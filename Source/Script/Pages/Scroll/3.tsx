@@ -1,29 +1,38 @@
-import { createEffect, createSignal, onMount, useRef } from "solid-js";
+import { createEffect, createSignal, onMount } from "solid-js";
 
-export default (props) => {
+export default (props: { text: string }) => {
 	const [offset, setOffset] = createSignal(0);
-	const containerRef = useRef(null);
+
+	const [ref, setRef] = createSignal<HTMLDivElement | undefined>();
+
 	const [displayChars, setDisplayChars] = createSignal(10);
+
 	const charWidth = 4;
+
 	const text = () => props.text || "HELLO 123";
+
 	const needsScroll = () => text().length > displayChars();
 
 	onMount(() => {
 		const calculateWidth = () => {
-			if (containerRef.current) {
-				const containerWidth = containerRef.current.offsetWidth;
-				const availableChars = Math.floor(containerWidth / 20);
+			if (ref()) {
+				const containerWidth = ref()?.offsetWidth;
+
+				const availableChars = Math.floor((containerWidth ?? 100) / 20);
+
 				setDisplayChars(Math.max(1, availableChars));
 			}
 		};
 
 		calculateWidth();
+
 		window.addEventListener("resize", calculateWidth);
+
 		return () => window.removeEventListener("resize", calculateWidth);
 	});
 
 	createEffect(() => {
-		if (!needsScroll) return;
+		if (!needsScroll()) return;
 
 		const timer = setInterval(() => {
 			setOffset((prev) => (prev + 1) % (text.length * charWidth));
@@ -32,42 +41,46 @@ export default (props) => {
 		return () => clearInterval(timer);
 	});
 
-	const renderPixel = (on) => (
-		<div class="p-px">
-			<div class={on ? "h-2 w-2 bg-yellow-100" : "h-2 w-2 bg-black"} />
-		</div>
-	);
-
-	const renderChar = (char) => {
-		const pattern = Matrix[char.toUpperCase()] || Matrix[" "];
-		return (
-			<div class="mr-2">
-				{pattern.map((row, i) => (
-					<div class="flex" key={i}>
-						{row.map((pixel, j) => (
-							<div key={j}>{renderPixel(pixel)}</div>
-						))}
-					</div>
-				))}
-			</div>
-		);
-	};
-
-	const visibleText = needsScroll
-		? (text + "   " + text).slice(
-				Math.floor(offset / charWidth),
-				Math.floor(offset / charWidth) + displayChars,
-			)
-		: text.slice(0, displayChars);
-
 	return (
-		<div className="w-full rounded-lg bg-black p-4" ref={containerRef}>
-			<div className="rounded bg-black p-3">
-				<div className="flex flex-wrap justify-center">
-					{visibleText.split("").map((char, i) => (
-						<div key={i}>{renderChar(char)}</div>
+		<div class="w-full bg-black" ref={setRef}>
+			<div class="flex flex-wrap justify-center">
+				{(() =>
+					needsScroll()
+						? (text() + "   " + text()).slice(
+								Math.floor(offset() / charWidth),
+								Math.floor(offset() / charWidth) +
+									displayChars(),
+							)
+						: text().slice(0, displayChars()))()
+					.split("")
+					.map((Visible, _i) => (
+						<div>
+							{((char: string) => {
+								const pattern =
+									Matrix[char.toUpperCase()] || Matrix[" "];
+
+								return (
+									<div class="mr-2">
+										{pattern?.map((row, i) => (
+											<div class="flex">
+												{row.map((pixel, j) => (
+													<div>
+														{((on: number) => (
+															<div class="p-px">
+																<div
+																	class={`"h-2 w-2 ${on ? "bg-white" : "bg-black"}`}
+																/>
+															</div>
+														))(pixel)}
+													</div>
+												))}
+											</div>
+										))}
+									</div>
+								);
+							})(Visible)}
+						</div>
 					))}
-				</div>
 			</div>
 		</div>
 	);
