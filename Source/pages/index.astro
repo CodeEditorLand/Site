@@ -1,5 +1,8 @@
 ---
 import Base from "@Layout/Base.astro";
+import Scroll from "@Script/Pages/Scroll";
 ---
 
-<Base />
+<Base>
+	<Scroll client:only="solid-js" text="Hello World" />
+</Base>
