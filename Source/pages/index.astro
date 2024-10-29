@@ -1,8 +1,8 @@
 ---
+import Element from "@Function/Scroll/Component.jsx";
 import Base from "@Layout/Base.astro";
-import Scroll from "@Script/Pages/Scroll";
 ---
 
 <Base>
-	<Scroll client:only="solid-js" Text={() => "Hello World"} />
+	<Element client:only="solid-js" Text="Hello World" />
 </Base>
