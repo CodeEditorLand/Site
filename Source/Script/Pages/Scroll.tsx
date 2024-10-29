@@ -1,28 +1,24 @@
 import { createEffect, createSignal, onMount } from "solid-js";
 
-export default (props: { text: string }) => {
+export default ({ Text }: { Text: () => string } = { Text: () => "" }) => {
 	const [offset, setOffset] = createSignal(0);
 
 	const [ref, setRef] = createSignal<HTMLDivElement | undefined>();
 
-	const [displayChars, setDisplayChars] = createSignal(10);
+	const [Count, setDisplayChars] = createSignal(10);
 
 	const Width = 4;
 
-	const text = () => props.text || "";
+	const Padded = () => Text() + "   " + Text() + "   ";
 
-	const paddedText = () => text() + "   " + text() + "   ";
-
-	const needsScroll = () => text().length > displayChars();
+	const Animate = () => Text().length > Count();
 
 	onMount(() => {
 		const calculateWidth = () => {
 			if (ref()) {
-				const containerWidth = ref()?.offsetWidth;
-
-				const availableChars = Math.floor((containerWidth ?? 100) / 32);
-
-				setDisplayChars(Math.max(1, availableChars));
+				setDisplayChars(
+					Math.max(1, Math.floor((ref()?.offsetWidth ?? 100) / 32)),
+				);
 			}
 		};
 
@@ -34,68 +30,65 @@ export default (props: { text: string }) => {
 	});
 
 	createEffect(() => {
-		if (!needsScroll()) return;
+		if (!Animate()) return;
 
-		let animationId: number;
-		let lastTimestamp = 0;
+		let Animation: number;
+		let Index = 0;
 
-		const totalWidth = paddedText().length * Width;
+		const totalWidth = Padded().length * Width;
 
-		const animate = (timestamp: number) => {
-			if (timestamp - lastTimestamp > 50) {
+		const Roll = (timestamp: number) => {
+			if (timestamp - Index > 50) {
 				setOffset((prev) => (prev + 1) % totalWidth);
-				lastTimestamp = timestamp;
+				Index = timestamp;
 			}
 
-			animationId = requestAnimationFrame(animate);
+			Animation = requestAnimationFrame(Roll);
 		};
 
-		animationId = requestAnimationFrame(animate);
+		Animation = requestAnimationFrame(Roll);
 
-		return () => cancelAnimationFrame(animationId);
+		return () => cancelAnimationFrame(Animation);
 	});
 
-	const visibleText = () => {
-		if (!needsScroll()) {
-			return text().slice(0, displayChars());
+	const Display = () => {
+		if (!Animate()) {
+			return Text().slice(0, Count());
 		}
 
-		const totalWidth = paddedText().length * Width;
-		const currentOffset = (offset() / 2) % totalWidth; // Move by half a pixel each frame
-		const startIndex = Math.floor(currentOffset / Width);
+		const Start = Math.floor(
+			(((offset() / 2) % Padded().length) * Width) / Width,
+		);
 
 		return (
-			paddedText().slice(startIndex, startIndex + displayChars()) +
-			paddedText().slice(
-				0,
-				Math.max(0, startIndex + displayChars() - paddedText().length),
-			)
+			Padded().slice(Start, Start + Count()) +
+			Padded().slice(0, Math.max(0, Start + Count() - Padded().length))
 		);
 	};
 
 	return (
 		<div class="w-full overflow-hidden bg-black p-2" ref={setRef}>
-			<p class="sr-only">{text()}</p>
+			<p class="sr-only">{Text()}</p>
 
 			<div class="flex justify-center" aria-hidden="true">
-				{visibleText()
+				{Display()
 					.split("")
 					.map((Visible, _i) => (
 						<div>
-							{((char: string) => (
-								<div class="mr-2 flex-shrink-0">
+							{((Position) => (
+								<div class="mr-2">
 									{(
-										Matrix[char.toUpperCase()] ||
+										Matrix[Position.toUpperCase()] ||
 										Matrix[" "]
-									)?.map((row, _i) => (
+									)?.map((Row, _i) => (
 										<div class="flex">
-											{row.map((pixel, _j) => (
+											{Row.map((Pixel, _j) => (
 												<div>
-													{((on: number) => (
+													{((Show) => (
 														<div
-															class={`h-2 w-2 ${on ? "bg-white" : "bg-black"}`}
+															class={`h-2 w-2 ${Show ? "bg-white" : "bg-black"}`}
 														/>
-													))(pixel)}
+													))(Pixel)}
 												</div>
 											))}
 										</div>
