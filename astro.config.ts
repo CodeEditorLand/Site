@@ -29,7 +29,6 @@ export default (await import("astro/config")).defineConfig({
 			: null,
 		(await import("@astrojs/sitemap")).default(),
 		!On ? (await import("@playform/inline")).default({ Logger: 1 }) : null,
-		(await import("@astrojs/prefetch")).default(),
 		!On ? (await import("@playform/format")).default({ Logger: 1 }) : null,
 		!On
 			? (await import("@playform/compress")).default({ Logger: 1 })

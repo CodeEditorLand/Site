@@ -21,7 +21,6 @@
 		"prepublishOnly": "astro build"
 	},
 	"dependencies": {
-		"@astrojs/prefetch": "0.4.1",
 		"@astrojs/sitemap": "3.2.1",
 		"@astrojs/solid-js": "4.4.2",
 		"@playform/build": "0.1.8",
