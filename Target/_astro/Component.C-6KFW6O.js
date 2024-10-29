@@ -9,26 +9,23 @@ import {
 	b as l,
 	t as o,
 } from "./web.CGGjRl-f.js";
-var c = o(
+var u = o(
 		'<div class="w-full overflow-hidden bg-black p-2"><p class=sr-only></p><div class="flex justify-center"aria-hidden=true>',
 	),
-	u = o("<div>"),
-	d = o('<div class="mr-2 flex-shrink-0">'),
+	c = o("<div>"),
+	d = o("<div class=mr-2>"),
 	f = o("<div class=flex>");
-const m = (e) => {
+const m = ({ Text: e } = { Text: "" }) => {
 		const [o, m] = r(0),
-			[v, p] = r(),
+			[h, p] = r(),
 			[w, g] = r(10),
-			x = () => e.text || "",
+			[x] = r(e),
 			b = () => x() + "   " + x() + "   ",
 			_ = () => x().length > w();
 		t(() => {
 			const e = () => {
-				if (v()) {
-					const e = v()?.offsetWidth,
-						r = Math.floor((e ?? 100) / 32);
-					g(Math.max(1, r));
-				}
+				h() &&
+					g(Math.max(1, Math.floor((h()?.offsetWidth ?? 100) / 32)));
 			};
 			return (
 				e(),
@@ -51,7 +48,7 @@ const m = (e) => {
 				);
 			});
 		return (
-			(M = s(c)),
+			(M = s(u)),
 			(j = M.firstChild),
 			(A = j.nextSibling),
 			n(p, M),
@@ -59,37 +56,35 @@ const m = (e) => {
 			i(A, () =>
 				(() => {
 					if (!_()) return x().slice(0, w());
-					const e = 4 * b().length,
-						r = (o() / 2) % e,
-						t = Math.floor(r / 4);
+					const e = Math.floor((((o() / 2) % b().length) * 4) / 4);
 					return (
-						b().slice(t, t + w()) +
-						b().slice(0, Math.max(0, t + w() - b().length))
+						b().slice(e, e + w()) +
+						b().slice(0, Math.max(0, e + w() - b().length))
 					);
 				})()
 					.split("")
 					.map((e, r) => {
 						return (
-							(t = s(u)),
+							(t = s(c)),
 							i(t, () => {
 								return (
 									(r = e),
 									(t = s(d)),
 									i(t, () =>
-										(h[r.toUpperCase()] || h[" "])?.map(
+										(v[r.toUpperCase()] || v[" "])?.map(
 											(e, r) => {
 												return (
 													(t = s(f)),
 													i(t, () =>
 														e.map((e, r) => {
 															return (
-																(t = s(u)),
+																(t = s(c)),
 																i(t, () => {
 																	return (
 																		(r = e),
 																		(t =
 																			s(
-																				u,
+																				c,
 																			)),
 																		l(
 																			t,
@@ -126,7 +121,7 @@ const m = (e) => {
 		);
 		var M, j, A;
 	},
-	{ default: h } = await e(async () => {
+	{ default: v } = await e(async () => {
 		const { default: e } = await import("./Matrix.BYOAHmu9.js");
 		return { default: e };
 	}, []);

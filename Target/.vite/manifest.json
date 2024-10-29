@@ -35,10 +35,10 @@
       "../../../node_modules/firebase/app/dist/esm/index.esm.js"
     ]
   },
-  "Source/Script/Pages/Scroll/Matrix.ts": {
+  "Source/Variable/Scroll/Matrix.ts": {
     "file": "_astro/Matrix.BYOAHmu9.js",
     "name": "Matrix",
-    "src": "Source/Script/Pages/Scroll/Matrix.ts",
+    "src": "Source/Variable/Scroll/Matrix.ts",
     "isDynamicEntry": true
   },
   "_index.ftVfT69A.js": {
@@ -53,21 +53,21 @@
     "file": "_astro/web.CGGjRl-f.js",
     "name": "web"
   },
-  "astro-entry:@Script/Pages/Scroll": {
-    "file": "_astro/Scroll.Bgcl0rh0.js",
-    "name": "Scroll",
-    "src": "astro-entry:@Script/Pages/Scroll",
+  "astro-entry:@Function/Scroll/Component.tsx": {
+    "file": "_astro/Component.C-6KFW6O.js",
+    "name": "Component",
+    "src": "astro-entry:@Function/Scroll/Component.tsx",
     "isEntry": true,
     "imports": [
       "_preload-helper.D21cck6N.js",
       "_web.CGGjRl-f.js"
     ],
     "dynamicImports": [
-      "Source/Script/Pages/Scroll/Matrix.ts"
+      "Source/Variable/Scroll/Matrix.ts"
     ]
   },
   "astro:scripts/page.js": {
-    "file": "_astro/page.sV6Ljm8p.js",
+    "file": "_astro/page.nSjBrTOo.js",
     "name": "page",
     "src": "astro:scripts/page.js",
     "isEntry": true,
