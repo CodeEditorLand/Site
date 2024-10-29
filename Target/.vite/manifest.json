@@ -53,10 +53,10 @@
     "file": "_astro/web.CGGjRl-f.js",
     "name": "web"
   },
-  "astro-entry:@Script/Pages/Scroll/3.tsx": {
-    "file": "_astro/3.DqjcPaCp.js",
-    "name": "3",
-    "src": "astro-entry:@Script/Pages/Scroll/3.tsx",
+  "astro-entry:@Script/Pages/Scroll": {
+    "file": "_astro/Scroll.Bgcl0rh0.js",
+    "name": "Scroll",
+    "src": "astro-entry:@Script/Pages/Scroll",
     "isEntry": true,
     "imports": [
       "_preload-helper.D21cck6N.js",
