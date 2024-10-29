@@ -19,6 +19,10 @@ export default (
 
 	const Animate = () => _Text().length > Count();
 
+	const [LastTimestamp, _LastTimestamp] = createSignal(0);
+
+	const Time = 50;
+
 	onMount(() => {
 		const calculateWidth = () => {
 			if (Element()) {
@@ -41,23 +45,24 @@ export default (
 	createEffect(() => {
 		if (!Animate()) return;
 
-		let Animation: number;
-		let Index = 0;
+		let ID: number;
 
 		const totalWidth = Padded().length * Width;
 
-		const Roll = (timestamp: number) => {
-			if (timestamp - Index > 50) {
+		const Roll = (Current: number) => {
+			const elapsed = Current - LastTimestamp();
+
+			if (elapsed >= Time) {
 				_Offset((prev) => (prev + 1) % totalWidth);
-				Index = timestamp;
+				_LastTimestamp(Current);
 			}
 
-			Animation = requestAnimationFrame(Roll);
+			ID = requestAnimationFrame(Roll);
 		};
 
-		Animation = requestAnimationFrame(Roll);
+		ID = requestAnimationFrame(Roll);
 
-		return () => cancelAnimationFrame(Animation);
+		return () => cancelAnimationFrame(ID);
 	});
 
 	const Display = () => {
