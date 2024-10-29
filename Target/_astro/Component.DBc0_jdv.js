@@ -21,7 +21,8 @@ const m = ({ Text: e } = { Text: "" }) => {
 			[w, g] = r(10),
 			[x] = r(e),
 			b = () => x() + "   " + x() + "   ",
-			_ = () => x().length > w();
+			_ = () => x().length > w(),
+			[M, j] = r(0);
 		t(() => {
 			const e = () => {
 				h() &&
@@ -35,25 +36,24 @@ const m = ({ Text: e } = { Text: "" }) => {
 		}),
 			a(() => {
 				if (!_()) return;
-				let e,
-					r = 0;
-				const t = 4 * b().length,
-					a = (s) => {
-						s - r > 50 && (m((e) => (e + 1) % t), (r = s)),
-							(e = requestAnimationFrame(a));
+				let e;
+				const r = 4 * b().length,
+					t = (a) => {
+						a - M() >= 50 && (m((e) => (e + 1) % r), j(a)),
+							(e = requestAnimationFrame(t));
 					};
 				return (
-					(e = requestAnimationFrame(a)),
+					(e = requestAnimationFrame(t)),
 					() => cancelAnimationFrame(e)
 				);
 			});
 		return (
-			(M = s(u)),
-			(j = M.firstChild),
-			(A = j.nextSibling),
-			n(p, M),
-			i(j, x),
-			i(A, () =>
+			(A = s(u)),
+			(E = A.firstChild),
+			(y = E.nextSibling),
+			n(p, A),
+			i(E, x),
+			i(y, () =>
 				(() => {
 					if (!_()) return x().slice(0, w());
 					const e = Math.floor((((o() / 2) % b().length) * 4) / 4);
@@ -117,9 +117,9 @@ const m = ({ Text: e } = { Text: "" }) => {
 						var t;
 					}),
 			),
-			M
+			A
 		);
-		var M, j, A;
+		var A, E, y;
 	},
 	{ default: v } = await e(async () => {
 		const { default: e } = await import("./Matrix.BYOAHmu9.js");
