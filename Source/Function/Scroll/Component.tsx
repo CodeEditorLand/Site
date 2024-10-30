@@ -21,7 +21,10 @@ export default (
 
 	const [LastTimestamp, _LastTimestamp] = createSignal(0);
 
-	const Time = 50;
+	const Time = 170;
+	const Added = 250;
+
+	const Get = () => Time + Math.random() * Added;
 
 	onMount(() => {
 		const calculateWidth = () => {
@@ -47,14 +50,18 @@ export default (
 
 		let ID: number;
 
-		const totalWidth = Padded().length * Width;
+		const Size = Padded().length * Width;
+
+		let Time = Get();
 
 		const Roll = (Current: number) => {
-			const elapsed = Current - LastTimestamp();
+			const Past = Current - LastTimestamp();
 
-			if (elapsed >= Time) {
-				_Offset((prev) => (prev + 1) % totalWidth);
+			if (Past >= Time) {
+				const jump = Math.floor(Math.random() * 3) + 1;
+				_Offset((Current) => (Current + jump) % Size);
 				_LastTimestamp(Current);
+				Time = Get();
 			}
 
 			ID = requestAnimationFrame(Roll);
