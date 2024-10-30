@@ -58,8 +58,8 @@ export default (
 			const Past = Current - LastTimestamp();
 
 			if (Past >= Time) {
-				const jump = Math.floor(Math.random() * 3) + 1;
-				_Offset((Current) => (Current + jump) % Size);
+				const Next = Math.floor(Math.random() * 3) + 1;
+				_Offset((Current) => (Current + Next) % Size);
 				_LastTimestamp(Current);
 				Time = Get();
 			}
