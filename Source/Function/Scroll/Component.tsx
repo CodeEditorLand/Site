@@ -23,8 +23,6 @@ export default (
 
 	const Time = 50;
 
-	const Get = () => Time + Math.random() * Added;
-
 	onMount(() => {
 		const calculateWidth = () => {
 			if (Element()) {
@@ -51,15 +49,12 @@ export default (
 
 		const Size = Padded().length * Width;
 
-		let Time = Get();
-
 		const Roll = (Current: number) => {
 			const Past = Current - LastTimestamp();
 
 			if (Past >= Time) {
 				_Offset((prev) => (prev + 1) % Size);
 				_LastTimestamp(Current);
-				Time = Get();
 			}
 
 			ID = requestAnimationFrame(Roll);
