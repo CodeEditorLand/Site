@@ -1,5 +1,3 @@
-import { createEffect, createSignal, onMount } from "solid-js";
-
 export default (
 	{ Text }: { Text: string } = {
 		Text: "",
@@ -117,3 +115,5 @@ export default (
 };
 
 export const { default: Matrix } = await import("@Variable/Scroll/Matrix.js");
+
+export const { createEffect, createSignal, onMount } = await import("solid-js");
