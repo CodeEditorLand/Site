@@ -21,8 +21,7 @@ export default (
 
 	const [LastTimestamp, _LastTimestamp] = createSignal(0);
 
-	const Time = 170;
-	const Added = 250;
+	const Time = 50;
 
 	const Get = () => Time + Math.random() * Added;
 
@@ -58,8 +57,7 @@ export default (
 			const Past = Current - LastTimestamp();
 
 			if (Past >= Time) {
-				const Next = Math.floor(Math.random() * 2) + 1;
-				_Offset((Current) => (Current + Next) % Size);
+				_Offset((prev) => (prev + 1) % Size);
 				_LastTimestamp(Current);
 				Time = Get();
 			}
