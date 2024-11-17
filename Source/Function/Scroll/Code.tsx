@@ -83,7 +83,7 @@ export default (
 	};
 
 	onMount(() =>
-		setTimeout(() => _Loaded(false), Display().length * 30 + 100 + 7 * 5),
+		setTimeout(() => _Loaded(false), Text.length * 30 + 100 + 7 * 5),
 	);
 
 	return (
