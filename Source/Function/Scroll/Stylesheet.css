@@ -1,6 +1,4 @@
 .Pixel {
-	opacity: 1;
-
 	transition: none;
 
 	.Loaded & {
