@@ -1,11 +1,11 @@
 {
   "../../../node_modules/@astrojs/solid-js/dist/client.js": {
-    "file": "_astro/client.BdA_Dids.js",
+    "file": "_astro/client.CE5VRrTc.js",
     "name": "client",
     "src": "../../../node_modules/@astrojs/solid-js/dist/client.js",
     "isEntry": true,
     "imports": [
-      "_web.CjQ3rXGK.js"
+      "_web.D_hp9GMo.js"
     ]
   },
   "../../../node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
@@ -49,23 +49,23 @@
     "file": "_astro/preload-helper.D21cck6N.js",
     "name": "preload-helper"
   },
-  "_web.CjQ3rXGK.js": {
-    "file": "_astro/web.CjQ3rXGK.js",
+  "_web.D_hp9GMo.js": {
+    "file": "_astro/web.D_hp9GMo.js",
     "name": "web",
     "isDynamicEntry": true
   },
   "astro-entry:@Function/Scroll/Code": {
-    "file": "_astro/Code.BJq0DeWM.js",
+    "file": "_astro/Code.BTLlgA3k.js",
     "name": "Code",
     "src": "astro-entry:@Function/Scroll/Code",
     "isEntry": true,
     "imports": [
       "_preload-helper.D21cck6N.js",
-      "_web.CjQ3rXGK.js"
+      "_web.D_hp9GMo.js"
     ],
     "dynamicImports": [
       "Source/Variable/Scroll/Matrix.ts",
-      "_web.CjQ3rXGK.js"
+      "_web.D_hp9GMo.js"
     ]
   },
   "astro:scripts/page.js": {

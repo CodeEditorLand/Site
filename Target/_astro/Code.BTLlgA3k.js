@@ -1,31 +1,24 @@
 import { _ as e } from "./preload-helper.D21cck6N.js";
-import {
-	g as t,
-	u as a,
-	i as r,
-	c as n,
-	a as s,
-	t as i,
-} from "./web.CjQ3rXGK.js";
-var o = i(
-		'<div><p class=sr-only></p><div class="flex justify-center"aria-hidden=true>',
+import { g as t, u as a, i as r, c as n, t as s } from "./web.D_hp9GMo.js";
+var i = s(
+		'<div class="w-full overflow-hidden bg-black p-2"><p class=sr-only></p><div class="flex justify-center"aria-hidden=true>',
 	),
-	l = i("<div>"),
-	c = i("<div class=mr-2>"),
-	u = i("<div class=flex>");
-const d = ({ Text: e } = { Text: "" }) => {
-		const [i, d] = h(!0),
-			[v, w] = h(0),
-			[g, _] = h(),
-			[x, E] = h(10),
-			[M] = h(e),
-			b = () => M() + "   " + M() + "   ",
-			L = () => M().length > x(),
-			[j, A] = h(0);
-		p(() => {
+	o = s("<div>"),
+	l = s("<div class=mr-2>"),
+	c = s("<div class=flex>");
+const u = ({ Text: e } = { Text: "" }) => {
+		const [s, u] = m(!0),
+			[p, v] = m(0),
+			[w, g] = m(),
+			[_, x] = m(10),
+			[E] = m(e),
+			M = () => E() + "   " + E() + "   ",
+			b = () => E().length > _(),
+			[T, j] = m(0);
+		h(() => {
 			const e = () => {
-				g() &&
-					E(Math.max(1, Math.floor((g()?.offsetWidth ?? 100) / 32)));
+				w() &&
+					x(Math.max(1, Math.floor((w()?.offsetWidth ?? 100) / 32)));
 			};
 			return (
 				e(),
@@ -33,12 +26,13 @@ const d = ({ Text: e } = { Text: "" }) => {
 				() => window.removeEventListener("resize", e)
 			);
 		}),
-			m(() => {
-				if (!L()) return;
+			d(() => {
+				if (!b()) return;
 				let e;
-				const t = 4 * b().length,
+				u(!1);
+				const t = 4 * M().length,
 					a = (r) => {
-						r - j() >= 50 && (w((e) => (e + 1) % t), A(r)),
+						r - T() >= 50 && (v((e) => (e + 1) % t), j(r)),
 							(e = requestAnimationFrame(a));
 					};
 				return (
@@ -46,46 +40,48 @@ const d = ({ Text: e } = { Text: "" }) => {
 					() => cancelAnimationFrame(e)
 				);
 			});
+		const A = () => {
+			if (!b()) return E().slice(0, _());
+			const e = Math.floor((((p() / 2) % M().length) * 4) / 4);
+			return (
+				M().slice(e, e + _()) +
+				M().slice(0, Math.max(0, e + _() - M().length))
+			);
+		};
 		return (
-			(S = t(o)),
-			(T = S.firstChild),
-			(y = T.nextSibling),
-			a(_, S),
-			r(T, M),
+			h(() => setTimeout(() => u(!1), 30 * A().length + 100 + 35)),
+			(L = t(i)),
+			(S = L.firstChild),
+			(y = S.nextSibling),
+			a(g, L),
+			r(S, E),
 			r(y, () =>
-				(() => {
-					if (!L()) return M().slice(0, x());
-					const e = Math.floor((((v() / 2) % b().length) * 4) / 4);
-					return (
-						b().slice(e, e + x()) +
-						b().slice(0, Math.max(0, e + x() - b().length))
-					);
-				})()
+				A()
 					.split("")
-					.map((e, n) => {
+					.map((e, s) => {
 						return (
-							(i = t(l)),
+							(i = t(o)),
 							r(i, () => {
 								return (
 									(i = e),
-									(o = t(c)),
-									r(o, () =>
+									(u = t(l)),
+									r(u, () =>
 										(f[i.toUpperCase()] || f[" "])?.map(
 											(e, i) => {
 												return (
-													(o = t(u)),
-													r(o, () =>
-														e.map((e, o) => {
+													(l = t(c)),
+													r(l, () =>
+														e.map((e, l) => {
 															return (
-																(c = t(l)),
+																(c = t(o)),
 																r(c, () =>
 																	((e) => {
 																		const [
 																			r,
 																			c,
-																		] = h();
+																		] = m();
 																		return (
-																			p(
+																			h(
 																				() => {
 																					e &&
 																						setTimeout(
@@ -94,24 +90,24 @@ const d = ({ Text: e } = { Text: "" }) => {
 																									"Shown",
 																								),
 																							30 *
-																								n +
+																								s +
 																								100 *
 																									Math.random() +
 																								5 *
 																									(i +
-																										o),
+																										l),
 																						);
 																				},
 																			),
 																			(u =
 																				t(
-																					l,
+																					o,
 																				)),
 																			a(
 																				c,
 																				u,
 																			),
-																			s(
+																			n(
 																				u,
 																				"Pixel h-2 w-2 " +
 																					(e
@@ -128,46 +124,39 @@ const d = ({ Text: e } = { Text: "" }) => {
 															var c;
 														}),
 													),
-													o
+													l
 												);
-												var o;
+												var l;
 											},
 										),
 									),
-									o
+									u
 								);
-								var i, o;
+								var i, u;
 							}),
 							i
 						);
 						var i;
 					}),
 			),
-			n(() =>
-				s(
-					S,
-					"w-full overflow-hidden bg-black p-2 " +
-						(i() ? "Loaded" : ""),
-				),
-			),
-			S
+			L
 		);
-		var S, T, y;
+		var L, S, y;
 	},
 	{ default: f } = await e(async () => {
 		const { default: e } = await import("./Matrix.BYOAHmu9.js");
 		return { default: e };
 	}, []),
 	{
-		createEffect: m,
-		createSignal: h,
-		onMount: p,
+		createEffect: d,
+		createSignal: m,
+		onMount: h,
 	} = await e(async () => {
 		const {
 			createEffect: e,
 			createSignal: t,
 			onMount: a,
-		} = await import("./web.CjQ3rXGK.js").then((e) => e.s);
+		} = await import("./web.D_hp9GMo.js").then((e) => e.s);
 		return { createEffect: e, createSignal: t, onMount: a };
 	}, []);
-export { d as default };
+export { u as default };
