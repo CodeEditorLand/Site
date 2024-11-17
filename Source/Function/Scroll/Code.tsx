@@ -3,6 +3,8 @@ export default (
 		Text: "",
 	},
 ) => {
+	const [Loaded, _Loaded] = createSignal(true);
+
 	const [Offset, _Offset] = createSignal(0);
 
 	const [Element, _Element] = createSignal<HTMLDivElement | undefined>();
@@ -22,7 +24,7 @@ export default (
 	const Time = 50;
 
 	onMount(() => {
-		const calculateWidth = () => {
+		const Factor = () => {
 			if (Element()) {
 				_Count(
 					Math.max(
@@ -33,15 +35,17 @@ export default (
 			}
 		};
 
-		calculateWidth();
+		Factor();
 
-		window.addEventListener("resize", calculateWidth);
+		window.addEventListener("resize", Factor);
 
-		return () => window.removeEventListener("resize", calculateWidth);
+		return () => window.removeEventListener("resize", Factor);
 	});
 
 	createEffect(() => {
 		if (!Animate()) return;
+
+		_Loaded(false);
 
 		let ID: number;
 
@@ -78,29 +82,62 @@ export default (
 		);
 	};
 
+	onMount(() =>
+		setTimeout(() => _Loaded(false), Display().length * 30 + 100 + 7 * 5),
+	);
+
 	return (
-		<div class="w-full overflow-hidden bg-black p-2" ref={_Element}>
+		<div
+			class={`w-full overflow-hidden bg-black p-2 ${Loaded() ? "Loaded" : ""}`}
+			ref={_Element}>
 			<p class="sr-only">{_Text()}</p>
 
 			<div class="flex justify-center" aria-hidden="true">
 				{Display()
 					.split("")
-					.map((Visible, _i) => (
+					.map((Visible, IndexLetter) => (
 						<div>
 							{((Position) => (
 								<div class="mr-2">
 									{(
 										Matrix[Position.toUpperCase()] ||
 										Matrix[" "]
-									)?.map((Row, _i) => (
+									)?.map((Row, IndexRow) => (
 										<div class="flex">
-											{Row.map((Pixel, _j) => (
+											{Row.map((Pixel, IndexPixel) => (
 												<div>
-													{((Show) => (
-														<div
-															class={`h-2 w-2 ${Show ? "bg-white" : "bg-black"}`}
-														/>
-													))(Pixel)}
+													{((Show) => {
+														const [Pixel, _Pixel] =
+															createSignal<
+																| HTMLDivElement
+																| undefined
+															>();
+
+														onMount(() => {
+															if (Show) {
+																setTimeout(
+																	() =>
+																		Pixel()?.classList.add(
+																			"Shown",
+																		),
+																	IndexLetter *
+																		30 +
+																		Math.random() *
+																			100 +
+																		(IndexRow +
+																			IndexPixel) *
+																			5,
+																);
+															}
+														});
+
+														return (
+															<div
+																ref={_Pixel}
+																class={`Pixel h-2 w-2 ${Show ? "bg-white" : "bg-black"}`}
+															/>
+														);
+													})(Pixel)}
 												</div>
 											))}
 										</div>
