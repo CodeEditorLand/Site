@@ -48,7 +48,7 @@ const d = ({ Text: e } = { Text: "" }) => {
 				);
 			});
 		return (
-			p(() => setTimeout(() => d(!1), 30 * e.length + 2e3 + 35)),
+			p(() => setTimeout(() => d(!1), 30 * e.length + 100 + 35)),
 			(A = t(o)),
 			(S = A.firstChild),
 			(y = S.nextSibling),
