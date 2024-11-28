@@ -3,8 +3,6 @@ export default (
 		Text: "",
 	},
 ) => {
-	const [Loaded, _Loaded] = createSignal(true);
-
 	const [Offset, _Offset] = createSignal(0);
 
 	const [Element, _Element] = createSignal<HTMLDivElement | undefined>();
@@ -45,8 +43,6 @@ export default (
 	createEffect(() => {
 		if (!Animate()) return;
 
-		_Loaded(false);
-
 		let ID: number;
 
 		const Size = Padded().length * Width;
@@ -82,58 +78,27 @@ export default (
 		);
 	};
 
-	onMount(() =>
-		setTimeout(() => _Loaded(false), Text.length * 30 + 100 + 7 * 5),
-	);
-
 	return (
-		<div
-			class={`w-full overflow-hidden bg-black p-2 ${Loaded() ? "Loaded" : ""}`}
-			ref={_Element}>
+		<div class={`w-full overflow-hidden bg-black p-2`} ref={_Element}>
 			<p class="sr-only">{_Text()}</p>
 
 			<div class="flex justify-center" aria-hidden="true">
 				{Display()
 					.split("")
-					.map((Visible, IndexLetter) => (
+					.map((Visible) => (
 						<div>
 							{((Position) => (
 								<div class="mr-2">
 									{(
 										Matrix[Position.toUpperCase()] ||
 										Matrix[" "]
-									)?.map((Row, IndexRow) => (
+									)?.map((Row) => (
 										<div class="flex">
-											{Row.map((Pixel, IndexPixel) => (
+											{Row.map((Pixel) => (
 												<div>
 													{((Show) => {
-														const [Pixel, _Pixel] =
-															createSignal<
-																| HTMLDivElement
-																| undefined
-															>();
-
-														onMount(() => {
-															if (Show) {
-																setTimeout(
-																	() =>
-																		Pixel()?.classList.add(
-																			"Shown",
-																		),
-																	IndexLetter *
-																		30 +
-																		Math.random() *
-																			100 +
-																		(IndexRow +
-																			IndexPixel) *
-																			5,
-																);
-															}
-														});
-
 														return (
 															<div
-																ref={_Pixel}
 																class={`Pixel h-2 w-2 ${Show ? "bg-white" : "bg-black"}`}
 															/>
 														);
