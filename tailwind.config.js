@@ -1,5 +1,6 @@
 import { fontFamily } from "tailwindcss/defaultTheme";
 
+/** @type {import('tailwindcss').Config} */
 export default {
 	content: [
 		"./Public/**/*.html",
@@ -42,4 +43,7 @@ export default {
 		require("@tailwindcss/typography"),
 		require("@tailwindcss/aspect-ratio"),
 	],
+
+	// Link that to the dynamic components inside ./Source/Function/Scroll/Layout.astro
+	safelist: ["h-2", "w-2"],
 };

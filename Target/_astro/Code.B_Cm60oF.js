@@ -3,21 +3,21 @@ import { g as t, u as r, i as a, c as n, t as i } from "./web.D_hp9GMo.js";
 var s = i(
 		'<div class="w-full overflow-hidden bg-black p-2"><p class=sr-only></p><div class="flex justify-center"aria-hidden=true>',
 	),
-	l = i("<div>"),
-	o = i("<div class=mr-2>"),
+	o = i("<div>"),
+	l = i("<div class=mr-2>"),
 	c = i("<div class=flex>");
-const u = ({ Text: e } = { Text: "" }) => {
-		const [i, u] = m(0),
-			[p, v] = m(),
-			[w, g] = m(10),
-			[_] = m(e),
-			x = () => _() + "   " + _() + "   ",
-			E = () => _().length > w(),
-			[b, M] = m(0);
+const u = ({ Text: e, Font: i } = { Text: "", Font: 1 }) => {
+		const [u, p] = m(0),
+			[v, w] = m(),
+			[g, _] = m(10),
+			[x] = m(e),
+			E = () => x() + "   " + x() + "   ",
+			b = () => x().length > g(),
+			[M, j] = m(0);
 		h(() => {
 			const e = () => {
-				p() &&
-					g(Math.max(1, Math.floor((p()?.offsetWidth ?? 100) / 32)));
+				v() &&
+					_(Math.max(1, Math.floor((v()?.offsetWidth ?? 100) / 32)));
 			};
 			return (
 				e(),
@@ -26,11 +26,11 @@ const u = ({ Text: e } = { Text: "" }) => {
 			);
 		}),
 			d(() => {
-				if (!E()) return;
+				if (!b()) return;
 				let e;
-				const t = 4 * x().length,
+				const t = 4 * E().length,
 					r = (a) => {
-						a - b() >= 50 && (u((e) => (e + 1) % t), M(a)),
+						a - M() >= 50 && (p((e) => (e + 1) % t), j(a)),
 							(e = requestAnimationFrame(r));
 					};
 				return (
@@ -39,29 +39,29 @@ const u = ({ Text: e } = { Text: "" }) => {
 				);
 			});
 		return (
-			(j = t(s)),
-			(A = j.firstChild),
-			(y = A.nextSibling),
-			r(v, j),
-			a(A, _),
+			(A = t(s)),
+			(F = A.firstChild),
+			(y = F.nextSibling),
+			r(w, A),
+			a(F, x),
 			a(y, () =>
 				(() => {
-					if (!E()) return _().slice(0, w());
-					const e = Math.floor((((i() / 2) % x().length) * 4) / 4);
+					if (!b()) return x().slice(0, g());
+					const e = Math.floor((((u() / 2) % E().length) * 4) / 4);
 					return (
-						x().slice(e, e + w()) +
-						x().slice(0, Math.max(0, e + w() - x().length))
+						E().slice(e, e + g()) +
+						E().slice(0, Math.max(0, e + g() - E().length))
 					);
 				})()
 					.split("")
 					.map((e) => {
 						return (
-							(r = t(l)),
+							(r = t(o)),
 							a(r, () => {
 								return (
 									(r = e),
-									(i = t(o)),
-									a(i, () =>
+									(s = t(l)),
+									a(s, () =>
 										(f[r.toUpperCase()] || f[" "])?.map(
 											(e) => {
 												return (
@@ -69,20 +69,17 @@ const u = ({ Text: e } = { Text: "" }) => {
 													a(r, () =>
 														e.map((e) => {
 															return (
-																(r = t(l)),
+																(r = t(o)),
 																a(r, () => {
 																	return (
 																		(r = e),
 																		(a =
 																			t(
-																				l,
+																				o,
 																			)),
 																		n(
 																			a,
-																			"Pixel h-2 w-2 " +
-																				(r
-																					? "bg-white"
-																					: "bg-black"),
+																			`Pixel h-${i} w-${i} ${r ? "bg-white" : "bg-black"}`,
 																		),
 																		a
 																	);
@@ -99,18 +96,18 @@ const u = ({ Text: e } = { Text: "" }) => {
 											},
 										),
 									),
-									i
+									s
 								);
-								var r, i;
+								var r, s;
 							}),
 							r
 						);
 						var r;
 					}),
 			),
-			j
+			A
 		);
-		var j, A, y;
+		var A, F, y;
 	},
 	{ default: f } = await e(async () => {
 		const { default: e } = await import("./Matrix.BYOAHmu9.js");
