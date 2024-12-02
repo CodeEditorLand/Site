@@ -1,6 +1,7 @@
 export default (
-	{ Text }: { Text: string } = {
+	{ Text, Font }: { Text: string; Font?: number } = {
 		Text: "",
+		Font: 1,
 	},
 ) => {
 	const [Offset, _Offset] = createSignal(0);
@@ -99,7 +100,7 @@ export default (
 													{((Show) => {
 														return (
 															<div
-																class={`Pixel h-2 w-2 ${Show ? "bg-white" : "bg-black"}`}
+																class={`Pixel h-${Font} w-${Font} ${Show ? "bg-white" : "bg-black"}`}
 															/>
 														);
 													})(Pixel)}
