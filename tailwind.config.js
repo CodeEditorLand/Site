@@ -44,6 +44,6 @@ export default {
 		require("@tailwindcss/aspect-ratio"),
 	],
 
-	// Link that to the dynamic components inside ./Source/Function/Scroll/Layout.astro
+	// TODO: Link that to the dynamic components inside ./Source/Function/Scroll/Layout.astro
 	safelist: ["h-2", "w-2"],
 };
