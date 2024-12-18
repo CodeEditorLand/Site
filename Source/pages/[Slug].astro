@@ -1,0 +1,70 @@
+---
+import Base from "@Layout/Base.astro";
+import type { MarkdownInstance } from "astro";
+
+export const Permute = (Words: string[]) => {
+	const Output: string[] = [];
+
+	const Combinations = (prefix: string, Other: string[]) => {
+		if (Other.length === 0) {
+			Output.push(prefix);
+			return;
+		}
+
+		Combinations(prefix + (Other[0]?.toLowerCase() ?? ""), Other.slice(1));
+		Combinations(prefix + (Other[0]?.toUpperCase() ?? ""), Other.slice(1));
+	};
+
+	Words.forEach((word) => {
+		Combinations("", word.split(""));
+	});
+
+	return [...new Set(Output)];
+};
+
+export const Capitalize = (Text: string) =>
+	Text.replace(/\b\w/g, (Text) => Text.toUpperCase());
+
+export const getStaticPaths = async () =>
+	Permute(["status"]).map((Slug) => ({
+		params: { Slug },
+	}));
+
+const File = Object.entries(
+	import.meta.glob("./../Content/en/*.md", { eager: true }),
+);
+
+File.filter(([Name, _Module]) => {
+	Name.indexOf(
+		(typeof Astro.params["Slug"] === "string" ? Astro.params["Slug"] : "")
+			.toLowerCase()
+			.replaceAll(" ", "-"),
+	) > -1;
+});
+
+let Content = "Not found.",
+	Title = "404.";
+
+for (const [Name, _Module] of File) {
+	const Module = _Module as MarkdownInstance<Record<string, any>>;
+
+	if (
+		Name.indexOf(
+			(typeof Astro.params["Slug"] === "string"
+				? Astro.params["Slug"]
+				: ""
+			)
+				.toLowerCase()
+				.replaceAll(" ", "-"),
+		) > -1
+	) {
+		Content = await Module.compiledContent();
+
+		Title = Module.frontmatter["Title"];
+	}
+}
+---
+
+<Base {Title}>
+	<Fragment set:html={Content} />
+</Base>

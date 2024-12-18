@@ -8,6 +8,15 @@
       "_web.D_hp9GMo.js"
     ]
   },
+  "../../../node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
+    "file": "_astro/ClientRouter.astro_astro_type_script_index_0_lang.DElhdQ9j.js",
+    "name": "ClientRouter.astro_astro_type_script_index_0_lang",
+    "src": "../../../node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts",
+    "isEntry": true,
+    "imports": [
+      "_index.ftVfT69A.js"
+    ]
+  },
   "../../../node_modules/firebase/app/dist/esm/index.esm.js": {
     "file": "_astro/index.esm.Bnaa-YML.js",
     "name": "index.esm",
@@ -63,15 +72,6 @@
     "file": "_astro/page.nSjBrTOo.js",
     "name": "page",
     "src": "astro:scripts/page.js",
-    "isEntry": true,
-    "imports": [
-      "_index.ftVfT69A.js"
-    ]
-  },
-  "node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
-    "file": "_astro/ClientRouter.astro_astro_type_script_index_0_lang.DElhdQ9j.js",
-    "name": "ClientRouter.astro_astro_type_script_index_0_lang",
-    "src": "node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts",
     "isEntry": true,
     "imports": [
       "_index.ftVfT69A.js"
