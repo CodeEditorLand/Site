@@ -45,23 +45,13 @@ File.filter(([Name, _Module]) => {
 let Content = "Not found.",
 	Title = "404.";
 
-for (const [Name, _Module] of File) {
-	const Module = _Module as MarkdownInstance<Record<string, any>>;
+for (const [_Name, Module] of File as [
+	string,
+	MarkdownInstance<Record<string, any>>,
+][]) {
+	Content = await Module.compiledContent();
 
-	if (
-		Name.indexOf(
-			(typeof Astro.params["Slug"] === "string"
-				? Astro.params["Slug"]
-				: ""
-			)
-				.toLowerCase()
-				.replaceAll(" ", "-"),
-		) > -1
-	) {
-		Content = await Module.compiledContent();
-
-		Title = Module.frontmatter["Title"];
-	}
+	Title = Module.frontmatter["Title"];
 }
 ---
 
