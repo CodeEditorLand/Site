@@ -52,7 +52,7 @@ export default (
 			const Past = Current - LastTimestamp();
 
 			if (Past >= Time) {
-				_Offset((prev) => (prev + 1) % Size);
+				_Offset((prev) => (prev - 0.2 + Size) % Size);
 				_LastTimestamp(Current);
 			}
 
