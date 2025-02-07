@@ -1,4 +1,4 @@
-import "@Function/Scroll/Stylesheet.css";
+import "@Function/Scroll/Stylesheet.scss";
 
 export default ({ Text = "", Font = 1 }: { Text?: string; Font?: number }) => {
 	const [Offset, _Offset] = createSignal(0);
@@ -83,48 +83,46 @@ export default ({ Text = "", Font = 1 }: { Text?: string; Font?: number }) => {
 			<div class="flex justify-center" aria-hidden="true">
 				{Display()
 					.split("")
-					.map((Visible, charIndex) => (
+					.map((Visible, IndexChar) => (
 						<div class="mr-2">
 							{((Position) => (
-								<div>
+								<div class="Grid">
 									{(
 										Matrix[Position.toUpperCase()] ||
 										Matrix[" "]
-									)?.map((Row, rowIndex) => (
-										<div class="flex">
-											{Row.map((Pixel, pixelIndex) => (
-												<div>
-													{((Show) => (
-														<div
-															class={`Pixel h-${Font} w-${Font} ${
-																Show
-																	? `Color ${
-																			(charIndex +
-																				rowIndex +
-																				pixelIndex) %
-																				2 ===
-																			0
-																				? "Left"
-																				: "Right"
-																		}`
-																	: "bg-transparent"
-															} `}
-															style={
-																Show
-																	? `animation-delay: ${
-																			charIndex *
-																				0.1 +
-																			rowIndex *
-																				0.05 +
-																			pixelIndex *
-																				0.02
-																		}s;`
-																	: ""
-															}
-														/>
-													))(Pixel)}
-												</div>
-											))}
+									)?.map((Row, IndexRow) => (
+										<div class="Row flex">
+											{Row.map((Pixel, IndexPixel) =>
+												((Show) => (
+													<div
+														class={`Pixel h-${Font} w-${Font} ${
+															Show
+																? `Color ${
+																		(IndexChar +
+																			IndexRow +
+																			IndexPixel) %
+																			2 ===
+																		0
+																			? "Left"
+																			: "Right"
+																	}`
+																: "bg-transparent"
+														} `}
+														style={
+															Show
+																? `animation-delay: ${
+																		IndexChar *
+																			0.1 +
+																		IndexRow *
+																			0.05 +
+																		IndexPixel *
+																			0.02
+																	}s;`
+																: ""
+														}
+													/>
+												))(Pixel),
+											)}
 										</div>
 									))}
 								</div>
