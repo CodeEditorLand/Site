@@ -1,6 +1,7 @@
 ---
 import "@Stylesheet/Base.css";
 
+import Scroll from "@Function/Scroll/Layout.astro";
 import { Head } from "astro-capo";
 import { ClientRouter } from "astro:transitions";
 
@@ -10,6 +11,8 @@ interface Props {
 	Title?: string;
 	Description?: string;
 }
+
+const Index = Astro.url.pathname === "/" ? "-1" : "";
 ---
 
 <!doctype html>
@@ -55,6 +58,14 @@ interface Props {
 	<body>
 		<div class="grow">
 			<slot />
+
+			<a
+				href="/"
+				title="Land 🏞️"
+				tabindex={Index}
+				class="float-right inline-block w-auto">
+				<Scroll Text="Hello World" />
+			</a>
 		</div>
 		<script>
 			import "@Script/Firebase";

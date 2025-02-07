@@ -1,12 +1,5 @@
 ---
-import Scroll from "@Function/Scroll/Layout.astro";
 import Base from "@Layout/Base.astro";
-
-const Index = Astro.url.pathname === "/" ? "-1" : "";
 ---
 
-<Base>
-	<a href="/" title="Land 🏞️" tabindex={Index}>
-		<Scroll Text="Hello World" />
-	</a>
-</Base>
+<Base />
