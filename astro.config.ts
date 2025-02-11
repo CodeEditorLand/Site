@@ -92,24 +92,24 @@ export default (await import("astro/config")).defineConfig({
 		},
 		plugins: [
 			{
-				name: "crossorigin",
+				name: "CrossOrigin",
 				transform(Code, Identifier, _) {
-					const crossorigin = Identifier.includes(".js")
+					const CrossOrigin = Identifier.includes(".js")
 						? `crossorigin=\\"anonymous\\"`
 						: 'crossorigin="anonymous"';
 
-					return Code.replace(/<script/g, `<script ${crossorigin}`)
+					return Code.replace(/<script/g, `<script ${CrossOrigin}`)
 						.replace(
 							/<link[^>]*(?=.*rel="preload")(?=.*href="[^"]*\.js")(?=.*as="script")[^>]*/g,
-							`$& ${crossorigin}`,
+							`$& ${CrossOrigin}`,
 						)
 						.replace(
 							/<link[^>]*(?=.*rel="preload")(?=.*as="font")[^>]*/g,
-							`$& ${crossorigin}`,
+							`$& ${CrossOrigin}`,
 						)
 						.replace(
 							/<link[^>]*(?=.*rel="stylesheet")(?=.*href="https?:\/\/[^"]*")[^>]*/g,
-							`$& ${crossorigin}`,
+							`$& ${CrossOrigin}`,
 						);
 				},
 			},
