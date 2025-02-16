@@ -1,5 +1,6 @@
 ---
 import Code from "@Function/Scroll/Code";
+import Duplicate from "@Function/Scroll/Duplicate";
 
 interface Props {
 	Text?: string;
@@ -8,4 +9,6 @@ interface Props {
 
 <>
 	<Code client:only="solid-js" Text={Astro.props.Text ?? ""} Font={2} />
+
+	<Duplicate client:only="solid-js" Text={Astro.props.Text ?? ""} Font={2} />
 </>
