@@ -14,6 +14,7 @@ export const Spectrum = (Step: number): string[] => {
 	for (let Index = 0; Index < Step; Index++) {
 		Spectrum.push(`hsl(${(Index / Step) * 360}, 100%, 50%)`);
 	}
+
 	return Spectrum;
 };
 
@@ -50,7 +51,7 @@ const RadiusEffect = 150;
 
 const Dimension = 4;
 
-const FadeDuration = 1000;
+const FadeDuration = 5;
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 export default (
@@ -61,7 +62,7 @@ export default (
 		number,
 		number,
 		Accessor<Mouse>,
-		Accessor<HTMLDivElement | undefined>,
+		DOMRect,
 	]
 ): JSX.Element => {
 	const [Element, _Element] = createSignal<HTMLDivElement>();
@@ -98,7 +99,7 @@ export default (
 			let ID: number;
 
 			const Move = (): void => {
-				if (!(Element() && Container())) {
+				if (!(Element() && Container)) {
 					ID = requestAnimationFrame(Move);
 
 					return;
@@ -137,15 +138,9 @@ export default (
 
 				if (MouseState().Active) {
 					const dx =
-						MouseState().X -
-						// @ts-expect-error
-						(Container().getBoundingClientRect().left +
-							Column * Font);
+						MouseState().X - (Container.left + Column * Font);
 
-					const dy =
-						MouseState().Y -
-						// @ts-expect-error
-						(Container().getBoundingClientRect().top + Row * Font);
+					const dy = MouseState().Y - (Container.top + Row * Font);
 
 					InfluenceMouse = Lerp(
 						InfluenceMouse,

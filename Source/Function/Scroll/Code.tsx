@@ -155,7 +155,8 @@ export default ({
 
 													Mouse,
 
-													Element,
+													// @ts-expect-error
+													Element()?.getBoundingClientRect(),
 												),
 											)}
 										</div>
