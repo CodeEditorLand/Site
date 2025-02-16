@@ -72,8 +72,6 @@ export default (
 
 	const Row = Math.floor(Pixel / 3);
 
-	const Delay = Position * 0.1 + (Row * 3 + Column) * 0.05;
-
 	if (Show) {
 		const Seed = Position * 0.1 + Row * 0.05 + Column * 0.02;
 
@@ -308,26 +306,17 @@ export default (
 		});
 	}
 
-	return (
-		<div
-			ref={_Element}
-			class={`Pixel h-${Font} w-${Font} ${Show ? "Color" : "bg-transparent"}`}
-			style={
-				Show
-					? {
-							"animation-delay": `${Delay}s`,
-							transition: "all 0.3s ease-out",
-						}
-					: {}
-			}
-		/>
-	);
+	return <div ref={_Element} class={`h-${Font} w-${Font}`} />;
 };
 
+// biome-ignore lint/nursery/useComponentExportOnlyModules:
 export const Noise = createNoise2D();
 
 export const Lerp = (a: number, b: number, t: number): number =>
 	a + (b - a) * t;
 
-export const Layer = (Time: number, Offset: number, Strength = 0.0001): number =>
-	Noise(Time + Offset, 20) + Strength * Noise(Time * 2 + Offset, 30);
+export const Layer = (
+	Time: number,
+	Offset: number,
+	Strength = 0.0001,
+): number => Noise(Time + Offset, 20) + Strength * Noise(Time * 2 + Offset, 30);
