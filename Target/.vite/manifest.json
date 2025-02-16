@@ -1,30 +1,15 @@
 {
   "Source/Function/Scroll/Code/Pixel.tsx": {
-    "file": "_astro/Pixel.BZF4miDr.js",
+    "file": "_astro/Pixel.Knmz-exM.js",
     "name": "Pixel",
     "src": "Source/Function/Scroll/Code/Pixel.tsx",
     "isDynamicEntry": true,
     "imports": [
-      "_preload-helper.D21cck6N.js",
-      "_web.DR5g4Cyb.js",
-      "_simplex-noise.5eX6VW3g.js"
-    ],
-    "dynamicImports": [
       "_web.DR5g4Cyb.js"
     ]
   },
-  "Source/Function/Scroll/Duplicate/Pixel.tsx": {
-    "file": "_astro/Pixel.7oh0K2mo.js",
-    "name": "Pixel",
-    "src": "Source/Function/Scroll/Duplicate/Pixel.tsx",
-    "isDynamicEntry": true,
-    "imports": [
-      "_web.DR5g4Cyb.js",
-      "_simplex-noise.5eX6VW3g.js"
-    ]
-  },
   "Source/Layout/Base.astro?astro&type=script&index=0&lang.ts": {
-    "file": "_astro/Base.astro_astro_type_script_index_0_lang.w6pSPwhO.js",
+    "file": "_astro/Base.astro_astro_type_script_index_0_lang.BSadSNyL.js",
     "name": "Base.astro_astro_type_script_index_0_lang",
     "src": "Source/Layout/Base.astro?astro&type=script&index=0&lang.ts",
     "isEntry": true,
@@ -49,17 +34,13 @@
     "file": "_astro/preload-helper.D21cck6N.js",
     "name": "preload-helper"
   },
-  "_simplex-noise.5eX6VW3g.js": {
-    "file": "_astro/simplex-noise.5eX6VW3g.js",
-    "name": "simplex-noise"
-  },
   "_web.DR5g4Cyb.js": {
     "file": "_astro/web.DR5g4Cyb.js",
     "name": "web",
     "isDynamicEntry": true
   },
   "astro-entry:@Function/Scroll/Code": {
-    "file": "_astro/Code.Bbhiel6i.js",
+    "file": "_astro/Code.BydigdtG.js",
     "name": "Code",
     "src": "astro-entry:@Function/Scroll/Code",
     "isEntry": true,
@@ -71,21 +52,6 @@
       "Source/Variable/Scroll/Matrix.ts",
       "_web.DR5g4Cyb.js",
       "Source/Function/Scroll/Code/Pixel.tsx"
-    ]
-  },
-  "astro-entry:@Function/Scroll/Duplicate": {
-    "file": "_astro/Duplicate.wD-5tZSK.js",
-    "name": "Duplicate",
-    "src": "astro-entry:@Function/Scroll/Duplicate",
-    "isEntry": true,
-    "imports": [
-      "_preload-helper.D21cck6N.js",
-      "_web.DR5g4Cyb.js"
-    ],
-    "dynamicImports": [
-      "Source/Variable/Scroll/Matrix.ts",
-      "_web.DR5g4Cyb.js",
-      "Source/Function/Scroll/Duplicate/Pixel.tsx"
     ]
   },
   "astro:scripts/page.js": {
