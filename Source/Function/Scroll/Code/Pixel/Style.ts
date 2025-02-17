@@ -251,7 +251,9 @@ export default class {
 
 	private Particle(): void {
 		this.Dust.forEach((Particle) => Particle.remove());
+
 		this.Dust.length = 0;
+
 		this.Element?.querySelectorAll(".Dust").forEach((Particle) =>
 			Particle.remove(),
 		);
@@ -261,9 +263,9 @@ export default class {
 			() => Math.random() * 1000,
 		);
 
-		// Create new particles
 		for (let i = 0; i < Constant.DUST_PARTICLE_COUNT; i++) {
 			const particle = document.createElement("div");
+
 			particle.className = "Dust";
 
 			Object.assign(particle.style, {
@@ -279,6 +281,7 @@ export default class {
 
 			// @ts-expect-error
 			this.Element.appendChild(particle);
+
 			this.Dust.push(particle);
 		}
 	}
