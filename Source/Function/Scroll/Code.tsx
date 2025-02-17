@@ -40,7 +40,8 @@ export default ({
 
 	const Padded = (): string => `${_Text()}   ${_Text()}   `;
 
-	const Animate = (): boolean => _Text().length > Count();
+	// const Animate = (): boolean => _Text().length > Count();
+	const Animate = (): boolean => false;
 
 	const [LastTimestamp, _LastTimestamp] = createSignal(0);
 
