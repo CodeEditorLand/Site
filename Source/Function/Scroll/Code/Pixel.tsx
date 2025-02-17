@@ -35,10 +35,10 @@ export default function Pixel({
 
 		const dy = Mouse().Y - (Container.top + Row * Font);
 
-		const mouseInfluence = Influence(dx, dy, CurrentTime, Mouse());
+		const _Influence = Influence(dx, dy, CurrentTime, Mouse());
 
 		new Style(_Element, {
-			timeN:
+			TimeNow:
 				Position * 0.1 +
 				CurrentTime *
 					(Constant.MULTIPLIER_TIME_BASE +
@@ -47,16 +47,16 @@ export default function Pixel({
 			Seed,
 			Column,
 			Position,
-			mouseInfluence,
-			offsets: new Dimensional(
+			Influence: _Influence,
+			Offset: new Dimensional(
 				CurrentTime,
 				Seed,
 				Mouse(),
-				mouseInfluence,
+				_Influence,
 			).calculate(dx, dy),
-			mouseState: Mouse(),
-			colorSpectrum: ALL_COLORS,
-		}).updateStyles();
+			Mouse: Mouse(),
+			Spectrum: ALL_COLORS,
+		}).Roll();
 		// }
 	});
 
