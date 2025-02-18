@@ -251,14 +251,14 @@ export default class {
 				(Layer(TimeNoise, this.Column + 300) + 1) / 2,
 			);
 
-			const opacity = Lerp(
+			const Opacity = Lerp(
 				0.8,
 				0,
 				(Layer(TimeNoise, this.Column + 400) + 1) / 2,
 			);
 
 			// 3D rotations using noise
-			const rotateX = Lerp(
+			const XRotate = Lerp(
 				0,
 				360,
 				(Layer(TimeNoise, this.Column + 500) + 1) / 2,
@@ -310,7 +310,7 @@ export default class {
                         ${-HeightSpiral + YOffsetVelocity}px,
                         ${ZSpiral}px
                     )
-                    rotateX(${rotateX + this.Mouse().Velocity * 720 * this.Influence}deg)
+                    rotateX(${XRotate + this.Mouse().Velocity * 720 * this.Influence}deg)
                     rotateY(${YRotate + this.Mouse().Velocity * 720 * this.Influence}deg)
                     rotateZ(${ZRotate + Angle * (180 / Math.PI)}deg)
                     scale3d(${Scale}, ${Scale}, ${Scale})
@@ -330,7 +330,7 @@ export default class {
 						)}px,
                         0
                     )
-                    rotateX(${rotateX}deg)
+                    rotateX(${XRotate}deg)
                     rotateY(${YRotate}deg)
                     rotateZ(${ZRotate}deg)
                     scale3d(${Scale}, ${Scale}, ${Scale})
@@ -339,7 +339,7 @@ export default class {
 
 			Object.assign(Particle.style, {
 				backgroundColor: Color,
-				opacity: opacity.toString(),
+				opacity: Opacity.toString(),
 				transform: Transform,
 			});
 
@@ -365,12 +365,12 @@ export default class {
 	}
 
 	private Particle(): void {
-		this.Dust.forEach((particle, index) => {
+		this.Dust.forEach((Particle, index) => {
 			if (this.StateParticle[index]?.ID) {
 				cancelAnimationFrame(this.StateParticle[index].ID!);
 			}
 
-			particle.remove();
+			Particle.remove();
 		});
 
 		this.Dust.length = 0;
