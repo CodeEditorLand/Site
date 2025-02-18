@@ -8,6 +8,9 @@ export default (await import("astro/config")).defineConfig({
 	outDir: "./Target",
 	site: On ? "HTTP://localhost" : "HTTPS://Editor.Land",
 	compressHTML: !On,
+	devToolbar: {
+		enabled: false,
+	},
 	prefetch: {
 		defaultStrategy: "hover",
 		prefetchAll: true,

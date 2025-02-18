@@ -40,13 +40,8 @@ export default ({
 
 	const Padded = (): string => `${_Text()}   ${_Text()}   `;
 
-	// const Animate = (): boolean => _Text().length > Count();
-	const Animate = (): boolean => false;
-
-	const [LastTimestamp, _LastTimestamp] = createSignal(0);
-
 	const Move = (e: MouseEvent): void => {
-		const currentTime = performance.now();
+		const CurrentTime = performance.now();
 
 		_Mouse((prev) => {
 			const dx = e.clientX - prev.X;
@@ -64,7 +59,7 @@ export default ({
 
 				Velocity: Math.sqrt(dx * dx + dy * dy),
 
-				Last: currentTime,
+				Last: CurrentTime,
 
 				Active: true,
 			};
@@ -109,29 +104,10 @@ export default ({
 	});
 
 	createEffect(() => {
-		if (!Animate()) {
-			return;
-		}
-
 		let ID: number;
 
 		const Scroll = (Time: number): void => {
 			_CurrentTime(Time);
-
-			// Text scroll animation
-			if (Animate()) {
-				const Past = Time - LastTimestamp();
-
-				if (Past >= Time) {
-					_Offset(
-						(prev) =>
-							(prev - 0.2 + Padded().length * Width) %
-							(Padded().length * Width),
-					);
-
-					_LastTimestamp(Time);
-				}
-			}
 
 			ID = requestAnimationFrame(Scroll);
 		};
@@ -142,18 +118,7 @@ export default ({
 	});
 
 	const Display = (): string => {
-		if (!Animate()) {
-			return _Text().slice(0, Count());
-		}
-
-		const Start = Math.floor(
-			(((Offset() / 2) % Padded().length) * Width) / Width,
-		);
-
-		return (
-			Padded().slice(Start, Start + Count()) +
-			Padded().slice(0, Math.max(0, Start + Count() - Padded().length))
-		);
+		return _Text().slice(0, Count());
 	};
 
 	return (
@@ -162,7 +127,7 @@ export default ({
 			<div class="flex justify-center" aria-hidden="true">
 				{Display()
 					.split("")
-					.map((Visible, IndexChar) => (
+					.map((Visible, Character) => (
 						<div class="mr-2">
 							{((Position) => (
 								<div class="Grid">
@@ -171,20 +136,21 @@ export default ({
 										Matrix[" "]
 									)?.map((Row, RowIndex) => (
 										<div class="Row flex">
-											{Row.map((Show, Index) => (
-												<Pixel
-													Font={Font}
-													Character={IndexChar}
-													Index={Index}
-													Show={Show}
-													Text={Display().length}
-													Mouse={Mouse}
-													Container={Element()?.getBoundingClientRect()}
-													CurrentTime={CurrentTime}
-													Row={RowIndex}
-													Column={Index % 3}
-												/>
-											))}
+											{Row.map((Show, Index) =>
+												Pixel({
+													Font,
+													Character,
+													Index,
+													Show,
+													Text: Display().length,
+													Mouse,
+													Container:
+														Element()?.getBoundingClientRect() as DOMRect,
+													CurrentTime,
+													Row: RowIndex,
+													Column: Index % 3,
+												}),
+											)}
 										</div>
 									))}
 								</div>

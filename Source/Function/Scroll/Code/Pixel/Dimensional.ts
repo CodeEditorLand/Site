@@ -1,37 +1,37 @@
 import type { Mouse, MovementDimensional } from "@Function/Scroll/Type.js";
 
 export default class {
-	private readonly currentTime: number;
+	private readonly TimeCurrent: number;
 
-	private readonly seed: number;
+	private readonly Seed: number;
 
-	private readonly mouseState: Mouse;
+	private readonly StateMouse: Mouse;
 
-	private readonly mouseInfluence: number;
+	private readonly InfluenceMouse: number;
 
 	constructor(
-		currentTime: number,
+		TimeCurrent: number,
 
-		seed: number,
+		Seed: number,
 
-		mouseState: Mouse,
+		StateMouse: Mouse,
 
 		mouseInfluence: number,
 	) {
-		this.currentTime = currentTime;
+		this.TimeCurrent = TimeCurrent;
 
-		this.seed = seed;
+		this.Seed = Seed;
 
-		this.mouseState = mouseState;
+		this.StateMouse = StateMouse;
 
-		this.mouseInfluence = mouseInfluence;
+		this.InfluenceMouse = mouseInfluence;
 	}
 
-	calculate(dx: number, dy: number): MovementDimensional {
+	Calculate(dx: number, dy: number): MovementDimensional {
 		const { DIMENSION } = Constant;
 
-		const mouseFactor =
-			this.mouseInfluence * Math.min(1, this.mouseState.Velocity / 100);
+		const FactorMouse =
+			this.InfluenceMouse * Math.min(1, this.StateMouse.Velocity / 100);
 
 		return Array.from({ length: DIMENSION }).reduce(
 			(acc, _, i) => {
@@ -40,17 +40,17 @@ export default class {
 
 					frequency: 0.002 + i * 0.001,
 
-					phase: this.seed + i * 1000,
+					phase: this.Seed + i * 1000,
 				};
 
 				const value = Noise(
-					this.currentTime * 0.001 * noiseParams.frequency +
+					this.TimeCurrent * 0.001 * noiseParams.frequency +
 						noiseParams.phase,
 
-					i * 1000 + this.seed,
+					i * 1000 + this.Seed,
 				);
 
-				this.applyDimensionalEffect(
+				this.Apply(
 					acc as MovementDimensional,
 
 					i,
@@ -63,7 +63,7 @@ export default class {
 
 					dy,
 
-					mouseFactor,
+					FactorMouse,
 				);
 
 				return acc;
@@ -73,7 +73,7 @@ export default class {
 		) as MovementDimensional;
 	}
 
-	private applyDimensionalEffect(
+	private Apply(
 		acc: MovementDimensional,
 
 		dimension: number,
