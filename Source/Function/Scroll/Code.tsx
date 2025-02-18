@@ -26,19 +26,13 @@ export default ({
 		Active: false,
 	});
 
-	const [Offset, _Offset] = createSignal(0);
-
 	const [Element, _Element] = createSignal<HTMLDivElement>();
 
-	const [Count, _Count] = createSignal(10);
+	const [Count, _Count] = createSignal(Text.length);
 
 	const [CurrentTime, _CurrentTime] = createSignal(performance.now());
 
-	const Width = 4;
-
 	const [_Text] = createSignal(Text);
-
-	const Padded = (): string => `${_Text()}   ${_Text()}   `;
 
 	const Move = (e: MouseEvent): void => {
 		const CurrentTime = performance.now();
@@ -98,8 +92,6 @@ export default ({
 			_Element.removeEventListener("mouseleave", () =>
 				_Mouse((Previous) => ({ ...Previous, Active: false })),
 			);
-
-			window.removeEventListener("resize", Factor);
 		});
 	});
 
