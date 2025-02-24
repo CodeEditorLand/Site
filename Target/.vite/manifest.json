@@ -1,12 +1,12 @@
 {
   "Source/Function/Scroll/Code/Pixel.tsx": {
-    "file": "_astro/Pixel.BhpCXlxr.js",
+    "file": "_astro/Pixel.CkTBuRqF.js",
     "name": "Pixel",
     "src": "Source/Function/Scroll/Code/Pixel.tsx",
     "isDynamicEntry": true,
     "imports": [
       "_preload-helper.D21cck6N.js",
-      "_web.CCnzT9kG.js"
+      "_web.d7l3FkaN.js"
     ],
     "dynamicImports": [
       "Source/Function/Scroll/Code/Pixel/Dimensional.ts",
@@ -48,13 +48,13 @@
     ]
   },
   "Source/Function/Scroll/Code/Pixel/Style.ts": {
-    "file": "_astro/Style.C6Rhf1u4.js",
+    "file": "_astro/Style.VjVElUvh.js",
     "name": "Style",
     "src": "Source/Function/Scroll/Code/Pixel/Style.ts",
     "isDynamicEntry": true,
     "imports": [
       "_preload-helper.D21cck6N.js",
-      "_web.CCnzT9kG.js"
+      "_web.d7l3FkaN.js"
     ],
     "dynamicImports": [
       "Source/Function/Scroll/Code/Pixel/Animation/Constant.ts",
@@ -87,24 +87,24 @@
     "file": "_astro/preload-helper.D21cck6N.js",
     "name": "preload-helper"
   },
-  "_web.CCnzT9kG.js": {
-    "file": "_astro/web.CCnzT9kG.js",
+  "_web.d7l3FkaN.js": {
+    "file": "_astro/web.d7l3FkaN.js",
     "name": "web",
     "isDynamicEntry": true
   },
   "astro-entry:@Function/Scroll/Code": {
-    "file": "_astro/Code.BNJlG67x.js",
+    "file": "_astro/Code.CHESeu_m.js",
     "name": "Code",
     "src": "astro-entry:@Function/Scroll/Code",
     "isEntry": true,
     "imports": [
       "_preload-helper.D21cck6N.js",
-      "_web.CCnzT9kG.js"
+      "_web.d7l3FkaN.js"
     ],
     "dynamicImports": [
       "Source/Function/Scroll/Code/Pixel.tsx",
       "Source/Variable/Scroll/Matrix.ts",
-      "_web.CCnzT9kG.js"
+      "_web.d7l3FkaN.js"
     ]
   },
   "astro:scripts/page.js": {
@@ -117,12 +117,12 @@
     ]
   },
   "node_modules/@astrojs/solid-js/dist/client.js": {
-    "file": "_astro/client.DWV50bj1.js",
+    "file": "_astro/client.DQxvgEyj.js",
     "name": "client",
     "src": "node_modules/@astrojs/solid-js/dist/client.js",
     "isEntry": true,
     "imports": [
-      "_web.CCnzT9kG.js"
+      "_web.d7l3FkaN.js"
     ]
   },
   "node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {

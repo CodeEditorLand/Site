@@ -3,13 +3,13 @@ const __vite__mapDeps = (
 	m = __vite__mapDeps,
 	d = m.f ||
 		(m.f = [
-			"_astro/Pixel.BhpCXlxr.js",
+			"_astro/Pixel.CkTBuRqF.js",
 			"_astro/preload-helper.D21cck6N.js",
-			"_astro/web.CCnzT9kG.js",
+			"_astro/web.d7l3FkaN.js",
 		]),
 ) => i.map((i) => d[i]);
 import { _ as e } from "./preload-helper.D21cck6N.js";
-import { g as t, t as a, u as n, i as r } from "./web.CCnzT9kG.js";
+import { g as t, t as a, u as n, i as r } from "./web.d7l3FkaN.js";
 var i = a(
 		'<div class="Scroll w-full p-2"><p class=sr-only></p><div class="flex justify-center"aria-hidden=true>',
 	),
@@ -98,7 +98,7 @@ const c = ({ Text: e = "", Font: a = 1 }) => {
 	},
 	{ default: u } = await e(
 		async () => {
-			const { default: e } = await import("./Pixel.BhpCXlxr.js");
+			const { default: e } = await import("./Pixel.CkTBuRqF.js");
 			return { default: e };
 		},
 		__vite__mapDeps([0, 1, 2]),
@@ -118,7 +118,7 @@ const c = ({ Text: e = "", Font: a = 1 }) => {
 			createSignal: t,
 			onCleanup: a,
 			onMount: n,
-		} = await import("./web.CCnzT9kG.js").then((e) => e.s);
+		} = await import("./web.d7l3FkaN.js").then((e) => e.s);
 		return { createEffect: e, createSignal: t, onCleanup: a, onMount: n };
 	}, []);
 export { c as default };
