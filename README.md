@@ -1,3 +1,3 @@
 # [WebSite 🗾]
 
-[WebSite 🗾]: HTTPS://Editor.Land
+[WebSite 🗾]: HTTPS://Editor.Land
