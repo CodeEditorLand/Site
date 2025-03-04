@@ -1,7 +1,7 @@
 import { _ as a } from "./preload-helper.D21cck6N.js";
 (
 	await a(async () => {
-		const { initializeApp: a } = await import("./index.esm.DMCO24_P.js");
+		const { initializeApp: a } = await import("./index.esm.CH6WyvPW.js");
 		return { initializeApp: a };
 	}, [])
 ).initializeApp({
