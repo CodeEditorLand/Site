@@ -3,7 +3,7 @@ const __vite__mapDeps = (
 	m = __vite__mapDeps,
 	d = m.f ||
 		(m.f = [
-			"_astro/Animation.CzVc6N1H.js",
+			"_astro/Animation.DHIlcHOd.js",
 			"_astro/preload-helper.Cat91CNq.js",
 		]),
 ) => i.map((i) => d[i]);
@@ -34,9 +34,9 @@ class t {
 		return Array.from({ length: r }).reduce(
 			(a, r, l) => {
 				const _ = this.TimeCurrent * (i + l * c) + this.Seed,
-					A = s(_, 1e3 * l),
-					E = n + l * o;
-				return this.Apply(a, l, A, E, e, t, I, u), a;
+					h = s(_, 1e3 * l),
+					A = n + l * o;
+				return this.Apply(a, l, h, A, e, t, I, u), a;
 			},
 			{ X: 0, Y: 0, Rotation: 0, Scale: 1 },
 		);
@@ -63,7 +63,7 @@ const { default: a } = await e(async () => {
 	}, []),
 	{ Layer: s } = await e(
 		async () => {
-			const { Layer: e } = await import("./Animation.CzVc6N1H.js");
+			const { Layer: e } = await import("./Animation.DHIlcHOd.js");
 			return { Layer: e };
 		},
 		__vite__mapDeps([0, 1]),

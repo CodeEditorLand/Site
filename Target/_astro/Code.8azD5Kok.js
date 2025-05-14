@@ -3,21 +3,23 @@ const __vite__mapDeps = (
 	m = __vite__mapDeps,
 	d = m.f ||
 		(m.f = [
-			"_astro/Pixel.DpRajXqs.js",
+			"_astro/Pixel.943oBfI5.js",
 			"_astro/preload-helper.Cat91CNq.js",
-			"_astro/web.d7l3FkaN.js",
+			"_astro/web.DSF-svtj.js",
+			"_astro/solid.BM37VfZ_.js",
 		]),
 ) => i.map((i) => d[i]);
 import { _ as e } from "./preload-helper.Cat91CNq.js";
-import { g as t, t as a, u as n, i as r } from "./web.d7l3FkaN.js";
+import { g as t, t as a, u as r, i as n } from "./web.DSF-svtj.js";
+import "./solid.BM37VfZ_.js";
 var i = a(
 		'<div class="Scroll w-full p-2"><p class=sr-only></p><div class="flex justify-center"aria-hidden=true>',
 	),
-	s = a("<div class=mr-2>"),
-	o = a("<div class=Grid>"),
+	o = a("<div class=mr-2>"),
+	s = a("<div class=Grid>"),
 	l = a('<div class="Row flex">');
 const c = ({ Text: e = "", Font: a = 1 }) => {
-		const [c, _] = m({
+		const [c, _] = f({
 				X: 0,
 				Y: 0,
 				XPrevious: 0,
@@ -26,47 +28,47 @@ const c = ({ Text: e = "", Font: a = 1 }) => {
 				Last: 0,
 				Active: !1,
 			}),
-			[v, w] = m(),
-			[C, g] = m(e.length),
-			[x, E] = m(performance.now()),
-			[h] = m(e);
-		p(() => {
+			[v, w] = f(),
+			[C, g] = f(e.length),
+			[x, E] = f(performance.now()),
+			[h] = f(e);
+		d(() => {
 			let e;
 			const t = (a) => {
 				E(a), (e = requestAnimationFrame(t));
 			};
-			(e = requestAnimationFrame(t)), d(() => cancelAnimationFrame(e));
+			(e = requestAnimationFrame(t)), m(() => cancelAnimationFrame(e));
 		});
-		const A = () => h().slice(0, C());
+		const j = () => h().slice(0, C());
 		return (
-			(j = t(i)),
-			(y = j.firstChild),
+			(A = t(i)),
+			(y = A.firstChild),
 			(P = y.nextSibling),
-			n(w, j),
-			r(y, h),
-			r(P, () =>
-				A()
+			r(w, A),
+			n(y, h),
+			n(P, () =>
+				j()
 					.split("")
-					.map((e, n) => {
+					.map((e, r) => {
 						return (
-							(i = t(s)),
-							r(i, () => {
+							(i = t(o)),
+							n(i, () => {
 								return (
 									(i = e),
-									(s = t(o)),
-									r(s, () =>
-										(f[i.toUpperCase()] || f[" "])?.map(
+									(o = t(s)),
+									n(o, () =>
+										(p[i.toUpperCase()] || p[" "])?.map(
 											(e, i) => {
 												return (
-													(s = t(l)),
-													r(s, () =>
+													(o = t(l)),
+													n(o, () =>
 														e.map((e, t) =>
 															u({
 																Font: a,
-																Character: n,
+																Character: r,
 																Index: t,
 																Show: e,
-																Text: A()
+																Text: j()
 																	.length,
 																Mouse: c,
 																Container:
@@ -77,48 +79,48 @@ const c = ({ Text: e = "", Font: a = 1 }) => {
 															}),
 														),
 													),
-													s
+													o
 												);
-												var s;
+												var o;
 											},
 										),
 									),
-									s
+									o
 								);
-								var i, s;
+								var i, o;
 							}),
 							i
 						);
 						var i;
 					}),
 			),
-			j
+			A
 		);
-		var j, y, P;
+		var A, y, P;
 	},
 	{ default: u } = await e(
 		async () => {
-			const { default: e } = await import("./Pixel.DpRajXqs.js");
+			const { default: e } = await import("./Pixel.943oBfI5.js");
 			return { default: e };
 		},
-		__vite__mapDeps([0, 1, 2]),
+		__vite__mapDeps([0, 1, 2, 3]),
 	),
-	{ default: f } = await e(async () => {
+	{ default: p } = await e(async () => {
 		const { default: e } = await import("./Matrix.BYOAHmu9.js");
 		return { default: e };
 	}, []),
 	{
-		createEffect: p,
-		createSignal: m,
-		onCleanup: d,
+		createEffect: d,
+		createSignal: f,
+		onCleanup: m,
 		onMount: _,
 	} = await e(async () => {
 		const {
 			createEffect: e,
 			createSignal: t,
 			onCleanup: a,
-			onMount: n,
-		} = await import("./web.d7l3FkaN.js").then((e) => e.s);
-		return { createEffect: e, createSignal: t, onCleanup: a, onMount: n };
+			onMount: r,
+		} = await import("./solid.BM37VfZ_.js");
+		return { createEffect: e, createSignal: t, onCleanup: a, onMount: r };
 	}, []);
 export { c as default };

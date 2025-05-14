@@ -12,14 +12,14 @@ const t = (
 	s = (a) =>
 		Array.from({ length: a }, (t, e) => `hsl(${(e / a) * 360}, 100%, 50%)`),
 	o = (a, t, e, r) =>
-		Math.max(0, 1 - Math.sqrt(a * a + t * t) / _.RADIUS_EFFECT) *
-		Math.max(0, 1 - (e - r.Last) / _.FADE_DURATION),
-	{ default: _ } = await a(async () => {
+		Math.max(0, 1 - Math.sqrt(a * a + t * t) / i.RADIUS_EFFECT) *
+		Math.max(0, 1 - (e - r.Last) / i.FADE_DURATION),
+	{ default: i } = await a(async () => {
 		const { default: a } = await import("./Constant.Ds8dDfZx.js");
 		return { default: a };
 	}, []);
 export {
-	_ as Constant,
+	i as Constant,
 	o as Influence,
 	r as Layer,
 	e as Lerp,
