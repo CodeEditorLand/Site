@@ -47,7 +47,7 @@ let Title = "404.";
 
 for (const [_Name, Module] of File as [
 	string,
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny:
 	MarkdownInstance<Record<string, any>>,
 ][]) {
 	Content = await Module.compiledContent();
