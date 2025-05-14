@@ -4,7 +4,7 @@ html {
 
 html,
 body {
-	@apply h-full w-full;
+	@apply m-0 h-full w-full p-0;
 }
 
 body {
@@ -34,7 +34,7 @@ img {
 body {
 	background-image: url("/Asset/Logo/Land.svg");
 	background-repeat: no-repeat;
-	background-size: 60% 60%;
+	background-size: auto 60%;
 	background-position: 50% 60%;
 
 	@apply bg-no-repeat;
