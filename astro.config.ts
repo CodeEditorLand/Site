@@ -153,7 +153,6 @@ export default defineConfig({
 
 			postcss: {
 				plugins: [
-					// @ts-expect-error
 					(await import("postcss-url")).default([
 						{
 							filter: "**/Asset/**",
