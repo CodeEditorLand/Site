@@ -104,13 +104,13 @@ img {
 }
 
 body {
-	background-image: url("/Asset/Logo/Land.svg");
+	background-image: url("/Asset/Avatar/Land.svg");
 
 	background-repeat: no-repeat;
 
-	background-size: auto 60%;
+	background-size: 160% auto;
 
-	background-position: 50% 60%;
+	background-position: 50% 50%;
 
 	background-repeat: no-repeat;
 }
