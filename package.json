@@ -2,9 +2,9 @@
 	"name": "@website/editor_land",
 	"version": "0.0.1",
 	"private": true,
-	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/WebSite#readme",
+	"homepage": "https://GitHub.Com/CodeEditorLand/WebSite#readme",
 	"bugs": {
-		"url": "HTTPS://GitHub.Com/CodeEditorLand/WebSite/issues"
+		"url": "https://GitHub.Com/CodeEditorLand/WebSite/issues"
 	},
 	"repository": {
 		"type": "git",
@@ -14,7 +14,7 @@
 	"author": {
 		"name": "Source ✍️ Open 👐🏻",
 		"email": "Source/Open@Editor.Land",
-		"url": "HTTPS://Editor.Land"
+		"url": "https://Editor.Land"
 	},
 	"scripts": {
 		"Run": "astro dev --host",

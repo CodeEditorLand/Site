@@ -1,6 +1,6 @@
 # [WebSite 🗾]
 
-[WebSite 🗾]: HTTPS://Editor.Land
+[WebSite 🗾]: https://Editor.Land
 
 ## Funding
 
