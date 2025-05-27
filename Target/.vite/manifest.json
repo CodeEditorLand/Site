@@ -1,32 +1,32 @@
 {
-  "../../../node_modules/.pnpm/@astrojs+solid-js@5.0.10_@t_66b02de8bbeef983f9b49302d1534dad/node_modules/@astrojs/solid-js/dist/client.js": {
-    "file": "_astro/client.CZ9HVOf_.js",
+  "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_f99a479e945b77054b2fb91f24f5cb12/node_modules/@astrojs/solid-js/dist/client.js": {
+    "file": "_astro/client.CenBy7L1.js",
     "name": "client",
-    "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.0.10_@t_66b02de8bbeef983f9b49302d1534dad/node_modules/@astrojs/solid-js/dist/client.js",
+    "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_f99a479e945b77054b2fb91f24f5cb12/node_modules/@astrojs/solid-js/dist/client.js",
     "isEntry": true
   },
-  "../../../node_modules/.pnpm/astro@5.7.13_@types+node@22_57876a9a9b45ebad4bec98c563d152dd/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
+  "../../../node_modules/.pnpm/astro@5.8.0_@types+node@22._23c0bb6c238f4e93e8ed11848eaa6315/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
     "file": "_astro/ClientRouter.astro_astro_type_script_index_0_lang.70AGayl5.js",
     "name": "ClientRouter.astro_astro_type_script_index_0_lang",
-    "src": "../../../node_modules/.pnpm/astro@5.7.13_@types+node@22_57876a9a9b45ebad4bec98c563d152dd/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts",
+    "src": "../../../node_modules/.pnpm/astro@5.8.0_@types+node@22._23c0bb6c238f4e93e8ed11848eaa6315/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts",
     "isEntry": true,
     "imports": [
       "_index.DSBWf7TZ.js"
     ]
   },
-  "../../../node_modules/.pnpm/firebase@11.7.1/node_modules/firebase/app/dist/esm/index.esm.js": {
-    "file": "_astro/index.esm.DDMuUZg5.js",
+  "../../../node_modules/.pnpm/firebase@11.8.1/node_modules/firebase/app/dist/esm/index.esm.js": {
+    "file": "_astro/index.esm.BHEwOI5X.js",
     "name": "index.esm",
-    "src": "../../../node_modules/.pnpm/firebase@11.7.1/node_modules/firebase/app/dist/esm/index.esm.js",
+    "src": "../../../node_modules/.pnpm/firebase@11.8.1/node_modules/firebase/app/dist/esm/index.esm.js",
     "isDynamicEntry": true
   },
   "Source/Layout/Base.astro?astro&type=script&index=0&lang.ts": {
-    "file": "_astro/Base.astro_astro_type_script_index_0_lang.BtKCjh6q.js",
+    "file": "_astro/Base.astro_astro_type_script_index_0_lang.DbrcNQR7.js",
     "name": "Base.astro_astro_type_script_index_0_lang",
     "src": "Source/Layout/Base.astro?astro&type=script&index=0&lang.ts",
     "isEntry": true,
     "dynamicImports": [
-      "../../../node_modules/.pnpm/firebase@11.7.1/node_modules/firebase/app/dist/esm/index.esm.js"
+      "../../../node_modules/.pnpm/firebase@11.8.1/node_modules/firebase/app/dist/esm/index.esm.js"
     ]
   },
   "_index.DSBWf7TZ.js": {
