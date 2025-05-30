@@ -5,10 +5,10 @@
     "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_f99a479e945b77054b2fb91f24f5cb12/node_modules/@astrojs/solid-js/dist/client.js",
     "isEntry": true
   },
-  "../../../node_modules/.pnpm/astro@5.8.0_@types+node@22._23c0bb6c238f4e93e8ed11848eaa6315/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
+  "../../../node_modules/.pnpm/astro@5.8.1_@types+node@22._cf5586393211bea99de6b02b8abe7e7c/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts": {
     "file": "_astro/ClientRouter.astro_astro_type_script_index_0_lang.70AGayl5.js",
     "name": "ClientRouter.astro_astro_type_script_index_0_lang",
-    "src": "../../../node_modules/.pnpm/astro@5.8.0_@types+node@22._23c0bb6c238f4e93e8ed11848eaa6315/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts",
+    "src": "../../../node_modules/.pnpm/astro@5.8.1_@types+node@22._cf5586393211bea99de6b02b8abe7e7c/node_modules/astro/components/ClientRouter.astro?astro&type=script&index=0&lang.ts",
     "isEntry": true,
     "imports": [
       "_index.DSBWf7TZ.js"
