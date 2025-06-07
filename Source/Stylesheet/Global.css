@@ -1,5 +1,49 @@
 html {
 	-webkit-tap-highlight-color: transparent;
+	background-repeat: no-repeat;
+	background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+	color: rgb(0 0 0);
+
+	/* 
+	  Default for screens up to 1080p (1920px wide).
+	  We use image-set to handle standard (1x) vs high-density (2x) screens
+	  within this size range.
+	*/
+	background-image: image-set(url("/Rock.png") 1x, url("/Rockx22.jpg") 2x);
+
+	/* 
+	  For screens WIDER than 1080p but smaller than 2K/QHD.
+	  A 1x screen gets the medium image, a 2x screen gets the largest.
+	*/
+	@media (min-width: 1921px) {
+		& {
+			background-image: image-set(
+				url("/Rockx22.jpg") 1x,
+				url("/Rockx22x22.jpg") 2x
+			);
+		}
+	}
+
+	/* 
+	  For 2K/QHD screens (2560px) and larger.
+	  At this size, always load the highest resolution image.
+	*/
+	@media (min-width: 2560px) {
+		& {
+			background-image: url("/Rockx22x22.jpg");
+		}
+	}
+
+	/* Combined styles for dark mode */
+	@media (prefers-color-scheme: dark) {
+		& {
+			--tw-bg-opacity: 1;
+			background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+
+			--tw-text-opacity: 1;
+			color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+		}
+	}
 }
 
 html,
@@ -22,7 +66,7 @@ body {
 
 	--tw-bg-opacity: 1;
 
-	background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+	background-color: transparent;
 
 	--tw-numeric-spacing: tabular-nums;
 
@@ -43,22 +87,6 @@ body {
 			-webkit-font-smoothing: auto;
 
 			-moz-osx-font-smoothing: auto;
-		}
-	}
-
-	@media (prefers-color-scheme: dark) {
-		& {
-			--tw-bg-opacity: 1;
-
-			background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
-		}
-	}
-
-	@media (prefers-color-scheme: dark) {
-		& {
-			--tw-text-opacity: 1;
-
-			color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 		}
 	}
 
@@ -104,7 +132,7 @@ img {
 }
 
 body {
-	background-image: url("/Asset/Avatar/Land.svg");
+	background-image: url("/Background.svg");
 
 	background-repeat: no-repeat;
 
