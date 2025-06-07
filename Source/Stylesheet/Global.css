@@ -16,7 +16,7 @@ html {
 	  We use image-set to handle standard (1x) vs high-density (2x) screens
 	  within this size range.
 	*/
-	background-image: image-set(url("/Rock.png") 1x, url("/Rockx22.jpg") 2x);
+	background-image: image-set(url("/Asset/Rock.png") 1x, url("/Asset/Rockx22.jpg") 2x);
 
 	/* 
 	  For screens WIDER than 1080p but smaller than 2K/QHD.
@@ -25,8 +25,8 @@ html {
 	@media (min-width: 1921px) {
 		& {
 			background-image: image-set(
-				url("/Rockx22.jpg") 1x,
-				url("/Rockx22x22.jpg") 2x
+				url("/Asset/Rockx22.jpg") 1x,
+				url("/Asset/Rockx22x22.jpg") 2x
 			);
 		}
 	}
@@ -37,7 +37,7 @@ html {
 	*/
 	@media (min-width: 2560px) {
 		& {
-			background-image: url("/Rockx22x22.jpg");
+			background-image: url("/Asset/Rockx22x22.jpg");
 		}
 	}
 
@@ -106,7 +106,7 @@ body {
 
 	padding: 0;
 
-	background-image: url("/Background.svg");
+	background-image: url("/Asset/Background.svg");
 
 	background-repeat: no-repeat;
 

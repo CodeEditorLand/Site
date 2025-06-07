@@ -1,1 +1,2 @@
-import{i}from"./index.DSBWf7TZ.js";i();
+import { i } from "./index.DSBWf7TZ.js";
+i();
