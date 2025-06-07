@@ -50,9 +50,16 @@ export default defineConfig({
 
 		!On ? (await import("@playform/format")).default({ Logger: 1 }) : null,
 
-		// !On
-		// 	? (await import("@playform/compress")).default({ Logger: 1 })
-		// 	: null,
+		!On
+			? (await import("@playform/compress")).default({
+					Logger: 1,
+					HTML: {
+						"html-minifier-terser": {
+							minifyCSS: false,
+						},
+					},
+				})
+			: null,
 	],
 
 	experimental: {
