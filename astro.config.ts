@@ -11,7 +11,7 @@ export default defineConfig({
 
 	outDir: "./Target",
 
-	site: On ? "HTTP://localhost" : "https://Editor.Land",
+	site: On ? "http://localhost" : "https://Editor.Land",
 
 	compressHTML: !On,
 
