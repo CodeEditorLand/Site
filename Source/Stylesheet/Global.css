@@ -1,27 +1,19 @@
 html {
+	@apply m-0 h-full w-full p-0;
+
+	@apply bg-white text-black;
+
+	@apply dark:bg-black dark:text-white;
+
+	@apply bg-cover bg-top bg-no-repeat;
+
 	-webkit-tap-highlight-color: transparent;
 
-	background-repeat: no-repeat;
+	background-image: image-set(
+		url("/Asset/Rock.webp") 1x,
+		url("/Asset/Rockx22.webp") 2x
+	);
 
-	background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
-
-	color: rgb(0 0 0);
-
-	background-position: top center;
-
-	background-size: cover;
-
-	/* 
-	  Default for screens up to 1080p (1920px wide).
-	  We use image-set to handle standard (1x) vs high-density (2x) screens
-	  within this size range.
-	*/
-	background-image: image-set(url("/Asset/Rock.webp") 1x, url("/Asset/Rockx22.webp") 2x);
-
-	/* 
-	  For screens WIDER than 1080p but smaller than 2K/QHD.
-	  A 1x screen gets the medium image, a 2x screen gets the largest.
-	*/
 	@media (min-width: 1921px) {
 		& {
 			background-image: image-set(
@@ -30,127 +22,45 @@ html {
 			);
 		}
 	}
-
-	/* 
-	  For 2K/QHD screens (2560px) and larger.
-	  At this size, always load the highest resolution image.
-	*/
 	@media (min-width: 2560px) {
 		& {
 			background-image: url("/Asset/Rockx22x22.webp");
 		}
 	}
-
-	/* Combined styles for dark mode */
-	@media (prefers-color-scheme: dark) {
-		& {
-			--tw-bg-opacity: 1;
-
-			background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
-
-			--tw-text-opacity: 1;
-
-			color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-		}
-	}
-
-	width: 100%;
-
-	height: 100%;
-
-	margin: 0;
-
-	padding: 0;
 }
 
 body {
-	display: flex;
+	@apply flex h-full flex-grow flex-col;
 
-	flex-grow: 1;
+	@apply bg-transparent;
 
-	flex-direction: column;
+	@apply tabular-nums;
 
-	--tw-bg-opacity: 1;
-
-	background-color: transparent;
-
-	--tw-numeric-spacing: tabular-nums;
-
-	font-variant-numeric: var(--tw-ordinal) var(--tw-slashed-zero)
-		var(--tw-numeric-figure) var(--tw-numeric-spacing)
-		var(--tw-numeric-fraction);
-
-	--tw-text-opacity: 1;
-
-	color: rgb(0 0 0 / var(--tw-text-opacity, 1));
-
-	-webkit-font-smoothing: antialiased;
-
-	-moz-osx-font-smoothing: grayscale;
-
-	@media (min-width: 640px) {
-		& {
-			-webkit-font-smoothing: auto;
-
-			-moz-osx-font-smoothing: auto;
-		}
-	}
-
-	font-variant-ligatures: no-common-ligatures;
-
-	width: 100%;
-
-	height: 100%;
-
-	margin: 0;
-
-	padding: 0;
+	@apply antialiased sm:subpixel-antialiased;
 
 	background-image: url("/Asset/Background.svg");
 
-	background-repeat: no-repeat;
+	font-variant-ligatures: no-common-ligatures;
 
 	background-size: 160% auto;
 
 	background-position: 50% 50%;
 
-	background-repeat: no-repeat;
+	@apply bg-no-repeat;
 }
 
+/* Text Selection Highlighting */
 *::selection,
 ::selection {
+	@apply bg-yellow-400 text-black;
+
+	@apply dark:bg-orange-400 dark:text-white;
+
 	text-shadow: none;
-
-	--tw-bg-opacity: 1;
-
-	background-color: rgb(251 191 36 / var(--tw-bg-opacity, 1));
-
-	--tw-text-opacity: 1;
-
-	color: rgb(0 0 0 / var(--tw-text-opacity, 1));
-}
-
-@media (prefers-color-scheme: dark) {
-	*::selection,
-	::selection {
-		--tw-bg-opacity: 1;
-
-		background-color: rgb(251 146 60 / var(--tw-bg-opacity, 1));
-
-		--tw-text-opacity: 1;
-
-		color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-	}
 }
 
 img {
-	display: inline-block;
+	@apply inline-block select-none align-top;
 
-	user-select: none;
-
-	vertical-align: top;
-
-	outline: 2px solid transparent;
-
-	outline-offset: 2px;
+	@apply outline-2 outline-offset-2 outline-transparent;
 }

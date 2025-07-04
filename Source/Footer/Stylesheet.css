@@ -1,0 +1,56 @@
+.footer {
+	ul {
+		@apply px-4 py-2;
+	}
+
+	.icons {
+		li + li {
+			@apply mt-3;
+		}
+	}
+
+	.links li {
+		+ li {
+			@apply mt-3 sm:ml-3 sm:mt-0;
+		}
+	}
+
+	a {
+		@apply relative text-base underline underline-offset-8 outline-none outline-offset-2 transition-all duration-150 ease-Ease hover:text-blue-200 focus-visible:z-10 focus-visible:decoration-transparent focus-visible:outline-2 focus-visible:outline-blue-200 sm:text-sm;
+	}
+
+	.icon {
+		@apply h-5 w-5;
+	}
+
+	.button {
+		@apply outline-none;
+
+		padding: 2px 5px;
+		border: none;
+		border-radius: 6px;
+		font-size: 14px;
+		cursor: pointer;
+		position: relative;
+		display: inline-block;
+
+		box-shadow:
+			0 0 0 1px rgba(139, 75, 139, 0.3),
+			0 0 0 4px rgba(89, 48, 89, 0.8);
+
+		transition: all 0.3s ease;
+
+		&:hover {
+			box-shadow:
+				0 0 0 1px rgba(139, 75, 139, 0.5),
+				0 0 0 4px rgba(89, 48, 89, 1);
+			cursor: none;
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			@apply outline-none;
+		}
+	}
+}

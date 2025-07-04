@@ -2,12 +2,14 @@
 import "@Stylesheet/Base.css";
 
 import { Head } from "astro-capo";
-import { ClientRouter } from "astro:transitions";
+
+import Footer from "../Footer.astro";
 
 const { Title = "Land", Description = "Code Editor" } = Astro.props;
 
 interface Props {
 	Title?: string;
+
 	Description?: string;
 }
 ---
@@ -38,11 +40,6 @@ interface Props {
 			crossorigin
 		/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<!-- <link
-			rel="manifest"
-			href="/Manifest.json"
-			crossorigin="use-credentials"
-		/> -->
 
 		<style is:global>
 			@import "@Stylesheet/Global.css";
@@ -66,15 +63,23 @@ interface Props {
 		/>
 		<meta name="apple-mobile-web-app-title" content="Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
-
-		<ClientRouter />
 	</Head>
 	<body>
-		<div class="grow">
+		<main class="grow">
 			<slot />
+		</main>
+
+		<div id="footer" class="shrink">
+			<Footer />
 		</div>
+
 		<script>
 			import "@Script/Firebase";
 		</script>
+
+		<a
+			class="absolute left-0 top-0 hidden"
+			rel="me"
+			href="https://x.com/@CodeEditorLand"></a>
 	</body>
 </html>

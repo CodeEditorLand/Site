@@ -1,0 +1,33 @@
+<footer class="footer flex flex-col sm:flex-row">
+	<ul class="icons flex shrink flex-col justify-start">
+		<li>
+			<a
+				href="https://GitHub.Com/CodeEditorLand"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="icon flex">
+				<picture>
+					<img alt="GitHub" src="/Image/GitHub.svg" />
+				</picture>
+			</a>
+		</li>
+	</ul>
+	<slot />
+	<!-- <ul class="links flex flex-1 flex-col justify-start sm:flex-row">
+		<li>
+			<a href="/Personal-Data-Protection-Policy" rel="prefetch"
+				>Personal Data Protection Policy 📄</a
+			>
+		</li>
+		<li>
+			<a href="/Privacy-Policy" rel="prefetch">Privacy Policy 📄</a>
+		</li>
+		<li>
+			<a href="/Terms-of-Service" rel="prefetch">Terms of Service 📄</a>
+		</li>
+	</ul> -->
+</footer>
+
+<style is:global>
+	@import "./Footer/Stylesheet.css";
+</style>

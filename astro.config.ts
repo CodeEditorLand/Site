@@ -157,42 +157,6 @@ export default defineConfig({
 			devSourcemap: On,
 
 			transformer: "postcss",
-
-			postcss: {
-				plugins: [
-					(await import("postcss-url")).default([
-						{
-							filter: "**/Asset/**",
-
-							url: (Asset: { url: string }) => {
-								if (
-									Asset.url.includes(`?Time=${__INCREMENT__}`)
-								) {
-									return Asset.url;
-								}
-
-								try {
-									if (
-										new URL(
-											Asset.url,
-
-											"file://",
-										).searchParams.has("Time")
-									) {
-										return Asset.url;
-									}
-								} catch (e) {
-									if (Asset.url.includes("?Time=")) {
-										return Asset.url;
-									}
-								}
-
-								return `${Asset.url}?Time=${__INCREMENT__}`;
-							},
-						},
-					]),
-				],
-			},
 		},
 
 		plugins: [

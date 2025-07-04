@@ -9,3 +9,8 @@
 		--background-dark: theme("colors.black");
 	}
 }
+
+
+body {
+	@apply bg-slate-100;
+}
