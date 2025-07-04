@@ -5,7 +5,11 @@ html {
 
 	@apply dark:bg-black dark:text-white;
 
-	@apply bg-cover bg-top bg-no-repeat;
+	@apply bg-no-repeat;
+
+	background-position: center center;
+
+	background-size: 160% auto;
 
 	-webkit-tap-highlight-color: transparent;
 
