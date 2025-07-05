@@ -16,24 +16,19 @@
 	}
 
 	a {
-		@apply relative text-base underline underline-offset-8 outline-none outline-offset-2 transition-all duration-150 ease-Ease hover:text-blue-200 focus-visible:z-10 focus-visible:decoration-transparent focus-visible:outline-2 focus-visible:outline-blue-200 sm:text-sm p-1.5 bg-white;
+		@apply relative bg-white p-1.5 text-base underline underline-offset-8 outline-none outline-offset-2 transition-all duration-150 ease-Ease hover:text-blue-200 focus-visible:z-10 focus-visible:decoration-transparent focus-visible:outline-2 focus-visible:outline-blue-200 sm:text-sm;
 	}
 
 	.icon {
 		width: calc(1.25rem + 12px);
+
 		height: calc(1.25rem + 12px);
 	}
 
 	.button {
-		@apply outline-none;
+		@apply relative inline-block cursor-pointer rounded-md border-none text-sm outline-none;
 
 		padding: 2px 5px;
-		border: none;
-		border-radius: 6px;
-		font-size: 14px;
-		cursor: pointer;
-		position: relative;
-		display: inline-block;
 
 		box-shadow:
 			0 0 0 1px rgba(139, 75, 139, 0.3),
@@ -42,10 +37,11 @@
 		transition: all 0.3s ease;
 
 		&:hover {
+			@apply cursor-none;
+
 			box-shadow:
 				0 0 0 1px rgba(139, 75, 139, 0.5),
 				0 0 0 4px rgba(89, 48, 89, 1);
-			cursor: none;
 		}
 
 		&:hover,
