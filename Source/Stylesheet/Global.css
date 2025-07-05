@@ -1,11 +1,7 @@
 html {
-	@apply m-0 h-full w-full p-0;
+	@apply m-0 h-full w-full bg-white bg-center bg-no-repeat p-0 text-black dark:bg-black dark:text-white;
 
-	@apply bg-white text-black;
-
-	@apply dark:bg-black dark:text-white;
-
-	@apply bg-no-repeat;
+	image-rendering: pixelated;
 
 	background-position: center center;
 
@@ -34,13 +30,7 @@ html {
 }
 
 body {
-	@apply flex h-full flex-grow flex-col;
-
-	@apply bg-transparent;
-
-	@apply tabular-nums;
-
-	@apply antialiased sm:subpixel-antialiased;
+	@apply flex h-full flex-grow flex-col bg-transparent bg-no-repeat tabular-nums antialiased sm:subpixel-antialiased;
 
 	background-image: url("/Asset/Background.svg");
 
@@ -49,22 +39,16 @@ body {
 	background-size: 160% auto;
 
 	background-position: 50% 50%;
-
-	@apply bg-no-repeat;
 }
 
 /* Text Selection Highlighting */
 *::selection,
 ::selection {
-	@apply bg-yellow-400 text-black;
-
-	@apply dark:bg-orange-400 dark:text-white;
+	@apply bg-yellow-400 text-black dark:bg-orange-400 dark:text-white;
 
 	text-shadow: none;
 }
 
 img {
-	@apply inline-block select-none align-top;
-
-	@apply outline-2 outline-offset-2 outline-transparent;
+	@apply inline-block select-none align-top outline-2 outline-offset-2 outline-transparent;
 }
