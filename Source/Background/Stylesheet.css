@@ -1,18 +1,48 @@
-div {
-	@apply fixed left-0 top-0 h-screen w-screen;
+#Background {
+	position: fixed;
+
+	left: 0;
+
+	top: 0;
+
+	height: 100vh;
+
+	width: 100vw;
 
 	z-index: -1;
 
-	&:before {
-		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat;
+	opacity: 0;
 
+	&.Load {
+		opacity: 1;
+	}
+
+	&.WithTransition {
+		transition: opacity 0.8s ease-in-out;
+	}
+
+	&:before {
 		content: "";
 
-		image-rendering: pixelated;
+		position: fixed;
+
+		left: 50%;
+
+		top: 50%;
+
+		height: 100vh;
+
+		width: 160vw;
 
 		transform: translateX(-50%) translateY(-50%);
 
-		width: 160vw;
+		background-size: cover;
+
+		background-position: center;
+
+		background-repeat: no-repeat;
+
+		image-rendering: pixelated;
 
 		z-index: -3;
 
@@ -31,7 +61,6 @@ div {
 				);
 			}
 		}
-
 		@media (min-width: 1280px) {
 			& {
 				background-image: image-set(
@@ -41,7 +70,6 @@ div {
 				);
 			}
 		}
-
 		@media (min-width: 1920px) {
 			& {
 				background-image: url("/Asset/DesktopLargeRock.webp");
@@ -50,15 +78,27 @@ div {
 	}
 
 	&:after {
-		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat content-none;
-
 		content: "";
 
-		background-image: url("/Asset/Background.svg");
+		position: fixed;
+
+		left: 50%;
+
+		top: 50%;
+
+		height: 100vh;
+
+		width: 160vw;
 
 		transform: translateX(-50%) translateY(-50%);
 
-		width: 160vw;
+		background-size: cover;
+
+		background-position: center;
+
+		background-repeat: no-repeat;
+
+		background-image: url("/Asset/Background.svg");
 
 		z-index: -2;
 	}

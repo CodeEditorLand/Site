@@ -1,5 +1,58 @@
-<div></div>
+<div id="Background"></div>
 
 <style>
 	@import "./Background/Stylesheet.css";
 </style>
+
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const Container = document.getElementById("Background");
+
+		if (!Container) return;
+
+		let Rock;
+
+		if (window.matchMedia("(min-width: 1920px)").matches) {
+			Rock = "/Asset/DesktopLargeRock.webp";
+		} else if (window.matchMedia("(min-width: 1280px)").matches) {
+			Rock = "/Asset/DesktopRock.webp";
+		} else if (window.matchMedia("(min-width: 768px)").matches) {
+			Rock = "/Asset/TabletRock.webp";
+		} else {
+			Rock = "/Asset/MobileRock.webp";
+		}
+
+		const Element = [Rock, "/Asset/Background.svg"].map((src) => {
+			const _Image = new Image();
+
+			_Image.src = src;
+
+			return _Image;
+		});
+
+		if (Element.every((Image) => Image.complete)) {
+			Container.classList.add("Load");
+		} else {
+			Promise.all(
+				Element.map((Image) => {
+					return new Promise((Resolve, Reject) => {
+						if (Image.complete) {
+							// @ts-expect-error
+							Resolve();
+						} else {
+							Image.onload = Resolve;
+
+							Image.onerror = Reject;
+						}
+					});
+				}),
+			).then(() => {
+				Container.classList.add("WithTransition");
+
+				setTimeout(() => {
+					Container.classList.add("Load");
+				}, 0);
+			});
+		}
+	});
+</script>
