@@ -4,7 +4,9 @@ div {
 	z-index: -1;
 
 	&:before {
-		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat content-none;
+		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat;
+
+		content: "";
 
 		image-rendering: pixelated;
 
@@ -49,6 +51,8 @@ div {
 
 	&:after {
 		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat content-none;
+
+		content: "";
 
 		background-image: url("/Asset/Background.svg");
 
