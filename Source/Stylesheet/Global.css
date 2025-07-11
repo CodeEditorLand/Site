@@ -9,22 +9,49 @@ html {
 
 	-webkit-tap-highlight-color: transparent;
 
+	/*
+	 * Default: Mobile First (for iPhones, small screens)
+	 * Serves a ~1.3k wide image for standard screens and a ~2k image for retina phones.
+	 */
 	background-image: image-set(
-		url("/Asset/Rock.webp") 1x,
-		url("/Asset/Rockx22.webp") 2x
+		url("/Asset/MobileRock.webp") 1x,
+		url("/Asset/TabletRock.webp") 2x
 	);
 
-	@media (min-width: 1921px) {
+	/*
+	 * Tablet and Small Laptops (md, lg)
+	 * min-width: 768px
+	 */
+	@media (min-width: 768px) {
 		& {
 			background-image: image-set(
-				url("/Asset/Rockx22.webp") 1x,
-				url("/Asset/Rockx22x22.webp") 2x
+				url("/Asset/TabletRock.webp") 1x,
+				url("/Asset/DesktopRock.webp") 2x
 			);
 		}
 	}
-	@media (min-width: 2560px) {
+
+	/*
+	 * Standard Desktops (xl)
+	 * min-width: 1280px
+	 */
+	@media (min-width: 1280px) {
 		& {
-			background-image: url("/Asset/Rockx22x22.webp");
+			background-image: image-set(
+				url("/Asset/DesktopRock.webp") 1x,
+				url("/Asset/DesktopLargeRock.webp") 2x
+			);
+		}
+	}
+
+	/*
+	 * Large Desktops, 2K & 4K screens
+	 * min-width: 1920px
+	 * At this size, we just serve the largest image as the 2x version would be impractically huge.
+	 */
+	@media (min-width: 1920px) {
+		& {
+			background-image: url("/Asset/DesktopLargeRock.webp");
 		}
 	}
 }

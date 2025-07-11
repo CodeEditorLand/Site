@@ -1,8 +1,8 @@
 {
-  "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_2c83156f128cbe20bf64431a6debe6ac/node_modules/@astrojs/solid-js/dist/client.js": {
+  "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_1469469d17a48f425cb7b9b611d30596/node_modules/@astrojs/solid-js/dist/client.js": {
     "file": "_astro/client.v__YGRcE.js",
     "name": "client",
-    "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_2c83156f128cbe20bf64431a6debe6ac/node_modules/@astrojs/solid-js/dist/client.js",
+    "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.0_@ty_1469469d17a48f425cb7b9b611d30596/node_modules/@astrojs/solid-js/dist/client.js",
     "isEntry": true
   },
   "../../../node_modules/.pnpm/firebase@11.10.0/node_modules/firebase/app/dist/esm/index.esm.js": {
