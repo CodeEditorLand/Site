@@ -1,71 +1,9 @@
 html {
-	@apply m-0 h-full w-full bg-white bg-center bg-no-repeat p-0 text-black dark:bg-black dark:text-white;
-
-	image-rendering: pixelated;
-
-	background-position: center center;
-
-	background-size: 160% auto;
-
-	-webkit-tap-highlight-color: transparent;
-
-	/*
-	 * Default: Mobile First (for iPhones, small screens)
-	 * Serves a ~1.3k wide image for standard screens and a ~2k image for retina phones.
-	 */
-	background-image: image-set(
-		url("/Asset/MobileRock.webp") 1x,
-		url("/Asset/TabletRock.webp") 2x
-	);
-
-	/*
-	 * Tablet and Small Laptops (md, lg)
-	 * min-width: 768px
-	 */
-	@media (min-width: 768px) {
-		& {
-			background-image: image-set(
-				url("/Asset/TabletRock.webp") 1x,
-				url("/Asset/DesktopRock.webp") 2x
-			);
-		}
-	}
-
-	/*
-	 * Standard Desktops (xl)
-	 * min-width: 1280px
-	 */
-	@media (min-width: 1280px) {
-		& {
-			background-image: image-set(
-				url("/Asset/DesktopRock.webp") 1x,
-				url("/Asset/DesktopLargeRock.webp") 2x
-			);
-		}
-	}
-
-	/*
-	 * Large Desktops, 2K & 4K screens
-	 * min-width: 1920px
-	 * At this size, we just serve the largest image as the 2x version would be impractically huge.
-	 */
-	@media (min-width: 1920px) {
-		& {
-			background-image: url("/Asset/DesktopLargeRock.webp");
-		}
-	}
+	@apply m-0 h-full w-full p-0 text-black dark:bg-black dark:text-white;
 }
 
 body {
-	@apply flex h-full flex-grow flex-col bg-transparent bg-no-repeat tabular-nums antialiased sm:subpixel-antialiased;
-
-	background-image: url("/Asset/Background.svg");
-
-	font-variant-ligatures: no-common-ligatures;
-
-	background-size: 160% auto;
-
-	background-position: 50% 50%;
+	@apply flex h-full flex-grow flex-col tabular-nums antialiased sm:subpixel-antialiased;
 }
 
 /* Text Selection Highlighting */

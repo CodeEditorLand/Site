@@ -1,0 +1,61 @@
+div {
+	@apply fixed left-0 top-0 h-screen w-screen;
+
+	z-index: -1;
+
+	&:before {
+		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat content-none;
+
+		image-rendering: pixelated;
+
+		transform: translateX(-50%) translateY(-50%);
+
+		width: 160vw;
+
+		z-index: -3;
+
+		background-image: image-set(
+			url("/Asset/MobileRock.webp") 1x,
+
+			url("/Asset/TabletRock.webp") 2x
+		);
+
+		@media (min-width: 768px) {
+			& {
+				background-image: image-set(
+					url("/Asset/TabletRock.webp") 1x,
+
+					url("/Asset/DesktopRock.webp") 2x
+				);
+			}
+		}
+
+		@media (min-width: 1280px) {
+			& {
+				background-image: image-set(
+					url("/Asset/DesktopRock.webp") 1x,
+
+					url("/Asset/DesktopLargeRock.webp") 2x
+				);
+			}
+		}
+
+		@media (min-width: 1920px) {
+			& {
+				background-image: url("/Asset/DesktopLargeRock.webp");
+			}
+		}
+	}
+
+	&:after {
+		@apply fixed left-1/2 top-1/2 h-screen bg-cover bg-center bg-no-repeat content-none;
+
+		background-image: url("/Asset/Background.svg");
+
+		transform: translateX(-50%) translateY(-50%);
+
+		width: 160vw;
+
+		z-index: -2;
+	}
+}

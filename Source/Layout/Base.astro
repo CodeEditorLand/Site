@@ -3,6 +3,7 @@ import "@Stylesheet/Base.css";
 
 import { Head } from "astro-capo";
 
+import Background from "../Background.astro";
 import Footer from "../Footer.astro";
 
 const { Title = "Land", Description = "Code Editor" } = Astro.props;
@@ -65,6 +66,8 @@ interface Props {
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
 	</Head>
 	<body>
+		<Background />
+
 		<main class="grow">
 			<slot />
 		</main>
