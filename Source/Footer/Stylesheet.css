@@ -1,4 +1,4 @@
-.footer {
+.Footer {
 	ul {
 		@apply px-4 py-2;
 	}
@@ -17,6 +17,8 @@
 
 	a {
 		@apply relative bg-white p-1.5 text-base underline underline-offset-8 outline-none outline-offset-2 transition-all duration-150 ease-Ease hover:text-blue-200 focus-visible:z-10 focus-visible:decoration-transparent focus-visible:outline-2 focus-visible:outline-blue-200 sm:text-sm;
+
+		max-width: max-content;
 	}
 
 	.icon {
