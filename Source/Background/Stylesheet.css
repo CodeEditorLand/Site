@@ -1,105 +1,33 @@
-#Background {
-	position: fixed;
-
-	left: 0;
-
-	top: 0;
-
-	height: 100vh;
-
-	width: 100vw;
+#Layout {
+	@apply fixed inset-0 h-screen w-screen overflow-hidden opacity-0;
 
 	z-index: -1;
 
-	opacity: 0;
-
 	&.Load {
-		opacity: 1;
+		@apply opacity-100;
 	}
 
-	&.WithTransition {
-		transition: opacity 0.8s ease-in-out;
+	&.Transition {
+		transition: opacity 0.8s ease-out;
 	}
 
-	&:before {
-		content: "";
-
-		position: fixed;
-
-		left: 50%;
-
-		top: 50%;
-
-		height: 100vh;
+	.Container {
+		@apply absolute left-1/2 top-1/2 h-screen;
 
 		width: 160vw;
 
-		transform: translateX(-50%) translateY(-50%);
+		transform: translate(-50%, -50%);
+	}
 
-		background-size: cover;
+	.Image {
+		@apply h-full w-full object-cover object-center;
+	}
 
-		background-position: center;
-
-		background-repeat: no-repeat;
-
-		image-rendering: pixelated;
-
+	#Rock {
 		z-index: -3;
-
-		background-image: image-set(
-			url("/Asset/MobileRock.webp") 1x,
-
-			url("/Asset/TabletRock.webp") 2x
-		);
-
-		@media (min-width: 768px) {
-			& {
-				background-image: image-set(
-					url("/Asset/TabletRock.webp") 1x,
-
-					url("/Asset/DesktopRock.webp") 2x
-				);
-			}
-		}
-		@media (min-width: 1280px) {
-			& {
-				background-image: image-set(
-					url("/Asset/DesktopRock.webp") 1x,
-
-					url("/Asset/DesktopLargeRock.webp") 2x
-				);
-			}
-		}
-		@media (min-width: 1920px) {
-			& {
-				background-image: url("/Asset/DesktopLargeRock.webp");
-			}
-		}
 	}
 
-	&:after {
-		content: "";
-
-		position: fixed;
-
-		left: 50%;
-
-		top: 50%;
-
-		height: 100vh;
-
-		width: 160vw;
-
-		transform: translateX(-50%) translateY(-50%);
-
-		background-size: cover;
-
-		background-position: center;
-
-		background-repeat: no-repeat;
-
-		background-image: url("/Asset/Background.svg");
-
+	#Background {
 		z-index: -2;
 	}
 }

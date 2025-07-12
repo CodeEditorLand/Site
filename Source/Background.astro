@@ -1,60 +1,92 @@
-<div id="Background"></div>
+---
+import { Image } from "astro:assets";
+---
+
+<div id="Layout">
+	<div id="Background" class="Container">
+		<Image
+			src="/Asset/Background.svg"
+			alt=""
+			role="presentation"
+			class="Image"
+			loading="eager"
+			decoding="async"
+			width={1920}
+			height={1080}
+		/>
+	</div>
+
+	<div id="Rock" class="Container">
+		<picture>
+			<source
+				media="(min-width: 1920px)"
+				srcset="/Asset/DesktopLargeRock.webp"
+			/>
+
+			<source
+				media="(min-width: 1280px)"
+				srcset="/Asset/DesktopRock.webp"
+			/>
+
+			<source
+				media="(min-width: 768px)"
+				srcset="/Asset/TabletRock.webp"
+			/>
+
+			<img
+				src="/Asset/MobileRock.webp"
+				alt=""
+				role="presentation"
+				class="Image"
+				loading="eager"
+				decoding="async"
+				width="2400"
+				height="1309"
+			/>
+		</picture>
+	</div>
+</div>
 
 <style>
 	@import "./Background/Stylesheet.css";
 </style>
 
-<script is:inline>
-	document.addEventListener("DOMContentLoaded", () => {
-		const Container = document.getElementById("Background");
+<script>
+	(() => {
+		const Layout = document.querySelector<HTMLDivElement>("#Layout");
 
-		if (!Container) {
+		const _Image = Array.from(
+			Layout?.querySelectorAll<HTMLImageElement>(".Image") ?? [],
+		);
+
+		if (!Layout || _Image.length === 0) {
 			return;
 		}
 
-		let Rock;
+		const Load = performance.now();
 
-		if (window.matchMedia("(min-width: 1920px)").matches) {
-			Rock = "/Asset/DesktopLargeRock.webp";
-		} else if (window.matchMedia("(min-width: 1280px)").matches) {
-			Rock = "/Asset/DesktopRock.webp";
-		} else if (window.matchMedia("(min-width: 768px)").matches) {
-			Rock = "/Asset/TabletRock.webp";
-		} else {
-			Rock = "/Asset/MobileRock.webp";
-		}
+		Promise.all(
+			_Image.map((_Image) => {
+				if (_Image.complete) {
+					return Promise.resolve();
+				}
 
-		const Element = [Rock, "/Asset/Background.svg"].map((src) => {
-			const _Image = new Image();
+				return new Promise((resolve, reject) => {
+					_Image.addEventListener("load", resolve);
 
-			_Image.src = src;
+					_Image.addEventListener("error", reject);
+				});
+			}),
+		)
+			.then(() => {
+				if (performance.now() - Load > 50) {
+					Layout.classList.add("Transition");
+				}
 
-			return _Image;
-		});
-
-		if (Element.every((Image) => Image.complete)) {
-			Container.classList.add("Load");
-		} else {
-			Promise.all(
-				Element.map((Image) => {
-					return new Promise((Resolve, Reject) => {
-						if (Image.complete) {
-							// @ts-expect-error
-							Resolve();
-						} else {
-							Image.onload = Resolve;
-
-							Image.onerror = Reject;
-						}
-					});
-				}),
-			).then(() => {
-				Container.classList.add("WithTransition");
-
-				setTimeout(() => {
-					Container.classList.add("Load");
-				}, 0);
+				Layout.classList.add("Load");
+			})
+			.catch(() => {
+				Layout.classList.add("Load");
 			});
-		}
-	});
+	})();
 </script>
