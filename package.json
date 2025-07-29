@@ -51,7 +51,7 @@
 		"tailwindcss": "3.4.17",
 		"typescript": "5.8.3",
 		"ulid": "3.0.1",
-		"zod": "4.0.10"
+		"zod": "4.0.13"
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "1.10.4",
