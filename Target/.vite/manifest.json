@@ -1,8 +1,8 @@
 {
-  "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.3_@types+node@25.0.3_jiti@1.21.7_lightningcss@1.30.2_sass-embedde_db47179500faecf33d83906d81a26912/node_modules/@astrojs/solid-js/dist/client.js": {
+  "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.3_@types+node@25.0.3_jiti@1.21.7_lightningcss@1.30.2_sass-embedde_8f98e6226c45c809a8a793f2ea14f87b/node_modules/@astrojs/solid-js/dist/client.js": {
     "file": "_astro/client.Vfzkr1-Z.js",
     "name": "client",
-    "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.3_@types+node@25.0.3_jiti@1.21.7_lightningcss@1.30.2_sass-embedde_db47179500faecf33d83906d81a26912/node_modules/@astrojs/solid-js/dist/client.js",
+    "src": "../../../node_modules/.pnpm/@astrojs+solid-js@5.1.3_@types+node@25.0.3_jiti@1.21.7_lightningcss@1.30.2_sass-embedde_8f98e6226c45c809a8a793f2ea14f87b/node_modules/@astrojs/solid-js/dist/client.js",
     "isEntry": true
   },
   "../../../node_modules/.pnpm/firebase@12.7.0/node_modules/firebase/app/dist/esm/index.esm.js": {
