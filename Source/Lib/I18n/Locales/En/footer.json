@@ -1,0 +1,22 @@
+{
+  "columns": {
+    "company": {
+      "blog": "Blog",
+      "contributing": "Contributing",
+      "github": "GitHub",
+      "title": "Community"
+    },
+    "legal": {
+      "license": "License",
+      "privacy": "Privacy",
+      "terms": "Terms",
+      "title": "Legal"
+    },
+    "product": {
+      "docs": "Docs",
+      "downloads": "Download",
+      "features": "Features",
+      "title": "Product"
+    }
+  }
+}

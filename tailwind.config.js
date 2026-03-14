@@ -5,6 +5,7 @@ export default {
 	content: [
 		"./Public/**/*.html",
 		"./Source/**/*.{astro,js,jsx,ts,tsx,vue,svelte}",
+		"./src/**/*.{astro,js,jsx,ts,tsx}",
 	],
 
 	darkMode: "media",
@@ -30,8 +31,37 @@ export default {
 				},
 			},
 			colors: {
+				// Existing tokens
 				backgroundLight: "var(--background-light)",
 				backgroundDark: "var(--background-dark)",
+
+				// Bridge colors from Example/src/index.css
+				"color-green-500": "var(--color-green-500)",
+				"color-yellow-500": "var(--color-yellow-500)",
+				"color-white": "var(--color-white)",
+
+				// Extended technology badge palette - Protocol Spines
+				"spine-grpc": "#22c55e",
+				"spine-ipc": "#3b82f6",
+				"spine-tcp": "#f97316",
+				"spine-wasm": "#a855f7",
+
+				// Extensions & Libraries
+				"ext-rust": "#ea580c",
+				"ext-tauri": "#eab308",
+				"ext-effect-ts": "#06b6d4",
+				"ext-react": "#60a5fa",
+				"ext-vue": "#4ade80",
+				"ext-svelte": "#fb923c",
+				"ext-next": "#171717",
+				"ext-nuxt": "#16a34a",
+				"ext-solid": "#2563eb",
+				"ext-astro": "#9333ea",
+
+				// Platform indicators
+				"platform-web": "#4f46e5",
+				"platform-desktop": "#475569",
+				"platform-mobile": "#ec4899",
 			},
 		},
 	},
@@ -45,5 +75,39 @@ export default {
 	],
 
 	// TODO: Link that to the dynamic components inside ./Source/Function/Scroll/Layout.astro
-	safelist: ["h-2", "w-2"],
+	safelist: [
+		"h-2",
+		"w-2",
+		// Include badge color utilities
+		"bg-spine-grpc",
+		"text-spine-grpc",
+		"border-spine-grpc",
+		"bg-spine-ipc",
+		"text-spine-ipc",
+		"border-spine-ipc",
+		"bg-spine-tcp",
+		"text-spine-tcp",
+		"border-spine-tcp",
+		"bg-spine-wasm",
+		"text-spine-wasm",
+		"border-spine-wasm",
+		"bg-ext-rust",
+		"text-ext-rust",
+		"border-ext-rust",
+		"bg-ext-tauri",
+		"text-ext-tauri",
+		"border-ext-tauri",
+		"bg-ext-effect-ts",
+		"text-ext-effect-ts",
+		"border-ext-effect-ts",
+		"bg-platform-web",
+		"text-platform-web",
+		"border-platform-web",
+		"bg-platform-desktop",
+		"text-platform-desktop",
+		"border-platform-desktop",
+		"bg-platform-mobile",
+		"text-platform-mobile",
+		"border-platform-mobile",
+	],
 };

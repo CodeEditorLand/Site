@@ -1,0 +1,37 @@
+---
+import Base from "../Layout/Base.astro";
+import { getI18n } from "../Lib/I18n/Server";
+
+const t = getI18n();
+
+const metaTitle = t("common.error.404", {
+	defaultValue: "404 - Page Not Found",
+});
+const metaDescription = t("common.error.pageNotFound", {
+	defaultValue: "The page you're looking for doesn't exist.",
+});
+---
+
+<Base Title={metaTitle} Description={metaDescription} noIndex={true}>
+	<section className="py-20">
+		<div className="container mx-auto px-4 text-center">
+			<h1 className="mb-4 text-6xl font-bold">404</h1>
+			<p className="text-muted-foreground mb-8 text-xl">
+				{
+					t("common.error.pageNotFound", {
+						defaultValue: "Page not found",
+					})
+				}
+			</p>
+			<a
+				href="/"
+				className="border-border bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center justify-center gap-2 border-[3px] px-4 py-2 text-sm font-medium transition-all">
+				← {
+					t("common.button.backToHome", {
+						defaultValue: "Back to Home",
+					})
+				}
+			</a>
+		</div>
+	</section>
+</Base>

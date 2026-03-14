@@ -3,14 +3,258 @@
 @tailwind utilities;
 @tailwind variants;
 
-@layer base {
+/* Unified Design Token System */
+@layer theme {
 	:root {
+		/* shadcn/ui CSS Variables - Light Mode (Design Token Compliant) */
+		--background: 0 0% 100%;
+		--foreground: 240 10% 3.9%;
+		--card: 0 0% 100%;
+		--card-foreground: 240 10% 3.9%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 240 10% 3.9%;
+		--primary: 222.2 47.4% 11.2%;
+		--primary-foreground: 210 40% 98%;
+		--secondary: 240 4.8% 95.9%;
+		--secondary-foreground: 240 5.9% 10%;
+		--muted: 240 4.8% 95.9%;
+		--muted-foreground: 240 3.8% 46.1%;
+		--accent: 240 4.8% 95.9%;
+		--accent-foreground: 240 5.9% 10%;
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 0 0% 98%;
+		--border: 240 5.9% 90%;
+		--input: 240 5.9% 90%;
+		--ring: 240 10% 3.9%;
+
+		/* Core background/foreground tokens */
 		--background-light: theme("colors.white");
 		--background-dark: theme("colors.black");
+
+		/* Protocol Spine Colors (Primary colors) */
+		--spine-grpc: #22c55e;
+		--spine-ipc: #3b82f6;
+		--spine-tcp: #f97316;
+		--spine-wasm: #a855f7;
+
+		/* Extension/Library Colors */
+		--ext-rust: #ea580c;
+		--ext-tauri: #eab308;
+		--ext-effect-ts: #06b6d4;
+		--ext-react: #60a5fa;
+		--ext-vue: #4ade80;
+		--ext-svelte: #fb923c;
+		--ext-next: #171717;
+		--ext-nuxt: #16a34a;
+		--ext-solid: #2563eb;
+		--ext-astro: #9333ea;
+
+		/* Platform Indicator Colors */
+		--platform-web: #4f46e5;
+		--platform-desktop: #475569;
+		--platform-mobile: #ec4899;
+
+		/* Chart Colors (for data visualization) */
+		--chart-1: #2563eb;
+		--chart-2: #dc2626;
+		--chart-3: #16a34a;
+		--chart-4: #9333ea;
+		--chart-5: #e77614;
+
+		/* Spacing system */
+		--spacing: 0.25rem;
+
+		/* Container sizes */
+		--container-xs: 20rem;
+		--container-md: 28rem;
+		--container-2xl: 42rem;
+		--container-4xl: 56rem;
+		--container-5xl: 64rem;
+		--container-6xl: 72rem;
+
+		/* Design System Constraints */
+		--border-width: 3px;
+		--border-style: solid;
+		--border-radius: 0;
 	}
 }
 
+@layer base {
+	* {
+		border-color: var(--border);
+		outline-color: var(--ring);
+	}
 
-body {
-	@apply bg-slate-100;
+	/* Design constraint: All borders must be exactly 3px, no border-radius */
+	*:not(path):not(svg):not(circle):not(rect):not(line):not(polyline):not(
+			polygon
+		) {
+		border-width: var(--border-width) !important;
+		border-style: var(--border-style) !important;
+		border-radius: var(--border-radius) !important;
+	}
+
+	/* Exception: Badges use rounded-full for pill shape */
+	.badge,
+	[class*="badge"] {
+		border-radius: 9999px !important;
+	}
+
+	/* Exception: Avatars can be circular */
+	.avatar,
+	[class*="avatar"] {
+		border-radius: 9999px !important;
+	}
+
+	body {
+		background-color: var(--background);
+		color: var(--foreground);
+	}
+}
+
+/* shadcn/ui Base Styles */
+@layer base {
+	* {
+		border-color: var(--border);
+	}
+
+	html {
+		@apply scroll-smooth;
+	}
+
+	body {
+		background-color: var(--background);
+		color: var(--foreground);
+	}
+}
+
+@layer components {
+	/* Primary Button */
+	.btn-primary {
+		background-color: var(--primary);
+		color: var(--primary-foreground);
+		border: var(--border-width) solid var(--border);
+		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	}
+	.btn-primary:hover {
+		background-color: color-mix(in srgb, var(--primary) 90%, transparent);
+	}
+
+	/* Secondary Button */
+	.btn-secondary {
+		background-color: var(--secondary);
+		color: var(--secondary-foreground);
+		border: var(--border-width) solid var(--border);
+		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	}
+	.btn-secondary:hover {
+		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+	}
+
+	/* Outline Button */
+	.btn-outline {
+		border: var(--border-width) solid var(--border);
+		background-color: var(--background);
+	}
+	.btn-outline:hover {
+		background-color: var(--accent);
+		color: var(--accent-foreground);
+	}
+
+	/* Ghost Button */
+	.btn-ghost {
+		cursor: pointer;
+	}
+	.btn-ghost:hover {
+		background-color: var(--accent);
+		color: var(--accent-foreground);
+	}
+
+	/* Card */
+	.card {
+		background-color: var(--card);
+		color: var(--card-foreground);
+		border: var(--border-width) solid var(--border);
+		box-shadow:
+			0 4px 6px -1px rgb(0 0 0 / 0.1),
+			0 2px 4px -1px rgb(0 0 0 / 0.06);
+	}
+
+	/* Input */
+	.input {
+		border: var(--border-width) solid var(--border);
+		background-color: var(--background);
+		padding: 0.375rem 0.75rem;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		ring-offset-color: var(--background);
+	}
+	.input::file-selector-button {
+		border: 0;
+		background-color: transparent;
+	}
+	.input::placeholder {
+		color: var(--muted-foreground);
+	}
+	.input:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--ring);
+	}
+	.input:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	/* Badge - Pill shape (rounded-full is OK) */
+	.badge {
+		display: inline-flex;
+		align-items: center;
+		border-radius: 9999px;
+		border: 1px solid transparent;
+		padding: 0.125rem 0.625rem;
+		font-size: 0.75rem;
+		line-height: 1rem;
+		font-weight: 600;
+		transition-property: color, background-color, border-color;
+		transition-duration: 150ms;
+	}
+	.badge:focus {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--ring);
+	}
+
+	.badge-primary {
+		border-color: transparent;
+		background-color: var(--primary);
+		color: var(--primary-foreground);
+	}
+	.badge-primary:hover {
+		background-color: color-mix(in srgb, var(--primary) 80%, transparent);
+	}
+
+	.badge-secondary {
+		border-color: transparent;
+		background-color: var(--secondary);
+		color: var(--secondary-foreground);
+	}
+	.badge-secondary:hover {
+		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+	}
+
+	.badge-destructive {
+		border-color: transparent;
+		background-color: var(--destructive);
+		color: var(--destructive-foreground);
+	}
+	.badge-destructive:hover {
+		background-color: color-mix(
+			in srgb,
+			var(--destructive) 80%,
+			transparent
+		);
+	}
+
+	.badge-outline {
+		color: var(--foreground);
+	}
 }

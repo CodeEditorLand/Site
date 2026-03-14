@@ -1,0 +1,125 @@
+{
+  "features": {
+    "item": {
+      "cicdIntegration": {
+        "description": "Integrate with GitHub Actions, GitLab CI, or Jenkins. Automate builds and deployments.",
+        "title": "CI/CD Integration"
+      },
+      "collaboration": {
+        "description": "Invite team members, manage permissions, and collaborate on design system updates in real-time.",
+        "title": "Team Collaboration"
+      },
+      "componentLibrary": {
+        "description": "Production-ready components with full TypeScript support. Customize to match your brand.",
+        "title": "Component Library"
+      },
+      "designTokens": {
+        "description": "Centralized design tokens for colors, typography, spacing, and more. Maintain consistency across all platforms.",
+        "title": "Design Tokens"
+      },
+      "documentation": {
+        "description": "Documentation automatically generated from your design tokens and component props.",
+        "title": "Auto-Generated Docs"
+      },
+      "versionControl": {
+        "description": "Track changes to your design system over time. Roll back to previous versions when needed.",
+        "title": "Version Control"
+      }
+    },
+    "subtitle": "Discover what makes Code Editor Land the most advanced code editor available.",
+    "title": "Built for Performance, Designed for Developers"
+  },
+  "hero": {
+    "badge": "New: AI-powered component generation",
+    "subtitle": "Create, maintain, and scale your design system with our comprehensive platform. From design tokens to component libraries, we've got you covered.",
+    "title": "Build consistent design systems at scale",
+    "titleHighlight": "design systems",
+    "cta": {
+      "primary": "Start Free Trial",
+      "secondary": "Watch Demo"
+    },
+    "scene": {
+      "description": "3D animated design system components",
+      "hub": "Central Design System Hub",
+      "components": {
+        "button": "Button Component",
+        "colors": "Color Tokens",
+        "typography": "Typography System",
+        "components": "Component Library",
+        "spacing": "Spacing Scale",
+        "icons": "Icon Library",
+        "docs": "Documentation",
+        "versions": "Version Control"
+      }
+    }
+  },
+  "nav": {
+    "docs": "Docs",
+    "downloads": "Download",
+    "features": "Features",
+    "github": "GitHub"
+  },
+  "pricing": {
+    "subtitle": "Choose the plan that fits your needs. All plans include a 14-day free trial.",
+    "tiers": {
+      "free": {
+        "name": "Free",
+        "description": "For individuals",
+        "features": {
+          "1": "1 design system",
+          "2": "Basic components",
+          "3": "Community support"
+        },
+        "button": "Get Started"
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "For professionals",
+        "features": {
+          "1": "Unlimited design systems",
+          "2": "All components & templates",
+          "3": "Priority support",
+          "4": "Version history"
+        },
+        "button": "Start Free Trial"
+      },
+      "team": {
+        "name": "Team",
+        "description": "For teams",
+        "features": {
+          "1": "Everything in Pro",
+          "2": "Unlimited team members",
+          "3": "Advanced permissions",
+          "4": "SSO integration"
+        },
+        "button": "Start Free Trial"
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "For large organizations",
+        "features": {
+          "1": "Everything in Team",
+          "2": "Custom integrations",
+          "3": "Dedicated support",
+          "4": "SLA guarantee"
+        },
+        "button": "Contact Sales"
+      }
+    },
+    "title": "Clear, transparent pricing",
+    "badge": "Pricing"
+  },
+  "testimonials": {
+    "quote": {
+      "1": "Code Editor Land transformed how the platform manages its design system. Time to ship new features was reduced by 60%.",
+      "2": "The component library is incredibly well-designed. Consistent, accessible, and beautiful out of the box.",
+      "3": "A valuable investment for the team this year. Documentation generation alone provided hundreds of hours in savings.",
+      "4": "A tool that understands both design and engineering. Designers and developers are aligned.",
+      "5": "The version control features are a game-changer. Users can track changes and roll back when needed.",
+      "6": "Support team is exceptional. They responded within hours and assisted with customization requirements."
+    },
+    "subtitle": "See what customers have to say about Code Editor Land.",
+    "title": "Adopted by teams worldwide",
+    "badge": "Testimonials"
+  }
+}

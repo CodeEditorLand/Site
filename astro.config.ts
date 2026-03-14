@@ -34,7 +34,7 @@ export default defineConfig({
 	},
 
 	integrations: [
-		(await import("@astrojs/solid-js")).default({
+		(await import("@astrojs/react")).default({
 			// @ts-ignore
 			devtools: On,
 		}),

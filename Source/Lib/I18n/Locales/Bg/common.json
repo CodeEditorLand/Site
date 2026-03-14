@@ -1,0 +1,29 @@
+{
+  "actions": {
+    "signIn": "Sign In to Your Account"
+  },
+  "brand": {
+    "name": "Code Editor Land",
+    "tagline": "The next-generation code editor. Open source and free forever under the CC0 license. Experience professional-grade development tools without any cost or restrictions."
+  },
+  "button": {
+    "backToHome": "Return to Homepage",
+    "download": "Download Code Editor Land",
+    "learnMore": "Learn More About Features",
+    "signIn": "Sign In to Your Account",
+    "signUp": "Create Your Free Account"
+  },
+  "error": {
+    "404": "404 - Page Not Found",
+    "pageNotFound": "The page you're looking for doesn't exist or has been moved. Please check the URL for any typos, or return to the home page to start fresh. If you believe this is an error, contact our support team and we'll help you find what you need."
+  },
+  "label": {
+    "email": "Email Address",
+    "password": "Password"
+  },
+  "nav": {
+    "docs": "Documentation",
+    "downloads": "Download",
+    "github": "GitHub Repository"
+  }
+}

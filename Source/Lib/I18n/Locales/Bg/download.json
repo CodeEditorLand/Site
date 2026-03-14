@@ -1,0 +1,38 @@
+{
+  "card": {
+    "platform": {
+      "linux": {
+        "description": "DEB, RPM, AppImage",
+        "title": "Linux"
+      },
+      "macos": {
+        "title": "macOS",
+        "universalBadge": "Universal Binary"
+      },
+      "windows": {
+        "description": "64-bit (x64)",
+        "title": "Windows"
+      }
+    }
+  },
+  "page": {
+    "subtitle": "Available for macOS, Windows, and Linux. Fast, native, and free.",
+    "title": "Download Land"
+  },
+  "previousReleases": {
+    "description": "Download older versions if needed.",
+    "title": "Previous Releases"
+  },
+  "subtitle": "Available for macOS, Windows, and Linux. Built with Tauri, powered by Rust.",
+  "systemRequirements": {
+    "subtitle": "Ensure your system meets these requirements before downloading.",
+    "title": "System Requirements"
+  },
+  "title": "Download Land",
+  "verification": {
+    "description": "Land releases are signed with PGP. Verify your download to ensure integrity.",
+    "downloadButton": "Download PGP Public Key",
+    "title": "Verify Your Download",
+    "verifyButton": "Verify Download"
+  }
+}

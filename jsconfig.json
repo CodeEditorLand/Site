@@ -1,7 +1,15 @@
 {
 	"$schema": "https://json.schemastore.org/jsconfig",
 	"compilerOptions": {
-		"baseUrl": "./",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["Source/*"],
+			"@/Components": ["Source/Components"],
+			"@/Components/*": ["Source/Components/*"],
+			"@/utils": ["Source/Function/Utility/CN.ts"],
+			"@/Function": ["Source/Function"],
+			"@/Function/*": ["Source/Function/*"]
+		},
 		"emitDeclarationOnly": false,
 		"noEmit": true,
 		"outDir": "Target",
