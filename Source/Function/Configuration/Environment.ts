@@ -1,11 +1,10 @@
-import { Environment } from "./Schema";
-import On from "./On";
-
-export default (() => {
+export default await (async () => {
 	const Value = process.env["SITE_ENVIRONMENT"];
 
 	if (Value) {
-		const Result = Environment.safeParse(Value);
+		const Result = (
+			await import("./Schema/Environment.js")
+		).default.safeParse(Value);
 
 		if (Result.success) return Result.data;
 
@@ -14,5 +13,5 @@ export default (() => {
 		);
 	}
 
-	return On ? "Development" : "Production";
+	return (await import("./On.js")).default ? "Development" : "Production";
 })();

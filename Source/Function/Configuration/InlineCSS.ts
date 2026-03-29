@@ -1,4 +1,3 @@
-import On from "./On";
-import Resolve from "./Resolve";
-
-export default On ? false : Resolve.InlineCSS;
+export default (await import("./On.js")).default
+	? false
+	: (await import("./Resolve.js")).default.InlineCSS;

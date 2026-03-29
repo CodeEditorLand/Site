@@ -1,3 +1,1 @@
-import Resolve from "./Resolve";
-
-export default Resolve.Manifest;
+export default (await import("./Resolve.js")).default.Manifest;

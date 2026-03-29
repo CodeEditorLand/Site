@@ -1,4 +1,4 @@
-import type { Configuration } from "./Schema";
+import type { default as Configuration } from "./Type/Configuration.js";
 
 export default {
 	Site: "https://Editor.Land",
@@ -19,4 +19,4 @@ export default {
 	ServiceWorker: true,
 	InlineCSS: true,
 	Compress: true,
-} satisfies Configuration;
+} satisfies Configuration as Configuration;

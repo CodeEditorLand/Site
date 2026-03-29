@@ -1,45 +1,41 @@
-import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import type Interface from "./Interface/Load.js";
 
-import Schema from "./Schema";
-
-function Strip(
-	Source: Record<string, unknown>,
-): Record<string, unknown> {
-	const Result: Record<string, unknown> = {};
-
-	for (const [Key, Value] of Object.entries(Source)) {
-		if (Value !== undefined) {
-			Result[Key] = Value;
-		}
-	}
-
-	return Result;
-}
-
-export default function Load(): Record<string, unknown> {
-	const FilePath = resolve(
+export default (async () => {
+	const FilePath = (await import("node:path")).resolve(
 		import.meta.dirname ?? process.cwd(),
 		"../../../Configuration.json",
 	);
 
-	if (!existsSync(FilePath)) {
+	try {
+		await (
+			await import("node:fs/promises")
+		).access(FilePath, (await import("node:fs/promises")).constants.R_OK);
+	} catch (error) {
 		return {};
 	}
 
-	const Content = readFileSync(FilePath, "utf-8");
-	const Parsed = JSON.parse(Content);
-
-	const Result = Schema.partial().safeParse(Parsed);
+	const Result = (await import("./Schema.js")).default.partial().safeParse(
+		JSON.parse(
+			await (
+				await import("node:fs/promises")
+			).readFile(FilePath, {
+				encoding: "utf-8",
+			}),
+		),
+	);
 
 	if (!Result.success) {
 		console.warn(
 			"[Configuration] Configuration.json validation failed:",
 			Result.error.format(),
 		);
+
 		console.warn("[Configuration] Falling back to preset values.");
+
 		return {};
 	}
 
-	return Strip(Result.data);
-}
+	return Object.fromEntries(
+		Object.entries(Result.data).filter(([, Value]) => Value !== undefined),
+	);
+}) satisfies Interface as Interface;

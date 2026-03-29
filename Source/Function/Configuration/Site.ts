@@ -1,4 +1,3 @@
-import On from "./On";
-import Resolve from "./Resolve";
-
-export default On ? "http://localhost" : Resolve.Site;
+export default (await import("./On.js")).default
+	? "http://localhost"
+	: (await import("./Resolve.js")).default.Site;

@@ -112,9 +112,7 @@ export function DynamicHeroSection({
 				</div>
 
 				{/* Tech stack visualization */}
-				<div
-					className="relative mx-auto max-w-5xl"
-					aria-hidden="true">
+				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
 						{floatingCards.map((card) => (
@@ -201,10 +199,8 @@ export function DynamicHeroSection({
 										Math.PI / 2;
 									const radiusX = 38;
 									const radiusY = 35;
-									const cx =
-										50 + Math.cos(angle) * radiusX;
-									const cy =
-										50 + Math.sin(angle) * radiusY;
+									const cx = 50 + Math.cos(angle) * radiusX;
+									const cy = 50 + Math.sin(angle) * radiusY;
 									return (
 										<line
 											key={card.id}

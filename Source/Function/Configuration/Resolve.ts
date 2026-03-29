@@ -1,26 +1,20 @@
-import type { Configuration } from "./Schema";
+import type { default as Configuration } from "./Type/Configuration.js";
 
-import Schema from "./Schema";
-import Preset from "./Preset";
-import Load from "./Load";
-import Override from "./Override";
-
-const Merged = {
-	...Preset,
-	...Load(),
-	...Override(),
-};
-
-const Result = Schema.safeParse(Merged);
+const Result = (await import("./Schema.js")).default.safeParse({
+	...(await import("./Preset.js")).default,
+	...(await (await import("./Load.js")).default()),
+	...(await (await import("./Override.js")).default()),
+});
 
 if (!Result.success) {
 	console.error(
 		"[Configuration] Final merged configuration is invalid:",
 		Result.error.format(),
 	);
+
 	throw new Error(
 		"[Configuration] Cannot start with invalid configuration. Check Configuration.json and environment variables.",
 	);
 }
 
-export default Result.data satisfies Configuration;
+export default Result.data satisfies Configuration as Configuration;

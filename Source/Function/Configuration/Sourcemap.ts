@@ -1,4 +1,3 @@
-import On from "./On";
-import Resolve from "./Resolve";
-
-export default On ? true : Resolve.Sourcemap;
+export default (await import("./On.js")).default
+	? true
+	: (await import("./Resolve.js")).default.Sourcemap;

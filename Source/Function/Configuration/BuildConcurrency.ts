@@ -1,3 +1,1 @@
-import Resolve from "./Resolve";
-
-export default Resolve.BuildConcurrency;
+export default (await import("./Resolve.js")).default.BuildConcurrency;

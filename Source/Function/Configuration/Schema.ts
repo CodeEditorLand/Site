@@ -1,42 +1,22 @@
-import { z } from "zod";
+const { z } = await import("zod");
 
-export const Environment = z.enum(["Production", "Preview", "Development"]);
-
-export const Prefetch = z.enum(["hover", "tap", "viewport", "load"]);
-
-export const Minification = z.union([
-	z.enum(["terser", "esbuild"]),
-	z.literal(false),
-]);
-
-export const CSSMinification = z.union([
-	z.enum(["esbuild", "lightningcss"]),
-	z.literal(false),
-]);
-
-export const CSSTransformation = z.enum(["postcss", "lightningcss"]);
-
-const Schema = z.object({
+export default z.object({
 	Site: z.string().url(),
 	Port: z.number().int().min(1).max(65535),
 	CompressHTML: z.boolean(),
 	DevToolbar: z.boolean(),
-	PrefetchStrategy: Prefetch,
+	PrefetchStrategy: (await import("./Schema/Prefetch.js")).default,
 	PrefetchAll: z.boolean(),
 	BuildConcurrency: z.number().int().min(1),
 	Sourcemap: z.boolean(),
 	Manifest: z.boolean(),
-	Minify: Minification,
-	CSSMinify: CSSMinification,
+	Minify: (await import("./Schema/Minification.js")).default,
+	CSSMinify: (await import("./Schema/CSSMinification.js")).default,
 	ClientPrerender: z.boolean(),
 	ContentIntellisense: z.boolean(),
-	CSSTransformer: CSSTransformation,
+	CSSTransformer: (await import("./Schema/CSSTransformation.js")).default,
 	PreserveSymlinks: z.boolean(),
 	ServiceWorker: z.boolean(),
 	InlineCSS: z.boolean(),
 	Compress: z.boolean(),
 });
-
-export type Configuration = z.infer<typeof Schema>;
-
-export default Schema;

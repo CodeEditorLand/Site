@@ -702,7 +702,10 @@ export function getWorkersClient(): WorkersClient {
 	if (!authUrl || !downloadUrl || !analyticsUrl) {
 		// During SSG pre-rendering, env vars may not be available.
 		// Return a no-op client that returns error responses instead of throwing.
-		const noopResponse = { success: false as const, error: "Worker URLs not configured" };
+		const noopResponse = {
+			success: false as const,
+			error: "Worker URLs not configured",
+		};
 		const noop = () => Promise.resolve(noopResponse);
 		const noopHandler = new Proxy({} as WorkersClient, {
 			get: () => new Proxy({}, { get: () => noop }),

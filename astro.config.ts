@@ -1,57 +1,36 @@
-import { resolve } from "node:path";
+export const __INCREMENT__ = `${(await import("./Source/Function/Configuration/Environment.js")).default}-${(await import("ulid")).ulid()}`;
 
-import { defineConfig } from "astro/config";
+const On = (await import("./Source/Function/Configuration/On.js")).default;
+const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js")).default;
+const { resolve } = await import("node:path");
 
-import BuildConcurrency from "./Source/Function/Configuration/BuildConcurrency";
-import ClientPrerender from "./Source/Function/Configuration/ClientPrerender";
-import Compress from "./Source/Function/Configuration/Compress";
-import CompressHTML from "./Source/Function/Configuration/CompressHTML";
-import ContentIntellisense from "./Source/Function/Configuration/ContentIntellisense";
-import CSSMinify from "./Source/Function/Configuration/CSSMinify";
-import CSSTransformer from "./Source/Function/Configuration/CSSTransformer";
-import DevToolbar from "./Source/Function/Configuration/DevToolbar";
-import Environment from "./Source/Function/Configuration/Environment";
-import InlineCSS from "./Source/Function/Configuration/InlineCSS";
-import Manifest from "./Source/Function/Configuration/Manifest";
-import Minify from "./Source/Function/Configuration/Minify";
-import On from "./Source/Function/Configuration/On";
-import Port from "./Source/Function/Configuration/Port";
-import PrefetchAll from "./Source/Function/Configuration/PrefetchAll";
-import PrefetchStrategy from "./Source/Function/Configuration/PrefetchStrategy";
-import PreserveSymlinks from "./Source/Function/Configuration/PreserveSymlinks";
-import ServiceWorker from "./Source/Function/Configuration/ServiceWorker";
-import Site from "./Source/Function/Configuration/Site";
-import Sourcemap from "./Source/Function/Configuration/Sourcemap";
-
-export const __INCREMENT__ = `${Environment}-${(await import("ulid")).ulid()}`;
-
-export default defineConfig({
+export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
 
 	publicDir: "./Public",
 
 	outDir: "./Target",
 
-	site: Site,
+	site: (await import("./Source/Function/Configuration/Site.js")).default,
 
-	compressHTML: CompressHTML,
+	compressHTML: (await import("./Source/Function/Configuration/CompressHTML.js")).default,
 
 	devToolbar: {
-		enabled: DevToolbar,
+		enabled: (await import("./Source/Function/Configuration/DevToolbar.js")).default,
 	},
 
 	prefetch: {
-		defaultStrategy: PrefetchStrategy,
+		defaultStrategy: (await import("./Source/Function/Configuration/PrefetchStrategy.js")).default,
 
-		prefetchAll: PrefetchAll,
+		prefetchAll: (await import("./Source/Function/Configuration/PrefetchAll.js")).default,
 	},
 
 	server: {
-		port: Port,
+		port: (await import("./Source/Function/Configuration/Port.js")).default,
 	},
 
 	build: {
-		concurrency: BuildConcurrency,
+		concurrency: (await import("./Source/Function/Configuration/BuildConcurrency.js")).default,
 	},
 
 	integrations: [
@@ -61,13 +40,13 @@ export default defineConfig({
 		}),
 
 		// @ts-ignore
-		ServiceWorker
+		(await import("./Source/Function/Configuration/ServiceWorker.js")).default
 			? (await import("astrojs-service-worker")).default()
 			: null,
 
 		(await import("@astrojs/sitemap")).default(),
 
-		InlineCSS
+		(await import("./Source/Function/Configuration/InlineCSS.js")).default
 			? (await import("@playform/inline")).default({
 					Logger: 1,
 					Beasties: {
@@ -76,7 +55,7 @@ export default defineConfig({
 				})
 			: null,
 
-		Compress
+		(await import("./Source/Function/Configuration/Compress.js")).default
 			? (await import("@playform/compress")).default({
 					Logger: 1,
 					HTML: {
@@ -92,20 +71,20 @@ export default defineConfig({
 	],
 
 	experimental: {
-		clientPrerender: ClientPrerender,
+		clientPrerender: (await import("./Source/Function/Configuration/ClientPrerender.js")).default,
 
-		contentIntellisense: ContentIntellisense,
+		contentIntellisense: (await import("./Source/Function/Configuration/ContentIntellisense.js")).default,
 	},
 
 	vite: {
 		build: {
 			sourcemap: Sourcemap,
 
-			manifest: Manifest,
+			manifest: (await import("./Source/Function/Configuration/Manifest.js")).default,
 
-			minify: Minify,
+			minify: (await import("./Source/Function/Configuration/Minify.js")).default,
 
-			cssMinify: CSSMinify,
+			cssMinify: (await import("./Source/Function/Configuration/CSSMinify.js")).default,
 
 			terserOptions: On
 				? {
@@ -188,13 +167,13 @@ export default defineConfig({
 				"@Variable": resolve("./Source/Variable"),
 			},
 
-			preserveSymlinks: PreserveSymlinks,
+			preserveSymlinks: (await import("./Source/Function/Configuration/PreserveSymlinks.js")).default,
 		},
 
 		css: {
 			devSourcemap: Sourcemap,
 
-			transformer: CSSTransformer,
+			transformer: (await import("./Source/Function/Configuration/CSSTransformer.js")).default,
 		},
 
 		plugins: [

@@ -70,12 +70,12 @@ export function Header({ content }: HeaderProps) {
 						<div
 							className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
 							aria-hidden="true">
-						<img
-							src="/Asset/Logo/Glyph/LandDark.svg"
-							alt=""
-							className="absolute inset-0 h-full w-full"
-						/>
-					</div>
+							<img
+								src="/Asset/Logo/Glyph/LandDark.svg"
+								alt=""
+								className="absolute inset-0 h-full w-full"
+							/>
+						</div>
 						<span className="font-semibold">
 							{headerContent.logo?.text || "Land"}
 						</span>

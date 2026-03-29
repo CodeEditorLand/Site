@@ -1,9 +1,9 @@
-import { z } from "zod";
+import type Interface from "./Interface/Override.js";
 
-import { ParseBoolean, ParseNumber } from "./Parse";
-import { CSSMinification, CSSTransformation, Prefetch } from "./Schema";
+export default (async () => {
+	const ParseBoolean = (await import("./Parse/Boolean.js")).default;
+	const ParseNumber = (await import("./Parse/Number.js")).default;
 
-export default function Override(): Record<string, unknown> {
 	const Source = process.env;
 
 	const Result: Record<string, unknown> = {};
@@ -21,7 +21,9 @@ export default function Override(): Record<string, unknown> {
 	if (DevToolbarValue !== undefined) Result["DevToolbar"] = DevToolbarValue;
 
 	if (Source["PREFETCH_STRATEGY"]) {
-		const StrategyResult = Prefetch.safeParse(Source["PREFETCH_STRATEGY"]);
+		const StrategyResult = (
+			await import("./Schema/Prefetch.js")
+		).default.safeParse(Source["PREFETCH_STRATEGY"]);
 		if (StrategyResult.success)
 			Result["PrefetchStrategy"] = StrategyResult.data;
 	}
@@ -44,9 +46,9 @@ export default function Override(): Record<string, unknown> {
 		if (Source["MINIFY"] === "false") {
 			Result["Minify"] = false;
 		} else {
-			const MinifyResult = z
-				.enum(["terser", "esbuild"])
-				.safeParse(Source["MINIFY"]);
+			const MinifyResult = (
+				await import("./Schema/Minification.js")
+			).default.safeParse(Source["MINIFY"]);
 			if (MinifyResult.success) Result["Minify"] = MinifyResult.data;
 		}
 	}
@@ -55,9 +57,9 @@ export default function Override(): Record<string, unknown> {
 		if (Source["CSS_MINIFY"] === "false") {
 			Result["CSSMinify"] = false;
 		} else {
-			const CSSMinifyResult = CSSMinification.safeParse(
-				Source["CSS_MINIFY"],
-			);
+			const CSSMinifyResult = (
+				await import("./Schema/CSSMinification.js")
+			).default.safeParse(Source["CSS_MINIFY"]);
 			if (CSSMinifyResult.success)
 				Result["CSSMinify"] = CSSMinifyResult.data;
 		}
@@ -74,16 +76,14 @@ export default function Override(): Record<string, unknown> {
 		Result["ContentIntellisense"] = ContentIntellisenseValue;
 
 	if (Source["CSS_TRANSFORMER"]) {
-		const TransformerResult = CSSTransformation.safeParse(
-			Source["CSS_TRANSFORMER"],
-		);
+		const TransformerResult = (
+			await import("./Schema/CSSTransformation.js")
+		).default.safeParse(Source["CSS_TRANSFORMER"]);
 		if (TransformerResult.success)
 			Result["CSSTransformer"] = TransformerResult.data;
 	}
 
-	const PreserveSymlinksValue = ParseBoolean(
-		Source["PRESERVE_SYMLINKS"],
-	);
+	const PreserveSymlinksValue = ParseBoolean(Source["PRESERVE_SYMLINKS"]);
 	if (PreserveSymlinksValue !== undefined)
 		Result["PreserveSymlinks"] = PreserveSymlinksValue;
 
@@ -98,4 +98,4 @@ export default function Override(): Record<string, unknown> {
 	if (CompressValue !== undefined) Result["Compress"] = CompressValue;
 
 	return Result;
-}
+}) satisfies Interface as Interface;
