@@ -1,5 +1,6 @@
 import { CheckCircle, Mail, XCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
 	Card,
@@ -19,6 +20,11 @@ interface VerificationContent {
 		description: string;
 		emailSentMessage?: string;
 		resendButton: ButtonContent;
+		resendSuccessMessage?: string;
+	};
+	verifying?: {
+		title?: string;
+		description?: string;
 	};
 	success: {
 		title: string;
@@ -57,10 +63,35 @@ export function DynamicEmailVerification({
 	onNavigate,
 	className,
 }: DynamicEmailVerificationProps) {
+	const { t } = useTranslation("verify");
 	const [state, setState] = useState<VerificationState>("pending");
 	const [token, setToken] = useState<string>(propToken || "");
 	const [email, setEmail] = useState<string>(userEmail || "");
 	const [errorMessage, setErrorMessage] = useState("");
+	const [resendSuccess, setResendSuccess] = useState(false);
+
+	const handleVerify = useCallback(
+		async (verifyToken: string) => {
+			try {
+				const success = onVerify ? await onVerify(verifyToken) : true; // Mock success for demo
+				if (success) {
+					setState("success");
+				} else {
+					setState("error");
+					setErrorMessage(content.error.description);
+				}
+			} catch {
+				setState("error");
+				setErrorMessage(
+					t("errorGeneric", {
+						defaultValue:
+							"An error occurred during verification. Please try again.",
+					}),
+				);
+			}
+		},
+		[onVerify, content.error.description],
+	);
 
 	// Auto-verify if token in URL
 	useEffect(() => {
@@ -72,33 +103,20 @@ export function DynamicEmailVerification({
 			setState("verifying");
 			handleVerify(urlToken);
 		}
-	}, [propToken]);
-
-	const handleVerify = async (verifyToken: string) => {
-		try {
-			const success = onVerify ? await onVerify(verifyToken) : true; // Mock success for demo
-			if (success) {
-				setState("success");
-			} else {
-				setState("error");
-				setErrorMessage(content.error.description);
-			}
-		} catch {
-			setState("error");
-			setErrorMessage(
-				"An error occurred during verification. Please try again.",
-			);
-		}
-	};
+	}, [propToken, handleVerify]);
 
 	const handleResend = async () => {
 		if (!email) return;
 		try {
 			(await onResend?.(email)) || Promise.resolve(true);
-			// Success - could show toast or update state
-			alert("Verification email resent!");
-		} catch (error) {
-			setErrorMessage("Failed to resend email. Please try again.");
+			setResendSuccess(true);
+			setTimeout(() => setResendSuccess(false), 5000);
+		} catch {
+			setErrorMessage(
+				t("resendFailed", {
+					defaultValue: "Failed to resend email. Please try again.",
+				}),
+			);
 		}
 	};
 
@@ -106,7 +124,7 @@ export function DynamicEmailVerification({
 		<Card>
 			<CardHeader className="text-center">
 				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
-					<Mail className="text-primary h-6 w-6" />
+					<Mail className="h-6 w-6 text-primary" aria-hidden="true" />
 				</div>
 				<CardTitle className="text-2xl">
 					{content.pending.title}
@@ -115,7 +133,7 @@ export function DynamicEmailVerification({
 			</CardHeader>
 			<CardContent className="space-y-6">
 				{content.pending.emailSentMessage && (
-					<p className="text-muted-foreground text-center">
+					<p className="text-center text-muted-foreground">
 						{content.pending.emailSentMessage}
 					</p>
 				)}
@@ -123,15 +141,28 @@ export function DynamicEmailVerification({
 				<div className="space-y-4">
 					<DynamicInput
 						content={{
-							label: "Email",
-							placeholder:
-								"Enter your email to resend verification",
+							label: t("emailLabel", { defaultValue: "Email" }),
+							placeholder: t("emailPlaceholder", {
+								defaultValue:
+									"Enter your email to resend verification",
+							}),
 							type: "email",
 							value: email,
 							onChange: setEmail,
 						}}
 						id="email"
 					/>
+
+					{resendSuccess && (
+						<p
+							className="text-center text-sm text-green-600"
+							role="status">
+							{content.pending.resendSuccessMessage ||
+								t("resendSuccess", {
+									defaultValue: "Verification email resent!",
+								})}
+						</p>
+					)}
 
 					<DynamicButton
 						content={{
@@ -149,12 +180,23 @@ export function DynamicEmailVerification({
 	const renderVerifying = () => (
 		<Card>
 			<CardHeader className="text-center">
-				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
-					<div className="border-primary h-6 w-6 animate-spin rounded-none border border-t-transparent"></div>
+				<div
+					className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none"
+					aria-hidden="true">
+					<div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
 				</div>
-				<CardTitle>Verifying your email</CardTitle>
-				<CardDescription>
-					Please wait while we verify your email address...
+				<CardTitle>
+					{content.verifying?.title ||
+						t("verifying.title", {
+							defaultValue: "Verifying your email",
+						})}
+				</CardTitle>
+				<CardDescription role="status">
+					{content.verifying?.description ||
+						t("verifying.description", {
+							defaultValue:
+								"Please wait while we verify your email address...",
+						})}
 				</CardDescription>
 			</CardHeader>
 		</Card>
@@ -163,8 +205,11 @@ export function DynamicEmailVerification({
 	const renderSuccess = () => (
 		<Card>
 			<CardHeader className="text-center">
-				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100 dark:bg-green-900/30">
-					<CheckCircle className="h-10 w-10 text-green-600" />
+				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100">
+					<CheckCircle
+						className="h-10 w-10 text-green-600"
+						aria-hidden="true"
+					/>
 				</div>
 				<CardTitle className="text-2xl">
 					{content.success.title}
@@ -186,8 +231,11 @@ export function DynamicEmailVerification({
 	const renderError = () => (
 		<Card>
 			<CardHeader className="text-center">
-				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100 dark:bg-red-900/30">
-					<XCircle className="h-10 w-10 text-red-600" />
+				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100">
+					<XCircle
+						className="h-10 w-10 text-red-600"
+						aria-hidden="true"
+					/>
 				</div>
 				<CardTitle className="text-2xl">
 					{content.error.title}
@@ -209,9 +257,11 @@ export function DynamicEmailVerification({
 	);
 
 	return (
-		<section className="py-20">
+		<section className="py-20" aria-label="Email verification">
 			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${className}`}>
+				<div
+					className={`mx-auto max-w-md ${className}`}
+					aria-live="polite">
 					{state === "pending" && renderPending()}
 					{state === "verifying" && renderVerifying()}
 					{state === "success" && renderSuccess()}

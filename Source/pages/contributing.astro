@@ -1,0 +1,438 @@
+---
+import { Header } from "../Components/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { getI18n } from "../Lib/I18n/Server";
+
+const t = getI18n();
+
+const metaTitle = t("meta.contributing.title", {
+	defaultValue: "Contributing | Code Editor Land",
+});
+
+const metaDescription = t("meta.contributing.description", {
+	defaultValue:
+		"Learn how to contribute to Code Editor Land — an open source code editor built with Rust and TypeScript.",
+});
+---
+
+<Base
+	Title={metaTitle}
+	Description={metaDescription}
+	Url="https://editor.land/contributing"
+	lang="en">
+	<Header client:load />
+
+	<div class="container mx-auto max-w-4xl px-4 py-16">
+		<!-- Breadcrumbs -->
+		<nav aria-label="Breadcrumb" class="mb-8">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>{
+							t("common.breadcrumb.home", {
+								defaultValue: "Home",
+							})
+						}</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground"
+						>{
+							t("common.contributing.pageTitle", {
+								defaultValue: "Contributing",
+							})
+						}</span
+					>
+				</li>
+			</ol>
+		</nav>
+
+		<!-- Page Header -->
+		<header class="mb-12">
+			<h1 class="mb-4 text-4xl font-bold tracking-tight">
+				{
+					t("common.contributing.pageTitle", {
+						defaultValue: "Contributing",
+					})
+				}
+			</h1>
+			<p class="text-lg text-muted-foreground">
+				{
+					t("common.contributing.pageSubtitle", {
+						defaultValue:
+							"Code Editor Land is open source and welcomes contributions from everyone. Here is how to get involved.",
+					})
+				}
+			</p>
+		</header>
+
+		<!-- Quick Links -->
+		<section class="mb-12">
+			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+				<a
+					href="https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+					<h2 class="mb-2 text-xl font-semibold">
+						{
+							t("common.contributing.guide.title", {
+								defaultValue: "Contributing Guide",
+							})
+						}
+					</h2>
+					<p class="text-sm text-muted-foreground">
+						{
+							t("common.contributing.guide.description", {
+								defaultValue:
+									"Read the full CONTRIBUTING.md on GitHub for detailed instructions on setting up the development environment and submitting changes.",
+							})
+						}
+					</p>
+				</a>
+
+				<a
+					href="https://github.com/CodeEditorLand/Land/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+					<h2 class="mb-2 text-xl font-semibold">
+						{
+							t("common.contributing.goodFirstIssues.title", {
+								defaultValue: "Good First Issues",
+							})
+						}
+					</h2>
+					<p class="text-sm text-muted-foreground">
+						{
+							t(
+								"common.contributing.goodFirstIssues.description",
+								{
+									defaultValue:
+										'Browse issues labeled "good first issue" to find approachable tasks for new contributors.',
+								},
+							)
+						}
+					</p>
+				</a>
+			</div>
+		</section>
+
+		<!-- How to Contribute -->
+		<section class="mb-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.contributing.howToContribute.heading", {
+						defaultValue: "How to Contribute",
+					})
+				}
+			</h2>
+			<div class="border border-[var(--border)] bg-white p-6">
+				<ol class="space-y-6">
+					<li class="flex items-start gap-4">
+						<span
+							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--border)] bg-[var(--secondary)] text-sm font-semibold"
+							>1</span
+						>
+						<div>
+							<h3 class="font-semibold">
+								{
+									t("common.contributing.step1.title", {
+										defaultValue: "Fork and Clone",
+									})
+								}
+							</h3>
+							<p class="mt-1 text-sm text-muted-foreground">
+								{
+									t("common.contributing.step1.description", {
+										defaultValue:
+											"Fork the Land repository on GitHub and clone it locally with submodules:",
+									})
+								}
+							</p>
+							<pre
+								class="mt-2 overflow-x-auto border border-[var(--border)] bg-[var(--muted)] p-3 font-mono text-xs">git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git</pre>
+						</div>
+					</li>
+					<li class="flex items-start gap-4">
+						<span
+							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--border)] bg-[var(--secondary)] text-sm font-semibold"
+							>2</span
+						>
+						<div>
+							<h3 class="font-semibold">
+								{
+									t("common.contributing.step2.title", {
+										defaultValue: "Set Up the Environment",
+									})
+								}
+							</h3>
+							<p class="mt-1 text-sm text-muted-foreground">
+								{
+									t("common.contributing.step2.description", {
+										defaultValue:
+											"Install Rust (1.95.0+), Node.js, and pnpm. Then run:",
+									})
+								}
+							</p>
+							<pre
+								class="mt-2 overflow-x-auto border border-[var(--border)] bg-[var(--muted)] p-3 font-mono text-xs">cd Land && pnpm install && cargo build</pre>
+						</div>
+					</li>
+					<li class="flex items-start gap-4">
+						<span
+							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--border)] bg-[var(--secondary)] text-sm font-semibold"
+							>3</span
+						>
+						<div>
+							<h3 class="font-semibold">
+								{
+									t("common.contributing.step3.title", {
+										defaultValue: "Make Your Changes",
+									})
+								}
+							</h3>
+							<p class="mt-1 text-sm text-muted-foreground">
+								{
+									t("common.contributing.step3.description", {
+										defaultValue:
+											"Create a new branch, make your changes, and follow the PascalCase naming convention used throughout the project.",
+									})
+								}
+							</p>
+						</div>
+					</li>
+					<li class="flex items-start gap-4">
+						<span
+							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--border)] bg-[var(--secondary)] text-sm font-semibold"
+							>4</span
+						>
+						<div>
+							<h3 class="font-semibold">
+								{
+									t("common.contributing.step4.title", {
+										defaultValue: "Submit a Pull Request",
+									})
+								}
+							</h3>
+							<p class="mt-1 text-sm text-muted-foreground">
+								{
+									t("common.contributing.step4.description", {
+										defaultValue:
+											"Push your branch and open a pull request against the Current branch. Describe what you changed and why.",
+									})
+								}
+							</p>
+						</div>
+					</li>
+				</ol>
+			</div>
+		</section>
+
+		<!-- Ways to Contribute -->
+		<section class="mb-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.contributing.ways.heading", {
+						defaultValue: "Ways to Contribute",
+					})
+				}
+			</h2>
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+				<div class="border border-[var(--border)] bg-white p-5">
+					<h3 class="mb-2 font-semibold">
+						{
+							t("common.contributing.ways.code.title", {
+								defaultValue: "Code",
+							})
+						}
+					</h3>
+					<p class="text-sm text-muted-foreground">
+						{
+							t("common.contributing.ways.code.description", {
+								defaultValue:
+									"Fix bugs, implement features, or improve performance in Rust or TypeScript.",
+							})
+						}
+					</p>
+				</div>
+				<div class="border border-[var(--border)] bg-white p-5">
+					<h3 class="mb-2 font-semibold">
+						{
+							t("common.contributing.ways.documentation.title", {
+								defaultValue: "Documentation",
+							})
+						}
+					</h3>
+					<p class="text-sm text-muted-foreground">
+						{
+							t(
+								"common.contributing.ways.documentation.description",
+								{
+									defaultValue:
+										"Improve guides, add examples, or translate existing documentation to other languages.",
+								},
+							)
+						}
+					</p>
+				</div>
+				<div class="border border-[var(--border)] bg-white p-5">
+					<h3 class="mb-2 font-semibold">
+						{
+							t("common.contributing.ways.testing.title", {
+								defaultValue: "Testing",
+							})
+						}
+					</h3>
+					<p class="text-sm text-muted-foreground">
+						{
+							t("common.contributing.ways.testing.description", {
+								defaultValue:
+									"Write tests, report bugs, or help reproduce and triage existing issues.",
+							})
+						}
+					</p>
+				</div>
+				<div class="border border-[var(--border)] bg-white p-5">
+					<h3 class="mb-2 font-semibold">
+						{
+							t("common.contributing.ways.design.title", {
+								defaultValue: "Design",
+							})
+						}
+					</h3>
+					<p class="text-sm text-muted-foreground">
+						{
+							t("common.contributing.ways.design.description", {
+								defaultValue:
+									"Contribute UI/UX improvements, icons, or visual design work for the editor or website.",
+							})
+						}
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Funding -->
+		<section class="mb-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.contributing.funding.heading", {
+						defaultValue: "Funding",
+					})
+				}
+			</h2>
+			<div class="border border-[var(--border)] bg-white p-6">
+				<p class="mb-4 text-muted-foreground">
+					{
+						t("common.contributing.funding.nlnetIntro", {
+							defaultValue:
+								"Code Editor Land has been funded through the",
+						})
+					}
+					<a
+						href="https://nlnet.nl/commonsfund"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-[var(--primary)] hover:underline">
+						{
+							t("common.contributing.funding.nlnetFundName", {
+								defaultValue: "NGI0 Commons Fund",
+							})
+						}
+					</a>{
+						t("common.contributing.funding.nlnetEstablishedBy", {
+							defaultValue: ", a fund established by",
+						})
+					}
+					<a
+						href="https://nlnet.nl"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-[var(--primary)] hover:underline">
+						NLnet
+					</a>
+					{
+						t("common.contributing.funding.nlnetSuffix", {
+							defaultValue:
+								"with financial support from the European Commission's Next Generation Internet programme, under grant agreement No.\u00a0101135429. This funding enables sustained open-source development on the project.",
+						})
+					}
+				</p>
+				<p class="mb-4 text-muted-foreground">
+					{
+						t("common.contributing.funding.playformInfo", {
+							defaultValue:
+								"The project is operated by PlayForm, a company based in Sofia, Bulgaria. PlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+						})
+					}
+				</p>
+				<p class="text-muted-foreground">
+					{
+						t("common.contributing.funding.viewProject", {
+							defaultValue: "View the",
+						})
+					}
+					<a
+						href="https://nlnet.nl/project/Land/"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-[var(--primary)] hover:underline">
+						{
+							t("common.contributing.funding.nlnetProjectPage", {
+								defaultValue: "NLnet project page",
+							})
+						}
+					</a>
+					{
+						t("common.contributing.funding.viewProjectSuffix", {
+							defaultValue:
+								"for more details about the grant and objectives.",
+						})
+					}
+				</p>
+			</div>
+		</section>
+
+		<!-- Code of Conduct -->
+		<section class="mb-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.contributing.conduct.heading", {
+						defaultValue: "Code of Conduct",
+					})
+				}
+			</h2>
+			<div class="border border-[var(--border)] bg-white p-6">
+				<p class="text-muted-foreground">
+					{
+						t("common.contributing.conduct.description", {
+							defaultValue:
+								"All participants in the Code Editor Land community are expected to be respectful and constructive. Read the full Code of Conduct on GitHub.",
+						})
+					}
+					<a
+						href="https://github.com/CodeEditorLand/Land/blob/Current/CODE_OF_CONDUCT.md"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-[var(--primary)] hover:underline">
+						Code of Conduct
+					</a>
+				</p>
+			</div>
+		</section>
+
+		<!-- Back to top -->
+		<div class="mt-12 border-t pt-8">
+			<a href="#top" class="text-sm text-primary hover:underline"
+				>{
+					t("common.button.backToTop", {
+						defaultValue: "Back to top",
+					})
+				}</a
+			>
+		</div>
+	</div>
+</Base>

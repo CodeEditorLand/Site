@@ -42,15 +42,25 @@ export function DynamicTestimonials({
 	};
 
 	const renderStars = (rating: number = 5) => {
-		return Array.from({ length: 5 }).map((_, i) => (
-			<span key={i} className="text-yellow-400">
-				{i < rating ? "★" : "☆"}
-			</span>
-		));
+		return (
+			<div role="img" aria-label={`Rating: ${rating} out of 5 stars`}>
+				{Array.from({ length: 5 }).map((_, i) => (
+					<span
+						key={i}
+						className="star-rating__symbol text-yellow-400"
+						aria-hidden="true">
+						{i < rating ? "\u2605" : "\u2606"}
+					</span>
+				))}
+			</div>
+		);
 	};
 
 	return (
-		<section className={`py-20 ${className || ""}`}>
+		<section
+			id="testimonials"
+			aria-label="Testimonials"
+			className={`py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="mb-16 text-center">
@@ -60,7 +70,7 @@ export function DynamicTestimonials({
 							</h2>
 						)}
 						{subtitle && (
-							<p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
 								{subtitle}
 							</p>
 						)}
@@ -69,7 +79,9 @@ export function DynamicTestimonials({
 
 				<div className={`grid ${columnClasses[columns]} mx-auto gap-8`}>
 					{testimonials.map((testimonial) => (
-						<div key={testimonial.id} className="flex flex-col">
+						<article
+							key={testimonial.id}
+							className="bg-white/92 flex flex-col rounded-none border border-[var(--border)] p-6">
 							<div className="mb-4">
 								{renderStars(testimonial.rating)}
 							</div>
@@ -80,24 +92,28 @@ export function DynamicTestimonials({
 								{testimonial.avatar ? (
 									<img
 										src={testimonial.avatar}
-										alt=""
-										className="border-border size-12 rounded-none border-[3px] object-cover"
+										alt={`Photo of ${testimonial.author}`}
+										className="size-12 rounded-none border border-[var(--border)] object-cover"
 										loading="lazy"
 									/>
 								) : (
-									<div className="border-border bg-secondary flex size-12 items-center justify-center rounded-none border-[3px]">
+									<div
+										className="flex size-12 items-center justify-center rounded-none border border-[var(--border)] bg-secondary"
+										aria-hidden="true">
 										<span className="text-lg font-semibold">
-											{testimonial.author.charAt(0)}
+											{(testimonial.author || "?").charAt(
+												0,
+											)}
 										</span>
 									</div>
 								)}
 								<div>
-									<p className="font-semibold">
+									<cite className="font-semibold not-italic">
 										{testimonial.author}
-									</p>
+									</cite>
 									{(testimonial.role ||
 										testimonial.company) && (
-										<p className="text-muted-foreground text-sm">
+										<p className="text-sm text-muted-foreground">
 											{testimonial.role}
 											{testimonial.role &&
 												testimonial.company &&
@@ -107,7 +123,7 @@ export function DynamicTestimonials({
 									)}
 								</div>
 							</div>
-						</div>
+						</article>
 					))}
 				</div>
 			</div>

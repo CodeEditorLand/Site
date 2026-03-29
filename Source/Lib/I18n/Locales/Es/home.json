@@ -1,0 +1,106 @@
+{
+	"features": {
+		"badge": "Funciones",
+		"item": {
+			"designTokens": {
+				"description": "El backend nativo en Rust con IPC gRPC garantiza que cada operacion sea rapida, receptiva y confiable. Sin la pesadez de Electron.",
+				"title": "Rendimiento primero"
+			},
+			"componentLibrary": {
+				"description": "Ejecute sus extensiones de VS Code existentes con alta fidelidad a traves del host de extensiones Cocoon. Sin cambios necesarios.",
+				"title": "Compatibilidad con VS Code"
+			},
+			"documentation": {
+				"description": "Los servicios de UI nativos de Effect-TS proporcionan seguridad de tipos, concurrencia estructurada y excelente manejo de errores.",
+				"title": "Arquitectura Effect-TS"
+			},
+			"versionControl": {
+				"description": "Una base de codigo, despliegues nativos para macOS, Windows y Linux con Tauri. Escribe una vez, ejecuta en todas partes.",
+				"title": "Multiplataforma"
+			},
+			"collaboration": {
+				"description": "Licenciado bajo Creative Commons CC0 \u2014 completamente libre de usar, modificar y distribuir. Sin restricciones.",
+				"title": "Codigo abierto"
+			},
+			"cicdIntegration": {
+				"description": "Construido sobre tecnologias de codigo abierto probadas: Rust, Tauri, Effect-TS y la plataforma VS Code. Familiar y potente.",
+				"title": "Herramientas modernas"
+			}
+		},
+		"subtitle": "Descubra lo que hace de Code Editor Land el editor de codigo mas avanzado disponible.",
+		"title": "Construido para el rendimiento, disenado para desarrolladores"
+	},
+	"hero": {
+		"badge": "Nuevo: Arquitectura Effect-TS",
+		"subtitle": "Un editor ultrarapido y con seguridad de tipos, construido con Rust, Tauri y Effect-TS. Experimente el editor que reinventa VS Code para la era moderna.",
+		"title": "El futuro de",
+		"titleHighlight": "la edicion de codigo",
+		"atScale": "comienza aqui",
+		"cta": {
+			"primary": "Descargar",
+			"secondary": "Mas informacion"
+		},
+		"scene": {
+			"description": "Visualizacion animada de la arquitectura",
+			"hub": "Arquitectura central",
+			"components": {
+				"button": "Nucleo Rust",
+				"colors": "Interfaz Tauri",
+				"typography": "Servicios Effect-TS",
+				"components": "IPC gRPC",
+				"spacing": "Host de extensiones",
+				"icons": "Multiplataforma",
+				"docs": "API VS Code",
+				"versions": "Open Source CC0"
+			}
+		}
+	},
+	"nav": {
+		"docs": "Documentacion",
+		"downloads": "Descargar",
+		"features": "Funciones",
+		"github": "GitHub"
+	},
+	"pricing": {
+		"subtitle": "Code Editor Land es completamente gratuito. Sin niveles, sin suscripciones, sin restricciones.",
+		"labels": {
+			"monthly": "Mensual",
+			"yearly": "Anual",
+			"savings": "(Ahorre hasta un 20%)",
+			"popular": "Mas popular",
+			"perMonth": "/mes",
+			"perYear": "/ano"
+		},
+		"tiers": {
+			"free": {
+				"name": "Comunidad",
+				"description": "Para todos. Todas las funciones del editor, completamente gratuito.",
+				"features": {
+					"1": "Compatibilidad completa con VS Code",
+					"2": "Todas las extensiones soportadas",
+					"3": "Rendimiento nativo de Rust",
+					"4": "Multiplataforma (macOS, Windows, Linux)",
+					"5": "Interfaz type-safe con Effect-TS",
+					"6": "Arquitectura basada en gRPC",
+					"7": "Codigo abierto (licencia CC0)"
+				},
+				"button": "Descargar ahora"
+			}
+		},
+		"title": "Gratuito para siempre, codigo abierto",
+		"badge": "Precios"
+	},
+	"testimonials": {
+		"quote": {
+			"1": "Land es exactamente lo que VS Code necesitaba \u2014 una alternativa de alto rendimiento y abierta. Es increiblemente rapido.",
+			"2": "La arquitectura Effect-TS es hermosa. La seguridad de tipos detecta errores antes de que ocurran.",
+			"3": "Ejecutar mis extensiones existentes sin cambios es revolucionario. La compatibilidad es impresionante.",
+			"4": "Por fin, un editor que respeta mis recursos del sistema. Se acabo el consumo excesivo de memoria de Electron.",
+			"5": "El compromiso con el codigo abierto significa que puedo contribuir y personalizar. Este es el editor que estaba esperando.",
+			"6": "La arquitectura basada en gRPC es una clase magistral en diseno de sistemas. Land es el futuro de los editores de escritorio."
+		},
+		"subtitle": "Voces de la comunidad sobre el futuro de la edicion de codigo.",
+		"title": "Lo que dicen los desarrolladores",
+		"badge": "Testimonios"
+	}
+}

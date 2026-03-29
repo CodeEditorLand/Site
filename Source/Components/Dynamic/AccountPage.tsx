@@ -3,18 +3,17 @@ import { toast } from "sonner";
 
 import { authAPI } from "../../Lib/api/auth";
 import type { User } from "../../Lib/types";
-import { Footer } from "../Layout/Footer";
-import { Header } from "../Layout/Header";
-import { DynamicForgotPassword } from "./DynamicForgotPassword";
-import { DynamicResetPassword } from "./DynamicResetPassword";
-import { DynamicSignIn } from "./DynamicSignIn";
-import { DynamicSignUp } from "./DynamicSignUp";
-import type { ForgotPasswordContent } from "./DynamicForgotPassword";
-import type { ResetPasswordContent } from "./DynamicResetPassword";
-import type { SignInContent } from "./DynamicSignIn";
-import type { SignUpContent } from "./DynamicSignUp";
-import type { HeaderContent } from "../Layout/Header";
-import type { FooterContent } from "../Layout/Footer";
+import { Header, type HeaderContent } from "../Layout/Header";
+import {
+	DynamicForgotPassword,
+	type ForgotPasswordContent,
+} from "./DynamicForgotPassword";
+import {
+	DynamicResetPassword,
+	type ResetPasswordContent,
+} from "./DynamicResetPassword";
+import { DynamicSignIn, type SignInContent } from "./DynamicSignIn";
+import { DynamicSignUp, type SignUpContent } from "./DynamicSignUp";
 
 interface AccountPageContent {
 	signIn: SignInContent;
@@ -22,7 +21,7 @@ interface AccountPageContent {
 	forgotPassword: ForgotPasswordContent;
 	resetPassword: ResetPasswordContent;
 	header?: HeaderContent;
-	footer?: FooterContent;
+	footer?: Record<string, unknown>;
 }
 
 type AccountRoute = "signin" | "signup" | "forgot-password" | "reset-password";
@@ -31,25 +30,36 @@ interface AccountPageProps {
 	content: AccountPageContent;
 	route: AccountRoute;
 	resetToken?: string;
+	metaTitle?: string;
+	metaDescription?: string;
 	className?: string;
-	onSignIn?: (email: string, password: string) => void;
-	onSignUp?: (email: string, password: string, confirmPassword: string, terms: boolean) => void;
-	onForgotPassword?: (email: string) => void;
-	onResetPassword?: (token: string, password: string, confirmPassword: string) => void;
-	onOAuth?: (provider?: string) => void;
-	onNavigate?: (path: string) => void;
+	onSignIn?: (Email: string, Password: string) => void;
+	onSignUp?: (
+		Email: string,
+		Password: string,
+		ConfirmPassword: string,
+		TermsAccepted: boolean,
+	) => void;
+	onForgotPassword?: (Email: string) => void;
+	onResetPassword?: (
+		Token: string,
+		Password: string,
+		ConfirmPassword: string,
+	) => void;
+	onOAuth?: (Provider?: string) => void;
+	onNavigate?: (Path: string) => void;
 }
 
-function setSessionToken(token: string): void {
+function SetSessionToken(Token: string): void {
 	try {
-		document.cookie = `session=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
+		document.cookie = `session=${Token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
 	} catch {
 		// Cookie API not available during SSR
 	}
-	localStorage.setItem("session_token", token);
+	localStorage.setItem("session_token", Token);
 }
 
-function clearSessionToken(): void {
+function ClearSessionToken(): void {
 	try {
 		document.cookie = "session=; path=/; max-age=0";
 	} catch {
@@ -58,11 +68,11 @@ function clearSessionToken(): void {
 	localStorage.removeItem("session_token");
 }
 
-function getCurrentUser(): User | null {
+function GetCurrentUser(): User | null {
 	try {
-		const userData = localStorage.getItem("current_user");
-		if (userData) {
-			return JSON.parse(userData);
+		const UserData = localStorage.getItem("current_user");
+		if (UserData) {
+			return JSON.parse(UserData);
 		}
 	} catch {
 		// Not available during SSR
@@ -70,12 +80,16 @@ function getCurrentUser(): User | null {
 	return null;
 }
 
-function setCurrentUser(user: User): void {
+function SetCurrentUser(CurrentUser: User): void {
 	try {
-		localStorage.setItem("current_user", JSON.stringify(user));
+		localStorage.setItem("current_user", JSON.stringify(CurrentUser));
 	} catch {
 		// Not available during SSR
 	}
+}
+
+function NavigateToPath(Path: string): void {
+	window.location.href = Path;
 }
 
 export function AccountPage({
@@ -92,173 +106,192 @@ export function AccountPage({
 }: AccountPageProps) {
 	const { signIn, signUp, forgotPassword, resetPassword } = content;
 
+	const Navigate = onNavigate || NavigateToPath;
+
 	// Loading states
-	const [isSignInLoading, setIsSignInLoading] = useState(false);
-	const [isSignUpLoading, setIsSignUpLoading] = useState(false);
-	const [isForgotPasswordLoading, setIsForgotPasswordLoading] =
+	const [IsSignInLoading, SetIsSignInLoading] = useState(false);
+	const [IsSignUpLoading, SetIsSignUpLoading] = useState(false);
+	const [IsForgotPasswordLoading, SetIsForgotPasswordLoading] =
 		useState(false);
-	const [isResetPasswordLoading, setIsResetPasswordLoading] = useState(false);
-	const [isOAuthLoading, setIsOAuthLoading] = useState(false);
+	const [IsResetPasswordLoading, SetIsResetPasswordLoading] = useState(false);
+	const [IsOAuthLoading, SetIsOAuthLoading] = useState(false);
 
 	// Error states
-	const [signInError, setSignInError] = useState<string>("");
-	const [signUpError, setSignUpError] = useState<string>("");
-	const [forgotPasswordError, setForgotPasswordError] = useState<string>("");
-	const [resetPasswordError, setResetPasswordError] = useState<string>("");
+	const [SignInErrorMessage, SetSignInErrorMessage] = useState<string>("");
+	const [SignUpErrorMessage, SetSignUpErrorMessage] = useState<string>("");
+	const [ForgotPasswordErrorMessage, SetForgotPasswordErrorMessage] =
+		useState<string>("");
+	const [ResetPasswordErrorMessage, SetResetPasswordErrorMessage] =
+		useState<string>("");
 
-	const handleSignIn = async (email: string, password: string): Promise<void> => {
-		setIsSignInLoading(true);
-		setSignInError("");
+	const HandleSignIn = async (
+		Email: string,
+		Password: string,
+	): Promise<void> => {
+		SetIsSignInLoading(true);
+		SetSignInErrorMessage("");
 
 		try {
-			const result = await authAPI.login(email, password);
-			const { session, user } = result;
-			setSessionToken(session.token);
-			setCurrentUser(user);
+			const ResponseData = await authAPI.login(Email, Password);
+			const { session: SessionData, user: UserData } = ResponseData;
+			SetSessionToken(SessionData.token);
+			SetCurrentUser(UserData);
 
-			toast.success(`Welcome back, ${user.username}!`);
-			onSignIn?.(email, password);
+			toast.success(`Welcome back, ${UserData.username}!`);
+			onSignIn?.(Email, Password);
 
-			// Redirect to intended page or home
+			// Redirect to account dashboard
 			setTimeout(() => {
-				(onNavigate || ((p) => { }))("/account");
+				Navigate("/account");
 			}, 1000);
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error
-					? error.message
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
 					: "An unexpected error occurred";
-			setSignInError(errorMessage);
-			toast.error(errorMessage);
+			SetSignInErrorMessage(ErrorMessage);
+			toast.error(ErrorMessage);
 		} finally {
-			setIsSignInLoading(false);
+			SetIsSignInLoading(false);
 		}
 	};
 
-	const handleSignUp = async (
-		email: string,
-		password: string,
-		confirmPassword: string,
-		termsAccepted: boolean,
+	const HandleSignUp = async (
+		Email: string,
+		Password: string,
+		ConfirmPassword: string,
+		TermsAccepted: boolean,
 	): Promise<void> => {
-		setIsSignUpLoading(true);
-		setSignUpError("");
+		SetIsSignUpLoading(true);
+		SetSignUpErrorMessage("");
 
 		try {
-			const username = email.split("@")[0] || "user";
-			const result = await authAPI.register(
-				email,
-				password,
-				username,
+			const Username = Email.split("@")[0] || "user";
+			const ResponseData = await authAPI.register(
+				Email,
+				Password,
+				Username,
 				undefined,
 			);
-			const { session, user } = result;
-			setSessionToken(session.token);
-			setCurrentUser(user);
+			const { session: SessionData, user: UserData } = ResponseData;
+			SetSessionToken(SessionData.token);
+			SetCurrentUser(UserData);
 
 			toast.success(
 				"Account created successfully! Please verify your email.",
 			);
-			onSignUp?.(email, password, confirmPassword, termsAccepted);
+			onSignUp?.(Email, Password, ConfirmPassword, TermsAccepted);
 
-			// Redirect to verification page
+			// Redirect to email verification page
 			setTimeout(() => {
-				(onNavigate || ((p) => { }))("/verify");
+				Navigate("/verify");
 			}, 1000);
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error
-					? error.message
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
 					: "An unexpected error occurred";
-			setSignUpError(errorMessage);
-			toast.error(errorMessage);
+			SetSignUpErrorMessage(ErrorMessage);
+			toast.error(ErrorMessage);
 		} finally {
-			setIsSignUpLoading(false);
+			SetIsSignUpLoading(false);
 		}
 	};
 
-	const handleForgotPassword = async (email: string): Promise<void> => {
-		setIsForgotPasswordLoading(true);
-		setForgotPasswordError("");
+	const HandleForgotPassword = async (Email: string): Promise<void> => {
+		SetIsForgotPasswordLoading(true);
+		SetForgotPasswordErrorMessage("");
 
 		try {
-			await authAPI.forgotPassword(email);
+			await authAPI.forgotPassword(Email);
 			toast.success(
 				"Password reset email sent. Please check your inbox.",
 			);
-			onForgotPassword?.(email);
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error
-					? error.message
+			onForgotPassword?.(Email);
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
 					: "An unexpected error occurred";
-			setForgotPasswordError(errorMessage);
-			toast.error(errorMessage);
+			SetForgotPasswordErrorMessage(ErrorMessage);
+			toast.error(ErrorMessage);
 		} finally {
-			setIsForgotPasswordLoading(false);
+			SetIsForgotPasswordLoading(false);
 		}
 	};
 
-	const handleResetPassword = async (
-		token: string,
-		password: string,
-		confirmPassword: string,
+	const HandleResetPassword = async (
+		Token: string,
+		Password: string,
+		ConfirmPassword: string,
 	): Promise<void> => {
-		setIsResetPasswordLoading(true);
-		setResetPasswordError("");
+		SetIsResetPasswordLoading(true);
+		SetResetPasswordErrorMessage("");
 
 		try {
-			await authAPI.resetPassword(token, password);
+			await authAPI.resetPassword(Token, Password);
 			toast.success(
 				"Password reset successful! You can now sign in with your new password.",
 			);
-			onResetPassword?.(token, password, confirmPassword);
+			onResetPassword?.(Token, Password, ConfirmPassword);
 
 			setTimeout(() => {
-				(onNavigate || ((p) => { }))("/account/signin");
+				Navigate("/account/signin");
 			}, 2000);
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error
-					? error.message
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
 					: "An unexpected error occurred";
-			setResetPasswordError(errorMessage);
-			toast.error(errorMessage);
+			SetResetPasswordErrorMessage(ErrorMessage);
+			toast.error(ErrorMessage);
 		} finally {
-			setIsResetPasswordLoading(false);
+			SetIsResetPasswordLoading(false);
 		}
 	};
 
-	const handleOAuth = async (provider?: string) => {
-		setIsOAuthLoading(true);
+	const HandleOAuth = async (Provider?: string) => {
+		SetIsOAuthLoading(true);
 
 		try {
 			// Default to github if no provider specified
-			const authProvider = (provider as "github" | "google" | "gitlab") || "github";
-			await authAPI.oauth(authProvider);
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error
-					? error.message
+			const AuthProvider =
+				(Provider as "github" | "google" | "gitlab") || "github";
+			await authAPI.oauth(AuthProvider);
+			// oauth() redirects the browser via window.location.href,
+			// so we only reach here if something went wrong
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
 					: "OAuth initialization failed";
-			toast.error(errorMessage);
-			setIsOAuthLoading(false);
+			toast.error(ErrorMessage);
+			SetIsOAuthLoading(false);
 		}
 	};
 
-	// OAuth callback handler (for /oauth/success page)
+	// OAuth callback handler — extract token from URL when returning from OAuth
 	useEffect(() => {
-		// Check if we're returning from OAuth with a token in URL
-		const urlParams = new URLSearchParams(window.location.search);
-		const token = urlParams.get("token");
+		const UrlParameters = new URLSearchParams(window.location.search);
+		const OAuthToken = UrlParameters.get("token");
 
-		if (token && route === "signin") {
-			// Set the session token and redirect
-			setSessionToken(token);
+		if (OAuthToken && route === "signin") {
+			SetSessionToken(OAuthToken);
 			toast.success("OAuth authentication successful!");
-			(onNavigate || ((p) => { }))("/account");
+
+			// Fetch user profile with the new token
+			authAPI
+				.getSession()
+				.then((SessionResponse) => {
+					SetCurrentUser(SessionResponse.user);
+				})
+				.catch(() => {
+					// Session fetch failed but token is set — user can still proceed
+				});
+
+			Navigate("/account");
 		}
-	}, [route, onNavigate]);
+	}, [route, Navigate]);
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
@@ -268,7 +301,10 @@ export function AccountPage({
 						logo: { text: "Land" },
 						navigation: [
 							{ label: "Product", href: "/#product" },
-							{ label: "Docs", href: "/docs" },
+							{
+								label: "Docs",
+								href: "https://github.com/CodeEditorLand/Land#readme",
+							},
 							{ label: "Support", href: "/support" },
 						],
 						actions: [],
@@ -276,31 +312,31 @@ export function AccountPage({
 				}
 			/>
 
-			<main className="flex-1">
+			<div className="flex-1">
 				{route === "signin" && (
 					<DynamicSignIn
 						content={signIn}
-						onSubmit={handleSignIn}
-						onOAuth={handleOAuth}
-						{...(onNavigate ? { onNavigate } : {})}
+						onSubmit={HandleSignIn}
+						onOAuth={HandleOAuth}
+						onNavigate={Navigate}
 					/>
 				)}
 
 				{route === "signup" && (
 					<DynamicSignUp
 						content={signUp}
-						onSubmit={handleSignUp}
-						onOAuth={handleOAuth}
-						{...(onNavigate ? { onNavigate } : {})}
+						onSubmit={HandleSignUp}
+						onOAuth={HandleOAuth}
+						onNavigate={Navigate}
 					/>
 				)}
 
 				{route === "forgot-password" && (
 					<DynamicForgotPassword
 						content={forgotPassword}
-						onSubmit={handleForgotPassword}
-						onResend={() => handleForgotPassword("")}
-						{...(onNavigate ? { onNavigate } : {})}
+						onSubmit={HandleForgotPassword}
+						onResend={() => HandleForgotPassword("")}
+						onNavigate={Navigate}
 					/>
 				)}
 
@@ -308,13 +344,11 @@ export function AccountPage({
 					<DynamicResetPassword
 						content={resetPassword}
 						token={resetToken || ""}
-						onReset={handleResetPassword}
-						{...(onNavigate ? { onNavigate } : {})}
+						onReset={HandleResetPassword}
+						onNavigate={Navigate}
 					/>
 				)}
-			</main>
-
-			<Footer content={content.footer || {}} />
+			</div>
 		</div>
 	);
 }

@@ -1,0 +1,57 @@
+{
+	"account": {
+		"forgotPassword": "Passwort vergessen - Code Editor Land",
+		"resetPassword": "Passwort zuruecksetzen - Code Editor Land",
+		"signIn": "Anmelden - Code Editor Land",
+		"signUp": "Registrieren - Code Editor Land"
+	},
+	"description": "Der Code-Editor der naechsten Generation",
+	"downloads": {
+		"description": "Laden Sie Code Editor Land fuer macOS, Windows und Linux herunter. Alle Versionen sind signiert und fuer Ihre Sicherheit verifiziert.",
+		"title": "Code Editor Land herunterladen | Der Code-Editor der naechsten Generation"
+	},
+	"home": {
+		"description": "Code Editor Land ist ein leistungsstarker, ressourcenschonender Code-Editor, gebaut mit Rust und Tauri. Erleben Sie VS Code",
+		"title": "Code Editor Land | Der Code-Editor der naechsten Generation"
+	},
+	"legal": {
+		"privacy": {
+			"description": "Datenschutzrichtlinie fuer Code Editor Land - Erfahren Sie, wie wir Ihre personenbezogenen Daten in Uebereinstimmung mit DSGVO und CCPA erheben, verwenden und schuetzen.",
+			"title": "Datenschutzrichtlinie | Code Editor Land"
+		},
+		"terms": {
+			"description": "Nutzungsbedingungen fuer Code Editor Land - Regelung Ihrer Nutzung unseres Open-Source-Code-Editors und verwandter Dienste.",
+			"title": "Nutzungsbedingungen | Code Editor Land"
+		}
+	},
+	"license": {
+		"description": "Code Editor Land ist Open Source unter der Creative Commons CC0 1.0 Universal Lizenz.",
+		"title": "Lizenz | Code Editor Land"
+	},
+	"title": "Code Editor Land",
+	"verify": {
+		"title": "E-Mail verifizieren - Code Editor Land"
+	},
+	"docs": {
+		"title": "Dokumentation | Code Editor Land",
+		"description": "Durchsuchen Sie die Dokumentation von Code Editor Land, Architekturleitfaeden und Entwicklerressourcen."
+	},
+	"blog": {
+		"title": "Blog | Code Editor Land",
+		"description": "Neuigkeiten, Updates und Artikel vom Code Editor Land Team."
+	},
+	"contributing": {
+		"title": "Mitwirken | Code Editor Land",
+		"description": "Erfahren Sie, wie Sie zu Code Editor Land beitragen koennen — einem Open-Source-Code-Editor, gebaut mit Rust und Tauri."
+	},
+	"dashboard": {
+		"title": "Dashboard | Code Editor Land",
+		"description": "Ihr Code Editor Land Dashboard — verwalten Sie Ihr Konto, Downloads und Einstellungen."
+	},
+	"contact": {
+		"sales": {
+			"title": "Unternehmensanfragen | Code Editor Land",
+			"description": "Kontaktieren Sie das Code Editor Land Team fuer Unternehmenslizenzierung, Support und Bereitstellungsoptionen."
+		}
+	}
+}

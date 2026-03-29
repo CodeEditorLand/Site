@@ -1,38 +1,80 @@
 ---
-import Base from "../Layout/Base.astro";
 import { VerifyPage } from "../Components/Dynamic/VerifyPage";
+import Base from "../Layout/Base.astro";
 import { getI18n } from "../Lib/I18n/Server";
 
 const t = getI18n();
 
 const verifyContent = {
-  verification: {
-    pending: {
-      title: t("verify.pending.title", { defaultValue: "Verify Your Email" }),
-      description: t("verify.pending.description", { defaultValue: "We've sent a verification link to your email address." }),
-      resendButton: { text: t("verify.pending.resendButton", { defaultValue: "Resend Verification Email" }), variant: "default", fullWidth: true }
-    },
-    success: {
-      title: t("verify.success.title", { defaultValue: "Email Verified Successfully!" }),
-      description: t("verify.success.description", { defaultValue: "Your email address has been verified." }),
-      continueButton: { text: t("verify.success.continueButton", { defaultValue: "Continue to Dashboard" }), variant: "default", fullWidth: true }
-    },
-    error: {
-      title: t("verify.error.title", { defaultValue: "Verification Failed" }),
-      description: t("verify.error.description", { defaultValue: "An error occurred during verification." }),
-      backToSignInButton: { text: t("verify.error.backToSignInButton", { defaultValue: "Back to Sign In" }), variant: "default", fullWidth: true }
-    }
-  }
+	verification: {
+		pending: {
+			title: t("verify.pending.title", {
+				defaultValue: "Verify Your Email",
+			}),
+			description: t("verify.pending.description", {
+				defaultValue:
+					"We've sent a verification link to your email address.",
+			}),
+			resendButton: {
+				text: t("verify.pending.resendButton", {
+					defaultValue: "Resend Verification Email",
+				}),
+				variant: "default",
+				fullWidth: true,
+			},
+		},
+		success: {
+			title: t("verify.success.title", {
+				defaultValue: "Email Verified Successfully!",
+			}),
+			description: t("verify.success.description", {
+				defaultValue: "Your email address has been verified.",
+			}),
+			continueButton: {
+				text: t("verify.success.continueButton", {
+					defaultValue: "Continue to Dashboard",
+				}),
+				variant: "default",
+				fullWidth: true,
+			},
+		},
+		error: {
+			title: t("verify.error.title", {
+				defaultValue: "Verification Failed",
+			}),
+			description: t("verify.error.description", {
+				defaultValue: "An error occurred during verification.",
+			}),
+			backToSignInButton: {
+				text: t("verify.error.backToSignInButton", {
+					defaultValue: "Back to Sign In",
+				}),
+				variant: "default",
+				fullWidth: true,
+			},
+		},
+	},
 };
 
 const token = Astro.url.searchParams.get("token");
 const reason = Astro.url.searchParams.get("reason");
 const route = token ? "verify" : reason ? "failure" : "pending";
 
-const metaTitle = t("meta.verify.title", { defaultValue: "Verify Email - Land" });
-const metaDescription = t("verify.pending.description", { defaultValue: "Verify your email address to activate your account." });
+const metaTitle = t("meta.verify.title", {
+	defaultValue: "Verify Email - Land",
+});
+const metaDescription = t("verify.pending.description", {
+	defaultValue: "Verify your email address to activate your account.",
+});
 ---
 
 <Base Title={metaTitle} Description={metaDescription} noIndex={true}>
-  <VerifyPage content={verifyContent} route={route} token={token || undefined} reason={reason || undefined} metaTitle={metaTitle} metaDescription={metaDescription} />
+	<VerifyPage
+		content={verifyContent}
+		route={route}
+		token={token || undefined}
+		reason={reason || undefined}
+		metaTitle={metaTitle}
+		metaDescription={metaDescription}
+	/>
 </Base>

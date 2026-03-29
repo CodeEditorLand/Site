@@ -123,7 +123,7 @@ export function DynamicSignUp({
 	];
 
 	return (
-		<section className="py-20">
+		<section className="py-20" aria-label="Sign up">
 			<div className="container mx-auto px-4">
 				<div className={`mx-auto max-w-md ${className}`}>
 					<Card>
@@ -132,12 +132,19 @@ export function DynamicSignUp({
 							<CardDescription>{description}</CardDescription>
 						</CardHeader>
 						<CardContent>
-							<form className="space-y-4" onSubmit={handleSubmit}>
-								{errorMessage && (
-									<div className="bg-destructive/10 text-destructive rounded-none p-3 text-sm">
-										{errorMessage}
-									</div>
-								)}
+							<form
+								className="space-y-4"
+								onSubmit={handleSubmit}
+								aria-label="Sign up form">
+								<div aria-live="polite" aria-atomic="true">
+									{errorMessage && (
+										<div
+											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+											role="alert">
+											{errorMessage}
+										</div>
+									)}
+								</div>
 
 								<DynamicInput
 									content={{
@@ -189,7 +196,7 @@ export function DynamicSignUp({
 										<span className="w-full border-t" />
 									</div>
 									<div className="relative flex justify-center text-xs uppercase">
-										<span className="bg-background text-muted-foreground px-2">
+										<span className="bg-background px-2 text-muted-foreground">
 											{"Or"}
 										</span>
 									</div>
@@ -219,7 +226,7 @@ export function DynamicSignUp({
 									{"Already have an account?"}{" "}
 									<button
 										type="button"
-										className="text-primary font-medium hover:underline"
+										className="font-medium text-primary hover:underline"
 										onClick={() =>
 											footerLinks.signIn &&
 											onNavigate?.(

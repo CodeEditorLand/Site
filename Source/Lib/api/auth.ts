@@ -93,7 +93,9 @@ export class AuthAPI {
 		return response.data;
 	}
 
-	async oauth(provider: "github" | "google" | "gitlab"): Promise<{ success: boolean }> {
+	async oauth(
+		provider: "github" | "google" | "gitlab",
+	): Promise<{ success: boolean }> {
 		return await this.workers.auth.oauth(provider);
 	}
 }

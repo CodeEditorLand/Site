@@ -1,29 +1,225 @@
 {
-  "actions": {
-    "signIn": "Sign In to Your Account"
-  },
-  "brand": {
-    "name": "Code Editor Land",
-    "tagline": "The next-generation code editor. Open source and free forever under the CC0 license. Experience professional-grade development tools without any cost or restrictions."
-  },
-  "button": {
-    "backToHome": "Return to Homepage",
-    "download": "Download Code Editor Land",
-    "learnMore": "Learn More About Features",
-    "signIn": "Sign In to Your Account",
-    "signUp": "Create Your Free Account"
-  },
-  "error": {
-    "404": "404 - Page Not Found",
-    "pageNotFound": "The page you're looking for doesn't exist or has been moved. Please check the URL for any typos, or return to the home page to start fresh. If you believe this is an error, contact our support team and we'll help you find what you need."
-  },
-  "label": {
-    "email": "Email Address",
-    "password": "Password"
-  },
-  "nav": {
-    "docs": "Documentation",
-    "downloads": "Download",
-    "github": "GitHub Repository"
-  }
+	"actions": {
+		"signIn": "Влезте в профила си"
+	},
+	"brand": {
+		"name": "Code Editor Land",
+		"tagline": "Редакторът на код от ново поколение. С отворен код и безплатен завинаги."
+	},
+	"breadcrumb": {
+		"home": "Начало"
+	},
+	"button": {
+		"backToHome": "Към началната страница",
+		"backToTop": "Обратно към началото",
+		"download": "Изтеглете Land",
+		"learnMore": "Научете повече за функциите",
+		"signIn": "Влезте в профила си",
+		"signUp": "Създайте безплатен профил"
+	},
+	"comingSoon": "Очаквайте скоро",
+	"error": {
+		"404": "404 - Страницата не е намерена",
+		"pageNotFound": "Страницата, която търсите, не съществува или е била преместена. Моля, проверете URL адреса за грешки или се върнете на началната страница. Ако смятате, че това е грешка, свържете се с нашия екип за поддръжка и ще ви помогнем да намерите това, което търсите."
+	},
+	"label": {
+		"email": "Имейл адрес",
+		"password": "Парола"
+	},
+	"nav": {
+		"docs": "Документация",
+		"downloads": "Изтегляне",
+		"github": "GitHub хранилище"
+	},
+	"docs": {
+		"pageTitle": "Документация",
+		"pageSubtitle": "Всичко необходимо, за да започнете с Code Editor Land.",
+		"gettingStarted": {
+			"title": "Начало",
+			"description": "Прочетете README за инструкции за инсталиране, стъпки за изграждане и преглед на архитектурата на проекта."
+		},
+		"wiki": {
+			"title": "Уики",
+			"description": "Разгледайте уикито на проекта за задълбочени ръководства, уроци и справочна документация."
+		},
+		"discussions": {
+			"title": "Дискусии",
+			"description": "Задавайте въпроси, споделяйте идеи и се свързвайте с общността в GitHub Discussions."
+		},
+		"issueTracker": {
+			"title": "Проследяване на проблеми",
+			"description": "Докладвайте грешки, искайте функции или разглеждайте съществуващи проблеми в GitHub."
+		},
+		"architecture": {
+			"heading": "Преглед на архитектурата",
+			"intro": "Land замества Electron стека на VS Code с модерна, високопроизводителна архитектура:",
+			"mountain": "Rust/Tauri нативен бекенд — управлява прозорци, файлова система, процеси",
+			"cocoon": "TypeScript хост за разширения — изпълнява VS Code разширения чрез Effect-TS",
+			"wind": "TypeScript UI услуги — преимплементация на VS Code работното пространство",
+			"sky": "Astro UI компоненти — рендира интерфейса на редактора",
+			"air": "Rust фонов демон — актуализации, изтегляния, криптографско подписване",
+			"echo": "Rust планировчик на задачи — високопроизводителен изпълнител с кражба на работа"
+		},
+		"repositories": {
+			"heading": "Изходни хранилища",
+			"mainMonorepo": "Основно монорепо",
+			"tauriBackend": "Tauri бекенд",
+			"extensionHost": "Хост за разширения",
+			"viewAll": "Вижте всички хранилища"
+		}
+	},
+	"blog": {
+		"pageTitle": "Блог",
+		"pageSubtitle": "Новини, актуализации и технически статии от екипа.",
+		"comingSoonHeading": "Очаквайте скоро",
+		"comingSoonText": "Подготвяме статии за архитектурата, процеса на разработка и пътната карта на Code Editor Land. Проверете отново скоро за актуализации.",
+		"joinDiscussions": "Присъединете се към дискусиите",
+		"followGitHub": "Следвайте в GitHub"
+	},
+	"contributing": {
+		"pageTitle": "Принос",
+		"pageSubtitle": "Code Editor Land е с отворен код и приветства приноса на всички. Ето как да се включите.",
+		"guide": {
+			"title": "Ръководство за принос",
+			"description": "Прочетете пълния CONTRIBUTING.md в GitHub за подробни инструкции за настройване на средата за разработка и изпращане на промени."
+		},
+		"goodFirstIssues": {
+			"title": "Добри първи проблеми",
+			"description": "Разгледайте проблеми с етикет \"good first issue\", за да намерите достъпни задачи за нови участници."
+		},
+		"howToContribute": {
+			"heading": "Как да допринесете"
+		},
+		"step1": {
+			"title": "Форкнете и клонирайте",
+			"description": "Форкнете хранилището Land в GitHub и го клонирайте локално с подмодули:"
+		},
+		"step2": {
+			"title": "Настройте средата",
+			"description": "Инсталирайте Rust (1.95.0+), Node.js и pnpm. След това изпълнете:"
+		},
+		"step3": {
+			"title": "Направете промените",
+			"description": "Създайте нов клон, направете промените си и следвайте конвенцията за именуване PascalCase, използвана в целия проект."
+		},
+		"step4": {
+			"title": "Изпратете заявка за сливане",
+			"description": "Натиснете клона си и отворете заявка за сливане срещу клона Current. Опишете какво сте променили и защо."
+		},
+		"ways": {
+			"heading": "Начини за принос",
+			"code": {
+				"title": "Код",
+				"description": "Поправяйте грешки, имплементирайте функции или подобрявайте производителността в Rust или TypeScript."
+			},
+			"documentation": {
+				"title": "Документация",
+				"description": "Подобрявайте ръководства, добавяйте примери или превеждайте съществуваща документация на други езици."
+			},
+			"testing": {
+				"title": "Тестване",
+				"description": "Пишете тестове, докладвайте грешки или помагайте за възпроизвеждане и сортиране на съществуващи проблеми."
+			},
+			"design": {
+				"title": "Дизайн",
+				"description": "Допринасяйте за подобрения на UI/UX, икони или визуален дизайн за редактора или уебсайта."
+			}
+		},
+		"funding": {
+			"heading": "Финансиране",
+			"description": "Code Editor Land се финансира чрез фонда NGI0 Commons чрез NLnet. Това позволява разработка на пълно работно време по проекта.",
+			"nlnetIntro": "Code Editor Land е финансиран чрез",
+			"nlnetFundName": "Фонд NGI0 Commons",
+			"nlnetEstablishedBy": ", фонд, създаден от",
+			"nlnetSuffix": "с финансовата подкрепа на програмата Next Generation Internet на Европейската комисия, по споразумение за безвъзмездна помощ №\u00a0101135429. Това финансиране позволява устойчива разработка на проекта с отворен код.",
+			"playformInfo": "Проектът се управлява от PlayForm, компания със седалище в София, България. PlayForm действа като стюард на отворения код за Code Editor Land по програмата NGI0 Commons Fund.",
+			"viewProject": "Вижте",
+			"nlnetProjectPage": "страницата на проекта в NLnet",
+			"viewProjectSuffix": "за повече подробности относно гранта и целите."
+		},
+		"conduct": {
+			"heading": "Кодекс за поведение",
+			"description": "Очаква се всички участници в общността на Code Editor Land да бъдат уважителни и конструктивни. Прочетете пълния Кодекс за поведение в GitHub."
+		}
+	},
+	"sales": {
+		"pageTitle": "Запитвания за предприятия",
+		"pageSubtitle": "Интересувате се от внедряване на Code Editor Land в организацията си? Свържете се с нашия екип.",
+		"form": {
+			"firstName": "Собствено име",
+			"lastName": "Фамилно име",
+			"email": "Служебен имейл",
+			"company": "Компания",
+			"teamSize": "Размер на екипа",
+			"teamSizePlaceholder": "Изберете размер на екипа",
+			"message": "Как можем да помогнем?",
+			"messagePlaceholder": "Разкажете ни за вашите изисквания, нуди за внедряване или въпроси.",
+			"submitButton": "Изпратете запитване"
+		},
+		"features": {
+			"heading": "Функции за предприятия",
+			"prioritySupport": "Приоритетна поддръжка и SLA",
+			"customDeployment": "Опции за персонализирано внедряване",
+			"volumeLicensing": "Групово лицензиране",
+			"accountManagement": "Специализирано управление на акаунти",
+			"securityReview": "Преглед на сигурността и съответствието",
+			"customIntegrations": "Персонализирани интеграции"
+		},
+		"contact": {
+			"heading": "Как да се свържете с нас",
+			"directHeading": "Директен контакт",
+			"description": "Предпочитате имейл? Свържете се директно с нас:",
+			"githubNote": "Обработваме корпоративни запитвания чрез GitHub Issues. Това гарантира, че заявката ви се проследява, видима е за екипа и получава бърз отговор.",
+			"openIssueHeading": "Отворете GitHub Issue",
+			"openIssueDescription": "Създайте issue в нашето GitHub хранилище, описващо нуждите на организацията ви. Включете името на компанията, размера на екипа, случая на употреба и изисквания за внедряване. Екипът ни следи issues ежедневно.",
+			"openIssueButton": "Отворете GitHub Issue",
+			"issueIncludeLabel": "Какво да включите в issue:",
+			"issueIncludeText": "Име на компанията, размер на екипа, предвиден случай на употреба, среда за внедряване (облак/на място), срокове и специфични изисквания за поддръжка или съответствие.",
+			"operatedBy": "Управлявано от PlayForm, София, България"
+		},
+		"openSource": {
+			"heading": "Отворен код",
+			"description": "Code Editor Land е с отворен код под CC0. Плановете за предприятия предоставят поддръжка, SLA и персонализирана разработка — не достъп до самия код."
+		}
+	},
+	"dashboard": {
+		"pageTitle": "Добре дошли",
+		"pageSubtitle": "Управлявайте своя акаунт и предпочитания в Code Editor Land.",
+		"breadcrumbLabel": "Табло",
+		"account": {
+			"heading": "Акаунт",
+			"emailLabel": "Имейл",
+			"planLabel": "План",
+			"planFree": "Безплатен",
+			"memberSinceLabel": "Член от"
+		},
+		"downloads": {
+			"heading": "Изтегляния",
+			"description": "Изтеглете най-новата версия на Code Editor Land за вашата платформа.",
+			"goButton": "Към изтеглянията"
+		},
+		"quickLinks": {
+			"heading": "Бързи връзки",
+			"docs": "Документация",
+			"community": "Дискусии в общността",
+			"reportIssue": "Докладвайте проблем",
+			"contribute": "Допринесете"
+		},
+		"settings": {
+			"heading": "Настройки",
+			"sync": {
+				"title": "Синхронизиране на настройките",
+				"description": "Синхронизирайте предпочитанията на редактора между устройствата."
+			},
+			"extensionSync": {
+				"title": "Синхронизиране на разширения",
+				"description": "Поддържайте инсталираните разширения синхронизирани между машините."
+			},
+			"account": {
+				"title": "Акаунт",
+				"description": "Актуализирайте профила си и управлявайте акаунта си.",
+				"manageButton": "Управление"
+			}
+		}
+	}
 }

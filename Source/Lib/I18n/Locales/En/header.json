@@ -1,1 +1,13 @@
-{}
+{
+	"logo": "Land",
+	"nav": {
+		"features": "Features",
+		"download": "Download",
+		"docs": "Docs",
+		"github": "GitHub"
+	},
+	"actions": {
+		"signIn": "Sign In",
+		"getStarted": "Get Land"
+	}
+}

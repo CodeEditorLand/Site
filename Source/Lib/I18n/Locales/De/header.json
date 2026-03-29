@@ -1,0 +1,13 @@
+{
+	"logo": "Land",
+	"nav": {
+		"features": "Funktionen",
+		"download": "Herunterladen",
+		"docs": "Dokumentation",
+		"github": "GitHub"
+	},
+	"actions": {
+		"signIn": "Anmelden",
+		"getStarted": "Land holen"
+	}
+}

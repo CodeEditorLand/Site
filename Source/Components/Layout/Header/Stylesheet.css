@@ -1,0 +1,14 @@
+/* Header - flat white bar with subtle bottom border */
+.header {
+	background: rgba(255, 255, 255, 0.95);
+	border-bottom: 1px solid var(--border);
+}
+
+.header .logo-box {
+	background-color: var(--primary);
+	border: 1px solid var(--border);
+}
+
+.header-logo span {
+	color: var(--foreground);
+}

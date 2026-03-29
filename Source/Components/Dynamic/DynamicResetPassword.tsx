@@ -124,15 +124,19 @@ export function DynamicResetPassword({
 
 	if (state === "checking") {
 		return (
-			<section className="py-20">
+			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
 						className={`mx-auto max-w-md text-center ${className}`}>
 						<Card>
 							<CardContent className="pt-6">
-								<div className="space-y-4">
-									<div className="border-primary mx-auto h-8 w-8 animate-spin rounded-none border border-t-transparent"></div>
-									<p className="text-muted-foreground">
+								<div className="space-y-4" aria-live="polite">
+									<div
+										className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"
+										aria-hidden="true"></div>
+									<p
+										className="text-muted-foreground"
+										role="status">
 										{checkingMessage ||
 											"Validating reset token..."}
 									</p>
@@ -147,14 +151,17 @@ export function DynamicResetPassword({
 
 	if (state === "invalid") {
 		return (
-			<section className="py-20">
+			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
 						className={`mx-auto max-w-md text-center ${className}`}>
 						<Card>
 							<CardContent className="pt-6">
-								<div className="space-y-4">
-									<AlertCircle className="text-destructive mx-auto h-12 w-12" />
+								<div className="space-y-4" role="alert">
+									<AlertCircle
+										className="mx-auto h-12 w-12 text-destructive"
+										aria-hidden="true"
+									/>
 									<h3 className="text-lg font-semibold">
 										Invalid or Expired Token
 									</h3>
@@ -183,14 +190,20 @@ export function DynamicResetPassword({
 
 	if (state === "success") {
 		return (
-			<section className="py-20">
+			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
 						className={`mx-auto max-w-md text-center ${className}`}>
 						<Card>
 							<CardContent className="pt-6">
-								<div className="space-y-4">
-									<CheckCircle className="mx-auto h-12 w-12 text-green-600" />
+								<div
+									className="space-y-4"
+									role="status"
+									aria-live="polite">
+									<CheckCircle
+										className="mx-auto h-12 w-12 text-green-600"
+										aria-hidden="true"
+									/>
 									<h3 className="text-lg font-semibold">
 										Password Reset Successful
 									</h3>
@@ -219,7 +232,7 @@ export function DynamicResetPassword({
 
 	// Valid state - show form
 	return (
-		<section className="py-20">
+		<section className="py-20" aria-label="Reset password">
 			<div className="container mx-auto px-4">
 				<div className={`mx-auto max-w-md ${className}`}>
 					<Card>
@@ -228,12 +241,19 @@ export function DynamicResetPassword({
 							<CardDescription>{description}</CardDescription>
 						</CardHeader>
 						<CardContent>
-							<form className="space-y-4" onSubmit={handleSubmit}>
-								{(errorMessage || error) && (
-									<div className="bg-destructive/10 text-destructive rounded-none p-3 text-sm">
-										{errorMessage || error}
-									</div>
-								)}
+							<form
+								className="space-y-4"
+								onSubmit={handleSubmit}
+								aria-label="Reset password form">
+								<div aria-live="polite" aria-atomic="true">
+									{errorMessage && (
+										<div
+											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+											role="alert">
+											{errorMessage}
+										</div>
+									)}
+								</div>
 
 								<DynamicInput
 									content={{
@@ -257,12 +277,12 @@ export function DynamicResetPassword({
 									errors.confirmPassword) && (
 									<div className="space-y-1">
 										{errors.password && (
-											<p className="text-destructive text-sm">
+											<p className="text-sm text-destructive">
 												{errors.password}
 											</p>
 										)}
 										{errors.confirmPassword && (
-											<p className="text-destructive text-sm">
+											<p className="text-sm text-destructive">
 												{errors.confirmPassword}
 											</p>
 										)}

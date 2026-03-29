@@ -1,0 +1,49 @@
+{
+	"card": {
+		"platform": {
+			"linux": {
+				"description": "DEB, RPM, AppImage",
+				"title": "Linux"
+			},
+			"macos": {
+				"title": "macOS",
+				"universalBadge": "Binaire universel"
+			},
+			"windows": {
+				"description": "64 bits (x64)",
+				"title": "Windows"
+			}
+		}
+	},
+	"page": {
+		"subtitle": "Disponible pour macOS, Windows et Linux. Rapide, natif et gratuit.",
+		"title": "Telecharger Land"
+	},
+	"previousReleases": {
+		"description": "Telechargez des versions anterieures si necessaire.",
+		"title": "Versions precedentes"
+	},
+	"subtitle": "Disponible pour macOS, Windows et Linux. Construit avec Tauri, propulse par Rust.",
+	"systemRequirements": {
+		"subtitle": "Assurez-vous que votre systeme repond a ces exigences avant de telecharger.",
+		"title": "Configuration requise"
+	},
+	"title": "Telecharger Land",
+	"verification": {
+		"description": "Les versions de Land sont signees avec PGP. Verifiez votre telechargement pour garantir l'integrite.",
+		"downloadButton": "Telecharger la cle publique PGP",
+		"title": "Verifiez votre telechargement",
+		"verifyButton": "Verifier le telechargement"
+	},
+	"labels": {
+		"version": "Version :",
+		"size": "Taille :",
+		"requirements": "Configuration requise :",
+		"loading": "Chargement des telechargements...",
+		"errorTitle": "Impossible de charger les telechargements",
+		"downloadFailed": "Echec du telechargement. Veuillez reessayer.",
+		"downloadFor": "Telecharger pour {{platform}}",
+		"copiedToClipboard": "{{label}} copie dans le presse-papiers !",
+		"failedToCopy": "Echec de la copie de {{label}}"
+	}
+}

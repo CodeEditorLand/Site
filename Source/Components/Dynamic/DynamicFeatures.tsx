@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface FeatureItem {
 	id: string;
@@ -62,7 +62,10 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 	};
 
 	return (
-		<section className={`py-20 ${className || ""}`}>
+		<section
+			id="features"
+			aria-label="Features"
+			className={`py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="mb-16 text-center">
@@ -72,7 +75,7 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 							</h2>
 						)}
 						{subtitle && (
-							<p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
 								{subtitle}
 							</p>
 						)}
@@ -86,10 +89,15 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 						return (
 							<div
 								key={feature.id}
-								className="flex flex-col items-start space-y-4">
-								<div className="bg-secondary w-fit rounded-none p-3">
+								className="bg-white/92 flex flex-col items-start space-y-4 rounded-none border border-[var(--border)] p-6">
+								<div
+									className="w-fit rounded-none bg-secondary p-3"
+									aria-hidden="true">
 									{Icon && (
-										<Icon className="text-primary h-6 w-6" />
+										<Icon
+											className="h-6 w-6 text-primary"
+											aria-hidden="true"
+										/>
 									)}
 								</div>
 								<h3 className="text-xl font-semibold">

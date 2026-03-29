@@ -1,5 +1,3 @@
-import React from "react";
-
 interface FooterColumn {
 	title: string;
 	links: { label: string; href: string }[];
@@ -53,21 +51,21 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 							{brand.name}
 						</h3>
 						{brand.description && (
-							<p className="text-muted-foreground mb-4 text-sm">
+							<p className="mb-4 text-sm text-muted-foreground">
 								{brand.description}
 							</p>
 						)}
 						{social && (
 							<div className="flex space-x-4">
 								{Object.entries(socialIcons).map(
-									([key, { icon, href }]) =>
+									([key, { href }]) =>
 										href !== "#" && (
 											<a
 												key={key}
 												href={href}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="text-muted-foreground hover:text-foreground transition-colors"
+												className="text-muted-foreground transition-colors hover:text-foreground"
 												aria-label={`Follow us on ${key}`}>
 												{/* Icon placeholder - would render actual Lucide icon in implementation */}
 												<span className="sr-only">
@@ -91,7 +89,7 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 									<li key={linkIndex}>
 										<a
 											href={link.href}
-											className="text-muted-foreground hover:text-foreground text-sm transition-colors">
+											className="text-sm text-muted-foreground transition-colors hover:text-foreground">
 											{link.label}
 										</a>
 									</li>
@@ -104,7 +102,7 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 				{/* Bottom Bar */}
 				{bottomBar && (
 					<div className="flex flex-col items-center justify-between space-y-4 border-t pt-8 md:flex-row md:space-y-0">
-						<div className="text-muted-foreground text-sm">
+						<div className="text-sm text-muted-foreground">
 							{bottomBar.copyright || (
 								<>
 									© {currentYear} {brand.name}. All rights
@@ -113,7 +111,7 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 							)}
 						</div>
 						{bottomBar.madeWith && (
-							<div className="text-muted-foreground text-sm">
+							<div className="text-sm text-muted-foreground">
 								Made with ❤️ by {brand.name} Team
 							</div>
 						)}

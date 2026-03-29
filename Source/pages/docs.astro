@@ -1,0 +1,329 @@
+---
+import { Header } from "../Components/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { getI18n } from "../Lib/I18n/Server";
+
+const t = getI18n();
+
+const metaTitle = t("meta.docs.title", {
+	defaultValue: "Documentation | Code Editor Land",
+});
+
+const metaDescription = t("meta.docs.description", {
+	defaultValue:
+		"Browse the Code Editor Land documentation, guides, and API references on GitHub.",
+});
+---
+
+<Base
+	Title={metaTitle}
+	Description={metaDescription}
+	Url="https://editor.land/docs"
+	lang="en">
+	<Header client:load />
+
+	<div class="container mx-auto max-w-4xl px-4 py-16">
+		<!-- Breadcrumbs -->
+		<nav aria-label="Breadcrumb" class="mb-8">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>{
+							t("common.breadcrumb.home", {
+								defaultValue: "Home",
+							})
+						}</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground"
+						>{
+							t("common.docs.pageTitle", {
+								defaultValue: "Documentation",
+							})
+						}</span
+					>
+				</li>
+			</ol>
+		</nav>
+
+		<!-- Page Header -->
+		<header class="mb-12">
+			<h1 class="mb-4 text-4xl font-bold tracking-tight">
+				{t("common.docs.pageTitle", { defaultValue: "Documentation" })}
+			</h1>
+			<p class="text-lg text-muted-foreground">
+				{
+					t("common.docs.pageSubtitle", {
+						defaultValue:
+							"Everything you need to get started with Code Editor Land.",
+					})
+				}
+			</p>
+		</header>
+
+		<!-- Documentation Links -->
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+			<a
+				href="https://github.com/CodeEditorLand/Land#readme"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+				<h2 class="mb-2 text-xl font-semibold">
+					{
+						t("common.docs.gettingStarted.title", {
+							defaultValue: "Getting Started",
+						})
+					}
+				</h2>
+				<p class="text-sm text-muted-foreground">
+					{
+						t("common.docs.gettingStarted.description", {
+							defaultValue:
+								"Read the README for installation instructions, build steps, and an overview of the project architecture.",
+						})
+					}
+				</p>
+			</a>
+
+			<a
+				href="https://github.com/CodeEditorLand/Land/wiki"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+				<h2 class="mb-2 text-xl font-semibold">
+					{t("common.docs.wiki.title", { defaultValue: "Wiki" })}
+				</h2>
+				<p class="text-sm text-muted-foreground">
+					{
+						t("common.docs.wiki.description", {
+							defaultValue:
+								"Browse the project wiki for in-depth guides, tutorials, and reference documentation.",
+						})
+					}
+				</p>
+			</a>
+
+			<a
+				href="https://github.com/CodeEditorLand/Land/discussions"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+				<h2 class="mb-2 text-xl font-semibold">
+					{
+						t("common.docs.discussions.title", {
+							defaultValue: "Discussions",
+						})
+					}
+				</h2>
+				<p class="text-sm text-muted-foreground">
+					{
+						t("common.docs.discussions.description", {
+							defaultValue:
+								"Ask questions, share ideas, and connect with the community on GitHub Discussions.",
+						})
+					}
+				</p>
+			</a>
+
+			<a
+				href="https://github.com/CodeEditorLand/Land/issues"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+				<h2 class="mb-2 text-xl font-semibold">
+					{
+						t("common.docs.issueTracker.title", {
+							defaultValue: "Issue Tracker",
+						})
+					}
+				</h2>
+				<p class="text-sm text-muted-foreground">
+					{
+						t("common.docs.issueTracker.description", {
+							defaultValue:
+								"Report bugs, request features, or browse existing issues on GitHub.",
+						})
+					}
+				</p>
+			</a>
+		</div>
+
+		<!-- Architecture Section -->
+		<section class="mt-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.docs.architecture.heading", {
+						defaultValue: "Architecture Overview",
+					})
+				}
+			</h2>
+			<div class="border border-[var(--border)] bg-white p-6">
+				<p class="mb-4 text-muted-foreground">
+					{
+						t("common.docs.architecture.intro", {
+							defaultValue:
+								"Land replaces VS Code's Electron stack with a modern, high-performance architecture:",
+						})
+					}
+				</p>
+				<ul class="space-y-3 text-sm">
+					<li class="flex items-start gap-3">
+						<span class="min-w-[120px] font-semibold">Mountain</span
+						>
+						<span class="text-muted-foreground"
+							>{
+								t("common.docs.architecture.mountain", {
+									defaultValue:
+										"Rust/Tauri native backend — manages windows, filesystem, processes",
+								})
+							}</span
+						>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="min-w-[120px] font-semibold">Cocoon</span>
+						<span class="text-muted-foreground"
+							>{
+								t("common.docs.architecture.cocoon", {
+									defaultValue:
+										"TypeScript extension host — runs VS Code extensions via Effect-TS",
+								})
+							}</span
+						>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="min-w-[120px] font-semibold">Wind</span>
+						<span class="text-muted-foreground"
+							>{
+								t("common.docs.architecture.wind", {
+									defaultValue:
+										"TypeScript UI services — re-implementation of VS Code workbench",
+								})
+							}</span
+						>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="min-w-[120px] font-semibold">Sky</span>
+						<span class="text-muted-foreground"
+							>{
+								t("common.docs.architecture.sky", {
+									defaultValue:
+										"Astro UI components — renders the editor interface",
+								})
+							}</span
+						>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="min-w-[120px] font-semibold">Air</span>
+						<span class="text-muted-foreground"
+							>{
+								t("common.docs.architecture.air", {
+									defaultValue:
+										"Rust background daemon — updates, downloads, crypto signing",
+								})
+							}</span
+						>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="min-w-[120px] font-semibold">Echo</span>
+						<span class="text-muted-foreground"
+							>{
+								t("common.docs.architecture.echo", {
+									defaultValue:
+										"Rust task scheduler — high-performance work-stealing executor",
+								})
+							}</span
+						>
+					</li>
+				</ul>
+			</div>
+		</section>
+
+		<!-- Source Repositories -->
+		<section class="mt-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.docs.repositories.heading", {
+						defaultValue: "Source Repositories",
+					})
+				}
+			</h2>
+			<div class="border border-[var(--border)] bg-white">
+				<div class="border-b border-[var(--border)] p-4">
+					<a
+						href="https://github.com/CodeEditorLand/Land"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-[var(--primary)] hover:underline">
+						CodeEditorLand/Land
+					</a>
+					<span class="ml-2 text-sm text-muted-foreground"
+						>{
+							t("common.docs.repositories.mainMonorepo", {
+								defaultValue: "Main monorepo",
+							})
+						}</span
+					>
+				</div>
+				<div class="border-b border-[var(--border)] p-4">
+					<a
+						href="https://github.com/CodeEditorLand/Mountain"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-[var(--primary)] hover:underline">
+						CodeEditorLand/Mountain
+					</a>
+					<span class="ml-2 text-sm text-muted-foreground"
+						>{
+							t("common.docs.repositories.tauriBackend", {
+								defaultValue: "Tauri backend",
+							})
+						}</span
+					>
+				</div>
+				<div class="border-b border-[var(--border)] p-4">
+					<a
+						href="https://github.com/CodeEditorLand/Cocoon"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-[var(--primary)] hover:underline">
+						CodeEditorLand/Cocoon
+					</a>
+					<span class="ml-2 text-sm text-muted-foreground"
+						>{
+							t("common.docs.repositories.extensionHost", {
+								defaultValue: "Extension host",
+							})
+						}</span
+					>
+				</div>
+				<div class="p-4">
+					<a
+						href="https://github.com/CodeEditorLand"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-[var(--primary)] hover:underline">
+						{
+							t("common.docs.repositories.viewAll", {
+								defaultValue: "View all repositories",
+							})
+						}
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Back to top -->
+		<div class="mt-12 border-t pt-8">
+			<a href="#top" class="text-sm text-primary hover:underline"
+				>{
+					t("common.button.backToTop", {
+						defaultValue: "Back to top",
+					})
+				}</a
+			>
+		</div>
+	</div>
+</Base>

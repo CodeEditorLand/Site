@@ -119,7 +119,7 @@ export interface GitHubIssue {
 	id: number;
 	number: number;
 	title: string;
-	state: 'open' | 'closed';
+	state: "open" | "closed";
 	user: {
 		login: string;
 		id: number;

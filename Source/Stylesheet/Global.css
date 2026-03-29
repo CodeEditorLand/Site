@@ -1,5 +1,33 @@
 html {
-	@apply m-0 h-full w-full p-0 text-black dark:bg-black dark:text-white;
+	@apply m-0 h-full w-full bg-white p-0 text-[#1a1a1a];
+	font-family:
+		"Albert Sans",
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		"Helvetica Neue",
+		Arial,
+		sans-serif;
+}
+
+/* Emoji and symbol fallback fonts for special characters like ★☆ */
+body,
+button,
+input,
+textarea,
+select {
+	font-family: inherit;
+}
+
+/* Emoji font — apply ONLY to elements that render emoji/symbol characters.
+ * Use BEM: block__element pattern (e.g. star-rating__symbol).
+ * NEVER use broad attribute selectors like [class*="star"] — they leak
+ * emoji font-family onto unrelated text that shares a substring. */
+.star-rating__symbol {
+	font-family:
+		"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+		"Android Emoji", "EmojiSymbols", sans-serif;
 }
 
 body {
@@ -9,7 +37,7 @@ body {
 /* Text Selection Highlighting */
 *::selection,
 ::selection {
-	@apply bg-yellow-400 text-black dark:bg-orange-400 dark:text-white;
+	@apply bg-yellow-400 text-black;
 
 	text-shadow: none;
 }

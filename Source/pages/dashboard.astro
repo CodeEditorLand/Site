@@ -1,0 +1,319 @@
+---
+import { Header } from "../Components/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { getI18n } from "../Lib/I18n/Server";
+
+const t = getI18n();
+
+const metaTitle = t("meta.dashboard.title", {
+	defaultValue: "Dashboard | Code Editor Land",
+});
+
+const metaDescription = t("meta.dashboard.description", {
+	defaultValue: "Your Code Editor Land account dashboard.",
+});
+---
+
+<Base
+	Title={metaTitle}
+	Description={metaDescription}
+	Url="https://editor.land/dashboard"
+	lang="en">
+	<Header client:load />
+
+	<div class="container mx-auto max-w-5xl px-4 py-16">
+		<!-- Breadcrumbs -->
+		<nav aria-label="Breadcrumb" class="mb-8">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>{
+							t("common.breadcrumb.home", {
+								defaultValue: "Home",
+							})
+						}</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground"
+						>{
+							t("common.dashboard.breadcrumbLabel", {
+								defaultValue: "Dashboard",
+							})
+						}</span
+					>
+				</li>
+			</ol>
+		</nav>
+
+		<!-- Page Header -->
+		<header class="mb-12">
+			<h1 class="mb-2 text-4xl font-bold tracking-tight">
+				{t("common.dashboard.pageTitle", { defaultValue: "Welcome" })}
+			</h1>
+			<p class="text-lg text-muted-foreground">
+				{
+					t("common.dashboard.pageSubtitle", {
+						defaultValue:
+							"Manage your Code Editor Land account and preferences.",
+					})
+				}
+			</p>
+		</header>
+
+		<!-- Dashboard Grid -->
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+			<!-- Account Info Card -->
+			<div class="border border-[var(--border)] bg-white p-6">
+				<h2 class="mb-4 text-lg font-semibold">
+					{
+						t("common.dashboard.account.heading", {
+							defaultValue: "Account",
+						})
+					}
+				</h2>
+				<div class="space-y-3 text-sm">
+					<div class="flex justify-between">
+						<span class="text-muted-foreground"
+							>{
+								t("common.dashboard.account.emailLabel", {
+									defaultValue: "Email",
+								})
+							}</span
+						>
+						<span id="UserEmail" class="text-muted-foreground"
+							>--</span
+						>
+					</div>
+					<div class="flex justify-between">
+						<span class="text-muted-foreground"
+							>{
+								t("common.dashboard.account.planLabel", {
+									defaultValue: "Plan",
+								})
+							}</span
+						>
+						<span class="font-medium"
+							>{
+								t("common.dashboard.account.planFree", {
+									defaultValue: "Free",
+								})
+							}</span
+						>
+					</div>
+					<div class="flex justify-between">
+						<span class="text-muted-foreground"
+							>{
+								t("common.dashboard.account.memberSinceLabel", {
+									defaultValue: "Member Since",
+								})
+							}</span
+						>
+						<span id="MemberSince" class="text-muted-foreground"
+							>--</span
+						>
+					</div>
+				</div>
+			</div>
+
+			<!-- Downloads Card -->
+			<div class="border border-[var(--border)] bg-white p-6">
+				<h2 class="mb-4 text-lg font-semibold">
+					{
+						t("common.dashboard.downloads.heading", {
+							defaultValue: "Downloads",
+						})
+					}
+				</h2>
+				<p class="mb-4 text-sm text-muted-foreground">
+					{
+						t("common.dashboard.downloads.description", {
+							defaultValue:
+								"Download the latest version of Code Editor Land for your platform.",
+						})
+					}
+				</p>
+				<a
+					href="/downloads"
+					class="inline-flex h-9 items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+					{
+						t("common.dashboard.downloads.goButton", {
+							defaultValue: "Go to Downloads",
+						})
+					}
+				</a>
+			</div>
+
+			<!-- Quick Links Card -->
+			<div class="border border-[var(--border)] bg-white p-6">
+				<h2 class="mb-4 text-lg font-semibold">
+					{
+						t("common.dashboard.quickLinks.heading", {
+							defaultValue: "Quick Links",
+						})
+					}
+				</h2>
+				<ul class="space-y-2 text-sm">
+					<li>
+						<a
+							href="/docs"
+							class="text-[var(--primary)] hover:underline">
+							{
+								t("common.dashboard.quickLinks.docs", {
+									defaultValue: "Documentation",
+								})
+							}
+						</a>
+					</li>
+					<li>
+						<a
+							href="https://github.com/CodeEditorLand/Land/discussions"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-[var(--primary)] hover:underline">
+							{
+								t("common.dashboard.quickLinks.community", {
+									defaultValue: "Community Discussions",
+								})
+							}
+						</a>
+					</li>
+					<li>
+						<a
+							href="https://github.com/CodeEditorLand/Land/issues"
+							target="_blank"
+							rel="noopener noreferrer"
+							class="text-[var(--primary)] hover:underline">
+							{
+								t("common.dashboard.quickLinks.reportIssue", {
+									defaultValue: "Report an Issue",
+								})
+							}
+						</a>
+					</li>
+					<li>
+						<a
+							href="/contributing"
+							class="text-[var(--primary)] hover:underline">
+							{
+								t("common.dashboard.quickLinks.contribute", {
+									defaultValue: "Contribute",
+								})
+							}
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<!-- Settings Section -->
+		<section class="mt-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					t("common.dashboard.settings.heading", {
+						defaultValue: "Settings",
+					})
+				}
+			</h2>
+			<div class="border border-[var(--border)] bg-white">
+				<div
+					class="flex items-center justify-between border-b border-[var(--border)] p-5">
+					<div>
+						<h3 class="font-medium">
+							{
+								t("common.dashboard.settings.sync.title", {
+									defaultValue: "Sync Settings",
+								})
+							}
+						</h3>
+						<p class="mt-1 text-sm text-muted-foreground">
+							{
+								t(
+									"common.dashboard.settings.sync.description",
+									{
+										defaultValue:
+											"Synchronize your editor preferences across devices.",
+									},
+								)
+							}
+						</p>
+					</div>
+					<span
+						class="border border-[var(--border)] bg-[var(--muted)] px-3 py-1 text-xs font-medium text-muted-foreground">
+						{
+							t("common.comingSoon", {
+								defaultValue: "Coming Soon",
+							})
+						}
+					</span>
+				</div>
+				<div
+					class="flex items-center justify-between border-b border-[var(--border)] p-5">
+					<div>
+						<h3 class="font-medium">
+							{
+								t(
+									"common.dashboard.settings.extensionSync.title",
+									{ defaultValue: "Extension Sync" },
+								)
+							}
+						</h3>
+						<p class="mt-1 text-sm text-muted-foreground">
+							{
+								t(
+									"common.dashboard.settings.extensionSync.description",
+									{
+										defaultValue:
+											"Keep your installed extensions in sync across machines.",
+									},
+								)
+							}
+						</p>
+					</div>
+					<span
+						class="border border-[var(--border)] bg-[var(--muted)] px-3 py-1 text-xs font-medium text-muted-foreground">
+						{
+							t("common.comingSoon", {
+								defaultValue: "Coming Soon",
+							})
+						}
+					</span>
+				</div>
+				<div class="flex items-center justify-between p-5">
+					<div>
+						<h3 class="font-medium">
+							{
+								t("common.dashboard.settings.account.title", {
+									defaultValue: "Account",
+								})
+							}
+						</h3>
+						<p class="mt-1 text-sm text-muted-foreground">
+							{
+								t(
+									"common.dashboard.settings.account.description",
+									{
+										defaultValue:
+											"Update your profile and manage your account.",
+									},
+								)
+							}
+						</p>
+					</div>
+					<a
+						href="/account/signin"
+						class="inline-flex h-9 items-center justify-center border border-[var(--border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+						{
+							t(
+								"common.dashboard.settings.account.manageButton",
+								{ defaultValue: "Manage" },
+							)
+						}
+					</a>
+				</div>
+			</div>
+		</section>
+	</div>
+</Base>

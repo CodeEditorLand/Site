@@ -16,7 +16,9 @@ const homeContent = {
 		title: t("home.hero.title", {
 			defaultValue: "The Future of Code Editing",
 		}),
-		titleHighlight: t("home.hero.titleHighlight", { defaultValue: "Land" }),
+		titleHighlight: t("home.hero.titleHighlight", {
+			defaultValue: "Code Editing",
+		}),
 		subtitle: t("home.hero.subtitle", {
 			defaultValue:
 				"A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS. Experience the editor that reimagines VS Code for the modern era.",
@@ -221,11 +223,11 @@ const homeContent = {
 	},
 	testimonials: {
 		title: t("home.testimonials.title", {
-			defaultValue: "Loved by developers",
+			defaultValue: "What developers are saying",
 		}),
 		subtitle: t("home.testimonials.subtitle", {
 			defaultValue:
-				"Join the community building the future of code editing.",
+				"Representative community feedback on the future of code editing.",
 		}),
 		testimonials: [
 			{
@@ -234,9 +236,12 @@ const homeContent = {
 					defaultValue:
 						"Land is exactly what VS Code needed - a performance-focused, open alternative. It's incredibly fast.",
 				}),
-				author: "Dev One",
-				role: "Senior Developer",
-				company: "Tech",
+				author: t("home.testimonials.attribution", {
+					defaultValue: "Community Feedback",
+				}),
+				role: t("home.testimonials.attributionNote", {
+					defaultValue: "Representative community member",
+				}),
 				rating: 5,
 			},
 			{
@@ -245,9 +250,12 @@ const homeContent = {
 					defaultValue:
 						"The Effect-TS architecture is beautiful to work with. The type safety catches bugs before they happen.",
 				}),
-				author: "Dev Two",
-				role: "Tech Lead",
-				company: "Startup",
+				author: t("home.testimonials.attribution", {
+					defaultValue: "Community Feedback",
+				}),
+				role: t("home.testimonials.attributionNote", {
+					defaultValue: "Representative community member",
+				}),
 				rating: 5,
 			},
 			{
@@ -256,9 +264,12 @@ const homeContent = {
 					defaultValue:
 						"Running my existing extensions with no changes is a game-changer. The compatibility is impressive.",
 				}),
-				author: "Dev Three",
-				role: "Developer",
-				company: "Enterprise",
+				author: t("home.testimonials.attribution", {
+					defaultValue: "Community Feedback",
+				}),
+				role: t("home.testimonials.attributionNote", {
+					defaultValue: "Representative community member",
+				}),
 				rating: 5,
 			},
 			{
@@ -267,9 +278,12 @@ const homeContent = {
 					defaultValue:
 						"Finally, an editor that respects my system resources. No more Electron memory bloat.",
 				}),
-				author: "Dev Four",
-				role: "Full-Stack Dev",
-				company: "Agency",
+				author: t("home.testimonials.attribution", {
+					defaultValue: "Community Feedback",
+				}),
+				role: t("home.testimonials.attributionNote", {
+					defaultValue: "Representative community member",
+				}),
 				rating: 5,
 			},
 			{
@@ -278,9 +292,12 @@ const homeContent = {
 					defaultValue:
 						"The open-source commitment means I can contribute and customize. This is the editor I've been waiting for.",
 				}),
-				author: "Dev Five",
-				role: "OSS Maintainer",
-				company: "Open Source",
+				author: t("home.testimonials.attribution", {
+					defaultValue: "Community Feedback",
+				}),
+				role: t("home.testimonials.attributionNote", {
+					defaultValue: "Representative community member",
+				}),
 				rating: 5,
 			},
 			{
@@ -289,9 +306,12 @@ const homeContent = {
 					defaultValue:
 						"The gRPC-based architecture is a masterclass in system design. Land is the future of desktop editors.",
 				}),
-				author: "Dev Six",
-				role: "Architect",
-				company: "Consulting",
+				author: t("home.testimonials.attribution", {
+					defaultValue: "Community Feedback",
+				}),
+				role: t("home.testimonials.attributionNote", {
+					defaultValue: "Representative community member",
+				}),
 				rating: 5,
 			},
 		],
@@ -313,8 +333,8 @@ const homeContent = {
 				description: t("download.card.platform.macos.universalBadge", {
 					defaultValue: "Universal Binary",
 				}),
-				version: "v0.1.0",
-				size: "45.2 MB",
+				version: "Pre-release",
+				size: "TBD",
 			},
 			{
 				id: "windows",
@@ -325,8 +345,8 @@ const homeContent = {
 				description: t("download.card.platform.windows.description", {
 					defaultValue: "64-bit (x64)",
 				}),
-				version: "v0.1.0",
-				size: "48.7 MB",
+				version: "Pre-release",
+				size: "TBD",
 			},
 			{
 				id: "linux",
@@ -337,8 +357,8 @@ const homeContent = {
 				description: t("download.card.platform.linux.description", {
 					defaultValue: "DEB, RPM, AppImage",
 				}),
-				version: "v0.1.0",
-				size: "41.3 MB",
+				version: "Pre-release",
+				size: "TBD",
 			},
 		],
 		showVerification: true,
@@ -366,15 +386,15 @@ const homeContent = {
 			},
 			{
 				label: t("home.nav.downloads", { defaultValue: "Download" }),
-				href: "/download",
+				href: "/downloads",
 			},
 			{
 				label: t("home.nav.docs", { defaultValue: "Docs" }),
-				href: "/docs",
+				href: "https://github.com/CodeEditorLand/Land#readme",
 			},
 			{
 				label: t("home.nav.github", { defaultValue: "GitHub" }),
-				href: "https://github.com/Land/Land",
+				href: "https://github.com/CodeEditorLand/Land",
 			},
 		],
 		actions: [
@@ -389,7 +409,7 @@ const homeContent = {
 				text: t("common.button.download", { defaultValue: "Get Land" }),
 				variant: "default",
 				size: "default",
-				href: "/download",
+				href: "/downloads",
 			},
 		],
 		sticky: true,
@@ -404,9 +424,7 @@ const homeContent = {
 			}),
 		},
 		social: {
-			github: "https://github.com/Land/Land",
-			twitter: "https://twitter.com/Land",
-			discord: "https://discord.gg/Land",
+			github: "https://github.com/CodeEditorLand/Land",
 		},
 		columns: [
 			{
@@ -418,19 +436,19 @@ const homeContent = {
 						label: t("footer.columns.product.features", {
 							defaultValue: "Features",
 						}),
-						href: "#",
+						href: "/#features",
 					},
 					{
 						label: t("footer.columns.product.downloads", {
 							defaultValue: "Download",
 						}),
-						href: "/download",
+						href: "/downloads",
 					},
 					{
 						label: t("footer.columns.product.docs", {
 							defaultValue: "Docs",
 						}),
-						href: "/docs",
+						href: "https://github.com/CodeEditorLand/Land#readme",
 					},
 				],
 			},
@@ -443,19 +461,19 @@ const homeContent = {
 						label: t("footer.columns.company.github", {
 							defaultValue: "GitHub",
 						}),
-						href: "https://github.com/Land/Land",
+						href: "https://github.com/CodeEditorLand/Land",
 					},
 					{
 						label: t("footer.columns.company.blog", {
-							defaultValue: "Blog",
+							defaultValue: "Discussions",
 						}),
-						href: "/blog",
+						href: "https://github.com/CodeEditorLand/Land/discussions",
 					},
 					{
 						label: t("footer.columns.company.contributing", {
 							defaultValue: "Contributing",
 						}),
-						href: "/contributing",
+						href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
 					},
 				],
 			},
@@ -499,6 +517,53 @@ const metaDescription = t("meta.home.description", {
 ---
 
 <Base Title={metaTitle} Description={metaDescription} lang="en">
+	<Fragment slot="Head">
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "SoftwareApplication",
+				"name": "Code Editor Land",
+				"alternateName": "Land",
+				"description":
+					"A high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code compatibility without the Electron bloat.",
+				"url": "https://editor.land",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "macOS, Windows, Linux",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD",
+				},
+				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
+				"softwareVersion": "Pre-release",
+				"downloadUrl": "https://editor.land/downloads",
+				"screenshot": "https://editor.land/Favicon/og-image.png",
+				"author": {
+					"@type": "Organization",
+					"name": "Code Editor Land",
+					"url": "https://editor.land",
+				},
+				"publisher": {
+					"@type": "Organization",
+					"name": "Code Editor Land",
+					"url": "https://editor.land",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://editor.land/Favicon/favicon.svg",
+					},
+				},
+				"featureList": [
+					"Native Rust backend with gRPC IPC",
+					"VS Code extension compatibility",
+					"Effect-TS type-safe UI services",
+					"Cross-platform (macOS, Windows, Linux)",
+					"Open source under CC0 license",
+				],
+				"isAccessibleForFree": true,
+			})}
+		/>
+	</Fragment>
 	<HomePage
 		content={homeContent}
 		metaTitle={metaTitle}

@@ -1,4 +1,8 @@
-import type { Mouse, MatrixType, PixelComponent } from "@Function/Scroll/Type.js";
+import type {
+	MatrixType,
+	Mouse,
+	PixelComponent,
+} from "@Function/Scroll/Type.js";
 import React, { useEffect, useRef, useState } from "react";
 
 // Typed dynamic imports for dependencies
@@ -91,7 +95,9 @@ const ScrollCode: React.FC<ScrollCodeProps> = ({ Text = "", Font = 1 }) => {
 							{(() => {
 								const Position = Character % text.length;
 								if (!Matrix) return null;
-								const matrixRowArray: number[][] = Matrix[Position.toUpperCase()] ?? Matrix[" "];
+								const matrixRowArray: number[][] =
+									Matrix[Position.toUpperCase()] ??
+									Matrix[" "];
 								if (!matrixRowArray) return null;
 
 								return matrixRowArray.map(
@@ -106,17 +112,26 @@ const ScrollCode: React.FC<ScrollCodeProps> = ({ Text = "", Font = 1 }) => {
 												): React.ReactNode => {
 													const container =
 														elementRef.current?.getBoundingClientRect();
-													if (!Pixel || !container) return null;
+													if (!Pixel || !container)
+														return null;
 													return (
 														<Pixel
 															Font={Font}
-															Character={Character}
+															Character={
+																Character
+															}
 															Index={Index}
 															Show={Show}
-															Text={display().length}
+															Text={
+																display().length
+															}
 															Mouse={mouse}
-															Container={container}
-															CurrentTime={currentTime}
+															Container={
+																container
+															}
+															CurrentTime={
+																currentTime
+															}
 															Row={RowIndex}
 															Column={Index % 3}
 														/>

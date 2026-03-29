@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Label } from "../ui/label";
 import type { LabelContent } from "./types";
 

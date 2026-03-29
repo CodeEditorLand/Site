@@ -5,11 +5,12 @@ import { getI18n } from "../Lib/I18n/Server";
 const t = getI18n();
 
 const metaTitle = t("meta.license.title", {
-	defaultValue: "License | Code Editor Land"
+	defaultValue: "License | Code Editor Land",
 });
 
 const metaDescription = t("meta.license.description", {
-	defaultValue: "Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license."
+	defaultValue:
+		"Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license.",
 });
 
 // Full CC0 1.0 Universal text
@@ -132,111 +133,201 @@ legal effect of CC0 on those rights.
    Work.`;
 ---
 
-<Base Title={metaTitle} Description={metaDescription} Url="https://editor.land/license" lang="en">
-	<div class="container mx-auto px-4 py-16 max-w-4xl">
+<Base
+	Title={metaTitle}
+	Description={metaDescription}
+	Url="https://editor.land/license"
+	lang="en">
+	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
-			<ol class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
 				<li>
-					<a href="/" class="hover:text-foreground transition-colors">Home</a>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>Home</a
+					>
 				</li>
 				<li class="mx-2">/</li>
 				<li>
-					<span class="text-foreground font-medium">License</span>
+					<span class="font-medium text-foreground">License</span>
 				</li>
 			</ol>
 		</nav>
 
 		<!-- Page Header -->
 		<header class="mb-12">
-			<h1 class="text-4xl font-bold tracking-tight mb-4">License</h1>
+			<h1 class="mb-4 text-4xl font-bold tracking-tight">License</h1>
 			<p class="text-lg text-muted-foreground">
-				Code Editor Land is open source software dedicated to the public domain.
+				Code Editor Land is open source software dedicated to the public
+				domain.
 			</p>
 		</header>
 
 		<!-- Content -->
 		<article class="prose prose-slate max-w-none">
 			<section class="mb-10">
-				<h2 class="text-2xl font-semibold mb-4">CC0 1.0 Universal</h2>
+				<h2 class="mb-4 text-2xl font-semibold">CC0 1.0 Universal</h2>
 				<p class="mb-4">
-					The Code Editor Land project, including all source code, documentation, and related materials, is dedicated to the public domain under the <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener noreferrer">Creative Commons CC0 1.0 Universal</a> license.
+					The Code Editor Land project, including all source code,
+					documentation, and related materials, is dedicated to the
+					public domain under the <a
+						href="https://creativecommons.org/publicdomain/zero/1.0/"
+						target="_blank"
+						rel="noopener noreferrer"
+						>Creative Commons CC0 1.0 Universal</a
+					> license.
 				</p>
-				<div class="bg-muted/50 p-6 rounded-lg border mb-6">
-					<p class="text-sm text-muted-foreground mb-4">
-						<strong>What this means:</strong> You are free to use, modify, distribute, and use the code for any purpose, including commercial purposes, without attribution or restrictions. The authors have waived all copyright and related rights to the fullest extent permitted by law.
+				<div class="bg-muted/50 mb-6 rounded-lg border p-6">
+					<p class="mb-4 text-sm text-muted-foreground">
+						<strong>What this means:</strong> You are free to use, modify,
+						distribute, and use the code for any purpose, including commercial
+						purposes, without attribution or restrictions. The authors
+						have waived all copyright and related rights to the fullest
+						extent permitted by law.
 					</p>
 					<p class="text-sm text-muted-foreground">
-						This is not a "copyfree" license—it is a public domain dedication with a fallback license. See the full legal text below.
+						This is not a "copyfree" license—it is a public domain
+						dedication with a fallback license. See the full legal
+						text below.
 					</p>
 				</div>
 			</section>
 
 			<section class="mb-10">
-				<h2 class="text-2xl font-semibold mb-4">Full License Text</h2>
-				<div class="bg-muted/30 p-6 rounded-lg border overflow-x-auto">
-					<pre class="text-sm whitespace-pre-wrap font-mono leading-relaxed">{cc0LicenseText}</pre>
+				<h2 class="mb-4 text-2xl font-semibold">Full License Text</h2>
+				<div class="bg-muted/30 overflow-x-auto rounded-lg border p-6">
+					<pre
+						class="whitespace-pre-wrap font-mono text-sm leading-relaxed">{cc0LicenseText}</pre>
 				</div>
 			</section>
 
 			<section class="mb-10">
-				<h2 class="text-2xl font-semibold mb-4">Key Points</h2>
-				<ul class="list-disc pl-8 mb-4 space-y-2">
-					<li><strong>No copyright restrictions:</strong> To the fullest extent permitted by law, the authors have waived all copyright and related rights.</li>
-					<li><strong>Free for all uses:</strong> Use, modify, distribute, and use commercially without permission or attribution.</li>
-					<li><strong>No warranty:</strong> The work is provided "as-is" without any warranties.</li>
-					<li><strong>Trademarks not included:</strong> The "Code Editor Land", "Land", and associated logos are trademarks and are not licensed under CC0.</li>
-					<li><strong>Third-party components:</strong> Some dependencies may be under different licenses. These are documented in the source repository.</li>
+				<h2 class="mb-4 text-2xl font-semibold">Key Points</h2>
+				<ul class="mb-4 list-disc space-y-2 pl-8">
+					<li>
+						<strong>No copyright restrictions:</strong> To the fullest
+						extent permitted by law, the authors have waived all copyright
+						and related rights.
+					</li>
+					<li>
+						<strong>Free for all uses:</strong> Use, modify, distribute,
+						and use commercially without permission or attribution.
+					</li>
+					<li>
+						<strong>No warranty:</strong> The work is provided "as-is"
+						without any warranties.
+					</li>
+					<li>
+						<strong>Trademarks not included:</strong> The "Code Editor
+						Land", "Land", and associated logos are trademarks and are
+						not licensed under CC0.
+					</li>
+					<li>
+						<strong>Third-party components:</strong> Some dependencies
+						may be under different licenses. These are documented in the
+						source repository.
+					</li>
 				</ul>
 			</section>
 
 			<section class="mb-10">
-				<h2 class="text-2xl font-semibold mb-4">Third-Party Licenses</h2>
+				<h2 class="mb-4 text-2xl font-semibold">
+					Third-Party Licenses
+				</h2>
 				<p class="mb-4">
-					The Code Editor Land project incorporates numerous third-party open-source components. Each component retains its original license. The project as a whole is dedicated to the public domain, but individual components may be under:
+					The Code Editor Land project incorporates numerous
+					third-party open-source components. Each component retains
+					its original license. The project as a whole is dedicated to
+					the public domain, but individual components may be under:
 				</p>
-				<ul class="list-disc pl-8 mb-4 space-y-2">
+				<ul class="mb-4 list-disc space-y-2 pl-8">
 					<li>MIT License</li>
 					<li>Apache License 2.0</li>
 					<li>BSD Licenses (2-clause, 3-clause)</li>
 					<li>Other permissive open-source licenses</li>
 				</ul>
 				<p>
-					For a complete list of dependencies and their licenses, please refer to the <code>Cargo.toml</code> file for Rust components and <code>package.json</code> for web components in the <a href="https://github.com/CodeEditorLand/Land" target="_blank" rel="noopener noreferrer">source repository</a>.
+					For a complete list of dependencies and their licenses,
+					please refer to the <code>Cargo.toml</code> file for Rust components
+					and <code>package.json</code> for web components in the <a
+						href="https://github.com/CodeEditorLand/Land"
+						target="_blank"
+						rel="noopener noreferrer">source repository</a
+					>.
+				</p>
+				tttt<p class="mt-4">
+					ttttt<strong>Trademark Notices:</strong> VS Code is a trademark
+					tttttof Microsoft Corporation. Code Editor Land is not affiliated
+					tttttwith or endorsed by Microsoft. Tauri is a trademark of the
+					tttttTauri Programme within the Commons Conservancy. Effect-TS
+					is tttttMIT licensed. tttt
 				</p>
 			</section>
 
 			<section class="mb-10">
-				<h2 class="text-2xl font-semibold mb-4">Why CC0?</h2>
+				<h2 class="mb-4 text-2xl font-semibold">Why CC0?</h2>
 				<p class="mb-4">
-					We believe that foundational software tools should be freely available to everyone, without barriers or restrictions. By dedicating Code Editor Land to the public domain, we ensure that:
+					We believe that foundational software tools should be freely
+					available to everyone, without barriers or restrictions. By
+					dedicating Code Editor Land to the public domain, we ensure
+					that:
 				</p>
-				<ul class="list-disc pl-8 mb-4 space-y-2">
-					<li>Developers, researchers, and companies can use the code without legal concerns</li>
-					<li>Educational institutions can freely incorporate the code into curricula</li>
-					<li>The community can fork, modify, and improve the project without permission</li>
-					<li>The work remains free forever, regardless of future changes in ownership or project direction</li>
+				<ul class="mb-4 list-disc space-y-2 pl-8">
+					<li>
+						Developers, researchers, and companies can use the code
+						without legal concerns
+					</li>
+					<li>
+						Educational institutions can freely incorporate the code
+						into curricula
+					</li>
+					<li>
+						The community can fork, modify, and improve the project
+						without permission
+					</li>
+					<li>
+						The work remains free forever, regardless of future
+						changes in ownership or project direction
+					</li>
 				</ul>
 				<p>
-					This dedication aligns with our mission to provide a high-quality, accessible code editor to developers worldwide.
+					This dedication aligns with our mission to provide a
+					high-quality, accessible code editor to developers
+					worldwide.
 				</p>
 			</section>
 
 			<section class="mb-10">
-				<h2 class="text-2xl font-semibold mb-4">Contact</h2>
+				<h2 class="mb-4 text-2xl font-semibold">Contact</h2>
 				<p class="mb-4">
-					If you have questions about the license, feel free to contact us:
+					If you have questions about the license, feel free to
+					contact us:
 				</p>
 				<p>
-					<strong>Email:</strong> <a href="mailto:legal@editor.land" class="text-primary hover:underline">legal@editor.land</a><br>
-					<strong>GitHub:</strong> <a href="https://github.com/CodeEditorLand/Land" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">github.com/CodeEditorLand/Land</a>
+					<strong>Email:</strong>
+					<a
+						href="mailto:legal@editor.land"
+						class="text-primary hover:underline"
+						>legal@editor.land</a
+					><br />
+					<strong>GitHub:</strong>
+					<a
+						href="https://github.com/CodeEditorLand/Land"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="text-primary hover:underline"
+						>github.com/CodeEditorLand/Land</a
+					>
 				</p>
 			</section>
 		</article>
 
 		<!-- Back to top -->
-		<div class="mt-12 pt-8 border-t">
-			<a href="#top" class="text-primary hover:underline text-sm">Back to top ↑</a>
+		<div class="mt-12 border-t pt-8">
+			<a href="#top" class="text-sm text-primary hover:underline"
+				>Back to top ↑</a
+			>
 		</div>
 	</div>
 
@@ -249,11 +340,11 @@ legal effect of CC0 on those rights.
 			"description": "Code Editor Land License - CC0 1.0 Universal",
 			"url": "https://editor.land/license",
 			"license": "https://creativecommons.org/publicdomain/zero/1.0/",
-			"datePublished": "2025-01-01T00:00:00Z",
-			"dateModified": "2025-01-01T00:00:00Z",
+			"datePublished": "2026-03-26T00:00:00Z",
+			"dateModified": "2026-03-26T00:00:00Z",
 			"publisher": {
 				"@type": "Organization",
-				"name": "Code Editor Land Foundation",
+				"name": "Code Editor Land",
 				"url": "https://editor.land",
 				"logo": {
 					"@type": "ImageObject",

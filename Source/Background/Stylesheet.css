@@ -21,10 +21,15 @@
 
 	.Image {
 		@apply h-full w-full object-cover object-center;
+		opacity: 0.08;
 	}
 
 	#Rock {
 		z-index: -3;
+	}
+
+	#Rock .Image {
+		opacity: 0.12;
 	}
 
 	#Background {

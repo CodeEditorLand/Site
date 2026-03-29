@@ -1,105 +1,193 @@
 ---
-import Base from "../Layout/Base.astro";
 import { DownloadsPage } from "../Components/Dynamic/DownloadsPage";
+import Base from "../Layout/Base.astro";
 import { getI18n } from "../Lib/I18n/Server";
 
 const t = getI18n();
 
 // For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
 const downloadsContent = {
-  platformGrid: {
-    title: t("download.page.title", { defaultValue: "Download Land" }),
-    subtitle: t("download.page.subtitle", { defaultValue: "Available for macOS, Windows, and Linux. Fast, native, and free." }),
-    platforms: [], // Will be fetched by DynamicPlatformGrid
-    showVerification: true,
-    onDownload: async (platform: { name: string; id?: string }) => {
-      if (platform.id) {
-        try {
-          const { downloadsAPI } = await import("../Lib/api/downloads");
-          const info = await downloadsAPI.getInfo(platform.id);
-          window.open(info.downloadUrl, '_blank');
-          await downloadsAPI.trackDownload(platform.id);
-        } catch (error) {
-          console.error("Download failed:", error);
-          alert("Download failed. Please try again.");
-        }
-      }
-    }
-  },
-  systemRequirements: {
-    title: t("download.systemRequirements.title", { defaultValue: "System Requirements" }),
-    description: t("download.systemRequirements.subtitle", { defaultValue: "Ensure your system meets these requirements before downloading." }),
-    requirements: {
-      minimum: [
-        { id: "cpu-min", label: "Processor", value: "Intel Core i5 or AMD Ryzen 5 / Apple Silicon" },
-        { id: "ram-min", label: "Memory", value: "4 GB RAM" },
-        { id: "disk-min", label: "Disk Space", value: "500 MB" }
-      ],
-      recommended: [
-        { id: "cpu-rec", label: "Processor", value: "Intel Core i7 or AMD Ryzen 7" },
-        { id: "ram-rec", label: "Memory", value: "8 GB RAM" },
-        { id: "disk-rec", label: "Disk Space", value: "1 GB SSD" }
-      ]
-    },
-    os: ["macOS 11+", "Windows 10+", "Ubuntu 20.04+ / Fedora 35+ / Debian 11+"]
-  },
-  verificationInfo: {
-    title: t("download.verification.title", { defaultValue: "Verify Your Download" }),
-    description: t("download.verification.description", { defaultValue: "Land releases are signed with PGP. Verify your download to ensure integrity." }),
-    downloadVerification: {
-      sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-      pgpSignature: "-----BEGIN PGP SIGNATURE-----\nVersion: OpenPGP.js v4.10.1\nComment: https://openpgpjs.org\n\n...",
-      signingKeyId: "0x12345678",
-      verificationInstructions: "Use the SHA-256 checksum to verify your download matches the original file. For PGP verification, import our public key and verify the signature."
-    },
-    integrityVerification: {
-      sha256: "Enter checksum to verify",
-      pgpSignature: "Click to download signature file",
-      verificationInstructions: "To verify: shasum -a 256 <filename> and compare output with the checksum above. For PGP: gpg --verify <file>.sig <file>"
-    },
-    downloadButton: { text: t("download.verification.downloadButton", { defaultValue: "Download PGP Public Key" }), variant: "outline", size: "default", fullWidth: false },
-    verifyButton: { text: t("download.verification.verifyButton", { defaultValue: "Verify Download" }), variant: "default", size: "default", fullWidth: false }
-  },
-  previousReleases: {
-    title: t("download.previousReleases.title", { defaultValue: "Previous Releases" }),
-    description: t("download.previousReleases.description", { defaultValue: "Download older versions if needed." }),
-    releases: [
-      {
-        version: "v0.1.0",
-        publishedAt: "2025-12-15T10:30:00Z",
-        size: "44.8 MB",
-        downloads: 15420,
-        changelog: "Initial public release",
-        assets: [
-          { platform: "macOS", url: "/downloads/v0.1.0/macos", sha256: "abc123...", signature: "sig123..." },
-          { platform: "Windows", url: "/downloads/v0.1.0/win64", sha256: "def456...", signature: "sig456..." },
-          { platform: "Linux", url: "/downloads/v0.1.0/linux", sha256: "ghi789...", signature: "sig789..." }
-        ]
-      }
-    ],
-    showChangelog: true,
-    onDownload: (version: string, platform: string) => console.log(`Download ${version} for ${platform}`),
-    onViewChangelog: (version: string) => console.log(`View changelog for ${version}`)
-  },
-  header: {
-    logo: { text: "Land" },
-    navigation: [
-      { label: t("common.nav.downloads", { defaultValue: "Download" }), href: "/download", isActive: true },
-      { label: t("common.nav.docs", { defaultValue: "Docs" }), href: "/docs" },
-      { label: t("common.nav.github", { defaultValue: "GitHub" }), href: "https://github.com/CodeEditorLand/Land" }
-    ],
-    actions: [
-      { type: "mobile-menu" as const },
-      { text: t("common.actions.signIn", { defaultValue: "Sign In" }), variant: "ghost", size: "default", href: "/account/signin" }
-    ]
-  },
-  footer: {}
+	platformGrid: {
+		title: t("download.page.title", { defaultValue: "Download Land" }),
+		subtitle: t("download.page.subtitle", {
+			defaultValue:
+				"Available for macOS, Windows, and Linux. Fast, native, and free.",
+		}),
+		platforms: [], // Will be fetched by DynamicPlatformGrid
+		showVerification: true,
+		onDownload: async (platform: { name: string; id?: string }) => {
+			if (platform.id) {
+				try {
+					const { downloadsAPI } =
+						await import("../Lib/api/downloads");
+					const info = await downloadsAPI.getInfo(platform.id);
+					window.open(info.downloadUrl, "_blank");
+					await downloadsAPI.trackDownload(platform.id);
+				} catch (error) {
+					console.error("Download failed:", error);
+					alert("Download failed. Please try again.");
+				}
+			}
+		},
+	},
+	systemRequirements: {
+		title: t("download.systemRequirements.title", {
+			defaultValue: "System Requirements",
+		}),
+		description: t("download.systemRequirements.subtitle", {
+			defaultValue:
+				"Ensure your system meets these requirements before downloading.",
+		}),
+		requirements: {
+			minimum: [
+				{
+					id: "cpu-min",
+					label: "Processor",
+					value: "Intel Core i5 or AMD Ryzen 5 / Apple Silicon",
+				},
+				{ id: "ram-min", label: "Memory", value: "4 GB RAM" },
+				{ id: "disk-min", label: "Disk Space", value: "500 MB" },
+			],
+			recommended: [
+				{
+					id: "cpu-rec",
+					label: "Processor",
+					value: "Intel Core i7 or AMD Ryzen 7",
+				},
+				{ id: "ram-rec", label: "Memory", value: "8 GB RAM" },
+				{ id: "disk-rec", label: "Disk Space", value: "1 GB SSD" },
+			],
+		},
+		os: [
+			"macOS 11+",
+			"Windows 10+",
+			"Ubuntu 20.04+ / Fedora 35+ / Debian 11+",
+		],
+	},
+	verificationInfo: {
+		title: t("download.verification.title", {
+			defaultValue: "Verify Your Download",
+		}),
+		description: t("download.verification.description", {
+			defaultValue:
+				"Land releases are signed with PGP. Verify your download to ensure integrity.",
+		}),
+		downloadVerification: {
+			sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+			pgpSignature:
+				"-----BEGIN PGP SIGNATURE-----\nVersion: OpenPGP.js v4.10.1\nComment: https://openpgpjs.org\n\n...",
+			signingKeyId: "0x12345678",
+			verificationInstructions:
+				"Use the SHA-256 checksum to verify your download matches the original file. For PGP verification, import our public key and verify the signature.",
+		},
+		integrityVerification: {
+			sha256: "Enter checksum to verify",
+			pgpSignature: "Click to download signature file",
+			verificationInstructions:
+				"To verify: shasum -a 256 <filename> and compare output with the checksum above. For PGP: gpg --verify <file>.sig <file>",
+		},
+		downloadButton: {
+			text: t("download.verification.downloadButton", {
+				defaultValue: "Download PGP Public Key",
+			}),
+			variant: "outline",
+			size: "default",
+			fullWidth: false,
+		},
+		verifyButton: {
+			text: t("download.verification.verifyButton", {
+				defaultValue: "Verify Download",
+			}),
+			variant: "default",
+			size: "default",
+			fullWidth: false,
+		},
+	},
+	previousReleases: {
+		title: t("download.previousReleases.title", {
+			defaultValue: "Previous Releases",
+		}),
+		description: t("download.previousReleases.description", {
+			defaultValue: "Download older versions if needed.",
+		}),
+		releases: [
+			{
+				version: "v0.1.0",
+				publishedAt: "2025-12-15T10:30:00Z",
+				size: "44.8 MB",
+				downloads: 15420,
+				changelog: "Initial public release",
+				assets: [
+					{
+						platform: "macOS",
+						url: "/downloads/v0.1.0/macos",
+						sha256: "abc123...",
+						signature: "sig123...",
+					},
+					{
+						platform: "Windows",
+						url: "/downloads/v0.1.0/win64",
+						sha256: "def456...",
+						signature: "sig456...",
+					},
+					{
+						platform: "Linux",
+						url: "/downloads/v0.1.0/linux",
+						sha256: "ghi789...",
+						signature: "sig789...",
+					},
+				],
+			},
+		],
+		showChangelog: true,
+		onDownload: (version: string, platform: string) =>
+			console.log(`Download ${version} for ${platform}`),
+		onViewChangelog: (version: string) =>
+			console.log(`View changelog for ${version}`),
+	},
+	header: {
+		logo: { text: "Land" },
+		navigation: [
+			{
+				label: t("common.nav.downloads", { defaultValue: "Download" }),
+				href: "/downloads",
+				isActive: true,
+			},
+			{
+				label: t("common.nav.docs", { defaultValue: "Docs" }),
+				href: "https://github.com/CodeEditorLand/Land#readme",
+			},
+			{
+				label: t("common.nav.github", { defaultValue: "GitHub" }),
+				href: "https://github.com/CodeEditorLand/Land",
+			},
+		],
+		actions: [
+			{ type: "mobile-menu" as const },
+			{
+				text: t("common.actions.signIn", { defaultValue: "Sign In" }),
+				variant: "ghost",
+				size: "default",
+				href: "/account/signin",
+			},
+		],
+	},
+	footer: {},
 };
 
-const metaTitle = t("meta.downloads.title", { defaultValue: "Download Land | The Next-Generation Code Editor" });
-const metaDescription = t("meta.downloads.description", { defaultValue: "Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security." });
+const metaTitle = t("meta.downloads.title", {
+	defaultValue: "Download Land | The Next-Generation Code Editor",
+});
+const metaDescription = t("meta.downloads.description", {
+	defaultValue:
+		"Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
+});
 ---
 
 <Base Title={metaTitle} Description={metaDescription}>
-  <DownloadsPage content={downloadsContent} metaTitle={metaTitle} metaDescription={metaDescription} />
+	<DownloadsPage
+		content={downloadsContent}
+		metaTitle={metaTitle}
+		metaDescription={metaDescription}
+	/>
 </Base>

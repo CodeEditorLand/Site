@@ -42,27 +42,32 @@ export function DynamicHeader({ content, className }: DynamicHeaderProps) {
 
 	return (
 		<header
-			className={` ${sticky ? "sticky top-0 z-50" : ""} bg-background/95 supports-[backdrop-filter]:bg-background/60 w-full border-b backdrop-blur ${className || ""} `}>
+			className={` ${sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white/95 ${className || ""} `}>
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo */}
 				<div className="flex items-center space-x-2">
 					{logo.icon && (
-						<div className="bg-primary border-border h-8 w-8 !rounded-none border-[3px]"></div>
+						<div className="h-8 w-8 !rounded-none border border-[var(--border)] bg-primary"></div>
 					)}
 					<span className="font-semibold">{logo.text}</span>
 				</div>
 
 				{/* Desktop Navigation */}
-				<nav className="hidden items-center space-x-6 md:flex">
+				<nav
+					className="hidden items-center space-x-6 md:flex"
+					aria-label="Main navigation">
 					{navigation.map((link, index) => (
 						<a
 							key={index}
 							href={link.href}
-							className={`transition-colors ${
+							className={`transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)] ${
 								link.isActive
-									? "text-foreground font-medium"
+									? "font-medium text-foreground"
 									: "text-muted-foreground hover:text-foreground"
-							}`}>
+							}`}
+							{...(link.isActive
+								? { "aria-current": "page" as const }
+								: {})}>
 							{link.label}
 						</a>
 					))}
@@ -80,7 +85,9 @@ export function DynamicHeader({ content, className }: DynamicHeaderProps) {
 									className="md:hidden"
 									onClick={() =>
 										setMobileMenuOpen(!mobileMenuOpen)
-									}>
+									}
+									aria-label="Toggle menu"
+									aria-expanded={mobileMenuOpen}>
 									<Menu className="h-4 w-4" />
 								</Button>
 							);
@@ -91,12 +98,12 @@ export function DynamicHeader({ content, className }: DynamicHeaderProps) {
 						return (
 							<React.Fragment key={index}>
 								{mobileMenuOpen && showMobileMenu && (
-									<div className="bg-background absolute left-0 right-0 top-16 z-50 flex flex-col space-y-2 border-b p-4 md:hidden">
+									<div className="absolute left-0 right-0 top-16 z-50 flex flex-col space-y-2 border-b bg-background p-4 md:hidden">
 										{navigation.map((link, navIndex) => (
 											<a
 												key={navIndex}
 												href={link.href}
-												className="hover:bg-accent rounded-none px-4 py-2"
+												className="rounded-none px-4 py-2 hover:bg-accent"
 												onClick={() =>
 													setMobileMenuOpen(false)
 												}>

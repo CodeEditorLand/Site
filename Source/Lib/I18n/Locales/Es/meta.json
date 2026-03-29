@@ -1,0 +1,57 @@
+{
+	"account": {
+		"forgotPassword": "Contrasena olvidada - Code Editor Land",
+		"resetPassword": "Restablecer contrasena - Code Editor Land",
+		"signIn": "Iniciar sesion - Code Editor Land",
+		"signUp": "Registrarse - Code Editor Land"
+	},
+	"description": "El editor de codigo de nueva generacion",
+	"downloads": {
+		"description": "Descargue Code Editor Land para macOS, Windows y Linux. Todas las versiones estan firmadas y verificadas para su seguridad.",
+		"title": "Descargar Code Editor Land | El editor de codigo de nueva generacion"
+	},
+	"home": {
+		"description": "Code Editor Land es un editor de codigo de alto rendimiento y eficiente en recursos, construido con Rust y Tauri. Experimente VS Code",
+		"title": "Code Editor Land | El editor de codigo de nueva generacion"
+	},
+	"legal": {
+		"privacy": {
+			"description": "Politica de privacidad de Code Editor Land - Conozca como recopilamos, usamos y protegemos sus datos personales en cumplimiento con GDPR y CCPA.",
+			"title": "Politica de privacidad | Code Editor Land"
+		},
+		"terms": {
+			"description": "Terminos de servicio de Code Editor Land - Regulando su uso de nuestro editor de codigo abierto y servicios relacionados.",
+			"title": "Terminos de servicio | Code Editor Land"
+		}
+	},
+	"license": {
+		"description": "Code Editor Land es codigo abierto bajo la licencia Creative Commons CC0 1.0 Universal.",
+		"title": "Licencia | Code Editor Land"
+	},
+	"title": "Code Editor Land",
+	"verify": {
+		"title": "Verificar correo electronico - Code Editor Land"
+	},
+	"docs": {
+		"title": "Documentacion | Code Editor Land",
+		"description": "Explore la documentacion de Code Editor Land, guias de arquitectura y recursos para desarrolladores."
+	},
+	"blog": {
+		"title": "Blog | Code Editor Land",
+		"description": "Noticias, actualizaciones y articulos del equipo de Code Editor Land."
+	},
+	"contributing": {
+		"title": "Contribuir | Code Editor Land",
+		"description": "Aprenda como contribuir a Code Editor Land — un editor de codigo abierto construido con Rust y Tauri."
+	},
+	"dashboard": {
+		"title": "Panel de control | Code Editor Land",
+		"description": "Su panel de control de Code Editor Land — administre su cuenta, descargas y configuraciones."
+	},
+	"contact": {
+		"sales": {
+			"title": "Consultas empresariales | Code Editor Land",
+			"description": "Contacte al equipo de Code Editor Land para licencias empresariales, soporte y opciones de implementacion."
+		}
+	}
+}

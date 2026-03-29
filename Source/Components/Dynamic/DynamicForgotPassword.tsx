@@ -4,7 +4,6 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "../ui/card";
@@ -73,7 +72,7 @@ export function DynamicForgotPassword({
 	};
 
 	return (
-		<section className="py-20">
+		<section className="py-20" aria-label="Forgot password">
 			<div className="container mx-auto px-4">
 				<div className={`mx-auto max-w-md ${className}`}>
 					<Card>
@@ -85,12 +84,17 @@ export function DynamicForgotPassword({
 							{!isSubmitted ? (
 								<form
 									className="space-y-4"
-									onSubmit={handleSubmit}>
-									{(errorMessage || internalError) && (
-										<div className="bg-destructive/10 text-destructive rounded-none p-3 text-sm">
-											{errorMessage || internalError}
-										</div>
-									)}
+									onSubmit={handleSubmit}
+									aria-label="Password reset request form">
+									<div aria-live="polite" aria-atomic="true">
+										{(errorMessage || internalError) && (
+											<div
+												className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+												role="alert">
+												{errorMessage || internalError}
+											</div>
+										)}
+									</div>
 
 									<DynamicInput
 										content={{
@@ -110,14 +114,20 @@ export function DynamicForgotPassword({
 									/>
 								</form>
 							) : (
-								<div className="space-y-6 text-center">
+								<div
+									className="space-y-6 text-center"
+									role="status"
+									aria-live="polite">
 									<div className="space-y-2">
-										<div className="mx-auto flex h-12 w-12 items-center justify-center rounded-none bg-green-100 dark:bg-green-900/30">
+										<div
+											className="mx-auto flex h-12 w-12 items-center justify-center rounded-none bg-green-100"
+											aria-hidden="true">
 											<svg
 												className="h-6 w-6 text-green-600"
 												fill="none"
 												viewBox="0 0 24 24"
-												stroke="currentColor">
+												stroke="currentColor"
+												aria-hidden="true">
 												<path
 													strokeLinecap="round"
 													strokeLinejoin="round"
@@ -136,8 +146,8 @@ export function DynamicForgotPassword({
 									</div>
 
 									{resendButton && (
-										<div className="border-border border-t pt-4">
-											<p className="text-muted-foreground mb-2 text-sm">
+										<div className="border-t border-border pt-4">
+											<p className="mb-2 text-sm text-muted-foreground">
 												Didn't receive the email?
 											</p>
 											<DynamicButton
@@ -154,7 +164,7 @@ export function DynamicForgotPassword({
 									<p className="text-sm">
 										<button
 											type="button"
-											className="text-primary font-medium hover:underline"
+											className="font-medium text-primary hover:underline"
 											onClick={() =>
 												onNavigate?.("/account/signin")
 											}>

@@ -1,5 +1,6 @@
 import { Download, Fingerprint, Shield } from "lucide-react";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 import type { ButtonContent } from "./types";
@@ -37,6 +38,7 @@ export function DynamicVerificationInfo({
 	onDownloadSignature,
 	className,
 }: DynamicVerificationInfoProps) {
+	const { t } = useTranslation("download");
 	const { title, description, downloadVerification, integrityVerification } =
 		content;
 
@@ -44,10 +46,20 @@ export function DynamicVerificationInfo({
 		navigator.clipboard
 			.writeText(text)
 			.then(() => {
-				alert(`${label} copied to clipboard!`);
+				alert(
+					t("labels.copiedToClipboard", {
+						defaultValue: "{{label}} copied to clipboard!",
+						label,
+					}),
+				);
 			})
 			.catch(() => {
-				alert(`Failed to copy ${label}`);
+				alert(
+					t("labels.failedToCopy", {
+						defaultValue: "Failed to copy {{label}}",
+						label,
+					}),
+				);
 			});
 	};
 
@@ -59,16 +71,20 @@ export function DynamicVerificationInfo({
 			{info.sha256 && (
 				<div className="space-y-2">
 					<div className="flex items-center gap-2">
-						<Fingerprint className="text-primary h-4 w-4" />
+						<Fingerprint
+							className="h-4 w-4 text-primary"
+							aria-hidden="true"
+						/>
 						<span className="font-semibold">SHA-256 Checksum</span>
 					</div>
-					<div className="bg-muted/50 border-border flex items-center gap-2 border p-3">
+					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
 							{info.sha256}
 						</code>
 						<button
 							type="button"
-							className="border-border hover:bg-accent border px-3 py-1 text-xs transition-colors"
+							className="border border-[var(--border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
+							aria-label="Copy SHA-256 checksum to clipboard"
 							onClick={() =>
 								copyToClipboard(
 									info.sha256!,
@@ -84,16 +100,20 @@ export function DynamicVerificationInfo({
 			{info.pgpSignature && (
 				<div className="space-y-2">
 					<div className="flex items-center gap-2">
-						<Shield className="text-primary h-4 w-4" />
+						<Shield
+							className="h-4 w-4 text-primary"
+							aria-hidden="true"
+						/>
 						<span className="font-semibold">PGP Signature</span>
 					</div>
-					<div className="bg-muted/50 border-border flex items-center gap-2 border p-3">
+					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
 							{info.pgpSignature}
 						</code>
 						<button
 							type="button"
-							className="border-border hover:bg-accent border px-3 py-1 text-xs transition-colors"
+							className="border border-[var(--border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
+							aria-label="Copy PGP signature to clipboard"
 							onClick={() =>
 								copyToClipboard(
 									info.pgpSignature,
@@ -104,7 +124,7 @@ export function DynamicVerificationInfo({
 						</button>
 					</div>
 					{info.signingKeyId && (
-						<p className="text-muted-foreground text-xs">
+						<p className="text-xs text-muted-foreground">
 							Signed with key ID: {info.signingKeyId}
 						</p>
 					)}
@@ -112,11 +132,11 @@ export function DynamicVerificationInfo({
 			)}
 
 			{info.verificationInstructions && (
-				<div className="border-border border-t pt-4">
+				<div className="border-t border-[var(--border)] pt-4">
 					<h5 className="mb-2 font-semibold">
 						Verification Instructions
 					</h5>
-					<p className="text-muted-foreground whitespace-pre-line text-sm">
+					<p className="whitespace-pre-line text-sm text-muted-foreground">
 						{info.verificationInstructions}
 					</p>
 				</div>
@@ -144,7 +164,9 @@ export function DynamicVerificationInfo({
 	);
 
 	return (
-		<section className={`py-20 ${className || ""}`}>
+		<section
+			className={`py-20 ${className || ""}`}
+			aria-label="Download verification">
 			<div className="container mx-auto px-4">
 				<div className="mx-auto max-w-4xl">
 					{(title || description) && (
@@ -155,7 +177,7 @@ export function DynamicVerificationInfo({
 								</h2>
 							)}
 							{description && (
-								<p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+								<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
 									{description}
 								</p>
 							)}
@@ -164,9 +186,12 @@ export function DynamicVerificationInfo({
 
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						{/* Download Verification */}
-						<div className="border-border !rounded-none border-[3px] p-6 shadow-lg">
+						<div className="bg-white/92 !rounded-none border border-[var(--border)] p-6">
 							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
-								<Download className="h-5 w-5" />
+								<Download
+									className="h-5 w-5"
+									aria-hidden="true"
+								/>
 								Download Verification
 							</h3>
 							{renderVerificationBlock(
@@ -176,9 +201,12 @@ export function DynamicVerificationInfo({
 						</div>
 
 						{/* Integrity Verification */}
-						<div className="border-primary !rounded-none border-[3px] p-6 shadow-xl">
+						<div className="bg-white/92 !rounded-none border border-primary p-6">
 							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
-								<Shield className="h-5 w-5" />
+								<Shield
+									className="h-5 w-5"
+									aria-hidden="true"
+								/>
 								Integrity Check
 							</h3>
 							{renderVerificationBlock(

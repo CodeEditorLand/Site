@@ -1,21 +1,57 @@
 {
-  "account": {
-    "forgotPassword": "Forgot Password - Land",
-    "resetPassword": "Reset Password - Land",
-    "signIn": "Sign In - Land",
-    "signUp": "Sign Up - Land"
-  },
-  "description": "Code Editor",
-  "downloads": {
-    "description": "Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
-    "title": "Download Land | The Next-Generation Code Editor"
-  },
-  "home": {
-    "description": "Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code",
-    "title": "Land | The Next-Generation Code Editor"
-  },
-  "title": "Land",
-  "verify": {
-    "title": "Verify Email - Land"
-  }
+	"account": {
+		"forgotPassword": "Забравена парола - Code Editor Land",
+		"resetPassword": "Нулиране на парола - Code Editor Land",
+		"signIn": "Вход - Code Editor Land",
+		"signUp": "Регистрация - Code Editor Land"
+	},
+	"description": "Редакторът на код от ново поколение",
+	"downloads": {
+		"description": "Изтеглете Code Editor Land за macOS, Windows и Linux. Всички версии са подписани и проверени за вашата сигурност.",
+		"title": "Изтеглете Code Editor Land | Редакторът на код от ново поколение"
+	},
+	"home": {
+		"description": "Code Editor Land е високопроизводителен, ресурсно ефективен редактор на код, създаден с Rust и Tauri. Изживейте VS Code",
+		"title": "Code Editor Land | Редакторът на код от ново поколение"
+	},
+	"legal": {
+		"privacy": {
+			"description": "Политика за поверителност на Code Editor Land - Научете как събираме, използваме и защитаваме вашите лични данни в съответствие с GDPR и CCPA.",
+			"title": "Политика за поверителност | Code Editor Land"
+		},
+		"terms": {
+			"description": "Условия за ползване на Code Editor Land - Уреждащи използването на нашия редактор на код с отворен код и свързаните услуги.",
+			"title": "Условия за ползване | Code Editor Land"
+		}
+	},
+	"license": {
+		"description": "Code Editor Land е с отворен код под лиценза Creative Commons CC0 1.0 Universal.",
+		"title": "Лиценз | Code Editor Land"
+	},
+	"title": "Code Editor Land",
+	"verify": {
+		"title": "Потвърждение на имейл - Code Editor Land"
+	},
+	"docs": {
+		"title": "Документация | Code Editor Land",
+		"description": "Разгледайте документацията на Code Editor Land, ръководства за архитектурата и ресурси за разработчици."
+	},
+	"blog": {
+		"title": "Блог | Code Editor Land",
+		"description": "Новини, актуализации и статии от екипа на Code Editor Land."
+	},
+	"contributing": {
+		"title": "Принос | Code Editor Land",
+		"description": "Научете как да допринесете за Code Editor Land — редактор на код с отворен код, изграден с Rust и Tauri."
+	},
+	"dashboard": {
+		"title": "Табло | Code Editor Land",
+		"description": "Вашето табло в Code Editor Land — управлявайте профила, изтеглянията и настройките си."
+	},
+	"contact": {
+		"sales": {
+			"title": "Корпоративни запитвания | Code Editor Land",
+			"description": "Свържете се с екипа на Code Editor Land за корпоративно лицензиране, поддръжка и опции за внедряване."
+		}
+	}
 }

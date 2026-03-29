@@ -1,0 +1,225 @@
+{
+	"actions": {
+		"signIn": "Connectez-vous a votre compte"
+	},
+	"brand": {
+		"name": "Code Editor Land",
+		"tagline": "L'editeur de code de nouvelle generation. Open source et gratuit pour toujours."
+	},
+	"breadcrumb": {
+		"home": "Accueil"
+	},
+	"button": {
+		"backToHome": "Retour a la page d'accueil",
+		"backToTop": "Retour en haut",
+		"download": "Telecharger Land",
+		"learnMore": "En savoir plus sur les fonctionnalites",
+		"signIn": "Connectez-vous a votre compte",
+		"signUp": "Creez votre compte gratuit"
+	},
+	"comingSoon": "Bientot disponible",
+	"error": {
+		"404": "404 - Page non trouvee",
+		"pageNotFound": "La page que vous recherchez n'existe pas ou a ete deplacee. Veuillez verifier l'URL pour d'eventuelles fautes de frappe, ou retournez a la page d'accueil. Si vous pensez qu'il s'agit d'une erreur, contactez notre equipe de support et nous vous aiderons."
+	},
+	"label": {
+		"email": "Adresse e-mail",
+		"password": "Mot de passe"
+	},
+	"nav": {
+		"docs": "Documentation",
+		"downloads": "Telecharger",
+		"github": "Depot GitHub"
+	},
+	"docs": {
+		"pageTitle": "Documentation",
+		"pageSubtitle": "Tout ce dont vous avez besoin pour demarrer avec Code Editor Land.",
+		"gettingStarted": {
+			"title": "Premiers pas",
+			"description": "Lisez le README pour les instructions d'installation, les etapes de construction et un apercu de l'architecture du projet."
+		},
+		"wiki": {
+			"title": "Wiki",
+			"description": "Parcourez le wiki du projet pour des guides approfondis, des tutoriels et de la documentation de reference."
+		},
+		"discussions": {
+			"title": "Discussions",
+			"description": "Posez des questions, partagez des idees et connectez-vous avec la communaute sur GitHub Discussions."
+		},
+		"issueTracker": {
+			"title": "Suivi des problemes",
+			"description": "Signalez des bugs, demandez des fonctionnalites ou consultez les problemes existants sur GitHub."
+		},
+		"architecture": {
+			"heading": "Apercu de l'architecture",
+			"intro": "Land remplace la pile Electron de VS Code par une architecture moderne et haute performance :",
+			"mountain": "Backend natif Rust/Tauri — gere les fenetres, le systeme de fichiers, les processus",
+			"cocoon": "Hote d'extension TypeScript — execute les extensions VS Code via Effect-TS",
+			"wind": "Services UI TypeScript — reimplementation du workbench VS Code",
+			"sky": "Composants UI Astro — rend l'interface de l'editeur",
+			"air": "Daemon de fond Rust — mises a jour, telechargements, signature cryptographique",
+			"echo": "Planificateur de taches Rust — executeur a vol de travail haute performance"
+		},
+		"repositories": {
+			"heading": "Depots sources",
+			"mainMonorepo": "Monorepo principal",
+			"tauriBackend": "Backend Tauri",
+			"extensionHost": "Hote d'extension",
+			"viewAll": "Voir tous les depots"
+		}
+	},
+	"blog": {
+		"pageTitle": "Blog",
+		"pageSubtitle": "Actualites, mises a jour et articles techniques de l'equipe.",
+		"comingSoonHeading": "Bientot disponible",
+		"comingSoonText": "Nous preparons des articles sur l'architecture, le processus de developpement et la feuille de route de Code Editor Land. Revenez bientot pour des mises a jour.",
+		"joinDiscussions": "Rejoindre les discussions",
+		"followGitHub": "Suivre sur GitHub"
+	},
+	"contributing": {
+		"pageTitle": "Contribuer",
+		"pageSubtitle": "Code Editor Land est open source et accueille les contributions de tous. Voici comment s'impliquer.",
+		"guide": {
+			"title": "Guide de contribution",
+			"description": "Lisez le CONTRIBUTING.md complet sur GitHub pour des instructions detaillees sur la configuration de l'environnement de developpement et la soumission de modifications."
+		},
+		"goodFirstIssues": {
+			"title": "Bons premiers problemes",
+			"description": "Parcourez les problemes etiquetes \"good first issue\" pour trouver des taches accessibles aux nouveaux contributeurs."
+		},
+		"howToContribute": {
+			"heading": "Comment contribuer"
+		},
+		"step1": {
+			"title": "Forker et cloner",
+			"description": "Forkez le depot Land sur GitHub et clonez-le localement avec les sous-modules :"
+		},
+		"step2": {
+			"title": "Configurer l'environnement",
+			"description": "Installez Rust (1.95.0+), Node.js et pnpm. Puis executez :"
+		},
+		"step3": {
+			"title": "Effectuer vos modifications",
+			"description": "Creez une nouvelle branche, effectuez vos modifications et suivez la convention de nommage PascalCase utilisee dans tout le projet."
+		},
+		"step4": {
+			"title": "Soumettre une pull request",
+			"description": "Poussez votre branche et ouvrez une pull request vers la branche Current. Decrivez ce que vous avez change et pourquoi."
+		},
+		"ways": {
+			"heading": "Facons de contribuer",
+			"code": {
+				"title": "Code",
+				"description": "Corrigez des bugs, implementez des fonctionnalites ou ameliorez les performances en Rust ou TypeScript."
+			},
+			"documentation": {
+				"title": "Documentation",
+				"description": "Ameliorez les guides, ajoutez des exemples ou traduisez la documentation existante dans d'autres langues."
+			},
+			"testing": {
+				"title": "Tests",
+				"description": "Ecrivez des tests, signalez des bugs ou aidez a reproduire et trier les problemes existants."
+			},
+			"design": {
+				"title": "Design",
+				"description": "Contribuez des ameliorations UI/UX, des icones ou du travail de conception visuelle pour l'editeur ou le site web."
+			}
+		},
+		"funding": {
+			"heading": "Financement",
+			"description": "Code Editor Land est finance par le fonds NGI0 Commons via NLnet. Cela permet un developpement a temps plein sur le projet.",
+			"nlnetIntro": "Code Editor Land a ete finance par le",
+			"nlnetFundName": "Fonds NGI0 Commons",
+			"nlnetEstablishedBy": ", un fonds etabli par",
+			"nlnetSuffix": "avec le soutien financier du programme Next Generation Internet de la Commission europeenne, dans le cadre de l'accord de subvention n\u00b0\u00a0101135429. Ce financement permet un developpement durable du projet open source.",
+			"playformInfo": "Le projet est exploite par PlayForm, une societe basee a Sofia, en Bulgarie. PlayForm agit en tant que steward open source pour Code Editor Land dans le cadre de la subvention NGI0 Commons Fund.",
+			"viewProject": "Consultez la",
+			"nlnetProjectPage": "page du projet NLnet",
+			"viewProjectSuffix": "pour plus de details sur la subvention et les objectifs."
+		},
+		"conduct": {
+			"heading": "Code de conduite",
+			"description": "Tous les participants de la communaute Code Editor Land sont tenus d'etre respectueux et constructifs. Lisez le Code de conduite complet sur GitHub."
+		}
+	},
+	"sales": {
+		"pageTitle": "Demandes entreprise",
+		"pageSubtitle": "Interesse par le deploiement de Code Editor Land dans votre organisation ? Contactez notre equipe.",
+		"form": {
+			"firstName": "Prenom",
+			"lastName": "Nom de famille",
+			"email": "E-mail professionnel",
+			"company": "Entreprise",
+			"teamSize": "Taille de l'equipe",
+			"teamSizePlaceholder": "Selectionnez la taille de l'equipe",
+			"message": "Comment pouvons-nous vous aider ?",
+			"messagePlaceholder": "Parlez-nous de vos besoins, exigences de deploiement ou questions.",
+			"submitButton": "Envoyer la demande"
+		},
+		"features": {
+			"heading": "Fonctionnalites enterprise",
+			"prioritySupport": "Support prioritaire et SLA",
+			"customDeployment": "Options de deploiement personnalisees",
+			"volumeLicensing": "Licences en volume",
+			"accountManagement": "Gestion de compte dediee",
+			"securityReview": "Revue de securite et conformite",
+			"customIntegrations": "Integrations personnalisees"
+		},
+		"contact": {
+			"heading": "Comment nous contacter",
+			"directHeading": "Contact direct",
+			"description": "Vous preferez l'e-mail ? Contactez-nous directement :",
+			"githubNote": "Nous traitons les demandes entreprise via GitHub Issues. Cela garantit que votre demande est suivie, visible par l'equipe et traitee rapidement.",
+			"openIssueHeading": "Ouvrir un GitHub Issue",
+			"openIssueDescription": "Creez un issue sur notre depot GitHub decrivant les besoins de votre organisation. Incluez le nom de l'entreprise, la taille de l'equipe, le cas d'utilisation et les exigences de deploiement. Notre equipe surveille les issues quotidiennement.",
+			"openIssueButton": "Ouvrir un GitHub Issue",
+			"issueIncludeLabel": "Ce qu'il faut inclure dans votre issue :",
+			"issueIncludeText": "Nom de l'entreprise, taille de l'equipe, cas d'utilisation prevu, environnement de deploiement (cloud/sur site), calendrier et exigences specifiques de support ou de conformite.",
+			"operatedBy": "Exploite par PlayForm, Sofia, Bulgarie"
+		},
+		"openSource": {
+			"heading": "Open Source",
+			"description": "Code Editor Land est open source sous CC0. Les plans enterprise fournissent support, SLA et developpement personnalise — pas l'acces au code lui-meme."
+		}
+	},
+	"dashboard": {
+		"pageTitle": "Bienvenue",
+		"pageSubtitle": "Gerez votre compte Code Editor Land et vos preferences.",
+		"breadcrumbLabel": "Tableau de bord",
+		"account": {
+			"heading": "Compte",
+			"emailLabel": "E-mail",
+			"planLabel": "Plan",
+			"planFree": "Gratuit",
+			"memberSinceLabel": "Membre depuis"
+		},
+		"downloads": {
+			"heading": "Telechargements",
+			"description": "Telechargez la derniere version de Code Editor Land pour votre plateforme.",
+			"goButton": "Aller aux telechargements"
+		},
+		"quickLinks": {
+			"heading": "Liens rapides",
+			"docs": "Documentation",
+			"community": "Discussions communautaires",
+			"reportIssue": "Signaler un probleme",
+			"contribute": "Contribuer"
+		},
+		"settings": {
+			"heading": "Parametres",
+			"sync": {
+				"title": "Synchroniser les parametres",
+				"description": "Synchronisez vos preferences d'editeur sur tous vos appareils."
+			},
+			"extensionSync": {
+				"title": "Synchronisation des extensions",
+				"description": "Gardez vos extensions installees synchronisees sur toutes vos machines."
+			},
+			"account": {
+				"title": "Compte",
+				"description": "Mettez a jour votre profil et gerez votre compte.",
+				"manageButton": "Gerer"
+			}
+		}
+	}
+}

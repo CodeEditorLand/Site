@@ -1,19 +1,17 @@
 import React from "react";
 
-import { Footer } from "../Layout/Footer";
-import { Header } from "../Layout/Header";
-import { DynamicFeatures } from "./DynamicFeatures";
-import { DynamicHeroSection } from "./DynamicHeroSection";
-import { DynamicPlatformGrid } from "./DynamicPlatformGrid";
-import { DynamicPricing } from "./DynamicPricing";
-import { DynamicTestimonials } from "./DynamicTestimonials";
-import type { FeaturesContent } from "./DynamicFeatures";
-import type { HeroContent } from "./DynamicHeroSection";
-import type { PlatformGridContent } from "./DynamicPlatformGrid";
-import type { PricingContent } from "./DynamicPricing";
-import type { TestimonialsContent } from "./DynamicTestimonials";
-import type { HeaderContent } from "../Layout/Header";
-import type { FooterContent } from "../Layout/Footer";
+import { Header, type HeaderContent } from "../Layout/Header";
+import { DynamicFeatures, type FeaturesContent } from "./DynamicFeatures";
+import { DynamicHeroSection, type HeroContent } from "./DynamicHeroSection";
+import {
+	DynamicPlatformGrid,
+	type PlatformGridContent,
+} from "./DynamicPlatformGrid";
+import { DynamicPricing, type PricingContent } from "./DynamicPricing";
+import {
+	DynamicTestimonials,
+	type TestimonialsContent,
+} from "./DynamicTestimonials";
 
 interface HomePageContent {
 	hero: HeroContent;
@@ -22,7 +20,7 @@ interface HomePageContent {
 	testimonials: TestimonialsContent;
 	download: PlatformGridContent;
 	header?: HeaderContent;
-	footer?: FooterContent;
+	footer?: Record<string, unknown>;
 }
 
 interface HomePageProps {
@@ -38,8 +36,7 @@ interface HomePageProps {
  * All content driven by schema props
  */
 export function HomePage({ content, className }: HomePageProps) {
-	const { hero, features, pricing, testimonials, download, header, footer } =
-		content;
+	const { hero, features, pricing, testimonials, download, header } = content;
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
@@ -51,7 +48,10 @@ export function HomePage({ content, className }: HomePageProps) {
 							{ label: "Features", href: "#features" },
 							{ label: "Pricing", href: "#pricing" },
 							{ label: "Testimonials", href: "#testimonials" },
-							{ label: "Docs", href: "/docs" },
+							{
+								label: "Docs",
+								href: "https://github.com/CodeEditorLand/Land#readme",
+							},
 						],
 						actions: [
 							{ type: "mobile-menu" as const, text: "Menu" },
@@ -65,65 +65,36 @@ export function HomePage({ content, className }: HomePageProps) {
 								text: "Get Land",
 								variant: "default",
 								size: "default",
-								href: "/download",
+								href: "/downloads",
 							},
 						],
 					}
 				}
 			/>
 
-			<main className="flex-1">
+			<div className="flex-1" role="region" aria-label="Page content">
 				<DynamicHeroSection content={hero} />
+				<hr
+					className="mx-auto max-w-5xl border-t border-[var(--border)]"
+					aria-hidden="true"
+				/>
 				<DynamicFeatures content={features} />
+				<hr
+					className="mx-auto max-w-5xl border-t border-[var(--border)]"
+					aria-hidden="true"
+				/>
 				<DynamicPricing content={pricing} />
+				<hr
+					className="mx-auto max-w-5xl border-t border-[var(--border)]"
+					aria-hidden="true"
+				/>
 				<DynamicTestimonials content={testimonials} />
+				<hr
+					className="mx-auto max-w-5xl border-t border-[var(--border)]"
+					aria-hidden="true"
+				/>
 				<DynamicPlatformGrid content={download} />
-			</main>
-
-			<Footer
-				content={
-					footer || {
-						brand: {
-							name: "Land",
-							description:
-								"The next-generation code editor for modern developers.",
-						},
-						columns: [
-							{
-								title: "Product",
-								links: [
-									{ label: "Features", href: "#features" },
-									{ label: "Pricing", href: "#pricing" },
-									{ label: "Downloads", href: "/downloads" },
-								],
-							},
-							{
-								title: "Company",
-								links: [
-									{ label: "About", href: "/about" },
-									{ label: "Blog", href: "/blog" },
-									{ label: "Careers", href: "/careers" },
-								],
-							},
-							{
-								title: "Legal",
-								links: [
-									{
-										label: "Privacy",
-										href: "/legal/privacy",
-									},
-									{ label: "Terms", href: "/legal/terms" },
-									{
-										label: "Cookies",
-										href: "/legal/cookies",
-									},
-								],
-							},
-						],
-						bottomBar: { madeWith: true },
-					}
-				}
-			/>
+			</div>
 		</div>
 	);
 }

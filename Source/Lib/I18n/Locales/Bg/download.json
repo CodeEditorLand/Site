@@ -1,38 +1,49 @@
 {
-  "card": {
-    "platform": {
-      "linux": {
-        "description": "DEB, RPM, AppImage",
-        "title": "Linux"
-      },
-      "macos": {
-        "title": "macOS",
-        "universalBadge": "Universal Binary"
-      },
-      "windows": {
-        "description": "64-bit (x64)",
-        "title": "Windows"
-      }
-    }
-  },
-  "page": {
-    "subtitle": "Available for macOS, Windows, and Linux. Fast, native, and free.",
-    "title": "Download Land"
-  },
-  "previousReleases": {
-    "description": "Download older versions if needed.",
-    "title": "Previous Releases"
-  },
-  "subtitle": "Available for macOS, Windows, and Linux. Built with Tauri, powered by Rust.",
-  "systemRequirements": {
-    "subtitle": "Ensure your system meets these requirements before downloading.",
-    "title": "System Requirements"
-  },
-  "title": "Download Land",
-  "verification": {
-    "description": "Land releases are signed with PGP. Verify your download to ensure integrity.",
-    "downloadButton": "Download PGP Public Key",
-    "title": "Verify Your Download",
-    "verifyButton": "Verify Download"
-  }
+	"card": {
+		"platform": {
+			"linux": {
+				"description": "DEB, RPM, AppImage",
+				"title": "Linux"
+			},
+			"macos": {
+				"title": "macOS",
+				"universalBadge": "Универсален двоичен файл"
+			},
+			"windows": {
+				"description": "64-битов (x64)",
+				"title": "Windows"
+			}
+		}
+	},
+	"page": {
+		"subtitle": "Наличен за macOS, Windows и Linux. Бърз, нативен и безплатен.",
+		"title": "Изтеглете Land"
+	},
+	"previousReleases": {
+		"description": "Изтеглете по-стари версии при необходимост.",
+		"title": "Предишни версии"
+	},
+	"subtitle": "Наличен за macOS, Windows и Linux. Създаден с Tauri, задвижван от Rust.",
+	"systemRequirements": {
+		"subtitle": "Уверете се, че системата ви отговаря на тези изисквания, преди да изтеглите.",
+		"title": "Системни изисквания"
+	},
+	"title": "Изтеглете Land",
+	"verification": {
+		"description": "Версиите на Land са подписани с PGP. Проверете изтеглянето си, за да гарантирате целостта.",
+		"downloadButton": "Изтеглете публичния PGP ключ",
+		"title": "Проверете изтеглянето си",
+		"verifyButton": "Проверете изтеглянето"
+	},
+	"labels": {
+		"version": "Версия:",
+		"size": "Размер:",
+		"requirements": "Изисквания:",
+		"loading": "Зареждане на изтегляния...",
+		"errorTitle": "Неуспешно зареждане на изтегляния",
+		"downloadFailed": "Изтеглянето неуспешно. Моля, опитайте отново.",
+		"downloadFor": "Изтегляне за {{platform}}",
+		"copiedToClipboard": "{{label}} копирано в клипборда!",
+		"failedToCopy": "Неуспешно копиране на {{label}}"
+	}
 }

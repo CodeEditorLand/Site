@@ -1,29 +1,225 @@
 {
-  "actions": {
-    "signIn": "Sign In to Your Account"
-  },
-  "brand": {
-    "name": "Code Editor Land",
-    "tagline": "The next-generation code editor. Open source and free forever under the CC0 license. Experience professional-grade development tools without any cost or restrictions."
-  },
-  "button": {
-    "backToHome": "Return to Homepage",
-    "download": "Download Code Editor Land",
-    "learnMore": "Learn More About Features",
-    "signIn": "Sign In to Your Account",
-    "signUp": "Create Your Free Account"
-  },
-  "error": {
-    "404": "404 - Page Not Found",
-    "pageNotFound": "The page you're looking for doesn't exist or has been moved. Please check the URL for any typos, or return to the home page to start fresh. If you believe this is an error, contact our support team and we'll help you find what you need."
-  },
-  "label": {
-    "email": "Email Address",
-    "password": "Password"
-  },
-  "nav": {
-    "docs": "Documentation",
-    "downloads": "Download",
-    "github": "GitHub Repository"
-  }
+	"actions": {
+		"signIn": "Sign In to Your Account"
+	},
+	"brand": {
+		"name": "Code Editor Land",
+		"tagline": "The next-generation code editor. Open source and free forever."
+	},
+	"breadcrumb": {
+		"home": "Home"
+	},
+	"button": {
+		"backToHome": "Return to Homepage",
+		"backToTop": "Back to top",
+		"download": "Download Land",
+		"learnMore": "Learn More About Features",
+		"signIn": "Sign In to Your Account",
+		"signUp": "Create Your Free Account"
+	},
+	"comingSoon": "Coming Soon",
+	"error": {
+		"404": "404 - Page Not Found",
+		"pageNotFound": "The page you're looking for doesn't exist or has been moved. Please check the URL for any typos, or return to the home page to start fresh. If you believe this is an error, contact our support team and we'll help you find what you need."
+	},
+	"label": {
+		"email": "Email Address",
+		"password": "Password"
+	},
+	"nav": {
+		"docs": "Documentation",
+		"downloads": "Download",
+		"github": "GitHub Repository"
+	},
+	"docs": {
+		"pageTitle": "Documentation",
+		"pageSubtitle": "Everything you need to get started with Code Editor Land.",
+		"gettingStarted": {
+			"title": "Getting Started",
+			"description": "Read the README for installation instructions, build steps, and an overview of the project architecture."
+		},
+		"wiki": {
+			"title": "Wiki",
+			"description": "Browse the project wiki for in-depth guides, tutorials, and reference documentation."
+		},
+		"discussions": {
+			"title": "Discussions",
+			"description": "Ask questions, share ideas, and connect with the community on GitHub Discussions."
+		},
+		"issueTracker": {
+			"title": "Issue Tracker",
+			"description": "Report bugs, request features, or browse existing issues on GitHub."
+		},
+		"architecture": {
+			"heading": "Architecture Overview",
+			"intro": "Land replaces VS Code's Electron stack with a modern, high-performance architecture:",
+			"mountain": "Rust/Tauri native backend — manages windows, filesystem, processes",
+			"cocoon": "TypeScript extension host — runs VS Code extensions via Effect-TS",
+			"wind": "TypeScript UI services — re-implementation of VS Code workbench",
+			"sky": "Astro UI components — renders the editor interface",
+			"air": "Rust background daemon — updates, downloads, crypto signing",
+			"echo": "Rust task scheduler — high-performance work-stealing executor"
+		},
+		"repositories": {
+			"heading": "Source Repositories",
+			"mainMonorepo": "Main monorepo",
+			"tauriBackend": "Tauri backend",
+			"extensionHost": "Extension host",
+			"viewAll": "View all repositories"
+		}
+	},
+	"blog": {
+		"pageTitle": "Blog",
+		"pageSubtitle": "News, updates, and technical articles from the team.",
+		"comingSoonHeading": "Coming Soon",
+		"comingSoonText": "We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
+		"joinDiscussions": "Join Discussions",
+		"followGitHub": "Follow on GitHub"
+	},
+	"contributing": {
+		"pageTitle": "Contributing",
+		"pageSubtitle": "Code Editor Land is open source and welcomes contributions from everyone. Here is how to get involved.",
+		"guide": {
+			"title": "Contributing Guide",
+			"description": "Read the full CONTRIBUTING.md on GitHub for detailed instructions on setting up the development environment and submitting changes."
+		},
+		"goodFirstIssues": {
+			"title": "Good First Issues",
+			"description": "Browse issues labeled \"good first issue\" to find approachable tasks for new contributors."
+		},
+		"howToContribute": {
+			"heading": "How to Contribute"
+		},
+		"step1": {
+			"title": "Fork and Clone",
+			"description": "Fork the Land repository on GitHub and clone it locally with submodules:"
+		},
+		"step2": {
+			"title": "Set Up the Environment",
+			"description": "Install Rust (1.95.0+), Node.js, and pnpm. Then run:"
+		},
+		"step3": {
+			"title": "Make Your Changes",
+			"description": "Create a new branch, make your changes, and follow the PascalCase naming convention used throughout the project."
+		},
+		"step4": {
+			"title": "Submit a Pull Request",
+			"description": "Push your branch and open a pull request against the Current branch. Describe what you changed and why."
+		},
+		"ways": {
+			"heading": "Ways to Contribute",
+			"code": {
+				"title": "Code",
+				"description": "Fix bugs, implement features, or improve performance in Rust or TypeScript."
+			},
+			"documentation": {
+				"title": "Documentation",
+				"description": "Improve guides, add examples, or translate existing documentation to other languages."
+			},
+			"testing": {
+				"title": "Testing",
+				"description": "Write tests, report bugs, or help reproduce and triage existing issues."
+			},
+			"design": {
+				"title": "Design",
+				"description": "Contribute UI/UX improvements, icons, or visual design work for the editor or website."
+			}
+		},
+		"funding": {
+			"heading": "Funding",
+			"description": "Code Editor Land is funded through the NGI0 Commons Fund via NLnet. This enables full-time development on the project.",
+			"nlnetIntro": "Code Editor Land has been funded through the",
+			"nlnetFundName": "NGI0 Commons Fund",
+			"nlnetEstablishedBy": ", a fund established by",
+			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No.\u00a0101135429. This funding enables sustained open-source development on the project.",
+			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria. PlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+			"viewProject": "View the",
+			"nlnetProjectPage": "NLnet project page",
+			"viewProjectSuffix": "for more details about the grant and objectives."
+		},
+		"conduct": {
+			"heading": "Code of Conduct",
+			"description": "All participants in the Code Editor Land community are expected to be respectful and constructive. Read the full Code of Conduct on GitHub."
+		}
+	},
+	"sales": {
+		"pageTitle": "Enterprise Inquiries",
+		"pageSubtitle": "Interested in deploying Code Editor Land across your organization? Get in touch with our team.",
+		"form": {
+			"firstName": "First Name",
+			"lastName": "Last Name",
+			"email": "Work Email",
+			"company": "Company",
+			"teamSize": "Team Size",
+			"teamSizePlaceholder": "Select team size",
+			"message": "How can we help?",
+			"messagePlaceholder": "Tell us about your requirements, deployment needs, or any questions you have.",
+			"submitButton": "Send Inquiry"
+		},
+		"features": {
+			"heading": "Enterprise Features",
+			"prioritySupport": "Priority support and SLA",
+			"customDeployment": "Custom deployment options",
+			"volumeLicensing": "Volume licensing",
+			"accountManagement": "Dedicated account management",
+			"securityReview": "Security and compliance review",
+			"customIntegrations": "Custom integrations"
+		},
+		"contact": {
+			"heading": "How to reach us",
+			"directHeading": "Direct Contact",
+			"description": "Prefer email? Reach us directly:",
+			"githubNote": "We handle enterprise inquiries through GitHub Issues. This ensures your request is tracked, visible to the team, and responded to promptly.",
+			"openIssueHeading": "Open a GitHub Issue",
+			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs. Include your company name, team size, use case, and any deployment requirements. Our team monitors issues daily.",
+			"openIssueButton": "Open GitHub Issue",
+			"issueIncludeLabel": "What to include in your issue:",
+			"issueIncludeText": "Company name, team size, intended use case, deployment environment (cloud/on-prem), timeline, and any specific support or compliance requirements.",
+			"operatedBy": "Operated by PlayForm, Sofia, Bulgaria"
+		},
+		"openSource": {
+			"heading": "Open Source",
+			"description": "Code Editor Land is open source under CC0. Enterprise plans provide support, SLAs, and custom development — not access to the code itself."
+		}
+	},
+	"dashboard": {
+		"pageTitle": "Welcome",
+		"pageSubtitle": "Manage your Code Editor Land account and preferences.",
+		"breadcrumbLabel": "Dashboard",
+		"account": {
+			"heading": "Account",
+			"emailLabel": "Email",
+			"planLabel": "Plan",
+			"planFree": "Free",
+			"memberSinceLabel": "Member Since"
+		},
+		"downloads": {
+			"heading": "Downloads",
+			"description": "Download the latest version of Code Editor Land for your platform.",
+			"goButton": "Go to Downloads"
+		},
+		"quickLinks": {
+			"heading": "Quick Links",
+			"docs": "Documentation",
+			"community": "Community Discussions",
+			"reportIssue": "Report an Issue",
+			"contribute": "Contribute"
+		},
+		"settings": {
+			"heading": "Settings",
+			"sync": {
+				"title": "Sync Settings",
+				"description": "Synchronize your editor preferences across devices."
+			},
+			"extensionSync": {
+				"title": "Extension Sync",
+				"description": "Keep your installed extensions in sync across machines."
+			},
+			"account": {
+				"title": "Account",
+				"description": "Update your profile and manage your account.",
+				"manageButton": "Manage"
+			}
+		}
+	}
 }

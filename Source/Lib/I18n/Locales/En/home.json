@@ -1,125 +1,106 @@
 {
-  "features": {
-    "item": {
-      "cicdIntegration": {
-        "description": "Integrate with GitHub Actions, GitLab CI, or Jenkins. Automate builds and deployments.",
-        "title": "CI/CD Integration"
-      },
-      "collaboration": {
-        "description": "Invite team members, manage permissions, and collaborate on design system updates in real-time.",
-        "title": "Team Collaboration"
-      },
-      "componentLibrary": {
-        "description": "Production-ready components with full TypeScript support. Customize to match your brand.",
-        "title": "Component Library"
-      },
-      "designTokens": {
-        "description": "Centralized design tokens for colors, typography, spacing, and more. Maintain consistency across all platforms.",
-        "title": "Design Tokens"
-      },
-      "documentation": {
-        "description": "Documentation automatically generated from your design tokens and component props.",
-        "title": "Auto-Generated Docs"
-      },
-      "versionControl": {
-        "description": "Track changes to your design system over time. Roll back to previous versions when needed.",
-        "title": "Version Control"
-      }
-    },
-    "subtitle": "Discover what makes Code Editor Land the most advanced code editor available.",
-    "title": "Built for Performance, Designed for Developers"
-  },
-  "hero": {
-    "badge": "New: AI-powered component generation",
-    "subtitle": "Create, maintain, and scale your design system with the platform's comprehensive capabilities. From design tokens to component libraries, the platform provides complete coverage.",
-    "title": "Build consistent design systems at scale",
-    "titleHighlight": "design systems",
-    "cta": {
-      "primary": "Start Free Trial",
-      "secondary": "Watch Demo"
-    },
-    "scene": {
-      "description": "3D animated design system components",
-      "hub": "Central Design System Hub",
-      "components": {
-        "button": "Button Component",
-        "colors": "Color Tokens",
-        "typography": "Typography System",
-        "components": "Component Library",
-        "spacing": "Spacing Scale",
-        "icons": "Icon Library",
-        "docs": "Documentation",
-        "versions": "Version Control"
-      }
-    }
-  },
-  "nav": {
-    "docs": "Docs",
-    "downloads": "Download",
-    "features": "Features",
-    "github": "GitHub"
-  },
-  "pricing": {
-    "subtitle": "Select the plan that aligns with your requirements. All plans include a 14-day trial period.",
-    "tiers": {
-      "free": {
-        "name": "Free",
-        "description": "For individuals",
-        "features": {
-          "1": "1 design system",
-          "2": "Basic components",
-          "3": "Community support"
-        },
-        "button": "Get Started"
-      },
-      "pro": {
-        "name": "Pro",
-        "description": "For professionals",
-        "features": {
-          "1": "Unlimited design systems",
-          "2": "All components & templates",
-          "3": "Priority support",
-          "4": "Version history"
-        },
-        "button": "Start Free Trial"
-      },
-      "team": {
-        "name": "Team",
-        "description": "For teams",
-        "features": {
-          "1": "Everything in Pro",
-          "2": "Unlimited team members",
-          "3": "Advanced permissions",
-          "4": "SSO integration"
-        },
-        "button": "Start Free Trial"
-      },
-      "enterprise": {
-        "name": "Enterprise",
-        "description": "For large organizations",
-        "features": {
-          "1": "Everything in Team",
-          "2": "Custom integrations",
-          "3": "Dedicated support",
-          "4": "SLA guarantee"
-        },
-        "button": "Contact Sales"
-      }
-    },
-    "title": "Clear, transparent pricing",
-    "badge": "Pricing"
-  },
-  "testimonials": {
-    "quote": {
-      "1": "Code Editor Land transformed design system management. The time to ship new features was reduced by 60%.",
-      "2": "The component library is well-designed, consistent, accessible, and ready for production use.",
-      "3": "A valuable investment. Documentation generation saved significant time.",
-      "4": "A tool that understands both design and engineering. Designers and developers are aligned.",
-      "5": "The version control capabilities allow change tracking and rollback when needed.",
-      "6": "The support team responded promptly and assisted with customization."
-    },
-    "subtitle": "See what users say about Code Editor Land.",
-    "title": "Used by teams worldwide",
-    "badge": "Testimonials"
-  }
+	"features": {
+		"badge": "Features",
+		"item": {
+			"designTokens": {
+				"description": "Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable. No Electron bloat.",
+				"title": "Performance First"
+			},
+			"componentLibrary": {
+				"description": "Run your existing VS Code extensions with high fidelity through the Cocoon extension host. No changes needed.",
+				"title": "VS Code Compatibility"
+			},
+			"documentation": {
+				"description": "Effect-TS native UI services provide type safety, structured concurrency, and excellent error handling.",
+				"title": "Effect-TS Architecture"
+			},
+			"versionControl": {
+				"description": "One codebase, native deployments for macOS, Windows, and Linux with Tauri. Write once, run everywhere.",
+				"title": "Cross-Platform"
+			},
+			"collaboration": {
+				"description": "Licensed under Creative Commons CC0 — completely free to use, modify, and distribute. No strings attached.",
+				"title": "Open Source"
+			},
+			"cicdIntegration": {
+				"description": "Built on proven open-source technologies: Rust, Tauri, Effect-TS, and the VS Code platform. Familiar and powerful.",
+				"title": "Modern Tooling"
+			}
+		},
+		"subtitle": "Discover what makes Code Editor Land the most advanced code editor available.",
+		"title": "Built for Performance, Designed for Developers"
+	},
+	"hero": {
+		"badge": "New: Effect-TS Architecture",
+		"subtitle": "A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS. Experience the editor that reimagines VS Code for the modern era.",
+		"title": "The Future of",
+		"titleHighlight": "Code Editing",
+		"atScale": "starts here",
+		"cta": {
+			"primary": "Download",
+			"secondary": "Learn More"
+		},
+		"scene": {
+			"description": "Animated architecture visualization",
+			"hub": "Core Architecture",
+			"components": {
+				"button": "Rust Core",
+				"colors": "Tauri UI",
+				"typography": "Effect-TS Services",
+				"components": "gRPC IPC",
+				"spacing": "Extension Host",
+				"icons": "Cross-Platform",
+				"docs": "VS Code API",
+				"versions": "Open Source CC0"
+			}
+		}
+	},
+	"nav": {
+		"docs": "Docs",
+		"downloads": "Download",
+		"features": "Features",
+		"github": "GitHub"
+	},
+	"pricing": {
+		"subtitle": "Code Editor Land is completely free. No tiers, no subscriptions, no restrictions.",
+		"labels": {
+			"monthly": "Monthly",
+			"yearly": "Yearly",
+			"savings": "(Save up to 20%)",
+			"popular": "Most Popular",
+			"perMonth": "/month",
+			"perYear": "/year"
+		},
+		"tiers": {
+			"free": {
+				"name": "Community",
+				"description": "For everyone. Full editor features, completely free.",
+				"features": {
+					"1": "Full VS Code compatibility",
+					"2": "All extensions supported",
+					"3": "Native Rust performance",
+					"4": "Cross-platform (macOS, Windows, Linux)",
+					"5": "Effect-TS type-safe UI",
+					"6": "gRPC-based architecture",
+					"7": "Open source (CC0 license)"
+				},
+				"button": "Download Now"
+			}
+		},
+		"title": "Free Forever, Open Source",
+		"badge": "Pricing"
+	},
+	"testimonials": {
+		"quote": {
+			"1": "Land is exactly what VS Code needed — a performance-focused, open alternative. It's incredibly fast.",
+			"2": "The Effect-TS architecture is beautiful to work with. The type safety catches bugs before they happen.",
+			"3": "Running my existing extensions with no changes is a game-changer. The compatibility is impressive.",
+			"4": "Finally, an editor that respects my system resources. No more Electron memory bloat.",
+			"5": "The open-source commitment means I can contribute and customize. This is the editor I've been waiting for.",
+			"6": "The gRPC-based architecture is a masterclass in system design. Land is the future of desktop editors."
+		},
+		"subtitle": "Community voices on the future of code editing.",
+		"title": "What developers are saying",
+		"badge": "Testimonials"
+	}
 }

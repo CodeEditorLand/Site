@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import type { InputContent } from "./types";
@@ -30,6 +28,9 @@ export function DynamicInput({ content, id: propId }: DynamicInputProps) {
 	} = content;
 
 	const id = propId || `input-${Math.random().toString(36).substr(2, 9)}`;
+	const errorId = `${id}-error`;
+	const helperId = `${id}-helper`;
+	const describedBy = error ? errorId : helperText ? helperId : undefined;
 
 	return (
 		<div className="space-y-2">
@@ -46,6 +47,8 @@ export function DynamicInput({ content, id: propId }: DynamicInputProps) {
 				defaultValue={defaultValue}
 				disabled={disabled}
 				required={required}
+				aria-invalid={!!error}
+				aria-describedby={describedBy}
 				className={error ? "border-destructive" : className}
 				onChange={(e) => {
 					if (onChange) {
@@ -57,10 +60,17 @@ export function DynamicInput({ content, id: propId }: DynamicInputProps) {
 				}}
 				{...props}
 			/>
-			{(error || helperText) && (
+			{error && (
 				<p
-					className={`text-sm ${error ? "text-destructive" : "text-muted-foreground"}`}>
-					{error || helperText}
+					id={errorId}
+					className="text-sm text-destructive"
+					role="alert">
+					{error}
+				</p>
+			)}
+			{!error && helperText && (
+				<p id={helperId} className="text-sm text-muted-foreground">
+					{helperText}
 				</p>
 			)}
 		</div>

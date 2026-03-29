@@ -1,109 +1,109 @@
 {
-  "forgotPassword": {
-    "emailPlaceholder": "name@example.com",
-    "submit": "Send Reset Link",
-    "subtitle": "Enter your email address to request a reset link",
-    "success": {
-      "title": "Check your email",
-      "subtitle": "A password reset link has been sent to",
-      "instruction": "Click the link in the email to reset your password. The link expires in 24 hours.",
-      "resend": "Resend Email"
-    },
-    "title": "Reset Password",
-    "emailLabel": "Email",
-    "loading": "Sending...",
-    "backToSignIn": "Back to Sign In",
-    "successToast": "Reset email sent",
-    "errorToast": "Failed to send reset email",
-    "emailRequired": "Email is required",
-    "resendSuccess": "Reset email sent again",
-    "resendError": "Failed to resend email"
-  },
-  "resetPassword": {
-    "checkingMessage": "Validating your reset token, please wait...",
-    "confirmLabel": "Confirm New Password",
-    "confirmPlaceholder": "Re-enter your new password exactly as above",
-    "invalidToken": {
-      "title": "Invalid or expired token",
-      "description": "This password reset link is invalid, has expired, or was already used.",
-      "instruction": "Request a new password reset email to continue.",
-      "button": "Request New Reset Email"
-    },
-    "passwordLabel": "New Password",
-    "passwordPlaceholder": "Enter a strong new password",
-    "submit": "Reset Password",
-    "subtitle": "Enter your new password below",
-    "success": {
-      "title": "Password reset successful",
-      "description": "Your password has been reset. You can now sign in with your new password.",
-      "button": "Continue to Sign In"
-    },
-    "title": "Reset Password",
-    "passwordHint": "Minimum 8 characters",
-    "loading": "Resetting...",
-    "mismatch": "Passwords do not match",
-    "signInLink": "Sign in",
-    "checking": "Checking token...",
-    "error": {
-      "tooShort": "Password must be at least 8 characters"
-    },
-    "successToast": "Password reset successfully",
-    "errorToast": "Failed to reset password"
-  },
-  "signIn": {
-    "emailPlaceholder": "name@example.com",
-    "forgotPassword": "Forgot your password? No problem - click here to reset it securely.",
-    "githubButton": "Continue with GitHub",
-    "passwordPlaceholder": "Enter your password",
-    "signUpLink": "Sign up",
-    "subtitle": "Enter your credentials to access your account",
-    "title": "Sign In",
-    "emailLabel": "Email",
-    "passwordLabel": "Password",
-    "submit": "Sign In",
-    "loading": "Signing in...",
-    "or": "Or",
-    "noAccount": "Don't have an account?",
-    "successToast": "Signed in successfully",
-    "errorToast": "Invalid credentials"
-  },
-  "signUp": {
-    "confirmPasswordLabel": "Confirm Password",
-    "confirmPasswordPlaceholder": "Enter your password again to confirm",
-    "emailPlaceholder": "name@example.com",
-    "passwordHint": "Minimum 8 characters",
-    "passwordPlaceholder": "Create a strong password",
-    "signInLink": "Sign in",
-    "social": {
-      "github": "Continue with GitHub",
-      "google": "Continue with Google",
-      "gitlab": "Continue with GitLab"
-    },
-    "subtitle": "Enter your information to create an account",
-    "termsLabel": "I agree to the Terms of Service and Privacy Policy",
-    "title": "Create Account",
-    "validation": {
-      "emailRequired": "Email is required",
-      "emailInvalid": "Invalid email format",
-      "passwordRequired": "Password is required",
-      "passwordTooShort": "Password must be at least 8 characters",
-      "confirmPasswordRequired": "Please confirm your password",
-      "termsRequired": "You must accept the terms and privacy policy"
-    },
-    "emailLabel": "Email",
-    "passwordLabel": "Password",
-    "submit": "Create Account",
-    "loading": "Creating account...",
-    "or": "Or",
-    "hasAccount": "Already have an account?",
-    "termsLink": "Terms of Service",
-    "privacyLink": "Privacy Policy",
-    "and": "and",
-    "successToast": "Account created successfully",
-    "errorToast": "Failed to create account",
-    "confirmPasswordMismatch": "Passwords do not match"
-  },
-  "common": {
-    "and": "and"
-  }
+	"forgotPassword": {
+		"emailPlaceholder": "name@example.com",
+		"submit": "Send Reset Link",
+		"subtitle": "Enter your email address to request a reset link",
+		"success": {
+			"title": "Check your email",
+			"subtitle": "A password reset link has been sent to",
+			"instruction": "Click the link in the email to reset your password. The link expires in 24 hours.",
+			"resend": "Resend Email"
+		},
+		"title": "Reset Password",
+		"emailLabel": "Email",
+		"loading": "Sending...",
+		"backToSignIn": "Back to Sign In",
+		"successToast": "Reset email sent",
+		"errorToast": "Failed to send reset email",
+		"emailRequired": "Email is required",
+		"resendSuccess": "Reset email sent again",
+		"resendError": "Failed to resend email"
+	},
+	"resetPassword": {
+		"checkingMessage": "Validating your reset token, please wait...",
+		"confirmLabel": "Confirm New Password",
+		"confirmPlaceholder": "Re-enter your new password exactly as above",
+		"invalidToken": {
+			"title": "Invalid or expired token",
+			"description": "This password reset link is invalid, has expired, or was already used.",
+			"instruction": "Request a new password reset email to continue.",
+			"button": "Request New Reset Email"
+		},
+		"passwordLabel": "New Password",
+		"passwordPlaceholder": "Enter a strong new password",
+		"submit": "Reset Password",
+		"subtitle": "Enter your new password below",
+		"success": {
+			"title": "Password reset successful",
+			"description": "Your password has been reset. You can now sign in with your new password.",
+			"button": "Continue to Sign In"
+		},
+		"title": "Reset Password",
+		"passwordHint": "Minimum 8 characters",
+		"loading": "Resetting...",
+		"mismatch": "Passwords do not match",
+		"signInLink": "Sign in",
+		"checking": "Checking token...",
+		"error": {
+			"tooShort": "Password must be at least 8 characters"
+		},
+		"successToast": "Password reset successfully",
+		"errorToast": "Failed to reset password"
+	},
+	"signIn": {
+		"emailPlaceholder": "name@example.com",
+		"forgotPassword": "Forgot your password? No problem - click here to reset it securely.",
+		"githubButton": "Continue with GitHub",
+		"passwordPlaceholder": "Enter your password",
+		"signUpLink": "Sign up",
+		"subtitle": "Enter your credentials to access your account",
+		"title": "Sign In",
+		"emailLabel": "Email",
+		"passwordLabel": "Password",
+		"submit": "Sign In",
+		"loading": "Signing in...",
+		"or": "Or",
+		"noAccount": "Don't have an account?",
+		"successToast": "Signed in successfully",
+		"errorToast": "Invalid credentials"
+	},
+	"signUp": {
+		"confirmPasswordLabel": "Confirm Password",
+		"confirmPasswordPlaceholder": "Enter your password again to confirm",
+		"emailPlaceholder": "name@example.com",
+		"passwordHint": "Minimum 8 characters",
+		"passwordPlaceholder": "Create a strong password",
+		"signInLink": "Sign in",
+		"social": {
+			"github": "Continue with GitHub",
+			"google": "Continue with Google",
+			"gitlab": "Continue with GitLab"
+		},
+		"subtitle": "Enter your information to create an account",
+		"termsLabel": "I agree to the Terms of Service and Privacy Policy",
+		"title": "Create Account",
+		"validation": {
+			"emailRequired": "Email is required",
+			"emailInvalid": "Invalid email format",
+			"passwordRequired": "Password is required",
+			"passwordTooShort": "Password must be at least 8 characters",
+			"confirmPasswordRequired": "Please confirm your password",
+			"termsRequired": "You must accept the terms and privacy policy"
+		},
+		"emailLabel": "Email",
+		"passwordLabel": "Password",
+		"submit": "Create Account",
+		"loading": "Creating account...",
+		"or": "Or",
+		"hasAccount": "Already have an account?",
+		"termsLink": "Terms of Service",
+		"privacyLink": "Privacy Policy",
+		"and": "and",
+		"successToast": "Account created successfully",
+		"errorToast": "Failed to create account",
+		"confirmPasswordMismatch": "Passwords do not match"
+	},
+	"common": {
+		"and": "and"
+	}
 }

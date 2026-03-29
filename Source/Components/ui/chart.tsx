@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from "react";
-import * as RechartsPrimitive from "recharts@2.15.2";
+import * as RechartsPrimitive from "recharts";
 
 import { cn } from "./utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+const THEMES = { light: "" } as const;
 
 export type ChartConfig = {
 	[k in string]: {
@@ -55,7 +55,7 @@ function ChartContainer({
 				data-slot="chart"
 				data-chart={chartId}
 				className={cn(
-					"[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-polar-grid_line]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_line]:stroke-border aspect-video [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden flex justify-center text-xs [&_.recharts-dot]:stroke-transparent [&_.recharts-sector]:stroke-transparent",
+					"[&_.recharts-cartesian-grid_line]:stroke-border/50 aspect-video [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden flex justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot]:stroke-transparent [&_.recharts-polar-grid_line]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_line]:stroke-border [&_.recharts-sector]:stroke-transparent",
 					className,
 				)}
 				{...props}>
@@ -172,7 +172,7 @@ function ChartTooltipContent({
 	return (
 		<div
 			className={cn(
-				"border-border/50 bg-background grid min-w-[8rem] items-start gap-1.5 rounded-none border px-2.5 py-1.5 text-xs shadow-xl",
+				"border-border/50 grid min-w-[8rem] items-start gap-1.5 rounded-none border bg-background px-2.5 py-1.5 text-xs",
 				className,
 			)}>
 			{!nestLabel ? tooltipLabel : null}
@@ -191,7 +191,7 @@ function ChartTooltipContent({
 						<div
 							key={item.dataKey}
 							className={cn(
-								"[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
+								"flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
 								indicator === "dot" && "items-center",
 							)}>
 							{formatter &&
@@ -253,7 +253,7 @@ function ChartTooltipContent({
 											</span>
 										</div>
 										{item.value && (
-											<span className="text-foreground font-mono font-medium tabular-nums">
+											<span className="font-mono font-medium tabular-nums text-foreground">
 												{item.value.toLocaleString()}
 											</span>
 										)}
@@ -306,7 +306,7 @@ function ChartLegendContent({
 					<div
 						key={item.value}
 						className={cn(
-							"[&>svg]:text-muted-foreground flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3",
+							"flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground",
 						)}>
 						{itemConfig?.icon && !hideIcon ? (
 							<itemConfig.icon />

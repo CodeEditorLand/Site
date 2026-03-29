@@ -3,11 +3,11 @@ import type {
 	ApiResponse,
 	Download,
 	DownloadEvent,
+	GitHubActionRun,
+	GitHubCommit,
+	GitHubIssue,
 	Session,
 	User,
-	GitHubCommit,
-	GitHubActionRun,
-	GitHubIssue,
 } from "./types";
 
 export interface WorkersClient {
@@ -31,10 +31,17 @@ export interface WorkersClient {
 		): Promise<ApiResponse<{ token: string; expiresIn: number }>>;
 		verifyEmail(token: string): Promise<ApiResponse<void>>;
 		resendVerification(): Promise<ApiResponse<{ message: string }>>;
-		forgotPassword(email: string): Promise<ApiResponse<{ message: string }>>;
-		resetPassword(token: string, password: string): Promise<ApiResponse<void>>;
+		forgotPassword(
+			email: string,
+		): Promise<ApiResponse<{ message: string }>>;
+		resetPassword(
+			token: string,
+			password: string,
+		): Promise<ApiResponse<void>>;
 		getSession(): Promise<ApiResponse<{ user: User; expiresIn: number }>>;
-		oauth(provider: "github" | "google" | "gitlab"): Promise<{ success: boolean }>;
+		oauth(
+			provider: "github" | "google" | "gitlab",
+		): Promise<{ success: boolean }>;
 		handleOAuthCallback(): never;
 	};
 	// Download
@@ -47,9 +54,7 @@ export interface WorkersClient {
 		getDownload(id: string): Promise<ApiResponse<Download>>;
 		getSha256(id: string): Promise<ApiResponse<{ sha256: string }>>;
 		getSignature(id: string): Promise<ApiResponse<{ signature: string }>>;
-		getInfo(
-			id: string,
-		): Promise<
+		getInfo(id: string): Promise<
 			ApiResponse<
 				Download & {
 					downloadUrl: string;
@@ -140,18 +145,14 @@ export interface WorkersClient {
 		): Promise<
 			ApiResponse<Array<{ path: string; title: string; count: number }>>
 		>;
-		getEventStats(
-			days?: number,
-		): Promise<
+		getEventStats(days?: number): Promise<
 			ApiResponse<{
 				byType: Record<string, number>;
 				byBrowser: Record<string, number>;
 				byOS: Record<string, number>;
 			}>
 		>;
-		getSessionStats(
-			days?: number,
-		): Promise<
+		getSessionStats(days?: number): Promise<
 			ApiResponse<{
 				totalSessions: number;
 				avgEventsPerSession: number;
@@ -187,9 +188,7 @@ export interface WorkersClient {
 				}>
 			>
 		>;
-		getCheck(
-			id: string,
-		): Promise<
+		getCheck(id: string): Promise<
 			ApiResponse<{
 				id: string;
 				name: string;
@@ -212,9 +211,17 @@ export interface WorkersClient {
 				}>
 			>
 		>;
-		getGitHubCommits(branch?: string, limit?: number): Promise<ApiResponse<GitHubCommit[]>>;
-		getGitHubActions(limit?: number): Promise<ApiResponse<GitHubActionRun[]>>;
-		getGitHubIssues(state?: string, limit?: number): Promise<ApiResponse<GitHubIssue[]>>;
+		getGitHubCommits(
+			branch?: string,
+			limit?: number,
+		): Promise<ApiResponse<GitHubCommit[]>>;
+		getGitHubActions(
+			limit?: number,
+		): Promise<ApiResponse<GitHubActionRun[]>>;
+		getGitHubIssues(
+			state?: string,
+			limit?: number,
+		): Promise<ApiResponse<GitHubIssue[]>>;
 	};
 }
 
@@ -393,7 +400,9 @@ function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
 			// The OAuth callback endpoint returns a 302 redirect to the frontend with token in URL
 			// Frontend should extract token from URL query parameters on the redirect landing page
 			handleOAuthCallback: () => {
-				throw new Error("handleOAuthCallback should not be called as a fetch. OAuth callback redirects to frontend URL with token parameter.");
+				throw new Error(
+					"handleOAuthCallback should not be called as a fetch. OAuth callback redirects to frontend URL with token parameter.",
+				);
 			},
 		},
 		download: {
@@ -691,9 +700,15 @@ export function getWorkersClient(): WorkersClient {
 	const frontendUrl = import.meta.env.PUBLIC_FRONTEND_URL;
 
 	if (!authUrl || !downloadUrl || !analyticsUrl) {
-		throw new Error(
-			"Worker URLs not configured. Please set PUBLIC_AUTH_WORKER_URL, PUBLIC_DOWNLOAD_WORKER_URL, PUBLIC_ANALYTICS_WORKER_URL in .env",
-		);
+		// During SSG pre-rendering, env vars may not be available.
+		// Return a no-op client that returns error responses instead of throwing.
+		const noopResponse = { success: false as const, error: "Worker URLs not configured" };
+		const noop = () => Promise.resolve(noopResponse);
+		const noopHandler = new Proxy({} as WorkersClient, {
+			get: () => new Proxy({}, { get: () => noop }),
+		});
+		clientInstance = noopHandler;
+		return clientInstance;
 	}
 
 	clientInstance = {

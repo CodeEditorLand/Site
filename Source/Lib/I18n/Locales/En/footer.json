@@ -1,22 +1,39 @@
 {
-  "columns": {
-    "company": {
-      "blog": "Blog",
-      "contributing": "Contributing",
-      "github": "GitHub",
-      "title": "Community"
-    },
-    "legal": {
-      "license": "License",
-      "privacy": "Privacy",
-      "terms": "Terms",
-      "title": "Legal"
-    },
-    "product": {
-      "docs": "Docs",
-      "downloads": "Download",
-      "features": "Features",
-      "title": "Product"
-    }
-  }
+	"brand": {
+		"name": "Code Editor Land",
+		"description": "The next-generation code editor. Open source and free forever."
+	},
+	"columns": {
+		"product": {
+			"title": "Product",
+			"features": "Features",
+			"downloads": "Download",
+			"docs": "Docs"
+		},
+		"company": {
+			"title": "Community",
+			"blog": "Discussions",
+			"contributing": "Contributing",
+			"github": "GitHub"
+		},
+		"legal": {
+			"title": "Legal",
+			"privacy": "Privacy",
+			"terms": "Terms",
+			"license": "License"
+		}
+	},
+	"bottomBar": {
+		"copyright": "© {{year}} Code Editor Land. All rights reserved.",
+		"builtBy": "Built by the Code Editor Land team",
+		"madeWith": "Made with"
+	},
+	"funding": {
+		"prefix": "This project has been funded through the ",
+		"ngiFund": "NGI0 Commons Fund",
+		"nlnetIntro": ", a fund established by ",
+		"nlnet": "NLnet",
+		"euSupport": " with financial support from the European Commission\u2019s Next Generation Internet programme, under grant agreement No.\u00a0101135429. ",
+		"projectPage": "View project page"
+	}
 }

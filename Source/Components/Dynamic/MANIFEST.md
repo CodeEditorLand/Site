@@ -153,12 +153,19 @@ Create companion validation schemas using Zod:
 import { z } from "zod";
 
 export const ButtonContentSchema = z.object({
-  text: z.string(),
-  variant: z.enum(["default", "destructive", "outline", "secondary", "ghost", "link"]),
-  size: z.enum(["default", "sm", "lg", "icon"]).optional(),
-  icon: z.string().optional(),
-  disabled: z.boolean().optional(),
-  fullWidth: z.boolean().optional(),
+	text: z.string(),
+	variant: z.enum([
+		"default",
+		"destructive",
+		"outline",
+		"secondary",
+		"ghost",
+		"link",
+	]),
+	size: z.enum(["default", "sm", "lg", "icon"]).optional(),
+	icon: z.string().optional(),
+	disabled: z.boolean().optional(),
+	fullWidth: z.boolean().optional(),
 });
 
 export type ButtonContent = z.infer<typeof ButtonContentSchema>;

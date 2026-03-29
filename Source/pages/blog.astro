@@ -1,0 +1,123 @@
+---
+import { Header } from "../Components/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { getI18n } from "../Lib/I18n/Server";
+
+const t = getI18n();
+
+const metaTitle = t("meta.blog.title", {
+	defaultValue: "Blog | Code Editor Land",
+});
+
+const metaDescription = t("meta.blog.description", {
+	defaultValue:
+		"News, updates, and technical articles from the Code Editor Land team.",
+});
+---
+
+<Base
+	Title={metaTitle}
+	Description={metaDescription}
+	Url="https://editor.land/blog"
+	lang="en">
+	<Header client:load />
+
+	<div class="container mx-auto max-w-4xl px-4 py-16">
+		<!-- Breadcrumbs -->
+		<nav aria-label="Breadcrumb" class="mb-8">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>{
+							t("common.breadcrumb.home", {
+								defaultValue: "Home",
+							})
+						}</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground"
+						>{
+							t("common.blog.pageTitle", { defaultValue: "Blog" })
+						}</span
+					>
+				</li>
+			</ol>
+		</nav>
+
+		<!-- Page Header -->
+		<header class="mb-12">
+			<h1 class="mb-4 text-4xl font-bold tracking-tight">
+				{t("common.blog.pageTitle", { defaultValue: "Blog" })}
+			</h1>
+			<p class="text-lg text-muted-foreground">
+				{
+					t("common.blog.pageSubtitle", {
+						defaultValue:
+							"News, updates, and technical articles from the team.",
+					})
+				}
+			</p>
+		</header>
+
+		<!-- Coming Soon -->
+		<section
+			class="border border-[var(--border)] bg-white p-12 text-center">
+			<div class="mx-auto max-w-md">
+				<h2 class="mb-4 text-2xl font-semibold">
+					{
+						t("common.blog.comingSoonHeading", {
+							defaultValue: "Coming Soon",
+						})
+					}
+				</h2>
+				<p class="mb-8 text-muted-foreground">
+					{
+						t("common.blog.comingSoonText", {
+							defaultValue:
+								"We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
+						})
+					}
+				</p>
+				<div
+					class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+					<a
+						href="https://github.com/CodeEditorLand/Land/discussions"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex h-10 items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-6 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+						{
+							t("common.blog.joinDiscussions", {
+								defaultValue: "Join Discussions",
+							})
+						}
+					</a>
+					<a
+						href="https://github.com/CodeEditorLand/Land"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex h-10 items-center justify-center border border-[var(--border)] bg-white px-6 text-sm font-medium transition-all hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+						{
+							t("common.blog.followGitHub", {
+								defaultValue: "Follow on GitHub",
+							})
+						}
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Back to top -->
+		<div class="mt-12 border-t pt-8">
+			<a href="#top" class="text-sm text-primary hover:underline"
+				>{
+					t("common.button.backToTop", {
+						defaultValue: "Back to top",
+					})
+				}</a
+			>
+		</div>
+	</div>
+</Base>

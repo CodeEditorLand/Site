@@ -2,11 +2,16 @@
 import "@Stylesheet/Base.css";
 
 import Background from "../Background.astro";
+import { ErrorBoundary } from "../Components/ErrorBoundary";
+import { Footer } from "../Components/Layout/Footer";
 import { AnalyticsProvider } from "../Components/providers/AnalyticsProvider";
 import { PageviewTracker } from "../Components/providers/PageviewTracker";
 import MetaTags from "../Components/Social/MetaTags";
-import Footer from "../Footer.astro";
 import { getI18n } from "../Lib/I18n/Server";
+
+const canonicalPath =
+	Astro.url.pathname === "/" ? "" : Astro.url.pathname.replace(/\/$/, "");
+const defaultUrl = `https://editor.land${canonicalPath}`;
 
 const {
 	Title,
@@ -14,8 +19,9 @@ const {
 	lang = "en",
 	dir = "ltr",
 	Image = "/Favicon/og-image.png",
-	Url = "https://editor.land",
+	Url = defaultUrl,
 	Type = "website",
+	noIndex = false,
 } = Astro.props;
 
 interface Props {
@@ -26,6 +32,7 @@ interface Props {
 	Image?: string;
 	Url?: string;
 	Type?: "website" | "article";
+	noIndex?: boolean;
 }
 
 // Get i18n instance - works in both SSR and static with fallback
@@ -49,7 +56,9 @@ const t = getI18n();
 			url={Url}
 			type={Type}
 			lang={lang}
+			noIndex={noIndex}
 		/>
+		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<meta name="theme-color" content="#ffffff" />
 		<meta name="format-detection" content="telephone=no" />
@@ -62,6 +71,10 @@ const t = getI18n();
 			crossorigin
 		/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=swap"
+		/>
 
 		<style is:global>
 			@import "@Stylesheet/Global.css";
@@ -83,17 +96,25 @@ const t = getI18n();
 			sizes="180x180"
 			href="/Favicon/apple-touch-icon.png"
 		/>
-		<meta name="apple-mobile-web-app-title" content="Land" />
+		<meta name="apple-mobile-web-app-title" content="Code Editor Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
 	</head>
 	<body>
+		<a
+			href="#main-content"
+			class="sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+			Skip to main content
+		</a>
+
 		<Background />
 
 		<AnalyticsProvider>
 			{/* Client-side only component for pageview tracking */}
 			<PageviewTracker />
-			<main class="grow">
-				<slot />
+			<main id="main-content" class="grow" tabindex="-1">
+				<ErrorBoundary client:load>
+					<slot />
+				</ErrorBoundary>
 			</main>
 		</AnalyticsProvider>
 
@@ -108,6 +129,8 @@ const t = getI18n();
 		<a
 			class="absolute left-0 top-0 hidden"
 			rel="me"
-			href="https://x.com/CodeEditorLand"></a>
+			href="https://x.com/CodeEditorLand"
+			aria-hidden="true"
+			tabindex="-1"></a>
 	</body>
 </html>

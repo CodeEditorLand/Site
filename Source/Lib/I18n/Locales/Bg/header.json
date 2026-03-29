@@ -1,1 +1,13 @@
-{}
+{
+	"logo": "Land",
+	"nav": {
+		"features": "Функции",
+		"download": "Изтегляне",
+		"docs": "Документация",
+		"github": "GitHub"
+	},
+	"actions": {
+		"signIn": "Вход",
+		"getStarted": "Вземете Land"
+	}
+}

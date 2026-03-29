@@ -44,9 +44,9 @@ export function DynamicSystemRequirements({
 				<div key={req.id} className="flex items-start gap-3">
 					<div className="mt-1">
 						{variant === "minimum" ? (
-							<Cpu className="text-muted-foreground h-4 w-4" />
+							<Cpu className="h-4 w-4 text-muted-foreground" />
 						) : (
-							<Monitor className="text-muted-foreground h-4 w-4" />
+							<Monitor className="h-4 w-4 text-muted-foreground" />
 						)}
 					</div>
 					<div className="flex-1">
@@ -61,14 +61,16 @@ export function DynamicSystemRequirements({
 	);
 
 	return (
-		<section className={`py-20 ${className || ""}`}>
+		<section
+			className={`py-20 ${className || ""}`}
+			aria-label="System requirements">
 			<div className="container mx-auto px-4">
 				<div className="mb-16 text-center">
 					<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
 						{title}
 					</h2>
 					{description && (
-						<p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+						<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
 							{description}
 						</p>
 					)}
@@ -76,7 +78,7 @@ export function DynamicSystemRequirements({
 
 				<div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
-					<div className="border-border !rounded-none border-[3px] p-6 shadow-lg">
+					<div className="bg-white/92 !rounded-none border border-[var(--border)] p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							Minimum Requirements
 						</h3>
@@ -87,7 +89,7 @@ export function DynamicSystemRequirements({
 					</div>
 
 					{/* Recommended Requirements */}
-					<div className="border-primary !rounded-none border-[3px] p-6 shadow-xl">
+					<div className="bg-white/92 !rounded-none border border-primary p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							Recommended
 						</h3>
@@ -108,7 +110,7 @@ export function DynamicSystemRequirements({
 							{content.os.map((os, index) => (
 								<span
 									key={index}
-									className="bg-secondary border-border border px-4 py-2 text-sm font-medium">
+									className="border border-[var(--border)] bg-secondary px-4 py-2 text-sm font-medium">
 									{os}
 								</span>
 							))}

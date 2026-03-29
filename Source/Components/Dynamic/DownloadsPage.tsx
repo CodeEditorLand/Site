@@ -1,15 +1,20 @@
-import { Footer } from "../Layout/Footer";
-import { Header } from "../Layout/Header";
-import { DynamicPlatformGrid } from "./DynamicPlatformGrid";
-import { DynamicPreviousReleases } from "./DynamicPreviousReleases";
-import { DynamicSystemRequirements } from "./DynamicSystemRequirements";
-import { DynamicVerificationInfo } from "./DynamicVerificationInfo";
-import type { PlatformGridContent } from "./DynamicPlatformGrid";
-import type { PreviousReleasesContent } from "./DynamicPreviousReleases";
-import type { SystemRequirementsContent } from "./DynamicSystemRequirements";
-import type { VerificationInfoContent } from "./DynamicVerificationInfo";
-import type { HeaderContent } from "../Layout/Header";
-import type { FooterContent } from "../Layout/Footer";
+import { Header, type HeaderContent } from "../Layout/Header";
+import {
+	DynamicPlatformGrid,
+	type PlatformGridContent,
+} from "./DynamicPlatformGrid";
+import {
+	DynamicPreviousReleases,
+	type PreviousReleasesContent,
+} from "./DynamicPreviousReleases";
+import {
+	DynamicSystemRequirements,
+	type SystemRequirementsContent,
+} from "./DynamicSystemRequirements";
+import {
+	DynamicVerificationInfo,
+	type VerificationInfoContent,
+} from "./DynamicVerificationInfo";
 
 interface DownloadsPageContent {
 	platformGrid: PlatformGridContent;
@@ -17,7 +22,7 @@ interface DownloadsPageContent {
 	verificationInfo: VerificationInfoContent;
 	previousReleases: PreviousReleasesContent;
 	header?: HeaderContent;
-	footer?: FooterContent;
+	footer?: Record<string, unknown>;
 }
 
 interface DownloadsPageProps {
@@ -36,7 +41,6 @@ export function DownloadsPage({ content, className }: DownloadsPageProps) {
 		verificationInfo,
 		previousReleases,
 		header,
-		footer,
 	} = content;
 
 	return (
@@ -50,7 +54,10 @@ export function DownloadsPage({ content, className }: DownloadsPageProps) {
 								label: "Downloads",
 								href: "/downloads",
 							},
-							{ label: "Docs", href: "/docs" },
+							{
+								label: "Docs",
+								href: "https://github.com/CodeEditorLand/Land#readme",
+							},
 							{ label: "Support", href: "/support" },
 						],
 						actions: [
@@ -65,7 +72,7 @@ export function DownloadsPage({ content, className }: DownloadsPageProps) {
 				}
 			/>
 
-			<main className="flex-1">
+			<div className="flex-1">
 				<DynamicPlatformGrid content={platformGrid} />
 
 				<DynamicSystemRequirements content={systemRequirements} />
@@ -73,9 +80,7 @@ export function DownloadsPage({ content, className }: DownloadsPageProps) {
 				<DynamicVerificationInfo content={verificationInfo} />
 
 				<DynamicPreviousReleases content={previousReleases} />
-			</main>
-
-			<Footer content={footer || {}} />
+			</div>
 		</div>
 	);
 }

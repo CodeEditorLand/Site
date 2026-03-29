@@ -1,8 +1,5 @@
-import React from "react";
-
 import { DynamicButton } from "./DynamicButton";
 import { DynamicTable } from "./DynamicTable";
-import type { TableContent } from "./types";
 
 interface ReleaseVersion {
 	version: string;
@@ -46,8 +43,8 @@ export function DynamicPreviousReleases({
 		{
 			key: "version" as const,
 			header: "Version",
-			render: (value: unknown, row: ReleaseVersion) => (
-				<span className="text-primary font-semibold">
+			render: (value: unknown, _row: ReleaseVersion) => (
+				<span className="font-semibold text-primary">
 					{String(value)}
 				</span>
 			),
@@ -126,7 +123,9 @@ export function DynamicPreviousReleases({
 	];
 
 	return (
-		<section className={`py-20 ${className || ""}`}>
+		<section
+			className={`py-20 ${className || ""}`}
+			aria-label="Previous releases">
 			<div className="container mx-auto px-4">
 				{(title || description) && (
 					<div className="mb-16 text-center">
@@ -136,14 +135,14 @@ export function DynamicPreviousReleases({
 							</h2>
 						)}
 						{description && (
-							<p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
 								{description}
 							</p>
 						)}
 					</div>
 				)}
 
-				<div className="border-border mx-auto max-w-5xl overflow-hidden !rounded-none border-[3px] shadow-lg">
+				<div className="bg-white/92 mx-auto max-w-5xl overflow-hidden !rounded-none border border-[var(--border)]">
 					<DynamicTable<ReleaseVersion>
 						content={{
 							columns,

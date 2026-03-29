@@ -1,4 +1,10 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+
 import { Separator } from "../ui/separator";
+
+import "./Footer/Stylesheet.css";
 
 interface FooterColumn {
 	title: string;
@@ -16,35 +22,69 @@ interface FooterProps {
 }
 
 export function Footer({ content }: FooterProps) {
+	const { t } = useTranslation("footer");
+
 	const footerContent = content || {
 		brand: {
-			name: "Code Editor Land",
-			description:
-				"The next-generation code editor for modern developers.",
+			name: t("brand.name", "Land"),
+			description: t(
+				"brand.description",
+				"The next-generation code editor. Open source and free forever.",
+			),
 		},
 		columns: [
 			{
-				title: "Product",
+				title: t("columns.product.title", "Product"),
 				links: [
-					{ label: "Features", href: "#features" },
-					{ label: "Pricing", href: "#pricing" },
-					{ label: "Downloads", href: "/downloads" },
+					{
+						label: t("columns.product.features", "Features"),
+						href: "/#features",
+					},
+					{
+						label: t("columns.product.downloads", "Downloads"),
+						href: "/downloads",
+					},
+					{
+						label: t("columns.product.docs", "Docs"),
+						href: "https://github.com/CodeEditorLand/Land#readme",
+					},
 				],
 			},
 			{
-				title: "Community",
+				title: t("columns.company.title", "Community"),
 				links: [
-					{ label: "About", href: "/about" },
-					{ label: "Blog", href: "/blog" },
-					{ label: "Contributing", href: "/contributing" },
+					{
+						label: t("columns.company.blog", "Discussions"),
+						href: "https://github.com/CodeEditorLand/Land/discussions",
+					},
+					{
+						label: t(
+							"columns.company.contributing",
+							"Contributing",
+						),
+						href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
+					},
+					{
+						label: t("columns.company.github", "GitHub"),
+						href: "https://github.com/CodeEditorLand/Land",
+					},
 				],
 			},
 			{
-				title: "Legal",
+				title: t("columns.legal.title", "Legal"),
 				links: [
-					{ label: "Privacy", href: "/legal/privacy" },
-					{ label: "Terms", href: "/legal/terms" },
-					{ label: "License", href: "/license" },
+					{
+						label: t("columns.legal.privacy", "Privacy"),
+						href: "/legal/privacy",
+					},
+					{
+						label: t("columns.legal.terms", "Terms"),
+						href: "/legal/terms",
+					},
+					{
+						label: t("columns.legal.license", "License"),
+						href: "/license",
+					},
 				],
 			},
 		],
@@ -52,52 +92,127 @@ export function Footer({ content }: FooterProps) {
 	};
 
 	return (
-		<footer className="bg-muted/50 border-t">
-			<div className="container mx-auto px-4 py-16">
+		<footer className="footer" role="contentinfo" aria-label="Site footer">
+			<div className="footer-content container mx-auto px-4 py-12">
 				<div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-5">
 					<div className="lg:col-span-2">
-						<div className="mb-4 flex items-center space-x-2">
-							<div className="bg-primary border-border h-8 w-8 !rounded-none border-[3px]"></div>
+						<a
+							href="/"
+							className="mb-4 flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							aria-label={`${footerContent.brand?.name || "Land"} - Go to homepage`}>
+							<div
+								className="h-8 w-8 border border-[var(--border)] bg-primary"
+								aria-hidden="true"></div>
 							<span className="font-semibold">
 								{footerContent.brand?.name || "Land"}
 							</span>
-						</div>
+						</a>
 						{footerContent.brand?.description && (
-							<p className="text-muted-foreground mb-6 max-w-md">
+							<p className="mb-6 max-w-md text-muted-foreground">
 								{footerContent.brand.description}
 							</p>
 						)}
 					</div>
 
 					{footerContent.columns?.map((column, colIndex) => (
-						<div key={colIndex}>
+						<nav key={colIndex} aria-label={column.title}>
 							<h4 className="mb-4 font-medium">{column.title}</h4>
-							<ul className="text-muted-foreground space-y-2 text-sm">
+							<ul className="space-y-2 text-sm text-muted-foreground">
 								{column.links.map((link, linkIndex) => (
 									<li key={linkIndex}>
 										<a
 											href={link.href}
-											className="hover:text-foreground transition-colors">
+											className="transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+											{...(link.href.startsWith("http")
+												? {
+														target: "_blank",
+														rel: "noopener noreferrer",
+													}
+												: {})}>
 											{link.label}
 										</a>
 									</li>
 								))}
 							</ul>
-						</div>
+						</nav>
 					))}
 				</div>
 
 				<Separator className="my-8" />
 
-				<div className="flex flex-col items-center justify-between md:flex-row">
-					<p className="text-muted-foreground mb-4 text-sm md:mb-0">
-						© 2025 {footerContent.brand?.name || "Land"}. All rights
-						reserved.
+				<div className="mb-6 border border-[var(--border)] bg-white p-4">
+					<p className="text-xs leading-relaxed text-muted-foreground">
+						{t(
+							"funding.prefix",
+							"This project has been funded through the ",
+						)}
+						<a
+							href="https://nlnet.nl/commonsfund"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+							{t("funding.ngiFund", "NGI0 Commons Fund")}
+						</a>
+						{t("funding.nlnetIntro", ", a fund established by ")}
+						<a
+							href="https://nlnet.nl"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+							{t("funding.nlnet", "NLnet")}
+						</a>
+						{t(
+							"funding.euSupport",
+							" with financial support from the European Commission\u2019s Next Generation Internet programme, under grant agreement No.\u00a0101135429. ",
+						)}
+						<a
+							href="https://nlnet.nl/project/Land/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+							{t("funding.projectPage", "View project page")}
+						</a>
+						{"."}
 					</p>
-					{footerContent.bottomBar?.madeWith && (
-						<p className="text-muted-foreground text-sm">
-							Built by the Code Editor Land team
+				</div>
+
+				<div className="flex flex-col items-center justify-between md:flex-row">
+					<div className="mb-4 flex items-center gap-4 md:mb-0">
+						<a
+							href="https://github.com/CodeEditorLand"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							aria-label="Code Editor Land on GitHub (opens in new tab)">
+							<img
+								src="/Image/GitHub.svg"
+								alt=""
+								aria-hidden="true"
+								className="h-5 w-5"
+							/>
+						</a>
+						<p className="text-sm text-muted-foreground">
+							{t("bottomBar.copyright", {
+								year: new Date().getFullYear(),
+								defaultValue:
+									"© {{year}} Code Editor Land. All rights reserved.",
+							})}
 						</p>
+					</div>
+					{footerContent.bottomBar?.madeWith && (
+						<a
+							href="https://tauri.app"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							aria-label="Made with Tauri (opens in new tab)">
+							<img
+								src="https://playform.cloud/Image/GitHub/Made/Tauri.svg"
+								alt="Made with Tauri"
+								className="h-8"
+								loading="lazy"
+							/>
+						</a>
 					)}
 				</div>
 			</div>

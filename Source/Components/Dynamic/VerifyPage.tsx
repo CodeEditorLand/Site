@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { getWorkersClient } from "../../Lib/workers-client";
-import { DynamicEmailVerification } from "./DynamicEmailVerification";
-import type { VerificationContent } from "./types";
+import { authAPI } from "../../Lib/api/auth";
+import {
+	DynamicEmailVerification,
+	type VerificationContent,
+} from "./DynamicEmailVerification";
 
 interface VerifyPageContent {
 	verification: VerificationContent;
 }
 
-type VerifyRoute = "verify" | "success" | "failure";
+type VerifyRoute = "pending" | "verify" | "success" | "failure";
 
 interface VerifyPageProps {
 	content: VerifyPageContent;
@@ -19,9 +21,13 @@ interface VerifyPageProps {
 	metaTitle?: string;
 	metaDescription?: string;
 	className?: string;
-	onVerify?: (token: string) => Promise<boolean>;
-	onResend?: (email: string) => Promise<boolean>;
-	onNavigate?: ((path: string) => void) | undefined;
+	onVerify?: (Token: string) => Promise<boolean>;
+	onResend?: (Email: string) => Promise<boolean>;
+	onNavigate?: ((Path: string) => void) | undefined;
+}
+
+function NavigateToPath(Path: string): void {
+	window.location.href = Path;
 }
 
 export function VerifyPage({
@@ -37,91 +43,63 @@ export function VerifyPage({
 	onNavigate,
 }: VerifyPageProps) {
 	const { verification } = content;
-	const workers = getWorkersClient();
-	const [userEmail, setUserEmail] = useState<string>("");
+	const Navigate = onNavigate || NavigateToPath;
+	const [UserEmail, SetUserEmail] = useState<string>("");
 
 	// Extract email from localStorage if available
 	useEffect(() => {
 		try {
-			const userData = localStorage.getItem("current_user");
-			if (userData) {
-				const user = JSON.parse(userData);
-				setUserEmail(user.email || "");
+			const UserData = localStorage.getItem("current_user");
+			if (UserData) {
+				const ParsedUser = JSON.parse(UserData);
+				SetUserEmail(ParsedUser.email || "");
 			}
 		} catch {
 			// Not available during SSR
 		}
 	}, []);
 
-	const handleVerify = async (verifyToken: string): Promise<boolean> => {
+	const HandleVerify = async (VerifyToken: string): Promise<boolean> => {
 		try {
-			const response = await workers.auth.verifyEmail(verifyToken);
-
-			if (response.success) {
-				toast.success("Email verified successfully!");
-				// Clear any pending verification state
-				return true;
-			} else {
-				toast.error(response.error || "Verification failed");
-				return false;
-			}
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error ? error.message : "Verification failed";
-			toast.error(errorMessage);
+			await authAPI.verifyEmail(VerifyToken);
+			toast.success("Email verified successfully!");
+			return true;
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
+					: "Verification failed";
+			toast.error(ErrorMessage);
 			return false;
 		}
 	};
 
-	const handleResend = async (email: string): Promise<boolean> => {
+	const HandleResend = async (Email: string): Promise<boolean> => {
 		try {
-			const response = await workers.auth.resendVerification();
-
-			if (response.success) {
-				toast.success("Verification email sent!");
-				return true;
-			} else {
-				toast.error(response.error || "Failed to resend email");
-				return false;
-			}
-		} catch (error) {
-			const errorMessage =
-				error instanceof Error
-					? error.message
+			await authAPI.resendVerification();
+			toast.success("Verification email sent!");
+			return true;
+		} catch (ErrorInstance) {
+			const ErrorMessage =
+				ErrorInstance instanceof Error
+					? ErrorInstance.message
 					: "Failed to resend email";
-			toast.error(errorMessage);
+			toast.error(ErrorMessage);
 			return false;
-		}
-	};
-
-	const getTitle = () => {
-		switch (route) {
-			case "verify":
-				return t("verify.pending.title", {
-					defaultValue: "Verify Your Email",
-				});
-			case "success":
-				return t("verify.success.title", {
-					defaultValue: "Email Verified",
-				});
-			case "failure":
-				return t("verify.error.title", {
-					defaultValue: "Verification Failed",
-				});
 		}
 	};
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<main className="flex-1">
-				{route === "verify" && (
+			<div className="flex-1">
+				{(route === "verify" || route === "pending") && (
 					<DynamicEmailVerification
 						content={verification}
 						token={token}
-						userEmail={userEmail}
-						onVerify={handleVerify}
-						onResend={handleResend}
-						onNavigate={onNavigate}
+						userEmail={UserEmail}
+						onVerify={onVerify || HandleVerify}
+						onResend={onResend || HandleResend}
+						onNavigate={Navigate}
 					/>
 				)}
 
@@ -129,13 +107,15 @@ export function VerifyPage({
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
-								<div className="!rounded-none border-[3px] border-green-500 p-8 shadow-lg">
-									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100 dark:bg-green-900/30">
+								<div className="rounded-none border border-green-500 p-8">
+									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100">
 										<svg
 											className="h-10 w-10 text-green-600"
 											fill="none"
 											viewBox="0 0 24 24"
-											stroke="currentColor">
+											stroke="currentColor"
+											aria-hidden="true">
+											<title>Email verified</title>
 											<path
 												strokeLinecap="round"
 												strokeLinejoin="round"
@@ -147,19 +127,16 @@ export function VerifyPage({
 									<h1 className="mb-2 text-2xl font-bold">
 										{"Email Verified Successfully!"}
 									</h1>
-									<p className="text-muted-foreground mb-6">
+									<p className="mb-6 text-muted-foreground">
 										{
 											"Your email address has been verified. You can now access all features."
 										}
 									</p>
 									<button
 										type="button"
-										className="border-border bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center justify-center gap-2 border-[3px] px-4 py-2 text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50"
-										onClick={() => onNavigate?.("/")}>
-										{t("verify.success.continueButton", {
-											defaultValue:
-												"Continue to Homepage",
-										})}
+										className="inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
+										onClick={() => Navigate("/")}>
+										{"Continue to Homepage"}
 									</button>
 								</div>
 							</div>
@@ -171,13 +148,15 @@ export function VerifyPage({
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
-								<div className="border-destructive !rounded-none border-[3px] p-8 shadow-lg">
-									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100 dark:bg-red-900/30">
+								<div className="rounded-none border border-destructive p-8">
+									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100">
 										<svg
 											className="h-10 w-10 text-red-600"
 											fill="none"
 											viewBox="0 0 24 24"
-											stroke="currentColor">
+											stroke="currentColor"
+											aria-hidden="true">
+											<title>Verification failed</title>
 											<path
 												strokeLinecap="round"
 												strokeLinejoin="round"
@@ -189,12 +168,12 @@ export function VerifyPage({
 									<h1 className="mb-2 text-2xl font-bold">
 										{"Verification Failed"}
 									</h1>
-									<p className="text-muted-foreground mb-2">
+									<p className="mb-2 text-muted-foreground">
 										{reason
-											? `${t("verify.error.instruction", { defaultValue: "Error:" })} ${reason}`
+											? `Error: ${reason}`
 											: "This verification link is invalid or has expired."}
 									</p>
-									<p className="text-muted-foreground mb-6 text-sm">
+									<p className="mb-6 text-sm text-muted-foreground">
 										{
 											"Please request a new verification email or contact support if the problem persists."
 										}
@@ -202,17 +181,15 @@ export function VerifyPage({
 									<div className="flex justify-center gap-4">
 										<button
 											type="button"
-											className="border-border bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center justify-center gap-2 border-[3px] px-4 py-2 text-sm font-medium transition-all"
-											onClick={() =>
-												onNavigate?.("/verify")
-											}>
+											className="inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary"
+											onClick={() => Navigate("/verify")}>
 											{"Send New Verification Email"}
 										</button>
 										<button
 											type="button"
-											className="border-border bg-background hover:bg-accent inline-flex h-10 items-center justify-center gap-2 border-[3px] px-4 py-2 text-sm font-medium transition-all"
+											className="inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-background px-4 py-2 text-sm font-medium transition-all hover:bg-accent"
 											onClick={() =>
-												onNavigate?.("/account/signin")
+												Navigate("/account/signin")
 											}>
 											{"Sign In"}
 										</button>
@@ -222,7 +199,7 @@ export function VerifyPage({
 						</div>
 					</section>
 				)}
-			</main>
+			</div>
 		</div>
 	);
 }

@@ -1,0 +1,39 @@
+{
+	"brand": {
+		"name": "Code Editor Land",
+		"description": "L'editeur de code de nouvelle generation. Open source et gratuit pour toujours."
+	},
+	"columns": {
+		"product": {
+			"title": "Produit",
+			"features": "Fonctionnalites",
+			"downloads": "Telecharger",
+			"docs": "Documentation"
+		},
+		"company": {
+			"title": "Communaute",
+			"blog": "Discussions",
+			"contributing": "Contribuer",
+			"github": "GitHub"
+		},
+		"legal": {
+			"title": "Mentions legales",
+			"privacy": "Confidentialite",
+			"terms": "Conditions d'utilisation",
+			"license": "Licence"
+		}
+	},
+	"bottomBar": {
+		"copyright": "\u00a9 {{year}} Code Editor Land. Tous droits reserves.",
+		"builtBy": "Cree par l'equipe Code Editor Land",
+		"madeWith": "Fait avec"
+	},
+	"funding": {
+		"prefix": "Ce projet a \u00e9t\u00e9 financ\u00e9 par le ",
+		"ngiFund": "Fonds NGI0 Commons",
+		"nlnetIntro": ", un fonds \u00e9tabli par ",
+		"nlnet": "NLnet",
+		"euSupport": " avec le soutien financier du programme Internet de prochaine g\u00e9n\u00e9ration de la Commission europ\u00e9enne, dans le cadre de la convention de subvention n\u00b0\u00a0101135429. ",
+		"projectPage": "Voir la page du projet"
+	}
+}

@@ -8,6 +8,7 @@ interface MetaTagsProps {
 	siteName?: string;
 	publishedTime?: string;
 	author?: string;
+	noIndex?: boolean;
 }
 
 /**
@@ -23,13 +24,14 @@ export function MetaTags({
 	url = "",
 	type = "website",
 	lang = "en",
-	siteName = "Land",
+	siteName = "Code Editor Land",
 	publishedTime,
 	author,
+	noIndex = false,
 }: MetaTagsProps) {
 	// Ensure title and description are never empty
 	const safeTitle = title || siteName;
-	const safeDescription = description || "Code Editor";
+	const safeDescription = description || "The next-generation code editor";
 
 	// Build absolute URL
 	const baseUrl = "https://editor.land";
@@ -64,7 +66,10 @@ export function MetaTags({
 			{/* Basic Meta Tags */}
 			<title>{safeTitle}</title>
 			<meta name="description" content={safeDescription} />
-			<meta name="robots" content="index, follow" />
+			<meta
+				name="robots"
+				content={noIndex ? "noindex, nofollow" : "index, follow"}
+			/>
 			{/* Canonical URL */}
 			<link rel="canonical" href={siteUrl} />
 

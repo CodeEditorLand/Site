@@ -1,17 +1,28 @@
 import { Apple, Monitor, Terminal } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCard } from "./DynamicCard";
 import type { ButtonContent, CardSection, PlatformInfo } from "./types";
 
+interface PlatformGridLabels {
+	version?: string;
+	size?: string;
+	requirements?: string;
+	loading?: string;
+	errorTitle?: string;
+	downloadFailed?: string;
+}
+
 interface PlatformGridContent {
 	title?: string;
 	subtitle?: string;
-	platforms?: PlatformInfo[]; // Optional - will fetch from API if not provided
+	platforms?: PlatformInfo[];
 	showVerification?: boolean;
 	onDownload?: (platform: PlatformInfo) => void;
-	apiPlatform?: "macos" | "windows" | "linux"; // Optional: specify which platform to show (defaults to all)
+	apiPlatform?: "macos" | "windows" | "linux";
+	labels?: PlatformGridLabels;
 }
 
 interface DynamicPlatformGridProps {
@@ -28,6 +39,7 @@ export function DynamicPlatformGrid({
 	content,
 	className,
 }: DynamicPlatformGridProps) {
+	const { t } = useTranslation("download");
 	const {
 		title,
 		subtitle,
@@ -35,7 +47,26 @@ export function DynamicPlatformGrid({
 		showVerification = true,
 		onDownload,
 		apiPlatform,
+		labels = {},
 	} = content;
+	const {
+		version: versionLabel = t("labels.version", {
+			defaultValue: "Version:",
+		}),
+		size: sizeLabel = t("labels.size", { defaultValue: "Size:" }),
+		requirements: requirementsLabel = t("labels.requirements", {
+			defaultValue: "Requirements:",
+		}),
+		loading: loadingLabel = t("labels.loading", {
+			defaultValue: "Loading downloads...",
+		}),
+		errorTitle: errorTitleLabel = t("labels.errorTitle", {
+			defaultValue: "Unable to load downloads",
+		}),
+		downloadFailed: downloadFailedLabel = t("labels.downloadFailed", {
+			defaultValue: "Download failed. Please try again.",
+		}),
+	} = labels;
 
 	const [platforms, setPlatforms] = useState<PlatformInfo[]>(
 		providedPlatforms || [],
@@ -164,17 +195,23 @@ export function DynamicPlatformGrid({
 			onDownload?.(platform);
 		} catch (err) {
 			console.error("Download failed:", err);
-			alert("Download failed. Please try again.");
+			console.warn(downloadFailedLabel);
 		}
 	};
 
 	if (loading) {
 		return (
-			<section className={`py-20 ${className || ""}`}>
+			<section
+				className={`py-20 ${className || ""}`}
+				aria-label="Downloads"
+				aria-busy="true">
 				<div className="container mx-auto px-4">
-					<div className="mb-16 text-center">
+					<div
+						className="mb-16 text-center"
+						role="status"
+						aria-live="polite">
 						<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-							Loading downloads...
+							{loadingLabel}
 						</h2>
 					</div>
 					<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
@@ -193,11 +230,13 @@ export function DynamicPlatformGrid({
 
 	if (error) {
 		return (
-			<section className={`py-20 ${className || ""}`}>
+			<section
+				className={`py-20 ${className || ""}`}
+				aria-label="Downloads">
 				<div className="container mx-auto px-4">
-					<div className="mb-16 text-center">
+					<div className="mb-16 text-center" role="alert">
 						<h2 className="mb-4 text-3xl tracking-tight text-red-500 md:text-4xl lg:text-5xl">
-							Unable to load downloads
+							{errorTitleLabel}
 						</h2>
 						<p className="text-muted-foreground">{error}</p>
 					</div>
@@ -207,7 +246,10 @@ export function DynamicPlatformGrid({
 	}
 
 	return (
-		<section className={`py-20 ${className || ""}`}>
+		<section
+			id="download"
+			aria-label="Downloads"
+			className={`py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="mb-16 text-center">
@@ -217,7 +259,7 @@ export function DynamicPlatformGrid({
 							</h2>
 						)}
 						{subtitle && (
-							<p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
 								{subtitle}
 							</p>
 						)}
@@ -235,27 +277,27 @@ export function DynamicPlatformGrid({
 							},
 							body: {
 								content: (
-									<div className="text-muted-foreground space-y-2 text-sm">
+									<div className="space-y-2 text-sm text-muted-foreground">
 										<div className="flex justify-between">
-											<span>Version:</span>
-											<span className="text-foreground font-medium">
+											<span>{versionLabel}</span>
+											<span className="font-medium text-foreground">
 												{formatVersion(
 													platform.version,
 												)}
 											</span>
 										</div>
 										<div className="flex justify-between">
-											<span>Size:</span>
-											<span className="text-foreground font-medium">
+											<span>{sizeLabel}</span>
+											<span className="font-medium text-foreground">
 												{formatFileSize(platform.size)}
 											</span>
 										</div>
 										{platform.requirements &&
 											platform.requirements.length >
 												0 && (
-												<div className="border-border mt-2 border-t pt-2">
-													<p className="text-foreground mb-1 font-medium">
-														Requirements:
+												<div className="mt-2 border-t border-border pt-2">
+													<p className="mb-1 font-medium text-foreground">
+														{requirementsLabel}
 													</p>
 													<ul className="list-inside list-disc space-y-1">
 														{platform.requirements.map(
@@ -279,7 +321,7 @@ export function DynamicPlatformGrid({
 										{showVerification &&
 											(platform.checksum ||
 												platform.signature) && (
-												<div className="text-muted-foreground mb-3 text-xs">
+												<div className="mb-3 text-xs text-muted-foreground">
 													{platform.checksum && (
 														<p>
 															SHA-256:{" "}
@@ -297,7 +339,13 @@ export function DynamicPlatformGrid({
 											)}
 										<DynamicButton
 											content={{
-												text: `Download for ${platform.name || "this platform"}`,
+												text: t("labels.downloadFor", {
+													defaultValue:
+														"Download for {{platform}}",
+													platform:
+														platform.name ||
+														"this platform",
+												}),
 												variant: "default",
 												size: "lg",
 												fullWidth: true,

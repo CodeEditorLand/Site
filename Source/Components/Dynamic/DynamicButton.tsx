@@ -60,6 +60,7 @@ export function DynamicButton({
 			type={type}
 			disabled={disabled || isLoading}
 			className={fullWidth ? "w-full" : className}
+			aria-busy={isLoading || undefined}
 			onClick={() => {
 				if (!isLoading && onAction) {
 					onAction();
@@ -70,9 +71,9 @@ export function DynamicButton({
 			}}
 			{...props}>
 			{isLoading ? (
-				<Loader2 className="h-4 w-4 animate-spin" />
+				<Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
 			) : IconComponent ? (
-				<IconComponent className="h-4 w-4" />
+				<IconComponent className="h-4 w-4" aria-hidden="true" />
 			) : null}
 			{text}
 		</Button>

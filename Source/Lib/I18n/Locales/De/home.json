@@ -1,0 +1,106 @@
+{
+	"features": {
+		"badge": "Funktionen",
+		"item": {
+			"designTokens": {
+				"description": "Natives Rust-Backend mit gRPC-IPC sorgt dafuer, dass jede Operation schnell, reaktionsfaehig und zuverlaessig ist. Kein Electron-Ballast.",
+				"title": "Leistung zuerst"
+			},
+			"componentLibrary": {
+				"description": "Fuehren Sie Ihre vorhandenen VS Code-Erweiterungen mit hoher Wiedergabetreue ueber den Cocoon-Erweiterungshost aus. Keine Aenderungen noetig.",
+				"title": "VS Code-Kompatibilitaet"
+			},
+			"documentation": {
+				"description": "Effect-TS-native UI-Dienste bieten Typsicherheit, strukturierte Nebenlaeufigkeit und hervorragende Fehlerbehandlung.",
+				"title": "Effect-TS-Architektur"
+			},
+			"versionControl": {
+				"description": "Eine Codebasis, native Bereitstellungen fuer macOS, Windows und Linux mit Tauri. Einmal schreiben, ueberall ausfuehren.",
+				"title": "Plattformuebergreifend"
+			},
+			"collaboration": {
+				"description": "Lizenziert unter Creative Commons CC0 \u2014 voellig kostenlos zu verwenden, zu aendern und zu verteilen. Ohne Einschraenkungen.",
+				"title": "Open Source"
+			},
+			"cicdIntegration": {
+				"description": "Basierend auf bewaehrten Open-Source-Technologien: Rust, Tauri, Effect-TS und die VS Code-Plattform. Vertraut und leistungsstark.",
+				"title": "Moderne Werkzeuge"
+			}
+		},
+		"subtitle": "Entdecken Sie, was Code Editor Land zum fortschrittlichsten verfuegbaren Code-Editor macht.",
+		"title": "Fuer Leistung gebaut, fuer Entwickler entworfen"
+	},
+	"hero": {
+		"badge": "Neu: Effect-TS-Architektur",
+		"subtitle": "Ein blitzschneller, typsicherer Editor, gebaut mit Rust, Tauri und Effect-TS. Erleben Sie den Editor, der VS Code fuer die moderne Aera neu denkt.",
+		"title": "Die Zukunft der",
+		"titleHighlight": "Code-Bearbeitung",
+		"atScale": "beginnt hier",
+		"cta": {
+			"primary": "Herunterladen",
+			"secondary": "Mehr erfahren"
+		},
+		"scene": {
+			"description": "Animierte Architektur-Visualisierung",
+			"hub": "Kernarchitektur",
+			"components": {
+				"button": "Rust-Kern",
+				"colors": "Tauri-UI",
+				"typography": "Effect-TS-Dienste",
+				"components": "gRPC-IPC",
+				"spacing": "Erweiterungshost",
+				"icons": "Plattformuebergreifend",
+				"docs": "VS Code-API",
+				"versions": "Open Source CC0"
+			}
+		}
+	},
+	"nav": {
+		"docs": "Dokumentation",
+		"downloads": "Herunterladen",
+		"features": "Funktionen",
+		"github": "GitHub"
+	},
+	"pricing": {
+		"subtitle": "Code Editor Land ist voellig kostenlos. Keine Stufen, keine Abonnements, keine Einschraenkungen.",
+		"labels": {
+			"monthly": "Monatlich",
+			"yearly": "Jaehrlich",
+			"savings": "(Bis zu 20% sparen)",
+			"popular": "Beliebteste",
+			"perMonth": "/Monat",
+			"perYear": "/Jahr"
+		},
+		"tiers": {
+			"free": {
+				"name": "Community",
+				"description": "Fuer alle. Voller Funktionsumfang, voellig kostenlos.",
+				"features": {
+					"1": "Volle VS Code-Kompatibilitaet",
+					"2": "Alle Erweiterungen unterstuetzt",
+					"3": "Native Rust-Leistung",
+					"4": "Plattformuebergreifend (macOS, Windows, Linux)",
+					"5": "Effect-TS typsichere UI",
+					"6": "gRPC-basierte Architektur",
+					"7": "Open Source (CC0-Lizenz)"
+				},
+				"button": "Jetzt herunterladen"
+			}
+		},
+		"title": "Fuer immer kostenlos, Open Source",
+		"badge": "Preise"
+	},
+	"testimonials": {
+		"quote": {
+			"1": "Land ist genau das, was VS Code brauchte \u2014 eine leistungsorientierte, offene Alternative. Es ist unglaublich schnell.",
+			"2": "Die Effect-TS-Architektur ist wunderbar. Die Typsicherheit faengt Fehler ab, bevor sie auftreten.",
+			"3": "Meine vorhandenen Erweiterungen ohne Aenderungen ausfuehren zu koennen ist ein Wendepunkt. Die Kompatibilitaet ist beeindruckend.",
+			"4": "Endlich ein Editor, der meine Systemressourcen respektiert. Kein Electron-Speicherfresser mehr.",
+			"5": "Das Open-Source-Engagement bedeutet, dass ich beitragen und anpassen kann. Dies ist der Editor, auf den ich gewartet habe.",
+			"6": "Die gRPC-basierte Architektur ist ein Meisterwerk im Systemdesign. Land ist die Zukunft der Desktop-Editoren."
+		},
+		"subtitle": "Stimmen aus der Community ueber die Zukunft der Code-Bearbeitung.",
+		"title": "Was Entwickler sagen",
+		"badge": "Erfahrungsberichte"
+	}
+}

@@ -1,0 +1,109 @@
+{
+	"forgotPassword": {
+		"emailPlaceholder": "nombre@ejemplo.es",
+		"submit": "Enviar enlace de restablecimiento",
+		"subtitle": "Ingrese su direccion de correo electronico para solicitar un enlace de restablecimiento",
+		"success": {
+			"title": "Revise su correo electronico",
+			"subtitle": "Se ha enviado un enlace de restablecimiento de contrasena a",
+			"instruction": "Haga clic en el enlace del correo electronico para restablecer su contrasena. El enlace caduca en 24 horas.",
+			"resend": "Reenviar correo electronico"
+		},
+		"title": "Restablecer contrasena",
+		"emailLabel": "Correo electronico",
+		"loading": "Enviando...",
+		"backToSignIn": "Volver a iniciar sesion",
+		"successToast": "Correo de restablecimiento enviado",
+		"errorToast": "No se pudo enviar el correo de restablecimiento",
+		"emailRequired": "El correo electronico es obligatorio",
+		"resendSuccess": "Correo de restablecimiento reenviado",
+		"resendError": "No se pudo reenviar el correo electronico"
+	},
+	"resetPassword": {
+		"checkingMessage": "Validando su token de restablecimiento, por favor espere...",
+		"confirmLabel": "Confirmar nueva contrasena",
+		"confirmPlaceholder": "Vuelva a ingresar su nueva contrasena",
+		"invalidToken": {
+			"title": "Token invalido o caducado",
+			"description": "Este enlace de restablecimiento de contrasena es invalido, ha caducado o ya fue utilizado.",
+			"instruction": "Solicite un nuevo correo electronico de restablecimiento de contrasena para continuar.",
+			"button": "Solicitar nuevo correo de restablecimiento"
+		},
+		"passwordLabel": "Nueva contrasena",
+		"passwordPlaceholder": "Ingrese una nueva contrasena segura",
+		"submit": "Restablecer contrasena",
+		"subtitle": "Ingrese su nueva contrasena a continuacion",
+		"success": {
+			"title": "Contrasena restablecida exitosamente",
+			"description": "Su contrasena ha sido restablecida. Ahora puede iniciar sesion con su nueva contrasena.",
+			"button": "Continuar a iniciar sesion"
+		},
+		"title": "Restablecer contrasena",
+		"passwordHint": "Minimo 8 caracteres",
+		"loading": "Restableciendo...",
+		"mismatch": "Las contrasenas no coinciden",
+		"signInLink": "Iniciar sesion",
+		"checking": "Verificando token...",
+		"error": {
+			"tooShort": "La contrasena debe tener al menos 8 caracteres"
+		},
+		"successToast": "Contrasena restablecida exitosamente",
+		"errorToast": "No se pudo restablecer la contrasena"
+	},
+	"signIn": {
+		"emailPlaceholder": "nombre@ejemplo.es",
+		"forgotPassword": "Olvido su contrasena? No hay problema - haga clic aqui para restablecerla de forma segura.",
+		"githubButton": "Continuar con GitHub",
+		"passwordPlaceholder": "Ingrese su contrasena",
+		"signUpLink": "Registrarse",
+		"subtitle": "Ingrese sus credenciales para acceder a su cuenta",
+		"title": "Iniciar sesion",
+		"emailLabel": "Correo electronico",
+		"passwordLabel": "Contrasena",
+		"submit": "Iniciar sesion",
+		"loading": "Iniciando sesion...",
+		"or": "O",
+		"noAccount": "No tiene una cuenta?",
+		"successToast": "Sesion iniciada exitosamente",
+		"errorToast": "Credenciales invalidas"
+	},
+	"signUp": {
+		"confirmPasswordLabel": "Confirmar contrasena",
+		"confirmPasswordPlaceholder": "Ingrese su contrasena nuevamente para confirmar",
+		"emailPlaceholder": "nombre@ejemplo.es",
+		"passwordHint": "Minimo 8 caracteres",
+		"passwordPlaceholder": "Cree una contrasena segura",
+		"signInLink": "Iniciar sesion",
+		"social": {
+			"github": "Continuar con GitHub",
+			"google": "Continuar con Google",
+			"gitlab": "Continuar con GitLab"
+		},
+		"subtitle": "Ingrese su informacion para crear una cuenta",
+		"termsLabel": "Acepto los Terminos de servicio y la Politica de privacidad",
+		"title": "Crear cuenta",
+		"validation": {
+			"emailRequired": "El correo electronico es obligatorio",
+			"emailInvalid": "Formato de correo electronico invalido",
+			"passwordRequired": "La contrasena es obligatoria",
+			"passwordTooShort": "La contrasena debe tener al menos 8 caracteres",
+			"confirmPasswordRequired": "Por favor confirme su contrasena",
+			"termsRequired": "Debe aceptar los terminos de servicio y la politica de privacidad"
+		},
+		"emailLabel": "Correo electronico",
+		"passwordLabel": "Contrasena",
+		"submit": "Crear cuenta",
+		"loading": "Creando cuenta...",
+		"or": "O",
+		"hasAccount": "Ya tiene una cuenta?",
+		"termsLink": "Terminos de servicio",
+		"privacyLink": "Politica de privacidad",
+		"and": "y",
+		"successToast": "Cuenta creada exitosamente",
+		"errorToast": "No se pudo crear la cuenta",
+		"confirmPasswordMismatch": "Las contrasenas no coinciden"
+	},
+	"common": {
+		"and": "y"
+	}
+}

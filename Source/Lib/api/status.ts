@@ -1,4 +1,4 @@
-import type { GitHubCommit, GitHubActionRun, GitHubIssue } from "../types";
+import type { GitHubActionRun, GitHubCommit, GitHubIssue } from "../types";
 import { getWorkersClient } from "../workers-client";
 
 /**
@@ -44,9 +44,7 @@ export class StatusAPI {
 		return response.data;
 	}
 
-	async getCheck(
-		id: string,
-	): Promise<{
+	async getCheck(id: string): Promise<{
 		id: string;
 		name: string;
 		status: string;
@@ -79,7 +77,10 @@ export class StatusAPI {
 		return response.data;
 	}
 
-	async getGitHubCommits(branch?: string, limit?: number): Promise<GitHubCommit[]> {
+	async getGitHubCommits(
+		branch?: string,
+		limit?: number,
+	): Promise<GitHubCommit[]> {
 		const response = await this.workers.status.getGitHubCommits(
 			branch,
 			limit,
@@ -98,7 +99,10 @@ export class StatusAPI {
 		return response.data;
 	}
 
-	async getGitHubIssues(state?: string, limit?: number): Promise<GitHubIssue[]> {
+	async getGitHubIssues(
+		state?: string,
+		limit?: number,
+	): Promise<GitHubIssue[]> {
 		const response = await this.workers.status.getGitHubIssues(
 			state,
 			limit,

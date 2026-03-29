@@ -1,0 +1,49 @@
+{
+	"card": {
+		"platform": {
+			"linux": {
+				"description": "DEB, RPM, AppImage",
+				"title": "Linux"
+			},
+			"macos": {
+				"title": "macOS",
+				"universalBadge": "Binario universal"
+			},
+			"windows": {
+				"description": "64 bits (x64)",
+				"title": "Windows"
+			}
+		}
+	},
+	"page": {
+		"subtitle": "Disponible para macOS, Windows y Linux. Rapido, nativo y gratuito.",
+		"title": "Descargar Land"
+	},
+	"previousReleases": {
+		"description": "Descargue versiones anteriores si es necesario.",
+		"title": "Versiones anteriores"
+	},
+	"subtitle": "Disponible para macOS, Windows y Linux. Construido con Tauri, impulsado por Rust.",
+	"systemRequirements": {
+		"subtitle": "Asegurese de que su sistema cumple estos requisitos antes de descargar.",
+		"title": "Requisitos del sistema"
+	},
+	"title": "Descargar Land",
+	"verification": {
+		"description": "Las versiones de Land estan firmadas con PGP. Verifique su descarga para garantizar la integridad.",
+		"downloadButton": "Descargar clave publica PGP",
+		"title": "Verifique su descarga",
+		"verifyButton": "Verificar descarga"
+	},
+	"labels": {
+		"version": "Version:",
+		"size": "Tamano:",
+		"requirements": "Requisitos:",
+		"loading": "Cargando descargas...",
+		"errorTitle": "No se pudieron cargar las descargas",
+		"downloadFailed": "Descarga fallida. Por favor, intentelo de nuevo.",
+		"downloadFor": "Descargar para {{platform}}",
+		"copiedToClipboard": "{{label}} copiado al portapapeles!",
+		"failedToCopy": "Error al copiar {{label}}"
+	}
+}

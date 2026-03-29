@@ -87,6 +87,8 @@ export function DynamicHeroSection({
 
 	return (
 		<section
+			id="hero"
+			aria-label="Hero"
 			className={`relative overflow-hidden py-20 lg:py-32 ${className || ""}`}>
 			<div className="container mx-auto px-4 text-center">
 				{/* Badge */}
@@ -98,14 +100,12 @@ export function DynamicHeroSection({
 				<h1 className="mx-auto mb-6 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
 					{title}{" "}
 					{titleHighlight && (
-						<span className="from-primary to-primary/60 bg-gradient-to-r bg-clip-text text-transparent">
-							{titleHighlight}
-						</span>
+						<span className="text-primary">{titleHighlight}</span>
 					)}
 				</h1>
 
 				{/* Subtitle */}
-				<p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-lg">
+				<p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
 					{subtitle}
 				</p>
 
@@ -115,16 +115,18 @@ export function DynamicHeroSection({
 					{secondaryCta && <DynamicButton content={secondaryCta} />}
 				</div>
 
-				{/* 3D Scene */}
-				<div className="relative mx-auto h-96 max-w-5xl lg:h-[500px]">
+				{/* 3D Scene - decorative */}
+				<div
+					className="relative mx-auto h-96 max-w-5xl lg:h-[500px]"
+					aria-hidden="true">
 					<div
 						ref={sceneRef}
 						className="perspective-1000 relative h-full w-full"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub */}
-						<div className="from-primary to-primary/70 border-border absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center !rounded-none border-[3px] bg-gradient-to-br shadow-2xl">
-							<div className="border-border flex h-16 w-16 items-center justify-center !rounded-none border-[3px] bg-white">
-								<div className="bg-primary border-border h-8 w-8 !rounded-none border"></div>
+						<div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center !rounded-none border border-[var(--border)] bg-primary">
+							<div className="flex h-16 w-16 items-center justify-center !rounded-none border border-[var(--border)] bg-white">
+								<div className="h-8 w-8 !rounded-none border border-[var(--border)] bg-primary"></div>
 							</div>
 						</div>
 
@@ -132,14 +134,14 @@ export function DynamicHeroSection({
 						{floatingCards.map((card, index) => (
 							<div
 								key={card.id}
-								className="floating-card bg-card absolute transform-gpu !rounded-none border-[3px] p-4 shadow-lg"
+								className="floating-card bg-white/92 absolute transform-gpu !rounded-none border p-4"
 								style={{
 									top: `${20 + index * 10}%`,
 									left: `${15 + index * 15}%`,
 									width: "140px",
 									height: "100px",
 								}}>
-								<div className="text-muted-foreground mb-2 text-xs">
+								<div className="mb-2 text-xs text-muted-foreground">
 									{card.title}
 								</div>
 								<div className="flex items-center space-x-2">
@@ -147,7 +149,7 @@ export function DynamicHeroSection({
 										card.colors.map((color, colorIndex) => (
 											<div
 												key={colorIndex}
-												className={`h-4 w-4 ${color} border-border !rounded-none border`}
+												className={`h-4 w-4 ${color} !rounded-none border border-[var(--border)]`}
 											/>
 										))}
 								</div>
@@ -156,37 +158,16 @@ export function DynamicHeroSection({
 
 						{/* Connecting Lines */}
 						{heroConfig.showConnectingLines && (
-							<svg className="pointer-events-none absolute inset-0 h-full w-full opacity-20">
-								<defs>
-									<linearGradient
-										id="lineGradient"
-										x1="0%"
-										y1="0%"
-										x2="100%"
-										y2="100%">
-										<stop
-											offset="0%"
-											stopColor="currentColor"
-											stopOpacity="0.1"
-										/>
-										<stop
-											offset="50%"
-											stopColor="currentColor"
-											stopOpacity="0.3"
-										/>
-										<stop
-											offset="100%"
-											stopColor="currentColor"
-											stopOpacity="0.1"
-										/>
-									</linearGradient>
-								</defs>
+							<svg
+								className="pointer-events-none absolute inset-0 h-full w-full opacity-20"
+								aria-hidden="true"
+								role="presentation">
 								<line
 									x1="50%"
 									y1="50%"
 									x2="20%"
 									y2="20%"
-									stroke="url(#lineGradient)"
+									stroke="currentColor"
 									strokeWidth="2"
 									className="animate-pulse"
 								/>
@@ -195,7 +176,7 @@ export function DynamicHeroSection({
 									y1="50%"
 									x2="80%"
 									y2="30%"
-									stroke="url(#lineGradient)"
+									stroke="currentColor"
 									strokeWidth="2"
 									className="animate-pulse"
 									style={{ animationDelay: "0.5s" }}
@@ -205,7 +186,7 @@ export function DynamicHeroSection({
 									y1="50%"
 									x2="25%"
 									y2="75%"
-									stroke="url(#lineGradient)"
+									stroke="currentColor"
 									strokeWidth="2"
 									className="animate-pulse"
 									style={{ animationDelay: "1s" }}
@@ -215,7 +196,7 @@ export function DynamicHeroSection({
 									y1="50%"
 									x2="75%"
 									y2="80%"
-									stroke="url(#lineGradient)"
+									stroke="currentColor"
 									strokeWidth="2"
 									className="animate-pulse"
 									style={{ animationDelay: "1.5s" }}
@@ -229,7 +210,7 @@ export function DynamicHeroSection({
 								{Array.from({ length: 20 }).map((_, i) => (
 									<div
 										key={i}
-										className="bg-primary/20 border-border absolute h-1 w-1 animate-pulse !rounded-none border"
+										className="bg-primary/20 absolute h-1 w-1 animate-pulse !rounded-none border border-[var(--border)]"
 										style={{
 											left: `${Math.random() * 100}%`,
 											top: `${Math.random() * 100}%`,

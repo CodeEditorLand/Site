@@ -125,9 +125,7 @@ export class AnalyticsAPI {
 		return response.data;
 	}
 
-	async getEventStats(
-		days?: number,
-	): Promise<{
+	async getEventStats(days?: number): Promise<{
 		byType: Record<string, number>;
 		byBrowser: Record<string, number>;
 		byOS: Record<string, number>;
@@ -139,9 +137,7 @@ export class AnalyticsAPI {
 		return response.data;
 	}
 
-	async getSessionStats(
-		days?: number,
-	): Promise<{
+	async getSessionStats(days?: number): Promise<{
 		totalSessions: number;
 		avgEventsPerSession: number;
 		sessionsByEventCount: Record<string, number>;

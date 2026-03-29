@@ -54,9 +54,7 @@ export class DownloadsAPI {
 		return response.data;
 	}
 
-	async getInfo(
-		id: string,
-	): Promise<
+	async getInfo(id: string): Promise<
 		Download & {
 			downloadUrl: string;
 			sha256Url: string;

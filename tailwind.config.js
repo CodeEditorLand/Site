@@ -8,7 +8,7 @@ export default {
 		"./src/**/*.{astro,js,jsx,ts,tsx}",
 	],
 
-	darkMode: "media",
+	darkMode: "class",
 
 	theme: {
 		container: {
@@ -30,7 +30,49 @@ export default {
 					},
 				},
 			},
+			borderRadius: {
+				none: "0",
+				full: "9999px",
+			},
+			borderColor: {
+				DEFAULT: "var(--border)",
+			},
 			colors: {
+				/* Design system tokens — maps Tailwind utilities to CSS custom properties in Base.css */
+				background: "hsl(var(--background))",
+				foreground: "var(--foreground)",
+				card: {
+					DEFAULT: "var(--card)",
+					foreground: "var(--card-foreground)",
+				},
+				popover: {
+					DEFAULT: "var(--popover)",
+					foreground: "var(--popover-foreground)",
+				},
+				primary: {
+					DEFAULT: "var(--primary)",
+					foreground: "var(--primary-foreground)",
+				},
+				secondary: {
+					DEFAULT: "var(--secondary)",
+					foreground: "var(--secondary-foreground)",
+				},
+				muted: {
+					DEFAULT: "var(--muted)",
+					foreground: "var(--muted-foreground)",
+				},
+				accent: {
+					DEFAULT: "var(--accent)",
+					foreground: "var(--accent-foreground)",
+				},
+				destructive: {
+					DEFAULT: "var(--destructive)",
+					foreground: "var(--destructive-foreground)",
+				},
+				border: "var(--border)",
+				input: "var(--input)",
+				ring: "var(--ring)",
+
 				// Existing tokens
 				backgroundLight: "var(--background-light)",
 				backgroundDark: "var(--background-dark)",

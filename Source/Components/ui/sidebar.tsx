@@ -1,7 +1,7 @@
 "use client";
 
 import { Slot } from "@radix-ui/react-slot";
-import { cva, VariantProps } from "class-variance-authority@0.7.1";
+import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 import * as React from "react";
 
@@ -253,7 +253,7 @@ function Sidebar({
 				<div
 					data-sidebar="sidebar"
 					data-slot="sidebar-inner"
-					className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-none group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm">
+					className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-none group-data-[variant=floating]:border group-data-[variant=floating]:shadow-none">
 					{children}
 				</div>
 			</div>
@@ -316,8 +316,8 @@ function SidebarInset({ className, ...props }: React.ComponentProps<"main">) {
 		<main
 			data-slot="sidebar-inset"
 			className={cn(
-				"bg-background relative flex w-full flex-1 flex-col",
-				"md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[variant=inset]:rounded-none md:peer-data-[variant=inset]:shadow-sm",
+				"relative flex w-full flex-1 flex-col bg-background",
+				"md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2 md:peer-data-[variant=inset]:rounded-none md:peer-data-[variant=inset]:shadow-none",
 				className,
 			)}
 			{...props}
@@ -333,7 +333,7 @@ function SidebarInput({
 		<Input
 			data-slot="sidebar-input"
 			data-sidebar="input"
-			className={cn("bg-background h-8 w-full shadow-none", className)}
+			className={cn("h-8 w-full bg-background shadow-none", className)}
 			{...props}
 		/>
 	);

@@ -11,7 +11,7 @@ import {
 	type ControllerProps,
 	type FieldPath,
 	type FieldValues,
-} from "react-hook-form@7.55.0";
+} from "react-hook-form";
 
 import { Label } from "./label";
 import { cn } from "./utils";
@@ -130,7 +130,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 		<p
 			data-slot="form-description"
 			id={formDescriptionId}
-			className={cn("text-muted-foreground text-sm", className)}
+			className={cn("text-sm text-muted-foreground", className)}
 			{...props}
 		/>
 	);
@@ -148,7 +148,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 		<p
 			data-slot="form-message"
 			id={formMessageId}
-			className={cn("text-destructive text-sm", className)}
+			className={cn("text-sm text-destructive", className)}
 			{...props}>
 			{body}
 		</p>

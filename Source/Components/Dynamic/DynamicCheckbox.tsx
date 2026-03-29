@@ -80,7 +80,7 @@ export function DynamicCheckbox({
 						</Label>
 					)}
 					{description && (
-						<p className="text-muted-foreground text-sm">
+						<p className="text-sm text-muted-foreground">
 							{description}
 						</p>
 					)}

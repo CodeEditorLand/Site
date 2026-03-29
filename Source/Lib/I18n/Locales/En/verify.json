@@ -1,30 +1,41 @@
 {
-  "error": {
-    "title": "Verification failed",
-    "description": "This verification link is invalid or has expired.",
-    "instruction": "Please request a new verification email or contact support if the problem persists.",
-    "resendButton": "Send New Verification Email",
-    "contactSupport": "Contact Support"
-  },
-  "pending": {
-    "description": "A verification link has been sent to your email address. Please check your inbox and click the link to activate your account. The link is valid for 7 days. If the email is not received within a few minutes, check the spam or promotions folder. For security, do not share this email with anyone.",
-    "resendButton": "Resend Verification Email",
-    "title": "Verify Your Email Address"
-  },
-  "success": {
-    "title": "Email verified!",
-    "description": "Your email has been successfully verified.",
-    "instruction": "You can now sign in to your account and begin constructing comprehensive design systems.",
-    "continue": "Continue to Sign In"
-  },
-  "title": "Verify your email",
-  "description": "A verification link was sent to",
-  "instruction": "Click the link in the email to verify your account and start using Code Editor Land.",
-  "didntReceive": "Didn't receive the email?",
-  "checkSpam": "Check your spam folder or",
-  "resendLink": "resend verification email",
-  "resendButton": "Resend Verification Email",
-  "backToSignIn": "Back to Sign In",
-  "resending": "Sending...",
-  "resent": "Verification email sent!"
+	"error": {
+		"title": "Verification failed",
+		"description": "This verification link is invalid or has expired.",
+		"instruction": "Please request a new verification email or contact support if the problem persists.",
+		"resendButton": "Send New Verification Email",
+		"contactSupport": "Contact Support",
+		"backToSignInButton": "Back to Sign In"
+	},
+	"pending": {
+		"description": "A verification link has been sent to your email address. Please check your inbox and click the link to activate your account. The link is valid for 7 days. If the email is not received within a few minutes, check the spam or promotions folder. For security, do not share this email with anyone.",
+		"resendButton": "Resend Verification Email",
+		"title": "Verify Your Email Address"
+	},
+	"success": {
+		"title": "Email verified!",
+		"description": "Your email has been successfully verified.",
+		"instruction": "You can now sign in to your account and start using Code Editor Land.",
+		"continue": "Continue to Sign In",
+		"continueButton": "Continue to Homepage"
+	},
+	"title": "Verify your email",
+	"description": "A verification link was sent to",
+	"instruction": "Click the link in the email to verify your account and start using Code Editor Land.",
+	"didntReceive": "Didn't receive the email?",
+	"checkSpam": "Check your spam folder or",
+	"resendLink": "resend verification email",
+	"resendButton": "Resend Verification Email",
+	"backToSignIn": "Back to Sign In",
+	"resending": "Sending...",
+	"resent": "Verification email sent!",
+	"verifying": {
+		"title": "Verifying your email",
+		"description": "Please wait while we verify your email address..."
+	},
+	"errorGeneric": "An error occurred during verification. Please try again.",
+	"resendFailed": "Failed to resend email. Please try again.",
+	"emailLabel": "Email",
+	"emailPlaceholder": "Enter your email to resend verification",
+	"resendSuccess": "Verification email resent!"
 }

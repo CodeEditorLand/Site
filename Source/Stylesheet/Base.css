@@ -6,60 +6,61 @@
 /* Unified Design Token System */
 @layer theme {
 	:root {
-		/* shadcn/ui CSS Variables - Light Mode (Design Token Compliant) */
+		/* Flat White Theme - Clean, app-like design */
 		--background: 0 0% 100%;
-		--foreground: 240 10% 3.9%;
-		--card: 0 0% 100%;
-		--card-foreground: 240 10% 3.9%;
-		--popover: 0 0% 100%;
-		--popover-foreground: 240 10% 3.9%;
-		--primary: 222.2 47.4% 11.2%;
-		--primary-foreground: 210 40% 98%;
-		--secondary: 240 4.8% 95.9%;
-		--secondary-foreground: 240 5.9% 10%;
-		--muted: 240 4.8% 95.9%;
-		--muted-foreground: 240 3.8% 46.1%;
-		--accent: 240 4.8% 95.9%;
-		--accent-foreground: 240 5.9% 10%;
-		--destructive: 0 84.2% 60.2%;
-		--destructive-foreground: 0 0% 98%;
-		--border: 240 5.9% 90%;
-		--input: 240 5.9% 90%;
-		--ring: 240 10% 3.9%;
+		--foreground: #1a1a1a;
+		--card: rgba(255, 255, 255, 0.92);
+		--card-foreground: #1a1a1a;
+		--popover: rgba(255, 255, 255, 0.98);
+		--popover-foreground: #1a1a1a;
+		--primary: #2563eb;
+		--primary-foreground: #ffffff;
+		--secondary: #f0f4f8;
+		--secondary-foreground: #1a1a1a;
+		--muted: #f5f5f5;
+		--muted-foreground: #6b7280;
+		--accent: #f0f4f8;
+		--accent-foreground: #1a1a1a;
+		--destructive: #dc2626;
+		--destructive-foreground: #ffffff;
+		--border: rgba(0, 0, 0, 0.08);
+		--input: #ffffff;
+		--ring: #2563eb;
 
-		/* Core background/foreground tokens */
-		--background-light: theme("colors.white");
-		--background-dark: theme("colors.black");
+		/* Component background tokens */
+		--background-white: 0 0% 100%;
+		--input-background: #ffffff;
+		--popover-background: rgba(255, 255, 255, 0.98);
 
-		/* Protocol Spine Colors (Primary colors) */
+		/* Protocol Spine Colors (Primary colors) - Blue theme */
 		--spine-grpc: #22c55e;
 		--spine-ipc: #3b82f6;
 		--spine-tcp: #f97316;
 		--spine-wasm: #a855f7;
 
-		/* Extension/Library Colors */
-		--ext-rust: #ea580c;
-		--ext-tauri: #eab308;
-		--ext-effect-ts: #06b6d4;
+		/* Extension/Library Colors - Adjusted for blue background */
+		--ext-rust: #f87171;
+		--ext-tauri: #fbbf24;
+		--ext-effect-ts: #22d3d8;
 		--ext-react: #60a5fa;
 		--ext-vue: #4ade80;
 		--ext-svelte: #fb923c;
 		--ext-next: #171717;
 		--ext-nuxt: #16a34a;
-		--ext-solid: #2563eb;
+		--ext-solid: #60a5fa;
 		--ext-astro: #9333ea;
 
 		/* Platform Indicator Colors */
-		--platform-web: #4f46e5;
-		--platform-desktop: #475569;
-		--platform-mobile: #ec4899;
+		--platform-web: #60a5fa;
+		--platform-desktop: #94a3b8;
+		--platform-mobile: #f472b6;
 
-		/* Chart Colors (for data visualization) */
-		--chart-1: #2563eb;
-		--chart-2: #dc2626;
-		--chart-3: #16a34a;
-		--chart-4: #9333ea;
-		--chart-5: #e77614;
+		/* Chart Colors (for data visualization) - Blue palette */
+		--chart-1: #3b82f6;
+		--chart-2: #60a5fa;
+		--chart-3: #93c5fd;
+		--chart-4: #bfdbfe;
+		--chart-5: #dbeafe;
 
 		/* Spacing system */
 		--spacing: 0.25rem;
@@ -73,24 +74,43 @@
 		--container-6xl: 72rem;
 
 		/* Design System Constraints */
-		--border-width: 3px;
+		--border-width: 1px;
 		--border-style: solid;
 		--border-radius: 0;
 	}
 }
 
 @layer base {
+	/* Box-sizing: border-box for all elements to prevent spacing issues */
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
 	* {
 		border-color: var(--border);
 		outline-color: var(--ring);
 	}
 
-	/* Design constraint: All borders must be exactly 3px, no border-radius */
-	*:not(path):not(svg):not(circle):not(rect):not(line):not(polyline):not(
-			polygon
-		) {
-		border-width: var(--border-width) !important;
-		border-style: var(--border-style) !important;
+	/* Global focus styles for keyboard navigation - uses outline per design system */
+	a:focus-visible,
+	button:focus-visible,
+	input:focus-visible,
+	select:focus-visible,
+	textarea:focus-visible,
+	[tabindex]:focus-visible {
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
+	}
+
+	/* Design constraint: Flat, non-rounded UI elements with subtle borders */
+	.card,
+	.input,
+	.textarea,
+	.select,
+	.select-trigger,
+	.button {
 		border-radius: var(--border-radius) !important;
 	}
 
@@ -107,24 +127,21 @@
 	}
 
 	body {
-		background-color: var(--background);
+		background-color: #ffffff;
 		color: var(--foreground);
+	}
+
+	/* Flat panel utility class (replaces frosted glass) */
+	.frosted {
+		background: rgba(255, 255, 255, 0.92);
+		border: var(--border-width) solid var(--border);
 	}
 }
 
-/* shadcn/ui Base Styles */
+/* Global Styles */
 @layer base {
-	* {
-		border-color: var(--border);
-	}
-
 	html {
 		@apply scroll-smooth;
-	}
-
-	body {
-		background-color: var(--background);
-		color: var(--foreground);
 	}
 }
 
@@ -134,7 +151,6 @@
 		background-color: var(--primary);
 		color: var(--primary-foreground);
 		border: var(--border-width) solid var(--border);
-		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	}
 	.btn-primary:hover {
 		background-color: color-mix(in srgb, var(--primary) 90%, transparent);
@@ -145,7 +161,6 @@
 		background-color: var(--secondary);
 		color: var(--secondary-foreground);
 		border: var(--border-width) solid var(--border);
-		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	}
 	.btn-secondary:hover {
 		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
@@ -170,14 +185,11 @@
 		color: var(--accent-foreground);
 	}
 
-	/* Card */
+	/* Card - Flat panel */
 	.card {
 		background-color: var(--card);
 		color: var(--card-foreground);
 		border: var(--border-width) solid var(--border);
-		box-shadow:
-			0 4px 6px -1px rgb(0 0 0 / 0.1),
-			0 2px 4px -1px rgb(0 0 0 / 0.06);
 	}
 
 	/* Input */

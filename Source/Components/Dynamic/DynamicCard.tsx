@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
 	Card,
 	CardContent,
@@ -49,7 +47,7 @@ export function DynamicCard({
 						<h3 className="mb-2 font-semibold">{body.title}</h3>
 					)}
 					{body.description && (
-						<p className="text-muted-foreground mb-4">
+						<p className="mb-4 text-muted-foreground">
 							{body.description}
 						</p>
 					)}

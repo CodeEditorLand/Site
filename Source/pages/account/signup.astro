@@ -1,72 +1,196 @@
 ---
-import Base from "../../Layout/Base.astro";
 import { AccountPage } from "../../Components/Dynamic/AccountPage";
+import Base from "../../Layout/Base.astro";
 import { getI18n } from "../../Lib/I18n/Server";
 
 const t = getI18n();
 
 const accountContent = {
-  signIn: { 
-    title: t("common.button.signIn", { defaultValue: "Sign In" }), 
-    description: "", 
-    emailField: { label: t("common.label.email", { defaultValue: "Email" }) }, 
-    passwordField: { label: t("common.label.password", { defaultValue: "Password" }) }, 
-    submitButton: { text: t("common.button.signIn", { defaultValue: "Sign In" }) } 
-  },
-  signUp: {
-    title: t("account.signUp.title", { defaultValue: "Create Account" }),
-    description: t("account.signUp.subtitle", { defaultValue: "Enter your details to create a new account" }),
-    emailField: { label: t("common.label.email", { defaultValue: "Email" }), placeholder: t("account.signUp.emailPlaceholder", { defaultValue: "name@example.com" }), type: "email", required: true },
-    passwordField: { label: t("common.label.password", { defaultValue: "Password" }), placeholder: t("account.signUp.passwordPlaceholder", { defaultValue: "Create a password" }), type: "password", required: true, helperText: t("account.signUp.passwordHint", { defaultValue: "At least 8 characters" }) },
-    confirmPasswordField: { label: t("account.signUp.confirmPasswordLabel", { defaultValue: "Confirm Password" }), placeholder: t("account.signUp.confirmPasswordPlaceholder", { defaultValue: "Confirm your password" }), type: "password", required: true },
-    termsCheckbox: { label: t("account.signUp.termsLabel", { defaultValue: "I agree to the Terms of Service and Privacy Policy" }), required: true },
-    submitButton: { text: t("common.button.signUp", { defaultValue: "Create Account" }), variant: "default", fullWidth: true },
-    oauthButtons: [
-      { text: t("account.signUp.social.github", { defaultValue: "Continue with GitHub" }), variant: "outline", fullWidth: true, icon: "Github" },
-      { text: t("account.signUp.social.google", { defaultValue: "Continue with Google" }), variant: "outline", fullWidth: true, icon: "Chrome" },
-      { text: t("account.signUp.social.gitlab", { defaultValue: "Continue with GitLab" }), variant: "outline", fullWidth: true, icon: "Gitlab" }
-    ],
-    footerLinks: { signIn: { label: t("account.signUp.signInLink", { defaultValue: "Sign in" }), href: "/account/signin" } }
-  },
-  forgotPassword: {
-    title: t("account.forgotPassword.title", { defaultValue: "Reset Password" }),
-    description: t("account.forgotPassword.subtitle", { defaultValue: "Enter your email to receive a password reset link" }),
-    emailField: { label: t("common.label.email", { defaultValue: "Email" }), placeholder: t("account.forgotPassword.emailPlaceholder", { defaultValue: "name@example.com" }), type: "email", required: true },
-    submitButton: { text: t("account.forgotPassword.submit", { defaultValue: "Send Reset Link" }), variant: "default", fullWidth: true },
-    successMessage: t("account.forgotPassword.success.subtitle", { defaultValue: "We've sent a password reset link to your email address." })
-  },
-  resetPassword: {
-    title: t("account.resetPassword.title", { defaultValue: "Set New Password" }),
-    description: t("account.resetPassword.subtitle", { defaultValue: "Choose a new password for your account" }),
-    passwordField: {
-      label: t("account.resetPassword.passwordLabel", { defaultValue: "New Password" }),
-      placeholder: t("account.resetPassword.passwordPlaceholder", { defaultValue: "Enter new password" }),
-      type: "password",
-      required: true
-    },
-    confirmPasswordField: {
-      label: t("account.resetPassword.confirmLabel", { defaultValue: "Confirm New Password" }),
-      placeholder: t("account.resetPassword.confirmPlaceholder", { defaultValue: "Confirm new password" }),
-      type: "password",
-      required: true
-    },
-    submitButton: {
-      text: t("account.resetPassword.submit", { defaultValue: "Reset Password" }),
-      variant: "default",
-      fullWidth: true
-    },
-    checkingMessage: t("account.resetPassword.checkingMessage", { defaultValue: "Validating reset token..." }),
-    invalidTokenMessage: t("account.resetPassword.invalidToken.description", { defaultValue: "This password reset link is invalid or has expired. Please request a new one." }),
-    successMessage: t("account.resetPassword.success.description", { defaultValue: "Your password has been reset successfully. You can now sign in with your new password." })
-  },
-  header: { logo: { text: "Land" }, navigation: [], actions: [] },
-  footer: {}
+	signIn: {
+		title: t("common.button.signIn", { defaultValue: "Sign In" }),
+		description: "",
+		emailField: {
+			label: t("common.label.email", { defaultValue: "Email" }),
+		},
+		passwordField: {
+			label: t("common.label.password", { defaultValue: "Password" }),
+		},
+		submitButton: {
+			text: t("common.button.signIn", { defaultValue: "Sign In" }),
+		},
+	},
+	signUp: {
+		title: t("account.signUp.title", { defaultValue: "Create Account" }),
+		description: t("account.signUp.subtitle", {
+			defaultValue: "Enter your details to create a new account",
+		}),
+		emailField: {
+			label: t("common.label.email", { defaultValue: "Email" }),
+			placeholder: t("account.signUp.emailPlaceholder", {
+				defaultValue: "name@example.com",
+			}),
+			type: "email",
+			required: true,
+		},
+		passwordField: {
+			label: t("common.label.password", { defaultValue: "Password" }),
+			placeholder: t("account.signUp.passwordPlaceholder", {
+				defaultValue: "Create a password",
+			}),
+			type: "password",
+			required: true,
+			helperText: t("account.signUp.passwordHint", {
+				defaultValue: "At least 8 characters",
+			}),
+		},
+		confirmPasswordField: {
+			label: t("account.signUp.confirmPasswordLabel", {
+				defaultValue: "Confirm Password",
+			}),
+			placeholder: t("account.signUp.confirmPasswordPlaceholder", {
+				defaultValue: "Confirm your password",
+			}),
+			type: "password",
+			required: true,
+		},
+		termsCheckbox: {
+			label: t("account.signUp.termsLabel", {
+				defaultValue:
+					"I agree to the Terms of Service and Privacy Policy",
+			}),
+			required: true,
+		},
+		submitButton: {
+			text: t("common.button.signUp", { defaultValue: "Create Account" }),
+			variant: "default",
+			fullWidth: true,
+		},
+		oauthButtons: [
+			{
+				text: t("account.signUp.social.github", {
+					defaultValue: "Continue with GitHub",
+				}),
+				variant: "outline",
+				fullWidth: true,
+				icon: "Github",
+			},
+			{
+				text: t("account.signUp.social.google", {
+					defaultValue: "Continue with Google",
+				}),
+				variant: "outline",
+				fullWidth: true,
+				icon: "Chrome",
+			},
+			{
+				text: t("account.signUp.social.gitlab", {
+					defaultValue: "Continue with GitLab",
+				}),
+				variant: "outline",
+				fullWidth: true,
+				icon: "Gitlab",
+			},
+		],
+		footerLinks: {
+			signIn: {
+				label: t("account.signUp.signInLink", {
+					defaultValue: "Sign in",
+				}),
+				href: "/account/signin",
+			},
+		},
+	},
+	forgotPassword: {
+		title: t("account.forgotPassword.title", {
+			defaultValue: "Reset Password",
+		}),
+		description: t("account.forgotPassword.subtitle", {
+			defaultValue: "Enter your email to receive a password reset link",
+		}),
+		emailField: {
+			label: t("common.label.email", { defaultValue: "Email" }),
+			placeholder: t("account.forgotPassword.emailPlaceholder", {
+				defaultValue: "name@example.com",
+			}),
+			type: "email",
+			required: true,
+		},
+		submitButton: {
+			text: t("account.forgotPassword.submit", {
+				defaultValue: "Send Reset Link",
+			}),
+			variant: "default",
+			fullWidth: true,
+		},
+		successMessage: t("account.forgotPassword.success.subtitle", {
+			defaultValue:
+				"We've sent a password reset link to your email address.",
+		}),
+	},
+	resetPassword: {
+		title: t("account.resetPassword.title", {
+			defaultValue: "Set New Password",
+		}),
+		description: t("account.resetPassword.subtitle", {
+			defaultValue: "Choose a new password for your account",
+		}),
+		passwordField: {
+			label: t("account.resetPassword.passwordLabel", {
+				defaultValue: "New Password",
+			}),
+			placeholder: t("account.resetPassword.passwordPlaceholder", {
+				defaultValue: "Enter new password",
+			}),
+			type: "password",
+			required: true,
+		},
+		confirmPasswordField: {
+			label: t("account.resetPassword.confirmLabel", {
+				defaultValue: "Confirm New Password",
+			}),
+			placeholder: t("account.resetPassword.confirmPlaceholder", {
+				defaultValue: "Confirm new password",
+			}),
+			type: "password",
+			required: true,
+		},
+		submitButton: {
+			text: t("account.resetPassword.submit", {
+				defaultValue: "Reset Password",
+			}),
+			variant: "default",
+			fullWidth: true,
+		},
+		checkingMessage: t("account.resetPassword.checkingMessage", {
+			defaultValue: "Validating reset token...",
+		}),
+		invalidTokenMessage: t(
+			"account.resetPassword.invalidToken.description",
+			{
+				defaultValue:
+					"This password reset link is invalid or has expired. Please request a new one.",
+			},
+		),
+		successMessage: t("account.resetPassword.success.description", {
+			defaultValue:
+				"Your password has been reset successfully. You can now sign in with your new password.",
+		}),
+	},
+	header: { logo: { text: "Land" }, navigation: [], actions: [] },
+	footer: {},
 };
 
 const metaTitle = t("meta.account.signUp", { defaultValue: "Sign Up - Land" });
-const metaDescription = t("account.signUp.subtitle", { defaultValue: "Create a new Land account." });
+const metaDescription = t("account.signUp.subtitle", {
+	defaultValue: "Create a new Land account.",
+});
 ---
 
 <Base Title={metaTitle} Description={metaDescription}>
-  <AccountPage content={accountContent} route="signup" metaTitle={metaTitle} metaDescription={metaDescription} />
+	<AccountPage
+		content={accountContent}
+		route="signup"
+		metaTitle={metaTitle}
+		metaDescription={metaDescription}
+	/>
 </Base>

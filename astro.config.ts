@@ -1,3 +1,5 @@
+import { resolve } from "node:path";
+
 import { defineConfig } from "astro/config";
 
 export const On = process.env["NODE_ENV"] === "development";
@@ -46,7 +48,14 @@ export default defineConfig({
 
 		(await import("@astrojs/sitemap")).default(),
 
-		!On ? (await import("@playform/inline")).default({ Logger: 1 }) : null,
+		!On
+			? (await import("@playform/inline")).default({
+					Logger: 1,
+					Beasties: {
+						pruneSource: false,
+					},
+				})
+			: null,
 
 		!On
 			? (await import("@playform/compress")).default({
@@ -148,6 +157,15 @@ export default defineConfig({
 		},
 
 		resolve: {
+			alias: {
+				"@": resolve("./Source"),
+				"@Stylesheet": resolve("./Source/Stylesheet"),
+				"@Function": resolve("./Source/Function"),
+				"@Layout": resolve("./Source/Layout"),
+				"@Script": resolve("./Source/Script"),
+				"@Variable": resolve("./Source/Variable"),
+			},
+
 			preserveSymlinks: false,
 		},
 
