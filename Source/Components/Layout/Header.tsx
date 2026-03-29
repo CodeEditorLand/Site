@@ -68,8 +68,14 @@ export function Header({ content }: HeaderProps) {
 						className="header-logo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 						aria-label={`${headerContent.logo?.text || "Land"} - Go to homepage`}>
 						<div
-							className="logo-box h-8 w-8"
-							aria-hidden="true"></div>
+							className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
+							aria-hidden="true">
+						<img
+							src="/Asset/Logo/Glyph/Land.svg"
+							alt=""
+							className="absolute inset-0 h-full w-full brightness-0 invert"
+						/>
+					</div>
 						<span className="font-semibold">
 							{headerContent.logo?.text || "Land"}
 						</span>

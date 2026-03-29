@@ -124,83 +124,76 @@ export function DynamicHeroSection({
 						className="perspective-1000 relative h-full w-full"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub */}
-						<div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center !rounded-none border border-[var(--border)] bg-primary">
-							<div className="flex h-16 w-16 items-center justify-center !rounded-none border border-[var(--border)] bg-white">
-								<div className="h-8 w-8 !rounded-none border border-[var(--border)] bg-primary"></div>
-							</div>
+						<div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center overflow-hidden !rounded-none border border-[var(--border)] bg-primary">
+							<img
+								src="/Asset/Logo/Glyph/Land.svg"
+								alt=""
+								className="h-20 w-20 brightness-0 invert"
+							/>
 						</div>
 
-						{/* Floating Cards */}
-						{floatingCards.map((card, index) => (
-							<div
-								key={card.id}
-								className="floating-card bg-white/92 absolute transform-gpu !rounded-none border p-4"
-								style={{
-									top: `${20 + index * 10}%`,
-									left: `${15 + index * 15}%`,
-									width: "140px",
-									height: "100px",
-								}}>
-								<div className="mb-2 text-xs text-muted-foreground">
-									{card.title}
-								</div>
-								<div className="flex items-center space-x-2">
-									{card.colors &&
-										card.colors.map((color, colorIndex) => (
-											<div
-												key={colorIndex}
-												className={`h-4 w-4 ${color} !rounded-none border border-[var(--border)]`}
-											/>
-										))}
-								</div>
-							</div>
-						))}
+						{/* Floating Cards — orbital layout around center */}
+						{floatingCards.map((card, index) => {
+							const total = floatingCards.length;
+							const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+							const radiusX = 38;
+							const radiusY = 35;
+							const cx = 50 + Math.cos(angle) * radiusX;
+							const cy = 50 + Math.sin(angle) * radiusY;
 
-						{/* Connecting Lines */}
+							return (
+								<div
+									key={card.id}
+									className="floating-card absolute transform-gpu !rounded-none border border-[var(--border)] bg-white/95 p-3"
+									style={{
+										top: `${cy}%`,
+										left: `${cx}%`,
+										transform: "translate(-50%, -50%)",
+										width: "130px",
+									}}>
+									<div className="mb-1.5 text-xs font-medium text-foreground">
+										{card.title}
+									</div>
+									<div className="flex items-center gap-1.5">
+										{card.colors &&
+											card.colors.map((color, colorIndex) => (
+												<div
+													key={colorIndex}
+													className={`h-3 w-3 ${color} !rounded-none border border-[var(--border)]`}
+												/>
+											))}
+									</div>
+								</div>
+							);
+						})}
+
+						{/* Connecting Lines — radiate from center to each card */}
 						{heroConfig.showConnectingLines && (
 							<svg
-								className="pointer-events-none absolute inset-0 h-full w-full opacity-20"
+								className="pointer-events-none absolute inset-0 h-full w-full opacity-15"
 								aria-hidden="true"
 								role="presentation">
-								<line
-									x1="50%"
-									y1="50%"
-									x2="20%"
-									y2="20%"
-									stroke="currentColor"
-									strokeWidth="2"
-									className="animate-pulse"
-								/>
-								<line
-									x1="50%"
-									y1="50%"
-									x2="80%"
-									y2="30%"
-									stroke="currentColor"
-									strokeWidth="2"
-									className="animate-pulse"
-									style={{ animationDelay: "0.5s" }}
-								/>
-								<line
-									x1="50%"
-									y1="50%"
-									x2="25%"
-									y2="75%"
-									stroke="currentColor"
-									strokeWidth="2"
-									className="animate-pulse"
-									style={{ animationDelay: "1s" }}
-								/>
-								<line
-									x1="50%"
-									y1="50%"
-									x2="75%"
-									y2="80%"
-									stroke="currentColor"
-									strokeWidth="2"
-									className="animate-pulse"
-									style={{ animationDelay: "1.5s" }}
-								/>
+								{floatingCards.map((card, index) => {
+									const total = floatingCards.length;
+									const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+									const radiusX = 38;
+									const radiusY = 35;
+									const cx = 50 + Math.cos(angle) * radiusX;
+									const cy = 50 + Math.sin(angle) * radiusY;
+									return (
+										<line
+											key={card.id}
+											x1="50%"
+											y1="50%"
+											x2={`${cx}%`}
+											y2={`${cy}%`}
+											stroke="currentColor"
+											strokeWidth="1"
+											className="animate-pulse"
+											style={{ animationDelay: `${index * 0.3}s` }}
+										/>
+									);
+								})}
 							</svg>
 						)}
 
