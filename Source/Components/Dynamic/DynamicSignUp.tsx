@@ -11,7 +11,9 @@ import {
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCheckbox } from "./DynamicCheckbox";
 import { DynamicInput } from "./DynamicInput";
-import type { ButtonContent, CheckboxContent, InputContent } from "./types";
+import type ButtonContent from "./Interface/Content/Button.js";
+import type CheckboxContent from "./Interface/Content/Checkbox.js";
+import type InputContent from "./Interface/Content/Input.js";
 
 interface SignUpContent {
 	title: string;

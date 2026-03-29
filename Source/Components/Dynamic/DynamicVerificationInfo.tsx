@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
-import type { ButtonContent } from "./types";
+import type ButtonContent from "./Interface/Content/Button.js";
 
 interface VerificationInfo {
 	sha256?: string;

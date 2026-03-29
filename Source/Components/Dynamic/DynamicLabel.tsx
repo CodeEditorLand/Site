@@ -1,5 +1,5 @@
 import { Label } from "../ui/label";
-import type { LabelContent } from "./types";
+import type LabelContent from "./Interface/Content/Label.js";
 
 interface DynamicLabelProps {
 	content: LabelContent;

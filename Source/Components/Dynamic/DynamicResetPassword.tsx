@@ -11,7 +11,8 @@ import {
 } from "../ui/card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
-import type { ButtonContent, InputContent } from "./types";
+import type ButtonContent from "./Interface/Content/Button.js";
+import type InputContent from "./Interface/Content/Input.js";
 
 interface ResetPasswordContent {
 	title: string;

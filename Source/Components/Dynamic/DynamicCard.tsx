@@ -6,7 +6,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../ui/card";
-import type { CardContentItem, CardSection } from "./types";
+import type CardContentItem from "./Interface/Item/Content/Card.js";
+import type CardSection from "./Interface/Section/Card.js";
 
 interface DynamicCardProps {
 	sections: CardSection;

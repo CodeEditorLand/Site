@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCard } from "./DynamicCard";
-import type { ButtonContent, CardSection, PlatformInfo } from "./types";
+import type CardSection from "./Interface/Section/Card.js";
+import type PlatformInformation from "./Interface/Information/Platform.js";
 
 interface PlatformGridLabels {
 	version?: string;
@@ -18,9 +19,9 @@ interface PlatformGridLabels {
 interface PlatformGridContent {
 	title?: string;
 	subtitle?: string;
-	platforms?: PlatformInfo[];
+	platforms?: PlatformInformation[];
 	showVerification?: boolean;
-	onDownload?: (platform: PlatformInfo) => void;
+	onDownload?: (platform: PlatformInformation) => void;
 	apiPlatform?: "macos" | "windows" | "linux";
 	labels?: PlatformGridLabels;
 }
@@ -68,7 +69,7 @@ export function DynamicPlatformGrid({
 		}),
 	} = labels;
 
-	const [platforms, setPlatforms] = useState<PlatformInfo[]>(
+	const [platforms, setPlatforms] = useState<PlatformInformation[]>(
 		providedPlatforms || [],
 	);
 	const [loading, setLoading] = useState(!providedPlatforms);
@@ -96,7 +97,7 @@ export function DynamicPlatformGrid({
 					);
 				}
 				const latest = response.data;
-				const currentPlatforms: PlatformInfo[] = [];
+				const currentPlatforms: PlatformInformation[] = [];
 
 				if (latest.platform === "macos") {
 					currentPlatforms.push({
@@ -178,7 +179,7 @@ export function DynamicPlatformGrid({
 		return version.startsWith("v") ? version : `v${version}`;
 	};
 
-	const handleDownload = async (platform: PlatformInfo) => {
+	const handleDownload = async (platform: PlatformInformation) => {
 		try {
 			// Use workers client directly
 			const { getWorkersClient } =
@@ -374,4 +375,4 @@ export function DynamicPlatformGrid({
 	);
 }
 
-export type { PlatformInfo, PlatformGridContent };
+export type { PlatformInformation, PlatformGridContent };

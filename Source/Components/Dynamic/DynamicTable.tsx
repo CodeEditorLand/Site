@@ -9,7 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "../ui/table";
-import type { TableContent } from "./types";
+import type TableContent from "./Interface/Content/Table.js";
 
 interface DynamicTableProps<T extends Record<string, unknown>> {
 	content: TableContent<T>;

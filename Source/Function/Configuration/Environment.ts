@@ -1,4 +1,6 @@
-export default await (async () => {
+import type { default as Environment } from "./Type/Environment.js";
+
+export default (await (async () => {
 	const Value = process.env["SITE_ENVIRONMENT"];
 
 	if (Value) {
@@ -14,4 +16,4 @@ export default await (async () => {
 	}
 
 	return (await import("./On.js")).default ? "Development" : "Production";
-})();
+})()) satisfies Environment as Environment;

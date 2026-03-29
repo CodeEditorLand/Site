@@ -1,5 +1,5 @@
 import { Badge } from "../ui/badge";
-import type { BadgeContent } from "./types";
+import type BadgeContent from "./Interface/Content/Badge.js";
 
 interface DynamicBadgeProps {
 	content: BadgeContent;

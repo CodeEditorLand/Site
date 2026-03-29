@@ -1,6 +1,6 @@
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
-import type { CheckboxContent } from "./types";
+import type CheckboxContent from "./Interface/Content/Checkbox.js";
 
 interface DynamicCheckboxProps {
 	content: CheckboxContent;

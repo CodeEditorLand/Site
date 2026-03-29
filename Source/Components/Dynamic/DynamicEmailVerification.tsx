@@ -12,7 +12,7 @@ import {
 } from "../ui/card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
-import type { ButtonContent } from "./types";
+import type ButtonContent from "./Interface/Content/Button.js";
 
 interface VerificationContent {
 	pending: {

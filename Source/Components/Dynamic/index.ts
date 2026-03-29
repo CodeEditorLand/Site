@@ -39,5 +39,4 @@ export * from "./VerifyPage";
 // Meta & Social
 export * from "./DynamicMetaTags";
 
-// Types
-export * from "./types";
+// Types — import directly from ./Interface/ files

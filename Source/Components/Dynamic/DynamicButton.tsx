@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState, type ComponentType } from "react";
 
 import { Button } from "../ui/button";
-import type { ButtonContent } from "./types";
+import type ButtonContent from "./Interface/Content/Button.js";
 
 interface DynamicButtonProps {
 	content: ButtonContent;

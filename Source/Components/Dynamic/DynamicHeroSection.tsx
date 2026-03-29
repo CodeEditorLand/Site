@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from "react";
 
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
-import type { BadgeContent, ButtonContent } from "./types";
+import type BadgeContent from "./Interface/Content/Badge.js";
+import type ButtonContent from "./Interface/Content/Button.js";
 
 interface FloatingCard {
 	id: string;

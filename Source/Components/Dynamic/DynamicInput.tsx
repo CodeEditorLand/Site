@@ -1,6 +1,6 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import type { InputContent } from "./types";
+import type InputContent from "./Interface/Content/Input.js";
 
 interface DynamicInputProps {
 	content: InputContent;
