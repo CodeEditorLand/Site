@@ -186,7 +186,7 @@ export function DynamicVerificationInfo({
 
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						{/* Download Verification */}
-						<div className="bg-white/92 !rounded-none border border-[var(--border)] p-6">
+						<div className="bg-white/92 rounded-none border border-[var(--border)] p-6">
 							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
 								<Download
 									className="h-5 w-5"
@@ -201,7 +201,7 @@ export function DynamicVerificationInfo({
 						</div>
 
 						{/* Integrity Verification */}
-						<div className="bg-white/92 !rounded-none border border-primary p-6">
+						<div className="bg-white/92 rounded-none border border-primary p-6">
 							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
 								<Shield
 									className="h-5 w-5"

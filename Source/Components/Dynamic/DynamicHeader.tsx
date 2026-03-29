@@ -47,12 +47,12 @@ export function DynamicHeader({ content, className }: DynamicHeaderProps) {
 				{/* Logo */}
 				<div className="flex items-center space-x-2">
 					<div
-						className="relative flex h-8 w-8 items-center justify-center overflow-hidden !rounded-none border border-[var(--border)] bg-primary"
+						className="relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
 						<img
-							src="/Asset/Logo/Glyph/Land.svg"
+							src="/Asset/Logo/Glyph/LandDark.svg"
 							alt=""
-							className="absolute inset-0 h-full w-full brightness-0 invert"
+							className="h-full w-full"
 						/>
 					</div>
 					<span className="font-semibold">{logo.text}</span>

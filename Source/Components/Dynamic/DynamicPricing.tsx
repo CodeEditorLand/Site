@@ -149,7 +149,7 @@ export function DynamicPricing({ content, className }: DynamicPricingProps) {
 					{displayTiers.map((tier) => (
 						<div
 							key={tier.id}
-							className={`bg-white/92 flex flex-col !rounded-none border ${tier.highlighted || tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
+							className={`bg-white/92 flex flex-col rounded-none border ${tier.highlighted || tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
 							<div className="border-b border-[var(--border)] p-6">
 								{tier.popular && (
 									<div className="mb-2">
