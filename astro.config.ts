@@ -65,6 +65,9 @@ export default defineConfig({
 							minifyCSS: false,
 						},
 					},
+					CSS: {
+						csso: false,
+					},
 				})
 			: null,
 	],
