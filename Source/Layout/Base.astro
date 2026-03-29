@@ -1,34 +1,55 @@
 ---
 import "@Stylesheet/Base.css";
 
-import { Head } from "astro-capo";
-
 import Background from "../Background.astro";
+import { AnalyticsProvider } from "../Components/providers/AnalyticsProvider";
+import { PageviewTracker } from "../Components/providers/PageviewTracker";
+import MetaTags from "../Components/Social/MetaTags";
 import Footer from "../Footer.astro";
+import { getI18n } from "../Lib/I18n/Server";
 
-const { Title = "Land", Description = "Code Editor" } = Astro.props;
+const {
+	Title,
+	Description,
+	lang = "en",
+	dir = "ltr",
+	Image = "/Favicon/og-image.png",
+	Url = "https://editor.land",
+	Type = "website",
+} = Astro.props;
 
 interface Props {
 	Title?: string;
-
 	Description?: string;
+	lang?: string;
+	dir?: string;
+	Image?: string;
+	Url?: string;
+	Type?: "website" | "article";
 }
+
+// Get i18n instance - works in both SSR and static with fallback
+const t = getI18n();
 ---
 
 <!doctype html>
-<html lang="en" class="no-js" dir="ltr">
-	<Head>
+<html lang={lang} class="no-js" dir={dir}>
+	<head>
 		<script>
 			document.documentElement.classList.remove("no-js");
-
 			document.documentElement.classList.add("js");
 		</script>
 
-		<!-- Meta -->
-		<title>{Title}</title>
-		<meta charset="utf-8" />
-
-		<meta name="description" content={Description} />
+		<!-- Dynamic Meta Tags -->
+		<MetaTags
+			title={Title || t("meta.title", { defaultValue: "Land" })}
+			description={Description ||
+				t("meta.description", { defaultValue: "Code Editor" })}
+			image={Image}
+			url={Url}
+			type={Type}
+			lang={lang}
+		/>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<meta name="theme-color" content="#ffffff" />
 		<meta name="format-detection" content="telephone=no" />
@@ -64,13 +85,17 @@ interface Props {
 		/>
 		<meta name="apple-mobile-web-app-title" content="Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
-	</Head>
+	</head>
 	<body>
 		<Background />
 
-		<main class="grow">
-			<slot />
-		</main>
+		<AnalyticsProvider>
+			{/* Client-side only component for pageview tracking */}
+			<PageviewTracker />
+			<main class="grow">
+				<slot />
+			</main>
+		</AnalyticsProvider>
 
 		<div id="Footer" class="shrink">
 			<Footer />
@@ -83,6 +108,6 @@ interface Props {
 		<a
 			class="absolute left-0 top-0 hidden"
 			rel="me"
-			href="https://x.com/@CodeEditorLand"></a>
+			href="https://x.com/CodeEditorLand"></a>
 	</body>
 </html>

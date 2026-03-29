@@ -34,7 +34,7 @@ export default defineConfig({
 	},
 
 	integrations: [
-		(await import("@astrojs/solid-js")).default({
+		(await import("@astrojs/react")).default({
 			// @ts-ignore
 			devtools: On,
 		}),
@@ -47,8 +47,6 @@ export default defineConfig({
 		(await import("@astrojs/sitemap")).default(),
 
 		!On ? (await import("@playform/inline")).default({ Logger: 1 }) : null,
-
-		!On ? (await import("@playform/format")).default({ Logger: 1 }) : null,
 
 		!On
 			? (await import("@playform/compress")).default({

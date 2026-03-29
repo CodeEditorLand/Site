@@ -1,0 +1,35 @@
+{
+  "account": {
+    "forgotPassword": "Forgot Password - Land",
+    "resetPassword": "Reset Password - Land",
+    "signIn": "Sign In - Land",
+    "signUp": "Sign Up - Land"
+  },
+  "description": "Code Editor",
+  "downloads": {
+    "description": "Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
+    "title": "Download Land | The Next-Generation Code Editor"
+  },
+  "home": {
+    "description": "Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code",
+    "title": "Land | The Next-Generation Code Editor"
+  },
+  "legal": {
+    "privacy": {
+      "description": "Privacy Policy for Code Editor Land - Learn how we collect, use, and protect your personal data in compliance with GDPR and CCPA.",
+      "title": "Privacy Policy | Code Editor Land"
+    },
+    "terms": {
+      "description": "Terms of Service for Code Editor Land - Governing your use of our open-source code editor and related services.",
+      "title": "Terms of Service | Code Editor Land"
+    }
+  },
+  "license": {
+    "description": "Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license.",
+    "title": "License | Code Editor Land"
+  },
+  "title": "Land",
+  "verify": {
+    "title": "Verify Email - Land"
+  }
+}

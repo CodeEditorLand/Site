@@ -1,0 +1,21 @@
+{
+  "account": {
+    "forgotPassword": "Forgot Password - Land",
+    "resetPassword": "Reset Password - Land",
+    "signIn": "Sign In - Land",
+    "signUp": "Sign Up - Land"
+  },
+  "description": "Code Editor",
+  "downloads": {
+    "description": "Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
+    "title": "Download Land | The Next-Generation Code Editor"
+  },
+  "home": {
+    "description": "Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code",
+    "title": "Land | The Next-Generation Code Editor"
+  },
+  "title": "Land",
+  "verify": {
+    "title": "Verify Email - Land"
+  }
+}
