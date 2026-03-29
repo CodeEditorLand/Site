@@ -2,13 +2,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState, type ComponentType } from "react";
 
 import { Button } from "../ui/button";
-import type ButtonContent from "./Interface/Content/Button.js";
-
-interface DynamicButtonProps {
-	content: ButtonContent;
-	onAction?: () => void;
-	isLoading?: boolean;
-}
+import type Property from "./Interface/Property/Button.js";
 
 /**
  * Dynamic Button component that accepts content schema
@@ -18,7 +12,7 @@ export function DynamicButton({
 	content,
 	onAction,
 	isLoading = false,
-}: DynamicButtonProps) {
+}: Property) {
 	const {
 		text,
 		icon,

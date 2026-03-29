@@ -11,39 +11,7 @@ import {
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCheckbox } from "./DynamicCheckbox";
 import { DynamicInput } from "./DynamicInput";
-import type ButtonContent from "./Interface/Content/Button.js";
-import type CheckboxContent from "./Interface/Content/Checkbox.js";
-import type InputContent from "./Interface/Content/Input.js";
-
-interface SignUpContent {
-	title: string;
-	description: string;
-	emailField: InputContent;
-	passwordField: InputContent;
-	confirmPasswordField: InputContent;
-	termsCheckbox: CheckboxContent;
-	submitButton: ButtonContent;
-	oauthButtons?: ButtonContent[];
-	showDivider?: boolean;
-	footerLinks?: {
-		signIn?: { label: string; href: string };
-	};
-}
-
-interface DynamicSignUpProps {
-	content: SignUpContent;
-	onSubmit?: (
-		email: string,
-		password: string,
-		confirmPassword: string,
-		termsAccepted: boolean,
-	) => void;
-	onOAuth?: (provider: string) => void;
-	onNavigate?: (path: string) => void;
-	className?: string;
-	isLoading?: boolean;
-	errorMessage?: string;
-}
+import type Property from "./Interface/Property/SignUp.js";
 
 /**
  * Dynamic SignUp component that accepts registration form schema
@@ -57,7 +25,7 @@ export function DynamicSignUp({
 	className,
 	isLoading = false,
 	errorMessage,
-}: DynamicSignUpProps) {
+}: Property) {
 	const {
 		title,
 		description,

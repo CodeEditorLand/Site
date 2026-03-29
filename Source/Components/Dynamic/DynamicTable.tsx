@@ -9,11 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "../ui/table";
-import type TableContent from "./Interface/Content/Table.js";
-
-interface DynamicTableProps<T extends Record<string, unknown>> {
-	content: TableContent<T>;
-}
+import type Property from "./Interface/Property/Table.js";
 
 /**
  * Dynamic Table component that accepts content schema
@@ -21,7 +17,7 @@ interface DynamicTableProps<T extends Record<string, unknown>> {
  */
 export function DynamicTable<T extends Record<string, unknown>>({
 	content,
-}: DynamicTableProps<T>) {
+}: Property<T>) {
 	const {
 		columns,
 		data,

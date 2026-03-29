@@ -9,27 +9,7 @@ import {
 } from "../ui/card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
-import type ButtonContent from "./Interface/Content/Button.js";
-import type InputContent from "./Interface/Content/Input.js";
-
-interface ForgotPasswordContent {
-	title: string;
-	description: string;
-	emailField: InputContent;
-	submitButton: ButtonContent;
-	successMessage?: string;
-	resendButton?: ButtonContent;
-}
-
-interface DynamicForgotPasswordProps {
-	content: ForgotPasswordContent;
-	onSubmit?: (email: string) => void;
-	onResend?: () => void;
-	onNavigate?: (path: string) => void;
-	className?: string;
-	isLoading?: boolean;
-	errorMessage?: string;
-}
+import type Property from "./Interface/Property/Password/Forgot.js";
 
 /**
  * Dynamic ForgotPassword component for password reset request
@@ -43,7 +23,7 @@ export function DynamicForgotPassword({
 	className,
 	isLoading = false,
 	errorMessage,
-}: DynamicForgotPasswordProps) {
+}: Property) {
 	const {
 		title,
 		description,
@@ -182,4 +162,4 @@ export function DynamicForgotPassword({
 	);
 }
 
-export type { ForgotPasswordContent };
+export type { Property as ForgotPasswordContent };

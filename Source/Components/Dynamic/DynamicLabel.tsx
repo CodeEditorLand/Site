@@ -1,16 +1,11 @@
 import { Label } from "../ui/label";
-import type LabelContent from "./Interface/Content/Label.js";
-
-interface DynamicLabelProps {
-	content: LabelContent;
-	htmlFor?: string;
-}
+import type Property from "./Interface/Property/Label.js";
 
 /**
  * Dynamic Label component that accepts content schema
  * Wraps the base Label with prop-based configuration
  */
-export function DynamicLabel({ content, htmlFor }: DynamicLabelProps) {
+export function DynamicLabel({ content, htmlFor }: Property) {
 	const {
 		text,
 		required = false,

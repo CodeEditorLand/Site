@@ -1,15 +1,11 @@
 import { Badge } from "../ui/badge";
-import type BadgeContent from "./Interface/Content/Badge.js";
-
-interface DynamicBadgeProps {
-	content: BadgeContent;
-}
+import type Property from "./Interface/Property/Badge.js";
 
 /**
  * Dynamic Badge component that accepts content schema
  * Wraps the base Badge component with prop-based configuration
  */
-export function DynamicBadge({ content }: DynamicBadgeProps) {
+export function DynamicBadge({ content }: Property) {
 	const {
 		text,
 		variant = "default",

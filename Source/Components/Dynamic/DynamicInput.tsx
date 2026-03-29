@@ -1,17 +1,12 @@
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import type InputContent from "./Interface/Content/Input.js";
-
-interface DynamicInputProps {
-	content: InputContent;
-	id?: string;
-}
+import type Property from "./Interface/Property/Input.js";
 
 /**
  * Dynamic Input component that accepts content schema
  * Composes Label + Input with proper error/helper text states
  */
-export function DynamicInput({ content, id: propId }: DynamicInputProps) {
+export function DynamicInput({ content, id: propId }: Property) {
 	const {
 		label,
 		placeholder,

@@ -11,33 +11,7 @@ import {
 } from "../ui/card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
-import type ButtonContent from "./Interface/Content/Button.js";
-import type InputContent from "./Interface/Content/Input.js";
-
-interface ResetPasswordContent {
-	title: string;
-	description: string;
-	passwordField: InputContent;
-	confirmPasswordField: InputContent;
-	submitButton: ButtonContent;
-	successMessage?: string;
-	invalidTokenMessage?: string;
-	checkingMessage?: string;
-}
-
-interface DynamicResetPasswordProps {
-	content: ResetPasswordContent;
-	token?: string;
-	onReset?: (
-		token: string,
-		password: string,
-		confirmPassword: string,
-	) => void;
-	onNavigate?: (path: string) => void;
-	className?: string;
-	isLoading?: boolean;
-	errorMessage?: string;
-}
+import type Property from "./Interface/Property/Password/Reset.js";
 
 type ResetState = "checking" | "valid" | "invalid" | "success";
 
@@ -53,7 +27,7 @@ export function DynamicResetPassword({
 	className,
 	isLoading = false,
 	errorMessage,
-}: DynamicResetPasswordProps) {
+}: Property) {
 	const {
 		title,
 		description,

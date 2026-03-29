@@ -1,12 +1,6 @@
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
-import type CheckboxContent from "./Interface/Content/Checkbox.js";
-
-interface DynamicCheckboxProps {
-	content: CheckboxContent;
-	name?: string;
-	onCheckedChange?: (checked: boolean) => void;
-}
+import type Property from "./Interface/Property/Checkbox.js";
 
 /**
  * Dynamic Checkbox component that accepts content schema
@@ -16,7 +10,7 @@ export function DynamicCheckbox({
 	content,
 	name,
 	onCheckedChange,
-}: DynamicCheckboxProps) {
+}: Property) {
 	const {
 		label,
 		description,

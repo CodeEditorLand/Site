@@ -7,13 +7,7 @@ import {
 	CardTitle,
 } from "../ui/card";
 import type CardContentItem from "./Interface/Item/Content/Card.js";
-import type CardSection from "./Interface/Section/Card.js";
-
-interface DynamicCardProps {
-	sections: CardSection;
-	className?: string;
-	onClick?: () => void;
-}
+import type Property from "./Interface/Property/Card.js";
 
 /**
  * Dynamic Card component that accepts section schemas
@@ -23,7 +17,7 @@ export function DynamicCard({
 	sections,
 	className,
 	onClick,
-}: DynamicCardProps) {
+}: Property) {
 	const { header, body, footer } = sections;
 
 	return (
