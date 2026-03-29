@@ -2,30 +2,28 @@ import { resolve } from "node:path";
 
 import { defineConfig } from "astro/config";
 
-import {
-	BuildConcurrency,
-	ClientPrerender,
-	Compress,
-	CompressHTML,
-	ContentIntellisense,
-	CSSMinify,
-	CSSTransformer,
-	DevToolbar,
-	EnableManifest,
-	InlineCSS,
-	Minify,
-	On,
-	Port,
-	PrefetchAll,
-	PrefetchStrategy,
-	PreserveSymlinks,
-	ServiceWorker,
-	Site,
-	SiteEnvironment,
-	Sourcemap,
-} from "./Source/Function/Configuration";
+import BuildConcurrency from "./Source/Function/Configuration/BuildConcurrency";
+import ClientPrerender from "./Source/Function/Configuration/ClientPrerender";
+import Compress from "./Source/Function/Configuration/Compress";
+import CompressHTML from "./Source/Function/Configuration/CompressHTML";
+import ContentIntellisense from "./Source/Function/Configuration/ContentIntellisense";
+import CSSMinify from "./Source/Function/Configuration/CSSMinify";
+import CSSTransformer from "./Source/Function/Configuration/CSSTransformer";
+import DevToolbar from "./Source/Function/Configuration/DevToolbar";
+import Environment from "./Source/Function/Configuration/Environment";
+import InlineCSS from "./Source/Function/Configuration/InlineCSS";
+import Manifest from "./Source/Function/Configuration/Manifest";
+import Minify from "./Source/Function/Configuration/Minify";
+import On from "./Source/Function/Configuration/On";
+import Port from "./Source/Function/Configuration/Port";
+import PrefetchAll from "./Source/Function/Configuration/PrefetchAll";
+import PrefetchStrategy from "./Source/Function/Configuration/PrefetchStrategy";
+import PreserveSymlinks from "./Source/Function/Configuration/PreserveSymlinks";
+import ServiceWorker from "./Source/Function/Configuration/ServiceWorker";
+import Site from "./Source/Function/Configuration/Site";
+import Sourcemap from "./Source/Function/Configuration/Sourcemap";
 
-export const __INCREMENT__ = `${SiteEnvironment}-${(await import("ulid")).ulid()}`;
+export const __INCREMENT__ = `${Environment}-${(await import("ulid")).ulid()}`;
 
 export default defineConfig({
 	srcDir: "./Source",
@@ -103,7 +101,7 @@ export default defineConfig({
 		build: {
 			sourcemap: Sourcemap,
 
-			manifest: EnableManifest,
+			manifest: Manifest,
 
 			minify: Minify,
 

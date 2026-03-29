@@ -1,0 +1,22 @@
+import type { Configuration } from "./Schema";
+
+export default {
+	Site: "https://Editor.Land",
+	Port: 9999,
+	CompressHTML: true,
+	DevToolbar: false,
+	PrefetchStrategy: "hover",
+	PrefetchAll: true,
+	BuildConcurrency: 9999,
+	Sourcemap: false,
+	Manifest: true,
+	Minify: "terser",
+	CSSMinify: "esbuild",
+	ClientPrerender: true,
+	ContentIntellisense: true,
+	CSSTransformer: "postcss",
+	PreserveSymlinks: false,
+	ServiceWorker: true,
+	InlineCSS: true,
+	Compress: true,
+} satisfies Configuration;
