@@ -2,9 +2,30 @@ import { resolve } from "node:path";
 
 import { defineConfig } from "astro/config";
 
-export const On = process.env["NODE_ENV"] === "development";
+import {
+	BuildConcurrency,
+	ClientPrerender,
+	Compress,
+	CompressHTML,
+	ContentIntellisense,
+	CSSMinify,
+	CSSTransformer,
+	DevToolbar,
+	EnableManifest,
+	InlineCSS,
+	Minify,
+	On,
+	Port,
+	PrefetchAll,
+	PrefetchStrategy,
+	PreserveSymlinks,
+	ServiceWorker,
+	Site,
+	SiteEnvironment,
+	Sourcemap,
+} from "./Source/Function/Configuration";
 
-export const __INCREMENT__ = `${On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`;
+export const __INCREMENT__ = `${SiteEnvironment}-${(await import("ulid")).ulid()}`;
 
 export default defineConfig({
 	srcDir: "./Source",
@@ -13,26 +34,26 @@ export default defineConfig({
 
 	outDir: "./Target",
 
-	site: On ? "http://localhost" : "https://Editor.Land",
+	site: Site,
 
-	compressHTML: !On,
+	compressHTML: CompressHTML,
 
 	devToolbar: {
-		enabled: false,
+		enabled: DevToolbar,
 	},
 
 	prefetch: {
-		defaultStrategy: "hover",
+		defaultStrategy: PrefetchStrategy,
 
-		prefetchAll: true,
+		prefetchAll: PrefetchAll,
 	},
 
 	server: {
-		port: 9999,
+		port: Port,
 	},
 
 	build: {
-		concurrency: 9999,
+		concurrency: BuildConcurrency,
 	},
 
 	integrations: [
@@ -42,13 +63,13 @@ export default defineConfig({
 		}),
 
 		// @ts-ignore
-		import.meta.env.MODE === "production"
+		ServiceWorker
 			? (await import("astrojs-service-worker")).default()
 			: null,
 
 		(await import("@astrojs/sitemap")).default(),
 
-		!On
+		InlineCSS
 			? (await import("@playform/inline")).default({
 					Logger: 1,
 					Beasties: {
@@ -57,7 +78,7 @@ export default defineConfig({
 				})
 			: null,
 
-		!On
+		Compress
 			? (await import("@playform/compress")).default({
 					Logger: 1,
 					HTML: {
@@ -73,20 +94,20 @@ export default defineConfig({
 	],
 
 	experimental: {
-		clientPrerender: true,
+		clientPrerender: ClientPrerender,
 
-		contentIntellisense: true,
+		contentIntellisense: ContentIntellisense,
 	},
 
 	vite: {
 		build: {
-			sourcemap: On,
+			sourcemap: Sourcemap,
 
-			manifest: true,
+			manifest: EnableManifest,
 
-			minify: On ? false : "terser",
+			minify: Minify,
 
-			cssMinify: On ? false : "esbuild",
+			cssMinify: CSSMinify,
 
 			terserOptions: On
 				? {
@@ -169,13 +190,13 @@ export default defineConfig({
 				"@Variable": resolve("./Source/Variable"),
 			},
 
-			preserveSymlinks: false,
+			preserveSymlinks: PreserveSymlinks,
 		},
 
 		css: {
-			devSourcemap: On,
+			devSourcemap: Sourcemap,
 
-			transformer: "postcss",
+			transformer: CSSTransformer,
 		},
 
 		plugins: [
