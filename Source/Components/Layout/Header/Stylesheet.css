@@ -5,8 +5,7 @@
 }
 
 .header .logo-box {
-	background-color: var(--primary);
-	border: 1px solid var(--border);
+	background-color: transparent;
 }
 
 .header-logo span {

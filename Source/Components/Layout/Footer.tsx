@@ -100,9 +100,12 @@ export function Footer({ content }: FooterProps) {
 							href="/"
 							className="mb-4 flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 							aria-label={`${footerContent.brand?.name || "Land"} - Go to homepage`}>
-							<div
-								className="h-8 w-8 border border-[var(--border)] bg-primary"
-								aria-hidden="true"></div>
+							<img
+								src="/Asset/Logo/Glyph/LandDark.svg"
+								alt=""
+								className="h-8 w-8"
+								aria-hidden="true"
+							/>
 							<span className="font-semibold">
 								{footerContent.brand?.name || "Land"}
 							</span>

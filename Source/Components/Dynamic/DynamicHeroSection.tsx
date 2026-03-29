@@ -30,9 +30,9 @@ interface DynamicHeroSectionProps {
 }
 
 /**
- * Dynamic HeroSection with 3D animated floating cards
- * Accepts content schema matching plan specification
- * Uses GPU-accelerated animations with requestAnimationFrame
+ * Dynamic HeroSection with animated floating cards
+ * Mobile: responsive grid layout
+ * Desktop: orbital layout with subtle float animation
  */
 export function DynamicHeroSection({
 	content,
@@ -60,6 +60,7 @@ export function DynamicHeroSection({
 		}
 
 		const cardElements = scene.querySelectorAll(".floating-card");
+		let frameId: number;
 
 		const animateCards = () => {
 			cardElements.forEach((card, index) => {
@@ -67,22 +68,17 @@ export function DynamicHeroSection({
 				const time = Date.now() * 0.001;
 				const offset = index * 0.5;
 
-				const x = Math.sin(time + offset) * 30;
-				const y = Math.cos(time + offset * 1.2) * 20;
-				const rotateX = Math.sin(time + offset) * 10;
-				const rotateY = Math.cos(time + offset * 0.8) * 15;
+				const x = Math.sin(time + offset) * 12;
+				const y = Math.cos(time + offset * 1.2) * 8;
 
-				element.style.transform = `
-          translate3d(${x}px, ${y}px, 0)
-          rotateX(${rotateX}deg)
-          rotateY(${rotateY}deg)
-        `;
+				element.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0)`;
 			});
 
-			requestAnimationFrame(animateCards);
+			frameId = requestAnimationFrame(animateCards);
 		};
 
 		animateCards();
+		return () => cancelAnimationFrame(frameId);
 	}, [heroConfig.respectReducedMotion]);
 
 	return (
@@ -115,27 +111,51 @@ export function DynamicHeroSection({
 					{secondaryCta && <DynamicButton content={secondaryCta} />}
 				</div>
 
-				{/* 3D Scene - decorative */}
+				{/* Tech stack visualization */}
 				<div
-					className="relative mx-auto h-96 max-w-5xl lg:h-[500px]"
+					className="relative mx-auto max-w-5xl"
 					aria-hidden="true">
+					{/* Mobile + Tablet: wrap grid */}
+					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
+						{floatingCards.map((card) => (
+							<div
+								key={card.id}
+								className="border border-[var(--border)] bg-white p-3"
+								style={{ minWidth: "120px" }}>
+								<div className="mb-1.5 text-xs font-medium text-foreground">
+									{card.title}
+								</div>
+								<div className="flex items-center gap-1.5">
+									{card.colors?.map((color, colorIndex) => (
+										<div
+											key={colorIndex}
+											className={`h-3 w-3 ${color} border border-[var(--border)]`}
+										/>
+									))}
+								</div>
+							</div>
+						))}
+					</div>
+
+					{/* Desktop: orbital layout */}
 					<div
 						ref={sceneRef}
-						className="perspective-1000 relative h-full w-full"
+						className="relative hidden h-[500px] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub */}
-						<div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 transform items-center justify-center overflow-hidden !rounded-none border border-[var(--border)] bg-primary">
+						<div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--border)] bg-white">
 							<img
-								src="/Asset/Logo/Glyph/Land.svg"
+								src="/Asset/Logo/Glyph/LandDark.svg"
 								alt=""
-								className="h-20 w-20 brightness-0 invert"
+								className="h-20 w-20"
 							/>
 						</div>
 
-						{/* Floating Cards — orbital layout around center */}
+						{/* Floating Cards */}
 						{floatingCards.map((card, index) => {
 							const total = floatingCards.length;
-							const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+							const angle =
+								(index / total) * 2 * Math.PI - Math.PI / 2;
 							const radiusX = 38;
 							const radiusY = 35;
 							const cx = 50 + Math.cos(angle) * radiusX;
@@ -144,7 +164,7 @@ export function DynamicHeroSection({
 							return (
 								<div
 									key={card.id}
-									className="floating-card absolute transform-gpu !rounded-none border border-[var(--border)] bg-white/95 p-3"
+									className="floating-card absolute transform-gpu border border-[var(--border)] bg-white/95 p-3"
 									style={{
 										top: `${cy}%`,
 										left: `${cx}%`,
@@ -155,19 +175,20 @@ export function DynamicHeroSection({
 										{card.title}
 									</div>
 									<div className="flex items-center gap-1.5">
-										{card.colors &&
-											card.colors.map((color, colorIndex) => (
+										{card.colors?.map(
+											(color, colorIndex) => (
 												<div
 													key={colorIndex}
-													className={`h-3 w-3 ${color} !rounded-none border border-[var(--border)]`}
+													className={`h-3 w-3 ${color} border border-[var(--border)]`}
 												/>
-											))}
+											),
+										)}
 									</div>
 								</div>
 							);
 						})}
 
-						{/* Connecting Lines — radiate from center to each card */}
+						{/* Connecting Lines */}
 						{heroConfig.showConnectingLines && (
 							<svg
 								className="pointer-events-none absolute inset-0 h-full w-full opacity-15"
@@ -175,11 +196,15 @@ export function DynamicHeroSection({
 								role="presentation">
 								{floatingCards.map((card, index) => {
 									const total = floatingCards.length;
-									const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+									const angle =
+										(index / total) * 2 * Math.PI -
+										Math.PI / 2;
 									const radiusX = 38;
 									const radiusY = 35;
-									const cx = 50 + Math.cos(angle) * radiusX;
-									const cy = 50 + Math.sin(angle) * radiusY;
+									const cx =
+										50 + Math.cos(angle) * radiusX;
+									const cy =
+										50 + Math.sin(angle) * radiusY;
 									return (
 										<line
 											key={card.id}
@@ -190,30 +215,13 @@ export function DynamicHeroSection({
 											stroke="currentColor"
 											strokeWidth="1"
 											className="animate-pulse"
-											style={{ animationDelay: `${index * 0.3}s` }}
+											style={{
+												animationDelay: `${index * 0.3}s`,
+											}}
 										/>
 									);
 								})}
 							</svg>
-						)}
-
-						{/* Background Particles */}
-						{heroConfig.showParticles && (
-							<div className="pointer-events-none absolute inset-0 overflow-hidden">
-								{Array.from({ length: 20 }).map((_, i) => (
-									<div
-										key={i}
-										className="bg-primary/20 absolute h-1 w-1 animate-pulse !rounded-none border border-[var(--border)]"
-										style={{
-											left: `${Math.random() * 100}%`,
-											top: `${Math.random() * 100}%`,
-											animationDelay: `${Math.random() * 3}s`,
-											animationDuration: `${2 + Math.random() * 3}s`,
-										}}
-										aria-hidden="true"
-									/>
-								))}
-							</div>
 						)}
 					</div>
 				</div>

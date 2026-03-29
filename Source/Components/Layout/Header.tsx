@@ -71,9 +71,9 @@ export function Header({ content }: HeaderProps) {
 							className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
 							aria-hidden="true">
 						<img
-							src="/Asset/Logo/Glyph/Land.svg"
+							src="/Asset/Logo/Glyph/LandDark.svg"
 							alt=""
-							className="absolute inset-0 h-full w-full brightness-0 invert"
+							className="absolute inset-0 h-full w-full"
 						/>
 					</div>
 						<span className="font-semibold">
