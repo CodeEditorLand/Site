@@ -1,4 +1,4 @@
-import { Badge } from "../UI/badge";
+import { Badge } from "../UI/Badge";
 import type Property from "./Interface/Property/Badge.js";
 
 /**

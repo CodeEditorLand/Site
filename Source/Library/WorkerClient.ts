@@ -1,14 +1,12 @@
-import type {
-	AnalyticsEvent,
-	ApiResponse,
-	Download,
-	DownloadEvent,
-	GitHubActionRun,
-	GitHubCommit,
-	GitHubIssue,
-	Session,
-	User,
-} from "./types";
+import type AnalyticsEvent from "./Interface/AnalyticsEvent.js";
+import type APIResponse from "./Interface/APIResponse.js";
+import type Download from "./Interface/Download.js";
+import type DownloadEvent from "./Interface/DownloadEvent.js";
+import type GitHubActionRun from "./Interface/GitHubActionRun.js";
+import type GitHubCommit from "./Interface/GitHubCommit.js";
+import type GitHubIssue from "./Interface/GitHubIssue.js";
+import type Session from "./Interface/Session.js";
+import type User from "./Interface/User.js";
 
 export interface WorkersClient {
 	// Auth
@@ -16,29 +14,29 @@ export interface WorkersClient {
 		login(
 			email: string,
 			password: string,
-		): Promise<ApiResponse<{ user: User; session: Session }>>;
+		): Promise<APIResponse<{ user: User; session: Session }>>;
 		register(
 			email: string,
 			password: string,
 			username: string,
 			displayName?: string,
 		): Promise<
-			ApiResponse<{ user: User; session: Session; message?: string }>
+			APIResponse<{ user: User; session: Session; message?: string }>
 		>;
-		logout(): Promise<ApiResponse<{ message?: string }>>;
+		logout(): Promise<APIResponse<{ message?: string }>>;
 		refresh(
 			token: string,
-		): Promise<ApiResponse<{ token: string; expiresIn: number }>>;
-		verifyEmail(token: string): Promise<ApiResponse<void>>;
-		resendVerification(): Promise<ApiResponse<{ message: string }>>;
+		): Promise<APIResponse<{ token: string; expiresIn: number }>>;
+		verifyEmail(token: string): Promise<APIResponse<void>>;
+		resendVerification(): Promise<APIResponse<{ message: string }>>;
 		forgotPassword(
 			email: string,
-		): Promise<ApiResponse<{ message: string }>>;
+		): Promise<APIResponse<{ message: string }>>;
 		resetPassword(
 			token: string,
 			password: string,
-		): Promise<ApiResponse<void>>;
-		getSession(): Promise<ApiResponse<{ user: User; expiresIn: number }>>;
+		): Promise<APIResponse<void>>;
+		getSession(): Promise<APIResponse<{ user: User; expiresIn: number }>>;
 		oauth(
 			provider: "github" | "google" | "gitlab",
 		): Promise<{ success: boolean }>;
@@ -49,13 +47,13 @@ export interface WorkersClient {
 		getBinaries(
 			platform?: string,
 			architecture?: string,
-		): Promise<ApiResponse<Download[]>>;
-		getVersionList(limit?: number): Promise<ApiResponse<Download[]>>;
-		getDownload(id: string): Promise<ApiResponse<Download>>;
-		getSha256(id: string): Promise<ApiResponse<{ sha256: string }>>;
-		getSignature(id: string): Promise<ApiResponse<{ signature: string }>>;
+		): Promise<APIResponse<Download[]>>;
+		getVersionList(limit?: number): Promise<APIResponse<Download[]>>;
+		getDownload(id: string): Promise<APIResponse<Download>>;
+		getSha256(id: string): Promise<APIResponse<{ sha256: string }>>;
+		getSignature(id: string): Promise<APIResponse<{ signature: string }>>;
 		getInfo(id: string): Promise<
-			ApiResponse<
+			APIResponse<
 				Download & {
 					downloadUrl: string;
 					sha256Url: string;
@@ -67,17 +65,17 @@ export interface WorkersClient {
 			version: string,
 			platform?: string,
 			architecture?: string,
-		): Promise<ApiResponse<Download[]>>;
+		): Promise<APIResponse<Download[]>>;
 		getLatest(
 			platform?: string,
 			architecture?: string,
-		): Promise<ApiResponse<Download>>;
-		trackDownload(id: string): Promise<ApiResponse<{ eventId: string }>>;
+		): Promise<APIResponse<Download>>;
+		trackDownload(id: string): Promise<APIResponse<{ eventId: string }>>;
 		getAnalytics(
 			limit?: number,
 			offset?: number,
 		): Promise<
-			ApiResponse<{
+			APIResponse<{
 				events: DownloadEvent[];
 				stats: {
 					total: number;
@@ -92,7 +90,7 @@ export interface WorkersClient {
 		track(
 			type: string,
 			properties?: Record<string, unknown>,
-		): Promise<ApiResponse<{ eventId: string }>>;
+		): Promise<APIResponse<{ eventId: string }>>;
 		trackBatch(
 			events: Array<{
 				type: string;
@@ -100,25 +98,25 @@ export interface WorkersClient {
 				sessionId?: string;
 				properties?: Record<string, unknown>;
 			}>,
-		): Promise<ApiResponse<{ tracked: number; eventIds: string[] }>>;
+		): Promise<APIResponse<{ tracked: number; eventIds: string[] }>>;
 		trackPageView(
 			path: string,
 			title?: string,
 			referrer?: string,
-		): Promise<ApiResponse<{ eventId: string }>>;
+		): Promise<APIResponse<{ eventId: string }>>;
 		getEvents(
 			type?: string,
 			limit?: number,
 			offset?: number,
 			startDate?: string,
 			endDate?: string,
-		): Promise<ApiResponse<AnalyticsEvent[]>>;
-		getEvent(id: string): Promise<ApiResponse<AnalyticsEvent>>;
+		): Promise<APIResponse<AnalyticsEvent[]>>;
+		getEvent(id: string): Promise<APIResponse<AnalyticsEvent>>;
 		getSummary(
 			days?: number,
 			type?: string,
 		): Promise<
-			ApiResponse<{
+			APIResponse<{
 				totalEvents: number;
 				uniqueVisitors: number;
 				uniqueSessions: number;
@@ -131,7 +129,7 @@ export interface WorkersClient {
 			days?: number,
 			type?: string,
 		): Promise<
-			ApiResponse<
+			APIResponse<
 				Array<{
 					date: string;
 					count: number;
@@ -143,17 +141,17 @@ export interface WorkersClient {
 			days?: number,
 			limit?: number,
 		): Promise<
-			ApiResponse<Array<{ path: string; title: string; count: number }>>
+			APIResponse<Array<{ path: string; title: string; count: number }>>
 		>;
 		getEventStats(days?: number): Promise<
-			ApiResponse<{
+			APIResponse<{
 				byType: Record<string, number>;
 				byBrowser: Record<string, number>;
 				byOS: Record<string, number>;
 			}>
 		>;
 		getSessionStats(days?: number): Promise<
-			ApiResponse<{
+			APIResponse<{
 				totalSessions: number;
 				avgEventsPerSession: number;
 				sessionsByEventCount: Record<string, number>;
@@ -163,7 +161,7 @@ export interface WorkersClient {
 	// Status
 	status: {
 		getOverallStatus(): Promise<
-			ApiResponse<{
+			APIResponse<{
 				status: "operational" | "degraded" | "outage" | "maintenance";
 				lastUpdate: string;
 				checks: Array<{
@@ -177,7 +175,7 @@ export interface WorkersClient {
 			}>
 		>;
 		getChecks(): Promise<
-			ApiResponse<
+			APIResponse<
 				Array<{
 					id: string;
 					name: string;
@@ -189,7 +187,7 @@ export interface WorkersClient {
 			>
 		>;
 		getCheck(id: string): Promise<
-			ApiResponse<{
+			APIResponse<{
 				id: string;
 				name: string;
 				status: string;
@@ -202,7 +200,7 @@ export interface WorkersClient {
 			limit?: number,
 			checkId?: string,
 		): Promise<
-			ApiResponse<
+			APIResponse<
 				Array<{
 					checkId: string;
 					status: string;
@@ -214,14 +212,14 @@ export interface WorkersClient {
 		getGitHubCommits(
 			branch?: string,
 			limit?: number,
-		): Promise<ApiResponse<GitHubCommit[]>>;
+		): Promise<APIResponse<GitHubCommit[]>>;
 		getGitHubActions(
 			limit?: number,
-		): Promise<ApiResponse<GitHubActionRun[]>>;
+		): Promise<APIResponse<GitHubActionRun[]>>;
 		getGitHubIssues(
 			state?: string,
 			limit?: number,
-		): Promise<ApiResponse<GitHubIssue[]>>;
+		): Promise<APIResponse<GitHubIssue[]>>;
 	};
 }
 
@@ -233,9 +231,9 @@ function delay(ms: number): Promise<void> {
 }
 
 function withRetry<T>(
-	fn: () => Promise<ApiResponse<T>>,
+	fn: () => Promise<APIResponse<T>>,
 	retries = MAX_RETRIES,
-): Promise<ApiResponse<T>> {
+): Promise<APIResponse<T>> {
 	return fn().catch(async (error: Error) => {
 		if (retries > 0) {
 			console.warn(
@@ -287,7 +285,7 @@ function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
 	const fetchWithAuth = async <T>(
 		endpoint: string,
 		options: RequestInit = {},
-	): Promise<ApiResponse<T>> => {
+	): Promise<APIResponse<T>> => {
 		const token = getAuthToken();
 		const headers: Record<string, string> = {
 			"Content-Type": "application/json",
@@ -311,7 +309,7 @@ function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
 			};
 		}
 
-		return data as ApiResponse<T>;
+		return data as APIResponse<T>;
 	};
 
 	return {

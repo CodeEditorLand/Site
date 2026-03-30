@@ -1,5 +1,6 @@
-import type { Download, DownloadEvent } from "../types";
-import { getWorkersClient } from "../workers-client";
+import type Download from "../Interface/Download.js";
+import type DownloadEvent from "../Interface/DownloadEvent.js";
+import { getWorkersClient } from "../WorkerClient";
 
 /**
  * Downloads API adapter

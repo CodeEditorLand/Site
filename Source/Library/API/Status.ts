@@ -1,5 +1,7 @@
-import type { GitHubActionRun, GitHubCommit, GitHubIssue } from "../types";
-import { getWorkersClient } from "../workers-client";
+import type GitHubActionRun from "../Interface/GitHubActionRun.js";
+import type GitHubCommit from "../Interface/GitHubCommit.js";
+import type GitHubIssue from "../Interface/GitHubIssue.js";
+import { getWorkersClient } from "../WorkerClient";
 
 /**
  * Status API adapter

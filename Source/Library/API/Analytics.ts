@@ -1,5 +1,5 @@
-import type { AnalyticsEvent } from "../types";
-import { getWorkersClient } from "../workers-client";
+import type AnalyticsEvent from "../Interface/AnalyticsEvent.js";
+import { getWorkersClient } from "../WorkerClient";
 
 /**
  * Analytics API adapter

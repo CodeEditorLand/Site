@@ -1,5 +1,5 @@
-import { Checkbox } from "../UI/checkbox";
-import { Label } from "../UI/label";
+import { Checkbox } from "../UI/Checkbox";
+import { Label } from "../UI/Label";
 import type Property from "./Interface/Property/Checkbox.js";
 
 /**

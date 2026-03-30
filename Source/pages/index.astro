@@ -366,7 +366,7 @@ const homeContent = {
 			if (platform.id) {
 				try {
 					const { downloadsAPI } =
-						await import("../Library/API/downloads");
+						await import("../Library/API/Download");
 					const info = await downloadsAPI.getInfo(platform.id);
 					window.open(info.downloadUrl, "_blank");
 					await downloadsAPI.trackDownload(platform.id);

@@ -9,7 +9,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../UI/card";
+} from "../UI/Card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
 import type Interface from "./Interface/Content/Verification/Email.js";

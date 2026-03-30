@@ -1,5 +1,6 @@
-import type { Session, User } from "../types";
-import { getWorkersClient } from "../workers-client";
+import type Session from "../Interface/Session.js";
+import type User from "../Interface/User.js";
+import { getWorkersClient } from "../WorkerClient";
 
 /**
  * Authentication API adapter

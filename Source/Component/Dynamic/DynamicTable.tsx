@@ -8,7 +8,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "../UI/table";
+} from "../UI/Table";
 import type Property from "./Interface/Property/Table.js";
 
 /**

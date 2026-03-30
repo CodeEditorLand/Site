@@ -7,7 +7,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../UI/card";
+} from "../UI/Card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCheckbox } from "./DynamicCheckbox";
 import { DynamicInput } from "./DynamicInput";

@@ -5,8 +5,8 @@ import {
 } from "lucide-react";
 import * as React from "react";
 
-import { Button, buttonVariants } from "./button";
-import { cn } from "./utils";
+import { Button, buttonVariants } from "./Button";
+import { cn } from "./Utility";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
 	return (

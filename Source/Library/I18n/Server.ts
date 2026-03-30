@@ -1,50 +1,50 @@
 import i18n from "i18next";
 
 // Bulgarian
-import bgAccount from "./Locale/Bg/account.json";
-import bgCommon from "./Locale/Bg/common.json";
-import bgDownload from "./Locale/Bg/download.json";
-import bgFooter from "./Locale/Bg/footer.json";
-import bgHeader from "./Locale/Bg/header.json";
-import bgHome from "./Locale/Bg/home.json";
-import bgMeta from "./Locale/Bg/meta.json";
-import bgVerify from "./Locale/Bg/verify.json";
+import bgAccount from "./Locale/Bg/Account.json";
+import bgCommon from "./Locale/Bg/Common.json";
+import bgDownload from "./Locale/Bg/Download.json";
+import bgFooter from "./Locale/Bg/Footer.json";
+import bgHeader from "./Locale/Bg/Header.json";
+import bgHome from "./Locale/Bg/Home.json";
+import bgMeta from "./Locale/Bg/Meta.json";
+import bgVerify from "./Locale/Bg/Verify.json";
 // German
-import deAccount from "./Locale/De/account.json";
-import deCommon from "./Locale/De/common.json";
-import deDownload from "./Locale/De/download.json";
-import deFooter from "./Locale/De/footer.json";
-import deHeader from "./Locale/De/header.json";
-import deHome from "./Locale/De/home.json";
-import deMeta from "./Locale/De/meta.json";
-import deVerify from "./Locale/De/verify.json";
+import deAccount from "./Locale/De/Account.json";
+import deCommon from "./Locale/De/Common.json";
+import deDownload from "./Locale/De/Download.json";
+import deFooter from "./Locale/De/Footer.json";
+import deHeader from "./Locale/De/Header.json";
+import deHome from "./Locale/De/Home.json";
+import deMeta from "./Locale/De/Meta.json";
+import deVerify from "./Locale/De/Verify.json";
 // English
-import enAccount from "./Locale/En/account.json";
-import enCommon from "./Locale/En/common.json";
-import enDownload from "./Locale/En/download.json";
-import enFooter from "./Locale/En/footer.json";
-import enHeader from "./Locale/En/header.json";
-import enHome from "./Locale/En/home.json";
-import enMeta from "./Locale/En/meta.json";
-import enVerify from "./Locale/En/verify.json";
+import enAccount from "./Locale/En/Account.json";
+import enCommon from "./Locale/En/Common.json";
+import enDownload from "./Locale/En/Download.json";
+import enFooter from "./Locale/En/Footer.json";
+import enHeader from "./Locale/En/Header.json";
+import enHome from "./Locale/En/Home.json";
+import enMeta from "./Locale/En/Meta.json";
+import enVerify from "./Locale/En/Verify.json";
 // Spanish
-import esAccount from "./Locale/Es/account.json";
-import esCommon from "./Locale/Es/common.json";
-import esDownload from "./Locale/Es/download.json";
-import esFooter from "./Locale/Es/footer.json";
-import esHeader from "./Locale/Es/header.json";
-import esHome from "./Locale/Es/home.json";
-import esMeta from "./Locale/Es/meta.json";
-import esVerify from "./Locale/Es/verify.json";
+import esAccount from "./Locale/Es/Account.json";
+import esCommon from "./Locale/Es/Common.json";
+import esDownload from "./Locale/Es/Download.json";
+import esFooter from "./Locale/Es/Footer.json";
+import esHeader from "./Locale/Es/Header.json";
+import esHome from "./Locale/Es/Home.json";
+import esMeta from "./Locale/Es/Meta.json";
+import esVerify from "./Locale/Es/Verify.json";
 // French
-import frAccount from "./Locale/Fr/account.json";
-import frCommon from "./Locale/Fr/common.json";
-import frDownload from "./Locale/Fr/download.json";
-import frFooter from "./Locale/Fr/footer.json";
-import frHeader from "./Locale/Fr/header.json";
-import frHome from "./Locale/Fr/home.json";
-import frMeta from "./Locale/Fr/meta.json";
-import frVerify from "./Locale/Fr/verify.json";
+import frAccount from "./Locale/Fr/Account.json";
+import frCommon from "./Locale/Fr/Common.json";
+import frDownload from "./Locale/Fr/Download.json";
+import frFooter from "./Locale/Fr/Footer.json";
+import frHeader from "./Locale/Fr/Header.json";
+import frHome from "./Locale/Fr/Home.json";
+import frMeta from "./Locale/Fr/Meta.json";
+import frVerify from "./Locale/Fr/Verify.json";
 
 const supportedLocales = ["en", "bg", "de", "fr", "es"];
 

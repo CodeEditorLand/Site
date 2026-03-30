@@ -8,7 +8,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../UI/card";
+} from "../UI/Card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
 import type Property from "./Interface/Property/Password/Reset.js";

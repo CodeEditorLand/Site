@@ -65,7 +65,7 @@ export function DynamicPlatformGrid({
 
 				// Import workers client directly for platform data
 				const { getWorkersClient } =
-					await import("../../Library/workers-client");
+					await import("../../Library/WorkerClient");
 				const Workers = getWorkersClient();
 				const Response = await Workers.download.getLatest(apiPlatform);
 				if (!Response.success || !Response.data) {
@@ -160,7 +160,7 @@ export function DynamicPlatformGrid({
 		try {
 			// Use workers client directly
 			const { getWorkersClient } =
-				await import("../../Library/workers-client");
+				await import("../../Library/WorkerClient");
 			const Workers = getWorkersClient();
 			const InfoResponse = await Workers.download.getInfo(Platform.id);
 			if (!InfoResponse.success || !InfoResponse.data) {

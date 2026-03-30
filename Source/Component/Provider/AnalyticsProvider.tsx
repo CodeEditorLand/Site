@@ -8,7 +8,7 @@ import {
 	type ReactNode,
 } from "react";
 
-import { getWorkersClient } from "../../Library/workers-client";
+import { getWorkersClient } from "../../Library/WorkerClient";
 
 interface AnalyticsContextType {
 	track: (
