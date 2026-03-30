@@ -9,7 +9,6 @@ import type Session from "./Interface/Session.js";
 import type User from "./Interface/User.js";
 
 export interface WorkersClient {
-	// Authentication
 	Authentication: {
 		Login(
 			Email: string,
@@ -36,27 +35,26 @@ export interface WorkersClient {
 			Token: string,
 			Password: string,
 		): Promise<APIResponse<void>>;
-		GetSession(): Promise<APIResponse<{ user: User; expiresIn: number }>>;
+		GetSession(): Promise<
+			APIResponse<{ user: User; expiresIn: number }>
+		>;
 		OAuth(
 			Provider: "github" | "google" | "gitlab",
 		): Promise<{ success: boolean }>;
 		HandleOAuthCallback(): never;
 	};
-	// Download
 	Download: {
 		GetBinaries(
 			Platform?: string,
 			Architecture?: string,
 		): Promise<APIResponse<Download[]>>;
 		GetVersionList(Limit?: number): Promise<APIResponse<Download[]>>;
-		GetDownload(Identifier: string): Promise<APIResponse<Download>>;
-		GetSHA256(
-			Identifier: string,
-		): Promise<APIResponse<{ sha256: string }>>;
+		GetDownload(Id: string): Promise<APIResponse<Download>>;
+		GetSHA256(Id: string): Promise<APIResponse<{ sha256: string }>>;
 		GetSignature(
-			Identifier: string,
+			Id: string,
 		): Promise<APIResponse<{ signature: string }>>;
-		GetInfo(Identifier: string): Promise<
+		GetInfo(Id: string): Promise<
 			APIResponse<
 				Download & {
 					downloadUrl: string;
@@ -75,7 +73,7 @@ export interface WorkersClient {
 			Architecture?: string,
 		): Promise<APIResponse<Download>>;
 		TrackDownload(
-			Identifier: string,
+			Id: string,
 		): Promise<APIResponse<{ eventId: string }>>;
 		GetAnalytics(
 			Limit?: number,
@@ -91,7 +89,6 @@ export interface WorkersClient {
 			}>
 		>;
 	};
-	// Analytics
 	Analytics: {
 		Track(
 			Type: string,
@@ -117,7 +114,7 @@ export interface WorkersClient {
 			StartDate?: string,
 			EndDate?: string,
 		): Promise<APIResponse<AnalyticsEvent[]>>;
-		GetEvent(Identifier: string): Promise<APIResponse<AnalyticsEvent>>;
+		GetEvent(Id: string): Promise<APIResponse<AnalyticsEvent>>;
 		GetSummary(
 			Days?: number,
 			Type?: string,
@@ -147,7 +144,9 @@ export interface WorkersClient {
 			Days?: number,
 			Limit?: number,
 		): Promise<
-			APIResponse<Array<{ path: string; title: string; count: number }>>
+			APIResponse<
+				Array<{ path: string; title: string; count: number }>
+			>
 		>;
 		GetEventStats(Days?: number): Promise<
 			APIResponse<{
@@ -164,11 +163,14 @@ export interface WorkersClient {
 			}>
 		>;
 	};
-	// Status
 	Status: {
 		GetOverallStatus(): Promise<
 			APIResponse<{
-				status: "operational" | "degraded" | "outage" | "maintenance";
+				status:
+					| "operational"
+					| "degraded"
+					| "outage"
+					| "maintenance";
 				lastUpdate: string;
 				checks: Array<{
 					id: string;
@@ -192,7 +194,7 @@ export interface WorkersClient {
 				}>
 			>
 		>;
-		GetCheck(Identifier: string): Promise<
+		GetCheck(Id: string): Promise<
 			APIResponse<{
 				id: string;
 				name: string;
@@ -204,7 +206,7 @@ export interface WorkersClient {
 		>;
 		GetHistory(
 			Limit?: number,
-			CheckIdentifier?: string,
+			CheckId?: string,
 		): Promise<
 			APIResponse<
 				Array<{
@@ -255,8 +257,8 @@ function WithRetry<T>(
 
 function GetAuthToken(): string | null {
 	try {
-		const Cookies = document.cookie.split(";");
-		const SessionCookie = Cookies.find((Cookie) =>
+		const CookieList = document.cookie.split(";");
+		const SessionCookie = CookieList.find((Cookie) =>
 			Cookie.trim().startsWith("session="),
 		);
 		if (SessionCookie) {
@@ -290,18 +292,18 @@ function ClearAuthToken(): void {
 function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 	const FetchWithAuthentication = async <T>(
 		Endpoint: string,
-		Options: RequestInit = {},
+		Option: RequestInit = {},
 	): Promise<APIResponse<T>> => {
 		const Token = GetAuthToken();
-		const Headers: Record<string, string> = {
+		const Header: Record<string, string> = {
 			"Content-Type": "application/json",
 			...(Token ? { Authorization: `Bearer ${Token}` } : {}),
-			...(Options.headers as Record<string, string>),
+			...(Option.headers as Record<string, string>),
 		};
 
 		const Response = await fetch(`${BaseURL}${Endpoint}`, {
-			...Options,
-			headers: Headers,
+			...Option,
+			headers: Header,
 		});
 
 		const Data = await Response.json().catch(() => ({
@@ -312,7 +314,10 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 		if (!Response.ok || !Data.success) {
 			return {
 				success: false,
-				error: Data.error || Data.message || `HTTP ${Response.status}`,
+				error:
+					Data.error ||
+					Data.message ||
+					`HTTP ${Response.status}`,
 			};
 		}
 
@@ -323,16 +328,16 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 		Authentication: {
 			Login: (Email, Password) =>
 				WithRetry(() =>
-					FetchWithAuthentication<{ user: User; session: Session }>(
-						"/auth/login",
-						{
-							method: "POST",
-							body: JSON.stringify({
-								email: Email,
-								password: Password,
-							}),
-						},
-					),
+					FetchWithAuthentication<{
+						user: User;
+						session: Session;
+					}>("/auth/login", {
+						method: "POST",
+						body: JSON.stringify({
+							email: Email,
+							password: Password,
+						}),
+					}),
 				),
 			Register: (Email, Password, Username, DisplayName) =>
 				WithRetry(() =>
@@ -352,7 +357,9 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				),
 			Logout: () =>
 				WithRetry(() =>
-					FetchWithAuthentication("/auth/logout", { method: "POST" }),
+					FetchWithAuthentication("/auth/logout", {
+						method: "POST",
+					}),
 				),
 			Refresh: (Token) =>
 				WithRetry(() =>
@@ -368,9 +375,7 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				WithRetry(() =>
 					FetchWithAuthentication<void>(
 						`/auth/verify-email/${Token}`,
-						{
-							method: "GET",
-						},
+						{ method: "GET" },
 					),
 				),
 			ResendVerification: () =>
@@ -407,13 +412,10 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 					}>("/auth/session"),
 				),
 			OAuth: (Provider) => {
-				const URL = `${BaseURL}/auth/oauth/${Provider}`;
-				window.location.href = URL;
+				const RedirectURL = `${BaseURL}/auth/oauth/${Provider}`;
+				window.location.href = RedirectURL;
 				return Promise.resolve({ success: true });
 			},
-			// Note: HandleOAuthCallback is intentionally NOT implemented as a fetch call
-			// The OAuth callback endpoint returns a 302 redirect to the frontend with token in URL
-			// Frontend should extract token from URL query parameters on the redirect landing page
 			HandleOAuthCallback: () => {
 				throw new Error(
 					"HandleOAuthCallback should not be called as a fetch. OAuth callback redirects to frontend URL with token parameter.",
@@ -422,11 +424,11 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 		},
 		Download: {
 			GetBinaries: (Platform, Architecture) => {
-				const Params = new URLSearchParams();
-				if (Platform) Params.append("platform", Platform);
+				const Parameter = new URLSearchParams();
+				if (Platform) Parameter.append("platform", Platform);
 				if (Architecture)
-					Params.append("architecture", Architecture);
-				const Query = Params.toString();
+					Parameter.append("architecture", Architecture);
+				const Query = Parameter.toString();
 				return WithRetry(() =>
 					FetchWithAuthentication<Download[]>(
 						`/downloads${Query ? `?${Query}` : ""}`,
@@ -441,25 +443,23 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 					),
 				);
 			},
-			GetDownload: (Identifier) =>
+			GetDownload: (Id) =>
 				WithRetry(() =>
-					FetchWithAuthentication<Download>(
-						`/downloads/${Identifier}`,
-					),
+					FetchWithAuthentication<Download>(`/downloads/${Id}`),
 				),
-			GetSHA256: (Identifier) =>
+			GetSHA256: (Id) =>
 				WithRetry(() =>
 					FetchWithAuthentication<{ sha256: string }>(
-						`/downloads/${Identifier}/sha256`,
+						`/downloads/${Id}/sha256`,
 					),
 				),
-			GetSignature: (Identifier) =>
+			GetSignature: (Id) =>
 				WithRetry(() =>
 					FetchWithAuthentication<{ signature: string }>(
-						`/downloads/${Identifier}/signature`,
+						`/downloads/${Id}/signature`,
 					),
 				),
-			GetInfo: (Identifier) =>
+			GetInfo: (Id) =>
 				WithRetry(() =>
 					FetchWithAuthentication<
 						Download & {
@@ -467,14 +467,14 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							sha256Url: string;
 							signatureUrl: string | null;
 						}
-					>(`/downloads/${Identifier}/info`),
+					>(`/downloads/${Id}/info`),
 				),
 			GetByVersion: (Version, Platform, Architecture) => {
-				const Params = new URLSearchParams();
-				if (Platform) Params.append("platform", Platform);
+				const Parameter = new URLSearchParams();
+				if (Platform) Parameter.append("platform", Platform);
 				if (Architecture)
-					Params.append("architecture", Architecture);
-				const Query = Params.toString();
+					Parameter.append("architecture", Architecture);
+				const Query = Parameter.toString();
 				return WithRetry(() =>
 					FetchWithAuthentication<Download[]>(
 						`/downloads/version/${Version}${Query ? `?${Query}` : ""}`,
@@ -482,29 +482,31 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				);
 			},
 			GetLatest: (Platform, Architecture) => {
-				const Params = new URLSearchParams();
-				if (Platform) Params.append("platform", Platform);
+				const Parameter = new URLSearchParams();
+				if (Platform) Parameter.append("platform", Platform);
 				if (Architecture)
-					Params.append("architecture", Architecture);
-				const Query = Params.toString();
+					Parameter.append("architecture", Architecture);
+				const Query = Parameter.toString();
 				return WithRetry(() =>
 					FetchWithAuthentication<Download>(
 						`/downloads/latest${Query ? `?${Query}` : ""}`,
 					),
 				);
 			},
-			TrackDownload: (Identifier) =>
+			TrackDownload: (Id) =>
 				WithRetry(() =>
 					FetchWithAuthentication<{ eventId: string }>(
-						`/downloads/${Identifier}/track`,
+						`/downloads/${Id}/track`,
 						{ method: "POST" },
 					),
 				),
 			GetAnalytics: (Limit, Offset) => {
-				const Params = new URLSearchParams();
-				if (Limit) Params.append("limit", Limit.toString());
-				if (Offset) Params.append("offset", Offset.toString());
-				const Query = Params.toString();
+				const Parameter = new URLSearchParams();
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
+				if (Offset)
+					Parameter.append("offset", Offset.toString());
+				const Query = Parameter.toString();
 				return WithRetry(() =>
 					FetchWithAuthentication<{
 						events: DownloadEvent[];
@@ -522,13 +524,16 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 		Analytics: {
 			Track: (Type, Properties = {}) =>
 				WithRetry(() =>
-					FetchWithAuthentication<{ eventId: string }>("/track", {
-						method: "POST",
-						body: JSON.stringify({
-							type: Type,
-							properties: Properties,
-						}),
-					}),
+					FetchWithAuthentication<{ eventId: string }>(
+						"/track",
+						{
+							method: "POST",
+							body: JSON.stringify({
+								type: Type,
+								properties: Properties,
+							}),
+						},
+					),
 				),
 			TrackBatch: (Events) =>
 				WithRetry(() =>
@@ -542,38 +547,44 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 				),
 			TrackPageView: (Path, Title, Referrer) =>
 				WithRetry(() =>
-					FetchWithAuthentication<{ eventId: string }>("/pageview", {
-						method: "POST",
-						body: JSON.stringify({
-							path: Path,
-							title: Title,
-							referrer: Referrer,
-						}),
-					}),
+					FetchWithAuthentication<{ eventId: string }>(
+						"/pageview",
+						{
+							method: "POST",
+							body: JSON.stringify({
+								path: Path,
+								title: Title,
+								referrer: Referrer,
+							}),
+						},
+					),
 				),
 			GetEvents: (Type, Limit, Offset, StartDate, EndDate) => {
-				const Params = new URLSearchParams();
-				if (Type) Params.append("type", Type);
-				if (Limit) Params.append("limit", Limit.toString());
-				if (Offset) Params.append("offset", Offset.toString());
-				if (StartDate) Params.append("start", StartDate);
-				if (EndDate) Params.append("end", EndDate);
+				const Parameter = new URLSearchParams();
+				if (Type) Parameter.append("type", Type);
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
+				if (Offset)
+					Parameter.append("offset", Offset.toString());
+				if (StartDate) Parameter.append("start", StartDate);
+				if (EndDate) Parameter.append("end", EndDate);
 				return WithRetry(() =>
 					FetchWithAuthentication<AnalyticsEvent[]>(
-						`/events?${Params.toString()}`,
+						`/events?${Parameter.toString()}`,
 					),
 				);
 			},
-			GetEvent: (Identifier) =>
+			GetEvent: (Id) =>
 				WithRetry(() =>
 					FetchWithAuthentication<AnalyticsEvent>(
-						`/events/${Identifier}`,
+						`/events/${Id}`,
 					),
 				),
 			GetSummary: (Days, Type) => {
-				const Params = new URLSearchParams();
-				if (Days) Params.append("days", Days.toString());
-				if (Type) Params.append("type", Type);
+				const Parameter = new URLSearchParams();
+				if (Days)
+					Parameter.append("days", Days.toString());
+				if (Type) Parameter.append("type", Type);
 				return WithRetry(() =>
 					FetchWithAuthentication<{
 						totalEvents: number;
@@ -586,13 +597,14 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							start: string;
 							end: string;
 						};
-					}>(`/summary?${Params.toString()}`),
+					}>(`/summary?${Parameter.toString()}`),
 				);
 			},
 			GetTimeline: (Days, Type) => {
-				const Params = new URLSearchParams();
-				if (Days) Params.append("days", Days.toString());
-				if (Type) Params.append("type", Type);
+				const Parameter = new URLSearchParams();
+				if (Days)
+					Parameter.append("days", Days.toString());
+				if (Type) Parameter.append("type", Type);
 				return WithRetry(() =>
 					FetchWithAuthentication<
 						Array<{
@@ -600,13 +612,15 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							count: number;
 							types: Record<string, number>;
 						}>
-					>(`/timeline?${Params.toString()}`),
+					>(`/timeline?${Parameter.toString()}`),
 				);
 			},
 			GetPageViewStats: (Days, Limit) => {
-				const Params = new URLSearchParams();
-				if (Days) Params.append("days", Days.toString());
-				if (Limit) Params.append("limit", Limit.toString());
+				const Parameter = new URLSearchParams();
+				if (Days)
+					Parameter.append("days", Days.toString());
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
 				return WithRetry(() =>
 					FetchWithAuthentication<
 						Array<{
@@ -614,29 +628,31 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							title: string;
 							count: number;
 						}>
-					>(`/stats/pageviews?${Params.toString()}`),
+					>(`/stats/pageviews?${Parameter.toString()}`),
 				);
 			},
 			GetEventStats: (Days) => {
-				const Params = new URLSearchParams();
-				if (Days) Params.append("days", Days.toString());
+				const Parameter = new URLSearchParams();
+				if (Days)
+					Parameter.append("days", Days.toString());
 				return WithRetry(() =>
 					FetchWithAuthentication<{
 						byType: Record<string, number>;
 						byBrowser: Record<string, number>;
 						byOS: Record<string, number>;
-					}>(`/stats/events?${Params.toString()}`),
+					}>(`/stats/events?${Parameter.toString()}`),
 				);
 			},
 			GetSessionStats: (Days) => {
-				const Params = new URLSearchParams();
-				if (Days) Params.append("days", Days.toString());
+				const Parameter = new URLSearchParams();
+				if (Days)
+					Parameter.append("days", Days.toString());
 				return WithRetry(() =>
 					FetchWithAuthentication<{
 						totalSessions: number;
 						avgEventsPerSession: number;
 						sessionsByEventCount: Record<string, number>;
-					}>(`/stats/sessions?${Params.toString()}`),
+					}>(`/stats/sessions?${Parameter.toString()}`),
 				);
 			},
 		},
@@ -673,7 +689,7 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 						}>
 					>("/status/checks"),
 				),
-			GetCheck: (Identifier) =>
+			GetCheck: (Id) =>
 				WithRetry(() =>
 					FetchWithAuthentication<{
 						id: string;
@@ -682,13 +698,14 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 						lastChecked: string;
 						latency?: number;
 						message?: string;
-					}>(`/status/checks/${Identifier}`),
+					}>(`/status/checks/${Id}`),
 				),
-			GetHistory: (Limit, CheckIdentifier) => {
-				const Params = new URLSearchParams();
-				if (Limit) Params.append("limit", Limit.toString());
-				if (CheckIdentifier)
-					Params.append("checkId", CheckIdentifier);
+			GetHistory: (Limit, CheckId) => {
+				const Parameter = new URLSearchParams();
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
+				if (CheckId)
+					Parameter.append("checkId", CheckId);
 				return WithRetry(() =>
 					FetchWithAuthentication<
 						Array<{
@@ -697,35 +714,38 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							timestamp: string;
 							message?: string;
 						}>
-					>(`/status/history?${Params.toString()}`),
+					>(`/status/history?${Parameter.toString()}`),
 				);
 			},
 			GetGitHubCommits: (Branch, Limit) => {
-				const Params = new URLSearchParams();
-				if (Branch) Params.append("branch", Branch);
-				if (Limit) Params.append("limit", Limit.toString());
+				const Parameter = new URLSearchParams();
+				if (Branch) Parameter.append("branch", Branch);
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
 				return WithRetry(() =>
 					FetchWithAuthentication<GitHubCommit[]>(
-						`/status/github/commits?${Params.toString()}`,
+						`/status/github/commits?${Parameter.toString()}`,
 					),
 				);
 			},
 			GetGitHubActions: (Limit) => {
-				const Params = new URLSearchParams();
-				if (Limit) Params.append("limit", Limit.toString());
+				const Parameter = new URLSearchParams();
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
 				return WithRetry(() =>
 					FetchWithAuthentication<GitHubActionRun[]>(
-						`/status/github/actions?${Params.toString()}`,
+						`/status/github/actions?${Parameter.toString()}`,
 					),
 				);
 			},
 			GetGitHubIssues: (State, Limit) => {
-				const Params = new URLSearchParams();
-				if (State) Params.append("state", State);
-				if (Limit) Params.append("limit", Limit.toString());
+				const Parameter = new URLSearchParams();
+				if (State) Parameter.append("state", State);
+				if (Limit)
+					Parameter.append("limit", Limit.toString());
 				return WithRetry(() =>
 					FetchWithAuthentication<GitHubIssue[]>(
-						`/status/github/issues?${Params.toString()}`,
+						`/status/github/issues?${Parameter.toString()}`,
 					),
 				);
 			},
@@ -746,17 +766,15 @@ export function GetWorkersClient(): WorkersClient {
 	const FrontendURL = import.meta.env.PUBLIC_FRONTEND_URL;
 
 	if (!AuthenticationURL || !DownloadURL || !AnalyticsURL) {
-		// During SSG pre-rendering, env vars may not be available.
-		// Return a no-op client that returns error responses instead of throwing.
-		const NoopResponse = {
+		const NoOperationResponse = {
 			success: false as const,
 			error: "Worker URLs not configured",
 		};
-		const Noop = () => Promise.resolve(NoopResponse);
-		const NoopHandler = new Proxy({} as WorkersClient, {
-			get: () => new Proxy({}, { get: () => Noop }),
+		const NoOperation = () => Promise.resolve(NoOperationResponse);
+		const NoOperationHandler = new Proxy({} as WorkersClient, {
+			get: () => new Proxy({}, { get: () => NoOperation }),
 		});
-		ClientInstance = NoopHandler;
+		ClientInstance = NoOperationHandler;
 		return ClientInstance;
 	}
 

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { authAPI } from "../../Library/API/Authentication";
+import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
+
+const Authentication = new AuthAPIClass();
 import type User from "../../Library/Interface/User.js";
 import { Header } from "../Layout/Header";
 import { DynamicForgotPassword } from "./DynamicForgotPassword";
@@ -98,7 +100,7 @@ export function AccountPage({
 		SetSignInErrorMessage("");
 
 		try {
-			const ResponseData = await authAPI.login(Email, Password);
+			const ResponseData = await Authentication.Login(Email, Password);
 			const { session: SessionData, user: UserData } = ResponseData;
 			SetSessionToken(SessionData.token);
 			SetCurrentUser(UserData);
@@ -133,7 +135,7 @@ export function AccountPage({
 
 		try {
 			const Username = Email.split("@")[0] || "user";
-			const ResponseData = await authAPI.register(
+			const ResponseData = await Authentication.Register(
 				Email,
 				Password,
 				Username,
@@ -169,7 +171,7 @@ export function AccountPage({
 		SetForgotPasswordErrorMessage("");
 
 		try {
-			await authAPI.forgotPassword(Email);
+			await Authentication.ForgotPassword(Email);
 			toast.success(
 				"Password reset email sent. Please check your inbox.",
 			);
@@ -195,7 +197,7 @@ export function AccountPage({
 		SetResetPasswordErrorMessage("");
 
 		try {
-			await authAPI.resetPassword(Token, Password);
+			await Authentication.ResetPassword(Token, Password);
 			toast.success(
 				"Password reset successful! You can now sign in with your new password.",
 			);
@@ -223,7 +225,7 @@ export function AccountPage({
 			// Default to github if no provider specified
 			const AuthProvider =
 				(Provider as "github" | "google" | "gitlab") || "github";
-			await authAPI.oauth(AuthProvider);
+			await Authentication.OAuth(AuthProvider);
 			// oauth() redirects the browser via window.location.href,
 			// so we only reach here if something went wrong
 		} catch (ErrorInstance) {
@@ -246,8 +248,8 @@ export function AccountPage({
 			toast.success("OAuth authentication successful!");
 
 			// Fetch user profile with the new token
-			authAPI
-				.getSession()
+			Authentication
+				.GetSession()
 				.then((SessionResponse) => {
 					SetCurrentUser(SessionResponse.user);
 				})

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { authAPI } from "../../Library/API/Authentication";
+import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
+
+const Authentication = new AuthAPIClass();
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
 import type Interface from "./Interface/Content/Page/Verify.js";
 import type Property from "./Interface/Property/Page/Verify.js";
@@ -41,7 +43,7 @@ export function VerifyPage({
 
 	const HandleVerify = async (VerifyToken: string): Promise<boolean> => {
 		try {
-			await authAPI.verifyEmail(VerifyToken);
+			await Authentication.VerifyEmail(VerifyToken);
 			toast.success("Email verified successfully!");
 			return true;
 		} catch (ErrorInstance) {
@@ -56,7 +58,7 @@ export function VerifyPage({
 
 	const HandleResend = async (Email: string): Promise<boolean> => {
 		try {
-			await authAPI.resendVerification();
+			await Authentication.ResendVerification();
 			toast.success("Verification email sent!");
 			return true;
 		} catch (ErrorInstance) {
