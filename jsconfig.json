@@ -1,21 +1,37 @@
 {
 	"$schema": "https://json.schemastore.org/jsconfig",
+
 	"compilerOptions": {
+		"ignoreDeprecations": "6.0",
+
 		"baseUrl": ".",
+
 		"paths": {
 			"@/*": ["Source/*"],
+
 			"@/Components": ["Source/Components"],
+
 			"@/Components/*": ["Source/Components/*"],
+
 			"@/utils": ["Source/Function/Utility/CN.ts"],
+
 			"@/Function": ["Source/Function"],
+
 			"@/Function/*": ["Source/Function/*"]
 		},
+
 		"emitDeclarationOnly": false,
+
 		"noEmit": true,
+
 		"outDir": "Target",
+
 		"rootDir": ".",
+
 		"types": ["astro/client", "astro/env"]
 	},
+
 	"extends": "@playform/build/jsconfig",
+
 	"include": ["Source"]
 }

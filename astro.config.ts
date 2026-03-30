@@ -1,7 +1,8 @@
 export const __INCREMENT__ = `${(await import("./Source/Function/Configuration/Environment.js")).default}-${(await import("ulid")).ulid()}`;
 
 const On = (await import("./Source/Function/Configuration/On.js")).default;
-const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js")).default;
+const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
+	.default;
 const { resolve } = await import("node:path");
 
 export default (await import("astro/config")).defineConfig({
@@ -13,16 +14,23 @@ export default (await import("astro/config")).defineConfig({
 
 	site: (await import("./Source/Function/Configuration/Site.js")).default,
 
-	compressHTML: (await import("./Source/Function/Configuration/CompressHTML.js")).default,
+	compressHTML: (
+		await import("./Source/Function/Configuration/CompressHTML.js")
+	).default,
 
 	devToolbar: {
-		enabled: (await import("./Source/Function/Configuration/DevToolbar.js")).default,
+		enabled: (await import("./Source/Function/Configuration/DevToolbar.js"))
+			.default,
 	},
 
 	prefetch: {
-		defaultStrategy: (await import("./Source/Function/Configuration/PrefetchStrategy.js")).default,
+		defaultStrategy: (
+			await import("./Source/Function/Configuration/PrefetchStrategy.js")
+		).default,
 
-		prefetchAll: (await import("./Source/Function/Configuration/PrefetchAll.js")).default,
+		prefetchAll: (
+			await import("./Source/Function/Configuration/PrefetchAll.js")
+		).default,
 	},
 
 	server: {
@@ -30,7 +38,9 @@ export default (await import("astro/config")).defineConfig({
 	},
 
 	build: {
-		concurrency: (await import("./Source/Function/Configuration/BuildConcurrency.js")).default,
+		concurrency: (
+			await import("./Source/Function/Configuration/BuildConcurrency.js")
+		).default,
 	},
 
 	integrations: [
@@ -40,51 +50,67 @@ export default (await import("astro/config")).defineConfig({
 		}),
 
 		// @ts-ignore
-		(await import("./Source/Function/Configuration/ServiceWorker.js")).default
-			? (await import("astrojs-service-worker")).default()
-			: null,
+		...((await import("./Source/Function/Configuration/ServiceWorker.js"))
+			.default
+			? [(await import("astrojs-service-worker")).default()]
+			: []),
 
 		(await import("@astrojs/sitemap")).default(),
 
-		(await import("./Source/Function/Configuration/InlineCSS.js")).default
-			? (await import("@playform/inline")).default({
-					Logger: 1,
-					Beasties: {
-						pruneSource: false,
-					},
-				})
-			: null,
-
-		(await import("./Source/Function/Configuration/Compress.js")).default
-			? (await import("@playform/compress")).default({
-					Logger: 1,
-					HTML: {
-						"html-minifier-terser": {
-							minifyCSS: false,
+		...((await import("./Source/Function/Configuration/InlineCSS.js"))
+			.default
+			? [
+					(await import("@playform/inline")).default({
+						Logger: 1,
+						Beasties: {
+							pruneSource: false,
 						},
-					},
-					CSS: {
-						csso: false,
-					},
-				})
-			: null,
+					}),
+				]
+			: []),
+
+		...((await import("./Source/Function/Configuration/Compress.js"))
+			.default
+			? [
+					(await import("@playform/compress")).default({
+						Logger: 1,
+						HTML: {
+							"html-minifier-terser": {
+								minifyCSS: false,
+							},
+						},
+						CSS: {
+							csso: false,
+						},
+					}),
+				]
+			: []),
 	],
 
 	experimental: {
-		clientPrerender: (await import("./Source/Function/Configuration/ClientPrerender.js")).default,
+		clientPrerender: (
+			await import("./Source/Function/Configuration/ClientPrerender.js")
+		).default,
 
-		contentIntellisense: (await import("./Source/Function/Configuration/ContentIntellisense.js")).default,
+		contentIntellisense: (
+			await import("./Source/Function/Configuration/ContentIntellisense.js")
+		).default,
 	},
 
 	vite: {
 		build: {
 			sourcemap: Sourcemap,
 
-			manifest: (await import("./Source/Function/Configuration/Manifest.js")).default,
+			manifest: (
+				await import("./Source/Function/Configuration/Manifest.js")
+			).default,
 
-			minify: (await import("./Source/Function/Configuration/Minify.js")).default,
+			minify: (await import("./Source/Function/Configuration/Minify.js"))
+				.default,
 
-			cssMinify: (await import("./Source/Function/Configuration/CSSMinify.js")).default,
+			cssMinify: (
+				await import("./Source/Function/Configuration/CSSMinify.js")
+			).default,
 
 			terserOptions: On
 				? {
@@ -167,13 +193,17 @@ export default (await import("astro/config")).defineConfig({
 				"@Variable": resolve("./Source/Variable"),
 			},
 
-			preserveSymlinks: (await import("./Source/Function/Configuration/PreserveSymlinks.js")).default,
+			preserveSymlinks: (
+				await import("./Source/Function/Configuration/PreserveSymlinks.js")
+			).default,
 		},
 
 		css: {
 			devSourcemap: Sourcemap,
 
-			transformer: (await import("./Source/Function/Configuration/CSSTransformer.js")).default,
+			transformer: (
+				await import("./Source/Function/Configuration/CSSTransformer.js")
+			).default,
 		},
 
 		plugins: [

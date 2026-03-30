@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Header, type HeaderContent } from "../Layout/Header";
 import { DynamicFeatures, type FeaturesContent } from "./DynamicFeatures";
 import { DynamicHeroSection, type HeroContent } from "./DynamicHeroSection";

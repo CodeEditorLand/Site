@@ -33,8 +33,8 @@
 	"hero": {
 		"badge": "Neu: Effect-TS-Architektur",
 		"subtitle": "Ein blitzschneller, typsicherer Editor, gebaut mit Rust, Tauri und Effect-TS. Erleben Sie den Editor, der VS Code fuer die moderne Aera neu denkt.",
-		"title": "Die Zukunft der",
-		"titleHighlight": "Code-Bearbeitung",
+		"title": "Die Zukunft der Code-Bearbeitung",
+		"titleHighlight": "Land",
 		"atScale": "beginnt hier",
 		"cta": {
 			"primary": "Herunterladen",

@@ -33,8 +33,8 @@
 	"hero": {
 		"badge": "Nouveau : Architecture Effect-TS",
 		"subtitle": "Un editeur ultra-rapide et type-safe, construit avec Rust, Tauri et Effect-TS. Decouvrez l'editeur qui reinvente VS Code pour l'ere moderne.",
-		"title": "L'avenir de",
-		"titleHighlight": "l'edition de code",
+		"title": "L'avenir de l'edition de code",
+		"titleHighlight": "Land",
 		"atScale": "commence ici",
 		"cta": {
 			"primary": "Telecharger",
