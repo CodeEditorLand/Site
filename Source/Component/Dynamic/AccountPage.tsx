@@ -263,22 +263,7 @@ export function AccountPage({
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header
-				content={
-					content.header || {
-						logo: { text: "Land" },
-						navigation: [
-							{ label: "Product", href: "/#product" },
-							{
-								label: "Docs",
-								href: "https://github.com/CodeEditorLand/Land#readme",
-							},
-							{ label: "Support", href: "/support" },
-						],
-						actions: [],
-					}
-				}
-			/>
+			<Header content={content.header} />
 
 			<div className="flex-1">
 				{route === "signin" && (

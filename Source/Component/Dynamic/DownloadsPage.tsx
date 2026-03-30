@@ -21,32 +21,7 @@ export function DownloadsPage({ content, className }: Property) {
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header
-				content={
-					HeaderContent || {
-						logo: { text: "Land" },
-						navigation: [
-							{
-								label: "Downloads",
-								href: "/downloads",
-							},
-							{
-								label: "Docs",
-								href: "https://github.com/CodeEditorLand/Land#readme",
-							},
-							{ label: "Support", href: "/support" },
-						],
-						actions: [
-							{ type: "mobile-menu" as const },
-							{
-								text: "Sign In",
-								variant: "ghost",
-								href: "/account/signin",
-							},
-						],
-					}
-				}
-			/>
+			<Header content={HeaderContent} />
 
 			<div className="flex-1">
 				<DynamicPlatformGrid content={PlatformGrid} />

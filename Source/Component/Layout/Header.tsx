@@ -1,6 +1,20 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import {
+	BookOpen,
+	Download,
+	ExternalLink,
+	GitFork,
+	HelpCircle,
+	LayoutDashboard,
+	LogIn,
+	Menu,
+	Newspaper,
+	Sparkles,
+	Users,
+	X,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -9,15 +23,39 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 
 import "../Layout/Header/Stylesheet.css";
 
+/**
+ * Icon registry — maps string keys to Lucide components.
+ * Used by both sub-header and mobile menu.
+ */
+const IconRegistry: Record<string, LucideIcon> = {
+	Sparkles,
+	Download,
+	BookOpen,
+	GitFork,
+	ExternalLink,
+	Newspaper,
+	Users,
+	LayoutDashboard,
+	HelpCircle,
+	LogIn,
+};
+
+interface NavigationLink {
+	label: string;
+	href: string;
+	icon?: string;
+}
+
 interface HeaderContent {
 	logo?: { text: string };
-	navigation?: Array<{ label: string; href: string }>;
+	navigation?: NavigationLink[];
 	actions?: Array<{
 		type?: string;
 		text: string;
 		variant?: string;
 		size?: string;
 		href?: string;
+		icon?: string;
 	}>;
 }
 
@@ -29,18 +67,43 @@ export function Header({ content }: HeaderProps) {
 	const { t: T } = useTranslation("header");
 	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
-	const HeaderData = content || {
+	const HeaderData: HeaderContent = content || {
 		logo: { text: T("logo", "Land") },
 		navigation: [
-			{ label: T("nav.features", "Features"), href: "/#features" },
-			{ label: T("nav.download", "Download"), href: "/downloads" },
+			{
+				label: T("nav.features", "Features"),
+				href: "/#features",
+				icon: "Sparkles",
+			},
+			{
+				label: T("nav.download", "Download"),
+				href: "/downloads",
+				icon: "Download",
+			},
 			{
 				label: T("nav.docs", "Docs"),
-				href: "https://github.com/CodeEditorLand/Land#readme",
+				href: "/docs",
+				icon: "BookOpen",
+			},
+			{
+				label: T("nav.blog", "Blog"),
+				href: "/blog",
+				icon: "Newspaper",
+			},
+			{
+				label: T("nav.contributing", "Contributing"),
+				href: "/contributing",
+				icon: "Users",
+			},
+			{
+				label: T("nav.dashboard", "Dashboard"),
+				href: "/dashboard",
+				icon: "LayoutDashboard",
 			},
 			{
 				label: T("nav.github", "GitHub"),
 				href: "https://github.com/CodeEditorLand/Land",
+				icon: "GitFork",
 			},
 		],
 		actions: [
@@ -49,20 +112,36 @@ export function Header({ content }: HeaderProps) {
 				variant: "ghost",
 				size: "default",
 				href: "/account/signin",
+				icon: "LogIn",
 			},
 			{
 				text: T("actions.getStarted", "Get Land"),
 				variant: "default",
 				size: "default",
 				href: "/downloads",
+				icon: "Download",
 			},
 		],
+	};
+
+	const RenderIcon = (IconName?: string) => {
+		if (!IconName) return null;
+		const Icon = IconRegistry[IconName];
+		if (!Icon) return null;
+		return <Icon className="StaccatoIcon h-3.5 w-3.5" aria-hidden="true" />;
+	};
+
+	const RenderActionIcon = (IconName?: string) => {
+		if (!IconName) return null;
+		const Icon = IconRegistry[IconName];
+		if (!Icon) return null;
+		return <Icon className="h-4 w-4" aria-hidden="true" />;
 	};
 
 	return (
 		<header className="header sticky top-0 z-50 w-full" role="banner">
 			{/* Primary bar — logo + actions */}
-			<div className="container mx-auto flex h-16 items-center justify-between px-4">
+			<div className="container mx-auto flex h-14 items-center justify-between px-4">
 				<a
 					href="/"
 					className="StaccatoLogo header-logo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
@@ -82,7 +161,7 @@ export function Header({ content }: HeaderProps) {
 				</a>
 
 				<div className="flex items-center space-x-3">
-					<div className="hidden items-center space-x-3 md:flex">
+					<div className="hidden items-center space-x-2 md:flex">
 						<LocaleSwitcher />
 						{HeaderData.actions?.map((Action, Index) => (
 							<Button
@@ -97,9 +176,12 @@ export function Header({ content }: HeaderProps) {
 									(Action.size as "default" | "sm" | "lg") ||
 									"default"
 								}
-								className="StaccatoButton"
+								className="StaccatoButton gap-1.5"
 								asChild>
-								<a href={Action.href}>{Action.text}</a>
+								<a href={Action.href}>
+									{RenderActionIcon(Action.icon)}
+									{Action.text}
+								</a>
 							</Button>
 						))}
 					</div>
@@ -119,7 +201,7 @@ export function Header({ content }: HeaderProps) {
 				</div>
 			</div>
 
-			{/* Sub-header — breadcrumb-style nav bar */}
+			{/* Sub-header — breadcrumb-style app bar with icons */}
 			<div className="header-sub hidden md:block" style={{ marginTop: "2px" }}>
 				<nav
 					className="container mx-auto flex items-center px-4"
@@ -128,20 +210,21 @@ export function Header({ content }: HeaderProps) {
 						<span key={Index} className="flex items-center">
 							{Index > 0 && (
 								<span
-									className="StaccatoBreath mx-1 select-none text-xs text-muted-foreground/50"
+									className="StaccatoBreath mx-0.5 select-none text-[10px] text-muted-foreground/40"
 									aria-hidden="true">
 									/
 								</span>
 							)}
 							<a
 								href={Link.href}
-								className="StaccatoNavLink header-sub-link relative px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+								className="StaccatoNavLink header-sub-link relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 								{...(Link.href.startsWith("http")
 									? {
 											target: "_blank",
 											rel: "noopener noreferrer",
 										}
 									: {})}>
+								{RenderIcon(Link.icon)}
 								{Link.label}
 							</a>
 						</span>
@@ -149,29 +232,46 @@ export function Header({ content }: HeaderProps) {
 				</nav>
 			</div>
 
-			{/* Mobile menu */}
+			{/* Mobile menu — full nav with icons */}
 			{MobileMenuOpen && (
 				<div
 					className="border-t border-[var(--border)] bg-white md:hidden"
 					role="dialog"
 					aria-label="Mobile navigation menu">
 					<nav
-						className="container mx-auto flex flex-col space-y-1 px-4 py-4"
+						className="container mx-auto flex flex-col space-y-0.5 px-4 py-3"
 						aria-label="Mobile navigation">
-						{HeaderData.navigation?.map((Link, Index) => (
-							<a
-								key={Index}
-								href={Link.href}
-								className="rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-								onClick={() => SetMobileMenuOpen(false)}>
-								{Link.label}
-							</a>
-						))}
-						<div className="my-2 border-t border-border" />
-						<div className="px-3 py-2">
+						{HeaderData.navigation?.map((Link, Index) => {
+							const Icon = Link.icon
+								? IconRegistry[Link.icon]
+								: null;
+							return (
+								<a
+									key={Index}
+									href={Link.href}
+									className="flex items-center gap-2.5 rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+									onClick={() => SetMobileMenuOpen(false)}
+									{...(Link.href.startsWith("http")
+										? {
+												target: "_blank",
+												rel: "noopener noreferrer",
+											}
+										: {})}>
+									{Icon && (
+										<Icon
+											className="h-4 w-4 text-muted-foreground/70"
+											aria-hidden="true"
+										/>
+									)}
+									{Link.label}
+								</a>
+							);
+						})}
+						<div className="my-1.5 border-t border-border" />
+						<div className="px-3 py-1.5">
 							<LocaleSwitcher />
 						</div>
-						<div className="my-2 border-t border-border" />
+						<div className="my-1.5 border-t border-border" />
 						{HeaderData.actions?.map((Action, Index) => (
 							<Button
 								key={Index}
@@ -181,9 +281,12 @@ export function Header({ content }: HeaderProps) {
 										| "default"
 										| "outline") || "default"
 								}
-								className="w-full justify-start"
+								className="w-full justify-start gap-2"
 								asChild>
-								<a href={Action.href}>{Action.text}</a>
+								<a href={Action.href}>
+									{RenderActionIcon(Action.icon)}
+									{Action.text}
+								</a>
 							</Button>
 						))}
 					</nav>

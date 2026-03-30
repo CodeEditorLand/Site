@@ -24,37 +24,7 @@ export function HomePage({ content, className }: Property) {
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header
-				content={
-					HeaderContent || {
-						logo: { text: "Land" },
-						navigation: [
-							{ label: "Features", href: "#features" },
-							{ label: "Pricing", href: "#pricing" },
-							{ label: "Testimonials", href: "#testimonials" },
-							{
-								label: "Docs",
-								href: "https://github.com/CodeEditorLand/Land#readme",
-							},
-						],
-						actions: [
-							{ type: "mobile-menu" as const, text: "Menu" },
-							{
-								text: "Sign In",
-								variant: "ghost",
-								size: "default",
-								href: "/account/signin",
-							},
-							{
-								text: "Get Land",
-								variant: "default",
-								size: "default",
-								href: "/downloads",
-							},
-						],
-					}
-				}
-			/>
+			<Header content={HeaderContent} />
 
 			<div className="flex-1" role="region" aria-label="Page content">
 				<DynamicHeroSection content={Hero} />
