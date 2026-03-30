@@ -11,7 +11,6 @@
 		"type": "git",
 		"url": "git+https://github.com/CodeEditorLand/WebSite.git"
 	},
-	"packageManager": "pnpm@10.28.2",
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
 		"name": "Source Open",
