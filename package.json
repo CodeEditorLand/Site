@@ -22,7 +22,7 @@
 		"prepublishOnly": "astro build"
 	},
 	"dependencies": {
-		"@astrojs/react": "5.0.1",
+		"@astrojs/react": "5.0.2",
 		"@astrojs/sitemap": "3.7.1",
 		"@playform/build": "0.3.0",
 		"@playform/compress": "0.2.2",
