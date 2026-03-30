@@ -3,8 +3,8 @@ import UserEvent from "@testing-library/user-event";
 import React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { DynamicCard, SimpleCard } from "../../Components/Dynamic/DynamicCard";
-import type { CardSection } from "../../Components/Dynamic/types";
+import { DynamicCard, SimpleCard } from "../../Component/Dynamic/DynamicCard";
+import type { CardSection } from "../../Component/Dynamic/types";
 
 afterEach(() => {
 	cleanup();

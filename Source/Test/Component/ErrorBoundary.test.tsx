@@ -3,7 +3,7 @@ import UserEvent from "@testing-library/user-event";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { ErrorBoundary } from "../../Components/ErrorBoundary";
+import { ErrorBoundary } from "../../Component/ErrorBoundary";
 
 // Component that throws an error for testing
 function ThrowingComponent({ ShouldThrow }: { ShouldThrow: boolean }) {

@@ -2,8 +2,8 @@ import { cleanup, render, screen } from "@testing-library/react";
 import UserEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { DynamicButton } from "../../Components/Dynamic/DynamicButton";
-import type { ButtonContent } from "../../Components/Dynamic/types";
+import { DynamicButton } from "../../Component/Dynamic/DynamicButton";
+import type { ButtonContent } from "../../Component/Dynamic/types";
 
 afterEach(() => {
 	cleanup();

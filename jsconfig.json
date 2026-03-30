@@ -9,9 +9,9 @@
 		"paths": {
 			"@/*": ["Source/*"],
 
-			"@/Components": ["Source/Components"],
+			"@/Component": ["Source/Component"],
 
-			"@/Components/*": ["Source/Components/*"],
+			"@/Component/*": ["Source/Component/*"],
 
 			"@/utils": ["Source/Function/Utility/CN.ts"],
 

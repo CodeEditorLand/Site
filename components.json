@@ -55,7 +55,7 @@
 		}
 	},
 	"aliases": {
-		"components": "./Source/Components",
+		"components": "./Source/Component",
 		"utils": "./Source/Function/Utility/CN.ts"
 	},
 	"icon": "lucide",
