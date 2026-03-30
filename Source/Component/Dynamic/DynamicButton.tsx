@@ -1,12 +1,45 @@
-import { Loader2 } from "lucide-react";
-import { useEffect, useState, type ComponentType } from "react";
+import {
+	ArrowRight,
+	ChevronRight,
+	Download,
+	ExternalLink,
+	GitFork,
+	Globe,
+	Heart,
+	Loader2,
+	LogIn,
+	Mail,
+	Search,
+	Send,
+	Sparkles,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import { Button } from "../UI/Button";
 import type Property from "./Interface/Property/Button.js";
 
 /**
+ * Icon registry — direct imports for instant render.
+ * Covers all icons used in CTA buttons across the site.
+ */
+const ButtonIconRegistry: Record<string, LucideIcon> = {
+	ArrowRight,
+	ChevronRight,
+	Download,
+	ExternalLink,
+	GitFork,
+	Globe,
+	Heart,
+	LogIn,
+	Mail,
+	Search,
+	Send,
+	Sparkles,
+};
+
+/**
  * Dynamic Button with simplex noise integration.
- * Wraps the base Button with StaccatoButton for organic hover/active/focus.
+ * Icons render immediately via direct imports (no dynamic import flash).
  * Loading state uses StaccatoSpinner for breathing opacity.
  */
 export function DynamicButton({
@@ -26,26 +59,7 @@ export function DynamicButton({
 		...props
 	} = content;
 
-	const [IconComponent, SetIconComponent] = useState<ComponentType<{
-		className?: string;
-	}> | null>(null);
-
-	useEffect(() => {
-		if (icon) {
-			import("lucide-react")
-				.then((Icons) => {
-					const Icon = (Icons as Record<string, unknown>)[
-						icon as keyof typeof Icons
-					] as ComponentType<{ className?: string }> | undefined;
-					if (Icon) {
-						SetIconComponent(() => Icon);
-					}
-				})
-				.catch((ErrorInstance) => {
-					console.error(`Failed to load icon ${icon}:`, ErrorInstance);
-				});
-		}
-	}, [icon]);
+	const IconComponent = icon ? ButtonIconRegistry[icon] || null : null;
 
 	return (
 		<Button

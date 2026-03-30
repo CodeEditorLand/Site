@@ -87,9 +87,9 @@ export function DynamicSignUp({
 	};
 
 	const OAuthProviderList = [
-		{ name: "GitHub", icon: "Github" },
-		{ name: "Google", icon: "Chrome" },
-		{ name: "GitLab", icon: "Gitlab" },
+		{ name: "GitHub", icon: "GitFork" },
+		{ name: "Google", icon: "Globe" },
+		{ name: "GitLab", icon: "GitFork" },
 	];
 
 	return (

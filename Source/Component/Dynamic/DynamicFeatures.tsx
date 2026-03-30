@@ -1,11 +1,48 @@
+import {
+	Box,
+	Code,
+	Cpu,
+	Database,
+	Globe,
+	Heart,
+	Layers,
+	Package,
+	Puzzle,
+	Server,
+	Shield,
+	Sparkles,
+	Wrench,
+	Zap,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type Property from "./Interface/Property/Feature.js";
+
+/**
+ * Icon registry — direct imports so icons render in initial HTML,
+ * not after a dynamic import resolves on the client.
+ */
+const FeatureIconRegistry: Record<string, LucideIcon> = {
+	Zap,
+	Box,
+	Cpu,
+	Globe,
+	Wrench,
+	Heart,
+	Sparkles,
+	Code,
+	Layers,
+	Package,
+	Puzzle,
+	Server,
+	Shield,
+	Database,
+};
 
 /**
  * Dynamic Features with simplex noise integration.
  * Cards get StaccatoCard + Attention scatter for organic layout.
- * Icons pulse with StaccatoIcon rhythm.
+ * Icons render immediately via direct imports (no dynamic import delay).
  */
 export function DynamicFeatures({ content, className }: Property) {
 	const { title, subtitle, features, columns = 3, gap = "lg" } = content;
@@ -27,18 +64,6 @@ export function DynamicFeatures({ content, className }: Property) {
 		6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
 	};
 
-	const [IconMap, SetIconMap] = useState<Record<string, LucideIcon>>({});
-
-	useEffect(() => {
-		import("lucide-react")
-			.then((Icon) => {
-				SetIconMap(Icon as unknown as Record<string, LucideIcon>);
-			})
-			.catch((Error) => {
-				console.error("Failed to load lucide-react icons:", Error);
-			});
-	}, []);
-
 	// Apply attention scatter to feature cards on mount
 	useEffect(() => {
 		const Grid = GridReference.current;
@@ -54,7 +79,7 @@ export function DynamicFeatures({ content, className }: Property) {
 				"../../Function/Noise/Attention.js"
 			);
 			const Attention = await AttentionModule.default;
-			const Cards = Grid.querySelectorAll<HTMLElement>(".feature-card");
+			const Cards = Grid.querySelectorAll<HTMLElement>(".FeatureCard");
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 6, 4);
 			});
@@ -63,14 +88,14 @@ export function DynamicFeatures({ content, className }: Property) {
 				"../../Function/Noise/Staccato.js"
 			);
 			const Engine = await StaccatoModule.default;
-			Engine.SeedSelector(".feature-card");
+			Engine.SeedSelector(".FeatureCard");
 		};
 
 		ApplyScatter();
 	}, [features]);
 
 	const GetIcon = (IconName: string): LucideIcon | null => {
-		return IconMap[IconName] || null;
+		return FeatureIconRegistry[IconName] || null;
 	};
 
 	return (
@@ -102,12 +127,17 @@ export function DynamicFeatures({ content, className }: Property) {
 						return (
 							<div
 								key={Feature.id}
-								className="feature-card StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col items-start space-y-4 rounded-none border border-[var(--border)] p-6">
+								className="FeatureCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col items-start space-y-4 rounded-none border border-[var(--border)] p-6">
 								<div
-									className="w-fit rounded-none bg-secondary p-3"
+									className="flex h-12 w-12 items-center justify-center rounded-none border border-[var(--border)] bg-secondary"
 									aria-hidden="true">
-									{Icon && (
+									{Icon ? (
 										<Icon
+											className="StaccatoIcon h-6 w-6 text-primary"
+											aria-hidden="true"
+										/>
+									) : (
+										<Sparkles
 											className="StaccatoIcon h-6 w-6 text-primary"
 											aria-hidden="true"
 										/>

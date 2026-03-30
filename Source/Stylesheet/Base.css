@@ -105,24 +105,24 @@
 	}
 
 	/* Design constraint: Flat, non-rounded UI elements with subtle borders */
-	.card,
-	.input,
-	.textarea,
-	.select,
-	.select-trigger,
-	.button {
+	.Card,
+	.Input,
+	.Textarea,
+	.Select,
+	.SelectTrigger,
+	.Button {
 		border-radius: var(--border-radius) !important;
 	}
 
 	/* Exception: Badges use rounded-full for pill shape */
-	.badge,
-	[class*="badge"] {
+	.Badge,
+	[class*="Badge"] {
 		border-radius: 9999px !important;
 	}
 
 	/* Exception: Avatars can be circular */
-	.avatar,
-	[class*="avatar"] {
+	.Avatar,
+	[class*="Avatar"] {
 		border-radius: 9999px !important;
 	}
 
@@ -132,7 +132,7 @@
 	}
 
 	/* Flat panel utility class (replaces frosted glass) */
-	.frosted {
+	.Frosted {
 		background: rgba(255, 255, 255, 0.92);
 		border: var(--border-width) solid var(--border);
 	}
@@ -147,53 +147,53 @@
 
 @layer components {
 	/* Primary Button */
-	.btn-primary {
+	.ButtonPrimary {
 		background-color: var(--primary);
 		color: var(--primary-foreground);
 		border: var(--border-width) solid var(--border);
 	}
-	.btn-primary:hover {
+	.ButtonPrimary:hover {
 		background-color: color-mix(in srgb, var(--primary) 90%, transparent);
 	}
 
 	/* Secondary Button */
-	.btn-secondary {
+	.ButtonSecondary {
 		background-color: var(--secondary);
 		color: var(--secondary-foreground);
 		border: var(--border-width) solid var(--border);
 	}
-	.btn-secondary:hover {
+	.ButtonSecondary:hover {
 		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
 	}
 
 	/* Outline Button */
-	.btn-outline {
+	.ButtonOutline {
 		border: var(--border-width) solid var(--border);
 		background-color: var(--background);
 	}
-	.btn-outline:hover {
+	.ButtonOutline:hover {
 		background-color: var(--accent);
 		color: var(--accent-foreground);
 	}
 
 	/* Ghost Button */
-	.btn-ghost {
+	.ButtonGhost {
 		cursor: pointer;
 	}
-	.btn-ghost:hover {
+	.ButtonGhost:hover {
 		background-color: var(--accent);
 		color: var(--accent-foreground);
 	}
 
 	/* Card - Flat panel */
-	.card {
+	.Card {
 		background-color: var(--card);
 		color: var(--card-foreground);
 		border: var(--border-width) solid var(--border);
 	}
 
 	/* Input */
-	.input {
+	.Input {
 		border: var(--border-width) solid var(--border);
 		background-color: var(--background);
 		padding: 0.375rem 0.75rem;
@@ -201,24 +201,24 @@
 		line-height: 1.25rem;
 		ring-offset-color: var(--background);
 	}
-	.input::file-selector-button {
+	.Input::file-selector-button {
 		border: 0;
 		background-color: transparent;
 	}
-	.input::placeholder {
+	.Input::placeholder {
 		color: var(--muted-foreground);
 	}
-	.input:focus-visible {
+	.Input:focus-visible {
 		outline: none;
 		box-shadow: 0 0 0 2px var(--ring);
 	}
-	.input:disabled {
+	.Input:disabled {
 		cursor: not-allowed;
 		opacity: 0.5;
 	}
 
 	/* Badge - Pill shape (rounded-full is OK) */
-	.badge {
+	.Badge {
 		display: inline-flex;
 		align-items: center;
 		border-radius: 9999px;
@@ -230,35 +230,35 @@
 		transition-property: color, background-color, border-color;
 		transition-duration: 150ms;
 	}
-	.badge:focus {
+	.Badge:focus {
 		outline: none;
 		box-shadow: 0 0 0 2px var(--ring);
 	}
 
-	.badge-primary {
+	.BadgePrimary {
 		border-color: transparent;
 		background-color: var(--primary);
 		color: var(--primary-foreground);
 	}
-	.badge-primary:hover {
+	.BadgePrimary:hover {
 		background-color: color-mix(in srgb, var(--primary) 80%, transparent);
 	}
 
-	.badge-secondary {
+	.BadgeSecondary {
 		border-color: transparent;
 		background-color: var(--secondary);
 		color: var(--secondary-foreground);
 	}
-	.badge-secondary:hover {
+	.BadgeSecondary:hover {
 		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
 	}
 
-	.badge-destructive {
+	.BadgeDestructive {
 		border-color: transparent;
 		background-color: var(--destructive);
 		color: var(--destructive-foreground);
 	}
-	.badge-destructive:hover {
+	.BadgeDestructive:hover {
 		background-color: color-mix(
 			in srgb,
 			var(--destructive) 80%,
@@ -266,7 +266,7 @@
 		);
 	}
 
-	.badge-outline {
+	.BadgeOutline {
 		color: var(--foreground);
 	}
 }

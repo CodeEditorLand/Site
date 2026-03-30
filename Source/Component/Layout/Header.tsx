@@ -139,15 +139,15 @@ export function Header({ content }: HeaderProps) {
 	};
 
 	return (
-		<header className="header sticky top-0 z-50 w-full" role="banner">
+		<header className="Header sticky top-0 z-50 w-full" role="banner">
 			{/* Primary bar — logo + actions */}
 			<div className="container mx-auto flex h-14 items-center justify-between px-4">
 				<a
 					href="/"
-					className="StaccatoLogo header-logo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+					className="StaccatoLogo HeaderLogo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 					aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
 					<div
-						className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
+						className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
 						<img
 							src="/Asset/Logo/Glyph/LandDark.svg"
@@ -202,7 +202,7 @@ export function Header({ content }: HeaderProps) {
 			</div>
 
 			{/* Sub-header — breadcrumb-style app bar with icons */}
-			<div className="header-sub hidden md:block" style={{ marginTop: "2px" }}>
+			<div className="HeaderSub hidden md:block" style={{ marginTop: "2px" }}>
 				<nav
 					className="container mx-auto flex items-center px-4"
 					aria-label="Main navigation">
@@ -217,7 +217,7 @@ export function Header({ content }: HeaderProps) {
 							)}
 							<a
 								href={Link.href}
-								className="StaccatoNavLink header-sub-link relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+								className="StaccatoNavLink HeaderSubLink relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 								{...(Link.href.startsWith("http")
 									? {
 											target: "_blank",

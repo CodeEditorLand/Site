@@ -22,7 +22,7 @@ export function DynamicHeroSection({
 		subtitle: Subtitle,
 		primaryCta: PrimaryCTA,
 		secondaryCta: SecondaryCTA,
-		FloatingCard: FloatingCard = [],
+		floatingCards: FloatingCard = [],
 		...HeroConfiguration
 	} = content;
 

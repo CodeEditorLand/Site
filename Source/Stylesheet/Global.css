@@ -23,10 +23,9 @@ select {
 }
 
 /* Emoji font — apply ONLY to elements that render emoji/symbol characters.
- * Use BEM: block__element pattern (e.g. star-rating__symbol).
  * NEVER use broad attribute selectors like [class*="star"] — they leak
  * emoji font-family onto unrelated text that shares a substring. */
-.star-rating__symbol {
+.StarRatingSymbol {
 	font-family:
 		"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
 		"Android Emoji", "EmojiSymbols", sans-serif;

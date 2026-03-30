@@ -34,7 +34,7 @@ const HomeContent = {
 			text: T("common.button.learnMore", { defaultValue: "Learn More" }),
 			variant: "outline",
 			size: "lg",
-			icon: "Github",
+			icon: "ExternalLink",
 			fullWidth: true,
 		},
 		floatingCards: [
@@ -365,11 +365,11 @@ const HomeContent = {
 		onDownload: async (platform: { name: string; id?: string }) => {
 			if (platform.id) {
 				try {
-					const { DownloadsAPI } =
+					const { default: DownloadAPI } =
 						await import("../Library/API/Download");
-					const Information = await DownloadsAPI.getInfo(platform.id);
+					const Information = await DownloadAPI.GetInfo(platform.id);
 					window.open(Information.downloadUrl, "_blank");
-					await DownloadsAPI.trackDownload(platform.id);
+					await DownloadAPI.TrackDownload(platform.id);
 				} catch (error) {
 					console.error("Download failed:", error);
 					alert("Download failed. Please try again.");
@@ -377,44 +377,7 @@ const HomeContent = {
 			}
 		},
 	},
-	header: {
-		logo: { text: T("common.brand.name", { defaultValue: "Land" }) },
-		navigation: [
-			{
-				label: T("home.nav.features", { defaultValue: "Features" }),
-				href: "#features",
-			},
-			{
-				label: T("home.nav.downloads", { defaultValue: "Download" }),
-				href: "/downloads",
-			},
-			{
-				label: T("home.nav.docs", { defaultValue: "Docs" }),
-				href: "https://github.com/CodeEditorLand/Land#readme",
-			},
-			{
-				label: T("home.nav.github", { defaultValue: "GitHub" }),
-				href: "https://github.com/CodeEditorLand/Land",
-			},
-		],
-		actions: [
-			{ type: "mobile-menu" as const },
-			{
-				text: T("common.actions.signIn", { defaultValue: "Sign In" }),
-				variant: "ghost",
-				size: "default",
-				href: "/account/signin",
-			},
-			{
-				text: T("common.button.download", { defaultValue: "Get Land" }),
-				variant: "default",
-				size: "default",
-				href: "/downloads",
-			},
-		],
-		sticky: true,
-		showMobileMenu: true,
-	},
+	header: undefined,
 	footer: {
 		brand: {
 			name: T("common.brand.name", { defaultValue: "Land" }),

@@ -39,7 +39,7 @@ export function DynamicTestimonials({
 			);
 			const Attention = await AttentionModule.default;
 			const Cards =
-				Grid.querySelectorAll<HTMLElement>(".testimonial-card");
+				Grid.querySelectorAll<HTMLElement>(".TestimonialCard");
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 5, 3);
 			});
@@ -48,7 +48,7 @@ export function DynamicTestimonials({
 				"../../Function/Noise/Staccato.js"
 			);
 			const Engine = await StaccatoModule.default;
-			Engine.SeedSelector(".testimonial-card");
+			Engine.SeedSelector(".TestimonialCard");
 		};
 
 		ApplyScatter();
@@ -60,7 +60,7 @@ export function DynamicTestimonials({
 				{Array.from({ length: 5 }).map((_, Index) => (
 					<span
 						key={Index}
-						className="StaccatoStar star-rating__symbol text-yellow-400"
+						className="StaccatoStar StarRatingSymbol text-yellow-400"
 						aria-hidden="true">
 						{Index < Rating ? "\u2605" : "\u2606"}
 					</span>
@@ -96,7 +96,7 @@ export function DynamicTestimonials({
 					{testimonials.map((Testimonial) => (
 						<article
 							key={Testimonial.id}
-							className="testimonial-card StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border border-[var(--border)] p-6">
+							className="TestimonialCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border border-[var(--border)] p-6">
 							<div className="mb-4">
 								{RenderStars(Testimonial.rating)}
 							</div>

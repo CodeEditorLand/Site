@@ -1,30 +1,30 @@
 /* Header - flat white bar with subtle bottom border */
-.header {
+.Header {
 	background: rgba(255, 255, 255, 0.95);
 	border-bottom: 1px solid var(--border);
 }
 
-.header .logo-box {
+.Header .LogoBox {
 	background-color: transparent;
 }
 
-.header-logo span {
+.HeaderLogo span {
 	color: var(--foreground);
 }
 
 /* Sub-header — breadcrumb-style app bar */
-.header-sub {
+.HeaderSub {
 	background: rgba(255, 255, 255, 0.92);
 	border-bottom: 1px solid var(--border);
 }
 
-.header-sub-link {
+.HeaderSubLink {
 	position: relative;
 	z-index: 1;
 }
 
 /* Full gray hover overlay */
-.header-sub-link::before {
+.HeaderSubLink::before {
 	content: "";
 	position: absolute;
 	inset: 0;
@@ -34,11 +34,11 @@
 	transition: opacity 0.12s ease;
 }
 
-.header-sub-link:hover::before {
+.HeaderSubLink:hover::before {
 	opacity: 1;
 }
 
-.header-sub-link:active::before {
+.HeaderSubLink:active::before {
 	opacity: 0.8;
 	background: var(--accent);
 }

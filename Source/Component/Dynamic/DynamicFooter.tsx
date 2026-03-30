@@ -9,10 +9,10 @@ export function DynamicFooter({ content, className }: Property) {
 	const CurrentYear = new Date().getFullYear();
 
 	const SocialIcon: Record<string, { icon: string; href: string }> = {
-		github: { icon: "Github", href: social?.github || "#" },
-		twitter: { icon: "Twitter", href: social?.twitter || "#" },
+		github: { icon: "GitFork", href: social?.github || "#" },
+		twitter: { icon: "Send", href: social?.twitter || "#" },
 		discord: { icon: "MessageCircle", href: social?.discord || "#" },
-		linkedin: { icon: "Linkedin", href: social?.linkedin || "#" },
+		linkedin: { icon: "ExternalLink", href: social?.linkedin || "#" },
 	};
 
 	return (
