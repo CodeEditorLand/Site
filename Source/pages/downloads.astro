@@ -1,12 +1,12 @@
 ---
 import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
 // For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
-const downloadsContent = {
+const DownloadContent = {
 	platformGrid: {
 		title: t("download.page.title", { defaultValue: "Download Land" }),
 		subtitle: t("download.page.subtitle", {
@@ -20,8 +20,8 @@ const downloadsContent = {
 				try {
 					const { downloadsAPI } =
 						await import("../Library/API/Download");
-					const info = await downloadsAPI.getInfo(platform.id);
-					window.open(info.downloadUrl, "_blank");
+					const Information = await downloadsAPI.getInfo(platform.id);
+					window.open(Information.downloadUrl, "_blank");
 					await downloadsAPI.trackDownload(platform.id);
 				} catch (error) {
 					console.error("Download failed:", error);
@@ -175,19 +175,19 @@ const downloadsContent = {
 	footer: {},
 };
 
-const metaTitle = t("meta.downloads.title", {
+const MetaTitle = t("meta.downloads.title", {
 	defaultValue: "Download Land | The Next-Generation Code Editor",
 });
-const metaDescription = t("meta.downloads.description", {
+const MetaDescription = t("meta.downloads.description", {
 	defaultValue:
 		"Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
 });
 ---
 
-<Base Title={metaTitle} Description={metaDescription}>
+<Base Title={MetaTitle} Description={MetaDescription}>
 	<DownloadsPage
-		content={downloadsContent}
-		metaTitle={metaTitle}
-		metaDescription={metaDescription}
+		content={DownloadContent}
+		metaTitle={MetaTitle}
+		metaDescription={MetaDescription}
 	/>
 </Base>

@@ -1,11 +1,11 @@
 ---
 import { AccountPage } from "../../Component/Dynamic/AccountPage";
 import Base from "../../Layout/Base.astro";
-import { getI18n } from "../../Library/I18n/Server";
+import { GetI18n } from "../../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const accountContent = {
+const AccountContent = {
 	signIn: {
 		title: t("common.button.signIn", { defaultValue: "Sign In" }),
 		description: "",
@@ -180,17 +180,17 @@ const accountContent = {
 	footer: {},
 };
 
-const metaTitle = t("meta.account.signUp", { defaultValue: "Sign Up - Land" });
-const metaDescription = t("account.signUp.subtitle", {
+const MetaTitle = t("meta.account.signUp", { defaultValue: "Sign Up - Land" });
+const MetaDescription = t("account.signUp.subtitle", {
 	defaultValue: "Create a new Land account.",
 });
 ---
 
-<Base Title={metaTitle} Description={metaDescription}>
+<Base Title={MetaTitle} Description={MetaDescription}>
 	<AccountPage
-		content={accountContent}
+		content={AccountContent}
 		route="signup"
-		metaTitle={metaTitle}
-		metaDescription={metaDescription}
+		metaTitle={MetaTitle}
+		metaDescription={MetaDescription}
 	/>
 </Base>

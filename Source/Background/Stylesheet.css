@@ -16,7 +16,10 @@
 
 		width: 160vw;
 
-		transform: translate(-50%, -50%);
+		transform: translate(
+			calc(-50% + var(--Staccato, 0) * 4px),
+			calc(-50% + var(--StaccatoPhase, 0) * 3px)
+		);
 	}
 
 	.Image {
@@ -34,5 +37,11 @@
 
 	#Background {
 		z-index: -2;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	#Layout .Container {
+		transform: translate(-50%, -50%);
 	}
 }

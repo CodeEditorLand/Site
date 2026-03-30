@@ -64,10 +64,10 @@ export function DynamicPlatformGrid({
 				SetErrorMessage(null);
 
 				// Import workers client directly for platform data
-				const { getWorkersClient } =
+				const { GetWorkersClient } =
 					await import("../../Library/WorkerClient");
-				const Workers = getWorkersClient();
-				const Response = await Workers.download.getLatest(apiPlatform);
+				const Workers = GetWorkersClient();
+				const Response = await Workers.Download.GetLatest(apiPlatform);
 				if (!Response.success || !Response.data) {
 					throw new Error(
 						Response.error || "Failed to fetch latest download",
@@ -159,17 +159,17 @@ export function DynamicPlatformGrid({
 	const HandleDownload = async (Platform: PlatformInformation) => {
 		try {
 			// Use workers client directly
-			const { getWorkersClient } =
+			const { GetWorkersClient } =
 				await import("../../Library/WorkerClient");
-			const Workers = getWorkersClient();
-			const InfoResponse = await Workers.download.getInfo(Platform.id);
+			const Workers = GetWorkersClient();
+			const InfoResponse = await Workers.Download.GetInfo(Platform.id);
 			if (!InfoResponse.success || !InfoResponse.data) {
 				throw new Error(
 					InfoResponse.error || "Failed to get download info",
 				);
 			}
 			window.open(InfoResponse.data.downloadUrl, "_blank");
-			await Workers.download.trackDownload(Platform.id);
+			await Workers.Download.TrackDownload(Platform.id);
 			onDownload?.(Platform);
 		} catch (DownloadError) {
 			console.error("Download failed:", DownloadError);

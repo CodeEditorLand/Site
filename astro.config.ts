@@ -3,7 +3,7 @@ export const __INCREMENT__ = `${(await import("./Source/Function/Configuration/E
 const On = (await import("./Source/Function/Configuration/On.js")).default;
 const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 	.default;
-const { resolve } = await import("node:path");
+const { resolve: Resolve } = await import("node:path");
 
 export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
@@ -185,12 +185,12 @@ export default (await import("astro/config")).defineConfig({
 
 		resolve: {
 			alias: {
-				"@": resolve("./Source"),
-				"@Stylesheet": resolve("./Source/Stylesheet"),
-				"@Function": resolve("./Source/Function"),
-				"@Layout": resolve("./Source/Layout"),
-				"@Script": resolve("./Source/Script"),
-				"@Variable": resolve("./Source/Variable"),
+				"@": Resolve("./Source"),
+				"@Stylesheet": Resolve("./Source/Stylesheet"),
+				"@Function": Resolve("./Source/Function"),
+				"@Layout": Resolve("./Source/Layout"),
+				"@Script": Resolve("./Source/Script"),
+				"@Variable": Resolve("./Source/Variable"),
 			},
 
 			preserveSymlinks: (

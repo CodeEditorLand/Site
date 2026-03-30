@@ -15,20 +15,20 @@ export function DynamicHeroSection({
 }: Property) {
 	const SceneReference = useRef<HTMLDivElement>(null);
 	const {
-		title,
-		titleHighlight,
-		subtitle,
-		primaryCta,
-		secondaryCta,
-		floatingCards = [],
-		...heroConfig
+		title: Title,
+		titleHighlight: TitleHighlight,
+		subtitle: Subtitle,
+		primaryCta: PrimaryCTA,
+		secondaryCta: SecondaryCTA,
+		FloatingCard: FloatingCard = [],
+		...HeroConfiguration
 	} = content;
 
 	useEffect(() => {
 		const Scene = SceneReference.current;
 		if (
 			!Scene ||
-			(heroConfig.respectReducedMotion &&
+			(HeroConfiguration.respectReducedMotion &&
 				window.matchMedia("(prefers-reduced-motion: reduce)").matches)
 		) {
 			return;
@@ -36,15 +36,34 @@ export function DynamicHeroSection({
 
 		const CardElement = Scene.querySelectorAll(".floating-card");
 		let FrameIdentifier: number;
+		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
-		const AnimateCards = () => {
+		const STEP = 6;
+
+		const Quantize = (Value: number, Step: number): number =>
+			Math.floor(Value * Step) / Step;
+
+		const LoadNoise = async () => {
+			const { createNoise2D } = await import("simplex-noise");
+			NoiseFunction = createNoise2D();
+		};
+
+		const AnimateCards = (Time: number) => {
+			if (!NoiseFunction) {
+				FrameIdentifier = requestAnimationFrame(AnimateCards);
+				return;
+			}
+
 			CardElement.forEach((Card, Index) => {
 				const Element = Card as HTMLElement;
-				const Time = Date.now() * 0.001;
-				const Offset = Index * 0.5;
+				const Seed = Index * 0.7;
+				const TimeFactor = Time * 0.0003;
 
-				const X = Math.sin(Time + Offset) * 12;
-				const Y = Math.cos(Time + Offset * 1.2) * 8;
+				const RawX = NoiseFunction!(TimeFactor + Seed, 0);
+				const RawY = NoiseFunction!(0, TimeFactor + Seed);
+
+				const X = Quantize(RawX, STEP) * 18;
+				const Y = Quantize(RawY, STEP) * 12;
 
 				Element.style.transform = `translate(-50%, -50%) translate3d(${X}px, ${Y}px, 0)`;
 			});
@@ -52,9 +71,10 @@ export function DynamicHeroSection({
 			FrameIdentifier = requestAnimationFrame(AnimateCards);
 		};
 
-		AnimateCards();
+		LoadNoise();
+		FrameIdentifier = requestAnimationFrame(AnimateCards);
 		return () => cancelAnimationFrame(FrameIdentifier);
-	}, [heroConfig.respectReducedMotion]);
+	}, [HeroConfiguration.respectReducedMotion]);
 
 	return (
 		<section
@@ -69,28 +89,28 @@ export function DynamicHeroSection({
 
 				{/* Title */}
 				<h1 className="mx-auto mb-6 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
-					{title}{" "}
-					{titleHighlight && (
-						<span className="text-primary">{titleHighlight}</span>
+					{Title}{" "}
+					{TitleHighlight && (
+						<span className="text-primary">{TitleHighlight}</span>
 					)}
 				</h1>
 
 				{/* Subtitle */}
 				<p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
-					{subtitle}
+					{Subtitle}
 				</p>
 
 				{/* CTAs */}
 				<div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
-					<DynamicButton content={primaryCta} />
-					{secondaryCta && <DynamicButton content={secondaryCta} />}
+					<DynamicButton content={PrimaryCTA} />
+					{SecondaryCTA && <DynamicButton content={SecondaryCTA} />}
 				</div>
 
 				{/* Tech stack visualization */}
 				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
-						{floatingCards.map((Card) => (
+						{FloatingCard.map((Card) => (
 							<div
 								key={Card.id}
 								className="border border-[var(--border)] bg-white p-3"
@@ -125,8 +145,8 @@ export function DynamicHeroSection({
 						</div>
 
 						{/* Floating Cards */}
-						{floatingCards.map((Card, Index) => {
-							const Total = floatingCards.length;
+						{FloatingCard.map((Card, Index) => {
+							const Total = FloatingCard.length;
 							const Angle =
 								(Index / Total) * 2 * Math.PI - Math.PI / 2;
 							const RadiusX = 38;
@@ -162,13 +182,13 @@ export function DynamicHeroSection({
 						})}
 
 						{/* Connecting Lines */}
-						{heroConfig.showConnectingLines && (
+						{HeroConfiguration.showConnectingLines && (
 							<svg
 								className="pointer-events-none absolute inset-0 h-full w-full opacity-15"
 								aria-hidden="true"
 								role="presentation">
-								{floatingCards.map((Card, Index) => {
-									const Total = floatingCards.length;
+								{FloatingCard.map((Card, Index) => {
+									const Total = FloatingCard.length;
 									const Angle =
 										(Index / Total) * 2 * Math.PI -
 										Math.PI / 2;

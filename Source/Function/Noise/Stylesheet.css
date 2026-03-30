@@ -1,0 +1,46 @@
+:root {
+	--Staccato: 0;
+	--StaccatoRaw: 0;
+	--StaccatoPhase: 0;
+	--AttentionOffsetX: 0px;
+	--AttentionOffsetY: 0px;
+}
+
+.StaccatoTranslate {
+	transform: translate(
+		calc(var(--Staccato) * 20px + var(--AttentionOffsetX)),
+		calc(var(--Staccato) * -15px + var(--AttentionOffsetY))
+	);
+}
+
+.StaccatoScale {
+	transform: scale(calc(1 + var(--Staccato) * 0.05));
+}
+
+.StaccatoSkew {
+	transform: skewX(calc(var(--Staccato) * 3deg));
+}
+
+.StaccatoJitter {
+	transform: translate(
+		calc(var(--Staccato) * 8px),
+		calc(var(--StaccatoPhase) * 6px)
+	);
+}
+
+.StaccatoOpacity {
+	opacity: calc(0.7 + var(--StaccatoRaw) * 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.StaccatoTranslate,
+	.StaccatoScale,
+	.StaccatoSkew,
+	.StaccatoJitter {
+		transform: none;
+	}
+
+	.StaccatoOpacity {
+		opacity: 1;
+	}
+}

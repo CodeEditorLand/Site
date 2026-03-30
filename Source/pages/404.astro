@@ -1,18 +1,18 @@
 ---
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("common.error.404", {
+const MetaTitle = t("common.error.404", {
 	defaultValue: "404 - Page Not Found",
 });
-const metaDescription = t("common.error.pageNotFound", {
+const MetaDescription = t("common.error.pageNotFound", {
 	defaultValue: "The page you're looking for doesn't exist.",
 });
 ---
 
-<Base Title={metaTitle} Description={metaDescription} noIndex={true}>
+<Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<section class="py-20" aria-label="Page not found">
 		<div class="container mx-auto px-4 text-center">
 			<h1 class="mb-4 text-6xl font-bold">404</h1>

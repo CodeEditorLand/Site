@@ -1,46 +1,46 @@
 import React, { useEffect, useRef } from "react";
 
 const Background: React.FC = () => {
-	const layoutRef = useRef<HTMLDivElement>(null);
+	const LayoutReference = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		const layout = layoutRef.current;
-		if (!layout) return;
+		const Layout = LayoutReference.current;
+		if (!Layout) return;
 
-		const images = Array.from(
-			layout.querySelectorAll<HTMLImageElement>(".Image") ?? [],
+		const ImageList = Array.from(
+			Layout.querySelectorAll<HTMLImageElement>(".Image") ?? [],
 		);
 
-		if (images.length === 0) {
+		if (ImageList.length === 0) {
 			return;
 		}
 
-		const loadStart = performance.now();
+		const LoadStart = performance.now();
 
 		Promise.all(
-			images.map((img) => {
-				if (img.complete) {
+			ImageList.map((Image) => {
+				if (Image.complete) {
 					return Promise.resolve();
 				}
-				return new Promise((resolve, reject) => {
-					img.addEventListener("load", resolve);
-					img.addEventListener("error", reject);
+				return new Promise((Resolve, Reject) => {
+					Image.addEventListener("load", Resolve);
+					Image.addEventListener("error", Reject);
 				});
 			}),
 		)
 			.then(() => {
-				if (performance.now() - loadStart > 50) {
-					layout.classList.add("Transition");
+				if (performance.now() - LoadStart > 50) {
+					Layout.classList.add("Transition");
 				}
-				layout.classList.add("Load");
+				Layout.classList.add("Load");
 			})
 			.catch(() => {
-				layout.classList.add("Load");
+				Layout.classList.add("Load");
 			});
 	}, []);
 
 	return (
-		<div id="Layout" ref={layoutRef}>
+		<div id="Layout" ref={LayoutReference}>
 			<div id="Background" className="Container">
 				<img
 					src="/Asset/Background.svg"

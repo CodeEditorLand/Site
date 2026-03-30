@@ -1,11 +1,11 @@
 ---
 import { VerifyPage } from "../Component/Dynamic/VerifyPage";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const verifyContent = {
+const VerifyContent = {
 	verification: {
 		pending: {
 			title: t("verify.pending.title", {
@@ -56,25 +56,25 @@ const verifyContent = {
 	},
 };
 
-const token = Astro.url.searchParams.get("token");
-const reason = Astro.url.searchParams.get("reason");
-const route = token ? "verify" : reason ? "failure" : "pending";
+const Token = Astro.url.searchParams.get("token");
+const Reason = Astro.url.searchParams.get("reason");
+const Route = Token ? "verify" : Reason ? "failure" : "pending";
 
-const metaTitle = t("meta.verify.title", {
+const MetaTitle = t("meta.verify.title", {
 	defaultValue: "Verify Email - Land",
 });
-const metaDescription = t("verify.pending.description", {
+const MetaDescription = t("verify.pending.description", {
 	defaultValue: "Verify your email address to activate your account.",
 });
 ---
 
-<Base Title={metaTitle} Description={metaDescription} noIndex={true}>
+<Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<VerifyPage
-		content={verifyContent}
-		route={route}
-		token={token || undefined}
-		reason={reason || undefined}
-		metaTitle={metaTitle}
-		metaDescription={metaDescription}
+		content={VerifyContent}
+		route={Route}
+		token={Token || undefined}
+		reason={Reason || undefined}
+		metaTitle={MetaTitle}
+		metaDescription={MetaDescription}
 	/>
 </Base>

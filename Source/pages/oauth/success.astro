@@ -1,18 +1,18 @@
 ---
 import Base from "../../Layout/Base.astro";
-import { getI18n } from "../../Library/I18n/Server";
+import { GetI18n } from "../../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.oauth.success", {
+const MetaTitle = t("meta.oauth.success", {
 	defaultValue: "Authentication Successful - Land",
 });
-const metaDescription = t("meta.oauth.successDescription", {
+const MetaDescription = t("meta.oauth.successDescription", {
 	defaultValue: "You have been authenticated successfully.",
 });
 ---
 
-<Base Title={metaTitle} Description={metaDescription} noIndex={true}>
+<Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<section class="flex min-h-screen items-center justify-center py-20">
 		<div class="container mx-auto px-4">
 			<div class="mx-auto max-w-md text-center">

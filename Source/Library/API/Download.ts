@@ -1,119 +1,128 @@
 import type Download from "../Interface/Download.js";
 import type DownloadEvent from "../Interface/DownloadEvent.js";
-import { getWorkersClient } from "../WorkerClient";
+import { GetWorkersClient } from "../WorkerClient";
 
 /**
  * Downloads API adapter
  * Provides clean, type-safe interface for download operations
  */
 export class DownloadsAPI {
-	private workers = getWorkersClient();
+	private Workers = GetWorkersClient();
 
-	async getBinaries(
-		platform?: string,
-		architecture?: string,
+	async GetBinaries(
+		Platform?: string,
+		Architecture?: string,
 	): Promise<Download[]> {
-		const response = await this.workers.download.getBinaries(
-			platform,
-			architecture,
+		const Response = await this.Workers.Download.GetBinaries(
+			Platform,
+			Architecture,
 		);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch binaries");
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to fetch binaries");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getVersionList(limit?: number): Promise<Download[]> {
-		const response = await this.workers.download.getVersionList(limit);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch version list");
+	async GetVersionList(Limit?: number): Promise<Download[]> {
+		const Response = await this.Workers.Download.GetVersionList(Limit);
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch version list",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getDownload(id: string): Promise<Download> {
-		const response = await this.workers.download.getDownload(id);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch download");
+	async GetDownload(Identifier: string): Promise<Download> {
+		const Response =
+			await this.Workers.Download.GetDownload(Identifier);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to fetch download");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getSha256(id: string): Promise<{ sha256: string }> {
-		const response = await this.workers.download.getSha256(id);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch checksum");
+	async GetSHA256(Identifier: string): Promise<{ sha256: string }> {
+		const Response =
+			await this.Workers.Download.GetSHA256(Identifier);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to fetch checksum");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getSignature(id: string): Promise<{ signature: string }> {
-		const response = await this.workers.download.getSignature(id);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch signature");
+	async GetSignature(Identifier: string): Promise<{ signature: string }> {
+		const Response =
+			await this.Workers.Download.GetSignature(Identifier);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to fetch signature");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getInfo(id: string): Promise<
+	async GetInfo(Identifier: string): Promise<
 		Download & {
 			downloadUrl: string;
 			sha256Url: string;
 			signatureUrl: string | null;
 		}
 	> {
-		const response = await this.workers.download.getInfo(id);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch download info");
+		const Response =
+			await this.Workers.Download.GetInfo(Identifier);
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch download info",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getByVersion(
-		version: string,
-		platform?: string,
-		architecture?: string,
+	async GetByVersion(
+		Version: string,
+		Platform?: string,
+		Architecture?: string,
 	): Promise<Download[]> {
-		const response = await this.workers.download.getByVersion(
-			version,
-			platform,
-			architecture,
+		const Response = await this.Workers.Download.GetByVersion(
+			Version,
+			Platform,
+			Architecture,
 		);
-		if (!response.success || !response.data) {
+		if (!Response.success || !Response.data) {
 			throw new Error(
-				response.error || "Failed to fetch downloads by version",
+				Response.error || "Failed to fetch downloads by version",
 			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getLatest(
-		platform?: string,
-		architecture?: string,
+	async GetLatest(
+		Platform?: string,
+		Architecture?: string,
 	): Promise<Download> {
-		const response = await this.workers.download.getLatest(
-			platform,
-			architecture,
+		const Response = await this.Workers.Download.GetLatest(
+			Platform,
+			Architecture,
 		);
-		if (!response.success || !response.data) {
+		if (!Response.success || !Response.data) {
 			throw new Error(
-				response.error || "Failed to fetch latest download",
+				Response.error || "Failed to fetch latest download",
 			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async trackDownload(id: string): Promise<{ eventId: string }> {
-		const response = await this.workers.download.trackDownload(id);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to track download");
+	async TrackDownload(Identifier: string): Promise<{ eventId: string }> {
+		const Response =
+			await this.Workers.Download.TrackDownload(Identifier);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to track download");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getAnalytics(
-		limit?: number,
-		offset?: number,
+	async GetAnalytics(
+		Limit?: number,
+		Offset?: number,
 	): Promise<{
 		events: DownloadEvent[];
 		stats: {
@@ -122,15 +131,15 @@ export class DownloadsAPI {
 			byVersion: Record<string, number>;
 		};
 	}> {
-		const response = await this.workers.download.getAnalytics(
-			limit,
-			offset,
+		const Response = await this.Workers.Download.GetAnalytics(
+			Limit,
+			Offset,
 		);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch analytics");
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to fetch analytics");
 		}
-		return response.data;
+		return Response.data;
 	}
 }
 
-export const downloadsAPI = new DownloadsAPI();
+export default new DownloadsAPI();

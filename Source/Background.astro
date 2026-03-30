@@ -71,10 +71,10 @@ import { Image } from "astro:assets";
 					return Promise.resolve();
 				}
 
-				return new Promise((resolve, reject) => {
-					_Image.addEventListener("load", resolve);
+				return new Promise((Resolve, Reject) => {
+					_Image.addEventListener("load", Resolve);
 
-					_Image.addEventListener("error", reject);
+					_Image.addEventListener("error", Reject);
 				});
 			}),
 		)

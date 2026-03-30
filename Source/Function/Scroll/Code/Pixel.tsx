@@ -12,32 +12,32 @@ let Dimensional: any,
 	ALL_COLORS: any;
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
-const initDimensional = async () => {
+const InitDimensional = async () => {
 	// @ts-ignore
-	const mod = await import("@Function/Scroll/Code/Pixel/Dimensional.ts");
-	return mod.default;
+	const Module = await import("@Function/Scroll/Code/Pixel/Dimensional.ts");
+	return Module.default;
 };
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
-const initStyle = async () => {
+const InitStyle = async () => {
 	// @ts-ignore
-	const mod = await import("@Function/Scroll/Code/Pixel/Style.ts");
-	return mod.default;
+	const Module = await import("@Function/Scroll/Code/Pixel/Style.ts");
+	return Module.default;
 };
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
-const initAnimation = async () => {
+const InitAnimation = async () => {
 	// @ts-ignore
-	const mod = await import("@Function/Scroll/Code/Pixel/Animation.ts");
-	return mod;
+	const Module = await import("@Function/Scroll/Code/Pixel/Animation.ts");
+	return Module;
 };
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
-const initConstant = async () => {
+const InitConstant = async () => {
 	// @ts-ignore
-	const mod =
+	const Module =
 		await import("@Function/Scroll/Code/Pixel/Animation/Constant.ts");
-	return mod.default;
+	return Module.default;
 };
 
 const Pixel = ({
@@ -52,32 +52,32 @@ const Pixel = ({
 	Row,
 	Column,
 }: PixelProps) => {
-	const elementRef = useRef<HTMLDivElement>(null);
+	const ElementReference = useRef<HTMLDivElement>(null);
 	const Position = Character % Text;
 	const Seed = Position * 0.1 + Row * 0.05 + Column * 0.02;
 
 	useEffect(() => {
 		// Initialize dependencies if not yet loaded
-		const initializeAndApply = async () => {
+		const InitializeAndApply = async () => {
 			if (!Dimensional) {
-				Dimensional = await initDimensional();
-				Style = await initStyle();
-				const Animation = await initAnimation();
+				Dimensional = await InitDimensional();
+				Style = await InitStyle();
+				const Animation = await InitAnimation();
 				Influence = Animation.Influence;
 				Layer = Animation.Layer;
 				Noise = Animation.Noise;
 				Spectrum = Animation.Spectrum;
-				Constant = await initConstant();
+				Constant = await InitConstant();
 				ALL_COLORS = Spectrum(Constant.COLOR_STEPS);
 			}
 
-			const element = elementRef.current;
-			if (!(Show && element && Container)) {
+			const Element = ElementReference.current;
+			if (!(Show && Element && Container)) {
 				return;
 			}
 
-			const mouseValue = Mouse(); // Get the current mouse value
-			new Style(element, {
+			const MouseValue = Mouse(); // Get the current mouse value
+			new Style(Element, {
 				TimeNoise:
 					Position * 0.1 +
 					CurrentTime() *
@@ -91,15 +91,15 @@ const Pixel = ({
 				Offset: new Dimensional(
 					CurrentTime(),
 					Seed,
-					mouseValue,
+					MouseValue,
 					1,
 				).Calculate(1, 1),
-				Mouse: mouseValue, // Pass the direct value, not the accessor
+				Mouse: MouseValue, // Pass the direct value, not the accessor
 				Spectrum: ALL_COLORS,
 			}).Roll();
 		};
 
-		initializeAndApply();
+		InitializeAndApply();
 	}, [
 		Show,
 		Container,
@@ -112,7 +112,7 @@ const Pixel = ({
 		Font,
 	]);
 
-	return <div ref={elementRef} className={`h-${Font} w-${Font}`} />;
+	return <div ref={ElementReference} className={`h-${Font} w-${Font}`} />;
 };
 
 export default Pixel;

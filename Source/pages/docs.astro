@@ -1,23 +1,23 @@
 ---
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.docs.title", {
+const MetaTitle = t("meta.docs.title", {
 	defaultValue: "Documentation | Code Editor Land",
 });
 
-const metaDescription = t("meta.docs.description", {
+const MetaDescription = t("meta.docs.description", {
 	defaultValue:
 		"Browse the Code Editor Land documentation, guides, and API references on GitHub.",
 });
 ---
 
 <Base
-	Title={metaTitle}
-	Description={metaDescription}
+	Title={MetaTitle}
+	Description={MetaDescription}
 	Url="https://editor.land/docs"
 	lang="en">
 	<Header client:load />

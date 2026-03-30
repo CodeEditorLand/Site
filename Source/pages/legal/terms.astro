@@ -1,25 +1,25 @@
 ---
 import Base from "../../Layout/Base.astro";
-import { getI18n } from "../../Library/I18n/Server";
+import { GetI18n } from "../../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.legal.terms.title", {
+const MetaTitle = t("meta.legal.terms.title", {
 	defaultValue: "Terms of Service | Code Editor Land",
 });
 
-const metaDescription = t("meta.legal.terms.description", {
+const MetaDescription = t("meta.legal.terms.description", {
 	defaultValue:
 		"Terms of Service for Code Editor Land - Governing your use of our open-source code editor and related services.",
 });
 
-const effectiveDate = "March 26, 2026";
-const lastUpdated = "March 26, 2026";
+const EffectiveDate = "March 26, 2026";
+const LastUpdated = "March 26, 2026";
 ---
 
 <Base
-	Title={metaTitle}
-	Description={metaDescription}
+	Title={MetaTitle}
+	Description={MetaDescription}
 	Url="https://editor.land/legal/terms"
 	lang="en">
 	<div class="container mx-auto max-w-4xl px-4 py-16">
@@ -47,8 +47,8 @@ const lastUpdated = "March 26, 2026";
 				Terms of Service
 			</h1>
 			<div class="space-y-1 text-sm text-muted-foreground">
-				<p><strong>Effective Date:</strong> {effectiveDate}</p>
-				<p><strong>Last Updated:</strong> {lastUpdated}</p>
+				<p><strong>Effective Date:</strong> {EffectiveDate}</p>
+				<p><strong>Last Updated:</strong> {LastUpdated}</p>
 			</div>
 		</header>
 

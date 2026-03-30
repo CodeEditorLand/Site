@@ -290,9 +290,9 @@ export default class {
 	}
 
 	private Particle(): void {
-		this.Dust.forEach((Particle, index) => {
-			if (this.StateParticle[index]?.ID) {
-				cancelAnimationFrame(this.StateParticle[index].ID!);
+		this.Dust.forEach((Particle, Index) => {
+			if (this.StateParticle[Index]?.ID) {
+				cancelAnimationFrame(this.StateParticle[Index].ID!);
 			}
 			Particle.remove();
 		});
@@ -305,7 +305,7 @@ export default class {
 			() => Math.random() * 1000,
 		);
 
-		for (let i = 0; i < Constant.DUST_PARTICLE_COUNT; i++) {
+		for (let Index = 0; Index < Constant.DUST_PARTICLE_COUNT; Index++) {
 			const Particle = document.createElement("div");
 			Particle.className = "Dust";
 			Object.assign(Particle.style, {

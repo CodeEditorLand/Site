@@ -9,50 +9,54 @@ import type Session from "./Interface/Session.js";
 import type User from "./Interface/User.js";
 
 export interface WorkersClient {
-	// Auth
-	auth: {
-		login(
-			email: string,
-			password: string,
+	// Authentication
+	Authentication: {
+		Login(
+			Email: string,
+			Password: string,
 		): Promise<APIResponse<{ user: User; session: Session }>>;
-		register(
-			email: string,
-			password: string,
-			username: string,
-			displayName?: string,
+		Register(
+			Email: string,
+			Password: string,
+			Username: string,
+			DisplayName?: string,
 		): Promise<
 			APIResponse<{ user: User; session: Session; message?: string }>
 		>;
-		logout(): Promise<APIResponse<{ message?: string }>>;
-		refresh(
-			token: string,
+		Logout(): Promise<APIResponse<{ message?: string }>>;
+		Refresh(
+			Token: string,
 		): Promise<APIResponse<{ token: string; expiresIn: number }>>;
-		verifyEmail(token: string): Promise<APIResponse<void>>;
-		resendVerification(): Promise<APIResponse<{ message: string }>>;
-		forgotPassword(
-			email: string,
+		VerifyEmail(Token: string): Promise<APIResponse<void>>;
+		ResendVerification(): Promise<APIResponse<{ message: string }>>;
+		ForgotPassword(
+			Email: string,
 		): Promise<APIResponse<{ message: string }>>;
-		resetPassword(
-			token: string,
-			password: string,
+		ResetPassword(
+			Token: string,
+			Password: string,
 		): Promise<APIResponse<void>>;
-		getSession(): Promise<APIResponse<{ user: User; expiresIn: number }>>;
-		oauth(
-			provider: "github" | "google" | "gitlab",
+		GetSession(): Promise<APIResponse<{ user: User; expiresIn: number }>>;
+		OAuth(
+			Provider: "github" | "google" | "gitlab",
 		): Promise<{ success: boolean }>;
-		handleOAuthCallback(): never;
+		HandleOAuthCallback(): never;
 	};
 	// Download
-	download: {
-		getBinaries(
-			platform?: string,
-			architecture?: string,
+	Download: {
+		GetBinaries(
+			Platform?: string,
+			Architecture?: string,
 		): Promise<APIResponse<Download[]>>;
-		getVersionList(limit?: number): Promise<APIResponse<Download[]>>;
-		getDownload(id: string): Promise<APIResponse<Download>>;
-		getSha256(id: string): Promise<APIResponse<{ sha256: string }>>;
-		getSignature(id: string): Promise<APIResponse<{ signature: string }>>;
-		getInfo(id: string): Promise<
+		GetVersionList(Limit?: number): Promise<APIResponse<Download[]>>;
+		GetDownload(Identifier: string): Promise<APIResponse<Download>>;
+		GetSHA256(
+			Identifier: string,
+		): Promise<APIResponse<{ sha256: string }>>;
+		GetSignature(
+			Identifier: string,
+		): Promise<APIResponse<{ signature: string }>>;
+		GetInfo(Identifier: string): Promise<
 			APIResponse<
 				Download & {
 					downloadUrl: string;
@@ -61,19 +65,21 @@ export interface WorkersClient {
 				}
 			>
 		>;
-		getByVersion(
-			version: string,
-			platform?: string,
-			architecture?: string,
+		GetByVersion(
+			Version: string,
+			Platform?: string,
+			Architecture?: string,
 		): Promise<APIResponse<Download[]>>;
-		getLatest(
-			platform?: string,
-			architecture?: string,
+		GetLatest(
+			Platform?: string,
+			Architecture?: string,
 		): Promise<APIResponse<Download>>;
-		trackDownload(id: string): Promise<APIResponse<{ eventId: string }>>;
-		getAnalytics(
-			limit?: number,
-			offset?: number,
+		TrackDownload(
+			Identifier: string,
+		): Promise<APIResponse<{ eventId: string }>>;
+		GetAnalytics(
+			Limit?: number,
+			Offset?: number,
 		): Promise<
 			APIResponse<{
 				events: DownloadEvent[];
@@ -86,35 +92,35 @@ export interface WorkersClient {
 		>;
 	};
 	// Analytics
-	analytics: {
-		track(
-			type: string,
-			properties?: Record<string, unknown>,
+	Analytics: {
+		Track(
+			Type: string,
+			Properties?: Record<string, unknown>,
 		): Promise<APIResponse<{ eventId: string }>>;
-		trackBatch(
-			events: Array<{
+		TrackBatch(
+			Events: Array<{
 				type: string;
 				userId?: string;
 				sessionId?: string;
 				properties?: Record<string, unknown>;
 			}>,
 		): Promise<APIResponse<{ tracked: number; eventIds: string[] }>>;
-		trackPageView(
-			path: string,
-			title?: string,
-			referrer?: string,
+		TrackPageView(
+			Path: string,
+			Title?: string,
+			Referrer?: string,
 		): Promise<APIResponse<{ eventId: string }>>;
-		getEvents(
-			type?: string,
-			limit?: number,
-			offset?: number,
-			startDate?: string,
-			endDate?: string,
+		GetEvents(
+			Type?: string,
+			Limit?: number,
+			Offset?: number,
+			StartDate?: string,
+			EndDate?: string,
 		): Promise<APIResponse<AnalyticsEvent[]>>;
-		getEvent(id: string): Promise<APIResponse<AnalyticsEvent>>;
-		getSummary(
-			days?: number,
-			type?: string,
+		GetEvent(Identifier: string): Promise<APIResponse<AnalyticsEvent>>;
+		GetSummary(
+			Days?: number,
+			Type?: string,
 		): Promise<
 			APIResponse<{
 				totalEvents: number;
@@ -125,9 +131,9 @@ export interface WorkersClient {
 				period: { days: number; start: string; end: string };
 			}>
 		>;
-		getTimeline(
-			days?: number,
-			type?: string,
+		GetTimeline(
+			Days?: number,
+			Type?: string,
 		): Promise<
 			APIResponse<
 				Array<{
@@ -137,20 +143,20 @@ export interface WorkersClient {
 				}>
 			>
 		>;
-		getPageViewStats(
-			days?: number,
-			limit?: number,
+		GetPageViewStats(
+			Days?: number,
+			Limit?: number,
 		): Promise<
 			APIResponse<Array<{ path: string; title: string; count: number }>>
 		>;
-		getEventStats(days?: number): Promise<
+		GetEventStats(Days?: number): Promise<
 			APIResponse<{
 				byType: Record<string, number>;
 				byBrowser: Record<string, number>;
 				byOS: Record<string, number>;
 			}>
 		>;
-		getSessionStats(days?: number): Promise<
+		GetSessionStats(Days?: number): Promise<
 			APIResponse<{
 				totalSessions: number;
 				avgEventsPerSession: number;
@@ -159,8 +165,8 @@ export interface WorkersClient {
 		>;
 	};
 	// Status
-	status: {
-		getOverallStatus(): Promise<
+	Status: {
+		GetOverallStatus(): Promise<
 			APIResponse<{
 				status: "operational" | "degraded" | "outage" | "maintenance";
 				lastUpdate: string;
@@ -174,7 +180,7 @@ export interface WorkersClient {
 				}>;
 			}>
 		>;
-		getChecks(): Promise<
+		GetChecks(): Promise<
 			APIResponse<
 				Array<{
 					id: string;
@@ -186,7 +192,7 @@ export interface WorkersClient {
 				}>
 			>
 		>;
-		getCheck(id: string): Promise<
+		GetCheck(Identifier: string): Promise<
 			APIResponse<{
 				id: string;
 				name: string;
@@ -196,9 +202,9 @@ export interface WorkersClient {
 				message?: string;
 			}>
 		>;
-		getHistory(
-			limit?: number,
-			checkId?: string,
+		GetHistory(
+			Limit?: number,
+			CheckIdentifier?: string,
 		): Promise<
 			APIResponse<
 				Array<{
@@ -209,16 +215,16 @@ export interface WorkersClient {
 				}>
 			>
 		>;
-		getGitHubCommits(
-			branch?: string,
-			limit?: number,
+		GetGitHubCommits(
+			Branch?: string,
+			Limit?: number,
 		): Promise<APIResponse<GitHubCommit[]>>;
-		getGitHubActions(
-			limit?: number,
+		GetGitHubActions(
+			Limit?: number,
 		): Promise<APIResponse<GitHubActionRun[]>>;
-		getGitHubIssues(
-			state?: string,
-			limit?: number,
+		GetGitHubIssues(
+			State?: string,
+			Limit?: number,
 		): Promise<APIResponse<GitHubIssue[]>>;
 	};
 }
@@ -226,36 +232,36 @@ export interface WorkersClient {
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
-function delay(ms: number): Promise<void> {
-	return new Promise((resolve) => setTimeout(resolve, ms));
+function Delay(Millisecond: number): Promise<void> {
+	return new Promise((Resolve) => setTimeout(Resolve, Millisecond));
 }
 
-function withRetry<T>(
-	fn: () => Promise<APIResponse<T>>,
-	retries = MAX_RETRIES,
+function WithRetry<T>(
+	Function: () => Promise<APIResponse<T>>,
+	Retries = MAX_RETRIES,
 ): Promise<APIResponse<T>> {
-	return fn().catch(async (error: Error) => {
-		if (retries > 0) {
+	return Function().catch(async (Error: Error) => {
+		if (Retries > 0) {
 			console.warn(
-				`Retrying request... (${retries} retries left)`,
-				error.message,
+				`Retrying request... (${Retries} retries left)`,
+				Error.message,
 			);
-			await delay(RETRY_DELAY);
-			return withRetry(fn, retries - 1);
+			await Delay(RETRY_DELAY);
+			return WithRetry(Function, Retries - 1);
 		}
-		return { success: false, error: error.message };
+		return { success: false, error: Error.message };
 	});
 }
 
-function getAuthToken(): string | null {
+function GetAuthToken(): string | null {
 	try {
-		const cookies = document.cookie.split(";");
-		const sessionCookie = cookies.find((c) =>
-			c.trim().startsWith("session="),
+		const Cookies = document.cookie.split(";");
+		const SessionCookie = Cookies.find((Cookie) =>
+			Cookie.trim().startsWith("session="),
 		);
-		if (sessionCookie) {
-			const token = sessionCookie.split("=")[1];
-			return token ?? null;
+		if (SessionCookie) {
+			const Token = SessionCookie.split("=")[1];
+			return Token ?? null;
 		}
 	} catch {
 		// Cookie API not available during SSR
@@ -263,16 +269,16 @@ function getAuthToken(): string | null {
 	return localStorage.getItem("session_token");
 }
 
-function setAuthToken(token: string): void {
+function SetAuthToken(Token: string): void {
 	try {
-		document.cookie = `session=${token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
+		document.cookie = `session=${Token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
 	} catch {
 		// Cookie API not available during SSR
 	}
-	localStorage.setItem("session_token", token);
+	localStorage.setItem("session_token", Token);
 }
 
-function clearAuthToken(): void {
+function ClearAuthToken(): void {
 	try {
 		document.cookie = "session=; path=/; max-age=0";
 	} catch {
@@ -281,322 +287,363 @@ function clearAuthToken(): void {
 	localStorage.removeItem("session_token");
 }
 
-function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
-	const fetchWithAuth = async <T>(
-		endpoint: string,
-		options: RequestInit = {},
+function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
+	const FetchWithAuthentication = async <T>(
+		Endpoint: string,
+		Options: RequestInit = {},
 	): Promise<APIResponse<T>> => {
-		const token = getAuthToken();
-		const headers: Record<string, string> = {
+		const Token = GetAuthToken();
+		const Headers: Record<string, string> = {
 			"Content-Type": "application/json",
-			...(token ? { Authorization: `Bearer ${token}` } : {}),
-			...(options.headers as Record<string, string>),
+			...(Token ? { Authorization: `Bearer ${Token}` } : {}),
+			...(Options.headers as Record<string, string>),
 		};
 
-		const response = await fetch(`${baseUrl}${endpoint}`, {
-			...options,
-			headers,
+		const Response = await fetch(`${BaseURL}${Endpoint}`, {
+			...Options,
+			headers: Headers,
 		});
 
-		const data = await response
-			.json()
-			.catch(() => ({ success: false, error: "Invalid response" }));
+		const Data = await Response.json().catch(() => ({
+			success: false,
+			error: "Invalid response",
+		}));
 
-		if (!response.ok || !data.success) {
+		if (!Response.ok || !Data.success) {
 			return {
 				success: false,
-				error: data.error || data.message || `HTTP ${response.status}`,
+				error: Data.error || Data.message || `HTTP ${Response.status}`,
 			};
 		}
 
-		return data as APIResponse<T>;
+		return Data as APIResponse<T>;
 	};
 
 	return {
-		auth: {
-			login: (email, password) =>
-				withRetry(() =>
-					fetchWithAuth<{ user: User; session: Session }>(
+		Authentication: {
+			Login: (Email, Password) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ user: User; session: Session }>(
 						"/auth/login",
 						{
 							method: "POST",
-							body: JSON.stringify({ email, password }),
+							body: JSON.stringify({
+								email: Email,
+								password: Password,
+							}),
 						},
 					),
 				),
-			register: (email, password, username, displayName) =>
-				withRetry(() =>
-					fetchWithAuth<{
+			Register: (Email, Password, Username, DisplayName) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{
 						user: User;
 						session: Session;
 						message?: string;
 					}>("/auth/register", {
 						method: "POST",
 						body: JSON.stringify({
-							email,
-							password,
-							username,
-							displayName,
+							email: Email,
+							password: Password,
+							username: Username,
+							displayName: DisplayName,
 						}),
 					}),
 				),
-			logout: () =>
-				withRetry(() =>
-					fetchWithAuth("/auth/logout", { method: "POST" }),
+			Logout: () =>
+				WithRetry(() =>
+					FetchWithAuthentication("/auth/logout", { method: "POST" }),
 				),
-			refresh: (token) =>
-				withRetry(() =>
-					fetchWithAuth<{ token: string; expiresIn: number }>(
-						"/auth/refresh",
+			Refresh: (Token) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{
+						token: string;
+						expiresIn: number;
+					}>("/auth/refresh", {
+						method: "POST",
+						headers: { Authorization: `Bearer ${Token}` },
+					}),
+				),
+			VerifyEmail: (Token) =>
+				WithRetry(() =>
+					FetchWithAuthentication<void>(
+						`/auth/verify-email/${Token}`,
 						{
-							method: "POST",
-							headers: { Authorization: `Bearer ${token}` },
+							method: "GET",
 						},
 					),
 				),
-			verifyEmail: (token) =>
-				withRetry(() =>
-					fetchWithAuth<void>(`/auth/verify-email/${token}`, {
-						method: "GET",
-					}),
-				),
-			resendVerification: () =>
-				withRetry(() =>
-					fetchWithAuth("/auth/resend-verification", {
+			ResendVerification: () =>
+				WithRetry(() =>
+					FetchWithAuthentication("/auth/resend-verification", {
 						method: "POST",
 					}),
 				),
-			forgotPassword: (email) =>
-				withRetry(() =>
-					fetchWithAuth<{ message: string }>(
+			ForgotPassword: (Email) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ message: string }>(
 						"/auth/forgot-password",
 						{
 							method: "POST",
-							body: JSON.stringify({ email }),
+							body: JSON.stringify({ email: Email }),
 						},
 					),
 				),
-			resetPassword: (token, password) =>
-				withRetry(() =>
-					fetchWithAuth<void>(`/auth/reset-password/${token}`, {
-						method: "POST",
-						body: JSON.stringify({ password }),
-					}),
-				),
-			getSession: () =>
-				withRetry(() =>
-					fetchWithAuth<{ user: User; expiresIn: number }>(
-						"/auth/session",
+			ResetPassword: (Token, Password) =>
+				WithRetry(() =>
+					FetchWithAuthentication<void>(
+						`/auth/reset-password/${Token}`,
+						{
+							method: "POST",
+							body: JSON.stringify({ password: Password }),
+						},
 					),
 				),
-			oauth: (provider) => {
-				const url = `${baseUrl}/auth/oauth/${provider}`;
-				window.location.href = url;
+			GetSession: () =>
+				WithRetry(() =>
+					FetchWithAuthentication<{
+						user: User;
+						expiresIn: number;
+					}>("/auth/session"),
+				),
+			OAuth: (Provider) => {
+				const URL = `${BaseURL}/auth/oauth/${Provider}`;
+				window.location.href = URL;
 				return Promise.resolve({ success: true });
 			},
-			// Note: handleOAuthCallback is intentionally NOT implemented as a fetch call
+			// Note: HandleOAuthCallback is intentionally NOT implemented as a fetch call
 			// The OAuth callback endpoint returns a 302 redirect to the frontend with token in URL
 			// Frontend should extract token from URL query parameters on the redirect landing page
-			handleOAuthCallback: () => {
+			HandleOAuthCallback: () => {
 				throw new Error(
-					"handleOAuthCallback should not be called as a fetch. OAuth callback redirects to frontend URL with token parameter.",
+					"HandleOAuthCallback should not be called as a fetch. OAuth callback redirects to frontend URL with token parameter.",
 				);
 			},
 		},
-		download: {
-			getBinaries: (platform, architecture) => {
-				const params = new URLSearchParams();
-				if (platform) params.append("platform", platform);
-				if (architecture) params.append("architecture", architecture);
-				const query = params.toString();
-				return withRetry(() =>
-					fetchWithAuth<Download[]>(
-						`/downloads${query ? `?${query}` : ""}`,
+		Download: {
+			GetBinaries: (Platform, Architecture) => {
+				const Params = new URLSearchParams();
+				if (Platform) Params.append("platform", Platform);
+				if (Architecture)
+					Params.append("architecture", Architecture);
+				const Query = Params.toString();
+				return WithRetry(() =>
+					FetchWithAuthentication<Download[]>(
+						`/downloads${Query ? `?${Query}` : ""}`,
 					),
 				);
 			},
-			getVersionList: (limit) => {
-				const query = limit ? `?limit=${limit}` : "";
-				return withRetry(() =>
-					fetchWithAuth<Download[]>(`/downloads${query}`),
+			GetVersionList: (Limit) => {
+				const Query = Limit ? `?limit=${Limit}` : "";
+				return WithRetry(() =>
+					FetchWithAuthentication<Download[]>(
+						`/downloads${Query}`,
+					),
 				);
 			},
-			getDownload: (id) =>
-				withRetry(() => fetchWithAuth<Download>(`/downloads/${id}`)),
-			getSha256: (id) =>
-				withRetry(() =>
-					fetchWithAuth<{ sha256: string }>(
-						`/downloads/${id}/sha256`,
+			GetDownload: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<Download>(
+						`/downloads/${Identifier}`,
 					),
 				),
-			getSignature: (id) =>
-				withRetry(() =>
-					fetchWithAuth<{ signature: string }>(
-						`/downloads/${id}/signature`,
+			GetSHA256: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ sha256: string }>(
+						`/downloads/${Identifier}/sha256`,
 					),
 				),
-			getInfo: (id) =>
-				withRetry(() =>
-					fetchWithAuth<
+			GetSignature: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ signature: string }>(
+						`/downloads/${Identifier}/signature`,
+					),
+				),
+			GetInfo: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<
 						Download & {
 							downloadUrl: string;
 							sha256Url: string;
 							signatureUrl: string | null;
 						}
-					>(`/downloads/${id}/info`),
+					>(`/downloads/${Identifier}/info`),
 				),
-			getByVersion: (version, platform, architecture) => {
-				const params = new URLSearchParams();
-				if (platform) params.append("platform", platform);
-				if (architecture) params.append("architecture", architecture);
-				const query = params.toString();
-				return withRetry(() =>
-					fetchWithAuth<Download[]>(
-						`/downloads/version/${version}${query ? `?${query}` : ""}`,
+			GetByVersion: (Version, Platform, Architecture) => {
+				const Params = new URLSearchParams();
+				if (Platform) Params.append("platform", Platform);
+				if (Architecture)
+					Params.append("architecture", Architecture);
+				const Query = Params.toString();
+				return WithRetry(() =>
+					FetchWithAuthentication<Download[]>(
+						`/downloads/version/${Version}${Query ? `?${Query}` : ""}`,
 					),
 				);
 			},
-			getLatest: (platform, architecture) => {
-				const params = new URLSearchParams();
-				if (platform) params.append("platform", platform);
-				if (architecture) params.append("architecture", architecture);
-				const query = params.toString();
-				return withRetry(() =>
-					fetchWithAuth<Download>(
-						`/downloads/latest${query ? `?${query}` : ""}`,
+			GetLatest: (Platform, Architecture) => {
+				const Params = new URLSearchParams();
+				if (Platform) Params.append("platform", Platform);
+				if (Architecture)
+					Params.append("architecture", Architecture);
+				const Query = Params.toString();
+				return WithRetry(() =>
+					FetchWithAuthentication<Download>(
+						`/downloads/latest${Query ? `?${Query}` : ""}`,
 					),
 				);
 			},
-			trackDownload: (id) =>
-				withRetry(() =>
-					fetchWithAuth<{ eventId: string }>(
-						`/downloads/${id}/track`,
+			TrackDownload: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ eventId: string }>(
+						`/downloads/${Identifier}/track`,
 						{ method: "POST" },
 					),
 				),
-			getAnalytics: (limit, offset) => {
-				const params = new URLSearchParams();
-				if (limit) params.append("limit", limit.toString());
-				if (offset) params.append("offset", offset.toString());
-				const query = params.toString();
-				return withRetry(() =>
-					fetchWithAuth<{
+			GetAnalytics: (Limit, Offset) => {
+				const Params = new URLSearchParams();
+				if (Limit) Params.append("limit", Limit.toString());
+				if (Offset) Params.append("offset", Offset.toString());
+				const Query = Params.toString();
+				return WithRetry(() =>
+					FetchWithAuthentication<{
 						events: DownloadEvent[];
 						stats: {
 							total: number;
 							byPlatform: Record<string, number>;
 							byVersion: Record<string, number>;
 						};
-					}>(`/analytics/downloads${query ? `?${query}` : ""}`),
+					}>(
+						`/analytics/downloads${Query ? `?${Query}` : ""}`,
+					),
 				);
 			},
 		},
-		analytics: {
-			track: (type, properties = {}) =>
-				withRetry(() =>
-					fetchWithAuth<{ eventId: string }>("/track", {
+		Analytics: {
+			Track: (Type, Properties = {}) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ eventId: string }>("/track", {
 						method: "POST",
-						body: JSON.stringify({ type, properties }),
+						body: JSON.stringify({
+							type: Type,
+							properties: Properties,
+						}),
 					}),
 				),
-			trackBatch: (events) =>
-				withRetry(() =>
-					fetchWithAuth<{ tracked: number; eventIds: string[] }>(
-						"/track/batch",
-						{
-							method: "POST",
-							body: JSON.stringify({ events }),
-						},
-					),
-				),
-			trackPageView: (path, title, referrer) =>
-				withRetry(() =>
-					fetchWithAuth<{ eventId: string }>("/pageview", {
+			TrackBatch: (Events) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{
+						tracked: number;
+						eventIds: string[];
+					}>("/track/batch", {
 						method: "POST",
-						body: JSON.stringify({ path, title, referrer }),
+						body: JSON.stringify({ events: Events }),
 					}),
 				),
-			getEvents: (type, limit, offset, startDate, endDate) => {
-				const params = new URLSearchParams();
-				if (type) params.append("type", type);
-				if (limit) params.append("limit", limit.toString());
-				if (offset) params.append("offset", offset.toString());
-				if (startDate) params.append("start", startDate);
-				if (endDate) params.append("end", endDate);
-				return withRetry(() =>
-					fetchWithAuth<AnalyticsEvent[]>(
-						`/events?${params.toString()}`,
+			TrackPageView: (Path, Title, Referrer) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{ eventId: string }>("/pageview", {
+						method: "POST",
+						body: JSON.stringify({
+							path: Path,
+							title: Title,
+							referrer: Referrer,
+						}),
+					}),
+				),
+			GetEvents: (Type, Limit, Offset, StartDate, EndDate) => {
+				const Params = new URLSearchParams();
+				if (Type) Params.append("type", Type);
+				if (Limit) Params.append("limit", Limit.toString());
+				if (Offset) Params.append("offset", Offset.toString());
+				if (StartDate) Params.append("start", StartDate);
+				if (EndDate) Params.append("end", EndDate);
+				return WithRetry(() =>
+					FetchWithAuthentication<AnalyticsEvent[]>(
+						`/events?${Params.toString()}`,
 					),
 				);
 			},
-			getEvent: (id) =>
-				withRetry(() => fetchWithAuth<AnalyticsEvent>(`/events/${id}`)),
-			getSummary: (days, type) => {
-				const params = new URLSearchParams();
-				if (days) params.append("days", days.toString());
-				if (type) params.append("type", type);
-				return withRetry(() =>
-					fetchWithAuth<{
+			GetEvent: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<AnalyticsEvent>(
+						`/events/${Identifier}`,
+					),
+				),
+			GetSummary: (Days, Type) => {
+				const Params = new URLSearchParams();
+				if (Days) Params.append("days", Days.toString());
+				if (Type) Params.append("type", Type);
+				return WithRetry(() =>
+					FetchWithAuthentication<{
 						totalEvents: number;
 						uniqueVisitors: number;
 						uniqueSessions: number;
 						byType: Record<string, number>;
 						byDate: Record<string, number>;
-						period: { days: number; start: string; end: string };
-					}>(`/summary?${params.toString()}`),
+						period: {
+							days: number;
+							start: string;
+							end: string;
+						};
+					}>(`/summary?${Params.toString()}`),
 				);
 			},
-			getTimeline: (days, type) => {
-				const params = new URLSearchParams();
-				if (days) params.append("days", days.toString());
-				if (type) params.append("type", type);
-				return withRetry(() =>
-					fetchWithAuth<
+			GetTimeline: (Days, Type) => {
+				const Params = new URLSearchParams();
+				if (Days) Params.append("days", Days.toString());
+				if (Type) Params.append("type", Type);
+				return WithRetry(() =>
+					FetchWithAuthentication<
 						Array<{
 							date: string;
 							count: number;
 							types: Record<string, number>;
 						}>
-					>(`/timeline?${params.toString()}`),
+					>(`/timeline?${Params.toString()}`),
 				);
 			},
-			getPageViewStats: (days, limit) => {
-				const params = new URLSearchParams();
-				if (days) params.append("days", days.toString());
-				if (limit) params.append("limit", limit.toString());
-				return withRetry(() =>
-					fetchWithAuth<
-						Array<{ path: string; title: string; count: number }>
-					>(`/stats/pageviews?${params.toString()}`),
+			GetPageViewStats: (Days, Limit) => {
+				const Params = new URLSearchParams();
+				if (Days) Params.append("days", Days.toString());
+				if (Limit) Params.append("limit", Limit.toString());
+				return WithRetry(() =>
+					FetchWithAuthentication<
+						Array<{
+							path: string;
+							title: string;
+							count: number;
+						}>
+					>(`/stats/pageviews?${Params.toString()}`),
 				);
 			},
-			getEventStats: (days) => {
-				const params = new URLSearchParams();
-				if (days) params.append("days", days.toString());
-				return withRetry(() =>
-					fetchWithAuth<{
+			GetEventStats: (Days) => {
+				const Params = new URLSearchParams();
+				if (Days) Params.append("days", Days.toString());
+				return WithRetry(() =>
+					FetchWithAuthentication<{
 						byType: Record<string, number>;
 						byBrowser: Record<string, number>;
 						byOS: Record<string, number>;
-					}>(`/stats/events?${params.toString()}`),
+					}>(`/stats/events?${Params.toString()}`),
 				);
 			},
-			getSessionStats: (days) => {
-				const params = new URLSearchParams();
-				if (days) params.append("days", days.toString());
-				return withRetry(() =>
-					fetchWithAuth<{
+			GetSessionStats: (Days) => {
+				const Params = new URLSearchParams();
+				if (Days) Params.append("days", Days.toString());
+				return WithRetry(() =>
+					FetchWithAuthentication<{
 						totalSessions: number;
 						avgEventsPerSession: number;
 						sessionsByEventCount: Record<string, number>;
-					}>(`/stats/sessions?${params.toString()}`),
+					}>(`/stats/sessions?${Params.toString()}`),
 				);
 			},
 		},
-		status: {
-			getOverallStatus: () =>
-				withRetry(() =>
-					fetchWithAuth<{
+		Status: {
+			GetOverallStatus: () =>
+				WithRetry(() =>
+					FetchWithAuthentication<{
 						status:
 							| "operational"
 							| "degraded"
@@ -613,9 +660,9 @@ function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
 						}>;
 					}>("/status"),
 				),
-			getChecks: () =>
-				withRetry(() =>
-					fetchWithAuth<
+			GetChecks: () =>
+				WithRetry(() =>
+					FetchWithAuthentication<
 						Array<{
 							id: string;
 							name: string;
@@ -626,58 +673,59 @@ function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
 						}>
 					>("/status/checks"),
 				),
-			getCheck: (id) =>
-				withRetry(() =>
-					fetchWithAuth<{
+			GetCheck: (Identifier) =>
+				WithRetry(() =>
+					FetchWithAuthentication<{
 						id: string;
 						name: string;
 						status: string;
 						lastChecked: string;
 						latency?: number;
 						message?: string;
-					}>(`/status/checks/${id}`),
+					}>(`/status/checks/${Identifier}`),
 				),
-			getHistory: (limit, checkId) => {
-				const params = new URLSearchParams();
-				if (limit) params.append("limit", limit.toString());
-				if (checkId) params.append("checkId", checkId);
-				return withRetry(() =>
-					fetchWithAuth<
+			GetHistory: (Limit, CheckIdentifier) => {
+				const Params = new URLSearchParams();
+				if (Limit) Params.append("limit", Limit.toString());
+				if (CheckIdentifier)
+					Params.append("checkId", CheckIdentifier);
+				return WithRetry(() =>
+					FetchWithAuthentication<
 						Array<{
 							checkId: string;
 							status: string;
 							timestamp: string;
 							message?: string;
 						}>
-					>(`/status/history?${params.toString()}`),
+					>(`/status/history?${Params.toString()}`),
 				);
 			},
-			getGitHubCommits: (branch, limit) => {
-				const params = new URLSearchParams();
-				if (branch) params.append("branch", branch);
-				if (limit) params.append("limit", limit.toString());
-				return withRetry(() =>
-					fetchWithAuth<GitHubCommit[]>(
-						`/status/github/commits?${params.toString()}`,
+			GetGitHubCommits: (Branch, Limit) => {
+				const Params = new URLSearchParams();
+				if (Branch) Params.append("branch", Branch);
+				if (Limit) Params.append("limit", Limit.toString());
+				return WithRetry(() =>
+					FetchWithAuthentication<GitHubCommit[]>(
+						`/status/github/commits?${Params.toString()}`,
 					),
 				);
 			},
-			getGitHubActions: (limit) => {
-				const params = new URLSearchParams();
-				if (limit) params.append("limit", limit.toString());
-				return withRetry(() =>
-					fetchWithAuth<GitHubActionRun[]>(
-						`/status/github/actions?${params.toString()}`,
+			GetGitHubActions: (Limit) => {
+				const Params = new URLSearchParams();
+				if (Limit) Params.append("limit", Limit.toString());
+				return WithRetry(() =>
+					FetchWithAuthentication<GitHubActionRun[]>(
+						`/status/github/actions?${Params.toString()}`,
 					),
 				);
 			},
-			getGitHubIssues: (state, limit) => {
-				const params = new URLSearchParams();
-				if (state) params.append("state", state);
-				if (limit) params.append("limit", limit.toString());
-				return withRetry(() =>
-					fetchWithAuth<GitHubIssue[]>(
-						`/status/github/issues?${params.toString()}`,
+			GetGitHubIssues: (State, Limit) => {
+				const Params = new URLSearchParams();
+				if (State) Params.append("state", State);
+				if (Limit) Params.append("limit", Limit.toString());
+				return WithRetry(() =>
+					FetchWithAuthentication<GitHubIssue[]>(
+						`/status/github/issues?${Params.toString()}`,
 					),
 				);
 			},
@@ -685,48 +733,49 @@ function createWorkerClient(baseUrl: string): Partial<WorkersClient> {
 	};
 }
 
-let clientInstance: WorkersClient | null = null;
+let ClientInstance: WorkersClient | null = null;
 
-export function getWorkersClient(): WorkersClient {
-	if (clientInstance) {
-		return clientInstance;
+export function GetWorkersClient(): WorkersClient {
+	if (ClientInstance) {
+		return ClientInstance;
 	}
 
-	const authUrl = import.meta.env.PUBLIC_AUTH_WORKER_URL;
-	const downloadUrl = import.meta.env.PUBLIC_DOWNLOAD_WORKER_URL;
-	const analyticsUrl = import.meta.env.PUBLIC_ANALYTICS_WORKER_URL;
-	const frontendUrl = import.meta.env.PUBLIC_FRONTEND_URL;
+	const AuthenticationURL = import.meta.env.PUBLIC_AUTH_WORKER_URL;
+	const DownloadURL = import.meta.env.PUBLIC_DOWNLOAD_WORKER_URL;
+	const AnalyticsURL = import.meta.env.PUBLIC_ANALYTICS_WORKER_URL;
+	const FrontendURL = import.meta.env.PUBLIC_FRONTEND_URL;
 
-	if (!authUrl || !downloadUrl || !analyticsUrl) {
+	if (!AuthenticationURL || !DownloadURL || !AnalyticsURL) {
 		// During SSG pre-rendering, env vars may not be available.
 		// Return a no-op client that returns error responses instead of throwing.
-		const noopResponse = {
+		const NoopResponse = {
 			success: false as const,
 			error: "Worker URLs not configured",
 		};
-		const noop = () => Promise.resolve(noopResponse);
-		const noopHandler = new Proxy({} as WorkersClient, {
-			get: () => new Proxy({}, { get: () => noop }),
+		const Noop = () => Promise.resolve(NoopResponse);
+		const NoopHandler = new Proxy({} as WorkersClient, {
+			get: () => new Proxy({}, { get: () => Noop }),
 		});
-		clientInstance = noopHandler;
-		return clientInstance;
+		ClientInstance = NoopHandler;
+		return ClientInstance;
 	}
 
-	clientInstance = {
-		auth: createWorkerClient(authUrl).auth as WorkersClient["auth"],
-		download: createWorkerClient(downloadUrl)
-			.download as WorkersClient["download"],
-		analytics: createWorkerClient(analyticsUrl)
-			.analytics as WorkersClient["analytics"],
-		status: analyticsUrl
-			? (createWorkerClient(analyticsUrl)
-					.status as WorkersClient["status"])
+	ClientInstance = {
+		Authentication: CreateWorkerClient(AuthenticationURL)
+			.Authentication as WorkersClient["Authentication"],
+		Download: CreateWorkerClient(DownloadURL)
+			.Download as WorkersClient["Download"],
+		Analytics: CreateWorkerClient(AnalyticsURL)
+			.Analytics as WorkersClient["Analytics"],
+		Status: AnalyticsURL
+			? (CreateWorkerClient(AnalyticsURL)
+					.Status as WorkersClient["Status"])
 			: (undefined as any),
 	} as WorkersClient;
 
-	return clientInstance;
+	return ClientInstance;
 }
 
-export function clearWorkersClient(): void {
-	clientInstance = null;
+export function ClearWorkersClient(): void {
+	ClientInstance = null;
 }

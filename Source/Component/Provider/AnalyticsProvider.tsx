@@ -8,7 +8,7 @@ import {
 	type ReactNode,
 } from "react";
 
-import { getWorkersClient } from "../../Library/WorkerClient";
+import { GetWorkersClient } from "../../Library/WorkerClient";
 
 interface AnalyticsContextType {
 	track: (
@@ -26,12 +26,12 @@ const AnalyticsContext = createContext<AnalyticsContextType | null>(null);
 
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
 	const [Client, SetClient] = useState<ReturnType<
-		typeof getWorkersClient
+		typeof GetWorkersClient
 	> | null>(null);
 
 	useEffect(() => {
 		try {
-			SetClient(getWorkersClient());
+			SetClient(GetWorkersClient());
 		} catch (AnalyticsError) {
 			console.error("Failed to initialize analytics client:", AnalyticsError);
 		}
@@ -47,7 +47,7 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
 		}
 
 		try {
-			await Client.analytics.track(Event, Properties);
+			await Client.Analytics.Track(Event, Properties);
 		} catch (TrackError) {
 			console.error("Failed to track event:", TrackError);
 		}

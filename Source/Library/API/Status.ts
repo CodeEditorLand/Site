@@ -1,16 +1,16 @@
 import type GitHubActionRun from "../Interface/GitHubActionRun.js";
 import type GitHubCommit from "../Interface/GitHubCommit.js";
 import type GitHubIssue from "../Interface/GitHubIssue.js";
-import { getWorkersClient } from "../WorkerClient";
+import { GetWorkersClient } from "../WorkerClient";
 
 /**
  * Status API adapter
  * Provides clean, type-safe interface for status/health check operations
  */
 export class StatusAPI {
-	private workers = getWorkersClient();
+	private Workers = GetWorkersClient();
 
-	async getOverallStatus(): Promise<{
+	async GetOverallStatus(): Promise<{
 		status: "operational" | "degraded" | "outage" | "maintenance";
 		lastUpdate: string;
 		checks: Array<{
@@ -22,14 +22,16 @@ export class StatusAPI {
 			message?: string;
 		}>;
 	}> {
-		const response = await this.workers.status.getOverallStatus();
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch overall status");
+		const Response = await this.Workers.Status.GetOverallStatus();
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch overall status",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getChecks(): Promise<
+	async GetChecks(): Promise<
 		Array<{
 			id: string;
 			name: string;
@@ -39,14 +41,16 @@ export class StatusAPI {
 			message?: string;
 		}>
 	> {
-		const response = await this.workers.status.getChecks();
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch status checks");
+		const Response = await this.Workers.Status.GetChecks();
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch status checks",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getCheck(id: string): Promise<{
+	async GetCheck(Identifier: string): Promise<{
 		id: string;
 		name: string;
 		status: string;
@@ -54,16 +58,16 @@ export class StatusAPI {
 		latency?: number;
 		message?: string;
 	}> {
-		const response = await this.workers.status.getCheck(id);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch check");
+		const Response = await this.Workers.Status.GetCheck(Identifier);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to fetch check");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getHistory(
-		limit?: number,
-		checkId?: string,
+	async GetHistory(
+		Limit?: number,
+		CheckIdentifier?: string,
 	): Promise<
 		Array<{
 			checkId: string;
@@ -72,48 +76,59 @@ export class StatusAPI {
 			message?: string;
 		}>
 	> {
-		const response = await this.workers.status.getHistory(limit, checkId);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch status history");
+		const Response = await this.Workers.Status.GetHistory(
+			Limit,
+			CheckIdentifier,
+		);
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch status history",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getGitHubCommits(
-		branch?: string,
-		limit?: number,
+	async GetGitHubCommits(
+		Branch?: string,
+		Limit?: number,
 	): Promise<GitHubCommit[]> {
-		const response = await this.workers.status.getGitHubCommits(
-			branch,
-			limit,
+		const Response = await this.Workers.Status.GetGitHubCommits(
+			Branch,
+			Limit,
 		);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch GitHub commits");
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch GitHub commits",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getGitHubActions(limit?: number): Promise<GitHubActionRun[]> {
-		const response = await this.workers.status.getGitHubActions(limit);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch GitHub actions");
+	async GetGitHubActions(Limit?: number): Promise<GitHubActionRun[]> {
+		const Response = await this.Workers.Status.GetGitHubActions(Limit);
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch GitHub actions",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async getGitHubIssues(
-		state?: string,
-		limit?: number,
+	async GetGitHubIssues(
+		State?: string,
+		Limit?: number,
 	): Promise<GitHubIssue[]> {
-		const response = await this.workers.status.getGitHubIssues(
-			state,
-			limit,
+		const Response = await this.Workers.Status.GetGitHubIssues(
+			State,
+			Limit,
 		);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to fetch GitHub issues");
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Failed to fetch GitHub issues",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 }
 
-export const statusAPI = new StatusAPI();
+export default new StatusAPI();

@@ -1,14 +1,14 @@
 ---
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.license.title", {
+const MetaTitle = t("meta.license.title", {
 	defaultValue: "License | Code Editor Land",
 });
 
-const metaDescription = t("meta.license.description", {
+const MetaDescription = t("meta.license.description", {
 	defaultValue:
 		"Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license.",
 });
@@ -134,8 +134,8 @@ legal effect of CC0 on those rights.
 ---
 
 <Base
-	Title={metaTitle}
-	Description={metaDescription}
+	Title={MetaTitle}
+	Description={MetaDescription}
 	Url="https://editor.land/license"
 	lang="en">
 	<div class="container mx-auto max-w-4xl px-4 py-16">

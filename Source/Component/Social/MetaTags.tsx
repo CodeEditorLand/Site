@@ -1,4 +1,4 @@
-interface MetaTagsProps {
+interface MetaTagsProperty {
 	title: string;
 	description: string;
 	image?: string;
@@ -11,13 +11,7 @@ interface MetaTagsProps {
 	noIndex?: boolean;
 }
 
-/**
- * MetaTags component for generating comprehensive meta tags
- * Includes OpenGraph, Twitter Cards, and JSON-LD structured data
- * All content is dynamically passed from pages via props
- * Works with both SSR and client-side rendering
- */
-export function MetaTags({
+export default ({
 	title,
 	description,
 	image = "/Favicon/og-image.png",
@@ -28,34 +22,31 @@ export function MetaTags({
 	publishedTime,
 	author,
 	noIndex = false,
-}: MetaTagsProps) {
-	// Ensure title and description are never empty
-	const safeTitle = title || siteName;
-	const safeDescription = description || "The next-generation code editor";
+}: MetaTagsProperty) => {
+	const SafeTitle = title || siteName;
+	const SafeDescription = description || "The next-generation code editor";
 
-	// Build absolute URL
-	const baseUrl = "https://editor.land";
-	const siteUrl = url.startsWith("http")
+	const BaseURL = "https://editor.land";
+	const SiteURL = url.startsWith("http")
 		? url
 		: url.startsWith("/")
-			? `${baseUrl}${url}`
-			: baseUrl;
+			? `${BaseURL}${url}`
+			: BaseURL;
 
-	// JSON-LD structured data
-	const jsonLd: any = {
+	const JSONLD: any = {
 		"@context": "https://schema.org",
 		"@type": "WebSite",
 		"name": siteName,
-		"url": siteUrl,
-		"description": safeDescription,
+		"url": SiteURL,
+		"description": SafeDescription,
 	};
 
 	if (type === "article" && publishedTime) {
-		jsonLd.datePublished = publishedTime;
+		JSONLD.datePublished = publishedTime;
 	}
 
 	if (author) {
-		jsonLd.author = {
+		JSONLD.author = {
 			"@type": "Organization",
 			"name": author,
 		};
@@ -63,21 +54,18 @@ export function MetaTags({
 
 	return (
 		<>
-			{/* Basic Meta Tags */}
-			<title>{safeTitle}</title>
-			<meta name="description" content={safeDescription} />
+			<title>{SafeTitle}</title>
+			<meta name="description" content={SafeDescription} />
 			<meta
 				name="robots"
 				content={noIndex ? "noindex, nofollow" : "index, follow"}
 			/>
-			{/* Canonical URL */}
-			<link rel="canonical" href={siteUrl} />
+			<link rel="canonical" href={SiteURL} />
 
-			{/* OpenGraph / Facebook */}
 			<meta property="og:type" content={type} />
-			<meta property="og:url" content={siteUrl} />
-			<meta property="og:title" content={safeTitle} />
-			<meta property="og:description" content={safeDescription} />
+			<meta property="og:url" content={SiteURL} />
+			<meta property="og:title" content={SafeTitle} />
+			<meta property="og:description" content={SafeDescription} />
 			<meta
 				property="og:image"
 				content={
@@ -89,11 +77,10 @@ export function MetaTags({
 			<meta property="og:site_name" content={siteName} />
 			<meta property="og:locale" content={lang} />
 
-			{/* Twitter Card */}
 			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:url" content={siteUrl} />
-			<meta name="twitter:title" content={safeTitle} />
-			<meta name="twitter:description" content={safeDescription} />
+			<meta name="twitter:url" content={SiteURL} />
+			<meta name="twitter:title" content={SafeTitle} />
+			<meta name="twitter:description" content={SafeDescription} />
 			<meta
 				name="twitter:image"
 				content={
@@ -105,7 +92,6 @@ export function MetaTags({
 			<meta name="twitter:site" content="@CodeEditorLand" />
 			<meta name="twitter:creator" content="@CodeEditorLand" />
 
-			{/* Additional SEO metadata */}
 			<meta
 				name="viewport"
 				content="width=device-width, initial-scale=1.0"
@@ -113,15 +99,12 @@ export function MetaTags({
 			<meta name="theme-color" content="var(--color-background)" />
 			<meta name="format-detection" content="telephone=no" />
 
-			{/* JSON-LD structured data */}
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{
-					__html: JSON.stringify(jsonLd),
+					__html: JSON.stringify(JSONLD),
 				}}
 			/>
 		</>
 	);
-}
-
-export default MetaTags;
+};

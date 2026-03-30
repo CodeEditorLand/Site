@@ -1,136 +1,138 @@
 import i18n from "i18next";
 
 // Bulgarian
-import bgAccount from "./Locale/Bg/Account.json";
-import bgCommon from "./Locale/Bg/Common.json";
-import bgDownload from "./Locale/Bg/Download.json";
-import bgFooter from "./Locale/Bg/Footer.json";
-import bgHeader from "./Locale/Bg/Header.json";
-import bgHome from "./Locale/Bg/Home.json";
-import bgMeta from "./Locale/Bg/Meta.json";
-import bgVerify from "./Locale/Bg/Verify.json";
+import BgAccount from "./Locale/Bg/Account.json";
+import BgCommon from "./Locale/Bg/Common.json";
+import BgDownload from "./Locale/Bg/Download.json";
+import BgFooter from "./Locale/Bg/Footer.json";
+import BgHeader from "./Locale/Bg/Header.json";
+import BgHome from "./Locale/Bg/Home.json";
+import BgMeta from "./Locale/Bg/Meta.json";
+import BgVerify from "./Locale/Bg/Verify.json";
 // German
-import deAccount from "./Locale/De/Account.json";
-import deCommon from "./Locale/De/Common.json";
-import deDownload from "./Locale/De/Download.json";
-import deFooter from "./Locale/De/Footer.json";
-import deHeader from "./Locale/De/Header.json";
-import deHome from "./Locale/De/Home.json";
-import deMeta from "./Locale/De/Meta.json";
-import deVerify from "./Locale/De/Verify.json";
+import DeAccount from "./Locale/De/Account.json";
+import DeCommon from "./Locale/De/Common.json";
+import DeDownload from "./Locale/De/Download.json";
+import DeFooter from "./Locale/De/Footer.json";
+import DeHeader from "./Locale/De/Header.json";
+import DeHome from "./Locale/De/Home.json";
+import DeMeta from "./Locale/De/Meta.json";
+import DeVerify from "./Locale/De/Verify.json";
 // English
-import enAccount from "./Locale/En/Account.json";
-import enCommon from "./Locale/En/Common.json";
-import enDownload from "./Locale/En/Download.json";
-import enFooter from "./Locale/En/Footer.json";
-import enHeader from "./Locale/En/Header.json";
-import enHome from "./Locale/En/Home.json";
-import enMeta from "./Locale/En/Meta.json";
-import enVerify from "./Locale/En/Verify.json";
+import EnAccount from "./Locale/En/Account.json";
+import EnCommon from "./Locale/En/Common.json";
+import EnDownload from "./Locale/En/Download.json";
+import EnFooter from "./Locale/En/Footer.json";
+import EnHeader from "./Locale/En/Header.json";
+import EnHome from "./Locale/En/Home.json";
+import EnMeta from "./Locale/En/Meta.json";
+import EnVerify from "./Locale/En/Verify.json";
 // Spanish
-import esAccount from "./Locale/Es/Account.json";
-import esCommon from "./Locale/Es/Common.json";
-import esDownload from "./Locale/Es/Download.json";
-import esFooter from "./Locale/Es/Footer.json";
-import esHeader from "./Locale/Es/Header.json";
-import esHome from "./Locale/Es/Home.json";
-import esMeta from "./Locale/Es/Meta.json";
-import esVerify from "./Locale/Es/Verify.json";
+import EsAccount from "./Locale/Es/Account.json";
+import EsCommon from "./Locale/Es/Common.json";
+import EsDownload from "./Locale/Es/Download.json";
+import EsFooter from "./Locale/Es/Footer.json";
+import EsHeader from "./Locale/Es/Header.json";
+import EsHome from "./Locale/Es/Home.json";
+import EsMeta from "./Locale/Es/Meta.json";
+import EsVerify from "./Locale/Es/Verify.json";
 // French
-import frAccount from "./Locale/Fr/Account.json";
-import frCommon from "./Locale/Fr/Common.json";
-import frDownload from "./Locale/Fr/Download.json";
-import frFooter from "./Locale/Fr/Footer.json";
-import frHeader from "./Locale/Fr/Header.json";
-import frHome from "./Locale/Fr/Home.json";
-import frMeta from "./Locale/Fr/Meta.json";
-import frVerify from "./Locale/Fr/Verify.json";
+import FrAccount from "./Locale/Fr/Account.json";
+import FrCommon from "./Locale/Fr/Common.json";
+import FrDownload from "./Locale/Fr/Download.json";
+import FrFooter from "./Locale/Fr/Footer.json";
+import FrHeader from "./Locale/Fr/Header.json";
+import FrHome from "./Locale/Fr/Home.json";
+import FrMeta from "./Locale/Fr/Meta.json";
+import FrVerify from "./Locale/Fr/Verify.json";
 
-const supportedLocales = ["en", "bg", "de", "fr", "es"];
+const SupportedLocaleList = ["en", "bg", "de", "fr", "es"];
 
-export async function getLocale(request?: Request): Promise<string> {
-	if (!request) {
+export async function GetLocale(Request?: Request): Promise<string> {
+	if (!Request) {
 		return "en";
 	}
 
-	const url = new URL(request.url);
-	const cookie = request.headers.get("cookie");
-	const acceptLanguage = request.headers.get("accept-language");
+	const URL = new globalThis.URL(Request.url);
+	const Cookie = Request.headers.get("cookie");
+	const AcceptLanguage = Request.headers.get("accept-language");
 
-	// Priority: URL param > cookie > Accept-Language header
-	const urlParam = url.searchParams.get("lng");
-	if (urlParam && supportedLocales.includes(urlParam)) return urlParam;
+	const URLParameter = URL.searchParams.get("lng");
+	if (URLParameter && SupportedLocaleList.includes(URLParameter))
+		return URLParameter;
 
-	if (cookie) {
-		const match = cookie.match(/LOCALE=([^;]+)/);
-		if (match?.[1] && supportedLocales.includes(match[1])) return match[1];
+	if (Cookie) {
+		const Match = Cookie.match(/LOCALE=([^;]+)/);
+		if (Match?.[1] && SupportedLocaleList.includes(Match[1]))
+			return Match[1];
 	}
 
-	if (acceptLanguage) {
-		const languages = acceptLanguage
-			.split(",")
-			.map((lang) => lang.split(";")[0]?.trim());
-		for (const lang of languages) {
-			if (lang && supportedLocales.includes(lang)) return lang;
+	if (AcceptLanguage) {
+		const LanguageList = AcceptLanguage.split(",").map(
+			(Language) => Language.split(";")[0]?.trim(),
+		);
+		for (const Language of LanguageList) {
+			if (Language && SupportedLocaleList.includes(Language))
+				return Language;
 		}
 	}
 
 	return "en";
 }
 
-export function getI18n(req?: Request) {
+export function GetI18n(Request?: Request) {
 	if (!i18n.isInitialized) {
 		i18n.init({
 			resources: {
 				en: {
-					common: enCommon,
-					home: enHome,
-					download: enDownload,
-					account: enAccount,
-					verify: enVerify,
-					header: enHeader,
-					footer: enFooter,
-					meta: enMeta,
+					common: EnCommon,
+					home: EnHome,
+					download: EnDownload,
+					account: EnAccount,
+					verify: EnVerify,
+					header: EnHeader,
+					footer: EnFooter,
+					meta: EnMeta,
 				},
 				bg: {
-					common: bgCommon,
-					home: bgHome,
-					download: bgDownload,
-					account: bgAccount,
-					verify: bgVerify,
-					header: bgHeader,
-					footer: bgFooter,
-					meta: bgMeta,
+					common: BgCommon,
+					home: BgHome,
+					download: BgDownload,
+					account: BgAccount,
+					verify: BgVerify,
+					header: BgHeader,
+					footer: BgFooter,
+					meta: BgMeta,
 				},
 				de: {
-					common: deCommon,
-					home: deHome,
-					download: deDownload,
-					account: deAccount,
-					verify: deVerify,
-					header: deHeader,
-					footer: deFooter,
-					meta: deMeta,
+					common: DeCommon,
+					home: DeHome,
+					download: DeDownload,
+					account: DeAccount,
+					verify: DeVerify,
+					header: DeHeader,
+					footer: DeFooter,
+					meta: DeMeta,
 				},
 				fr: {
-					common: frCommon,
-					home: frHome,
-					download: frDownload,
-					account: frAccount,
-					verify: frVerify,
-					header: frHeader,
-					footer: frFooter,
-					meta: frMeta,
+					common: FrCommon,
+					home: FrHome,
+					download: FrDownload,
+					account: FrAccount,
+					verify: FrVerify,
+					header: FrHeader,
+					footer: FrFooter,
+					meta: FrMeta,
 				},
 				es: {
-					common: esCommon,
-					home: esHome,
-					download: esDownload,
-					account: esAccount,
-					verify: esVerify,
-					header: esHeader,
-					footer: esFooter,
-					meta: esMeta,
+					common: EsCommon,
+					home: EsHome,
+					download: EsDownload,
+					account: EsAccount,
+					verify: EsVerify,
+					header: EsHeader,
+					footer: EsFooter,
+					meta: EsMeta,
 				},
 			},
 			lng: "en",
@@ -154,38 +156,38 @@ export function getI18n(req?: Request) {
 		return i18n.getFixedT("en");
 	}
 
-	if (!req) {
+	if (!Request) {
 		return i18n.getFixedT("en");
 	}
 
 	try {
-		const url = new URL(req.url);
-		const urlParam = url.searchParams.get("lng");
-		if (urlParam && supportedLocales.includes(urlParam)) {
-			return i18n.getFixedT(urlParam);
+		const URL = new globalThis.URL(Request.url);
+		const URLParameter = URL.searchParams.get("lng");
+		if (URLParameter && SupportedLocaleList.includes(URLParameter)) {
+			return i18n.getFixedT(URLParameter);
 		}
 
-		const cookie = req.headers.get("cookie");
-		if (cookie) {
-			const match = cookie.match(/LOCALE=([^;]+)/);
-			if (match?.[1] && supportedLocales.includes(match[1])) {
-				return i18n.getFixedT(match[1]);
+		const Cookie = Request.headers.get("cookie");
+		if (Cookie) {
+			const Match = Cookie.match(/LOCALE=([^;]+)/);
+			if (Match?.[1] && SupportedLocaleList.includes(Match[1])) {
+				return i18n.getFixedT(Match[1]);
 			}
 		}
 
-		const acceptLanguage = req.headers.get("accept-language");
-		if (acceptLanguage) {
-			const languages = acceptLanguage
-				.split(",")
-				.map((lang) => lang.split(";")[0]?.trim());
-			for (const lang of languages) {
-				if (lang && supportedLocales.includes(lang)) {
-					return i18n.getFixedT(lang);
+		const AcceptLanguage = Request.headers.get("accept-language");
+		if (AcceptLanguage) {
+			const LanguageList = AcceptLanguage.split(",").map(
+				(Language) => Language.split(";")[0]?.trim(),
+			);
+			for (const Language of LanguageList) {
+				if (Language && SupportedLocaleList.includes(Language)) {
+					return i18n.getFixedT(Language);
 				}
 			}
 		}
-	} catch (error) {
-		console.warn("i18n locale detection failed:", error);
+	} catch (Error) {
+		console.warn("i18n locale detection failed:", Error);
 	}
 
 	return i18n.getFixedT("en");

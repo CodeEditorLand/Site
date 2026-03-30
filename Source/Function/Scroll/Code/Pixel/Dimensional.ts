@@ -24,7 +24,7 @@ export default class {
 		this.InfluenceMouse = InfluenceMouse;
 	}
 
-	Calculate(dx: number, dy: number): MovementDimensional {
+	Calculate(DX: number, DY: number): MovementDimensional {
 		const {
 			DIMENSION,
 			AMPLITUDE_BASE,
@@ -54,8 +54,8 @@ export default class {
 					Index,
 					Value,
 					Amplitude,
-					dx,
-					dy,
+					DX,
+					DY,
 					FactorMouse,
 					COLOR_STEPS,
 				);
@@ -70,25 +70,25 @@ export default class {
 		Accumulate: MovementDimensional,
 		Dimension: number,
 		Value: number,
-		amplitude: number,
+		Amplitude: number,
 		DX: number,
 		DY: number,
 		FactorMouse: number,
-		colorSteps: number,
+		ColorStep: number,
 	): void {
 		switch (Dimension) {
 			case 0:
-				Accumulate.X = Value * amplitude + DX * FactorMouse;
+				Accumulate.X = Value * Amplitude + DX * FactorMouse;
 
 				break;
 
 			case 1:
-				Accumulate.Y = Value * amplitude + DY * FactorMouse;
+				Accumulate.Y = Value * Amplitude + DY * FactorMouse;
 
 				break;
 
 			case 2:
-				Accumulate.Rotation = Value * colorSteps * FactorMouse;
+				Accumulate.Rotation = Value * ColorStep * FactorMouse;
 
 				break;
 

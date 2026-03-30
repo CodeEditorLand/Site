@@ -1,11 +1,11 @@
 ---
 import { HomePage } from "../Component/Dynamic/HomePage";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const homeContent = {
+const HomeContent = {
 	hero: {
 		badge: {
 			text: t("home.hero.badge", {
@@ -367,8 +367,8 @@ const homeContent = {
 				try {
 					const { downloadsAPI } =
 						await import("../Library/API/Download");
-					const info = await downloadsAPI.getInfo(platform.id);
-					window.open(info.downloadUrl, "_blank");
+					const Information = await downloadsAPI.getInfo(platform.id);
+					window.open(Information.downloadUrl, "_blank");
 					await downloadsAPI.trackDownload(platform.id);
 				} catch (error) {
 					console.error("Download failed:", error);
@@ -507,16 +507,16 @@ const homeContent = {
 	},
 };
 
-const metaTitle = t("meta.home.title", {
+const MetaTitle = t("meta.home.title", {
 	defaultValue: "Land | The Next-Generation Code Editor",
 });
-const metaDescription = t("meta.home.description", {
+const MetaDescription = t("meta.home.description", {
 	defaultValue:
 		"Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code's power without the Electron bloat.",
 });
 ---
 
-<Base Title={metaTitle} Description={metaDescription} lang="en">
+<Base Title={MetaTitle} Description={MetaDescription} lang="en">
 	<Fragment slot="Head">
 		<script
 			type="application/ld+json"
@@ -565,8 +565,8 @@ const metaDescription = t("meta.home.description", {
 		/>
 	</Fragment>
 	<HomePage
-		content={homeContent}
-		metaTitle={metaTitle}
-		metaDescription={metaDescription}
+		content={HomeContent}
+		metaTitle={MetaTitle}
+		metaDescription={MetaDescription}
 	/>
 </Base>

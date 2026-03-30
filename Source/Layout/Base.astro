@@ -7,40 +7,40 @@ import { Footer } from "../Component/Layout/Footer";
 import { AnalyticsProvider } from "../Component/Provider/AnalyticsProvider";
 import { PageviewTracker } from "../Component/Provider/PageviewTracker";
 import MetaTags from "../Component/Social/MetaTags";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const canonicalPath =
+const CanonicalPath =
 	Astro.url.pathname === "/" ? "" : Astro.url.pathname.replace(/\/$/, "");
-const defaultUrl = `https://editor.land${canonicalPath}`;
+const DefaultURL = `https://editor.land${CanonicalPath}`;
 
 const {
 	Title,
 	Description,
-	lang = "en",
-	dir = "ltr",
+	Language = "en",
+	Direction = "ltr",
 	Image = "/Favicon/og-image.png",
-	Url = defaultUrl,
+	Url = DefaultURL,
 	Type = "website",
-	noIndex = false,
+	NoIndex = false,
 } = Astro.props;
 
 interface Props {
 	Title?: string;
 	Description?: string;
-	lang?: string;
-	dir?: string;
+	Language?: string;
+	Direction?: string;
 	Image?: string;
 	Url?: string;
 	Type?: "website" | "article";
-	noIndex?: boolean;
+	NoIndex?: boolean;
 }
 
 // Get i18n instance - works in both SSR and static with fallback
-const t = getI18n();
+const t = GetI18n();
 ---
 
 <!doctype html>
-<html lang={lang} class="no-js" dir={dir}>
+<html lang={Language} class="no-js" dir={Direction}>
 	<head>
 		<script>
 			document.documentElement.classList.remove("no-js");
@@ -55,8 +55,8 @@ const t = getI18n();
 			image={Image}
 			url={Url}
 			type={Type}
-			lang={lang}
-			noIndex={noIndex}
+			lang={Language}
+			noIndex={NoIndex}
 		/>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
@@ -124,6 +124,18 @@ const t = getI18n();
 
 		<script>
 			import "@Script/Firebase";
+		</script>
+
+		<script>
+			const ReducedMotion = window.matchMedia(
+				"(prefers-reduced-motion: reduce)",
+			).matches;
+
+			if (!ReducedMotion) {
+				const Staccato = await import("@Function/Noise/Staccato.js");
+				const Engine = await Staccato.default;
+				Engine.Start();
+			}
 		</script>
 
 		<a

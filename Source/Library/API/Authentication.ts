@@ -1,104 +1,114 @@
 import type Session from "../Interface/Session.js";
 import type User from "../Interface/User.js";
-import { getWorkersClient } from "../WorkerClient";
+import { GetWorkersClient } from "../WorkerClient";
 
 /**
  * Authentication API adapter
  * Provides clean, type-safe interface for auth operations
  */
 export class AuthAPI {
-	private workers = getWorkersClient();
+	private Workers = GetWorkersClient();
 
-	async login(
-		email: string,
-		password: string,
+	async Login(
+		Email: string,
+		Password: string,
 	): Promise<{ user: User; session: Session }> {
-		const response = await this.workers.auth.login(email, password);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Login failed");
-		}
-		return response.data;
-	}
-
-	async register(
-		email: string,
-		password: string,
-		username: string,
-		displayName?: string,
-	): Promise<{ user: User; session: Session }> {
-		const response = await this.workers.auth.register(
-			email,
-			password,
-			username,
-			displayName,
+		const Response = await this.Workers.Authentication.Login(
+			Email,
+			Password,
 		);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Registration failed");
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Login failed");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async logout(): Promise<void> {
-		const response = await this.workers.auth.logout();
-		if (!response.success) {
-			throw new Error(response.error || "Logout failed");
+	async Register(
+		Email: string,
+		Password: string,
+		Username: string,
+		DisplayName?: string,
+	): Promise<{ user: User; session: Session }> {
+		const Response = await this.Workers.Authentication.Register(
+			Email,
+			Password,
+			Username,
+			DisplayName,
+		);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Registration failed");
+		}
+		return Response.data;
+	}
+
+	async Logout(): Promise<void> {
+		const Response = await this.Workers.Authentication.Logout();
+		if (!Response.success) {
+			throw new Error(Response.error || "Logout failed");
 		}
 	}
 
-	async refresh(
-		token: string,
+	async Refresh(
+		Token: string,
 	): Promise<{ token: string; expiresIn: number }> {
-		const response = await this.workers.auth.refresh(token);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Token refresh failed");
+		const Response = await this.Workers.Authentication.Refresh(Token);
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Token refresh failed");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async verifyEmail(token: string): Promise<void> {
-		const response = await this.workers.auth.verifyEmail(token);
-		if (!response.success) {
-			throw new Error(response.error || "Email verification failed");
+	async VerifyEmail(Token: string): Promise<void> {
+		const Response = await this.Workers.Authentication.VerifyEmail(Token);
+		if (!Response.success) {
+			throw new Error(Response.error || "Email verification failed");
 		}
 	}
 
-	async resendVerification(): Promise<void> {
-		const response = await this.workers.auth.resendVerification();
-		if (!response.success) {
+	async ResendVerification(): Promise<void> {
+		const Response =
+			await this.Workers.Authentication.ResendVerification();
+		if (!Response.success) {
 			throw new Error(
-				response.error || "Failed to resend verification email",
+				Response.error || "Failed to resend verification email",
 			);
 		}
 	}
 
-	async forgotPassword(email: string): Promise<{ message: string }> {
-		const response = await this.workers.auth.forgotPassword(email);
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Password reset request failed");
+	async ForgotPassword(Email: string): Promise<{ message: string }> {
+		const Response =
+			await this.Workers.Authentication.ForgotPassword(Email);
+		if (!Response.success || !Response.data) {
+			throw new Error(
+				Response.error || "Password reset request failed",
+			);
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async resetPassword(token: string, password: string): Promise<void> {
-		const response = await this.workers.auth.resetPassword(token, password);
-		if (!response.success) {
-			throw new Error(response.error || "Password reset failed");
+	async ResetPassword(Token: string, Password: string): Promise<void> {
+		const Response = await this.Workers.Authentication.ResetPassword(
+			Token,
+			Password,
+		);
+		if (!Response.success) {
+			throw new Error(Response.error || "Password reset failed");
 		}
 	}
 
-	async getSession(): Promise<{ user: User; expiresIn: number }> {
-		const response = await this.workers.auth.getSession();
-		if (!response.success || !response.data) {
-			throw new Error(response.error || "Failed to get session");
+	async GetSession(): Promise<{ user: User; expiresIn: number }> {
+		const Response = await this.Workers.Authentication.GetSession();
+		if (!Response.success || !Response.data) {
+			throw new Error(Response.error || "Failed to get session");
 		}
-		return response.data;
+		return Response.data;
 	}
 
-	async oauth(
-		provider: "github" | "google" | "gitlab",
+	async OAuth(
+		Provider: "github" | "google" | "gitlab",
 	): Promise<{ success: boolean }> {
-		return await this.workers.auth.oauth(provider);
+		return await this.Workers.Authentication.OAuth(Provider);
 	}
 }
 
-export const authAPI = new AuthAPI();
+export default new AuthAPI();

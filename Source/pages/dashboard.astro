@@ -1,22 +1,22 @@
 ---
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.dashboard.title", {
+const MetaTitle = t("meta.dashboard.title", {
 	defaultValue: "Dashboard | Code Editor Land",
 });
 
-const metaDescription = t("meta.dashboard.description", {
+const MetaDescription = t("meta.dashboard.description", {
 	defaultValue: "Your Code Editor Land account dashboard.",
 });
 ---
 
 <Base
-	Title={metaTitle}
-	Description={metaDescription}
+	Title={MetaTitle}
+	Description={MetaDescription}
 	Url="https://editor.land/dashboard"
 	lang="en">
 	<Header client:load />

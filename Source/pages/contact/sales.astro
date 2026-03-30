@@ -1,23 +1,23 @@
 ---
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
-import { getI18n } from "../../Library/I18n/Server";
+import { GetI18n } from "../../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.contact.sales.title", {
+const MetaTitle = t("meta.contact.sales.title", {
 	defaultValue: "Enterprise Inquiries | Code Editor Land",
 });
 
-const metaDescription = t("meta.contact.sales.description", {
+const MetaDescription = t("meta.contact.sales.description", {
 	defaultValue:
 		"Contact the Code Editor Land team about enterprise licensing, custom deployments, and volume pricing.",
 });
 ---
 
 <Base
-	Title={metaTitle}
-	Description={metaDescription}
+	Title={MetaTitle}
+	Description={MetaDescription}
 	Url="https://editor.land/contact/sales"
 	lang="en">
 	<Header client:load />

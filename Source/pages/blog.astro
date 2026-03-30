@@ -1,23 +1,23 @@
 ---
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Library/I18n/Server";
+import { GetI18n } from "../Library/I18n/Server";
 
-const t = getI18n();
+const t = GetI18n();
 
-const metaTitle = t("meta.blog.title", {
+const MetaTitle = t("meta.blog.title", {
 	defaultValue: "Blog | Code Editor Land",
 });
 
-const metaDescription = t("meta.blog.description", {
+const MetaDescription = t("meta.blog.description", {
 	defaultValue:
 		"News, updates, and technical articles from the Code Editor Land team.",
 });
 ---
 
 <Base
-	Title={metaTitle}
-	Description={metaDescription}
+	Title={MetaTitle}
+	Description={MetaDescription}
 	Url="https://editor.land/blog"
 	lang="en">
 	<Header client:load />
