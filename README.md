@@ -4,7 +4,7 @@
 			<h3 align="left">WebSite</h3>
 		</td>
 		<td align="left" valign="middle">
-			<h3 align="left">🌐</h3>
+			<h3 align="left">🗾</h3>
 		</td>
 		<td align="left" valign="middle">
 			<h3 align="left"> + </h3>
@@ -49,7 +49,7 @@
 
 ---
 
-# **WebSite** 🌐
+# **WebSite** 🗾
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://github.com/CodeEditorLand/WebSite/tree/Current/LICENSE)
 [![Astro](https://img.shields.io/badge/Astro-5.x-FF5D53.svg)](https://Astro.Build)
