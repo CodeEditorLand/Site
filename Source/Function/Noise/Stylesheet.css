@@ -1,10 +1,30 @@
 :root {
+	/* Core channels */
 	--Staccato: 0;
 	--StaccatoRaw: 0;
 	--StaccatoPhase: 0;
+
+	/* Extended channels */
+	--StaccatoColor: 0;
+	--StaccatoRhythm: 0;
+	--StaccatoMorph: 0;
+	--StaccatoBorder: 0;
+	--StaccatoGlow: 0;
+
+	/* Attention layout (per-element, set by JS) */
 	--AttentionOffsetX: 0px;
 	--AttentionOffsetY: 0px;
+	--AttentionRotation: 0deg;
+	--AttentionScale: 1;
+	--AttentionDelay: 0ms;
+	--AttentionOpacity: 1;
+
+	/* Per-element seed (set by JS SeedElement) */
+	--StaccatoSeed: 0;
+	--StaccatoSeedPhase: 0;
 }
+
+/* ─── Movement ─────────────────────────────────────────── */
 
 .StaccatoTranslate {
 	transform: translate(
@@ -23,24 +43,333 @@
 
 .StaccatoJitter {
 	transform: translate(
-		calc(var(--Staccato) * 8px),
-		calc(var(--StaccatoPhase) * 6px)
+		calc(var(--Staccato) * 8px + var(--StaccatoSeed, 0) * 4px),
+		calc(var(--StaccatoPhase) * 6px + var(--StaccatoSeedPhase, 0) * 3px)
 	);
 }
+
+.StaccatoFloat {
+	transform: translate(
+			calc(var(--StaccatoRaw) * 6px + var(--AttentionOffsetX)),
+			calc(var(--StaccatoPhase) * 4px + var(--AttentionOffsetY))
+		)
+		rotate(var(--AttentionRotation, 0deg))
+		scale(var(--AttentionScale, 1));
+}
+
+.StaccatoRotate {
+	transform: rotate(
+		calc(var(--Staccato) * 2deg + var(--AttentionRotation, 0deg))
+	);
+}
+
+/* ─── Opacity & Visibility ─────────────────────────────── */
 
 .StaccatoOpacity {
 	opacity: calc(0.7 + var(--StaccatoRaw) * 0.3);
 }
 
+.StaccatoBreath {
+	opacity: calc(
+		var(--AttentionOpacity, 0.85) + var(--StaccatoRaw) * 0.15
+	);
+}
+
+.StaccatoPulse {
+	opacity: calc(0.5 + var(--StaccatoRhythm) * 0.5);
+}
+
+/* ─── Color Channels ───────────────────────────────────── */
+
+.StaccatoColorShift {
+	filter: hue-rotate(calc(var(--StaccatoColor) * 8deg));
+}
+
+.StaccatoColorAccent {
+	--_Accent: calc(0.5 + var(--StaccatoColor) * 0.15);
+	border-color: hsl(0 0% calc(var(--_Accent) * 100%));
+}
+
+/* ─── Border & Outline ─────────────────────────────────── */
+
+.StaccatoBorderWeight {
+	border-width: calc(1px + var(--StaccatoBorder) * 0.5px);
+}
+
+.StaccatoBorderShimmer {
+	border-color: hsl(
+		0 0% calc(85% + var(--StaccatoBorder) * 5%)
+	);
+}
+
+.StaccatoOutlineGlow {
+	outline: calc(1px + var(--StaccatoGlow) * 1px) solid
+		hsl(0 0% calc(70% + var(--StaccatoGlow) * 15%));
+	outline-offset: calc(2px + var(--StaccatoGlow) * 2px);
+}
+
+/* ─── Glow & Shadow ────────────────────────────────────── */
+
+.StaccatoGlow {
+	box-shadow: 0 0 calc(4px + var(--StaccatoGlow) * 8px)
+		hsl(0 0% calc(80% + var(--StaccatoGlow) * 10%));
+}
+
+.StaccatoShadowLift {
+	box-shadow: 0 calc(2px + var(--StaccatoRaw) * 4px)
+		calc(8px + var(--StaccatoRaw) * 8px)
+		hsl(0 0% 0% / calc(0.04 + var(--StaccatoRaw) * 0.03));
+}
+
+/* ─── Morphing (shape interpolation) ───────────────────── */
+
+.StaccatoMorphRadius {
+	border-radius: calc(var(--StaccatoMorph) * 2px);
+}
+
+.StaccatoMorphPadding {
+	padding: calc(1rem + var(--StaccatoMorph) * 0.15rem);
+}
+
+.StaccatoMorphGap {
+	gap: calc(1rem + var(--StaccatoMorph) * 0.25rem);
+}
+
+/* ─── Rhythm (binary beat) ─────────────────────────────── */
+
+.StaccatoRhythmBeat {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.02));
+}
+
+.StaccatoRhythmDot {
+	opacity: calc(0.3 + var(--StaccatoRhythm) * 0.7);
+}
+
+/* ─── Interaction Composites ───────────────────────────── */
+
+/* Hero-as-Button: entire section is interactive */
+.StaccatoHeroButton {
+	cursor: pointer;
+	transform: translate(
+			calc(var(--StaccatoRaw) * 3px),
+			calc(var(--StaccatoPhase) * 2px)
+		)
+		scale(calc(1 + var(--StaccatoRhythm) * 0.005));
+	transition: box-shadow 0.2s ease;
+}
+.StaccatoHeroButton:hover {
+	box-shadow: 0 0 calc(12px + var(--StaccatoGlow) * 12px)
+		hsl(0 0% 0% / 0.06);
+}
+.StaccatoHeroButton:active {
+	transform: translate(
+			calc(var(--StaccatoRaw) * 1px),
+			calc(var(--StaccatoPhase) * 1px + 1px)
+		)
+		scale(0.995);
+}
+
+/* Card with full noise treatment */
+.StaccatoCard {
+	transform: translate(
+			var(--AttentionOffsetX, 0px),
+			var(--AttentionOffsetY, 0px)
+		)
+		rotate(var(--AttentionRotation, 0deg))
+		scale(var(--AttentionScale, 1));
+	border-width: calc(1px + var(--StaccatoBorder) * 0.3px);
+	box-shadow: 0 calc(1px + var(--StaccatoRaw) * 3px)
+		calc(4px + var(--StaccatoRaw) * 6px)
+		hsl(0 0% 0% / calc(0.03 + var(--StaccatoRaw) * 0.02));
+	opacity: var(--AttentionOpacity, 1);
+	transition-delay: var(--AttentionDelay, 0ms);
+}
+
+/* Button with noise-driven state transitions */
+.StaccatoButton {
+	transform: translate(
+		calc(var(--StaccatoRaw) * 1px),
+		calc(var(--StaccatoPhase) * 0.5px)
+	);
+	transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.StaccatoButton:hover {
+	transform: translate(
+			calc(var(--StaccatoRaw) * 2px),
+			calc(var(--StaccatoPhase) * 1px - 1px)
+		)
+		scale(1.01);
+	box-shadow: 0 calc(2px + var(--StaccatoGlow) * 3px)
+		calc(6px + var(--StaccatoGlow) * 6px)
+		hsl(0 0% 0% / 0.06);
+}
+.StaccatoButton:active {
+	transform: translate(0, 1px) scale(0.98);
+}
+.StaccatoButton:focus-visible {
+	outline: calc(2px + var(--StaccatoGlow) * 1px) solid var(--primary);
+	outline-offset: calc(2px + var(--StaccatoGlow) * 1px);
+}
+
+/* Badge breathing */
+.StaccatoBadge {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.03));
+	opacity: calc(0.85 + var(--StaccatoRaw) * 0.15);
+}
+.StaccatoBadge .StaccatoDot {
+	opacity: calc(0.3 + var(--StaccatoRhythm) * 0.7);
+	transform: scale(calc(0.8 + var(--StaccatoRhythm) * 0.4));
+}
+
+/* Input field focus noise */
+.StaccatoInput:focus-within {
+	border-color: hsl(0 0% calc(60% + var(--StaccatoGlow) * 15%));
+	box-shadow: 0 0 0 calc(2px + var(--StaccatoGlow) * 1px)
+		hsl(0 0% calc(85% + var(--StaccatoGlow) * 10%));
+}
+
+/* Nav link organic spacing */
+.StaccatoNavLink {
+	transform: translateX(calc(var(--StaccatoRaw) * 1.5px));
+}
+.StaccatoNavLink:hover {
+	transform: translateX(calc(var(--StaccatoRaw) * 1.5px))
+		translateY(-1px);
+}
+
+/* Separator/divider breathing */
+.StaccatoSeparator {
+	opacity: calc(0.15 + var(--StaccatoRaw) * 0.1);
+	transform: scaleX(calc(1 + var(--StaccatoMorph) * 0.01));
+}
+
+/* Logo micro-movement */
+.StaccatoLogo {
+	transform: translate(
+		calc(var(--StaccatoRaw) * 0.5px),
+		calc(var(--StaccatoPhase) * 0.3px)
+	) rotate(calc(var(--StaccatoRaw) * 0.3deg));
+}
+
+/* Icon pulse */
+.StaccatoIcon {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.04));
+	opacity: calc(0.8 + var(--StaccatoRaw) * 0.2);
+}
+
+/* Star rating shimmer */
+.StaccatoStar {
+	opacity: calc(0.85 + var(--StaccatoColor) * 0.15);
+	filter: brightness(calc(1 + var(--StaccatoColor) * 0.08));
+}
+
+/* Toggle switch organic feel */
+.StaccatoToggle {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.01));
+}
+
+/* Section divider (hr) breathing */
+.StaccatoDivider {
+	opacity: calc(0.2 + var(--StaccatoRaw) * 0.1);
+	transform: scaleX(calc(0.98 + var(--StaccatoMorph) * 0.02));
+	transform-origin: center;
+}
+
+/* Avatar gentle bounce */
+.StaccatoAvatar {
+	transform: translate(
+		calc(var(--StaccatoRaw) * 1px),
+		calc(var(--StaccatoPhase) * 0.5px)
+	) scale(calc(1 + var(--StaccatoRhythm) * 0.02));
+}
+
+/* Price tag emphasis */
+.StaccatoPrice {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.008));
+	letter-spacing: calc(var(--StaccatoMorph) * 0.2px);
+}
+
+/* Checkmark feature list */
+.StaccatoCheckmark {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.05));
+	opacity: calc(0.7 + var(--StaccatoRaw) * 0.3);
+}
+
+/* Loading spinner noise variation */
+.StaccatoSpinner {
+	opacity: calc(0.6 + var(--StaccatoRaw) * 0.4);
+}
+
+/* Footer social icons */
+.StaccatoSocial {
+	transform: translateY(calc(var(--StaccatoPhase) * 1px));
+	opacity: calc(0.7 + var(--StaccatoRaw) * 0.3);
+}
+.StaccatoSocial:hover {
+	transform: translateY(calc(var(--StaccatoPhase) * 1px - 2px))
+		scale(1.1);
+}
+
+/* ─── Reduced Motion ───────────────────────────────────── */
+
 @media (prefers-reduced-motion: reduce) {
 	.StaccatoTranslate,
 	.StaccatoScale,
 	.StaccatoSkew,
-	.StaccatoJitter {
+	.StaccatoJitter,
+	.StaccatoFloat,
+	.StaccatoRotate,
+	.StaccatoHeroButton,
+	.StaccatoCard,
+	.StaccatoButton,
+	.StaccatoBadge,
+	.StaccatoNavLink,
+	.StaccatoLogo,
+	.StaccatoIcon,
+	.StaccatoAvatar,
+	.StaccatoPrice,
+	.StaccatoCheckmark,
+	.StaccatoSocial,
+	.StaccatoRhythmBeat,
+	.StaccatoToggle,
+	.StaccatoDivider,
+	.StaccatoSeparator,
+	.StaccatoSpinner {
 		transform: none;
 	}
 
-	.StaccatoOpacity {
+	.StaccatoOpacity,
+	.StaccatoBreath,
+	.StaccatoPulse,
+	.StaccatoRhythmDot,
+	.StaccatoStar {
 		opacity: 1;
+		filter: none;
+	}
+
+	.StaccatoColorShift {
+		filter: none;
+	}
+
+	.StaccatoBorderWeight,
+	.StaccatoBorderShimmer,
+	.StaccatoMorphRadius,
+	.StaccatoMorphPadding,
+	.StaccatoMorphGap {
+		/* Reset to static values */
+	}
+
+	.StaccatoGlow,
+	.StaccatoShadowLift,
+	.StaccatoCard {
+		box-shadow: none;
+	}
+
+	.StaccatoOutlineGlow {
+		outline: none;
+	}
+
+	.StaccatoInput:focus-within {
+		box-shadow: 0 0 0 2px var(--primary);
 	}
 }

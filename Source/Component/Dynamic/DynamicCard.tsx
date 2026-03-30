@@ -10,8 +10,9 @@ import type CardContentItem from "./Interface/Item/Content/Card.js";
 import type Property from "./Interface/Property/Card.js";
 
 /**
- * Dynamic Card component that accepts section schemas
- * Composes Card, CardHeader, CardContent, CardFooter based on provided data
+ * Dynamic Card with simplex noise integration.
+ * Applies StaccatoCard + StaccatoBorderShimmer + StaccatoShadowLift
+ * for organic hover lift and border breathing.
  */
 export function DynamicCard({
 	sections,
@@ -22,7 +23,7 @@ export function DynamicCard({
 
 	return (
 		<Card
-			className={className}
+			className={`StaccatoCard StaccatoBorderShimmer ${className || ""}`}
 			onClick={onClick}
 			style={{ cursor: onClick ? "pointer" : undefined }}>
 			{HeaderSection && (
@@ -42,7 +43,7 @@ export function DynamicCard({
 						<h3 className="mb-2 font-semibold">{BodySection.title}</h3>
 					)}
 					{BodySection.description && (
-						<p className="mb-4 text-muted-foreground">
+						<p className="StaccatoBreath mb-4 text-muted-foreground">
 							{BodySection.description}
 						</p>
 					)}
@@ -65,7 +66,7 @@ export function SimpleCard({
 }: SimpleProperty) {
 	return (
 		<Card
-			className={className}
+			className={`StaccatoCard StaccatoBorderShimmer ${className || ""}`}
 			onClick={onClick}
 			style={{ cursor: onClick ? "pointer" : undefined }}>
 			{(title || description) && (

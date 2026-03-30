@@ -66,7 +66,7 @@ const MetaDescription = T("meta.dashboard.description", {
 		<!-- Dashboard Grid -->
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 			<!-- Account Info Card -->
-			<div class="border border-[var(--border)] bg-white p-6">
+			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--border)] bg-white p-6">
 				<h2 class="mb-4 text-lg font-semibold">
 					{
 						T("common.dashboard.account.heading", {
@@ -119,7 +119,7 @@ const MetaDescription = T("meta.dashboard.description", {
 			</div>
 
 			<!-- Downloads Card -->
-			<div class="border border-[var(--border)] bg-white p-6">
+			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--border)] bg-white p-6">
 				<h2 class="mb-4 text-lg font-semibold">
 					{
 						T("common.dashboard.downloads.heading", {
@@ -137,7 +137,7 @@ const MetaDescription = T("meta.dashboard.description", {
 				</p>
 				<a
 					href="/downloads"
-					class="inline-flex h-9 items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+					class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 					{
 						T("common.dashboard.downloads.goButton", {
 							defaultValue: "Go to Downloads",
@@ -147,7 +147,7 @@ const MetaDescription = T("meta.dashboard.description", {
 			</div>
 
 			<!-- Quick Links Card -->
-			<div class="border border-[var(--border)] bg-white p-6">
+			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--border)] bg-white p-6">
 				<h2 class="mb-4 text-lg font-semibold">
 					{
 						T("common.dashboard.quickLinks.heading", {
@@ -217,7 +217,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					})
 				}
 			</h2>
-			<div class="border border-[var(--border)] bg-white">
+			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--border)] bg-white">
 				<div
 					class="flex items-center justify-between border-b border-[var(--border)] p-5">
 					<div>
@@ -304,7 +304,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					</div>
 					<a
 						href="/account/signin"
-						class="inline-flex h-9 items-center justify-center border border-[var(--border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+						class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 						{
 							T(
 								"common.dashboard.settings.account.manageButton",

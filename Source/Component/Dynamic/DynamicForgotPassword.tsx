@@ -56,7 +56,7 @@ export function DynamicForgotPassword({
 		<section className="py-20" aria-label="Forgot password">
 			<div className="container mx-auto px-4">
 				<div className={`mx-auto max-w-md ${className}`}>
-					<Card>
+					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 						<CardHeader className="space-y-1 text-center">
 							<CardTitle className="text-2xl">{title}</CardTitle>
 							<CardDescription>{description}</CardDescription>

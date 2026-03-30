@@ -1,16 +1,19 @@
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
- * Dynamic Pricing component that displays pricing tiers in a grid
- * Supports monthly/yearly toggle and highlighted/plan populaire badges
+ * Dynamic Pricing with simplex noise integration.
+ * Tier cards get StaccatoCard scatter. Toggle uses StaccatoToggle.
+ * Popular badge pulses with StaccatoRhythm. Price text breathes.
+ * Checkmarks use StaccatoCheckmark for organic emphasis.
  */
 export function DynamicPricing({ content, className }: Property) {
 	const { t: T } = useTranslation("home");
+	const GridReference = useRef<HTMLDivElement>(null);
 	const {
 		title,
 		subtitle,
@@ -41,6 +44,30 @@ export function DynamicPricing({ content, className }: Property) {
 	} = labels;
 	const [IsYearly, SetIsYearly] = useState(defaultYearly);
 
+	// Apply attention scatter to pricing tier cards
+	useEffect(() => {
+		const Grid = GridReference.current;
+		if (!Grid) return;
+
+		const ReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+		if (ReducedMotion) return;
+
+		const ApplyScatter = async () => {
+			const AttentionModule = await import(
+				"../../Function/Noise/Attention.js"
+			);
+			const Attention = await AttentionModule.default;
+			const Cards = Grid.querySelectorAll<HTMLElement>(".pricing-card");
+			Cards.forEach((Card, Index) => {
+				Attention.ApplyToElement(Card, Index, 4, 3);
+			});
+		};
+
+		ApplyScatter();
+	}, [tiers]);
+
 	const FormatPrice = (Price: number, Currency: string = "USD") => {
 		return new Intl.NumberFormat("en-US", {
 			style: "currency",
@@ -62,7 +89,7 @@ export function DynamicPricing({ content, className }: Property) {
 			className={`py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
-					<div className="mb-16 text-center">
+					<div className="StaccatoBreath mb-16 text-center">
 						{title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
 								{title}
@@ -90,7 +117,7 @@ export function DynamicPricing({ content, className }: Property) {
 									? "Switch to monthly billing"
 									: "Switch to yearly billing"
 							}
-							className={`relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${IsYearly ? "bg-primary" : "bg-input"}`}
+							className={`StaccatoToggle relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${IsYearly ? "bg-primary" : "bg-input"}`}
 							onClick={() => SetIsYearly(!IsYearly)}>
 							<span
 								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${IsYearly ? "translate-x-6" : "translate-x-1"}`}
@@ -100,22 +127,24 @@ export function DynamicPricing({ content, className }: Property) {
 							{YearlyLabel}
 						</span>
 						{IsYearly && (
-							<span className="text-sm text-muted-foreground">
+							<span className="StaccatoBadge text-sm text-muted-foreground">
 								{SavingsLabel}
 							</span>
 						)}
 					</div>
 				)}
 
-				<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+				<div
+					ref={GridReference}
+					className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
-							className={`bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
+							className={`pricing-card StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
 							<div className="border-b border-[var(--border)] p-6">
 								{Tier.popular && (
 									<div className="mb-2">
-										<span className="text-xs font-semibold uppercase tracking-wider text-primary">
+										<span className="StaccatoBadge StaccatoRhythmBeat text-xs font-semibold uppercase tracking-wider text-primary">
 											{PopularLabel}
 										</span>
 									</div>
@@ -124,12 +153,12 @@ export function DynamicPricing({ content, className }: Property) {
 									{Tier.name}
 								</h3>
 								{Tier.description && (
-									<p className="mb-4 text-sm text-muted-foreground">
+									<p className="StaccatoBreath mb-4 text-sm text-muted-foreground">
 										{Tier.description}
 									</p>
 								)}
 								<div className="flex items-baseline">
-									<span className="text-4xl font-bold">
+									<span className="StaccatoPrice text-4xl font-bold">
 										{FormatPrice(
 											Tier.currentPrice,
 											Tier.currency,
@@ -153,7 +182,7 @@ export function DynamicPricing({ content, className }: Property) {
 												key={FeatureIndex}
 												className="flex items-start gap-3">
 												<Check
-													className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+													className="StaccatoCheckmark mt-0.5 h-5 w-5 shrink-0 text-primary"
 													aria-hidden="true"
 												/>
 												<span className="text-sm">

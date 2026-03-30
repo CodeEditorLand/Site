@@ -7,6 +7,10 @@ export default (async () => {
 
 	const LayoutNoise: Noise2D = CreateNoise2D();
 
+	/**
+	 * Scatter — returns noise-driven X/Y offsets for layout distribution.
+	 * Each Index gets a deterministic but organic position.
+	 */
 	const Scatter = (
 		Index: number,
 		SpreadX: number,
@@ -21,6 +25,56 @@ export default (async () => {
 		};
 	};
 
+	/**
+	 * ScatterRotation — returns a noise-driven rotation angle.
+	 * Useful for cards, badges, icons that need organic tilt.
+	 */
+	const ScatterRotation = (
+		Index: number,
+		MaxDegree: number = 3,
+	): number => {
+		return LayoutNoise(Index * 0.37, Index * 0.91) * MaxDegree;
+	};
+
+	/**
+	 * ScatterScale — returns a noise-driven scale factor.
+	 * Centers around 1.0, deviates by Spread.
+	 */
+	const ScatterScale = (
+		Index: number,
+		Spread: number = 0.05,
+	): number => {
+		return 1 + LayoutNoise(Index * 0.61, Index * 0.43) * Spread;
+	};
+
+	/**
+	 * ScatterDelay — returns a noise-driven animation delay in ms.
+	 * Creates organic staggering instead of linear index * N.
+	 */
+	const ScatterDelay = (
+		Index: number,
+		MaxDelay: number = 200,
+	): number => {
+		const Raw = LayoutNoise(Index * 0.83, Index * 0.29);
+		return Math.abs(Raw) * MaxDelay;
+	};
+
+	/**
+	 * ScatterOpacity — returns noise-driven opacity between Min and Max.
+	 */
+	const ScatterOpacity = (
+		Index: number,
+		Min: number = 0.7,
+		Max: number = 1.0,
+	): number => {
+		const Raw = LayoutNoise(Index * 0.47, Index * 0.67);
+		const Normalized = (Raw + 1) / 2; // 0..1
+		return Min + Normalized * (Max - Min);
+	};
+
+	/**
+	 * ApplyToElement — sets all attention CSS vars on one element.
+	 */
 	const ApplyToElement = (
 		Element: HTMLElement,
 		Index: number,
@@ -28,10 +82,22 @@ export default (async () => {
 		SpreadY: number = 0,
 	): void => {
 		const Offset = Scatter(Index, SpreadX, SpreadY);
+		const Rotation = ScatterRotation(Index);
+		const Scale = ScatterScale(Index);
+		const Delay = ScatterDelay(Index);
+		const Opacity = ScatterOpacity(Index);
+
 		Element.style.setProperty("--AttentionOffsetX", `${Offset.X}px`);
 		Element.style.setProperty("--AttentionOffsetY", `${Offset.Y}px`);
+		Element.style.setProperty("--AttentionRotation", `${Rotation}deg`);
+		Element.style.setProperty("--AttentionScale", String(Scale));
+		Element.style.setProperty("--AttentionDelay", `${Delay}ms`);
+		Element.style.setProperty("--AttentionOpacity", String(Opacity));
 	};
 
+	/**
+	 * ApplyToSelector — batch-applies attention vars to all matching elements.
+	 */
 	const ApplyToSelector = (
 		Selector: string,
 		SpreadX: number,
@@ -43,5 +109,14 @@ export default (async () => {
 		});
 	};
 
-	return { Scatter, ApplyToElement, ApplyToSelector, LayoutNoise };
+	return {
+		Scatter,
+		ScatterRotation,
+		ScatterScale,
+		ScatterDelay,
+		ScatterOpacity,
+		ApplyToElement,
+		ApplyToSelector,
+		LayoutNoise,
+	};
 })();

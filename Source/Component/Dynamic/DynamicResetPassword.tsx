@@ -102,7 +102,7 @@ export function DynamicResetPassword({
 				<div className="container mx-auto px-4">
 					<div
 						className={`mx-auto max-w-md text-center ${className}`}>
-						<Card>
+						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" aria-live="polite">
 									<div
@@ -129,7 +129,7 @@ export function DynamicResetPassword({
 				<div className="container mx-auto px-4">
 					<div
 						className={`mx-auto max-w-md text-center ${className}`}>
-						<Card>
+						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" role="alert">
 									<AlertCircle
@@ -168,7 +168,7 @@ export function DynamicResetPassword({
 				<div className="container mx-auto px-4">
 					<div
 						className={`mx-auto max-w-md text-center ${className}`}>
-						<Card>
+						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div
 									className="space-y-4"
@@ -209,7 +209,7 @@ export function DynamicResetPassword({
 		<section className="py-20" aria-label="Reset password">
 			<div className="container mx-auto px-4">
 				<div className={`mx-auto max-w-md ${className}`}>
-					<Card>
+					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 						<CardHeader className="space-y-1 text-center">
 							<CardTitle className="text-2xl">{title}</CardTitle>
 							<CardDescription>{description}</CardDescription>

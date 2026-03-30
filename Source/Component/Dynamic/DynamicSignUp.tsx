@@ -96,7 +96,7 @@ export function DynamicSignUp({
 		<section className="py-20" aria-label="Sign up">
 			<div className="container mx-auto px-4">
 				<div className={`mx-auto max-w-md ${className}`}>
-					<Card>
+					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 						<CardHeader className="space-y-1 text-center">
 							<CardTitle className="text-2xl">{title}</CardTitle>
 							<CardDescription>{description}</CardDescription>
@@ -163,7 +163,7 @@ export function DynamicSignUp({
 							{showDivider && oauthButtons.length > 0 && (
 								<div className="relative my-6">
 									<div className="absolute inset-0 flex items-center">
-										<span className="w-full border-t" />
+										<span className="StaccatoSeparator w-full border-t" />
 									</div>
 									<div className="relative flex justify-center text-xs uppercase">
 										<span className="bg-background px-2 text-muted-foreground">

@@ -5,15 +5,17 @@ import { DynamicButton } from "./DynamicButton";
 import type Property from "./Interface/Property/Hero.js";
 
 /**
- * Dynamic HeroSection with animated floating cards
- * Mobile: responsive grid layout
- * Desktop: orbital layout with subtle float animation
+ * Dynamic HeroSection with simplex noise integration.
+ * Desktop: orbital layout with staccato float animation.
+ * The entire hero can act as a button (clickable CTA surface).
+ * Floating cards are noise-seeded for organic staccato movement.
  */
 export function DynamicHeroSection({
 	content,
 	className,
 }: Property) {
 	const SceneReference = useRef<HTMLDivElement>(null);
+	const SectionReference = useRef<HTMLElement>(null);
 	const {
 		title: Title,
 		titleHighlight: TitleHighlight,
@@ -26,6 +28,7 @@ export function DynamicHeroSection({
 
 	useEffect(() => {
 		const Scene = SceneReference.current;
+		const Section = SectionReference.current;
 		if (
 			!Scene ||
 			(HeroConfiguration.respectReducedMotion &&
@@ -34,7 +37,7 @@ export function DynamicHeroSection({
 			return;
 		}
 
-		const CardElement = Scene.querySelectorAll(".floating-card");
+		const CardElement = Scene.querySelectorAll<HTMLElement>(".floating-card");
 		let FrameIdentifier: number;
 		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
@@ -46,6 +49,22 @@ export function DynamicHeroSection({
 		const LoadNoise = async () => {
 			const { createNoise2D } = await import("simplex-noise");
 			NoiseFunction = createNoise2D();
+
+			// Seed each floating card with per-element noise offsets
+			const StaccatoModule = await import(
+				"../../Function/Noise/Staccato.js"
+			);
+			const Engine = await StaccatoModule.default;
+			CardElement.forEach((Card, Index) => {
+				Engine.SeedElement(Card, Index);
+			});
+
+			// Apply attention scatter to connecting lines container
+			const AttentionModule = await import(
+				"../../Function/Noise/Attention.js"
+			);
+			const Attention = await AttentionModule.default;
+			Attention.ApplyToSelector(".floating-card", 8, 6);
 		};
 
 		const AnimateCards = (Time: number) => {
@@ -76,31 +95,47 @@ export function DynamicHeroSection({
 		return () => cancelAnimationFrame(FrameIdentifier);
 	}, [HeroConfiguration.respectReducedMotion]);
 
+	const HandleHeroClick = () => {
+		if (PrimaryCTA?.href) {
+			window.location.href = PrimaryCTA.href;
+		}
+	};
+
 	return (
 		<section
+			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`relative overflow-hidden py-20 lg:py-32 ${className || ""}`}>
+			className={`StaccatoHeroButton relative overflow-hidden py-20 lg:py-32 ${className || ""}`}
+			onClick={HandleHeroClick}
+			onKeyDown={(Event) => {
+				if (Event.key === "Enter" || Event.key === " ") {
+					Event.preventDefault();
+					HandleHeroClick();
+				}
+			}}
+			role="button"
+			tabIndex={0}>
 			<div className="container mx-auto px-4 text-center">
-				{/* Badge */}
+				{/* Badge — breathing with rhythm pulse on dot */}
 				{content.badge && (
-					<DynamicBadge content={content.badge} className="mb-6" />
+					<DynamicBadge content={content.badge} className="StaccatoBadge mb-6" />
 				)}
 
-				{/* Title */}
-				<h1 className="mx-auto mb-6 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
+				{/* Title — subtle color shift */}
+				<h1 className="StaccatoColorShift mx-auto mb-6 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
 					{Title}{" "}
 					{TitleHighlight && (
 						<span className="text-primary">{TitleHighlight}</span>
 					)}
 				</h1>
 
-				{/* Subtitle */}
-				<p className="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
+				{/* Subtitle — breathing opacity */}
+				<p className="StaccatoBreath mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
 					{Subtitle}
 				</p>
 
-				{/* CTAs */}
+				{/* CTAs — noise-driven button states */}
 				<div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
 					<DynamicButton content={PrimaryCTA} />
 					{SecondaryCTA && <DynamicButton content={SecondaryCTA} />}
@@ -110,11 +145,14 @@ export function DynamicHeroSection({
 				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
-						{FloatingCard.map((Card) => (
+						{FloatingCard.map((Card, Index) => (
 							<div
 								key={Card.id}
-								className="border border-[var(--border)] bg-white p-3"
-								style={{ minWidth: "120px" }}>
+								className="StaccatoCard border border-[var(--border)] bg-white p-3"
+								style={{
+									minWidth: "120px",
+									transitionDelay: `${Index * 50}ms`,
+								}}>
 								<div className="mb-1.5 text-xs font-medium text-foreground">
 									{Card.title}
 								</div>
@@ -122,7 +160,7 @@ export function DynamicHeroSection({
 									{Card.colors?.map((Color, ColorIndex) => (
 										<div
 											key={ColorIndex}
-											className={`h-3 w-3 ${Color} border border-[var(--border)]`}
+											className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--border)]`}
 										/>
 									))}
 								</div>
@@ -135,8 +173,8 @@ export function DynamicHeroSection({
 						ref={SceneReference}
 						className="relative hidden h-[500px] lg:block"
 						style={{ perspective: "1000px" }}>
-						{/* Central Hub */}
-						<div className="absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--border)] bg-white">
+						{/* Central Hub — logo with micro-movement */}
+						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--border)] bg-white">
 							<img
 								src="/Asset/Logo/Glyph/LandDark.svg"
 								alt=""
@@ -144,7 +182,7 @@ export function DynamicHeroSection({
 							/>
 						</div>
 
-						{/* Floating Cards */}
+						{/* Floating Cards — noise-seeded staccato */}
 						{FloatingCard.map((Card, Index) => {
 							const Total = FloatingCard.length;
 							const Angle =
@@ -157,7 +195,7 @@ export function DynamicHeroSection({
 							return (
 								<div
 									key={Card.id}
-									className="floating-card absolute transform-gpu border border-[var(--border)] bg-white/95 p-3"
+									className="floating-card StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--border)] bg-white/95 p-3"
 									style={{
 										top: `${CenterY}%`,
 										left: `${CenterX}%`,
@@ -172,7 +210,7 @@ export function DynamicHeroSection({
 											(Color, ColorIndex) => (
 												<div
 													key={ColorIndex}
-													className={`h-3 w-3 ${Color} border border-[var(--border)]`}
+													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--border)]`}
 												/>
 											),
 										)}
@@ -181,10 +219,10 @@ export function DynamicHeroSection({
 							);
 						})}
 
-						{/* Connecting Lines */}
+						{/* Connecting Lines — breathing opacity */}
 						{HeroConfiguration.showConnectingLines && (
 							<svg
-								className="pointer-events-none absolute inset-0 h-full w-full opacity-15"
+								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full opacity-15"
 								aria-hidden="true"
 								role="presentation">
 								{FloatingCard.map((Card, Index) => {
@@ -205,10 +243,6 @@ export function DynamicHeroSection({
 											y2={`${CenterY}%`}
 											stroke="currentColor"
 											strokeWidth="1"
-											className="animate-pulse"
-											style={{
-												animationDelay: `${Index * 0.3}s`,
-											}}
 										/>
 									);
 								})}

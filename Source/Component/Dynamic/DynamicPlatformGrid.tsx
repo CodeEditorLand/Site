@@ -1,5 +1,5 @@
 import { Apple, Monitor, Terminal } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
@@ -142,11 +142,33 @@ export function DynamicPlatformGrid({
 		FetchPlatforms();
 	}, [providedPlatforms, apiPlatform]);
 
+	const GridReference = useRef<HTMLDivElement>(null);
 	const IconMap = {
 		Apple,
 		Monitor,
 		Terminal,
 	};
+
+	// Apply attention scatter to platform download cards
+	useEffect(() => {
+		const Grid = GridReference.current;
+		if (!Grid || Loading) return;
+
+		const ReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+		if (ReducedMotion) return;
+
+		const ApplyScatter = async () => {
+			const AttentionModule = await import(
+				"../../Function/Noise/Attention.js"
+			);
+			const Attention = await AttentionModule.default;
+			Attention.ApplyToSelector(".platform-card", 5, 3);
+		};
+
+		ApplyScatter();
+	}, [Platforms, Loading]);
 
 	const FormatFileSize = (SizeString: string) => {
 		return SizeString;
@@ -230,7 +252,7 @@ export function DynamicPlatformGrid({
 			className={`py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
-					<div className="mb-16 text-center">
+					<div className="StaccatoBreath mb-16 text-center">
 						{title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
 								{title}
@@ -244,7 +266,7 @@ export function DynamicPlatformGrid({
 					</div>
 				)}
 
-				<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+				<div ref={GridReference} className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
 					{Platforms.map((Platform) => {
 						const Icon = IconMap[Platform.icon];
 
@@ -342,7 +364,7 @@ export function DynamicPlatformGrid({
 							<DynamicCard
 								key={Platform.id}
 								sections={PlatformCardSection}
-								className="flex flex-col"
+								className="platform-card flex flex-col"
 							/>
 						);
 					})}

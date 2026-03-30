@@ -61,44 +61,26 @@ export function Header({ content }: HeaderProps) {
 
 	return (
 		<header className="header sticky top-0 z-50 w-full" role="banner">
+			{/* Primary bar — logo + actions */}
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
-				<div className="flex items-center space-x-8">
-					<a
-						href="/"
-						className="header-logo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-						aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
-						<div
-							className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
-							aria-hidden="true">
-							<img
-								src="/Asset/Logo/Glyph/LandDark.svg"
-								alt=""
-								className="absolute inset-0 h-full w-full"
-							/>
-						</div>
-						<span className="font-semibold">
-							{HeaderData.logo?.text || "Land"}
-						</span>
-					</a>
-					<nav
-						className="hidden items-center space-x-6 md:flex"
-						aria-label="Main navigation">
-						{HeaderData.navigation?.map((Link, Index) => (
-							<a
-								key={Index}
-								href={Link.href}
-								className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-								{...(Link.href.startsWith("http")
-									? {
-											target: "_blank",
-											rel: "noopener noreferrer",
-										}
-									: {})}>
-								{Link.label}
-							</a>
-						))}
-					</nav>
-				</div>
+				<a
+					href="/"
+					className="StaccatoLogo header-logo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+					aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
+					<div
+						className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
+						aria-hidden="true">
+						<img
+							src="/Asset/Logo/Glyph/LandDark.svg"
+							alt=""
+							className="absolute inset-0 h-full w-full"
+						/>
+					</div>
+					<span className="font-semibold">
+						{HeaderData.logo?.text || "Land"}
+					</span>
+				</a>
+
 				<div className="flex items-center space-x-3">
 					<div className="hidden items-center space-x-3 md:flex">
 						<LocaleSwitcher />
@@ -115,6 +97,7 @@ export function Header({ content }: HeaderProps) {
 									(Action.size as "default" | "sm" | "lg") ||
 									"default"
 								}
+								className="StaccatoButton"
 								asChild>
 								<a href={Action.href}>{Action.text}</a>
 							</Button>
@@ -136,6 +119,37 @@ export function Header({ content }: HeaderProps) {
 				</div>
 			</div>
 
+			{/* Sub-header — breadcrumb-style nav bar */}
+			<div className="header-sub hidden md:block" style={{ marginTop: "2px" }}>
+				<nav
+					className="container mx-auto flex items-center px-4"
+					aria-label="Main navigation">
+					{HeaderData.navigation?.map((Link, Index) => (
+						<span key={Index} className="flex items-center">
+							{Index > 0 && (
+								<span
+									className="StaccatoBreath mx-1 select-none text-xs text-muted-foreground/50"
+									aria-hidden="true">
+									/
+								</span>
+							)}
+							<a
+								href={Link.href}
+								className="StaccatoNavLink header-sub-link relative px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+								{...(Link.href.startsWith("http")
+									? {
+											target: "_blank",
+											rel: "noopener noreferrer",
+										}
+									: {})}>
+								{Link.label}
+							</a>
+						</span>
+					))}
+				</nav>
+			</div>
+
+			{/* Mobile menu */}
 			{MobileMenuOpen && (
 				<div
 					className="border-t border-[var(--border)] bg-white md:hidden"

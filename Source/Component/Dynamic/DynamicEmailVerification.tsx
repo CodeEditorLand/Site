@@ -87,7 +87,7 @@ export function DynamicEmailVerification({
 	};
 
 	const RenderPending = () => (
-		<Card>
+		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
 					<Mail className="h-6 w-6 text-primary" aria-hidden="true" />
@@ -144,7 +144,7 @@ export function DynamicEmailVerification({
 	);
 
 	const RenderVerifying = () => (
-		<Card>
+		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div
 					className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none"
@@ -169,7 +169,7 @@ export function DynamicEmailVerification({
 	);
 
 	const RenderSuccess = () => (
-		<Card>
+		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100">
 					<CheckCircle
@@ -195,7 +195,7 @@ export function DynamicEmailVerification({
 	);
 
 	const RenderError = () => (
-		<Card>
+		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100">
 					<XCircle

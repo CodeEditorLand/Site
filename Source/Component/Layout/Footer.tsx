@@ -125,7 +125,7 @@ export function Footer({ content }: FooterProps) {
 									<li key={LinkIndex}>
 										<a
 											href={Link.href}
-											className="transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+											className="StaccatoNavLink transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 											{...(Link.href.startsWith("http")
 												? {
 														target: "_blank",
@@ -141,9 +141,9 @@ export function Footer({ content }: FooterProps) {
 					))}
 				</div>
 
-				<Separator className="my-8" />
+				<Separator className="StaccatoSeparator my-8" />
 
-				<div className="mb-6 border border-[var(--border)] bg-white p-4">
+				<div className="StaccatoCard StaccatoBorderShimmer mb-6 border border-[var(--border)] bg-white p-4">
 					<p className="text-xs leading-relaxed text-muted-foreground">
 						{T(
 							"funding.prefix",
@@ -185,7 +185,7 @@ export function Footer({ content }: FooterProps) {
 							href="https://github.com/CodeEditorLand"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
 							<img
 								src="/Image/GitHub.svg"

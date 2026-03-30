@@ -28,7 +28,7 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 	const DescribedBy = error ? ErrorIdentifier : helperText ? HelperIdentifier : undefined;
 
 	return (
-		<div className="space-y-2">
+		<div className="StaccatoInput space-y-2">
 			{label && (
 				<Label htmlFor={Identifier} required={required}>
 					{label}

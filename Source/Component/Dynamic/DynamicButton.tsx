@@ -5,8 +5,9 @@ import { Button } from "../UI/Button";
 import type Property from "./Interface/Property/Button.js";
 
 /**
- * Dynamic Button component that accepts content schema
- * Wraps the base Button component with prop-based configuration
+ * Dynamic Button with simplex noise integration.
+ * Wraps the base Button with StaccatoButton for organic hover/active/focus.
+ * Loading state uses StaccatoSpinner for breathing opacity.
  */
 export function DynamicButton({
 	content,
@@ -25,24 +26,23 @@ export function DynamicButton({
 		...props
 	} = content;
 
-	const [IconComponent, setIconComponent] = useState<ComponentType<{
+	const [IconComponent, SetIconComponent] = useState<ComponentType<{
 		className?: string;
 	}> | null>(null);
 
 	useEffect(() => {
 		if (icon) {
-			// Dynamically import the icon from lucide-react
 			import("lucide-react")
-				.then((icons) => {
-					const Icon = (icons as Record<string, unknown>)[
-						icon as keyof typeof icons
+				.then((Icons) => {
+					const Icon = (Icons as Record<string, unknown>)[
+						icon as keyof typeof Icons
 					] as ComponentType<{ className?: string }> | undefined;
 					if (Icon) {
-						setIconComponent(() => Icon);
+						SetIconComponent(() => Icon);
 					}
 				})
-				.catch((error) => {
-					console.error(`Failed to load icon ${icon}:`, error);
+				.catch((ErrorInstance) => {
+					console.error(`Failed to load icon ${icon}:`, ErrorInstance);
 				});
 		}
 	}, [icon]);
@@ -53,7 +53,7 @@ export function DynamicButton({
 			size={size}
 			type={type}
 			disabled={disabled || isLoading}
-			className={fullWidth ? "w-full" : className}
+			className={`StaccatoButton ${fullWidth ? "w-full" : ""} ${className || ""}`}
 			aria-busy={isLoading || undefined}
 			onClick={() => {
 				if (!isLoading && onAction) {
@@ -65,9 +65,9 @@ export function DynamicButton({
 			}}
 			{...props}>
 			{isLoading ? (
-				<Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+				<Loader2 className="StaccatoSpinner h-4 w-4 animate-spin" aria-hidden="true" />
 			) : IconComponent ? (
-				<IconComponent className="h-4 w-4" aria-hidden="true" />
+				<IconComponent className="StaccatoIcon h-4 w-4" aria-hidden="true" />
 			) : null}
 			{text}
 		</Button>
