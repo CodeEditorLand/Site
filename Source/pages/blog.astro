@@ -5,11 +5,11 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = t("meta.blog.title", {
+const MetaTitle = T("meta.blog.title", {
 	defaultValue: "Blog | Code Editor Land",
 });
 
-const MetaDescription = t("meta.blog.description", {
+const MetaDescription = T("meta.blog.description", {
 	defaultValue:
 		"News, updates, and technical articles from the Code Editor Land team.",
 });
@@ -30,7 +30,7 @@ const MetaDescription = t("meta.blog.description", {
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
-							t("common.breadcrumb.home", {
+							T("common.breadcrumb.home", {
 								defaultValue: "Home",
 							})
 						}</a
@@ -40,7 +40,7 @@ const MetaDescription = t("meta.blog.description", {
 				<li>
 					<span class="font-medium text-foreground"
 						>{
-							t("common.blog.pageTitle", { defaultValue: "Blog" })
+							T("common.blog.pageTitle", { defaultValue: "Blog" })
 						}</span
 					>
 				</li>
@@ -50,11 +50,11 @@ const MetaDescription = t("meta.blog.description", {
 		<!-- Page Header -->
 		<header class="mb-12">
 			<h1 class="mb-4 text-4xl font-bold tracking-tight">
-				{t("common.blog.pageTitle", { defaultValue: "Blog" })}
+				{T("common.blog.pageTitle", { defaultValue: "Blog" })}
 			</h1>
 			<p class="text-lg text-muted-foreground">
 				{
-					t("common.blog.pageSubtitle", {
+					T("common.blog.pageSubtitle", {
 						defaultValue:
 							"News, updates, and technical articles from the team.",
 					})
@@ -68,14 +68,14 @@ const MetaDescription = t("meta.blog.description", {
 			<div class="mx-auto max-w-md">
 				<h2 class="mb-4 text-2xl font-semibold">
 					{
-						t("common.blog.comingSoonHeading", {
+						T("common.blog.comingSoonHeading", {
 							defaultValue: "Coming Soon",
 						})
 					}
 				</h2>
 				<p class="mb-8 text-muted-foreground">
 					{
-						t("common.blog.comingSoonText", {
+						T("common.blog.comingSoonText", {
 							defaultValue:
 								"We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
 						})
@@ -89,7 +89,7 @@ const MetaDescription = t("meta.blog.description", {
 						rel="noopener noreferrer"
 						class="inline-flex h-10 items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-6 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 						{
-							t("common.blog.joinDiscussions", {
+							T("common.blog.joinDiscussions", {
 								defaultValue: "Join Discussions",
 							})
 						}
@@ -100,7 +100,7 @@ const MetaDescription = t("meta.blog.description", {
 						rel="noopener noreferrer"
 						class="inline-flex h-10 items-center justify-center border border-[var(--border)] bg-white px-6 text-sm font-medium transition-all hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 						{
-							t("common.blog.followGitHub", {
+							T("common.blog.followGitHub", {
 								defaultValue: "Follow on GitHub",
 							})
 						}
@@ -113,7 +113,7 @@ const MetaDescription = t("meta.blog.description", {
 		<div class="mt-12 border-t pt-8">
 			<a href="#top" class="text-sm text-primary hover:underline"
 				>{
-					t("common.button.backToTop", {
+					T("common.button.backToTop", {
 						defaultValue: "Back to top",
 					})
 				}</a

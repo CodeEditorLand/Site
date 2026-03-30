@@ -22,67 +22,67 @@ interface FooterProps {
 }
 
 export function Footer({ content }: FooterProps) {
-	const { t } = useTranslation("footer");
+	const { t: T } = useTranslation("footer");
 
 	const FooterData = content || {
 		brand: {
-			name: t("brand.name", "Land"),
-			description: t(
+			name: T("brand.name", "Land"),
+			description: T(
 				"brand.description",
 				"The next-generation code editor. Open source and free forever.",
 			),
 		},
 		columns: [
 			{
-				title: t("columns.product.title", "Product"),
+				title: T("columns.product.title", "Product"),
 				links: [
 					{
-						label: t("columns.product.features", "Features"),
+						label: T("columns.product.features", "Features"),
 						href: "/#features",
 					},
 					{
-						label: t("columns.product.downloads", "Downloads"),
+						label: T("columns.product.downloads", "Downloads"),
 						href: "/downloads",
 					},
 					{
-						label: t("columns.product.docs", "Docs"),
+						label: T("columns.product.docs", "Docs"),
 						href: "https://github.com/CodeEditorLand/Land#readme",
 					},
 				],
 			},
 			{
-				title: t("columns.company.title", "Community"),
+				title: T("columns.company.title", "Community"),
 				links: [
 					{
-						label: t("columns.company.blog", "Discussions"),
+						label: T("columns.company.blog", "Discussions"),
 						href: "https://github.com/CodeEditorLand/Land/discussions",
 					},
 					{
-						label: t(
+						label: T(
 							"columns.company.contributing",
 							"Contributing",
 						),
 						href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
 					},
 					{
-						label: t("columns.company.github", "GitHub"),
+						label: T("columns.company.github", "GitHub"),
 						href: "https://github.com/CodeEditorLand/Land",
 					},
 				],
 			},
 			{
-				title: t("columns.legal.title", "Legal"),
+				title: T("columns.legal.title", "Legal"),
 				links: [
 					{
-						label: t("columns.legal.privacy", "Privacy"),
+						label: T("columns.legal.privacy", "Privacy"),
 						href: "/legal/privacy",
 					},
 					{
-						label: t("columns.legal.terms", "Terms"),
+						label: T("columns.legal.terms", "Terms"),
 						href: "/legal/terms",
 					},
 					{
-						label: t("columns.legal.license", "License"),
+						label: T("columns.legal.license", "License"),
 						href: "/license",
 					},
 				],
@@ -145,7 +145,7 @@ export function Footer({ content }: FooterProps) {
 
 				<div className="mb-6 border border-[var(--border)] bg-white p-4">
 					<p className="text-xs leading-relaxed text-muted-foreground">
-						{t(
+						{T(
 							"funding.prefix",
 							"This project has been funded through the ",
 						)}
@@ -154,17 +154,17 @@ export function Footer({ content }: FooterProps) {
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
-							{t("funding.ngiFund", "NGI0 Commons Fund")}
+							{T("funding.ngiFund", "NGI0 Commons Fund")}
 						</a>
-						{t("funding.nlnetIntro", ", a fund established by ")}
+						{T("funding.nlnetIntro", ", a fund established by ")}
 						<a
 							href="https://nlnet.nl"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
-							{t("funding.nlnet", "NLnet")}
+							{T("funding.nlnet", "NLnet")}
 						</a>
-						{t(
+						{T(
 							"funding.euSupport",
 							" with financial support from the European Commission\u2019s Next Generation Internet programme, under grant agreement No.\u00a0101135429. ",
 						)}
@@ -173,7 +173,7 @@ export function Footer({ content }: FooterProps) {
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
-							{t("funding.projectPage", "View project page")}
+							{T("funding.projectPage", "View project page")}
 						</a>
 						{"."}
 					</p>
@@ -195,7 +195,7 @@ export function Footer({ content }: FooterProps) {
 							/>
 						</a>
 						<p className="text-sm text-muted-foreground">
-							{t("bottomBar.copyright", {
+							{T("bottomBar.copyright", {
 								year: new Date().getFullYear(),
 								defaultValue:
 									"© {{year}} Code Editor Land. All rights reserved.",

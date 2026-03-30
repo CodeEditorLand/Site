@@ -17,7 +17,7 @@ export function DynamicPlatformGrid({
 	content,
 	className,
 }: Property) {
-	const { t } = useTranslation("download");
+	const { t: T } = useTranslation("download");
 	const {
 		title,
 		subtitle,
@@ -28,20 +28,20 @@ export function DynamicPlatformGrid({
 		labels = {},
 	} = content;
 	const {
-		version: VersionLabel = t("labels.version", {
+		version: VersionLabel = T("labels.version", {
 			defaultValue: "Version:",
 		}),
-		size: SizeLabel = t("labels.size", { defaultValue: "Size:" }),
-		requirements: RequirementsLabel = t("labels.requirements", {
+		size: SizeLabel = T("labels.size", { defaultValue: "Size:" }),
+		requirements: RequirementsLabel = T("labels.requirements", {
 			defaultValue: "Requirements:",
 		}),
-		loading: LoadingLabel = t("labels.loading", {
+		loading: LoadingLabel = T("labels.loading", {
 			defaultValue: "Loading downloads...",
 		}),
-		errorTitle: ErrorTitleLabel = t("labels.errorTitle", {
+		errorTitle: ErrorTitleLabel = T("labels.errorTitle", {
 			defaultValue: "Unable to load downloads",
 		}),
-		downloadFailed: DownloadFailedLabel = t("labels.downloadFailed", {
+		downloadFailed: DownloadFailedLabel = T("labels.downloadFailed", {
 			defaultValue: "Download failed. Please try again.",
 		}),
 	} = labels;
@@ -317,7 +317,7 @@ export function DynamicPlatformGrid({
 											)}
 										<DynamicButton
 											content={{
-												text: t("labels.downloadFor", {
+												text: T("labels.downloadFor", {
 													defaultValue:
 														"Download for {{platform}}",
 													platform:

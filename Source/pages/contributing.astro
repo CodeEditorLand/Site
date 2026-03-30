@@ -5,11 +5,11 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = t("meta.contributing.title", {
+const MetaTitle = T("meta.contributing.title", {
 	defaultValue: "Contributing | Code Editor Land",
 });
 
-const MetaDescription = t("meta.contributing.description", {
+const MetaDescription = T("meta.contributing.description", {
 	defaultValue:
 		"Learn how to contribute to Code Editor Land — an open source code editor built with Rust and TypeScript.",
 });
@@ -30,7 +30,7 @@ const MetaDescription = t("meta.contributing.description", {
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
-							t("common.breadcrumb.home", {
+							T("common.breadcrumb.home", {
 								defaultValue: "Home",
 							})
 						}</a
@@ -40,7 +40,7 @@ const MetaDescription = t("meta.contributing.description", {
 				<li>
 					<span class="font-medium text-foreground"
 						>{
-							t("common.contributing.pageTitle", {
+							T("common.contributing.pageTitle", {
 								defaultValue: "Contributing",
 							})
 						}</span
@@ -53,14 +53,14 @@ const MetaDescription = t("meta.contributing.description", {
 		<header class="mb-12">
 			<h1 class="mb-4 text-4xl font-bold tracking-tight">
 				{
-					t("common.contributing.pageTitle", {
+					T("common.contributing.pageTitle", {
 						defaultValue: "Contributing",
 					})
 				}
 			</h1>
 			<p class="text-lg text-muted-foreground">
 				{
-					t("common.contributing.pageSubtitle", {
+					T("common.contributing.pageSubtitle", {
 						defaultValue:
 							"Code Editor Land is open source and welcomes contributions from everyone. Here is how to get involved.",
 					})
@@ -78,14 +78,14 @@ const MetaDescription = t("meta.contributing.description", {
 					class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 					<h2 class="mb-2 text-xl font-semibold">
 						{
-							t("common.contributing.guide.title", {
+							T("common.contributing.guide.title", {
 								defaultValue: "Contributing Guide",
 							})
 						}
 					</h2>
 					<p class="text-sm text-muted-foreground">
 						{
-							t("common.contributing.guide.description", {
+							T("common.contributing.guide.description", {
 								defaultValue:
 									"Read the full CONTRIBUTING.md on GitHub for detailed instructions on setting up the development environment and submitting changes.",
 							})
@@ -100,14 +100,14 @@ const MetaDescription = t("meta.contributing.description", {
 					class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 					<h2 class="mb-2 text-xl font-semibold">
 						{
-							t("common.contributing.goodFirstIssues.title", {
+							T("common.contributing.goodFirstIssues.title", {
 								defaultValue: "Good First Issues",
 							})
 						}
 					</h2>
 					<p class="text-sm text-muted-foreground">
 						{
-							t(
+							T(
 								"common.contributing.goodFirstIssues.description",
 								{
 									defaultValue:
@@ -124,7 +124,7 @@ const MetaDescription = t("meta.contributing.description", {
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-semibold">
 				{
-					t("common.contributing.howToContribute.heading", {
+					T("common.contributing.howToContribute.heading", {
 						defaultValue: "How to Contribute",
 					})
 				}
@@ -139,14 +139,14 @@ const MetaDescription = t("meta.contributing.description", {
 						<div>
 							<h3 class="font-semibold">
 								{
-									t("common.contributing.step1.title", {
+									T("common.contributing.step1.title", {
 										defaultValue: "Fork and Clone",
 									})
 								}
 							</h3>
 							<p class="mt-1 text-sm text-muted-foreground">
 								{
-									t("common.contributing.step1.description", {
+									T("common.contributing.step1.description", {
 										defaultValue:
 											"Fork the Land repository on GitHub and clone it locally with submodules:",
 									})
@@ -164,14 +164,14 @@ const MetaDescription = t("meta.contributing.description", {
 						<div>
 							<h3 class="font-semibold">
 								{
-									t("common.contributing.step2.title", {
+									T("common.contributing.step2.title", {
 										defaultValue: "Set Up the Environment",
 									})
 								}
 							</h3>
 							<p class="mt-1 text-sm text-muted-foreground">
 								{
-									t("common.contributing.step2.description", {
+									T("common.contributing.step2.description", {
 										defaultValue:
 											"Install Rust (1.95.0+), Node.js, and pnpm. Then run:",
 									})
@@ -189,14 +189,14 @@ const MetaDescription = t("meta.contributing.description", {
 						<div>
 							<h3 class="font-semibold">
 								{
-									t("common.contributing.step3.title", {
+									T("common.contributing.step3.title", {
 										defaultValue: "Make Your Changes",
 									})
 								}
 							</h3>
 							<p class="mt-1 text-sm text-muted-foreground">
 								{
-									t("common.contributing.step3.description", {
+									T("common.contributing.step3.description", {
 										defaultValue:
 											"Create a new branch, make your changes, and follow the PascalCase naming convention used throughout the project.",
 									})
@@ -212,14 +212,14 @@ const MetaDescription = t("meta.contributing.description", {
 						<div>
 							<h3 class="font-semibold">
 								{
-									t("common.contributing.step4.title", {
+									T("common.contributing.step4.title", {
 										defaultValue: "Submit a Pull Request",
 									})
 								}
 							</h3>
 							<p class="mt-1 text-sm text-muted-foreground">
 								{
-									t("common.contributing.step4.description", {
+									T("common.contributing.step4.description", {
 										defaultValue:
 											"Push your branch and open a pull request against the Current branch. Describe what you changed and why.",
 									})
@@ -235,7 +235,7 @@ const MetaDescription = t("meta.contributing.description", {
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-semibold">
 				{
-					t("common.contributing.ways.heading", {
+					T("common.contributing.ways.heading", {
 						defaultValue: "Ways to Contribute",
 					})
 				}
@@ -244,14 +244,14 @@ const MetaDescription = t("meta.contributing.description", {
 				<div class="border border-[var(--border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
-							t("common.contributing.ways.code.title", {
+							T("common.contributing.ways.code.title", {
 								defaultValue: "Code",
 							})
 						}
 					</h3>
 					<p class="text-sm text-muted-foreground">
 						{
-							t("common.contributing.ways.code.description", {
+							T("common.contributing.ways.code.description", {
 								defaultValue:
 									"Fix bugs, implement features, or improve performance in Rust or TypeScript.",
 							})
@@ -261,14 +261,14 @@ const MetaDescription = t("meta.contributing.description", {
 				<div class="border border-[var(--border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
-							t("common.contributing.ways.documentation.title", {
+							T("common.contributing.ways.documentation.title", {
 								defaultValue: "Documentation",
 							})
 						}
 					</h3>
 					<p class="text-sm text-muted-foreground">
 						{
-							t(
+							T(
 								"common.contributing.ways.documentation.description",
 								{
 									defaultValue:
@@ -281,14 +281,14 @@ const MetaDescription = t("meta.contributing.description", {
 				<div class="border border-[var(--border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
-							t("common.contributing.ways.testing.title", {
+							T("common.contributing.ways.testing.title", {
 								defaultValue: "Testing",
 							})
 						}
 					</h3>
 					<p class="text-sm text-muted-foreground">
 						{
-							t("common.contributing.ways.testing.description", {
+							T("common.contributing.ways.testing.description", {
 								defaultValue:
 									"Write tests, report bugs, or help reproduce and triage existing issues.",
 							})
@@ -298,14 +298,14 @@ const MetaDescription = t("meta.contributing.description", {
 				<div class="border border-[var(--border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
-							t("common.contributing.ways.design.title", {
+							T("common.contributing.ways.design.title", {
 								defaultValue: "Design",
 							})
 						}
 					</h3>
 					<p class="text-sm text-muted-foreground">
 						{
-							t("common.contributing.ways.design.description", {
+							T("common.contributing.ways.design.description", {
 								defaultValue:
 									"Contribute UI/UX improvements, icons, or visual design work for the editor or website.",
 							})
@@ -319,7 +319,7 @@ const MetaDescription = t("meta.contributing.description", {
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-semibold">
 				{
-					t("common.contributing.funding.heading", {
+					T("common.contributing.funding.heading", {
 						defaultValue: "Funding",
 					})
 				}
@@ -327,7 +327,7 @@ const MetaDescription = t("meta.contributing.description", {
 			<div class="border border-[var(--border)] bg-white p-6">
 				<p class="mb-4 text-muted-foreground">
 					{
-						t("common.contributing.funding.nlnetIntro", {
+						T("common.contributing.funding.nlnetIntro", {
 							defaultValue:
 								"Code Editor Land has been funded through the",
 						})
@@ -338,12 +338,12 @@ const MetaDescription = t("meta.contributing.description", {
 						rel="noopener noreferrer"
 						class="text-[var(--primary)] hover:underline">
 						{
-							t("common.contributing.funding.nlnetFundName", {
+							T("common.contributing.funding.nlnetFundName", {
 								defaultValue: "NGI0 Commons Fund",
 							})
 						}
 					</a>{
-						t("common.contributing.funding.nlnetEstablishedBy", {
+						T("common.contributing.funding.nlnetEstablishedBy", {
 							defaultValue: ", a fund established by",
 						})
 					}
@@ -355,7 +355,7 @@ const MetaDescription = t("meta.contributing.description", {
 						NLnet
 					</a>
 					{
-						t("common.contributing.funding.nlnetSuffix", {
+						T("common.contributing.funding.nlnetSuffix", {
 							defaultValue:
 								"with financial support from the European Commission's Next Generation Internet programme, under grant agreement No.\u00a0101135429. This funding enables sustained open-source development on the project.",
 						})
@@ -363,7 +363,7 @@ const MetaDescription = t("meta.contributing.description", {
 				</p>
 				<p class="mb-4 text-muted-foreground">
 					{
-						t("common.contributing.funding.playformInfo", {
+						T("common.contributing.funding.playformInfo", {
 							defaultValue:
 								"The project is operated by PlayForm, a company based in Sofia, Bulgaria. PlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
 						})
@@ -371,7 +371,7 @@ const MetaDescription = t("meta.contributing.description", {
 				</p>
 				<p class="text-muted-foreground">
 					{
-						t("common.contributing.funding.viewProject", {
+						T("common.contributing.funding.viewProject", {
 							defaultValue: "View the",
 						})
 					}
@@ -381,13 +381,13 @@ const MetaDescription = t("meta.contributing.description", {
 						rel="noopener noreferrer"
 						class="text-[var(--primary)] hover:underline">
 						{
-							t("common.contributing.funding.nlnetProjectPage", {
+							T("common.contributing.funding.nlnetProjectPage", {
 								defaultValue: "NLnet project page",
 							})
 						}
 					</a>
 					{
-						t("common.contributing.funding.viewProjectSuffix", {
+						T("common.contributing.funding.viewProjectSuffix", {
 							defaultValue:
 								"for more details about the grant and objectives.",
 						})
@@ -400,7 +400,7 @@ const MetaDescription = t("meta.contributing.description", {
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-semibold">
 				{
-					t("common.contributing.conduct.heading", {
+					T("common.contributing.conduct.heading", {
 						defaultValue: "Code of Conduct",
 					})
 				}
@@ -408,7 +408,7 @@ const MetaDescription = t("meta.contributing.description", {
 			<div class="border border-[var(--border)] bg-white p-6">
 				<p class="text-muted-foreground">
 					{
-						t("common.contributing.conduct.description", {
+						T("common.contributing.conduct.description", {
 							defaultValue:
 								"All participants in the Code Editor Land community are expected to be respectful and constructive. Read the full Code of Conduct on GitHub.",
 						})
@@ -428,7 +428,7 @@ const MetaDescription = t("meta.contributing.description", {
 		<div class="mt-12 border-t pt-8">
 			<a href="#top" class="text-sm text-primary hover:underline"
 				>{
-					t("common.button.backToTop", {
+					T("common.button.backToTop", {
 						defaultValue: "Back to top",
 					})
 				}</a

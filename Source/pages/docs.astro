@@ -5,11 +5,11 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = t("meta.docs.title", {
+const MetaTitle = T("meta.docs.title", {
 	defaultValue: "Documentation | Code Editor Land",
 });
 
-const MetaDescription = t("meta.docs.description", {
+const MetaDescription = T("meta.docs.description", {
 	defaultValue:
 		"Browse the Code Editor Land documentation, guides, and API references on GitHub.",
 });
@@ -30,7 +30,7 @@ const MetaDescription = t("meta.docs.description", {
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
-							t("common.breadcrumb.home", {
+							T("common.breadcrumb.home", {
 								defaultValue: "Home",
 							})
 						}</a
@@ -40,7 +40,7 @@ const MetaDescription = t("meta.docs.description", {
 				<li>
 					<span class="font-medium text-foreground"
 						>{
-							t("common.docs.pageTitle", {
+							T("common.docs.pageTitle", {
 								defaultValue: "Documentation",
 							})
 						}</span
@@ -52,11 +52,11 @@ const MetaDescription = t("meta.docs.description", {
 		<!-- Page Header -->
 		<header class="mb-12">
 			<h1 class="mb-4 text-4xl font-bold tracking-tight">
-				{t("common.docs.pageTitle", { defaultValue: "Documentation" })}
+				{T("common.docs.pageTitle", { defaultValue: "Documentation" })}
 			</h1>
 			<p class="text-lg text-muted-foreground">
 				{
-					t("common.docs.pageSubtitle", {
+					T("common.docs.pageSubtitle", {
 						defaultValue:
 							"Everything you need to get started with Code Editor Land.",
 					})
@@ -73,14 +73,14 @@ const MetaDescription = t("meta.docs.description", {
 				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 				<h2 class="mb-2 text-xl font-semibold">
 					{
-						t("common.docs.gettingStarted.title", {
+						T("common.docs.gettingStarted.title", {
 							defaultValue: "Getting Started",
 						})
 					}
 				</h2>
 				<p class="text-sm text-muted-foreground">
 					{
-						t("common.docs.gettingStarted.description", {
+						T("common.docs.gettingStarted.description", {
 							defaultValue:
 								"Read the README for installation instructions, build steps, and an overview of the project architecture.",
 						})
@@ -94,11 +94,11 @@ const MetaDescription = t("meta.docs.description", {
 				rel="noopener noreferrer"
 				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 				<h2 class="mb-2 text-xl font-semibold">
-					{t("common.docs.wiki.title", { defaultValue: "Wiki" })}
+					{T("common.docs.wiki.title", { defaultValue: "Wiki" })}
 				</h2>
 				<p class="text-sm text-muted-foreground">
 					{
-						t("common.docs.wiki.description", {
+						T("common.docs.wiki.description", {
 							defaultValue:
 								"Browse the project wiki for in-depth guides, tutorials, and reference documentation.",
 						})
@@ -113,14 +113,14 @@ const MetaDescription = t("meta.docs.description", {
 				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 				<h2 class="mb-2 text-xl font-semibold">
 					{
-						t("common.docs.discussions.title", {
+						T("common.docs.discussions.title", {
 							defaultValue: "Discussions",
 						})
 					}
 				</h2>
 				<p class="text-sm text-muted-foreground">
 					{
-						t("common.docs.discussions.description", {
+						T("common.docs.discussions.description", {
 							defaultValue:
 								"Ask questions, share ideas, and connect with the community on GitHub Discussions.",
 						})
@@ -135,14 +135,14 @@ const MetaDescription = t("meta.docs.description", {
 				class="block border border-[var(--border)] bg-white p-6 transition-colors hover:bg-[var(--secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 				<h2 class="mb-2 text-xl font-semibold">
 					{
-						t("common.docs.issueTracker.title", {
+						T("common.docs.issueTracker.title", {
 							defaultValue: "Issue Tracker",
 						})
 					}
 				</h2>
 				<p class="text-sm text-muted-foreground">
 					{
-						t("common.docs.issueTracker.description", {
+						T("common.docs.issueTracker.description", {
 							defaultValue:
 								"Report bugs, request features, or browse existing issues on GitHub.",
 						})
@@ -155,7 +155,7 @@ const MetaDescription = t("meta.docs.description", {
 		<section class="mt-12">
 			<h2 class="mb-6 text-2xl font-semibold">
 				{
-					t("common.docs.architecture.heading", {
+					T("common.docs.architecture.heading", {
 						defaultValue: "Architecture Overview",
 					})
 				}
@@ -163,7 +163,7 @@ const MetaDescription = t("meta.docs.description", {
 			<div class="border border-[var(--border)] bg-white p-6">
 				<p class="mb-4 text-muted-foreground">
 					{
-						t("common.docs.architecture.intro", {
+						T("common.docs.architecture.intro", {
 							defaultValue:
 								"Land replaces VS Code's Electron stack with a modern, high-performance architecture:",
 						})
@@ -175,7 +175,7 @@ const MetaDescription = t("meta.docs.description", {
 						>
 						<span class="text-muted-foreground"
 							>{
-								t("common.docs.architecture.mountain", {
+								T("common.docs.architecture.mountain", {
 									defaultValue:
 										"Rust/Tauri native backend — manages windows, filesystem, processes",
 								})
@@ -186,7 +186,7 @@ const MetaDescription = t("meta.docs.description", {
 						<span class="min-w-[120px] font-semibold">Cocoon</span>
 						<span class="text-muted-foreground"
 							>{
-								t("common.docs.architecture.cocoon", {
+								T("common.docs.architecture.cocoon", {
 									defaultValue:
 										"TypeScript extension host — runs VS Code extensions via Effect-TS",
 								})
@@ -197,7 +197,7 @@ const MetaDescription = t("meta.docs.description", {
 						<span class="min-w-[120px] font-semibold">Wind</span>
 						<span class="text-muted-foreground"
 							>{
-								t("common.docs.architecture.wind", {
+								T("common.docs.architecture.wind", {
 									defaultValue:
 										"TypeScript UI services — re-implementation of VS Code workbench",
 								})
@@ -208,7 +208,7 @@ const MetaDescription = t("meta.docs.description", {
 						<span class="min-w-[120px] font-semibold">Sky</span>
 						<span class="text-muted-foreground"
 							>{
-								t("common.docs.architecture.sky", {
+								T("common.docs.architecture.sky", {
 									defaultValue:
 										"Astro UI components — renders the editor interface",
 								})
@@ -219,7 +219,7 @@ const MetaDescription = t("meta.docs.description", {
 						<span class="min-w-[120px] font-semibold">Air</span>
 						<span class="text-muted-foreground"
 							>{
-								t("common.docs.architecture.air", {
+								T("common.docs.architecture.air", {
 									defaultValue:
 										"Rust background daemon — updates, downloads, crypto signing",
 								})
@@ -230,7 +230,7 @@ const MetaDescription = t("meta.docs.description", {
 						<span class="min-w-[120px] font-semibold">Echo</span>
 						<span class="text-muted-foreground"
 							>{
-								t("common.docs.architecture.echo", {
+								T("common.docs.architecture.echo", {
 									defaultValue:
 										"Rust task scheduler — high-performance work-stealing executor",
 								})
@@ -245,7 +245,7 @@ const MetaDescription = t("meta.docs.description", {
 		<section class="mt-12">
 			<h2 class="mb-6 text-2xl font-semibold">
 				{
-					t("common.docs.repositories.heading", {
+					T("common.docs.repositories.heading", {
 						defaultValue: "Source Repositories",
 					})
 				}
@@ -261,7 +261,7 @@ const MetaDescription = t("meta.docs.description", {
 					</a>
 					<span class="ml-2 text-sm text-muted-foreground"
 						>{
-							t("common.docs.repositories.mainMonorepo", {
+							T("common.docs.repositories.mainMonorepo", {
 								defaultValue: "Main monorepo",
 							})
 						}</span
@@ -277,7 +277,7 @@ const MetaDescription = t("meta.docs.description", {
 					</a>
 					<span class="ml-2 text-sm text-muted-foreground"
 						>{
-							t("common.docs.repositories.tauriBackend", {
+							T("common.docs.repositories.tauriBackend", {
 								defaultValue: "Tauri backend",
 							})
 						}</span
@@ -293,7 +293,7 @@ const MetaDescription = t("meta.docs.description", {
 					</a>
 					<span class="ml-2 text-sm text-muted-foreground"
 						>{
-							t("common.docs.repositories.extensionHost", {
+							T("common.docs.repositories.extensionHost", {
 								defaultValue: "Extension host",
 							})
 						}</span
@@ -306,7 +306,7 @@ const MetaDescription = t("meta.docs.description", {
 						rel="noopener noreferrer"
 						class="font-medium text-[var(--primary)] hover:underline">
 						{
-							t("common.docs.repositories.viewAll", {
+							T("common.docs.repositories.viewAll", {
 								defaultValue: "View all repositories",
 							})
 						}
@@ -319,7 +319,7 @@ const MetaDescription = t("meta.docs.description", {
 		<div class="mt-12 border-t pt-8">
 			<a href="#top" class="text-sm text-primary hover:underline"
 				>{
-					t("common.button.backToTop", {
+					T("common.button.backToTop", {
 						defaultValue: "Back to top",
 					})
 				}</a

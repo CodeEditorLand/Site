@@ -5,11 +5,11 @@ import { GetI18n } from "../../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = t("meta.contact.sales.title", {
+const MetaTitle = T("meta.contact.sales.title", {
 	defaultValue: "Enterprise Inquiries | Code Editor Land",
 });
 
-const MetaDescription = t("meta.contact.sales.description", {
+const MetaDescription = T("meta.contact.sales.description", {
 	defaultValue:
 		"Contact the Code Editor Land team about enterprise licensing, custom deployments, and volume pricing.",
 });
@@ -30,7 +30,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
-							t("common.breadcrumb.home", {
+							T("common.breadcrumb.home", {
 								defaultValue: "Home",
 							})
 						}</a
@@ -40,7 +40,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 				<li>
 					<span class="font-medium text-foreground"
 						>{
-							t("common.sales.pageTitle", {
+							T("common.sales.pageTitle", {
 								defaultValue: "Enterprise Inquiries",
 							})
 						}</span
@@ -53,14 +53,14 @@ const MetaDescription = t("meta.contact.sales.description", {
 		<header class="mb-12">
 			<h1 class="mb-4 text-4xl font-bold tracking-tight">
 				{
-					t("common.sales.pageTitle", {
+					T("common.sales.pageTitle", {
 						defaultValue: "Enterprise Inquiries",
 					})
 				}
 			</h1>
 			<p class="text-lg text-muted-foreground">
 				{
-					t("common.sales.pageSubtitle", {
+					T("common.sales.pageSubtitle", {
 						defaultValue:
 							"Interested in deploying Code Editor Land across your organization? Get in touch with our team.",
 					})
@@ -76,14 +76,14 @@ const MetaDescription = t("meta.contact.sales.description", {
 						<p
 							class="mb-1 text-sm font-medium text-[var(--primary)]">
 							{
-								t("common.sales.contact.heading", {
+								T("common.sales.contact.heading", {
 									defaultValue: "How to reach us",
 								})
 							}
 						</p>
 						<p class="text-sm text-muted-foreground">
 							{
-								t("common.sales.contact.githubNote", {
+								T("common.sales.contact.githubNote", {
 									defaultValue:
 										"We handle enterprise inquiries through GitHub Issues. This ensures your request is tracked, visible to the team, and responded to promptly.",
 								})
@@ -93,14 +93,14 @@ const MetaDescription = t("meta.contact.sales.description", {
 
 					<h2 class="mb-4 text-xl font-semibold">
 						{
-							t("common.sales.contact.openIssueHeading", {
+							T("common.sales.contact.openIssueHeading", {
 								defaultValue: "Open a GitHub Issue",
 							})
 						}
 					</h2>
 					<p class="mb-6 text-sm text-muted-foreground">
 						{
-							t("common.sales.contact.openIssueDescription", {
+							T("common.sales.contact.openIssueDescription", {
 								defaultValue:
 									"Create an issue on our GitHub repository describing your organization's needs. Include your company name, team size, use case, and any deployment requirements. Our team monitors issues daily.",
 							})
@@ -113,7 +113,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 						rel="noopener noreferrer"
 						class="inline-flex h-10 items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-8 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 						{
-							t("common.sales.contact.openIssueButton", {
+							T("common.sales.contact.openIssueButton", {
 								defaultValue: "Open GitHub Issue",
 							})
 						}
@@ -124,7 +124,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 						<p class="text-xs text-muted-foreground">
 							<strong
 								>{
-									t(
+									T(
 										"common.sales.contact.issueIncludeLabel",
 										{
 											defaultValue:
@@ -134,7 +134,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 								}</strong
 							>
 							{
-								t("common.sales.contact.issueIncludeText", {
+								T("common.sales.contact.issueIncludeText", {
 									defaultValue:
 										"Company name, team size, intended use case, deployment environment (cloud/on-prem), timeline, and any specific support or compliance requirements.",
 								})
@@ -149,7 +149,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 				<div class="border border-[var(--border)] bg-white p-6">
 					<h3 class="mb-3 font-semibold">
 						{
-							t("common.sales.features.heading", {
+							T("common.sales.features.heading", {
 								defaultValue: "Enterprise Features",
 							})
 						}
@@ -157,28 +157,28 @@ const MetaDescription = t("meta.contact.sales.description", {
 					<ul class="space-y-2 text-sm text-muted-foreground">
 						<li>
 							{
-								t("common.sales.features.prioritySupport", {
+								T("common.sales.features.prioritySupport", {
 									defaultValue: "Priority support and SLA",
 								})
 							}
 						</li>
 						<li>
 							{
-								t("common.sales.features.customDeployment", {
+								T("common.sales.features.customDeployment", {
 									defaultValue: "Custom deployment options",
 								})
 							}
 						</li>
 						<li>
 							{
-								t("common.sales.features.volumeLicensing", {
+								T("common.sales.features.volumeLicensing", {
 									defaultValue: "Volume licensing",
 								})
 							}
 						</li>
 						<li>
 							{
-								t("common.sales.features.accountManagement", {
+								T("common.sales.features.accountManagement", {
 									defaultValue:
 										"Dedicated account management",
 								})
@@ -186,7 +186,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 						</li>
 						<li>
 							{
-								t("common.sales.features.securityReview", {
+								T("common.sales.features.securityReview", {
 									defaultValue:
 										"Security and compliance review",
 								})
@@ -194,7 +194,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 						</li>
 						<li>
 							{
-								t("common.sales.features.customIntegrations", {
+								T("common.sales.features.customIntegrations", {
 									defaultValue: "Custom integrations",
 								})
 							}
@@ -205,14 +205,14 @@ const MetaDescription = t("meta.contact.sales.description", {
 				<div class="border border-[var(--border)] bg-white p-6">
 					<h3 class="mb-3 font-semibold">
 						{
-							t("common.sales.contact.directHeading", {
+							T("common.sales.contact.directHeading", {
 								defaultValue: "Direct Contact",
 							})
 						}
 					</h3>
 					<p class="mb-3 text-sm text-muted-foreground">
 						{
-							t("common.sales.contact.description", {
+							T("common.sales.contact.description", {
 								defaultValue:
 									"Prefer email? Reach us directly:",
 							})
@@ -227,7 +227,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 					</p>
 					<p class="text-xs text-muted-foreground">
 						{
-							t("common.sales.contact.operatedBy", {
+							T("common.sales.contact.operatedBy", {
 								defaultValue:
 									"Operated by PlayForm, Sofia, Bulgaria",
 							})
@@ -238,14 +238,14 @@ const MetaDescription = t("meta.contact.sales.description", {
 				<div class="border border-[var(--border)] bg-white p-6">
 					<h3 class="mb-3 font-semibold">
 						{
-							t("common.sales.openSource.heading", {
+							T("common.sales.openSource.heading", {
 								defaultValue: "Open Source",
 							})
 						}
 					</h3>
 					<p class="text-sm text-muted-foreground">
 						{
-							t("common.sales.openSource.description", {
+							T("common.sales.openSource.description", {
 								defaultValue:
 									"Code Editor Land is open source under CC0. Enterprise plans provide support, SLAs, and custom development — not access to the code itself.",
 							})
@@ -259,7 +259,7 @@ const MetaDescription = t("meta.contact.sales.description", {
 		<div class="mt-12 border-t pt-8">
 			<a href="#top" class="text-sm text-primary hover:underline"
 				>{
-					t("common.button.backToTop", {
+					T("common.button.backToTop", {
 						defaultValue: "Back to top",
 					})
 				}</a

@@ -4,10 +4,10 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = t("common.error.404", {
+const MetaTitle = T("common.error.404", {
 	defaultValue: "404 - Page Not Found",
 });
-const MetaDescription = t("common.error.pageNotFound", {
+const MetaDescription = T("common.error.pageNotFound", {
 	defaultValue: "The page you're looking for doesn't exist.",
 });
 ---
@@ -18,7 +18,7 @@ const MetaDescription = t("common.error.pageNotFound", {
 			<h1 class="mb-4 text-6xl font-bold">404</h1>
 			<p class="mb-8 text-xl text-muted-foreground">
 				{
-					t("common.error.pageNotFound", {
+					T("common.error.pageNotFound", {
 						defaultValue: "Page not found",
 					})
 				}
@@ -27,7 +27,7 @@ const MetaDescription = t("common.error.pageNotFound", {
 				href="/"
 				class="inline-flex h-10 items-center justify-center gap-2 border border-[var(--border)] bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
 				&larr; {
-					t("common.button.backToHome", {
+					T("common.button.backToHome", {
 						defaultValue: "Back to Home",
 					})
 				}

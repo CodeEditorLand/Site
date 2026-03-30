@@ -26,32 +26,32 @@ interface HeaderProps {
 }
 
 export function Header({ content }: HeaderProps) {
-	const { t } = useTranslation("header");
+	const { t: T } = useTranslation("header");
 	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
 	const HeaderData = content || {
-		logo: { text: t("logo", "Land") },
+		logo: { text: T("logo", "Land") },
 		navigation: [
-			{ label: t("nav.features", "Features"), href: "/#features" },
-			{ label: t("nav.download", "Download"), href: "/downloads" },
+			{ label: T("nav.features", "Features"), href: "/#features" },
+			{ label: T("nav.download", "Download"), href: "/downloads" },
 			{
-				label: t("nav.docs", "Docs"),
+				label: T("nav.docs", "Docs"),
 				href: "https://github.com/CodeEditorLand/Land#readme",
 			},
 			{
-				label: t("nav.github", "GitHub"),
+				label: T("nav.github", "GitHub"),
 				href: "https://github.com/CodeEditorLand/Land",
 			},
 		],
 		actions: [
 			{
-				text: t("actions.signIn", "Sign In"),
+				text: T("actions.signIn", "Sign In"),
 				variant: "ghost",
 				size: "default",
 				href: "/account/signin",
 			},
 			{
-				text: t("actions.getStarted", "Get Land"),
+				text: T("actions.getStarted", "Get Land"),
 				variant: "default",
 				size: "default",
 				href: "/downloads",

@@ -16,7 +16,7 @@ export function DynamicVerificationInfo({
 	onDownloadSignature,
 	className,
 }: Property) {
-	const { t } = useTranslation("download");
+	const { t: T } = useTranslation("download");
 	const { title, description, downloadVerification, integrityVerification } =
 		content;
 
@@ -25,7 +25,7 @@ export function DynamicVerificationInfo({
 			.writeText(Text)
 			.then(() => {
 				alert(
-					t("labels.copiedToClipboard", {
+					T("labels.copiedToClipboard", {
 						defaultValue: "{{label}} copied to clipboard!",
 						label: Label,
 					}),
@@ -33,7 +33,7 @@ export function DynamicVerificationInfo({
 			})
 			.catch(() => {
 				alert(
-					t("labels.failedToCopy", {
+					T("labels.failedToCopy", {
 						defaultValue: "Failed to copy {{label}}",
 						label: Label,
 					}),

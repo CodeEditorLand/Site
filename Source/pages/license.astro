@@ -4,17 +4,17 @@ import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = t("meta.license.title", {
+const MetaTitle = T("meta.license.title", {
 	defaultValue: "License | Code Editor Land",
 });
 
-const MetaDescription = t("meta.license.description", {
+const MetaDescription = T("meta.license.description", {
 	defaultValue:
 		"Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license.",
 });
 
 // Full CC0 1.0 Universal text
-const cc0LicenseText = `Creative Commons Legal Code
+const CC0LicenseText = `Creative Commons Legal Code
 
 CC0 1.0 Universal
 
@@ -198,7 +198,7 @@ legal effect of CC0 on those rights.
 				<h2 class="mb-4 text-2xl font-semibold">Full License Text</h2>
 				<div class="bg-muted/30 overflow-x-auto rounded-lg border p-6">
 					<pre
-						class="whitespace-pre-wrap font-mono text-sm leading-relaxed">{cc0LicenseText}</pre>
+						class="whitespace-pre-wrap font-mono text-sm leading-relaxed">{CC0LicenseText}</pre>
 				</div>
 			</section>
 

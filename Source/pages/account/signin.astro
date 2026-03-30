@@ -7,34 +7,34 @@ const T = GetI18n();
 
 const AccountContent = {
 	signIn: {
-		title: t("account.signIn.title", { defaultValue: "Sign In" }),
-		description: t("account.signIn.subtitle", {
+		title: T("account.signIn.title", { defaultValue: "Sign In" }),
+		description: T("account.signIn.subtitle", {
 			defaultValue: "Enter your credentials to access your account",
 		}),
 		emailField: {
-			label: t("common.label.email", { defaultValue: "Email" }),
-			placeholder: t("account.signIn.emailPlaceholder", {
+			label: T("common.label.email", { defaultValue: "Email" }),
+			placeholder: T("account.signIn.emailPlaceholder", {
 				defaultValue: "name@example.com",
 			}),
 			type: "email",
 			required: true,
 		},
 		passwordField: {
-			label: t("common.label.password", { defaultValue: "Password" }),
-			placeholder: t("account.signIn.passwordPlaceholder", {
+			label: T("common.label.password", { defaultValue: "Password" }),
+			placeholder: T("account.signIn.passwordPlaceholder", {
 				defaultValue: "Enter your password",
 			}),
 			type: "password",
 			required: true,
 		},
 		submitButton: {
-			text: t("common.button.signIn", { defaultValue: "Sign In" }),
+			text: T("common.button.signIn", { defaultValue: "Sign In" }),
 			variant: "default",
 			fullWidth: true,
 			type: "submit" as const,
 		},
 		oauthButton: {
-			text: t("account.signIn.githubButton", {
+			text: T("account.signIn.githubButton", {
 				defaultValue: "Continue with GitHub",
 			}),
 			variant: "outline",
@@ -44,13 +44,13 @@ const AccountContent = {
 		showDivider: true,
 		footerLinks: {
 			signUp: {
-				label: t("account.signIn.signUpLink", {
+				label: T("account.signIn.signUpLink", {
 					defaultValue: "Sign up",
 				}),
 				href: "/account/signup",
 			},
 			forgotPassword: {
-				label: t("account.signIn.forgotPassword", {
+				label: T("account.signIn.forgotPassword", {
 					defaultValue: "Forgot your password?",
 				}),
 				href: "/account/forgot-password",
@@ -58,54 +58,54 @@ const AccountContent = {
 		},
 	},
 	signUp: {
-		title: t("account.signUp.title", { defaultValue: "Create Account" }),
-		description: t("account.signUp.subtitle", {
+		title: T("account.signUp.title", { defaultValue: "Create Account" }),
+		description: T("account.signUp.subtitle", {
 			defaultValue: "Enter your details to create a new account",
 		}),
 		emailField: {
-			label: t("common.label.email", { defaultValue: "Email" }),
-			placeholder: t("account.signUp.emailPlaceholder", {
+			label: T("common.label.email", { defaultValue: "Email" }),
+			placeholder: T("account.signUp.emailPlaceholder", {
 				defaultValue: "name@example.com",
 			}),
 			type: "email",
 			required: true,
 		},
 		passwordField: {
-			label: t("common.label.password", { defaultValue: "Password" }),
-			placeholder: t("account.signUp.passwordPlaceholder", {
+			label: T("common.label.password", { defaultValue: "Password" }),
+			placeholder: T("account.signUp.passwordPlaceholder", {
 				defaultValue: "Create a password",
 			}),
 			type: "password",
 			required: true,
-			helperText: t("account.signUp.passwordHint", {
+			helperText: T("account.signUp.passwordHint", {
 				defaultValue: "At least 8 characters",
 			}),
 		},
 		confirmPasswordField: {
-			label: t("account.signUp.confirmPasswordLabel", {
+			label: T("account.signUp.confirmPasswordLabel", {
 				defaultValue: "Confirm Password",
 			}),
-			placeholder: t("account.signUp.confirmPasswordPlaceholder", {
+			placeholder: T("account.signUp.confirmPasswordPlaceholder", {
 				defaultValue: "Confirm your password",
 			}),
 			type: "password",
 			required: true,
 		},
 		termsCheckbox: {
-			label: t("account.signUp.termsLabel", {
+			label: T("account.signUp.termsLabel", {
 				defaultValue:
 					"I agree to the Terms of Service and Privacy Policy",
 			}),
 			required: true,
 		},
 		submitButton: {
-			text: t("common.button.signUp", { defaultValue: "Create Account" }),
+			text: T("common.button.signUp", { defaultValue: "Create Account" }),
 			variant: "default",
 			fullWidth: true,
 		},
 		oauthButtons: [
 			{
-				text: t("account.signUp.social.github", {
+				text: T("account.signUp.social.github", {
 					defaultValue: "Continue with GitHub",
 				}),
 				variant: "outline",
@@ -113,7 +113,7 @@ const AccountContent = {
 				icon: "Github",
 			},
 			{
-				text: t("account.signUp.social.google", {
+				text: T("account.signUp.social.google", {
 					defaultValue: "Continue with Google",
 				}),
 				variant: "outline",
@@ -121,7 +121,7 @@ const AccountContent = {
 				icon: "Chrome",
 			},
 			{
-				text: t("account.signUp.social.gitlab", {
+				text: T("account.signUp.social.gitlab", {
 					defaultValue: "Continue with GitLab",
 				}),
 				variant: "outline",
@@ -131,7 +131,7 @@ const AccountContent = {
 		],
 		footerLinks: {
 			signIn: {
-				label: t("account.signUp.signInLink", {
+				label: T("account.signUp.signInLink", {
 					defaultValue: "Sign in",
 				}),
 				href: "/account/signin",
@@ -139,77 +139,77 @@ const AccountContent = {
 		},
 	},
 	forgotPassword: {
-		title: t("account.forgotPassword.title", {
+		title: T("account.forgotPassword.title", {
 			defaultValue: "Reset Password",
 		}),
-		description: t("account.forgotPassword.subtitle", {
+		description: T("account.forgotPassword.subtitle", {
 			defaultValue: "Enter your email to receive a password reset link",
 		}),
 		emailField: {
-			label: t("common.label.email", { defaultValue: "Email" }),
-			placeholder: t("account.forgotPassword.emailPlaceholder", {
+			label: T("common.label.email", { defaultValue: "Email" }),
+			placeholder: T("account.forgotPassword.emailPlaceholder", {
 				defaultValue: "name@example.com",
 			}),
 			type: "email",
 			required: true,
 		},
 		submitButton: {
-			text: t("account.forgotPassword.submit", {
+			text: T("account.forgotPassword.submit", {
 				defaultValue: "Send Reset Link",
 			}),
 			variant: "default",
 			fullWidth: true,
 		},
-		successMessage: t("account.forgotPassword.success.subtitle", {
+		successMessage: T("account.forgotPassword.success.subtitle", {
 			defaultValue:
 				"We've sent a password reset link to your email address.",
 		}),
 	},
 	resetPassword: {
-		title: t("account.resetPassword.title", {
+		title: T("account.resetPassword.title", {
 			defaultValue: "Set New Password",
 		}),
-		description: t("account.resetPassword.subtitle", {
+		description: T("account.resetPassword.subtitle", {
 			defaultValue: "Choose a new password for your account",
 		}),
 		passwordField: {
-			label: t("account.resetPassword.passwordLabel", {
+			label: T("account.resetPassword.passwordLabel", {
 				defaultValue: "New Password",
 			}),
-			placeholder: t("account.resetPassword.passwordPlaceholder", {
+			placeholder: T("account.resetPassword.passwordPlaceholder", {
 				defaultValue: "Enter new password",
 			}),
 			type: "password",
 			required: true,
 		},
 		confirmPasswordField: {
-			label: t("account.resetPassword.confirmLabel", {
+			label: T("account.resetPassword.confirmLabel", {
 				defaultValue: "Confirm New Password",
 			}),
-			placeholder: t("account.resetPassword.confirmPlaceholder", {
+			placeholder: T("account.resetPassword.confirmPlaceholder", {
 				defaultValue: "Confirm new password",
 			}),
 			type: "password",
 			required: true,
 		},
 		submitButton: {
-			text: t("account.resetPassword.submit", {
+			text: T("account.resetPassword.submit", {
 				defaultValue: "Reset Password",
 			}),
 			variant: "default",
 			fullWidth: true,
 		},
-		checkingMessage: t("account.resetPassword.checkingMessage", {
+		checkingMessage: T("account.resetPassword.checkingMessage", {
 			defaultValue: "Validating reset token...",
 		}),
-		invalidTokenMessage: t(
+		invalidTokenMessage: T(
 			"account.resetPassword.invalidToken.description",
 			{
 				defaultValue:
 					"This password reset link is invalid or has expired. Please request a new one.",
 			},
 		),
-		successMessage: t("account.resetPassword.success.description", {
+		successMessage: T("account.resetPassword.success.description", {
 			defaultValue:
 				"Your password has been reset successfully. You can now sign in with your new password.",
 		}),
@@ -218,8 +218,8 @@ const AccountContent = {
 	footer: {},
 };
 
-const MetaTitle = t("meta.account.signIn", { defaultValue: "Sign In - Land" });
-const MetaDescription = t("account.signIn.subtitle", {
+const MetaTitle = T("meta.account.signIn", { defaultValue: "Sign In - Land" });
+const MetaDescription = T("account.signIn.subtitle", {
 	defaultValue: "Sign in to your Land account.",
 });
 ---

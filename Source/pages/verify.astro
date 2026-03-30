@@ -8,15 +8,15 @@ const T = GetI18n();
 const VerifyContent = {
 	verification: {
 		pending: {
-			title: t("verify.pending.title", {
+			title: T("verify.pending.title", {
 				defaultValue: "Verify Your Email",
 			}),
-			description: t("verify.pending.description", {
+			description: T("verify.pending.description", {
 				defaultValue:
 					"We've sent a verification link to your email address.",
 			}),
 			resendButton: {
-				text: t("verify.pending.resendButton", {
+				text: T("verify.pending.resendButton", {
 					defaultValue: "Resend Verification Email",
 				}),
 				variant: "default",
@@ -24,14 +24,14 @@ const VerifyContent = {
 			},
 		},
 		success: {
-			title: t("verify.success.title", {
+			title: T("verify.success.title", {
 				defaultValue: "Email Verified Successfully!",
 			}),
-			description: t("verify.success.description", {
+			description: T("verify.success.description", {
 				defaultValue: "Your email address has been verified.",
 			}),
 			continueButton: {
-				text: t("verify.success.continueButton", {
+				text: T("verify.success.continueButton", {
 					defaultValue: "Continue to Dashboard",
 				}),
 				variant: "default",
@@ -39,14 +39,14 @@ const VerifyContent = {
 			},
 		},
 		error: {
-			title: t("verify.error.title", {
+			title: T("verify.error.title", {
 				defaultValue: "Verification Failed",
 			}),
-			description: t("verify.error.description", {
+			description: T("verify.error.description", {
 				defaultValue: "An error occurred during verification.",
 			}),
 			backToSignInButton: {
-				text: t("verify.error.backToSignInButton", {
+				text: T("verify.error.backToSignInButton", {
 					defaultValue: "Back to Sign In",
 				}),
 				variant: "default",
@@ -60,10 +60,10 @@ const Token = Astro.url.searchParams.get("token");
 const Reason = Astro.url.searchParams.get("reason");
 const Route = Token ? "verify" : Reason ? "failure" : "pending";
 
-const MetaTitle = t("meta.verify.title", {
+const MetaTitle = T("meta.verify.title", {
 	defaultValue: "Verify Email - Land",
 });
-const MetaDescription = t("verify.pending.description", {
+const MetaDescription = T("verify.pending.description", {
 	defaultValue: "Verify your email address to activate your account.",
 });
 ---

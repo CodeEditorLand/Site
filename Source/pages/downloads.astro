@@ -8,8 +8,8 @@ const T = GetI18n();
 // For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
 const DownloadContent = {
 	platformGrid: {
-		title: t("download.page.title", { defaultValue: "Download Land" }),
-		subtitle: t("download.page.subtitle", {
+		title: T("download.page.title", { defaultValue: "Download Land" }),
+		subtitle: T("download.page.subtitle", {
 			defaultValue:
 				"Available for macOS, Windows, and Linux. Fast, native, and free.",
 		}),
@@ -18,11 +18,11 @@ const DownloadContent = {
 		onDownload: async (platform: { name: string; id?: string }) => {
 			if (platform.id) {
 				try {
-					const { downloadsAPI } =
+					const { default: DownloadAPI } =
 						await import("../Library/API/Download");
-					const Information = await downloadsAPI.getInfo(platform.id);
+					const Information = await DownloadAPI.GetInfo(platform.id);
 					window.open(Information.downloadUrl, "_blank");
-					await downloadsAPI.trackDownload(platform.id);
+					await DownloadAPI.TrackDownload(platform.id);
 				} catch (error) {
 					console.error("Download failed:", error);
 					alert("Download failed. Please try again.");
@@ -31,10 +31,10 @@ const DownloadContent = {
 		},
 	},
 	systemRequirements: {
-		title: t("download.systemRequirements.title", {
+		title: T("download.systemRequirements.title", {
 			defaultValue: "System Requirements",
 		}),
-		description: t("download.systemRequirements.subtitle", {
+		description: T("download.systemRequirements.subtitle", {
 			defaultValue:
 				"Ensure your system meets these requirements before downloading.",
 		}),
@@ -65,10 +65,10 @@ const DownloadContent = {
 		],
 	},
 	verificationInfo: {
-		title: t("download.verification.title", {
+		title: T("download.verification.title", {
 			defaultValue: "Verify Your Download",
 		}),
-		description: t("download.verification.description", {
+		description: T("download.verification.description", {
 			defaultValue:
 				"Land releases are signed with PGP. Verify your download to ensure integrity.",
 		}),
@@ -87,7 +87,7 @@ const DownloadContent = {
 				"To verify: shasum -a 256 <filename> and compare output with the checksum above. For PGP: gpg --verify <file>.sig <file>",
 		},
 		downloadButton: {
-			text: t("download.verification.downloadButton", {
+			text: T("download.verification.downloadButton", {
 				defaultValue: "Download PGP Public Key",
 			}),
 			variant: "outline",
@@ -95,7 +95,7 @@ const DownloadContent = {
 			fullWidth: false,
 		},
 		verifyButton: {
-			text: t("download.verification.verifyButton", {
+			text: T("download.verification.verifyButton", {
 				defaultValue: "Verify Download",
 			}),
 			variant: "default",
@@ -104,10 +104,10 @@ const DownloadContent = {
 		},
 	},
 	previousReleases: {
-		title: t("download.previousReleases.title", {
+		title: T("download.previousReleases.title", {
 			defaultValue: "Previous Releases",
 		}),
-		description: t("download.previousReleases.description", {
+		description: T("download.previousReleases.description", {
 			defaultValue: "Download older versions if needed.",
 		}),
 		releases: [
@@ -149,23 +149,23 @@ const DownloadContent = {
 		logo: { text: "Land" },
 		navigation: [
 			{
-				label: t("common.nav.downloads", { defaultValue: "Download" }),
+				label: T("common.nav.downloads", { defaultValue: "Download" }),
 				href: "/downloads",
 				isActive: true,
 			},
 			{
-				label: t("common.nav.docs", { defaultValue: "Docs" }),
+				label: T("common.nav.docs", { defaultValue: "Docs" }),
 				href: "https://github.com/CodeEditorLand/Land#readme",
 			},
 			{
-				label: t("common.nav.github", { defaultValue: "GitHub" }),
+				label: T("common.nav.github", { defaultValue: "GitHub" }),
 				href: "https://github.com/CodeEditorLand/Land",
 			},
 		],
 		actions: [
 			{ type: "mobile-menu" as const },
 			{
-				text: t("common.actions.signIn", { defaultValue: "Sign In" }),
+				text: T("common.actions.signIn", { defaultValue: "Sign In" }),
 				variant: "ghost",
 				size: "default",
 				href: "/account/signin",
@@ -175,10 +175,10 @@ const DownloadContent = {
 	footer: {},
 };
 
-const MetaTitle = t("meta.downloads.title", {
+const MetaTitle = T("meta.downloads.title", {
 	defaultValue: "Download Land | The Next-Generation Code Editor",
 });
-const MetaDescription = t("meta.downloads.description", {
+const MetaDescription = T("meta.downloads.description", {
 	defaultValue:
 		"Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
 });

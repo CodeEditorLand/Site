@@ -29,7 +29,7 @@ export function DynamicEmailVerification({
 	onNavigate,
 	className,
 }: Property) {
-	const { t } = useTranslation("verify");
+	const { t: T } = useTranslation("verify");
 	const [State, SetState] = useState<VerificationState>("pending");
 	const [Token, SetToken] = useState<string>(PropToken || "");
 	const [Email, SetEmail] = useState<string>(userEmail || "");
@@ -49,7 +49,7 @@ export function DynamicEmailVerification({
 			} catch {
 				SetState("error");
 				SetErrorMessage(
-					t("errorGeneric", {
+					T("errorGeneric", {
 						defaultValue:
 							"An error occurred during verification. Please try again.",
 					}),
@@ -79,7 +79,7 @@ export function DynamicEmailVerification({
 			setTimeout(() => SetResendSuccess(false), 5000);
 		} catch {
 			SetErrorMessage(
-				t("resendFailed", {
+				T("resendFailed", {
 					defaultValue: "Failed to resend email. Please try again.",
 				}),
 			);
@@ -107,8 +107,8 @@ export function DynamicEmailVerification({
 				<div className="space-y-4">
 					<DynamicInput
 						content={{
-							label: t("emailLabel", { defaultValue: "Email" }),
-							placeholder: t("emailPlaceholder", {
+							label: T("emailLabel", { defaultValue: "Email" }),
+							placeholder: T("emailPlaceholder", {
 								defaultValue:
 									"Enter your email to resend verification",
 							}),
@@ -124,7 +124,7 @@ export function DynamicEmailVerification({
 							className="text-center text-sm text-green-600"
 							role="status">
 							{content.pending.resendSuccessMessage ||
-								t("resendSuccess", {
+								T("resendSuccess", {
 									defaultValue: "Verification email resent!",
 								})}
 						</p>
@@ -153,13 +153,13 @@ export function DynamicEmailVerification({
 				</div>
 				<CardTitle>
 					{content.verifying?.title ||
-						t("verifying.title", {
+						T("verifying.title", {
 							defaultValue: "Verifying your email",
 						})}
 				</CardTitle>
 				<CardDescription role="status">
 					{content.verifying?.description ||
-						t("verifying.description", {
+						T("verifying.description", {
 							defaultValue:
 								"Please wait while we verify your email address...",
 						})}

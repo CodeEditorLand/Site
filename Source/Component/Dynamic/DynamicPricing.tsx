@@ -10,7 +10,7 @@ import type Property from "./Interface/Property/Pricing.js";
  * Supports monthly/yearly toggle and highlighted/plan populaire badges
  */
 export function DynamicPricing({ content, className }: Property) {
-	const { t } = useTranslation("home");
+	const { t: T } = useTranslation("home");
 	const {
 		title,
 		subtitle,
@@ -20,22 +20,22 @@ export function DynamicPricing({ content, className }: Property) {
 		labels = {},
 	} = content;
 	const {
-		monthly: MonthlyLabel = t("pricing.labels.monthly", {
+		monthly: MonthlyLabel = T("pricing.labels.monthly", {
 			defaultValue: "Monthly",
 		}),
-		yearly: YearlyLabel = t("pricing.labels.yearly", {
+		yearly: YearlyLabel = T("pricing.labels.yearly", {
 			defaultValue: "Yearly",
 		}),
-		savings: SavingsLabel = t("pricing.labels.savings", {
+		savings: SavingsLabel = T("pricing.labels.savings", {
 			defaultValue: "(Save up to 20%)",
 		}),
-		popular: PopularLabel = t("pricing.labels.popular", {
+		popular: PopularLabel = T("pricing.labels.popular", {
 			defaultValue: "Most Popular",
 		}),
-		perMonth: PerMonthLabel = t("pricing.labels.perMonth", {
+		perMonth: PerMonthLabel = T("pricing.labels.perMonth", {
 			defaultValue: "/month",
 		}),
-		perYear: PerYearLabel = t("pricing.labels.perYear", {
+		perYear: PerYearLabel = T("pricing.labels.perYear", {
 			defaultValue: "/year",
 		}),
 	} = labels;

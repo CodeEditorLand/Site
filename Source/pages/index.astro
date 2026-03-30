@@ -8,30 +8,30 @@ const T = GetI18n();
 const HomeContent = {
 	hero: {
 		badge: {
-			text: t("home.hero.badge", {
+			text: T("home.hero.badge", {
 				defaultValue: "🎉 New: Effect-TS Architecture",
 			}),
 			variant: "secondary",
 		},
-		title: t("home.hero.title", {
+		title: T("home.hero.title", {
 			defaultValue: "The Future of Code Editing",
 		}),
-		titleHighlight: t("home.hero.titleHighlight", {
+		titleHighlight: T("home.hero.titleHighlight", {
 			defaultValue: "Land",
 		}),
-		subtitle: t("home.hero.subtitle", {
+		subtitle: T("home.hero.subtitle", {
 			defaultValue:
 				"A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS. Experience the editor that reimagines VS Code for the modern era.",
 		}),
 		primaryCta: {
-			text: t("common.button.download", { defaultValue: "Download" }),
+			text: T("common.button.download", { defaultValue: "Download" }),
 			variant: "default",
 			size: "lg",
 			icon: "Download",
 			fullWidth: true,
 		},
 		secondaryCta: {
-			text: t("common.button.learnMore", { defaultValue: "Learn More" }),
+			text: T("common.button.learnMore", { defaultValue: "Learn More" }),
 			variant: "outline",
 			size: "lg",
 			icon: "Github",
@@ -81,10 +81,10 @@ const HomeContent = {
 		respectReducedMotion: true,
 	},
 	features: {
-		title: t("home.features.title", {
+		title: T("home.features.title", {
 			defaultValue: "Built for Performance, Designed for Developers",
 		}),
-		subtitle: t("home.features.subtitle", {
+		subtitle: T("home.features.subtitle", {
 			defaultValue:
 				"Discover what makes Code Editor Land the most advanced code editor available.",
 		}),
@@ -92,10 +92,10 @@ const HomeContent = {
 			{
 				id: "performance",
 				icon: "Zap",
-				title: t("home.features.item.designTokens.title", {
+				title: T("home.features.item.designTokens.title", {
 					defaultValue: "Performance First",
 				}),
-				description: t("home.features.item.designTokens.description", {
+				description: T("home.features.item.designTokens.description", {
 					defaultValue:
 						"Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable. No Electron bloat.",
 				}),
@@ -103,10 +103,10 @@ const HomeContent = {
 			{
 				id: "compatibility",
 				icon: "Box",
-				title: t("home.features.item.componentLibrary.title", {
+				title: T("home.features.item.componentLibrary.title", {
 					defaultValue: "VS Code Compatibility",
 				}),
-				description: t(
+				description: T(
 					"home.features.item.componentLibrary.description",
 					{
 						defaultValue:
@@ -117,10 +117,10 @@ const HomeContent = {
 			{
 				id: "architecture",
 				icon: "Cpu",
-				title: t("home.features.item.documentation.title", {
+				title: T("home.features.item.documentation.title", {
 					defaultValue: "Effect-TS Architecture",
 				}),
-				description: t("home.features.item.documentation.description", {
+				description: T("home.features.item.documentation.description", {
 					defaultValue:
 						"Effect-TS native UI services provide type safety, structured concurrency, and excellent error handling.",
 				}),
@@ -128,10 +128,10 @@ const HomeContent = {
 			{
 				id: "cross-platform",
 				icon: "Globe",
-				title: t("home.features.item.versionControl.title", {
+				title: T("home.features.item.versionControl.title", {
 					defaultValue: "Cross-Platform",
 				}),
-				description: t(
+				description: T(
 					"home.features.item.versionControl.description",
 					{
 						defaultValue:
@@ -142,10 +142,10 @@ const HomeContent = {
 			{
 				id: "tooling",
 				icon: "Wrench",
-				title: t("home.features.item.cicdIntegration.title", {
+				title: T("home.features.item.cicdIntegration.title", {
 					defaultValue: "Modern Tooling",
 				}),
-				description: t(
+				description: T(
 					"home.features.item.cicdIntegration.description",
 					{
 						defaultValue:
@@ -156,10 +156,10 @@ const HomeContent = {
 			{
 				id: "opensource",
 				icon: "Heart",
-				title: t("home.features.item.collaboration.title", {
+				title: T("home.features.item.collaboration.title", {
 					defaultValue: "Open Source",
 				}),
-				description: t("home.features.item.collaboration.description", {
+				description: T("home.features.item.collaboration.description", {
 					defaultValue:
 						"Licensed under Creative Commons CC0 - completely free to use, modify, and distribute. No strings attached.",
 				}),
@@ -169,49 +169,49 @@ const HomeContent = {
 		gap: "lg",
 	},
 	pricing: {
-		title: t("home.pricing.title", {
+		title: T("home.pricing.title", {
 			defaultValue: "Free Forever, Open Source",
 		}),
-		subtitle: t("home.pricing.subtitle", {
+		subtitle: T("home.pricing.subtitle", {
 			defaultValue:
 				"Code Editor Land is completely free. No tiers, no subscriptions, no restrictions.",
 		}),
 		tiers: [
 			{
 				id: "community",
-				name: t("home.pricing.tiers.free.name", {
+				name: T("home.pricing.tiers.free.name", {
 					defaultValue: "Community",
 				}),
-				description: t("home.pricing.tiers.free.description", {
+				description: T("home.pricing.tiers.free.description", {
 					defaultValue:
 						"For everyone. Full editor features, completely free.",
 				}),
 				price: { monthly: 0, yearly: 0 },
 				features: [
-					t("home.pricing.tiers.free.features.1", {
+					T("home.pricing.tiers.free.features.1", {
 						defaultValue: "Full VS Code compatibility",
 					}),
-					t("home.pricing.tiers.free.features.2", {
+					T("home.pricing.tiers.free.features.2", {
 						defaultValue: "All extensions supported",
 					}),
-					t("home.pricing.tiers.free.features.3", {
+					T("home.pricing.tiers.free.features.3", {
 						defaultValue: "Native Rust performance",
 					}),
-					t("home.pricing.tiers.free.features.4", {
+					T("home.pricing.tiers.free.features.4", {
 						defaultValue: "Cross-platform (macOS, Windows, Linux)",
 					}),
-					t("home.pricing.tiers.free.features.5", {
+					T("home.pricing.tiers.free.features.5", {
 						defaultValue: "Effect-TS type-safe UI",
 					}),
-					t("home.pricing.tiers.free.features.6", {
+					T("home.pricing.tiers.free.features.6", {
 						defaultValue: "gRPC-based architecture",
 					}),
-					t("home.pricing.tiers.free.features.7", {
+					T("home.pricing.tiers.free.features.7", {
 						defaultValue: "Open source (CC0 license)",
 					}),
 				],
 				cta: {
-					text: t("home.pricing.tiers.free.button", {
+					text: T("home.pricing.tiers.free.button", {
 						defaultValue: "Download Now",
 					}),
 					variant: "default",
@@ -222,94 +222,94 @@ const HomeContent = {
 		],
 	},
 	testimonials: {
-		title: t("home.testimonials.title", {
+		title: T("home.testimonials.title", {
 			defaultValue: "What developers are saying",
 		}),
-		subtitle: t("home.testimonials.subtitle", {
+		subtitle: T("home.testimonials.subtitle", {
 			defaultValue:
 				"Representative community feedback on the future of code editing.",
 		}),
 		testimonials: [
 			{
 				id: "1",
-				quote: t("home.testimonials.quote.1", {
+				quote: T("home.testimonials.quote.1", {
 					defaultValue:
 						"Land is exactly what VS Code needed - a performance-focused, open alternative. It's incredibly fast.",
 				}),
-				author: t("home.testimonials.attribution", {
+				author: T("home.testimonials.attribution", {
 					defaultValue: "Community Feedback",
 				}),
-				role: t("home.testimonials.attributionNote", {
+				role: T("home.testimonials.attributionNote", {
 					defaultValue: "Representative community member",
 				}),
 				rating: 5,
 			},
 			{
 				id: "2",
-				quote: t("home.testimonials.quote.2", {
+				quote: T("home.testimonials.quote.2", {
 					defaultValue:
 						"The Effect-TS architecture is beautiful to work with. The type safety catches bugs before they happen.",
 				}),
-				author: t("home.testimonials.attribution", {
+				author: T("home.testimonials.attribution", {
 					defaultValue: "Community Feedback",
 				}),
-				role: t("home.testimonials.attributionNote", {
+				role: T("home.testimonials.attributionNote", {
 					defaultValue: "Representative community member",
 				}),
 				rating: 5,
 			},
 			{
 				id: "3",
-				quote: t("home.testimonials.quote.3", {
+				quote: T("home.testimonials.quote.3", {
 					defaultValue:
 						"Running my existing extensions with no changes is a game-changer. The compatibility is impressive.",
 				}),
-				author: t("home.testimonials.attribution", {
+				author: T("home.testimonials.attribution", {
 					defaultValue: "Community Feedback",
 				}),
-				role: t("home.testimonials.attributionNote", {
+				role: T("home.testimonials.attributionNote", {
 					defaultValue: "Representative community member",
 				}),
 				rating: 5,
 			},
 			{
 				id: "4",
-				quote: t("home.testimonials.quote.4", {
+				quote: T("home.testimonials.quote.4", {
 					defaultValue:
 						"Finally, an editor that respects my system resources. No more Electron memory bloat.",
 				}),
-				author: t("home.testimonials.attribution", {
+				author: T("home.testimonials.attribution", {
 					defaultValue: "Community Feedback",
 				}),
-				role: t("home.testimonials.attributionNote", {
+				role: T("home.testimonials.attributionNote", {
 					defaultValue: "Representative community member",
 				}),
 				rating: 5,
 			},
 			{
 				id: "5",
-				quote: t("home.testimonials.quote.5", {
+				quote: T("home.testimonials.quote.5", {
 					defaultValue:
 						"The open-source commitment means I can contribute and customize. This is the editor I've been waiting for.",
 				}),
-				author: t("home.testimonials.attribution", {
+				author: T("home.testimonials.attribution", {
 					defaultValue: "Community Feedback",
 				}),
-				role: t("home.testimonials.attributionNote", {
+				role: T("home.testimonials.attributionNote", {
 					defaultValue: "Representative community member",
 				}),
 				rating: 5,
 			},
 			{
 				id: "6",
-				quote: t("home.testimonials.quote.6", {
+				quote: T("home.testimonials.quote.6", {
 					defaultValue:
 						"The gRPC-based architecture is a masterclass in system design. Land is the future of desktop editors.",
 				}),
-				author: t("home.testimonials.attribution", {
+				author: T("home.testimonials.attribution", {
 					defaultValue: "Community Feedback",
 				}),
-				role: t("home.testimonials.attributionNote", {
+				role: T("home.testimonials.attributionNote", {
 					defaultValue: "Representative community member",
 				}),
 				rating: 5,
@@ -318,19 +318,19 @@ const HomeContent = {
 		columns: 3,
 	},
 	download: {
-		title: t("download.title", { defaultValue: "Download Land" }),
-		subtitle: t("download.subtitle", {
+		title: T("download.title", { defaultValue: "Download Land" }),
+		subtitle: T("download.subtitle", {
 			defaultValue:
 				"Available for macOS, Windows, and Linux. Built with Tauri, powered by Rust.",
 		}),
 		platforms: [
 			{
 				id: "macos",
-				name: t("download.card.platform.macos.title", {
+				name: T("download.card.platform.macos.title", {
 					defaultValue: "macOS",
 				}),
 				icon: "Apple" as const,
-				description: t("download.card.platform.macos.universalBadge", {
+				description: T("download.card.platform.macos.universalBadge", {
 					defaultValue: "Universal Binary",
 				}),
 				version: "Pre-release",
@@ -338,11 +338,11 @@ const HomeContent = {
 			},
 			{
 				id: "windows",
-				name: t("download.card.platform.windows.title", {
+				name: T("download.card.platform.windows.title", {
 					defaultValue: "Windows",
 				}),
 				icon: "Monitor" as const,
-				description: t("download.card.platform.windows.description", {
+				description: T("download.card.platform.windows.description", {
 					defaultValue: "64-bit (x64)",
 				}),
 				version: "Pre-release",
@@ -350,11 +350,11 @@ const HomeContent = {
 			},
 			{
 				id: "linux",
-				name: t("download.card.platform.linux.title", {
+				name: T("download.card.platform.linux.title", {
 					defaultValue: "Linux",
 				}),
 				icon: "Terminal" as const,
-				description: t("download.card.platform.linux.description", {
+				description: T("download.card.platform.linux.description", {
 					defaultValue: "DEB, RPM, AppImage",
 				}),
 				version: "Pre-release",
@@ -365,11 +365,11 @@ const HomeContent = {
 		onDownload: async (platform: { name: string; id?: string }) => {
 			if (platform.id) {
 				try {
-					const { downloadsAPI } =
+					const { DownloadsAPI } =
 						await import("../Library/API/Download");
-					const Information = await downloadsAPI.getInfo(platform.id);
+					const Information = await DownloadsAPI.getInfo(platform.id);
 					window.open(Information.downloadUrl, "_blank");
-					await downloadsAPI.trackDownload(platform.id);
+					await DownloadsAPI.trackDownload(platform.id);
 				} catch (error) {
 					console.error("Download failed:", error);
 					alert("Download failed. Please try again.");
@@ -378,35 +378,35 @@ const HomeContent = {
 		},
 	},
 	header: {
-		logo: { text: t("common.brand.name", { defaultValue: "Land" }) },
+		logo: { text: T("common.brand.name", { defaultValue: "Land" }) },
 		navigation: [
 			{
-				label: t("home.nav.features", { defaultValue: "Features" }),
+				label: T("home.nav.features", { defaultValue: "Features" }),
 				href: "#features",
 			},
 			{
-				label: t("home.nav.downloads", { defaultValue: "Download" }),
+				label: T("home.nav.downloads", { defaultValue: "Download" }),
 				href: "/downloads",
 			},
 			{
-				label: t("home.nav.docs", { defaultValue: "Docs" }),
+				label: T("home.nav.docs", { defaultValue: "Docs" }),
 				href: "https://github.com/CodeEditorLand/Land#readme",
 			},
 			{
-				label: t("home.nav.github", { defaultValue: "GitHub" }),
+				label: T("home.nav.github", { defaultValue: "GitHub" }),
 				href: "https://github.com/CodeEditorLand/Land",
 			},
 		],
 		actions: [
 			{ type: "mobile-menu" as const },
 			{
-				text: t("common.actions.signIn", { defaultValue: "Sign In" }),
+				text: T("common.actions.signIn", { defaultValue: "Sign In" }),
 				variant: "ghost",
 				size: "default",
 				href: "/account/signin",
 			},
 			{
-				text: t("common.button.download", { defaultValue: "Get Land" }),
+				text: T("common.button.download", { defaultValue: "Get Land" }),
 				variant: "default",
 				size: "default",
 				href: "/downloads",
@@ -417,8 +417,8 @@ const HomeContent = {
 	},
 	footer: {
 		brand: {
-			name: t("common.brand.name", { defaultValue: "Land" }),
-			description: t("common.brand.tagline", {
+			name: T("common.brand.name", { defaultValue: "Land" }),
+			description: T("common.brand.tagline", {
 				defaultValue:
 					"The next-generation code editor. Open source and free forever.",
 			}),
@@ -428,24 +428,24 @@ const HomeContent = {
 		},
 		columns: [
 			{
-				title: t("footer.columns.product.title", {
+				title: T("footer.columns.product.title", {
 					defaultValue: "Product",
 				}),
 				links: [
 					{
-						label: t("footer.columns.product.features", {
+						label: T("footer.columns.product.features", {
 							defaultValue: "Features",
 						}),
 						href: "/#features",
 					},
 					{
-						label: t("footer.columns.product.downloads", {
+						label: T("footer.columns.product.downloads", {
 							defaultValue: "Download",
 						}),
 						href: "/downloads",
 					},
 					{
-						label: t("footer.columns.product.docs", {
+						label: T("footer.columns.product.docs", {
 							defaultValue: "Docs",
 						}),
 						href: "https://github.com/CodeEditorLand/Land#readme",
@@ -453,24 +453,24 @@ const HomeContent = {
 				],
 			},
 			{
-				title: t("footer.columns.company.title", {
+				title: T("footer.columns.company.title", {
 					defaultValue: "Community",
 				}),
 				links: [
 					{
-						label: t("footer.columns.company.github", {
+						label: T("footer.columns.company.github", {
 							defaultValue: "GitHub",
 						}),
 						href: "https://github.com/CodeEditorLand/Land",
 					},
 					{
-						label: t("footer.columns.company.blog", {
+						label: T("footer.columns.company.blog", {
 							defaultValue: "Discussions",
 						}),
 						href: "https://github.com/CodeEditorLand/Land/discussions",
 					},
 					{
-						label: t("footer.columns.company.contributing", {
+						label: T("footer.columns.company.contributing", {
 							defaultValue: "Contributing",
 						}),
 						href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
@@ -478,24 +478,24 @@ const HomeContent = {
 				],
 			},
 			{
-				title: t("footer.columns.legal.title", {
+				title: T("footer.columns.legal.title", {
 					defaultValue: "Legal",
 				}),
 				links: [
 					{
-						label: t("footer.columns.legal.privacy", {
+						label: T("footer.columns.legal.privacy", {
 							defaultValue: "Privacy",
 						}),
 						href: "/legal/privacy",
 					},
 					{
-						label: t("footer.columns.legal.terms", {
+						label: T("footer.columns.legal.terms", {
 							defaultValue: "Terms",
 						}),
 						href: "/legal/terms",
 					},
 					{
-						label: t("footer.columns.legal.license", {
+						label: T("footer.columns.legal.license", {
 							defaultValue: "License",
 						}),
 						href: "/license",
@@ -507,10 +507,10 @@ const HomeContent = {
 	},
 };
 
-const MetaTitle = t("meta.home.title", {
+const MetaTitle = T("meta.home.title", {
 	defaultValue: "Land | The Next-Generation Code Editor",
 });
-const MetaDescription = t("meta.home.description", {
+const MetaDescription = T("meta.home.description", {
 	defaultValue:
 		"Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code's power without the Electron bloat.",
 });
