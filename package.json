@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"@astrojs/react": "5.0.2",
-		"@astrojs/sitemap": "3.7.1",
+		"@astrojs/sitemap": "3.7.2",
 		"@playform/build": "0.3.0",
 		"@playform/compress": "0.2.2",
 		"@playform/inline": "0.1.4",
