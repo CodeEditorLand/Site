@@ -1,26 +1,5 @@
 import React from "react";
-
-interface Testimonial {
-	id: string;
-	quote: string;
-	author: string;
-	role?: string;
-	company?: string;
-	avatar?: string; // URL or initials
-	rating?: 1 | 2 | 3 | 4 | 5;
-}
-
-interface TestimonialsContent {
-	title?: string;
-	subtitle?: string;
-	testimonials: Testimonial[];
-	columns?: 1 | 2 | 3 | 4 | 5 | 6;
-}
-
-interface DynamicTestimonialsProps {
-	content: TestimonialsContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Testimonial.js";
 
 /**
  * Dynamic Testimonials component that displays customer quotes
@@ -29,10 +8,10 @@ interface DynamicTestimonialsProps {
 export function DynamicTestimonials({
 	content,
 	className,
-}: DynamicTestimonialsProps) {
+}: Property) {
 	const { title, subtitle, testimonials, columns = 3 } = content;
 
-	const columnClasses: Record<number, string> = {
+	const ColumnClass: Record<number, string> = {
 		1: "grid-cols-1 max-w-3xl",
 		2: "grid-cols-1 md:grid-cols-2 max-w-5xl",
 		3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl",
@@ -41,15 +20,15 @@ export function DynamicTestimonials({
 		6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 max-w-7xl",
 	};
 
-	const renderStars = (rating: number = 5) => {
+	const RenderStars = (Rating: number = 5) => {
 		return (
-			<div role="img" aria-label={`Rating: ${rating} out of 5 stars`}>
-				{Array.from({ length: 5 }).map((_, i) => (
+			<div role="img" aria-label={`Rating: ${Rating} out of 5 stars`}>
+				{Array.from({ length: 5 }).map((_, Index) => (
 					<span
-						key={i}
+						key={Index}
 						className="star-rating__symbol text-yellow-400"
 						aria-hidden="true">
-						{i < rating ? "\u2605" : "\u2606"}
+						{Index < Rating ? "\u2605" : "\u2606"}
 					</span>
 				))}
 			</div>
@@ -77,22 +56,22 @@ export function DynamicTestimonials({
 					</div>
 				)}
 
-				<div className={`grid ${columnClasses[columns]} mx-auto gap-8`}>
-					{testimonials.map((testimonial) => (
+				<div className={`grid ${ColumnClass[columns]} mx-auto gap-8`}>
+					{testimonials.map((Testimonial) => (
 						<article
-							key={testimonial.id}
+							key={Testimonial.id}
 							className="bg-white/92 flex flex-col rounded-none border border-[var(--border)] p-6">
 							<div className="mb-4">
-								{renderStars(testimonial.rating)}
+								{RenderStars(Testimonial.rating)}
 							</div>
 							<blockquote className="mb-6 flex-1">
-								<p className="text-lg">"{testimonial.quote}"</p>
+								<p className="text-lg">"{Testimonial.quote}"</p>
 							</blockquote>
 							<div className="flex items-center gap-4">
-								{testimonial.avatar ? (
+								{Testimonial.avatar ? (
 									<img
-										src={testimonial.avatar}
-										alt={`Photo of ${testimonial.author}`}
+										src={Testimonial.avatar}
+										alt={`Photo of ${Testimonial.author}`}
 										className="size-12 rounded-none border border-[var(--border)] object-cover"
 										loading="lazy"
 									/>
@@ -101,7 +80,7 @@ export function DynamicTestimonials({
 										className="flex size-12 items-center justify-center rounded-none border border-[var(--border)] bg-secondary"
 										aria-hidden="true">
 										<span className="text-lg font-semibold">
-											{(testimonial.author || "?").charAt(
+											{(Testimonial.author || "?").charAt(
 												0,
 											)}
 										</span>
@@ -109,16 +88,16 @@ export function DynamicTestimonials({
 								)}
 								<div>
 									<cite className="font-semibold not-italic">
-										{testimonial.author}
+										{Testimonial.author}
 									</cite>
-									{(testimonial.role ||
-										testimonial.company) && (
+									{(Testimonial.role ||
+										Testimonial.company) && (
 										<p className="text-sm text-muted-foreground">
-											{testimonial.role}
-											{testimonial.role &&
-												testimonial.company &&
+											{Testimonial.role}
+											{Testimonial.role &&
+												Testimonial.company &&
 												", "}
-											{testimonial.company}
+											{Testimonial.company}
 										</p>
 									)}
 								</div>
@@ -130,5 +109,3 @@ export function DynamicTestimonials({
 		</section>
 	);
 }
-
-export type { Testimonial, TestimonialsContent };

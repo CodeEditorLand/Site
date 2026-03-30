@@ -73,6 +73,3 @@ export function DynamicButton({
 		</Button>
 	);
 }
-
-// Export type for reuse
-export type { ButtonContent };

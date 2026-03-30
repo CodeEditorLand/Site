@@ -27,9 +27,9 @@ interface HeaderProps {
 
 export function Header({ content }: HeaderProps) {
 	const { t } = useTranslation("header");
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
-	const headerContent = content || {
+	const HeaderData = content || {
 		logo: { text: t("logo", "Land") },
 		navigation: [
 			{ label: t("nav.features", "Features"), href: "/#features" },
@@ -66,7 +66,7 @@ export function Header({ content }: HeaderProps) {
 					<a
 						href="/"
 						className="header-logo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-						aria-label={`${headerContent.logo?.text || "Land"} - Go to homepage`}>
+						aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
 						<div
 							className="logo-box relative flex h-8 w-8 items-center justify-center overflow-hidden"
 							aria-hidden="true">
@@ -77,24 +77,24 @@ export function Header({ content }: HeaderProps) {
 							/>
 						</div>
 						<span className="font-semibold">
-							{headerContent.logo?.text || "Land"}
+							{HeaderData.logo?.text || "Land"}
 						</span>
 					</a>
 					<nav
 						className="hidden items-center space-x-6 md:flex"
 						aria-label="Main navigation">
-						{headerContent.navigation?.map((link, index) => (
+						{HeaderData.navigation?.map((Link, Index) => (
 							<a
-								key={index}
-								href={link.href}
+								key={Index}
+								href={Link.href}
 								className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-								{...(link.href.startsWith("http")
+								{...(Link.href.startsWith("http")
 									? {
 											target: "_blank",
 											rel: "noopener noreferrer",
 										}
 									: {})}>
-								{link.label}
+								{Link.label}
 							</a>
 						))}
 					</nav>
@@ -102,21 +102,21 @@ export function Header({ content }: HeaderProps) {
 				<div className="flex items-center space-x-3">
 					<div className="hidden items-center space-x-3 md:flex">
 						<LocaleSwitcher />
-						{headerContent.actions?.map((action, index) => (
+						{HeaderData.actions?.map((Action, Index) => (
 							<Button
-								key={index}
+								key={Index}
 								variant={
-									(action.variant as
+									(Action.variant as
 										| "ghost"
 										| "default"
 										| "outline") || "default"
 								}
 								size={
-									(action.size as "default" | "sm" | "lg") ||
+									(Action.size as "default" | "sm" | "lg") ||
 									"default"
 								}
 								asChild>
-								<a href={action.href}>{action.text}</a>
+								<a href={Action.href}>{Action.text}</a>
 							</Button>
 						))}
 					</div>
@@ -124,10 +124,10 @@ export function Header({ content }: HeaderProps) {
 						variant="ghost"
 						size="icon"
 						className="md:hidden"
-						onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+						onClick={() => SetMobileMenuOpen(!MobileMenuOpen)}
 						aria-label="Toggle menu"
-						aria-expanded={mobileMenuOpen}>
-						{mobileMenuOpen ? (
+						aria-expanded={MobileMenuOpen}>
+						{MobileMenuOpen ? (
 							<X className="h-5 w-5" />
 						) : (
 							<Menu className="h-5 w-5" />
@@ -136,7 +136,7 @@ export function Header({ content }: HeaderProps) {
 				</div>
 			</div>
 
-			{mobileMenuOpen && (
+			{MobileMenuOpen && (
 				<div
 					className="border-t border-[var(--border)] bg-white md:hidden"
 					role="dialog"
@@ -144,13 +144,13 @@ export function Header({ content }: HeaderProps) {
 					<nav
 						className="container mx-auto flex flex-col space-y-1 px-4 py-4"
 						aria-label="Mobile navigation">
-						{headerContent.navigation?.map((link, index) => (
+						{HeaderData.navigation?.map((Link, Index) => (
 							<a
-								key={index}
-								href={link.href}
+								key={Index}
+								href={Link.href}
 								className="rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-								onClick={() => setMobileMenuOpen(false)}>
-								{link.label}
+								onClick={() => SetMobileMenuOpen(false)}>
+								{Link.label}
 							</a>
 						))}
 						<div className="my-2 border-t border-border" />
@@ -158,18 +158,18 @@ export function Header({ content }: HeaderProps) {
 							<LocaleSwitcher />
 						</div>
 						<div className="my-2 border-t border-border" />
-						{headerContent.actions?.map((action, index) => (
+						{HeaderData.actions?.map((Action, Index) => (
 							<Button
-								key={index}
+								key={Index}
 								variant={
-									(action.variant as
+									(Action.variant as
 										| "ghost"
 										| "default"
 										| "outline") || "default"
 								}
 								className="w-full justify-start"
 								asChild>
-								<a href={action.href}>{action.text}</a>
+								<a href={Action.href}>{Action.text}</a>
 							</Button>
 						))}
 					</nav>
@@ -178,5 +178,3 @@ export function Header({ content }: HeaderProps) {
 		</header>
 	);
 }
-
-export type { HeaderContent };

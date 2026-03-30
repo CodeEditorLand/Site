@@ -5,75 +5,71 @@ import { useEffect, useRef, useState } from "react";
 import { useAnalytics } from "./AnalyticsProvider";
 
 export function PageviewTracker() {
-	const [isMounted, setIsMounted] = useState(false);
-	const hasTrackedRef = useRef(false);
-	const trackPageViewRef = useRef<
-		((path: string, title?: string) => Promise<void>) | null
+	const [IsMounted, SetIsMounted] = useState(false);
+	const HasTrackedReference = useRef(false);
+	const TrackPageViewReference = useRef<
+		((Path: string, Title?: string) => Promise<void>) | null
 	>(null);
 
 	useEffect(() => {
-		setIsMounted(true);
+		SetIsMounted(true);
 	}, []);
 
 	useEffect(() => {
-		if (!isMounted) return;
+		if (!IsMounted) return;
 
-		// Get the trackPageView function after mount
-		const { trackPageView } = useAnalytics();
-		trackPageViewRef.current = trackPageView;
+		const { trackPageView: TrackPageView } = useAnalytics();
+		TrackPageViewReference.current = TrackPageView;
 
-		const handleRouteChange = () => {
-			if (hasTrackedRef.current) return;
-			hasTrackedRef.current = true;
+		const HandleRouteChange = () => {
+			if (HasTrackedReference.current) return;
+			HasTrackedReference.current = true;
 
 			try {
-				const path = window.location.pathname;
-				const title = document.title;
-				trackPageViewRef.current?.(path, title).catch((err: Error) => {
+				const CurrentPath = window.location.pathname;
+				const CurrentTitle = document.title;
+				TrackPageViewReference.current?.(CurrentPath, CurrentTitle).catch((TrackError: Error) => {
 					if (process.env.NODE_ENV !== "production") {
-						console.error("Failed to track page view:", err);
+						console.error("Failed to track page view:", TrackError);
 					}
 				});
-			} catch (err) {
+			} catch (TrackError) {
 				if (process.env.NODE_ENV !== "production") {
-					console.error("Failed to track page view:", err);
+					console.error("Failed to track page view:", TrackError);
 				}
 			}
 		};
 
-		// Track initial page load
-		handleRouteChange();
+		HandleRouteChange();
 
-		// Listen for route changes (SPA navigation)
-		const handlePopState = () => {
-			hasTrackedRef.current = false;
-			handleRouteChange();
+		const HandlePopState = () => {
+			HasTrackedReference.current = false;
+			HandleRouteChange();
 		};
 
-		window.addEventListener("popstate", handlePopState);
+		window.addEventListener("popstate", HandlePopState);
 
-		// For Astro's client-side routing
-		const originalPushState = history.pushState;
-		const originalReplaceState = history.replaceState;
+		const OriginalPushState = history.pushState;
+		const OriginalReplaceState = history.replaceState;
 
-		history.pushState = function (...args) {
-			originalPushState.apply(this, args);
-			hasTrackedRef.current = false;
-			handleRouteChange();
+		history.pushState = function (...Arguments) {
+			OriginalPushState.apply(this, Arguments);
+			HasTrackedReference.current = false;
+			HandleRouteChange();
 		};
 
-		history.replaceState = function (...args) {
-			originalReplaceState.apply(this, args);
-			hasTrackedRef.current = false;
-			handleRouteChange();
+		history.replaceState = function (...Arguments) {
+			OriginalReplaceState.apply(this, Arguments);
+			HasTrackedReference.current = false;
+			HandleRouteChange();
 		};
 
 		return () => {
-			window.removeEventListener("popstate", handlePopState);
-			history.pushState = originalPushState;
-			history.replaceState = originalReplaceState;
+			window.removeEventListener("popstate", HandlePopState);
+			history.pushState = OriginalPushState;
+			history.replaceState = OriginalReplaceState;
 		};
-	}, [isMounted]);
+	}, [IsMounted]);
 
 	return null;
 }

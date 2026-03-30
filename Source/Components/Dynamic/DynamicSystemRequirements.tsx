@@ -1,26 +1,7 @@
 import { Cpu, Monitor } from "lucide-react";
 import React from "react";
-
-interface RequirementItem {
-	id: string;
-	label: string;
-	value: string;
-}
-
-interface SystemRequirementsContent {
-	title: string;
-	description?: string;
-	requirements: {
-		minimum: RequirementItem[];
-		recommended: RequirementItem[];
-	};
-	os?: string[];
-}
-
-interface DynamicSystemRequirementsProps {
-	content: SystemRequirementsContent;
-	className?: string;
-}
+import type RequirementItem from "./Interface/Item/Requirement.js";
+import type Property from "./Interface/Property/Requirement/System.js";
 
 /**
  * Dynamic SystemRequirements component for displaying platform requirements
@@ -29,30 +10,30 @@ interface DynamicSystemRequirementsProps {
 export function DynamicSystemRequirements({
 	content,
 	className,
-}: DynamicSystemRequirementsProps) {
+}: Property) {
 	const { title, description, requirements } = content;
 
 	const RequirementList = ({
-		items,
-		variant = "minimum",
+		items: ItemList,
+		variant: Variant = "minimum",
 	}: {
 		items: RequirementItem[];
 		variant?: "minimum" | "recommended";
 	}) => (
 		<div className="space-y-3">
-			{items.map((req) => (
-				<div key={req.id} className="flex items-start gap-3">
+			{ItemList.map((Requirement) => (
+				<div key={Requirement.id} className="flex items-start gap-3">
 					<div className="mt-1">
-						{variant === "minimum" ? (
+						{Variant === "minimum" ? (
 							<Cpu className="h-4 w-4 text-muted-foreground" />
 						) : (
 							<Monitor className="h-4 w-4 text-muted-foreground" />
 						)}
 					</div>
 					<div className="flex-1">
-						<span className="font-medium">{req.label}:</span>{" "}
+						<span className="font-medium">{Requirement.label}:</span>{" "}
 						<span className="text-muted-foreground">
-							{req.value}
+							{Requirement.value}
 						</span>
 					</div>
 				</div>
@@ -107,11 +88,11 @@ export function DynamicSystemRequirements({
 							Supported Operating Systems
 						</h4>
 						<div className="flex flex-wrap justify-center gap-4">
-							{content.os.map((os, index) => (
+							{content.os.map((OperatingSystem, Index) => (
 								<span
-									key={index}
+									key={Index}
 									className="border border-[var(--border)] bg-secondary px-4 py-2 text-sm font-medium">
-									{os}
+									{OperatingSystem}
 								</span>
 							))}
 						</div>
@@ -121,5 +102,3 @@ export function DynamicSystemRequirements({
 		</section>
 	);
 }
-
-export type { RequirementItem, SystemRequirementsContent };

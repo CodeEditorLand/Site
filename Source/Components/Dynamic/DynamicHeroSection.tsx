@@ -2,33 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
-import type BadgeContent from "./Interface/Content/Badge.js";
-import type ButtonContent from "./Interface/Content/Button.js";
-
-interface FloatingCard {
-	id: string;
-	title: string;
-	icon?: string;
-	colors?: string[];
-}
-
-interface HeroContent {
-	badge?: BadgeContent;
-	title: string;
-	titleHighlight?: string;
-	subtitle: string;
-	primaryCta: ButtonContent;
-	secondaryCta?: ButtonContent;
-	floatingCards?: FloatingCard[];
-	showConnectingLines?: boolean;
-	showParticles?: boolean;
-	respectReducedMotion?: boolean;
-}
-
-interface DynamicHeroSectionProps {
-	content: HeroContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Hero.js";
 
 /**
  * Dynamic HeroSection with animated floating cards
@@ -38,8 +12,8 @@ interface DynamicHeroSectionProps {
 export function DynamicHeroSection({
 	content,
 	className,
-}: DynamicHeroSectionProps) {
-	const sceneRef = useRef<HTMLDivElement>(null);
+}: Property) {
+	const SceneReference = useRef<HTMLDivElement>(null);
 	const {
 		title,
 		titleHighlight,
@@ -51,35 +25,35 @@ export function DynamicHeroSection({
 	} = content;
 
 	useEffect(() => {
-		const scene = sceneRef.current;
+		const Scene = SceneReference.current;
 		if (
-			!scene ||
+			!Scene ||
 			(heroConfig.respectReducedMotion &&
 				window.matchMedia("(prefers-reduced-motion: reduce)").matches)
 		) {
 			return;
 		}
 
-		const cardElements = scene.querySelectorAll(".floating-card");
-		let frameId: number;
+		const CardElement = Scene.querySelectorAll(".floating-card");
+		let FrameIdentifier: number;
 
-		const animateCards = () => {
-			cardElements.forEach((card, index) => {
-				const element = card as HTMLElement;
-				const time = Date.now() * 0.001;
-				const offset = index * 0.5;
+		const AnimateCards = () => {
+			CardElement.forEach((Card, Index) => {
+				const Element = Card as HTMLElement;
+				const Time = Date.now() * 0.001;
+				const Offset = Index * 0.5;
 
-				const x = Math.sin(time + offset) * 12;
-				const y = Math.cos(time + offset * 1.2) * 8;
+				const X = Math.sin(Time + Offset) * 12;
+				const Y = Math.cos(Time + Offset * 1.2) * 8;
 
-				element.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, 0)`;
+				Element.style.transform = `translate(-50%, -50%) translate3d(${X}px, ${Y}px, 0)`;
 			});
 
-			frameId = requestAnimationFrame(animateCards);
+			FrameIdentifier = requestAnimationFrame(AnimateCards);
 		};
 
-		animateCards();
-		return () => cancelAnimationFrame(frameId);
+		AnimateCards();
+		return () => cancelAnimationFrame(FrameIdentifier);
 	}, [heroConfig.respectReducedMotion]);
 
 	return (
@@ -116,19 +90,19 @@ export function DynamicHeroSection({
 				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
-						{floatingCards.map((card) => (
+						{floatingCards.map((Card) => (
 							<div
-								key={card.id}
+								key={Card.id}
 								className="border border-[var(--border)] bg-white p-3"
 								style={{ minWidth: "120px" }}>
 								<div className="mb-1.5 text-xs font-medium text-foreground">
-									{card.title}
+									{Card.title}
 								</div>
 								<div className="flex items-center gap-1.5">
-									{card.colors?.map((color, colorIndex) => (
+									{Card.colors?.map((Color, ColorIndex) => (
 										<div
-											key={colorIndex}
-											className={`h-3 w-3 ${color} border border-[var(--border)]`}
+											key={ColorIndex}
+											className={`h-3 w-3 ${Color} border border-[var(--border)]`}
 										/>
 									))}
 								</div>
@@ -138,7 +112,7 @@ export function DynamicHeroSection({
 
 					{/* Desktop: orbital layout */}
 					<div
-						ref={sceneRef}
+						ref={SceneReference}
 						className="relative hidden h-[500px] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub */}
@@ -151,34 +125,34 @@ export function DynamicHeroSection({
 						</div>
 
 						{/* Floating Cards */}
-						{floatingCards.map((card, index) => {
-							const total = floatingCards.length;
-							const angle =
-								(index / total) * 2 * Math.PI - Math.PI / 2;
-							const radiusX = 38;
-							const radiusY = 35;
-							const cx = 50 + Math.cos(angle) * radiusX;
-							const cy = 50 + Math.sin(angle) * radiusY;
+						{floatingCards.map((Card, Index) => {
+							const Total = floatingCards.length;
+							const Angle =
+								(Index / Total) * 2 * Math.PI - Math.PI / 2;
+							const RadiusX = 38;
+							const RadiusY = 35;
+							const CenterX = 50 + Math.cos(Angle) * RadiusX;
+							const CenterY = 50 + Math.sin(Angle) * RadiusY;
 
 							return (
 								<div
-									key={card.id}
+									key={Card.id}
 									className="floating-card absolute transform-gpu border border-[var(--border)] bg-white/95 p-3"
 									style={{
-										top: `${cy}%`,
-										left: `${cx}%`,
+										top: `${CenterY}%`,
+										left: `${CenterX}%`,
 										transform: "translate(-50%, -50%)",
 										width: "130px",
 									}}>
 									<div className="mb-1.5 text-xs font-medium text-foreground">
-										{card.title}
+										{Card.title}
 									</div>
 									<div className="flex items-center gap-1.5">
-										{card.colors?.map(
-											(color, colorIndex) => (
+										{Card.colors?.map(
+											(Color, ColorIndex) => (
 												<div
-													key={colorIndex}
-													className={`h-3 w-3 ${color} border border-[var(--border)]`}
+													key={ColorIndex}
+													className={`h-3 w-3 ${Color} border border-[var(--border)]`}
 												/>
 											),
 										)}
@@ -193,27 +167,27 @@ export function DynamicHeroSection({
 								className="pointer-events-none absolute inset-0 h-full w-full opacity-15"
 								aria-hidden="true"
 								role="presentation">
-								{floatingCards.map((card, index) => {
-									const total = floatingCards.length;
-									const angle =
-										(index / total) * 2 * Math.PI -
+								{floatingCards.map((Card, Index) => {
+									const Total = floatingCards.length;
+									const Angle =
+										(Index / Total) * 2 * Math.PI -
 										Math.PI / 2;
-									const radiusX = 38;
-									const radiusY = 35;
-									const cx = 50 + Math.cos(angle) * radiusX;
-									const cy = 50 + Math.sin(angle) * radiusY;
+									const RadiusX = 38;
+									const RadiusY = 35;
+									const CenterX = 50 + Math.cos(Angle) * RadiusX;
+									const CenterY = 50 + Math.sin(Angle) * RadiusY;
 									return (
 										<line
-											key={card.id}
+											key={Card.id}
 											x1="50%"
 											y1="50%"
-											x2={`${cx}%`}
-											y2={`${cy}%`}
+											x2={`${CenterX}%`}
+											y2={`${CenterY}%`}
 											stroke="currentColor"
 											strokeWidth="1"
 											className="animate-pulse"
 											style={{
-												animationDelay: `${index * 0.3}s`,
+												animationDelay: `${Index * 0.3}s`,
 											}}
 										/>
 									);
@@ -226,5 +200,3 @@ export function DynamicHeroSection({
 		</section>
 	);
 }
-
-export type { HeroContent, FloatingCard };

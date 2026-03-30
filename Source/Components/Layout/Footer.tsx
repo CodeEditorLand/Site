@@ -24,7 +24,7 @@ interface FooterProps {
 export function Footer({ content }: FooterProps) {
 	const { t } = useTranslation("footer");
 
-	const footerContent = content || {
+	const FooterData = content || {
 		brand: {
 			name: t("brand.name", "Land"),
 			description: t(
@@ -99,7 +99,7 @@ export function Footer({ content }: FooterProps) {
 						<a
 							href="/"
 							className="mb-4 flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-							aria-label={`${footerContent.brand?.name || "Land"} - Go to homepage`}>
+							aria-label={`${FooterData.brand?.name || "Land"} - Go to homepage`}>
 							<img
 								src="/Asset/Logo/Glyph/LandDark.svg"
 								alt=""
@@ -107,32 +107,32 @@ export function Footer({ content }: FooterProps) {
 								aria-hidden="true"
 							/>
 							<span className="font-semibold">
-								{footerContent.brand?.name || "Land"}
+								{FooterData.brand?.name || "Land"}
 							</span>
 						</a>
-						{footerContent.brand?.description && (
+						{FooterData.brand?.description && (
 							<p className="mb-6 max-w-md text-muted-foreground">
-								{footerContent.brand.description}
+								{FooterData.brand.description}
 							</p>
 						)}
 					</div>
 
-					{footerContent.columns?.map((column, colIndex) => (
-						<nav key={colIndex} aria-label={column.title}>
-							<h4 className="mb-4 font-medium">{column.title}</h4>
+					{FooterData.columns?.map((Column, ColumnIndex) => (
+						<nav key={ColumnIndex} aria-label={Column.title}>
+							<h4 className="mb-4 font-medium">{Column.title}</h4>
 							<ul className="space-y-2 text-sm text-muted-foreground">
-								{column.links.map((link, linkIndex) => (
-									<li key={linkIndex}>
+								{Column.links.map((Link, LinkIndex) => (
+									<li key={LinkIndex}>
 										<a
-											href={link.href}
+											href={Link.href}
 											className="transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
-											{...(link.href.startsWith("http")
+											{...(Link.href.startsWith("http")
 												? {
 														target: "_blank",
 														rel: "noopener noreferrer",
 													}
 												: {})}>
-											{link.label}
+											{Link.label}
 										</a>
 									</li>
 								))}
@@ -202,7 +202,7 @@ export function Footer({ content }: FooterProps) {
 							})}
 						</p>
 					</div>
-					{footerContent.bottomBar?.madeWith && (
+					{FooterData.bottomBar?.madeWith && (
 						<a
 							href="https://tauri.app"
 							target="_blank"
@@ -223,4 +223,3 @@ export function Footer({ content }: FooterProps) {
 	);
 }
 
-export type { FooterContent };

@@ -6,7 +6,7 @@ import type Property from "./Interface/Property/Input.js";
  * Dynamic Input component that accepts content schema
  * Composes Label + Input with proper error/helper text states
  */
-export function DynamicInput({ content, id: propId }: Property) {
+export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 	const {
 		label,
 		placeholder,
@@ -22,20 +22,20 @@ export function DynamicInput({ content, id: propId }: Property) {
 		...props
 	} = content;
 
-	const id = propId || `input-${Math.random().toString(36).substr(2, 9)}`;
-	const errorId = `${id}-error`;
-	const helperId = `${id}-helper`;
-	const describedBy = error ? errorId : helperText ? helperId : undefined;
+	const Identifier = PropertyIdentifier || `input-${Math.random().toString(36).substr(2, 9)}`;
+	const ErrorIdentifier = `${Identifier}-error`;
+	const HelperIdentifier = `${Identifier}-helper`;
+	const DescribedBy = error ? ErrorIdentifier : helperText ? HelperIdentifier : undefined;
 
 	return (
 		<div className="space-y-2">
 			{label && (
-				<Label htmlFor={id} required={required}>
+				<Label htmlFor={Identifier} required={required}>
 					{label}
 				</Label>
 			)}
 			<Input
-				id={id}
+				id={Identifier}
 				type={type}
 				placeholder={placeholder}
 				value={value}
@@ -43,33 +43,31 @@ export function DynamicInput({ content, id: propId }: Property) {
 				disabled={disabled}
 				required={required}
 				aria-invalid={!!error}
-				aria-describedby={describedBy}
+				aria-describedby={DescribedBy}
 				className={error ? "border-destructive" : className}
-				onChange={(e) => {
+				onChange={(Event) => {
 					if (onChange) {
-						onChange(e.target.value);
+						onChange(Event.target.value);
 					}
 					if (content.onChange) {
-						content.onChange(e.target.value);
+						content.onChange(Event.target.value);
 					}
 				}}
 				{...props}
 			/>
 			{error && (
 				<p
-					id={errorId}
+					id={ErrorIdentifier}
 					className="text-sm text-destructive"
 					role="alert">
 					{error}
 				</p>
 			)}
 			{!error && helperText && (
-				<p id={helperId} className="text-sm text-muted-foreground">
+				<p id={HelperIdentifier} className="text-sm text-muted-foreground">
 					{helperText}
 				</p>
 			)}
 		</div>
 	);
 }
-
-export type { InputContent };

@@ -15,7 +15,7 @@ export function DynamicBadge({ content }: Property) {
 		...props
 	} = content;
 
-	const dotColors: Record<string, string> = {
+	const DotColor: Record<string, string> = {
 		green: "bg-green-500",
 		yellow: "bg-yellow-500",
 		red: "bg-red-500",
@@ -26,7 +26,7 @@ export function DynamicBadge({ content }: Property) {
 		<Badge variant={variant} className={className} {...props}>
 			{showDot && (
 				<span
-					className={`mr-2 h-2 w-2 rounded-none ${dotColors[dotColor]}`}
+					className={`mr-2 h-2 w-2 rounded-none ${DotColor[dotColor]}`}
 					aria-hidden="true"
 				/>
 			)}
@@ -34,5 +34,3 @@ export function DynamicBadge({ content }: Property) {
 		</Badge>
 	);
 }
-
-export type { BadgeContent };

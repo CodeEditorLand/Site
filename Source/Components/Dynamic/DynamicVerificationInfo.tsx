@@ -3,30 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
-import type ButtonContent from "./Interface/Content/Button.js";
-
-interface VerificationInfo {
-	sha256?: string;
-	pgpSignature?: string;
-	signingKeyId?: string;
-	verificationInstructions?: string;
-}
-
-interface VerificationInfoContent {
-	title: string;
-	description?: string;
-	downloadVerification: VerificationInfo;
-	integrityVerification: VerificationInfo;
-	downloadButton?: ButtonContent;
-	verifyButton?: ButtonContent;
-}
-
-interface DynamicVerificationInfoProps {
-	content: VerificationInfoContent;
-	onVerify?: (checksum: string) => void;
-	onDownloadSignature?: () => void;
-	className?: string;
-}
+import type VerificationInfo from "./Interface/Information/Verification.js";
+import type Property from "./Interface/Property/Information/Verification.js";
 
 /**
  * Dynamic VerificationInfo component for displaying binary verification info
@@ -37,19 +15,19 @@ export function DynamicVerificationInfo({
 	onVerify,
 	onDownloadSignature,
 	className,
-}: DynamicVerificationInfoProps) {
+}: Property) {
 	const { t } = useTranslation("download");
 	const { title, description, downloadVerification, integrityVerification } =
 		content;
 
-	const copyToClipboard = (text: string, label: string) => {
+	const CopyToClipboard = (Text: string, Label: string) => {
 		navigator.clipboard
-			.writeText(text)
+			.writeText(Text)
 			.then(() => {
 				alert(
 					t("labels.copiedToClipboard", {
 						defaultValue: "{{label}} copied to clipboard!",
-						label,
+						label: Label,
 					}),
 				);
 			})
@@ -57,18 +35,18 @@ export function DynamicVerificationInfo({
 				alert(
 					t("labels.failedToCopy", {
 						defaultValue: "Failed to copy {{label}}",
-						label,
+						label: Label,
 					}),
 				);
 			});
 	};
 
-	const renderVerificationBlock = (
-		info: VerificationInfo,
-		type: "download" | "integrity",
+	const RenderVerificationBlock = (
+		Information: VerificationInfo,
+		Type: "download" | "integrity",
 	) => (
 		<div className="space-y-4">
-			{info.sha256 && (
+			{Information.sha256 && (
 				<div className="space-y-2">
 					<div className="flex items-center gap-2">
 						<Fingerprint
@@ -79,15 +57,15 @@ export function DynamicVerificationInfo({
 					</div>
 					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
-							{info.sha256}
+							{Information.sha256}
 						</code>
 						<button
 							type="button"
 							className="border border-[var(--border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
 							aria-label="Copy SHA-256 checksum to clipboard"
 							onClick={() =>
-								copyToClipboard(
-									info.sha256!,
+								CopyToClipboard(
+									Information.sha256!,
 									"SHA-256 checksum",
 								)
 							}>
@@ -97,7 +75,7 @@ export function DynamicVerificationInfo({
 				</div>
 			)}
 
-			{info.pgpSignature && (
+			{Information.pgpSignature && (
 				<div className="space-y-2">
 					<div className="flex items-center gap-2">
 						<Shield
@@ -108,41 +86,41 @@ export function DynamicVerificationInfo({
 					</div>
 					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
-							{info.pgpSignature}
+							{Information.pgpSignature}
 						</code>
 						<button
 							type="button"
 							className="border border-[var(--border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
 							aria-label="Copy PGP signature to clipboard"
 							onClick={() =>
-								copyToClipboard(
-									info.pgpSignature,
+								CopyToClipboard(
+									Information.pgpSignature,
 									"PGP signature",
 								)
 							}>
 							Copy
 						</button>
 					</div>
-					{info.signingKeyId && (
+					{Information.signingKeyId && (
 						<p className="text-xs text-muted-foreground">
-							Signed with key ID: {info.signingKeyId}
+							Signed with key ID: {Information.signingKeyId}
 						</p>
 					)}
 				</div>
 			)}
 
-			{info.verificationInstructions && (
+			{Information.verificationInstructions && (
 				<div className="border-t border-[var(--border)] pt-4">
 					<h5 className="mb-2 font-semibold">
 						Verification Instructions
 					</h5>
 					<p className="whitespace-pre-line text-sm text-muted-foreground">
-						{info.verificationInstructions}
+						{Information.verificationInstructions}
 					</p>
 				</div>
 			)}
 
-			{type === "download" && content.downloadButton && (
+			{Type === "download" && content.downloadButton && (
 				<div className="pt-4">
 					<DynamicButton
 						content={{ ...content.downloadButton, fullWidth: true }}
@@ -150,7 +128,7 @@ export function DynamicVerificationInfo({
 				</div>
 			)}
 
-			{type === "integrity" && content.verifyButton && (
+			{Type === "integrity" && content.verifyButton && (
 				<div className="pt-4">
 					<DynamicButton
 						content={{ ...content.verifyButton, fullWidth: true }}
@@ -194,7 +172,7 @@ export function DynamicVerificationInfo({
 								/>
 								Download Verification
 							</h3>
-							{renderVerificationBlock(
+							{RenderVerificationBlock(
 								downloadVerification,
 								"download",
 							)}
@@ -209,7 +187,7 @@ export function DynamicVerificationInfo({
 								/>
 								Integrity Check
 							</h3>
-							{renderVerificationBlock(
+							{RenderVerificationBlock(
 								integrityVerification,
 								"integrity",
 							)}
@@ -220,5 +198,3 @@ export function DynamicVerificationInfo({
 		</section>
 	);
 }
-
-export type { VerificationInfo, VerificationInfoContent };

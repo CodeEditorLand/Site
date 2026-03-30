@@ -25,68 +25,68 @@ interface AnalyticsContextType {
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null);
 
 export function AnalyticsProvider({ children }: { children: ReactNode }) {
-	const [client, setClient] = useState<ReturnType<
+	const [Client, SetClient] = useState<ReturnType<
 		typeof getWorkersClient
 	> | null>(null);
 
 	useEffect(() => {
 		try {
-			setClient(getWorkersClient());
-		} catch (error) {
-			console.error("Failed to initialize analytics client:", error);
+			SetClient(getWorkersClient());
+		} catch (AnalyticsError) {
+			console.error("Failed to initialize analytics client:", AnalyticsError);
 		}
 	}, []);
 
-	const track = async (
-		event: string,
-		properties: Record<string, unknown> = {},
+	const Track = async (
+		Event: string,
+		Properties: Record<string, unknown> = {},
 	) => {
-		if (!client) {
+		if (!Client) {
 			console.warn("Analytics client not initialized");
 			return;
 		}
 
 		try {
-			await client.analytics.track(event, properties);
-		} catch (error) {
-			console.error("Failed to track event:", error);
+			await Client.analytics.track(Event, Properties);
+		} catch (TrackError) {
+			console.error("Failed to track event:", TrackError);
 		}
 	};
 
-	const trackPageView = async (path: string, title?: string) => {
-		await track("pageview", {
-			path,
-			title,
+	const TrackPageView = async (Path: string, Title?: string) => {
+		await Track("pageview", {
+			path: Path,
+			title: Title,
 			timestamp: new Date().toISOString(),
 		});
 	};
 
-	const identify = async (
-		userId: string,
-		traits: Record<string, unknown> = {},
+	const Identify = async (
+		UserIdentifier: string,
+		Traits: Record<string, unknown> = {},
 	) => {
-		await track("user_identified", { userId, ...traits });
+		await Track("user_identified", { userId: UserIdentifier, ...Traits });
 	};
 
-	const value: AnalyticsContextType = {
-		track,
-		trackPageView,
-		identify,
+	const Value: AnalyticsContextType = {
+		track: Track,
+		trackPageView: TrackPageView,
+		identify: Identify,
 	};
 
 	return (
-		<AnalyticsContext.Provider value={value}>
+		<AnalyticsContext.Provider value={Value}>
 			{children}
 		</AnalyticsContext.Provider>
 	);
 }
 
 export function useAnalytics() {
-	const context = useContext(AnalyticsContext);
-	if (!context) {
+	const Context = useContext(AnalyticsContext);
+	if (!Context) {
 		throw new Error(
 			"useAnalytics must be used within an AnalyticsProvider",
 		);
 	}
-	return context;
+	return Context;
 }

@@ -12,8 +12,7 @@ import {
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
 import type Property from "./Interface/Property/Password/Reset.js";
-
-type ResetState = "checking" | "valid" | "invalid" | "success";
+import type { default as ResetState } from "./Type/State/Reset.js";
 
 /**
  * Dynamic ResetPassword component for setting new password with token validation
@@ -21,7 +20,7 @@ type ResetState = "checking" | "valid" | "invalid" | "success";
  */
 export function DynamicResetPassword({
 	content,
-	token: propToken,
+	token: PropToken,
 	onReset,
 	onNavigate,
 	className,
@@ -39,65 +38,65 @@ export function DynamicResetPassword({
 		checkingMessage,
 	} = content;
 
-	const [state, setState] = useState<ResetState>("checking");
-	const [token, setToken] = useState<string>(propToken || "");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [errors, setErrors] = useState<{
+	const [State, SetState] = useState<ResetState>("checking");
+	const [Token, SetToken] = useState<string>(PropToken || "");
+	const [Password, SetPassword] = useState("");
+	const [ConfirmPassword, SetConfirmPassword] = useState("");
+	const [Errors, SetErrors] = useState<{
 		password?: string;
 		confirmPassword?: string;
 	}>({});
 
 	// Simulate token validation (would be API call in real implementation)
 	useEffect(() => {
-		const tokenFromUrl =
-			propToken ||
+		const TokenFromUrl =
+			PropToken ||
 			new URLSearchParams(window.location.search).get("token");
 
-		if (!tokenFromUrl) {
-			setState("invalid");
+		if (!TokenFromUrl) {
+			SetState("invalid");
 			return;
 		}
 
 		// Simulate API call to validate token
-		const validateToken = async () => {
-			await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
+		const ValidateToken = async () => {
+			await new Promise((Resolve) => setTimeout(Resolve, 1000)); // Simulate delay
 			// In real implementation, call `/api/auth/verify-reset-token?token=${token}`
-			setToken(tokenFromUrl);
-			setState("valid"); // Assume valid for now
+			SetToken(TokenFromUrl);
+			SetState("valid"); // Assume valid for now
 		};
 
-		validateToken();
-	}, [propToken]);
+		ValidateToken();
+	}, [PropToken]);
 
-	const validate = () => {
-		const newErrors: typeof errors = {};
+	const Validate = () => {
+		const NewErrors: typeof Errors = {};
 
-		if (!password) {
-			newErrors.password = "Password is required";
-		} else if (password.length < 8) {
-			newErrors.password = "Password must be at least 8 characters";
+		if (!Password) {
+			NewErrors.password = "Password is required";
+		} else if (Password.length < 8) {
+			NewErrors.password = "Password must be at least 8 characters";
 		}
 
-		if (!confirmPassword) {
-			newErrors.confirmPassword = "Please confirm your password";
-		} else if (password !== confirmPassword) {
-			newErrors.confirmPassword = "Passwords do not match";
+		if (!ConfirmPassword) {
+			NewErrors.confirmPassword = "Please confirm your password";
+		} else if (Password !== ConfirmPassword) {
+			NewErrors.confirmPassword = "Passwords do not match";
 		}
 
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
+		SetErrors(NewErrors);
+		return Object.keys(NewErrors).length === 0;
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (validate() && token) {
-			onReset?.(token, password, confirmPassword);
-			setState("success");
+	const HandleSubmit = (Event: React.FormEvent) => {
+		Event.preventDefault();
+		if (Validate() && Token) {
+			onReset?.(Token, Password, ConfirmPassword);
+			SetState("success");
 		}
 	};
 
-	if (state === "checking") {
+	if (State === "checking") {
 		return (
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
@@ -124,7 +123,7 @@ export function DynamicResetPassword({
 		);
 	}
 
-	if (state === "invalid") {
+	if (State === "invalid") {
 		return (
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
@@ -163,7 +162,7 @@ export function DynamicResetPassword({
 		);
 	}
 
-	if (state === "success") {
+	if (State === "success") {
 		return (
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
@@ -218,7 +217,7 @@ export function DynamicResetPassword({
 						<CardContent>
 							<form
 								className="space-y-4"
-								onSubmit={handleSubmit}
+								onSubmit={HandleSubmit}
 								aria-label="Reset password form">
 								<div aria-live="polite" aria-atomic="true">
 									{errorMessage && (
@@ -234,7 +233,7 @@ export function DynamicResetPassword({
 									content={{
 										...passwordField,
 										type: "password",
-										onChange: setPassword,
+										onChange: SetPassword,
 									}}
 									id="password"
 								/>
@@ -243,22 +242,22 @@ export function DynamicResetPassword({
 									content={{
 										...confirmPasswordField,
 										type: "password",
-										onChange: setConfirmPassword,
+										onChange: SetConfirmPassword,
 									}}
 									id="confirmPassword"
 								/>
 
-								{(errors.password ||
-									errors.confirmPassword) && (
+								{(Errors.password ||
+									Errors.confirmPassword) && (
 									<div className="space-y-1">
-										{errors.password && (
+										{Errors.password && (
 											<p className="text-sm text-destructive">
-												{errors.password}
+												{Errors.password}
 											</p>
 										)}
-										{errors.confirmPassword && (
+										{Errors.confirmPassword && (
 											<p className="text-sm text-destructive">
-												{errors.confirmPassword}
+												{Errors.confirmPassword}
 											</p>
 										)}
 									</div>
@@ -280,5 +279,3 @@ export function DynamicResetPassword({
 		</section>
 	);
 }
-
-export type { ResetPasswordContent };

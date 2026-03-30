@@ -1,53 +1,29 @@
-import { Header, type HeaderContent } from "../Layout/Header";
-import {
-	DynamicPlatformGrid,
-	type PlatformGridContent,
-} from "./DynamicPlatformGrid";
-import {
-	DynamicPreviousReleases,
-	type PreviousReleasesContent,
-} from "./DynamicPreviousReleases";
-import {
-	DynamicSystemRequirements,
-	type SystemRequirementsContent,
-} from "./DynamicSystemRequirements";
-import {
-	DynamicVerificationInfo,
-	type VerificationInfoContent,
-} from "./DynamicVerificationInfo";
-
-interface DownloadsPageContent {
-	platformGrid: PlatformGridContent;
-	systemRequirements: SystemRequirementsContent;
-	verificationInfo: VerificationInfoContent;
-	previousReleases: PreviousReleasesContent;
-	header?: HeaderContent;
-	footer?: Record<string, unknown>;
-}
-
-interface DownloadsPageProps {
-	content: DownloadsPageContent;
-	className?: string;
-}
+import { Header } from "../Layout/Header";
+import { DynamicPlatformGrid } from "./DynamicPlatformGrid";
+import { DynamicPreviousReleases } from "./DynamicPreviousReleases";
+import { DynamicSystemRequirements } from "./DynamicSystemRequirements";
+import { DynamicVerificationInfo } from "./DynamicVerificationInfo";
+import type Interface from "./Interface/Content/Page/Download.js";
+import type Property from "./Interface/Property/Page/Download.js";
 
 /**
  * Dynamic DownloadsPage composition
  * Assembles PlatformGrid, SystemRequirements, VerificationInfo, PreviousReleases
  */
-export function DownloadsPage({ content, className }: DownloadsPageProps) {
+export function DownloadsPage({ content, className }: Property) {
 	const {
-		platformGrid,
-		systemRequirements,
-		verificationInfo,
-		previousReleases,
-		header,
+		platformGrid: PlatformGrid,
+		systemRequirements: SystemRequirements,
+		verificationInfo: VerificationInformation,
+		previousReleases: PreviousReleases,
+		header: HeaderContent,
 	} = content;
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
 			<Header
 				content={
-					header || {
+					HeaderContent || {
 						logo: { text: "Land" },
 						navigation: [
 							{
@@ -73,16 +49,14 @@ export function DownloadsPage({ content, className }: DownloadsPageProps) {
 			/>
 
 			<div className="flex-1">
-				<DynamicPlatformGrid content={platformGrid} />
+				<DynamicPlatformGrid content={PlatformGrid} />
 
-				<DynamicSystemRequirements content={systemRequirements} />
+				<DynamicSystemRequirements content={SystemRequirements} />
 
-				<DynamicVerificationInfo content={verificationInfo} />
+				<DynamicVerificationInfo content={VerificationInformation} />
 
-				<DynamicPreviousReleases content={previousReleases} />
+				<DynamicPreviousReleases content={PreviousReleases} />
 			</div>
 		</div>
 	);
 }
-
-export type { DownloadsPageContent };

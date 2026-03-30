@@ -25,5 +25,3 @@ export function DynamicLabel({ content, htmlFor }: Property) {
 		</Label>
 	);
 }
-
-export type { LabelContent };

@@ -1,41 +1,22 @@
 import type { LucideIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-
-interface FeatureItem {
-	id: string;
-	icon: string;
-	title: string;
-	description: string;
-}
-
-interface FeaturesContent {
-	title?: string;
-	subtitle?: string;
-	features: FeatureItem[];
-	columns?: 1 | 2 | 3 | 4 | 5 | 6;
-	gap?: "sm" | "md" | "lg" | "xl";
-}
-
-interface DynamicFeaturesProps {
-	content: FeaturesContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Feature.js";
 
 /**
  * Dynamic Features component that displays a grid of feature cards
  * Accepts feature items with icons, titles, and descriptions
  */
-export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
+export function DynamicFeatures({ content, className }: Property) {
 	const { title, subtitle, features, columns = 3, gap = "lg" } = content;
 
-	const gapClasses = {
+	const GapClass = {
 		sm: "gap-4",
 		md: "gap-6",
 		lg: "gap-8",
 		xl: "gap-12",
 	};
 
-	const columnClasses: Record<number, string> = {
+	const ColumnClass: Record<number, string> = {
 		1: "grid-cols-1",
 		2: "grid-cols-1 md:grid-cols-2",
 		3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
@@ -44,21 +25,20 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 		6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
 	};
 
-	const [iconsMap, setIconsMap] = useState<Record<string, LucideIcon>>({});
+	const [IconMap, SetIconMap] = useState<Record<string, LucideIcon>>({});
 
 	useEffect(() => {
-		// Dynamically load all icons from lucide-react
 		import("lucide-react")
-			.then((icons) => {
-				setIconsMap(icons as Record<string, LucideIcon>);
+			.then((Icon) => {
+				SetIconMap(Icon as unknown as Record<string, LucideIcon>);
 			})
-			.catch((error) => {
-				console.error("Failed to load lucide-react icons:", error);
+			.catch((Error) => {
+				console.error("Failed to load lucide-react icons:", Error);
 			});
 	}, []);
 
-	const getIcon = (iconName: string): LucideIcon | null => {
-		return iconsMap[iconName] || null;
+	const GetIcon = (IconName: string): LucideIcon | null => {
+		return IconMap[IconName] || null;
 	};
 
 	return (
@@ -83,12 +63,12 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 				)}
 
 				<div
-					className={`grid ${columnClasses[columns]} ${gapClasses[gap]} mx-auto max-w-6xl`}>
-					{features.map((feature) => {
-						const Icon = getIcon(feature.icon);
+					className={`grid ${ColumnClass[columns]} ${GapClass[gap]} mx-auto max-w-6xl`}>
+					{features.map((Feature) => {
+						const Icon = GetIcon(Feature.icon);
 						return (
 							<div
-								key={feature.id}
+								key={Feature.id}
 								className="bg-white/92 flex flex-col items-start space-y-4 rounded-none border border-[var(--border)] p-6">
 								<div
 									className="w-fit rounded-none bg-secondary p-3"
@@ -101,10 +81,10 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 									)}
 								</div>
 								<h3 className="text-xl font-semibold">
-									{feature.title}
+									{Feature.title}
 								</h3>
 								<p className="text-muted-foreground">
-									{feature.description}
+									{Feature.description}
 								</p>
 							</div>
 						);
@@ -114,5 +94,3 @@ export function DynamicFeatures({ content, className }: DynamicFeaturesProps) {
 		</section>
 	);
 }
-
-export type { FeatureItem, FeaturesContent };

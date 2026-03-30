@@ -1,40 +1,14 @@
-interface FooterColumn {
-	title: string;
-	links: { label: string; href: string }[];
-}
-
-interface FooterContent {
-	brand: {
-		name: string;
-		description?: string;
-	};
-	social?: {
-		github?: string;
-		twitter?: string;
-		discord?: string;
-		linkedin?: string;
-	};
-	columns: FooterColumn[];
-	bottomBar?: {
-		copyright?: string;
-		madeWith?: boolean;
-	};
-}
-
-interface DynamicFooterProps {
-	content: FooterContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Footer.js";
 
 /**
  * Dynamic Footer component that accepts brand, links, and social schemas
  * Renders multi-column footer with bottom bar
  */
-export function DynamicFooter({ content, className }: DynamicFooterProps) {
+export function DynamicFooter({ content, className }: Property) {
 	const { brand, social, columns, bottomBar } = content;
-	const currentYear = new Date().getFullYear();
+	const CurrentYear = new Date().getFullYear();
 
-	const socialIcons: Record<string, { icon: string; href: string }> = {
+	const SocialIcon: Record<string, { icon: string; href: string }> = {
 		github: { icon: "Github", href: social?.github || "#" },
 		twitter: { icon: "Twitter", href: social?.twitter || "#" },
 		discord: { icon: "MessageCircle", href: social?.discord || "#" },
@@ -57,19 +31,19 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 						)}
 						{social && (
 							<div className="flex space-x-4">
-								{Object.entries(socialIcons).map(
-									([key, { href }]) =>
-										href !== "#" && (
+								{Object.entries(SocialIcon).map(
+									([Key, { href: Href }]) =>
+										Href !== "#" && (
 											<a
-												key={key}
-												href={href}
+												key={Key}
+												href={Href}
 												target="_blank"
 												rel="noopener noreferrer"
 												className="text-muted-foreground transition-colors hover:text-foreground"
-												aria-label={`Follow us on ${key}`}>
+												aria-label={`Follow us on ${Key}`}>
 												{/* Icon placeholder - would render actual Lucide icon in implementation */}
 												<span className="sr-only">
-													{key}
+													{Key}
 												</span>
 											</a>
 										),
@@ -79,18 +53,18 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 					</div>
 
 					{/* Dynamic Columns */}
-					{columns.map((column, colIndex) => (
-						<div key={colIndex}>
+					{columns.map((Column, ColumnIndex) => (
+						<div key={ColumnIndex}>
 							<h4 className="mb-4 font-semibold">
-								{column.title}
+								{Column.title}
 							</h4>
 							<ul className="space-y-2">
-								{column.links.map((link, linkIndex) => (
-									<li key={linkIndex}>
+								{Column.links.map((Link, LinkIndex) => (
+									<li key={LinkIndex}>
 										<a
-											href={link.href}
+											href={Link.href}
 											className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-											{link.label}
+											{Link.label}
 										</a>
 									</li>
 								))}
@@ -105,7 +79,7 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 						<div className="text-sm text-muted-foreground">
 							{bottomBar.copyright || (
 								<>
-									© {currentYear} {brand.name}. All rights
+									© {CurrentYear} {brand.name}. All rights
 									reserved.
 								</>
 							)}
@@ -121,5 +95,3 @@ export function DynamicFooter({ content, className }: DynamicFooterProps) {
 		</footer>
 	);
 }
-
-export type { FooterContent, FooterColumn };

@@ -2,29 +2,9 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { authAPI } from "../../Lib/api/auth";
-import {
-	DynamicEmailVerification,
-	type VerificationContent,
-} from "./DynamicEmailVerification";
-
-interface VerifyPageContent {
-	verification: VerificationContent;
-}
-
-type VerifyRoute = "pending" | "verify" | "success" | "failure";
-
-interface VerifyPageProps {
-	content: VerifyPageContent;
-	route: VerifyRoute;
-	token?: string;
-	reason?: string;
-	metaTitle?: string;
-	metaDescription?: string;
-	className?: string;
-	onVerify?: (Token: string) => Promise<boolean>;
-	onResend?: (Email: string) => Promise<boolean>;
-	onNavigate?: ((Path: string) => void) | undefined;
-}
+import { DynamicEmailVerification } from "./DynamicEmailVerification";
+import type Interface from "./Interface/Content/Page/Verify.js";
+import type Property from "./Interface/Property/Page/Verify.js";
 
 function NavigateToPath(Path: string): void {
 	window.location.href = Path;
@@ -41,7 +21,7 @@ export function VerifyPage({
 	onVerify,
 	onResend,
 	onNavigate,
-}: VerifyPageProps) {
+}: Property) {
 	const { verification } = content;
 	const Navigate = onNavigate || NavigateToPath;
 	const [UserEmail, SetUserEmail] = useState<string>("");
@@ -203,5 +183,3 @@ export function VerifyPage({
 		</div>
 	);
 }
-
-export type { VerifyPageContent };

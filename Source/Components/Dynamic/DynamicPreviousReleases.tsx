@@ -1,33 +1,7 @@
 import { DynamicButton } from "./DynamicButton";
 import { DynamicTable } from "./DynamicTable";
-
-interface ReleaseVersion {
-	version: string;
-	publishedAt: string;
-	size: string;
-	downloads: number;
-	changelog?: string;
-	assets: {
-		platform: "macOS" | "Windows" | "Linux";
-		url: string;
-		sha256: string;
-		signature?: string;
-	}[];
-}
-
-interface PreviousReleasesContent {
-	title: string;
-	description?: string;
-	releases: ReleaseVersion[];
-	showChangelog?: boolean;
-	onDownload?: (version: string, platform: string) => void;
-	onViewChangelog?: (version: string) => void;
-}
-
-interface DynamicPreviousReleasesProps {
-	content: PreviousReleasesContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Release/Previous.js";
+import type ReleaseVersion from "./Interface/Version/Release.js";
 
 /**
  * Dynamic PreviousReleases component showing version history table
@@ -36,25 +10,25 @@ interface DynamicPreviousReleasesProps {
 export function DynamicPreviousReleases({
 	content,
 	className,
-}: DynamicPreviousReleasesProps) {
+}: Property) {
 	const { title, description, releases, showChangelog = true } = content;
 
-	const columns = [
+	const Columns = [
 		{
 			key: "version" as const,
 			header: "Version",
-			render: (value: unknown, _row: ReleaseVersion) => (
+			render: (Value: unknown, _Row: ReleaseVersion) => (
 				<span className="font-semibold text-primary">
-					{String(value)}
+					{String(Value)}
 				</span>
 			),
 		},
 		{
 			key: "publishedAt" as const,
 			header: "Published",
-			render: (value: unknown) => (
-				<time dateTime={String(value)}>
-					{new Date(String(value)).toLocaleDateString("en-US", {
+			render: (Value: unknown) => (
+				<time dateTime={String(Value)}>
+					{new Date(String(Value)).toLocaleDateString("en-US", {
 						year: "numeric",
 						month: "short",
 						day: "numeric",
@@ -65,47 +39,47 @@ export function DynamicPreviousReleases({
 		{
 			key: "size" as const,
 			header: "Size",
-			render: (value: unknown) => (
-				<span className="text-muted-foreground">{String(value)}</span>
+			render: (Value: unknown) => (
+				<span className="text-muted-foreground">{String(Value)}</span>
 			),
 		},
 		{
 			key: "downloads" as const,
 			header: "Downloads",
-			render: (value: unknown) => (
+			render: (Value: unknown) => (
 				<span className="text-muted-foreground">
-					{(value as number).toLocaleString()}
+					{(Value as number).toLocaleString()}
 				</span>
 			),
 		},
 		{
 			key: "actions" as const,
 			header: "",
-			render: (_value: unknown, row: ReleaseVersion) => (
+			render: (_Value: unknown, Row: ReleaseVersion) => (
 				<div className="flex gap-2">
-					{row.assets.map((asset) => (
+					{Row.assets.map((Asset) => (
 						<DynamicButton
-							key={asset.platform}
+							key={Asset.platform}
 							content={{
-								text: asset.platform,
+								text: Asset.platform,
 								variant: "outline",
 								size: "sm",
 								icon:
-									asset.platform === "macOS"
+									Asset.platform === "macOS"
 										? "Apple"
-										: asset.platform === "Windows"
+										: Asset.platform === "Windows"
 											? "Monitor"
 											: "Terminal",
 							}}
 							onAction={() =>
 								content.onDownload?.(
-									row.version,
-									asset.platform,
+									Row.version,
+									Asset.platform,
 								)
 							}
 						/>
 					))}
-					{showChangelog && row.changelog && (
+					{showChangelog && Row.changelog && (
 						<DynamicButton
 							content={{
 								text: "Changelog",
@@ -113,7 +87,7 @@ export function DynamicPreviousReleases({
 								size: "sm",
 							}}
 							onAction={() =>
-								content.onViewChangelog?.(row.version)
+								content.onViewChangelog?.(Row.version)
 							}
 						/>
 					)}
@@ -145,7 +119,7 @@ export function DynamicPreviousReleases({
 				<div className="bg-white/92 mx-auto max-w-5xl overflow-hidden rounded-none border border-[var(--border)]">
 					<DynamicTable<ReleaseVersion>
 						content={{
-							columns,
+							columns: Columns,
 							data: releases,
 							striped: true,
 							hoverable: true,
@@ -158,5 +132,3 @@ export function DynamicPreviousReleases({
 		</section>
 	);
 }
-
-export type { ReleaseVersion, PreviousReleasesContent };

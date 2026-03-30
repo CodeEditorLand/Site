@@ -1,0 +1,14 @@
+import type PlatformGridContent from "../Grid/Platform.js";
+import type SystemRequirementsContent from "../Requirement/System.js";
+import type VerificationInfoContent from "../Information/Verification.js";
+import type PreviousReleasesContent from "../Release/Previous.js";
+import type { HeaderContent } from "../../../../Layout/Header.js";
+
+export default interface Interface {
+	platformGrid: PlatformGridContent;
+	systemRequirements: SystemRequirementsContent;
+	verificationInfo: VerificationInfoContent;
+	previousReleases: PreviousReleasesContent;
+	header?: HeaderContent;
+	footer?: Record<string, unknown>;
+}

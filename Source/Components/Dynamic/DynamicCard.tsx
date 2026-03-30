@@ -18,50 +18,43 @@ export function DynamicCard({
 	className,
 	onClick,
 }: Property) {
-	const { header, body, footer } = sections;
+	const { header: HeaderSection, body: BodySection, footer: FooterSection } = sections;
 
 	return (
 		<Card
 			className={className}
 			onClick={onClick}
 			style={{ cursor: onClick ? "pointer" : undefined }}>
-			{header && (
+			{HeaderSection && (
 				<CardHeader>
-					{header.title && <CardTitle>{header.title}</CardTitle>}
-					{header.description && (
-						<CardDescription>{header.description}</CardDescription>
+					{HeaderSection.title && <CardTitle>{HeaderSection.title}</CardTitle>}
+					{HeaderSection.description && (
+						<CardDescription>{HeaderSection.description}</CardDescription>
 					)}
-					{header.content && (
-						<div className="mt-2">{header.content}</div>
+					{HeaderSection.content && (
+						<div className="mt-2">{HeaderSection.content}</div>
 					)}
 				</CardHeader>
 			)}
-			{body && (
+			{BodySection && (
 				<CardContent>
-					{body.title && (
-						<h3 className="mb-2 font-semibold">{body.title}</h3>
+					{BodySection.title && (
+						<h3 className="mb-2 font-semibold">{BodySection.title}</h3>
 					)}
-					{body.description && (
+					{BodySection.description && (
 						<p className="mb-4 text-muted-foreground">
-							{body.description}
+							{BodySection.description}
 						</p>
 					)}
-					{body.content}
+					{BodySection.content}
 				</CardContent>
 			)}
-			{footer && <CardFooter>{footer.content}</CardFooter>}
+			{FooterSection && <CardFooter>{FooterSection.content}</CardFooter>}
 		</Card>
 	);
 }
 
-// Convenience wrapper for simple cards with title/desc/children
-interface SimpleCardProps {
-	title?: string;
-	description?: string;
-	children: React.ReactNode;
-	className?: string;
-	onClick?: () => void;
-}
+import type SimpleProperty from "./Interface/Property/Card/Simple.js";
 
 export function SimpleCard({
 	title,
@@ -69,7 +62,7 @@ export function SimpleCard({
 	children,
 	className,
 	onClick,
-}: SimpleCardProps) {
+}: SimpleProperty) {
 	return (
 		<Card
 			className={className}
@@ -87,5 +80,3 @@ export function SimpleCard({
 		</Card>
 	);
 }
-
-export type { CardContentItem, CardSection };

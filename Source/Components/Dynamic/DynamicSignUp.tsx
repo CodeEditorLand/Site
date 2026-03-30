@@ -39,54 +39,54 @@ export function DynamicSignUp({
 		footerLinks,
 	} = content;
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [confirmPassword, setConfirmPassword] = useState("");
-	const [termsAccepted, setTermsAccepted] = useState(false);
-	const [errors, setErrors] = useState<{
+	const [Email, SetEmail] = useState("");
+	const [Password, SetPassword] = useState("");
+	const [ConfirmPassword, SetConfirmPassword] = useState("");
+	const [TermsAccepted, SetTermsAccepted] = useState(false);
+	const [Errors, SetErrors] = useState<{
 		email?: string;
 		password?: string;
 		confirmPassword?: string;
 		terms?: string;
 	}>({});
 
-	const validate = () => {
-		const newErrors: typeof errors = {};
+	const Validate = () => {
+		const NewErrors: typeof Errors = {};
 
-		if (!email) {
-			newErrors.email = "Email is required";
-		} else if (!/\S+@\S+\.\S+/.test(email)) {
-			newErrors.email = "Please enter a valid email";
+		if (!Email) {
+			NewErrors.email = "Email is required";
+		} else if (!/\S+@\S+\.\S+/.test(Email)) {
+			NewErrors.email = "Please enter a valid email";
 		}
 
-		if (!password) {
-			newErrors.password = "Password is required";
-		} else if (password.length < 8) {
-			newErrors.password = "Password must be at least 8 characters";
+		if (!Password) {
+			NewErrors.password = "Password is required";
+		} else if (Password.length < 8) {
+			NewErrors.password = "Password must be at least 8 characters";
 		}
 
-		if (!confirmPassword) {
-			newErrors.confirmPassword = "Please confirm your password";
-		} else if (password !== confirmPassword) {
-			newErrors.confirmPassword = "Passwords do not match";
+		if (!ConfirmPassword) {
+			NewErrors.confirmPassword = "Please confirm your password";
+		} else if (Password !== ConfirmPassword) {
+			NewErrors.confirmPassword = "Passwords do not match";
 		}
 
-		if (!termsAccepted) {
-			newErrors.terms = "You must accept the terms and conditions";
+		if (!TermsAccepted) {
+			NewErrors.terms = "You must accept the terms and conditions";
 		}
 
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
+		SetErrors(NewErrors);
+		return Object.keys(NewErrors).length === 0;
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (validate()) {
-			onSubmit?.(email, password, confirmPassword, termsAccepted);
+	const HandleSubmit = (Event: React.FormEvent) => {
+		Event.preventDefault();
+		if (Validate()) {
+			onSubmit?.(Email, Password, ConfirmPassword, TermsAccepted);
 		}
 	};
 
-	const oauthProviders = [
+	const OAuthProviderList = [
 		{ name: "GitHub", icon: "Github" },
 		{ name: "Google", icon: "Chrome" },
 		{ name: "GitLab", icon: "Gitlab" },
@@ -104,7 +104,7 @@ export function DynamicSignUp({
 						<CardContent>
 							<form
 								className="space-y-4"
-								onSubmit={handleSubmit}
+								onSubmit={HandleSubmit}
 								aria-label="Sign up form">
 								<div aria-live="polite" aria-atomic="true">
 									{errorMessage && (
@@ -119,7 +119,7 @@ export function DynamicSignUp({
 								<DynamicInput
 									content={{
 										...emailField,
-										onChange: setEmail,
+										onChange: SetEmail,
 									}}
 									id="email"
 								/>
@@ -128,7 +128,7 @@ export function DynamicSignUp({
 									content={{
 										...passwordField,
 										type: "password",
-										onChange: setPassword,
+										onChange: SetPassword,
 									}}
 									id="password"
 								/>
@@ -137,7 +137,7 @@ export function DynamicSignUp({
 									content={{
 										...confirmPasswordField,
 										type: "password",
-										onChange: setConfirmPassword,
+										onChange: SetConfirmPassword,
 									}}
 									id="confirmPassword"
 								/>
@@ -145,8 +145,8 @@ export function DynamicSignUp({
 								<DynamicCheckbox
 									content={{
 										...termsCheckbox,
-										checked: termsAccepted,
-										onChange: setTermsAccepted,
+										checked: TermsAccepted,
+										onChange: SetTermsAccepted,
 									}}
 								/>
 
@@ -175,15 +175,15 @@ export function DynamicSignUp({
 
 							{oauthButtons.length > 0 && (
 								<div className="space-y-3">
-									{oauthButtons.map((button, index) => (
+									{oauthButtons.map((Button, Index) => (
 										<DynamicButton
-											key={index}
+											key={Index}
 											content={{
-												...button,
+												...Button,
 												fullWidth: true,
 											}}
 											onAction={() =>
-												onOAuth?.(button.icon as string)
+												onOAuth?.(Button.icon as string)
 											}
 										/>
 									))}
@@ -214,5 +214,3 @@ export function DynamicSignUp({
 		</section>
 	);
 }
-
-export type { SignUpContent };

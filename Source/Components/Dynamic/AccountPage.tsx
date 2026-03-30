@@ -3,52 +3,13 @@ import { toast } from "sonner";
 
 import { authAPI } from "../../Lib/api/auth";
 import type { User } from "../../Lib/types";
-import { Header, type HeaderContent } from "../Layout/Header";
-import {
-	DynamicForgotPassword,
-	type ForgotPasswordContent,
-} from "./DynamicForgotPassword";
-import {
-	DynamicResetPassword,
-	type ResetPasswordContent,
-} from "./DynamicResetPassword";
-import { DynamicSignIn, type SignInContent } from "./DynamicSignIn";
-import { DynamicSignUp, type SignUpContent } from "./DynamicSignUp";
-
-interface AccountPageContent {
-	signIn: SignInContent;
-	signUp: SignUpContent;
-	forgotPassword: ForgotPasswordContent;
-	resetPassword: ResetPasswordContent;
-	header?: HeaderContent;
-	footer?: Record<string, unknown>;
-}
-
-type AccountRoute = "signin" | "signup" | "forgot-password" | "reset-password";
-
-interface AccountPageProps {
-	content: AccountPageContent;
-	route: AccountRoute;
-	resetToken?: string;
-	metaTitle?: string;
-	metaDescription?: string;
-	className?: string;
-	onSignIn?: (Email: string, Password: string) => void;
-	onSignUp?: (
-		Email: string,
-		Password: string,
-		ConfirmPassword: string,
-		TermsAccepted: boolean,
-	) => void;
-	onForgotPassword?: (Email: string) => void;
-	onResetPassword?: (
-		Token: string,
-		Password: string,
-		ConfirmPassword: string,
-	) => void;
-	onOAuth?: (Provider?: string) => void;
-	onNavigate?: (Path: string) => void;
-}
+import { Header } from "../Layout/Header";
+import { DynamicForgotPassword } from "./DynamicForgotPassword";
+import { DynamicResetPassword } from "./DynamicResetPassword";
+import { DynamicSignIn } from "./DynamicSignIn";
+import { DynamicSignUp } from "./DynamicSignUp";
+import type Interface from "./Interface/Content/Page/Account.js";
+import type Property from "./Interface/Property/Page/Account.js";
 
 function SetSessionToken(Token: string): void {
 	try {
@@ -103,8 +64,13 @@ export function AccountPage({
 	onResetPassword,
 	onOAuth,
 	onNavigate,
-}: AccountPageProps) {
-	const { signIn, signUp, forgotPassword, resetPassword } = content;
+}: Property) {
+	const {
+		signIn: SignIn,
+		signUp: SignUp,
+		forgotPassword: ForgotPassword,
+		resetPassword: ResetPassword,
+	} = content;
 
 	const Navigate = onNavigate || NavigateToPath;
 
@@ -315,7 +281,7 @@ export function AccountPage({
 			<div className="flex-1">
 				{route === "signin" && (
 					<DynamicSignIn
-						content={signIn}
+						content={SignIn}
 						onSubmit={HandleSignIn}
 						onOAuth={HandleOAuth}
 						onNavigate={Navigate}
@@ -324,7 +290,7 @@ export function AccountPage({
 
 				{route === "signup" && (
 					<DynamicSignUp
-						content={signUp}
+						content={SignUp}
 						onSubmit={HandleSignUp}
 						onOAuth={HandleOAuth}
 						onNavigate={Navigate}
@@ -333,7 +299,7 @@ export function AccountPage({
 
 				{route === "forgot-password" && (
 					<DynamicForgotPassword
-						content={forgotPassword}
+						content={ForgotPassword}
 						onSubmit={HandleForgotPassword}
 						onResend={() => HandleForgotPassword("")}
 						onNavigate={Navigate}
@@ -342,7 +308,7 @@ export function AccountPage({
 
 				{route === "reset-password" && (
 					<DynamicResetPassword
-						content={resetPassword}
+						content={ResetPassword}
 						token={resetToken || ""}
 						onReset={HandleResetPassword}
 						onNavigate={Navigate}
@@ -352,6 +318,3 @@ export function AccountPage({
 		</div>
 	);
 }
-
-export type { AccountPageContent };
-export type { AccountRoute };

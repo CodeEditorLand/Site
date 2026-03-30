@@ -6,30 +6,7 @@ import { DynamicButton } from "./DynamicButton";
 import { DynamicCard } from "./DynamicCard";
 import type CardSection from "./Interface/Section/Card.js";
 import type PlatformInformation from "./Interface/Information/Platform.js";
-
-interface PlatformGridLabels {
-	version?: string;
-	size?: string;
-	requirements?: string;
-	loading?: string;
-	errorTitle?: string;
-	downloadFailed?: string;
-}
-
-interface PlatformGridContent {
-	title?: string;
-	subtitle?: string;
-	platforms?: PlatformInformation[];
-	showVerification?: boolean;
-	onDownload?: (platform: PlatformInformation) => void;
-	apiPlatform?: "macos" | "windows" | "linux";
-	labels?: PlatformGridLabels;
-}
-
-interface DynamicPlatformGridProps {
-	content: PlatformGridContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Grid/Platform.js";
 
 /**
  * Dynamic PlatformGrid component that displays download cards for each platform
@@ -39,7 +16,7 @@ interface DynamicPlatformGridProps {
 export function DynamicPlatformGrid({
 	content,
 	className,
-}: DynamicPlatformGridProps) {
+}: Property) {
 	const { t } = useTranslation("download");
 	const {
 		title,
@@ -51,96 +28,96 @@ export function DynamicPlatformGrid({
 		labels = {},
 	} = content;
 	const {
-		version: versionLabel = t("labels.version", {
+		version: VersionLabel = t("labels.version", {
 			defaultValue: "Version:",
 		}),
-		size: sizeLabel = t("labels.size", { defaultValue: "Size:" }),
-		requirements: requirementsLabel = t("labels.requirements", {
+		size: SizeLabel = t("labels.size", { defaultValue: "Size:" }),
+		requirements: RequirementsLabel = t("labels.requirements", {
 			defaultValue: "Requirements:",
 		}),
-		loading: loadingLabel = t("labels.loading", {
+		loading: LoadingLabel = t("labels.loading", {
 			defaultValue: "Loading downloads...",
 		}),
-		errorTitle: errorTitleLabel = t("labels.errorTitle", {
+		errorTitle: ErrorTitleLabel = t("labels.errorTitle", {
 			defaultValue: "Unable to load downloads",
 		}),
-		downloadFailed: downloadFailedLabel = t("labels.downloadFailed", {
+		downloadFailed: DownloadFailedLabel = t("labels.downloadFailed", {
 			defaultValue: "Download failed. Please try again.",
 		}),
 	} = labels;
 
-	const [platforms, setPlatforms] = useState<PlatformInformation[]>(
+	const [Platforms, SetPlatforms] = useState<PlatformInformation[]>(
 		providedPlatforms || [],
 	);
-	const [loading, setLoading] = useState(!providedPlatforms);
-	const [error, setError] = useState<string | null>(null);
+	const [Loading, SetLoading] = useState(!providedPlatforms);
+	const [ErrorMessage, SetErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (providedPlatforms) {
-			setPlatforms(providedPlatforms);
+			SetPlatforms(providedPlatforms);
 			return;
 		}
 
-		const fetchPlatforms = async () => {
+		const FetchPlatforms = async () => {
 			try {
-				setLoading(true);
-				setError(null);
+				SetLoading(true);
+				SetErrorMessage(null);
 
 				// Import workers client directly for platform data
 				const { getWorkersClient } =
 					await import("../../Lib/workers-client");
-				const workers = getWorkersClient();
-				const response = await workers.download.getLatest(apiPlatform);
-				if (!response.success || !response.data) {
+				const Workers = getWorkersClient();
+				const Response = await Workers.download.getLatest(apiPlatform);
+				if (!Response.success || !Response.data) {
 					throw new Error(
-						response.error || "Failed to fetch latest download",
+						Response.error || "Failed to fetch latest download",
 					);
 				}
-				const latest = response.data;
-				const currentPlatforms: PlatformInformation[] = [];
+				const Latest = Response.data;
+				const CurrentPlatform: PlatformInformation[] = [];
 
-				if (latest.platform === "macos") {
-					currentPlatforms.push({
-						id: latest.id,
+				if (Latest.platform === "macos") {
+					CurrentPlatform.push({
+						id: Latest.id,
 						name: "Apple",
 						icon: "Apple",
 						description: "Universal Binary",
-						version: latest.version,
-						size: latest.size || "45.2 MB",
-						checksum: latest.checksum,
-						signature: latest.signature,
+						version: Latest.version,
+						size: Latest.size || "45.2 MB",
+						checksum: Latest.checksum,
+						signature: Latest.signature,
 						requirements: [
 							"macOS 11.0 (Big Sur) or later",
 							"4 GB RAM",
 							"500 MB disk space",
 						],
 					});
-				} else if (latest.platform === "windows") {
-					currentPlatforms.push({
-						id: latest.id,
+				} else if (Latest.platform === "windows") {
+					CurrentPlatform.push({
+						id: Latest.id,
 						name: "Windows",
 						icon: "Monitor",
 						description: "64-bit (x64)",
-						version: latest.version,
-						size: latest.size || "48.7 MB",
-						checksum: latest.checksum,
-						signature: latest.signature,
+						version: Latest.version,
+						size: Latest.size || "48.7 MB",
+						checksum: Latest.checksum,
+						signature: Latest.signature,
 						requirements: [
 							"Windows 10 or later (64-bit)",
 							"4 GB RAM",
 							"500 MB disk space",
 						],
 					});
-				} else if (latest.platform === "linux") {
-					currentPlatforms.push({
-						id: latest.id,
+				} else if (Latest.platform === "linux") {
+					CurrentPlatform.push({
+						id: Latest.id,
 						name: "Linux",
 						icon: "Terminal",
 						description: "DEB, RPM, AppImage",
-						version: latest.version,
-						size: latest.size || "41.3 MB",
-						checksum: latest.checksum,
-						signature: latest.signature,
+						version: Latest.version,
+						size: Latest.size || "41.3 MB",
+						checksum: Latest.checksum,
+						signature: Latest.signature,
 						requirements: [
 							"glibc 2.28+",
 							"4 GB RAM",
@@ -149,58 +126,58 @@ export function DynamicPlatformGrid({
 					});
 				}
 
-				setPlatforms(currentPlatforms);
-			} catch (err) {
-				setError(
-					err instanceof Error
-						? err.message
+				SetPlatforms(CurrentPlatform);
+			} catch (FetchError) {
+				SetErrorMessage(
+					FetchError instanceof Error
+						? FetchError.message
 						: "Failed to load downloads",
 				);
-				console.error("Failed to fetch platform data:", err);
+				console.error("Failed to fetch platform data:", FetchError);
 			} finally {
-				setLoading(false);
+				SetLoading(false);
 			}
 		};
 
-		fetchPlatforms();
+		FetchPlatforms();
 	}, [providedPlatforms, apiPlatform]);
 
-	const iconMap = {
+	const IconMap = {
 		Apple,
 		Monitor,
 		Terminal,
 	};
 
-	const formatFileSize = (sizeStr: string) => {
-		return sizeStr;
+	const FormatFileSize = (SizeString: string) => {
+		return SizeString;
 	};
 
-	const formatVersion = (version: string) => {
-		return version.startsWith("v") ? version : `v${version}`;
+	const FormatVersion = (Version: string) => {
+		return Version.startsWith("v") ? Version : `v${Version}`;
 	};
 
-	const handleDownload = async (platform: PlatformInformation) => {
+	const HandleDownload = async (Platform: PlatformInformation) => {
 		try {
 			// Use workers client directly
 			const { getWorkersClient } =
 				await import("../../Lib/workers-client");
-			const workers = getWorkersClient();
-			const infoResponse = await workers.download.getInfo(platform.id);
-			if (!infoResponse.success || !infoResponse.data) {
+			const Workers = getWorkersClient();
+			const InfoResponse = await Workers.download.getInfo(Platform.id);
+			if (!InfoResponse.success || !InfoResponse.data) {
 				throw new Error(
-					infoResponse.error || "Failed to get download info",
+					InfoResponse.error || "Failed to get download info",
 				);
 			}
-			window.open(infoResponse.data.downloadUrl, "_blank");
-			await workers.download.trackDownload(platform.id);
-			onDownload?.(platform);
-		} catch (err) {
-			console.error("Download failed:", err);
-			console.warn(downloadFailedLabel);
+			window.open(InfoResponse.data.downloadUrl, "_blank");
+			await Workers.download.trackDownload(Platform.id);
+			onDownload?.(Platform);
+		} catch (DownloadError) {
+			console.error("Download failed:", DownloadError);
+			console.warn(DownloadFailedLabel);
 		}
 	};
 
-	if (loading) {
+	if (Loading) {
 		return (
 			<section
 				className={`py-20 ${className || ""}`}
@@ -212,13 +189,13 @@ export function DynamicPlatformGrid({
 						role="status"
 						aria-live="polite">
 						<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-							{loadingLabel}
+							{LoadingLabel}
 						</h2>
 					</div>
 					<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
-						{[1, 2, 3].map((i) => (
+						{[1, 2, 3].map((Index) => (
 							<DynamicCard
-								key={i}
+								key={Index}
 								sections={{}}
 								className="flex animate-pulse flex-col"
 							/>
@@ -229,7 +206,7 @@ export function DynamicPlatformGrid({
 		);
 	}
 
-	if (error) {
+	if (ErrorMessage) {
 		return (
 			<section
 				className={`py-20 ${className || ""}`}
@@ -237,9 +214,9 @@ export function DynamicPlatformGrid({
 				<div className="container mx-auto px-4">
 					<div className="mb-16 text-center" role="alert">
 						<h2 className="mb-4 text-3xl tracking-tight text-red-500 md:text-4xl lg:text-5xl">
-							{errorTitleLabel}
+							{ErrorTitleLabel}
 						</h2>
-						<p className="text-muted-foreground">{error}</p>
+						<p className="text-muted-foreground">{ErrorMessage}</p>
 					</div>
 				</div>
 			</section>
@@ -268,45 +245,45 @@ export function DynamicPlatformGrid({
 				)}
 
 				<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
-					{platforms.map((platform) => {
-						const Icon = iconMap[platform.icon];
+					{Platforms.map((Platform) => {
+						const Icon = IconMap[Platform.icon];
 
-						const cardSections: CardSection = {
+						const PlatformCardSection: CardSection = {
 							header: {
-								title: platform.name,
-								description: platform.description,
+								title: Platform.name,
+								description: Platform.description,
 							},
 							body: {
 								content: (
 									<div className="space-y-2 text-sm text-muted-foreground">
 										<div className="flex justify-between">
-											<span>{versionLabel}</span>
+											<span>{VersionLabel}</span>
 											<span className="font-medium text-foreground">
-												{formatVersion(
-													platform.version,
+												{FormatVersion(
+													Platform.version,
 												)}
 											</span>
 										</div>
 										<div className="flex justify-between">
-											<span>{sizeLabel}</span>
+											<span>{SizeLabel}</span>
 											<span className="font-medium text-foreground">
-												{formatFileSize(platform.size)}
+												{FormatFileSize(Platform.size)}
 											</span>
 										</div>
-										{platform.requirements &&
-											platform.requirements.length >
+										{Platform.requirements &&
+											Platform.requirements.length >
 												0 && (
 												<div className="mt-2 border-t border-border pt-2">
 													<p className="mb-1 font-medium text-foreground">
-														{requirementsLabel}
+														{RequirementsLabel}
 													</p>
 													<ul className="list-inside list-disc space-y-1">
-														{platform.requirements.map(
-															(req, idx) => (
+														{Platform.requirements.map(
+															(Requirement, RequirementIndex) => (
 																<li
-																	key={idx}
+																	key={RequirementIndex}
 																	className="text-xs">
-																	{req}
+																	{Requirement}
 																</li>
 															),
 														)}
@@ -320,20 +297,20 @@ export function DynamicPlatformGrid({
 								content: (
 									<>
 										{showVerification &&
-											(platform.checksum ||
-												platform.signature) && (
+											(Platform.checksum ||
+												Platform.signature) && (
 												<div className="mb-3 text-xs text-muted-foreground">
-													{platform.checksum && (
+													{Platform.checksum && (
 														<p>
 															SHA-256:{" "}
-															{platform.checksum.substring(
+															{Platform.checksum.substring(
 																0,
 																16,
 															)}
 															...
 														</p>
 													)}
-													{platform.signature && (
+													{Platform.signature && (
 														<p>PGP Signed: ✓</p>
 													)}
 												</div>
@@ -344,7 +321,7 @@ export function DynamicPlatformGrid({
 													defaultValue:
 														"Download for {{platform}}",
 													platform:
-														platform.name ||
+														Platform.name ||
 														"this platform",
 												}),
 												variant: "default",
@@ -353,7 +330,7 @@ export function DynamicPlatformGrid({
 												icon: "Download",
 											}}
 											onAction={() =>
-												handleDownload(platform)
+												HandleDownload(Platform)
 											}
 										/>
 									</>
@@ -363,8 +340,8 @@ export function DynamicPlatformGrid({
 
 						return (
 							<DynamicCard
-								key={platform.id}
-								sections={cardSections}
+								key={Platform.id}
+								sections={PlatformCardSection}
 								className="flex flex-col"
 							/>
 						);
@@ -374,5 +351,3 @@ export function DynamicPlatformGrid({
 		</section>
 	);
 }
-
-export type { PlatformInformation, PlatformGridContent };

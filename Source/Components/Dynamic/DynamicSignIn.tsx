@@ -36,33 +36,33 @@ export function DynamicSignIn({
 		showDivider = true,
 		footerLinks,
 	} = content;
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+	const [Email, SetEmail] = useState("");
+	const [Password, SetPassword] = useState("");
+	const [Errors, SetErrors] = useState<{ email?: string; password?: string }>(
 		{},
 	);
 
-	const validate = () => {
-		const newErrors: { email?: string; password?: string } = {};
+	const Validate = () => {
+		const NewErrors: { email?: string; password?: string } = {};
 
-		if (!email) {
-			newErrors.email = "Email is required";
-		} else if (!/\S+@\S+\.\S+/.test(email)) {
-			newErrors.email = "Please enter a valid email";
+		if (!Email) {
+			NewErrors.email = "Email is required";
+		} else if (!/\S+@\S+\.\S+/.test(Email)) {
+			NewErrors.email = "Please enter a valid email";
 		}
 
-		if (!password) {
-			newErrors.password = "Password is required";
+		if (!Password) {
+			NewErrors.password = "Password is required";
 		}
 
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
+		SetErrors(NewErrors);
+		return Object.keys(NewErrors).length === 0;
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!isLoading && validate()) {
-			onSubmit?.(email, password);
+	const HandleSubmit = (Event: React.FormEvent) => {
+		Event.preventDefault();
+		if (!isLoading && Validate()) {
+			onSubmit?.(Email, Password);
 		}
 	};
 
@@ -78,7 +78,7 @@ export function DynamicSignIn({
 						<CardContent>
 							<form
 								className="space-y-4"
-								onSubmit={handleSubmit}
+								onSubmit={HandleSubmit}
 								aria-label="Sign in form">
 								<div aria-live="polite" aria-atomic="true">
 									{errorMessage && (
@@ -93,7 +93,7 @@ export function DynamicSignIn({
 								<DynamicInput
 									content={{
 										...emailField,
-										onChange: setEmail,
+										onChange: SetEmail,
 									}}
 									id="email"
 								/>
@@ -102,7 +102,7 @@ export function DynamicSignIn({
 									content={{
 										...passwordField,
 										type: "password",
-										onChange: setPassword,
+										onChange: SetPassword,
 									}}
 									id="password"
 								/>
@@ -180,5 +180,3 @@ export function DynamicSignIn({
 		</section>
 	);
 }
-
-export type { SignInContent };

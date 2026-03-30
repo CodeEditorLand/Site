@@ -3,51 +3,13 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
-import type ButtonContent from "./Interface/Content/Button.js";
-
-interface PricingTier {
-	id: string;
-	name: string;
-	description?: string;
-	price: {
-		monthly: number;
-		yearly: number;
-	};
-	currency?: string;
-	features: string[];
-	cta: ButtonContent;
-	highlighted?: boolean;
-	popular?: boolean;
-}
-
-interface PricingLabels {
-	monthly?: string;
-	yearly?: string;
-	savings?: string;
-	popular?: string;
-	perMonth?: string;
-	perYear?: string;
-}
-
-interface PricingContent {
-	title?: string;
-	subtitle?: string;
-	tiers: PricingTier[];
-	showMonthlyYearlyToggle?: boolean;
-	defaultYearly?: boolean;
-	labels?: PricingLabels;
-}
-
-interface DynamicPricingProps {
-	content: PricingContent;
-	className?: string;
-}
+import type Property from "./Interface/Property/Pricing.js";
 
 /**
  * Dynamic Pricing component that displays pricing tiers in a grid
  * Supports monthly/yearly toggle and highlighted/plan populaire badges
  */
-export function DynamicPricing({ content, className }: DynamicPricingProps) {
+export function DynamicPricing({ content, className }: Property) {
 	const { t } = useTranslation("home");
 	const {
 		title,
@@ -58,39 +20,39 @@ export function DynamicPricing({ content, className }: DynamicPricingProps) {
 		labels = {},
 	} = content;
 	const {
-		monthly: monthlyLabel = t("pricing.labels.monthly", {
+		monthly: MonthlyLabel = t("pricing.labels.monthly", {
 			defaultValue: "Monthly",
 		}),
-		yearly: yearlyLabel = t("pricing.labels.yearly", {
+		yearly: YearlyLabel = t("pricing.labels.yearly", {
 			defaultValue: "Yearly",
 		}),
-		savings: savingsLabel = t("pricing.labels.savings", {
+		savings: SavingsLabel = t("pricing.labels.savings", {
 			defaultValue: "(Save up to 20%)",
 		}),
-		popular: popularLabel = t("pricing.labels.popular", {
+		popular: PopularLabel = t("pricing.labels.popular", {
 			defaultValue: "Most Popular",
 		}),
-		perMonth: perMonthLabel = t("pricing.labels.perMonth", {
+		perMonth: PerMonthLabel = t("pricing.labels.perMonth", {
 			defaultValue: "/month",
 		}),
-		perYear: perYearLabel = t("pricing.labels.perYear", {
+		perYear: PerYearLabel = t("pricing.labels.perYear", {
 			defaultValue: "/year",
 		}),
 	} = labels;
-	const [isYearly, setIsYearly] = useState(defaultYearly);
+	const [IsYearly, SetIsYearly] = useState(defaultYearly);
 
-	const formatPrice = (price: number, currency: string = "USD") => {
+	const FormatPrice = (Price: number, Currency: string = "USD") => {
 		return new Intl.NumberFormat("en-US", {
 			style: "currency",
-			currency,
+			currency: Currency,
 			minimumFractionDigits: 0,
 			maximumFractionDigits: 0,
-		}).format(price);
+		}).format(Price);
 	};
 
-	const displayTiers = tiers.map((tier) => ({
-		...tier,
-		currentPrice: isYearly ? tier.price.yearly : tier.price.monthly,
+	const DisplayTier = tiers.map((Tier) => ({
+		...Tier,
+		currentPrice: IsYearly ? Tier.price.yearly : Tier.price.monthly,
 	}));
 
 	return (
@@ -117,67 +79,67 @@ export function DynamicPricing({ content, className }: DynamicPricingProps) {
 				{showMonthlyYearlyToggle && (
 					<div className="mb-12 flex items-center justify-center gap-4">
 						<span className="text-sm font-medium">
-							{monthlyLabel}
+							{MonthlyLabel}
 						</span>
 						<button
 							type="button"
 							role="switch"
-							aria-checked={isYearly}
+							aria-checked={IsYearly}
 							aria-label={
-								isYearly
+								IsYearly
 									? "Switch to monthly billing"
 									: "Switch to yearly billing"
 							}
-							className={`relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${isYearly ? "bg-primary" : "bg-input"}`}
-							onClick={() => setIsYearly(!isYearly)}>
+							className={`relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${IsYearly ? "bg-primary" : "bg-input"}`}
+							onClick={() => SetIsYearly(!IsYearly)}>
 							<span
-								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${isYearly ? "translate-x-6" : "translate-x-1"}`}
+								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${IsYearly ? "translate-x-6" : "translate-x-1"}`}
 							/>
 						</button>
 						<span className="text-sm font-medium">
-							{yearlyLabel}
+							{YearlyLabel}
 						</span>
-						{isYearly && (
+						{IsYearly && (
 							<span className="text-sm text-muted-foreground">
-								{savingsLabel}
+								{SavingsLabel}
 							</span>
 						)}
 					</div>
 				)}
 
 				<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-					{displayTiers.map((tier) => (
+					{DisplayTier.map((Tier) => (
 						<div
-							key={tier.id}
-							className={`bg-white/92 flex flex-col rounded-none border ${tier.highlighted || tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
+							key={Tier.id}
+							className={`bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
 							<div className="border-b border-[var(--border)] p-6">
-								{tier.popular && (
+								{Tier.popular && (
 									<div className="mb-2">
 										<span className="text-xs font-semibold uppercase tracking-wider text-primary">
-											{popularLabel}
+											{PopularLabel}
 										</span>
 									</div>
 								)}
 								<h3 className="mb-2 text-2xl font-bold">
-									{tier.name}
+									{Tier.name}
 								</h3>
-								{tier.description && (
+								{Tier.description && (
 									<p className="mb-4 text-sm text-muted-foreground">
-										{tier.description}
+										{Tier.description}
 									</p>
 								)}
 								<div className="flex items-baseline">
 									<span className="text-4xl font-bold">
-										{formatPrice(
-											tier.currentPrice,
-											tier.currency,
+										{FormatPrice(
+											Tier.currentPrice,
+											Tier.currency,
 										)}
 									</span>
 									{showMonthlyYearlyToggle && (
 										<span className="ml-2 text-muted-foreground">
-											{isYearly
-												? perYearLabel
-												: perMonthLabel}
+											{IsYearly
+												? PerYearLabel
+												: PerMonthLabel}
 										</span>
 									)}
 								</div>
@@ -185,23 +147,23 @@ export function DynamicPricing({ content, className }: DynamicPricingProps) {
 
 							<div className="flex flex-1 flex-col p-6">
 								<ul className="mb-8 flex-1 space-y-3">
-									{tier.features.map(
-										(feature, featureIndex) => (
+									{Tier.features.map(
+										(Feature, FeatureIndex) => (
 											<li
-												key={featureIndex}
+												key={FeatureIndex}
 												className="flex items-start gap-3">
 												<Check
 													className="mt-0.5 h-5 w-5 shrink-0 text-primary"
 													aria-hidden="true"
 												/>
 												<span className="text-sm">
-													{feature}
+													{Feature}
 												</span>
 											</li>
 										),
 									)}
 								</ul>
-								<DynamicButton content={tier.cta} fullWidth />
+								<DynamicButton content={Tier.cta} fullWidth />
 							</div>
 						</div>
 					))}
@@ -210,5 +172,3 @@ export function DynamicPricing({ content, className }: DynamicPricingProps) {
 		</section>
 	);
 }
-
-export type { PricingTier, PricingContent };

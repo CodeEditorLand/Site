@@ -278,19 +278,17 @@ export interface EmailVerificationContent {
 // ============================================
 
 // Helper to render Lucide icons dynamically
-export function renderIcon(
-	iconName: string,
-	className?: string,
-	size?: number,
+export function RenderIcon(
+	IconName: string,
+	ClassName?: string,
+	Size?: number,
 ): ReactNode {
 	try {
-		// Dynamic import would be ideal but we'll use a simple mapping
-		const iconModule = require("lucide-react");
-		const IconComponent = iconModule[iconName];
+		const IconModule = require("lucide-react");
+		const IconComponent = IconModule[IconName];
 		if (IconComponent) {
-			return <IconComponent className={className} size={size} />;
+			return <IconComponent className={ClassName} size={Size} />;
 		}
-		// Fallback: return null or a placeholder
 		return null;
 	} catch {
 		return null;

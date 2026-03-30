@@ -5,28 +5,27 @@ import type {
 } from "@Function/Scroll/Type.js";
 import React, { useEffect, useRef, useState } from "react";
 
-// Typed dynamic imports for dependencies
 let Pixel: PixelComponent | null = null;
 let Matrix: MatrixType | null = null;
 
-const loadDependencies = async (): Promise<void> => {
+const LoadDependency = async (): Promise<void> => {
 	if (!Pixel) {
-		const module = await import("@Function/Scroll/Code/Pixel.js");
-		Pixel = module.default;
+		const Module = await import("@Function/Scroll/Code/Pixel.js");
+		Pixel = Module.default;
 	}
 	if (!Matrix) {
-		const module = await import("@Variable/Scroll/Matrix.js");
-		Matrix = module.default;
+		const Module = await import("@Variable/Scroll/Matrix.js");
+		Matrix = Module.default;
 	}
 };
 
-interface ScrollCodeProps {
+interface ScrollCodeProperty {
 	Text?: string;
 	Font?: number;
 }
 
-const ScrollCode: React.FC<ScrollCodeProps> = ({ Text = "", Font = 1 }) => {
-	const [mouse, setMouse] = useState<Mouse>({
+const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
+	const [MouseState, SetMouseState] = useState<Mouse>({
 		X: 0,
 		Y: 0,
 		XPrevious: 0,
@@ -36,71 +35,68 @@ const ScrollCode: React.FC<ScrollCodeProps> = ({ Text = "", Font = 1 }) => {
 		Active: false,
 	});
 
-	const elementRef = useRef<HTMLDivElement>(null);
-	const [count, setCount] = useState(Text.length);
-	const [currentTime, setCurrentTime] = useState(performance.now());
-	const [text] = useState(Text);
+	const ElementReference = useRef<HTMLDivElement>(null);
+	const [Count, SetCount] = useState(Text.length);
+	const [CurrentTime, SetCurrentTime] = useState(performance.now());
+	const [TextContent] = useState(Text);
 
-	// Scroll animation loop
 	useEffect(() => {
-		let mounted = true;
+		let Mounted = true;
 
-		const scroll = (time: number): void => {
-			if (!mounted) return;
-			setCurrentTime(time);
-			requestAnimationFrame(scroll);
+		const Scroll = (Time: number): void => {
+			if (!Mounted) return;
+			SetCurrentTime(Time);
+			requestAnimationFrame(Scroll);
 		};
 
-		const animationId = requestAnimationFrame(scroll);
+		const AnimationIdentifier = requestAnimationFrame(Scroll);
 
 		return () => {
-			mounted = false;
-			cancelAnimationFrame(animationId);
+			Mounted = false;
+			cancelAnimationFrame(AnimationIdentifier);
 		};
 	}, []);
 
-	// Update text when prop changes
 	useEffect(() => {
-		setCount(text.length);
-	}, [text]);
+		SetCount(TextContent.length);
+	}, [TextContent]);
 
-	const display = (): string => {
-		return text.slice(0, count);
+	const Display = (): string => {
+		return TextContent.slice(0, Count);
 	};
 
-	// Load dependencies and render
-	const [dependenciesLoaded, setDependenciesLoaded] = useState(false);
+	const [DependencyLoaded, SetDependencyLoaded] = useState(false);
 
 	useEffect(() => {
-		loadDependencies().then(() => setDependenciesLoaded(true));
+		LoadDependency().then(() => SetDependencyLoaded(true));
 	}, []);
 
-	if (!dependenciesLoaded) {
+	if (!DependencyLoaded) {
 		return (
-			<div className="Scroll w-full p-2" ref={elementRef}>
-				<p className="sr-only">{text}</p>
+			<div className="Scroll w-full p-2" ref={ElementReference}>
+				<p className="sr-only">{TextContent}</p>
 				<div>Loading...</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="Scroll w-full p-2" ref={elementRef}>
-			<p className="sr-only">{text}</p>
+		<div className="Scroll w-full p-2" ref={ElementReference}>
+			<p className="sr-only">{TextContent}</p>
 			<div className="flex justify-center" aria-hidden="true">
-				{display()
+				{Display()
 					.split("")
 					.map((Visible, Character) => (
 						<div key={`char-${Character}`} className="mr-2">
 							{(() => {
-								const Position = Character % text.length;
+								const Position = Character % TextContent.length;
 								if (!Matrix) return null;
-								const matrixRowArray: number[][] =
+								const MatrixRowArray: number[][] =
 									Matrix[Position.toUpperCase()] ??
 									Matrix[" "];
-								if (!matrixRowArray) return null;
+								if (!MatrixRowArray) return null;
 
-								return matrixRowArray.map(
+								return MatrixRowArray.map(
 									(Row, RowIndex): React.ReactNode => (
 										<div
 											key={`row-${RowIndex}`}
@@ -110,9 +106,9 @@ const ScrollCode: React.FC<ScrollCodeProps> = ({ Text = "", Font = 1 }) => {
 													Show: number,
 													Index: number,
 												): React.ReactNode => {
-													const container =
-														elementRef.current?.getBoundingClientRect();
-													if (!Pixel || !container)
+													const Container =
+														ElementReference.current?.getBoundingClientRect();
+													if (!Pixel || !Container)
 														return null;
 													return (
 														<Pixel
@@ -123,14 +119,14 @@ const ScrollCode: React.FC<ScrollCodeProps> = ({ Text = "", Font = 1 }) => {
 															Index={Index}
 															Show={Show}
 															Text={
-																display().length
+																Display().length
 															}
-															Mouse={mouse}
+															Mouse={MouseState}
 															Container={
-																container
+																Container
 															}
 															CurrentTime={
-																currentTime
+																CurrentTime
 															}
 															Row={RowIndex}
 															Column={Index % 3}

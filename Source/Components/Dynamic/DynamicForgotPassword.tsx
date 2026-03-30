@@ -32,24 +32,24 @@ export function DynamicForgotPassword({
 		resendButton,
 		successMessage,
 	} = content;
-	const [email, setEmail] = useState("");
-	const [isSubmitted, setIsSubmitted] = useState(false);
-	const [internalError, setInternalError] = useState("");
+	const [Email, SetEmail] = useState("");
+	const [IsSubmitted, SetIsSubmitted] = useState(false);
+	const [InternalError, SetInternalError] = useState("");
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (!email) {
-			setInternalError("Email is required");
+	const HandleSubmit = (Event: React.FormEvent) => {
+		Event.preventDefault();
+		if (!Email) {
+			SetInternalError("Email is required");
 			return;
 		}
-		if (!/\S+@\S+\.\S+/.test(email)) {
-			setInternalError("Please enter a valid email");
+		if (!/\S+@\S+\.\S+/.test(Email)) {
+			SetInternalError("Please enter a valid email");
 			return;
 		}
 
-		onSubmit?.(email);
-		setIsSubmitted(true);
-		setInternalError("");
+		onSubmit?.(Email);
+		SetIsSubmitted(true);
+		SetInternalError("");
 	};
 
 	return (
@@ -62,17 +62,17 @@ export function DynamicForgotPassword({
 							<CardDescription>{description}</CardDescription>
 						</CardHeader>
 						<CardContent>
-							{!isSubmitted ? (
+							{!IsSubmitted ? (
 								<form
 									className="space-y-4"
-									onSubmit={handleSubmit}
+									onSubmit={HandleSubmit}
 									aria-label="Password reset request form">
 									<div aria-live="polite" aria-atomic="true">
-										{(errorMessage || internalError) && (
+										{(errorMessage || InternalError) && (
 											<div
 												className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
 												role="alert">
-												{errorMessage || internalError}
+												{errorMessage || InternalError}
 											</div>
 										)}
 									</div>
@@ -80,7 +80,7 @@ export function DynamicForgotPassword({
 									<DynamicInput
 										content={{
 											...emailField,
-											onChange: setEmail,
+											onChange: SetEmail,
 										}}
 										id="email"
 									/>
@@ -161,5 +161,3 @@ export function DynamicForgotPassword({
 		</section>
 	);
 }
-
-export type { Property as ForgotPasswordContent };

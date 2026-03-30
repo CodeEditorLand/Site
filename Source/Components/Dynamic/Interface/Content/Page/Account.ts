@@ -1,0 +1,14 @@
+import type SignInContent from "../SignIn.js";
+import type SignUpContent from "../SignUp.js";
+import type ForgotPasswordContent from "../Password/Forgot.js";
+import type ResetPasswordContent from "../Password/Reset.js";
+import type { HeaderContent } from "../../../../Layout/Header.js";
+
+export default interface Interface {
+	signIn: SignInContent;
+	signUp: SignUpContent;
+	forgotPassword: ForgotPasswordContent;
+	resetPassword: ResetPasswordContent;
+	header?: HeaderContent;
+	footer?: Record<string, unknown>;
+}

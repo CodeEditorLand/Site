@@ -12,43 +12,9 @@ import {
 } from "../ui/card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
-import type ButtonContent from "./Interface/Content/Button.js";
-
-interface VerificationContent {
-	pending: {
-		title: string;
-		description: string;
-		emailSentMessage?: string;
-		resendButton: ButtonContent;
-		resendSuccessMessage?: string;
-	};
-	verifying?: {
-		title?: string;
-		description?: string;
-	};
-	success: {
-		title: string;
-		description: string;
-		continueButton: ButtonContent;
-	};
-	error: {
-		title: string;
-		description: string;
-		backToSignInButton: ButtonContent;
-	};
-}
-
-interface DynamicEmailVerificationProps {
-	content: VerificationContent;
-	token?: string;
-	userEmail?: string;
-	onVerify?: (token: string) => Promise<boolean>;
-	onResend?: (email: string) => Promise<boolean>;
-	onNavigate?: (path: string) => void;
-	className?: string;
-}
-
-type VerificationState = "pending" | "verifying" | "success" | "error";
+import type Interface from "./Interface/Content/Verification/Email.js";
+import type Property from "./Interface/Property/Verification/Email.js";
+import type { default as VerificationState } from "./Type/State/Verification.js";
 
 /**
  * Dynamic EmailVerification component with states: pending, verifying, success, error
@@ -56,33 +22,33 @@ type VerificationState = "pending" | "verifying" | "success" | "error";
  */
 export function DynamicEmailVerification({
 	content,
-	token: propToken,
+	token: PropToken,
 	userEmail,
 	onVerify,
 	onResend,
 	onNavigate,
 	className,
-}: DynamicEmailVerificationProps) {
+}: Property) {
 	const { t } = useTranslation("verify");
-	const [state, setState] = useState<VerificationState>("pending");
-	const [token, setToken] = useState<string>(propToken || "");
-	const [email, setEmail] = useState<string>(userEmail || "");
-	const [errorMessage, setErrorMessage] = useState("");
-	const [resendSuccess, setResendSuccess] = useState(false);
+	const [State, SetState] = useState<VerificationState>("pending");
+	const [Token, SetToken] = useState<string>(PropToken || "");
+	const [Email, SetEmail] = useState<string>(userEmail || "");
+	const [ErrorMessage, SetErrorMessage] = useState("");
+	const [ResendSuccess, SetResendSuccess] = useState(false);
 
-	const handleVerify = useCallback(
-		async (verifyToken: string) => {
+	const HandleVerify = useCallback(
+		async (VerifyToken: string) => {
 			try {
-				const success = onVerify ? await onVerify(verifyToken) : true; // Mock success for demo
-				if (success) {
-					setState("success");
+				const Success = onVerify ? await onVerify(VerifyToken) : true; // Mock success for demo
+				if (Success) {
+					SetState("success");
 				} else {
-					setState("error");
-					setErrorMessage(content.error.description);
+					SetState("error");
+					SetErrorMessage(content.error.description);
 				}
 			} catch {
-				setState("error");
-				setErrorMessage(
+				SetState("error");
+				SetErrorMessage(
 					t("errorGeneric", {
 						defaultValue:
 							"An error occurred during verification. Please try again.",
@@ -95,24 +61,24 @@ export function DynamicEmailVerification({
 
 	// Auto-verify if token in URL
 	useEffect(() => {
-		const urlToken =
-			propToken ||
+		const UrlToken =
+			PropToken ||
 			new URLSearchParams(window.location.search).get("token");
-		if (urlToken) {
-			setToken(urlToken);
-			setState("verifying");
-			handleVerify(urlToken);
+		if (UrlToken) {
+			SetToken(UrlToken);
+			SetState("verifying");
+			HandleVerify(UrlToken);
 		}
-	}, [propToken, handleVerify]);
+	}, [PropToken, HandleVerify]);
 
-	const handleResend = async () => {
-		if (!email) return;
+	const HandleResend = async () => {
+		if (!Email) return;
 		try {
-			(await onResend?.(email)) || Promise.resolve(true);
-			setResendSuccess(true);
-			setTimeout(() => setResendSuccess(false), 5000);
+			(await onResend?.(Email)) || Promise.resolve(true);
+			SetResendSuccess(true);
+			setTimeout(() => SetResendSuccess(false), 5000);
 		} catch {
-			setErrorMessage(
+			SetErrorMessage(
 				t("resendFailed", {
 					defaultValue: "Failed to resend email. Please try again.",
 				}),
@@ -120,7 +86,7 @@ export function DynamicEmailVerification({
 		}
 	};
 
-	const renderPending = () => (
+	const RenderPending = () => (
 		<Card>
 			<CardHeader className="text-center">
 				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
@@ -147,13 +113,13 @@ export function DynamicEmailVerification({
 									"Enter your email to resend verification",
 							}),
 							type: "email",
-							value: email,
-							onChange: setEmail,
+							value: Email,
+							onChange: SetEmail,
 						}}
 						id="email"
 					/>
 
-					{resendSuccess && (
+					{ResendSuccess && (
 						<p
 							className="text-center text-sm text-green-600"
 							role="status">
@@ -168,16 +134,16 @@ export function DynamicEmailVerification({
 						content={{
 							...content.pending.resendButton,
 							fullWidth: true,
-							disabled: !email,
+							disabled: !Email,
 						}}
-						onAction={handleResend}
+						onAction={HandleResend}
 					/>
 				</div>
 			</CardContent>
 		</Card>
 	);
 
-	const renderVerifying = () => (
+	const RenderVerifying = () => (
 		<Card>
 			<CardHeader className="text-center">
 				<div
@@ -202,7 +168,7 @@ export function DynamicEmailVerification({
 		</Card>
 	);
 
-	const renderSuccess = () => (
+	const RenderSuccess = () => (
 		<Card>
 			<CardHeader className="text-center">
 				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100">
@@ -228,7 +194,7 @@ export function DynamicEmailVerification({
 		</Card>
 	);
 
-	const renderError = () => (
+	const RenderError = () => (
 		<Card>
 			<CardHeader className="text-center">
 				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100">
@@ -241,7 +207,7 @@ export function DynamicEmailVerification({
 					{content.error.title}
 				</CardTitle>
 				<CardDescription>
-					{errorMessage || content.error.description}
+					{ErrorMessage || content.error.description}
 				</CardDescription>
 			</CardHeader>
 			<CardFooter className="flex justify-center">
@@ -262,14 +228,12 @@ export function DynamicEmailVerification({
 				<div
 					className={`mx-auto max-w-md ${className}`}
 					aria-live="polite">
-					{state === "pending" && renderPending()}
-					{state === "verifying" && renderVerifying()}
-					{state === "success" && renderSuccess()}
-					{state === "error" && renderError()}
+					{State === "pending" && RenderPending()}
+					{State === "verifying" && RenderVerifying()}
+					{State === "success" && RenderSuccess()}
+					{State === "error" && RenderError()}
 				</div>
 			</div>
 		</section>
 	);
 }
-
-export type { VerificationContent };

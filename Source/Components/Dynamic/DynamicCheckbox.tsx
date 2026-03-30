@@ -23,30 +23,30 @@ export function DynamicCheckbox({
 		...props
 	} = content;
 
-	const handleCheckedChange = (newChecked: boolean) => {
+	const HandleCheckedChange = (NewChecked: boolean) => {
 		if (onCheckedChange) {
-			onCheckedChange(newChecked);
+			onCheckedChange(NewChecked);
 		}
 		if (onChange) {
-			onChange(newChecked);
+			onChange(NewChecked);
 		}
 	};
 
 	// Build checkbox props, only including defined values to satisfy exactOptionalPropertyTypes
-	const checkboxProps: Record<string, unknown> = {
+	const CheckboxProperties: Record<string, unknown> = {
 		disabled,
-		onCheckedChange: handleCheckedChange,
+		onCheckedChange: HandleCheckedChange,
 		className,
 		...props,
 	};
 
 	if (checked !== undefined) {
-		checkboxProps.checked = checked;
+		CheckboxProperties.checked = checked;
 	}
 	if (defaultChecked !== undefined) {
-		checkboxProps.defaultChecked = defaultChecked;
+		CheckboxProperties.defaultChecked = defaultChecked;
 		if (checked === undefined) {
-			checkboxProps.checked = defaultChecked;
+			CheckboxProperties.checked = defaultChecked;
 		}
 	}
 
@@ -54,7 +54,7 @@ export function DynamicCheckbox({
 		<div className="flex items-start space-x-3">
 			<Checkbox
 				name={name}
-				{...(checkboxProps as Parameters<typeof Checkbox>[0])}>
+				{...(CheckboxProperties as Parameters<typeof Checkbox>[0])}>
 				{indeterminate && <span className="animate-pulse">?</span>}
 			</Checkbox>
 			{(label || description) && (
@@ -62,13 +62,13 @@ export function DynamicCheckbox({
 					{label && (
 						<Label
 							className="cursor-pointer font-normal"
-							onClick={(e) => {
-								e.preventDefault();
-								const currentChecked =
+							onClick={(Event) => {
+								Event.preventDefault();
+								const CurrentChecked =
 									(checked !== undefined
 										? checked
 										: defaultChecked) || false;
-								handleCheckedChange(!currentChecked);
+								HandleCheckedChange(!CurrentChecked);
 							}}>
 							{label}
 						</Label>
@@ -83,5 +83,3 @@ export function DynamicCheckbox({
 		</div>
 	);
 }
-
-export type { CheckboxContent };
