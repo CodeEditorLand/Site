@@ -4,7 +4,7 @@ import {
 	LocaleLabel,
 	SupportedLocaleList,
 	type SupportedLocale,
-} from "@/Lib/I18n";
+} from "@/Library/I18n";
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 

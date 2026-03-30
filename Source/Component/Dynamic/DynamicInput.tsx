@@ -1,5 +1,5 @@
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
+import { Input } from "../UI/input";
+import { Label } from "../UI/label";
 import type Property from "./Interface/Property/Input.js";
 
 /**

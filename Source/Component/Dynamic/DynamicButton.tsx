@@ -1,7 +1,7 @@
 import { Loader2 } from "lucide-react";
 import { useEffect, useState, type ComponentType } from "react";
 
-import { Button } from "../ui/button";
+import { Button } from "../UI/button";
 import type Property from "./Interface/Property/Button.js";
 
 /**

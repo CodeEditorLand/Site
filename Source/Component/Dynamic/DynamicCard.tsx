@@ -5,7 +5,7 @@ import {
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "../ui/card";
+} from "../UI/card";
 import type CardContentItem from "./Interface/Item/Content/Card.js";
 import type Property from "./Interface/Property/Card.js";
 

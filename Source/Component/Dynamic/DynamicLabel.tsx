@@ -1,4 +1,4 @@
-import { Label } from "../ui/label";
+import { Label } from "../UI/label";
 import type Property from "./Interface/Property/Label.js";
 
 /**

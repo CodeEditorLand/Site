@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { authAPI } from "../../Lib/api/auth";
+import { authAPI } from "../../Library/API/auth";
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
 import type Interface from "./Interface/Content/Page/Verify.js";
 import type Property from "./Interface/Property/Page/Verify.js";

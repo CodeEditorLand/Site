@@ -4,10 +4,10 @@ import "@Stylesheet/Base.css";
 import Background from "../Background.astro";
 import { ErrorBoundary } from "../Component/ErrorBoundary";
 import { Footer } from "../Component/Layout/Footer";
-import { AnalyticsProvider } from "../Component/providers/AnalyticsProvider";
-import { PageviewTracker } from "../Component/providers/PageviewTracker";
+import { AnalyticsProvider } from "../Component/Provider/AnalyticsProvider";
+import { PageviewTracker } from "../Component/Provider/PageviewTracker";
 import MetaTags from "../Component/Social/MetaTags";
-import { getI18n } from "../Lib/I18n/Server";
+import { getI18n } from "../Library/I18n/Server";
 
 const canonicalPath =
 	Astro.url.pathname === "/" ? "" : Astro.url.pathname.replace(/\/$/, "");

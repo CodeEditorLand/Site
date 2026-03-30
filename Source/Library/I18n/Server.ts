@@ -1,50 +1,50 @@
 import i18n from "i18next";
 
 // Bulgarian
-import bgAccount from "./Locales/Bg/account.json";
-import bgCommon from "./Locales/Bg/common.json";
-import bgDownload from "./Locales/Bg/download.json";
-import bgFooter from "./Locales/Bg/footer.json";
-import bgHeader from "./Locales/Bg/header.json";
-import bgHome from "./Locales/Bg/home.json";
-import bgMeta from "./Locales/Bg/meta.json";
-import bgVerify from "./Locales/Bg/verify.json";
+import bgAccount from "./Locale/Bg/account.json";
+import bgCommon from "./Locale/Bg/common.json";
+import bgDownload from "./Locale/Bg/download.json";
+import bgFooter from "./Locale/Bg/footer.json";
+import bgHeader from "./Locale/Bg/header.json";
+import bgHome from "./Locale/Bg/home.json";
+import bgMeta from "./Locale/Bg/meta.json";
+import bgVerify from "./Locale/Bg/verify.json";
 // German
-import deAccount from "./Locales/De/account.json";
-import deCommon from "./Locales/De/common.json";
-import deDownload from "./Locales/De/download.json";
-import deFooter from "./Locales/De/footer.json";
-import deHeader from "./Locales/De/header.json";
-import deHome from "./Locales/De/home.json";
-import deMeta from "./Locales/De/meta.json";
-import deVerify from "./Locales/De/verify.json";
+import deAccount from "./Locale/De/account.json";
+import deCommon from "./Locale/De/common.json";
+import deDownload from "./Locale/De/download.json";
+import deFooter from "./Locale/De/footer.json";
+import deHeader from "./Locale/De/header.json";
+import deHome from "./Locale/De/home.json";
+import deMeta from "./Locale/De/meta.json";
+import deVerify from "./Locale/De/verify.json";
 // English
-import enAccount from "./Locales/En/account.json";
-import enCommon from "./Locales/En/common.json";
-import enDownload from "./Locales/En/download.json";
-import enFooter from "./Locales/En/footer.json";
-import enHeader from "./Locales/En/header.json";
-import enHome from "./Locales/En/home.json";
-import enMeta from "./Locales/En/meta.json";
-import enVerify from "./Locales/En/verify.json";
+import enAccount from "./Locale/En/account.json";
+import enCommon from "./Locale/En/common.json";
+import enDownload from "./Locale/En/download.json";
+import enFooter from "./Locale/En/footer.json";
+import enHeader from "./Locale/En/header.json";
+import enHome from "./Locale/En/home.json";
+import enMeta from "./Locale/En/meta.json";
+import enVerify from "./Locale/En/verify.json";
 // Spanish
-import esAccount from "./Locales/Es/account.json";
-import esCommon from "./Locales/Es/common.json";
-import esDownload from "./Locales/Es/download.json";
-import esFooter from "./Locales/Es/footer.json";
-import esHeader from "./Locales/Es/header.json";
-import esHome from "./Locales/Es/home.json";
-import esMeta from "./Locales/Es/meta.json";
-import esVerify from "./Locales/Es/verify.json";
+import esAccount from "./Locale/Es/account.json";
+import esCommon from "./Locale/Es/common.json";
+import esDownload from "./Locale/Es/download.json";
+import esFooter from "./Locale/Es/footer.json";
+import esHeader from "./Locale/Es/header.json";
+import esHome from "./Locale/Es/home.json";
+import esMeta from "./Locale/Es/meta.json";
+import esVerify from "./Locale/Es/verify.json";
 // French
-import frAccount from "./Locales/Fr/account.json";
-import frCommon from "./Locales/Fr/common.json";
-import frDownload from "./Locales/Fr/download.json";
-import frFooter from "./Locales/Fr/footer.json";
-import frHeader from "./Locales/Fr/header.json";
-import frHome from "./Locales/Fr/home.json";
-import frMeta from "./Locales/Fr/meta.json";
-import frVerify from "./Locales/Fr/verify.json";
+import frAccount from "./Locale/Fr/account.json";
+import frCommon from "./Locale/Fr/common.json";
+import frDownload from "./Locale/Fr/download.json";
+import frFooter from "./Locale/Fr/footer.json";
+import frHeader from "./Locale/Fr/header.json";
+import frHome from "./Locale/Fr/home.json";
+import frMeta from "./Locale/Fr/meta.json";
+import frVerify from "./Locale/Fr/verify.json";
 
 const supportedLocales = ["en", "bg", "de", "fr", "es"];
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { authAPI } from "../../Lib/api/auth";
-import type { User } from "../../Lib/types";
+import { authAPI } from "../../Library/API/auth";
+import type { User } from "../../Library/types";
 import { Header } from "../Layout/Header";
 import { DynamicForgotPassword } from "./DynamicForgotPassword";
 import { DynamicResetPassword } from "./DynamicResetPassword";

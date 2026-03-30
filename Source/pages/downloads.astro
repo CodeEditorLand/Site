@@ -1,7 +1,7 @@
 ---
 import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
 import Base from "../Layout/Base.astro";
-import { getI18n } from "../Lib/I18n/Server";
+import { getI18n } from "../Library/I18n/Server";
 
 const t = getI18n();
 
@@ -19,7 +19,7 @@ const downloadsContent = {
 			if (platform.id) {
 				try {
 					const { downloadsAPI } =
-						await import("../Lib/api/downloads");
+						await import("../Library/API/downloads");
 					const info = await downloadsAPI.getInfo(platform.id);
 					window.open(info.downloadUrl, "_blank");
 					await downloadsAPI.trackDownload(platform.id);

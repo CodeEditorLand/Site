@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 
-import { Separator } from "../ui/separator";
+import { Separator } from "../UI/separator";
 
 import "./Footer/Stylesheet.css";
 
