@@ -11,3 +11,34 @@
 .header-logo span {
 	color: var(--foreground);
 }
+
+/* Sub-header — breadcrumb-style app bar */
+.header-sub {
+	background: rgba(255, 255, 255, 0.92);
+	border-bottom: 1px solid var(--border);
+}
+
+.header-sub-link {
+	position: relative;
+	z-index: 1;
+}
+
+/* Full gray hover overlay */
+.header-sub-link::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: var(--muted);
+	opacity: 0;
+	transition: opacity 0.12s ease;
+}
+
+.header-sub-link:hover::before {
+	opacity: 1;
+}
+
+.header-sub-link:active::before {
+	opacity: 0.8;
+	background: var(--accent);
+}
