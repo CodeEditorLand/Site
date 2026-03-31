@@ -54,7 +54,7 @@
 		"zod": "4.3.5"
 	},
 	"devDependencies": {
-		"@astrojs/ts-plugin": "1.10.6",
+		"@astrojs/ts-plugin": "1.10.7",
 		"@types/postcss-import": "14.0.3",
 		"@types/postcss-reporter": "7.0.5",
 		"@types/postcss-url": "10.0.4"
