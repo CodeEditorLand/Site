@@ -29,7 +29,7 @@
 	position: absolute;
 	inset: 0;
 	z-index: -1;
-	background: var(--Muted);
+	background: var(--Mute);
 	opacity: 0;
 	transition: opacity 0.12s ease;
 }

@@ -30,7 +30,7 @@ export function LocaleSwitcher() {
 	return (
 		<div className="relative inline-flex items-center">
 			<Globe
-				className="pointer-events-none absolute left-2 h-4 w-4 text-[var(--MutedForeground)]"
+				className="pointer-events-none absolute left-2 h-4 w-4 text-[var(--MuteForeground)]"
 				aria-hidden="true"
 			/>
 			<select
@@ -46,7 +46,7 @@ export function LocaleSwitcher() {
 				))}
 			</select>
 			<svg
-				className="pointer-events-none absolute right-1.5 h-3 w-3 text-[var(--MutedForeground)]"
+				className="pointer-events-none absolute right-1.5 h-3 w-3 text-[var(--MuteForeground)]"
 				fill="none"
 				stroke="currentColor"
 				viewBox="0 0 24 24"

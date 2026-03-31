@@ -17,12 +17,12 @@
 		--PrimaryForeground: #ffffff;
 		--Secondary: #f0f4f8;
 		--SecondaryForeground: #1a1a1a;
-		--Muted: #f5f5f5;
-		--MutedForeground: #6b7280;
+		--Mute: #f5f5f5;
+		--MuteForeground: #6b7280;
 		--Accent: #f0f4f8;
 		--AccentForeground: #1a1a1a;
-		--Destructive: #dc2626;
-		--DestructiveForeground: #ffffff;
+		--Destruct: #dc2626;
+		--DestructForeground: #ffffff;
 		--Border: rgba(0, 0, 0, 0.08);
 		--Input: #ffffff;
 		--Ring: #2563eb;
@@ -42,9 +42,9 @@
 		--TierCloud: var(--SpineIPC); /* #3b82f6 — online secure login */
 		--TierProvider: var(--SpineWASM); /* #a855f7 — GitHub/OAuth */
 		--TierLocalFirst: var(--SpineTCP); /* #f97316 — Air Daemon */
-		--TierCloudMuted: color-mix(in srgb, var(--SpineIPC) 12%, #ffffff);
-		--TierProviderMuted: color-mix(in srgb, var(--SpineWASM) 12%, #ffffff);
-		--TierLocalFirstMuted: color-mix(in srgb, var(--SpineTCP) 12%, #ffffff);
+		--TierCloudMute: color-mix(in srgb, var(--SpineIPC) 12%, #ffffff);
+		--TierProviderMute: color-mix(in srgb, var(--SpineWASM) 12%, #ffffff);
+		--TierLocalFirstMute: color-mix(in srgb, var(--SpineTCP) 12%, #ffffff);
 
 		/* Extension/Library Colors - Adjusted for blue background */
 		--ExtensionRust: #f87171;
@@ -214,7 +214,7 @@
 		background-color: transparent;
 	}
 	.Input::placeholder {
-		color: var(--MutedForeground);
+		color: var(--MuteForeground);
 	}
 	.Input:focus-visible {
 		outline: none;
@@ -263,13 +263,13 @@
 
 	.BadgeDestructive {
 		border-color: transparent;
-		background-color: var(--Destructive);
-		color: var(--DestructiveForeground);
+		background-color: var(--Destruct);
+		color: var(--DestructForeground);
 	}
 	.BadgeDestructive:hover {
 		background-color: color-mix(
 			in srgb,
-			var(--Destructive) 80%,
+			var(--Destruct) 80%,
 			transparent
 		);
 	}

@@ -58,7 +58,7 @@ export default {
 					foreground: "var(--SecondaryForeground)",
 				},
 				muted: {
-					DEFAULT: "var(--Muted)",
+					DEFAULT: "var(--Mute)",
 					foreground: "var(--MutedForeground)",
 				},
 				accent: {

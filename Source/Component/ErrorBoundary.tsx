@@ -47,7 +47,7 @@ export class ErrorBoundary extends Component<
 						<h2 className="mb-2 text-xl font-semibold text-[var(--Foreground)]">
 							Something went wrong
 						</h2>
-						<p className="mb-6 text-sm text-[var(--MutedForeground)]">
+						<p className="mb-6 text-sm text-[var(--MuteForeground)]">
 							An unexpected error occurred. Please try again.
 						</p>
 						<button

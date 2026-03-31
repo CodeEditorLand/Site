@@ -9,6 +9,7 @@ import {
 	LayoutDashboard,
 	LogIn,
 	Menu,
+	Monitor,
 	Newspaper,
 	Sparkles,
 	Users,
@@ -38,6 +39,7 @@ const IconRegistry: Record<string, LucideIcon> = {
 	LayoutDashboard,
 	HelpCircle,
 	LogIn,
+	Monitor,
 };
 
 interface NavigationLink {
@@ -113,6 +115,13 @@ export function Header({ content }: HeaderProps) {
 				size: "default",
 				href: "/account/signin",
 				icon: "LogIn",
+			},
+			{
+				text: T("actions.editorPortal", "Editor Portal"),
+				variant: "outline",
+				size: "default",
+				href: "/portal",
+				icon: "Monitor",
 			},
 			{
 				text: T("actions.getStarted", "Get Land"),

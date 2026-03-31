@@ -38,14 +38,14 @@
 	--ColorPrimary: #2563eb;
 	--ColorSecondary: #f0f4f8;
 	--ColorAccent: #f0f4f8;
-	--ColorMuted: #f5f5f5;
-	--ColorMutedForeground: #6b7280;
+	--ColorMute: #f5f5f5;
+	--ColorMuteForeground: #6b7280;
 	--ColorCard: rgba(255, 255, 255, 0.92);
 	--ColorCardForeground: #1a1a1a;
 	--ColorPopover: rgba(255, 255, 255, 0.98);
 	--ColorPopoverForeground: #1a1a1a;
 	--ColorRing: #2563eb;
-	--ColorDestructive: #dc2626;
+	--ColorDestruct: #dc2626;
 	--ColorSuccess: #34d399;
 	--ColorWarning: #fbbf24;
 
