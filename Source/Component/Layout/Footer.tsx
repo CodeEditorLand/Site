@@ -54,8 +54,8 @@ export function Footer({ content }: FooterProps) {
 				title: T("columns.company.title", "Community"),
 				links: [
 					{
-						label: T("columns.company.blog", "Discussions"),
-						href: "https://github.com/CodeEditorLand/Land/discussions",
+						label: T("columns.company.issues", "Issues"),
+						href: "https://github.com/CodeEditorLand/Land/issues",
 					},
 					{
 						label: T(

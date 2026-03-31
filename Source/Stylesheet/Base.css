@@ -141,7 +141,7 @@
 
 	/* Flat panel utility class (replaces frosted glass) */
 	.Frosted {
-		background: rgba(255, 255, 255, 0.92);
+		background: #ffffff;
 		border: var(--BorderWidth) solid var(--Border);
 	}
 }

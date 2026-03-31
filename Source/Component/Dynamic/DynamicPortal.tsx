@@ -108,14 +108,16 @@ const PortalTierRow = ({
 			<div className="PortalTierLogin">
 				<Card className="PortalTierCard">
 					<CardHeader className="PortalTierCardHeader">
-						<div className="PortalTierIconWrapper">
-							<IconComponent
-								className="StaccatoIcon h-6 w-6"
-								aria-hidden="true"
-								style={{ color: Content.Color }}
-							/>
+						<div className="flex items-center justify-between">
+							<CardTitle className="text-xl">{Content.Title}</CardTitle>
+							<div className="PortalTierIconWrapper">
+								<IconComponent
+									className="StaccatoIcon h-6 w-6"
+									aria-hidden="true"
+									style={{ color: Content.Color }}
+								/>
+							</div>
 						</div>
-						<CardTitle className="text-xl">{Content.Title}</CardTitle>
 						<CardDescription className="text-sm">
 							{Content.Subtitle}
 						</CardDescription>
@@ -216,13 +218,14 @@ const PortalTierRow = ({
 								className="space-y-3"
 								aria-label="Local-first connection">
 								<div className="PortalTierDaemonStatus StaccatoBreath">
-									<div className="PortalTierDaemonDot StaccatoRhythmDot" />
 									<span className="text-xs font-medium">
 										Air Daemon
 									</span>
 									<span className="ml-auto text-xs text-muted-foreground">
 										Scanning...
 									</span>
+									{"\u2001"}
+									<div className="PortalTierDaemonDot StaccatoRhythmDot" />
 								</div>
 								<Button
 									className="StaccatoButton w-full"

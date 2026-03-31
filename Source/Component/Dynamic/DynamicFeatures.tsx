@@ -127,25 +127,27 @@ export function DynamicFeatures({ content, className }: Property) {
 						return (
 							<div
 								key={Feature.id}
-								className="FeatureCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col items-start space-y-4 rounded-none border border-[var(--Border)] p-6">
-								<div
-									className="flex h-12 w-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
-									aria-hidden="true">
-									{Icon ? (
-										<Icon
-											className="StaccatoIcon h-6 w-6 text-primary"
-											aria-hidden="true"
-										/>
-									) : (
-										<Sparkles
-											className="StaccatoIcon h-6 w-6 text-primary"
-											aria-hidden="true"
-										/>
-									)}
+								className="FeatureCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col space-y-4 rounded-none border border-[var(--Border)] p-6">
+								<div className="flex items-start justify-between">
+									<h3 className="text-xl font-semibold">
+										{Feature.title}
+									</h3>
+									<div
+										className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
+										aria-hidden="true">
+										{Icon ? (
+											<Icon
+												className="StaccatoIcon h-5 w-5 text-primary"
+												aria-hidden="true"
+											/>
+										) : (
+											<Sparkles
+												className="StaccatoIcon h-5 w-5 text-primary"
+												aria-hidden="true"
+											/>
+										)}
+									</div>
 								</div>
-								<h3 className="text-xl font-semibold">
-									{Feature.title}
-								</h3>
 								<p className="StaccatoBreath text-muted-foreground">
 									{Feature.description}
 								</p>
