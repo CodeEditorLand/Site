@@ -28,13 +28,16 @@ export function DynamicBadge({ content, className }: Property) {
 			variant={variant}
 			className={`StaccatoBadge ${ContentClassName || ""} ${className || ""}`}
 			{...props}>
-			{showDot && (
-				<span
-					className={`StaccatoDot StaccatoRhythmDot mr-2 h-2 w-2 rounded-none ${DotColor[dotColor]}`}
-					aria-hidden="true"
-				/>
-			)}
 			{text}
+			{showDot && (
+				<>
+					{"\u2001"}
+					<span
+						className={`StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none ${DotColor[dotColor]}`}
+						aria-hidden="true"
+					/>
+				</>
+			)}
 		</Badge>
 	);
 }

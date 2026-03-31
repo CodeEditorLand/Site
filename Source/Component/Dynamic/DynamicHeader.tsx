@@ -21,7 +21,7 @@ export function DynamicHeader({ content, className }: Property) {
 
 	return (
 		<header
-			className={` ${sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white/95 ${className || ""} `}>
+			className={` ${sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white ${className || ""} `}>
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo */}
 				<div className="flex items-center space-x-2">

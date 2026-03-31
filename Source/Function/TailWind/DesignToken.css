@@ -40,9 +40,9 @@
 	--ColorAccent: #f0f4f8;
 	--ColorMute: #f5f5f5;
 	--ColorMuteForeground: #6b7280;
-	--ColorCard: rgba(255, 255, 255, 0.92);
+	--ColorCard: #ffffff;
 	--ColorCardForeground: #1a1a1a;
-	--ColorPopover: rgba(255, 255, 255, 0.98);
+	--ColorPopover: #ffffff;
 	--ColorPopoverForeground: #1a1a1a;
 	--ColorRing: #2563eb;
 	--ColorDestruct: #dc2626;

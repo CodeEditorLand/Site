@@ -59,7 +59,7 @@ export function DynamicSystemRequirements({
 
 				<div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
-					<div className="bg-white/92 rounded-none border border-[var(--Border)] p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer bg-white rounded-none border border-[var(--Border)] p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							Minimum Requirements
 						</h3>
@@ -70,7 +70,7 @@ export function DynamicSystemRequirements({
 					</div>
 
 					{/* Recommended Requirements */}
-					<div className="bg-white/92 rounded-none border border-primary p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer bg-white rounded-none border border-primary p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							Recommended
 						</h3>

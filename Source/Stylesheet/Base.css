@@ -9,9 +9,9 @@
 		/* Flat White Theme - Clean, app-like design */
 		--Background: 0 0% 100%;
 		--Foreground: #1a1a1a;
-		--Card: rgba(255, 255, 255, 0.92);
+		--Card: #ffffff;
 		--CardForeground: #1a1a1a;
-		--Popover: rgba(255, 255, 255, 0.98);
+		--Popover: #ffffff;
 		--PopoverForeground: #1a1a1a;
 		--Primary: #2563eb;
 		--PrimaryForeground: #ffffff;
@@ -30,7 +30,7 @@
 		/* Component background tokens */
 		--BackgroundWhite: 0 0% 100%;
 		--InputBackground: #ffffff;
-		--PopoverBackground: rgba(255, 255, 255, 0.98);
+		--PopoverBackground: #ffffff;
 
 		/* Protocol Spine Colors (Primary colors) - Blue theme */
 		--SpinegRPC: #22c55e;

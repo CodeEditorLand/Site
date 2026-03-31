@@ -140,7 +140,7 @@ export function DynamicPricing({ content, className }: Property) {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
-							className={`PricingCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
+							className={`PricingCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
 							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.popular && (
 									<div className="mb-2">
@@ -183,14 +183,14 @@ export function DynamicPricing({ content, className }: Property) {
 										(Feature, FeatureIndex) => (
 											<li
 												key={FeatureIndex}
-												className="flex items-start gap-3">
-												<Check
-													className="StaccatoCheckmark mt-0.5 h-5 w-5 shrink-0 text-primary"
-													aria-hidden="true"
-												/>
+												className="flex items-start justify-between gap-2">
 												<span className="text-sm">
 													{Feature}
 												</span>
+												<Check
+													className="StaccatoCheckmark mt-0.5 h-4 w-4 shrink-0 text-primary"
+													aria-hidden="true"
+												/>
 											</li>
 										),
 									)}

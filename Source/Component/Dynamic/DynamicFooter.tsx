@@ -86,7 +86,7 @@ export function DynamicFooter({ content, className }: Property) {
 						</div>
 						{bottomBar.madeWith && (
 							<div className="text-sm text-muted-foreground">
-								Made with ❤️ by {brand.name} Team
+								Made by {brand.name} Team{"\u2001"}❤️
 							</div>
 						)}
 					</div>

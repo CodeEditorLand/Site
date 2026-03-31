@@ -116,7 +116,7 @@ export function DynamicPreviousReleases({
 					</div>
 				)}
 
-				<div className="bg-white/92 mx-auto max-w-5xl overflow-hidden rounded-none border border-[var(--Border)]">
+				<div className="bg-white mx-auto max-w-5xl overflow-hidden rounded-none border border-[var(--Border)]">
 					<DynamicTable<ReleaseVersion>
 						content={{
 							columns: Columns,

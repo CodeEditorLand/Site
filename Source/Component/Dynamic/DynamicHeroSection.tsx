@@ -195,7 +195,7 @@ export function DynamicHeroSection({
 							return (
 								<div
 									key={Card.id}
-									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white/95 p-3"
+									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white p-3"
 									style={{
 										top: `${CenterY}%`,
 										left: `${CenterX}%`,

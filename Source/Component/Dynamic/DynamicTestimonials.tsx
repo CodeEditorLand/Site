@@ -96,7 +96,7 @@ export function DynamicTestimonials({
 					{testimonials.map((Testimonial) => (
 						<article
 							key={Testimonial.id}
-							className="TestimonialCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border border-[var(--Border)] p-6">
+							className="TestimonialCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col rounded-none border border-[var(--Border)] p-6">
 							<div className="mb-4">
 								{RenderStars(Testimonial.rating)}
 							</div>

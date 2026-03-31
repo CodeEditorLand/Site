@@ -157,8 +157,9 @@ const PortalTierRow = ({
 										borderColor: Content.BorderColor,
 										color: "#ffffff",
 									}}>
-									<Lock className="mr-2 h-4 w-4" aria-hidden="true" />
 									Secure Sign In
+									{"\u2001"}
+									<Lock className="h-4 w-4" aria-hidden="true" />
 								</Button>
 							</form>
 						)}
@@ -172,33 +173,36 @@ const PortalTierRow = ({
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => OnAction?.()}>
-									<GitFork
-										className="mr-2 h-4 w-4"
-										aria-hidden="true"
-									/>
 									Continue with GitHub
-								</Button>
-								<Button
-									className="StaccatoButton w-full"
-									variant="outline"
-									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
-									<Globe
-										className="mr-2 h-4 w-4"
-										aria-hidden="true"
-									/>
-									Continue with Google
-								</Button>
-								<Button
-									className="StaccatoButton w-full"
-									variant="outline"
-									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
+									{"\u2001"}
 									<GitFork
-										className="mr-2 h-4 w-4"
+										className="h-4 w-4"
 										aria-hidden="true"
 									/>
+								</Button>
+								<Button
+									className="StaccatoButton w-full"
+									variant="outline"
+									style={{ borderColor: Content.BorderColor }}
+									onClick={() => OnAction?.()}>
+									Continue with Google
+									{"\u2001"}
+									<Globe
+										className="h-4 w-4"
+										aria-hidden="true"
+									/>
+								</Button>
+								<Button
+									className="StaccatoButton w-full"
+									variant="outline"
+									style={{ borderColor: Content.BorderColor }}
+									onClick={() => OnAction?.()}>
 									Continue with GitLab
+									{"\u2001"}
+									<GitFork
+										className="h-4 w-4"
+										aria-hidden="true"
+									/>
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
@@ -228,11 +232,12 @@ const PortalTierRow = ({
 										color: "#ffffff",
 									}}
 									onClick={() => OnAction?.()}>
+									Connect to Air Daemon
+									{"\u2001"}
 									<Wifi
-										className="mr-2 h-4 w-4"
+										className="h-4 w-4"
 										aria-hidden="true"
 									/>
-									Connect to Air Daemon
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
@@ -273,13 +278,13 @@ const PortalTierRow = ({
 					<h4 className="PortalTierFeatureHeading">Included</h4>
 					<ul className="PortalTierFeatureItems">
 						{Content.Feature.map((FeatureText, FeatureIndex) => (
-							<li key={FeatureIndex} className="PortalTierFeatureItem">
+							<li key={FeatureIndex} className="PortalTierFeatureItem" style={{ justifyContent: "space-between" }}>
+								<span className="text-sm">{FeatureText}</span>
 								<Check
 									className="StaccatoCheckmark h-4 w-4 shrink-0"
 									aria-hidden="true"
 									style={{ color: Content.Color }}
 								/>
-								<span className="text-sm">{FeatureText}</span>
 							</li>
 						))}
 					</ul>
@@ -295,14 +300,15 @@ const PortalTierRow = ({
 									<div
 										key={CapabilityIndex}
 										className="PortalTierCapabilityItem StaccatoBreath">
+										<span className="text-xs">
+											{CapabilityText}
+										</span>
+										{"\u2001"}
 										<Shield
 											className="h-3 w-3 shrink-0"
 											aria-hidden="true"
 											style={{ color: Content.Color }}
 										/>
-										<span className="text-xs">
-											{CapabilityText}
-										</span>
 									</div>
 								),
 							)}
@@ -325,17 +331,18 @@ const PortalTierRow = ({
 
 				{/* Settings managed badge:universal across all tiers */}
 				<div className="PortalTierSettingsManaged StaccatoBorderShimmer">
-					<RefreshCw
-						className="StaccatoIcon h-3.5 w-3.5"
-						aria-hidden="true"
-						style={{ color: Content.Color }}
-					/>
 					<span className="text-xs font-medium">
 						Settings Managed
 					</span>
 					<span className="text-xs text-muted-foreground">
 						Included in all tiers
 					</span>
+					{"\u2001"}
+					<RefreshCw
+						className="StaccatoIcon h-3.5 w-3.5"
+						aria-hidden="true"
+						style={{ color: Content.Color }}
+					/>
 				</div>
 			</div>
 		</div>
