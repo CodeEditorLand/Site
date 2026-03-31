@@ -24,7 +24,7 @@
 		"@astrojs/sitemap": "3.6.1",
 		"@astrojs/solid-js": "6.0.1",
 		"@playform/build": "0.2.6",
-		"@playform/compress": "0.2.1",
+		"@playform/compress": "0.2.2",
 		"@playform/format": "0.0.8",
 		"@playform/inline": "0.1.4",
 		"@tailwindcss/aspect-ratio": "0.4.2",
