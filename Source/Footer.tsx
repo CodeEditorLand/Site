@@ -3,13 +3,13 @@ import React from "react";
 const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 	return (
 		<footer className="Footer flex flex-col sm:flex-row sm:items-center sm:justify-between">
-			<ul className="icons flex shrink flex-col justify-start">
+			<ul className="IconList flex shrink flex-col justify-start">
 				<li>
 					<a
 						href="https://github.com/CodeEditorLand/Land"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="icon flex">
+						className="Icon flex">
 						<picture>
 							<img alt="GitHub" src="/Image/GitHub.svg" />
 						</picture>
@@ -19,7 +19,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
 			{children}
 
-			<ul className="icons flex shrink flex-col justify-start">
+			<ul className="IconList flex shrink flex-col justify-start">
 				<li>
 					<a
 						href="https://Tauri.App/"

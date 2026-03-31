@@ -145,33 +145,7 @@ const DownloadContent = {
 		onViewChangelog: (version: string) =>
 			console.log(`View changelog for ${version}`),
 	},
-	header: {
-		logo: { text: "Land" },
-		navigation: [
-			{
-				label: T("common.nav.downloads", { defaultValue: "Download" }),
-				href: "/downloads",
-				isActive: true,
-			},
-			{
-				label: T("common.nav.docs", { defaultValue: "Docs" }),
-				href: "https://github.com/CodeEditorLand/Land#readme",
-			},
-			{
-				label: T("common.nav.github", { defaultValue: "GitHub" }),
-				href: "https://github.com/CodeEditorLand/Land",
-			},
-		],
-		actions: [
-			{ type: "mobile-menu" as const },
-			{
-				text: T("common.actions.signIn", { defaultValue: "Sign In" }),
-				variant: "ghost",
-				size: "default",
-				href: "/account/signin",
-			},
-		],
-	},
+	header: undefined,
 	footer: {},
 };
 

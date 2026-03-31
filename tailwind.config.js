@@ -59,15 +59,15 @@ export default {
 				},
 				muted: {
 					DEFAULT: "var(--Mute)",
-					foreground: "var(--MutedForeground)",
+					foreground: "var(--MuteForeground)",
 				},
 				accent: {
 					DEFAULT: "var(--Accent)",
 					foreground: "var(--AccentForeground)",
 				},
 				destructive: {
-					DEFAULT: "var(--Destructive)",
-					foreground: "var(--DestructiveForeground)",
+					DEFAULT: "var(--Destruct)",
+					foreground: "var(--DestructForeground)",
 				},
 				border: "var(--Border)",
 				input: "var(--Input)",
