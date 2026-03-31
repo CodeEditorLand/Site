@@ -78,12 +78,18 @@ export function DynamicButton({
 				}
 			}}
 			{...props}>
-			{isLoading ? (
-				<Loader2 className="StaccatoSpinner h-4 w-4 animate-spin" aria-hidden="true" />
-			) : IconComponent ? (
-				<IconComponent className="StaccatoIcon h-4 w-4" aria-hidden="true" />
-			) : null}
 			{text}
+			{isLoading ? (
+				<>
+					{"\u2001"}
+					<Loader2 className="StaccatoSpinner h-4 w-4 animate-spin" aria-hidden="true" />
+				</>
+			) : IconComponent ? (
+				<>
+					{"\u2001"}
+					<IconComponent className="StaccatoIcon h-4 w-4" aria-hidden="true" />
+				</>
+			) : null}
 		</Button>
 	);
 }

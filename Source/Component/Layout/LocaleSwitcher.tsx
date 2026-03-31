@@ -29,22 +29,27 @@ export function LocaleSwitcher() {
 
 	return (
 		<div className="relative inline-flex items-center">
-			<Globe
-				className="pointer-events-none absolute left-2 h-4 w-4 text-[var(--MuteForeground)]"
-				aria-hidden="true"
-			/>
 			<select
 				value={CurrentLocale}
 				onChange={HandleChange}
 				aria-label="Select language"
-				className="h-9 appearance-none border border-[var(--Border)] bg-white py-1 pl-8 pr-6 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
-				style={{ borderRadius: 0 }}>
+				className="h-9 appearance-none border border-[var(--Border)] bg-none bg-white py-1 pl-3 pr-8 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
+				style={{
+					borderRadius: 0,
+					WebkitAppearance: "none",
+					MozAppearance: "none",
+					backgroundImage: "none",
+				}}>
 				{SupportedLocaleList.map((Locale) => (
 					<option key={Locale} value={Locale}>
 						{LocaleLabel[Locale]}
 					</option>
 				))}
 			</select>
+			<Globe
+				className="pointer-events-none absolute right-6 h-3.5 w-3.5 text-[var(--MuteForeground)]"
+				aria-hidden="true"
+			/>
 			<svg
 				className="pointer-events-none absolute right-1.5 h-3 w-3 text-[var(--MuteForeground)]"
 				fill="none"

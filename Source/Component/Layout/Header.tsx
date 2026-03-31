@@ -137,14 +137,24 @@ export function Header({ content }: HeaderProps) {
 		if (!IconName) return null;
 		const Icon = IconRegistry[IconName];
 		if (!Icon) return null;
-		return <Icon className="StaccatoIcon h-3.5 w-3.5" aria-hidden="true" />;
+		return (
+			<>
+				{"\u2001"}
+				<Icon className="StaccatoIcon h-3.5 w-3.5" aria-hidden="true" />
+			</>
+		);
 	};
 
 	const RenderActionIcon = (IconName?: string) => {
 		if (!IconName) return null;
 		const Icon = IconRegistry[IconName];
 		if (!Icon) return null;
-		return <Icon className="h-4 w-4" aria-hidden="true" />;
+		return (
+			<>
+				{"\u2001"}
+				<Icon className="h-4 w-4" aria-hidden="true" />
+			</>
+		);
 	};
 
 	return (
@@ -185,11 +195,11 @@ export function Header({ content }: HeaderProps) {
 									(Action.size as "default" | "sm" | "lg") ||
 									"default"
 								}
-								className="StaccatoButton gap-1.5"
+								className="StaccatoButton"
 								asChild>
 								<a href={Action.href}>
-									{RenderActionIcon(Action.icon)}
 									{Action.text}
+									{RenderActionIcon(Action.icon)}
 								</a>
 							</Button>
 						))}
@@ -226,15 +236,15 @@ export function Header({ content }: HeaderProps) {
 							)}
 							<a
 								href={Link.href}
-								className="StaccatoNavLink HeaderSubLink relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+								className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 								{...(Link.href.startsWith("http")
 									? {
 											target: "_blank",
 											rel: "noopener noreferrer",
 										}
 									: {})}>
-								{RenderIcon(Link.icon)}
 								{Link.label}
+								{RenderIcon(Link.icon)}
 							</a>
 						</span>
 					))}
@@ -258,7 +268,7 @@ export function Header({ content }: HeaderProps) {
 								<a
 									key={Index}
 									href={Link.href}
-									className="flex items-center gap-2.5 rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									className="flex items-center rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 									onClick={() => SetMobileMenuOpen(false)}
 									{...(Link.href.startsWith("http")
 										? {
@@ -266,13 +276,16 @@ export function Header({ content }: HeaderProps) {
 												rel: "noopener noreferrer",
 											}
 										: {})}>
-									{Icon && (
-										<Icon
-											className="h-4 w-4 text-muted-foreground/70"
-											aria-hidden="true"
-										/>
-									)}
 									{Link.label}
+									{Icon && (
+										<>
+											{"\u2001"}
+											<Icon
+												className="h-4 w-4 text-muted-foreground/70"
+												aria-hidden="true"
+											/>
+										</>
+									)}
 								</a>
 							);
 						})}
@@ -290,11 +303,11 @@ export function Header({ content }: HeaderProps) {
 										| "default"
 										| "outline") || "default"
 								}
-								className="w-full justify-start gap-2"
+								className="w-full justify-start"
 								asChild>
 								<a href={Action.href}>
-									{RenderActionIcon(Action.icon)}
 									{Action.text}
+									{RenderActionIcon(Action.icon)}
 								</a>
 							</Button>
 						))}
