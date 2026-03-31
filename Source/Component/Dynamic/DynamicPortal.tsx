@@ -123,7 +123,7 @@ const PortalTierRow = ({
 					<CardContent>
 						{IsCloud && (
 							<form
-								className="space-y-3"
+								className="space-y-4"
 								onSubmit={(Event) => {
 									Event.preventDefault();
 									OnAction?.();
@@ -169,7 +169,7 @@ const PortalTierRow = ({
 
 						{IsProvider && (
 							<div
-								className="space-y-3"
+								className="space-y-4"
 								aria-label="Provider authentication options">
 								<Button
 									className="StaccatoButton w-full"
@@ -217,7 +217,7 @@ const PortalTierRow = ({
 
 						{IsLocalFirst && (
 							<div
-								className="space-y-3"
+								className="space-y-4"
 								aria-label="Local-first connection">
 								<div className="PortalTierDaemonStatus StaccatoBreath">
 									<span className="text-xs font-medium">

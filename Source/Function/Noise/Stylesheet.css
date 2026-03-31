@@ -293,13 +293,16 @@
 .InlineSeparator {
 	display: inline-flex;
 	align-items: center;
+	vertical-align: middle;
+	font-size: 1.15em;
 	line-height: 1;
-	vertical-align: baseline;
 }
 
+/* text [em quad] | [em quad] icon
+   U+2001 = em quad on both sides of the pipe character */
 .InlineSeparator::before {
 	content: "\2001\007C\2001";
-	opacity: 0.3;
+	opacity: 0.2;
 }
 
 /* ─── Reduced Motion ───────────────────────────────────── */

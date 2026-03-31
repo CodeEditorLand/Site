@@ -54,7 +54,7 @@ export function DynamicCheckbox({ content, name, onCheckedChange }: Property) {
 				{indeterminate && <span className="animate-pulse">?</span>}
 			</Checkbox>
 			{(label || description) && (
-				<div className="space-y-0.5">
+				<div className="space-y-1.5">
 					{label && (
 						<Label
 							className="cursor-pointer font-normal"

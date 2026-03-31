@@ -34,7 +34,7 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 			: undefined;
 
 	return (
-		<div className="StaccatoInput flex flex-col gap-1">
+		<div className="StaccatoInput flex flex-col gap-2">
 			<Input
 				id={Identifier}
 				type={type}
