@@ -30,14 +30,14 @@ export function LocaleSwitcher() {
 	return (
 		<div className="relative inline-flex items-center">
 			<Globe
-				className="pointer-events-none absolute left-2 h-4 w-4 text-[var(--muted-foreground)]"
+				className="pointer-events-none absolute left-2 h-4 w-4 text-[var(--MutedForeground)]"
 				aria-hidden="true"
 			/>
 			<select
 				value={CurrentLocale}
 				onChange={HandleChange}
 				aria-label="Select language"
-				className="h-9 appearance-none border border-[var(--border)] bg-white py-1 pl-8 pr-6 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--foreground)]"
+				className="h-9 appearance-none border border-[var(--Border)] bg-white py-1 pl-8 pr-6 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
 				style={{ borderRadius: 0 }}>
 				{SupportedLocaleList.map((Locale) => (
 					<option key={Locale} value={Locale}>
@@ -46,7 +46,7 @@ export function LocaleSwitcher() {
 				))}
 			</select>
 			<svg
-				className="pointer-events-none absolute right-1.5 h-3 w-3 text-[var(--muted-foreground)]"
+				className="pointer-events-none absolute right-1.5 h-3 w-3 text-[var(--MutedForeground)]"
 				fill="none"
 				stroke="currentColor"
 				viewBox="0 0 24 24"

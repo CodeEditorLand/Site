@@ -1,7 +1,7 @@
 /* Header - flat white bar with subtle bottom border */
 .Header {
 	background: rgba(255, 255, 255, 0.95);
-	border-bottom: 1px solid var(--border);
+	border-bottom: 1px solid var(--Border);
 }
 
 .Header .LogoBox {
@@ -9,13 +9,13 @@
 }
 
 .HeaderLogo span {
-	color: var(--foreground);
+	color: var(--Foreground);
 }
 
 /* Sub-header — breadcrumb-style app bar */
 .HeaderSub {
 	background: rgba(255, 255, 255, 0.92);
-	border-bottom: 1px solid var(--border);
+	border-bottom: 1px solid var(--Border);
 }
 
 .HeaderSubLink {
@@ -29,7 +29,7 @@
 	position: absolute;
 	inset: 0;
 	z-index: -1;
-	background: var(--muted);
+	background: var(--Muted);
 	opacity: 0;
 	transition: opacity 0.12s ease;
 }
@@ -40,5 +40,5 @@
 
 .HeaderSubLink:active::before {
 	opacity: 0.8;
-	background: var(--accent);
+	background: var(--Accent);
 }

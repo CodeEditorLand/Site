@@ -1,0 +1,216 @@
+---
+import { DynamicPortal } from "../Component/Dynamic/DynamicPortal";
+import Base from "../Layout/Base.astro";
+import { GetI18n } from "../Library/I18n/Server";
+
+const T = GetI18n();
+
+const PortalContent = {
+	Title: T("account.portal.title", {
+		defaultValue: "Choose Your Account Type",
+	}),
+	Subtitle: T("account.portal.subtitle", {
+		defaultValue:
+			"Three ways to manage your editor — from fully online to completely local-first",
+	}),
+
+	Cloud: {
+		Identifier: "Cloud" as const,
+		Title: T("account.portal.cloud.title", {
+			defaultValue: "Cloud Account",
+		}),
+		Subtitle: T("account.portal.cloud.subtitle", {
+			defaultValue:
+				"Secure online login with full cloud sync. Your settings, extensions, and preferences stored and synced across all devices.",
+		}),
+		Color: "#3b82f6",
+		BorderColor: "#3b82f6",
+		Icon: "Cloud",
+		Badge: "Online",
+		Protocol: "HTTPS / TLS 1.3",
+		Feature: [
+			T("account.portal.cloud.feature.sync", {
+				defaultValue: "Cross-device settings synchronization",
+			}),
+			T("account.portal.cloud.feature.backup", {
+				defaultValue: "Automatic cloud backup of configurations",
+			}),
+			T("account.portal.cloud.feature.team", {
+				defaultValue: "Team workspace management",
+			}),
+			T("account.portal.cloud.feature.extension", {
+				defaultValue: "Extension marketplace with cloud install",
+			}),
+			T("account.portal.cloud.feature.remote", {
+				defaultValue: "Remote development server integration",
+			}),
+		],
+		Capability: [
+			T("account.portal.cloud.capability.jwt", {
+				defaultValue: "JWT session tokens",
+			}),
+			T("account.portal.cloud.capability.okta", {
+				defaultValue: "Okta SSO integration",
+			}),
+			T("account.portal.cloud.capability.mfa", {
+				defaultValue: "Multi-factor authentication",
+			}),
+			T("account.portal.cloud.capability.rbac", {
+				defaultValue: "Role-based access control",
+			}),
+			T("account.portal.cloud.capability.audit", {
+				defaultValue: "Audit log trail",
+			}),
+			T("account.portal.cloud.capability.cert", {
+				defaultValue: "Developer certificates",
+			}),
+		],
+	},
+
+	Provider: {
+		Identifier: "Provider" as const,
+		Title: T("account.portal.provider.title", {
+			defaultValue: "Provider Account",
+		}),
+		Subtitle: T("account.portal.provider.subtitle", {
+			defaultValue:
+				"Authenticate through GitHub, Google, or GitLab. Your OAuth identity links directly to your editor preferences and team memberships.",
+		}),
+		Color: "#a855f7",
+		BorderColor: "#a855f7",
+		Icon: "GitFork",
+		Badge: "OAuth 2.0",
+		Protocol: "OAuth 2.0 / PKCE",
+		Feature: [
+			T("account.portal.provider.feature.github", {
+				defaultValue:
+					"GitHub identity linked to preferences",
+			}),
+			T("account.portal.provider.feature.sso", {
+				defaultValue:
+					"Single sign-on across all Land services",
+			}),
+			T("account.portal.provider.feature.repo", {
+				defaultValue:
+					"Repository-aware workspace configuration",
+			}),
+			T("account.portal.provider.feature.team", {
+				defaultValue:
+					"Organization and team membership sync",
+			}),
+			T("account.portal.provider.feature.ci", {
+				defaultValue:
+					"CI/CD pipeline integration with build triggers",
+			}),
+		],
+		Capability: [
+			T("account.portal.provider.capability.oauth", {
+				defaultValue: "OAuth 2.0 + PKCE flow",
+			}),
+			T("account.portal.provider.capability.scope", {
+				defaultValue: "Granular permission scopes",
+			}),
+			T("account.portal.provider.capability.token", {
+				defaultValue: "Refresh token rotation",
+			}),
+			T("account.portal.provider.capability.webhook", {
+				defaultValue: "Webhook event subscriptions",
+			}),
+			T("account.portal.provider.capability.org", {
+				defaultValue: "Organization-level policies",
+			}),
+			T("account.portal.provider.capability.cert", {
+				defaultValue: "Developer certificates",
+			}),
+		],
+	},
+
+	LocalFirst: {
+		Identifier: "LocalFirst" as const,
+		Title: T("account.portal.localfirst.title", {
+			defaultValue: "Local-First Account",
+		}),
+		Subtitle: T("account.portal.localfirst.subtitle", {
+			defaultValue:
+				"Zero cloud dependency. The website communicates directly with the Air Daemon inside Land/Element via local-first protocols. Configure, update, rebuild, and deploy your editor entirely from this console — like a SaaS control panel that runs on your machine.",
+		}),
+		Color: "#f97316",
+		BorderColor: "#f97316",
+		Icon: "HardDrive",
+		Badge: "Local-First",
+		Protocol: "mTLS / CRDTs / WebSocket",
+		Feature: [
+			T("account.portal.localfirst.feature.daemon", {
+				defaultValue:
+					"Direct Air Daemon connection to Land/Element",
+			}),
+			T("account.portal.localfirst.feature.build", {
+				defaultValue:
+					"Launch builds directly through the website console",
+			}),
+			T("account.portal.localfirst.feature.deploy", {
+				defaultValue:
+					"Deploy changes directly to the application",
+			}),
+			T("account.portal.localfirst.feature.configure", {
+				defaultValue:
+					"Full editor configuration and settings management",
+			}),
+			T("account.portal.localfirst.feature.parity", {
+				defaultValue:
+					"1:1 parity with VS Code server features and settings",
+			}),
+			T("account.portal.localfirst.feature.offline", {
+				defaultValue:
+					"Complete offline operation — no cloud login required",
+			}),
+			T("account.portal.localfirst.feature.bake", {
+				defaultValue:
+					"Bake the portal directly into the editor as embedded SaaS",
+			}),
+		],
+		Capability: [
+			T("account.portal.localfirst.capability.jwt", {
+				defaultValue: "JWT developer certificates",
+			}),
+			T("account.portal.localfirst.capability.mtls", {
+				defaultValue: "Mutual TLS authentication",
+			}),
+			T("account.portal.localfirst.capability.crdt", {
+				defaultValue: "CRDT state synchronization",
+			}),
+			T("account.portal.localfirst.capability.team", {
+				defaultValue: "Team management (fully local)",
+			}),
+			T("account.portal.localfirst.capability.cert", {
+				defaultValue: "Certificate authority management",
+			}),
+			T("account.portal.localfirst.capability.ws", {
+				defaultValue: "WebSocket live connection",
+			}),
+			T("account.portal.localfirst.capability.rbac", {
+				defaultValue: "Local RBAC policies",
+			}),
+			T("account.portal.localfirst.capability.backup", {
+				defaultValue: "Encrypted local backup",
+			}),
+		],
+	},
+
+};
+
+const MetaTitle = T("meta.portal.title", {
+	defaultValue: "Portal - Land",
+});
+const MetaDescription = T("meta.portal.description", {
+	defaultValue:
+		"Choose your authentication method — Cloud, Provider, or Local-First.",
+});
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<DynamicPortal
+		Content={PortalContent}
+		client:load
+	/>
+</Base>

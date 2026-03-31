@@ -35,52 +35,52 @@ export default {
 				full: "9999px",
 			},
 			borderColor: {
-				DEFAULT: "var(--border)",
+				DEFAULT: "var(--Border)",
 			},
 			colors: {
 				/* Design system tokens — maps Tailwind utilities to CSS custom properties in Base.css */
-				background: "hsl(var(--background))",
-				foreground: "var(--foreground)",
+				background: "hsl(var(--Background))",
+				foreground: "var(--Foreground)",
 				card: {
-					DEFAULT: "var(--card)",
-					foreground: "var(--card-foreground)",
+					DEFAULT: "var(--Card)",
+					foreground: "var(--CardForeground)",
 				},
 				popover: {
-					DEFAULT: "var(--popover)",
-					foreground: "var(--popover-foreground)",
+					DEFAULT: "var(--Popover)",
+					foreground: "var(--PopoverForeground)",
 				},
 				primary: {
-					DEFAULT: "var(--primary)",
-					foreground: "var(--primary-foreground)",
+					DEFAULT: "var(--Primary)",
+					foreground: "var(--PrimaryForeground)",
 				},
 				secondary: {
-					DEFAULT: "var(--secondary)",
-					foreground: "var(--secondary-foreground)",
+					DEFAULT: "var(--Secondary)",
+					foreground: "var(--SecondaryForeground)",
 				},
 				muted: {
-					DEFAULT: "var(--muted)",
-					foreground: "var(--muted-foreground)",
+					DEFAULT: "var(--Muted)",
+					foreground: "var(--MutedForeground)",
 				},
 				accent: {
-					DEFAULT: "var(--accent)",
-					foreground: "var(--accent-foreground)",
+					DEFAULT: "var(--Accent)",
+					foreground: "var(--AccentForeground)",
 				},
 				destructive: {
-					DEFAULT: "var(--destructive)",
-					foreground: "var(--destructive-foreground)",
+					DEFAULT: "var(--Destructive)",
+					foreground: "var(--DestructiveForeground)",
 				},
-				border: "var(--border)",
-				input: "var(--input)",
-				ring: "var(--ring)",
+				border: "var(--Border)",
+				input: "var(--Input)",
+				ring: "var(--Ring)",
 
 				// Existing tokens
-				backgroundLight: "var(--background-light)",
-				backgroundDark: "var(--background-dark)",
+				backgroundLight: "var(--BackgroundLight)",
+				backgroundDark: "var(--BackgroundDark)",
 
 				// Bridge colors from Example/src/index.css
-				"color-green-500": "var(--color-green-500)",
-				"color-yellow-500": "var(--color-yellow-500)",
-				"color-white": "var(--color-white)",
+				"color-green-500": "var(--ColorGreen500)",
+				"color-yellow-500": "var(--ColorYellow500)",
+				"color-white": "var(--ColorWhite)",
 
 				// Extended technology badge palette - Protocol Spines
 				"spine-grpc": "#22c55e",

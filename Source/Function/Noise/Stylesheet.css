@@ -207,7 +207,7 @@
 	transform: translate(0, 1px) scale(0.98);
 }
 .StaccatoButton:focus-visible {
-	outline: calc(2px + var(--StaccatoGlow) * 1px) solid var(--primary);
+	outline: calc(2px + var(--StaccatoGlow) * 1px) solid var(--Primary);
 	outline-offset: calc(2px + var(--StaccatoGlow) * 1px);
 }
 
@@ -370,6 +370,6 @@
 	}
 
 	.StaccatoInput:focus-within {
-		box-shadow: 0 0 0 2px var(--primary);
+		box-shadow: 0 0 0 2px var(--Primary);
 	}
 }

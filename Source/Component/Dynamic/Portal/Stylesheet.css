@@ -1,0 +1,310 @@
+/* ─── Portal Authentication Tiers ─────────────────────────
+ *
+ * Three-tier color system derived from Protocol Spine:
+ *   Cloud     = IPC blue   (#3b82f6 / --SpineIPC)
+ *   Provider  = WASM purple (#a855f7 / --SpineWASM)
+ *   LocalFirst = TCP orange  (#f97316 / --SpineTCP)
+ *
+ * Layout: Login box (left, white bg) | Feature description (right)
+ * All borders use the tier's protocol color.
+ * ────────────────────────────────────────────────────────── */
+
+/* ─── Section ─────────────────────────────────────────────── */
+
+.PortalSection {
+	padding: 5rem 0 6rem;
+}
+
+.PortalHeader {
+	text-align: center;
+	margin-bottom: 4rem;
+}
+
+.PortalTitle {
+	font-size: clamp(1.75rem, 4vw, 3rem);
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	color: var(--Foreground);
+	margin-bottom: 1rem;
+}
+
+.PortalSubtitle {
+	font-size: 1.125rem;
+	color: var(--MutedForeground);
+	max-width: 40rem;
+	margin: 0 auto;
+}
+
+/* ─── Tier Grid (vertical stack) ──────────────────────────── */
+
+.PortalTierGrid {
+	display: flex;
+	flex-direction: column;
+	gap: 2.5rem;
+	max-width: 72rem;
+	margin: 0 auto;
+}
+
+/* ─── Tier Row ────────────────────────────────────────────── */
+
+.PortalTierRow {
+	display: grid;
+	grid-template-columns: minmax(20rem, 24rem) 1fr;
+	gap: 0;
+	background: #ffffff;
+	border: var(--BorderWidth) solid var(--Border);
+	border-left-width: 4px;
+	transition: border-color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+	.PortalTierRow {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ─── Tier Color Variants ─────────────────────────────────── */
+
+.PortalTierCloud {
+	border-left-color: var(--SpineIPC);
+}
+
+.PortalTierCloud:hover {
+	border-color: var(--SpineIPC);
+}
+
+.PortalTierProvider {
+	border-left-color: var(--SpineWASM);
+}
+
+.PortalTierProvider:hover {
+	border-color: var(--SpineWASM);
+}
+
+.PortalTierLocalFirst {
+	border-left-color: var(--SpineTCP);
+}
+
+.PortalTierLocalFirst:hover {
+	border-color: var(--SpineTCP);
+}
+
+/* ─── Login Box (Left Column) ─────────────────────────────── */
+
+.PortalTierLogin {
+	padding: 0;
+	background: #ffffff;
+	border-right: var(--BorderWidth) solid var(--Border);
+}
+
+@media (max-width: 768px) {
+	.PortalTierLogin {
+		border-right: none;
+		border-bottom: var(--BorderWidth) solid var(--Border);
+	}
+}
+
+.PortalTierCard {
+	border: none;
+	background: transparent;
+	height: 100%;
+}
+
+.PortalTierCardHeader {
+	padding: 1.5rem 1.5rem 0.75rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.PortalTierIconWrapper {
+	width: 2.5rem;
+	height: 2.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: var(--BorderWidth) solid var(--Border);
+	margin-bottom: 0.5rem;
+}
+
+/* ─── Description (Right Column) ──────────────────────────── */
+
+.PortalTierDescription {
+	padding: 1.5rem 2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.PortalTierBadge {
+	align-self: flex-start;
+	font-size: 0.625rem;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+	border: var(--BorderWidth) solid;
+	padding: 0.125rem 0.5rem;
+}
+
+.PortalTierDescriptionTitle {
+	font-size: 1.25rem;
+	font-weight: 700;
+	letter-spacing: -0.01em;
+}
+
+.PortalTierDescriptionSubtitle {
+	font-size: 0.875rem;
+	color: var(--MutedForeground);
+	line-height: 1.5;
+}
+
+/* ─── Feature List ────────────────────────────────────────── */
+
+.PortalTierFeatureList {
+	margin-top: 0.25rem;
+}
+
+.PortalTierFeatureHeading {
+	font-size: 0.6875rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--MutedForeground);
+	margin-bottom: 0.5rem;
+}
+
+.PortalTierFeatureItems {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.PortalTierFeatureItem {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.5rem;
+}
+
+/* ─── Capability Grid ─────────────────────────────────────── */
+
+.PortalTierCapabilityList {
+	margin-top: 0.5rem;
+}
+
+.PortalTierCapabilityGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+	gap: 0.375rem;
+}
+
+.PortalTierCapabilityItem {
+	display: flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0.25rem 0;
+}
+
+/* ─── Protocol Badge ──────────────────────────────────────── */
+
+.PortalTierProtocol {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 0.25rem;
+}
+
+.PortalTierProtocolCode {
+	font-family: "JetBrains Mono", "Fira Code", monospace;
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
+/* ─── Settings Managed (universal) ────────────────────────── */
+
+.PortalTierSettingsManaged {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: auto;
+	padding: 0.5rem 0.75rem;
+	border: var(--BorderWidth) solid var(--Border);
+	background: var(--Muted);
+}
+
+/* ─── Daemon Status Indicator ─────────────────────────────── */
+
+.PortalTierDaemonStatus {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.5rem 0.75rem;
+	border: var(--BorderWidth) solid var(--Border);
+	background: var(--Muted);
+}
+
+.PortalTierDaemonDot {
+	width: 0.5rem;
+	height: 0.5rem;
+	border-radius: 9999px;
+	background: var(--SpineTCP);
+}
+
+/* ─── Divider ─────────────────────────────────────────────── */
+
+.PortalTierDivider {
+	width: 100%;
+	height: 0;
+	border-top: var(--BorderWidth) solid var(--Border);
+	margin: 0.5rem 0;
+}
+
+/* ─── Orange-on-White Emphasis (LocalFirst hero treatment) ── */
+
+.PortalTierLocalFirst .PortalTierLogin {
+	border-right-color: color-mix(in srgb, var(--SpineTCP) 20%, transparent);
+}
+
+.PortalTierLocalFirst .PortalTierSettingsManaged {
+	border-color: color-mix(in srgb, var(--SpineTCP) 30%, transparent);
+}
+
+.PortalTierLocalFirst .PortalTierIconWrapper {
+	border-color: color-mix(in srgb, var(--SpineTCP) 40%, transparent);
+}
+
+/* ─── Staccato Integration ────────────────────────────────── */
+
+.PortalTierRow {
+	border-width: calc(1px + var(--StaccatoBorder) * 0.3px);
+	border-left-width: calc(4px + var(--StaccatoBorder) * 0.5px);
+}
+
+.PortalTierRow:hover .PortalTierIconWrapper {
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.03));
+}
+
+.PortalTierRow:hover .PortalTierDescriptionTitle {
+	letter-spacing: calc(-0.01em + var(--StaccatoMorph) * 0.002em);
+}
+
+/* ─── Reduced Motion ──────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+	.PortalTierRow {
+		border-width: 1px;
+		border-left-width: 4px;
+		transition: none;
+	}
+
+	.PortalTierRow:hover .PortalTierIconWrapper {
+		transform: none;
+	}
+
+	.PortalTierRow:hover .PortalTierDescriptionTitle {
+		letter-spacing: -0.01em;
+	}
+}

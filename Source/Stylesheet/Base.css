@@ -7,76 +7,84 @@
 @layer theme {
 	:root {
 		/* Flat White Theme - Clean, app-like design */
-		--background: 0 0% 100%;
-		--foreground: #1a1a1a;
-		--card: rgba(255, 255, 255, 0.92);
-		--card-foreground: #1a1a1a;
-		--popover: rgba(255, 255, 255, 0.98);
-		--popover-foreground: #1a1a1a;
-		--primary: #2563eb;
-		--primary-foreground: #ffffff;
-		--secondary: #f0f4f8;
-		--secondary-foreground: #1a1a1a;
-		--muted: #f5f5f5;
-		--muted-foreground: #6b7280;
-		--accent: #f0f4f8;
-		--accent-foreground: #1a1a1a;
-		--destructive: #dc2626;
-		--destructive-foreground: #ffffff;
-		--border: rgba(0, 0, 0, 0.08);
-		--input: #ffffff;
-		--ring: #2563eb;
+		--Background: 0 0% 100%;
+		--Foreground: #1a1a1a;
+		--Card: rgba(255, 255, 255, 0.92);
+		--CardForeground: #1a1a1a;
+		--Popover: rgba(255, 255, 255, 0.98);
+		--PopoverForeground: #1a1a1a;
+		--Primary: #2563eb;
+		--PrimaryForeground: #ffffff;
+		--Secondary: #f0f4f8;
+		--SecondaryForeground: #1a1a1a;
+		--Muted: #f5f5f5;
+		--MutedForeground: #6b7280;
+		--Accent: #f0f4f8;
+		--AccentForeground: #1a1a1a;
+		--Destructive: #dc2626;
+		--DestructiveForeground: #ffffff;
+		--Border: rgba(0, 0, 0, 0.08);
+		--Input: #ffffff;
+		--Ring: #2563eb;
 
 		/* Component background tokens */
-		--background-white: 0 0% 100%;
-		--input-background: #ffffff;
-		--popover-background: rgba(255, 255, 255, 0.98);
+		--BackgroundWhite: 0 0% 100%;
+		--InputBackground: #ffffff;
+		--PopoverBackground: rgba(255, 255, 255, 0.98);
 
 		/* Protocol Spine Colors (Primary colors) - Blue theme */
-		--spine-grpc: #22c55e;
-		--spine-ipc: #3b82f6;
-		--spine-tcp: #f97316;
-		--spine-wasm: #a855f7;
+		--SpinegRPC: #22c55e;
+		--SpineIPC: #3b82f6;
+		--SpineTCP: #f97316;
+		--SpineWASM: #a855f7;
+
+		/* Authentication Tier Colors (mapped from Protocol Spine) */
+		--TierCloud: var(--SpineIPC); /* #3b82f6 — online secure login */
+		--TierProvider: var(--SpineWASM); /* #a855f7 — GitHub/OAuth */
+		--TierLocalFirst: var(--SpineTCP); /* #f97316 — Air Daemon */
+		--TierCloudMuted: color-mix(in srgb, var(--SpineIPC) 12%, #ffffff);
+		--TierProviderMuted: color-mix(in srgb, var(--SpineWASM) 12%, #ffffff);
+		--TierLocalFirstMuted: color-mix(in srgb, var(--SpineTCP) 12%, #ffffff);
 
 		/* Extension/Library Colors - Adjusted for blue background */
-		--ext-rust: #f87171;
-		--ext-tauri: #fbbf24;
-		--ext-effect-ts: #22d3d8;
-		--ext-react: #60a5fa;
-		--ext-vue: #4ade80;
-		--ext-svelte: #fb923c;
-		--ext-next: #171717;
-		--ext-nuxt: #16a34a;
-		--ext-solid: #60a5fa;
-		--ext-astro: #9333ea;
+		--ExtensionRust: #f87171;
+		--ExtensionTauri: #fbbf24;
+		--ExtensionEffectTypeScript: #22d3d8;
+		--ExtensionReact: #60a5fa;
+		--ExtensionVue: #4ade80;
+		--ExtensionSvelte: #fb923c;
+		--ExtensionNext: #171717;
+		--ExtensionNuxt: #16a34a;
+		--ExtensionSolid: #60a5fa;
+		--ExtensionAstro: #9333ea;
 
 		/* Platform Indicator Colors */
-		--platform-web: #60a5fa;
-		--platform-desktop: #94a3b8;
-		--platform-mobile: #f472b6;
+		--PlatformWeb: #60a5fa;
+		--PlatformDesktop: #94a3b8;
+		--PlatformMobile: #f472b6;
 
 		/* Chart Colors (for data visualization) - Blue palette */
-		--chart-1: #3b82f6;
-		--chart-2: #60a5fa;
-		--chart-3: #93c5fd;
-		--chart-4: #bfdbfe;
-		--chart-5: #dbeafe;
+		--Chart1: #3b82f6;
+		--Chart2: #60a5fa;
+		--Chart3: #93c5fd;
+		--Chart4: #bfdbfe;
+		--Chart5: #dbeafe;
 
 		/* Spacing system */
-		--spacing: 0.25rem;
+		--Spacing: 0.25rem;
 
 		/* Container sizes */
-		--container-xs: 20rem;
-		--container-md: 28rem;
-		--container-2xl: 42rem;
-		--container-4xl: 56rem;
-		--container-5xl: 64rem;
-		--container-6xl: 72rem;
+		--ContainerExtraSmall: 20rem;
+		--ContainerMedium: 28rem;
+		--ContainerTwoExtraLarge: 42rem;
+		--ContainerFourExtraLarge: 56rem;
+		--ContainerFiveExtraLarge: 64rem;
+		--ContainerSixExtraLarge: 72rem;
 
 		/* Design System Constraints */
-		--border-width: 1px;
-		--border-style: solid;
-		--border-radius: 0;
+		--BorderWidth: 1px;
+		--BorderStyle: solid;
+		--BorderRadius: 0;
 	}
 }
 
@@ -89,8 +97,8 @@
 	}
 
 	* {
-		border-color: var(--border);
-		outline-color: var(--ring);
+		border-color: var(--Border);
+		outline-color: var(--Ring);
 	}
 
 	/* Global focus styles for keyboard navigation - uses outline per design system */
@@ -100,7 +108,7 @@
 	select:focus-visible,
 	textarea:focus-visible,
 	[tabindex]:focus-visible {
-		outline: 2px solid var(--primary);
+		outline: 2px solid var(--Primary);
 		outline-offset: 2px;
 	}
 
@@ -111,7 +119,7 @@
 	.Select,
 	.SelectTrigger,
 	.Button {
-		border-radius: var(--border-radius) !important;
+		border-radius: var(--BorderRadius) !important;
 	}
 
 	/* Exception: Badges use rounded-full for pill shape */
@@ -128,13 +136,13 @@
 
 	body {
 		background-color: #ffffff;
-		color: var(--foreground);
+		color: var(--Foreground);
 	}
 
 	/* Flat panel utility class (replaces frosted glass) */
 	.Frosted {
 		background: rgba(255, 255, 255, 0.92);
-		border: var(--border-width) solid var(--border);
+		border: var(--BorderWidth) solid var(--Border);
 	}
 }
 
@@ -148,32 +156,32 @@
 @layer components {
 	/* Primary Button */
 	.ButtonPrimary {
-		background-color: var(--primary);
-		color: var(--primary-foreground);
-		border: var(--border-width) solid var(--border);
+		background-color: var(--Primary);
+		color: var(--PrimaryForeground);
+		border: var(--BorderWidth) solid var(--Border);
 	}
 	.ButtonPrimary:hover {
-		background-color: color-mix(in srgb, var(--primary) 90%, transparent);
+		background-color: color-mix(in srgb, var(--Primary) 90%, transparent);
 	}
 
 	/* Secondary Button */
 	.ButtonSecondary {
-		background-color: var(--secondary);
-		color: var(--secondary-foreground);
-		border: var(--border-width) solid var(--border);
+		background-color: var(--Secondary);
+		color: var(--SecondaryForeground);
+		border: var(--BorderWidth) solid var(--Border);
 	}
 	.ButtonSecondary:hover {
-		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+		background-color: color-mix(in srgb, var(--Secondary) 80%, transparent);
 	}
 
 	/* Outline Button */
 	.ButtonOutline {
-		border: var(--border-width) solid var(--border);
-		background-color: var(--background);
+		border: var(--BorderWidth) solid var(--Border);
+		background-color: var(--Background);
 	}
 	.ButtonOutline:hover {
-		background-color: var(--accent);
-		color: var(--accent-foreground);
+		background-color: var(--Accent);
+		color: var(--AccentForeground);
 	}
 
 	/* Ghost Button */
@@ -181,36 +189,36 @@
 		cursor: pointer;
 	}
 	.ButtonGhost:hover {
-		background-color: var(--accent);
-		color: var(--accent-foreground);
+		background-color: var(--Accent);
+		color: var(--AccentForeground);
 	}
 
 	/* Card - Flat panel */
 	.Card {
-		background-color: var(--card);
-		color: var(--card-foreground);
-		border: var(--border-width) solid var(--border);
+		background-color: var(--Card);
+		color: var(--CardForeground);
+		border: var(--BorderWidth) solid var(--Border);
 	}
 
 	/* Input */
 	.Input {
-		border: var(--border-width) solid var(--border);
-		background-color: var(--background);
+		border: var(--BorderWidth) solid var(--Border);
+		background-color: var(--Background);
 		padding: 0.375rem 0.75rem;
 		font-size: 0.875rem;
 		line-height: 1.25rem;
-		ring-offset-color: var(--background);
+		ring-offset-color: var(--Background);
 	}
 	.Input::file-selector-button {
 		border: 0;
 		background-color: transparent;
 	}
 	.Input::placeholder {
-		color: var(--muted-foreground);
+		color: var(--MutedForeground);
 	}
 	.Input:focus-visible {
 		outline: none;
-		box-shadow: 0 0 0 2px var(--ring);
+		box-shadow: 0 0 0 2px var(--Ring);
 	}
 	.Input:disabled {
 		cursor: not-allowed;
@@ -232,41 +240,41 @@
 	}
 	.Badge:focus {
 		outline: none;
-		box-shadow: 0 0 0 2px var(--ring);
+		box-shadow: 0 0 0 2px var(--Ring);
 	}
 
 	.BadgePrimary {
 		border-color: transparent;
-		background-color: var(--primary);
-		color: var(--primary-foreground);
+		background-color: var(--Primary);
+		color: var(--PrimaryForeground);
 	}
 	.BadgePrimary:hover {
-		background-color: color-mix(in srgb, var(--primary) 80%, transparent);
+		background-color: color-mix(in srgb, var(--Primary) 80%, transparent);
 	}
 
 	.BadgeSecondary {
 		border-color: transparent;
-		background-color: var(--secondary);
-		color: var(--secondary-foreground);
+		background-color: var(--Secondary);
+		color: var(--SecondaryForeground);
 	}
 	.BadgeSecondary:hover {
-		background-color: color-mix(in srgb, var(--secondary) 80%, transparent);
+		background-color: color-mix(in srgb, var(--Secondary) 80%, transparent);
 	}
 
 	.BadgeDestructive {
 		border-color: transparent;
-		background-color: var(--destructive);
-		color: var(--destructive-foreground);
+		background-color: var(--Destructive);
+		color: var(--DestructiveForeground);
 	}
 	.BadgeDestructive:hover {
 		background-color: color-mix(
 			in srgb,
-			var(--destructive) 80%,
+			var(--Destructive) 80%,
 			transparent
 		);
 	}
 
 	.BadgeOutline {
-		color: var(--foreground);
+		color: var(--Foreground);
 	}
 }

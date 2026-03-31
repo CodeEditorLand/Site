@@ -43,17 +43,17 @@ export class ErrorBoundary extends Component<
 
 			return (
 				<div className="flex min-h-[200px] items-center justify-center p-8">
-					<div className="w-full max-w-md border border-[var(--border)] bg-white p-8 text-center">
-						<h2 className="mb-2 text-xl font-semibold text-[var(--foreground)]">
+					<div className="w-full max-w-md border border-[var(--Border)] bg-white p-8 text-center">
+						<h2 className="mb-2 text-xl font-semibold text-[var(--Foreground)]">
 							Something went wrong
 						</h2>
-						<p className="mb-6 text-sm text-[var(--muted-foreground)]">
+						<p className="mb-6 text-sm text-[var(--MutedForeground)]">
 							An unexpected error occurred. Please try again.
 						</p>
 						<button
 							type="button"
 							onClick={this.handleRetry}
-							className="inline-flex h-9 items-center justify-center border border-[var(--border)] bg-[var(--primary)] px-4 py-2 text-sm font-medium text-white transition-all hover:opacity-90">
+							className="inline-flex h-9 items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 py-2 text-sm font-medium text-white transition-all hover:opacity-90">
 							Try again
 						</button>
 					</div>
