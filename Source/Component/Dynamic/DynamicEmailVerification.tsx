@@ -6,7 +6,6 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
@@ -98,12 +97,6 @@ export function DynamicEmailVerification({
 				<CardDescription>{content.pending.description}</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-6">
-				{content.pending.emailSentMessage && (
-					<p className="text-center text-muted-foreground">
-						{content.pending.emailSentMessage}
-					</p>
-				)}
-
 				<div className="space-y-4">
 					<DynamicInput
 						content={{
@@ -119,17 +112,6 @@ export function DynamicEmailVerification({
 						id="email"
 					/>
 
-					{ResendSuccess && (
-						<p
-							className="text-center text-sm text-green-600"
-							role="status">
-							{content.pending.resendSuccessMessage ||
-								T("resendSuccess", {
-									defaultValue: "Verification email resent!",
-								})}
-						</p>
-					)}
-
 					<DynamicButton
 						content={{
 							...content.pending.resendButton,
@@ -138,6 +120,23 @@ export function DynamicEmailVerification({
 						}}
 						onAction={HandleResend}
 					/>
+
+					{ResendSuccess && (
+						<p
+							className="text-center text-xs text-green-600"
+							role="status">
+							{content.pending.resendSuccessMessage ||
+								T("resendSuccess", {
+									defaultValue: "Verification email resent!",
+								})}
+						</p>
+					)}
+
+					{content.pending.emailSentMessage && (
+						<p className="text-center text-xs text-muted-foreground">
+							{content.pending.emailSentMessage}
+						</p>
+					)}
 				</div>
 			</CardContent>
 		</Card>
@@ -171,18 +170,6 @@ export function DynamicEmailVerification({
 	const RenderSuccess = () => (
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
-				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100">
-					<CheckCircle
-						className="h-10 w-10 text-green-600"
-						aria-hidden="true"
-					/>
-				</div>
-				<CardTitle className="text-2xl">
-					{content.success.title}
-				</CardTitle>
-				<CardDescription>{content.success.description}</CardDescription>
-			</CardHeader>
-			<CardFooter className="flex justify-center">
 				<DynamicButton
 					content={{
 						...content.success.continueButton,
@@ -190,27 +177,23 @@ export function DynamicEmailVerification({
 					}}
 					onAction={() => onNavigate?.("/")}
 				/>
-			</CardFooter>
+				<div className="flex items-center justify-center gap-2 pt-4">
+					<CheckCircle
+						className="h-5 w-5 text-green-600"
+						aria-hidden="true"
+					/>
+					<CardTitle className="text-2xl">
+						{content.success.title}
+					</CardTitle>
+				</div>
+				<CardDescription className="text-xs">{content.success.description}</CardDescription>
+			</CardHeader>
 		</Card>
 	);
 
 	const RenderError = () => (
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
-				<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100">
-					<XCircle
-						className="h-10 w-10 text-red-600"
-						aria-hidden="true"
-					/>
-				</div>
-				<CardTitle className="text-2xl">
-					{content.error.title}
-				</CardTitle>
-				<CardDescription>
-					{ErrorMessage || content.error.description}
-				</CardDescription>
-			</CardHeader>
-			<CardFooter className="flex justify-center">
 				<DynamicButton
 					content={{
 						...content.error.backToSignInButton,
@@ -218,7 +201,19 @@ export function DynamicEmailVerification({
 					}}
 					onAction={() => onNavigate?.("/account/signin")}
 				/>
-			</CardFooter>
+				<div className="flex items-center justify-center gap-2 pt-4">
+					<XCircle
+						className="h-5 w-5 text-red-600"
+						aria-hidden="true"
+					/>
+					<CardTitle className="text-2xl">
+						{content.error.title}
+					</CardTitle>
+				</div>
+				<CardDescription className="text-xs">
+					{ErrorMessage || content.error.description}
+				</CardDescription>
+			</CardHeader>
 		</Card>
 	);
 

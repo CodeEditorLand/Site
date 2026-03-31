@@ -190,10 +190,9 @@ export function DynamicSignUp({
 								</div>
 							)}
 						</CardContent>
-						<CardFooter className="flex flex-col gap-4 text-center text-sm">
+						<CardFooter className="flex flex-col gap-3 text-center text-sm">
 							{footerLinks?.signIn && (
-								<p>
-									{"Already have an account?"}{" "}
+								<div>
 									<button
 										type="button"
 										className="font-medium text-primary hover:underline"
@@ -205,7 +204,10 @@ export function DynamicSignUp({
 										}>
 										{footerLinks.signIn.label}
 									</button>
-								</p>
+									<p className="mt-1 text-xs text-muted-foreground">
+										Already have an account?
+									</p>
+								</div>
 							)}
 						</CardFooter>
 					</Card>

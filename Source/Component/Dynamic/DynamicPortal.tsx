@@ -118,9 +118,6 @@ const PortalTierRow = ({
 								/>
 							</div>
 						</div>
-						<CardDescription className="text-sm">
-							{Content.Subtitle}
-						</CardDescription>
 					</CardHeader>
 					<CardContent>
 						{IsCloud && (
@@ -281,8 +278,9 @@ const PortalTierRow = ({
 					<h4 className="PortalTierFeatureHeading">Included</h4>
 					<ul className="PortalTierFeatureItems">
 						{Content.Feature.map((FeatureText, FeatureIndex) => (
-							<li key={FeatureIndex} className="PortalTierFeatureItem" style={{ justifyContent: "space-between" }}>
+							<li key={FeatureIndex} className="PortalTierFeatureItem">
 								<span className="text-sm">{FeatureText}</span>
+								{"\u2001"}
 								<Check
 									className="StaccatoCheckmark h-4 w-4 shrink-0"
 									aria-hidden="true"

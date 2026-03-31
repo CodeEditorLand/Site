@@ -128,9 +128,6 @@ export function DynamicForgotPassword({
 
 									{resendButton && (
 										<div className="border-t border-border pt-4">
-											<p className="mb-2 text-sm text-muted-foreground">
-												Didn't receive the email?
-											</p>
 											<DynamicButton
 												content={{
 													...resendButton,
@@ -139,10 +136,13 @@ export function DynamicForgotPassword({
 												}}
 												onAction={() => onResend?.()}
 											/>
+											<p className="mt-2 text-xs text-muted-foreground">
+												Didn't receive the email?
+											</p>
 										</div>
 									)}
 
-									<p className="text-sm">
+									<div>
 										<button
 											type="button"
 											className="font-medium text-primary hover:underline"
@@ -151,7 +151,7 @@ export function DynamicForgotPassword({
 											}>
 											Back to Sign In
 										</button>
-									</p>
+									</div>
 								</div>
 							)}
 						</CardContent>

@@ -111,14 +111,11 @@
 /* ─── Glow & Shadow ────────────────────────────────────── */
 
 .StaccatoGlow {
-	box-shadow: 0 0 calc(4px + var(--StaccatoGlow) * 8px)
-		hsl(0 0% calc(80% + var(--StaccatoGlow) * 10%));
+	/* No box-shadow — flat white design */
 }
 
 .StaccatoShadowLift {
-	box-shadow: 0 calc(2px + var(--StaccatoRaw) * 4px)
-		calc(8px + var(--StaccatoRaw) * 8px)
-		hsl(0 0% 0% / calc(0.04 + var(--StaccatoRaw) * 0.03));
+	/* No box-shadow — flat white design */
 }
 
 /* ─── Morphing (shape interpolation) ───────────────────── */
@@ -155,11 +152,6 @@
 			calc(var(--StaccatoPhase) * 2px)
 		)
 		scale(calc(1 + var(--StaccatoRhythm) * 0.005));
-	transition: box-shadow 0.2s ease;
-}
-.StaccatoHeroButton:hover {
-	box-shadow: 0 0 calc(12px + var(--StaccatoGlow) * 12px)
-		hsl(0 0% 0% / 0.06);
 }
 .StaccatoHeroButton:active {
 	transform: translate(
@@ -178,9 +170,6 @@
 		rotate(var(--AttentionRotation, 0deg))
 		scale(var(--AttentionScale, 1));
 	border-width: calc(1px + var(--StaccatoBorder) * 0.3px);
-	box-shadow: 0 calc(1px + var(--StaccatoRaw) * 3px)
-		calc(4px + var(--StaccatoRaw) * 6px)
-		hsl(0 0% 0% / calc(0.03 + var(--StaccatoRaw) * 0.02));
 	opacity: var(--AttentionOpacity, 1);
 	transition-delay: var(--AttentionDelay, 0ms);
 }
@@ -191,7 +180,7 @@
 		calc(var(--StaccatoRaw) * 1px),
 		calc(var(--StaccatoPhase) * 0.5px)
 	);
-	transition: transform 0.15s ease, box-shadow 0.15s ease;
+	transition: transform 0.15s ease;
 }
 .StaccatoButton:hover {
 	transform: translate(
@@ -199,9 +188,6 @@
 			calc(var(--StaccatoPhase) * 1px - 1px)
 		)
 		scale(1.01);
-	box-shadow: 0 calc(2px + var(--StaccatoGlow) * 3px)
-		calc(6px + var(--StaccatoGlow) * 6px)
-		hsl(0 0% 0% / 0.06);
 }
 .StaccatoButton:active {
 	transform: translate(0, 1px) scale(0.98);
@@ -224,8 +210,6 @@
 /* Input field focus noise */
 .StaccatoInput:focus-within {
 	border-color: hsl(0 0% calc(60% + var(--StaccatoGlow) * 15%));
-	box-shadow: 0 0 0 calc(2px + var(--StaccatoGlow) * 1px)
-		hsl(0 0% calc(85% + var(--StaccatoGlow) * 10%));
 }
 
 /* Nav link organic spacing */
@@ -310,6 +294,20 @@
 		scale(1.1);
 }
 
+/* ─── Inline Separator (pipe between text and trailing icon/arrow) ── */
+
+.InlineSeparator {
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+	vertical-align: baseline;
+}
+
+.InlineSeparator::before {
+	content: "\2001\007C\2001";
+	opacity: 0.3;
+}
+
 /* ─── Reduced Motion ───────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
@@ -359,17 +357,7 @@
 		/* Reset to static values */
 	}
 
-	.StaccatoGlow,
-	.StaccatoShadowLift,
-	.StaccatoCard {
-		box-shadow: none;
-	}
-
 	.StaccatoOutlineGlow {
 		outline: none;
-	}
-
-	.StaccatoInput:focus-within {
-		box-shadow: 0 0 0 2px var(--Primary);
 	}
 }

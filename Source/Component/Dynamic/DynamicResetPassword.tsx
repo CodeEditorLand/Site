@@ -132,17 +132,6 @@ export function DynamicResetPassword({
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" role="alert">
-									<AlertCircle
-										className="mx-auto h-12 w-12 text-destructive"
-										aria-hidden="true"
-									/>
-									<h3 className="text-lg font-semibold">
-										Invalid or Expired Token
-									</h3>
-									<p className="text-muted-foreground">
-										{invalidTokenMessage ||
-											"This password reset link is invalid or has expired. Please request a new one."}
-									</p>
 									<DynamicButton
 										content={{
 											text: "Back to Sign In",
@@ -153,6 +142,19 @@ export function DynamicResetPassword({
 											onNavigate?.("/account/signin")
 										}
 									/>
+									<div className="flex items-center justify-center gap-2">
+										<AlertCircle
+											className="h-5 w-5 text-destructive"
+											aria-hidden="true"
+										/>
+										<h3 className="text-lg font-semibold">
+											Invalid or Expired Token
+										</h3>
+									</div>
+									<p className="text-xs text-muted-foreground">
+										{invalidTokenMessage ||
+											"This password reset link is invalid or has expired. Please request a new one."}
+									</p>
 								</div>
 							</CardContent>
 						</Card>
@@ -174,17 +176,6 @@ export function DynamicResetPassword({
 									className="space-y-4"
 									role="status"
 									aria-live="polite">
-									<CheckCircle
-										className="mx-auto h-12 w-12 text-green-600"
-										aria-hidden="true"
-									/>
-									<h3 className="text-lg font-semibold">
-										Password Reset Successful
-									</h3>
-									<p className="text-muted-foreground">
-										{successMessage ||
-											"Your password has been reset successfully. You can now sign in with your new password."}
-									</p>
 									<DynamicButton
 										content={{
 											text: "Go to Sign In",
@@ -195,6 +186,19 @@ export function DynamicResetPassword({
 											onNavigate?.("/account/signin")
 										}
 									/>
+									<div className="flex items-center justify-center gap-2">
+										<CheckCircle
+											className="h-5 w-5 text-green-600"
+											aria-hidden="true"
+										/>
+										<h3 className="text-lg font-semibold">
+											Password Reset Successful
+										</h3>
+									</div>
+									<p className="text-xs text-muted-foreground">
+										{successMessage ||
+											"Your password has been reset successfully. You can now sign in with your new password."}
+									</p>
 								</div>
 							</CardContent>
 						</Card>

@@ -140,10 +140,9 @@ export function DynamicSignIn({
 								/>
 							)}
 						</CardContent>
-						<CardFooter className="flex flex-col gap-4 text-center text-sm">
+						<CardFooter className="flex flex-col gap-3 text-center text-sm">
 							{footerLinks?.signUp && (
-								<p>
-									Don't have an account?{" "}
+								<div>
 									<button
 										type="button"
 										className="font-medium text-primary hover:underline"
@@ -155,11 +154,13 @@ export function DynamicSignIn({
 										}>
 										{footerLinks.signUp.label}
 									</button>
-								</p>
+									<p className="mt-1 text-xs text-muted-foreground">
+										Don't have an account?
+									</p>
+								</div>
 							)}
 							{footerLinks?.forgotPassword && (
-								<p>
-									Forgot your password?{" "}
+								<div>
 									<button
 										type="button"
 										className="font-medium text-primary hover:underline"
@@ -171,7 +172,10 @@ export function DynamicSignIn({
 										}>
 										{footerLinks.forgotPassword.label}
 									</button>
-								</p>
+									<p className="mt-1 text-xs text-muted-foreground">
+										Forgot your password?
+									</p>
+								</div>
 							)}
 						</CardFooter>
 					</Card>
