@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import type Property from "./Interface/Property/Testimonial.js";
 
 /**
@@ -7,10 +8,7 @@ import type Property from "./Interface/Property/Testimonial.js";
  * Stars shimmer with StaccatoStar. Avatars bounce with StaccatoAvatar.
  * Quotes breathe with StaccatoBreath.
  */
-export function DynamicTestimonials({
-	content,
-	className,
-}: Property) {
+export function DynamicTestimonials({ content, className }: Property) {
 	const { title, subtitle, testimonials, columns = 3 } = content;
 	const GridReference = useRef<HTMLDivElement>(null);
 
@@ -34,9 +32,8 @@ export function DynamicTestimonials({
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
-			const AttentionModule = await import(
-				"../../Function/Noise/Attention.js"
-			);
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
 			const Cards =
 				Grid.querySelectorAll<HTMLElement>(".TestimonialCard");
@@ -44,9 +41,8 @@ export function DynamicTestimonials({
 				Attention.ApplyToElement(Card, Index, 5, 3);
 			});
 
-			const StaccatoModule = await import(
-				"../../Function/Noise/Staccato.js"
-			);
+			const StaccatoModule =
+				await import("../../Function/Noise/Staccato.js");
 			const Engine = await StaccatoModule.default;
 			Engine.SeedSelector(".TestimonialCard");
 		};
@@ -96,7 +92,7 @@ export function DynamicTestimonials({
 					{testimonials.map((Testimonial) => (
 						<article
 							key={Testimonial.id}
-							className="TestimonialCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col rounded-none border border-[var(--Border)] p-6">
+							className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6">
 							<div className="mb-4">
 								{RenderStars(Testimonial.rating)}
 							</div>

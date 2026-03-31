@@ -10,10 +10,7 @@ import type Property from "./Interface/Property/Hero.js";
  * The entire hero can act as a button (clickable CTA surface).
  * Floating cards are noise-seeded for organic staccato movement.
  */
-export function DynamicHeroSection({
-	content,
-	className,
-}: Property) {
+export function DynamicHeroSection({ content, className }: Property) {
 	const SceneReference = useRef<HTMLDivElement>(null);
 	const SectionReference = useRef<HTMLElement>(null);
 	const {
@@ -37,7 +34,8 @@ export function DynamicHeroSection({
 			return;
 		}
 
-		const CardElement = Scene.querySelectorAll<HTMLElement>(".FloatingCard");
+		const CardElement =
+			Scene.querySelectorAll<HTMLElement>(".FloatingCard");
 		let FrameIdentifier: number;
 		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
@@ -51,18 +49,16 @@ export function DynamicHeroSection({
 			NoiseFunction = createNoise2D();
 
 			// Seed each floating card with per-element noise offsets
-			const StaccatoModule = await import(
-				"../../Function/Noise/Staccato.js"
-			);
+			const StaccatoModule =
+				await import("../../Function/Noise/Staccato.js");
 			const Engine = await StaccatoModule.default;
 			CardElement.forEach((Card, Index) => {
 				Engine.SeedElement(Card, Index);
 			});
 
 			// Apply attention scatter to connecting lines container
-			const AttentionModule = await import(
-				"../../Function/Noise/Attention.js"
-			);
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
 			Attention.ApplyToSelector(".FloatingCard", 8, 6);
 		};
@@ -119,7 +115,10 @@ export function DynamicHeroSection({
 			<div className="container mx-auto px-4 text-center">
 				{/* Badge:breathing with rhythm pulse on dot */}
 				{content.badge && (
-					<DynamicBadge content={content.badge} className="StaccatoBadge mb-6" />
+					<DynamicBadge
+						content={content.badge}
+						className="StaccatoBadge mb-6"
+					/>
 				)}
 
 				{/* Title:subtle color shift */}
@@ -232,8 +231,10 @@ export function DynamicHeroSection({
 										Math.PI / 2;
 									const RadiusX = 38;
 									const RadiusY = 35;
-									const CenterX = 50 + Math.cos(Angle) * RadiusX;
-									const CenterY = 50 + Math.sin(Angle) * RadiusY;
+									const CenterX =
+										50 + Math.cos(Angle) * RadiusX;
+									const CenterY =
+										50 + Math.sin(Angle) * RadiusY;
 									return (
 										<line
 											key={Card.id}

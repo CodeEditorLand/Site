@@ -84,17 +84,19 @@ export function DynamicHeader({ content, className }: Property) {
 							<React.Fragment key={Index}>
 								{MobileMenuOpen && showMobileMenu && (
 									<div className="absolute left-0 right-0 top-16 z-50 flex flex-col space-y-2 border-b bg-background p-4 md:hidden">
-										{navigation.map((Link, NavigationIndex) => (
-											<a
-												key={NavigationIndex}
-												href={Link.href}
-												className="rounded-none px-4 py-2 hover:bg-accent"
-												onClick={() =>
-													SetMobileMenuOpen(false)
-												}>
-												{Link.label}
-											</a>
-										))}
+										{navigation.map(
+											(Link, NavigationIndex) => (
+												<a
+													key={NavigationIndex}
+													href={Link.href}
+													className="rounded-none px-4 py-2 hover:bg-accent"
+													onClick={() =>
+														SetMobileMenuOpen(false)
+													}>
+													{Link.label}
+												</a>
+											),
+										)}
 									</div>
 								)}
 							</React.Fragment>

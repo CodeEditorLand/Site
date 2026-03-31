@@ -28,7 +28,10 @@ export function PageviewTracker() {
 			try {
 				const CurrentPath = window.location.pathname;
 				const CurrentTitle = document.title;
-				TrackPageViewReference.current?.(CurrentPath, CurrentTitle).catch((TrackError: Error) => {
+				TrackPageViewReference.current?.(
+					CurrentPath,
+					CurrentTitle,
+				).catch((TrackError: Error) => {
 					if (process.env.NODE_ENV !== "production") {
 						console.error("Failed to track page view:", TrackError);
 					}

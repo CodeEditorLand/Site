@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
-
-const Authentication = new AuthAPIClass();
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
 import type Interface from "./Interface/Content/Page/Verify.js";
 import type Property from "./Interface/Property/Page/Verify.js";
+
+const Authentication = new AuthAPIClass();
 
 function NavigateToPath(Path: string): void {
 	window.location.href = Path;

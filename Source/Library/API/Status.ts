@@ -24,9 +24,7 @@ export class StatusAPI {
 	}> {
 		const Response = await this.Workers.Status.GetOverallStatus();
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch overall status",
-			);
+			throw new Error(Response.error || "Failed to fetch overall status");
 		}
 		return Response.data;
 	}
@@ -43,9 +41,7 @@ export class StatusAPI {
 	> {
 		const Response = await this.Workers.Status.GetChecks();
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch status checks",
-			);
+			throw new Error(Response.error || "Failed to fetch status checks");
 		}
 		return Response.data;
 	}
@@ -81,9 +77,7 @@ export class StatusAPI {
 			CheckIdentifier,
 		);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch status history",
-			);
+			throw new Error(Response.error || "Failed to fetch status history");
 		}
 		return Response.data;
 	}
@@ -97,9 +91,7 @@ export class StatusAPI {
 			Limit,
 		);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch GitHub commits",
-			);
+			throw new Error(Response.error || "Failed to fetch GitHub commits");
 		}
 		return Response.data;
 	}
@@ -107,9 +99,7 @@ export class StatusAPI {
 	async GetGitHubActions(Limit?: number): Promise<GitHubActionRun[]> {
 		const Response = await this.Workers.Status.GetGitHubActions(Limit);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch GitHub actions",
-			);
+			throw new Error(Response.error || "Failed to fetch GitHub actions");
 		}
 		return Response.data;
 	}
@@ -123,9 +113,7 @@ export class StatusAPI {
 			Limit,
 		);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch GitHub issues",
-			);
+			throw new Error(Response.error || "Failed to fetch GitHub issues");
 		}
 		return Response.data;
 	}

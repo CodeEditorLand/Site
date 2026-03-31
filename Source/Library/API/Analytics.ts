@@ -29,9 +29,7 @@ export class AnalyticsAPI {
 	): Promise<{ tracked: number; eventIds: string[] }> {
 		const Response = await this.Workers.Analytics.TrackBatch(Events);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to track batch events",
-			);
+			throw new Error(Response.error || "Failed to track batch events");
 		}
 		return Response.data;
 	}
@@ -73,8 +71,7 @@ export class AnalyticsAPI {
 	}
 
 	async GetEvent(Identifier: string): Promise<AnalyticsEvent> {
-		const Response =
-			await this.Workers.Analytics.GetEvent(Identifier);
+		const Response = await this.Workers.Analytics.GetEvent(Identifier);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch event");
 		}
@@ -135,9 +132,7 @@ export class AnalyticsAPI {
 	}> {
 		const Response = await this.Workers.Analytics.GetEventStats(Days);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch event stats",
-			);
+			throw new Error(Response.error || "Failed to fetch event stats");
 		}
 		return Response.data;
 	}
@@ -149,9 +144,7 @@ export class AnalyticsAPI {
 	}> {
 		const Response = await this.Workers.Analytics.GetSessionStats(Days);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch session stats",
-			);
+			throw new Error(Response.error || "Failed to fetch session stats");
 		}
 		return Response.data;
 	}

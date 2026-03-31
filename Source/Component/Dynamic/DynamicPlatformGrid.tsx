@@ -4,19 +4,16 @@ import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCard } from "./DynamicCard";
-import type CardSection from "./Interface/Section/Card.js";
 import type PlatformInformation from "./Interface/Information/Platform.js";
 import type Property from "./Interface/Property/Grid/Platform.js";
+import type CardSection from "./Interface/Section/Card.js";
 
 /**
  * Dynamic PlatformGrid component that displays download cards for each platform
  * Supports fetching real download data from the Workers API
  * Includes loading and error states
  */
-export function DynamicPlatformGrid({
-	content,
-	className,
-}: Property) {
+export function DynamicPlatformGrid({ content, className }: Property) {
 	const { t: T } = useTranslation("download");
 	const {
 		title,
@@ -160,9 +157,8 @@ export function DynamicPlatformGrid({
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
-			const AttentionModule = await import(
-				"../../Function/Noise/Attention.js"
-			);
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
 			Attention.ApplyToSelector(".PlatformCard", 5, 3);
 		};
@@ -266,14 +262,17 @@ export function DynamicPlatformGrid({
 					</div>
 				)}
 
-				<div ref={GridReference} className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+				<div
+					ref={GridReference}
+					className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
 					{Platforms.map((Platform) => {
 						const Icon = IconMap[Platform.icon];
 
-						const HasVerification = showVerification &&
-						(Platform.checksum || Platform.signature);
+						const HasVerification =
+							showVerification &&
+							(Platform.checksum || Platform.signature);
 
-					const PlatformCardSection: CardSection = {
+						const PlatformCardSection: CardSection = {
 							header: {
 								title: Platform.name,
 								description: Platform.description,
@@ -326,11 +325,18 @@ export function DynamicPlatformGrid({
 													</p>
 													<ul className="list-inside list-disc space-y-1">
 														{Platform.requirements.map(
-															(Requirement, RequirementIndex) => (
+															(
+																Requirement,
+																RequirementIndex,
+															) => (
 																<li
-																	key={RequirementIndex}
+																	key={
+																		RequirementIndex
+																	}
 																	className="text-xs">
-																	{Requirement}
+																	{
+																		Requirement
+																	}
 																</li>
 															),
 														)}
@@ -340,27 +346,29 @@ export function DynamicPlatformGrid({
 									</div>
 								),
 							},
-							...(HasVerification ? {
-							footer: {
-								content: (
-									<div className="text-xs text-muted-foreground">
-										{Platform.checksum && (
-											<p>
-												SHA-256:{" "}
-												{Platform.checksum.substring(
-													0,
-													16,
-												)}
-												...
-											</p>
-										)}
-										{Platform.signature && (
-											<p>PGP Signed: ✓</p>
-										)}
-									</div>
-								),
-							},
-						} : {}),
+							...(HasVerification
+								? {
+										footer: {
+											content: (
+												<div className="text-xs text-muted-foreground">
+													{Platform.checksum && (
+														<p>
+															SHA-256:{" "}
+															{Platform.checksum.substring(
+																0,
+																16,
+															)}
+															...
+														</p>
+													)}
+													{Platform.signature && (
+														<p>PGP Signed: ✓</p>
+													)}
+												</div>
+											),
+										},
+									}
+								: {}),
 						};
 
 						return (

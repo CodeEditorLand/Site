@@ -1,5 +1,6 @@
 import { Cpu, Monitor } from "lucide-react";
 import React from "react";
+
 import type RequirementItem from "./Interface/Item/Requirement.js";
 import type Property from "./Interface/Property/Requirement/System.js";
 
@@ -7,10 +8,7 @@ import type Property from "./Interface/Property/Requirement/System.js";
  * Dynamic SystemRequirements component for displaying platform requirements
  * Shows minimum and recommended specs in Card format
  */
-export function DynamicSystemRequirements({
-	content,
-	className,
-}: Property) {
+export function DynamicSystemRequirements({ content, className }: Property) {
 	const { title, description, requirements } = content;
 
 	const RequirementList = ({
@@ -31,7 +29,9 @@ export function DynamicSystemRequirements({
 						)}
 					</div>
 					<div className="flex-1">
-						<span className="font-medium">{Requirement.label}:</span>{" "}
+						<span className="font-medium">
+							{Requirement.label}:
+						</span>{" "}
 						<span className="text-muted-foreground">
 							{Requirement.value}
 						</span>
@@ -59,7 +59,7 @@ export function DynamicSystemRequirements({
 
 				<div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer bg-white rounded-none border border-[var(--Border)] p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							Minimum Requirements
 						</h3>
@@ -70,7 +70,7 @@ export function DynamicSystemRequirements({
 					</div>
 
 					{/* Recommended Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer bg-white rounded-none border border-primary p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							Recommended
 						</h3>

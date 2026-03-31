@@ -53,8 +53,7 @@
 			calc(var(--StaccatoRaw) * 6px + var(--AttentionOffsetX)),
 			calc(var(--StaccatoPhase) * 4px + var(--AttentionOffsetY))
 		)
-		rotate(var(--AttentionRotation, 0deg))
-		scale(var(--AttentionScale, 1));
+		rotate(var(--AttentionRotation, 0deg)) scale(var(--AttentionScale, 1));
 }
 
 .StaccatoRotate {
@@ -70,9 +69,7 @@
 }
 
 .StaccatoBreath {
-	opacity: calc(
-		var(--AttentionOpacity, 0.85) + var(--StaccatoRaw) * 0.15
-	);
+	opacity: calc(var(--AttentionOpacity, 0.85) + var(--StaccatoRaw) * 0.15);
 }
 
 .StaccatoPulse {
@@ -97,9 +94,7 @@
 }
 
 .StaccatoBorderShimmer {
-	border-color: hsl(
-		0 0% calc(85% + var(--StaccatoBorder) * 5%)
-	);
+	border-color: hsl(0 0% calc(85% + var(--StaccatoBorder) * 5%));
 }
 
 .StaccatoOutlineGlow {
@@ -167,8 +162,7 @@
 			var(--AttentionOffsetX, 0px),
 			var(--AttentionOffsetY, 0px)
 		)
-		rotate(var(--AttentionRotation, 0deg))
-		scale(var(--AttentionScale, 1));
+		rotate(var(--AttentionRotation, 0deg)) scale(var(--AttentionScale, 1));
 	border-width: calc(1px + var(--StaccatoBorder) * 0.3px);
 	opacity: var(--AttentionOpacity, 1);
 	transition-delay: var(--AttentionDelay, 0ms);
@@ -217,8 +211,7 @@
 	transform: translateX(calc(var(--StaccatoRaw) * 1.5px));
 }
 .StaccatoNavLink:hover {
-	transform: translateX(calc(var(--StaccatoRaw) * 1.5px))
-		translateY(-1px);
+	transform: translateX(calc(var(--StaccatoRaw) * 1.5px)) translateY(-1px);
 }
 
 /* Separator/divider breathing */
@@ -230,9 +223,10 @@
 /* Logo micro-movement */
 .StaccatoLogo {
 	transform: translate(
-		calc(var(--StaccatoRaw) * 0.5px),
-		calc(var(--StaccatoPhase) * 0.3px)
-	) rotate(calc(var(--StaccatoRaw) * 0.3deg));
+			calc(var(--StaccatoRaw) * 0.5px),
+			calc(var(--StaccatoPhase) * 0.3px)
+		)
+		rotate(calc(var(--StaccatoRaw) * 0.3deg));
 }
 
 /* Icon pulse */
@@ -262,9 +256,10 @@
 /* Avatar gentle bounce */
 .StaccatoAvatar {
 	transform: translate(
-		calc(var(--StaccatoRaw) * 1px),
-		calc(var(--StaccatoPhase) * 0.5px)
-	) scale(calc(1 + var(--StaccatoRhythm) * 0.02));
+			calc(var(--StaccatoRaw) * 1px),
+			calc(var(--StaccatoPhase) * 0.5px)
+		)
+		scale(calc(1 + var(--StaccatoRhythm) * 0.02));
 }
 
 /* Price tag emphasis */
@@ -290,8 +285,7 @@
 	opacity: calc(0.7 + var(--StaccatoRaw) * 0.3);
 }
 .StaccatoSocial:hover {
-	transform: translateY(calc(var(--StaccatoPhase) * 1px - 2px))
-		scale(1.1);
+	transform: translateY(calc(var(--StaccatoPhase) * 1px - 2px)) scale(1.1);
 }
 
 /* ─── Inline Separator (pipe between text and trailing icon/arrow) ── */

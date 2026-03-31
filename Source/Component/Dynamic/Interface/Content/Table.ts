@@ -1,5 +1,5 @@
-import type ContentSchema from "../Schema/Content.js";
 import type TableColumn from "../Column/Table.js";
+import type ContentSchema from "../Schema/Content.js";
 
 export default interface Interface<
 	T = Record<string, unknown>,

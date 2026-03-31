@@ -13,9 +13,10 @@ import {
 	Sparkles,
 	Wrench,
 	Zap,
+	type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
+
 import type Property from "./Interface/Property/Feature.js";
 
 /**
@@ -75,18 +76,16 @@ export function DynamicFeatures({ content, className }: Property) {
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
-			const AttentionModule = await import(
-				"../../Function/Noise/Attention.js"
-			);
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
 			const Cards = Grid.querySelectorAll<HTMLElement>(".FeatureCard");
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 6, 4);
 			});
 
-			const StaccatoModule = await import(
-				"../../Function/Noise/Staccato.js"
-			);
+			const StaccatoModule =
+				await import("../../Function/Noise/Staccato.js");
 			const Engine = await StaccatoModule.default;
 			Engine.SeedSelector(".FeatureCard");
 		};
@@ -127,7 +126,7 @@ export function DynamicFeatures({ content, className }: Property) {
 						return (
 							<div
 								key={Feature.id}
-								className="FeatureCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col space-y-4 rounded-none border border-[var(--Border)] p-6">
+								className="FeatureCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none border border-[var(--Border)] bg-white p-6">
 								<div className="flex items-start justify-between">
 									<h3 className="text-xl font-semibold">
 										{Feature.title}

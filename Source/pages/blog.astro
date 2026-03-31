@@ -72,24 +72,24 @@ const MetaDescription = T("meta.blog.description", {
 						href="https://github.com/CodeEditorLand/Land/issues"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-6 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-						{
+						class="StaccatoButton inline-flex items-center border border-[var(--Border)] bg-[var(--Primary)] px-6 py-2 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						>{
 							T("common.blog.reportIssue", {
 								defaultValue: "Report an Issue",
 							})
-						}
-					</a>
+						}<span class="InlineSeparator">→</span></a
+					>
 					<a
 						href="https://github.com/CodeEditorLand/Land"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--Border)] bg-white px-6 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-						{
+						class="StaccatoButton inline-flex items-center border border-[var(--Border)] bg-white px-6 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						>{
 							T("common.blog.followGitHub", {
 								defaultValue: "Follow on GitHub",
 							})
-						}
-					</a>
+						}<span class="InlineSeparator">→</span></a
+					>
 				</div>
 				<h2 class="mb-4 text-2xl font-semibold">
 					{
@@ -111,7 +111,15 @@ const MetaDescription = T("meta.blog.description", {
 
 		<!-- Back to top -->
 		<div class="mt-12 border-t pt-8">
-			<a href="#top" class="StaccatoButton text-sm text-primary hover:underline">{T("common.button.backToTop", { defaultValue: "Back to top" })}<span class="InlineSeparator">↑</span></a>
+			<a
+				href="#top"
+				class="StaccatoButton text-sm text-primary hover:underline"
+				>{
+					T("common.button.backToTop", {
+						defaultValue: "Back to top",
+					})
+				}<span class="InlineSeparator">↑</span></a
+			>
 		</div>
 	</div>
 </Base>

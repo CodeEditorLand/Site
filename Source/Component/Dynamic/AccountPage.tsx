@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
-
-const Authentication = new AuthAPIClass();
 import type User from "../../Library/Interface/User.js";
 import { Header } from "../Layout/Header";
 import { DynamicForgotPassword } from "./DynamicForgotPassword";
@@ -12,6 +10,8 @@ import { DynamicSignIn } from "./DynamicSignIn";
 import { DynamicSignUp } from "./DynamicSignUp";
 import type Interface from "./Interface/Content/Page/Account.js";
 import type Property from "./Interface/Property/Page/Account.js";
+
+const Authentication = new AuthAPIClass();
 
 function SetSessionToken(Token: string): void {
 	try {
@@ -248,8 +248,7 @@ export function AccountPage({
 			toast.success("OAuth authentication successful!");
 
 			// Fetch user profile with the new token
-			Authentication
-				.GetSession()
+			Authentication.GetSession()
 				.then((SessionResponse) => {
 					SetCurrentUser(SessionResponse.user);
 				})

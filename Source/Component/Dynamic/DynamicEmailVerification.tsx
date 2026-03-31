@@ -186,7 +186,9 @@ export function DynamicEmailVerification({
 						{content.success.title}
 					</CardTitle>
 				</div>
-				<CardDescription className="text-xs">{content.success.description}</CardDescription>
+				<CardDescription className="text-xs">
+					{content.success.description}
+				</CardDescription>
 			</CardHeader>
 		</Card>
 	);

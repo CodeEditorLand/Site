@@ -267,11 +267,7 @@
 		color: var(--DestructForeground);
 	}
 	.BadgeDestructive:hover {
-		background-color: color-mix(
-			in srgb,
-			var(--Destruct) 80%,
-			transparent
-		);
+		background-color: color-mix(in srgb, var(--Destruct) 80%, transparent);
 	}
 
 	.BadgeOutline {

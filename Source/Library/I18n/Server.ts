@@ -68,8 +68,8 @@ export async function GetLocale(Request?: Request): Promise<string> {
 	}
 
 	if (AcceptLanguage) {
-		const LanguageList = AcceptLanguage.split(",").map(
-			(Language) => Language.split(";")[0]?.trim(),
+		const LanguageList = AcceptLanguage.split(",").map((Language) =>
+			Language.split(";")[0]?.trim(),
 		);
 		for (const Language of LanguageList) {
 			if (Language && SupportedLocaleList.includes(Language))
@@ -177,8 +177,8 @@ export function GetI18n(Request?: Request) {
 
 		const AcceptLanguage = Request.headers.get("accept-language");
 		if (AcceptLanguage) {
-			const LanguageList = AcceptLanguage.split(",").map(
-				(Language) => Language.split(";")[0]?.trim(),
+			const LanguageList = AcceptLanguage.split(",").map((Language) =>
+				Language.split(";")[0]?.trim(),
 			);
 			for (const Language of LanguageList) {
 				if (Language && SupportedLocaleList.includes(Language)) {

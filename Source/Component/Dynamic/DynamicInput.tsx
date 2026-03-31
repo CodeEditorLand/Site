@@ -22,10 +22,16 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 		...props
 	} = content;
 
-	const Identifier = PropertyIdentifier || `input-${Math.random().toString(36).substr(2, 9)}`;
+	const Identifier =
+		PropertyIdentifier ||
+		`input-${Math.random().toString(36).substr(2, 9)}`;
 	const ErrorIdentifier = `${Identifier}-error`;
 	const HelperIdentifier = `${Identifier}-helper`;
-	const DescribedBy = error ? ErrorIdentifier : helperText ? HelperIdentifier : undefined;
+	const DescribedBy = error
+		? ErrorIdentifier
+		: helperText
+			? HelperIdentifier
+			: undefined;
 
 	return (
 		<div className="StaccatoInput flex flex-col gap-1">
@@ -51,7 +57,10 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 				{...props}
 			/>
 			{label && (
-				<Label htmlFor={Identifier} required={required} className="block text-xs text-muted-foreground">
+				<Label
+					htmlFor={Identifier}
+					required={required}
+					className="block text-xs text-muted-foreground">
 					{label}
 				</Label>
 			)}
@@ -64,7 +73,9 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 				</p>
 			)}
 			{!error && helperText && (
-				<p id={HelperIdentifier} className="text-xs text-muted-foreground">
+				<p
+					id={HelperIdentifier}
+					className="text-xs text-muted-foreground">
 					{helperText}
 				</p>
 			)}

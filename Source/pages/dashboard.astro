@@ -66,7 +66,8 @@ const MetaDescription = T("meta.dashboard.description", {
 		<!-- Dashboard Grid -->
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 			<!-- Account Info Card -->
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<h2 class="mb-4 text-lg font-semibold">
 					{
 						T("common.dashboard.account.heading", {
@@ -119,7 +120,8 @@ const MetaDescription = T("meta.dashboard.description", {
 			</div>
 
 			<!-- Downloads Card -->
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<h2 class="mb-4 text-lg font-semibold">
 					{
 						T("common.dashboard.downloads.heading", {
@@ -129,7 +131,7 @@ const MetaDescription = T("meta.dashboard.description", {
 				</h2>
 				<a
 					href="/downloads"
-					class="StaccatoButton mb-3 inline-flex h- items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					class="StaccatoButton h- mb-3 inline-flex items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 					{
 						T("common.dashboard.downloads.goButton", {
 							defaultValue: "Go to Downloads",
@@ -147,7 +149,8 @@ const MetaDescription = T("meta.dashboard.description", {
 			</div>
 
 			<!-- Quick Links Card -->
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<h2 class="mb-4 text-lg font-semibold">
 					{
 						T("common.dashboard.quickLinks.heading", {
@@ -204,7 +207,8 @@ const MetaDescription = T("meta.dashboard.description", {
 					})
 				}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
 				<div
 					class="flex items-center justify-between border-b border-[var(--Border)] p-5">
 					<div>
@@ -271,7 +275,7 @@ const MetaDescription = T("meta.dashboard.description", {
 				<div class="p-5">
 					<a
 						href="/account/signin"
-						class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--Border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoButton h- inline-flex items-center justify-center border border-[var(--Border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 						{
 							T(
 								"common.dashboard.settings.account.manageButton",
@@ -288,13 +292,10 @@ const MetaDescription = T("meta.dashboard.description", {
 					</h3>
 					<p class="mt-1 text-sm text-muted-foreground">
 						{
-							T(
-								"common.dashboard.settings.account.description",
-								{
-									defaultValue:
-										"Update your profile and manage your account.",
-								},
-							)
+							T("common.dashboard.settings.account.description", {
+								defaultValue:
+									"Update your profile and manage your account.",
+							})
 						}
 					</p>
 				</div>

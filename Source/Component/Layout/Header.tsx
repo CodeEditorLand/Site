@@ -14,8 +14,8 @@ import {
 	Sparkles,
 	Users,
 	X,
+	type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -221,7 +221,9 @@ export function Header({ content }: HeaderProps) {
 			</div>
 
 			{/* Sub-header:breadcrumb-style app bar with icons */}
-			<div className="HeaderSub hidden md:block" style={{ marginTop: "2px" }}>
+			<div
+				className="HeaderSub hidden md:block"
+				style={{ marginTop: "2px" }}>
 				<nav
 					className="container mx-auto flex items-center px-4"
 					aria-label="Main navigation">
@@ -229,7 +231,7 @@ export function Header({ content }: HeaderProps) {
 						<span key={Index} className="flex items-center">
 							{Index > 0 && (
 								<span
-									className="StaccatoBreath mx-0.5 select-none text-[10px] text-muted-foreground/40"
+									className="StaccatoBreath text-muted-foreground/40 mx-0.5 select-none text-[10px]"
 									aria-hidden="true">
 									/
 								</span>
@@ -281,7 +283,7 @@ export function Header({ content }: HeaderProps) {
 										<>
 											{"\u2001"}
 											<Icon
-												className="h-4 w-4 text-muted-foreground/70"
+												className="text-muted-foreground/70 h-4 w-4"
 												aria-hidden="true"
 											/>
 										</>

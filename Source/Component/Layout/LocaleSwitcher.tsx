@@ -33,7 +33,7 @@ export function LocaleSwitcher() {
 				value={CurrentLocale}
 				onChange={HandleChange}
 				aria-label="Select language"
-				className="h-9 appearance-none border border-[var(--Border)] bg-none bg-white py-1 pl-3 pr-8 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
+				className="h-9 appearance-none border border-[var(--Border)] bg-white bg-none py-1 pl-3 pr-8 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
 				style={{
 					borderRadius: 0,
 					WebkitAppearance: "none",

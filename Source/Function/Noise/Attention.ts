@@ -29,10 +29,7 @@ export default (async () => {
 	 * ScatterRotation:returns a noise-driven rotation angle.
 	 * Useful for cards, badges, icons that need organic tilt.
 	 */
-	const ScatterRotation = (
-		Index: number,
-		MaxDegree: number = 3,
-	): number => {
+	const ScatterRotation = (Index: number, MaxDegree: number = 3): number => {
 		return LayoutNoise(Index * 0.37, Index * 0.91) * MaxDegree;
 	};
 
@@ -40,10 +37,7 @@ export default (async () => {
 	 * ScatterScale:returns a noise-driven scale factor.
 	 * Centers around 1.0, deviates by Spread.
 	 */
-	const ScatterScale = (
-		Index: number,
-		Spread: number = 0.05,
-	): number => {
+	const ScatterScale = (Index: number, Spread: number = 0.05): number => {
 		return 1 + LayoutNoise(Index * 0.61, Index * 0.43) * Spread;
 	};
 
@@ -51,10 +45,7 @@ export default (async () => {
 	 * ScatterDelay:returns a noise-driven animation delay in ms.
 	 * Creates organic staggering instead of linear index * N.
 	 */
-	const ScatterDelay = (
-		Index: number,
-		MaxDelay: number = 200,
-	): number => {
+	const ScatterDelay = (Index: number, MaxDelay: number = 200): number => {
 		const Raw = LayoutNoise(Index * 0.83, Index * 0.29);
 		return Math.abs(Raw) * MaxDelay;
 	};

@@ -12,8 +12,8 @@ import {
 	Shield,
 	Users,
 	Wifi,
+	type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "../UI/Button";
@@ -78,9 +78,8 @@ const PortalTierRow = ({
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
-			const AttentionModule = await import(
-				"../../Function/Noise/Attention.js"
-			);
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
 			Attention.ApplyToElement(Row, Index, 3, 2);
 		};
@@ -109,7 +108,9 @@ const PortalTierRow = ({
 				<Card className="PortalTierCard">
 					<CardHeader className="PortalTierCardHeader">
 						<div className="flex items-center justify-between">
-							<CardTitle className="text-xl">{Content.Title}</CardTitle>
+							<CardTitle className="text-xl">
+								{Content.Title}
+							</CardTitle>
 							<div className="PortalTierIconWrapper">
 								<IconComponent
 									className="StaccatoIcon h-6 w-6"
@@ -158,7 +159,10 @@ const PortalTierRow = ({
 									}}>
 									Secure Sign In
 									{"\u2001"}
-									<Lock className="h-4 w-4" aria-hidden="true" />
+									<Lock
+										className="h-4 w-4"
+										aria-hidden="true"
+									/>
 								</Button>
 							</form>
 						)}
@@ -205,7 +209,8 @@ const PortalTierRow = ({
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
-									OAuth 2.0 &middot; Linked to your preferences
+									OAuth 2.0 &middot; Linked to your
+									preferences
 								</p>
 							</div>
 						)}
@@ -278,7 +283,9 @@ const PortalTierRow = ({
 					<h4 className="PortalTierFeatureHeading">Included</h4>
 					<ul className="PortalTierFeatureItems">
 						{Content.Feature.map((FeatureText, FeatureIndex) => (
-							<li key={FeatureIndex} className="PortalTierFeatureItem">
+							<li
+								key={FeatureIndex}
+								className="PortalTierFeatureItem">
 								<span className="text-sm">{FeatureText}</span>
 								{"\u2001"}
 								<Check
@@ -294,7 +301,9 @@ const PortalTierRow = ({
 				{/* Capabilities list */}
 				{Content.Capability.length > 0 && (
 					<div className="PortalTierCapabilityList">
-						<h4 className="PortalTierFeatureHeading">Capabilities</h4>
+						<h4 className="PortalTierFeatureHeading">
+							Capabilities
+						</h4>
 						<div className="PortalTierCapabilityGrid">
 							{Content.Capability.map(
 								(CapabilityText, CapabilityIndex) => (
@@ -384,9 +393,8 @@ export function DynamicPortal({
 		let StopFunction: (() => void) | undefined;
 
 		const StartNoise = async () => {
-			const StaccatoModule = await import(
-				"../../Function/Noise/Staccato.js"
-			);
+			const StaccatoModule =
+				await import("../../Function/Noise/Staccato.js");
 			const Staccato = await StaccatoModule.default;
 			Staccato.Start();
 			StopFunction = Staccato.Stop;

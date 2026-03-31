@@ -83,24 +83,19 @@ const PortalContent = {
 		Protocol: "OAuth 2.0 / PKCE",
 		Feature: [
 			T("account.portal.provider.feature.github", {
-				defaultValue:
-					"GitHub identity linked to preferences",
+				defaultValue: "GitHub identity linked to preferences",
 			}),
 			T("account.portal.provider.feature.sso", {
-				defaultValue:
-					"Single sign-on across all Land services",
+				defaultValue: "Single sign-on across all Land services",
 			}),
 			T("account.portal.provider.feature.repo", {
-				defaultValue:
-					"Repository-aware workspace configuration",
+				defaultValue: "Repository-aware workspace configuration",
 			}),
 			T("account.portal.provider.feature.team", {
-				defaultValue:
-					"Organization and team membership sync",
+				defaultValue: "Organization and team membership sync",
 			}),
 			T("account.portal.provider.feature.ci", {
-				defaultValue:
-					"CI/CD pipeline integration with build triggers",
+				defaultValue: "CI/CD pipeline integration with build triggers",
 			}),
 		],
 		Capability: [
@@ -141,16 +136,14 @@ const PortalContent = {
 		Protocol: "mTLS / CRDTs / WebSocket",
 		Feature: [
 			T("account.portal.localfirst.feature.daemon", {
-				defaultValue:
-					"Direct Air Daemon connection to Land/Element",
+				defaultValue: "Direct Air Daemon connection to Land/Element",
 			}),
 			T("account.portal.localfirst.feature.build", {
 				defaultValue:
 					"Launch builds directly through the website console",
 			}),
 			T("account.portal.localfirst.feature.deploy", {
-				defaultValue:
-					"Deploy changes directly to the application",
+				defaultValue: "Deploy changes directly to the application",
 			}),
 			T("account.portal.localfirst.feature.configure", {
 				defaultValue:
@@ -196,7 +189,6 @@ const PortalContent = {
 			}),
 		],
 	},
-
 };
 
 const MetaTitle = T("meta.portal.title", {
@@ -209,8 +201,5 @@ const MetaDescription = T("meta.portal.description", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<DynamicPortal
-		Content={PortalContent}
-		client:load
-	/>
+	<DynamicPortal Content={PortalContent} client:load />
 </Base>

@@ -81,7 +81,7 @@ const MetaDescription = T("meta.contributing.description", {
 							T("common.contributing.guide.title", {
 								defaultValue: "Contributing Guide",
 							})
-						}
+						}<span class="InlineSeparator">→</span>
 					</h2>
 					<p class="text-sm text-muted-foreground">
 						{
@@ -103,7 +103,7 @@ const MetaDescription = T("meta.contributing.description", {
 							T("common.contributing.goodFirstIssues.title", {
 								defaultValue: "Good First Issues",
 							})
-						}
+						}<span class="InlineSeparator">→</span>
 					</h2>
 					<p class="text-sm text-muted-foreground">
 						{
@@ -129,7 +129,8 @@ const MetaDescription = T("meta.contributing.description", {
 					})
 				}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<ol class="space-y-6">
 					<li class="flex items-start gap-4">
 						<span
@@ -241,7 +242,8 @@ const MetaDescription = T("meta.contributing.description", {
 				}
 			</h2>
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-				<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+				<div
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.code.title", {
@@ -258,7 +260,8 @@ const MetaDescription = T("meta.contributing.description", {
 						}
 					</p>
 				</div>
-				<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+				<div
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.documentation.title", {
@@ -278,7 +281,8 @@ const MetaDescription = T("meta.contributing.description", {
 						}
 					</p>
 				</div>
-				<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+				<div
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.testing.title", {
@@ -295,7 +299,8 @@ const MetaDescription = T("meta.contributing.description", {
 						}
 					</p>
 				</div>
-				<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+				<div
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.design.title", {
@@ -324,7 +329,8 @@ const MetaDescription = T("meta.contributing.description", {
 					})
 				}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
 					<a
 						href="https://nlnet.nl/project/Land/"
@@ -376,14 +382,15 @@ const MetaDescription = T("meta.contributing.description", {
 					})
 				}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<a
 					href="https://github.com/CodeEditorLand/Land/blob/Current/CODE_OF_CONDUCT.md"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="font-medium text-[var(--Primary)] hover:underline">
-					Code of Conduct
-				</a>
+					class="StaccatoButton font-medium text-[var(--Primary)] hover:underline"
+					>Code of Conduct<span class="InlineSeparator">→</span></a
+				>
 				<p class="mt-2 text-muted-foreground">
 					{
 						T("common.contributing.conduct.description", {
@@ -397,7 +404,15 @@ const MetaDescription = T("meta.contributing.description", {
 
 		<!-- Back to top -->
 		<div class="mt-12 border-t pt-8">
-			<a href="#top" class="StaccatoButton text-sm text-primary hover:underline">{T("common.button.backToTop", { defaultValue: "Back to top" })}<span class="InlineSeparator">↑</span></a>
+			<a
+				href="#top"
+				class="StaccatoButton text-sm text-primary hover:underline"
+				>{
+					T("common.button.backToTop", {
+						defaultValue: "Back to top",
+					})
+				}<span class="InlineSeparator">↑</span></a
+			>
 		</div>
 	</div>
 </Base>

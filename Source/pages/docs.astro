@@ -127,7 +127,8 @@ const MetaDescription = T("meta.docs.description", {
 					})
 				}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
 				<p class="mb-4 text-muted-foreground">
 					{
 						T("common.docs.architecture.intro", {
@@ -142,126 +143,154 @@ const MetaDescription = T("meta.docs.description", {
 							href="https://github.com/CodeEditorLand/Mountain"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="font-semibold text-[var(--Primary)] hover:underline">Mountain&#x2001;⛰️</a>
-						<p class="mt-1 text-muted-foreground"
-							>{
-								T("common.docs.architecture.mountain.description", {
-									defaultValue:
-										"Manages Window, File System and Process",
-								})
-							}</p>
-						<p class="text-xs text-muted-foreground/70"
-							>{
-								T("common.docs.architecture.mountain.subtitle", {
-									defaultValue:
-										"Rust/Tauri native backend",
-								})
-							}</p>
+							class="font-semibold text-[var(--Primary)] hover:underline"
+							>Mountain&#x2001;⛰️</a
+						>
+						<p class="mt-1 text-muted-foreground">
+							{
+								T(
+									"common.docs.architecture.mountain.description",
+									{
+										defaultValue:
+											"Manages Window, File System and Process",
+									},
+								)
+							}
+						</p>
+						<p class="text-muted-foreground/70 text-xs">
+							{
+								T(
+									"common.docs.architecture.mountain.subtitle",
+									{
+										defaultValue:
+											"Rust/Tauri native backend",
+									},
+								)
+							}
+						</p>
 					</li>
 					<li>
 						<a
 							href="https://github.com/CodeEditorLand/Cocoon"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="font-semibold text-[var(--Primary)] hover:underline">Cocoon&#x2001;🦋</a>
-						<p class="mt-1 text-muted-foreground"
-							>{
-								T("common.docs.architecture.cocoon.description", {
-									defaultValue:
-										"Runs VS Code Extension via Effect-TS",
-								})
-							}</p>
-						<p class="text-xs text-muted-foreground/70"
-							>{
+							class="font-semibold text-[var(--Primary)] hover:underline"
+							>Cocoon&#x2001;🦋</a
+						>
+						<p class="mt-1 text-muted-foreground">
+							{
+								T(
+									"common.docs.architecture.cocoon.description",
+									{
+										defaultValue:
+											"Runs VS Code Extension via Effect-TS",
+									},
+								)
+							}
+						</p>
+						<p class="text-muted-foreground/70 text-xs">
+							{
 								T("common.docs.architecture.cocoon.subtitle", {
-									defaultValue:
-										"TypeScript extension host",
+									defaultValue: "TypeScript extension host",
 								})
-							}</p>
+							}
+						</p>
 					</li>
 					<li>
 						<a
 							href="https://github.com/CodeEditorLand/Wind"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="font-semibold text-[var(--Primary)] hover:underline">Wind&#x2001;🍃</a>
-						<p class="mt-1 text-muted-foreground"
-							>{
+							class="font-semibold text-[var(--Primary)] hover:underline"
+							>Wind&#x2001;🍃</a
+						>
+						<p class="mt-1 text-muted-foreground">
+							{
 								T("common.docs.architecture.wind.description", {
 									defaultValue:
 										"Re-Implementation of VS Code Workbench",
 								})
-							}</p>
-						<p class="text-xs text-muted-foreground/70"
-							>{
+							}
+						</p>
+						<p class="text-muted-foreground/70 text-xs">
+							{
 								T("common.docs.architecture.wind.subtitle", {
-									defaultValue:
-										"TypeScript UI service",
+									defaultValue: "TypeScript UI service",
 								})
-							}</p>
+							}
+						</p>
 					</li>
 					<li>
 						<a
 							href="https://github.com/CodeEditorLand/Sky"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="font-semibold text-[var(--Primary)] hover:underline">Sky&#x2001;🌌</a>
-						<p class="mt-1 text-muted-foreground"
-							>{
+							class="font-semibold text-[var(--Primary)] hover:underline"
+							>Sky&#x2001;🌌</a
+						>
+						<p class="mt-1 text-muted-foreground">
+							{
 								T("common.docs.architecture.sky.description", {
 									defaultValue:
 										"Renders the Editor Interface",
 								})
-							}</p>
-						<p class="text-xs text-muted-foreground/70"
-							>{
+							}
+						</p>
+						<p class="text-muted-foreground/70 text-xs">
+							{
 								T("common.docs.architecture.sky.subtitle", {
-									defaultValue:
-										"Astro UI component",
+									defaultValue: "Astro UI component",
 								})
-							}</p>
+							}
+						</p>
 					</li>
 					<li>
 						<a
 							href="https://github.com/CodeEditorLand/Air"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="font-semibold text-[var(--Primary)] hover:underline">Air&#x2001;🪁</a>
-						<p class="mt-1 text-muted-foreground"
-							>{
+							class="font-semibold text-[var(--Primary)] hover:underline"
+							>Air&#x2001;🪁</a
+						>
+						<p class="mt-1 text-muted-foreground">
+							{
 								T("common.docs.architecture.air.description", {
 									defaultValue:
 										"Update, Download and Crypto Signing",
 								})
-							}</p>
-						<p class="text-xs text-muted-foreground/70"
-							>{
+							}
+						</p>
+						<p class="text-muted-foreground/70 text-xs">
+							{
 								T("common.docs.architecture.air.subtitle", {
-									defaultValue:
-										"Rust background daemon",
+									defaultValue: "Rust background daemon",
 								})
-							}</p>
+							}
+						</p>
 					</li>
 					<li>
 						<a
 							href="https://github.com/CodeEditorLand/Echo"
 							target="_blank"
 							rel="noopener noreferrer"
-							class="font-semibold text-[var(--Primary)] hover:underline">Echo&#x2001;📣</a>
-						<p class="mt-1 text-muted-foreground"
-							>{
+							class="font-semibold text-[var(--Primary)] hover:underline"
+							>Echo&#x2001;📣</a
+						>
+						<p class="mt-1 text-muted-foreground">
+							{
 								T("common.docs.architecture.echo.description", {
 									defaultValue:
 										"High-Performance Work-Stealing Executor",
 								})
-							}</p>
-						<p class="text-xs text-muted-foreground/70"
-							>{
+							}
+						</p>
+						<p class="text-muted-foreground/70 text-xs">
+							{
 								T("common.docs.architecture.echo.subtitle", {
-									defaultValue:
-										"Rust task scheduler",
+									defaultValue: "Rust task scheduler",
 								})
-							}</p>
+							}
+						</p>
 					</li>
 				</ul>
 			</div>
@@ -276,7 +305,8 @@ const MetaDescription = T("meta.docs.description", {
 					})
 				}
 			</h2>
-			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
+			<div
+				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
 				<div class="border-b border-[var(--Border)] p-4">
 					<a
 						href="https://github.com/CodeEditorLand/Land"
@@ -285,12 +315,13 @@ const MetaDescription = T("meta.docs.description", {
 						class="font-medium text-[var(--Primary)] hover:underline">
 						CodeEditorLand/Land
 					</a>
-					<p class="mt-1 text-sm text-muted-foreground"
-						>{
+					<p class="mt-1 text-sm text-muted-foreground">
+						{
 							T("common.docs.repositories.mainMonorepo", {
 								defaultValue: "Main monorepo",
 							})
-						}</p>
+						}
+					</p>
 				</div>
 				<div class="border-b border-[var(--Border)] p-4">
 					<a
@@ -300,12 +331,13 @@ const MetaDescription = T("meta.docs.description", {
 						class="font-medium text-[var(--Primary)] hover:underline">
 						CodeEditorLand/Mountain
 					</a>
-					<p class="mt-1 text-sm text-muted-foreground"
-						>{
+					<p class="mt-1 text-sm text-muted-foreground">
+						{
 							T("common.docs.repositories.tauriBackend", {
 								defaultValue: "Tauri backend",
 							})
-						}</p>
+						}
+					</p>
 				</div>
 				<div class="border-b border-[var(--Border)] p-4">
 					<a
@@ -315,12 +347,13 @@ const MetaDescription = T("meta.docs.description", {
 						class="font-medium text-[var(--Primary)] hover:underline">
 						CodeEditorLand/Cocoon
 					</a>
-					<p class="mt-1 text-sm text-muted-foreground"
-						>{
+					<p class="mt-1 text-sm text-muted-foreground">
+						{
 							T("common.docs.repositories.extensionHost", {
 								defaultValue: "Extension host",
 							})
-						}</p>
+						}
+					</p>
 				</div>
 				<div class="p-4">
 					<a
@@ -340,7 +373,15 @@ const MetaDescription = T("meta.docs.description", {
 
 		<!-- Back to top -->
 		<div class="mt-12 border-t pt-8">
-			<a href="#top" class="StaccatoButton text-sm text-primary hover:underline">{T("common.button.backToTop", { defaultValue: "Back to top" })}<span class="InlineSeparator">↑</span></a>
+			<a
+				href="#top"
+				class="StaccatoButton text-sm text-primary hover:underline"
+				>{
+					T("common.button.backToTop", {
+						defaultValue: "Back to top",
+					})
+				}<span class="InlineSeparator">↑</span></a
+			>
 		</div>
 	</div>
 </Base>

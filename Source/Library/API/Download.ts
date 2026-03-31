@@ -26,16 +26,13 @@ export class DownloadsAPI {
 	async GetVersionList(Limit?: number): Promise<Download[]> {
 		const Response = await this.Workers.Download.GetVersionList(Limit);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch version list",
-			);
+			throw new Error(Response.error || "Failed to fetch version list");
 		}
 		return Response.data;
 	}
 
 	async GetDownload(Identifier: string): Promise<Download> {
-		const Response =
-			await this.Workers.Download.GetDownload(Identifier);
+		const Response = await this.Workers.Download.GetDownload(Identifier);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch download");
 		}
@@ -43,8 +40,7 @@ export class DownloadsAPI {
 	}
 
 	async GetSHA256(Identifier: string): Promise<{ sha256: string }> {
-		const Response =
-			await this.Workers.Download.GetSHA256(Identifier);
+		const Response = await this.Workers.Download.GetSHA256(Identifier);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch checksum");
 		}
@@ -52,8 +48,7 @@ export class DownloadsAPI {
 	}
 
 	async GetSignature(Identifier: string): Promise<{ signature: string }> {
-		const Response =
-			await this.Workers.Download.GetSignature(Identifier);
+		const Response = await this.Workers.Download.GetSignature(Identifier);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch signature");
 		}
@@ -67,12 +62,9 @@ export class DownloadsAPI {
 			signatureUrl: string | null;
 		}
 	> {
-		const Response =
-			await this.Workers.Download.GetInfo(Identifier);
+		const Response = await this.Workers.Download.GetInfo(Identifier);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Failed to fetch download info",
-			);
+			throw new Error(Response.error || "Failed to fetch download info");
 		}
 		return Response.data;
 	}
@@ -112,8 +104,7 @@ export class DownloadsAPI {
 	}
 
 	async TrackDownload(Identifier: string): Promise<{ eventId: string }> {
-		const Response =
-			await this.Workers.Download.TrackDownload(Identifier);
+		const Response = await this.Workers.Download.TrackDownload(Identifier);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to track download");
 		}

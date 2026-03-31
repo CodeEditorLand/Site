@@ -6,11 +6,7 @@ import type Property from "./Interface/Property/Checkbox.js";
  * Dynamic Checkbox component that accepts content schema
  * Composes Checkbox with Label and optional description
  */
-export function DynamicCheckbox({
-	content,
-	name,
-	onCheckedChange,
-}: Property) {
+export function DynamicCheckbox({ content, name, onCheckedChange }: Property) {
 	const {
 		label,
 		description,

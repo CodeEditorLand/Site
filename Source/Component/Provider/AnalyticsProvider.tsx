@@ -33,7 +33,10 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
 		try {
 			SetClient(GetWorkersClient());
 		} catch (AnalyticsError) {
-			console.error("Failed to initialize analytics client:", AnalyticsError);
+			console.error(
+				"Failed to initialize analytics client:",
+				AnalyticsError,
+			);
 		}
 	}, []);
 

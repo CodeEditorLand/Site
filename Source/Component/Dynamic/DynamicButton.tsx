@@ -12,8 +12,8 @@ import {
 	Search,
 	Send,
 	Sparkles,
+	type LucideIcon,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 
 import { Button } from "../UI/Button";
 import type Property from "./Interface/Property/Button.js";
@@ -82,12 +82,18 @@ export function DynamicButton({
 			{isLoading ? (
 				<>
 					{"\u2001"}
-					<Loader2 className="StaccatoSpinner h-4 w-4 animate-spin" aria-hidden="true" />
+					<Loader2
+						className="StaccatoSpinner h-4 w-4 animate-spin"
+						aria-hidden="true"
+					/>
 				</>
 			) : IconComponent ? (
 				<>
 					{"\u2001"}
-					<IconComponent className="StaccatoIcon h-4 w-4" aria-hidden="true" />
+					<IconComponent
+						className="StaccatoIcon h-4 w-4"
+						aria-hidden="true"
+					/>
 				</>
 			) : null}
 		</Button>

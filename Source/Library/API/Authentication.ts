@@ -66,8 +66,7 @@ export class AuthAPI {
 	}
 
 	async ResendVerification(): Promise<void> {
-		const Response =
-			await this.Workers.Authentication.ResendVerification();
+		const Response = await this.Workers.Authentication.ResendVerification();
 		if (!Response.success) {
 			throw new Error(
 				Response.error || "Failed to resend verification email",
@@ -79,9 +78,7 @@ export class AuthAPI {
 		const Response =
 			await this.Workers.Authentication.ForgotPassword(Email);
 		if (!Response.success || !Response.data) {
-			throw new Error(
-				Response.error || "Password reset request failed",
-			);
+			throw new Error(Response.error || "Password reset request failed");
 		}
 		return Response.data;
 	}

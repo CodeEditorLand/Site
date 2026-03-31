@@ -1,5 +1,5 @@
-import type FormField from "../../Content/Field/Form.js";
 import type ButtonContent from "../../Content/Button.js";
+import type FormField from "../../Content/Field/Form.js";
 
 export default interface Interface {
 	Title: string;

@@ -203,10 +203,9 @@
 
 .PortalTierCapabilityGrid {
 	display: grid;
-	grid-template-columns: repeat(3, auto);
-	justify-content: space-evenly;
+	grid-template-columns: repeat(3, 1fr);
 	row-gap: 2px;
-	column-gap: 1.5rem;
+	column-gap: 0;
 }
 
 .PortalTierCapabilityItem {
@@ -222,9 +221,9 @@
 .PortalTierCapabilityItem:not(:nth-child(3n + 1))::before {
 	content: "";
 	position: absolute;
-	left: -0.75rem;
+	left: 0;
 	top: 50%;
-	transform: translateY(-50%);
+	transform: translate(-50%, -50%);
 	height: 1em;
 	width: 1px;
 	background: var(--Border);

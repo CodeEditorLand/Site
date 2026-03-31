@@ -222,4 +222,3 @@ export function Footer({ content }: FooterProps) {
 		</footer>
 	);
 }
-

@@ -55,9 +55,8 @@ export function DynamicPricing({ content, className }: Property) {
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
-			const AttentionModule = await import(
-				"../../Function/Noise/Attention.js"
-			);
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
 			const Cards = Grid.querySelectorAll<HTMLElement>(".PricingCard");
 			Cards.forEach((Card, Index) => {
@@ -140,7 +139,7 @@ export function DynamicPricing({ content, className }: Property) {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
-							className={`PricingCard StaccatoCard StaccatoBorderShimmer bg-white flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
+							className={`PricingCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border bg-white ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
 							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.popular && (
 									<div className="mb-2">
@@ -150,7 +149,12 @@ export function DynamicPricing({ content, className }: Property) {
 									</div>
 								)}
 								<div className="mb-4">
-									<DynamicButton content={{ ...Tier.cta, fullWidth: true }} />
+									<DynamicButton
+										content={{
+											...Tier.cta,
+											fullWidth: true,
+										}}
+									/>
 								</div>
 								<h3 className="mb-2 text-2xl font-bold">
 									{Tier.name}
