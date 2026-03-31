@@ -144,7 +144,7 @@ export function Header({ content }: HeaderProps) {
 			<div className="container mx-auto flex h-14 items-center justify-between px-4">
 				<a
 					href="/"
-					className="StaccatoLogo HeaderLogo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+					className="StaccatoLogo HeaderLogo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 					aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
 					<div
 						className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
@@ -217,7 +217,7 @@ export function Header({ content }: HeaderProps) {
 							)}
 							<a
 								href={Link.href}
-								className="StaccatoNavLink HeaderSubLink relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+								className="StaccatoNavLink HeaderSubLink relative flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 								{...(Link.href.startsWith("http")
 									? {
 											target: "_blank",
@@ -235,7 +235,7 @@ export function Header({ content }: HeaderProps) {
 			{/* Mobile menu — full nav with icons */}
 			{MobileMenuOpen && (
 				<div
-					className="border-t border-[var(--border)] bg-white md:hidden"
+					className="border-t border-[var(--Border)] bg-white md:hidden"
 					role="dialog"
 					aria-label="Mobile navigation menu">
 					<nav
@@ -249,7 +249,7 @@ export function Header({ content }: HeaderProps) {
 								<a
 									key={Index}
 									href={Link.href}
-									className="flex items-center gap-2.5 rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+									className="flex items-center gap-2.5 rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 									onClick={() => SetMobileMenuOpen(false)}
 									{...(Link.href.startsWith("http")
 										? {

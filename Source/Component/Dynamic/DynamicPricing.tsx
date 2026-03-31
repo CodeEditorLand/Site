@@ -140,8 +140,8 @@ export function DynamicPricing({ content, className }: Property) {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
-							className={`pricing-card StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--border)]"} `}>
-							<div className="border-b border-[var(--border)] p-6">
+							className={`pricing-card StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
+							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.popular && (
 									<div className="mb-2">
 										<span className="StaccatoBadge StaccatoRhythmBeat text-xs font-semibold uppercase tracking-wider text-primary">

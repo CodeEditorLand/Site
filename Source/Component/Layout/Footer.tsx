@@ -98,7 +98,7 @@ export function Footer({ content }: FooterProps) {
 					<div className="lg:col-span-2">
 						<a
 							href="/"
-							className="mb-4 flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							className="mb-4 flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label={`${FooterData.brand?.name || "Land"} - Go to homepage`}>
 							<img
 								src="/Asset/Logo/Glyph/LandDark.svg"
@@ -125,7 +125,7 @@ export function Footer({ content }: FooterProps) {
 									<li key={LinkIndex}>
 										<a
 											href={Link.href}
-											className="StaccatoNavLink transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+											className="StaccatoNavLink transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 											{...(Link.href.startsWith("http")
 												? {
 														target: "_blank",
@@ -143,7 +143,7 @@ export function Footer({ content }: FooterProps) {
 
 				<Separator className="StaccatoSeparator my-8" />
 
-				<div className="StaccatoCard StaccatoBorderShimmer mb-6 border border-[var(--border)] bg-white p-4">
+				<div className="StaccatoCard StaccatoBorderShimmer mb-6 border border-[var(--Border)] bg-white p-4">
 					<p className="text-xs leading-relaxed text-muted-foreground">
 						{T(
 							"funding.prefix",
@@ -153,7 +153,7 @@ export function Footer({ content }: FooterProps) {
 							href="https://nlnet.nl/commonsfund"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+							className="text-[var(--Primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 							{T("funding.ngiFund", "NGI0 Commons Fund")}
 						</a>
 						{T("funding.nlnetIntro", ", a fund established by ")}
@@ -161,7 +161,7 @@ export function Footer({ content }: FooterProps) {
 							href="https://nlnet.nl"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+							className="text-[var(--Primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 							{T("funding.nlnet", "NLnet")}
 						</a>
 						{T(
@@ -172,7 +172,7 @@ export function Footer({ content }: FooterProps) {
 							href="https://nlnet.nl/project/Land/"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]">
+							className="text-[var(--Primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 							{T("funding.projectPage", "View project page")}
 						</a>
 						{"."}
@@ -185,7 +185,7 @@ export function Footer({ content }: FooterProps) {
 							href="https://github.com/CodeEditorLand"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
 							<img
 								src="/Image/GitHub.svg"
@@ -207,7 +207,7 @@ export function Footer({ content }: FooterProps) {
 							href="https://tauri.app"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)]"
+							className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Made with Tauri (opens in new tab)">
 							<img
 								src="https://playform.cloud/Image/GitHub/Made/Tauri.svg"

@@ -55,13 +55,13 @@ export function DynamicVerificationInfo({
 						/>
 						<span className="font-semibold">SHA-256 Checksum</span>
 					</div>
-					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--border)] p-3">
+					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
 							{Information.sha256}
 						</code>
 						<button
 							type="button"
-							className="border border-[var(--border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
+							className="border border-[var(--Border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
 							aria-label="Copy SHA-256 checksum to clipboard"
 							onClick={() =>
 								CopyToClipboard(
@@ -84,13 +84,13 @@ export function DynamicVerificationInfo({
 						/>
 						<span className="font-semibold">PGP Signature</span>
 					</div>
-					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--border)] p-3">
+					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
 							{Information.pgpSignature}
 						</code>
 						<button
 							type="button"
-							className="border border-[var(--border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
+							className="border border-[var(--Border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
 							aria-label="Copy PGP signature to clipboard"
 							onClick={() =>
 								CopyToClipboard(
@@ -110,7 +110,7 @@ export function DynamicVerificationInfo({
 			)}
 
 			{Information.verificationInstructions && (
-				<div className="border-t border-[var(--border)] pt-4">
+				<div className="border-t border-[var(--Border)] pt-4">
 					<h5 className="mb-2 font-semibold">
 						Verification Instructions
 					</h5>
@@ -164,7 +164,7 @@ export function DynamicVerificationInfo({
 
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						{/* Download Verification */}
-						<div className="bg-white/92 rounded-none border border-[var(--border)] p-6">
+						<div className="bg-white/92 rounded-none border border-[var(--Border)] p-6">
 							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
 								<Download
 									className="h-5 w-5"

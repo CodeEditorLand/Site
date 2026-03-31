@@ -116,7 +116,7 @@ export function VerifyPage({
 									</p>
 									<button
 										type="button"
-										className="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
+										className="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--Border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
 										onClick={() => Navigate("/")}>
 										{"Continue to Homepage"}
 									</button>
@@ -163,13 +163,13 @@ export function VerifyPage({
 									<div className="flex justify-center gap-4">
 										<button
 											type="button"
-											className="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary"
+											className="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--Border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary"
 											onClick={() => Navigate("/verify")}>
 											{"Send New Verification Email"}
 										</button>
 										<button
 											type="button"
-											className="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--border)] bg-background px-4 py-2 text-sm font-medium transition-all hover:bg-accent"
+											className="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--Border)] bg-background px-4 py-2 text-sm font-medium transition-all hover:bg-accent"
 											onClick={() =>
 												Navigate("/account/signin")
 											}>

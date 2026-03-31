@@ -29,22 +29,22 @@ export function HomePage({ content, className }: Property) {
 			<div className="flex-1" role="region" aria-label="Page content">
 				<DynamicHeroSection content={Hero} />
 				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--border)]"
+					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
 					aria-hidden="true"
 				/>
 				<DynamicFeatures content={Features} />
 				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--border)]"
+					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
 					aria-hidden="true"
 				/>
 				<DynamicPricing content={Pricing} />
 				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--border)]"
+					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
 					aria-hidden="true"
 				/>
 				<DynamicTestimonials content={Testimonials} />
 				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--border)]"
+					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
 					aria-hidden="true"
 				/>
 				<DynamicPlatformGrid content={Download} />

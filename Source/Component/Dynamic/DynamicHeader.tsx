@@ -45,7 +45,7 @@ export function DynamicHeader({ content, className }: Property) {
 						<a
 							key={Index}
 							href={Link.href}
-							className={`transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--primary)] ${
+							className={`transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
 								Link.isActive
 									? "font-medium text-foreground"
 									: "text-muted-foreground hover:text-foreground"

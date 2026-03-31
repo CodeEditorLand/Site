@@ -148,7 +148,7 @@ export function DynamicHeroSection({
 						{FloatingCard.map((Card, Index) => (
 							<div
 								key={Card.id}
-								className="StaccatoCard border border-[var(--border)] bg-white p-3"
+								className="StaccatoCard border border-[var(--Border)] bg-white p-3"
 								style={{
 									minWidth: "120px",
 									transitionDelay: `${Index * 50}ms`,
@@ -160,7 +160,7 @@ export function DynamicHeroSection({
 									{Card.colors?.map((Color, ColorIndex) => (
 										<div
 											key={ColorIndex}
-											className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--border)]`}
+											className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
 										/>
 									))}
 								</div>
@@ -174,7 +174,7 @@ export function DynamicHeroSection({
 						className="relative hidden h-[500px] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub — logo with micro-movement */}
-						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--border)] bg-white">
+						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
 							<img
 								src="/Asset/Logo/Glyph/LandDark.svg"
 								alt=""
@@ -195,7 +195,7 @@ export function DynamicHeroSection({
 							return (
 								<div
 									key={Card.id}
-									className="floating-card StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--border)] bg-white/95 p-3"
+									className="floating-card StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white/95 p-3"
 									style={{
 										top: `${CenterY}%`,
 										left: `${CenterX}%`,
@@ -210,7 +210,7 @@ export function DynamicHeroSection({
 											(Color, ColorIndex) => (
 												<div
 													key={ColorIndex}
-													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--border)]`}
+													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
 												/>
 											),
 										)}

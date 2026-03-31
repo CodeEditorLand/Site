@@ -96,7 +96,7 @@ export function DynamicTestimonials({
 					{testimonials.map((Testimonial) => (
 						<article
 							key={Testimonial.id}
-							className="TestimonialCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border border-[var(--border)] p-6">
+							className="TestimonialCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border border-[var(--Border)] p-6">
 							<div className="mb-4">
 								{RenderStars(Testimonial.rating)}
 							</div>
@@ -108,12 +108,12 @@ export function DynamicTestimonials({
 									<img
 										src={Testimonial.avatar}
 										alt={`Photo of ${Testimonial.author}`}
-										className="StaccatoAvatar size-12 rounded-none border border-[var(--border)] object-cover"
+										className="StaccatoAvatar size-12 rounded-none border border-[var(--Border)] object-cover"
 										loading="lazy"
 									/>
 								) : (
 									<div
-										className="StaccatoAvatar flex size-12 items-center justify-center rounded-none border border-[var(--border)] bg-secondary"
+										className="StaccatoAvatar flex size-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
 										aria-hidden="true">
 										<span className="text-lg font-semibold">
 											{(Testimonial.author || "?").charAt(

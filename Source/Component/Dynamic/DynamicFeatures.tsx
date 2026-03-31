@@ -127,9 +127,9 @@ export function DynamicFeatures({ content, className }: Property) {
 						return (
 							<div
 								key={Feature.id}
-								className="FeatureCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col items-start space-y-4 rounded-none border border-[var(--border)] p-6">
+								className="FeatureCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col items-start space-y-4 rounded-none border border-[var(--Border)] p-6">
 								<div
-									className="flex h-12 w-12 items-center justify-center rounded-none border border-[var(--border)] bg-secondary"
+									className="flex h-12 w-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
 									aria-hidden="true">
 									{Icon ? (
 										<Icon
