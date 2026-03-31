@@ -25,7 +25,7 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 import "../Layout/Header/Stylesheet.css";
 
 /**
- * Icon registry — maps string keys to Lucide components.
+ * Icon registry:maps string keys to Lucide components.
  * Used by both sub-header and mobile menu.
  */
 const IconRegistry: Record<string, LucideIcon> = {
@@ -159,7 +159,7 @@ export function Header({ content }: HeaderProps) {
 
 	return (
 		<header className="Header sticky top-0 z-50 w-full" role="banner">
-			{/* Primary bar — logo + actions */}
+			{/* Primary bar:logo + actions */}
 			<div className="container mx-auto flex h-14 items-center justify-between px-4">
 				<a
 					href="/"
@@ -220,7 +220,7 @@ export function Header({ content }: HeaderProps) {
 				</div>
 			</div>
 
-			{/* Sub-header — breadcrumb-style app bar with icons */}
+			{/* Sub-header:breadcrumb-style app bar with icons */}
 			<div className="HeaderSub hidden md:block" style={{ marginTop: "2px" }}>
 				<nav
 					className="container mx-auto flex items-center px-4"
@@ -251,7 +251,7 @@ export function Header({ content }: HeaderProps) {
 				</nav>
 			</div>
 
-			{/* Mobile menu — full nav with icons */}
+			{/* Mobile menu:full nav with icons */}
 			{MobileMenuOpen && (
 				<div
 					className="border-t border-[var(--Border)] bg-white md:hidden"

@@ -53,12 +53,30 @@
 		"architecture": {
 			"heading": "Descripcion general de la arquitectura",
 			"intro": "Land reemplaza la pila Electron de VS Code con una arquitectura moderna y de alto rendimiento:",
-			"mountain": "Backend nativo Rust/Tauri — gestiona ventanas, sistema de archivos, procesos",
-			"cocoon": "Host de extension TypeScript — ejecuta extensiones de VS Code a traves de Effect-TS",
-			"wind": "Servicios de interfaz TypeScript — reimplementacion del entorno de trabajo de VS Code",
-			"sky": "Componentes de interfaz Astro — renderiza la interfaz del editor",
-			"air": "Demonio de fondo Rust — actualizaciones, descargas, firma criptografica",
-			"echo": "Planificador de tareas Rust — ejecutor de robo de trabajo de alto rendimiento"
+			"mountain": {
+				"description": "Gestiona ventanas, sistema de archivos, procesos",
+				"subtitle": "Backend nativo Rust/Tauri"
+			},
+			"cocoon": {
+				"description": "Ejecuta extensiones de VS Code a traves de Effect-TS",
+				"subtitle": "Host de extension TypeScript"
+			},
+			"wind": {
+				"description": "Reimplementacion del entorno de trabajo de VS Code",
+				"subtitle": "Servicios de interfaz TypeScript"
+			},
+			"sky": {
+				"description": "Renderiza la interfaz del editor",
+				"subtitle": "Componentes de interfaz Astro"
+			},
+			"air": {
+				"description": "Actualizaciones, descargas, firma criptografica",
+				"subtitle": "Demonio de fondo Rust"
+			},
+			"echo": {
+				"description": "Ejecutor de robo de trabajo de alto rendimiento",
+				"subtitle": "Planificador de tareas Rust"
+			}
 		},
 		"repositories": {
 			"heading": "Repositorios de codigo fuente",
@@ -179,7 +197,7 @@
 		},
 		"openSource": {
 			"heading": "Codigo abierto",
-			"description": "Code Editor Land es de codigo abierto bajo CC0. Los planes empresariales proporcionan soporte, SLA y desarrollo personalizado — no acceso al codigo en si."
+			"description": "Los planes empresariales proporcionan soporte, SLA y desarrollo personalizado, no acceso al codigo en si. Code Editor Land es de codigo abierto bajo CC0."
 		}
 	},
 	"dashboard": {

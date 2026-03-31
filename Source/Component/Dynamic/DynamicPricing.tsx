@@ -149,6 +149,9 @@ export function DynamicPricing({ content, className }: Property) {
 										</span>
 									</div>
 								)}
+								<div className="mb-4">
+									<DynamicButton content={{ ...Tier.cta, fullWidth: true }} />
+								</div>
 								<h3 className="mb-2 text-2xl font-bold">
 									{Tier.name}
 								</h3>
@@ -175,7 +178,7 @@ export function DynamicPricing({ content, className }: Property) {
 							</div>
 
 							<div className="flex flex-1 flex-col p-6">
-								<ul className="mb-8 flex-1 space-y-3">
+								<ul className="flex-1 space-y-3">
 									{Tier.features.map(
 										(Feature, FeatureIndex) => (
 											<li
@@ -192,7 +195,6 @@ export function DynamicPricing({ content, className }: Property) {
 										),
 									)}
 								</ul>
-								<DynamicButton content={Tier.cta} fullWidth />
 							</div>
 						</div>
 					))}

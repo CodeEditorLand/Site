@@ -39,9 +39,9 @@
 		--SpineWASM: #a855f7;
 
 		/* Authentication Tier Colors (mapped from Protocol Spine) */
-		--TierCloud: var(--SpineIPC); /* #3b82f6 — online secure login */
-		--TierProvider: var(--SpineWASM); /* #a855f7 — GitHub/OAuth */
-		--TierLocalFirst: var(--SpineTCP); /* #f97316 — Air Daemon */
+		--TierCloud: var(--SpineIPC); /* #3b82f6:online secure login */
+		--TierProvider: var(--SpineWASM); /* #a855f7:GitHub/OAuth */
+		--TierLocalFirst: var(--SpineTCP); /* #f97316:Air Daemon */
 		--TierCloudMute: color-mix(in srgb, var(--SpineIPC) 12%, #ffffff);
 		--TierProviderMute: color-mix(in srgb, var(--SpineWASM) 12%, #ffffff);
 		--TierLocalFirstMute: color-mix(in srgb, var(--SpineTCP) 12%, #ffffff);

@@ -19,7 +19,7 @@ import { useEffect, useRef } from "react";
 import type Property from "./Interface/Property/Feature.js";
 
 /**
- * Icon registry — direct imports so icons render in initial HTML,
+ * Icon registry:direct imports so icons render in initial HTML,
  * not after a dynamic import resolves on the client.
  */
 const FeatureIconRegistry: Record<string, LucideIcon> = {

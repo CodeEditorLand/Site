@@ -19,7 +19,7 @@ import { Button } from "../UI/Button";
 import type Property from "./Interface/Property/Button.js";
 
 /**
- * Icon registry — direct imports for instant render.
+ * Icon registry:direct imports for instant render.
  * Covers all icons used in CTA buttons across the site.
  */
 const ButtonIconRegistry: Record<string, LucideIcon> = {

@@ -42,11 +42,11 @@
 	},
 	"contributing": {
 		"title": "Contribuir | Code Editor Land",
-		"description": "Aprenda como contribuir a Code Editor Land — un editor de codigo abierto construido con Rust y Tauri."
+		"description": "Un editor de codigo abierto construido con Rust y Tauri. Aprenda como contribuir a Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Panel de control | Code Editor Land",
-		"description": "Su panel de control de Code Editor Land — administre su cuenta, descargas y configuraciones."
+		"description": "Administre su cuenta, descargas y configuraciones. Su panel de control de Code Editor Land."
 	},
 	"contact": {
 		"sales": {

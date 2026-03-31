@@ -29,11 +29,11 @@ export function DynamicCard({
 			{HeaderSection && (
 				<CardHeader>
 					{HeaderSection.title && <CardTitle>{HeaderSection.title}</CardTitle>}
-					{HeaderSection.description && (
-						<CardDescription>{HeaderSection.description}</CardDescription>
-					)}
 					{HeaderSection.content && (
 						<div className="mt-2">{HeaderSection.content}</div>
+					)}
+					{HeaderSection.description && (
+						<CardDescription>{HeaderSection.description}</CardDescription>
 					)}
 				</CardHeader>
 			)}

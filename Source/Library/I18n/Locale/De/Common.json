@@ -53,12 +53,30 @@
 		"architecture": {
 			"heading": "Architekturueberblick",
 			"intro": "Land ersetzt den Electron-Stack von VS Code durch eine moderne, hochleistungsfaehige Architektur:",
-			"mountain": "Rust/Tauri-nativer Backend — verwaltet Fenster, Dateisystem, Prozesse",
-			"cocoon": "TypeScript-Erweiterungs-Host — fuehrt VS Code-Erweiterungen ueber Effect-TS aus",
-			"wind": "TypeScript-UI-Dienste — Neuimplementierung des VS Code-Workbench",
-			"sky": "Astro-UI-Komponenten — rendert die Editor-Oberflaeche",
-			"air": "Rust-Hintergrunddaemon — Updates, Downloads, Kryptosignierung",
-			"echo": "Rust-Aufgabenplaner — hochleistungsfaehiger Work-Stealing-Executor"
+			"mountain": {
+				"description": "Verwaltet Fenster, Dateisystem, Prozesse",
+				"subtitle": "Rust/Tauri-nativer Backend"
+			},
+			"cocoon": {
+				"description": "Fuehrt VS Code-Erweiterungen ueber Effect-TS aus",
+				"subtitle": "TypeScript-Erweiterungs-Host"
+			},
+			"wind": {
+				"description": "Neuimplementierung des VS Code-Workbench",
+				"subtitle": "TypeScript-UI-Dienste"
+			},
+			"sky": {
+				"description": "Rendert die Editor-Oberflaeche",
+				"subtitle": "Astro-UI-Komponenten"
+			},
+			"air": {
+				"description": "Updates, Downloads, Kryptosignierung",
+				"subtitle": "Rust-Hintergrunddaemon"
+			},
+			"echo": {
+				"description": "Hochleistungsfaehiger Work-Stealing-Executor",
+				"subtitle": "Rust-Aufgabenplaner"
+			}
 		},
 		"repositories": {
 			"heading": "Quell-Repositories",
@@ -179,7 +197,10 @@
 		},
 		"openSource": {
 			"heading": "Open Source",
-			"description": "Code Editor Land ist Open Source unter CC0. Enterprise-Plaene bieten Support, SLAs und individuelle Entwicklung — keinen Zugang zum Code selbst."
+			"description": {
+				"detail": "Keinen Zugang zum Code selbst",
+				"main": "Code Editor Land ist Open Source unter CC0. Enterprise-Plaene bieten Support, SLAs und individuelle Entwicklung."
+			}
 		}
 	},
 	"dashboard": {

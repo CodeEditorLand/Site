@@ -42,11 +42,11 @@
 	},
 	"contributing": {
 		"title": "Принос | Code Editor Land",
-		"description": "Научете как да допринесете за Code Editor Land — редактор на код с отворен код, изграден с Rust и Tauri."
+		"description": "Редактор на код с отворен код, изграден с Rust и Tauri. Научете как да допринесете за Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Табло | Code Editor Land",
-		"description": "Вашето табло в Code Editor Land — управлявайте профила, изтеглянията и настройките си."
+		"description": "Управлявайте профила, изтеглянията и настройките си. Вашето табло в Code Editor Land."
 	},
 	"contact": {
 		"sales": {

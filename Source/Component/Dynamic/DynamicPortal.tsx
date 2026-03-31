@@ -47,7 +47,7 @@ const TierIconRegistry: Record<string, LucideIcon> = {
 };
 
 /**
- * Single tier row — login form on the left, feature description on the right.
+ * Single tier row:login form on the left, feature description on the right.
  * Color-coded border by Protocol Spine identity.
  */
 const PortalTierRow = ({
@@ -323,7 +323,7 @@ const PortalTierRow = ({
 					</div>
 				)}
 
-				{/* Settings managed badge — universal across all tiers */}
+				{/* Settings managed badge:universal across all tiers */}
 				<div className="PortalTierSettingsManaged StaccatoBorderShimmer">
 					<RefreshCw
 						className="StaccatoIcon h-3.5 w-3.5"
@@ -343,12 +343,12 @@ const PortalTierRow = ({
 };
 
 /**
- * DynamicPortal — Three-tier authentication portal.
+ * DynamicPortal:Three-tier authentication portal.
  *
  * Three distinct rows, each color-coded by Protocol Spine:
- *   Cloud (IPC blue) — Secure online login
- *   Provider (WASM purple) — GitHub/OAuth authentication
- *   LocalFirst (TCP orange) — Air Daemon local-first connection
+ *   Cloud (IPC blue):Secure online login
+ *   Provider (WASM purple):GitHub/OAuth authentication
+ *   LocalFirst (TCP orange):Air Daemon local-first connection
  *
  * Layout: Login box (left, white bg) | Feature description (right)
  * Staccato noise integration on all interactive elements.

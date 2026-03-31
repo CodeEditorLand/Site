@@ -42,11 +42,11 @@
 	},
 	"contributing": {
 		"title": "Contribuer | Code Editor Land",
-		"description": "Decouvrez comment contribuer a Code Editor Land — un editeur de code open source construit avec Rust et Tauri."
+		"description": "Un editeur de code open source construit avec Rust et Tauri. Decouvrez comment contribuer a Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Tableau de bord | Code Editor Land",
-		"description": "Votre tableau de bord Code Editor Land — gerez votre compte, vos telechargements et vos parametres."
+		"description": "Gerez votre compte, vos telechargements et vos parametres. Votre tableau de bord Code Editor Land."
 	},
 	"contact": {
 		"sales": {

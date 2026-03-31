@@ -42,11 +42,11 @@
 	},
 	"contributing": {
 		"title": "Contributing | Code Editor Land",
-		"description": "Learn how to contribute to Code Editor Land — an open-source code editor built with Rust and Tauri."
+		"description": "An open source code editor built with Rust and Tauri. Learn how to contribute to Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Dashboard | Code Editor Land",
-		"description": "Your Code Editor Land dashboard — manage your account, downloads, and settings."
+		"description": "Manage your account, download, and setting. Your Code Editor Land dashboard."
 	},
 	"contact": {
 		"sales": {

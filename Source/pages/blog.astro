@@ -66,23 +66,8 @@ const MetaDescription = T("meta.blog.description", {
 		<section
 			class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-12 text-center">
 			<div class="mx-auto max-w-md">
-				<h2 class="mb-4 text-2xl font-semibold">
-					{
-						T("common.blog.comingSoonHeading", {
-							defaultValue: "Coming Soon",
-						})
-					}
-				</h2>
-				<p class="mb-8 text-muted-foreground">
-					{
-						T("common.blog.comingSoonText", {
-							defaultValue:
-								"We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
-						})
-					}
-				</p>
 				<div
-					class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+					class="mb-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
 					<a
 						href="https://github.com/CodeEditorLand/Land/discussions"
 						target="_blank"
@@ -106,6 +91,21 @@ const MetaDescription = T("meta.blog.description", {
 						}
 					</a>
 				</div>
+				<h2 class="mb-4 text-2xl font-semibold">
+					{
+						T("common.blog.comingSoonHeading", {
+							defaultValue: "Coming Soon",
+						})
+					}
+				</h2>
+				<p class="text-muted-foreground">
+					{
+						T("common.blog.comingSoonText", {
+							defaultValue:
+								"We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
+						})
+					}
+				</p>
 			</div>
 		</section>
 

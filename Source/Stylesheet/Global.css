@@ -23,8 +23,8 @@ select {
 	font-family: inherit;
 }
 
-/* Emoji font — apply ONLY to elements that render emoji/symbol characters.
- * NEVER use broad attribute selectors like [class*="star"] — they leak
+/* Emoji font:apply ONLY to elements that render emoji/symbol characters.
+ * NEVER use broad attribute selectors like [class*="star"]:they leak
  * emoji font-family onto unrelated text that shares a substring. */
 .StarRatingSymbol {
 	font-family:

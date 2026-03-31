@@ -33,19 +33,19 @@ export default (async () => {
 		const Stepped = Quantize(Raw, STEP);
 		const Phase = Quantize(Noise(Time * SPEED * 0.5, 100), 4);
 
-		// Color channel — very slow drift, 3-step quantize for sharp palette shifts
+		// Color channel:very slow drift, 3-step quantize for sharp palette shifts
 		const Color = Quantize(Noise(Time * SPEED * 0.2, 200), 3);
 
-		// Rhythm channel — faster pulse, 2-step for binary on/off staccato beat
+		// Rhythm channel:faster pulse, 2-step for binary on/off staccato beat
 		const Rhythm = Quantize(Noise(Time * SPEED * 2, 300), 2);
 
-		// Morph channel — medium speed, 5-step for shape interpolation
+		// Morph channel:medium speed, 5-step for shape interpolation
 		const Morph = Quantize(Noise(Time * SPEED * 0.7, 400), 5);
 
-		// Border channel — slow crawl for border weight/color transitions
+		// Border channel:slow crawl for border weight/color transitions
 		const Border = Quantize(Noise(Time * SPEED * 0.3, 500), 4);
 
-		// Glow channel — continuous for smooth glow radius breathing
+		// Glow channel:continuous for smooth glow radius breathing
 		const Glow = Noise(Time * SPEED * 0.8, 600);
 
 		const Root = document.documentElement.style;

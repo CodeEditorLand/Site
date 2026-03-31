@@ -52,7 +52,7 @@
 	},
 	"signIn": {
 		"emailPlaceholder": "name@example.com",
-		"forgotPassword": "Забравихте паролата си? Няма проблем — натиснете тук, за да я нулирате сигурно.",
+		"forgotPassword": "Забравихте паролата си? Няма проблем - натиснете тук, за да я нулирате сигурно.",
 		"githubButton": "Продължете с GitHub",
 		"passwordPlaceholder": "Въведете паролата си",
 		"signUpLink": "Регистрация",

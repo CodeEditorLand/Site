@@ -238,7 +238,7 @@ export function AccountPage({
 		}
 	};
 
-	// OAuth callback handler — extract token from URL when returning from OAuth
+	// OAuth callback handler:extract token from URL when returning from OAuth
 	useEffect(() => {
 		const UrlParameters = new URLSearchParams(window.location.search);
 		const OAuthToken = UrlParameters.get("token");
@@ -254,7 +254,7 @@ export function AccountPage({
 					SetCurrentUser(SessionResponse.user);
 				})
 				.catch(() => {
-					// Session fetch failed but token is set — user can still proceed
+					// Session fetch failed but token is set:user can still proceed
 				});
 
 			Navigate("/account");

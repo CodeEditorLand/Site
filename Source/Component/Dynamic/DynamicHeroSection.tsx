@@ -117,12 +117,12 @@ export function DynamicHeroSection({
 			role="button"
 			tabIndex={0}>
 			<div className="container mx-auto px-4 text-center">
-				{/* Badge — breathing with rhythm pulse on dot */}
+				{/* Badge:breathing with rhythm pulse on dot */}
 				{content.badge && (
 					<DynamicBadge content={content.badge} className="StaccatoBadge mb-6" />
 				)}
 
-				{/* Title — subtle color shift */}
+				{/* Title:subtle color shift */}
 				<h1 className="StaccatoColorShift mx-auto mb-6 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
 					{Title}{" "}
 					{TitleHighlight && (
@@ -130,16 +130,16 @@ export function DynamicHeroSection({
 					)}
 				</h1>
 
-				{/* Subtitle — breathing opacity */}
-				<p className="StaccatoBreath mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
-					{Subtitle}
-				</p>
-
-				{/* CTAs — noise-driven button states */}
-				<div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
+				{/* CTAs:noise-driven button states */}
+				<div className="mb-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
 					<DynamicButton content={PrimaryCTA} />
 					{SecondaryCTA && <DynamicButton content={SecondaryCTA} />}
 				</div>
+
+				{/* Subtitle:breathing opacity */}
+				<p className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
+					{Subtitle}
+				</p>
 
 				{/* Tech stack visualization */}
 				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
@@ -173,7 +173,7 @@ export function DynamicHeroSection({
 						ref={SceneReference}
 						className="relative hidden h-[500px] lg:block"
 						style={{ perspective: "1000px" }}>
-						{/* Central Hub — logo with micro-movement */}
+						{/* Central Hub:logo with micro-movement */}
 						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
 							<img
 								src="/Asset/Logo/Glyph/LandDark.svg"
@@ -182,7 +182,7 @@ export function DynamicHeroSection({
 							/>
 						</div>
 
-						{/* Floating Cards — noise-seeded staccato */}
+						{/* Floating Cards:noise-seeded staccato */}
 						{FloatingCard.map((Card, Index) => {
 							const Total = FloatingCard.length;
 							const Angle =
@@ -219,7 +219,7 @@ export function DynamicHeroSection({
 							);
 						})}
 
-						{/* Connecting Lines — breathing opacity */}
+						{/* Connecting Lines:breathing opacity */}
 						{HeroConfiguration.showConnectingLines && (
 							<svg
 								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full opacity-15"

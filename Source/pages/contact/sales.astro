@@ -91,6 +91,17 @@ const MetaDescription = T("meta.contact.sales.description", {
 						</p>
 					</div>
 
+					<a
+						href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="StaccatoButton mb-4 inline-flex h- items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-8 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						{
+							T("common.sales.contact.openIssueButton", {
+								defaultValue: "Open GitHub Issue",
+							})
+						}
+					</a>
 					<h2 class="mb-4 text-xl font-semibold">
 						{
 							T("common.sales.contact.openIssueHeading", {
@@ -98,7 +109,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 							})
 						}
 					</h2>
-					<p class="mb-6 text-sm text-muted-foreground">
+					<p class="text-sm text-muted-foreground">
 						{
 							T("common.sales.contact.openIssueDescription", {
 								defaultValue:
@@ -106,18 +117,6 @@ const MetaDescription = T("meta.contact.sales.description", {
 							})
 						}
 					</p>
-
-					<a
-						href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-8 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-						{
-							T("common.sales.contact.openIssueButton", {
-								defaultValue: "Open GitHub Issue",
-							})
-						}
-					</a>
 
 					<div
 						class="mt-8 border border-[var(--Border)] bg-[var(--Secondary)] p-4">
@@ -203,27 +202,25 @@ const MetaDescription = T("meta.contact.sales.description", {
 				</div>
 
 				<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
-					<h3 class="mb-3 font-semibold">
+					<a
+						href="mailto:enterprise@editor.land"
+						class="font-medium text-[var(--Primary)] hover:underline">
+						enterprise@editor.land
+					</a>
+					<h3 class="mt-2 mb-3 font-semibold">
 						{
 							T("common.sales.contact.directHeading", {
 								defaultValue: "Direct Contact",
 							})
 						}
 					</h3>
-					<p class="mb-3 text-sm text-muted-foreground">
+					<p class="mb-2 text-sm text-muted-foreground">
 						{
 							T("common.sales.contact.description", {
 								defaultValue:
-									"Prefer email? Reach us directly:",
+									"Prefer email? Reach us directly.",
 							})
 						}
-					</p>
-					<p class="mb-2 text-sm">
-						<a
-							href="mailto:enterprise@editor.land"
-							class="text-[var(--Primary)] hover:underline">
-							enterprise@editor.land
-						</a>
 					</p>
 					<p class="text-xs text-muted-foreground">
 						{
@@ -247,7 +244,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 						{
 							T("common.sales.openSource.description", {
 								defaultValue:
-									"Code Editor Land is open source under CC0. Enterprise plans provide support, SLAs, and custom development — not access to the code itself.",
+									"Not access to the code itself. Code Editor Land is open source under CC0. Enterprise plan provide support, SLA, and custom development.",
 							})
 						}
 					</p>

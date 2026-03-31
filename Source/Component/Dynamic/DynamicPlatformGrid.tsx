@@ -270,10 +270,35 @@ export function DynamicPlatformGrid({
 					{Platforms.map((Platform) => {
 						const Icon = IconMap[Platform.icon];
 
-						const PlatformCardSection: CardSection = {
+						const HasVerification = showVerification &&
+						(Platform.checksum || Platform.signature);
+
+					const PlatformCardSection: CardSection = {
 							header: {
 								title: Platform.name,
 								description: Platform.description,
+								content: (
+									<div className="mt-3">
+										<DynamicButton
+											content={{
+												text: T("labels.downloadFor", {
+													defaultValue:
+														"Download for {{platform}}",
+													platform:
+														Platform.name ||
+														"this platform",
+												}),
+												variant: "default",
+												size: "lg",
+												fullWidth: true,
+												icon: "Download",
+											}}
+											onAction={() =>
+												HandleDownload(Platform)
+											}
+										/>
+									</div>
+								),
 							},
 							body: {
 								content: (
@@ -315,49 +340,27 @@ export function DynamicPlatformGrid({
 									</div>
 								),
 							},
+							...(HasVerification ? {
 							footer: {
 								content: (
-									<>
-										{showVerification &&
-											(Platform.checksum ||
-												Platform.signature) && (
-												<div className="mb-3 text-xs text-muted-foreground">
-													{Platform.checksum && (
-														<p>
-															SHA-256:{" "}
-															{Platform.checksum.substring(
-																0,
-																16,
-															)}
-															...
-														</p>
-													)}
-													{Platform.signature && (
-														<p>PGP Signed: ✓</p>
-													)}
-												</div>
-											)}
-										<DynamicButton
-											content={{
-												text: T("labels.downloadFor", {
-													defaultValue:
-														"Download for {{platform}}",
-													platform:
-														Platform.name ||
-														"this platform",
-												}),
-												variant: "default",
-												size: "lg",
-												fullWidth: true,
-												icon: "Download",
-											}}
-											onAction={() =>
-												HandleDownload(Platform)
-											}
-										/>
-									</>
+									<div className="text-xs text-muted-foreground">
+										{Platform.checksum && (
+											<p>
+												SHA-256:{" "}
+												{Platform.checksum.substring(
+													0,
+													16,
+												)}
+												...
+											</p>
+										)}
+										{Platform.signature && (
+											<p>PGP Signed: ✓</p>
+										)}
+									</div>
 								),
 							},
+						} : {}),
 						};
 
 						return (

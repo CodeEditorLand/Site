@@ -8,7 +8,7 @@ export default (async () => {
 	const LayoutNoise: Noise2D = CreateNoise2D();
 
 	/**
-	 * Scatter — returns noise-driven X/Y offsets for layout distribution.
+	 * Scatter:returns noise-driven X/Y offsets for layout distribution.
 	 * Each Index gets a deterministic but organic position.
 	 */
 	const Scatter = (
@@ -26,7 +26,7 @@ export default (async () => {
 	};
 
 	/**
-	 * ScatterRotation — returns a noise-driven rotation angle.
+	 * ScatterRotation:returns a noise-driven rotation angle.
 	 * Useful for cards, badges, icons that need organic tilt.
 	 */
 	const ScatterRotation = (
@@ -37,7 +37,7 @@ export default (async () => {
 	};
 
 	/**
-	 * ScatterScale — returns a noise-driven scale factor.
+	 * ScatterScale:returns a noise-driven scale factor.
 	 * Centers around 1.0, deviates by Spread.
 	 */
 	const ScatterScale = (
@@ -48,7 +48,7 @@ export default (async () => {
 	};
 
 	/**
-	 * ScatterDelay — returns a noise-driven animation delay in ms.
+	 * ScatterDelay:returns a noise-driven animation delay in ms.
 	 * Creates organic staggering instead of linear index * N.
 	 */
 	const ScatterDelay = (
@@ -60,7 +60,7 @@ export default (async () => {
 	};
 
 	/**
-	 * ScatterOpacity — returns noise-driven opacity between Min and Max.
+	 * ScatterOpacity:returns noise-driven opacity between Min and Max.
 	 */
 	const ScatterOpacity = (
 		Index: number,
@@ -73,7 +73,7 @@ export default (async () => {
 	};
 
 	/**
-	 * ApplyToElement — sets all attention CSS vars on one element.
+	 * ApplyToElement:sets all attention CSS vars on one element.
 	 */
 	const ApplyToElement = (
 		Element: HTMLElement,
@@ -96,7 +96,7 @@ export default (async () => {
 	};
 
 	/**
-	 * ApplyToSelector — batch-applies attention vars to all matching elements.
+	 * ApplyToSelector:batch-applies attention vars to all matching elements.
 	 */
 	const ApplyToSelector = (
 		Selector: string,

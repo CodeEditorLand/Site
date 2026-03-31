@@ -19,7 +19,7 @@
 				"title": "Cross-Platform"
 			},
 			"collaboration": {
-				"description": "Licensed under Creative Commons CC0 — completely free to use, modify, and distribute. No strings attached.",
+				"description": "Completely free to use, modify, and distribute. Licensed under Creative Commons CC0. No string attached.",
 				"title": "Open Source"
 			},
 			"cicdIntegration": {
@@ -92,7 +92,7 @@
 	},
 	"testimonials": {
 		"quote": {
-			"1": "Land is exactly what VS Code needed — a performance-focused, open alternative. It's incredibly fast.",
+			"1": "A performance-focused, open alternative. Land is exactly what VS Code needed. It's incredibly fast.",
 			"2": "The Effect-TS architecture is beautiful to work with. The type safety catches bugs before they happen.",
 			"3": "Running my existing extensions with no changes is a game-changer. The compatibility is impressive.",
 			"4": "Finally, an editor that respects my system resources. No more Electron memory bloat.",

@@ -127,7 +127,16 @@ const MetaDescription = T("meta.dashboard.description", {
 						})
 					}
 				</h2>
-				<p class="mb-4 text-sm text-muted-foreground">
+				<a
+					href="/downloads"
+					class="StaccatoButton mb-3 inline-flex h- items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					{
+						T("common.dashboard.downloads.goButton", {
+							defaultValue: "Go to Downloads",
+						})
+					}
+				</a>
+				<p class="text-sm text-muted-foreground">
 					{
 						T("common.dashboard.downloads.description", {
 							defaultValue:
@@ -135,15 +144,6 @@ const MetaDescription = T("meta.dashboard.description", {
 						})
 					}
 				</p>
-				<a
-					href="/downloads"
-					class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-					{
-						T("common.dashboard.downloads.goButton", {
-							defaultValue: "Go to Downloads",
-						})
-					}
-				</a>
 			</div>
 
 			<!-- Quick Links Card -->
@@ -221,7 +221,15 @@ const MetaDescription = T("meta.dashboard.description", {
 				<div
 					class="flex items-center justify-between border-b border-[var(--Border)] p-5">
 					<div>
-						<h3 class="font-medium">
+						<span
+							class="border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-medium text-muted-foreground">
+							{
+								T("common.comingSoon", {
+									defaultValue: "Coming Soon",
+								})
+							}
+						</span>
+						<h3 class="mt-2 font-medium">
 							{
 								T("common.dashboard.settings.sync.title", {
 									defaultValue: "Sync Settings",
@@ -240,19 +248,19 @@ const MetaDescription = T("meta.dashboard.description", {
 							}
 						</p>
 					</div>
-					<span
-						class="border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-medium text-muted-foreground">
-						{
-							T("common.comingSoon", {
-								defaultValue: "Coming Soon",
-							})
-						}
-					</span>
 				</div>
 				<div
 					class="flex items-center justify-between border-b border-[var(--Border)] p-5">
 					<div>
-						<h3 class="font-medium">
+						<span
+							class="border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-medium text-muted-foreground">
+							{
+								T("common.comingSoon", {
+									defaultValue: "Coming Soon",
+								})
+							}
+						</span>
+						<h3 class="mt-2 font-medium">
 							{
 								T(
 									"common.dashboard.settings.extensionSync.title",
@@ -272,36 +280,8 @@ const MetaDescription = T("meta.dashboard.description", {
 							}
 						</p>
 					</div>
-					<span
-						class="border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-medium text-muted-foreground">
-						{
-							T("common.comingSoon", {
-								defaultValue: "Coming Soon",
-							})
-						}
-					</span>
 				</div>
-				<div class="flex items-center justify-between p-5">
-					<div>
-						<h3 class="font-medium">
-							{
-								T("common.dashboard.settings.account.title", {
-									defaultValue: "Account",
-								})
-							}
-						</h3>
-						<p class="mt-1 text-sm text-muted-foreground">
-							{
-								T(
-									"common.dashboard.settings.account.description",
-									{
-										defaultValue:
-											"Update your profile and manage your account.",
-									},
-								)
-							}
-						</p>
-					</div>
+				<div class="p-5">
 					<a
 						href="/account/signin"
 						class="StaccatoButton inline-flex h- items-center justify-center border border-[var(--Border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
@@ -312,6 +292,24 @@ const MetaDescription = T("meta.dashboard.description", {
 							)
 						}
 					</a>
+					<h3 class="mt-2 font-medium">
+						{
+							T("common.dashboard.settings.account.title", {
+								defaultValue: "Account",
+							})
+						}
+					</h3>
+					<p class="mt-1 text-sm text-muted-foreground">
+						{
+							T(
+								"common.dashboard.settings.account.description",
+								{
+									defaultValue:
+										"Update your profile and manage your account.",
+								},
+							)
+						}
+					</p>
 				</div>
 			</div>
 		</section>
