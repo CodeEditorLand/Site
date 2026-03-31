@@ -164,7 +164,7 @@ export function DynamicPlatformGrid({
 				"../../Function/Noise/Attention.js"
 			);
 			const Attention = await AttentionModule.default;
-			Attention.ApplyToSelector(".platform-card", 5, 3);
+			Attention.ApplyToSelector(".PlatformCard", 5, 3);
 		};
 
 		ApplyScatter();
@@ -364,7 +364,7 @@ export function DynamicPlatformGrid({
 							<DynamicCard
 								key={Platform.id}
 								sections={PlatformCardSection}
-								className="platform-card flex flex-col"
+								className="PlatformCard flex flex-col"
 							/>
 						);
 					})}

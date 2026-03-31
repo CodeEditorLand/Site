@@ -59,7 +59,7 @@ export function DynamicPricing({ content, className }: Property) {
 				"../../Function/Noise/Attention.js"
 			);
 			const Attention = await AttentionModule.default;
-			const Cards = Grid.querySelectorAll<HTMLElement>(".pricing-card");
+			const Cards = Grid.querySelectorAll<HTMLElement>(".PricingCard");
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 4, 3);
 			});
@@ -140,7 +140,7 @@ export function DynamicPricing({ content, className }: Property) {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
-							className={`pricing-card StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
+							className={`PricingCard StaccatoCard StaccatoBorderShimmer bg-white/92 flex flex-col rounded-none border ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
 							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.popular && (
 									<div className="mb-2">

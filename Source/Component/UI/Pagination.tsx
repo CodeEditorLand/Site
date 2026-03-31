@@ -74,7 +74,7 @@ function PaginationPrevious({
 			aria-label="Go to previous page"
 			size="default"
 			className={cn(
-				"gap-1 px-[var(--spacing-2.5)] sm:pl-[var(--spacing-2.5)]",
+				"gap-1 px-[var(--Spacing2Point5)] sm:pl-[var(--Spacing2Point5)]",
 				className,
 			)}
 			{...props}>
@@ -93,7 +93,7 @@ function PaginationNext({
 			aria-label="Go to next page"
 			size="default"
 			className={cn(
-				"gap-1 px-[var(--spacing-2.5)] sm:pr-[var(--spacing-2.5)]",
+				"gap-1 px-[var(--Spacing2Point5)] sm:pr-[var(--Spacing2Point5)]",
 				className,
 			)}
 			{...props}>

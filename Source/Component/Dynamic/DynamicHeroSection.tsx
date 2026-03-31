@@ -37,7 +37,7 @@ export function DynamicHeroSection({
 			return;
 		}
 
-		const CardElement = Scene.querySelectorAll<HTMLElement>(".floating-card");
+		const CardElement = Scene.querySelectorAll<HTMLElement>(".FloatingCard");
 		let FrameIdentifier: number;
 		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
@@ -64,7 +64,7 @@ export function DynamicHeroSection({
 				"../../Function/Noise/Attention.js"
 			);
 			const Attention = await AttentionModule.default;
-			Attention.ApplyToSelector(".floating-card", 8, 6);
+			Attention.ApplyToSelector(".FloatingCard", 8, 6);
 		};
 
 		const AnimateCards = (Time: number) => {
@@ -195,7 +195,7 @@ export function DynamicHeroSection({
 							return (
 								<div
 									key={Card.id}
-									className="floating-card StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white/95 p-3"
+									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white/95 p-3"
 									style={{
 										top: `${CenterY}%`,
 										left: `${CenterX}%`,
