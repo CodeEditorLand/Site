@@ -325,71 +325,42 @@ const MetaDescription = T("meta.contributing.description", {
 				}
 			</h2>
 			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
-				<p class="mb-4 text-muted-foreground">
-					{
-						T("common.contributing.funding.nlnetIntro", {
-							defaultValue:
-								"Code Editor Land has been funded through the",
-						})
-					}
+				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
+					<a
+						href="https://nlnet.nl/project/Land/"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-[var(--Primary)] hover:underline">
+						NLnet Project Page
+					</a>
 					<a
 						href="https://nlnet.nl/commonsfund"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-[var(--Primary)] hover:underline">
-						{
-							T("common.contributing.funding.nlnetFundName", {
-								defaultValue: "NGI0 Commons Fund",
-							})
-						}
-					</a>{
-						T("common.contributing.funding.nlnetEstablishedBy", {
-							defaultValue: ", a fund established by",
-						})
-					}
+						class="font-medium text-[var(--Primary)] hover:underline">
+						NGI0 Commons Fund
+					</a>
 					<a
 						href="https://nlnet.nl"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="text-[var(--Primary)] hover:underline">
+						class="font-medium text-[var(--Primary)] hover:underline">
 						NLnet
 					</a>
-					{
-						T("common.contributing.funding.nlnetSuffix", {
-							defaultValue:
-								"with financial support from the European Commission's Next Generation Internet programme, under grant agreement No.\u00a0101135429. This funding enables sustained open-source development on the project.",
-						})
-					}
-				</p>
+				</div>
 				<p class="mb-4 text-muted-foreground">
 					{
-						T("common.contributing.funding.playformInfo", {
+						T("common.contributing.funding.nlnetIntro", {
 							defaultValue:
-								"The project is operated by PlayForm, a company based in Sofia, Bulgaria. PlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+								"Code Editor Land has been funded through the NGI0 Commons Fund, a fund established by NLnet with financial support from the European Commission's Next Generation Internet programme, under grant agreement No.\u00a0101135429. This funding enables sustained open-source development on the project.",
 						})
 					}
 				</p>
 				<p class="text-muted-foreground">
 					{
-						T("common.contributing.funding.viewProject", {
-							defaultValue: "View the",
-						})
-					}
-					<a
-						href="https://nlnet.nl/project/Land/"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-[var(--Primary)] hover:underline">
-						{
-							T("common.contributing.funding.nlnetProjectPage", {
-								defaultValue: "NLnet project page",
-							})
-						}
-					</a>
-					{
-						T("common.contributing.funding.viewProjectSuffix", {
+						T("common.contributing.funding.playformInfo", {
 							defaultValue:
-								"for more details about the grant and objectives.",
+								"The project is operated by PlayForm, a company based in Sofia, Bulgaria. PlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
 						})
 					}
 				</p>
@@ -406,20 +377,20 @@ const MetaDescription = T("meta.contributing.description", {
 				}
 			</h2>
 			<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
-				<p class="text-muted-foreground">
+				<a
+					href="https://github.com/CodeEditorLand/Land/blob/Current/CODE_OF_CONDUCT.md"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="font-medium text-[var(--Primary)] hover:underline">
+					Code of Conduct
+				</a>
+				<p class="mt-2 text-muted-foreground">
 					{
 						T("common.contributing.conduct.description", {
 							defaultValue:
-								"All participants in the Code Editor Land community are expected to be respectful and constructive. Read the full Code of Conduct on GitHub.",
+								"All participants in the Code Editor Land community are expected to be respectful and constructive.",
 						})
 					}
-					<a
-						href="https://github.com/CodeEditorLand/Land/blob/Current/CODE_OF_CONDUCT.md"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="text-[var(--Primary)] hover:underline">
-						Code of Conduct
-					</a>
 				</p>
 			</div>
 		</section>
