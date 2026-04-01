@@ -53,5 +53,13 @@
 			"title": "Unternehmensanfragen | Code Editor Land",
 			"description": "Kontaktieren Sie das Code Editor Land Team fuer Unternehmenslizenzierung, Support und Bereitstellungsoptionen."
 		}
+	},
+	"portal": {
+		"title": "Editor-Portal | Code Editor Land",
+		"description": "Cloud, Anbieter oder Local-First.\nWaehlen Sie Ihre Authentifizierungsmethode fuer Code Editor Land."
+	},
+	"oauth": {
+		"success": "Authentifizierung erfolgreich - Code Editor Land",
+		"successDescription": "Sie wurden erfolgreich authentifiziert."
 	}
 }

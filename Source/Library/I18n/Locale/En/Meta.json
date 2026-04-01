@@ -53,5 +53,13 @@
 			"title": "Enterprise Inquiries | Code Editor Land",
 			"description": "Contact the Code Editor Land team for enterprise licensing, support, and deployment options."
 		}
+	},
+	"portal": {
+		"title": "Editor Portal | Code Editor Land",
+		"description": "Cloud, Provider, or Local-First.\nChoose your authentication method for Code Editor Land."
+	},
+	"oauth": {
+		"success": "Authentication Successful - Code Editor Land",
+		"successDescription": "You have been authenticated successfully."
 	}
 }

@@ -53,5 +53,13 @@
 			"title": "Consultas empresariales | Code Editor Land",
 			"description": "Contacte al equipo de Code Editor Land para licencias empresariales, soporte y opciones de implementacion."
 		}
+	},
+	"portal": {
+		"title": "Portal del editor | Code Editor Land",
+		"description": "Nube, proveedor o local.\nElija su metodo de autenticacion para Code Editor Land."
+	},
+	"oauth": {
+		"success": "Autenticacion exitosa - Code Editor Land",
+		"successDescription": "Se ha autenticado exitosamente."
 	}
 }

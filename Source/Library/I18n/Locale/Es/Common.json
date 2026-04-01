@@ -84,7 +84,8 @@
 		"comingSoonHeading": "Proximamente",
 		"comingSoonText": "Estamos preparando articulos sobre la arquitectura, el proceso de desarrollo y la hoja de ruta de Code Editor Land.\nVuelva pronto para obtener actualizaciones.",
 		"joinDiscussions": "Unirse a las discusiones",
-		"followGitHub": "Seguir en GitHub"
+		"followGitHub": "Seguir en GitHub",
+		"reportIssue": "Reportar un problema"
 	},
 	"contributing": {
 		"pageTitle": "Contribuir",
@@ -191,6 +192,15 @@
 			"heading": "Codigo abierto",
 			"description": "Los planes empresariales proporcionan soporte, SLA y desarrollo personalizado, no acceso al codigo en si.\nCode Editor Land es de codigo abierto bajo CC0."
 		}
+	},
+	"oauth": {
+		"completing": "Completando autenticacion...",
+		"failed": "Autenticacion fallida",
+		"errorGeneric": "Se produjo un error durante la autenticacion.",
+		"errorExpired": "La sesion de autenticacion ha expirado.\nPor favor, intentelo de nuevo.",
+		"errorProvider": "El proveedor de OAuth devolvio un error.\nPor favor, intentelo de nuevo.",
+		"errorNoToken": "No se recibio ningun token de autenticacion.",
+		"backToSignIn": "Volver a iniciar sesion"
 	},
 	"dashboard": {
 		"pageTitle": "Bienvenido",

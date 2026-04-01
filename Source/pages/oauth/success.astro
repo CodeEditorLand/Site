@@ -10,6 +10,19 @@ const MetaTitle = T("meta.oauth.success", {
 const MetaDescription = T("meta.oauth.successDescription", {
 	defaultValue: "You have been authenticated successfully.",
 });
+
+const CompletingText = T("common.oauth.completing", {
+	defaultValue: "Completing authentication...",
+});
+const FailedText = T("common.oauth.failed", {
+	defaultValue: "Authentication Failed",
+});
+const ErrorGenericText = T("common.oauth.errorGeneric", {
+	defaultValue: "An error occurred during authentication.",
+});
+const BackToSignInText = T("common.oauth.backToSignIn", {
+	defaultValue: "Back to Sign In",
+});
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
@@ -25,20 +38,20 @@ const MetaDescription = T("meta.oauth.successDescription", {
 							class="h-8 w-8 animate-spin rounded-full border-2 border-current border-t-transparent">
 						</div>
 						<p class="text-muted-foreground">
-							{"Completing authentication..."}
+							{CompletingText}
 						</p>
 					</div>
 					<div id="ErrorState" class="hidden">
 						<h1 class="mb-2 text-2xl font-bold">
-							{"Authentication Failed"}
+							{FailedText}
 						</h1>
 						<p id="ErrorMessage" class="mb-6 text-muted-foreground">
-							{"An error occurred during authentication."}
+							{ErrorGenericText}
 						</p>
 						<a
 							href="/account/signin"
 							class="StaccatoButton inline-flex h-10 items-center justify-center gap-2 rounded-none border border-[var(--Border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary">
-							{"Back to Sign In"}
+							{BackToSignInText}
 						</a>
 					</div>
 				</div>

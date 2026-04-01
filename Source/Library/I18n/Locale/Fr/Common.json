@@ -84,7 +84,8 @@
 		"comingSoonHeading": "Bientot disponible",
 		"comingSoonText": "Nous preparons des articles sur l'architecture, le processus de developpement et la feuille de route de Code Editor Land.\nRevenez bientot pour des mises a jour.",
 		"joinDiscussions": "Rejoindre les discussions",
-		"followGitHub": "Suivre sur GitHub"
+		"followGitHub": "Suivre sur GitHub",
+		"reportIssue": "Signaler un probleme"
 	},
 	"contributing": {
 		"pageTitle": "Contribuer",
@@ -191,6 +192,15 @@
 			"heading": "Open Source",
 			"description": "Pas l'acces au code lui-meme.\nCode Editor Land est open source sous CC0.\nLes plans enterprise fournissent support, SLA et developpement personnalise."
 		}
+	},
+	"oauth": {
+		"completing": "Finalisation de l'authentification...",
+		"failed": "Echec de l'authentification",
+		"errorGeneric": "Une erreur s'est produite lors de l'authentification.",
+		"errorExpired": "La session d'authentification a expire.\nVeuillez reessayer.",
+		"errorProvider": "Le fournisseur OAuth a renvoye une erreur.\nVeuillez reessayer.",
+		"errorNoToken": "Aucun jeton d'authentification recu.",
+		"backToSignIn": "Retour a la connexion"
 	},
 	"dashboard": {
 		"pageTitle": "Bienvenue",

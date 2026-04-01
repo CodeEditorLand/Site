@@ -84,7 +84,8 @@
 		"comingSoonHeading": "Demnachst verfuegbar",
 		"comingSoonText": "Wir bereiten Artikel ueber die Architektur, den Entwicklungsprozess und die Roadmap fuer Code Editor Land vor.\nSchauen Sie bald wieder vorbei fuer Updates.",
 		"joinDiscussions": "An Diskussionen teilnehmen",
-		"followGitHub": "Auf GitHub folgen"
+		"followGitHub": "Auf GitHub folgen",
+		"reportIssue": "Problem melden"
 	},
 	"contributing": {
 		"pageTitle": "Beitragen",
@@ -191,6 +192,15 @@
 			"heading": "Open Source",
 			"description": "Keinen Zugang zum Code selbst.\nCode Editor Land ist Open Source unter CC0.\nEnterprise-Plaene bieten Support, SLAs und individuelle Entwicklung."
 		}
+	},
+	"oauth": {
+		"completing": "Authentifizierung wird abgeschlossen...",
+		"failed": "Authentifizierung fehlgeschlagen",
+		"errorGeneric": "Bei der Authentifizierung ist ein Fehler aufgetreten.",
+		"errorExpired": "Authentifizierungssitzung abgelaufen.\nBitte versuchen Sie es erneut.",
+		"errorProvider": "OAuth-Anbieter hat einen Fehler zurueckgegeben.\nBitte versuchen Sie es erneut.",
+		"errorNoToken": "Kein Authentifizierungstoken erhalten.",
+		"backToSignIn": "Zurueck zur Anmeldung"
 	},
 	"dashboard": {
 		"pageTitle": "Willkommen",

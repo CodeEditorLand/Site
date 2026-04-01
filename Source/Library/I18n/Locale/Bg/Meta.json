@@ -53,5 +53,13 @@
 			"title": "Корпоративни запитвания | Code Editor Land",
 			"description": "Свържете се с екипа на Code Editor Land за корпоративно лицензиране, поддръжка и опции за внедряване."
 		}
+	},
+	"portal": {
+		"title": "Портал на редактора | Code Editor Land",
+		"description": "Облачен, доставчик или локален.\nИзберете метод за удостоверяване за Code Editor Land."
+	},
+	"oauth": {
+		"success": "Успешно удостоверяване - Code Editor Land",
+		"successDescription": "Удостоверяването е успешно."
 	}
 }
