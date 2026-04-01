@@ -424,17 +424,20 @@ const PortalTierRow = ({
 				<div className="PortalTierFeatureList">
 					<h4 className="PortalTierFeatureHeading">{Labels?.Included ?? "Included"}</h4>
 					<ul className="PortalTierFeatureItems">
-						{Content.Feature.map((FeatureText, FeatureIndex) => (
+						{Content.Feature.map((Feature, FeatureIndex) => (
 							<li
 								key={FeatureIndex}
 								className="PortalTierFeatureItem">
-								<span className="text-sm">{FeatureText}</span>
-								{"\u2001"}
-								<Check
-									className="StaccatoCheckmark h-4 w-4 shrink-0"
-									aria-hidden="true"
-									style={{ color: Content.Color }}
-								/>
+								<span className="text-sm font-medium">{Feature.Heading}</span>
+								<span className="text-sm text-muted-foreground">
+									{Feature.Description}
+									{"\u2001"}
+									<Check
+										className="StaccatoCheckmark inline h-4 w-4 align-text-bottom"
+										aria-hidden="true"
+										style={{ color: Content.Color }}
+									/>
+								</span>
 							</li>
 						))}
 					</ul>

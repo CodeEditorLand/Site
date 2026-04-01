@@ -29,41 +29,19 @@ const PortalContent = {
 		Badge: "Online",
 		Protocol: "HTTPS / TLS 1.3",
 		Feature: [
-			T("account.portal.cloud.feature.sync", {
-				defaultValue: "Cross-device settings synchronization",
-			}),
-			T("account.portal.cloud.feature.backup", {
-				defaultValue: "Automatic cloud backup of configurations",
-			}),
-			T("account.portal.cloud.feature.team", {
-				defaultValue: "Team workspace management",
-			}),
-			T("account.portal.cloud.feature.extension", {
-				defaultValue: "Extension marketplace with cloud install",
-			}),
-			T("account.portal.cloud.feature.remote", {
-				defaultValue: "Remote development server integration",
-			}),
+			{ Heading: "Sync", Description: T("account.portal.cloud.feature.sync", { defaultValue: "Cross-device settings synchronization" }) },
+			{ Heading: "Backup", Description: T("account.portal.cloud.feature.backup", { defaultValue: "Automatic cloud backup of configurations" }) },
+			{ Heading: "Team", Description: T("account.portal.cloud.feature.team", { defaultValue: "Team workspace management" }) },
+			{ Heading: "Extensions", Description: T("account.portal.cloud.feature.extension", { defaultValue: "Extension marketplace with cloud install" }) },
+			{ Heading: "Remote", Description: T("account.portal.cloud.feature.remote", { defaultValue: "Remote development server integration" }) },
 		],
 		Capability: [
-			T("account.portal.cloud.capability.jwt", {
-				defaultValue: "JWT session tokens",
-			}),
-			T("account.portal.cloud.capability.okta", {
-				defaultValue: "Okta SSO integration",
-			}),
-			T("account.portal.cloud.capability.mfa", {
-				defaultValue: "Multi-factor authentication",
-			}),
-			T("account.portal.cloud.capability.rbac", {
-				defaultValue: "Role-based access control",
-			}),
-			T("account.portal.cloud.capability.audit", {
-				defaultValue: "Audit log trail",
-			}),
-			T("account.portal.cloud.capability.cert", {
-				defaultValue: "Developer certificates",
-			}),
+			T("account.portal.cloud.capability.jwt", { defaultValue: "JWT session tokens" }),
+			T("account.portal.cloud.capability.okta", { defaultValue: "Okta SSO integration" }),
+			T("account.portal.cloud.capability.mfa", { defaultValue: "Multi-factor authentication" }),
+			T("account.portal.cloud.capability.rbac", { defaultValue: "Role-based access control" }),
+			T("account.portal.cloud.capability.audit", { defaultValue: "Audit log trail" }),
+			T("account.portal.cloud.capability.cert", { defaultValue: "Developer certificates" }),
 		],
 	},
 
@@ -82,41 +60,19 @@ const PortalContent = {
 		Badge: "OAuth 2.0",
 		Protocol: "OAuth 2.0 / PKCE",
 		Feature: [
-			T("account.portal.provider.feature.github", {
-				defaultValue: "GitHub identity linked to preferences",
-			}),
-			T("account.portal.provider.feature.sso", {
-				defaultValue: "Single sign-on across all Land services",
-			}),
-			T("account.portal.provider.feature.repo", {
-				defaultValue: "Repository-aware workspace configuration",
-			}),
-			T("account.portal.provider.feature.team", {
-				defaultValue: "Organization and team membership sync",
-			}),
-			T("account.portal.provider.feature.ci", {
-				defaultValue: "CI/CD pipeline integration with build triggers",
-			}),
+			{ Heading: "GitHub", Description: T("account.portal.provider.feature.github", { defaultValue: "GitHub identity linked to preferences" }) },
+			{ Heading: "SSO", Description: T("account.portal.provider.feature.sso", { defaultValue: "Single sign-on across all Land services" }) },
+			{ Heading: "Repository", Description: T("account.portal.provider.feature.repo", { defaultValue: "Repository-aware workspace configuration" }) },
+			{ Heading: "Team", Description: T("account.portal.provider.feature.team", { defaultValue: "Organization and team membership sync" }) },
+			{ Heading: "CI/CD", Description: T("account.portal.provider.feature.ci", { defaultValue: "CI/CD pipeline integration with build triggers" }) },
 		],
 		Capability: [
-			T("account.portal.provider.capability.oauth", {
-				defaultValue: "OAuth 2.0 + PKCE flow",
-			}),
-			T("account.portal.provider.capability.scope", {
-				defaultValue: "Granular permission scopes",
-			}),
-			T("account.portal.provider.capability.token", {
-				defaultValue: "Refresh token rotation",
-			}),
-			T("account.portal.provider.capability.webhook", {
-				defaultValue: "Webhook event subscriptions",
-			}),
-			T("account.portal.provider.capability.org", {
-				defaultValue: "Organization-level policies",
-			}),
-			T("account.portal.provider.capability.cert", {
-				defaultValue: "Developer certificates",
-			}),
+			T("account.portal.provider.capability.oauth", { defaultValue: "OAuth 2.0 + PKCE flow" }),
+			T("account.portal.provider.capability.scope", { defaultValue: "Granular permission scopes" }),
+			T("account.portal.provider.capability.token", { defaultValue: "Refresh token rotation" }),
+			T("account.portal.provider.capability.webhook", { defaultValue: "Webhook event subscriptions" }),
+			T("account.portal.provider.capability.org", { defaultValue: "Organization-level policies" }),
+			T("account.portal.provider.capability.cert", { defaultValue: "Developer certificates" }),
 		],
 	},
 
@@ -135,58 +91,23 @@ const PortalContent = {
 		Badge: "Local-First",
 		Protocol: "mTLS / CRDTs / WebSocket",
 		Feature: [
-			T("account.portal.localfirst.feature.daemon", {
-				defaultValue: "Direct Air Daemon connection to Land/Element",
-			}),
-			T("account.portal.localfirst.feature.build", {
-				defaultValue:
-					"Launch builds directly through the website console",
-			}),
-			T("account.portal.localfirst.feature.deploy", {
-				defaultValue: "Deploy changes directly to the application",
-			}),
-			T("account.portal.localfirst.feature.configure", {
-				defaultValue:
-					"Full editor configuration and settings management",
-			}),
-			T("account.portal.localfirst.feature.parity", {
-				defaultValue:
-					"1:1 parity with VS Code server features and settings",
-			}),
-			T("account.portal.localfirst.feature.offline", {
-				defaultValue:
-					"No cloud login required. Complete offline operation.",
-			}),
-			T("account.portal.localfirst.feature.bake", {
-				defaultValue:
-					"Bake the portal directly into the editor as embedded SaaS",
-			}),
+			{ Heading: "Air Daemon", Description: T("account.portal.localfirst.feature.daemon", { defaultValue: "Direct Air Daemon connection to Land/Element" }) },
+			{ Heading: "Build", Description: T("account.portal.localfirst.feature.build", { defaultValue: "Launch builds directly through the website console" }) },
+			{ Heading: "Deploy", Description: T("account.portal.localfirst.feature.deploy", { defaultValue: "Deploy changes directly to the application" }) },
+			{ Heading: "Configure", Description: T("account.portal.localfirst.feature.configure", { defaultValue: "Full editor configuration and settings management" }) },
+			{ Heading: "VS Code Parity", Description: T("account.portal.localfirst.feature.parity", { defaultValue: "1:1 parity with VS Code server features and settings" }) },
+			{ Heading: "Offline", Description: T("account.portal.localfirst.feature.offline", { defaultValue: "No cloud login required. Complete offline operation." }) },
+			{ Heading: "Embedded SaaS", Description: T("account.portal.localfirst.feature.bake", { defaultValue: "Bake the portal directly into the editor as embedded SaaS" }) },
 		],
 		Capability: [
-			T("account.portal.localfirst.capability.jwt", {
-				defaultValue: "JWT developer certificates",
-			}),
-			T("account.portal.localfirst.capability.mtls", {
-				defaultValue: "Mutual TLS authentication",
-			}),
-			T("account.portal.localfirst.capability.crdt", {
-				defaultValue: "CRDT state synchronization",
-			}),
-			T("account.portal.localfirst.capability.team", {
-				defaultValue: "Team management (fully local)",
-			}),
-			T("account.portal.localfirst.capability.cert", {
-				defaultValue: "Certificate authority management",
-			}),
-			T("account.portal.localfirst.capability.ws", {
-				defaultValue: "WebSocket live connection",
-			}),
-			T("account.portal.localfirst.capability.rbac", {
-				defaultValue: "Local RBAC policies",
-			}),
-			T("account.portal.localfirst.capability.backup", {
-				defaultValue: "Encrypted local backup",
-			}),
+			T("account.portal.localfirst.capability.jwt", { defaultValue: "JWT developer certificates" }),
+			T("account.portal.localfirst.capability.mtls", { defaultValue: "Mutual TLS authentication" }),
+			T("account.portal.localfirst.capability.crdt", { defaultValue: "CRDT state synchronization" }),
+			T("account.portal.localfirst.capability.team", { defaultValue: "Team management (fully local)" }),
+			T("account.portal.localfirst.capability.cert", { defaultValue: "Certificate authority management" }),
+			T("account.portal.localfirst.capability.ws", { defaultValue: "WebSocket live connection" }),
+			T("account.portal.localfirst.capability.rbac", { defaultValue: "Local RBAC policies" }),
+			T("account.portal.localfirst.capability.backup", { defaultValue: "Encrypted local backup" }),
 		],
 	},
 
@@ -205,44 +126,20 @@ const PortalContent = {
 		Badge: "OIDC / SAML",
 		Protocol: "OIDC / SAML 2.0 / SCIM",
 		Feature: [
-			T("account.portal.enterprise.feature.okta", {
-				defaultValue: "Okta SSO integration",
-			}),
-			T("account.portal.enterprise.feature.azure", {
-				defaultValue: "Azure AD / Entra ID support",
-			}),
-			T("account.portal.enterprise.feature.saml", {
-				defaultValue: "SAML 2.0 for legacy enterprise IdPs",
-			}),
-			T("account.portal.enterprise.feature.scim", {
-				defaultValue: "SCIM user provisioning",
-			}),
-			T("account.portal.enterprise.feature.group", {
-				defaultValue: "Group-to-role mapping",
-			}),
-			T("account.portal.enterprise.feature.audit", {
-				defaultValue: "Full audit log trail",
-			}),
+			{ Heading: "Okta", Description: T("account.portal.enterprise.feature.okta", { defaultValue: "Okta SSO integration" }) },
+			{ Heading: "Azure AD", Description: T("account.portal.enterprise.feature.azure", { defaultValue: "Azure AD / Entra ID support" }) },
+			{ Heading: "SAML 2.0", Description: T("account.portal.enterprise.feature.saml", { defaultValue: "SAML 2.0 for legacy enterprise IdPs" }) },
+			{ Heading: "SCIM", Description: T("account.portal.enterprise.feature.scim", { defaultValue: "SCIM user provisioning" }) },
+			{ Heading: "Groups", Description: T("account.portal.enterprise.feature.group", { defaultValue: "Group-to-role mapping" }) },
+			{ Heading: "Audit", Description: T("account.portal.enterprise.feature.audit", { defaultValue: "Full audit log trail" }) },
 		],
 		Capability: [
-			T("account.portal.enterprise.capability.oidc", {
-				defaultValue: "OIDC Discovery + PKCE",
-			}),
-			T("account.portal.enterprise.capability.jit", {
-				defaultValue: "Just-in-time provisioning",
-			}),
-			T("account.portal.enterprise.capability.mfa", {
-				defaultValue: "Enforced MFA policies",
-			}),
-			T("account.portal.enterprise.capability.session", {
-				defaultValue: "Session management + revocation",
-			}),
-			T("account.portal.enterprise.capability.ca", {
-				defaultValue: "Organization CA certificates",
-			}),
-			T("account.portal.enterprise.capability.compliance", {
-				defaultValue: "SOC 2 / GDPR compliance",
-			}),
+			T("account.portal.enterprise.capability.oidc", { defaultValue: "OIDC Discovery + PKCE" }),
+			T("account.portal.enterprise.capability.jit", { defaultValue: "Just-in-time provisioning" }),
+			T("account.portal.enterprise.capability.mfa", { defaultValue: "Enforced MFA policies" }),
+			T("account.portal.enterprise.capability.session", { defaultValue: "Session management + revocation" }),
+			T("account.portal.enterprise.capability.ca", { defaultValue: "Organization CA certificates" }),
+			T("account.portal.enterprise.capability.compliance", { defaultValue: "SOC 2 / GDPR compliance" }),
 		],
 	},
 

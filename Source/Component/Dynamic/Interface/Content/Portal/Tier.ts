@@ -1,3 +1,8 @@
+export interface TierItem {
+	Heading: string;
+	Description: string;
+}
+
 export default interface Interface {
 	Identifier: "Cloud" | "Provider" | "LocalFirst" | "Enterprise";
 	Title: string;
@@ -5,7 +10,7 @@ export default interface Interface {
 	Color: string;
 	BorderColor: string;
 	Icon: string;
-	Feature: string[];
+	Feature: TierItem[];
 	Capability: string[];
 	Protocol?: string;
 	Badge?: string;
