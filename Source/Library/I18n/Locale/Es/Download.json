@@ -25,7 +25,10 @@
 	},
 	"subtitle": "Disponible para macOS, Windows y Linux.\nConstruido con Tauri, impulsado por Rust.",
 	"systemRequirements": {
+		"minimum": "Requisitos minimos",
+		"recommended": "Recomendado",
 		"subtitle": "Asegurese de que su sistema cumple estos requisitos antes de descargar.",
+		"supportedOS": "Sistemas operativos compatibles",
 		"title": "Requisitos del sistema"
 	},
 	"title": "Descargar Land",

@@ -11,7 +11,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						rel="noopener noreferrer"
 						className="Icon flex">
 						<picture>
-							<img alt="GitHub" src="/Image/GitHub.svg" />
+							<img alt="GitHub" src="/Image/GitHub.svg" width="24" height="24" />
 						</picture>
 					</a>
 				</li>
@@ -31,6 +31,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 								alt="Made With Tauri"
 								src="https://PlayForm.Cloud/Image/GitHub/Made/Tauri.svg"
 								width="160"
+								height="32"
 							/>
 						</picture>
 					</a>

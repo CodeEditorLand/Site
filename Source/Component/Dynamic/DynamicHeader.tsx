@@ -31,6 +31,8 @@ export function DynamicHeader({ content, className }: Property) {
 						<img
 							src="/Asset/Logo/Glyph/Land.svg"
 							alt=""
+							width="32"
+							height="32"
 							className="h-full w-full"
 						/>
 					</div>

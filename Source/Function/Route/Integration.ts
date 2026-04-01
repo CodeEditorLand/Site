@@ -5,8 +5,10 @@ import type { AstroIntegration } from "astro";
 // imports of local modules would fail with "module runner has been closed".
 const {
 	default: GenerateRouteMap,
+	CanonicalPath,
 	PascalCaseCanonical,
 	SemanticAlias,
+	GeneratePathVariant,
 } = await import("./Map.js");
 
 const {
@@ -20,42 +22,32 @@ const { join: Join, resolve: Resolve } = await import("node:path");
 const { fileURLToPath: FileURLToPath } = await import("node:url");
 
 // Build a combined dev-time lookup from the static maps.
-// In dev, Astro serves pages at their built paths (e.g., /downloads),
-// so we redirect variants to the built path that Astro can serve,
-// AND we redirect built paths to PascalCase canonical URLs.
+// In dev, Astro serves pages at their PascalCase filename path
+// (e.g., /Download from Download.astro), so we redirect every variant
+// (lowercase, plural, case permutations, semantic aliases) to the
+// PascalCase canonical that Astro can actually serve.
 const BuildDevVariantMap = (): Record<string, string> => {
 	const DevMap: Record<string, string> = {};
 
-	// Reverse lookup: PascalCase canonical → built path (for serving)
-	const CanonicalToBuilt: Record<string, string> = {};
+	// Generate all variants (plural, case, compound, abbreviation) for
+	// each canonical path — same logic the build-time route map uses.
+	for (const PascalPath of CanonicalPath) {
+		const BuiltPath = PascalPath.toLowerCase();
 
-	for (const [BuiltPath, PascalPath] of Object.entries(
-		PascalCaseCanonical,
-	)) {
-		CanonicalToBuilt[PascalPath] = BuiltPath;
-	}
-
-	// Map built paths → PascalCase canonical (redirect /downloads → /Download)
-	for (const [BuiltPath, PascalPath] of Object.entries(
-		PascalCaseCanonical,
-	)) {
-		if (BuiltPath !== PascalPath.toLowerCase()) {
-			DevMap[BuiltPath] = PascalPath;
-		}
-
+		// Lowercase built path → PascalCase canonical
 		DevMap[BuiltPath] = PascalPath;
+
+		// Full dynamic variants (plural, case permutations, compounds, etc.)
+		for (const Variant of GeneratePathVariant(PascalPath, BuiltPath)) {
+			if (!DevMap[Variant]) {
+				DevMap[Variant] = PascalPath;
+			}
+		}
 	}
 
 	// Map semantic aliases → PascalCase canonical
 	for (const [Alias, PascalPath] of Object.entries(SemanticAlias)) {
 		DevMap[Alias] = PascalPath;
-	}
-
-	// Map UPPERCASE variants → PascalCase canonical
-	for (const [BuiltPath, PascalPath] of Object.entries(
-		PascalCaseCanonical,
-	)) {
-		DevMap[BuiltPath.toUpperCase()] = PascalPath;
 	}
 
 	return DevMap;
@@ -92,24 +84,11 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 							? "/"
 							: PathOnly.replace(/\/+$/, "");
 
-					// Check if this path is a PascalCase canonical that
-					// needs to be rewritten to the actual built page
-					if (CanonicalToBuilt[Cleaned]) {
-						logger.info(
-							`[dev] Rewriting ${Cleaned} → ${CanonicalToBuilt[Cleaned]}`,
-						);
+					// In dev, Astro serves pages at their PascalCase filename
+				// path (e.g., /Download from Download.astro), so PascalCase
+				// canonicals need no rewrite — just pass through.
 
-						Request.url = RawPath.replace(
-							PathOnly,
-							CanonicalToBuilt[Cleaned],
-						);
-
-						Next();
-
-						return;
-					}
-
-					// Check if this is a variant that should redirect
+				// Check if this is a variant that should redirect
 					const Target = DevVariantMap[Cleaned];
 
 					if (Target && Target !== Cleaned) {

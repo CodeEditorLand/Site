@@ -25,7 +25,10 @@
 	},
 	"subtitle": "Verfuegbar fuer macOS, Windows und Linux.\nGebaut mit Tauri, angetrieben von Rust.",
 	"systemRequirements": {
+		"minimum": "Mindestanforderungen",
+		"recommended": "Empfohlen",
 		"subtitle": "Stellen Sie sicher, dass Ihr System diese Anforderungen erfuellt, bevor Sie herunterladen.",
+		"supportedOS": "Unterstutzte Betriebssysteme",
 		"title": "Systemanforderungen"
 	},
 	"title": "Land herunterladen",

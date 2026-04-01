@@ -103,6 +103,8 @@ export function Footer({ content }: FooterProps) {
 							<img
 								src="/Asset/Logo/Glyph/Land.svg"
 								alt=""
+								width="32"
+								height="32"
 								className="h-8 w-8"
 								aria-hidden="true"
 							/>
@@ -190,6 +192,8 @@ export function Footer({ content }: FooterProps) {
 							<img
 								src="/Image/GitHub.svg"
 								alt=""
+								width="20"
+								height="20"
 								aria-hidden="true"
 								className="h-5 w-5"
 							/>
@@ -212,6 +216,8 @@ export function Footer({ content }: FooterProps) {
 							<img
 								src="https://playform.cloud/Image/GitHub/Made/Tauri.svg"
 								alt="Made with Tauri"
+								width="160"
+								height="32"
 								className="h-8"
 								loading="lazy"
 							/>

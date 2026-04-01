@@ -83,7 +83,7 @@
 		"pageSubtitle": "News, updates, and technical articles from the team.",
 		"comingSoonHeading": "Coming Soon",
 		"comingSoonText": "We are preparing articles about the architecture, development process, and roadmap for Code Editor Land.\nCheck back soon for updates.",
-		"joinDiscussions": "Join Discussions",
+		"joinDiscussions": "Join the Community",
 		"followGitHub": "Follow on GitHub",
 		"reportIssue": "Report an Issue"
 	},
@@ -221,7 +221,7 @@
 		"quickLinks": {
 			"heading": "Quick Links",
 			"docs": "Documentation",
-			"community": "Community Discussions",
+			"community": "Community",
 			"reportIssue": "Report an Issue",
 			"contribute": "Contribute"
 		},

@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<
 		console.error("ErrorBoundary caught an error:", error, errorInfo);
 	}
 
-	handleRetry = () => {
+	HandleRetry = () => {
 		this.setState({ hasError: false, error: null });
 	};
 
@@ -52,7 +52,7 @@ export class ErrorBoundary extends Component<
 						</p>
 						<button
 							type="button"
-							onClick={this.handleRetry}
+							onClick={this.HandleRetry}
 							className="inline-flex h-9 items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 py-2 text-sm font-medium text-white transition-all hover:opacity-90">
 							Try again
 						</button>

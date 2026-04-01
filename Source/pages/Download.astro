@@ -16,17 +16,16 @@ const DownloadContent = {
 		}),
 		platforms: [], // Will be fetched by DynamicPlatformGrid
 		showVerification: true,
-		onDownload: async (platform: { name: string; id?: string }) => {
-			if (platform.id) {
+		onDownload: async (Platform: { name: string; id?: string }) => {
+			if (Platform.id) {
 				try {
 					const { default: DownloadAPI } =
 						await import("../Library/API/Download");
-					const Information = await DownloadAPI.GetInfo(platform.id);
+					const Information = await DownloadAPI.GetInfo(Platform.id);
 					window.open(Information.downloadUrl, "_blank");
-					await DownloadAPI.TrackDownload(platform.id);
-				} catch (error) {
-					console.error("Download failed:", error);
-					alert("Download failed. Please try again.");
+					await DownloadAPI.TrackDownload(Platform.id);
+				} catch (DownloadError) {
+					console.error("Download failed:", DownloadError);
 				}
 			}
 		},

@@ -104,6 +104,8 @@ export function DynamicTestimonials({ content, className }: Property) {
 									<img
 										src={Testimonial.avatar}
 										alt={`Photo of ${Testimonial.author}`}
+										width="48"
+										height="48"
 										className="StaccatoAvatar size-12 rounded-none border border-[var(--Border)] object-cover"
 										loading="lazy"
 									/>

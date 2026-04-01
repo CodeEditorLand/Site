@@ -46,6 +46,7 @@ export const PascalCaseCanonical: Record<string, string> = Object.fromEntries(
 
 export const SemanticAlias: Record<string, string> = {
 	// Download
+	"/downloads": "/Download",
 	"/down": "/Download",
 	"/get": "/Download",
 	"/fetch": "/Download",
@@ -277,7 +278,7 @@ const GenerateCompoundVariant = (PascalSegment: string): string[] => {
 //   - Each segment's case variants × other segments in lowercase
 //   - Full lowercase, full uppercase
 //   - Hyphenated/flat compound alternatives for each segment
-const GeneratePathVariant = (
+export const GeneratePathVariant = (
 	CanonicalPath: string,
 	BuiltPath: string,
 ): string[] => {

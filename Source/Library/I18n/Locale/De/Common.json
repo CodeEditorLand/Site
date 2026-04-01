@@ -83,7 +83,7 @@
 		"pageSubtitle": "Neuigkeiten, Aktualisierungen und technische Artikel vom Team.",
 		"comingSoonHeading": "Demnachst verfuegbar",
 		"comingSoonText": "Wir bereiten Artikel ueber die Architektur, den Entwicklungsprozess und die Roadmap fuer Code Editor Land vor.\nSchauen Sie bald wieder vorbei fuer Updates.",
-		"joinDiscussions": "An Diskussionen teilnehmen",
+		"joinDiscussions": "Der Community beitreten",
 		"followGitHub": "Auf GitHub folgen",
 		"reportIssue": "Problem melden"
 	},
@@ -221,7 +221,7 @@
 		"quickLinks": {
 			"heading": "Schnellzugriff",
 			"docs": "Dokumentation",
-			"community": "Community-Diskussionen",
+			"community": "Community",
 			"reportIssue": "Problem melden",
 			"contribute": "Beitragen"
 		},

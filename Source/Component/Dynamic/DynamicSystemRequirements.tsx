@@ -1,5 +1,6 @@
 import { Cpu, Monitor } from "lucide-react";
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import type RequirementItem from "./Interface/Item/Requirement.js";
 import type Property from "./Interface/Property/Requirement/System.js";
@@ -9,6 +10,7 @@ import type Property from "./Interface/Property/Requirement/System.js";
  * Shows minimum and recommended specs in Card format
  */
 export function DynamicSystemRequirements({ content, className }: Property) {
+	const { t: T } = useTranslation("download");
 	const { title, description, requirements } = content;
 
 	const GridReference = useRef<HTMLDivElement>(null);
@@ -87,7 +89,7 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 					{/* Minimum Requirements */}
 					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
-							Minimum Requirements
+							{T("systemRequirements.minimum", "Minimum Requirements")}
 						</h3>
 						<RequirementList
 							items={requirements.minimum}
@@ -98,7 +100,7 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 					{/* Recommended Requirements */}
 					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
-							Recommended
+							{T("systemRequirements.recommended", "Recommended")}
 						</h3>
 						<RequirementList
 							items={requirements.recommended}
@@ -111,7 +113,7 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 				{content.os && content.os.length > 0 && (
 					<div className="mt-12 text-center">
 						<h4 className="mb-4 text-lg font-semibold">
-							Supported Operating Systems
+							{T("systemRequirements.supportedOS", "Supported Operating Systems")}
 						</h4>
 						<div className="flex flex-wrap justify-center gap-4">
 							{content.os.map((OperatingSystem, Index) => (

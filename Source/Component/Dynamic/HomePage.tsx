@@ -435,7 +435,7 @@ export function HomePage({ content, className }: Property) {
 						await DownloadAPI.TrackDownload(Platform.id);
 					} catch (DownloadError) {
 						console.error("Download failed:", DownloadError);
-						alert("Download failed. Please try again.");
+						alert(T("download:labels.downloadFailed", { defaultValue: "Download failed. Please try again." }));
 					}
 				}
 			},

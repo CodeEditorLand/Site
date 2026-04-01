@@ -171,6 +171,8 @@ export function Header({ content }: HeaderProps) {
 						<img
 							src="/Asset/Logo/Glyph/Land.svg"
 							alt=""
+							width="32"
+							height="32"
 							className="absolute inset-0 h-full w-full"
 						/>
 					</div>
@@ -178,6 +180,39 @@ export function Header({ content }: HeaderProps) {
 						{HeaderData.logo?.text || "Land"}
 					</span>
 				</a>
+
+				{/* Sub-header:breadcrumb-style app bar with icons */}
+				<div
+					className="HeaderSub hidden md:block"
+					style={{ marginTop: "2px" }}>
+					<nav
+						className="flex items-center"
+						aria-label="Main navigation">
+						{HeaderData.navigation?.map((Link, Index) => (
+							<span key={Index} className="flex items-center">
+								{Index > 0 && (
+									<span
+										className="StaccatoBreath text-muted-foreground/40 mx-0.5 select-none text-[10px]"
+										aria-hidden="true">
+										/
+									</span>
+								)}
+								<a
+									href={Link.href}
+									className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									{...(Link.href.startsWith("http")
+										? {
+												target: "_blank",
+												rel: "noopener noreferrer",
+											}
+										: {})}>
+									{Link.label}
+									{RenderIcon(Link.icon)}
+								</a>
+							</span>
+						))}
+					</nav>
+				</div>
 
 				<div className="flex items-center space-x-3">
 					<div className="hidden items-center space-x-2 md:flex">
@@ -218,39 +253,6 @@ export function Header({ content }: HeaderProps) {
 						)}
 					</Button>
 				</div>
-			</div>
-
-			{/* Sub-header:breadcrumb-style app bar with icons */}
-			<div
-				className="HeaderSub hidden md:block"
-				style={{ marginTop: "2px" }}>
-				<nav
-					className="container mx-auto flex items-center px-4"
-					aria-label="Main navigation">
-					{HeaderData.navigation?.map((Link, Index) => (
-						<span key={Index} className="flex items-center">
-							{Index > 0 && (
-								<span
-									className="StaccatoBreath text-muted-foreground/40 mx-0.5 select-none text-[10px]"
-									aria-hidden="true">
-									/
-								</span>
-							)}
-							<a
-								href={Link.href}
-								className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-								{...(Link.href.startsWith("http")
-									? {
-											target: "_blank",
-											rel: "noopener noreferrer",
-										}
-									: {})}>
-								{Link.label}
-								{RenderIcon(Link.icon)}
-							</a>
-						</span>
-					))}
-				</nav>
 			</div>
 
 			{/* Mobile menu:full nav with icons */}

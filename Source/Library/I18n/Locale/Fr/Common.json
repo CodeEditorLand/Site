@@ -83,7 +83,7 @@
 		"pageSubtitle": "Actualites, mises a jour et articles techniques de l'equipe.",
 		"comingSoonHeading": "Bientot disponible",
 		"comingSoonText": "Nous preparons des articles sur l'architecture, le processus de developpement et la feuille de route de Code Editor Land.\nRevenez bientot pour des mises a jour.",
-		"joinDiscussions": "Rejoindre les discussions",
+		"joinDiscussions": "Rejoindre la communaute",
 		"followGitHub": "Suivre sur GitHub",
 		"reportIssue": "Signaler un probleme"
 	},
@@ -221,7 +221,7 @@
 		"quickLinks": {
 			"heading": "Liens rapides",
 			"docs": "Documentation",
-			"community": "Discussions communautaires",
+			"community": "Communaute",
 			"reportIssue": "Signaler un probleme",
 			"contribute": "Contribuer"
 		},
