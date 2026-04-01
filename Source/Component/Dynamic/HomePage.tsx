@@ -37,24 +37,22 @@ const HomePage = ({ content, className }: Property) => {
 				defaultValue:
 					"A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS.\nExperience the editor that reimagines VS Code for the modern era.",
 			}),
-			primaryCta: {
-				text: T("common:button.download", {
-					defaultValue: "Download",
-				}),
-				variant: "default",
-				size: "lg",
-				icon: "Download",
-				fullWidth: true,
-			},
-			secondaryCta: {
-				text: T("common:button.learnMore", {
-					defaultValue: "Learn More",
-				}),
-				variant: "outline",
-				size: "lg",
-				icon: "ExternalLink",
-				fullWidth: true,
-			},
+		primaryCta: {
+			text: T("common:button.download", {
+				defaultValue: "Download",
+			}),
+			variant: "default",
+			size: "lg",
+			icon: "Download",
+		},
+		secondaryCta: {
+			text: T("common:button.learnMore", {
+				defaultValue: "Learn More",
+			}),
+			variant: "outline",
+			size: "lg",
+			icon: "ExternalLink",
+		},
 			floatingCards: [
 				{
 					id: "1",
@@ -251,7 +249,6 @@ const HomePage = ({ content, className }: Property) => {
 							defaultValue: "View on GitHub",
 						}),
 						variant: "default",
-						fullWidth: true,
 					},
 					popular: true,
 				},
@@ -287,7 +284,6 @@ const HomePage = ({ content, className }: Property) => {
 							defaultValue: "Track Progress",
 						}),
 						variant: "outline",
-						fullWidth: true,
 					},
 					popular: false,
 				},
@@ -321,7 +317,6 @@ const HomePage = ({ content, className }: Property) => {
 							defaultValue: "Learn More",
 						}),
 						variant: "outline",
-						fullWidth: true,
 					},
 					popular: false,
 				},

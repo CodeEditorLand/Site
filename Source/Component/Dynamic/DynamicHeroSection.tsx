@@ -101,7 +101,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-[100dvh] w-full items-center overflow-hidden py-20 lg:py-32 ${className || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-[200dvh] w-full items-center overflow-hidden py-20 lg:py-32 ${className || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -129,7 +129,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 				</h1>
 
 				{/* CTAs:noise-driven button states */}
-				<div className="mb-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
+				<div className="mb-6 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
 					<DynamicButton content={PrimaryCTA} />
 					{SecondaryCTA && <DynamicButton content={SecondaryCTA} />}
 				</div>
@@ -148,7 +148,6 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 								key={Card.id}
 								className="StaccatoCard border border-[var(--Border)] bg-white p-3"
 								style={{
-									minWidth: "120px",
 									transitionDelay: `${Index * 50}ms`,
 								}}>
 								<div className="mb-1.5 text-xs font-medium text-foreground">
@@ -169,7 +168,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 					{/* Desktop: orbital layout */}
 					<div
 						ref={SceneReference}
-						className="relative hidden h-[600px] lg:block"
+						className="relative hidden min-h-[80vh] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub:logo with micro-movement */}
 						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
@@ -194,15 +193,14 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 							const CenterY = 50 + Math.sin(Angle) * RadiusY;
 
 							return (
-								<div
-									key={Card.id}
-									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white p-3"
-									style={{
-										top: `${CenterY}%`,
-										left: `${CenterX}%`,
-										transform: "translate(-50%, -50%)",
-										width: "130px",
-									}}>
+							<div
+								key={Card.id}
+								className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white p-3 w-36"
+								style={{
+									top: `${CenterY}%`,
+									left: `${CenterX}%`,
+									transform: "translate(-50%, -50%)",
+								}}>
 									<div className="mb-1.5 text-xs font-medium text-foreground">
 										{Card.title}
 									</div>
