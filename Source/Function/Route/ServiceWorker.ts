@@ -1,22 +1,73 @@
-/**
- * Custom service worker with route-redirect interception + Workbox precaching.
- *
- * At build time, the Astro integration replaces the placeholder markers:
- *   __ROUTE_MAP_CANONICAL__ → JSON array of canonical paths
- *   __ROUTE_MAP_VARIANT__   → JSON object of variant → canonical mappings
- *   __PRECACHE_MANIFEST__   → Workbox precache manifest entries
- *
- * This file is NOT imported at runtime — it is read as a text template by
- * Integration.ts, transformed, and written to the build output.
- */
+declare var self: ServiceWorkerGlobalScope;
 
-declare const self: ServiceWorkerGlobalScope;
+declare const __DEV__: boolean;
 
-// Injected at build time
+declare const __INCREMENT__: string;
+
+// ─── Build-time injected data ───
+// The Astro integration replaces these markers at build time:
+//   __ROUTE_MAP_CANONICAL__ → JSON array of canonical PascalCase paths
+//   __ROUTE_MAP_VARIANT__   → JSON object of variant → canonical mappings
+
+declare const __ROUTE_MAP_CANONICAL__: string[];
+
+declare const __ROUTE_MAP_VARIANT__: Record<string, string>;
+
+// ─── Version + Cache ───
+
+const INCREMENT = __INCREMENT__ ?? "Initial";
+
+const CACHE_ROUTE = `Route-${INCREMENT}`;
+
+const CACHE_ASSET = `Asset-${INCREMENT}`;
+
+const CACHE = [CACHE_ROUTE, CACHE_ASSET];
+
+let CurrentClientVersion: string | null = null;
+
+const BASE_REMOTE =
+	new URLSearchParams(self.location.search).get("BASE_REMOTE") ||
+	self.location.origin;
+
+// ─── Logging (stripped in production) ───
+
+const Log = __DEV__
+	? (..._Message: any[]) => {
+			console.log(
+				`[Route ${INCREMENT}]`,
+				`(Remote: ${BASE_REMOTE})`,
+				..._Message,
+			);
+		}
+	: () => {};
+
+const ErrorLog = __DEV__
+	? (..._Message: any[]) => {
+			console.error(
+				`[Route ${INCREMENT}]`,
+				`(Remote: ${BASE_REMOTE})`,
+				..._Message,
+			);
+		}
+	: () => {};
+
+const WarnLog = __DEV__
+	? (..._Message: any[]) => {
+			console.warn(
+				`[Route ${INCREMENT}]`,
+				`(Remote: ${BASE_REMOTE})`,
+				..._Message,
+			);
+		}
+	: () => {};
+
+// ─── Route Map ───
+
 const CanonicalSet: Set<string> = new Set(__ROUTE_MAP_CANONICAL__);
+
 const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
 
-// ─── Path normalization (inlined from Normalize.ts for SW context) ───
+// ─── Path normalization ───
 
 const StripTrailingSlash = (Path: string): string =>
 	Path === "/" ? "/" : Path.replace(/\/+$/, "");
@@ -26,39 +77,42 @@ const NormalizePath = (Path: string): string =>
 		"/" +
 			Path.replace(/^\/+/, "")
 				.split("/")
-				.map((Segment) => decodeURIComponent(Segment).toLowerCase())
+				.map((Segment: string) =>
+					decodeURIComponent(Segment).toLowerCase(),
+				)
 				.join("/"),
 	);
 
 // ─── Route resolution ───
+// Returns the PascalCase canonical path, or null if already canonical
 
 const ResolveRoute = (RequestPath: string): string | null => {
 	const Cleaned = StripTrailingSlash(RequestPath);
 
-	// Already canonical — no redirect needed
 	if (CanonicalSet.has(Cleaned)) {
 		return null;
 	}
 
-	// Normalize and check canonical set
 	const Normalized = NormalizePath(Cleaned);
 
 	if (CanonicalSet.has(Normalized)) {
 		return Normalized;
 	}
 
-	// Check variant map (case-insensitive, plural/singular, aliases)
 	if (VariantMap[Normalized]) {
 		return VariantMap[Normalized];
 	}
 
-	// Strip hyphens/underscores and retry
+	if (VariantMap[Cleaned]) {
+		return VariantMap[Cleaned];
+	}
+
 	const Stripped =
 		"/" +
 		Normalized
 			.replace(/^\/+/, "")
 			.split("/")
-			.map((Segment) => Segment.replace(/[-_]/g, ""))
+			.map((Segment: string) => Segment.replace(/[-_]/g, ""))
 			.join("/");
 
 	if (VariantMap[Stripped]) {
@@ -68,47 +122,300 @@ const ResolveRoute = (RequestPath: string): string | null => {
 	return null;
 };
 
-// ─── Fetch event handler ───
+// ─── Install ───
 
-self.addEventListener("fetch", (Event: FetchEvent) => {
+self.addEventListener("install", (Event) => {
+	__DEV__ && Log(`Installing version ${INCREMENT}...`);
+
+	Event.waitUntil(
+		caches
+			.open(CACHE_ROUTE)
+			.then((Cache) => {
+				__DEV__ && Log("Route cache opened.");
+
+				return Cache;
+			})
+			.catch((_Error) => __DEV__ && ErrorLog("Cache open failed:", _Error))
+			.then(() => {
+				__DEV__ &&
+					Log("Install complete. Activating immediately.");
+
+				return self.skipWaiting();
+			}),
+	);
+});
+
+// ─── Activate ───
+
+self.addEventListener("activate", (Event) => {
+	__DEV__ && Log(`Activating version ${INCREMENT}...`);
+
+	Event.waitUntil(
+		Promise.all([
+			caches
+				.keys()
+				.then((CacheKey) =>
+					Promise.all(
+						CacheKey.map((Key) => {
+							if (!CACHE.includes(Key)) {
+								__DEV__ && Log(`Deleting old cache: ${Key}`);
+
+								return caches.delete(Key);
+							}
+
+							return Promise.resolve();
+						}),
+					),
+				)
+				.catch((_Error) => {
+					__DEV__ &&
+						ErrorLog("Cache cleanup failed:", _Error);
+
+					return Promise.resolve();
+				}),
+
+			self.clients
+				.claim()
+				.then(() => {
+					__DEV__ && Log("Clients claimed successfully.");
+				})
+				.catch((_Error) => {
+					__DEV__ &&
+						ErrorLog("self.clients.claim() failed:", _Error);
+
+					return Promise.resolve();
+				}),
+		])
+			.then(async () => {
+				__DEV__ &&
+					Log(
+						`Version ${INCREMENT} activated and controlling clients.`,
+					);
+
+				const IsNewVersion = CurrentClientVersion !== INCREMENT;
+
+				if (IsNewVersion) {
+					__DEV__ &&
+						Log(
+							`New version detected (${CurrentClientVersion} -> ${INCREMENT}). Notifying clients.`,
+						);
+
+					CurrentClientVersion = INCREMENT;
+
+					return (
+						await self.clients.matchAll({ type: "window" })
+					).forEach((Client) => {
+						__DEV__ &&
+							Log(
+								`Sending New Version message to client ${Client.id}`,
+							);
+
+						Client.postMessage({ Version: "New" });
+					});
+				} else {
+					__DEV__ &&
+						Log(
+							`Same version (${INCREMENT}), skipping notification.`,
+						);
+				}
+			})
+			.catch(
+				(_Error) =>
+					__DEV__ && ErrorLog("Activation failed overall:", _Error),
+			),
+	);
+});
+
+// ─── Fetch ───
+// Delineated concerns:
+//   1. Route Redirect — intercept navigation, redirect to PascalCase canonical
+//   2. Page Cache — network-first for navigation (cache fallback for offline)
+//   3. Asset Cache — cache-first for static assets (_astro/*, Asset/*, etc.)
+//   4. Pass-through — everything else goes to network
+
+self.addEventListener("fetch", (Event) => {
 	const Request = Event.request;
 
-	// Only intercept navigation requests (page loads, not assets)
-	if (Request.mode !== "navigate") {
+	const _URL = new URL(Request.url);
+
+	const Path = _URL.pathname;
+
+	__DEV__ &&
+		Log(`Fetch: ${Path}`, {
+			Method: Request.method,
+			Destination: Request.destination,
+			Mode: Request.mode,
+		});
+
+	if (
+		_URL.origin === self.origin &&
+		Path === new URL(self.location.href).pathname
+	) {
+		__DEV__ && Log("Ignoring fetch for SW script itself:", Path);
+
 		return;
 	}
 
-	const URL = new self.URL(Request.url);
-	const ResolvedPath = ResolveRoute(URL.pathname);
-
-	if (ResolvedPath !== null) {
-		// Redirect to canonical path, preserving query string and hash
-		const RedirectURL = new self.URL(ResolvedPath, URL.origin);
-
-		RedirectURL.search = URL.search;
-
-		Event.respondWith(Response.redirect(RedirectURL.href, 301));
+	if (Request.method !== "GET") {
+		__DEV__ && Log(`Ignoring non-GET: ${Request.method} ${Path}`);
 
 		return;
 	}
 
-	// Fall through — let the browser handle the request normally
-	// (Workbox precache will serve cached assets if available)
+	// ── Concern 1: Route Redirect ──
+	// Intercept ALL navigation requests and redirect variants to PascalCase
+
+	if (Request.mode === "navigate") {
+		const ResolvedPath = ResolveRoute(Path);
+
+		if (ResolvedPath !== null) {
+			__DEV__ && Log(`Redirecting ${Path} → ${ResolvedPath}`);
+
+			const RedirectURL = new URL(ResolvedPath, _URL.origin);
+
+			RedirectURL.search = _URL.search;
+
+			Event.respondWith(Response.redirect(RedirectURL.href, 301));
+
+			return;
+		}
+
+		// ── Concern 2: Page Cache (Network-First) ──
+		__DEV__ && Log(`Navigation (network-first): ${Path}`);
+
+		Event.respondWith(
+			(async () => {
+				try {
+					const _Response = await fetch(Request);
+
+					if (_Response && _Response.ok) {
+						__DEV__ && Log(`Navigation fetched: ${Path}`);
+
+						(await caches.open(CACHE_ROUTE)).put(
+							Request,
+							_Response.clone(),
+						);
+
+						return _Response;
+					}
+
+					__DEV__ &&
+						WarnLog(
+							`Navigation failed (${_Response.status}): ${Path}. Trying cache...`,
+						);
+				} catch (_Error) {
+					__DEV__ &&
+						WarnLog(
+							`Navigation fetch failed: ${Path}. Trying cache...`,
+							_Error,
+						);
+				}
+
+				const _Response = await (
+					await caches.open(CACHE_ROUTE)
+				).match(Request);
+
+				if (_Response) {
+					__DEV__ && Log(`Serving from cache: ${Path}`);
+
+					return _Response;
+				}
+
+				__DEV__ &&
+					ErrorLog(`No cache fallback for navigation: ${Path}`);
+
+				return new Response(
+					"Network error: You appear to be offline and the page is not cached.",
+					{
+						status: 503,
+						statusText: "Service Unavailable",
+						headers: { "Content-Type": "text/plain" },
+					},
+				);
+			})(),
+		);
+
+		return;
+	}
+
+	// ── Concern 3: Asset Cache (Cache-First) ──
+	// Static assets with content hashes: _astro/*, Asset/*, Favicon/*
+
+	if (
+		Path.startsWith("/_astro/") ||
+		Path.startsWith("/Asset/") ||
+		Path.startsWith("/Favicon/") ||
+		Path.startsWith("/Image/")
+	) {
+		__DEV__ && Log(`Asset (cache-first): ${Path}`);
+
+		Event.respondWith(
+			caches
+				.open(CACHE_ASSET)
+				.then(async (Cache) => {
+					const Cached = await Cache.match(Request);
+
+					if (Cached) {
+						__DEV__ && Log(`Asset cache hit: ${Path}`);
+
+						return Cached;
+					}
+
+					__DEV__ && Log(`Asset cache miss, fetching: ${Path}`);
+
+					try {
+						const _Response = await fetch(Request);
+
+						if (_Response && _Response.ok) {
+							__DEV__ && Log(`Caching asset: ${Path}`);
+
+							await Cache.put(Request, _Response.clone());
+						}
+
+						return (
+							_Response ||
+							new Response(`Failed to fetch ${Path}`, {
+								status: 504,
+							})
+						);
+					} catch (_Error) {
+						__DEV__ &&
+							ErrorLog(`Asset fetch failed: ${Path}`, _Error);
+
+						return new Response(`Offline: ${Path}`, {
+							status: 503,
+						});
+					}
+				})
+				.catch((_Error) => {
+					__DEV__ &&
+						ErrorLog(`Asset cache error: ${Path}`, _Error);
+
+					return fetch(Request);
+				}),
+		);
+
+		return;
+	}
+
+	// ── Concern 4: Pass-through ──
+	__DEV__ && WarnLog(`Unhandled, passing through: ${Path}`);
 });
 
-// ─── Service worker lifecycle ───
+// ─── Message handler ───
 
-self.addEventListener("install", () => {
-	// Activate immediately — don't wait for old SW to release clients
-	self.skipWaiting();
+self.addEventListener("message", (Event) => {
+	if (Event.origin !== self.location.origin && Event.origin !== BASE_REMOTE) {
+		__DEV__ &&
+			WarnLog(
+				`Message from untrusted origin: ${Event.origin}`,
+				Event.data,
+			);
+
+		return;
+	}
+
+	__DEV__ && Log("Message from client:", Event.data);
 });
 
-self.addEventListener("activate", (Event: ExtendableEvent) => {
-	// Claim all open tabs immediately so routing starts without refresh
-	Event.waitUntil(self.clients.claim());
-});
-
-// ─── Workbox precache (injected at build time) ───
-// The integration reads the existing astrojs-service-worker manifest
-// and appends Workbox precaching calls here.
-// __WORKBOX_PRECACHE_PLACEHOLDER__
+export default {};

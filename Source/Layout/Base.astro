@@ -127,6 +127,11 @@ const T = GetI18n();
 		</script>
 
 		<script>
+			await import("@Function/Route/Policy.js");
+			await import("@Function/Route/Register.js");
+		</script>
+
+		<script>
 			const ReducedMotion = window.matchMedia(
 				"(prefers-reduced-motion: reduce)",
 			).matches;

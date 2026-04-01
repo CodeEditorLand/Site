@@ -1,10 +1,3 @@
-/**
- * Astro integration that generates the route map, builds the custom service
- * worker with embedded routing, and writes Cloudflare _redirects.
- *
- * Hooks into `astro:build:done` so all pages are already rendered.
- */
-
 import type { AstroIntegration } from "astro";
 
 const RouteRedirectIntegration = (): AstroIntegration => ({
@@ -12,9 +5,11 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 	hooks: {
 		"astro:build:done": async ({ dir, logger }) => {
-			const { readFile: ReadFile, writeFile: WriteFile } = await import(
-				"node:fs/promises"
-			);
+			const {
+				copyFile: CopyFile,
+				readFile: ReadFile,
+				writeFile: WriteFile,
+			} = await import("node:fs/promises");
 			const { join: Join, resolve: Resolve } = await import("node:path");
 			const { fileURLToPath: FileURLToPath } = await import("node:url");
 
@@ -22,7 +17,8 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			logger.info("Generating route map...");
 
-			// 1. Generate route map
+			// ── 1. Generate route map ──
+
 			const GenerateRouteMap = (await import("./Map.js")).default;
 			const RouteMap = await GenerateRouteMap(OutputDirectory);
 
@@ -30,7 +26,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				`Found ${RouteMap.Canonical.length} canonical routes, ${Object.keys(RouteMap.Variant).length} variant mappings`,
 			);
 
-			// 2. Write route map JSON (for 404 page script to fetch)
+			// ── 2. Write route map JSON ──
+			// Served statically for 404 page script to fetch
+
 			const RouteMapPath = Join(OutputDirectory, "RouteMap.json");
 
 			await WriteFile(
@@ -41,43 +39,119 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			logger.info("Wrote RouteMap.json");
 
-			// 3. Build custom service worker from template
-			const TemplatePath = Resolve(
+			// ── 3. Create PascalCase URL directories ──
+			// For each PascalCase canonical that differs from the built path,
+			// copy the built HTML to the PascalCase path so static hosting
+			// serves the page at both URLs. The SW/CF then redirects variants
+			// to the PascalCase canonical.
+			//
+			// E.g., /downloads/index.html → also copied to /Download/index.html
+
+			const { mkdir: MakeDirectory } = await import("node:fs/promises");
+
+			for (const [BuiltPath, PascalPath] of Object.entries(
+				RouteMap.Variant,
+			)) {
+				// Only process actual built paths (lowercase) → PascalCase
+				// Skip semantic aliases and other variants
+				if (
+					!BuiltPath.startsWith("/") ||
+					!RouteMap.Canonical.includes(PascalPath) ||
+					PascalPath === "/"
+				) {
+					continue;
+				}
+
+				// Check if the built path has an actual HTML file
+				const BuiltHTMLPath = Join(
+					OutputDirectory,
+					BuiltPath.slice(1),
+					"index.html",
+				);
+
+				let BuiltHTML: string;
+
+				try {
+					BuiltHTML = await ReadFile(BuiltHTMLPath, "utf-8");
+				} catch {
+					continue;
+				}
+
+				// Create PascalCase directory and copy HTML
+				const PascalDirectory = Join(
+					OutputDirectory,
+					PascalPath.slice(1),
+				);
+
+				try {
+					await MakeDirectory(PascalDirectory, { recursive: true });
+
+					await WriteFile(
+						Join(PascalDirectory, "index.html"),
+						BuiltHTML,
+						"utf-8",
+					);
+
+					logger.info(
+						`Copied ${BuiltPath} → ${PascalPath}/index.html`,
+					);
+				} catch (_Error) {
+					logger.warn(
+						`Failed to copy ${BuiltPath} → ${PascalPath}: ${_Error}`,
+					);
+				}
+			}
+
+			// ── 4. Build service worker ──
+			// Read the compiled ServiceWorker.js template and inject route data
+
+			const TemplateDirectory = Resolve(
 				FileURLToPath(import.meta.url),
 				"..",
-				"ServiceWorker.ts",
 			);
 
 			let ServiceWorkerSource: string;
 
 			try {
-				ServiceWorkerSource = await ReadFile(TemplatePath, "utf-8");
+				ServiceWorkerSource = await ReadFile(
+					Join(TemplateDirectory, "ServiceWorker.js"),
+					"utf-8",
+				);
 			} catch {
-				// Fallback: try the compiled .js version
-				const CompiledPath = TemplatePath.replace(/\.ts$/, ".js");
+				try {
+					ServiceWorkerSource = await ReadFile(
+						Join(TemplateDirectory, "ServiceWorker.ts"),
+						"utf-8",
+					);
+				} catch (_Error) {
+					logger.error(
+						`Could not read ServiceWorker template: ${_Error}`,
+					);
 
-				ServiceWorkerSource = await ReadFile(CompiledPath, "utf-8");
+					return;
+				}
 			}
 
-			// Strip TypeScript-only syntax for the raw JS output
+			// Strip TypeScript declarations for raw JS output
 			let ServiceWorkerCode = ServiceWorkerSource
-				// Remove type imports and declarations
+				.replace(/^declare var self.*$/m, "")
+				.replace(/^declare const __DEV__.*$/m, "")
+				.replace(/^declare const __INCREMENT__.*$/m, "")
+				.replace(/^declare const __ROUTE_MAP_CANONICAL__.*$/m, "")
+				.replace(/^declare const __ROUTE_MAP_VARIANT__.*$/m, "")
 				.replace(
-					/^declare const self: ServiceWorkerGlobalScope;$/m,
+					/^import type.*$/gm,
 					"",
 				)
+				.replace(/^export interface.*\{[\s\S]*?\}$/gm, "")
 				.replace(/: Set<string>/g, "")
 				.replace(/: Record<string, string>/g, "")
 				.replace(/: string \| null/g, "")
 				.replace(/: string/g, "")
-				.replace(/: FetchEvent/g, "")
-				.replace(/: ExtendableEvent/g, "")
-				// Remove block comments (the JSDoc headers)
-				.replace(/\/\*\*[\s\S]*?\*\//g, "")
-				// Remove single-line TS comments that reference types
-				.replace(/\/\/.*@ts.*$/gm, "");
+				.replace(/: any\[\]/g, "")
+				.replace(/^export default \{\};$/m, "");
 
-			// Inject route data
+			// Inject route data + build constants
 			ServiceWorkerCode = ServiceWorkerCode
 				.replace(
 					"__ROUTE_MAP_CANONICAL__",
@@ -86,55 +160,31 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				.replace(
 					"__ROUTE_MAP_VARIANT__",
 					JSON.stringify(RouteMap.Variant),
-				);
+				)
+				.replace(
+					/__INCREMENT__/g,
+					JSON.stringify(`Route-${Date.now()}`),
+				)
+				.replace(/__DEV__/g, "false");
 
-			// Read existing Workbox service worker if present
-			const ExistingServiceWorkerPath = Join(
+			const ServiceWorkerPath = Join(
 				OutputDirectory,
 				"service-worker.js",
 			);
 
-			let WorkboxCode = "";
+			await WriteFile(ServiceWorkerPath, ServiceWorkerCode, "utf-8");
 
-			try {
-				const ExistingCode = await ReadFile(
-					ExistingServiceWorkerPath,
-					"utf-8",
-				);
-
-				// Extract the Workbox precache+route call
-				const PrecacheMatch = ExistingCode.match(
-					/e\.precacheAndRoute\([^)]+\)/,
-				);
-
-				if (PrecacheMatch) {
-					WorkboxCode = `\n// Workbox precache (preserved from astrojs-service-worker)\n// ${PrecacheMatch[0]}\n`;
-				}
-			} catch {
-				// No existing service worker — that's fine
-			}
-
-			ServiceWorkerCode = ServiceWorkerCode.replace(
-				"// __WORKBOX_PRECACHE_PLACEHOLDER__",
-				WorkboxCode,
+			logger.info(
+				"Wrote service-worker.js with route redirect + cache",
 			);
 
-			// Write the custom service worker
-			await WriteFile(
-				ExistingServiceWorkerPath,
-				ServiceWorkerCode,
-				"utf-8",
-			);
+			// ── 5. Generate Cloudflare _redirects ──
 
-			logger.info("Wrote custom service-worker.js with route redirect");
-
-			// 4. Generate Cloudflare _redirects file
 			const RedirectLine: string[] = [];
 
 			for (const [VariantPath, CanonicalPath] of Object.entries(
 				RouteMap.Variant,
 			)) {
-				// Only add if the variant looks like a real URL path
 				if (
 					VariantPath.startsWith("/") &&
 					VariantPath !== CanonicalPath
@@ -143,7 +193,6 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				}
 			}
 
-			// Add trailing-slash redirects for all canonical paths
 			for (const CanonicalPath of RouteMap.Canonical) {
 				if (CanonicalPath !== "/") {
 					RedirectLine.push(
@@ -158,7 +207,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			await WriteFile(RedirectPath, RedirectContent, "utf-8");
 
 			logger.info(
-				`Wrote _redirects with ${RedirectLine.length} redirect rules`,
+				`Wrote _redirects with ${RedirectLine.length} rules`,
 			);
 		},
 	},

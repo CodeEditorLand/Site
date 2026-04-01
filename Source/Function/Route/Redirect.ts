@@ -1,14 +1,14 @@
-/**
- * Client-side route redirect script. Embedded inline in 404.astro.
- * Fetches RouteMap.json and redirects if a match is found.
- *
- * This is the Layer 3 fallback — runs when the service worker hasn't
- * been installed yet and the Cloudflare _redirects didn't catch the path.
- */
+// Layer 3 fallback — client-side redirect for 404 page.
+// Fetches RouteMap.json and redirects to PascalCase canonical if match found.
+// Runs when SW isn't installed and Cloudflare _redirects didn't catch the path.
 
 const RedirectFromRouteMap = async (): Promise<void> => {
 	const CurrentPath = window.location.pathname.replace(/\/+$/, "") || "/";
-	const NormalizedPath = CurrentPath.toLowerCase();
+
+	// Already on root — nothing to redirect
+	if (CurrentPath === "/") {
+		return;
+	}
 
 	try {
 		const Response = await fetch("/RouteMap.json");
@@ -19,32 +19,35 @@ const RedirectFromRouteMap = async (): Promise<void> => {
 
 		const RouteMap = await Response.json();
 
-		// Check variant map
-		const CanonicalPath =
-			RouteMap.Variant[NormalizedPath] ||
-			RouteMap.Variant[
-				NormalizedPath.replace(/[-_]/g, "").replace(/s$/, "")
-			] ||
-			RouteMap.Variant[NormalizedPath.replace(/[-_]/g, "")];
-
-		if (CanonicalPath && CanonicalPath !== CurrentPath) {
-			// Preserve query string and hash
-			const Target = new URL(CanonicalPath, window.location.origin);
-
-			Target.search = window.location.search;
-			Target.hash = window.location.hash;
-
-			window.location.replace(Target.href);
-
+		// If already on a PascalCase canonical URL, no redirect needed
+		if (RouteMap.Canonical.includes(CurrentPath)) {
 			return;
 		}
 
-		// Check if lowercase version is canonical
-		if (
-			RouteMap.Canonical.includes(NormalizedPath) &&
-			NormalizedPath !== CurrentPath
-		) {
-			const Target = new URL(NormalizedPath, window.location.origin);
+		// Try exact match first
+		let CanonicalPath = RouteMap.Variant[CurrentPath];
+
+		// Try lowercase
+		if (!CanonicalPath) {
+			CanonicalPath = RouteMap.Variant[CurrentPath.toLowerCase()];
+		}
+
+		// Try stripped hyphens/underscores
+		if (!CanonicalPath) {
+			const Stripped = CurrentPath.toLowerCase().replace(/[-_]/g, "");
+
+			CanonicalPath = RouteMap.Variant[Stripped];
+		}
+
+		// Try without trailing 's' (plural → singular)
+		if (!CanonicalPath) {
+			const Singular = CurrentPath.toLowerCase().replace(/s$/, "");
+
+			CanonicalPath = RouteMap.Variant[Singular];
+		}
+
+		if (CanonicalPath && CanonicalPath !== CurrentPath) {
+			const Target = new URL(CanonicalPath, window.location.origin);
 
 			Target.search = window.location.search;
 			Target.hash = window.location.hash;

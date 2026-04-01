@@ -15,8 +15,11 @@ const MetaDescription = T("common.error.pageNotFound", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load />
-	<section class="py-20" aria-label="Page not found">
+	<section id="NotFoundContent" class="py-20" aria-label="Page not found">
 		<div class="container mx-auto px-4 text-center">
+			<p id="RouteRedirectNotice" class="mb-4 text-sm text-muted-foreground hidden">
+				Redirecting...
+			</p>
 			<h1 class="StaccatoJitter mb-4 text-6xl font-bold">404</h1>
 			<p class="StaccatoBreath mb-8 text-xl text-muted-foreground">
 				{
@@ -36,4 +39,22 @@ const MetaDescription = T("common.error.pageNotFound", {
 			</a>
 		</div>
 	</section>
+
+	<script>
+		const Notice = document.getElementById("RouteRedirectNotice");
+
+		if (Notice) {
+			Notice.classList.remove("hidden");
+		}
+
+		const RedirectFromRouteMap = (
+			await import("@Function/Route/Redirect.js")
+		).default;
+
+		await RedirectFromRouteMap();
+
+		if (Notice) {
+			Notice.classList.add("hidden");
+		}
+	</script>
 </Base>

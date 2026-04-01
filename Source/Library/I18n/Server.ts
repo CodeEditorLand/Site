@@ -48,40 +48,6 @@ import FrVerify from "./Locale/Fr/Verify.json";
 
 const SupportedLocaleList = ["en", "bg", "de", "fr", "es"];
 
-const NamespaceList = new Set([
-	"common",
-	"home",
-	"download",
-	"account",
-	"verify",
-	"header",
-	"footer",
-	"meta",
-]);
-
-/**
- * Creates a T function that auto-detects the namespace from the key prefix.
- * E.g., T("home.hero.badge") resolves to namespace "home", key "hero.badge".
- * Falls back to "common" namespace if prefix is not a known namespace.
- */
-function CreateT(Locale: string) {
-	return (Key: string, Options?: Record<string, unknown>) => {
-		const DotIndex = Key.indexOf(".");
-
-		if (DotIndex > 0) {
-			const Prefix = Key.slice(0, DotIndex);
-
-			if (NamespaceList.has(Prefix)) {
-				const NamespaceKey = Key.slice(DotIndex + 1);
-
-				return i18n.getFixedT(Locale, Prefix)(NamespaceKey, Options);
-			}
-		}
-
-		return i18n.getFixedT(Locale, "common")(Key, Options);
-	};
-}
-
 export async function GetLocale(Request?: Request): Promise<string> {
 	if (!Request) {
 		return "en";
@@ -187,25 +153,25 @@ export function GetI18n(Request?: Request) {
 	}
 
 	if (import.meta.env["PRERENDER"]) {
-		return CreateT("en");
+		return i18n.getFixedT("en");
 	}
 
 	if (!Request) {
-		return CreateT("en");
+		return i18n.getFixedT("en");
 	}
 
 	try {
 		const URL = new globalThis.URL(Request.url);
 		const URLParameter = URL.searchParams.get("lng");
 		if (URLParameter && SupportedLocaleList.includes(URLParameter)) {
-			return CreateT(URLParameter);
+			return i18n.getFixedT(URLParameter);
 		}
 
 		const Cookie = Request.headers.get("cookie");
 		if (Cookie) {
 			const Match = Cookie.match(/LOCALE=([^;]+)/);
 			if (Match?.[1] && SupportedLocaleList.includes(Match[1])) {
-				return CreateT(Match[1]);
+				return i18n.getFixedT(Match[1]);
 			}
 		}
 
@@ -216,7 +182,7 @@ export function GetI18n(Request?: Request) {
 			);
 			for (const Language of LanguageList) {
 				if (Language && SupportedLocaleList.includes(Language)) {
-					return CreateT(Language);
+					return i18n.getFixedT(Language);
 				}
 			}
 		}
@@ -224,5 +190,5 @@ export function GetI18n(Request?: Request) {
 		console.warn("i18n locale detection failed:", Error);
 	}
 
-	return CreateT("en");
+	return i18n.getFixedT("en");
 }
