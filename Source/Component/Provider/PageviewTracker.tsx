@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { useAnalytics } from "./AnalyticsProvider";
 
-export function PageviewTracker() {
+const PageviewTracker = () => {
 	const [IsMounted, SetIsMounted] = useState(false);
 	const HasTrackedReference = useRef(false);
 	const TrackPageViewReference = useRef<
@@ -75,4 +75,8 @@ export function PageviewTracker() {
 	}, [IsMounted]);
 
 	return null;
-}
+};
+
+export { PageviewTracker };
+
+export default PageviewTracker;
