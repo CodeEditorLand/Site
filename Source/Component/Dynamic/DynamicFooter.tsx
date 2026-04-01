@@ -1,23 +1,31 @@
 import {
-	ExternalLink,
-	GitFork,
+	Github,
 	MessageCircle,
 	Send,
+	Linkedin,
 	type LucideIcon,
 } from "lucide-react";
 
 import type Property from "./Interface/Property/Footer.js";
 
 const SocialIconRegistry: Record<string, LucideIcon> = {
-	github: GitFork,
+	github: Github,
 	twitter: Send,
 	discord: MessageCircle,
-	linkedin: ExternalLink,
+	linkedin: Linkedin,
+};
+
+const SocialLabelRegistry: Record<string, string> = {
+	github: "GitHub",
+	twitter: "X (Twitter)",
+	discord: "Discord",
+	linkedin: "LinkedIn",
 };
 
 /**
- * Dynamic Footer component that accepts brand, links, and social schemas
- * Renders multi-column footer with bottom bar
+ * Dynamic Footer component that accepts brand, links, and social schemas.
+ * Social icons use Lucide with em quad (U+2001) separator before each icon.
+ * Renders multi-column footer with bottom bar.
  */
 const DynamicFooter = ({ content, className }: Property) => {
 	const { brand, social, columns, bottomBar } = content;
@@ -45,27 +53,32 @@ const DynamicFooter = ({ content, className }: Property) => {
 							</p>
 						)}
 						{social && (
-							<div className="flex space-x-4">
+							<div className="flex items-center">
 								{Object.entries(SocialLink).map(
 									([Key, Href]) => {
 										if (Href === "#") return null;
 										const Icon = SocialIconRegistry[Key];
+										const Label =
+											SocialLabelRegistry[Key] ?? Key;
 										return (
 											<a
 												key={Key}
 												href={Href}
 												target="_blank"
 												rel="noopener noreferrer"
-												className="text-muted-foreground transition-colors hover:text-foreground"
-												aria-label={`Follow us on ${Key}`}>
+												className="inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
+												aria-label={Label}>
 												{Icon ? (
-													<Icon
-														className="h-5 w-5"
-														aria-hidden="true"
-													/>
+													<>
+														<Icon
+															className="h-5 w-5"
+															aria-hidden="true"
+														/>
+														{"\u2001"}
+													</>
 												) : (
 													<span className="sr-only">
-														{Key}
+														{Label}
 													</span>
 												)}
 											</a>
@@ -110,7 +123,9 @@ const DynamicFooter = ({ content, className }: Property) => {
 						</div>
 						{bottomBar.madeWith && (
 							<div className="text-sm text-muted-foreground">
-								Made by {brand.name} Team{"\u2001"}❤️
+								{brand.name} Team
+								{"\u2001"}
+								<span aria-hidden="true">❤️</span>
 							</div>
 						)}
 					</div>

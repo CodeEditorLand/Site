@@ -10,6 +10,7 @@ import type Property from "./Interface/Property/Pricing.js";
  * Tier cards get StaccatoCard scatter. Toggle uses StaccatoToggle.
  * Popular badge pulses with StaccatoRhythm. Price text breathes.
  * Checkmarks use StaccatoCheckmark for organic emphasis.
+ * All billing-period labels are i18n-resolved; no hardcoded strings.
  */
 const DynamicPricing = ({ content, className }: Property) => {
 	const { t: T } = useTranslation("home");
@@ -22,26 +23,26 @@ const DynamicPricing = ({ content, className }: Property) => {
 		defaultYearly = false,
 		labels = {},
 	} = content;
-	const {
-		monthly: MonthlyLabel = T("pricing.labels.monthly", {
-			defaultValue: "Monthly",
-		}),
-		yearly: YearlyLabel = T("pricing.labels.yearly", {
-			defaultValue: "Yearly",
-		}),
-		savings: SavingsLabel = T("pricing.labels.savings", {
-			defaultValue: "(Save up to 20%)",
-		}),
-		popular: PopularLabel = T("pricing.labels.popular", {
-			defaultValue: "Most Popular",
-		}),
-		perMonth: PerMonthLabel = T("pricing.labels.perMonth", {
-			defaultValue: "/month",
-		}),
-		perYear: PerYearLabel = T("pricing.labels.perYear", {
-			defaultValue: "/year",
-		}),
-	} = labels;
+
+	const MonthlyLabel =
+		labels.monthly ??
+		T("pricing.labels.monthly", { defaultValue: "Monthly" });
+	const YearlyLabel =
+		labels.yearly ??
+		T("pricing.labels.yearly", { defaultValue: "Yearly" });
+	const SavingsLabel =
+		labels.savings ??
+		T("pricing.labels.savings", { defaultValue: "(Save up to 20%)" });
+	const PopularLabel =
+		labels.popular ??
+		T("pricing.labels.popular", { defaultValue: "Most Popular" });
+	const PerMonthLabel =
+		labels.perMonth ??
+		T("pricing.labels.perMonth", { defaultValue: "/month" });
+	const PerYearLabel =
+		labels.perYear ??
+		T("pricing.labels.perYear", { defaultValue: "/year" });
+
 	const [IsYearly, SetIsYearly] = useState(defaultYearly);
 
 	// Apply attention scatter to pricing tier cards
@@ -113,8 +114,8 @@ const DynamicPricing = ({ content, className }: Property) => {
 							aria-checked={IsYearly}
 							aria-label={
 								IsYearly
-									? "Switch to monthly billing"
-									: "Switch to yearly billing"
+									? `Switch to ${MonthlyLabel} billing`
+									: `Switch to ${YearlyLabel} billing`
 							}
 							className={`StaccatoToggle relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${IsYearly ? "bg-primary" : "bg-input"}`}
 							onClick={() => SetIsYearly(!IsYearly)}>

@@ -101,8 +101,6 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const { t: T } = useTranslation("account");
 
 	const HandleEnterpriseLogin = (Connection: string) => {
-		// Auth0 loginWithRedirect is triggered via the parent's OnEnterprise callback
-		// which passes the connection + organization to Auth0AccountGate
 		const Params = new URLSearchParams();
 		Params.set("connection", Connection);
 		if (OrganizationDomain.trim()) {
@@ -114,7 +112,6 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const HandleDomainSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
 		if (!OrganizationDomain.trim()) return;
-		// HRD: Auth0 will detect the domain and route to the correct enterprise connection
 		window.location.href = `/Account/SignIn?login_hint=${encodeURIComponent(OrganizationDomain.trim())}`;
 	};
 
@@ -217,7 +214,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 };
 
 /**
- * Single tier row:login form on the left, feature description on the right.
+ * Single tier row: login form on the left, feature description on the right.
  * Color-coded border by Protocol Spine identity.
  */
 const PortalTierRow = ({
@@ -239,7 +236,6 @@ const PortalTierRow = ({
 		? TierIconRegistry[Content.Icon] || Shield
 		: Shield;
 
-	// Apply Attention scatter per-row
 	useEffect(() => {
 		const Row = RowReference.current;
 		if (!Row) return;
@@ -312,7 +308,7 @@ const PortalTierRow = ({
 										required: true,
 										onChange: SetEmail,
 									}}
-									id={`portal-cloud-email`}
+									id="portal-cloud-email"
 								/>
 								<DynamicInput
 									content={{
@@ -322,7 +318,7 @@ const PortalTierRow = ({
 										required: true,
 										onChange: SetPassword,
 									}}
-									id={`portal-cloud-password`}
+									id="portal-cloud-password"
 								/>
 								<Button
 									type="submit"
@@ -512,20 +508,7 @@ const PortalTierRow = ({
 															<span
 																key={IconIndex}
 																className="inline-flex items-center">
-																{IconIndex ===
-																0 ? (
-																	"\u2001"
-																) : (
-																	<>
-																		{
-																			"\u2001"
-																		}
-																		+
-																		{
-																			"\u2001"
-																		}
-																	</>
-																)}
+																{"\u2001"}
 																{IconName.startsWith(
 																	"/",
 																) ? (
@@ -616,7 +599,6 @@ const PortalTierRow = ({
 					</div>
 				)}
 
-				{/* Settings managed badge:universal across all tiers */}
 				<div className="PortalTierSettingsManaged StaccatoBorderShimmer">
 					<span className="text-xs font-medium">
 						{Labels?.SettingsManaged ?? "Settings Managed"}
@@ -637,12 +619,12 @@ const PortalTierRow = ({
 };
 
 /**
- * DynamicPortal:Three-tier authentication portal.
+ * DynamicPortal: Three-tier authentication portal.
  *
  * Three distinct rows, each color-coded by Protocol Spine:
- *   Cloud (IPC blue):Secure online login
- *   Provider (WASM purple):GitHub/OAuth authentication
- *   LocalFirst (TCP orange):Air Daemon local-first connection
+ *   Cloud (IPC blue): Secure online login
+ *   Provider (WASM purple): GitHub/OAuth authentication
+ *   LocalFirst (TCP orange): Air Daemon local-first connection
  *
  * Layout: Login box (left, white bg) | Feature description (right)
  * Staccato noise integration on all interactive elements.
@@ -662,7 +644,6 @@ const DynamicPortal = ({
 }) => {
 	const SectionReference = useRef<HTMLElement>(null);
 
-	// Start Staccato noise engine
 	useEffect(() => {
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
@@ -677,8 +658,6 @@ const DynamicPortal = ({
 			const Staccato = await StaccatoModule.default;
 			Staccato.Start();
 			StopFunction = Staccato.Stop;
-
-			// Seed all portal rows
 			Staccato.SeedSelector(".PortalTierRow");
 		};
 
@@ -696,13 +675,11 @@ const DynamicPortal = ({
 			className="PortalSection"
 			aria-label="Authentication Portal">
 			<div className="container mx-auto px-4">
-				{/* Section Header */}
 				<div className="PortalHeader StaccatoBreath">
 					<h1 className="PortalTitle">{Content.Title}</h1>
 					<p className="PortalSubtitle">{Content.Subtitle}</p>
 				</div>
 
-				{/* Three Tier Rows */}
 				<div className="PortalTierGrid">
 					<PortalTierRow
 						Content={Content.Cloud}
