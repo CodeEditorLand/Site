@@ -208,17 +208,6 @@ export function Footer({ content }: FooterProps) {
 					</div>
 					<div className="flex flex-wrap items-center gap-4">
 						<a
-							href="https://github.com/NikolaRHristov"
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-xs text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-							aria-label="Nikola R. Hristov on GitHub (opens in new tab)">
-							{T("bottomBar.author", {
-								defaultValue: "Nikola R. Hristov",
-							})}
-							<span className="InlineSeparator">→</span>
-						</a>
-						<a
 							href="https://PlayForm.Cloud"
 							target="_blank"
 							rel="noopener noreferrer"

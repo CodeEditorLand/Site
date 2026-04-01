@@ -431,11 +431,13 @@ export function DynamicPortal({
 	OnSignIn,
 	OnOAuth,
 	OnConnect,
+	OnEnterprise,
 }: {
 	Content: PortalContent;
 	OnSignIn?: (Email: string, Password: string) => void;
 	OnOAuth?: (Provider: string) => void;
 	OnConnect?: () => void;
+	OnEnterprise?: (Provider: string) => void;
 }) {
 	const SectionReference = useRef<HTMLElement>(null);
 
@@ -501,6 +503,15 @@ export function DynamicPortal({
 						OnAction={() => OnConnect?.()}
 						Labels={Content.Labels}
 					/>
+
+					{Content.Enterprise && (
+						<PortalTierRow
+							Content={Content.Enterprise}
+							Index={3}
+							OnAction={() => OnEnterprise?.("okta")}
+							Labels={Content.Labels}
+						/>
+					)}
 				</div>
 			</div>
 		</section>

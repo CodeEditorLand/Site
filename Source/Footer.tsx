@@ -11,32 +11,34 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						rel="noopener noreferrer"
 						className="Icon flex">
 						<picture>
-							<img alt="GitHub" src="/Image/GitHub.svg" width="24" height="24" />
+							<img
+								alt="GitHub"
+								src="/Image/GitHub.svg"
+								width="24"
+								height="24"
+							/>
 						</picture>
 					</a>
 				</li>
 			</ul>
 
 			<div className="flex flex-col items-center gap-2 py-4 text-xs text-muted-foreground sm:flex-row sm:gap-4">
-				<a
-					href="https://github.com/NikolaRHristov"
-					target="_blank"
-					rel="noopener noreferrer"
-					className="hover:text-foreground transition-colors">
-					Nikola R. Hristov
-				</a>
-				<span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+				<span className="hidden sm:inline" aria-hidden="true">
+					&middot;
+				</span>
 				<a
 					href="https://editor.land"
-					className="hover:text-foreground transition-colors">
+					className="transition-colors hover:text-foreground">
 					CodeEditorLand
 				</a>
-				<span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+				<span className="hidden sm:inline" aria-hidden="true">
+					&middot;
+				</span>
 				<a
 					href="https://PlayForm.Cloud"
 					target="_blank"
 					rel="noopener noreferrer"
-					className="hover:text-foreground transition-colors">
+					className="transition-colors hover:text-foreground">
 					PlayForm
 				</a>
 			</div>
@@ -61,9 +63,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 					</a>
 				</li>
 				<li className="flex items-center gap-2">
-					<a
-						href="https://editor.land"
-						className="flex items-center">
+					<a href="https://editor.land" className="flex items-center">
 						<picture>
 							<img
 								alt="Land"
