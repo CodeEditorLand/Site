@@ -27,7 +27,7 @@ export class ErrorBoundary extends Component<
 		return { hasError: true, error };
 	}
 
-	componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+	override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
 		console.error("ErrorBoundary caught an error:", error, errorInfo);
 	}
 
