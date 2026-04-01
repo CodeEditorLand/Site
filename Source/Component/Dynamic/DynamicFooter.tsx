@@ -1,4 +1,14 @@
+import { ExternalLink, GitFork, MessageCircle, Send } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
 import type Property from "./Interface/Property/Footer.js";
+
+const SocialIconRegistry: Record<string, LucideIcon> = {
+	github: GitFork,
+	twitter: Send,
+	discord: MessageCircle,
+	linkedin: ExternalLink,
+};
 
 /**
  * Dynamic Footer component that accepts brand, links, and social schemas
@@ -8,11 +18,11 @@ export function DynamicFooter({ content, className }: Property) {
 	const { brand, social, columns, bottomBar } = content;
 	const CurrentYear = new Date().getFullYear();
 
-	const SocialIcon: Record<string, { icon: string; href: string }> = {
-		github: { icon: "GitFork", href: social?.github || "#" },
-		twitter: { icon: "Send", href: social?.twitter || "#" },
-		discord: { icon: "MessageCircle", href: social?.discord || "#" },
-		linkedin: { icon: "ExternalLink", href: social?.linkedin || "#" },
+	const SocialLink: Record<string, string> = {
+		github: social?.github || "#",
+		twitter: social?.twitter || "#",
+		discord: social?.discord || "#",
+		linkedin: social?.linkedin || "#",
 	};
 
 	return (
@@ -31,9 +41,11 @@ export function DynamicFooter({ content, className }: Property) {
 						)}
 						{social && (
 							<div className="flex space-x-4">
-								{Object.entries(SocialIcon).map(
-									([Key, { href: Href }]) =>
-										Href !== "#" && (
+								{Object.entries(SocialLink).map(
+									([Key, Href]) => {
+										if (Href === "#") return null;
+										const Icon = SocialIconRegistry[Key];
+										return (
 											<a
 												key={Key}
 												href={Href}
@@ -41,12 +53,19 @@ export function DynamicFooter({ content, className }: Property) {
 												rel="noopener noreferrer"
 												className="text-muted-foreground transition-colors hover:text-foreground"
 												aria-label={`Follow us on ${Key}`}>
-												{/* Icon placeholder - would render actual Lucide icon in implementation */}
-												<span className="sr-only">
-													{Key}
-												</span>
+												{Icon ? (
+													<Icon
+														className="h-5 w-5"
+														aria-hidden="true"
+													/>
+												) : (
+													<span className="sr-only">
+														{Key}
+													</span>
+												)}
 											</a>
-										),
+										);
+									},
 								)}
 							</div>
 						)}

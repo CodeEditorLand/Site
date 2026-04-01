@@ -64,10 +64,10 @@ const MetaDescription = T("meta.blog.description", {
 
 		<!-- Coming Soon -->
 		<section
-			class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-12 text-center">
-			<div class="mx-auto max-w-md">
+			class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-12">
+			<div class="mx-auto max-w-2xl">
 				<div
-					class="mb-6 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+					class="mb-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
 					<a
 						href="https://github.com/CodeEditorLand/Land/issues"
 						target="_blank"
@@ -98,11 +98,75 @@ const MetaDescription = T("meta.blog.description", {
 						})
 					}
 				</h2>
-				<p class="text-muted-foreground">
+				<p class="mb-6 text-muted-foreground">
 					{
 						T("common.blog.comingSoonText", {
 							defaultValue:
 								"We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
+						})
+					}
+				</p>
+
+				<h3 class="mb-3 text-lg font-semibold">
+					{
+						T("common.blog.upcomingTopicsHeading", {
+							defaultValue: "Upcoming Topics",
+						})
+					}
+				</h3>
+				<ul class="mb-6 space-y-3 text-sm text-muted-foreground">
+					<li class="flex items-start gap-3">
+						<span class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"></span>
+						<span>{
+							T("common.blog.topic.architecture", {
+								defaultValue:
+									"Deep dive into the Mountain/Cocoon/Wind/Sky/Air/Echo element architecture and how they replace Electron",
+							})
+						}</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"></span>
+						<span>{
+							T("common.blog.topic.effectTS", {
+								defaultValue:
+									"How Effect-TS powers type-safe UI services with structured concurrency and error handling",
+							})
+						}</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"></span>
+						<span>{
+							T("common.blog.topic.grpc", {
+								defaultValue:
+									"gRPC IPC protocol design: bridging Rust and TypeScript at native speed",
+							})
+						}</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"></span>
+						<span>{
+							T("common.blog.topic.extensions", {
+								defaultValue:
+									"VS Code extension compatibility: running existing extensions without modification via Cocoon",
+							})
+						}</span>
+					</li>
+					<li class="flex items-start gap-3">
+						<span class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"></span>
+						<span>{
+							T("common.blog.topic.ngi", {
+								defaultValue:
+									"Building with NGI0 Commons Fund: open-source sustainability and the European open internet initiative",
+							})
+						}</span>
+					</li>
+				</ul>
+
+				<p class="text-xs text-muted-foreground">
+					{
+						T("common.blog.followNote", {
+							defaultValue:
+								"Follow progress on GitHub or check back here for published articles.",
 						})
 					}
 				</p>
