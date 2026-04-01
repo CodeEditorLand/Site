@@ -1,5 +1,6 @@
 "use client";
 
+import { Github, Twitter } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Separator } from "../UI/Separator";
@@ -190,16 +191,24 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
-							<img
-								src="/Image/GitHub.svg"
-								alt="GitHub"
-								title="Code Editor Land on GitHub"
-								width="20"
-								height="20"
-								aria-hidden="true"
+							<Github
 								className="h-5 w-5"
+								aria-hidden="true"
 							/>
 						</a>
+						<span className="InlineSeparator" aria-hidden="true" />
+						<a
+							href="https://x.com/CodeEditorLand"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							aria-label="Code Editor Land on X (opens in new tab)">
+							<Twitter
+								className="h-5 w-5"
+								aria-hidden="true"
+							/>
+						</a>
+						<span className="InlineSeparator" aria-hidden="true" />
 						<p className="text-sm text-muted-foreground">
 							{T("bottomBar.copyright", {
 								year: new Date().getFullYear(),
@@ -216,7 +225,7 @@ const Footer = ({ content }: FooterProps) => {
 							className="text-xs text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="PlayForm (opens in new tab)">
 							PlayForm
-							<span className="InlineSeparator">→</span>
+							<span className="InlineSeparator">&#x2192;</span>
 						</a>
 						{FooterData.bottomBar?.madeWith && (
 							<a
