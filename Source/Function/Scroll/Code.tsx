@@ -86,12 +86,11 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 			<div className="flex justify-center" aria-hidden="true">
 				{Display()
 					.split("")
-					.map((_Visible, Character) => (
+					.map((Visible, Character) => (
 						<div key={`char-${Character}`} className="mr-2">
 							{(() => {
-								const Position = Character % TextContent.length;
-								if (!Matrix) return null;
-								const MatrixRowArray: number[][] =
+																if (!Matrix) return null;
+								const MatrixRowArray =
 									Matrix[Visible.toUpperCase()] ??
 									Matrix[" "];
 								if (!MatrixRowArray) return null;

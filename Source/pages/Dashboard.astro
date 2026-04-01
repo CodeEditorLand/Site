@@ -473,7 +473,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					})
 				}
 			</p>
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
 				<a
 					href="/Portal"
 					class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 border border-[var(--Border)] bg-white p-5 transition-all hover:border-blue-300">
@@ -537,6 +537,28 @@ const MetaDescription = T("meta.dashboard.description", {
 						class="ml-auto inline-flex items-center border border-orange-200 bg-orange-50 px-2 py-0.5 text-xs text-orange-700">
 						Local{"\u2001"}<span
 							class="h-1.5 w-1.5 rounded-none bg-orange-500"
+							aria-hidden="true"></span>
+					</span>
+				</a>
+				<a
+					href="/Portal"
+					class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 border border-[var(--Border)] bg-white p-5 transition-all hover:border-green-300">
+					<div
+						class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-green-200 bg-green-50">
+						<span class="text-lg text-green-600" aria-hidden="true"
+							>&#9739;</span
+						>
+					</div>
+					<div>
+						<h3 class="font-medium">Enterprise</h3>
+						<p class="text-xs text-muted-foreground">
+							OIDC &middot; SAML 2.0 &middot; SCIM
+						</p>
+					</div>
+					<span
+						class="ml-auto inline-flex items-center border border-green-200 bg-green-50 px-2 py-0.5 text-xs text-green-700">
+						SSO{"\u2001"}<span
+							class="h-1.5 w-1.5 rounded-none bg-green-500"
 							aria-hidden="true"></span>
 					</span>
 				</a>

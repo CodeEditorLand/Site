@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 // Import dependencies
 let Dimensional: any,
 	Style: any,
-	_Influence: any,
-	_Layer: any,
 	Noise: any,
 	Spectrum: any,
 	Constant: any,
@@ -63,8 +61,6 @@ const Pixel = ({
 				Dimensional = await InitDimensional();
 				Style = await InitStyle();
 				const Animation = await InitAnimation();
-				_Influence = Animation.Influence;
-				_Layer = Animation.Layer;
 				Noise = Animation.Noise;
 				Spectrum = Animation.Spectrum;
 				Constant = await InitConstant();
@@ -76,20 +72,20 @@ const Pixel = ({
 				return;
 			}
 
-			const MouseValue = Mouse(); // Get the current mouse value
+			const MouseValue = Mouse;
 			new Style(Element, {
 				TimeNoise:
 					Position * 0.1 +
-					CurrentTime() *
+					CurrentTime *
 						(Constant.MULTIPLIER_TIME_BASE +
-							Noise(CurrentTime() * 0.001 + Seed, 30) *
+							Noise(CurrentTime * 0.001 + Seed, 30) *
 								Constant.MULTIPLIER_TIME_VARIATION),
 				Seed,
 				Column,
 				Position,
 				Influence: 0,
 				Offset: new Dimensional(
-					CurrentTime(),
+					CurrentTime,
 					Seed,
 					MouseValue,
 					1,

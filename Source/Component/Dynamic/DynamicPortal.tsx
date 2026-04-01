@@ -1,4 +1,5 @@
 import {
+	Building2,
 	Check,
 	Cloud,
 	GitFork,
@@ -15,6 +16,7 @@ import {
 	type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
 import {
@@ -31,6 +33,7 @@ import type TierContent from "./Interface/Content/Portal/Tier.js";
  * Icon registry for tier icons.
  */
 const TierIconRegistry: Record<string, LucideIcon> = {
+	Building2,
 	Cloud,
 	GitFork,
 	Globe,
@@ -43,6 +46,137 @@ const TierIconRegistry: Record<string, LucideIcon> = {
 	Shield,
 	Users,
 	Wifi,
+};
+
+/**
+ * Enterprise SSO form with organization domain input and Auth0 redirect buttons.
+ * Routes through Auth0 Enterprise Connections (Okta, Azure AD, SAML).
+ */
+const EnterpriseSSOForm = ({
+	Content,
+	OnEnterprise,
+}: {
+	Content: TierContent;
+	OnEnterprise?: () => void;
+}) => {
+	const [OrganizationDomain, SetOrganizationDomain] = useState("");
+	const { t: T } = useTranslation("account");
+
+	const HandleEnterpriseLogin = (Connection: string) => {
+		// Auth0 loginWithRedirect is triggered via the parent's OnEnterprise callback
+		// which passes the connection + organization to Auth0AccountGate
+		const Params = new URLSearchParams();
+		Params.set("connection", Connection);
+		if (OrganizationDomain.trim()) {
+			Params.set("login_hint", OrganizationDomain.trim());
+		}
+		window.location.href = `/Account/SignIn?${Params.toString()}`;
+	};
+
+	const HandleDomainSubmit = (Event: React.FormEvent) => {
+		Event.preventDefault();
+		if (!OrganizationDomain.trim()) return;
+		// HRD: Auth0 will detect the domain and route to the correct enterprise connection
+		window.location.href = `/Account/SignIn?login_hint=${encodeURIComponent(OrganizationDomain.trim())}`;
+	};
+
+	return (
+		<div
+			className="space-y-4"
+			aria-label={T("portal.enterprise.ariaLabel", {
+				defaultValue: "Enterprise SSO",
+			})}>
+			<form onSubmit={HandleDomainSubmit} className="space-y-3">
+				<DynamicInput
+					content={{
+						label: T("portal.enterprise.domainLabel", {
+							defaultValue: "Work Email or Domain",
+						}),
+						placeholder: T(
+							"portal.enterprise.domainPlaceholder",
+							{
+								defaultValue: "name@company.com",
+							},
+						),
+						type: "email",
+						required: false,
+						onChange: SetOrganizationDomain,
+					}}
+					id="portal-enterprise-domain"
+				/>
+				<Button
+					type="submit"
+					className="StaccatoButton w-full"
+					style={{
+						backgroundColor: Content.Color,
+						borderColor: Content.BorderColor,
+						color: "#ffffff",
+					}}>
+					{T("portal.enterprise.continueSSO", {
+						defaultValue: "Continue with SSO",
+					})}
+					{"\u2001"}
+					<Building2
+						className="h-4 w-4"
+						aria-hidden="true"
+					/>
+				</Button>
+			</form>
+
+			<div className="PortalTierDivider StaccatoSeparator" />
+
+			<Button
+				className="StaccatoButton w-full"
+				variant="outline"
+				style={{ borderColor: Content.BorderColor }}
+				onClick={() => HandleEnterpriseLogin("okta")}>
+				{T("portal.enterprise.continueOkta", {
+					defaultValue: "Continue with Okta",
+				})}
+				{"\u2001"}
+				<Shield
+					className="h-4 w-4"
+					aria-hidden="true"
+				/>
+			</Button>
+			<Button
+				className="StaccatoButton w-full"
+				variant="outline"
+				style={{ borderColor: Content.BorderColor }}
+				onClick={() => HandleEnterpriseLogin("waad")}>
+				{T("portal.enterprise.continueAzure", {
+					defaultValue: "Continue with Azure AD",
+				})}
+				{"\u2001"}
+				<Key
+					className="h-4 w-4"
+					aria-hidden="true"
+				/>
+			</Button>
+			<Button
+				className="StaccatoButton w-full"
+				variant="outline"
+				style={{ borderColor: Content.BorderColor }}
+				onClick={() => HandleEnterpriseLogin("samlp")}>
+				{T("portal.enterprise.continueSAML", {
+					defaultValue: "Continue with SAML",
+				})}
+				{"\u2001"}
+				<Lock
+					className="h-4 w-4"
+					aria-hidden="true"
+				/>
+			</Button>
+
+			<div className="PortalTierDivider StaccatoSeparator" />
+			<p className="text-center text-xs text-muted-foreground">
+				{T("portal.enterprise.note", {
+					defaultValue:
+						"OIDC Discovery \u00B7 SAML 2.0 \u00B7 SCIM provisioning",
+				})}
+			</p>
+		</div>
+	);
 };
 
 /**
@@ -257,54 +391,10 @@ const PortalTierRow = ({
 						)}
 
 						{IsEnterprise && (
-							<div
-								className="space-y-4"
-								aria-label="Enterprise SSO">
-								<Button
-									className="StaccatoButton w-full"
-									style={{
-										backgroundColor: Content.Color,
-										borderColor: Content.BorderColor,
-										color: "#ffffff",
-									}}
-									onClick={() => OnAction?.()}>
-									Sign In with Okta
-									{"\u2001"}
-									<Shield
-										className="h-4 w-4"
-										aria-hidden="true"
-									/>
-								</Button>
-								<Button
-									className="StaccatoButton w-full"
-									variant="outline"
-									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
-									Sign In with Azure AD
-									{"\u2001"}
-									<Key
-										className="h-4 w-4"
-										aria-hidden="true"
-									/>
-								</Button>
-								<Button
-									className="StaccatoButton w-full"
-									variant="outline"
-									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
-									Custom OIDC Provider
-									{"\u2001"}
-									<Lock
-										className="h-4 w-4"
-										aria-hidden="true"
-									/>
-								</Button>
-								<div className="PortalTierDivider StaccatoSeparator" />
-								<p className="text-center text-xs text-muted-foreground">
-									OIDC Discovery &middot; SAML 2.0
-									&middot; SCIM provisioning
-								</p>
-							</div>
+							<EnterpriseSSOForm
+								Content={Content}
+								OnEnterprise={OnAction}
+							/>
 						)}
 					</CardContent>
 				</Card>

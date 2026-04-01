@@ -111,6 +111,11 @@ const DashboardUserInner = () => {
 		: "--";
 
 	const ProviderLabel = DetectProviderLabel(User.sub);
+	const IsEnterprise = IsEnterpriseUser(User.sub);
+	const OrganizationName =
+		(User as Record<string, unknown>)["org_name"] as string | undefined;
+	const OrganizationIdentifier =
+		(User as Record<string, unknown>)["org_id"] as string | undefined;
 
 	return (
 		<div className="space-y-3 text-sm">
@@ -144,7 +149,13 @@ const DashboardUserInner = () => {
 					{T("dashboard.account.planLabel", { defaultValue: "Plan" })}
 				</span>
 				<span className="font-medium">
-					{T("dashboard.account.planFree", { defaultValue: "Free" })}
+					{IsEnterprise
+						? T("dashboard.account.planEnterprise", {
+								defaultValue: "Enterprise",
+							})
+						: T("dashboard.account.planFree", {
+								defaultValue: "Free",
+							})}
 				</span>
 			</div>
 			<div className="flex justify-between">
@@ -153,6 +164,18 @@ const DashboardUserInner = () => {
 				</span>
 				<span className="text-muted-foreground">{ProviderLabel}</span>
 			</div>
+			{IsEnterprise && (OrganizationName || OrganizationIdentifier) && (
+				<div className="flex justify-between">
+					<span className="text-muted-foreground">
+						{T("dashboard.account.organizationLabel", {
+							defaultValue: "Organization",
+						})}
+					</span>
+					<span className="font-medium">
+						{OrganizationName || OrganizationIdentifier}
+					</span>
+				</div>
+			)}
 			<div className="flex justify-between">
 				<span className="text-muted-foreground">
 					{T("dashboard.account.memberSinceLabel", {
@@ -161,6 +184,18 @@ const DashboardUserInner = () => {
 				</span>
 				<span className="text-muted-foreground">{MemberSince}</span>
 			</div>
+			{IsEnterprise && (
+				<div className="mt-2 border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700">
+					{T("dashboard.account.enterpriseSSO", {
+						defaultValue: "Enterprise SSO active",
+					})}
+					{"\u2001"}
+					<span
+						className="inline-block h-1.5 w-1.5 rounded-none bg-green-500"
+						aria-hidden="true"
+					/>
+				</div>
+			)}
 			{User.email_verified === false && (
 				<div className="mt-2 border border-yellow-200 bg-yellow-50 px-3 py-2 text-xs text-yellow-700">
 					{T("dashboard.account.emailNotVerified", {
@@ -191,4 +226,13 @@ const DetectProviderLabel = (Sub?: string): string => {
 	if (Sub.startsWith("samlp|")) return "SAML SSO";
 	if (Sub.startsWith("waad|")) return "Azure AD";
 	return "Auth0";
+};
+
+const IsEnterpriseUser = (Sub?: string): boolean => {
+	if (!Sub) return false;
+	return (
+		Sub.startsWith("okta|") ||
+		Sub.startsWith("samlp|") ||
+		Sub.startsWith("waad|")
+	);
 };

@@ -1,4 +1,3 @@
-import { Apple, Monitor, Terminal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -87,7 +86,7 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 						version: Latest.version,
 						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "45.2 MB",
 						checksum: Latest.sha256,
-						signature: Latest.pgpSignature,
+						...(Latest.pgpSignature ? { signature: Latest.pgpSignature } : {}),
 						requirements: [
 							"macOS 11.0 (Big Sur) or later",
 							"4 GB RAM",
@@ -103,7 +102,7 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 						version: Latest.version,
 						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "48.7 MB",
 						checksum: Latest.sha256,
-						signature: Latest.pgpSignature,
+						...(Latest.pgpSignature ? { signature: Latest.pgpSignature } : {}),
 						requirements: [
 							"Windows 10 or later (64-bit)",
 							"4 GB RAM",
@@ -119,7 +118,7 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 						version: Latest.version,
 						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "41.3 MB",
 						checksum: Latest.sha256,
-						signature: Latest.pgpSignature,
+						...(Latest.pgpSignature ? { signature: Latest.pgpSignature } : {}),
 						requirements: [
 							"glibc 2.28+",
 							"4 GB RAM",
@@ -145,11 +144,6 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 	}, [providedPlatforms, apiPlatform]);
 
 	const GridReference = useRef<HTMLDivElement>(null);
-	const IconMap = {
-		Apple,
-		Monitor,
-		Terminal,
-	};
 
 	// Apply attention scatter to platform download cards
 	useEffect(() => {

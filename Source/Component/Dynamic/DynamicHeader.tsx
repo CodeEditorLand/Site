@@ -62,7 +62,7 @@ export function DynamicHeader({ content, className }: Property) {
 				{/* Actions */}
 				<div className="flex items-center space-x-4">
 					{actions.map((Action, Index) => {
-						if (Action.type === "mobile-menu" && showMobileMenu) {
+						if ("type" in Action && Action.type === "mobile-menu" && showMobileMenu) {
 							return (
 								<Button
 									key={Index}

@@ -259,23 +259,6 @@ function GetAuthToken(): string | null {
 	return localStorage.getItem("session_token");
 }
 
-function _SetAuthToken(Token: string): void {
-	try {
-		document.cookie = `session=${Token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
-	} catch {
-		// Cookie API not available during SSR
-	}
-	localStorage.setItem("session_token", Token);
-}
-
-function _ClearAuthToken(): void {
-	try {
-		document.cookie = "session=; path=/; max-age=0";
-	} catch {
-		// Cookie API not available during SSR
-	}
-	localStorage.removeItem("session_token");
-}
 
 function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 	const FetchWithAuthentication = async <T>(
@@ -721,8 +704,6 @@ export function GetWorkersClient(): WorkersClient {
 	const AuthenticationURL = import.meta.env.PUBLIC_AUTH_WORKER_URL;
 	const DownloadURL = import.meta.env.PUBLIC_DOWNLOAD_WORKER_URL;
 	const AnalyticsURL = import.meta.env.PUBLIC_ANALYTICS_WORKER_URL;
-	const _FrontendURL = import.meta.env.PUBLIC_FRONTEND_URL;
-
 	if (!AuthenticationURL || !DownloadURL || !AnalyticsURL) {
 		const NoOperationResponse = {
 			success: false as const,
