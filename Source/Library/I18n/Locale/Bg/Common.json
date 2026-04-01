@@ -86,15 +86,15 @@
 		"joinDiscussions": "Присъединете се към общността",
 		"followGitHub": "Следвайте в GitHub",
 		"reportIssue": "Докладвайте проблем",
-		"followNote": "[BG] Follow progress on GitHub or check back here for published articles.",
+		"followNote": "Следете напредъка в GitHub или проверете тук за публикувани статии.",
 		"topic": {
-			"architecture": "[BG] Deep dive into the Mountain/Cocoon/Wind/Sky/Air/Echo element architecture and how they replace Electron",
-			"effectTS": "[BG] How Effect-TS powers type-safe UI services with structured concurrency and error handling",
-			"grpc": "[BG] gRPC IPC protocol design: bridging Rust and TypeScript at native speed",
-			"extensions": "[BG] VS Code extension compatibility: running existing extensions without modification via Cocoon",
-			"ngi": "[BG] Building with NGI0 Commons Fund: open-source sustainability and the European open internet initiative"
+			"architecture": "Задълбочен поглед върху архитектурата на елементите Mountain/Cocoon/Wind/Sky/Air/Echo и как заместват Electron",
+			"effectTS": "Как Effect-TS захранва типово безопасни UI услуги със структурирана конкурентност и управление на грешки",
+			"grpc": "Дизайн на gRPC IPC протокол: свързване на Rust и TypeScript с нативна скорост",
+			"extensions": "Съвместимост с VS Code разширения: стартиране на съществуващи разширения без модификация чрез Cocoon",
+			"ngi": "Разработка с NGI0 Commons Fund: устойчивост на отворения код и европейската инициатива за отворен интернет"
 		},
-		"upcomingTopicsHeading": "[BG] Upcoming Topics"
+		"upcomingTopicsHeading": "Предстоящи теми"
 	},
 	"contributing": {
 		"pageTitle": "Принос",
@@ -259,46 +259,46 @@
 			}
 		},
 		"telemetry": {
-			"heading": "[BG] Telemetry Status",
+			"heading": "Състояние на телеметрията",
 			"production": {
-				"title": "[BG] Production Build Telemetry",
-				"description": "[BG] Telemetry is disabled by default. The Telemetry Cargo feature is not in default features. All tracing compiles to zero-cost no-ops."
+				"title": "Телеметрия на продукционна компилация",
+				"description": "Телеметрията е деактивирана по подразбиране. Функцията Telemetry на Cargo не е в основните функции. Цялото проследяване се компилира до нулеви операции."
 			},
 			"otel": {
-				"title": "[BG] OpenTelemetry (Opt-In)",
-				"description": "[BG] Enable with cargo build --features Telemetry. Local-only OTEL tracing, metrics, and distributed spans. No external transmission."
+				"title": "OpenTelemetry (по избор)",
+				"description": "Активирайте с cargo build --features Telemetry. Само локално OTEL проследяване, метрики и разпределени обхвати. Без външно предаване."
 			},
 			"effect": {
-				"title": "[BG] Effect-TS Local Telemetry",
-				"description": "[BG] Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing. All data stays local."
+				"title": "Effect-TS локална телеметрия",
+				"description": "Cocoon extension host използва TelemetryService за вътрешна RPC инструментация и времена на зареждане. Всички данни остават локални."
 			}
 		},
 		"buildLog": {
-			"heading": "[BG] Build Configuration",
-			"subtitle": "[BG] Active build variant and deployment mode. Available via Local-First Air Daemon connection.",
+			"heading": "Конфигурация на компилацията",
+			"subtitle": "Активен вариант на компилация и режим на внедряване. Достъпно чрез връзка с локален Air Daemon.",
 			"profile": {
-				"heading": "[BG] Active Profile"
+				"heading": "Активен профил"
 			},
 			"deployment": {
-				"heading": "[BG] Deployment Mode"
+				"heading": "Режим на внедряване"
 			},
 			"matrix": {
-				"heading": "[BG] Test Matrix"
+				"heading": "Тестова матрица"
 			}
 		},
 		"portal": {
-			"heading": "[BG] Authentication Tiers",
-			"subtitle": "[BG] Your current authentication method and available tiers."
+			"heading": "Нива на удостоверяване",
+			"subtitle": "Текущият ви метод за удостоверяване и налични нива."
 		},
 		"editor": {
-			"heading": "[BG] Editor Connection",
-			"subtitle": "[BG] Connect the website to your running Land editor instance.",
-			"status": "[BG] Not Connected",
-			"description": "[BG] The Air Daemon connects this dashboard to a running Land editor via WebSocket. Launch Land to enable real-time build logs, telemetry, and configuration management.",
-			"connect": "[BG] Connect via Portal"
+			"heading": "Връзка с редактора",
+			"subtitle": "Свържете уебсайта с работещия екземпляр на Land редактора.",
+			"status": "Не е свързан",
+			"description": "Air Daemon свързва това табло с работещ Land редактор чрез WebSocket. Стартирайте Land, за да активирате дневници за компилация в реално време, телеметрия и управление на конфигурацията.",
+			"connect": "Свържете чрез портала"
 		},
 		"partners": {
-			"heading": "[BG] Partners & Attribution"
+			"heading": "Партньори и признания"
 		}
 	}
 }

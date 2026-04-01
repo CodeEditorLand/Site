@@ -86,15 +86,15 @@
 		"joinDiscussions": "Rejoindre la communaute",
 		"followGitHub": "Suivre sur GitHub",
 		"reportIssue": "Signaler un probleme",
-		"followNote": "[FR] Follow progress on GitHub or check back here for published articles.",
+		"followNote": "Suivez les progres sur GitHub ou revenez ici pour les articles publies.",
 		"topic": {
-			"architecture": "[FR] Deep dive into the Mountain/Cocoon/Wind/Sky/Air/Echo element architecture and how they replace Electron",
-			"effectTS": "[FR] How Effect-TS powers type-safe UI services with structured concurrency and error handling",
-			"grpc": "[FR] gRPC IPC protocol design: bridging Rust and TypeScript at native speed",
-			"extensions": "[FR] VS Code extension compatibility: running existing extensions without modification via Cocoon",
-			"ngi": "[FR] Building with NGI0 Commons Fund: open-source sustainability and the European open internet initiative"
+			"architecture": "Plongee dans l'architecture des elements Mountain/Cocoon/Wind/Sky/Air/Echo et comment ils remplacent Electron",
+			"effectTS": "Comment Effect-TS alimente des services UI type-safe avec la concurrence structuree et la gestion des erreurs",
+			"grpc": "Conception du protocole gRPC IPC : relier Rust et TypeScript a vitesse native",
+			"extensions": "Compatibilite des extensions VS Code : executer les extensions existantes sans modification via Cocoon",
+			"ngi": "Developper avec le NGI0 Commons Fund : durabilite open source et l'initiative europeenne pour un internet ouvert"
 		},
-		"upcomingTopicsHeading": "[FR] Upcoming Topics"
+		"upcomingTopicsHeading": "Sujets a venir"
 	},
 	"contributing": {
 		"pageTitle": "Contribuer",
@@ -259,46 +259,46 @@
 			}
 		},
 		"telemetry": {
-			"heading": "[FR] Telemetry Status",
+			"heading": "Etat de la telemetrie",
 			"production": {
-				"title": "[FR] Production Build Telemetry",
-				"description": "[FR] Telemetry is disabled by default. The Telemetry Cargo feature is not in default features. All tracing compiles to zero-cost no-ops."
+				"title": "Telemetrie de compilation production",
+				"description": "La telemetrie est desactivee par defaut. La fonctionnalite Telemetry de Cargo n'est pas dans les fonctionnalites par defaut. Tout le tracage compile en operations a cout nul."
 			},
 			"otel": {
-				"title": "[FR] OpenTelemetry (Opt-In)",
-				"description": "[FR] Enable with cargo build --features Telemetry. Local-only OTEL tracing, metrics, and distributed spans. No external transmission."
+				"title": "OpenTelemetry (optionnel)",
+				"description": "Activez avec cargo build --features Telemetry. Tracage OTEL local uniquement, metriques et spans distribues. Aucune transmission externe."
 			},
 			"effect": {
-				"title": "[FR] Effect-TS Local Telemetry",
-				"description": "[FR] Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing. All data stays local."
+				"title": "Telemetrie locale Effect-TS",
+				"description": "L'hote d'extensions Cocoon utilise TelemetryService pour l'instrumentation RPC interne et le chronometrage de demarrage. Toutes les donnees restent locales."
 			}
 		},
 		"buildLog": {
-			"heading": "[FR] Build Configuration",
-			"subtitle": "[FR] Active build variant and deployment mode. Available via Local-First Air Daemon connection.",
+			"heading": "Configuration de compilation",
+			"subtitle": "Variante de compilation active et mode de deploiement. Disponible via la connexion Local-First Air Daemon.",
 			"profile": {
-				"heading": "[FR] Active Profile"
+				"heading": "Profil actif"
 			},
 			"deployment": {
-				"heading": "[FR] Deployment Mode"
+				"heading": "Mode de deploiement"
 			},
 			"matrix": {
-				"heading": "[FR] Test Matrix"
+				"heading": "Matrice de tests"
 			}
 		},
 		"portal": {
-			"heading": "[FR] Authentication Tiers",
-			"subtitle": "[FR] Your current authentication method and available tiers."
+			"heading": "Niveaux d'authentification",
+			"subtitle": "Votre methode d'authentification actuelle et les niveaux disponibles."
 		},
 		"editor": {
-			"heading": "[FR] Editor Connection",
-			"subtitle": "[FR] Connect the website to your running Land editor instance.",
-			"status": "[FR] Not Connected",
-			"description": "[FR] The Air Daemon connects this dashboard to a running Land editor via WebSocket. Launch Land to enable real-time build logs, telemetry, and configuration management.",
-			"connect": "[FR] Connect via Portal"
+			"heading": "Connexion editeur",
+			"subtitle": "Connectez le site web a votre instance Land en cours d'execution.",
+			"status": "Non connecte",
+			"description": "L'Air Daemon connecte ce tableau de bord a un editeur Land en cours d'execution via WebSocket. Lancez Land pour activer les journaux de compilation en temps reel, la telemetrie et la gestion de configuration.",
+			"connect": "Connecter via le portail"
 		},
 		"partners": {
-			"heading": "[FR] Partners & Attribution"
+			"heading": "Partenaires et attributions"
 		}
 	}
 }

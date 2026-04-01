@@ -215,11 +215,11 @@
 			"allTiers": "Включено във всички нива"
 		}
 	},
-	"loading": "[BG] Loading...",
-	"error": "[BG] Authentication error",
-	"tryAgain": "[BG] Try again",
-	"dashboard": "[BG] Go to Dashboard",
-	"logout": "[BG] Logout",
-	"emailNotVerified": "[BG] Email not verified. Check your inbox.",
-	"redirecting": "[BG] Redirecting to sign in..."
+	"loading": "Зареждане...",
+	"error": "Грешка при удостоверяване",
+	"tryAgain": "Опитайте отново",
+	"dashboard": "Към таблото",
+	"logout": "Изход",
+	"emailNotVerified": "Имейлът не е потвърден. Проверете входящата си поща.",
+	"redirecting": "Пренасочване към вход..."
 }

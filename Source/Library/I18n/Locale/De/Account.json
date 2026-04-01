@@ -215,11 +215,11 @@
 			"allTiers": "In allen Stufen enthalten"
 		}
 	},
-	"loading": "[DE] Loading...",
-	"error": "[DE] Authentication error",
-	"tryAgain": "[DE] Try again",
-	"dashboard": "[DE] Go to Dashboard",
-	"logout": "[DE] Logout",
-	"emailNotVerified": "[DE] Email not verified. Check your inbox.",
-	"redirecting": "[DE] Redirecting to sign in..."
+	"loading": "Wird geladen...",
+	"error": "Authentifizierungsfehler",
+	"tryAgain": "Erneut versuchen",
+	"dashboard": "Zum Dashboard",
+	"logout": "Abmelden",
+	"emailNotVerified": "E-Mail nicht verifiziert. Pruefen Sie Ihren Posteingang.",
+	"redirecting": "Weiterleitung zur Anmeldung..."
 }

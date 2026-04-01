@@ -50,7 +50,7 @@
 		"failedToCopy": "{{label}} konnte nicht kopiert werden"
 	},
 	"transparency": {
-		"title": "[DE] Build Transparency",
-		"subtitle": "[DE] Full disclosure on telemetry, build variants, and deployment. Verify everything in source."
+		"title": "Build-Transparenz",
+		"subtitle": "Vollstaendige Offenlegung zu Telemetrie, Build-Varianten und Bereitstellung. Alles im Quellcode nachpruefbar."
 	}
 }

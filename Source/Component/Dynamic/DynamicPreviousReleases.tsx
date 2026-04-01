@@ -1,14 +1,32 @@
+import { useEffect, useRef } from "react";
+
 import { DynamicButton } from "./DynamicButton";
 import { DynamicTable } from "./DynamicTable";
 import type Property from "./Interface/Property/Release/Previous.js";
 import type ReleaseVersion from "./Interface/Version/Release.js";
 
-/**
- * Dynamic PreviousReleases component showing version history table
- * Displays table with version, date, size, downloads, and download buttons
- */
 const DynamicPreviousReleases = ({ content, className }: Property) => {
 	const { title, description, releases, showChangelog = true } = content;
+	const SectionReference = useRef<HTMLElement>(null);
+
+	useEffect(() => {
+		const Section = SectionReference.current;
+		if (!Section) return;
+
+		const ReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+		if (ReducedMotion) return;
+
+		const ApplyScatter = async () => {
+			const StaccatoModule =
+				await import("../../Function/Noise/Staccato.js");
+			const Staccato = await StaccatoModule.default;
+			Staccato.SeedElement(Section, 0);
+		};
+
+		ApplyScatter();
+	}, []);
 
 	const Columns = [
 		{
@@ -95,6 +113,7 @@ const DynamicPreviousReleases = ({ content, className }: Property) => {
 
 	return (
 		<section
+			ref={SectionReference}
 			className={`py-20 ${className || ""}`}
 			aria-label="Previous releases">
 			<div className="container mx-auto px-4">

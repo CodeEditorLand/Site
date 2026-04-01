@@ -70,7 +70,7 @@
 			"popular": "Най-популярен",
 			"perMonth": "/месец",
 			"perYear": "/година",
-			"free": "[BG] Free"
+			"free": "Безплатно"
 		},
 		"tiers": {
 			"free": {
@@ -107,72 +107,72 @@
 		"attributionNote": "Представителен член на общността"
 	},
 	"roadmap": {
-		"title": "[BG] Roadmap & Expectancy",
-		"subtitle": "[BG] Funded by the NGI0 Commons Fund. Open source, free forever, built in public.",
+		"title": "Пътна карта и очаквания",
+		"subtitle": "Финансиран от фонда NGI0 Commons. Отворен код, безплатен завинаги, разработван публично.",
 		"tiers": {
 			"current": {
-				"name": "[BG] Current Phase",
-				"description": "[BG] Foundation and core editor scaffold. Active development.",
+				"name": "Текуща фаза",
+				"description": "Основи и скеле на основния редактор. Активна разработка.",
 				"features": {
-					"1": "[BG] Mountain: Rust/Tauri native backend",
-					"2": "[BG] Cocoon: VS Code extension host via Effect-TS",
-					"3": "[BG] Wind: Workbench re-implementation",
-					"4": "[BG] Sky: Editor interface rendering",
-					"5": "[BG] Air: Update daemon and crypto signing",
-					"6": "[BG] Echo: Work-stealing task scheduler"
+					"1": "Mountain: Rust/Tauri нативен бекенд",
+					"2": "Cocoon: VS Code extension host чрез Effect-TS",
+					"3": "Wind: Преимплементация на работното пространство",
+					"4": "Sky: Рендиране на интерфейса на редактора",
+					"5": "Air: Демон за обновяване и криптографско подписване",
+					"6": "Echo: Планировчик на задачи с кражба на работа"
 				},
-				"button": "[BG] View on GitHub"
+				"button": "Вижте в GitHub"
 			},
 			"next": {
-				"name": "[BG] Next Milestone",
-				"description": "[BG] Extension ecosystem and platform stability.",
+				"name": "Следващ етап",
+				"description": "Екосистема за разширения и стабилност на платформата.",
 				"features": {
-					"1": "[BG] High-fidelity VS Code extension compatibility",
-					"2": "[BG] Cross-platform installer and auto-update",
-					"3": "[BG] gRPC IPC protocol finalization",
-					"4": "[BG] Settings sync and cloud-optional portal"
+					"1": "Високоточна съвместимост с VS Code разширения",
+					"2": "Крос-платформен инсталатор и автоматично обновяване",
+					"3": "Финализиране на gRPC IPC протокола",
+					"4": "Синхронизация на настройки и портал без задължителен облак"
 				},
-				"button": "[BG] Track Progress"
+				"button": "Проследяване на напредъка"
 			},
 			"future": {
-				"name": "[BG] Long-Term Vision",
-				"description": "[BG] Full-featured editor replacing Electron-based tools.",
+				"name": "Дългосрочна визия",
+				"description": "Пълнофункционален редактор, заместващ инструменти базирани на Electron.",
 				"features": {
-					"1": "[BG] Native mobile editing (iOS, Android)",
-					"2": "[BG] Collaborative real-time editing",
-					"3": "[BG] AI-assisted development tooling",
-					"4": "[BG] Plugin marketplace and ecosystem"
+					"1": "Нативно мобилно редактиране (iOS, Android)",
+					"2": "Съвместно редактиране в реално време",
+					"3": "Инструменти за разработка с AI помощ",
+					"4": "Магазин за плъгини и екосистема"
 				},
-				"button": "[BG] Learn More"
+				"button": "Научете повече"
 			}
 		}
 	},
 	"architecture": {
-		"title": "[BG] Architecture",
-		"subtitle": "[BG] Land replaces VS Code's Electron stack with a modular, high-performance architecture. Each element is a standalone repository.",
+		"title": "Архитектура",
+		"subtitle": "Land заменя Electron стека на VS Code с модулна, високопроизводителна архитектура. Всеки елемент е самостоятелно хранилище.",
 		"mountain": {
-			"description": "[BG] Manages Window, File System, and Process lifecycle. The native Rust/Tauri backend that replaces Electron's main process.",
-			"subtitle": "[BG] Rust/Tauri native backend"
+			"description": "Управлява прозорци, файлова система и жизнения цикъл на процесите. Нативният Rust/Tauri бекенд, който заменя основния процес на Electron.",
+			"subtitle": "Rust/Tauri нативен бекенд"
 		},
 		"cocoon": {
-			"description": "[BG] Runs VS Code extensions via Effect-TS with high-fidelity API compatibility. No changes needed to existing extensions.",
-			"subtitle": "[BG] TypeScript extension host"
+			"description": "Изпълнява VS Code разширения чрез Effect-TS с високоточна API съвместимост. Не са нужни промени в съществуващите разширения.",
+			"subtitle": "TypeScript хост за разширения"
 		},
 		"wind": {
-			"description": "[BG] Re-implementation of the VS Code Workbench. Provides the editor shell, panels, sidebars, and activity bar.",
-			"subtitle": "[BG] TypeScript UI service"
+			"description": "Преимплементация на VS Code работното пространство. Осигурява обвивката на редактора, панели, странични ленти и лента за активност.",
+			"subtitle": "TypeScript UI услуга"
 		},
 		"sky": {
-			"description": "[BG] Renders the editor interface using Astro components. Handles themes, layouts, and the visual presentation layer.",
-			"subtitle": "[BG] Astro UI component"
+			"description": "Рендира интерфейса на редактора с Astro компоненти. Управлява теми, оформления и визуалния презентационен слой.",
+			"subtitle": "Astro UI компонент"
 		},
 		"air": {
-			"description": "[BG] Background daemon for automatic updates, downloads, and cryptographic signing. Keeps Land up to date silently.",
-			"subtitle": "[BG] Rust background daemon"
+			"description": "Фонов демон за автоматични обновявания, изтегляния и криптографско подписване. Поддържа Land актуален безшумно.",
+			"subtitle": "Rust фонов демон"
 		},
 		"echo": {
-			"description": "[BG] High-performance work-stealing executor. Schedules and distributes tasks across cores for maximum throughput.",
-			"subtitle": "[BG] Rust task scheduler"
+			"description": "Високопроизводителен изпълнител с кражба на работа. Планира и разпределя задачи между ядрата за максимална производителност.",
+			"subtitle": "Rust планировчик на задачи"
 		}
 	}
 }

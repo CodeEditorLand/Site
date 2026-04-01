@@ -70,7 +70,7 @@
 			"popular": "Beliebteste",
 			"perMonth": "/Monat",
 			"perYear": "/Jahr",
-			"free": "[DE] Free"
+			"free": "Kostenlos"
 		},
 		"tiers": {
 			"free": {
@@ -107,72 +107,72 @@
 		"attributionNote": "Repraesentativer Community-Teilnehmer"
 	},
 	"roadmap": {
-		"title": "[DE] Roadmap & Expectancy",
-		"subtitle": "[DE] Funded by the NGI0 Commons Fund. Open source, free forever, built in public.",
+		"title": "Roadmap und Ausblick",
+		"subtitle": "Finanziert durch den NGI0 Commons Fund. Open Source, fuer immer kostenlos, oeffentlich entwickelt.",
 		"tiers": {
 			"current": {
-				"name": "[DE] Current Phase",
-				"description": "[DE] Foundation and core editor scaffold. Active development.",
+				"name": "Aktuelle Phase",
+				"description": "Grundlagen und Kerngeruest des Editors. Aktive Entwicklung.",
 				"features": {
-					"1": "[DE] Mountain: Rust/Tauri native backend",
-					"2": "[DE] Cocoon: VS Code extension host via Effect-TS",
-					"3": "[DE] Wind: Workbench re-implementation",
-					"4": "[DE] Sky: Editor interface rendering",
-					"5": "[DE] Air: Update daemon and crypto signing",
-					"6": "[DE] Echo: Work-stealing task scheduler"
+					"1": "Mountain: Rust/Tauri-natives Backend",
+					"2": "Cocoon: VS Code-Erweiterungshost ueber Effect-TS",
+					"3": "Wind: Neuimplementierung des Workbench",
+					"4": "Sky: Rendering der Editor-Oberflaeche",
+					"5": "Air: Update-Daemon und kryptografische Signierung",
+					"6": "Echo: Work-Stealing-Aufgabenplaner"
 				},
-				"button": "[DE] View on GitHub"
+				"button": "Auf GitHub ansehen"
 			},
 			"next": {
-				"name": "[DE] Next Milestone",
-				"description": "[DE] Extension ecosystem and platform stability.",
+				"name": "Naechster Meilenstein",
+				"description": "Erweiterungs-Oekosystem und Plattformstabilitaet.",
 				"features": {
-					"1": "[DE] High-fidelity VS Code extension compatibility",
-					"2": "[DE] Cross-platform installer and auto-update",
-					"3": "[DE] gRPC IPC protocol finalization",
-					"4": "[DE] Settings sync and cloud-optional portal"
+					"1": "Hochpraezise VS Code-Erweiterungskompatibilitaet",
+					"2": "Plattformuebergreifender Installer und Auto-Update",
+					"3": "Finalisierung des gRPC-IPC-Protokolls",
+					"4": "Einstellungssynchronisierung und Cloud-optionales Portal"
 				},
-				"button": "[DE] Track Progress"
+				"button": "Fortschritt verfolgen"
 			},
 			"future": {
-				"name": "[DE] Long-Term Vision",
-				"description": "[DE] Full-featured editor replacing Electron-based tools.",
+				"name": "Langfristige Vision",
+				"description": "Voll ausgestatteter Editor als Ersatz fuer Electron-basierte Werkzeuge.",
 				"features": {
-					"1": "[DE] Native mobile editing (iOS, Android)",
-					"2": "[DE] Collaborative real-time editing",
-					"3": "[DE] AI-assisted development tooling",
-					"4": "[DE] Plugin marketplace and ecosystem"
+					"1": "Natives mobiles Bearbeiten (iOS, Android)",
+					"2": "Kollaboratives Echtzeit-Bearbeiten",
+					"3": "KI-gestuetzte Entwicklungswerkzeuge",
+					"4": "Plugin-Marktplatz und Oekosystem"
 				},
-				"button": "[DE] Learn More"
+				"button": "Mehr erfahren"
 			}
 		}
 	},
 	"architecture": {
-		"title": "[DE] Architecture",
-		"subtitle": "[DE] Land replaces VS Code's Electron stack with a modular, high-performance architecture. Each element is a standalone repository.",
+		"title": "Architektur",
+		"subtitle": "Land ersetzt den Electron-Stack von VS Code durch eine modulare, hochleistungsfaehige Architektur. Jedes Element ist ein eigenstaendiges Repository.",
 		"mountain": {
-			"description": "[DE] Manages Window, File System, and Process lifecycle. The native Rust/Tauri backend that replaces Electron's main process.",
-			"subtitle": "[DE] Rust/Tauri native backend"
+			"description": "Verwaltet Fenster, Dateisystem und Prozess-Lebenszyklus. Das native Rust/Tauri-Backend, das den Hauptprozess von Electron ersetzt.",
+			"subtitle": "Rust/Tauri-natives Backend"
 		},
 		"cocoon": {
-			"description": "[DE] Runs VS Code extensions via Effect-TS with high-fidelity API compatibility. No changes needed to existing extensions.",
-			"subtitle": "[DE] TypeScript extension host"
+			"description": "Fuehrt VS Code-Erweiterungen ueber Effect-TS mit hochpraeziser API-Kompatibilitaet aus. Keine Aenderungen an bestehenden Erweiterungen noetig.",
+			"subtitle": "TypeScript-Erweiterungshost"
 		},
 		"wind": {
-			"description": "[DE] Re-implementation of the VS Code Workbench. Provides the editor shell, panels, sidebars, and activity bar.",
-			"subtitle": "[DE] TypeScript UI service"
+			"description": "Neuimplementierung des VS Code-Workbench. Bietet die Editor-Shell, Panels, Seitenleisten und Aktivitaetsleiste.",
+			"subtitle": "TypeScript-UI-Dienst"
 		},
 		"sky": {
-			"description": "[DE] Renders the editor interface using Astro components. Handles themes, layouts, and the visual presentation layer.",
-			"subtitle": "[DE] Astro UI component"
+			"description": "Rendert die Editor-Oberflaeche mit Astro-Komponenten. Verwaltet Themes, Layouts und die visuelle Darstellungsschicht.",
+			"subtitle": "Astro-UI-Komponente"
 		},
 		"air": {
-			"description": "[DE] Background daemon for automatic updates, downloads, and cryptographic signing. Keeps Land up to date silently.",
-			"subtitle": "[DE] Rust background daemon"
+			"description": "Hintergrunddaemon fuer automatische Updates, Downloads und kryptografische Signierung. Haelt Land lautlos aktuell.",
+			"subtitle": "Rust-Hintergrunddaemon"
 		},
 		"echo": {
-			"description": "[DE] High-performance work-stealing executor. Schedules and distributes tasks across cores for maximum throughput.",
-			"subtitle": "[DE] Rust task scheduler"
+			"description": "Hochleistungsfaehiger Work-Stealing-Executor. Plant und verteilt Aufgaben ueber Kerne fuer maximalen Durchsatz.",
+			"subtitle": "Rust-Aufgabenplaner"
 		}
 	}
 }

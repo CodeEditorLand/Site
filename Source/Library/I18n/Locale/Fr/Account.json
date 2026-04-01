@@ -215,11 +215,11 @@
 			"allTiers": "Inclus dans tous les niveaux"
 		}
 	},
-	"loading": "[FR] Loading...",
-	"error": "[FR] Authentication error",
-	"tryAgain": "[FR] Try again",
-	"dashboard": "[FR] Go to Dashboard",
-	"logout": "[FR] Logout",
-	"emailNotVerified": "[FR] Email not verified. Check your inbox.",
-	"redirecting": "[FR] Redirecting to sign in..."
+	"loading": "Chargement...",
+	"error": "Erreur d'authentification",
+	"tryAgain": "Reessayer",
+	"dashboard": "Aller au tableau de bord",
+	"logout": "Deconnexion",
+	"emailNotVerified": "E-mail non verifie. Verifiez votre boite de reception.",
+	"redirecting": "Redirection vers la connexion..."
 }

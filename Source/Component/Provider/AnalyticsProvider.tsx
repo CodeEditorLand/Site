@@ -24,7 +24,7 @@ interface AnalyticsContextType {
 
 const AnalyticsContext = createContext<AnalyticsContextType | null>(null);
 
-export function AnalyticsProvider({ children }: { children: ReactNode }) {
+const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 	const [Client, SetClient] = useState<ReturnType<
 		typeof GetWorkersClient
 	> | null>(null);
@@ -82,9 +82,9 @@ export function AnalyticsProvider({ children }: { children: ReactNode }) {
 			{children}
 		</AnalyticsContext.Provider>
 	);
-}
+};
 
-export function useAnalytics() {
+const useAnalytics = () => {
 	const Context = useContext(AnalyticsContext);
 	if (!Context) {
 		throw new Error(
@@ -92,4 +92,8 @@ export function useAnalytics() {
 		);
 	}
 	return Context;
-}
+};
+
+export { AnalyticsProvider, useAnalytics };
+
+export default AnalyticsProvider;

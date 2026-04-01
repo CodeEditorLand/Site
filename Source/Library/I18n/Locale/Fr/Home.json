@@ -70,7 +70,7 @@
 			"popular": "Le plus populaire",
 			"perMonth": "/mois",
 			"perYear": "/an",
-			"free": "[FR] Free"
+			"free": "Gratuit"
 		},
 		"tiers": {
 			"free": {
@@ -107,72 +107,72 @@
 		"attributionNote": "Membre representatif de la communaute"
 	},
 	"roadmap": {
-		"title": "[FR] Roadmap & Expectancy",
-		"subtitle": "[FR] Funded by the NGI0 Commons Fund. Open source, free forever, built in public.",
+		"title": "Feuille de route et perspectives",
+		"subtitle": "Finance par le NGI0 Commons Fund. Open source, gratuit pour toujours, developpe en public.",
 		"tiers": {
 			"current": {
-				"name": "[FR] Current Phase",
-				"description": "[FR] Foundation and core editor scaffold. Active development.",
+				"name": "Phase actuelle",
+				"description": "Fondations et structure de base de l'editeur. Developpement actif.",
 				"features": {
-					"1": "[FR] Mountain: Rust/Tauri native backend",
-					"2": "[FR] Cocoon: VS Code extension host via Effect-TS",
-					"3": "[FR] Wind: Workbench re-implementation",
-					"4": "[FR] Sky: Editor interface rendering",
-					"5": "[FR] Air: Update daemon and crypto signing",
-					"6": "[FR] Echo: Work-stealing task scheduler"
+					"1": "Mountain : backend natif Rust/Tauri",
+					"2": "Cocoon : hote d'extensions VS Code via Effect-TS",
+					"3": "Wind : reimplementation du Workbench",
+					"4": "Sky : rendu de l'interface editeur",
+					"5": "Air : daemon de mise a jour et signature cryptographique",
+					"6": "Echo : planificateur de taches par vol de travail"
 				},
-				"button": "[FR] View on GitHub"
+				"button": "Voir sur GitHub"
 			},
 			"next": {
-				"name": "[FR] Next Milestone",
-				"description": "[FR] Extension ecosystem and platform stability.",
+				"name": "Prochaine etape",
+				"description": "Ecosysteme d'extensions et stabilite de la plateforme.",
 				"features": {
-					"1": "[FR] High-fidelity VS Code extension compatibility",
-					"2": "[FR] Cross-platform installer and auto-update",
-					"3": "[FR] gRPC IPC protocol finalization",
-					"4": "[FR] Settings sync and cloud-optional portal"
+					"1": "Compatibilite haute fidelite des extensions VS Code",
+					"2": "Installateur multiplateforme et mise a jour automatique",
+					"3": "Finalisation du protocole gRPC IPC",
+					"4": "Synchronisation des parametres et portail cloud optionnel"
 				},
-				"button": "[FR] Track Progress"
+				"button": "Suivre les progres"
 			},
 			"future": {
-				"name": "[FR] Long-Term Vision",
-				"description": "[FR] Full-featured editor replacing Electron-based tools.",
+				"name": "Vision a long terme",
+				"description": "Editeur complet remplacant les outils bases sur Electron.",
 				"features": {
-					"1": "[FR] Native mobile editing (iOS, Android)",
-					"2": "[FR] Collaborative real-time editing",
-					"3": "[FR] AI-assisted development tooling",
-					"4": "[FR] Plugin marketplace and ecosystem"
+					"1": "Edition mobile native (iOS, Android)",
+					"2": "Edition collaborative en temps reel",
+					"3": "Outils de developpement assistes par IA",
+					"4": "Place de marche de plugins et ecosysteme"
 				},
-				"button": "[FR] Learn More"
+				"button": "En savoir plus"
 			}
 		}
 	},
 	"architecture": {
-		"title": "[FR] Architecture",
-		"subtitle": "[FR] Land replaces VS Code's Electron stack with a modular, high-performance architecture. Each element is a standalone repository.",
+		"title": "Architecture",
+		"subtitle": "Land remplace la pile Electron de VS Code par une architecture modulaire et haute performance. Chaque element est un depot autonome.",
 		"mountain": {
-			"description": "[FR] Manages Window, File System, and Process lifecycle. The native Rust/Tauri backend that replaces Electron's main process.",
-			"subtitle": "[FR] Rust/Tauri native backend"
+			"description": "Gere les fenetres, le systeme de fichiers et le cycle de vie des processus. Le backend natif Rust/Tauri qui remplace le processus principal d'Electron.",
+			"subtitle": "Backend natif Rust/Tauri"
 		},
 		"cocoon": {
-			"description": "[FR] Runs VS Code extensions via Effect-TS with high-fidelity API compatibility. No changes needed to existing extensions.",
-			"subtitle": "[FR] TypeScript extension host"
+			"description": "Execute les extensions VS Code via Effect-TS avec une compatibilite API haute fidelite. Aucune modification necessaire pour les extensions existantes.",
+			"subtitle": "Hote d'extensions TypeScript"
 		},
 		"wind": {
-			"description": "[FR] Re-implementation of the VS Code Workbench. Provides the editor shell, panels, sidebars, and activity bar.",
-			"subtitle": "[FR] TypeScript UI service"
+			"description": "Reimplementation du Workbench VS Code. Fournit le shell de l'editeur, les panneaux, les barres laterales et la barre d'activite.",
+			"subtitle": "Service UI TypeScript"
 		},
 		"sky": {
-			"description": "[FR] Renders the editor interface using Astro components. Handles themes, layouts, and the visual presentation layer.",
-			"subtitle": "[FR] Astro UI component"
+			"description": "Rend l'interface de l'editeur avec des composants Astro. Gere les themes, les mises en page et la couche de presentation visuelle.",
+			"subtitle": "Composant UI Astro"
 		},
 		"air": {
-			"description": "[FR] Background daemon for automatic updates, downloads, and cryptographic signing. Keeps Land up to date silently.",
-			"subtitle": "[FR] Rust background daemon"
+			"description": "Daemon en arriere-plan pour les mises a jour automatiques, les telechargements et la signature cryptographique. Maintient Land a jour silencieusement.",
+			"subtitle": "Daemon Rust en arriere-plan"
 		},
 		"echo": {
-			"description": "[FR] High-performance work-stealing executor. Schedules and distributes tasks across cores for maximum throughput.",
-			"subtitle": "[FR] Rust task scheduler"
+			"description": "Executeur haute performance par vol de travail. Planifie et distribue les taches entre les coeurs pour un debit maximal.",
+			"subtitle": "Planificateur de taches Rust"
 		}
 	}
 }

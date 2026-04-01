@@ -50,7 +50,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 		ApplyScatter();
 	}, [testimonials]);
 
-	const RenderStars = (Rating: number = 5) => {
+	const RenderStars = (Rating: number = 0) => {
 		if (Rating <= 0) return null;
 		return (
 			<div role="img" aria-label={`Rating: ${Rating} out of 5 stars`}>
