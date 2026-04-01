@@ -1,9 +1,4 @@
-import {
-	Github,
-	MessageCircle,
-	Linkedin,
-	type LucideIcon,
-} from "lucide-react";
+import { Github, Linkedin, MessageCircle, type LucideIcon } from "lucide-react";
 
 import type Property from "./Interface/Property/Footer.js";
 

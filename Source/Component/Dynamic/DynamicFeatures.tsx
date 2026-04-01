@@ -122,7 +122,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 		<section
 			id="features"
 			aria-label="Features"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${
+			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${
 				className || ""
 			}`}>
 			<div className="container mx-auto px-4">
@@ -194,12 +194,26 @@ const DynamicFeatures = ({ content, className }: Property) => {
 															<span
 																key={IconIndex}
 																className="inline-flex items-center">
-																{IconIndex === 0
-																	? "\u2001"
-																	: <>{"\u2001"}{"\u2001"}</>}
+																{IconIndex ===
+																0 ? (
+																	"\u2001"
+																) : (
+																	<>
+																		{
+																			"\u2001"
+																		}
+																		{
+																			"\u2001"
+																		}
+																	</>
+																)}
 																<IconTooltip
-																	Label={StackLabel}
-																	Icon={StackIcon}
+																	Label={
+																		StackLabel
+																	}
+																	Icon={
+																		StackIcon
+																	}
 																	SizeClass="h-4 w-4"
 																	ClassName="text-primary"
 																/>

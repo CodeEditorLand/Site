@@ -70,7 +70,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 		<section
 			id="testimonials"
 			aria-label="Architecture"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${className || ""}`}>
+			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">

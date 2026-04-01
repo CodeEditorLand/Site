@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
+import { Cpu, Globe, Layers, Server, Zap, Puzzle, Box, Network } from "lucide-react";
 import type Property from "./Interface/Property/Hero.js";
 
 /**
@@ -101,7 +102,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-[200dvh] w-full items-center overflow-hidden py-20 lg:py-32 ${className || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-[100dvh] w-full items-center overflow-hidden py-16 lg:py-24 ${className || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -143,32 +144,47 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
-						{FloatingCard.map((Card, Index) => (
+						{FloatingCard.map((Card, Index) => {
+							// Map card titles to appropriate icons
+							const GetIcon = () => {
+								const Title = Card.title.toLowerCase();
+								if (Title.includes("rust") || Title.includes("core")) return Cpu;
+								if (Title.includes("tauri") || Title.includes("ui")) return Box;
+								if (Title.includes("effect") || Title.includes("service")) return Layers;
+								if (Title.includes("grpc") || Title.includes("ipc")) return Network;
+								if (Title.includes("extension")) return Puzzle;
+								if (Title.includes("cross") || Title.includes("platform")) return Globe;
+								if (Title.includes("vs code") || Title.includes("api")) return Server;
+								if (Title.includes("open") || Title.includes("source")) return Zap;
+								return Cpu; // default fallback
+							};
+
+							const IconComponent = GetIcon();
+
+							return (
 							<div
 								key={Card.id}
 								className="StaccatoCard border border-[var(--Border)] bg-white p-3"
 								style={{
 									transitionDelay: `${Index * 50}ms`,
 								}}>
-								<div className="mb-1.5 text-xs font-medium text-foreground">
-									{Card.title}
+								<div className="mb-2 flex items-center justify-center">
+									<IconComponent className="h-6 w-6 text-primary" />
 								</div>
-								<div className="flex items-center gap-1.5">
-									{Card.colors?.map((Color, ColorIndex) => (
-										<div
-											key={ColorIndex}
-											className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
-										/>
-									))}
+								<div className="text-center">
+									<div className="text-xs font-medium text-foreground">
+										{Card.title}
+									</div>
 								</div>
 							</div>
-						))}
+							);
+						})}
 					</div>
 
 					{/* Desktop: orbital layout */}
 					<div
 						ref={SceneReference}
-						className="relative hidden min-h-[80vh] lg:block"
+						className="relative hidden min-h-[500px] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub:logo with micro-movement */}
 						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
@@ -192,6 +208,22 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 							const CenterX = 50 + Math.cos(Angle) * RadiusX;
 							const CenterY = 50 + Math.sin(Angle) * RadiusY;
 
+							// Map card titles to appropriate icons
+							const GetIcon = () => {
+								const Title = Card.title.toLowerCase();
+								if (Title.includes("rust") || Title.includes("core")) return Cpu;
+								if (Title.includes("tauri") || Title.includes("ui")) return Box;
+								if (Title.includes("effect") || Title.includes("service")) return Layers;
+								if (Title.includes("grpc") || Title.includes("ipc")) return Network;
+								if (Title.includes("extension")) return Puzzle;
+								if (Title.includes("cross") || Title.includes("platform")) return Globe;
+								if (Title.includes("vs code") || Title.includes("api")) return Server;
+								if (Title.includes("open") || Title.includes("source")) return Zap;
+								return Cpu; // default fallback
+							};
+
+							const IconComponent = GetIcon();
+
 							return (
 							<div
 								key={Card.id}
@@ -201,20 +233,15 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 									left: `${CenterX}%`,
 									transform: "translate(-50%, -50%)",
 								}}>
-									<div className="mb-1.5 text-xs font-medium text-foreground">
+								<div className="mb-2 flex items-center justify-center">
+									<IconComponent className="h-8 w-8 text-primary" />
+								</div>
+								<div className="text-center">
+									<div className="text-xs font-medium text-foreground">
 										{Card.title}
 									</div>
-									<div className="flex items-center gap-1.5">
-										{Card.colors?.map(
-											(Color, ColorIndex) => (
-												<div
-													key={ColorIndex}
-													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
-												/>
-											),
-										)}
-									</div>
 								</div>
+							</div>
 							);
 						})}
 

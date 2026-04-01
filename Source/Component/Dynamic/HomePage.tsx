@@ -37,22 +37,22 @@ const HomePage = ({ content, className }: Property) => {
 				defaultValue:
 					"A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS.\nExperience the editor that reimagines VS Code for the modern era.",
 			}),
-		primaryCta: {
-			text: T("common:button.download", {
-				defaultValue: "Download",
-			}),
-			variant: "default",
-			size: "lg",
-			icon: "Download",
-		},
-		secondaryCta: {
-			text: T("common:button.learnMore", {
-				defaultValue: "Learn More",
-			}),
-			variant: "outline",
-			size: "lg",
-			icon: "ExternalLink",
-		},
+			primaryCta: {
+				text: T("common:button.download", {
+					defaultValue: "Download",
+				}),
+				variant: "default",
+				size: "lg",
+				icon: "Download",
+			},
+			secondaryCta: {
+				text: T("common:button.learnMore", {
+					defaultValue: "Learn More",
+				}),
+				variant: "outline",
+				size: "lg",
+				icon: "ExternalLink",
+			},
 			floatingCards: [
 				{
 					id: "1",
@@ -582,25 +582,13 @@ const HomePage = ({ content, className }: Property) => {
 
 			<div className="flex-1" role="region" aria-label="Page content">
 				<DynamicHeroSection content={Hero} />
-				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
-					aria-hidden="true"
-				/>
+				<div className="py-12" />
 				<DynamicFeatures content={Features} />
-				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
-					aria-hidden="true"
-				/>
+				<div className="py-16" />
 				<DynamicPricing content={Pricing} />
-				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
-					aria-hidden="true"
-				/>
+				<div className="py-16" />
 				<DynamicTestimonials content={Testimonials} />
-				<hr
-					className="StaccatoDivider mx-auto max-w-5xl border-t border-[var(--Border)]"
-					aria-hidden="true"
-				/>
+				<div className="py-16" />
 				<DynamicPlatformGrid content={Download} />
 			</div>
 		</div>

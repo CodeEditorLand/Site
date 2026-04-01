@@ -760,17 +760,26 @@ const PortalTierRow = ({
 														// Derive label: SVG path → filename without extension;
 														// Lucide key → IconLabelMap lookup.
 														const IconLabel =
-															IconName.startsWith("/")
-																? (IconName.split("/")
+															IconName.startsWith(
+																"/",
+															)
+																? (IconName.split(
+																		"/",
+																	)
 																		.pop()
-																		?.replace(".svg", "") ??
-																	"")
-																: (IconLabelMap[IconName] ??
-																		IconName);
+																		?.replace(
+																			".svg",
+																			"",
+																		) ?? "")
+																: (IconLabelMap[
+																		IconName
+																	] ??
+																	IconName);
 
 														const LucideColor =
-															IconColorMap[IconName] ??
-															"#94a3b8";
+															IconColorMap[
+																IconName
+															] ?? "#94a3b8";
 
 														return (
 															<span
@@ -779,30 +788,50 @@ const PortalTierRow = ({
 																{"\u2001"}
 																{"+"}
 																{"\u2001"}
-																{IconName.startsWith("/") ? (
-																	<IconTooltip Label={IconLabel}>
+																{IconName.startsWith(
+																	"/",
+																) ? (
+																	<IconTooltip
+																		Label={
+																			IconLabel
+																		}>
 																		<img
-																			src={IconName}
-																			alt={IconLabel}
-																			title={IconLabel}
+																			src={
+																				IconName
+																			}
+																			alt={
+																				IconLabel
+																			}
+																			title={
+																				IconLabel
+																			}
 																			width="16"
 																			height="16"
 																			className="h-4 w-4"
 																		/>
 																	</IconTooltip>
-																) : (() => {
-																	const FeatureIcon =
-																		TierIconRegistry[IconName];
-																	return FeatureIcon ? (
-																		<IconTooltip
-																			Label={IconLabel}
-																			Icon={FeatureIcon}
-																			Color={LucideColor}
-																			SizeClass="h-4 w-4"
-																		/>
-																	) : null;
-																})()
-																}
+																) : (
+																	(() => {
+																		const FeatureIcon =
+																			TierIconRegistry[
+																				IconName
+																			];
+																		return FeatureIcon ? (
+																			<IconTooltip
+																				Label={
+																					IconLabel
+																				}
+																				Icon={
+																					FeatureIcon
+																				}
+																				Color={
+																					LucideColor
+																				}
+																				SizeClass="h-4 w-4"
+																			/>
+																		) : null;
+																	})()
+																)}
 															</span>
 														);
 													},
@@ -836,7 +865,10 @@ const PortalTierRow = ({
 										<IconTooltip
 											Label="Security"
 											Icon={Shield}
-											Color={IconColorMap["Shield"] ?? "#6366f1"}
+											Color={
+												IconColorMap["Shield"] ??
+												"#6366f1"
+											}
 											SizeClass="h-3 w-3 shrink-0"
 										/>
 									</div>

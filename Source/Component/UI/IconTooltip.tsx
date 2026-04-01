@@ -63,24 +63,22 @@ const IconTooltip = ({
 	DocHref: _DocHref,
 	children,
 }: IconTooltipProperty) => {
-	const Content = children ?? (
-		Icon ? (
+	const Content =
+		children ??
+		(Icon ? (
 			<Icon
 				className={`${SizeClass} ${className}`}
 				style={Color ? { color: Color } : undefined}
 				aria-hidden="true"
 			/>
-		) : null
-	);
+		) : null);
 
 	if (!Content) return null;
 
 	return (
 		<TooltipProvider>
 			<Tooltip>
-				<TooltipTrigger
-					asChild
-					tabIndex={-1}>
+				<TooltipTrigger asChild tabIndex={-1}>
 					<span
 						className="inline-flex items-center"
 						aria-label={Label}
@@ -89,9 +87,7 @@ const IconTooltip = ({
 						{Content}
 					</span>
 				</TooltipTrigger>
-				<TooltipContent>
-					{Label}
-				</TooltipContent>
+				<TooltipContent>{Label}</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
 	);

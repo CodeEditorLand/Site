@@ -28,8 +28,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 		labels.monthly ??
 		T("pricing.labels.monthly", { defaultValue: "Monthly" });
 	const YearlyLabel =
-		labels.yearly ??
-		T("pricing.labels.yearly", { defaultValue: "Yearly" });
+		labels.yearly ?? T("pricing.labels.yearly", { defaultValue: "Yearly" });
 	const SavingsLabel =
 		labels.savings ??
 		T("pricing.labels.savings", { defaultValue: "(Save up to 20%)" });
@@ -85,7 +84,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 		<section
 			id="pricing"
 			aria-label="Roadmap"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${
+			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${
 				className || ""
 			}`}>
 			<div className="container mx-auto px-4">
