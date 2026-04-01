@@ -1,28 +1,29 @@
 import { describe, expect, it } from "vitest";
 
 import GenerateRouteMap, {
+	CanonicalPath,
 	PascalCaseCanonical,
 	SemanticAlias,
 } from "../../Function/Route/Map.js";
 
 describe("PascalCaseCanonical", () => {
-	it("maps every built path to a PascalCase canonical", () => {
+	it("maps every lowercase built path to a PascalCase canonical", () => {
 		for (const [BuiltPath, PascalPath] of Object.entries(
 			PascalCaseCanonical,
 		)) {
-			expect(BuiltPath).toMatch(/^\/[a-z]/);
+			expect(BuiltPath).toBe(BuiltPath.toLowerCase());
 			expect(PascalPath).toMatch(/^\/[A-Z/]/);
 		}
 	});
 
 	it("contains expected core routes", () => {
-		expect(PascalCaseCanonical["/downloads"]).toBe("/Download");
-		expect(PascalCaseCanonical["/docs"]).toBe("/Doc");
+		expect(PascalCaseCanonical["/download"]).toBe("/Download");
+		expect(PascalCaseCanonical["/doc"]).toBe("/Doc");
 		expect(PascalCaseCanonical["/blog"]).toBe("/Blog");
 		expect(PascalCaseCanonical["/portal"]).toBe("/Portal");
 		expect(PascalCaseCanonical["/account/signin"]).toBe("/Account/SignIn");
 		expect(PascalCaseCanonical["/account/signup"]).toBe("/Account/SignUp");
-		expect(PascalCaseCanonical["/legal/terms"]).toBe("/Legal/Term");
+		expect(PascalCaseCanonical["/legal/term"]).toBe("/Legal/Term");
 		expect(PascalCaseCanonical["/legal/privacy"]).toBe("/Legal/Privacy");
 		expect(PascalCaseCanonical["/oauth/success"]).toBe("/OAuth/Success");
 	});
@@ -32,6 +33,16 @@ describe("PascalCaseCanonical", () => {
 		const UniqueTarget = new Set(Target);
 
 		expect(UniqueTarget.size).toBe(Target.length);
+	});
+
+	it("is derived from CanonicalPath set", () => {
+		for (const PascalPath of Object.values(PascalCaseCanonical)) {
+			expect(CanonicalPath.has(PascalPath)).toBe(true);
+		}
+
+		expect(Object.keys(PascalCaseCanonical).length).toBe(
+			CanonicalPath.size,
+		);
 	});
 });
 
@@ -73,7 +84,7 @@ describe("SemanticAlias", () => {
 });
 
 describe("GenerateRouteMap", () => {
-	it("generates a valid route map from an output directory", async () => {
+	it("generates a valid route map from PascalCase output directory", async () => {
 		const { mkdtemp, mkdir, writeFile, rm } = await import(
 			"node:fs/promises"
 		);
@@ -83,26 +94,25 @@ describe("GenerateRouteMap", () => {
 		const TempDirectory = await mkdtemp(join(tmpdir(), "routemap-"));
 
 		try {
-			// Create fake built pages matching PascalCaseCanonical keys
-			await mkdir(join(TempDirectory, "downloads"), { recursive: true });
-			await writeFile(
-				join(TempDirectory, "downloads", "index.html"),
-				"<html><body>Downloads</body></html>",
-			);
+			// Create PascalCase built pages (matching real Astro output)
+			const BuiltPage = [
+				"Download",
+				"Doc",
+				"Blog",
+				"Account/SignIn",
+				"Account/SignUp",
+				"Legal/Term",
+				"Legal/Privacy",
+			];
 
-			await mkdir(join(TempDirectory, "docs"), { recursive: true });
-			await writeFile(
-				join(TempDirectory, "docs", "index.html"),
-				"<html><body>Docs</body></html>",
-			);
+			for (const Page of BuiltPage) {
+				await mkdir(join(TempDirectory, Page), { recursive: true });
+				await writeFile(
+					join(TempDirectory, Page, "index.html"),
+					`<html><body>${Page}</body></html>`,
+				);
+			}
 
-			await mkdir(join(TempDirectory, "blog"), { recursive: true });
-			await writeFile(
-				join(TempDirectory, "blog", "index.html"),
-				"<html><body>Blog</body></html>",
-			);
-
-			// Root index
 			await writeFile(
 				join(TempDirectory, "index.html"),
 				"<html><body>Home</body></html>",
@@ -123,13 +133,15 @@ describe("GenerateRouteMap", () => {
 			expect(RouteMap.Canonical).toContain("/Download");
 			expect(RouteMap.Canonical).toContain("/Doc");
 			expect(RouteMap.Canonical).toContain("/Blog");
+			expect(RouteMap.Canonical).toContain("/Account/SignIn");
+			expect(RouteMap.Canonical).toContain("/Legal/Term");
 
 			// 404 should NOT be in canonical
 			expect(RouteMap.Canonical).not.toContain("/404");
 
 			// Variant map should contain lowercase → PascalCase
-			expect(RouteMap.Variant["/downloads"]).toBe("/Download");
-			expect(RouteMap.Variant["/docs"]).toBe("/Doc");
+			expect(RouteMap.Variant["/download"]).toBe("/Download");
+			expect(RouteMap.Variant["/doc"]).toBe("/Doc");
 			expect(RouteMap.Variant["/blog"]).toBe("/Blog");
 
 			// Variant map should contain semantic aliases
@@ -137,8 +149,8 @@ describe("GenerateRouteMap", () => {
 			expect(RouteMap.Variant["/login"]).toBe("/Account/SignIn");
 
 			// Case variants should be generated
-			expect(RouteMap.Variant["/DOWNLOADS"]).toBe("/Download");
-			expect(RouteMap.Variant["/DOCS"]).toBe("/Doc");
+			expect(RouteMap.Variant["/DOWNLOAD"]).toBe("/Download");
+			expect(RouteMap.Variant["/DOC"]).toBe("/Doc");
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}
@@ -154,9 +166,9 @@ describe("GenerateRouteMap", () => {
 		const TempDirectory = await mkdtemp(join(tmpdir(), "routemap-slash-"));
 
 		try {
-			await mkdir(join(TempDirectory, "downloads"), { recursive: true });
+			await mkdir(join(TempDirectory, "Download"), { recursive: true });
 			await writeFile(
-				join(TempDirectory, "downloads", "index.html"),
+				join(TempDirectory, "Download", "index.html"),
 				"<html></html>",
 			);
 			await writeFile(
@@ -167,7 +179,7 @@ describe("GenerateRouteMap", () => {
 			const RouteMap = await GenerateRouteMap(TempDirectory);
 
 			// Should have trailing slash variants
-			expect(RouteMap.Variant["/downloads/"]).toBe("/Download");
+			expect(RouteMap.Variant["/download/"]).toBe("/Download");
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}

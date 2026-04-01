@@ -15,16 +15,16 @@ describe("Integration: Build output structure", () => {
 		const TempDirectory = await mkdtemp(join(tmpdir(), "integration-"));
 
 		try {
-			// Simulate Astro build output
+			// Simulate Astro build output (PascalCase — real page files)
 			const BuiltPage = [
-				"downloads",
-				"docs",
-				"blog",
-				"portal",
-				"account/signin",
-				"account/signup",
-				"legal/terms",
-				"legal/privacy",
+				"Download",
+				"Doc",
+				"Blog",
+				"Portal",
+				"Account/SignIn",
+				"Account/SignUp",
+				"Legal/Term",
+				"Legal/Privacy",
 			];
 
 			for (const Page of BuiltPage) {
@@ -65,48 +65,44 @@ describe("Integration: Build output structure", () => {
 			expect(RouteMapContent.Canonical).toContain("/Legal/Term");
 			expect(RouteMapContent.Canonical).toContain("/Legal/Privacy");
 
-			// Simulate PascalCase directory copy (what Integration.ts does)
-			for (const [BuiltPath, PascalPath] of Object.entries(
-				RouteMap.Variant,
+			// Simulate lowercase directory copy (what Integration.ts does)
+			// For each lowercase → PascalCase mapping, copy from PascalCase
+			// source to lowercase directory (for backward-compat serving)
+			for (const [LowercasePath, PascalPath] of Object.entries(
+				PascalCaseCanonical,
 			)) {
-				if (
-					!BuiltPath.startsWith("/") ||
-					!RouteMap.Canonical.includes(PascalPath) ||
-					PascalPath === "/"
-				) {
+				if (PascalPath === "/" || LowercasePath === PascalPath) {
 					continue;
 				}
 
-				const BuiltHTMLPath = join(
+				const SourceHTMLPath = join(
 					TempDirectory,
-					BuiltPath.slice(1),
+					PascalPath.slice(1),
 					"index.html",
 				);
 
-				let BuiltHTML: string;
+				let SourceHTML: string;
 
 				try {
-					BuiltHTML = await readFile(BuiltHTMLPath, "utf-8");
+					SourceHTML = await readFile(SourceHTMLPath, "utf-8");
 				} catch {
 					continue;
 				}
 
-				const PascalDirectory = join(
+				const LowercaseDirectory = join(
 					TempDirectory,
-					PascalPath.slice(1),
+					LowercasePath.slice(1),
 				);
 
-				await mkdir(PascalDirectory, { recursive: true });
+				await mkdir(LowercaseDirectory, { recursive: true });
 				await writeFile(
-					join(PascalDirectory, "index.html"),
-					BuiltHTML,
+					join(LowercaseDirectory, "index.html"),
+					SourceHTML,
 				);
 			}
 
-			// Verify PascalCase directories were created with HTML
-			for (const [BuiltPath, PascalPath] of Object.entries(
-				PascalCaseCanonical,
-			)) {
+			// Verify PascalCase directories exist with HTML
+			for (const PascalPath of RouteMap.Canonical) {
 				if (PascalPath === "/") continue;
 
 				const PascalHTMLPath = join(
@@ -117,16 +113,10 @@ describe("Integration: Build output structure", () => {
 
 				const Stat = await stat(PascalHTMLPath).catch(() => null);
 
-				if (BuiltPage.includes(BuiltPath.slice(1))) {
-					expect(
-						Stat,
-						`Expected ${PascalPath}/index.html to exist`,
-					).not.toBeNull();
-
-					const Content = await readFile(PascalHTMLPath, "utf-8");
-
-					expect(Content).toContain(BuiltPath.slice(1));
-				}
+				expect(
+					Stat,
+					`Expected ${PascalPath}/index.html to exist`,
+				).not.toBeNull();
 			}
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
@@ -153,7 +143,7 @@ describe("Integration: Build output structure", () => {
 
 		// Simulate the injection that Integration.ts does
 		const TestCanonical = ["/", "/Download", "/Doc"];
-		const TestVariant = { "/downloads": "/Download", "/docs": "/Doc" };
+		const TestVariant = { "/download": "/Download", "/doc": "/Doc" };
 
 		let Injected = Template.replace(
 			/^\/\/.*$/gm,
@@ -193,12 +183,12 @@ describe("Integration: Build output structure", () => {
 		try {
 			const SitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://editor.land/downloads</loc></url>
-<url><loc>https://editor.land/docs</loc></url>
+<url><loc>https://editor.land/download</loc></url>
+<url><loc>https://editor.land/doc</loc></url>
 <url><loc>https://editor.land/blog</loc></url>
 <url><loc>https://editor.land/portal</loc></url>
 <url><loc>https://editor.land/account/signin</loc></url>
-<url><loc>https://editor.land/legal/terms</loc></url>
+<url><loc>https://editor.land/legal/term</loc></url>
 </urlset>`;
 
 			await writeFile(
@@ -248,10 +238,10 @@ describe("Integration: Build output structure", () => {
 
 			// Original lowercase should be gone
 			expect(Final).not.toContain(
-				"<loc>https://editor.land/downloads</loc>",
+				"<loc>https://editor.land/download</loc>",
 			);
 			expect(Final).not.toContain(
-				"<loc>https://editor.land/docs</loc>",
+				"<loc>https://editor.land/doc</loc>",
 			);
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });

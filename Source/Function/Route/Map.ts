@@ -30,6 +30,17 @@ export const CanonicalPath: Set<string> = new Set([
 	"/OAuth/Success",
 ]);
 
+// ─── Built-path → PascalCase mapping ───
+// Maps what Astro historically built (lowercase) to PascalCase canonical.
+// Used by Integration.ts for dev redirects, sitemap rewriting, and directory copies.
+
+export const PascalCaseCanonical: Record<string, string> = Object.fromEntries(
+	[...CanonicalPath].map((PascalPath) => [
+		PascalPath.toLowerCase(),
+		PascalPath,
+	]),
+);
+
 // ─── Semantic aliases (human-curated, cannot be auto-derived) ───
 // These are alternate names, abbreviations, or synonyms that map to canonicals.
 
