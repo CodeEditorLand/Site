@@ -1,21 +1,38 @@
 import {
 	Github,
 	MessageCircle,
-	Send,
 	Linkedin,
 	type LucideIcon,
 } from "lucide-react";
 
 import type Property from "./Interface/Property/Footer.js";
 
-const SocialIconRegistry: Record<string, LucideIcon> = {
+/**
+ * X (Twitter) is not in lucide-react; render an inline SVG mark instead.
+ * All other social icons use Lucide.
+ * Em quad (U+2001) appears BEFORE each icon in the row, matching the
+ * icon-right InlineSeparator convention used across the portal.
+ */
+const XIcon = ({ className }: { className?: string }) => (
+	<svg
+		viewBox="0 0 24 24"
+		fill="currentColor"
+		aria-hidden="true"
+		className={className}>
+		<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+	</svg>
+);
+
+type SocialKey = "github" | "twitter" | "discord" | "linkedin";
+
+const SocialIconRegistry: Record<SocialKey, LucideIcon | typeof XIcon> = {
 	github: Github,
-	twitter: Send,
+	twitter: XIcon,
 	discord: MessageCircle,
 	linkedin: Linkedin,
 };
 
-const SocialLabelRegistry: Record<string, string> = {
+const SocialLabelRegistry: Record<SocialKey, string> = {
 	github: "GitHub",
 	twitter: "X (Twitter)",
 	discord: "Discord",
@@ -24,14 +41,14 @@ const SocialLabelRegistry: Record<string, string> = {
 
 /**
  * Dynamic Footer component that accepts brand, links, and social schemas.
- * Social icons use Lucide with em quad (U+2001) separator before each icon.
- * Renders multi-column footer with bottom bar.
+ * Social icons use Lucide (or inline SVG for X) with em quad (U+2001)
+ * separator BEFORE each icon. Renders multi-column footer with bottom bar.
  */
 const DynamicFooter = ({ content, className }: Property) => {
 	const { brand, social, columns, bottomBar } = content;
 	const CurrentYear = new Date().getFullYear();
 
-	const SocialLink: Record<string, string> = {
+	const SocialLink: Record<SocialKey, string> = {
 		github: social?.github || "#",
 		twitter: social?.twitter || "#",
 		discord: social?.discord || "#",
@@ -54,12 +71,12 @@ const DynamicFooter = ({ content, className }: Property) => {
 						)}
 						{social && (
 							<div className="flex items-center">
-								{Object.entries(SocialLink).map(
-									([Key, Href]) => {
+								{(Object.keys(SocialLink) as SocialKey[]).map(
+									(Key) => {
+										const Href = SocialLink[Key];
 										if (Href === "#") return null;
 										const Icon = SocialIconRegistry[Key];
-										const Label =
-											SocialLabelRegistry[Key] ?? Key;
+										const Label = SocialLabelRegistry[Key];
 										return (
 											<a
 												key={Key}
@@ -68,19 +85,11 @@ const DynamicFooter = ({ content, className }: Property) => {
 												rel="noopener noreferrer"
 												className="inline-flex items-center text-muted-foreground transition-colors hover:text-foreground"
 												aria-label={Label}>
-												{Icon ? (
-													<>
-														<Icon
-															className="h-5 w-5"
-															aria-hidden="true"
-														/>
-														{"\u2001"}
-													</>
-												) : (
-													<span className="sr-only">
-														{Label}
-													</span>
-												)}
+												{"\u2001"}
+												<Icon
+													className="h-5 w-5"
+													aria-hidden="true"
+												/>
 											</a>
 										);
 									},
@@ -123,7 +132,7 @@ const DynamicFooter = ({ content, className }: Property) => {
 						</div>
 						{bottomBar.madeWith && (
 							<div className="text-sm text-muted-foreground">
-								{brand.name} Team
+								{brand.name}
 								{"\u2001"}
 								<span aria-hidden="true">❤️</span>
 							</div>

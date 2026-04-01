@@ -2,7 +2,7 @@ import { Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { DynamicButton } from "./DynamicButton";
+import { DynamicButton } from "./DynamicButton.js";
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
@@ -45,7 +45,6 @@ const DynamicPricing = ({ content, className }: Property) => {
 
 	const [IsYearly, SetIsYearly] = useState(defaultYearly);
 
-	// Apply attention scatter to pricing tier cards
 	useEffect(() => {
 		const Grid = GridReference.current;
 		if (!Grid) return;
@@ -86,7 +85,9 @@ const DynamicPricing = ({ content, className }: Property) => {
 		<section
 			id="pricing"
 			aria-label="Roadmap"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${
+				className || ""
+			}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
@@ -114,13 +115,25 @@ const DynamicPricing = ({ content, className }: Property) => {
 							aria-checked={IsYearly}
 							aria-label={
 								IsYearly
-									? `Switch to ${MonthlyLabel} billing`
-									: `Switch to ${YearlyLabel} billing`
+									? T("pricing.toggle.toMonthly", {
+											defaultValue:
+												"Switch to {{label}} billing",
+											label: MonthlyLabel,
+										})
+									: T("pricing.toggle.toYearly", {
+											defaultValue:
+												"Switch to {{label}} billing",
+											label: YearlyLabel,
+										})
 							}
-							className={`StaccatoToggle relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${IsYearly ? "bg-primary" : "bg-input"}`}
+							className={`StaccatoToggle relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+								IsYearly ? "bg-primary" : "bg-input"
+							}`}
 							onClick={() => SetIsYearly(!IsYearly)}>
 							<span
-								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${IsYearly ? "translate-x-6" : "translate-x-1"}`}
+								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${
+									IsYearly ? "translate-x-6" : "translate-x-1"
+								}`}
 							/>
 						</button>
 						<span className="text-sm font-medium">
@@ -140,7 +153,11 @@ const DynamicPricing = ({ content, className }: Property) => {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
-							className={`PricingCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border bg-white ${Tier.highlighted || Tier.popular ? "border-primary" : "border-[var(--Border)]"} `}>
+							className={`PricingCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border bg-white ${
+								Tier.highlighted || Tier.popular
+									? "border-primary"
+									: "border-[var(--Border)]"
+							}`}>
 							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.popular && (
 									<div className="mb-2">
