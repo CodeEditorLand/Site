@@ -171,7 +171,8 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 						aria-hidden="true">
 						<img
 							src="/Asset/Logo/Glyph/Land.svg"
-							alt=""
+							alt="Code Editor Land"
+							title="Code Editor Land"
 							width="32"
 							height="32"
 							className="absolute inset-0 h-full w-full"

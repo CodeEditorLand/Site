@@ -65,6 +65,33 @@ const TierIconRegistry: Record<string, LucideIcon> = {
 	WifiOff,
 };
 
+const IconLabelMap: Record<string, string> = {
+	Box: "Package",
+	Building2: "Enterprise",
+	CirclePlay: "Pipeline",
+	Cloud: "Cloud",
+	FileText: "Audit Log",
+	GitBranch: "Repository",
+	GitFork: "Source Control",
+	Globe: "Web",
+	Hammer: "Build",
+	HardDrive: "Storage",
+	Key: "Authentication",
+	KeyRound: "Single Sign-On",
+	Lock: "Encryption",
+	Monitor: "Device",
+	Puzzle: "Extensions",
+	RefreshCw: "Sync",
+	Rocket: "Deploy",
+	Server: "Server",
+	Settings: "Configuration",
+	Shield: "Security",
+	UserPlus: "Provisioning",
+	Users: "Team",
+	Wifi: "Connection",
+	WifiOff: "Offline",
+};
+
 /**
  * Enterprise SSO form with organization domain input and Auth0 redirect buttons.
  * Routes through Auth0 Enterprise Connections (Okta, Azure AD, SAML).
@@ -477,7 +504,10 @@ const PortalTierRow = ({
 																			".svg",
 																			"",
 																		) ?? "")
-																: IconName;
+																: (IconLabelMap[
+																		IconName
+																	] ??
+																	IconName);
 														return (
 															<span
 																key={IconIndex}

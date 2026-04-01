@@ -175,7 +175,8 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
 							<img
 								src="/Asset/Logo/Glyph/Land.svg"
-								alt=""
+								alt="Code Editor Land"
+								title="Code Editor Land"
 								width="80"
 								height="80"
 								className="h-20 w-20"

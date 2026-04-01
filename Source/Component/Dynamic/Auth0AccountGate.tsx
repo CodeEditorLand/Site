@@ -163,7 +163,8 @@ export default ({
 					{User.picture && (
 						<img
 							src={User.picture}
-							alt=""
+							alt={User.name || "User avatar"}
+							title={User.name || "User avatar"}
 							width="64"
 							height="64"
 							className="h-16 w-16 rounded-none border border-[var(--Border)]"

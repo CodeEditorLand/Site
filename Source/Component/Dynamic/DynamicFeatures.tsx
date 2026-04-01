@@ -40,6 +40,23 @@ const FeatureIconRegistry: Record<string, LucideIcon> = {
 	Database,
 };
 
+const FeatureIconLabelMap: Record<string, string> = {
+	Zap: "Performance",
+	Box: "Compatibility",
+	Cpu: "Architecture",
+	Globe: "Cross-Platform",
+	Wrench: "Tooling",
+	Heart: "Open Source",
+	Sparkles: "Features",
+	Code: "Code",
+	Layers: "Layers",
+	Package: "Package",
+	Puzzle: "Extensions",
+	Server: "Server",
+	Shield: "Security",
+	Database: "Storage",
+};
+
 /**
  * Dynamic Features with simplex noise integration.
  * Cards get StaccatoCard + Attention scatter for organic layout.
@@ -179,7 +196,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 																{StackIcon ? (
 																	<StackIcon
 																		className="h-4 w-4 text-primary"
-																		aria-label={IconName}
+																		aria-label={FeatureIconLabelMap[IconName] ?? IconName}
 																		role="img"
 																	/>
 																) : null}

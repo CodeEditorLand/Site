@@ -126,7 +126,8 @@ const DashboardUserInner = () => {
 				<div className="flex justify-center pb-2">
 					<img
 						src={User.picture}
-						alt=""
+						alt={User.name || "User avatar"}
+						title={User.name || "User avatar"}
 						width="48"
 						height="48"
 						className="h-12 w-12 rounded-none border border-[var(--Border)]"

@@ -88,7 +88,8 @@ export default ({
 				{User.picture && (
 					<img
 						src={User.picture}
-						alt=""
+						alt={User.name || "User avatar"}
+						title={User.name || "User avatar"}
 						width="24"
 						height="24"
 						className="h-6 w-6 rounded-none border border-[var(--Border)]"
@@ -108,7 +109,8 @@ export default ({
 			{User.picture && (
 				<img
 					src={User.picture}
-					alt=""
+					alt={User.name || "User avatar"}
+					title={User.name || "User avatar"}
 					width="28"
 					height="28"
 					className="h-7 w-7 rounded-none border border-[var(--Border)]"

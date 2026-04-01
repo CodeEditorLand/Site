@@ -102,7 +102,8 @@ const Footer = ({ content }: FooterProps) => {
 							aria-label={`${FooterData.brand?.name || "Land"} - Go to homepage`}>
 							<img
 								src="/Asset/Logo/Glyph/Land.svg"
-								alt=""
+								alt="Code Editor Land"
+								title="Code Editor Land"
 								width="32"
 								height="32"
 								className="h-8 w-8"
@@ -191,7 +192,8 @@ const Footer = ({ content }: FooterProps) => {
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
 							<img
 								src="/Image/GitHub.svg"
-								alt=""
+								alt="GitHub"
+								title="Code Editor Land on GitHub"
 								width="20"
 								height="20"
 								aria-hidden="true"
