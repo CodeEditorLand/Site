@@ -16,8 +16,6 @@ export function VerifyPage({
 	route,
 	token,
 	reason,
-	_metaTitle = "Verify Email - Land",
-	_metaDescription = "Verify your email address to activate your account.",
 	className,
 	onVerify,
 	onResend,

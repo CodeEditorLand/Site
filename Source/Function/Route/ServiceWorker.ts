@@ -1,3 +1,5 @@
+/// <reference lib="webworker" />
+
 declare var self: ServiceWorkerGlobalScope;
 
 declare const __DEV__: boolean;
@@ -124,7 +126,7 @@ const ResolveRoute = (RequestPath: string): string | null => {
 
 // ─── Install ───
 
-self.addEventListener("install", (Event) => {
+self.addEventListener("install", (Event: ExtendableEvent) => {
 	__DEV__ && Log(`Installing version ${INCREMENT}...`);
 
 	Event.waitUntil(
@@ -135,7 +137,7 @@ self.addEventListener("install", (Event) => {
 
 				return Cache;
 			})
-			.catch((_Error) => __DEV__ && ErrorLog("Cache open failed:", _Error))
+			.catch((_Error: unknown) => __DEV__ && ErrorLog("Cache open failed:", _Error))
 			.then(() => {
 				__DEV__ &&
 					Log("Install complete. Activating immediately.");
@@ -147,7 +149,7 @@ self.addEventListener("install", (Event) => {
 
 // ─── Activate ───
 
-self.addEventListener("activate", (Event) => {
+self.addEventListener("activate", (Event: ExtendableEvent) => {
 	__DEV__ && Log(`Activating version ${INCREMENT}...`);
 
 	Event.waitUntil(
@@ -167,7 +169,7 @@ self.addEventListener("activate", (Event) => {
 						}),
 					),
 				)
-				.catch((_Error) => {
+				.catch((_Error: unknown) => {
 					__DEV__ &&
 						ErrorLog("Cache cleanup failed:", _Error);
 
@@ -179,7 +181,7 @@ self.addEventListener("activate", (Event) => {
 				.then(() => {
 					__DEV__ && Log("Clients claimed successfully.");
 				})
-				.catch((_Error) => {
+				.catch((_Error: unknown) => {
 					__DEV__ &&
 						ErrorLog("self.clients.claim() failed:", _Error);
 
@@ -204,7 +206,7 @@ self.addEventListener("activate", (Event) => {
 
 					return (
 						await self.clients.matchAll({ type: "window" })
-					).forEach((Client) => {
+					).forEach((Client: WindowClient) => {
 						__DEV__ &&
 							Log(
 								`Sending New Version message to client ${Client.id}`,
@@ -220,7 +222,7 @@ self.addEventListener("activate", (Event) => {
 				}
 			})
 			.catch(
-				(_Error) =>
+				(_Error: unknown) =>
 					__DEV__ && ErrorLog("Activation failed overall:", _Error),
 			),
 	);
@@ -233,7 +235,7 @@ self.addEventListener("activate", (Event) => {
 //   3. Asset Cache — cache-first for static assets (_astro/*, Asset/*, etc.)
 //   4. Pass-through — everything else goes to network
 
-self.addEventListener("fetch", (Event) => {
+self.addEventListener("fetch", (Event: FetchEvent) => {
 	const Request = Event.request;
 
 	const _URL = new URL(Request.url);
@@ -303,7 +305,7 @@ self.addEventListener("fetch", (Event) => {
 						WarnLog(
 							`Navigation failed (${_Response.status}): ${Path}. Trying cache...`,
 						);
-				} catch (_Error) {
+				} catch (_Error: unknown) {
 					__DEV__ &&
 						WarnLog(
 							`Navigation fetch failed: ${Path}. Trying cache...`,
@@ -378,7 +380,7 @@ self.addEventListener("fetch", (Event) => {
 								status: 504,
 							})
 						);
-					} catch (_Error) {
+					} catch (_Error: unknown) {
 						__DEV__ &&
 							ErrorLog(`Asset fetch failed: ${Path}`, _Error);
 
@@ -387,7 +389,7 @@ self.addEventListener("fetch", (Event) => {
 						});
 					}
 				})
-				.catch((_Error) => {
+				.catch((_Error: unknown) => {
 					__DEV__ &&
 						ErrorLog(`Asset cache error: ${Path}`, _Error);
 
@@ -404,7 +406,7 @@ self.addEventListener("fetch", (Event) => {
 
 // ─── Message handler ───
 
-self.addEventListener("message", (Event) => {
+self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 	if (Event.origin !== self.location.origin && Event.origin !== BASE_REMOTE) {
 		__DEV__ &&
 			WarnLog(

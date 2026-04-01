@@ -135,7 +135,7 @@ function ChartTooltipContent({
 		}
 
 		const [item] = payload;
-		const key = `${labelKey || item?.dataKey || item?.name || "value"}`;
+		const key = `${labelKey || item?.["dataKey"] || item?.["name"] || "value"}`;
 		const ItemConfig = GetPayloadConfigFromPayload(config, item, key);
 		const value =
 			!labelKey && typeof label === "string"
@@ -180,31 +180,32 @@ function ChartTooltipContent({
 			{!NestLabel ? TooltipLabel : null}
 			<div className="grid gap-1.5">
 				{payload.map((item: Record<string, unknown>, index: number) => {
-					const key = `${nameKey || item.name || item.dataKey || "value"}`;
+					const key = `${nameKey || item["name"] || item["dataKey"] || "value"}`;
 					const ItemConfig = GetPayloadConfigFromPayload(
 						config,
 						item,
 						key,
 					);
+					const ItemPayload = item["payload"] as Record<string, unknown> | undefined;
 					const IndicatorColor =
-						color || item.payload.fill || item.color;
+						color || ItemPayload?.["fill"] || item["color"];
 
 					return (
 						<div
-							key={item.dataKey}
+							key={String(item["dataKey"])}
 							className={cn(
 								"flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
 								indicator === "dot" && "items-center",
 							)}>
 							{formatter &&
-							item?.value !== undefined &&
-							item.name ? (
+							item["value"] !== undefined &&
+							item["name"] ? (
 								formatter(
-									item.value,
-									item.name,
+									item["value"] as number,
+									item["name"] as string,
 									item,
 									index,
-									item.payload,
+									item["payload"],
 								)
 							) : (
 								<>
@@ -251,12 +252,12 @@ function ChartTooltipContent({
 										<div className="grid gap-1.5">
 											{NestLabel ? TooltipLabel : null}
 											<span className="text-muted-foreground">
-												{ItemConfig?.label || item.name}
+												{ItemConfig?.label || (item["name"] as string)}
 											</span>
 										</div>
-										{item.value && (
+										{item["value"] && (
 											<span className="font-mono font-medium tabular-nums text-foreground">
-												{item.value.toLocaleString()}
+												{(item["value"] as number).toLocaleString()}
 											</span>
 										)}
 									</div>

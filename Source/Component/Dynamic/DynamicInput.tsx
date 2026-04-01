@@ -59,7 +59,6 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 			{label && (
 				<Label
 					htmlFor={Identifier}
-					required={required}
 					className="block text-xs text-muted-foreground">
 					{label}
 				</Label>

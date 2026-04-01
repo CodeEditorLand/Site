@@ -1,4 +1,5 @@
 export default interface Interface {
+	[Key: string]: unknown;
 	version: string;
 	publishedAt: string;
 	size: string;

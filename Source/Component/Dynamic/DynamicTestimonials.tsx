@@ -99,7 +99,7 @@ export function DynamicTestimonials({ content, className }: Property) {
 							</div>
 							<blockquote className="StaccatoBreath mb-6 flex-1">
 								<p className="text-lg">
-									{Testimonial.rating > 0
+									{(Testimonial.rating ?? 0) > 0
 										? `\u201C${Testimonial.quote}\u201D`
 										: Testimonial.quote}
 								</p>

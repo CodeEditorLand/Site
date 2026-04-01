@@ -12,7 +12,6 @@ import type Property from "./Interface/Property/Information/Verification.js";
 export function DynamicVerificationInfo({
 	content,
 	onVerify,
-	_onDownloadSignature,
 	className,
 }: Property) {
 	const { t: T } = useTranslation("download");
@@ -95,7 +94,7 @@ export function DynamicVerificationInfo({
 							aria-label="Copy PGP signature to clipboard"
 							onClick={() =>
 								CopyToClipboard(
-									Information.pgpSignature,
+									Information.pgpSignature || "",
 									"PGP signature",
 								)
 							}>

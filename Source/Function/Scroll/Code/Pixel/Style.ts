@@ -125,7 +125,7 @@ export default class {
 					(this.Mouse.Velocity * 2) % 360,
 					this.Influence,
 				)}, 100%, 50%)`
-			: this.Spectrum[
+			: (this.Spectrum[
 					Math.floor(
 						(Layer(
 							this.TimeNoise + this.Seed,
@@ -134,14 +134,14 @@ export default class {
 							1) *
 							180,
 					)
-				];
+				] ?? "");
 	}
 
 	private Shadow(): void {
 		// Direct style assignment instead of createEffect
-		const Color = this.Mouse.Active
+		const Color: string = this.Mouse.Active
 			? this.Element.style.backgroundColor
-			: this.Spectrum[
+			: (this.Spectrum[
 					Math.floor(
 						(Layer(
 							this.TimeNoise + this.Seed,
@@ -150,7 +150,7 @@ export default class {
 							1) *
 							180,
 					)
-				];
+				] ?? "");
 
 		this.Element.style.boxShadow = `0 0 ${Lerp(
 			((Layer(this.TimeNoise + this.Seed, this.Column + 50) + 1) / 2) *

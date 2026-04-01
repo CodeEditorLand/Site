@@ -92,7 +92,7 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 								const Position = Character % TextContent.length;
 								if (!Matrix) return null;
 								const MatrixRowArray: number[][] =
-									Matrix[Position.toUpperCase()] ??
+									Matrix[Visible.toUpperCase()] ??
 									Matrix[" "];
 								if (!MatrixRowArray) return null;
 

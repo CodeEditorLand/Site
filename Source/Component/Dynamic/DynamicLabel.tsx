@@ -17,8 +17,8 @@ export function DynamicLabel({ content, htmlFor }: Property) {
 	return (
 		<Label
 			htmlFor={htmlFor}
-			required={required}
-			disabled={disabled}
+			aria-required={required}
+			aria-disabled={disabled}
 			className={className}
 			{...props}>
 			{text}

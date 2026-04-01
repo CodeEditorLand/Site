@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
-import type User from "../../Library/Interface/User.js";
 import { Header } from "../Layout/Header";
 import { DynamicForgotPassword } from "./DynamicForgotPassword";
 import { DynamicResetPassword } from "./DynamicResetPassword";
@@ -21,28 +20,7 @@ function SetSessionToken(Token: string): void {
 	localStorage.setItem("session_token", Token);
 }
 
-function _ClearSessionToken(): void {
-	try {
-		document.cookie = "session=; path=/; max-age=0";
-	} catch {
-		// Cookie API not available during SSR
-	}
-	localStorage.removeItem("session_token");
-}
-
-function _GetCurrentUser(): User | null {
-	try {
-		const UserData = localStorage.getItem("current_user");
-		if (UserData) {
-			return JSON.parse(UserData);
-		}
-	} catch {
-		// Not available during SSR
-	}
-	return null;
-}
-
-function SetCurrentUser(CurrentUser: User): void {
+function SetCurrentUser(CurrentUser: unknown): void {
 	try {
 		localStorage.setItem("current_user", JSON.stringify(CurrentUser));
 	} catch {
@@ -63,7 +41,6 @@ export function AccountPage({
 	onSignUp,
 	onForgotPassword,
 	onResetPassword,
-	_onOAuth,
 	onNavigate,
 }: Property) {
 	const {
