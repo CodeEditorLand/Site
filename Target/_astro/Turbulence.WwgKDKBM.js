@@ -1,0 +1,22 @@
+const o={title:"Неуспешна проверка",description:"Тази връзка за проверка е невалидна или е изтекла.",instruction:"Моля, заявете нов имейл за проверка или се свържете с поддръжката, ако проблемът продължава.",resendButton:"Изпратете нов имейл за проверка",contactSupport:"Свържете се с поддръжката",backToSignInButton:"Обратно към вход"},i={description:`Връзка за проверка беше изпратена на вашия имейл адрес.
+Моля, проверете входящата си поща и натиснете връзката, за да активирате профила си.
+Връзката е валидна 7 дни.
+Ако имейлът не бъде получен в рамките на няколко минути, проверете папката за нежелана поща или промоции.
+От съображения за сигурност не споделяйте този имейл с никого.`,resendButton:"Изпратете отново имейл за проверка",title:"Потвърдете имейл адреса си"},r={title:"Имейлът е потвърден!",description:"Вашият имейл беше успешно потвърден.",instruction:"Вече можете да влезете в профила си и да започнете да използвате Code Editor Land.",continue:"Продължете към вход",continueButton:"Продължете към началната страница"},s="Потвърдете имейла си",c="Връзка за проверка беше изпратена на",u="Натиснете връзката в имейла, за да потвърдите профила си и да започнете да използвате Code Editor Land.",l="Не получихте имейла?",a="Проверете папката за нежелана поща или",d="изпратете отново имейл за проверка",p="Изпратете отново имейл за проверка",b="Обратно към вход",g="Изпращане...",f="Имейлът за проверка е изпратен!",m={title:"Проверка на имейла ви",description:"Моля, изчакайте, докато проверим вашия имейл адрес..."},y="Възникна грешка по време на проверката. Моля, опитайте отново.",h="Неуспешно повторно изпращане на имейл. Моля, опитайте отново.",S="Имейл",v="Въведете имейла си за повторно изпращане на проверка",C="Имейлът за проверка е изпратен отново!",L={error:o,pending:i,success:r,title:s,description:c,instruction:u,didntReceive:l,checkSpam:a,resendLink:d,resendButton:p,backToSignIn:b,resending:g,resent:f,verifying:m,errorGeneric:y,resendFailed:h,emailLabel:S,emailPlaceholder:v,resendSuccess:C},N=Object.freeze(Object.defineProperty({__proto__:null,backToSignIn:b,checkSpam:a,default:L,description:c,didntReceive:l,emailLabel:S,emailPlaceholder:v,error:o,errorGeneric:y,instruction:u,pending:i,resendButton:p,resendFailed:h,resendLink:d,resendSuccess:C,resending:g,resent:f,success:r,title:s,verifying:m},Symbol.toStringTag,{value:"Module"})),T={name:"Code Editor Land",description:"L'editeur de code de nouvelle generation. Open source et gratuit pour toujours."},F={product:{title:"Produit",features:"Fonctionnalites",downloads:"Telecharger",docs:"Documentation"},company:{title:"Communaute",issues:"Issues",contributing:"Contribuer",github:"GitHub"},legal:{title:"Mentions legales",privacy:"Confidentialite",terms:"Conditions d'utilisation",license:"Licence"}},_={copyright:"© {{year}} Code Editor Land. Tous droits reserves.",builtBy:"Cree par l'equipe Code Editor Land",madeWith:"Fait avec"},j={prefix:"Ce projet a été financé par le ",ngiFund:"Fonds NGI0 Commons",nlnetIntro:", un fonds établi par ",nlnet:"NLnet",euSupport:" avec le soutien financier du programme Internet de prochaine génération de la Commission européenne, dans le cadre de la convention de subvention n° 101135429. ",projectPage:"Voir la page du projet"},E={brand:T,columns:F,bottomBar:_,funding:j},P=Object.freeze(Object.defineProperty({__proto__:null,bottomBar:_,brand:T,columns:F,default:E,funding:j},Symbol.toStringTag,{value:"Module"}));let t=null,n=!1;const M="StaccatoTurbulence",O=()=>{if(n)return;n=!0;const e=document.createElementNS("http://www.w3.org/2000/svg","svg");e.setAttribute("width","0"),e.setAttribute("height","0"),e.setAttribute("aria-hidden","true"),e.style.position="absolute",e.style.pointerEvents="none",e.innerHTML=`<defs>
+		<filter id="${M}" x="-10%" y="-10%" width="120%" height="120%">
+			<feTurbulence
+				type="turbulence"
+				baseFrequency="0.02"
+				numOctaves="3"
+				seed="0"
+				result="Noise"
+			/>
+			<feDisplacementMap
+				in="SourceGraphic"
+				in2="Noise"
+				scale="4"
+				xChannelSelector="R"
+				yChannelSelector="G"
+			/>
+		</filter>
+	</defs>`,document.body.appendChild(e),t=e.querySelector("feTurbulence")},w=e=>{if(!t)return;const I=Math.abs(Math.floor(e*1e3))%9999;t.setAttribute("seed",String(I))},B={InjectFilter:O,AnimateFilter:w},A=Object.freeze(Object.defineProperty({__proto__:null,default:B},Symbol.toStringTag,{value:"Module"}));export{P as F,A as T,N as V};

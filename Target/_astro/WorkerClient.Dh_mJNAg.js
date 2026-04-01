@@ -1,1 +1,0 @@
-let e=null;function t(){if(e)return e;{const r={success:!1,error:"Worker URLs not configured"},n=()=>Promise.resolve(r);return e=new Proxy({},{get:()=>new Proxy({},{get:()=>n})}),e}}function s(){e=null}export{s as ClearWorkersClient,t as GetWorkersClient};

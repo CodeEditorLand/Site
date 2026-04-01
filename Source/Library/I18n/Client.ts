@@ -1,52 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
-// Bulgarian
-import bgAccount from "./Locale/Bg/Account.json";
-import bgCommon from "./Locale/Bg/Common.json";
-import bgDownload from "./Locale/Bg/Download.json";
-import bgFooter from "./Locale/Bg/Footer.json";
-import bgHeader from "./Locale/Bg/Header.json";
-import bgHome from "./Locale/Bg/Home.json";
-import bgMeta from "./Locale/Bg/Meta.json";
-import bgVerify from "./Locale/Bg/Verify.json";
-// German
-import deAccount from "./Locale/De/Account.json";
-import deCommon from "./Locale/De/Common.json";
-import deDownload from "./Locale/De/Download.json";
-import deFooter from "./Locale/De/Footer.json";
-import deHeader from "./Locale/De/Header.json";
-import deHome from "./Locale/De/Home.json";
-import deMeta from "./Locale/De/Meta.json";
-import deVerify from "./Locale/De/Verify.json";
-// English
-import enAccount from "./Locale/En/Account.json";
-import enCommon from "./Locale/En/Common.json";
-import enDownload from "./Locale/En/Download.json";
-import enFooter from "./Locale/En/Footer.json";
-import enHeader from "./Locale/En/Header.json";
-import enHome from "./Locale/En/Home.json";
-import enMeta from "./Locale/En/Meta.json";
-import enVerify from "./Locale/En/Verify.json";
-// Spanish
-import esAccount from "./Locale/Es/Account.json";
-import esCommon from "./Locale/Es/Common.json";
-import esDownload from "./Locale/Es/Download.json";
-import esFooter from "./Locale/Es/Footer.json";
-import esHeader from "./Locale/Es/Header.json";
-import esHome from "./Locale/Es/Home.json";
-import esMeta from "./Locale/Es/Meta.json";
-import esVerify from "./Locale/Es/Verify.json";
-// French
-import frAccount from "./Locale/Fr/Account.json";
-import frCommon from "./Locale/Fr/Common.json";
-import frDownload from "./Locale/Fr/Download.json";
-import frFooter from "./Locale/Fr/Footer.json";
-import frHeader from "./Locale/Fr/Header.json";
-import frHome from "./Locale/Fr/Home.json";
-import frMeta from "./Locale/Fr/Meta.json";
-import frVerify from "./Locale/Fr/Verify.json";
-
 export const SupportedLocaleList = ["en", "bg", "de", "fr", "es"] as const;
 export type SupportedLocale = (typeof SupportedLocaleList)[number];
 
@@ -57,6 +11,19 @@ export const LocaleLabel: Record<SupportedLocale, string> = {
 	fr: "Francais",
 	es: "Espanol",
 };
+
+const NamespaceList = [
+	"common",
+	"home",
+	"download",
+	"account",
+	"verify",
+	"header",
+	"footer",
+	"meta",
+] as const;
+
+type Namespace = (typeof NamespaceList)[number];
 
 function DetectLocale(): SupportedLocale {
 	if (typeof window === "undefined") return "en";
@@ -80,72 +47,87 @@ function DetectLocale(): SupportedLocale {
 	return "en";
 }
 
+/**
+ * Dynamically import all namespace JSON files for a given locale.
+ * Vite resolves these to separate chunks that are only fetched when needed.
+ */
+const LocaleLoader: Record<
+	SupportedLocale,
+	() => Promise<Record<Namespace, unknown>>
+> = {
+	en: async () => ({
+		common: (await import("./Locale/En/Common.json")).default,
+		home: (await import("./Locale/En/Home.json")).default,
+		download: (await import("./Locale/En/Download.json")).default,
+		account: (await import("./Locale/En/Account.json")).default,
+		verify: (await import("./Locale/En/Verify.json")).default,
+		header: (await import("./Locale/En/Header.json")).default,
+		footer: (await import("./Locale/En/Footer.json")).default,
+		meta: (await import("./Locale/En/Meta.json")).default,
+	}),
+	bg: async () => ({
+		common: (await import("./Locale/Bg/Common.json")).default,
+		home: (await import("./Locale/Bg/Home.json")).default,
+		download: (await import("./Locale/Bg/Download.json")).default,
+		account: (await import("./Locale/Bg/Account.json")).default,
+		verify: (await import("./Locale/Bg/Verify.json")).default,
+		header: (await import("./Locale/Bg/Header.json")).default,
+		footer: (await import("./Locale/Bg/Footer.json")).default,
+		meta: (await import("./Locale/Bg/Meta.json")).default,
+	}),
+	de: async () => ({
+		common: (await import("./Locale/De/Common.json")).default,
+		home: (await import("./Locale/De/Home.json")).default,
+		download: (await import("./Locale/De/Download.json")).default,
+		account: (await import("./Locale/De/Account.json")).default,
+		verify: (await import("./Locale/De/Verify.json")).default,
+		header: (await import("./Locale/De/Header.json")).default,
+		footer: (await import("./Locale/De/Footer.json")).default,
+		meta: (await import("./Locale/De/Meta.json")).default,
+	}),
+	fr: async () => ({
+		common: (await import("./Locale/Fr/Common.json")).default,
+		home: (await import("./Locale/Fr/Home.json")).default,
+		download: (await import("./Locale/Fr/Download.json")).default,
+		account: (await import("./Locale/Fr/Account.json")).default,
+		verify: (await import("./Locale/Fr/Verify.json")).default,
+		header: (await import("./Locale/Fr/Header.json")).default,
+		footer: (await import("./Locale/Fr/Footer.json")).default,
+		meta: (await import("./Locale/Fr/Meta.json")).default,
+	}),
+	es: async () => ({
+		common: (await import("./Locale/Es/Common.json")).default,
+		home: (await import("./Locale/Es/Home.json")).default,
+		download: (await import("./Locale/Es/Download.json")).default,
+		account: (await import("./Locale/Es/Account.json")).default,
+		verify: (await import("./Locale/Es/Verify.json")).default,
+		header: (await import("./Locale/Es/Header.json")).default,
+		footer: (await import("./Locale/Es/Footer.json")).default,
+		meta: (await import("./Locale/Es/Meta.json")).default,
+	}),
+};
+
+function AddResources(
+	Locale: SupportedLocale,
+	Bundles: Record<Namespace, unknown>,
+) {
+	for (const NS of NamespaceList) {
+		if (Bundles[NS]) {
+			i18n.addResourceBundle(Locale, NS, Bundles[NS], true, true);
+		}
+	}
+}
+
+const DetectedLocale = DetectLocale();
+
+// Always load English (fallback) first, then the detected locale.
+const EnglishBundle = await LocaleLoader.en();
 i18n.use(initReactI18next).init({
-	resources: {
-		en: {
-			common: enCommon,
-			home: enHome,
-			download: enDownload,
-			account: enAccount,
-			verify: enVerify,
-			header: enHeader,
-			footer: enFooter,
-			meta: enMeta,
-		},
-		bg: {
-			common: bgCommon,
-			home: bgHome,
-			download: bgDownload,
-			account: bgAccount,
-			verify: bgVerify,
-			header: bgHeader,
-			footer: bgFooter,
-			meta: bgMeta,
-		},
-		de: {
-			common: deCommon,
-			home: deHome,
-			download: deDownload,
-			account: deAccount,
-			verify: deVerify,
-			header: deHeader,
-			footer: deFooter,
-			meta: deMeta,
-		},
-		fr: {
-			common: frCommon,
-			home: frHome,
-			download: frDownload,
-			account: frAccount,
-			verify: frVerify,
-			header: frHeader,
-			footer: frFooter,
-			meta: frMeta,
-		},
-		es: {
-			common: esCommon,
-			home: esHome,
-			download: esDownload,
-			account: esAccount,
-			verify: esVerify,
-			header: esHeader,
-			footer: esFooter,
-			meta: esMeta,
-		},
-	},
-	lng: DetectLocale(),
+	resources: {},
+	lng: DetectedLocale,
 	fallbackLng: "en",
 	defaultNS: "common",
-	ns: [
-		"common",
-		"home",
-		"download",
-		"account",
-		"verify",
-		"header",
-		"footer",
-		"meta",
-	],
+	ns: [...NamespaceList],
 	interpolation: {
 		escapeValue: false,
 	},
@@ -153,5 +135,26 @@ i18n.use(initReactI18next).init({
 		useSuspense: false,
 	},
 });
+
+AddResources("en", EnglishBundle);
+
+if (DetectedLocale !== "en") {
+	const LocaleBundle = await LocaleLoader[DetectedLocale]();
+	AddResources(DetectedLocale, LocaleBundle);
+}
+
+/**
+ * Switch locale at runtime — loads the target locale bundle on demand.
+ */
+export const SwitchLocale = async (Locale: SupportedLocale) => {
+	if (!i18n.hasResourceBundle(Locale, "common")) {
+		const Bundle = await LocaleLoader[Locale]();
+		AddResources(Locale, Bundle);
+	}
+
+	await i18n.changeLanguage(Locale);
+
+	document.cookie = `LOCALE=${Locale};path=/;max-age=${60 * 60 * 24 * 365};SameSite=Lax`;
+};
 
 export default i18n;

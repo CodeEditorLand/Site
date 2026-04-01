@@ -3,6 +3,7 @@
 import {
 	LocaleLabel,
 	SupportedLocaleList,
+	SwitchLocale,
 	type SupportedLocale,
 } from "@/Library/I18n/Client.js";
 import { Globe } from "lucide-react";
@@ -16,9 +17,7 @@ export function LocaleSwitcher() {
 	function HandleChange(event: React.ChangeEvent<HTMLSelectElement>) {
 		const NewLocale = event.target.value as SupportedLocale;
 
-		document.cookie = `LOCALE=${NewLocale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
-
-		i18n.changeLanguage(NewLocale);
+		SwitchLocale(NewLocale);
 	}
 
 	return (

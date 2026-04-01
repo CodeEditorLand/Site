@@ -95,6 +95,17 @@ export default (await import("astro/config")).defineConfig({
 						CSS: {
 							csso: false,
 						},
+						JavaScript: {
+							terser: {
+								compress: {
+									passes: 2,
+									drop_console: !On,
+									dead_code: true,
+									unused: true,
+								},
+								mangle: !On,
+							},
+						},
 					}),
 				]
 			: []),
@@ -111,6 +122,10 @@ export default (await import("astro/config")).defineConfig({
 	},
 
 	vite: {
+		optimizeDeps: {
+			exclude: ["@auth0/auth0-react"],
+		},
+
 		define: {
 			__DEV__: JSON.stringify(On),
 			__INCREMENT__: JSON.stringify(__INCREMENT__),
@@ -205,6 +220,54 @@ export default (await import("astro/config")).defineConfig({
 						toplevel: true,
 					}
 				: {},
+
+			rollupOptions: {
+				output: {
+					experimentalMinChunkSize: 4_000,
+
+					manualChunks(Identifier: string) {
+						if (Identifier.includes("node_modules")) {
+							// React + Radix share the same chunk (Radix
+							// imports React internals, splitting them
+							// creates a circular dependency).
+							if (
+								Identifier.includes("react-dom") ||
+								Identifier.includes("react/") ||
+								Identifier.includes("scheduler") ||
+								Identifier.includes("@radix-ui")
+							) {
+								return "Vendor/React";
+							}
+
+							if (Identifier.includes("@auth0")) {
+								return "Vendor/Auth0";
+							}
+
+							if (Identifier.includes("lucide-react")) {
+								return "Vendor/Icon";
+							}
+
+							if (Identifier.includes("firebase")) {
+								return "Vendor/Firebase";
+							}
+
+							if (
+								Identifier.includes("i18next") ||
+								Identifier.includes("react-i18next")
+							) {
+								return "Vendor/I18n";
+							}
+
+							if (
+								Identifier.includes("recharts") ||
+								Identifier.includes("d3-")
+							) {
+								return "Vendor/Chart";
+							}
+						}
+					},
+				},
+			},
 		},
 
 		resolve: {

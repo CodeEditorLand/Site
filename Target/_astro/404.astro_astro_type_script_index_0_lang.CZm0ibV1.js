@@ -1,1 +1,0 @@
-import{_ as i}from"./preload-helper.CVfkMyKi.js";const t=document.getElementById("RouteRedirectNotice");t&&t.classList.remove("hidden");const a=(await i(async()=>{const{default:e}=await import("./Redirect.DpujdcKJ.js");return{default:e}},[])).default;await a();t&&t.classList.add("hidden");

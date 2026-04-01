@@ -1,1 +1,0 @@
-const e=()=>{const e=document.documentElement.scrollTop||document.body.scrollTop,t=document.documentElement.scrollHeight-document.documentElement.clientHeight;return t<=0?0:Math.min(1,Math.max(0,e/t))},l=t=>{t.setProperty("--ScrollProgress",String(e()))},r={UpdateScrollProgress:l};export{r as default};
