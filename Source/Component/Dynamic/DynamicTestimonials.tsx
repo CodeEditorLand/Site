@@ -51,6 +51,7 @@ export function DynamicTestimonials({ content, className }: Property) {
 	}, [testimonials]);
 
 	const RenderStars = (Rating: number = 5) => {
+		if (Rating <= 0) return null;
 		return (
 			<div role="img" aria-label={`Rating: ${Rating} out of 5 stars`}>
 				{Array.from({ length: 5 }).map((_, Index) => (
@@ -97,7 +98,11 @@ export function DynamicTestimonials({ content, className }: Property) {
 								{RenderStars(Testimonial.rating)}
 							</div>
 							<blockquote className="StaccatoBreath mb-6 flex-1">
-								<p className="text-lg">"{Testimonial.quote}"</p>
+								<p className="text-lg">
+									{Testimonial.rating > 0
+										? `\u201C${Testimonial.quote}\u201D`
+										: Testimonial.quote}
+								</p>
 							</blockquote>
 							<div className="flex items-center gap-4">
 								{Testimonial.avatar ? (
