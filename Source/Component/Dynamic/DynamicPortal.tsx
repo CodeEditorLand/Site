@@ -66,6 +66,7 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/Card";
+import { IconTooltip } from "../UI/IconTooltip.js";
 import { DynamicInput } from "./DynamicInput";
 import type PortalContent from "./Interface/Content/Page/Portal.js";
 import type TierContent from "./Interface/Content/Portal/Tier.js";
@@ -229,7 +230,7 @@ const IconLabelMap: Record<string, string> = {
  *   Storage/hardware  → slate    #64748b
  *   Build/code        → emerald  #10b981
  *   Git/VCS           → amber    #f59e0b
- *   Cloud/sync/deploy → blue     #3b82f6  (matches Cloud tier intentionally — these ARE cloud ops)
+ *   Cloud/sync/deploy → blue     #3b82f6
  *   Auth/provision    → violet   #7c3aed
  *   Audit/docs        → teal     #14b8a6
  *   Settings/config   → slate-4  #94a3b8
@@ -343,7 +344,9 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const HandleDomainSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
 		if (!OrganizationDomain.trim()) return;
-		window.location.href = `/Account/SignIn?login_hint=${encodeURIComponent(OrganizationDomain.trim())}`;
+		window.location.href = `/Account/SignIn?login_hint=${encodeURIComponent(
+			OrganizationDomain.trim(),
+		)}`;
 	};
 
 	return (
@@ -475,6 +478,8 @@ const PortalTierRow = ({
 		? TierIconRegistry[Content.Icon] || Shield
 		: Shield;
 
+	const TierIconLabel = IconLabelMap[Content.Icon ?? ""] ?? Content.Title;
+
 	useEffect(() => {
 		const Row = RowReference.current;
 		if (!Row) return;
@@ -521,11 +526,14 @@ const PortalTierRow = ({
 							<CardTitle className="text-xl">
 								{Content.Title}
 							</CardTitle>
+							{/* Tier header icon — tooltip shows tier identity label on hover */}
 							<div className="PortalTierIconWrapper">
-								<IconComponent
-									className="StaccatoIcon h-6 w-6"
-									aria-hidden="true"
-									style={{ color: Content.Color }}
+								<IconTooltip
+									Label={TierIconLabel}
+									Icon={IconComponent}
+									Color={Content.Color}
+									SizeClass="h-6 w-6"
+									ClassName="StaccatoIcon"
 								/>
 							</div>
 						</div>
@@ -744,33 +752,25 @@ const PortalTierRow = ({
 											<span
 												className="inline-flex items-center align-middle"
 												role="img"
-												aria-label={`${Feature.Heading} technology stack`}>
+												aria-label={`${
+													Feature.Heading
+												} technology stack`}>
 												{Feature.Icon.map(
 													(IconName, IconIndex) => {
+														// Derive label: SVG path → filename without extension;
+														// Lucide key → IconLabelMap lookup.
 														const IconLabel =
-															IconName.startsWith(
-																"/",
-															)
-																? (IconName.split(
-																		"/",
-																	)
+															IconName.startsWith("/")
+																? (IconName.split("/")
 																		.pop()
-																		?.replace(
-																			".svg",
-																			"",
-																		) ?? "")
-																: (IconLabelMap[
-																		IconName
-																	] ??
-																	IconName);
+																		?.replace(".svg", "") ??
+																	"")
+																: (IconLabelMap[IconName] ??
+																		IconName);
 
-														// Semantic color: SVG brand images keep natural color (no tint);
-														// Lucide icons get their domain color from IconColorMap,
-														// falling back to a neutral slate if not mapped.
 														const LucideColor =
-															IconColorMap[
-																IconName
-															] ?? "#94a3b8";
+															IconColorMap[IconName] ??
+															"#94a3b8";
 
 														return (
 															<span
@@ -779,43 +779,30 @@ const PortalTierRow = ({
 																{"\u2001"}
 																{"+"}
 																{"\u2001"}
-																{IconName.startsWith(
-																	"/",
-																) ? (
-																	<img
-																		src={
-																			IconName
-																		}
-																		alt={
-																			IconLabel
-																		}
-																		title={
-																			IconLabel
-																		}
-																		width="16"
-																		height="16"
-																		className="h-4 w-4"
-																	/>
-																) : (
-																	(() => {
-																		const FeatureIcon =
-																			TierIconRegistry[
-																				IconName
-																			];
-																		return FeatureIcon ? (
-																			<FeatureIcon
-																				className="h-4 w-4"
-																				aria-label={
-																					IconLabel
-																				}
-																				role="img"
-																				style={{
-																					color: LucideColor,
-																				}}
-																			/>
-																		) : null;
-																	})()
-																)}
+																{IconName.startsWith("/") ? (
+																	<IconTooltip Label={IconLabel}>
+																		<img
+																			src={IconName}
+																			alt={IconLabel}
+																			title={IconLabel}
+																			width="16"
+																			height="16"
+																			className="h-4 w-4"
+																		/>
+																	</IconTooltip>
+																) : (() => {
+																	const FeatureIcon =
+																		TierIconRegistry[IconName];
+																	return FeatureIcon ? (
+																		<IconTooltip
+																			Label={IconLabel}
+																			Icon={FeatureIcon}
+																			Color={LucideColor}
+																			SizeClass="h-4 w-4"
+																		/>
+																	) : null;
+																})()
+																}
 															</span>
 														);
 													},
@@ -846,14 +833,11 @@ const PortalTierRow = ({
 										{"\u2001"}
 										{"+"}
 										{"\u2001"}
-										<Shield
-											className="h-3 w-3 shrink-0"
-											aria-hidden="true"
-											style={{
-												color:
-													IconColorMap["Shield"] ??
-													"#6366f1",
-											}}
+										<IconTooltip
+											Label="Security"
+											Icon={Shield}
+											Color={IconColorMap["Shield"] ?? "#6366f1"}
+											SizeClass="h-3 w-3 shrink-0"
 										/>
 									</div>
 								),
@@ -888,10 +872,12 @@ const PortalTierRow = ({
 					{"\u2001"}
 					{"+"}
 					{"\u2001"}
-					<RefreshCw
-						className="StaccatoIcon h-3.5 w-3.5"
-						aria-hidden="true"
-						style={{ color: IconColorMap["RefreshCw"] ?? "#3b82f6" }}
+					<IconTooltip
+						Label="Sync"
+						Icon={RefreshCw}
+						Color={IconColorMap["RefreshCw"] ?? "#3b82f6"}
+						SizeClass="h-3.5 w-3.5"
+						ClassName="StaccatoIcon"
 					/>
 				</div>
 			</div>
@@ -914,10 +900,15 @@ const PortalTierRow = ({
  * TierIconRegistry covers 59 icons spanning the full CEL technology stack.
  * Feature.Icon[] arrays accept both Lucide registry keys and /Image/*.svg paths.
  *
- * Icon color delineation (IconColorMap):
- *   Each Lucide icon is colored by its function domain, not by its parent tier.
- *   12 semantic groups × distinct color — all visually separated from tier border colors.
- *   SVG brand images (/Image/*.svg) render at natural color with no tint applied.
+ * Icon accessibility (IconTooltip):
+ *   Every icon in the tier header, feature stack, capability list, and
+ *   settings footer is wrapped in <IconTooltip> — three layers:
+ *     1. aria-label on the trigger <span>  — screen reader announcement
+ *     2. title on the trigger <span>       — native browser tooltip fallback
+ *     3. Radix TooltipContent              — styled hover tooltip (sighted users)
+ *   DocHref prop is reserved for future doc-link integration.
+ *   Button-chrome icons (Lock, Wifi, Building2) that follow visible button
+ *   text are exempted and keep aria-hidden="true" — they are decorative there.
  */
 const DynamicPortal = ({
 	Content,
@@ -1007,5 +998,4 @@ const DynamicPortal = ({
 };
 
 export { DynamicPortal };
-
 export default DynamicPortal;
