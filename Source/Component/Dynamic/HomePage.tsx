@@ -16,7 +16,7 @@ import type Property from "./Interface/Property/Page/Home.js";
  * Assembles Header, Hero, Features, Pricing, Testimonials, Download, Footer
  * Content driven by translations (useTranslation) or explicit props
  */
-export function HomePage({ content, className }: Property) {
+const HomePage = ({ content, className }: Property) => {
 	const { t: T } = useTranslation(["home", "common", "download", "footer"]);
 
 	const ResolvedContent: Interface = content || {
@@ -622,4 +622,8 @@ export function HomePage({ content, className }: Property) {
 			</div>
 		</div>
 	);
-}
+};
+
+export { HomePage };
+
+export default HomePage;

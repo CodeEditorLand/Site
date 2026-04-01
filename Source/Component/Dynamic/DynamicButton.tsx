@@ -44,11 +44,11 @@ const ButtonIconRegistry: Record<string, LucideIcon> = {
  * Icons render immediately via direct imports (no dynamic import flash).
  * Loading state uses StaccatoSpinner for breathing opacity.
  */
-export function DynamicButton({
+const DynamicButton = ({
 	content,
 	onAction,
 	isLoading = false,
-}: Property) {
+}: Property) => {
 	const {
 		text,
 		icon,
@@ -100,4 +100,8 @@ export function DynamicButton({
 			) : null}
 		</Button>
 	);
-}
+};
+
+export { DynamicButton };
+
+export default DynamicButton;

@@ -9,11 +9,11 @@ import type Property from "./Interface/Property/Information/Verification.js";
  * Dynamic VerificationInfo component for displaying binary verification info
  * Shows SHA-256 checksums and PGP signatures with copy functionality
  */
-export function DynamicVerificationInfo({
+const DynamicVerificationInfo = ({
 	content,
 	onVerify,
 	className,
-}: Property) {
+}: Property) => {
 	const { t: T } = useTranslation("download");
 	const { title, description, downloadVerification, integrityVerification } =
 		content;
@@ -199,4 +199,8 @@ export function DynamicVerificationInfo({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicVerificationInfo };
+
+export default DynamicVerificationInfo;

@@ -12,6 +12,7 @@
 	"actions": {
 		"signIn": "Iniciar sesion",
 		"editorPortal": "Portal del editor",
-		"getStarted": "Obtener Land"
+		"getStarted": "Obtener Land",
+		"logout": "[ES] Logout"
 	}
 }

@@ -12,6 +12,7 @@
 	"actions": {
 		"signIn": "Anmelden",
 		"editorPortal": "Editor-Portal",
-		"getStarted": "Land holen"
+		"getStarted": "Land holen",
+		"logout": "[DE] Logout"
 	}
 }

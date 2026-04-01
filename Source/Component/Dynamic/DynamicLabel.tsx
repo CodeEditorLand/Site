@@ -5,7 +5,7 @@ import type Property from "./Interface/Property/Label.js";
  * Dynamic Label component that accepts content schema
  * Wraps the base Label with prop-based configuration
  */
-export function DynamicLabel({ content, htmlFor }: Property) {
+const DynamicLabel = ({ content, htmlFor }: Property) => {
 	const {
 		text,
 		required = false,
@@ -24,4 +24,6 @@ export function DynamicLabel({ content, htmlFor }: Property) {
 			{text}
 		</Label>
 	);
-}
+};
+
+export default DynamicLabel;

@@ -179,6 +179,34 @@
 				"backup": "Copia de seguridad local cifrada"
 			}
 		},
+		"enterprise": {
+			"title": "Cuenta Empresarial",
+			"subtitle": "Inicio de sesion unico OIDC / SAML 2.0 a traves de Okta, Azure AD o cualquier proveedor de identidad compatible. Mapeo de grupo a rol, registros de auditoria y gestion de certificados CA de la organizacion.",
+			"ariaLabel": "SSO Empresarial",
+			"domainLabel": "Correo corporativo o dominio",
+			"domainPlaceholder": "nombre@empresa.es",
+			"continueSSO": "Continuar con SSO",
+			"continueOkta": "Continuar con Okta",
+			"continueAzure": "Continuar con Azure AD",
+			"continueSAML": "Continuar con SAML",
+			"note": "OIDC Discovery · SAML 2.0 · Aprovisionamiento SCIM",
+			"feature": {
+				"okta": "Integracion SSO de Okta",
+				"azure": "Soporte Azure AD / Entra ID",
+				"saml": "SAML 2.0 para IdPs empresariales heredados",
+				"scim": "Aprovisionamiento de usuarios SCIM",
+				"group": "Mapeo de grupo a rol",
+				"audit": "Registro de auditoria completo"
+			},
+			"capability": {
+				"oidc": "OIDC Discovery + PKCE",
+				"jit": "Aprovisionamiento justo a tiempo",
+				"mfa": "Politicas MFA obligatorias",
+				"session": "Gestion de sesion + revocacion",
+				"ca": "Certificados CA de la organizacion",
+				"compliance": "Cumplimiento SOC 2 / RGPD"
+			}
+		},
 		"labels": {
 			"included": "Incluido",
 			"capabilities": "Capacidades",
@@ -186,5 +214,12 @@
 			"settingsManaged": "Configuraciones gestionadas",
 			"allTiers": "Incluido en todos los niveles"
 		}
-	}
+	},
+	"loading": "[ES] Loading...",
+	"error": "[ES] Authentication error",
+	"tryAgain": "[ES] Try again",
+	"dashboard": "[ES] Go to Dashboard",
+	"logout": "[ES] Logout",
+	"emailNotVerified": "[ES] Email not verified. Check your inbox.",
+	"redirecting": "[ES] Redirecting to sign in..."
 }

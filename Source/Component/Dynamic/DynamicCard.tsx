@@ -14,7 +14,7 @@ import type SimpleProperty from "./Interface/Property/Card/Simple.js";
  * Applies StaccatoCard + StaccatoBorderShimmer + StaccatoShadowLift
  * for organic hover lift and border breathing.
  */
-export function DynamicCard({ sections, className, onClick }: Property) {
+const DynamicCard = ({ sections, className, onClick }: Property) => {
 	const {
 		header: HeaderSection,
 		body: BodySection,
@@ -59,15 +59,19 @@ export function DynamicCard({ sections, className, onClick }: Property) {
 			{FooterSection && <CardFooter>{FooterSection.content}</CardFooter>}
 		</Card>
 	);
-}
+};
 
-export function SimpleCard({
+export { DynamicCard };
+
+export default DynamicCard;
+
+export const SimpleCard = ({
 	title,
 	description,
 	children,
 	className,
 	onClick,
-}: SimpleProperty) {
+}: SimpleProperty) => {
 	return (
 		<Card
 			className={`StaccatoCard StaccatoBorderShimmer ${className || ""}`}
@@ -84,4 +88,4 @@ export function SimpleCard({
 			<CardContent>{children}</CardContent>
 		</Card>
 	);
-}
+};

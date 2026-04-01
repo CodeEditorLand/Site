@@ -9,16 +9,16 @@ import {
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function LocaleSwitcher() {
+const LocaleSwitcher = () => {
 	const { i18n } = useTranslation();
 
 	const CurrentLocale = (i18n.language || "en") as SupportedLocale;
 
-	function HandleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-		const NewLocale = event.target.value as SupportedLocale;
+	const HandleChange = (Event: React.ChangeEvent<HTMLSelectElement>) => {
+		const NewLocale = Event.target.value as SupportedLocale;
 
 		SwitchLocale(NewLocale);
-	}
+	};
 
 	return (
 		<div className="relative inline-flex items-center">
@@ -45,4 +45,8 @@ export function LocaleSwitcher() {
 			/>
 		</div>
 	);
-}
+};
+
+export { LocaleSwitcher };
+
+export default LocaleSwitcher;

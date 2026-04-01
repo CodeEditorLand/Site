@@ -14,7 +14,7 @@ const SocialIconRegistry: Record<string, LucideIcon> = {
  * Dynamic Footer component that accepts brand, links, and social schemas
  * Renders multi-column footer with bottom bar
  */
-export function DynamicFooter({ content, className }: Property) {
+const DynamicFooter = ({ content, className }: Property) => {
 	const { brand, social, columns, bottomBar } = content;
 	const CurrentYear = new Date().getFullYear();
 
@@ -113,4 +113,8 @@ export function DynamicFooter({ content, className }: Property) {
 			</div>
 		</footer>
 	);
-}
+};
+
+export { DynamicFooter };
+
+export default DynamicFooter;

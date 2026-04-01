@@ -12,6 +12,7 @@
 	"actions": {
 		"signIn": "Sign In",
 		"editorPortal": "Editor Portal",
-		"getStarted": "Get Land"
+		"getStarted": "Get Land",
+		"logout": "Logout"
 	}
 }

@@ -54,10 +54,8 @@ const TierIconRegistry: Record<string, LucideIcon> = {
  */
 const EnterpriseSSOForm = ({
 	Content,
-	OnEnterprise,
 }: {
 	Content: TierContent;
-	OnEnterprise?: () => void;
 }) => {
 	const [OrganizationDomain, SetOrganizationDomain] = useState("");
 	const { t: T } = useTranslation("account");
@@ -393,7 +391,6 @@ const PortalTierRow = ({
 						{IsEnterprise && (
 							<EnterpriseSSOForm
 								Content={Content}
-								OnEnterprise={OnAction}
 							/>
 						)}
 					</CardContent>
@@ -515,7 +512,7 @@ const PortalTierRow = ({
  * Layout: Login box (left, white bg) | Feature description (right)
  * Staccato noise integration on all interactive elements.
  */
-export function DynamicPortal({
+const DynamicPortal = ({
 	Content,
 	OnSignIn,
 	OnOAuth,
@@ -527,7 +524,7 @@ export function DynamicPortal({
 	OnOAuth?: (Provider: string) => void;
 	OnConnect?: () => void;
 	OnEnterprise?: (Provider: string) => void;
-}) {
+}) => {
 	const SectionReference = useRef<HTMLElement>(null);
 
 	// Start Staccato noise engine
@@ -605,4 +602,8 @@ export function DynamicPortal({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicPortal };
+
+export default DynamicPortal;

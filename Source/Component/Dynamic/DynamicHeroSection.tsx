@@ -10,7 +10,7 @@ import type Property from "./Interface/Property/Hero.js";
  * The entire hero can act as a button (clickable CTA surface).
  * Floating cards are noise-seeded for organic staccato movement.
  */
-export function DynamicHeroSection({ content, className }: Property) {
+const DynamicHeroSection = ({ content, className }: Property) => {
 	const SceneReference = useRef<HTMLDivElement>(null);
 	const SectionReference = useRef<HTMLElement>(null);
 	const {
@@ -255,4 +255,8 @@ export function DynamicHeroSection({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicHeroSection };
+
+export default DynamicHeroSection;

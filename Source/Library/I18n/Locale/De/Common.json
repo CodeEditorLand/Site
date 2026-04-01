@@ -85,7 +85,16 @@
 		"comingSoonText": "Wir bereiten Artikel ueber die Architektur, den Entwicklungsprozess und die Roadmap fuer Code Editor Land vor.\nSchauen Sie bald wieder vorbei fuer Updates.",
 		"joinDiscussions": "Der Community beitreten",
 		"followGitHub": "Auf GitHub folgen",
-		"reportIssue": "Problem melden"
+		"reportIssue": "Problem melden",
+		"followNote": "[DE] Follow progress on GitHub or check back here for published articles.",
+		"topic": {
+			"architecture": "[DE] Deep dive into the Mountain/Cocoon/Wind/Sky/Air/Echo element architecture and how they replace Electron",
+			"effectTS": "[DE] How Effect-TS powers type-safe UI services with structured concurrency and error handling",
+			"grpc": "[DE] gRPC IPC protocol design: bridging Rust and TypeScript at native speed",
+			"extensions": "[DE] VS Code extension compatibility: running existing extensions without modification via Cocoon",
+			"ngi": "[DE] Building with NGI0 Commons Fund: open-source sustainability and the European open internet initiative"
+		},
+		"upcomingTopicsHeading": "[DE] Upcoming Topics"
 	},
 	"contributing": {
 		"pageTitle": "Beitragen",
@@ -208,10 +217,18 @@
 		"breadcrumbLabel": "Dashboard",
 		"account": {
 			"heading": "Konto",
+			"nameLabel": "Name",
 			"emailLabel": "E-Mail",
 			"planLabel": "Plan",
 			"planFree": "Kostenlos",
-			"memberSinceLabel": "Mitglied seit"
+			"planEnterprise": "Enterprise",
+			"providerLabel": "Anbieter",
+			"organizationLabel": "Organisation",
+			"memberSinceLabel": "Mitglied seit",
+			"notSignedIn": "Melden Sie sich an, um Ihre Kontodaten zu sehen.",
+			"signInButton": "Anmelden",
+			"emailNotVerified": "E-Mail nicht verifiziert. Pruefen Sie Ihren Posteingang.",
+			"enterpriseSSO": "Enterprise SSO aktiv"
 		},
 		"downloads": {
 			"heading": "Downloads",
@@ -240,6 +257,48 @@
 				"description": "Aktualisieren Sie Ihr Profil und verwalten Sie Ihr Konto.",
 				"manageButton": "Verwalten"
 			}
+		},
+		"telemetry": {
+			"heading": "[DE] Telemetry Status",
+			"production": {
+				"title": "[DE] Production Build Telemetry",
+				"description": "[DE] Telemetry is disabled by default. The Telemetry Cargo feature is not in default features. All tracing compiles to zero-cost no-ops."
+			},
+			"otel": {
+				"title": "[DE] OpenTelemetry (Opt-In)",
+				"description": "[DE] Enable with cargo build --features Telemetry. Local-only OTEL tracing, metrics, and distributed spans. No external transmission."
+			},
+			"effect": {
+				"title": "[DE] Effect-TS Local Telemetry",
+				"description": "[DE] Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing. All data stays local."
+			}
+		},
+		"buildLog": {
+			"heading": "[DE] Build Configuration",
+			"subtitle": "[DE] Active build variant and deployment mode. Available via Local-First Air Daemon connection.",
+			"profile": {
+				"heading": "[DE] Active Profile"
+			},
+			"deployment": {
+				"heading": "[DE] Deployment Mode"
+			},
+			"matrix": {
+				"heading": "[DE] Test Matrix"
+			}
+		},
+		"portal": {
+			"heading": "[DE] Authentication Tiers",
+			"subtitle": "[DE] Your current authentication method and available tiers."
+		},
+		"editor": {
+			"heading": "[DE] Editor Connection",
+			"subtitle": "[DE] Connect the website to your running Land editor instance.",
+			"status": "[DE] Not Connected",
+			"description": "[DE] The Air Daemon connects this dashboard to a running Land editor via WebSocket. Launch Land to enable real-time build logs, telemetry, and configuration management.",
+			"connect": "[DE] Connect via Portal"
+		},
+		"partners": {
+			"heading": "[DE] Partners & Attribution"
 		}
 	}
 }

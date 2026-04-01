@@ -179,6 +179,34 @@
 				"backup": "Verschluesselte lokale Sicherung"
 			}
 		},
+		"enterprise": {
+			"title": "Enterprise-Konto",
+			"subtitle": "OIDC / SAML 2.0 Single Sign-On ueber Okta, Azure AD oder jeden kompatiblen Identitaetsanbieter. Gruppen-zu-Rollen-Zuordnung, Audit-Protokolle und Verwaltung von Organisations-CA-Zertifikaten.",
+			"ariaLabel": "Enterprise SSO",
+			"domainLabel": "Geschaeftliche E-Mail oder Domain",
+			"domainPlaceholder": "name@unternehmen.de",
+			"continueSSO": "Weiter mit SSO",
+			"continueOkta": "Weiter mit Okta",
+			"continueAzure": "Weiter mit Azure AD",
+			"continueSAML": "Weiter mit SAML",
+			"note": "OIDC Discovery · SAML 2.0 · SCIM-Bereitstellung",
+			"feature": {
+				"okta": "Okta SSO-Integration",
+				"azure": "Azure AD / Entra ID-Unterstuetzung",
+				"saml": "SAML 2.0 fuer aeltere Enterprise-IdPs",
+				"scim": "SCIM-Benutzerbereitstellung",
+				"group": "Gruppen-zu-Rollen-Zuordnung",
+				"audit": "Vollstaendige Audit-Protokollverfolgung"
+			},
+			"capability": {
+				"oidc": "OIDC Discovery + PKCE",
+				"jit": "Just-in-Time-Bereitstellung",
+				"mfa": "Erzwungene MFA-Richtlinien",
+				"session": "Sitzungsverwaltung + Widerruf",
+				"ca": "Organisations-CA-Zertifikate",
+				"compliance": "SOC 2 / DSGVO-Konformitaet"
+			}
+		},
 		"labels": {
 			"included": "Enthalten",
 			"capabilities": "Faehigkeiten",
@@ -186,5 +214,12 @@
 			"settingsManaged": "Verwaltete Einstellungen",
 			"allTiers": "In allen Stufen enthalten"
 		}
-	}
+	},
+	"loading": "[DE] Loading...",
+	"error": "[DE] Authentication error",
+	"tryAgain": "[DE] Try again",
+	"dashboard": "[DE] Go to Dashboard",
+	"logout": "[DE] Logout",
+	"emailNotVerified": "[DE] Email not verified. Check your inbox.",
+	"redirecting": "[DE] Redirecting to sign in..."
 }

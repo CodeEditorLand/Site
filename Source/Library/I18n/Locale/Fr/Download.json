@@ -48,5 +48,9 @@
 		"downloadFor": "Telecharger pour {{platform}}",
 		"copiedToClipboard": "{{label}} copie dans le presse-papiers !",
 		"failedToCopy": "Echec de la copie de {{label}}"
+	},
+	"transparency": {
+		"title": "[FR] Build Transparency",
+		"subtitle": "[FR] Full disclosure on telemetry, build variants, and deployment. Verify everything in source."
 	}
 }

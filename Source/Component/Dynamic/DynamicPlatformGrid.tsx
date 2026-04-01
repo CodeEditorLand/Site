@@ -12,7 +12,7 @@ import type CardSection from "./Interface/Section/Card.js";
  * Supports fetching real download data from the Workers API
  * Includes loading and error states
  */
-export function DynamicPlatformGrid({ content, className }: Property) {
+const DynamicPlatformGrid = ({ content, className }: Property) => {
 	const { t: T } = useTranslation("download");
 	const {
 		title,
@@ -380,4 +380,8 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicPlatformGrid };
+
+export default DynamicPlatformGrid;

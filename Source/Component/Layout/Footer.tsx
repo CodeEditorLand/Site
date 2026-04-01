@@ -21,7 +21,7 @@ interface FooterProps {
 	content?: FooterContent;
 }
 
-export function Footer({ content }: FooterProps) {
+const Footer = ({ content }: FooterProps) => {
 	const { t: T } = useTranslation("footer");
 
 	const FooterData = content || {
@@ -238,4 +238,8 @@ export function Footer({ content }: FooterProps) {
 			</div>
 		</footer>
 	);
-}
+};
+
+export { Footer };
+
+export default Footer;

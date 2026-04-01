@@ -52,7 +52,7 @@ const VariantStatusColor: Record<string, string> = {
 	Development: "bg-orange-500",
 };
 
-export function DynamicTransparency({ content, className }: Property) {
+const DynamicTransparency = ({ content, className }: Property) => {
 	const {
 		Title,
 		Subtitle,
@@ -314,4 +314,8 @@ export function DynamicTransparency({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicTransparency };
+
+export default DynamicTransparency;

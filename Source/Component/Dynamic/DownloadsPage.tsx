@@ -15,7 +15,7 @@ import type Property from "./Interface/Property/Page/Download.js";
  * Assembles PlatformGrid, SystemRequirements, VerificationInfo, PreviousReleases
  * Content driven by translations (useTranslation) or explicit props
  */
-export function DownloadsPage({ content, className }: Property) {
+const DownloadsPage = ({ content, className }: Property) => {
 	const { t: T } = useTranslation(["download", "common"]);
 
 	const ResolvedContent: Interface = content || {
@@ -160,4 +160,8 @@ export function DownloadsPage({ content, className }: Property) {
 			</div>
 		</div>
 	);
-}
+};
+
+export { DownloadsPage };
+
+export default DownloadsPage;

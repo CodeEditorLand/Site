@@ -11,7 +11,7 @@ import type Property from "./Interface/Property/Pricing.js";
  * Popular badge pulses with StaccatoRhythm. Price text breathes.
  * Checkmarks use StaccatoCheckmark for organic emphasis.
  */
-export function DynamicPricing({ content, className }: Property) {
+const DynamicPricing = ({ content, className }: Property) => {
 	const { t: T } = useTranslation("home");
 	const GridReference = useRef<HTMLDivElement>(null);
 	const {
@@ -211,4 +211,8 @@ export function DynamicPricing({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicPricing };
+
+export default DynamicPricing;

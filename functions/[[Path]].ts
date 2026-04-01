@@ -11,6 +11,8 @@
  *   3. 404 Page Script — fallback when SW not installed
  */
 
+// SYNC: These must match Source/Function/Route/Map.ts CanonicalPath + SemanticAlias.
+// CF Workers cannot import from the build system, so duplication is required.
 const CanonicalPath = new Set([
 	"/Download",
 	"/Doc",

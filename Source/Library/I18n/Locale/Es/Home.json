@@ -69,7 +69,8 @@
 			"savings": "(Ahorre hasta un 20%)",
 			"popular": "Mas popular",
 			"perMonth": "/mes",
-			"perYear": "/ano"
+			"perYear": "/ano",
+			"free": "[ES] Free"
 		},
 		"tiers": {
 			"free": {
@@ -104,5 +105,74 @@
 		"badge": "Testimonios",
 		"attribution": "Comentarios de la comunidad",
 		"attributionNote": "Miembro representativo de la comunidad"
+	},
+	"roadmap": {
+		"title": "[ES] Roadmap & Expectancy",
+		"subtitle": "[ES] Funded by the NGI0 Commons Fund. Open source, free forever, built in public.",
+		"tiers": {
+			"current": {
+				"name": "[ES] Current Phase",
+				"description": "[ES] Foundation and core editor scaffold. Active development.",
+				"features": {
+					"1": "[ES] Mountain: Rust/Tauri native backend",
+					"2": "[ES] Cocoon: VS Code extension host via Effect-TS",
+					"3": "[ES] Wind: Workbench re-implementation",
+					"4": "[ES] Sky: Editor interface rendering",
+					"5": "[ES] Air: Update daemon and crypto signing",
+					"6": "[ES] Echo: Work-stealing task scheduler"
+				},
+				"button": "[ES] View on GitHub"
+			},
+			"next": {
+				"name": "[ES] Next Milestone",
+				"description": "[ES] Extension ecosystem and platform stability.",
+				"features": {
+					"1": "[ES] High-fidelity VS Code extension compatibility",
+					"2": "[ES] Cross-platform installer and auto-update",
+					"3": "[ES] gRPC IPC protocol finalization",
+					"4": "[ES] Settings sync and cloud-optional portal"
+				},
+				"button": "[ES] Track Progress"
+			},
+			"future": {
+				"name": "[ES] Long-Term Vision",
+				"description": "[ES] Full-featured editor replacing Electron-based tools.",
+				"features": {
+					"1": "[ES] Native mobile editing (iOS, Android)",
+					"2": "[ES] Collaborative real-time editing",
+					"3": "[ES] AI-assisted development tooling",
+					"4": "[ES] Plugin marketplace and ecosystem"
+				},
+				"button": "[ES] Learn More"
+			}
+		}
+	},
+	"architecture": {
+		"title": "[ES] Architecture",
+		"subtitle": "[ES] Land replaces VS Code's Electron stack with a modular, high-performance architecture. Each element is a standalone repository.",
+		"mountain": {
+			"description": "[ES] Manages Window, File System, and Process lifecycle. The native Rust/Tauri backend that replaces Electron's main process.",
+			"subtitle": "[ES] Rust/Tauri native backend"
+		},
+		"cocoon": {
+			"description": "[ES] Runs VS Code extensions via Effect-TS with high-fidelity API compatibility. No changes needed to existing extensions.",
+			"subtitle": "[ES] TypeScript extension host"
+		},
+		"wind": {
+			"description": "[ES] Re-implementation of the VS Code Workbench. Provides the editor shell, panels, sidebars, and activity bar.",
+			"subtitle": "[ES] TypeScript UI service"
+		},
+		"sky": {
+			"description": "[ES] Renders the editor interface using Astro components. Handles themes, layouts, and the visual presentation layer.",
+			"subtitle": "[ES] Astro UI component"
+		},
+		"air": {
+			"description": "[ES] Background daemon for automatic updates, downloads, and cryptographic signing. Keeps Land up to date silently.",
+			"subtitle": "[ES] Rust background daemon"
+		},
+		"echo": {
+			"description": "[ES] High-performance work-stealing executor. Schedules and distributes tasks across cores for maximum throughput.",
+			"subtitle": "[ES] Rust task scheduler"
+		}
 	}
 }

@@ -9,7 +9,7 @@ import type Property from "./Interface/Property/Requirement/System.js";
  * Dynamic SystemRequirements component for displaying platform requirements
  * Shows minimum and recommended specs in Card format
  */
-export function DynamicSystemRequirements({ content, className }: Property) {
+const DynamicSystemRequirements = ({ content, className }: Property) => {
 	const { t: T } = useTranslation("download");
 	const { title, description, requirements } = content;
 
@@ -129,4 +129,8 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicSystemRequirements };
+
+export default DynamicSystemRequirements;

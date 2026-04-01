@@ -17,7 +17,7 @@ import type Property from "./Interface/Property/SignUp.js";
  * Dynamic SignUp component that accepts registration form schema
  * Renders email, password, confirm password, terms checkbox, social OAuth
  */
-export function DynamicSignUp({
+const DynamicSignUp = ({
 	content,
 	onSubmit,
 	onOAuth,
@@ -25,7 +25,7 @@ export function DynamicSignUp({
 	className,
 	isLoading = false,
 	errorMessage,
-}: Property) {
+}: Property) => {
 	const {
 		title,
 		description,
@@ -209,4 +209,8 @@ export function DynamicSignUp({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicSignUp };
+
+export default DynamicSignUp;

@@ -7,11 +7,11 @@ import type Property from "./Interface/Property/Page/Verify.js";
 
 const Authentication = new AuthAPIClass();
 
-function NavigateToPath(Path: string): void {
+const NavigateToPath = (Path: string): void => {
 	window.location.href = Path;
-}
+};
 
-export function VerifyPage({
+const VerifyPage = ({
 	content,
 	route,
 	token,
@@ -20,7 +20,7 @@ export function VerifyPage({
 	onVerify,
 	onResend,
 	onNavigate,
-}: Property) {
+}: Property) => {
 	const { verification } = content;
 	const Navigate = onNavigate || NavigateToPath;
 	const [UserEmail, SetUserEmail] = useState<string>("");
@@ -181,4 +181,9 @@ export function VerifyPage({
 			</div>
 		</div>
 	);
-}
+};
+
+export { VerifyPage };
+
+
+export default VerifyPage;

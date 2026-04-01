@@ -179,6 +179,34 @@
 				"backup": "Encrypted local backup"
 			}
 		},
+		"enterprise": {
+			"title": "Enterprise Account",
+			"subtitle": "OIDC / SAML 2.0 single sign-on through Okta, Azure AD, or any compliant identity provider. Group-to-role mapping, audit logs, and organization CA certificate management.",
+			"ariaLabel": "Enterprise SSO",
+			"domainLabel": "Work Email or Domain",
+			"domainPlaceholder": "name@company.com",
+			"continueSSO": "Continue with SSO",
+			"continueOkta": "Continue with Okta",
+			"continueAzure": "Continue with Azure AD",
+			"continueSAML": "Continue with SAML",
+			"note": "OIDC Discovery · SAML 2.0 · SCIM provisioning",
+			"feature": {
+				"okta": "Okta SSO integration",
+				"azure": "Azure AD / Entra ID support",
+				"saml": "SAML 2.0 for legacy enterprise IdPs",
+				"scim": "SCIM user provisioning",
+				"group": "Group-to-role mapping",
+				"audit": "Full audit log trail"
+			},
+			"capability": {
+				"oidc": "OIDC Discovery + PKCE",
+				"jit": "Just-in-time provisioning",
+				"mfa": "Enforced MFA policies",
+				"session": "Session management + revocation",
+				"ca": "Organization CA certificates",
+				"compliance": "SOC 2 / GDPR compliance"
+			}
+		},
 		"labels": {
 			"included": "Included",
 			"capabilities": "Capabilities",
@@ -186,5 +214,12 @@
 			"settingsManaged": "Settings Managed",
 			"allTiers": "Included in all tiers"
 		}
-	}
+	},
+	"loading": "Loading...",
+	"error": "Authentication error",
+	"tryAgain": "Try again",
+	"dashboard": "Go to Dashboard",
+	"logout": "Logout",
+	"emailNotVerified": "Email not verified. Check your inbox.",
+	"redirecting": "Redirecting to sign in..."
 }

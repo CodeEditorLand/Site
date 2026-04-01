@@ -263,7 +263,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				)
 				.replace(
 					/__INCREMENT__/g,
-					JSON.stringify(`Route-${Date.now()}`),
+					JSON.stringify(String(Date.now())),
 				)
 				.replace(/__DEV__/g, "false");
 

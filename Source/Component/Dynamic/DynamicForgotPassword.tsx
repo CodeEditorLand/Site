@@ -15,7 +15,7 @@ import type Property from "./Interface/Property/Password/Forgot.js";
  * Dynamic ForgotPassword component for password reset request
  * Renders email form, success state, and resend functionality
  */
-export function DynamicForgotPassword({
+const DynamicForgotPassword = ({
 	content,
 	onSubmit,
 	onResend,
@@ -23,7 +23,7 @@ export function DynamicForgotPassword({
 	className,
 	isLoading = false,
 	errorMessage,
-}: Property) {
+}: Property) => {
 	const {
 		title,
 		description,
@@ -160,4 +160,8 @@ export function DynamicForgotPassword({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicForgotPassword };
+
+export default DynamicForgotPassword;

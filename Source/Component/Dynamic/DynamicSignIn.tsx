@@ -16,7 +16,7 @@ import type Property from "./Interface/Property/SignIn.js";
  * Dynamic SignIn component that accepts form schema
  * Renders email/password form with optional OAuth and footer links
  */
-export function DynamicSignIn({
+const DynamicSignIn = ({
 	content,
 	onSubmit,
 	onOAuth,
@@ -24,7 +24,7 @@ export function DynamicSignIn({
 	className,
 	isLoading = false,
 	errorMessage,
-}: Property) {
+}: Property) => {
 	const {
 		title,
 		description,
@@ -182,4 +182,8 @@ export function DynamicSignIn({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicSignIn };
+
+export default DynamicSignIn;

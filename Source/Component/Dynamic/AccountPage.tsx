@@ -11,7 +11,7 @@ import type Property from "./Interface/Property/Page/Account.js";
 
 const Authentication = new AuthAPIClass();
 
-function SetSessionToken(Token: string): void {
+const SetSessionToken = (Token: string): void => {
 	try {
 		document.cookie = `session=${Token}; path=/; max-age=${7 * 24 * 60 * 60}; SameSite=Strict`;
 	} catch {
@@ -20,7 +20,7 @@ function SetSessionToken(Token: string): void {
 	localStorage.setItem("session_token", Token);
 }
 
-function SetCurrentUser(CurrentUser: unknown): void {
+const SetCurrentUser = (CurrentUser: unknown): void => {
 	try {
 		localStorage.setItem("current_user", JSON.stringify(CurrentUser));
 	} catch {
@@ -28,11 +28,11 @@ function SetCurrentUser(CurrentUser: unknown): void {
 	}
 }
 
-function NavigateToPath(Path: string): void {
+const NavigateToPath = (Path: string): void => {
 	window.location.href = Path;
-}
+};
 
-export function AccountPage({
+const AccountPage = ({
 	content,
 	route,
 	resetToken,
@@ -42,7 +42,7 @@ export function AccountPage({
 	onForgotPassword,
 	onResetPassword,
 	onNavigate,
-}: Property) {
+}: Property) => {
 	const {
 		signIn: SignIn,
 		signUp: SignUp,
@@ -279,4 +279,9 @@ export function AccountPage({
 			</div>
 		</div>
 	);
-}
+};
+
+export { AccountPage };
+
+
+export default AccountPage;

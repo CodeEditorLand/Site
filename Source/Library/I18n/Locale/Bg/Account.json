@@ -179,6 +179,34 @@
 				"backup": "Криптирано локално архивиране"
 			}
 		},
+		"enterprise": {
+			"title": "Корпоративен профил",
+			"subtitle": "OIDC / SAML 2.0 единен вход чрез Okta, Azure AD или всеки съвместим доставчик на идентичност. Съпоставяне на групи с роли, одитни дневници и управление на CA сертификати на организацията.",
+			"ariaLabel": "Корпоративен SSO",
+			"domainLabel": "Служебен имейл или домейн",
+			"domainPlaceholder": "name@company.com",
+			"continueSSO": "Продължете с SSO",
+			"continueOkta": "Продължете с Okta",
+			"continueAzure": "Продължете с Azure AD",
+			"continueSAML": "Продължете с SAML",
+			"note": "OIDC Discovery · SAML 2.0 · SCIM осигуряване",
+			"feature": {
+				"okta": "Okta SSO интеграция",
+				"azure": "Azure AD / Entra ID поддръжка",
+				"saml": "SAML 2.0 за наследени корпоративни IdP",
+				"scim": "SCIM осигуряване на потребители",
+				"group": "Съпоставяне на групи с роли",
+				"audit": "Пълна одитна следа"
+			},
+			"capability": {
+				"oidc": "OIDC Discovery + PKCE",
+				"jit": "Осигуряване при необходимост",
+				"mfa": "Задължителни MFA политики",
+				"session": "Управление на сесии + отзоваване",
+				"ca": "CA сертификати на организация",
+				"compliance": "SOC 2 / GDPR съответствие"
+			}
+		},
 		"labels": {
 			"included": "Включено",
 			"capabilities": "Възможности",
@@ -186,5 +214,12 @@
 			"settingsManaged": "Управлявани настройки",
 			"allTiers": "Включено във всички нива"
 		}
-	}
+	},
+	"loading": "[BG] Loading...",
+	"error": "[BG] Authentication error",
+	"tryAgain": "[BG] Try again",
+	"dashboard": "[BG] Go to Dashboard",
+	"logout": "[BG] Logout",
+	"emailNotVerified": "[BG] Email not verified. Check your inbox.",
+	"redirecting": "[BG] Redirecting to sign in..."
 }

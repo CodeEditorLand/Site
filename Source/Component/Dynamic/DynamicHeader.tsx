@@ -8,7 +8,7 @@ import type Property from "./Interface/Property/Header.js";
  * Dynamic Header component that accepts navigation and action schemas
  * Renders sticky header with logo, nav links, and CTA buttons
  */
-export function DynamicHeader({ content, className }: Property) {
+const DynamicHeader = ({ content, className }: Property) => {
 	const {
 		logo,
 		navigation,
@@ -106,4 +106,8 @@ export function DynamicHeader({ content, className }: Property) {
 			</div>
 		</header>
 	);
-}
+};
+
+export { DynamicHeader };
+
+export default DynamicHeader;

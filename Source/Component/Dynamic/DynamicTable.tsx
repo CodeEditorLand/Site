@@ -12,9 +12,9 @@ import type Property from "./Interface/Property/Table.js";
  * Dynamic Table component that accepts content schema
  * Composes Table compound components based on columns and data
  */
-export function DynamicTable<T extends Record<string, unknown>>({
+const DynamicTable = <T extends Record<string, unknown>>({
 	content,
-}: Property<T>) {
+}: Property<T>) => {
 	const {
 		columns: ColumnList,
 		data: DataList,
@@ -59,4 +59,8 @@ export function DynamicTable<T extends Record<string, unknown>>({
 			</Table>
 		</div>
 	);
-}
+};
+
+export { DynamicTable };
+
+export default DynamicTable;

@@ -48,5 +48,9 @@
 		"downloadFor": "Изтегляне за {{platform}}",
 		"copiedToClipboard": "{{label}} копирано в клипборда!",
 		"failedToCopy": "Неуспешно копиране на {{label}}"
+	},
+	"transparency": {
+		"title": "[BG] Build Transparency",
+		"subtitle": "[BG] Full disclosure on telemetry, build variants, and deployment. Verify everything in source."
 	}
 }

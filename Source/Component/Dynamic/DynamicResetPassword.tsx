@@ -17,7 +17,7 @@ import type { default as ResetState } from "./Type/State/Reset.js";
  * Dynamic ResetPassword component for setting new password with token validation
  * Supports 4 states: checking, valid (form), invalid (error), success
  */
-export function DynamicResetPassword({
+const DynamicResetPassword = ({
 	content,
 	token: PropToken,
 	onReset,
@@ -25,7 +25,7 @@ export function DynamicResetPassword({
 	className,
 	isLoading = false,
 	errorMessage,
-}: Property) {
+}: Property) => {
 	const {
 		title,
 		description,
@@ -283,4 +283,8 @@ export function DynamicResetPassword({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicResetPassword };
+
+export default DynamicResetPassword;

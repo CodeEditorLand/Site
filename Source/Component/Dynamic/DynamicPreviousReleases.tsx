@@ -7,7 +7,7 @@ import type ReleaseVersion from "./Interface/Version/Release.js";
  * Dynamic PreviousReleases component showing version history table
  * Displays table with version, date, size, downloads, and download buttons
  */
-export function DynamicPreviousReleases({ content, className }: Property) {
+const DynamicPreviousReleases = ({ content, className }: Property) => {
 	const { title, description, releases, showChangelog = true } = content;
 
 	const Columns = [
@@ -128,4 +128,8 @@ export function DynamicPreviousReleases({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicPreviousReleases };
+
+export default DynamicPreviousReleases;

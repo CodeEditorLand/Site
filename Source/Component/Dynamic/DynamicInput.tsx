@@ -6,7 +6,7 @@ import type Property from "./Interface/Property/Input.js";
  * Dynamic Input component that accepts content schema
  * Composes Label + Input with proper error/helper text states
  */
-export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
+const DynamicInput = ({ content, id: PropertyIdentifier }: Property) => {
 	const {
 		label,
 		placeholder,
@@ -80,4 +80,8 @@ export function DynamicInput({ content, id: PropertyIdentifier }: Property) {
 			)}
 		</div>
 	);
-}
+};
+
+export { DynamicInput };
+
+export default DynamicInput;

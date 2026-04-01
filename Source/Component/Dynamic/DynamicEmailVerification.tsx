@@ -18,7 +18,7 @@ import type { default as VerificationState } from "./Type/State/Verification.js"
  * Dynamic EmailVerification component with states: pending, verifying, success, error
  * Auto-verifies if token present in URL, otherwise shows pending state with resend
  */
-export function DynamicEmailVerification({
+const DynamicEmailVerification = ({
 	content,
 	token: PropToken,
 	userEmail,
@@ -26,7 +26,7 @@ export function DynamicEmailVerification({
 	onResend,
 	onNavigate,
 	className,
-}: Property) {
+}: Property) => {
 	const { t: T } = useTranslation("verify");
 	const [State, SetState] = useState<VerificationState>("pending");
 	const [, SetToken] = useState<string>(PropToken || "");
@@ -234,4 +234,8 @@ export function DynamicEmailVerification({
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicEmailVerification };
+
+export default DynamicEmailVerification;

@@ -6,7 +6,7 @@ import type Property from "./Interface/Property/Badge.js";
  * Wraps the base Badge with StaccatoBadge for breathing scale.
  * The status dot pulses with StaccatoRhythm for a heartbeat effect.
  */
-export function DynamicBadge({ content, className }: Property) {
+const DynamicBadge = ({ content, className }: Property) => {
 	const {
 		text,
 		variant = "default",
@@ -40,4 +40,8 @@ export function DynamicBadge({ content, className }: Property) {
 			)}
 		</Badge>
 	);
-}
+};
+
+export { DynamicBadge };
+
+export default DynamicBadge;

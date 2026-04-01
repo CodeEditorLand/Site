@@ -8,7 +8,7 @@ import type Property from "./Interface/Property/Testimonial.js";
  * Stars shimmer with StaccatoStar. Avatars bounce with StaccatoAvatar.
  * Quotes breathe with StaccatoBreath.
  */
-export function DynamicTestimonials({ content, className }: Property) {
+const DynamicTestimonials = ({ content, className }: Property) => {
 	const { title, subtitle, testimonials, columns = 3 } = content;
 	const GridReference = useRef<HTMLDivElement>(null);
 
@@ -147,4 +147,8 @@ export function DynamicTestimonials({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicTestimonials };
+
+export default DynamicTestimonials;

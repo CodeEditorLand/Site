@@ -45,7 +45,7 @@ const FeatureIconRegistry: Record<string, LucideIcon> = {
  * Cards get StaccatoCard + Attention scatter for organic layout.
  * Icons render immediately via direct imports (no dynamic import delay).
  */
-export function DynamicFeatures({ content, className }: Property) {
+const DynamicFeatures = ({ content, className }: Property) => {
 	const { title, subtitle, features, columns = 3, gap = "lg" } = content;
 	const GridReference = useRef<HTMLDivElement>(null);
 
@@ -157,4 +157,8 @@ export function DynamicFeatures({ content, className }: Property) {
 			</div>
 		</section>
 	);
-}
+};
+
+export { DynamicFeatures };
+
+export default DynamicFeatures;
