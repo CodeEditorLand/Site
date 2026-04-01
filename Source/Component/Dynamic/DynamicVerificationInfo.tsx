@@ -48,12 +48,13 @@ export function DynamicVerificationInfo({
 		<div className="space-y-4">
 			{Information.sha256 && (
 				<div className="space-y-2">
-					<div className="flex items-center gap-2">
+					<div className="flex items-center">
+						<span className="font-semibold">SHA-256 Checksum</span>
+						{"\u2001"}
 						<Fingerprint
-							className="h-4 w-4 text-primary"
+							className="h-4 w-4 shrink-0 text-primary"
 							aria-hidden="true"
 						/>
-						<span className="font-semibold">SHA-256 Checksum</span>
 					</div>
 					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
@@ -77,12 +78,13 @@ export function DynamicVerificationInfo({
 
 			{Information.pgpSignature && (
 				<div className="space-y-2">
-					<div className="flex items-center gap-2">
+					<div className="flex items-center">
+						<span className="font-semibold">PGP Signature</span>
+						{"\u2001"}
 						<Shield
-							className="h-4 w-4 text-primary"
+							className="h-4 w-4 shrink-0 text-primary"
 							aria-hidden="true"
 						/>
-						<span className="font-semibold">PGP Signature</span>
 					</div>
 					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
@@ -165,12 +167,13 @@ export function DynamicVerificationInfo({
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						{/* Download Verification */}
 						<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
-							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
+							<h3 className="mb-4 flex items-center text-xl font-semibold">
+								Download Verification
+								{"\u2001"}
 								<Download
-									className="h-5 w-5"
+									className="h-5 w-5 shrink-0"
 									aria-hidden="true"
 								/>
-								Download Verification
 							</h3>
 							{RenderVerificationBlock(
 								downloadVerification,
@@ -180,12 +183,13 @@ export function DynamicVerificationInfo({
 
 						{/* Integrity Verification */}
 						<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-white p-6">
-							<h3 className="mb-4 flex items-center gap-2 text-xl font-semibold">
+							<h3 className="mb-4 flex items-center text-xl font-semibold">
+								Integrity Check
+								{"\u2001"}
 								<Shield
-									className="h-5 w-5"
+									className="h-5 w-5 shrink-0"
 									aria-hidden="true"
 								/>
-								Integrity Check
 							</h3>
 							{RenderVerificationBlock(
 								integrityVerification,

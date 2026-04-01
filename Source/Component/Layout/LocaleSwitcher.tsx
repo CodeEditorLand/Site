@@ -33,7 +33,7 @@ export function LocaleSwitcher() {
 				value={CurrentLocale}
 				onChange={HandleChange}
 				aria-label="Select language"
-				className="h-9 appearance-none border border-[var(--Border)] bg-white bg-none py-1 pl-3 pr-8 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
+				className="h-9 appearance-none border border-[var(--Border)] bg-white bg-none py-1 pl-3 pr-7 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
 				style={{
 					borderRadius: 0,
 					WebkitAppearance: "none",
@@ -47,22 +47,9 @@ export function LocaleSwitcher() {
 				))}
 			</select>
 			<Globe
-				className="pointer-events-none absolute right-6 h-3.5 w-3.5 text-[var(--MuteForeground)]"
+				className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-[var(--MuteForeground)]"
 				aria-hidden="true"
 			/>
-			<svg
-				className="pointer-events-none absolute right-1.5 h-3 w-3 text-[var(--MuteForeground)]"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-				aria-hidden="true">
-				<path
-					strokeLinecap="square"
-					strokeLinejoin="miter"
-					strokeWidth={2}
-					d="M6 9l6 6 6-6"
-				/>
-			</svg>
 		</div>
 	);
 }

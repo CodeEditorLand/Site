@@ -1,5 +1,5 @@
 import { Cpu, Monitor } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import type RequirementItem from "./Interface/Item/Requirement.js";
 import type Property from "./Interface/Property/Requirement/System.js";
@@ -11,6 +11,31 @@ import type Property from "./Interface/Property/Requirement/System.js";
 export function DynamicSystemRequirements({ content, className }: Property) {
 	const { title, description, requirements } = content;
 
+	const GridReference = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const Grid = GridReference.current;
+		if (!Grid) return;
+
+		const ReducedMotion = window.matchMedia(
+			"(prefers-reduced-motion: reduce)",
+		).matches;
+		if (ReducedMotion) return;
+
+		const ApplyScatter = async () => {
+			const AttentionModule =
+				await import("../../Function/Noise/Attention.js");
+			const Attention = await AttentionModule.default;
+			const Cards =
+				Grid.querySelectorAll<HTMLElement>(".StaccatoCard");
+			Cards.forEach((Card, Index) => {
+				Attention.ApplyToElement(Card, Index, 4, 3);
+			});
+		};
+
+		ApplyScatter();
+	}, [requirements]);
+
 	const RequirementList = ({
 		items: ItemList,
 		variant: Variant = "minimum",
@@ -20,14 +45,7 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 	}) => (
 		<div className="space-y-3">
 			{ItemList.map((Requirement) => (
-				<div key={Requirement.id} className="flex items-start gap-3">
-					<div className="mt-1">
-						{Variant === "minimum" ? (
-							<Cpu className="h-4 w-4 text-muted-foreground" />
-						) : (
-							<Monitor className="h-4 w-4 text-muted-foreground" />
-						)}
-					</div>
+				<div key={Requirement.id} className="flex items-start">
 					<div className="flex-1">
 						<span className="font-medium">
 							{Requirement.label}:
@@ -35,6 +53,14 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 						<span className="text-muted-foreground">
 							{Requirement.value}
 						</span>
+					</div>
+					{" "}
+					<div className="mt-1 shrink-0">
+						{Variant === "minimum" ? (
+							<Cpu className="h-4 w-4 text-muted-foreground" />
+						) : (
+							<Monitor className="h-4 w-4 text-muted-foreground" />
+						)}
 					</div>
 				</div>
 			))}
@@ -57,7 +83,7 @@ export function DynamicSystemRequirements({ content, className }: Property) {
 					)}
 				</div>
 
-				<div className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+				<div ref={GridReference} className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
 					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">

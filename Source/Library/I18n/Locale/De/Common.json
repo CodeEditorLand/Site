@@ -38,14 +38,6 @@
 			"title": "Erste Schritte",
 			"description": "Lesen Sie die README-Datei fuer Installationsanweisungen, Build-Schritte und einen Ueberblick ueber die Projektarchitektur."
 		},
-		"wiki": {
-			"title": "Wiki",
-			"description": "Durchsuchen Sie das Projekt-Wiki nach ausfuehrlichen Anleitungen, Tutorials und Referenzdokumentation."
-		},
-		"discussions": {
-			"title": "Diskussionen",
-			"description": "Stellen Sie Fragen, teilen Sie Ideen und vernetzen Sie sich mit der Community in GitHub Discussions."
-		},
 		"issueTracker": {
 			"title": "Issue-Tracker",
 			"description": "Melden Sie Fehler, fordern Sie Funktionen an oder durchsuchen Sie vorhandene Issues auf GitHub."
@@ -149,7 +141,7 @@
 			"nlnetIntro": "Code Editor Land wurde finanziert durch den",
 			"nlnetFundName": "NGI0 Commons Fund",
 			"nlnetEstablishedBy": ", einen Fonds, gegruendet von",
-			"nlnetSuffix": "mit finanzieller Unterstuetzung des Next-Generation-Internet-Programms der Europaeischen Kommission, unter Foerdervereinbarung Nr.\u00a0101135429. Diese Finanzierung ermoeglicht eine nachhaltige Open-Source-Entwicklung des Projekts.",
+			"nlnetSuffix": "mit finanzieller Unterstuetzung des Next-Generation-Internet-Programms der Europaeischen Kommission, unter Foerdervereinbarung Nr. 101135429. Diese Finanzierung ermoeglicht eine nachhaltige Open-Source-Entwicklung des Projekts.",
 			"playformInfo": "Das Projekt wird von PlayForm betrieben, einem Unternehmen mit Sitz in Sofia, Bulgarien. PlayForm fungiert als Open-Source-Steward fuer Code Editor Land im Rahmen des NGI0 Commons Fund.",
 			"viewProject": "Besuchen Sie die",
 			"nlnetProjectPage": "NLnet-Projektseite",

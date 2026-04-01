@@ -177,14 +177,15 @@ export function DynamicEmailVerification({
 					}}
 					onAction={() => onNavigate?.("/")}
 				/>
-				<div className="flex items-center justify-center gap-2 pt-4">
-					<CheckCircle
-						className="h-5 w-5 text-green-600"
-						aria-hidden="true"
-					/>
+				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">
 						{content.success.title}
 					</CardTitle>
+					{" "}
+					<CheckCircle
+						className="h-5 w-5 shrink-0 text-green-600"
+						aria-hidden="true"
+					/>
 				</div>
 				<CardDescription className="text-xs">
 					{content.success.description}
@@ -203,14 +204,15 @@ export function DynamicEmailVerification({
 					}}
 					onAction={() => onNavigate?.("/account/signin")}
 				/>
-				<div className="flex items-center justify-center gap-2 pt-4">
-					<XCircle
-						className="h-5 w-5 text-red-600"
-						aria-hidden="true"
-					/>
+				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">
 						{content.error.title}
 					</CardTitle>
+					{" "}
+					<XCircle
+						className="h-5 w-5 shrink-0 text-red-600"
+						aria-hidden="true"
+					/>
 				</div>
 				<CardDescription className="text-xs">
 					{ErrorMessage || content.error.description}

@@ -142,14 +142,15 @@ export function DynamicResetPassword({
 											onNavigate?.("/account/signin")
 										}
 									/>
-									<div className="flex items-center justify-center gap-2">
-										<AlertCircle
-											className="h-5 w-5 text-destructive"
-											aria-hidden="true"
-										/>
+									<div className="flex items-center justify-center">
 										<h3 className="text-lg font-semibold">
 											Invalid or Expired Token
 										</h3>
+										{" "}
+										<AlertCircle
+											className="h-5 w-5 shrink-0 text-destructive"
+											aria-hidden="true"
+										/>
 									</div>
 									<p className="text-xs text-muted-foreground">
 										{invalidTokenMessage ||
@@ -186,14 +187,15 @@ export function DynamicResetPassword({
 											onNavigate?.("/account/signin")
 										}
 									/>
-									<div className="flex items-center justify-center gap-2">
-										<CheckCircle
-											className="h-5 w-5 text-green-600"
-											aria-hidden="true"
-										/>
+									<div className="flex items-center justify-center">
 										<h3 className="text-lg font-semibold">
 											Password Reset Successful
 										</h3>
+										{" "}
+										<CheckCircle
+											className="h-5 w-5 shrink-0 text-green-600"
+											aria-hidden="true"
+										/>
 									</div>
 									<p className="text-xs text-muted-foreground">
 										{successMessage ||
