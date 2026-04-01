@@ -120,7 +120,7 @@ export default ({
 						className="w-full"
 						asChild
 					>
-						<a href="/account">
+						<a href="/Dashboard">
 							{T("dashboard", {
 								defaultValue: "Account Dashboard",
 							})}

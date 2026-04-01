@@ -329,6 +329,64 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			logger.info(
 				`Wrote _redirects with ${RedirectLine.length} rules`,
 			);
+
+			// ── 6. Post-process sitemap for PascalCase URLs ──
+			// @astrojs/sitemap generates URLs from built pages (lowercase).
+			// Replace lowercase paths with PascalCase canonicals so Google
+			// indexes the correct URL form.
+
+			const SitemapFile = ["sitemap-0.xml", "sitemap-index.xml"];
+
+			for (const FileName of SitemapFile) {
+				const SitemapPath = Join(OutputDirectory, FileName);
+
+				try {
+					let SitemapContent = await ReadFile(
+						SitemapPath,
+						"utf-8",
+					);
+
+					let ReplacementCount = 0;
+
+					for (const [BuiltPath, PascalPath] of Object.entries(
+						PascalCaseCanonical,
+					)) {
+						// Replace <loc>https://editor.land/downloads</loc>
+						// with    <loc>https://editor.land/Download</loc>
+						// Also handle trailing slashes and bare paths
+						const Pattern = new RegExp(
+							`(<loc>[^<]*?)${BuiltPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(/?)(<\\/loc>)`,
+							"g",
+						);
+
+						const Before = SitemapContent;
+
+						SitemapContent = SitemapContent.replace(
+							Pattern,
+							`$1${PascalPath}$3`,
+						);
+
+						if (SitemapContent !== Before) {
+							ReplacementCount++;
+						}
+					}
+
+					if (ReplacementCount > 0) {
+						await WriteFile(
+							SitemapPath,
+							SitemapContent,
+							"utf-8",
+						);
+
+						logger.info(
+							`Fixed ${ReplacementCount} URLs in ${FileName} to PascalCase`,
+						);
+					}
+				} catch {
+					// Sitemap file doesn't exist — @astrojs/sitemap might
+					// not be installed or hasn't run yet
+				}
+			}
 		},
 	},
 });

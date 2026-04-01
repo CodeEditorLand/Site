@@ -8,10 +8,16 @@ import { AnalyticsProvider } from "../Component/Provider/AnalyticsProvider";
 import { PageviewTracker } from "../Component/Provider/PageviewTracker";
 import MetaTags from "../Component/Social/MetaTags";
 import { GetI18n } from "../Library/I18n/Server";
+import { PascalCaseCanonical } from "../Function/Route/Map";
 
-const CanonicalPath =
-	Astro.url.pathname === "/" ? "" : Astro.url.pathname.replace(/\/$/, "");
-const DefaultURL = `https://editor.land${CanonicalPath}`;
+// Resolve PascalCase canonical URL for SEO tags.
+// Astro builds pages at lowercase paths (e.g., /downloads), but our canonical
+// URLs are PascalCase (e.g., /Download). Look up the mapping so that
+// <link rel="canonical">, og:url, and all meta tags reference the correct URL.
+const RawPath =
+	Astro.url.pathname === "/" ? "/" : Astro.url.pathname.replace(/\/$/, "");
+const CanonicalPath = PascalCaseCanonical[RawPath] ?? RawPath;
+const DefaultURL = `https://editor.land${CanonicalPath === "/" ? "" : CanonicalPath}`;
 
 const {
 	Title,

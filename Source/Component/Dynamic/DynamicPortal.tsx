@@ -54,10 +54,12 @@ const PortalTierRow = ({
 	Content,
 	Index,
 	OnAction,
+	Labels,
 }: {
 	Content: TierContent;
 	Index: number;
 	OnAction?: () => void;
+	Labels?: PortalContent["Labels"];
 }) => {
 	const RowReference = useRef<HTMLDivElement>(null);
 	const [Email, SetEmail] = useState("");
@@ -280,7 +282,7 @@ const PortalTierRow = ({
 
 				{/* Features list */}
 				<div className="PortalTierFeatureList">
-					<h4 className="PortalTierFeatureHeading">Included</h4>
+					<h4 className="PortalTierFeatureHeading">{Labels?.Included ?? "Included"}</h4>
 					<ul className="PortalTierFeatureItems">
 						{Content.Feature.map((FeatureText, FeatureIndex) => (
 							<li
@@ -302,7 +304,7 @@ const PortalTierRow = ({
 				{Content.Capability.length > 0 && (
 					<div className="PortalTierCapabilityList">
 						<h4 className="PortalTierFeatureHeading">
-							Capabilities
+							{Labels?.Capabilities ?? "Capabilities"}
 						</h4>
 						<div className="PortalTierCapabilityGrid">
 							{Content.Capability.map(
@@ -329,7 +331,7 @@ const PortalTierRow = ({
 				{Content.Protocol && (
 					<div className="PortalTierProtocol">
 						<span className="text-xs font-medium text-muted-foreground">
-							Protocol:
+							{Labels?.Protocol ?? "Protocol:"}
 						</span>
 						<code
 							className="PortalTierProtocolCode"
@@ -342,10 +344,10 @@ const PortalTierRow = ({
 				{/* Settings managed badge:universal across all tiers */}
 				<div className="PortalTierSettingsManaged StaccatoBorderShimmer">
 					<span className="text-xs font-medium">
-						Settings Managed
+						{Labels?.SettingsManaged ?? "Settings Managed"}
 					</span>
 					<span className="text-xs text-muted-foreground">
-						Included in all tiers
+						{Labels?.AllTiers ?? "Included in all tiers"}
 					</span>
 					{"\u2001"}
 					<RefreshCw
@@ -429,18 +431,21 @@ export function DynamicPortal({
 						Content={Content.Cloud}
 						Index={0}
 						OnAction={() => OnSignIn?.("", "")}
+						Labels={Content.Labels}
 					/>
 
 					<PortalTierRow
 						Content={Content.Provider}
 						Index={1}
 						OnAction={() => OnOAuth?.("github")}
+						Labels={Content.Labels}
 					/>
 
 					<PortalTierRow
 						Content={Content.LocalFirst}
 						Index={2}
 						OnAction={() => OnConnect?.()}
+						Labels={Content.Labels}
 					/>
 				</div>
 			</div>

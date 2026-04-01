@@ -53,19 +53,22 @@ export default (await import("astro/config")).defineConfig({
 			devtools: On,
 		}),
 
-		// Route Redirect — local-first PascalCase URL routing + caching
-		// Replaces astrojs-service-worker with custom SW that handles:
+		(await import("@astrojs/sitemap")).default(),
+
+		// Route Redirect — local-first PascalCase URL routing + caching.
+		// Must run AFTER @astrojs/sitemap so the sitemap post-processor
+		// can rewrite lowercase URLs to PascalCase canonicals.
+		// Handles:
 		//   1. Route redirect (variant URLs → PascalCase canonical)
 		//   2. Network-first page cache (offline support)
 		//   3. Cache-first asset cache (_astro/*, Asset/*, Favicon/*)
 		//   4. Cloudflare _redirects generation
+		//   5. Sitemap URL canonicalization
 		(
 			await import(
 				"./Source/Function/Route/Integration.js"
 			)
 		).default(),
-
-		(await import("@astrojs/sitemap")).default(),
 
 		...((await import("./Source/Function/Configuration/InlineCSS.js"))
 			.default
