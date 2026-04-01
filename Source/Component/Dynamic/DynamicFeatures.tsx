@@ -101,7 +101,7 @@ export function DynamicFeatures({ content, className }: Property) {
 		<section
 			id="features"
 			aria-label="Features"
-			className={`py-20 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">

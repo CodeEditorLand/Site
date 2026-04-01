@@ -84,8 +84,8 @@ export function DynamicPricing({ content, className }: Property) {
 	return (
 		<section
 			id="pricing"
-			aria-label="Pricing"
-			className={`py-20 ${className || ""}`}>
+			aria-label="Roadmap"
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
@@ -135,7 +135,7 @@ export function DynamicPricing({ content, className }: Property) {
 
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+					className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.id}
@@ -166,18 +166,23 @@ export function DynamicPricing({ content, className }: Property) {
 								)}
 								<div className="flex items-baseline">
 									<span className="StaccatoPrice text-4xl font-bold">
-										{FormatPrice(
-											Tier.currentPrice,
-											Tier.currency,
-										)}
+										{Tier.currentPrice === 0
+											? T("pricing.labels.free", {
+													defaultValue: "Free",
+												})
+											: FormatPrice(
+													Tier.currentPrice,
+													Tier.currency,
+												)}
 									</span>
-									{showMonthlyYearlyToggle && (
-										<span className="ml-2 text-muted-foreground">
-											{IsYearly
-												? PerYearLabel
-												: PerMonthLabel}
-										</span>
-									)}
+									{showMonthlyYearlyToggle &&
+										Tier.currentPrice > 0 && (
+											<span className="ml-2 text-muted-foreground">
+												{IsYearly
+													? PerYearLabel
+													: PerMonthLabel}
+											</span>
+										)}
 								</div>
 							</div>
 

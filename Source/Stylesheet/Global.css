@@ -36,6 +36,22 @@ body {
 	@apply flex h-full flex-grow flex-col tabular-nums antialiased sm:subpixel-antialiased;
 }
 
+/* CLS prevention: reserve space for client:load components before hydration.
+ * Astro renders an empty astro-island wrapper; this ensures the page
+ * doesn't collapse to zero height then jump when JS renders content. */
+main > astro-island {
+	display: block;
+	min-height: 100dvh;
+	contain-intrinsic-block-size: 100dvh;
+	content-visibility: visible;
+}
+
+/* Once hydrated and content is rendered, release the reserved space */
+main > astro-island:has(> :first-child) {
+	min-height: auto;
+	contain-intrinsic-block-size: auto;
+}
+
 /* Text Selection Highlighting */
 *::selection,
 ::selection {
@@ -46,4 +62,16 @@ body {
 
 img {
 	@apply inline-block select-none align-top outline-2 outline-offset-2 outline-transparent;
+}
+
+/* Accessibility: links must be distinguishable by more than color alone.
+ * Underline content links; exclude nav, logo, button, icon, and social links. */
+a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not([class*="Social"]):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not([aria-label]) {
+	text-decoration: underline;
+	text-decoration-color: var(--Border);
+	text-underline-offset: 2px;
+}
+
+a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not([class*="Social"]):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not([aria-label]):hover {
+	text-decoration-color: var(--Primary);
 }

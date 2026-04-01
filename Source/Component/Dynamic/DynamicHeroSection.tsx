@@ -102,7 +102,7 @@ export function DynamicHeroSection({ content, className }: Property) {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative overflow-hidden py-20 lg:py-32 ${className || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-[100dvh] w-full items-center overflow-hidden py-20 lg:py-32 ${className || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {

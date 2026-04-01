@@ -216,152 +216,208 @@ export function HomePage({ content, className }: Property) {
 			gap: "lg",
 		},
 		pricing: {
-			title: T("home:pricing.title", {
-				defaultValue: "Free Forever, Open Source",
+			title: T("home:roadmap.title", {
+				defaultValue: "Roadmap & Expectancy",
 			}),
-			subtitle: T("home:pricing.subtitle", {
+			subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Code Editor Land is completely free. No tiers, no subscriptions, no restrictions.",
+					"Funded by the NGI0 Commons Fund. Open source, free forever, built in public.",
 			}),
 			tiers: [
 				{
-					id: "community",
-					name: T("home:pricing.tiers.free.name", {
-						defaultValue: "Community",
+					id: "current",
+					name: T("home:roadmap.tiers.current.name", {
+						defaultValue: "Current Phase",
 					}),
 					description: T(
-						"home:pricing.tiers.free.description",
+						"home:roadmap.tiers.current.description",
 						{
 							defaultValue:
-								"For everyone. Full editor features, completely free.",
+								"Foundation and core editor scaffold. Active development.",
 						},
 					),
 					price: { monthly: 0, yearly: 0 },
 					features: [
-						T("home:pricing.tiers.free.features.1", {
-							defaultValue: "Full VS Code compatibility",
+						T("home:roadmap.tiers.current.features.1", {
+							defaultValue: "Mountain: Rust/Tauri native backend",
 						}),
-						T("home:pricing.tiers.free.features.2", {
-							defaultValue: "All extensions supported",
+						T("home:roadmap.tiers.current.features.2", {
+							defaultValue: "Cocoon: VS Code extension host via Effect-TS",
 						}),
-						T("home:pricing.tiers.free.features.3", {
-							defaultValue: "Native Rust performance",
+						T("home:roadmap.tiers.current.features.3", {
+							defaultValue: "Wind: Workbench re-implementation",
 						}),
-						T("home:pricing.tiers.free.features.4", {
-							defaultValue:
-								"Cross-platform (macOS, Windows, Linux)",
+						T("home:roadmap.tiers.current.features.4", {
+							defaultValue: "Sky: Editor interface rendering",
 						}),
-						T("home:pricing.tiers.free.features.5", {
-							defaultValue: "Effect-TS type-safe UI",
+						T("home:roadmap.tiers.current.features.5", {
+							defaultValue: "Air: Update daemon and crypto signing",
 						}),
-						T("home:pricing.tiers.free.features.6", {
-							defaultValue: "gRPC-based architecture",
-						}),
-						T("home:pricing.tiers.free.features.7", {
-							defaultValue: "Open source (CC0 license)",
+						T("home:roadmap.tiers.current.features.6", {
+							defaultValue: "Echo: Work-stealing task scheduler",
 						}),
 					],
 					cta: {
-						text: T("home:pricing.tiers.free.button", {
-							defaultValue: "Download Now",
+						text: T("home:roadmap.tiers.current.button", {
+							defaultValue: "View on GitHub",
 						}),
 						variant: "default",
 						fullWidth: true,
 					},
 					popular: true,
 				},
+				{
+					id: "next",
+					name: T("home:roadmap.tiers.next.name", {
+						defaultValue: "Next Milestone",
+					}),
+					description: T(
+						"home:roadmap.tiers.next.description",
+						{
+							defaultValue:
+								"Extension ecosystem and platform stability.",
+						},
+					),
+					price: { monthly: 0, yearly: 0 },
+					features: [
+						T("home:roadmap.tiers.next.features.1", {
+							defaultValue: "High-fidelity VS Code extension compatibility",
+						}),
+						T("home:roadmap.tiers.next.features.2", {
+							defaultValue: "Cross-platform installer and auto-update",
+						}),
+						T("home:roadmap.tiers.next.features.3", {
+							defaultValue: "gRPC IPC protocol finalization",
+						}),
+						T("home:roadmap.tiers.next.features.4", {
+							defaultValue: "Settings sync and cloud-optional portal",
+						}),
+					],
+					cta: {
+						text: T("home:roadmap.tiers.next.button", {
+							defaultValue: "Track Progress",
+						}),
+						variant: "outline",
+						fullWidth: true,
+					},
+					popular: false,
+				},
+				{
+					id: "future",
+					name: T("home:roadmap.tiers.future.name", {
+						defaultValue: "Long-Term Vision",
+					}),
+					description: T(
+						"home:roadmap.tiers.future.description",
+						{
+							defaultValue:
+								"Full-featured editor replacing Electron-based tools.",
+						},
+					),
+					price: { monthly: 0, yearly: 0 },
+					features: [
+						T("home:roadmap.tiers.future.features.1", {
+							defaultValue: "Native mobile editing (iOS, Android)",
+						}),
+						T("home:roadmap.tiers.future.features.2", {
+							defaultValue: "Collaborative real-time editing",
+						}),
+						T("home:roadmap.tiers.future.features.3", {
+							defaultValue: "AI-assisted development tooling",
+						}),
+						T("home:roadmap.tiers.future.features.4", {
+							defaultValue: "Plugin marketplace and ecosystem",
+						}),
+					],
+					cta: {
+						text: T("home:roadmap.tiers.future.button", {
+							defaultValue: "Learn More",
+						}),
+						variant: "outline",
+						fullWidth: true,
+					},
+					popular: false,
+				},
 			],
 		},
 		testimonials: {
-			title: T("home:testimonials.title", {
-				defaultValue: "What developers are saying",
+			title: T("home:architecture.title", {
+				defaultValue: "Architecture",
 			}),
-			subtitle: T("home:testimonials.subtitle", {
+			subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Representative community feedback on the future of code editing.",
+					"Land replaces VS Code's Electron stack with a modular, high-performance architecture. Each element is a standalone repository.",
 			}),
 			testimonials: [
 				{
-					id: "1",
-					quote: T("home:testimonials.quote.1", {
+					id: "mountain",
+					quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"Land is exactly what VS Code needed - a performance-focused, open alternative. It's incredibly fast.",
+							"Manages Window, File System, and Process lifecycle. The native Rust/Tauri backend that replaces Electron's main process.",
 					}),
-					author: T("home:testimonials.attribution", {
-						defaultValue: "Community Feedback",
-					}),
-					role: T("home:testimonials.attributionNote", {
-						defaultValue: "Representative community member",
+					author: "Mountain",
+					role: T("home:architecture.mountain.subtitle", {
+						defaultValue: "Rust/Tauri native backend",
 					}),
 					rating: 5,
 				},
 				{
-					id: "2",
-					quote: T("home:testimonials.quote.2", {
+					id: "cocoon",
+					quote: T("home:architecture.cocoon.description", {
 						defaultValue:
-							"The Effect-TS architecture is beautiful to work with. The type safety catches bugs before they happen.",
+							"Runs VS Code extensions via Effect-TS with high-fidelity API compatibility. No changes needed to existing extensions.",
 					}),
-					author: T("home:testimonials.attribution", {
-						defaultValue: "Community Feedback",
-					}),
-					role: T("home:testimonials.attributionNote", {
-						defaultValue: "Representative community member",
+					author: "Cocoon",
+					role: T("home:architecture.cocoon.subtitle", {
+						defaultValue: "TypeScript extension host",
 					}),
 					rating: 5,
 				},
 				{
-					id: "3",
-					quote: T("home:testimonials.quote.3", {
+					id: "wind",
+					quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"Running my existing extensions with no changes is a game-changer. The compatibility is impressive.",
+							"Re-implementation of the VS Code Workbench. Provides the editor shell, panels, sidebars, and activity bar.",
 					}),
-					author: T("home:testimonials.attribution", {
-						defaultValue: "Community Feedback",
-					}),
-					role: T("home:testimonials.attributionNote", {
-						defaultValue: "Representative community member",
+					author: "Wind",
+					role: T("home:architecture.wind.subtitle", {
+						defaultValue: "TypeScript UI service",
 					}),
 					rating: 5,
 				},
 				{
-					id: "4",
-					quote: T("home:testimonials.quote.4", {
+					id: "sky",
+					quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"Finally, an editor that respects my system resources. No more Electron memory bloat.",
+							"Renders the editor interface using Astro components. Handles themes, layouts, and the visual presentation layer.",
 					}),
-					author: T("home:testimonials.attribution", {
-						defaultValue: "Community Feedback",
-					}),
-					role: T("home:testimonials.attributionNote", {
-						defaultValue: "Representative community member",
+					author: "Sky",
+					role: T("home:architecture.sky.subtitle", {
+						defaultValue: "Astro UI component",
 					}),
 					rating: 5,
 				},
 				{
-					id: "5",
-					quote: T("home:testimonials.quote.5", {
+					id: "air",
+					quote: T("home:architecture.air.description", {
 						defaultValue:
-							"The open-source commitment means I can contribute and customize. This is the editor I've been waiting for.",
+							"Background daemon for automatic updates, downloads, and cryptographic signing. Keeps Land up to date silently.",
 					}),
-					author: T("home:testimonials.attribution", {
-						defaultValue: "Community Feedback",
-					}),
-					role: T("home:testimonials.attributionNote", {
-						defaultValue: "Representative community member",
+					author: "Air",
+					role: T("home:architecture.air.subtitle", {
+						defaultValue: "Rust background daemon",
 					}),
 					rating: 5,
 				},
 				{
-					id: "6",
-					quote: T("home:testimonials.quote.6", {
+					id: "echo",
+					quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"The gRPC-based architecture is a masterclass in system design. Land is the future of desktop editors.",
+							"High-performance work-stealing executor. Schedules and distributes tasks across cores for maximum throughput.",
 					}),
-					author: T("home:testimonials.attribution", {
-						defaultValue: "Community Feedback",
-					}),
-					role: T("home:testimonials.attributionNote", {
-						defaultValue: "Representative community member",
+					author: "Echo",
+					role: T("home:architecture.echo.subtitle", {
+						defaultValue: "Rust task scheduler",
 					}),
 					rating: 5,
 				},
@@ -388,7 +444,7 @@ export function HomePage({ content, className }: Property) {
 						},
 					),
 					version: "Pre-release",
-					size: "TBD",
+					size: "Coming Soon",
 				},
 				{
 					id: "windows",
@@ -403,7 +459,7 @@ export function HomePage({ content, className }: Property) {
 						},
 					),
 					version: "Pre-release",
-					size: "TBD",
+					size: "Coming Soon",
 				},
 				{
 					id: "linux",
@@ -418,7 +474,7 @@ export function HomePage({ content, className }: Property) {
 						},
 					),
 					version: "Pre-release",
-					size: "TBD",
+					size: "Coming Soon",
 				},
 			],
 			showVerification: true,
