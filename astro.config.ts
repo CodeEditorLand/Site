@@ -114,6 +114,12 @@ export default (await import("astro/config")).defineConfig({
 		define: {
 			__DEV__: JSON.stringify(On),
 			__INCREMENT__: JSON.stringify(__INCREMENT__),
+			__NOISE_SPEED__: JSON.stringify(
+				Number(process.env["NOISE_SPEED"]) || undefined,
+			),
+			__NOISE_STEP__: JSON.stringify(
+				Number(process.env["NOISE_STEP"]) || undefined,
+			),
 		},
 
 		build: {

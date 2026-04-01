@@ -1,10 +1,214 @@
 ---
 import { Header } from "../Component/Layout/Header";
 import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
+import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
+
+const TransparencyContent = {
+	Title: T("download.transparency.title", {
+		defaultValue: "Build Transparency",
+	}),
+	Subtitle: T("download.transparency.subtitle", {
+		defaultValue:
+			"Full disclosure on telemetry, build variants, and deployment. Verify everything in source.",
+	}),
+	Policy: [
+		{
+			Identifier: "no-telemetry-default",
+			Title: "No Telemetry by Default",
+			Description:
+				"Production builds ship with telemetry completely disabled. The Telemetry Cargo feature flag is not in default features — it must be explicitly opted in at compile time.",
+			Icon: "EyeOff",
+			Status: "Disabled" as const,
+			Detail:
+				"Default features: ExtensionHostCocoon, MistNative, AirIntegration. No Telemetry.",
+		},
+		{
+			Identifier: "no-crash-reporter",
+			Title: "No Crash Reports",
+			Description:
+				"No crash reporter IDs, no external error reporting endpoints. Errors stay local. No crashReporterId in product.json.",
+			Icon: "Shield",
+			Status: "Disabled" as const,
+			Detail:
+				"Code-OSS base: MIT licensed, no Microsoft telemetry endpoints.",
+		},
+		{
+			Identifier: "no-phone-home",
+			Title: "No Phone Home",
+			Description:
+				"No usage data collection, no analytics endpoints, no DO_NOT_TRACK needed — telemetry simply does not exist in the build.",
+			Icon: "Lock",
+			Status: "Disabled" as const,
+		},
+		{
+			Identifier: "zero-cost-noop",
+			Title: "Zero-Cost No-Ops",
+			Description:
+				"When telemetry is disabled, all tracing, metrics, and spans compile to zero-cost no-ops. No runtime overhead whatsoever.",
+			Icon: "Zap",
+			Status: "Active" as const,
+			Detail:
+				"Rust #[cfg(feature)] gates eliminate dead code at compile time.",
+		},
+		{
+			Identifier: "opt-in-otel",
+			Title: "Optional OpenTelemetry",
+			Description:
+				"Opt-in compile flag enables local OpenTelemetry tracing, metrics collection, and distributed spans. All data stays on your machine.",
+			Icon: "Eye",
+			Status: "Optional" as const,
+			Detail:
+				"Enable with: cargo build --features Telemetry. Sub-features: MetricsCollection, DistributedTracing.",
+		},
+		{
+			Identifier: "effect-ts-local",
+			Title: "Local Effect-TS Telemetry",
+			Description:
+				"Cocoon extension host uses Effect-TS TelemetryService for internal metrics and spans. No external transmission — used for RPC instrumentation and bootstrap timing.",
+			Icon: "Layers",
+			Status: "Active" as const,
+			Detail: "TelemetryMock layer available for testing (all no-ops).",
+		},
+	],
+	Variant: [
+		{
+			Identifier: "debug",
+			Name: "debug",
+			Tier: "Debug" as const,
+			Workbench: "Browser",
+			Feature: "70-80%",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "debug-mountain",
+			Name: "debug-mountain",
+			Tier: "Debug" as const,
+			Workbench: "Mountain",
+			Feature: "80-90%",
+			Status: "Recommended" as const,
+		},
+		{
+			Identifier: "debug-electron",
+			Name: "debug-electron",
+			Tier: "Debug" as const,
+			Workbench: "Electron",
+			Feature: "95%+",
+			Status: "Legacy" as const,
+		},
+		{
+			Identifier: "production",
+			Name: "production",
+			Tier: "Release" as const,
+			Workbench: "Mountain",
+			Feature: "80-90%",
+			Status: "Recommended" as const,
+		},
+		{
+			Identifier: "release",
+			Name: "release",
+			Tier: "Release" as const,
+			Workbench: "Mountain",
+			Feature: "100%",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "web-browser",
+			Name: "web-browser",
+			Tier: "Release" as const,
+			Workbench: "Browser",
+			Feature: "70-80%",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "bundler-preparation",
+			Name: "bundler-preparation",
+			Tier: "Build" as const,
+			Workbench: "—",
+			Feature: "—",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "swc-bundle",
+			Name: "swc-bundle",
+			Tier: "Build" as const,
+			Workbench: "—",
+			Feature: "—",
+			Status: "Experimental" as const,
+		},
+		{
+			Identifier: "oxc-bundle",
+			Name: "oxc-bundle",
+			Tier: "Build" as const,
+			Workbench: "—",
+			Feature: "—",
+			Status: "Experimental" as const,
+		},
+	],
+	Strategy: [
+		{
+			Identifier: "dev-hot-reload",
+			Name: "Development (Hot-Reload)",
+			Description:
+				"Tauri dev mode with Sky dev server on localhost:9999. Live reload on file changes for rapid iteration.",
+			Icon: "Zap",
+			Command: "bash Maintain/Dev-Mountain.sh",
+			Feature: [
+				"Hot-Reload",
+				"Sky Dev Server",
+				"localhost:9999",
+				"No Bundling",
+			],
+		},
+		{
+			Identifier: "debug-build",
+			Name: "Debug Build",
+			Description:
+				"Three debug profiles with profile-specific bundling. Browser, Mountain, and Electron variants with tauri build --debug.",
+			Icon: "Code",
+			Command: "bash Maintain/Debug/Build.sh --profile debug-mountain",
+			Feature: [
+				"3 Profiles",
+				"Debug Symbols",
+				"Configurable Port",
+				"File Watching",
+			],
+		},
+		{
+			Identifier: "production-release",
+			Name: "Production Release",
+			Description:
+				"Mountain workbench with full bundling, clean build, production NODE_ENV, and RUST_LOG=info. Signed and packaged.",
+			Icon: "Server",
+			Command: "bash Maintain/Release/Build.sh --profile production",
+			Feature: [
+				"Full Bundle",
+				"Clean Build",
+				"PGP Signed",
+				"RUST_LOG=info",
+			],
+		},
+		{
+			Identifier: "web-only",
+			Name: "Web-Only Deployment",
+			Description:
+				"Browser workbench with no Tauri runtime. 70-80% features for web-based deployments without native shell.",
+			Icon: "Layers",
+			Command: "bash Maintain/Release.sh --profile web-browser",
+			Feature: [
+				"No Tauri",
+				"70-80% Features",
+				"Web Deployment",
+				"esbuild or OXC",
+			],
+		},
+	],
+	MatrixPermutation: 16,
+	SourceURL: "https://github.com/nicholasadamou/CodeEditorLand",
+} as const;
 
 // For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
 const DownloadContent = {
@@ -165,4 +369,5 @@ const MetaDescription = T("meta.downloads.description", {
 		metaTitle={MetaTitle}
 		metaDescription={MetaDescription}
 	/>
+	<DynamicTransparency content={TransparencyContent} client:load />
 </Base>

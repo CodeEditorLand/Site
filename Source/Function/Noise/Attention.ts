@@ -100,6 +100,45 @@ export default (async () => {
 		});
 	};
 
+	/**
+	 * ObserveAndApply: IntersectionObserver-gated scatter.
+	 * Applies attention vars only when elements scroll into view.
+	 * Adds `StaccatoVisible` class for CSS transition on entry.
+	 */
+	const ObserveAndApply = (
+		Selector: string,
+		SpreadX: number,
+		SpreadY: number = 0,
+		Threshold: number = 0.1,
+	): IntersectionObserver => {
+		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
+
+		const Observer = new IntersectionObserver(
+			(EntryList) => {
+				for (const Entry of EntryList) {
+					if (Entry.isIntersecting) {
+						const Element = Entry.target as HTMLElement;
+						const Index = Array.from(ElementList).indexOf(Element);
+
+						if (Index >= 0) {
+							ApplyToElement(Element, Index, SpreadX, SpreadY);
+						}
+
+						Element.classList.add("StaccatoVisible");
+						Observer.unobserve(Element);
+					}
+				}
+			},
+			{ threshold: Threshold },
+		);
+
+		ElementList.forEach((Element) => {
+			Observer.observe(Element);
+		});
+
+		return Observer;
+	};
+
 	return {
 		Scatter,
 		ScatterRotation,
@@ -108,6 +147,7 @@ export default (async () => {
 		ScatterOpacity,
 		ApplyToElement,
 		ApplyToSelector,
+		ObserveAndApply,
 		LayoutNoise,
 	};
 })();

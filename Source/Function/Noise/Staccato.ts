@@ -4,18 +4,19 @@ type Noise2D = ReturnType<typeof createNoise2D>;
 
 export default (async () => {
 	const { createNoise2D: CreateNoise2D } = await import("simplex-noise");
+	const Config = (await import("../Configuration/Noise.js")).default;
+	const Turbulence = (await import("./Turbulence.js")).default;
+	const ParallaxModule = (await import("./Parallax.js")).default;
 
 	const Noise: Noise2D = CreateNoise2D();
 
-	const STEP = 8;
-	const SPEED = 0.0005;
+	const STEP = Config.Step;
+	const SPEED = Config.Speed;
+	const Channel = Config.ChannelSpeed;
 
-	// Core properties (existing)
 	const PROPERTY_STACCATO = "--Staccato";
 	const PROPERTY_RAW = "--StaccatoRaw";
 	const PROPERTY_PHASE = "--StaccatoPhase";
-
-	// New channels
 	const PROPERTY_COLOR = "--StaccatoColor";
 	const PROPERTY_RHYTHM = "--StaccatoRhythm";
 	const PROPERTY_MORPH = "--StaccatoMorph";
@@ -31,22 +32,12 @@ export default (async () => {
 	const Tick = (Time: number): void => {
 		const Raw = Noise(Time * SPEED, 0);
 		const Stepped = Quantize(Raw, STEP);
-		const Phase = Quantize(Noise(Time * SPEED * 0.5, 100), 4);
-
-		// Color channel:very slow drift, 3-step quantize for sharp palette shifts
-		const Color = Quantize(Noise(Time * SPEED * 0.2, 200), 3);
-
-		// Rhythm channel:faster pulse, 2-step for binary on/off staccato beat
-		const Rhythm = Quantize(Noise(Time * SPEED * 2, 300), 2);
-
-		// Morph channel:medium speed, 5-step for shape interpolation
-		const Morph = Quantize(Noise(Time * SPEED * 0.7, 400), 5);
-
-		// Border channel:slow crawl for border weight/color transitions
-		const Border = Quantize(Noise(Time * SPEED * 0.3, 500), 4);
-
-		// Glow channel:continuous for smooth glow radius breathing
-		const Glow = Noise(Time * SPEED * 0.8, 600);
+		const Phase = Quantize(Noise(Time * SPEED * Channel.Phase, 100), 4);
+		const Color = Quantize(Noise(Time * SPEED * Channel.Color, 200), 3);
+		const Rhythm = Quantize(Noise(Time * SPEED * Channel.Rhythm, 300), 2);
+		const Morph = Quantize(Noise(Time * SPEED * Channel.Morph, 400), 5);
+		const Border = Quantize(Noise(Time * SPEED * Channel.Border, 500), 4);
+		const Glow = Noise(Time * SPEED * Channel.Glow, 600);
 
 		const Root = document.documentElement.style;
 		Root.setProperty(PROPERTY_STACCATO, String(Stepped));
@@ -58,6 +49,9 @@ export default (async () => {
 		Root.setProperty(PROPERTY_BORDER, String(Border));
 		Root.setProperty(PROPERTY_GLOW, String(Glow));
 
+		Turbulence.AnimateFilter(Raw);
+		ParallaxModule.UpdateScrollProgress(Root);
+
 		if (Active) {
 			FrameIdentifier = requestAnimationFrame(Tick);
 		}
@@ -66,6 +60,7 @@ export default (async () => {
 	const Start = (): void => {
 		if (Active) return;
 		Active = true;
+		Turbulence.InjectFilter();
 		FrameIdentifier = requestAnimationFrame(Tick);
 	};
 

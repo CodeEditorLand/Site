@@ -22,6 +22,9 @@
 	/* Per-element seed (set by JS SeedElement) */
 	--StaccatoSeed: 0;
 	--StaccatoSeedPhase: 0;
+
+	/* Scroll progress (set by JS Parallax) */
+	--ScrollProgress: 0;
 }
 
 /* ─── Movement ─────────────────────────────────────────── */
@@ -288,6 +291,48 @@
 	transform: translateY(calc(var(--StaccatoPhase) * 1px - 2px)) scale(1.1);
 }
 
+/* ─── feTurbulence Displacement ────────────────────────── */
+
+.StaccatoTurbulence:hover {
+	filter: url(#StaccatoTurbulence);
+}
+
+/* ─── IntersectionObserver Entry ──────────────────────── */
+
+.StaccatoVisible {
+	animation: StaccatoFadeIn 0.4s ease-out both;
+}
+
+@keyframes StaccatoFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+	to {
+		opacity: var(--AttentionOpacity, 1);
+		transform: translate(
+				var(--AttentionOffsetX, 0px),
+				var(--AttentionOffsetY, 0px)
+			)
+			rotate(var(--AttentionRotation, 0deg))
+			scale(var(--AttentionScale, 1));
+	}
+}
+
+/* ─── Parallax (Scroll-Linked Depth) ─────────────────── */
+
+.StaccatoParallaxNear {
+	transform: translateY(calc(var(--ScrollProgress) * -20px));
+}
+
+.StaccatoParallaxMid {
+	transform: translateY(calc(var(--ScrollProgress) * -12px));
+}
+
+.StaccatoParallaxFar {
+	transform: translateY(calc(var(--ScrollProgress) * -6px));
+}
+
 /* ─── Inline Separator (pipe between text and trailing icon/arrow) ── */
 
 .InlineSeparator {
@@ -329,7 +374,10 @@
 	.StaccatoToggle,
 	.StaccatoDivider,
 	.StaccatoSeparator,
-	.StaccatoSpinner {
+	.StaccatoSpinner,
+	.StaccatoParallaxNear,
+	.StaccatoParallaxMid,
+	.StaccatoParallaxFar {
 		transform: none;
 	}
 
@@ -342,7 +390,8 @@
 		filter: none;
 	}
 
-	.StaccatoColorShift {
+	.StaccatoColorShift,
+	.StaccatoTurbulence:hover {
 		filter: none;
 	}
 
@@ -356,5 +405,9 @@
 
 	.StaccatoOutlineGlow {
 		outline: none;
+	}
+
+	.StaccatoVisible {
+		animation: none;
 	}
 }
