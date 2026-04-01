@@ -3,7 +3,7 @@ import { DynamicPortal } from "../Component/Dynamic/DynamicPortal";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
-const T = GetI18n();
+const T = GetI18n(Astro.request);
 
 const PortalContent = {
 	Title: T("account.portal.title", {

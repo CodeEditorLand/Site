@@ -24,7 +24,7 @@ export function HomePage({ content, className }: Property) {
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header content={HeaderContent} />
+			{HeaderContent !== undefined && <Header content={HeaderContent} />}
 
 			<div className="flex-1" role="region" aria-label="Page content">
 				<DynamicHeroSection content={Hero} />

@@ -1,9 +1,10 @@
 ---
+import { Header } from "../Component/Layout/Header";
 import { HomePage } from "../Component/Dynamic/HomePage";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
-const T = GetI18n();
+const T = GetI18n(Astro.request);
 
 const HomeContent = {
 	hero: {
@@ -527,6 +528,7 @@ const MetaDescription = T("meta.home.description", {
 			})}
 		/>
 	</Fragment>
+	<Header client:load />
 	<HomePage
 		content={HomeContent}
 		metaTitle={MetaTitle}

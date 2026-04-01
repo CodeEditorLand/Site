@@ -21,7 +21,7 @@ export function DownloadsPage({ content, className }: Property) {
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header content={HeaderContent} />
+			{HeaderContent !== undefined && <Header content={HeaderContent} />}
 
 			<div className="flex-1">
 				<DynamicPlatformGrid content={PlatformGrid} />

@@ -1,9 +1,10 @@
 ---
+import { Header } from "../Component/Layout/Header";
 import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
-const T = GetI18n();
+const T = GetI18n(Astro.request);
 
 // For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
 const DownloadContent = {
@@ -159,6 +160,7 @@ const MetaDescription = T("meta.downloads.description", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
+	<Header client:load />
 	<DownloadsPage
 		content={DownloadContent}
 		metaTitle={MetaTitle}
