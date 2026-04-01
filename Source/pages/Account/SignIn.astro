@@ -9,11 +9,16 @@ const MetaTitle = T("meta.account.signIn", { defaultValue: "Sign In - Land" });
 const MetaDescription = T("account.signIn.subtitle", {
 	defaultValue: "Sign in to your Land account.",
 });
+
+const Auth0Domain = (await import("../../Function/Configuration/Auth0Domain.js")).default;
+const Auth0ClientIdentifier = (await import("../../Function/Configuration/Auth0ClientIdentifier.js")).default;
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
 	<Auth0Account
 		client:only="react"
 		Route="signin"
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 </Base>

@@ -11,6 +11,8 @@ import Auth0AccountGate from "./Auth0AccountGate";
 export default ({
 	Route,
 	Header,
+	Domain,
+	ClientIdentifier,
 }: {
 	Route: "signin" | "signup";
 	Header?: {
@@ -25,8 +27,10 @@ export default ({
 			icon?: string;
 		}>;
 	};
+	Domain?: string;
+	ClientIdentifier?: string;
 }) => (
-	<Auth0Provider>
+	<Auth0Provider Domain={Domain} ClientIdentifier={ClientIdentifier}>
 		<Auth0AccountGate Route={Route} Header={Header} />
 	</Auth0Provider>
 );

@@ -22,6 +22,8 @@ export default ({
 	<Auth0Provider
 		domain={Domain}
 		clientId={ClientIdentifier}
+		cacheLocation="localstorage"
+		useRefreshTokens={true}
 		authorizationParams={{
 			redirect_uri:
 				typeof window !== "undefined"
