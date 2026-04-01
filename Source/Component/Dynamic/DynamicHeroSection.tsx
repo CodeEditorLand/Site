@@ -170,7 +170,7 @@ export function DynamicHeroSection({ content, className }: Property) {
 					{/* Desktop: orbital layout */}
 					<div
 						ref={SceneReference}
-						className="relative hidden h-[500px] lg:block"
+						className="relative hidden h-[600px] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub:logo with micro-movement */}
 						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">

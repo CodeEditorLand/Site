@@ -12,9 +12,10 @@
 	}
 
 	.Container {
-		@apply absolute left-1/2 top-1/2 h-screen;
+		@apply absolute left-1/2 top-1/2;
 
-		width: 160vw;
+		width: 200vw;
+		height: 200vh;
 
 		transform: translate(
 			calc(-50% + var(--Staccato, 0) * 4px),
@@ -24,7 +25,7 @@
 
 	.Image {
 		@apply h-full w-full object-cover object-center;
-		opacity: 0.08;
+		opacity: 0.15;
 	}
 
 	#Rock {
@@ -32,7 +33,7 @@
 	}
 
 	#Rock .Image {
-		opacity: 0.12;
+		opacity: 0.20;
 	}
 
 	#Background {
