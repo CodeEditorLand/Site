@@ -252,8 +252,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				}
 			}
 
-			// Strip TypeScript declarations for raw JS output
+			// Strip TypeScript declarations and comments for raw JS output
 			let ServiceWorkerCode = ServiceWorkerSource
+				.replace(/^\/\/.*$/gm, "")
 				.replace(/^declare var self.*$/m, "")
 				.replace(/^declare const __DEV__.*$/m, "")
 				.replace(/^declare const __INCREMENT__.*$/m, "")
@@ -298,37 +299,10 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				"Wrote service-worker.js with route redirect + cache",
 			);
 
-			// ── 5. Generate Cloudflare _redirects ──
-
-			const RedirectLine: string[] = [];
-
-			for (const [VariantPath, CanonicalPath] of Object.entries(
-				RouteMap.Variant,
-			)) {
-				if (
-					VariantPath.startsWith("/") &&
-					VariantPath !== CanonicalPath
-				) {
-					RedirectLine.push(`${VariantPath} ${CanonicalPath} 301`);
-				}
-			}
-
-			for (const CanonicalPath of RouteMap.Canonical) {
-				if (CanonicalPath !== "/") {
-					RedirectLine.push(
-						`${CanonicalPath}/ ${CanonicalPath} 301`,
-					);
-				}
-			}
-
-			const RedirectContent = RedirectLine.join("\n") + "\n";
-			const RedirectPath = Join(OutputDirectory, "_redirects");
-
-			await WriteFile(RedirectPath, RedirectContent, "utf-8");
-
-			logger.info(
-				`Wrote _redirects with ${RedirectLine.length} rules`,
-			);
+			// ── 5. Cloudflare _redirects ──
+			// Disabled: service worker + 404 fallback handle all routing.
+			// CF _redirects caused ERR_TOO_MANY_REDIRECTS loops when both
+			// CF and the SW tried to redirect the same paths.
 
 			// ── 6. Post-process sitemap for PascalCase URLs ──
 			// @astrojs/sitemap generates URLs from built pages (lowercase).
