@@ -108,6 +108,11 @@ export default (await import("astro/config")).defineConfig({
 	},
 
 	vite: {
+		define: {
+			__DEV__: JSON.stringify(On),
+			__INCREMENT__: JSON.stringify(__INCREMENT__),
+		},
+
 		build: {
 			sourcemap: Sourcemap,
 

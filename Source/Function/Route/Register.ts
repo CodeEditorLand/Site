@@ -16,7 +16,8 @@ declare const __DEV__: boolean;
 
 declare const __INCREMENT__: string;
 
-const INCREMENT = __INCREMENT__ ?? "Initial";
+const INCREMENT =
+	typeof __INCREMENT__ !== "undefined" ? __INCREMENT__ : "Initial";
 
 const Path =
 	typeof window._ROUTE_WORKER === "string"
