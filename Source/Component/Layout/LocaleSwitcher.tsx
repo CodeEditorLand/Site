@@ -19,11 +19,6 @@ export function LocaleSwitcher() {
 		document.cookie = `LOCALE=${NewLocale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
 
 		i18n.changeLanguage(NewLocale);
-
-		// Reload so server-rendered Astro content picks up the new locale
-		const Url = new URL(window.location.href);
-		Url.searchParams.set("lng", NewLocale);
-		window.location.href = Url.toString();
 	}
 
 	return (

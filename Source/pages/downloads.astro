@@ -4,7 +4,7 @@ import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
-const T = GetI18n(Astro.request);
+const T = GetI18n();
 
 // For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
 const DownloadContent = {

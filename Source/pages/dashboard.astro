@@ -3,7 +3,7 @@ import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
-const T = GetI18n(Astro.request);
+const T = GetI18n();
 
 const MetaTitle = T("meta.dashboard.title", {
 	defaultValue: "Dashboard | Code Editor Land",

@@ -3,7 +3,7 @@ import Auth0Account from "../../Component/Dynamic/Auth0Account";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
 
-const T = GetI18n(Astro.request);
+const T = GetI18n();
 
 const MetaTitle = T("meta.account.signUp", { defaultValue: "Sign Up - Land" });
 const MetaDescription = T("account.signUp.subtitle", {
