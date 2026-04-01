@@ -84,14 +84,12 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 					.map(
 						([theme, prefix]) => `
 ${prefix} [data-chart=${id}] {
-${ColorConfig
-	.map(([key, ItemConfig]) => {
-		const color =
-			ItemConfig.theme?.[theme as keyof typeof ItemConfig.theme] ||
-			ItemConfig.color;
-		return color ? `  --color-${key}: ${color};` : null;
-	})
-	.join("\n")}
+${ColorConfig.map(([key, ItemConfig]) => {
+	const color =
+		ItemConfig.theme?.[theme as keyof typeof ItemConfig.theme] ||
+		ItemConfig.color;
+	return color ? `  --color-${key}: ${color};` : null;
+}).join("\n")}
 }
 `,
 					)
@@ -118,28 +116,28 @@ function ChartTooltipContent({
 	nameKey,
 	labelKey,
 }: React.ComponentProps<"div"> & {
-		active?: boolean;
-		hideLabel?: boolean;
-		hideIndicator?: boolean;
-		indicator?: "line" | "dot" | "dashed";
-		nameKey?: string;
-		labelKey?: string;
-		payload?: Array<Record<string, unknown>>;
-		label?: string;
-		color?: string;
-		labelClassName?: string;
-		labelFormatter?: (
-			Value: React.ReactNode,
-			Payload: Array<Record<string, unknown>>,
-		) => React.ReactNode;
-		formatter?: (
-			Value: number,
-			Name: string,
-			Item: Record<string, unknown>,
-			Index: number,
-			Payload: unknown,
-		) => React.ReactNode;
-	}) {
+	active?: boolean;
+	hideLabel?: boolean;
+	hideIndicator?: boolean;
+	indicator?: "line" | "dot" | "dashed";
+	nameKey?: string;
+	labelKey?: string;
+	payload?: Array<Record<string, unknown>>;
+	label?: string;
+	color?: string;
+	labelClassName?: string;
+	labelFormatter?: (
+		Value: React.ReactNode,
+		Payload: Array<Record<string, unknown>>,
+	) => React.ReactNode;
+	formatter?: (
+		Value: number,
+		Name: string,
+		Item: Record<string, unknown>,
+		Index: number,
+		Payload: unknown,
+	) => React.ReactNode;
+}) {
 	const { config } = useChart();
 
 	const TooltipLabel = React.useMemo(() => {
@@ -199,7 +197,9 @@ function ChartTooltipContent({
 						item,
 						key,
 					);
-					const ItemPayload = item["payload"] as Record<string, unknown> | undefined;
+					const ItemPayload = item["payload"] as
+						| Record<string, unknown>
+						| undefined;
 					const IndicatorColor =
 						color || ItemPayload?.["fill"] || item["color"];
 
@@ -265,12 +265,15 @@ function ChartTooltipContent({
 										<div className="grid gap-1.5">
 											{NestLabel ? TooltipLabel : null}
 											<span className="text-muted-foreground">
-												{ItemConfig?.label || (item["name"] as string)}
+												{ItemConfig?.label ||
+													(item["name"] as string)}
 											</span>
 										</div>
 										{item["value"] != null && (
 											<span className="font-mono font-medium tabular-nums text-foreground">
-												{(item["value"] as number).toLocaleString()}
+												{(
+													item["value"] as number
+												).toLocaleString()}
 											</span>
 										)}
 									</div>

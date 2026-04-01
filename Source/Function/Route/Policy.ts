@@ -56,8 +56,9 @@ const WarnLog = __DEV__
 
 	if (!window._POLICY_ROUTE.RouteWorker) {
 		try {
-			window._POLICY_ROUTE.RouteWorker =
-				window.trustedTypes.createPolicy("RouteWorker", {
+			window._POLICY_ROUTE.RouteWorker = window.trustedTypes.createPolicy(
+				"RouteWorker",
+				{
 					createScriptURL: (Input) => {
 						if (
 							Input &&
@@ -80,7 +81,8 @@ const WarnLog = __DEV__
 							`Invalid URL format for route service worker script: ${Input}`,
 						);
 					},
-				});
+				},
+			);
 
 			__DEV__ &&
 				Log("Policy 'RouteWorker' created and stored successfully.");
@@ -95,10 +97,7 @@ const WarnLog = __DEV__
 					);
 			} else {
 				__DEV__ &&
-					ErrorLog(
-						"Failed to create policy 'RouteWorker':",
-						_Error,
-					);
+					ErrorLog("Failed to create policy 'RouteWorker':", _Error);
 			}
 		}
 	} else {

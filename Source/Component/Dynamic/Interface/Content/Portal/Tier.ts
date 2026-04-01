@@ -1,7 +1,7 @@
 export interface TierItem {
 	Heading: string;
 	Description: string;
-	Icon?: string;
+	Icon?: string[];
 }
 
 export default interface Interface {

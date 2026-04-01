@@ -75,7 +75,7 @@
 		"tiers": {
 			"free": {
 				"name": "Communaute",
-				"description": "Pour tout le monde. Toutes les fonctionnalites, entierement gratuit.",
+				"description": "Pour tout le monde.\nToutes les fonctionnalites, entierement gratuit.",
 				"features": {
 					"1": "Compatibilite complete VS Code",
 					"2": "Toutes les extensions supportees",
@@ -108,11 +108,11 @@
 	},
 	"roadmap": {
 		"title": "Feuille de route et perspectives",
-		"subtitle": "Finance par le NGI0 Commons Fund. Open source, gratuit pour toujours, developpe en public.",
+		"subtitle": "Finance par le NGI0 Commons Fund.\nOpen source, gratuit pour toujours, developpe en public.",
 		"tiers": {
 			"current": {
 				"name": "Phase actuelle",
-				"description": "Fondations et structure de base de l'editeur. Developpement actif.",
+				"description": "Fondations et structure de base de l'editeur.\nDeveloppement actif.",
 				"features": {
 					"1": "Mountain : backend natif Rust/Tauri",
 					"2": "Cocoon : hote d'extensions VS Code via Effect-TS",
@@ -149,29 +149,29 @@
 	},
 	"architecture": {
 		"title": "Architecture",
-		"subtitle": "Land remplace la pile Electron de VS Code par une architecture modulaire et haute performance. Chaque element est un depot autonome.",
+		"subtitle": "Land remplace la pile Electron de VS Code par une architecture modulaire et haute performance.\nChaque element est un depot autonome.",
 		"mountain": {
-			"description": "Gere les fenetres, le systeme de fichiers et le cycle de vie des processus. Le backend natif Rust/Tauri qui remplace le processus principal d'Electron.",
+			"description": "Gere les fenetres, le systeme de fichiers et le cycle de vie des processus.\nLe backend natif Rust/Tauri qui remplace le processus principal d'Electron.",
 			"subtitle": "Backend natif Rust/Tauri"
 		},
 		"cocoon": {
-			"description": "Execute les extensions VS Code via Effect-TS avec une compatibilite API haute fidelite. Aucune modification necessaire pour les extensions existantes.",
+			"description": "Execute les extensions VS Code via Effect-TS avec une compatibilite API haute fidelite.\nAucune modification necessaire pour les extensions existantes.",
 			"subtitle": "Hote d'extensions TypeScript"
 		},
 		"wind": {
-			"description": "Reimplementation du Workbench VS Code. Fournit le shell de l'editeur, les panneaux, les barres laterales et la barre d'activite.",
+			"description": "Reimplementation du Workbench VS Code.\nFournit le shell de l'editeur, les panneaux, les barres laterales et la barre d'activite.",
 			"subtitle": "Service UI TypeScript"
 		},
 		"sky": {
-			"description": "Rend l'interface de l'editeur avec des composants Astro. Gere les themes, les mises en page et la couche de presentation visuelle.",
+			"description": "Rend l'interface de l'editeur avec des composants Astro.\nGere les themes, les mises en page et la couche de presentation visuelle.",
 			"subtitle": "Composant UI Astro"
 		},
 		"air": {
-			"description": "Daemon en arriere-plan pour les mises a jour automatiques, les telechargements et la signature cryptographique. Maintient Land a jour silencieusement.",
+			"description": "Daemon en arriere-plan pour les mises a jour automatiques, les telechargements et la signature cryptographique.\nMaintient Land a jour silencieusement.",
 			"subtitle": "Daemon Rust en arriere-plan"
 		},
 		"echo": {
-			"description": "Executeur haute performance par vol de travail. Planifie et distribue les taches entre les coeurs pour un debit maximal.",
+			"description": "Executeur haute performance par vol de travail.\nPlanifie et distribue les taches entre les coeurs pour un debit maximal.",
 			"subtitle": "Planificateur de taches Rust"
 		}
 	}

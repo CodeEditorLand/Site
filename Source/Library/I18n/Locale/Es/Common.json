@@ -116,7 +116,7 @@
 		},
 		"step2": {
 			"title": "Configurar el entorno",
-			"description": "Instale Rust (1.95.0+), Node.js y pnpm. Luego ejecute:"
+			"description": "Instale Rust (1.95.0+), Node.js y pnpm.\nLuego ejecute:"
 		},
 		"step3": {
 			"title": "Realizar los cambios",
@@ -227,7 +227,7 @@
 			"memberSinceLabel": "Miembro desde",
 			"notSignedIn": "Inicie sesion para ver los detalles de su cuenta.",
 			"signInButton": "Iniciar sesion",
-			"emailNotVerified": "Correo no verificado. Revise su bandeja de entrada.",
+			"emailNotVerified": "Correo no verificado.\nRevise su bandeja de entrada.",
 			"enterpriseSSO": "SSO empresarial activo"
 		},
 		"downloads": {
@@ -262,20 +262,20 @@
 			"heading": "Estado de telemetria",
 			"production": {
 				"title": "Telemetria de compilacion de produccion",
-				"description": "La telemetria esta desactivada por defecto. La funcion Telemetry de Cargo no esta en las funciones predeterminadas. Todo el rastreo se compila a operaciones de costo cero."
+				"description": "La telemetria esta desactivada por defecto.\nLa funcion Telemetry de Cargo no esta en las funciones predeterminadas.\nTodo el rastreo se compila a operaciones de costo cero."
 			},
 			"otel": {
 				"title": "OpenTelemetry (opcional)",
-				"description": "Active con cargo build --features Telemetry. Rastreo OTEL solo local, metricas y spans distribuidos. Sin transmision externa."
+				"description": "Active con cargo build --features Telemetry.\nRastreo OTEL solo local, metricas y spans distribuidos.\nSin transmision externa."
 			},
 			"effect": {
 				"title": "Telemetria local de Effect-TS",
-				"description": "El host de extensiones Cocoon utiliza TelemetryService para instrumentacion RPC interna y cronometraje de arranque. Todos los datos permanecen locales."
+				"description": "El host de extensiones Cocoon utiliza TelemetryService para instrumentacion RPC interna y cronometraje de arranque.\nTodos los datos permanecen locales."
 			}
 		},
 		"buildLog": {
 			"heading": "Configuracion de compilacion",
-			"subtitle": "Variante de compilacion activa y modo de despliegue. Disponible a traves de la conexion Local-First Air Daemon.",
+			"subtitle": "Variante de compilacion activa y modo de despliegue.\nDisponible a traves de la conexion Local-First Air Daemon.",
 			"profile": {
 				"heading": "Perfil activo"
 			},
@@ -294,7 +294,7 @@
 			"heading": "Conexion del editor",
 			"subtitle": "Conecte el sitio web a su instancia de Land en ejecucion.",
 			"status": "No conectado",
-			"description": "El Air Daemon conecta este panel con un editor Land en ejecucion a traves de WebSocket. Inicie Land para activar registros de compilacion en tiempo real, telemetria y gestion de configuracion.",
+			"description": "El Air Daemon conecta este panel con un editor Land en ejecucion a traves de WebSocket.\nInicie Land para activar registros de compilacion en tiempo real, telemetria y gestion de configuracion.",
 			"connect": "Conectar via portal"
 		},
 		"partners": {

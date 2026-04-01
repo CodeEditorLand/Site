@@ -1,30 +1,36 @@
 import {
+	Box,
 	Building2,
 	Check,
+	CirclePlay,
 	Cloud,
+	FileText,
+	GitBranch,
 	GitFork,
 	Globe,
+	Hammer,
 	HardDrive,
 	Key,
+	KeyRound,
 	Lock,
 	Monitor,
+	Puzzle,
 	RefreshCw,
+	Rocket,
 	Server,
+	Settings,
 	Shield,
+	UserPlus,
 	Users,
 	Wifi,
+	WifiOff,
 	type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-} from "../UI/Card";
+import { Card, CardContent, CardHeader, CardTitle } from "../UI/Card";
 import { DynamicInput } from "./DynamicInput";
 import type PortalContent from "./Interface/Content/Page/Portal.js";
 import type TierContent from "./Interface/Content/Portal/Tier.js";
@@ -33,30 +39,37 @@ import type TierContent from "./Interface/Content/Portal/Tier.js";
  * Icon registry for tier icons.
  */
 const TierIconRegistry: Record<string, LucideIcon> = {
+	Box,
 	Building2,
+	CirclePlay,
 	Cloud,
+	FileText,
+	GitBranch,
 	GitFork,
 	Globe,
+	Hammer,
 	HardDrive,
 	Key,
+	KeyRound,
 	Lock,
 	Monitor,
+	Puzzle,
 	RefreshCw,
+	Rocket,
 	Server,
+	Settings,
 	Shield,
+	UserPlus,
 	Users,
 	Wifi,
+	WifiOff,
 };
 
 /**
  * Enterprise SSO form with organization domain input and Auth0 redirect buttons.
  * Routes through Auth0 Enterprise Connections (Okta, Azure AD, SAML).
  */
-const EnterpriseSSOForm = ({
-	Content,
-}: {
-	Content: TierContent;
-}) => {
+const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const [OrganizationDomain, SetOrganizationDomain] = useState("");
 	const { t: T } = useTranslation("account");
 
@@ -90,12 +103,9 @@ const EnterpriseSSOForm = ({
 						label: T("portal.enterprise.domainLabel", {
 							defaultValue: "Work Email or Domain",
 						}),
-						placeholder: T(
-							"portal.enterprise.domainPlaceholder",
-							{
-								defaultValue: "name@company.com",
-							},
-						),
+						placeholder: T("portal.enterprise.domainPlaceholder", {
+							defaultValue: "name@company.com",
+						}),
 						type: "email",
 						required: false,
 						onChange: SetOrganizationDomain,
@@ -114,10 +124,7 @@ const EnterpriseSSOForm = ({
 						defaultValue: "Continue with SSO",
 					})}
 					{"\u2001"}
-					<Building2
-						className="h-4 w-4"
-						aria-hidden="true"
-					/>
+					<Building2 className="h-4 w-4" aria-hidden="true" />
 				</Button>
 			</form>
 
@@ -132,7 +139,14 @@ const EnterpriseSSOForm = ({
 					defaultValue: "Continue with Okta",
 				})}
 				{"\u2001"}
-				<img src="/Image/Okta.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
+				<img
+					src="/Image/Okta.svg"
+					alt="Okta"
+					title="Okta"
+					width="20"
+					height="20"
+					className="h-5 w-5"
+				/>
 			</Button>
 			<Button
 				className="StaccatoButton w-full"
@@ -143,7 +157,14 @@ const EnterpriseSSOForm = ({
 					defaultValue: "Continue with Azure AD",
 				})}
 				{"\u2001"}
-				<img src="/Image/Microsoft.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
+				<img
+					src="/Image/Microsoft.svg"
+					alt="Microsoft"
+					title="Microsoft Azure AD"
+					width="20"
+					height="20"
+					className="h-5 w-5"
+				/>
 			</Button>
 			<Button
 				className="StaccatoButton w-full"
@@ -154,10 +175,7 @@ const EnterpriseSSOForm = ({
 					defaultValue: "Continue with SAML",
 				})}
 				{"\u2001"}
-				<Lock
-					className="h-4 w-4"
-					aria-hidden="true"
-				/>
+				<Lock className="h-4 w-4" aria-hidden="true" />
 			</Button>
 
 			<div className="PortalTierDivider StaccatoSeparator" />
@@ -308,7 +326,14 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with GitHub
 									{"\u2001"}
-									<img src="/Image/GitHub.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
+									<img
+										src="/Image/GitHub.svg"
+										alt="GitHub"
+										title="GitHub"
+										width="20"
+										height="20"
+										className="h-5 w-5"
+									/>
 								</Button>
 								<Button
 									className="StaccatoButton w-full"
@@ -317,7 +342,14 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with Google
 									{"\u2001"}
-									<img src="/Image/Google.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
+									<img
+										src="/Image/Google.svg"
+										alt="Google"
+										title="Google"
+										width="20"
+										height="20"
+										className="h-5 w-5"
+									/>
 								</Button>
 								<Button
 									className="StaccatoButton w-full"
@@ -326,7 +358,14 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with GitLab
 									{"\u2001"}
-									<img src="/Image/GitLab.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
+									<img
+										src="/Image/GitLab.svg"
+										alt="GitLab"
+										title="GitLab"
+										width="20"
+										height="20"
+										className="h-5 w-5"
+									/>
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
@@ -374,9 +413,7 @@ const PortalTierRow = ({
 						)}
 
 						{IsEnterprise && (
-							<EnterpriseSSOForm
-								Content={Content}
-							/>
+							<EnterpriseSSOForm Content={Content} />
 						)}
 					</CardContent>
 				</Card>
@@ -407,21 +444,101 @@ const PortalTierRow = ({
 
 				{/* Features list */}
 				<div className="PortalTierFeatureList">
-					<h4 className="PortalTierFeatureHeading">{Labels?.Included ?? "Included"}</h4>
+					<h4 className="PortalTierFeatureHeading">
+						{Labels?.Included ?? "Included"}
+					</h4>
 					<ul className="PortalTierFeatureItems">
 						{Content.Feature.map((Feature, FeatureIndex) => (
 							<li
 								key={FeatureIndex}
 								className="PortalTierFeatureItem">
-								<span className="text-sm font-medium">{Feature.Heading}</span>
-								<span className="text-sm text-muted-foreground">
+								<span className="text-sm font-medium">
+									{Feature.Heading}
+								</span>
+								<span className="text-xs text-muted-foreground">
 									{Feature.Description}
-									{"\u2001"}
-									<Check
-										className="StaccatoCheckmark inline h-4 w-4 align-text-bottom"
-										aria-hidden="true"
-										style={{ color: Content.Color }}
-									/>
+									{Feature.Icon &&
+										Feature.Icon.length > 0 && (
+											<span
+												className="inline-flex items-center align-middle"
+												role="img"
+												aria-label={`${Feature.Heading} technology stack`}>
+												{Feature.Icon.map(
+													(IconName, IconIndex) => {
+														const IconLabel =
+															IconName.startsWith(
+																"/",
+															)
+																? (IconName.split(
+																		"/",
+																	)
+																		.pop()
+																		?.replace(
+																			".svg",
+																			"",
+																		) ?? "")
+																: IconName;
+														return (
+															<span
+																key={IconIndex}
+																className="inline-flex items-center">
+																{IconIndex ===
+																0 ? (
+																	"\u2001"
+																) : (
+																	<>
+																		{
+																			"\u2001"
+																		}
+																		+
+																		{
+																			"\u2001"
+																		}
+																	</>
+																)}
+																{IconName.startsWith(
+																	"/",
+																) ? (
+																	<img
+																		src={
+																			IconName
+																		}
+																		alt={
+																			IconLabel
+																		}
+																		title={
+																			IconLabel
+																		}
+																		width="16"
+																		height="16"
+																		className="h-4 w-4"
+																	/>
+																) : (
+																	(() => {
+																		const FeatureIcon =
+																			TierIconRegistry[
+																				IconName
+																			];
+																		return FeatureIcon ? (
+																			<FeatureIcon
+																				className="h-4 w-4"
+																				aria-label={
+																					IconLabel
+																				}
+																				role="img"
+																				style={{
+																					color: Content.Color,
+																				}}
+																			/>
+																		) : null;
+																	})()
+																)}
+															</span>
+														);
+													},
+												)}
+											</span>
+										)}
 								</span>
 							</li>
 						))}

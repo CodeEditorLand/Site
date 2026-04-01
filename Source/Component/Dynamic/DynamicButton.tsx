@@ -44,11 +44,7 @@ const ButtonIconRegistry: Record<string, LucideIcon> = {
  * Icons render immediately via direct imports (no dynamic import flash).
  * Loading state uses StaccatoSpinner for breathing opacity.
  */
-const DynamicButton = ({
-	content,
-	onAction,
-	isLoading = false,
-}: Property) => {
+const DynamicButton = ({ content, onAction, isLoading = false }: Property) => {
 	const {
 		text,
 		icon,

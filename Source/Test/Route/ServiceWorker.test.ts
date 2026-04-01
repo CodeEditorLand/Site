@@ -47,8 +47,7 @@ const ResolveRoute = (
 
 	const Stripped =
 		"/" +
-		Normalized
-			.replace(/^\/+/, "")
+		Normalized.replace(/^\/+/, "")
 			.split("/")
 			.map((Segment: string) => Segment.replace(/[-_]/g, ""))
 			.join("/");
@@ -135,7 +134,9 @@ describe("NormalizePath", () => {
 
 describe("ResolveRoute", () => {
 	it("returns null for canonical paths (no redirect needed)", () => {
-		expect(ResolveRoute("/Download", TestCanonical, TestVariant)).toBeNull();
+		expect(
+			ResolveRoute("/Download", TestCanonical, TestVariant),
+		).toBeNull();
 		expect(ResolveRoute("/Doc", TestCanonical, TestVariant)).toBeNull();
 		expect(ResolveRoute("/", TestCanonical, TestVariant)).toBeNull();
 		expect(
@@ -198,11 +199,11 @@ describe("ResolveRoute", () => {
 		expect(
 			ResolveRoute("/account/signin", TestCanonical, TestVariant),
 		).toBe("/Account/SignIn");
-		expect(
-			ResolveRoute("/legal/terms", TestCanonical, TestVariant),
-		).toBe("/Legal/Term");
-		expect(
-			ResolveRoute("/legal/privacy", TestCanonical, TestVariant),
-		).toBe("/Legal/Privacy");
+		expect(ResolveRoute("/legal/terms", TestCanonical, TestVariant)).toBe(
+			"/Legal/Term",
+		);
+		expect(ResolveRoute("/legal/privacy", TestCanonical, TestVariant)).toBe(
+			"/Legal/Privacy",
+		);
 	});
 });

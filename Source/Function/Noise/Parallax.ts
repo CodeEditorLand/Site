@@ -1,5 +1,6 @@
 const GetScrollProgress = (): number => {
-	const ScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	const ScrollTop =
+		document.documentElement.scrollTop || document.body.scrollTop;
 	const ScrollHeight =
 		document.documentElement.scrollHeight -
 		document.documentElement.clientHeight;

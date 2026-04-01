@@ -84,9 +84,13 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 						icon: "Apple",
 						description: "Universal Binary",
 						version: Latest.version,
-						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "45.2 MB",
+						size: Latest.fileSize
+							? FormatBytes(Latest.fileSize)
+							: "45.2 MB",
 						checksum: Latest.sha256,
-						...(Latest.pgpSignature ? { signature: Latest.pgpSignature } : {}),
+						...(Latest.pgpSignature
+							? { signature: Latest.pgpSignature }
+							: {}),
 						requirements: [
 							"macOS 11.0 (Big Sur) or later",
 							"4 GB RAM",
@@ -100,9 +104,13 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 						icon: "Monitor",
 						description: "64-bit (x64)",
 						version: Latest.version,
-						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "48.7 MB",
+						size: Latest.fileSize
+							? FormatBytes(Latest.fileSize)
+							: "48.7 MB",
 						checksum: Latest.sha256,
-						...(Latest.pgpSignature ? { signature: Latest.pgpSignature } : {}),
+						...(Latest.pgpSignature
+							? { signature: Latest.pgpSignature }
+							: {}),
 						requirements: [
 							"Windows 10 or later (64-bit)",
 							"4 GB RAM",
@@ -116,9 +124,13 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 						icon: "Terminal",
 						description: "DEB, RPM, AppImage",
 						version: Latest.version,
-						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "41.3 MB",
+						size: Latest.fileSize
+							? FormatBytes(Latest.fileSize)
+							: "41.3 MB",
 						checksum: Latest.sha256,
-						...(Latest.pgpSignature ? { signature: Latest.pgpSignature } : {}),
+						...(Latest.pgpSignature
+							? { signature: Latest.pgpSignature }
+							: {}),
 						requirements: [
 							"glibc 2.28+",
 							"4 GB RAM",

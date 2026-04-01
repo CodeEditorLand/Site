@@ -1,7 +1,7 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "The next-generation code editor. Open source and free forever."
+		"description": "The next-generation code editor.\nOpen source and free forever."
 	},
 	"columns": {
 		"product": {
@@ -24,7 +24,7 @@
 		}
 	},
 	"bottomBar": {
-		"copyright": "© {{year}} Code Editor Land. All rights reserved.",
+		"copyright": "© {{year}} Code Editor Land.\nAll rights reserved.",
 		"builtBy": "Built by the Code Editor Land team",
 		"madeWith": "Made with"
 	},

@@ -49,9 +49,7 @@ const WarnLog = __DEV__
 if ("serviceWorker" in navigator) {
 	const RegisteredKey = "RouteWorkerRegistered";
 
-	const CheckForUpdate = async (
-		Registration: ServiceWorkerRegistration,
-	) => {
+	const CheckForUpdate = async (Registration: ServiceWorkerRegistration) => {
 		const Update = await Registration.update();
 
 		__DEV__ &&
@@ -77,9 +75,7 @@ if ("serviceWorker" in navigator) {
 
 			if (window.trustedTypes) {
 				__DEV__ &&
-					Log(
-						"TrustedTypes available. Using RouteWorker policy...",
-					);
+					Log("TrustedTypes available. Using RouteWorker policy...");
 
 				try {
 					const Policy = window._POLICY_ROUTE?.RouteWorker;
@@ -96,16 +92,10 @@ if ("serviceWorker" in navigator) {
 
 					URL = Policy.createScriptURL(Path);
 
-					__DEV__ &&
-						Log(
-							`Created TrustedScriptURL for: ${Path}`,
-						);
+					__DEV__ && Log(`Created TrustedScriptURL for: ${Path}`);
 				} catch (_Error) {
 					__DEV__ &&
-						ErrorLog(
-							"TrustedScriptURL creation failed:",
-							_Error,
-						);
+						ErrorLog("TrustedScriptURL creation failed:", _Error);
 
 					throw _Error;
 				}
@@ -157,10 +147,7 @@ if ("serviceWorker" in navigator) {
 			}
 
 			if (!InitiallyControlled && !Controlled) {
-				__DEV__ &&
-					Log(
-						"Page not yet controlled. Setting reload flag.",
-					);
+				__DEV__ && Log("Page not yet controlled. Setting reload flag.");
 
 				sessionStorage.setItem(Reload, "true");
 
@@ -176,20 +163,14 @@ if ("serviceWorker" in navigator) {
 			}
 
 			// Listen for version updates from the service worker
-			navigator.serviceWorker.addEventListener(
-				"message",
-				(Event) => {
-					if (Event.data?.Version === "New") {
-						__DEV__ &&
-							Log(
-								"New SW version detected. Route map updated.",
-							);
-					}
-				},
-			);
+			navigator.serviceWorker.addEventListener("message", (Event) => {
+				if (Event.data?.Version === "New") {
+					__DEV__ &&
+						Log("New SW version detected. Route map updated.");
+				}
+			});
 		} catch (_Error) {
-			__DEV__ &&
-				ErrorLog("Registration failed:", _Error);
+			__DEV__ && ErrorLog("Registration failed:", _Error);
 
 			if (
 				_Error instanceof TypeError &&

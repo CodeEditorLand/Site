@@ -4,8 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Button } from "../UI/Button";
 import { Header } from "../Layout/Header";
+import { Button } from "../UI/Button";
 
 /**
  * Auth0 redirect-based account gate.
@@ -96,9 +96,11 @@ export default ({
 	if (IsLoading) {
 		return (
 			<div className="flex min-h-screen flex-col">
-				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
+				<Header
+					{...(HeaderContent ? { content: HeaderContent } : {})}
+				/>
 				<div className="flex flex-1 items-center justify-center">
-					<p className="text-muted-foreground text-sm">
+					<p className="text-sm text-muted-foreground">
 						{T("loading", { defaultValue: "Loading..." })}
 					</p>
 				</div>
@@ -109,18 +111,17 @@ export default ({
 	if (Error) {
 		return (
 			<div className="flex min-h-screen flex-col">
-				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
+				<Header
+					{...(HeaderContent ? { content: HeaderContent } : {})}
+				/>
 				<div className="flex flex-1 flex-col items-center justify-center gap-4 px-4">
-					<p className="text-destructive text-sm">
+					<p className="text-sm text-destructive">
 						{T("error", {
 							defaultValue: "Authentication error",
 						})}
 						: {Error.message}
 					</p>
-					<Button
-						variant="outline"
-						onClick={() => Login()}
-					>
+					<Button variant="outline" onClick={() => Login()}>
 						{T("tryAgain", {
 							defaultValue: "Try again",
 						})}
@@ -138,13 +139,11 @@ export default ({
 
 		return (
 			<div className="flex min-h-screen flex-col">
-				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
+				<Header
+					{...(HeaderContent ? { content: HeaderContent } : {})}
+				/>
 				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-4">
-					<Button
-						variant="default"
-						className="w-full"
-						asChild
-					>
+					<Button variant="default" className="w-full" asChild>
 						<a href="/Dashboard">
 							{T("dashboard", {
 								defaultValue: "Go to Dashboard",
@@ -155,8 +154,7 @@ export default ({
 					<Button
 						variant="outline"
 						className="w-full"
-						onClick={Logout}
-					>
+						onClick={Logout}>
 						{T("logout", {
 							defaultValue: "Logout",
 						})}
@@ -172,18 +170,17 @@ export default ({
 						/>
 					)}
 
-					<h2 className="text-lg font-semibold">
-						{DisplayName}
-					</h2>
+					<h2 className="text-lg font-semibold">{DisplayName}</h2>
 
-					<p className="text-muted-foreground text-sm">
+					<p className="text-sm text-muted-foreground">
 						{User.email}
 					</p>
 
 					{User.email_verified === false && (
 						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-xs text-yellow-700">
 							{T("emailNotVerified", {
-								defaultValue: "Email not verified. Check your inbox.",
+								defaultValue:
+									"Email not verified. Check your inbox.",
 							})}
 						</p>
 					)}
@@ -197,7 +194,7 @@ export default ({
 		<div className="flex min-h-screen flex-col">
 			<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
 			<div className="flex flex-1 items-center justify-center">
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					{T("redirecting", {
 						defaultValue: "Redirecting to sign in...",
 					})}

@@ -1,7 +1,7 @@
 ---
-import { Header } from "../Component/Layout/Header";
 import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
 import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
+import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -23,8 +23,7 @@ const TransparencyContent = {
 				"Production builds ship with telemetry completely disabled. The Telemetry Cargo feature flag is not in default features — it must be explicitly opted in at compile time.",
 			Icon: "EyeOff",
 			Status: "Disabled" as const,
-			Detail:
-				"Default features: ExtensionHostCocoon, MistNative, AirIntegration. No Telemetry.",
+			Detail: "Default features: ExtensionHostCocoon, MistNative, AirIntegration. No Telemetry.",
 		},
 		{
 			Identifier: "no-crash-reporter",
@@ -33,8 +32,7 @@ const TransparencyContent = {
 				"No crash reporter IDs, no external error reporting endpoints. Errors stay local. No crashReporterId in product.json.",
 			Icon: "Shield",
 			Status: "Disabled" as const,
-			Detail:
-				"Code-OSS base: CC0 licensed, no Microsoft telemetry endpoints.",
+			Detail: "Code-OSS base: CC0 licensed, no Microsoft telemetry endpoints.",
 		},
 		{
 			Identifier: "no-phone-home",
@@ -51,8 +49,7 @@ const TransparencyContent = {
 				"When telemetry is disabled, all tracing, metrics, and spans compile to zero-cost no-ops. No runtime overhead whatsoever.",
 			Icon: "Zap",
 			Status: "Active" as const,
-			Detail:
-				"Rust #[cfg(feature)] gates eliminate dead code at compile time.",
+			Detail: "Rust #[cfg(feature)] gates eliminate dead code at compile time.",
 		},
 		{
 			Identifier: "opt-in-otel",
@@ -61,8 +58,7 @@ const TransparencyContent = {
 				"Opt-in compile flag enables local OpenTelemetry tracing, metrics collection, and distributed spans. All data stays on your machine.",
 			Icon: "Eye",
 			Status: "Optional" as const,
-			Detail:
-				"Enable with: cargo build --features Telemetry. Sub-features: MetricsCollection, DistributedTracing.",
+			Detail: "Enable with: cargo build --features Telemetry. Sub-features: MetricsCollection, DistributedTracing.",
 		},
 		{
 			Identifier: "effect-ts-local",
@@ -332,7 +328,8 @@ const MetaDescription = T("meta.downloads.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription}>
 	<Header client:load />
-	<div class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
+	<div
+		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
 		<picture>
 			<img
 				alt="Land"
@@ -341,22 +338,32 @@ const MetaDescription = T("meta.downloads.description", {
 				height="24"
 			/>
 		</picture>
-		<span class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-			No Telemetry&#x2001;<span class="h-1.5 w-1.5 rounded-none bg-green-500" aria-hidden="true"></span>
+		<span
+			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+			No Telemetry&#x2001;<span
+				class="h-1.5 w-1.5 rounded-none bg-green-500"
+				aria-hidden="true"></span>
 		</span>
-		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
 			CC0 Licensed
 		</span>
-		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
 			PGP Signed
 		</span>
-		<span class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700">
-			Mountain (Recommended)&#x2001;<span class="h-1.5 w-1.5 rounded-none bg-blue-500" aria-hidden="true"></span>
+		<span
+			class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700">
+			Mountain (Recommended)&#x2001;<span
+				class="h-1.5 w-1.5 rounded-none bg-blue-500"
+				aria-hidden="true"></span>
 		</span>
-		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
 			9 Profiles
 		</span>
-		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
 			16 Test Permutations
 		</span>
 	</div>

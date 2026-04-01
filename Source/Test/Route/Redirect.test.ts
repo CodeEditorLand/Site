@@ -88,9 +88,7 @@ describe("RedirectFromRouteMap logic", () => {
 	});
 
 	it("redirects lowercase built paths to PascalCase", async () => {
-		expect(await RunRedirect("/downloads", TestRouteMap)).toBe(
-			"/Download",
-		);
+		expect(await RunRedirect("/downloads", TestRouteMap)).toBe("/Download");
 		expect(await RunRedirect("/docs", TestRouteMap)).toBe("/Doc");
 		expect(await RunRedirect("/blog", TestRouteMap)).toBe("/Blog");
 	});
@@ -103,9 +101,7 @@ describe("RedirectFromRouteMap logic", () => {
 	});
 
 	it("redirects uppercase variants via lowercase fallback", async () => {
-		expect(await RunRedirect("/DOWNLOADS", TestRouteMap)).toBe(
-			"/Download",
-		);
+		expect(await RunRedirect("/DOWNLOADS", TestRouteMap)).toBe("/Download");
 	});
 
 	it("redirects stripped hyphen variants", async () => {
@@ -120,9 +116,7 @@ describe("RedirectFromRouteMap logic", () => {
 
 	it("returns null for unknown paths", async () => {
 		expect(await RunRedirect("/nonexistent", TestRouteMap)).toBeNull();
-		expect(
-			await RunRedirect("/some/random/path", TestRouteMap),
-		).toBeNull();
+		expect(await RunRedirect("/some/random/path", TestRouteMap)).toBeNull();
 	});
 
 	it("handles trailing slash paths", async () => {

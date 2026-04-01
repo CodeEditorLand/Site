@@ -65,9 +65,7 @@ describe("SemanticAlias", () => {
 		expect(SemanticAlias["/forgot-password"]).toBe(
 			"/Account/ForgotPassword",
 		);
-		expect(SemanticAlias["/reset-password"]).toBe(
-			"/Account/ResetPassword",
-		);
+		expect(SemanticAlias["/reset-password"]).toBe("/Account/ResetPassword");
 	});
 
 	it("includes download shorthand aliases", () => {
@@ -85,9 +83,8 @@ describe("SemanticAlias", () => {
 
 describe("GenerateRouteMap", () => {
 	it("generates a valid route map from PascalCase output directory", async () => {
-		const { mkdtemp, mkdir, writeFile, rm } = await import(
-			"node:fs/promises"
-		);
+		const { mkdtemp, mkdir, writeFile, rm } =
+			await import("node:fs/promises");
 		const { join } = await import("node:path");
 		const { tmpdir } = await import("node:os");
 
@@ -157,9 +154,8 @@ describe("GenerateRouteMap", () => {
 	});
 
 	it("includes trailing slash variants", async () => {
-		const { mkdtemp, mkdir, writeFile, rm } = await import(
-			"node:fs/promises"
-		);
+		const { mkdtemp, mkdir, writeFile, rm } =
+			await import("node:fs/promises");
 		const { join } = await import("node:path");
 		const { tmpdir } = await import("node:os");
 
@@ -171,10 +167,7 @@ describe("GenerateRouteMap", () => {
 				join(TempDirectory, "Download", "index.html"),
 				"<html></html>",
 			);
-			await writeFile(
-				join(TempDirectory, "index.html"),
-				"<html></html>",
-			);
+			await writeFile(join(TempDirectory, "index.html"), "<html></html>");
 
 			const RouteMap = await GenerateRouteMap(TempDirectory);
 

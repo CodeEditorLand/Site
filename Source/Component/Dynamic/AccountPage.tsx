@@ -18,7 +18,7 @@ const SetSessionToken = (Token: string): void => {
 		// Cookie API not available during SSR
 	}
 	localStorage.setItem("session_token", Token);
-}
+};
 
 const SetCurrentUser = (CurrentUser: unknown): void => {
 	try {
@@ -26,7 +26,7 @@ const SetCurrentUser = (CurrentUser: unknown): void => {
 	} catch {
 		// Not available during SSR
 	}
-}
+};
 
 const NavigateToPath = (Path: string): void => {
 	window.location.href = Path;
@@ -55,18 +55,15 @@ const AccountPage = ({
 	// Loading states
 	const [, SetIsSignInLoading] = useState(false);
 	const [, SetIsSignUpLoading] = useState(false);
-	const [, SetIsForgotPasswordLoading] =
-		useState(false);
+	const [, SetIsForgotPasswordLoading] = useState(false);
 	const [, SetIsResetPasswordLoading] = useState(false);
 	const [, SetIsOAuthLoading] = useState(false);
 
 	// Error states
 	const [, SetSignInErrorMessage] = useState<string>("");
 	const [, SetSignUpErrorMessage] = useState<string>("");
-	const [, SetForgotPasswordErrorMessage] =
-		useState<string>("");
-	const [, SetResetPasswordErrorMessage] =
-		useState<string>("");
+	const [, SetForgotPasswordErrorMessage] = useState<string>("");
+	const [, SetResetPasswordErrorMessage] = useState<string>("");
 
 	const HandleSignIn = async (
 		Email: string,
@@ -282,6 +279,5 @@ const AccountPage = ({
 };
 
 export { AccountPage };
-
 
 export default AccountPage;

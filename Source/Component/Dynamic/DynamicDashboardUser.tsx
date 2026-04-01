@@ -67,9 +67,11 @@ const DashboardUserInner = () => {
 			<div className="space-y-3 text-sm">
 				<div className="flex justify-between">
 					<span className="text-muted-foreground">
-						{T("dashboard.account.emailLabel", { defaultValue: "Email" })}
+						{T("dashboard.account.emailLabel", {
+							defaultValue: "Email",
+						})}
 					</span>
-					<span className="text-muted-foreground animate-pulse">
+					<span className="animate-pulse text-muted-foreground">
 						{"\u2026"}
 					</span>
 				</div>
@@ -80,7 +82,7 @@ const DashboardUserInner = () => {
 	if (!IsAuthenticated || !User) {
 		return (
 			<div className="space-y-3 text-sm">
-				<p className="text-muted-foreground text-sm">
+				<p className="text-sm text-muted-foreground">
 					{T("dashboard.account.notSignedIn", {
 						defaultValue: "Sign in to see your account details.",
 					})}
@@ -88,8 +90,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={() => Login()}
-					className="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 py-1.5 text-sm font-medium text-white transition-all hover:opacity-90"
-				>
+					className="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 py-1.5 text-sm font-medium text-white transition-all hover:opacity-90">
 					{T("dashboard.account.signInButton", {
 						defaultValue: "Sign In",
 					})}
@@ -112,10 +113,12 @@ const DashboardUserInner = () => {
 
 	const ProviderLabel = DetectProviderLabel(User.sub);
 	const IsEnterprise = IsEnterpriseUser(User.sub);
-	const OrganizationName =
-		(User as Record<string, unknown>)["org_name"] as string | undefined;
-	const OrganizationIdentifier =
-		(User as Record<string, unknown>)["org_id"] as string | undefined;
+	const OrganizationName = (User as Record<string, unknown>)["org_name"] as
+		| string
+		| undefined;
+	const OrganizationIdentifier = (User as Record<string, unknown>)[
+		"org_id"
+	] as string | undefined;
 
 	return (
 		<div className="space-y-3 text-sm">
@@ -138,7 +141,9 @@ const DashboardUserInner = () => {
 			</div>
 			<div className="flex justify-between">
 				<span className="text-muted-foreground">
-					{T("dashboard.account.emailLabel", { defaultValue: "Email" })}
+					{T("dashboard.account.emailLabel", {
+						defaultValue: "Email",
+					})}
 				</span>
 				<span className="text-muted-foreground">
 					{User.email || "--"}
@@ -160,7 +165,9 @@ const DashboardUserInner = () => {
 			</div>
 			<div className="flex justify-between">
 				<span className="text-muted-foreground">
-					{T("dashboard.account.providerLabel", { defaultValue: "Provider" })}
+					{T("dashboard.account.providerLabel", {
+						defaultValue: "Provider",
+					})}
 				</span>
 				<span className="text-muted-foreground">{ProviderLabel}</span>
 			</div>

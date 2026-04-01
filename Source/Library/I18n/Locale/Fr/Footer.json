@@ -1,7 +1,7 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "L'editeur de code de nouvelle generation. Open source et gratuit pour toujours."
+		"description": "L'editeur de code de nouvelle generation.\nOpen source et gratuit pour toujours."
 	},
 	"columns": {
 		"product": {
@@ -24,7 +24,7 @@
 		}
 	},
 	"bottomBar": {
-		"copyright": "© {{year}} Code Editor Land. Tous droits reserves.",
+		"copyright": "© {{year}} Code Editor Land.\nTous droits reserves.",
 		"builtBy": "Cree par l'equipe Code Editor Land",
 		"madeWith": "Fait avec"
 	},

@@ -149,6 +149,46 @@ const DynamicFeatures = ({ content, className }: Property) => {
 								</div>
 								<p className="StaccatoBreath text-muted-foreground">
 									{Feature.description}
+									{Feature.icons &&
+										Feature.icons.length > 0 && (
+											<span className="inline-flex items-center align-middle" role="img" aria-label={`${Feature.title} technology stack`}>
+												{Feature.icons.map(
+													(IconName, IconIndex) => {
+														const StackIcon =
+															FeatureIconRegistry[
+																IconName
+															];
+														return (
+															<span
+																key={IconIndex}
+																className="inline-flex items-center">
+																{IconIndex ===
+																0 ? (
+																	"\u2001"
+																) : (
+																	<>
+																		{
+																			"\u2001"
+																		}
+																		+
+																		{
+																			"\u2001"
+																		}
+																	</>
+																)}
+																{StackIcon ? (
+																	<StackIcon
+																		className="h-4 w-4 text-primary"
+																		aria-label={IconName}
+																		role="img"
+																	/>
+																) : null}
+															</span>
+														);
+													},
+												)}
+											</span>
+										)}
 								</p>
 							</div>
 						);

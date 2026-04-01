@@ -17,7 +17,7 @@
 
 
 
-const INCREMENT = "1775072819155" ?? "Initial";
+const INCREMENT = "1775073734379" ?? "Initial";
 
 const CACHE_ROUTE = `Route-${INCREMENT}`;
 
@@ -111,8 +111,7 @@ const ResolveRoute = (RequestPath) => {
 
 	const Stripped =
 		"/" +
-		Normalized
-			.replace(/^\/+/, "")
+		Normalized.replace(/^\/+/, "")
 			.split("/")
 			.map((Segment) => Segment.replace(/[-_]/g, ""))
 			.join("/");
@@ -137,10 +136,12 @@ self.addEventListener("install", (Event: ExtendableEvent) => {
 
 				return Cache;
 			})
-			.catch((_Error: unknown) => false && ErrorLog("Cache open failed:", _Error))
+			.catch(
+				(_Error: unknown) =>
+					false && ErrorLog("Cache open failed:", _Error),
+			)
 			.then(() => {
-				false &&
-					Log("Install complete. Activating immediately.");
+				false && Log("Install complete. Activating immediately.");
 
 				return self.skipWaiting();
 			}),
@@ -170,8 +171,7 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 					),
 				)
 				.catch((_Error: unknown) => {
-					false &&
-						ErrorLog("Cache cleanup failed:", _Error);
+					false && ErrorLog("Cache cleanup failed:", _Error);
 
 					return Promise.resolve();
 				}),
@@ -182,8 +182,7 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 					false && Log("Clients claimed successfully.");
 				})
 				.catch((_Error: unknown) => {
-					false &&
-						ErrorLog("self.clients.claim() failed:", _Error);
+					false && ErrorLog("self.clients.claim() failed:", _Error);
 
 					return Promise.resolve();
 				}),
@@ -390,8 +389,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					}
 				})
 				.catch((_Error: unknown) => {
-					false &&
-						ErrorLog(`Asset cache error: ${Path}`, _Error);
+					false && ErrorLog(`Asset cache error: ${Path}`, _Error);
 
 					return fetch(Request);
 				}),

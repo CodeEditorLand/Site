@@ -80,15 +80,13 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 					const PathOnly = RawPath.split("?")[0]!;
 
 					const Cleaned =
-						PathOnly === "/"
-							? "/"
-							: PathOnly.replace(/\/+$/, "");
+						PathOnly === "/" ? "/" : PathOnly.replace(/\/+$/, "");
 
 					// In dev, Astro serves pages at their PascalCase filename
-				// path (e.g., /Download from Download.astro), so PascalCase
-				// canonicals need no rewrite — just pass through.
+					// path (e.g., /Download from Download.astro), so PascalCase
+					// canonicals need no rewrite — just pass through.
 
-				// Check if this is a variant that should redirect
+					// Check if this is a variant that should redirect
 					const Target = DevVariantMap[Cleaned];
 
 					if (Target && Target !== Cleaned) {
@@ -96,9 +94,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 							? "?" + RawPath.split("?")[1]
 							: "";
 
-						logger.info(
-							`[dev] Redirecting ${Cleaned} → ${Target}`,
-						);
+						logger.info(`[dev] Redirecting ${Cleaned} → ${Target}`);
 
 						Response.writeHead(302, {
 							Location: Target + Query,
@@ -232,17 +228,16 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			}
 
 			// Strip TypeScript declarations and comments for raw JS output
-			let ServiceWorkerCode = ServiceWorkerSource
-				.replace(/^\/\/.*$/gm, "")
+			let ServiceWorkerCode = ServiceWorkerSource.replace(
+				/^\/\/.*$/gm,
+				"",
+			)
 				.replace(/^declare var self.*$/m, "")
 				.replace(/^declare const __DEV__.*$/m, "")
 				.replace(/^declare const __INCREMENT__.*$/m, "")
 				.replace(/^declare const __ROUTE_MAP_CANONICAL__.*$/m, "")
 				.replace(/^declare const __ROUTE_MAP_VARIANT__.*$/m, "")
-				.replace(
-					/^import type.*$/gm,
-					"",
-				)
+				.replace(/^import type.*$/gm, "")
 				.replace(/^export interface.*\{[\s\S]*?\}$/gm, "")
 				.replace(/: Set<string>/g, "")
 				.replace(/: Record<string, string>/g, "")
@@ -252,19 +247,15 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				.replace(/^export default \{\};$/m, "");
 
 			// Inject route data + build constants
-			ServiceWorkerCode = ServiceWorkerCode
-				.replace(
-					"__ROUTE_MAP_CANONICAL__",
-					JSON.stringify(RouteMap.Canonical),
-				)
+			ServiceWorkerCode = ServiceWorkerCode.replace(
+				"__ROUTE_MAP_CANONICAL__",
+				JSON.stringify(RouteMap.Canonical),
+			)
 				.replace(
 					"__ROUTE_MAP_VARIANT__",
 					JSON.stringify(RouteMap.Variant),
 				)
-				.replace(
-					/__INCREMENT__/g,
-					JSON.stringify(String(Date.now())),
-				)
+				.replace(/__INCREMENT__/g, JSON.stringify(String(Date.now())))
 				.replace(/__DEV__/g, "false");
 
 			const ServiceWorkerPath = Join(
@@ -274,9 +265,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			await WriteFile(ServiceWorkerPath, ServiceWorkerCode, "utf-8");
 
-			logger.info(
-				"Wrote service-worker.js with route redirect + cache",
-			);
+			logger.info("Wrote service-worker.js with route redirect + cache");
 
 			// ── 5. Cloudflare _redirects — DISABLED ──
 			// _redirects matching on CF Pages is case-insensitive, so a rule
@@ -296,10 +285,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				const SitemapPath = Join(OutputDirectory, FileName);
 
 				try {
-					let SitemapContent = await ReadFile(
-						SitemapPath,
-						"utf-8",
-					);
+					let SitemapContent = await ReadFile(SitemapPath, "utf-8");
 
 					let ReplacementCount = 0;
 
@@ -327,11 +313,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 					}
 
 					if (ReplacementCount > 0) {
-						await WriteFile(
-							SitemapPath,
-							SitemapContent,
-							"utf-8",
-						);
+						await WriteFile(SitemapPath, SitemapContent, "utf-8");
 
 						logger.info(
 							`Fixed ${ReplacementCount} URLs in ${FileName} to PascalCase`,

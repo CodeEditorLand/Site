@@ -185,5 +185,4 @@ const VerifyPage = ({
 
 export { VerifyPage };
 
-
 export default VerifyPage;

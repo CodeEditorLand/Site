@@ -32,9 +32,8 @@ const DownloadsPage = ({ content, className }: Property) => {
 			onDownload: async (Platform: { name: string; id?: string }) => {
 				if (Platform.id) {
 					try {
-						const { default: DownloadAPI } = await import(
-							"../../Library/API/Download.js"
-						);
+						const { default: DownloadAPI } =
+							await import("../../Library/API/Download.js");
 						const Information = await DownloadAPI.GetInfo(
 							Platform.id,
 						);
@@ -42,7 +41,12 @@ const DownloadsPage = ({ content, className }: Property) => {
 						await DownloadAPI.TrackDownload(Platform.id);
 					} catch (DownloadError) {
 						console.error("Download failed:", DownloadError);
-						alert(T("download:labels.downloadFailed", { defaultValue: "Download failed. Please try again." }));
+						alert(
+							T("download:labels.downloadFailed", {
+								defaultValue:
+									"Download failed. Please try again.",
+							}),
+						);
 					}
 				}
 			},

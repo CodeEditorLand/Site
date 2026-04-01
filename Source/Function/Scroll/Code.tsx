@@ -89,7 +89,7 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 					.map((Visible, Character) => (
 						<div key={`char-${Character}`} className="mr-2">
 							{(() => {
-																if (!Matrix) return null;
+								if (!Matrix) return null;
 								const MatrixRowArray =
 									Matrix[Visible.toUpperCase()] ??
 									Matrix[" "];

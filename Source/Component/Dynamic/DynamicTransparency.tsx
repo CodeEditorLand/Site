@@ -34,15 +34,13 @@ const StatusColor: Record<string, string> = {
 	Recommended: "bg-blue-500",
 };
 
-const StatusBadgeVariant: Record<
-	string,
-	"default" | "secondary" | "outline"
-> = {
-	Active: "default",
-	Disabled: "secondary",
-	Optional: "outline",
-	Recommended: "default",
-};
+const StatusBadgeVariant: Record<string, "default" | "secondary" | "outline"> =
+	{
+		Active: "default",
+		Disabled: "secondary",
+		Optional: "outline",
+		Recommended: "default",
+	};
 
 const VariantStatusColor: Record<string, string> = {
 	Recommended: "bg-blue-500",
@@ -160,7 +158,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 										{Item.Description}
 									</p>
 									{Item.Detail && (
-										<p className="text-xs text-muted-foreground/70">
+										<p className="text-muted-foreground/70 text-xs">
 											{Item.Detail}
 										</p>
 									)}
@@ -303,10 +301,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 							className="inline-flex items-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
 							Verify in source code
 							<span className="InlineSeparator">
-								<Code
-									className="h-4 w-4"
-									aria-hidden="true"
-								/>
+								<Code className="h-4 w-4" aria-hidden="true" />
 							</span>
 						</a>
 					</div>

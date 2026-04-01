@@ -4,7 +4,7 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "The next-generation code editor. Open source and free forever."
+		"tagline": "The next-generation code editor.\nOpen source and free forever."
 	},
 	"breadcrumb": {
 		"home": "Home"
@@ -116,7 +116,7 @@
 		},
 		"step2": {
 			"title": "Set Up the Environment",
-			"description": "Install Rust (1.95.0+), Node.js, and pnpm. Then run:"
+			"description": "Install Rust (1.95.0+), Node.js, and pnpm.\nThen run:"
 		},
 		"step3": {
 			"title": "Make Your Changes",
@@ -227,7 +227,7 @@
 			"memberSinceLabel": "Member Since",
 			"notSignedIn": "Sign in to see your account details.",
 			"signInButton": "Sign In",
-			"emailNotVerified": "Email not verified. Check your inbox.",
+			"emailNotVerified": "Email not verified.\nCheck your inbox.",
 			"enterpriseSSO": "Enterprise SSO active"
 		},
 		"downloads": {
@@ -262,20 +262,20 @@
 			"heading": "Telemetry Status",
 			"production": {
 				"title": "Production Build Telemetry",
-				"description": "Telemetry is disabled by default. The Telemetry Cargo feature is not in default features. All tracing compiles to zero-cost no-ops."
+				"description": "Telemetry is disabled by default.\nThe Telemetry Cargo feature is not in default features.\nAll tracing compiles to zero-cost no-ops."
 			},
 			"otel": {
 				"title": "OpenTelemetry (Opt-In)",
-				"description": "Enable with cargo build --features Telemetry. Local-only OTEL tracing, metrics, and distributed spans. No external transmission."
+				"description": "Enable with cargo build --features Telemetry.\nLocal-only OTEL tracing, metrics, and distributed spans.\nNo external transmission."
 			},
 			"effect": {
 				"title": "Effect-TS Local Telemetry",
-				"description": "Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing. All data stays local."
+				"description": "Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing.\nAll data stays local."
 			}
 		},
 		"buildLog": {
 			"heading": "Build Configuration",
-			"subtitle": "Active build variant and deployment mode. Available via Local-First Air Daemon connection.",
+			"subtitle": "Active build variant and deployment mode.\nAvailable via Local-First Air Daemon connection.",
 			"profile": {
 				"heading": "Active Profile"
 			},
@@ -294,7 +294,7 @@
 			"heading": "Editor Connection",
 			"subtitle": "Connect the website to your running Land editor instance.",
 			"status": "Not Connected",
-			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket. Launch Land to enable real-time build logs, telemetry, and configuration management.",
+			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
 			"connect": "Connect via Portal"
 		},
 		"partners": {

@@ -16,7 +16,7 @@
 		}
 	},
 	"page": {
-		"subtitle": "Disponible para macOS, Windows y Linux. Rapido, nativo y gratuito.",
+		"subtitle": "Disponible para macOS, Windows y Linux.\nRapido, nativo y gratuito.",
 		"title": "Descargar Land"
 	},
 	"previousReleases": {
@@ -44,13 +44,13 @@
 		"requirements": "Requisitos:",
 		"loading": "Cargando descargas...",
 		"errorTitle": "No se pudieron cargar las descargas",
-		"downloadFailed": "Descarga fallida. Por favor, intentelo de nuevo.",
+		"downloadFailed": "Descarga fallida.\nPor favor, intentelo de nuevo.",
 		"downloadFor": "Descargar para {{platform}}",
 		"copiedToClipboard": "{{label}} copiado al portapapeles!",
 		"failedToCopy": "Error al copiar {{label}}"
 	},
 	"transparency": {
 		"title": "Transparencia de compilacion",
-		"subtitle": "Divulgacion completa sobre telemetria, variantes de compilacion y despliegue. Verifique todo en el codigo fuente."
+		"subtitle": "Divulgacion completa sobre telemetria, variantes de compilacion y despliegue.\nVerifique todo en el codigo fuente."
 	}
 }

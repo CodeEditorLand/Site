@@ -1,5 +1,10 @@
-import { ExternalLink, GitFork, MessageCircle, Send } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import {
+	ExternalLink,
+	GitFork,
+	MessageCircle,
+	Send,
+	type LucideIcon,
+} from "lucide-react";
 
 import type Property from "./Interface/Property/Footer.js";
 

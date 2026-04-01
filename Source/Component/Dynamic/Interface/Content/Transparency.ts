@@ -1,6 +1,6 @@
-import type TransparencyItem from "../Item/Transparency.js";
 import type BuildVariantItem from "../Item/BuildVariant.js";
 import type DeploymentStrategyItem from "../Item/DeploymentStrategy.js";
+import type TransparencyItem from "../Item/Transparency.js";
 
 export default interface Interface {
 	readonly Title?: string;

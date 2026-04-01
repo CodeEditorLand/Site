@@ -16,7 +16,7 @@
 		}
 	},
 	"page": {
-		"subtitle": "Verfuegbar fuer macOS, Windows und Linux. Schnell, nativ und kostenlos.",
+		"subtitle": "Verfuegbar fuer macOS, Windows und Linux.\nSchnell, nativ und kostenlos.",
 		"title": "Land herunterladen"
 	},
 	"previousReleases": {
@@ -44,13 +44,13 @@
 		"requirements": "Anforderungen:",
 		"loading": "Downloads werden geladen...",
 		"errorTitle": "Downloads konnten nicht geladen werden",
-		"downloadFailed": "Download fehlgeschlagen. Bitte versuchen Sie es erneut.",
+		"downloadFailed": "Download fehlgeschlagen.\nBitte versuchen Sie es erneut.",
 		"downloadFor": "Herunterladen fuer {{platform}}",
 		"copiedToClipboard": "{{label}} in die Zwischenablage kopiert!",
 		"failedToCopy": "{{label}} konnte nicht kopiert werden"
 	},
 	"transparency": {
 		"title": "Build-Transparenz",
-		"subtitle": "Vollstaendige Offenlegung zu Telemetrie, Build-Varianten und Bereitstellung. Alles im Quellcode nachpruefbar."
+		"subtitle": "Vollstaendige Offenlegung zu Telemetrie, Build-Varianten und Bereitstellung.\nAlles im Quellcode nachpruefbar."
 	}
 }

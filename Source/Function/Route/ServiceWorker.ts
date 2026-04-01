@@ -111,8 +111,7 @@ const ResolveRoute = (RequestPath: string): string | null => {
 
 	const Stripped =
 		"/" +
-		Normalized
-			.replace(/^\/+/, "")
+		Normalized.replace(/^\/+/, "")
 			.split("/")
 			.map((Segment: string) => Segment.replace(/[-_]/g, ""))
 			.join("/");
@@ -137,10 +136,12 @@ self.addEventListener("install", (Event: ExtendableEvent) => {
 
 				return Cache;
 			})
-			.catch((_Error: unknown) => __DEV__ && ErrorLog("Cache open failed:", _Error))
+			.catch(
+				(_Error: unknown) =>
+					__DEV__ && ErrorLog("Cache open failed:", _Error),
+			)
 			.then(() => {
-				__DEV__ &&
-					Log("Install complete. Activating immediately.");
+				__DEV__ && Log("Install complete. Activating immediately.");
 
 				return self.skipWaiting();
 			}),
@@ -170,8 +171,7 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 					),
 				)
 				.catch((_Error: unknown) => {
-					__DEV__ &&
-						ErrorLog("Cache cleanup failed:", _Error);
+					__DEV__ && ErrorLog("Cache cleanup failed:", _Error);
 
 					return Promise.resolve();
 				}),
@@ -182,8 +182,7 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 					__DEV__ && Log("Clients claimed successfully.");
 				})
 				.catch((_Error: unknown) => {
-					__DEV__ &&
-						ErrorLog("self.clients.claim() failed:", _Error);
+					__DEV__ && ErrorLog("self.clients.claim() failed:", _Error);
 
 					return Promise.resolve();
 				}),
@@ -390,8 +389,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					}
 				})
 				.catch((_Error: unknown) => {
-					__DEV__ &&
-						ErrorLog(`Asset cache error: ${Path}`, _Error);
+					__DEV__ && ErrorLog(`Asset cache error: ${Path}`, _Error);
 
 					return fetch(Request);
 				}),

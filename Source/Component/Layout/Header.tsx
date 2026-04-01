@@ -222,7 +222,10 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 							<>
 								{AuthSlot}
 								{HeaderData.actions
-									?.filter((Action) => Action.href !== "/Account/SignIn")
+									?.filter(
+										(Action) =>
+											Action.href !== "/Account/SignIn",
+									)
 									.map((Action, Index) => (
 										<Button
 											key={Index}
@@ -233,8 +236,10 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 													| "outline") || "default"
 											}
 											size={
-												(Action.size as "default" | "sm" | "lg") ||
-												"default"
+												(Action.size as
+													| "default"
+													| "sm"
+													| "lg") || "default"
 											}
 											className="StaccatoButton"
 											asChild>
@@ -256,8 +261,10 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 											| "outline") || "default"
 									}
 									size={
-										(Action.size as "default" | "sm" | "lg") ||
-										"default"
+										(Action.size as
+											| "default"
+											| "sm"
+											| "lg") || "default"
 									}
 									className="StaccatoButton"
 									asChild>

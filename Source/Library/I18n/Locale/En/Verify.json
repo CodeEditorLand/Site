@@ -33,8 +33,8 @@
 		"title": "Verifying your email",
 		"description": "Please wait while we verify your email address..."
 	},
-	"errorGeneric": "An error occurred during verification. Please try again.",
-	"resendFailed": "Failed to resend email. Please try again.",
+	"errorGeneric": "An error occurred during verification.\nPlease try again.",
+	"resendFailed": "Failed to resend email.\nPlease try again.",
 	"emailLabel": "Email",
 	"emailPlaceholder": "Enter your email to resend verification",
 	"resendSuccess": "Verification email resent!"

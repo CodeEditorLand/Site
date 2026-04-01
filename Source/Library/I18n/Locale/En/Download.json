@@ -16,14 +16,14 @@
 		}
 	},
 	"page": {
-		"subtitle": "Available for macOS, Windows, and Linux. Fast, native, and free.",
+		"subtitle": "Available for macOS, Windows, and Linux.\nFast, native, and free.",
 		"title": "Download Land"
 	},
 	"previousReleases": {
 		"description": "Download older versions if needed.",
 		"title": "Previous Releases"
 	},
-	"subtitle": "Available for macOS, Windows, and Linux. Built with Tauri, powered by Rust.",
+	"subtitle": "Available for macOS, Windows, and Linux.\nBuilt with Tauri, powered by Rust.",
 	"systemRequirements": {
 		"minimum": "Minimum Requirements",
 		"recommended": "Recommended",
@@ -33,7 +33,7 @@
 	},
 	"title": "Download Land",
 	"verification": {
-		"description": "Land releases are signed with PGP. Verify your download to ensure integrity.",
+		"description": "Land releases are signed with PGP.\nVerify your download to ensure integrity.",
 		"downloadButton": "Download PGP Public Key",
 		"title": "Verify Your Download",
 		"verifyButton": "Verify Download"
@@ -44,13 +44,13 @@
 		"requirements": "Requirements:",
 		"loading": "Loading downloads...",
 		"errorTitle": "Unable to load downloads",
-		"downloadFailed": "Download failed. Please try again.",
+		"downloadFailed": "Download failed.\nPlease try again.",
 		"downloadFor": "Download for {{platform}}",
 		"copiedToClipboard": "{{label}} copied to clipboard!",
 		"failedToCopy": "Failed to copy {{label}}"
 	},
 	"transparency": {
 		"title": "Build Transparency",
-		"subtitle": "Full disclosure on telemetry, build variants, and deployment. Verify everything in source."
+		"subtitle": "Full disclosure on telemetry, build variants, and deployment.\nVerify everything in source."
 	}
 }

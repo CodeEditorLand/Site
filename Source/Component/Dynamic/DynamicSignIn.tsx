@@ -37,9 +37,7 @@ const DynamicSignIn = ({
 	} = content;
 	const [Email, SetEmail] = useState("");
 	const [Password, SetPassword] = useState("");
-	const [, SetErrors] = useState<{ email?: string; password?: string }>(
-		{},
-	);
+	const [, SetErrors] = useState<{ email?: string; password?: string }>({});
 
 	const Validate = () => {
 		const NewErrors: { email?: string; password?: string } = {};

@@ -10,8 +10,12 @@ const MetaDescription = T("account.signUp.subtitle", {
 	defaultValue: "Create a new Land account.",
 });
 
-const Auth0Domain = (await import("../../Function/Configuration/Auth0Domain.js")).default;
-const Auth0ClientIdentifier = (await import("../../Function/Configuration/Auth0ClientIdentifier.js")).default;
+const Auth0Domain = (
+	await import("../../Function/Configuration/Auth0Domain.js")
+).default;
+const Auth0ClientIdentifier = (
+	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
+).default;
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>

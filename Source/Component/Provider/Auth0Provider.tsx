@@ -39,8 +39,7 @@ export default ({
 					? window.location.origin
 					: undefined,
 			...(Organization ? { organization: Organization } : {}),
-		}}
-	>
+		}}>
 		{Children}
 	</Auth0Provider>
 );

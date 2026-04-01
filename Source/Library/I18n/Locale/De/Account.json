@@ -181,7 +181,7 @@
 		},
 		"enterprise": {
 			"title": "Enterprise-Konto",
-			"subtitle": "OIDC / SAML 2.0 Single Sign-On ueber Okta, Azure AD oder jeden kompatiblen Identitaetsanbieter. Gruppen-zu-Rollen-Zuordnung, Audit-Protokolle und Verwaltung von Organisations-CA-Zertifikaten.",
+			"subtitle": "OIDC / SAML 2.0 Single Sign-On ueber Okta, Azure AD oder jeden kompatiblen Identitaetsanbieter.\nGruppen-zu-Rollen-Zuordnung, Audit-Protokolle und Verwaltung von Organisations-CA-Zertifikaten.",
 			"ariaLabel": "Enterprise SSO",
 			"domainLabel": "Geschaeftliche E-Mail oder Domain",
 			"domainPlaceholder": "name@unternehmen.de",
@@ -220,6 +220,6 @@
 	"tryAgain": "Erneut versuchen",
 	"dashboard": "Zum Dashboard",
 	"logout": "Abmelden",
-	"emailNotVerified": "E-Mail nicht verifiziert. Pruefen Sie Ihren Posteingang.",
+	"emailNotVerified": "E-Mail nicht verifiziert.\nPruefen Sie Ihren Posteingang.",
 	"redirecting": "Weiterleitung zur Anmeldung..."
 }

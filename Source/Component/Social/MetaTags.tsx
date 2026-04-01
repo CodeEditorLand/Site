@@ -69,7 +69,10 @@ export default ({
 		<>
 			<title>{SafeTitle}</title>
 			<meta name="description" content={SafeDescription} />
-			<meta name="author" content="Nikola R. Hristov, Code Editor Land, PlayForm" />
+			<meta
+				name="author"
+				content="Nikola R. Hristov, Code Editor Land, PlayForm"
+			/>
 			<meta
 				name="robots"
 				content={noIndex ? "noindex, nofollow" : "index, follow"}

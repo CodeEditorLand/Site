@@ -33,8 +33,8 @@
 		"title": "Verificando su correo electronico",
 		"description": "Por favor espere mientras verificamos su direccion de correo electronico..."
 	},
-	"errorGeneric": "Ocurrio un error durante la verificacion. Por favor, intentelo de nuevo.",
-	"resendFailed": "No se pudo reenviar el correo electronico. Por favor, intentelo de nuevo.",
+	"errorGeneric": "Ocurrio un error durante la verificacion.\nPor favor, intentelo de nuevo.",
+	"resendFailed": "No se pudo reenviar el correo electronico.\nPor favor, intentelo de nuevo.",
 	"emailLabel": "Correo electronico",
 	"emailPlaceholder": "Ingrese su correo electronico para reenviar la verificacion",
 	"resendSuccess": "Correo de verificacion reenviado!"

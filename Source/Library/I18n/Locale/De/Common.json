@@ -4,7 +4,7 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "Der Code-Editor der naechsten Generation. Open Source und fuer immer kostenlos."
+		"tagline": "Der Code-Editor der naechsten Generation.\nOpen Source und fuer immer kostenlos."
 	},
 	"breadcrumb": {
 		"home": "Startseite"
@@ -116,7 +116,7 @@
 		},
 		"step2": {
 			"title": "Umgebung einrichten",
-			"description": "Installieren Sie Rust (1.95.0+), Node.js und pnpm. Fuehren Sie dann aus:"
+			"description": "Installieren Sie Rust (1.95.0+), Node.js und pnpm.\nFuehren Sie dann aus:"
 		},
 		"step3": {
 			"title": "Aenderungen vornehmen",
@@ -227,7 +227,7 @@
 			"memberSinceLabel": "Mitglied seit",
 			"notSignedIn": "Melden Sie sich an, um Ihre Kontodaten zu sehen.",
 			"signInButton": "Anmelden",
-			"emailNotVerified": "E-Mail nicht verifiziert. Pruefen Sie Ihren Posteingang.",
+			"emailNotVerified": "E-Mail nicht verifiziert.\nPruefen Sie Ihren Posteingang.",
 			"enterpriseSSO": "Enterprise SSO aktiv"
 		},
 		"downloads": {
@@ -262,20 +262,20 @@
 			"heading": "Telemetrie-Status",
 			"production": {
 				"title": "Produktions-Build-Telemetrie",
-				"description": "Telemetrie ist standardmaessig deaktiviert. Das Telemetry-Cargo-Feature ist nicht in den Standardfeatures enthalten. Alle Traces kompilieren zu kostenlosen No-Ops."
+				"description": "Telemetrie ist standardmaessig deaktiviert.\nDas Telemetry-Cargo-Feature ist nicht in den Standardfeatures enthalten.\nAlle Traces kompilieren zu kostenlosen No-Ops."
 			},
 			"otel": {
 				"title": "OpenTelemetry (Opt-In)",
-				"description": "Aktivieren mit cargo build --features Telemetry. Nur lokales OTEL-Tracing, Metriken und verteilte Spans. Keine externe Uebertragung."
+				"description": "Aktivieren mit cargo build --features Telemetry.\nNur lokales OTEL-Tracing, Metriken und verteilte Spans.\nKeine externe Uebertragung."
 			},
 			"effect": {
 				"title": "Effect-TS lokale Telemetrie",
-				"description": "Der Cocoon-Erweiterungshost verwendet TelemetryService fuer interne RPC-Instrumentierung und Bootstrap-Zeitmessung. Alle Daten bleiben lokal."
+				"description": "Der Cocoon-Erweiterungshost verwendet TelemetryService fuer interne RPC-Instrumentierung und Bootstrap-Zeitmessung.\nAlle Daten bleiben lokal."
 			}
 		},
 		"buildLog": {
 			"heading": "Build-Konfiguration",
-			"subtitle": "Aktive Build-Variante und Bereitstellungsmodus. Verfuegbar ueber die Local-First Air Daemon-Verbindung.",
+			"subtitle": "Aktive Build-Variante und Bereitstellungsmodus.\nVerfuegbar ueber die Local-First Air Daemon-Verbindung.",
 			"profile": {
 				"heading": "Aktives Profil"
 			},
@@ -294,7 +294,7 @@
 			"heading": "Editor-Verbindung",
 			"subtitle": "Verbinden Sie die Website mit Ihrer laufenden Land-Editor-Instanz.",
 			"status": "Nicht verbunden",
-			"description": "Der Air Daemon verbindet dieses Dashboard mit einem laufenden Land-Editor ueber WebSocket. Starten Sie Land, um Echtzeit-Build-Protokolle, Telemetrie und Konfigurationsverwaltung zu aktivieren.",
+			"description": "Der Air Daemon verbindet dieses Dashboard mit einem laufenden Land-Editor ueber WebSocket.\nStarten Sie Land, um Echtzeit-Build-Protokolle, Telemetrie und Konfigurationsverwaltung zu aktivieren.",
 			"connect": "Ueber Portal verbinden"
 		},
 		"partners": {

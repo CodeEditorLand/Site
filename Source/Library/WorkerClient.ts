@@ -259,7 +259,6 @@ function GetAuthToken(): string | null {
 	return localStorage.getItem("session_token");
 }
 
-
 function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 	const FetchWithAuthentication = async <T>(
 		Endpoint: string,

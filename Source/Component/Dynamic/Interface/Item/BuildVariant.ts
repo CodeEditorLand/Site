@@ -4,5 +4,10 @@ export default interface Item {
 	readonly Tier: "Debug" | "Release" | "Build";
 	readonly Workbench: string;
 	readonly Feature: string;
-	readonly Status: "Recommended" | "Available" | "Legacy" | "Experimental" | "Development";
+	readonly Status:
+		| "Recommended"
+		| "Available"
+		| "Legacy"
+		| "Experimental"
+		| "Development";
 }

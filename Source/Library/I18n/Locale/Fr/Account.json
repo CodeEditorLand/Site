@@ -181,7 +181,7 @@
 		},
 		"enterprise": {
 			"title": "Compte Entreprise",
-			"subtitle": "Authentification unique OIDC / SAML 2.0 via Okta, Azure AD ou tout fournisseur d'identite compatible. Mappage groupe-role, journaux d'audit et gestion des certificats CA de l'organisation.",
+			"subtitle": "Authentification unique OIDC / SAML 2.0 via Okta, Azure AD ou tout fournisseur d'identite compatible.\nMappage groupe-role, journaux d'audit et gestion des certificats CA de l'organisation.",
 			"ariaLabel": "SSO Entreprise",
 			"domainLabel": "E-mail professionnel ou domaine",
 			"domainPlaceholder": "nom@entreprise.fr",
@@ -220,6 +220,6 @@
 	"tryAgain": "Reessayer",
 	"dashboard": "Aller au tableau de bord",
 	"logout": "Deconnexion",
-	"emailNotVerified": "E-mail non verifie. Verifiez votre boite de reception.",
+	"emailNotVerified": "E-mail non verifie.\nVerifiez votre boite de reception.",
 	"redirecting": "Redirection vers la connexion..."
 }

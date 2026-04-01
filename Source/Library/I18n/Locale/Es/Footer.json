@@ -24,7 +24,7 @@
 		}
 	},
 	"bottomBar": {
-		"copyright": "© {{year}} Code Editor Land. Todos los derechos reservados.",
+		"copyright": "© {{year}} Code Editor Land.\nTodos los derechos reservados.",
 		"builtBy": "Creado por el equipo de Code Editor Land",
 		"madeWith": "Hecho con"
 	},

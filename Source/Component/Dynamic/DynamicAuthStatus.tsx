@@ -41,15 +41,17 @@ export default ({
 
 	if (IsLoading) {
 		return (
-			<span className="text-muted-foreground text-xs">
-				{"\u2026"}
-			</span>
+			<span className="text-xs text-muted-foreground">{"\u2026"}</span>
 		);
 	}
 
 	if (!IsAuthenticated || !User) {
 		return (
-			<Button variant="ghost" size="default" className="StaccatoButton" asChild>
+			<Button
+				variant="ghost"
+				size="default"
+				className="StaccatoButton"
+				asChild>
 				<a href={SignInHref}>
 					{T("actions.signIn", "Sign In")}
 					{"\u2001"}
@@ -62,8 +64,7 @@ export default ({
 						strokeWidth="2"
 						strokeLinecap="round"
 						strokeLinejoin="round"
-						aria-hidden="true"
-					>
+						aria-hidden="true">
 						<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
 						<polyline points="10 17 15 12 10 7" />
 						<line x1="15" y1="12" x2="3" y2="12" />
@@ -95,8 +96,7 @@ export default ({
 				)}
 				<a
 					href={DashboardHref}
-					className="text-xs font-medium text-foreground hover:underline"
-				>
+					className="text-xs font-medium text-foreground hover:underline">
 					{DisplayName}
 				</a>
 			</div>
@@ -116,16 +116,14 @@ export default ({
 			)}
 			<a
 				href={DashboardHref}
-				className="text-xs font-medium text-foreground hover:underline"
-			>
+				className="text-xs font-medium text-foreground hover:underline">
 				{DisplayName}
 			</a>
 			<Button
 				variant="ghost"
 				size="sm"
 				className="h-7 px-2 text-xs"
-				onClick={Logout}
-			>
+				onClick={Logout}>
 				{T("actions.logout", "Logout")}
 			</Button>
 		</div>

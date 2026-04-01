@@ -6,9 +6,8 @@ import GenerateRouteMap, {
 
 describe("Integration: Build output structure", () => {
 	it("generates PascalCase HTML directories from built pages", async () => {
-		const { mkdtemp, mkdir, writeFile, readFile, rm, stat } = await import(
-			"node:fs/promises"
-		);
+		const { mkdtemp, mkdir, writeFile, readFile, rm, stat } =
+			await import("node:fs/promises");
 		const { join } = await import("node:path");
 		const { tmpdir } = await import("node:os");
 
@@ -45,10 +44,7 @@ describe("Integration: Build output structure", () => {
 
 			// Write RouteMap.json
 			const RouteMapPath = join(TempDirectory, "RouteMap.json");
-			await writeFile(
-				RouteMapPath,
-				JSON.stringify(RouteMap, null, "\t"),
-			);
+			await writeFile(RouteMapPath, JSON.stringify(RouteMap, null, "\t"));
 
 			// Verify RouteMap.json is valid
 			const RouteMapContent = JSON.parse(
@@ -145,10 +141,7 @@ describe("Integration: Build output structure", () => {
 		const TestCanonical = ["/", "/Download", "/Doc"];
 		const TestVariant = { "/download": "/Download", "/doc": "/Doc" };
 
-		let Injected = Template.replace(
-			/^\/\/.*$/gm,
-			"",
-		)
+		let Injected = Template.replace(/^\/\/.*$/gm, "")
 			.replace(/^declare var self.*$/m, "")
 			.replace(/^declare const __DEV__.*$/m, "")
 			.replace(/^declare const __INCREMENT__.*$/m, "")
@@ -172,9 +165,8 @@ describe("Integration: Build output structure", () => {
 	});
 
 	it("rewrites sitemap URLs to PascalCase", async () => {
-		const { mkdtemp, writeFile, readFile, rm } = await import(
-			"node:fs/promises"
-		);
+		const { mkdtemp, writeFile, readFile, rm } =
+			await import("node:fs/promises");
 		const { join } = await import("node:path");
 		const { tmpdir } = await import("node:os");
 
@@ -213,19 +205,14 @@ describe("Integration: Build output structure", () => {
 				Rewritten = Rewritten.replace(Pattern, `$1${PascalPath}$3`);
 			}
 
-			await writeFile(
-				join(TempDirectory, "sitemap-0.xml"),
-				Rewritten,
-			);
+			await writeFile(join(TempDirectory, "sitemap-0.xml"), Rewritten);
 
 			const Final = await readFile(
 				join(TempDirectory, "sitemap-0.xml"),
 				"utf-8",
 			);
 
-			expect(Final).toContain(
-				"<loc>https://editor.land/Download</loc>",
-			);
+			expect(Final).toContain("<loc>https://editor.land/Download</loc>");
 			expect(Final).toContain("<loc>https://editor.land/Doc</loc>");
 			expect(Final).toContain("<loc>https://editor.land/Blog</loc>");
 			expect(Final).toContain("<loc>https://editor.land/Portal</loc>");
@@ -240,9 +227,7 @@ describe("Integration: Build output structure", () => {
 			expect(Final).not.toContain(
 				"<loc>https://editor.land/download</loc>",
 			);
-			expect(Final).not.toContain(
-				"<loc>https://editor.land/doc</loc>",
-			);
+			expect(Final).not.toContain("<loc>https://editor.land/doc</loc>");
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}

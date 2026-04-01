@@ -66,12 +66,20 @@ img {
 
 /* Accessibility: links must be distinguishable by more than color alone.
  * Underline content links; exclude nav, logo, button, icon, and social links. */
-a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not([class*="Social"]):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not([aria-label]) {
+a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
+		[class*="Social"]
+	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
+		[aria-label]
+	) {
 	text-decoration: underline;
 	text-decoration-color: var(--Border);
 	text-underline-offset: 2px;
 }
 
-a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not([class*="Social"]):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not([aria-label]):hover {
+a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
+		[class*="Social"]
+	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
+		[aria-label]
+	):hover {
 	text-decoration-color: var(--Primary);
 }

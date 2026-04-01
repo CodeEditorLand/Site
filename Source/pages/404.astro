@@ -15,9 +15,14 @@ const MetaDescription = T("common.error.pageNotFound", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load />
-	<section id="NotFoundContent" class="flex min-h-[80dvh] w-full flex-col items-center justify-center py-20" aria-label="Page not found">
+	<section
+		id="NotFoundContent"
+		class="flex min-h-[80dvh] w-full flex-col items-center justify-center py-20"
+		aria-label="Page not found">
 		<div class="container mx-auto px-4 text-center">
-			<p id="RouteRedirectNotice" class="mb-4 text-sm text-muted-foreground hidden">
+			<p
+				id="RouteRedirectNotice"
+				class="mb-4 hidden text-sm text-muted-foreground">
 				Redirecting...
 			</p>
 			<h1 class="StaccatoJitter mb-4 text-6xl font-bold">404</h1>

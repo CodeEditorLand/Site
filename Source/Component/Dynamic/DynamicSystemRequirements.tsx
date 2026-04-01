@@ -28,8 +28,7 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
-			const Cards =
-				Grid.querySelectorAll<HTMLElement>(".StaccatoCard");
+			const Cards = Grid.querySelectorAll<HTMLElement>(".StaccatoCard");
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 4, 3);
 			});
@@ -85,11 +84,16 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 					)}
 				</div>
 
-				<div ref={GridReference} className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+				<div
+					ref={GridReference}
+					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
 					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
-							{T("systemRequirements.minimum", "Minimum Requirements")}
+							{T(
+								"systemRequirements.minimum",
+								"Minimum Requirements",
+							)}
 						</h3>
 						<RequirementList
 							items={requirements.minimum}
@@ -113,7 +117,10 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 				{content.os && content.os.length > 0 && (
 					<div className="mt-12 text-center">
 						<h4 className="mb-4 text-lg font-semibold">
-							{T("systemRequirements.supportedOS", "Supported Operating Systems")}
+							{T(
+								"systemRequirements.supportedOS",
+								"Supported Operating Systems",
+							)}
 						</h4>
 						<div className="flex flex-wrap justify-center gap-4">
 							{content.os.map((OperatingSystem, Index) => (

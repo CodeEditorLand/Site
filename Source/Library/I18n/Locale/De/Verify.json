@@ -34,7 +34,7 @@
 		"description": "Bitte warten Sie, waehrend wir Ihre E-Mail-Adresse verifizieren..."
 	},
 	"errorGeneric": "Bei der Verifizierung ist ein Fehler aufgetreten.\nBitte versuchen Sie es erneut.",
-	"resendFailed": "E-Mail konnte nicht erneut gesendet werden. Bitte versuchen Sie es erneut.",
+	"resendFailed": "E-Mail konnte nicht erneut gesendet werden.\nBitte versuchen Sie es erneut.",
 	"emailLabel": "E-Mail",
 	"emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein, um die Verifizierung erneut zu senden",
 	"resendSuccess": "Verifizierungs-E-Mail erneut gesendet!"

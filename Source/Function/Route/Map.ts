@@ -231,9 +231,7 @@ const GenerateAbbreviationPrefix = (PascalSegment: string): string[] => {
 			Prefix.push(Upper.slice(0, Length));
 
 			// Title case prefix
-			Prefix.push(
-				Upper.charAt(0) + Lower.slice(1, Length),
-			);
+			Prefix.push(Upper.charAt(0) + Lower.slice(1, Length));
 		}
 	}
 
@@ -344,15 +342,9 @@ export const GeneratePathVariant = (
 		// Multi-segment path: selective cross-product.
 		// For each segment position, vary that segment while keeping
 		// all other segments at their lowercase form.
-		const LowercaseSegment = CanonicalSegment.map((S) =>
-			S.toLowerCase(),
-		);
+		const LowercaseSegment = CanonicalSegment.map((S) => S.toLowerCase());
 
-		for (
-			let Position = 0;
-			Position < SegmentVariant.length;
-			Position++
-		) {
+		for (let Position = 0; Position < SegmentVariant.length; Position++) {
 			for (const Variant of SegmentVariant[Position]!) {
 				const Part = [...LowercaseSegment];
 				Part[Position] = Variant;
@@ -401,9 +393,7 @@ export const GeneratePathVariant = (
 
 // ─── Route map generator ───
 
-const GenerateRouteMap = async (
-	OutputDirectory: string,
-): Promise<RouteMap> => {
+const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
 	const BuiltPath: string[] = [];
 
 	const ScanDirectory = async (Directory: string): Promise<void> => {
@@ -419,8 +409,7 @@ const GenerateRouteMap = async (
 			} else if (Item.name === "index.html") {
 				const RelativePath = Relative(OutputDirectory, Directory);
 
-				const Path =
-					RelativePath === "" ? "/" : "/" + RelativePath;
+				const Path = RelativePath === "" ? "/" : "/" + RelativePath;
 
 				BuiltPath.push(Path);
 			} else if (

@@ -1,10 +1,8 @@
 "use client";
 
+import { Header, type HeaderContent } from "../Layout/Header";
 import Auth0Provider from "../Provider/Auth0Provider";
-import { Header } from "../Layout/Header";
 import DynamicAuthStatus from "./DynamicAuthStatus";
-
-import type { HeaderContent } from "../Layout/Header";
 
 /**
  * Auth0-aware header island for Astro pages.
@@ -26,9 +24,7 @@ export default ({
 	Content?: HeaderContent;
 }) => (
 	<Auth0Provider
-		Children={
-			<HeaderWithAuth {...(Content ? { Content } : {})} />
-		}
+		Children={<HeaderWithAuth {...(Content ? { Content } : {})} />}
 		{...(Domain ? { Domain } : {})}
 		{...(ClientIdentifier ? { ClientIdentifier } : {})}
 	/>

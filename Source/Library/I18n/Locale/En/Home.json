@@ -75,7 +75,7 @@
 		"tiers": {
 			"free": {
 				"name": "Community",
-				"description": "For everyone. Full editor features, completely free.",
+				"description": "For everyone.\nFull editor features, completely free.",
 				"features": {
 					"1": "Full VS Code compatibility",
 					"2": "All extensions supported",
@@ -108,11 +108,11 @@
 	},
 	"roadmap": {
 		"title": "Roadmap & Expectancy",
-		"subtitle": "Funded by the NGI0 Commons Fund. Open source, free forever, built in public.",
+		"subtitle": "Funded by the NGI0 Commons Fund.\nOpen source, free forever, built in public.",
 		"tiers": {
 			"current": {
 				"name": "Current Phase",
-				"description": "Foundation and core editor scaffold. Active development.",
+				"description": "Foundation and core editor scaffold.\nActive development.",
 				"features": {
 					"1": "Mountain: Rust/Tauri native backend",
 					"2": "Cocoon: VS Code extension host via Effect-TS",
@@ -149,29 +149,29 @@
 	},
 	"architecture": {
 		"title": "Architecture",
-		"subtitle": "Land replaces VS Code's Electron stack with a modular, high-performance architecture. Each element is a standalone repository.",
+		"subtitle": "Land replaces VS Code's Electron stack with a modular, high-performance architecture.\nEach element is a standalone repository.",
 		"mountain": {
-			"description": "Manages Window, File System, and Process lifecycle. The native Rust/Tauri backend that replaces Electron's main process.",
+			"description": "Manages Window, File System, and Process lifecycle.\nThe native Rust/Tauri backend that replaces Electron's main process.",
 			"subtitle": "Rust/Tauri native backend"
 		},
 		"cocoon": {
-			"description": "Runs VS Code extensions via Effect-TS with high-fidelity API compatibility. No changes needed to existing extensions.",
+			"description": "Runs VS Code extensions via Effect-TS with high-fidelity API compatibility.\nNo changes needed to existing extensions.",
 			"subtitle": "TypeScript extension host"
 		},
 		"wind": {
-			"description": "Re-implementation of the VS Code Workbench. Provides the editor shell, panels, sidebars, and activity bar.",
+			"description": "Re-implementation of the VS Code Workbench.\nProvides the editor shell, panels, sidebars, and activity bar.",
 			"subtitle": "TypeScript UI service"
 		},
 		"sky": {
-			"description": "Renders the editor interface using Astro components. Handles themes, layouts, and the visual presentation layer.",
+			"description": "Renders the editor interface using Astro components.\nHandles themes, layouts, and the visual presentation layer.",
 			"subtitle": "Astro UI component"
 		},
 		"air": {
-			"description": "Background daemon for automatic updates, downloads, and cryptographic signing. Keeps Land up to date silently.",
+			"description": "Background daemon for automatic updates, downloads, and cryptographic signing.\nKeeps Land up to date silently.",
 			"subtitle": "Rust background daemon"
 		},
 		"echo": {
-			"description": "High-performance work-stealing executor. Schedules and distributes tasks across cores for maximum throughput.",
+			"description": "High-performance work-stealing executor.\nSchedules and distributes tasks across cores for maximum throughput.",
 			"subtitle": "Rust task scheduler"
 		}
 	}

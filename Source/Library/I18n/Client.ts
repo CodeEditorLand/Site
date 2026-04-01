@@ -30,10 +30,7 @@ function DetectLocale(): SupportedLocale {
 
 	const Parameter = new URL(window.location.href).searchParams.get("lng");
 
-	if (
-		Parameter &&
-		SupportedLocaleList.includes(Parameter as SupportedLocale)
-	)
+	if (Parameter && SupportedLocaleList.includes(Parameter as SupportedLocale))
 		return Parameter as SupportedLocale;
 
 	const Cookie = document.cookie.match(/LOCALE=([^;]+)/);
