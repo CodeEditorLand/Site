@@ -42,7 +42,7 @@ export function Footer({ content }: FooterProps) {
 					},
 					{
 						label: T("columns.product.downloads", "Downloads"),
-						href: "/downloads",
+						href: "/Download",
 					},
 					{
 						label: T("columns.product.docs", "Docs"),
@@ -75,15 +75,15 @@ export function Footer({ content }: FooterProps) {
 				links: [
 					{
 						label: T("columns.legal.privacy", "Privacy"),
-						href: "/legal/privacy",
+						href: "/Legal/Privacy",
 					},
 					{
 						label: T("columns.legal.terms", "Terms"),
-						href: "/legal/terms",
+						href: "/Legal/Term",
 					},
 					{
 						label: T("columns.legal.license", "License"),
-						href: "/license",
+						href: "/License",
 					},
 				],
 			},

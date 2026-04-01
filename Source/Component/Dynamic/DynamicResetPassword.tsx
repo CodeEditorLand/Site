@@ -139,7 +139,7 @@ export function DynamicResetPassword({
 											fullWidth: true,
 										}}
 										onAction={() =>
-											onNavigate?.("/account/signin")
+											onNavigate?.("/Account/SignIn")
 										}
 									/>
 									<div className="flex items-center justify-center">
@@ -184,7 +184,7 @@ export function DynamicResetPassword({
 											fullWidth: true,
 										}}
 										onAction={() =>
-											onNavigate?.("/account/signin")
+											onNavigate?.("/Account/SignIn")
 										}
 									/>
 									<div className="flex items-center justify-center">

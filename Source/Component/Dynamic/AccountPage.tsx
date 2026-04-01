@@ -110,7 +110,7 @@ export function AccountPage({
 
 			// Redirect to account dashboard
 			setTimeout(() => {
-				Navigate("/account");
+				Navigate("/Dashboard");
 			}, 1000);
 		} catch (ErrorInstance) {
 			const ErrorMessage =
@@ -152,7 +152,7 @@ export function AccountPage({
 
 			// Redirect to email verification page
 			setTimeout(() => {
-				Navigate("/verify");
+				Navigate("/Verify");
 			}, 1000);
 		} catch (ErrorInstance) {
 			const ErrorMessage =
@@ -204,7 +204,7 @@ export function AccountPage({
 			onResetPassword?.(Token, Password, ConfirmPassword);
 
 			setTimeout(() => {
-				Navigate("/account/signin");
+				Navigate("/Account/SignIn");
 			}, 2000);
 		} catch (ErrorInstance) {
 			const ErrorMessage =
@@ -256,7 +256,7 @@ export function AccountPage({
 					// Session fetch failed but token is set:user can still proceed
 				});
 
-			Navigate("/account");
+			Navigate("/Dashboard");
 		}
 	}, [route, Navigate]);
 

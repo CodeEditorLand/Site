@@ -164,14 +164,14 @@ export function VerifyPage({
 										<button
 											type="button"
 											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none border border-[var(--Border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary"
-											onClick={() => Navigate("/verify")}>
+											onClick={() => Navigate("/Verify")}>
 											{"Send New Verification Email"}
 										</button>
 										<button
 											type="button"
 											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none border border-[var(--Border)] bg-background px-4 py-2 text-sm font-medium transition-all hover:bg-accent"
 											onClick={() =>
-												Navigate("/account/signin")
+												Navigate("/Account/SignIn")
 											}>
 											{"Sign In"}
 										</button>

@@ -147,7 +147,7 @@ export function DynamicForgotPassword({
 											type="button"
 											className="font-medium text-primary hover:underline"
 											onClick={() =>
-												onNavigate?.("/account/signin")
+												onNavigate?.("/Account/SignIn")
 											}>
 											Back to Sign In
 										</button>

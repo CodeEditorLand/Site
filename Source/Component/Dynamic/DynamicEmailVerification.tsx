@@ -202,7 +202,7 @@ export function DynamicEmailVerification({
 						...content.error.backToSignInButton,
 						fullWidth: true,
 					}}
-					onAction={() => onNavigate?.("/account/signin")}
+					onAction={() => onNavigate?.("/Account/SignIn")}
 				/>
 				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">

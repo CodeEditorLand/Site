@@ -526,7 +526,7 @@ export function HomePage({ content, className }: Property) {
 							label: T("footer:columns.product.downloads", {
 								defaultValue: "Download",
 							}),
-							href: "/downloads",
+							href: "/Download",
 						},
 						{
 							label: T("footer:columns.product.docs", {
@@ -570,19 +570,19 @@ export function HomePage({ content, className }: Property) {
 							label: T("footer:columns.legal.privacy", {
 								defaultValue: "Privacy",
 							}),
-							href: "/legal/privacy",
+							href: "/Legal/Privacy",
 						},
 						{
 							label: T("footer:columns.legal.terms", {
 								defaultValue: "Terms",
 							}),
-							href: "/legal/terms",
+							href: "/Legal/Term",
 						},
 						{
 							label: T("footer:columns.legal.license", {
 								defaultValue: "License",
 							}),
-							href: "/license",
+							href: "/License",
 						},
 					],
 				},

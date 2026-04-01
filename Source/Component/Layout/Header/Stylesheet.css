@@ -15,7 +15,7 @@
 /* Sub-header:breadcrumb-style app bar */
 .HeaderSub {
 	background: #ffffff;
-	border-bottom: 1px solid var(--Border);
+	border: 1px solid var(--Border);
 }
 
 .HeaderSubLink {
