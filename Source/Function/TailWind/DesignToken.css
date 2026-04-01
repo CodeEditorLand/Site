@@ -1,13 +1,21 @@
 :root {
-	/* Border tokens */
+	/* ─────────────────────────────────────────────────────────────
+	   BORDER / RADIUS TOKENS
+	   ───────────────────────────────────────────────────────────── */
 	--BorderWidth: 1px;
 	--BorderRadius: 0;
 
-	/* Spacing scale (4px grid) */
+	/* ─────────────────────────────────────────────────────────────
+	   SPACING SCALE (4px grid)
+	   ───────────────────────────────────────────────────────────── */
 	--Spacing0: 0;
-	--Spacing1: 0.25rem; /* 4px */
-	--Spacing2: 0.5rem; /* 8px */
+	--Spacing0Point5: 0.125rem; /*  2px */
+	--Spacing1: 0.25rem; /*  4px */
+	--Spacing1Point5: 0.375rem; /*  6px */
+	--Spacing2: 0.5rem; /*  8px */
+	--Spacing2Point5: 0.625rem; /* 10px */
 	--Spacing3: 0.75rem; /* 12px */
+	--Spacing3Point5: 0.875rem; /* 14px */
 	--Spacing4: 1rem; /* 16px */
 	--Spacing5: 1.25rem; /* 20px */
 	--Spacing6: 1.5rem; /* 24px */
@@ -25,20 +33,18 @@
 	--Spacing56: 14rem; /* 224px */
 	--Spacing64: 16rem; /* 256px */
 
-	/* Additional spacing for non-standard values found in codebase */
-	--Spacing2Point5: 0.625rem; /* 10px */
-	--Spacing1Point5: 0.375rem; /* 6px */
-	--Spacing0Point5: 0.125rem; /* 2px */
-	--Spacing3Point5: 0.875rem; /* 14px */
-
-	/* Color palette - Semantic colors - Flat White Theme */
+	/* ─────────────────────────────────────────────────────────────
+	   SEMANTIC COLOR TOKENS — Flat White Theme
+	   Warm neutral convergence: Secondary/Mute/Accent now pull from
+	   the warm ColorSlate scale rather than cool blue-gray.
+	   ───────────────────────────────────────────────────────────── */
 	--ColorBackground: #ffffff;
 	--ColorForeground: #1a1a1a;
-	--ColorBorder: rgba(0, 0, 0, 0.08);
+	--ColorBorder: rgba(26, 20, 10, 0.08);
 	--ColorPrimary: #2563eb;
-	--ColorSecondary: #f0f4f8;
-	--ColorAccent: #f0f4f8;
-	--ColorMute: #f5f5f5;
+	--ColorSecondary: #f5f0e8;
+	--ColorAccent: #f5f0e8;
+	--ColorMute: #faf8f5;
 	--ColorMuteForeground: #6b7280;
 	--ColorCard: #ffffff;
 	--ColorCardForeground: #1a1a1a;
@@ -49,7 +55,19 @@
 	--ColorSuccess: #34d399;
 	--ColorWarning: #fbbf24;
 
-	/* Neutral scale */
+	/* Surface depth layers */
+	--ColorSurface0: #ffffff;
+	--ColorSurface1: #faf8f5;
+	--ColorSurface2: #f5f0e8;
+	--ColorSurface3: #eae3d2;
+	--ColorSurface4: #dfd6bd;
+
+	/* ─────────────────────────────────────────────────────────────
+	   WARM NEUTRAL SCALE
+	   All scales warm-shifted. Used as surface depth references.
+	   ───────────────────────────────────────────────────────────── */
+
+	/* Slate (warm cream) */
 	--ColorSlate50: #faf8f5;
 	--ColorSlate100: #f5f0e8;
 	--ColorSlate200: #eae3d2;
@@ -62,6 +80,7 @@
 	--ColorSlate900: #a3583b;
 	--ColorSlate950: #9a4227;
 
+	/* Gray (warm parchment) */
 	--ColorGray50: #f9f9f7;
 	--ColorGray100: #f2f2ef;
 	--ColorGray200: #e6e6e0;
@@ -74,6 +93,7 @@
 	--ColorGray900: #8c8c7d;
 	--ColorGray950: #808071;
 
+	/* Zinc (warm sand) */
 	--ColorZinc50: #f8f7f5;
 	--ColorZinc100: #f1f0eb;
 	--ColorZinc200: #e3e1d7;
@@ -86,6 +106,7 @@
 	--ColorZinc900: #868b4b;
 	--ColorZinc950: #7a7b37;
 
+	/* Neutral (warm linen) */
 	--ColorNeutral50: #faf9f7;
 	--ColorNeutral100: #f5f2ed;
 	--ColorNeutral200: #ebe5da;
@@ -98,6 +119,7 @@
 	--ColorNeutral900: #a49f54;
 	--ColorNeutral950: #9a933f;
 
+	/* Stone (warm chalk) */
 	--ColorStone50: #faf9f8;
 	--ColorStone100: #f5f4f1;
 	--ColorStone200: #ebeae3;
@@ -110,7 +132,12 @@
 	--ColorStone900: #a4a486;
 	--ColorStone950: #9a9a79;
 
-	/* Red scale */
+	/* ─────────────────────────────────────────────────────────────
+	   CHROMATIC SCALES
+	   Warm-shifted where applicable. Full 50–950 stops.
+	   ───────────────────────────────────────────────────────────── */
+
+	/* Red */
 	--ColorRed50: #fceaea;
 	--ColorRed100: #f9d5c5;
 	--ColorRed200: #f5bfa0;
@@ -123,7 +150,7 @@
 	--ColorRed900: #853b18;
 	--ColorRed950: #6b2c12;
 
-	/* Orange scale */
+	/* Orange */
 	--ColorOrange50: #fff3e6;
 	--ColorOrange100: #ffe0bf;
 	--ColorOrange200: #ffcc99;
@@ -136,7 +163,7 @@
 	--ColorOrange900: #88691f;
 	--ColorOrange950: #6c5e1a;
 
-	/* Amber scale */
+	/* Amber */
 	--ColorAmber50: #fff8e6;
 	--ColorAmber100: #fff0cc;
 	--ColorAmber200: #ffe9b3;
@@ -149,7 +176,7 @@
 	--ColorAmber900: #99703f;
 	--ColorAmber950: #805c32;
 
-	/* Yellow scale */
+	/* Yellow */
 	--ColorYellow50: #fffce8;
 	--ColorYellow100: #fff9d1;
 	--ColorYellow200: #fff5ba;
@@ -162,7 +189,7 @@
 	--ColorYellow900: #99741d;
 	--ColorYellow950: #806d07;
 
-	/* Lime scale */
+	/* Lime */
 	--ColorLime50: #f6fee6;
 	--ColorLime100: #edfdcc;
 	--ColorLime200: #e3fcb2;
@@ -175,7 +202,7 @@
 	--ColorLime900: #476c11;
 	--ColorLime950: #28520c;
 
-	/* Green scale */
+	/* Green */
 	--ColorGreen50: #f1f8e9;
 	--ColorGreen100: #dcedc8;
 	--ColorGreen200: #c5e1a5;
@@ -188,7 +215,7 @@
 	--ColorGreen900: #33691e;
 	--ColorGreen950: #254d13;
 
-	/* Emerald scale */
+	/* Emerald */
 	--ColorEmerald50: #e8f9f0;
 	--ColorEmerald100: #d1f3e1;
 	--ColorEmerald200: #bafce1;
@@ -201,7 +228,7 @@
 	--ColorEmerald900: #26764b;
 	--ColorEmerald950: #135232;
 
-	/* Teal scale */
+	/* Teal */
 	--ColorTeal50: #e6f9f8;
 	--ColorTeal100: #cceff1;
 	--ColorTeal200: #b3e5ea;
@@ -214,7 +241,7 @@
 	--ColorTeal900: #205f56;
 	--ColorTeal950: #104138;
 
-	/* Cyan scale */
+	/* Cyan */
 	--ColorCyan50: #e6f7fb;
 	--ColorCyan100: #cceff7;
 	--ColorCyan200: #b3e7f3;
@@ -227,7 +254,7 @@
 	--ColorCyan900: #20526c;
 	--ColorCyan950: #103a4d;
 
-	/* Sky scale */
+	/* Sky */
 	--ColorSky50: #e6f2ff;
 	--ColorSky100: #cce5ff;
 	--ColorSky200: #b3d8ff;
@@ -240,7 +267,7 @@
 	--ColorSky900: #203099;
 	--ColorSky950: #101f80;
 
-	/* Blue scale */
+	/* Blue */
 	--ColorBlue50: #e6edff;
 	--ColorBlue100: #cceaff;
 	--ColorBlue200: #b3e7ff;
@@ -253,7 +280,7 @@
 	--ColorBlue900: #205091;
 	--ColorBlue950: #103c7e;
 
-	/* Indigo scale */
+	/* Indigo */
 	--ColorIndigo50: #ececff;
 	--ColorIndigo100: #dbd8ff;
 	--ColorIndigo200: #c9c5ff;
@@ -266,7 +293,7 @@
 	--ColorIndigo900: #35335d;
 	--ColorIndigo950: #1e2140;
 
-	/* Violet scale */
+	/* Violet */
 	--ColorViolet50: #f3e6ff;
 	--ColorViolet100: #e7ccff;
 	--ColorViolet200: #dab3ff;
@@ -279,7 +306,7 @@
 	--ColorViolet900: #5d20a0;
 	--ColorViolet950: #471f80;
 
-	/* Purple scale */
+	/* Purple */
 	--ColorPurple50: #f4e6ff;
 	--ColorPurple100: #e9ccff;
 	--ColorPurple200: #dfb3ff;
@@ -292,7 +319,7 @@
 	--ColorPurple900: #512d53;
 	--ColorPurple950: #361630;
 
-	/* Fuchsia scale */
+	/* Fuchsia */
 	--ColorFuchsia50: #fde6ff;
 	--ColorFuchsia100: #fbc9ff;
 	--ColorFuchsia200: #f9acff;
@@ -305,7 +332,7 @@
 	--ColorFuchsia900: #800075;
 	--ColorFuchsia950: #640057;
 
-	/* Pink scale */
+	/* Pink */
 	--ColorPink50: #ffe6f2;
 	--ColorPink100: #ffccd9;
 	--ColorPink200: #ffb3c1;
@@ -318,7 +345,7 @@
 	--ColorPink900: #993844;
 	--ColorPink950: #802c37;
 
-	/* Rose scale */
+	/* Rose */
 	--ColorRose50: #fff0f0;
 	--ColorRose100: #ffe0e0;
 	--ColorRose200: #ffd1d1;
@@ -330,4 +357,131 @@
 	--ColorRose800: #a06969;
 	--ColorRose900: #804656;
 	--ColorRose950: #603343;
+
+	/* ─────────────────────────────────────────────────────────────
+	   TECHNOLOGY COLOR ALIASES
+	   Mirror Base.css token names so both files are in sync.
+	   These are flat references — no color-mix() here; computed
+	   values live in Base.css :root.
+	   ───────────────────────────────────────────────────────────── */
+
+	/* Protocol Spine */
+	--ColorSpinegRPC: #22c55e;
+	--ColorSpineIPC: #3b82f6;
+	--ColorSpineTCP: #f97316;
+	--ColorSpineWASM: #a855f7;
+
+	/* Frameworks / Extensions */
+	--ColorExtensionRust: #f87171;
+	--ColorExtensionTauri: #fbbf24;
+	--ColorExtensionEffectTypeScript: #22d3d8;
+	--ColorExtensionReact: #60a5fa;
+	--ColorExtensionVue: #4ade80;
+	--ColorExtensionSvelte: #fb923c;
+	--ColorExtensionNext: #171717;
+	--ColorExtensionNuxt: #16a34a;
+	--ColorExtensionSolid: #446b9e;
+	--ColorExtensionAstro: #9333ea;
+	--ColorExtensionAngular: #dd0031;
+	--ColorExtensionEmber: #e04e39;
+	--ColorExtensionQwik: #18b6f6;
+	--ColorExtensionRemix: #121212;
+	--ColorExtensionTanStack: #ff4154;
+	--ColorExtensionElectron: #47848f;
+
+	/* Languages */
+	--ColorLanguageTypeScript: #3178c6;
+	--ColorLanguageJavaScript: #f7df1e;
+	--ColorLanguageRust: #ce422b;
+	--ColorLanguageGo: #00add8;
+	--ColorLanguagePython: #3572a5;
+	--ColorLanguageJava: #b07219;
+	--ColorLanguageKotlin: #7f52ff;
+	--ColorLanguageSwift: #fa7343;
+	--ColorLanguageCSharp: #178600;
+	--ColorLanguageCPlusPlus: #f34b7d;
+	--ColorLanguageC: #555555;
+	--ColorLanguageZig: #f7a41d;
+	--ColorLanguageElixir: #6e4a7e;
+	--ColorLanguageElm: #60b5cc;
+	--ColorLanguageHaskell: #5e5086;
+	--ColorLanguageRuby: #701516;
+	--ColorLanguagePhp: #4f5d95;
+	--ColorLanguageDart: #00b4ab;
+	--ColorLanguageScala: #dc322f;
+	--ColorLanguageLua: #000080;
+	--ColorLanguageShell: #89e051;
+	--ColorLanguageNix: #7e7eff;
+
+	/* Runtimes */
+	--ColorRuntimeNode: #5fa04e;
+	--ColorRuntimeDeno: #070707;
+	--ColorRuntimeBun: #f5a623;
+	--ColorRuntimeWASM: #a855f7;
+
+	/* Databases */
+	--ColorDatabasePostgres: #336791;
+	--ColorDatabaseMySQL: #4479a1;
+	--ColorDatabaseSQLite: #003b57;
+	--ColorDatabaseMongoDB: #47a248;
+	--ColorDatabaseRedis: #dc382d;
+	--ColorDatabasePlanetScale: #000000;
+	--ColorDatabaseTurso: #4ff8d2;
+	--ColorDatabaseNeon: #00e699;
+	--ColorDatabaseSupabase: #3ecf8e;
+
+	/* Cloud / Deployment */
+	--ColorCloudAWS: #ff9900;
+	--ColorCloudAzure: #0078d4;
+	--ColorCloudGCP: #4285f4;
+	--ColorCloudCloudflare: #f48120;
+	--ColorCloudVercel: #000000;
+	--ColorCloudNetlify: #00c7b7;
+	--ColorCloudFly: #7b3fe4;
+	--ColorCloudRailway: #0b0d0e;
+
+	/* Build Tools */
+	--ColorToolVite: #646cff;
+	--ColorToolWebpack: #8dd6f9;
+	--ColorToolRollup: #ec4a3f;
+	--ColorToolTurbo: #ef4444;
+	--ColorToolEsBuild: #ffcf00;
+	--ColorToolBiome: #60a5fa;
+	--ColorToolOxc: #f97316;
+
+	/* Operating Systems */
+	--ColorOSLinux: #fcc624;
+	--ColorOSMacOS: #999999;
+	--ColorOSWindows: #00a4ef;
+	--ColorOSAndroid: #3ddc84;
+	--ColorOSIOS: #000000;
+
+	/* Platforms */
+	--ColorPlatformWeb: #60a5fa;
+	--ColorPlatformDesktop: #94a3b8;
+	--ColorPlatformMobile: #f472b6;
+	--ColorPlatformCLI: #22c55e;
+	--ColorPlatformExtension: #a855f7;
+	--ColorPlatformEmbedded: #f97316;
+
+	/* Identity Providers */
+	--ColorProviderGitHub: #171515;
+	--ColorProviderGoogle: #4285f4;
+	--ColorProviderGitLab: #fc6d26;
+	--ColorProviderMicrosoft: #00a4ef;
+	--ColorProviderOkta: #007dc1;
+	--ColorProviderAuth0: #eb5424;
+	--ColorProviderBitbucket: #0052cc;
+	--ColorProviderLinkedIn: #0a66c2;
+	--ColorProviderApple: #000000;
+
+	/* Chart palette (8-stop accessible) */
+	--ColorChart1: #3b82f6;
+	--ColorChart2: #22c55e;
+	--ColorChart3: #f97316;
+	--ColorChart4: #a855f7;
+	--ColorChart5: #f43f5e;
+	--ColorChart6: #06b6d4;
+	--ColorChart7: #eab308;
+	--ColorChart8: #8b5cf6;
 }
