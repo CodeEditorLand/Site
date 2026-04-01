@@ -2,7 +2,6 @@ import { Menu } from "lucide-react";
 import React from "react";
 
 import { Button } from "../UI/Button";
-import type DynamicButtonProps from "./Interface/Property/Button.js";
 import type Property from "./Interface/Property/Header.js";
 
 /**
@@ -81,7 +80,6 @@ export function DynamicHeader({ content, className }: Property) {
 						}
 
 						// Action is a button config
-						const ButtonProperties = Action as DynamicButtonProps;
 						return (
 							<React.Fragment key={Index}>
 								{MobileMenuOpen && showMobileMenu && (

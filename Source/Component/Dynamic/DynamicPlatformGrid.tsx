@@ -73,6 +73,11 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 				const Latest = Response.data;
 				const CurrentPlatform: PlatformInformation[] = [];
 
+				const FormatBytes = (Bytes: number): string => {
+					const MB = Bytes / (1024 * 1024);
+					return `${MB.toFixed(1)} MB`;
+				};
+
 				if (Latest.platform === "macos") {
 					CurrentPlatform.push({
 						id: Latest.id,
@@ -80,9 +85,9 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 						icon: "Apple",
 						description: "Universal Binary",
 						version: Latest.version,
-						size: Latest.size || "45.2 MB",
-						checksum: Latest.checksum,
-						signature: Latest.signature,
+						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "45.2 MB",
+						checksum: Latest.sha256,
+						signature: Latest.pgpSignature,
 						requirements: [
 							"macOS 11.0 (Big Sur) or later",
 							"4 GB RAM",
@@ -96,9 +101,9 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 						icon: "Monitor",
 						description: "64-bit (x64)",
 						version: Latest.version,
-						size: Latest.size || "48.7 MB",
-						checksum: Latest.checksum,
-						signature: Latest.signature,
+						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "48.7 MB",
+						checksum: Latest.sha256,
+						signature: Latest.pgpSignature,
 						requirements: [
 							"Windows 10 or later (64-bit)",
 							"4 GB RAM",
@@ -112,9 +117,9 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 						icon: "Terminal",
 						description: "DEB, RPM, AppImage",
 						version: Latest.version,
-						size: Latest.size || "41.3 MB",
-						checksum: Latest.checksum,
-						signature: Latest.signature,
+						size: Latest.fileSize ? FormatBytes(Latest.fileSize) : "41.3 MB",
+						checksum: Latest.sha256,
+						signature: Latest.pgpSignature,
 						requirements: [
 							"glibc 2.28+",
 							"4 GB RAM",
@@ -266,8 +271,6 @@ export function DynamicPlatformGrid({ content, className }: Property) {
 					ref={GridReference}
 					className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
 					{Platforms.map((Platform) => {
-						const Icon = IconMap[Platform.icon];
-
 						const HasVerification =
 							showVerification &&
 							(Platform.checksum || Platform.signature);

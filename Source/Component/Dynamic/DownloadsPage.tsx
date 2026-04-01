@@ -134,7 +134,6 @@ export function DownloadsPage({ content, className }: Property) {
 			releases: [],
 			showChangelog: false,
 		},
-		header: undefined,
 		footer: {},
 	};
 

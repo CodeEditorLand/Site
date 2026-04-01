@@ -1,11 +1,11 @@
 import type { PixelProps } from "@Function/Scroll/Type.js";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 // Import dependencies
 let Dimensional: any,
 	Style: any,
-	Influence: any,
-	Layer: any,
+	_Influence: any,
+	_Layer: any,
 	Noise: any,
 	Spectrum: any,
 	Constant: any,
@@ -14,21 +14,21 @@ let Dimensional: any,
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitDimensional = async () => {
 	// @ts-ignore
-	const Module = await import("@Function/Scroll/Code/Pixel/Dimensional.ts");
+	const Module = await import("@Function/Scroll/Code/Pixel/Dimensional.js");
 	return Module.default;
 };
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitStyle = async () => {
 	// @ts-ignore
-	const Module = await import("@Function/Scroll/Code/Pixel/Style.ts");
+	const Module = await import("@Function/Scroll/Code/Pixel/Style.js");
 	return Module.default;
 };
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitAnimation = async () => {
 	// @ts-ignore
-	const Module = await import("@Function/Scroll/Code/Pixel/Animation.ts");
+	const Module = await import("@Function/Scroll/Code/Pixel/Animation.js");
 	return Module;
 };
 
@@ -36,7 +36,7 @@ const InitAnimation = async () => {
 const InitConstant = async () => {
 	// @ts-ignore
 	const Module =
-		await import("@Function/Scroll/Code/Pixel/Animation/Constant.ts");
+		await import("@Function/Scroll/Code/Pixel/Animation/Constant.js");
 	return Module.default;
 };
 
@@ -63,8 +63,8 @@ const Pixel = ({
 				Dimensional = await InitDimensional();
 				Style = await InitStyle();
 				const Animation = await InitAnimation();
-				Influence = Animation.Influence;
-				Layer = Animation.Layer;
+				_Influence = Animation.Influence;
+				_Layer = Animation.Layer;
 				Noise = Animation.Noise;
 				Spectrum = Animation.Spectrum;
 				Constant = await InitConstant();

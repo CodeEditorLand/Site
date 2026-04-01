@@ -4,7 +4,7 @@ import React from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicCard, SimpleCard } from "../../Component/Dynamic/DynamicCard";
-import type { CardSection } from "../../Component/Dynamic/types";
+import type { CardSection } from "../../Component/Dynamic/Type.js";
 
 afterEach(() => {
 	cleanup();

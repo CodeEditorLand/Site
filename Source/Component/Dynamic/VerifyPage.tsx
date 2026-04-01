@@ -3,7 +3,6 @@ import { toast } from "sonner";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
-import type Interface from "./Interface/Content/Page/Verify.js";
 import type Property from "./Interface/Property/Page/Verify.js";
 
 const Authentication = new AuthAPIClass();
@@ -17,8 +16,8 @@ export function VerifyPage({
 	route,
 	token,
 	reason,
-	metaTitle = "Verify Email - Land",
-	metaDescription = "Verify your email address to activate your account.",
+	_metaTitle = "Verify Email - Land",
+	_metaDescription = "Verify your email address to activate your account.",
 	className,
 	onVerify,
 	onResend,
@@ -56,7 +55,7 @@ export function VerifyPage({
 		}
 	};
 
-	const HandleResend = async (Email: string): Promise<boolean> => {
+	const HandleResend = async (_Email: string): Promise<boolean> => {
 		try {
 			await Authentication.ResendVerification();
 			toast.success("Verification email sent!");
@@ -77,7 +76,7 @@ export function VerifyPage({
 				{(route === "verify" || route === "pending") && (
 					<DynamicEmailVerification
 						content={verification}
-						token={token}
+						{...(token ? { token } : {})}
 						userEmail={UserEmail}
 						onVerify={onVerify || HandleVerify}
 						onResend={onResend || HandleResend}

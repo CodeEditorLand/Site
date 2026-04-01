@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
@@ -25,7 +25,6 @@ export function DynamicHeroSection({ content, className }: Property) {
 
 	useEffect(() => {
 		const Scene = SceneReference.current;
-		const Section = SectionReference.current;
 		if (
 			!Scene ||
 			(HeroConfiguration.respectReducedMotion &&

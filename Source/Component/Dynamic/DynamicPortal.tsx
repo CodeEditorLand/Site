@@ -20,7 +20,6 @@ import { Button } from "../UI/Button";
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
@@ -62,8 +61,8 @@ const PortalTierRow = ({
 	Labels?: PortalContent["Labels"];
 }) => {
 	const RowReference = useRef<HTMLDivElement>(null);
-	const [Email, SetEmail] = useState("");
-	const [Password, SetPassword] = useState("");
+	const [, SetEmail] = useState("");
+	const [, SetPassword] = useState("");
 
 	const IconComponent = Content.Icon
 		? TierIconRegistry[Content.Icon] || Shield

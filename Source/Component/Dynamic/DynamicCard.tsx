@@ -6,7 +6,6 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
-import type CardContentItem from "./Interface/Item/Content/Card.js";
 import type Property from "./Interface/Property/Card.js";
 import type SimpleProperty from "./Interface/Property/Card/Simple.js";
 

@@ -8,7 +8,6 @@ import { DynamicForgotPassword } from "./DynamicForgotPassword";
 import { DynamicResetPassword } from "./DynamicResetPassword";
 import { DynamicSignIn } from "./DynamicSignIn";
 import { DynamicSignUp } from "./DynamicSignUp";
-import type Interface from "./Interface/Content/Page/Account.js";
 import type Property from "./Interface/Property/Page/Account.js";
 
 const Authentication = new AuthAPIClass();
@@ -22,7 +21,7 @@ function SetSessionToken(Token: string): void {
 	localStorage.setItem("session_token", Token);
 }
 
-function ClearSessionToken(): void {
+function _ClearSessionToken(): void {
 	try {
 		document.cookie = "session=; path=/; max-age=0";
 	} catch {
@@ -31,7 +30,7 @@ function ClearSessionToken(): void {
 	localStorage.removeItem("session_token");
 }
 
-function GetCurrentUser(): User | null {
+function _GetCurrentUser(): User | null {
 	try {
 		const UserData = localStorage.getItem("current_user");
 		if (UserData) {
@@ -64,7 +63,7 @@ export function AccountPage({
 	onSignUp,
 	onForgotPassword,
 	onResetPassword,
-	onOAuth,
+	_onOAuth,
 	onNavigate,
 }: Property) {
 	const {
@@ -77,19 +76,19 @@ export function AccountPage({
 	const Navigate = onNavigate || NavigateToPath;
 
 	// Loading states
-	const [IsSignInLoading, SetIsSignInLoading] = useState(false);
-	const [IsSignUpLoading, SetIsSignUpLoading] = useState(false);
-	const [IsForgotPasswordLoading, SetIsForgotPasswordLoading] =
+	const [, SetIsSignInLoading] = useState(false);
+	const [, SetIsSignUpLoading] = useState(false);
+	const [, SetIsForgotPasswordLoading] =
 		useState(false);
-	const [IsResetPasswordLoading, SetIsResetPasswordLoading] = useState(false);
-	const [IsOAuthLoading, SetIsOAuthLoading] = useState(false);
+	const [, SetIsResetPasswordLoading] = useState(false);
+	const [, SetIsOAuthLoading] = useState(false);
 
 	// Error states
-	const [SignInErrorMessage, SetSignInErrorMessage] = useState<string>("");
-	const [SignUpErrorMessage, SetSignUpErrorMessage] = useState<string>("");
-	const [ForgotPasswordErrorMessage, SetForgotPasswordErrorMessage] =
+	const [, SetSignInErrorMessage] = useState<string>("");
+	const [, SetSignUpErrorMessage] = useState<string>("");
+	const [, SetForgotPasswordErrorMessage] =
 		useState<string>("");
-	const [ResetPasswordErrorMessage, SetResetPasswordErrorMessage] =
+	const [, SetResetPasswordErrorMessage] =
 		useState<string>("");
 
 	const HandleSignIn = async (
@@ -262,7 +261,7 @@ export function AccountPage({
 
 	return (
 		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header content={content.header} />
+			<Header {...(content.header ? { content: content.header } : {})} />
 
 			<div className="flex-1">
 				{route === "signin" && (

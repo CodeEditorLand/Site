@@ -11,7 +11,6 @@ import {
 } from "../UI/Card";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicInput } from "./DynamicInput";
-import type Interface from "./Interface/Content/Verification/Email.js";
 import type Property from "./Interface/Property/Verification/Email.js";
 import type { default as VerificationState } from "./Type/State/Verification.js";
 
@@ -30,7 +29,7 @@ export function DynamicEmailVerification({
 }: Property) {
 	const { t: T } = useTranslation("verify");
 	const [State, SetState] = useState<VerificationState>("pending");
-	const [Token, SetToken] = useState<string>(PropToken || "");
+	const [, SetToken] = useState<string>(PropToken || "");
 	const [Email, SetEmail] = useState<string>(userEmail || "");
 	const [ErrorMessage, SetErrorMessage] = useState("");
 	const [ResendSuccess, SetResendSuccess] = useState(false);

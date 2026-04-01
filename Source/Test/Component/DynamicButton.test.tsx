@@ -3,7 +3,7 @@ import UserEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicButton } from "../../Component/Dynamic/DynamicButton";
-import type { ButtonContent } from "../../Component/Dynamic/types";
+import type { ButtonContent } from "../../Component/Dynamic/Type.js";
 
 afterEach(() => {
 	cleanup();

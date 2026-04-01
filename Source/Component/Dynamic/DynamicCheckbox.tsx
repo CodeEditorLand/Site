@@ -37,12 +37,12 @@ export function DynamicCheckbox({ content, name, onCheckedChange }: Property) {
 	};
 
 	if (checked !== undefined) {
-		CheckboxProperties.checked = checked;
+		CheckboxProperties["checked"] = checked;
 	}
 	if (defaultChecked !== undefined) {
-		CheckboxProperties.defaultChecked = defaultChecked;
+		CheckboxProperties["defaultChecked"] = defaultChecked;
 		if (checked === undefined) {
-			CheckboxProperties.checked = defaultChecked;
+			CheckboxProperties["checked"] = defaultChecked;
 		}
 	}
 

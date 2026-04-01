@@ -124,6 +124,8 @@ function ChartTooltipContent({
 		indicator?: "line" | "dot" | "dashed";
 		nameKey?: string;
 		labelKey?: string;
+		payload?: Array<Record<string, unknown>>;
+		label?: string;
 	}) {
 	const { config } = useChart();
 
@@ -177,7 +179,7 @@ function ChartTooltipContent({
 			)}>
 			{!NestLabel ? TooltipLabel : null}
 			<div className="grid gap-1.5">
-				{payload.map((item, index) => {
+				{payload.map((item: Record<string, unknown>, index: number) => {
 					const key = `${nameKey || item.name || item.dataKey || "value"}`;
 					const ItemConfig = GetPayloadConfigFromPayload(
 						config,
@@ -277,9 +279,10 @@ function ChartLegendContent({
 	verticalAlign = "bottom",
 	nameKey,
 }: React.ComponentProps<"div"> &
-	Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+	Partial<Pick<RechartsPrimitive.LegendProps, "verticalAlign">> & {
 		hideIcon?: boolean;
 		nameKey?: string;
+		payload?: Array<Record<string, unknown>>;
 	}) {
 	const { config } = useChart();
 

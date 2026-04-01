@@ -30,7 +30,9 @@ export default ({
 	Domain?: string;
 	ClientIdentifier?: string;
 }) => (
-	<Auth0Provider Domain={Domain} ClientIdentifier={ClientIdentifier}>
-		<Auth0AccountGate Route={Route} Header={Header} />
-	</Auth0Provider>
+	<Auth0Provider
+		Children={<Auth0AccountGate Route={Route} {...(Header ? { Header } : {})} />}
+		{...(Domain ? { Domain } : {})}
+		{...(ClientIdentifier ? { ClientIdentifier } : {})}
+	/>
 );

@@ -48,7 +48,7 @@ interface NavigationLink {
 	icon?: string;
 }
 
-interface HeaderContent {
+export interface HeaderContent {
 	logo?: { text: string };
 	navigation?: NavigationLink[];
 	actions?: Array<{

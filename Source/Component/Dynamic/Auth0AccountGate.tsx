@@ -66,7 +66,7 @@ export default ({
 	if (IsLoading) {
 		return (
 			<div className="flex min-h-screen flex-col">
-				<Header content={HeaderContent} />
+				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
 				<div className="flex flex-1 items-center justify-center">
 					<p className="text-muted-foreground text-sm">
 						{T("loading", { defaultValue: "Loading..." })}
@@ -79,7 +79,7 @@ export default ({
 	if (Error) {
 		return (
 			<div className="flex min-h-screen flex-col">
-				<Header content={HeaderContent} />
+				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
 				<div className="flex flex-1 flex-col items-center justify-center gap-4 px-4">
 					<p className="text-destructive text-sm">
 						{T("error", {
@@ -103,7 +103,7 @@ export default ({
 	if (IsAuthenticated && User) {
 		return (
 			<div className="flex min-h-screen flex-col">
-				<Header content={HeaderContent} />
+				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
 				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-4">
 					<Button
 						variant="outline"
@@ -151,7 +151,7 @@ export default ({
 	// Not authenticated, not loading — redirect is in progress
 	return (
 		<div className="flex min-h-screen flex-col">
-			<Header content={HeaderContent} />
+			<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
 			<div className="flex flex-1 items-center justify-center">
 				<p className="text-muted-foreground text-sm">
 					{T("redirecting", {

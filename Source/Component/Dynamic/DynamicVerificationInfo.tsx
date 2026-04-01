@@ -1,5 +1,4 @@
 import { Download, Fingerprint, Shield } from "lucide-react";
-import React from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton";
@@ -13,7 +12,7 @@ import type Property from "./Interface/Property/Information/Verification.js";
 export function DynamicVerificationInfo({
 	content,
 	onVerify,
-	onDownloadSignature,
+	_onDownloadSignature,
 	className,
 }: Property) {
 	const { t: T } = useTranslation("download");

@@ -359,8 +359,7 @@ export function HomePage({ content, className }: Property) {
 					role: T("home:architecture.mountain.subtitle", {
 						defaultValue: "Rust/Tauri native backend",
 					}),
-					rating: 0,
-				},
+					},
 				{
 					id: "cocoon",
 					quote: T("home:architecture.cocoon.description", {
@@ -371,8 +370,7 @@ export function HomePage({ content, className }: Property) {
 					role: T("home:architecture.cocoon.subtitle", {
 						defaultValue: "TypeScript extension host",
 					}),
-					rating: 0,
-				},
+					},
 				{
 					id: "wind",
 					quote: T("home:architecture.wind.description", {
@@ -383,8 +381,7 @@ export function HomePage({ content, className }: Property) {
 					role: T("home:architecture.wind.subtitle", {
 						defaultValue: "TypeScript UI service",
 					}),
-					rating: 0,
-				},
+					},
 				{
 					id: "sky",
 					quote: T("home:architecture.sky.description", {
@@ -395,8 +392,7 @@ export function HomePage({ content, className }: Property) {
 					role: T("home:architecture.sky.subtitle", {
 						defaultValue: "Astro UI component",
 					}),
-					rating: 0,
-				},
+					},
 				{
 					id: "air",
 					quote: T("home:architecture.air.description", {
@@ -407,8 +403,7 @@ export function HomePage({ content, className }: Property) {
 					role: T("home:architecture.air.subtitle", {
 						defaultValue: "Rust background daemon",
 					}),
-					rating: 0,
-				},
+					},
 				{
 					id: "echo",
 					quote: T("home:architecture.echo.description", {
@@ -419,8 +414,7 @@ export function HomePage({ content, className }: Property) {
 					role: T("home:architecture.echo.subtitle", {
 						defaultValue: "Rust task scheduler",
 					}),
-					rating: 0,
-				},
+					},
 			],
 			columns: 3,
 		},
@@ -496,7 +490,6 @@ export function HomePage({ content, className }: Property) {
 				}
 			},
 		},
-		header: undefined,
 		footer: {
 			brand: {
 				name: T("common:brand.name", {

@@ -32,12 +32,12 @@ export function PageviewTracker() {
 					CurrentPath,
 					CurrentTitle,
 				).catch((TrackError: Error) => {
-					if (process.env.NODE_ENV !== "production") {
+					if (process.env["NODE_ENV"] !== "production") {
 						console.error("Failed to track page view:", TrackError);
 					}
 				});
 			} catch (TrackError) {
-				if (process.env.NODE_ENV !== "production") {
+				if (process.env["NODE_ENV"] !== "production") {
 					console.error("Failed to track page view:", TrackError);
 				}
 			}

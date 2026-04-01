@@ -18,6 +18,8 @@ import {
 import { Button } from "../UI/Button";
 import type Property from "./Interface/Property/Button.js";
 
+export type DynamicButtonProps = Property;
+
 /**
  * Icon registry:direct imports for instant render.
  * Covers all icons used in CTA buttons across the site.

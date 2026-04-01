@@ -1,5 +1,5 @@
 import { Cpu, Monitor } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import type RequirementItem from "./Interface/Item/Requirement.js";

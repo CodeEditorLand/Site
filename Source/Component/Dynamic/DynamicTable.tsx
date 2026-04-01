@@ -1,10 +1,7 @@
-import React from "react";
-
 import {
 	Table,
 	TableBody,
 	TableCell,
-	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -23,8 +20,8 @@ export function DynamicTable<T extends Record<string, unknown>>({
 		data: DataList,
 		striped: Striped = false,
 		hoverable: Hoverable = false,
-		bordered: Bordered = true,
-		compact: Compact = false,
+		bordered: _Bordered = true,
+		compact: _Compact = false,
 		onRowClick: OnRowClick,
 		className: ClassName,
 	} = content;

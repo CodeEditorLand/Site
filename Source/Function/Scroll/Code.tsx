@@ -25,7 +25,7 @@ interface ScrollCodeProperty {
 }
 
 const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
-	const [MouseState, SetMouseState] = useState<Mouse>({
+	const [MouseState] = useState<Mouse>({
 		X: 0,
 		Y: 0,
 		XPrevious: 0,
@@ -86,7 +86,7 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 			<div className="flex justify-center" aria-hidden="true">
 				{Display()
 					.split("")
-					.map((Visible, Character) => (
+					.map((_Visible, Character) => (
 						<div key={`char-${Character}`} className="mr-2">
 							{(() => {
 								const Position = Character % TextContent.length;

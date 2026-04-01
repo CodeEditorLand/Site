@@ -1,7 +1,6 @@
 "use client";
 
 import { GripVerticalIcon } from "lucide-react";
-import * as React from "react";
 import {
 	Group,
 	Panel,

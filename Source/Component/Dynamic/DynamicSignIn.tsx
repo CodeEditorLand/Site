@@ -9,7 +9,6 @@ import {
 	CardTitle,
 } from "../UI/Card";
 import { DynamicButton } from "./DynamicButton";
-import { DynamicCheckbox } from "./DynamicCheckbox";
 import { DynamicInput } from "./DynamicInput";
 import type Property from "./Interface/Property/SignIn.js";
 
@@ -38,7 +37,7 @@ export function DynamicSignIn({
 	} = content;
 	const [Email, SetEmail] = useState("");
 	const [Password, SetPassword] = useState("");
-	const [Errors, SetErrors] = useState<{ email?: string; password?: string }>(
+	const [, SetErrors] = useState<{ email?: string; password?: string }>(
 		{},
 	);
 
@@ -136,7 +135,7 @@ export function DynamicSignIn({
 										...oauthButton,
 										fullWidth: true,
 									}}
-									onAction={onOAuth}
+									{...(onOAuth ? { onAction: onOAuth } : {})}
 								/>
 							)}
 						</CardContent>

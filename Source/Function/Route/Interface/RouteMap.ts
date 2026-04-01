@@ -5,4 +5,4 @@ export interface RouteMap {
 	Variant: Record<string, string>;
 }
 
-export default RouteMap;
+export type { RouteMap as default };

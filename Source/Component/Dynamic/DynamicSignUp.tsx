@@ -86,12 +86,6 @@ export function DynamicSignUp({
 		}
 	};
 
-	const OAuthProviderList = [
-		{ name: "GitHub", icon: "GitFork" },
-		{ name: "Google", icon: "Globe" },
-		{ name: "GitLab", icon: "GitFork" },
-	];
-
 	return (
 		<section className="py-20" aria-label="Sign up">
 			<div className="container mx-auto px-4">
