@@ -63,9 +63,10 @@ export interface HeaderContent {
 
 interface HeaderProps {
 	content?: HeaderContent;
+	AuthSlot?: React.ReactNode;
 }
 
-export function Header({ content }: HeaderProps) {
+export function Header({ content, AuthSlot }: HeaderProps) {
 	const { t: T } = useTranslation("header");
 	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
