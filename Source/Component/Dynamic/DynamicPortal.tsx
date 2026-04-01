@@ -132,10 +132,7 @@ const EnterpriseSSOForm = ({
 					defaultValue: "Continue with Okta",
 				})}
 				{"\u2001"}
-				<Shield
-					className="h-4 w-4"
-					aria-hidden="true"
-				/>
+				<img src="/Image/Okta.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
 			</Button>
 			<Button
 				className="StaccatoButton w-full"
@@ -146,10 +143,7 @@ const EnterpriseSSOForm = ({
 					defaultValue: "Continue with Azure AD",
 				})}
 				{"\u2001"}
-				<Key
-					className="h-4 w-4"
-					aria-hidden="true"
-				/>
+				<img src="/Image/Microsoft.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
 			</Button>
 			<Button
 				className="StaccatoButton w-full"
@@ -314,10 +308,7 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with GitHub
 									{"\u2001"}
-									<GitFork
-										className="h-4 w-4"
-										aria-hidden="true"
-									/>
+									<img src="/Image/GitHub.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
 								</Button>
 								<Button
 									className="StaccatoButton w-full"
@@ -326,10 +317,7 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with Google
 									{"\u2001"}
-									<Globe
-										className="h-4 w-4"
-										aria-hidden="true"
-									/>
+									<img src="/Image/Google.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
 								</Button>
 								<Button
 									className="StaccatoButton w-full"
@@ -338,10 +326,7 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with GitLab
 									{"\u2001"}
-									<GitFork
-										className="h-4 w-4"
-										aria-hidden="true"
-									/>
+									<img src="/Image/GitLab.svg" alt="" width="16" height="16" className="h-4 w-4" aria-hidden="true" />
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
