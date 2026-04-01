@@ -218,27 +218,56 @@ export function Header({ content, AuthSlot }: HeaderProps) {
 				<div className="flex items-center space-x-3">
 					<div className="hidden items-center space-x-2 md:flex">
 						<LocaleSwitcher />
-						{HeaderData.actions?.map((Action, Index) => (
-							<Button
-								key={Index}
-								variant={
-									(Action.variant as
-										| "ghost"
-										| "default"
-										| "outline") || "default"
-								}
-								size={
-									(Action.size as "default" | "sm" | "lg") ||
-									"default"
-								}
-								className="StaccatoButton"
-								asChild>
-								<a href={Action.href}>
-									{Action.text}
-									{RenderActionIcon(Action.icon)}
-								</a>
-							</Button>
-						))}
+						{AuthSlot ? (
+							<>
+								{AuthSlot}
+								{HeaderData.actions
+									?.filter((Action) => Action.href !== "/Account/SignIn")
+									.map((Action, Index) => (
+										<Button
+											key={Index}
+											variant={
+												(Action.variant as
+													| "ghost"
+													| "default"
+													| "outline") || "default"
+											}
+											size={
+												(Action.size as "default" | "sm" | "lg") ||
+												"default"
+											}
+											className="StaccatoButton"
+											asChild>
+											<a href={Action.href}>
+												{Action.text}
+												{RenderActionIcon(Action.icon)}
+											</a>
+										</Button>
+									))}
+							</>
+						) : (
+							HeaderData.actions?.map((Action, Index) => (
+								<Button
+									key={Index}
+									variant={
+										(Action.variant as
+											| "ghost"
+											| "default"
+											| "outline") || "default"
+									}
+									size={
+										(Action.size as "default" | "sm" | "lg") ||
+										"default"
+									}
+									className="StaccatoButton"
+									asChild>
+									<a href={Action.href}>
+										{Action.text}
+										{RenderActionIcon(Action.icon)}
+									</a>
+								</Button>
+							))
+						)}
 					</div>
 					<Button
 						variant="ghost"

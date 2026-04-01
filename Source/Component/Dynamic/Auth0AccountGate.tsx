@@ -20,6 +20,8 @@ import { Header } from "../Layout/Header";
 export default ({
 	Route,
 	Header: HeaderContent,
+	Connection,
+	Organization,
 }: {
 	Route: "signin" | "signup";
 	Header?: {
@@ -34,6 +36,10 @@ export default ({
 			icon?: string;
 		}>;
 	};
+	/** Auth0 enterprise connection name (e.g. "okta-acme" for Okta SSO) */
+	Connection?: string;
+	/** Auth0 organization ID (e.g. "org_abc123" for multi-tenant Okta) */
+	Organization?: string;
 }) => {
 	const {
 		isLoading: IsLoading,
@@ -46,8 +52,32 @@ export default ({
 
 	const { t: T } = useTranslation("account");
 
-	const Signup = () =>
-		Login({ authorizationParams: { screen_hint: "signup" } });
+	// Build enterprise SSO params (Okta, SAML, Azure AD, etc.)
+	const EnterpriseParams: Record<string, string> = {};
+	if (Connection) EnterpriseParams["connection"] = Connection;
+	if (Organization) EnterpriseParams["organization"] = Organization;
+
+	// Check URL for enterprise hints: ?connection=okta-acme&organization=org_abc123
+	const URLConnection =
+		typeof window !== "undefined"
+			? new URLSearchParams(window.location.search).get("connection")
+			: null;
+	const URLOrganization =
+		typeof window !== "undefined"
+			? new URLSearchParams(window.location.search).get("organization")
+			: null;
+	if (URLConnection) EnterpriseParams["connection"] = URLConnection;
+	if (URLOrganization) EnterpriseParams["organization"] = URLOrganization;
+
+	const LoginWithParams = (Extra?: Record<string, string>) =>
+		Login({
+			authorizationParams: {
+				...EnterpriseParams,
+				...Extra,
+			},
+		});
+
+	const Signup = () => LoginWithParams({ screen_hint: "signup" });
 
 	const Logout = () =>
 		Auth0Logout({ logoutParams: { returnTo: window.location.origin } });
@@ -59,7 +89,7 @@ export default ({
 		if (Route === "signup") {
 			Signup();
 		} else {
-			Login();
+			LoginWithParams();
 		}
 	}, [IsLoading, IsAuthenticated, Route]);
 
@@ -101,10 +131,27 @@ export default ({
 	}
 
 	if (IsAuthenticated && User) {
+		const DisplayName =
+			User.name && User.name !== User.email
+				? User.name
+				: User.nickname || User.email?.split("@")[0] || "User";
+
 		return (
 			<div className="flex min-h-screen flex-col">
 				<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
 				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-6 px-4">
+					<Button
+						variant="default"
+						className="w-full"
+						asChild
+					>
+						<a href="/Dashboard">
+							{T("dashboard", {
+								defaultValue: "Go to Dashboard",
+							})}
+						</a>
+					</Button>
+
 					<Button
 						variant="outline"
 						className="w-full"
@@ -115,34 +162,31 @@ export default ({
 						})}
 					</Button>
 
-					<Button
-						variant="ghost"
-						className="w-full"
-						asChild
-					>
-						<a href="/Dashboard">
-							{T("dashboard", {
-								defaultValue: "Account Dashboard",
-							})}
-						</a>
-					</Button>
+					{User.picture && (
+						<img
+							src={User.picture}
+							alt=""
+							width="64"
+							height="64"
+							className="h-16 w-16 rounded-none border border-[var(--Border)]"
+						/>
+					)}
 
 					<h2 className="text-lg font-semibold">
-						{T("profile", {
-							defaultValue: "User Profile",
-						})}
+						{DisplayName}
 					</h2>
 
 					<p className="text-muted-foreground text-sm">
-						{T("loggedInAs", {
-							defaultValue: "Logged in as",
-						})}{" "}
 						{User.email}
 					</p>
 
-					<pre className="w-full overflow-auto rounded-none border border-[var(--Border)] bg-white p-4 text-xs">
-						{JSON.stringify(User, null, 2)}
-					</pre>
+					{User.email_verified === false && (
+						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-xs text-yellow-700">
+							{T("emailNotVerified", {
+								defaultValue: "Email not verified. Check your inbox.",
+							})}
+						</p>
+					)}
 				</div>
 			</div>
 		);

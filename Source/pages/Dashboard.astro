@@ -1,9 +1,13 @@
 ---
-import { Header } from "../Component/Layout/Header";
+import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
+import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
+
+const Auth0Domain = (await import("../Function/Configuration/Auth0Domain.js")).default;
+const Auth0ClientIdentifier = (await import("../Function/Configuration/Auth0ClientIdentifier.js")).default;
 
 const MetaTitle = T("meta.dashboard.title", {
 	defaultValue: "Dashboard | Code Editor Land",
@@ -19,7 +23,11 @@ const MetaDescription = T("meta.dashboard.description", {
 	Description={MetaDescription}
 	Url="https://editor.land/Dashboard"
 	lang="en">
-	<Header client:load />
+	<DynamicAuthHeader
+		client:load
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
+	/>
 
 	<div class="container mx-auto max-w-5xl px-4 py-16">
 		<!-- Breadcrumbs -->
@@ -114,48 +122,11 @@ const MetaDescription = T("meta.dashboard.description", {
 						})
 					}
 				</h2>
-				<div class="space-y-3 text-sm">
-					<div class="flex justify-between">
-						<span class="text-muted-foreground"
-							>{
-								T("common.dashboard.account.emailLabel", {
-									defaultValue: "Email",
-								})
-							}</span
-						>
-						<span id="UserEmail" class="text-muted-foreground"
-							>--</span
-						>
-					</div>
-					<div class="flex justify-between">
-						<span class="text-muted-foreground"
-							>{
-								T("common.dashboard.account.planLabel", {
-									defaultValue: "Plan",
-								})
-							}</span
-						>
-						<span class="font-medium"
-							>{
-								T("common.dashboard.account.planFree", {
-									defaultValue: "Free",
-								})
-							}</span
-						>
-					</div>
-					<div class="flex justify-between">
-						<span class="text-muted-foreground"
-							>{
-								T("common.dashboard.account.memberSinceLabel", {
-									defaultValue: "Member Since",
-								})
-							}</span
-						>
-						<span id="MemberSince" class="text-muted-foreground"
-							>--</span
-						>
-					</div>
-				</div>
+				<DynamicDashboardUser
+					client:load
+					Domain={Auth0Domain}
+					ClientIdentifier={Auth0ClientIdentifier}
+				/>
 			</div>
 
 			<!-- Downloads Card -->

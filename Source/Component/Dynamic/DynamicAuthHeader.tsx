@@ -27,7 +27,7 @@ export default ({
 }) => (
 	<Auth0Provider
 		Children={
-			<HeaderWithAuth Content={Content} />
+			<HeaderWithAuth {...(Content ? { Content } : {})} />
 		}
 		{...(Domain ? { Domain } : {})}
 		{...(ClientIdentifier ? { ClientIdentifier } : {})}
@@ -35,10 +35,8 @@ export default ({
 );
 
 const HeaderWithAuth = ({ Content }: { Content?: HeaderContent }) => (
-	<>
-		<Header
-			content={Content}
-			AuthSlot={<DynamicAuthStatus />}
-		/>
-	</>
+	<Header
+		{...(Content ? { content: Content } : {})}
+		AuthSlot={<DynamicAuthStatus />}
+	/>
 );
