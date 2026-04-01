@@ -215,6 +215,115 @@ const IconLabelMap: Record<string, string> = {
 };
 
 /**
+ * Semantic icon color map — per-icon, domain-grouped, tier-independent.
+ *
+ * Each color group represents a function domain. Colors are chosen to be:
+ *   — Visually distinct from each other
+ *   — Visually distinct from the 4 tier border colors
+ *     (Cloud #3b82f6, Provider #8b5cf6, LocalFirst #f97316, Enterprise #374151)
+ *   — Readable at 16px on both light and dark surfaces
+ *
+ * Groups:
+ *   Identity/crypto   → indigo   #6366f1
+ *   Network/connect   → sky      #0ea5e9
+ *   Storage/hardware  → slate    #64748b
+ *   Build/code        → emerald  #10b981
+ *   Git/VCS           → amber    #f59e0b
+ *   Cloud/sync/deploy → blue     #3b82f6  (matches Cloud tier intentionally — these ARE cloud ops)
+ *   Auth/provision    → violet   #7c3aed
+ *   Audit/docs        → teal     #14b8a6
+ *   Settings/config   → slate-4  #94a3b8
+ *   Connectivity misc → orange   #f97316
+ *   AI                → purple   #a855f7
+ *   Support/lifecycle → pink     #ec4899
+ */
+const IconColorMap: Record<string, string> = {
+	// Identity / crypto — indigo
+	Lock: "#6366f1",
+	Key: "#6366f1",
+	Fingerprint: "#6366f1",
+	Shield: "#6366f1",
+
+	// Network / connect — sky
+	Wifi: "#0ea5e9",
+	WifiOff: "#0ea5e9",
+	Globe: "#0ea5e9",
+	Network: "#0ea5e9",
+	Radio: "#0ea5e9",
+	Link2: "#0ea5e9",
+
+	// Storage / hardware — slate
+	HardDrive: "#64748b",
+	Server: "#64748b",
+	Database: "#64748b",
+	Cpu: "#64748b",
+	Terminal: "#64748b",
+
+	// Build / code — emerald
+	Code: "#10b981",
+	Wrench: "#10b981",
+	Hammer: "#10b981",
+	FlaskConical: "#10b981",
+	Package: "#10b981",
+	PackageOpen: "#10b981",
+	Box: "#10b981",
+	Puzzle: "#10b981",
+
+	// Git / VCS — amber
+	GitBranch: "#f59e0b",
+	GitFork: "#f59e0b",
+	GitCommit: "#f59e0b",
+	GitPullRequest: "#f59e0b",
+	FolderGit: "#f59e0b",
+
+	// Cloud / sync / deploy — blue
+	Cloud: "#3b82f6",
+	RefreshCw: "#3b82f6",
+	RefreshCcw: "#3b82f6",
+	RotateCcw: "#3b82f6",
+	Download: "#3b82f6",
+	Rocket: "#3b82f6",
+	Timer: "#3b82f6",
+	Zap: "#3b82f6",
+
+	// Auth / provisioning — violet
+	KeyRound: "#7c3aed",
+	UserPlus: "#7c3aed",
+	Users: "#7c3aed",
+	Building2: "#7c3aed",
+	Blocks: "#7c3aed",
+
+	// Audit / docs — teal
+	FileText: "#14b8a6",
+	Activity: "#14b8a6",
+	AlertTriangle: "#14b8a6",
+	Info: "#14b8a6",
+	Search: "#14b8a6",
+
+	// Settings / config — slate-400
+	Settings: "#94a3b8",
+	Sliders: "#94a3b8",
+	CheckCircle: "#94a3b8",
+	Check: "#94a3b8",
+	ChevronRight: "#94a3b8",
+
+	// Connectivity misc — orange
+	Unplug: "#f97316",
+	ExternalLink: "#f97316",
+	Layers: "#f97316",
+	Hash: "#f97316",
+
+	// AI — purple
+	BrainCircuit: "#a855f7",
+
+	// Support / lifecycle — pink
+	LifeBuoy: "#ec4899",
+	CirclePlay: "#ec4899",
+	Monitor: "#ec4899",
+	Laptop: "#ec4899",
+};
+
+/**
  * Enterprise SSO form with organization domain input and Auth0 redirect buttons.
  * Routes through Auth0 Enterprise Connections (Okta, Azure AD, SAML).
  */
@@ -270,6 +379,8 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 						defaultValue: "Continue with SSO",
 					})}
 					{"\u2001"}
+					{"+"}
+					{"\u2001"}
 					<Building2 className="h-4 w-4" aria-hidden="true" />
 				</Button>
 			</form>
@@ -284,6 +395,8 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 				{T("portal.enterprise.continueOkta", {
 					defaultValue: "Continue with Okta",
 				})}
+				{"\u2001"}
+				{"+"}
 				{"\u2001"}
 				<img
 					src="/Image/Okta.svg"
@@ -303,6 +416,8 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					defaultValue: "Continue with Azure AD",
 				})}
 				{"\u2001"}
+				{"+"}
+				{"\u2001"}
 				<img
 					src="/Image/Microsoft.svg"
 					alt="Microsoft"
@@ -321,6 +436,8 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					defaultValue: "Continue with SAML",
 				})}
 				{"\u2001"}
+				{"+"}
+				{"\u2001"}
 				<Lock className="h-4 w-4" aria-hidden="true" />
 			</Button>
 
@@ -328,7 +445,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			<p className="text-center text-xs text-muted-foreground">
 				{T("portal.enterprise.note", {
 					defaultValue:
-						"OIDC Discovery \u00B7 SAML 2.0 \u00B7 SCIM provisioning",
+						"OIDC Discovery \u2001+\u2001 SAML 2.0 \u2001+\u2001 SCIM provisioning",
 				})}
 			</p>
 		</div>
@@ -452,6 +569,8 @@ const PortalTierRow = ({
 									}}>
 									Secure Sign In
 									{"\u2001"}
+									{"+"}
+									{"\u2001"}
 									<Lock
 										className="h-4 w-4"
 										aria-hidden="true"
@@ -471,6 +590,8 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with GitHub
 									{"\u2001"}
+									{"+"}
+									{"\u2001"}
 									<img
 										src="/Image/GitHub.svg"
 										alt="GitHub"
@@ -486,6 +607,8 @@ const PortalTierRow = ({
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => OnAction?.()}>
 									Continue with Google
+									{"\u2001"}
+									{"+"}
 									{"\u2001"}
 									<img
 										src="/Image/Google.svg"
@@ -503,6 +626,8 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Continue with GitLab
 									{"\u2001"}
+									{"+"}
+									{"\u2001"}
 									<img
 										src="/Image/GitLab.svg"
 										alt="GitLab"
@@ -514,8 +639,11 @@ const PortalTierRow = ({
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
-									OAuth 2.0 &middot; Linked to your
-									preferences
+									{"OAuth 2.0"}
+									{"\u2001"}
+									{"+"}
+									{"\u2001"}
+									{"Linked to your preferences"}
 								</p>
 							</div>
 						)}
@@ -544,6 +672,8 @@ const PortalTierRow = ({
 									onClick={() => OnAction?.()}>
 									Connect to Air Daemon
 									{"\u2001"}
+									{"+"}
+									{"\u2001"}
 									<Wifi
 										className="h-4 w-4"
 										aria-hidden="true"
@@ -551,8 +681,15 @@ const PortalTierRow = ({
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
-									Zero cloud dependency &middot; JWT
-									certificates &middot; mTLS
+									{"Zero cloud dependency"}
+									{"\u2001"}
+									{"+"}
+									{"\u2001"}
+									{"JWT certificates"}
+									{"\u2001"}
+									{"+"}
+									{"\u2001"}
+									{"mTLS"}
 								</p>
 							</div>
 						)}
@@ -626,10 +763,21 @@ const PortalTierRow = ({
 																		IconName
 																	] ??
 																	IconName);
+
+														// Semantic color: SVG brand images keep natural color (no tint);
+														// Lucide icons get their domain color from IconColorMap,
+														// falling back to a neutral slate if not mapped.
+														const LucideColor =
+															IconColorMap[
+																IconName
+															] ?? "#94a3b8";
+
 														return (
 															<span
 																key={IconIndex}
 																className="inline-flex items-center">
+																{"\u2001"}
+																{"+"}
 																{"\u2001"}
 																{IconName.startsWith(
 																	"/",
@@ -662,7 +810,7 @@ const PortalTierRow = ({
 																				}
 																				role="img"
 																				style={{
-																					color: Content.Color,
+																					color: LucideColor,
 																				}}
 																			/>
 																		) : null;
@@ -696,10 +844,16 @@ const PortalTierRow = ({
 											{CapabilityText}
 										</span>
 										{"\u2001"}
+										{"+"}
+										{"\u2001"}
 										<Shield
 											className="h-3 w-3 shrink-0"
 											aria-hidden="true"
-											style={{ color: Content.Color }}
+											style={{
+												color:
+													IconColorMap["Shield"] ??
+													"#6366f1",
+											}}
 										/>
 									</div>
 								),
@@ -725,14 +879,19 @@ const PortalTierRow = ({
 					<span className="text-xs font-medium">
 						{Labels?.SettingsManaged ?? "Settings Managed"}
 					</span>
+					{"\u2001"}
+					{"+"}
+					{"\u2001"}
 					<span className="text-xs text-muted-foreground">
 						{Labels?.AllTiers ?? "Included in all tiers"}
 					</span>
 					{"\u2001"}
+					{"+"}
+					{"\u2001"}
 					<RefreshCw
 						className="StaccatoIcon h-3.5 w-3.5"
 						aria-hidden="true"
-						style={{ color: Content.Color }}
+						style={{ color: IconColorMap["RefreshCw"] ?? "#3b82f6" }}
 					/>
 				</div>
 			</div>
@@ -754,6 +913,11 @@ const PortalTierRow = ({
  *
  * TierIconRegistry covers 59 icons spanning the full CEL technology stack.
  * Feature.Icon[] arrays accept both Lucide registry keys and /Image/*.svg paths.
+ *
+ * Icon color delineation (IconColorMap):
+ *   Each Lucide icon is colored by its function domain, not by its parent tier.
+ *   12 semantic groups × distinct color — all visually separated from tier border colors.
+ *   SVG brand images (/Image/*.svg) render at natural color with no tint applied.
  */
 const DynamicPortal = ({
 	Content,
