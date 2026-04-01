@@ -35,6 +35,10 @@ export default (await import("astro/config")).defineConfig({
 
 	server: {
 		port: (await import("./Source/Function/Configuration/Port.js")).default,
+
+		// Strict port prevents Vite from auto-selecting a different port
+		// when 9999 is occupied — avoids Auth0 callback URL mismatches
+		strictPort: true,
 	},
 
 	build: {
