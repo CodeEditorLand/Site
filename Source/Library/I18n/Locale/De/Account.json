@@ -6,7 +6,7 @@
 		"success": {
 			"title": "Pruefen Sie Ihre E-Mail",
 			"subtitle": "Ein Link zum Zuruecksetzen des Passworts wurde gesendet an",
-			"instruction": "Klicken Sie auf den Link in der E-Mail, um Ihr Passwort zurueckzusetzen. Der Link laeuft in 24 Stunden ab.",
+			"instruction": "Klicken Sie auf den Link in der E-Mail, um Ihr Passwort zurueckzusetzen.\nDer Link laeuft in 24 Stunden ab.",
 			"resend": "E-Mail erneut senden"
 		},
 		"title": "Passwort zuruecksetzen",
@@ -35,7 +35,7 @@
 		"subtitle": "Geben Sie unten Ihr neues Passwort ein",
 		"success": {
 			"title": "Passwort erfolgreich zurueckgesetzt",
-			"description": "Ihr Passwort wurde zurueckgesetzt. Sie koennen sich jetzt mit Ihrem neuen Passwort anmelden.",
+			"description": "Ihr Passwort wurde zurueckgesetzt.\nSie koennen sich jetzt mit Ihrem neuen Passwort anmelden.",
 			"button": "Weiter zur Anmeldung"
 		},
 		"title": "Passwort zuruecksetzen",
@@ -105,5 +105,86 @@
 	},
 	"common": {
 		"and": "und"
+	},
+	"portal": {
+		"title": "Waehlen Sie Ihren Kontotyp",
+		"subtitle": "Von vollstaendig online bis komplett lokal.\nDrei Wege, Ihren Editor zu verwalten.",
+		"cloud": {
+			"title": "Cloud-Konto",
+			"subtitle": "Sichere Online-Anmeldung mit vollstaendiger Cloud-Synchronisierung.\nIhre Einstellungen, Erweiterungen und Praeferenzen werden auf allen Geraeten gespeichert und synchronisiert.",
+			"signIn": "Sichere Anmeldung",
+			"feature": {
+				"sync": "Geraeteuebergreifende Synchronisierung der Einstellungen",
+				"backup": "Automatische Cloud-Sicherung von Konfigurationen",
+				"team": "Verwaltung von Team-Arbeitsbereichen",
+				"extension": "Erweiterungs-Marktplatz mit Cloud-Installation",
+				"remote": "Integration von Remote-Entwicklungsservern"
+			},
+			"capability": {
+				"jwt": "JWT-Sitzungstokens",
+				"okta": "Okta SSO-Integration",
+				"mfa": "Multi-Faktor-Authentifizierung",
+				"rbac": "Rollenbasierte Zugriffskontrolle",
+				"audit": "Audit-Protokollverfolgung",
+				"cert": "Entwicklerzertifikate"
+			}
+		},
+		"provider": {
+			"title": "Anbieter-Konto",
+			"subtitle": "Authentifizieren Sie sich ueber GitHub, Google oder GitLab.\nIhre OAuth-Identitaet verknuepft sich direkt mit Ihren Editor-Praeferenzen und Teammitgliedschaften.",
+			"continueGitHub": "Weiter mit GitHub",
+			"continueGoogle": "Weiter mit Google",
+			"continueGitLab": "Weiter mit GitLab",
+			"oauthNote": "OAuth 2.0 · Verknuepft mit Ihren Praeferenzen",
+			"feature": {
+				"github": "GitHub-Identitaet verknuepft mit Praeferenzen",
+				"sso": "Einmalanmeldung fuer alle Land-Dienste",
+				"repo": "Repository-bewusste Arbeitsbereichskonfiguration",
+				"team": "Synchronisierung von Organisations- und Teammitgliedschaften",
+				"ci": "CI/CD-Pipeline-Integration mit Build-Triggern"
+			},
+			"capability": {
+				"oauth": "OAuth 2.0 + PKCE-Ablauf",
+				"scope": "Granulare Berechtigungsbereiche",
+				"token": "Rotation von Aktualisierungstokens",
+				"webhook": "Webhook-Ereignisabonnements",
+				"org": "Richtlinien auf Organisationsebene",
+				"cert": "Entwicklerzertifikate"
+			}
+		},
+		"localfirst": {
+			"title": "Lokales Konto",
+			"subtitle": "Wie ein SaaS-Kontrollpanel, das auf Ihrem Rechner laeuft.\nKeine Cloud-Abhaengigkeit.\nDie Website kommuniziert direkt mit dem Air Daemon in Land/Element ueber ein lokales Protokoll.\nKonfigurieren, aktualisieren, kompilieren und bereitstellen Sie Ihren Editor vollstaendig von dieser Konsole aus.",
+			"daemonLabel": "Air Daemon",
+			"daemonStatus": "Wird gescannt...",
+			"connect": "Mit Air Daemon verbinden",
+			"note": "Keine Cloud-Abhaengigkeit · JWT-Zertifikate · mTLS",
+			"feature": {
+				"daemon": "Direkte Air Daemon-Verbindung zu Land/Element",
+				"build": "Builds direkt ueber die Website-Konsole starten",
+				"deploy": "Aenderungen direkt in der Anwendung bereitstellen",
+				"configure": "Vollstaendige Editor-Konfigurations- und Einstellungsverwaltung",
+				"parity": "1:1-Paritaet mit VS Code Server-Funktionen und -Einstellungen",
+				"offline": "Keine Cloud-Anmeldung erforderlich.\nVollstaendiger Offline-Betrieb.",
+				"bake": "Das Portal direkt als eingebettetes SaaS in den Editor einbetten"
+			},
+			"capability": {
+				"jwt": "JWT-Entwicklerzertifikate",
+				"mtls": "Gegenseitige TLS-Authentifizierung",
+				"crdt": "CRDT-Zustandssynchronisierung",
+				"team": "Teamverwaltung (vollstaendig lokal)",
+				"cert": "Zertifizierungsstellenverwaltung",
+				"ws": "WebSocket-Live-Verbindung",
+				"rbac": "Lokale RBAC-Richtlinien",
+				"backup": "Verschluesselte lokale Sicherung"
+			}
+		},
+		"labels": {
+			"included": "Enthalten",
+			"capabilities": "Faehigkeiten",
+			"protocol": "Protokoll:",
+			"settingsManaged": "Verwaltete Einstellungen",
+			"allTiers": "In allen Stufen enthalten"
+		}
 	}
 }

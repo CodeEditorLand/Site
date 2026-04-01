@@ -20,7 +20,7 @@
 	"comingSoon": "Coming Soon",
 	"error": {
 		"404": "404 - Page Not Found",
-		"pageNotFound": "The page you're looking for doesn't exist or has been moved. Please check the URL for any typos, or return to the home page to start fresh. If you believe this is an error, contact our support team and we'll help you find what you need."
+		"pageNotFound": "The page you're looking for doesn't exist or has been moved.\nPlease check the URL for any typos, or return to the home page to start fresh.\nIf you believe this is an error, contact our support team and we'll help you find what you need."
 	},
 	"label": {
 		"email": "Email Address",
@@ -82,13 +82,13 @@
 		"pageTitle": "Blog",
 		"pageSubtitle": "News, updates, and technical articles from the team.",
 		"comingSoonHeading": "Coming Soon",
-		"comingSoonText": "We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
+		"comingSoonText": "We are preparing articles about the architecture, development process, and roadmap for Code Editor Land.\nCheck back soon for updates.",
 		"joinDiscussions": "Join Discussions",
 		"followGitHub": "Follow on GitHub"
 	},
 	"contributing": {
 		"pageTitle": "Contributing",
-		"pageSubtitle": "Code Editor Land is open source and welcomes contributions from everyone. Here is how to get involved.",
+		"pageSubtitle": "Code Editor Land is open source and welcomes contributions from everyone.\nHere is how to get involved.",
 		"guide": {
 			"title": "Contributing Guide",
 			"description": "Read the full CONTRIBUTING.md on GitHub for detailed instructions on setting up the development environment and submitting changes."
@@ -114,7 +114,7 @@
 		},
 		"step4": {
 			"title": "Submit a Pull Request",
-			"description": "Push your branch and open a pull request against the Current branch. Describe what you changed and why."
+			"description": "Push your branch and open a pull request against the Current branch.\nDescribe what you changed and why."
 		},
 		"ways": {
 			"heading": "Ways to Contribute",
@@ -137,19 +137,19 @@
 		},
 		"funding": {
 			"heading": "Funding",
-			"description": "Code Editor Land is funded through the NGI0 Commons Fund via NLnet. This enables full-time development on the project.",
+			"description": "Code Editor Land is funded through the NGI0 Commons Fund via NLnet.\nThis enables full-time development on the project.",
 			"nlnetIntro": "Code Editor Land has been funded through the",
 			"nlnetFundName": "NGI0 Commons Fund",
 			"nlnetEstablishedBy": ", a fund established by",
-			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429. This funding enables sustained open-source development on the project.",
-			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria. PlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429.\nThis funding enables sustained open-source development on the project.",
+			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria.\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
 			"viewProject": "View the",
 			"nlnetProjectPage": "NLnet project page",
 			"viewProjectSuffix": "for more details about the grant and objectives."
 		},
 		"conduct": {
 			"heading": "Code of Conduct",
-			"description": "All participants in the Code Editor Land community are expected to be respectful and constructive. Read the full Code of Conduct on GitHub."
+			"description": "All participants in the Code Editor Land community are expected to be respectful and constructive.\nRead the full Code of Conduct on GitHub."
 		}
 	},
 	"sales": {
@@ -179,9 +179,9 @@
 			"heading": "How to reach us",
 			"directHeading": "Direct Contact",
 			"description": "Prefer email? Reach us directly:",
-			"githubNote": "We handle enterprise inquiries through GitHub Issues. This ensures your request is tracked, visible to the team, and responded to promptly.",
+			"githubNote": "We handle enterprise inquiries through GitHub Issues.\nThis ensures your request is tracked, visible to the team, and responded to promptly.",
 			"openIssueHeading": "Open a GitHub Issue",
-			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs. Include your company name, team size, use case, and any deployment requirements. Our team monitors issues daily.",
+			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\nInclude your company name, team size, use case, and any deployment requirements.\nOur team monitors issues daily.",
 			"openIssueButton": "Open GitHub Issue",
 			"issueIncludeLabel": "What to include in your issue:",
 			"issueIncludeText": "Company name, team size, intended use case, deployment environment (cloud/on-prem), timeline, and any specific support or compliance requirements.",
@@ -189,7 +189,7 @@
 		},
 		"openSource": {
 			"heading": "Open Source",
-			"description": "Not access to the code itself. Code Editor Land is open source under CC0. Enterprise plan provide support, SLA, and custom development."
+			"description": "Not access to the code itself.\nCode Editor Land is open source under CC0.\nEnterprise plan provide support, SLA, and custom development."
 		}
 	},
 	"dashboard": {

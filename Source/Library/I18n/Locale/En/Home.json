@@ -3,11 +3,11 @@
 		"badge": "Features",
 		"item": {
 			"designTokens": {
-				"description": "Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable. No Electron bloat.",
+				"description": "Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable.\nNo Electron bloat.",
 				"title": "Performance First"
 			},
 			"componentLibrary": {
-				"description": "Run your existing VS Code extensions with high fidelity through the Cocoon extension host. No changes needed.",
+				"description": "Run your existing VS Code extensions with high fidelity through the Cocoon extension host.\nNo changes needed.",
 				"title": "VS Code Compatibility"
 			},
 			"documentation": {
@@ -15,15 +15,15 @@
 				"title": "Effect-TS Architecture"
 			},
 			"versionControl": {
-				"description": "One codebase, native deployments for macOS, Windows, and Linux with Tauri. Write once, run everywhere.",
+				"description": "One codebase, native deployments for macOS, Windows, and Linux with Tauri.\nWrite once, run everywhere.",
 				"title": "Cross-Platform"
 			},
 			"collaboration": {
-				"description": "Completely free to use, modify, and distribute. Licensed under Creative Commons CC0. No string attached.",
+				"description": "Completely free to use, modify, and distribute.\nLicensed under Creative Commons CC0.\nNo string attached.",
 				"title": "Open Source"
 			},
 			"cicdIntegration": {
-				"description": "Built on proven open-source technologies: Rust, Tauri, Effect-TS, and the VS Code platform. Familiar and powerful.",
+				"description": "Built on proven open-source technologies:\nRust, Tauri, Effect-TS, and the VS Code platform.\nFamiliar and powerful.",
 				"title": "Modern Tooling"
 			}
 		},
@@ -32,7 +32,7 @@
 	},
 	"hero": {
 		"badge": "New: Effect-TS Architecture",
-		"subtitle": "A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS. Experience the editor that reimagines VS Code for the modern era.",
+		"subtitle": "A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS.\nExperience the editor that reimagines VS Code for the modern era.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",
 		"atScale": "starts here",
@@ -62,7 +62,7 @@
 		"github": "GitHub"
 	},
 	"pricing": {
-		"subtitle": "Code Editor Land is completely free. No tiers, no subscriptions, no restrictions.",
+		"subtitle": "Code Editor Land is completely free.\nNo tiers, no subscriptions, no restrictions.",
 		"labels": {
 			"monthly": "Monthly",
 			"yearly": "Yearly",
@@ -92,15 +92,17 @@
 	},
 	"testimonials": {
 		"quote": {
-			"1": "A performance-focused, open alternative. Land is exactly what VS Code needed. It's incredibly fast.",
-			"2": "The Effect-TS architecture is beautiful to work with. The type safety catches bugs before they happen.",
-			"3": "Running my existing extensions with no changes is a game-changer. The compatibility is impressive.",
-			"4": "Finally, an editor that respects my system resources. No more Electron memory bloat.",
-			"5": "The open-source commitment means I can contribute and customize. This is the editor I've been waiting for.",
-			"6": "The gRPC-based architecture is a masterclass in system design. Land is the future of desktop editors."
+			"1": "A performance-focused, open alternative.\nLand is exactly what VS Code needed.\nIt's incredibly fast.",
+			"2": "The Effect-TS architecture is beautiful to work with.\nThe type safety catches bugs before they happen.",
+			"3": "Running my existing extensions with no changes is a game-changer.\nThe compatibility is impressive.",
+			"4": "Finally, an editor that respects my system resources.\nNo more Electron memory bloat.",
+			"5": "The open-source commitment means I can contribute and customize.\nThis is the editor I've been waiting for.",
+			"6": "The gRPC-based architecture is a masterclass in system design.\nLand is the future of desktop editors."
 		},
 		"subtitle": "Community voices on the future of code editing.",
 		"title": "What developers are saying",
-		"badge": "Testimonials"
+		"badge": "Testimonials",
+		"attribution": "Community Feedback",
+		"attributionNote": "Representative community member"
 	}
 }

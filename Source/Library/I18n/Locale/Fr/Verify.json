@@ -8,7 +8,7 @@
 		"backToSignInButton": "Retour a la connexion"
 	},
 	"pending": {
-		"description": "Un lien de verification a ete envoye a votre adresse e-mail. Veuillez verifier votre boite de reception et cliquer sur le lien pour activer votre compte. Le lien est valide pendant 7 jours. Si l'e-mail n'est pas recu dans les prochaines minutes, verifiez le dossier spam ou promotions. Pour des raisons de securite, ne partagez pas cet e-mail avec quiconque.",
+		"description": "Un lien de verification a ete envoye a votre adresse e-mail.\nVeuillez verifier votre boite de reception et cliquer sur le lien pour activer votre compte.\nLe lien est valide pendant 7 jours.\nSi l'e-mail n'est pas recu dans les prochaines minutes, verifiez le dossier spam ou promotions.\nPour des raisons de securite, ne partagez pas cet e-mail avec quiconque.",
 		"resendButton": "Renvoyer l'e-mail de verification",
 		"title": "Verifiez votre adresse e-mail"
 	},

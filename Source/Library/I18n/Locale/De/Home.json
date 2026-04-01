@@ -3,11 +3,11 @@
 		"badge": "Funktionen",
 		"item": {
 			"designTokens": {
-				"description": "Natives Rust-Backend mit gRPC-IPC sorgt dafuer, dass jede Operation schnell, reaktionsfaehig und zuverlaessig ist. Kein Electron-Ballast.",
+				"description": "Natives Rust-Backend mit gRPC-IPC sorgt dafuer, dass jede Operation schnell, reaktionsfaehig und zuverlaessig ist.\nKein Electron-Ballast.",
 				"title": "Leistung zuerst"
 			},
 			"componentLibrary": {
-				"description": "Fuehren Sie Ihre vorhandenen VS Code-Erweiterungen mit hoher Wiedergabetreue ueber den Cocoon-Erweiterungshost aus. Keine Aenderungen noetig.",
+				"description": "Fuehren Sie Ihre vorhandenen VS Code-Erweiterungen mit hoher Wiedergabetreue ueber den Cocoon-Erweiterungshost aus.\nKeine Aenderungen noetig.",
 				"title": "VS Code-Kompatibilitaet"
 			},
 			"documentation": {
@@ -15,15 +15,15 @@
 				"title": "Effect-TS-Architektur"
 			},
 			"versionControl": {
-				"description": "Eine Codebasis, native Bereitstellungen fuer macOS, Windows und Linux mit Tauri. Einmal schreiben, ueberall ausfuehren.",
+				"description": "Eine Codebasis, native Bereitstellungen fuer macOS, Windows und Linux mit Tauri.\nEinmal schreiben, ueberall ausfuehren.",
 				"title": "Plattformuebergreifend"
 			},
 			"collaboration": {
-				"description": "Lizenziert unter Creative Commons CC0 \u2014 voellig kostenlos zu verwenden, zu aendern und zu verteilen. Ohne Einschraenkungen.",
+				"description": "Lizenziert unter Creative Commons CC0 — voellig kostenlos zu verwenden, zu aendern und zu verteilen.\nOhne Einschraenkungen.",
 				"title": "Open Source"
 			},
 			"cicdIntegration": {
-				"description": "Basierend auf bewaehrten Open-Source-Technologien: Rust, Tauri, Effect-TS und die VS Code-Plattform. Vertraut und leistungsstark.",
+				"description": "Basierend auf bewaehrten Open-Source-Technologien:\nRust, Tauri, Effect-TS und die VS Code-Plattform.\nVertraut und leistungsstark.",
 				"title": "Moderne Werkzeuge"
 			}
 		},
@@ -32,7 +32,7 @@
 	},
 	"hero": {
 		"badge": "Neu: Effect-TS-Architektur",
-		"subtitle": "Ein blitzschneller, typsicherer Editor, gebaut mit Rust, Tauri und Effect-TS. Erleben Sie den Editor, der VS Code fuer die moderne Aera neu denkt.",
+		"subtitle": "Ein blitzschneller, typsicherer Editor, gebaut mit Rust, Tauri und Effect-TS.\nErleben Sie den Editor, der VS Code fuer die moderne Aera neu denkt.",
 		"title": "Die Zukunft der Code-Bearbeitung",
 		"titleHighlight": "Land",
 		"atScale": "beginnt hier",
@@ -62,7 +62,7 @@
 		"github": "GitHub"
 	},
 	"pricing": {
-		"subtitle": "Code Editor Land ist voellig kostenlos. Keine Stufen, keine Abonnements, keine Einschraenkungen.",
+		"subtitle": "Code Editor Land ist voellig kostenlos.\nKeine Stufen, keine Abonnements, keine Einschraenkungen.",
 		"labels": {
 			"monthly": "Monatlich",
 			"yearly": "Jaehrlich",
@@ -92,15 +92,17 @@
 	},
 	"testimonials": {
 		"quote": {
-			"1": "Land ist genau das, was VS Code brauchte \u2014 eine leistungsorientierte, offene Alternative. Es ist unglaublich schnell.",
-			"2": "Die Effect-TS-Architektur ist wunderbar. Die Typsicherheit faengt Fehler ab, bevor sie auftreten.",
-			"3": "Meine vorhandenen Erweiterungen ohne Aenderungen ausfuehren zu koennen ist ein Wendepunkt. Die Kompatibilitaet ist beeindruckend.",
-			"4": "Endlich ein Editor, der meine Systemressourcen respektiert. Kein Electron-Speicherfresser mehr.",
-			"5": "Das Open-Source-Engagement bedeutet, dass ich beitragen und anpassen kann. Dies ist der Editor, auf den ich gewartet habe.",
-			"6": "Die gRPC-basierte Architektur ist ein Meisterwerk im Systemdesign. Land ist die Zukunft der Desktop-Editoren."
+			"1": "Land ist genau das, was VS Code brauchte — eine leistungsorientierte, offene Alternative.\nEs ist unglaublich schnell.",
+			"2": "Die Effect-TS-Architektur ist wunderbar.\nDie Typsicherheit faengt Fehler ab, bevor sie auftreten.",
+			"3": "Meine vorhandenen Erweiterungen ohne Aenderungen ausfuehren zu koennen ist ein Wendepunkt.\nDie Kompatibilitaet ist beeindruckend.",
+			"4": "Endlich ein Editor, der meine Systemressourcen respektiert.\nKein Electron-Speicherfresser mehr.",
+			"5": "Das Open-Source-Engagement bedeutet, dass ich beitragen und anpassen kann.\nDies ist der Editor, auf den ich gewartet habe.",
+			"6": "Die gRPC-basierte Architektur ist ein Meisterwerk im Systemdesign.\nLand ist die Zukunft der Desktop-Editoren."
 		},
 		"subtitle": "Stimmen aus der Community ueber die Zukunft der Code-Bearbeitung.",
 		"title": "Was Entwickler sagen",
-		"badge": "Erfahrungsberichte"
+		"badge": "Erfahrungsberichte",
+		"attribution": "Community-Feedback",
+		"attributionNote": "Repraesentativer Community-Teilnehmer"
 	}
 }

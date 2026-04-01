@@ -23,14 +23,14 @@
 		"description": "Telechargez des versions anterieures si necessaire.",
 		"title": "Versions precedentes"
 	},
-	"subtitle": "Disponible pour macOS, Windows et Linux. Construit avec Tauri, propulse par Rust.",
+	"subtitle": "Disponible pour macOS, Windows et Linux.\nConstruit avec Tauri, propulse par Rust.",
 	"systemRequirements": {
 		"subtitle": "Assurez-vous que votre systeme repond a ces exigences avant de telecharger.",
 		"title": "Configuration requise"
 	},
 	"title": "Telecharger Land",
 	"verification": {
-		"description": "Les versions de Land sont signees avec PGP. Verifiez votre telechargement pour garantir l'integrite.",
+		"description": "Les versions de Land sont signees avec PGP.\nVerifiez votre telechargement pour garantir l'integrite.",
 		"downloadButton": "Telecharger la cle publique PGP",
 		"title": "Verifiez votre telechargement",
 		"verifyButton": "Verifier le telechargement"

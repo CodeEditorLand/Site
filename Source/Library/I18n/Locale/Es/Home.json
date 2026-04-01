@@ -3,11 +3,11 @@
 		"badge": "Funciones",
 		"item": {
 			"designTokens": {
-				"description": "El backend nativo en Rust con IPC gRPC garantiza que cada operacion sea rapida, receptiva y confiable. Sin la pesadez de Electron.",
+				"description": "El backend nativo en Rust con IPC gRPC garantiza que cada operacion sea rapida, receptiva y confiable.\nSin la pesadez de Electron.",
 				"title": "Rendimiento primero"
 			},
 			"componentLibrary": {
-				"description": "Ejecute sus extensiones de VS Code existentes con alta fidelidad a traves del host de extensiones Cocoon. Sin cambios necesarios.",
+				"description": "Ejecute sus extensiones de VS Code existentes con alta fidelidad a traves del host de extensiones Cocoon.\nSin cambios necesarios.",
 				"title": "Compatibilidad con VS Code"
 			},
 			"documentation": {
@@ -15,15 +15,15 @@
 				"title": "Arquitectura Effect-TS"
 			},
 			"versionControl": {
-				"description": "Una base de codigo, despliegues nativos para macOS, Windows y Linux con Tauri. Escribe una vez, ejecuta en todas partes.",
+				"description": "Una base de codigo, despliegues nativos para macOS, Windows y Linux con Tauri.\nEscribe una vez, ejecuta en todas partes.",
 				"title": "Multiplataforma"
 			},
 			"collaboration": {
-				"description": "Licenciado bajo Creative Commons CC0 \u2014 completamente libre de usar, modificar y distribuir. Sin restricciones.",
+				"description": "Licenciado bajo Creative Commons CC0 — completamente libre de usar, modificar y distribuir.\nSin restricciones.",
 				"title": "Codigo abierto"
 			},
 			"cicdIntegration": {
-				"description": "Construido sobre tecnologias de codigo abierto probadas: Rust, Tauri, Effect-TS y la plataforma VS Code. Familiar y potente.",
+				"description": "Construido sobre tecnologias de codigo abierto probadas:\nRust, Tauri, Effect-TS y la plataforma VS Code.\nFamiliar y potente.",
 				"title": "Herramientas modernas"
 			}
 		},
@@ -32,7 +32,7 @@
 	},
 	"hero": {
 		"badge": "Nuevo: Arquitectura Effect-TS",
-		"subtitle": "Un editor ultrarapido y con seguridad de tipos, construido con Rust, Tauri y Effect-TS. Experimente el editor que reinventa VS Code para la era moderna.",
+		"subtitle": "Un editor ultrarapido y con seguridad de tipos, construido con Rust, Tauri y Effect-TS.\nExperimente el editor que reinventa VS Code para la era moderna.",
 		"title": "El futuro de la edicion de codigo",
 		"titleHighlight": "Land",
 		"atScale": "comienza aqui",
@@ -62,7 +62,7 @@
 		"github": "GitHub"
 	},
 	"pricing": {
-		"subtitle": "Code Editor Land es completamente gratuito. Sin niveles, sin suscripciones, sin restricciones.",
+		"subtitle": "Code Editor Land es completamente gratuito.\nSin niveles, sin suscripciones, sin restricciones.",
 		"labels": {
 			"monthly": "Mensual",
 			"yearly": "Anual",
@@ -92,15 +92,17 @@
 	},
 	"testimonials": {
 		"quote": {
-			"1": "Land es exactamente lo que VS Code necesitaba \u2014 una alternativa de alto rendimiento y abierta. Es increiblemente rapido.",
-			"2": "La arquitectura Effect-TS es hermosa. La seguridad de tipos detecta errores antes de que ocurran.",
-			"3": "Ejecutar mis extensiones existentes sin cambios es revolucionario. La compatibilidad es impresionante.",
-			"4": "Por fin, un editor que respeta mis recursos del sistema. Se acabo el consumo excesivo de memoria de Electron.",
-			"5": "El compromiso con el codigo abierto significa que puedo contribuir y personalizar. Este es el editor que estaba esperando.",
-			"6": "La arquitectura basada en gRPC es una clase magistral en diseno de sistemas. Land es el futuro de los editores de escritorio."
+			"1": "Land es exactamente lo que VS Code necesitaba — una alternativa de alto rendimiento y abierta.\nEs increiblemente rapido.",
+			"2": "La arquitectura Effect-TS es hermosa.\nLa seguridad de tipos detecta errores antes de que ocurran.",
+			"3": "Ejecutar mis extensiones existentes sin cambios es revolucionario.\nLa compatibilidad es impresionante.",
+			"4": "Por fin, un editor que respeta mis recursos del sistema.\nSe acabo el consumo excesivo de memoria de Electron.",
+			"5": "El compromiso con el codigo abierto significa que puedo contribuir y personalizar.\nEste es el editor que estaba esperando.",
+			"6": "La arquitectura basada en gRPC es una clase magistral en diseno de sistemas.\nLand es el futuro de los editores de escritorio."
 		},
 		"subtitle": "Voces de la comunidad sobre el futuro de la edicion de codigo.",
 		"title": "Lo que dicen los desarrolladores",
-		"badge": "Testimonios"
+		"badge": "Testimonios",
+		"attribution": "Comentarios de la comunidad",
+		"attributionNote": "Miembro representativo de la comunidad"
 	}
 }

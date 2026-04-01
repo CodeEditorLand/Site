@@ -20,7 +20,7 @@
 	"comingSoon": "Demnachst verfuegbar",
 	"error": {
 		"404": "404 - Seite nicht gefunden",
-		"pageNotFound": "Die gesuchte Seite existiert nicht oder wurde verschoben. Bitte ueberpruefen Sie die URL auf Tippfehler oder kehren Sie zur Startseite zurueck. Wenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie unser Support-Team und wir helfen Ihnen weiter."
+		"pageNotFound": "Die gesuchte Seite existiert nicht oder wurde verschoben.\nBitte ueberpruefen Sie die URL auf Tippfehler oder kehren Sie zur Startseite zurueck.\nWenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie unser Support-Team und wir helfen Ihnen weiter."
 	},
 	"label": {
 		"email": "E-Mail-Adresse",
@@ -82,13 +82,13 @@
 		"pageTitle": "Blog",
 		"pageSubtitle": "Neuigkeiten, Aktualisierungen und technische Artikel vom Team.",
 		"comingSoonHeading": "Demnachst verfuegbar",
-		"comingSoonText": "Wir bereiten Artikel ueber die Architektur, den Entwicklungsprozess und die Roadmap fuer Code Editor Land vor. Schauen Sie bald wieder vorbei fuer Updates.",
+		"comingSoonText": "Wir bereiten Artikel ueber die Architektur, den Entwicklungsprozess und die Roadmap fuer Code Editor Land vor.\nSchauen Sie bald wieder vorbei fuer Updates.",
 		"joinDiscussions": "An Diskussionen teilnehmen",
 		"followGitHub": "Auf GitHub folgen"
 	},
 	"contributing": {
 		"pageTitle": "Beitragen",
-		"pageSubtitle": "Code Editor Land ist Open Source und heisst Beitraege von allen willkommen. So koennen Sie mitmachen.",
+		"pageSubtitle": "Code Editor Land ist Open Source und heisst Beitraege von allen willkommen.\nSo koennen Sie mitmachen.",
 		"guide": {
 			"title": "Beitragsleitfaden",
 			"description": "Lesen Sie die vollstaendige CONTRIBUTING.md auf GitHub fuer detaillierte Anweisungen zur Einrichtung der Entwicklungsumgebung und zum Einreichen von Aenderungen."
@@ -114,7 +114,7 @@
 		},
 		"step4": {
 			"title": "Pull Request einreichen",
-			"description": "Pushen Sie Ihren Branch und eroeffnen Sie einen Pull Request gegen den Current-Branch. Beschreiben Sie, was Sie geaendert haben und warum."
+			"description": "Pushen Sie Ihren Branch und eroeffnen Sie einen Pull Request gegen den Current-Branch.\nBeschreiben Sie, was Sie geaendert haben und warum."
 		},
 		"ways": {
 			"heading": "Moeglichkeiten zur Mitwirkung",
@@ -137,19 +137,19 @@
 		},
 		"funding": {
 			"heading": "Finanzierung",
-			"description": "Code Editor Land wird durch den NGI0 Commons Fund ueber NLnet finanziert. Dies ermoerlicht die Vollzeitentwicklung des Projekts.",
+			"description": "Code Editor Land wird durch den NGI0 Commons Fund ueber NLnet finanziert.\nDies ermoerlicht die Vollzeitentwicklung des Projekts.",
 			"nlnetIntro": "Code Editor Land wurde finanziert durch den",
 			"nlnetFundName": "NGI0 Commons Fund",
 			"nlnetEstablishedBy": ", einen Fonds, gegruendet von",
-			"nlnetSuffix": "mit finanzieller Unterstuetzung des Next-Generation-Internet-Programms der Europaeischen Kommission, unter Foerdervereinbarung Nr. 101135429. Diese Finanzierung ermoeglicht eine nachhaltige Open-Source-Entwicklung des Projekts.",
-			"playformInfo": "Das Projekt wird von PlayForm betrieben, einem Unternehmen mit Sitz in Sofia, Bulgarien. PlayForm fungiert als Open-Source-Steward fuer Code Editor Land im Rahmen des NGI0 Commons Fund.",
+			"nlnetSuffix": "mit finanzieller Unterstuetzung des Next-Generation-Internet-Programms der Europaeischen Kommission, unter Foerdervereinbarung Nr. 101135429.\nDiese Finanzierung ermoeglicht eine nachhaltige Open-Source-Entwicklung des Projekts.",
+			"playformInfo": "Das Projekt wird von PlayForm betrieben, einem Unternehmen mit Sitz in Sofia, Bulgarien.\nPlayForm fungiert als Open-Source-Steward fuer Code Editor Land im Rahmen des NGI0 Commons Fund.",
 			"viewProject": "Besuchen Sie die",
 			"nlnetProjectPage": "NLnet-Projektseite",
 			"viewProjectSuffix": "fuer weitere Details zum Foerderprogramm und den Zielen."
 		},
 		"conduct": {
 			"heading": "Verhaltenskodex",
-			"description": "Von allen Teilnehmern der Code Editor Land-Community wird erwartet, respektvoll und konstruktiv zu sein. Lesen Sie den vollstaendigen Verhaltenskodex auf GitHub."
+			"description": "Von allen Teilnehmern der Code Editor Land-Community wird erwartet, respektvoll und konstruktiv zu sein.\nLesen Sie den vollstaendigen Verhaltenskodex auf GitHub."
 		}
 	},
 	"sales": {
@@ -179,9 +179,9 @@
 			"heading": "So erreichen Sie uns",
 			"directHeading": "Direktkontakt",
 			"description": "Bevorzugen Sie E-Mail? Kontaktieren Sie uns direkt:",
-			"githubNote": "Wir bearbeiten Enterprise-Anfragen ueber GitHub Issues. Dies stellt sicher, dass Ihre Anfrage verfolgt wird, fuer das Team sichtbar ist und zeitnah beantwortet wird.",
+			"githubNote": "Wir bearbeiten Enterprise-Anfragen ueber GitHub Issues.\nDies stellt sicher, dass Ihre Anfrage verfolgt wird, fuer das Team sichtbar ist und zeitnah beantwortet wird.",
 			"openIssueHeading": "GitHub Issue eroeffnen",
-			"openIssueDescription": "Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Anforderungen Ihrer Organisation. Geben Sie Firmenname, Teamgroesse, Anwendungsfall und Bereitstellungsanforderungen an. Unser Team ueberwacht Issues taeglich.",
+			"openIssueDescription": "Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Anforderungen Ihrer Organisation.\nGeben Sie Firmenname, Teamgroesse, Anwendungsfall und Bereitstellungsanforderungen an.\nUnser Team ueberwacht Issues taeglich.",
 			"openIssueButton": "GitHub Issue eroeffnen",
 			"issueIncludeLabel": "Was in Ihrem Issue enthalten sein sollte:",
 			"issueIncludeText": "Firmenname, Teamgroesse, geplanter Anwendungsfall, Bereitstellungsumgebung (Cloud/On-Premise), Zeitrahmen und spezifische Support- oder Compliance-Anforderungen.",
@@ -189,10 +189,7 @@
 		},
 		"openSource": {
 			"heading": "Open Source",
-			"description": {
-				"detail": "Keinen Zugang zum Code selbst",
-				"main": "Code Editor Land ist Open Source unter CC0. Enterprise-Plaene bieten Support, SLAs und individuelle Entwicklung."
-			}
+			"description": "Keinen Zugang zum Code selbst.\nCode Editor Land ist Open Source unter CC0.\nEnterprise-Plaene bieten Support, SLAs und individuelle Entwicklung."
 		}
 	},
 	"dashboard": {

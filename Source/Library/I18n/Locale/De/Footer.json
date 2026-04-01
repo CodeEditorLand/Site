@@ -12,7 +12,7 @@
 		},
 		"company": {
 			"title": "Gemeinschaft",
-			"blog": "Diskussionen",
+			"issues": "Diskussionen",
 			"contributing": "Mitwirken",
 			"github": "GitHub"
 		},
@@ -24,7 +24,7 @@
 		}
 	},
 	"bottomBar": {
-		"copyright": "\u00a9 {{year}} Code Editor Land. Alle Rechte vorbehalten.",
+		"copyright": "© {{year}} Code Editor Land. Alle Rechte vorbehalten.",
 		"builtBy": "Erstellt vom Code Editor Land Team",
 		"madeWith": "Erstellt mit"
 	},
@@ -33,7 +33,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", einen Fonds der ",
 		"nlnet": "NLnet",
-		"euSupport": " mit finanzieller Unterst\u00fctzung des Programms der Europ\u00e4ischen Kommission f\u00fcr das Internet der n\u00e4chsten Generation, unter F\u00f6rdervereinbarung Nr.\u00a0101135429. ",
+		"euSupport": " mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr. 101135429. ",
 		"projectPage": "Projektseite anzeigen"
 	}
 }

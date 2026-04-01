@@ -4,10 +4,14 @@
 		"features": "Funciones",
 		"download": "Descargar",
 		"docs": "Documentacion",
+		"blog": "Blog",
+		"contributing": "Contribuir",
+		"dashboard": "Panel",
 		"github": "GitHub"
 	},
 	"actions": {
 		"signIn": "Iniciar sesion",
+		"editorPortal": "Portal del editor",
 		"getStarted": "Obtener Land"
 	}
 }

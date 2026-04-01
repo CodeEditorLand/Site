@@ -4,10 +4,14 @@
 		"features": "Функции",
 		"download": "Изтегляне",
 		"docs": "Документация",
+		"blog": "Блог",
+		"contributing": "Принос",
+		"dashboard": "Табло",
 		"github": "GitHub"
 	},
 	"actions": {
 		"signIn": "Вход",
+		"editorPortal": "Портал на редактора",
 		"getStarted": "Вземете Land"
 	}
 }

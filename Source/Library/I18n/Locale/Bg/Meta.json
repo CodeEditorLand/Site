@@ -7,11 +7,11 @@
 	},
 	"description": "Редакторът на код от ново поколение",
 	"downloads": {
-		"description": "Изтеглете Code Editor Land за macOS, Windows и Linux. Всички версии са подписани и проверени за вашата сигурност.",
+		"description": "Изтеглете Code Editor Land за macOS, Windows и Linux.\nВсички версии са подписани и проверени за вашата сигурност.",
 		"title": "Изтеглете Code Editor Land | Редакторът на код от ново поколение"
 	},
 	"home": {
-		"description": "Code Editor Land е високопроизводителен, ресурсно ефективен редактор на код, създаден с Rust и Tauri. Изживейте VS Code",
+		"description": "Code Editor Land е високопроизводителен, ресурсно ефективен редактор на код, създаден с Rust и Tauri.\nИзживейте VS Code",
 		"title": "Code Editor Land | Редакторът на код от ново поколение"
 	},
 	"legal": {
@@ -42,11 +42,11 @@
 	},
 	"contributing": {
 		"title": "Принос | Code Editor Land",
-		"description": "Редактор на код с отворен код, изграден с Rust и Tauri. Научете как да допринесете за Code Editor Land."
+		"description": "Редактор на код с отворен код, изграден с Rust и Tauri.\nНаучете как да допринесете за Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Табло | Code Editor Land",
-		"description": "Управлявайте профила, изтеглянията и настройките си. Вашето табло в Code Editor Land."
+		"description": "Управлявайте профила, изтеглянията и настройките си.\nВашето табло в Code Editor Land."
 	},
 	"contact": {
 		"sales": {

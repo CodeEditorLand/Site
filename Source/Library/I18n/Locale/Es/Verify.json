@@ -8,7 +8,7 @@
 		"backToSignInButton": "Volver a iniciar sesion"
 	},
 	"pending": {
-		"description": "Se ha enviado un enlace de verificacion a su direccion de correo electronico. Por favor, revise su bandeja de entrada y haga clic en el enlace para activar su cuenta. El enlace es valido durante 7 dias. Si no recibe el correo en unos minutos, revise la carpeta de spam o promociones. Por seguridad, no comparta este correo con nadie.",
+		"description": "Se ha enviado un enlace de verificacion a su direccion de correo electronico.\nPor favor, revise su bandeja de entrada y haga clic en el enlace para activar su cuenta.\nEl enlace es valido durante 7 dias.\nSi no recibe el correo en unos minutos, revise la carpeta de spam o promociones.\nPor seguridad, no comparta este correo con nadie.",
 		"resendButton": "Reenviar correo de verificacion",
 		"title": "Verifique su direccion de correo electronico"
 	},

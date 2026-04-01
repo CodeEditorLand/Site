@@ -4,10 +4,14 @@
 		"features": "Features",
 		"download": "Download",
 		"docs": "Docs",
+		"blog": "Blog",
+		"contributing": "Contributing",
+		"dashboard": "Dashboard",
 		"github": "GitHub"
 	},
 	"actions": {
 		"signIn": "Sign In",
+		"editorPortal": "Editor Portal",
 		"getStarted": "Get Land"
 	}
 }

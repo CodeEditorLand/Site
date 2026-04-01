@@ -6,7 +6,7 @@
 		"success": {
 			"title": "Verifiez votre e-mail",
 			"subtitle": "Un lien de reinitialisation du mot de passe a ete envoye a",
-			"instruction": "Cliquez sur le lien dans l'e-mail pour reinitialiser votre mot de passe. Le lien expire dans 24 heures.",
+			"instruction": "Cliquez sur le lien dans l'e-mail pour reinitialiser votre mot de passe.\nLe lien expire dans 24 heures.",
 			"resend": "Renvoyer l'e-mail"
 		},
 		"title": "Reinitialiser le mot de passe",
@@ -35,7 +35,7 @@
 		"subtitle": "Entrez votre nouveau mot de passe ci-dessous",
 		"success": {
 			"title": "Mot de passe reinitialise avec succes",
-			"description": "Votre mot de passe a ete reinitialise. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
+			"description": "Votre mot de passe a ete reinitialise.\nVous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
 			"button": "Continuer vers la connexion"
 		},
 		"title": "Reinitialiser le mot de passe",
@@ -105,5 +105,86 @@
 	},
 	"common": {
 		"and": "et"
+	},
+	"portal": {
+		"title": "Choisissez votre type de compte",
+		"subtitle": "Du tout en ligne au tout en local.\nTrois facons de gerer votre editeur.",
+		"cloud": {
+			"title": "Compte Cloud",
+			"subtitle": "Connexion en ligne securisee avec synchronisation cloud complete.\nVos parametres, extensions et preferences stockes et synchronises sur tous vos appareils.",
+			"signIn": "Connexion securisee",
+			"feature": {
+				"sync": "Synchronisation des parametres entre appareils",
+				"backup": "Sauvegarde cloud automatique des configurations",
+				"team": "Gestion des espaces de travail d'equipe",
+				"extension": "Place de marche des extensions avec installation cloud",
+				"remote": "Integration de serveurs de developpement a distance"
+			},
+			"capability": {
+				"jwt": "Jetons de session JWT",
+				"okta": "Integration SSO Okta",
+				"mfa": "Authentification multi-facteurs",
+				"rbac": "Controle d'acces base sur les roles",
+				"audit": "Piste d'audit",
+				"cert": "Certificats de developpeur"
+			}
+		},
+		"provider": {
+			"title": "Compte Fournisseur",
+			"subtitle": "Authentifiez-vous via GitHub, Google ou GitLab.\nVotre identite OAuth se lie directement a vos preferences d'editeur et appartenances d'equipe.",
+			"continueGitHub": "Continuer avec GitHub",
+			"continueGoogle": "Continuer avec Google",
+			"continueGitLab": "Continuer avec GitLab",
+			"oauthNote": "OAuth 2.0 · Lie a vos preferences",
+			"feature": {
+				"github": "Identite GitHub liee aux preferences",
+				"sso": "Authentification unique pour tous les services Land",
+				"repo": "Configuration d'espace de travail consciente du depot",
+				"team": "Synchronisation des organisations et appartenances d'equipe",
+				"ci": "Integration de pipeline CI/CD avec declencheurs de build"
+			},
+			"capability": {
+				"oauth": "Flux OAuth 2.0 + PKCE",
+				"scope": "Portees de permissions granulaires",
+				"token": "Rotation des jetons de rafraichissement",
+				"webhook": "Abonnements aux evenements webhook",
+				"org": "Politiques au niveau de l'organisation",
+				"cert": "Certificats de developpeur"
+			}
+		},
+		"localfirst": {
+			"title": "Compte Local",
+			"subtitle": "Comme un panneau de controle SaaS qui fonctionne sur votre machine.\nZero dependance au cloud.\nLe site web communique directement avec le Air Daemon dans Land/Element via un protocole local.\nConfigurez, mettez a jour, compilez et deployez votre editeur entierement depuis cette console.",
+			"daemonLabel": "Air Daemon",
+			"daemonStatus": "Analyse en cours...",
+			"connect": "Se connecter au Air Daemon",
+			"note": "Zero dependance au cloud · Certificats JWT · mTLS",
+			"feature": {
+				"daemon": "Connexion directe du Air Daemon a Land/Element",
+				"build": "Lancez des compilations directement via la console du site web",
+				"deploy": "Deployez des modifications directement dans l'application",
+				"configure": "Gestion complete de la configuration et des parametres de l'editeur",
+				"parity": "Parite 1:1 avec les fonctionnalites et parametres du serveur VS Code",
+				"offline": "Aucune connexion cloud requise.\nFonctionnement hors ligne complet.",
+				"bake": "Integrez le portail directement dans l'editeur en tant que SaaS embarque"
+			},
+			"capability": {
+				"jwt": "Certificats de developpeur JWT",
+				"mtls": "Authentification TLS mutuelle",
+				"crdt": "Synchronisation d'etat CRDT",
+				"team": "Gestion d'equipe (entierement locale)",
+				"cert": "Gestion de l'autorite de certification",
+				"ws": "Connexion WebSocket en direct",
+				"rbac": "Politiques RBAC locales",
+				"backup": "Sauvegarde locale chiffree"
+			}
+		},
+		"labels": {
+			"included": "Inclus",
+			"capabilities": "Capacites",
+			"protocol": "Protocole :",
+			"settingsManaged": "Parametres geres",
+			"allTiers": "Inclus dans tous les niveaux"
+		}
 	}
 }

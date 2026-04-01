@@ -46,41 +46,12 @@ import FrHome from "./Locale/Fr/Home.json";
 import FrMeta from "./Locale/Fr/Meta.json";
 import FrVerify from "./Locale/Fr/Verify.json";
 
-const SupportedLocaleList = ["en", "bg", "de", "fr", "es"];
-
-export async function GetLocale(Request?: Request): Promise<string> {
-	if (!Request) {
-		return "en";
-	}
-
-	const URL = new globalThis.URL(Request.url);
-	const Cookie = Request.headers.get("cookie");
-	const AcceptLanguage = Request.headers.get("accept-language");
-
-	const URLParameter = URL.searchParams.get("lng");
-	if (URLParameter && SupportedLocaleList.includes(URLParameter))
-		return URLParameter;
-
-	if (Cookie) {
-		const Match = Cookie.match(/LOCALE=([^;]+)/);
-		if (Match?.[1] && SupportedLocaleList.includes(Match[1]))
-			return Match[1];
-	}
-
-	if (AcceptLanguage) {
-		const LanguageList = AcceptLanguage.split(",").map((Language) =>
-			Language.split(";")[0]?.trim(),
-		);
-		for (const Language of LanguageList) {
-			if (Language && SupportedLocaleList.includes(Language))
-				return Language;
-		}
-	}
-
-	return "en";
-}
-
-export function GetI18n(Request?: Request) {
+/**
+ * Server-side i18n for Astro prerendered pages.
+ * Always returns English — locale switching happens client-side
+ * via react-i18next in hydrated React components.
+ */
+export function GetI18n() {
 	if (!i18n.isInitialized) {
 		i18n.init({
 			resources: {
@@ -150,44 +121,6 @@ export function GetI18n(Request?: Request) {
 			],
 			interpolation: { escapeValue: false },
 		});
-	}
-
-	if (import.meta.env["PRERENDER"]) {
-		return i18n.getFixedT("en");
-	}
-
-	if (!Request) {
-		return i18n.getFixedT("en");
-	}
-
-	try {
-		const URL = new globalThis.URL(Request.url);
-		const URLParameter = URL.searchParams.get("lng");
-		if (URLParameter && SupportedLocaleList.includes(URLParameter)) {
-			return i18n.getFixedT(URLParameter);
-		}
-
-		const Cookie = Request.headers.get("cookie");
-		if (Cookie) {
-			const Match = Cookie.match(/LOCALE=([^;]+)/);
-			if (Match?.[1] && SupportedLocaleList.includes(Match[1])) {
-				return i18n.getFixedT(Match[1]);
-			}
-		}
-
-		const AcceptLanguage = Request.headers.get("accept-language");
-		if (AcceptLanguage) {
-			const LanguageList = AcceptLanguage.split(",").map((Language) =>
-				Language.split(";")[0]?.trim(),
-			);
-			for (const Language of LanguageList) {
-				if (Language && SupportedLocaleList.includes(Language)) {
-					return i18n.getFixedT(Language);
-				}
-			}
-		}
-	} catch (Error) {
-		console.warn("i18n locale detection failed:", Error);
 	}
 
 	return i18n.getFixedT("en");

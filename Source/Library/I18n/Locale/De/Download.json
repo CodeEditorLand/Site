@@ -23,14 +23,14 @@
 		"description": "Laden Sie bei Bedarf aeltere Versionen herunter.",
 		"title": "Fruehere Versionen"
 	},
-	"subtitle": "Verfuegbar fuer macOS, Windows und Linux. Gebaut mit Tauri, angetrieben von Rust.",
+	"subtitle": "Verfuegbar fuer macOS, Windows und Linux.\nGebaut mit Tauri, angetrieben von Rust.",
 	"systemRequirements": {
 		"subtitle": "Stellen Sie sicher, dass Ihr System diese Anforderungen erfuellt, bevor Sie herunterladen.",
 		"title": "Systemanforderungen"
 	},
 	"title": "Land herunterladen",
 	"verification": {
-		"description": "Land-Versionen sind mit PGP signiert. Ueberpruefen Sie Ihren Download, um die Integritaet sicherzustellen.",
+		"description": "Land-Versionen sind mit PGP signiert.\nUeberpruefen Sie Ihren Download, um die Integritaet sicherzustellen.",
 		"downloadButton": "PGP-Schluessel herunterladen",
 		"title": "Download ueberpruefen",
 		"verifyButton": "Download ueberpruefen"

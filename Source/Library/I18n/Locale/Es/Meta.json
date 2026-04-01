@@ -7,11 +7,11 @@
 	},
 	"description": "El editor de codigo de nueva generacion",
 	"downloads": {
-		"description": "Descargue Code Editor Land para macOS, Windows y Linux. Todas las versiones estan firmadas y verificadas para su seguridad.",
+		"description": "Descargue Code Editor Land para macOS, Windows y Linux.\nTodas las versiones estan firmadas y verificadas para su seguridad.",
 		"title": "Descargar Code Editor Land | El editor de codigo de nueva generacion"
 	},
 	"home": {
-		"description": "Code Editor Land es un editor de codigo de alto rendimiento y eficiente en recursos, construido con Rust y Tauri. Experimente VS Code",
+		"description": "Code Editor Land es un editor de codigo de alto rendimiento y eficiente en recursos, construido con Rust y Tauri.\nExperimente VS Code",
 		"title": "Code Editor Land | El editor de codigo de nueva generacion"
 	},
 	"legal": {
@@ -42,11 +42,11 @@
 	},
 	"contributing": {
 		"title": "Contribuir | Code Editor Land",
-		"description": "Un editor de codigo abierto construido con Rust y Tauri. Aprenda como contribuir a Code Editor Land."
+		"description": "Un editor de codigo abierto construido con Rust y Tauri.\nAprenda como contribuir a Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Panel de control | Code Editor Land",
-		"description": "Administre su cuenta, descargas y configuraciones. Su panel de control de Code Editor Land."
+		"description": "Administre su cuenta, descargas y configuraciones.\nSu panel de control de Code Editor Land."
 	},
 	"contact": {
 		"sales": {

@@ -4,10 +4,14 @@
 		"features": "Funktionen",
 		"download": "Herunterladen",
 		"docs": "Dokumentation",
+		"blog": "Blog",
+		"contributing": "Mitwirken",
+		"dashboard": "Dashboard",
 		"github": "GitHub"
 	},
 	"actions": {
 		"signIn": "Anmelden",
+		"editorPortal": "Editor-Portal",
 		"getStarted": "Land holen"
 	}
 }

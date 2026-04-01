@@ -1,5 +1,11 @@
 import type { RouteMap } from "./Interface/RouteMap.js";
 
+// Pre-import at module evaluation time (while Vite module runner is alive).
+// GenerateRouteMap runs in astro:build:done AFTER Vite closes.
+const { readdir: ReadDirectory } = await import("node:fs/promises");
+
+const { join: Join, relative: Relative } = await import("node:path");
+
 // PascalCase canonical → all lowercase/variant forms that should reach it
 // The ACTUAL built path (from Astro) maps to its PascalCase canonical URL.
 // E.g., Astro builds /downloads/index.html → actual path is /downloads
@@ -7,7 +13,7 @@ import type { RouteMap } from "./Interface/RouteMap.js";
 //       Variants: /downloads, /Downloads, /DOWNLOADS, /down, /get → /Download
 
 // Maps: actual built path (lowercase) → PascalCase canonical URL
-const PascalCaseCanonical: Record<string, string> = {
+export const PascalCaseCanonical: Record<string, string> = {
 	"/downloads": "/Download",
 	"/docs": "/Doc",
 	"/blog": "/Blog",
@@ -27,7 +33,7 @@ const PascalCaseCanonical: Record<string, string> = {
 };
 
 // Extra semantic aliases → PascalCase canonical
-const SemanticAlias: Record<string, string> = {
+export const SemanticAlias: Record<string, string> = {
 	// Download variants
 	"/down": "/Download",
 	"/get": "/Download",
@@ -72,9 +78,6 @@ const SemanticAlias: Record<string, string> = {
 const GenerateRouteMap = async (
 	OutputDirectory: string,
 ): Promise<RouteMap> => {
-	const { readdir: ReadDirectory } = await import("node:fs/promises");
-	const { join: Join, relative: Relative } = await import("node:path");
-
 	const BuiltPath: string[] = [];
 
 	const ScanDirectory = async (Directory: string): Promise<void> => {

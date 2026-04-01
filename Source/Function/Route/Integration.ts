@@ -1,25 +1,147 @@
 import type { AstroIntegration } from "astro";
 
+// Pre-import at module evaluation time (Vite is alive here).
+// The astro:build:done hook fires AFTER Vite shuts down, so dynamic
+// imports of local modules would fail with "module runner has been closed".
+const {
+	default: GenerateRouteMap,
+	PascalCaseCanonical,
+	SemanticAlias,
+} = await import("./Map.js");
+
+const {
+	mkdir: MakeDirectory,
+	readFile: ReadFile,
+	writeFile: WriteFile,
+} = await import("node:fs/promises");
+
+const { join: Join, resolve: Resolve } = await import("node:path");
+
+const { fileURLToPath: FileURLToPath } = await import("node:url");
+
+// Build a combined dev-time lookup from the static maps.
+// In dev, Astro serves pages at their built paths (e.g., /downloads),
+// so we redirect variants to the built path that Astro can serve,
+// AND we redirect built paths to PascalCase canonical URLs.
+const BuildDevVariantMap = (): Record<string, string> => {
+	const DevMap: Record<string, string> = {};
+
+	// Reverse lookup: PascalCase canonical → built path (for serving)
+	const CanonicalToBuilt: Record<string, string> = {};
+
+	for (const [BuiltPath, PascalPath] of Object.entries(
+		PascalCaseCanonical,
+	)) {
+		CanonicalToBuilt[PascalPath] = BuiltPath;
+	}
+
+	// Map built paths → PascalCase canonical (redirect /downloads → /Download)
+	for (const [BuiltPath, PascalPath] of Object.entries(
+		PascalCaseCanonical,
+	)) {
+		if (BuiltPath !== PascalPath.toLowerCase()) {
+			DevMap[BuiltPath] = PascalPath;
+		}
+
+		DevMap[BuiltPath] = PascalPath;
+	}
+
+	// Map semantic aliases → PascalCase canonical
+	for (const [Alias, PascalPath] of Object.entries(SemanticAlias)) {
+		DevMap[Alias] = PascalPath;
+	}
+
+	// Map UPPERCASE variants → PascalCase canonical
+	for (const [BuiltPath, PascalPath] of Object.entries(
+		PascalCaseCanonical,
+	)) {
+		DevMap[BuiltPath.toUpperCase()] = PascalPath;
+	}
+
+	return DevMap;
+};
+
+const DevVariantMap = BuildDevVariantMap();
+
+// PascalCase canonicals that have a real built page behind them
+const CanonicalToBuilt: Record<string, string> = {};
+
+for (const [BuiltPath, PascalPath] of Object.entries(PascalCaseCanonical)) {
+	CanonicalToBuilt[PascalPath] = BuiltPath;
+}
+
 const RouteRedirectIntegration = (): AstroIntegration => ({
 	name: "RouteRedirect",
 
 	hooks: {
-		"astro:build:done": async ({ dir, logger }) => {
-			const {
-				copyFile: CopyFile,
-				readFile: ReadFile,
-				writeFile: WriteFile,
-			} = await import("node:fs/promises");
-			const { join: Join, resolve: Resolve } = await import("node:path");
-			const { fileURLToPath: FileURLToPath } = await import("node:url");
+		// ── Dev server: Vite middleware for route redirects ──
+		"astro:server:setup": ({ server, logger }) => {
+			server.middlewares.use(
+				(
+					Request: import("http").IncomingMessage,
+					Response: import("http").ServerResponse,
+					Next: () => void,
+				) => {
+					const RawPath = Request.url ?? "/";
 
+					// Strip query string for matching
+					const PathOnly = RawPath.split("?")[0]!;
+
+					const Cleaned =
+						PathOnly === "/"
+							? "/"
+							: PathOnly.replace(/\/+$/, "");
+
+					// Check if this path is a PascalCase canonical that
+					// needs to be rewritten to the actual built page
+					if (CanonicalToBuilt[Cleaned]) {
+						logger.info(
+							`[dev] Rewriting ${Cleaned} → ${CanonicalToBuilt[Cleaned]}`,
+						);
+
+						Request.url = RawPath.replace(
+							PathOnly,
+							CanonicalToBuilt[Cleaned],
+						);
+
+						Next();
+
+						return;
+					}
+
+					// Check if this is a variant that should redirect
+					const Target = DevVariantMap[Cleaned];
+
+					if (Target && Target !== Cleaned) {
+						const Query = RawPath.includes("?")
+							? "?" + RawPath.split("?")[1]
+							: "";
+
+						logger.info(
+							`[dev] Redirecting ${Cleaned} → ${Target}`,
+						);
+
+						Response.writeHead(302, {
+							Location: Target + Query,
+						});
+
+						Response.end();
+
+						return;
+					}
+
+					Next();
+				},
+			);
+		},
+
+		"astro:build:done": async ({ dir, logger }) => {
 			const OutputDirectory = FileURLToPath(dir);
 
 			logger.info("Generating route map...");
 
 			// ── 1. Generate route map ──
 
-			const GenerateRouteMap = (await import("./Map.js")).default;
 			const RouteMap = await GenerateRouteMap(OutputDirectory);
 
 			logger.info(
@@ -46,8 +168,6 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			// to the PascalCase canonical.
 			//
 			// E.g., /downloads/index.html → also copied to /Download/index.html
-
-			const { mkdir: MakeDirectory } = await import("node:fs/promises");
 
 			for (const [BuiltPath, PascalPath] of Object.entries(
 				RouteMap.Variant,

@@ -6,7 +6,7 @@
 		"success": {
 			"title": "Revise su correo electronico",
 			"subtitle": "Se ha enviado un enlace de restablecimiento de contrasena a",
-			"instruction": "Haga clic en el enlace del correo electronico para restablecer su contrasena. El enlace caduca en 24 horas.",
+			"instruction": "Haga clic en el enlace del correo electronico para restablecer su contrasena.\nEl enlace caduca en 24 horas.",
 			"resend": "Reenviar correo electronico"
 		},
 		"title": "Restablecer contrasena",
@@ -35,7 +35,7 @@
 		"subtitle": "Ingrese su nueva contrasena a continuacion",
 		"success": {
 			"title": "Contrasena restablecida exitosamente",
-			"description": "Su contrasena ha sido restablecida. Ahora puede iniciar sesion con su nueva contrasena.",
+			"description": "Su contrasena ha sido restablecida.\nAhora puede iniciar sesion con su nueva contrasena.",
 			"button": "Continuar a iniciar sesion"
 		},
 		"title": "Restablecer contrasena",
@@ -105,5 +105,86 @@
 	},
 	"common": {
 		"and": "y"
+	},
+	"portal": {
+		"title": "Elija su tipo de cuenta",
+		"subtitle": "Desde completamente en linea hasta totalmente local.\nTres formas de gestionar su editor.",
+		"cloud": {
+			"title": "Cuenta en la nube",
+			"subtitle": "Inicio de sesion en linea seguro con sincronizacion completa en la nube.\nSus configuraciones, extensiones y preferencias almacenadas y sincronizadas en todos sus dispositivos.",
+			"signIn": "Inicio de sesion seguro",
+			"feature": {
+				"sync": "Sincronizacion de configuraciones entre dispositivos",
+				"backup": "Copia de seguridad automatica en la nube de configuraciones",
+				"team": "Gestion de espacios de trabajo de equipo",
+				"extension": "Mercado de extensiones con instalacion en la nube",
+				"remote": "Integracion de servidores de desarrollo remoto"
+			},
+			"capability": {
+				"jwt": "Tokens de sesion JWT",
+				"okta": "Integracion SSO de Okta",
+				"mfa": "Autenticacion multifactor",
+				"rbac": "Control de acceso basado en roles",
+				"audit": "Registro de auditoria",
+				"cert": "Certificados de desarrollador"
+			}
+		},
+		"provider": {
+			"title": "Cuenta de proveedor",
+			"subtitle": "Autentiquese a traves de GitHub, Google o GitLab.\nSu identidad OAuth se vincula directamente con sus preferencias de editor y membresias de equipo.",
+			"continueGitHub": "Continuar con GitHub",
+			"continueGoogle": "Continuar con Google",
+			"continueGitLab": "Continuar con GitLab",
+			"oauthNote": "OAuth 2.0 · Vinculado a sus preferencias",
+			"feature": {
+				"github": "Identidad de GitHub vinculada a preferencias",
+				"sso": "Inicio de sesion unico en todos los servicios de Land",
+				"repo": "Configuracion de espacio de trabajo con reconocimiento de repositorio",
+				"team": "Sincronizacion de organizaciones y membresias de equipo",
+				"ci": "Integracion de pipeline CI/CD con activadores de compilacion"
+			},
+			"capability": {
+				"oauth": "Flujo OAuth 2.0 + PKCE",
+				"scope": "Alcances de permisos granulares",
+				"token": "Rotacion de tokens de actualizacion",
+				"webhook": "Suscripciones a eventos webhook",
+				"org": "Politicas a nivel de organizacion",
+				"cert": "Certificados de desarrollador"
+			}
+		},
+		"localfirst": {
+			"title": "Cuenta local",
+			"subtitle": "Como un panel de control SaaS que funciona en su maquina.\nCero dependencia de la nube.\nEl sitio web se comunica directamente con el Air Daemon dentro de Land/Element a traves de un protocolo local.\nConfigure, actualice, compile e implemente su editor completamente desde esta consola.",
+			"daemonLabel": "Air Daemon",
+			"daemonStatus": "Escaneando...",
+			"connect": "Conectar con Air Daemon",
+			"note": "Cero dependencia de la nube · Certificados JWT · mTLS",
+			"feature": {
+				"daemon": "Conexion directa del Air Daemon a Land/Element",
+				"build": "Lance compilaciones directamente a traves de la consola del sitio web",
+				"deploy": "Implemente cambios directamente en la aplicacion",
+				"configure": "Gestion completa de la configuracion y parametros del editor",
+				"parity": "Paridad 1:1 con las funciones y configuraciones del servidor VS Code",
+				"offline": "No se requiere inicio de sesion en la nube.\nOperacion completamente fuera de linea.",
+				"bake": "Integre el portal directamente en el editor como SaaS incorporado"
+			},
+			"capability": {
+				"jwt": "Certificados de desarrollador JWT",
+				"mtls": "Autenticacion TLS mutua",
+				"crdt": "Sincronizacion de estado CRDT",
+				"team": "Gestion de equipos (completamente local)",
+				"cert": "Gestion de autoridad de certificacion",
+				"ws": "Conexion WebSocket en vivo",
+				"rbac": "Politicas RBAC locales",
+				"backup": "Copia de seguridad local cifrada"
+			}
+		},
+		"labels": {
+			"included": "Incluido",
+			"capabilities": "Capacidades",
+			"protocol": "Protocolo:",
+			"settingsManaged": "Configuraciones gestionadas",
+			"allTiers": "Incluido en todos los niveles"
+		}
 	}
 }
