@@ -6,28 +6,29 @@ const { readdir: ReadDirectory } = await import("node:fs/promises");
 
 const { join: Join, relative: Relative } = await import("node:path");
 
-// ─── Canonical mapping ───
-// Maps: actual Astro built path (lowercase) → PascalCase canonical URL.
-// This is the authoritative source — everything else is derived from it.
+// ─── Canonical paths ───
+// Authoritative set of PascalCase canonical URLs.
+// Page files are named PascalCase, so Astro builds these paths directly.
+// Everything else (variants, aliases, redirects) is derived from this set.
 
-export const PascalCaseCanonical: Record<string, string> = {
-	"/downloads": "/Download",
-	"/docs": "/Doc",
-	"/blog": "/Blog",
-	"/portal": "/Portal",
-	"/dashboard": "/Dashboard",
-	"/contributing": "/Contributing",
-	"/license": "/License",
-	"/verify": "/Verify",
-	"/contact/sales": "/Contact/Sale",
-	"/account/signin": "/Account/SignIn",
-	"/account/signup": "/Account/SignUp",
-	"/account/forgot-password": "/Account/ForgotPassword",
-	"/account/reset-password": "/Account/ResetPassword",
-	"/legal/terms": "/Legal/Term",
-	"/legal/privacy": "/Legal/Privacy",
-	"/oauth/success": "/OAuth/Success",
-};
+export const CanonicalPath: Set<string> = new Set([
+	"/Download",
+	"/Doc",
+	"/Blog",
+	"/Portal",
+	"/Dashboard",
+	"/Contributing",
+	"/License",
+	"/Verify",
+	"/Contact/Sale",
+	"/Account/SignIn",
+	"/Account/SignUp",
+	"/Account/ForgotPassword",
+	"/Account/ResetPassword",
+	"/Legal/Term",
+	"/Legal/Privacy",
+	"/OAuth/Success",
+]);
 
 // ─── Semantic aliases (human-curated, cannot be auto-derived) ───
 // These are alternate names, abbreviations, or synonyms that map to canonicals.
@@ -440,23 +441,18 @@ const GenerateRouteMap = async (
 		if (Built === "/") continue;
 		if (Built === "/404") continue;
 
-		const PascalCase = PascalCaseCanonical[Built];
-
-		if (PascalCase) {
-			Canonical.push(PascalCase);
+		if (CanonicalPath.has(Built)) {
+			Canonical.push(Built);
 
 			// Generate ALL variants dynamically
-			for (const VariantPath of GeneratePathVariant(
-				PascalCase,
-				Built,
-			)) {
+			for (const VariantPath of GeneratePathVariant(Built, Built)) {
 				// Don't overwrite existing mappings (first mapping wins)
 				if (!Variant[VariantPath]) {
-					Variant[VariantPath] = PascalCase;
+					Variant[VariantPath] = Built;
 				}
 			}
 		} else {
-			// No explicit PascalCase mapping — use as-is
+			// Not a known canonical — use as-is
 			Canonical.push(Built);
 		}
 	}

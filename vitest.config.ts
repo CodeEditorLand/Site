@@ -1,4 +1,8 @@
-export default (await import("vitest/config")).defineConfig({
+import { resolve } from "node:path";
+
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
 	esbuild: {
 		jsx: "automatic",
 		jsxImportSource: "react",
@@ -11,7 +15,8 @@ export default (await import("vitest/config")).defineConfig({
 	},
 	resolve: {
 		alias: {
-			"@": (await import("path")).default.resolve(__dirname, "./Source"),
+			"@": resolve(__dirname, "./Source"),
+			"@Function": resolve(__dirname, "./Source/Function"),
 		},
 	},
 });
