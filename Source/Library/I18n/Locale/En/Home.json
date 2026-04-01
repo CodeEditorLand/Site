@@ -72,6 +72,10 @@
 			"perYear": "/year",
 			"free": "Free"
 		},
+		"toggle": {
+			"toMonthly": "Switch to {{label}} billing",
+			"toYearly": "Switch to {{label}} billing"
+		},
 		"tiers": {
 			"free": {
 				"name": "Community",

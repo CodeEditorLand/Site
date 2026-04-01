@@ -23,6 +23,12 @@
 			"license": "License"
 		}
 	},
+	"social": {
+		"github": "GitHub",
+		"twitter": "X (Twitter)",
+		"discord": "Discord",
+		"linkedin": "LinkedIn"
+	},
 	"bottomBar": {
 		"copyright": "© {{year}} Code Editor Land.\nAll rights reserved.",
 		"builtBy": "Built by the Code Editor Land team",
@@ -33,7 +39,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", a fund established by ",
 		"nlnet": "NLnet",
-		"euSupport": " with financial support from the European Commission’s Next Generation Internet programme, under grant agreement No. 101135429. ",
+		"euSupport": " with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429. ",
 		"projectPage": "View project page"
 	}
 }
