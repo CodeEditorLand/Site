@@ -1,4 +1,5 @@
 ---
+import { Header } from "../Component/Layout/Header";
 import { VerifyPage } from "../Component/Dynamic/VerifyPage";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -69,6 +70,7 @@ const MetaDescription = T("verify.pending.description", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
+	<Header client:load />
 	<VerifyPage
 		content={VerifyContent}
 		route={Route}
