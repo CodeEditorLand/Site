@@ -19,12 +19,6 @@ export function LocaleSwitcher() {
 		i18n.changeLanguage(NewLocale);
 
 		document.cookie = `LOCALE=${NewLocale};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
-
-		const Url = new URL(window.location.href);
-
-		Url.searchParams.set("lng", NewLocale);
-
-		window.location.href = Url.toString();
 	}
 
 	return (

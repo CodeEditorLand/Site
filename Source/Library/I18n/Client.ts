@@ -58,6 +58,28 @@ export const LocaleLabel: Record<SupportedLocale, string> = {
 	es: "Espanol",
 };
 
+function DetectLocale(): SupportedLocale {
+	if (typeof window === "undefined") return "en";
+
+	const Parameter = new URL(window.location.href).searchParams.get("lng");
+
+	if (
+		Parameter &&
+		SupportedLocaleList.includes(Parameter as SupportedLocale)
+	)
+		return Parameter as SupportedLocale;
+
+	const Cookie = document.cookie.match(/LOCALE=([^;]+)/);
+
+	if (
+		Cookie?.[1] &&
+		SupportedLocaleList.includes(Cookie[1] as SupportedLocale)
+	)
+		return Cookie[1] as SupportedLocale;
+
+	return "en";
+}
+
 i18n.use(initReactI18next).init({
 	resources: {
 		en: {
@@ -111,7 +133,7 @@ i18n.use(initReactI18next).init({
 			meta: esMeta,
 		},
 	},
-	lng: "en",
+	lng: DetectLocale(),
 	fallbackLng: "en",
 	defaultNS: "common",
 	ns: [
