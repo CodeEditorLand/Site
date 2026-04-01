@@ -26,6 +26,7 @@
 	"dependencies": {
 		"@astrojs/react": "5.0.2",
 		"@astrojs/sitemap": "3.7.2",
+		"@auth0/auth0-react": "~2.16.1",
 		"@playform/build": "0.3.0",
 		"@playform/compress": "0.2.2",
 		"@playform/inline": "0.1.4",

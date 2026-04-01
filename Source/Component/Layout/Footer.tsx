@@ -98,10 +98,10 @@ export function Footer({ content }: FooterProps) {
 					<div className="lg:col-span-2">
 						<a
 							href="/"
-							className="mb-4 flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="mb-4 flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label={`${FooterData.brand?.name || "Land"} - Go to homepage`}>
 							<img
-								src="/Asset/Logo/Glyph/LandDark.svg"
+								src="/Asset/Logo/Glyph/Land.svg"
 								alt=""
 								className="h-8 w-8"
 								aria-hidden="true"

@@ -24,12 +24,12 @@ export function DynamicHeader({ content, className }: Property) {
 			className={` ${sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white ${className || ""} `}>
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo */}
-				<div className="flex items-center space-x-2">
+				<div className="flex items-center space-x-3">
 					<div
 						className="relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
 						<img
-							src="/Asset/Logo/Glyph/LandDark.svg"
+							src="/Asset/Logo/Glyph/Land.svg"
 							alt=""
 							className="h-full w-full"
 						/>

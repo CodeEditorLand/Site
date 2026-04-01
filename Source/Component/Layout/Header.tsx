@@ -163,13 +163,13 @@ export function Header({ content }: HeaderProps) {
 			<div className="container mx-auto flex h-14 items-center justify-between px-4">
 				<a
 					href="/"
-					className="StaccatoLogo HeaderLogo flex items-center space-x-2 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					className="StaccatoLogo HeaderLogo flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 					aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
 					<div
 						className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
 						<img
-							src="/Asset/Logo/Glyph/LandDark.svg"
+							src="/Asset/Logo/Glyph/Land.svg"
 							alt=""
 							className="absolute inset-0 h-full w-full"
 						/>
