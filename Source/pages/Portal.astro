@@ -11,7 +11,7 @@ const PortalContent = {
 	}),
 	Subtitle: T("account.portal.subtitle", {
 		defaultValue:
-			"From fully online to completely local-first. Three ways to manage your editor.",
+			"From fully online to completely local-first. Three ways to manage your editor. No telemetry in any tier.",
 	}),
 
 	Cloud: {
@@ -190,6 +190,62 @@ const PortalContent = {
 		],
 	},
 
+	Enterprise: {
+		Identifier: "Enterprise" as const,
+		Title: T("account.portal.enterprise.title", {
+			defaultValue: "Enterprise Account",
+		}),
+		Subtitle: T("account.portal.enterprise.subtitle", {
+			defaultValue:
+				"OIDC / SAML 2.0 single sign-on through Okta, Azure AD, or any compliant identity provider. Group-to-role mapping, audit logs, and organization CA certificate management.",
+		}),
+		Color: "#10b981",
+		BorderColor: "#10b981",
+		Icon: "Shield",
+		Badge: "OIDC / SAML",
+		Protocol: "OIDC / SAML 2.0 / SCIM",
+		Feature: [
+			T("account.portal.enterprise.feature.okta", {
+				defaultValue: "Okta SSO integration",
+			}),
+			T("account.portal.enterprise.feature.azure", {
+				defaultValue: "Azure AD / Entra ID support",
+			}),
+			T("account.portal.enterprise.feature.saml", {
+				defaultValue: "SAML 2.0 for legacy enterprise IdPs",
+			}),
+			T("account.portal.enterprise.feature.scim", {
+				defaultValue: "SCIM user provisioning",
+			}),
+			T("account.portal.enterprise.feature.group", {
+				defaultValue: "Group-to-role mapping",
+			}),
+			T("account.portal.enterprise.feature.audit", {
+				defaultValue: "Full audit log trail",
+			}),
+		],
+		Capability: [
+			T("account.portal.enterprise.capability.oidc", {
+				defaultValue: "OIDC Discovery + PKCE",
+			}),
+			T("account.portal.enterprise.capability.jit", {
+				defaultValue: "Just-in-time provisioning",
+			}),
+			T("account.portal.enterprise.capability.mfa", {
+				defaultValue: "Enforced MFA policies",
+			}),
+			T("account.portal.enterprise.capability.session", {
+				defaultValue: "Session management + revocation",
+			}),
+			T("account.portal.enterprise.capability.ca", {
+				defaultValue: "Organization CA certificates",
+			}),
+			T("account.portal.enterprise.capability.compliance", {
+				defaultValue: "SOC 2 / GDPR compliance",
+			}),
+		],
+	},
+
 	Labels: {
 		Included: T("account.portal.labels.included", {
 			defaultValue: "Included",
@@ -219,5 +275,34 @@ const MetaDescription = T("meta.portal.description", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
+	<div class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-8 text-xs text-muted-foreground">
+		<picture>
+			<img
+				alt="Land"
+				src="/Asset/Logo/Glyph/Land.svg"
+				width="28"
+				height="28"
+			/>
+		</picture>
+		<span class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+			No Telemetry&#x2001;<span class="h-1.5 w-1.5 rounded-none bg-green-500" aria-hidden="true"></span>
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			MIT Licensed
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			Auth0 + OAuth 2.0 + mTLS
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			OIDC / Okta (Planned)
+		</span>
+		<a
+			href="https://PlayForm.Cloud"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
+			PlayForm
+		</a>
+	</div>
 	<DynamicPortal Content={PortalContent} client:load />
 </Base>

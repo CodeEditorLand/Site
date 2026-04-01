@@ -13,10 +13,20 @@
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Source Open",
-		"email": "Source/Open@Editor.Land",
-		"url": "https://Editor.Land"
+		"name": "Nikola R. Hristov",
+		"email": "Nikola@PlayForm.Cloud",
+		"url": "https://github.com/NikolaRHristov"
 	},
+	"contributors": [
+		{
+			"name": "Code Editor Land",
+			"url": "https://github.com/CodeEditorLand"
+		},
+		{
+			"name": "PlayForm",
+			"url": "https://PlayForm.Cloud"
+		}
+	],
 	"scripts": {
 		"Run": "astro dev --host",
 		"prepublishOnly": "astro build",

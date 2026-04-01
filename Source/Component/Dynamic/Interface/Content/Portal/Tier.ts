@@ -1,5 +1,5 @@
 export default interface Interface {
-	Identifier: "Cloud" | "Provider" | "LocalFirst";
+	Identifier: "Cloud" | "Provider" | "LocalFirst" | "Enterprise";
 	Title: string;
 	Subtitle: string;
 	Color: string;

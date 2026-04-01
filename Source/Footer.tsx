@@ -17,9 +17,33 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				</li>
 			</ul>
 
+			<div className="flex flex-col items-center gap-2 py-4 text-xs text-muted-foreground sm:flex-row sm:gap-4">
+				<a
+					href="https://github.com/NikolaRHristov"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="hover:text-foreground transition-colors">
+					Nikola R. Hristov
+				</a>
+				<span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+				<a
+					href="https://editor.land"
+					className="hover:text-foreground transition-colors">
+					CodeEditorLand
+				</a>
+				<span className="hidden sm:inline" aria-hidden="true">&middot;</span>
+				<a
+					href="https://PlayForm.Cloud"
+					target="_blank"
+					rel="noopener noreferrer"
+					className="hover:text-foreground transition-colors">
+					PlayForm
+				</a>
+			</div>
+
 			{children}
 
-			<ul className="IconList flex shrink flex-col justify-start">
+			<ul className="IconList flex shrink flex-col justify-start gap-2">
 				<li>
 					<a
 						href="https://Tauri.App/"
@@ -32,6 +56,20 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 								src="https://PlayForm.Cloud/Image/GitHub/Made/Tauri.svg"
 								width="160"
 								height="32"
+							/>
+						</picture>
+					</a>
+				</li>
+				<li className="flex items-center gap-2">
+					<a
+						href="https://editor.land"
+						className="flex items-center">
+						<picture>
+							<img
+								alt="Land"
+								src="/Asset/Logo/Glyph/Land.svg"
+								width="24"
+								height="24"
 							/>
 						</picture>
 					</a>

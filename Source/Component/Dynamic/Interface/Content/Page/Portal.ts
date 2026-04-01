@@ -6,6 +6,7 @@ export default interface Interface {
 	Cloud: Tier;
 	Provider: Tier;
 	LocalFirst: Tier;
+	Enterprise?: Tier;
 	Labels?: {
 		Included?: string;
 		Capabilities?: string;

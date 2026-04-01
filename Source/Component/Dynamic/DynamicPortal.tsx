@@ -92,12 +92,15 @@ const PortalTierRow = ({
 	const IsCloud = Content.Identifier === "Cloud";
 	const IsProvider = Content.Identifier === "Provider";
 	const IsLocalFirst = Content.Identifier === "LocalFirst";
+	const IsEnterprise = Content.Identifier === "Enterprise";
 
 	const TierBorderClass = IsCloud
 		? "PortalTierCloud"
 		: IsProvider
 			? "PortalTierProvider"
-			: "PortalTierLocalFirst";
+			: IsEnterprise
+				? "PortalTierEnterprise"
+				: "PortalTierLocalFirst";
 
 	return (
 		<div
@@ -250,6 +253,57 @@ const PortalTierRow = ({
 								<p className="text-center text-xs text-muted-foreground">
 									Zero cloud dependency &middot; JWT
 									certificates &middot; mTLS
+								</p>
+							</div>
+						)}
+
+						{IsEnterprise && (
+							<div
+								className="space-y-4"
+								aria-label="Enterprise SSO">
+								<Button
+									className="StaccatoButton w-full"
+									style={{
+										backgroundColor: Content.Color,
+										borderColor: Content.BorderColor,
+										color: "#ffffff",
+									}}
+									onClick={() => OnAction?.()}>
+									Sign In with Okta
+									{"\u2001"}
+									<Shield
+										className="h-4 w-4"
+										aria-hidden="true"
+									/>
+								</Button>
+								<Button
+									className="StaccatoButton w-full"
+									variant="outline"
+									style={{ borderColor: Content.BorderColor }}
+									onClick={() => OnAction?.()}>
+									Sign In with Azure AD
+									{"\u2001"}
+									<Key
+										className="h-4 w-4"
+										aria-hidden="true"
+									/>
+								</Button>
+								<Button
+									className="StaccatoButton w-full"
+									variant="outline"
+									style={{ borderColor: Content.BorderColor }}
+									onClick={() => OnAction?.()}>
+									Custom OIDC Provider
+									{"\u2001"}
+									<Lock
+										className="h-4 w-4"
+										aria-hidden="true"
+									/>
+								</Button>
+								<div className="PortalTierDivider StaccatoSeparator" />
+								<p className="text-center text-xs text-muted-foreground">
+									OIDC Discovery &middot; SAML 2.0
+									&middot; SCIM provisioning
 								</p>
 							</div>
 						)}

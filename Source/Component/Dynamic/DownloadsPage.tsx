@@ -91,21 +91,20 @@ export function DownloadsPage({ content, className }: Property) {
 			}),
 			description: T("download:verification.description", {
 				defaultValue:
-					"Land releases are signed with PGP.\nVerify your download to ensure integrity.",
+					"Land releases will be signed with PGP. Verification checksums and signatures will be available with the first public release.",
 			}),
 			downloadVerification: {
-				sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-				pgpSignature:
-					"-----BEGIN PGP SIGNATURE-----\nVersion: OpenPGP.js v4.10.1\nComment: https://openpgpjs.org\n\n...",
-				signingKeyId: "0x12345678",
+				sha256: "Available at first public release",
+				pgpSignature: "Available at first public release",
+				signingKeyId: "Available at first public release",
 				verificationInstructions:
-					"Use the SHA-256 checksum to verify your download matches the original file.\nFor PGP verification, import our public key and verify the signature.",
+					"To verify: shasum -a 256 <filename> and compare output with the published checksum.\nFor PGP: gpg --verify <file>.sig <file>",
 			},
 			integrityVerification: {
-				sha256: "Enter checksum to verify",
-				pgpSignature: "Click to download signature file",
+				sha256: "Available at first public release",
+				pgpSignature: "Available at first public release",
 				verificationInstructions:
-					"To verify: shasum -a 256 <filename> and compare output with the checksum above.\nFor PGP: gpg --verify <file>.sig <file>",
+					"Verification instructions will be published alongside the first release. All releases will include SHA-256 checksums and PGP signatures.",
 			},
 			downloadButton: {
 				text: T("download:verification.downloadButton", {
@@ -129,42 +128,11 @@ export function DownloadsPage({ content, className }: Property) {
 				defaultValue: "Previous Releases",
 			}),
 			description: T("download:previousReleases.description", {
-				defaultValue: "Download older versions if needed.",
+				defaultValue:
+					"No previous releases yet. The first public release is currently in development.",
 			}),
-			releases: [
-				{
-					version: "v0.1.0",
-					publishedAt: "2025-12-15T10:30:00Z",
-					size: "44.8 MB",
-					downloads: 15420,
-					changelog: "Initial public release",
-					assets: [
-						{
-							platform: "macOS",
-							url: "/downloads/v0.1.0/macos",
-							sha256: "abc123...",
-							signature: "sig123...",
-						},
-						{
-							platform: "Windows",
-							url: "/downloads/v0.1.0/win64",
-							sha256: "def456...",
-							signature: "sig456...",
-						},
-						{
-							platform: "Linux",
-							url: "/downloads/v0.1.0/linux",
-							sha256: "ghi789...",
-							signature: "sig789...",
-						},
-					],
-				},
-			],
-			showChangelog: true,
-			onDownload: (Version: string, Platform: string) =>
-				console.log(`Download ${Version} for ${Platform}`),
-			onViewChangelog: (Version: string) =>
-				console.log(`View changelog for ${Version}`),
+			releases: [],
+			showChangelog: false,
 		},
 		header: undefined,
 		footer: {},

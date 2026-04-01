@@ -206,23 +206,45 @@ export function Footer({ content }: FooterProps) {
 							})}
 						</p>
 					</div>
-					{FooterData.bottomBar?.madeWith && (
+					<div className="flex flex-wrap items-center gap-4">
 						<a
-							href="https://tauri.app"
+							href="https://github.com/NikolaRHristov"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-							aria-label="Made with Tauri (opens in new tab)">
-							<img
-								src="https://playform.cloud/Image/GitHub/Made/Tauri.svg"
-								alt="Made with Tauri"
-								width="160"
-								height="32"
-								className="h-8"
-								loading="lazy"
-							/>
+							className="text-xs text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							aria-label="Nikola R. Hristov on GitHub (opens in new tab)">
+							{T("bottomBar.author", {
+								defaultValue: "Nikola R. Hristov",
+							})}
+							<span className="InlineSeparator">→</span>
 						</a>
-					)}
+						<a
+							href="https://PlayForm.Cloud"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="text-xs text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							aria-label="PlayForm (opens in new tab)">
+							PlayForm
+							<span className="InlineSeparator">→</span>
+						</a>
+						{FooterData.bottomBar?.madeWith && (
+							<a
+								href="https://tauri.app"
+								target="_blank"
+								rel="noopener noreferrer"
+								className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+								aria-label="Made with Tauri (opens in new tab)">
+								<img
+									src="https://playform.cloud/Image/GitHub/Made/Tauri.svg"
+									alt="Made with Tauri"
+									width="160"
+									height="32"
+									className="h-8"
+									loading="lazy"
+								/>
+							</a>
+						)}
+					</div>
 				</div>
 			</div>
 		</footer>

@@ -45,17 +45,31 @@ export default ({
 		JSONLD.datePublished = publishedTime;
 	}
 
-	if (author) {
-		JSONLD.author = {
-			"@type": "Organization",
-			"name": author,
-		};
-	}
+	JSONLD.author = author
+		? { "@type": "Organization", "name": author }
+		: [
+				{
+					"@type": "Person",
+					"name": "Nikola R. Hristov",
+					"url": "https://github.com/NikolaRHristov",
+				},
+				{
+					"@type": "Organization",
+					"name": "Code Editor Land",
+					"url": "https://editor.land",
+				},
+				{
+					"@type": "Organization",
+					"name": "PlayForm",
+					"url": "https://PlayForm.Cloud",
+				},
+			];
 
 	return (
 		<>
 			<title>{SafeTitle}</title>
 			<meta name="description" content={SafeDescription} />
+			<meta name="author" content="Nikola R. Hristov, Code Editor Land, PlayForm" />
 			<meta
 				name="robots"
 				content={noIndex ? "noindex, nofollow" : "index, follow"}

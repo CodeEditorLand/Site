@@ -274,21 +274,20 @@ const DownloadContent = {
 		}),
 		description: T("download.verification.description", {
 			defaultValue:
-				"Land releases are signed with PGP. Verify your download to ensure integrity.",
+				"Land releases will be signed with PGP. Verification checksums and signatures will be available with the first public release.",
 		}),
 		downloadVerification: {
-			sha256: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
-			pgpSignature:
-				"-----BEGIN PGP SIGNATURE-----\nVersion: OpenPGP.js v4.10.1\nComment: https://openpgpjs.org\n\n...",
-			signingKeyId: "0x12345678",
+			sha256: "Available at first public release",
+			pgpSignature: "Available at first public release",
+			signingKeyId: "Available at first public release",
 			verificationInstructions:
-				"Use the SHA-256 checksum to verify your download matches the original file. For PGP verification, import our public key and verify the signature.",
+				"To verify: shasum -a 256 <filename> and compare output with the published checksum. For PGP: gpg --verify <file>.sig <file>",
 		},
 		integrityVerification: {
-			sha256: "Enter checksum to verify",
-			pgpSignature: "Click to download signature file",
+			sha256: "Available at first public release",
+			pgpSignature: "Available at first public release",
 			verificationInstructions:
-				"To verify: shasum -a 256 <filename> and compare output with the checksum above. For PGP: gpg --verify <file>.sig <file>",
+				"Verification instructions will be published alongside the first release. All releases will include SHA-256 checksums and PGP signatures.",
 		},
 		downloadButton: {
 			text: T("download.verification.downloadButton", {
@@ -312,42 +311,11 @@ const DownloadContent = {
 			defaultValue: "Previous Releases",
 		}),
 		description: T("download.previousReleases.description", {
-			defaultValue: "Download older versions if needed.",
+			defaultValue:
+				"No previous releases yet. The first public release is currently in development.",
 		}),
-		releases: [
-			{
-				version: "v0.1.0",
-				publishedAt: "2025-12-15T10:30:00Z",
-				size: "44.8 MB",
-				downloads: 15420,
-				changelog: "Initial public release",
-				assets: [
-					{
-						platform: "macOS",
-						url: "/downloads/v0.1.0/macos",
-						sha256: "abc123...",
-						signature: "sig123...",
-					},
-					{
-						platform: "Windows",
-						url: "/downloads/v0.1.0/win64",
-						sha256: "def456...",
-						signature: "sig456...",
-					},
-					{
-						platform: "Linux",
-						url: "/downloads/v0.1.0/linux",
-						sha256: "ghi789...",
-						signature: "sig789...",
-					},
-				],
-			},
-		],
-		showChangelog: true,
-		onDownload: (version: string, platform: string) =>
-			console.log(`Download ${version} for ${platform}`),
-		onViewChangelog: (version: string) =>
-			console.log(`View changelog for ${version}`),
+		releases: [],
+		showChangelog: false,
 	},
 	header: undefined,
 	footer: {},
@@ -364,6 +332,34 @@ const MetaDescription = T("meta.downloads.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription}>
 	<Header client:load />
+	<div class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
+		<picture>
+			<img
+				alt="Land"
+				src="/Asset/Logo/Glyph/Land.svg"
+				width="24"
+				height="24"
+			/>
+		</picture>
+		<span class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+			No Telemetry&#x2001;<span class="h-1.5 w-1.5 rounded-none bg-green-500" aria-hidden="true"></span>
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			MIT Licensed
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			PGP Signed
+		</span>
+		<span class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700">
+			Mountain (Recommended)&#x2001;<span class="h-1.5 w-1.5 rounded-none bg-blue-500" aria-hidden="true"></span>
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			9 Profiles
+		</span>
+		<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			16 Test Permutations
+		</span>
+	</div>
 	<DownloadsPage
 		content={DownloadContent}
 		metaTitle={MetaTitle}
