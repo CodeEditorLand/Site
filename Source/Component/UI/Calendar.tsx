@@ -65,7 +65,7 @@ function Calendar({
 				ChevronLeft: ChevronLeft,
 				ChevronRight: ChevronRight,
 			} as React.ComponentProps<typeof DayPicker>["icons"]}
-			{...props}
+			{...(props as React.ComponentProps<typeof DayPicker>)}
 		/>
 	);
 }

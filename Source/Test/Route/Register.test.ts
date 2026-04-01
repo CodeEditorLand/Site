@@ -1,12 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 describe("SW Registration logic", () => {
-	let OriginalNavigator: typeof globalThis.navigator;
-
-	beforeEach(() => {
-		OriginalNavigator = globalThis.navigator;
-	});
-
 	afterEach(() => {
 		vi.restoreAllMocks();
 	});

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 // ─── RedirectFromRouteMap logic (extracted for testability) ───
 // The actual module relies on `window.location` and `fetch`. We replicate
