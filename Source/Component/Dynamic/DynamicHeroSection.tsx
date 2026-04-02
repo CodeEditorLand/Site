@@ -186,7 +186,8 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 											{Card.colors.map((Color, ColorIndex) => (
 												<div
 													key={ColorIndex}
-													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
+													className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
+													style={{ backgroundColor: Color }}
 												/>
 											))}
 										</div>
@@ -266,7 +267,8 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 											{Card.colors.map((Color, ColorIndex) => (
 												<div
 													key={ColorIndex}
-													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
+													className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
+													style={{ backgroundColor: Color }}
 												/>
 											))}
 										</div>
