@@ -1,9 +1,16 @@
 ---
+import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import { DynamicPortal } from "../Component/Dynamic/DynamicPortal";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
+
+const Auth0Domain = (await import("../Function/Configuration/Auth0Domain.js"))
+	.default;
+const Auth0ClientIdentifier = (
+	await import("../Function/Configuration/Auth0ClientIdentifier.js")
+).default;
 
 const PortalContent = {
 	Title: T("account.portal.title", {
@@ -369,43 +376,75 @@ const MetaDescription = T("meta.portal.description", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<div
-		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-8 text-xs text-muted-foreground">
-		<picture>
-			<img
-				alt="Land"
-				src="/Asset/Logo/Glyph/Land.svg"
-				width="28"
-				height="28"
-			/>
-		</picture>
-		<span
-			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-			No Telemetry&#x2001;<span
-				class="h-1.5 w-1.5 rounded-none bg-green-500"
-				aria-hidden="true"></span>
-		</span>
-		<span
-			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			CC0 Licensed
-		</span>
-		<span
-			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			Auth0 + OAuth 2.0 + mTLS
-		</span>
-		<span
-			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-			OIDC / SAML / Okta&#x2001;<span
-				class="h-1.5 w-1.5 rounded-none bg-green-500"
-				aria-hidden="true"></span>
-		</span>
-		<a
-			href="https://PlayForm.Cloud"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
-			PlayForm
-		</a>
-	</div>
-	<DynamicPortal Content={PortalContent} client:load />
+	<DynamicAuthHeader
+		client:load
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
+	/>
+
+	<main id="main-content">
+		<!-- Breadcrumb -->
+		<nav
+			aria-label="Breadcrumb"
+			class="container mx-auto px-4 pt-6 text-sm text-muted-foreground">
+			<ol class="flex flex-wrap items-center space-x-2">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground">
+						{T("common.breadcrumb.home", { defaultValue: "Home" })}
+					</a>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground">
+						{
+							T("meta.portal.breadcrumb", {
+								defaultValue: "Portal",
+							})
+						}
+					</span>
+				</li>
+			</ol>
+		</nav>
+
+		<div
+			class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
+			<picture>
+				<img
+					alt="Land"
+					src="/Asset/Logo/Glyph/Land.svg"
+					width="28"
+					height="28"
+				/>
+			</picture>
+			<span
+				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+				No Telemetry&#x2001;<span
+					class="h-1.5 w-1.5 rounded-none bg-green-500"
+					aria-hidden="true"></span>
+			</span>
+			<span
+				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+				CC0 Licensed
+			</span>
+			<span
+				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+				Auth0 + OAuth 2.0 + mTLS
+			</span>
+			<span
+				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+				OIDC / SAML / Okta&#x2001;<span
+					class="h-1.5 w-1.5 rounded-none bg-green-500"
+					aria-hidden="true"></span>
+			</span>
+			<a
+				href="https://PlayForm.Cloud"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
+				PlayForm
+			</a>
+		</div>
+
+		<DynamicPortal Content={PortalContent} client:load />
+	</main>
 </Base>

@@ -1,10 +1,10 @@
+import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
+import { IconTooltip } from "../UI/IconTooltip.js";
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
-import * as lucide from "lucide-react";
 import type Property from "./Interface/Property/Hero.js";
-import { IconTooltip } from "../UI/IconTooltip.js";
 
 /**
  * Dynamic HeroSection with simplex noise integration.
@@ -177,7 +177,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				</div>
 
 				{/* Subtitle:breathing opacity */}
-				<p className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
+				<p className="StaccatoBreath mx-auto mb-12 max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
 					{Subtitle}
 				</p>
 
@@ -189,51 +189,86 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
 								const Title = Card.Title.toLowerCase();
-								if (Title.includes("rust") || Title.includes("core")) return lucide.Cpu;
-								if (Title.includes("tauri") || Title.includes("ui")) return lucide.Box;
-								if (Title.includes("effect") || Title.includes("service")) return lucide.Layers;
-								if (Title.includes("grpc") || Title.includes("ipc")) return lucide.Network;
-								if (Title.includes("extension")) return lucide.Puzzle;
-								if (Title.includes("cross") || Title.includes("platform")) return lucide.Globe;
-								if (Title.includes("vs code") || Title.includes("api")) return lucide.Server;
-								if (Title.includes("open") || Title.includes("source")) return lucide.Zap;
+								if (
+									Title.includes("rust") ||
+									Title.includes("core")
+								)
+									return lucide.Cpu;
+								if (
+									Title.includes("tauri") ||
+									Title.includes("ui")
+								)
+									return lucide.Box;
+								if (
+									Title.includes("effect") ||
+									Title.includes("service")
+								)
+									return lucide.Layers;
+								if (
+									Title.includes("grpc") ||
+									Title.includes("ipc")
+								)
+									return lucide.Network;
+								if (Title.includes("extension"))
+									return lucide.Puzzle;
+								if (
+									Title.includes("cross") ||
+									Title.includes("platform")
+								)
+									return lucide.Globe;
+								if (
+									Title.includes("vs code") ||
+									Title.includes("api")
+								)
+									return lucide.Server;
+								if (
+									Title.includes("open") ||
+									Title.includes("source")
+								)
+									return lucide.Zap;
 								return lucide.Cpu; // default fallback
 							};
 
 							const IconComponent = GetIcon();
 
 							return (
-							<div
-								key={Card.Id}
-								className="StaccatoCard border border-[var(--Border)] bg-white p-3"
-								style={{
-									transitionDelay: `${Index * 50}ms`,
-								}}>
-								<div className="mb-2 flex items-center justify-center">
-									<IconTooltip
-										Label={Card.Title}
-										Icon={IconComponent}
-										SizeClass="h-6 w-6"
-										ClassName="text-primary"
-									/>
-								</div>
-								<div className="text-center">
-									<div className="text-xs font-medium text-foreground">
-										{Card.Title}
+								<div
+									key={Card.Id}
+									className="StaccatoCard border border-[var(--Border)] bg-white p-3"
+									style={{
+										transitionDelay: `${Index * 50}ms`,
+									}}>
+									<div className="mb-2 flex items-center justify-center">
+										<IconTooltip
+											Label={Card.Title}
+											Icon={IconComponent}
+											SizeClass="h-6 w-6"
+											ClassName="text-primary"
+										/>
 									</div>
-									{Card.Colors && Card.Colors.length > 0 && (
-										<div className="mt-1.5 flex items-center justify-center gap-1.5">
-											{Card.Colors.map((Color, ColorIndex) => (
-												<div
-													key={ColorIndex}
-													className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
-													style={{ backgroundColor: Color }}
-												/>
-											))}
+									<div className="text-center">
+										<div className="text-xs font-medium text-foreground">
+											{Card.Title}
 										</div>
-									)}
+										{Card.Colors &&
+											Card.Colors.length > 0 && (
+												<div className="mt-1.5 flex items-center justify-center gap-1.5">
+													{Card.Colors.map(
+														(Color, ColorIndex) => (
+															<div
+																key={ColorIndex}
+																className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
+																style={{
+																	backgroundColor:
+																		Color,
+																}}
+															/>
+														),
+													)}
+												</div>
+											)}
+									</div>
 								</div>
-							</div>
 							);
 						})}
 					</div>
@@ -268,53 +303,88 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
 								const Title = Card.Title.toLowerCase();
-								if (Title.includes("rust") || Title.includes("core")) return lucide.Cpu;
-								if (Title.includes("tauri") || Title.includes("ui")) return lucide.Box;
-								if (Title.includes("effect") || Title.includes("service")) return lucide.Layers;
-								if (Title.includes("grpc") || Title.includes("ipc")) return lucide.Network;
-								if (Title.includes("extension")) return lucide.Puzzle;
-								if (Title.includes("cross") || Title.includes("platform")) return lucide.Globe;
-								if (Title.includes("vs code") || Title.includes("api")) return lucide.Server;
-								if (Title.includes("open") || Title.includes("source")) return lucide.Zap;
+								if (
+									Title.includes("rust") ||
+									Title.includes("core")
+								)
+									return lucide.Cpu;
+								if (
+									Title.includes("tauri") ||
+									Title.includes("ui")
+								)
+									return lucide.Box;
+								if (
+									Title.includes("effect") ||
+									Title.includes("service")
+								)
+									return lucide.Layers;
+								if (
+									Title.includes("grpc") ||
+									Title.includes("ipc")
+								)
+									return lucide.Network;
+								if (Title.includes("extension"))
+									return lucide.Puzzle;
+								if (
+									Title.includes("cross") ||
+									Title.includes("platform")
+								)
+									return lucide.Globe;
+								if (
+									Title.includes("vs code") ||
+									Title.includes("api")
+								)
+									return lucide.Server;
+								if (
+									Title.includes("open") ||
+									Title.includes("source")
+								)
+									return lucide.Zap;
 								return lucide.Cpu; // default fallicon
 							};
 
 							const IconComponent = GetIcon();
 
 							return (
-							<div
-								key={Card.Id}
-								className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute z-50 transform-gpu border border-[var(--Border)] bg-white p-3 w-36"
-								style={{
-									top: `${CenterY}%`,
-									left: `${CenterX}%`,
-									transform: "translate(-50%, -50%)",
-								}}>
-								<div className="mb-2 flex items-center justify-center">
-									<IconTooltip
-										Label={Card.Title}
-										Icon={IconComponent}
-										SizeClass="h-8 w-8"
-										ClassName="text-primary"
-									/>
-								</div>
-								<div className="text-center">
-									<div className="text-xs font-medium text-foreground">
-										{Card.Title}
+								<div
+									key={Card.Id}
+									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute z-50 w-36 transform-gpu border border-[var(--Border)] bg-white p-3"
+									style={{
+										top: `${CenterY}%`,
+										left: `${CenterX}%`,
+										transform: "translate(-50%, -50%)",
+									}}>
+									<div className="mb-2 flex items-center justify-center">
+										<IconTooltip
+											Label={Card.Title}
+											Icon={IconComponent}
+											SizeClass="h-8 w-8"
+											ClassName="text-primary"
+										/>
 									</div>
-									{Card.Colors && Card.Colors.length > 0 && (
-										<div className="mt-1.5 flex items-center justify-center gap-1.5">
-											{Card.Colors.map((Color, ColorIndex) => (
-												<div
-													key={ColorIndex}
-													className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
-													style={{ backgroundColor: Color }}
-												/>
-											))}
+									<div className="text-center">
+										<div className="text-xs font-medium text-foreground">
+											{Card.Title}
 										</div>
-									)}
+										{Card.Colors &&
+											Card.Colors.length > 0 && (
+												<div className="mt-1.5 flex items-center justify-center gap-1.5">
+													{Card.Colors.map(
+														(Color, ColorIndex) => (
+															<div
+																key={ColorIndex}
+																className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
+																style={{
+																	backgroundColor:
+																		Color,
+																}}
+															/>
+														),
+													)}
+												</div>
+											)}
+									</div>
 								</div>
-							</div>
 							);
 						})}
 

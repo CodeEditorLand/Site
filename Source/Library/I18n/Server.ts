@@ -20,7 +20,9 @@ import DeMeta from "./Locale/De/Meta.json";
 import DeVerify from "./Locale/De/Verify.json";
 // English
 import EnAccount from "./Locale/En/Account.json";
+import EnBlog from "./Locale/En/Blog.json";
 import EnCommon from "./Locale/En/Common.json";
+import EnDoc from "./Locale/En/Doc.json";
 import EnDownload from "./Locale/En/Download.json";
 import EnFooter from "./Locale/En/Footer.json";
 import EnHeader from "./Locale/En/Header.json";
@@ -56,7 +58,9 @@ export function GetI18n() {
 		i18n.init({
 			resources: {
 				en: {
+					blog: EnBlog,
 					common: EnCommon,
+					doc: EnDoc,
 					home: EnHome,
 					download: EnDownload,
 					account: EnAccount,
@@ -110,7 +114,9 @@ export function GetI18n() {
 			fallbackLng: "en",
 			defaultNS: "common",
 			ns: [
+				"blog",
 				"common",
+				"doc",
 				"home",
 				"download",
 				"account",

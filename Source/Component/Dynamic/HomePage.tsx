@@ -2,7 +2,13 @@
 
 import { useTranslation } from "react-i18next";
 
+import { ErrorBoundary } from "../ErrorBoundary.js";
 import { Header } from "../Layout/Header";
+import {
+	SkeletonCard,
+	SkeletonFeatureCard,
+	SkeletonPricingTier,
+} from "../UI/Skeleton.js";
 import { DynamicFeatures } from "./DynamicFeatures";
 import { DynamicHeroSection } from "./DynamicHeroSection";
 import { DynamicPlatformGrid } from "./DynamicPlatformGrid";
@@ -57,10 +63,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "1",
 					Title: "Rust Core",
-					Colors: [
-						"var(--ExtensionRust)",
-						"var(--Mute)",
-					],
+					Colors: ["var(--ExtensionRust)", "var(--Mute)"],
 				},
 				{
 					Id: "2",
@@ -84,10 +87,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "4",
 					Title: "gRPC IPC",
-					Colors: [
-						"var(--SpinegRPC)",
-						"var(--SpineIPC)",
-					],
+					Colors: ["var(--SpinegRPC)", "var(--SpineIPC)"],
 				},
 				{
 					Id: "5",
@@ -111,10 +111,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "8",
 					Title: "Open Source CC0",
-					Colors: [
-						"var(--SpinegRPC)",
-						"var(--ExtensionTauri)",
-					],
+					Colors: ["var(--SpinegRPC)", "var(--ExtensionTauri)"],
 				},
 			],
 			ShowConnectingLines: true,
@@ -602,15 +599,52 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			{HeaderContent !== undefined && <Header content={HeaderContent} />}
 
 			<div className="flex-1" role="region" aria-label="Page content">
-				<DynamicHeroSection Content={Hero} />
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<SkeletonFeatureCard className="min-h-[60dvh]" />
+					)}>
+					<DynamicHeroSection Content={Hero} />
+				</ErrorBoundary>
 				<div className="py-12" />
-				<DynamicFeatures Content={Features} />
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3, 4, 5, 6].map((Index) => (
+								<SkeletonFeatureCard key={Index} />
+							))}
+						</div>
+					)}>
+					<DynamicFeatures Content={Features} />
+				</ErrorBoundary>
 				<div className="py-16" />
-				<DynamicPricing Content={Pricing} />
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3].map((Index) => (
+								<SkeletonPricingTier key={Index} />
+							))}
+						</div>
+					)}>
+					<DynamicPricing Content={Pricing} />
+				</ErrorBoundary>
 				<div className="py-16" />
-				<DynamicTestimonials Content={Testimonials} />
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
+							{[1, 2, 3].map((Index) => (
+								<SkeletonCard key={Index} />
+							))}
+						</div>
+					)}>
+					<DynamicTestimonials Content={Testimonials} />
+				</ErrorBoundary>
 				<div className="py-16" />
-				<DynamicPlatformGrid Content={Download} />
+				<ErrorBoundary
+					FallbackComponent={() => (
+						<SkeletonCard className="min-h-[30dvh]" />
+					)}>
+					<DynamicPlatformGrid Content={Download} />
+				</ErrorBoundary>
 			</div>
 		</div>
 	);

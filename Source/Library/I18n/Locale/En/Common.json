@@ -147,9 +147,9 @@
 			"description": "Browse issues labeled \"good first issue\" to find approachable tasks for new contributors."
 		},
 		"elements": {
-		"heading": "Elements Architecture",
-		"description": "Code Editor Land is built from 15 modular Elements — self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
-		"docs": "Each Element has its own README with architecture details. Find them in Land/Element/"
+			"heading": "Elements Architecture",
+			"description": "Code Editor Land is built from 15 modular Elements — self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
+			"docs": "Each Element has its own README with architecture details. Find them in Land/Element/"
 		},
 		"howToContribute": {
 			"heading": "How to Contribute"
@@ -253,7 +253,12 @@
 		"errorExpired": "Authentication session expired.\nPlease try again.",
 		"errorProvider": "OAuth provider returned an error.\nPlease try again.",
 		"errorNoToken": "No authentication token received.",
-		"backToSignIn": "Back to Sign In"
+		"backToSignIn": "Back to Sign In",
+		"goToDashboard": "Go to Dashboard",
+		"success": {
+			"title": "You're signed in",
+			"redirect": "Redirecting to your dashboard..."
+		}
 	},
 	"dashboard": {
 		"pageTitle": "Welcome",

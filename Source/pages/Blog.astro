@@ -1,18 +1,49 @@
 ---
+import { getCollection } from "astro:content";
+
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
 
-const MetaTitle = T("meta.blog.title", {
+const MetaTitle = T("meta.title", {
+	ns: "blog",
 	defaultValue: "Blog | Code Editor Land",
 });
 
-const MetaDescription = T("meta.blog.description", {
-	defaultValue:
-		"News, updates, and technical articles from the Code Editor Land team.",
+const MetaDescription = T("meta.description", {
+	ns: "blog",
+	defaultValue: "Architecture deep-dives, release notes, and updates.",
 });
+
+const PageTitle = T("page.title", { ns: "blog", defaultValue: "Blog" });
+const PageSubtitle = T("page.subtitle", {
+	ns: "blog",
+	defaultValue: "Architecture, releases, and the road ahead.",
+});
+const EmptyTitle = T("empty.title", {
+	ns: "blog",
+	defaultValue: "No posts yet",
+});
+const EmptySubtitle = T("empty.subtitle", {
+	ns: "blog",
+	defaultValue: "Check back soon for updates.",
+});
+
+const BlogEntries = (await getCollection("blog")).sort((A, B) =>
+	B.data.publishedAt.localeCompare(A.data.publishedAt),
+);
+
+const Posts = BlogEntries.map((Entry) => ({
+	Slug: Entry.slug,
+	Title: Entry.data.title,
+	Summary: Entry.data.summary,
+	PublishedAt: Entry.data.publishedAt,
+	Tags: Entry.data.tags,
+	Author: Entry.data.author,
+	ReadTime: Entry.data.readTime,
+}));
 ---
 
 <Base
@@ -38,159 +69,61 @@ const MetaDescription = T("meta.blog.description", {
 				</li>
 				<li class="mx-2">/</li>
 				<li>
-					<span class="font-medium text-foreground"
-						>{
-							T("common.blog.pageTitle", { defaultValue: "Blog" })
-						}</span
-					>
+					<span class="font-medium text-foreground">{PageTitle}</span>
 				</li>
 			</ol>
 		</nav>
 
 		<!-- Page Header -->
 		<header class="mb-12">
-			<h1 class="mb-4 text-4xl font-bold tracking-tight">
-				{T("common.blog.pageTitle", { defaultValue: "Blog" })}
+			<h1
+				id="BlogPostsHeading"
+				class="mb-4 text-4xl font-bold tracking-tight">
+				{PageTitle}
 			</h1>
-			<p class="text-lg text-muted-foreground">
-				{
-					T("common.blog.pageSubtitle", {
-						defaultValue:
-							"News, updates, and technical articles from the team.",
-					})
-				}
-			</p>
+			<p class="text-lg text-muted-foreground">{PageSubtitle}</p>
 		</header>
 
-		<!-- Coming Soon -->
-		<section
-			class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-12">
-			<div class="mx-auto max-w-2xl">
-				<div
-					class="mb-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-					<a
-						href="https://github.com/CodeEditorLand/Land/issues"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoButton inline-flex items-center border border-[var(--Border)] bg-[var(--Primary)] px-6 py-2 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						>{
-							T("common.blog.reportIssue", {
-								defaultValue: "Report an Issue",
-							})
-						}<span class="InlineSeparator">→</span></a
-					>
-					<a
-						href="https://github.com/CodeEditorLand/Land"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoButton inline-flex items-center border border-[var(--Border)] bg-white px-6 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						>{
-							T("common.blog.followGitHub", {
-								defaultValue: "Follow on GitHub",
-							})
-						}<span class="InlineSeparator">→</span></a
-					>
-				</div>
-				<h2 class="mb-4 text-2xl font-semibold">
-					{
-						T("common.blog.comingSoonHeading", {
-							defaultValue: "Coming Soon",
-						})
-					}
-				</h2>
-				<p class="mb-6 text-muted-foreground">
-					{
-						T("common.blog.comingSoonText", {
-							defaultValue:
-								"We are preparing articles about the architecture, development process, and roadmap for Code Editor Land. Check back soon for updates.",
-						})
-					}
-				</p>
-
-				<h3 class="mb-3 text-lg font-semibold">
-					{
-						T("common.blog.upcomingTopicsHeading", {
-							defaultValue: "Upcoming Topics",
-						})
-					}
-				</h3>
-				<ul class="mb-6 space-y-3 text-sm text-muted-foreground">
-					<li class="flex items-start gap-3">
-						<span
-							class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"
-						></span>
-						<span
-							>{
-								T("common.blog.topic.architecture", {
-									defaultValue:
-										"Deep dive into the Mountain/Cocoon/Wind/Sky/Air/Echo element architecture and how they replace Electron",
-								})
-							}</span
-						>
-					</li>
-					<li class="flex items-start gap-3">
-						<span
-							class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"
-						></span>
-						<span
-							>{
-								T("common.blog.topic.effectTS", {
-									defaultValue:
-										"How Effect-TS powers type-safe UI services with structured concurrency and error handling",
-								})
-							}</span
-						>
-					</li>
-					<li class="flex items-start gap-3">
-						<span
-							class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"
-						></span>
-						<span
-							>{
-								T("common.blog.topic.grpc", {
-									defaultValue:
-										"gRPC IPC protocol design: bridging Rust and TypeScript at native speed",
-								})
-							}</span
-						>
-					</li>
-					<li class="flex items-start gap-3">
-						<span
-							class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"
-						></span>
-						<span
-							>{
-								T("common.blog.topic.extensions", {
-									defaultValue:
-										"VS Code extension compatibility: running existing extensions without modification via Cocoon",
-								})
-							}</span
-						>
-					</li>
-					<li class="flex items-start gap-3">
-						<span
-							class="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 border border-[var(--Border)] bg-[var(--Primary)]"
-						></span>
-						<span
-							>{
-								T("common.blog.topic.ngi", {
-									defaultValue:
-										"Building with NGI0 Commons Fund: open-source sustainability and the European open internet initiative",
-								})
-							}</span
-						>
-					</li>
-				</ul>
-
-				<p class="text-xs text-muted-foreground">
-					{
-						T("common.blog.followNote", {
-							defaultValue:
-								"Follow progress on GitHub or check back here for published articles.",
-						})
-					}
-				</p>
-			</div>
+		<!-- Post Grid or Empty State -->
+		<section aria-labelledby="BlogPostsHeading">
+			{
+				Posts.length === 0 ? (
+					<div class="StaccatoCard border border-[var(--ColorBorder)] bg-[var(--ColorCard)] p-12 text-center">
+						<h2 class="mb-3 text-xl font-semibold">{EmptyTitle}</h2>
+						<p class="text-muted-foreground">{EmptySubtitle}</p>
+					</div>
+				) : (
+					<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+						{Posts.map((Post) => (
+							<a
+								href={`/Blog/${Post.Slug}`}
+								class="block transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
+								<article class="StaccatoCard h-full border border-[var(--ColorBorder)] bg-[var(--ColorCard)] p-6">
+									{Post.Tags.length > 0 && (
+										<div class="mb-3 flex flex-wrap gap-2">
+											{Post.Tags.map((Tag) => (
+												<span class="border border-[var(--ColorBorder)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+													{Tag}
+												</span>
+											))}
+										</div>
+									)}
+									<h3 class="mb-2 text-xl font-semibold">
+										{Post.Title}
+									</h3>
+									<p class="mb-4 text-sm text-muted-foreground">
+										{Post.Summary}
+									</p>
+									<div class="flex items-center justify-between text-xs text-muted-foreground">
+										<span>{Post.Author}</span>
+										<span>{Post.ReadTime} min read</span>
+									</div>
+								</article>
+							</a>
+						))}
+					</div>
+				)
+			}
 		</section>
 
 		<!-- Back to top -->

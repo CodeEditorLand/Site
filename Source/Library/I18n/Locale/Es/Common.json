@@ -146,9 +146,9 @@
 			}
 		},
 		"elements": {
-		"heading": "Arquitectura de Elementos",
-		"description": "Code Editor Land está construido con 15 elementos modulares — crates de Rust autónomo que proporcionan funcionalidad específica. Cada elemento se publica como crate y puede usarse de forma independiente.",
-		"docs": "Cada elemento tiene su propio README con detalles de arquitectura. Encuéntralos en Land/Element/"
+			"heading": "Arquitectura de Elementos",
+			"description": "Code Editor Land está construido con 15 elementos modulares — crates de Rust autónomo que proporcionan funcionalidad específica. Cada elemento se publica como crate y puede usarse de forma independiente.",
+			"docs": "Cada elemento tiene su propio README con detalles de arquitectura. Encuéntralos en Land/Element/"
 		},
 		"funding": {
 			"heading": "Financiacion",

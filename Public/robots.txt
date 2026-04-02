@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /Dashboard
+Disallow: /Account/
+Disallow: /OAuth/
+Sitemap: https://editor.land/sitemap-index.xml

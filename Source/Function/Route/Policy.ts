@@ -105,4 +105,23 @@ const WarnLog = __DEV__
 	}
 })();
 
+/**
+ * PublicRoutes — canonical paths that are publicly accessible.
+ * Used as source of truth for sitemap filtering and robots.txt.
+ * Excludes auth pages (/Account/, /OAuth/), /Dashboard.
+ */
+export const PublicRoutes: string[] = [
+	"/",
+	"/Download",
+	"/Doc",
+	"/Blog",
+	"/Contributing",
+	"/License",
+	"/Legal/Term",
+	"/Legal/Privacy",
+	"/Contact/Sale",
+	"/Portal",
+	"/Verify",
+];
+
 export default {};

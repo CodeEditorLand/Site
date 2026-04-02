@@ -64,6 +64,10 @@ const IconTooltip = ({
 	DocHref: _DocHref,
 	children,
 }: IconTooltipProperty) => {
+	if (process.env.NODE_ENV === "development" && !Label) {
+		console.warn("IconTooltip: Label (aria-label) is required");
+	}
+
 	const Content =
 		children ??
 		(Icon ? (

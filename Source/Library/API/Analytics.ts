@@ -1,9 +1,15 @@
 import type AnalyticsEvent from "../Interface/AnalyticsEvent.js";
 import { GetWorkersClient } from "../WorkerClient";
 
+// Returns false when running server-side (SSR) or in development mode.
+// In these cases all analytics methods are silent no-ops.
+const IsAnalyticsEnabled = (): boolean =>
+	typeof window !== "undefined" && !import.meta.env.DEV;
+
 /**
  * Analytics API adapter
- * Provides clean, type-safe interface for analytics operations
+ * Provides clean, type-safe interface for analytics operations.
+ * All methods are no-ops during SSR and in development mode.
  */
 export class AnalyticsAPI {
 	private Workers = GetWorkersClient();
@@ -12,6 +18,7 @@ export class AnalyticsAPI {
 		Type: string,
 		Properties?: Record<string, unknown>,
 	): Promise<{ eventId: string }> {
+		if (!IsAnalyticsEnabled()) return { eventId: "" };
 		const Response = await this.Workers.Analytics.Track(Type, Properties);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to track event");
@@ -27,6 +34,7 @@ export class AnalyticsAPI {
 			properties?: Record<string, unknown>;
 		}>,
 	): Promise<{ tracked: number; eventIds: string[] }> {
+		if (!IsAnalyticsEnabled()) return { tracked: 0, eventIds: [] };
 		const Response = await this.Workers.Analytics.TrackBatch(Events);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to track batch events");
@@ -39,6 +47,7 @@ export class AnalyticsAPI {
 		Title?: string,
 		Referrer?: string,
 	): Promise<{ eventId: string }> {
+		if (!IsAnalyticsEnabled()) return { eventId: "" };
 		const Response = await this.Workers.Analytics.TrackPageView(
 			Path,
 			Title,
@@ -57,6 +66,7 @@ export class AnalyticsAPI {
 		StartDate?: string,
 		EndDate?: string,
 	): Promise<AnalyticsEvent[]> {
+		if (!IsAnalyticsEnabled()) return [];
 		const Response = await this.Workers.Analytics.GetEvents(
 			Type,
 			Limit,
@@ -71,6 +81,14 @@ export class AnalyticsAPI {
 	}
 
 	async GetEvent(Identifier: string): Promise<AnalyticsEvent> {
+		if (!IsAnalyticsEnabled()) {
+			return {
+				id: "",
+				type: "custom",
+				properties: {},
+				timestamp: new Date().toISOString(),
+			};
+		}
 		const Response = await this.Workers.Analytics.GetEvent(Identifier);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch event");
@@ -89,6 +107,17 @@ export class AnalyticsAPI {
 		byDate: Record<string, number>;
 		period: { days: number; start: string; end: string };
 	}> {
+		if (!IsAnalyticsEnabled()) {
+			const Now = new Date().toISOString();
+			return {
+				totalEvents: 0,
+				uniqueVisitors: 0,
+				uniqueSessions: 0,
+				byType: {},
+				byDate: {},
+				period: { days: Days ?? 0, start: Now, end: Now },
+			};
+		}
 		const Response = await this.Workers.Analytics.GetSummary(Days, Type);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch summary");
@@ -102,6 +131,7 @@ export class AnalyticsAPI {
 	): Promise<
 		Array<{ date: string; count: number; types: Record<string, number> }>
 	> {
+		if (!IsAnalyticsEnabled()) return [];
 		const Response = await this.Workers.Analytics.GetTimeline(Days, Type);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch timeline");
@@ -113,6 +143,7 @@ export class AnalyticsAPI {
 		Days?: number,
 		Limit?: number,
 	): Promise<Array<{ path: string; title: string; count: number }>> {
+		if (!IsAnalyticsEnabled()) return [];
 		const Response = await this.Workers.Analytics.GetPageViewStats(
 			Days,
 			Limit,
@@ -130,6 +161,8 @@ export class AnalyticsAPI {
 		byBrowser: Record<string, number>;
 		byOS: Record<string, number>;
 	}> {
+		if (!IsAnalyticsEnabled())
+			return { byType: {}, byBrowser: {}, byOS: {} };
 		const Response = await this.Workers.Analytics.GetEventStats(Days);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch event stats");
@@ -142,6 +175,12 @@ export class AnalyticsAPI {
 		avgEventsPerSession: number;
 		sessionsByEventCount: Record<string, number>;
 	}> {
+		if (!IsAnalyticsEnabled())
+			return {
+				totalSessions: 0,
+				avgEventsPerSession: 0,
+				sessionsByEventCount: {},
+			};
 		const Response = await this.Workers.Analytics.GetSessionStats(Days);
 		if (!Response.success || !Response.data) {
 			throw new Error(Response.error || "Failed to fetch session stats");

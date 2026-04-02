@@ -48,10 +48,10 @@ const DynamicVerificationInfo = ({
 				<div className="space-y-2">
 					<div className="flex items-center">
 						<span className="font-semibold">
-						{T("labels.sha256Checksum", {
-							defaultValue: "SHA-256 Checksum",
-						})}
-					</span>
+							{T("labels.sha256Checksum", {
+								defaultValue: "SHA-256 Checksum",
+							})}
+						</span>
 						{"\u2001"}
 						<Fingerprint
 							className="h-4 w-4 shrink-0 text-primary"
@@ -70,8 +70,8 @@ const DynamicVerificationInfo = ({
 								CopyToClipboard(
 									Information.SHA256!,
 									T("labels.sha256Checksum", {
-									defaultValue: "SHA-256 checksum",
-								}),
+										defaultValue: "SHA-256 checksum",
+									}),
 								)
 							}>
 							{T("labels.copy", { defaultValue: "Copy" })}
@@ -84,10 +84,10 @@ const DynamicVerificationInfo = ({
 				<div className="space-y-2">
 					<div className="flex items-center">
 						<span className="font-semibold">
-						{T("labels.pgpSignature", {
-							defaultValue: "PGP Signature",
-						})}
-					</span>
+							{T("labels.pgpSignature", {
+								defaultValue: "PGP Signature",
+							})}
+						</span>
 						{"\u2001"}
 						<Shield
 							className="h-4 w-4 shrink-0 text-primary"
@@ -106,8 +106,8 @@ const DynamicVerificationInfo = ({
 								CopyToClipboard(
 									Information.PGPSignature || "",
 									T("labels.pgpSignature", {
-									defaultValue: "PGP signature",
-								}),
+										defaultValue: "PGP signature",
+									}),
 								)
 							}>
 							{T("labels.copy", { defaultValue: "Copy" })}
@@ -172,7 +172,7 @@ const DynamicVerificationInfo = ({
 								</h2>
 							)}
 							{Description && (
-								<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
+								<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
 									{Description}
 								</p>
 							)}

@@ -37,5 +37,13 @@
 	"resendFailed": "Failed to resend email.\nPlease try again.",
 	"emailLabel": "Email",
 	"emailPlaceholder": "Enter your email to resend verification",
-	"resendSuccess": "Verification email resent!"
+	"resendSuccess": "Verification email resent!",
+	"resendCooldown": "Resend in {{seconds}}s",
+	"resend": {
+		"success": "Verification email sent successfully."
+	},
+	"token": {
+		"invalid": "This verification link is invalid.",
+		"expired": "This verification link has expired. Please request a new one."
+	}
 }

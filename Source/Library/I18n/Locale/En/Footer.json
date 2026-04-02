@@ -8,13 +8,15 @@
 			"title": "Product",
 			"features": "Features",
 			"downloads": "Download",
-			"docs": "Docs"
+			"docs": "Docs",
+			"blog": "Blog"
 		},
 		"company": {
 			"title": "Community",
 			"issues": "Issues",
 			"contributing": "Contributing",
-			"github": "GitHub"
+			"github": "GitHub",
+			"enterprise": "Enterprise"
 		},
 		"legal": {
 			"title": "Legal",

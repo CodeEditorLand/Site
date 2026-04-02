@@ -277,7 +277,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
+							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
 								{Subtitle}
 							</p>
 						)}
@@ -398,7 +398,11 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 						return (
 							<div
 								key={Platform.Id}
-								style={{ borderTopColor: PlatformAccentColor, borderTopWidth: "2px", borderTopStyle: "solid" }}>
+								style={{
+									borderTopColor: PlatformAccentColor,
+									borderTopWidth: "2px",
+									borderTopStyle: "solid",
+								}}>
 								<DynamicCard
 									Sections={PlatformCardSection}
 									ClassName="PlatformCard flex flex-col"

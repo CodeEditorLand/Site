@@ -11,4 +11,5 @@ export default interface Interface extends ContentSchema {
 	Disabled?: boolean;
 	Required?: boolean;
 	HelperText?: string;
+	AutoComplete?: string;
 }

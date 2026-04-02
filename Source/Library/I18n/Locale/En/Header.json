@@ -11,8 +11,18 @@
 	},
 	"actions": {
 		"signIn": "Sign In",
+		"signUp": "Sign Up",
 		"editorPortal": "Editor Portal",
 		"getStarted": "Get Land",
-		"logout": "Logout"
+		"logout": "Logout",
+		"loading": "Loading\u2026"
+	},
+	"user": {
+		"avatarAlt": "User menu",
+		"menu": {
+			"dashboard": "Dashboard",
+			"account": "Account",
+			"signOut": "Sign Out"
+		}
 	}
 }

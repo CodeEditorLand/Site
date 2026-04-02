@@ -94,7 +94,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
+							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
 								{Subtitle}
 							</p>
 						)}
@@ -109,58 +109,61 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							TestimonialColorMap[Testimonial.Id] ??
 							"var(--Primary)";
 						return (
-						<article
-							key={Testimonial.Id}
-							className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6"
-							style={{ borderLeftColor: AccentColor, borderLeftWidth: "2px" }}>
-							<div className="mb-4">
-								{RenderStars(Testimonial.Rating)}
-							</div>
-							<blockquote className="StaccatoBreath mb-6 flex-1">
-								<p className="text-lg">
-									{(Testimonial.Rating ?? 0) > 0
-										? `\u201C${Testimonial.Quote}\u201D`
-										: Testimonial.Quote}
-								</p>
-							</blockquote>
-							<div className="flex items-center gap-4">
-								{Testimonial.Avatar ? (
-									<img
-										src={Testimonial.Avatar}
-										alt={`Photo of ${Testimonial.Author}`}
-										width="48"
-										height="48"
-										className="StaccatoAvatar size-12 rounded-none border border-[var(--Border)] object-cover"
-										loading="lazy"
-									/>
-								) : (
-									<div
-										className="StaccatoAvatar flex size-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
-										aria-hidden="true">
-										<span className="text-lg font-semibold">
-											{(Testimonial.Author || "?").charAt(
-												0,
-											)}
-										</span>
-									</div>
-								)}
-								<div>
-									<cite className="font-semibold not-italic">
-										{Testimonial.Author}
-									</cite>
-									{(Testimonial.Role ||
-										Testimonial.Company) && (
-										<p className="StaccatoBreath text-sm text-muted-foreground whitespace-pre-line">
-											{Testimonial.Role}
-											{Testimonial.Role &&
-												Testimonial.Company &&
-												", "}
-											{Testimonial.Company}
-										</p>
-									)}
+							<article
+								key={Testimonial.Id}
+								className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6"
+								style={{
+									borderLeftColor: AccentColor,
+									borderLeftWidth: "2px",
+								}}>
+								<div className="mb-4">
+									{RenderStars(Testimonial.Rating)}
 								</div>
-							</div>
-						</article>
+								<blockquote className="StaccatoBreath mb-6 flex-1">
+									<p className="text-lg">
+										{(Testimonial.Rating ?? 0) > 0
+											? `\u201C${Testimonial.Quote}\u201D`
+											: Testimonial.Quote}
+									</p>
+								</blockquote>
+								<div className="flex items-center gap-4">
+									{Testimonial.Avatar ? (
+										<img
+											src={Testimonial.Avatar}
+											alt={`Photo of ${Testimonial.Author}`}
+											width="48"
+											height="48"
+											className="StaccatoAvatar size-12 rounded-none border border-[var(--Border)] object-cover"
+											loading="lazy"
+										/>
+									) : (
+										<div
+											className="StaccatoAvatar flex size-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
+											aria-hidden="true">
+											<span className="text-lg font-semibold">
+												{(
+													Testimonial.Author || "?"
+												).charAt(0)}
+											</span>
+										</div>
+									)}
+									<div>
+										<cite className="font-semibold not-italic">
+											{Testimonial.Author}
+										</cite>
+										{(Testimonial.Role ||
+											Testimonial.Company) && (
+											<p className="StaccatoBreath whitespace-pre-line text-sm text-muted-foreground">
+												{Testimonial.Role}
+												{Testimonial.Role &&
+													Testimonial.Company &&
+													", "}
+												{Testimonial.Company}
+											</p>
+										)}
+									</div>
+								</div>
+							</article>
 						);
 					})}
 				</div>

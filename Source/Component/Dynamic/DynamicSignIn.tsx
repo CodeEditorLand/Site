@@ -1,4 +1,6 @@
+import * as lucide from "lucide-react";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
 	Card,
@@ -37,7 +39,9 @@ const DynamicSignIn = ({
 	} = Content;
 	const [Email, SetEmail] = useState("");
 	const [Password, SetPassword] = useState("");
+	const [ShowPassword, SetShowPassword] = useState(false);
 	const [, SetErrors] = useState<{ email?: string; password?: string }>({});
+	const { t: T } = useTranslation("account");
 
 	const Validate = () => {
 		const NewErrors: { email?: string; password?: string } = {};
@@ -95,14 +99,47 @@ const DynamicSignIn = ({
 									Id="email"
 								/>
 
-								<DynamicInput
-									Content={{
-										...PasswordField,
-										Type: "password",
-										OnChange: SetPassword,
-									}}
-									Id="password"
-								/>
+								<div className="relative">
+									<DynamicInput
+										Content={{
+											...PasswordField,
+											Type: ShowPassword
+												? "text"
+												: "password",
+											OnChange: SetPassword,
+										}}
+										Id="password"
+									/>
+									<button
+										type="button"
+										className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
+										aria-label={
+											ShowPassword
+												? T("signIn.hidePassword", {
+														defaultValue:
+															"Hide password",
+													})
+												: T("signIn.showPassword", {
+														defaultValue:
+															"Show password",
+													})
+										}
+										onClick={() =>
+											SetShowPassword(!ShowPassword)
+										}>
+										{ShowPassword ? (
+											<lucide.EyeOff
+												className="h-4 w-4"
+												aria-hidden="true"
+											/>
+										) : (
+											<lucide.Eye
+												className="h-4 w-4"
+												aria-hidden="true"
+											/>
+										)}
+									</button>
+								</div>
 
 								<DynamicButton
 									Content={{

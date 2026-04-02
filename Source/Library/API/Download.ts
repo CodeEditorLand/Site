@@ -131,6 +131,38 @@ export class DownloadsAPI {
 		}
 		return Response.data;
 	}
+
+	/**
+	 * Returns all previous release versions, ordered newest-first.
+	 * Semantic alias for GetVersionList() with an explicit limit default.
+	 */
+	async GetPreviousReleases(Limit: number = 20): Promise<Download[]> {
+		return await this.GetVersionList(Limit);
+	}
+
+	/**
+	 * Returns the latest release for the given platform and architecture.
+	 * Semantic alias for GetLatest() with named parameters.
+	 */
+	async GetLatestRelease(
+		Platform?: string,
+		Architecture?: string,
+	): Promise<Download> {
+		return await this.GetLatest(Platform, Architecture);
+	}
+
+	/**
+	 * Returns the direct download URL for the given platform and architecture.
+	 * Fetches the latest release, then resolves the download info URL.
+	 */
+	async GetDownloadUrl(
+		Platform: string,
+		Architecture: string,
+	): Promise<string> {
+		const Latest = await this.GetLatest(Platform, Architecture);
+		const Info = await this.GetInfo(Latest.id);
+		return Info.downloadUrl;
+	}
 }
 
 export default new DownloadsAPI();

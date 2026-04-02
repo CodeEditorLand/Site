@@ -234,39 +234,67 @@ const DynamicResetPassword = ({
 									)}
 								</div>
 
-								<DynamicInput
-									Content={{
-										...PasswordField,
-										Type: "password",
-										OnChange: SetPassword,
-									}}
-									Id="password"
-								/>
+								<div>
+									<DynamicInput
+										Content={{
+											...PasswordField,
+											Type: "password",
+											OnChange: SetPassword,
+											AutoComplete: "new-password",
+											Error: Errors.password,
+										}}
+										Id="password"
+									/>
+									{Password && (
+										<div
+											className="mt-1 flex gap-1"
+											role="status"
+											aria-label={
+												Password.length >= 12 &&
+												/[^a-zA-Z0-9]/.test(Password)
+													? "Strong password"
+													: "Weak password"
+											}>
+											{[0, 1, 2].map((Segment) => (
+												<div
+													key={Segment}
+													className="h-1 flex-1 rounded-none transition-colors"
+													style={{
+														backgroundColor:
+															Password.length >=
+																12 &&
+															/[^a-zA-Z0-9]/.test(
+																Password,
+															)
+																? "var(--ColorSuccess, #16a34a)"
+																: Password.length >=
+																			8 &&
+																	  Segment <
+																			2
+																	? "var(--ColorWarning, #ca8a04)"
+																	: Password.length >=
+																				6 &&
+																		  Segment <
+																				1
+																		? "var(--ColorDestruct, #dc2626)"
+																		: "var(--Border, #e5e7eb)",
+													}}
+												/>
+											))}
+										</div>
+									)}
+								</div>
 
 								<DynamicInput
 									Content={{
 										...ConfirmPasswordField,
 										Type: "password",
 										OnChange: SetConfirmPassword,
+										AutoComplete: "new-password",
+										Error: Errors.confirmPassword,
 									}}
 									Id="confirmPassword"
 								/>
-
-								{(Errors.password ||
-									Errors.confirmPassword) && (
-									<div className="space-y-1">
-										{Errors.password && (
-											<p className="text-sm text-destructive">
-												{Errors.password}
-											</p>
-										)}
-										{Errors.confirmPassword && (
-											<p className="text-sm text-destructive">
-												{Errors.confirmPassword}
-											</p>
-										)}
-									</div>
-								)}
 
 								<DynamicButton
 									Content={{

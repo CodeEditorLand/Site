@@ -113,7 +113,9 @@ export default ({
 				name="viewport"
 				content="width=device-width, initial-scale=1.0"
 			/>
-			<meta name="theme-color" content="var(--ColorBackground)" />
+			<meta property="og:locale:alternate" content="bg" />
+			<meta property="og:locale:alternate" content="de" />
+			<meta name="theme-color" content="#ffffff" />
 			<meta name="format-detection" content="telephone=no" />
 
 			<script

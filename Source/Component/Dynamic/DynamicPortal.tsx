@@ -558,7 +558,8 @@ const PortalTierRow = ({
 										Placeholder: T(
 											"portal.cloud.emailPlaceholder",
 											{
-												defaultValue: "name@example.com",
+												defaultValue:
+													"name@example.com",
 											},
 										),
 										Type: "email",
@@ -798,19 +799,25 @@ const PortalTierRow = ({
 														const LucideColor =
 															IconColorMap[
 																IconName
-															] ?? "var(--PlatformDesktop)";
+															] ??
+															"var(--PlatformDesktop)";
 
 														return (
 															<span
 																key={IconIndex}
 																className="inline-flex items-center">
-																{IconIndex === 0 ? (
+																{IconIndex ===
+																0 ? (
 																	"\u2001"
 																) : (
 																	<>
-																		{"\u2001"}
+																		{
+																			"\u2001"
+																		}
 																		{"+"}
-																		{"\u2001"}
+																		{
+																			"\u2001"
+																		}
 																	</>
 																)}
 																{IconName.startsWith(
@@ -929,7 +936,9 @@ const PortalTierRow = ({
 					<IconTooltip
 						Label="Sync"
 						Icon={lucide.RefreshCw}
-						Color={IconColorMap["RefreshCw"] ?? "var(--TierCloudFore)"}
+						Color={
+							IconColorMap["RefreshCw"] ?? "var(--TierCloudFore)"
+						}
 						SizeClass="h-3.5 w-3.5"
 						ClassName="StaccatoIcon"
 					/>

@@ -32,11 +32,12 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 	useEffect(() => {
 		try {
 			SetClient(GetWorkersClient());
-		} catch (AnalyticsError) {
-			console.error(
-				"Failed to initialize analytics client:",
-				AnalyticsError,
-			);
+		} catch {
+			if (import.meta.env.DEV) {
+				console.warn(
+					"Analytics: initialization blocked (ad-blocker or network unavailable)",
+				);
+			}
 		}
 	}, []);
 
@@ -44,15 +45,14 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 		Event: string,
 		Properties: Record<string, unknown> = {},
 	) => {
-		if (!Client) {
-			console.warn("Analytics client not initialized");
-			return;
-		}
+		if (!Client) return;
 
 		try {
 			await Client.Analytics.Track(Event, Properties);
-		} catch (TrackError) {
-			console.error("Failed to track event:", TrackError);
+		} catch {
+			if (import.meta.env.DEV) {
+				console.warn("Analytics: failed to track event");
+			}
 		}
 	};
 

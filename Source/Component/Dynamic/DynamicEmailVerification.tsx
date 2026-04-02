@@ -1,5 +1,5 @@
 import * as lucide from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -33,6 +33,10 @@ const DynamicEmailVerification = ({
 	const [Email, SetEmail] = useState<string>(UserEmail || "");
 	const [ErrorMessage, SetErrorMessage] = useState("");
 	const [ResendSuccess, SetResendSuccess] = useState(false);
+	const [ResendCooldown, SetResendCooldown] = useState(0);
+	const CooldownInterval = useRef<ReturnType<typeof setInterval> | null>(
+		null,
+	);
 
 	const HandleVerify = useCallback(
 		async (VerifyToken: string) => {
@@ -69,11 +73,36 @@ const DynamicEmailVerification = ({
 		}
 	}, [PropToken, HandleVerify]);
 
+	const StartCooldown = () => {
+		SetResendCooldown(60);
+		CooldownInterval.current = setInterval(() => {
+			SetResendCooldown((Previous) => {
+				if (Previous <= 1) {
+					if (CooldownInterval.current) {
+						clearInterval(CooldownInterval.current);
+						CooldownInterval.current = null;
+					}
+					return 0;
+				}
+				return Previous - 1;
+			});
+		}, 1000);
+	};
+
+	useEffect(() => {
+		return () => {
+			if (CooldownInterval.current) {
+				clearInterval(CooldownInterval.current);
+			}
+		};
+	}, []);
+
 	const HandleResend = async () => {
-		if (!Email) return;
+		if (!Email || ResendCooldown > 0) return;
 		try {
 			(await OnResend?.(Email)) || Promise.resolve(true);
 			SetResendSuccess(true);
+			StartCooldown();
 			setTimeout(() => SetResendSuccess(false), 5000);
 		} catch {
 			SetErrorMessage(
@@ -88,7 +117,10 @@ const DynamicEmailVerification = ({
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
-					<lucide.Mail className="h-6 w-6 text-primary" aria-hidden="true" />
+					<lucide.Mail
+						className="h-6 w-6 text-primary"
+						aria-hidden="true"
+					/>
 				</div>
 				<CardTitle className="text-2xl">
 					{Content.Pending.Title}
@@ -114,8 +146,16 @@ const DynamicEmailVerification = ({
 					<DynamicButton
 						Content={{
 							...Content.Pending.ResendButton,
+							Text:
+								ResendCooldown > 0
+									? T("resendCooldown", {
+											defaultValue:
+												"Resend in {{seconds}}s",
+											seconds: ResendCooldown,
+										})
+									: Content.Pending.ResendButton.Text,
 							FullWidth: true,
-							Disabled: !Email,
+							Disabled: !Email || ResendCooldown > 0,
 						}}
 						OnAction={HandleResend}
 					/>

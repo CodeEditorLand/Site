@@ -12,6 +12,15 @@ export default (await import("astro/config")).defineConfig({
 
 	outDir: "./Target",
 
+	trailingSlash: "never",
+
+	redirects: {
+		"/downloads": "/Download",
+		"/contributing": "/Contributing",
+		"/blog": "/Blog",
+		"/doc": "/Doc",
+	},
+
 	site: (await import("./Source/Function/Configuration/Site.js")).default,
 
 	compressHTML: (
@@ -53,7 +62,24 @@ export default (await import("astro/config")).defineConfig({
 			devtools: On,
 		}),
 
-		(await import("@astrojs/sitemap")).default(),
+		(await import("@astrojs/mdx")).default({
+			syntaxHighlight: "shiki",
+			shikiConfig: {
+				theme: "github-light",
+			},
+		}),
+
+		(await import("@astrojs/sitemap")).default({
+			filter: (Page) => {
+				const Lower = Page.toLowerCase();
+				return (
+					!Lower.includes("/dashboard") &&
+					!Lower.includes("/account/") &&
+					!Lower.includes("/oauth/")
+				);
+				// TODO: Add blog slugs once B1/B2 (Blog Content Collections) are merged
+			},
+		}),
 
 		// Route Redirect — local-first PascalCase URL routing + caching.
 		// Must run AFTER @astrojs/sitemap so the sitemap post-processor
@@ -64,11 +90,7 @@ export default (await import("astro/config")).defineConfig({
 		//   3. Cache-first asset cache (_astro/*, Asset/*, Favicon/*)
 		//   4. Cloudflare _redirects generation
 		//   5. Sitemap URL canonicalization
-		(
-			await import(
-				"./Source/Function/Route/Integration.js"
-			)
-		).default(),
+		(await import("./Source/Function/Route/Integration.js")).default(),
 
 		...((await import("./Source/Function/Configuration/InlineCSS.js"))
 			.default

@@ -143,283 +143,294 @@ export default (async () => {
 	 * Lerp helper for smooth transitions
 	 */
 	const Lerp = (Start: number, End: number, Factor: number): number =>
-	Start + (End - Start) * Factor;
-	
+		Start + (End - Start) * Factor;
+
 	/**
 	 * State for hover/focus animation
 	 */
 	interface HoverState {
-	Element: HTMLElement;
-	OriginalTransform: string;
-	TargetOpacity: number;
-	TargetScale: number;
-	TargetRotation: number;
-	CurrentOpacity: number;
-	CurrentScale: number;
-	CurrentRotation: number;
-	IsHovered: boolean;
-	IsFocused: boolean;
-	FrameId: number;
+		Element: HTMLElement;
+		OriginalTransform: string;
+		TargetOpacity: number;
+		TargetScale: number;
+		TargetRotation: number;
+		CurrentOpacity: number;
+		CurrentScale: number;
+		CurrentRotation: number;
+		IsHovered: boolean;
+		IsFocused: boolean;
+		FrameId: number;
 	}
-	
+
 	/**
 	 * Hover/Focus animation configuration
 	 */
 	interface HoverConfig {
-	LerpFactor: number;
-	ResetOpacity: number;
-	ResetScale: number;
-	ResetRotation: number;
-	HoverOpacity: number;
-	HoverScale: number;
-	HoverRotation: number;
+		LerpFactor: number;
+		ResetOpacity: number;
+		ResetScale: number;
+		ResetRotation: number;
+		HoverOpacity: number;
+		HoverScale: number;
+		HoverRotation: number;
 	}
-	
+
 	const DefaultConfig: HoverConfig = {
-	LerpFactor: 0.08,
-	ResetOpacity: 1.0,
-	ResetScale: 1.0,
-	ResetRotation: 0,
-	HoverOpacity: 1.0,
-	HoverScale: 1.02,
-	HoverRotation: 0,
+		LerpFactor: 0.08,
+		ResetOpacity: 1.0,
+		ResetScale: 1.0,
+		ResetRotation: 0,
+		HoverOpacity: 1.0,
+		HoverScale: 1.02,
+		HoverRotation: 0,
 	};
-	
+
 	const HoverStateMap = new Map<HTMLElement, HoverState>();
 	let AnimationFrameId = 0;
-	
+
 	/**
 	 * Initialize hover state for an element
 	 */
 	const InitHoverState = (
-	Element: HTMLElement,
-	Config: Partial<HoverConfig> = {},
+		Element: HTMLElement,
+		Config: Partial<HoverConfig> = {},
 	): HoverState => {
-	const FinalConfig = { ...DefaultConfig, ...Config };
-	
-	// Get current computed style for original transform
-	const ComputedStyle = window.getComputedStyle(Element);
-	const OriginalTransform = ComputedStyle.transform || "none";
-	
-	const State: HoverState = {
-	Element,
-	OriginalTransform,
-	TargetOpacity: FinalConfig.ResetOpacity,
-	CurrentOpacity: parseFloat(ComputedStyle.opacity) || 1,
-	TargetScale: FinalConfig.ResetScale,
-	CurrentScale: 1,
-	TargetRotation: FinalConfig.ResetRotation,
-	CurrentRotation: 0,
-	IsHovered: false,
-	IsFocused: false,
-	FrameId: 0,
+		const FinalConfig = { ...DefaultConfig, ...Config };
+
+		// Get current computed style for original transform
+		const ComputedStyle = window.getComputedStyle(Element);
+		const OriginalTransform = ComputedStyle.transform || "none";
+
+		const State: HoverState = {
+			Element,
+			OriginalTransform,
+			TargetOpacity: FinalConfig.ResetOpacity,
+			CurrentOpacity: parseFloat(ComputedStyle.opacity) || 1,
+			TargetScale: FinalConfig.ResetScale,
+			CurrentScale: 1,
+			TargetRotation: FinalConfig.ResetRotation,
+			CurrentRotation: 0,
+			IsHovered: false,
+			IsFocused: false,
+			FrameId: 0,
+		};
+
+		HoverStateMap.set(Element, State);
+		return State;
 	};
-	
-	HoverStateMap.set(Element, State);
-	return State;
-	};
-	
+
 	/**
 	 * Animation loop for all hovered/focused elements
 	 */
 	const AnimateHoverStates = (): void => {
-	let HasActiveAnimations = false;
-	
-	HoverStateMap.forEach((State) => {
-	if (State.IsHovered || State.IsFocused) {
-	HasActiveAnimations = true;
-	
-	// Lerp towards hover/target values
-	State.CurrentOpacity = Lerp(State.CurrentOpacity, State.TargetOpacity, DefaultConfig.LerpFactor);
-	State.CurrentScale = Lerp(State.CurrentScale, State.TargetScale, DefaultConfig.LerpFactor);
-	State.CurrentRotation = Lerp(State.CurrentRotation, State.TargetRotation, DefaultConfig.LerpFactor);
-	
-	// Apply transforms with lerped values
-	const Transform = `scale(${State.CurrentScale.toFixed(4)}) rotate(${State.CurrentRotation.toFixed(2)}deg)`;
-	State.Element.style.transform = Transform;
-	State.Element.style.opacity = String(State.CurrentOpacity);
-	}
-	});
-	
-	if (HasActiveAnimations) {
-	AnimationFrameId = requestAnimationFrame(AnimateHoverStates);
-	}
+		let HasActiveAnimations = false;
+
+		HoverStateMap.forEach((State) => {
+			if (State.IsHovered || State.IsFocused) {
+				HasActiveAnimations = true;
+
+				// Lerp towards hover/target values
+				State.CurrentOpacity = Lerp(
+					State.CurrentOpacity,
+					State.TargetOpacity,
+					DefaultConfig.LerpFactor,
+				);
+				State.CurrentScale = Lerp(
+					State.CurrentScale,
+					State.TargetScale,
+					DefaultConfig.LerpFactor,
+				);
+				State.CurrentRotation = Lerp(
+					State.CurrentRotation,
+					State.TargetRotation,
+					DefaultConfig.LerpFactor,
+				);
+
+				// Apply transforms with lerped values
+				const Transform = `scale(${State.CurrentScale.toFixed(4)}) rotate(${State.CurrentRotation.toFixed(2)}deg)`;
+				State.Element.style.transform = Transform;
+				State.Element.style.opacity = String(State.CurrentOpacity);
+			}
+		});
+
+		if (HasActiveAnimations) {
+			AnimationFrameId = requestAnimationFrame(AnimateHoverStates);
+		}
 	};
-	
+
 	/**
 	 * Handle mouse enter - start lerping to hover state
 	 */
 	const OnMouseEnter = (Event: Event): void => {
-	const Element = Event.target as HTMLElement;
-	if (!Element) return;
-	
-	let State = HoverStateMap.get(Element);
-	if (!State) {
-	State = InitHoverState(Element);
-	}
-	
-	State.IsHovered = true;
-	State.TargetOpacity = DefaultConfig.HoverOpacity;
-	State.TargetScale = DefaultConfig.HoverScale;
-	State.TargetRotation = DefaultConfig.HoverRotation;
-	
-	// Add visual indicator class
-	Element.classList.add("StaccatoHover");
-	
-	// Start animation loop if not running
-	if (!AnimationFrameId) {
-	AnimationFrameId = requestAnimationFrame(AnimateHoverStates);
-	}
+		const Element = Event.target as HTMLElement;
+		if (!Element) return;
+
+		let State = HoverStateMap.get(Element);
+		if (!State) {
+			State = InitHoverState(Element);
+		}
+
+		State.IsHovered = true;
+		State.TargetOpacity = DefaultConfig.HoverOpacity;
+		State.TargetScale = DefaultConfig.HoverScale;
+		State.TargetRotation = DefaultConfig.HoverRotation;
+
+		// Add visual indicator class
+		Element.classList.add("StaccatoHover");
+
+		// Start animation loop if not running
+		if (!AnimationFrameId) {
+			AnimationFrameId = requestAnimationFrame(AnimateHoverStates);
+		}
 	};
-	
+
 	/**
 	 * Handle mouse leave - lerp back to reset state
 	 */
 	const OnMouseLeave = (Event: Event): void => {
-	const Element = Event.target as HTMLElement;
-	if (!Element) return;
-	
-	const State = HoverStateMap.get(Element);
-	if (!State) return;
-	
-	State.IsHovered = false;
-	State.TargetOpacity = DefaultConfig.ResetOpacity;
-	State.TargetScale = DefaultConfig.ResetScale;
-	State.TargetRotation = DefaultConfig.ResetRotation;
-	
-	// Remove hover class
-	Element.classList.remove("StaccatoHover");
+		const Element = Event.target as HTMLElement;
+		if (!Element) return;
+
+		const State = HoverStateMap.get(Element);
+		if (!State) return;
+
+		State.IsHovered = false;
+		State.TargetOpacity = DefaultConfig.ResetOpacity;
+		State.TargetScale = DefaultConfig.ResetScale;
+		State.TargetRotation = DefaultConfig.ResetRotation;
+
+		// Remove hover class
+		Element.classList.remove("StaccatoHover");
 	};
-	
+
 	/**
 	 * Handle focus - start lerping to focus state
 	 */
 	const OnFocus = (Event: Event): void => {
-	const Element = Event.target as HTMLElement;
-	if (!Element) return;
-	
-	let State = HoverStateMap.get(Element);
-	if (!State) {
-	State = InitHoverState(Element);
-	}
-	
-	State.IsFocused = true;
-	State.TargetOpacity = DefaultConfig.HoverOpacity;
-	State.TargetScale = DefaultConfig.HoverScale;
-	State.TargetRotation = DefaultConfig.HoverRotation;
-	
-	Element.classList.add("StaccatoFocus");
-	
-	if (!AnimationFrameId) {
-	AnimationFrameId = requestAnimationFrame(AnimateHoverStates);
-	}
+		const Element = Event.target as HTMLElement;
+		if (!Element) return;
+
+		let State = HoverStateMap.get(Element);
+		if (!State) {
+			State = InitHoverState(Element);
+		}
+
+		State.IsFocused = true;
+		State.TargetOpacity = DefaultConfig.HoverOpacity;
+		State.TargetScale = DefaultConfig.HoverScale;
+		State.TargetRotation = DefaultConfig.HoverRotation;
+
+		Element.classList.add("StaccatoFocus");
+
+		if (!AnimationFrameId) {
+			AnimationFrameId = requestAnimationFrame(AnimateHoverStates);
+		}
 	};
-	
+
 	/**
 	 * Handle blur - lerp back to reset state
 	 */
 	const OnBlur = (Event: Event): void => {
-	const Element = Event.target as HTMLElement;
-	if (!Element) return;
-	
-	const State = HoverStateMap.get(Element);
-	if (!State) return;
-	
-	State.IsFocused = false;
-	State.TargetOpacity = DefaultConfig.ResetOpacity;
-	State.TargetScale = DefaultConfig.ResetScale;
-	State.TargetRotation = DefaultConfig.ResetRotation;
-	
-	Element.classList.remove("StaccatoFocus");
+		const Element = Event.target as HTMLElement;
+		if (!Element) return;
+
+		const State = HoverStateMap.get(Element);
+		if (!State) return;
+
+		State.IsFocused = false;
+		State.TargetOpacity = DefaultConfig.ResetOpacity;
+		State.TargetScale = DefaultConfig.ResetScale;
+		State.TargetRotation = DefaultConfig.ResetRotation;
+
+		Element.classList.remove("StaccatoFocus");
 	};
-	
+
 	/**
 	 * Apply hover/focus handlers to a selector
 	 */
 	const ApplyHoverEffects = (
-	Selector: string,
-	Config: Partial<HoverConfig> = {},
+		Selector: string,
+		Config: Partial<HoverConfig> = {},
 	): void => {
-	const ElementList = document.querySelectorAll<HTMLElement>(Selector);
-	
-	ElementList.forEach((Element) => {
-	const State = InitHoverState(Element, Config);
-	
-	// Store config on element for retrieval
-	(Element as unknown as { StaccatoHoverConfig: HoverConfig }).StaccatoHoverConfig = {
-	...DefaultConfig,
-	...Config,
+		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
+
+		ElementList.forEach((Element) => {
+			const State = InitHoverState(Element, Config);
+
+			// Store config on element for retrieval
+			(
+				Element as unknown as { StaccatoHoverConfig: HoverConfig }
+			).StaccatoHoverConfig = {
+				...DefaultConfig,
+				...Config,
+			};
+
+			// Add event listeners
+			Element.addEventListener("mouseenter", OnMouseEnter);
+			Element.addEventListener("mouseleave", OnMouseLeave);
+			Element.addEventListener("focus", OnFocus, true);
+			Element.addEventListener("blur", OnBlur, true);
+
+			// Make focusable if not already
+			if (Element.getAttribute("tabindex") === null) {
+				Element.setAttribute("tabindex", "0");
+			}
+		});
 	};
-	
-	// Add event listeners
-	Element.addEventListener("mouseenter", OnMouseEnter);
-	Element.addEventListener("mouseleave", OnMouseLeave);
-	Element.addEventListener("focus", OnFocus, true);
-	Element.addEventListener("blur", OnBlur, true);
-	
-	// Make focusable if not already
-	if (Element.getAttribute("tabindex") === null) {
-	Element.setAttribute("tabindex", "0");
-	}
-	});
-	};
-	
+
 	/**
 	 * Remove hover/focus handlers from a selector
 	 */
 	const RemoveHoverEffects = (Selector: string): void => {
-	const ElementList = document.querySelectorAll<HTMLElement>(Selector);
-	
-	ElementList.forEach((Element) => {
-	Element.removeEventListener("mouseenter", OnMouseEnter);
-	Element.removeEventListener("mouseleave", OnMouseLeave);
-	Element.removeEventListener("focus", OnFocus, true);
-	Element.removeEventListener("blur", OnBlur, true);
-	
-	HoverStateMap.delete(Element);
-	Element.classList.remove("StaccatoHover", "StaccatoFocus");
-	});
+		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
+
+		ElementList.forEach((Element) => {
+			Element.removeEventListener("mouseenter", OnMouseEnter);
+			Element.removeEventListener("mouseleave", OnMouseLeave);
+			Element.removeEventListener("focus", OnFocus, true);
+			Element.removeEventListener("blur", OnBlur, true);
+
+			HoverStateMap.delete(Element);
+			Element.classList.remove("StaccatoHover", "StaccatoFocus");
+		});
 	};
-	
+
 	/**
 	 * Order elements on hover - brings hovered element to front with z-index
 	 */
-	const OrderOnHover = (
-	Selector: string,
-	ZIndexBase: number = 10,
-	): void => {
-	const ElementList = document.querySelectorAll<HTMLElement>(Selector);
-	
-	ElementList.forEach((Element, Index) => {
-	Element.style.setProperty("--StaccatoOrderIndex", String(Index));
-	
-	Element.addEventListener("mouseenter", () => {
-	Element.style.zIndex = String(ZIndexBase + ElementList.length);
-	Element.style.setProperty("--StaccatoIsOrdered", "1");
-	});
-	
-	Element.addEventListener("mouseleave", () => {
-	setTimeout(() => {
-	Element.style.zIndex = String(ZIndexBase);
-	Element.style.setProperty("--StaccatoIsOrdered", "0");
-	}, 300); // Delay to allow other elements to animate
-	});
-	});
+	const OrderOnHover = (Selector: string, ZIndexBase: number = 10): void => {
+		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
+
+		ElementList.forEach((Element, Index) => {
+			Element.style.setProperty("--StaccatoOrderIndex", String(Index));
+
+			Element.addEventListener("mouseenter", () => {
+				Element.style.zIndex = String(ZIndexBase + ElementList.length);
+				Element.style.setProperty("--StaccatoIsOrdered", "1");
+			});
+
+			Element.addEventListener("mouseleave", () => {
+				setTimeout(() => {
+					Element.style.zIndex = String(ZIndexBase);
+					Element.style.setProperty("--StaccatoIsOrdered", "0");
+				}, 300); // Delay to allow other elements to animate
+			});
+		});
 	};
-	
+
 	return {
-	Scatter,
-	ScatterRotation,
-	ScatterScale,
-	ScatterDelay,
-	ScatterOpacity,
-	ApplyToElement,
-	ApplyToSelector,
-	ObserveAndApply,
-	ApplyHoverEffects,
-	RemoveHoverEffects,
-	OrderOnHover,
-	Lerp,
-	LayoutNoise,
+		Scatter,
+		ScatterRotation,
+		ScatterScale,
+		ScatterDelay,
+		ScatterOpacity,
+		ApplyToElement,
+		ApplyToSelector,
+		ObserveAndApply,
+		ApplyHoverEffects,
+		RemoveHoverEffects,
+		OrderOnHover,
+		Lerp,
+		LayoutNoise,
 	};
-	})();
+})();

@@ -6,44 +6,45 @@ import {
 	SwitchLocale,
 	type SupportedLocale,
 } from "@/Library/I18n/Client.js";
-import * as lucide from "lucide-react";
 import { useTranslation } from "react-i18next";
+
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "../UI/Select.js";
 
 const LocaleSwitcher = () => {
 	const { i18n } = useTranslation();
 
 	const CurrentLocale = (i18n.language || "en") as SupportedLocale;
 
-	const HandleChange = (Event: React.ChangeEvent<HTMLSelectElement>) => {
-		const NewLocale = Event.target.value as SupportedLocale;
-
-		SwitchLocale(NewLocale);
+	const HandleChange = (Value: string) => {
+		SwitchLocale(Value as SupportedLocale);
 	};
 
 	return (
-		<div className="relative inline-flex items-center">
-			<select
-				value={CurrentLocale}
-				onChange={HandleChange}
-				aria-label="Select language"
-				className="h-9 appearance-none border border-[var(--Border)] bg-white bg-none py-1 pl-3 pr-7 text-sm font-medium text-[var(--Foreground)] transition-colors hover:bg-[var(--Secondary)] focus:outline-none focus:ring-1 focus:ring-[var(--Foreground)]"
-				style={{
-					borderRadius: 0,
-					WebkitAppearance: "none",
-					MozAppearance: "none",
-					backgroundImage: "none",
-				}}>
+		<Select value={CurrentLocale} onValueChange={HandleChange}>
+			<SelectTrigger
+				className="h-9 w-auto min-w-[6rem] border border-[var(--Border)] bg-white text-sm font-medium text-[var(--Foreground)]"
+				aria-label="Select language">
+				<SelectValue />
+			</SelectTrigger>
+			<SelectContent>
 				{SupportedLocaleList.map((Locale) => (
-					<option key={Locale} value={Locale}>
+					<SelectItem
+						key={Locale}
+						value={Locale}
+						aria-current={
+							Locale === CurrentLocale ? "true" : undefined
+						}>
 						{LocaleLabel[Locale]}
-					</option>
+					</SelectItem>
 				))}
-			</select>
-			<lucide.Globe
-				className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-[var(--MuteForeground)]"
-				aria-hidden="true"
-			/>
-		</div>
+			</SelectContent>
+		</Select>
 	);
 };
 

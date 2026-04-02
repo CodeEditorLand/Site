@@ -86,6 +86,24 @@ const T = GetI18n();
 			@import "@Stylesheet/Global.css";
 		</style>
 
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "SoftwareApplication",
+				"name": "Code Editor Land",
+				"operatingSystem": "Windows, macOS, Linux",
+				"applicationCategory": "DeveloperApplication",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD"
+				},
+				"url": "https://editor.land",
+				"downloadUrl": "https://editor.land/Download",
+				"license": "https://creativecommons.org/publicdomain/zero/1.0/"
+			}
+		</script>
+
 		<slot name="Head" />
 
 		<!-- Favicon -->

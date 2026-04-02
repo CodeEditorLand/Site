@@ -48,7 +48,11 @@ const Footer = ({ Content }: FooterProps) => {
 					},
 					{
 						Label: T("columns.product.docs", "Docs"),
-						Href: "https://github.com/CodeEditorLand/Land#readme",
+						Href: "/Doc",
+					},
+					{
+						Label: T("columns.product.blog", "Blog"),
+						Href: "/Blog",
 					},
 				],
 			},
@@ -64,11 +68,15 @@ const Footer = ({ Content }: FooterProps) => {
 							"columns.company.contributing",
 							"Contributing",
 						),
-						Href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
+						Href: "/Contributing",
 					},
 					{
 						Label: T("columns.company.github", "GitHub"),
 						Href: "https://github.com/CodeEditorLand/Land",
+					},
+					{
+						Label: T("columns.company.enterprise", "Enterprise"),
+						Href: "/Contact/Sale",
 					},
 				],
 			},

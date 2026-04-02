@@ -25,9 +25,9 @@ contributes to this include:
 - Accepting responsibility for mistakes and learning from them
 - Focusing on the best interests of the community
 
-Unacceptable behavior includes harassment, derogatory comments, personal attacks,
-publishing private information without permission, and other unprofessional
-conduct.
+Unacceptable behavior includes harassment, derogatory comments, personal
+attacks, publishing private information without permission, and other
+unprofessional conduct.
 
 ### Enforcement
 
@@ -36,7 +36,8 @@ Community@Editor.Land. All complaints will be reviewed and investigated fairly.
 Community leaders will enforce these standards and may take corrective action,
 including warning, temporary banning, or permanent banning from the community.
 
-The full Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/).
+The full Code of Conduct is adapted from the
+[Contributor Covenant](https://www.contributor-covenant.org/).
 
 ---
 
@@ -58,14 +59,14 @@ development workflow, coding standards, and pull request process.
 
 1. Fork the repository on GitHub
 2. Clone your fork locally:
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/CodeEditorLand.git
-   cd CodeEditorLand
-   ```
+    ```bash
+    git clone https://github.com/YOUR_USERNAME/CodeEditorLand.git
+    cd CodeEditorLand
+    ```
 3. Add the upstream remote:
-   ```bash
-   git remote add upstream https://github.com/CodeEditorLand/CodeEditorLand.git
-   ```
+    ```bash
+    git remote add upstream https://github.com/CodeEditorLand/CodeEditorLand.git
+    ```
 
 #### Install Dependencies
 
@@ -132,6 +133,7 @@ pnpm deploy
 Create local environment files:
 
 **WebSite/.env** (from example):
+
 ```env
 PUBLIC_AUTH_WORKER_URL=http://localhost:8787
 PUBLIC_DOWNLOAD_WORKER_URL=http://localhost:8788
@@ -141,6 +143,7 @@ PUBLIC_FRONTEND_URL=http://localhost:4321
 ```
 
 **Workers/.env** (for local development with wrangler):
+
 ```env
 # Auth Worker
 JWT_SECRET=your-secret-key-change-this
@@ -151,20 +154,23 @@ OAUTH_GITHUB_CLIENT_SECRET=your-github-client-secret
 # ... other OAuth and SMTP settings
 ```
 
-For development, you can use [MailHog](https://github.com/mailhog/MailHog) to catch
-outgoing emails without actually sending them.
+For development, you can use [MailHog](https://github.com/mailhog/MailHog) to
+catch outgoing emails without actually sending them.
 
 ### Code Style
 
 We enforce consistent code style across the project:
 
-- **TypeScript Strict Mode:** All code uses `strict: true` and `exactOptionalPropertyTypes: true`
+- **TypeScript Strict Mode:** All code uses `strict: true` and
+  `exactOptionalPropertyTypes: true`
 - **PascalCase:** Files, components, interfaces, classes, type definitions
 - **camelCase:** Variables, functions, methods, properties
 - **kebab-case:** URLs, CSS classes, file names for assets
 - **UPPER_SNAKE_CASE:** Constants, environment variables, configuration keys
-- **Imports:** Grouped by external (Node, third-party) then internal, alphabetized within groups
-- **Formatting:** Use Prettier with default configuration (auto-format on commit)
+- **Imports:** Grouped by external (Node, third-party) then internal,
+  alphabetized within groups
+- **Formatting:** Use Prettier with default configuration (auto-format on
+  commit)
 
 #### TypeScript Rules
 
@@ -252,49 +258,53 @@ CodeEditorLand/
 When creating new components:
 
 1. **Determine category:**
-   - `ui/` - Base primitives extending shadcn (rare)
-   - `Dynamic/` - Content-driven components with schemas
-   - `Layout/` - Page layout components (Header, Footer)
-   - `Marketing/` - Landing page sections
-   - `Auth/` - Authentication flows
-   - `Download/` - Download-related components
-   - `Utility/` - Helper utilities
-   - `Social/` - Social sharing, meta tags
+    - `ui/` - Base primitives extending shadcn (rare)
+    - `Dynamic/` - Content-driven components with schemas
+    - `Layout/` - Page layout components (Header, Footer)
+    - `Marketing/` - Landing page sections
+    - `Auth/` - Authentication flows
+    - `Download/` - Download-related components
+    - `Utility/` - Helper utilities
+    - `Social/` - Social sharing, meta tags
 
 2. **Use PascalCase** for filename: `MyComponent.tsx`
 
 3. **Define TypeScript interface** for props/content:
-   ```typescript
-   interface MyComponentProps {
-     title: string;
-     items?: string[];
-   }
 
-   export function MyComponent({ title, items = [] }: MyComponentProps) {
-     // Component implementation
-   }
-   ```
+    ```typescript
+    interface MyComponentProps {
+    	title: string;
+    	items?: string[];
+    }
+
+    export function MyComponent({ title, items = [] }: MyComponentProps) {
+    	// Component implementation
+    }
+    ```
 
 4. **Implement with shadcn primitives** (if UI component):
-   ```typescript
-   import { Button } from '../ui/button';
-   import { Card } from '../ui/card';
-   ```
+
+    ```typescript
+    import { Button } from "../ui/button";
+    import { Card } from "../ui/card";
+    ```
 
 5. **Add translations** to appropriate namespace JSON files:
-   ```json
-   // Source/Lib/I18n/Locales/En/mycomponent.json
-   {
-     "title": "My Title",
-     "description": "My description"
-   }
-   ```
+
+    ```json
+    // Source/Lib/I18n/Locales/En/mycomponent.json
+    {
+    	"title": "My Title",
+    	"description": "My description"
+    }
+    ```
 
 6. **Export from index.ts** in component category:
-   ```typescript
-   // Components/MyCategory/index.ts
-   export { MyComponent } from './MyComponent';
-   ```
+
+    ```typescript
+    // Components/MyCategory/index.ts
+    export { MyComponent } from "./MyComponent";
+    ```
 
 7. **Update COMPONENT_CATALOG.md** with component details (this file)
 
@@ -302,36 +312,37 @@ When creating new components:
 
 Translation keys are namespace-based:
 
-1. **Define keys** in `plans/Data/TranslationKeys.json` (for planning) and add to actual JSON files
+1. **Define keys** in `plans/Data/TranslationKeys.json` (for planning) and add
+   to actual JSON files
 2. **Add translations** to each locale file:
-   ```json
-   // Source/Lib/I18n/Locales/En/home.json
-   {
-     "myComponent": {
-       "title": "English Title",
-       "description": "English description"
-     }
-   }
-   ```
+    ```json
+    // Source/Lib/I18n/Locales/En/home.json
+    {
+    	"myComponent": {
+    		"title": "English Title",
+    		"description": "English description"
+    	}
+    }
+    ```
 3. **Create corresponding file** for other locales (e.g., `Es/`, `Fr/`, etc.)
 4. **Use in component:**
-   ```typescript
-   const { t } = useTranslation('home');
-   return <h1>{t('myComponent.title')}</h1>;
-   ```
+    ```typescript
+    const { t } = useTranslation('home');
+    return <h1>{t('myComponent.title')}</h1>;
+    ```
 
 ### Translation Namespaces
 
-| Namespace | Purpose | Location |
-|-----------|---------|----------|
-| `common` | Shared button/label/error texts | `common.json` |
-| `home` | Homepage content (hero, features, pricing, testimonials) | `home.json` |
-| `download` | Download page content | `download.json` |
-| `account` | Authentication forms | `account.json` |
-| `header` | Navigation labels | `header.json` |
-| `footer` | Footer text and links | `footer.json` |
-| `meta` | Page meta titles/descriptions | `meta.json` |
-| `verify` | Email verification states | `verify.json` |
+| Namespace  | Purpose                                                  | Location        |
+| ---------- | -------------------------------------------------------- | --------------- |
+| `common`   | Shared button/label/error texts                          | `common.json`   |
+| `home`     | Homepage content (hero, features, pricing, testimonials) | `home.json`     |
+| `download` | Download page content                                    | `download.json` |
+| `account`  | Authentication forms                                     | `account.json`  |
+| `header`   | Navigation labels                                        | `header.json`   |
+| `footer`   | Footer text and links                                    | `footer.json`   |
+| `meta`     | Page meta titles/descriptions                            | `meta.json`     |
+| `verify`   | Email verification states                                | `verify.json`   |
 
 ### Design System Compliance
 
@@ -340,27 +351,30 @@ All UI components must adhere to the Code Editor Land design tokens:
 ```css
 /* Source/Stylesheet/Base.css */
 :root {
-  --border-width: 3px;           /* All borders exactly 3px */
-  --border-radius: 0;            /* No border-radius (except badges) */
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+	--border-width: 3px; /* All borders exactly 3px */
+	--border-radius: 0; /* No border-radius (except badges) */
+	--font-sans: "Inter", system-ui, sans-serif;
+	--font-mono: "JetBrains Mono", monospace;
 }
 
 /* Global enforcement */
 * {
-  border-radius: var(--border-radius) !important;
+	border-radius: var(--border-radius) !important;
 }
 
 .border {
-  border-width: var(--border-width);
+	border-width: var(--border-width);
 }
 ```
 
-**Border enforcement:** All components using borders must include `border-[3px]` (or `border border-border`) class. Do not use plain `border` without width.
+**Border enforcement:** All components using borders must include `border-[3px]`
+(or `border border-border`) class. Do not use plain `border` without width.
 
-**Radius enforcement:** All components must use `!rounded-none` to enforce zero radius. The only exception is badges which may use `rounded-full`.
+**Radius enforcement:** All components must use `!rounded-none` to enforce zero
+radius. The only exception is badges which may use `rounded-full`.
 
-**Colors:** Use theme colors from Tailwind config (`bg-primary`, `text-foreground`, `border-border`, etc.) to support light/dark modes.
+**Colors:** Use theme colors from Tailwind config (`bg-primary`,
+`text-foreground`, `border-border`, etc.) to support light/dark modes.
 
 ### Working with Workers
 
@@ -387,12 +401,12 @@ Each Worker uses:
 Use the API client wrappers in `WebSite/Source/Lib/api/`:
 
 ```typescript
-import { authAPI } from '@/Lib/api/auth';
+import { authAPI } from "@/Lib/api/auth";
 
 // Example: login
 const { data, error } = await authAPI.login(email, password);
 if (data) {
-  console.log('Logged in as', data.user.username);
+	console.log("Logged in as", data.user.username);
 }
 ```
 
@@ -406,16 +420,17 @@ Available API modules:
 #### Adding New API Endpoints
 
 1. **Define types** in `Workers/shared/src/types.ts` (if new data structures)
-2. **Implement endpoint** in appropriate Worker (`workers/auth/src/index.ts` etc.)
+2. **Implement endpoint** in appropriate Worker (`workers/auth/src/index.ts`
+   etc.)
 3. **Add handler** using router:
-   ```typescript
-   router.post('/my-endpoint', async (req) => {
-     const data = await req.json();
-     // Validation
-     // Business logic
-     return json({ success: true, data: result });
-   });
-   ```
+    ```typescript
+    router.post("/my-endpoint", async (req) => {
+    	const data = await req.json();
+    	// Validation
+    	// Business logic
+    	return json({ success: true, data: result });
+    });
+    ```
 4. **Add CORS headers** automatically handled by middleware
 5. **Update API_CONTRACT.md** with endpoint documentation
 6. **Create frontend client** in `WebSite/Source/Lib/api/` if needed
@@ -458,10 +473,10 @@ pnpm dev
 1. Start all Workers: `cd Workers && pnpm dev`
 2. Start frontend: `cd WebSite && pnpm dev`
 3. Test full user flows:
-   - Registration → email verification → login → logout
-   - Download flow (after uploading binaries to R2)
-   - Pageview tracking → analytics queries
-   - OAuth (with valid OAuth app credentials)
+    - Registration → email verification → login → logout
+    - Download flow (after uploading binaries to R2)
+    - Pageview tracking → analytics queries
+    - OAuth (with valid OAuth app credentials)
 
 ### Commit Messages
 
@@ -476,6 +491,7 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 **Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation changes
@@ -489,6 +505,7 @@ We follow [Conventional Commits](https://www.conventionalcommits.org/):
 - `revert` - Revert a previous commit
 
 **Examples:**
+
 ```
 feat(auth): add OAuth support for Google and GitLab
 
@@ -502,45 +519,48 @@ chore(deps): update TypeScript to 5.9.3
 ### Pull Request Process
 
 1. **Create a feature branch** from `main`:
-   ```bash
-   git checkout -b feat/my-feature
-   ```
+
+    ```bash
+    git checkout -b feat/my-feature
+    ```
 
 2. **Make your changes** following code style guidelines.
 
 3. **Test your changes** locally:
-   - Frontend builds without errors
-   - Workers type-check and build
-   - All linting passes
-   - Manual testing of affected features
+    - Frontend builds without errors
+    - Workers type-check and build
+    - All linting passes
+    - Manual testing of affected features
 
 4. **Commit your changes** with conventional commit message:
-   ```bash
-   git add .
-   git commit -m "feat(component): add new DynamicCard with schema validation"
-   ```
+
+    ```bash
+    git add .
+    git commit -m "feat(component): add new DynamicCard with schema validation"
+    ```
 
 5. **Push to your fork**:
-   ```bash
-   git push origin feat/my-feature
-   ```
+
+    ```bash
+    git push origin feat/my-feature
+    ```
 
 6. **Open a Pull Request** against the `main` branch of the upstream repository.
 
 7. **PR Description:**
-   - Explain what the change does and why
-   - Reference related issues (e.g., "Closes #123")
-   - Include screenshots for UI changes
-   - Note any breaking changes
+    - Explain what the change does and why
+    - Reference related issues (e.g., "Closes #123")
+    - Include screenshots for UI changes
+    - Note any breaking changes
 
 8. **Code Review:**
-   - Maintainers will review your code
-   - Address review comments (request changes if needed)
-   - Squash commits before merging (maintain clean history)
+    - Maintainers will review your code
+    - Address review comments (request changes if needed)
+    - Squash commits before merging (maintain clean history)
 
 9. **Merge:**
-   - After approval, maintainers will merge your PR
-   - We use "Squash and merge" to keep history clean
+    - After approval, maintainers will merge your PR
+    - We use "Squash and merge" to keep history clean
 
 ### Issue Reporting
 
@@ -549,13 +569,14 @@ Found a bug or have a feature request?
 1. **Search existing issues** to avoid duplicates
 2. **Open a new issue** using the appropriate template
 3. **Provide detailed information:**
-   - Steps to reproduce (for bugs)
-   - Expected vs actual behavior
-   - Screenshots if applicable
-   - Environment details (OS, browser, Node version)
-   - Logs or error messages
+    - Steps to reproduce (for bugs)
+    - Expected vs actual behavior
+    - Screenshots if applicable
+    - Environment details (OS, browser, Node version)
+    - Logs or error messages
 
 Issue templates are available for:
+
 - Bug report
 - Feature request
 - Documentation improvement
@@ -581,7 +602,7 @@ Issue templates are available for:
 
 ## Thank You
 
-Your contributions make Code Editor Land possible. We appreciate your time
-and effort in improving this project for everyone.
+Your contributions make Code Editor Land possible. We appreciate your time and
+effort in improving this project for everyone.
 
 **Built with gratitude by the Code Editor Land team**

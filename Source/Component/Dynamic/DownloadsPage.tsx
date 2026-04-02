@@ -2,7 +2,9 @@
 
 import { useTranslation } from "react-i18next";
 
+import { ErrorBoundary } from "../ErrorBoundary.js";
 import { Header } from "../Layout/Header";
+import { SkeletonCard } from "../UI/Skeleton.js";
 import { DynamicPlatformGrid } from "./DynamicPlatformGrid";
 import { DynamicPreviousReleases } from "./DynamicPreviousReleases";
 import { DynamicSystemRequirements } from "./DynamicSystemRequirements";
@@ -156,11 +158,19 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			<div className="flex-1">
 				<DynamicPlatformGrid Content={PlatformGrid} />
 
-				<DynamicSystemRequirements Content={SystemRequirements} />
+				<ErrorBoundary FallbackComponent={() => <SkeletonCard />}>
+					<DynamicSystemRequirements Content={SystemRequirements} />
+				</ErrorBoundary>
 
-				<DynamicVerificationInfo Content={VerificationInformation} />
+				<ErrorBoundary FallbackComponent={() => <SkeletonCard />}>
+					<DynamicVerificationInfo
+						Content={VerificationInformation}
+					/>
+				</ErrorBoundary>
 
-				<DynamicPreviousReleases Content={PreviousReleases} />
+				<ErrorBoundary FallbackComponent={() => <SkeletonCard />}>
+					<DynamicPreviousReleases Content={PreviousReleases} />
+				</ErrorBoundary>
 			</div>
 		</div>
 	);

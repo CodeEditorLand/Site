@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
 	Card,
@@ -43,6 +44,7 @@ const DynamicSignUp = ({
 	const [Password, SetPassword] = useState("");
 	const [ConfirmPassword, SetConfirmPassword] = useState("");
 	const [TermsAccepted, SetTermsAccepted] = useState(false);
+	const { t: T } = useTranslation("account");
 	const [Errors, SetErrors] = useState<{
 		email?: string;
 		password?: string;
@@ -118,20 +120,84 @@ const DynamicSignUp = ({
 									Id="email"
 								/>
 
-								<DynamicInput
-									Content={{
-										...PasswordField,
-										Type: "password",
-										OnChange: SetPassword,
-									}}
-									Id="password"
-								/>
+								<div>
+									<DynamicInput
+										Content={{
+											...PasswordField,
+											Type: "password",
+											OnChange: SetPassword,
+											AutoComplete: "new-password",
+											Error: Errors.password,
+										}}
+										Id="password"
+									/>
+									{Password && (
+										<div
+											className="mt-1 flex gap-1"
+											aria-label={
+												Password.length >= 12 &&
+												/[^a-zA-Z0-9]/.test(Password)
+													? T(
+															"signUp.passwordStrength.strong",
+															{
+																defaultValue:
+																	"Strong password",
+															},
+														)
+													: Password.length >= 8
+														? T(
+																"signUp.passwordStrength.weak",
+																{
+																	defaultValue:
+																		"Weak password",
+																},
+															)
+														: T(
+																"signUp.passwordStrength.weak",
+																{
+																	defaultValue:
+																		"Weak password",
+																},
+															)
+											}
+											role="status">
+											{[0, 1, 2].map((Segment) => (
+												<div
+													key={Segment}
+													className="h-1 flex-1 rounded-none transition-colors"
+													style={{
+														backgroundColor:
+															Password.length >=
+																12 &&
+															/[^a-zA-Z0-9]/.test(
+																Password,
+															)
+																? "var(--ColorSuccess, #16a34a)"
+																: Password.length >=
+																			8 &&
+																	  Segment <
+																			2
+																	? "var(--ColorWarning, #ca8a04)"
+																	: Password.length >=
+																				6 &&
+																		  Segment <
+																				1
+																		? "var(--ColorDestruct, #dc2626)"
+																		: "var(--Border, #e5e7eb)",
+													}}
+												/>
+											))}
+										</div>
+									)}
+								</div>
 
 								<DynamicInput
 									Content={{
 										...ConfirmPasswordField,
 										Type: "password",
 										OnChange: SetConfirmPassword,
+										AutoComplete: "new-password",
+										Error: Errors.confirmPassword,
 									}}
 									Id="confirmPassword"
 								/>
@@ -177,7 +243,9 @@ const DynamicSignUp = ({
 												FullWidth: true,
 											}}
 											OnAction={() =>
-												OnOAuth?.(ButtonItem.Icon as string)
+												OnOAuth?.(
+													ButtonItem.Icon as string,
+												)
 											}
 										/>
 									))}

@@ -71,12 +71,14 @@ const MetaDescription = T("verify.pending.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load />
-	<VerifyPage
-		Content={VerifyContent}
-		route={Route}
-		token={Token || undefined}
-		reason={Reason || undefined}
-		metaTitle={MetaTitle}
-		metaDescription={MetaDescription}
-	/>
+	<main id="main-content">
+		<VerifyPage
+			Content={VerifyContent}
+			route={Route}
+			token={Token || undefined}
+			reason={Reason || undefined}
+			metaTitle={MetaTitle}
+			metaDescription={MetaDescription}
+		/>
+	</main>
 </Base>

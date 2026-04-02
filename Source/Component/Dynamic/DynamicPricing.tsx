@@ -2,8 +2,8 @@ import * as lucide from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { DynamicButton } from "./DynamicButton.js";
 import { IconTooltip } from "../UI/IconTooltip.js";
+import { DynamicButton } from "./DynamicButton.js";
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
@@ -97,7 +97,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
+							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
 								{Subtitle}
 							</p>
 						)}
@@ -129,6 +129,16 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							className={`StaccatoToggle relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
 								IsYearly ? "bg-primary" : "bg-input"
 							}`}
+							tabIndex={0}
+							onKeyDown={(Event) => {
+								if (
+									Event.key === " " ||
+									Event.key === "Enter"
+								) {
+									Event.preventDefault();
+									SetIsYearly(!IsYearly);
+								}
+							}}
 							onClick={() => SetIsYearly(!IsYearly)}>
 							<span
 								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${
@@ -178,7 +188,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									{Tier.Name}
 								</h3>
 								{Tier.Description && (
-									<p className="StaccatoBreath mb-4 text-sm text-muted-foreground whitespace-pre-line">
+									<p className="StaccatoBreath mb-4 whitespace-pre-line text-sm text-muted-foreground">
 										{Tier.Description}
 									</p>
 								)}

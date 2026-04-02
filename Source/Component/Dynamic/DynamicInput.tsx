@@ -19,6 +19,7 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 		HelperText,
 		ClassName,
 		OnChange,
+		AutoComplete,
 		...props
 	} = Content;
 
@@ -46,6 +47,7 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 				aria-invalid={!!Error}
 				aria-describedby={DescribedBy}
 				className={Error ? "border-destructive" : ClassName}
+				{...(AutoComplete ? { autoComplete: AutoComplete } : {})}
 				onChange={(Event) => {
 					if (OnChange) {
 						OnChange(Event.target.value);

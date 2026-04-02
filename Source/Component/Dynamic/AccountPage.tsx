@@ -43,12 +43,7 @@ const AccountPage = ({
 	OnResetPassword,
 	OnNavigate,
 }: Property) => {
-	const {
-		SignIn,
-		SignUp,
-		ForgotPassword,
-		ResetPassword,
-	} = Content;
+	const { SignIn, SignUp, ForgotPassword, ResetPassword } = Content;
 
 	const Navigate = OnNavigate || NavigateToPath;
 

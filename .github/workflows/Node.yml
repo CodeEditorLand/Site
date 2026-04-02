@@ -85,6 +85,14 @@ jobs:
             - run: pnpm install
               working-directory: .
 
+            - name: Type check
+              run: pnpm astro check
+              working-directory: .
+
+            - name: Lint check
+              run: pnpm biome check
+              working-directory: .
+
             - run: pnpm run prepublishOnly
               working-directory: .
 

@@ -17,7 +17,8 @@
 		"errorToast": "Failed to send reset email",
 		"emailRequired": "Email is required",
 		"resendSuccess": "Reset email sent again",
-		"resendError": "Failed to resend email"
+		"resendError": "Failed to resend email",
+		"emailSent": "Reset email sent to your inbox"
 	},
 	"resetPassword": {
 		"checkingMessage": "Validating your reset token, please wait...",
@@ -65,7 +66,9 @@
 		"or": "Or",
 		"noAccount": "Don't have an account?",
 		"successToast": "Signed in successfully",
-		"errorToast": "Invalid credentials"
+		"errorToast": "Invalid credentials",
+		"showPassword": "Show password",
+		"hidePassword": "Hide password"
 	},
 	"signUp": {
 		"confirmPasswordLabel": "Confirm Password",
@@ -101,7 +104,12 @@
 		"and": "and",
 		"successToast": "Account created successfully",
 		"errorToast": "Failed to create account",
-		"confirmPasswordMismatch": "Passwords do not match"
+		"confirmPasswordMismatch": "Passwords do not match",
+		"passwordStrength": {
+			"weak": "Weak password",
+			"medium": "Medium password",
+			"strong": "Strong password"
+		}
 	},
 	"common": {
 		"and": "and"
@@ -231,5 +239,13 @@
 	"dashboard": "Go to Dashboard",
 	"logout": "Logout",
 	"emailNotVerified": "Email not verified.\nCheck your inbox.",
-	"redirecting": "Redirecting to sign in..."
+	"redirecting": "Redirecting to sign in...",
+	"dashboardPage": {
+		"title": "Dashboard",
+		"welcome": "Welcome back",
+		"downloadsHeading": "Downloads",
+		"signOut": "Sign Out",
+		"loading": "Loading account\u2026",
+		"error": "Failed to load account."
+	}
 }

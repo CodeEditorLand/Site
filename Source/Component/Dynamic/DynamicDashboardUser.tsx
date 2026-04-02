@@ -4,6 +4,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
+import { Button } from "../UI/Button";
+import { Skeleton } from "../UI/Skeleton";
 
 /**
  * Auth0-aware dashboard user panel.
@@ -37,6 +39,7 @@ const DashboardUserInner = () => {
 		isLoading: IsLoading,
 		isAuthenticated: IsAuthenticated,
 		user: User,
+		error: AuthError,
 		loginWithRedirect: Login,
 	} = useAuth0();
 
@@ -64,17 +67,33 @@ const DashboardUserInner = () => {
 
 	if (IsLoading) {
 		return (
-			<div className="space-y-3 text-sm">
-				<div className="flex justify-between">
-					<span className="text-muted-foreground">
-						{T("dashboard.account.emailLabel", {
-							defaultValue: "Email",
-						})}
-					</span>
-					<span className="animate-pulse text-muted-foreground">
-						{"\u2026"}
-					</span>
-				</div>
+			<div
+				className="space-y-3"
+				aria-label={T("dashboard.loading", {
+					defaultValue: "Loading account…",
+				})}>
+				<Skeleton className="mx-auto h-12 w-12" />
+				<Skeleton className="h-4 w-full" />
+				<Skeleton className="h-4 w-4/5" />
+				<Skeleton className="h-4 w-3/5" />
+			</div>
+		);
+	}
+
+	if (AuthError) {
+		return (
+			<div className="space-y-3 text-sm" role="alert" aria-live="polite">
+				<p className="text-sm text-destructive">
+					{T("dashboard.error", {
+						defaultValue: "Failed to load account.",
+					})}
+				</p>
+				<Button
+					variant="outline"
+					size="sm"
+					onClick={() => window.location.reload()}>
+					{T("tryAgain", { defaultValue: "Try again" })}
+				</Button>
 			</div>
 		);
 	}

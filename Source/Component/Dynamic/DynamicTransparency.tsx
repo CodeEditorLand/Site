@@ -89,7 +89,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-3xl text-lg text-muted-foreground whitespace-pre-line">
+							<p className="mx-auto max-w-3xl whitespace-pre-line text-lg text-muted-foreground">
 								{Subtitle}
 							</p>
 						)}
@@ -143,7 +143,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											)}
 										</div>
 									</div>
-									<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
+									<p className="StaccatoBreath whitespace-pre-line text-muted-foreground">
 										{Item.Description}
 									</p>
 									{Item.Detail && (
@@ -256,7 +256,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											</div>
 										)}
 									</div>
-									<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
+									<p className="StaccatoBreath whitespace-pre-line text-muted-foreground">
 										{Item.Description}
 									</p>
 									<code className="block rounded-none border border-[var(--Border)] bg-secondary px-3 py-2 text-xs">
@@ -290,7 +290,10 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							className="inline-flex items-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
 							Verify in source code
 							<span className="InlineSeparator">
-								<lucide.Code className="h-4 w-4" aria-hidden="true" />
+								<lucide.Code
+									className="h-4 w-4"
+									aria-hidden="true"
+								/>
 							</span>
 						</a>
 					</div>

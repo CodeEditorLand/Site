@@ -150,7 +150,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 	return (
 		<section
 			id="features"
-			aria-label="Features"
+			aria-labelledby="FeaturesHeading"
 			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
 				ClassName || ""
 			}`}>
@@ -158,12 +158,14 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
 						{Title && (
-							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+							<h2
+								id="FeaturesHeading"
+								className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
 								{Title}
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
+							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
 								{Subtitle}
 							</p>
 						)}
@@ -200,7 +202,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 										/>
 									</div>
 								</div>
-								<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
+								<p className="StaccatoBreath whitespace-pre-line text-muted-foreground">
 									{Feature.Description}
 									{Feature.Icons &&
 										Feature.Icons.length > 0 && (
