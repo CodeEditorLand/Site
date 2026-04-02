@@ -60,6 +60,38 @@ const FeatureIconLabelMap: Record<string, string> = {
 };
 
 /**
+ * Per-icon semantic color — each icon has its OWN color based on what it
+ * represents in the technology stack, independent of which feature card
+ * it appears in. This ensures visual delineation across the color matrix.
+ *
+ * Groups:
+ *   Rust/perf    → ExtensionRust (red)
+ *   VS Code/ext  → SpineIPC (blue)
+ *   Effect-TS    → ExtensionEffectTypeScript (cyan)
+ *   Platform/OS  → OSMacOS (gray)
+ *   Build tools  → ToolBiome (emerald via SpinegRPC)
+ *   Open source  → SpinegRPC (green)
+ *   Security     → SpineWASM (purple)
+ *   Storage      → SpineTCP (orange)
+ */
+const IconSemanticColorMap: Record<string, string> = {
+	Zap: "var(--ExtensionRust)",
+	Cpu: "var(--ExtensionEffectTypeScript)",
+	Server: "var(--PlatformDesktop)",
+	Box: "var(--SpineIPC)",
+	Puzzle: "var(--SpineWASM)",
+	Code: "var(--SpineIPC)",
+	Layers: "var(--ExtensionEffectTypeScript)",
+	Shield: "var(--SpineWASMFore)",
+	Globe: "var(--OSMacOS)",
+	Package: "var(--ExtensionTauri)",
+	Database: "var(--SpineTCP)",
+	Wrench: "var(--SpinegRPC)",
+	Heart: "var(--ExtensionRust)",
+	Sparkles: "var(--ExtensionTauri)",
+};
+
+/**
  * Dynamic Features with simplex noise integration.
  * Cards get StaccatoCard + Attention scatter for organic layout.
  * Icons render immediately via direct imports (no dynamic import delay).
@@ -131,7 +163,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 							</h2>
 						)}
 						{subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
 								{subtitle}
 							</p>
 						)}
@@ -168,7 +200,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 										/>
 									</div>
 								</div>
-								<p className="StaccatoBreath text-muted-foreground">
+								<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
 									{Feature.description}
 									{Feature.icons &&
 										Feature.icons.length > 0 && (
@@ -188,6 +220,10 @@ const DynamicFeatures = ({ content, className }: Property) => {
 															FeatureIconLabelMap[
 																IconName
 															] ?? IconName;
+														const StackColor =
+															IconSemanticColorMap[
+																IconName
+															] ?? FeatureColor;
 														if (!StackIcon)
 															return null;
 														return (
@@ -215,7 +251,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 																		StackIcon
 																	}
 																	Color={
-																		FeatureColor
+																		StackColor
 																	}
 																	SizeClass="h-4 w-4"
 																/>

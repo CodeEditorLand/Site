@@ -49,7 +49,7 @@ const DynamicCard = ({ sections, className, onClick }: Property) => {
 						</h3>
 					)}
 					{BodySection.description && (
-						<p className="StaccatoBreath mb-4 text-muted-foreground">
+						<p className="StaccatoBreath mb-4 text-muted-foreground whitespace-pre-line">
 							{BodySection.description}
 						</p>
 					)}

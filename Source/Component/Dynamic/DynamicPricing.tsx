@@ -97,7 +97,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 							</h2>
 						)}
 						{subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
 								{subtitle}
 							</p>
 						)}
@@ -178,7 +178,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 									{Tier.name}
 								</h3>
 								{Tier.description && (
-									<p className="StaccatoBreath mb-4 text-sm text-muted-foreground">
+									<p className="StaccatoBreath mb-4 text-sm text-muted-foreground whitespace-pre-line">
 										{Tier.description}
 									</p>
 								)}

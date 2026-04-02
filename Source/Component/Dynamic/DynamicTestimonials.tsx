@@ -94,7 +94,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 							</h2>
 						)}
 						{subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
 								{subtitle}
 							</p>
 						)}
@@ -150,7 +150,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 									</cite>
 									{(Testimonial.role ||
 										Testimonial.company) && (
-										<p className="StaccatoBreath text-sm text-muted-foreground">
+										<p className="StaccatoBreath text-sm text-muted-foreground whitespace-pre-line">
 											{Testimonial.role}
 											{Testimonial.role &&
 												Testimonial.company &&

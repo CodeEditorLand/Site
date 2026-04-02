@@ -277,7 +277,7 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 							</h2>
 						)}
 						{subtitle && (
-							<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
 								{subtitle}
 							</p>
 						)}

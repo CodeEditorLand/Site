@@ -78,7 +78,7 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 						{title}
 					</h2>
 					{description && (
-						<p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+						<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
 							{description}
 						</p>
 					)}

@@ -89,7 +89,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-3xl text-lg text-muted-foreground">
+							<p className="mx-auto max-w-3xl text-lg text-muted-foreground whitespace-pre-line">
 								{Subtitle}
 							</p>
 						)}
@@ -143,7 +143,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 											)}
 										</div>
 									</div>
-									<p className="StaccatoBreath text-muted-foreground">
+									<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
 										{Item.Description}
 									</p>
 									{Item.Detail && (
@@ -256,7 +256,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 											</div>
 										)}
 									</div>
-									<p className="StaccatoBreath text-muted-foreground">
+									<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
 										{Item.Description}
 									</p>
 									<code className="block rounded-none border border-[var(--Border)] bg-secondary px-3 py-2 text-xs">

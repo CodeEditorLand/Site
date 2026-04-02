@@ -137,7 +137,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 				</div>
 
 				{/* Subtitle:breathing opacity */}
-				<p className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
+				<p className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
 					{Subtitle}
 				</p>
 
