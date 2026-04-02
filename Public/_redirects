@@ -1,0 +1,30 @@
+# Cloudflare Pages — trailing slash loop prevention
+#
+# CF Pages' static asset server issues a 301 to add a trailing slash when
+# a directory exists (e.g. /Account/SignIn → /Account/SignIn/). The CF
+# Pages Function then strips it back (301 to /Account/SignIn), creating
+# an infinite redirect loop.
+#
+# 200 rewrites intercept BEFORE CF's trailing slash logic fires and serve
+# the directory index directly — no redirect issued, URL stays clean.
+#
+# Note: CF Pages _redirects matching is case-insensitive, but the
+# [[Path]].ts edge function runs first and redirects lowercase variants
+# to the PascalCase canonical before _redirects is consulted.
+
+/Account/ForgotPassword /Account/ForgotPassword/ 200
+/Account/ResetPassword /Account/ResetPassword/ 200
+/Account/SignIn /Account/SignIn/ 200
+/Account/SignUp /Account/SignUp/ 200
+/Blog /Blog/ 200
+/Contact/Sale /Contact/Sale/ 200
+/Contributing /Contributing/ 200
+/Dashboard /Dashboard/ 200
+/Doc /Doc/ 200
+/Download /Download/ 200
+/Legal/Privacy /Legal/Privacy/ 200
+/Legal/Term /Legal/Term/ 200
+/License /License/ 200
+/OAuth/Success /OAuth/Success/ 200
+/Portal /Portal/ 200
+/Verify /Verify/ 200

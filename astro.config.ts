@@ -12,15 +12,6 @@ export default (await import("astro/config")).defineConfig({
 
 	outDir: "./Target",
 
-	trailingSlash: "never",
-
-	redirects: {
-		"/downloads": "/Download",
-		"/contributing": "/Contributing",
-		"/blog": "/Blog",
-		"/doc": "/Doc",
-	},
-
 	site: (await import("./Source/Function/Configuration/Site.js")).default,
 
 	compressHTML: (
