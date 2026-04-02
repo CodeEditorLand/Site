@@ -12,10 +12,10 @@
 	color: var(--Foreground);
 }
 
-/* Sub-header:breadcrumb-style app bar */
-.HeaderSub {
+/* Nav dropdown (desktop hamburger panel) */
+.NavDropdown {
 	background: #ffffff;
-	border: 1px solid var(--Border);
+	border-bottom: 1px solid var(--Border);
 }
 
 .HeaderSubLink {

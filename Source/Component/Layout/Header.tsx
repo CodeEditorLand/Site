@@ -54,6 +54,7 @@ interface HeaderProps {
 
 const Header = ({ Content, AuthSlot }: HeaderProps) => {
 	const { t: T } = useTranslation("header");
+	const [NavMenuOpen, SetNavMenuOpen] = useState(false);
 	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
 	const HeaderData: HeaderContent = Content || {
@@ -153,125 +154,157 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 		);
 	};
 
+	const NavLinks = ({ OnClick }: { OnClick?: () => void }) => (
+		<>
+			{HeaderData.Navigation?.map((Link, Index) => {
+				const Icon = Link.Icon ? IconRegistry[Link.Icon] : null;
+				return (
+					<a
+						key={Index}
+						href={Link.Href}
+						className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						onClick={OnClick}
+						{...(Link.Href.startsWith("http")
+							? { target: "_blank", rel: "noopener noreferrer" }
+							: {})}>
+						{Link.Label}
+						{Icon && (
+							<>
+								{"\u2001"}
+								<IconTooltip
+									Label={Link.Label}
+									Icon={Icon}
+									SizeClass="h-4 w-4"
+									ClassName="StaccatoIcon"
+								/>
+							</>
+						)}
+					</a>
+				);
+			})}
+		</>
+	);
+
+	const ActionButtons = ({
+		OnClick,
+		FullWidth,
+	}: {
+		OnClick?: () => void;
+		FullWidth?: boolean;
+	}) => (
+		<>
+			{AuthSlot ? (
+				<>
+					{AuthSlot}
+					{HeaderData.Actions?.filter(
+						(Action) => Action.Href !== "/Account/SignIn",
+					).map((Action, Index) => (
+						<Button
+							key={Index}
+							variant={
+								(Action.Variant as
+									| "ghost"
+									| "default"
+									| "outline") || "default"
+							}
+							size={
+								(Action.Size as "default" | "sm" | "lg") ||
+								"default"
+							}
+							className={
+								FullWidth
+									? "StaccatoButton w-full justify-start"
+									: "StaccatoButton"
+							}
+							asChild>
+							<a href={Action.Href} onClick={OnClick}>
+								{Action.Text}
+								{RenderActionIcon(Action.Icon, Action.Text)}
+							</a>
+						</Button>
+					))}
+				</>
+			) : (
+				HeaderData.Actions?.map((Action, Index) => (
+					<Button
+						key={Index}
+						variant={
+							(Action.Variant as
+								| "ghost"
+								| "default"
+								| "outline") || "default"
+						}
+						size={
+							(Action.Size as "default" | "sm" | "lg") ||
+							"default"
+						}
+						className={
+							FullWidth
+								? "StaccatoButton w-full justify-start"
+								: "StaccatoButton"
+						}
+						asChild>
+						<a href={Action.Href} onClick={OnClick}>
+							{Action.Text}
+							{RenderActionIcon(Action.Icon, Action.Text)}
+						</a>
+					</Button>
+				))
+			)}
+		</>
+	);
+
 	return (
 		<header className="Header sticky top-0 z-50 w-full" role="banner">
-			{/* Primary bar:logo + actions */}
+			{/* Primary bar */}
 			<div className="container mx-auto flex h-14 items-center justify-between px-4">
-				<a
-					href="/"
-					className="StaccatoLogo HeaderLogo flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-					aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}>
-					<div
-						className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
-						aria-hidden="true">
-						<img
-							src="/Asset/Logo/Glyph/Land.svg"
-							alt="Code Editor Land"
-							title="Code Editor Land"
-							width="32"
-							height="32"
-							className="absolute inset-0 h-full w-full"
-						/>
-					</div>
-					<span className="font-semibold">
-						{HeaderData.Logo?.Text || "Land"}
-					</span>
-				</a>
+				{/* Left: logo + nav hamburger (md+) */}
+				<div className="flex items-center gap-8">
+					<a
+						href="/"
+						className="StaccatoLogo HeaderLogo flex items-center space-x-4 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}>
+						<div
+							className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
+							aria-hidden="true">
+							<img
+								src="/Asset/Logo/Glyph/Land.svg"
+								alt="Code Editor Land"
+								title="Code Editor Land"
+								width="32"
+								height="32"
+								className="absolute inset-0 h-full w-full"
+							/>
+						</div>
+						<span className="font-semibold">
+							{HeaderData.Logo?.Text || "Land"}
+						</span>
+					</a>
 
-				{/* Sub-header:breadcrumb-style app bar with icons */}
-				<div
-					className="HeaderSub hidden md:block"
-					style={{ marginTop: "2px" }}>
-					<nav
-						className="flex items-center"
-						aria-label="Main navigation">
-						{HeaderData.Navigation?.map((Link, Index) => (
-							<span key={Index} className="flex items-center">
-								{Index > 0 && (
-									<span
-										className="StaccatoBreath text-muted-foreground/40 mx-0.5 select-none text-[10px]"
-										aria-hidden="true">
-										/
-									</span>
-								)}
-								<a
-									href={Link.Href}
-									className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-									{...(Link.Href.startsWith("http")
-										? {
-												target: "_blank",
-												rel: "noopener noreferrer",
-											}
-										: {})}>
-									{Link.Label}
-									{RenderIcon(Link.Icon, Link.Label)}
-								</a>
-							</span>
-						))}
-					</nav>
+					{/* Nav hamburger — desktop/tablet only */}
+					<Button
+						variant="ghost"
+						size="icon"
+						className="hidden md:flex"
+						onClick={() => SetNavMenuOpen(!NavMenuOpen)}
+						aria-label="Toggle navigation"
+						aria-expanded={NavMenuOpen}>
+						{NavMenuOpen ? (
+							<lucide.X className="h-5 w-5" />
+						) : (
+							<lucide.Menu className="h-5 w-5" />
+						)}
+					</Button>
 				</div>
 
-				<div className="flex items-center space-x-3">
-					<div className="hidden items-center space-x-2 md:flex">
+				{/* Right: actions (md+) + mobile hamburger */}
+				<div className="flex items-center gap-8">
+					<div className="hidden items-center gap-8 md:flex">
 						<LocaleSwitcher />
-						{AuthSlot ? (
-							<>
-								{AuthSlot}
-								{HeaderData.Actions
-									?.filter(
-										(Action) =>
-											Action.Href !== "/Account/SignIn",
-									)
-									.map((Action, Index) => (
-										<Button
-											key={Index}
-											variant={
-												(Action.Variant as
-													| "ghost"
-													| "default"
-													| "outline") || "default"
-											}
-											size={
-												(Action.Size as
-													| "default"
-													| "sm"
-													| "lg") || "default"
-											}
-											className="StaccatoButton"
-											asChild>
-											<a href={Action.Href}>
-												{Action.Text}
-												{RenderActionIcon(Action.Icon, Action.Text)}
-											</a>
-										</Button>
-									))}
-							</>
-						) : (
-							HeaderData.Actions?.map((Action, Index) => (
-								<Button
-									key={Index}
-									variant={
-										(Action.Variant as
-											| "ghost"
-											| "default"
-											| "outline") || "default"
-									}
-									size={
-										(Action.Size as
-											| "default"
-											| "sm"
-											| "lg") || "default"
-									}
-									className="StaccatoButton"
-									asChild>
-									<a href={Action.Href}>
-										{Action.Text}
-										{RenderActionIcon(Action.Icon, Action.Text)}
-									</a>
-								</Button>
-							))
-						)}
+						<ActionButtons />
 					</div>
+
+					{/* Mobile hamburger — merges nav + actions */}
 					<Button
 						variant="ghost"
 						size="icon"
@@ -288,68 +321,39 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				</div>
 			</div>
 
-			{/* Mobile menu:full nav with icons */}
+			{/* Desktop nav dropdown */}
+			{NavMenuOpen && (
+				<div
+					className="NavDropdown hidden border-t border-[var(--Border)] bg-white md:block"
+					role="dialog"
+					aria-label="Navigation menu">
+					<nav
+						className="container mx-auto flex flex-col gap-1 px-4 py-4"
+						aria-label="Site navigation">
+						<NavLinks OnClick={() => SetNavMenuOpen(false)} />
+					</nav>
+				</div>
+			)}
+
+			{/* Mobile full menu: nav + locale + actions */}
 			{MobileMenuOpen && (
 				<div
 					className="border-t border-[var(--Border)] bg-white md:hidden"
 					role="dialog"
 					aria-label="Mobile navigation menu">
 					<nav
-						className="container mx-auto flex flex-col space-y-0.5 px-4 py-3"
+						className="container mx-auto flex flex-col gap-1 px-4 py-4"
 						aria-label="Mobile navigation">
-						{HeaderData.Navigation?.map((Link, Index) => {
-							const Icon = Link.Icon
-								? IconRegistry[Link.Icon]
-								: null;
-							return (
-								<a
-									key={Index}
-									href={Link.Href}
-									className="flex items-center rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-									onClick={() => SetMobileMenuOpen(false)}
-									{...(Link.Href.startsWith("http")
-										? {
-												target: "_blank",
-												rel: "noopener noreferrer",
-											}
-										: {})}>
-									{Link.Label}
-									{Icon && (
-										<>
-											{"\u2001"}
-											<IconTooltip
-												Label={Link.Label}
-												Icon={Icon}
-												SizeClass="h-4 w-4"
-												ClassName="text-muted-foreground/70"
-											/>
-										</>
-									)}
-								</a>
-							);
-						})}
+						<NavLinks OnClick={() => SetMobileMenuOpen(false)} />
 						<div className="my-1.5 border-t border-border" />
-						<div className="px-3 py-1.5">
+						<div className="px-4 py-3">
 							<LocaleSwitcher />
 						</div>
 						<div className="my-1.5 border-t border-border" />
-						{HeaderData.Actions?.map((Action, Index) => (
-							<Button
-								key={Index}
-								variant={
-									(Action.Variant as
-										| "ghost"
-										| "default"
-										| "outline") || "default"
-								}
-								className="w-full justify-start"
-								asChild>
-								<a href={Action.Href}>
-									{Action.Text}
-									{RenderActionIcon(Action.Icon, Action.Text)}
-								</a>
-							</Button>
-						))}
+						<ActionButtons
+							OnClick={() => SetMobileMenuOpen(false)}
+							FullWidth
+						/>
 					</nav>
 				</div>
 			)}

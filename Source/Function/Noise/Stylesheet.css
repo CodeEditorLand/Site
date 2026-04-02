@@ -150,13 +150,14 @@
 			calc(var(--StaccatoPhase) * 2px)
 		)
 		scale(calc(1 + var(--StaccatoRhythm) * 0.005));
+	transition: transform 0.2s ease;
+}
+.StaccatoHeroButton:hover {
+	/* Noise cancels on hover — settle to clean slight scale */
+	transform: scale(1.005);
 }
 .StaccatoHeroButton:active {
-	transform: translate(
-			calc(var(--StaccatoRaw) * 1px),
-			calc(var(--StaccatoPhase) * 1px + 1px)
-		)
-		scale(0.995);
+	transform: translate(0, 1px) scale(0.995);
 }
 
 /* Card with full noise treatment */
@@ -177,14 +178,11 @@
 		calc(var(--StaccatoRaw) * 1px),
 		calc(var(--StaccatoPhase) * 0.5px)
 	);
-	transition: transform 0.15s ease;
+	transition: transform 0.2s ease;
 }
 .StaccatoButton:hover {
-	transform: translate(
-			calc(var(--StaccatoRaw) * 2px),
-			calc(var(--StaccatoPhase) * 1px - 1px)
-		)
-		scale(1.01);
+	/* Noise cancels on hover — element normalizes to clean elevated state */
+	transform: translateY(-2px) scale(1.01);
 }
 .StaccatoButton:active {
 	transform: translate(0, 1px) scale(0.98);
@@ -196,12 +194,17 @@
 
 /* Badge breathing */
 .StaccatoBadge {
-	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.03));
-	opacity: calc(0.85 + var(--StaccatoRaw) * 0.15);
+	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.01));
+	opacity: calc(0.92 + var(--StaccatoRaw) * 0.08);
+	transition: transform 0.2s ease;
+}
+.StaccatoBadge:hover {
+	transform: scale(1);
+	opacity: 1;
 }
 .StaccatoBadge .StaccatoDot {
-	opacity: calc(0.3 + var(--StaccatoRhythm) * 0.7);
-	transform: scale(calc(0.8 + var(--StaccatoRhythm) * 0.4));
+	opacity: calc(0.5 + var(--StaccatoRhythm) * 0.5);
+	transform: scale(calc(0.9 + var(--StaccatoRhythm) * 0.2));
 }
 
 /* Input field focus noise */
@@ -212,9 +215,11 @@
 /* Nav link organic spacing */
 .StaccatoNavLink {
 	transform: translateX(calc(var(--StaccatoRaw) * 1.5px));
+	transition: transform 0.2s ease;
 }
 .StaccatoNavLink:hover {
-	transform: translateX(calc(var(--StaccatoRaw) * 1.5px)) translateY(-1px);
+	/* Noise cancels — land at clean vertical lift */
+	transform: translateY(-1px);
 }
 
 /* Separator/divider breathing */
@@ -286,9 +291,14 @@
 .StaccatoSocial {
 	transform: translateY(calc(var(--StaccatoPhase) * 1px));
 	opacity: calc(0.7 + var(--StaccatoRaw) * 0.3);
+	transition:
+		transform 0.2s ease,
+		opacity 0.2s ease;
 }
 .StaccatoSocial:hover {
-	transform: translateY(calc(var(--StaccatoPhase) * 1px - 2px)) scale(1.1);
+	/* Noise cancels — normalize to clean lift, full opacity */
+	transform: translateY(-2px) scale(1.05);
+	opacity: 1;
 }
 
 /* ─── feTurbulence Displacement ────────────────────────── */
