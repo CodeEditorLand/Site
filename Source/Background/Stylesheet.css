@@ -2,6 +2,9 @@
 	@apply fixed inset-0 h-screen w-screen overflow-hidden opacity-0;
 
 	z-index: -1;
+	/* contain: strict prevents fixed children from contributing to
+	   document scroll width, eliminating the horizontal overflow bar */
+	contain: strict;
 
 	&.Load {
 		@apply opacity-100;

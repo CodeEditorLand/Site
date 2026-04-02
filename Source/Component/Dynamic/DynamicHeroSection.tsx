@@ -40,28 +40,44 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 		let FrameIdentifier: number;
 		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
-		const STEP = 6;
-
-		const Quantize = (Value: number, Step: number): number =>
-			Math.floor(Value * Step) / Step;
+		// Per-card lerp state — tracks current rendered position and hover
+		interface CardState {
+			CurrentX: number;
+			CurrentY: number;
+			IsHovered: boolean;
+		}
+		const CardStates = new Map<HTMLElement, CardState>();
 
 		const LoadNoise = async () => {
 			const { createNoise2D } = await import("simplex-noise");
+			// Each page load gets a new noise function → unique orbital drift
 			NoiseFunction = createNoise2D();
 
-			// Seed each floating card with per-element noise offsets
 			const StaccatoModule =
 				await import("../../Function/Noise/Staccato.js");
 			const Engine = await StaccatoModule.default;
+
 			CardElement.forEach((Card, Index) => {
 				Engine.SeedElement(Card, Index);
+				const State: CardState = {
+					CurrentX: 0,
+					CurrentY: 0,
+					IsHovered: false,
+				};
+				CardStates.set(Card, State);
+				// Hover: target lerps to (0,0) — card settles at orbital anchor
+				Card.addEventListener("mouseenter", () => {
+					State.IsHovered = true;
+				});
+				Card.addEventListener("mouseleave", () => {
+					State.IsHovered = false;
+				});
 			});
 
-			// Apply attention scatter to connecting lines container
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
 			const Attention = await AttentionModule.default;
-			Attention.ApplyToSelector(".FloatingCard", 8, 6);
+			Attention.ApplyToSelector(".FloatingCard", 6, 4);
 		};
 
 		const AnimateCards = (Time: number) => {
@@ -70,18 +86,31 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				return;
 			}
 
+			// Very slow advance — 0.00007 per ms = ~0.07 per second
+			// No quantization: pure smooth simplex output
+			const TimeFactor = Time * 0.00007;
+
 			CardElement.forEach((Card, Index) => {
-				const Element = Card as HTMLElement;
-				const Seed = Index * 0.7;
-				const TimeFactor = Time * 0.0003;
+				const State = CardStates.get(Card);
+				if (!State) return;
 
-				const RawX = NoiseFunction!(TimeFactor + Seed, 0);
-				const RawY = NoiseFunction!(0, TimeFactor + Seed);
+				// Each card uses a different noise coordinate offset (Seed)
+				const Seed = Index * 1.3;
 
-				const X = Quantize(RawX, STEP) * 18;
-				const Y = Quantize(RawY, STEP) * 12;
+				// Target: noise → small amplitude (±5px / ±3.5px)
+				// On hover target is (0,0) → smooth lerp back to orbital rest
+				const TargetX = State.IsHovered
+					? 0
+					: NoiseFunction!(TimeFactor + Seed, Seed * 0.4) * 5;
+				const TargetY = State.IsHovered
+					? 0
+					: NoiseFunction!(Seed * 0.4, TimeFactor + Seed) * 3.5;
 
-				Element.style.transform = `translate(-50%, -50%) translate3d(${X}px, ${Y}px, 0)`;
+				// Lerp factor 0.04 → silky smooth, no visible stepping
+				State.CurrentX += (TargetX - State.CurrentX) * 0.04;
+				State.CurrentY += (TargetY - State.CurrentY) * 0.04;
+
+				Card.style.transform = `translate(-50%, -50%) translate3d(${State.CurrentX.toFixed(2)}px, ${State.CurrentY.toFixed(2)}px, 0)`;
 			});
 
 			FrameIdentifier = requestAnimationFrame(AnimateCards);
@@ -89,7 +118,18 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 		LoadNoise();
 		FrameIdentifier = requestAnimationFrame(AnimateCards);
-		return () => cancelAnimationFrame(FrameIdentifier);
+		return () => {
+			cancelAnimationFrame(FrameIdentifier);
+			// Remove event listeners on cleanup
+			CardElement.forEach((Card) => {
+				const Fresh: CardState = {
+					CurrentX: 0,
+					CurrentY: 0,
+					IsHovered: false,
+				};
+				CardStates.set(Card, Fresh);
+			});
+		};
 	}, [HeroConfiguration.RespectReducedMotion]);
 
 	const HandleHeroClick = () => {

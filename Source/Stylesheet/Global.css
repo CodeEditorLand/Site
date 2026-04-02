@@ -3,6 +3,8 @@
 
 html {
 	@apply m-0 h-full w-full bg-white p-0 text-[#1a1a1a];
+	/* clip (not hidden) so fixed/sticky children don't add horizontal scroll */
+	overflow-x: clip;
 	font-family:
 		"Albert Sans",
 		-apple-system,
@@ -63,6 +65,35 @@ main > astro-island:has(> :first-child) {
 img {
 	@apply inline-block select-none align-top outline-2 outline-offset-2 outline-transparent;
 }
+
+/* ─── Custom scrollbar — thin, transparent, cross-browser ─── */
+
+/* WebKit / Blink */
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: rgba(26, 26, 26, 0.18);
+	border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(26, 26, 26, 0.32);
+}
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+/* Firefox */
+html {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(26, 26, 26, 0.18) transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────── */
 
 /* Accessibility: links must be distinguishable by more than color alone.
  * Underline content links; exclude nav, logo, button, icon, and social links. */

@@ -258,11 +258,11 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 		<header className="Header sticky top-0 z-50 w-full" role="banner">
 			{/* Primary bar */}
 			<div className="container mx-auto flex h-14 items-center justify-between px-4">
-				{/* Left: logo + nav hamburger (md+) */}
-				<div className="flex items-center gap-8">
+				{/* Left: logo always + inline nav on lg+, hamburger on md only */}
+				<div className="flex items-center gap-3">
 					<a
 						href="/"
-						className="StaccatoLogo HeaderLogo flex items-center space-x-4 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						className="StaccatoLogo HeaderLogo flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}>
 						<div
 							className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
@@ -281,11 +281,47 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						</span>
 					</a>
 
-					{/* Nav hamburger — desktop/tablet only */}
+					{/* Inline nav — desktop only (lg+) */}
+					<nav
+						className="ml-2 hidden items-center lg:flex"
+						aria-label="Main navigation">
+						{HeaderData.Navigation?.map((Link, Index) => {
+							const Icon = Link.Icon
+								? IconRegistry[Link.Icon]
+								: null;
+							return (
+								<a
+									key={Index}
+									href={Link.Href}
+									className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									{...(Link.Href.startsWith("http")
+										? {
+												target: "_blank",
+												rel: "noopener noreferrer",
+											}
+										: {})}>
+									{Link.Label}
+									{Icon && (
+										<>
+											{"\u2001"}
+											<IconTooltip
+												Label={Link.Label}
+												Icon={Icon}
+												SizeClass="h-3.5 w-3.5"
+												ClassName="StaccatoIcon"
+											/>
+										</>
+									)}
+								</a>
+							);
+						})}
+					</nav>
+
+					{/* Nav hamburger — tablet only (md, hidden on lg+) */}
 					<Button
 						variant="ghost"
 						size="icon"
-						className="hidden md:flex"
+						className="hidden md:flex lg:hidden"
 						onClick={() => SetNavMenuOpen(!NavMenuOpen)}
 						aria-label="Toggle navigation"
 						aria-expanded={NavMenuOpen}>
@@ -298,8 +334,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				</div>
 
 				{/* Right: actions (md+) + mobile hamburger */}
-				<div className="flex items-center gap-8">
-					<div className="hidden items-center gap-8 md:flex">
+				<div className="flex items-center gap-3">
+					<div className="hidden items-center gap-3 md:flex">
 						<LocaleSwitcher />
 						<ActionButtons />
 					</div>
@@ -321,10 +357,10 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				</div>
 			</div>
 
-			{/* Desktop nav dropdown */}
+			{/* Tablet nav dropdown (md only, hidden on lg+) */}
 			{NavMenuOpen && (
 				<div
-					className="NavDropdown hidden border-t border-[var(--Border)] bg-white md:block"
+					className="NavDropdown hidden border-t border-[var(--Border)] bg-white md:block lg:hidden"
 					role="dialog"
 					aria-label="Navigation menu">
 					<nav

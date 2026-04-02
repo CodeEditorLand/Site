@@ -1,1 +1,0 @@
-import"./Vendor/React.D0v28xPa.js";import{E as m}from"./simplex-noise.DCiKmXGz.js";export{m as ErrorBoundary};
