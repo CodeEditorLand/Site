@@ -1,5 +1,5 @@
 export default interface Interface {
-	id: string;
-	label: string;
-	value: string;
+	Id: string;
+	Label: string;
+	Value: string;
 }

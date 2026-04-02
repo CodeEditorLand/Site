@@ -1,6 +1,6 @@
 export default interface Interface {
-	id: string;
-	title: string;
-	icon?: string;
-	colors?: string[];
+	Id: string;
+	Title: string;
+	Icon?: string;
+	Colors?: string[];
 }

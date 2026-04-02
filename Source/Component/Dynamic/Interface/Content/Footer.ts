@@ -1,19 +1,19 @@
 import type FooterColumn from "../Column/Footer.js";
 
 export default interface Interface {
-	brand: {
-		name: string;
-		description?: string;
+	Brand: {
+		Name: string;
+		Description?: string;
 	};
-	social?: {
-		github?: string;
-		twitter?: string;
-		discord?: string;
-		linkedin?: string;
+	Social?: {
+		GitHub?: string;
+		Twitter?: string;
+		Discord?: string;
+		LinkedIn?: string;
 	};
-	columns: FooterColumn[];
-	bottomBar?: {
-		copyright?: string;
-		madeWith?: boolean;
+	Columns: FooterColumn[];
+	BottomBar?: {
+		Copyright?: string;
+		MadeWith?: boolean;
 	};
 }

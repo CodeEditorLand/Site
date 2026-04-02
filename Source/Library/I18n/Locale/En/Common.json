@@ -68,6 +68,42 @@
 			"echo": {
 				"description": "High-Performance Work-Stealing Executor",
 				"subtitle": "Rust task scheduler"
+			},
+			"common": {
+				"description": "Abstract Core Library — Trait Definitions and DTOs",
+				"subtitle": "Rust core library"
+			},
+			"vine": {
+				"description": "gRPC Protocol Definition and Implementation",
+				"subtitle": "Protobuf/Rust IPC"
+			},
+			"rest": {
+				"description": "JS Bundler for VS Code Platform Code",
+				"subtitle": "Rust/OXC bundler"
+			},
+			"output": {
+				"description": "Bundled JS Artifacts from Rest",
+				"subtitle": "JavaScript runtime bundle"
+			},
+			"mist": {
+				"description": "WebSocket Communication Layer",
+				"subtitle": "Rust WebSocket"
+			},
+			"grove": {
+				"description": "Native WASM and Rhai Extension Host",
+				"subtitle": "Rust/WASM extension host"
+			},
+			"worker": {
+				"description": "Web Workers for Frontend",
+				"subtitle": "TypeScript web workers"
+			},
+			"sidecar": {
+				"description": "Pre-Built Node.js Binaries",
+				"subtitle": "Cross-platform Node.js"
+			},
+			"maintain": {
+				"description": "CI/CD and Maintenance Scripts",
+				"subtitle": "Build tooling"
 			}
 		},
 		"repositories": {
@@ -75,6 +111,9 @@
 			"mainMonorepo": "Main monorepo",
 			"tauriBackend": "Tauri backend",
 			"extensionHost": "Extension host",
+			"windServiceLayer": "UI service layer",
+			"skyComponentLayer": "UI component layer",
+			"airDaemon": "Background daemon",
 			"viewAll": "View all repositories"
 		}
 	},

@@ -1,7 +1,7 @@
 export default interface Interface {
-	id: string;
-	icon: string;
-	icons?: string[];
-	title: string;
-	description: string;
+	Id: string;
+	Icon: string;
+	Icons?: string[];
+	Title: string;
+	Description: string;
 }

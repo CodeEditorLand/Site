@@ -1,16 +1,16 @@
 import type SignUpContent from "../Content/SignUp.js";
 
 export default interface Interface {
-	content: SignUpContent;
-	onSubmit?: (
-		email: string,
-		password: string,
-		confirmPassword: string,
-		termsAccepted: boolean,
+	Content: SignUpContent;
+	OnSubmit?: (
+		Email: string,
+		Password: string,
+		ConfirmPassword: string,
+		TermsAccepted: boolean,
 	) => void;
-	onOAuth?: (provider: string) => void;
-	onNavigate?: (path: string) => void;
-	className?: string;
-	isLoading?: boolean;
-	errorMessage?: string;
+	OnOAuth?: (Provider: string) => void;
+	OnNavigate?: (Path: string) => void;
+	ClassName?: string;
+	IsLoading?: boolean;
+	ErrorMessage?: string;
 }

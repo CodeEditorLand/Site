@@ -97,8 +97,8 @@ const IconSemanticColorMap: Record<string, string> = {
  * Icons render immediately via direct imports (no dynamic import delay).
  * All icons are wrapped in IconTooltip — aria-label, title, and hover tooltip.
  */
-const DynamicFeatures = ({ content, className }: Property) => {
-	const { title, subtitle, features, columns = 3, gap = "lg" } = content;
+const DynamicFeatures = ({ Content, ClassName }: Property) => {
+	const { Title, Subtitle, Features, Columns = 3, Gap = "lg" } = Content;
 	const GridReference = useRef<HTMLDivElement>(null);
 
 	const GapClass = {
@@ -142,7 +142,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 		};
 
 		ApplyScatter();
-	}, [features]);
+	}, [Features]);
 
 	const GetIcon = (IconName: string): lucide.LucideIcon | null =>
 		FeatureIconRegistry[IconName] || null;
@@ -152,19 +152,19 @@ const DynamicFeatures = ({ content, className }: Property) => {
 			id="features"
 			aria-label="Features"
 			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
-				className || ""
+				ClassName || ""
 			}`}>
 			<div className="container mx-auto px-4">
-				{(title || subtitle) && (
+				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
-						{title && (
+						{Title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-								{title}
+								{Title}
 							</h2>
 						)}
-						{subtitle && (
+						{Subtitle && (
 							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-								{subtitle}
+								{Subtitle}
 							</p>
 						)}
 					</div>
@@ -173,21 +173,21 @@ const DynamicFeatures = ({ content, className }: Property) => {
 				<div
 					ref={GridReference}
 					className={`StaccatoMorphGap grid ${
-						ColumnClass[columns]
-					} ${GapClass[gap]} mx-auto max-w-6xl`}>
-					{features.map((Feature) => {
-						const Icon = GetIcon(Feature.icon);
+						ColumnClass[Columns]
+					} ${GapClass[Gap]} mx-auto max-w-6xl`}>
+					{Features.map((Feature) => {
+						const Icon = GetIcon(Feature.Icon);
 						const IconLabel =
-							FeatureIconLabelMap[Feature.icon] ?? Feature.title;
+							FeatureIconLabelMap[Feature.Icon] ?? Feature.Title;
 						const FeatureColor =
-							FeatureColorMap[Feature.id] ?? "var(--Primary)";
+							FeatureColorMap[Feature.Id] ?? "var(--Primary)";
 						return (
 							<div
-								key={Feature.id}
+								key={Feature.Id}
 								className="FeatureCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none border border-[var(--Border)] bg-white p-6">
 								<div className="flex items-start justify-between">
 									<h3 className="text-xl font-semibold">
-										{Feature.title}
+										{Feature.Title}
 									</h3>
 									{/* Card header icon — wrapped in IconTooltip so hover + screen reader both work */}
 									<div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary">
@@ -201,16 +201,16 @@ const DynamicFeatures = ({ content, className }: Property) => {
 									</div>
 								</div>
 								<p className="StaccatoBreath text-muted-foreground whitespace-pre-line">
-									{Feature.description}
-									{Feature.icons &&
-										Feature.icons.length > 0 && (
+									{Feature.Description}
+									{Feature.Icons &&
+										Feature.Icons.length > 0 && (
 											<span
 												className="inline-flex items-center align-middle"
 												role="img"
 												aria-label={`${
-													Feature.title
+													Feature.Title
 												} technology stack`}>
-												{Feature.icons.map(
+												{Feature.Icons.map(
 													(IconName, IconIndex) => {
 														const StackIcon =
 															FeatureIconRegistry[

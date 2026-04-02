@@ -33,24 +33,24 @@ const NavigateToPath = (Path: string): void => {
 };
 
 const AccountPage = ({
-	content,
-	route,
-	resetToken,
-	className,
-	onSignIn,
-	onSignUp,
-	onForgotPassword,
-	onResetPassword,
-	onNavigate,
+	Content,
+	Route,
+	ResetToken,
+	ClassName,
+	OnSignIn,
+	OnSignUp,
+	OnForgotPassword,
+	OnResetPassword,
+	OnNavigate,
 }: Property) => {
 	const {
-		signIn: SignIn,
-		signUp: SignUp,
-		forgotPassword: ForgotPassword,
-		resetPassword: ResetPassword,
-	} = content;
+		SignIn,
+		SignUp,
+		ForgotPassword,
+		ResetPassword,
+	} = Content;
 
-	const Navigate = onNavigate || NavigateToPath;
+	const Navigate = OnNavigate || NavigateToPath;
 
 	// Loading states
 	const [, SetIsSignInLoading] = useState(false);
@@ -79,7 +79,7 @@ const AccountPage = ({
 			SetCurrentUser(UserData);
 
 			toast.success(`Welcome back, ${UserData.username}!`);
-			onSignIn?.(Email, Password);
+			OnSignIn?.(Email, Password);
 
 			// Redirect to account dashboard
 			setTimeout(() => {
@@ -121,7 +121,7 @@ const AccountPage = ({
 			toast.success(
 				"Account created successfully! Please verify your email.",
 			);
-			onSignUp?.(Email, Password, ConfirmPassword, TermsAccepted);
+			OnSignUp?.(Email, Password, ConfirmPassword, TermsAccepted);
 
 			// Redirect to email verification page
 			setTimeout(() => {
@@ -148,7 +148,7 @@ const AccountPage = ({
 			toast.success(
 				"Password reset email sent. Please check your inbox.",
 			);
-			onForgotPassword?.(Email);
+			OnForgotPassword?.(Email);
 		} catch (ErrorInstance) {
 			const ErrorMessage =
 				ErrorInstance instanceof Error
@@ -174,7 +174,7 @@ const AccountPage = ({
 			toast.success(
 				"Password reset successful! You can now sign in with your new password.",
 			);
-			onResetPassword?.(Token, Password, ConfirmPassword);
+			OnResetPassword?.(Token, Password, ConfirmPassword);
 
 			setTimeout(() => {
 				Navigate("/Account/SignIn");
@@ -216,7 +216,7 @@ const AccountPage = ({
 		const UrlParameters = new URLSearchParams(window.location.search);
 		const OAuthToken = UrlParameters.get("token");
 
-		if (OAuthToken && route === "signin") {
+		if (OAuthToken && Route === "signin") {
 			SetSessionToken(OAuthToken);
 			toast.success("OAuth authentication successful!");
 
@@ -231,46 +231,46 @@ const AccountPage = ({
 
 			Navigate("/Dashboard");
 		}
-	}, [route, Navigate]);
+	}, [Route, Navigate]);
 
 	return (
-		<div className={`flex min-h-screen flex-col ${className || ""}`}>
-			<Header {...(content.header ? { content: content.header } : {})} />
+		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
+			<Header {...(Content.Header ? { content: Content.Header } : {})} />
 
 			<div className="flex-1">
-				{route === "signin" && (
+				{Route === "signin" && (
 					<DynamicSignIn
-						content={SignIn}
-						onSubmit={HandleSignIn}
-						onOAuth={HandleOAuth}
-						onNavigate={Navigate}
+						Content={SignIn}
+						OnSubmit={HandleSignIn}
+						OnOAuth={HandleOAuth}
+						OnNavigate={Navigate}
 					/>
 				)}
 
-				{route === "signup" && (
+				{Route === "signup" && (
 					<DynamicSignUp
-						content={SignUp}
-						onSubmit={HandleSignUp}
-						onOAuth={HandleOAuth}
-						onNavigate={Navigate}
+						Content={SignUp}
+						OnSubmit={HandleSignUp}
+						OnOAuth={HandleOAuth}
+						OnNavigate={Navigate}
 					/>
 				)}
 
-				{route === "forgot-password" && (
+				{Route === "forgot-password" && (
 					<DynamicForgotPassword
-						content={ForgotPassword}
-						onSubmit={HandleForgotPassword}
-						onResend={() => HandleForgotPassword("")}
-						onNavigate={Navigate}
+						Content={ForgotPassword}
+						OnSubmit={HandleForgotPassword}
+						OnResend={() => HandleForgotPassword("")}
+						OnNavigate={Navigate}
 					/>
 				)}
 
-				{route === "reset-password" && (
+				{Route === "reset-password" && (
 					<DynamicResetPassword
-						content={ResetPassword}
-						token={resetToken || ""}
-						onReset={HandleResetPassword}
-						onNavigate={Navigate}
+						Content={ResetPassword}
+						Token={ResetToken || ""}
+						OnReset={HandleResetPassword}
+						OnNavigate={Navigate}
 					/>
 				)}
 			</div>

@@ -6,17 +6,17 @@ import type Property from "./Interface/Property/Badge.js";
  * Wraps the base Badge with StaccatoBadge for breathing scale.
  * The status dot pulses with StaccatoRhythm for a heartbeat effect.
  */
-const DynamicBadge = ({ content, className }: Property) => {
+const DynamicBadge = ({ Content, ClassName }: Property) => {
 	const {
-		text,
-		variant = "default",
-		showDot = false,
-		dotColor = "green",
-		className: ContentClassName,
+		Text,
+		Variant = "default",
+		ShowDot = false,
+		DotColor = "green",
+		ClassName: ContentClassName,
 		...props
-	} = content;
+	} = Content;
 
-	const DotColor: Record<string, string> = {
+	const DotColorMap: Record<string, string> = {
 		green: "bg-green-500",
 		yellow: "bg-yellow-500",
 		red: "bg-red-500",
@@ -25,15 +25,15 @@ const DynamicBadge = ({ content, className }: Property) => {
 
 	return (
 		<Badge
-			variant={variant}
-			className={`StaccatoBadge ${ContentClassName || ""} ${className || ""}`}
+			variant={Variant}
+			className={`StaccatoBadge ${ContentClassName || ""} ${ClassName || ""}`}
 			{...props}>
-			{text}
-			{showDot && (
+			{Text}
+			{ShowDot && (
 				<>
 					{"\u2001"}
 					<span
-						className={`StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none ${DotColor[dotColor]}`}
+						className={`StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none ${DotColorMap[DotColor]}`}
 						aria-hidden="true"
 					/>
 				</>

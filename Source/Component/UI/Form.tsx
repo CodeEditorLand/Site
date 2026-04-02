@@ -42,7 +42,7 @@ const FormField = <
 	);
 };
 
-const useFormField = () => {
+const UseFormField = () => {
 	const fieldContext = React.useContext(FormFieldContext);
 	const itemContext = React.useContext(FormItemContext);
 	const { getFieldState } = useFormContext();
@@ -50,7 +50,7 @@ const useFormField = () => {
 	const fieldState = getFieldState(fieldContext.name, formState);
 
 	if (!fieldContext) {
-		throw new Error("useFormField should be used within <FormField>");
+		throw new Error("UseFormField should be used within <FormField>");
 	}
 
 	const { id } = itemContext;
@@ -91,7 +91,7 @@ function FormLabel({
 	className,
 	...props
 }: React.ComponentProps<typeof LabelPrimitive.Root>) {
-	const { error, formItemId } = useFormField();
+	const { error, formItemId } = UseFormField();
 
 	return (
 		<Label
@@ -106,7 +106,7 @@ function FormLabel({
 
 function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
 	const { error, formItemId, formDescriptionId, formMessageId } =
-		useFormField();
+		UseFormField();
 
 	return (
 		<Slot
@@ -124,7 +124,7 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
 }
 
 function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
-	const { formDescriptionId } = useFormField();
+	const { formDescriptionId } = UseFormField();
 
 	return (
 		<p
@@ -137,7 +137,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
-	const { error, formMessageId } = useFormField();
+	const { error, formMessageId } = UseFormField();
 	const body = error ? String(error?.message ?? "") : props.children;
 
 	if (!body) {
@@ -156,7 +156,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 export {
-	useFormField,
+	UseFormField,
 	Form,
 	FormItem,
 	FormLabel,

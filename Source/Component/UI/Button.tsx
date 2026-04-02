@@ -4,7 +4,7 @@ import React from "react";
 
 import { cn } from "./Utility";
 
-const buttonVariants = cva(
+const ButtonVariants = cva(
 	"inline-flex items-center justify-center gap-0 whitespace-nowrap border text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[1px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
 	{
 		variants: {
@@ -37,7 +37,7 @@ const buttonVariants = cva(
 export interface ButtonProps
 	extends
 		React.ButtonHTMLAttributes<HTMLButtonElement>,
-		VariantProps<typeof buttonVariants> {
+		VariantProps<typeof ButtonVariants> {
 	asChild?: boolean;
 }
 
@@ -48,7 +48,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			<Comp
 				data-slot="button"
 				ref={ref}
-				className={cn(buttonVariants({ variant, size, className }))}
+				className={cn(ButtonVariants({ variant, size, className }))}
 				{...props}
 			/>
 		);
@@ -57,4 +57,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = "Button";
 
-export { buttonVariants };
+export { ButtonVariants };

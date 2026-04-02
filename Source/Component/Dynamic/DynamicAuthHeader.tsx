@@ -32,7 +32,7 @@ export default ({
 
 const HeaderWithAuth = ({ Content }: { Content?: HeaderContent }) => (
 	<Header
-		{...(Content ? { content: Content } : {})}
+		{...(Content ? { Content } : {})}
 		AuthSlot={<DynamicAuthStatus />}
 	/>
 );

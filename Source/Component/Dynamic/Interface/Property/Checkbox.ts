@@ -1,7 +1,7 @@
 import type CheckboxContent from "../Content/Checkbox.js";
 
 export default interface Interface {
-	content: CheckboxContent;
-	name?: string;
-	onCheckedChange?: (checked: boolean) => void;
+	Content: CheckboxContent;
+	Name?: string;
+	OnCheckedChange?: (Checked: boolean) => void;
 }

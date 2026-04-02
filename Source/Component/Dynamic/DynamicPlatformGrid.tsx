@@ -23,45 +23,45 @@ const PlatformColorMap: Record<string, string> = {
  * Supports fetching real download data from the Workers API
  * Includes loading and error states
  */
-const DynamicPlatformGrid = ({ content, className }: Property) => {
+const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("download");
 	const {
-		title,
-		subtitle,
-		platforms: providedPlatforms,
-		showVerification = true,
-		onDownload,
-		apiPlatform,
-		labels = {},
-	} = content;
+		Title,
+		Subtitle,
+		Platforms: ProvidedPlatforms,
+		ShowVerification = true,
+		OnDownload,
+		ApiPlatform,
+		Labels = {},
+	} = Content;
 	const {
-		version: VersionLabel = T("labels.version", {
+		Version: VersionLabel = T("labels.version", {
 			defaultValue: "Version:",
 		}),
-		size: SizeLabel = T("labels.size", { defaultValue: "Size:" }),
-		requirements: RequirementsLabel = T("labels.requirements", {
+		Size: SizeLabel = T("labels.size", { defaultValue: "Size:" }),
+		Requirements: RequirementsLabel = T("labels.requirements", {
 			defaultValue: "Requirements:",
 		}),
-		loading: LoadingLabel = T("labels.loading", {
+		Loading: LoadingLabel = T("labels.loading", {
 			defaultValue: "Loading downloads...",
 		}),
-		errorTitle: ErrorTitleLabel = T("labels.errorTitle", {
+		ErrorTitle: ErrorTitleLabel = T("labels.errorTitle", {
 			defaultValue: "Unable to load downloads",
 		}),
-		downloadFailed: DownloadFailedLabel = T("labels.downloadFailed", {
+		DownloadFailed: DownloadFailedLabel = T("labels.downloadFailed", {
 			defaultValue: "Download failed. Please try again.",
 		}),
-	} = labels;
+	} = Labels;
 
 	const [Platforms, SetPlatforms] = useState<PlatformInformation[]>(
-		providedPlatforms || [],
+		ProvidedPlatforms || [],
 	);
-	const [Loading, SetLoading] = useState(!providedPlatforms);
+	const [Loading, SetLoading] = useState(!ProvidedPlatforms);
 	const [ErrorMessage, SetErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
-		if (providedPlatforms) {
-			SetPlatforms(providedPlatforms);
+		if (ProvidedPlatforms) {
+			SetPlatforms(ProvidedPlatforms);
 			return;
 		}
 
@@ -74,7 +74,7 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 				const { GetWorkersClient } =
 					await import("../../Library/WorkerClient");
 				const Workers = GetWorkersClient();
-				const Response = await Workers.Download.GetLatest(apiPlatform);
+				const Response = await Workers.Download.GetLatest(ApiPlatform);
 				if (!Response.success || !Response.data) {
 					throw new Error(
 						Response.error || "Failed to fetch latest download",
@@ -90,19 +90,19 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 
 				if (Latest.platform === "macos") {
 					CurrentPlatform.push({
-						id: Latest.id,
-						name: "Apple",
-						icon: "Apple",
-						description: "Universal Binary",
-						version: Latest.version,
-						size: Latest.fileSize
+						Id: Latest.id,
+						Name: "Apple",
+						Icon: "Apple",
+						Description: "Universal Binary",
+						Version: Latest.version,
+						Size: Latest.fileSize
 							? FormatBytes(Latest.fileSize)
 							: "45.2 MB",
-						checksum: Latest.sha256,
+						Checksum: Latest.sha256,
 						...(Latest.pgpSignature
-							? { signature: Latest.pgpSignature }
+							? { Signature: Latest.pgpSignature }
 							: {}),
-						requirements: [
+						Requirements: [
 							"macOS 11.0 (Big Sur) or later",
 							"4 GB RAM",
 							"500 MB disk space",
@@ -110,19 +110,19 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 					});
 				} else if (Latest.platform === "windows") {
 					CurrentPlatform.push({
-						id: Latest.id,
-						name: "Windows",
-						icon: "Monitor",
-						description: "64-bit (x64)",
-						version: Latest.version,
-						size: Latest.fileSize
+						Id: Latest.id,
+						Name: "Windows",
+						Icon: "Monitor",
+						Description: "64-bit (x64)",
+						Version: Latest.version,
+						Size: Latest.fileSize
 							? FormatBytes(Latest.fileSize)
 							: "48.7 MB",
-						checksum: Latest.sha256,
+						Checksum: Latest.sha256,
 						...(Latest.pgpSignature
-							? { signature: Latest.pgpSignature }
+							? { Signature: Latest.pgpSignature }
 							: {}),
-						requirements: [
+						Requirements: [
 							"Windows 10 or later (64-bit)",
 							"4 GB RAM",
 							"500 MB disk space",
@@ -130,19 +130,19 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 					});
 				} else if (Latest.platform === "linux") {
 					CurrentPlatform.push({
-						id: Latest.id,
-						name: "Linux",
-						icon: "Terminal",
-						description: "DEB, RPM, AppImage",
-						version: Latest.version,
-						size: Latest.fileSize
+						Id: Latest.id,
+						Name: "Linux",
+						Icon: "Terminal",
+						Description: "DEB, RPM, AppImage",
+						Version: Latest.version,
+						Size: Latest.fileSize
 							? FormatBytes(Latest.fileSize)
 							: "41.3 MB",
-						checksum: Latest.sha256,
+						Checksum: Latest.sha256,
 						...(Latest.pgpSignature
-							? { signature: Latest.pgpSignature }
+							? { Signature: Latest.pgpSignature }
 							: {}),
-						requirements: [
+						Requirements: [
 							"glibc 2.28+",
 							"4 GB RAM",
 							"500 MB disk space",
@@ -164,7 +164,7 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 		};
 
 		FetchPlatforms();
-	}, [providedPlatforms, apiPlatform]);
+	}, [ProvidedPlatforms, ApiPlatform]);
 
 	const GridReference = useRef<HTMLDivElement>(null);
 
@@ -202,15 +202,15 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 			const { GetWorkersClient } =
 				await import("../../Library/WorkerClient");
 			const Workers = GetWorkersClient();
-			const InfoResponse = await Workers.Download.GetInfo(Platform.id);
+			const InfoResponse = await Workers.Download.GetInfo(Platform.Id);
 			if (!InfoResponse.success || !InfoResponse.data) {
 				throw new Error(
 					InfoResponse.error || "Failed to get download info",
 				);
 			}
 			window.open(InfoResponse.data.downloadUrl, "_blank");
-			await Workers.Download.TrackDownload(Platform.id);
-			onDownload?.(Platform);
+			await Workers.Download.TrackDownload(Platform.Id);
+			OnDownload?.(Platform);
 		} catch (DownloadError) {
 			console.error("Download failed:", DownloadError);
 			console.warn(DownloadFailedLabel);
@@ -220,7 +220,7 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 	if (Loading) {
 		return (
 			<section
-				className={`py-20 ${className || ""}`}
+				className={`py-20 ${ClassName || ""}`}
 				aria-label="Downloads"
 				aria-busy="true">
 				<div className="container mx-auto px-4">
@@ -236,8 +236,8 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 						{[1, 2, 3].map((Index) => (
 							<DynamicCard
 								key={Index}
-								sections={{}}
-								className="flex animate-pulse flex-col"
+								Sections={{}}
+								ClassName="flex animate-pulse flex-col"
 							/>
 						))}
 					</div>
@@ -249,7 +249,7 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 	if (ErrorMessage) {
 		return (
 			<section
-				className={`py-20 ${className || ""}`}
+				className={`py-20 ${ClassName || ""}`}
 				aria-label="Downloads">
 				<div className="container mx-auto px-4">
 					<div className="mb-16 text-center" role="alert">
@@ -267,18 +267,18 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 		<section
 			id="download"
 			aria-label="Downloads"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
-				{(title || subtitle) && (
+				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
-						{title && (
+						{Title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-								{title}
+								{Title}
 							</h2>
 						)}
-						{subtitle && (
+						{Subtitle && (
 							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-								{subtitle}
+								{Subtitle}
 							</p>
 						)}
 					</div>
@@ -289,62 +289,62 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 					className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
 					{Platforms.map((Platform) => {
 						const HasVerification =
-							showVerification &&
-							(Platform.checksum || Platform.signature);
+							ShowVerification &&
+							(Platform.Checksum || Platform.Signature);
 
 						const PlatformCardSection: CardSection = {
-							header: {
-								title: Platform.name,
-								description: Platform.description,
+							Header: {
+								title: Platform.Name,
+								description: Platform.Description,
 								content: (
 									<div className="mt-3">
 										<DynamicButton
-											content={{
-												text: T("labels.downloadFor", {
+											Content={{
+												Text: T("labels.downloadFor", {
 													defaultValue:
 														"Download for {{platform}}",
 													platform:
-														Platform.name ||
+														Platform.Name ||
 														"this platform",
 												}),
-												variant: "default",
-												size: "lg",
-												fullWidth: true,
-												icon: "Download",
+												Variant: "default",
+												Size: "lg",
+												FullWidth: true,
+												Icon: "Download",
 											}}
-											onAction={() =>
+											OnAction={() =>
 												HandleDownload(Platform)
 											}
 										/>
 									</div>
 								),
 							},
-							body: {
+							Body: {
 								content: (
 									<div className="space-y-2 text-sm text-muted-foreground">
 										<div className="flex justify-between">
 											<span>{VersionLabel}</span>
 											<span className="font-medium text-foreground">
 												{FormatVersion(
-													Platform.version,
+													Platform.Version,
 												)}
 											</span>
 										</div>
 										<div className="flex justify-between">
 											<span>{SizeLabel}</span>
 											<span className="font-medium text-foreground">
-												{FormatFileSize(Platform.size)}
+												{FormatFileSize(Platform.Size)}
 											</span>
 										</div>
-										{Platform.requirements &&
-											Platform.requirements.length >
+										{Platform.Requirements &&
+											Platform.Requirements.length >
 												0 && (
 												<div className="mt-2 border-t border-border pt-2">
 													<p className="mb-1 font-medium text-foreground">
 														{RequirementsLabel}
 													</p>
 													<ul className="list-inside list-disc space-y-1">
-														{Platform.requirements.map(
+														{Platform.Requirements.map(
 															(
 																Requirement,
 																RequirementIndex,
@@ -368,20 +368,20 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 							},
 							...(HasVerification
 								? {
-										footer: {
+										Footer: {
 											content: (
 												<div className="text-xs text-muted-foreground">
-													{Platform.checksum && (
+													{Platform.Checksum && (
 														<p>
 															SHA-256:{" "}
-															{Platform.checksum.substring(
+															{Platform.Checksum.substring(
 																0,
 																16,
 															)}
 															...
 														</p>
 													)}
-													{Platform.signature && (
+													{Platform.Signature && (
 														<p>PGP Signed: ✓</p>
 													)}
 												</div>
@@ -392,16 +392,16 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 						};
 
 						const PlatformAccentColor =
-							PlatformColorMap[Platform.name] ??
+							PlatformColorMap[Platform.Name] ??
 							"var(--PlatformDesktop)";
 
 						return (
 							<div
-								key={Platform.id}
+								key={Platform.Id}
 								style={{ borderTopColor: PlatformAccentColor, borderTopWidth: "2px", borderTopStyle: "solid" }}>
 								<DynamicCard
-									sections={PlatformCardSection}
-									className="PlatformCard flex flex-col"
+									Sections={PlatformCardSection}
+									ClassName="PlatformCard flex flex-col"
 								/>
 							</div>
 						);

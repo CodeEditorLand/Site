@@ -1,16 +1,16 @@
 import type ButtonContent from "../Content/Button.js";
 
 export default interface Interface {
-	id: string;
-	name: string;
-	description?: string;
-	price: {
-		monthly: number;
-		yearly: number;
+	Id: string;
+	Name: string;
+	Description?: string;
+	Price: {
+		Monthly: number;
+		Yearly: number;
 	};
-	currency?: string;
-	features: string[];
-	cta: ButtonContent;
-	highlighted?: boolean;
-	popular?: boolean;
+	Currency?: string;
+	Features: string[];
+	CTA: ButtonContent;
+	Highlighted?: boolean;
+	Popular?: boolean;
 }

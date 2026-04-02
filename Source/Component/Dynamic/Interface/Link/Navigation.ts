@@ -1,5 +1,5 @@
 export default interface Interface {
-	label: string;
-	href: string;
-	isActive?: boolean;
+	Label: string;
+	Href: string;
+	IsActive?: boolean;
 }

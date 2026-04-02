@@ -1,15 +1,15 @@
 import type ResetPasswordContent from "../../Content/Password/Reset.js";
 
 export default interface Interface {
-	content: ResetPasswordContent;
-	token?: string;
-	onReset?: (
-		token: string,
-		password: string,
-		confirmPassword: string,
+	Content: ResetPasswordContent;
+	Token?: string;
+	OnReset?: (
+		Token: string,
+		Password: string,
+		ConfirmPassword: string,
 	) => void;
-	onNavigate?: (path: string) => void;
-	className?: string;
-	isLoading?: boolean;
-	errorMessage?: string;
+	OnNavigate?: (Path: string) => void;
+	ClassName?: string;
+	IsLoading?: boolean;
+	ErrorMessage?: string;
 }

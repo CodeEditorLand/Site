@@ -4,7 +4,7 @@ import * as lucide from "lucide-react";
 import * as React from "react";
 import { DayPicker } from "react-day-picker";
 
-import { buttonVariants } from "./Button";
+import { ButtonVariants } from "./Button";
 import { cn } from "./Utility";
 
 function Calendar({
@@ -23,7 +23,7 @@ function Calendar({
 			caption_label: "text-sm font-medium",
 			nav: "flex items-center gap-1",
 			nav_button: cn(
-				buttonVariants({ variant: "outline" }),
+				ButtonVariants({ variant: "outline" }),
 				"size-7 bg-transparent p-0 opacity-50 hover:opacity-100",
 			),
 			nav_button_previous: "absolute left-1",
@@ -40,7 +40,7 @@ function Calendar({
 					: "[&:has([aria-selected])]:rounded-none",
 			),
 			day: cn(
-				buttonVariants({ variant: "ghost" }),
+				ButtonVariants({ variant: "ghost" }),
 				"size-8 p-0 font-normal aria-selected:opacity-100",
 			),
 			day_range_start:

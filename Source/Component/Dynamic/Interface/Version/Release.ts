@@ -1,14 +1,14 @@
 export default interface Interface {
 	[Key: string]: unknown;
-	version: string;
-	publishedAt: string;
-	size: string;
-	downloads: number;
-	changelog?: string;
-	assets: {
-		platform: "macOS" | "Windows" | "Linux";
-		url: string;
-		sha256: string;
-		signature?: string;
+	Version: string;
+	PublishedAt: string;
+	Size: string;
+	Downloads: number;
+	Changelog?: string;
+	Assets: {
+		Platform: "macOS" | "Windows" | "Linux";
+		URL: string;
+		SHA256: string;
+		Signature?: string;
 	}[];
 }

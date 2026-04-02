@@ -18,26 +18,26 @@ import type Property from "./Interface/Property/SignUp.js";
  * Renders email, password, confirm password, terms checkbox, social OAuth
  */
 const DynamicSignUp = ({
-	content,
-	onSubmit,
-	onOAuth,
-	onNavigate,
-	className,
-	isLoading = false,
-	errorMessage,
+	Content,
+	OnSubmit,
+	OnOAuth,
+	OnNavigate,
+	ClassName,
+	IsLoading = false,
+	ErrorMessage,
 }: Property) => {
 	const {
-		title,
-		description,
-		emailField,
-		passwordField,
-		confirmPasswordField,
-		termsCheckbox,
-		submitButton,
-		oauthButtons = [],
-		showDivider = true,
-		footerLinks,
-	} = content;
+		Title,
+		Description,
+		EmailField,
+		PasswordField,
+		ConfirmPasswordField,
+		TermsCheckbox,
+		SubmitButton,
+		OauthButtons = [],
+		ShowDivider = true,
+		FooterLinks,
+	} = Content;
 
 	const [Email, SetEmail] = useState("");
 	const [Password, SetPassword] = useState("");
@@ -82,18 +82,18 @@ const DynamicSignUp = ({
 	const HandleSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
 		if (Validate()) {
-			onSubmit?.(Email, Password, ConfirmPassword, TermsAccepted);
+			OnSubmit?.(Email, Password, ConfirmPassword, TermsAccepted);
 		}
 	};
 
 	return (
 		<section className="py-20" aria-label="Sign up">
 			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${className}`}>
+				<div className={`mx-auto max-w-md ${ClassName}`}>
 					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 						<CardHeader className="space-y-1 text-center">
-							<CardTitle className="text-2xl">{title}</CardTitle>
-							<CardDescription>{description}</CardDescription>
+							<CardTitle className="text-2xl">{Title}</CardTitle>
+							<CardDescription>{Description}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<form
@@ -101,60 +101,60 @@ const DynamicSignUp = ({
 								onSubmit={HandleSubmit}
 								aria-label="Sign up form">
 								<div aria-live="polite" aria-atomic="true">
-									{errorMessage && (
+									{ErrorMessage && (
 										<div
 											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
 											role="alert">
-											{errorMessage}
+											{ErrorMessage}
 										</div>
 									)}
 								</div>
 
 								<DynamicInput
-									content={{
-										...emailField,
-										onChange: SetEmail,
+									Content={{
+										...EmailField,
+										OnChange: SetEmail,
 									}}
-									id="email"
+									Id="email"
 								/>
 
 								<DynamicInput
-									content={{
-										...passwordField,
-										type: "password",
-										onChange: SetPassword,
+									Content={{
+										...PasswordField,
+										Type: "password",
+										OnChange: SetPassword,
 									}}
-									id="password"
+									Id="password"
 								/>
 
 								<DynamicInput
-									content={{
-										...confirmPasswordField,
-										type: "password",
-										onChange: SetConfirmPassword,
+									Content={{
+										...ConfirmPasswordField,
+										Type: "password",
+										OnChange: SetConfirmPassword,
 									}}
-									id="confirmPassword"
+									Id="confirmPassword"
 								/>
 
 								<DynamicCheckbox
-									content={{
-										...termsCheckbox,
-										checked: TermsAccepted,
-										onChange: SetTermsAccepted,
+									Content={{
+										...TermsCheckbox,
+										Checked: TermsAccepted,
+										OnChange: SetTermsAccepted,
 									}}
 								/>
 
 								<DynamicButton
-									content={{
-										...submitButton,
-										type: "submit",
-										fullWidth: true,
+									Content={{
+										...SubmitButton,
+										Type: "submit",
+										FullWidth: true,
 									}}
-									isLoading={isLoading}
+									IsLoading={IsLoading}
 								/>
 							</form>
 
-							{showDivider && oauthButtons.length > 0 && (
+							{ShowDivider && OauthButtons.length > 0 && (
 								<div className="relative my-6">
 									<div className="absolute inset-0 flex items-center">
 										<span className="StaccatoSeparator w-full border-t" />
@@ -167,17 +167,17 @@ const DynamicSignUp = ({
 								</div>
 							)}
 
-							{oauthButtons.length > 0 && (
+							{OauthButtons.length > 0 && (
 								<div className="space-y-3">
-									{oauthButtons.map((Button, Index) => (
+									{OauthButtons.map((ButtonItem, Index) => (
 										<DynamicButton
 											key={Index}
-											content={{
-												...Button,
-												fullWidth: true,
+											Content={{
+												...ButtonItem,
+												FullWidth: true,
 											}}
-											onAction={() =>
-												onOAuth?.(Button.icon as string)
+											OnAction={() =>
+												OnOAuth?.(ButtonItem.Icon as string)
 											}
 										/>
 									))}
@@ -185,18 +185,18 @@ const DynamicSignUp = ({
 							)}
 						</CardContent>
 						<CardFooter className="flex flex-col gap-3 text-center text-sm">
-							{footerLinks?.signIn && (
+							{FooterLinks?.SignIn && (
 								<div>
 									<button
 										type="button"
 										className="font-medium text-primary hover:underline"
 										onClick={() =>
-											footerLinks.signIn &&
-											onNavigate?.(
-												footerLinks.signIn.href,
+											FooterLinks.SignIn &&
+											OnNavigate?.(
+												FooterLinks.SignIn.Href,
 											)
 										}>
-										{footerLinks.signIn.label}
+										{FooterLinks.SignIn.Label}
 									</button>
 									<p className="mt-1 text-xs text-muted-foreground">
 										Already have an account?

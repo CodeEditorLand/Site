@@ -12,24 +12,24 @@ import { IconTooltip } from "../UI/IconTooltip.js";
  * The entire hero can act as a button (clickable CTA surface).
  * Floating cards are noise-seeded for organic staccato movement.
  */
-const DynamicHeroSection = ({ content, className }: Property) => {
+const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 	const SceneReference = useRef<HTMLDivElement>(null);
 	const SectionReference = useRef<HTMLElement>(null);
 	const {
-		title: Title,
-		titleHighlight: TitleHighlight,
-		subtitle: Subtitle,
-		primaryCta: PrimaryCTA,
-		secondaryCta: SecondaryCTA,
-		floatingCards: FloatingCard = [],
+		Title,
+		TitleHighlight,
+		Subtitle,
+		PrimaryCta: PrimaryCTA,
+		SecondaryCta: SecondaryCTA,
+		FloatingCards: FloatingCard = [],
 		...HeroConfiguration
-	} = content;
+	} = Content;
 
 	useEffect(() => {
 		const Scene = SceneReference.current;
 		if (
 			!Scene ||
-			(HeroConfiguration.respectReducedMotion &&
+			(HeroConfiguration.RespectReducedMotion &&
 				window.matchMedia("(prefers-reduced-motion: reduce)").matches)
 		) {
 			return;
@@ -90,11 +90,11 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 		LoadNoise();
 		FrameIdentifier = requestAnimationFrame(AnimateCards);
 		return () => cancelAnimationFrame(FrameIdentifier);
-	}, [HeroConfiguration.respectReducedMotion]);
+	}, [HeroConfiguration.RespectReducedMotion]);
 
 	const HandleHeroClick = () => {
 		if (PrimaryCTA?.href) {
-			window.location.href = PrimaryCTA.href;
+			window.location.href = PrimaryCTA.Href;
 		}
 	};
 
@@ -103,7 +103,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-[200dvh] w-full items-center overflow-hidden py-16 lg:py-24 ${className || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-[200dvh] w-full items-center overflow-hidden py-16 lg:py-24 ${ClassName || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -115,10 +115,10 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 			tabIndex={0}>
 			<div className="container mx-auto px-4 text-center">
 				{/* Badge:breathing with rhythm pulse on dot */}
-				{content.badge && (
+				{Content.Badge && (
 					<DynamicBadge
-						content={content.badge}
-						className="StaccatoBadge mb-6"
+						Content={Content.Badge}
+						ClassName="StaccatoBadge mb-6"
 					/>
 				)}
 
@@ -132,8 +132,8 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 
 				{/* CTAs:noise-driven button states */}
 				<div className="mb-6 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
-					<DynamicButton content={PrimaryCTA} />
-					{SecondaryCTA && <DynamicButton content={SecondaryCTA} />}
+					<DynamicButton Content={PrimaryCTA} />
+					{SecondaryCTA && <DynamicButton Content={SecondaryCTA} />}
 				</div>
 
 				{/* Subtitle:breathing opacity */}
@@ -148,7 +148,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 						{FloatingCard.map((Card, Index) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
-								const Title = Card.title.toLowerCase();
+								const Title = Card.Title.toLowerCase();
 								if (Title.includes("rust") || Title.includes("core")) return lucide.Cpu;
 								if (Title.includes("tauri") || Title.includes("ui")) return lucide.Box;
 								if (Title.includes("effect") || Title.includes("service")) return lucide.Layers;
@@ -164,14 +164,14 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 
 							return (
 							<div
-								key={Card.id}
+								key={Card.Id}
 								className="StaccatoCard border border-[var(--Border)] bg-white p-3"
 								style={{
 									transitionDelay: `${Index * 50}ms`,
 								}}>
 								<div className="mb-2 flex items-center justify-center">
 									<IconTooltip
-										Label={Card.title}
+										Label={Card.Title}
 										Icon={IconComponent}
 										SizeClass="h-6 w-6"
 										ClassName="text-primary"
@@ -179,11 +179,11 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 								</div>
 								<div className="text-center">
 									<div className="text-xs font-medium text-foreground">
-										{Card.title}
+										{Card.Title}
 									</div>
-									{Card.colors && Card.colors.length > 0 && (
+									{Card.Colors && Card.Colors.length > 0 && (
 										<div className="mt-1.5 flex items-center justify-center gap-1.5">
-											{Card.colors.map((Color, ColorIndex) => (
+											{Card.Colors.map((Color, ColorIndex) => (
 												<div
 													key={ColorIndex}
 													className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
@@ -227,7 +227,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
-								const Title = Card.title.toLowerCase();
+								const Title = Card.Title.toLowerCase();
 								if (Title.includes("rust") || Title.includes("core")) return lucide.Cpu;
 								if (Title.includes("tauri") || Title.includes("ui")) return lucide.Box;
 								if (Title.includes("effect") || Title.includes("service")) return lucide.Layers;
@@ -243,7 +243,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 
 							return (
 							<div
-								key={Card.id}
+								key={Card.Id}
 								className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white p-3 w-36"
 								style={{
 									top: `${CenterY}%`,
@@ -252,7 +252,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 								}}>
 								<div className="mb-2 flex items-center justify-center">
 									<IconTooltip
-										Label={Card.title}
+										Label={Card.Title}
 										Icon={IconComponent}
 										SizeClass="h-8 w-8"
 										ClassName="text-primary"
@@ -260,11 +260,11 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 								</div>
 								<div className="text-center">
 									<div className="text-xs font-medium text-foreground">
-										{Card.title}
+										{Card.Title}
 									</div>
-									{Card.colors && Card.colors.length > 0 && (
+									{Card.Colors && Card.Colors.length > 0 && (
 										<div className="mt-1.5 flex items-center justify-center gap-1.5">
-											{Card.colors.map((Color, ColorIndex) => (
+											{Card.Colors.map((Color, ColorIndex) => (
 												<div
 													key={ColorIndex}
 													className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
@@ -279,7 +279,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 						})}
 
 						{/* Connecting Lines:breathing opacity */}
-						{HeroConfiguration.showConnectingLines && (
+						{HeroConfiguration.ShowConnectingLines && (
 							<svg
 								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full opacity-15"
 								aria-hidden="true"
@@ -297,7 +297,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 										50 + Math.sin(Angle) * RadiusY;
 									return (
 										<line
-											key={Card.id}
+											key={Card.Id}
 											x1="50%"
 											y1="50%"
 											x2={`${CenterX}%`}

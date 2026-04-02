@@ -13,37 +13,37 @@ import type Property from "./Interface/Property/Pricing.js";
  * Checkmarks use StaccatoCheckmark for organic emphasis.
  * All billing-period labels are i18n-resolved; no hardcoded strings.
  */
-const DynamicPricing = ({ content, className }: Property) => {
+const DynamicPricing = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("home");
 	const GridReference = useRef<HTMLDivElement>(null);
 	const {
-		title,
-		subtitle,
-		tiers,
-		showMonthlyYearlyToggle = false,
-		defaultYearly = false,
-		labels = {},
-	} = content;
+		Title,
+		Subtitle,
+		Tiers,
+		ShowMonthlyYearlyToggle = false,
+		DefaultYearly = false,
+		Labels = {},
+	} = Content;
 
 	const MonthlyLabel =
-		labels.monthly ??
+		Labels.Monthly ??
 		T("pricing.labels.monthly", { defaultValue: "Monthly" });
 	const YearlyLabel =
-		labels.yearly ?? T("pricing.labels.yearly", { defaultValue: "Yearly" });
+		Labels.Yearly ?? T("pricing.labels.yearly", { defaultValue: "Yearly" });
 	const SavingsLabel =
-		labels.savings ??
+		Labels.Savings ??
 		T("pricing.labels.savings", { defaultValue: "(Save up to 20%)" });
 	const PopularLabel =
-		labels.popular ??
+		Labels.Popular ??
 		T("pricing.labels.popular", { defaultValue: "Most Popular" });
 	const PerMonthLabel =
-		labels.perMonth ??
+		Labels.PerMonth ??
 		T("pricing.labels.perMonth", { defaultValue: "/month" });
 	const PerYearLabel =
-		labels.perYear ??
+		Labels.PerYear ??
 		T("pricing.labels.perYear", { defaultValue: "/year" });
 
-	const [IsYearly, SetIsYearly] = useState(defaultYearly);
+	const [IsYearly, SetIsYearly] = useState(DefaultYearly);
 
 	useEffect(() => {
 		const Grid = GridReference.current;
@@ -65,7 +65,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 		};
 
 		ApplyScatter();
-	}, [tiers]);
+	}, [Tiers]);
 
 	const FormatPrice = (Price: number, Currency: string = "USD") => {
 		return new Intl.NumberFormat("en-US", {
@@ -76,9 +76,9 @@ const DynamicPricing = ({ content, className }: Property) => {
 		}).format(Price);
 	};
 
-	const DisplayTier = tiers.map((Tier) => ({
+	const DisplayTier = Tiers.map((Tier) => ({
 		...Tier,
-		currentPrice: IsYearly ? Tier.price.yearly : Tier.price.monthly,
+		currentPrice: IsYearly ? Tier.Price.Yearly : Tier.Price.Monthly,
 	}));
 
 	return (
@@ -86,25 +86,25 @@ const DynamicPricing = ({ content, className }: Property) => {
 			id="pricing"
 			aria-label="Roadmap"
 			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
-				className || ""
+				ClassName || ""
 			}`}>
 			<div className="container mx-auto px-4">
-				{(title || subtitle) && (
+				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
-						{title && (
+						{Title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-								{title}
+								{Title}
 							</h2>
 						)}
-						{subtitle && (
+						{Subtitle && (
 							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-								{subtitle}
+								{Subtitle}
 							</p>
 						)}
 					</div>
 				)}
 
-				{showMonthlyYearlyToggle && (
+				{ShowMonthlyYearlyToggle && (
 					<div className="mb-12 flex items-center justify-center gap-4">
 						<span className="text-sm font-medium">
 							{MonthlyLabel}
@@ -152,14 +152,14 @@ const DynamicPricing = ({ content, className }: Property) => {
 					className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
 					{DisplayTier.map((Tier) => (
 						<div
-							key={Tier.id}
+							key={Tier.Id}
 							className={`PricingCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border bg-white ${
-								Tier.highlighted || Tier.popular
+								Tier.Highlighted || Tier.Popular
 									? "border-primary"
 									: "border-[var(--Border)]"
 							}`}>
 							<div className="border-b border-[var(--Border)] p-6">
-								{Tier.popular && (
+								{Tier.Popular && (
 									<div className="mb-2">
 										<span className="StaccatoBadge StaccatoRhythmBeat text-xs font-semibold uppercase tracking-wider text-primary">
 											{PopularLabel}
@@ -168,18 +168,18 @@ const DynamicPricing = ({ content, className }: Property) => {
 								)}
 								<div className="mb-4">
 									<DynamicButton
-										content={{
-											...Tier.cta,
-											fullWidth: true,
+										Content={{
+											...Tier.CTA,
+											FullWidth: true,
 										}}
 									/>
 								</div>
 								<h3 className="mb-2 text-2xl font-bold">
-									{Tier.name}
+									{Tier.Name}
 								</h3>
-								{Tier.description && (
+								{Tier.Description && (
 									<p className="StaccatoBreath mb-4 text-sm text-muted-foreground whitespace-pre-line">
-										{Tier.description}
+										{Tier.Description}
 									</p>
 								)}
 								<div className="flex items-baseline">
@@ -190,10 +190,10 @@ const DynamicPricing = ({ content, className }: Property) => {
 												})
 											: FormatPrice(
 													Tier.currentPrice,
-													Tier.currency,
+													Tier.Currency,
 												)}
 									</span>
-									{showMonthlyYearlyToggle &&
+									{ShowMonthlyYearlyToggle &&
 										Tier.currentPrice > 0 && (
 											<span className="ml-2 text-muted-foreground">
 												{IsYearly
@@ -206,7 +206,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 
 							<div className="flex flex-1 flex-col p-6">
 								<ul className="flex-1 space-y-3">
-									{Tier.features.map(
+									{Tier.Features.map(
 										(Feature, FeatureIndex) => (
 											<li
 												key={FeatureIndex}

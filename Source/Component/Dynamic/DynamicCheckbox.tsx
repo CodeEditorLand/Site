@@ -6,72 +6,72 @@ import type Property from "./Interface/Property/Checkbox.js";
  * Dynamic Checkbox component that accepts content schema
  * Composes Checkbox with Label and optional description
  */
-const DynamicCheckbox = ({ content, name, onCheckedChange }: Property) => {
+const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 	const {
-		label,
-		description,
-		checked,
-		defaultChecked,
-		disabled = false,
-		indeterminate = false,
-		onChange,
-		className,
+		Label: LabelText,
+		Description,
+		Checked,
+		DefaultChecked,
+		Disabled = false,
+		Indeterminate = false,
+		OnChange,
+		ClassName,
 		...props
-	} = content;
+	} = Content;
 
 	const HandleCheckedChange = (NewChecked: boolean) => {
-		if (onCheckedChange) {
-			onCheckedChange(NewChecked);
+		if (OnCheckedChange) {
+			OnCheckedChange(NewChecked);
 		}
-		if (onChange) {
-			onChange(NewChecked);
+		if (OnChange) {
+			OnChange(NewChecked);
 		}
 	};
 
 	// Build checkbox props, only including defined values to satisfy exactOptionalPropertyTypes
 	const CheckboxProperties: Record<string, unknown> = {
-		disabled,
+		disabled: Disabled,
 		onCheckedChange: HandleCheckedChange,
-		className,
+		className: ClassName,
 		...props,
 	};
 
-	if (checked !== undefined) {
-		CheckboxProperties["checked"] = checked;
+	if (Checked !== undefined) {
+		CheckboxProperties["checked"] = Checked;
 	}
-	if (defaultChecked !== undefined) {
-		CheckboxProperties["defaultChecked"] = defaultChecked;
-		if (checked === undefined) {
-			CheckboxProperties["checked"] = defaultChecked;
+	if (DefaultChecked !== undefined) {
+		CheckboxProperties["defaultChecked"] = DefaultChecked;
+		if (Checked === undefined) {
+			CheckboxProperties["checked"] = DefaultChecked;
 		}
 	}
 
 	return (
 		<div className="flex items-start space-x-3">
 			<Checkbox
-				name={name}
+				name={Name}
 				{...(CheckboxProperties as Parameters<typeof Checkbox>[0])}>
-				{indeterminate && <span className="animate-pulse">?</span>}
+				{Indeterminate && <span className="animate-pulse">?</span>}
 			</Checkbox>
-			{(label || description) && (
+			{(LabelText || Description) && (
 				<div className="space-y-1.5">
-					{label && (
+					{LabelText && (
 						<Label
 							className="cursor-pointer font-normal"
 							onClick={(Event) => {
 								Event.preventDefault();
 								const CurrentChecked =
-									(checked !== undefined
-										? checked
-										: defaultChecked) || false;
+									(Checked !== undefined
+										? Checked
+										: DefaultChecked) || false;
 								HandleCheckedChange(!CurrentChecked);
 							}}>
-							{label}
+							{LabelText}
 						</Label>
 					)}
-					{description && (
+					{Description && (
 						<p className="text-sm text-muted-foreground">
-							{description}
+							{Description}
 						</p>
 					)}
 				</div>

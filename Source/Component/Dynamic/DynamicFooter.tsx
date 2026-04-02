@@ -58,32 +58,32 @@ const SocialLabelRegistry: Record<SocialKey, string> = {
  * Social icons use Lucide (or inline SVG for X) with em quad (U+2001)
  * separator BEFORE each icon. Renders multi-column footer with bottom bar.
  */
-const DynamicFooter = ({ content, className }: Property) => {
-	const { brand, social, columns, bottomBar } = content;
+const DynamicFooter = ({ Content, ClassName }: Property) => {
+	const { Brand, Social, Columns, BottomBar } = Content;
 	const CurrentYear = new Date().getFullYear();
 
 	const SocialLink: Record<SocialKey, string> = {
-		github: social?.github || "#",
-		twitter: social?.twitter || "#",
-		discord: social?.discord || "#",
-		linkedin: social?.linkedin || "#",
+		github: Social?.GitHub || "#",
+		twitter: Social?.Twitter || "#",
+		discord: Social?.Discord || "#",
+		linkedin: Social?.LinkedIn || "#",
 	};
 
 	return (
-		<footer className={`bg-muted/50 border-t py-12 ${className || ""}`}>
+		<footer className={`bg-muted/50 border-t py-12 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				<div className="mb-8 grid grid-cols-2 gap-8 md:grid-cols-4">
 					{/* Brand Column */}
 					<div className="col-span-2 md:col-span-4 lg:col-span-1">
 						<h3 className="mb-2 text-lg font-semibold">
-							{brand.name}
+							{Brand.Name}
 						</h3>
-						{brand.description && (
+						{Brand.Description && (
 							<p className="mb-4 text-sm text-muted-foreground">
-								{brand.description}
+								{Brand.Description}
 							</p>
 						)}
-						{social && (
+						{Social && (
 							<div className="flex items-center">
 								{(Object.keys(SocialLink) as SocialKey[]).map(
 									(Key) => {
@@ -113,18 +113,18 @@ const DynamicFooter = ({ content, className }: Property) => {
 					</div>
 
 					{/* Dynamic Columns */}
-					{columns.map((Column, ColumnIndex) => (
+					{Columns.map((Column, ColumnIndex) => (
 						<div key={ColumnIndex}>
 							<h4 className="mb-4 font-semibold">
-								{Column.title}
+								{Column.Title}
 							</h4>
 							<ul className="space-y-2">
-								{Column.links.map((Link, LinkIndex) => (
+								{Column.Links.map((Link, LinkIndex) => (
 									<li key={LinkIndex}>
 										<a
-											href={Link.href}
+											href={Link.Href}
 											className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-											{Link.label}
+											{Link.Label}
 										</a>
 									</li>
 								))}
@@ -134,19 +134,19 @@ const DynamicFooter = ({ content, className }: Property) => {
 				</div>
 
 				{/* Bottom Bar */}
-				{bottomBar && (
+				{BottomBar && (
 					<div className="flex flex-col items-center justify-between space-y-4 border-t pt-8 md:flex-row md:space-y-0">
 						<div className="text-sm text-muted-foreground">
-							{bottomBar.copyright || (
+							{BottomBar.Copyright || (
 								<>
-									© {CurrentYear} {brand.name}. All rights
+									© {CurrentYear} {Brand.Name}. All rights
 									reserved.
 								</>
 							)}
 						</div>
-						{bottomBar.madeWith && (
+						{BottomBar.MadeWith && (
 							<div className="text-sm text-muted-foreground">
-								{brand.name}
+								{Brand.Name}
 								{"\u2001"}
 								<span aria-hidden="true">❤️</span>
 							</div>

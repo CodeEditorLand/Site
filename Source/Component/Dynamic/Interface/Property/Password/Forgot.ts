@@ -1,11 +1,11 @@
 import type ForgotPasswordContent from "../../Content/Password/Forgot.js";
 
 export default interface Interface {
-	content: ForgotPasswordContent;
-	onSubmit?: (email: string) => void;
-	onResend?: () => void;
-	onNavigate?: (path: string) => void;
-	className?: string;
-	isLoading?: boolean;
-	errorMessage?: string;
+	Content: ForgotPasswordContent;
+	OnSubmit?: (Email: string) => void;
+	OnResend?: () => void;
+	OnNavigate?: (Path: string) => void;
+	ClassName?: string;
+	IsLoading?: boolean;
+	ErrorMessage?: string;
 }

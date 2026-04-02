@@ -9,9 +9,9 @@ import type Property from "./Interface/Property/Requirement/System.js";
  * Dynamic SystemRequirements component for displaying platform requirements
  * Shows minimum and recommended specs in Card format
  */
-const DynamicSystemRequirements = ({ content, className }: Property) => {
+const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("download");
-	const { title, description, requirements } = content;
+	const { Title, Description, Requirements } = Content;
 
 	const GridReference = useRef<HTMLDivElement>(null);
 
@@ -35,7 +35,7 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 		};
 
 		ApplyScatter();
-	}, [requirements]);
+	}, [Requirements]);
 
 	const RequirementList = ({
 		items: ItemList,
@@ -46,13 +46,13 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 	}) => (
 		<div className="space-y-3">
 			{ItemList.map((Requirement) => (
-				<div key={Requirement.id} className="flex items-start">
+				<div key={Requirement.Id} className="flex items-start">
 					<div className="flex-1">
 						<span className="font-medium">
-							{Requirement.label}:
+							{Requirement.Label}:
 						</span>{" "}
 						<span className="text-muted-foreground">
-							{Requirement.value}
+							{Requirement.Value}
 						</span>
 					</div>
 					{" "}
@@ -70,16 +70,16 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 
 	return (
 		<section
-			className={`py-20 ${className || ""}`}
+			className={`py-20 ${ClassName || ""}`}
 			aria-label="System requirements">
 			<div className="container mx-auto px-4">
 				<div className="mb-16 text-center">
 					<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-						{title}
+						{Title}
 					</h2>
-					{description && (
+					{Description && (
 						<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-							{description}
+							{Description}
 						</p>
 					)}
 				</div>
@@ -96,7 +96,7 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 							)}
 						</h3>
 						<RequirementList
-							items={requirements.minimum}
+							items={Requirements.Minimum}
 							variant="minimum"
 						/>
 					</div>
@@ -107,14 +107,14 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 							{T("systemRequirements.recommended", "Recommended")}
 						</h3>
 						<RequirementList
-							items={requirements.recommended}
+							items={Requirements.Recommended}
 							variant="recommended"
 						/>
 					</div>
 				</div>
 
 				{/* OS Support */}
-				{content.os && content.os.length > 0 && (
+				{Content.Os && Content.Os.length > 0 && (
 					<div className="mt-12 text-center">
 						<h4 className="mb-4 text-lg font-semibold">
 							{T(
@@ -123,7 +123,7 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 							)}
 						</h4>
 						<div className="flex flex-wrap justify-center gap-4">
-							{content.os.map((OperatingSystem, Index) => (
+							{Content.Os.map((OperatingSystem, Index) => (
 								<span
 									key={Index}
 									className="border border-[var(--Border)] bg-secondary px-4 py-2 text-sm font-medium">

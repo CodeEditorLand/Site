@@ -4,11 +4,11 @@ import type ContentSchema from "../Schema/Content.js";
 export default interface Interface<
 	T = Record<string, unknown>,
 > extends ContentSchema {
-	columns: TableColumn<T>[];
-	data: T[];
-	striped?: boolean;
-	hoverable?: boolean;
-	bordered?: boolean;
-	compact?: boolean;
-	onRowClick?: (row: T) => void;
+	Columns: TableColumn<T>[];
+	Data: T[];
+	Striped?: boolean;
+	Hoverable?: boolean;
+	Bordered?: boolean;
+	Compact?: boolean;
+	OnRowClick?: (Row: T) => void;
 }

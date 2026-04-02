@@ -39,7 +39,7 @@ const VariantStatusColor: Record<string, string> = {
 	Development: "bg-orange-500",
 };
 
-const DynamicTransparency = ({ content, className }: Property) => {
+const DynamicTransparency = ({ Content, ClassName }: Property) => {
 	const {
 		Title,
 		Subtitle,
@@ -48,7 +48,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 		Strategy,
 		MatrixPermutation,
 		SourceURL,
-	} = content;
+	} = Content;
 
 	const SectionReference = useRef<HTMLDivElement>(null);
 
@@ -79,7 +79,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 		<section
 			id="Transparency"
 			aria-label="Build Transparency"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">

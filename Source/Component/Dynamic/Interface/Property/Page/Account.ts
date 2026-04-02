@@ -1,25 +1,25 @@
 import type Interface from "../../Content/Page/Account.js";
 
 export default interface Property {
-	content: Interface;
-	route: "signin" | "signup" | "forgot-password" | "reset-password";
-	resetToken?: string;
-	metaTitle?: string;
-	metaDescription?: string;
-	className?: string;
-	onSignIn?: (Email: string, Password: string) => void;
-	onSignUp?: (
+	Content: Interface;
+	Route: "signin" | "signup" | "forgot-password" | "reset-password";
+	ResetToken?: string;
+	MetaTitle?: string;
+	MetaDescription?: string;
+	ClassName?: string;
+	OnSignIn?: (Email: string, Password: string) => void;
+	OnSignUp?: (
 		Email: string,
 		Password: string,
 		ConfirmPassword: string,
 		TermsAccepted: boolean,
 	) => void;
-	onForgotPassword?: (Email: string) => void;
-	onResetPassword?: (
+	OnForgotPassword?: (Email: string) => void;
+	OnResetPassword?: (
 		Token: string,
 		Password: string,
 		ConfirmPassword: string,
 	) => void;
-	onOAuth?: (Provider?: string) => void;
-	onNavigate?: (Path: string) => void;
+	OnOAuth?: (Provider?: string) => void;
+	OnNavigate?: (Path: string) => void;
 }

@@ -3,7 +3,7 @@ import React from "react";
 
 import { cn } from "./Utility";
 
-const badgeVariants = cva(
+const BadgeVariants = cva(
 	"inline-flex items-center rounded-none border px-[var(--Spacing2Point5)] py-[var(--Spacing0Point5)] text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
 	{
 		variants: {
@@ -26,14 +26,14 @@ const badgeVariants = cva(
 export interface BadgeProps
 	extends
 		React.HTMLAttributes<HTMLSpanElement>,
-		VariantProps<typeof badgeVariants> {}
+		VariantProps<typeof BadgeVariants> {}
 
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 	({ className, variant, ...props }, ref) => {
 		return (
 			<span
 				ref={ref}
-				className={cn(badgeVariants({ variant }), className)}
+				className={cn(BadgeVariants({ variant }), className)}
 				{...props}
 			/>
 		);
@@ -42,4 +42,4 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 
 Badge.displayName = "Badge";
 
-export { badgeVariants };
+export { BadgeVariants };

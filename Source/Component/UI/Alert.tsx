@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { cn } from "./Utility";
 
-const alertVariants = cva(
+const AlertVariants = cva(
 	"relative w-full rounded-none border px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--Spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
 	{
 		variants: {
@@ -23,12 +23,12 @@ function Alert({
 	className,
 	variant,
 	...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+}: React.ComponentProps<"div"> & VariantProps<typeof AlertVariants>) {
 	return (
 		<div
 			data-slot="alert"
 			role="alert"
-			className={cn(alertVariants({ variant }), className)}
+			className={cn(AlertVariants({ variant }), className)}
 			{...props}
 		/>
 	);

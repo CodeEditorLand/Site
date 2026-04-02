@@ -16,22 +16,22 @@ import type Property from "./Interface/Property/Password/Forgot.js";
  * Renders email form, success state, and resend functionality
  */
 const DynamicForgotPassword = ({
-	content,
-	onSubmit,
-	onResend,
-	onNavigate,
-	className,
-	isLoading = false,
-	errorMessage,
+	Content,
+	OnSubmit,
+	OnResend,
+	OnNavigate,
+	ClassName,
+	IsLoading = false,
+	ErrorMessage,
 }: Property) => {
 	const {
-		title,
-		description,
-		emailField,
-		submitButton,
-		resendButton,
-		successMessage,
-	} = content;
+		Title,
+		Description,
+		EmailField,
+		SubmitButton,
+		ResendButton,
+		SuccessMessage,
+	} = Content;
 	const [Email, SetEmail] = useState("");
 	const [IsSubmitted, SetIsSubmitted] = useState(false);
 	const [InternalError, SetInternalError] = useState("");
@@ -47,7 +47,7 @@ const DynamicForgotPassword = ({
 			return;
 		}
 
-		onSubmit?.(Email);
+		OnSubmit?.(Email);
 		SetIsSubmitted(true);
 		SetInternalError("");
 	};
@@ -55,11 +55,11 @@ const DynamicForgotPassword = ({
 	return (
 		<section className="py-20" aria-label="Forgot password">
 			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${className}`}>
+				<div className={`mx-auto max-w-md ${ClassName}`}>
 					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 						<CardHeader className="space-y-1 text-center">
-							<CardTitle className="text-2xl">{title}</CardTitle>
-							<CardDescription>{description}</CardDescription>
+							<CardTitle className="text-2xl">{Title}</CardTitle>
+							<CardDescription>{Description}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							{!IsSubmitted ? (
@@ -68,30 +68,30 @@ const DynamicForgotPassword = ({
 									onSubmit={HandleSubmit}
 									aria-label="Password reset request form">
 									<div aria-live="polite" aria-atomic="true">
-										{(errorMessage || InternalError) && (
+										{(ErrorMessage || InternalError) && (
 											<div
 												className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
 												role="alert">
-												{errorMessage || InternalError}
+												{ErrorMessage || InternalError}
 											</div>
 										)}
 									</div>
 
 									<DynamicInput
-										content={{
-											...emailField,
-											onChange: SetEmail,
+										Content={{
+											...EmailField,
+											OnChange: SetEmail,
 										}}
-										id="email"
+										Id="email"
 									/>
 
 									<DynamicButton
-										content={{
-											...submitButton,
-											type: "submit",
-											fullWidth: true,
+										Content={{
+											...SubmitButton,
+											Type: "submit",
+											FullWidth: true,
 										}}
-										isLoading={isLoading}
+										IsLoading={IsLoading}
 									/>
 								</form>
 							) : (
@@ -121,20 +121,20 @@ const DynamicForgotPassword = ({
 											Check your email
 										</h3>
 										<p className="text-muted-foreground">
-											{successMessage ||
+											{SuccessMessage ||
 												"We've sent a password reset link to your email address."}
 										</p>
 									</div>
 
-									{resendButton && (
+									{ResendButton && (
 										<div className="border-t border-border pt-4">
 											<DynamicButton
-												content={{
-													...resendButton,
-													variant: "outline",
-													fullWidth: true,
+												Content={{
+													...ResendButton,
+													Variant: "outline",
+													FullWidth: true,
 												}}
-												onAction={() => onResend?.()}
+												OnAction={() => OnResend?.()}
 											/>
 											<p className="mt-2 text-xs text-muted-foreground">
 												Didn't receive the email?
@@ -147,7 +147,7 @@ const DynamicForgotPassword = ({
 											type="button"
 											className="font-medium text-primary hover:underline"
 											onClick={() =>
-												onNavigate?.("/Account/SignIn")
+												OnNavigate?.("/Account/SignIn")
 											}>
 											Back to Sign In
 										</button>

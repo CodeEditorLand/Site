@@ -3,16 +3,16 @@ import type CheckboxContent from "./Checkbox.js";
 import type InputContent from "./Input.js";
 
 export default interface Interface {
-	title: string;
-	description: string;
-	emailField: InputContent;
-	passwordField: InputContent;
-	confirmPasswordField: InputContent;
-	termsCheckbox: CheckboxContent;
-	submitButton: ButtonContent;
-	oauthButtons?: ButtonContent[];
-	showDivider?: boolean;
-	footerLinks?: {
-		signIn?: { label: string; href: string };
+	Title: string;
+	Description: string;
+	EmailField: InputContent;
+	PasswordField: InputContent;
+	ConfirmPasswordField: InputContent;
+	TermsCheckbox: CheckboxContent;
+	SubmitButton: ButtonContent;
+	OauthButtons?: ButtonContent[];
+	ShowDivider?: boolean;
+	FooterLinks?: {
+		SignIn?: { Label: string; Href: string };
 	};
 }

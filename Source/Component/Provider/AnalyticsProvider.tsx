@@ -84,16 +84,16 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 	);
 };
 
-const useAnalytics = () => {
+const UseAnalytics = () => {
 	const Context = useContext(AnalyticsContext);
 	if (!Context) {
 		throw new Error(
-			"useAnalytics must be used within an AnalyticsProvider",
+			"UseAnalytics must be used within an AnalyticsProvider",
 		);
 	}
 	return Context;
 };
 
-export { AnalyticsProvider, useAnalytics };
+export { AnalyticsProvider, UseAnalytics };
 
 export default AnalyticsProvider;

@@ -13,18 +13,18 @@ import type Property from "./Interface/Property/Table.js";
  * Composes Table compound components based on columns and data
  */
 const DynamicTable = <T extends Record<string, unknown>>({
-	content,
+	Content,
 }: Property<T>) => {
 	const {
-		columns: ColumnList,
-		data: DataList,
-		striped: Striped = false,
-		hoverable: Hoverable = false,
-		bordered: _Bordered = true,
-		compact: _Compact = false,
-		onRowClick: OnRowClick,
-		className: ClassName,
-	} = content;
+		Columns: ColumnList,
+		Data: DataList,
+		Striped = false,
+		Hoverable = false,
+		Bordered: _Bordered = true,
+		Compact: _Compact = false,
+		OnRowClick,
+		ClassName,
+	} = Content;
 
 	return (
 		<div className="overflow-x-auto">
@@ -32,8 +32,8 @@ const DynamicTable = <T extends Record<string, unknown>>({
 				<TableHeader>
 					<TableRow>
 						{ColumnList.map((Column, Index) => (
-							<TableHead key={Index} className={Column.className}>
-								{Column.header}
+							<TableHead key={Index} className={Column.ClassName}>
+								{Column.Header}
 							</TableHead>
 						))}
 					</TableRow>
@@ -47,10 +47,10 @@ const DynamicTable = <T extends Record<string, unknown>>({
 							{ColumnList.map((Column, ColumnIndex) => (
 								<TableCell
 									key={ColumnIndex}
-									className={Column.className}>
-									{Column.render
-										? Column.render(Row[Column.key], Row)
-										: String(Row[Column.key] ?? "")}
+									className={Column.ClassName}>
+									{Column.Render
+										? Column.Render(Row[Column.Key], Row)
+										: String(Row[Column.Key] ?? "")}
 								</TableCell>
 							))}
 						</TableRow>

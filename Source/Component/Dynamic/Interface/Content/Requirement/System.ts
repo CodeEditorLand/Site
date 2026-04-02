@@ -1,11 +1,11 @@
 import type RequirementItem from "../../Item/Requirement.js";
 
 export default interface Interface {
-	title: string;
-	description?: string;
-	requirements: {
-		minimum: RequirementItem[];
-		recommended: RequirementItem[];
+	Title: string;
+	Description?: string;
+	Requirements: {
+		Minimum: RequirementItem[];
+		Recommended: RequirementItem[];
 	};
-	os?: string[];
+	Os?: string[];
 }

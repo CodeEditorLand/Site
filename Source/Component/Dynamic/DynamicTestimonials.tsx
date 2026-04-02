@@ -22,8 +22,8 @@ const TestimonialColorMap: Record<string, string> = {
  * Stars shimmer with StaccatoStar. Avatars bounce with StaccatoAvatar.
  * Quotes breathe with StaccatoBreath.
  */
-const DynamicTestimonials = ({ content, className }: Property) => {
-	const { title, subtitle, testimonials, columns = 3 } = content;
+const DynamicTestimonials = ({ Content, ClassName }: Property) => {
+	const { Title, Subtitle, Testimonials, Columns = 3 } = Content;
 	const GridReference = useRef<HTMLDivElement>(null);
 
 	const ColumnClass: Record<number, string> = {
@@ -62,7 +62,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 		};
 
 		ApplyScatter();
-	}, [testimonials]);
+	}, [Testimonials]);
 
 	const RenderStars = (Rating: number = 0) => {
 		if (Rating <= 0) return null;
@@ -84,18 +84,18 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 		<section
 			id="testimonials"
 			aria-label="Architecture"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
-				{(title || subtitle) && (
+				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
-						{title && (
+						{Title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-								{title}
+								{Title}
 							</h2>
 						)}
-						{subtitle && (
+						{Subtitle && (
 							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-								{subtitle}
+								{Subtitle}
 							</p>
 						)}
 					</div>
@@ -103,31 +103,31 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 
 				<div
 					ref={GridReference}
-					className={`StaccatoMorphGap grid ${ColumnClass[columns]} mx-auto gap-8`}>
-					{testimonials.map((Testimonial) => {
+					className={`StaccatoMorphGap grid ${ColumnClass[Columns]} mx-auto gap-8`}>
+					{Testimonials.map((Testimonial) => {
 						const AccentColor =
-							TestimonialColorMap[Testimonial.id] ??
+							TestimonialColorMap[Testimonial.Id] ??
 							"var(--Primary)";
 						return (
 						<article
-							key={Testimonial.id}
+							key={Testimonial.Id}
 							className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6"
 							style={{ borderLeftColor: AccentColor, borderLeftWidth: "2px" }}>
 							<div className="mb-4">
-								{RenderStars(Testimonial.rating)}
+								{RenderStars(Testimonial.Rating)}
 							</div>
 							<blockquote className="StaccatoBreath mb-6 flex-1">
 								<p className="text-lg">
-									{(Testimonial.rating ?? 0) > 0
-										? `\u201C${Testimonial.quote}\u201D`
-										: Testimonial.quote}
+									{(Testimonial.Rating ?? 0) > 0
+										? `\u201C${Testimonial.Quote}\u201D`
+										: Testimonial.Quote}
 								</p>
 							</blockquote>
 							<div className="flex items-center gap-4">
-								{Testimonial.avatar ? (
+								{Testimonial.Avatar ? (
 									<img
-										src={Testimonial.avatar}
-										alt={`Photo of ${Testimonial.author}`}
+										src={Testimonial.Avatar}
+										alt={`Photo of ${Testimonial.Author}`}
 										width="48"
 										height="48"
 										className="StaccatoAvatar size-12 rounded-none border border-[var(--Border)] object-cover"
@@ -138,7 +138,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 										className="StaccatoAvatar flex size-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
 										aria-hidden="true">
 										<span className="text-lg font-semibold">
-											{(Testimonial.author || "?").charAt(
+											{(Testimonial.Author || "?").charAt(
 												0,
 											)}
 										</span>
@@ -146,16 +146,16 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 								)}
 								<div>
 									<cite className="font-semibold not-italic">
-										{Testimonial.author}
+										{Testimonial.Author}
 									</cite>
-									{(Testimonial.role ||
-										Testimonial.company) && (
+									{(Testimonial.Role ||
+										Testimonial.Company) && (
 										<p className="StaccatoBreath text-sm text-muted-foreground whitespace-pre-line">
-											{Testimonial.role}
-											{Testimonial.role &&
-												Testimonial.company &&
+											{Testimonial.Role}
+											{Testimonial.Role &&
+												Testimonial.Company &&
 												", "}
-											{Testimonial.company}
+											{Testimonial.Company}
 										</p>
 									)}
 								</div>

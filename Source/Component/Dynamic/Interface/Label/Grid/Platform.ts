@@ -1,8 +1,8 @@
 export default interface Interface {
-	version?: string;
-	size?: string;
-	requirements?: string;
-	loading?: string;
-	errorTitle?: string;
-	downloadFailed?: string;
+	Version?: string;
+	Size?: string;
+	Requirements?: string;
+	Loading?: string;
+	ErrorTitle?: string;
+	DownloadFailed?: string;
 }

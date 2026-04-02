@@ -1,7 +1,7 @@
 import type CardSection from "../Section/Card.js";
 
 export default interface Interface {
-	sections: CardSection;
-	className?: string;
-	onClick?: () => void;
+	Sections: CardSection;
+	ClassName?: string;
+	OnClick?: () => void;
 }

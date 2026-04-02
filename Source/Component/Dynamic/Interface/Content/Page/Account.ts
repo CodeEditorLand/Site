@@ -5,10 +5,10 @@ import type SignInContent from "../SignIn.js";
 import type SignUpContent from "../SignUp.js";
 
 export default interface Interface {
-	signIn: SignInContent;
-	signUp: SignUpContent;
-	forgotPassword: ForgotPasswordContent;
-	resetPassword: ResetPasswordContent;
-	header?: HeaderContent;
-	footer?: Record<string, unknown>;
+	SignIn: SignInContent;
+	SignUp: SignUpContent;
+	ForgotPassword: ForgotPasswordContent;
+	ResetPassword: ResetPasswordContent;
+	Header?: HeaderContent;
+	Footer?: Record<string, unknown>;
 }

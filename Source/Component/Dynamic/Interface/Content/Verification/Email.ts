@@ -1,25 +1,25 @@
 import type ButtonContent from "../Button.js";
 
 export default interface Interface {
-	pending: {
-		title: string;
-		description: string;
-		emailSentMessage?: string;
-		resendButton: ButtonContent;
-		resendSuccessMessage?: string;
+	Pending: {
+		Title: string;
+		Description: string;
+		EmailSentMessage?: string;
+		ResendButton: ButtonContent;
+		ResendSuccessMessage?: string;
 	};
-	verifying?: {
-		title?: string;
-		description?: string;
+	Verifying?: {
+		Title?: string;
+		Description?: string;
 	};
-	success: {
-		title: string;
-		description: string;
-		continueButton: ButtonContent;
+	Success: {
+		Title: string;
+		Description: string;
+		ContinueButton: ButtonContent;
 	};
-	error: {
-		title: string;
-		description: string;
-		backToSignInButton: ButtonContent;
+	Error: {
+		Title: string;
+		Description: string;
+		BackToSignInButton: ButtonContent;
 	};
 }

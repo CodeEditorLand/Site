@@ -1,8 +1,8 @@
 export default interface Interface {
-	monthly?: string;
-	yearly?: string;
-	savings?: string;
-	popular?: string;
-	perMonth?: string;
-	perYear?: string;
+	Monthly?: string;
+	Yearly?: string;
+	Savings?: string;
+	Popular?: string;
+	PerMonth?: string;
+	PerYear?: string;
 }

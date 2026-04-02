@@ -19,30 +19,30 @@ import type { default as VerificationState } from "./Type/State/Verification.js"
  * Auto-verifies if token present in URL, otherwise shows pending state with resend
  */
 const DynamicEmailVerification = ({
-	content,
-	token: PropToken,
-	userEmail,
-	onVerify,
-	onResend,
-	onNavigate,
-	className,
+	Content,
+	Token: PropToken,
+	UserEmail,
+	OnVerify,
+	OnResend,
+	OnNavigate,
+	ClassName,
 }: Property) => {
 	const { t: T } = useTranslation("verify");
 	const [State, SetState] = useState<VerificationState>("pending");
 	const [, SetToken] = useState<string>(PropToken || "");
-	const [Email, SetEmail] = useState<string>(userEmail || "");
+	const [Email, SetEmail] = useState<string>(UserEmail || "");
 	const [ErrorMessage, SetErrorMessage] = useState("");
 	const [ResendSuccess, SetResendSuccess] = useState(false);
 
 	const HandleVerify = useCallback(
 		async (VerifyToken: string) => {
 			try {
-				const Success = onVerify ? await onVerify(VerifyToken) : true; // Mock success for demo
+				const Success = OnVerify ? await OnVerify(VerifyToken) : true; // Mock success for demo
 				if (Success) {
 					SetState("success");
 				} else {
 					SetState("error");
-					SetErrorMessage(content.error.description);
+					SetErrorMessage(Content.Error.Description);
 				}
 			} catch {
 				SetState("error");
@@ -54,7 +54,7 @@ const DynamicEmailVerification = ({
 				);
 			}
 		},
-		[onVerify, content.error.description],
+		[OnVerify, Content.Error.Description],
 	);
 
 	// Auto-verify if token in URL
@@ -72,7 +72,7 @@ const DynamicEmailVerification = ({
 	const HandleResend = async () => {
 		if (!Email) return;
 		try {
-			(await onResend?.(Email)) || Promise.resolve(true);
+			(await OnResend?.(Email)) || Promise.resolve(true);
 			SetResendSuccess(true);
 			setTimeout(() => SetResendSuccess(false), 5000);
 		} catch {
@@ -91,49 +91,49 @@ const DynamicEmailVerification = ({
 					<lucide.Mail className="h-6 w-6 text-primary" aria-hidden="true" />
 				</div>
 				<CardTitle className="text-2xl">
-					{content.pending.title}
+					{Content.Pending.Title}
 				</CardTitle>
-				<CardDescription>{content.pending.description}</CardDescription>
+				<CardDescription>{Content.Pending.Description}</CardDescription>
 			</CardHeader>
 			<CardContent className="space-y-6">
 				<div className="space-y-4">
 					<DynamicInput
-						content={{
-							label: T("emailLabel", { defaultValue: "Email" }),
-							placeholder: T("emailPlaceholder", {
+						Content={{
+							Label: T("emailLabel", { defaultValue: "Email" }),
+							Placeholder: T("emailPlaceholder", {
 								defaultValue:
 									"Enter your email to resend verification",
 							}),
-							type: "email",
-							value: Email,
-							onChange: SetEmail,
+							Type: "email",
+							Value: Email,
+							OnChange: SetEmail,
 						}}
-						id="email"
+						Id="email"
 					/>
 
 					<DynamicButton
-						content={{
-							...content.pending.resendButton,
-							fullWidth: true,
-							disabled: !Email,
+						Content={{
+							...Content.Pending.ResendButton,
+							FullWidth: true,
+							Disabled: !Email,
 						}}
-						onAction={HandleResend}
+						OnAction={HandleResend}
 					/>
 
 					{ResendSuccess && (
 						<p
 							className="text-center text-xs text-green-600"
 							role="status">
-							{content.pending.resendSuccessMessage ||
+							{Content.Pending.ResendSuccessMessage ||
 								T("resendSuccess", {
 									defaultValue: "Verification email resent!",
 								})}
 						</p>
 					)}
 
-					{content.pending.emailSentMessage && (
+					{Content.Pending.EmailSentMessage && (
 						<p className="text-center text-xs text-muted-foreground">
-							{content.pending.emailSentMessage}
+							{Content.Pending.EmailSentMessage}
 						</p>
 					)}
 				</div>
@@ -150,13 +150,13 @@ const DynamicEmailVerification = ({
 					<div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
 				</div>
 				<CardTitle>
-					{content.verifying?.title ||
+					{Content.Verifying?.Title ||
 						T("verifying.title", {
 							defaultValue: "Verifying your email",
 						})}
 				</CardTitle>
 				<CardDescription role="status">
-					{content.verifying?.description ||
+					{Content.Verifying?.Description ||
 						T("verifying.description", {
 							defaultValue:
 								"Please wait while we verify your email address...",
@@ -170,15 +170,15 @@ const DynamicEmailVerification = ({
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<DynamicButton
-					content={{
-						...content.success.continueButton,
-						fullWidth: true,
+					Content={{
+						...Content.Success.ContinueButton,
+						FullWidth: true,
 					}}
-					onAction={() => onNavigate?.("/")}
+					OnAction={() => OnNavigate?.("/")}
 				/>
 				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">
-						{content.success.title}
+						{Content.Success.Title}
 					</CardTitle>
 					{" "}
 					<lucide.CheckCircle
@@ -187,7 +187,7 @@ const DynamicEmailVerification = ({
 					/>
 				</div>
 				<CardDescription className="text-xs">
-					{content.success.description}
+					{Content.Success.Description}
 				</CardDescription>
 			</CardHeader>
 		</Card>
@@ -197,15 +197,15 @@ const DynamicEmailVerification = ({
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<DynamicButton
-					content={{
-						...content.error.backToSignInButton,
-						fullWidth: true,
+					Content={{
+						...Content.Error.BackToSignInButton,
+						FullWidth: true,
 					}}
-					onAction={() => onNavigate?.("/Account/SignIn")}
+					OnAction={() => OnNavigate?.("/Account/SignIn")}
 				/>
 				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">
-						{content.error.title}
+						{Content.Error.Title}
 					</CardTitle>
 					{" "}
 					<lucide.XCircle
@@ -214,7 +214,7 @@ const DynamicEmailVerification = ({
 					/>
 				</div>
 				<CardDescription className="text-xs">
-					{ErrorMessage || content.error.description}
+					{ErrorMessage || Content.Error.Description}
 				</CardDescription>
 			</CardHeader>
 		</Card>
@@ -224,7 +224,7 @@ const DynamicEmailVerification = ({
 		<section className="py-20" aria-label="Email verification">
 			<div className="container mx-auto px-4">
 				<div
-					className={`mx-auto max-w-md ${className}`}
+					className={`mx-auto max-w-md ${ClassName}`}
 					aria-live="polite">
 					{State === "pending" && RenderPending()}
 					{State === "verifying" && RenderVerifying()}

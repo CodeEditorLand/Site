@@ -18,24 +18,24 @@ import type { default as ResetState } from "./Type/State/Reset.js";
  * Supports 4 states: checking, valid (form), invalid (error), success
  */
 const DynamicResetPassword = ({
-	content,
-	token: PropToken,
-	onReset,
-	onNavigate,
-	className,
-	isLoading = false,
-	errorMessage,
+	Content,
+	Token: PropToken,
+	OnReset,
+	OnNavigate,
+	ClassName,
+	IsLoading = false,
+	ErrorMessage,
 }: Property) => {
 	const {
-		title,
-		description,
-		passwordField,
-		confirmPasswordField,
-		submitButton,
-		successMessage,
-		invalidTokenMessage,
-		checkingMessage,
-	} = content;
+		Title,
+		Description,
+		PasswordField,
+		ConfirmPasswordField,
+		SubmitButton,
+		SuccessMessage,
+		InvalidTokenMessage,
+		CheckingMessage,
+	} = Content;
 
 	const [State, SetState] = useState<ResetState>("checking");
 	const [Token, SetToken] = useState<string>(PropToken || "");
@@ -90,7 +90,7 @@ const DynamicResetPassword = ({
 	const HandleSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
 		if (Validate() && Token) {
-			onReset?.(Token, Password, ConfirmPassword);
+			OnReset?.(Token, Password, ConfirmPassword);
 			SetState("success");
 		}
 	};
@@ -100,7 +100,7 @@ const DynamicResetPassword = ({
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
-						className={`mx-auto max-w-md text-center ${className}`}>
+						className={`mx-auto max-w-md text-center ${ClassName}`}>
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" aria-live="polite">
@@ -110,7 +110,7 @@ const DynamicResetPassword = ({
 									<p
 										className="text-muted-foreground"
 										role="status">
-										{checkingMessage ||
+										{CheckingMessage ||
 											"Validating reset token..."}
 									</p>
 								</div>
@@ -127,18 +127,18 @@ const DynamicResetPassword = ({
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
-						className={`mx-auto max-w-md text-center ${className}`}>
+						className={`mx-auto max-w-md text-center ${ClassName}`}>
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" role="alert">
 									<DynamicButton
-										content={{
-											text: "Back to Sign In",
-											variant: "default",
-											fullWidth: true,
+										Content={{
+											Text: "Back to Sign In",
+											Variant: "default",
+											FullWidth: true,
 										}}
-										onAction={() =>
-											onNavigate?.("/Account/SignIn")
+										OnAction={() =>
+											OnNavigate?.("/Account/SignIn")
 										}
 									/>
 									<div className="flex items-center justify-center">
@@ -152,7 +152,7 @@ const DynamicResetPassword = ({
 										/>
 									</div>
 									<p className="text-xs text-muted-foreground">
-										{invalidTokenMessage ||
+										{InvalidTokenMessage ||
 											"This password reset link is invalid or has expired. Please request a new one."}
 									</p>
 								</div>
@@ -169,7 +169,7 @@ const DynamicResetPassword = ({
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
-						className={`mx-auto max-w-md text-center ${className}`}>
+						className={`mx-auto max-w-md text-center ${ClassName}`}>
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div
@@ -177,13 +177,13 @@ const DynamicResetPassword = ({
 									role="status"
 									aria-live="polite">
 									<DynamicButton
-										content={{
-											text: "Go to Sign In",
-											variant: "default",
-											fullWidth: true,
+										Content={{
+											Text: "Go to Sign In",
+											Variant: "default",
+											FullWidth: true,
 										}}
-										onAction={() =>
-											onNavigate?.("/Account/SignIn")
+										OnAction={() =>
+											OnNavigate?.("/Account/SignIn")
 										}
 									/>
 									<div className="flex items-center justify-center">
@@ -197,7 +197,7 @@ const DynamicResetPassword = ({
 										/>
 									</div>
 									<p className="text-xs text-muted-foreground">
-										{successMessage ||
+										{SuccessMessage ||
 											"Your password has been reset successfully. You can now sign in with your new password."}
 									</p>
 								</div>
@@ -213,11 +213,11 @@ const DynamicResetPassword = ({
 	return (
 		<section className="py-20" aria-label="Reset password">
 			<div className="container mx-auto px-4">
-				<div className={`mx-auto max-w-md ${className}`}>
+				<div className={`mx-auto max-w-md ${ClassName}`}>
 					<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 						<CardHeader className="space-y-1 text-center">
-							<CardTitle className="text-2xl">{title}</CardTitle>
-							<CardDescription>{description}</CardDescription>
+							<CardTitle className="text-2xl">{Title}</CardTitle>
+							<CardDescription>{Description}</CardDescription>
 						</CardHeader>
 						<CardContent>
 							<form
@@ -225,31 +225,31 @@ const DynamicResetPassword = ({
 								onSubmit={HandleSubmit}
 								aria-label="Reset password form">
 								<div aria-live="polite" aria-atomic="true">
-									{errorMessage && (
+									{ErrorMessage && (
 										<div
 											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
 											role="alert">
-											{errorMessage}
+											{ErrorMessage}
 										</div>
 									)}
 								</div>
 
 								<DynamicInput
-									content={{
-										...passwordField,
-										type: "password",
-										onChange: SetPassword,
+									Content={{
+										...PasswordField,
+										Type: "password",
+										OnChange: SetPassword,
 									}}
-									id="password"
+									Id="password"
 								/>
 
 								<DynamicInput
-									content={{
-										...confirmPasswordField,
-										type: "password",
-										onChange: SetConfirmPassword,
+									Content={{
+										...ConfirmPasswordField,
+										Type: "password",
+										OnChange: SetConfirmPassword,
 									}}
-									id="confirmPassword"
+									Id="confirmPassword"
 								/>
 
 								{(Errors.password ||
@@ -269,12 +269,12 @@ const DynamicResetPassword = ({
 								)}
 
 								<DynamicButton
-									content={{
-										...submitButton,
-										type: "submit",
-										fullWidth: true,
+									Content={{
+										...SubmitButton,
+										Type: "submit",
+										FullWidth: true,
 									}}
-									isLoading={isLoading}
+									IsLoading={IsLoading}
 								/>
 							</form>
 						</CardContent>

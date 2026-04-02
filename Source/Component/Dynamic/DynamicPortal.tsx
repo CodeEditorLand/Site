@@ -308,18 +308,18 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			})}>
 			<form onSubmit={HandleDomainSubmit} className="space-y-3">
 				<DynamicInput
-					content={{
-						label: T("portal.enterprise.domainLabel", {
+					Content={{
+						Label: T("portal.enterprise.domainLabel", {
 							defaultValue: "Work Email or Domain",
 						}),
-						placeholder: T("portal.enterprise.domainPlaceholder", {
+						Placeholder: T("portal.enterprise.domainPlaceholder", {
 							defaultValue: "name@company.com",
 						}),
-						type: "email",
-						required: false,
-						onChange: SetOrganizationDomain,
+						Type: "email",
+						Required: false,
+						OnChange: SetOrganizationDomain,
 					}}
-					id="portal-enterprise-domain"
+					Id="portal-enterprise-domain"
 				/>
 				<Button
 					type="submit"
@@ -340,18 +340,18 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			<div className="PortalTierDivider StaccatoSeparator" />
 
 			<DynamicInput
-				content={{
-					label: T("portal.enterprise.oktaDomainLabel", {
+				Content={{
+					Label: T("portal.enterprise.oktaDomainLabel", {
 						defaultValue: "Okta Domain",
 					}),
-					placeholder: T("portal.enterprise.oktaDomainPlaceholder", {
+					Placeholder: T("portal.enterprise.oktaDomainPlaceholder", {
 						defaultValue: "your-org.okta.com",
 					}),
-					type: "text",
-					required: false,
-					onChange: SetOktaDomain,
+					Type: "text",
+					Required: false,
+					OnChange: SetOktaDomain,
 				}}
-				id="portal-enterprise-okta-domain"
+				Id="portal-enterprise-okta-domain"
 			/>
 			<Button
 				className="StaccatoButton w-full"
@@ -377,18 +377,18 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			</Button>
 
 			<DynamicInput
-				content={{
-					label: T("portal.enterprise.azureTenantLabel", {
+				Content={{
+					Label: T("portal.enterprise.azureTenantLabel", {
 						defaultValue: "Azure AD Tenant ID",
 					}),
-					placeholder: T("portal.enterprise.azureTenantPlaceholder", {
+					Placeholder: T("portal.enterprise.azureTenantPlaceholder", {
 						defaultValue: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 					}),
-					type: "text",
-					required: false,
-					onChange: SetAzureTenant,
+					Type: "text",
+					Required: false,
+					OnChange: SetAzureTenant,
 				}}
-				id="portal-enterprise-azure-tenant"
+				Id="portal-enterprise-azure-tenant"
 			/>
 			<Button
 				className="StaccatoButton w-full"
@@ -414,21 +414,21 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			</Button>
 
 			<DynamicInput
-				content={{
-					label: T("portal.enterprise.samlMetadataLabel", {
+				Content={{
+					Label: T("portal.enterprise.samlMetadataLabel", {
 						defaultValue: "SAML Metadata URL",
 					}),
-					placeholder: T(
+					Placeholder: T(
 						"portal.enterprise.samlMetadataPlaceholder",
 						{
 							defaultValue: "https://your-idp.com/metadata.xml",
 						},
 					),
-					type: "url",
-					required: false,
-					onChange: SetSamlMetadata,
+					Type: "url",
+					Required: false,
+					OnChange: SetSamlMetadata,
 				}}
-				id="portal-enterprise-saml-metadata"
+				Id="portal-enterprise-saml-metadata"
 			/>
 			<Button
 				className="StaccatoButton w-full"
@@ -551,39 +551,39 @@ const PortalTierRow = ({
 								}}
 								aria-label="Cloud sign in form">
 								<DynamicInput
-									content={{
-										label: T("portal.cloud.emailLabel", {
+									Content={{
+										Label: T("portal.cloud.emailLabel", {
 											defaultValue: "Email",
 										}),
-										placeholder: T(
+										Placeholder: T(
 											"portal.cloud.emailPlaceholder",
 											{
 												defaultValue: "name@example.com",
 											},
 										),
-										type: "email",
-										required: true,
-										onChange: SetEmail,
+										Type: "email",
+										Required: true,
+										OnChange: SetEmail,
 									}}
-									id="portal-cloud-email"
+									Id="portal-cloud-email"
 								/>
 								<DynamicInput
-									content={{
-										label: T("portal.cloud.passwordLabel", {
+									Content={{
+										Label: T("portal.cloud.passwordLabel", {
 											defaultValue: "Password",
 										}),
-										placeholder: T(
+										Placeholder: T(
 											"portal.cloud.passwordPlaceholder",
 											{
 												defaultValue:
 													"Enter your password",
 											},
 										),
-										type: "password",
-										required: true,
-										onChange: SetPassword,
+										Type: "password",
+										Required: true,
+										OnChange: SetPassword,
 									}}
-									id="portal-cloud-password"
+									Id="portal-cloud-password"
 								/>
 								<Button
 									type="submit"

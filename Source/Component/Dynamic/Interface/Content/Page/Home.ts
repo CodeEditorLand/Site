@@ -6,11 +6,11 @@ import type PricingContent from "../Pricing.js";
 import type TestimonialsContent from "../Testimonial.js";
 
 export default interface Interface {
-	hero: HeroContent;
-	features: FeaturesContent;
-	pricing: PricingContent;
-	testimonials: TestimonialsContent;
-	download: PlatformGridContent;
-	header?: HeaderContent;
-	footer?: Record<string, unknown>;
+	Hero: HeroContent;
+	Features: FeaturesContent;
+	Pricing: PricingContent;
+	Testimonials: TestimonialsContent;
+	Download: PlatformGridContent;
+	Header?: HeaderContent;
+	Footer?: Record<string, unknown>;
 }

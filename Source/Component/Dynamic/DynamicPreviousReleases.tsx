@@ -5,8 +5,8 @@ import { DynamicTable } from "./DynamicTable";
 import type Property from "./Interface/Property/Release/Previous.js";
 import type ReleaseVersion from "./Interface/Version/Release.js";
 
-const DynamicPreviousReleases = ({ content, className }: Property) => {
-	const { title, description, releases, showChangelog = true } = content;
+const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
+	const { Title, Description, Releases, ShowChangelog = true } = Content;
 	const SectionReference = useRef<HTMLElement>(null);
 
 	useEffect(() => {
@@ -28,20 +28,20 @@ const DynamicPreviousReleases = ({ content, className }: Property) => {
 		ApplyScatter();
 	}, []);
 
-	const Columns = [
+	const ColumnDefinitions = [
 		{
-			key: "version" as const,
-			header: "Version",
-			render: (Value: unknown, _Row: ReleaseVersion) => (
+			Key: "Version" as const,
+			Header: "Version",
+			Render: (Value: unknown, _Row: ReleaseVersion) => (
 				<span className="font-semibold text-primary">
 					{String(Value)}
 				</span>
 			),
 		},
 		{
-			key: "publishedAt" as const,
-			header: "Published",
-			render: (Value: unknown) => (
+			Key: "PublishedAt" as const,
+			Header: "Published",
+			Render: (Value: unknown) => (
 				<time dateTime={String(Value)}>
 					{new Date(String(Value)).toLocaleDateString("en-US", {
 						year: "numeric",
@@ -52,57 +52,57 @@ const DynamicPreviousReleases = ({ content, className }: Property) => {
 			),
 		},
 		{
-			key: "size" as const,
-			header: "Size",
-			render: (Value: unknown) => (
+			Key: "Size" as const,
+			Header: "Size",
+			Render: (Value: unknown) => (
 				<span className="text-muted-foreground">{String(Value)}</span>
 			),
 		},
 		{
-			key: "downloads" as const,
-			header: "Downloads",
-			render: (Value: unknown) => (
+			Key: "Downloads" as const,
+			Header: "Downloads",
+			Render: (Value: unknown) => (
 				<span className="text-muted-foreground">
 					{(Value as number).toLocaleString()}
 				</span>
 			),
 		},
 		{
-			key: "actions" as const,
-			header: "",
-			render: (_Value: unknown, Row: ReleaseVersion) => (
+			Key: "actions" as const,
+			Header: "",
+			Render: (_Value: unknown, Row: ReleaseVersion) => (
 				<div className="flex gap-2">
-					{Row.assets.map((Asset) => (
+					{Row.Assets.map((Asset) => (
 						<DynamicButton
-							key={Asset.platform}
-							content={{
-								text: Asset.platform,
-								variant: "outline",
-								size: "sm",
-								icon:
-									Asset.platform === "macOS"
+							key={Asset.Platform}
+							Content={{
+								Text: Asset.Platform,
+								Variant: "outline",
+								Size: "sm",
+								Icon:
+									Asset.Platform === "macOS"
 										? "Apple"
-										: Asset.platform === "Windows"
+										: Asset.Platform === "Windows"
 											? "Monitor"
 											: "Terminal",
 							}}
-							onAction={() =>
-								content.onDownload?.(
-									Row.version,
-									Asset.platform,
+							OnAction={() =>
+								Content.OnDownload?.(
+									Row.Version,
+									Asset.Platform,
 								)
 							}
 						/>
 					))}
-					{showChangelog && Row.changelog && (
+					{ShowChangelog && Row.Changelog && (
 						<DynamicButton
-							content={{
-								text: "Changelog",
-								variant: "ghost",
-								size: "sm",
+							Content={{
+								Text: "Changelog",
+								Variant: "ghost",
+								Size: "sm",
 							}}
-							onAction={() =>
-								content.onViewChangelog?.(Row.version)
+							OnAction={() =>
+								Content.OnViewChangelog?.(Row.Version)
 							}
 						/>
 					)}
@@ -114,19 +114,19 @@ const DynamicPreviousReleases = ({ content, className }: Property) => {
 	return (
 		<section
 			ref={SectionReference}
-			className={`py-20 ${className || ""}`}
+			className={`py-20 ${ClassName || ""}`}
 			aria-label="Previous releases">
 			<div className="container mx-auto px-4">
-				{(title || description) && (
+				{(Title || Description) && (
 					<div className="mb-16 text-center">
-						{title && (
+						{Title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-								{title}
+								{Title}
 							</h2>
 						)}
-						{description && (
+						{Description && (
 							<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-								{description}
+								{Description}
 							</p>
 						)}
 					</div>
@@ -134,13 +134,13 @@ const DynamicPreviousReleases = ({ content, className }: Property) => {
 
 				<div className="StaccatoCard StaccatoBorderShimmer mx-auto max-w-5xl overflow-hidden rounded-none border border-[var(--Border)] bg-white">
 					<DynamicTable<ReleaseVersion>
-						content={{
-							columns: Columns,
-							data: releases,
-							striped: true,
-							hoverable: true,
-							bordered: false, // Table already has outer border
-							compact: false,
+						Content={{
+							Columns: ColumnDefinitions,
+							Data: Releases,
+							Striped: true,
+							Hoverable: true,
+							Bordered: false, // Table already has outer border
+							Compact: false,
 						}}
 					/>
 				</div>

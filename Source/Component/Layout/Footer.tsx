@@ -9,88 +9,88 @@ import { Separator } from "../UI/Separator";
 import "./Footer/Stylesheet.css";
 
 interface FooterColumn {
-	title: string;
-	links: Array<{ label: string; href: string }>;
+	Title: string;
+	Links: Array<{ Label: string; Href: string }>;
 }
 
 interface FooterContent {
-	brand?: { name: string; description?: string };
-	columns?: FooterColumn[];
-	bottomBar?: { madeWith?: boolean; copyright?: string };
+	Brand?: { Name: string; Description?: string };
+	Columns?: FooterColumn[];
+	BottomBar?: { MadeWith?: boolean; Copyright?: string };
 }
 
 interface FooterProps {
-	content?: FooterContent;
+	Content?: FooterContent;
 }
 
-const Footer = ({ content }: FooterProps) => {
+const Footer = ({ Content }: FooterProps) => {
 	const { t: T } = useTranslation("footer");
 
-	const FooterData = content || {
-		brand: {
-			name: T("brand.name", "Land"),
-			description: T(
+	const FooterData = Content || {
+		Brand: {
+			Name: T("brand.name", "Land"),
+			Description: T(
 				"brand.description",
 				"The next-generation code editor. Open source and free forever.",
 			),
 		},
-		columns: [
+		Columns: [
 			{
-				title: T("columns.product.title", "Product"),
-				links: [
+				Title: T("columns.product.title", "Product"),
+				Links: [
 					{
-						label: T("columns.product.features", "Features"),
-						href: "/#features",
+						Label: T("columns.product.features", "Features"),
+						Href: "/#features",
 					},
 					{
-						label: T("columns.product.downloads", "Downloads"),
-						href: "/Download",
+						Label: T("columns.product.downloads", "Downloads"),
+						Href: "/Download",
 					},
 					{
-						label: T("columns.product.docs", "Docs"),
-						href: "https://github.com/CodeEditorLand/Land#readme",
+						Label: T("columns.product.docs", "Docs"),
+						Href: "https://github.com/CodeEditorLand/Land#readme",
 					},
 				],
 			},
 			{
-				title: T("columns.company.title", "Community"),
-				links: [
+				Title: T("columns.company.title", "Community"),
+				Links: [
 					{
-						label: T("columns.company.issues", "Issues"),
-						href: "https://github.com/CodeEditorLand/Land/issues",
+						Label: T("columns.company.issues", "Issues"),
+						Href: "https://github.com/CodeEditorLand/Land/issues",
 					},
 					{
-						label: T(
+						Label: T(
 							"columns.company.contributing",
 							"Contributing",
 						),
-						href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
+						Href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
 					},
 					{
-						label: T("columns.company.github", "GitHub"),
-						href: "https://github.com/CodeEditorLand/Land",
+						Label: T("columns.company.github", "GitHub"),
+						Href: "https://github.com/CodeEditorLand/Land",
 					},
 				],
 			},
 			{
-				title: T("columns.legal.title", "Legal"),
-				links: [
+				Title: T("columns.legal.title", "Legal"),
+				Links: [
 					{
-						label: T("columns.legal.privacy", "Privacy"),
-						href: "/Legal/Privacy",
+						Label: T("columns.legal.privacy", "Privacy"),
+						Href: "/Legal/Privacy",
 					},
 					{
-						label: T("columns.legal.terms", "Terms"),
-						href: "/Legal/Term",
+						Label: T("columns.legal.terms", "Terms"),
+						Href: "/Legal/Term",
 					},
 					{
-						label: T("columns.legal.license", "License"),
-						href: "/License",
+						Label: T("columns.legal.license", "License"),
+						Href: "/License",
 					},
 				],
 			},
 		],
-		bottomBar: { madeWith: true },
+		BottomBar: { MadeWith: true },
 	};
 
 	return (
@@ -101,7 +101,7 @@ const Footer = ({ content }: FooterProps) => {
 						<a
 							href="/"
 							className="mb-4 flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-							aria-label={`${FooterData.brand?.name || "Land"} - Go to homepage`}>
+							aria-label={`${FooterData.Brand?.Name || "Land"} - Go to homepage`}>
 							<img
 								src="/Asset/Logo/Glyph/Land.svg"
 								alt="Code Editor Land"
@@ -112,32 +112,32 @@ const Footer = ({ content }: FooterProps) => {
 								aria-hidden="true"
 							/>
 							<span className="font-semibold">
-								{FooterData.brand?.name || "Land"}
+								{FooterData.Brand?.Name || "Land"}
 							</span>
 						</a>
-						{FooterData.brand?.description && (
+						{FooterData.Brand?.Description && (
 							<p className="mb-6 max-w-md text-muted-foreground">
-								{FooterData.brand.description}
+								{FooterData.Brand.Description}
 							</p>
 						)}
 					</div>
 
-					{FooterData.columns?.map((Column, ColumnIndex) => (
-						<nav key={ColumnIndex} aria-label={Column.title}>
-							<h4 className="mb-4 font-medium">{Column.title}</h4>
+					{FooterData.Columns?.map((Column, ColumnIndex) => (
+						<nav key={ColumnIndex} aria-label={Column.Title}>
+							<h4 className="mb-4 font-medium">{Column.Title}</h4>
 							<ul className="space-y-2 text-sm text-muted-foreground">
-								{Column.links.map((Link, LinkIndex) => (
+								{Column.Links.map((Link, LinkIndex) => (
 									<li key={LinkIndex}>
 										<a
-											href={Link.href}
+											href={Link.Href}
 											className="StaccatoNavLink transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-											{...(Link.href.startsWith("http")
+											{...(Link.Href.startsWith("http")
 												? {
 														target: "_blank",
 														rel: "noopener noreferrer",
 													}
 												: {})}>
-											{Link.label}
+											{Link.Label}
 										</a>
 									</li>
 								))}
@@ -236,7 +236,7 @@ const Footer = ({ content }: FooterProps) => {
 							PlayForm
 							<span className="InlineSeparator">&#x2192;</span>
 						</a>
-						{FooterData.bottomBar?.madeWith && (
+						{FooterData.BottomBar?.MadeWith && (
 							<a
 								href="https://tauri.app"
 								target="_blank"

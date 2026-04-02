@@ -1,7 +1,7 @@
 export default interface Interface {
-	title?: string;
-	description?: string;
-	children: React.ReactNode;
-	className?: string;
-	onClick?: () => void;
+	Title?: string;
+	Description?: string;
+	Children: React.ReactNode;
+	ClassName?: string;
+	OnClick?: () => void;
 }

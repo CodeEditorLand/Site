@@ -6,30 +6,30 @@ import type Property from "./Interface/Property/Input.js";
  * Dynamic Input component that accepts content schema
  * Composes Label + Input with proper error/helper text states
  */
-const DynamicInput = ({ content, id: PropertyIdentifier }: Property) => {
+const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 	const {
-		label,
-		placeholder,
-		type = "text",
-		value,
-		defaultValue,
-		error,
-		disabled = false,
-		required = false,
-		helperText,
-		className,
-		onChange,
+		Label: LabelText,
+		Placeholder,
+		Type = "text",
+		Value,
+		DefaultValue,
+		Error,
+		Disabled = false,
+		Required = false,
+		HelperText,
+		ClassName,
+		OnChange,
 		...props
-	} = content;
+	} = Content;
 
 	const Identifier =
 		PropertyIdentifier ||
 		`input-${Math.random().toString(36).substr(2, 9)}`;
 	const ErrorIdentifier = `${Identifier}-error`;
 	const HelperIdentifier = `${Identifier}-helper`;
-	const DescribedBy = error
+	const DescribedBy = Error
 		? ErrorIdentifier
-		: helperText
+		: HelperText
 			? HelperIdentifier
 			: undefined;
 
@@ -37,45 +37,45 @@ const DynamicInput = ({ content, id: PropertyIdentifier }: Property) => {
 		<div className="StaccatoInput flex flex-col gap-2">
 			<Input
 				id={Identifier}
-				type={type}
-				placeholder={placeholder}
-				value={value}
-				defaultValue={defaultValue}
-				disabled={disabled}
-				required={required}
-				aria-invalid={!!error}
+				type={Type}
+				placeholder={Placeholder}
+				value={Value}
+				defaultValue={DefaultValue}
+				disabled={Disabled}
+				required={Required}
+				aria-invalid={!!Error}
 				aria-describedby={DescribedBy}
-				className={error ? "border-destructive" : className}
+				className={Error ? "border-destructive" : ClassName}
 				onChange={(Event) => {
-					if (onChange) {
-						onChange(Event.target.value);
+					if (OnChange) {
+						OnChange(Event.target.value);
 					}
-					if (content.onChange) {
-						content.onChange(Event.target.value);
+					if (Content.OnChange) {
+						Content.OnChange(Event.target.value);
 					}
 				}}
 				{...props}
 			/>
-			{label && (
+			{LabelText && (
 				<Label
 					htmlFor={Identifier}
 					className="block text-xs text-muted-foreground">
-					{label}
+					{LabelText}
 				</Label>
 			)}
-			{error && (
+			{Error && (
 				<p
 					id={ErrorIdentifier}
 					className="text-xs text-destructive"
 					role="alert">
-					{error}
+					{Error}
 				</p>
 			)}
-			{!error && helperText && (
+			{!Error && HelperText && (
 				<p
 					id={HelperIdentifier}
 					className="text-xs text-muted-foreground">
-					{helperText}
+					{HelperText}
 				</p>
 			)}
 		</div>

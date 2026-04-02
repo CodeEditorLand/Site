@@ -14,18 +14,18 @@ import type SimpleProperty from "./Interface/Property/Card/Simple.js";
  * Applies StaccatoCard + StaccatoBorderShimmer + StaccatoShadowLift
  * for organic hover lift and border breathing.
  */
-const DynamicCard = ({ sections, className, onClick }: Property) => {
+const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 	const {
-		header: HeaderSection,
-		body: BodySection,
-		footer: FooterSection,
-	} = sections;
+		Header: HeaderSection,
+		Body: BodySection,
+		Footer: FooterSection,
+	} = Sections;
 
 	return (
 		<Card
-			className={`StaccatoCard StaccatoBorderShimmer ${className || ""}`}
-			onClick={onClick}
-			style={{ cursor: onClick ? "pointer" : undefined }}>
+			className={`StaccatoCard StaccatoBorderShimmer ${ClassName || ""}`}
+			onClick={OnClick}
+			style={{ cursor: OnClick ? "pointer" : undefined }}>
 			{HeaderSection && (
 				<CardHeader>
 					{HeaderSection.title && (
@@ -66,26 +66,26 @@ export { DynamicCard };
 export default DynamicCard;
 
 export const SimpleCard = ({
-	title,
-	description,
-	children,
-	className,
-	onClick,
+	Title,
+	Description,
+	Children,
+	ClassName,
+	OnClick,
 }: SimpleProperty) => {
 	return (
 		<Card
-			className={`StaccatoCard StaccatoBorderShimmer ${className || ""}`}
-			onClick={onClick}
-			style={{ cursor: onClick ? "pointer" : undefined }}>
-			{(title || description) && (
+			className={`StaccatoCard StaccatoBorderShimmer ${ClassName || ""}`}
+			onClick={OnClick}
+			style={{ cursor: OnClick ? "pointer" : undefined }}>
+			{(Title || Description) && (
 				<CardHeader>
-					{title && <CardTitle>{title}</CardTitle>}
-					{description && (
-						<CardDescription>{description}</CardDescription>
+					{Title && <CardTitle>{Title}</CardTitle>}
+					{Description && (
+						<CardDescription>{Description}</CardDescription>
 					)}
 				</CardHeader>
 			)}
-			<CardContent>{children}</CardContent>
+			<CardContent>{Children}</CardContent>
 		</Card>
 	);
 };

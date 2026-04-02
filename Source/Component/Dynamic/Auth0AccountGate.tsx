@@ -193,7 +193,7 @@ export default ({
 	// Not authenticated, not loading — redirect is in progress
 	return (
 		<div className="flex min-h-screen flex-col">
-			<Header {...(HeaderContent ? { content: HeaderContent } : {})} />
+			<Header {...(HeaderContent ? { Content: HeaderContent } : {})} />
 			<div className="flex flex-1 items-center justify-center">
 				<p className="text-sm text-muted-foreground">
 					{T("redirecting", {

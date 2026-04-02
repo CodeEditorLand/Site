@@ -32,11 +32,11 @@ type CarouselContextProps = {
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
-function useCarousel() {
+function UseCarousel() {
 	const context = React.useContext(CarouselContext);
 
 	if (!context) {
-		throw new Error("useCarousel must be used within a <Carousel />");
+		throw new Error("UseCarousel must be used within a <Carousel />");
 	}
 
 	return context;
@@ -132,7 +132,7 @@ function Carousel({
 }
 
 function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
-	const { carouselRef, orientation } = useCarousel();
+	const { carouselRef, orientation } = UseCarousel();
 
 	return (
 		<div
@@ -152,7 +152,7 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
-	const { orientation } = useCarousel();
+	const { orientation } = UseCarousel();
 
 	return (
 		<div
@@ -175,7 +175,7 @@ function CarouselPrevious({
 	size = "icon",
 	...props
 }: React.ComponentProps<typeof Button>) {
-	const { orientation, scrollPrev, canScrollPrev } = useCarousel();
+	const { orientation, scrollPrev, canScrollPrev } = UseCarousel();
 
 	return (
 		<Button
@@ -204,7 +204,7 @@ function CarouselNext({
 	size = "icon",
 	...props
 }: React.ComponentProps<typeof Button>) {
-	const { orientation, scrollNext, canScrollNext } = useCarousel();
+	const { orientation, scrollNext, canScrollNext } = UseCarousel();
 
 	return (
 		<Button

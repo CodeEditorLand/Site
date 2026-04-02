@@ -12,17 +12,17 @@ const NavigateToPath = (Path: string): void => {
 };
 
 const VerifyPage = ({
-	content,
-	route,
-	token,
-	reason,
-	className,
-	onVerify,
-	onResend,
-	onNavigate,
+	Content,
+	Route,
+	Token,
+	Reason,
+	ClassName,
+	OnVerify,
+	OnResend,
+	OnNavigate,
 }: Property) => {
-	const { verification } = content;
-	const Navigate = onNavigate || NavigateToPath;
+	const { Verification } = Content;
+	const Navigate = OnNavigate || NavigateToPath;
 	const [UserEmail, SetUserEmail] = useState<string>("");
 
 	// Extract email from localStorage if available
@@ -69,20 +69,20 @@ const VerifyPage = ({
 	};
 
 	return (
-		<div className={`flex min-h-screen flex-col ${className || ""}`}>
+		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
 			<div className="flex-1">
-				{(route === "verify" || route === "pending") && (
+				{(Route === "verify" || Route === "pending") && (
 					<DynamicEmailVerification
-						content={verification}
-						{...(token ? { token } : {})}
-						userEmail={UserEmail}
-						onVerify={onVerify || HandleVerify}
-						onResend={onResend || HandleResend}
-						onNavigate={Navigate}
+						Content={Verification}
+						{...(Token ? { Token } : {})}
+						UserEmail={UserEmail}
+						OnVerify={OnVerify || HandleVerify}
+						OnResend={OnResend || HandleResend}
+						OnNavigate={Navigate}
 					/>
 				)}
 
-				{route === "success" && (
+				{Route === "success" && (
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
@@ -123,7 +123,7 @@ const VerifyPage = ({
 					</section>
 				)}
 
-				{route === "failure" && (
+				{Route === "failure" && (
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
@@ -148,8 +148,8 @@ const VerifyPage = ({
 										{"Verification Failed"}
 									</h1>
 									<p className="mb-2 text-muted-foreground">
-										{reason
-											? `Error: ${reason}`
+										{Reason
+											? `Error: ${Reason}`
 											: "This verification link is invalid or has expired."}
 									</p>
 									<p className="mb-6 text-sm text-muted-foreground">

@@ -7,51 +7,51 @@ import { GetI18n } from "../Library/I18n/Server";
 const T = GetI18n();
 
 const VerifyContent = {
-	verification: {
-		pending: {
-			title: T("verify.pending.title", {
+	Verification: {
+		Pending: {
+			Title: T("verify.pending.title", {
 				defaultValue: "Verify Your Email",
 			}),
-			description: T("verify.pending.description", {
+			Description: T("verify.pending.description", {
 				defaultValue:
 					"We've sent a verification link to your email address.",
 			}),
-			resendButton: {
-				text: T("verify.pending.resendButton", {
+			ResendButton: {
+				Text: T("verify.pending.resendButton", {
 					defaultValue: "Resend Verification Email",
 				}),
-				variant: "default",
-				fullWidth: true,
+				Variant: "default",
+				FullWidth: true,
 			},
 		},
-		success: {
-			title: T("verify.success.title", {
+		Success: {
+			Title: T("verify.success.title", {
 				defaultValue: "Email Verified Successfully!",
 			}),
-			description: T("verify.success.description", {
+			Description: T("verify.success.description", {
 				defaultValue: "Your email address has been verified.",
 			}),
-			continueButton: {
-				text: T("verify.success.continueButton", {
+			ContinueButton: {
+				Text: T("verify.success.continueButton", {
 					defaultValue: "Continue to Dashboard",
 				}),
-				variant: "default",
-				fullWidth: true,
+				Variant: "default",
+				FullWidth: true,
 			},
 		},
-		error: {
-			title: T("verify.error.title", {
+		Error: {
+			Title: T("verify.error.title", {
 				defaultValue: "Verification Failed",
 			}),
-			description: T("verify.error.description", {
+			Description: T("verify.error.description", {
 				defaultValue: "An error occurred during verification.",
 			}),
-			backToSignInButton: {
-				text: T("verify.error.backToSignInButton", {
+			BackToSignInButton: {
+				Text: T("verify.error.backToSignInButton", {
 					defaultValue: "Back to Sign In",
 				}),
-				variant: "default",
-				fullWidth: true,
+				Variant: "default",
+				FullWidth: true,
 			},
 		},
 	},
@@ -72,7 +72,7 @@ const MetaDescription = T("verify.pending.description", {
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load />
 	<VerifyPage
-		content={VerifyContent}
+		Content={VerifyContent}
 		route={Route}
 		token={Token || undefined}
 		reason={Reason || undefined}

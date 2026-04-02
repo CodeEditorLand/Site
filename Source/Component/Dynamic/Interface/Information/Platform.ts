@@ -1,11 +1,11 @@
 export default interface Interface {
-	id: string;
-	name: string;
-	icon: "Apple" | "Monitor" | "Terminal";
-	description: string;
-	version: string;
-	size: string;
-	checksum?: string;
-	signature?: string;
-	requirements?: string[];
+	Id: string;
+	Name: string;
+	Icon: "Apple" | "Monitor" | "Terminal";
+	Description: string;
+	Version: string;
+	Size: string;
+	Checksum?: string;
+	Signature?: string;
+	Requirements?: string[];
 }

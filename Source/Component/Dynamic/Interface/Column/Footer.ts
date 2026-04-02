@@ -1,4 +1,4 @@
 export default interface Interface {
-	title: string;
-	links: { label: string; href: string }[];
+	Title: string;
+	Links: { Label: string; Href: string }[];
 }

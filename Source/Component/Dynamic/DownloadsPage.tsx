@@ -15,21 +15,21 @@ import type Property from "./Interface/Property/Page/Download.js";
  * Assembles PlatformGrid, SystemRequirements, VerificationInfo, PreviousReleases
  * Content driven by translations (useTranslation) or explicit props
  */
-const DownloadsPage = ({ content, className }: Property) => {
+const DownloadsPage = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation(["download", "common"]);
 
-	const ResolvedContent: Interface = content || {
-		platformGrid: {
-			title: T("download:page.title", {
+	const ResolvedContent: Interface = Content || {
+		PlatformGrid: {
+			Title: T("download:page.title", {
 				defaultValue: "Download Land",
 			}),
-			subtitle: T("download:page.subtitle", {
+			Subtitle: T("download:page.subtitle", {
 				defaultValue:
 					"Available for macOS, Windows, and Linux.\nFast, native, and free.",
 			}),
-			platforms: [],
-			showVerification: true,
-			onDownload: async (Platform: { name: string; id?: string }) => {
+			Platforms: [],
+			ShowVerification: true,
+			OnDownload: async (Platform: { name: string; id?: string }) => {
 				if (Platform.id) {
 					try {
 						const { default: DownloadAPI } =
@@ -51,116 +51,116 @@ const DownloadsPage = ({ content, className }: Property) => {
 				}
 			},
 		},
-		systemRequirements: {
-			title: T("download:systemRequirements.title", {
+		SystemRequirements: {
+			Title: T("download:systemRequirements.title", {
 				defaultValue: "System Requirements",
 			}),
-			description: T("download:systemRequirements.subtitle", {
+			Description: T("download:systemRequirements.subtitle", {
 				defaultValue:
 					"Ensure your system meets these requirements before downloading.",
 			}),
-			requirements: {
-				minimum: [
+			Requirements: {
+				Minimum: [
 					{
-						id: "cpu-min",
-						label: "Processor",
-						value: "Intel Core i5 or AMD Ryzen 5 / Apple Silicon",
+						Id: "cpu-min",
+						Label: "Processor",
+						Value: "Intel Core i5 or AMD Ryzen 5 / Apple Silicon",
 					},
-					{ id: "ram-min", label: "Memory", value: "4 GB RAM" },
-					{ id: "disk-min", label: "Disk Space", value: "500 MB" },
+					{ Id: "ram-min", Label: "Memory", Value: "4 GB RAM" },
+					{ Id: "disk-min", Label: "Disk Space", Value: "500 MB" },
 				],
-				recommended: [
+				Recommended: [
 					{
-						id: "cpu-rec",
-						label: "Processor",
-						value: "Intel Core i7 or AMD Ryzen 7",
+						Id: "cpu-rec",
+						Label: "Processor",
+						Value: "Intel Core i7 or AMD Ryzen 7",
 					},
-					{ id: "ram-rec", label: "Memory", value: "8 GB RAM" },
+					{ Id: "ram-rec", Label: "Memory", Value: "8 GB RAM" },
 					{
-						id: "disk-rec",
-						label: "Disk Space",
-						value: "1 GB SSD",
+						Id: "disk-rec",
+						Label: "Disk Space",
+						Value: "1 GB SSD",
 					},
 				],
 			},
-			os: [
+			Os: [
 				"macOS 11+",
 				"Windows 10+",
 				"Ubuntu 20.04+ / Fedora 35+ / Debian 11+",
 			],
 		},
-		verificationInfo: {
-			title: T("download:verification.title", {
+		VerificationInfo: {
+			Title: T("download:verification.title", {
 				defaultValue: "Verify Your Download",
 			}),
-			description: T("download:verification.description", {
+			Description: T("download:verification.description", {
 				defaultValue:
 					"Land releases will be signed with PGP. Verification checksums and signatures will be available with the first public release.",
 			}),
-			downloadVerification: {
-				sha256: "Available at first public release",
-				pgpSignature: "Available at first public release",
-				signingKeyId: "Available at first public release",
-				verificationInstructions:
+			DownloadVerification: {
+				SHA256: "Available at first public release",
+				PGPSignature: "Available at first public release",
+				SigningKeyId: "Available at first public release",
+				VerificationInstructions:
 					"To verify: shasum -a 256 <filename> and compare output with the published checksum.\nFor PGP: gpg --verify <file>.sig <file>",
 			},
-			integrityVerification: {
-				sha256: "Available at first public release",
-				pgpSignature: "Available at first public release",
-				verificationInstructions:
+			IntegrityVerification: {
+				SHA256: "Available at first public release",
+				PGPSignature: "Available at first public release",
+				VerificationInstructions:
 					"Verification instructions will be published alongside the first release. All releases will include SHA-256 checksums and PGP signatures.",
 			},
-			downloadButton: {
-				text: T("download:verification.downloadButton", {
+			DownloadButton: {
+				Text: T("download:verification.downloadButton", {
 					defaultValue: "Download PGP Public Key",
 				}),
-				variant: "outline",
-				size: "default",
-				fullWidth: false,
+				Variant: "outline",
+				Size: "default",
+				FullWidth: false,
 			},
-			verifyButton: {
-				text: T("download:verification.verifyButton", {
+			VerifyButton: {
+				Text: T("download:verification.verifyButton", {
 					defaultValue: "Verify Download",
 				}),
-				variant: "default",
-				size: "default",
-				fullWidth: false,
+				Variant: "default",
+				Size: "default",
+				FullWidth: false,
 			},
 		},
-		previousReleases: {
-			title: T("download:previousReleases.title", {
+		PreviousReleases: {
+			Title: T("download:previousReleases.title", {
 				defaultValue: "Previous Releases",
 			}),
-			description: T("download:previousReleases.description", {
+			Description: T("download:previousReleases.description", {
 				defaultValue:
 					"No previous releases yet. The first public release is currently in development.",
 			}),
-			releases: [],
-			showChangelog: false,
+			Releases: [],
+			ShowChangelog: false,
 		},
-		footer: {},
+		Footer: {},
 	};
 
 	const {
-		platformGrid: PlatformGrid,
-		systemRequirements: SystemRequirements,
-		verificationInfo: VerificationInformation,
-		previousReleases: PreviousReleases,
-		header: HeaderContent,
+		PlatformGrid,
+		SystemRequirements,
+		VerificationInfo: VerificationInformation,
+		PreviousReleases,
+		Header: HeaderContent,
 	} = ResolvedContent;
 
 	return (
-		<div className={`flex min-h-screen flex-col ${className || ""}`}>
+		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
 			{HeaderContent !== undefined && <Header content={HeaderContent} />}
 
 			<div className="flex-1">
-				<DynamicPlatformGrid content={PlatformGrid} />
+				<DynamicPlatformGrid Content={PlatformGrid} />
 
-				<DynamicSystemRequirements content={SystemRequirements} />
+				<DynamicSystemRequirements Content={SystemRequirements} />
 
-				<DynamicVerificationInfo content={VerificationInformation} />
+				<DynamicVerificationInfo Content={VerificationInformation} />
 
-				<DynamicPreviousReleases content={PreviousReleases} />
+				<DynamicPreviousReleases Content={PreviousReleases} />
 			</div>
 		</div>
 	);

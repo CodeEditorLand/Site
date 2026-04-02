@@ -1,6 +1,6 @@
 export default interface Interface {
-	sha256?: string;
-	pgpSignature?: string;
-	signingKeyId?: string;
-	verificationInstructions?: string;
+	SHA256?: string;
+	PGPSignature?: string;
+	SigningKeyId?: string;
+	VerificationInstructions?: string;
 }

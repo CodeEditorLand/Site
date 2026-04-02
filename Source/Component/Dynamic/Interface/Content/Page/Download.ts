@@ -5,10 +5,10 @@ import type PreviousReleasesContent from "../Release/Previous.js";
 import type SystemRequirementsContent from "../Requirement/System.js";
 
 export default interface Interface {
-	platformGrid: PlatformGridContent;
-	systemRequirements: SystemRequirementsContent;
-	verificationInfo: VerificationInfoContent;
-	previousReleases: PreviousReleasesContent;
-	header?: HeaderContent;
-	footer?: Record<string, unknown>;
+	PlatformGrid: PlatformGridContent;
+	SystemRequirements: SystemRequirementsContent;
+	VerificationInfo: VerificationInfoContent;
+	PreviousReleases: PreviousReleasesContent;
+	Header?: HeaderContent;
+	Footer?: Record<string, unknown>;
 }

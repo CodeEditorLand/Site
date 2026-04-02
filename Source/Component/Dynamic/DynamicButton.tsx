@@ -29,40 +29,40 @@ const ButtonIconRegistry: Record<string, lucide.LucideIcon> = {
  * Icons render immediately via direct imports (no dynamic import flash).
  * Loading state uses StaccatoSpinner for breathing opacity.
  */
-const DynamicButton = ({ content, onAction, isLoading = false }: Property) => {
+const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 	const {
-		text,
-		icon,
-		variant = "default",
-		size = "default",
-		type = "button",
-		disabled = false,
-		fullWidth = false,
-		className,
+		Text,
+		Icon,
+		Variant = "default",
+		Size = "default",
+		Type = "button",
+		Disabled = false,
+		FullWidth = false,
+		ClassName,
 		...props
-	} = content;
+	} = Content;
 
-	const IconComponent = icon ? ButtonIconRegistry[icon] || null : null;
+	const IconComponent = Icon ? ButtonIconRegistry[Icon] || null : null;
 
 	return (
 		<Button
-			variant={variant}
-			size={size}
-			type={type}
-			disabled={disabled || isLoading}
-			className={`StaccatoButton ${fullWidth ? "w-full" : ""} ${className || ""}`}
-			aria-busy={isLoading || undefined}
+			variant={Variant}
+			size={Size}
+			type={Type}
+			disabled={Disabled || IsLoading}
+			className={`StaccatoButton ${FullWidth ? "w-full" : ""} ${ClassName || ""}`}
+			aria-busy={IsLoading || undefined}
 			onClick={() => {
-				if (!isLoading && onAction) {
-					onAction();
+				if (!IsLoading && OnAction) {
+					OnAction();
 				}
-				if (!isLoading && content.onClick) {
-					content.onClick();
+				if (!IsLoading && Content.OnClick) {
+					Content.OnClick();
 				}
 			}}
 			{...props}>
-			{text}
-			{isLoading ? (
+			{Text}
+			{IsLoading ? (
 				<>
 					{"\u2001"}
 					<lucide.Loader2

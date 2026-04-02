@@ -8,19 +8,19 @@ import type Property from "./Interface/Property/Header.js";
  * Dynamic Header component that accepts navigation and action schemas
  * Renders sticky header with logo, nav links, and CTA buttons
  */
-const DynamicHeader = ({ content, className }: Property) => {
+const DynamicHeader = ({ Content, ClassName }: Property) => {
 	const {
-		logo,
-		navigation,
-		actions,
-		sticky = true,
-		showMobileMenu = true,
-	} = content;
+		Logo,
+		Navigation,
+		Actions,
+		Sticky = true,
+		ShowMobileMenu = true,
+	} = Content;
 	const [MobileMenuOpen, SetMobileMenuOpen] = React.useState(false);
 
 	return (
 		<header
-			className={` ${sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white ${className || ""} `}>
+			className={` ${Sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white ${ClassName || ""} `}>
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo */}
 				<div className="flex items-center space-x-3">
@@ -36,37 +36,37 @@ const DynamicHeader = ({ content, className }: Property) => {
 							className="h-full w-full"
 						/>
 					</div>
-					<span className="font-semibold">{logo.text}</span>
+					<span className="font-semibold">{Logo.Text}</span>
 				</div>
 
 				{/* Desktop Navigation */}
 				<nav
 					className="hidden items-center space-x-6 md:flex"
 					aria-label="Main navigation">
-					{navigation.map((Link, Index) => (
+					{Navigation.map((Link, Index) => (
 						<a
 							key={Index}
-							href={Link.href}
+							href={Link.Href}
 							className={`transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
-								Link.isActive
+								Link.IsActive
 									? "font-medium text-foreground"
 									: "text-muted-foreground hover:text-foreground"
 							}`}
-							{...(Link.isActive
+							{...(Link.IsActive
 								? { "aria-current": "page" as const }
 								: {})}>
-							{Link.label}
+							{Link.Label}
 						</a>
 					))}
 				</nav>
 
 				{/* Actions */}
 				<div className="flex items-center space-x-4">
-					{actions.map((Action, Index) => {
+					{Actions.map((Action, Index) => {
 						if (
-							"type" in Action &&
-							Action.type === "mobile-menu" &&
-							showMobileMenu
+							"Type" in Action &&
+							Action.Type === "mobile-menu" &&
+							ShowMobileMenu
 						) {
 							return (
 								<Button
@@ -87,18 +87,18 @@ const DynamicHeader = ({ content, className }: Property) => {
 						// Action is a button config
 						return (
 							<React.Fragment key={Index}>
-								{MobileMenuOpen && showMobileMenu && (
+								{MobileMenuOpen && ShowMobileMenu && (
 									<div className="absolute left-0 right-0 top-16 z-50 flex flex-col space-y-2 border-b bg-background p-4 md:hidden">
-										{navigation.map(
+										{Navigation.map(
 											(Link, NavigationIndex) => (
 												<a
 													key={NavigationIndex}
-													href={Link.href}
+													href={Link.Href}
 													className="rounded-none px-4 py-2 hover:bg-accent"
 													onClick={() =>
 														SetMobileMenuOpen(false)
 													}>
-													{Link.label}
+													{Link.Label}
 												</a>
 											),
 										)}

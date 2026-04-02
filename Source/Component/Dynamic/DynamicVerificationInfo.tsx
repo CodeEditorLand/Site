@@ -10,13 +10,13 @@ import type Property from "./Interface/Property/Information/Verification.js";
  * Shows SHA-256 checksums and PGP signatures with copy functionality
  */
 const DynamicVerificationInfo = ({
-	content,
-	onVerify,
-	className,
+	Content,
+	OnVerify,
+	ClassName,
 }: Property) => {
 	const { t: T } = useTranslation("download");
-	const { title, description, downloadVerification, integrityVerification } =
-		content;
+	const { Title, Description, DownloadVerification, IntegrityVerification } =
+		Content;
 
 	const CopyToClipboard = (Text: string, Label: string) => {
 		navigator.clipboard
@@ -44,7 +44,7 @@ const DynamicVerificationInfo = ({
 		Type: "download" | "integrity",
 	) => (
 		<div className="space-y-4">
-			{Information.sha256 && (
+			{Information.SHA256 && (
 				<div className="space-y-2">
 					<div className="flex items-center">
 						<span className="font-semibold">
@@ -60,7 +60,7 @@ const DynamicVerificationInfo = ({
 					</div>
 					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
-							{Information.sha256}
+							{Information.SHA256}
 						</code>
 						<button
 							type="button"
@@ -68,7 +68,7 @@ const DynamicVerificationInfo = ({
 							aria-label="Copy SHA-256 checksum to clipboard"
 							onClick={() =>
 								CopyToClipboard(
-									Information.sha256!,
+									Information.SHA256!,
 									T("labels.sha256Checksum", {
 									defaultValue: "SHA-256 checksum",
 								}),
@@ -80,7 +80,7 @@ const DynamicVerificationInfo = ({
 				</div>
 			)}
 
-			{Information.pgpSignature && (
+			{Information.PGPSignature && (
 				<div className="space-y-2">
 					<div className="flex items-center">
 						<span className="font-semibold">
@@ -96,7 +96,7 @@ const DynamicVerificationInfo = ({
 					</div>
 					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
 						<code className="flex-1 truncate font-mono text-sm">
-							{Information.pgpSignature}
+							{Information.PGPSignature}
 						</code>
 						<button
 							type="button"
@@ -104,7 +104,7 @@ const DynamicVerificationInfo = ({
 							aria-label="Copy PGP signature to clipboard"
 							onClick={() =>
 								CopyToClipboard(
-									Information.pgpSignature || "",
+									Information.PGPSignature || "",
 									T("labels.pgpSignature", {
 									defaultValue: "PGP signature",
 								}),
@@ -113,18 +113,18 @@ const DynamicVerificationInfo = ({
 							{T("labels.copy", { defaultValue: "Copy" })}
 						</button>
 					</div>
-					{Information.signingKeyId && (
+					{Information.SigningKeyId && (
 						<p className="text-xs text-muted-foreground">
 							{T("labels.signedWithKeyId", {
 								defaultValue: "Signed with key ID: {{keyId}}",
-								keyId: Information.signingKeyId,
+								keyId: Information.SigningKeyId,
 							})}
 						</p>
 					)}
 				</div>
 			)}
 
-			{Information.verificationInstructions && (
+			{Information.VerificationInstructions && (
 				<div className="border-t border-[var(--Border)] pt-4">
 					<h5 className="mb-2 font-semibold">
 						{T("labels.verificationInstructions", {
@@ -132,25 +132,25 @@ const DynamicVerificationInfo = ({
 						})}
 					</h5>
 					<p className="whitespace-pre-line text-sm text-muted-foreground">
-						{Information.verificationInstructions}
+						{Information.VerificationInstructions}
 					</p>
 				</div>
 			)}
 
-			{Type === "download" && content.downloadButton && (
+			{Type === "download" && Content.DownloadButton && (
 				<div className="pt-4">
 					<DynamicButton
-						content={{ ...content.downloadButton, fullWidth: true }}
+						Content={{ ...Content.DownloadButton, FullWidth: true }}
 					/>
 				</div>
 			)}
 
-			{Type === "integrity" && content.verifyButton && (
+			{Type === "integrity" && Content.VerifyButton && (
 				<div className="pt-4">
 					<DynamicButton
-						content={{ ...content.verifyButton, fullWidth: true }}
-						onAction={() =>
-							onVerify?.(integrityVerification.sha256 || "")
+						Content={{ ...Content.VerifyButton, FullWidth: true }}
+						OnAction={() =>
+							OnVerify?.(IntegrityVerification.SHA256 || "")
 						}
 					/>
 				</div>
@@ -160,20 +160,20 @@ const DynamicVerificationInfo = ({
 
 	return (
 		<section
-			className={`py-20 ${className || ""}`}
+			className={`py-20 ${ClassName || ""}`}
 			aria-label="Download verification">
 			<div className="container mx-auto px-4">
 				<div className="mx-auto max-w-4xl">
-					{(title || description) && (
+					{(Title || Description) && (
 						<div className="mb-12 text-center">
-							{title && (
+							{Title && (
 								<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
-									{title}
+									{Title}
 								</h2>
 							)}
-							{description && (
+							{Description && (
 								<p className="mx-auto max-w-2xl text-lg text-muted-foreground whitespace-pre-line">
-									{description}
+									{Description}
 								</p>
 							)}
 						</div>
@@ -193,7 +193,7 @@ const DynamicVerificationInfo = ({
 								/>
 							</h3>
 							{RenderVerificationBlock(
-								downloadVerification,
+								DownloadVerification,
 								"download",
 							)}
 						</div>
@@ -211,7 +211,7 @@ const DynamicVerificationInfo = ({
 								/>
 							</h3>
 							{RenderVerificationBlock(
-								integrityVerification,
+								IntegrityVerification,
 								"integrity",
 							)}
 						</div>

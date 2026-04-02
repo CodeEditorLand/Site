@@ -29,93 +29,93 @@ const IconRegistry: Record<string, lucide.LucideIcon> = {
 };
 
 interface NavigationLink {
-	label: string;
-	href: string;
-	icon?: string;
+	Label: string;
+	Href: string;
+	Icon?: string;
 }
 
 export interface HeaderContent {
-	logo?: { text: string };
-	navigation?: NavigationLink[];
-	actions?: Array<{
-		type?: string;
-		text: string;
-		variant?: string;
-		size?: string;
-		href?: string;
-		icon?: string;
+	Logo?: { Text: string };
+	Navigation?: NavigationLink[];
+	Actions?: Array<{
+		Type?: string;
+		Text: string;
+		Variant?: string;
+		Size?: string;
+		Href?: string;
+		Icon?: string;
 	}>;
 }
 
 interface HeaderProps {
-	content?: HeaderContent;
+	Content?: HeaderContent;
 	AuthSlot?: React.ReactNode;
 }
 
-const Header = ({ content, AuthSlot }: HeaderProps) => {
+const Header = ({ Content, AuthSlot }: HeaderProps) => {
 	const { t: T } = useTranslation("header");
 	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
-	const HeaderData: HeaderContent = content || {
-		logo: { text: T("logo", "Land") },
-		navigation: [
+	const HeaderData: HeaderContent = Content || {
+		Logo: { Text: T("logo", "Land") },
+		Navigation: [
 			{
-				label: T("nav.features", "Features"),
-				href: "/#features",
-				icon: "Sparkles",
+				Label: T("nav.features", "Features"),
+				Href: "/#features",
+				Icon: "Sparkles",
 			},
 			{
-				label: T("nav.download", "Download"),
-				href: "/Download",
-				icon: "Download",
+				Label: T("nav.download", "Download"),
+				Href: "/Download",
+				Icon: "Download",
 			},
 			{
-				label: T("nav.docs", "Docs"),
-				href: "/Doc",
-				icon: "BookOpen",
+				Label: T("nav.docs", "Docs"),
+				Href: "/Doc",
+				Icon: "BookOpen",
 			},
 			{
-				label: T("nav.blog", "Blog"),
-				href: "/Blog",
-				icon: "Newspaper",
+				Label: T("nav.blog", "Blog"),
+				Href: "/Blog",
+				Icon: "Newspaper",
 			},
 			{
-				label: T("nav.contributing", "Contributing"),
-				href: "/Contributing",
-				icon: "Users",
+				Label: T("nav.contributing", "Contributing"),
+				Href: "/Contributing",
+				Icon: "Users",
 			},
 			{
-				label: T("nav.dashboard", "Dashboard"),
-				href: "/Dashboard",
-				icon: "LayoutDashboard",
+				Label: T("nav.dashboard", "Dashboard"),
+				Href: "/Dashboard",
+				Icon: "LayoutDashboard",
 			},
 			{
-				label: T("nav.github", "GitHub"),
-				href: "https://github.com/CodeEditorLand/Land",
-				icon: "GitFork",
+				Label: T("nav.github", "GitHub"),
+				Href: "https://github.com/CodeEditorLand/Land",
+				Icon: "GitFork",
 			},
 		],
-		actions: [
+		Actions: [
 			{
-				text: T("actions.signIn", "Sign In"),
-				variant: "ghost",
-				size: "default",
-				href: "/Account/SignIn",
-				icon: "LogIn",
+				Text: T("actions.signIn", "Sign In"),
+				Variant: "ghost",
+				Size: "default",
+				Href: "/Account/SignIn",
+				Icon: "LogIn",
 			},
 			{
-				text: T("actions.editorPortal", "Editor Portal"),
-				variant: "outline",
-				size: "default",
-				href: "/Portal",
-				icon: "Monitor",
+				Text: T("actions.editorPortal", "Editor Portal"),
+				Variant: "outline",
+				Size: "default",
+				Href: "/Portal",
+				Icon: "Monitor",
 			},
 			{
-				text: T("actions.getStarted", "Get Land"),
-				variant: "default",
-				size: "default",
-				href: "/Download",
-				icon: "Download",
+				Text: T("actions.getStarted", "Get Land"),
+				Variant: "default",
+				Size: "default",
+				Href: "/Download",
+				Icon: "Download",
 			},
 		],
 	};
@@ -160,7 +160,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 				<a
 					href="/"
 					className="StaccatoLogo HeaderLogo flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-					aria-label={`${HeaderData.logo?.text || "Land"} - Go to homepage`}>
+					aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}>
 					<div
 						className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
@@ -174,7 +174,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 						/>
 					</div>
 					<span className="font-semibold">
-						{HeaderData.logo?.text || "Land"}
+						{HeaderData.Logo?.Text || "Land"}
 					</span>
 				</a>
 
@@ -185,7 +185,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 					<nav
 						className="flex items-center"
 						aria-label="Main navigation">
-						{HeaderData.navigation?.map((Link, Index) => (
+						{HeaderData.Navigation?.map((Link, Index) => (
 							<span key={Index} className="flex items-center">
 								{Index > 0 && (
 									<span
@@ -195,16 +195,16 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 									</span>
 								)}
 								<a
-									href={Link.href}
+									href={Link.Href}
 									className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-									{...(Link.href.startsWith("http")
+									{...(Link.Href.startsWith("http")
 										? {
 												target: "_blank",
 												rel: "noopener noreferrer",
 											}
 										: {})}>
-									{Link.label}
-									{RenderIcon(Link.icon, Link.label)}
+									{Link.Label}
+									{RenderIcon(Link.Icon, Link.Label)}
 								</a>
 							</span>
 						))}
@@ -217,56 +217,56 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 						{AuthSlot ? (
 							<>
 								{AuthSlot}
-								{HeaderData.actions
+								{HeaderData.Actions
 									?.filter(
 										(Action) =>
-											Action.href !== "/Account/SignIn",
+											Action.Href !== "/Account/SignIn",
 									)
 									.map((Action, Index) => (
 										<Button
 											key={Index}
 											variant={
-												(Action.variant as
+												(Action.Variant as
 													| "ghost"
 													| "default"
 													| "outline") || "default"
 											}
 											size={
-												(Action.size as
+												(Action.Size as
 													| "default"
 													| "sm"
 													| "lg") || "default"
 											}
 											className="StaccatoButton"
 											asChild>
-											<a href={Action.href}>
-												{Action.text}
-												{RenderActionIcon(Action.icon, Action.text)}
+											<a href={Action.Href}>
+												{Action.Text}
+												{RenderActionIcon(Action.Icon, Action.Text)}
 											</a>
 										</Button>
 									))}
 							</>
 						) : (
-							HeaderData.actions?.map((Action, Index) => (
+							HeaderData.Actions?.map((Action, Index) => (
 								<Button
 									key={Index}
 									variant={
-										(Action.variant as
+										(Action.Variant as
 											| "ghost"
 											| "default"
 											| "outline") || "default"
 									}
 									size={
-										(Action.size as
+										(Action.Size as
 											| "default"
 											| "sm"
 											| "lg") || "default"
 									}
 									className="StaccatoButton"
 									asChild>
-									<a href={Action.href}>
-										{Action.text}
-										{RenderActionIcon(Action.icon, Action.text)}
+									<a href={Action.Href}>
+										{Action.Text}
+										{RenderActionIcon(Action.Icon, Action.Text)}
 									</a>
 								</Button>
 							))
@@ -297,28 +297,28 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 					<nav
 						className="container mx-auto flex flex-col space-y-0.5 px-4 py-3"
 						aria-label="Mobile navigation">
-						{HeaderData.navigation?.map((Link, Index) => {
-							const Icon = Link.icon
-								? IconRegistry[Link.icon]
+						{HeaderData.Navigation?.map((Link, Index) => {
+							const Icon = Link.Icon
+								? IconRegistry[Link.Icon]
 								: null;
 							return (
 								<a
 									key={Index}
-									href={Link.href}
+									href={Link.Href}
 									className="flex items-center rounded-none px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 									onClick={() => SetMobileMenuOpen(false)}
-									{...(Link.href.startsWith("http")
+									{...(Link.Href.startsWith("http")
 										? {
 												target: "_blank",
 												rel: "noopener noreferrer",
 											}
 										: {})}>
-									{Link.label}
+									{Link.Label}
 									{Icon && (
 										<>
 											{"\u2001"}
 											<IconTooltip
-												Label={Link.label}
+												Label={Link.Label}
 												Icon={Icon}
 												SizeClass="h-4 w-4"
 												ClassName="text-muted-foreground/70"
@@ -333,20 +333,20 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 							<LocaleSwitcher />
 						</div>
 						<div className="my-1.5 border-t border-border" />
-						{HeaderData.actions?.map((Action, Index) => (
+						{HeaderData.Actions?.map((Action, Index) => (
 							<Button
 								key={Index}
 								variant={
-									(Action.variant as
+									(Action.Variant as
 										| "ghost"
 										| "default"
 										| "outline") || "default"
 								}
 								className="w-full justify-start"
 								asChild>
-								<a href={Action.href}>
-									{Action.text}
-									{RenderActionIcon(Action.icon, Action.text)}
+								<a href={Action.Href}>
+									{Action.Text}
+									{RenderActionIcon(Action.Icon, Action.Text)}
 								</a>
 							</Button>
 						))}

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { useAnalytics } from "./AnalyticsProvider";
+import { UseAnalytics } from "./AnalyticsProvider";
 
 const PageviewTracker = () => {
 	const [IsMounted, SetIsMounted] = useState(false);
@@ -18,7 +18,7 @@ const PageviewTracker = () => {
 	useEffect(() => {
 		if (!IsMounted) return;
 
-		const { trackPageView: TrackPageView } = useAnalytics();
+		const { trackPageView: TrackPageView } = UseAnalytics();
 		TrackPageViewReference.current = TrackPageView;
 
 		const HandleRouteChange = () => {
