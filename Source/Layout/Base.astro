@@ -146,6 +146,13 @@ const T = GetI18n();
 				const Staccato = await import("@Function/Noise/Staccato.js");
 				const Engine = await Staccato.default;
 				Engine.Start();
+
+				// Seed every Staccato element once.
+				// This sets --StaccatoSeed and --StaccatoSeedPhase per element
+				// so each gets a unique static offset that is different on every
+				// page load but structurally stable — the noise is "baked in"
+				// at startup and not re-animated on each frame.
+				Engine.SeedSelector('[class*="Staccato"]');
 			}
 		</script>
 

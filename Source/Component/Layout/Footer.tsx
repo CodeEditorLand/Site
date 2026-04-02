@@ -190,7 +190,7 @@ const Footer = ({ Content }: FooterProps) => {
 							href="https://github.com/CodeEditorLand"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="StaccatoSocial focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
 							<IconTooltip Label="GitHub">
 								<img
@@ -207,7 +207,7 @@ const Footer = ({ Content }: FooterProps) => {
 							href="https://x.com/CodeEditorLand"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="StaccatoSocial focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on X (opens in new tab)">
 							<IconTooltip Label="X (Twitter)">
 								<span
