@@ -197,66 +197,57 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				}
 			}
 
-			// ── 4. Build service worker ──
-			// Read the compiled ServiceWorker.js template and inject route data
+			// ── 4. Build service worker with esbuild ──
+			// esbuild properly strips all TypeScript types (type annotations,
+			// generics, declare statements, reference directives) and substitutes
+			// build-time constants via `define`. The previous text-based regex
+			// approach left stray `: TypeName` annotations causing SW parse errors.
 
-			const TemplateDirectory = Resolve(
+			const ServiceWorkerSourcePath = Resolve(
 				FileURLToPath(import.meta.url),
 				"..",
+				"ServiceWorker.ts",
 			);
 
 			let ServiceWorkerSource: string;
 
 			try {
 				ServiceWorkerSource = await ReadFile(
-					Join(TemplateDirectory, "ServiceWorker.js"),
+					ServiceWorkerSourcePath,
 					"utf-8",
 				);
-			} catch {
-				try {
-					ServiceWorkerSource = await ReadFile(
-						Join(TemplateDirectory, "ServiceWorker.ts"),
-						"utf-8",
-					);
-				} catch (_Error) {
-					logger.error(
-						`Could not read ServiceWorker template: ${_Error}`,
-					);
+			} catch (_Error) {
+				logger.error(
+					`Could not read ServiceWorker.ts: ${_Error}`,
+				);
 
-					return;
-				}
+				return;
 			}
 
-			// Strip TypeScript declarations and comments for raw JS output
-			let ServiceWorkerCode = ServiceWorkerSource.replace(
-				/^\/\/.*$/gm,
-				"",
-			)
-				.replace(/^declare var self.*$/m, "")
-				.replace(/^declare const __DEV__.*$/m, "")
-				.replace(/^declare const __INCREMENT__.*$/m, "")
-				.replace(/^declare const __ROUTE_MAP_CANONICAL__.*$/m, "")
-				.replace(/^declare const __ROUTE_MAP_VARIANT__.*$/m, "")
-				.replace(/^import type.*$/gm, "")
-				.replace(/^export interface.*\{[\s\S]*?\}$/gm, "")
-				.replace(/: Set<string>/g, "")
-				.replace(/: Record<string, string>/g, "")
-				.replace(/: string \| null/g, "")
-				.replace(/: string/g, "")
-				.replace(/: any\[\]/g, "")
-				.replace(/^export default \{\};$/m, "");
+			const { transform: ESBuildTransform } = await import("esbuild");
 
-			// Inject route data + build constants
-			ServiceWorkerCode = ServiceWorkerCode.replace(
-				"__ROUTE_MAP_CANONICAL__",
-				JSON.stringify(RouteMap.Canonical),
-			)
-				.replace(
-					"__ROUTE_MAP_VARIANT__",
-					JSON.stringify(RouteMap.Variant),
-				)
-				.replace(/__INCREMENT__/g, JSON.stringify(String(Date.now())))
-				.replace(/__DEV__/g, "false");
+			const ESBuildResult = await ESBuildTransform(ServiceWorkerSource, {
+				loader: "ts",
+				platform: "browser",
+				target: ["chrome110", "safari16", "firefox115"],
+				define: {
+					__DEV__: "false",
+					__INCREMENT__: JSON.stringify(String(Date.now())),
+					__ROUTE_MAP_CANONICAL__: JSON.stringify(
+						RouteMap.Canonical,
+					),
+					__ROUTE_MAP_VARIANT__: JSON.stringify(RouteMap.Variant),
+				},
+				sourcemap: false,
+				minify: false,
+			});
+
+			// Remove the `export default {}` stub — present only for TS module
+			// compatibility, not valid in a classic service worker script context.
+			const ServiceWorkerCode =
+				ESBuildResult.code
+					.replace(/^export\s+default\s+\{\s*\};\s*$/m, "")
+					.trimEnd() + "\n";
 
 			const ServiceWorkerPath = Join(
 				OutputDirectory,
@@ -265,14 +256,19 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			await WriteFile(ServiceWorkerPath, ServiceWorkerCode, "utf-8");
 
-			logger.info("Wrote service-worker.js with route redirect + cache");
+			logger.info(
+				"Wrote service-worker.js (compiled with esbuild)",
+			);
 
-			// ── 5. Cloudflare _redirects — DISABLED ──
-			// _redirects matching on CF Pages is case-insensitive, so a rule
-			// like `/download /Download 301` also matches `/Download` itself,
-			// creating an infinite redirect loop for PascalCase URLs.
-			// The CF Pages function (functions/[[Path]].ts) and the service
-			// worker handle all redirects correctly with case-sensitive logic.
+			// ── 5. Cloudflare _redirects ──
+			// Public/_redirects uses 200 (rewrite) rules, NOT 301 redirects.
+			// 200 rewrites serve directory content directly, preventing CF Pages'
+			// internal trailing-slash 301 from firing before [[Path]].ts can strip
+			// it — which was the source of the /Account/SignIn ↔ /Account/SignIn/
+			// infinite redirect loop.
+			// The [[Path]].ts edge function still handles all variant → canonical
+			// redirects (case-insensitive, semantic aliases, etc.) with correct
+			// case-sensitive logic before _redirects is consulted.
 
 			// ── 6. Post-process sitemap for PascalCase URLs ──
 			// @astrojs/sitemap generates URLs from built pages (lowercase).
