@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { DynamicButton } from "./DynamicButton.js";
+import { IconTooltip } from "../UI/IconTooltip.js";
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
@@ -84,7 +85,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 		<section
 			id="pricing"
 			aria-label="Roadmap"
-			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
 				className || ""
 			}`}>
 			<div className="container mx-auto px-4">
@@ -213,9 +214,11 @@ const DynamicPricing = ({ content, className }: Property) => {
 												<span className="text-sm">
 													{Feature}
 												</span>
-												<lucide.Check
-													className="StaccatoCheckmark mt-0.5 h-4 w-4 shrink-0 text-primary"
-													aria-hidden="true"
+												<IconTooltip
+													Label="Included"
+													Icon={lucide.Check}
+													SizeClass="h-4 w-4 shrink-0"
+													ClassName="StaccatoCheckmark mt-0.5 text-primary"
 												/>
 											</li>
 										),

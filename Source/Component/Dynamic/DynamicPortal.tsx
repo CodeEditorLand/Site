@@ -177,89 +177,89 @@ const IconLabelMap: Record<string, string> = {
  *   Support/lifecycle → pink     #ec4899
  */
 const IconColorMap: Record<string, string> = {
-	// Identity / crypto — indigo
-	Lock: "#6366f1",
-	Key: "#6366f1",
-	Fingerprint: "#6366f1",
-	Shield: "#6366f1",
+	// Identity / crypto — TierEnterprise (charcoal → SpineWASM for identity)
+	Lock: "var(--SpineWASMFore)",
+	Key: "var(--SpineWASMFore)",
+	Fingerprint: "var(--SpineWASMFore)",
+	Shield: "var(--SpineWASMFore)",
 
-	// Network / connect — sky
-	Wifi: "#0ea5e9",
-	WifiOff: "#0ea5e9",
-	Globe: "#0ea5e9",
-	Network: "#0ea5e9",
-	Radio: "#0ea5e9",
-	Link2: "#0ea5e9",
+	// Network / connect — TierLocalFirst (TCP orange)
+	Wifi: "var(--SpineTCPFore)",
+	WifiOff: "var(--SpineTCPFore)",
+	Globe: "var(--SpineIPCFore)",
+	Network: "var(--SpineIPCFore)",
+	Radio: "var(--SpineTCPFore)",
+	Link2: "var(--SpineIPCFore)",
 
-	// Storage / hardware — slate
-	HardDrive: "#64748b",
-	Server: "#64748b",
-	Database: "#64748b",
-	Cpu: "#64748b",
-	Terminal: "#64748b",
+	// Storage / hardware — PlatformDesktop slate
+	HardDrive: "var(--PlatformDesktopFore)",
+	Server: "var(--PlatformDesktopFore)",
+	Database: "var(--DatabasePostgresFore)",
+	Cpu: "var(--PlatformDesktopFore)",
+	Terminal: "var(--PlatformCLIFore)",
 
-	// Build / code — emerald
-	Code: "#10b981",
-	Wrench: "#10b981",
-	Hammer: "#10b981",
-	FlaskConical: "#10b981",
-	Package: "#10b981",
-	PackageOpen: "#10b981",
-	Box: "#10b981",
-	Puzzle: "#10b981",
+	// Build / code — ExtensionRust / LanguageRust emerald
+	Code: "var(--SpinegRPCFore)",
+	Wrench: "var(--SpinegRPCFore)",
+	Hammer: "var(--SpinegRPCFore)",
+	FlaskConical: "var(--SpinegRPCFore)",
+	Package: "var(--SpinegRPCFore)",
+	PackageOpen: "var(--SpinegRPCFore)",
+	Box: "var(--SpinegRPCFore)",
+	Puzzle: "var(--PlatformExtensionFore)",
 
-	// Git / VCS — amber
-	GitBranch: "#f59e0b",
-	GitFork: "#f59e0b",
-	GitCommit: "#f59e0b",
-	GitPullRequest: "#f59e0b",
-	FolderGit: "#f59e0b",
+	// Git / VCS — LanguageJavaScript amber
+	GitBranch: "var(--LanguageJavaScriptFore)",
+	GitFork: "var(--LanguageJavaScriptFore)",
+	GitCommit: "var(--LanguageJavaScriptFore)",
+	GitPullRequest: "var(--LanguageJavaScriptFore)",
+	FolderGit: "var(--LanguageJavaScriptFore)",
 
-	// Cloud / sync / deploy — blue
-	Cloud: "#3b82f6",
-	RefreshCw: "#3b82f6",
-	RefreshCcw: "#3b82f6",
-	RotateCcw: "#3b82f6",
-	Download: "#3b82f6",
-	Rocket: "#3b82f6",
-	Timer: "#3b82f6",
-	Zap: "#3b82f6",
+	// Cloud / sync / deploy — TierCloud (SpineIPC blue)
+	Cloud: "var(--TierCloudFore)",
+	RefreshCw: "var(--TierCloudFore)",
+	RefreshCcw: "var(--TierCloudFore)",
+	RotateCcw: "var(--TierCloudFore)",
+	Download: "var(--TierCloudFore)",
+	Rocket: "var(--TierCloudFore)",
+	Timer: "var(--TierCloudFore)",
+	Zap: "var(--TierCloudFore)",
 
-	// Auth / provisioning — violet
-	KeyRound: "#7c3aed",
-	UserPlus: "#7c3aed",
-	Users: "#7c3aed",
-	Building2: "#7c3aed",
-	Blocks: "#7c3aed",
+	// Auth / provisioning — TierProvider (SpineWASM violet)
+	KeyRound: "var(--TierProviderFore)",
+	UserPlus: "var(--TierProviderFore)",
+	Users: "var(--TierProviderFore)",
+	Building2: "var(--TierProviderFore)",
+	Blocks: "var(--TierProviderFore)",
 
-	// Audit / docs — teal
-	FileText: "#14b8a6",
-	Activity: "#14b8a6",
-	AlertTriangle: "#14b8a6",
-	Info: "#14b8a6",
-	Search: "#14b8a6",
+	// Audit / docs — DatabaseTurso teal
+	FileText: "var(--DatabaseTursoFore)",
+	Activity: "var(--DatabaseTursoFore)",
+	AlertTriangle: "var(--DatabaseTursoFore)",
+	Info: "var(--DatabaseTursoFore)",
+	Search: "var(--DatabaseTursoFore)",
 
-	// Settings / config — slate-400
-	Settings: "#94a3b8",
-	Sliders: "#94a3b8",
-	CheckCircle: "#94a3b8",
-	Check: "#94a3b8",
-	ChevronRight: "#94a3b8",
+	// Settings / config — PlatformDesktop slate
+	Settings: "var(--PlatformDesktop)",
+	Sliders: "var(--PlatformDesktop)",
+	CheckCircle: "var(--PlatformDesktop)",
+	Check: "var(--PlatformDesktop)",
+	ChevronRight: "var(--PlatformDesktop)",
 
-	// Connectivity misc — orange
-	Unplug: "#f97316",
-	ExternalLink: "#f97316",
-	Layers: "#f97316",
-	Hash: "#f97316",
+	// Connectivity misc — TierLocalFirst (SpineTCP orange)
+	Unplug: "var(--TierLocalFirstFore)",
+	ExternalLink: "var(--TierLocalFirstFore)",
+	Layers: "var(--TierLocalFirstFore)",
+	Hash: "var(--TierLocalFirstFore)",
 
-	// AI — purple
-	BrainCircuit: "#a855f7",
+	// AI — SpineWASM purple
+	BrainCircuit: "var(--SpineWASM)",
 
-	// Support / lifecycle — pink
-	LifeBuoy: "#ec4899",
-	CirclePlay: "#ec4899",
-	Monitor: "#ec4899",
-	Laptop: "#ec4899",
+	// Support / lifecycle — PlatformMobile pink
+	LifeBuoy: "var(--PlatformMobileFore)",
+	CirclePlay: "var(--PlatformMobileFore)",
+	Monitor: "var(--PlatformMobileFore)",
+	Laptop: "var(--PlatformMobileFore)",
 };
 
 /**
@@ -268,13 +268,26 @@ const IconColorMap: Record<string, string> = {
  */
 const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const [OrganizationDomain, SetOrganizationDomain] = useState("");
+	const [OktaDomain, SetOktaDomain] = useState("");
+	const [AzureTenant, SetAzureTenant] = useState("");
+	const [SamlMetadata, SetSamlMetadata] = useState("");
 	const { t: T } = useTranslation("account");
 
-	const HandleEnterpriseLogin = (Connection: string) => {
+	const HandleEnterpriseLogin = (
+		Connection: string,
+		Extra?: Record<string, string>,
+	) => {
 		const Params = new URLSearchParams();
 		Params.set("connection", Connection);
 		if (OrganizationDomain.trim()) {
 			Params.set("login_hint", OrganizationDomain.trim());
+		}
+		if (Extra) {
+			for (const [Key, Value] of Object.entries(Extra)) {
+				if (Value.trim()) {
+					Params.set(Key, Value.trim());
+				}
+			}
 		}
 		window.location.href = `/Account/SignIn?${Params.toString()}`;
 	};
@@ -320,24 +333,38 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 						defaultValue: "Continue with SSO",
 					})}
 					{"\u2001"}
-					{"+"}
-					{"\u2001"}
 					<lucide.Building2 className="h-4 w-4" aria-hidden="true" />
 				</Button>
 			</form>
 
 			<div className="PortalTierDivider StaccatoSeparator" />
 
+			<DynamicInput
+				content={{
+					label: T("portal.enterprise.oktaDomainLabel", {
+						defaultValue: "Okta Domain",
+					}),
+					placeholder: T("portal.enterprise.oktaDomainPlaceholder", {
+						defaultValue: "your-org.okta.com",
+					}),
+					type: "text",
+					required: false,
+					onChange: SetOktaDomain,
+				}}
+				id="portal-enterprise-okta-domain"
+			/>
 			<Button
 				className="StaccatoButton w-full"
 				variant="outline"
 				style={{ borderColor: Content.BorderColor }}
-				onClick={() => HandleEnterpriseLogin("okta")}>
+				onClick={() =>
+					HandleEnterpriseLogin("okta", {
+						okta_domain: OktaDomain,
+					})
+				}>
 				{T("portal.enterprise.continueOkta", {
 					defaultValue: "Continue with Okta",
 				})}
-				{"\u2001"}
-				{"+"}
 				{"\u2001"}
 				<img
 					src="/Image/Okta.svg"
@@ -348,16 +375,33 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					className="h-5 w-5"
 				/>
 			</Button>
+
+			<DynamicInput
+				content={{
+					label: T("portal.enterprise.azureTenantLabel", {
+						defaultValue: "Azure AD Tenant ID",
+					}),
+					placeholder: T("portal.enterprise.azureTenantPlaceholder", {
+						defaultValue: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+					}),
+					type: "text",
+					required: false,
+					onChange: SetAzureTenant,
+				}}
+				id="portal-enterprise-azure-tenant"
+			/>
 			<Button
 				className="StaccatoButton w-full"
 				variant="outline"
 				style={{ borderColor: Content.BorderColor }}
-				onClick={() => HandleEnterpriseLogin("waad")}>
+				onClick={() =>
+					HandleEnterpriseLogin("waad", {
+						tenant: AzureTenant,
+					})
+				}>
 				{T("portal.enterprise.continueAzure", {
 					defaultValue: "Continue with Azure AD",
 				})}
-				{"\u2001"}
-				{"+"}
 				{"\u2001"}
 				<img
 					src="/Image/Microsoft.svg"
@@ -368,16 +412,36 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					className="h-5 w-5"
 				/>
 			</Button>
+
+			<DynamicInput
+				content={{
+					label: T("portal.enterprise.samlMetadataLabel", {
+						defaultValue: "SAML Metadata URL",
+					}),
+					placeholder: T(
+						"portal.enterprise.samlMetadataPlaceholder",
+						{
+							defaultValue: "https://your-idp.com/metadata.xml",
+						},
+					),
+					type: "url",
+					required: false,
+					onChange: SetSamlMetadata,
+				}}
+				id="portal-enterprise-saml-metadata"
+			/>
 			<Button
 				className="StaccatoButton w-full"
 				variant="outline"
 				style={{ borderColor: Content.BorderColor }}
-				onClick={() => HandleEnterpriseLogin("samlp")}>
+				onClick={() =>
+					HandleEnterpriseLogin("samlp", {
+						saml_metadata_url: SamlMetadata,
+					})
+				}>
 				{T("portal.enterprise.continueSAML", {
 					defaultValue: "Continue with SAML",
 				})}
-				{"\u2001"}
-				{"+"}
 				{"\u2001"}
 				<lucide.Lock className="h-4 w-4" aria-hidden="true" />
 			</Button>
@@ -411,6 +475,7 @@ const PortalTierRow = ({
 	const RowReference = useRef<HTMLDivElement>(null);
 	const [, SetEmail] = useState("");
 	const [, SetPassword] = useState("");
+	const { t: T } = useTranslation("account");
 
 	const IconComponent = Content.Icon
 		? TierIconRegistry[Content.Icon] || lucide.Shield
@@ -487,8 +552,15 @@ const PortalTierRow = ({
 								aria-label="Cloud sign in form">
 								<DynamicInput
 									content={{
-										label: "Email",
-										placeholder: "name@example.com",
+										label: T("portal.cloud.emailLabel", {
+											defaultValue: "Email",
+										}),
+										placeholder: T(
+											"portal.cloud.emailPlaceholder",
+											{
+												defaultValue: "name@example.com",
+											},
+										),
 										type: "email",
 										required: true,
 										onChange: SetEmail,
@@ -497,8 +569,16 @@ const PortalTierRow = ({
 								/>
 								<DynamicInput
 									content={{
-										label: "Password",
-										placeholder: "Enter your password",
+										label: T("portal.cloud.passwordLabel", {
+											defaultValue: "Password",
+										}),
+										placeholder: T(
+											"portal.cloud.passwordPlaceholder",
+											{
+												defaultValue:
+													"Enter your password",
+											},
+										),
 										type: "password",
 										required: true,
 										onChange: SetPassword,
@@ -513,9 +593,9 @@ const PortalTierRow = ({
 										borderColor: Content.BorderColor,
 										color: "#ffffff",
 									}}>
-									Secure Sign In
-									{"\u2001"}
-									{"+"}
+									{T("portal.cloud.signIn", {
+										defaultValue: "Secure Sign In",
+									})}
 									{"\u2001"}
 									<lucide.Lock
 										className="h-4 w-4"
@@ -534,9 +614,9 @@ const PortalTierRow = ({
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => OnAction?.()}>
-									Continue with GitHub
-									{"\u2001"}
-									{"+"}
+									{T("portal.provider.continueGitHub", {
+										defaultValue: "Continue with GitHub",
+									})}
 									{"\u2001"}
 									<img
 										src="/Image/GitHub.svg"
@@ -552,9 +632,9 @@ const PortalTierRow = ({
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => OnAction?.()}>
-									Continue with Google
-									{"\u2001"}
-									{"+"}
+									{T("portal.provider.continueGoogle", {
+										defaultValue: "Continue with Google",
+									})}
 									{"\u2001"}
 									<img
 										src="/Image/Google.svg"
@@ -570,9 +650,9 @@ const PortalTierRow = ({
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => OnAction?.()}>
-									Continue with GitLab
-									{"\u2001"}
-									{"+"}
+									{T("portal.provider.continueGitLab", {
+										defaultValue: "Continue with GitLab",
+									})}
 									{"\u2001"}
 									<img
 										src="/Image/GitLab.svg"
@@ -585,11 +665,10 @@ const PortalTierRow = ({
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
-									{"OAuth 2.0"}
-									{"\u2001"}
-									{"+"}
-									{"\u2001"}
-									{"Linked to your preferences"}
+									{T("portal.provider.oauthNote", {
+										defaultValue:
+											"OAuth 2.0 \u00b7 Linked to your preferences",
+									})}
 								</p>
 							</div>
 						)}
@@ -600,10 +679,14 @@ const PortalTierRow = ({
 								aria-label="Local-first connection">
 								<div className="PortalTierDaemonStatus StaccatoBreath">
 									<span className="text-xs font-medium">
-										Air Daemon
+										{T("portal.localfirst.daemonLabel", {
+											defaultValue: "Air Daemon",
+										})}
 									</span>
 									<span className="ml-auto text-xs text-muted-foreground">
-										Scanning...
+										{T("portal.localfirst.daemonStatus", {
+											defaultValue: "Scanning...",
+										})}
 									</span>
 									{"\u2001"}
 									<div className="PortalTierDaemonDot StaccatoRhythmDot" />
@@ -616,9 +699,9 @@ const PortalTierRow = ({
 										color: "#ffffff",
 									}}
 									onClick={() => OnAction?.()}>
-									Connect to Air Daemon
-									{"\u2001"}
-									{"+"}
+									{T("portal.localfirst.connect", {
+										defaultValue: "Connect to Air Daemon",
+									})}
 									{"\u2001"}
 									<lucide.Wifi
 										className="h-4 w-4"
@@ -627,15 +710,10 @@ const PortalTierRow = ({
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
-									{"Zero cloud dependency"}
-									{"\u2001"}
-									{"+"}
-									{"\u2001"}
-									{"JWT certificates"}
-									{"\u2001"}
-									{"+"}
-									{"\u2001"}
-									{"mTLS"}
+									{T("portal.localfirst.note", {
+										defaultValue:
+											"Zero cloud dependency \u00b7 JWT certificates \u00b7 mTLS",
+									})}
 								</p>
 							</div>
 						)}
@@ -673,7 +751,10 @@ const PortalTierRow = ({
 				{/* Features list */}
 				<div className="PortalTierFeatureList">
 					<h4 className="PortalTierFeatureHeading">
-						{Labels?.Included ?? "Included"}
+						{Labels?.Included ??
+							T("portal.labels.included", {
+								defaultValue: "Included",
+							})}
 					</h4>
 					<ul className="PortalTierFeatureItems">
 						{Content.Feature.map((Feature, FeatureIndex) => (
@@ -717,7 +798,7 @@ const PortalTierRow = ({
 														const LucideColor =
 															IconColorMap[
 																IconName
-															] ?? "#94a3b8";
+															] ?? "var(--PlatformDesktop)";
 
 														return (
 															<span
@@ -786,7 +867,10 @@ const PortalTierRow = ({
 				{Content.Capability.length > 0 && (
 					<div className="PortalTierCapabilityList">
 						<h4 className="PortalTierFeatureHeading">
-							{Labels?.Capabilities ?? "Capabilities"}
+							{Labels?.Capabilities ??
+								T("portal.labels.capabilities", {
+									defaultValue: "Capabilities",
+								})}
 						</h4>
 						<div className="PortalTierCapabilityGrid">
 							{Content.Capability.map(
@@ -798,14 +882,12 @@ const PortalTierRow = ({
 											{CapabilityText}
 										</span>
 										{"\u2001"}
-										{"+"}
-										{"\u2001"}
 										<IconTooltip
 											Label="Security"
 											Icon={lucide.Shield}
 											Color={
 												IconColorMap["Shield"] ??
-												"#6366f1"
+												"var(--SpineWASMFore)"
 											}
 											SizeClass="h-3 w-3 shrink-0"
 										/>
@@ -834,18 +916,14 @@ const PortalTierRow = ({
 						{Labels?.SettingsManaged ?? "Settings Managed"}
 					</span>
 					{"\u2001"}
-					{"+"}
-					{"\u2001"}
 					<span className="text-xs text-muted-foreground">
 						{Labels?.AllTiers ?? "Included in all tiers"}
 					</span>
 					{"\u2001"}
-					{"+"}
-					{"\u2001"}
 					<IconTooltip
 						Label="Sync"
 						Icon={lucide.RefreshCw}
-						Color={IconColorMap["RefreshCw"] ?? "#3b82f6"}
+						Color={IconColorMap["RefreshCw"] ?? "var(--TierCloudFore)"}
 						SizeClass="h-3.5 w-3.5"
 						ClassName="StaccatoIcon"
 					/>

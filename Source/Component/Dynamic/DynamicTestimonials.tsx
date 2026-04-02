@@ -3,6 +3,20 @@ import { useEffect, useRef } from "react";
 import type Property from "./Interface/Property/Testimonial.js";
 
 /**
+ * Semantic color map per architecture element ID — maps each element to its design token.
+ * Mountain/Air/Echo: ExtensionRust (Rust backend), Cocoon: ExtensionEffectTypeScript,
+ * Wind: LanguageTypeScript (TS workbench), Sky: ExtensionTauri (UI rendering).
+ */
+const TestimonialColorMap: Record<string, string> = {
+	mountain: "var(--ExtensionRust)",
+	cocoon: "var(--ExtensionEffectTypeScript)",
+	wind: "var(--LanguageTypeScript)",
+	sky: "var(--ExtensionTauri)",
+	air: "var(--ExtensionRust)",
+	echo: "var(--ExtensionRust)",
+};
+
+/**
  * Dynamic Testimonials with simplex noise integration.
  * Cards get StaccatoCard + Attention scatter for organic stagger.
  * Stars shimmer with StaccatoStar. Avatars bounce with StaccatoAvatar.
@@ -70,7 +84,7 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 		<section
 			id="testimonials"
 			aria-label="Architecture"
-			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
@@ -90,10 +104,15 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 				<div
 					ref={GridReference}
 					className={`StaccatoMorphGap grid ${ColumnClass[columns]} mx-auto gap-8`}>
-					{testimonials.map((Testimonial) => (
+					{testimonials.map((Testimonial) => {
+						const AccentColor =
+							TestimonialColorMap[Testimonial.id] ??
+							"var(--Primary)";
+						return (
 						<article
 							key={Testimonial.id}
-							className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6">
+							className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6"
+							style={{ borderLeftColor: AccentColor, borderLeftWidth: "2px" }}>
 							<div className="mb-4">
 								{RenderStars(Testimonial.rating)}
 							</div>
@@ -142,7 +161,8 @@ const DynamicTestimonials = ({ content, className }: Property) => {
 								</div>
 							</div>
 						</article>
-					))}
+						);
+					})}
 				</div>
 			</div>
 		</section>

@@ -8,6 +8,17 @@ import type Property from "./Interface/Property/Grid/Platform.js";
 import type CardSection from "./Interface/Section/Card.js";
 
 /**
+ * Semantic color map per platform name — maps each platform to its OS token.
+ * Applied as a top-border accent on each download card.
+ */
+const PlatformColorMap: Record<string, string> = {
+	Apple: "var(--OSMacOS)",
+	macOS: "var(--OSMacOS)",
+	Windows: "var(--OSWindows)",
+	Linux: "var(--OSLinux)",
+};
+
+/**
  * Dynamic PlatformGrid component that displays download cards for each platform
  * Supports fetching real download data from the Workers API
  * Includes loading and error states
@@ -256,7 +267,7 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 		<section
 			id="download"
 			aria-label="Downloads"
-			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(title || subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
@@ -380,12 +391,19 @@ const DynamicPlatformGrid = ({ content, className }: Property) => {
 								: {}),
 						};
 
+						const PlatformAccentColor =
+							PlatformColorMap[Platform.name] ??
+							"var(--PlatformDesktop)";
+
 						return (
-							<DynamicCard
+							<div
 								key={Platform.id}
-								sections={PlatformCardSection}
-								className="PlatformCard flex flex-col"
-							/>
+								style={{ borderTopColor: PlatformAccentColor, borderTopWidth: "2px", borderTopStyle: "solid" }}>
+								<DynamicCard
+									sections={PlatformCardSection}
+									className="PlatformCard flex flex-col"
+								/>
+							</div>
 						);
 					})}
 				</div>

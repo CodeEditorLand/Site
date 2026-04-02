@@ -34,8 +34,8 @@ const PortalData: PortalContent = {
 		Title: "Cloud",
 		Subtitle:
 			"Secure online login. Your workspace syncs across every device via the CEL cloud relay.",
-		Color: "#3b82f6",
-		BorderColor: "#2563eb",
+		Color: "var(--TierCloud)",
+		BorderColor: "var(--TierCloudFore)",
 		Icon: "Cloud",
 		Badge: "Hosted",
 		Protocol: "HTTPS \u00b7 WebSocket \u00b7 JWT RS256",
@@ -85,8 +85,8 @@ const PortalData: PortalContent = {
 		Title: "Provider",
 		Subtitle:
 			"Sign in with your existing developer identity. OAuth 2.0 scopes request only the minimum required.",
-		Color: "#8b5cf6",
-		BorderColor: "#7c3aed",
+		Color: "var(--TierProvider)",
+		BorderColor: "var(--TierProviderFore)",
 		Icon: "GitFork",
 		Badge: "OAuth",
 		Protocol: "OAuth 2.0 \u00b7 PKCE \u00b7 OpenID Connect",
@@ -136,8 +136,8 @@ const PortalData: PortalContent = {
 		Title: "Local-First",
 		Subtitle:
 			"Zero cloud dependency. The Air Daemon runs on your machine and issues mTLS certificates locally.",
-		Color: "#f97316",
-		BorderColor: "#ea580c",
+		Color: "var(--TierLocalFirst)",
+		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "Wifi",
 		Badge: "Offline",
 		Protocol: "Air Daemon \u00b7 mTLS \u00b7 JWT ES384",
@@ -187,8 +187,8 @@ const PortalData: PortalContent = {
 		Title: "Enterprise",
 		Subtitle:
 			"OIDC Discovery, SAML 2.0, and SCIM provisioning. Managed by your IT team.",
-		Color: "#374151",
-		BorderColor: "#1f2937",
+		Color: "var(--PlatformDesktopFore)",
+		BorderColor: "var(--PlatformDesktop)",
 		Icon: "Building2",
 		Badge: "Enterprise",
 		Protocol: "OIDC \u00b7 SAML 2.0 \u00b7 SCIM 2.0",

@@ -4,6 +4,7 @@ import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
 import * as lucide from "lucide-react";
 import type Property from "./Interface/Property/Hero.js";
+import { IconTooltip } from "../UI/IconTooltip.js";
 
 /**
  * Dynamic HeroSection with simplex noise integration.
@@ -102,7 +103,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-[100dvh] w-full items-center overflow-hidden py-16 lg:py-24 ${className || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-[200dvh] w-full items-center overflow-hidden py-16 lg:py-24 ${className || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -169,12 +170,27 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 									transitionDelay: `${Index * 50}ms`,
 								}}>
 								<div className="mb-2 flex items-center justify-center">
-									<IconComponent className="h-6 w-6 text-primary" />
+									<IconTooltip
+										Label={Card.title}
+										Icon={IconComponent}
+										SizeClass="h-6 w-6"
+										ClassName="text-primary"
+									/>
 								</div>
 								<div className="text-center">
 									<div className="text-xs font-medium text-foreground">
 										{Card.title}
 									</div>
+									{Card.colors && Card.colors.length > 0 && (
+										<div className="mt-1.5 flex items-center justify-center gap-1.5">
+											{Card.colors.map((Color, ColorIndex) => (
+												<div
+													key={ColorIndex}
+													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
+												/>
+											))}
+										</div>
+									)}
 								</div>
 							</div>
 							);
@@ -184,7 +200,7 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 					{/* Desktop: orbital layout */}
 					<div
 						ref={SceneReference}
-						className="relative hidden min-h-[500px] lg:block"
+						className="relative hidden min-h-[80vh] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub:logo with micro-movement */}
 						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
@@ -234,12 +250,27 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 									transform: "translate(-50%, -50%)",
 								}}>
 								<div className="mb-2 flex items-center justify-center">
-									<IconComponent className="h-8 w-8 text-primary" />
+									<IconTooltip
+										Label={Card.title}
+										Icon={IconComponent}
+										SizeClass="h-8 w-8"
+										ClassName="text-primary"
+									/>
 								</div>
 								<div className="text-center">
 									<div className="text-xs font-medium text-foreground">
 										{Card.title}
 									</div>
+									{Card.colors && Card.colors.length > 0 && (
+										<div className="mt-1.5 flex items-center justify-center gap-1.5">
+											{Card.colors.map((Color, ColorIndex) => (
+												<div
+													key={ColorIndex}
+													className={`StaccatoRhythmDot h-3 w-3 ${Color} border border-[var(--Border)]`}
+												/>
+											))}
+										</div>
+									)}
 								</div>
 							</div>
 							);

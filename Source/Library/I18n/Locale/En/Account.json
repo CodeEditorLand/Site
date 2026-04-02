@@ -113,6 +113,10 @@
 			"title": "Cloud Account",
 			"subtitle": "Secure online login with full cloud sync.\nYour settings, extensions, and preferences stored and synced across all devices.",
 			"signIn": "Secure Sign In",
+			"emailLabel": "Email",
+			"emailPlaceholder": "name@example.com",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Enter your password",
 			"feature": {
 				"sync": "Cross-device settings synchronization",
 				"backup": "Automatic cloud backup of configurations",
@@ -189,6 +193,12 @@
 			"continueOkta": "Continue with Okta",
 			"continueAzure": "Continue with Azure AD",
 			"continueSAML": "Continue with SAML",
+			"oktaDomainLabel": "Okta Domain",
+			"oktaDomainPlaceholder": "your-org.okta.com",
+			"azureTenantLabel": "Azure AD Tenant ID",
+			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"samlMetadataLabel": "SAML Metadata URL",
+			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
 			"note": "OIDC Discovery · SAML 2.0 · SCIM provisioning",
 			"feature": {
 				"okta": "Okta SSO integration",

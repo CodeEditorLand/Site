@@ -47,7 +47,14 @@
 		"downloadFailed": "Download failed.\nPlease try again.",
 		"downloadFor": "Download for {{platform}}",
 		"copiedToClipboard": "{{label}} copied to clipboard!",
-		"failedToCopy": "Failed to copy {{label}}"
+		"failedToCopy": "Failed to copy {{label}}",
+		"sha256Checksum": "SHA-256 Checksum",
+		"pgpSignature": "PGP Signature",
+		"verificationInstructions": "Verification Instructions",
+		"downloadVerification": "Download Verification",
+		"integrityCheck": "Integrity Check",
+		"copy": "Copy",
+		"signedWithKeyId": "Signed with key ID: {{keyId}}"
 	},
 	"transparency": {
 		"title": "Build Transparency",

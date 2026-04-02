@@ -79,7 +79,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 		<section
 			id="Transparency"
 			aria-label="Build Transparency"
-			className={`flex w-full flex-col py-20 ${className || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${className || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">

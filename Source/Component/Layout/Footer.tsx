@@ -3,6 +3,7 @@
 import * as lucide from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { IconTooltip } from "../UI/IconTooltip.js";
 import { Separator } from "../UI/Separator";
 
 import "./Footer/Stylesheet.css";
@@ -191,14 +192,15 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
-							<img
-								src="/Image/GitHub.svg"
-								alt=""
-								width="20"
-								height="20"
-								className="h-5 w-5"
-								aria-hidden="true"
-							/>
+							<IconTooltip Label="GitHub">
+								<img
+									src="/Image/GitHub.svg"
+									alt="GitHub"
+									width="20"
+									height="20"
+									className="h-5 w-5"
+								/>
+							</IconTooltip>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
 						<a
@@ -207,11 +209,13 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on X (opens in new tab)">
-							<span
-								className="inline-flex h-5 w-5 items-center justify-center text-sm font-bold"
-								aria-hidden="true">
-								𝕏
-							</span>
+							<IconTooltip Label="X (Twitter)">
+								<span
+									className="inline-flex h-5 w-5 items-center justify-center text-sm font-bold"
+									aria-hidden="true">
+									𝕏
+								</span>
+							</IconTooltip>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
 						<p className="text-sm text-muted-foreground">

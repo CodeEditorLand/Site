@@ -23,8 +23,8 @@ const PortalContent = {
 			defaultValue:
 				"Secure online login with full cloud sync.\nYour settings, extensions, and preferences stored and synced across all devices.",
 		}),
-		Color: "#3b82f6",
-		BorderColor: "#3b82f6",
+		Color: "var(--TierCloud)",
+		BorderColor: "var(--TierCloudFore)",
 		Icon: "Cloud",
 		Badge: "Online",
 		Protocol: "HTTPS / TLS 1.3",
@@ -96,8 +96,8 @@ const PortalContent = {
 			defaultValue:
 				"Authenticate through GitHub, Google, or GitLab.\nYour OAuth identity links directly to your editor preferences and team memberships.",
 		}),
-		Color: "#a855f7",
-		BorderColor: "#a855f7",
+		Color: "var(--TierProvider)",
+		BorderColor: "var(--TierProviderFore)",
 		Icon: "GitFork",
 		Badge: "OAuth 2.0",
 		Protocol: "OAuth 2.0 / PKCE",
@@ -170,8 +170,8 @@ const PortalContent = {
 			defaultValue:
 				"Like a SaaS control panel that runs on your machine.\nZero cloud dependency.\nThe website communicates directly with the Air Daemon inside Land/Element via local-first protocol.\nConfigure, update, rebuild, and deploy your editor entirely from this console.",
 		}),
-		Color: "#f97316",
-		BorderColor: "#f97316",
+		Color: "var(--TierLocalFirst)",
+		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "HardDrive",
 		Badge: "Local-First",
 		Protocol: "mTLS / CRDTs / WebSocket",
@@ -269,8 +269,8 @@ const PortalContent = {
 			defaultValue:
 				"OIDC / SAML 2.0 single sign-on through Okta, Azure AD, or any compliant identity provider.\nGroup-to-role mapping, audit logs, and organization CA certificate management.",
 		}),
-		Color: "#10b981",
-		BorderColor: "#10b981",
+		Color: "var(--PlatformDesktopFore)",
+		BorderColor: "var(--PlatformDesktop)",
 		Icon: "Shield",
 		Badge: "OIDC / SAML",
 		Protocol: "OIDC / SAML 2.0 / SCIM",

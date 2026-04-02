@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
+import { IconTooltip } from "../UI/IconTooltip.js";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 import "../Layout/Header/Stylesheet.css";
@@ -119,26 +120,35 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 		],
 	};
 
-	const RenderIcon = (IconName?: string) => {
+	const RenderIcon = (IconName?: string, Label?: string) => {
 		if (!IconName) return null;
 		const Icon = IconRegistry[IconName];
 		if (!Icon) return null;
 		return (
 			<>
 				{"\u2001"}
-				<Icon className="StaccatoIcon h-3.5 w-3.5" aria-hidden="true" />
+				<IconTooltip
+					Label={Label || IconName}
+					Icon={Icon}
+					SizeClass="h-3.5 w-3.5"
+					ClassName="StaccatoIcon"
+				/>
 			</>
 		);
 	};
 
-	const RenderActionIcon = (IconName?: string) => {
+	const RenderActionIcon = (IconName?: string, Label?: string) => {
 		if (!IconName) return null;
 		const Icon = IconRegistry[IconName];
 		if (!Icon) return null;
 		return (
 			<>
 				{"\u2001"}
-				<Icon className="h-4 w-4" aria-hidden="true" />
+				<IconTooltip
+					Label={Label || IconName}
+					Icon={Icon}
+					SizeClass="h-4 w-4"
+				/>
 			</>
 		);
 	};
@@ -194,7 +204,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 											}
 										: {})}>
 									{Link.label}
-									{RenderIcon(Link.icon)}
+									{RenderIcon(Link.icon, Link.label)}
 								</a>
 							</span>
 						))}
@@ -231,7 +241,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 											asChild>
 											<a href={Action.href}>
 												{Action.text}
-												{RenderActionIcon(Action.icon)}
+												{RenderActionIcon(Action.icon, Action.text)}
 											</a>
 										</Button>
 									))}
@@ -256,7 +266,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 									asChild>
 									<a href={Action.href}>
 										{Action.text}
-										{RenderActionIcon(Action.icon)}
+										{RenderActionIcon(Action.icon, Action.text)}
 									</a>
 								</Button>
 							))
@@ -307,9 +317,11 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 									{Icon && (
 										<>
 											{"\u2001"}
-											<Icon
-												className="text-muted-foreground/70 h-4 w-4"
-												aria-hidden="true"
+											<IconTooltip
+												Label={Link.label}
+												Icon={Icon}
+												SizeClass="h-4 w-4"
+												ClassName="text-muted-foreground/70"
 											/>
 										</>
 									)}
@@ -334,7 +346,7 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 								asChild>
 								<a href={Action.href}>
 									{Action.text}
-									{RenderActionIcon(Action.icon)}
+									{RenderActionIcon(Action.icon, Action.text)}
 								</a>
 							</Button>
 						))}

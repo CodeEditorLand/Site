@@ -57,43 +57,64 @@ const HomePage = ({ content, className }: Property) => {
 				{
 					id: "1",
 					title: "Rust Core",
-					colors: ["bg-orange-600", "bg-muted"],
+					colors: [
+						"bg-[var(--ExtensionRust)]",
+						"bg-[var(--Mute)]",
+					],
 				},
 				{
 					id: "2",
 					title: "Tauri UI",
 					colors: [
-						"bg-yellow-500",
-						"bg-primary",
-						"bg-secondary",
-						"bg-muted",
+						"bg-[var(--ExtensionTauri)]",
+						"bg-[var(--Primary)]",
+						"bg-[var(--Secondary)]",
+						"bg-[var(--Mute)]",
 					],
 				},
 				{
 					id: "3",
 					title: "Effect-TS Services",
-					colors: ["bg-cyan-500", "bg-cyan-600", "bg-cyan-700"],
+					colors: [
+						"bg-[var(--ExtensionEffectTypeScript)]",
+						"bg-[var(--ExtensionEffectTypeScriptFore)]",
+						"bg-[var(--ExtensionEffectTypeScriptMute)]",
+					],
 				},
 				{
 					id: "4",
 					title: "gRPC IPC",
-					colors: ["bg-green-500", "bg-blue-500"],
+					colors: [
+						"bg-[var(--SpinegRPC)]",
+						"bg-[var(--SpineIPC)]",
+					],
 				},
 				{
 					id: "5",
 					title: "Extension Host",
-					colors: ["bg-purple-600"],
+					colors: ["bg-[var(--TierProvider)]"],
 				},
 				{
 					id: "6",
 					title: "Cross-Platform",
-					colors: ["bg-gray-600", "bg-blue-600", "bg-orange-500"],
+					colors: [
+						"bg-[var(--OSMacOS)]",
+						"bg-[var(--OSWindows)]",
+						"bg-[var(--OSLinux)]",
+					],
 				},
-				{ id: "7", title: "VS Code API", colors: ["bg-blue-500"] },
+				{
+					id: "7",
+					title: "VS Code API",
+					colors: ["bg-[var(--SpineIPC)]"],
+				},
 				{
 					id: "8",
 					title: "Open Source CC0",
-					colors: ["bg-green-500", "bg-yellow-500"],
+					colors: [
+						"bg-[var(--SpinegRPC)]",
+						"bg-[var(--ExtensionTauri)]",
+					],
 				},
 			],
 			showConnectingLines: true,

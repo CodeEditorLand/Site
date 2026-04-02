@@ -47,7 +47,11 @@ const DynamicVerificationInfo = ({
 			{Information.sha256 && (
 				<div className="space-y-2">
 					<div className="flex items-center">
-						<span className="font-semibold">SHA-256 Checksum</span>
+						<span className="font-semibold">
+						{T("labels.sha256Checksum", {
+							defaultValue: "SHA-256 Checksum",
+						})}
+					</span>
 						{"\u2001"}
 						<Fingerprint
 							className="h-4 w-4 shrink-0 text-primary"
@@ -65,10 +69,12 @@ const DynamicVerificationInfo = ({
 							onClick={() =>
 								CopyToClipboard(
 									Information.sha256!,
-									"SHA-256 checksum",
+									T("labels.sha256Checksum", {
+									defaultValue: "SHA-256 checksum",
+								}),
 								)
 							}>
-							Copy
+							{T("labels.copy", { defaultValue: "Copy" })}
 						</button>
 					</div>
 				</div>
@@ -77,7 +83,11 @@ const DynamicVerificationInfo = ({
 			{Information.pgpSignature && (
 				<div className="space-y-2">
 					<div className="flex items-center">
-						<span className="font-semibold">PGP Signature</span>
+						<span className="font-semibold">
+						{T("labels.pgpSignature", {
+							defaultValue: "PGP Signature",
+						})}
+					</span>
 						{"\u2001"}
 						<Shield
 							className="h-4 w-4 shrink-0 text-primary"
@@ -95,15 +105,20 @@ const DynamicVerificationInfo = ({
 							onClick={() =>
 								CopyToClipboard(
 									Information.pgpSignature || "",
-									"PGP signature",
+									T("labels.pgpSignature", {
+									defaultValue: "PGP signature",
+								}),
 								)
 							}>
-							Copy
+							{T("labels.copy", { defaultValue: "Copy" })}
 						</button>
 					</div>
 					{Information.signingKeyId && (
 						<p className="text-xs text-muted-foreground">
-							Signed with key ID: {Information.signingKeyId}
+							{T("labels.signedWithKeyId", {
+								defaultValue: "Signed with key ID: {{keyId}}",
+								keyId: Information.signingKeyId,
+							})}
 						</p>
 					)}
 				</div>
@@ -112,7 +127,9 @@ const DynamicVerificationInfo = ({
 			{Information.verificationInstructions && (
 				<div className="border-t border-[var(--Border)] pt-4">
 					<h5 className="mb-2 font-semibold">
-						Verification Instructions
+						{T("labels.verificationInstructions", {
+							defaultValue: "Verification Instructions",
+						})}
 					</h5>
 					<p className="whitespace-pre-line text-sm text-muted-foreground">
 						{Information.verificationInstructions}
@@ -166,7 +183,9 @@ const DynamicVerificationInfo = ({
 						{/* Download Verification */}
 						<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
 							<h3 className="mb-4 flex items-center text-xl font-semibold">
-								Download Verification
+								{T("labels.downloadVerification", {
+									defaultValue: "Download Verification",
+								})}
 								{"\u2001"}
 								<Download
 									className="h-5 w-5 shrink-0"
@@ -182,7 +201,9 @@ const DynamicVerificationInfo = ({
 						{/* Integrity Verification */}
 						<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-white p-6">
 							<h3 className="mb-4 flex items-center text-xl font-semibold">
-								Integrity Check
+								{T("labels.integrityCheck", {
+									defaultValue: "Integrity Check",
+								})}
 								{"\u2001"}
 								<Shield
 									className="h-5 w-5 shrink-0"

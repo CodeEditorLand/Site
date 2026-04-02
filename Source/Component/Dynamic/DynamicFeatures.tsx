@@ -26,6 +26,19 @@ const FeatureIconRegistry: Record<string, lucide.LucideIcon> = {
 };
 
 /**
+ * Semantic color map per feature ID — maps each feature to its design token.
+ * Used for the card header icon color and the icon stack in the description.
+ */
+const FeatureColorMap: Record<string, string> = {
+	performance: "var(--ExtensionRust)",
+	compatibility: "var(--SpineIPC)",
+	architecture: "var(--ExtensionEffectTypeScript)",
+	"cross-platform": "var(--OSMacOS)",
+	tooling: "var(--ToolBiome)",
+	opensource: "var(--SpinegRPC)",
+};
+
+/**
  * Human-readable labels for every icon in the registry.
  * These flow into aria-label, title, and Radix tooltip text via IconTooltip.
  */
@@ -106,7 +119,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 		<section
 			id="features"
 			aria-label="Features"
-			className={`flex min-h-[50dvh] w-full flex-col justify-center py-16 ${
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
 				className || ""
 			}`}>
 			<div className="container mx-auto px-4">
@@ -134,6 +147,8 @@ const DynamicFeatures = ({ content, className }: Property) => {
 						const Icon = GetIcon(Feature.icon);
 						const IconLabel =
 							FeatureIconLabelMap[Feature.icon] ?? Feature.title;
+						const FeatureColor =
+							FeatureColorMap[Feature.id] ?? "var(--Primary)";
 						return (
 							<div
 								key={Feature.id}
@@ -147,8 +162,9 @@ const DynamicFeatures = ({ content, className }: Property) => {
 										<IconTooltip
 											Label={IconLabel}
 											Icon={Icon ?? lucide.Sparkles}
+											Color={FeatureColor}
 											SizeClass="h-5 w-5"
-											ClassName="StaccatoIcon text-primary"
+											ClassName="StaccatoIcon"
 										/>
 									</div>
 								</div>
@@ -198,8 +214,10 @@ const DynamicFeatures = ({ content, className }: Property) => {
 																	Icon={
 																		StackIcon
 																	}
+																	Color={
+																		FeatureColor
+																	}
 																	SizeClass="h-4 w-4"
-																	ClassName="text-primary"
 																/>
 															</span>
 														);
