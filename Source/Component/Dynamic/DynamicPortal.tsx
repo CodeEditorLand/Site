@@ -804,9 +804,15 @@ const PortalTierRow = ({
 															<span
 																key={IconIndex}
 																className="inline-flex items-center">
-																{"\u2001"}
-																{"+"}
-																{"\u2001"}
+																{IconIndex === 0 ? (
+																	"\u2001"
+																) : (
+																	<>
+																		{"\u2001"}
+																		{"+"}
+																		{"\u2001"}
+																	</>
+																)}
 																{IconName.startsWith(
 																	"/",
 																) ? (
