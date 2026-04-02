@@ -322,7 +322,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					{"\u2001"}
 					{"+"}
 					{"\u2001"}
-					<Building2 className="h-4 w-4" aria-hidden="true" />
+					<lucide.Building2 className="h-4 w-4" aria-hidden="true" />
 				</Button>
 			</form>
 
@@ -413,8 +413,8 @@ const PortalTierRow = ({
 	const [, SetPassword] = useState("");
 
 	const IconComponent = Content.Icon
-		? TierIconRegistry[Content.Icon] || Shield
-		: Shield;
+		? TierIconRegistry[Content.Icon] || lucide.Shield
+		: lucide.Shield;
 
 	const TierIconLabel = IconLabelMap[Content.Icon ?? ""] ?? Content.Title;
 
@@ -620,7 +620,7 @@ const PortalTierRow = ({
 									{"\u2001"}
 									{"+"}
 									{"\u2001"}
-									<Wifi
+									<lucide.Wifi
 										className="h-4 w-4"
 										aria-hidden="true"
 									/>
@@ -802,7 +802,7 @@ const PortalTierRow = ({
 										{"\u2001"}
 										<IconTooltip
 											Label="Security"
-											Icon={Shield}
+											Icon={lucide.Shield}
 											Color={
 												IconColorMap["Shield"] ??
 												"#6366f1"
@@ -844,7 +844,7 @@ const PortalTierRow = ({
 					{"\u2001"}
 					<IconTooltip
 						Label="Sync"
-						Icon={RefreshCw}
+						Icon={lucide.RefreshCw}
 						Color={IconColorMap["RefreshCw"] ?? "#3b82f6"}
 						SizeClass="h-3.5 w-3.5"
 						ClassName="StaccatoIcon"
