@@ -244,7 +244,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							return (
 							<div
 								key={Card.Id}
-								className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute transform-gpu border border-[var(--Border)] bg-white p-3 w-36"
+								className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute z-50 transform-gpu border border-[var(--Border)] bg-white p-3 w-36"
 								style={{
 									top: `${CenterY}%`,
 									left: `${CenterX}%`,
