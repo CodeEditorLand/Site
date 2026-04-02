@@ -408,41 +408,88 @@
 	}
 
 	.StaccatoVisible {
-	animation: none;
+		animation: none;
 	}
-	
+
 	/* ===== HOVER / FOCUS LERP ANIMATION ===== */
 	.StaccatoHover,
 	.StaccatoFocus {
-	transition: transform 0.15s ease-out, opacity 0.15s ease-out;
-	transform-origin: center center;
+		transition:
+			transform 0.15s ease-out,
+			opacity 0.15s ease-out;
+		transform-origin: center center;
 	}
-	
+
 	[style*="--StaccatoIsOrdered: 1"] {
-	will-change: transform, opacity, z-index;
+		will-change: transform, opacity, z-index;
 	}
-	
+
 	.StaccatoHover,
 	.StaccatoFocus,
 	.StaccatoCard.StaccatoHover,
 	.StaccatoCard.StaccatoFocus {
-	transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-	            opacity 0.2s ease-out,
-	            box-shadow 0.2s ease-out;
+		transition:
+			transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+			opacity 0.2s ease-out,
+			box-shadow 0.2s ease-out;
 	}
-	
-	.StaccatoHover { cursor: pointer; }
-	
+
+	.StaccatoHover {
+		cursor: pointer;
+	}
+
 	.StaccatoFocus {
+		outline: 2px solid var(--Primary, #3b82f6);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.StaccatoHover,
+		.StaccatoFocus {
+			transition: none !important;
+			transform: none !important;
+			opacity: 1 !important;
+		}
+	}
+}
+
+/* ===== HOVER / FOCUS LERP ANIMATION ===== */
+.StaccatoHover,
+.StaccatoFocus {
+	transition:
+		transform 0.15s ease-out,
+		opacity 0.15s ease-out;
+	transform-origin: center center;
+}
+
+[style*="--StaccatoIsOrdered: 1"] {
+	will-change: transform, opacity, z-index;
+}
+
+.StaccatoHover,
+.StaccatoFocus,
+.StaccatoCard.StaccatoHover,
+.StaccatoCard.StaccatoFocus {
+	transition:
+		transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+		opacity 0.2s ease-out,
+		box-shadow 0.2s ease-out;
+}
+
+.StaccatoHover {
+	cursor: pointer;
+}
+
+.StaccatoFocus {
 	outline: 2px solid var(--Primary, #3b82f6);
 	outline-offset: 2px;
-	}
-	
-	@media (prefers-reduced-motion: reduce) {
+}
+
+@media (prefers-reduced-motion: reduce) {
 	.StaccatoHover,
 	.StaccatoFocus {
-	  transition: none !important;
-	  transform: none !important;
-	  opacity: 1 !important;
+		transition: none !important;
+		transform: none !important;
+		opacity: 1 !important;
 	}
-	}
+}

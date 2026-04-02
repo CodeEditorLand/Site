@@ -664,6 +664,7 @@
 		color: var(--PrimaryForeground);
 		border: var(--BorderWidth) solid var(--Border);
 	}
+
 	.ButtonPrimary:hover {
 		background-color: color-mix(in srgb, var(--Primary) 90%, transparent);
 	}
