@@ -1,6 +1,6 @@
 "use client";
 
-import { Github, Twitter } from "lucide-react";
+import * as lucide from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Separator } from "../UI/Separator";
@@ -191,7 +191,7 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
-							<Github className="h-5 w-5" aria-hidden="true" />
+							<lucide.Github className="h-5 w-5" aria-hidden="true" />
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
 						<a
@@ -200,7 +200,7 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on X (opens in new tab)">
-							<Twitter className="h-5 w-5" aria-hidden="true" />
+							<lucide.Twitter className="h-5 w-5" aria-hidden="true" />
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
 						<p className="text-sm text-muted-foreground">

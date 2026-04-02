@@ -1,21 +1,6 @@
 "use client";
 
-import {
-	BookOpen,
-	Download,
-	ExternalLink,
-	GitFork,
-	HelpCircle,
-	LayoutDashboard,
-	LogIn,
-	Menu,
-	Monitor,
-	Newspaper,
-	Sparkles,
-	Users,
-	X,
-	type LucideIcon,
-} from "lucide-react";
+import * as lucide from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -28,18 +13,18 @@ import "../Layout/Header/Stylesheet.css";
  * Icon registry:maps string keys to Lucide components.
  * Used by both sub-header and mobile menu.
  */
-const IconRegistry: Record<string, LucideIcon> = {
-	Sparkles,
-	Download,
-	BookOpen,
-	GitFork,
-	ExternalLink,
-	Newspaper,
-	Users,
-	LayoutDashboard,
-	HelpCircle,
-	LogIn,
-	Monitor,
+const IconRegistry: Record<string, lucide.LucideIcon> = {
+	Sparkles: lucide.Sparkles,
+	Download: lucide.Download,
+	BookOpen: lucide.BookOpen,
+	GitFork: lucide.GitFork,
+	ExternalLink: lucide.ExternalLink,
+	Newspaper: lucide.Newspaper,
+	Users: lucide.Users,
+	LayoutDashboard: lucide.LayoutDashboard,
+	HelpCircle: lucide.HelpCircle,
+	LogIn: lucide.LogIn,
+	Monitor: lucide.Monitor,
 };
 
 interface NavigationLink {
@@ -285,9 +270,9 @@ const Header = ({ content, AuthSlot }: HeaderProps) => {
 						aria-label="Toggle menu"
 						aria-expanded={MobileMenuOpen}>
 						{MobileMenuOpen ? (
-							<X className="h-5 w-5" />
+							<lucide.X className="h-5 w-5" />
 						) : (
-							<Menu className="h-5 w-5" />
+							<lucide.Menu className="h-5 w-5" />
 						)}
 					</Button>
 				</div>

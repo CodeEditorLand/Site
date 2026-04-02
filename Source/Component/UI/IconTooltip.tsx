@@ -1,6 +1,7 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
+import * as lucide from "lucide-react";
 import * as React from "react";
 
 import {
@@ -67,7 +68,7 @@ const IconTooltip = ({
 		children ??
 		(Icon ? (
 			<Icon
-				className={`${SizeClass} ${className}`}
+				className={`${SizeClass} ${ClassName}`}
 				style={Color ? { color: Color } : undefined}
 				aria-hidden="true"
 			/>

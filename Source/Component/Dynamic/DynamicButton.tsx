@@ -1,19 +1,4 @@
-import {
-	ArrowRight,
-	ChevronRight,
-	Download,
-	ExternalLink,
-	GitFork,
-	Globe,
-	Heart,
-	Loader2,
-	LogIn,
-	Mail,
-	Search,
-	Send,
-	Sparkles,
-	type LucideIcon,
-} from "lucide-react";
+import * as lucide from "lucide-react";
 
 import { Button } from "../UI/Button";
 import type Property from "./Interface/Property/Button.js";
@@ -24,19 +9,19 @@ export type DynamicButtonProps = Property;
  * Icon registry:direct imports for instant render.
  * Covers all icons used in CTA buttons across the site.
  */
-const ButtonIconRegistry: Record<string, LucideIcon> = {
-	ArrowRight,
-	ChevronRight,
-	Download,
-	ExternalLink,
-	GitFork,
-	Globe,
-	Heart,
-	LogIn,
-	Mail,
-	Search,
-	Send,
-	Sparkles,
+const ButtonIconRegistry: Record<string, lucide.LucideIcon> = {
+	ArrowRight: lucide.ArrowRight,
+	ChevronRight: lucide.ChevronRight,
+	Download: lucide.Download,
+	ExternalLink: lucide.ExternalLink,
+	GitFork: lucide.GitFork,
+	Globe: lucide.Globe,
+	Heart: lucide.Heart,
+	LogIn: lucide.LogIn,
+	Mail: lucide.Mail,
+	Search: lucide.Search,
+	Send: lucide.Send,
+	Sparkles: lucide.Sparkles,
 };
 
 /**
@@ -80,7 +65,7 @@ const DynamicButton = ({ content, onAction, isLoading = false }: Property) => {
 			{isLoading ? (
 				<>
 					{"\u2001"}
-					<Loader2
+					<lucide.Loader2
 						className="StaccatoSpinner h-4 w-4 animate-spin"
 						aria-hidden="true"
 					/>

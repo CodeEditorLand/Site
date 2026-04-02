@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import * as lucide from "lucide-react";
 import * as React from "react";
 import { DayPicker } from "react-day-picker";
 
@@ -59,9 +59,9 @@ function Calendar({
 			...classNames,
 		},
 		icons: {
-			Chevron: ChevronLeft,
-			ChevronLeft: ChevronLeft,
-			ChevronRight: ChevronRight,
+			Chevron: lucide.ChevronLeft,
+			ChevronLeft: lucide.ChevronLeft,
+			ChevronRight: lucide.ChevronRight,
 		},
 		...props,
 	} as unknown as React.ComponentProps<typeof DayPicker>;

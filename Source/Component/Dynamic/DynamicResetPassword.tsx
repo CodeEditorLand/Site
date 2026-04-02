@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle } from "lucide-react";
+import * as lucide from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -146,7 +146,7 @@ const DynamicResetPassword = ({
 											Invalid or Expired Token
 										</h3>
 										{" "}
-										<AlertCircle
+										<lucide.AlertCircle
 											className="h-5 w-5 shrink-0 text-destructive"
 											aria-hidden="true"
 										/>
@@ -191,7 +191,7 @@ const DynamicResetPassword = ({
 											Password Reset Successful
 										</h3>
 										{" "}
-										<CheckCircle
+										<lucide.CheckCircle
 											className="h-5 w-5 shrink-0 text-green-600"
 											aria-hidden="true"
 										/>

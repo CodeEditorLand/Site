@@ -1,4 +1,4 @@
-import { Cpu, Monitor } from "lucide-react";
+import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -58,9 +58,9 @@ const DynamicSystemRequirements = ({ content, className }: Property) => {
 					{" "}
 					<div className="mt-1 shrink-0">
 						{Variant === "minimum" ? (
-							<Cpu className="h-4 w-4 text-muted-foreground" />
+							<lucide.Cpu className="h-4 w-4 text-muted-foreground" />
 						) : (
-							<Monitor className="h-4 w-4 text-muted-foreground" />
+							<lucide.Monitor className="h-4 w-4 text-muted-foreground" />
 						)}
 					</div>
 				</div>

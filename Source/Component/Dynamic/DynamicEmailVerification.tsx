@@ -1,4 +1,4 @@
-import { CheckCircle, Mail, XCircle } from "lucide-react";
+import * as lucide from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -88,7 +88,7 @@ const DynamicEmailVerification = ({
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
-					<Mail className="h-6 w-6 text-primary" aria-hidden="true" />
+					<lucide.Mail className="h-6 w-6 text-primary" aria-hidden="true" />
 				</div>
 				<CardTitle className="text-2xl">
 					{content.pending.title}
@@ -181,7 +181,7 @@ const DynamicEmailVerification = ({
 						{content.success.title}
 					</CardTitle>
 					{" "}
-					<CheckCircle
+					<lucide.CheckCircle
 						className="h-5 w-5 shrink-0 text-green-600"
 						aria-hidden="true"
 					/>
@@ -208,7 +208,7 @@ const DynamicEmailVerification = ({
 						{content.error.title}
 					</CardTitle>
 					{" "}
-					<XCircle
+					<lucide.XCircle
 						className="h-5 w-5 shrink-0 text-red-600"
 						aria-hidden="true"
 					/>

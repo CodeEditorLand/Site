@@ -1,30 +1,19 @@
-import {
-	Code,
-	Cpu,
-	Eye,
-	EyeOff,
-	Layers,
-	Lock,
-	Server,
-	Shield,
-	Zap,
-	type LucideIcon,
-} from "lucide-react";
+import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { Badge } from "../UI/Badge";
 import type Property from "./Interface/Property/Transparency.js";
 
-const TransparencyIconRegistry: Record<string, LucideIcon> = {
-	Shield,
-	Eye,
-	EyeOff,
-	Lock,
-	Server,
-	Cpu,
-	Code,
-	Layers,
-	Zap,
+const TransparencyIconRegistry: Record<string, lucide.LucideIcon> = {
+	Shield: lucide.Shield,
+	Eye: lucide.Eye,
+	EyeOff: lucide.EyeOff,
+	Lock: lucide.Lock,
+	Server: lucide.Server,
+	Cpu: lucide.Cpu,
+	Code: lucide.Code,
+	Layers: lucide.Layers,
+	Zap: lucide.Zap,
 };
 
 const StatusColor: Record<string, string> = {
@@ -82,7 +71,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 		ApplyNoise();
 	}, []);
 
-	const GetIcon = (IconName: string): LucideIcon | null => {
+	const GetIcon = (IconName: string): lucide.LucideIcon | null => {
 		return TransparencyIconRegistry[IconName] || null;
 	};
 
@@ -146,7 +135,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 												<div
 													className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
 													aria-hidden="true">
-													<Icon
+													<lucide.Icon
 														className="StaccatoIcon h-5 w-5 text-primary"
 														aria-hidden="true"
 													/>

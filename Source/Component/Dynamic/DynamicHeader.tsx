@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react";
+import * as lucide from "lucide-react";
 import React from "react";
 
 import { Button } from "../UI/Button";
@@ -79,7 +79,7 @@ const DynamicHeader = ({ content, className }: Property) => {
 									}
 									aria-label="Toggle menu"
 									aria-expanded={MobileMenuOpen}>
-									<Menu className="h-4 w-4" />
+									<lucide.Menu className="h-4 w-4" />
 								</Button>
 							);
 						}

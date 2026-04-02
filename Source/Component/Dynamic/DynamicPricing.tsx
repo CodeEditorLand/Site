@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import * as lucide from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -213,7 +213,7 @@ const DynamicPricing = ({ content, className }: Property) => {
 												<span className="text-sm">
 													{Feature}
 												</span>
-												<Check
+												<lucide.Check
 													className="StaccatoCheckmark mt-0.5 h-4 w-4 shrink-0 text-primary"
 													aria-hidden="true"
 												/>

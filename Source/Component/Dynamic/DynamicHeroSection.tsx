@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
-import { Cpu, Globe, Layers, Server, Zap, Puzzle, Box, Network } from "lucide-react";
+import * as lucide from "lucide-react";
 import type Property from "./Interface/Property/Hero.js";
 
 /**
@@ -148,15 +148,15 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
 								const Title = Card.title.toLowerCase();
-								if (Title.includes("rust") || Title.includes("core")) return Cpu;
-								if (Title.includes("tauri") || Title.includes("ui")) return Box;
-								if (Title.includes("effect") || Title.includes("service")) return Layers;
-								if (Title.includes("grpc") || Title.includes("ipc")) return Network;
-								if (Title.includes("extension")) return Puzzle;
-								if (Title.includes("cross") || Title.includes("platform")) return Globe;
-								if (Title.includes("vs code") || Title.includes("api")) return Server;
-								if (Title.includes("open") || Title.includes("source")) return Zap;
-								return Cpu; // default fallback
+								if (Title.includes("rust") || Title.includes("core")) return lucide.Cpu;
+								if (Title.includes("tauri") || Title.includes("ui")) return lucide.Box;
+								if (Title.includes("effect") || Title.includes("service")) return lucide.Layers;
+								if (Title.includes("grpc") || Title.includes("ipc")) return lucide.Network;
+								if (Title.includes("extension")) return lucide.Puzzle;
+								if (Title.includes("cross") || Title.includes("platform")) return lucide.Globe;
+								if (Title.includes("vs code") || Title.includes("api")) return lucide.Server;
+								if (Title.includes("open") || Title.includes("source")) return lucide.Zap;
+								return lucide.Cpu; // default fallback
 							};
 
 							const IconComponent = GetIcon();
@@ -211,15 +211,15 @@ const DynamicHeroSection = ({ content, className }: Property) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
 								const Title = Card.title.toLowerCase();
-								if (Title.includes("rust") || Title.includes("core")) return Cpu;
-								if (Title.includes("tauri") || Title.includes("ui")) return Box;
-								if (Title.includes("effect") || Title.includes("service")) return Layers;
-								if (Title.includes("grpc") || Title.includes("ipc")) return Network;
-								if (Title.includes("extension")) return Puzzle;
-								if (Title.includes("cross") || Title.includes("platform")) return Globe;
-								if (Title.includes("vs code") || Title.includes("api")) return Server;
-								if (Title.includes("open") || Title.includes("source")) return Zap;
-								return Cpu; // default fallback
+								if (Title.includes("rust") || Title.includes("core")) return lucide.Cpu;
+								if (Title.includes("tauri") || Title.includes("ui")) return lucide.Box;
+								if (Title.includes("effect") || Title.includes("service")) return lucide.Layers;
+								if (Title.includes("grpc") || Title.includes("ipc")) return lucide.Network;
+								if (Title.includes("extension")) return lucide.Puzzle;
+								if (Title.includes("cross") || Title.includes("platform")) return lucide.Globe;
+								if (Title.includes("vs code") || Title.includes("api")) return lucide.Server;
+								if (Title.includes("open") || Title.includes("source")) return lucide.Zap;
+								return lucide.Cpu; // default fallicon
 							};
 
 							const IconComponent = GetIcon();

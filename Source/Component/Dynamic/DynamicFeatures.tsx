@@ -1,20 +1,4 @@
-import {
-	Box,
-	Code,
-	Cpu,
-	Database,
-	Globe,
-	Heart,
-	Layers,
-	Package,
-	Puzzle,
-	Server,
-	Shield,
-	Sparkles,
-	Wrench,
-	Zap,
-	type LucideIcon,
-} from "lucide-react";
+import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
@@ -24,21 +8,21 @@ import type Property from "./Interface/Property/Feature.js";
  * Icon registry: direct imports so icons render in initial HTML,
  * not after a dynamic import resolves on the client.
  */
-const FeatureIconRegistry: Record<string, LucideIcon> = {
-	Zap,
-	Box,
-	Cpu,
-	Globe,
-	Wrench,
-	Heart,
-	Sparkles,
-	Code,
-	Layers,
-	Package,
-	Puzzle,
-	Server,
-	Shield,
-	Database,
+const FeatureIconRegistry: Record<string, lucide.LucideIcon> = {
+	Zap: lucide.Zap,
+	Box: lucide.Box,
+	Cpu: lucide.Cpu,
+	Globe: lucide.Globe,
+	Wrench: lucide.Wrench,
+	Heart: lucide.Heart,
+	Sparkles: lucide.Sparkles,
+	Code: lucide.Code,
+	Layers: lucide.Layers,
+	Package: lucide.Package,
+	Puzzle: lucide.Puzzle,
+	Server: lucide.Server,
+	Shield: lucide.Shield,
+	Database: lucide.Database,
 };
 
 /**
@@ -115,7 +99,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 		ApplyScatter();
 	}, [features]);
 
-	const GetIcon = (IconName: string): LucideIcon | null =>
+	const GetIcon = (IconName: string): lucide.LucideIcon | null =>
 		FeatureIconRegistry[IconName] || null;
 
 	return (
@@ -162,7 +146,7 @@ const DynamicFeatures = ({ content, className }: Property) => {
 									<div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary">
 										<IconTooltip
 											Label={IconLabel}
-											Icon={Icon ?? Sparkles}
+											Icon={Icon ?? lucide.Sparkles}
 											SizeClass="h-5 w-5"
 											ClassName="StaccatoIcon text-primary"
 										/>

@@ -6,7 +6,7 @@ import {
 	SwitchLocale,
 	type SupportedLocale,
 } from "@/Library/I18n/Client.js";
-import { Globe } from "lucide-react";
+import * as lucide from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const LocaleSwitcher = () => {
@@ -39,7 +39,7 @@ const LocaleSwitcher = () => {
 					</option>
 				))}
 			</select>
-			<Globe
+			<lucide.Globe
 				className="pointer-events-none absolute right-2 h-3.5 w-3.5 text-[var(--MuteForeground)]"
 				aria-hidden="true"
 			/>
