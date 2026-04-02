@@ -1,62 +1,81 @@
-# Cloudflare Pages — trailing slash loop prevention
+# Cloudflare Pages — full route map
 #
-# CF Pages' static asset server issues an internal 301 to add a trailing
-# slash when it finds a directory (e.g. /Account/SignIn → /Account/SignIn/).
-# The [[Path]].ts edge function then strips it back (→ /Account/SignIn),
-# creating an infinite redirect loop.
+# Two rule types are used:
 #
-# 200 rewrites are evaluated BEFORE CF's trailing slash logic and serve
-# the directory index directly — no redirect, URL stays clean.
+#   301/302  Redirect  — browser changes URL (for bare/alias paths with no page)
+#   200      Rewrite   — serve directory index without trailing-slash redirect
+#                        (prevents CF Pages' internal 301 looping with [[Path]].ts)
 #
-# Ordering rules:
-#   1. Exact static routes come first (most specific wins)
-#   2. Splat (wildcard) routes for dynamic pages follow
-#   3. CF evaluates in order, first match wins
+# Execution order (CF Pages):
+#   1. [[Path]].ts edge function  — handles variant→canonical 301s, calls next()
+#   2. _redirects                 — consulted when [[Path]].ts calls context.next()
+#   3. Static asset serving       — fallback
 #
-# Note: CF Pages _redirects matching is case-insensitive. The [[Path]].ts
-# edge function runs first and redirects lowercase/variant paths to the
-# PascalCase canonical BEFORE _redirects is consulted, so case collisions
-# only occur if the edge function is bypassed (e.g. cold-start preview).
-# A 200 rewrite for such a collision just serves the correct content anyway.
+# Rule ordering:
+#   - Static redirects (301/302) before dynamic rewrites (200)
+#   - More specific paths before splat patterns
+#   - First match wins
+#
+# ────────────────────────────────────────────────────────────────────────────
+# BARE-PATH DISPATCHERS (301)
+# These paths have no corresponding page file. [[Path]].ts passes them through
+# (no canonical match), then _redirects dispatches to the correct sub-route.
+# ────────────────────────────────────────────────────────────────────────────
+
+/Account                  /Account/SignIn           301
+/Account/               /Account/SignIn           301
+/Legal                    /Legal/Term               301
+/Legal/                  /Legal/Term               301
+/Contact                  /Contact/Sale             301
+/Contact/                /Contact/Sale             301
+
+# ────────────────────────────────────────────────────────────────────────────
+# TRAILING-SLASH LOOP PREVENTION (200 rewrites)
+# CF Pages would issue a 301 to add a trailing slash for any directory-based
+# page (e.g. /Account/SignIn → /Account/SignIn/). The [[Path]].ts function
+# strips it back (→ /Account/SignIn), creating an infinite loop.
+# 200 rewrites intercept BEFORE CF's trailing-slash logic and serve the
+# directory index directly — no redirect, URL stays clean.
+# ────────────────────────────────────────────────────────────────────────────
 
 # ── Account ──────────────────────────────────────────────────────────────────
-/Account/ForgotPassword /Account/ForgotPassword/ 200
-/Account/ResetPassword /Account/ResetPassword/ 200
-/Account/SignIn /Account/SignIn/ 200
-/Account/SignUp /Account/SignUp/ 200
+/Account/ForgotPassword   /Account/ForgotPassword/  200
+/Account/ResetPassword    /Account/ResetPassword/   200
+/Account/SignIn           /Account/SignIn/           200
+/Account/SignUp           /Account/SignUp/           200
 
-# ── Blog (static index + dynamic slug pages) ─────────────────────────────────
-/Blog /Blog/ 200
-/Blog/* /Blog/:splat 200
+# ── Blog (index + dynamic slug pages) ────────────────────────────────────────
+/Blog                     /Blog/                    200
+/Blog/*                   /Blog/:splat              200
 
 # ── Contact ──────────────────────────────────────────────────────────────────
-/Contact/Sale /Contact/Sale/ 200
+/Contact/Sale             /Contact/Sale/            200
 
 # ── Contributing ─────────────────────────────────────────────────────────────
-/Contributing /Contributing/ 200
+/Contributing             /Contributing/            200
 
 # ── Dashboard ────────────────────────────────────────────────────────────────
-/Dashboard /Dashboard/ 200
+/Dashboard                /Dashboard/               200
 
-# ── Doc (static index + dynamic slug pages) ──────────────────────────────────
-/Doc /Doc/ 200
-/Doc/* /Doc/:splat 200
+# ── Doc (index + dynamic slug pages) ─────────────────────────────────────────
+/Doc                      /Doc/                     200
+/Doc/*                    /Doc/:splat               200
 
 # ── Download ─────────────────────────────────────────────────────────────────
-/Download /Download/ 200
+/Download                 /Download/                200
 
 # ── Legal ────────────────────────────────────────────────────────────────────
-/Legal/Privacy /Legal/Privacy/ 200
-/Legal/Term /Legal/Term/ 200
+/Legal/Privacy            /Legal/Privacy/           200
+/Legal/Term               /Legal/Term/              200
 
 # ── License ──────────────────────────────────────────────────────────────────
-/License /License/ 200
+/License                  /License/                 200
 
 # ── OAuth ────────────────────────────────────────────────────────────────────
-/OAuth/Success /OAuth/Success/ 200
+/OAuth/Success            /OAuth/Success/           200
 
 # ── Portal ───────────────────────────────────────────────────────────────────
-/Portal /Portal/ 200
+/Portal                   /Portal/                  200
 
 # ── Verify ───────────────────────────────────────────────────────────────────
-/Verify /Verify/ 200
+/Verify                   /Verify/                  200

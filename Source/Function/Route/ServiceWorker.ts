@@ -15,15 +15,16 @@ declare const __ROUTE_MAP_CANONICAL__: string[];
 
 declare const __ROUTE_MAP_VARIANT__: Record<string, string>;
 
-// ─── Version + Cache ───
+// ─── Version + Cache names ───
 
 const INCREMENT = __INCREMENT__ ?? "Initial";
 
 const CACHE_ROUTE = `Route-${INCREMENT}`;
-
 const CACHE_ASSET = `Asset-${INCREMENT}`;
+const CACHE_AUTH = "Auth"; // Not versioned — persists across deploys
 
 const CACHE = [CACHE_ROUTE, CACHE_ASSET];
+// Note: CACHE_AUTH is NOT in the eviction list — it outlives route cache.
 
 let CurrentClientVersion: string | null = null;
 
@@ -36,7 +37,7 @@ const BASE_REMOTE =
 const Log = __DEV__
 	? (..._Message: any[]) => {
 			console.log(
-				`[Route ${INCREMENT}]`,
+				`[SW ${INCREMENT}]`,
 				`(Remote: ${BASE_REMOTE})`,
 				..._Message,
 			);
@@ -46,7 +47,7 @@ const Log = __DEV__
 const ErrorLog = __DEV__
 	? (..._Message: any[]) => {
 			console.error(
-				`[Route ${INCREMENT}]`,
+				`[SW ${INCREMENT}]`,
 				`(Remote: ${BASE_REMOTE})`,
 				..._Message,
 			);
@@ -56,18 +57,112 @@ const ErrorLog = __DEV__
 const WarnLog = __DEV__
 	? (..._Message: any[]) => {
 			console.warn(
-				`[Route ${INCREMENT}]`,
+				`[SW ${INCREMENT}]`,
 				`(Remote: ${BASE_REMOTE})`,
 				..._Message,
 			);
 		}
 	: () => {};
 
-// ─── Route Map ───
+// ─── Route registry ───
+// Injected at build time from the Astro route map.
 
 const CanonicalSet: Set<string> = new Set(__ROUTE_MAP_CANONICAL__);
 
 const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
+
+// ─── Route classification ───
+// Auth-required routes — redirect to /Account/SignIn when no session cached.
+
+const ProtectedRoute: Set<string> = new Set([
+	"/Dashboard",
+	"/Portal",
+]);
+
+// Auth-bypass routes — redirect to /Dashboard when a session IS cached.
+// Prevents authenticated users from seeing the sign-in/sign-up pages.
+
+const AuthRoute: Set<string> = new Set([
+	"/Account/SignIn",
+	"/Account/SignUp",
+	"/Account/ForgotPassword",
+	"/Account/ResetPassword",
+]);
+
+// Dynamic route patterns — segments after the prefix are slug parameters.
+// Each entry maps a URL prefix to the canonical base it falls under.
+
+const DynamicRoute: Array<{ Pattern: RegExp; Base: string }> = [
+	{ Pattern: /^\/Blog\/([^/]+)\/?$/, Base: "/Blog" },
+	{ Pattern: /^\/Doc\/([^/]+)\/?$/, Base: "/Doc" },
+];
+
+// Workers API URL prefixes — requests to these paths are pre-processed
+// to inject the SW-managed auth token before forwarding to the network.
+// NOTE: full domain injection of bearer token is handled in pre-processing.
+// In production these match the PUBLIC_*_WORKER_URL env vars; in dev they
+// are relative /api/* paths exposed by the dev Workers.
+
+const ApiPrefix: string[] = [
+	"/api/",
+	"/auth/",
+	"/downloads/",
+	"/track",
+	"/pageview",
+	"/events",
+	"/summary",
+	"/timeline",
+	"/stats/",
+	"/status",
+];
+
+// ─── Auth state ───
+// Session token is stored in CACHE_AUTH as a JSON response at /auth-state.
+// The token itself is a Bearer token from the Auth Worker.
+// JWT/HMAC encryption of the stored payload is a follow-up task.
+
+interface AuthState {
+	Token: string;
+	ExpiresAt: number; // Unix ms
+	UserId: string;
+}
+
+const AUTH_STATE_KEY = "/auth-state";
+
+const ReadAuthState = async (): Promise<AuthState | null> => {
+	try {
+		const Cache = await caches.open(CACHE_AUTH);
+		const Cached = await Cache.match(AUTH_STATE_KEY);
+		if (!Cached) return null;
+		const State = (await Cached.json()) as AuthState;
+		// Treat as expired if within 30 s of expiry (clock skew buffer)
+		if (State.ExpiresAt - 30_000 < Date.now()) {
+			await Cache.delete(AUTH_STATE_KEY);
+			__DEV__ && Log("Auth token expired, cleared from cache.");
+			return null;
+		}
+		return State;
+	} catch {
+		return null;
+	}
+};
+
+const WriteAuthState = async (State: AuthState): Promise<void> => {
+	const Cache = await caches.open(CACHE_AUTH);
+	await Cache.put(
+		AUTH_STATE_KEY,
+		new Response(JSON.stringify(State), {
+			headers: { "Content-Type": "application/json" },
+		}),
+	);
+	__DEV__ && Log("Auth state written to cache.", { ExpiresAt: State.ExpiresAt });
+};
+
+const ClearAuthState = async (): Promise<void> => {
+	const Cache = await caches.open(CACHE_AUTH);
+	await Cache.delete(AUTH_STATE_KEY);
+	__DEV__ && Log("Auth state cleared.");
+};
 
 // ─── Path normalization ───
 
@@ -86,29 +181,30 @@ const NormalizePath = (Path: string): string =>
 	);
 
 // ─── Route resolution ───
-// Returns the PascalCase canonical path, or null if already canonical
+// Returns the PascalCase canonical path, or null if already canonical.
+// Handles static routes AND dynamic route slugs.
 
 const ResolveRoute = (RequestPath: string): string | null => {
 	const Cleaned = StripTrailingSlash(RequestPath);
 
-	if (CanonicalSet.has(Cleaned)) {
-		return null;
+	// Already a canonical static route — no redirect needed
+	if (CanonicalSet.has(Cleaned) || Cleaned === "/") return null;
+
+	// Check dynamic route patterns — slugs are valid, no redirect needed
+	for (const { Pattern } of DynamicRoute) {
+		if (Pattern.test(Cleaned)) return null;
 	}
 
 	const Normalized = NormalizePath(Cleaned);
 
-	if (CanonicalSet.has(Normalized)) {
-		return Normalized;
-	}
+	// Normalize against known canonicals
+	if (CanonicalSet.has(Normalized)) return Normalized;
 
-	if (VariantMap[Normalized]) {
-		return VariantMap[Normalized];
-	}
+	// Check variant map (auto-generated case/plural/compound permutations)
+	if (VariantMap[Normalized]) return VariantMap[Normalized];
+	if (VariantMap[Cleaned]) return VariantMap[Cleaned];
 
-	if (VariantMap[Cleaned]) {
-		return VariantMap[Cleaned];
-	}
-
+	// Hyphen/underscore stripped form
 	const Stripped =
 		"/" +
 		Normalized.replace(/^\/+/, "")
@@ -116,11 +212,48 @@ const ResolveRoute = (RequestPath: string): string | null => {
 			.map((Segment: string) => Segment.replace(/[-_]/g, ""))
 			.join("/");
 
-	if (VariantMap[Stripped]) {
-		return VariantMap[Stripped];
-	}
+	if (VariantMap[Stripped]) return VariantMap[Stripped];
 
 	return null;
+};
+
+// ─── API request detection ───
+// Returns true if a fetch request should have auth headers injected.
+
+const IsApiRequest = (URL: URL): boolean => {
+	// Same-origin /api/* relative paths
+	if (URL.origin === self.location.origin) {
+		return ApiPrefix.some((Prefix) => URL.pathname.startsWith(Prefix));
+	}
+	// Cross-origin Workers URLs (e.g. https://auth.workers.dev/…)
+	// Pre-process if the host looks like a workers.dev deployment
+	return URL.hostname.endsWith(".workers.dev");
+};
+
+// ─── Inject auth header ───
+// Attaches Bearer token to outbound API requests from the SW cache.
+// Does not modify the request if no session is active.
+
+const InjectAuthHeader = async (Request: Request): Promise<Request> => {
+	const State = await ReadAuthState();
+	if (!State) return Request;
+
+	const Headers = new Headers(Request.headers);
+	Headers.set("Authorization", `Bearer ${State.Token}`);
+
+	return new Request(Request.url, {
+		method: Request.method,
+		headers: Headers,
+		body:
+			Request.method !== "GET" && Request.method !== "HEAD"
+				? Request.body
+				: undefined,
+		credentials: Request.credentials,
+		cache: Request.cache,
+		redirect: Request.redirect,
+		referrer: Request.referrer,
+		mode: Request.mode,
+	});
 };
 
 // ─── Install ───
@@ -133,16 +266,13 @@ self.addEventListener("install", (Event: ExtendableEvent) => {
 			.open(CACHE_ROUTE)
 			.then((Cache) => {
 				__DEV__ && Log("Route cache opened.");
-
 				return Cache;
 			})
-			.catch(
-				(_Error: unknown) =>
-					__DEV__ && ErrorLog("Cache open failed:", _Error),
-			)
+			.catch((_Error: unknown) => {
+				__DEV__ && ErrorLog("Cache open failed:", _Error);
+			})
 			.then(() => {
 				__DEV__ && Log("Install complete. Activating immediately.");
-
 				return self.skipWaiting();
 			}),
 	);
@@ -160,85 +290,64 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 				.then((CacheKey) =>
 					Promise.all(
 						CacheKey.map((Key) => {
-							if (!CACHE.includes(Key)) {
+							// Evict old versioned caches; preserve CACHE_AUTH
+							if (!CACHE.includes(Key) && Key !== CACHE_AUTH) {
 								__DEV__ && Log(`Deleting old cache: ${Key}`);
-
 								return caches.delete(Key);
 							}
-
 							return Promise.resolve();
 						}),
 					),
 				)
 				.catch((_Error: unknown) => {
 					__DEV__ && ErrorLog("Cache cleanup failed:", _Error);
-
 					return Promise.resolve();
 				}),
 
 			self.clients
 				.claim()
 				.then(() => {
-					__DEV__ && Log("Clients claimed successfully.");
+					__DEV__ && Log("Clients claimed.");
 				})
 				.catch((_Error: unknown) => {
-					__DEV__ && ErrorLog("self.clients.claim() failed:", _Error);
-
+					__DEV__ && ErrorLog("clients.claim() failed:", _Error);
 					return Promise.resolve();
 				}),
 		])
 			.then(async () => {
 				__DEV__ &&
-					Log(
-						`Version ${INCREMENT} activated and controlling clients.`,
-					);
+					Log(`Version ${INCREMENT} activated and controlling clients.`);
 
 				const IsNewVersion = CurrentClientVersion !== INCREMENT;
 
 				if (IsNewVersion) {
-					__DEV__ &&
-						Log(
-							`New version detected (${CurrentClientVersion} -> ${INCREMENT}). Notifying clients.`,
-						);
-
 					CurrentClientVersion = INCREMENT;
-
 					return (
 						await self.clients.matchAll({ type: "window" })
 					).forEach((Client: WindowClient) => {
-						__DEV__ &&
-							Log(
-								`Sending New Version message to client ${Client.id}`,
-							);
-
 						Client.postMessage({ Version: "New" });
 					});
-				} else {
-					__DEV__ &&
-						Log(
-							`Same version (${INCREMENT}), skipping notification.`,
-						);
 				}
 			})
-			.catch(
-				(_Error: unknown) =>
-					__DEV__ && ErrorLog("Activation failed overall:", _Error),
-			),
+			.catch((_Error: unknown) => {
+				__DEV__ && ErrorLog("Activation failed:", _Error);
+			}),
 	);
 });
 
 // ─── Fetch ───
-// Delineated concerns:
-//   1. Route Redirect — intercept navigation, redirect to PascalCase canonical
-//   2. Page Cache — network-first for navigation (cache fallback for offline)
-//   3. Asset Cache — cache-first for static assets (_astro/*, Asset/*, etc.)
-//   4. Pass-through — everything else goes to network
+// Layered request handler — mirrors a CF Pages Function / server adapter:
+//
+//   Layer 1  Route redirect     — normalize variant URLs → PascalCase canonical
+//   Layer 2  Auth gate          — guard protected routes, bypass auth routes
+//   Layer 3  API pre-process    — inject Bearer token on Workers API calls
+//   Layer 4  Page cache         — network-first for navigation (offline fallback)
+//   Layer 5  Asset cache        — cache-first for hashed static assets
+//   Layer 6  Pass-through       — everything else → network
 
 self.addEventListener("fetch", (Event: FetchEvent) => {
 	const Request = Event.request;
-
 	const _URL = new URL(Request.url);
-
 	const Path = _URL.pathname;
 
 	__DEV__ &&
@@ -248,61 +357,85 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 			Mode: Request.mode,
 		});
 
+	// Ignore fetches for the SW script itself
 	if (
 		_URL.origin === self.origin &&
 		Path === new URL(self.location.href).pathname
 	) {
-		__DEV__ && Log("Ignoring fetch for SW script itself:", Path);
-
 		return;
 	}
 
-	if (Request.method !== "GET") {
-		__DEV__ && Log(`Ignoring non-GET: ${Request.method} ${Path}`);
-
+	if (Request.method !== "GET" && Request.method !== "HEAD") {
+		// ── Layer 3 (mutation): Inject auth on non-GET API requests ──
+		if (IsApiRequest(_URL)) {
+			__DEV__ && Log(`API mutation (auth inject): ${Request.method} ${Path}`);
+			Event.respondWith(
+				InjectAuthHeader(Request).then((AuthedRequest) =>
+					fetch(AuthedRequest),
+				),
+			);
+		}
+		// All other non-GET requests pass through unmodified
 		return;
 	}
 
-	// ── Concern 1: Route Redirect ──
-	// Intercept ALL navigation requests and redirect variants to PascalCase
-
+	// ── Layer 1: Route redirect ──
 	if (Request.mode === "navigate") {
 		const ResolvedPath = ResolveRoute(Path);
 
 		if (ResolvedPath !== null) {
-			__DEV__ && Log(`Redirecting ${Path} → ${ResolvedPath}`);
-
+			__DEV__ && Log(`Route redirect: ${Path} → ${ResolvedPath}`);
 			const RedirectURL = new URL(ResolvedPath, _URL.origin);
-
 			RedirectURL.search = _URL.search;
-
 			Event.respondWith(Response.redirect(RedirectURL.href, 301));
-
 			return;
 		}
 
-		// ── Concern 2: Page Cache (Network-First) ──
-		__DEV__ && Log(`Navigation (network-first): ${Path}`);
-
+		// ── Layer 2: Auth gate ──
 		Event.respondWith(
 			(async () => {
+				const AuthState = await ReadAuthState();
+				const IsAuthed = AuthState !== null;
+
+				// Protected route + no session → sign in
+				if (ProtectedRoute.has(Path) && !IsAuthed) {
+					__DEV__ &&
+						Log(
+							`Auth gate: ${Path} requires auth, redirecting to SignIn`,
+						);
+					const SignInURL = new URL("/Account/SignIn", _URL.origin);
+					SignInURL.searchParams.set("next", Path);
+					return Response.redirect(SignInURL.href, 302);
+				}
+
+				// Auth route + has session → already signed in, go to Dashboard
+				if (AuthRoute.has(Path) && IsAuthed) {
+					__DEV__ &&
+						Log(
+							`Auth bypass: ${Path} already authed, redirecting to Dashboard`,
+						);
+					return Response.redirect(
+						new URL("/Dashboard", _URL.origin).href,
+						302,
+					);
+				}
+
+				// ── Layer 4: Page cache (network-first) ──
+				__DEV__ && Log(`Navigation (network-first): ${Path}`);
+
 				try {
-					const _Response = await fetch(Request);
-
-					if (_Response && _Response.ok) {
+					const NetworkResponse = await fetch(Request);
+					if (NetworkResponse && NetworkResponse.ok) {
 						__DEV__ && Log(`Navigation fetched: ${Path}`);
-
 						(await caches.open(CACHE_ROUTE)).put(
 							Request,
-							_Response.clone(),
+							NetworkResponse.clone(),
 						);
-
-						return _Response;
+						return NetworkResponse;
 					}
-
 					__DEV__ &&
 						WarnLog(
-							`Navigation failed (${_Response.status}): ${Path}. Trying cache...`,
+							`Navigation failed (${NetworkResponse.status}): ${Path}. Trying cache...`,
 						);
 				} catch (_Error: unknown) {
 					__DEV__ &&
@@ -312,18 +445,16 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 						);
 				}
 
-				const _Response = await (
+				const CachedResponse = await (
 					await caches.open(CACHE_ROUTE)
 				).match(Request);
 
-				if (_Response) {
+				if (CachedResponse) {
 					__DEV__ && Log(`Serving from cache: ${Path}`);
-
-					return _Response;
+					return CachedResponse;
 				}
 
-				__DEV__ &&
-					ErrorLog(`No cache fallback for navigation: ${Path}`);
+				__DEV__ && ErrorLog(`No cache fallback for: ${Path}`);
 
 				return new Response(
 					"Network error: You appear to be offline and the page is not cached.",
@@ -339,9 +470,27 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 		return;
 	}
 
-	// ── Concern 3: Asset Cache (Cache-First) ──
-	// Static assets with content hashes: _astro/*, Asset/*, Favicon/*
+	// ── Layer 3 (GET): Inject auth on API requests ──
+	if (IsApiRequest(_URL)) {
+		__DEV__ && Log(`API fetch (auth inject): ${Path}`);
+		Event.respondWith(
+			InjectAuthHeader(Request).then((AuthedRequest) =>
+				fetch(AuthedRequest).catch((_Error: unknown) => {
+					__DEV__ && ErrorLog(`API fetch failed: ${Path}`, _Error);
+					return new Response(
+						JSON.stringify({ success: false, error: "Network error" }),
+						{
+							status: 503,
+							headers: { "Content-Type": "application/json" },
+						},
+					);
+				}),
+			),
+		);
+		return;
+	}
 
+	// ── Layer 5: Asset cache (cache-first) ──
 	if (
 		Path.startsWith("/_astro/") ||
 		Path.startsWith("/Asset/") ||
@@ -349,60 +498,51 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 		Path.startsWith("/Image/")
 	) {
 		__DEV__ && Log(`Asset (cache-first): ${Path}`);
-
 		Event.respondWith(
 			caches
 				.open(CACHE_ASSET)
 				.then(async (Cache) => {
 					const Cached = await Cache.match(Request);
-
 					if (Cached) {
 						__DEV__ && Log(`Asset cache hit: ${Path}`);
-
 						return Cached;
 					}
-
 					__DEV__ && Log(`Asset cache miss, fetching: ${Path}`);
-
 					try {
-						const _Response = await fetch(Request);
-
-						if (_Response && _Response.ok) {
-							__DEV__ && Log(`Caching asset: ${Path}`);
-
-							await Cache.put(Request, _Response.clone());
+						const NetworkResponse = await fetch(Request);
+						if (NetworkResponse && NetworkResponse.ok) {
+							await Cache.put(Request, NetworkResponse.clone());
 						}
-
 						return (
-							_Response ||
-							new Response(`Failed to fetch ${Path}`, {
-								status: 504,
-							})
+							NetworkResponse ||
+							new Response(`Failed to fetch ${Path}`, { status: 504 })
 						);
 					} catch (_Error: unknown) {
-						__DEV__ &&
-							ErrorLog(`Asset fetch failed: ${Path}`, _Error);
-
-						return new Response(`Offline: ${Path}`, {
-							status: 503,
-						});
+						__DEV__ && ErrorLog(`Asset fetch failed: ${Path}`, _Error);
+						return new Response(`Offline: ${Path}`, { status: 503 });
 					}
 				})
 				.catch((_Error: unknown) => {
 					__DEV__ && ErrorLog(`Asset cache error: ${Path}`, _Error);
-
 					return fetch(Request);
 				}),
 		);
-
 		return;
 	}
 
-	// ── Concern 4: Pass-through ──
+	// ── Layer 6: Pass-through ──
 	__DEV__ && WarnLog(`Unhandled, passing through: ${Path}`);
 });
 
-// ─── Message handler ───
+// ─── Message bus ───
+// Handles auth state updates posted by the app (WorkerClient calls postMessage
+// after Login/Register/Refresh/Logout). The SW stores the token in CACHE_AUTH
+// so it can inject it on subsequent API requests without reading from DOM APIs.
+//
+// Message shapes:
+//   { Type: "Auth:Write",  Token: string, ExpiresAt: number, UserId: string }
+//   { Type: "Auth:Clear"  }
+//   { Type: "Auth:Read"   }  → SW replies with { Type: "Auth:State", State: AuthState | null }
 
 self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 	if (Event.origin !== self.location.origin && Event.origin !== BASE_REMOTE) {
@@ -411,11 +551,67 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 				`Message from untrusted origin: ${Event.origin}`,
 				Event.data,
 			);
-
 		return;
 	}
 
-	__DEV__ && Log("Message from client:", Event.data);
+	__DEV__ && Log("Message from client:", Event.data?.Type ?? Event.data);
+
+	const Data = Event.data as {
+		Type: string;
+		Token?: string;
+		ExpiresAt?: number;
+		UserId?: string;
+	} | null;
+
+	if (!Data || typeof Data.Type !== "string") return;
+
+	if (Data.Type === "Auth:Write") {
+		if (!Data.Token || !Data.ExpiresAt || !Data.UserId) {
+			__DEV__ && ErrorLog("Auth:Write missing required fields.");
+			return;
+		}
+		Event.waitUntil(
+			WriteAuthState({
+				Token: Data.Token,
+				ExpiresAt: Data.ExpiresAt,
+				UserId: Data.UserId,
+			}).then(() => {
+				Event.source?.postMessage({ Type: "Auth:Written" });
+			}),
+		);
+		return;
+	}
+
+	if (Data.Type === "Auth:Clear") {
+		Event.waitUntil(
+			ClearAuthState().then(() => {
+				Event.source?.postMessage({ Type: "Auth:Cleared" });
+			}),
+		);
+		return;
+	}
+
+	if (Data.Type === "Auth:Read") {
+		Event.waitUntil(
+			ReadAuthState().then((State) => {
+				Event.source?.postMessage({ Type: "Auth:State", State });
+			}),
+		);
+		return;
+	}
+
+	if (Data.Type === "Version:Check") {
+		Event.source?.postMessage({
+			Type: "Version:Current",
+			Version: INCREMENT,
+		});
+		return;
+	}
+
+	// Legacy: old clients post { Version: "New" }
+	if (Event.data?.Version === "New") {
+		__DEV__ && Log("Legacy version message received.");
+	}
 });
 
 export default {};
