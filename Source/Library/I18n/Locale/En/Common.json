@@ -146,6 +146,11 @@
 			"title": "Good First Issues",
 			"description": "Browse issues labeled \"good first issue\" to find approachable tasks for new contributors."
 		},
+		"elements": {
+		"heading": "Elements Architecture",
+		"description": "Code Editor Land is built from 15 modular Elements — self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
+		"docs": "Each Element has its own README with architecture details. Find them in Land/Element/"
+		},
 		"howToContribute": {
 			"heading": "How to Contribute"
 		},

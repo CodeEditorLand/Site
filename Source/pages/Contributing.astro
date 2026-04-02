@@ -232,6 +232,183 @@ const MetaDescription = T("meta.contributing.description", {
 			</div>
 		</section>
 
+		<!-- Elements Architecture -->
+		<section class="mb-12">
+			<h2 class="mb-6 text-2xl font-semibold">
+				{
+					T("common.contributing.elements.heading", {
+						defaultValue: "Elements Architecture",
+					})
+				}
+			</h2>
+			<p class="mb-6 text-muted-foreground">
+				{
+					T("common.contributing.elements.description", {
+						defaultValue:
+							"Code Editor Land is built from 15 modular Elements — self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
+					})
+				}
+			</p>
+			<div
+				class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+				<a
+					href="https://crates.io/crates/land-Mountain"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Mountain</span>
+					<span class="block text-xs text-muted-foreground"
+						>Core editor</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Cocoon"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Cocoon</span>
+					<span class="block text-xs text-muted-foreground"
+						>File tree</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Wind"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Wind</span>
+					<span class="block text-xs text-muted-foreground"
+						>Terminal</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Sky"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Sky</span>
+					<span class="block text-xs text-muted-foreground">Tabs</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Air"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Air</span>
+					<span class="block text-xs text-muted-foreground"
+						>Search</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Echo"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Echo</span>
+					<span class="block text-xs text-muted-foreground"
+						>Output</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Common"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Common</span>
+					<span class="block text-xs text-muted-foreground"
+						>Shared types</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Vine"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Vine</span>
+					<span class="block text-xs text-muted-foreground"
+						>Settings</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Rest"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Rest</span>
+					<span class="block text-xs text-muted-foreground"
+						>REST API</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Output"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Output</span>
+					<span class="block text-xs text-muted-foreground"
+						>Debug</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Mist"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Mist</span>
+					<span class="block text-xs text-muted-foreground">LSP</span>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Grove"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Grove</span>
+					<span class="block text-xs text-muted-foreground"
+						>Snippets</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-SideCar"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">SideCar</span>
+					<span class="block text-xs text-muted-foreground"
+						>AI/ML</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Worker"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Worker</span>
+					<span class="block text-xs text-muted-foreground"
+						>WebWorkers</span
+					>
+				</a>
+				<a
+					href="https://crates.io/crates/land-Maintain"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Maintain</span>
+					<span class="block text-xs text-muted-foreground"
+						>Plugins</span
+					>
+				</a>
+			</div>
+			<p class="mt-4 text-sm text-muted-foreground">
+				{
+					T("common.contributing.elements.docs", {
+						defaultValue:
+							"Each Element has its own README with architecture details. Find them in Land/Element/",
+					})
+				}
+			</p>
+		</section>
+
 		<!-- Ways to Contribute -->
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-semibold">

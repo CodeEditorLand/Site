@@ -145,6 +145,11 @@
 				"description": "Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeiten fuer den Editor oder die Website bei."
 			}
 		},
+		"elements": {
+		"heading": "Elemente-Architektur",
+		"description": "Code Editor Land besteht aus 15 modularen Elementen — eigenständigen Rust-Crates, die bestimmte Funktionalität bieten. Jedes Element wird als Crate veröffentlicht und kann unabhängig verwendet werden.",
+		"docs": "Jedes Element hat seine eigene README mit Architekturdetails. Finden Sie sie unter Land/Element/"
+		},
 		"funding": {
 			"heading": "Finanzierung",
 			"description": "Code Editor Land wird durch den NGI0 Commons Fund ueber NLnet finanziert.\nDies ermoerlicht die Vollzeitentwicklung des Projekts.",
