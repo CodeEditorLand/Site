@@ -16,14 +16,14 @@
 		}
 	},
 	"page": {
-		"subtitle": "Наличен за macOS, Windows и Linux. Бърз, нативен и безплатен.",
+		"subtitle": "Наличен за macOS, Windows и Linux.\n\nБърз, нативен и безплатен.",
 		"title": "Изтеглете Land"
 	},
 	"previousReleases": {
 		"description": "Изтеглете по-стари версии при необходимост.",
 		"title": "Предишни версии"
 	},
-	"subtitle": "Наличен за macOS, Windows и Linux. Създаден с Tauri, задвижван от Rust.",
+	"subtitle": "Наличен за macOS, Windows и Linux.\n\nСъздаден с Tauri, задвижван от Rust.",
 	"systemRequirements": {
 		"minimum": "Минимални изисквания",
 		"recommended": "Препоръчителни",
@@ -33,7 +33,7 @@
 	},
 	"title": "Изтеглете Land",
 	"verification": {
-		"description": "Версиите на Land са подписани с PGP.\nПроверете изтеглянето си, за да гарантирате целостта.",
+		"description": "Версиите на Land са подписани с PGP.\n\nПроверете изтеглянето си, за да гарантирате целостта.",
 		"downloadButton": "Изтеглете публичния PGP ключ",
 		"title": "Проверете изтеглянето си",
 		"verifyButton": "Проверете изтеглянето"
@@ -44,13 +44,20 @@
 		"requirements": "Изисквания:",
 		"loading": "Зареждане на изтегляния...",
 		"errorTitle": "Неуспешно зареждане на изтегляния",
-		"downloadFailed": "Изтеглянето неуспешно. Моля, опитайте отново.",
+		"downloadFailed": "Изтеглянето неуспешно.\n\nМоля, опитайте отново.",
 		"downloadFor": "Изтегляне за {{platform}}",
 		"copiedToClipboard": "{{label}} копирано в клипборда!",
-		"failedToCopy": "Неуспешно копиране на {{label}}"
+		"failedToCopy": "Неуспешно копиране на {{label}}",
+		"sha256Checksum": "SHA-256 контролна сума",
+		"pgpSignature": "PGP подпис",
+		"verificationInstructions": "Инструкции за проверка",
+		"downloadVerification": "Проверка на изтеглянето",
+		"integrityCheck": "Проверка на целостта",
+		"copy": "Копиране",
+		"signedWithKeyId": "Подписано с ключ ID: {{keyId}}"
 	},
 	"transparency": {
 		"title": "Прозрачност на компилацията",
-		"subtitle": "Пълно разкриване относно телеметрия, варианти на компилация и внедряване. Проверете всичко в изходния код."
+		"subtitle": "Пълно разкриване относно телеметрия, варианти на компилация и внедряване.\n\nПроверете всичко в изходния код."
 	}
 }

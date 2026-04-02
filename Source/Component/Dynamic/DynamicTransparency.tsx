@@ -2,6 +2,7 @@ import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { Badge } from "../UI/Badge";
+import { RichText } from "../UI/RichText";
 import type Property from "./Interface/Property/Transparency.js";
 
 const TransparencyIconRegistry: Record<string, lucide.LucideIcon> = {
@@ -89,9 +90,9 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-3xl whitespace-pre-line text-lg text-muted-foreground">
-								{Subtitle}
-							</p>
+							<div className="mx-auto max-w-3xl text-lg text-muted-foreground">
+								<RichText Text={Subtitle} />
+							</div>
 						)}
 					</div>
 				)}
@@ -143,13 +144,16 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											)}
 										</div>
 									</div>
-									<p className="StaccatoBreath whitespace-pre-line text-muted-foreground">
-										{Item.Description}
-									</p>
+									<div className="StaccatoBreath text-muted-foreground">
+										<RichText Text={Item.Description} />
+									</div>
 									{Item.Detail && (
-										<p className="text-muted-foreground/70 text-xs">
-											{Item.Detail}
-										</p>
+										<div className="text-muted-foreground/70 text-xs">
+											<RichText
+												Text={Item.Detail}
+												Terms
+											/>
+										</div>
 									)}
 								</div>
 							);
@@ -256,12 +260,33 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											</div>
 										)}
 									</div>
-									<p className="StaccatoBreath whitespace-pre-line text-muted-foreground">
-										{Item.Description}
-									</p>
-									<code className="block rounded-none border border-[var(--Border)] bg-secondary px-3 py-2 text-xs">
-										{Item.Command}
-									</code>
+									<div className="StaccatoBreath text-muted-foreground">
+										<RichText Text={Item.Description} />
+									</div>
+									<div className="flex items-baseline rounded-none border border-[var(--Border)] bg-secondary px-3 py-2 text-xs">
+										<code className="font-mono">
+											{Item.Command}
+										</code>
+										<button
+											type="button"
+											onClick={async () => {
+												try {
+													await navigator.clipboard.writeText(
+														Item.Command,
+													);
+												} catch {
+													// clipboard unavailable
+												}
+											}}
+											aria-label="Copy command"
+											title="Copy command"
+											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100">
+											<lucide.Copy
+												className="h-[0.65em] w-[0.65em]"
+												aria-hidden="true"
+											/>
+										</button>
+									</div>
 									<div className="flex flex-wrap gap-2">
 										{Item.Feature.map(
 											(FeatureName, Index) => (

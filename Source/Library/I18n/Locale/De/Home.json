@@ -3,11 +3,11 @@
 		"badge": "Funktionen",
 		"item": {
 			"designTokens": {
-				"description": "Natives Rust-Backend mit gRPC IPC stellt sicher, dass jeder Vorgang schnell, reaktionsschnell und zuverlässig ist.\nKein Electron-Overhead.",
+				"description": "Natives Rust-Backend mit gRPC IPC stellt sicher, dass jeder Vorgang schnell, reaktionsschnell und zuverlässig ist.\n\nKein Electron-Overhead.",
 				"title": "Performance zuerst"
 			},
 			"componentLibrary": {
-				"description": "Führen Sie Ihre bestehenden VS Code-Erweiterungen mit hoher Wiedergabetreue über den Cocoon-Extension-Host aus.\nKeine Änderungen erforderlich.",
+				"description": "Führen Sie Ihre bestehenden VS Code-Erweiterungen mit hoher Wiedergabetreue über den Cocoon-Extension-Host aus.\n\nKeine Änderungen erforderlich.",
 				"title": "VS Code-Kompatibilität"
 			},
 			"documentation": {
@@ -15,15 +15,15 @@
 				"title": "Effect-TS-Architektur"
 			},
 			"versionControl": {
-				"description": "Eine Codebasis, native Deployments für macOS, Windows und Linux mit Tauri.\nEinmal schreiben, überall ausführen.",
+				"description": "Eine Codebasis, native Deployments für macOS, Windows und Linux mit Tauri.\n\nEinmal schreiben, überall ausführen.",
 				"title": "Cross-Platform"
 			},
 			"collaboration": {
-				"description": "Völlig frei zu nutzen, zu verändern und zu verbreiten.\nLizenziert unter Creative Commons CC0.\nKeine Einschränkungen.",
+				"description": "Völlig frei zu nutzen, zu verändern und zu verbreiten.\n\nLizenziert unter Creative Commons CC0.\n\nKeine Einschränkungen.",
 				"title": "Open Source"
 			},
 			"cicdIntegration": {
-				"description": "Aufgebaut auf bewährten Open-Source-Technologien:\nRust, Tauri, Effect-TS und die VS Code-Plattform.",
+				"description": "Aufgebaut auf bewährten Open-Source-Technologien:\n\nRust, Tauri, Effect-TS und die VS Code-Plattform.",
 				"title": "Moderne Werkzeuge"
 			}
 		},
@@ -32,7 +32,7 @@
 	},
 	"hero": {
 		"badge": "Neu: Effect-TS-Architektur",
-		"subtitle": "Ein blitzschneller, typsicherer Editor, erstellt mit Rust, Tauri und Effect-TS.\nErleben Sie den Editor, der VS Code für die moderne Ära neu denkt.",
+		"subtitle": "Ein blitzschneller, typsicherer Editor, erstellt mit Rust, Tauri und Effect-TS.\n\nErleben Sie den Editor, der VS Code für die moderne Ära neu denkt.",
 		"title": "Die Zukunft der Code-Bearbeitung",
 		"titleHighlight": "Land",
 		"atScale": "beginnt hier",
@@ -62,7 +62,7 @@
 		"github": "GitHub"
 	},
 	"pricing": {
-		"subtitle": "Code Editor Land ist komplett kostenlos.\nKeine Stufen, keine Abonnements, keine Einschränkungen.",
+		"subtitle": "Code Editor Land ist komplett kostenlos.\n\nKeine Stufen, keine Abonnements, keine Einschränkungen.",
 		"labels": {
 			"monthly": "Monatlich",
 			"yearly": "Jährlich",
@@ -79,7 +79,7 @@
 		"tiers": {
 			"free": {
 				"name": "Community",
-				"description": "Für jeden.\nVolle Editor-Funktionen, völlig kostenlos.",
+				"description": "Für jeden.\n\nVolle Editor-Funktionen, völlig kostenlos.",
 				"features": {
 					"1": "Volle VS Code-Kompatibilität",
 					"2": "Alle Erweiterungen unterstützt",
@@ -97,12 +97,12 @@
 	},
 	"testimonials": {
 		"quote": {
-			"1": "Eine leistungsorientierte, offene Alternative.\nLand ist genau das, was VS Code brauchte.\nEs ist unglaublich schnell.",
-			"2": "Die Effect-TS-Architektur ist wunderschön zu bearbeiten.\nDie Typsicherheit fängt Fehler ab, bevor sie passieren.",
-			"3": "Meine bestehenden Erweiterungen ohne Änderungen auszuführen ist bahnbrechend.\nDie Kompatibilität ist beeindruckend.",
-			"4": "Endlich ein Editor, der meine Systemressourcen respektiert.\nKein Electron-Speicheroverhead mehr.",
-			"5": "Das Open-Source-Engagement bedeutet, dass ich beitragen und anpassen kann.\nDas ist der Editor, auf den ich gewartet habe.",
-			"6": "Die gRPC-basierte Architektur ist ein Meisterwerk des Systemdesigns.\nLand ist die Zukunft der Desktop-Editoren."
+			"1": "Eine leistungsorientierte, offene Alternative.\n\nLand ist genau das, was VS Code brauchte.\n\nEs ist unglaublich schnell.",
+			"2": "Die Effect-TS-Architektur ist wunderschön zu bearbeiten.\n\nDie Typsicherheit fängt Fehler ab, bevor sie passieren.",
+			"3": "Meine bestehenden Erweiterungen ohne Änderungen auszuführen ist bahnbrechend.\n\nDie Kompatibilität ist beeindruckend.",
+			"4": "Endlich ein Editor, der meine Systemressourcen respektiert.\n\nKein Electron-Speicheroverhead mehr.",
+			"5": "Das Open-Source-Engagement bedeutet, dass ich beitragen und anpassen kann.\n\nDas ist der Editor, auf den ich gewartet habe.",
+			"6": "Die gRPC-basierte Architektur ist ein Meisterwerk des Systemdesigns.\n\nLand ist die Zukunft der Desktop-Editoren."
 		},
 		"subtitle": "Community-Stimmen zur Zukunft der Code-Bearbeitung.",
 		"title": "Was Entwickler sagen",
@@ -112,11 +112,11 @@
 	},
 	"roadmap": {
 		"title": "Roadmap & Erwartungen",
-		"subtitle": "Finanziert durch den NGI0 Commons Fund.\nOpen Source, kostenlos für immer, öffentlich entwickelt.",
+		"subtitle": "Finanziert durch den NGI0 Commons Fund.\n\nOpen Source, kostenlos für immer, öffentlich entwickelt.",
 		"tiers": {
 			"current": {
 				"name": "Aktuelle Phase",
-				"description": "Grundlagen und Kern-Editor-Gerüst.\nAktive Entwicklung.",
+				"description": "Grundlagen und Kern-Editor-Gerüst.\n\nAktive Entwicklung.",
 				"features": {
 					"1": "Mountain: Rust/Tauri natives Backend",
 					"2": "Cocoon: VS Code Extension Host via Effect-TS",
@@ -153,29 +153,29 @@
 	},
 	"architecture": {
 		"title": "Architektur",
-		"subtitle": "Land ersetzt VS Codes Electron-Stack durch eine modulare, hochleistungsfähige Architektur.\nJedes Element ist ein eigenständiges Repository.",
+		"subtitle": "Land ersetzt VS Codes Electron-Stack durch eine modulare, hochleistungsfähige Architektur.\n\nJedes Element ist ein eigenständiges Repository.",
 		"mountain": {
-			"description": "Verwaltet Fenster-, Dateisystem- und Prozess-Lebenszyklus.\nDas native Rust/Tauri-Backend, das Electrons Hauptprozess ersetzt.",
+			"description": "Verwaltet Fenster-, Dateisystem- und Prozess-Lebenszyklus.\n\nDas native Rust/Tauri-Backend, das Electrons Hauptprozess ersetzt.",
 			"subtitle": "Rust/Tauri natives Backend"
 		},
 		"cocoon": {
-			"description": "Führt VS Code-Erweiterungen über Effect-TS mit hochwertiger API-Kompatibilität aus.\nKeine Änderungen an bestehenden Erweiterungen erforderlich.",
+			"description": "Führt VS Code-Erweiterungen über Effect-TS mit hochwertiger API-Kompatibilität aus.\n\nKeine Änderungen an bestehenden Erweiterungen erforderlich.",
 			"subtitle": "TypeScript Extension Host"
 		},
 		"wind": {
-			"description": "Neuimplementierung des VS Code Workbench.\nBietet die Editor-Shell, Panels, Seitenleisten und Aktivitätsleiste.",
+			"description": "Neuimplementierung des VS Code Workbench.\n\nBietet die Editor-Shell, Panels, Seitenleisten und Aktivitätsleiste.",
 			"subtitle": "TypeScript UI-Dienst"
 		},
 		"sky": {
-			"description": "Rendert die Editor-Oberfläche mit Astro-Komponenten.\nVerwaltet Themes, Layouts und die visuelle Präsentationsschicht.",
+			"description": "Rendert die Editor-Oberfläche mit Astro-Komponenten.\n\nVerwaltet Themes, Layouts und die visuelle Präsentationsschicht.",
 			"subtitle": "Astro UI-Komponente"
 		},
 		"air": {
-			"description": "Hintergrunddaemon für automatische Updates, Downloads und kryptografische Signierung.\nHält Land still auf dem neuesten Stand.",
+			"description": "Hintergrunddaemon für automatische Updates, Downloads und kryptografische Signierung.\n\nHält Land still auf dem neuesten Stand.",
 			"subtitle": "Rust-Hintergrunddaemon"
 		},
 		"echo": {
-			"description": "Hochleistungs-Work-Stealing-Executor.\nPlant und verteilt Aufgaben auf Kerne für maximalen Durchsatz.",
+			"description": "Hochleistungs-Work-Stealing-Executor.\n\nPlant und verteilt Aufgaben auf Kerne für maximalen Durchsatz.",
 			"subtitle": "Rust Task Scheduler"
 		}
 	}

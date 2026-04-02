@@ -4,7 +4,7 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "El editor de codigo de nueva generacion.\nCodigo abierto y gratuito para siempre."
+		"tagline": "El editor de código de nueva generación.\n\nCódigo abierto y gratuito para siempre."
 	},
 	"breadcrumb": {
 		"home": "Inicio"
@@ -20,7 +20,7 @@
 	"comingSoon": "Proximamente",
 	"error": {
 		"404": "404 - Pagina no encontrada",
-		"pageNotFound": "La pagina que busca no existe o ha sido movida.\nPor favor, verifique la URL en busca de errores tipograficos, o regrese a la pagina de inicio.\nSi cree que esto es un error, contacte a nuestro equipo de soporte y le ayudaremos."
+		"pageNotFound": "La página que busca no existe o ha sido movida.\n\nPor favor, verifique la URL en busca de errores tipográficos, o regrese a la página de inicio.\n\nSi cree que esto es un error, contacte a nuestro equipo de soporte y le ayudaremos."
 	},
 	"label": {
 		"email": "Direccion de correo electronico",
@@ -75,7 +75,10 @@
 			"mainMonorepo": "Monorepo principal",
 			"tauriBackend": "Backend Tauri",
 			"extensionHost": "Host de extension",
-			"viewAll": "Ver todos los repositorios"
+			"viewAll": "Ver todos los repositorios",
+			"windServiceLayer": "Capa de servicio UI",
+			"skyComponentLayer": "Capa de componentes UI",
+			"airDaemon": "Demonio en segundo plano"
 		}
 	},
 	"blog": {
@@ -98,7 +101,7 @@
 	},
 	"contributing": {
 		"pageTitle": "Contribuir",
-		"pageSubtitle": "Code Editor Land es de codigo abierto y da la bienvenida a las contribuciones de todos.\nAqui se explica como participar.",
+		"pageSubtitle": "Code Editor Land es de código abierto y da la bienvenida a las contribuciones de todos.\n\nAquí se explica cómo participar.",
 		"guide": {
 			"title": "Guia de contribucion",
 			"description": "Lea el CONTRIBUTING.md completo en GitHub para obtener instrucciones detalladas sobre como configurar el entorno de desarrollo y enviar cambios."
@@ -124,7 +127,7 @@
 		},
 		"step4": {
 			"title": "Enviar una solicitud de incorporacion de cambios",
-			"description": "Empuje su rama y abra una solicitud de incorporacion de cambios contra la rama Current.\nDescriba que cambio y por que."
+			"description": "Empuje su rama y abra una solicitud de incorporación de cambios contra la rama Current.\n\nDescriba qué cambió y por qué."
 		},
 		"ways": {
 			"heading": "Formas de contribuir",
@@ -152,19 +155,19 @@
 		},
 		"funding": {
 			"heading": "Financiacion",
-			"description": "Code Editor Land esta financiado a traves del fondo NGI0 Commons a traves de NLnet.\nEsto permite el desarrollo a tiempo completo del proyecto.",
+			"description": "Code Editor Land está financiado a través del fondo NGI0 Commons a través de NLnet.\n\nEsto permite el desarrollo a tiempo completo del proyecto.",
 			"nlnetIntro": "Code Editor Land ha sido financiado a traves del",
 			"nlnetFundName": "Fondo NGI0 Commons",
 			"nlnetEstablishedBy": ", un fondo establecido por",
-			"nlnetSuffix": "con el apoyo financiero del programa Next Generation Internet de la Comision Europea, bajo el acuerdo de subvencion n.° 101135429.\nEsta financiacion permite el desarrollo sostenido del proyecto de codigo abierto.",
-			"playformInfo": "El proyecto es operado por PlayForm, una empresa con sede en Sofia, Bulgaria.\nPlayForm actua como administrador de codigo abierto para Code Editor Land bajo la subvencion del fondo NGI0 Commons.",
+			"nlnetSuffix": "con el apoyo financiero del programa Next Generation Internet de la Comisión Europea, bajo el acuerdo de subvención n.° 101135429.\n\nEsta financiación permite el desarrollo sostenido del proyecto de código abierto.",
+			"playformInfo": "El proyecto es operado por PlayForm, una empresa con sede en Sofia, Bulgaria.\n\nPlayForm actúa como administrador de código abierto para Code Editor Land bajo la subvención del fondo NGI0 Commons.",
 			"viewProject": "Consulte la",
 			"nlnetProjectPage": "pagina del proyecto NLnet",
 			"viewProjectSuffix": "para mas detalles sobre la subvencion y los objetivos."
 		},
 		"conduct": {
 			"heading": "Codigo de conducta",
-			"description": "Se espera que todos los participantes de la comunidad Code Editor Land sean respetuosos y constructivos.\nLea el Codigo de conducta completo en GitHub."
+			"description": "Se espera que todos los participantes de la comunidad Code Editor Land sean respetuosos y constructivos.\n\nLea el Código de conducta completo en GitHub."
 		}
 	},
 	"sales": {
@@ -194,9 +197,9 @@
 			"heading": "Como contactarnos",
 			"directHeading": "Contacto directo",
 			"description": "Prefiere correo electronico? Contactenos directamente:",
-			"githubNote": "Gestionamos las consultas empresariales a traves de GitHub Issues.\nEsto garantiza que su solicitud sea rastreada, visible para el equipo y respondida de manera oportuna.",
+			"githubNote": "Gestionamos las consultas empresariales a través de GitHub Issues.\n\nEsto garantiza que su solicitud sea rastreada, visible para el equipo y respondida de manera oportuna.",
 			"openIssueHeading": "Abrir un GitHub Issue",
-			"openIssueDescription": "Cree un issue en nuestro repositorio de GitHub describiendo las necesidades de su organizacion.\nIncluya el nombre de la empresa, tamano del equipo, caso de uso y requisitos de implementacion.\nNuestro equipo monitorea los issues diariamente.",
+			"openIssueDescription": "Cree un issue en nuestro repositorio de GitHub describiendo las necesidades de su organización.\n\nIncluya el nombre de la empresa, tamaño del equipo, caso de uso y requisitos de implementación.\n\nNuestro equipo monitorea los issues diariamente.",
 			"openIssueButton": "Abrir GitHub Issue",
 			"issueIncludeLabel": "Que incluir en su issue:",
 			"issueIncludeText": "Nombre de la empresa, tamano del equipo, caso de uso previsto, entorno de implementacion (nube/local), cronograma y requisitos especificos de soporte o cumplimiento.",
@@ -204,17 +207,22 @@
 		},
 		"openSource": {
 			"heading": "Codigo abierto",
-			"description": "Los planes empresariales proporcionan soporte, SLA y desarrollo personalizado, no acceso al codigo en si.\nCode Editor Land es de codigo abierto bajo CC0."
+			"description": "Los planes empresariales proporcionan soporte, SLA y desarrollo personalizado, no acceso al código en sí.\n\nCode Editor Land es de código abierto bajo CC0."
 		}
 	},
 	"oauth": {
 		"completing": "Completando autenticacion...",
 		"failed": "Autenticacion fallida",
 		"errorGeneric": "Se produjo un error durante la autenticacion.",
-		"errorExpired": "La sesion de autenticacion ha expirado.\nPor favor, intentelo de nuevo.",
-		"errorProvider": "El proveedor de OAuth devolvio un error.\nPor favor, intentelo de nuevo.",
+		"errorExpired": "La sesión de autenticación ha expirado.\n\nPor favor, inténtelo de nuevo.",
+		"errorProvider": "El proveedor de OAuth devolvió un error.\n\nPor favor, inténtelo de nuevo.",
 		"errorNoToken": "No se recibio ningun token de autenticacion.",
-		"backToSignIn": "Volver a iniciar sesion"
+		"backToSignIn": "Volver a iniciar sesion",
+		"goToDashboard": "Ir al panel de control",
+		"success": {
+			"title": "Has iniciado sesión",
+			"redirect": "Redirigiendo a tu panel de control..."
+		}
 	},
 	"dashboard": {
 		"pageTitle": "Bienvenido",
@@ -267,20 +275,20 @@
 			"heading": "Estado de telemetria",
 			"production": {
 				"title": "Telemetria de compilacion de produccion",
-				"description": "La telemetria esta desactivada por defecto.\nLa funcion Telemetry de Cargo no esta en las funciones predeterminadas.\nTodo el rastreo se compila a operaciones de costo cero."
+				"description": "La telemetría está desactivada por defecto.\n\nLa función Telemetry de Cargo no está en las funciones predeterminadas.\n\nTodo el rastreo se compila a operaciones de costo cero."
 			},
 			"otel": {
 				"title": "OpenTelemetry (opcional)",
-				"description": "Active con cargo build --features Telemetry.\nRastreo OTEL solo local, metricas y spans distribuidos.\nSin transmision externa."
+				"description": "Active con: `cargo build --features Telemetry`.\n\nRastreo OTEL solo local, métricas y spans distribuidos.\n\nSin transmisión externa."
 			},
 			"effect": {
 				"title": "Telemetria local de Effect-TS",
-				"description": "El host de extensiones Cocoon utiliza TelemetryService para instrumentacion RPC interna y cronometraje de arranque.\nTodos los datos permanecen locales."
+				"description": "El host de extensiones Cocoon utiliza TelemetryService para instrumentación RPC interna y cronometraje de arranque.\n\nTodos los datos permanecen locales."
 			}
 		},
 		"buildLog": {
 			"heading": "Configuracion de compilacion",
-			"subtitle": "Variante de compilacion activa y modo de despliegue.\nDisponible a traves de la conexion Local-First Air Daemon.",
+			"subtitle": "Variante de compilación activa y modo de despliegue.\n\nDisponible a través de la conexión Local-First Air Daemon.",
 			"profile": {
 				"heading": "Perfil activo"
 			},
@@ -299,7 +307,7 @@
 			"heading": "Conexion del editor",
 			"subtitle": "Conecte el sitio web a su instancia de Land en ejecucion.",
 			"status": "No conectado",
-			"description": "El Air Daemon conecta este panel con un editor Land en ejecucion a traves de WebSocket.\nInicie Land para activar registros de compilacion en tiempo real, telemetria y gestion de configuracion.",
+			"description": "El Air Daemon conecta este panel con un editor Land en ejecución a través de WebSocket.\n\nInicie Land para activar registros de compilación en tiempo real, telemetría y gestión de configuración.",
 			"connect": "Conectar via portal"
 		},
 		"partners": {

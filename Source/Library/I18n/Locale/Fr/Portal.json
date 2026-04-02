@@ -1,0 +1,22 @@
+{
+	"portal": {
+		"title": "Portail",
+		"subtitle": "Choisissez votre modèle de déploiement.",
+		"cloud": {
+			"title": "Cloud",
+			"description": "Hébergé sur notre infrastructure. Connectez-vous avec votre e-mail et mot de passe."
+		},
+		"localFirst": {
+			"title": "Local d'abord",
+			"description": "Vos données restent sur votre machine. Connectez-vous via l'Air Daemon par WebSocket."
+		},
+		"provider": {
+			"title": "Fournisseur géré",
+			"description": "OAuth 2.0 avec PKCE. Connectez-vous avec GitHub, Google ou GitLab."
+		},
+		"enterprise": {
+			"title": "Entreprise",
+			"description": "OIDC / SAML 2.0 / SCIM. Authentification unique via Okta, Azure AD ou SAML."
+		}
+	}
+}

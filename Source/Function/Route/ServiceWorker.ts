@@ -74,10 +74,7 @@ const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
 // ─── Route classification ───
 // Auth-required routes — redirect to /Account/SignIn when no session cached.
 
-const ProtectedRoute: Set<string> = new Set([
-	"/Dashboard",
-	"/Portal",
-]);
+const ProtectedRoute: Set<string> = new Set(["/Dashboard", "/Portal"]);
 
 // Auth-bypass routes — redirect to /Dashboard when a session IS cached.
 // Prevents authenticated users from seeing the sign-in/sign-up pages.
@@ -155,7 +152,8 @@ const WriteAuthState = async (State: AuthState): Promise<void> => {
 			headers: { "Content-Type": "application/json" },
 		}),
 	);
-	__DEV__ && Log("Auth state written to cache.", { ExpiresAt: State.ExpiresAt });
+	__DEV__ &&
+		Log("Auth state written to cache.", { ExpiresAt: State.ExpiresAt });
 };
 
 const ClearAuthState = async (): Promise<void> => {
@@ -316,7 +314,9 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 		])
 			.then(async () => {
 				__DEV__ &&
-					Log(`Version ${INCREMENT} activated and controlling clients.`);
+					Log(
+						`Version ${INCREMENT} activated and controlling clients.`,
+					);
 
 				const IsNewVersion = CurrentClientVersion !== INCREMENT;
 
@@ -368,7 +368,8 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 	if (Request.method !== "GET" && Request.method !== "HEAD") {
 		// ── Layer 3 (mutation): Inject auth on non-GET API requests ──
 		if (IsApiRequest(_URL)) {
-			__DEV__ && Log(`API mutation (auth inject): ${Request.method} ${Path}`);
+			__DEV__ &&
+				Log(`API mutation (auth inject): ${Request.method} ${Path}`);
 			Event.respondWith(
 				InjectAuthHeader(Request).then((AuthedRequest) =>
 					fetch(AuthedRequest),
@@ -478,7 +479,10 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 				fetch(AuthedRequest).catch((_Error: unknown) => {
 					__DEV__ && ErrorLog(`API fetch failed: ${Path}`, _Error);
 					return new Response(
-						JSON.stringify({ success: false, error: "Network error" }),
+						JSON.stringify({
+							success: false,
+							error: "Network error",
+						}),
 						{
 							status: 503,
 							headers: { "Content-Type": "application/json" },
@@ -515,11 +519,16 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 						}
 						return (
 							NetworkResponse ||
-							new Response(`Failed to fetch ${Path}`, { status: 504 })
+							new Response(`Failed to fetch ${Path}`, {
+								status: 504,
+							})
 						);
 					} catch (_Error: unknown) {
-						__DEV__ && ErrorLog(`Asset fetch failed: ${Path}`, _Error);
-						return new Response(`Offline: ${Path}`, { status: 503 });
+						__DEV__ &&
+							ErrorLog(`Asset fetch failed: ${Path}`, _Error);
+						return new Response(`Offline: ${Path}`, {
+							status: 503,
+						});
 					}
 				})
 				.catch((_Error: unknown) => {

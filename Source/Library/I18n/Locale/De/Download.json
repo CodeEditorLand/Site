@@ -16,14 +16,14 @@
 		}
 	},
 	"page": {
-		"subtitle": "Verfuegbar fuer macOS, Windows und Linux.\nSchnell, nativ und kostenlos.",
+		"subtitle": "Verfügbar für macOS, Windows und Linux.\n\nSchnell, nativ und kostenlos.",
 		"title": "Land herunterladen"
 	},
 	"previousReleases": {
 		"description": "Laden Sie bei Bedarf aeltere Versionen herunter.",
 		"title": "Fruehere Versionen"
 	},
-	"subtitle": "Verfuegbar fuer macOS, Windows und Linux.\nGebaut mit Tauri, angetrieben von Rust.",
+	"subtitle": "Verfügbar für macOS, Windows und Linux.\n\nGebaut mit Tauri, angetrieben von Rust.",
 	"systemRequirements": {
 		"minimum": "Mindestanforderungen",
 		"recommended": "Empfohlen",
@@ -33,7 +33,7 @@
 	},
 	"title": "Land herunterladen",
 	"verification": {
-		"description": "Land-Versionen sind mit PGP signiert.\nUeberpruefen Sie Ihren Download, um die Integritaet sicherzustellen.",
+		"description": "Land-Versionen sind mit PGP signiert.\n\nÜberprüfen Sie Ihren Download, um die Integrität sicherzustellen.",
 		"downloadButton": "PGP-Schluessel herunterladen",
 		"title": "Download ueberpruefen",
 		"verifyButton": "Download ueberpruefen"
@@ -44,13 +44,20 @@
 		"requirements": "Anforderungen:",
 		"loading": "Downloads werden geladen...",
 		"errorTitle": "Downloads konnten nicht geladen werden",
-		"downloadFailed": "Download fehlgeschlagen.\nBitte versuchen Sie es erneut.",
+		"downloadFailed": "Download fehlgeschlagen.\n\nBitte versuchen Sie es erneut.",
 		"downloadFor": "Herunterladen fuer {{platform}}",
 		"copiedToClipboard": "{{label}} in die Zwischenablage kopiert!",
-		"failedToCopy": "{{label}} konnte nicht kopiert werden"
+		"failedToCopy": "{{label}} konnte nicht kopiert werden",
+		"sha256Checksum": "SHA-256-Prüfsumme",
+		"pgpSignature": "PGP-Signatur",
+		"verificationInstructions": "Verifizierungsanweisungen",
+		"downloadVerification": "Download-Verifizierung",
+		"integrityCheck": "Integritätsprüfung",
+		"copy": "Kopieren",
+		"signedWithKeyId": "Signiert mit Schlüssel-ID: {{keyId}}"
 	},
 	"transparency": {
 		"title": "Build-Transparenz",
-		"subtitle": "Vollstaendige Offenlegung zu Telemetrie, Build-Varianten und Bereitstellung.\nAlles im Quellcode nachpruefbar."
+		"subtitle": "Vollständige Offenlegung zu Telemetrie, Build-Varianten und Bereitstellung.\n\nAlles im Quellcode nachprüfbar."
 	}
 }

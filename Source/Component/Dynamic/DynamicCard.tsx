@@ -6,6 +6,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Card.js";
 import type SimpleProperty from "./Interface/Property/Card/Simple.js";
 
@@ -49,9 +50,9 @@ const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 						</h3>
 					)}
 					{BodySection.description && (
-						<p className="StaccatoBreath mb-4 whitespace-pre-line text-muted-foreground">
-							{BodySection.description}
-						</p>
+						<div className="StaccatoBreath mb-4 text-muted-foreground">
+							<RichText Text={BodySection.description} />
+						</div>
 					)}
 					{BodySection.content}
 				</CardContent>

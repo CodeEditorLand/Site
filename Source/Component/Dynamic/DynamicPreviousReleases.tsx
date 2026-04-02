@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { RichText } from "../UI/RichText.js";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicTable } from "./DynamicTable";
 import type Property from "./Interface/Property/Release/Previous.js";
@@ -125,9 +126,9 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Description && (
-							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-								{Description}
-							</p>
+							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+								<RichText Text={Description} />
+							</div>
 						)}
 					</div>
 				)}

@@ -217,9 +217,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 					"utf-8",
 				);
 			} catch (_Error) {
-				logger.error(
-					`Could not read ServiceWorker.ts: ${_Error}`,
-				);
+				logger.error(`Could not read ServiceWorker.ts: ${_Error}`);
 
 				return;
 			}
@@ -233,9 +231,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				define: {
 					__DEV__: "false",
 					__INCREMENT__: JSON.stringify(String(Date.now())),
-					__ROUTE_MAP_CANONICAL__: JSON.stringify(
-						RouteMap.Canonical,
-					),
+					__ROUTE_MAP_CANONICAL__: JSON.stringify(RouteMap.Canonical),
 					__ROUTE_MAP_VARIANT__: JSON.stringify(RouteMap.Variant),
 				},
 				sourcemap: false,
@@ -256,9 +252,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			await WriteFile(ServiceWorkerPath, ServiceWorkerCode, "utf-8");
 
-			logger.info(
-				"Wrote service-worker.js (compiled with esbuild)",
-			);
+			logger.info("Wrote service-worker.js (compiled with esbuild)");
 
 			// ── 5. Cloudflare _redirects ──
 			// Public/_redirects uses 200 (rewrite) rules, NOT 301 redirects.

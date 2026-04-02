@@ -2,6 +2,7 @@ import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+import { RichText } from "../UI/RichText.js";
 import { DynamicBadge } from "./DynamicBadge";
 import { DynamicButton } from "./DynamicButton";
 import type Property from "./Interface/Property/Hero.js";
@@ -177,9 +178,9 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				</div>
 
 				{/* Subtitle:breathing opacity */}
-				<p className="StaccatoBreath mx-auto mb-12 max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-					{Subtitle}
-				</p>
+				<div className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
+					<RichText Text={Subtitle} />
+				</div>
 
 				{/* Tech stack visualization */}
 				<div className="relative mx-auto max-w-5xl" aria-hidden="true">

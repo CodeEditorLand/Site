@@ -86,6 +86,11 @@ const T = GetI18n();
 			@import "@Stylesheet/Global.css";
 		</style>
 
+		<!-- i18n client — must initialize before any React component hydrates -->
+		<script>
+			import "@/Library/I18n/Client.js";
+		</script>
+
 		<script type="application/ld+json">
 			{
 				"@context": "https://schema.org",
@@ -143,7 +148,7 @@ const T = GetI18n();
 		</AnalyticsProvider>
 
 		<div id="Footer" class="shrink">
-			<Footer client:load />
+			<Footer client:idle />
 		</div>
 
 		<script>

@@ -1,6 +1,7 @@
 import { Download, Fingerprint, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { RichText } from "../UI/RichText.js";
 import { DynamicButton } from "./DynamicButton";
 import type VerificationInfo from "./Interface/Information/Verification.js";
 import type Property from "./Interface/Property/Information/Verification.js";
@@ -131,9 +132,9 @@ const DynamicVerificationInfo = ({
 							defaultValue: "Verification Instructions",
 						})}
 					</h5>
-					<p className="whitespace-pre-line text-sm text-muted-foreground">
-						{Information.VerificationInstructions}
-					</p>
+					<div className="text-sm text-muted-foreground">
+						<RichText Text={Information.VerificationInstructions} />
+					</div>
 				</div>
 			)}
 
@@ -172,9 +173,9 @@ const DynamicVerificationInfo = ({
 								</h2>
 							)}
 							{Description && (
-								<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-									{Description}
-								</p>
+								<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+									<RichText Text={Description} />
+								</div>
 							)}
 						</div>
 					)}

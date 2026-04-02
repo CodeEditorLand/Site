@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+import { RichText } from "../UI/RichText.js";
 import { DynamicButton } from "./DynamicButton.js";
 import type Property from "./Interface/Property/Pricing.js";
 
@@ -97,9 +98,9 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-								{Subtitle}
-							</p>
+							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+								<RichText Text={Subtitle} />
+							</div>
 						)}
 					</div>
 				)}
@@ -188,9 +189,9 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									{Tier.Name}
 								</h3>
 								{Tier.Description && (
-									<p className="StaccatoBreath mb-4 whitespace-pre-line text-sm text-muted-foreground">
-										{Tier.Description}
-									</p>
+									<div className="StaccatoBreath mb-4 text-sm text-muted-foreground">
+										<RichText Text={Tier.Description} />
+									</div>
 								)}
 								<div className="flex items-baseline">
 									<span className="StaccatoPrice text-4xl font-bold">

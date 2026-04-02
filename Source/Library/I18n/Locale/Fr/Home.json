@@ -3,11 +3,11 @@
 		"badge": "Fonctionnalités",
 		"item": {
 			"designTokens": {
-				"description": "Le backend Rust natif avec gRPC IPC garantit que chaque opération est rapide, réactive et fiable.\nSans la lourdeur d'Electron.",
+				"description": "Le backend Rust natif avec gRPC IPC garantit que chaque opération est rapide, réactive et fiable.\n\nSans la lourdeur d'Electron.",
 				"title": "Performance avant tout"
 			},
 			"componentLibrary": {
-				"description": "Exécutez vos extensions VS Code existantes avec haute fidélité via l'hôte d'extension Cocoon.\nAucune modification nécessaire.",
+				"description": "Exécutez vos extensions VS Code existantes avec haute fidélité via l'hôte d'extension Cocoon.\n\nAucune modification nécessaire.",
 				"title": "Compatibilité VS Code"
 			},
 			"documentation": {
@@ -15,15 +15,15 @@
 				"title": "Architecture Effect-TS"
 			},
 			"versionControl": {
-				"description": "Une base de code, des déploiements natifs pour macOS, Windows et Linux avec Tauri.\nÉcrivez une fois, exécutez partout.",
+				"description": "Une base de code, des déploiements natifs pour macOS, Windows et Linux avec Tauri.\n\nÉcrivez une fois, exécutez partout.",
 				"title": "Multi-plateforme"
 			},
 			"collaboration": {
-				"description": "Entièrement libre d'utilisation, de modification et de distribution.\nLicencié sous Creative Commons CC0.\nAucune restriction.",
+				"description": "Entièrement libre d'utilisation, de modification et de distribution.\n\nLicencié sous Creative Commons CC0.\n\nAucune restriction.",
 				"title": "Open Source"
 			},
 			"cicdIntegration": {
-				"description": "Construit sur des technologies open source éprouvées:\nRust, Tauri, Effect-TS et la plateforme VS Code.",
+				"description": "Construit sur des technologies open source éprouvées:\n\nRust, Tauri, Effect-TS et la plateforme VS Code.",
 				"title": "Outils modernes"
 			}
 		},
@@ -32,7 +32,7 @@
 	},
 	"hero": {
 		"badge": "Nouveau : Architecture Effect-TS",
-		"subtitle": "Un éditeur ultra-rapide et type-safe construit avec Rust, Tauri et Effect-TS.\nDécouvrez l'éditeur qui réinvente VS Code pour l'ère moderne.",
+		"subtitle": "Un éditeur ultra-rapide et type-safe construit avec Rust, Tauri et Effect-TS.\n\nDécouvrez l'éditeur qui réinvente VS Code pour l'ère moderne.",
 		"title": "L'avenir de l'édition de code",
 		"titleHighlight": "Land",
 		"atScale": "commence ici",
@@ -62,7 +62,7 @@
 		"github": "GitHub"
 	},
 	"pricing": {
-		"subtitle": "Code Editor Land est entièrement gratuit.\nPas de niveaux, pas d'abonnements, pas de restrictions.",
+		"subtitle": "Code Editor Land est entièrement gratuit.\n\nPas de niveaux, pas d'abonnements, pas de restrictions.",
 		"labels": {
 			"monthly": "Mensuel",
 			"yearly": "Annuel",
@@ -79,7 +79,7 @@
 		"tiers": {
 			"free": {
 				"name": "Communauté",
-				"description": "Pour tout le monde.\nToutes les fonctionnalités de l'éditeur, entièrement gratuites.",
+				"description": "Pour tout le monde.\n\nToutes les fonctionnalités de l'éditeur, entièrement gratuites.",
 				"features": {
 					"1": "Compatibilité VS Code complète",
 					"2": "Toutes les extensions supportées",
@@ -97,12 +97,12 @@
 	},
 	"testimonials": {
 		"quote": {
-			"1": "Une alternative axée sur la performance et ouverte.\nLand est exactement ce dont VS Code avait besoin.\nC'est incroyablement rapide.",
-			"2": "L'architecture Effect-TS est magnifique à utiliser.\nLa sécurité des types détecte les bugs avant qu'ils ne se produisent.",
-			"3": "Exécuter mes extensions existantes sans modifications est révolutionnaire.\nLa compatibilité est impressionnante.",
-			"4": "Enfin un éditeur qui respecte mes ressources système.\nPlus de surcharge mémoire Electron.",
-			"5": "L'engagement open source signifie que je peux contribuer et personnaliser.\nC'est l'éditeur que j'attendais.",
-			"6": "L'architecture basée sur gRPC est un chef-d'œuvre en conception de systèmes.\nLand est l'avenir des éditeurs de bureau."
+			"1": "Une alternative axée sur la performance et ouverte.\n\nLand est exactement ce dont VS Code avait besoin.\n\nC'est incroyablement rapide.",
+			"2": "L'architecture Effect-TS est magnifique à utiliser.\n\nLa sécurité des types détecte les bugs avant qu'ils ne se produisent.",
+			"3": "Exécuter mes extensions existantes sans modifications est révolutionnaire.\n\nLa compatibilité est impressionnante.",
+			"4": "Enfin un éditeur qui respecte mes ressources système.\n\nPlus de surcharge mémoire Electron.",
+			"5": "L'engagement open source signifie que je peux contribuer et personnaliser.\n\nC'est l'éditeur que j'attendais.",
+			"6": "L'architecture basée sur gRPC est un chef-d'œuvre en conception de systèmes.\n\nLand est l'avenir des éditeurs de bureau."
 		},
 		"subtitle": "Les voix de la communauté sur l'avenir de l'édition de code.",
 		"title": "Ce que disent les développeurs",
@@ -112,11 +112,11 @@
 	},
 	"roadmap": {
 		"title": "Feuille de route & Prévisions",
-		"subtitle": "Financé par le fonds NGI0 Commons.\nOpen Source, gratuit pour toujours, développé en public.",
+		"subtitle": "Financé par le fonds NGI0 Commons.\n\nOpen Source, gratuit pour toujours, développé en public.",
 		"tiers": {
 			"current": {
 				"name": "Phase actuelle",
-				"description": "Fondation et échafaudage de l'éditeur principal.\nDéveloppement actif.",
+				"description": "Fondation et échafaudage de l'éditeur principal.\n\nDéveloppement actif.",
 				"features": {
 					"1": "Mountain : backend natif Rust/Tauri",
 					"2": "Cocoon : hôte d'extension VS Code via Effect-TS",
@@ -153,29 +153,29 @@
 	},
 	"architecture": {
 		"title": "Architecture",
-		"subtitle": "Land remplace la pile Electron de VS Code par une architecture modulaire et haute performance.\nChaque élément est un dépôt autonome.",
+		"subtitle": "Land remplace la pile Electron de VS Code par une architecture modulaire et haute performance.\n\nChaque élément est un dépôt autonome.",
 		"mountain": {
-			"description": "Gère le cycle de vie des fenêtres, du système de fichiers et des processus.\nLe backend natif Rust/Tauri qui remplace le processus principal d'Electron.",
+			"description": "Gère le cycle de vie des fenêtres, du système de fichiers et des processus.\n\nLe backend natif Rust/Tauri qui remplace le processus principal d'Electron.",
 			"subtitle": "Backend natif Rust/Tauri"
 		},
 		"cocoon": {
-			"description": "Exécute les extensions VS Code via Effect-TS avec une compatibilité API haute fidélité.\nAucune modification nécessaire aux extensions existantes.",
+			"description": "Exécute les extensions VS Code via Effect-TS avec une compatibilité API haute fidélité.\n\nAucune modification nécessaire aux extensions existantes.",
 			"subtitle": "Hôte d'extension TypeScript"
 		},
 		"wind": {
-			"description": "Ré-implémentation du VS Code Workbench.\nFournit le shell de l'éditeur, les panneaux, les barres latérales et la barre d'activité.",
+			"description": "Ré-implémentation du VS Code Workbench.\n\nFournit le shell de l'éditeur, les panneaux, les barres latérales et la barre d'activité.",
 			"subtitle": "Service UI TypeScript"
 		},
 		"sky": {
-			"description": "Rend l'interface de l'éditeur avec des composants Astro.\nGère les thèmes, les mises en page et la couche de présentation visuelle.",
+			"description": "Rend l'interface de l'éditeur avec des composants Astro.\n\nGère les thèmes, les mises en page et la couche de présentation visuelle.",
 			"subtitle": "Composant UI Astro"
 		},
 		"air": {
-			"description": "Démon en arrière-plan pour les mises à jour automatiques, les téléchargements et la signature cryptographique.\nGarde Land à jour silencieusement.",
+			"description": "Démon en arrière-plan pour les mises à jour automatiques, les téléchargements et la signature cryptographique.\n\nGarde Land à jour silencieusement.",
 			"subtitle": "Démon en arrière-plan Rust"
 		},
 		"echo": {
-			"description": "Exécuteur à vol de travail haute performance.\nPlanifie et distribue les tâches sur les cœurs pour un débit maximum.",
+			"description": "Exécuteur à vol de travail haute performance.\n\nPlanifie et distribue les tâches sur les cœurs pour un débit maximum.",
 			"subtitle": "Planificateur de tâches Rust"
 		}
 	}

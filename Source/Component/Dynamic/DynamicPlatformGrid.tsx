@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { RichText } from "../UI/RichText.js";
 import { DynamicButton } from "./DynamicButton";
 import { DynamicCard } from "./DynamicCard";
 import type PlatformInformation from "./Interface/Information/Platform.js";
@@ -277,9 +278,9 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-								{Subtitle}
-							</p>
+							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+								<RichText Text={Subtitle} />
+							</div>
 						)}
 					</div>
 				)}

@@ -58,7 +58,7 @@ const MetaDescription = T("meta.contributing.description", {
 					})
 				}
 			</h1>
-			<p class="text-lg text-muted-foreground">
+			<p class="whitespace-pre-line text-lg text-muted-foreground">
 				{
 					T("common.contributing.pageSubtitle", {
 						defaultValue:
@@ -83,7 +83,8 @@ const MetaDescription = T("meta.contributing.description", {
 							})
 						}<span class="InlineSeparator">→</span>
 					</h3>
-					<p class="text-sm text-muted-foreground">
+					<p
+						class="whitespace-pre-line text-sm text-muted-foreground">
 						{
 							T("common.contributing.guide.description", {
 								defaultValue:
@@ -105,7 +106,8 @@ const MetaDescription = T("meta.contributing.description", {
 							})
 						}<span class="InlineSeparator">→</span>
 					</h3>
-					<p class="text-sm text-muted-foreground">
+					<p
+						class="whitespace-pre-line text-sm text-muted-foreground">
 						{
 							T(
 								"common.contributing.goodFirstIssues.description",
@@ -145,7 +147,8 @@ const MetaDescription = T("meta.contributing.description", {
 									})
 								}
 							</h3>
-							<p class="mt-1 text-sm text-muted-foreground">
+							<p
+								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
 								{
 									T("common.contributing.step1.description", {
 										defaultValue:
@@ -170,7 +173,8 @@ const MetaDescription = T("meta.contributing.description", {
 									})
 								}
 							</h3>
-							<p class="mt-1 text-sm text-muted-foreground">
+							<p
+								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
 								{
 									T("common.contributing.step2.description", {
 										defaultValue:
@@ -195,7 +199,8 @@ const MetaDescription = T("meta.contributing.description", {
 									})
 								}
 							</h3>
-							<p class="mt-1 text-sm text-muted-foreground">
+							<p
+								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
 								{
 									T("common.contributing.step3.description", {
 										defaultValue:
@@ -218,7 +223,8 @@ const MetaDescription = T("meta.contributing.description", {
 									})
 								}
 							</h3>
-							<p class="mt-1 text-sm text-muted-foreground">
+							<p
+								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
 								{
 									T("common.contributing.step4.description", {
 										defaultValue:
@@ -241,165 +247,176 @@ const MetaDescription = T("meta.contributing.description", {
 					})
 				}
 			</h2>
-			<p class="mb-6 text-muted-foreground">
+			<p class="mb-6 whitespace-pre-line text-muted-foreground">
 				{
 					T("common.contributing.elements.description", {
 						defaultValue:
-							"Code Editor Land is built from 15 modular Elements — self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
+							"Code Editor Land is built from 15 modular Elements — self-contained components that provide specific functionality. Each Element lives in its own GitHub repository and can be developed independently.",
 					})
 				}
 			</p>
 			<div
 				class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 				<a
-					href="https://crates.io/crates/land-Mountain"
+					href="https://github.com/CodeEditorLand/Mountain"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Mountain</span>
+					<span class="font-medium"
+						>Mountain&#x2001;&#x1F3D4;&#xFE0F;</span
+					>
 					<span class="block text-xs text-muted-foreground"
-						>Core editor</span
+						>Native backend</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Cocoon"
+					href="https://github.com/CodeEditorLand/Cocoon"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Cocoon</span>
+					<span class="font-medium">Cocoon&#x2001;&#x1F98B;</span>
 					<span class="block text-xs text-muted-foreground"
-						>File tree</span
+						>Extension host</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Wind"
+					href="https://github.com/CodeEditorLand/Wind"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Wind</span>
+					<span class="font-medium">Wind&#x2001;&#x1F4A8;</span>
 					<span class="block text-xs text-muted-foreground"
-						>Terminal</span
+						>UI services</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Sky"
+					href="https://github.com/CodeEditorLand/Sky"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Sky</span>
-					<span class="block text-xs text-muted-foreground">Tabs</span
+					<span class="font-medium">Sky&#x2001;&#x1F324;&#xFE0F;</span
 					>
-				</a>
-				<a
-					href="https://crates.io/crates/land-Air"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Air</span>
 					<span class="block text-xs text-muted-foreground"
-						>Search</span
+						>UI components</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Echo"
+					href="https://github.com/CodeEditorLand/Air"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Echo</span>
+					<span class="font-medium">Air&#x2001;&#x1F32C;&#xFE0F;</span
+					>
 					<span class="block text-xs text-muted-foreground"
-						>Output</span
+						>Daemon sidecar</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Common"
+					href="https://github.com/CodeEditorLand/Echo"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Common</span>
+					<span class="font-medium">Echo&#x2001;&#x1F50A;</span>
 					<span class="block text-xs text-muted-foreground"
-						>Shared types</span
+						>Task scheduler</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Vine"
+					href="https://github.com/CodeEditorLand/Common"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Vine</span>
+					<span class="font-medium">Common&#x2001;&#x1F4E6;</span>
 					<span class="block text-xs text-muted-foreground"
-						>Settings</span
+						>Core library</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Rest"
+					href="https://github.com/CodeEditorLand/Vine"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Rest</span>
+					<span class="font-medium">Vine&#x2001;&#x1F33F;</span>
 					<span class="block text-xs text-muted-foreground"
-						>REST API</span
+						>gRPC protocol</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Output"
+					href="https://github.com/CodeEditorLand/Rest"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Output</span>
+					<span class="font-medium">Rest&#x2001;&#x26A1;</span>
 					<span class="block text-xs text-muted-foreground"
-						>Debug</span
+						>JS bundler</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Mist"
+					href="https://github.com/CodeEditorLand/Output"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Mist</span>
-					<span class="block text-xs text-muted-foreground">LSP</span>
-				</a>
-				<a
-					href="https://crates.io/crates/land-Grove"
-					target="_blank"
-					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Grove</span>
+					<span class="font-medium">Output&#x2001;&#x1F4E4;</span>
 					<span class="block text-xs text-muted-foreground"
-						>Snippets</span
+						>JS artifacts</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-SideCar"
+					href="https://github.com/CodeEditorLand/Mist"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">SideCar</span>
+					<span class="font-medium"
+						>Mist&#x2001;&#x1F32B;&#xFE0F;</span
+					>
+					<span class="block text-xs text-muted-foreground"
+						>WebSocket</span
+					>
+				</a>
+				<a
+					href="https://github.com/CodeEditorLand/Grove"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">Grove&#x2001;&#x1F333;</span>
+					<span class="block text-xs text-muted-foreground"
+						>WASM extensions</span
+					>
+				</a>
+				<a
+					href="https://github.com/CodeEditorLand/SideCar"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					<span class="font-medium">SideCar&#x2001;&#x1F916;</span>
 					<span class="block text-xs text-muted-foreground"
 						>AI/ML</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Worker"
+					href="https://github.com/CodeEditorLand/Worker"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Worker</span>
+					<span class="font-medium"
+						>Worker&#x2001;&#x2699;&#xFE0F;</span
+					>
 					<span class="block text-xs text-muted-foreground"
-						>WebWorkers</span
+						>Web workers</span
 					>
 				</a>
 				<a
-					href="https://crates.io/crates/land-Maintain"
+					href="https://github.com/CodeEditorLand/Maintain"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
-					<span class="font-medium">Maintain</span>
+					<span class="font-medium">Maintain&#x2001;&#x1F527;</span>
 					<span class="block text-xs text-muted-foreground"
-						>Plugins</span
+						>CI/CD scripts</span
 					>
 				</a>
 			</div>
-			<p class="mt-4 text-sm text-muted-foreground">
+			<p class="mt-4 whitespace-pre-line text-sm text-muted-foreground">
 				{
 					T("common.contributing.elements.docs", {
 						defaultValue:
@@ -426,9 +443,10 @@ const MetaDescription = T("meta.contributing.description", {
 							T("common.contributing.ways.code.title", {
 								defaultValue: "Code",
 							})
-						}
+						}&#x2001;&#x1F4BB;
 					</h3>
-					<p class="text-sm text-muted-foreground">
+					<p
+						class="whitespace-pre-line text-sm text-muted-foreground">
 						{
 							T("common.contributing.ways.code.description", {
 								defaultValue:
@@ -444,9 +462,10 @@ const MetaDescription = T("meta.contributing.description", {
 							T("common.contributing.ways.documentation.title", {
 								defaultValue: "Documentation",
 							})
-						}
+						}&#x2001;&#x1F4D6;
 					</h3>
-					<p class="text-sm text-muted-foreground">
+					<p
+						class="whitespace-pre-line text-sm text-muted-foreground">
 						{
 							T(
 								"common.contributing.ways.documentation.description",
@@ -465,9 +484,10 @@ const MetaDescription = T("meta.contributing.description", {
 							T("common.contributing.ways.testing.title", {
 								defaultValue: "Testing",
 							})
-						}
+						}&#x2001;&#x1F9EA;
 					</h3>
-					<p class="text-sm text-muted-foreground">
+					<p
+						class="whitespace-pre-line text-sm text-muted-foreground">
 						{
 							T("common.contributing.ways.testing.description", {
 								defaultValue:
@@ -483,9 +503,10 @@ const MetaDescription = T("meta.contributing.description", {
 							T("common.contributing.ways.design.title", {
 								defaultValue: "Design",
 							})
-						}
+						}&#x2001;&#x1F3A8;
 					</h3>
-					<p class="text-sm text-muted-foreground">
+					<p
+						class="whitespace-pre-line text-sm text-muted-foreground">
 						{
 							T("common.contributing.ways.design.description", {
 								defaultValue:
@@ -514,24 +535,28 @@ const MetaDescription = T("meta.contributing.description", {
 						target="_blank"
 						rel="noopener noreferrer"
 						class="font-medium text-[var(--Primary)] hover:underline">
-						NLnet Project Page
+						NLnet Project Page<span class="InlineSeparator"
+							>&#x1F310;</span
+						>
 					</a>
 					<a
 						href="https://nlnet.nl/commonsfund"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="font-medium text-[var(--Primary)] hover:underline">
-						NGI0 Commons Fund
+						NGI0 Commons Fund<span class="InlineSeparator"
+							>&#x1F91D;</span
+						>
 					</a>
 					<a
 						href="https://nlnet.nl"
 						target="_blank"
 						rel="noopener noreferrer"
 						class="font-medium text-[var(--Primary)] hover:underline">
-						NLnet
+						NLnet<span class="InlineSeparator">&#x1F3E0;</span>
 					</a>
 				</div>
-				<p class="mb-4 text-muted-foreground">
+				<p class="mb-4 whitespace-pre-line text-muted-foreground">
 					{
 						T("common.contributing.funding.nlnetIntro", {
 							defaultValue:
@@ -539,7 +564,7 @@ const MetaDescription = T("meta.contributing.description", {
 						})
 					}
 				</p>
-				<p class="text-muted-foreground">
+				<p class="whitespace-pre-line text-muted-foreground">
 					{
 						T("common.contributing.funding.playformInfo", {
 							defaultValue:

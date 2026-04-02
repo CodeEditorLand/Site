@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Testimonial.js";
 
 /**
@@ -94,9 +95,9 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-								{Subtitle}
-							</p>
+							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+								<RichText Text={Subtitle} />
+							</div>
 						)}
 					</div>
 				)}
@@ -120,11 +121,23 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									{RenderStars(Testimonial.Rating)}
 								</div>
 								<blockquote className="StaccatoBreath mb-6 flex-1">
-									<p className="text-lg">
-										{(Testimonial.Rating ?? 0) > 0
-											? `\u201C${Testimonial.Quote}\u201D`
-											: Testimonial.Quote}
-									</p>
+									<div className="text-lg">
+										{(Testimonial.Rating ?? 0) > 0 && (
+											<span
+												className="text-muted-foreground/50"
+												aria-hidden="true">
+												“
+											</span>
+										)}
+										<RichText Text={Testimonial.Quote} />
+										{(Testimonial.Rating ?? 0) > 0 && (
+											<span
+												className="text-muted-foreground/50"
+												aria-hidden="true">
+												”
+											</span>
+										)}
+									</div>
 								</blockquote>
 								<div className="flex items-center gap-4">
 									{Testimonial.Avatar ? (
@@ -153,7 +166,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										</cite>
 										{(Testimonial.Role ||
 											Testimonial.Company) && (
-											<p className="StaccatoBreath whitespace-pre-line text-sm text-muted-foreground">
+											<p className="StaccatoBreath text-sm text-muted-foreground">
 												{Testimonial.Role}
 												{Testimonial.Role &&
 													Testimonial.Company &&

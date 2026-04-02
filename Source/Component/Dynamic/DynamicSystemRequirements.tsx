@@ -2,6 +2,7 @@ import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
+import { RichText } from "../UI/RichText.js";
 import type RequirementItem from "./Interface/Item/Requirement.js";
 import type Property from "./Interface/Property/Requirement/System.js";
 
@@ -78,9 +79,9 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 						{Title}
 					</h2>
 					{Description && (
-						<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-							{Description}
-						</p>
+						<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<RichText Text={Description} />
+						</div>
 					)}
 				</div>
 

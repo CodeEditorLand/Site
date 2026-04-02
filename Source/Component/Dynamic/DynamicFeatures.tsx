@@ -2,6 +2,7 @@ import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Feature.js";
 
 /**
@@ -165,9 +166,9 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 							</h2>
 						)}
 						{Subtitle && (
-							<p className="mx-auto max-w-2xl whitespace-pre-line text-lg text-muted-foreground">
-								{Subtitle}
-							</p>
+							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+								<RichText Text={Subtitle} />
+							</div>
 						)}
 					</div>
 				)}
@@ -202,8 +203,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 										/>
 									</div>
 								</div>
-								<p className="StaccatoBreath whitespace-pre-line text-muted-foreground">
-									{Feature.Description}
+								<p className="StaccatoBreath text-muted-foreground">
+									<RichText Text={Feature.Description} />
 									{Feature.Icons &&
 										Feature.Icons.length > 0 && (
 											<span

@@ -1,6 +1,7 @@
 ---
 import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
+import DynamicRichText from "../Component/Dynamic/DynamicRichText";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -258,17 +259,18 @@ const MetaDescription = T("meta.dashboard.description", {
 									)
 								}
 							</h3>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T(
-										"common.dashboard.telemetry.production.description",
-										{
-											defaultValue:
-												"Telemetry is disabled by default. The Telemetry Cargo feature is not in default features. All tracing compiles to zero-cost no-ops.",
-										},
-									)
-								}
-							</p>
+							<DynamicRichText
+								client:load
+								Text={T(
+									"common.dashboard.telemetry.production.description",
+									{
+										defaultValue:
+											"Telemetry is disabled by default.\n\nThe Telemetry Cargo feature is not in default features.\n\nAll tracing compiles to zero-cost no-ops.",
+									},
+								)}
+								Terms
+								ClassName="mt-1 text-sm text-muted-foreground"
+							/>
 						</div>
 					</div>
 					<div
@@ -289,17 +291,18 @@ const MetaDescription = T("meta.dashboard.description", {
 									})
 								}
 							</h3>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T(
-										"common.dashboard.telemetry.otel.description",
-										{
-											defaultValue:
-												"Enable with cargo build --features Telemetry. Local-only OTEL tracing, metrics, and distributed spans. No external transmission.",
-										},
-									)
-								}
-							</p>
+							<DynamicRichText
+								client:load
+								Text={T(
+									"common.dashboard.telemetry.otel.description",
+									{
+										defaultValue:
+											"Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and distributed spans.\n\nNo external transmission.",
+									},
+								)}
+								Terms
+								ClassName="mt-1 text-sm text-muted-foreground"
+							/>
 						</div>
 					</div>
 					<div class="p-5">
@@ -318,17 +321,18 @@ const MetaDescription = T("meta.dashboard.description", {
 								})
 							}
 						</h3>
-						<p class="mt-1 text-sm text-muted-foreground">
-							{
-								T(
-									"common.dashboard.telemetry.effect.description",
-									{
-										defaultValue:
-											"Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing. All data stays local.",
-									},
-								)
-							}
-						</p>
+						<DynamicRichText
+							client:load
+							Text={T(
+								"common.dashboard.telemetry.effect.description",
+								{
+									defaultValue:
+										"Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing.\n\nAll data stays local.",
+								},
+							)}
+							Terms
+							ClassName="mt-1 text-sm text-muted-foreground"
+						/>
 					</div>
 				</div>
 			</section>
@@ -654,14 +658,15 @@ const MetaDescription = T("meta.dashboard.description", {
 										aria-hidden="true"></span>
 								</span>
 							</div>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T("common.dashboard.editor.description", {
-										defaultValue:
-											"The Air Daemon connects this dashboard to a running Land editor via WebSocket. Launch Land to enable real-time build logs, telemetry, and configuration management.",
-									})
-								}
-							</p>
+							<DynamicRichText
+								client:load
+								Text={T("common.dashboard.editor.description", {
+									defaultValue:
+										"The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+								})}
+								Terms
+								ClassName="mt-1 text-sm text-muted-foreground"
+							/>
 						</div>
 					</div>
 					<div class="mt-6 flex flex-wrap items-center gap-3">

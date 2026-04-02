@@ -4,7 +4,7 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "The next-generation code editor.\nOpen source and free forever."
+		"tagline": "The next-generation code editor.\n\nOpen source and free forever."
 	},
 	"breadcrumb": {
 		"home": "Home"
@@ -20,7 +20,7 @@
 	"comingSoon": "Coming Soon",
 	"error": {
 		"404": "404 - Page Not Found",
-		"pageNotFound": "The page you're looking for doesn't exist or has been moved.\nPlease check the URL for any typos, or return to the home page to start fresh.\nIf you believe this is an error, contact our support team and we'll help you find what you need."
+		"pageNotFound": "The page you're looking for doesn't exist or has been moved.\n\nPlease check the URL for any typos, or return to the home page to start fresh.\n\nIf you believe this is an error, contact our support team and we'll help you find what you need."
 	},
 	"label": {
 		"email": "Email Address",
@@ -137,7 +137,7 @@
 	},
 	"contributing": {
 		"pageTitle": "Contributing",
-		"pageSubtitle": "Code Editor Land is open source and welcomes contributions from everyone.\nHere is how to get involved.",
+		"pageSubtitle": "Code Editor Land is open source and welcomes contributions from everyone.\n\nHere is how to get involved.",
 		"guide": {
 			"title": "Contributing Guide",
 			"description": "Read the full CONTRIBUTING.md on GitHub for detailed instructions on setting up the development environment and submitting changes."
@@ -168,7 +168,7 @@
 		},
 		"step4": {
 			"title": "Submit a Pull Request",
-			"description": "Push your branch and open a pull request against the Current branch.\nDescribe what you changed and why."
+			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what you changed and why."
 		},
 		"ways": {
 			"heading": "Ways to Contribute",
@@ -191,19 +191,19 @@
 		},
 		"funding": {
 			"heading": "Funding",
-			"description": "Code Editor Land is funded through the NGI0 Commons Fund via NLnet.\nThis enables full-time development on the project.",
+			"description": "Code Editor Land is funded through the NGI0 Commons Fund via NLnet.\n\nThis enables full-time development on the project.",
 			"nlnetIntro": "Code Editor Land has been funded through the",
 			"nlnetFundName": "NGI0 Commons Fund",
 			"nlnetEstablishedBy": ", a fund established by",
-			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429.\nThis funding enables sustained open-source development on the project.",
-			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria.\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429.\n\nThis funding enables sustained open-source development on the project.",
+			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
 			"viewProject": "View the",
 			"nlnetProjectPage": "NLnet project page",
 			"viewProjectSuffix": "for more details about the grant and objectives."
 		},
 		"conduct": {
 			"heading": "Code of Conduct",
-			"description": "All participants in the Code Editor Land community are expected to be respectful and constructive.\nRead the full Code of Conduct on GitHub."
+			"description": "All participants in the Code Editor Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub."
 		}
 	},
 	"sales": {
@@ -233,9 +233,9 @@
 			"heading": "How to reach us",
 			"directHeading": "Direct Contact",
 			"description": "Prefer email? Reach us directly:",
-			"githubNote": "We handle enterprise inquiries through GitHub Issues.\nThis ensures your request is tracked, visible to the team, and responded to promptly.",
+			"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the team, and responded to promptly.",
 			"openIssueHeading": "Open a GitHub Issue",
-			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\nInclude your company name, team size, use case, and any deployment requirements.\nOur team monitors issues daily.",
+			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and any deployment requirements.\n\nOur team monitors issues daily.",
 			"openIssueButton": "Open GitHub Issue",
 			"issueIncludeLabel": "What to include in your issue:",
 			"issueIncludeText": "Company name, team size, intended use case, deployment environment (cloud/on-prem), timeline, and any specific support or compliance requirements.",
@@ -243,15 +243,15 @@
 		},
 		"openSource": {
 			"heading": "Open Source",
-			"description": "Not access to the code itself.\nCode Editor Land is open source under CC0.\nEnterprise plan provide support, SLA, and custom development."
+			"description": "Not access to the code itself.\n\nCode Editor Land is open source under CC0.\n\nEnterprise plans provide support, SLA, and custom development."
 		}
 	},
 	"oauth": {
 		"completing": "Completing authentication...",
 		"failed": "Authentication Failed",
 		"errorGeneric": "An error occurred during authentication.",
-		"errorExpired": "Authentication session expired.\nPlease try again.",
-		"errorProvider": "OAuth provider returned an error.\nPlease try again.",
+		"errorExpired": "Authentication session expired.\n\nPlease try again.",
+		"errorProvider": "OAuth provider returned an error.\n\nPlease try again.",
 		"errorNoToken": "No authentication token received.",
 		"backToSignIn": "Back to Sign In",
 		"goToDashboard": "Go to Dashboard",
@@ -311,20 +311,20 @@
 			"heading": "Telemetry Status",
 			"production": {
 				"title": "Production Build Telemetry",
-				"description": "Telemetry is disabled by default.\nThe Telemetry Cargo feature is not in default features.\nAll tracing compiles to zero-cost no-ops."
+				"description": "Telemetry is disabled by default.\n\nThe Telemetry Cargo feature is not in default features.\n\nAll tracing compiles to zero-cost no-ops."
 			},
 			"otel": {
 				"title": "OpenTelemetry (Opt-In)",
-				"description": "Enable with cargo build --features Telemetry.\nLocal-only OTEL tracing, metrics, and distributed spans.\nNo external transmission."
+				"description": "Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and distributed spans.\n\nNo external transmission."
 			},
 			"effect": {
 				"title": "Effect-TS Local Telemetry",
-				"description": "Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing.\nAll data stays local."
+				"description": "Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing.\n\nAll data stays local."
 			}
 		},
 		"buildLog": {
 			"heading": "Build Configuration",
-			"subtitle": "Active build variant and deployment mode.\nAvailable via Local-First Air Daemon connection.",
+			"subtitle": "Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
 			"profile": {
 				"heading": "Active Profile"
 			},
@@ -343,7 +343,7 @@
 			"heading": "Editor Connection",
 			"subtitle": "Connect the website to your running Land editor instance.",
 			"status": "Not Connected",
-			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
 			"connect": "Connect via Portal"
 		},
 		"partners": {

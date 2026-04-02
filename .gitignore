@@ -7,3 +7,6 @@ yarn-error.log*
 .env.*.local
 .env.production
 build.log
+
+.lycheecache
+lychee-report.md
