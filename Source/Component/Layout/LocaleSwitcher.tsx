@@ -6,6 +6,7 @@ import {
 	SwitchLocale,
 	type SupportedLocale,
 } from "@/Library/I18n/Client.js";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -20,6 +21,7 @@ const LocaleSwitcher = () => {
 	const { i18n } = useTranslation();
 
 	const CurrentLocale = (i18n.language || "en") as SupportedLocale;
+	const TriggerRef = useRef<HTMLButtonElement>(null);
 
 	const HandleChange = (Value: string) => {
 		// Preserve scroll position across language switch — i18n.changeLanguage()
@@ -34,16 +36,18 @@ const LocaleSwitcher = () => {
 	return (
 		<Select value={CurrentLocale} onValueChange={HandleChange}>
 			<SelectTrigger
+				ref={TriggerRef}
 				className="h-9 w-auto min-w-[6rem] border border-[var(--Border)] bg-white text-sm font-medium text-[var(--Foreground)]"
 				aria-label="Select language">
 				<SelectValue />
 			</SelectTrigger>
 			<SelectContent
 				onCloseAutoFocus={(Event) => {
-					// Prevent Radix from restoring focus to the trigger on close.
-					// Without this the browser scrolls to bring the trigger into
-					// view, which resets the page scroll position to the top.
+					// Return focus to the trigger without any scroll side-effect.
+					// preventDefault alone drops focus to document.body on some
+					// browsers, which snaps the viewport to y=0.
 					Event.preventDefault();
+					TriggerRef.current?.focus({ preventScroll: true });
 				}}>
 				{SupportedLocaleList.map((Locale) => (
 					<SelectItem

@@ -417,12 +417,15 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 			return;
 		}
 
-		// Lock the container width so layout doesn't jump as text reveals.
+		// Lock both dimensions so the element never collapses to zero
+		// height/width during the typewriter reveal — a height collapse
+		// causes the page to shrink and the browser snaps scroll to y=0.
 		if (ContainerRef.current) {
-			const Width =
-				ContainerRef.current.getBoundingClientRect().width;
-			if (Width > 0) {
-				ContainerRef.current.style.minWidth = `${Width}px`;
+			const Rect =
+				ContainerRef.current.getBoundingClientRect();
+			if (Rect.width > 0) {
+				ContainerRef.current.style.minWidth = `${Rect.width}px`;
+				ContainerRef.current.style.minHeight = `${Rect.height}px`;
 				ContainerRef.current.style.display = "inline-block";
 			}
 		}
@@ -457,9 +460,10 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 
 				if (CharCount >= Text.length) {
 					SetIsAnimating(false);
-					// Release width lock — allow natural reflow.
+					// Release dimension lock — allow natural reflow.
 					if (ContainerRef.current) {
 						ContainerRef.current.style.minWidth = "";
+						ContainerRef.current.style.minHeight = "";
 						ContainerRef.current.style.display = "";
 					}
 					return;

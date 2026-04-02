@@ -129,11 +129,14 @@ function AddResources(
 
 const DetectedLocale = DetectLocale();
 
-// Always load English (fallback) first, then the detected locale.
+// Phase 1: Initialize with English so the first client render matches the
+// server-rendered HTML (always English in static Astro builds).
+// If we initialize with the detected locale immediately, React throws a
+// hydration mismatch for every user with a non-English cookie.
 const EnglishBundle = await LocaleLoader.en();
 i18n.use(initReactI18next).init({
 	resources: {},
-	lng: DetectedLocale,
+	lng: "en",
 	fallbackLng: "en",
 	defaultNS: "common",
 	ns: [...NamespaceList],
@@ -147,9 +150,21 @@ i18n.use(initReactI18next).init({
 
 AddResources("en", EnglishBundle);
 
+// Phase 2: After React hydration completes, switch to the user's detected
+// locale. requestIdleCallback (or setTimeout fallback) ensures this runs
+// after the initial hydration pass, preventing any mismatch.
 if (DetectedLocale !== "en") {
-	const LocaleBundle = await LocaleLoader[DetectedLocale]();
-	AddResources(DetectedLocale, LocaleBundle);
+	const SwitchAfterHydration = async () => {
+		const LocaleBundle = await LocaleLoader[DetectedLocale]();
+		AddResources(DetectedLocale, LocaleBundle);
+		await i18n.changeLanguage(DetectedLocale);
+	};
+
+	if (typeof requestIdleCallback !== "undefined") {
+		requestIdleCallback(() => { SwitchAfterHydration(); });
+	} else {
+		setTimeout(() => { SwitchAfterHydration(); }, 0);
+	}
 }
 
 /**

@@ -171,11 +171,18 @@ const T = GetI18n();
 				Engine.Start();
 
 				// Seed every Staccato element once.
-				// This sets --StaccatoSeed and --StaccatoSeedPhase per element
-				// so each gets a unique static offset that is different on every
-				// page load but structurally stable — the noise is "baked in"
-				// at startup and not re-animated on each frame.
-				Engine.SeedSelector('[class*="Staccato"]');
+				// Deferred until after React hydration to avoid inline CSS vars
+				// on DOM elements that React doesn't expect (hydration warnings).
+				// requestIdleCallback is preferred; the load-event fallback is used
+				// for browsers that lack it — load fires after hydration completes.
+				const Seed = () => Engine.SeedSelector('[class*="Staccato"]');
+				if (typeof requestIdleCallback !== "undefined") {
+					requestIdleCallback(Seed);
+				} else if (document.readyState === "complete") {
+					setTimeout(Seed, 200);
+				} else {
+					window.addEventListener("load", () => setTimeout(Seed, 200), { once: true });
+				}
 			}
 		</script>
 

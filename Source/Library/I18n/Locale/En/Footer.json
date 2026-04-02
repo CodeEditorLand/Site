@@ -1,13 +1,13 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "The next-generation code editor.\nOpen source and free forever."
+		"description": "The next-generation code editor.\n\nOpen source and free forever."
 	},
 	"columns": {
 		"product": {
 			"title": "Product",
 			"features": "Features",
-			"downloads": "Download",
+			"downloads": "Downloads",
 			"docs": "Docs",
 			"blog": "Blog"
 		},

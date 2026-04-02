@@ -214,11 +214,15 @@ const Footer = ({ Content }: FooterProps) => {
 							className="StaccatoSocial focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on X (opens in new tab)">
 							<IconTooltip Label="X (Twitter)">
-								<span
-									className="inline-flex h-5 w-5 items-center justify-center text-sm font-bold"
+								<svg
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									width="20"
+									height="20"
+									className="h-5 w-5"
 									aria-hidden="true">
-									𝕏
-								</span>
+									<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+								</svg>
 							</IconTooltip>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
