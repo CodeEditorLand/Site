@@ -1,0 +1,102 @@
+import { c as createComponent, G as GetI18n, $ as $$Base } from './Base_m0Baad5Q.mjs';
+import 'piccolore';
+import { r as renderComponent, a as renderTemplate, m as maybeRenderHead } from './prerender_3pwDrPn4.mjs';
+import { H as Header } from './Header_xXukYMkP.mjs';
+
+const $$Doc = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$props, $$slots);
+  Astro2.self = $$Doc;
+  const T = GetI18n();
+  const MetaTitle = T("meta.docs.title", {
+    defaultValue: "Documentation | Code Editor Land"
+  });
+  const MetaDescription = T("meta.docs.description", {
+    defaultValue: "Browse the Code Editor Land documentation, guides, and API references on GitHub."
+  });
+  return renderTemplate`${renderComponent($$result, "Base", $$Base, { "Title": MetaTitle, "Description": MetaDescription, "Url": "https://editor.land/Doc", "lang": "en" }, { "default": ($$result2) => renderTemplate` ${renderComponent($$result2, "Header", Header, { "client:load": true, "client:component-hydration": "load", "client:component-path": "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/Component/Layout/Header", "client:component-export": "Header" })} ${maybeRenderHead()}<div class="container mx-auto max-w-4xl px-4 py-16"> <!-- Breadcrumbs --> <nav aria-label="Breadcrumb" class="mb-8"> <ol class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground"> <li> <a href="/" class="transition-colors hover:text-foreground">${T("common.breadcrumb.home", {
+    defaultValue: "Home"
+  })}</a> </li> <li class="mx-2">/</li> <li> <span class="font-medium text-foreground">${T("common.docs.pageTitle", {
+    defaultValue: "Documentation"
+  })}</span> </li> </ol> </nav> <!-- Page Header --> <header class="mb-12"> <h1 class="mb-4 text-4xl font-bold tracking-tight"> ${T("common.docs.pageTitle", { defaultValue: "Documentation" })} </h1> <p class="text-lg text-muted-foreground"> ${T("common.docs.pageSubtitle", {
+    defaultValue: "Everything you need to get started with Code Editor Land."
+  })} </p> </header> <!-- Documentation Links --> <div class="grid grid-cols-1 gap-6 md:grid-cols-2"> <a href="https://github.com/CodeEditorLand/Land#readme" target="_blank" rel="noopener noreferrer" class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"> <h2 class="mb-2 text-xl font-semibold"> ${T("common.docs.gettingStarted.title", {
+    defaultValue: "Getting Started"
+  })} </h2> <p class="text-sm text-muted-foreground"> ${T("common.docs.gettingStarted.description", {
+    defaultValue: "Read the README for installation instructions, build steps, and an overview of the project architecture."
+  })} </p> </a> <a href="https://github.com/CodeEditorLand/Land/issues" target="_blank" rel="noopener noreferrer" class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"> <h2 class="mb-2 text-xl font-semibold"> ${T("common.docs.issueTracker.title", {
+    defaultValue: "Issue Tracker"
+  })} </h2> <p class="text-sm text-muted-foreground"> ${T("common.docs.issueTracker.description", {
+    defaultValue: "Report bugs, request features, or browse existing issues on GitHub."
+  })} </p> </a> </div> <!-- Architecture Section --> <section class="mt-12"> <a href="https://github.com/CodeEditorLand" target="_blank" rel="noopener noreferrer" class="mb-2 inline-block text-sm text-[var(--Primary)] hover:underline">
+github.com/CodeEditorLand
+</a> <h2 class="mb-6 text-2xl font-semibold"> ${T("common.docs.architecture.heading", {
+    defaultValue: "Architecture Overview"
+  })} </h2> <div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6"> <p class="mb-4 text-muted-foreground"> ${T("common.docs.architecture.intro", {
+    defaultValue: "Land replaces VS Code's Electron stack with a modern, high-performance architecture:"
+  })} </p> <ul class="space-y-4 text-sm"> <li> <a href="https://github.com/CodeEditorLand/Mountain" target="_blank" rel="noopener noreferrer" class="font-semibold text-[var(--Primary)] hover:underline">Mountain&#x2001;⛰️</a> <p class="mt-1 text-muted-foreground"> ${T(
+    "common.docs.architecture.mountain.description",
+    {
+      defaultValue: "Manages Window, File System and Process"
+    }
+  )} </p> <p class="text-muted-foreground/70 text-xs"> ${T(
+    "common.docs.architecture.mountain.subtitle",
+    {
+      defaultValue: "Rust/Tauri native backend"
+    }
+  )} </p> </li> <li> <a href="https://github.com/CodeEditorLand/Cocoon" target="_blank" rel="noopener noreferrer" class="font-semibold text-[var(--Primary)] hover:underline">Cocoon&#x2001;🦋</a> <p class="mt-1 text-muted-foreground"> ${T(
+    "common.docs.architecture.cocoon.description",
+    {
+      defaultValue: "Runs VS Code Extension via Effect-TS"
+    }
+  )} </p> <p class="text-muted-foreground/70 text-xs"> ${T("common.docs.architecture.cocoon.subtitle", {
+    defaultValue: "TypeScript extension host"
+  })} </p> </li> <li> <a href="https://github.com/CodeEditorLand/Wind" target="_blank" rel="noopener noreferrer" class="font-semibold text-[var(--Primary)] hover:underline">Wind&#x2001;🍃</a> <p class="mt-1 text-muted-foreground"> ${T("common.docs.architecture.wind.description", {
+    defaultValue: "Re-Implementation of VS Code Workbench"
+  })} </p> <p class="text-muted-foreground/70 text-xs"> ${T("common.docs.architecture.wind.subtitle", {
+    defaultValue: "TypeScript UI service"
+  })} </p> </li> <li> <a href="https://github.com/CodeEditorLand/Sky" target="_blank" rel="noopener noreferrer" class="font-semibold text-[var(--Primary)] hover:underline">Sky&#x2001;🌌</a> <p class="mt-1 text-muted-foreground"> ${T("common.docs.architecture.sky.description", {
+    defaultValue: "Renders the Editor Interface"
+  })} </p> <p class="text-muted-foreground/70 text-xs"> ${T("common.docs.architecture.sky.subtitle", {
+    defaultValue: "Astro UI component"
+  })} </p> </li> <li> <a href="https://github.com/CodeEditorLand/Air" target="_blank" rel="noopener noreferrer" class="font-semibold text-[var(--Primary)] hover:underline">Air&#x2001;🪁</a> <p class="mt-1 text-muted-foreground"> ${T("common.docs.architecture.air.description", {
+    defaultValue: "Update, Download and Crypto Signing"
+  })} </p> <p class="text-muted-foreground/70 text-xs"> ${T("common.docs.architecture.air.subtitle", {
+    defaultValue: "Rust background daemon"
+  })} </p> </li> <li> <a href="https://github.com/CodeEditorLand/Echo" target="_blank" rel="noopener noreferrer" class="font-semibold text-[var(--Primary)] hover:underline">Echo&#x2001;📣</a> <p class="mt-1 text-muted-foreground"> ${T("common.docs.architecture.echo.description", {
+    defaultValue: "High-Performance Work-Stealing Executor"
+  })} </p> <p class="text-muted-foreground/70 text-xs"> ${T("common.docs.architecture.echo.subtitle", {
+    defaultValue: "Rust task scheduler"
+  })} </p> </li> </ul> </div> </section> <!-- Source Repositories --> <section class="mt-12"> <h2 class="mb-6 text-2xl font-semibold"> ${T("common.docs.repositories.heading", {
+    defaultValue: "Source Repositories"
+  })} </h2> <div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white"> <div class="border-b border-[var(--Border)] p-4"> <a href="https://github.com/CodeEditorLand/Land" target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--Primary)] hover:underline">
+CodeEditorLand/Land
+</a> <p class="mt-1 text-sm text-muted-foreground"> ${T("common.docs.repositories.mainMonorepo", {
+    defaultValue: "Main monorepo"
+  })} </p> </div> <div class="border-b border-[var(--Border)] p-4"> <a href="https://github.com/CodeEditorLand/Mountain" target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--Primary)] hover:underline">
+CodeEditorLand/Mountain
+</a> <p class="mt-1 text-sm text-muted-foreground"> ${T("common.docs.repositories.tauriBackend", {
+    defaultValue: "Tauri backend"
+  })} </p> </div> <div class="border-b border-[var(--Border)] p-4"> <a href="https://github.com/CodeEditorLand/Cocoon" target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--Primary)] hover:underline">
+CodeEditorLand/Cocoon
+</a> <p class="mt-1 text-sm text-muted-foreground"> ${T("common.docs.repositories.extensionHost", {
+    defaultValue: "Extension host"
+  })} </p> </div> <div class="p-4"> <a href="https://github.com/CodeEditorLand" target="_blank" rel="noopener noreferrer" class="font-medium text-[var(--Primary)] hover:underline"> ${T("common.docs.repositories.viewAll", {
+    defaultValue: "View all repositories"
+  })} </a> </div> </div> </section> <!-- Back to top --> <div class="mt-12 border-t pt-8"> <a href="#top" class="StaccatoButton text-sm text-primary hover:underline">${T("common.button.backToTop", {
+    defaultValue: "Back to top"
+  })}<span class="InlineSeparator">↑</span></a> </div> </div> ` })}`;
+}, "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Doc.astro", void 0);
+
+const $$file = "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Doc.astro";
+const $$url = "/Doc";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	default: $$Doc,
+	file: $$file,
+	url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };

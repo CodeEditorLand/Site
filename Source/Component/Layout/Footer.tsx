@@ -191,7 +191,14 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
-							<lucide.Github className="h-5 w-5" aria-hidden="true" />
+							<img
+								src="/Image/GitHub.svg"
+								alt=""
+								width="20"
+								height="20"
+								className="h-5 w-5"
+								aria-hidden="true"
+							/>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
 						<a
@@ -200,7 +207,11 @@ const Footer = ({ content }: FooterProps) => {
 							rel="noopener noreferrer"
 							className="StaccatoSocial transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on X (opens in new tab)">
-							<lucide.Twitter className="h-5 w-5" aria-hidden="true" />
+							<span
+								className="inline-flex h-5 w-5 items-center justify-center text-sm font-bold"
+								aria-hidden="true">
+								𝕏
+							</span>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
 						<p className="text-sm text-muted-foreground">

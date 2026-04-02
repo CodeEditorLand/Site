@@ -135,7 +135,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 												<div
 													className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
 													aria-hidden="true">
-													<lucide.Icon
+													<Icon
 														className="StaccatoIcon h-5 w-5 text-primary"
 														aria-hidden="true"
 													/>
@@ -290,7 +290,7 @@ const DynamicTransparency = ({ content, className }: Property) => {
 							className="inline-flex items-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
 							Verify in source code
 							<span className="InlineSeparator">
-								<Code className="h-4 w-4" aria-hidden="true" />
+								<lucide.Code className="h-4 w-4" aria-hidden="true" />
 							</span>
 						</a>
 					</div>

@@ -379,7 +379,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 				{"\u2001"}
 				{"+"}
 				{"\u2001"}
-				<Lock className="h-4 w-4" aria-hidden="true" />
+				<lucide.Lock className="h-4 w-4" aria-hidden="true" />
 			</Button>
 
 			<div className="PortalTierDivider StaccatoSeparator" />
@@ -517,7 +517,7 @@ const PortalTierRow = ({
 									{"\u2001"}
 									{"+"}
 									{"\u2001"}
-									<Lock
+									<lucide.Lock
 										className="h-4 w-4"
 										aria-hidden="true"
 									/>
