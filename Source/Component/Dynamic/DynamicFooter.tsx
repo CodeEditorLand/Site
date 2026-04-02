@@ -1,5 +1,6 @@
 import { MessageCircle, type LucideIcon } from "lucide-react";
 
+import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Footer.js";
 
 /**
@@ -79,9 +80,9 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 							{Brand.Name}
 						</h3>
 						{Brand.Description && (
-							<p className="mb-4 text-sm text-muted-foreground">
-								{Brand.Description}
-							</p>
+							<div className="mb-4 text-sm text-muted-foreground">
+								<RichText Text={Brand.Description} />
+							</div>
 						)}
 						{Social && (
 							<div className="flex items-center">
@@ -137,12 +138,12 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 				{BottomBar && (
 					<div className="flex flex-col items-center justify-between space-y-4 border-t pt-8 md:flex-row md:space-y-0">
 						<div className="text-sm text-muted-foreground">
-							{BottomBar.Copyright || (
-								<>
-									© {CurrentYear} {Brand.Name}. All rights
-									reserved.
-								</>
-							)}
+							<RichText
+								Text={
+									BottomBar.Copyright ||
+									`© ${CurrentYear} ${Brand.Name}.\nAll rights reserved.`
+								}
+							/>
 						</div>
 						{BottomBar.MadeWith && (
 							<div className="text-sm text-muted-foreground">

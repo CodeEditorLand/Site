@@ -506,6 +506,29 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   TYPEWRITER CURSOR
+   Blinks via --StaccatoRhythm so it syncs with the noise engine.
+   Used by RichText during locale-switch character-reveal animation.
+   ══════════════════════════════════════════════════════════════════ */
+
+.StaccatoCursor {
+	display: inline-block;
+	width: 2px;
+	height: 0.85em;
+	vertical-align: text-bottom;
+	margin-left: 1px;
+	background: currentColor;
+	opacity: calc(0.3 + var(--StaccatoRhythm, 0) * 0.7);
+	pointer-events: none;
+	user-select: none;
+}
+
+/* Width-locked container during typewriter animation */
+.StaccatoTypewriter {
+	display: inline-block;
+}
+
+/* ══════════════════════════════════════════════════════════════════
    REDUCED MOTION
    ══════════════════════════════════════════════════════════════════ */
 
@@ -565,5 +588,9 @@
 		transition: none !important;
 		transform: none !important;
 		opacity: 1 !important;
+	}
+
+	.StaccatoCursor {
+		display: none !important;
 	}
 }

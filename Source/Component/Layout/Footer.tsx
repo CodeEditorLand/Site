@@ -1,6 +1,5 @@
 "use client";
 
-import * as lucide from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
@@ -28,11 +27,8 @@ const Footer = ({ Content }: FooterProps) => {
 
 	const FooterData = Content || {
 		Brand: {
-			Name: T("brand.name", "Land"),
-			Description: T(
-				"brand.description",
-				"The next-generation code editor. Open source and free forever.",
-			),
+			Name: T("brand.name", { defaultValue: "Code Editor Land" }),
+			Description: T("brand.description", { defaultValue: "The next-generation code editor.\n\nOpen source and free forever." }),
 		},
 		Columns: [
 			{
@@ -230,7 +226,7 @@ const Footer = ({ Content }: FooterProps) => {
 							{T("bottomBar.copyright", {
 								year: new Date().getFullYear(),
 								defaultValue:
-									"© {{year}} Code Editor Land. All rights reserved.",
+									`© ${new Date().getFullYear()} Code Editor Land. All rights reserved.`,
 							})}
 						</p>
 					</div>

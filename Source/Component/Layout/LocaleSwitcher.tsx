@@ -22,7 +22,13 @@ const LocaleSwitcher = () => {
 	const CurrentLocale = (i18n.language || "en") as SupportedLocale;
 
 	const HandleChange = (Value: string) => {
-		SwitchLocale(Value as SupportedLocale);
+		// Preserve scroll position across language switch — i18n.changeLanguage()
+		// triggers a full re-render of all translated components which can cause
+		// layout recalculation and scroll drift.
+		const ScrollY = window.scrollY;
+		SwitchLocale(Value as SupportedLocale).then(() => {
+			window.scrollTo({ top: ScrollY, behavior: "instant" });
+		});
 	};
 
 	return (
@@ -32,7 +38,13 @@ const LocaleSwitcher = () => {
 				aria-label="Select language">
 				<SelectValue />
 			</SelectTrigger>
-			<SelectContent>
+			<SelectContent
+				onCloseAutoFocus={(Event) => {
+					// Prevent Radix from restoring focus to the trigger on close.
+					// Without this the browser scrolls to bring the trigger into
+					// view, which resets the page scroll position to the top.
+					Event.preventDefault();
+				}}>
 				{SupportedLocaleList.map((Locale) => (
 					<SelectItem
 						key={Locale}

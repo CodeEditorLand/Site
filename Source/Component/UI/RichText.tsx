@@ -1,7 +1,7 @@
 "use client";
 
 import * as lucide from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // ─── Term dictionary ──────────────────────────────────────────────────────────
 
@@ -370,31 +370,163 @@ export interface RichTextProps {
 	readonly ClassName?: string;
 }
 
-const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
-	const Paragraphs = Text.split("\n\n").filter(Boolean);
+// ─── Typewriter core ──────────────────────────────────────────────────────────
 
-	const RenderParagraph = (Paragraph: string, ParagraphIndex: number) => {
+/**
+ * Read the current --StaccatoRaw value from the CSS custom property.
+ * Returns 0 when Staccato hasn't started yet (SSR / before first tick).
+ */
+const ReadStaccatoRaw = (): number => {
+	if (typeof document === "undefined") return 0;
+	const Value = getComputedStyle(document.documentElement).getPropertyValue(
+		"--StaccatoRaw",
+	);
+	return parseFloat(Value) || 0;
+};
+
+/**
+ * Lerp a value toward a target by factor α (0–1).
+ * At α = 0.12, a step of ~0.3ms toward target gives organic character timing.
+ */
+const Lerp = (Current: number, Target: number, Alpha: number): number =>
+	Current + (Target - Current) * Alpha;
+
+// ─── Main component ────────────────────────────────────────────────────────────
+
+const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
+	const [Revealed, SetRevealed] = useState(Text.length);
+	const [IsAnimating, SetIsAnimating] = useState(false);
+
+	const PreviousText = useRef(Text);
+	const ContainerRef = useRef<HTMLSpanElement>(null);
+	const AnimRef = useRef(0);
+	/** Lerped character delay in ms — starts at 20ms, noise modulates it. */
+	const LerpedDelay = useRef(20);
+	const LastTime = useRef(performance.now());
+
+	useEffect(() => {
+		if (Text === PreviousText.current) return;
+
+		// Respect reduced-motion preference — instant switch, no animation.
+		if (
+			typeof window !== "undefined" &&
+			window.matchMedia("(prefers-reduced-motion: reduce)").matches
+		) {
+			PreviousText.current = Text;
+			SetRevealed(Text.length);
+			return;
+		}
+
+		// Lock the container width so layout doesn't jump as text reveals.
+		if (ContainerRef.current) {
+			const Width =
+				ContainerRef.current.getBoundingClientRect().width;
+			if (Width > 0) {
+				ContainerRef.current.style.minWidth = `${Width}px`;
+				ContainerRef.current.style.display = "inline-block";
+			}
+		}
+
+		PreviousText.current = Text;
+		LerpedDelay.current = 20;
+		LastTime.current = performance.now();
+		cancelAnimationFrame(AnimRef.current);
+
+		// Start from 0 characters revealed.
+		SetIsAnimating(true);
+		SetRevealed(0);
+
+		let CharCount = 0;
+
+		const Step = (Now: number): void => {
+			// Noise-modulated character delay:
+			// --StaccatoRaw ∈ [-1, 1] → target delay ∈ [8, 36] ms
+			const NoiseRaw = ReadStaccatoRaw();
+			const TargetDelay = 18 + (NoiseRaw + 1) * 0.5 * 18;
+			LerpedDelay.current = Lerp(
+				LerpedDelay.current,
+				TargetDelay,
+				0.12,
+			);
+
+			const Elapsed = Now - LastTime.current;
+			if (Elapsed >= LerpedDelay.current) {
+				CharCount++;
+				SetRevealed(CharCount);
+				LastTime.current = Now;
+
+				if (CharCount >= Text.length) {
+					SetIsAnimating(false);
+					// Release width lock — allow natural reflow.
+					if (ContainerRef.current) {
+						ContainerRef.current.style.minWidth = "";
+						ContainerRef.current.style.display = "";
+					}
+					return;
+				}
+			}
+
+			AnimRef.current = requestAnimationFrame(Step);
+		};
+
+		AnimRef.current = requestAnimationFrame(Step);
+
+		return () => cancelAnimationFrame(AnimRef.current);
+	}, [Text]);
+
+	// Feed the sliced text through the existing parser on every frame.
+	const DisplayText = IsAnimating ? Text.slice(0, Revealed) : Text;
+	const Paragraphs = DisplayText.split("\n\n").filter(Boolean);
+
+	const RenderParagraph = (
+		Paragraph: string,
+		ParagraphIndex: number,
+		IsLast: boolean,
+	) => {
 		const Lines = Paragraph.split("\n");
 		return (
 			<span key={ParagraphIndex} className="block">
-				{Lines.map((Line, LineIndex) => (
-					<span key={LineIndex}>
-						{LineIndex > 0 && <br />}
-						<LineNode Line={Line} ShowTerms={Terms} />
-					</span>
-				))}
+				{Lines.map((Line, LineIndex) => {
+					const IsLastLine =
+						IsLast && LineIndex === Lines.length - 1;
+					return (
+						<span key={LineIndex}>
+							{LineIndex > 0 && <br />}
+							<LineNode Line={Line} ShowTerms={Terms} />
+							{/* Cursor anchors to the last character of the last line */}
+							{IsAnimating && IsLastLine && (
+								<span
+									className="StaccatoCursor"
+									aria-hidden="true"
+								/>
+							)}
+						</span>
+					);
+				})}
 			</span>
 		);
 	};
 
 	if (Paragraphs.length <= 1) {
-		return <span className={ClassName}>{RenderParagraph(Text, 0)}</span>;
+		return (
+			<span
+				ref={ContainerRef}
+				className={ClassName}>
+				{RenderParagraph(DisplayText, 0, true)}
+			</span>
+		);
 	}
 
 	return (
-		<span className={`block space-y-3 ${ClassName ?? ""}`}>
+		<span
+			ref={ContainerRef}
+			className={`block space-y-3 ${ClassName ?? ""}`}>
 			{Paragraphs.map((Paragraph, Index) =>
-				RenderParagraph(Paragraph, Index),
+				RenderParagraph(
+					Paragraph,
+					Index,
+					Index === Paragraphs.length - 1,
+				),
 			)}
 		</span>
 	);
