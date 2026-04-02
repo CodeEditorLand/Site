@@ -1,0 +1,628 @@
+import { c as createComponent, G as GetI18n, $ as $$Base } from './Base_Czy5kkbA.mjs';
+import 'piccolore';
+import { r as renderComponent, a as renderTemplate, m as maybeRenderHead } from './prerender_SnvtGgzS.mjs';
+import { H as Header } from './Header_y9oh1c8T.mjs';
+
+var __freeze = Object.freeze;
+var __defProp = Object.defineProperty;
+var __template = (cooked, raw) => __freeze(__defProp(cooked, "raw", { value: __freeze(cooked.slice()) }));
+var _a;
+const $$Privacy = createComponent(($$result, $$props, $$slots) => {
+  const T = GetI18n();
+  const MetaTitle = T("meta.legal.privacy.title", {
+    defaultValue: "Privacy Policy | Code Editor Land"
+  });
+  const MetaDescription = T("meta.legal.privacy.description", {
+    defaultValue: "Privacy Policy for Code Editor Land - Learn how we collect, use, and protect your personal data in compliance with GDPR and CCPA."
+  });
+  const EffectiveDate = "March 26, 2026";
+  const LastUpdated = "March 26, 2026";
+  return renderTemplate`${renderComponent($$result, "Base", $$Base, { "Title": MetaTitle, "Description": MetaDescription, "Url": "https://editor.land/Legal/Privacy", "lang": "en" }, { "default": ($$result2) => renderTemplate(_a || (_a = __template([" ", " ", '<div class="container mx-auto max-w-4xl px-4 py-16"> <!-- Breadcrumbs --> <nav aria-label="Breadcrumb" class="mb-8"> <ol class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground"> <li> <a href="/" class="transition-colors hover:text-foreground">Home</a> </li> <li class="mx-2">/</li> <li> <span class="font-medium text-foreground">Privacy Policy</span> </li> </ol> </nav> <!-- Page Header --> <header class="mb-12"> <h1 class="mb-4 text-4xl font-bold tracking-tight">\nPrivacy Policy\n</h1> <div class="space-y-1 text-sm text-muted-foreground"> <p><strong>Effective Date:</strong> ', "</p> <p><strong>Last Updated:</strong> ", `</p> </div> </header> <!-- Content --> <article class="prose prose-slate max-w-none"> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">1. Introduction</h2> <p class="mb-4">
+Code Editor Land ("we", "our", or "us") is committed to
+					protecting your personal information and your right to
+					privacy. This Privacy Policy explains how we collect, use,
+					disclose, and safeguard your information when you use our
+					code editor application, website, and related services
+					(collectively, the "Service").
+</p> <p class="mb-4">
+We are dedicated to providing a free, open-source code
+					editor to developers worldwide. Our services are built using
+					Cloudflare Workers, Firebase, and other third-party
+					infrastructure providers to deliver a high-performance,
+					global experience.
+</p> <p>
+Please read this Privacy Policy carefully. By accessing or
+					using the Service, you acknowledge that you have read,
+					understood, and agree to be bound by all the terms outlined
+					in this policy. If you do not agree with our policies and
+					practices, please do not use our Service.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+2. Scope of This Privacy Policy
+</h2> <p class="mb-4">This Privacy Policy applies to:</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+Our desktop application (Land editor) and associated
+						components
+</li> <li>
+Our website at https://editor.land and all subdomains
+</li> <li>
+Any APIs, backend services, and Cloudflare Workers that
+						power our Service
+</li> <li>Any other services that link to this Privacy Policy</li> </ul> <p class="mb-4">
+This policy does not apply to third-party websites,
+					services, or applications that you may access through links
+					on our Service. We are not responsible for the privacy
+					practices of these third parties.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+3. Types of Data We Collect
+</h2> <p class="mb-4">
+We collect several categories of personal information to
+					provide and improve our Service:
+</p> <h3 class="mb-3 text-xl font-semibold">
+3.1 Personal Information
+</h3> <p class="mb-3">
+Personal information is data that can be used to identify
+					you individually. We collect:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Account Information:</strong> When you create an account,
+						we collect your email address, username, and password (hashed).
+						This information is stored securely using Firebase Authentication.
+</li> <li> <strong>Profile Information:</strong> Optional profile data
+						such as display name, avatar, and bio that you choose to provide.
+</li> <li> <strong>GitHub OAuth Data:</strong> If you sign up using GitHub
+						OAuth, we receive your GitHub account ID, username, email
+						address (as provided by GitHub), and avatar URL. We do not
+						access your private repositories or other sensitive GitHub
+						data.
+</li> <li> <strong>Communications:</strong> Information from your messages
+						to us, including support requests, bug reports, and feedback.
+						We may retain these communications to improve our Service
+						and respond to your inquiries.
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+3.2 Usage and Technical Data
+</h3> <p class="mb-3">
+We automatically collect certain information about your
+					device and how you interact with the Service:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Device Information:</strong> Operating system, device
+						type, screen resolution, language settings, and unique device
+						identifiers.
+</li> <li> <strong>Usage Data:</strong> Actions taken within the editor,
+						features used, extensions installed, performance metrics,
+						and crash reports (without personal content).
+</li> <li> <strong>Network Data:</strong> IP address, ISP, connection
+						type, and approximate geographic location derived from IP
+						(used for Cloudflare Workers analytics and security).
+</li> <li> <strong>Application Performance:</strong> Anonymous performance
+						metrics including startup time, memory usage, editor responsiveness,
+						and error logs that do not contain user code or personal data.
+</li> <li> <strong>Telemetry Data:</strong> Aggregated, anonymized data
+						about how the Service is used to inform feature development
+						and bug fixes. This data is never sold or shared with advertisers.
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+3.3 Cookies and Tracking Technologies
+</h3> <p class="mb-3">
+We use cookies and similar technologies to enhance your
+					experience and analyze Service usage:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Essential Cookies:</strong> Required for authentication
+						sessions, security features, and basic functionality. These
+						cannot be disabled.
+</li> <li> <strong>Analytics Cookies:</strong> Used by Cloudflare Analytics
+						and Firebase Analytics to understand user behavior and improve
+						the Service. These can be disabled via your browser settings
+						.
+</li> <li> <strong>Preference Cookies:</strong> Remember your settings,
+						theme preferences, and customization choices.
+</li> </ul> <p>
+You can manage cookie preferences through your browser
+					settings. Disabling essential cookies may prevent some
+					features of the Service from functioning properly.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+4. How We Use Your Data
+</h2> <p class="mb-4">
+We use the collected data for the following legitimate
+					purposes:
+</p> <h3 class="mb-3 text-xl font-semibold">
+4.1 Providing and Improving the Service
+</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>Creating and managing your account</li> <li>
+Authenticating your identity and maintaining session
+						security
+</li> <li>
+Providing cloud synchronization of settings and
+						extensions (if enabled)
+</li> <li>
+Improving editor performance, stability, and user
+						experience
+</li> <li>
+Developing new features based on aggregated usage
+						patterns
+</li> <li>Testing and debugging the application</li> </ul> <h3 class="mb-3 text-xl font-semibold">4.2 Communications</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+Sending service-related notifications (security alerts,
+						feature updates, account verification)
+</li> <li>Responding to your support inquiries and feedback</li> <li>
+Providing information about community contributions and
+						events (only with your consent)
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+4.3 Security and Compliance
+</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+Detecting and preventing fraud, abuse, and security
+						incidents
+</li> <li>Verifying your identity for authentication purposes</li> <li>
+Complying with legal obligations and protecting our
+						rights and users
+</li> <li>
+Auditing and analyzing usage patterns for security
+						research
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+4.4 Analytics and Metrics
+</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+Understanding how users interact with the Service to
+						guide development priorities
+</li> <li>
+Measuring feature adoption and identifying usability
+						issues
+</li> <li>Tracking crash reports and performance bottlenecks</li> <li>
+Monitoring Service availability and reliability metrics
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+4.5 Legal Basis for Processing (GDPR Article 6)
+</h3> <p class="mb-3">
+Under the General Data Protection Regulation (GDPR), we
+					process your personal data based on the following legal
+					grounds:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Consent (Article 6(1)(a)):</strong> For analytics
+						cookies, optional telemetry collection, and marketing communications.
+						You may withdraw consent at any time.
+</li> <li> <strong>Contract Performance (Article 6(1)(b)):</strong>
+For account creation, authentication, settings synchronization,
+						and delivering the core Service functionality.
+</li> <li> <strong>Legitimate Interests (Article 6(1)(f)):</strong>
+For security monitoring, abuse prevention, service improvement,
+						crash reporting, and performance optimization. We balance
+						these interests against your rights and freedoms.
+</li> <li> <strong>Legal Obligation (Article 6(1)(c)):</strong>
+For compliance with applicable laws, responding to legal processes,
+						and fulfilling regulatory requirements.
+</li> </ul> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+5. Data Sharing and Third Parties
+</h2> <p class="mb-4">
+We do not sell, trade, or rent your personal information to
+					third parties. We share data only in the following
+					circumstances:
+</p> <h3 class="mb-3 text-xl font-semibold">
+5.1 Service Providers and Infrastructure
+</h3> <p class="mb-3">
+We rely on trusted third-party providers to operate the
+					Service:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Cloudflare Workers:</strong> Our backend APIs and
+						serverless functions run on Cloudflare's global network. Cloudflare
+						processes request data including IP addresses, User-Agent
+						strings, and HTTP headers to deliver the Service, provide
+						security (DDoS protection, WAF), and generate analytics. Cloudflare's
+						privacy practices are governed by their <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+</li> <li> <strong>Firebase (Google):</strong> We use Firebase Authentication
+						for account management, Firebase Analytics for aggregate usage
+						metrics, and Firebase Cloud Messaging for notifications. Google
+						processes data in accordance with their <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. Data is stored in Firebase data centers governed by
+						Google's data processing terms.
+</li> <li> <strong>CloudFlare R2:</strong> For storing and serving public
+						assets (downloadable releases, images, documentation). This
+						data is publicly accessible and does not contain personal
+						information.
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+5.2 Legal and Safety Disclosures
+</h3> <p class="mb-3">
+We may disclose your personal information if required to do
+					so by law or in response to valid legal requests, including
+					to meet national security or law enforcement requirements.
+					We may also disclose information to:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+Protect our rights, property, or safety, or the rights,
+						property, or safety of our users or the public
+</li> <li>
+Prevent or address fraud, security, or technical issues
+</li> <li>Enforce our Terms of Service or other agreements</li> <li>
+Respond to court orders, subpoenas, or other legal
+						process
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+5.3 Business Transfers
+</h3> <p>
+If Code Editor Land undergoes a merger, acquisition, asset
+					sale, or similar corporate event, your personal information
+					may be transferred as part of the business assets. We will
+					notify you via email or prominent notice on our website
+					before such a transfer, and the new entity will continue to
+					be bound by this Privacy Policy unless you consent
+					otherwise.
+</p> <h3 class="mb-3 text-xl font-semibold">
+5.4 Aggregated and Anonymized Data
+</h3> <p>
+We may share aggregated, anonymized data that cannot
+					reasonably be used to identify you with researchers,
+					industry analysts, or the public to demonstrate the impact
+					and reach of our open-source project. This data is stripped
+					of all personally identifiable information.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+6. International Data Transfers
+</h2> <p class="mb-4">
+Our infrastructure is operated by Cloudflare and Google,
+					which have data centers worldwide. When you use our Service,
+					your personal information may be transferred to, stored, and
+					processed in countries other than your country of residence,
+					including the United States and European Union member
+					states.
+</p> <p class="mb-4">
+Both Cloudflare and Google participate in and comply with
+					international data transfer frameworks such as the EU-U.S.
+					Data Privacy Framework and Standard Contractual Clauses
+					(SCCs) to ensure adequate protection of your personal data.
+					By using our Service, you consent to such international
+					transfers.
+</p> <p>
+We take reasonable steps to ensure that your personal data
+					is processed securely and in accordance with this Privacy
+					Policy, regardless of where it is processed.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+7. Data Retention Periods
+</h2> <p class="mb-4">
+We retain your personal information only for as long as
+					necessary to fulfill the purposes outlined in this Privacy
+					Policy, unless a longer retention period is required or
+					permitted by law:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Account Information:</strong> Retained as long as
+						your account remains active. If you delete your account, we
+						permanently delete all associated personal data within 30
+						days, except for logs and analytics that have been anonymized.
+</li> <li> <strong>Email Communications:</strong> Retained for up to
+						7 years for compliance and support continuity purposes.
+</li> <li> <strong>Analytics and Telemetry:</strong> Aggregated, anonymized
+						data may be retained indefinitely for trend analysis and Service
+						improvement. Personal identifiers are removed after 12 months.
+</li> <li> <strong>Server Logs:</strong> Cloudflare logs including IP
+						addresses are retained for up to 24 months for security, analytics,
+						and abuse prevention purposes.
+</li> <li> <strong>Crash Reports:</strong> Retained for up to 12 months
+						to address stability issues, then automatically deleted.
+</li> </ul> <p>
+When we no longer need your personal information, we
+					securely delete or anonymize it. Some data may be retained
+					in backups for up to 90 days before being purged.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+8. Data Security Measures
+</h2> <p class="mb-4">
+Code Editor Land implements industry-standard security
+					measures to protect your personal information:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Encryption in Transit:</strong> All communications
+						with our Service use TLS 1.3 encryption. Our website enforces
+						HTTPS via HSTS headers.
+</li> <li> <strong>Encryption at Rest:</strong> Sensitive data stored
+						in Firebase is encrypted using Google's server-side encryption.
+						We employ Firebase Security Rules to restrict unauthorized
+						access.
+</li> <li> <strong>Authentication Security:</strong> Passwords are hashed
+						using scrypt with strong cost factors. We support two-factor
+						authentication (2FA) via TOTP where available.
+</li> <li> <strong>Cloudflare Workers Security:</strong> Our APIs are
+						protected by Cloudflare's Web Application Firewall (WAF),
+						DDoS mitigation, and rate limiting. All worker code undergoes
+						security review before deployment.
+</li> <li> <strong>Access Controls:</strong> Strict internal access controls
+						limit who within Code Editor Land can access user data. Access
+						is granted on a least-privilege basis and logged for audit
+						purposes.
+</li> <li> <strong>Regular Security Audits:</strong> We conduct periodic
+						security reviews, dependency vulnerability scanning, and penetration
+						testing to identify and remediate potential risks.
+</li> <li> <strong>Incident Response:</strong> We have established procedures
+						for responding to security incidents, including mandatory
+						breach notification within 72 hours to affected users and
+						regulators where required by GDPR.
+</li> </ul> <p class="mb-4 font-medium text-amber-600">
+Security Disclaimer: No method of transmission or storage is
+					100% secure. While we strive to protect your information, we
+					cannot guarantee absolute security. You also play a role in
+					protecting your account by using strong passwords and
+					enabling two-factor authentication when available.&#x2001;⚠️
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+9. Your Data Subject Rights (GDPR/CCPA)
+</h2> <p class="mb-4">
+Depending on your jurisdiction, you may have the following
+					rights regarding your personal data:
+</p> <h3 class="mb-3 text-xl font-semibold">
+9.1 Rights Under GDPR (EU Residents)
+</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Right to Access:</strong> Request a copy of all personal
+						data we hold about you, free of charge, in a commonly used
+						electronic format.
+</li> <li> <strong>Right to Rectification:</strong> Request correction
+						of inaccurate or incomplete personal data.
+</li> <li> <strong>Right to Erasure (Right to be Forgotten):</strong> Request deletion of your personal data when it is no longer
+						necessary or you withdraw consent (subject to legal retention
+						obligations).
+</li> <li> <strong>Right to Restrict Processing:</strong> Request limitation
+						of data processing in certain circumstances, such as when
+						you contest data accuracy or processing is unlawful.
+</li> <li> <strong>Right to Data Portability:</strong> Receive your personal
+						data in a structured, machine-readable format and transmit
+						it to another controller.
+</li> <li> <strong>Right to Object:</strong> Object to processing based
+						on legitimate interests or direct marketing activities.
+</li> <li> <strong>Right to Withdraw Consent:</strong> Withdraw previously
+						given consent at any time, without affecting processing that
+						occurred before withdrawal.
+</li> <li> <strong>Right to Lodge a Complaint:</strong> File a complaint
+						with a supervisory authority if you believe our processing
+						violates applicable data protection law.
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+9.2 Rights Under CCPA/CPRA (California Residents)
+</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Right to Know:</strong> Request disclosure of the
+						categories and specific pieces of personal information we
+						collect, use, share, or sell.
+</li> <li> <strong>Right to Delete:</strong> Request deletion of personal
+						information we maintain about you (with exceptions similar
+						to GDPR).
+</li> <li> <strong>Right to Opt-Out:</strong> Opt out of the sale or
+						sharing of personal information. We do not sell personal data
+						for monetary consideration, but sharing for cross-context
+						behavioral advertising is prohibited under CPRA.
+</li> <li> <strong>Right to Non-Discrimination:</strong> We will not
+						discriminate against you for exercising your CCPA rights,
+						including by denying goods or services, charging different
+						prices, or providing a different level or quality of service.
+</li> <li> <strong>Right to Limit Use of Sensitive Personal
+							Information:</strong> You may limit our use and disclosure of sensitive personal
+						information (e.g., precise geolocation, race, ethnicity, etc.)
+						to purposes other than those necessary to provide the Service.
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+9.3 How to Exercise Your Rights
+</h3> <p class="mb-3">
+To exercise any of these rights, please contact us at:
+</p> <p class="mb-3"> <strong>Email:</strong> <a href="mailto:privacy@editor.land" class="StaccatoButton text-primary hover:underline">privacy@editor.land<span class="InlineSeparator">✉</span></a> </p><p class="mb-3">
+We will respond to your request within 30 days for
+						GDPR/CCPA compliance. We may need to verify your
+						identity before processing certain requests, which may
+						require additional information from you. There is no
+						charge for reasonable requests unless they are
+						manifestly unfounded or excessive.
+</p>  <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+10. Children's Privacy (COPPA)
+</h2> <p class="mb-4">
+Code Editor Land is not directed at children under the
+						age of 13 (or the applicable age of digital consent in
+						your jurisdiction). We do not knowingly collect personal
+						information from children. If we become aware that we
+						have collected personal information from a child without
+						parental consent, we will delete that information
+						promptly.
+</p> <p class="mb-4">
+Parents or guardians who believe their child has
+						provided us with personal information are encouraged to
+						contact us at privacy@editor.land to request removal of
+						such information.
+</p> <p>
+We encourage parents and guardians to take an active
+						role in their children's online activities and to review
+						this Privacy Policy to educate them about online privacy
+						practices.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+11. Cookie Policy and Tracking Technologies
+</h2> <p class="mb-4">
+Our Service uses cookies and similar tracking
+						technologies to enhance functionality, analyze usage,
+						and provide a better user experience.
+</p> <h3 class="mb-3 text-xl font-semibold">
+11.1 Types of Cookies Used
+</h3> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>Authentication Cookies:</strong> Session tokens
+							that maintain your login state. These are essential for
+							accessing your account and cannot be disabled. They expire
+							after a period of inactivity or when you sign out.
+</li> <li> <strong>Analytics Cookies:</strong> Firebase Analytics
+							sets cookies to distinguish unique users and track feature
+							usage across sessions. These help us understand which
+							features are most valuable and where improvements are
+							needed.
+</li> <li> <strong>Preference Cookies:</strong> Store your UI preferences,
+							theme settings, and editor configurations so they persist
+							between sessions.
+</li> <li> <strong>Cloudflare Cookies:</strong> Cloudflare may set
+							cookies for security purposes (e.g., cf_clearance, __cf_bm)
+							and to distinguish between humans and bots for analytics.
+</li> </ul> <h3 class="mb-3 text-xl font-semibold">
+11.2 Managing Cookies
+</h3> <p class="mb-3">
+You can control cookie preferences through your browser
+						settings. Most browsers allow you to:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>Block the acceptance of all cookies</li> <li>Prompt before accepting cookies</li> <li>Delete existing cookies</li> </ul> <p class="mb-3">
+Disabling essential cookies will prevent the Service
+						from functioning correctly, including authentication
+						features. To manage analytics cookies, you may also use
+						the Digital Advertising Alliance's opt-out tool at <a href="https://optout.aboutads.info" target="_blank" rel="noopener noreferrer">https://optout.aboutads.info</a>.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+12. Third-Party Services and Data Sharing
+</h2> <p class="mb-4">
+In addition to the service providers listed in Section
+						5, we integrate with the following third-party services
+						that may collect your data:
+</p> <h3 class="mb-3 text-xl font-semibold">
+12.1 GitHub OAuth
+</h3> <p class="mb-3">
+We offer the option to sign up and sign in using your
+						GitHub account via OAuth 2.0. When you choose this
+						option:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+GitHub shares your account ID, username, email
+							address, and avatar URL with us
+</li> <li>
+We receive an access token that allows us to read
+							basic profile information only
+</li> <li>
+We do <strong>not</strong> request permissions to access
+							your private repositories, organizations, or any other
+							sensitive data
+</li> <li>
+You can revoke our application's access at any time
+							through your GitHub account settings
+</li> </ul> <p>
+GitHub's use of your data is governed by their <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+</p> <h3 class="mb-3 text-xl font-semibold">
+12.2 Analytics Services
+</h3> <p class="mb-3">
+We use Firebase Analytics (provided by Google) to
+						understand how users interact with our Service. Firebase
+						collects:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>Device type, OS version, and app version</li> <li>
+Feature usage events (e.g., "extension_installed",
+							"file_opened")
+</li> <li>
+Crash reports with stack traces and device state
+</li> <li>
+Aggregated metrics (no personal content of files or
+							code)
+</li> </ul> <p class="mb-3">
+All analytics data is aggregated and anonymized where
+						possible. We do not use analytics data to create user
+						profiles for advertising purposes.
+</p> <p>
+You can opt out of Firebase Analytics by disabling
+						analytics collection in the settings or through your
+						device's privacy settings.
+</p> <h3 class="mb-3 text-xl font-semibold">
+12.3 CDN and Hosting
+</h3> <p>
+Our static assets are hosted on Cloudflare's global CDN.
+						Cloudflare may cache content at edge locations worldwide
+						to improve performance. They do not have access to
+						personal data stored in our backend services. See
+						Cloudflare's <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Privacy Policy</a> for details on how they handle logs and analytics.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+13. Data Breach Notification
+</h2> <p class="mb-4">
+We take data security seriously and have implemented
+						measures to protect your personal information. In the
+						unlikely event of a data breach that affects your
+						personal data, we will:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+Take immediate steps to contain and remediate the
+							incident
+</li> <li>
+Notify affected users within 72 hours of becoming
+							aware of the breach (for GDPR/EU residents), or
+							within the timeframe required by applicable law
+</li> <li>
+Provide information about the nature of the breach,
+							the types of data affected, and steps we are taking
+</li> <li>
+Provide recommendations for user actions to protect
+							themselves
+</li> <li>
+Report the breach to relevant supervisory
+							authorities as required by law
+</li> </ul> <p>
+We maintain an incident response plan and conduct
+						regular security drills to ensure preparedness. Any
+						notifications will be communicated via email and posted
+						on our website's status page.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+14. Changes to This Privacy Policy
+</h2> <p class="mb-4">
+We reserve the right to update or modify this Privacy
+						Policy from time to time to reflect changes in our
+						practices, technology, legal requirements, or the
+						features of our Service. When we make material changes:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li>
+We will update the "Last Updated" date at the top of
+							this policy
+</li> <li>
+We will provide prominent notice before the changes
+							take effect (e.g., website banner, email
+							notification, or in-app notification for seated
+							users)
+</li> <li>
+If required by law, we will obtain your consent for
+							significant changes
+</li> <li>
+The revised policy will be available at least 30
+							days before it becomes effective
+</li> </ul> <p class="mb-4">
+Your continued use of the Service after such
+						modifications constitutes your acceptance of the revised
+						Privacy Policy. We encourage you to review this policy
+						periodically to stay informed about our data practices.
+</p> <p>
+For changes that materially increase the scope of data
+						collection or decrease privacy protections, we will
+						provide a clear opportunity to opt out or delete your
+						account.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+15. Contact Information
+</h2> <p class="mb-4">
+If you have questions, concerns, or requests regarding
+						this Privacy Policy or your personal data, please
+						contact us:
+</p> <div class="mb-4"> <p> <strong>Email:</strong> <a href="mailto:privacy@editor.land" class="StaccatoButton text-primary hover:underline">privacy@editor.land<span class="InlineSeparator">✉</span></a> </p> <p> <strong>Data Protection Officer:</strong> We have appointed
+							a DPO to oversee compliance with data protection laws.
+							You may contact the DPO directly at <a href="mailto:privacy@editor.land" class="StaccatoButton text-primary hover:underline">privacy@editor.land<span class="InlineSeparator">✉</span></a> </p> </div> <p class="mb-4">
+We will make every effort to respond to your inquiry
+						promptly. If you are not satisfied with our response,
+						you may have the right to lodge a complaint with your
+						local data protection authority.
+</p> </section> <section class="mb-10"> <h2 class="mb-4 text-2xl font-semibold">
+16. Summary of Key Points
+</h2> <p class="mb-4">
+To help you understand our privacy practices, here is a
+						concise summary:
+</p> <ul class="mb-4 list-disc space-y-2 pl-8"> <li> <strong>We collect</strong> your email, account data,
+							and usage metrics to provide and improve the Service
+</li> <li> <strong>We do not sell</strong> your personal data to
+							advertisers or third parties
+</li> <li> <strong>We share</strong> data only with trusted service
+							providers (Cloudflare, Firebase) and as required by law
+</li> <li> <strong>We store</strong> analytics data for up to 12
+							months; account data is retained until deletion
+</li> <li> <strong>You have rights</strong> to access, correct, delete,
+							and export your data (GDPR/CCPA)
+</li> <li> <strong>We secure</strong> data with encryption, access
+							controls, and industry best practices
+</li> <li> <strong>We support</strong> international data transfers
+							via EU-U.S. Data Privacy Framework and SCCs
+</li> <li> <strong>You control</strong> your cookie preferences through
+							browser settings and consent dialogs
+</li> </ul> <p class="text-sm text-muted-foreground">
+This summary is for convenience only. The complete
+						Privacy Policy governs. If there is any conflict, the
+						full text prevails.
+</p> </section> </section> <!-- Back to top --> <div class="mt-12 border-t pt-8"> <a href="#top" class="StaccatoButton text-sm text-primary hover:underline">Back to top<span class="InlineSeparator">↑</span></a> </div> </article> <!-- Schema.org Structured Data --> <script crossorigin=\"anonymous\" type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebPage",
+				"name": "Privacy Policy",
+				"description": "Privacy Policy for Code Editor Land",
+				"url": "https://editor.land/legal/privacy",
+				"datePublished": "2026-03-26T00:00:00Z",
+				"dateModified": "2026-03-26T00:00:00Z",
+				"publisher": {
+					"@type": "Organization",
+					"name": "Code Editor Land",
+					"url": "https://editor.land",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://editor.land/Favicon/favicon.svg"
+					}
+				},
+				"inLanguage": "en",
+				"isPartOf": {
+					"@type": "WebSite",
+					"name": "Code Editor Land",
+					"url": "https://editor.land"
+				}
+			}
+		<\/script> </div> `])), renderComponent($$result2, "Header", Header, { "client:load": true, "client:component-hydration": "load", "client:component-path": "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/Component/Layout/Header", "client:component-export": "Header" }), maybeRenderHead(), EffectiveDate, LastUpdated) })}`;
+}, "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Legal/Privacy.astro", void 0);
+
+const $$file = "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Legal/Privacy.astro";
+const $$url = "/Legal/Privacy";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	default: $$Privacy,
+	file: $$file,
+	url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
