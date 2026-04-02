@@ -421,8 +421,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 		// height/width during the typewriter reveal — a height collapse
 		// causes the page to shrink and the browser snaps scroll to y=0.
 		if (ContainerRef.current) {
-			const Rect =
-				ContainerRef.current.getBoundingClientRect();
+			const Rect = ContainerRef.current.getBoundingClientRect();
 			if (Rect.width > 0) {
 				ContainerRef.current.style.minWidth = `${Rect.width}px`;
 				ContainerRef.current.style.minHeight = `${Rect.height}px`;
@@ -446,11 +445,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 			// --StaccatoRaw ∈ [-1, 1] → target delay ∈ [8, 36] ms
 			const NoiseRaw = ReadStaccatoRaw();
 			const TargetDelay = 18 + (NoiseRaw + 1) * 0.5 * 18;
-			LerpedDelay.current = Lerp(
-				LerpedDelay.current,
-				TargetDelay,
-				0.12,
-			);
+			LerpedDelay.current = Lerp(LerpedDelay.current, TargetDelay, 0.12);
 
 			const Elapsed = Now - LastTime.current;
 			if (Elapsed >= LerpedDelay.current) {
@@ -491,8 +486,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 		return (
 			<span key={ParagraphIndex} className="block">
 				{Lines.map((Line, LineIndex) => {
-					const IsLastLine =
-						IsLast && LineIndex === Lines.length - 1;
+					const IsLastLine = IsLast && LineIndex === Lines.length - 1;
 					return (
 						<span key={LineIndex}>
 							{LineIndex > 0 && <br />}
@@ -513,9 +507,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 
 	if (Paragraphs.length <= 1) {
 		return (
-			<span
-				ref={ContainerRef}
-				className={ClassName}>
+			<span ref={ContainerRef} className={ClassName}>
 				{RenderParagraph(DisplayText, 0, true)}
 			</span>
 		);

@@ -28,7 +28,10 @@ const Footer = ({ Content }: FooterProps) => {
 	const FooterData = Content || {
 		Brand: {
 			Name: T("brand.name", { defaultValue: "Code Editor Land" }),
-			Description: T("brand.description", { defaultValue: "The next-generation code editor.\n\nOpen source and free forever." }),
+			Description: T("brand.description", {
+				defaultValue:
+					"The next-generation code editor.\n\nOpen source and free forever.",
+			}),
 		},
 		Columns: [
 			{
@@ -229,8 +232,7 @@ const Footer = ({ Content }: FooterProps) => {
 						<p className="text-sm text-muted-foreground">
 							{T("bottomBar.copyright", {
 								year: new Date().getFullYear(),
-								defaultValue:
-									`© ${new Date().getFullYear()} Code Editor Land. All rights reserved.`,
+								defaultValue: `© ${new Date().getFullYear()} Code Editor Land. All rights reserved.`,
 							})}
 						</p>
 					</div>

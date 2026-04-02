@@ -181,7 +181,11 @@ const T = GetI18n();
 				} else if (document.readyState === "complete") {
 					setTimeout(Seed, 200);
 				} else {
-					window.addEventListener("load", () => setTimeout(Seed, 200), { once: true });
+					window.addEventListener(
+						"load",
+						() => setTimeout(Seed, 200),
+						{ once: true },
+					);
 				}
 			}
 		</script>

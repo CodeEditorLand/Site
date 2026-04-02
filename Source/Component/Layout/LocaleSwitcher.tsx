@@ -24,12 +24,25 @@ const LocaleSwitcher = () => {
 	const TriggerRef = useRef<HTMLButtonElement>(null);
 
 	const HandleChange = (Value: string) => {
-		// Preserve scroll position across language switch — i18n.changeLanguage()
-		// triggers a full re-render of all translated components which can cause
-		// layout recalculation and scroll drift.
 		const ScrollY = window.scrollY;
-		SwitchLocale(Value as SupportedLocale).then(() => {
+
+		// Install a guard before the locale switch starts.
+		// React 18 defers i18n re-renders to the next animation frame,
+		// so the naive .then() scrollTo fires too early — the deferred
+		// layout reflow overwrites it. The guard snaps back any scroll
+		// attempt immediately, and is held for two frames post-switch
+		// to cover all deferred React work before being released.
+		const Guard = () =>
 			window.scrollTo({ top: ScrollY, behavior: "instant" });
+		window.addEventListener("scroll", Guard, { passive: true });
+
+		SwitchLocale(Value as SupportedLocale).then(() => {
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					window.removeEventListener("scroll", Guard);
+					window.scrollTo({ top: ScrollY, behavior: "instant" });
+				});
+			});
 		});
 	};
 

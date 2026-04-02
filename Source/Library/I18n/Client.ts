@@ -161,9 +161,13 @@ if (DetectedLocale !== "en") {
 	};
 
 	if (typeof requestIdleCallback !== "undefined") {
-		requestIdleCallback(() => { SwitchAfterHydration(); });
+		requestIdleCallback(() => {
+			SwitchAfterHydration();
+		});
 	} else {
-		setTimeout(() => { SwitchAfterHydration(); }, 0);
+		setTimeout(() => {
+			SwitchAfterHydration();
+		}, 0);
 	}
 }
 

@@ -100,6 +100,7 @@ const IconSemanticColorMap: Record<string, string> = {
  */
 const DynamicFeatures = ({ Content, ClassName }: Property) => {
 	const { Title, Subtitle, Features, Columns = 3, Gap = "lg" } = Content;
+
 	const GridReference = useRef<HTMLDivElement>(null);
 
 	const GapClass = {
@@ -120,25 +121,32 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 
 	useEffect(() => {
 		const Grid = GridReference.current;
+
 		if (!Grid) return;
 
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
+
 			const Attention = await AttentionModule.default;
+
 			const Cards = Grid.querySelectorAll<HTMLElement>(".FeatureCard");
+
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 6, 4);
 			});
 
 			const StaccatoModule =
 				await import("../../Function/Noise/Staccato.js");
+
 			const Engine = await StaccatoModule.default;
+
 			Engine.SeedSelector(".FeatureCard");
 		};
 
@@ -180,10 +188,13 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 					} ${GapClass[Gap]} mx-auto max-w-6xl`}>
 					{Features.map((Feature) => {
 						const Icon = GetIcon(Feature.Icon);
+
 						const IconLabel =
 							FeatureIconLabelMap[Feature.Icon] ?? Feature.Title;
+
 						const FeatureColor =
 							FeatureColorMap[Feature.Id] ?? "var(--Primary)";
+
 						return (
 							<div
 								key={Feature.Id}
@@ -205,6 +216,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 								</div>
 								<p className="StaccatoBreath text-muted-foreground">
 									<RichText Text={Feature.Description} />
+									<br />
 									{Feature.Icons &&
 										Feature.Icons.length > 0 && (
 											<span
@@ -219,16 +231,21 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															FeatureIconRegistry[
 																IconName
 															];
+
 														const StackLabel =
 															FeatureIconLabelMap[
 																IconName
 															] ?? IconName;
+
 														const StackColor =
 															IconSemanticColorMap[
 																IconName
 															] ?? FeatureColor;
-														if (!StackIcon)
+
+														if (!StackIcon) {
 															return null;
+														}
+
 														return (
 															<span
 																key={IconIndex}
@@ -275,4 +292,5 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 };
 
 export { DynamicFeatures };
+
 export default DynamicFeatures;
