@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import { Input } from "../UI/Input";
 import { Label } from "../UI/Label";
 import type Property from "./Interface/Property/Input.js";
@@ -23,9 +25,10 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 		...props
 	} = Content;
 
-	const Identifier =
-		PropertyIdentifier ||
-		`input-${Math.random().toString(36).substr(2, 9)}`;
+	// useId() generates a stable ID that is identical on server and client,
+	// preventing the React #418 hydration mismatch that Math.random() caused.
+	const AutoId = useId();
+	const Identifier = PropertyIdentifier || AutoId;
 	const ErrorIdentifier = `${Identifier}-error`;
 	const HelperIdentifier = `${Identifier}-helper`;
 	const DescribedBy = Error

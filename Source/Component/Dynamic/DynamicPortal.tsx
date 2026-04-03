@@ -317,6 +317,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 						}),
 						Type: "email",
 						Required: false,
+						AutoComplete: "email",
 						OnChange: SetOrganizationDomain,
 					}}
 					Id="portal-enterprise-domain"
@@ -564,6 +565,7 @@ const PortalTierRow = ({
 										),
 										Type: "email",
 										Required: true,
+										AutoComplete: "email",
 										OnChange: SetEmail,
 									}}
 									Id="portal-cloud-email"
@@ -582,6 +584,7 @@ const PortalTierRow = ({
 										),
 										Type: "password",
 										Required: true,
+										AutoComplete: "current-password",
 										OnChange: SetPassword,
 									}}
 									Id="portal-cloud-password"
