@@ -58,7 +58,7 @@ const LocaleSwitcher = () => {
 	};
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger
 				className="flex h-9 items-center gap-1.5 rounded-md border border-[var(--Border)] bg-white px-3 text-sm font-medium text-[var(--Foreground)] outline-none ring-offset-white hover:bg-[var(--Muted)] focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-[var(--Muted)]"
 				aria-label="Select language">
