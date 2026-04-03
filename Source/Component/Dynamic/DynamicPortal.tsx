@@ -464,12 +464,10 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 const PortalTierRow = ({
 	Content,
 	Index,
-	OnAction,
 	Labels,
 }: {
 	Content: TierContent;
 	Index: number;
-	OnAction?: () => void;
 	Labels?: PortalContent["Labels"];
 }) => {
 	const RowReference = useRef<HTMLDivElement>(null);
@@ -547,7 +545,9 @@ const PortalTierRow = ({
 								className="space-y-4"
 								onSubmit={(Event) => {
 									Event.preventDefault();
-									OnAction?.();
+									// Navigate to Auth0 Universal Login (database connection).
+									// Auth0AccountGate on /Account/SignIn handles the redirect.
+									window.location.href = "/Account/SignIn";
 								}}
 								aria-label="Cloud sign in form">
 								<DynamicInput
@@ -614,7 +614,10 @@ const PortalTierRow = ({
 									className="StaccatoButton w-full"
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
+									onClick={() => {
+										window.location.href =
+											"/Account/SignIn?connection=github";
+									}}>
 									{T("portal.provider.continueGitHub", {
 										defaultValue: "Continue with GitHub",
 									})}
@@ -632,7 +635,10 @@ const PortalTierRow = ({
 									className="StaccatoButton w-full"
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
+									onClick={() => {
+										window.location.href =
+											"/Account/SignIn?connection=google-oauth2";
+									}}>
 									{T("portal.provider.continueGoogle", {
 										defaultValue: "Continue with Google",
 									})}
@@ -650,7 +656,10 @@ const PortalTierRow = ({
 									className="StaccatoButton w-full"
 									variant="outline"
 									style={{ borderColor: Content.BorderColor }}
-									onClick={() => OnAction?.()}>
+									onClick={() => {
+										window.location.href =
+											"/Account/SignIn?connection=gitlab";
+									}}>
 									{T("portal.provider.continueGitLab", {
 										defaultValue: "Continue with GitLab",
 									})}
@@ -699,7 +708,14 @@ const PortalTierRow = ({
 										borderColor: Content.BorderColor,
 										color: "#ffffff",
 									}}
-									onClick={() => OnAction?.()}>
+									onClick={() => {
+										// Local-first connection is handled by the
+										// Air Daemon discovery protocol (mTLS/WebSocket).
+										// No Auth0 redirect - navigate to Dashboard
+										// which will initiate local-first handshake.
+										window.location.href =
+											"/Dashboard?mode=local";
+									}}>
 									{T("portal.localfirst.connect", {
 										defaultValue: "Connect to Air Daemon",
 									})}
@@ -975,16 +991,8 @@ const PortalTierRow = ({
  */
 const DynamicPortal = ({
 	Content,
-	OnSignIn,
-	OnOAuth,
-	OnConnect,
-	OnEnterprise,
 }: {
 	Content: PortalContent;
-	OnSignIn?: (Email: string, Password: string) => void;
-	OnOAuth?: (Provider: string) => void;
-	OnConnect?: () => void;
-	OnEnterprise?: (Provider: string) => void;
 }) => {
 	const SectionReference = useRef<HTMLElement>(null);
 
@@ -1028,21 +1036,18 @@ const DynamicPortal = ({
 					<PortalTierRow
 						Content={Content.Cloud}
 						Index={0}
-						OnAction={() => OnSignIn?.("", "")}
 						Labels={Content.Labels}
 					/>
 
 					<PortalTierRow
 						Content={Content.Provider}
 						Index={1}
-						OnAction={() => OnOAuth?.("github")}
 						Labels={Content.Labels}
 					/>
 
 					<PortalTierRow
 						Content={Content.LocalFirst}
 						Index={2}
-						OnAction={() => OnConnect?.()}
 						Labels={Content.Labels}
 					/>
 
@@ -1050,7 +1055,6 @@ const DynamicPortal = ({
 						<PortalTierRow
 							Content={Content.Enterprise}
 							Index={3}
-							OnAction={() => OnEnterprise?.("okta")}
 							Labels={Content.Labels}
 						/>
 					)}

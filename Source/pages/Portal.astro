@@ -1,16 +1,10 @@
 ---
-import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
+import { Header } from "../Component/Layout/Header";
 import { DynamicPortal } from "../Component/Dynamic/DynamicPortal";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
 const T = GetI18n();
-
-const Auth0Domain = (await import("../Function/Configuration/Auth0Domain.js"))
-	.default;
-const Auth0ClientIdentifier = (
-	await import("../Function/Configuration/Auth0ClientIdentifier.js")
-).default;
 
 const PortalContent = {
 	Title: T("account.portal.title", {
@@ -376,11 +370,11 @@ const MetaDescription = T("meta.portal.description", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>
-	<DynamicAuthHeader
-		client:load
-		Domain={Auth0Domain}
-		ClientIdentifier={Auth0ClientIdentifier}
-	/>
+	<!-- Portal is the auth gateway itself; use the plain header so the
+	     Auth0-aware DynamicAuthHeader does not place a "Sign In" link on
+	     the auth-selection page, and more importantly does not instantiate
+	     Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
+	<Header client:load />
 
 	<main id="main-content">
 		<!-- Breadcrumb -->
