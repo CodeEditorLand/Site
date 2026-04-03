@@ -83,6 +83,9 @@
 # ── Verify ───────────────────────────────────────────────────────────────────
 /Verify                   /Verify/                  200
 
+# ── Home (root index — must be explicit or /* catches it and loops) ──────────
+/                         /                         200
+
 # ── Visit (dispatch center itself) ───────────────────────────────────────────
 /Visit                    /Visit/                   200
 
