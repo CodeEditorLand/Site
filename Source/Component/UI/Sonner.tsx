@@ -1,14 +1,16 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
-const Toaster = ({ ...props }: ToasterProps) => {
-	const { theme } = useTheme();
+// ─── Theme note ───────────────────────────────────────────────────────────────
+// The site uses a fixed flat-white theme with no dark mode. next-themes is not
+// wired up (no ThemeProvider in the Astro root), so theme is hardcoded "light".
+// ─────────────────────────────────────────────────────────────────────────────
 
+const Toaster = ({ ...props }: ToasterProps) => {
 	return (
 		<Sonner
-			theme={(theme ?? "system") as "light" | "dark" | "system"}
+			theme="light"
 			className="toaster group"
 			style={
 				{

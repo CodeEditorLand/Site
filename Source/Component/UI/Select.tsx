@@ -6,6 +6,18 @@ import * as React from "react";
 
 import { cn } from "./Utility";
 
+// ─── Scroll-lock Warning ─────────────────────────────────────────────────────
+//
+// @radix-ui/react-select unconditionally wraps its content with
+// react-remove-scroll, which injects `overflow: hidden` on <body> via CSS.
+// In Chrome this silently resets window.scrollY to 0 whenever the Select opens
+// — there is no `modal` prop to disable it.
+//
+// DO NOT use this component in sticky-header pages or anywhere the user may
+// have scrolled before interacting. Use DropdownMenu with modal={false} instead
+// (see LocaleSwitcher.tsx for the established pattern).
+// ─────────────────────────────────────────────────────────────────────────────
+
 function Select({
 	...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
