@@ -134,7 +134,21 @@ export default (await import("astro/config")).defineConfig({
 
 	vite: {
 		optimizeDeps: {
+			// @auth0/auth0-react is excluded from pre-bundling because its
+			// peer-dep resolution is incompatible with Vite's optimizer.
+			// The include list below ensures React itself is ALWAYS in the
+			// pre-bundle — without this, auth0 (excluded) would resolve React
+			// from its own node_modules while the rest of the app uses Vite's
+			// pre-bundled copy, creating two React instances and triggering
+			// "Invalid hook call" on every SSR render after a dep re-optimization.
 			exclude: ["@auth0/auth0-react"],
+			include: [
+				"react",
+				"react-dom",
+				"react-dom/client",
+				"react/jsx-runtime",
+				"react/jsx-dev-runtime",
+			],
 		},
 
 		define: {
@@ -282,6 +296,12 @@ export default (await import("astro/config")).defineConfig({
 		},
 
 		resolve: {
+			// dedupe forces Vite to always resolve to one copy of React,
+			// even when excluded packages (e.g. @auth0/auth0-react) bring
+			// their own React into the module graph. Without this, two React
+			// instances coexist and any hook call throws "Invalid hook call".
+			dedupe: ["react", "react-dom"],
+
 			alias: {
 				"@": Resolve("./Source"),
 				"@Stylesheet": Resolve("./Source/Stylesheet"),
