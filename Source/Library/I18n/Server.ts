@@ -50,7 +50,7 @@ import FrVerify from "./Locale/Fr/Verify.json";
 
 /**
  * Server-side i18n for Astro prerendered pages.
- * Always returns English — locale switching happens client-side
+ * Always returns English - locale switching happens client-side
  * via react-i18next in hydrated React components.
  */
 export function GetI18n() {

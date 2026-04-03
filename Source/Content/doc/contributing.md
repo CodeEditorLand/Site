@@ -34,10 +34,10 @@ on GitHub.
 
 ## Ways to Contribute
 
-- **Code** — Rust or TypeScript fixes, features, or performance improvements
-- **Documentation** — Guides, examples, and translations
-- **Testing** — Bug reports, reproductions, and test coverage
-- **Design** — UI/UX improvements for the editor or website
+- **Code** - Rust or TypeScript fixes, features, or performance improvements
+- **Documentation** - Guides, examples, and translations
+- **Testing** - Bug reports, reproductions, and test coverage
+- **Design** - UI/UX improvements for the editor or website
 
 ## Code of Conduct
 

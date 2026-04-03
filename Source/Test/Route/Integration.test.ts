@@ -14,7 +14,7 @@ describe("Integration: Build output structure", () => {
 		const TempDirectory = await mkdtemp(join(tmpdir(), "integration-"));
 
 		try {
-			// Simulate Astro build output (PascalCase — real page files)
+			// Simulate Astro build output (PascalCase - real page files)
 			const BuiltPage = [
 				"Download",
 				"Doc",

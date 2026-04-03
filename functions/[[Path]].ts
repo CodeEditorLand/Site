@@ -1,14 +1,14 @@
 /**
- * Cloudflare Pages Function — PascalCase Route Redirect (Edge Layer)
+ * Cloudflare Pages Function - PascalCase Route Redirect (Edge Layer)
  *
  * Catch-all function that intercepts requests before they hit static assets.
  * If the path matches a known variant (lowercase, hyphenated, plural, etc.),
  * responds with a 301 redirect to the PascalCase canonical URL.
  *
  * This is Layer 1 of the 3-layer routing system:
- *   1. CF Pages Function (this file) — edge, before static files
- *   2. Service Worker — browser, after first page load
- *   3. 404 Page Script — fallback when SW not installed
+ *   1. CF Pages Function (this file) - edge, before static files
+ *   2. Service Worker - browser, after first page load
+ *   3. 404 Page Script - fallback when SW not installed
  */
 
 // SYNC: These must match Source/Function/Route/Map.ts CanonicalPath + SemanticAlias.

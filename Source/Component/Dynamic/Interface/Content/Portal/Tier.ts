@@ -2,8 +2,8 @@
  * A single feature row in a tier description panel.
  *
  * Icon[] accepts two kinds of values:
- *   — Lucide registry key  e.g. "Shield", "Cpu", "GitBranch"
- *   — Public image path    e.g. "/Image/GitHub.svg", "/Image/Rust.svg"
+ *   - Lucide registry key  e.g. "Shield", "Cpu", "GitBranch"
+ *   - Public image path    e.g. "/Image/GitHub.svg", "/Image/Rust.svg"
  * Both are resolved at render time by DynamicPortal's icon dispatch logic.
  */
 export interface TierItem {

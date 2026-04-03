@@ -70,7 +70,7 @@ export default (await import("astro/config")).defineConfig({
 			},
 		}),
 
-		// Route Redirect — local-first PascalCase URL routing + caching.
+		// Route Redirect - local-first PascalCase URL routing + caching.
 		// Must run AFTER @astrojs/sitemap so the sitemap post-processor
 		// can rewrite lowercase URLs to PascalCase canonicals.
 		// Handles:

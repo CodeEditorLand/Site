@@ -103,7 +103,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 						Telemetry Policy
 					</h3>
 					<p className="mb-8 text-muted-foreground">
-						Full disclosure on what Land collects — and what it does
+						Full disclosure on what Land collects - and what it does
 						not.
 					</p>
 					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

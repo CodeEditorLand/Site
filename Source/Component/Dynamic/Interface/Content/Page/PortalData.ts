@@ -14,8 +14,8 @@ import type PortalContent from "./Portal.js";
  *   Enterprise → charcoal     #374151 / #1f2937
  *
  * Feature.Icon[] values reference either:
- *   — A key in TierIconRegistry (DynamicPortal.tsx) — e.g. "Shield", "Cpu"
- *   — A Public image path — e.g. "/Image/GitHub.svg"
+ *   - A key in TierIconRegistry (DynamicPortal.tsx) - e.g. "Shield", "Cpu"
+ *   - A Public image path - e.g. "/Image/GitHub.svg"
  */
 const PortalData: PortalContent = {
 	Title: "Sign In to CodeEditorLand",

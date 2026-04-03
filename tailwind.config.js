@@ -38,7 +38,7 @@ export default {
 				DEFAULT: "var(--Border)",
 			},
 			colors: {
-				/* Design system tokens — maps Tailwind utilities to CSS custom properties in Base.css */
+				/* Design system tokens - maps Tailwind utilities to CSS custom properties in Base.css */
 				background: "hsl(var(--Background))",
 				foreground: "var(--Foreground)",
 				card: {

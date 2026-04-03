@@ -21,10 +21,10 @@ const INCREMENT = __INCREMENT__ ?? "Initial";
 
 const CACHE_ROUTE = `Route-${INCREMENT}`;
 const CACHE_ASSET = `Asset-${INCREMENT}`;
-const CACHE_AUTH = "Auth"; // Not versioned — persists across deploys
+const CACHE_AUTH = "Auth"; // Not versioned - persists across deploys
 
 const CACHE = [CACHE_ROUTE, CACHE_ASSET];
-// Note: CACHE_AUTH is NOT in the eviction list — it outlives route cache.
+// Note: CACHE_AUTH is NOT in the eviction list - it outlives route cache.
 
 let CurrentClientVersion: string | null = null;
 
@@ -72,11 +72,11 @@ const CanonicalSet: Set<string> = new Set(__ROUTE_MAP_CANONICAL__);
 const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
 
 // ─── Route classification ───
-// Auth-required routes — redirect to /Account/SignIn when no session cached.
+// Auth-required routes - redirect to /Account/SignIn when no session cached.
 
 const ProtectedRoute: Set<string> = new Set(["/Dashboard", "/Portal"]);
 
-// Auth-bypass routes — redirect to /Dashboard when a session IS cached.
+// Auth-bypass routes - redirect to /Dashboard when a session IS cached.
 // Prevents authenticated users from seeing the sign-in/sign-up pages.
 
 const AuthRoute: Set<string> = new Set([
@@ -86,7 +86,7 @@ const AuthRoute: Set<string> = new Set([
 	"/Account/ResetPassword",
 ]);
 
-// Dynamic route patterns — segments after the prefix are slug parameters.
+// Dynamic route patterns - segments after the prefix are slug parameters.
 // Each entry maps a URL prefix to the canonical base it falls under.
 
 const DynamicRoute: Array<{ Pattern: RegExp; Base: string }> = [
@@ -94,7 +94,7 @@ const DynamicRoute: Array<{ Pattern: RegExp; Base: string }> = [
 	{ Pattern: /^\/Doc\/([^/]+)\/?$/, Base: "/Doc" },
 ];
 
-// Workers API URL prefixes — requests to these paths are pre-processed
+// Workers API URL prefixes - requests to these paths are pre-processed
 // to inject the SW-managed auth token before forwarding to the network.
 // NOTE: full domain injection of bearer token is handled in pre-processing.
 // In production these match the PUBLIC_*_WORKER_URL env vars; in dev they
@@ -185,10 +185,10 @@ const NormalizePath = (Path: string): string =>
 const ResolveRoute = (RequestPath: string): string | null => {
 	const Cleaned = StripTrailingSlash(RequestPath);
 
-	// Already a canonical static route — no redirect needed
+	// Already a canonical static route - no redirect needed
 	if (CanonicalSet.has(Cleaned) || Cleaned === "/") return null;
 
-	// Check dynamic route patterns — slugs are valid, no redirect needed
+	// Check dynamic route patterns - slugs are valid, no redirect needed
 	for (const { Pattern } of DynamicRoute) {
 		if (Pattern.test(Cleaned)) return null;
 	}
@@ -336,14 +336,14 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 });
 
 // ─── Fetch ───
-// Layered request handler — mirrors a CF Pages Function / server adapter:
+// Layered request handler - mirrors a CF Pages Function / server adapter:
 //
-//   Layer 1  Route redirect     — normalize variant URLs → PascalCase canonical
-//   Layer 2  Auth gate          — guard protected routes, bypass auth routes
-//   Layer 3  API pre-process    — inject Bearer token on Workers API calls
-//   Layer 4  Page cache         — network-first for navigation (offline fallback)
-//   Layer 5  Asset cache        — cache-first for hashed static assets
-//   Layer 6  Pass-through       — everything else → network
+//   Layer 1  Route redirect     - normalize variant URLs → PascalCase canonical
+//   Layer 2  Auth gate          - guard protected routes, bypass auth routes
+//   Layer 3  API pre-process    - inject Bearer token on Workers API calls
+//   Layer 4  Page cache         - network-first for navigation (offline fallback)
+//   Layer 5  Asset cache        - cache-first for hashed static assets
+//   Layer 6  Pass-through       - everything else → network
 
 self.addEventListener("fetch", (Event: FetchEvent) => {
 	const Request = Event.request;

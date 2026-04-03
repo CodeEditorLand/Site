@@ -82,7 +82,7 @@ const T = GetI18n();
 		<meta name="twitter:dnt" content="on" />
 
 		<!-- Fonts: preconnect + async load via media=print swap to avoid render-blocking.
-		     No <link rel="preload"> — preload + media=print causes a credentials-mode
+		     No <link rel="preload"> - preload + media=print causes a credentials-mode
 		     mismatch warning (preload uses same-origin, stylesheet uses crossorigin=anonymous
 		     via the CrossOrigin Vite plugin) and a "not used within a few seconds" warning.
 		     The media=print technique already loads the CSS async without blocking render. -->
@@ -105,7 +105,7 @@ const T = GetI18n();
 			@import "@Stylesheet/Global.css";
 		</style>
 
-		<!-- i18n client — must initialize before any React component hydrates -->
+		<!-- i18n client - must initialize before any React component hydrates -->
 		<script>
 			import "@/Library/I18n/Client.js";
 		</script>
@@ -194,7 +194,7 @@ const T = GetI18n();
 
 				// Seed every Staccato element once, strictly after window.load.
 				//
-				// WHY window.load is required — not just requestIdleCallback:
+				// WHY window.load is required - not just requestIdleCallback:
 				// React 18 concurrent mode breaks hydration into small chunks
 				// and yields to the browser between each one. requestIdleCallback
 				// fires precisely during those yield gaps, BEFORE hydration is

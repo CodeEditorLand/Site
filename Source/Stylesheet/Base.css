@@ -7,7 +7,7 @@
 @layer theme {
 	:root {
 		/* ─────────────────────────────────────────────────────────────
-		   SEMANTIC SURFACE TOKENS — Flat White Theme
+		   SEMANTIC SURFACE TOKENS - Flat White Theme
 		   Neutrals now derived from warm ColorSlate/ColorNeutral scale.
 		   No dark mode. No gradients. No shadows. No rounded corners.
 		   ───────────────────────────────────────────────────────────── */
@@ -55,8 +55,8 @@
 		/* ─────────────────────────────────────────────────────────────
 		   PROTOCOL SPINE COLORS
 		   Primary: saturated brand hue
-		   Mute:    12% on white  — pill/chip backgrounds
-		   Surface: 5% on white   — hover/active area tints
+		   Mute:    12% on white  - pill/chip backgrounds
+		   Surface: 5% on white   - hover/active area tints
 		   Fore:    foreground on white context
 		   ───────────────────────────────────────────────────────────── */
 		--SpinegRPC: #22c55e;
@@ -81,7 +81,7 @@
 
 		/* ─────────────────────────────────────────────────────────────
 		   AUTHENTICATION TIER COLORS
-		   (aliased from Spine — retain all existing Mute tokens)
+		   (aliased from Spine - retain all existing Mute tokens)
 		   ───────────────────────────────────────────────────────────── */
 		--TierCloud: var(--SpineIPC);
 		--TierCloudMute: var(--SpineIPCMute);

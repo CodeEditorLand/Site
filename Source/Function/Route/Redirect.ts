@@ -1,11 +1,11 @@
-// Layer 3 fallback — client-side redirect for 404 page.
+// Layer 3 fallback - client-side redirect for 404 page.
 // Fetches RouteMap.json and redirects to PascalCase canonical if match found.
 // Runs when SW isn't installed and Cloudflare _redirects didn't catch the path.
 
 const RedirectFromRouteMap = async (): Promise<void> => {
 	const CurrentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 
-	// Already on root — nothing to redirect
+	// Already on root - nothing to redirect
 	if (CurrentPath === "/") {
 		return;
 	}
@@ -57,7 +57,7 @@ const RedirectFromRouteMap = async (): Promise<void> => {
 			return;
 		}
 	} catch {
-		// RouteMap not available — show 404 as-is
+		// RouteMap not available - show 404 as-is
 	}
 };
 

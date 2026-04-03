@@ -4,7 +4,7 @@ import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Testimonial.js";
 
 /**
- * Semantic color map per architecture element ID — maps each element to its design token.
+ * Semantic color map per architecture element ID - maps each element to its design token.
  * Mountain/Air/Echo: ExtensionRust (Rust backend), Cocoon: ExtensionEffectTypeScript,
  * Wind: LanguageTypeScript (TS workbench), Sky: ExtensionTauri (UI rendering).
  */

@@ -11,7 +11,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 /**
- * Generic card skeleton — header + two body lines.
+ * Generic card skeleton - header + two body lines.
  */
 function SkeletonCard({ className }: React.ComponentProps<"div">) {
 	return (
@@ -28,7 +28,7 @@ function SkeletonCard({ className }: React.ComponentProps<"div">) {
 }
 
 /**
- * Feature card skeleton — matches FeatureCard layout (title + icon header,
+ * Feature card skeleton - matches FeatureCard layout (title + icon header,
  * description lines, icon stack row).
  */
 function SkeletonFeatureCard({ className }: React.ComponentProps<"div">) {
@@ -50,7 +50,7 @@ function SkeletonFeatureCard({ className }: React.ComponentProps<"div">) {
 }
 
 /**
- * Pricing tier skeleton — matches PricingCard layout (button, name, price,
+ * Pricing tier skeleton - matches PricingCard layout (button, name, price,
  * feature list).
  */
 function SkeletonPricingTier({ className }: React.ComponentProps<"div">) {

@@ -22,7 +22,7 @@ import {
 // react-remove-scroll, which injects `overflow: hidden` on <body> via CSS.
 // In Chrome, this silently transfers the scroll container from <body> to <html>
 // (which has scrollTop=0), resetting window.scrollY to 0 without firing any
-// scroll event — making it impossible to detect or counteract.
+// scroll event - making it impossible to detect or counteract.
 //
 // @radix-ui/react-dropdown-menu is built on @radix-ui/react-menu which does
 // NOT use react-remove-scroll. Confirmed via source: no "remove-scroll" import.

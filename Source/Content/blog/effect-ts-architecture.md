@@ -31,9 +31,9 @@ program with explicit error types and resource cleanup via `Scope`.
 Every service in the Wind UI layer returns an `Effect<Result, AppError, Env>`.
 The three type parameters represent:
 
-1. **Result** — the success value
-2. **AppError** — the union of all errors that can occur
-3. **Env** — the services this Effect depends on
+1. **Result** - the success value
+2. **AppError** - the union of all errors that can occur
+3. **Env** - the services this Effect depends on
 
 This makes refactoring safe: the compiler tells you exactly what changed at
 every call site.

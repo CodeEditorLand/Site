@@ -1,4 +1,4 @@
-# Lychee Link Checker — CodeEditorLand WebSite
+# Lychee Link Checker - CodeEditorLand WebSite
 # Scan the live dev server or production build for broken links.
 # Usage: lychee --config lychee.toml http://127.0.2.2:9999/
 
@@ -47,7 +47,7 @@ require_https = false
 scheme = ["http", "https"]
 include_fragments = true
 
-# Headers (must be last — TOML table)
+# Headers (must be last - TOML table)
 [header]
 User-Agent = "Mozilla/5.0 (compatible; Lychee/CodeEditorLand)"
 Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"

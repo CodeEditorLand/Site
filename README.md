@@ -102,7 +102,7 @@ namespaces:** `common`, `home`, `download`, `account`, `header`, `footer`,
 
 ## Design System 🎨
 
-Flat white theme enforced in `Base.css` — no shadows, no dark mode, no rounded
+Flat white theme enforced in `Base.css` - no shadows, no dark mode, no rounded
 corners. Only exception: `rounded-full` on spinners, badges, and avatars.
 
 ---

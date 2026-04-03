@@ -21,7 +21,7 @@ export interface StatusResponse {
 /**
  * Status API adapter
  * Provides clean, type-safe interface for status/health check operations.
- * GetCachedStatus() caches in memory for 60 seconds — no localStorage.
+ * GetCachedStatus() caches in memory for 60 seconds - no localStorage.
  */
 export class StatusAPI {
 	private Workers = GetWorkersClient();
@@ -31,7 +31,7 @@ export class StatusAPI {
 
 	/**
 	 * Returns the overall status, caching the result for 60 seconds.
-	 * Uses an in-memory cache only — no localStorage or sessionStorage.
+	 * Uses an in-memory cache only - no localStorage or sessionStorage.
 	 */
 	async GetCachedStatus(): Promise<StatusResponse> {
 		const Now = Date.now();

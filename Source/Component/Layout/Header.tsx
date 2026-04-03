@@ -281,7 +281,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						</span>
 					</a>
 
-					{/* Inline nav — desktop only (lg+) */}
+					{/* Inline nav - desktop only (lg+) */}
 					<nav
 						className="ml-2 hidden items-center lg:flex"
 						aria-label="Main navigation">
@@ -317,7 +317,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						})}
 					</nav>
 
-					{/* Nav hamburger — tablet only (md, hidden on lg+) */}
+					{/* Nav hamburger - tablet only (md, hidden on lg+) */}
 					<Button
 						variant="ghost"
 						size="icon"
@@ -340,7 +340,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						<ActionButtons />
 					</div>
 
-					{/* Mobile hamburger — merges nav + actions */}
+					{/* Mobile hamburger - merges nav + actions */}
 					<Button
 						variant="ghost"
 						size="icon"

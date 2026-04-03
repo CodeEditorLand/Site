@@ -1,15 +1,15 @@
-# Cloudflare Pages — full route map
+# Cloudflare Pages - full route map
 #
 # Two rule types are used:
 #
-#   301/302  Redirect  — browser changes URL (for bare/alias paths with no page)
-#   200      Rewrite   — serve directory index without trailing-slash redirect
+#   301/302  Redirect  - browser changes URL (for bare/alias paths with no page)
+#   200      Rewrite   - serve directory index without trailing-slash redirect
 #                        (prevents CF Pages' internal 301 looping with [[Path]].ts)
 #
 # Execution order (CF Pages):
-#   1. [[Path]].ts edge function  — handles variant→canonical 301s, calls next()
-#   2. _redirects                 — consulted when [[Path]].ts calls context.next()
-#   3. Static asset serving       — fallback
+#   1. [[Path]].ts edge function  - handles variant→canonical 301s, calls next()
+#   2. _redirects                 - consulted when [[Path]].ts calls context.next()
+#   3. Static asset serving       - fallback
 #
 # Rule ordering:
 #   - Static redirects (301/302) before dynamic rewrites (200)
@@ -35,7 +35,7 @@
 # page (e.g. /Account/SignIn → /Account/SignIn/). The [[Path]].ts function
 # strips it back (→ /Account/SignIn), creating an infinite loop.
 # 200 rewrites intercept BEFORE CF's trailing-slash logic and serve the
-# directory index directly — no redirect, URL stays clean.
+# directory index directly - no redirect, URL stays clean.
 # ────────────────────────────────────────────────────────────────────────────
 
 # ── Account ──────────────────────────────────────────────────────────────────

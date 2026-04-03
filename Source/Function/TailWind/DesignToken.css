@@ -34,7 +34,7 @@
 	--Spacing64: 16rem; /* 256px */
 
 	/* ─────────────────────────────────────────────────────────────
-	   SEMANTIC COLOR TOKENS — Flat White Theme
+	   SEMANTIC COLOR TOKENS - Flat White Theme
 	   Warm neutral convergence: Secondary/Mute/Accent now pull from
 	   the warm ColorSlate scale rather than cool blue-gray.
 	   ───────────────────────────────────────────────────────────── */
@@ -361,7 +361,7 @@
 	/* ─────────────────────────────────────────────────────────────
 	   TECHNOLOGY COLOR ALIASES
 	   Mirror Base.css token names so both files are in sync.
-	   These are flat references — no color-mix() here; computed
+	   These are flat references - no color-mix() here; computed
 	   values live in Base.css :root.
 	   ───────────────────────────────────────────────────────────── */
 

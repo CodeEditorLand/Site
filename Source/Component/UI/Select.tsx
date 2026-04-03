@@ -11,7 +11,7 @@ import { cn } from "./Utility";
 // @radix-ui/react-select unconditionally wraps its content with
 // react-remove-scroll, which injects `overflow: hidden` on <body> via CSS.
 // In Chrome this silently resets window.scrollY to 0 whenever the Select opens
-// — there is no `modal` prop to disable it.
+// - there is no `modal` prop to disable it.
 //
 // DO NOT use this component in sticky-header pages or anywhere the user may
 // have scrolled before interacting. Use DropdownMenu with modal={false} instead

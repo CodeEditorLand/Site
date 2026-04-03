@@ -41,7 +41,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 		let FrameIdentifier: number;
 		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
-		// Per-card lerp state — tracks current rendered position and hover
+		// Per-card lerp state - tracks current rendered position and hover
 		interface CardState {
 			CurrentX: number;
 			CurrentY: number;
@@ -66,7 +66,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					IsHovered: false,
 				};
 				CardStates.set(Card, State);
-				// Hover: target lerps to (0,0) — card settles at orbital anchor
+				// Hover: target lerps to (0,0) - card settles at orbital anchor
 				Card.addEventListener("mouseenter", () => {
 					State.IsHovered = true;
 				});
@@ -87,7 +87,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				return;
 			}
 
-			// Very slow advance — 0.00007 per ms = ~0.07 per second
+			// Very slow advance - 0.00007 per ms = ~0.07 per second
 			// No quantization: pure smooth simplex output
 			const TimeFactor = Time * 0.00007;
 

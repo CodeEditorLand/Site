@@ -1,5 +1,5 @@
 :root {
-	/* Core channels — updated every frame by Staccato.ts */
+	/* Core channels - updated every frame by Staccato.ts */
 	--Staccato: 0;
 	--StaccatoRaw: 0;
 	--StaccatoPhase: 0;
@@ -19,7 +19,7 @@
 	--AttentionDelay: 0ms;
 	--AttentionOpacity: 1;
 
-	/* Per-element seed — set ONCE per page load by SeedSelector.
+	/* Per-element seed - set ONCE per page load by SeedSelector.
 	   Drives static unique offsets so the layout looks different each
 	   visit yet is always structurally recognisable. */
 	--StaccatoSeed: 0;
@@ -33,7 +33,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 1 — STATIC SEED OFFSETS
+   TIER 1 - STATIC SEED OFFSETS
    ─────────────────────────────────────────────────────────────────
    Transforms are driven by --StaccatoSeed / --StaccatoSeedPhase,
    which are set ONCE on page load (never on each frame).
@@ -89,7 +89,7 @@
 	transform: rotate(0deg);
 }
 
-/* Card — seed scatter + attention vars for scroll-reveal entry */
+/* Card - seed scatter + attention vars for scroll-reveal entry */
 .StaccatoCard {
 	transform: translate(
 			calc(var(--StaccatoSeed, 0) * 3px + var(--AttentionOffsetX, 0px)),
@@ -103,7 +103,7 @@
 			)
 		)
 		scale(var(--AttentionScale, 1));
-	/* live border shimmer is intentional — it is a "flashing light", not movement */
+	/* live border shimmer is intentional - it is a "flashing light", not movement */
 	border-width: calc(1px + var(--StaccatoBorder) * 0.25px);
 	opacity: var(--AttentionOpacity, 1);
 	transition:
@@ -112,7 +112,7 @@
 	transition-delay: var(--AttentionDelay, 0ms);
 }
 .StaccatoCard:hover {
-	/* Drain seed & rotation — settle at attention anchor */
+	/* Drain seed & rotation - settle at attention anchor */
 	transform: translate(
 			var(--AttentionOffsetX, 0px),
 			var(--AttentionOffsetY, 0px)
@@ -121,7 +121,7 @@
 	transition-delay: 0ms;
 }
 
-/* Logo — near-zero seed offset, not structural movement */
+/* Logo - near-zero seed offset, not structural movement */
 .StaccatoLogo {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 0.4px),
@@ -133,7 +133,7 @@
 	transform: none;
 }
 
-/* Button — tiny seed texture; hover elevates cleanly */
+/* Button - tiny seed texture; hover elevates cleanly */
 .StaccatoButton {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 0.5px),
@@ -152,7 +152,7 @@
 	outline-offset: 3px;
 }
 
-/* Nav link — tiny seed offset; hover lifts to clean state */
+/* Nav link - tiny seed offset; hover lifts to clean state */
 .StaccatoNavLink {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 1px),
@@ -164,7 +164,7 @@
 	transform: translateY(-1px);
 }
 
-/* Icon — seed position + live opacity shimmer ("flashing light") */
+/* Icon - seed position + live opacity shimmer ("flashing light") */
 .StaccatoIcon {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 1px),
@@ -182,7 +182,7 @@
 	opacity: 1;
 }
 
-/* Avatar — seed scatter */
+/* Avatar - seed scatter */
 .StaccatoAvatar {
 	transform: translate(
 			calc(var(--StaccatoSeed, 0) * 2px),
@@ -195,7 +195,7 @@
 	transform: none;
 }
 
-/* Price — seed micro-scale + letter-spacing variance */
+/* Price - seed micro-scale + letter-spacing variance */
 .StaccatoPrice {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.005));
 	letter-spacing: calc(var(--StaccatoSeed, 0) * 0.08px);
@@ -208,7 +208,7 @@
 	letter-spacing: normal;
 }
 
-/* Checkmark — seed scale; live opacity shine is a "flashing light" */
+/* Checkmark - seed scale; live opacity shine is a "flashing light" */
 .StaccatoCheckmark {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.03));
 	opacity: calc(0.82 + var(--StaccatoRaw) * 0.18);
@@ -218,7 +218,7 @@
 	transform: scale(1);
 }
 
-/* Toggle — seed micro-scale */
+/* Toggle - seed micro-scale */
 .StaccatoToggle {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.008));
 	transition: transform 0.2s ease;
@@ -227,7 +227,7 @@
 	transform: scale(1);
 }
 
-/* Social icons — seed scatter; hover = clean lift + full opacity */
+/* Social icons - seed scatter; hover = clean lift + full opacity */
 .StaccatoSocial {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 2px),
@@ -243,7 +243,7 @@
 	opacity: 1;
 }
 
-/* Badge — seed micro-scale; tiny live opacity pulse */
+/* Badge - seed micro-scale; tiny live opacity pulse */
 .StaccatoBadge {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.015));
 	opacity: calc(0.93 + var(--StaccatoRaw) * 0.07);
@@ -261,7 +261,7 @@
 	transform: scale(calc(0.9 + var(--StaccatoRhythm) * 0.2));
 }
 
-/* Morphing — seed-based (set once, not live animated) */
+/* Morphing - seed-based (set once, not live animated) */
 .StaccatoMorphRadius {
 	border-radius: calc(max(var(--StaccatoSeed, 0), 0px) * 1.5px);
 }
@@ -273,14 +273,14 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 2 — LIVE FLOAT (only elements that SHOULD move)
+   TIER 2 - LIVE FLOAT (only elements that SHOULD move)
    ─────────────────────────────────────────────────────────────────
    Hero decorative elements and the hero CTA keep live animated
    transforms. Amplitudes are low. Hover drains the noise signal
    and settles at the attention anchor or a clean elevated state.
    ══════════════════════════════════════════════════════════════════ */
 
-/* Hero decorative particles / illustrations — gentle continuous float */
+/* Hero decorative particles / illustrations - gentle continuous float */
 .StaccatoFloat {
 	transform: translate(
 			calc(var(--StaccatoRaw) * 6px + var(--AttentionOffsetX, 0px)),
@@ -289,7 +289,7 @@
 		rotate(var(--AttentionRotation, 0deg)) scale(var(--AttentionScale, 1));
 }
 .StaccatoFloat:hover {
-	/* Drain noise — land at the attention anchor only */
+	/* Drain noise - land at the attention anchor only */
 	transform: translate(
 			var(--AttentionOffsetX, 0px),
 			var(--AttentionOffsetY, 0px)
@@ -299,7 +299,7 @@
 		cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Hero CTA — subtle live float, hover normalises */
+/* Hero CTA - subtle live float, hover normalises */
 .StaccatoHeroButton {
 	cursor: pointer;
 	transform: translate(
@@ -317,7 +317,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 3 — FLASHING LIGHTS (live opacity / color / border / glow)
+   TIER 3 - FLASHING LIGHTS (live opacity / color / border / glow)
    ─────────────────────────────────────────────────────────────────
    NO position changes. Only opacity, hue, border-color, outline.
    These are the "alive" elements. Everything else is seed-static.
@@ -368,7 +368,7 @@
 	outline-offset: calc(2px + var(--StaccatoGlow) * 2px);
 }
 
-/* Glow / shadow: flat white design — intentional no-ops */
+/* Glow / shadow: flat white design - intentional no-ops */
 .StaccatoGlow {
 	/* no box-shadow on flat white */
 }
@@ -392,7 +392,7 @@
 	filter: brightness(1);
 }
 
-/* Rhythm dot — live opacity for loading indicators, status pips */
+/* Rhythm dot - live opacity for loading indicators, status pips */
 .StaccatoRhythmBeat {
 	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.01));
 }
@@ -405,7 +405,7 @@
 	opacity: calc(0.65 + var(--StaccatoRaw) * 0.35);
 }
 
-/* Separator / divider — opacity only; micro-scale kept but near-zero */
+/* Separator / divider - opacity only; micro-scale kept but near-zero */
 .StaccatoSeparator {
 	opacity: calc(0.18 + var(--StaccatoRaw) * 0.07);
 	transform: scaleX(calc(1 + var(--StaccatoMorph) * 0.003));
@@ -418,7 +418,7 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 4 — SCROLL-LINKED PARALLAX (not noise jitter)
+   TIER 4 - SCROLL-LINKED PARALLAX (not noise jitter)
    ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoParallaxNear {

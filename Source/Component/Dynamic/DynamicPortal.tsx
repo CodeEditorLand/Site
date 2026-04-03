@@ -13,19 +13,19 @@ import type TierContent from "./Interface/Content/Portal/Tier.js";
  * Icon registry for tier icons.
  *
  * Covers the full CodeEditorLand technology stack:
- *   — Core runtime:        Cpu, Zap, Layers, Network, Radio, Timer
- *   — Platform/OS:         Laptop, Monitor, HardDrive, Server, Terminal
- *   — Language/build:      Code, Wrench, Package, PackageOpen, Hammer, FlaskConical
- *   — Git/VCS:             GitBranch, GitFork, GitCommit, GitPullRequest, FolderGit
- *   — Identity/crypto:     Key, KeyRound, Lock, Hash, Fingerprint, Shield
- *   — Cloud/sync:          Cloud, RefreshCw, RefreshCcw, RotateCcw, Database
- *   — Auth/provisioning:   UserPlus, Users, Building2, Blocks
- *   — Extensions/plugins:  Puzzle, Box, CirclePlay, Rocket
- *   — Connectivity:        Wifi, WifiOff, Globe, Unplug, Link2, ExternalLink
- *   — Audit/docs:          FileText, Activity, AlertTriangle, Info
- *   — Settings/config:     Settings, Sliders, CheckCircle, Check, ChevronRight
- *   — AI/intelligence:     BrainCircuit
- *   — Support/lifecycle:   LifeBuoy, Download, Search
+ *   - Core runtime:        Cpu, Zap, Layers, Network, Radio, Timer
+ *   - Platform/OS:         Laptop, Monitor, HardDrive, Server, Terminal
+ *   - Language/build:      Code, Wrench, Package, PackageOpen, Hammer, FlaskConical
+ *   - Git/VCS:             GitBranch, GitFork, GitCommit, GitPullRequest, FolderGit
+ *   - Identity/crypto:     Key, KeyRound, Lock, Hash, Fingerprint, Shield
+ *   - Cloud/sync:          Cloud, RefreshCw, RefreshCcw, RotateCcw, Database
+ *   - Auth/provisioning:   UserPlus, Users, Building2, Blocks
+ *   - Extensions/plugins:  Puzzle, Box, CirclePlay, Rocket
+ *   - Connectivity:        Wifi, WifiOff, Globe, Unplug, Link2, ExternalLink
+ *   - Audit/docs:          FileText, Activity, AlertTriangle, Info
+ *   - Settings/config:     Settings, Sliders, CheckCircle, Check, ChevronRight
+ *   - AI/intelligence:     BrainCircuit
+ *   - Support/lifecycle:   LifeBuoy, Download, Search
  */
 const TierIconRegistry: Record<string, lucide.LucideIcon> = {
 	Activity: lucide.Activity,
@@ -154,13 +154,13 @@ const IconLabelMap: Record<string, string> = {
 };
 
 /**
- * Semantic icon color map — per-icon, domain-grouped, tier-independent.
+ * Semantic icon color map - per-icon, domain-grouped, tier-independent.
  *
  * Each color group represents a function domain. Colors are chosen to be:
- *   — Visually distinct from each other
- *   — Visually distinct from the 4 tier border colors
+ *   - Visually distinct from each other
+ *   - Visually distinct from the 4 tier border colors
  *     (Cloud #3b82f6, Provider #8b5cf6, LocalFirst #f97316, Enterprise #374151)
- *   — Readable at 16px on both light and dark surfaces
+ *   - Readable at 16px on both light and dark surfaces
  *
  * Groups:
  *   Identity/crypto   → indigo   #6366f1
@@ -177,13 +177,13 @@ const IconLabelMap: Record<string, string> = {
  *   Support/lifecycle → pink     #ec4899
  */
 const IconColorMap: Record<string, string> = {
-	// Identity / crypto — TierEnterprise (charcoal → SpineWASM for identity)
+	// Identity / crypto - TierEnterprise (charcoal → SpineWASM for identity)
 	Lock: "var(--SpineWASMFore)",
 	Key: "var(--SpineWASMFore)",
 	Fingerprint: "var(--SpineWASMFore)",
 	Shield: "var(--SpineWASMFore)",
 
-	// Network / connect — TierLocalFirst (TCP orange)
+	// Network / connect - TierLocalFirst (TCP orange)
 	Wifi: "var(--SpineTCPFore)",
 	WifiOff: "var(--SpineTCPFore)",
 	Globe: "var(--SpineIPCFore)",
@@ -191,14 +191,14 @@ const IconColorMap: Record<string, string> = {
 	Radio: "var(--SpineTCPFore)",
 	Link2: "var(--SpineIPCFore)",
 
-	// Storage / hardware — PlatformDesktop slate
+	// Storage / hardware - PlatformDesktop slate
 	HardDrive: "var(--PlatformDesktopFore)",
 	Server: "var(--PlatformDesktopFore)",
 	Database: "var(--DatabasePostgresFore)",
 	Cpu: "var(--PlatformDesktopFore)",
 	Terminal: "var(--PlatformCLIFore)",
 
-	// Build / code — ExtensionRust / LanguageRust emerald
+	// Build / code - ExtensionRust / LanguageRust emerald
 	Code: "var(--SpinegRPCFore)",
 	Wrench: "var(--SpinegRPCFore)",
 	Hammer: "var(--SpinegRPCFore)",
@@ -208,14 +208,14 @@ const IconColorMap: Record<string, string> = {
 	Box: "var(--SpinegRPCFore)",
 	Puzzle: "var(--PlatformExtensionFore)",
 
-	// Git / VCS — LanguageJavaScript amber
+	// Git / VCS - LanguageJavaScript amber
 	GitBranch: "var(--LanguageJavaScriptFore)",
 	GitFork: "var(--LanguageJavaScriptFore)",
 	GitCommit: "var(--LanguageJavaScriptFore)",
 	GitPullRequest: "var(--LanguageJavaScriptFore)",
 	FolderGit: "var(--LanguageJavaScriptFore)",
 
-	// Cloud / sync / deploy — TierCloud (SpineIPC blue)
+	// Cloud / sync / deploy - TierCloud (SpineIPC blue)
 	Cloud: "var(--TierCloudFore)",
 	RefreshCw: "var(--TierCloudFore)",
 	RefreshCcw: "var(--TierCloudFore)",
@@ -225,37 +225,37 @@ const IconColorMap: Record<string, string> = {
 	Timer: "var(--TierCloudFore)",
 	Zap: "var(--TierCloudFore)",
 
-	// Auth / provisioning — TierProvider (SpineWASM violet)
+	// Auth / provisioning - TierProvider (SpineWASM violet)
 	KeyRound: "var(--TierProviderFore)",
 	UserPlus: "var(--TierProviderFore)",
 	Users: "var(--TierProviderFore)",
 	Building2: "var(--TierProviderFore)",
 	Blocks: "var(--TierProviderFore)",
 
-	// Audit / docs — DatabaseTurso teal
+	// Audit / docs - DatabaseTurso teal
 	FileText: "var(--DatabaseTursoFore)",
 	Activity: "var(--DatabaseTursoFore)",
 	AlertTriangle: "var(--DatabaseTursoFore)",
 	Info: "var(--DatabaseTursoFore)",
 	Search: "var(--DatabaseTursoFore)",
 
-	// Settings / config — PlatformDesktop slate
+	// Settings / config - PlatformDesktop slate
 	Settings: "var(--PlatformDesktop)",
 	Sliders: "var(--PlatformDesktop)",
 	CheckCircle: "var(--PlatformDesktop)",
 	Check: "var(--PlatformDesktop)",
 	ChevronRight: "var(--PlatformDesktop)",
 
-	// Connectivity misc — TierLocalFirst (SpineTCP orange)
+	// Connectivity misc - TierLocalFirst (SpineTCP orange)
 	Unplug: "var(--TierLocalFirstFore)",
 	ExternalLink: "var(--TierLocalFirstFore)",
 	Layers: "var(--TierLocalFirstFore)",
 	Hash: "var(--TierLocalFirstFore)",
 
-	// AI — SpineWASM purple
+	// AI - SpineWASM purple
 	BrainCircuit: "var(--SpineWASM)",
 
-	// Support / lifecycle — PlatformMobile pink
+	// Support / lifecycle - PlatformMobile pink
 	LifeBuoy: "var(--PlatformMobileFore)",
 	CirclePlay: "var(--PlatformMobileFore)",
 	Monitor: "var(--PlatformMobileFore)",
@@ -529,7 +529,7 @@ const PortalTierRow = ({
 							<CardTitle className="text-xl">
 								{Content.Title}
 							</CardTitle>
-							{/* Tier header icon — tooltip shows tier identity label on hover */}
+							{/* Tier header icon - tooltip shows tier identity label on hover */}
 							<div className="PortalTierIconWrapper">
 								<IconTooltip
 									Label={TierIconLabel}
@@ -965,13 +965,13 @@ const PortalTierRow = ({
  *
  * Icon accessibility (IconTooltip):
  *   Every icon in the tier header, feature stack, capability list, and
- *   settings footer is wrapped in <IconTooltip> — three layers:
- *     1. aria-label on the trigger <span>  — screen reader announcement
- *     2. title on the trigger <span>       — native browser tooltip fallback
- *     3. Radix TooltipContent              — styled hover tooltip (sighted users)
+ *   settings footer is wrapped in <IconTooltip> - three layers:
+ *     1. aria-label on the trigger <span>  - screen reader announcement
+ *     2. title on the trigger <span>       - native browser tooltip fallback
+ *     3. Radix TooltipContent              - styled hover tooltip (sighted users)
  *   DocHref prop is reserved for future doc-link integration.
  *   Button-chrome icons (Lock, Wifi, Building2) that follow visible button
- *   text are exempted and keep aria-hidden="true" — they are decorative there.
+ *   text are exempted and keep aria-hidden="true" - they are decorative there.
  */
 const DynamicPortal = ({
 	Content,

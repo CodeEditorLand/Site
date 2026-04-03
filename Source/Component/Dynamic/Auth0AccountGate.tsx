@@ -14,7 +14,7 @@ import { Button } from "../UI/Button";
  * - "signup" route: triggers loginWithRedirect({ screen_hint: "signup" })
  * - If already authenticated: shows user profile + logout
  *
- * This replaces custom email/password forms — Auth0 Universal Login
+ * This replaces custom email/password forms - Auth0 Universal Login
  * handles all UI (login, signup, password reset, MFA, social, enterprise SSO).
  */
 export default ({
@@ -190,7 +190,7 @@ export default ({
 		);
 	}
 
-	// Not authenticated, not loading — redirect is in progress
+	// Not authenticated, not loading - redirect is in progress
 	return (
 		<div className="flex min-h-screen flex-col">
 			<Header {...(HeaderContent ? { Content: HeaderContent } : {})} />

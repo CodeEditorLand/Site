@@ -400,14 +400,14 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 	const PreviousText = useRef(Text);
 	const ContainerRef = useRef<HTMLSpanElement>(null);
 	const AnimRef = useRef(0);
-	/** Lerped character delay in ms — starts at 20ms, noise modulates it. */
+	/** Lerped character delay in ms - starts at 20ms, noise modulates it. */
 	const LerpedDelay = useRef(20);
 	const LastTime = useRef(performance.now());
 
 	useEffect(() => {
 		if (Text === PreviousText.current) return;
 
-		// Respect reduced-motion preference — instant switch, no animation.
+		// Respect reduced-motion preference - instant switch, no animation.
 		if (
 			typeof window !== "undefined" &&
 			window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -418,7 +418,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 		}
 
 		// Lock both dimensions so the element never collapses to zero
-		// height/width during the typewriter reveal — a height collapse
+		// height/width during the typewriter reveal - a height collapse
 		// causes the page to shrink and the browser snaps scroll to y=0.
 		if (ContainerRef.current) {
 			const Rect = ContainerRef.current.getBoundingClientRect();
@@ -455,7 +455,7 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 
 				if (CharCount >= Text.length) {
 					SetIsAnimating(false);
-					// Release dimension lock — allow natural reflow.
+					// Release dimension lock - allow natural reflow.
 					if (ContainerRef.current) {
 						ContainerRef.current.style.minWidth = "";
 						ContainerRef.current.style.minHeight = "";

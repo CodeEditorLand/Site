@@ -70,7 +70,7 @@
 				"subtitle": "Rust task scheduler"
 			},
 			"common": {
-				"description": "Abstract Core Library — Trait Definitions and DTOs",
+				"description": "Abstract Core Library - Trait Definitions and DTOs",
 				"subtitle": "Rust core library"
 			},
 			"vine": {
@@ -148,7 +148,7 @@
 		},
 		"elements": {
 			"heading": "Elements Architecture",
-			"description": "Code Editor Land is built from 15 modular Elements — self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
+			"description": "Code Editor Land is built from 15 modular Elements - self-contained Rust crates that provide specific functionality. Each Element is published as a crate and can be used independently.",
 			"docs": "Each Element has its own README with architecture details. Find them in Land/Element/"
 		},
 		"howToContribute": {

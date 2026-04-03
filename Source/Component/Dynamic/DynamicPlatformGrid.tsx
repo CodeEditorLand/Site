@@ -9,7 +9,7 @@ import type Property from "./Interface/Property/Grid/Platform.js";
 import type CardSection from "./Interface/Section/Card.js";
 
 /**
- * Semantic color map per platform name — maps each platform to its OS token.
+ * Semantic color map per platform name - maps each platform to its OS token.
  * Applied as a top-border accent on each download card.
  */
 const PlatformColorMap: Record<string, string> = {

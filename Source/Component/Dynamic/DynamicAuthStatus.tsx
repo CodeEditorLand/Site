@@ -19,7 +19,7 @@ import { Skeleton } from "../UI/Skeleton";
  *
  * Loading state: skeleton matching avatar size (no layout shift).
  * Authenticated state: Radix Avatar (picture + initials fallback)
- *   with Radix DropdownMenu — Dashboard, Account, Sign Out items.
+ *   with Radix DropdownMenu - Dashboard, Account, Sign Out items.
  * Unauthenticated state: Sign In link button.
  */
 export default ({

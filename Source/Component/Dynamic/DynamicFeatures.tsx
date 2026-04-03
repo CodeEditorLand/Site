@@ -27,7 +27,7 @@ const FeatureIconRegistry: Record<string, lucide.LucideIcon> = {
 };
 
 /**
- * Semantic color map per feature ID — maps each feature to its design token.
+ * Semantic color map per feature ID - maps each feature to its design token.
  * Used for the card header icon color and the icon stack in the description.
  */
 const FeatureColorMap: Record<string, string> = {
@@ -61,7 +61,7 @@ const FeatureIconLabelMap: Record<string, string> = {
 };
 
 /**
- * Per-icon semantic color — each icon has its OWN color based on what it
+ * Per-icon semantic color - each icon has its OWN color based on what it
  * represents in the technology stack, independent of which feature card
  * it appears in. This ensures visual delineation across the color matrix.
  *
@@ -96,7 +96,7 @@ const IconSemanticColorMap: Record<string, string> = {
  * Dynamic Features with simplex noise integration.
  * Cards get StaccatoCard + Attention scatter for organic layout.
  * Icons render immediately via direct imports (no dynamic import delay).
- * All icons are wrapped in IconTooltip — aria-label, title, and hover tooltip.
+ * All icons are wrapped in IconTooltip - aria-label, title, and hover tooltip.
  */
 const DynamicFeatures = ({ Content, ClassName }: Property) => {
 	const { Title, Subtitle, Features, Columns = 3, Gap = "lg" } = Content;
@@ -203,7 +203,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 									<h3 className="text-xl font-semibold">
 										{Feature.Title}
 									</h3>
-									{/* Card header icon — wrapped in IconTooltip so hover + screen reader both work */}
+									{/* Card header icon - wrapped in IconTooltip so hover + screen reader both work */}
 									<div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary">
 										<IconTooltip
 											Label={IconLabel}

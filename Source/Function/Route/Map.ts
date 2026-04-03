@@ -59,34 +59,34 @@ export const SemanticAlias: Record<string, string> = {
 	"/guide": "/Doc",
 	"/manual": "/Doc",
 	"/api": "/Doc",
-	// Auth — SignIn
+	// Auth - SignIn
 	"/login": "/Account/SignIn",
 	"/log-in": "/Account/SignIn",
 	"/sign-in": "/Account/SignIn",
 	"/authenticate": "/Account/SignIn",
 	"/auth": "/Account/SignIn",
-	// Auth — SignUp
+	// Auth - SignUp
 	"/register": "/Account/SignUp",
 	"/sign-up": "/Account/SignUp",
 	"/join": "/Account/SignUp",
 	"/create-account": "/Account/SignUp",
-	// Auth — ForgotPassword
+	// Auth - ForgotPassword
 	"/forgot-password": "/Account/ForgotPassword",
 	"/forgot": "/Account/ForgotPassword",
 	"/password-reset": "/Account/ForgotPassword",
 	"/recover": "/Account/ForgotPassword",
 	"/recover-password": "/Account/ForgotPassword",
-	// Auth — ResetPassword
+	// Auth - ResetPassword
 	"/reset-password": "/Account/ResetPassword",
 	"/reset": "/Account/ResetPassword",
 	"/new-password": "/Account/ResetPassword",
 	"/change-password": "/Account/ResetPassword",
-	// Legal — Term
+	// Legal - Term
 	"/tos": "/Legal/Term",
 	"/terms-of-service": "/Legal/Term",
 	"/eula": "/Legal/Term",
 	"/conditions": "/Legal/Term",
-	// Legal — Privacy
+	// Legal - Privacy
 	"/privacy-policy": "/Legal/Privacy",
 	"/gdpr": "/Legal/Privacy",
 	"/data-policy": "/Legal/Privacy",
@@ -453,7 +453,7 @@ const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
 				}
 			}
 		} else {
-			// Not a known canonical — use as-is
+			// Not a known canonical - use as-is
 			Canonical.push(Built);
 		}
 	}

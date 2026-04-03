@@ -36,7 +36,7 @@ const BuildDevVariantMap = (): Record<string, string> => {
 	const DevMap: Record<string, string> = {};
 
 	// Generate all variants (plural, case, compound, abbreviation) for
-	// each canonical path — same logic the build-time route map uses.
+	// each canonical path - same logic the build-time route map uses.
 	for (const PascalPath of CanonicalPath) {
 		const BuiltPath = PascalPath.toLowerCase();
 
@@ -90,7 +90,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 					// In dev, Astro serves pages at their PascalCase filename
 					// path (e.g., /Download from Download.astro), so PascalCase
-					// canonicals need no rewrite — just pass through.
+					// canonicals need no rewrite - just pass through.
 
 					// Check if this is a variant that should redirect
 					const Target = DevVariantMap[Cleaned];
@@ -242,7 +242,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				minify: false,
 			});
 
-			// Remove the `export default {}` stub — present only for TS module
+			// Remove the `export default {}` stub - present only for TS module
 			// compatibility, not valid in a classic service worker script context.
 			const ServiceWorkerCode =
 				ESBuildResult.code
@@ -262,7 +262,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			// Public/_redirects uses 200 (rewrite) rules, NOT 301 redirects.
 			// 200 rewrites serve directory content directly, preventing CF Pages'
 			// internal trailing-slash 301 from firing before [[Path]].ts can strip
-			// it — which was the source of the /Account/SignIn ↔ /Account/SignIn/
+			// it - which was the source of the /Account/SignIn ↔ /Account/SignIn/
 			// infinite redirect loop.
 			// The [[Path]].ts edge function still handles all variant → canonical
 			// redirects (case-insensitive, semantic aliases, etc.) with correct
@@ -314,7 +314,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 						);
 					}
 				} catch {
-					// Sitemap file doesn't exist — @astrojs/sitemap might
+					// Sitemap file doesn't exist - @astrojs/sitemap might
 					// not be installed or hasn't run yet
 				}
 			}

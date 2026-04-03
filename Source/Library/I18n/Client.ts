@@ -131,7 +131,7 @@ const DetectedLocale = DetectLocale();
 
 // Phase 1: Bind i18next to React *synchronously* before any awaits.
 //
-// i18n.init() is called here — before awaiting the locale JSON — so that
+// i18n.init() is called here - before awaiting the locale JSON - so that
 // React components which hydrate via client:idle (e.g. Footer) can call
 // useTranslation() without hitting the "NO_I18NEXT_INSTANCE" error.
 // Resources start empty; components fall back to their hardcoded defaultValues
@@ -180,7 +180,7 @@ if (DetectedLocale !== "en") {
 }
 
 /**
- * Switch locale at runtime — loads the target locale bundle on demand.
+ * Switch locale at runtime - loads the target locale bundle on demand.
  */
 export const SwitchLocale = async (Locale: SupportedLocale) => {
 	if (!i18n.hasResourceBundle(Locale, "common")) {

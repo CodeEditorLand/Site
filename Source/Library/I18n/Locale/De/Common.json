@@ -150,7 +150,7 @@
 		},
 		"elements": {
 			"heading": "Elemente-Architektur",
-			"description": "Code Editor Land besteht aus 15 modularen Elementen — eigenständigen Rust-Crates, die bestimmte Funktionalität bieten. Jedes Element wird als Crate veröffentlicht und kann unabhängig verwendet werden.",
+			"description": "Code Editor Land besteht aus 15 modularen Elementen - eigenständigen Rust-Crates, die bestimmte Funktionalität bieten. Jedes Element wird als Crate veröffentlicht und kann unabhängig verwendet werden.",
 			"docs": "Jedes Element hat seine eigene README mit Architekturdetails. Finden Sie sie unter Land/Element/"
 		},
 		"funding": {

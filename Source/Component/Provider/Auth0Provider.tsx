@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 /**
  * Auth0 context wrapper for client-side React islands.
- * Uses Auth0 Universal Login (redirect-based) — no custom login forms needed.
+ * Uses Auth0 Universal Login (redirect-based) - no custom login forms needed.
  *
  * The Auth0 SPA SDK deduplicates auth state internally, so multiple
  * Auth0Provider instances (across Astro islands) share the same session.
