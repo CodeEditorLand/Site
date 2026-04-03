@@ -104,12 +104,13 @@ export const SemanticAlias: Record<string, string> = {
 	"/develop": "/Contributing",
 	"/opensource": "/Contributing",
 	"/open-source": "/Contributing",
-	// Home
+	// Home — also catches /Visit when SW is active (skips the dispatch page)
 	"/home": "/",
 	"/main": "/",
 	"/index": "/",
 	"/start": "/",
 	"/welcome": "/",
+	"/visit": "/",
 	// Verify
 	"/verify-email": "/Verify",
 	"/email-verification": "/Verify",
