@@ -399,7 +399,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 						{/* Connecting Lines:breathing opacity */}
 						{HeroConfiguration.ShowConnectingLines && (
 							<svg
-								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
+								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full"
 								aria-hidden="true"
 								role="presentation">
 								{FloatingCard.map((Card, Index) => {
@@ -424,6 +424,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 											strokeWidth="0.5"
 											strokeDasharray="4 10"
 											strokeLinecap="round"
+											opacity={0.1 - Index * 0.006}
 										/>
 									);
 								})}

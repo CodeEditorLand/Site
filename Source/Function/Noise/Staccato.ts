@@ -26,10 +26,25 @@ export default (async () => {
 	let Active = false;
 	let FrameIdentifier = 0;
 
+	// Optimistic-update throttle: CSS vars commit every COMMIT_INTERVAL ms.
+	// RAF still fires every frame for accurate time sampling, but the
+	// properties only write when enough time has passed. CSS transitions
+	// (set to 1.6s in Stylesheet.css) then smoothly bridge each commit,
+	// so the page feels alive but states are long enough to inspect.
+	const COMMIT_INTERVAL = 500;
+	let LastCommit = -Infinity;
+
 	const Quantize = (Value: number, Step: number): number =>
 		Math.floor(Value * Step) / Step;
 
 	const Tick = (Time: number): void => {
+		if (Active) {
+			FrameIdentifier = requestAnimationFrame(Tick);
+		}
+
+		if (Time - LastCommit < COMMIT_INTERVAL) return;
+		LastCommit = Time;
+
 		const Raw = Noise(Time * SPEED, 0);
 		const Stepped = Quantize(Raw, STEP);
 		const Phase = Quantize(Noise(Time * SPEED * Channel.Phase, 100), 4);
@@ -51,10 +66,6 @@ export default (async () => {
 
 		Turbulence.AnimateFilter(Raw);
 		ParallaxModule.UpdateScrollProgress(Root);
-
-		if (Active) {
-			FrameIdentifier = requestAnimationFrame(Tick);
-		}
 	};
 
 	const Start = (): void => {

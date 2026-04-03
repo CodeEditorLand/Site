@@ -1,0 +1,1 @@
+const _={Speed:typeof __NOISE_SPEED__<"u"?__NOISE_SPEED__:1e-4,Step:typeof __NOISE_STEP__<"u"?__NOISE_STEP__:20,ChannelSpeed:{Phase:.18,Color:.07,Rhythm:.6,Morph:.25,Border:.1,Glow:.28}};export{_ as default};
