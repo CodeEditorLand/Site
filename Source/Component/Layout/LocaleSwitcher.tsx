@@ -6,37 +6,48 @@ import {
 	SwitchLocale,
 	type SupportedLocale,
 } from "@/Library/I18n/Client.js";
-import { useRef } from "react";
+import { ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "../UI/Select.js";
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "../UI/DropdownMenu.js";
+
+// ─── Why DropdownMenu instead of Select ──────────────────────────────────────
+//
+// @radix-ui/react-select (any version) unconditionally wraps its content with
+// react-remove-scroll, which injects `overflow: hidden` on <body> via CSS.
+// In Chrome, this silently transfers the scroll container from <body> to <html>
+// (which has scrollTop=0), resetting window.scrollY to 0 without firing any
+// scroll event — making it impossible to detect or counteract.
+//
+// @radix-ui/react-dropdown-menu is built on @radix-ui/react-menu which does
+// NOT use react-remove-scroll. Confirmed via source: no "remove-scroll" import.
+// ─────────────────────────────────────────────────────────────────────────────
 
 const LocaleSwitcher = () => {
 	const { i18n } = useTranslation();
 
 	const CurrentLocale = (i18n.language || "en") as SupportedLocale;
-	const TriggerRef = useRef<HTMLButtonElement>(null);
 
-	const HandleChange = (Value: string) => {
+	// ─── Locale selection ─────────────────────────────────────────────────────
+	//
+	// The scroll guard here handles React 18's deferred re-renders after
+	// i18n.changeLanguage() resolves. Two rAFs ensure the guard outlasts any
+	// layout-triggered drift from the new locale's content dimensions.
+	//
+	const HandleChange = (Value: SupportedLocale) => {
 		const ScrollY = window.scrollY;
-
-		// Install a guard before the locale switch starts.
-		// React 18 defers i18n re-renders to the next animation frame,
-		// so the naive .then() scrollTo fires too early — the deferred
-		// layout reflow overwrites it. The guard snaps back any scroll
-		// attempt immediately, and is held for two frames post-switch
-		// to cover all deferred React work before being released.
-		const Guard = () =>
-			window.scrollTo({ top: ScrollY, behavior: "instant" });
+		const Guard = () => {
+			if (window.scrollY !== ScrollY) {
+				window.scrollTo({ top: ScrollY, behavior: "instant" });
+			}
+		};
 		window.addEventListener("scroll", Guard, { passive: true });
-
-		SwitchLocale(Value as SupportedLocale).then(() => {
+		SwitchLocale(Value).then(() => {
 			requestAnimationFrame(() => {
 				requestAnimationFrame(() => {
 					window.removeEventListener("scroll", Guard);
@@ -47,36 +58,33 @@ const LocaleSwitcher = () => {
 	};
 
 	return (
-		<Select value={CurrentLocale} onValueChange={HandleChange}>
-			<SelectTrigger
-				ref={TriggerRef}
-				className="h-9 w-auto min-w-[6rem] border border-[var(--Border)] bg-white text-sm font-medium text-[var(--Foreground)]"
+		<DropdownMenu>
+			<DropdownMenuTrigger
+				className="flex h-9 items-center gap-1.5 rounded-md border border-[var(--Border)] bg-white px-3 text-sm font-medium text-[var(--Foreground)] outline-none ring-offset-white hover:bg-[var(--Muted)] focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-[var(--Muted)]"
 				aria-label="Select language">
-				<SelectValue />
-			</SelectTrigger>
-			<SelectContent
-				onCloseAutoFocus={(Event) => {
-					// Return focus to the trigger without any scroll side-effect.
-					// preventDefault alone drops focus to document.body on some
-					// browsers, which snaps the viewport to y=0.
-					Event.preventDefault();
-					TriggerRef.current?.focus({ preventScroll: true });
-				}}>
+				<span>{LocaleLabel[CurrentLocale]}</span>
+				<ChevronDown
+					size={14}
+					className="text-[var(--MutedForeground)] transition-transform duration-200 [[data-state=open]_&]:rotate-180"
+				/>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent align="end" className="min-w-[8rem]">
 				{SupportedLocaleList.map((Locale) => (
-					<SelectItem
+					<DropdownMenuItem
 						key={Locale}
-						value={Locale}
-						aria-current={
-							Locale === CurrentLocale ? "true" : undefined
+						onClick={() => HandleChange(Locale)}
+						className={
+							Locale === CurrentLocale
+								? "font-semibold text-[var(--Foreground)]"
+								: "text-[var(--MutedForeground)]"
 						}>
 						{LocaleLabel[Locale]}
-					</SelectItem>
+					</DropdownMenuItem>
 				))}
-			</SelectContent>
-		</Select>
+			</DropdownMenuContent>
+		</DropdownMenu>
 	);
 };
 
 export { LocaleSwitcher };
-
 export default LocaleSwitcher;
