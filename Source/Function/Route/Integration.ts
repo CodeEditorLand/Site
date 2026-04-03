@@ -21,6 +21,12 @@ const { join: Join, resolve: Resolve } = await import("node:path");
 
 const { fileURLToPath: FileURLToPath } = await import("node:url");
 
+// esbuild must be pre-imported here (at module evaluation time, while Vite is
+// still alive). Importing it inside astro:build:done fails with "Vite module
+// runner has been closed" because dynamic imports route through Vite's module
+// runner, which Astro shuts down before firing the build:done hook.
+const { transform: ESBuildTransform } = await import("esbuild");
+
 // Build a combined dev-time lookup from the static maps.
 // In dev, Astro serves pages at their PascalCase filename path
 // (e.g., /Download from Download.astro), so we redirect every variant
@@ -221,8 +227,6 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 				return;
 			}
-
-			const { transform: ESBuildTransform } = await import("esbuild");
 
 			const ESBuildResult = await ESBuildTransform(ServiceWorkerSource, {
 				loader: "ts",

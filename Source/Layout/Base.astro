@@ -16,7 +16,9 @@ import { GetI18n } from "../Library/I18n/Server";
 // <link rel="canonical">, og:url, and all meta tags reference the correct URL.
 const RawPath =
 	Astro.url.pathname === "/" ? "/" : Astro.url.pathname.replace(/\/$/, "");
+
 const CanonicalPath = PascalCaseCanonical[RawPath] ?? RawPath;
+
 const DefaultURL = `https://editor.land${CanonicalPath === "/" ? "" : CanonicalPath}`;
 
 const {
@@ -32,12 +34,19 @@ const {
 
 interface Props {
 	Title?: string;
+
 	Description?: string;
+
 	Language?: string;
+
 	Direction?: string;
+
 	Image?: string;
+
 	Url?: string;
+
 	Type?: "website" | "article";
+
 	NoIndex?: boolean;
 }
 
@@ -48,8 +57,11 @@ const T = GetI18n();
 <!doctype html>
 <html lang={Language} class="no-js" dir={Direction}>
 	<head>
+		<meta charset="utf-8" />
+
 		<script>
 			document.documentElement.classList.remove("no-js");
+
 			document.documentElement.classList.add("js");
 		</script>
 
@@ -64,23 +76,30 @@ const T = GetI18n();
 			lang={Language}
 			noIndex={NoIndex}
 		/>
-		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<meta name="theme-color" content="#ffffff" />
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="twitter:dnt" content="on" />
 
-		<!-- Links -->
-		<link
-			rel="preconnect"
-			href="https://fonts.googleapis.com"
-			crossorigin
-		/>
+		<!-- Fonts: preconnect + async load via media=print swap to avoid render-blocking.
+		     No <link rel="preload"> — preload + media=print causes a credentials-mode
+		     mismatch warning (preload uses same-origin, stylesheet uses crossorigin=anonymous
+		     via the CrossOrigin Vite plugin) and a "not used within a few seconds" warning.
+		     The media=print technique already loads the CSS async without blocking render. -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			rel="stylesheet"
 			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=swap"
+			media="print"
+			onload="this.media='all'"
 		/>
+		<noscript>
+			<link
+				rel="stylesheet"
+				href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=swap"
+			/>
+		</noscript>
 
 		<style is:global>
 			@import "@Stylesheet/Global.css";
@@ -157,6 +176,7 @@ const T = GetI18n();
 
 		<script>
 			await import("@Function/Route/Policy.js");
+
 			await import("@Function/Route/Register.js");
 		</script>
 
@@ -167,25 +187,41 @@ const T = GetI18n();
 
 			if (!ReducedMotion) {
 				const Staccato = await import("@Function/Noise/Staccato.js");
+
 				const Engine = await Staccato.default;
+
 				Engine.Start();
 
-				// Seed every Staccato element once.
-				// Deferred until after React hydration to avoid inline CSS vars
-				// on DOM elements that React doesn't expect (hydration warnings).
-				// requestIdleCallback is preferred; the load-event fallback is used
-				// for browsers that lack it — load fires after hydration completes.
+				// Seed every Staccato element once, strictly after window.load.
+				//
+				// WHY window.load is required — not just requestIdleCallback:
+				// React 18 concurrent mode breaks hydration into small chunks
+				// and yields to the browser between each one. requestIdleCallback
+				// fires precisely during those yield gaps, BEFORE hydration is
+				// complete. If SeedSelector runs then, it writes --StaccatoSeed /
+				// --StaccatoSeedPhase onto DOM elements that React's virtual DOM
+				// doesn't know about → hydration attribute mismatch warnings.
+				//
+				// window.load fires only after all resources are loaded AND after
+				// React's client:load hydration has flushed. Scheduling via
+				// requestIdleCallback (or setTimeout as fallback) AFTER load
+				// ensures we land in the first true idle slot post-hydration.
 				const Seed = () => Engine.SeedSelector('[class*="Staccato"]');
-				if (typeof requestIdleCallback !== "undefined") {
-					requestIdleCallback(Seed);
-				} else if (document.readyState === "complete") {
-					setTimeout(Seed, 200);
+
+				const SeedAfterLoad = () => {
+					if (typeof requestIdleCallback !== "undefined") {
+						requestIdleCallback(Seed);
+					} else {
+						setTimeout(Seed, 0);
+					}
+				};
+
+				if (document.readyState === "complete") {
+					SeedAfterLoad();
 				} else {
-					window.addEventListener(
-						"load",
-						() => setTimeout(Seed, 200),
-						{ once: true },
-					);
+					window.addEventListener("load", SeedAfterLoad, {
+						once: true,
+					});
 				}
 			}
 		</script>

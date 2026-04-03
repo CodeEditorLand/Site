@@ -129,11 +129,17 @@ function AddResources(
 
 const DetectedLocale = DetectLocale();
 
-// Phase 1: Initialize with English so the first client render matches the
-// server-rendered HTML (always English in static Astro builds).
-// If we initialize with the detected locale immediately, React throws a
-// hydration mismatch for every user with a non-English cookie.
-const EnglishBundle = await LocaleLoader.en();
+// Phase 1: Bind i18next to React *synchronously* before any awaits.
+//
+// i18n.init() is called here — before awaiting the locale JSON — so that
+// React components which hydrate via client:idle (e.g. Footer) can call
+// useTranslation() without hitting the "NO_I18NEXT_INSTANCE" error.
+// Resources start empty; components fall back to their hardcoded defaultValues
+// (which match SSR output) until AddResources() populates them below.
+//
+// Previously init() ran AFTER `await LocaleLoader.en()`, meaning all 10 JSON
+// files had to finish loading before React was bound. If client:idle fired
+// during that window, Footer hydrated with no i18n instance → hydration mismatch.
 i18n.use(initReactI18next).init({
 	resources: {},
 	lng: "en",
@@ -147,6 +153,8 @@ i18n.use(initReactI18next).init({
 		useSuspense: false,
 	},
 });
+
+const EnglishBundle = await LocaleLoader.en();
 
 AddResources("en", EnglishBundle);
 

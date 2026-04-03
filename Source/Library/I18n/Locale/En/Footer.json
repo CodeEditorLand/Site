@@ -32,7 +32,7 @@
 		"linkedin": "LinkedIn"
 	},
 	"bottomBar": {
-		"copyright": "© {{year}} Code Editor Land.\nAll rights reserved.",
+		"copyright": "© {{year}} Code Editor Land. All rights reserved.",
 		"builtBy": "Built by the Code Editor Land team",
 		"madeWith": "Made with"
 	},
@@ -41,7 +41,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", a fund established by ",
 		"nlnet": "NLnet",
-		"euSupport": " with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429. ",
+		"euSupport": " with financial support from the European Commission\u2019s Next Generation Internet programme, under grant agreement No.\u00a0101135429. ",
 		"projectPage": "View project page"
 	}
 }
