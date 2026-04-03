@@ -434,7 +434,7 @@
    ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoVisible {
-	animation: StaccatoFadeIn 1.0s ease-out both;
+	animation: StaccatoFadeIn 1s ease-out both;
 }
 
 @keyframes StaccatoFadeIn {

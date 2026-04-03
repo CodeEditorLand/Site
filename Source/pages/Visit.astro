@@ -32,8 +32,8 @@
 
 import {
 	CanonicalPath,
-	SemanticAlias,
 	GeneratePathVariant,
+	SemanticAlias,
 } from "../Function/Route/Map";
 
 // Build the full variant map at SSG time — identical logic to Integration.ts
@@ -90,9 +90,7 @@ const CanonicalList = [...CanonicalPath];
 
 				// Normalise: strip trailing slash, lowercase
 				var Cleaned =
-					RawPath === "/"
-						? "/"
-						: RawPath.replace(/\/+$/, "");
+					RawPath === "/" ? "/" : RawPath.replace(/\/+$/, "");
 
 				var Lower = Cleaned.toLowerCase();
 

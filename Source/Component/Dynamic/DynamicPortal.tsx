@@ -992,11 +992,7 @@ const PortalTierRow = ({
  *   Button-chrome icons (Lock, Wifi, Building2) that follow visible button
  *   text are exempted and keep aria-hidden="true" - they are decorative there.
  */
-const DynamicPortal = ({
-	Content,
-}: {
-	Content: PortalContent;
-}) => {
+const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 	const SectionReference = useRef<HTMLElement>(null);
 
 	useEffect(() => {
