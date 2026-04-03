@@ -8,6 +8,90 @@ import type GitHubIssue from "./Interface/GitHubIssue.js";
 import type Session from "./Interface/Session.js";
 import type User from "./Interface/User.js";
 
+const IsLocalhost = (): boolean => {
+	try {
+		return (
+			typeof window !== "undefined" &&
+			(window.location.hostname === "localhost" ||
+				window.location.hostname === "127.0.0.1")
+		);
+	} catch {
+		return false;
+	}
+};
+
+const LocalDevToken = async (): Promise<{
+	Token: string;
+	ExpiresAt: number;
+	UserId: string;
+} | null> => {
+	if (!IsLocalhost()) return null;
+
+	try {
+		const AuthURL = import.meta.env.PUBLIC_AUTH_WORKER_URL;
+		if (!AuthURL) return null;
+
+		const Response = await fetch(`${AuthURL}/auth/local-token`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify({
+				userId: "local-dev-user",
+				email: "dev@localhost",
+			}),
+		});
+
+		if (!Response.ok) return null;
+
+		const Data = (await Response.json()) as {
+			success: boolean;
+			data?: { token: string; expiresAt: number; userId: string };
+		};
+
+		if (!Data.success || !Data.data) return null;
+
+		return {
+			Token: Data.data.token,
+			ExpiresAt: Data.data.expiresAt,
+			UserId: Data.data.userId,
+		};
+	} catch {
+		return null;
+	}
+};
+
+const PostAuthToServiceWorker = (Token: string, UserId: string): void => {
+	try {
+		if (
+			typeof navigator === "undefined" ||
+			!navigator.serviceWorker?.controller
+		)
+			return;
+
+		navigator.serviceWorker.controller.postMessage({
+			Type: "Auth:Write",
+			Token,
+			ExpiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+			UserId,
+		});
+	} catch {
+		// ServiceWorker not available — gracefully degrade
+	}
+};
+
+const ClearAuthFromServiceWorker = (): void => {
+	try {
+		if (
+			typeof navigator === "undefined" ||
+			!navigator.serviceWorker?.controller
+		)
+			return;
+
+		navigator.serviceWorker.controller.postMessage({ Type: "Auth:Clear" });
+	} catch {
+		// ServiceWorker not available
+	}
+};
+
 export interface WorkersClient {
 	Authentication: {
 		Login(
@@ -37,7 +121,7 @@ export interface WorkersClient {
 		): Promise<APIResponse<void>>;
 		GetSession(): Promise<APIResponse<{ user: User; expiresIn: number }>>;
 		OAuth(
-			Provider: "github" | "google" | "gitlab",
+			Provider: "github" | "google" | "gitlab" | "okta",
 		): Promise<{ success: boolean }>;
 		HandleOAuthCallback(): never;
 	};
@@ -305,7 +389,15 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							password: Password,
 						}),
 					}),
-				),
+				).then(async (Result) => {
+					if (Result.success && Result.data?.session) {
+						PostAuthToServiceWorker(
+							Result.data.session.token,
+							Result.data.user.id,
+						);
+					}
+					return Result;
+				}),
 			Register: (Email, Password, Username, DisplayName) =>
 				WithRetry(() =>
 					FetchWithAuthentication<{
@@ -321,13 +413,31 @@ function CreateWorkerClient(BaseURL: string): Partial<WorkersClient> {
 							displayName: DisplayName,
 						}),
 					}),
-				),
+				).then(async (Result) => {
+					if (Result.success && Result.data?.session) {
+						PostAuthToServiceWorker(
+							Result.data.session.token,
+							Result.data.user.id,
+						);
+					}
+					return Result;
+				}),
 			Logout: () =>
 				WithRetry(() =>
 					FetchWithAuthentication("/auth/logout", {
 						method: "POST",
 					}),
-				),
+				).then((Result) => {
+					ClearAuthFromServiceWorker();
+					try {
+						localStorage.removeItem("session_token");
+						document.cookie =
+							"session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
+					} catch {
+						// Storage not available
+					}
+					return Result;
+				}),
 			Refresh: (Token) =>
 				WithRetry(() =>
 					FetchWithAuthentication<{

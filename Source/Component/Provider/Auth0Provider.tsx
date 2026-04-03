@@ -36,7 +36,7 @@ export default ({
 		authorizationParams={{
 			redirect_uri:
 				typeof window !== "undefined"
-					? window.location.origin
+					? `${window.location.origin}/OAuth/Success`
 					: undefined,
 			...(Organization ? { organization: Organization } : {}),
 		}}>

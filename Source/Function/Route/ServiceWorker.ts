@@ -117,9 +117,10 @@ const ApiPrefix: string[] = [
 ];
 
 // ─── Auth state ───
-// Session token is stored in CACHE_AUTH as a JSON response at /auth-state.
-// The token itself is a Bearer token from the Auth Worker.
-// JWT/HMAC encryption of the stored payload is a follow-up task.
+// Session token is stored in CACHE_AUTH as an AES-GCM encrypted payload at
+// /auth-state. The UserId is stored separately at /auth-user-id for key
+// derivation. Outbound API requests are HMAC-signed with X-Signature header.
+// Legacy plain JSON payloads are read transparently and re-encrypted on write.
 
 interface AuthState {
 	Token: string;
@@ -129,16 +130,91 @@ interface AuthState {
 
 const AUTH_STATE_KEY = "/auth-state";
 
+// ─── Base64 helpers ───
+
+const ByteListToBase64 = (ByteList: Uint8Array): string =>
+	btoa(String.fromCharCode(...ByteList));
+
+const Base64ToByteList = (Base64: string): Uint8Array =>
+	Uint8Array.from(atob(Base64), (Char) => Char.charCodeAt(0));
+
+// ─── Encryption key derivation (AES-GCM via PBKDF2) ───
+
+interface EncryptedPayload {
+	Salt: string; // base64 random salt (16 bytes)
+	IV: string; // base64 AES-GCM IV (12 bytes)
+	Data: string; // base64 AES-GCM ciphertext
+}
+
+const DeriveKey = async (
+	UserId: string,
+	Salt: Uint8Array,
+): Promise<CryptoKey> => {
+	const Material = await crypto.subtle.importKey(
+		"raw",
+		new TextEncoder().encode(self.location.origin + UserId),
+		"PBKDF2",
+		false,
+		["deriveKey"],
+	);
+	return crypto.subtle.deriveKey(
+		{ name: "PBKDF2", salt: Salt, iterations: 100_000, hash: "SHA-256" },
+		Material,
+		{ name: "AES-GCM", length: 256 },
+		false,
+		["encrypt", "decrypt"],
+	);
+};
+
 const ReadAuthState = async (): Promise<AuthState | null> => {
 	try {
 		const Cache = await caches.open(CACHE_AUTH);
 		const Cached = await Cache.match(AUTH_STATE_KEY);
 		if (!Cached) return null;
-		const State = (await Cached.json()) as AuthState;
-		// Treat as expired if within 30 s of expiry (clock skew buffer)
+
+		const Raw = await Cached.json();
+
+		// Handle both encrypted and legacy plain formats for graceful migration
+		if (
+			"Salt" in (Raw as Record<string, unknown>) &&
+			"IV" in (Raw as Record<string, unknown>)
+		) {
+			const Payload = Raw as EncryptedPayload;
+			const Salt = Base64ToByteList(Payload.Salt);
+			const IV = Base64ToByteList(Payload.IV);
+			const Ciphertext = Base64ToByteList(Payload.Data);
+
+			// UserId is stored separately (unencrypted) for key derivation
+			const UserIdCached = await Cache.match("/auth-user-id");
+			if (!UserIdCached) {
+				await Cache.delete(AUTH_STATE_KEY);
+				return null;
+			}
+			const UserId = await UserIdCached.text();
+
+			const Key = await DeriveKey(UserId, Salt);
+			const Decrypted = await crypto.subtle.decrypt(
+				{ name: "AES-GCM", iv: IV },
+				Key,
+				Ciphertext,
+			);
+
+			const State = JSON.parse(
+				new TextDecoder().decode(Decrypted),
+			) as AuthState;
+			if (State.ExpiresAt - 30_000 < Date.now()) {
+				await Cache.delete(AUTH_STATE_KEY);
+				await Cache.delete("/auth-user-id");
+				__DEV__ && Log("Auth token expired, cleared from cache.");
+				return null;
+			}
+			return State;
+		}
+
+		// Legacy plain format — read and re-encrypt on next write
+		const State = Raw as AuthState;
 		if (State.ExpiresAt - 30_000 < Date.now()) {
 			await Cache.delete(AUTH_STATE_KEY);
-			__DEV__ && Log("Auth token expired, cleared from cache.");
 			return null;
 		}
 		return State;
@@ -148,20 +224,43 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 };
 
 const WriteAuthState = async (State: AuthState): Promise<void> => {
+	const Salt = crypto.getRandomValues(new Uint8Array(16));
+	const IV = crypto.getRandomValues(new Uint8Array(12));
+	const Key = await DeriveKey(State.UserId, Salt);
+
+	const Plaintext = new TextEncoder().encode(JSON.stringify(State));
+	const Ciphertext = await crypto.subtle.encrypt(
+		{ name: "AES-GCM", iv: IV },
+		Key,
+		Plaintext,
+	);
+
+	const Payload: EncryptedPayload = {
+		Salt: ByteListToBase64(Salt),
+		IV: ByteListToBase64(IV),
+		Data: ByteListToBase64(new Uint8Array(Ciphertext)),
+	};
+
 	const Cache = await caches.open(CACHE_AUTH);
 	await Cache.put(
 		AUTH_STATE_KEY,
-		new Response(JSON.stringify(State), {
+		new Response(JSON.stringify(Payload), {
 			headers: { "Content-Type": "application/json" },
 		}),
 	);
-	__DEV__ &&
-		Log("Auth state written to cache.", { ExpiresAt: State.ExpiresAt });
+	await Cache.put(
+		"/auth-user-id",
+		new Response(State.UserId, {
+			headers: { "Content-Type": "text/plain" },
+		}),
+	);
+	__DEV__ && Log("Auth state encrypted and written to cache.");
 };
 
 const ClearAuthState = async (): Promise<void> => {
 	const Cache = await caches.open(CACHE_AUTH);
 	await Cache.delete(AUTH_STATE_KEY);
+	await Cache.delete("/auth-user-id");
 	__DEV__ && Log("Auth state cleared.");
 };
 
@@ -231,30 +330,144 @@ const IsApiRequest = (URL: URL): boolean => {
 	return URL.hostname.endsWith(".workers.dev");
 };
 
+// ─── HMAC request signing ───
+// Adds X-Signature and X-Timestamp headers for Workers that verify integrity.
+// Signature covers: METHOD\nPATH\nTIMESTAMP\nBODY
+
+const SignRequest = async (
+	OriginalRequest: Request,
+	Token: string,
+): Promise<Request> => {
+	const Key = await crypto.subtle.importKey(
+		"raw",
+		new TextEncoder().encode(Token),
+		{ name: "HMAC", hash: "SHA-256" },
+		false,
+		["sign"],
+	);
+
+	const Body =
+		OriginalRequest.method !== "GET" && OriginalRequest.method !== "HEAD"
+			? await OriginalRequest.clone().text()
+			: "";
+	const Timestamp = Date.now().toString();
+	const PathName = new URL(OriginalRequest.url).pathname;
+	const Message = `${OriginalRequest.method}\n${PathName}\n${Timestamp}\n${Body}`;
+
+	const SignatureBuffer = await crypto.subtle.sign(
+		"HMAC",
+		Key,
+		new TextEncoder().encode(Message),
+	);
+
+	const SignedHeaders = new Headers(OriginalRequest.headers);
+	SignedHeaders.set(
+		"X-Signature",
+		ByteListToBase64(new Uint8Array(SignatureBuffer)),
+	);
+	SignedHeaders.set("X-Timestamp", Timestamp);
+
+	return new Request(OriginalRequest.url, {
+		method: OriginalRequest.method,
+		headers: SignedHeaders,
+		body:
+			OriginalRequest.method !== "GET" &&
+			OriginalRequest.method !== "HEAD"
+				? OriginalRequest.body
+				: undefined,
+		credentials: OriginalRequest.credentials,
+		cache: OriginalRequest.cache,
+		redirect: OriginalRequest.redirect,
+		referrer: OriginalRequest.referrer,
+		mode: OriginalRequest.mode,
+	});
+};
+
 // ─── Inject auth header ───
-// Attaches Bearer token to outbound API requests from the SW cache.
+// Attaches Bearer token to outbound API requests from the SW cache,
+// then HMAC-signs the request for Workers-side integrity verification.
 // Does not modify the request if no session is active.
 
-const InjectAuthHeader = async (Request: Request): Promise<Request> => {
+const InjectAuthHeader = async (OriginalRequest: Request): Promise<Request> => {
 	const State = await ReadAuthState();
-	if (!State) return Request;
+	if (!State) return OriginalRequest;
 
-	const Headers = new Headers(Request.headers);
-	Headers.set("Authorization", `Bearer ${State.Token}`);
+	const AuthHeaders = new Headers(OriginalRequest.headers);
+	AuthHeaders.set("Authorization", `Bearer ${State.Token}`);
 
-	return new Request(Request.url, {
-		method: Request.method,
-		headers: Headers,
+	const AuthedRequest = new Request(OriginalRequest.url, {
+		method: OriginalRequest.method,
+		headers: AuthHeaders,
 		body:
-			Request.method !== "GET" && Request.method !== "HEAD"
-				? Request.body
+			OriginalRequest.method !== "GET" &&
+			OriginalRequest.method !== "HEAD"
+				? OriginalRequest.body
 				: undefined,
-		credentials: Request.credentials,
-		cache: Request.cache,
-		redirect: Request.redirect,
-		referrer: Request.referrer,
-		mode: Request.mode,
+		credentials: OriginalRequest.credentials,
+		cache: OriginalRequest.cache,
+		redirect: OriginalRequest.redirect,
+		referrer: OriginalRequest.referrer,
+		mode: OriginalRequest.mode,
 	});
+
+	return SignRequest(AuthedRequest, State.Token);
+};
+
+// ─── Token refresh lifecycle ───
+// On activate (and on-demand via Auth:Refresh message), check if the cached
+// token is within 5 minutes of expiry and attempt a refresh against the Auth
+// Worker. On failure, clear auth state to force re-authentication.
+
+const MaybeRefreshToken = async (): Promise<void> => {
+	const State = await ReadAuthState();
+	if (!State) return;
+
+	const MinutesLeft = (State.ExpiresAt - Date.now()) / 60_000;
+	if (MinutesLeft > 5) return;
+
+	__DEV__ &&
+		Log(
+			`Token expires in ${MinutesLeft.toFixed(1)} minutes, attempting refresh...`,
+		);
+
+	try {
+		const RefreshResponse = await fetch(`${BASE_REMOTE}/auth/refresh`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${State.Token}`,
+			},
+		});
+
+		if (!RefreshResponse.ok) {
+			__DEV__ && WarnLog("Token refresh failed, clearing auth state.");
+			await ClearAuthState();
+			return;
+		}
+
+		const Data = (await RefreshResponse.json()) as {
+			success: boolean;
+			data?: { token: string; expiresIn: number };
+		};
+
+		if (Data.success && Data.data) {
+			await WriteAuthState({
+				Token: Data.data.token,
+				ExpiresAt: Date.now() + Data.data.expiresIn * 1000,
+				UserId: State.UserId,
+			});
+			__DEV__ && Log("Token refreshed successfully.");
+		} else {
+			__DEV__ &&
+				WarnLog(
+					"Token refresh response invalid, clearing auth state.",
+				);
+			await ClearAuthState();
+		}
+	} catch (RefreshError) {
+		__DEV__ && ErrorLog("Token refresh network error:", RefreshError);
+		// Don't clear — might be offline temporarily
+	}
 };
 
 // ─── Install ───
@@ -320,6 +533,9 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 					Log(
 						`Version ${INCREMENT} activated and controlling clients.`,
 					);
+
+				// Attempt token refresh if nearing expiry
+				await MaybeRefreshToken();
 
 				const IsNewVersion = CurrentClientVersion !== INCREMENT;
 
@@ -552,9 +768,10 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 // so it can inject it on subsequent API requests without reading from DOM APIs.
 //
 // Message shapes:
-//   { Type: "Auth:Write",  Token: string, ExpiresAt: number, UserId: string }
-//   { Type: "Auth:Clear"  }
-//   { Type: "Auth:Read"   }  → SW replies with { Type: "Auth:State", State: AuthState | null }
+//   { Type: "Auth:Write",   Token: string, ExpiresAt: number, UserId: string }
+//   { Type: "Auth:Clear"   }
+//   { Type: "Auth:Read"    }  → SW replies with { Type: "Auth:State", State: AuthState | null }
+//   { Type: "Auth:Refresh" }  → triggers MaybeRefreshToken, replies with { Type: "Auth:State", State }
 
 self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 	if (Event.origin !== self.location.origin && Event.origin !== BASE_REMOTE) {
@@ -607,6 +824,20 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 		Event.waitUntil(
 			ReadAuthState().then((State) => {
 				Event.source?.postMessage({ Type: "Auth:State", State });
+			}),
+		);
+		return;
+	}
+
+	if (Data.Type === "Auth:Refresh") {
+		Event.waitUntil(
+			MaybeRefreshToken().then(() => {
+				ReadAuthState().then((State) => {
+					Event.source?.postMessage({
+						Type: "Auth:State",
+						State,
+					});
+				});
 			}),
 		);
 		return;
