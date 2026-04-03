@@ -178,12 +178,19 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				</div>
 
 				{/* Subtitle:breathing opacity */}
-				<div className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
+				<div className="StaccatoBreath mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
 					<RichText Text={Subtitle} />
 				</div>
 
+				{/* Tech stack section label — accessible, outside aria-hidden */}
+				<p className="mb-5 mt-28 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+					Tech Stack
+				</p>
+
 				{/* Tech stack visualization */}
-				<div className="relative mx-auto max-w-5xl" aria-hidden="true">
+				<div
+					className="relative mx-auto max-w-5xl px-6 py-8 lg:px-10 lg:py-12"
+					aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
 						{FloatingCard.map((Card, Index) => {
@@ -296,8 +303,8 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							const Total = FloatingCard.length;
 							const Angle =
 								(Index / Total) * 2 * Math.PI - Math.PI / 2;
-							const RadiusX = 38;
-							const RadiusY = 35;
+							const RadiusX = 44;
+							const RadiusY = 40;
 							const CenterX = 50 + Math.cos(Angle) * RadiusX;
 							const CenterY = 50 + Math.sin(Angle) * RadiusY;
 
@@ -392,7 +399,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 						{/* Connecting Lines:breathing opacity */}
 						{HeroConfiguration.ShowConnectingLines && (
 							<svg
-								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full opacity-15"
+								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full opacity-[0.06]"
 								aria-hidden="true"
 								role="presentation">
 								{FloatingCard.map((Card, Index) => {
@@ -400,8 +407,8 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 									const Angle =
 										(Index / Total) * 2 * Math.PI -
 										Math.PI / 2;
-									const RadiusX = 38;
-									const RadiusY = 35;
+									const RadiusX = 44;
+									const RadiusY = 40;
 									const CenterX =
 										50 + Math.cos(Angle) * RadiusX;
 									const CenterY =
@@ -414,7 +421,9 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 											x2={`${CenterX}%`}
 											y2={`${CenterY}%`}
 											stroke="currentColor"
-											strokeWidth="1"
+											strokeWidth="0.5"
+											strokeDasharray="4 10"
+											strokeLinecap="round"
 										/>
 									);
 								})}

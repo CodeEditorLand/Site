@@ -123,15 +123,15 @@
 
 /* Logo - near-zero seed offset, not structural movement */
 .StaccatoLogo {
-	transform: translate(
+	/* transform: translate(
 		calc(var(--StaccatoSeed, 0) * 0.4px),
 		calc(var(--StaccatoSeedPhase, 0) * 0.2px)
-	);
+	); */
 	transition: transform 0.25s ease;
 }
-.StaccatoLogo:hover {
+/* .StaccatoLogo:hover {
 	transform: none;
-}
+} */
 
 /* Button - tiny seed texture; hover elevates cleanly */
 .StaccatoButton {
@@ -544,7 +544,6 @@
 	.StaccatoButton,
 	.StaccatoBadge,
 	.StaccatoNavLink,
-	.StaccatoLogo,
 	.StaccatoIcon,
 	.StaccatoAvatar,
 	.StaccatoPrice,
