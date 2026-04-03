@@ -73,8 +73,11 @@ const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
 
 // ─── Route classification ───
 // Auth-required routes - redirect to /Account/SignIn when no session cached.
+// NOTE: /Portal is the auth-selection gateway (Cloud / Provider / LocalFirst /
+// Enterprise tier picker). It must be publicly accessible — users land here
+// BEFORE they have a session. Only post-auth destinations belong here.
 
-const ProtectedRoute: Set<string> = new Set(["/Dashboard", "/Portal"]);
+const ProtectedRoute: Set<string> = new Set(["/Dashboard"]);
 
 // Auth-bypass routes - redirect to /Dashboard when a session IS cached.
 // Prevents authenticated users from seeing the sign-in/sign-up pages.
