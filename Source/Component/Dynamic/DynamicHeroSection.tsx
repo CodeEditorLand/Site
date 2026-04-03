@@ -144,7 +144,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-[200dvh] w-full items-center overflow-hidden py-16 lg:py-24 ${ClassName || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start pt-16 pb-8 overflow-hidden lg:min-h-[200dvh] lg:items-center lg:pt-24 lg:pb-0 ${ClassName || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -420,11 +420,11 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 											y1="50%"
 											x2={`${CenterX}%`}
 											y2={`${CenterY}%`}
-											stroke="currentColor"
+											stroke="rgba(79, 79, 79, 0.69)"
 											strokeWidth="0.5"
 											strokeDasharray="4 10"
 											strokeLinecap="round"
-											opacity={0.1 - Index * 0.006}
+											opacity={0.79 - Index * 0.02}
 										/>
 									);
 								})}
