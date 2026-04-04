@@ -35,12 +35,21 @@ const LocaleSwitcher = () => {
 
 	// ─── Locale selection ─────────────────────────────────────────────────────
 	//
-	// The scroll guard here handles React 18's deferred re-renders after
-	// i18n.changeLanguage() resolves. Two rAFs ensure the guard outlasts any
-	// layout-triggered drift from the new locale's content dimensions.
+	// CLS prevention: pin the main content container to its current height
+	// before the locale switch so that text-length differences between
+	// languages cannot cause layout reflow. The scroll guard handles any
+	// residual drift from React 18's deferred re-renders.
 	//
 	const HandleChange = (Value: SupportedLocale) => {
 		const ScrollY = window.scrollY;
+
+		// Pin the main content height to prevent CLS from text-length changes
+		const MainContent = document.getElementById("main-content");
+		const PreviousMinHeight = MainContent?.style.minHeight ?? "";
+		if (MainContent) {
+			MainContent.style.minHeight = `${MainContent.offsetHeight}px`;
+		}
+
 		const Guard = () => {
 			if (window.scrollY !== ScrollY) {
 				window.scrollTo({ top: ScrollY, behavior: "instant" });
@@ -52,6 +61,10 @@ const LocaleSwitcher = () => {
 				requestAnimationFrame(() => {
 					window.removeEventListener("scroll", Guard);
 					window.scrollTo({ top: ScrollY, behavior: "instant" });
+					// Release the pinned height so layout can adapt naturally
+					if (MainContent) {
+						MainContent.style.minHeight = PreviousMinHeight;
+					}
 				});
 			});
 		});

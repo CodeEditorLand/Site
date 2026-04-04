@@ -54,6 +54,19 @@ main > astro-island:has(> :first-child) {
 	contain-intrinsic-block-size: auto;
 }
 
+/* ─── content-visibility: skip layout cost for off-screen sections ─── */
+/* These sections sit below the fold on the homepage.
+ * content-visibility: auto lets the browser skip layout/paint until the
+ * section scrolls near the viewport. contain-intrinsic-block-size provides
+ * a placeholder height so the scrollbar remains stable (no CLS). */
+#features,
+#pricing,
+#testimonials,
+#download {
+	content-visibility: auto;
+	contain-intrinsic-block-size: 600px;
+}
+
 /* Text Selection Highlighting */
 *::selection,
 ::selection {
