@@ -253,54 +253,27 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"All fifteen elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
+							"The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
 						T("home:roadmap.tiers.current.features.mountain", {
-							defaultValue: "Mountain ⛰️ Native Rust/Tauri Backend Replaces Electron Main Process",
+							defaultValue: "Mountain ⛰️ Native Process Manager Replaces Electron",
 						}),
 						T("home:roadmap.tiers.current.features.cocoon", {
-							defaultValue: "Cocoon 🦋 Extension Host Full VS Code API Effect-TS Shim",
+							defaultValue: "Cocoon 🦋 Extension Host VS Code Extensions Unchanged",
 						}),
 						T("home:roadmap.tiers.current.features.wind", {
-							defaultValue: "Wind 🍃 VS Code Workbench Reimplemented TypeScript + Effect-TS",
+							defaultValue: "Wind 🍃 Full Workbench Shell Panels and Sidebars",
 						}),
 						T("home:roadmap.tiers.current.features.sky", {
-							defaultValue: "Sky 🌌 Astro UI Layer Instant Hot-Reload",
+							defaultValue: "Sky 🌌 Visual Layer Themes and Layouts",
 						}),
 						T("home:roadmap.tiers.current.features.air", {
-							defaultValue: "Air 🪁 Background Daemon Silent Auto-Update Crypto-Signed",
+							defaultValue: "Air 🪁 Silent Update Crypto-Signed",
 						}),
 						T("home:roadmap.tiers.current.features.echo", {
-							defaultValue: "Echo 📣 Lock-Free Work-Stealing Scheduler Every CPU Core",
-						}),
-						T("home:roadmap.tiers.current.features.vine", {
-							defaultValue: "Vine 🌿 gRPC Backbone Contract-First .proto Definition",
-						}),
-						T("home:roadmap.tiers.current.features.mist", {
-							defaultValue: "Mist 🌫️ DNS Sandbox Local *.editor.land Resolution",
-						}),
-						T("home:roadmap.tiers.current.features.rest", {
-							defaultValue: "Rest ⛱️ TypeScript Compiler Rust + OXC 2-3x Faster",
-						}),
-						T("home:roadmap.tiers.current.features.grove", {
-							defaultValue: "Grove 🌳 WASMtime Sandbox Capability-Based Isolation",
-						}),
-						T("home:roadmap.tiers.current.features.common", {
-							defaultValue: "Common 👨🏻‍🏭 Abstract Rust Foundation Typed Effect Zero Concrete Implementation",
-						}),
-						T("home:roadmap.tiers.current.features.output", {
-							defaultValue: "Output ⚫ Compilation Pipeline Deterministic Bundle Checksum",
-						}),
-						T("home:roadmap.tiers.current.features.sidecar", {
-							defaultValue: "SideCar ⚙️ Binary Distributor Node.js Runtime Per Platform",
-						}),
-						T("home:roadmap.tiers.current.features.worker", {
-							defaultValue: "Worker 🍩 Service Worker Offline Support AES-GCM Auth",
-						}),
-						T("home:roadmap.tiers.current.features.maintain", {
-							defaultValue: "Maintain 💪🏻 Build Orchestrator Rhai Scripting TOML/JSON5 Config",
+							defaultValue: "Echo 📣 Work-Stealing Scheduler Every CPU Core",
 						}),
 					],
 					CTA: {

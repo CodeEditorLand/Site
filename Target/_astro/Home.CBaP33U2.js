@@ -34,21 +34,21 @@ Land est l'avenir des éditeurs de bureau.`},subtitle:"Les voix de la communaut�
 
 Open Source, gratuit pour toujours, développé en public.`,tiers:{current:{name:"Phase actuelle",description:`Fondation et échafaudage de l'éditeur principal.
 
-Développement actif.`,features:{mountain:`Mountain ⛰️
-backend natif Rust/Tauri`,cocoon:`Cocoon 🦋
-hôte d'extension VS Code via Effect-TS`,wind:`Wind 🍃
-ré-implémentation du Workbench`,sky:`Sky 🌌
-rendu de l'interface de l'éditeur`,air:`Air 🪁
-démon de mise à jour et signature cryptographique`,echo:`Echo 📣
-planificateur de tâches à vol de travail`,common:`Common 👨🏻‍🏭
-Abstract Rust foundation, typed effects, zero concrete implementations`,grove:`Grove 🌳
-WASMtime sandbox, capability-based extension isolation`,maintain:`Maintain 💪🏻
-Build orchestrator, Rhai scripting, TOML/JSON5 config`,mist:`Mist 🌫️
-DNS sandbox, all *.editor.land traffic resolves locally`,output:`Output ⚫
-Compilation pipeline, deterministic checksummed bundles`,rest:`Rest ⛱️
-TypeScript compiler in Rust + OXC, 2–3× faster than esbuild`,sidecar:`SideCar ⚙️
-Cross-platform Node.js binary distributor per target triple`,vine:`Vine 🌿
-gRPC backbone, contract-first .proto definitions`,worker:`Worker 🍩
+Développement actif.`,features:{mountain:`Mountain ⛰️
+backend natif Rust/Tauri`,cocoon:`Cocoon 🦋
+hôte d'extension VS Code via Effect-TS`,wind:`Wind 🍃
+ré-implémentation du Workbench`,sky:`Sky 🌌
+rendu de l'interface de l'éditeur`,air:`Air 🪁
+démon de mise à jour et signature cryptographique`,echo:`Echo 📣
+planificateur de tâches à vol de travail`,common:`Common 👨🏻‍🏭
+Abstract Rust foundation, typed effects, zero concrete implementations`,grove:`Grove 🌳
+WASMtime sandbox, capability-based extension isolation`,maintain:`Maintain 💪🏻
+Build orchestrator, Rhai scripting, TOML/JSON5 config`,mist:`Mist 🌫️
+DNS sandbox, all *.editor.land traffic resolves locally`,output:`Output ⚫
+Compilation pipeline, deterministic checksummed bundles`,rest:`Rest ⛱️
+TypeScript compiler in Rust + OXC, 2–3× faster than esbuild`,sidecar:`SideCar ⚙️
+Cross-platform Node.js binary distributor per target triple`,vine:`Vine 🌿
+gRPC backbone, contract-first .proto definitions`,worker:`Worker 🍩
 Service Worker, offline support, AES-GCM encrypted auth`},button:"Voir sur GitHub"},next:{name:"Prochain jalon",description:"Écosystème d'extensions et stabilité de la plateforme.",features:{1:"Compatibilité élevée des extensions VS Code",2:"Installateur multi-plateforme et mise à jour automatique",3:"Finalisation du protocole gRPC IPC",4:"Synchronisation des paramètres et portail cloud optionnel"},button:"Suivre les progrès"},future:{name:"Vision à long terme",description:"Éditeur complet remplaçant les outils basés sur Electron.",features:{1:"Édition mobile native (iOS, Android)",2:"Édition collaborative en temps réel",3:"Outils de développement assistés par IA",4:"Place de marché de plugins et écosystème"},button:"En savoir plus"}}},s={title:"Architecture",subtitle:`Land remplace la pile Electron de VS Code par une architecture modulaire et haute performance.
 
 Chaque élément est un dépôt autonome.`,mountain:{description:`Gère le cycle de vie des fenêtres, du système de fichiers et des processus.

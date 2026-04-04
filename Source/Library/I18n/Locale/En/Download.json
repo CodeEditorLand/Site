@@ -54,7 +54,7 @@
 		"downloadVerification": "Download Verification",
 		"integrityCheck": "Integrity Check",
 		"copy": "Copy",
-		"signedWithKeyId": "Signed with key ID: {{keyId}}"
+		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"transparency": {
 		"title": "Nothing Hidden. Full Build Disclosure.",

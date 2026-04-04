@@ -116,23 +116,14 @@
 		"tiers": {
 			"current": {
 				"name": "Active Now",
-				"description": "All fifteen elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
+				"description": "The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"air": "Air 🪁 Background Daemon Silent Auto-Update Crypto-Signed",
-					"cocoon": "Cocoon 🦋 Extension Host Full VS Code API Effect-TS Shim",
-					"common": "Common 👨🏻‍🏭 Abstract Rust Foundation Typed Effect Zero Concrete Implementation",
-					"echo": "Echo 📣 Lock-Free Work-Stealing Scheduler Every CPU Core",
-					"grove": "Grove 🌳 WASMtime Sandbox Capability-Based Isolation",
-					"maintain": "Maintain 💪🏻 Build Orchestrator Rhai Scripting TOML/JSON5 Config",
-					"mist": "Mist 🌫️ DNS Sandbox Local *.editor.land Resolution",
-					"mountain": "Mountain ⛰️ Native Rust/Tauri Backend Replaces Electron Main Process",
-					"output": "Output ⚫ Compilation Pipeline Deterministic Bundle Checksum",
-					"rest": "Rest ⛱️ TypeScript Compiler Rust + OXC 2-3x Faster",
-					"sidecar": "SideCar ⚙️ Binary Distributor Node.js Runtime Per Platform",
-					"sky": "Sky 🌌 Astro UI Layer Instant Hot-Reload",
-					"vine": "Vine 🌿 gRPC Backbone Contract-First .proto Definition",
-					"wind": "Wind 🍃 VS Code Workbench Reimplemented TypeScript + Effect-TS",
-					"worker": "Worker 🍩 Service Worker Offline Support AES-GCM Auth"
+					"mountain": "Mountain ⛰️ Native Process Manager Replaces Electron",
+					"cocoon": "Cocoon 🦋 Extension Host VS Code Extensions Unchanged",
+					"wind": "Wind 🍃 Full Workbench Shell Panels and Sidebars",
+					"sky": "Sky 🌌 Visual Layer Themes and Layouts",
+					"air": "Air 🪁 Silent Update Crypto-Signed",
+					"echo": "Echo 📣 Work-Stealing Scheduler Every CPU Core"
 				},
 				"button": "View on GitHub"
 			},

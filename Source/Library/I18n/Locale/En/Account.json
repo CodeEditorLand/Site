@@ -133,11 +133,11 @@
 				"remote": "Remote development server integration"
 			},
 			"capability": {
-				"jwt": "JWT RS256 tokens: 15-min access, 30-day refresh",
+				"jwt": "JWT RS256 tokens 15-min access, 30-day refresh",
 				"okta": "Okta SSO integration available",
 				"mfa": "Multi-factor authentication supported",
 				"rbac": "Role-based access control at the gateway layer",
-				"audit": "Full audit log: every action recorded",
+				"audit": "Full audit log every action recorded",
 				"cert": "Developer certificates provisioned automatically"
 			}
 		},
@@ -147,7 +147,7 @@
 			"continueGitHub": "Continue with GitHub",
 			"continueGoogle": "Continue with Google",
 			"continueGitLab": "Continue with GitLab",
-			"oauthNote": "OAuth 2.0 \u2001 Email scope only \u2001 Linked to your preferences",
+			"oauthNote": "OAuth 2.0   Email scope only   Linked to your preferences",
 			"feature": {
 				"github": "No new password. Your GitHub identity is enough.",
 				"sso": "Single sign-on across all Land services",
@@ -170,7 +170,7 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Scanning...",
 			"connect": "Connect to Air Daemon",
-			"note": "Zero cloud dependency \u2001 JWT certificates \u2001 mTLS",
+			"note": "Zero cloud dependency   JWT certificates   mTLS",
 			"feature": {
 				"daemon": "Browser connects to Air Daemon over encrypted loopback",
 				"build": "Launch builds directly from the website console",
@@ -207,7 +207,7 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML Metadata URL",
 			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
-			"note": "OpenID Connect Discovery \u2001+\u2001 SAML 2.0 Assertion \u2001+\u2001 SCIM 2.0 User Provisioning",
+			"note": "OpenID Connect Discovery  +  SAML 2.0 Assertion  +  SCIM 2.0 User Provisioning",
 			"feature": {
 				"okta": "Okta SSO - one login unlocks everything",
 				"azure": "Azure AD / Entra ID - your Microsoft identity works",
@@ -217,7 +217,7 @@
 				"audit": "SOC 2 logs exported to your SIEM in CEF or JSON"
 			},
 			"capability": {
-				"oidc": "OIDC Discovery: auto-configured from your IdP metadata URL",
+				"oidc": "OIDC Discovery auto-configured from your IdP metadata URL",
 				"jit": "Just-in-time provisioning on first sign-in",
 				"mfa": "MFA enforced via IdP authentication context class",
 				"session": "Session duration controlled by IdP policy",
@@ -245,7 +245,7 @@
 		"welcome": "Welcome back",
 		"downloadsHeading": "Downloads",
 		"signOut": "Sign Out",
-		"loading": "Loading account\u2026",
+		"loading": "Loading account…",
 		"error": "Could not load your account. Please refresh."
 	}
 }
