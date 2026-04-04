@@ -9,6 +9,7 @@ export default interface Interface {
 		Yearly: number;
 	};
 	Currency?: string;
+	Elements?: string[];
 	Features: string[];
 	CTA: ButtonContent;
 	Highlighted?: boolean;

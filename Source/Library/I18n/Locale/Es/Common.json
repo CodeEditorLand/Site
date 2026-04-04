@@ -4,18 +4,18 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "El editor de código de nueva generación.\n\nCódigo abierto y gratuito para siempre."
+		"tagline": "Más rápido que VS Code. Más ligero que Electron. Gratis para siempre."
 	},
 	"breadcrumb": {
 		"home": "Inicio"
 	},
 	"button": {
-		"backToHome": "Volver a la página de inicio",
+		"backToHome": "Volver al inicio",
 		"backToTop": "Volver arriba",
-		"download": "Descargar Land",
-		"learnMore": "Más información sobre las funciones",
+		"download": "Descargar Land gratis",
+		"learnMore": "Lo que hace diferente a Land",
 		"signIn": "Iniciar sesión en su cuenta",
-		"signUp": "Crear su cuenta gratuita"
+		"signUp": "Crear cuenta gratuita"
 	},
 	"comingSoon": "Próximamente",
 	"error": {
@@ -33,18 +33,18 @@
 	},
 	"docs": {
 		"pageTitle": "Documentación",
-		"pageSubtitle": "Todo lo que necesita para comenzar con Code Editor Land.",
+		"pageSubtitle": "Todo lo que necesita para instalar, compilar y contribuir a Land.",
 		"gettingStarted": {
-			"title": "Primeros pasos",
-			"description": "Lea el README para obtener instrucciones de instalación, pasos de compilación y una descripción general de la arquitectura del proyecto."
+			"title": "Comience en minutos",
+			"description": "El README lo guía a través de la instalación, la primera compilación y la arquitectura de quince elementos. No se requiere conocimiento previo de Rust o Tauri."
 		},
 		"issueTracker": {
-			"title": "Seguimiento de problemas",
-			"description": "Reporte errores, solicite funciones o explore los problemas existentes en GitHub."
+			"title": "Reportar un error o solicitar una función",
+			"description": "Abra un issue en GitHub. El equipo lo monitorea diariamente y etiqueta tareas good-first-issue para nuevos colaboradores."
 		},
 		"architecture": {
-			"heading": "Descripción general de la arquitectura",
-			"intro": "Land reemplaza la pila Electron de VS Code con una arquitectura moderna y de alto rendimiento:",
+			"heading": "Cómo funciona la arquitectura",
+			"intro": "Land reemplaza el stack Electron de VS Code elemento por elemento. Cada uno de los quince elementos es un repositorio independiente de código abierto:",
 			"mountain": {
 				"description": "Gestiona ventanas, sistema de archivos, procesos",
 				"subtitle": "Backend nativo Rust/Tauri"
@@ -137,10 +137,10 @@
 	},
 	"contributing": {
 		"pageTitle": "Contribuir",
-		"pageSubtitle": "Code Editor Land es de código abierto y da la bienvenida a las contribuciones de todos.\n\nAquí se explica cómo participar.",
+		"pageSubtitle": "Land es de código abierto y se desarrolla en público.\n\nCada contribución (código, documentación, pruebas o diseño) llega a usuarios reales.",
 		"guide": {
 			"title": "Guía de contribución",
-			"description": "Lea el CONTRIBUTING.md completo en GitHub para obtener instrucciones detalladas sobre cómo configurar el entorno de desarrollo y enviar cambios."
+			"description": "Lea CONTRIBUTING.md en GitHub para el recorrido completo de configuración: entorno, convenciones de branches y cómo enviar cambios."
 		},
 		"goodFirstIssues": {
 			"title": "Primeros problemas",
@@ -155,15 +155,15 @@
 		},
 		"step2": {
 			"title": "Configurar el entorno",
-			"description": "Instale Rust (1.95.0+), Node.js y pnpm.\nLuego ejecute:"
+			"description": "Instale Rust 1.95.0+, Node.js y pnpm. Luego ejecute:"
 		},
 		"step3": {
 			"title": "Realizar los cambios",
-			"description": "Cree una nueva rama, realice sus cambios y siga la convención de nomenclatura PascalCase utilizada en todo el proyecto."
+			"description": "Cree una rama, haga sus cambios y siga la convención de nomenclatura PascalCase."
 		},
 		"step4": {
 			"title": "Enviar una solicitud de incorporación de cambios",
-			"description": "Empuje su rama y abra una solicitud de incorporación de cambios contra la rama Current.\n\nDescriba qué cambió y por qué."
+			"description": "Empuje su rama y abra un pull request contra la rama Current.\n\nDescribe qué cambió y por qué. Una oración es suficiente."
 		},
 		"ways": {
 			"heading": "Formas de contribuir",
@@ -173,25 +173,25 @@
 			},
 			"documentation": {
 				"title": "Documentación",
-				"description": "Mejore las guías, agregue ejemplos o traduzca la documentación existente a otros idiomas."
+				"description": "Mejore las guías, agregue ejemplos o traduzca contenido existente a otros idiomas."
 			},
 			"testing": {
 				"title": "Pruebas",
-				"description": "Escriba pruebas, reporte errores o ayude a reproducir y clasificar los problemas existentes."
+				"description": "Escriba pruebas, reproduzca errores reportados o ayude a clasificar issues abiertos."
 			},
 			"design": {
 				"title": "Diseño",
-				"description": "Contribuya con mejoras de UI/UX, iconos o trabajo de diseño visual para el editor o el sitio web."
+				"description": "Contribuya mejoras de UI/UX, iconos o trabajo de diseño visual."
 			}
 		},
 		"elements": {
-			"heading": "Arquitectura de Elementos",
-			"description": "Code Editor Land está construido con 15 elementos modulares - crates de Rust autónomos que proporcionan funcionalidad específica. Cada elemento se publica como crate y puede usarse de forma independiente.",
+			"heading": "Quince elementos, un editor",
+			"description": "Land está construido con quince elementos modulares, cada uno un crate de Rust o paquete TypeScript independiente.",
 			"docs": "Cada elemento tiene su propio README con detalles de arquitectura. Encuéntrelos en Land/Element/"
 		},
 		"funding": {
 			"heading": "Financiación",
-			"description": "Code Editor Land está financiado a través del fondo NGI0 Commons a través de NLnet.\n\nEsto permite el desarrollo a tiempo completo del proyecto.",
+			"description": "Land está financiado por el NLnet NGI0 Commons Fund.\n\nEsta subvención permite el desarrollo de código abierto a tiempo completo.",
 			"nlnetIntro": "Code Editor Land ha sido financiado a través del",
 			"nlnetFundName": "Fondo NGI0 Commons",
 			"nlnetEstablishedBy": ", un fondo establecido por",
@@ -203,12 +203,12 @@
 		},
 		"conduct": {
 			"heading": "Código de conducta",
-			"description": "Se espera que todos los participantes de la comunidad Code Editor Land sean respetuosos y constructivos.\n\nLea el Código de conducta completo en GitHub."
+			"description": "Se espera que todos los participantes de la comunidad Land sean respetuosos y constructivos.\n\nLea el Código de Conducta completo en GitHub."
 		}
 	},
 	"sales": {
 		"pageTitle": "Consultas empresariales",
-		"pageSubtitle": "¿Interesado en implementar Code Editor Land en su organización? Póngase en contacto con nuestro equipo.",
+		"pageSubtitle": "¿Implementando Land en su organización? Contáctenos y resolveremos los detalles juntos.",
 		"form": {
 			"firstName": "Nombre",
 			"lastName": "Apellido",
@@ -221,35 +221,35 @@
 			"submitButton": "Enviar consulta"
 		},
 		"features": {
-			"heading": "Funciones empresariales",
-			"prioritySupport": "Soporte prioritario y SLA",
-			"customDeployment": "Opciones de implementación personalizadas",
-			"volumeLicensing": "Licencias por volumen",
-			"accountManagement": "Gestión de cuentas dedicada",
-			"securityReview": "Revisión de seguridad y cumplimiento",
-			"customIntegrations": "Integraciones personalizadas"
+			"heading": "Qué incluye Enterprise",
+			"prioritySupport": "Soporte prioritario y SLA garantizado",
+			"customDeployment": "Opciones de implementación personalizadas nube, on-prem o air-gapped",
+			"volumeLicensing": "Licencias por volumen para equipos grandes",
+			"accountManagement": "Gerente de cuenta dedicado para su organización",
+			"securityReview": "Revisión de seguridad y documentación de cumplimiento",
+			"customIntegrations": "Integraciones personalizadas y trabajo de desarrollo"
 		},
 		"contact": {
 			"heading": "Cómo contactarnos",
 			"directHeading": "Contacto directo",
-			"description": "¿Prefiere correo electrónico? Contáctenos directamente:",
-			"githubNote": "Gestionamos las consultas empresariales a través de GitHub Issues.\n\nEsto garantiza que su solicitud sea rastreada, visible para el equipo y respondida de manera oportuna.",
+			"description": "¿Prefiere el correo electrónico? Escríbanos directamente:",
+			"githubNote": "Gestionamos las consultas empresariales a través de GitHub Issues.\n\nEsto garantiza que su solicitud sea rastreada, visible para todo el equipo y respondida con prontitud.",
 			"openIssueHeading": "Abrir un GitHub Issue",
-			"openIssueDescription": "Cree un issue en nuestro repositorio de GitHub describiendo las necesidades de su organización.\n\nIncluya el nombre de la empresa, tamaño del equipo, caso de uso y requisitos de implementación.\n\nNuestro equipo monitorea los issues diariamente.",
+			"openIssueDescription": "Cree un issue en nuestro repositorio de GitHub describiendo las necesidades de su organización.\n\nIncluya el nombre de la empresa, tamaño del equipo, caso de uso y requisitos de implementación.\n\nMonitoreamos los issues diariamente.",
 			"openIssueButton": "Abrir GitHub Issue",
 			"issueIncludeLabel": "Qué incluir en su issue:",
 			"issueIncludeText": "Nombre de la empresa, tamaño del equipo, caso de uso previsto, entorno de implementación (nube/local), cronograma y requisitos específicos de soporte o cumplimiento.",
 			"operatedBy": "Operado por PlayForm, Sofía, Bulgaria"
 		},
 		"openSource": {
-			"heading": "Código abierto",
-			"description": "Los planes empresariales proporcionan soporte, SLA y desarrollo personalizado, no acceso al código en sí.\n\nCode Editor Land es de código abierto bajo CC0."
+			"heading": "Sigue siendo Open Source",
+			"description": "Los planes Enterprise añaden soporte, SLA y desarrollo personalizado.\n\nEl código en sí permanece CC0. Forkéelo, léalo, distribúyalo."
 		}
 	},
 	"oauth": {
-		"completing": "Completando autenticación...",
-		"failed": "Autenticación fallida",
-		"errorGeneric": "Se produjo un error durante la autenticación.",
+		"completing": "Completando inicio de sesión...",
+		"failed": "Error al iniciar sesión",
+		"errorGeneric": "Algo salió mal durante el inicio de sesión. Por favor, inténtelo de nuevo.",
 		"errorExpired": "La sesión de autenticación ha expirado.\n\nPor favor, inténtelo de nuevo.",
 		"errorProvider": "El proveedor de OAuth devolvió un error.\n\nPor favor, inténtelo de nuevo.",
 		"errorNoToken": "No se recibió ningún token de autenticación.",
@@ -261,8 +261,8 @@
 		}
 	},
 	"dashboard": {
-		"pageTitle": "Bienvenido",
-		"pageSubtitle": "Gestione su cuenta de Code Editor Land y sus preferencias.",
+		"pageTitle": "Panel de control",
+		"pageSubtitle": "Su cuenta Land, descargas y conexión del editor.",
 		"breadcrumbLabel": "Panel de control",
 		"account": {
 			"heading": "Cuenta",
@@ -281,7 +281,7 @@
 		},
 		"downloads": {
 			"heading": "Descargas",
-			"description": "Descargue la última versión de Code Editor Land para su plataforma.",
+			"description": "Obtenga la última compilación de Land para su plataforma. Nativo en macOS, Windows y Linux.",
 			"goButton": "Ir a descargas"
 		},
 		"quickLinks": {

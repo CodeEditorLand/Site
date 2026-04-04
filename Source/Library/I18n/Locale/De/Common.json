@@ -4,17 +4,17 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "Der Code-Editor der nächsten Generation.\n\nOpen Source und für immer kostenlos."
+		"tagline": "Schneller als VS Code. Leichter als Electron. Für immer kostenlos."
 	},
 	"breadcrumb": {
 		"home": "Startseite"
 	},
 	"button": {
-		"backToHome": "Zurück zur Startseite",
-		"backToTop": "Zurück nach oben",
-		"download": "Land herunterladen",
-		"learnMore": "Mehr über Funktionen erfahren",
-		"signIn": "Bei Ihrem Konto anmelden",
+		"backToHome": "Zur Startseite",
+		"backToTop": "Nach oben",
+		"download": "Land kostenlos herunterladen",
+		"learnMore": "Was Land anders macht",
+		"signIn": "Bei Ihrem Account anmelden",
 		"signUp": "Kostenloses Konto erstellen"
 	},
 	"comingSoon": "Demnächst verfügbar",
@@ -28,23 +28,23 @@
 	},
 	"nav": {
 		"docs": "Dokumentation",
-		"downloads": "Herunterladen",
-		"github": "GitHub-Repository"
+		"downloads": "Download",
+		"github": "GitHub Repository"
 	},
 	"docs": {
 		"pageTitle": "Dokumentation",
-		"pageSubtitle": "Alles, was Sie für den Einstieg in Code Editor Land benötigen.",
+		"pageSubtitle": "Alles, was Sie zum Installieren, Bauen und Beitragen zu Land benötigen.",
 		"gettingStarted": {
-			"title": "Erste Schritte",
-			"description": "Lesen Sie die README-Datei für Installationsanweisungen, Build-Schritte und einen Überblick über die Projektarchitektur."
+			"title": "In Minuten loslegen",
+			"description": "Die README führt Sie durch Installation, ersten Build und die Fünfzehn-Element-Architektur. Keine Rust- oder Tauri-Vorkenntnisse erforderlich."
 		},
 		"issueTracker": {
-			"title": "Issue-Tracker",
-			"description": "Melden Sie Fehler, fordern Sie Funktionen an oder durchsuchen Sie vorhandene Issues auf GitHub."
+			"title": "Einen Bug melden oder ein Feature anfragen",
+			"description": "Öffnen Sie ein Issue auf GitHub. Das Team überwacht täglich und kennzeichnet good-first-issue-Aufgaben für neue Mitwirkende."
 		},
 		"architecture": {
-			"heading": "Architekturüberblick",
-			"intro": "Land ersetzt den Electron-Stack von VS Code durch eine moderne, hochleistungsfähige Architektur:",
+			"heading": "Wie die Architektur funktioniert",
+			"intro": "Land ersetzt den Electron-Stack von VS Code Element für Element. Jedes der fünfzehn Elemente ist ein unabhängiges Open-Source-Repository:",
 			"mountain": {
 				"description": "Verwaltet Fenster, Dateisystem, Prozesse",
 				"subtitle": "Rust/Tauri-nativer Backend"
@@ -137,10 +137,10 @@
 	},
 	"contributing": {
 		"pageTitle": "Beitragen",
-		"pageSubtitle": "Code Editor Land ist Open Source und heißt Beiträge von allen willkommen.\n\nSo können Sie mitmachen.",
+		"pageSubtitle": "Land ist Open Source und wird öffentlich entwickelt.\n\nJeder Beitrag (Code, Docs, Tests oder Design) geht an echte Nutzer.",
 		"guide": {
 			"title": "Beitragsleitfaden",
-			"description": "Lesen Sie die vollständige CONTRIBUTING.md auf GitHub für detaillierte Anweisungen zur Einrichtung der Entwicklungsumgebung und zum Einreichen von Änderungen."
+			"description": "Lesen Sie CONTRIBUTING.md auf GitHub für den vollständigen Einrichtungsweg: Umgebung, Branch-Konventionen und Einreichungsverfahren."
 		},
 		"goodFirstIssues": {
 			"title": "Gute erste Issues",
@@ -155,43 +155,43 @@
 		},
 		"step2": {
 			"title": "Umgebung einrichten",
-			"description": "Installieren Sie Rust (1.95.0+), Node.js und pnpm.\nFühren Sie dann aus:"
+			"description": "Installieren Sie Rust 1.95.0+, Node.js und pnpm. Dann ausführen:"
 		},
 		"step3": {
 			"title": "Änderungen vornehmen",
-			"description": "Erstellen Sie einen neuen Branch, nehmen Sie Ihre Änderungen vor und befolgen Sie die im gesamten Projekt verwendete PascalCase-Namenskonvention."
+			"description": "Erstellen Sie einen Branch, nehmen Sie Ihre Änderungen vor und befolgen Sie die PascalCase-Namenskonvention."
 		},
 		"step4": {
 			"title": "Pull Request einreichen",
-			"description": "Pushen Sie Ihren Branch und eröffnen Sie einen Pull Request gegen den Current-Branch.\n\nBeschreiben Sie, was Sie geändert haben und warum."
+			"description": "Pushen Sie Ihren Branch und öffnen Sie einen Pull Request gegen den Current-Branch.\n\nBeschreiben Sie, was und warum. Ein Satz genügt."
 		},
 		"ways": {
 			"heading": "Möglichkeiten zur Mitwirkung",
 			"code": {
 				"title": "Code",
-				"description": "Beheben Sie Fehler, implementieren Sie Funktionen oder verbessern Sie die Leistung in Rust oder TypeScript."
+				"description": "Beheben Sie Bugs, implementieren Sie Features oder verbessern Sie die Performance in Rust oder TypeScript."
 			},
 			"documentation": {
 				"title": "Dokumentation",
-				"description": "Verbessern Sie Anleitungen, fügen Sie Beispiele hinzu oder übersetzen Sie vorhandene Dokumentation in andere Sprachen."
+				"description": "Verbessern Sie Anleitungen, fügen Sie Beispiele hinzu oder übersetzen Sie Inhalte in andere Sprachen."
 			},
 			"testing": {
 				"title": "Testen",
-				"description": "Schreiben Sie Tests, melden Sie Fehler oder helfen Sie dabei, vorhandene Issues zu reproduzieren und zu triagieren."
+				"description": "Schreiben Sie Tests, reproduzieren Sie gemeldete Bugs oder helfen Sie bei der Triage offener Issues."
 			},
 			"design": {
 				"title": "Design",
-				"description": "Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeiten für den Editor oder die Website bei."
+				"description": "Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeit bei."
 			}
 		},
 		"elements": {
-			"heading": "Elemente-Architektur",
-			"description": "Code Editor Land besteht aus 15 modularen Elementen - eigenständigen Rust-Crates, die bestimmte Funktionalität bieten. Jedes Element wird als Crate veröffentlicht und kann unabhängig verwendet werden.",
-			"docs": "Jedes Element hat seine eigene README mit Architekturdetails. Finden Sie sie unter Land/Element/"
+			"heading": "Fünfzehn Elemente, ein Editor",
+			"description": "Land besteht aus fünfzehn modularen Elementen, jeweils ein eigenständiges Rust-Crate oder TypeScript-Paket.",
+			"docs": "Jedes Element hat seine eigene README mit Architekturdetails. Zu finden in Land/Element/"
 		},
 		"funding": {
 			"heading": "Finanzierung",
-			"description": "Code Editor Land wird durch den NGI0 Commons Fund über NLnet finanziert.\n\nDies ermöglicht die Vollzeitentwicklung des Projekts.",
+			"description": "Land wird durch den NLnet NGI0 Commons Fund finanziert.\n\nDieses Stipendium ermöglicht Vollzeit-Open-Source-Entwicklung.",
 			"nlnetIntro": "Code Editor Land wurde finanziert durch den",
 			"nlnetFundName": "NGI0 Commons Fund",
 			"nlnetEstablishedBy": ", einen Fonds, gegründet von",
@@ -203,12 +203,12 @@
 		},
 		"conduct": {
 			"heading": "Verhaltenskodex",
-			"description": "Von allen Teilnehmern der Code Editor Land-Community wird erwartet, respektvoll und konstruktiv zu sein.\n\nLesen Sie den vollständigen Verhaltenskodex auf GitHub."
+			"description": "Alle Teilnehmer der Land-Community sollen respektvoll und konstruktiv sein.\n\nLesen Sie den vollständigen Code of Conduct auf GitHub."
 		}
 	},
 	"sales": {
 		"pageTitle": "Enterprise-Anfragen",
-		"pageSubtitle": "Möchten Sie Code Editor Land in Ihrer Organisation einführen? Nehmen Sie Kontakt mit unserem Team auf.",
+		"pageSubtitle": "Setzen Sie Land in Ihrer Organisation ein? Melden Sie sich und wir klären die Details gemeinsam.",
 		"form": {
 			"firstName": "Vorname",
 			"lastName": "Nachname",
@@ -221,35 +221,35 @@
 			"submitButton": "Anfrage senden"
 		},
 		"features": {
-			"heading": "Enterprise-Funktionen",
-			"prioritySupport": "Prioritätssupport und SLA",
-			"customDeployment": "Benutzerdefinierte Bereitstellungsoptionen",
-			"volumeLicensing": "Volumenlizenzierung",
-			"accountManagement": "Dediziertes Account-Management",
-			"securityReview": "Sicherheits- und Compliance-Prüfung",
-			"customIntegrations": "Benutzerdefinierte Integrationen"
+			"heading": "Was Enterprise umfasst",
+			"prioritySupport": "Prioritätssupport und garantiertes SLA",
+			"customDeployment": "Individuelle Deployment-Optionen Cloud, On-Prem oder Air-Gapped",
+			"volumeLicensing": "Volumenlizenzierung für große Teams",
+			"accountManagement": "Dedizierter Account-Manager für Ihre Organisation",
+			"securityReview": "Sicherheitsüberprüfung und Compliance-Dokumentation",
+			"customIntegrations": "Individuelle Integrationen und Entwicklungsarbeit"
 		},
 		"contact": {
 			"heading": "So erreichen Sie uns",
 			"directHeading": "Direktkontakt",
-			"description": "Bevorzugen Sie E-Mail? Kontaktieren Sie uns direkt:",
-			"githubNote": "Wir bearbeiten Enterprise-Anfragen über GitHub Issues.\n\nDies stellt sicher, dass Ihre Anfrage verfolgt wird, für das Team sichtbar ist und zeitnah beantwortet wird.",
+			"description": "Bevorzugen Sie E-Mail? Schreiben Sie uns direkt:",
+			"githubNote": "Enterprise-Anfragen bearbeiten wir über GitHub Issues.\n\nSo ist Ihre Anfrage nachverfolgbar, für das gesamte Team sichtbar und wird zeitnah beantwortet.",
 			"openIssueHeading": "GitHub Issue eröffnen",
-			"openIssueDescription": "Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Anforderungen Ihrer Organisation.\n\nGeben Sie Firmenname, Teamgröße, Anwendungsfall und Bereitstellungsanforderungen an.\n\nUnser Team überwacht Issues täglich.",
+			"openIssueDescription": "Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Bedürfnisse Ihrer Organisation.\n\nNennen Sie Firmennamen, Teamgröße, Anwendungsfall und Deployment-Anforderungen.\n\nWir beobachten Issues täglich.",
 			"openIssueButton": "GitHub Issue eröffnen",
 			"issueIncludeLabel": "Was in Ihrem Issue enthalten sein sollte:",
 			"issueIncludeText": "Firmenname, Teamgröße, geplanter Anwendungsfall, Bereitstellungsumgebung (Cloud/On-Premise), Zeitrahmen und spezifische Support- oder Compliance-Anforderungen.",
 			"operatedBy": "Betrieben von PlayForm, Sofia, Bulgarien"
 		},
 		"openSource": {
-			"heading": "Open Source",
-			"description": "Nicht der Zugang zum Code selbst.\n\nCode Editor Land ist Open Source unter CC0.\n\nEnterprise-Pläne bieten Support, SLAs und individuelle Entwicklung."
+			"heading": "Weiterhin Open Source",
+			"description": "Enterprise-Pläne fügen Support, SLA und individuelle Entwicklung hinzu.\n\nDer Code selbst bleibt CC0. Forken, lesen, ausliefern."
 		}
 	},
 	"oauth": {
-		"completing": "Authentifizierung wird abgeschlossen...",
-		"failed": "Authentifizierung fehlgeschlagen",
-		"errorGeneric": "Bei der Authentifizierung ist ein Fehler aufgetreten.",
+		"completing": "Anmeldung wird abgeschlossen...",
+		"failed": "Anmeldung fehlgeschlagen",
+		"errorGeneric": "Bei der Anmeldung ist ein Fehler aufgetreten. Bitte erneut versuchen.",
 		"errorExpired": "Authentifizierungssitzung abgelaufen.\n\nBitte versuchen Sie es erneut.",
 		"errorProvider": "OAuth-Anbieter hat einen Fehler zurückgegeben.\n\nBitte versuchen Sie es erneut.",
 		"errorNoToken": "Kein Authentifizierungstoken erhalten.",
@@ -257,12 +257,12 @@
 		"goToDashboard": "Zum Dashboard",
 		"success": {
 			"title": "Sie sind angemeldet",
-			"redirect": "Weiterleitung zum Dashboard..."
+			"redirect": "Weiterleitung zu Ihrem Dashboard..."
 		}
 	},
 	"dashboard": {
-		"pageTitle": "Willkommen",
-		"pageSubtitle": "Verwalten Sie Ihr Code Editor Land-Konto und Ihre Einstellungen.",
+		"pageTitle": "Dashboard",
+		"pageSubtitle": "Ihr Land-Konto, Downloads und Editor-Verbindung.",
 		"breadcrumbLabel": "Dashboard",
 		"account": {
 			"heading": "Konto",
@@ -281,7 +281,7 @@
 		},
 		"downloads": {
 			"heading": "Downloads",
-			"description": "Laden Sie die neueste Version von Code Editor Land für Ihre Plattform herunter.",
+			"description": "Laden Sie den neuesten Land-Build für Ihre Plattform herunter. Nativ auf macOS, Windows und Linux.",
 			"goButton": "Zu den Downloads"
 		},
 		"quickLinks": {

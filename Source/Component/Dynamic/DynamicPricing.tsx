@@ -8,11 +8,29 @@ import { DynamicButton } from "./DynamicButton.js";
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
- * Dynamic Pricing with simplex noise integration.
- * Tier cards get StaccatoCard scatter. Toggle uses StaccatoToggle.
- * Popular badge pulses with StaccatoRhythm. Price text breathes.
- * Checkmarks use StaccatoCheckmark for organic emphasis.
- * All billing-period labels are i18n-resolved; no hardcoded strings.
+ * Semantic color map for the six core elements.
+ * Extracts the element name from the first segment before the emoji.
+ */
+const ElementColorMap: Record<string, string> = {
+	Mountain: "var(--ExtensionRust)",
+	Cocoon:   "var(--ExtensionEffectTypeScript)",
+	Wind:     "var(--LanguageTypeScript)",
+	Sky:      "var(--ExtensionAstro)",
+	Air:      "var(--ExtensionRust)",
+	Echo:     "var(--ExtensionRust)",
+};
+
+const GetElementColor = (Line: string): string => {
+	const Name = Line.split(/[\s\u2001]/)[0];
+	return ElementColorMap[Name] ?? "var(--Primary)";
+};
+
+/**
+ * Dynamic Pricing — two-column layout (Free + Future).
+ * Each tier card shows:
+ *   Elements section — colored multi-line rows (name / descriptor / detail)
+ *   Separator
+ *   Features section — icon checklist
  */
 const DynamicPricing = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("home");
@@ -26,35 +44,19 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 		Labels = {},
 	} = Content;
 
-	const MonthlyLabel =
-		Labels.Monthly ??
-		T("pricing.labels.monthly", { defaultValue: "Monthly" });
-	const YearlyLabel =
-		Labels.Yearly ?? T("pricing.labels.yearly", { defaultValue: "Yearly" });
-	const SavingsLabel =
-		Labels.Savings ??
-		T("pricing.labels.savings", { defaultValue: "(Save up to 20%)" });
 	const PopularLabel =
 		Labels.Popular ??
 		T("pricing.labels.popular", { defaultValue: "Most Popular" });
-	const PerMonthLabel =
-		Labels.PerMonth ??
-		T("pricing.labels.perMonth", { defaultValue: "/month" });
-	const PerYearLabel =
-		Labels.PerYear ??
-		T("pricing.labels.perYear", { defaultValue: "/year" });
 
 	const [IsYearly, SetIsYearly] = useState(DefaultYearly);
 
 	useEffect(() => {
 		const Grid = GridReference.current;
 		if (!Grid) return;
-
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
 		if (ReducedMotion) return;
-
 		const ApplyScatter = async () => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
@@ -64,18 +66,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 				Attention.ApplyToElement(Card, Index, 4, 3);
 			});
 		};
-
 		ApplyScatter();
 	}, [Tiers]);
-
-	const FormatPrice = (Price: number, Currency: string = "USD") => {
-		return new Intl.NumberFormat("en-US", {
-			style: "currency",
-			currency: Currency,
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 0,
-		}).format(Price);
-	};
 
 	const DisplayTier = Tiers.map((Tier) => ({
 		...Tier,
@@ -107,62 +99,9 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					</div>
 				)}
 
-				{ShowMonthlyYearlyToggle && (
-					<div className="mb-12 flex items-center justify-center gap-4">
-						<span className="text-sm font-medium">
-							{MonthlyLabel}
-						</span>
-						<button
-							type="button"
-							role="switch"
-							aria-checked={IsYearly}
-							aria-label={
-								IsYearly
-									? T("pricing.toggle.toMonthly", {
-											defaultValue:
-												"Switch to {{label}} billing",
-											label: MonthlyLabel,
-										})
-									: T("pricing.toggle.toYearly", {
-											defaultValue:
-												"Switch to {{label}} billing",
-											label: YearlyLabel,
-										})
-							}
-							className={`StaccatoToggle relative inline-flex h-6 w-11 items-center rounded-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
-								IsYearly ? "bg-primary" : "bg-input"
-							}`}
-							tabIndex={0}
-							onKeyDown={(Event) => {
-								if (
-									Event.key === " " ||
-									Event.key === "Enter"
-								) {
-									Event.preventDefault();
-									SetIsYearly(!IsYearly);
-								}
-							}}
-							onClick={() => SetIsYearly(!IsYearly)}>
-							<span
-								className={`inline-block h-4 w-4 transform rounded-none bg-white transition-transform ${
-									IsYearly ? "translate-x-6" : "translate-x-1"
-								}`}
-							/>
-						</button>
-						<span className="text-sm font-medium">
-							{YearlyLabel}
-						</span>
-						{IsYearly && (
-							<span className="StaccatoBadge text-sm text-muted-foreground">
-								{SavingsLabel}
-							</span>
-						)}
-					</div>
-				)}
-
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.Id}
@@ -171,6 +110,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									? "border-primary"
 									: "border-[var(--Border)]"
 							}`}>
+
+							{/* ── Card header ───────────────────────────── */}
 							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.Popular && (
 									<div className="mb-2">
@@ -191,82 +132,93 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									{Tier.Name}
 								</h3>
 								{Tier.Description && (
-									<div className="StaccatoBreath mb-4 text-sm text-muted-foreground">
+									<div className="StaccatoBreath text-sm text-muted-foreground">
 										<RichText Text={Tier.Description} />
 									</div>
 								)}
-								<div className="flex items-baseline">
-									<span className="StaccatoPrice text-4xl font-bold">
-										{Tier.currentPrice === 0
-											? T("pricing.labels.free", {
-													defaultValue: "Free",
-												})
-											: FormatPrice(
-													Tier.currentPrice,
-													Tier.Currency,
-												)}
-									</span>
-									{ShowMonthlyYearlyToggle &&
-										Tier.currentPrice > 0 && (
-											<span className="ml-2 text-muted-foreground">
-												{IsYearly
-													? PerYearLabel
-													: PerMonthLabel}
-											</span>
-										)}
-								</div>
 							</div>
 
+							{/* ── Card body ─────────────────────────────── */}
 							<div className="flex flex-1 flex-col p-6">
-								<ul
-									className={`flex-1 ${
-										Tier.Features.length > 8
-											? "grid grid-cols-2 gap-x-4 gap-y-3"
-											: "space-y-3"
-									}`}>
-									{Tier.Features.map(
-										(Feature, FeatureIndex) => {
-											const NewlineIndex =
-												Feature.indexOf("\n");
-											const HasSplit =
-												NewlineIndex !== -1;
-											const Name = HasSplit
-												? Feature.slice(
-														0,
-														NewlineIndex,
-													)
-												: Feature;
-											const Desc = HasSplit
-												? Feature.slice(
-														NewlineIndex + 1,
-													)
-												: null;
 
-											return (
-												<li
-													key={FeatureIndex}
-													className="flex items-start justify-between gap-2">
-													<span className="min-w-0 flex-1">
-														<span className="block text-sm font-medium">
-															{Name}
-														</span>
-														{Desc && (
-															<span className="block text-xs text-muted-foreground">
-																{Desc}
+								{/* Elements section */}
+								{Tier.Elements && Tier.Elements.length > 0 && (
+									<>
+										<p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+											Elements
+										</p>
+										<ul className="space-y-3">
+											{Tier.Elements.map(
+												(Element, Index) => {
+													const Parts =
+														Element.split("\n");
+													const NameLine = Parts[0] ?? "";
+													const Sub1 = Parts[1];
+													const Sub2 = Parts[2];
+													const AccentColor =
+														GetElementColor(NameLine);
+													return (
+														<li
+															key={Index}
+															className="flex flex-col gap-0.5">
+															<span
+																className="text-sm font-semibold"
+																style={{
+																	color: AccentColor,
+																}}>
+																{NameLine}
 															</span>
-														)}
-													</span>
-													<IconTooltip
-														Label="Included"
-														Icon={lucide.Check}
-														SizeClass="h-4 w-4 shrink-0"
-														ClassName="StaccatoCheckmark mt-0.5 text-primary"
-													/>
-												</li>
-											);
-										},
-									)}
-								</ul>
+															{Sub1 && (
+																<span className="text-xs text-foreground">
+																	{Sub1}
+																</span>
+															)}
+															{Sub2 && (
+																<span className="text-xs text-muted-foreground">
+																	{Sub2}
+																</span>
+															)}
+														</li>
+													);
+												},
+											)}
+										</ul>
+										{Tier.Features.length > 0 && (
+											<hr className="my-5 border-[var(--Border)]" />
+										)}
+									</>
+								)}
+
+								{/* Features section */}
+								{Tier.Features.length > 0 && (
+									<>
+										{Tier.Elements &&
+											Tier.Elements.length > 0 && (
+												<p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+													Coming Up
+												</p>
+											)}
+										<ul className="space-y-3">
+											{Tier.Features.map(
+												(Feature, FeatureIndex) => (
+													<li
+														key={FeatureIndex}
+														className="flex items-start justify-between gap-2">
+														<span className="min-w-0 flex-1 text-sm">
+															{Feature}
+														</span>
+														<IconTooltip
+															Label="Included"
+															Icon={lucide.Check}
+															SizeClass="h-4 w-4 shrink-0"
+															ClassName="StaccatoCheckmark mt-0.5 text-primary"
+														/>
+													</li>
+												),
+											)}
+										</ul>
+									</>
+								)}
 							</div>
 						</div>
 					))}

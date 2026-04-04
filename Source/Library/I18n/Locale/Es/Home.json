@@ -3,37 +3,37 @@
 		"badge": "Características",
 		"item": {
 			"designTokens": {
-				"description": "El backend nativo de Rust con gRPC IPC garantiza que cada operación sea rápida, receptiva y confiable.\n\nSin la carga de Electron.",
-				"title": "Rendimiento primero"
+				"description": "Deje de darle a VS Code un gigabyte de RAM solo para abrir un archivo.\n\nEl núcleo Rust de Land con gRPC IPC responde en microsegundos. Incluso con cientos de archivos abiertos.",
+				"title": "Sin lag, nunca"
 			},
 			"componentLibrary": {
-				"description": "Ejecute sus extensiones VS Code existentes con alta fidelidad a través del host de extensiones Cocoon.\n\nSin cambios necesarios.",
-				"title": "Compatibilidad con VS Code"
+				"description": "Toda su biblioteca de extensiones de VS Code funciona de inmediato.\n\nEl host Cocoon refleja la superficie completa de la API de VS Code. Nada necesita ser reescrito.",
+				"title": "Sus extensiones, sin cambios"
 			},
 			"documentation": {
-				"description": "Los servicios de UI nativos de Effect-TS proporcionan seguridad de tipos, concurrencia estructurada y excelente manejo de errores.",
-				"title": "Arquitectura Effect-TS"
+				"description": "Effect-TS proporciona servicios tipados, concurrencia estructurada y errores rastreados.\n\nLos errores se detectan en tiempo de compilación, no a las 3 de la mañana.",
+				"title": "Tipado seguro de extremo a extremo"
 			},
 			"versionControl": {
-				"description": "Una base de código, implementaciones nativas para macOS, Windows y Linux con Tauri.\n\nEscriba una vez, ejecute en todas partes.",
-				"title": "Multiplataforma"
+				"description": "Un codebase compila en aplicaciones completamente nativas en macOS, Windows y Linux vía Tauri.\n\nPublique para las tres plataformas con un solo comando.",
+				"title": "Una compilación, cada plataforma"
 			},
 			"collaboration": {
-				"description": "Completamente libre de usar, modificar y distribuir.\n\nLicenciado bajo Creative Commons CC0.\n\nSin restricciones.",
-				"title": "Código abierto"
+				"description": "CC0 dominio público. Úselo, bifúrquelo, distribúyalo, incluso véndalo.\n\nFinanciado por NLnet y construido completamente en público.",
+				"title": "Gratis para siempre, sin condiciones"
 			},
 			"cicdIntegration": {
-				"description": "Construido sobre tecnologías de código abierto probadas:\n\nRust, Tauri, Effect-TS y la plataforma VS Code.",
-				"title": "Herramientas modernas"
+				"description": "Rust, Tauri, Effect-TS y Biome forman un stack elegido por su corrección y velocidad de desarrollo.\n\nHerramientas conocidas, sin compromisos.",
+				"title": "Cadena de herramientas de primer nivel"
 			}
 		},
-		"subtitle": "Descubra qué hace de Code Editor Land el editor de código más avanzado disponible.",
-		"title": "Construido para el rendimiento, diseñado para desarrolladores"
+		"subtitle": "Seis razones por las que Land es más rápido, más seguro y más abierto que cualquier editor basado en Electron.",
+		"title": "Diferente por diseño. Mejor de forma medible."
 	},
 	"hero": {
-		"badge": "Nuevo: Arquitectura Effect-TS",
-		"subtitle": "Un editor ultra-rápido y con seguridad de tipos construido con Rust, Tauri y Effect-TS.\n\nExperimente el editor que reimagina VS Code para la era moderna.",
-		"title": "El futuro de la edición de código",
+		"badge": "Velocidad nativa Sin Electron CC0",
+		"subtitle": "Deje de darle a VS Code un gigabyte de RAM.\n\nLand está construido con Rust, Tauri y Effect-TS. Rápido de forma nativa. Sin Electron. Gratis para siempre.",
+		"title": "El editor de código que usted merece",
 		"titleHighlight": "Land",
 		"atScale": "comienza aquí",
 		"cta": {
@@ -111,12 +111,12 @@
 		"attributionNote": "Miembro representativo de la comunidad"
 	},
 	"roadmap": {
-		"title": "Hoja de ruta y expectativas",
-		"subtitle": "Financiado por el Fondo NGI0 Commons.\n\nCódigo abierto, gratuito para siempre, desarrollado en público.",
+		"title": "Hoja de ruta y qué esperar",
+		"subtitle": "Financiado por el NLnet NGI0 Commons Fund.\n\nConstruido en público, gratis para siempre, sin sorpresas en la hoja de ruta.",
 		"tiers": {
 			"current": {
-				"name": "Fase actual",
-				"description": "Fundación y andamiaje del editor principal.\n\nDesarrollo activo.",
+				"name": "Activo ahora",
+				"description": "Los quince elementos principales están en desarrollo activo. Cada uno es un repositorio independiente que puede inspeccionar y al que puede contribuir hoy.",
 				"features": {
 					"mountain": "Mountain ⛰️\nbackend nativo Rust/Tauri",
 					"cocoon": "Cocoon 🦋\nhost de extensiones VS Code via Effect-TS",
@@ -137,8 +137,8 @@
 				"button": "Ver en GitHub"
 			},
 			"next": {
-				"name": "Próximo hito",
-				"description": "Ecosistema de extensiones y estabilidad de la plataforma.",
+				"name": "Próximamente",
+				"description": "Refinamiento del ecosistema de extensiones y primera versión estable en las tres plataformas.",
 				"features": {
 					"1": "Compatibilidad de alta fidelidad con extensiones VS Code",
 					"2": "Instalador multiplataforma y actualización automática",
@@ -149,7 +149,7 @@
 			},
 			"future": {
 				"name": "Visión a largo plazo",
-				"description": "Editor completo que reemplaza las herramientas basadas en Electron.",
+				"description": "Land se convierte en el IDE nativo multiplataforma líder. Sandbox completo de plugins, extensiones WASM e integración de IA nativa.",
 				"features": {
 					"1": "Edición móvil nativa (iOS, Android)",
 					"2": "Edición colaborativa en tiempo real",
@@ -165,27 +165,29 @@
 		"subtitle": "Land reemplaza la pila Electron de VS Code con una arquitectura modular y de alto rendimiento.\n\nCada elemento es un repositorio independiente.",
 		"mountain": {
 			"description": "Gestiona el ciclo de vida de ventanas, sistema de archivos y procesos.\n\nEl backend nativo Rust/Tauri que reemplaza el proceso principal de Electron.",
-			"subtitle": "Backend nativo Rust/Tauri"
+			"subtitle": "Gestor de procesos nativo"
 		},
 		"cocoon": {
 			"description": "Ejecuta extensiones VS Code via Effect-TS con compatibilidad API de alta fidelidad.\n\nSin cambios necesarios en las extensiones existentes.",
-			"subtitle": "Host de extensiones TypeScript"
+			"subtitle": "Host de extensiones sin reescrituras"
 		},
 		"wind": {
 			"description": "Reimplementación del VS Code Workbench.\n\nProporciona el shell del editor, paneles, barras laterales y barra de actividad.",
-			"subtitle": "Servicio UI TypeScript"
+			"subtitle": "Shell completo del workbench"
 		},
 		"sky": {
 			"description": "Renderiza la interfaz del editor usando componentes Astro.\n\nGestiona temas, diseños y la capa de presentación visual.",
-			"subtitle": "Componente UI Astro"
+			"subtitle": "Capa de temas y diseño"
 		},
 		"air": {
 			"description": "Demonio en segundo plano para actualizaciones automáticas, descargas y firma criptográfica.\n\nMantiene Land actualizado silenciosamente.",
-			"subtitle": "Demonio en segundo plano Rust"
+			"subtitle": "Actualizaciones silenciosas, siempre firmadas"
 		},
 		"echo": {
 			"description": "Ejecutor de robo de trabajo de alto rendimiento.\n\nPlanifica y distribuye tareas entre núcleos para máximo rendimiento.",
-			"subtitle": "Programador de tareas Rust"
-		}
+			"subtitle": "Usa todos los núcleos de CPU"
+		},
+		"heading": "Cómo funciona la arquitectura",
+		"intro": "Land reemplaza el stack Electron de VS Code elemento por elemento."
 	}
 }

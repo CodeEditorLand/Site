@@ -147,7 +147,7 @@
 			"continueGitHub": "Продължете с GitHub",
 			"continueGoogle": "Продължете с Google",
 			"continueGitLab": "Продължете с GitLab",
-			"oauthNote": "OAuth 2.0   Само имейл обхват   Свързан с предпочитанията ви",
+			"oauthNote": "OAuth 2.0 Само имейл обхват Свързан с предпочитанията ви",
 			"feature": {
 				"github": "Без нова парола GitHub идентичността ви е достатъчна",
 				"sso": "Единичен вход за всички Land услуги",
@@ -170,14 +170,14 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Сканиране...",
 			"connect": "Свържете се с Air Daemon",
-			"note": "Нулева зависимост от облака   JWT сертификати   mTLS",
+			"note": "Нулева зависимост от облака JWT сертификати mTLS",
 			"feature": {
 				"daemon": "Браузърът се свързва с Air Daemon чрез криптиран loopback",
 				"build": "Стартирайте билдове директно от конзолата на уебсайта",
 				"deploy": "Разгърнете промените директно в работещия редактор",
 				"configure": "Пълно управление на конфигурацията и настройките",
 				"parity": "Пълен паритет с VS Code функции нищо не липсва",
-				"offline": "Пълна офлайн работа. Не е необходим облачен вход.",
+				"offline": "Пълна офлайн работа. Не е необходим облачен вход",
 				"bake": "Вградете портала директно в редактора като вграден SaaS"
 			},
 			"capability": {
@@ -207,7 +207,7 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "URL на SAML метаданни",
 			"samlMetadataPlaceholder": "https://вашият-idp.com/metadata.xml",
-			"note": "OpenID Connect Discovery  +  SAML 2.0 Assertion  +  SCIM 2.0 осигуряване на потребители",
+			"note": "OpenID Connect Discovery + SAML 2.0 Assertion + SCIM 2.0 осигуряване на потребители",
 			"feature": {
 				"okta": "Okta SSO един вход отключва всичко",
 				"azure": "Azure AD / Entra ID Microsoft идентичността ви работи",
