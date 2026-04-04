@@ -3,36 +3,36 @@
 		"badge": "Feature",
 		"item": {
 			"designTokens": {
-				"title": "No RAM tax. No blocked editor.",
-				"description": "VS Code with a medium project uses 500 MB to 1.5 GB RAM. Electron bundles Chromium into every window and the heap never shrinks.\n\nLand uses the OS's own renderer. No bundled Chromium. Mountain's Rust core responds in microseconds and releases memory when you close a file."
+				"title": "No More Frozen Cursors",
+				"description": "VS Code with a medium project uses 500MB to 1.5GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.\n\nMountain runs native Rust + Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks. Even with hundreds of files open."
 			},
 			"componentLibrary": {
-				"title": "Every extension runs unchanged.",
-				"description": "Cocoon intercepts require and import at the module level and routes VS Code API calls through a full Effect-TS service layer. Every extension sees the exact same vscode.* API it always has.\n\nInstall anything from the marketplace. Nothing needs to be ported, patched, or rewritten."
+				"title": "Every Extension Runs Unchanged",
+				"description": "Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not \"mostly works.\" Not \"works except for X.\" Unchanged."
 			},
 			"documentation": {
-				"title": "Extensions run concurrently, not in turns.",
-				"description": "VS Code's extension host is a single Node.js process. One extension's hung Promise blocks every other. Effect-TS fibers are not Promises: they can be interrupted, raced, and run in parallel across CPU cores.\n\nOne extension crash does not affect the others. Bugs are caught at compile time, not at 3 am."
+				"title": "Fibers, Not Promises",
+				"description": "VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other operation on that event loop.\n\nEffect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Type errors caught at compile time. Bugs that reach production in VS Code never compile in Land."
 			},
 			"versionControl": {
-				"title": "One binary. Native on every OS.",
-				"description": "One codebase compiles to fully native apps on macOS, Windows, and Linux via Tauri. The OS's own renderer draws the UI. No Electron IPC proxy. No renderer-to-main roundtrip for file dialogs.\n\nPublish to all three platforms with a single command."
+				"title": "One Codebase, Every Platform",
+				"description": "Building native apps for three operating systems used to mean three rendering engines, three native toolchains, three deployment pipelines.\n\nTauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux with no bundled Chromium."
 			},
 			"cicdIntegration": {
-				"title": "The stack built for correctness.",
-				"description": "Rust, Tauri, Effect-TS, and Biome — every choice was made because it catches more bugs earlier.\n\nTyped at the wire (Vine gRPC). Typed effects throughout (Common + Cocoon). Deterministic builds (Output). Familiar to VS Code developers, but without the failure modes."
+				"title": "No Restart to Update",
+				"description": "VS Code's \"Restart to Update\" prompt kills every open terminal, unsaved diff, and in-progress language server. The update cannot wait.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt, no restart, no lost state."
 			},
 			"collaboration": {
-				"title": "CC0. No restrictions. No telemetry.",
-				"description": "The Telemetry feature is not in default features. When it is not compiled in, the code paths do not exist. There is nothing to disable because there is nothing there.\n\nCC0 public domain. Fork it, ship it, sell it. NLnet-funded, built entirely in the open."
+				"title": "CC0. No Restrictions.",
+				"description": "Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches. No restrictions of any kind."
 			}
 		},
-		"subtitle": "The extension ecosystem you rely on, running on a stack built for performance.",
-		"title": "VS Code. Without Electron."
+		"subtitle": "Every design decision in Land traces back to a specific pain in VS Code's Electron stack. Not \"better\". Architecturally different.",
+		"title": "Eight Problems. One Architecture."
 	},
 	"hero": {
-		"badge": "Native Speed   No Electron   CC0",
-		"subtitle": "Stop handing VS Code a gigabyte of RAM.\n\nLand is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.",
+		"badge": "No Electron   No Restart to Update   CC0",
+		"subtitle": "VS Code runs on Electron. That means Chromium, Node.js, and a gigabyte of RAM just to open a file.\n\nLand replaces the entire Electron stack with Rust, Tauri, and Effect-TS. The difference is felt on first launch.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",
 		"atScale": "starts here",
@@ -118,12 +118,12 @@
 				"name": "Active Now",
 				"description": "All fifteen elements are in active development and independently deployable. The runtime is faster than VS Code. The extension API is implemented. Each element is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"1": "VS Code Extension Compatibility Zero Rewrites",
-					"2": "Native Rust Backend No Electron",
-					"3": "macOS Windows Linux",
-					"4": "CC0 Public Domain No Restriction",
-					"5": "gRPC IPC Sub-Millisecond Communication",
-					"6": "Effect-TS Architecture Typed Services"
+					"1": "Every Extension Runs Unchanged Zero Rewrites",
+					"2": "No Electron Overhead The OS’s Own Renderer",
+					"3": "Fibers, Not Promises Interruptible and Supervised",
+					"4": "Telemetry Is a Compile Flag Not a Config Option",
+					"5": "CC0 No Restrictions, No Compliance, No Attribution",
+					"6": "macOS Windows Linux"
 				},
 				"button": "View on GitHub",
 				"elements": {
@@ -148,11 +148,14 @@
 			"future": {
 				"name": "True Extension Isolation",
 				"description": "Grove makes Land the first editor where extensions are technically isolated, not just policy-isolated. An extension can only touch what you explicitly grant. The boundary is enforced by the hardware.",
-				"features": {
-					"1": "Grove WASM sandbox: capability-based extension isolation via WASMtime",
-					"2": "Collaborative editing built on CRDT state sync, no conflict resolution manual work",
-					"3": "AI-assisted development with local-first inference, no cloud dependency"
-				}
+				"features": [
+					"VS Code Marketplace Every Extension Installs Unchanged",
+					"Grove Hardware-Enforced Extension Isolation",
+					"Vine Typed at the Wire All IPC Finalized",
+					"Cross-Platform Native Installer Tauri",
+					"Source Map Generation OXC",
+					"Cloudflare CDN Download Worker Live"
+				]
 			}
 		}
 	},

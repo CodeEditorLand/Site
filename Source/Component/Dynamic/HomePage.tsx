@@ -29,7 +29,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Hero: {
 			Badge: {
 				Text: T("home:hero.badge", {
-					defaultValue: "Native Speed \u2001 No Electron \u2001 CC0",
+					defaultValue: "No Electron \u2001 No Restart to Update \u2001 CC0",
 				}),
 				Variant: "secondary",
 			},
@@ -148,13 +148,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Zap",
 					Icons: ["/Image/Rust.svg", "/Image/Tauri.svg", "Zap"],
 					Title: T("home:features.item.designTokens.title", {
-						defaultValue: "No Lag, Ever",
+						defaultValue: "No More Frozen Cursors",
 					}),
 					Description: T(
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"Stop handing VS Code a gigabyte of RAM just to open a file.\n\nLand's Rust core with gRPC IPC responds in microseconds. Even with hundreds of files open.",
+								"VS Code with a medium project uses 500MB to 1.5GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.
+
+Mountain runs native Rust + Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks. Even with hundreds of files open.",
 						},
 					),
 				},
@@ -163,13 +165,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Box",
 					Icons: ["/Image/EffectTS.svg", "Box", "Puzzle"],
 					Title: T("home:features.item.componentLibrary.title", {
-						defaultValue: "Your Extensions, Unchanged",
+						defaultValue: "Every Extension Runs Unchanged",
 					}),
 					Description: T(
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Your entire VS Code extension library works out of the box.\n\nThe Cocoon host mirrors the full VS Code API surface. Nothing needs rewriting.",
+								"Porting your extension library to a new editor is weeks of work you should never have to do.
+
+Cocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not "mostly works." Not "works except for X." Unchanged.",
 						},
 					),
 				},
@@ -178,13 +182,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Cpu",
 					Icons: ["/Image/EffectTS.svg", "/Image/TypeScript.svg", "Layers"],
 					Title: T("home:features.item.documentation.title", {
-						defaultValue: "Type-Safe End to End",
+						defaultValue: "Fibers, Not Promises",
 					}),
 					Description: T(
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"Effect-TS gives you typed services, structured concurrency, and traced errors.\n\nBugs are caught at compile time, not at 3 am.",
+								"VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other operation on that event loop.
+
+Effect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Type errors are caught at compile time. Bugs that reach production in VS Code never compile in Land.",
 						},
 					),
 				},
@@ -193,13 +199,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Globe",
 					Icons: ["/Image/Tauri.svg", "Globe", "Package"],
 					Title: T("home:features.item.versionControl.title", {
-						defaultValue: "One Build, Every Platform",
+						defaultValue: "One Codebase, Every Platform",
 					}),
 					Description: T(
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"One codebase compiles to fully native apps on macOS, Windows, and Linux via Tauri.\n\nPublish to all three platforms with a single command.",
+								"Building native apps for three operating systems from one codebase used to mean three separate rendering engines, three native toolchains, and three deployment pipelines.
+
+Tauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux with no bundled Chromium.",
 						},
 					),
 				},
@@ -208,13 +216,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Wrench",
 					Icons: ["/Image/Rust.svg", "/Image/Biome.svg", "/Image/EffectTS.svg"],
 					Title: T("home:features.item.cicdIntegration.title", {
-						defaultValue: "Best-in-Class Toolchain",
+						defaultValue: "No Restart to Update",
 					}),
 					Description: T(
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"Rust, Tauri, Effect-TS, and Biome form a stack chosen for correctness and developer velocity.\n\nFamiliar tools, no compromises.",
+								"VS Code's "Restart to Update" prompt kills every open terminal, unsaved diff, and in-progress language server. The update cannot wait.
+
+Air pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt, no restart, no lost state.",
 						},
 					),
 				},
@@ -223,13 +233,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Heart",
 					Icons: ["/Image/CC0.svg", "/Image/NLnet.svg", "Heart"],
 					Title: T("home:features.item.collaboration.title", {
-						defaultValue: "Free Forever, No Strings",
+						defaultValue: "CC0. No Restrictions.",
 					}),
 					Description: T(
 						"home:features.item.collaboration.description",
 						{
 							defaultValue:
-								"CC0 public domain. Use it, fork it, ship it, even sell it.\n\nNLnet-funded and built entirely in the open.",
+								"Most "open source" editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.
+
+The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches. No restrictions of any kind.",
 						},
 					),
 				},
