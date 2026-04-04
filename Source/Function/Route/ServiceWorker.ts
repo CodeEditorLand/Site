@@ -6,8 +6,9 @@
  * 2. Auth-gated API requests (Bearer token + HMAC signing)
  * 3. Asset caching (versioned route/asset caches + persistent auth cache)
  *
- * Build-time injected: __ROUTE_MAP_CANONICAL__, __ROUTE_MAP_VARIANT__,
- * __INCREMENT__ (cache version), __DEV__ (skip caching in dev).
+ * Build-time injected values: route maps (canonical + variant), cache
+ * version increment, and dev mode flag. See Integration.ts for the
+ * injection logic.
  *
  * Compiled with esbuild via /SW-Esbuild skill.
  */
