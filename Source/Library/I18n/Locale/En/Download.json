@@ -1,0 +1,63 @@
+{
+	"card": {
+		"platform": {
+			"linux": {
+				"description": "DEB, RPM, AppImage",
+				"title": "Linux"
+			},
+			"macos": {
+				"title": "macOS",
+				"universalBadge": "Universal Binary"
+			},
+			"windows": {
+				"description": "64-bit (x64)",
+				"title": "Windows"
+			}
+		}
+	},
+	"page": {
+		"subtitle": "Available for macOS, Windows, and Linux.\n\nFast, native, and free.",
+		"title": "Download Land"
+	},
+	"previousReleases": {
+		"description": "Download older versions if needed.",
+		"title": "Previous Releases"
+	},
+	"subtitle": "Available for macOS, Windows, and Linux.\n\nBuilt with Tauri, powered by Rust.",
+	"systemRequirements": {
+		"minimum": "Minimum Requirements",
+		"recommended": "Recommended",
+		"subtitle": "Ensure your system meets these requirements before downloading.",
+		"supportedOS": "Supported Operating Systems",
+		"title": "System Requirements"
+	},
+	"title": "Download Land",
+	"verification": {
+		"description": "Land releases are signed with PGP.\n\nVerify your download to ensure integrity.",
+		"downloadButton": "Download PGP Public Key",
+		"title": "Verify Your Download",
+		"verifyButton": "Verify Download"
+	},
+	"labels": {
+		"version": "Version:",
+		"size": "Size:",
+		"requirements": "Requirements:",
+		"loading": "Loading downloads...",
+		"errorTitle": "Unable to load downloads",
+		"downloadFailed": "Download failed.\n\nPlease try again.",
+		"downloadFor": "Download for {{platform}}",
+		"copiedToClipboard": "{{label}} copied to clipboard!",
+		"failedToCopy": "Failed to copy {{label}}",
+		"sha256Checksum": "SHA-256 Checksum",
+		"pgpSignature": "PGP Signature",
+		"verificationInstructions": "Verification Instructions",
+		"downloadVerification": "Download Verification",
+		"integrityCheck": "Integrity Check",
+		"copy": "Copy",
+		"signedWithKeyId": "Signed with key ID: {{keyId}}"
+	},
+	"transparency": {
+		"title": "Build Transparency",
+		"subtitle": "Full disclosure on telemetry, build variants, and deployment.\n\nVerify everything in source."
+	}
+}

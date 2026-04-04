@@ -1,0 +1,444 @@
+---
+import { DynamicPortal } from "../Component/Dynamic/DynamicPortal";
+import { Header } from "../Component/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { GetI18n } from "../Library/I18n/Server";
+
+const T = GetI18n();
+
+const PortalContent = {
+	Title: T("account.portal.title", {
+		defaultValue: "Choose Your Account Type",
+	}),
+	Subtitle: T("account.portal.subtitle", {
+		defaultValue:
+			"From fully online to completely local-first.\nThree ways to manage your editor.\nNo telemetry in any tier.",
+	}),
+
+	Cloud: {
+		Identifier: "Cloud" as const,
+		Title: T("account.portal.cloud.title", {
+			defaultValue: "Cloud Account",
+		}),
+		Subtitle: T("account.portal.cloud.subtitle", {
+			defaultValue:
+				"Secure online login with full cloud sync.\nYour settings, extensions, and preferences stored and synced across all devices.",
+		}),
+		Color: "var(--TierCloud)",
+		BorderColor: "var(--TierCloudFore)",
+		Icon: "Cloud",
+		Badge: "Online",
+		Protocol: "HTTPS / TLS 1.3",
+		Feature: [
+			{
+				Heading: "Sync",
+				Description: T("account.portal.cloud.feature.sync", {
+					defaultValue: "Cross-device settings synchronization",
+				}),
+				Icon: ["RefreshCw", "Cloud", "Monitor"],
+			},
+			{
+				Heading: "Backup",
+				Description: T("account.portal.cloud.feature.backup", {
+					defaultValue: "Automatic cloud backup of configurations",
+				}),
+				Icon: ["Cloud", "HardDrive", "Shield"],
+			},
+			{
+				Heading: "Team",
+				Description: T("account.portal.cloud.feature.team", {
+					defaultValue: "Team workspace management",
+				}),
+				Icon: ["Users", "Settings"],
+			},
+			{
+				Heading: "Extensions",
+				Description: T("account.portal.cloud.feature.extension", {
+					defaultValue: "Extension marketplace with cloud install",
+				}),
+				Icon: ["Puzzle", "Cloud", "Box"],
+			},
+			{
+				Heading: "Remote",
+				Description: T("account.portal.cloud.feature.remote", {
+					defaultValue: "Remote development server integration",
+				}),
+				Icon: ["Server", "Monitor", "Wifi"],
+			},
+		],
+		Capability: [
+			T("account.portal.cloud.capability.jwt", {
+				defaultValue: "JWT session tokens",
+			}),
+			T("account.portal.cloud.capability.okta", {
+				defaultValue: "Okta SSO integration",
+			}),
+			T("account.portal.cloud.capability.mfa", {
+				defaultValue: "Multi-factor authentication",
+			}),
+			T("account.portal.cloud.capability.rbac", {
+				defaultValue: "Role-based access control",
+			}),
+			T("account.portal.cloud.capability.audit", {
+				defaultValue: "Audit log trail",
+			}),
+			T("account.portal.cloud.capability.cert", {
+				defaultValue: "Developer certificates",
+			}),
+		],
+	},
+
+	Provider: {
+		Identifier: "Provider" as const,
+		Title: T("account.portal.provider.title", {
+			defaultValue: "Provider Account",
+		}),
+		Subtitle: T("account.portal.provider.subtitle", {
+			defaultValue:
+				"Authenticate through GitHub, Google, or GitLab.\nYour OAuth identity links directly to your editor preferences and team memberships.",
+		}),
+		Color: "var(--TierProvider)",
+		BorderColor: "var(--TierProviderFore)",
+		Icon: "GitFork",
+		Badge: "OAuth 2.0",
+		Protocol: "OAuth 2.0 / PKCE",
+		Feature: [
+			{
+				Heading: "GitHub",
+				Description: T("account.portal.provider.feature.github", {
+					defaultValue: "GitHub identity linked to preferences",
+				}),
+				Icon: ["/Image/GitHub.svg", "KeyRound", "Settings"],
+			},
+			{
+				Heading: "SSO",
+				Description: T("account.portal.provider.feature.sso", {
+					defaultValue: "Single sign-on across all Land services",
+				}),
+				Icon: ["KeyRound", "Shield", "Globe"],
+			},
+			{
+				Heading: "Repository",
+				Description: T("account.portal.provider.feature.repo", {
+					defaultValue: "Repository-aware workspace configuration",
+				}),
+				Icon: ["GitBranch", "Settings", "HardDrive"],
+			},
+			{
+				Heading: "Team",
+				Description: T("account.portal.provider.feature.team", {
+					defaultValue: "Organization and team membership sync",
+				}),
+				Icon: ["Users", "RefreshCw", "Building2"],
+			},
+			{
+				Heading: "CI/CD",
+				Description: T("account.portal.provider.feature.ci", {
+					defaultValue:
+						"CI/CD pipeline integration with build triggers",
+				}),
+				Icon: ["CirclePlay", "Rocket", "GitBranch"],
+			},
+		],
+		Capability: [
+			T("account.portal.provider.capability.oauth", {
+				defaultValue: "OAuth 2.0 + PKCE flow",
+			}),
+			T("account.portal.provider.capability.scope", {
+				defaultValue: "Granular permission scopes",
+			}),
+			T("account.portal.provider.capability.token", {
+				defaultValue: "Refresh token rotation",
+			}),
+			T("account.portal.provider.capability.webhook", {
+				defaultValue: "Webhook event subscriptions",
+			}),
+			T("account.portal.provider.capability.org", {
+				defaultValue: "Organization-level policies",
+			}),
+			T("account.portal.provider.capability.cert", {
+				defaultValue: "Developer certificates",
+			}),
+		],
+	},
+
+	LocalFirst: {
+		Identifier: "LocalFirst" as const,
+		Title: T("account.portal.localfirst.title", {
+			defaultValue: "Local-First Account",
+		}),
+		Subtitle: T("account.portal.localfirst.subtitle", {
+			defaultValue:
+				"Like a SaaS control panel that runs on your machine.\nZero cloud dependency.\nThe website communicates directly with the Air Daemon inside Land/Element via local-first protocol.\nConfigure, update, rebuild, and deploy your editor entirely from this console.",
+		}),
+		Color: "var(--TierLocalFirst)",
+		BorderColor: "var(--TierLocalFirstFore)",
+		Icon: "HardDrive",
+		Badge: "Local-First",
+		Protocol: "mTLS / CRDTs / WebSocket",
+		Feature: [
+			{
+				Heading: "Air Daemon",
+				Description: T("account.portal.localfirst.feature.daemon", {
+					defaultValue:
+						"Direct Air Daemon connection to Land/Element",
+				}),
+				Icon: ["Wifi", "Server", "Lock"],
+			},
+			{
+				Heading: "Build",
+				Description: T("account.portal.localfirst.feature.build", {
+					defaultValue:
+						"Launch builds directly through the website console",
+				}),
+				Icon: ["Hammer", "Monitor", "Globe"],
+			},
+			{
+				Heading: "Deploy",
+				Description: T("account.portal.localfirst.feature.deploy", {
+					defaultValue: "Deploy changes directly to the application",
+				}),
+				Icon: ["Rocket", "HardDrive"],
+			},
+			{
+				Heading: "Configure",
+				Description: T("account.portal.localfirst.feature.configure", {
+					defaultValue:
+						"Full editor configuration and settings management",
+				}),
+				Icon: ["Settings", "Monitor"],
+			},
+			{
+				Heading: "VS Code Parity",
+				Description: T("account.portal.localfirst.feature.parity", {
+					defaultValue:
+						"1:1 parity with VS Code server features and settings",
+				}),
+				Icon: ["Monitor", "RefreshCw"],
+			},
+			{
+				Heading: "Offline",
+				Description: T("account.portal.localfirst.feature.offline", {
+					defaultValue:
+						"No cloud login required.\nComplete offline operation.",
+				}),
+				Icon: ["WifiOff", "Shield", "HardDrive"],
+			},
+			{
+				Heading: "Embedded SaaS",
+				Description: T("account.portal.localfirst.feature.bake", {
+					defaultValue:
+						"Bake the portal directly into the editor as embedded SaaS",
+				}),
+				Icon: ["Box", "Monitor", "Globe"],
+			},
+		],
+		Capability: [
+			T("account.portal.localfirst.capability.jwt", {
+				defaultValue: "JWT developer certificates",
+			}),
+			T("account.portal.localfirst.capability.mtls", {
+				defaultValue: "Mutual TLS authentication",
+			}),
+			T("account.portal.localfirst.capability.crdt", {
+				defaultValue: "CRDT state synchronization",
+			}),
+			T("account.portal.localfirst.capability.team", {
+				defaultValue: "Team management (fully local)",
+			}),
+			T("account.portal.localfirst.capability.cert", {
+				defaultValue: "Certificate authority management",
+			}),
+			T("account.portal.localfirst.capability.ws", {
+				defaultValue: "WebSocket live connection",
+			}),
+			T("account.portal.localfirst.capability.rbac", {
+				defaultValue: "Local RBAC policies",
+			}),
+			T("account.portal.localfirst.capability.backup", {
+				defaultValue: "Encrypted local backup",
+			}),
+		],
+	},
+
+	Enterprise: {
+		Identifier: "Enterprise" as const,
+		Title: T("account.portal.enterprise.title", {
+			defaultValue: "Enterprise Account",
+		}),
+		Subtitle: T("account.portal.enterprise.subtitle", {
+			defaultValue:
+				"OIDC / SAML 2.0 single sign-on through Okta, Azure AD, or any compliant identity provider.\nGroup-to-role mapping, audit logs, and organization CA certificate management.",
+		}),
+		Color: "var(--PlatformDesktopFore)",
+		BorderColor: "var(--PlatformDesktop)",
+		Icon: "Shield",
+		Badge: "OIDC / SAML",
+		Protocol: "OIDC / SAML 2.0 / SCIM",
+		Feature: [
+			{
+				Heading: "Okta",
+				Description: T("account.portal.enterprise.feature.okta", {
+					defaultValue: "Okta SSO integration",
+				}),
+				Icon: ["/Image/Okta.svg", "KeyRound", "Shield"],
+			},
+			{
+				Heading: "Azure AD",
+				Description: T("account.portal.enterprise.feature.azure", {
+					defaultValue: "Azure AD / Entra ID support",
+				}),
+				Icon: ["/Image/Microsoft.svg", "Cloud", "Building2"],
+			},
+			{
+				Heading: "SAML 2.0",
+				Description: T("account.portal.enterprise.feature.saml", {
+					defaultValue: "SAML 2.0 for legacy enterprise IdPs",
+				}),
+				Icon: ["Shield", "Lock", "Building2"],
+			},
+			{
+				Heading: "SCIM",
+				Description: T("account.portal.enterprise.feature.scim", {
+					defaultValue: "SCIM user provisioning",
+				}),
+				Icon: ["UserPlus", "RefreshCw", "Users"],
+			},
+			{
+				Heading: "Groups",
+				Description: T("account.portal.enterprise.feature.group", {
+					defaultValue: "Group-to-role mapping",
+				}),
+				Icon: ["Users", "KeyRound", "Shield"],
+			},
+			{
+				Heading: "Audit",
+				Description: T("account.portal.enterprise.feature.audit", {
+					defaultValue: "Full audit log trail",
+				}),
+				Icon: ["FileText", "Shield", "Lock"],
+			},
+		],
+		Capability: [
+			T("account.portal.enterprise.capability.oidc", {
+				defaultValue: "OIDC Discovery + PKCE",
+			}),
+			T("account.portal.enterprise.capability.jit", {
+				defaultValue: "Just-in-time provisioning",
+			}),
+			T("account.portal.enterprise.capability.mfa", {
+				defaultValue: "Enforced MFA policies",
+			}),
+			T("account.portal.enterprise.capability.session", {
+				defaultValue: "Session management + revocation",
+			}),
+			T("account.portal.enterprise.capability.ca", {
+				defaultValue: "Organization CA certificates",
+			}),
+			T("account.portal.enterprise.capability.compliance", {
+				defaultValue: "SOC 2 / GDPR compliance",
+			}),
+		],
+	},
+
+	Labels: {
+		Included: T("account.portal.labels.included", {
+			defaultValue: "Included",
+		}),
+		Capabilities: T("account.portal.labels.capabilities", {
+			defaultValue: "Capabilities",
+		}),
+		Protocol: T("account.portal.labels.protocol", {
+			defaultValue: "Protocol:",
+		}),
+		SettingsManaged: T("account.portal.labels.settingsManaged", {
+			defaultValue: "Settings Managed",
+		}),
+		AllTiers: T("account.portal.labels.allTiers", {
+			defaultValue: "Included in all tiers",
+		}),
+	},
+};
+
+const MetaTitle = T("meta.portal.title", {
+	defaultValue: "Portal - Land",
+});
+const MetaDescription = T("meta.portal.description", {
+	defaultValue:
+		"Cloud, Provider, or Local-First. Choose your authentication method.",
+});
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<!-- Portal is the auth gateway itself; use the plain header so the
+	     Auth0-aware DynamicAuthHeader does not place a "Sign In" link on
+	     the auth-selection page, and more importantly does not instantiate
+	     Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
+	<Header client:load />
+
+	<main id="main-content">
+		<!-- Breadcrumb -->
+		<nav
+			aria-label="Breadcrumb"
+			class="container mx-auto px-4 pt-6 text-sm text-muted-foreground">
+			<ol class="flex flex-wrap items-center space-x-2">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground">
+						{T("common.breadcrumb.home", { defaultValue: "Home" })}
+					</a>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground">
+						{
+							T("meta.portal.breadcrumb", {
+								defaultValue: "Portal",
+							})
+						}
+					</span>
+				</li>
+			</ol>
+		</nav>
+
+		<div
+			class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
+			<picture>
+				<img
+					alt="Land"
+					src="/Asset/Logo/Glyph/Land.svg"
+					width="28"
+					height="28"
+				/>
+			</picture>
+			<span
+				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+				No Telemetry&#x2001;<span
+					class="h-1.5 w-1.5 rounded-none bg-green-500"
+					aria-hidden="true"></span>
+			</span>
+			<span
+				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+				CC0 Licensed
+			</span>
+			<span
+				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+				Auth0 + OAuth 2.0 + mTLS
+			</span>
+			<span
+				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+				OIDC / SAML / Okta&#x2001;<span
+					class="h-1.5 w-1.5 rounded-none bg-green-500"
+					aria-hidden="true"></span>
+			</span>
+			<a
+				href="https://PlayForm.Cloud"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
+				PlayForm
+			</a>
+		</div>
+
+		<DynamicPortal Content={PortalContent} client:load />
+	</main>
+</Base>

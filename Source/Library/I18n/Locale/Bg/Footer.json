@@ -1,0 +1,39 @@
+{
+	"brand": {
+		"name": "Code Editor Land",
+		"description": "Редакторът на код от ново поколение. Отворен код и безплатен завинаги."
+	},
+	"columns": {
+		"product": {
+			"title": "Продукт",
+			"features": "Функции",
+			"downloads": "Изтегляне",
+			"docs": "Документация"
+		},
+		"company": {
+			"title": "Общност",
+			"issues": "Дискусии",
+			"contributing": "Принос",
+			"github": "GitHub"
+		},
+		"legal": {
+			"title": "Правни",
+			"privacy": "Поверителност",
+			"terms": "Условия",
+			"license": "Лиценз"
+		}
+	},
+	"bottomBar": {
+		"copyright": "© {{year}} Code Editor Land. Всички права запазени.",
+		"builtBy": "Създаден от екипа на Code Editor Land",
+		"madeWith": "Направено с"
+	},
+	"funding": {
+		"prefix": "Този проект е финансиран чрез ",
+		"ngiFund": "NGI0 Commons Fund",
+		"nlnetIntro": ", фонд създаден от ",
+		"nlnet": "NLnet",
+		"euSupport": " с финансова подкрепа от Програмата за Интернет от ново поколение на Европейската комисия, споразумение No. 101135429. ",
+		"projectPage": "Виж страницата на проекта"
+	}
+}

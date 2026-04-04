@@ -5,9 +5,10 @@ export default {
 	content: [
 		"./Public/**/*.html",
 		"./Source/**/*.{astro,js,jsx,ts,tsx,vue,svelte}",
+		"./src/**/*.{astro,js,jsx,ts,tsx}",
 	],
 
-	darkMode: "media",
+	darkMode: "class",
 
 	theme: {
 		container: {
@@ -29,9 +30,80 @@ export default {
 					},
 				},
 			},
+			borderRadius: {
+				none: "0",
+				full: "9999px",
+			},
+			borderColor: {
+				DEFAULT: "var(--Border)",
+			},
 			colors: {
-				backgroundLight: "var(--background-light)",
-				backgroundDark: "var(--background-dark)",
+				/* Design system tokens - maps Tailwind utilities to CSS custom properties in Base.css */
+				background: "hsl(var(--Background))",
+				foreground: "var(--Foreground)",
+				card: {
+					DEFAULT: "var(--Card)",
+					foreground: "var(--CardForeground)",
+				},
+				popover: {
+					DEFAULT: "var(--Popover)",
+					foreground: "var(--PopoverForeground)",
+				},
+				primary: {
+					DEFAULT: "var(--Primary)",
+					foreground: "var(--PrimaryForeground)",
+				},
+				secondary: {
+					DEFAULT: "var(--Secondary)",
+					foreground: "var(--SecondaryForeground)",
+				},
+				muted: {
+					DEFAULT: "var(--Mute)",
+					foreground: "var(--MuteForeground)",
+				},
+				accent: {
+					DEFAULT: "var(--Accent)",
+					foreground: "var(--AccentForeground)",
+				},
+				destructive: {
+					DEFAULT: "var(--Destruct)",
+					foreground: "var(--DestructForeground)",
+				},
+				border: "var(--Border)",
+				input: "var(--Input)",
+				ring: "var(--Ring)",
+
+				// Existing tokens
+				backgroundLight: "var(--BackgroundLight)",
+				backgroundDark: "var(--BackgroundDark)",
+
+				// Bridge colors from Example/src/index.css
+				"color-green-500": "var(--ColorGreen500)",
+				"color-yellow-500": "var(--ColorYellow500)",
+				"color-white": "var(--ColorWhite)",
+
+				// Extended technology badge palette - Protocol Spines
+				"spine-grpc": "#22c55e",
+				"spine-ipc": "#3b82f6",
+				"spine-tcp": "#f97316",
+				"spine-wasm": "#a855f7",
+
+				// Extensions & Libraries
+				"ext-rust": "#ea580c",
+				"ext-tauri": "#eab308",
+				"ext-effect-ts": "#06b6d4",
+				"ext-react": "#60a5fa",
+				"ext-vue": "#4ade80",
+				"ext-svelte": "#fb923c",
+				"ext-next": "#171717",
+				"ext-nuxt": "#16a34a",
+				"ext-solid": "#2563eb",
+				"ext-astro": "#9333ea",
+
+				// Platform indicators
+				"platform-web": "#4f46e5",
+				"platform-desktop": "#475569",
+				"platform-mobile": "#ec4899",
 			},
 		},
 	},
@@ -45,5 +117,39 @@ export default {
 	],
 
 	// TODO: Link that to the dynamic components inside ./Source/Function/Scroll/Layout.astro
-	safelist: ["h-2", "w-2"],
+	safelist: [
+		"h-2",
+		"w-2",
+		// Include badge color utilities
+		"bg-spine-grpc",
+		"text-spine-grpc",
+		"border-spine-grpc",
+		"bg-spine-ipc",
+		"text-spine-ipc",
+		"border-spine-ipc",
+		"bg-spine-tcp",
+		"text-spine-tcp",
+		"border-spine-tcp",
+		"bg-spine-wasm",
+		"text-spine-wasm",
+		"border-spine-wasm",
+		"bg-ext-rust",
+		"text-ext-rust",
+		"border-ext-rust",
+		"bg-ext-tauri",
+		"text-ext-tauri",
+		"border-ext-tauri",
+		"bg-ext-effect-ts",
+		"text-ext-effect-ts",
+		"border-ext-effect-ts",
+		"bg-platform-web",
+		"text-platform-web",
+		"border-platform-web",
+		"bg-platform-desktop",
+		"text-platform-desktop",
+		"border-platform-desktop",
+		"bg-platform-mobile",
+		"text-platform-mobile",
+		"border-platform-mobile",
+	],
 };

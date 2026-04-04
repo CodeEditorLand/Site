@@ -1,0 +1,84 @@
+---
+import { VerifyPage } from "../Component/Dynamic/VerifyPage";
+import { Header } from "../Component/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { GetI18n } from "../Library/I18n/Server";
+
+const T = GetI18n();
+
+const VerifyContent = {
+	Verification: {
+		Pending: {
+			Title: T("verify.pending.title", {
+				defaultValue: "Verify Your Email",
+			}),
+			Description: T("verify.pending.description", {
+				defaultValue:
+					"We've sent a verification link to your email address.",
+			}),
+			ResendButton: {
+				Text: T("verify.pending.resendButton", {
+					defaultValue: "Resend Verification Email",
+				}),
+				Variant: "default",
+				FullWidth: true,
+			},
+		},
+		Success: {
+			Title: T("verify.success.title", {
+				defaultValue: "Email Verified Successfully!",
+			}),
+			Description: T("verify.success.description", {
+				defaultValue: "Your email address has been verified.",
+			}),
+			ContinueButton: {
+				Text: T("verify.success.continueButton", {
+					defaultValue: "Continue to Dashboard",
+				}),
+				Variant: "default",
+				FullWidth: true,
+			},
+		},
+		Error: {
+			Title: T("verify.error.title", {
+				defaultValue: "Verification Failed",
+			}),
+			Description: T("verify.error.description", {
+				defaultValue: "An error occurred during verification.",
+			}),
+			BackToSignInButton: {
+				Text: T("verify.error.backToSignInButton", {
+					defaultValue: "Back to Sign In",
+				}),
+				Variant: "default",
+				FullWidth: true,
+			},
+		},
+	},
+};
+
+const Token = Astro.url.searchParams.get("token");
+const Reason = Astro.url.searchParams.get("reason");
+const Route = Token ? "verify" : Reason ? "failure" : "pending";
+
+const MetaTitle = T("meta.verify.title", {
+	defaultValue: "Verify Email - Land",
+});
+const MetaDescription = T("verify.pending.description", {
+	defaultValue: "Verify your email address to activate your account.",
+});
+---
+
+<Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
+	<Header client:load />
+	<main id="main-content">
+		<VerifyPage
+			Content={VerifyContent}
+			route={Route}
+			token={Token || undefined}
+			reason={Reason || undefined}
+			metaTitle={MetaTitle}
+			metaDescription={MetaDescription}
+		/>
+	</main>
+</Base>

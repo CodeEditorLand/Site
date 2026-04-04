@@ -1,0 +1,53 @@
+# Lychee Link Checker - CodeEditorLand WebSite
+# Scan the live dev server or production build for broken links.
+# Usage: lychee --config lychee.toml http://127.0.2.2:9999/
+
+# Cache
+cache = true
+max_cache_age = "1d"
+
+# Request
+max_concurrency = 10
+max_redirects = 5
+max_retries = 3
+retry_wait_time = 2
+timeout = 30
+method = "get"
+
+# Accepted status codes
+accept = [200, 204, 301, 302, 307, 308]
+
+# Exclude patterns
+exclude = [
+	"/@id/",
+	"/@vite/",
+	"/@fs/",
+	"/__vite_ping",
+	"service-worker\\.js",
+	"dev-o5qwc17ra258xn81\\.eu\\.auth0\\.com",
+	"YOUR_USERNAME",
+	"example\\.com",
+	"twitter\\.com",
+	"x\\.com",
+	"mailto:",
+	"tel:",
+	"#StaccatoTurbulence",
+]
+
+# Exclude file paths (local file scanning only)
+exclude_path = ["node_modules", "Target", ".astro", ".git"]
+
+# Output
+format = "markdown"
+output = "lychee-report.md"
+verbose = "info"
+
+# Link behavior
+require_https = false
+scheme = ["http", "https"]
+include_fragments = true
+
+# Headers (must be last - TOML table)
+[header]
+User-Agent = "Mozilla/5.0 (compatible; Lychee/CodeEditorLand)"
+Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"

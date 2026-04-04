@@ -1,0 +1,157 @@
+---
+import { getCollection } from "astro:content";
+
+import { DynamicDocSidebar } from "../../Component/Dynamic/DynamicDocSidebar";
+import { Header } from "../../Component/Layout/Header";
+import Base from "../../Layout/Base.astro";
+import { GetI18n } from "../../Library/I18n/Server";
+
+export async function getStaticPaths() {
+	const Entries = await getCollection("doc");
+	return Entries.map((Entry) => ({
+		params: { Slug: Entry.slug },
+		props: { Entry },
+	}));
+}
+
+const { Entry } = Astro.props;
+const { Content } = await Entry.render();
+
+const AllEntries = (await getCollection("doc")).sort(
+	(A, B) => A.data.order - B.data.order,
+);
+
+const SidebarSections = AllEntries.map((E) => ({
+	Id: E.slug,
+	Label: E.data.title,
+}));
+
+// Sorted list for prev/next navigation
+const CurrentIndex = AllEntries.findIndex((E) => E.slug === Entry.slug);
+const PrevEntry = CurrentIndex > 0 ? AllEntries[CurrentIndex - 1] : null;
+const NextEntry =
+	CurrentIndex < AllEntries.length - 1 ? AllEntries[CurrentIndex + 1] : null;
+
+const T = GetI18n();
+
+const MetaTitle = `${Entry.data.title} | Code Editor Land`;
+const MetaDescription = Entry.data.description;
+---
+
+<Base
+	Title={MetaTitle}
+	Description={MetaDescription}
+	Url={`https://editor.land/Doc/${Entry.slug}`}
+	lang="en">
+	<Header client:load />
+
+	<div class="container mx-auto max-w-6xl px-4 py-16">
+		<div class="flex gap-8">
+			<!-- Sidebar -->
+			<aside class="hidden w-56 shrink-0 lg:block">
+				<div class="sticky top-8">
+					<p
+						class="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						{
+							T("sidebar.title", {
+								ns: "doc",
+								defaultValue: "Documentation",
+							})
+						}
+					</p>
+					<DynamicDocSidebar
+						Sections={SidebarSections}
+						ActiveId={Entry.slug}
+						client:load
+					/>
+				</div>
+			</aside>
+
+			<!-- Main content -->
+			<main id="main-content" class="min-w-0 flex-1">
+				<!-- Breadcrumbs -->
+				<nav aria-label="Breadcrumb" class="mb-8">
+					<ol
+						class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+						<li>
+							<a
+								href="/"
+								class="transition-colors hover:text-foreground"
+								>{
+									T("common.breadcrumb.home", {
+										defaultValue: "Home",
+									})
+								}</a
+							>
+						</li>
+						<li class="mx-2">/</li>
+						<li>
+							<a
+								href="/Doc"
+								class="transition-colors hover:text-foreground"
+								>{
+									T("sidebar.title", {
+										ns: "doc",
+										defaultValue: "Documentation",
+									})
+								}</a
+							>
+						</li>
+						<li class="mx-2">/</li>
+						<li>
+							<span class="font-medium text-foreground"
+								>{Entry.data.title}</span
+							>
+						</li>
+					</ol>
+				</nav>
+
+				<!-- Article header -->
+				<header class="mb-8">
+					<p
+						class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						{Entry.data.section}
+					</p>
+					<h1 class="mb-3 text-4xl font-bold tracking-tight">
+						{Entry.data.title}
+					</h1>
+					<p class="text-lg text-muted-foreground">
+						{Entry.data.description}
+					</p>
+				</header>
+
+				<!-- Doc content -->
+				<div
+					class="prose prose-neutral max-w-none border-t border-[var(--ColorBorder)] pt-8">
+					<Content />
+				</div>
+
+				<!-- Prev / Next navigation -->
+				{
+					(PrevEntry || NextEntry) && (
+						<div class="mt-12 flex justify-between border-t border-[var(--ColorBorder)] pt-8 text-sm">
+							{PrevEntry ? (
+								<a
+									href={`/Doc/${PrevEntry.slug}`}
+									class="StaccatoButton text-primary hover:underline">
+									{PrevEntry.data.title}
+									<span class="InlineSeparator">←</span>
+								</a>
+							) : (
+								<span />
+							)}
+							{NextEntry && (
+								<a
+									href={`/Doc/${NextEntry.slug}`}
+									class="StaccatoButton text-primary hover:underline">
+									{NextEntry.data.title}
+									<span class="InlineSeparator">→</span>
+								</a>
+							)}
+						</div>
+					)
+				}
+			</main>
+		</div>
+	</div>
+</Base>

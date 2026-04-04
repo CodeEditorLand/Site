@@ -1,0 +1,44 @@
+/* Header - flat white bar with subtle bottom border */
+.Header {
+	background: #ffffff;
+	border-bottom: 1px solid var(--Border);
+}
+
+.Header .LogoBox {
+	background-color: transparent;
+}
+
+.HeaderLogo span {
+	color: var(--Foreground);
+}
+
+/* Nav dropdown (desktop hamburger panel) */
+.NavDropdown {
+	background: #ffffff;
+	border-bottom: 1px solid var(--Border);
+}
+
+.HeaderSubLink {
+	position: relative;
+	z-index: 1;
+}
+
+/* Full gray hover overlay */
+.HeaderSubLink::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: var(--Mute);
+	opacity: 0;
+	transition: opacity 0.12s ease;
+}
+
+.HeaderSubLink:hover::before {
+	opacity: 1;
+}
+
+.HeaderSubLink:active::before {
+	opacity: 0.8;
+	background: var(--Accent);
+}

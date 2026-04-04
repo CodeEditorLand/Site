@@ -1,0 +1,22 @@
+{
+	"portal": {
+		"title": "Портал",
+		"subtitle": "Изберете вашия модел на разполагане.",
+		"cloud": {
+			"title": "Облак",
+			"description": "Хостван на нашата инфраструктура. Влезте с имейл и парола."
+		},
+		"localFirst": {
+			"title": "Локален приоритет",
+			"description": "Вашите данни остават на вашата машина. Свързване чрез Air Daemon по WebSocket."
+		},
+		"provider": {
+			"title": "Управляван доставчик",
+			"description": "OAuth 2.0 с PKCE. Влезте с GitHub, Google или GitLab."
+		},
+		"enterprise": {
+			"title": "Корпоративен",
+			"description": "OIDC / SAML 2.0 / SCIM. Единичен вход чрез Okta, Azure AD или SAML."
+		}
+	}
+}

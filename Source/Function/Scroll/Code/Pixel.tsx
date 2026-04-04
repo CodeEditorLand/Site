@@ -1,7 +1,44 @@
 import type { PixelProps } from "@Function/Scroll/Type.js";
-import { createSignal, onMount, type JSX, type Signal } from "solid-js";
+import { useEffect, useRef } from "react";
 
-export default ({
+// Import dependencies
+let Dimensional: any,
+	Style: any,
+	Noise: any,
+	Spectrum: any,
+	Constant: any,
+	ALL_COLORS: any;
+
+// biome-ignore lint/nursery/useComponentExportOnlyModules:
+const InitDimensional = async () => {
+	// @ts-ignore
+	const Module = await import("@Function/Scroll/Code/Pixel/Dimensional.js");
+	return Module.default;
+};
+
+// biome-ignore lint/nursery/useComponentExportOnlyModules:
+const InitStyle = async () => {
+	// @ts-ignore
+	const Module = await import("@Function/Scroll/Code/Pixel/Style.js");
+	return Module.default;
+};
+
+// biome-ignore lint/nursery/useComponentExportOnlyModules:
+const InitAnimation = async () => {
+	// @ts-ignore
+	const Module = await import("@Function/Scroll/Code/Pixel/Animation.js");
+	return Module;
+};
+
+// biome-ignore lint/nursery/useComponentExportOnlyModules:
+const InitConstant = async () => {
+	// @ts-ignore
+	const Module =
+		await import("@Function/Scroll/Code/Pixel/Animation/Constant.js");
+	return Module.default;
+};
+
+const Pixel = ({
 	Font,
 	Character,
 	Index: _,
@@ -12,61 +49,66 @@ export default ({
 	CurrentTime,
 	Row,
 	Column,
-}: PixelProps): JSX.Element => {
-	const [Element, _Element] =
-		createSignal<HTMLDivElement>() as Signal<HTMLDivElement>;
-
+}: PixelProps) => {
+	const ElementReference = useRef<HTMLDivElement>(null);
 	const Position = Character % Text;
-
 	const Seed = Position * 0.1 + Row * 0.05 + Column * 0.02;
 
-	onMount(() => {
-		if (!(Show && Element() && Container)) {
-			return;
-		}
+	useEffect(() => {
+		// Initialize dependencies if not yet loaded
+		const InitializeAndApply = async () => {
+			if (!Dimensional) {
+				Dimensional = await InitDimensional();
+				Style = await InitStyle();
+				const Animation = await InitAnimation();
+				Noise = Animation.Noise;
+				Spectrum = Animation.Spectrum;
+				Constant = await InitConstant();
+				ALL_COLORS = Spectrum(Constant.COLOR_STEPS);
+			}
 
-		new Style(Element(), {
-			TimeNoise:
-				Position * 0.1 +
-				CurrentTime() *
-					(Constant.MULTIPLIER_TIME_BASE +
-						Noise(CurrentTime() * 0.001 + Seed, 30) *
-							Constant.MULTIPLIER_TIME_VARIATION),
-			Seed,
-			Column,
-			Position,
-			Influence: 0,
-			Offset: new Dimensional(CurrentTime(), Seed, Mouse(), 1).Calculate(
-				1,
-				1,
-			),
-			Mouse,
-			Spectrum: ALL_COLORS,
-		}).Roll();
-	});
+			const Element = ElementReference.current;
+			if (!(Show && Element && Container)) {
+				return;
+			}
 
-	return <div ref={_Element} class={`h-${Font} w-${Font}`} />;
+			const MouseValue = Mouse;
+			new Style(Element, {
+				TimeNoise:
+					Position * 0.1 +
+					CurrentTime *
+						(Constant.MULTIPLIER_TIME_BASE +
+							Noise(CurrentTime * 0.001 + Seed, 30) *
+								Constant.MULTIPLIER_TIME_VARIATION),
+				Seed,
+				Column,
+				Position,
+				Influence: 0,
+				Offset: new Dimensional(
+					CurrentTime,
+					Seed,
+					MouseValue,
+					1,
+				).Calculate(1, 1),
+				Mouse: MouseValue, // Pass the direct value, not the accessor
+				Spectrum: ALL_COLORS,
+			}).Roll();
+		};
+
+		InitializeAndApply();
+	}, [
+		Show,
+		Container,
+		CurrentTime,
+		Mouse,
+		Position,
+		Seed,
+		Character,
+		Text,
+		Font,
+	]);
+
+	return <div ref={ElementReference} className={`h-${Font} w-${Font}`} />;
 };
 
-// biome-ignore lint/nursery/useComponentExportOnlyModules:
-export const { default: Dimensional } = await import(
-	"@Function/Scroll/Code/Pixel/Dimensional.js"
-);
-
-// biome-ignore lint/nursery/useComponentExportOnlyModules:
-export const { default: Style } = await import(
-	"@Function/Scroll/Code/Pixel/Style.js"
-);
-
-// biome-ignore lint/nursery/useComponentExportOnlyModules:
-export const { Influence, Layer, Noise, Spectrum } = await import(
-	"@Function/Scroll/Code/Pixel/Animation.js"
-);
-
-// biome-ignore lint/nursery/useComponentExportOnlyModules:
-export const { default: Constant } = await import(
-	"@Function/Scroll/Code/Pixel/Animation/Constant.js"
-);
-
-// biome-ignore lint/nursery/useComponentExportOnlyModules:
-export const ALL_COLORS = Spectrum(Constant.COLOR_STEPS);
+export default Pixel;

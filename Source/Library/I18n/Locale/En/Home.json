@@ -1,0 +1,182 @@
+{
+	"features": {
+		"badge": "Features",
+		"item": {
+			"designTokens": {
+				"description": "Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable.\n\nNo Electron bloat.",
+				"title": "Performance First"
+			},
+			"componentLibrary": {
+				"description": "Run your existing VS Code extensions with high fidelity through the Cocoon extension host.\n\nNo changes needed.",
+				"title": "VS Code Compatibility"
+			},
+			"documentation": {
+				"description": "Effect-TS native UI services provide type safety, structured concurrency, and excellent error handling.",
+				"title": "Effect-TS Architecture"
+			},
+			"versionControl": {
+				"description": "One codebase, native deployments for macOS, Windows, and Linux with Tauri.\n\nWrite once, run everywhere.",
+				"title": "Cross-Platform"
+			},
+			"collaboration": {
+				"description": "Completely free to use, modify, and distribute.\n\nLicensed under Creative Commons CC0.\n\nNo strings attached.",
+				"title": "Open Source"
+			},
+			"cicdIntegration": {
+				"description": "Built on proven open-source technologies:\nRust, Tauri, Effect-TS, and the VS Code platform.\n\nFamiliar and powerful.",
+				"title": "Modern Tooling"
+			}
+		},
+		"subtitle": "Discover what makes Code Editor Land the most advanced code editor available.",
+		"title": "Built for Performance, Designed for Developers"
+	},
+	"hero": {
+		"badge": "New: Effect-TS Architecture",
+		"subtitle": "A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS.\n\nExperience the editor that reimagines VS Code for the modern era.",
+		"title": "The Future of Code Editing",
+		"titleHighlight": "Land",
+		"atScale": "starts here",
+		"cta": {
+			"primary": "Download",
+			"secondary": "Learn More"
+		},
+		"scene": {
+			"description": "Animated architecture visualization",
+			"hub": "Core Architecture",
+			"components": {
+				"button": "Rust Core",
+				"colors": "Tauri UI",
+				"typography": "Effect-TS Services",
+				"components": "gRPC IPC",
+				"spacing": "Extension Host",
+				"icons": "Cross-Platform",
+				"docs": "VS Code API",
+				"versions": "Open Source CC0"
+			}
+		}
+	},
+	"nav": {
+		"docs": "Docs",
+		"downloads": "Download",
+		"features": "Features",
+		"github": "GitHub"
+	},
+	"pricing": {
+		"subtitle": "Code Editor Land is completely free.\n\nNo tiers, no subscriptions, no restrictions.",
+		"labels": {
+			"monthly": "Monthly",
+			"yearly": "Yearly",
+			"savings": "(Save up to 20%)",
+			"popular": "Most Popular",
+			"perMonth": "/month",
+			"perYear": "/year",
+			"free": "Free"
+		},
+		"toggle": {
+			"toMonthly": "Switch to {{label}} billing",
+			"toYearly": "Switch to {{label}} billing"
+		},
+		"tiers": {
+			"free": {
+				"name": "Community",
+				"description": "For everyone.\n\nFull editor features, completely free.",
+				"features": {
+					"1": "Full VS Code compatibility",
+					"2": "All extensions supported",
+					"3": "Native Rust performance",
+					"4": "Cross-platform (macOS, Windows, Linux)",
+					"5": "Effect-TS type-safe UI",
+					"6": "gRPC-based architecture",
+					"7": "Open source (CC0 license)"
+				},
+				"button": "Download Now"
+			}
+		},
+		"title": "Free Forever, Open Source",
+		"badge": "Pricing"
+	},
+	"testimonials": {
+		"quote": {
+			"1": "A performance-focused, open alternative.\n\nLand is exactly what VS Code needed.\n\nIt's incredibly fast.",
+			"2": "The Effect-TS architecture is beautiful to work with.\n\nThe type safety catches bugs before they happen.",
+			"3": "Running my existing extensions with no changes is a game-changer.\n\nThe compatibility is impressive.",
+			"4": "Finally, an editor that respects my system resources.\n\nNo more Electron memory bloat.",
+			"5": "The open-source commitment means I can contribute and customize.\n\nThis is the editor I've been waiting for.",
+			"6": "The gRPC-based architecture is a masterclass in system design.\n\nLand is the future of desktop editors."
+		},
+		"subtitle": "Community voices on the future of code editing.",
+		"title": "What developers are saying",
+		"badge": "Testimonials",
+		"attribution": "Community Feedback",
+		"attributionNote": "Representative community member"
+	},
+	"roadmap": {
+		"title": "Roadmap & Expectancy",
+		"subtitle": "Funded by the NGI0 Commons Fund.\n\nOpen source, free forever, built in public.",
+		"tiers": {
+			"current": {
+				"name": "Current Phase",
+				"description": "Foundation and core editor scaffold.\n\nActive development.",
+				"features": {
+					"1": "Mountain: Rust/Tauri native backend",
+					"2": "Cocoon: VS Code extension host via Effect-TS",
+					"3": "Wind: Workbench re-implementation",
+					"4": "Sky: Editor interface rendering",
+					"5": "Air: Update daemon and crypto signing",
+					"6": "Echo: Work-stealing task scheduler"
+				},
+				"button": "View on GitHub"
+			},
+			"next": {
+				"name": "Next Milestone",
+				"description": "Extension ecosystem and platform stability.",
+				"features": {
+					"1": "High-fidelity VS Code extension compatibility",
+					"2": "Cross-platform installer and auto-update",
+					"3": "gRPC IPC protocol finalization",
+					"4": "Settings sync and cloud-optional portal"
+				},
+				"button": "Track Progress"
+			},
+			"future": {
+				"name": "Long-Term Vision",
+				"description": "Full-featured editor replacing Electron-based tools.",
+				"features": {
+					"1": "Native mobile editing (iOS, Android)",
+					"2": "Collaborative real-time editing",
+					"3": "AI-assisted development tooling",
+					"4": "Plugin marketplace and ecosystem"
+				},
+				"button": "Learn More"
+			}
+		}
+	},
+	"architecture": {
+		"title": "Architecture",
+		"subtitle": "Land replaces VS Code's Electron stack with a modular, high-performance architecture.\n\nEach element is a standalone repository.",
+		"mountain": {
+			"description": "Manages Window, File System, and Process lifecycle.\n\nThe native Rust/Tauri backend that replaces Electron's main process.",
+			"subtitle": "Rust/Tauri native backend"
+		},
+		"cocoon": {
+			"description": "Runs VS Code extensions via Effect-TS with high-fidelity API compatibility.\n\nNo changes needed to existing extensions.",
+			"subtitle": "TypeScript extension host"
+		},
+		"wind": {
+			"description": "Re-implementation of the VS Code Workbench.\n\nProvides the editor shell, panels, sidebars, and activity bar.",
+			"subtitle": "TypeScript UI service"
+		},
+		"sky": {
+			"description": "Renders the editor interface using Astro components.\n\nHandles themes, layouts, and the visual presentation layer.",
+			"subtitle": "Astro UI component"
+		},
+		"air": {
+			"description": "Background daemon for automatic updates, downloads, and cryptographic signing.\n\nKeeps Land up to date silently.",
+			"subtitle": "Rust background daemon"
+		},
+		"echo": {
+			"description": "High-performance work-stealing executor.\n\nSchedules and distributes tasks across cores for maximum throughput.",
+			"subtitle": "Rust task scheduler"
+		}
+	}
+}

@@ -1,0 +1,141 @@
+---
+// ─── Visit — Universal Dispatch Center ───────────────────────────────────────
+//
+// This page is the catch-all landing target for ALL unresolved paths on
+// Cloudflare Pages. It is served via a `/* /Visit/ 200` rewrite rule in
+// _redirects — the browser URL stays as the original path, but the content
+// served is this page's HTML.
+//
+// Time horizons:
+//
+//   T0 — Cold start (no SW): Cloudflare's _redirects `/* /Visit/ 200` rule
+//        proxies this page for any path that has no static file. The client
+//        script resolves the original path from window.location and redirects.
+//
+//   T1 — SW just installed: SW registers, page reloads. From T2 onwards,
+//        the SW intercepts ALL navigations before they reach CF or this page.
+//
+//   T2 — SW active, known variant: SW's ResolveRoute() handles it with a
+//        301 redirect in-browser — this page is never served. /Visit itself
+//        is mapped to "/" in SemanticAlias so the SW redirects it directly.
+//
+//   T3 — SW active, truly unknown path: SW passes to network → CF returns
+//        this page's content (200 rewrite) → client script → home.
+//
+// Design constraints:
+//   - No React, no hydration, no Base.astro layout — minimal HTML only.
+//     Every ms counts; this page is a redirect trampoline, not a destination.
+//   - Route map is embedded at SSG time via define:vars — no RouteMap.json
+//     fetch needed, works on first visit with no network round-trips.
+//   - window.location.replace() is used for all redirects — no history entry.
+// ─────────────────────────────────────────────────────────────────────────────
+
+import {
+	CanonicalPath,
+	GeneratePathVariant,
+	SemanticAlias,
+} from "../Function/Route/Map";
+
+// Build the full variant map at SSG time — identical logic to Integration.ts
+// so this page and the SW resolve routes the same way.
+const VariantMap: Record<string, string> = {};
+
+for (const PascalPath of CanonicalPath) {
+	const BuiltPath = PascalPath.toLowerCase();
+	VariantMap[BuiltPath] = PascalPath;
+	for (const Variant of GeneratePathVariant(PascalPath, BuiltPath)) {
+		if (!VariantMap[Variant]) {
+			VariantMap[Variant] = PascalPath;
+		}
+	}
+}
+
+for (const [Alias, Target] of Object.entries(SemanticAlias)) {
+	VariantMap[Alias] = Target;
+}
+
+const CanonicalList = [...CanonicalPath];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+		<title>Redirecting…</title>
+		<meta name="robots" content="noindex,nofollow" />
+		<!-- Instant redirect: if JS is disabled, fall back to home after 3s -->
+		<noscript>
+			<meta http-equiv="refresh" content="3;url=/" />
+		</noscript>
+		<style>
+			/* Minimal no-flash shell — never visible longer than one frame */
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				background: #fff;
+			}
+		</style>
+	</head>
+	<body>
+		<script define:vars={{ VariantMap, CanonicalList }}>
+			(function () {
+				// ── Read the original path ──────────────────────────────────
+				// CF Pages' 200 rewrite preserves the original URL in the
+				// browser, so window.location reflects the user's intended path.
+				var RawPath = window.location.pathname;
+				var Search = window.location.search;
+				var Hash = window.location.hash;
+
+				// Normalise: strip trailing slash, lowercase
+				var Cleaned =
+					RawPath === "/" ? "/" : RawPath.replace(/\/+$/, "");
+
+				var Lower = Cleaned.toLowerCase();
+
+				// ── If we are literally ON /Visit with no other path ────────
+				// (direct navigation or unknown path with no alias) → home
+				if (
+					Cleaned === "/Visit" ||
+					Cleaned === "/visit" ||
+					Cleaned === "/"
+				) {
+					window.location.replace("/" + Search + Hash);
+					return;
+				}
+
+				// ── Already a known canonical — serve it directly ───────────
+				// (shouldn't normally reach here when SW is active, but handle
+				// the edge case where CF serves this page for a canonical path)
+				if (CanonicalList.indexOf(Cleaned) !== -1) {
+					window.location.replace(Cleaned + Search + Hash);
+					return;
+				}
+
+				// ── Exact lowercase match ───────────────────────────────────
+				var Canonical = VariantMap[Lower] || VariantMap[Cleaned];
+
+				// ── Strip hyphens/underscores and retry ─────────────────────
+				if (!Canonical) {
+					var Stripped = Lower.replace(/[-_]/g, "");
+					Canonical = VariantMap[Stripped];
+				}
+
+				// ── Strip trailing 's' (plural → singular) and retry ────────
+				if (!Canonical && Lower.length > 2 && Lower.endsWith("s")) {
+					Canonical = VariantMap[Lower.slice(0, -1)];
+				}
+
+				// ── Redirect or fall back to home ───────────────────────────
+				if (Canonical) {
+					// Preserve query string and hash from original navigation
+					window.location.replace(Canonical + Search + Hash);
+				} else {
+					// Truly unknown path — send to home
+					window.location.replace("/" + Search + Hash);
+				}
+			})();
+		</script>
+	</body>
+</html>

@@ -1,19 +1,129 @@
+@import "../Function/Noise/Stylesheet.css";
+@import "../Component/Dynamic/Portal/Stylesheet.css";
+
 html {
-	@apply m-0 h-full w-full p-0 text-black dark:bg-black dark:text-white;
+	@apply m-0 h-full w-full bg-white p-0 text-[#1a1a1a];
+	/* clip (not hidden) so fixed/sticky children don't add horizontal scroll */
+	overflow-x: clip;
+	font-family:
+		"Albert Sans",
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		"Helvetica Neue",
+		Arial,
+		sans-serif;
+}
+
+/* Emoji and symbol fallback fonts for special characters like ★☆ */
+body,
+button,
+input,
+textarea,
+select {
+	font-family: inherit;
+}
+
+/* Emoji font:apply ONLY to elements that render emoji/symbol characters.
+ * NEVER use broad attribute selectors like [class*="star"]:they leak
+ * emoji font-family onto unrelated text that shares a substring. */
+.StarRatingSymbol {
+	font-family:
+		"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+		"Android Emoji", "EmojiSymbols", sans-serif;
 }
 
 body {
 	@apply flex h-full flex-grow flex-col tabular-nums antialiased sm:subpixel-antialiased;
 }
 
+/* CLS prevention: reserve space for client:load components before hydration.
+ * Astro renders an empty astro-island wrapper; this ensures the page
+ * doesn't collapse to zero height then jump when JS renders content. */
+main > astro-island {
+	display: block;
+	min-height: 100dvh;
+	contain-intrinsic-block-size: 100dvh;
+	content-visibility: visible;
+}
+
+/* Once hydrated and content is rendered, release the reserved space */
+main > astro-island:has(> :first-child) {
+	min-height: auto;
+	contain-intrinsic-block-size: auto;
+}
+
+/* ─── content-visibility: skip layout cost for off-screen sections ─── */
+/* These sections sit below the fold on the homepage.
+ * content-visibility: auto lets the browser skip layout/paint until the
+ * section scrolls near the viewport. contain-intrinsic-block-size provides
+ * a placeholder height so the scrollbar remains stable (no CLS). */
+#features,
+#pricing,
+#testimonials,
+#download {
+	content-visibility: auto;
+	contain-intrinsic-block-size: 600px;
+}
+
 /* Text Selection Highlighting */
 *::selection,
 ::selection {
-	@apply bg-yellow-400 text-black dark:bg-orange-400 dark:text-white;
+	@apply bg-yellow-400 text-black;
 
 	text-shadow: none;
 }
 
 img {
 	@apply inline-block select-none align-top outline-2 outline-offset-2 outline-transparent;
+}
+
+/* ─── Custom scrollbar - thin, transparent, cross-browser ─── */
+
+/* WebKit / Blink */
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: rgba(26, 26, 26, 0.18);
+	border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: rgba(26, 26, 26, 0.32);
+}
+::-webkit-scrollbar-corner {
+	background: transparent;
+}
+
+/* Firefox */
+html {
+	scrollbar-width: thin;
+	scrollbar-color: rgba(26, 26, 26, 0.18) transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────── */
+
+/* Accessibility: links must be distinguishable by more than color alone.
+ * Underline content links; exclude nav, logo, button, icon, and social links. */
+a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
+		[class*="Social"]
+	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
+		[aria-label]
+	) {
+	text-decoration: underline;
+	text-decoration-color: var(--Border);
+	text-underline-offset: 2px;
+}
+
+a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
+		[class*="Social"]
+	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
+		[aria-label]
+	):hover {
+	text-decoration-color: var(--Primary);
 }

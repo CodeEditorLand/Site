@@ -1,82 +1,180 @@
-import { defineConfig } from "astro/config";
+export const __INCREMENT__ = `${(await import("./Source/Function/Configuration/Environment.js")).default}-${(await import("ulid")).ulid()}`;
 
-export const On = process.env["NODE_ENV"] === "development";
+const On = (await import("./Source/Function/Configuration/On.js")).default;
+const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
+	.default;
+const { resolve: Resolve } = await import("node:path");
 
-export const __INCREMENT__ = `${On ? "DEVELOPMENT" : "PRODUCTION"}-${(await import("ulid")).ulid()}`;
-
-export default defineConfig({
+export default (await import("astro/config")).defineConfig({
 	srcDir: "./Source",
 
 	publicDir: "./Public",
 
 	outDir: "./Target",
 
-	site: On ? "http://localhost" : "https://Editor.Land",
+	site: (await import("./Source/Function/Configuration/Site.js")).default,
 
-	compressHTML: !On,
+	compressHTML: (
+		await import("./Source/Function/Configuration/CompressHTML.js")
+	).default,
 
 	devToolbar: {
-		enabled: false,
+		enabled: (await import("./Source/Function/Configuration/DevToolbar.js"))
+			.default,
 	},
 
 	prefetch: {
-		defaultStrategy: "hover",
+		defaultStrategy: (
+			await import("./Source/Function/Configuration/PrefetchStrategy.js")
+		).default,
 
-		prefetchAll: true,
+		prefetchAll: (
+			await import("./Source/Function/Configuration/PrefetchAll.js")
+		).default,
 	},
 
 	server: {
-		port: 9999,
+		port: (await import("./Source/Function/Configuration/Port.js")).default,
+
+		host: true,
 	},
 
 	build: {
-		concurrency: 9999,
+		concurrency: (
+			await import("./Source/Function/Configuration/BuildConcurrency.js")
+		).default,
 	},
 
 	integrations: [
-		(await import("@astrojs/solid-js")).default({
+		(await import("@astrojs/react")).default({
 			// @ts-ignore
 			devtools: On,
 		}),
 
-		// @ts-ignore
-		import.meta.env.MODE === "production"
-			? (await import("astrojs-service-worker")).default()
-			: null,
+		(await import("@astrojs/mdx")).default({
+			syntaxHighlight: "shiki",
+			shikiConfig: {
+				theme: "github-light",
+			},
+		}),
 
-		(await import("@astrojs/sitemap")).default(),
+		(await import("@astrojs/sitemap")).default({
+			filter: (Page) => {
+				const Lower = Page.toLowerCase();
+				return (
+					!Lower.includes("/dashboard") &&
+					!Lower.includes("/account/") &&
+					!Lower.includes("/oauth/")
+				);
+				// TODO: Add blog slugs once B1/B2 (Blog Content Collections) are merged
+			},
+		}),
 
-		!On ? (await import("@playform/inline")).default({ Logger: 1 }) : null,
+		// Route Redirect - local-first PascalCase URL routing + caching.
+		// Must run AFTER @astrojs/sitemap so the sitemap post-processor
+		// can rewrite lowercase URLs to PascalCase canonicals.
+		// Handles:
+		//   1. Route redirect (variant URLs → PascalCase canonical)
+		//   2. Network-first page cache (offline support)
+		//   3. Cache-first asset cache (_astro/*, Asset/*, Favicon/*)
+		//   4. Cloudflare _redirects generation
+		//   5. Sitemap URL canonicalization
+		(await import("./Source/Function/Route/Integration.js")).default(),
 
-		!On ? (await import("@playform/format")).default({ Logger: 1 }) : null,
-
-		!On
-			? (await import("@playform/compress")).default({
-					Logger: 1,
-					HTML: {
-						"html-minifier-terser": {
-							minifyCSS: false,
+		...((await import("./Source/Function/Configuration/InlineCSS.js"))
+			.default
+			? [
+					(await import("@playform/inline")).default({
+						Logger: 1,
+						Beasties: {
+							pruneSource: false,
 						},
-					},
-				})
-			: null,
+					}),
+				]
+			: []),
+
+		...((await import("./Source/Function/Configuration/Compress.js"))
+			.default
+			? [
+					(await import("@playform/compress")).default({
+						Logger: 1,
+						HTML: {
+							"html-minifier-terser": {
+								minifyCSS: false,
+							},
+						},
+						CSS: {
+							csso: false,
+						},
+						JavaScript: {
+							terser: {
+								compress: {
+									passes: 2,
+									drop_console: !On,
+									dead_code: true,
+									unused: true,
+								},
+								mangle: !On,
+							},
+						},
+					}),
+				]
+			: []),
 	],
 
 	experimental: {
-		clientPrerender: true,
+		clientPrerender: (
+			await import("./Source/Function/Configuration/ClientPrerender.js")
+		).default,
 
-		contentIntellisense: true,
+		contentIntellisense: (
+			await import("./Source/Function/Configuration/ContentIntellisense.js")
+		).default,
 	},
 
 	vite: {
+		optimizeDeps: {
+			// @auth0/auth0-react is excluded from pre-bundling because its
+			// peer-dep resolution is incompatible with Vite's optimizer.
+			// The include list below ensures React itself is ALWAYS in the
+			// pre-bundle — without this, auth0 (excluded) would resolve React
+			// from its own node_modules while the rest of the app uses Vite's
+			// pre-bundled copy, creating two React instances and triggering
+			// "Invalid hook call" on every SSR render after a dep re-optimization.
+			exclude: ["@auth0/auth0-react"],
+			include: [
+				"react",
+				"react-dom",
+				"react-dom/client",
+				"react/jsx-runtime",
+				"react/jsx-dev-runtime",
+			],
+		},
+
+		define: {
+			__DEV__: JSON.stringify(On),
+			__INCREMENT__: JSON.stringify(__INCREMENT__),
+			__NOISE_SPEED__: JSON.stringify(
+				Number(process.env["NOISE_SPEED"]) || undefined,
+			),
+			__NOISE_STEP__: JSON.stringify(
+				Number(process.env["NOISE_STEP"]) || undefined,
+			),
+		},
+
 		build: {
-			sourcemap: On,
+			sourcemap: Sourcemap,
 
-			manifest: true,
+			manifest: (
+				await import("./Source/Function/Configuration/Manifest.js")
+			).default,
 
-			minify: On ? false : "terser",
+			minify: (await import("./Source/Function/Configuration/Minify.js"))
+				.default,
 
-			cssMinify: On ? false : "esbuild",
+			cssMinify: (
+				await import("./Source/Function/Configuration/CSSMinify.js")
+			).default,
 
 			terserOptions: On
 				? {
@@ -147,16 +245,83 @@ export default defineConfig({
 						toplevel: true,
 					}
 				: {},
+
+			rollupOptions: {
+				output: {
+					experimentalMinChunkSize: 4_000,
+
+					manualChunks(Identifier: string) {
+						if (Identifier.includes("node_modules")) {
+							// React + Radix share the same chunk (Radix
+							// imports React internals, splitting them
+							// creates a circular dependency).
+							if (
+								Identifier.includes("react-dom") ||
+								Identifier.includes("react/") ||
+								Identifier.includes("scheduler") ||
+								Identifier.includes("@radix-ui")
+							) {
+								return "Vendor/React";
+							}
+
+							if (Identifier.includes("@auth0")) {
+								return "Vendor/Auth0";
+							}
+
+							if (Identifier.includes("lucide-react")) {
+								return "Vendor/Icon";
+							}
+
+							if (Identifier.includes("firebase")) {
+								return "Vendor/Firebase";
+							}
+
+							if (
+								Identifier.includes("i18next") ||
+								Identifier.includes("react-i18next")
+							) {
+								return "Vendor/I18n";
+							}
+
+							if (
+								Identifier.includes("recharts") ||
+								Identifier.includes("d3-")
+							) {
+								return "Vendor/Chart";
+							}
+						}
+					},
+				},
+			},
 		},
 
 		resolve: {
-			preserveSymlinks: false,
+			// dedupe forces Vite to always resolve to one copy of React,
+			// even when excluded packages (e.g. @auth0/auth0-react) bring
+			// their own React into the module graph. Without this, two React
+			// instances coexist and any hook call throws "Invalid hook call".
+			dedupe: ["react", "react-dom"],
+
+			alias: {
+				"@": Resolve("./Source"),
+				"@Stylesheet": Resolve("./Source/Stylesheet"),
+				"@Function": Resolve("./Source/Function"),
+				"@Layout": Resolve("./Source/Layout"),
+				"@Script": Resolve("./Source/Script"),
+				"@Variable": Resolve("./Source/Variable"),
+			},
+
+			preserveSymlinks: (
+				await import("./Source/Function/Configuration/PreserveSymlinks.js")
+			).default,
 		},
 
 		css: {
-			devSourcemap: On,
+			devSourcemap: Sourcemap,
 
-			transformer: "postcss",
+			transformer: (
+				await import("./Source/Function/Configuration/CSSTransformer.js")
+			).default,
 		},
 
 		plugins: [

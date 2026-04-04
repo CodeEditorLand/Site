@@ -1,5 +1,126 @@
 ---
-import Base from "@Layout/Base.astro";
+import { HomePage } from "../Component/Dynamic/HomePage";
+import { Header } from "../Component/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { GetI18n } from "../Library/I18n/Server";
+
+const T = GetI18n();
+
+const MetaTitle = T("meta.home.title", {
+	defaultValue: "Land | The Next-Generation Code Editor",
+});
+const MetaDescription = T("meta.home.description", {
+	defaultValue:
+		"Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code's power without the Electron bloat.",
+});
 ---
 
-<Base />
+<Base Title={MetaTitle} Description={MetaDescription} lang="en">
+	<Fragment slot="Head">
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify({
+				"@context": "https://schema.org",
+				"@type": "SoftwareApplication",
+				"name": "Code Editor Land",
+				"alternateName": "Land",
+				"description":
+					"A high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code compatibility without the Electron bloat.",
+				"url": "https://editor.land",
+				"applicationCategory": "DeveloperApplication",
+				"operatingSystem": "macOS, Windows, Linux",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD",
+				},
+				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
+				"softwareVersion": "Pre-release",
+				"downloadUrl": "https://editor.land/downloads",
+				"screenshot": "https://editor.land/Favicon/og-image.png",
+				"author": [
+					{
+						"@type": "Person",
+						"name": "Nikola R. Hristov",
+						"url": "https://github.com/NikolaRHristov",
+					},
+					{
+						"@type": "Organization",
+						"name": "Code Editor Land",
+						"url": "https://editor.land",
+					},
+					{
+						"@type": "Organization",
+						"name": "PlayForm",
+						"url": "https://PlayForm.Cloud",
+					},
+				],
+				"publisher": {
+					"@type": "Organization",
+					"name": "Code Editor Land",
+					"url": "https://editor.land",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://editor.land/Favicon/favicon.svg",
+					},
+				},
+				"featureList": [
+					"Native Rust backend with gRPC IPC",
+					"VS Code extension compatibility",
+					"Effect-TS type-safe UI services",
+					"Cross-platform (macOS, Windows, Linux)",
+					"Open source under CC0 license",
+				],
+				"isAccessibleForFree": true,
+			})}
+		/>
+	</Fragment>
+	<Header client:load />
+	<HomePage
+		client:load
+		MetaTitle={MetaTitle}
+		MetaDescription={MetaDescription}
+	/>
+	<div
+		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 py-8 text-xs text-muted-foreground">
+		<picture>
+			<img
+				alt="Code Editor Land logo"
+				title="Code Editor Land"
+				src="/Asset/Logo/Glyph/Land.svg"
+				width="24"
+				height="24"
+			/>
+		</picture>
+		<span
+			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+			No Telemetry&#x2001;<span
+				class="h-1.5 w-1.5 rounded-none bg-green-500"
+				aria-hidden="true"></span>
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			CC0 Licensed
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			Rust + Tauri
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			VS Code Compatible
+		</span>
+		<a
+			href="https://PlayForm.Cloud"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
+			PlayForm
+		</a>
+		<a
+			href="https://editor.land"
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
+			CodeEditorLand
+		</a>
+	</div>
+</Base>

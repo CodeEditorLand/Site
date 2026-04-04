@@ -1,0 +1,376 @@
+---
+import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
+import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
+import { Header } from "../Component/Layout/Header";
+import Base from "../Layout/Base.astro";
+import { GetI18n } from "../Library/I18n/Server";
+
+const T = GetI18n();
+
+const TransparencyContent = {
+	Title: T("download.transparency.title", {
+		defaultValue: "Build Transparency",
+	}),
+	Subtitle: T("download.transparency.subtitle", {
+		defaultValue:
+			"Full disclosure on telemetry, build variants, and deployment. Verify everything in source.",
+	}),
+	Policy: [
+		{
+			Identifier: "no-telemetry-default",
+			Title: "No Telemetry by Default",
+			Description:
+				"Production builds ship with telemetry completely disabled.\n\nThe Telemetry Cargo feature flag is not in default features - it must be explicitly opted in at compile time.",
+			Icon: "EyeOff",
+			Status: "Disabled" as const,
+			Detail: "Default features: ExtensionHostCocoon, MistNative, AirIntegration. No Telemetry.",
+		},
+		{
+			Identifier: "no-crash-reporter",
+			Title: "No Crash Reports",
+			Description:
+				"No crash reporter IDs, no external error reporting endpoints.\n\nErrors stay local. No `crashReporterId` in product.json.",
+			Icon: "Shield",
+			Status: "Disabled" as const,
+			Detail: "Code-OSS base: CC0 licensed, no Microsoft telemetry endpoints.",
+		},
+		{
+			Identifier: "no-phone-home",
+			Title: "No Phone Home",
+			Description:
+				"No usage data collection, no analytics endpoints, no DO_NOT_TRACK needed.\n\nTelemetry simply does not exist in the build.",
+			Icon: "Lock",
+			Status: "Disabled" as const,
+		},
+		{
+			Identifier: "zero-cost-noop",
+			Title: "Zero-Cost No-Ops",
+			Description:
+				"When telemetry is disabled, all tracing, metrics, and spans compile to zero-cost no-ops.\n\nNo runtime overhead whatsoever.",
+			Icon: "Zap",
+			Status: "Active" as const,
+			Detail: "Rust `#[cfg(feature)]` gates eliminate dead code at compile time.",
+		},
+		{
+			Identifier: "opt-in-otel",
+			Title: "Optional OpenTelemetry",
+			Description:
+				"Opt-in compile flag enables local OpenTelemetry tracing, metrics collection, and distributed spans.\n\nAll data stays on your machine.",
+			Icon: "Eye",
+			Status: "Optional" as const,
+			Detail: "Enable with: cargo build --features Telemetry. Sub-features: MetricsCollection, DistributedTracing.",
+		},
+		{
+			Identifier: "effect-ts-local",
+			Title: "Local Effect-TS Telemetry",
+			Description:
+				"Cocoon extension host uses Effect-TS TelemetryService for internal metrics and spans.\n\nNo external transmission - used for RPC instrumentation and bootstrap timing.",
+			Icon: "Layers",
+			Status: "Active" as const,
+			Detail: "TelemetryMock layer available for testing (all no-ops).",
+		},
+	],
+	Variant: [
+		{
+			Identifier: "debug",
+			Name: "debug",
+			Tier: "Debug" as const,
+			Workbench: "Browser",
+			Feature: "70-80%",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "debug-mountain",
+			Name: "debug-mountain",
+			Tier: "Debug" as const,
+			Workbench: "Mountain",
+			Feature: "80-90%",
+			Status: "Recommended" as const,
+		},
+		{
+			Identifier: "debug-electron",
+			Name: "debug-electron",
+			Tier: "Debug" as const,
+			Workbench: "Electron",
+			Feature: "95%+",
+			Status: "Legacy" as const,
+		},
+		{
+			Identifier: "production",
+			Name: "production",
+			Tier: "Release" as const,
+			Workbench: "Mountain",
+			Feature: "80-90%",
+			Status: "Recommended" as const,
+		},
+		{
+			Identifier: "release",
+			Name: "release",
+			Tier: "Release" as const,
+			Workbench: "Mountain",
+			Feature: "100%",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "web-browser",
+			Name: "web-browser",
+			Tier: "Release" as const,
+			Workbench: "Browser",
+			Feature: "70-80%",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "bundler-preparation",
+			Name: "bundler-preparation",
+			Tier: "Build" as const,
+			Workbench: "-",
+			Feature: "-",
+			Status: "Available" as const,
+		},
+		{
+			Identifier: "swc-bundle",
+			Name: "swc-bundle",
+			Tier: "Build" as const,
+			Workbench: "-",
+			Feature: "-",
+			Status: "Experimental" as const,
+		},
+		{
+			Identifier: "oxc-bundle",
+			Name: "oxc-bundle",
+			Tier: "Build" as const,
+			Workbench: "-",
+			Feature: "-",
+			Status: "Experimental" as const,
+		},
+	],
+	Strategy: [
+		{
+			Identifier: "dev-hot-reload",
+			Name: "Development (Hot-Reload)",
+			Description:
+				"Tauri dev mode with Sky dev server on localhost:9999.\n\nLive reload on file changes for rapid iteration.",
+			Icon: "Zap",
+			Command: "bash Maintain/Dev-Mountain.sh",
+			Feature: [
+				"Hot-Reload",
+				"Sky Dev Server",
+				"localhost:9999",
+				"No Bundling",
+			],
+		},
+		{
+			Identifier: "debug-build",
+			Name: "Debug Build",
+			Description:
+				"Three debug profiles with profile-specific bundling.\n\nBrowser, Mountain, and Electron variants with `tauri build --debug`.",
+			Icon: "Code",
+			Command: "bash Maintain/Debug/Build.sh --profile debug-mountain",
+			Feature: [
+				"3 Profiles",
+				"Debug Symbols",
+				"Configurable Port",
+				"File Watching",
+			],
+		},
+		{
+			Identifier: "production-release",
+			Name: "Production Release",
+			Description:
+				"Mountain workbench with full bundling, clean build, production `NODE_ENV`, and `RUST_LOG=info`.\n\nSigned and packaged.",
+			Icon: "Server",
+			Command: "bash Maintain/Release/Build.sh --profile production",
+			Feature: [
+				"Full Bundle",
+				"Clean Build",
+				"PGP Signed",
+				"RUST_LOG=info",
+			],
+		},
+		{
+			Identifier: "web-only",
+			Name: "Web-Only Deployment",
+			Description:
+				"Browser workbench with no Tauri runtime.\n\n70-80% features for web-based deployments without native shell.",
+			Icon: "Layers",
+			Command: "bash Maintain/Release.sh --profile web-browser",
+			Feature: [
+				"No Tauri",
+				"70-80% Features",
+				"Web Deployment",
+				"esbuild or OXC",
+			],
+		},
+	],
+	MatrixPermutation: 16,
+	SourceURL: "https://github.com/CodeEditorLand/Land",
+} as const;
+
+// For static generation, we'll provide empty platforms - DynamicPlatformGrid will fetch from API
+const DownloadContent = {
+	PlatformGrid: {
+		Title: T("download.page.title", { defaultValue: "Download Land" }),
+		Subtitle: T("download.page.subtitle", {
+			defaultValue:
+				"Available for macOS, Windows, and Linux. Fast, native, and free.",
+		}),
+		Platforms: [], // Will be fetched by DynamicPlatformGrid
+		ShowVerification: true,
+		OnDownload: async (Platform: { Name: string; Id?: string }) => {
+			if (Platform.Id) {
+				try {
+					const { default: DownloadAPI } =
+						await import("../Library/API/Download");
+					const Information = await DownloadAPI.GetInfo(Platform.Id);
+					window.open(Information.downloadUrl, "_blank");
+					await DownloadAPI.TrackDownload(Platform.Id);
+				} catch (DownloadError) {
+					console.error("Download failed:", DownloadError);
+				}
+			}
+		},
+	},
+	SystemRequirements: {
+		Title: T("download.systemRequirements.title", {
+			defaultValue: "System Requirements",
+		}),
+		Description: T("download.systemRequirements.subtitle", {
+			defaultValue:
+				"Ensure your system meets these requirements before downloading.",
+		}),
+		Requirements: {
+			Minimum: [
+				{
+					Id: "cpu-min",
+					Label: "Processor",
+					Value: "Intel Core i5 or AMD Ryzen 5 / Apple Silicon",
+				},
+				{ Id: "ram-min", Label: "Memory", Value: "4 GB RAM" },
+				{ Id: "disk-min", Label: "Disk Space", Value: "500 MB" },
+			],
+			Recommended: [
+				{
+					Id: "cpu-rec",
+					Label: "Processor",
+					Value: "Intel Core i7 or AMD Ryzen 7",
+				},
+				{ Id: "ram-rec", Label: "Memory", Value: "8 GB RAM" },
+				{ Id: "disk-rec", Label: "Disk Space", Value: "1 GB SSD" },
+			],
+		},
+		Os: [
+			"macOS 11+",
+			"Windows 10+",
+			"Ubuntu 20.04+ / Fedora 35+ / Debian 11+",
+		],
+	},
+	VerificationInfo: {
+		Title: T("download.verification.title", {
+			defaultValue: "Verify Your Download",
+		}),
+		Description: T("download.verification.description", {
+			defaultValue:
+				"Land releases will be signed with PGP. Verification checksums and signatures will be available with the first public release.",
+		}),
+		DownloadVerification: {
+			SHA256: "Available at first public release",
+			PGPSignature: "Available at first public release",
+			SigningKeyId: "Available at first public release",
+			VerificationInstructions:
+				"To verify: shasum -a 256 <filename> and compare output with the published checksum. For PGP: gpg --verify <file>.sig <file>",
+		},
+		IntegrityVerification: {
+			SHA256: "Available at first public release",
+			PGPSignature: "Available at first public release",
+			VerificationInstructions:
+				"Verification instructions will be published alongside the first release. All releases will include SHA-256 checksums and PGP signatures.",
+		},
+		DownloadButton: {
+			Text: T("download.verification.downloadButton", {
+				defaultValue: "Download PGP Public Key",
+			}),
+			Variant: "outline",
+			Size: "default",
+			FullWidth: false,
+		},
+		VerifyButton: {
+			Text: T("download.verification.verifyButton", {
+				defaultValue: "Verify Download",
+			}),
+			Variant: "default",
+			Size: "default",
+			FullWidth: false,
+		},
+	},
+	PreviousReleases: {
+		Title: T("download.previousReleases.title", {
+			defaultValue: "Previous Releases",
+		}),
+		Description: T("download.previousReleases.description", {
+			defaultValue:
+				"No previous releases yet. The first public release is currently in development.",
+		}),
+		Releases: [],
+		ShowChangelog: false,
+	},
+	Header: undefined,
+	Footer: {},
+};
+
+const MetaTitle = T("meta.downloads.title", {
+	defaultValue: "Download Land | The Next-Generation Code Editor",
+});
+const MetaDescription = T("meta.downloads.description", {
+	defaultValue:
+		"Download Land for macOS, Windows, and Linux. All releases are signed and verified for your security.",
+});
+---
+
+<Base Title={MetaTitle} Description={MetaDescription}>
+	<Header client:load />
+	<div
+		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
+		<picture>
+			<img
+				alt="Land"
+				src="/Asset/Logo/Glyph/Land.svg"
+				width="24"
+				height="24"
+			/>
+		</picture>
+		<span
+			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+			No Telemetry&#x2001;<span
+				class="h-1.5 w-1.5 rounded-none bg-green-500"
+				aria-hidden="true"></span>
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			CC0 Licensed
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			PGP Signed
+		</span>
+		<span
+			class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700">
+			Mountain (Recommended)&#x2001;<span
+				class="h-1.5 w-1.5 rounded-none bg-blue-500"
+				aria-hidden="true"></span>
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			9 Profiles
+		</span>
+		<span
+			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+			16 Test Permutations
+		</span>
+	</div>
+	<DownloadsPage
+		Content={DownloadContent}
+		MetaTitle={MetaTitle}
+		MetaDescription={MetaDescription}
+	/>
+	<DynamicTransparency Content={TransparencyContent} client:load />
+</Base>

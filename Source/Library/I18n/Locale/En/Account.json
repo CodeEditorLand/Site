@@ -1,0 +1,251 @@
+{
+	"forgotPassword": {
+		"emailPlaceholder": "name@example.com",
+		"submit": "Send Reset Link",
+		"subtitle": "Enter your email address to request a reset link",
+		"success": {
+			"title": "Check your email",
+			"subtitle": "A password reset link has been sent to",
+			"instruction": "Click the link in the email to reset your password.\nThe link expires in 24 hours.",
+			"resend": "Resend Email"
+		},
+		"title": "Reset Password",
+		"emailLabel": "Email",
+		"loading": "Sending...",
+		"backToSignIn": "Back to Sign In",
+		"successToast": "Reset email sent",
+		"errorToast": "Failed to send reset email",
+		"emailRequired": "Email is required",
+		"resendSuccess": "Reset email sent again",
+		"resendError": "Failed to resend email",
+		"emailSent": "Reset email sent to your inbox"
+	},
+	"resetPassword": {
+		"checkingMessage": "Validating your reset token, please wait...",
+		"confirmLabel": "Confirm New Password",
+		"confirmPlaceholder": "Re-enter your new password exactly as above",
+		"invalidToken": {
+			"title": "Invalid or expired token",
+			"description": "This password reset link is invalid, has expired, or was already used.",
+			"instruction": "Request a new password reset email to continue.",
+			"button": "Request New Reset Email"
+		},
+		"passwordLabel": "New Password",
+		"passwordPlaceholder": "Enter a strong new password",
+		"submit": "Reset Password",
+		"subtitle": "Enter your new password below",
+		"success": {
+			"title": "Password reset successful",
+			"description": "Your password has been reset.\nYou can now sign in with your new password.",
+			"button": "Continue to Sign In"
+		},
+		"title": "Reset Password",
+		"passwordHint": "Minimum 8 characters",
+		"loading": "Resetting...",
+		"mismatch": "Passwords do not match",
+		"signInLink": "Sign in",
+		"checking": "Checking token...",
+		"error": {
+			"tooShort": "Password must be at least 8 characters"
+		},
+		"successToast": "Password reset successfully",
+		"errorToast": "Failed to reset password"
+	},
+	"signIn": {
+		"emailPlaceholder": "name@example.com",
+		"forgotPassword": "Forgot your password? No problem - click here to reset it securely.",
+		"githubButton": "Continue with GitHub",
+		"passwordPlaceholder": "Enter your password",
+		"signUpLink": "Sign up",
+		"subtitle": "Enter your credentials to access your account",
+		"title": "Sign In",
+		"emailLabel": "Email",
+		"passwordLabel": "Password",
+		"submit": "Sign In",
+		"loading": "Signing in...",
+		"or": "Or",
+		"noAccount": "Don't have an account?",
+		"successToast": "Signed in successfully",
+		"errorToast": "Invalid credentials",
+		"showPassword": "Show password",
+		"hidePassword": "Hide password"
+	},
+	"signUp": {
+		"confirmPasswordLabel": "Confirm Password",
+		"confirmPasswordPlaceholder": "Enter your password again to confirm",
+		"emailPlaceholder": "name@example.com",
+		"passwordHint": "Minimum 8 characters",
+		"passwordPlaceholder": "Create a strong password",
+		"signInLink": "Sign in",
+		"social": {
+			"github": "Continue with GitHub",
+			"google": "Continue with Google",
+			"gitlab": "Continue with GitLab"
+		},
+		"subtitle": "Enter your information to create an account",
+		"termsLabel": "I agree to the Terms of Service and Privacy Policy",
+		"title": "Create Account",
+		"validation": {
+			"emailRequired": "Email is required",
+			"emailInvalid": "Invalid email format",
+			"passwordRequired": "Password is required",
+			"passwordTooShort": "Password must be at least 8 characters",
+			"confirmPasswordRequired": "Please confirm your password",
+			"termsRequired": "You must accept the terms and privacy policy"
+		},
+		"emailLabel": "Email",
+		"passwordLabel": "Password",
+		"submit": "Create Account",
+		"loading": "Creating account...",
+		"or": "Or",
+		"hasAccount": "Already have an account?",
+		"termsLink": "Terms of Service",
+		"privacyLink": "Privacy Policy",
+		"and": "and",
+		"successToast": "Account created successfully",
+		"errorToast": "Failed to create account",
+		"confirmPasswordMismatch": "Passwords do not match",
+		"passwordStrength": {
+			"weak": "Weak password",
+			"medium": "Medium password",
+			"strong": "Strong password"
+		}
+	},
+	"common": {
+		"and": "and"
+	},
+	"portal": {
+		"title": "Choose Your Account Type",
+		"subtitle": "From fully online to completely local-first.\nThree ways to manage your editor.",
+		"cloud": {
+			"title": "Cloud Account",
+			"subtitle": "Secure online login with full cloud sync.\nYour settings, extensions, and preferences stored and synced across all devices.",
+			"signIn": "Secure Sign In",
+			"emailLabel": "Email",
+			"emailPlaceholder": "name@example.com",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Enter your password",
+			"feature": {
+				"sync": "Cross-device settings synchronization",
+				"backup": "Automatic cloud backup of configurations",
+				"team": "Team workspace management",
+				"extension": "Extension marketplace with cloud install",
+				"remote": "Remote development server integration"
+			},
+			"capability": {
+				"jwt": "JWT session tokens",
+				"okta": "Okta SSO integration",
+				"mfa": "Multi-factor authentication",
+				"rbac": "Role-based access control",
+				"audit": "Audit log trail",
+				"cert": "Developer certificates"
+			}
+		},
+		"provider": {
+			"title": "Provider Account",
+			"subtitle": "Authenticate through GitHub, Google, or GitLab.\nYour OAuth identity links directly to your editor preferences and team memberships.",
+			"continueGitHub": "Continue with GitHub",
+			"continueGoogle": "Continue with Google",
+			"continueGitLab": "Continue with GitLab",
+			"oauthNote": "OAuth 2.0 · Linked to your preferences",
+			"feature": {
+				"github": "GitHub identity linked to preferences",
+				"sso": "Single sign-on across all Land services",
+				"repo": "Repository-aware workspace configuration",
+				"team": "Organization and team membership sync",
+				"ci": "CI/CD pipeline integration with build triggers"
+			},
+			"capability": {
+				"oauth": "OAuth 2.0 + PKCE flow",
+				"scope": "Granular permission scopes",
+				"token": "Refresh token rotation",
+				"webhook": "Webhook event subscriptions",
+				"org": "Organization-level policies",
+				"cert": "Developer certificates"
+			}
+		},
+		"localfirst": {
+			"title": "Local-First Account",
+			"subtitle": "Like a SaaS control panel that runs on your machine.\nZero cloud dependency.\nThe website communicates directly with the Air Daemon inside Land/Element via local-first protocol.\nConfigure, update, rebuild, and deploy your editor entirely from this console.",
+			"daemonLabel": "Air Daemon",
+			"daemonStatus": "Scanning...",
+			"connect": "Connect to Air Daemon",
+			"note": "Zero cloud dependency · JWT certificates · mTLS",
+			"feature": {
+				"daemon": "Direct Air Daemon connection to Land/Element",
+				"build": "Launch builds directly through the website console",
+				"deploy": "Deploy changes directly to the application",
+				"configure": "Full editor configuration and settings management",
+				"parity": "1:1 parity with VS Code server features and settings",
+				"offline": "No cloud login required.\nComplete offline operation.",
+				"bake": "Bake the portal directly into the editor as embedded SaaS"
+			},
+			"capability": {
+				"jwt": "JWT developer certificates",
+				"mtls": "Mutual TLS authentication",
+				"crdt": "CRDT state synchronization",
+				"team": "Team management (fully local)",
+				"cert": "Certificate authority management",
+				"ws": "WebSocket live connection",
+				"rbac": "Local RBAC policies",
+				"backup": "Encrypted local backup"
+			}
+		},
+		"enterprise": {
+			"title": "Enterprise Account",
+			"subtitle": "OIDC / SAML 2.0 single sign-on through Okta, Azure AD, or any compliant identity provider.\nGroup-to-role mapping, audit logs, and organization CA certificate management.",
+			"ariaLabel": "Enterprise SSO",
+			"domainLabel": "Work Email or Domain",
+			"domainPlaceholder": "name@company.com",
+			"continueSSO": "Continue with SSO",
+			"continueOkta": "Continue with Okta",
+			"continueAzure": "Continue with Azure AD",
+			"continueSAML": "Continue with SAML",
+			"oktaDomainLabel": "Okta Domain",
+			"oktaDomainPlaceholder": "your-org.okta.com",
+			"azureTenantLabel": "Azure AD Tenant ID",
+			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"samlMetadataLabel": "SAML Metadata URL",
+			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
+			"note": "OIDC Discovery · SAML 2.0 · SCIM provisioning",
+			"feature": {
+				"okta": "Okta SSO integration",
+				"azure": "Azure AD / Entra ID support",
+				"saml": "SAML 2.0 for legacy enterprise IdPs",
+				"scim": "SCIM user provisioning",
+				"group": "Group-to-role mapping",
+				"audit": "Full audit log trail"
+			},
+			"capability": {
+				"oidc": "OIDC Discovery + PKCE",
+				"jit": "Just-in-time provisioning",
+				"mfa": "Enforced MFA policies",
+				"session": "Session management + revocation",
+				"ca": "Organization CA certificates",
+				"compliance": "SOC 2 / GDPR compliance"
+			}
+		},
+		"labels": {
+			"included": "Included",
+			"capabilities": "Capabilities",
+			"protocol": "Protocol:",
+			"settingsManaged": "Settings Managed",
+			"allTiers": "Included in all tiers"
+		}
+	},
+	"loading": "Loading...",
+	"error": "Authentication error",
+	"tryAgain": "Try again",
+	"dashboard": "Go to Dashboard",
+	"logout": "Logout",
+	"emailNotVerified": "Email not verified.\nCheck your inbox.",
+	"redirecting": "Redirecting to sign in...",
+	"dashboardPage": {
+		"title": "Dashboard",
+		"welcome": "Welcome back",
+		"downloadsHeading": "Downloads",
+		"signOut": "Sign Out",
+		"loading": "Loading account\u2026",
+		"error": "Failed to load account."
+	}
+}

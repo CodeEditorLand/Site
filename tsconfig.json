@@ -2,17 +2,21 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 
 	"compilerOptions": {
+		"ignoreDeprecations": "6.0",
+
 		"baseUrl": "./",
+
+		"paths": {
+			"@/*": ["Source/*"],
+			"@Function/*": ["Source/Function/*"],
+			"@Variable/*": ["Source/Variable/*"]
+		},
 
 		"emitDeclarationOnly": false,
 
 		"jsx": "preserve",
 
-		"jsxFactory": "createComponent",
-
-		"jsxFragmentFactory": "Fragment",
-
-		"jsxImportSource": "solid-js",
+		"jsxImportSource": "react",
 
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 

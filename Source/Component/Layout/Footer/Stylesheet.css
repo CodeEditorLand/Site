@@ -1,0 +1,9 @@
+/* Footer - flat white with subtle top border separator */
+.Footer {
+	border-top: 1px solid var(--Border);
+	background-color: #ffffff;
+}
+
+.FooterContent {
+	background: transparent;
+}
