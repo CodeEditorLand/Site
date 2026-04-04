@@ -3,32 +3,32 @@
 		"badge": "Feature",
 		"item": {
 			"designTokens": {
-				"title": "No More Frozen Cursors",
-				"description": "VS Code with a medium project uses 500MB to 1.5GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.\n\nMountain runs native Rust + Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks. Even with hundreds of files open."
+				"title": "No more frozen cursors.",
+				"description": "VS Code with a medium project uses 500 MB to 1.5 GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.\n\nMountain runs native Rust and Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks."
 			},
 			"componentLibrary": {
-				"title": "Every Extension Runs Unchanged",
-				"description": "Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not \"mostly works.\" Not \"works except for X.\" Unchanged."
+				"title": "Every extension runs unchanged.",
+				"description": "Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged."
 			},
 			"documentation": {
-				"title": "Fibers, Not Promises",
-				"description": "VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other operation on that event loop.\n\nEffect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Type errors caught at compile time. Bugs that reach production in VS Code never compile in Land."
+				"title": "Fibers, not Promises.",
+				"description": "VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other on that event loop.\n\nEffect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Bugs that reach production in VS Code never compile in Land."
 			},
 			"versionControl": {
-				"title": "One Codebase, Every Platform",
-				"description": "Building native apps for three operating systems used to mean three rendering engines, three native toolchains, three deployment pipelines.\n\nTauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux with no bundled Chromium."
+				"title": "One codebase, every platform.",
+				"description": "Building native apps for three operating systems used to mean three rendering engines, three toolchains, and three deployment pipelines.\n\nTauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux. No bundled Chromium."
 			},
 			"cicdIntegration": {
-				"title": "No Restart to Update",
-				"description": "VS Code's \"Restart to Update\" prompt kills every open terminal, unsaved diff, and in-progress language server. The update cannot wait.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt, no restart, no lost state."
+				"title": "No Restart to Update.",
+				"description": "VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt."
 			},
 			"collaboration": {
-				"title": "CC0. No Restrictions.",
-				"description": "Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches. No restrictions of any kind."
+				"title": "CC0. No restrictions.",
+				"description": "Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches."
 			}
 		},
-		"subtitle": "Every design decision in Land traces back to a specific pain in VS Code's Electron stack. Not \"better\". Architecturally different.",
-		"title": "Eight Problems. One Architecture."
+		"subtitle": "The extension ecosystem you already rely on, running on a stack designed for performance.",
+		"title": "VS Code. Without Electron."
 	},
 	"hero": {
 		"badge": "No Electron   No Restart to Update   CC0",
@@ -111,51 +111,60 @@
 		"attributionNote": "Representative community member"
 	},
 	"roadmap": {
-		"title": "The Architecture is Built. Here is What Comes Next.",
-		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is a demonstration that the stack works, not a feature we are catching up on.",
+		"title": "The Architecture Is Built. Here Is What Comes Next.",
+		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone demonstrates the stack works, not a feature we are catching up on.",
 		"tiers": {
 			"current": {
 				"name": "Active Now",
 				"description": "All fifteen elements are in active development and independently deployable. The runtime is faster than VS Code. The extension API is implemented. Each element is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"1": "Every Extension Runs Unchanged Zero Rewrites",
-					"2": "No Electron Overhead The OS’s Own Renderer",
-					"3": "Fibers, Not Promises Interruptible and Supervised",
-					"4": "Telemetry Is a Compile Flag Not a Config Option",
-					"5": "CC0 No Restrictions, No Compliance, No Attribution",
+					"1": "Every extension runs unchanged no rewrites",
+					"2": "No Electron OS's own renderer 70% less RAM",
+					"3": "Fibers, not Promises interruptible concurrent",
+					"4": "Telemetry is a compile flag absent, not disabled",
+					"5": "CC0 public domain no restrictions",
 					"6": "macOS Windows Linux"
 				},
 				"button": "View on GitHub",
 				"elements": {
-					"mountain": "Mountain ⛰️\nNative Process Manager\nReplaces Electron Main Process",
-					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
-					"wind": "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
-					"sky": "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
-					"air": "Air 🪁\nBackground Daemon\nSilent Update Crypto-Signed",
-					"echo": "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated"
+					"mountain": "Mountain ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
+					"cocoon": "Cocoon 🦋\nExtension Host\nFull VS Code API via Effect-TS, every extension unchanged",
+					"wind": "Wind 🍃\nWorkbench Shell\nEffect-TS layers, direct OS calls, no IPC proxy",
+					"sky": "Sky 🌌\nAstro UI Layer\nEvery panel a component, instant hot-reload",
+					"air": "Air 🪁\nBackground Daemon\nPre-stages updates, no Restart to Update prompt",
+					"echo": "Echo 📣\nWork-Stealing Scheduler\nAll CPU cores, heavy tasks never block the editor"
 				}
 			},
 			"next": {
 				"name": "Extension Compatibility Complete",
 				"description": "The VS Code marketplace works end-to-end. Language servers initialize in parallel. IntelliSense is ready before you finish the first keystroke.",
 				"features": {
-					"1": "Full marketplace: every extension installs and activates without modification",
-					"2": "Language servers run in parallel via Echo's work-stealing scheduler",
-					"3": "Vine gRPC protocol stabilized: typed IPC at sub-millisecond latency",
-					"4": "Air daemon: silent updates staged between sessions, no restart prompt"
+					"1": "Full marketplace every extension installs and activates",
+					"2": "Language servers in parallel via Echo's thread pool",
+					"3": "Vine gRPC protocol stabilized typed IPC at every boundary",
+					"4": "Air daemon live silent updates staged between sessions"
 				}
 			},
 			"future": {
-				"name": "True Extension Isolation",
-				"description": "Grove makes Land the first editor where extensions are technically isolated, not just policy-isolated. An extension can only touch what you explicitly grant. The boundary is enforced by the hardware.",
-				"features": [
-					"VS Code Marketplace Every Extension Installs Unchanged",
-					"Grove Hardware-Enforced Extension Isolation",
-					"Vine Typed at the Wire All IPC Finalized",
-					"Cross-Platform Native Installer Tauri",
-					"Source Map Generation OXC",
-					"Cloudflare CDN Download Worker Live"
-				]
+				"name": "v1.0",
+				"description": "Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",
+				"features": {
+					"1": "VS Code Marketplace every extension installs unchanged",
+					"2": "Grove hardware-enforced extension isolation",
+					"3": "Vine typed at the wire all IPC finalized",
+					"4": "Cross-platform native installer via Tauri",
+					"5": "Source map generation via OXC",
+					"6": "Cloudflare Workers download distribution live"
+				},
+				"elements": {
+					"vine": "Vine 🌿\nProtocol In Progress\nMountain and Grove channel completing",
+					"cocoon": "Cocoon 🦋\nExtension Compatibility Pass\nHigh-fidelity VS Code API coverage",
+					"grove": "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-based extension isolation",
+					"rest": "Rest ⛱️\nSource Map Support\nOXC transformer integration in progress",
+					"echo": "Echo 📣\nScheduler Optimization\nFaster steal, lower latency",
+					"air": "Air 🪁\nSigned CDN Delivery\nCloudflare Workers distribution"
+				},
+				"button": "Track Progress"
 			}
 		}
 	},

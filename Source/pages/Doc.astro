@@ -10,10 +10,42 @@ const DocEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
 );
 
-const SidebarSections = DocEntries.map((Entry) => ({
-	Id: Entry.id,
-	Label: Entry.data.title,
-}));
+// Group entries by section for hierarchical sidebar
+const SectionOrder = [
+	"Start",
+	"Architecture",
+	"Usage",
+	"Development",
+	"Community",
+	"Support",
+	"Element",
+	"Technology",
+	"License",
+];
+
+const GroupedBySection = new Map<
+	string,
+	{ Id: string; Label: string }[]
+>();
+
+for (const Entry of DocEntries) {
+	const Section = Entry.data.section ?? "Other";
+	if (!GroupedBySection.has(Section)) {
+		GroupedBySection.set(Section, []);
+	}
+	GroupedBySection.get(Section)!.push({
+		Id: Entry.id,
+		Label: Entry.data.title,
+	});
+}
+
+const SidebarSections = SectionOrder
+	.filter((Section) => GroupedBySection.has(Section))
+	.map((Section) => ({
+		Id: Section.toLowerCase().replace(/\s+/g, "-"),
+		Label: Section,
+		Children: GroupedBySection.get(Section)!,
+	}));
 
 const T = GetI18n();
 
@@ -350,38 +382,40 @@ const Element = [
 					</a>
 				</div>
 
-				<!-- Guides: links to /Doc/{slug} pages -->
-				<section class="mt-12">
-					<h2 class="mb-6 text-2xl font-semibold">
-						{
-							T("common.docs.guides.heading", {
-								defaultValue: "Guides",
-							})
-						}
-					</h2>
-					<div
-						class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-						{
-							DocEntries.map((Entry) => (
-								<a
-									href={`/Doc/${Entry.id}`}
-									class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-									<p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-										{Entry.data.section}
-									</p>
-									<h3 class="font-medium">
-										{Entry.data.title}
-									</h3>
-									{Entry.data.description && (
-										<p class="mt-1 text-xs text-muted-foreground">
-											{Entry.data.description}
-										</p>
-									)}
-								</a>
-							))
-						}
-					</div>
-				</section>
+				<!-- Guides: grouped by section -->
+				{
+					SectionOrder
+						.filter((Section) => GroupedBySection.has(Section))
+						.map((Section) => {
+							const Entries = DocEntries.filter(
+								(E) => E.data.section === Section,
+							);
+							if (Entries.length === 0) return null;
+							return (
+								<section class="mt-12" id={Section.toLowerCase().replace(/\s+/g, "-")}>
+									<h2 class="mb-6 text-2xl font-semibold">
+										{Section}
+									</h2>
+									<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+										{Entries.map((Entry) => (
+											<a
+												href={`/Doc/${Entry.id}`}
+												class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+												<h3 class="font-medium">
+													{Entry.data.title}
+												</h3>
+												{Entry.data.description && (
+													<p class="mt-1 text-xs text-muted-foreground">
+														{Entry.data.description}
+													</p>
+												)}
+											</a>
+										))}
+									</div>
+								</section>
+							);
+						})
+				}
 
 				<!-- Architecture Section - data-driven -->
 				<section class="mt-12">

@@ -29,7 +29,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Hero: {
 			Badge: {
 				Text: T("home:hero.badge", {
-					defaultValue: "No Electron \u2001 No Restart to Update \u2001 CC0",
+					defaultValue: "No Electron   No Restart to Update   CC0",
 				}),
 				Variant: "secondary",
 			},
@@ -41,11 +41,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:hero.subtitle", {
 				defaultValue:
-					"Stop handing VS Code a gigabyte of RAM.\n\nLand is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.",
+					"VS Code runs on Electron. That means Chromium, Node.js, and a gigabyte of RAM just to open a file.\n\nLand replaces the entire Electron stack with Rust, Tauri, and Effect-TS. The difference is felt on first launch.",
 			}),
 			PrimaryCta: {
 				Text: T("common:button.download", {
-					defaultValue: "Download",
+					defaultValue: "Download Land Free",
 				}),
 				Variant: "default",
 				Size: "lg",
@@ -54,7 +54,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			},
 			SecondaryCta: {
 				Text: T("common:button.learnMore", {
-					defaultValue: "Learn More",
+					defaultValue: "See What Makes Land Different",
 				}),
 				Variant: "outline",
 				Size: "lg",
@@ -136,11 +136,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Features: {
 			Title: T("home:features.title", {
-				defaultValue: "Built Different. Measurably Better.",
+				defaultValue: "VS Code. Without Electron.",
 			}),
 			Subtitle: T("home:features.subtitle", {
 				defaultValue:
-					"Six features that explain why Land is faster, safer, and more open than every Electron-based editor.",
+					"The extension ecosystem you already rely on, running on a stack designed for performance.",
 			}),
 			Features: [
 				{
@@ -148,15 +148,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Zap",
 					Icons: ["/Image/Rust.svg", "/Image/Tauri.svg", "Zap"],
 					Title: T("home:features.item.designTokens.title", {
-						defaultValue: "No More Frozen Cursors",
+						defaultValue: "No more frozen cursors.",
 					}),
 					Description: T(
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"VS Code with a medium project uses 500MB to 1.5GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.
-
-Mountain runs native Rust + Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks. Even with hundreds of files open.",
+								"VS Code with a medium project uses 500 MB to 1.5 GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.\n\nMountain runs native Rust and Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks.",
 						},
 					),
 				},
@@ -165,15 +163,13 @@ Mountain runs native Rust + Tauri. Echo runs every background task on a work-ste
 					Icon: "Box",
 					Icons: ["/Image/EffectTS.svg", "Box", "Puzzle"],
 					Title: T("home:features.item.componentLibrary.title", {
-						defaultValue: "Every Extension Runs Unchanged",
+						defaultValue: "Every extension runs unchanged.",
 					}),
 					Description: T(
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Porting your extension library to a new editor is weeks of work you should never have to do.
-
-Cocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not "mostly works." Not "works except for X." Unchanged.",
+								"Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged."mostly works." Not "works except for X." Unchanged.",
 						},
 					),
 				},
@@ -182,15 +178,13 @@ Cocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an ext
 					Icon: "Cpu",
 					Icons: ["/Image/EffectTS.svg", "/Image/TypeScript.svg", "Layers"],
 					Title: T("home:features.item.documentation.title", {
-						defaultValue: "Fibers, Not Promises",
+						defaultValue: "Fibers, not Promises.",
 					}),
 					Description: T(
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other operation on that event loop.
-
-Effect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Type errors are caught at compile time. Bugs that reach production in VS Code never compile in Land.",
+								"VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other on that event loop.\n\nEffect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Bugs that reach production in VS Code never compile in Land.",
 						},
 					),
 				},
@@ -199,15 +193,13 @@ Effect-TS fibers can be interrupted, raced, and run concurrently across CPU core
 					Icon: "Globe",
 					Icons: ["/Image/Tauri.svg", "Globe", "Package"],
 					Title: T("home:features.item.versionControl.title", {
-						defaultValue: "One Codebase, Every Platform",
+						defaultValue: "One codebase, every platform.",
 					}),
 					Description: T(
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"Building native apps for three operating systems from one codebase used to mean three separate rendering engines, three native toolchains, and three deployment pipelines.
-
-Tauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux with no bundled Chromium.",
+								"Building native apps for three operating systems used to mean three rendering engines, three toolchains, and three deployment pipelines.\n\nTauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux. No bundled Chromium.",
 						},
 					),
 				},
@@ -216,13 +208,13 @@ Tauri uses the OS's own WebView on each platform. One Rust codebase compiles to 
 					Icon: "Wrench",
 					Icons: ["/Image/Rust.svg", "/Image/Biome.svg", "/Image/EffectTS.svg"],
 					Title: T("home:features.item.cicdIntegration.title", {
-						defaultValue: "No Restart to Update",
+						defaultValue: "No Restart to Update.",
 					}),
 					Description: T(
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"VS Code's "Restart to Update" prompt kills every open terminal, unsaved diff, and in-progress language server. The update cannot wait.
+								"VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt."Restart to Update" prompt kills every open terminal, unsaved diff, and in-progress language server. The update cannot wait.
 
 Air pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt, no restart, no lost state.",
 						},
@@ -233,13 +225,13 @@ Air pre-downloads and PGP-verifies the next version while you work. The update s
 					Icon: "Heart",
 					Icons: ["/Image/CC0.svg", "/Image/NLnet.svg", "Heart"],
 					Title: T("home:features.item.collaboration.title", {
-						defaultValue: "CC0. No Restrictions.",
+						defaultValue: "CC0. No restrictions.",
 					}),
 					Description: T(
 						"home:features.item.collaboration.description",
 						{
 							defaultValue:
-								"Most "open source" editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.
+								"Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches."open source" editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.
 
 The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches. No restrictions of any kind.",
 						},
@@ -251,58 +243,58 @@ The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build c
 		},
 		Pricing: {
 			Title: T("home:roadmap.title", {
-				defaultValue: "Roadmap & What to Expect",
+				defaultValue: "The Architecture Is Built. Here Is What Comes Next.",
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Funded by NLnet NGI0 Commons Fund.\n\nBuilt in public, free forever, no roadmap surprises.",
+					"Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone demonstrates the stack works, not a feature we are catching up on.",
 			}),
 			Tiers: [
 				{
 					Id: "free",
 					Name: T("home:roadmap.tiers.current.name", {
-						defaultValue: "Free",
+						defaultValue: "Active Now",
 					}),
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"Six open-source elements building the editor core. Read, run, and contribute to each today.",
+							"All fifteen elements are in active development and independently deployable. The runtime is faster than VS Code. The extension API is implemented. Each element is a standalone repository you can inspect and contribute to today.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
 						T("home:roadmap.tiers.current.elements.mountain", {
-							defaultValue: "Mountain ⛰️\nNative Process Manager\nReplaces Electron Main Process",
+							defaultValue: "Mountain ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
 						}),
 						T("home:roadmap.tiers.current.elements.cocoon", {
-							defaultValue: "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
+							defaultValue: "Cocoon 🦋\nExtension Host\nFull VS Code API via Effect-TS, every extension unchanged",
 						}),
 						T("home:roadmap.tiers.current.elements.wind", {
-							defaultValue: "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
+							defaultValue: "Wind 🍃\nWorkbench Shell\nEffect-TS layers, direct OS calls, no IPC proxy",
 						}),
 						T("home:roadmap.tiers.current.elements.sky", {
-							defaultValue: "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
+							defaultValue: "Sky 🌌\nAstro UI Layer\nEvery panel a component, instant hot-reload",
 						}),
 						T("home:roadmap.tiers.current.elements.air", {
-							defaultValue: "Air 🪁\nBackground Daemon\nSilent Update Crypto-Signed",
+							defaultValue: "Air 🪁\nBackground Daemon\nPre-stages updates, no Restart to Update prompt",
 						}),
 						T("home:roadmap.tiers.current.elements.echo", {
-							defaultValue: "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated",
+							defaultValue: "Echo 📣\nWork-Stealing Scheduler\nAll CPU cores, heavy tasks never block the editor",
 						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "Every Extension Runs Unchanged Zero Rewrites",
+							defaultValue: "Every extension runs unchanged no rewrites",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
-							defaultValue: "No Electron Overhead The OS’s Own Renderer",
+							defaultValue: "No Electron OS's own renderer 70% less RAM",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "Fibers, Not Promises Interruptible and Supervised",
+							defaultValue: "Fibers, not Promises interruptible concurrent",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "Telemetry Is a Compile Flag Not a Config Option",
+							defaultValue: "Telemetry is a compile flag absent, not disabled",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
-							defaultValue: "CC0 No Restrictions, No Compliance, No Attribution",
+							defaultValue: "CC0 public domain no restrictions",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
 							defaultValue: "macOS Windows Linux",
@@ -329,42 +321,42 @@ The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build c
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
 						T("home:roadmap.tiers.future.elements.vine", {
-							defaultValue: "Vine 🌿\nProtocol In Progress\nMountain ↔ Grove Channel Completing",
+							defaultValue: "Vine 🌿\nProtocol In Progress\nMountain and Grove channel completing",
 						}),
 						T("home:roadmap.tiers.future.elements.cocoon", {
-							defaultValue: "Cocoon 🦋\nExtension Compatibility Pass\nHigh-Fidelity VS Code API Coverage",
+							defaultValue: "Cocoon 🦋\nExtension Compatibility Pass\nHigh-fidelity VS Code API coverage",
 						}),
 						T("home:roadmap.tiers.future.elements.grove", {
-							defaultValue: "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-Based Extension Isolation",
+							defaultValue: "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-based extension isolation",
 						}),
 						T("home:roadmap.tiers.future.elements.rest", {
-							defaultValue: "Rest ⛱️\nSource Map Support\nOXC Transformer Integration In Progress",
+							defaultValue: "Rest ⛱️\nSource Map Support\nOXC transformer integration in progress",
 						}),
 						T("home:roadmap.tiers.future.elements.echo", {
-							defaultValue: "Echo 📣\nScheduler Optimization\nFaster Steal Lower Latency",
+							defaultValue: "Echo 📣\nScheduler Optimization\nFaster steal, lower latency",
 						}),
 						T("home:roadmap.tiers.future.elements.air", {
-							defaultValue: "Air 🪁\nSigned CDN Delivery\nCloudflare Workers Distribution",
+							defaultValue: "Air 🪁\nSigned CDN Delivery\nCloudflare Workers distribution",
 						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.future.features.1", {
-							defaultValue: "VS Code Marketplace Every Extension Installs Unchanged",
+							defaultValue: "VS Code Marketplace every extension installs unchanged",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Grove Hardware-Enforced Extension Isolation",
+							defaultValue: "Grove hardware-enforced extension isolation",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "Vine Typed at the Wire All IPC Finalized",
+							defaultValue: "Vine typed at the wire all IPC finalized",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "Cross-Platform Native Installer Tauri",
+							defaultValue: "Cross-platform native installer via Tauri",
 						}),
 						T("home:roadmap.tiers.future.features.5", {
-							defaultValue: "Source Map Generation OXC",
+							defaultValue: "Source map generation via OXC",
 						}),
 						T("home:roadmap.tiers.future.features.6", {
-							defaultValue: "Cloudflare CDN Download Worker Live",
+							defaultValue: "Cloudflare Workers download distribution live",
 						}),
 					],
 					CTA: {
@@ -384,7 +376,7 @@ The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build c
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code\u2019s Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
+					"Land replaces VS Code's Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
 			}),
 			Testimonials: [
 				{
@@ -397,11 +389,7 @@ The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build c
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"VS Code cold-starts slowly because every session initializes from scratch: extension host, language servers, file indexing. Updates present a Restart to Update prompt that kills open terminals, unsaved diffs, and in-progress language servers.
-
-Air is a persistent background daemon that keeps running after you close the editor. It pre-downloads and PGP-verifies the next update before you decide to apply it. It pre-indexes workspace changes that happened while the editor was closed.
-
-The next version is already downloaded and verified before you decide to update. No restart prompt ever.",
+							"Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt.",
 					}),
 				},
 				{
@@ -414,11 +402,7 @@ The next version is already downloaded and verified before you decide to update.
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
-							"VS Code's extension host is a single Node.js event loop. One extension's hung Promise blocks every other handler. One language server crash freezes the cursor for two seconds. There is no way to interrupt an in-flight extension call.
-
-Cocoon routes every VS Code API call through Effect-TS fibers. Each extension runs in its own supervised scope. A hung operation is interrupted. A crashed scope restarts. Nothing bleeds across.
-
-Every extension runs in its own supervised fiber. One crash does not take down the rest.",
+							"A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks.",
 					}),
 				},
 				{
@@ -431,11 +415,7 @@ Every extension runs in its own supervised fiber. One crash does not take down t
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
-							"In VS Code's codebase, interfaces are often implicitly implemented and concretely imported. Testing requires mocking entire modules. There is no dependency injection.
-
-Common defines pure abstract traits with zero concrete implementations. Every element builds on Common's typed effects and composable building blocks. You can swap any implementation, mock any trait, and test any element without launching a window.
-
-Mock any service and test any element in isolation, no running editor required.",
+							"The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
 					}),
 				},
 				{
@@ -448,11 +428,7 @@ Mock any service and test any element in isolation, no running editor required."
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"VS Code's background tasks (file indexing, symbol scanning, git blame, search) run in single-threaded Node.js event loops. Heavy indexing blocks everything else on that thread.
-
-Echo is a lock-free work-stealing scheduler built on Rust's crossbeam-deque. Every task runs in a supervised worker pool across all CPU cores. Tasks are work-stolen, supervised, and gracefully shut down. No task outlives its scope.
-
-Indexing, search, and builds run on every CPU core in parallel. The editor stays responsive.",
+							"A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
 					}),
 				},
 				{
@@ -465,11 +441,7 @@ Indexing, search, and builds run on every CPU core in parallel. The editor stays
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
-							"VS Code extensions run with full Node.js capabilities in a shared process. A malicious extension can read the file system, access other extensions' secrets, and interfere with event handlers. The VS Code extension sandbox is a policy document, not a technical boundary.
-
-Grove runs extensions compiled to WebAssembly inside WASMtime with capability-based security. An extension can only touch resources explicitly granted to it. No implicit ambient authority. The sandbox is enforced by the hardware.
-
-An extension can only touch what you explicitly grant. The sandbox is enforced by the hardware, not a policy.",
+							"Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
 					}),
 				},
 				{
@@ -482,11 +454,7 @@ An extension can only touch what you explicitly grant. The sandbox is enforced b
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
-							"Build toolchains that span Rust, TypeScript, and multiple target platforms require complex orchestration that breaks silently when any one step drifts.
-
-Maintain provides build orchestration for the entire Land ecosystem via embedded Rhai scripting, compile-time validated TOML and JSON5 configuration, and deterministic artifact generation.
-
-Same commit always produces the same output. No environment surprises.",
+							"Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
 					}),
 				},
 				{
@@ -499,11 +467,7 @@ Same commit always produces the same output. No environment surprises.",
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
-							"Network requests from editor components have no isolation boundary. A buggy extension or tool can make requests to arbitrary hosts while appearing to run locally.
-
-Mist creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer. Nothing leaks to the public internet.
-
-Every service call stays local. The network boundary is enforced at the DNS layer.",
+							"Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
 					}),
 				},
 				{
@@ -516,11 +480,7 @@ Every service call stays local. The network boundary is enforced at the DNS laye
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"VS Code with a medium project open uses 500MB to 1.5GB RAM across three Chromium renderer processes. Every file dialog, clipboard read, and window move crosses Electron's serialized IPC bridge.
-
-Mountain replaces Electron's main process entirely with a Rust binary using Tauri. The OS's own WebView renders the UI. No bundled Chromium. No Node.js in the host process.
-
-Where Electron takes 200ms to open a dialog, Mountain takes 2.",
+							"Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk.",
 					}),
 				},
 				{
@@ -529,15 +489,11 @@ Where Electron takes 200ms to open a dialog, Mountain takes 2.",
 					Href: "https://github.com/CodeEditorLand/Output",
 					Author: "Output",
 					Role: T("home:architecture.output.subtitle", {
-						defaultValue: "Compilation pipeline Deterministic Bundle Checksum",
+						defaultValue: "Compilation Pipeline Deterministic Bundle Checksum",
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
-							"VS Code's build pipeline produces JavaScript artifacts through a mix of esbuild and Webpack passes. The output format changes between VS Code versions. Incremental migration between compilers is not supported.
-
-Output handles compilation from VS Code, Land, and the Rest compiler into a single deterministic pipeline. Both esbuild and Rest produce artifacts through the same build system, allowing incremental migration.
-
-Same commit, same output. Every bundle is deterministic and checksum-verified.",
+							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
 					}),
 				},
 				{
@@ -550,11 +506,7 @@ Same commit, same output. Every bundle is deterministic and checksum-verified.",
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
-							"VS Code's TypeScript compiler pipeline runs through esbuild's TypeScript loader, which strips types without a full parse. Source maps require a separate pass. The build is fast but produces output that drifts from tsc.
-
-Rest is a TypeScript compiler built on OXC, the same parser VS Code uses internally. It produces 100% tsc-compatible output at 2-3x the speed of esbuild. Source map generation is built in, not bolted on.
-
-Same output as tsc. Faster than esbuild. Source maps included.",
+							"A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
 					}),
 				},
 				{
@@ -567,11 +519,7 @@ Same output as tsc. Faster than esbuild. Source maps included.",
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
-							"Every Land element that spawns a Node.js process needs the exact right Node.js binary for the host platform. Getting this wrong at runtime is a hard-to-debug failure.
-
-SideCar selects and bundles the correct Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others. No runtime detection. No fallback chains.
-
-Land ships the exact right Node.js binary for your platform. No prerequisites. No version conflicts.",
+							"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
 					}),
 				},
 				{
@@ -584,11 +532,7 @@ Land ships the exact right Node.js binary for your platform. No prerequisites. N
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"VS Code's UI is a Chromium renderer process carrying a full browser heap. Every panel, sidebar, and tab bar re-renders on the same JavaScript thread as the extension host.
-
-Sky renders the editor interface entirely with Astro components inside Tauri's native WebView. Three workbench layouts: full desktop, embedded, and minimal. Tauri hot-reloads any component change instantly with no browser process overhead.
-
-Every panel is a component. Change one and Tauri reloads it in under a frame.",
+							"Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
 					}),
 				},
 				{
@@ -601,11 +545,7 @@ Every panel is a component. Change one and Tauri reloads it in under a frame.",
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
-							"Electron's IPC is untyped. You call ipcRenderer.send and hope the main process handles it correctly. Refactoring IPC messages is dangerous because nothing tells you what broke.
-
-Every inter-process service interface in Land starts as a .proto file. The generated Rust and TypeScript stubs are the only way processes communicate. gRPC over a Unix domain socket runs at native memory-copy speed.
-
-Change a message field and every consumer breaks loudly at compile time, not silently at runtime.",
+							"Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
 					}),
 				},
 				{
@@ -618,11 +558,7 @@ Change a message field and every consumer breaks loudly at compile time, not sil
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"In VS Code, every workbench interaction that touches the file system crosses Electron's IPC bridge twice: serialized to JSON, piped, deserialized. On high-frequency events like typing and hover tooltips, this adds measurable latency.
-
-Wind re-implements the VS Code Workbench as composable Effect-TS Layers. OS calls go directly through Mountain's Tauri bindings. No IPC proxy. No JSON serialization.
-
-No Electron IPC proxy. Workbench actions hit the OS directly.",
+							"A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
 					}),
 				},
 				{
@@ -635,11 +571,7 @@ No Electron IPC proxy. Workbench actions hit the OS directly.",
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
-							"The editor shell makes repeated network requests for static assets on every launch. Auth tokens stored in memory are lost on page reload and require a new sign-in flow.
-
-Worker manages caching, offline support, and AES-GCM encrypted auth token storage in the service worker layer. HMAC-signed requests. Automatic token refresh. Dynamic CSS imports from JavaScript modules handled without a build step.
-
-The shell loads from cache. Tokens survive refresh. The editor works offline.",
+							"Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
 					}),
 				},
 			],
@@ -649,7 +581,7 @@ The shell loads from cache. Tokens survive refresh. The editor works offline.",
 			Title: T("download:title", { defaultValue: "Download Land" }),
 			Subtitle: T("download:subtitle", {
 				defaultValue:
-					"Available for macOS, Windows, and Linux.\nBuilt with Tauri, powered by Rust.",
+					"Native on macOS, Windows, and Linux.\n\nBuilt with Tauri. Powered by Rust. Verified with PGP.",
 			}),
 			Platforms: [
 				{
@@ -661,7 +593,7 @@ The shell loads from cache. Tokens survive refresh. The editor works offline.",
 					Description: T(
 						"download:card.platform.macos.universalBadge",
 						{
-							defaultValue: "Universal Binary",
+							defaultValue: "Universal Binary: Apple Silicon and Intel",
 						},
 					),
 					Version: "Pre-release",
@@ -721,11 +653,11 @@ The shell loads from cache. Tokens survive refresh. The editor works offline.",
 		Footer: {
 			Brand: {
 				Name: T("common:brand.name", {
-					defaultValue: "Land",
+					defaultValue: "Code Editor Land",
 				}),
 				Description: T("common:brand.tagline", {
 					defaultValue:
-						"The next-generation code editor.\nOpen source and free forever.",
+						"Faster than VS Code. Lighter than Electron. Free forever.",
 				}),
 			},
 			Social: {
@@ -745,7 +677,7 @@ The shell loads from cache. Tokens survive refresh. The editor works offline.",
 						},
 						{
 							Label: T("footer:columns.product.downloads", {
-								defaultValue: "Download",
+								defaultValue: "Downloads",
 							}),
 							Href: "/Download",
 						},

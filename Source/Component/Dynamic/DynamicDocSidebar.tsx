@@ -59,7 +59,7 @@ const DynamicDocSidebar = ({
 												return (
 													<li key={Child.Id}>
 														<a
-															href={`#${Child.Id}`}
+															href={`/Doc/${Child.Id}`}
 															aria-current={
 																IsChildActive
 																	? "page"
@@ -85,7 +85,7 @@ const DynamicDocSidebar = ({
 					return (
 						<li key={Section.Id}>
 							<a
-								href={`#${Section.Id}`}
+								href={`/Doc/${Section.Id}`}
 								aria-current={IsActive ? "page" : undefined}
 								className={`block px-3 py-2 text-sm transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)] ${
 									IsActive

@@ -21,10 +21,42 @@ const AllEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
 );
 
-const SidebarSections = AllEntries.map((E) => ({
-	Id: E.id,
-	Label: E.data.title,
-}));
+// Group entries by section for hierarchical sidebar
+const SectionOrder = [
+	"Start",
+	"Architecture",
+	"Usage",
+	"Development",
+	"Community",
+	"Support",
+	"Element",
+	"Technology",
+	"License",
+];
+
+const GroupedBySection = new Map<
+	string,
+	{ Id: string; Label: string }[]
+>();
+
+for (const E of AllEntries) {
+	const Section = E.data.section ?? "Other";
+	if (!GroupedBySection.has(Section)) {
+		GroupedBySection.set(Section, []);
+	}
+	GroupedBySection.get(Section)!.push({
+		Id: E.id,
+		Label: E.data.title,
+	});
+}
+
+const SidebarSections = SectionOrder
+	.filter((Section) => GroupedBySection.has(Section))
+	.map((Section) => ({
+		Id: Section.toLowerCase().replace(/\s+/g, "-"),
+		Label: Section,
+		Children: GroupedBySection.get(Section)!,
+	}));
 
 // Sorted list for prev/next navigation
 const CurrentIndex = AllEntries.findIndex((E) => E.id === Entry.id);
