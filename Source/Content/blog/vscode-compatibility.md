@@ -57,8 +57,8 @@ Some VS Code APIs depend on Electron internals that do not exist in Tauri:
   Mountain element. Extensions that create custom terminal profiles may need
   minor adjustments.
 - **Notebook API** — The Jupyter notebook renderer is partially implemented.
-  Extensions using `NotebookSerializer` work; custom notebook renderers are under
-  development.
+  Extensions using `NotebookSerializer` work; custom notebook renderers are
+  under development.
 
 ## Marketplace Integration
 

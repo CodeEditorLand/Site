@@ -67,7 +67,9 @@ const DynamicLocalFirstScan = ({
 
 			{Status === "Scanning" && (
 				<div data-testid="scanning-indicator" aria-live="polite">
-					<span className="animate-pulse">Scanning for Air Daemon...</span>
+					<span className="animate-pulse">
+						Scanning for Air Daemon...
+					</span>
 				</div>
 			)}
 
@@ -178,9 +180,7 @@ describe("DynamicLocalFirstScan", () => {
 		const ConnectedIndicator = screen.getByTestId("connected-indicator");
 
 		expect(ConnectedIndicator).toBeInTheDocument();
-		expect(
-			screen.getByText("Connected to Air Daemon"),
-		).toBeInTheDocument();
+		expect(screen.getByText("Connected to Air Daemon")).toBeInTheDocument();
 	});
 
 	it("shows disconnected state when daemon is not found", () => {
@@ -196,9 +196,7 @@ describe("DynamicLocalFirstScan", () => {
 		);
 
 		expect(DisconnectedIndicator).toBeInTheDocument();
-		expect(
-			screen.getByText("Air Daemon not found"),
-		).toBeInTheDocument();
+		expect(screen.getByText("Air Daemon not found")).toBeInTheDocument();
 	});
 
 	it("shows download link when daemon not detected", () => {

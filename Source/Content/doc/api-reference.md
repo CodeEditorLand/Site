@@ -2,14 +2,16 @@
 title: "API Reference"
 section: "Development"
 order: 1
-description: "Overview of the Land extension API: commands, configuration, views, and webviews."
+description:
+    "Overview of the Land extension API: commands, configuration, views, and
+    webviews."
 ---
 
 # API Reference
 
-Land implements the VS Code extension API with full type compatibility. Extensions
-written against `@types/vscode` compile and run without modification. This page
-provides an overview of the major API surfaces.
+Land implements the VS Code extension API with full type compatibility.
+Extensions written against `@types/vscode` compile and run without modification.
+This page provides an overview of the major API surfaces.
 
 ## Commands
 

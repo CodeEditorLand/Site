@@ -1,58 +1,59 @@
 {
 	"forgotPassword": {
 		"emailPlaceholder": "name@beispiel.de",
-		"submit": "Link zum Zuruecksetzen senden",
-		"subtitle": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zuruecksetzen anzufordern",
+		"submit": "Link zum Zurücksetzen senden",
+		"subtitle": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen anzufordern",
 		"success": {
-			"title": "Pruefen Sie Ihre E-Mail",
-			"subtitle": "Ein Link zum Zuruecksetzen des Passworts wurde gesendet an",
-			"instruction": "Klicken Sie auf den Link in der E-Mail, um Ihr Passwort zurueckzusetzen.\nDer Link laeuft in 24 Stunden ab.",
+			"title": "Prüfen Sie Ihre E-Mail",
+			"subtitle": "Ein Link zum Zurücksetzen des Passworts wurde gesendet an",
+			"instruction": "Klicken Sie auf den Link in der E-Mail, um Ihr Passwort zurückzusetzen.\nDer Link läuft in 24 Stunden ab.",
 			"resend": "E-Mail erneut senden"
 		},
-		"title": "Passwort zuruecksetzen",
+		"title": "Passwort zurücksetzen",
 		"emailLabel": "E-Mail",
 		"loading": "Wird gesendet...",
-		"backToSignIn": "Zurueck zur Anmeldung",
-		"successToast": "E-Mail zum Zuruecksetzen gesendet",
-		"errorToast": "E-Mail zum Zuruecksetzen konnte nicht gesendet werden",
+		"backToSignIn": "Zurück zur Anmeldung",
+		"successToast": "E-Mail zum Zurücksetzen gesendet",
+		"errorToast": "E-Mail zum Zurücksetzen konnte nicht gesendet werden",
 		"emailRequired": "E-Mail ist erforderlich",
-		"resendSuccess": "E-Mail zum Zuruecksetzen erneut gesendet",
-		"resendError": "E-Mail konnte nicht erneut gesendet werden"
+		"resendSuccess": "E-Mail zum Zurücksetzen erneut gesendet",
+		"resendError": "E-Mail konnte nicht erneut gesendet werden",
+		"emailSent": "E-Mail zum Zurücksetzen an Ihren Posteingang gesendet"
 	},
 	"resetPassword": {
-		"checkingMessage": "Ihr Zuruecksetzungs-Token wird ueberprueft, bitte warten...",
-		"confirmLabel": "Neues Passwort bestaetigen",
+		"checkingMessage": "Ihr Zurücksetzungs-Token wird überprüft, bitte warten...",
+		"confirmLabel": "Neues Passwort bestätigen",
 		"confirmPlaceholder": "Geben Sie Ihr neues Passwort erneut ein",
 		"invalidToken": {
-			"title": "Ungueltiges oder abgelaufenes Token",
-			"description": "Dieser Link zum Zuruecksetzen des Passworts ist ungueltig, abgelaufen oder wurde bereits verwendet.",
-			"instruction": "Fordern Sie eine neue E-Mail zum Zuruecksetzen des Passworts an.",
-			"button": "Neue E-Mail zum Zuruecksetzen anfordern"
+			"title": "Ungültiges oder abgelaufenes Token",
+			"description": "Dieser Link zum Zurücksetzen des Passworts ist ungültig, abgelaufen oder wurde bereits verwendet.",
+			"instruction": "Fordern Sie eine neue E-Mail zum Zurücksetzen des Passworts an.",
+			"button": "Neue E-Mail zum Zurücksetzen anfordern"
 		},
 		"passwordLabel": "Neues Passwort",
 		"passwordPlaceholder": "Geben Sie ein sicheres neues Passwort ein",
-		"submit": "Passwort zuruecksetzen",
+		"submit": "Passwort zurücksetzen",
 		"subtitle": "Geben Sie unten Ihr neues Passwort ein",
 		"success": {
-			"title": "Passwort erfolgreich zurueckgesetzt",
-			"description": "Ihr Passwort wurde zurueckgesetzt.\nSie koennen sich jetzt mit Ihrem neuen Passwort anmelden.",
+			"title": "Passwort erfolgreich zurückgesetzt",
+			"description": "Ihr Passwort wurde zurückgesetzt.\nSie können sich jetzt mit Ihrem neuen Passwort anmelden.",
 			"button": "Weiter zur Anmeldung"
 		},
-		"title": "Passwort zuruecksetzen",
+		"title": "Passwort zurücksetzen",
 		"passwordHint": "Mindestens 8 Zeichen",
-		"loading": "Wird zurueckgesetzt...",
-		"mismatch": "Passwoerter stimmen nicht ueberein",
+		"loading": "Wird zurückgesetzt...",
+		"mismatch": "Passwörter stimmen nicht überein",
 		"signInLink": "Anmelden",
-		"checking": "Token wird ueberprueft...",
+		"checking": "Token wird überprüft...",
 		"error": {
 			"tooShort": "Passwort muss mindestens 8 Zeichen lang sein"
 		},
-		"successToast": "Passwort erfolgreich zurueckgesetzt",
-		"errorToast": "Passwort konnte nicht zurueckgesetzt werden"
+		"successToast": "Passwort erfolgreich zurückgesetzt",
+		"errorToast": "Passwort konnte nicht zurückgesetzt werden"
 	},
 	"signIn": {
 		"emailPlaceholder": "name@beispiel.de",
-		"forgotPassword": "Passwort vergessen? Kein Problem - klicken Sie hier, um es sicher zurueckzusetzen.",
+		"forgotPassword": "Passwort vergessen? Kein Problem - klicken Sie hier, um es sicher zurückzusetzen.",
 		"githubButton": "Weiter mit GitHub",
 		"passwordPlaceholder": "Geben Sie Ihr Passwort ein",
 		"signUpLink": "Registrieren",
@@ -65,11 +66,13 @@
 		"or": "Oder",
 		"noAccount": "Noch kein Konto?",
 		"successToast": "Erfolgreich angemeldet",
-		"errorToast": "Ungueltige Anmeldedaten"
+		"errorToast": "Ungültige Anmeldedaten",
+		"showPassword": "Passwort anzeigen",
+		"hidePassword": "Passwort verbergen"
 	},
 	"signUp": {
-		"confirmPasswordLabel": "Passwort bestaetigen",
-		"confirmPasswordPlaceholder": "Geben Sie Ihr Passwort erneut zur Bestaetigung ein",
+		"confirmPasswordLabel": "Passwort bestätigen",
+		"confirmPasswordPlaceholder": "Geben Sie Ihr Passwort erneut zur Bestätigung ein",
 		"emailPlaceholder": "name@beispiel.de",
 		"passwordHint": "Mindestens 8 Zeichen",
 		"passwordPlaceholder": "Erstellen Sie ein sicheres Passwort",
@@ -84,11 +87,11 @@
 		"title": "Konto erstellen",
 		"validation": {
 			"emailRequired": "E-Mail ist erforderlich",
-			"emailInvalid": "Ungueltiges E-Mail-Format",
+			"emailInvalid": "Ungültiges E-Mail-Format",
 			"passwordRequired": "Passwort ist erforderlich",
 			"passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
-			"confirmPasswordRequired": "Bitte bestaetigen Sie Ihr Passwort",
-			"termsRequired": "Sie muessen die Nutzungsbedingungen und die Datenschutzrichtlinie akzeptieren"
+			"confirmPasswordRequired": "Bitte bestätigen Sie Ihr Passwort",
+			"termsRequired": "Sie müssen die Nutzungsbedingungen und die Datenschutzrichtlinie akzeptieren"
 		},
 		"emailLabel": "E-Mail",
 		"passwordLabel": "Passwort",
@@ -101,20 +104,29 @@
 		"and": "und",
 		"successToast": "Konto erfolgreich erstellt",
 		"errorToast": "Konto konnte nicht erstellt werden",
-		"confirmPasswordMismatch": "Passwoerter stimmen nicht ueberein"
+		"confirmPasswordMismatch": "Passwörter stimmen nicht überein",
+		"passwordStrength": {
+			"weak": "Schwaches Passwort",
+			"medium": "Mittleres Passwort",
+			"strong": "Starkes Passwort"
+		}
 	},
 	"common": {
 		"and": "und"
 	},
 	"portal": {
-		"title": "Waehlen Sie Ihren Kontotyp",
-		"subtitle": "Von vollstaendig online bis komplett lokal.\nDrei Wege, Ihren Editor zu verwalten.",
+		"title": "Wählen Sie Ihren Kontotyp",
+		"subtitle": "Von vollständig online bis komplett lokal.\nDrei Wege, Ihren Editor zu verwalten.",
 		"cloud": {
 			"title": "Cloud-Konto",
-			"subtitle": "Sichere Online-Anmeldung mit vollstaendiger Cloud-Synchronisierung.\nIhre Einstellungen, Erweiterungen und Praeferenzen werden auf allen Geraeten gespeichert und synchronisiert.",
+			"subtitle": "Sichere Online-Anmeldung mit vollständiger Cloud-Synchronisierung.\nIhre Einstellungen, Erweiterungen und Präferenzen werden auf allen Geräten gespeichert und synchronisiert.",
 			"signIn": "Sichere Anmeldung",
+			"emailLabel": "E-Mail",
+			"emailPlaceholder": "name@beispiel.de",
+			"passwordLabel": "Passwort",
+			"passwordPlaceholder": "Geben Sie Ihr Passwort ein",
 			"feature": {
-				"sync": "Geraeteuebergreifende Synchronisierung der Einstellungen",
+				"sync": "Geräteübergreifende Synchronisierung der Einstellungen",
 				"backup": "Automatische Cloud-Sicherung von Konfigurationen",
 				"team": "Verwaltung von Team-Arbeitsbereichen",
 				"extension": "Erweiterungs-Marktplatz mit Cloud-Installation",
@@ -131,14 +143,14 @@
 		},
 		"provider": {
 			"title": "Anbieter-Konto",
-			"subtitle": "Authentifizieren Sie sich ueber GitHub, Google oder GitLab.\nIhre OAuth-Identitaet verknuepft sich direkt mit Ihren Editor-Praeferenzen und Teammitgliedschaften.",
+			"subtitle": "Authentifizieren Sie sich über GitHub, Google oder GitLab.\nIhre OAuth-Identität verknüpft sich direkt mit Ihren Editor-Präferenzen und Teammitgliedschaften.",
 			"continueGitHub": "Weiter mit GitHub",
 			"continueGoogle": "Weiter mit Google",
 			"continueGitLab": "Weiter mit GitLab",
-			"oauthNote": "OAuth 2.0 · Verknuepft mit Ihren Praeferenzen",
+			"oauthNote": "OAuth 2.0 · Verknüpft mit Ihren Präferenzen",
 			"feature": {
-				"github": "GitHub-Identitaet verknuepft mit Praeferenzen",
-				"sso": "Einmalanmeldung fuer alle Land-Dienste",
+				"github": "GitHub-Identität verknüpft mit Präferenzen",
+				"sso": "Einmalanmeldung für alle Land-Dienste",
 				"repo": "Repository-bewusste Arbeitsbereichskonfiguration",
 				"team": "Synchronisierung von Organisations- und Teammitgliedschaften",
 				"ci": "CI/CD-Pipeline-Integration mit Build-Triggern"
@@ -154,49 +166,55 @@
 		},
 		"localfirst": {
 			"title": "Lokales Konto",
-			"subtitle": "Wie ein SaaS-Kontrollpanel, das auf Ihrem Rechner laeuft.\nKeine Cloud-Abhaengigkeit.\nDie Website kommuniziert direkt mit dem Air Daemon in Land/Element ueber ein lokales Protokoll.\nKonfigurieren, aktualisieren, kompilieren und bereitstellen Sie Ihren Editor vollstaendig von dieser Konsole aus.",
+			"subtitle": "Wie ein SaaS-Kontrollpanel, das auf Ihrem Rechner läuft.\nKeine Cloud-Abhängigkeit.\nDie Website kommuniziert direkt mit dem Air Daemon in Land/Element über ein lokales Protokoll.\nKonfigurieren, aktualisieren, kompilieren und bereitstellen Sie Ihren Editor vollständig von dieser Konsole aus.",
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Wird gescannt...",
 			"connect": "Mit Air Daemon verbinden",
-			"note": "Keine Cloud-Abhaengigkeit · JWT-Zertifikate · mTLS",
+			"note": "Keine Cloud-Abhängigkeit · JWT-Zertifikate · mTLS",
 			"feature": {
 				"daemon": "Direkte Air Daemon-Verbindung zu Land/Element",
-				"build": "Builds direkt ueber die Website-Konsole starten",
-				"deploy": "Aenderungen direkt in der Anwendung bereitstellen",
-				"configure": "Vollstaendige Editor-Konfigurations- und Einstellungsverwaltung",
-				"parity": "1:1-Paritaet mit VS Code Server-Funktionen und -Einstellungen",
-				"offline": "Keine Cloud-Anmeldung erforderlich.\nVollstaendiger Offline-Betrieb.",
+				"build": "Builds direkt über die Website-Konsole starten",
+				"deploy": "Änderungen direkt in der Anwendung bereitstellen",
+				"configure": "Vollständige Editor-Konfigurations- und Einstellungsverwaltung",
+				"parity": "1:1-Parität mit VS Code Server-Funktionen und -Einstellungen",
+				"offline": "Keine Cloud-Anmeldung erforderlich.\nVollständiger Offline-Betrieb.",
 				"bake": "Das Portal direkt als eingebettetes SaaS in den Editor einbetten"
 			},
 			"capability": {
 				"jwt": "JWT-Entwicklerzertifikate",
 				"mtls": "Gegenseitige TLS-Authentifizierung",
 				"crdt": "CRDT-Zustandssynchronisierung",
-				"team": "Teamverwaltung (vollstaendig lokal)",
+				"team": "Teamverwaltung (vollständig lokal)",
 				"cert": "Zertifizierungsstellenverwaltung",
 				"ws": "WebSocket-Live-Verbindung",
 				"rbac": "Lokale RBAC-Richtlinien",
-				"backup": "Verschluesselte lokale Sicherung"
+				"backup": "Verschlüsselte lokale Sicherung"
 			}
 		},
 		"enterprise": {
 			"title": "Enterprise-Konto",
-			"subtitle": "OIDC / SAML 2.0 Single Sign-On ueber Okta, Azure AD oder jeden kompatiblen Identitaetsanbieter.\nGruppen-zu-Rollen-Zuordnung, Audit-Protokolle und Verwaltung von Organisations-CA-Zertifikaten.",
+			"subtitle": "OIDC / SAML 2.0 Single Sign-On über Okta, Azure AD oder jeden kompatiblen Identitätsanbieter.\nGruppen-zu-Rollen-Zuordnung, Audit-Protokolle und Verwaltung von Organisations-CA-Zertifikaten.",
 			"ariaLabel": "Enterprise SSO",
-			"domainLabel": "Geschaeftliche E-Mail oder Domain",
+			"domainLabel": "Geschäftliche E-Mail oder Domain",
 			"domainPlaceholder": "name@unternehmen.de",
 			"continueSSO": "Weiter mit SSO",
 			"continueOkta": "Weiter mit Okta",
 			"continueAzure": "Weiter mit Azure AD",
 			"continueSAML": "Weiter mit SAML",
+			"oktaDomainLabel": "Okta-Domain",
+			"oktaDomainPlaceholder": "ihre-org.okta.com",
+			"azureTenantLabel": "Azure AD Mandanten-ID",
+			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"samlMetadataLabel": "SAML-Metadaten-URL",
+			"samlMetadataPlaceholder": "https://ihr-idp.com/metadata.xml",
 			"note": "OIDC Discovery · SAML 2.0 · SCIM-Bereitstellung",
 			"feature": {
 				"okta": "Okta SSO-Integration",
-				"azure": "Azure AD / Entra ID-Unterstuetzung",
-				"saml": "SAML 2.0 fuer aeltere Enterprise-IdPs",
+				"azure": "Azure AD / Entra ID-Unterstützung",
+				"saml": "SAML 2.0 für ältere Enterprise-IdPs",
 				"scim": "SCIM-Benutzerbereitstellung",
 				"group": "Gruppen-zu-Rollen-Zuordnung",
-				"audit": "Vollstaendige Audit-Protokollverfolgung"
+				"audit": "Vollständige Audit-Protokollverfolgung"
 			},
 			"capability": {
 				"oidc": "OIDC Discovery + PKCE",
@@ -204,12 +222,12 @@
 				"mfa": "Erzwungene MFA-Richtlinien",
 				"session": "Sitzungsverwaltung + Widerruf",
 				"ca": "Organisations-CA-Zertifikate",
-				"compliance": "SOC 2 / DSGVO-Konformitaet"
+				"compliance": "SOC 2 / DSGVO-Konformität"
 			}
 		},
 		"labels": {
 			"included": "Enthalten",
-			"capabilities": "Faehigkeiten",
+			"capabilities": "Fähigkeiten",
 			"protocol": "Protokoll:",
 			"settingsManaged": "Verwaltete Einstellungen",
 			"allTiers": "In allen Stufen enthalten"
@@ -220,6 +238,14 @@
 	"tryAgain": "Erneut versuchen",
 	"dashboard": "Zum Dashboard",
 	"logout": "Abmelden",
-	"emailNotVerified": "E-Mail nicht verifiziert.\nPruefen Sie Ihren Posteingang.",
-	"redirecting": "Weiterleitung zur Anmeldung..."
+	"emailNotVerified": "E-Mail nicht verifiziert.\nPrüfen Sie Ihren Posteingang.",
+	"redirecting": "Weiterleitung zur Anmeldung...",
+	"dashboardPage": {
+		"title": "Dashboard",
+		"welcome": "Willkommen zurück",
+		"downloadsHeading": "Downloads",
+		"signOut": "Abmelden",
+		"loading": "Konto wird geladen\u2026",
+		"error": "Konto konnte nicht geladen werden."
+	}
 }

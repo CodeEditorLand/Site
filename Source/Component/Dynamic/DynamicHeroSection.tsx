@@ -144,7 +144,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start pt-16 pb-8 overflow-hidden lg:min-h-[200dvh] lg:items-center lg:pt-24 lg:pb-0 ${ClassName || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start overflow-hidden pb-8 pt-16 lg:min-h-[200dvh] lg:items-center lg:pb-0 lg:pt-24 ${ClassName || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {

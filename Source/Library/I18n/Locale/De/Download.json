@@ -20,32 +20,32 @@
 		"title": "Land herunterladen"
 	},
 	"previousReleases": {
-		"description": "Laden Sie bei Bedarf aeltere Versionen herunter.",
-		"title": "Fruehere Versionen"
+		"description": "Laden Sie bei Bedarf ältere Versionen herunter.",
+		"title": "Frühere Versionen"
 	},
 	"subtitle": "Verfügbar für macOS, Windows und Linux.\n\nGebaut mit Tauri, angetrieben von Rust.",
 	"systemRequirements": {
 		"minimum": "Mindestanforderungen",
 		"recommended": "Empfohlen",
-		"subtitle": "Stellen Sie sicher, dass Ihr System diese Anforderungen erfuellt, bevor Sie herunterladen.",
-		"supportedOS": "Unterstutzte Betriebssysteme",
+		"subtitle": "Stellen Sie sicher, dass Ihr System diese Anforderungen erfüllt, bevor Sie herunterladen.",
+		"supportedOS": "Unterstützte Betriebssysteme",
 		"title": "Systemanforderungen"
 	},
 	"title": "Land herunterladen",
 	"verification": {
 		"description": "Land-Versionen sind mit PGP signiert.\n\nÜberprüfen Sie Ihren Download, um die Integrität sicherzustellen.",
-		"downloadButton": "PGP-Schluessel herunterladen",
-		"title": "Download ueberpruefen",
-		"verifyButton": "Download ueberpruefen"
+		"downloadButton": "PGP-Schlüssel herunterladen",
+		"title": "Download überprüfen",
+		"verifyButton": "Download überprüfen"
 	},
 	"labels": {
 		"version": "Version:",
-		"size": "Groesse:",
+		"size": "Größe:",
 		"requirements": "Anforderungen:",
 		"loading": "Downloads werden geladen...",
 		"errorTitle": "Downloads konnten nicht geladen werden",
 		"downloadFailed": "Download fehlgeschlagen.\n\nBitte versuchen Sie es erneut.",
-		"downloadFor": "Herunterladen fuer {{platform}}",
+		"downloadFor": "Herunterladen für {{platform}}",
 		"copiedToClipboard": "{{label}} in die Zwischenablage kopiert!",
 		"failedToCopy": "{{label}} konnte nicht kopiert werden",
 		"sha256Checksum": "SHA-256-Prüfsumme",

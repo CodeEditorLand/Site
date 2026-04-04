@@ -2,7 +2,8 @@
 title: "Local-First Protocol"
 section: "Architecture"
 order: 2
-description: "Air Daemon protocol specification: discovery, sync, conflict resolution."
+description:
+    "Air Daemon protocol specification: discovery, sync, conflict resolution."
 ---
 
 # Local-First Protocol
@@ -20,8 +21,8 @@ through external servers.
 
 ## Discovery
 
-Air broadcasts a `_land-air._tcp` mDNS service record on the local network.
-Each record contains:
+Air broadcasts a `_land-air._tcp` mDNS service record on the local network. Each
+record contains:
 
 - **Instance ID** — a UUID generated on first launch.
 - **Port** — the WebSocket listen port (default: 18230).
@@ -44,7 +45,8 @@ No certificate authority or TLS infrastructure is required.
 
 ## Sync Protocol
 
-Once authenticated, peers exchange file state using a content-addressed protocol:
+Once authenticated, peers exchange file state using a content-addressed
+protocol:
 
 1. **Manifest exchange** — each peer sends a manifest listing file paths and
    their BLAKE3 hashes.
@@ -62,8 +64,8 @@ When both peers have modified the same file since the last sync:
 - **Default: last-write-wins** — the file with the more recent modification
   timestamp is accepted. The overwritten version is saved to a
   `.land/conflicts/` directory.
-- **Manual merge** — the user is notified and can open a three-way merge view
-  in the editor to resolve conflicts.
+- **Manual merge** — the user is notified and can open a three-way merge view in
+  the editor to resolve conflicts.
 
 Conflict resolution strategy is configurable per workspace.
 

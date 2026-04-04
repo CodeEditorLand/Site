@@ -12,9 +12,9 @@ a project, install extensions, configure settings, and run a task.
 
 ## Open a Project
 
-Launch Land and use **File > Open Folder** (or press `Cmd+O` on macOS,
-`Ctrl+O` on Windows/Linux) to open your project directory. Land loads the
-workspace and indexes files for search and navigation.
+Launch Land and use **File > Open Folder** (or press `Cmd+O` on macOS, `Ctrl+O`
+on Windows/Linux) to open your project directory. Land loads the workspace and
+indexes files for search and navigation.
 
 If you have an existing `.vscode/` directory with workspace settings, Land reads
 it automatically.
@@ -51,8 +51,8 @@ and mapped automatically.
 
 ## Run a Task
 
-Open the command palette and run **Tasks: Run Task**. Land reads task definitions
-from `.vscode/tasks.json`:
+Open the command palette and run **Tasks: Run Task**. Land reads task
+definitions from `.vscode/tasks.json`:
 
 ```json
 {

@@ -3,6 +3,8 @@ import UserEvent from "@testing-library/user-event";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import DynamicAuthStatus from "../../Component/Dynamic/DynamicAuthStatus";
+
 // ─── Auth0 mock ───
 
 const LogoutMock = vi.fn();
@@ -34,7 +36,13 @@ vi.mock("react-i18next", () => ({
 // ─── UI mocks ───
 
 vi.mock("../../Component/UI/Avatar", () => ({
-	Avatar: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+	Avatar: ({
+		children,
+		className,
+	}: {
+		children: React.ReactNode;
+		className?: string;
+	}) => (
 		<div data-testid="avatar" className={className}>
 			{children}
 		</div>
@@ -42,7 +50,13 @@ vi.mock("../../Component/UI/Avatar", () => ({
 	AvatarImage: ({ src, alt }: { src?: string; alt?: string }) => (
 		<img data-testid="avatar-image" src={src} alt={alt} />
 	),
-	AvatarFallback: ({ children, className }: { children: React.ReactNode; className?: string }) => (
+	AvatarFallback: ({
+		children,
+		className,
+	}: {
+		children: React.ReactNode;
+		className?: string;
+	}) => (
 		<span data-testid="avatar-fallback" className={className}>
 			{children}
 		</span>
@@ -86,7 +100,11 @@ vi.mock("../../Component/UI/DropdownMenu", () => ({
 		variant?: string;
 		[Key: string]: unknown;
 	}) => (
-		<div data-testid="dropdown-item" onClick={onClick} data-variant={variant} {...Rest}>
+		<div
+			data-testid="dropdown-item"
+			onClick={onClick}
+			data-variant={variant}
+			{...Rest}>
 			{children}
 		</div>
 	),
@@ -94,12 +112,14 @@ vi.mock("../../Component/UI/DropdownMenu", () => ({
 }));
 
 vi.mock("../../Component/UI/Skeleton", () => ({
-	Skeleton: ({ className, ...Rest }: { className?: string; [Key: string]: unknown }) => (
-		<div data-testid="skeleton" className={className} {...Rest} />
-	),
+	Skeleton: ({
+		className,
+		...Rest
+	}: {
+		className?: string;
+		[Key: string]: unknown;
+	}) => <div data-testid="skeleton" className={className} {...Rest} />,
 }));
-
-import DynamicAuthStatus from "../../Component/Dynamic/DynamicAuthStatus";
 
 beforeEach(() => {
 	Auth0State.IsLoading = false;

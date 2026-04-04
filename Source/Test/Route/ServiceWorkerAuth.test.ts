@@ -36,7 +36,11 @@ interface AuthState {
 	UserId: string;
 }
 
-const IsApiRequest = (Pathname: string, Origin: string, SelfOrigin: string): boolean => {
+const IsApiRequest = (
+	Pathname: string,
+	Origin: string,
+	SelfOrigin: string,
+): boolean => {
 	if (Origin === SelfOrigin) {
 		return ApiPrefix.some((Prefix) => Pathname.startsWith(Prefix));
 	}
@@ -71,10 +75,7 @@ type AuthGateResult =
 	| { Action: "Redirect"; Target: string; Code: number }
 	| { Action: "Continue" };
 
-const EvaluateAuthGate = (
-	Path: string,
-	IsAuthed: boolean,
-): AuthGateResult => {
+const EvaluateAuthGate = (Path: string, IsAuthed: boolean): AuthGateResult => {
 	if (ProtectedRoute.has(Path) && !IsAuthed) {
 		return {
 			Action: "Redirect",
@@ -304,9 +305,9 @@ describe("API request detection with Bearer token injection", () => {
 	});
 
 	it("detects same-origin /downloads/ paths as API requests", () => {
-		expect(
-			IsApiRequest("/downloads/latest", SelfOrigin, SelfOrigin),
-		).toBe(true);
+		expect(IsApiRequest("/downloads/latest", SelfOrigin, SelfOrigin)).toBe(
+			true,
+		);
 	});
 
 	it("detects same-origin /track path as API request", () => {
@@ -330,9 +331,9 @@ describe("API request detection with Bearer token injection", () => {
 	});
 
 	it("detects same-origin /stats/ paths as API requests", () => {
-		expect(
-			IsApiRequest("/stats/pageviews", SelfOrigin, SelfOrigin),
-		).toBe(true);
+		expect(IsApiRequest("/stats/pageviews", SelfOrigin, SelfOrigin)).toBe(
+			true,
+		);
 	});
 
 	it("detects same-origin /status path as API request", () => {
@@ -354,11 +355,7 @@ describe("API request detection with Bearer token injection", () => {
 
 	it("does not detect non-workers.dev cross-origin as API requests", () => {
 		expect(
-			IsApiRequest(
-				"/some/path",
-				"https://external-api.com",
-				SelfOrigin,
-			),
+			IsApiRequest("/some/path", "https://external-api.com", SelfOrigin),
 		).toBe(false);
 	});
 });

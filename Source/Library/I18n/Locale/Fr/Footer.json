@@ -1,31 +1,39 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "L'editeur de code de nouvelle generation.\nOpen source et gratuit pour toujours."
+		"description": "L'éditeur de code de nouvelle génération.\nOpen source et gratuit pour toujours."
 	},
 	"columns": {
 		"product": {
 			"title": "Produit",
-			"features": "Fonctionnalites",
-			"downloads": "Telecharger",
-			"docs": "Documentation"
+			"features": "Fonctionnalités",
+			"downloads": "Télécharger",
+			"docs": "Documentation",
+			"blog": "Blog"
 		},
 		"company": {
-			"title": "Communaute",
+			"title": "Communauté",
 			"issues": "Issues",
 			"contributing": "Contribuer",
-			"github": "GitHub"
+			"github": "GitHub",
+			"enterprise": "Entreprise"
 		},
 		"legal": {
-			"title": "Mentions legales",
-			"privacy": "Confidentialite",
+			"title": "Mentions légales",
+			"privacy": "Confidentialité",
 			"terms": "Conditions d'utilisation",
 			"license": "Licence"
 		}
 	},
+	"social": {
+		"github": "GitHub",
+		"twitter": "X (Twitter)",
+		"discord": "Discord",
+		"linkedin": "LinkedIn"
+	},
 	"bottomBar": {
-		"copyright": "© {{year}} Code Editor Land.\nTous droits reserves.",
-		"builtBy": "Cree par l'equipe Code Editor Land",
+		"copyright": "© {{year}} Code Editor Land. Tous droits réservés.",
+		"builtBy": "Créé par l'équipe Code Editor Land",
 		"madeWith": "Fait avec"
 	},
 	"funding": {
@@ -33,7 +41,7 @@
 		"ngiFund": "Fonds NGI0 Commons",
 		"nlnetIntro": ", un fonds établi par ",
 		"nlnet": "NLnet",
-		"euSupport": " avec le soutien financier du programme Internet de prochaine génération de la Commission européenne, dans le cadre de la convention de subvention n° 101135429. ",
+		"euSupport": " avec le soutien financier du programme Internet de prochaine génération de la Commission européenne, dans le cadre de la convention de subvention n°\u00a0101135429. ",
 		"projectPage": "Voir la page du projet"
 	}
 }

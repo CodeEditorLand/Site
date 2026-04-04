@@ -99,7 +99,10 @@ const IsEnterpriseUser = (Sub?: string): boolean => {
 	);
 };
 
-const TierColorMap: Record<string, { Border: string; Background: string; Text: string; Dot: string }> = {
+const TierColorMap: Record<
+	string,
+	{ Border: string; Background: string; Text: string; Dot: string }
+> = {
 	Cloud: {
 		Border: "border-blue-200",
 		Background: "bg-blue-50",
@@ -187,8 +190,7 @@ const AccountProfileInner = () => {
 			<div className="mx-auto max-w-2xl space-y-4 px-4 py-16 text-center">
 				<p className="text-muted-foreground">
 					{T("notSignedIn", {
-						defaultValue:
-							"Sign in to manage your account.",
+						defaultValue: "Sign in to manage your account.",
 					})}
 				</p>
 				<button
@@ -378,9 +380,7 @@ const AccountProfileInner = () => {
 						</span>
 					</div>
 					<div className="flex justify-between px-6 py-3 text-sm">
-						<span className="text-muted-foreground">
-							User ID
-						</span>
+						<span className="text-muted-foreground">User ID</span>
 						<code className="text-xs text-muted-foreground">
 							{User.sub || "--"}
 						</code>
@@ -398,8 +398,7 @@ const AccountProfileInner = () => {
 									Organization
 								</span>
 								<span className="font-medium">
-									{OrganizationName ||
-										OrganizationIdentifier}
+									{OrganizationName || OrganizationIdentifier}
 								</span>
 							</div>
 						)}
@@ -422,8 +421,7 @@ const AccountProfileInner = () => {
 						rel="noopener noreferrer"
 						className="StaccatoButton inline-flex w-full items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
 						{T("manageAuth0", {
-							defaultValue:
-								"Manage Account Settings",
+							defaultValue: "Manage Account Settings",
 						})}
 						<span className="InlineSeparator">&#8599;</span>
 					</a>

@@ -51,9 +51,7 @@ describe("ErrorBoundary", () => {
 		);
 
 		const ErrorHeading = screen.getByText("Something went wrong");
-		const ErrorDescription = screen.getByText(
-			"An unexpected error occurred. Please try again.",
-		);
+		const ErrorDescription = screen.getByText("Test error message");
 		const RetryButton = screen.getByRole("button", { name: "Try again" });
 
 		expect(ErrorHeading).toBeInTheDocument();

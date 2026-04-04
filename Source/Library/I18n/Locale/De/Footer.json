@@ -1,20 +1,22 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "Der Code-Editor der naechsten Generation.\nOpen Source und fuer immer kostenlos."
+		"description": "Der Code-Editor der nächsten Generation.\nOpen Source und für immer kostenlos."
 	},
 	"columns": {
 		"product": {
 			"title": "Produkt",
 			"features": "Funktionen",
 			"downloads": "Herunterladen",
-			"docs": "Dokumentation"
+			"docs": "Dokumentation",
+			"blog": "Blog"
 		},
 		"company": {
 			"title": "Gemeinschaft",
 			"issues": "Diskussionen",
 			"contributing": "Mitwirken",
-			"github": "GitHub"
+			"github": "GitHub",
+			"enterprise": "Enterprise"
 		},
 		"legal": {
 			"title": "Rechtliches",
@@ -23,8 +25,14 @@
 			"license": "Lizenz"
 		}
 	},
+	"social": {
+		"github": "GitHub",
+		"twitter": "X (Twitter)",
+		"discord": "Discord",
+		"linkedin": "LinkedIn"
+	},
 	"bottomBar": {
-		"copyright": "© {{year}} Code Editor Land.\nAlle Rechte vorbehalten.",
+		"copyright": "© {{year}} Code Editor Land. Alle Rechte vorbehalten.",
 		"builtBy": "Erstellt vom Code Editor Land Team",
 		"madeWith": "Erstellt mit"
 	},
@@ -33,7 +41,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", einen Fonds der ",
 		"nlnet": "NLnet",
-		"euSupport": " mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr. 101135429. ",
+		"euSupport": " mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr.\u00a0101135429. ",
 		"projectPage": "Projektseite anzeigen"
 	}
 }

@@ -1,21 +1,21 @@
 {
 	"error": {
 		"title": "Verifizierung fehlgeschlagen",
-		"description": "Dieser Verifizierungslink ist ungueltig oder abgelaufen.",
+		"description": "Dieser Verifizierungslink ist ungültig oder abgelaufen.",
 		"instruction": "Bitte fordern Sie eine neue Verifizierungs-E-Mail an oder kontaktieren Sie den Support, wenn das Problem weiterhin besteht.",
 		"resendButton": "Neue Verifizierungs-E-Mail senden",
 		"contactSupport": "Support kontaktieren",
-		"backToSignInButton": "Zurueck zur Anmeldung"
+		"backToSignInButton": "Zurück zur Anmeldung"
 	},
 	"pending": {
-		"description": "Ein Verifizierungslink wurde an Ihre E-Mail-Adresse gesendet.\nBitte pruefen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Konto zu aktivieren.\nDer Link ist 7 Tage gueltig.\nFalls die E-Mail nicht innerhalb weniger Minuten eintrifft, pruefen Sie den Spam- oder Werbeordner.\nAus Sicherheitsgruenden teilen Sie diese E-Mail bitte mit niemandem.",
+		"description": "Ein Verifizierungslink wurde an Ihre E-Mail-Adresse gesendet.\nBitte prüfen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Konto zu aktivieren.\nDer Link ist 7 Tage gültig.\nFalls die E-Mail nicht innerhalb weniger Minuten eintrifft, prüfen Sie den Spam- oder Werbeordner.\nAus Sicherheitsgründen teilen Sie diese E-Mail bitte mit niemandem.",
 		"resendButton": "Verifizierungs-E-Mail erneut senden",
 		"title": "E-Mail-Adresse verifizieren"
 	},
 	"success": {
 		"title": "E-Mail verifiziert!",
 		"description": "Ihre E-Mail wurde erfolgreich verifiziert.",
-		"instruction": "Sie koennen sich jetzt bei Ihrem Konto anmelden und Code Editor Land nutzen.",
+		"instruction": "Sie können sich jetzt bei Ihrem Konto anmelden und Code Editor Land nutzen.",
 		"continue": "Weiter zur Anmeldung",
 		"continueButton": "Weiter zur Startseite"
 	},
@@ -23,19 +23,27 @@
 	"description": "Ein Verifizierungslink wurde gesendet an",
 	"instruction": "Klicken Sie auf den Link in der E-Mail, um Ihr Konto zu verifizieren und Code Editor Land zu nutzen.",
 	"didntReceive": "E-Mail nicht erhalten?",
-	"checkSpam": "Pruefen Sie Ihren Spam-Ordner oder",
+	"checkSpam": "Prüfen Sie Ihren Spam-Ordner oder",
 	"resendLink": "Verifizierungs-E-Mail erneut senden",
 	"resendButton": "Verifizierungs-E-Mail erneut senden",
-	"backToSignIn": "Zurueck zur Anmeldung",
+	"backToSignIn": "Zurück zur Anmeldung",
 	"resending": "Wird gesendet...",
 	"resent": "Verifizierungs-E-Mail gesendet!",
 	"verifying": {
 		"title": "E-Mail wird verifiziert",
-		"description": "Bitte warten Sie, waehrend wir Ihre E-Mail-Adresse verifizieren..."
+		"description": "Bitte warten Sie, während wir Ihre E-Mail-Adresse verifizieren..."
 	},
 	"errorGeneric": "Bei der Verifizierung ist ein Fehler aufgetreten.\nBitte versuchen Sie es erneut.",
 	"resendFailed": "E-Mail konnte nicht erneut gesendet werden.\nBitte versuchen Sie es erneut.",
 	"emailLabel": "E-Mail",
 	"emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein, um die Verifizierung erneut zu senden",
-	"resendSuccess": "Verifizierungs-E-Mail erneut gesendet!"
+	"resendSuccess": "Verifizierungs-E-Mail erneut gesendet!",
+	"resendCooldown": "Erneut senden in {{seconds}}s",
+	"resend": {
+		"success": "Verifizierungs-E-Mail erfolgreich gesendet."
+	},
+	"token": {
+		"invalid": "Dieser Verifizierungslink ist ungültig.",
+		"expired": "Dieser Verifizierungslink ist abgelaufen. Bitte fordern Sie einen neuen an."
+	}
 }

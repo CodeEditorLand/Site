@@ -58,9 +58,10 @@ const ProbeDaemon = (
 				Socket.onmessage = (Event) => {
 					clearTimeout(VersionTimer);
 					try {
-						const Data = JSON.parse(
-							Event.data as string,
-						) as Record<string, unknown>;
+						const Data = JSON.parse(Event.data as string) as Record<
+							string,
+							unknown
+						>;
 						Socket.close();
 						Resolve({
 							Port,
@@ -134,9 +135,7 @@ const LocalFirstScanInner = () => {
 				if (!Endpoint) continue;
 
 				SetScanProgress(
-					Math.round(
-						((Index + 1) / DAEMON_ENDPOINT.length) * 100,
-					),
+					Math.round(((Index + 1) / DAEMON_ENDPOINT.length) * 100),
 				);
 
 				const Result = await ProbeDaemon(
@@ -245,19 +244,15 @@ const LocalFirstScanInner = () => {
 						<div className="mt-3 space-y-2">
 							<p className="text-sm text-green-700">
 								{T("dashboard.localFirst.connectedMessage", {
-									defaultValue:
-										"Connected to Air Daemon",
+									defaultValue: "Connected to Air Daemon",
 								})}
 							</p>
 							<div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
 								<span className="flex items-center gap-1">
 									<span className="font-medium">
-										{T(
-											"dashboard.localFirst.portLabel",
-											{
-												defaultValue: "Port",
-											},
-										)}
+										{T("dashboard.localFirst.portLabel", {
+											defaultValue: "Port",
+										})}
 									</span>
 									<code>{DaemonDetail.Port}</code>
 								</span>
@@ -323,12 +318,9 @@ const LocalFirstScanInner = () => {
 								<a
 									href="/Download"
 									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 transition-all hover:bg-orange-100">
-									{T(
-										"dashboard.localFirst.downloadButton",
-										{
-											defaultValue: "Download Land",
-										},
-									)}
+									{T("dashboard.localFirst.downloadButton", {
+										defaultValue: "Download Land",
+									})}
 									<span className="InlineSeparator">
 										&#8595;
 									</span>
@@ -337,12 +329,9 @@ const LocalFirstScanInner = () => {
 									type="button"
 									onClick={() => window.location.reload()}
 									className="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
-									{T(
-										"dashboard.localFirst.retryButton",
-										{
-											defaultValue: "Retry Scan",
-										},
-									)}
+									{T("dashboard.localFirst.retryButton", {
+										defaultValue: "Retry Scan",
+									})}
 								</button>
 							</div>
 						</div>
