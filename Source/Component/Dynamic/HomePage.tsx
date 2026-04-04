@@ -278,22 +278,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "Native Rust Backend No Electron",
+							defaultValue: "VS Code Extension Compatibility Zero Rewrites",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
-							defaultValue: "Full VS Code Extension Compatibility",
+							defaultValue: "Native Rust Backend No Electron",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "Effect-TS Service Layer End to End",
+							defaultValue: "macOS Windows Linux",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
 							defaultValue: "CC0 Public Domain No Restriction",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
-							defaultValue: "NLnet NGI0 Commons Fund",
+							defaultValue: "gRPC IPC Sub-Millisecond Communication",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
-							defaultValue: "macOS Windows Linux",
+							defaultValue: "Effect-TS Architecture Typed Services",
 						}),
 					],
 					CTA: {
@@ -337,22 +337,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					],
 					Features: [
 						T("home:roadmap.tiers.future.features.1", {
-							defaultValue: "Cross-Platform Native Installer",
+							defaultValue: "Cocoon Extension Compatibility Pass",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Command Palette (Cmd+K)",
+							defaultValue: "Cross-Platform Native Installer Tauri",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "Source Map Generation via Rest",
+							defaultValue: "Command Palette (Cmd+K)",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "Signed Release Distribution",
+							defaultValue: "gRPC Protocol Finalized Vine",
 						}),
 						T("home:roadmap.tiers.future.features.5", {
-							defaultValue: "Settings Sync via Cloud-Optional Portal",
+							defaultValue: "Source Map Generation OXC",
 						}),
 						T("home:roadmap.tiers.future.features.6", {
-							defaultValue: "gRPC IPC Protocol Finalized",
+							defaultValue: "Cloudflare CDN Download Distribution",
 						}),
 					],
 					CTA: {

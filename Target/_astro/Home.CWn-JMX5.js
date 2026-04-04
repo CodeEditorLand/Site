@@ -30,39 +30,33 @@ No more Electron memory bloat.`,5:`The open-source commitment means I can contri
 
 This is the editor I've been waiting for.`,6:`The gRPC-based architecture is a masterclass in system design.
 
-Land is the future of desktop editors.`},subtitle:"Community voices on the future of code editing.",title:"What developers are saying",badge:"Testimonial",attribution:"Community Feedback",attributionNote:"Representative community member"},a={title:"Roadmap & What to Expect",subtitle:`Funded by NLnet NGI0 Commons Fund.
+Land is the future of desktop editors.`},subtitle:"Community voices on the future of code editing.",title:"What developers are saying",badge:"Testimonial",attribution:"Community Feedback",attributionNote:"Representative community member"},r={title:"Roadmap & What to Expect",subtitle:`Funded by NLnet NGI0 Commons Fund.
 
-Built in public, free forever, no roadmap surprises.`,tiers:{current:{name:"Free",description:"Six open-source elements in active development. Each is a standalone repository you can read, run, and contribute to today.",features:{1:"High-Fidelity VS Code Extension Compatibility",2:"Cross-Platform Installer with Silent Auto-Update",3:"gRPC IPC Protocol Finalized and Documented",4:"Settings Sync via Cloud-Optional Portal",5:"Verified CDN Download Distribution",6:"Command Palette (Cmd+K)"},button:"View on GitHub",elements:{mountain:`Mountain ⛰️
+Built in public, free forever, no roadmap surprises.`,tiers:{current:{name:"Free",description:"Six open-source elements building the editor core. Read, run, and contribute to each today.",features:{1:"VS Code Extension Compatibility Zero Rewrites",2:"Native Rust Backend No Electron",3:"macOS Windows Linux",4:"CC0 Public Domain No Restriction",5:"gRPC IPC Sub-Millisecond Communication",6:"Effect-TS Architecture Typed Services"},button:"View on GitHub",elements:{mountain:`Mountain ⛰️
 Native Process Manager
-Replaces Electron Main Process`,cocoon:`Cocoon 🦋
+Replaces Electron Main Process`,cocoon:`Cocoon 🦋
 Extension Host
-VS Code Extensions Run Unchanged`,wind:`Wind 🍃
+VS Code Extensions Run Unchanged`,wind:`Wind 🍃
 Workbench Shell
-Panels, Sidebars, Activity Bar`,sky:`Sky 🌌
+Panels, Sidebars, Activity Bar`,sky:`Sky 🌌
 Astro UI Layer
-Every Panel Is a Component`,air:`Air 🪁
+Every Panel Is a Component`,air:`Air 🪁
 Background Daemon
-Silent Update, Crypto-Signed`,echo:`Echo 📣
+Silent Update Crypto-Signed`,echo:`Echo 📣
 Work-Stealing Scheduler
-Every CPU Core Saturated`}},next:{name:"Coming Next",description:"Extension ecosystem polish and first stable release across all three platforms.",features:{1:"High-fidelity VS Code extension compatibility pass",2:"Cross-platform installer with silent auto-update",3:"gRPC IPC protocol finalized and documented",4:"Settings sync with cloud-optional portal"},button:"Track Progress"},future:{name:"Future",description:"The nine supporting elements complete the platform. Each extends Land with infrastructure that no Electron editor can match.",features:[],button:"Explore Elements",elements:{common:`Common 👨🏻‍🏭
-Shared Foundation
-Abstract Traits, Zero Implementations`,vine:`Vine 🌿
-gRPC Backbone
-Contract-First .proto Definition`,grove:`Grove 🌳
-WASMtime Sandbox
-Capability-Based Isolation`,mist:`Mist 🌫️
-DNS Sandbox
-Local *.editor.land Resolution`,rest:`Rest ⛱️
-TypeScript Compiler
-Rust + OXC, 2-3x Faster`,output:`Output ⚫
-Compilation Pipeline
-Deterministic Bundle, Checksum`,sidecar:`SideCar ⚙️
-Node.js Distributor
-Correct Binary Per Platform`,worker:`Worker 🍩
-Service Worker
-Offline Support, AES-GCM Auth`,maintain:`Maintain 💪🏻
-Build Orchestrator
-Rhai Scripting, TOML/JSON5 Config`}}}},r={title:"Under the Hood",subtitle:`Land replaces VS Code's Electron stack element by element.
+Every CPU Core Saturated`}},next:{name:"Coming Next",description:"Extension ecosystem polish and first stable release across all three platforms.",features:{1:"High-fidelity VS Code extension compatibility pass",2:"Cross-platform installer with silent auto-update",3:"gRPC IPC protocol finalized and documented",4:"Settings sync with cloud-optional portal"},button:"Track Progress"},future:{name:"v1.0",description:"Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",features:["Cocoon Extension Compatibility Pass","Cross-Platform Native Installer Tauri","Command Palette (Cmd+K)","gRPC Protocol Finalized Vine","Source Map Generation OXC","Cloudflare CDN Download Distribution"],button:"Track Progress",elements:{vine:`Vine 🌿
+Protocol In Progress
+Mountain ↔ Grove Channel Completing`,cocoon:`Cocoon 🦋
+Extension Compatibility Pass
+High-Fidelity VS Code API Coverage`,grove:`Grove 🌳
+WASM Sandbox Stabilizing
+Capability-Based Extension Isolation`,rest:`Rest ⛱️
+Source Map Support
+OXC Transformer Integration In Progress`,echo:`Echo 📣
+Scheduler Optimization
+Faster Steal Lower Latency`,air:`Air 🪁
+Signed CDN Delivery
+Cloudflare Workers Distribution`}}}},a={title:"Under the Hood",subtitle:`Land replaces VS Code's Electron stack element by element.
 
 Fifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.`,air:{subtitle:"Background Daemon Silent Update Crypto-Signed",description:`Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.
 
@@ -94,4 +88,4 @@ Typed at the wire, typed at the call site, verified at compile time. Refactor a 
 
 Native OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.`},worker:{subtitle:"Service Worker Offline Support AES-GCM Auth",description:`Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.
 
-The shell stays functional and authenticated even when the network drops.`}},s={features:e,hero:t,nav:n,pricing:o,testimonials:i,roadmap:a,architecture:r};export{r as architecture,s as default,e as features,t as hero,n as nav,o as pricing,a as roadmap,i as testimonials};
+The shell stays functional and authenticated even when the network drops.`}},s={features:e,hero:t,nav:n,pricing:o,testimonials:i,roadmap:r,architecture:a};export{a as architecture,s as default,e as features,t as hero,n as nav,o as pricing,r as roadmap,i as testimonials};

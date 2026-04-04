@@ -232,20 +232,23 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 			const Logo = TermLogo[Segment.Value];
 			return (
 				<span
-					className={`inline-flex items-center align-middle gap-1 rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] leading-normal font-medium ${CategoryStyle[Segment.Category]}`}
+					className={`inline-flex items-center align-middle rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] leading-normal font-medium ${CategoryStyle[Segment.Category]}`}
 					title={`${CategoryLabel[Segment.Category]}: ${Segment.Value}`}
 					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}>
-					{Logo && (
-						<img
-							src={Logo}
-							alt=""
-							width={12}
-							height={12}
-							className="opacity-60"
-							aria-hidden="true"
-						/>
-					)}
 					{Segment.Value}
+					{Logo && (
+						<>
+							{" "}
+							<img
+								src={Logo}
+								alt=""
+								width={12}
+								height={12}
+								className="inline-block align-middle opacity-60"
+								aria-hidden="true"
+							/>
+						</>
+					)}
 				</span>
 			);
 		}

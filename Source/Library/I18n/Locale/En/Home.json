@@ -118,21 +118,21 @@
 				"name": "Free",
 				"description": "Six open-source elements building the editor core. Read, run, and contribute to each today.",
 				"features": {
-					"1": "Native Rust Backend No Electron",
-					"2": "Full VS Code Extension Compatibility",
-					"3": "Effect-TS Service Layer End to End",
+					"1": "VS Code Extension Compatibility Zero Rewrites",
+					"2": "Native Rust Backend No Electron",
+					"3": "macOS Windows Linux",
 					"4": "CC0 Public Domain No Restriction",
-					"5": "NLnet NGI0 Commons Fund",
-					"6": "macOS Windows Linux"
+					"5": "gRPC IPC Sub-Millisecond Communication",
+					"6": "Effect-TS Architecture Typed Services"
 				},
 				"button": "View on GitHub",
 				"elements": {
-					"mountain": "Mountain ⛰️\nNative Process Manager\nReplaces Electron Main Process",
-					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
-					"wind": "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
-					"sky": "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
-					"air": "Air 🪁\nBackground Daemon\nSilent Update Crypto-Signed",
-					"echo": "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated"
+					"mountain": "Mountain ⛰️\nNative Process Manager\nReplaces Electron Main Process",
+					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
+					"wind": "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
+					"sky": "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
+					"air": "Air 🪁\nBackground Daemon\nSilent Update Crypto-Signed",
+					"echo": "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated"
 				}
 			},
 			"next": {
@@ -150,21 +150,21 @@
 				"name": "v1.0",
 				"description": "Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",
 				"features": [
-					"Cross-Platform Native Installer",
+					"Cocoon Extension Compatibility Pass",
+					"Cross-Platform Native Installer Tauri",
 					"Command Palette (Cmd+K)",
-					"Source Map Generation via Rest",
-					"Signed Release Distribution",
-					"Settings Sync via Cloud-Optional Portal",
-					"gRPC IPC Protocol Finalized"
+					"gRPC Protocol Finalized Vine",
+					"Source Map Generation OXC",
+					"Cloudflare CDN Download Distribution"
 				],
 				"button": "Track Progress",
 				"elements": {
-					"vine": "Vine 🌿\nProtocol In Progress\nMountain ↔ Grove Channel Completing",
-					"cocoon": "Cocoon 🦋\nExtension Compatibility Pass\nHigh-Fidelity VS Code API Coverage",
-					"grove": "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-Based Extension Isolation",
-					"rest": "Rest ⛱️\nSource Map Support\nOXC Transformer Integration In Progress",
-					"echo": "Echo 📣\nScheduler Optimization\nFaster Steal Lower Latency",
-					"air": "Air 🪁\nSigned CDN Delivery\nCloudflare Workers Distribution"
+					"vine": "Vine 🌿\nProtocol In Progress\nMountain ↔ Grove Channel Completing",
+					"cocoon": "Cocoon 🦋\nExtension Compatibility Pass\nHigh-Fidelity VS Code API Coverage",
+					"grove": "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-Based Extension Isolation",
+					"rest": "Rest ⛱️\nSource Map Support\nOXC Transformer Integration In Progress",
+					"echo": "Echo 📣\nScheduler Optimization\nFaster Steal Lower Latency",
+					"air": "Air 🪁\nSigned CDN Delivery\nCloudflare Workers Distribution"
 				}
 			}
 		}

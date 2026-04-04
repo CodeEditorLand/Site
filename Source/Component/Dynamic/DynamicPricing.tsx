@@ -5,6 +5,9 @@ import { useTranslation } from "react-i18next";
 import { IconTooltip } from "../UI/IconTooltip.js";
 import { RichText } from "../UI/RichText.js";
 import { DynamicButton } from "./DynamicButton.js";
+
+// RichText is used with Terms={true} throughout so element names, tool names,
+// protocols, and licenses are auto-badged with logos from the term dictionary.
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
@@ -175,16 +178,16 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																style={{
 																	color: AccentColor,
 																}}>
-																{NameLine}
+																<RichText Text={NameLine} Terms={true} />
 															</span>
 															{Sub1 && (
 																<span className="text-xs text-foreground">
-																	{Sub1}
+																	<RichText Text={Sub1} Terms={true} />
 																</span>
 															)}
 															{Sub2 && (
 																<span className="text-xs text-muted-foreground">
-																	{Sub2}
+																	<RichText Text={Sub2} Terms={true} />
 																</span>
 															)}
 														</li>
@@ -214,7 +217,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 														key={FeatureIndex}
 														className="flex items-start justify-between gap-2">
 														<span className="min-w-0 flex-1 text-sm">
-															{Feature}
+															<RichText Text={Feature} Terms={true} />
 														</span>
 														<IconTooltip
 															Label="Included"
