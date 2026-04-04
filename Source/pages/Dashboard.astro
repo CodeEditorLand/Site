@@ -1,6 +1,7 @@
 ---
 import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
+import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
 import DynamicRichText from "../Component/Dynamic/DynamicRichText";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -12,6 +13,8 @@ const Auth0Domain = (await import("../Function/Configuration/Auth0Domain.js"))
 const Auth0ClientIdentifier = (
 	await import("../Function/Configuration/Auth0ClientIdentifier.js")
 ).default;
+
+const IsLocalMode = Astro.url.searchParams.get("mode") === "local";
 
 const MetaTitle = T("meta.dashboard.title", {
 	defaultValue: "Dashboard | Code Editor Land",
@@ -633,58 +636,93 @@ const MetaDescription = T("meta.dashboard.description", {
 						})
 					}
 				</p>
-				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
-					<div class="flex items-center gap-4">
-						<picture>
-							<img
-								alt="Land"
-								src="/Asset/Logo/Glyph/Land.svg"
-								width="48"
-								height="48"
-							/>
-						</picture>
-						<div class="flex-1">
-							<div class="flex items-center gap-3">
-								<h3 class="font-medium">Air Daemon</h3>
-								<span
-									class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
-									{
-										T("common.dashboard.editor.status", {
-											defaultValue: "Not Connected",
-										})
-									}{"\u2001"}<span
-										class="h-1.5 w-1.5 rounded-none bg-gray-400"
-										aria-hidden="true"></span>
+
+				{
+					IsLocalMode ? (
+						<DynamicLocalFirstScan
+							client:load
+							Domain={Auth0Domain}
+							ClientIdentifier={Auth0ClientIdentifier}
+						/>
+					) : (
+						<div class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+							<div class="flex items-center gap-4">
+								<picture>
+									<img
+										alt="Land"
+										src="/Asset/Logo/Glyph/Land.svg"
+										width="48"
+										height="48"
+									/>
+								</picture>
+								<div class="flex-1">
+									<div class="flex items-center gap-3">
+										<h3 class="font-medium">Air Daemon</h3>
+										<span class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+											{T(
+												"common.dashboard.editor.status",
+												{
+													defaultValue:
+														"Not Connected",
+												},
+											)}
+											{"\u2001"}
+											<span
+												class="h-1.5 w-1.5 rounded-none bg-gray-400"
+												aria-hidden="true"
+											/>
+										</span>
+									</div>
+									<DynamicRichText
+										client:load
+										Text={T(
+											"common.dashboard.editor.description",
+											{
+												defaultValue:
+													"The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+											},
+										)}
+										Terms
+										ClassName="mt-1 text-sm text-muted-foreground"
+									/>
+								</div>
+							</div>
+							<div class="mt-6 flex flex-wrap items-center gap-3">
+								<a
+									href="/Dashboard?mode=local"
+									class="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 transition-all hover:bg-orange-100 focus:outline-2 focus:outline-offset-2 focus:outline-orange-400">
+									{T(
+										"common.dashboard.editor.scanButton",
+										{
+											defaultValue: "Scan for Daemon",
+										},
+									)}
+									<span class="InlineSeparator"
+										>&rarr;</span
+									>
+								</a>
+								<a
+									href="/Portal"
+									class="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
+									{T(
+										"common.dashboard.editor.connect",
+										{
+											defaultValue:
+												"Connect via Portal",
+										},
+									)}
+									<span class="InlineSeparator"
+										>&rarr;</span
+									>
+								</a>
+								<span class="text-xs text-muted-foreground">
+									mTLS &middot; CRDTs &middot; WebSocket
+									&middot; Zero cloud dependency
 								</span>
 							</div>
-							<DynamicRichText
-								client:load
-								Text={T("common.dashboard.editor.description", {
-									defaultValue:
-										"The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
-								})}
-								Terms
-								ClassName="mt-1 text-sm text-muted-foreground"
-							/>
 						</div>
-					</div>
-					<div class="mt-6 flex flex-wrap items-center gap-3">
-						<a
-							href="/Portal"
-							class="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 transition-all hover:bg-orange-100 focus:outline-2 focus:outline-offset-2 focus:outline-orange-400">
-							{
-								T("common.dashboard.editor.connect", {
-									defaultValue: "Connect via Portal",
-								})
-							}<span class="InlineSeparator">→</span>
-						</a>
-						<span class="text-xs text-muted-foreground">
-							mTLS &middot; CRDTs &middot; WebSocket &middot; Zero
-							cloud dependency
-						</span>
-					</div>
-				</div>
+					)
+				}
 			</section>
 
 			<!-- Partners & Attribution -->
@@ -835,7 +873,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					</div>
 					<div class="p-5">
 						<a
-							href="/Account/SignIn"
+							href="/Account"
 							class="StaccatoButton h- inline-flex items-center justify-center border border-[var(--Border)] bg-white px-4 text-sm font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 							{
 								T(

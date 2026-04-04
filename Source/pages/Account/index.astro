@@ -1,0 +1,85 @@
+---
+import DynamicAccountProfile from "../../Component/Dynamic/DynamicAccountProfile";
+import DynamicAuthHeader from "../../Component/Dynamic/DynamicAuthHeader";
+import Base from "../../Layout/Base.astro";
+import { GetI18n } from "../../Library/I18n/Server";
+
+const T = GetI18n();
+
+const Auth0Domain = (
+	await import("../../Function/Configuration/Auth0Domain.js")
+).default;
+const Auth0ClientIdentifier = (
+	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
+).default;
+
+const MetaTitle = T("meta.account.title", {
+	defaultValue: "Account | Code Editor Land",
+});
+
+const MetaDescription = T("meta.account.description", {
+	defaultValue: "Manage your Code Editor Land account and profile.",
+});
+---
+
+<Base
+	Title={MetaTitle}
+	Description={MetaDescription}
+	Url="https://editor.land/Account"
+	lang="en">
+	<DynamicAuthHeader
+		client:load
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
+	/>
+
+	<main id="main-content">
+		<div class="container mx-auto max-w-5xl px-4">
+			<!-- Breadcrumbs -->
+			<nav aria-label="Breadcrumb" class="pt-6">
+				<ol
+					class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+					<li>
+						<a
+							href="/"
+							class="transition-colors hover:text-foreground"
+							>{
+								T("common.breadcrumb.home", {
+									defaultValue: "Home",
+								})
+							}</a
+						>
+					</li>
+					<li class="mx-2">/</li>
+					<li>
+						<a
+							href="/Dashboard"
+							class="transition-colors hover:text-foreground"
+							>{
+								T("common.breadcrumb.dashboard", {
+									defaultValue: "Dashboard",
+								})
+							}</a
+						>
+					</li>
+					<li class="mx-2">/</li>
+					<li>
+						<span class="font-medium text-foreground"
+							>{
+								T("common.breadcrumb.account", {
+									defaultValue: "Account",
+								})
+							}</span
+						>
+					</li>
+				</ol>
+			</nav>
+		</div>
+
+		<DynamicAccountProfile
+			client:load
+			Domain={Auth0Domain}
+			ClientIdentifier={Auth0ClientIdentifier}
+		/>
+	</main>
+</Base>
