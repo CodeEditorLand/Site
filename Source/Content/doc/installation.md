@@ -2,7 +2,8 @@
 title: "Installation"
 section: "Start"
 order: 2
-description: "Download and install Code Editor Land on macOS, Windows, and Linux."
+description:
+    "Download and install Code Editor Land on macOS, Windows, and Linux."
 ---
 
 # Installation
@@ -12,10 +13,10 @@ also install via package managers or build from source.
 
 ## System Requirements
 
-| Platform | Minimum Version       | Architecture       |
-| -------- | --------------------- | ------------------ |
-| macOS    | 13.0 (Ventura)        | aarch64, x86_64    |
-| Windows  | 11 (22H2)             | x86_64             |
+| Platform | Minimum Version                 | Architecture    |
+| -------- | ------------------------------- | --------------- |
+| macOS    | 13.0 (Ventura)                  | aarch64, x86_64 |
+| Windows  | 11 (22H2)                       | x86_64          |
 | Linux    | Ubuntu 22.04 / Fedora 38 / Arch | x86_64, aarch64 |
 
 All platforms require at least 4 GB of RAM and 500 MB of disk space. Linux
@@ -51,8 +52,8 @@ winget install CodeEditorLand.Land
 
 ## Build from Source
 
-If you prefer to compile from source, ensure you have Rust 1.95.0+, Node.js
-20+, and pnpm 9+ installed.
+If you prefer to compile from source, ensure you have Rust 1.95.0+, Node.js 20+,
+and pnpm 9+ installed.
 
 ```bash
 git clone --recurse-submodules https://github.com/CodeEditorLand/Land.git

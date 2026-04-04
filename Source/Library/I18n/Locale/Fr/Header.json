@@ -1,8 +1,8 @@
 {
 	"logo": "Land",
 	"nav": {
-		"features": "Fonctionnalites",
-		"download": "Telecharger",
+		"features": "Fonctionnalités",
+		"download": "Télécharger",
 		"docs": "Documentation",
 		"blog": "Blog",
 		"contributing": "Contribuer",
@@ -11,8 +11,18 @@
 	},
 	"actions": {
 		"signIn": "Connexion",
-		"editorPortal": "Portail editeur",
+		"signUp": "Inscription",
+		"editorPortal": "Portail éditeur",
 		"getStarted": "Obtenir Land",
-		"logout": "Deconnexion"
+		"logout": "Déconnexion",
+		"loading": "Chargement\u2026"
+	},
+	"user": {
+		"avatarAlt": "Menu utilisateur",
+		"menu": {
+			"dashboard": "Tableau de bord",
+			"account": "Compte",
+			"signOut": "Déconnexion"
+		}
 	}
 }

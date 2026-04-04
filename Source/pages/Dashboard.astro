@@ -691,29 +691,18 @@ const MetaDescription = T("meta.dashboard.description", {
 								<a
 									href="/Dashboard?mode=local"
 									class="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 transition-all hover:bg-orange-100 focus:outline-2 focus:outline-offset-2 focus:outline-orange-400">
-									{T(
-										"common.dashboard.editor.scanButton",
-										{
-											defaultValue: "Scan for Daemon",
-										},
-									)}
-									<span class="InlineSeparator"
-										>&rarr;</span
-									>
+									{T("common.dashboard.editor.scanButton", {
+										defaultValue: "Scan for Daemon",
+									})}
+									<span class="InlineSeparator">&rarr;</span>
 								</a>
 								<a
 									href="/Portal"
 									class="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
-									{T(
-										"common.dashboard.editor.connect",
-										{
-											defaultValue:
-												"Connect via Portal",
-										},
-									)}
-									<span class="InlineSeparator"
-										>&rarr;</span
-									>
+									{T("common.dashboard.editor.connect", {
+										defaultValue: "Connect via Portal",
+									})}
+									<span class="InlineSeparator">&rarr;</span>
 								</a>
 								<span class="text-xs text-muted-foreground">
 									mTLS &middot; CRDTs &middot; WebSocket

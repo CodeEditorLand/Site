@@ -13,13 +13,13 @@ afterEach(() => {
 describe("DynamicCard", () => {
 	it("renders with header title and description", () => {
 		const Sections: CardSection = {
-			header: {
+			Header: {
 				title: "Card Title",
 				description: "Card description text",
 			},
 		};
 
-		render(<DynamicCard sections={Sections} />);
+		render(<DynamicCard Sections={Sections} />);
 
 		const TitleElement = screen.getByText("Card Title");
 		const DescriptionElement = screen.getByText("Card description text");
@@ -30,14 +30,14 @@ describe("DynamicCard", () => {
 
 	it("renders with body content", () => {
 		const Sections: CardSection = {
-			body: {
+			Body: {
 				title: "Body Title",
 				description: "Body description",
 				content: React.createElement("span", null, "Body content here"),
 			},
 		};
 
-		render(<DynamicCard sections={Sections} />);
+		render(<DynamicCard Sections={Sections} />);
 
 		const BodyTitle = screen.getByText("Body Title");
 		const BodyDescription = screen.getByText("Body description");
@@ -50,12 +50,12 @@ describe("DynamicCard", () => {
 
 	it("renders with footer content", () => {
 		const Sections: CardSection = {
-			footer: {
+			Footer: {
 				content: React.createElement("span", null, "Footer content"),
 			},
 		};
 
-		render(<DynamicCard sections={Sections} />);
+		render(<DynamicCard Sections={Sections} />);
 
 		const FooterContent = screen.getByText("Footer content");
 
@@ -64,19 +64,19 @@ describe("DynamicCard", () => {
 
 	it("renders all sections together", () => {
 		const Sections: CardSection = {
-			header: {
+			Header: {
 				title: "Full Card",
 				description: "Full card description",
 			},
-			body: {
+			Body: {
 				content: React.createElement("p", null, "Main content area"),
 			},
-			footer: {
+			Footer: {
 				content: React.createElement("button", null, "Footer Action"),
 			},
 		};
 
-		render(<DynamicCard sections={Sections} />);
+		render(<DynamicCard Sections={Sections} />);
 
 		expect(screen.getByText("Full Card")).toBeInTheDocument();
 		expect(screen.getByText("Full card description")).toBeInTheDocument();
@@ -87,11 +87,11 @@ describe("DynamicCard", () => {
 	it("handles click events", async () => {
 		const ClickHandler = vi.fn();
 		const Sections: CardSection = {
-			header: { title: "Clickable Card" },
+			Header: { title: "Clickable Card" },
 		};
 		const User = UserEvent.setup();
 
-		render(<DynamicCard sections={Sections} onClick={ClickHandler} />);
+		render(<DynamicCard Sections={Sections} OnClick={ClickHandler} />);
 
 		const CardElement = screen.getByText("Clickable Card").closest("div");
 
@@ -104,11 +104,11 @@ describe("DynamicCard", () => {
 
 	it("applies custom className", () => {
 		const Sections: CardSection = {
-			header: { title: "Styled Card" },
+			Header: { title: "Styled Card" },
 		};
 
 		const { container } = render(
-			<DynamicCard sections={Sections} className="custom-class" />,
+			<DynamicCard Sections={Sections} ClassName="custom-class" />,
 		);
 
 		const CardElement = container.firstElementChild;
@@ -118,11 +118,11 @@ describe("DynamicCard", () => {
 
 	it("sets pointer cursor when onClick is provided", () => {
 		const Sections: CardSection = {
-			header: { title: "Pointer Card" },
+			Header: { title: "Pointer Card" },
 		};
 
 		const { container } = render(
-			<DynamicCard sections={Sections} onClick={() => {}} />,
+			<DynamicCard Sections={Sections} OnClick={() => {}} />,
 		);
 
 		const CardElement = container.firstElementChild as HTMLElement;
@@ -134,9 +134,11 @@ describe("DynamicCard", () => {
 describe("SimpleCard", () => {
 	it("renders with title, description, and children", () => {
 		render(
-			<SimpleCard title="Simple Title" description="Simple description">
-				<p>Child content</p>
-			</SimpleCard>,
+			<SimpleCard
+				Title="Simple Title"
+				Description="Simple description"
+				Children={<p>Child content</p>}
+			/>,
 		);
 
 		const TitleElement = screen.getByText("Simple Title");
@@ -149,11 +151,7 @@ describe("SimpleCard", () => {
 	});
 
 	it("renders children without title or description", () => {
-		render(
-			<SimpleCard>
-				<p>Only children</p>
-			</SimpleCard>,
-		);
+		render(<SimpleCard Children={<p>Only children</p>} />);
 
 		const ChildContent = screen.getByText("Only children");
 
@@ -165,9 +163,11 @@ describe("SimpleCard", () => {
 		const User = UserEvent.setup();
 
 		render(
-			<SimpleCard title="Clickable" onClick={ClickHandler}>
-				<p>Content</p>
-			</SimpleCard>,
+			<SimpleCard
+				Title="Clickable"
+				OnClick={ClickHandler}
+				Children={<p>Content</p>}
+			/>,
 		);
 
 		const CardElement = screen.getByText("Clickable").closest("div");

@@ -1,6 +1,7 @@
 ---
 title: "Why We Chose CC0 1.0 Universal for a Code Editor"
-summary: "Public domain licensing, no CLA, no copyright assignment — maximum freedom."
+summary:
+    "Public domain licensing, no CLA, no copyright assignment — maximum freedom."
 publishedAt: "2026-04-03"
 tags: ["Open Source", "Licensing", "CC0", "Community"]
 author: "CodeEditorLand"
@@ -20,8 +21,8 @@ whatsoever.
 CC0 is not a license in the traditional sense. It is a waiver. The copyright
 holder (CodeEditorLand Foundation, operated by PlayForm, Sofia, Bulgaria)
 irrevocably surrenders all copyright and related rights to the work, to the
-fullest extent permitted by law. Where waiver is not legally possible (as in some
-jurisdictions), CC0 includes a permissive fallback license.
+fullest extent permitted by law. Where waiver is not legally possible (as in
+some jurisdictions), CC0 includes a permissive fallback license.
 
 In practical terms:
 
@@ -49,15 +50,15 @@ ability to restrict others.
 
 Each of these licenses carries conditions that create friction:
 
-| License    | Condition                                         |
-| ---------- | ------------------------------------------------- |
-| MIT        | Must include copyright notice and license text    |
-| Apache 2.0 | Must include notice, state changes, patent grant  |
-| GPL 3.0    | Must distribute source for derivative works       |
+| License    | Condition                                        |
+| ---------- | ------------------------------------------------ |
+| MIT        | Must include copyright notice and license text   |
+| Apache 2.0 | Must include notice, state changes, patent grant |
+| GPL 3.0    | Must distribute source for derivative works      |
 
-These conditions are reasonable and well-intentioned. But for a code editor —
-a tool that developers use to build everything else — we wanted zero friction.
-You should not need a lawyer to decide whether you can embed a snippet from your
+These conditions are reasonable and well-intentioned. But for a code editor — a
+tool that developers use to build everything else — we wanted zero friction. You
+should not need a lawyer to decide whether you can embed a snippet from your
 editor's source into your project.
 
 CC0 eliminates that question entirely.
@@ -72,18 +73,18 @@ development of open internet infrastructure without requiring proprietary
 lock-in.
 
 PlayForm (Sofia, Bulgaria) operates the CodeEditorLand Foundation under this
-grant. The funding model ensures that CC0 licensing is sustainable — contributors
-and maintainers are compensated through public interest funding, not through
-monetizing user data or restricting distribution.
+grant. The funding model ensures that CC0 licensing is sustainable —
+contributors and maintainers are compensated through public interest funding,
+not through monetizing user data or restricting distribution.
 
 ## What This Means for You
 
 If you are an individual developer, CC0 means Land is yours. Fork it, ship it,
 break it apart, rebuild it.
 
-If you are a company, CC0 means there is no license compliance burden. Your legal
-team does not need to audit it. Your procurement process does not need to flag
-it.
+If you are a company, CC0 means there is no license compliance burden. Your
+legal team does not need to audit it. Your procurement process does not need to
+flag it.
 
 If you are a contributor, CC0 means your code reaches the widest possible
 audience without gatekeepers.

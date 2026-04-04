@@ -1,6 +1,8 @@
 ---
 title: "Tauri 2.0 Desktop Integration in Land"
-summary: "How Land leverages Tauri 2.0 for a native cross-platform editor without Electron."
+summary:
+    "How Land leverages Tauri 2.0 for a native cross-platform editor without
+    Electron."
 publishedAt: "2026-04-02"
 tags: ["Tauri", "Rust", "Desktop", "Architecture"]
 author: "CodeEditorLand"
@@ -12,16 +14,16 @@ readTime: 6
 Code Editor Land replaces Electron with [Tauri 2.0](https://v2.tauri.app), a
 Rust-based framework that uses the platform's native webview instead of shipping
 a bundled Chromium. This architectural decision cuts the binary size by roughly
-an order of magnitude and gives the editor direct access to operating system APIs
-through Rust.
+an order of magnitude and gives the editor direct access to operating system
+APIs through Rust.
 
 ## Why Tauri Over Electron?
 
 VS Code ships an entire Chromium browser alongside Node.js. Every running window
-carries hundreds of megabytes of memory overhead before a single extension loads.
-Tauri sidesteps this by rendering the UI through macOS WebKit, Windows WebView2,
-or Linux WebKitGTK — the same rendering engines the OS already maintains and
-patches.
+carries hundreds of megabytes of memory overhead before a single extension
+loads. Tauri sidesteps this by rendering the UI through macOS WebKit, Windows
+WebView2, or Linux WebKitGTK — the same rendering engines the OS already
+maintains and patches.
 
 The result is a smaller download, faster startup, and tighter OS integration.
 Land can call into native file-system watchers, Keychain, and system
@@ -29,10 +31,10 @@ notifications without a JavaScript bridge layer.
 
 ## Rust Backend: The Mountain Element
 
-The Tauri Rust backend lives in the **Mountain** element. Mountain manages window
-lifecycle, file-system operations, process spawning, and native menus. Because it
-is ordinary Rust, it benefits from Cargo's package ecosystem and `unsafe`-free
-memory safety.
+The Tauri Rust backend lives in the **Mountain** element. Mountain manages
+window lifecycle, file-system operations, process spawning, and native menus.
+Because it is ordinary Rust, it benefits from Cargo's package ecosystem and
+`unsafe`-free memory safety.
 
 ```rust
 #[tauri::command]
@@ -63,12 +65,12 @@ server code and TypeScript client stubs simultaneously.
 Tauri 2.0 introduces a formal plugin architecture. Land ships several built-in
 plugins:
 
-| Plugin              | Purpose                                    |
-| ------------------- | ------------------------------------------ |
-| `tauri-plugin-fs`   | Sandboxed file-system access               |
-| `tauri-plugin-shell`| Process spawning with allow-list            |
-| `tauri-plugin-store`| Persistent key-value storage for settings   |
-| `tauri-plugin-updater`| Delta updates via the Air daemon          |
+| Plugin                 | Purpose                                   |
+| ---------------------- | ----------------------------------------- |
+| `tauri-plugin-fs`      | Sandboxed file-system access              |
+| `tauri-plugin-shell`   | Process spawning with allow-list          |
+| `tauri-plugin-store`   | Persistent key-value storage for settings |
+| `tauri-plugin-updater` | Delta updates via the Air daemon          |
 
 Third-party Tauri plugins written in Rust can be loaded at build time, extending
 the editor with native capabilities that JavaScript alone cannot provide.

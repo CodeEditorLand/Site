@@ -21,8 +21,8 @@ yo code
 ```
 
 Select **New Extension (TypeScript)** and fill in the prompts. The generator
-creates a directory with `package.json`, `tsconfig.json`, and a `src/`
-folder containing an `Extension.ts` entry point.
+creates a directory with `package.json`, `tsconfig.json`, and a `src/` folder
+containing an `Extension.ts` entry point.
 
 ## Project Structure
 

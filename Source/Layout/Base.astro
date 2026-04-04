@@ -21,12 +21,22 @@ const CanonicalPath = PascalCaseCanonical[RawPath] ?? RawPath;
 
 const DefaultURL = `https://editor.land${CanonicalPath === "/" ? "" : CanonicalPath}`;
 
+// Compute dynamic OG image path from the current page slug.
+// Home page maps to /OpenGraph.svg (rest param undefined);
+// all others to /OpenGraph/{Slug}.svg.
+const OpenGraphSlug =
+	CanonicalPath === "/" ? "" : CanonicalPath.replace(/^\//, "");
+
+const DefaultOpenGraphImage = OpenGraphSlug
+	? `/OpenGraph/${OpenGraphSlug}.svg`
+	: "/OpenGraph.svg";
+
 const {
 	Title,
 	Description,
 	Language = "en",
 	Direction = "ltr",
-	Image = "/Favicon/og-image.png",
+	Image = DefaultOpenGraphImage,
 	Url = DefaultURL,
 	Type = "website",
 	NoIndex = false,

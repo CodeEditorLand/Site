@@ -459,9 +459,7 @@ const MaybeRefreshToken = async (): Promise<void> => {
 			__DEV__ && Log("Token refreshed successfully.");
 		} else {
 			__DEV__ &&
-				WarnLog(
-					"Token refresh response invalid, clearing auth state.",
-				);
+				WarnLog("Token refresh response invalid, clearing auth state.");
 			await ClearAuthState();
 		}
 	} catch (RefreshError) {

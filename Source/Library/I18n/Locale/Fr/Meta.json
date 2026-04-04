@@ -1,26 +1,26 @@
 {
 	"account": {
-		"forgotPassword": "Mot de passe oublie - Code Editor Land",
-		"resetPassword": "Reinitialiser le mot de passe - Code Editor Land",
+		"forgotPassword": "Mot de passe oublié - Code Editor Land",
+		"resetPassword": "Réinitialiser le mot de passe - Code Editor Land",
 		"signIn": "Connexion - Code Editor Land",
 		"signUp": "Inscription - Code Editor Land"
 	},
-	"description": "L'editeur de code de nouvelle generation",
+	"description": "L'éditeur de code de nouvelle génération",
 	"downloads": {
-		"description": "Telechargez Code Editor Land pour macOS, Windows et Linux.\nToutes les versions sont signees et verifiees pour votre securite.",
-		"title": "Telecharger Code Editor Land | L'editeur de code de nouvelle generation"
+		"description": "Téléchargez Code Editor Land pour macOS, Windows et Linux.\nToutes les versions sont signées et vérifiées pour votre sécurité.",
+		"title": "Télécharger Code Editor Land | L'éditeur de code de nouvelle génération"
 	},
 	"home": {
-		"description": "Code Editor Land est un editeur de code haute performance et econome en ressources, construit avec Rust et Tauri.\nDecouvrez VS Code",
-		"title": "Code Editor Land | L'editeur de code de nouvelle generation"
+		"description": "Code Editor Land est un éditeur de code haute performance et économe en ressources, construit avec Rust et Tauri.\nDécouvrez VS Code",
+		"title": "Code Editor Land | L'éditeur de code de nouvelle génération"
 	},
 	"legal": {
 		"privacy": {
-			"description": "Politique de confidentialite de Code Editor Land - Decouvrez comment nous collectons, utilisons et protegeons vos donnees personnelles conformement au RGPD et au CCPA.",
-			"title": "Politique de confidentialite | Code Editor Land"
+			"description": "Politique de confidentialité de Code Editor Land - Découvrez comment nous collectons, utilisons et protégeons vos données personnelles conformément au RGPD et au CCPA.",
+			"title": "Politique de confidentialité | Code Editor Land"
 		},
 		"terms": {
-			"description": "Conditions d'utilisation de Code Editor Land - Regissant votre utilisation de notre editeur de code open source et services associes.",
+			"description": "Conditions d'utilisation de Code Editor Land - Régissant votre utilisation de notre éditeur de code open source et services associés.",
 			"title": "Conditions d'utilisation | Code Editor Land"
 		}
 	},
@@ -30,36 +30,36 @@
 	},
 	"title": "Code Editor Land",
 	"verify": {
-		"title": "Verification de l'e-mail - Code Editor Land"
+		"title": "Vérification de l'e-mail - Code Editor Land"
 	},
 	"docs": {
 		"title": "Documentation | Code Editor Land",
-		"description": "Parcourez la documentation de Code Editor Land, les guides d'architecture et les ressources pour developpeurs."
+		"description": "Parcourez la documentation de Code Editor Land, les guides d'architecture et les ressources pour développeurs."
 	},
 	"blog": {
 		"title": "Blog | Code Editor Land",
-		"description": "Actualites, mises a jour et articles de l'equipe Code Editor Land."
+		"description": "Actualités, mises à jour et articles de l'équipe Code Editor Land."
 	},
 	"contributing": {
 		"title": "Contribuer | Code Editor Land",
-		"description": "Un editeur de code open source construit avec Rust et Tauri.\nDecouvrez comment contribuer a Code Editor Land."
+		"description": "Un éditeur de code open source construit avec Rust et Tauri.\nDécouvrez comment contribuer à Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Tableau de bord | Code Editor Land",
-		"description": "Gerez votre compte, vos telechargements et vos parametres.\nVotre tableau de bord Code Editor Land."
+		"description": "Gérez votre compte, vos téléchargements et vos paramètres.\nVotre tableau de bord Code Editor Land."
 	},
 	"contact": {
 		"sales": {
 			"title": "Demandes entreprise | Code Editor Land",
-			"description": "Contactez l'equipe Code Editor Land pour les licences entreprise, le support et les options de deploiement."
+			"description": "Contactez l'équipe Code Editor Land pour les licences entreprise, le support et les options de déploiement."
 		}
 	},
 	"portal": {
-		"title": "Portail de l'editeur | Code Editor Land",
-		"description": "Cloud, fournisseur ou local.\nChoisissez votre methode d'authentification pour Code Editor Land."
+		"title": "Portail de l'éditeur | Code Editor Land",
+		"description": "Cloud, fournisseur ou local.\nChoisissez votre méthode d'authentification pour Code Editor Land."
 	},
 	"oauth": {
-		"success": "Authentification reussie - Code Editor Land",
-		"successDescription": "Vous avez ete authentifie avec succes."
+		"success": "Authentification réussie - Code Editor Land",
+		"successDescription": "Vous avez été authentifié avec succès."
 	}
 }

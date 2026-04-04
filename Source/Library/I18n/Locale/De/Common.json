@@ -10,14 +10,14 @@
 		"home": "Startseite"
 	},
 	"button": {
-		"backToHome": "Zurueck zur Startseite",
-		"backToTop": "Zurueck nach oben",
+		"backToHome": "Zurück zur Startseite",
+		"backToTop": "Zurück nach oben",
 		"download": "Land herunterladen",
-		"learnMore": "Mehr ueber Funktionen erfahren",
+		"learnMore": "Mehr über Funktionen erfahren",
 		"signIn": "Bei Ihrem Konto anmelden",
 		"signUp": "Kostenloses Konto erstellen"
 	},
-	"comingSoon": "Demnachst verfuegbar",
+	"comingSoon": "Demnächst verfügbar",
 	"error": {
 		"404": "404 - Seite nicht gefunden",
 		"pageNotFound": "Die gesuchte Seite existiert nicht oder wurde verschoben.\n\nBitte überprüfen Sie die URL auf Tippfehler oder kehren Sie zur Startseite zurück.\n\nWenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie unser Support-Team und wir helfen Ihnen weiter."
@@ -33,24 +33,24 @@
 	},
 	"docs": {
 		"pageTitle": "Dokumentation",
-		"pageSubtitle": "Alles, was Sie fuer den Einstieg in Code Editor Land benoetigen.",
+		"pageSubtitle": "Alles, was Sie für den Einstieg in Code Editor Land benötigen.",
 		"gettingStarted": {
 			"title": "Erste Schritte",
-			"description": "Lesen Sie die README-Datei fuer Installationsanweisungen, Build-Schritte und einen Ueberblick ueber die Projektarchitektur."
+			"description": "Lesen Sie die README-Datei für Installationsanweisungen, Build-Schritte und einen Überblick über die Projektarchitektur."
 		},
 		"issueTracker": {
 			"title": "Issue-Tracker",
 			"description": "Melden Sie Fehler, fordern Sie Funktionen an oder durchsuchen Sie vorhandene Issues auf GitHub."
 		},
 		"architecture": {
-			"heading": "Architekturueberblick",
-			"intro": "Land ersetzt den Electron-Stack von VS Code durch eine moderne, hochleistungsfaehige Architektur:",
+			"heading": "Architekturüberblick",
+			"intro": "Land ersetzt den Electron-Stack von VS Code durch eine moderne, hochleistungsfähige Architektur:",
 			"mountain": {
 				"description": "Verwaltet Fenster, Dateisystem, Prozesse",
 				"subtitle": "Rust/Tauri-nativer Backend"
 			},
 			"cocoon": {
-				"description": "Fuehrt VS Code-Erweiterungen ueber Effect-TS aus",
+				"description": "Führt VS Code-Erweiterungen über Effect-TS aus",
 				"subtitle": "TypeScript-Erweiterungs-Host"
 			},
 			"wind": {
@@ -58,7 +58,7 @@
 				"subtitle": "TypeScript-UI-Dienste"
 			},
 			"sky": {
-				"description": "Rendert die Editor-Oberflaeche",
+				"description": "Rendert die Editor-Oberfläche",
 				"subtitle": "Astro-UI-Komponenten"
 			},
 			"air": {
@@ -66,8 +66,44 @@
 				"subtitle": "Rust-Hintergrunddaemon"
 			},
 			"echo": {
-				"description": "Hochleistungsfaehiger Work-Stealing-Executor",
+				"description": "Hochleistungsfähiger Work-Stealing-Executor",
 				"subtitle": "Rust-Aufgabenplaner"
+			},
+			"common": {
+				"description": "Abstrakte Kernbibliothek - Trait-Definitionen und DTOs",
+				"subtitle": "Rust-Kernbibliothek"
+			},
+			"vine": {
+				"description": "gRPC-Protokolldefinition und -Implementierung",
+				"subtitle": "Protobuf/Rust IPC"
+			},
+			"rest": {
+				"description": "JS-Bundler für VS Code-Plattformcode",
+				"subtitle": "Rust/OXC-Bundler"
+			},
+			"output": {
+				"description": "Gebündelte JS-Artefakte von Rest",
+				"subtitle": "JavaScript-Laufzeit-Bundle"
+			},
+			"mist": {
+				"description": "WebSocket-Kommunikationsschicht",
+				"subtitle": "Rust WebSocket"
+			},
+			"grove": {
+				"description": "Nativer WASM- und Rhai-Erweiterungs-Host",
+				"subtitle": "Rust/WASM-Erweiterungs-Host"
+			},
+			"worker": {
+				"description": "Web Workers für das Frontend",
+				"subtitle": "TypeScript Web Workers"
+			},
+			"sidecar": {
+				"description": "Vorgefertigte Node.js-Binärdateien",
+				"subtitle": "Plattformübergreifendes Node.js"
+			},
+			"maintain": {
+				"description": "CI/CD und Wartungsskripte",
+				"subtitle": "Build-Werkzeuge"
 			}
 		},
 		"repositories": {
@@ -84,18 +120,18 @@
 	"blog": {
 		"pageTitle": "Blog",
 		"pageSubtitle": "Neuigkeiten, Aktualisierungen und technische Artikel vom Team.",
-		"comingSoonHeading": "Demnachst verfuegbar",
-		"comingSoonText": "Wir bereiten Artikel ueber die Architektur, den Entwicklungsprozess und die Roadmap fuer Code Editor Land vor.\nSchauen Sie bald wieder vorbei fuer Updates.",
+		"comingSoonHeading": "Demnächst verfügbar",
+		"comingSoonText": "Wir bereiten Artikel über die Architektur, den Entwicklungsprozess und die Roadmap für Code Editor Land vor.\nSchauen Sie bald wieder vorbei für Updates.",
 		"joinDiscussions": "Der Community beitreten",
 		"followGitHub": "Auf GitHub folgen",
 		"reportIssue": "Problem melden",
-		"followNote": "Verfolgen Sie den Fortschritt auf GitHub oder schauen Sie hier nach veroeffentlichten Artikeln.",
+		"followNote": "Verfolgen Sie den Fortschritt auf GitHub oder schauen Sie hier nach veröffentlichten Artikeln.",
 		"topic": {
 			"architecture": "Tiefgehender Einblick in die Mountain/Cocoon/Wind/Sky/Air/Echo-Elementarchitektur und wie sie Electron ersetzen",
-			"effectTS": "Wie Effect-TS typsichere UI-Dienste mit strukturierter Nebenlaeufigkeit und Fehlerbehandlung ermoeglicht",
+			"effectTS": "Wie Effect-TS typsichere UI-Dienste mit strukturierter Nebenläufigkeit und Fehlerbehandlung ermöglicht",
 			"grpc": "gRPC-IPC-Protokolldesign: Rust und TypeScript mit nativer Geschwindigkeit verbinden",
-			"extensions": "VS Code-Erweiterungskompatibilitaet: vorhandene Erweiterungen ohne Aenderungen ueber Cocoon ausfuehren",
-			"ngi": "Entwicklung mit dem NGI0 Commons Fund: Open-Source-Nachhaltigkeit und die europaeische Initiative fuer offenes Internet"
+			"extensions": "VS Code-Erweiterungskompatibilität: vorhandene Erweiterungen ohne Änderungen über Cocoon ausführen",
+			"ngi": "Entwicklung mit dem NGI0 Commons Fund: Open-Source-Nachhaltigkeit und die europäische Initiative für offenes Internet"
 		},
 		"upcomingTopicsHeading": "Kommende Themen"
 	},
@@ -104,11 +140,11 @@
 		"pageSubtitle": "Code Editor Land ist Open Source und heißt Beiträge von allen willkommen.\n\nSo können Sie mitmachen.",
 		"guide": {
 			"title": "Beitragsleitfaden",
-			"description": "Lesen Sie die vollstaendige CONTRIBUTING.md auf GitHub fuer detaillierte Anweisungen zur Einrichtung der Entwicklungsumgebung und zum Einreichen von Aenderungen."
+			"description": "Lesen Sie die vollständige CONTRIBUTING.md auf GitHub für detaillierte Anweisungen zur Einrichtung der Entwicklungsumgebung und zum Einreichen von Änderungen."
 		},
 		"goodFirstIssues": {
 			"title": "Gute erste Issues",
-			"description": "Durchsuchen Sie Issues mit dem Label \"good first issue\", um zugaengliche Aufgaben fuer neue Mitwirkende zu finden."
+			"description": "Durchsuchen Sie Issues mit dem Label \"good first issue\", um zugängliche Aufgaben für neue Mitwirkende zu finden."
 		},
 		"howToContribute": {
 			"heading": "So tragen Sie bei"
@@ -119,25 +155,25 @@
 		},
 		"step2": {
 			"title": "Umgebung einrichten",
-			"description": "Installieren Sie Rust (1.95.0+), Node.js und pnpm.\nFuehren Sie dann aus:"
+			"description": "Installieren Sie Rust (1.95.0+), Node.js und pnpm.\nFühren Sie dann aus:"
 		},
 		"step3": {
-			"title": "Aenderungen vornehmen",
-			"description": "Erstellen Sie einen neuen Branch, nehmen Sie Ihre Aenderungen vor und befolgen Sie die im gesamten Projekt verwendete PascalCase-Namenskonvention."
+			"title": "Änderungen vornehmen",
+			"description": "Erstellen Sie einen neuen Branch, nehmen Sie Ihre Änderungen vor und befolgen Sie die im gesamten Projekt verwendete PascalCase-Namenskonvention."
 		},
 		"step4": {
 			"title": "Pull Request einreichen",
 			"description": "Pushen Sie Ihren Branch und eröffnen Sie einen Pull Request gegen den Current-Branch.\n\nBeschreiben Sie, was Sie geändert haben und warum."
 		},
 		"ways": {
-			"heading": "Moeglichkeiten zur Mitwirkung",
+			"heading": "Möglichkeiten zur Mitwirkung",
 			"code": {
 				"title": "Code",
 				"description": "Beheben Sie Fehler, implementieren Sie Funktionen oder verbessern Sie die Leistung in Rust oder TypeScript."
 			},
 			"documentation": {
 				"title": "Dokumentation",
-				"description": "Verbessern Sie Anleitungen, fuegen Sie Beispiele hinzu oder uebersetzen Sie vorhandene Dokumentation in andere Sprachen."
+				"description": "Verbessern Sie Anleitungen, fügen Sie Beispiele hinzu oder übersetzen Sie vorhandene Dokumentation in andere Sprachen."
 			},
 			"testing": {
 				"title": "Testen",
@@ -145,7 +181,7 @@
 			},
 			"design": {
 				"title": "Design",
-				"description": "Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeiten fuer den Editor oder die Website bei."
+				"description": "Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeiten für den Editor oder die Website bei."
 			}
 		},
 		"elements": {
@@ -158,12 +194,12 @@
 			"description": "Code Editor Land wird durch den NGI0 Commons Fund über NLnet finanziert.\n\nDies ermöglicht die Vollzeitentwicklung des Projekts.",
 			"nlnetIntro": "Code Editor Land wurde finanziert durch den",
 			"nlnetFundName": "NGI0 Commons Fund",
-			"nlnetEstablishedBy": ", einen Fonds, gegruendet von",
+			"nlnetEstablishedBy": ", einen Fonds, gegründet von",
 			"nlnetSuffix": "mit finanzieller Unterstützung des Next-Generation-Internet-Programms der Europäischen Kommission, unter Fördervereinbarung Nr. 101135429.\n\nDiese Finanzierung ermöglicht eine nachhaltige Open-Source-Entwicklung des Projekts.",
 			"playformInfo": "Das Projekt wird von PlayForm betrieben, einem Unternehmen mit Sitz in Sofia, Bulgarien.\n\nPlayForm fungiert als Open-Source-Steward für Code Editor Land im Rahmen des NGI0 Commons Fund.",
 			"viewProject": "Besuchen Sie die",
 			"nlnetProjectPage": "NLnet-Projektseite",
-			"viewProjectSuffix": "fuer weitere Details zum Foerderprogramm und den Zielen."
+			"viewProjectSuffix": "für weitere Details zum Förderprogramm und den Zielen."
 		},
 		"conduct": {
 			"heading": "Verhaltenskodex",
@@ -172,25 +208,25 @@
 	},
 	"sales": {
 		"pageTitle": "Enterprise-Anfragen",
-		"pageSubtitle": "Moechten Sie Code Editor Land in Ihrer Organisation einfuehren? Nehmen Sie Kontakt mit unserem Team auf.",
+		"pageSubtitle": "Möchten Sie Code Editor Land in Ihrer Organisation einführen? Nehmen Sie Kontakt mit unserem Team auf.",
 		"form": {
 			"firstName": "Vorname",
 			"lastName": "Nachname",
-			"email": "Geschaeftliche E-Mail",
+			"email": "Geschäftliche E-Mail",
 			"company": "Unternehmen",
-			"teamSize": "Teamgroesse",
-			"teamSizePlaceholder": "Teamgroesse auswaehlen",
-			"message": "Wie koennen wir helfen?",
-			"messagePlaceholder": "Erzaehlen Sie uns von Ihren Anforderungen, Bereitstellungsbeduerfnissen oder Fragen.",
+			"teamSize": "Teamgröße",
+			"teamSizePlaceholder": "Teamgröße auswählen",
+			"message": "Wie können wir helfen?",
+			"messagePlaceholder": "Erzählen Sie uns von Ihren Anforderungen, Bereitstellungsbedürfnissen oder Fragen.",
 			"submitButton": "Anfrage senden"
 		},
 		"features": {
 			"heading": "Enterprise-Funktionen",
-			"prioritySupport": "Prioritaetssupport und SLA",
+			"prioritySupport": "Prioritätssupport und SLA",
 			"customDeployment": "Benutzerdefinierte Bereitstellungsoptionen",
 			"volumeLicensing": "Volumenlizenzierung",
 			"accountManagement": "Dediziertes Account-Management",
-			"securityReview": "Sicherheits- und Compliance-Pruefung",
+			"securityReview": "Sicherheits- und Compliance-Prüfung",
 			"customIntegrations": "Benutzerdefinierte Integrationen"
 		},
 		"contact": {
@@ -198,16 +234,16 @@
 			"directHeading": "Direktkontakt",
 			"description": "Bevorzugen Sie E-Mail? Kontaktieren Sie uns direkt:",
 			"githubNote": "Wir bearbeiten Enterprise-Anfragen über GitHub Issues.\n\nDies stellt sicher, dass Ihre Anfrage verfolgt wird, für das Team sichtbar ist und zeitnah beantwortet wird.",
-			"openIssueHeading": "GitHub Issue eroeffnen",
+			"openIssueHeading": "GitHub Issue eröffnen",
 			"openIssueDescription": "Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Anforderungen Ihrer Organisation.\n\nGeben Sie Firmenname, Teamgröße, Anwendungsfall und Bereitstellungsanforderungen an.\n\nUnser Team überwacht Issues täglich.",
-			"openIssueButton": "GitHub Issue eroeffnen",
+			"openIssueButton": "GitHub Issue eröffnen",
 			"issueIncludeLabel": "Was in Ihrem Issue enthalten sein sollte:",
-			"issueIncludeText": "Firmenname, Teamgroesse, geplanter Anwendungsfall, Bereitstellungsumgebung (Cloud/On-Premise), Zeitrahmen und spezifische Support- oder Compliance-Anforderungen.",
+			"issueIncludeText": "Firmenname, Teamgröße, geplanter Anwendungsfall, Bereitstellungsumgebung (Cloud/On-Premise), Zeitrahmen und spezifische Support- oder Compliance-Anforderungen.",
 			"operatedBy": "Betrieben von PlayForm, Sofia, Bulgarien"
 		},
 		"openSource": {
 			"heading": "Open Source",
-			"description": "Keinen Zugang zum Code selbst.\n\nCode Editor Land ist Open Source unter CC0.\n\nEnterprise-Pläne bieten Support, SLAs und individuelle Entwicklung."
+			"description": "Nicht der Zugang zum Code selbst.\n\nCode Editor Land ist Open Source unter CC0.\n\nEnterprise-Pläne bieten Support, SLAs und individuelle Entwicklung."
 		}
 	},
 	"oauth": {
@@ -217,7 +253,7 @@
 		"errorExpired": "Authentifizierungssitzung abgelaufen.\n\nBitte versuchen Sie es erneut.",
 		"errorProvider": "OAuth-Anbieter hat einen Fehler zurückgegeben.\n\nBitte versuchen Sie es erneut.",
 		"errorNoToken": "Kein Authentifizierungstoken erhalten.",
-		"backToSignIn": "Zurueck zur Anmeldung",
+		"backToSignIn": "Zurück zur Anmeldung",
 		"goToDashboard": "Zum Dashboard",
 		"success": {
 			"title": "Sie sind angemeldet",
@@ -240,12 +276,12 @@
 			"memberSinceLabel": "Mitglied seit",
 			"notSignedIn": "Melden Sie sich an, um Ihre Kontodaten zu sehen.",
 			"signInButton": "Anmelden",
-			"emailNotVerified": "E-Mail nicht verifiziert.\nPruefen Sie Ihren Posteingang.",
+			"emailNotVerified": "E-Mail nicht verifiziert.\nPrüfen Sie Ihren Posteingang.",
 			"enterpriseSSO": "Enterprise SSO aktiv"
 		},
 		"downloads": {
 			"heading": "Downloads",
-			"description": "Laden Sie die neueste Version von Code Editor Land fuer Ihre Plattform herunter.",
+			"description": "Laden Sie die neueste Version von Code Editor Land für Ihre Plattform herunter.",
 			"goButton": "Zu den Downloads"
 		},
 		"quickLinks": {
@@ -259,11 +295,11 @@
 			"heading": "Einstellungen",
 			"sync": {
 				"title": "Einstellungen synchronisieren",
-				"description": "Synchronisieren Sie Ihre Editor-Einstellungen geraeteuebergreifend."
+				"description": "Synchronisieren Sie Ihre Editor-Einstellungen geräteübergreifend."
 			},
 			"extensionSync": {
 				"title": "Erweiterungs-Synchronisierung",
-				"description": "Halten Sie Ihre installierten Erweiterungen geraeteuebergreifend synchron."
+				"description": "Halten Sie Ihre installierten Erweiterungen geräteübergreifend synchron."
 			},
 			"account": {
 				"title": "Konto",
@@ -301,14 +337,14 @@
 		},
 		"portal": {
 			"heading": "Authentifizierungsstufen",
-			"subtitle": "Ihre aktuelle Authentifizierungsmethode und verfuegbare Stufen."
+			"subtitle": "Ihre aktuelle Authentifizierungsmethode und verfügbare Stufen."
 		},
 		"editor": {
 			"heading": "Editor-Verbindung",
 			"subtitle": "Verbinden Sie die Website mit Ihrer laufenden Land-Editor-Instanz.",
 			"status": "Nicht verbunden",
 			"description": "Der Air Daemon verbindet dieses Dashboard mit einem laufenden Land-Editor über WebSocket.\n\nStarten Sie Land, um Echtzeit-Build-Protokolle, Telemetrie und Konfigurationsverwaltung zu aktivieren.",
-			"connect": "Ueber Portal verbinden"
+			"connect": "Über Portal verbinden"
 		},
 		"partners": {
 			"heading": "Partner und Danksagungen"

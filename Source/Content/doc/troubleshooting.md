@@ -2,7 +2,9 @@
 title: "Troubleshooting"
 section: "Support"
 order: 1
-description: "Common issues and their solutions: blank screen, extension failures, high CPU."
+description:
+    "Common issues and their solutions: blank screen, extension failures, high
+    CPU."
 ---
 
 # Troubleshooting
@@ -17,9 +19,9 @@ Land, along with diagnosis steps and fixes.
 **Diagnosis:**
 
 1. Launch Land from the terminal to see error output:
-   ```bash
-   land --verbose
-   ```
+    ```bash
+    land --verbose
+    ```
 2. Check for GPU driver errors in the output.
 
 **Fixes:**
@@ -28,13 +30,14 @@ Land, along with diagnosis steps and fixes.
   may not support required CSS features.
 - **Linux:** Install WebKitGTK 4.1: `sudo apt install libwebkit2gtk-4.1-dev`.
 - **All platforms:** Try disabling GPU acceleration:
-  ```bash
-  land --disable-gpu
-  ```
+    ```bash
+    land --disable-gpu
+    ```
 
 ## Extension Not Loading
 
-**Symptoms:** An extension appears in the extensions panel but does not activate.
+**Symptoms:** An extension appears in the extensions panel but does not
+activate.
 
 **Diagnosis:**
 
@@ -61,17 +64,17 @@ Land, along with diagnosis steps and fixes.
 
 **Fixes:**
 
-- **Language server runaway:** Some language servers index the entire file system.
-  Add large directories to `Files.Exclude`:
-  ```json
-  {
-  	"Files.Exclude": {
-  		"**/node_modules": true,
-  		"**/target": true,
-  		"**/.git": true
-  	}
-  }
-  ```
+- **Language server runaway:** Some language servers index the entire file
+  system. Add large directories to `Files.Exclude`:
+    ```json
+    {
+    	"Files.Exclude": {
+    		"**/node_modules": true,
+    		"**/target": true,
+    		"**/.git": true
+    	}
+    }
+    ```
 - **Extension host:** Disable extensions one by one to identify the offender.
   Then file an issue with the extension author.
 - **File watcher overload:** Reduce the number of watched files by configuring
@@ -79,7 +82,8 @@ Land, along with diagnosis steps and fixes.
 
 ## Permission Errors on macOS
 
-**Symptoms:** Land cannot access files or shows "operation not permitted" errors.
+**Symptoms:** Land cannot access files or shows "operation not permitted"
+errors.
 
 **Diagnosis:** macOS requires explicit user consent for file access outside
 standard directories.
@@ -90,9 +94,9 @@ standard directories.
 2. Grant Land access to the directories it needs.
 3. If Land does not appear in the list, drag the `Land.app` bundle onto the
    Privacy pane, or reset permissions:
-   ```bash
-   tccutil reset All com.codeeditorland.land
-   ```
+    ```bash
+    tccutil reset All com.codeeditorland.land
+    ```
 
 ## Extensions Missing After Update
 

@@ -11,8 +11,18 @@
 	},
 	"actions": {
 		"signIn": "Anmelden",
+		"signUp": "Registrieren",
 		"editorPortal": "Editor-Portal",
 		"getStarted": "Land holen",
-		"logout": "Abmelden"
+		"logout": "Abmelden",
+		"loading": "Laden\u2026"
+	},
+	"user": {
+		"avatarAlt": "Benutzermenü",
+		"menu": {
+			"dashboard": "Dashboard",
+			"account": "Konto",
+			"signOut": "Abmelden"
+		}
 	}
 }

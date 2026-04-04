@@ -3,6 +3,8 @@ import UserEvent from "@testing-library/user-event";
 import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import Auth0AccountGate from "../../Component/Dynamic/Auth0AccountGate";
+
 // ─── Auth0 mock ───
 
 const LoginWithRedirectMock = vi.fn();
@@ -65,8 +67,6 @@ vi.mock("../../Component/UI/Button", () => ({
 	),
 }));
 
-import Auth0AccountGate from "../../Component/Dynamic/Auth0AccountGate";
-
 beforeEach(() => {
 	Auth0State.IsLoading = false;
 	Auth0State.IsAuthenticated = false;
@@ -112,6 +112,10 @@ describe("Auth0AccountGate", () => {
 		const User = UserEvent.setup();
 
 		render(<Auth0AccountGate Route="signin" />);
+
+		// The useEffect also fires loginWithRedirect on mount (not loading, not authenticated).
+		// Clear the mock so we can assert only the retry button click.
+		LoginWithRedirectMock.mockClear();
 
 		const RetryButton = screen.getByText("Try again");
 

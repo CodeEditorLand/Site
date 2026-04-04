@@ -76,9 +76,8 @@ describe("WorkerClient", () => {
 				"https://analytics.workers.dev",
 			);
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const FirstInstance = GetWorkersClient();
 			const SecondInstance = GetWorkersClient();
@@ -95,9 +94,8 @@ describe("WorkerClient", () => {
 			vi.stubEnv("PUBLIC_DOWNLOAD_WORKER_URL", "");
 			vi.stubEnv("PUBLIC_ANALYTICS_WORKER_URL", "");
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			const Result = await Client.Authentication.Login(
@@ -118,9 +116,8 @@ describe("WorkerClient", () => {
 			vi.stubEnv("PUBLIC_DOWNLOAD_WORKER_URL", "");
 			vi.stubEnv("PUBLIC_ANALYTICS_WORKER_URL", "");
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			const Result = await Client.Download.GetBinaries();
@@ -133,10 +130,7 @@ describe("WorkerClient", () => {
 
 	describe("Authentication.Login", () => {
 		it("sends correct POST body with email and password", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -158,9 +152,8 @@ describe("WorkerClient", () => {
 					}),
 			});
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			await Client.Authentication.Login(
@@ -185,10 +178,7 @@ describe("WorkerClient", () => {
 
 	describe("Authentication.Logout", () => {
 		it("clears localStorage and cookie after logout", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -207,9 +197,8 @@ describe("WorkerClient", () => {
 					}),
 			});
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			await Client.Authentication.Logout();
@@ -224,10 +213,7 @@ describe("WorkerClient", () => {
 
 	describe("PostAuthToServiceWorker", () => {
 		it("calls navigator.serviceWorker.controller.postMessage on login success", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -249,9 +235,8 @@ describe("WorkerClient", () => {
 					}),
 			});
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			await Client.Authentication.Login("user@example.com", "pass");
@@ -270,10 +255,7 @@ describe("WorkerClient", () => {
 
 	describe("ClearAuthFromServiceWorker", () => {
 		it("posts Auth:Clear message on logout", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -292,9 +274,8 @@ describe("WorkerClient", () => {
 					}),
 			});
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			await Client.Authentication.Logout();
@@ -309,10 +290,7 @@ describe("WorkerClient", () => {
 
 	describe("retry logic", () => {
 		it("retries on fetch failure up to MAX_RETRIES", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -323,15 +301,13 @@ describe("WorkerClient", () => {
 			);
 
 			// Fail 3 times (MAX_RETRIES = 3), then no more retries
-			FetchMock
-				.mockRejectedValueOnce(new Error("Network error 1"))
+			FetchMock.mockRejectedValueOnce(new Error("Network error 1"))
 				.mockRejectedValueOnce(new Error("Network error 2"))
 				.mockRejectedValueOnce(new Error("Network error 3"))
 				.mockRejectedValueOnce(new Error("Network error 4"));
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 
@@ -353,10 +329,7 @@ describe("WorkerClient", () => {
 		});
 
 		it("succeeds on retry after initial failure", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -381,9 +354,8 @@ describe("WorkerClient", () => {
 					}),
 			});
 
-			const { GetWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const Client = GetWorkersClient();
 			const ResultPromise = Client.Authentication.GetSession();
@@ -401,10 +373,7 @@ describe("WorkerClient", () => {
 
 	describe("ClearWorkersClient", () => {
 		it("allows a new instance to be created after clearing", async () => {
-			vi.stubEnv(
-				"PUBLIC_AUTH_WORKER_URL",
-				"https://auth.workers.dev",
-			);
+			vi.stubEnv("PUBLIC_AUTH_WORKER_URL", "https://auth.workers.dev");
 			vi.stubEnv(
 				"PUBLIC_DOWNLOAD_WORKER_URL",
 				"https://download.workers.dev",
@@ -414,9 +383,8 @@ describe("WorkerClient", () => {
 				"https://analytics.workers.dev",
 			);
 
-			const { GetWorkersClient, ClearWorkersClient } = await import(
-				"../../Library/WorkerClient.js"
-			);
+			const { GetWorkersClient, ClearWorkersClient } =
+				await import("../../Library/WorkerClient.js");
 
 			const FirstInstance = GetWorkersClient();
 			ClearWorkersClient();

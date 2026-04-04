@@ -116,8 +116,7 @@ const PageNamespaceLoader: Record<
 		home: async () => (await import("./Locale/En/Home.json")).default,
 		download: async () =>
 			(await import("./Locale/En/Download.json")).default,
-		account: async () =>
-			(await import("./Locale/En/Account.json")).default,
+		account: async () => (await import("./Locale/En/Account.json")).default,
 		verify: async () => (await import("./Locale/En/Verify.json")).default,
 	},
 	bg: {
@@ -126,8 +125,7 @@ const PageNamespaceLoader: Record<
 		home: async () => (await import("./Locale/Bg/Home.json")).default,
 		download: async () =>
 			(await import("./Locale/Bg/Download.json")).default,
-		account: async () =>
-			(await import("./Locale/Bg/Account.json")).default,
+		account: async () => (await import("./Locale/Bg/Account.json")).default,
 		verify: async () => (await import("./Locale/Bg/Verify.json")).default,
 	},
 	de: {
@@ -136,8 +134,7 @@ const PageNamespaceLoader: Record<
 		home: async () => (await import("./Locale/De/Home.json")).default,
 		download: async () =>
 			(await import("./Locale/De/Download.json")).default,
-		account: async () =>
-			(await import("./Locale/De/Account.json")).default,
+		account: async () => (await import("./Locale/De/Account.json")).default,
 		verify: async () => (await import("./Locale/De/Verify.json")).default,
 	},
 	fr: {
@@ -146,8 +143,7 @@ const PageNamespaceLoader: Record<
 		home: async () => (await import("./Locale/Fr/Home.json")).default,
 		download: async () =>
 			(await import("./Locale/Fr/Download.json")).default,
-		account: async () =>
-			(await import("./Locale/Fr/Account.json")).default,
+		account: async () => (await import("./Locale/Fr/Account.json")).default,
 		verify: async () => (await import("./Locale/Fr/Verify.json")).default,
 	},
 	es: {
@@ -156,8 +152,7 @@ const PageNamespaceLoader: Record<
 		home: async () => (await import("./Locale/Es/Home.json")).default,
 		download: async () =>
 			(await import("./Locale/Es/Download.json")).default,
-		account: async () =>
-			(await import("./Locale/Es/Account.json")).default,
+		account: async () => (await import("./Locale/Es/Account.json")).default,
 		verify: async () => (await import("./Locale/Es/Verify.json")).default,
 	},
 };

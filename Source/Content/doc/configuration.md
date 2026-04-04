@@ -2,7 +2,8 @@
 title: "Configuration"
 section: "Usage"
 order: 1
-description: "Settings, keybindings, themes, and language configuration reference."
+description:
+    "Settings, keybindings, themes, and language configuration reference."
 ---
 
 # Configuration
@@ -103,8 +104,8 @@ produce a warning. Extensions can contribute additional schema entries through
 
 Land respects the following environment variables:
 
-| Variable          | Purpose                                     |
-| ----------------- | ------------------------------------------- |
-| `LAND_USER_DATA`  | Override the user data directory             |
-| `LAND_EXTENSIONS` | Override the extensions directory            |
+| Variable          | Purpose                                              |
+| ----------------- | ---------------------------------------------------- |
+| `LAND_USER_DATA`  | Override the user data directory                     |
+| `LAND_EXTENSIONS` | Override the extensions directory                    |
 | `LAND_LOG_LEVEL`  | Set log verbosity (`error`, `warn`, `info`, `debug`) |

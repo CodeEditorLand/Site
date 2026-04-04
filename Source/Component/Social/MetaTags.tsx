@@ -91,6 +91,12 @@ export default ({
 						: `https://editor.land${image}`
 				}
 			/>
+			<meta property="og:image:width" content="1200" />
+			<meta property="og:image:height" content="630" />
+			<meta
+				property="og:image:type"
+				content={image.endsWith(".svg") ? "image/svg+xml" : "image/png"}
+			/>
 			<meta property="og:site_name" content={siteName} />
 			<meta property="og:locale" content={lang} />
 

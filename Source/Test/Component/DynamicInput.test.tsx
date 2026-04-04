@@ -12,11 +12,11 @@ afterEach(() => {
 describe("DynamicInput", () => {
 	it("renders with label and placeholder", () => {
 		const Content: InputContent = {
-			label: "Email Address",
-			placeholder: "Enter your email",
+			Label: "Email Address",
+			Placeholder: "Enter your email",
 		};
 
-		render(<DynamicInput content={Content} id="email-field" />);
+		render(<DynamicInput Content={Content} Id="email-field" />);
 
 		const LabelElement = screen.getByText("Email Address");
 		const InputElement = screen.getByPlaceholderText("Enter your email");
@@ -27,10 +27,10 @@ describe("DynamicInput", () => {
 
 	it("renders without label when not provided", () => {
 		const Content: InputContent = {
-			placeholder: "Type here",
+			Placeholder: "Type here",
 		};
 
-		render(<DynamicInput content={Content} id="no-label" />);
+		render(<DynamicInput Content={Content} Id="no-label" />);
 
 		const InputElement = screen.getByPlaceholderText("Type here");
 
@@ -40,13 +40,13 @@ describe("DynamicInput", () => {
 	it("calls onChange when value changes", async () => {
 		const ChangeHandler = vi.fn();
 		const Content: InputContent = {
-			label: "Name",
-			placeholder: "Enter name",
-			onChange: ChangeHandler,
+			Label: "Name",
+			Placeholder: "Enter name",
+			OnChange: ChangeHandler,
 		};
 		const User = UserEvent.setup();
 
-		render(<DynamicInput content={Content} id="name-field" />);
+		render(<DynamicInput Content={Content} Id="name-field" />);
 
 		const InputElement = screen.getByPlaceholderText("Enter name");
 
@@ -58,12 +58,12 @@ describe("DynamicInput", () => {
 
 	it("displays validation error message", () => {
 		const Content: InputContent = {
-			label: "Email",
-			placeholder: "Enter email",
-			error: "Invalid email address",
+			Label: "Email",
+			Placeholder: "Enter email",
+			Error: "Invalid email address",
 		};
 
-		render(<DynamicInput content={Content} id="error-field" />);
+		render(<DynamicInput Content={Content} Id="error-field" />);
 
 		const ErrorMessage = screen.getByRole("alert");
 
@@ -73,12 +73,12 @@ describe("DynamicInput", () => {
 
 	it("marks input as aria-invalid when error is present", () => {
 		const Content: InputContent = {
-			label: "Email",
-			placeholder: "Enter email",
-			error: "Required field",
+			Label: "Email",
+			Placeholder: "Enter email",
+			Error: "Required field",
 		};
 
-		render(<DynamicInput content={Content} id="invalid-field" />);
+		render(<DynamicInput Content={Content} Id="invalid-field" />);
 
 		const InputElement = screen.getByPlaceholderText("Enter email");
 
@@ -87,12 +87,12 @@ describe("DynamicInput", () => {
 
 	it("displays helper text when no error", () => {
 		const Content: InputContent = {
-			label: "Password",
-			placeholder: "Enter password",
-			helperText: "Must be at least 8 characters",
+			Label: "Password",
+			Placeholder: "Enter password",
+			HelperText: "Must be at least 8 characters",
 		};
 
-		render(<DynamicInput content={Content} id="helper-field" />);
+		render(<DynamicInput Content={Content} Id="helper-field" />);
 
 		const HelperText = screen.getByText("Must be at least 8 characters");
 
@@ -101,13 +101,13 @@ describe("DynamicInput", () => {
 
 	it("hides helper text when error is present", () => {
 		const Content: InputContent = {
-			label: "Password",
-			placeholder: "Enter password",
-			helperText: "Must be at least 8 characters",
-			error: "Password too short",
+			Label: "Password",
+			Placeholder: "Enter password",
+			HelperText: "Must be at least 8 characters",
+			Error: "Password too short",
 		};
 
-		render(<DynamicInput content={Content} id="error-helper-field" />);
+		render(<DynamicInput Content={Content} Id="error-helper-field" />);
 
 		const ErrorMessage = screen.getByText("Password too short");
 		const HelperText = screen.queryByText("Must be at least 8 characters");
@@ -118,12 +118,12 @@ describe("DynamicInput", () => {
 
 	it("renders in disabled state", () => {
 		const Content: InputContent = {
-			label: "Disabled Input",
-			placeholder: "Cannot type here",
-			disabled: true,
+			Label: "Disabled Input",
+			Placeholder: "Cannot type here",
+			Disabled: true,
 		};
 
-		render(<DynamicInput content={Content} id="disabled-field" />);
+		render(<DynamicInput Content={Content} Id="disabled-field" />);
 
 		const InputElement = screen.getByPlaceholderText("Cannot type here");
 
@@ -132,11 +132,11 @@ describe("DynamicInput", () => {
 
 	it("renders with default value", () => {
 		const Content: InputContent = {
-			label: "Prefilled",
-			defaultValue: "Default Text",
+			Label: "Prefilled",
+			DefaultValue: "Default Text",
 		};
 
-		render(<DynamicInput content={Content} id="default-field" />);
+		render(<DynamicInput Content={Content} Id="default-field" />);
 
 		const InputElement = screen.getByDisplayValue("Default Text");
 
@@ -145,12 +145,12 @@ describe("DynamicInput", () => {
 
 	it("sets required attribute when required is true", () => {
 		const Content: InputContent = {
-			label: "Required Field",
-			placeholder: "This is required",
-			required: true,
+			Label: "Required Field",
+			Placeholder: "This is required",
+			Required: true,
 		};
 
-		render(<DynamicInput content={Content} id="required-field" />);
+		render(<DynamicInput Content={Content} Id="required-field" />);
 
 		const InputElement = screen.getByPlaceholderText("This is required");
 

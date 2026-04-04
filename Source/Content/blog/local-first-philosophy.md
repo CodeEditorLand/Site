@@ -1,6 +1,7 @@
 ---
 title: "Local-First Philosophy: Why Your Code Never Leaves Your Machine"
-summary: "Land's local-first architecture keeps all data on your device by default."
+summary:
+    "Land's local-first architecture keeps all data on your device by default."
 publishedAt: "2026-04-02"
 tags: ["Local-First", "Architecture", "Privacy"]
 author: "CodeEditorLand"
@@ -16,9 +17,9 @@ never opt-out.
 ## The Problem with Cloud-First Editors
 
 VS Code's ecosystem increasingly assumes cloud connectivity. Settings Sync
-requires a GitHub or Microsoft account. Remote Development tunnels your workspace
-through Microsoft servers. Copilot streams code to external APIs. Each feature
-trades convenience for control.
+requires a GitHub or Microsoft account. Remote Development tunnels your
+workspace through Microsoft servers. Copilot streams code to external APIs. Each
+feature trades convenience for control.
 
 For developers working under NDAs, in air-gapped environments, or simply
 exercising their right to privacy, this trade-off is unacceptable. A code editor
@@ -29,9 +30,9 @@ should function at full capacity with zero network access.
 ### Settings and State
 
 Land stores all configuration in a local JSON file hierarchy under
-`~/.land/settings/`. There is no cloud sync enabled by default. Your keybindings,
-themes, and workspace state never leave the machine unless you explicitly
-configure synchronization.
+`~/.land/settings/`. There is no cloud sync enabled by default. Your
+keybindings, themes, and workspace state never leave the machine unless you
+explicitly configure synchronization.
 
 ### Extensions
 
@@ -48,11 +49,12 @@ Foundation. No data is shared with third parties.
 
 ## Air Daemon: Sync When You Want It
 
-The **Air** element provides optional peer-to-peer synchronization through
-the Air Daemon. Air uses WebSocket discovery on the local network to find other
-Land instances. When two machines connect:
+The **Air** element provides optional peer-to-peer synchronization through the
+Air Daemon. Air uses WebSocket discovery on the local network to find other Land
+instances. When two machines connect:
 
-1. **Delta sync** — only changed files transfer, using content-addressed hashing.
+1. **Delta sync** — only changed files transfer, using content-addressed
+   hashing.
 2. **Conflict resolution** — last-write-wins by default, with a merge UI for
    manual resolution.
 3. **Encryption** — all sync traffic is encrypted with NaCl (libsodium)
@@ -76,12 +78,12 @@ point.
 
 ## Comparison
 
-| Concern          | VS Code               | Land                        |
-| ---------------- | ---------------------- | --------------------------- |
-| Settings storage | Cloud Sync (Microsoft) | Local files                 |
-| Telemetry        | Opt-out                | Opt-in                      |
-| Sync protocol    | Proprietary            | Open (Air Daemon)           |
-| Extension source | Microsoft Marketplace  | Self-hostable marketplace   |
-| License          | MIT (source), proprietary (binary) | CC0 1.0 Universal |
+| Concern          | VS Code                            | Land                      |
+| ---------------- | ---------------------------------- | ------------------------- |
+| Settings storage | Cloud Sync (Microsoft)             | Local files               |
+| Telemetry        | Opt-out                            | Opt-in                    |
+| Sync protocol    | Proprietary                        | Open (Air Daemon)         |
+| Extension source | Microsoft Marketplace              | Self-hostable marketplace |
+| License          | MIT (source), proprietary (binary) | CC0 1.0 Universal         |
 
 Local-first is not a feature. It is the foundation everything else is built on.

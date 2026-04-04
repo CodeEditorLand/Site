@@ -11,9 +11,9 @@ afterEach(() => {
 
 describe("DynamicButton", () => {
 	it("renders with text content", () => {
-		const Content: ButtonContent = { text: "Click Me" };
+		const Content: ButtonContent = { Text: "Click Me" };
 
-		render(<DynamicButton content={Content} />);
+		render(<DynamicButton Content={Content} />);
 
 		const ButtonElement = screen.getByRole("button", { name: "Click Me" });
 
@@ -23,10 +23,10 @@ describe("DynamicButton", () => {
 
 	it("calls onAction when clicked", async () => {
 		const ActionHandler = vi.fn();
-		const Content: ButtonContent = { text: "Submit" };
+		const Content: ButtonContent = { Text: "Submit" };
 		const User = UserEvent.setup();
 
-		render(<DynamicButton content={Content} onAction={ActionHandler} />);
+		render(<DynamicButton Content={Content} OnAction={ActionHandler} />);
 
 		const SubmitButton = screen.getByRole("button", { name: "Submit" });
 
@@ -38,12 +38,12 @@ describe("DynamicButton", () => {
 	it("calls content onClick when clicked", async () => {
 		const ClickHandler = vi.fn();
 		const Content: ButtonContent = {
-			text: "Action",
-			onClick: ClickHandler,
+			Text: "Action",
+			OnClick: ClickHandler,
 		};
 		const User = UserEvent.setup();
 
-		render(<DynamicButton content={Content} />);
+		render(<DynamicButton Content={Content} />);
 
 		const ActionButton = screen.getByRole("button", { name: "Action" });
 
@@ -54,11 +54,11 @@ describe("DynamicButton", () => {
 
 	it("renders in disabled state", () => {
 		const Content: ButtonContent = {
-			text: "Disabled",
-			disabled: true,
+			Text: "Disabled",
+			Disabled: true,
 		};
 
-		render(<DynamicButton content={Content} />);
+		render(<DynamicButton Content={Content} />);
 
 		const DisabledButton = screen.getByRole("button", {
 			name: "Disabled",
@@ -70,12 +70,12 @@ describe("DynamicButton", () => {
 	it("does not call onAction when disabled", async () => {
 		const ActionHandler = vi.fn();
 		const Content: ButtonContent = {
-			text: "Disabled",
-			disabled: true,
+			Text: "Disabled",
+			Disabled: true,
 		};
 		const User = UserEvent.setup();
 
-		render(<DynamicButton content={Content} onAction={ActionHandler} />);
+		render(<DynamicButton Content={Content} OnAction={ActionHandler} />);
 
 		const DisabledButton = screen.getByRole("button", {
 			name: "Disabled",
@@ -87,9 +87,9 @@ describe("DynamicButton", () => {
 	});
 
 	it("renders in loading state with spinner", () => {
-		const Content: ButtonContent = { text: "Loading" };
+		const Content: ButtonContent = { Text: "Loading" };
 
-		render(<DynamicButton content={Content} isLoading={true} />);
+		render(<DynamicButton Content={Content} IsLoading={true} />);
 
 		const LoadingButton = screen.getByRole("button", { name: "Loading" });
 
@@ -99,14 +99,14 @@ describe("DynamicButton", () => {
 
 	it("does not call onAction when loading", async () => {
 		const ActionHandler = vi.fn();
-		const Content: ButtonContent = { text: "Loading" };
+		const Content: ButtonContent = { Text: "Loading" };
 		const User = UserEvent.setup();
 
 		render(
 			<DynamicButton
-				content={Content}
-				onAction={ActionHandler}
-				isLoading={true}
+				Content={Content}
+				OnAction={ActionHandler}
+				IsLoading={true}
 			/>,
 		);
 
@@ -119,11 +119,11 @@ describe("DynamicButton", () => {
 
 	it("applies full width class when fullWidth is true", () => {
 		const Content: ButtonContent = {
-			text: "Full Width",
-			fullWidth: true,
+			Text: "Full Width",
+			FullWidth: true,
 		};
 
-		render(<DynamicButton content={Content} />);
+		render(<DynamicButton Content={Content} />);
 
 		const FullWidthButton = screen.getByRole("button", {
 			name: "Full Width",
@@ -134,11 +134,11 @@ describe("DynamicButton", () => {
 
 	it("renders with different variants", () => {
 		const Content: ButtonContent = {
-			text: "Destructive",
-			variant: "destructive",
+			Text: "Destructive",
+			Variant: "destructive",
 		};
 
-		render(<DynamicButton content={Content} />);
+		render(<DynamicButton Content={Content} />);
 
 		const DestructiveButton = screen.getByRole("button", {
 			name: "Destructive",
