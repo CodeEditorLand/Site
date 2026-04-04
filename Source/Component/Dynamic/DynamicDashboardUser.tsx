@@ -183,18 +183,31 @@ const DashboardUserInner = () => {
 	return (
 		<div className="space-y-3 text-sm">
 			{/* Avatar */}
-			{User.picture && (
-				<div className="flex justify-center pb-2">
+			<div className="flex justify-center pb-2">
+				{User.picture ? (
 					<img
 						src={User.picture}
-						alt={User.name || "User avatar"}
-						title={User.name || "User avatar"}
+						alt={`${DisplayName} avatar`}
+						title={DisplayName}
 						width="48"
 						height="48"
+						loading="lazy"
 						className="h-12 w-12 rounded-none border border-[var(--Border)]"
+						onError={(Event) => {
+							(Event.target as HTMLImageElement).style.display =
+								"none";
+							const Fallback = (Event.target as HTMLImageElement)
+								.nextElementSibling as HTMLElement | null;
+							if (Fallback) Fallback.style.display = "flex";
+						}}
 					/>
+				) : null}
+				<div
+					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none border border-[var(--Border)] bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
+					aria-hidden="true">
+					{DisplayName.slice(0, 1).toUpperCase()}
 				</div>
-			)}
+			</div>
 
 			{/* Display Name */}
 			<div className="flex justify-between">
@@ -224,11 +237,7 @@ const DashboardUserInner = () => {
 							{T("dashboard.account.emailVerifiedBadge", {
 								defaultValue: "Verified",
 							})}
-							{"\u2001"}
-							<span
-								className="inline-block h-1 w-1 rounded-none bg-green-500"
-								aria-hidden="true"
-							/>
+							{"\u2001"}✅
 						</span>
 					)}
 				</span>
@@ -301,11 +310,7 @@ const DashboardUserInner = () => {
 					{T("dashboard.account.enterpriseSSO", {
 						defaultValue: "Enterprise SSO active",
 					})}
-					{"\u2001"}
-					<span
-						className="inline-block h-1.5 w-1.5 rounded-none bg-green-500"
-						aria-hidden="true"
-					/>
+					{"\u2001"}🏢
 				</div>
 			)}
 
@@ -315,6 +320,7 @@ const DashboardUserInner = () => {
 					{T("dashboard.account.emailNotVerified", {
 						defaultValue: "Email not verified. Check your inbox.",
 					})}
+					{"\u2001"}⚠️
 				</div>
 			)}
 

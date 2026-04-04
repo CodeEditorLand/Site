@@ -198,6 +198,23 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 						return (
 							<article
 								key={Feature.Id}
+								title={
+									Feature.Id === "performance"
+										? "Rust backend via Tauri 2.0 with gRPC IPC for native speed without Electron overhead."
+										: Feature.Id === "compatibility"
+											? "Cocoon extension host runs VS Code extensions via Effect-TS with high-fidelity API compatibility."
+											: Feature.Id === "architecture"
+												? "Effect-TS provides type-safe services, structured concurrency, and dependency injection in the UI layer."
+												: Feature.Id ===
+													  "cross-platform"
+													? "Tauri 2.0 compiles one codebase to native macOS, Windows, and Linux apps via platform WebViews."
+													: Feature.Id === "tooling"
+														? "Built on Rust, Tauri, Effect-TS, Biome formatter, and the VS Code platform for modern DX."
+														: Feature.Id ===
+															  "opensource"
+															? "CC0 1.0 Universal public domain dedication. Funded by NLnet NGI0 Commons Fund."
+															: undefined
+								}
 								className="FeatureCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none border border-[var(--Border)] bg-white p-6">
 								<div className="flex items-start justify-between">
 									<h3 className="text-xl font-semibold">
