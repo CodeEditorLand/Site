@@ -1,1 +1,0 @@
-import"./Vendor/React.BZMbxhSF.js";import{D as i,D as m}from"./DynamicRichText.BWH__bkK.js";export{i as DynamicRichText,m as default};
