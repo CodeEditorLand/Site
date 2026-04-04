@@ -33,10 +33,10 @@ const Element = [
 		Emoji: "⛰️",
 		Repo: "Mountain",
 		Description: T("common.docs.architecture.mountain.description", {
-			defaultValue: "Replaces Electron's main process. Manages windows, file system, and process lifecycle at native speed.",
+			defaultValue: "Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk.",
 		}),
 		Subtitle: T("common.docs.architecture.mountain.subtitle", {
-			defaultValue: "Native process manager",
+			defaultValue: "Native Rust Backend Replaces Electron Main Process",
 		}),
 	},
 	{
@@ -44,10 +44,10 @@ const Element = [
 		Emoji: "🦋",
 		Repo: "Cocoon",
 		Description: T("common.docs.architecture.cocoon.description", {
-			defaultValue: "Runs VS Code extensions via Effect-TS. Your existing extensions work without any modifications.",
+			defaultValue: "A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks.",
 		}),
 		Subtitle: T("common.docs.architecture.cocoon.subtitle", {
-			defaultValue: "Extension host, zero rewrites",
+			defaultValue: "Extension Host Full VS Code API Effect-TS Shim",
 		}),
 	},
 	{
@@ -55,10 +55,10 @@ const Element = [
 		Emoji: "🌀",
 		Repo: "Wind",
 		Description: T("common.docs.architecture.wind.description", {
-			defaultValue: "Re-implements the VS Code Workbench. Panels, sidebars, and the activity bar rebuilt without Electron.",
+			defaultValue: "A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
 		}),
 		Subtitle: T("common.docs.architecture.wind.subtitle", {
-			defaultValue: "Full workbench shell",
+			defaultValue: "VS Code Workbench Reimplemented Effect-TS Layer Native OS API",
 		}),
 	},
 	{
@@ -66,10 +66,10 @@ const Element = [
 		Emoji: "🌤️",
 		Repo: "Sky",
 		Description: T("common.docs.architecture.sky.description", {
-			defaultValue: "Renders the editor interface with Astro. Themes, layouts, and the visual layer load fast on every platform.",
+			defaultValue: "Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
 		}),
 		Subtitle: T("common.docs.architecture.sky.subtitle", {
-			defaultValue: "Themes and layouts layer",
+			defaultValue: "Visual UI Layer Astro Component Instant Hot-Reload",
 		}),
 	},
 	{
@@ -78,10 +78,10 @@ const Element = [
 		Repo: "Air",
 		Description: T("common.docs.architecture.air.description", {
 			defaultValue:
-				"Keeps Land current without interrupting you. Every update is cryptographically signed before it is applied.",
+				"Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt.",
 		}),
 		Subtitle: T("common.docs.architecture.air.subtitle", {
-			defaultValue: "Silent updates, always signed",
+			defaultValue: "Background Daemon Silent Update Crypto-Signed",
 		}),
 	},
 	{
@@ -90,10 +90,10 @@ const Element = [
 		Repo: "Echo",
 		Description: T("common.docs.architecture.echo.description", {
 			defaultValue:
-				"Saturates every CPU core with a work-stealing executor. Heavy indexing stays in the background; the editor stays fast.",
+				"A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
 		}),
 		Subtitle: T("common.docs.architecture.echo.subtitle", {
-			defaultValue: "Uses every CPU core you have",
+			defaultValue: "Work-Stealing Scheduler Every CPU Core",
 		}),
 	},
 	{
@@ -101,10 +101,10 @@ const Element = [
 		Emoji: "📦",
 		Repo: "Common",
 		Description: T("common.docs.architecture.common.description", {
-			defaultValue: "Shared trait definitions and DTOs used across all elements. The foundation everything else builds on.",
+			defaultValue: "The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
 		}),
 		Subtitle: T("common.docs.architecture.common.subtitle", {
-			defaultValue: "Core shared library",
+			defaultValue: "Shared Foundation Abstract Trait Zero Implementation",
 		}),
 	},
 	{
@@ -112,10 +112,10 @@ const Element = [
 		Emoji: "🌿",
 		Repo: "Vine",
 		Description: T("common.docs.architecture.vine.description", {
-			defaultValue: "gRPC protocol definition bridging Rust and TypeScript at sub-millisecond latency.",
+			defaultValue: "Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
 		}),
 		Subtitle: T("common.docs.architecture.vine.subtitle", {
-			defaultValue: "Native IPC protocol",
+			defaultValue: "gRPC Backbone Contract-First .proto Definition",
 		}),
 	},
 	{
@@ -124,10 +124,10 @@ const Element = [
 		Repo: "Mist",
 		Description: T("common.docs.architecture.mist.description", {
 			defaultValue:
-				"WebSocket communication layer between the daemon and the editor frontend.",
+				"Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
 		}),
 		Subtitle: T("common.docs.architecture.mist.subtitle", {
-			defaultValue: "Live WebSocket bridge",
+			defaultValue: "DNS Sandbox Local *.editor.land Resolution",
 		}),
 	},
 	{
@@ -136,10 +136,10 @@ const Element = [
 		Repo: "Rest",
 		Description: T("common.docs.architecture.rest.description", {
 			defaultValue:
-				"Bundles VS Code platform JavaScript with OXC. Produces the JS runtime Land ships in.",
+				"A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
 		}),
 		Subtitle: T("common.docs.architecture.rest.subtitle", {
-			defaultValue: "Platform JS bundler",
+			defaultValue: "TypeScript Compiler Rust + OXC 2-3x Faster",
 		}),
 	},
 	{
@@ -147,10 +147,10 @@ const Element = [
 		Emoji: "📤",
 		Repo: "Output",
 		Description: T("common.docs.architecture.output.description", {
-			defaultValue: "The compiled JavaScript artifacts from Rest, ready for the editor runtime.",
+			defaultValue: "Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
 		}),
 		Subtitle: T("common.docs.architecture.output.subtitle", {
-			defaultValue: "JavaScript runtime bundle",
+			defaultValue: "Compilation Pipeline Deterministic Bundle Checksum",
 		}),
 	},
 	{
@@ -158,10 +158,10 @@ const Element = [
 		Emoji: "🌳",
 		Repo: "Grove",
 		Description: T("common.docs.architecture.grove.description", {
-			defaultValue: "Hosts native WASM and Rhai extensions alongside the TypeScript extension host.",
+			defaultValue: "Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
 		}),
 		Subtitle: T("common.docs.architecture.grove.subtitle", {
-			defaultValue: "WASM and Rhai extension host",
+			defaultValue: "Secure WASM Sandbox WASMtime Capability-Based Isolation",
 		}),
 	},
 	{
@@ -169,10 +169,10 @@ const Element = [
 		Emoji: "⚙️",
 		Repo: "Worker",
 		Description: T("common.docs.architecture.worker.description", {
-			defaultValue: "Web Workers that offload heavy computation from the main UI thread.",
+			defaultValue: "Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
 		}),
 		Subtitle: T("common.docs.architecture.worker.subtitle", {
-			defaultValue: "Background web workers",
+			defaultValue: "Service Worker Offline Support AES-GCM Auth",
 		}),
 	},
 	{
@@ -181,10 +181,10 @@ const Element = [
 		Repo: "SideCar",
 		Description: T("common.docs.architecture.sidecar.description", {
 			defaultValue:
-				"Pre-built Node.js binaries that ship with Land for cross-platform compatibility.",
+				"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
 		}),
 		Subtitle: T("common.docs.architecture.sidecar.subtitle", {
-			defaultValue: "Bundled Node.js runtime",
+			defaultValue: "Binary Distributor Node.js Runtime Per Platform",
 		}),
 	},
 	{
@@ -193,10 +193,10 @@ const Element = [
 		Repo: "Maintain",
 		Description: T("common.docs.architecture.maintain.description", {
 			defaultValue:
-				"CI/CD pipelines and maintenance scripts that keep every element building and tested.",
+				"Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
 		}),
 		Subtitle: T("common.docs.architecture.maintain.subtitle", {
-			defaultValue: "Build automation",
+			defaultValue: "Build Orchestrator Rhai Scripting TOML/JSON5 Config",
 		}),
 	},
 ];
@@ -405,7 +405,7 @@ const Element = [
 							{
 								T("common.docs.architecture.intro", {
 									defaultValue:
-										"Land replaces VS Code's Electron stack piece by piece. Each element is an independent open-source repository:",
+										"Land replaces VS Code's Electron stack element by element. Each of the fifteen elements is an independent open-source repository:",
 								})
 							}
 						</p>

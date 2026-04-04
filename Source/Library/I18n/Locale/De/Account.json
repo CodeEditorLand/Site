@@ -2,7 +2,7 @@
 	"forgotPassword": {
 		"emailPlaceholder": "name@beispiel.de",
 		"submit": "Link zum Zurücksetzen senden",
-		"subtitle": "Geben Sie Ihre E-Mail-Adresse ein, um einen Link zum Zurücksetzen anzufordern",
+		"subtitle": "Geben Sie Ihre E-Mail ein und wir senden Ihnen einen sicheren Reset-Link.",
 		"success": {
 			"title": "Prüfen Sie Ihre E-Mail",
 			"subtitle": "Ein Link zum Zurücksetzen des Passworts wurde gesendet an",
@@ -39,7 +39,7 @@
 			"description": "Ihr Passwort wurde zurückgesetzt.\nSie können sich jetzt mit Ihrem neuen Passwort anmelden.",
 			"button": "Weiter zur Anmeldung"
 		},
-		"title": "Passwort zurücksetzen",
+		"title": "Neues Passwort festlegen",
 		"passwordHint": "Mindestens 8 Zeichen",
 		"loading": "Wird zurückgesetzt...",
 		"mismatch": "Passwörter stimmen nicht überein",
@@ -52,12 +52,12 @@
 		"errorToast": "Passwort konnte nicht zurückgesetzt werden"
 	},
 	"signIn": {
-		"emailPlaceholder": "name@beispiel.de",
-		"forgotPassword": "Passwort vergessen? Kein Problem - klicken Sie hier, um es sicher zurückzusetzen.",
+		"emailPlaceholder": "name@example.com",
+		"forgotPassword": "Passwort vergessen? Sicher zurücksetzen.",
 		"githubButton": "Weiter mit GitHub",
 		"passwordPlaceholder": "Geben Sie Ihr Passwort ein",
 		"signUpLink": "Registrieren",
-		"subtitle": "Geben Sie Ihre Anmeldedaten ein, um auf Ihr Konto zuzugreifen",
+		"subtitle": "Bei Ihrem Land-Workspace anmelden.",
 		"title": "Anmelden",
 		"emailLabel": "E-Mail",
 		"passwordLabel": "Passwort",
@@ -82,7 +82,7 @@
 			"google": "Weiter mit Google",
 			"gitlab": "Weiter mit GitLab"
 		},
-		"subtitle": "Geben Sie Ihre Daten ein, um ein Konto zu erstellen",
+		"subtitle": "Erstellen Sie Ihr kostenloses Land-Konto.",
 		"termsLabel": "Ich stimme den Nutzungsbedingungen und der Datenschutzrichtlinie zu",
 		"title": "Konto erstellen",
 		"validation": {
@@ -95,7 +95,7 @@
 		},
 		"emailLabel": "E-Mail",
 		"passwordLabel": "Passwort",
-		"submit": "Konto erstellen",
+		"submit": "Kostenloses Konto erstellen",
 		"loading": "Konto wird erstellt...",
 		"or": "Oder",
 		"hasAccount": "Bereits ein Konto?",
@@ -115,90 +115,90 @@
 		"and": "und"
 	},
 	"portal": {
-		"title": "Wählen Sie Ihren Kontotyp",
-		"subtitle": "Von vollständig online bis komplett lokal.\nDrei Wege, Ihren Editor zu verwalten.",
+		"title": "Bei CodeEditorLand anmelden",
+		"subtitle": "Wählen Sie die Stufe, die zu Ihrer Arbeitsweise passt. Cloud-Sync, OAuth-Identität, Local-First-Daemon oder Enterprise-SSO.",
 		"cloud": {
-			"title": "Cloud-Konto",
-			"subtitle": "Sichere Online-Anmeldung mit vollständiger Cloud-Synchronisierung.\nIhre Einstellungen, Erweiterungen und Präferenzen werden auf allen Geräten gespeichert und synchronisiert.",
-			"signIn": "Sichere Anmeldung",
+			"title": "Cloud",
+			"subtitle": "Einmal anmelden und jedes Gerät ist synchron.\n\nWorkspace-Status Ende-zu-Ende verschlüsselt, nie im Transit lesbar.",
+			"signIn": "Sicher anmelden",
 			"emailLabel": "E-Mail",
 			"emailPlaceholder": "name@beispiel.de",
 			"passwordLabel": "Passwort",
 			"passwordPlaceholder": "Geben Sie Ihr Passwort ein",
 			"feature": {
-				"sync": "Geräteübergreifende Synchronisierung der Einstellungen",
-				"backup": "Automatische Cloud-Sicherung von Konfigurationen",
-				"team": "Verwaltung von Team-Arbeitsbereichen",
-				"extension": "Erweiterungs-Marktplatz mit Cloud-Installation",
+				"sync": "Workspace bleibt auf jedem Gerät synchron",
+				"backup": "Verschlüsseltes Cloud-Backup aller Konfigurationen",
+				"team": "Geteilte Team-Workspaces inklusive",
+				"extension": "Erweiterungen mit einem Klick aus dem Marketplace installieren",
 				"remote": "Integration von Remote-Entwicklungsservern"
 			},
 			"capability": {
-				"jwt": "JWT-Sitzungstokens",
-				"okta": "Okta SSO-Integration",
-				"mfa": "Multi-Faktor-Authentifizierung",
-				"rbac": "Rollenbasierte Zugriffskontrolle",
-				"audit": "Audit-Protokollverfolgung",
-				"cert": "Entwicklerzertifikate"
+				"jwt": "JWT RS256 Token 15 Min. Zugriff 30 Tage Aktualisierung",
+				"okta": "Okta SSO-Integration verfügbar",
+				"mfa": "Mehrfaktor-Authentifizierung unterstützt",
+				"rbac": "Rollenbasierte Zugriffskontrolle auf Gateway-Ebene",
+				"audit": "Vollständiges Audit-Log jede Aktion aufgezeichnet",
+				"cert": "Entwicklerzertifikate automatisch bereitgestellt"
 			}
 		},
 		"provider": {
-			"title": "Anbieter-Konto",
-			"subtitle": "Authentifizieren Sie sich über GitHub, Google oder GitLab.\nIhre OAuth-Identität verknüpft sich direkt mit Ihren Editor-Präferenzen und Teammitgliedschaften.",
-			"continueGitHub": "Weiter mit GitHub",
-			"continueGoogle": "Weiter mit Google",
-			"continueGitLab": "Weiter mit GitLab",
-			"oauthNote": "OAuth 2.0 \u2001 Verknüpft mit Ihren Präferenzen",
+			"title": "Provider",
+			"subtitle": "Nutzen Sie die Entwickleridentität, die Sie bereits haben.\n\nWir fragen nur Ihre E-Mail-Adresse ab, niemals Repository-Zugriff oder Org-Daten.",
+			"continueGitHub": "Mit GitHub fortfahren",
+			"continueGoogle": "Mit Google fortfahren",
+			"continueGitLab": "Mit GitLab fortfahren",
+			"oauthNote": "OAuth 2.0 Nur E-Mail-Scope Mit Ihren Einstellungen verknüpft",
 			"feature": {
-				"github": "GitHub-Identität verknüpft mit Präferenzen",
+				"github": "Kein neues Passwort Ihre GitHub-Identität genügt",
 				"sso": "Einmalanmeldung für alle Land-Dienste",
-				"repo": "Repository-bewusste Arbeitsbereichskonfiguration",
-				"team": "Synchronisierung von Organisations- und Teammitgliedschaften",
+				"repo": "Thema und Tastenkürzel folgen Ihrer Provider-Identität",
+				"team": "Organisations- und Teammitgliedschaft automatisch synchronisiert",
 				"ci": "CI/CD-Pipeline-Integration mit Build-Triggern"
 			},
 			"capability": {
-				"oauth": "OAuth 2.0 + PKCE-Ablauf",
-				"scope": "Granulare Berechtigungsbereiche",
-				"token": "Rotation von Aktualisierungstokens",
+				"oauth": "OAuth 2.0 mit PKCE S256 bei jedem Flow",
+				"scope": "Nur E-Mail- und Profil-Scope nichts anderes angefragt",
+				"token": "Refresh-Token-Rotation bei jeder Anmeldung",
 				"webhook": "Webhook-Ereignisabonnements",
-				"org": "Richtlinien auf Organisationsebene",
-				"cert": "Entwicklerzertifikate"
+				"org": "Zugriffsrichtlinien auf Organisationsebene",
+				"cert": "Entwicklerzertifikate automatisch bereitgestellt"
 			}
 		},
 		"localfirst": {
-			"title": "Lokales Konto",
-			"subtitle": "Wie ein SaaS-Kontrollpanel, das auf Ihrem Rechner läuft.\nKeine Cloud-Abhängigkeit.\nDie Website kommuniziert direkt mit dem Air Daemon in Land/Element über ein lokales Protokoll.\nKonfigurieren, aktualisieren, kompilieren und bereitstellen Sie Ihren Editor vollständig von dieser Konsole aus.",
+			"title": "Local-First",
+			"subtitle": "Kein Internet? Kein Problem. Der Air-Daemon läuft vollständig auf Ihrer Maschine.\n\nIhre Code und Anmeldedaten verlassen sie nie.",
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Wird gescannt...",
-			"connect": "Mit Air Daemon verbinden",
-			"note": "Keine Cloud-Abhängigkeit \u2001 JWT-Zertifikate \u2001 mTLS",
+			"connect": "Mit Air-Daemon verbinden",
+			"note": "Kein Cloud-Abhängigkeit JWT-Zertifikate mTLS",
 			"feature": {
-				"daemon": "Direkte Air Daemon-Verbindung zu Land/Element",
-				"build": "Builds direkt über die Website-Konsole starten",
-				"deploy": "Änderungen direkt in der Anwendung bereitstellen",
+				"daemon": "Browser verbindet sich über verschlüsseltes Loopback mit Air-Daemon",
+				"build": "Builds direkt von der Website-Konsole starten",
+				"deploy": "Änderungen direkt im laufenden Editor deployen",
 				"configure": "Vollständige Editor-Konfigurations- und Einstellungsverwaltung",
-				"parity": "1:1-Parität mit VS Code Server-Funktionen und -Einstellungen",
-				"offline": "Keine Cloud-Anmeldung erforderlich.\nVollständiger Offline-Betrieb.",
-				"bake": "Das Portal direkt als eingebettetes SaaS in den Editor einbetten"
+				"parity": "Vollständige VS Code-Funktionsparität nichts fehlt",
+				"offline": "Vollständiger Offline-Betrieb kein Cloud-Login erforderlich",
+				"bake": "Portal direkt als eingebettetes SaaS in den Editor integrieren"
 			},
 			"capability": {
-				"jwt": "JWT-Entwicklerzertifikate",
-				"mtls": "Gegenseitige TLS-Authentifizierung",
-				"crdt": "CRDT-Zustandssynchronisierung",
-				"team": "Teamverwaltung (vollständig lokal)",
-				"cert": "Zertifizierungsstellenverwaltung",
-				"ws": "WebSocket-Live-Verbindung",
-				"rbac": "Lokale RBAC-Richtlinien",
-				"backup": "Verschlüsselte lokale Sicherung"
+				"jwt": "JWT ES384 Zertifikate 5 Min. Ablauf rotiert bei Neuverbindung",
+				"mtls": "mTLS gegenseitige Authentifizierung Daemon und Browser beide verifiziert",
+				"crdt": "CRDT-Zustandssynchronisierung für konfliktfreies Offline-Bearbeiten",
+				"team": "Team-Management vollständig lokal keine Cloud-Abhängigkeit",
+				"cert": "Lokale Zertifizierungsstelle keine externen CA-Aufrufe",
+				"ws": "WebSocket-Live-Verbindung nur über Loopback",
+				"rbac": "Lokale RBAC-Richtlinien auf Daemon-Ebene durchgesetzt",
+				"backup": "Verschlüsseltes lokales Backup aller Workspace-Zustände"
 			}
 		},
 		"enterprise": {
-			"title": "Enterprise-Konto",
-			"subtitle": "OIDC / SAML 2.0 Single Sign-On über Okta, Azure AD oder jeden kompatiblen Identitätsanbieter.\nGruppen-zu-Rollen-Zuordnung, Audit-Protokolle und Verwaltung von Organisations-CA-Zertifikaten.",
+			"title": "Enterprise",
+			"subtitle": "Ihr IT-Team kontrolliert jeden Arbeitsplatz.\n\nOIDC, SAML 2.0 und SCIM bedeuten null manuelle Bereitstellung und vollständige Verzeichnis-Governance.",
 			"ariaLabel": "Enterprise SSO",
 			"domainLabel": "Geschäftliche E-Mail oder Domain",
 			"domainPlaceholder": "name@unternehmen.de",
-			"continueSSO": "Weiter mit SSO",
-			"continueOkta": "Weiter mit Okta",
+			"continueSSO": "Mit SSO fortfahren",
+			"continueOkta": "Mit Okta fortfahren",
 			"continueAzure": "Weiter mit Azure AD",
 			"continueSAML": "Weiter mit SAML",
 			"oktaDomainLabel": "Okta-Domain",
@@ -207,22 +207,22 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML-Metadaten-URL",
 			"samlMetadataPlaceholder": "https://ihr-idp.com/metadata.xml",
-			"note": "OIDC Discovery \u2001 SAML 2.0 \u2001 SCIM-Bereitstellung",
+			"note": "OpenID Connect Discovery SAML 2.0 Assertion SCIM 2.0 Benutzerbereitstellung",
 			"feature": {
-				"okta": "Okta SSO-Integration",
-				"azure": "Azure AD / Entra ID-Unterstützung",
-				"saml": "SAML 2.0 für ältere Enterprise-IdPs",
-				"scim": "SCIM-Benutzerbereitstellung",
-				"group": "Gruppen-zu-Rollen-Zuordnung",
-				"audit": "Vollständige Audit-Protokollverfolgung"
+				"okta": "Okta SSO eine Anmeldung schaltet alles frei",
+				"azure": "Azure AD / Entra ID Ihre Microsoft-Identität funktioniert",
+				"saml": "SAML 2.0 für jeden Legacy-Enterprise-IdP",
+				"scim": "SCIM-Bereitstellung neue Entwickler in Minuten einsatzbereit",
+				"group": "IdP-Gruppe zu CEL-Rollen-Mapping Least Privilege automatisch",
+				"audit": "SOC 2-Logs in CEF oder JSON an Ihr SIEM exportiert"
 			},
 			"capability": {
-				"oidc": "OIDC Discovery + PKCE",
-				"jit": "Just-in-Time-Bereitstellung",
-				"mfa": "Erzwungene MFA-Richtlinien",
-				"session": "Sitzungsverwaltung + Widerruf",
-				"ca": "Organisations-CA-Zertifikate",
-				"compliance": "SOC 2 / DSGVO-Konformität"
+				"oidc": "OIDC Discovery auto-konfiguriert aus Ihrer IdP-Metadaten-URL",
+				"jit": "Just-in-Time-Bereitstellung bei erster Anmeldung",
+				"mfa": "MFA über IdP-Authentifizierungskontext durchgesetzt",
+				"session": "Sitzungsdauer durch IdP-Richtlinie gesteuert",
+				"ca": "Organisations-CA-Zertifikate von der IT verwaltet",
+				"compliance": "SOC 2 Typ II / DSGVO-Compliance-Dokumentation"
 			}
 		},
 		"labels": {
@@ -245,7 +245,7 @@
 		"welcome": "Willkommen zurück",
 		"downloadsHeading": "Downloads",
 		"signOut": "Abmelden",
-		"loading": "Konto wird geladen\u2026",
+		"loading": "Konto wird geladen…",
 		"error": "Konto konnte nicht geladen werden."
 	}
 }

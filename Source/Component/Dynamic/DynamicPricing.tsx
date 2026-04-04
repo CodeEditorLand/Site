@@ -18,6 +18,15 @@ const ElementColorMap: Record<string, string> = {
 	Sky:      "var(--ExtensionAstro)",
 	Air:      "var(--ExtensionRust)",
 	Echo:     "var(--ExtensionRust)",
+	Common:   "var(--LanguageRust)",
+	Vine:     "var(--SpinegRPC)",
+	Grove:    "var(--SpineWASM)",
+	Mist:     "var(--SpineIPC)",
+	Rest:     "var(--ToolOxc)",
+	Output:   "var(--ToolEsBuild)",
+	SideCar:  "var(--RuntimeNode)",
+	Worker:   "var(--LanguageJavaScript)",
+	Maintain: "var(--ToolBiome)",
 };
 
 const GetElementColor = (Line: string): string => {
@@ -195,7 +204,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 										{Tier.Elements &&
 											Tier.Elements.length > 0 && (
 												<p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-													Coming Up
+													Roadmap
 												</p>
 											)}
 										<ul className="space-y-3">

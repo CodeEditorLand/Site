@@ -2,14 +2,14 @@
 	"forgotPassword": {
 		"emailPlaceholder": "nom@exemple.fr",
 		"submit": "Envoyer le lien de reinitialisation",
-		"subtitle": "Entrez votre adresse e-mail pour demander un lien de reinitialisation",
+		"subtitle": "Entrez votre email et nous vous enverrons un lien de réinitialisation sécurisé.",
 		"success": {
 			"title": "Verifiez votre e-mail",
 			"subtitle": "Un lien de reinitialisation du mot de passe a ete envoye a",
 			"instruction": "Cliquez sur le lien dans l'e-mail pour reinitialiser votre mot de passe.\nLe lien expire dans 24 heures.",
 			"resend": "Renvoyer l'e-mail"
 		},
-		"title": "Reinitialiser le mot de passe",
+		"title": "Réinitialiser votre mot de passe",
 		"emailLabel": "E-mail",
 		"loading": "Envoi en cours...",
 		"backToSignIn": "Retour a la connexion",
@@ -39,7 +39,7 @@
 			"description": "Votre mot de passe a ete reinitialise.\nVous pouvez maintenant vous connecter avec votre nouveau mot de passe.",
 			"button": "Continuer vers la connexion"
 		},
-		"title": "Reinitialiser le mot de passe",
+		"title": "Définir un nouveau mot de passe",
 		"passwordHint": "Minimum 8 caracteres",
 		"loading": "Reinitialisation...",
 		"mismatch": "Les mots de passe ne correspondent pas",
@@ -52,12 +52,12 @@
 		"errorToast": "Echec de la reinitialisation du mot de passe"
 	},
 	"signIn": {
-		"emailPlaceholder": "nom@exemple.fr",
-		"forgotPassword": "Mot de passe oublie ? Pas de probleme - cliquez ici pour le reinitialiser en toute securite.",
+		"emailPlaceholder": "nom@exemple.com",
+		"forgotPassword": "Mot de passe oublié ? Réinitialisez-le en toute sécurité.",
 		"githubButton": "Continuer avec GitHub",
 		"passwordPlaceholder": "Entrez votre mot de passe",
 		"signUpLink": "S'inscrire",
-		"subtitle": "Entrez vos identifiants pour acceder a votre compte",
+		"subtitle": "Connectez-vous à votre workspace Land.",
 		"title": "Connexion",
 		"emailLabel": "E-mail",
 		"passwordLabel": "Mot de passe",
@@ -82,7 +82,7 @@
 			"google": "Continuer avec Google",
 			"gitlab": "Continuer avec GitLab"
 		},
-		"subtitle": "Entrez vos informations pour creer un compte",
+		"subtitle": "Créez votre compte Land gratuit.",
 		"termsLabel": "J'accepte les Conditions d'utilisation et la Politique de confidentialite",
 		"title": "Creer un compte",
 		"validation": {
@@ -95,7 +95,7 @@
 		},
 		"emailLabel": "E-mail",
 		"passwordLabel": "Mot de passe",
-		"submit": "Creer un compte",
+		"submit": "Créer un compte gratuit",
 		"loading": "Creation du compte...",
 		"or": "Ou",
 		"hasAccount": "Vous avez deja un compte ?",
@@ -115,81 +115,81 @@
 		"and": "et"
 	},
 	"portal": {
-		"title": "Choisissez votre type de compte",
-		"subtitle": "Du tout en ligne au tout en local.\nTrois facons de gerer votre editeur.",
+		"title": "Connexion à CodeEditorLand",
+		"subtitle": "Choisissez le niveau qui correspond à votre façon de travailler. Synchronisation cloud, identité OAuth, daemon local ou SSO entreprise.",
 		"cloud": {
-			"title": "Compte Cloud",
-			"subtitle": "Connexion en ligne securisee avec synchronisation cloud complete.\nVos parametres, extensions et preferences stockes et synchronises sur tous vos appareils.",
-			"signIn": "Connexion securisee",
+			"title": "Cloud",
+			"subtitle": "Connectez-vous une fois et chaque appareil est synchronisé.\n\nL'état du workspace chiffré de bout en bout, jamais lisible en transit.",
+			"signIn": "Connexion sécurisée",
 			"feature": {
-				"sync": "Synchronisation des parametres entre appareils",
-				"backup": "Sauvegarde cloud automatique des configurations",
-				"team": "Gestion des espaces de travail d'equipe",
-				"extension": "Place de marche des extensions avec installation cloud",
+				"sync": "Le workspace reste synchronisé sur chaque appareil",
+				"backup": "Sauvegarde cloud chiffrée de toutes les configurations",
+				"team": "Espaces de travail d'équipe partagés inclus",
+				"extension": "Installez des extensions depuis le marketplace en un clic",
 				"remote": "Integration de serveurs de developpement a distance"
 			},
 			"capability": {
-				"jwt": "Jetons de session JWT",
-				"okta": "Integration SSO Okta",
-				"mfa": "Authentification multi-facteurs",
-				"rbac": "Controle d'acces base sur les roles",
-				"audit": "Piste d'audit",
-				"cert": "Certificats de developpeur"
+				"jwt": "Tokens JWT RS256 accès 15 min. actualisation 30 jours",
+				"okta": "Intégration Okta SSO disponible",
+				"mfa": "Authentification multifacteur prise en charge",
+				"rbac": "Contrôle d'accès basé sur les rôles au niveau de la passerelle",
+				"audit": "Journal d'audit complet chaque action enregistrée",
+				"cert": "Certificats développeur provisionnés automatiquement"
 			}
 		},
 		"provider": {
-			"title": "Compte Fournisseur",
-			"subtitle": "Authentifiez-vous via GitHub, Google ou GitLab.\nVotre identite OAuth se lie directement a vos preferences d'editeur et appartenances d'equipe.",
+			"title": "Fournisseur",
+			"subtitle": "Utilisez l'identité de développeur que vous avez déjà.\n\nNous ne demandons que votre adresse email, jamais l'accès aux dépôts ni aux données d'organisation.",
 			"continueGitHub": "Continuer avec GitHub",
 			"continueGoogle": "Continuer avec Google",
 			"continueGitLab": "Continuer avec GitLab",
-			"oauthNote": "OAuth 2.0 \u2001 Lie a vos preferences",
+			"oauthNote": "OAuth 2.0 Scope email uniquement Lié à vos préférences",
 			"feature": {
-				"github": "Identite GitHub liee aux preferences",
+				"github": "Pas de nouveau mot de passe votre identité GitHub suffit",
 				"sso": "Authentification unique pour tous les services Land",
-				"repo": "Configuration d'espace de travail consciente du depot",
-				"team": "Synchronisation des organisations et appartenances d'equipe",
+				"repo": "Thème et raccourcis clavier suivent votre identité fournisseur",
+				"team": "Appartenance à l'organisation et à l'équipe synchronisée automatiquement",
 				"ci": "Integration de pipeline CI/CD avec declencheurs de build"
 			},
 			"capability": {
-				"oauth": "Flux OAuth 2.0 + PKCE",
-				"scope": "Portees de permissions granulaires",
-				"token": "Rotation des jetons de rafraichissement",
+				"oauth": "OAuth 2.0 avec PKCE S256 sur chaque flux",
+				"scope": "Scope email et profil uniquement rien d'autre demandé",
+				"token": "Rotation du token de rafraîchissement à chaque connexion",
 				"webhook": "Abonnements aux evenements webhook",
-				"org": "Politiques au niveau de l'organisation",
-				"cert": "Certificats de developpeur"
+				"org": "Politiques d'accès au niveau de l'organisation",
+				"cert": "Certificats développeur provisionnés automatiquement"
 			}
 		},
 		"localfirst": {
-			"title": "Compte Local",
-			"subtitle": "Comme un panneau de controle SaaS qui fonctionne sur votre machine.\nZero dependance au cloud.\nLe site web communique directement avec le Air Daemon dans Land/Element via un protocole local.\nConfigurez, mettez a jour, compilez et deployez votre editeur entierement depuis cette console.",
+			"title": "Local-First",
+			"subtitle": "Pas d'internet ? Aucun problème. L'Air Daemon s'exécute entièrement sur votre machine.\n\nVotre code et vos identifiants ne la quittent jamais.",
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Analyse en cours...",
-			"connect": "Se connecter au Air Daemon",
-			"note": "Zero dependance au cloud \u2001 Certificats JWT \u2001 mTLS",
+			"connect": "Se connecter à l'Air Daemon",
+			"note": "Aucune dépendance au cloud Certificats JWT mTLS",
 			"feature": {
-				"daemon": "Connexion directe du Air Daemon a Land/Element",
-				"build": "Lancez des compilations directement via la console du site web",
-				"deploy": "Deployez des modifications directement dans l'application",
+				"daemon": "Le navigateur se connecte à l'Air Daemon via loopback chiffré",
+				"build": "Lancez des compilations directement depuis la console du site",
+				"deploy": "Déployez les modifications directement dans l'éditeur en cours d'exécution",
 				"configure": "Gestion complete de la configuration et des parametres de l'editeur",
-				"parity": "Parite 1:1 avec les fonctionnalites et parametres du serveur VS Code",
-				"offline": "Aucune connexion cloud requise.\nFonctionnement hors ligne complet.",
-				"bake": "Integrez le portail directement dans l'editeur en tant que SaaS embarque"
+				"parity": "Parité complète des fonctionnalités VS Code rien ne manque",
+				"offline": "Fonctionnement hors ligne complet aucune connexion cloud requise",
+				"bake": "Intégrez le portail directement dans l'éditeur en tant que SaaS intégré"
 			},
 			"capability": {
-				"jwt": "Certificats de developpeur JWT",
-				"mtls": "Authentification TLS mutuelle",
-				"crdt": "Synchronisation d'etat CRDT",
-				"team": "Gestion d'equipe (entierement locale)",
-				"cert": "Gestion de l'autorite de certification",
-				"ws": "Connexion WebSocket en direct",
-				"rbac": "Politiques RBAC locales",
-				"backup": "Sauvegarde locale chiffree"
+				"jwt": "Certificats JWT ES384 expiration 5 min. rotatifs à la reconnexion",
+				"mtls": "Authentification mutuelle mTLS daemon et navigateur tous deux vérifiés",
+				"crdt": "Synchronisation d'état CRDT pour l'édition hors ligne sans conflit",
+				"team": "Gestion d'équipe entièrement locale aucune dépendance au cloud",
+				"cert": "Autorité de certification locale aucun appel à une CA externe",
+				"ws": "Connexion WebSocket en direct sur loopback uniquement",
+				"rbac": "Politiques RBAC locales appliquées au niveau du daemon",
+				"backup": "Sauvegarde locale chiffrée de tous les états du workspace"
 			}
 		},
 		"enterprise": {
-			"title": "Compte Entreprise",
-			"subtitle": "Authentification unique OIDC / SAML 2.0 via Okta, Azure AD ou tout fournisseur d'identite compatible.\nMappage groupe-role, journaux d'audit et gestion des certificats CA de l'organisation.",
+			"title": "Entreprise",
+			"subtitle": "Votre équipe informatique contrôle chaque poste.\n\nOIDC, SAML 2.0 et SCIM signifient zéro provisionnement manuel et gouvernance complète de l'annuaire.",
 			"ariaLabel": "SSO Entreprise",
 			"domainLabel": "E-mail professionnel ou domaine",
 			"domainPlaceholder": "nom@entreprise.fr",
@@ -197,22 +197,22 @@
 			"continueOkta": "Continuer avec Okta",
 			"continueAzure": "Continuer avec Azure AD",
 			"continueSAML": "Continuer avec SAML",
-			"note": "OIDC Discovery \u2001 SAML 2.0 \u2001 Provisionnement SCIM",
+			"note": "OpenID Connect Discovery Assertions SAML 2.0 Provisionnement SCIM 2.0",
 			"feature": {
-				"okta": "Integration SSO Okta",
-				"azure": "Support Azure AD / Entra ID",
-				"saml": "SAML 2.0 pour les IdP d'entreprise herites",
-				"scim": "Provisionnement d'utilisateurs SCIM",
-				"group": "Mappage groupe-role",
-				"audit": "Piste d'audit complete"
+				"okta": "Okta SSO une connexion déverrouille tout",
+				"azure": "Azure AD / Entra ID votre identité Microsoft fonctionne",
+				"saml": "SAML 2.0 pour tout IdP d'entreprise existant",
+				"scim": "Provisionnement SCIM nouveaux développeurs prêts en minutes",
+				"group": "Mappage groupe IdP vers rôle CEL moindre privilège automatique",
+				"audit": "Journaux SOC 2 exportés vers votre SIEM en CEF ou JSON"
 			},
 			"capability": {
-				"oidc": "OIDC Discovery + PKCE",
-				"jit": "Provisionnement juste-a-temps",
-				"mfa": "Politiques MFA imposees",
-				"session": "Gestion de session + revocation",
-				"ca": "Certificats CA de l'organisation",
-				"compliance": "Conformite SOC 2 / RGPD"
+				"oidc": "OIDC Discovery configuré automatiquement depuis l'URL de métadonnées de votre IdP",
+				"jit": "Provisionnement just-in-time à la première connexion",
+				"mfa": "MFA appliqué via la classe de contexte d'authentification de l'IdP",
+				"session": "Durée de session contrôlée par la politique de l'IdP",
+				"ca": "Certificats CA d'organisation gérés par l'informatique",
+				"compliance": "Documentation de conformité SOC 2 Type II / RGPD"
 			}
 		},
 		"labels": {
@@ -235,7 +235,7 @@
 		"welcome": "Bon retour",
 		"downloadsHeading": "Telechargements",
 		"signOut": "Deconnexion",
-		"loading": "Chargement du compte\u2026",
+		"loading": "Chargement du compte…",
 		"error": "Echec du chargement du compte."
 	}
 }

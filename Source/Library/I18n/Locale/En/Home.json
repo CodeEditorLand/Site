@@ -115,26 +115,25 @@
 		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nBuilt in public, free forever, no roadmap surprises.",
 		"tiers": {
 			"current": {
-				"name": "Active Now",
-				"description": "The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
+				"name": "Free",
+				"description": "Six open-source elements in active development. Each is a standalone repository you can read, run, and contribute to today.",
 				"features": {
-					"mountain": "Mountain ⛰️\nNative Process Manager\nReplaces Electron's main process",
-					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code extensions run unchanged",
-					"wind": "Wind 🍃\nWorkbench Shell\nPanels, sidebars, activity bar reimplemented",
-					"sky": "Sky 🌌\nAstro UI Layer\nEvery panel is a component, instant hot-reload",
-					"air": "Air 🪁\nBackground Daemon\nSilent updates, crypto-signed",
-					"echo": "Echo 📣\nWork-Stealing Scheduler\nSaturates every CPU core",
-					"vine": "Vine 🌿\ngRPC Backbone\nContract-first .proto definitions",
-					"mist": "Mist 🌫️\nDNS Sandbox\n*.editor.land resolves locally",
-					"rest": "Rest ⛱️\nTypeScript Compiler\nRust + OXC, 2-3x faster than esbuild",
-					"grove": "Grove 🌳\nWASMtime Sandbox\nCapability-based extension isolation",
-					"common": "Common 👨🏻‍🏭\nAbstract Rust Foundation\nTyped effects, zero concrete implementations",
-					"output": "Output ⚫\nCompilation Pipeline\nDeterministic checksummed bundles",
-					"sidecar": "SideCar ⚙️\nNode.js Distributor\nCross-platform binary per target triple",
-					"worker": "Worker 🍩\nService Worker\nOffline support, AES-GCM auth",
-					"maintain": "Maintain 💪🏻\nBuild Orchestrator\nRhai scripting, TOML/JSON5 config"
+					"1": "High-Fidelity VS Code Extension Compatibility",
+					"2": "Cross-Platform Installer with Silent Auto-Update",
+					"3": "gRPC IPC Protocol Finalized and Documented",
+					"4": "Settings Sync via Cloud-Optional Portal",
+					"5": "Verified CDN Download Distribution",
+					"6": "Command Palette (Cmd+K)"
 				},
-				"button": "View on GitHub"
+				"button": "View on GitHub",
+				"elements": {
+					"mountain": "Mountain ⛰️\nNative Process Manager\nReplaces Electron Main Process",
+					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
+					"wind": "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
+					"sky": "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
+					"air": "Air 🪁\nBackground Daemon\nSilent Update, Crypto-Signed",
+					"echo": "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated"
+				}
 			},
 			"next": {
 				"name": "Coming Next",
@@ -148,15 +147,21 @@
 				"button": "Track Progress"
 			},
 			"future": {
-				"name": "Long-Term Vision",
-				"description": "A full-featured, Electron-free editor that handles every workflow a modern developer needs.",
-				"features": {
-					"1": "Native mobile editing: iOS and Android",
-					"2": "Collaborative real-time editing built in",
-					"3": "AI-assisted development, privacy-first",
-					"4": "Open plugin marketplace and extension ecosystem"
-				},
-				"button": "Learn More"
+				"name": "Future",
+				"description": "The nine supporting elements complete the platform. Each extends Land with infrastructure that no Electron editor can match.",
+				"features": [],
+				"button": "Explore Elements",
+				"elements": {
+					"common": "Common 👨🏻‍🏭\nShared Foundation\nAbstract Traits, Zero Implementations",
+					"vine": "Vine 🌿\ngRPC Backbone\nContract-First .proto Definition",
+					"grove": "Grove 🌳\nWASMtime Sandbox\nCapability-Based Isolation",
+					"mist": "Mist 🌫️\nDNS Sandbox\nLocal *.editor.land Resolution",
+					"rest": "Rest ⛱️\nTypeScript Compiler\nRust + OXC, 2-3x Faster",
+					"output": "Output ⚫\nCompilation Pipeline\nDeterministic Bundle, Checksum",
+					"sidecar": "SideCar ⚙️\nNode.js Distributor\nCorrect Binary Per Platform",
+					"worker": "Worker 🍩\nService Worker\nOffline Support, AES-GCM Auth",
+					"maintain": "Maintain 💪🏻\nBuild Orchestrator\nRhai Scripting, TOML/JSON5 Config"
+				}
 			}
 		}
 	},

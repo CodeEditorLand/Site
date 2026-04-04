@@ -253,25 +253,28 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"The six core elements in active development. Each is a standalone repository you can inspect and contribute to today.",
+							"Six open-source elements in active development. Each is a standalone repository you can read, run, and contribute to today.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
-						T("home:roadmap.tiers.current.features.mountain", { defaultValue: "Mountain \u26f0\ufe0f\nNative Process Manager\nReplaces Electron’s main process" }),
-						T("home:roadmap.tiers.current.features.cocoon",   { defaultValue: "Cocoon \uD83E\uDD8B\nExtension Host\nVS Code extensions run unchanged" }),
-						T("home:roadmap.tiers.current.features.wind",     { defaultValue: "Wind \uD83C\uDF43\nWorkbench Shell\nPanels, sidebars, activity bar reimplemented" }),
-						T("home:roadmap.tiers.current.features.sky",      { defaultValue: "Sky \uD83C\uDF0C\nAstro UI Layer\nEvery panel is a component, instant hot-reload" }),
-						T("home:roadmap.tiers.current.features.air",      { defaultValue: "Air \uD83E\uDE81\nBackground Daemon\nSilent updates, crypto-signed" }),
-						T("home:roadmap.tiers.current.features.echo",     { defaultValue: "Echo \uD83D\uDCE3\nWork-Stealing Scheduler\nSaturates every CPU core" }),
-						T("home:roadmap.tiers.current.features.vine",     { defaultValue: "Vine \uD83C\uDF3F\ngRPC Backbone\nContract-first .proto definitions" }),
-						T("home:roadmap.tiers.current.features.mist",     { defaultValue: "Mist \uD83C\uDF2B\uFE0F\nDNS Sandbox\n*.editor.land resolves locally" }),
-						T("home:roadmap.tiers.current.features.rest",     { defaultValue: "Rest \u26F1\uFE0F\nTypeScript Compiler\nRust + OXC, 2-3x faster than esbuild" }),
-						T("home:roadmap.tiers.current.features.grove",    { defaultValue: "Grove \uD83C\uDF33\nWASMtime Sandbox\nCapability-based extension isolation" }),
-						T("home:roadmap.tiers.current.features.common",   { defaultValue: "Common \uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED\nAbstract Rust Foundation\nTyped effects, zero concrete implementations" }),
-						T("home:roadmap.tiers.current.features.output",   { defaultValue: "Output \u26AB\nCompilation Pipeline\nDeterministic checksummed bundles" }),
-						T("home:roadmap.tiers.current.features.sidecar",  { defaultValue: "SideCar \u2699\uFE0F\nNode.js Distributor\nCross-platform binary per target triple" }),
-						T("home:roadmap.tiers.current.features.worker",   { defaultValue: "Worker \uD83C\uDF69\nService Worker\nOffline support, AES-GCM auth" }),
-						T("home:roadmap.tiers.current.features.maintain", { defaultValue: "Maintain \uD83D\uDCAA\uD83C\uDFFB\nBuild Orchestrator\nRhai scripting, TOML/JSON5 config" }),
+						T("home:roadmap.tiers.current.elements.mountain", {
+							defaultValue: "Mountain ⛰️\nNative Process Manager\nReplaces Electron Main Process",
+						}),
+						T("home:roadmap.tiers.current.elements.cocoon", {
+							defaultValue: "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
+						}),
+						T("home:roadmap.tiers.current.elements.wind", {
+							defaultValue: "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
+						}),
+						T("home:roadmap.tiers.current.elements.sky", {
+							defaultValue: "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
+						}),
+						T("home:roadmap.tiers.current.elements.air", {
+							defaultValue: "Air 🪁\nBackground Daemon\nSilent Update, Crypto-Signed",
+						}),
+						T("home:roadmap.tiers.current.elements.echo", {
+							defaultValue: "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated",
+						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
@@ -284,7 +287,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 							defaultValue: "gRPC IPC Protocol Finalized and Documented",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "Settings Sync with Cloud-Optional Portal",
+							defaultValue: "Settings Sync via Cloud-Optional Portal",
+						}),
+						T("home:roadmap.tiers.current.features.5", {
+							defaultValue: "Verified CDN Download Distribution",
+						}),
+						T("home:roadmap.tiers.current.features.6", {
+							defaultValue: "Command Palette (Cmd+K)",
 						}),
 					],
 					CTA: {
@@ -303,29 +312,45 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"A full-featured, Electron-free editor that handles every workflow a modern developer needs.",
+							"The nine supporting elements complete the platform. Each extends Land with infrastructure that no Electron editor can match.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
-					Features: [
-						T("home:roadmap.tiers.future.features.1", {
-							defaultValue: "Native Mobile Editing: iOS and Android",
+					Elements: [
+						T("home:roadmap.tiers.future.elements.common", {
+							defaultValue: "Common 👨🏻‍🏭\nShared Foundation\nAbstract Traits, Zero Implementations",
 						}),
-						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Collaborative Real-Time Editing Built In",
+						T("home:roadmap.tiers.future.elements.vine", {
+							defaultValue: "Vine 🌿\ngRPC Backbone\nContract-First .proto Definition",
 						}),
-						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "AI-Assisted Development, Privacy-First",
+						T("home:roadmap.tiers.future.elements.grove", {
+							defaultValue: "Grove 🌳\nWASMtime Sandbox\nCapability-Based Isolation",
 						}),
-						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "Open Plugin Marketplace and Extension Ecosystem",
+						T("home:roadmap.tiers.future.elements.mist", {
+							defaultValue: "Mist 🌫️\nDNS Sandbox\nLocal *.editor.land Resolution",
+						}),
+						T("home:roadmap.tiers.future.elements.rest", {
+							defaultValue: "Rest ⛱️\nTypeScript Compiler\nRust + OXC, 2-3x Faster",
+						}),
+						T("home:roadmap.tiers.future.elements.output", {
+							defaultValue: "Output ⚫\nCompilation Pipeline\nDeterministic Bundle, Checksum",
+						}),
+						T("home:roadmap.tiers.future.elements.sidecar", {
+							defaultValue: "SideCar ⚙️\nNode.js Distributor\nCorrect Binary Per Platform",
+						}),
+						T("home:roadmap.tiers.future.elements.worker", {
+							defaultValue: "Worker 🍩\nService Worker\nOffline Support, AES-GCM Auth",
+						}),
+						T("home:roadmap.tiers.future.elements.maintain", {
+							defaultValue: "Maintain 💪🏻\nBuild Orchestrator\nRhai Scripting, TOML/JSON5 Config",
 						}),
 					],
+					Features: [],
 					CTA: {
 						Text: T("home:roadmap.tiers.future.button", {
-							defaultValue: "Learn More",
+							defaultValue: "Explore Elements",
 						}),
 						Variant: "outline",
-						Href: "https://github.com/CodeEditorLand/Land#readme",
+						Href: "https://github.com/CodeEditorLand",
 					},
 					Popular: false,
 				},

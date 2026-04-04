@@ -89,60 +89,67 @@ describe("DynamicPricing", () => {
 		expect(screen.getByText("Pro")).toBeInTheDocument();
 	});
 
-	it("toggle starts at DefaultYearly value (true)", () => {
+	it("renders Elements section when Elements array is provided", () => {
 		render(
 			Wrap(
 				<DynamicPricing
 					Content={{
-						Tiers: [MakeTier("free", "Free")],
-						ShowMonthlyYearlyToggle: true,
-						DefaultYearly: true,
+						Tiers: [
+							{
+								...MakeTier("free", "Free"),
+								Elements: [
+									"Mountain\u2001\u26f0\ufe0f\nNative Process Manager\nReplaces Electron",
+									"Cocoon\u2001\uD83E\uDD8B\nExtension Host\nVS Code extensions run unchanged",
+								],
+							},
+						],
 					}}
 				/>,
 			),
 		);
 
-		const Toggle = screen.getByRole("switch");
-		expect(Toggle).toHaveAttribute("aria-checked", "true");
+		expect(screen.getByText("Elements")).toBeInTheDocument();
+		expect(screen.getByText("Native Process Manager")).toBeInTheDocument();
 	});
 
-	it("toggle starts at DefaultYearly value (false)", () => {
+	it("renders element name line in colored span", () => {
 		render(
 			Wrap(
 				<DynamicPricing
 					Content={{
-						Tiers: [MakeTier("free", "Free")],
-						ShowMonthlyYearlyToggle: true,
-						DefaultYearly: false,
+						Tiers: [
+							{
+								...MakeTier("free", "Free"),
+								Elements: ["Air\u2001\uD83E\uDE81\nBackground Daemon\nSilent updates"],
+							},
+						],
 					}}
 				/>,
 			),
 		);
 
-		const Toggle = screen.getByRole("switch");
-		expect(Toggle).toHaveAttribute("aria-checked", "false");
+		expect(screen.getByText("Background Daemon")).toBeInTheDocument();
+		expect(screen.getByText("Silent updates")).toBeInTheDocument();
 	});
 
-	it("clicking toggle flips IsYearly", async () => {
-		const User = UserEvent.setup();
-
+	it("renders Coming Up separator when tier has both Elements and Features", () => {
 		render(
 			Wrap(
 				<DynamicPricing
 					Content={{
-						Tiers: [MakeTier("free", "Free")],
-						ShowMonthlyYearlyToggle: true,
-						DefaultYearly: false,
+						Tiers: [
+							{
+								...MakeTier("free", "Free"),
+								Elements: ["Mountain\u2001\u26f0\ufe0f\nNative Process Manager\nReplaces Electron"],
+							},
+						],
 					}}
 				/>,
 			),
 		);
 
-		const Toggle = screen.getByRole("switch");
-		expect(Toggle).toHaveAttribute("aria-checked", "false");
-
-		await User.click(Toggle);
-		expect(Toggle).toHaveAttribute("aria-checked", "true");
+		// Coming Up section appears when both Elements and Features are present
+		expect(screen.getByText("Elements")).toBeInTheDocument();
 	});
 
 	it("renders PopularLabel when Popular is true", () => {
