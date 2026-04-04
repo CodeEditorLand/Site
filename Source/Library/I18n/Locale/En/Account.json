@@ -133,11 +133,11 @@
 				"remote": "Remote development server integration"
 			},
 			"capability": {
-				"jwt": "JWT RS256 tokens — 15 min access, 30 day refresh",
+				"jwt": "JWT RS256 tokens: 15-min access, 30-day refresh",
 				"okta": "Okta SSO integration available",
 				"mfa": "Multi-factor authentication supported",
 				"rbac": "Role-based access control at the gateway layer",
-				"audit": "Full audit log — every action recorded",
+				"audit": "Full audit log: every action recorded",
 				"cert": "Developer certificates provisioned automatically"
 			}
 		},
@@ -149,7 +149,7 @@
 			"continueGitLab": "Continue with GitLab",
 			"oauthNote": "OAuth 2.0 \u2001 Email scope only \u2001 Linked to your preferences",
 			"feature": {
-				"github": "No new password — your GitHub identity is enough",
+				"github": "No new password. Your GitHub identity is enough.",
 				"sso": "Single sign-on across all Land services",
 				"repo": "Theme and keybindings follow your provider identity",
 				"team": "Organization and team membership synced automatically",

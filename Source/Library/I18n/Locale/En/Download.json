@@ -7,7 +7,7 @@
 			},
 			"macos": {
 				"title": "macOS",
-				"universalBadge": "Universal Binary — Apple Silicon and Intel"
+				"universalBadge": "Universal Binary: Apple Silicon and Intel"
 			},
 			"windows": {
 				"description": "64-bit (x64)",

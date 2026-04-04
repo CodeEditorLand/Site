@@ -257,29 +257,50 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
-						T("home:roadmap.tiers.current.features.1", {
-							defaultValue:
-								"Mountain: native process manager, replaces Electron",
+						T("home:roadmap.tiers.current.features.air", {
+							defaultValue: "Air \uD83E\uDE81: background daemon, silent auto-updates, crypto-signed",
 						}),
-						T("home:roadmap.tiers.current.features.2", {
-							defaultValue:
-								"Cocoon: extension host, your VS Code extensions work unchanged",
+						T("home:roadmap.tiers.current.features.cocoon", {
+							defaultValue: "Cocoon \uD83E\uDD8B: extension host, full VS Code API via Effect-TS shims",
 						}),
-						T("home:roadmap.tiers.current.features.3", {
-							defaultValue:
-								"Wind: full workbench shell, panels and sidebars",
+						T("home:roadmap.tiers.current.features.common", {
+							defaultValue: "Common \uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED: abstract Rust foundation, typed effects, zero concrete implementations",
 						}),
-						T("home:roadmap.tiers.current.features.4", {
-							defaultValue:
-								"Sky: visual layer, themes and layouts",
+						T("home:roadmap.tiers.current.features.echo", {
+							defaultValue: "Echo \uD83D\uDCE3: lock-free work-stealing scheduler, saturates every CPU core",
 						}),
-						T("home:roadmap.tiers.current.features.5", {
-							defaultValue:
-								"Air: silent updates, cryptographically signed",
+						T("home:roadmap.tiers.current.features.grove", {
+							defaultValue: "Grove \uD83C\uDF33: WASMtime sandbox, capability-based extension isolation",
 						}),
-						T("home:roadmap.tiers.current.features.6", {
-							defaultValue:
-								"Echo: work-stealing scheduler, uses every CPU core",
+						T("home:roadmap.tiers.current.features.maintain", {
+							defaultValue: "Maintain \uD83D\uDCAA\uD83C\uDFFB: build orchestrator, Rhai scripting, TOML/JSON5 config",
+						}),
+						T("home:roadmap.tiers.current.features.mist", {
+							defaultValue: "Mist \uD83C\uDF2B\uFE0F: DNS sandbox, all *.editor.land traffic resolves locally",
+						}),
+						T("home:roadmap.tiers.current.features.mountain", {
+							defaultValue: "Mountain \u26F0\uFE0F: native Rust/Tauri backend, replaces Electrons main process",
+						}),
+						T("home:roadmap.tiers.current.features.output", {
+							defaultValue: "Output \u26AB: compilation pipeline, deterministic checksummed bundles",
+						}),
+						T("home:roadmap.tiers.current.features.rest", {
+							defaultValue: "Rest \u26F1\uFE0F: TypeScript compiler in Rust + OXC, 2-3x faster than esbuild",
+						}),
+						T("home:roadmap.tiers.current.features.sidecar", {
+							defaultValue: "SideCar \u2699\uFE0F: cross-platform Node.js binary distributor per target triple",
+						}),
+						T("home:roadmap.tiers.current.features.sky", {
+							defaultValue: "Sky \uD83C\uDF0C: Astro UI layer, every panel is a component, instant hot-reload",
+						}),
+						T("home:roadmap.tiers.current.features.vine", {
+							defaultValue: "Vine \uD83C\uDF3F: gRPC backbone, contract-first .proto definitions",
+						}),
+						T("home:roadmap.tiers.current.features.wind", {
+							defaultValue: "Wind \uD83C\uDF43: VS Code Workbench reimplemented in TypeScript + Effect-TS",
+						}),
+						T("home:roadmap.tiers.current.features.worker", {
+							defaultValue: "Worker \uD83C\uDF69: Service Worker, offline support, AES-GCM encrypted auth",
 						}),
 					],
 					CTA: {
@@ -373,73 +394,202 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code's Electron stack element by element.\n\nEach component is a standalone open-source repository you can read, fork, or contribute to.",
+					"Land replaces VS Code\u2019s Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
 			}),
 			Testimonials: [
 				{
-					Id: "mountain",
-					Quote: T("home:architecture.mountain.description", {
-						defaultValue:
-							"Replaces Electron's main process with a native Rust/Tauri backend.\n\nWindow, file system, and process lifecycle run at native speed with no JavaScript overhead.",
+					Id: "air",
+					Emoji: "\uD83E\uDE81",
+					Href: "https://github.com/CodeEditorLand/Air",
+					Author: "Air",
+					Role: T("home:architecture.air.subtitle", {
+						defaultValue: "Background daemon \u00b7 silent updates \u00b7 crypto-signed",
 					}),
-					Author: "Mountain",
-					Role: T("home:architecture.mountain.subtitle", {
-						defaultValue: "Native speed without Electron overhead",
+					Quote: T("home:architecture.air.description", {
+						defaultValue:
+							"Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a \u201crestart to update\u201d prompt.",
 					}),
 				},
 				{
 					Id: "cocoon",
-					Quote: T("home:architecture.cocoon.description", {
-						defaultValue:
-							"Runs your existing VS Code extensions via Effect-TS with high-fidelity API compatibility.\n\nInstall them and they just work. No rewrites, no patches.",
-					}),
+					Emoji: "\uD83E\uDD8B",
+					Href: "https://github.com/CodeEditorLand/Cocoon",
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
-						defaultValue: "Your extensions, completely unchanged",
+						defaultValue: "Extension host \u00b7 full VS Code API \u00b7 Effect-TS shims",
+					}),
+					Quote: T("home:architecture.cocoon.description", {
+						defaultValue:
+							"A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension . It runs unchanged. No patches, no rewrites, no compatibility hacks.",
 					}),
 				},
 				{
-					Id: "wind",
-					Quote: T("home:architecture.wind.description", {
+					Id: "common",
+					Emoji: "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED",
+					Href: "https://github.com/CodeEditorLand/Common",
+					Author: "Common",
+					Role: T("home:architecture.common.subtitle", {
+						defaultValue: "Shared foundation \u00b7 abstract traits \u00b7 zero implementations",
+					}),
+					Quote: T("home:architecture.common.description", {
 						defaultValue:
-							"A clean re-implementation of the VS Code Workbench in TypeScript.\n\nPanels, sidebars, and the activity bar. Familiar layout, no Electron dependency.",
-					}),
-					Author: "Wind",
-					Role: T("home:architecture.wind.subtitle", {
-						defaultValue: "Full workbench shell, rebuilt clean",
-					}),
-				},
-				{
-					Id: "sky",
-					Quote: T("home:architecture.sky.description", {
-						defaultValue:
-							"Renders the editor UI using Astro components.\n\nThemes, layouts, and the visual layer load fast and stay consistent across platforms.",
-					}),
-					Author: "Sky",
-					Role: T("home:architecture.sky.subtitle", {
-						defaultValue: "Themes and layouts, fast by default",
-					}),
-				},
-				{
-					Id: "air",
-					Quote: T("home:architecture.air.description", {
-						defaultValue:
-							"A background daemon that keeps Land current without interrupting you.\n\nEvery update is cryptographically signed before it is applied.",
-					}),
-					Author: "Air",
-					Role: T("home:architecture.air.subtitle", {
-						defaultValue: "Silent updates, always signed",
+							"The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
 					}),
 				},
 				{
 					Id: "echo",
-					Quote: T("home:architecture.echo.description", {
-						defaultValue:
-							"A work-stealing task executor that saturates every CPU core.\n\nHeavy indexing and analysis happen in the background. The editor stays responsive.",
-					}),
+					Emoji: "\uD83D\uDCE3",
+					Href: "https://github.com/CodeEditorLand/Echo",
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
-						defaultValue: "Uses every CPU core you have",
+						defaultValue: "Work-stealing scheduler \u00b7 saturates every CPU core",
+					}),
+					Quote: T("home:architecture.echo.description", {
+						defaultValue:
+							"A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
+					}),
+				},
+				{
+					Id: "grove",
+					Emoji: "\uD83C\uDF33",
+					Href: "https://github.com/CodeEditorLand/Grove",
+					Author: "Grove",
+					Role: T("home:architecture.grove.subtitle", {
+						defaultValue: "Secure WASM sandbox \u00b7 WASMtime \u00b7 capability-based isolation",
+					}),
+					Quote: T("home:architecture.grove.description", {
+						defaultValue:
+							"Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
+					}),
+				},
+				{
+					Id: "maintain",
+					Emoji: "\uD83D\uDCAA\uD83C\uDFFB",
+					Href: "https://github.com/CodeEditorLand/Maintain",
+					Author: "Maintain",
+					Role: T("home:architecture.maintain.subtitle", {
+						defaultValue: "Build orchestrator \u00b7 Rhai scripting \u00b7 TOML/JSON5 config",
+					}),
+					Quote: T("home:architecture.maintain.description", {
+						defaultValue:
+							"Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
+					}),
+				},
+				{
+					Id: "mist",
+					Emoji: "\uD83C\uDF2B\uFE0F",
+					Href: "https://github.com/CodeEditorLand/Mist",
+					Author: "Mist",
+					Role: T("home:architecture.mist.subtitle", {
+						defaultValue: "DNS sandbox \u00b7 *.editor.land resolves to 127.0.0.1",
+					}),
+					Quote: T("home:architecture.mist.description", {
+						defaultValue:
+							"Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
+					}),
+				},
+				{
+					Id: "mountain",
+					Emoji: "\u26F0\uFE0F",
+					Href: "https://github.com/CodeEditorLand/Mountain",
+					Author: "Mountain",
+					Role: T("home:architecture.mountain.subtitle", {
+						defaultValue: "Native Rust backend \u00b7 replaces Electrons main process",
+					}),
+					Quote: T("home:architecture.mountain.description", {
+						defaultValue:
+							"Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk.",
+					}),
+				},
+				{
+					Id: "output",
+					Emoji: "\u26AB",
+					Href: "https://github.com/CodeEditorLand/Output",
+					Author: "Output",
+					Role: T("home:architecture.output.subtitle", {
+						defaultValue: "Compilation pipeline \u00b7 deterministic bundles \u00b7 checksums",
+					}),
+					Quote: T("home:architecture.output.description", {
+						defaultValue:
+							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
+					}),
+				},
+				{
+					Id: "rest",
+					Emoji: "\u26F1\uFE0F",
+					Href: "https://github.com/CodeEditorLand/Rest",
+					Author: "Rest",
+					Role: T("home:architecture.rest.subtitle", {
+						defaultValue: "TypeScript compiler \u00b7 Rust + OXC \u00b7 2\u20133\u00d7 faster than esbuild",
+					}),
+					Quote: T("home:architecture.rest.description", {
+						defaultValue:
+							"A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2\u20133\u00d7 the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
+					}),
+				},
+				{
+					Id: "sidecar",
+					Emoji: "\u2699\uFE0F",
+					Href: "https://github.com/CodeEditorLand/SideCar",
+					Author: "SideCar",
+					Role: T("home:architecture.sidecar.subtitle", {
+						defaultValue: "Binary distributor \u00b7 correct Node.js runtime per platform",
+					}),
+					Quote: T("home:architecture.sidecar.description", {
+						defaultValue:
+							"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
+					}),
+				},
+				{
+					Id: "sky",
+					Emoji: "\uD83C\uDF0C",
+					Href: "https://github.com/CodeEditorLand/Sky",
+					Author: "Sky",
+					Role: T("home:architecture.sky.subtitle", {
+						defaultValue: "Visual UI layer \u00b7 Astro components \u00b7 instant Tauri hot-reload",
+					}),
+					Quote: T("home:architecture.sky.description", {
+						defaultValue:
+							"Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
+					}),
+				},
+				{
+					Id: "vine",
+					Emoji: "\uD83C\uDF3F",
+					Href: "https://github.com/CodeEditorLand/Vine",
+					Author: "Vine",
+					Role: T("home:architecture.vine.subtitle", {
+						defaultValue: "gRPC backbone \u00b7 contract-first .proto definitions",
+					}),
+					Quote: T("home:architecture.vine.description", {
+						defaultValue:
+							"Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
+					}),
+				},
+				{
+					Id: "wind",
+					Emoji: "\uD83C\uDF43",
+					Href: "https://github.com/CodeEditorLand/Wind",
+					Author: "Wind",
+					Role: T("home:architecture.wind.subtitle", {
+						defaultValue: "VS Code Workbench reimplemented \u00b7 Effect-TS layers \u00b7 native OS APIs",
+					}),
+					Quote: T("home:architecture.wind.description", {
+						defaultValue:
+							"A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
+					}),
+				},
+				{
+					Id: "worker",
+					Emoji: "\uD83C\uDF69",
+					Href: "https://github.com/CodeEditorLand/Worker",
+					Author: "Worker",
+					Role: T("home:architecture.worker.subtitle", {
+						defaultValue: "Service Worker \u00b7 offline support \u00b7 AES-GCM encrypted auth",
+					}),
+					Quote: T("home:architecture.worker.description", {
+						defaultValue:
+							"Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
 					}),
 				},
 			],

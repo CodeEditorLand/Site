@@ -51,7 +51,7 @@
 			},
 			"cocoon": {
 				"description": "Runs VS Code extensions via Effect-TS. Your existing extensions work without any modifications.",
-				"subtitle": "Extension host — zero rewrites"
+				"subtitle": "Extension host, zero rewrites"
 			},
 			"wind": {
 				"description": "Re-implements the VS Code Workbench. Panels, sidebars, and the activity bar rebuilt without Electron.",
@@ -66,7 +66,7 @@
 				"subtitle": "Silent updates, always signed"
 			},
 			"echo": {
-				"description": "Saturates every CPU core with a work-stealing executor. Heavy indexing stays in the background — the editor stays fast.",
+				"description": "Saturates every CPU core with a work-stealing executor. Heavy indexing stays in the background; the editor stays fast.",
 				"subtitle": "Uses every CPU core you have"
 			},
 			"common": {
@@ -137,7 +137,7 @@
 	},
 	"contributing": {
 		"pageTitle": "Contributing",
-		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution — code, docs, tests, or design — ships to real users.",
+		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution (code, docs, tests, or design) and ships to real users.",
 		"guide": {
 			"title": "Contributing Guide",
 			"description": "Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes."
@@ -148,7 +148,7 @@
 		},
 		"elements": {
 			"heading": "Six Elements, One Editor",
-			"description": "Land is built from six modular Elements — each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
+			"description": "Land is built from six modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
 			"docs": "Every Element has its own README with architecture details. Find them in Land/Element/"
 		},
 		"howToContribute": {
@@ -168,7 +168,7 @@
 		},
 		"step4": {
 			"title": "Submit a Pull Request",
-			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why — one sentence is enough."
+			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.."
 		},
 		"ways": {
 			"heading": "Ways to Contribute",
@@ -223,7 +223,7 @@
 		"features": {
 			"heading": "What Enterprise Includes",
 			"prioritySupport": "Priority support and guaranteed SLA",
-			"customDeployment": "Custom deployment options — cloud, on-prem, or air-gapped",
+			"customDeployment": "Custom deployment options: cloud, on-prem, or air-gapped",
 			"volumeLicensing": "Volume licensing for large teams",
 			"accountManagement": "Dedicated account manager for your organization",
 			"securityReview": "Security review and compliance documentation",
