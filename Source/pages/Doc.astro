@@ -36,7 +36,7 @@ const Element = [
 			defaultValue: "Replaces Electron's main process. Manages windows, file system, and process lifecycle at native speed.",
 		}),
 		Subtitle: T("common.docs.architecture.mountain.subtitle", {
-			defaultValue: "Rust/Tauri native backend",
+			defaultValue: "Native process manager",
 		}),
 	},
 	{
@@ -47,7 +47,7 @@ const Element = [
 			defaultValue: "Runs VS Code extensions via Effect-TS. Your existing extensions work without any modifications.",
 		}),
 		Subtitle: T("common.docs.architecture.cocoon.subtitle", {
-			defaultValue: "TypeScript extension host",
+			defaultValue: "Extension host, zero rewrites",
 		}),
 	},
 	{
@@ -55,10 +55,10 @@ const Element = [
 		Emoji: "🌀",
 		Repo: "Wind",
 		Description: T("common.docs.architecture.wind.description", {
-			defaultValue: "Full workbench shell",
+			defaultValue: "Re-implements the VS Code Workbench. Panels, sidebars, and the activity bar rebuilt without Electron.",
 		}),
 		Subtitle: T("common.docs.architecture.wind.subtitle", {
-			defaultValue: "TypeScript UI service",
+			defaultValue: "Full workbench shell",
 		}),
 	},
 	{
@@ -66,10 +66,10 @@ const Element = [
 		Emoji: "🌤️",
 		Repo: "Sky",
 		Description: T("common.docs.architecture.sky.description", {
-			defaultValue: "Renders the editor interface using Astro components",
+			defaultValue: "Renders the editor interface with Astro. Themes, layouts, and the visual layer load fast on every platform.",
 		}),
 		Subtitle: T("common.docs.architecture.sky.subtitle", {
-			defaultValue: "Astro UI component layer",
+			defaultValue: "Themes and layouts layer",
 		}),
 	},
 	{
@@ -78,10 +78,10 @@ const Element = [
 		Repo: "Air",
 		Description: T("common.docs.architecture.air.description", {
 			defaultValue:
-				"Background daemon for updates, downloads, and crypto signing",
+				"Keeps Land current without interrupting you. Every update is cryptographically signed before it is applied.",
 		}),
 		Subtitle: T("common.docs.architecture.air.subtitle", {
-			defaultValue: "Rust background daemon",
+			defaultValue: "Silent updates, always signed",
 		}),
 	},
 	{
@@ -93,7 +93,7 @@ const Element = [
 				"Saturates every CPU core with a work-stealing executor. Heavy indexing stays in the background; the editor stays fast.",
 		}),
 		Subtitle: T("common.docs.architecture.echo.subtitle", {
-			defaultValue: "Shared trait definitions and DTOs used across all elements. The foundation everything else builds on.",
+			defaultValue: "Uses every CPU core you have",
 		}),
 	},
 	{
@@ -101,10 +101,10 @@ const Element = [
 		Emoji: "📦",
 		Repo: "Common",
 		Description: T("common.docs.architecture.common.description", {
-			defaultValue: "Core shared library",
+			defaultValue: "Shared trait definitions and DTOs used across all elements. The foundation everything else builds on.",
 		}),
 		Subtitle: T("common.docs.architecture.common.subtitle", {
-			defaultValue: "Rust shared library",
+			defaultValue: "Core shared library",
 		}),
 	},
 	{
@@ -112,10 +112,10 @@ const Element = [
 		Emoji: "🌿",
 		Repo: "Vine",
 		Description: T("common.docs.architecture.vine.description", {
-			defaultValue: "Native IPC protocol",
+			defaultValue: "gRPC protocol definition bridging Rust and TypeScript at sub-millisecond latency.",
 		}),
 		Subtitle: T("common.docs.architecture.vine.subtitle", {
-			defaultValue: "WebSocket communication layer between the daemon and the editor frontend.",
+			defaultValue: "Native IPC protocol",
 		}),
 	},
 	{
@@ -124,10 +124,10 @@ const Element = [
 		Repo: "Mist",
 		Description: T("common.docs.architecture.mist.description", {
 			defaultValue:
-				"Live WebSocket bridge",
+				"WebSocket communication layer between the daemon and the editor frontend.",
 		}),
 		Subtitle: T("common.docs.architecture.mist.subtitle", {
-			defaultValue: "Bundles VS Code platform JavaScript with OXC. Produces the JS runtime Land ships in.",
+			defaultValue: "Live WebSocket bridge",
 		}),
 	},
 	{
@@ -136,10 +136,10 @@ const Element = [
 		Repo: "Rest",
 		Description: T("common.docs.architecture.rest.description", {
 			defaultValue:
-				"OXC-based JavaScript bundler for VS Code platform code",
+				"Bundles VS Code platform JavaScript with OXC. Produces the JS runtime Land ships in.",
 		}),
 		Subtitle: T("common.docs.architecture.rest.subtitle", {
-			defaultValue: "Rust JS bundler",
+			defaultValue: "Platform JS bundler",
 		}),
 	},
 	{
@@ -147,10 +147,10 @@ const Element = [
 		Emoji: "📤",
 		Repo: "Output",
 		Description: T("common.docs.architecture.output.description", {
-			defaultValue: "Bundled JavaScript artifacts produced by Rest",
+			defaultValue: "The compiled JavaScript artifacts from Rest, ready for the editor runtime.",
 		}),
 		Subtitle: T("common.docs.architecture.output.subtitle", {
-			defaultValue: "JavaScript bundle",
+			defaultValue: "JavaScript runtime bundle",
 		}),
 	},
 	{
@@ -158,10 +158,10 @@ const Element = [
 		Emoji: "🌳",
 		Repo: "Grove",
 		Description: T("common.docs.architecture.grove.description", {
-			defaultValue: "WASM and Rhai scripting extension host",
+			defaultValue: "Hosts native WASM and Rhai extensions alongside the TypeScript extension host.",
 		}),
 		Subtitle: T("common.docs.architecture.grove.subtitle", {
-			defaultValue: "Rust WASM host",
+			defaultValue: "WASM and Rhai extension host",
 		}),
 	},
 	{
@@ -169,10 +169,10 @@ const Element = [
 		Emoji: "⚙️",
 		Repo: "Worker",
 		Description: T("common.docs.architecture.worker.description", {
-			defaultValue: "Web Workers for CPU-intensive frontend tasks",
+			defaultValue: "Web Workers that offload heavy computation from the main UI thread.",
 		}),
 		Subtitle: T("common.docs.architecture.worker.subtitle", {
-			defaultValue: "TypeScript Web Workers",
+			defaultValue: "Background web workers",
 		}),
 	},
 	{
@@ -181,10 +181,10 @@ const Element = [
 		Repo: "SideCar",
 		Description: T("common.docs.architecture.sidecar.description", {
 			defaultValue:
-				"Pre-built Node.js binaries for cross-platform extension support",
+				"Pre-built Node.js binaries that ship with Land for cross-platform compatibility.",
 		}),
 		Subtitle: T("common.docs.architecture.sidecar.subtitle", {
-			defaultValue: "Cross-platform Node.js",
+			defaultValue: "Bundled Node.js runtime",
 		}),
 	},
 	{
@@ -193,10 +193,10 @@ const Element = [
 		Repo: "Maintain",
 		Description: T("common.docs.architecture.maintain.description", {
 			defaultValue:
-				"CI/CD and maintenance scripts for the Land ecosystem",
+				"CI/CD pipelines and maintenance scripts that keep every element building and tested.",
 		}),
 		Subtitle: T("common.docs.architecture.maintain.subtitle", {
-			defaultValue: "Build tooling",
+			defaultValue: "Build automation",
 		}),
 	},
 ];
@@ -246,7 +246,7 @@ const Element = [
 								class="transition-colors hover:text-foreground"
 								>{
 									T("common.breadcrumb.home", {
-										defaultValue: "Documentation",
+										defaultValue: "Home",
 									})
 								}</a
 							>
@@ -269,7 +269,7 @@ const Element = [
 					<h1 class="mb-4 text-4xl font-bold tracking-tight">
 						{
 							T("common.docs.pageTitle", {
-								defaultValue: "Everything you need to install, build, and contribute to Land.",
+								defaultValue: "Documentation",
 							})
 						}
 					</h1>
@@ -277,7 +277,7 @@ const Element = [
 						{
 							T("common.docs.pageSubtitle", {
 								defaultValue:
-									"Everything you need to get started with Code Editor Land.",
+									"Everything you need to install, build, and contribute to Land.",
 							})
 						}
 					</p>
@@ -293,7 +293,7 @@ const Element = [
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.gettingStarted.title", {
-									defaultValue: "The README walks you through installation, first build, and the six-element architecture. No prior Rust or Tauri knowledge required.",
+									defaultValue: "Get Started in Minutes",
 								})
 							}
 						</h2>
@@ -301,7 +301,7 @@ const Element = [
 							{
 								T("common.docs.gettingStarted.description", {
 									defaultValue:
-										"Read the README for installation instructions, build steps, and an overview of the project architecture.",
+										"The README walks you through installation, first build, and the six-element architecture. No prior Rust or Tauri knowledge required.",
 								})
 							}
 						</p>
@@ -315,7 +315,7 @@ const Element = [
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.issueTracker.title", {
-									defaultValue: "Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors.",
+									defaultValue: "Report a Bug or Request a Feature",
 								})
 							}
 						</h2>
@@ -323,7 +323,7 @@ const Element = [
 							{
 								T("common.docs.issueTracker.description", {
 									defaultValue:
-										"Report bugs, request features, or browse existing issues on GitHub.",
+										"Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors.",
 								})
 							}
 						</p>
@@ -395,7 +395,7 @@ const Element = [
 					<h2 class="mb-6 text-2xl font-semibold">
 						{
 							T("common.docs.architecture.heading", {
-								defaultValue: "Land replaces VS Code's Electron stack piece by piece. Each element is an independent open-source repository:",
+								defaultValue: "How the Architecture Works",
 							})
 						}
 					</h2>
@@ -405,7 +405,7 @@ const Element = [
 							{
 								T("common.docs.architecture.intro", {
 									defaultValue:
-										"Land replaces VS Code's Electron stack with a modern, high-performance architecture:",
+										"Land replaces VS Code's Electron stack piece by piece. Each element is an independent open-source repository:",
 								})
 							}
 						</p>

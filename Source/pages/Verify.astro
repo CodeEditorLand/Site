@@ -18,7 +18,7 @@ const VerifyContent = {
 			}),
 			ResendButton: {
 				Text: T("verify.pending.resendButton", {
-					defaultValue: "Email verified!",
+					defaultValue: "Resend Verification Email",
 				}),
 				Variant: "default",
 				FullWidth: true,
@@ -26,14 +26,14 @@ const VerifyContent = {
 		},
 		Success: {
 			Title: T("verify.success.title", {
-				defaultValue: "Continue to Homepage",
+				defaultValue: "Email verified!",
 			}),
 			Description: T("verify.success.description", {
-				defaultValue: "Your email address has been verified.",
+				defaultValue: "Your email has been successfully verified.",
 			}),
 			ContinueButton: {
 				Text: T("verify.success.continueButton", {
-					defaultValue: "Verification failed",
+					defaultValue: "Continue to Homepage",
 				}),
 				Variant: "default",
 				FullWidth: true,
@@ -41,10 +41,10 @@ const VerifyContent = {
 		},
 		Error: {
 			Title: T("verify.error.title", {
-				defaultValue: "Back to Sign In",
+				defaultValue: "Verification failed",
 			}),
 			Description: T("verify.error.description", {
-				defaultValue: "An error occurred during verification.",
+				defaultValue: "This verification link is invalid or has expired.",
 			}),
 			BackToSignInButton: {
 				Text: T("verify.error.backToSignInButton", {
@@ -62,10 +62,10 @@ const Reason = Astro.url.searchParams.get("reason");
 const Route = Token ? "verify" : Reason ? "failure" : "pending";
 
 const MetaTitle = T("meta.verify.title", {
-	defaultValue: "A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 7 days.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share this email with anyone.",
+	defaultValue: "Verify Email - Code Editor Land",
 });
 const MetaDescription = T("verify.pending.description", {
-	defaultValue: "Verify your email address to activate your account.",
+	defaultValue: "A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 7 days.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share this email with anyone.",
 });
 ---
 

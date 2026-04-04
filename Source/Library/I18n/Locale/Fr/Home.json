@@ -118,12 +118,21 @@
 				"name": "Phase actuelle",
 				"description": "Fondation et échafaudage de l'éditeur principal.\n\nDéveloppement actif.",
 				"features": {
-					"1": "Mountain : backend natif Rust/Tauri",
-					"2": "Cocoon : hôte d'extension VS Code via Effect-TS",
-					"3": "Wind : ré-implémentation du Workbench",
-					"4": "Sky : rendu de l'interface de l'éditeur",
-					"5": "Air : démon de mise à jour et signature cryptographique",
-					"6": "Echo : planificateur de tâches à vol de travail"
+					"mountain": "Mountain ⛰️\nbackend natif Rust/Tauri",
+					"cocoon": "Cocoon 🦋\nhôte d'extension VS Code via Effect-TS",
+					"wind": "Wind 🍃\nré-implémentation du Workbench",
+					"sky": "Sky 🌌\nrendu de l'interface de l'éditeur",
+					"air": "Air 🪁\ndémon de mise à jour et signature cryptographique",
+					"echo": "Echo 📣\nplanificateur de tâches à vol de travail",
+					"common": "Common 👨🏻‍🏭\nAbstract Rust foundation, typed effects, zero concrete implementations",
+					"grove": "Grove 🌳\nWASMtime sandbox, capability-based extension isolation",
+					"maintain": "Maintain 💪🏻\nBuild orchestrator, Rhai scripting, TOML/JSON5 config",
+					"mist": "Mist 🌫️\nDNS sandbox, all *.editor.land traffic resolves locally",
+					"output": "Output ⚫\nCompilation pipeline, deterministic checksummed bundles",
+					"rest": "Rest ⛱️\nTypeScript compiler in Rust + OXC, 2–3× faster than esbuild",
+					"sidecar": "SideCar ⚙️\nCross-platform Node.js binary distributor per target triple",
+					"vine": "Vine 🌿\ngRPC backbone, contract-first .proto definitions",
+					"worker": "Worker 🍩\nService Worker, offline support, AES-GCM encrypted auth"
 				},
 				"button": "Voir sur GitHub"
 			},

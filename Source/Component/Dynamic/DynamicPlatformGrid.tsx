@@ -50,10 +50,10 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 			defaultValue: "Requirements:",
 		}),
 		Loading: LoadingLabel = T("labels.loading", {
-			defaultValue: "Loading downloads...",
+			defaultValue: "Loading available downloads...",
 		}),
 		ErrorTitle: ErrorTitleLabel = T("labels.errorTitle", {
-			defaultValue: "Unable to load downloads",
+			defaultValue: "Could not load downloads",
 		}),
 		DownloadFailed: DownloadFailedLabel = T("labels.downloadFailed", {
 			defaultValue: "Download failed. Please try again.",

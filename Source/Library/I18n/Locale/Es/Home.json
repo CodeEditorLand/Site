@@ -118,12 +118,21 @@
 				"name": "Fase actual",
 				"description": "Fundación y andamiaje del editor principal.\n\nDesarrollo activo.",
 				"features": {
-					"1": "Mountain: backend nativo Rust/Tauri",
-					"2": "Cocoon: host de extensiones VS Code via Effect-TS",
-					"3": "Wind: reimplementación del Workbench",
-					"4": "Sky: renderizado de la interfaz del editor",
-					"5": "Air: demonio de actualización y firma criptográfica",
-					"6": "Echo: programador de tareas con robo de trabajo"
+					"mountain": "Mountain ⛰️\nbackend nativo Rust/Tauri",
+					"cocoon": "Cocoon 🦋\nhost de extensiones VS Code via Effect-TS",
+					"wind": "Wind 🍃\nreimplementación del Workbench",
+					"sky": "Sky 🌌\nrenderizado de la interfaz del editor",
+					"air": "Air 🪁\ndemonio de actualización y firma criptográfica",
+					"echo": "Echo 📣\nprogramador de tareas con robo de trabajo",
+					"common": "Common 👨🏻‍🏭\nAbstract Rust foundation, typed effects, zero concrete implementations",
+					"grove": "Grove 🌳\nWASMtime sandbox, capability-based extension isolation",
+					"maintain": "Maintain 💪🏻\nBuild orchestrator, Rhai scripting, TOML/JSON5 config",
+					"mist": "Mist 🌫️\nDNS sandbox, all *.editor.land traffic resolves locally",
+					"output": "Output ⚫\nCompilation pipeline, deterministic checksummed bundles",
+					"rest": "Rest ⛱️\nTypeScript compiler in Rust + OXC, 2–3× faster than esbuild",
+					"sidecar": "SideCar ⚙️\nCross-platform Node.js binary distributor per target triple",
+					"vine": "Vine 🌿\ngRPC backbone, contract-first .proto definitions",
+					"worker": "Worker 🍩\nService Worker, offline support, AES-GCM encrypted auth"
 				},
 				"button": "Ver en GitHub"
 			},
