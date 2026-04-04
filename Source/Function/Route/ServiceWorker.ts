@@ -1,3 +1,16 @@
+/**
+ * ServiceWorker — route redirector, auth gate, and cache manager.
+ *
+ * Three responsibilities:
+ * 1. PascalCase URL normalization (redirect variants to canonical)
+ * 2. Auth-gated API requests (Bearer token + HMAC signing)
+ * 3. Asset caching (versioned route/asset caches + persistent auth cache)
+ *
+ * Build-time injected: __ROUTE_MAP_CANONICAL__, __ROUTE_MAP_VARIANT__,
+ * __INCREMENT__ (cache version), __DEV__ (skip caching in dev).
+ *
+ * Compiled with esbuild via /SW-Esbuild skill.
+ */
 /// <reference lib="webworker" />
 
 declare var self: ServiceWorkerGlobalScope;

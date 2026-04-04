@@ -1,3 +1,9 @@
+/**
+ * DynamicPlatformGrid — download section with OS-specific cards.
+ *
+ * Auto-detects the user's platform and highlights the matching card.
+ * Each card shows version, file size, checksum, and direct download link.
+ */
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 

@@ -1,3 +1,12 @@
+/**
+ * I18n Client — browser-side i18next initialization with lazy namespace loading.
+ *
+ * Supports 5 locales (en, bg, de, fr, es) with 10 namespaces loaded on demand.
+ * Two-phase init: starts with lng:"en", then switches to detected locale
+ * post-hydration to avoid SSR/client mismatch.
+ *
+ * See /Astro-I18n-Hydration skill for the hydration pattern.
+ */
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 

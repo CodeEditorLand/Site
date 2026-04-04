@@ -1,3 +1,9 @@
+/**
+ * Footer — site-wide footer with navigation columns, social links,
+ * funding attribution (NLnet/NGI0), and locale switcher.
+ *
+ * Content is fully i18n-driven via useTranslation("footer").
+ */
 "use client";
 
 import { useTranslation } from "react-i18next";

@@ -1,3 +1,13 @@
+/**
+ * WorkerClient — typed HTTP client for all Cloudflare Worker APIs.
+ *
+ * Handles auth (JWT Bearer), analytics, downloads, status, and GitHub
+ * integration. Localhost detection enables local dev tokens without a
+ * real auth flow.
+ *
+ * Each method returns `APIResponse<T>` for consistent error handling.
+ */
+
 import type AnalyticsEvent from "./Interface/AnalyticsEvent.js";
 import type APIResponse from "./Interface/APIResponse.js";
 import type Download from "./Interface/Download.js";

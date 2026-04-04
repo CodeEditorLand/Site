@@ -1,3 +1,11 @@
+/**
+ * AccountPage — orchestrates sign-in, sign-up, forgot-password, and
+ * reset-password views as a single-page flow.
+ *
+ * Switches between views based on Route prop ("SignIn" | "SignUp" |
+ * "ForgotPassword" | "ResetPassword"). Handles Auth0 token exchange
+ * and error display via toast notifications.
+ */
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 

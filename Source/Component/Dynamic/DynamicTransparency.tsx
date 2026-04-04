@@ -1,3 +1,10 @@
+/**
+ * DynamicTransparency — build transparency section showing SBOM,
+ * dependency tree, and build reproducibility information.
+ *
+ * Renders categorized items with copy-to-clipboard and expandable
+ * details. Content is driven by the Transparency interface.
+ */
 import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
