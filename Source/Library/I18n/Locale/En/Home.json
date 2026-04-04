@@ -116,14 +116,14 @@
 		"tiers": {
 			"current": {
 				"name": "Free",
-				"description": "Six open-source elements in active development. Each is a standalone repository you can read, run, and contribute to today.",
+				"description": "Six open-source elements building the editor core. Read, run, and contribute to each today.",
 				"features": {
-					"1": "High-Fidelity VS Code Extension Compatibility",
-					"2": "Cross-Platform Installer with Silent Auto-Update",
-					"3": "gRPC IPC Protocol Finalized and Documented",
-					"4": "Settings Sync via Cloud-Optional Portal",
-					"5": "Verified CDN Download Distribution",
-					"6": "Command Palette (Cmd+K)"
+					"1": "Native Rust Backend No Electron",
+					"2": "Full VS Code Extension Compatibility",
+					"3": "Effect-TS Service Layer End to End",
+					"4": "CC0 Public Domain No Restriction",
+					"5": "NLnet NGI0 Commons Fund",
+					"6": "macOS Windows Linux"
 				},
 				"button": "View on GitHub",
 				"elements": {
@@ -131,7 +131,7 @@
 					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code Extensions Run Unchanged",
 					"wind": "Wind 🍃\nWorkbench Shell\nPanels, Sidebars, Activity Bar",
 					"sky": "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
-					"air": "Air 🪁\nBackground Daemon\nSilent Update, Crypto-Signed",
+					"air": "Air 🪁\nBackground Daemon\nSilent Update Crypto-Signed",
 					"echo": "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated"
 				}
 			},
@@ -147,20 +147,24 @@
 				"button": "Track Progress"
 			},
 			"future": {
-				"name": "Future",
-				"description": "The nine supporting elements complete the platform. Each extends Land with infrastructure that no Electron editor can match.",
-				"features": [],
-				"button": "Explore Elements",
+				"name": "v1.0",
+				"description": "Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",
+				"features": [
+					"Cross-Platform Native Installer",
+					"Command Palette (Cmd+K)",
+					"Source Map Generation via Rest",
+					"Signed Release Distribution",
+					"Settings Sync via Cloud-Optional Portal",
+					"gRPC IPC Protocol Finalized"
+				],
+				"button": "Track Progress",
 				"elements": {
-					"common": "Common 👨🏻‍🏭\nShared Foundation\nAbstract Traits, Zero Implementations",
-					"vine": "Vine 🌿\ngRPC Backbone\nContract-First .proto Definition",
-					"grove": "Grove 🌳\nWASMtime Sandbox\nCapability-Based Isolation",
-					"mist": "Mist 🌫️\nDNS Sandbox\nLocal *.editor.land Resolution",
-					"rest": "Rest ⛱️\nTypeScript Compiler\nRust + OXC, 2-3x Faster",
-					"output": "Output ⚫\nCompilation Pipeline\nDeterministic Bundle, Checksum",
-					"sidecar": "SideCar ⚙️\nNode.js Distributor\nCorrect Binary Per Platform",
-					"worker": "Worker 🍩\nService Worker\nOffline Support, AES-GCM Auth",
-					"maintain": "Maintain 💪🏻\nBuild Orchestrator\nRhai Scripting, TOML/JSON5 Config"
+					"vine": "Vine 🌿\nProtocol In Progress\nMountain ↔ Grove Channel Completing",
+					"cocoon": "Cocoon 🦋\nExtension Compatibility Pass\nHigh-Fidelity VS Code API Coverage",
+					"grove": "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-Based Extension Isolation",
+					"rest": "Rest ⛱️\nSource Map Support\nOXC Transformer Integration In Progress",
+					"echo": "Echo 📣\nScheduler Optimization\nFaster Steal Lower Latency",
+					"air": "Air 🪁\nSigned CDN Delivery\nCloudflare Workers Distribution"
 				}
 			}
 		}

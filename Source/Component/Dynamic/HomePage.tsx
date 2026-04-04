@@ -253,7 +253,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"Six open-source elements in active development. Each is a standalone repository you can read, run, and contribute to today.",
+							"Six open-source elements building the editor core. Read, run, and contribute to each today.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
@@ -270,7 +270,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 							defaultValue: "Sky 🌌\nAstro UI Layer\nEvery Panel Is a Component",
 						}),
 						T("home:roadmap.tiers.current.elements.air", {
-							defaultValue: "Air 🪁\nBackground Daemon\nSilent Update, Crypto-Signed",
+							defaultValue: "Air 🪁\nBackground Daemon\nSilent Update Crypto-Signed",
 						}),
 						T("home:roadmap.tiers.current.elements.echo", {
 							defaultValue: "Echo 📣\nWork-Stealing Scheduler\nEvery CPU Core Saturated",
@@ -278,22 +278,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "High-Fidelity VS Code Extension Compatibility",
+							defaultValue: "Native Rust Backend No Electron",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
-							defaultValue: "Cross-Platform Installer with Silent Auto-Update",
+							defaultValue: "Full VS Code Extension Compatibility",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "gRPC IPC Protocol Finalized and Documented",
+							defaultValue: "Effect-TS Service Layer End to End",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "Settings Sync via Cloud-Optional Portal",
+							defaultValue: "CC0 Public Domain No Restriction",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
-							defaultValue: "Verified CDN Download Distribution",
+							defaultValue: "NLnet NGI0 Commons Fund",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
-							defaultValue: "Command Palette (Cmd+K)",
+							defaultValue: "macOS Windows Linux",
 						}),
 					],
 					CTA: {
@@ -306,51 +306,61 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Popular: true,
 				},
 				{
-					Id: "future",
+					Id: "progress",
 					Name: T("home:roadmap.tiers.future.name", {
-						defaultValue: "Future",
+						defaultValue: "v1.0",
 					}),
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"The nine supporting elements complete the platform. Each extends Land with infrastructure that no Electron editor can match.",
+							"Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
-						T("home:roadmap.tiers.future.elements.common", {
-							defaultValue: "Common 👨🏻‍🏭\nShared Foundation\nAbstract Traits, Zero Implementations",
-						}),
 						T("home:roadmap.tiers.future.elements.vine", {
-							defaultValue: "Vine 🌿\ngRPC Backbone\nContract-First .proto Definition",
+							defaultValue: "Vine 🌿\nProtocol In Progress\nMountain ↔ Grove Channel Completing",
+						}),
+						T("home:roadmap.tiers.future.elements.cocoon", {
+							defaultValue: "Cocoon 🦋\nExtension Compatibility Pass\nHigh-Fidelity VS Code API Coverage",
 						}),
 						T("home:roadmap.tiers.future.elements.grove", {
-							defaultValue: "Grove 🌳\nWASMtime Sandbox\nCapability-Based Isolation",
-						}),
-						T("home:roadmap.tiers.future.elements.mist", {
-							defaultValue: "Mist 🌫️\nDNS Sandbox\nLocal *.editor.land Resolution",
+							defaultValue: "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-Based Extension Isolation",
 						}),
 						T("home:roadmap.tiers.future.elements.rest", {
-							defaultValue: "Rest ⛱️\nTypeScript Compiler\nRust + OXC, 2-3x Faster",
+							defaultValue: "Rest ⛱️\nSource Map Support\nOXC Transformer Integration In Progress",
 						}),
-						T("home:roadmap.tiers.future.elements.output", {
-							defaultValue: "Output ⚫\nCompilation Pipeline\nDeterministic Bundle, Checksum",
+						T("home:roadmap.tiers.future.elements.echo", {
+							defaultValue: "Echo 📣\nScheduler Optimization\nFaster Steal Lower Latency",
 						}),
-						T("home:roadmap.tiers.future.elements.sidecar", {
-							defaultValue: "SideCar ⚙️\nNode.js Distributor\nCorrect Binary Per Platform",
-						}),
-						T("home:roadmap.tiers.future.elements.worker", {
-							defaultValue: "Worker 🍩\nService Worker\nOffline Support, AES-GCM Auth",
-						}),
-						T("home:roadmap.tiers.future.elements.maintain", {
-							defaultValue: "Maintain 💪🏻\nBuild Orchestrator\nRhai Scripting, TOML/JSON5 Config",
+						T("home:roadmap.tiers.future.elements.air", {
+							defaultValue: "Air 🪁\nSigned CDN Delivery\nCloudflare Workers Distribution",
 						}),
 					],
-					Features: [],
+					Features: [
+						T("home:roadmap.tiers.future.features.1", {
+							defaultValue: "Cross-Platform Native Installer",
+						}),
+						T("home:roadmap.tiers.future.features.2", {
+							defaultValue: "Command Palette (Cmd+K)",
+						}),
+						T("home:roadmap.tiers.future.features.3", {
+							defaultValue: "Source Map Generation via Rest",
+						}),
+						T("home:roadmap.tiers.future.features.4", {
+							defaultValue: "Signed Release Distribution",
+						}),
+						T("home:roadmap.tiers.future.features.5", {
+							defaultValue: "Settings Sync via Cloud-Optional Portal",
+						}),
+						T("home:roadmap.tiers.future.features.6", {
+							defaultValue: "gRPC IPC Protocol Finalized",
+						}),
+					],
 					CTA: {
 						Text: T("home:roadmap.tiers.future.button", {
-							defaultValue: "Explore Elements",
+							defaultValue: "Track Progress",
 						}),
 						Variant: "outline",
-						Href: "https://github.com/CodeEditorLand",
+						Href: "https://github.com/CodeEditorLand/Land/milestones",
 					},
 					Popular: false,
 				},
