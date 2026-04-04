@@ -103,12 +103,13 @@
 			)
 		)
 		scale(var(--AttentionScale, 1));
-	/* live border shimmer is intentional - it is a "flashing light", not movement */
-	border-width: calc(1px + var(--StaccatoBorder) * 0.25px);
+	/* border-width removed: it triggers layout (CLS). Use outline for shimmer. */
+	outline: calc(var(--StaccatoBorder) * 0.25px) solid hsl(0 0% calc(82% + var(--StaccatoBorder) * 5%));
+	outline-offset: -1px;
 	opacity: var(--AttentionOpacity, 1);
 	transition:
 		transform var(--StaccatoLerp) cubic-bezier(0.25, 0.46, 0.45, 0.94),
-		border-width 0.15s ease;
+		outline 0.15s ease;
 	transition-delay: var(--AttentionDelay, 0ms);
 }
 .StaccatoCard:hover {
@@ -166,7 +167,7 @@
 		calc(var(--StaccatoSeed, 0) * 1px),
 		calc(var(--StaccatoSeedPhase, 0) * 0.5px)
 	);
-	opacity: calc(0.85 + var(--StaccatoRaw) * 0.15);
+	opacity: max(0.7, calc(0.85 + var(--StaccatoRaw) * 0.15));
 	transition:
 		transform 0.5s ease,
 		opacity 1.4s ease;
@@ -191,23 +192,19 @@
 	transform: none;
 }
 
-/* Price - seed micro-scale + letter-spacing variance */
+/* Price - seed micro-scale only (letter-spacing causes CLS) */
 .StaccatoPrice {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.005));
-	letter-spacing: calc(var(--StaccatoSeed, 0) * 0.08px);
-	transition:
-		transform var(--StaccatoLerp) ease,
-		letter-spacing var(--StaccatoLerp) ease;
+	transition: transform var(--StaccatoLerp) ease;
 }
 .StaccatoPrice:hover {
 	transform: scale(1);
-	letter-spacing: normal;
 }
 
 /* Checkmark - seed scale; live opacity shine is a "flashing light" */
 .StaccatoCheckmark {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.03));
-	opacity: calc(0.82 + var(--StaccatoRaw) * 0.18);
+	opacity: max(0.5, calc(0.82 + var(--StaccatoRaw) * 0.18));
 	transition: transform var(--StaccatoLerp) ease;
 }
 .StaccatoCheckmark:hover {
@@ -229,7 +226,7 @@
 		calc(var(--StaccatoSeed, 0) * 2px),
 		calc(var(--StaccatoSeedPhase, 0) * 1.5px)
 	);
-	opacity: calc(0.72 + var(--StaccatoRaw) * 0.28);
+	opacity: max(0.5, calc(0.72 + var(--StaccatoRaw) * 0.28));
 	transition:
 		transform 0.5s ease,
 		opacity 1.4s ease;
@@ -253,19 +250,23 @@
 	opacity: 1;
 }
 .StaccatoBadge .StaccatoDot {
-	opacity: calc(0.5 + var(--StaccatoRhythm) * 0.5);
+	opacity: max(0.5, calc(0.5 + var(--StaccatoRhythm) * 0.5));
 	transform: scale(calc(0.9 + var(--StaccatoRhythm) * 0.2));
 }
 
-/* Morphing - seed-based (set once, not live animated) */
+/* Morphing - seed-based (set once, not live animated)
+   NOTE: padding and gap are LAYOUT properties and cause CLS.
+   Only border-radius (paint-only) is safe here. */
 .StaccatoMorphRadius {
 	border-radius: calc(max(var(--StaccatoSeed, 0), 0px) * 1.5px);
 }
 .StaccatoMorphPadding {
-	padding: calc(1rem + var(--StaccatoSeed, 0) * 0.08rem);
+	/* Disabled: padding changes cause CLS (layout shift).
+	   padding: calc(1rem + var(--StaccatoSeed, 0) * 0.08rem); */
 }
 .StaccatoMorphGap {
-	gap: calc(1rem + var(--StaccatoSeed, 0) * 0.15rem);
+	/* Disabled: gap changes cause CLS (layout shift).
+	   gap: calc(1rem + var(--StaccatoSeed, 0) * 0.15rem); */
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -320,11 +321,11 @@
    ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoOpacity {
-	opacity: calc(0.82 + var(--StaccatoRaw) * 0.18);
+	opacity: max(0.8, calc(0.82 + var(--StaccatoRaw) * 0.18));
 }
 
 .StaccatoBreath {
-	opacity: calc(var(--AttentionOpacity, 0.9) + var(--StaccatoRaw) * 0.1);
+	opacity: max(0.8, calc(var(--AttentionOpacity, 0.9) + var(--StaccatoRaw) * 0.1));
 	/* 1.6s > commit interval (500ms) so the element is always mid-transition
 	   between two noise states — continuous breathing, never a hard jump */
 	transition: opacity 1.6s ease;
@@ -334,7 +335,7 @@
 }
 
 .StaccatoPulse {
-	opacity: calc(0.55 + var(--StaccatoRhythm) * 0.45);
+	opacity: max(0.5, calc(0.55 + var(--StaccatoRhythm) * 0.45));
 }
 
 /* ─── Color ─── */
@@ -352,8 +353,9 @@
 /* ─── Border & Outline ─── */
 
 .StaccatoBorderWeight {
-	/* Reduced from 0.5px → 0.25px */
-	border-width: calc(1px + var(--StaccatoBorder) * 0.25px);
+	/* border-width causes CLS. Use outline instead. */
+	outline: calc(var(--StaccatoBorder) * 0.25px) solid currentColor;
+	outline-offset: -1px;
 }
 
 .StaccatoBorderShimmer {
@@ -395,12 +397,12 @@
 	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.01));
 }
 .StaccatoRhythmDot {
-	opacity: calc(0.4 + var(--StaccatoRhythm) * 0.6);
+	opacity: max(0.5, calc(0.4 + var(--StaccatoRhythm) * 0.6));
 }
 
 /* Loading spinner */
 .StaccatoSpinner {
-	opacity: calc(0.65 + var(--StaccatoRaw) * 0.35);
+	opacity: max(0.5, calc(0.65 + var(--StaccatoRaw) * 0.35));
 }
 
 /* Separator / divider - opacity only; micro-scale kept but near-zero */
@@ -516,7 +518,7 @@
 	vertical-align: text-bottom;
 	margin-left: 1px;
 	background: currentColor;
-	opacity: calc(0.3 + var(--StaccatoRhythm, 0) * 0.7);
+	opacity: max(0.5, calc(0.3 + var(--StaccatoRhythm, 0) * 0.7));
 	pointer-events: none;
 	user-select: none;
 }

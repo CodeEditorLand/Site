@@ -14,6 +14,9 @@ html {
 		"Helvetica Neue",
 		Arial,
 		sans-serif;
+	/* font-size-adjust stabilizes line height across fallback → Albert Sans swap,
+	   reducing CLS from text reflow. 0.48 matches Albert Sans x-height ratio. */
+	font-size-adjust: 0.48;
 }
 
 /* Emoji and symbol fallback fonts for special characters like ★☆ */
@@ -50,6 +53,23 @@ main > astro-island {
 
 /* Once hydrated and content is rendered, release the reserved space */
 main > astro-island:has(> :first-child) {
+	min-height: auto;
+	contain-intrinsic-block-size: auto;
+}
+
+/* CLS prevention: Header island — reserve the exact header bar height (h-14 = 3.5rem)
+ * so the sticky header doesn't shift content when it hydrates. */
+main ~ astro-island,
+body > astro-island {
+	display: block;
+}
+
+/* Footer wrapper: reserve space before client:idle hydration */
+#Footer {
+	min-height: 280px;
+	contain-intrinsic-block-size: 280px;
+}
+#Footer:has(> astro-island > :first-child) {
 	min-height: auto;
 	contain-intrinsic-block-size: auto;
 }
