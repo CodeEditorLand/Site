@@ -1,16 +1,16 @@
-const e={badge:"Feature",item:{designTokens:{description:`Stop handing VS Code a gigabyte of RAM just to open a file.
+const e={badge:"Feature",item:{designTokens:{title:"No RAM tax. No blocked editor.",description:`VS Code with a medium project uses 500 MB to 1.5 GB RAM. Electron bundles Chromium into every window and the heap never shrinks.
 
-Land's Rust core with gRPC IPC responds in microseconds. Even with hundreds of files open.`,title:"No Lag, Ever"},componentLibrary:{description:`Your entire VS Code extension library works out of the box.
+Land uses the OS's own renderer. No bundled Chromium. Mountain's Rust core responds in microseconds and releases memory when you close a file.`},componentLibrary:{title:"Every extension runs unchanged.",description:`Cocoon intercepts require and import at the module level and routes VS Code API calls through a full Effect-TS service layer. Every extension sees the exact same vscode.* API it always has.
 
-The Cocoon host mirrors the full VS Code API surface. Nothing needs rewriting.`,title:"Your Extensions, Unchanged"},documentation:{description:`Effect-TS gives you typed services, structured concurrency, and traced errors.
+Install anything from the marketplace. Nothing needs to be ported, patched, or rewritten.`},documentation:{title:"Extensions run concurrently, not in turns.",description:`VS Code's extension host is a single Node.js process. One extension's hung Promise blocks every other. Effect-TS fibers are not Promises: they can be interrupted, raced, and run in parallel across CPU cores.
 
-Bugs are caught at compile time, not at 3 am.`,title:"Type-Safe End to End"},versionControl:{description:`One codebase compiles to fully native apps on macOS, Windows, and Linux via Tauri.
+One extension crash does not affect the others. Bugs are caught at compile time, not at 3 am.`},versionControl:{title:"One binary. Native on every OS.",description:`One codebase compiles to fully native apps on macOS, Windows, and Linux via Tauri. The OS's own renderer draws the UI. No Electron IPC proxy. No renderer-to-main roundtrip for file dialogs.
 
-Publish to all three platforms with a single command.`,title:"One Build, Every Platform"},collaboration:{description:`CC0 public domain. Use it, fork it, ship it, even sell it.
+Publish to all three platforms with a single command.`},cicdIntegration:{title:"The stack built for correctness.",description:`Rust, Tauri, Effect-TS, and Biome — every choice was made because it catches more bugs earlier.
 
-NLnet-funded and built entirely in the open.`,title:"Free Forever, No Strings"},cicdIntegration:{description:`Rust, Tauri, Effect-TS, and Biome form a stack chosen for correctness and developer velocity.
+Typed at the wire (Vine gRPC). Typed effects throughout (Common + Cocoon). Deterministic builds (Output). Familiar to VS Code developers, but without the failure modes.`},collaboration:{title:"CC0. No restrictions. No telemetry.",description:`The Telemetry feature is not in default features. When it is not compiled in, the code paths do not exist. There is nothing to disable because there is nothing there.
 
-Familiar tools, no compromises.`,title:"Best-in-Class Toolchain"}},subtitle:"Six features that explain why Land is faster, safer, and more open than every Electron-based editor.",title:"Built Different. Measurably Better."},t={badge:"Native Speed   No Electron   CC0",subtitle:`Stop handing VS Code a gigabyte of RAM.
+CC0 public domain. Fork it, ship it, sell it. NLnet-funded, built entirely in the open.`}},subtitle:"The extension ecosystem you rely on, running on a stack built for performance.",title:"VS Code. Without Electron."},t={badge:"Native Speed   No Electron   CC0",subtitle:`Stop handing VS Code a gigabyte of RAM.
 
 Land is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.`,title:"The Future of Code Editing",titleHighlight:"Land",atScale:"starts here",cta:{primary:"Download",secondary:"Learn More"},scene:{description:"Animated architecture visualization",hub:"Core Architecture",components:{button:"Rust Core",colors:"Tauri UI",typography:"Effect-TS Services",components:"gRPC IPC",spacing:"Extension Host",icons:"Cross-Platform",docs:"VS Code API",versions:"Open Source CC0"}}},n={docs:"Docs",downloads:"Download",features:"Features",github:"GitHub"},o={subtitle:`Code Editor Land is completely free.
 
@@ -30,9 +30,9 @@ No more Electron memory bloat.`,5:`The open-source commitment means I can contri
 
 This is the editor I've been waiting for.`,6:`The gRPC-based architecture is a masterclass in system design.
 
-Land is the future of desktop editors.`},subtitle:"Community voices on the future of code editing.",title:"What developers are saying",badge:"Testimonial",attribution:"Community Feedback",attributionNote:"Representative community member"},r={title:"Roadmap & What to Expect",subtitle:`Funded by NLnet NGI0 Commons Fund.
+Land is the future of desktop editors.`},subtitle:"Community voices on the future of code editing.",title:"What developers are saying",badge:"Testimonial",attribution:"Community Feedback",attributionNote:"Representative community member"},s={title:"The Architecture is Built. Here is What Comes Next.",subtitle:`Funded by NLnet NGI0 Commons Fund.
 
-Built in public, free forever, no roadmap surprises.`,tiers:{current:{name:"Free",description:"Six open-source elements building the editor core. Read, run, and contribute to each today.",features:{1:"VS Code Extension Compatibility Zero Rewrites",2:"Native Rust Backend No Electron",3:"macOS Windows Linux",4:"CC0 Public Domain No Restriction",5:"gRPC IPC Sub-Millisecond Communication",6:"Effect-TS Architecture Typed Services"},button:"View on GitHub",elements:{mountain:`Mountain ⛰️
+Every milestone is a demonstration that the stack works, not a feature we are catching up on.`,tiers:{current:{name:"Active Now",description:"All fifteen elements are in active development and independently deployable. The runtime is faster than VS Code. The extension API is implemented. Each element is a standalone repository you can inspect and contribute to today.",features:{1:"VS Code Extension Compatibility Zero Rewrites",2:"Native Rust Backend No Electron",3:"macOS Windows Linux",4:"CC0 Public Domain No Restriction",5:"gRPC IPC Sub-Millisecond Communication",6:"Effect-TS Architecture Typed Services"},button:"View on GitHub",elements:{mountain:`Mountain ⛰️
 Native Process Manager
 Replaces Electron Main Process`,cocoon:`Cocoon 🦋
 Extension Host
@@ -44,19 +44,7 @@ Every Panel Is a Component`,air:`Air 🪁
 Background Daemon
 Silent Update Crypto-Signed`,echo:`Echo 📣
 Work-Stealing Scheduler
-Every CPU Core Saturated`}},next:{name:"Coming Next",description:"Extension ecosystem polish and first stable release across all three platforms.",features:{1:"High-fidelity VS Code extension compatibility pass",2:"Cross-platform installer with silent auto-update",3:"gRPC IPC protocol finalized and documented",4:"Settings sync with cloud-optional portal"},button:"Track Progress"},future:{name:"v1.0",description:"Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",features:["Cocoon Extension Compatibility Pass","Cross-Platform Native Installer Tauri","Command Palette (Cmd+K)","gRPC Protocol Finalized Vine","Source Map Generation OXC","Cloudflare CDN Download Distribution"],button:"Track Progress",elements:{vine:`Vine 🌿
-Protocol In Progress
-Mountain ↔ Grove Channel Completing`,cocoon:`Cocoon 🦋
-Extension Compatibility Pass
-High-Fidelity VS Code API Coverage`,grove:`Grove 🌳
-WASM Sandbox Stabilizing
-Capability-Based Extension Isolation`,rest:`Rest ⛱️
-Source Map Support
-OXC Transformer Integration In Progress`,echo:`Echo 📣
-Scheduler Optimization
-Faster Steal Lower Latency`,air:`Air 🪁
-Signed CDN Delivery
-Cloudflare Workers Distribution`}}}},a={title:"Under the Hood",subtitle:`Land replaces VS Code's Electron stack element by element.
+Every CPU Core Saturated`}},next:{name:"Extension Compatibility Complete",description:"The VS Code marketplace works end-to-end. Language servers initialize in parallel. IntelliSense is ready before you finish the first keystroke.",features:{1:"Full marketplace: every extension installs and activates without modification",2:"Language servers run in parallel via Echo's work-stealing scheduler",3:"Vine gRPC protocol stabilized: typed IPC at sub-millisecond latency",4:"Air daemon: silent updates staged between sessions, no restart prompt"}},future:{name:"True Extension Isolation",description:"Grove makes Land the first editor where extensions are technically isolated, not just policy-isolated. An extension can only touch what you explicitly grant. The boundary is enforced by the hardware.",features:{1:"Grove WASM sandbox: capability-based extension isolation via WASMtime",2:"Collaborative editing built on CRDT state sync, no conflict resolution manual work",3:"AI-assisted development with local-first inference, no cloud dependency"}}}},a={title:"Under the Hood",subtitle:`Land replaces VS Code's Electron stack element by element.
 
 Fifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.`,air:{subtitle:"Background Daemon Silent Update Crypto-Signed",description:`Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.
 
@@ -88,4 +76,4 @@ Typed at the wire, typed at the call site, verified at compile time. Refactor a 
 
 Native OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.`},worker:{subtitle:"Service Worker Offline Support AES-GCM Auth",description:`Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.
 
-The shell stays functional and authenticated even when the network drops.`}},s={features:e,hero:t,nav:n,pricing:o,testimonials:i,roadmap:r,architecture:a};export{a as architecture,s as default,e as features,t as hero,n as nav,o as pricing,r as roadmap,i as testimonials};
+The shell stays functional and authenticated even when the network drops.`}},r={features:e,hero:t,nav:n,pricing:o,testimonials:i,roadmap:s,architecture:a};export{a as architecture,r as default,e as features,t as hero,n as nav,o as pricing,s as roadmap,i as testimonials};
