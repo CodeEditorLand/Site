@@ -61,14 +61,14 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					<div className="mt-1 shrink-0">
 						{Variant === "minimum" ? (
 							<IconTooltip
-								Label="Processor"
+								Label="Your code runs at native CPU speed"
 								Icon={lucide.Cpu}
 								Color="var(--PlatformDesktopFore)"
 								SizeClass="h-4 w-4"
 							/>
 						) : (
 							<IconTooltip
-								Label="Display"
+								Label="Span your work across every monitor"
 								Icon={lucide.Monitor}
 								Color="var(--PlatformDesktopFore)"
 								SizeClass="h-4 w-4"

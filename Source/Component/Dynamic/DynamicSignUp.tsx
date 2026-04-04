@@ -123,16 +123,49 @@ const DynamicSignUp = ({
 								/>
 
 								<div>
-									<DynamicInput
-										Content={{
-											...PasswordField,
-											Type: "password",
-											OnChange: SetPassword,
-											AutoComplete: "new-password",
-											Error: Errors.password,
-										}}
-										Id="password"
-									/>
+									<div className="relative">
+										<DynamicInput
+											Content={{
+												...PasswordField,
+												Type: ShowPassword
+													? "text"
+													: "password",
+												OnChange: SetPassword,
+												AutoComplete: "new-password",
+												Error: Errors.password,
+											}}
+											Id="password"
+										/>
+										<button
+											type="button"
+											className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
+											aria-label={
+												ShowPassword
+													? T("signUp.hidePassword", {
+															defaultValue:
+																"Hide password",
+														})
+													: T("signUp.showPassword", {
+															defaultValue:
+																"Show password",
+														})
+											}
+											onClick={() =>
+												SetShowPassword(!ShowPassword)
+											}>
+											{ShowPassword ? (
+												<lucide.EyeOff
+													className="h-4 w-4"
+													aria-hidden="true"
+												/>
+											) : (
+												<lucide.Eye
+													className="h-4 w-4"
+													aria-hidden="true"
+												/>
+											)}
+										</button>
+									</div>
 									{Password && (
 										<div
 											className="mt-1 flex gap-1"

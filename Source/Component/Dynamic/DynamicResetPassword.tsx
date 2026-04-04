@@ -41,6 +41,8 @@ const DynamicResetPassword = ({
 	const [Token, SetToken] = useState<string>(PropToken || "");
 	const [Password, SetPassword] = useState("");
 	const [ConfirmPassword, SetConfirmPassword] = useState("");
+	const [ShowPassword, SetShowPassword] = useState(false);
+	const [ShowConfirmPassword, SetShowConfirmPassword] = useState(false);
 	const [Errors, SetErrors] = useState<{
 		password?: string;
 		confirmPassword?: string;
@@ -235,16 +237,43 @@ const DynamicResetPassword = ({
 								</div>
 
 								<div>
-									<DynamicInput
-										Content={{
-											...PasswordField,
-											Type: "password",
-											OnChange: SetPassword,
-											AutoComplete: "new-password",
-											Error: Errors.password,
-										}}
-										Id="password"
-									/>
+									<div className="relative">
+										<DynamicInput
+											Content={{
+												...PasswordField,
+												Type: ShowPassword
+													? "text"
+													: "password",
+												OnChange: SetPassword,
+												AutoComplete: "new-password",
+												Error: Errors.password,
+											}}
+											Id="password"
+										/>
+										<button
+											type="button"
+											className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
+											aria-label={
+												ShowPassword
+													? "Hide password"
+													: "Show password"
+											}
+											onClick={() =>
+												SetShowPassword(!ShowPassword)
+											}>
+											{ShowPassword ? (
+												<lucide.EyeOff
+													className="h-4 w-4"
+													aria-hidden="true"
+												/>
+											) : (
+												<lucide.Eye
+													className="h-4 w-4"
+													aria-hidden="true"
+												/>
+											)}
+										</button>
+									</div>
 									{Password && (
 										<div
 											className="mt-1 flex gap-1"
@@ -285,16 +314,43 @@ const DynamicResetPassword = ({
 									)}
 								</div>
 
-								<DynamicInput
-									Content={{
-										...ConfirmPasswordField,
-										Type: "password",
-										OnChange: SetConfirmPassword,
-										AutoComplete: "new-password",
-										Error: Errors.confirmPassword,
-									}}
-									Id="confirmPassword"
-								/>
+								<div className="relative">
+									<DynamicInput
+										Content={{
+											...ConfirmPasswordField,
+											Type: ShowConfirmPassword
+												? "text"
+												: "password",
+											OnChange: SetConfirmPassword,
+											AutoComplete: "new-password",
+											Error: Errors.confirmPassword,
+										}}
+										Id="confirmPassword"
+									/>
+									<button
+										type="button"
+										className="absolute right-3 top-2 text-muted-foreground hover:text-foreground"
+										aria-label={
+											ShowConfirmPassword
+												? "Hide confirm password"
+												: "Show confirm password"
+										}
+										onClick={() =>
+											SetShowConfirmPassword(!ShowConfirmPassword)
+										}>
+										{ShowConfirmPassword ? (
+											<lucide.EyeOff
+												className="h-4 w-4"
+												aria-hidden="true"
+											/>
+										) : (
+											<lucide.Eye
+												className="h-4 w-4"
+												aria-hidden="true"
+											/>
+										)}
+									</button>
+								</div>
 
 								<DynamicButton
 									Content={{

@@ -33,7 +33,7 @@ const PortalData: PortalContent = {
 		Identifier: "Cloud",
 		Title: "Cloud",
 		Subtitle:
-			"Secure online login. Your workspace syncs across every device via the CEL cloud relay.",
+			"Sign in once and every device is in sync \u2014 workspace state encrypted end to end, never readable in transit.",
 		Color: "var(--TierCloud)",
 		BorderColor: "var(--TierCloudFore)",
 		Icon: "Cloud",
@@ -41,42 +41,42 @@ const PortalData: PortalContent = {
 		Protocol: "HTTPS \u00b7 WebSocket \u00b7 JWT RS256",
 		Feature: [
 			{
-				Heading: "Encrypted sync",
+				Heading: "Your data never leaves in plaintext",
 				Description:
-					"All workspace state is end-to-end encrypted in transit and at rest via AES-256-GCM.",
+					"AES-256-GCM encrypts all workspace state in transit and at rest \u2014 the relay sees only ciphertext.",
 				Icon: ["Lock", "Shield", "Zap"],
 			},
 			{
-				Heading: "Multi-device sessions",
+				Heading: "Every device in sync, instantly",
 				Description:
-					"One account, unlimited devices. Session tokens rotate on every sign-in.",
+					"One account connects unlimited devices. Session tokens rotate on every sign-in so stale credentials can\u2019t be replayed.",
 				Icon: ["Monitor", "Laptop", "RefreshCw"],
 			},
 			{
-				Heading: "Extension marketplace",
+				Heading: "One click to install any extension",
 				Description:
-					"Install, update, and publish extensions from the CEL marketplace with one click.",
+					"Browse, install, update, and publish extensions from the CEL marketplace without leaving the editor.",
 				Icon: ["Puzzle", "Package", "Download"],
 			},
 			{
-				Heading: "Continuous delivery",
+				Heading: "Push once, live in under 60 s",
 				Description:
-					"Push to deploy \u2014 changes reach your cloud environment in under 60 seconds.",
+					"Changes reach your cloud environment in seconds \u2014 no manual deploy steps, no waiting for a CI queue.",
 				Icon: ["Rocket", "GitBranch", "Timer"],
 			},
 			{
-				Heading: "Audit trail",
+				Heading: "Every action on record",
 				Description:
-					"Every login event, extension install, and settings change is recorded in the audit log.",
+					"Login events, extension installs, and settings changes are all captured in the audit log \u2014 nothing hidden.",
 				Icon: ["FileText", "Activity", "Search"],
 			},
 		],
 		Capability: [
-			"WebSocket reconnection with exponential back-off",
-			"JWT RS256 \u2014 15 min access \u00b7 30 day refresh",
-			"Rate-limited per IP and per account",
-			"CORS-hardened API gateway",
-			"Global CDN edge caching",
+			"WebSocket reconnect with exponential back-off \u2014 drops heal automatically",
+			"JWT RS256 \u2014 15 min access \u00b7 30 day refresh, rotated on sign-in",
+			"Rate-limited per IP and per account \u2014 brute force blocked at the gateway",
+			"CORS-hardened API gateway \u2014 no cross-origin leakage",
+			"Global CDN edge caching \u2014 assets served fast regardless of region",
 		],
 	},
 
@@ -84,7 +84,7 @@ const PortalData: PortalContent = {
 		Identifier: "Provider",
 		Title: "Provider",
 		Subtitle:
-			"Sign in with your existing developer identity. OAuth 2.0 scopes request only the minimum required.",
+			"Use the developer identity you already have \u2014 we request only your email, never repository or org access.",
 		Color: "var(--TierProvider)",
 		BorderColor: "var(--TierProviderFore)",
 		Icon: "GitFork",
@@ -92,42 +92,42 @@ const PortalData: PortalContent = {
 		Protocol: "OAuth 2.0 \u00b7 PKCE \u00b7 OpenID Connect",
 		Feature: [
 			{
-				Heading: "GitHub identity",
+				Heading: "No new password to remember",
 				Description:
-					"Authenticate via GitHub OAuth. Repository access scopes are never requested.",
+					"Authenticate via your existing GitHub account. Repository scopes are never requested \u2014 only your identity.",
 				Icon: ["/Image/GitHub.svg", "GitBranch", "FolderGit"],
 			},
 			{
-				Heading: "Google identity",
+				Heading: "Use your Google account, nothing extra granted",
 				Description:
-					"Sign in with a Google account. Only email and profile scopes are requested.",
+					"Sign in with Google using only the email and profile scopes \u2014 Drive, Docs, and everything else stays untouched.",
 				Icon: ["/Image/Google.svg", "Globe", "Fingerprint"],
 			},
 			{
-				Heading: "GitLab identity",
+				Heading: "Self-hosted or gitlab.com \u2014 both work",
 				Description:
-					"Connect a GitLab account \u2014 self-hosted or gitlab.com \u2014 via OAuth 2.0 PKCE.",
+					"Connect any GitLab instance via OAuth 2.0 PKCE. Your company\u2019s self-hosted GitLab works out of the box.",
 				Icon: ["/Image/GitLab.svg", "GitCommit", "GitPullRequest"],
 			},
 			{
-				Heading: "Linked preferences",
+				Heading: "Your theme and keybindings follow you",
 				Description:
-					"Theme, keybindings, and layout preferences travel with your provider identity.",
+					"Preferences are linked to your provider identity so switching devices never means resetting your setup.",
 				Icon: ["Settings", "Sliders", "RefreshCw"],
 			},
 			{
-				Heading: "Minimal scopes",
+				Heading: "We see your email \u2014 nothing else",
 				Description:
-					"CEL requests only read:user and user:email \u2014 no repository or org access ever.",
+					"CEL requests only read:user and user:email. No repository data, no org membership, no billing info \u2014 ever.",
 				Icon: ["Lock", "Shield", "CheckCircle"],
 			},
 		],
 		Capability: [
-			"PKCE S256 code challenge on every OAuth flow",
-			"State parameter CSRF protection",
-			"Token storage in HttpOnly Secure cookies",
-			"Provider token never stored server-side",
-			"Account merge across providers",
+			"PKCE S256 code challenge \u2014 auth code interception is impossible",
+			"State parameter CSRF protection \u2014 phishing tokens are rejected",
+			"Tokens in HttpOnly Secure cookies \u2014 JavaScript can\u2019t touch them",
+			"Provider token never stored server-side \u2014 no server breach risk",
+			"Account merge across providers \u2014 one identity regardless of how you sign in",
 		],
 	},
 
@@ -135,7 +135,7 @@ const PortalData: PortalContent = {
 		Identifier: "LocalFirst",
 		Title: "Local-First",
 		Subtitle:
-			"Zero cloud dependency. The Air Daemon runs on your machine and issues mTLS certificates locally.",
+			"No internet? No problem. The Air Daemon runs entirely on your machine \u2014 your code and credentials never leave it.",
 		Color: "var(--TierLocalFirst)",
 		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "Wifi",
@@ -143,42 +143,42 @@ const PortalData: PortalContent = {
 		Protocol: "Air Daemon \u00b7 mTLS \u00b7 JWT ES384",
 		Feature: [
 			{
-				Heading: "Air Daemon connection",
+				Heading: "Connects over loopback \u2014 never leaves your machine",
 				Description:
-					"The browser connects to your local Air Daemon over a loopback WebSocket secured by mTLS.",
+					"The browser talks to your Air Daemon over a loopback WebSocket secured by mTLS \u2014 traffic never hits the network.",
 				Icon: ["Wifi", "Network", "Radio"],
 			},
 			{
-				Heading: "Local certificate authority",
+				Heading: "Cryptographic trust, no cloud CA needed",
 				Description:
-					"The daemon issues short-lived ES384 JWT certificates \u2014 no CA calls leave your machine.",
+					"The daemon issues short-lived ES384 JWT certificates locally \u2014 no certificate authority call ever leaves your machine.",
 				Icon: ["Key", "Fingerprint", "Lock"],
 			},
 			{
-				Heading: "Offline-capable workspaces",
+				Heading: "Full editor power, internet optional",
 				Description:
-					"Full editing, terminal, and extension functionality with no internet connection required.",
+					"Editing, terminal, debugger, and extensions all function with zero internet \u2014 ideal for secure or air-gapped environments.",
 				Icon: ["WifiOff", "HardDrive", "Cpu"],
 			},
 			{
-				Heading: "Local extension registry",
+				Heading: "Extensions install from disk, zero cloud",
 				Description:
-					"Mirror the CEL marketplace locally. Extensions install from disk without contacting the cloud.",
+					"Mirror the CEL marketplace locally so extensions install instantly from disk without touching the cloud.",
 				Icon: ["PackageOpen", "Box", "Terminal"],
 			},
 			{
-				Heading: "Daemon health monitor",
+				Heading: "Auto-reconnects the moment your machine wakes",
 				Description:
-					"Real-time daemon status pulsed in the status bar \u2014 reconnects automatically on wake.",
+					"The status bar pulses daemon health in real time and reconnects automatically after sleep or network flaps.",
 				Icon: ["Activity", "Timer", "RefreshCcw"],
 			},
 		],
 		Capability: [
-			"mTLS mutual authentication \u2014 daemon + browser both verified",
-			"JWT ES384 \u2014 5 min expiry, rotated on reconnect",
-			"Loopback-only binding \u2014 port never exposed to LAN",
-			"Automatic daemon restart via launchd / systemd / WinSVC",
-			"CRL revocation on daemon uninstall",
+			"mTLS mutual auth \u2014 both daemon and browser verify each other",
+			"JWT ES384 \u2014 5 min expiry, rotated on every reconnect",
+			"Loopback-only binding \u2014 your LAN and internet never see the port",
+			"Auto-restart via launchd / systemd / WinSVC on crash or reboot",
+			"CRL revocation on daemon uninstall \u2014 old certificates instantly invalidated",
 		],
 	},
 

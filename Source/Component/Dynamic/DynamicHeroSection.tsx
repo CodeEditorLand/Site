@@ -248,7 +248,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 									}}>
 									<div className="mb-2 flex items-center justify-center">
 										<IconTooltip
-											Label={Card.Title}
+											Label={Card.Tooltip ?? Card.Title}
 											Icon={IconComponent}
 											SizeClass="h-6 w-6"
 											ClassName="text-primary"
@@ -364,7 +364,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 									}}>
 									<div className="mb-2 flex items-center justify-center">
 										<IconTooltip
-											Label={Card.Title}
+											Label={Card.Tooltip ?? Card.Title}
 											Icon={IconComponent}
 											SizeClass="h-8 w-8"
 											ClassName="text-primary"
