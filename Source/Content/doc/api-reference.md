@@ -1,7 +1,7 @@
 ---
 title: "API Reference"
 section: "Development"
-order: 1
+order: 8
 description:
     "Overview of the Land extension API: commands, configuration, views, and
     webviews."
@@ -97,9 +97,38 @@ Land supports LSP servers out of the box through the `vscode-languageclient`
 package. Point your extension at a language server binary and the LSP client
 handles initialization, capabilities negotiation, and shutdown automatically.
 
+## Rust API Documentation
+
+Generated `rustdoc` output for the Rust crates is hosted on Cloudflare Pages:
+
+- [Mountain Crates](https://rust-documentation-mountain-land.pages.dev) —
+  Mountain, Echo, Common, CommonLibrary, Air, AirLibrary, SideCar, Download
+- [Rest Crates](https://rust-documentation-rest-land.pages.dev) —
+  Rest bundler documentation
+- [Maintain Crates](https://rust-documentation-maintain-land.pages.dev) —
+  CI/CD and maintenance tooling
+
+### Crate Index
+
+| Crate | Description | Element |
+|---|---|---|
+| `Mountain` | Tauri native backend | [Architecture](/Doc/architecture) |
+| `Echo` | Work-stealing task executor | [Architecture](/Doc/architecture) |
+| `Common` | Abstract traits and DTOs | [Architecture](/Doc/architecture) |
+| `CommonLibrary` | Shared utility functions | [Architecture](/Doc/architecture) |
+| `Air` | Background daemon | [Local-First Protocol](/Doc/local-first-protocol) |
+| `AirLibrary` | Air shared library | [Local-First Protocol](/Doc/local-first-protocol) |
+| `Download` | Binary download logic | [Local-First Protocol](/Doc/local-first-protocol) |
+| `SideCar` | Node.js binary management | [Architecture](/Doc/architecture) |
+| `Maintain` | CI/CD scripts | [Contributing](/Doc/contributing) |
+| `grove` | WASM extension host | [Extension Development](/Doc/extension-development) |
+
+## See Also
+
+- [Architecture Overview](/Doc/architecture)
+- [Extension Development](/Doc/extension-development)
+
 ## Further Reading
 
-- [Extension Development](/Doc/extension-development) — scaffold, test, and
-  publish an extension.
 - [VS Code API Documentation](https://code.visualstudio.com/api/references/vscode-api)
   — the upstream reference that Land implements.

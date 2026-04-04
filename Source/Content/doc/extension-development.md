@@ -1,7 +1,7 @@
 ---
 title: "Extension Development"
 section: "Development"
-order: 2
+order: 7
 description: "Build, test, and publish extensions for Code Editor Land."
 ---
 
@@ -97,3 +97,8 @@ following API surfaces are fully supported:
 
 If you encounter an API that behaves differently from VS Code, file an issue at
 [CodeEditorLand/Cocoon](https://github.com/CodeEditorLand/Cocoon).
+
+## See Also
+
+- [API Reference](/Doc/api-reference)
+- [Contributing](/Doc/contributing)

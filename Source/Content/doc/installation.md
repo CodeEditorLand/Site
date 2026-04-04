@@ -70,3 +70,9 @@ generated in `target/release/bundle/macos/`.
 Land checks for updates automatically through the Air daemon. When a new version
 is available, a notification appears in the editor. You can also update manually
 through your package manager or by downloading a new release.
+
+## See Also
+
+- [Getting Started](/Doc/getting-started)
+- [Configuration](/Doc/configuration)
+- [Troubleshooting](/Doc/troubleshooting)

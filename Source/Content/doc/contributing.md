@@ -1,7 +1,7 @@
 ---
 title: "Contributing"
 section: "Community"
-order: 1
+order: 9
 description: "How to contribute code, documentation, or translations."
 ---
 
@@ -51,3 +51,8 @@ Code Editor Land is funded through the
 [NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
 operated by PlayForm (Sofia, Bulgaria) under the
 [NLnet Foundation](https://nlnet.nl).
+
+## See Also
+
+- [Getting Started](/Doc/getting-started)
+- [Extension Development](/Doc/extension-development)

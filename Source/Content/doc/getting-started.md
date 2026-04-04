@@ -38,3 +38,9 @@ cargo tauri dev
 
 The editor window opens automatically. Extensions are loaded from the same
 directory as VS Code (`~/.vscode/extensions`) and work without modification.
+
+## See Also
+
+- [Installation](/Doc/installation)
+- [Quickstart](/Doc/quickstart)
+- [Architecture Overview](/Doc/architecture)

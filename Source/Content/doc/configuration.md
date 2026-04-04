@@ -1,7 +1,7 @@
 ---
 title: "Configuration"
 section: "Usage"
-order: 1
+order: 6
 description:
     "Settings, keybindings, themes, and language configuration reference."
 ---
@@ -109,3 +109,8 @@ Land respects the following environment variables:
 | `LAND_USER_DATA`  | Override the user data directory                     |
 | `LAND_EXTENSIONS` | Override the extensions directory                    |
 | `LAND_LOG_LEVEL`  | Set log verbosity (`error`, `warn`, `info`, `debug`) |
+
+## See Also
+
+- [Installation](/Doc/installation)
+- [Extension Development](/Doc/extension-development)

@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting"
 section: "Support"
-order: 1
+order: 10
 description:
     "Common issues and their solutions: blank screen, extension failures, high
     CPU."
@@ -117,3 +117,8 @@ If none of the above resolves your issue:
 2. Open an issue at
    [CodeEditorLand/Land](https://github.com/CodeEditorLand/Land/issues) with the
    log file, your OS version, and steps to reproduce.
+
+## See Also
+
+- [Installation](/Doc/installation)
+- [Configuration](/Doc/configuration)

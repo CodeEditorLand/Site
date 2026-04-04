@@ -1,7 +1,7 @@
 ---
 title: "Local-First Protocol"
 section: "Architecture"
-order: 2
+order: 5
 description:
     "Air Daemon protocol specification: discovery, sync, conflict resolution."
 ---
@@ -80,3 +80,8 @@ normally. Sync resumes automatically when connectivity is restored. There is no
 Air can optionally push snapshots to an S3-compatible bucket or WebDAV endpoint.
 This provides off-site backup without depending on a proprietary cloud service.
 Configure the endpoint in `~/.land/settings/Air.json`.
+
+## See Also
+
+- [Architecture Overview](/Doc/architecture)
+- [Configuration](/Doc/configuration)
