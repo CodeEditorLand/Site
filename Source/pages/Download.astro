@@ -9,62 +9,62 @@ const T = GetI18n();
 
 const TransparencyContent = {
 	Title: T("download.transparency.title", {
-		defaultValue: "Nothing Hidden. Full Build Disclosure.",
+		defaultValue: "VS Code Phones Home. Land Does Not.",
 	}),
 	Subtitle: T("download.transparency.subtitle", {
 		defaultValue:
-			"Zero telemetry by default. Build variants, deployment targets, and signing keys are all public.\n\nVerify everything in source.",
+			"VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent — it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable.",
 	}),
 	Policy: [
 		{
 			Identifier: "no-telemetry-default",
-			Title: "Your editor never phones home",
+			Title: "Not disabled. Absent.",
 			Description:
-				"Production builds ship with telemetry completely disabled. Not just off by default. Absent from the binary entirely.",
+				"VS Code's telemetry can be reduced via settings, but the code paths remain in the binary. Land's Telemetry feature is not compiled in by default. The code does not exist in the binary. There is nothing to disable.",
 			Icon: "EyeOff",
 			Status: "Disabled" as const,
 			Detail: "Telemetry is a Cargo feature flag, not in default features. Must be explicitly opted in at compile time.",
 		},
 		{
 			Identifier: "no-crash-reporter",
-			Title: "Errors stay on your machine",
+			Title: "No crash reporter. No upload. No Microsoft endpoints.",
 			Description:
-				"No crash reporter, no external error endpoints, no silent uploads. When something goes wrong, the data stays local.",
+				"VS Code (not VSCodium) includes Microsoft telemetry endpoints that make network calls regardless of settings. Land's CC0 base has all of these removed at the source level. No external error endpoints, no silent uploads.",
 			Icon: "Shield",
 			Status: "Disabled" as const,
 			Detail: "CC0-licensed Code-OSS base with all Microsoft telemetry endpoints removed.",
 		},
 		{
 			Identifier: "no-phone-home",
-			Title: "No analytics. Period.",
+			Title: "No DO_NOT_TRACK header needed.",
 			Description:
-				"No usage tracking, no analytics endpoints. You don't need DO_NOT_TRACK because there is nothing to track.",
+				"There is nothing to track. No usage analytics, no pageview beacons, no feature flag pings. The concept of opting out does not apply when there is no telemetry system.",
 			Icon: "Lock",
 			Status: "Disabled" as const,
 		},
 		{
 			Identifier: "zero-cost-noop",
-			Title: "Zero performance cost",
+			Title: "Absent code has zero runtime cost.",
 			Description:
-				"Disabled telemetry compiles to nothing. No runtime branches, no empty function calls. The code is not even in the binary.",
+				"VS Code's telemetry code occupies memory and CPU even when \"disabled\" — the functions exist, the branches run, the results are just dropped. Rust's cfg(feature) gates eliminate dead code at compile time. A feature that is not compiled in costs exactly zero.",
 			Icon: "Zap",
 			Status: "Active" as const,
 			Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
 		},
 		{
 			Identifier: "opt-in-otel",
-			Title: "Opt in when you want observability",
+			Title: "Need traces? Opt in. Your infrastructure only.",
 			Description:
-				"Need traces? Enable OpenTelemetry with a compile flag. Metrics, spans, and distributed tracing. All data stays on your infrastructure.",
+				"Running Land in a production deployment and need distributed traces? Enable OpenTelemetry with a single compile flag. Metrics, spans, and distributed tracing on your own infrastructure. No external transmission.",
 			Icon: "Eye",
 			Status: "Optional" as const,
 			Detail: "cargo build --features Telemetry\nSub-features: MetricsCollection, DistributedTracing.",
 		},
 		{
 			Identifier: "effect-ts-local",
-			Title: "Extension host metrics stay local",
+			Title: "Extension host timing stays in the process.",
 			Description:
-				"The Cocoon extension host collects internal timing for RPC and bootstrap. Nothing leaves the process. Mock layer available for testing.",
+				"Cocoon uses Effect-TS's TelemetryService to track internal RPC and bootstrap timing — the data used to make the extension host faster. Nothing leaves the process. TelemetryMock layer for zero-overhead testing.",
 			Icon: "Layers",
 			Status: "Active" as const,
 			Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",

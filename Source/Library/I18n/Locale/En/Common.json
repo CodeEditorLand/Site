@@ -308,18 +308,18 @@
 			}
 		},
 		"telemetry": {
-			"heading": "Telemetry Status",
+			"heading": "Telemetry Architecture",
 			"production": {
-				"title": "Zero Telemetry by Default",
-				"description": "The Telemetry Cargo feature is not in default features.\n\nAll tracing compiles to zero-cost no-ops.\n\nNothing is sent anywhere unless you explicitly opt in."
+				"title": "Absent from the binary. Not just disabled.",
+				"description": "VS Code's telemetry can be reduced via settings, but the code paths remain in the binary.\n\nThe Telemetry Cargo feature is not in Land's default features. All tracing compiles to zero-cost no-ops. Nothing is sent anywhere because there is nothing to send."
 			},
 			"otel": {
-				"title": "OpenTelemetry (Opt-In Only)",
-				"description": "Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and distributed spans.\n\nNo external transmission."
+				"title": "Opt-in OpenTelemetry. Your infrastructure only.",
+				"description": "Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure."
 			},
 			"effect": {
-				"title": "Effect-TS Local Instrumentation",
-				"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing.\n\nAll data stays local."
+				"title": "Extension host timing. Stays in the process.",
+				"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing."
 			}
 		},
 		"buildLog": {

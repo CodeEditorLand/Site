@@ -230,7 +230,7 @@ const MetaDescription = T("meta.dashboard.description", {
 				<h2 class="mb-6 text-2xl font-semibold">
 					{
 						T("common.dashboard.telemetry.heading", {
-							defaultValue: "Telemetry Status",
+							defaultValue: "Telemetry Architecture",
 						})
 					}
 				</h2>
@@ -257,7 +257,7 @@ const MetaDescription = T("meta.dashboard.description", {
 										"common.dashboard.telemetry.production.title",
 										{
 											defaultValue:
-												"Zero Telemetry by Default",
+												"Absent from the binary. Not just disabled.",
 										},
 									)
 								}
@@ -268,7 +268,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.production.description",
 									{
 										defaultValue:
-											"The Telemetry Cargo feature is not in default features.\n\nAll tracing compiles to zero-cost no-ops.\n\nNothing is sent anywhere unless you explicitly opt in.",
+											"VS Code's telemetry can be reduced via settings, but the code paths remain in the binary.\n\nThe Telemetry Cargo feature is not in Land's default features. All tracing compiles to zero-cost no-ops. Nothing is sent anywhere because there is nothing to send.",
 									},
 								)}
 								Terms
@@ -290,7 +290,7 @@ const MetaDescription = T("meta.dashboard.description", {
 							<h3 class="mt-2 font-medium">
 								{
 									T("common.dashboard.telemetry.otel.title", {
-										defaultValue: "OpenTelemetry (Opt-In Only)",
+										defaultValue: "Opt-in OpenTelemetry. Your infrastructure only.",
 									})
 								}
 							</h3>
@@ -300,7 +300,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.otel.description",
 									{
 										defaultValue:
-											"Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and distributed spans.\n\nNo external transmission.",
+											"Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure.",
 									},
 								)}
 								Terms
@@ -320,7 +320,7 @@ const MetaDescription = T("meta.dashboard.description", {
 						<h3 class="mt-2 font-medium">
 							{
 								T("common.dashboard.telemetry.effect.title", {
-									defaultValue: "Effect-TS Local Instrumentation",
+									defaultValue: "Extension host timing. Stays in the process.",
 								})
 							}
 						</h3>
@@ -330,7 +330,7 @@ const MetaDescription = T("meta.dashboard.description", {
 								"common.dashboard.telemetry.effect.description",
 								{
 									defaultValue:
-										"Cocoon uses TelemetryService for internal RPC and bootstrap timing.\n\nAll data stays local.",
+										"Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing.",
 								},
 							)}
 							Terms

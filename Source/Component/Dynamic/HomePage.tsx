@@ -278,22 +278,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "VS Code Extension Compatibility Zero Rewrites",
+							defaultValue: "Every Extension Runs Unchanged Zero Rewrites",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
-							defaultValue: "Native Rust Backend No Electron",
+							defaultValue: "No Electron Overhead The OS’s Own Renderer",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "macOS Windows Linux",
+							defaultValue: "Fibers, Not Promises Interruptible and Supervised",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "CC0 Public Domain No Restriction",
+							defaultValue: "Telemetry Is a Compile Flag Not a Config Option",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
-							defaultValue: "gRPC IPC Sub-Millisecond Communication",
+							defaultValue: "CC0 No Restrictions, No Compliance, No Attribution",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
-							defaultValue: "Effect-TS Architecture Typed Services",
+							defaultValue: "macOS Windows Linux",
 						}),
 					],
 					CTA: {
@@ -337,22 +337,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					],
 					Features: [
 						T("home:roadmap.tiers.future.features.1", {
-							defaultValue: "Cocoon Extension Compatibility Pass",
+							defaultValue: "VS Code Marketplace Every Extension Installs Unchanged",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Cross-Platform Native Installer Tauri",
+							defaultValue: "Grove Hardware-Enforced Extension Isolation",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "Command Palette (Cmd+K)",
+							defaultValue: "Vine Typed at the Wire All IPC Finalized",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "gRPC Protocol Finalized Vine",
+							defaultValue: "Cross-Platform Native Installer Tauri",
 						}),
 						T("home:roadmap.tiers.future.features.5", {
 							defaultValue: "Source Map Generation OXC",
 						}),
 						T("home:roadmap.tiers.future.features.6", {
-							defaultValue: "Cloudflare CDN Download Distribution",
+							defaultValue: "Cloudflare CDN Download Worker Live",
 						}),
 					],
 					CTA: {
@@ -385,7 +385,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a \u201crestart to update\u201d prompt.",
+							"VS Code cold-starts slowly because every session initializes from scratch: extension host, language servers, file indexing. Updates present a Restart to Update prompt that kills open terminals, unsaved diffs, and in-progress language servers.
+
+Air is a persistent background daemon that keeps running after you close the editor. It pre-downloads and PGP-verifies the next update before you decide to apply it. It pre-indexes workspace changes that happened while the editor was closed.
+
+The next version is already downloaded and verified before you decide to update. No restart prompt ever.",
 					}),
 				},
 				{
@@ -398,7 +402,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
-							"A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks.",
+							"VS Code's extension host is a single Node.js event loop. One extension's hung Promise blocks every other handler. One language server crash freezes the cursor for two seconds. There is no way to interrupt an in-flight extension call.
+
+Cocoon routes every VS Code API call through Effect-TS fibers. Each extension runs in its own supervised scope. A hung operation is interrupted. A crashed scope restarts. Nothing bleeds across.
+
+Every extension runs in its own supervised fiber. One crash does not take down the rest.",
 					}),
 				},
 				{
@@ -411,7 +419,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
-							"The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
+							"In VS Code's codebase, interfaces are often implicitly implemented and concretely imported. Testing requires mocking entire modules. There is no dependency injection.
+
+Common defines pure abstract traits with zero concrete implementations. Every element builds on Common's typed effects and composable building blocks. You can swap any implementation, mock any trait, and test any element without launching a window.
+
+Mock any service and test any element in isolation, no running editor required.",
 					}),
 				},
 				{
@@ -424,7 +436,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
+							"VS Code's background tasks (file indexing, symbol scanning, git blame, search) run in single-threaded Node.js event loops. Heavy indexing blocks everything else on that thread.
+
+Echo is a lock-free work-stealing scheduler built on Rust's crossbeam-deque. Every task runs in a supervised worker pool across all CPU cores. Tasks are work-stolen, supervised, and gracefully shut down. No task outlives its scope.
+
+Indexing, search, and builds run on every CPU core in parallel. The editor stays responsive.",
 					}),
 				},
 				{
@@ -437,7 +453,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
-							"Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
+							"VS Code extensions run with full Node.js capabilities in a shared process. A malicious extension can read the file system, access other extensions' secrets, and interfere with event handlers. The VS Code extension sandbox is a policy document, not a technical boundary.
+
+Grove runs extensions compiled to WebAssembly inside WASMtime with capability-based security. An extension can only touch resources explicitly granted to it. No implicit ambient authority. The sandbox is enforced by the hardware.
+
+An extension can only touch what you explicitly grant. The sandbox is enforced by the hardware, not a policy.",
 					}),
 				},
 				{
@@ -450,7 +470,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
-							"Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
+							"Build toolchains that span Rust, TypeScript, and multiple target platforms require complex orchestration that breaks silently when any one step drifts.
+
+Maintain provides build orchestration for the entire Land ecosystem via embedded Rhai scripting, compile-time validated TOML and JSON5 configuration, and deterministic artifact generation.
+
+Same commit always produces the same output. No environment surprises.",
 					}),
 				},
 				{
@@ -463,7 +487,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
-							"Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
+							"Network requests from editor components have no isolation boundary. A buggy extension or tool can make requests to arbitrary hosts while appearing to run locally.
+
+Mist creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer. Nothing leaks to the public internet.
+
+Every service call stays local. The network boundary is enforced at the DNS layer.",
 					}),
 				},
 				{
@@ -476,7 +504,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk.",
+							"VS Code with a medium project open uses 500MB to 1.5GB RAM across three Chromium renderer processes. Every file dialog, clipboard read, and window move crosses Electron's serialized IPC bridge.
+
+Mountain replaces Electron's main process entirely with a Rust binary using Tauri. The OS's own WebView renders the UI. No bundled Chromium. No Node.js in the host process.
+
+Where Electron takes 200ms to open a dialog, Mountain takes 2.",
 					}),
 				},
 				{
@@ -489,7 +521,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
-							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
+							"VS Code's build pipeline produces JavaScript artifacts through a mix of esbuild and Webpack passes. The output format changes between VS Code versions. Incremental migration between compilers is not supported.
+
+Output handles compilation from VS Code, Land, and the Rest compiler into a single deterministic pipeline. Both esbuild and Rest produce artifacts through the same build system, allowing incremental migration.
+
+Same commit, same output. Every bundle is deterministic and checksum-verified.",
 					}),
 				},
 				{
@@ -502,7 +538,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
-							"A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2\u20133\u00d7 the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
+							"VS Code's TypeScript compiler pipeline runs through esbuild's TypeScript loader, which strips types without a full parse. Source maps require a separate pass. The build is fast but produces output that drifts from tsc.
+
+Rest is a TypeScript compiler built on OXC, the same parser VS Code uses internally. It produces 100% tsc-compatible output at 2-3x the speed of esbuild. Source map generation is built in, not bolted on.
+
+Same output as tsc. Faster than esbuild. Source maps included.",
 					}),
 				},
 				{
@@ -515,7 +555,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
-							"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
+							"Every Land element that spawns a Node.js process needs the exact right Node.js binary for the host platform. Getting this wrong at runtime is a hard-to-debug failure.
+
+SideCar selects and bundles the correct Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others. No runtime detection. No fallback chains.
+
+Land ships the exact right Node.js binary for your platform. No prerequisites. No version conflicts.",
 					}),
 				},
 				{
@@ -528,7 +572,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
+							"VS Code's UI is a Chromium renderer process carrying a full browser heap. Every panel, sidebar, and tab bar re-renders on the same JavaScript thread as the extension host.
+
+Sky renders the editor interface entirely with Astro components inside Tauri's native WebView. Three workbench layouts: full desktop, embedded, and minimal. Tauri hot-reloads any component change instantly with no browser process overhead.
+
+Every panel is a component. Change one and Tauri reloads it in under a frame.",
 					}),
 				},
 				{
@@ -541,7 +589,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
-							"Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
+							"Electron's IPC is untyped. You call ipcRenderer.send and hope the main process handles it correctly. Refactoring IPC messages is dangerous because nothing tells you what broke.
+
+Every inter-process service interface in Land starts as a .proto file. The generated Rust and TypeScript stubs are the only way processes communicate. gRPC over a Unix domain socket runs at native memory-copy speed.
+
+Change a message field and every consumer breaks loudly at compile time, not silently at runtime.",
 					}),
 				},
 				{
@@ -554,7 +606,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
+							"In VS Code, every workbench interaction that touches the file system crosses Electron's IPC bridge twice: serialized to JSON, piped, deserialized. On high-frequency events like typing and hover tooltips, this adds measurable latency.
+
+Wind re-implements the VS Code Workbench as composable Effect-TS Layers. OS calls go directly through Mountain's Tauri bindings. No IPC proxy. No JSON serialization.
+
+No Electron IPC proxy. Workbench actions hit the OS directly.",
 					}),
 				},
 				{
@@ -567,7 +623,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
-							"Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
+							"The editor shell makes repeated network requests for static assets on every launch. Auth tokens stored in memory are lost on page reload and require a new sign-in flow.
+
+Worker manages caching, offline support, and AES-GCM encrypted auth token storage in the service worker layer. HMAC-signed requests. Automatic token refresh. Dynamic CSS imports from JavaScript modules handled without a build step.
+
+The shell loads from cache. Tokens survive refresh. The editor works offline.",
 					}),
 				},
 			],

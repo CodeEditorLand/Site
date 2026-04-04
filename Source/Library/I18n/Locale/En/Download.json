@@ -57,7 +57,7 @@
 		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"transparency": {
-		"title": "Nothing Hidden. Full Build Disclosure.",
-		"subtitle": "Zero telemetry by default. Build variants, deployment targets, and signing keys are all public.\n\nVerify everything in source."
+		"title": "VS Code Phones Home. Land Does Not.",
+		"subtitle": "VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent — it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable."
 	}
 }
