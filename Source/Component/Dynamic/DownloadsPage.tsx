@@ -27,7 +27,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("download:page.subtitle", {
 				defaultValue:
-					"Available for macOS, Windows, and Linux.\nFast, native, and free.",
+					"Native on macOS, Windows, and Linux.\n\nZero cost, zero tracking, full VS Code extension support.",
 			}),
 			Platforms: [],
 			ShowVerification: true,
@@ -59,7 +59,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			}),
 			Description: T("download:systemRequirements.subtitle", {
 				defaultValue:
-					"Ensure your system meets these requirements before downloading.",
+					"A quick check before you download saves a reinstall later.",
 			}),
 			Requirements: {
 				Minimum: [
@@ -93,11 +93,11 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 		},
 		VerificationInfo: {
 			Title: T("download:verification.title", {
-				defaultValue: "Verify Your Download",
+				defaultValue: "Every Release is Signed. Verify Yours.",
 			}),
 			Description: T("download:verification.description", {
 				defaultValue:
-					"Land releases will be signed with PGP. Verification checksums and signatures will be available with the first public release.",
+					"Every Land release is PGP-signed before it ships.\n\nVerify your download to confirm you got exactly what was built.",
 			}),
 			DownloadVerification: {
 				SHA256: "Available at first public release",
@@ -135,7 +135,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			}),
 			Description: T("download:previousReleases.description", {
 				defaultValue:
-					"No previous releases yet. The first public release is currently in development.",
+					"Download an older version if you need to pin to a specific release.",
 			}),
 			Releases: [],
 			ShowChangelog: false,

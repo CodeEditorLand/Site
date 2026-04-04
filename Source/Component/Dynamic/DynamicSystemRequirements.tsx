@@ -116,7 +116,10 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					{/* Recommended Requirements */}
 					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
-							{T("systemRequirements.recommended", "Recommended")}
+							{T(
+							"systemRequirements.recommended",
+							"Recommended for the Best Experience",
+						)}
 						</h3>
 						<RequirementList
 							items={Requirements.Recommended}

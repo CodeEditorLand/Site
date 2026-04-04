@@ -9,65 +9,65 @@ const T = GetI18n();
 
 const TransparencyContent = {
 	Title: T("download.transparency.title", {
-		defaultValue: "Build Transparency",
+		defaultValue: "Nothing Hidden. Full Build Disclosure.",
 	}),
 	Subtitle: T("download.transparency.subtitle", {
 		defaultValue:
-			"Full disclosure on telemetry, build variants, and deployment. Verify everything in source.",
+			"Zero telemetry by default. Build variants, deployment targets, and signing keys are all public.\n\nVerify everything in source.",
 	}),
 	Policy: [
 		{
 			Identifier: "no-telemetry-default",
-			Title: "No Telemetry by Default",
+			Title: "Your editor never phones home",
 			Description:
-				"Production builds ship with telemetry completely disabled.\n\nThe Telemetry Cargo feature flag is not in default features - it must be explicitly opted in at compile time.",
+				"Production builds ship with telemetry completely disabled. Not just off by default. Absent from the binary entirely.",
 			Icon: "EyeOff",
 			Status: "Disabled" as const,
-			Detail: "Default features: ExtensionHostCocoon, MistNative, AirIntegration. No Telemetry.",
+			Detail: "Telemetry is a Cargo feature flag, not in default features. Must be explicitly opted in at compile time.",
 		},
 		{
 			Identifier: "no-crash-reporter",
-			Title: "No Crash Reports",
+			Title: "Errors stay on your machine",
 			Description:
-				"No crash reporter IDs, no external error reporting endpoints.\n\nErrors stay local. No `crashReporterId` in product.json.",
+				"No crash reporter, no external error endpoints, no silent uploads. When something goes wrong, the data stays local.",
 			Icon: "Shield",
 			Status: "Disabled" as const,
-			Detail: "Code-OSS base: CC0 licensed, no Microsoft telemetry endpoints.",
+			Detail: "CC0-licensed Code-OSS base with all Microsoft telemetry endpoints removed.",
 		},
 		{
 			Identifier: "no-phone-home",
-			Title: "No Phone Home",
+			Title: "No analytics. Period.",
 			Description:
-				"No usage data collection, no analytics endpoints, no DO_NOT_TRACK needed.\n\nTelemetry simply does not exist in the build.",
+				"No usage tracking, no analytics endpoints. You don't need DO_NOT_TRACK because there is nothing to track.",
 			Icon: "Lock",
 			Status: "Disabled" as const,
 		},
 		{
 			Identifier: "zero-cost-noop",
-			Title: "Zero-Cost No-Ops",
+			Title: "Zero performance cost",
 			Description:
-				"When telemetry is disabled, all tracing, metrics, and spans compile to zero-cost no-ops.\n\nNo runtime overhead whatsoever.",
+				"Disabled telemetry compiles to nothing. No runtime branches, no empty function calls. The code is not even in the binary.",
 			Icon: "Zap",
 			Status: "Active" as const,
-			Detail: "Rust `#[cfg(feature)]` gates eliminate dead code at compile time.",
+			Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
 		},
 		{
 			Identifier: "opt-in-otel",
-			Title: "Optional OpenTelemetry",
+			Title: "Opt in when you want observability",
 			Description:
-				"Opt-in compile flag enables local OpenTelemetry tracing, metrics collection, and distributed spans.\n\nAll data stays on your machine.",
+				"Need traces? Enable OpenTelemetry with a compile flag. Metrics, spans, and distributed tracing. All data stays on your infrastructure.",
 			Icon: "Eye",
 			Status: "Optional" as const,
-			Detail: "Enable with: cargo build --features Telemetry. Sub-features: MetricsCollection, DistributedTracing.",
+			Detail: "cargo build --features Telemetry. Sub-features: MetricsCollection, DistributedTracing.",
 		},
 		{
 			Identifier: "effect-ts-local",
-			Title: "Local Effect-TS Telemetry",
+			Title: "Extension host metrics stay local",
 			Description:
-				"Cocoon extension host uses Effect-TS TelemetryService for internal metrics and spans.\n\nNo external transmission - used for RPC instrumentation and bootstrap timing.",
+				"The Cocoon extension host collects internal timing for RPC and bootstrap. Nothing leaves the process. Mock layer available for testing.",
 			Icon: "Layers",
 			Status: "Active" as const,
-			Detail: "TelemetryMock layer available for testing (all no-ops).",
+			Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",
 		},
 	],
 	Variant: [
@@ -147,15 +147,15 @@ const TransparencyContent = {
 	Strategy: [
 		{
 			Identifier: "dev-hot-reload",
-			Name: "Development (Hot-Reload)",
+			Name: "Development",
 			Description:
-				"Tauri dev mode with Sky dev server on localhost:9999.\n\nLive reload on file changes for rapid iteration.",
+				"Change a file, see it instantly. Hot-reload in Tauri with the Sky dev server. No manual rebuilds needed.",
 			Icon: "Zap",
 			Command: "bash Maintain/Dev-Mountain.sh",
 			Feature: [
-				"Hot-Reload",
-				"Sky Dev Server",
-				"localhost:9999",
+				"Hot Reload",
+				"Instant Preview",
+				"Dev Server",
 				"No Bundling",
 			],
 		},
@@ -163,42 +163,42 @@ const TransparencyContent = {
 			Identifier: "debug-build",
 			Name: "Debug Build",
 			Description:
-				"Three debug profiles with profile-specific bundling.\n\nBrowser, Mountain, and Electron variants with `tauri build --debug`.",
+				"Full debug symbols for stepping through code. Three profiles: Browser, Mountain, and Electron.",
 			Icon: "Code",
 			Command: "bash Maintain/Debug/Build.sh --profile debug-mountain",
 			Feature: [
-				"3 Profiles",
 				"Debug Symbols",
-				"Configurable Port",
-				"File Watching",
+				"3 Profiles",
+				"Source Maps",
+				"File Watch",
 			],
 		},
 		{
 			Identifier: "production-release",
-			Name: "Production Release",
+			Name: "Release Build",
 			Description:
-				"Mountain workbench with full bundling, clean build, production `NODE_ENV`, and `RUST_LOG=info`.\n\nSigned and packaged.",
+				"Optimized, signed, and ready to ship. Full bundling with PGP signatures for every artifact.",
 			Icon: "Server",
 			Command: "bash Maintain/Release/Build.sh --profile production",
 			Feature: [
-				"Full Bundle",
-				"Clean Build",
+				"Optimized",
 				"PGP Signed",
-				"RUST_LOG=info",
+				"Clean Build",
+				"Packaged",
 			],
 		},
 		{
 			Identifier: "web-only",
-			Name: "Web-Only Deployment",
+			Name: "Web Deployment",
 			Description:
-				"Browser workbench with no Tauri runtime.\n\n70-80% features for web-based deployments without native shell.",
+				"Run Land in the browser without installing anything. No native shell needed.",
 			Icon: "Layers",
 			Command: "bash Maintain/Release.sh --profile web-browser",
 			Feature: [
-				"No Tauri",
-				"70-80% Features",
-				"Web Deployment",
-				"esbuild or OXC",
+				"No Install",
+				"Browser Only",
+				"Web Deploy",
+				"OXC Bundled",
 			],
 		},
 	],
@@ -212,7 +212,7 @@ const DownloadContent = {
 		Title: T("download.page.title", { defaultValue: "Download Land" }),
 		Subtitle: T("download.page.subtitle", {
 			defaultValue:
-				"Available for macOS, Windows, and Linux. Fast, native, and free.",
+				"Native on macOS, Windows, and Linux.\n\nZero cost, zero tracking, full VS Code extension support.",
 		}),
 		Platforms: [], // Will be fetched by DynamicPlatformGrid
 		ShowVerification: true,
@@ -236,7 +236,7 @@ const DownloadContent = {
 		}),
 		Description: T("download.systemRequirements.subtitle", {
 			defaultValue:
-				"Ensure your system meets these requirements before downloading.",
+				"A quick check before you download saves a reinstall later.",
 		}),
 		Requirements: {
 			Minimum: [
@@ -266,11 +266,11 @@ const DownloadContent = {
 	},
 	VerificationInfo: {
 		Title: T("download.verification.title", {
-			defaultValue: "Verify Your Download",
+			defaultValue: "Every Release is Signed. Verify Yours.",
 		}),
 		Description: T("download.verification.description", {
 			defaultValue:
-				"Land releases will be signed with PGP. Verification checksums and signatures will be available with the first public release.",
+				"Every Land release is PGP-signed before it ships.\n\nVerify your download to confirm you got exactly what was built.",
 		}),
 		DownloadVerification: {
 			SHA256: "Available at first public release",
@@ -308,7 +308,7 @@ const DownloadContent = {
 		}),
 		Description: T("download.previousReleases.description", {
 			defaultValue:
-				"No previous releases yet. The first public release is currently in development.",
+				"Download an older version if you need to pin to a specific release.",
 		}),
 		Releases: [],
 		ShowChangelog: false,
@@ -354,17 +354,17 @@ const MetaDescription = T("meta.downloads.description", {
 		</span>
 		<span
 			class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700">
-			Mountain (Recommended)&#x2001;<span
+			Native Rust + Tauri&#x2001;<span
 				class="h-1.5 w-1.5 rounded-none bg-blue-500"
 				aria-hidden="true"></span>
 		</span>
 		<span
 			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			9 Profiles
+			macOS + Windows + Linux
 		</span>
 		<span
 			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			16 Test Permutations
+			VS Code Extensions
 		</span>
 	</div>
 	<DownloadsPage

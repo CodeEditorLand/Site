@@ -148,6 +148,7 @@ export default (await import("astro/config")).defineConfig({
 				"react-dom/client",
 				"react/jsx-runtime",
 				"react/jsx-dev-runtime",
+				"firebase/app",
 			],
 		},
 
