@@ -37,5 +37,13 @@
 	"resendFailed": "No se pudo reenviar el correo electronico.\nPor favor, intentelo de nuevo.",
 	"emailLabel": "Correo electronico",
 	"emailPlaceholder": "Ingrese su correo electronico para reenviar la verificacion",
-	"resendSuccess": "Correo de verificacion reenviado!"
+	"resendSuccess": "Correo de verificacion reenviado!",
+	"resendCooldown": "Reenviar en {{seconds}}s",
+	"resend": {
+		"success": "Correo de verificacion enviado exitosamente."
+	},
+	"token": {
+		"invalid": "Este enlace de verificacion es invalido.",
+		"expired": "Este enlace de verificacion ha caducado. Por favor solicite uno nuevo."
+	}
 }

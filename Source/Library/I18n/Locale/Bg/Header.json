@@ -11,8 +11,18 @@
 	},
 	"actions": {
 		"signIn": "Вход",
+		"signUp": "Регистрация",
 		"editorPortal": "Портал на редактора",
 		"getStarted": "Вземете Land",
-		"logout": "Изход"
+		"logout": "Изход",
+		"loading": "Зареждане\u2026"
+	},
+	"user": {
+		"avatarAlt": "Потребителско меню",
+		"menu": {
+			"dashboard": "Табло",
+			"account": "Профил",
+			"signOut": "Изход"
+		}
 	}
 }

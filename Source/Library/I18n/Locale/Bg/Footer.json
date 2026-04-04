@@ -8,13 +8,15 @@
 			"title": "Продукт",
 			"features": "Функции",
 			"downloads": "Изтегляне",
-			"docs": "Документация"
+			"docs": "Документация",
+			"blog": "Блог"
 		},
 		"company": {
 			"title": "Общност",
 			"issues": "Дискусии",
 			"contributing": "Принос",
-			"github": "GitHub"
+			"github": "GitHub",
+			"enterprise": "Корпоративен"
 		},
 		"legal": {
 			"title": "Правни",
@@ -22,6 +24,12 @@
 			"terms": "Условия",
 			"license": "Лиценз"
 		}
+	},
+	"social": {
+		"github": "GitHub",
+		"twitter": "X (Twitter)",
+		"discord": "Discord",
+		"linkedin": "LinkedIn"
 	},
 	"bottomBar": {
 		"copyright": "© {{year}} Code Editor Land. Всички права запазени.",
@@ -33,7 +41,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", фонд създаден от ",
 		"nlnet": "NLnet",
-		"euSupport": " с финансова подкрепа от Програмата за Интернет от ново поколение на Европейската комисия, споразумение No. 101135429. ",
+		"euSupport": " с финансова подкрепа от Програмата за Интернет от ново поколение на Европейската комисия, споразумение No.\u00a0101135429. ",
 		"projectPage": "Виж страницата на проекта"
 	}
 }

@@ -17,7 +17,8 @@
 		"errorToast": "No se pudo enviar el correo de restablecimiento",
 		"emailRequired": "El correo electronico es obligatorio",
 		"resendSuccess": "Correo de restablecimiento reenviado",
-		"resendError": "No se pudo reenviar el correo electronico"
+		"resendError": "No se pudo reenviar el correo electronico",
+		"emailSent": "Correo de restablecimiento enviado a su bandeja de entrada"
 	},
 	"resetPassword": {
 		"checkingMessage": "Validando su token de restablecimiento, por favor espere...",
@@ -65,7 +66,9 @@
 		"or": "O",
 		"noAccount": "No tiene una cuenta?",
 		"successToast": "Sesion iniciada exitosamente",
-		"errorToast": "Credenciales invalidas"
+		"errorToast": "Credenciales invalidas",
+		"showPassword": "Mostrar contrasena",
+		"hidePassword": "Ocultar contrasena"
 	},
 	"signUp": {
 		"confirmPasswordLabel": "Confirmar contrasena",
@@ -101,7 +104,12 @@
 		"and": "y",
 		"successToast": "Cuenta creada exitosamente",
 		"errorToast": "No se pudo crear la cuenta",
-		"confirmPasswordMismatch": "Las contrasenas no coinciden"
+		"confirmPasswordMismatch": "Las contrasenas no coinciden",
+		"passwordStrength": {
+			"weak": "Contrasena debil",
+			"medium": "Contrasena media",
+			"strong": "Contrasena fuerte"
+		}
 	},
 	"common": {
 		"and": "y"
@@ -113,6 +121,10 @@
 			"title": "Cuenta en la nube",
 			"subtitle": "Inicio de sesion en linea seguro con sincronizacion completa en la nube.\nSus configuraciones, extensiones y preferencias almacenadas y sincronizadas en todos sus dispositivos.",
 			"signIn": "Inicio de sesion seguro",
+			"emailLabel": "Correo electronico",
+			"emailPlaceholder": "nombre@ejemplo.es",
+			"passwordLabel": "Contrasena",
+			"passwordPlaceholder": "Ingrese su contrasena",
 			"feature": {
 				"sync": "Sincronizacion de configuraciones entre dispositivos",
 				"backup": "Copia de seguridad automatica en la nube de configuraciones",
@@ -189,6 +201,12 @@
 			"continueOkta": "Continuar con Okta",
 			"continueAzure": "Continuar con Azure AD",
 			"continueSAML": "Continuar con SAML",
+			"oktaDomainLabel": "Dominio Okta",
+			"oktaDomainPlaceholder": "su-org.okta.com",
+			"azureTenantLabel": "ID de inquilino Azure AD",
+			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"samlMetadataLabel": "URL de metadatos SAML",
+			"samlMetadataPlaceholder": "https://su-idp.com/metadata.xml",
 			"note": "OIDC Discovery · SAML 2.0 · Aprovisionamiento SCIM",
 			"feature": {
 				"okta": "Integracion SSO de Okta",
@@ -221,5 +239,13 @@
 	"dashboard": "Ir al panel",
 	"logout": "Cerrar sesion",
 	"emailNotVerified": "Correo no verificado.\nRevise su bandeja de entrada.",
-	"redirecting": "Redirigiendo al inicio de sesion..."
+	"redirecting": "Redirigiendo al inicio de sesion...",
+	"dashboardPage": {
+		"title": "Panel de control",
+		"welcome": "Bienvenido de vuelta",
+		"downloadsHeading": "Descargas",
+		"signOut": "Cerrar sesion",
+		"loading": "Cargando cuenta\u2026",
+		"error": "No se pudo cargar la cuenta."
+	}
 }
