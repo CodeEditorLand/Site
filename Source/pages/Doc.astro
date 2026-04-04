@@ -23,8 +23,179 @@ const MetaTitle = T("meta.docs.title", {
 
 const MetaDescription = T("meta.docs.description", {
 	defaultValue:
-		"Browse the Code Editor Land documentation, guides, and API references on GitHub.",
+		"Browse the Code Editor Land documentation, guides, and API references.",
 });
+
+// Data-driven architecture — replaces 450 lines of manual JSX
+const Element = [
+	{
+		Name: "Mountain",
+		Emoji: "⛰️",
+		Repo: "Mountain",
+		Description: T("common.docs.architecture.mountain.description", {
+			defaultValue: "Manages Window, File System and Process",
+		}),
+		Subtitle: T("common.docs.architecture.mountain.subtitle", {
+			defaultValue: "Rust/Tauri native backend",
+		}),
+	},
+	{
+		Name: "Cocoon",
+		Emoji: "🦋",
+		Repo: "Cocoon",
+		Description: T("common.docs.architecture.cocoon.description", {
+			defaultValue: "Runs VS Code Extension via Effect-TS",
+		}),
+		Subtitle: T("common.docs.architecture.cocoon.subtitle", {
+			defaultValue: "TypeScript extension host",
+		}),
+	},
+	{
+		Name: "Wind",
+		Emoji: "🌀",
+		Repo: "Wind",
+		Description: T("common.docs.architecture.wind.description", {
+			defaultValue: "Re-implementation of the VS Code Workbench",
+		}),
+		Subtitle: T("common.docs.architecture.wind.subtitle", {
+			defaultValue: "TypeScript UI service",
+		}),
+	},
+	{
+		Name: "Sky",
+		Emoji: "🌤️",
+		Repo: "Sky",
+		Description: T("common.docs.architecture.sky.description", {
+			defaultValue: "Renders the editor interface using Astro components",
+		}),
+		Subtitle: T("common.docs.architecture.sky.subtitle", {
+			defaultValue: "Astro UI component layer",
+		}),
+	},
+	{
+		Name: "Air",
+		Emoji: "💨",
+		Repo: "Air",
+		Description: T("common.docs.architecture.air.description", {
+			defaultValue:
+				"Background daemon for updates, downloads, and crypto signing",
+		}),
+		Subtitle: T("common.docs.architecture.air.subtitle", {
+			defaultValue: "Rust background daemon",
+		}),
+	},
+	{
+		Name: "Echo",
+		Emoji: "📣",
+		Repo: "Echo",
+		Description: T("common.docs.architecture.echo.description", {
+			defaultValue:
+				"High-performance work-stealing executor for task scheduling",
+		}),
+		Subtitle: T("common.docs.architecture.echo.subtitle", {
+			defaultValue: "Rust task scheduler",
+		}),
+	},
+	{
+		Name: "Common",
+		Emoji: "📦",
+		Repo: "Common",
+		Description: T("common.docs.architecture.common.description", {
+			defaultValue: "Abstract traits, DTOs, and shared library utilities",
+		}),
+		Subtitle: T("common.docs.architecture.common.subtitle", {
+			defaultValue: "Rust shared library",
+		}),
+	},
+	{
+		Name: "Vine",
+		Emoji: "🌿",
+		Repo: "Vine",
+		Description: T("common.docs.architecture.vine.description", {
+			defaultValue: "gRPC protocol definitions for editor IPC",
+		}),
+		Subtitle: T("common.docs.architecture.vine.subtitle", {
+			defaultValue: "Rust/Protobuf gRPC layer",
+		}),
+	},
+	{
+		Name: "Mist",
+		Emoji: "🌫️",
+		Repo: "Mist",
+		Description: T("common.docs.architecture.mist.description", {
+			defaultValue: "WebSocket communication layer between editor components",
+		}),
+		Subtitle: T("common.docs.architecture.mist.subtitle", {
+			defaultValue: "Rust WebSocket layer",
+		}),
+	},
+	{
+		Name: "Rest",
+		Emoji: "⚡",
+		Repo: "Rest",
+		Description: T("common.docs.architecture.rest.description", {
+			defaultValue: "OXC-based JavaScript bundler for VS Code platform code",
+		}),
+		Subtitle: T("common.docs.architecture.rest.subtitle", {
+			defaultValue: "Rust JS bundler",
+		}),
+	},
+	{
+		Name: "Output",
+		Emoji: "📤",
+		Repo: "Output",
+		Description: T("common.docs.architecture.output.description", {
+			defaultValue: "Bundled JavaScript artifacts produced by Rest",
+		}),
+		Subtitle: T("common.docs.architecture.output.subtitle", {
+			defaultValue: "JavaScript bundle",
+		}),
+	},
+	{
+		Name: "Grove",
+		Emoji: "🌳",
+		Repo: "Grove",
+		Description: T("common.docs.architecture.grove.description", {
+			defaultValue: "WASM and Rhai scripting extension host",
+		}),
+		Subtitle: T("common.docs.architecture.grove.subtitle", {
+			defaultValue: "Rust WASM host",
+		}),
+	},
+	{
+		Name: "Worker",
+		Emoji: "⚙️",
+		Repo: "Worker",
+		Description: T("common.docs.architecture.worker.description", {
+			defaultValue: "Web Workers for CPU-intensive frontend tasks",
+		}),
+		Subtitle: T("common.docs.architecture.worker.subtitle", {
+			defaultValue: "TypeScript Web Workers",
+		}),
+	},
+	{
+		Name: "SideCar",
+		Emoji: "🚂",
+		Repo: "SideCar",
+		Description: T("common.docs.architecture.sidecar.description", {
+			defaultValue: "Pre-built Node.js binaries for cross-platform extension support",
+		}),
+		Subtitle: T("common.docs.architecture.sidecar.subtitle", {
+			defaultValue: "Cross-platform Node.js",
+		}),
+	},
+	{
+		Name: "Maintain",
+		Emoji: "🔧",
+		Repo: "Maintain",
+		Description: T("common.docs.architecture.maintain.description", {
+			defaultValue: "CI/CD and maintenance scripts for the Land ecosystem",
+		}),
+		Subtitle: T("common.docs.architecture.maintain.subtitle", {
+			defaultValue: "Build tooling",
+		}),
+	},
+];
 ---
 
 <Base
@@ -49,6 +220,13 @@ const MetaDescription = T("meta.docs.description", {
 						}
 					</p>
 					<DynamicDocSidebar Sections={SidebarSections} client:load />
+					<div class="mt-4 border-t border-[var(--Border)] pt-4">
+						<a
+							href="/Doc/Rust"
+							class="block px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							Rust API
+						</a>
+					</div>
 				</div>
 			</aside>
 
@@ -101,8 +279,8 @@ const MetaDescription = T("meta.docs.description", {
 					</p>
 				</header>
 
-				<!-- Documentation Links -->
-				<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+				<!-- Quick Links: GitHub, Issues, Rust API -->
+				<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 					<a
 						href="https://github.com/CodeEditorLand/Land#readme"
 						target="_blank"
@@ -146,9 +324,62 @@ const MetaDescription = T("meta.docs.description", {
 							}
 						</p>
 					</a>
+
+					<a
+						href="/Doc/Rust"
+						class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						<h2 class="mb-2 text-xl font-semibold">
+							{
+								T("common.docs.rustApi.title", {
+									defaultValue: "Rust API Reference",
+								})
+							}
+						</h2>
+						<p class="text-sm text-muted-foreground">
+							{
+								T("common.docs.rustApi.description", {
+									defaultValue:
+										"Browse generated rustdoc output for Mountain, Echo, Air, and 11 more Rust crates.",
+								})
+							}
+						</p>
+					</a>
 				</div>
 
-				<!-- Architecture Section -->
+				<!-- Guides: links to /Doc/{slug} pages -->
+				<section class="mt-12">
+					<h2 class="mb-6 text-2xl font-semibold">
+						{
+							T("common.docs.guides.heading", {
+								defaultValue: "Guides",
+							})
+						}
+					</h2>
+					<div
+						class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+						{
+							DocEntries.map((Entry) => (
+								<a
+									href={`/Doc/${Entry.id}`}
+									class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+									<p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+										{Entry.data.section}
+									</p>
+									<h3 class="font-medium">
+										{Entry.data.title}
+									</h3>
+									{Entry.data.description && (
+										<p class="mt-1 text-xs text-muted-foreground">
+											{Entry.data.description}
+										</p>
+									)}
+								</a>
+							))
+						}
+					</div>
+				</section>
+
+				<!-- Architecture Section — data-driven -->
 				<section class="mt-12">
 					<a
 						href="https://github.com/CodeEditorLand"
@@ -175,602 +406,112 @@ const MetaDescription = T("meta.docs.description", {
 							}
 						</p>
 						<ul class="space-y-4 text-sm">
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Mountain"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Mountain&#x2001;⛰️</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.mountain.description",
-											{
-												defaultValue:
-													"Manages Window, File System and Process",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.mountain.subtitle",
-											{
-												defaultValue:
-													"Rust/Tauri native backend",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Cocoon"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Cocoon&#x2001;🦋</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.cocoon.description",
-											{
-												defaultValue:
-													"Runs VS Code Extension via Effect-TS",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.cocoon.subtitle",
-											{
-												defaultValue:
-													"TypeScript extension host",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Wind"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Wind&#x2001;🍃</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.wind.description",
-											{
-												defaultValue:
-													"Re-Implementation of VS Code Workbench",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.wind.subtitle",
-											{
-												defaultValue:
-													"TypeScript UI service",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Sky"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Sky&#x2001;🌌</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.sky.description",
-											{
-												defaultValue:
-													"Renders the Editor Interface",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.sky.subtitle",
-											{
-												defaultValue:
-													"Astro UI component",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Air"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Air&#x2001;🪁</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.air.description",
-											{
-												defaultValue:
-													"Update, Download and Crypto Signing",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.air.subtitle",
-											{
-												defaultValue:
-													"Rust background daemon",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Echo"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Echo&#x2001;📣</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.echo.description",
-											{
-												defaultValue:
-													"High-Performance Work-Stealing Executor",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.echo.subtitle",
-											{
-												defaultValue:
-													"Rust task scheduler",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Common"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Common&#x2001;🌐</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.common.description",
-											{
-												defaultValue:
-													"Abstract Core Library - Trait Definitions and DTOs",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.common.subtitle",
-											{
-												defaultValue:
-													"Rust core library",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Vine"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Vine&#x2001;🌿</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.vine.description",
-											{
-												defaultValue:
-													"gRPC Protocol Definition and Implementation",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.vine.subtitle",
-											{
-												defaultValue:
-													"Protobuf/Rust IPC",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Rest"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Rest&#x2001;🔨</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.rest.description",
-											{
-												defaultValue:
-													"JS Bundler for VS Code Platform Code",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.rest.subtitle",
-											{
-												defaultValue:
-													"Rust/OXC bundler",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Output"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Output&#x2001;📦</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.output.description",
-											{
-												defaultValue:
-													"Bundled JS Artifacts from Rest",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.output.subtitle",
-											{
-												defaultValue:
-													"JavaScript runtime bundle",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Mist"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Mist&#x2001;🌫️</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.mist.description",
-											{
-												defaultValue:
-													"WebSocket Communication Layer",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.mist.subtitle",
-											{
-												defaultValue: "Rust WebSocket",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Grove"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Grove&#x2001;🌳</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.grove.description",
-											{
-												defaultValue:
-													"Native WASM and Rhai Extension Host",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.grove.subtitle",
-											{
-												defaultValue:
-													"Rust/WASM extension host",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Worker"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Worker&#x2001;⚙️</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.worker.description",
-											{
-												defaultValue:
-													"Web Workers for Frontend",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.worker.subtitle",
-											{
-												defaultValue:
-													"TypeScript web workers",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/SideCar"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>SideCar&#x2001;🚂</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.sidecar.description",
-											{
-												defaultValue:
-													"Pre-Built Node.js Binaries",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.sidecar.subtitle",
-											{
-												defaultValue:
-													"Cross-platform Node.js",
-											},
-										)
-									}
-								</p>
-							</li>
-							<li>
-								<a
-									href="https://github.com/CodeEditorLand/Maintain"
-									target="_blank"
-									rel="noopener noreferrer"
-									class="font-semibold text-[var(--Primary)] hover:underline"
-									>Maintain&#x2001;🔧</a
-								>
-								<p class="mt-1 text-muted-foreground">
-									{
-										T(
-											"common.docs.architecture.maintain.description",
-											{
-												defaultValue:
-													"CI/CD and Maintenance Scripts",
-											},
-										)
-									}
-								</p>
-								<p class="text-muted-foreground/70 text-xs">
-									{
-										T(
-											"common.docs.architecture.maintain.subtitle",
-											{
-												defaultValue: "Build tooling",
-											},
-										)
-									}
-								</p>
-							</li>
+							{
+								Element.map((E) => (
+									<li>
+										<a
+											href={`https://github.com/CodeEditorLand/${E.Repo}`}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="font-semibold text-[var(--Primary)] hover:underline">
+											{E.Name}&#x2001;{E.Emoji}
+										</a>
+										<p class="mt-1 text-muted-foreground">
+											{E.Description}
+										</p>
+										<p class="text-muted-foreground/70 text-xs">
+											{E.Subtitle}
+										</p>
+									</li>
+								))
+							}
 						</ul>
-					</div>
-				</section>
-
-				<!-- Source Repositories -->
-				<section class="mt-12">
-					<h2 class="mb-6 text-2xl font-semibold">
-						{
-							T("common.docs.repositories.heading", {
-								defaultValue: "Source Repositories",
-							})
-						}
-					</h2>
-					<div
-						class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
-						<div class="border-b border-[var(--Border)] p-4">
-							<a
-								href="https://github.com/CodeEditorLand/Land"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
-								CodeEditorLand/Land
-							</a>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T("common.docs.repositories.mainMonorepo", {
-										defaultValue: "Main monorepo",
-									})
-								}
-							</p>
-						</div>
-						<div class="border-b border-[var(--Border)] p-4">
-							<a
-								href="https://github.com/CodeEditorLand/Mountain"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
-								CodeEditorLand/Mountain
-							</a>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T("common.docs.repositories.tauriBackend", {
-										defaultValue: "Tauri backend",
-									})
-								}
-							</p>
-						</div>
-						<div class="border-b border-[var(--Border)] p-4">
-							<a
-								href="https://github.com/CodeEditorLand/Cocoon"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
-								CodeEditorLand/Cocoon
-							</a>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T(
-										"common.docs.repositories.extensionHost",
-										{
-											defaultValue: "Extension host",
-										},
-									)
-								}
-							</p>
-						</div>
-						<div class="border-b border-[var(--Border)] p-4">
-							<a
-								href="https://github.com/CodeEditorLand/Wind"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
-								CodeEditorLand/Wind
-							</a>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T(
-										"common.docs.repositories.windServiceLayer",
-										{
-											defaultValue: "UI service layer",
-										},
-									)
-								}
-							</p>
-						</div>
-						<div class="border-b border-[var(--Border)] p-4">
-							<a
-								href="https://github.com/CodeEditorLand/Sky"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
-								CodeEditorLand/Sky
-							</a>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T(
-										"common.docs.repositories.skyComponentLayer",
-										{
-											defaultValue: "UI component layer",
-										},
-									)
-								}
-							</p>
-						</div>
-						<div class="border-b border-[var(--Border)] p-4">
-							<a
-								href="https://github.com/CodeEditorLand/Air"
-								target="_blank"
-								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
-								CodeEditorLand/Air
-							</a>
-							<p class="mt-1 text-sm text-muted-foreground">
-								{
-									T("common.docs.repositories.airDaemon", {
-										defaultValue: "Background daemon",
-									})
-								}
-							</p>
-						</div>
-						<div class="p-4">
+						<div class="mt-6 border-t border-[var(--Border)] pt-4">
 							<a
 								href="https://github.com/CodeEditorLand"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
+								class="text-sm font-medium text-[var(--Primary)] hover:underline">
 								{
 									T("common.docs.repositories.viewAll", {
 										defaultValue: "View all repositories",
 									})
 								}
+								<span class="InlineSeparator">↗</span>
 							</a>
 						</div>
+					</div>
+				</section>
+
+				<!-- Backend Services (Cloudflare Workers) -->
+				<section class="mt-12">
+					<h2 class="mb-6 text-2xl font-semibold">
+						{
+							T("common.docs.workers.heading", {
+								defaultValue: "Backend Services",
+							})
+						}
+					</h2>
+					<div
+						class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+						<p class="mb-4 text-muted-foreground">
+							{
+								T("common.docs.workers.intro", {
+									defaultValue:
+										"Five Cloudflare Workers power the Land backend infrastructure:",
+								})
+							}
+						</p>
+						<ul class="space-y-3 text-sm">
+							<li>
+								<span class="font-semibold">Auth</span>
+								<span class="text-muted-foreground">
+									{" — "}
+									{
+										T("common.docs.workers.auth", {
+											defaultValue:
+												"OAuth 2.0, JWT session tokens, and Auth0 integration",
+										})
+									}
+								</span>
+							</li>
+							<li>
+								<span class="font-semibold">Download</span>
+								<span class="text-muted-foreground">
+									{" — "}
+									{
+										T("common.docs.workers.download", {
+											defaultValue:
+												"Binary distribution, release metadata, and update checks",
+										})
+									}
+								</span>
+							</li>
+							<li>
+								<span class="font-semibold">Status</span>
+								<span class="text-muted-foreground">
+									{" — "}
+									{
+										T("common.docs.workers.status", {
+											defaultValue:
+												"Health checks and uptime monitoring",
+										})
+									}
+								</span>
+							</li>
+							<li>
+								<span class="font-semibold">Analytics</span>
+								<span class="text-muted-foreground">
+									{" — "}
+									{
+										T("common.docs.workers.analytics", {
+											defaultValue:
+												"Privacy-first usage analytics, no personal data stored",
+										})
+									}
+								</span>
+							</li>
+						</ul>
 					</div>
 				</section>
 

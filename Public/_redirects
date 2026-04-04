@@ -101,6 +101,8 @@
 /Asset/*                  /Asset/:splat             200
 /Favicon/*                /Favicon/:splat           200
 /Image/*                  /Image/:splat             200
+/OpenGraph.svg            /OpenGraph.svg            200
+/OpenGraph/*              /OpenGraph/:splat         200
 /RouteMap.json            /RouteMap.json            200
 /service-worker.js        /service-worker.js        200
 /sitemap-index.xml        /sitemap-index.xml        200

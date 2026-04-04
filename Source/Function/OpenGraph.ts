@@ -2,9 +2,16 @@
  * OpenGraph SVG template generator.
  *
  * Produces a 1200×675 (16:9) SVG string suitable for og:image / twitter:image
- * social sharing cards. The Land brand glyph (Glyph/Land.svg, 1880×1600
- * intrinsic) is scaled to 0.36 and placed right-side-center, bleeding
- * slightly off the right edge. Text occupies the left ~520 px.
+ * social sharing cards. Text occupies the left ~620 px; the Land brand glyph
+ * occupies the right column (x 690–1160, y 138–538).
+ *
+ * The glyph uses two pre-baked <polygon> elements — no SVG transforms, no
+ * matrix operations — so it renders identically in every crawler, bot, and
+ * minimal SVG renderer. Coordinates are the four corners of each parallelogram
+ * at 0.25× scale + translate(690, 138) of the 1880×1600 intrinsic viewBox:
+ *
+ *   matrix(-0.93358 0.358368 0 1 940  0.24)  → upper parallelogram
+ *   matrix(-0.93358 0.358368 0 1 1880 618.2) → lower parallelogram
  */
 
 const WrapText = (Text: string, MaxCharacter: number): string[] => {
@@ -37,18 +44,17 @@ const EscapeXML = (Text: string): string =>
 		.replace(/'/g, "&apos;");
 
 /**
- * Land brand glyph — two skewed parallelogram rects matching Glyph/Land.svg.
- * Intrinsic viewBox: 1880×1600. Caller supplies translate + uniform scale.
+ * Land brand glyph — two parallelograms pre-baked at OG card pixel coords.
+ *
+ * Pre-computed from Glyph/Land.svg (1880×1600) at scale=0.25, translate(690,138):
+ *   Upper: corners (925,138) (690,228) (690,383) (925,293)
+ *   Lower: corners (1160,293) (925,383) (925,538) (1160,448)
+ *
+ * No transforms used — direct <polygon> for maximum renderer compatibility.
  */
-const LogoGlyph = (X: number, Y: number, Scale: number): string =>
-	`<g transform="translate(${X}, ${Y}) scale(${Scale})">
-		<rect width="1005.28" height="620.771" rx="91.3889"
-			transform="matrix(-0.93358 0.358368 0 1 940 0.240723)"
-			fill="#151515" fill-opacity="0.22" />
-		<rect width="1005.28" height="620.771" rx="91.3889"
-			transform="matrix(-0.93358 0.358368 0 1 1880 618.204)"
-			fill="#151515" fill-opacity="0.22" />
-	</g>`;
+const LogoGlyph = (): string =>
+	`<polygon points="925,138 690,228 690,383 925,293" fill="#151515" fill-opacity="0.20" />
+	<polygon points="1160,293 925,383 925,538 1160,448" fill="#151515" fill-opacity="0.20" />`;
 
 /**
  * Generates an OpenGraph SVG card at 1200×675 (exact 16:9).
@@ -65,7 +71,7 @@ const GenerateOpenGraphSvg = (
 	const Width = 1200;
 	const Height = 675; // 16:9
 
-	// Text column width ~520 px — glyph left edge starts at ~623
+	// Text column: x 72–660. Glyph starts at x=690.
 	const TitleLine = WrapText(Title, 22);
 	const DescriptionLine = WrapText(Description, 48);
 
@@ -97,11 +103,6 @@ const GenerateOpenGraphSvg = (
 			`<text x="72" y="${DescriptionStartY + Index * DescriptionLineHeight}" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="${DescriptionFontSize}" font-weight="400" fill="#666666">${EscapeXML(Line)}</text>`,
 	).join("\n\t\t");
 
-	// Glyph: scale 0.36 → 677×576 px. Centred vertically; bleeds ~100 px off right edge.
-	const GlyphScale = 0.36;
-	const GlyphX = Math.round(Width - 1880 * GlyphScale + 100); // 623
-	const GlyphY = Math.round((Height - 1600 * GlyphScale) / 2); // 50
-
 	return `<svg width="${Width}" height="${Height}" viewBox="0 0 ${Width} ${Height}" xmlns="http://www.w3.org/2000/svg">
 	<!-- Background -->
 	<rect width="${Width}" height="${Height}" fill="#ffffff" />
@@ -109,8 +110,8 @@ const GenerateOpenGraphSvg = (
 	<!-- Top accent line -->
 	<rect width="${Width}" height="4" fill="#151515" fill-opacity="0.12" />
 
-	<!-- Land logo glyph (right side, brand proportions) -->
-	${LogoGlyph(GlyphX, GlyphY, GlyphScale)}
+	<!-- Land logo glyph: upper + lower parallelogram, x 690–1160, y 138–538 -->
+	${LogoGlyph()}
 
 	<!-- Section badge -->
 	${SectionBadge}

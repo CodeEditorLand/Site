@@ -98,6 +98,13 @@ const DynamicDocSidebar = ({
 					);
 				})}
 			</ul>
+			<div className="mt-3 border-t border-[var(--ColorBorder)] pt-3">
+				<a
+					href="/Doc/Rust"
+					className="block px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
+					Rust API
+				</a>
+			</div>
 		</nav>
 	);
 };
