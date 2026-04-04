@@ -1,5 +1,5 @@
 /**
- * WorkerClient — typed HTTP client for all Cloudflare Worker APIs.
+ * WorkerClient - typed HTTP client for all Cloudflare Worker APIs.
  *
  * Handles auth (JWT Bearer), analytics, downloads, status, and GitHub
  * integration. Localhost detection enables local dev tokens without a
@@ -84,7 +84,7 @@ const PostAuthToServiceWorker = (Token: string, UserId: string): void => {
 			UserId,
 		});
 	} catch {
-		// ServiceWorker not available — gracefully degrade
+		// ServiceWorker not available - gracefully degrade
 	}
 };
 

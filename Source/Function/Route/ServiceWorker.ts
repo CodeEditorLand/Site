@@ -1,5 +1,5 @@
 /**
- * ServiceWorker — route redirector, auth gate, and cache manager.
+ * ServiceWorker - route redirector, auth gate, and cache manager.
  *
  * Three responsibilities:
  * 1. PascalCase URL normalization (redirect variants to canonical)
@@ -88,7 +88,7 @@ const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
 // ─── Route classification ───
 // Auth-required routes - redirect to /Account/SignIn when no session cached.
 // NOTE: /Portal is the auth-selection gateway (Cloud / Provider / LocalFirst /
-// Enterprise tier picker). It must be publicly accessible — users land here
+// Enterprise tier picker). It must be publicly accessible - users land here
 // BEFORE they have a session. Only post-auth destinations belong here.
 
 const ProtectedRoute: Set<string> = new Set(["/Dashboard"]);
@@ -225,7 +225,7 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 			return State;
 		}
 
-		// Legacy plain format — read and re-encrypt on next write
+		// Legacy plain format - read and re-encrypt on next write
 		const State = Raw as AuthState;
 		if (State.ExpiresAt - 30_000 < Date.now()) {
 			await Cache.delete(AUTH_STATE_KEY);
@@ -478,7 +478,7 @@ const MaybeRefreshToken = async (): Promise<void> => {
 		}
 	} catch (RefreshError) {
 		__DEV__ && ErrorLog("Token refresh network error:", RefreshError);
-		// Don't clear — might be offline temporarily
+		// Don't clear - might be offline temporarily
 	}
 };
 

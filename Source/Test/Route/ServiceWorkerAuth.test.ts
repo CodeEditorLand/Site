@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 // The ServiceWorker file uses `declare var self: ServiceWorkerGlobalScope` and
 // build-time injected constants (__DEV__, __INCREMENT__, __ROUTE_MAP_*).
-// We cannot import it directly — instead we replicate the testable pure logic
+// We cannot import it directly - instead we replicate the testable pure logic
 // (same approach as ServiceWorker.test.ts) and test the message bus contracts,
 // auth gate routing rules, and API request classification deterministically.
 

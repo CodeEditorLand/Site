@@ -64,7 +64,7 @@ export const GET: APIRoute = async ({ params }) => {
 				});
 			}
 		} catch {
-			// Collection may not exist yet — fall through to fallback
+			// Collection may not exist yet - fall through to fallback
 		}
 	}
 
@@ -95,7 +95,7 @@ export const GET: APIRoute = async ({ params }) => {
 				});
 			}
 		} catch {
-			// Collection may not exist yet — fall through to fallback
+			// Collection may not exist yet - fall through to fallback
 		}
 	}
 
@@ -121,7 +121,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		await import("../../Function/OpenGraph/PageMetadata.js")
 	).default;
 
-	// Static pages — skip the home slug ("") which is served by /OpenGraph.svg.ts
+	// Static pages - skip the home slug ("") which is served by /OpenGraph.svg.ts
 	const StaticPath = Object.keys(PageMetadata)
 		.filter((Slug) => Slug !== "")
 		.map((Slug) => ({ params: { Slug } }));

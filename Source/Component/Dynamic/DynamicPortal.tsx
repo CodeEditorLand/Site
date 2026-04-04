@@ -140,7 +140,7 @@ const IconLabelMap: Record<string, string> = {
 	Search: "Find anything in your codebase",
 	Server: "Always-on relay server",
 	Settings: "Everything configurable by you",
-	Shield: "Zero trust — every request verified",
+	Shield: "Zero trust - every request verified",
 	Sliders: "Fine-tune every detail",
 	Terminal: "Full shell access, right here",
 	Timer: "Deploys in under 60 s",
@@ -942,7 +942,7 @@ const PortalTierRow = ({
 										</span>
 										{"\u2001"}
 										<IconTooltip
-											Label="Zero trust — every request verified"
+											Label="Zero trust - every request verified"
 											Icon={lucide.Shield}
 											Color={
 												IconColorMap["Shield"] ??

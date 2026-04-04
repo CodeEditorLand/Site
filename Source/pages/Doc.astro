@@ -23,17 +23,17 @@ const MetaTitle = T("meta.docs.title", {
 
 const MetaDescription = T("meta.docs.description", {
 	defaultValue:
-		"Browse the Code Editor Land documentation, guides, and API references.",
+		"Browse the Code Editor Land documentation, architecture guides, and developer resources.",
 });
 
-// Data-driven architecture — replaces 450 lines of manual JSX
+// Data-driven architecture - replaces 450 lines of manual JSX
 const Element = [
 	{
 		Name: "Mountain",
 		Emoji: "⛰️",
 		Repo: "Mountain",
 		Description: T("common.docs.architecture.mountain.description", {
-			defaultValue: "Manages Window, File System and Process",
+			defaultValue: "Replaces Electron's main process. Manages windows, file system, and process lifecycle at native speed.",
 		}),
 		Subtitle: T("common.docs.architecture.mountain.subtitle", {
 			defaultValue: "Rust/Tauri native backend",
@@ -44,7 +44,7 @@ const Element = [
 		Emoji: "🦋",
 		Repo: "Cocoon",
 		Description: T("common.docs.architecture.cocoon.description", {
-			defaultValue: "Runs VS Code Extension via Effect-TS",
+			defaultValue: "Runs VS Code extensions via Effect-TS. Your existing extensions work without any modifications.",
 		}),
 		Subtitle: T("common.docs.architecture.cocoon.subtitle", {
 			defaultValue: "TypeScript extension host",
@@ -55,7 +55,7 @@ const Element = [
 		Emoji: "🌀",
 		Repo: "Wind",
 		Description: T("common.docs.architecture.wind.description", {
-			defaultValue: "Re-implementation of the VS Code Workbench",
+			defaultValue: "Full workbench shell",
 		}),
 		Subtitle: T("common.docs.architecture.wind.subtitle", {
 			defaultValue: "TypeScript UI service",
@@ -90,10 +90,10 @@ const Element = [
 		Repo: "Echo",
 		Description: T("common.docs.architecture.echo.description", {
 			defaultValue:
-				"High-performance work-stealing executor for task scheduling",
+				"Saturates every CPU core with a work-stealing executor. Heavy indexing stays in the background; the editor stays fast.",
 		}),
 		Subtitle: T("common.docs.architecture.echo.subtitle", {
-			defaultValue: "Rust task scheduler",
+			defaultValue: "Shared trait definitions and DTOs used across all elements. The foundation everything else builds on.",
 		}),
 	},
 	{
@@ -101,7 +101,7 @@ const Element = [
 		Emoji: "📦",
 		Repo: "Common",
 		Description: T("common.docs.architecture.common.description", {
-			defaultValue: "Abstract traits, DTOs, and shared library utilities",
+			defaultValue: "Core shared library",
 		}),
 		Subtitle: T("common.docs.architecture.common.subtitle", {
 			defaultValue: "Rust shared library",
@@ -112,10 +112,10 @@ const Element = [
 		Emoji: "🌿",
 		Repo: "Vine",
 		Description: T("common.docs.architecture.vine.description", {
-			defaultValue: "gRPC protocol definitions for editor IPC",
+			defaultValue: "Native IPC protocol",
 		}),
 		Subtitle: T("common.docs.architecture.vine.subtitle", {
-			defaultValue: "Rust/Protobuf gRPC layer",
+			defaultValue: "WebSocket communication layer between the daemon and the editor frontend.",
 		}),
 	},
 	{
@@ -124,10 +124,10 @@ const Element = [
 		Repo: "Mist",
 		Description: T("common.docs.architecture.mist.description", {
 			defaultValue:
-				"WebSocket communication layer between editor components",
+				"Live WebSocket bridge",
 		}),
 		Subtitle: T("common.docs.architecture.mist.subtitle", {
-			defaultValue: "Rust WebSocket layer",
+			defaultValue: "Bundles VS Code platform JavaScript with OXC. Produces the JS runtime Land ships in.",
 		}),
 	},
 	{
@@ -246,7 +246,7 @@ const Element = [
 								class="transition-colors hover:text-foreground"
 								>{
 									T("common.breadcrumb.home", {
-										defaultValue: "Home",
+										defaultValue: "Documentation",
 									})
 								}</a
 							>
@@ -269,7 +269,7 @@ const Element = [
 					<h1 class="mb-4 text-4xl font-bold tracking-tight">
 						{
 							T("common.docs.pageTitle", {
-								defaultValue: "Documentation",
+								defaultValue: "Everything you need to install, build, and contribute to Land.",
 							})
 						}
 					</h1>
@@ -293,7 +293,7 @@ const Element = [
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.gettingStarted.title", {
-									defaultValue: "Getting Started",
+									defaultValue: "The README walks you through installation, first build, and the six-element architecture. No prior Rust or Tauri knowledge required.",
 								})
 							}
 						</h2>
@@ -315,7 +315,7 @@ const Element = [
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.issueTracker.title", {
-									defaultValue: "Issue Tracker",
+									defaultValue: "Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors.",
 								})
 							}
 						</h2>
@@ -383,7 +383,7 @@ const Element = [
 					</div>
 				</section>
 
-				<!-- Architecture Section — data-driven -->
+				<!-- Architecture Section - data-driven -->
 				<section class="mt-12">
 					<a
 						href="https://github.com/CodeEditorLand"
@@ -395,7 +395,7 @@ const Element = [
 					<h2 class="mb-6 text-2xl font-semibold">
 						{
 							T("common.docs.architecture.heading", {
-								defaultValue: "Architecture Overview",
+								defaultValue: "Land replaces VS Code's Electron stack piece by piece. Each element is an independent open-source repository:",
 							})
 						}
 					</h2>
@@ -470,7 +470,7 @@ const Element = [
 							<li>
 								<span class="font-semibold">Auth</span>
 								<span class="text-muted-foreground">
-									{" — "}
+									{" - "}
 									{
 										T("common.docs.workers.auth", {
 											defaultValue:
@@ -482,7 +482,7 @@ const Element = [
 							<li>
 								<span class="font-semibold">Download</span>
 								<span class="text-muted-foreground">
-									{" — "}
+									{" - "}
 									{
 										T("common.docs.workers.download", {
 											defaultValue:
@@ -494,7 +494,7 @@ const Element = [
 							<li>
 								<span class="font-semibold">Status</span>
 								<span class="text-muted-foreground">
-									{" — "}
+									{" - "}
 									{
 										T("common.docs.workers.status", {
 											defaultValue:
@@ -506,11 +506,11 @@ const Element = [
 							<li>
 								<span class="font-semibold">Analytics</span>
 								<span class="text-muted-foreground">
-									{" — "}
+									{" - "}
 									{
 										T("common.docs.workers.analytics", {
 											defaultValue:
-												"Privacy-first usage analytics, no personal data stored",
+												"Back to top",
 										})
 									}
 								</span>

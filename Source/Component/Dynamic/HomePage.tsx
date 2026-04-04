@@ -257,50 +257,50 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
-						T("home:roadmap.tiers.current.features.air", {
-							defaultValue: "Air \uD83E\uDE81: background daemon, silent auto-updates, crypto-signed",
+						T("home:roadmap.tiers.current.features.mountain", {
+							defaultValue: "Mountain \u26F0\uFE0F\nNative Rust/Tauri backend, replaces Electron's main process",
 						}),
 						T("home:roadmap.tiers.current.features.cocoon", {
-							defaultValue: "Cocoon \uD83E\uDD8B: extension host, full VS Code API via Effect-TS shims",
-						}),
-						T("home:roadmap.tiers.current.features.common", {
-							defaultValue: "Common \uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED: abstract Rust foundation, typed effects, zero concrete implementations",
-						}),
-						T("home:roadmap.tiers.current.features.echo", {
-							defaultValue: "Echo \uD83D\uDCE3: lock-free work-stealing scheduler, saturates every CPU core",
-						}),
-						T("home:roadmap.tiers.current.features.grove", {
-							defaultValue: "Grove \uD83C\uDF33: WASMtime sandbox, capability-based extension isolation",
-						}),
-						T("home:roadmap.tiers.current.features.maintain", {
-							defaultValue: "Maintain \uD83D\uDCAA\uD83C\uDFFB: build orchestrator, Rhai scripting, TOML/JSON5 config",
-						}),
-						T("home:roadmap.tiers.current.features.mist", {
-							defaultValue: "Mist \uD83C\uDF2B\uFE0F: DNS sandbox, all *.editor.land traffic resolves locally",
-						}),
-						T("home:roadmap.tiers.current.features.mountain", {
-							defaultValue: "Mountain \u26F0\uFE0F: native Rust/Tauri backend, replaces Electrons main process",
-						}),
-						T("home:roadmap.tiers.current.features.output", {
-							defaultValue: "Output \u26AB: compilation pipeline, deterministic checksummed bundles",
-						}),
-						T("home:roadmap.tiers.current.features.rest", {
-							defaultValue: "Rest \u26F1\uFE0F: TypeScript compiler in Rust + OXC, 2-3x faster than esbuild",
-						}),
-						T("home:roadmap.tiers.current.features.sidecar", {
-							defaultValue: "SideCar \u2699\uFE0F: cross-platform Node.js binary distributor per target triple",
-						}),
-						T("home:roadmap.tiers.current.features.sky", {
-							defaultValue: "Sky \uD83C\uDF0C: Astro UI layer, every panel is a component, instant hot-reload",
-						}),
-						T("home:roadmap.tiers.current.features.vine", {
-							defaultValue: "Vine \uD83C\uDF3F: gRPC backbone, contract-first .proto definitions",
+							defaultValue: "Cocoon \uD83E\uDD8B\nExtension host - full VS Code API via Effect-TS shims",
 						}),
 						T("home:roadmap.tiers.current.features.wind", {
-							defaultValue: "Wind \uD83C\uDF43: VS Code Workbench reimplemented in TypeScript + Effect-TS",
+							defaultValue: "Wind \uD83C\uDF43\nVS Code Workbench reimplemented in TypeScript + Effect-TS",
+						}),
+						T("home:roadmap.tiers.current.features.sky", {
+							defaultValue: "Sky \uD83C\uDF0C\nAstro UI layer - every panel is a component, instant hot-reload",
+						}),
+						T("home:roadmap.tiers.current.features.air", {
+							defaultValue: "Air \uD83E\uDE81\nBackground daemon, silent auto-updates, crypto-signed",
+						}),
+						T("home:roadmap.tiers.current.features.echo", {
+							defaultValue: "Echo \uD83D\uDCE3\nLock-free work-stealing scheduler, saturates every CPU core",
+						}),
+						T("home:roadmap.tiers.current.features.vine", {
+							defaultValue: "Vine \uD83C\uDF3F\ngRPC backbone, contract-first .proto definitions",
+						}),
+						T("home:roadmap.tiers.current.features.mist", {
+							defaultValue: "Mist \uD83C\uDF2B\uFE0F\nDNS sandbox, all *.editor.land traffic resolves locally",
+						}),
+						T("home:roadmap.tiers.current.features.rest", {
+							defaultValue: "Rest \u26F1\uFE0F\nTypeScript compiler in Rust + OXC, 2\u20133\u00d7 faster than esbuild",
+						}),
+						T("home:roadmap.tiers.current.features.grove", {
+							defaultValue: "Grove \uD83C\uDF33\nWASMtime sandbox, capability-based extension isolation",
+						}),
+						T("home:roadmap.tiers.current.features.common", {
+							defaultValue: "Common \uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED\nAbstract Rust foundation, typed effects, zero concrete implementations",
+						}),
+						T("home:roadmap.tiers.current.features.output", {
+							defaultValue: "Output \u26AB\nCompilation pipeline, deterministic checksummed bundles",
+						}),
+						T("home:roadmap.tiers.current.features.sidecar", {
+							defaultValue: "SideCar \u2699\uFE0F\nCross-platform Node.js binary distributor per target triple",
 						}),
 						T("home:roadmap.tiers.current.features.worker", {
-							defaultValue: "Worker \uD83C\uDF69: Service Worker, offline support, AES-GCM encrypted auth",
+							defaultValue: "Worker \uD83C\uDF69\nService Worker, offline support, AES-GCM encrypted auth",
+						}),
+						T("home:roadmap.tiers.current.features.maintain", {
+							defaultValue: "Maintain \uD83D\uDCAA\uD83C\uDFFB\nBuild orchestrator, Rhai scripting, TOML/JSON5 config",
 						}),
 					],
 					CTA: {
@@ -403,7 +403,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Air",
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
-						defaultValue: "Background daemon \u00b7 silent updates \u00b7 crypto-signed",
+						defaultValue: "Background daemon silent updates crypto-signed",
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
@@ -416,7 +416,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Cocoon",
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
-						defaultValue: "Extension host \u00b7 full VS Code API \u00b7 Effect-TS shims",
+						defaultValue: "Extension host full VS Code API Effect-TS shims",
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
@@ -429,7 +429,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Common",
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
-						defaultValue: "Shared foundation \u00b7 abstract traits \u00b7 zero implementations",
+						defaultValue: "Shared foundation Abstract traits Zero implementations",
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
@@ -442,7 +442,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Echo",
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
-						defaultValue: "Work-stealing scheduler \u00b7 saturates every CPU core",
+						defaultValue: "Work-stealing scheduler Saturates every CPU core",
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
@@ -455,7 +455,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Grove",
 					Author: "Grove",
 					Role: T("home:architecture.grove.subtitle", {
-						defaultValue: "Secure WASM sandbox \u00b7 WASMtime \u00b7 capability-based isolation",
+						defaultValue: "Secure WASM sandbox WASMtime capability-based isolation",
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
@@ -468,7 +468,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Maintain",
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
-						defaultValue: "Build orchestrator \u00b7 Rhai scripting \u00b7 TOML/JSON5 config",
+						defaultValue: "Build orchestrator Rhai scripting TOML/JSON5 config",
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
@@ -481,7 +481,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Mist",
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
-						defaultValue: "DNS sandbox \u00b7 *.editor.land resolves to 127.0.0.1",
+						defaultValue: "DNS sandbox *.editor.land resolves to 127.0.0.1",
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
@@ -494,7 +494,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Mountain",
 					Author: "Mountain",
 					Role: T("home:architecture.mountain.subtitle", {
-						defaultValue: "Native Rust backend \u00b7 replaces Electrons main process",
+						defaultValue: "Native Rust backend Replaces Electrons main process",
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
@@ -507,7 +507,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Output",
 					Author: "Output",
 					Role: T("home:architecture.output.subtitle", {
-						defaultValue: "Compilation pipeline \u00b7 deterministic bundles \u00b7 checksums",
+						defaultValue: "Compilation pipeline Deterministic Bundle Checksum",
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
@@ -520,7 +520,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Rest",
 					Author: "Rest",
 					Role: T("home:architecture.rest.subtitle", {
-						defaultValue: "TypeScript compiler \u00b7 Rust + OXC \u00b7 2\u20133\u00d7 faster than esbuild",
+						defaultValue: "TypeScript compiler Rust + OXC 2-3x faster than esbuild",
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
@@ -533,7 +533,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/SideCar",
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
-						defaultValue: "Binary distributor \u00b7 correct Node.js runtime per platform",
+						defaultValue: "Binary distributor correct Node.js runtime per platform",
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
@@ -546,7 +546,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Sky",
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
-						defaultValue: "Visual UI layer \u00b7 Astro components \u00b7 instant Tauri hot-reload",
+						defaultValue: "Visual UI layer Astro components instant Tauri hot-reload",
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
@@ -559,7 +559,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Vine",
 					Author: "Vine",
 					Role: T("home:architecture.vine.subtitle", {
-						defaultValue: "gRPC backbone \u00b7 contract-first .proto definitions",
+						defaultValue: "gRPC backbone contract-first .proto definitions",
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
@@ -572,7 +572,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Wind",
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
-						defaultValue: "VS Code Workbench reimplemented \u00b7 Effect-TS layers \u00b7 native OS APIs",
+						defaultValue: "VS Code Workbench reimplemented Effect-TS layers native OS APIs",
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
@@ -585,7 +585,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Worker",
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {
-						defaultValue: "Service Worker \u00b7 offline support \u00b7 AES-GCM encrypted auth",
+						defaultValue: "Service Worker offline support AES-GCM encrypted auth",
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:

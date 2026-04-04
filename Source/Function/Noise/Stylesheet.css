@@ -28,7 +28,7 @@
 	/* Scroll progress (set by JS Parallax) */
 	--ScrollProgress: 0;
 
-	/* Global hover lerp speed — 1.2s gives deliberate, inspectable drift */
+	/* Global hover lerp speed - 1.2s gives deliberate, inspectable drift */
 	--StaccatoLerp: 1.2s;
 }
 
@@ -331,7 +331,7 @@
 		calc(var(--AttentionOpacity, 0.9) + var(--StaccatoRaw) * 0.1)
 	);
 	/* 1.6s > commit interval (500ms) so the element is always mid-transition
-	   between two noise states — continuous breathing, never a hard jump */
+	   between two noise states - continuous breathing, never a hard jump */
 	transition: opacity 1.6s ease;
 }
 .StaccatoBreath:hover {

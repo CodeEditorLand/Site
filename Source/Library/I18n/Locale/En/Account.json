@@ -143,7 +143,7 @@
 		},
 		"provider": {
 			"title": "Provider",
-			"subtitle": "Use the developer identity you already have.\n\nWe request only your email — no repository access, no org data, ever.",
+			"subtitle": "Use the developer identity you already have.\n\nWe request only your email - no repository access, no org data, ever.",
 			"continueGitHub": "Continue with GitHub",
 			"continueGoogle": "Continue with Google",
 			"continueGitLab": "Continue with GitLab",
@@ -157,7 +157,7 @@
 			},
 			"capability": {
 				"oauth": "OAuth 2.0 with PKCE S256 on every flow",
-				"scope": "Email and profile scope only — nothing else requested",
+				"scope": "Email and profile scope only - nothing else requested",
 				"token": "Refresh token rotation on every sign-in",
 				"webhook": "Webhook event subscriptions",
 				"org": "Organization-level access policies",
@@ -176,16 +176,16 @@
 				"build": "Launch builds directly from the website console",
 				"deploy": "Deploy changes directly to the running editor",
 				"configure": "Full editor configuration and settings management",
-				"parity": "Full VS Code feature parity — nothing missing",
+				"parity": "Full VS Code feature parity - nothing missing",
 				"offline": "Complete offline operation. No cloud login required.",
 				"bake": "Embed the portal directly into the editor as built-in SaaS"
 			},
 			"capability": {
-				"jwt": "JWT ES384 certificates — 5 min expiry, rotated on reconnect",
-				"mtls": "mTLS mutual authentication — daemon and browser both verified",
+				"jwt": "JWT ES384 certificates - 5 min expiry, rotated on reconnect",
+				"mtls": "mTLS mutual authentication - daemon and browser both verified",
 				"crdt": "CRDT state synchronization for conflict-free offline editing",
-				"team": "Team management runs fully local — no cloud dependency",
-				"cert": "Local certificate authority — no external CA calls",
+				"team": "Team management runs fully local - no cloud dependency",
+				"cert": "Local certificate authority - no external CA calls",
 				"ws": "WebSocket live connection over loopback only",
 				"rbac": "Local RBAC policies enforced at the daemon layer",
 				"backup": "Encrypted local backup of all workspace state"
@@ -209,11 +209,11 @@
 			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
 			"note": "OpenID Connect Discovery \u2001+\u2001 SAML 2.0 Assertion \u2001+\u2001 SCIM 2.0 User Provisioning",
 			"feature": {
-				"okta": "Okta SSO — one login unlocks everything",
-				"azure": "Azure AD / Entra ID — your Microsoft identity works",
+				"okta": "Okta SSO - one login unlocks everything",
+				"azure": "Azure AD / Entra ID - your Microsoft identity works",
 				"saml": "SAML 2.0 for any legacy enterprise IdP",
-				"scim": "SCIM provisioning — new devs ready in minutes",
-				"group": "IdP group to CEL role mapping — least privilege automatic",
+				"scim": "SCIM provisioning - new devs ready in minutes",
+				"group": "IdP group to CEL role mapping - least privilege automatic",
 				"audit": "SOC 2 logs exported to your SIEM in CEF or JSON"
 			},
 			"capability": {

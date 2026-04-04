@@ -16,9 +16,9 @@ files use JSON format and support comments (`//` and `/* */`).
 Open settings with `Cmd+,` (macOS) or `Ctrl+,` (Windows/Linux). Land reads
 settings from three levels, merged in order of precedence:
 
-1. **Default** — built-in defaults shipped with Land.
-2. **User** — `~/.land/settings/Settings.json`.
-3. **Workspace** — `.land/settings.json` in the workspace root (or
+1. **Default** - built-in defaults shipped with Land.
+2. **User** - `~/.land/settings/Settings.json`.
+3. **Workspace** - `.land/settings.json` in the workspace root (or
    `.vscode/settings.json` for compatibility).
 
 ### Common Settings

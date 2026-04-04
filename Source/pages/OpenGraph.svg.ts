@@ -1,7 +1,7 @@
 /**
  * Home page OpenGraph SVG endpoint.
  *
- * Serves /OpenGraph.svg — the og:image for the root page.
+ * Serves /OpenGraph.svg - the og:image for the root page.
  * All other pages use /OpenGraph/[Slug].svg via the [...Slug].svg.ts endpoint.
  */
 

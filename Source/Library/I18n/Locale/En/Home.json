@@ -31,7 +31,7 @@
 		"title": "Built Different. Measurably Better."
 	},
 	"hero": {
-		"badge": "Native Speed \u2001 No Electron \u2001 CC0",
+		"badge": "Native Speed   No Electron   CC0",
 		"subtitle": "Stop handing VS Code a gigabyte of RAM.\n\nLand is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",
@@ -116,14 +116,23 @@
 		"tiers": {
 			"current": {
 				"name": "Active Now",
-				"description": "The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
+				"description": "All fifteen elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"1": "Mountain: native process manager, replaces Electron",
-					"2": "Cocoon: extension host, your VS Code extensions work unchanged",
-					"3": "Wind: full workbench shell, panels and sidebars",
-					"4": "Sky: visual layer, themes and layouts",
-					"5": "Air: silent updates, cryptographically signed",
-					"6": "Echo: work-stealing scheduler, uses every CPU core"
+					"air": "Air 🪁\nBackground daemon, silent auto-updates, crypto-signed",
+					"cocoon": "Cocoon 🦋\nExtension host - full VS Code API via Effect-TS shims",
+					"common": "Common 👨🏻‍🏭\nAbstract Rust foundation, typed effects, zero concrete implementations",
+					"echo": "Echo 📣\nLock-free work-stealing scheduler, saturates every CPU core",
+					"grove": "Grove 🌳\nWASMtime sandbox, capability-based extension isolation",
+					"maintain": "Maintain 💪🏻\nBuild orchestrator, Rhai scripting, TOML/JSON5 config",
+					"mist": "Mist 🌫️\nDNS sandbox, all *.editor.land traffic resolves locally",
+					"mountain": "Mountain ⛰️\nNative Rust/Tauri backend, replaces Electron’s main process",
+					"output": "Output ⚫\nCompilation pipeline, deterministic checksummed bundles",
+					"rest": "Rest ⛱️\nTypeScript compiler in Rust + OXC, 2–3× faster than esbuild",
+					"sidecar": "SideCar ⚙️\nCross-platform Node.js binary distributor per target triple",
+					"sky": "Sky 🌌\nAstro UI layer - every panel is a component, instant hot-reload",
+					"vine": "Vine 🌿\ngRPC backbone, contract-first .proto definitions",
+					"wind": "Wind 🍃\nVS Code Workbench reimplemented in TypeScript + Effect-TS",
+					"worker": "Worker 🍩\nService Worker, offline support, AES-GCM encrypted auth"
 				},
 				"button": "View on GitHub"
 			},
@@ -153,30 +162,66 @@
 	},
 	"architecture": {
 		"title": "Under the Hood",
-		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nEach component is a standalone open-source repository you can read, fork, or contribute to.",
-		"mountain": {
-			"description": "Replaces Electron's main process with a native Rust/Tauri backend.\n\nWindow, file system, and process lifecycle run at native speed with no JavaScript overhead.",
-			"subtitle": "Native speed without Electron overhead"
+		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
+		"air": {
+			"description": "Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt.",
+			"subtitle": "Background daemon silent updates crypto-signed"
 		},
 		"cocoon": {
-			"description": "Runs your existing VS Code extensions via Effect-TS with high-fidelity API compatibility.\n\nInstall them and they just work. No rewrites, no patches.",
-			"subtitle": "Your extensions, completely unchanged"
+			"description": "A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks.",
+			"subtitle": "Extension host full VS Code API Effect-TS shims"
 		},
-		"wind": {
-			"description": "A clean re-implementation of the VS Code Workbench in TypeScript.\n\nPanels, sidebars, and the activity bar. Familiar layout, no Electron dependency.",
-			"subtitle": "Full workbench shell, rebuilt clean"
-		},
-		"sky": {
-			"description": "Renders the editor UI using Astro components.\n\nThemes, layouts, and the visual layer load fast and stay consistent across platforms.",
-			"subtitle": "Themes and layouts, fast by default"
-		},
-		"air": {
-			"description": "A background daemon that keeps Land current without interrupting you.\n\nEvery update is cryptographically signed before it is applied.",
-			"subtitle": "Silent updates, always signed"
+		"common": {
+			"description": "The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
+			"subtitle": "Shared foundation abstract traits zero implementations"
 		},
 		"echo": {
-			"description": "A work-stealing task executor that saturates every CPU core.\n\nHeavy indexing and analysis happen in the background. The editor stays responsive.",
-			"subtitle": "Uses every CPU core you have"
+			"description": "A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
+			"subtitle": "Work-stealing scheduler saturates every CPU core"
+		},
+		"grove": {
+			"description": "Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
+			"subtitle": "Secure WASM sandbox WASMtime capability-based isolation"
+		},
+		"maintain": {
+			"description": "Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
+			"subtitle": "Build orchestrator Rhai scripting TOML/JSON5 config"
+		},
+		"mist": {
+			"description": "Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
+			"subtitle": "DNS sandbox *.editor.land resolves to 127.0.0.1"
+		},
+		"mountain": {
+			"description": "Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk.",
+			"subtitle": "Native Rust backend replaces Electrons main process"
+		},
+		"output": {
+			"description": "Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
+			"subtitle": "Compilation pipeline deterministic bundles checksums"
+		},
+		"rest": {
+			"description": "A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
+			"subtitle": "TypeScript compiler Rust + OXC 2-3x faster than esbuild"
+		},
+		"sidecar": {
+			"description": "Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
+			"subtitle": "Binary distributor correct Node.js runtime per platform"
+		},
+		"sky": {
+			"description": "Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
+			"subtitle": "Visual UI layer Astro components instant Tauri hot-reload"
+		},
+		"vine": {
+			"description": "Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
+			"subtitle": "gRPC backbone contract-first .proto definitions"
+		},
+		"wind": {
+			"description": "A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
+			"subtitle": "VS Code Workbench reimplemented Effect-TS layers native OS APIs"
+		},
+		"worker": {
+			"description": "Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
+			"subtitle": "Service Worker offline support AES-GCM encrypted auth"
 		}
 	}
 }

@@ -1,33 +1,33 @@
 ---
-// ─── Visit — Universal Dispatch Center ───────────────────────────────────────
+// ─── Visit - Universal Dispatch Center ───────────────────────────────────────
 //
 // This page is the catch-all landing target for ALL unresolved paths on
 // Cloudflare Pages. It is served via a `/* /Visit/ 200` rewrite rule in
-// _redirects — the browser URL stays as the original path, but the content
+// _redirects - the browser URL stays as the original path, but the content
 // served is this page's HTML.
 //
 // Time horizons:
 //
-//   T0 — Cold start (no SW): Cloudflare's _redirects `/* /Visit/ 200` rule
+//   T0 - Cold start (no SW): Cloudflare's _redirects `/* /Visit/ 200` rule
 //        proxies this page for any path that has no static file. The client
 //        script resolves the original path from window.location and redirects.
 //
-//   T1 — SW just installed: SW registers, page reloads. From T2 onwards,
+//   T1 - SW just installed: SW registers, page reloads. From T2 onwards,
 //        the SW intercepts ALL navigations before they reach CF or this page.
 //
-//   T2 — SW active, known variant: SW's ResolveRoute() handles it with a
-//        301 redirect in-browser — this page is never served. /Visit itself
+//   T2 - SW active, known variant: SW's ResolveRoute() handles it with a
+//        301 redirect in-browser - this page is never served. /Visit itself
 //        is mapped to "/" in SemanticAlias so the SW redirects it directly.
 //
-//   T3 — SW active, truly unknown path: SW passes to network → CF returns
+//   T3 - SW active, truly unknown path: SW passes to network → CF returns
 //        this page's content (200 rewrite) → client script → home.
 //
 // Design constraints:
-//   - No React, no hydration, no Base.astro layout — minimal HTML only.
+//   - No React, no hydration, no Base.astro layout - minimal HTML only.
 //     Every ms counts; this page is a redirect trampoline, not a destination.
-//   - Route map is embedded at SSG time via define:vars — no RouteMap.json
+//   - Route map is embedded at SSG time via define:vars - no RouteMap.json
 //     fetch needed, works on first visit with no network round-trips.
-//   - window.location.replace() is used for all redirects — no history entry.
+//   - window.location.replace() is used for all redirects - no history entry.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
@@ -36,7 +36,7 @@ import {
 	SemanticAlias,
 } from "../Function/Route/Map";
 
-// Build the full variant map at SSG time — identical logic to Integration.ts
+// Build the full variant map at SSG time - identical logic to Integration.ts
 // so this page and the SW resolve routes the same way.
 const VariantMap: Record<string, string> = {};
 
@@ -69,7 +69,7 @@ const CanonicalList = [...CanonicalPath];
 			<meta http-equiv="refresh" content="3;url=/" />
 		</noscript>
 		<style>
-			/* Minimal no-flash shell — never visible longer than one frame */
+			/* Minimal no-flash shell - never visible longer than one frame */
 			html,
 			body {
 				margin: 0;
@@ -105,7 +105,7 @@ const CanonicalList = [...CanonicalPath];
 					return;
 				}
 
-				// ── Already a known canonical — serve it directly ───────────
+				// ── Already a known canonical - serve it directly ───────────
 				// (shouldn't normally reach here when SW is active, but handle
 				// the edge case where CF serves this page for a canonical path)
 				if (CanonicalList.indexOf(Cleaned) !== -1) {
@@ -132,7 +132,7 @@ const CanonicalList = [...CanonicalPath];
 					// Preserve query string and hash from original navigation
 					window.location.replace(Canonical + Search + Hash);
 				} else {
-					// Truly unknown path — send to home
+					// Truly unknown path - send to home
 					window.location.replace("/" + Search + Hash);
 				}
 			})();

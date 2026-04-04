@@ -53,11 +53,11 @@ The **Air** element provides optional peer-to-peer synchronization through the
 Air Daemon. Air uses WebSocket discovery on the local network to find other Land
 instances. When two machines connect:
 
-1. **Delta sync** — only changed files transfer, using content-addressed
+1. **Delta sync** - only changed files transfer, using content-addressed
    hashing.
-2. **Conflict resolution** — last-write-wins by default, with a merge UI for
+2. **Conflict resolution** - last-write-wins by default, with a merge UI for
    manual resolution.
-3. **Encryption** — all sync traffic is encrypted with NaCl (libsodium)
+3. **Encryption** - all sync traffic is encrypted with NaCl (libsodium)
    box/secretbox. Keys stay on your devices.
 
 Air never routes through a central server. If you want cloud backup, you point
@@ -68,10 +68,10 @@ Air at your own S3-compatible bucket or WebDAV endpoint.
 Because Land is CC0 1.0 Universal (public domain), there is no vendor lock-in at
 any level:
 
-- **Source code** — fork and modify without restriction.
-- **Data format** — standard JSON, SQLite, and plain-text files.
-- **Extensions** — compatible with the VS Code extension API.
-- **Sync protocol** — documented and self-hostable.
+- **Source code** - fork and modify without restriction.
+- **Data format** - standard JSON, SQLite, and plain-text files.
+- **Extensions** - compatible with the VS Code extension API.
+- **Sync protocol** - documented and self-hostable.
 
 You can switch away from Land tomorrow and take everything with you. That is the
 point.

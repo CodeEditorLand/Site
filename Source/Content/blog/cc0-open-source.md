@@ -1,7 +1,7 @@
 ---
 title: "Why We Chose CC0 1.0 Universal for a Code Editor"
 summary:
-    "Public domain licensing, no CLA, no copyright assignment — maximum freedom."
+    "Public domain licensing, no CLA, no copyright assignment - maximum freedom."
 publishedAt: "2026-04-03"
 tags: ["Open Source", "Licensing", "CC0", "Community"]
 author: "CodeEditorLand"
@@ -11,7 +11,7 @@ readTime: 6
 # Why We Chose CC0 1.0 Universal for a Code Editor
 
 Code Editor Land is released under
-[CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) — a
+[CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) - a
 public domain dedication. This means the entire codebase, including every Rust
 crate, TypeScript package, and build script, carries no copyright restrictions
 whatsoever.
@@ -43,7 +43,7 @@ Land requires neither.
 When you submit a pull request to any CodeEditorLand repository, your
 contribution is accepted under the same CC0 dedication. There is no paperwork,
 no legal review, no waiting period. You retain the ability to use your own code
-however you wish — CC0 does not restrict the contributor, only the project's
+however you wish - CC0 does not restrict the contributor, only the project's
 ability to restrict others.
 
 ## Why Not MIT, Apache 2.0, or GPL?
@@ -56,8 +56,8 @@ Each of these licenses carries conditions that create friction:
 | Apache 2.0 | Must include notice, state changes, patent grant |
 | GPL 3.0    | Must distribute source for derivative works      |
 
-These conditions are reasonable and well-intentioned. But for a code editor — a
-tool that developers use to build everything else — we wanted zero friction. You
+These conditions are reasonable and well-intentioned. But for a code editor - a
+tool that developers use to build everything else - we wanted zero friction. You
 should not need a lawyer to decide whether you can embed a snippet from your
 editor's source into your project.
 
@@ -73,7 +73,7 @@ development of open internet infrastructure without requiring proprietary
 lock-in.
 
 PlayForm (Sofia, Bulgaria) operates the CodeEditorLand Foundation under this
-grant. The funding model ensures that CC0 licensing is sustainable —
+grant. The funding model ensures that CC0 licensing is sustainable -
 contributors and maintainers are compensated through public interest funding,
 not through monetizing user data or restricting distribution.
 

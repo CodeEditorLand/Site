@@ -1,5 +1,5 @@
 /**
- * DynamicSignIn — email/password sign-in form for the Cloud tier.
+ * DynamicSignIn - email/password sign-in form for the Cloud tier.
  *
  * Handles form validation, password visibility toggle, error display,
  * and "forgot password" link. Submits to Auth0 via Auth0AccountGate.

@@ -182,7 +182,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					<RichText Text={Subtitle} />
 				</div>
 
-				{/* Tech stack section label — accessible, outside aria-hidden */}
+				{/* Tech stack section label - accessible, outside aria-hidden */}
 				<p className="mb-5 mt-28 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
 					Tech Stack
 				</p>

@@ -1,5 +1,5 @@
 /**
- * DynamicTransparency — build transparency section showing SBOM,
+ * DynamicTransparency - build transparency section showing SBOM,
  * dependency tree, and build reproducibility information.
  *
  * Renders categorized items with copy-to-clipboard and expandable

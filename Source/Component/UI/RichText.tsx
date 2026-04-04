@@ -47,6 +47,7 @@ const TermDictionary = new Map<string, TermCategory>([
 	["WASM", "Protocol"],
 	["Rhai", "Protocol"],
 	// Tools / Frameworks
+	["Rust", "Tool"],
 	["Tauri", "Tool"],
 	["Effect-TS", "Tool"],
 	["Cargo", "Tool"],
@@ -77,8 +78,10 @@ const CategoryLabel: Record<TermCategory, string> = {
 };
 
 const TermLogo: Record<string, string> = {
+	Rust: "/Image/Rust.svg",
 	Tauri: "/Image/Tauri.svg",
 	"Effect-TS": "/Image/EffectTS.svg",
+	Cargo: "/Image/Rust.svg",
 };
 
 // ─── Segment types ────────────────────────────────────────────────────────────

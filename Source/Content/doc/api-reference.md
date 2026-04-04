@@ -101,11 +101,11 @@ handles initialization, capabilities negotiation, and shutdown automatically.
 
 Generated `rustdoc` output for the Rust crates is hosted on Cloudflare Pages:
 
-- [Mountain Crates](https://rust-documentation-mountain-land.pages.dev) —
+- [Mountain Crates](https://rust-documentation-mountain-land.pages.dev) -
   Mountain, Echo, Common, CommonLibrary, Air, AirLibrary, SideCar, Download
-- [Rest Crates](https://rust-documentation-rest-land.pages.dev) — Rest bundler
+- [Rest Crates](https://rust-documentation-rest-land.pages.dev) - Rest bundler
   documentation
-- [Maintain Crates](https://rust-documentation-maintain-land.pages.dev) — CI/CD
+- [Maintain Crates](https://rust-documentation-maintain-land.pages.dev) - CI/CD
   and maintenance tooling
 
 ### Crate Index
@@ -131,4 +131,4 @@ Generated `rustdoc` output for the Rust crates is hosted on Cloudflare Pages:
 ## Further Reading
 
 - [VS Code API Documentation](https://code.visualstudio.com/api/references/vscode-api)
-  — the upstream reference that Land implements.
+  - the upstream reference that Land implements.

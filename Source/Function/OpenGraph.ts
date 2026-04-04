@@ -5,7 +5,7 @@
  * social sharing cards. Text occupies the left ~620 px; the Land brand glyph
  * occupies the right column (x 690–1160, y 138–538).
  *
- * The glyph is borrowed verbatim from Public/Asset/Logo/Glyph/Land.svg —
+ * The glyph is borrowed verbatim from Public/Asset/Logo/Glyph/Land.svg -
  * two rounded parallelograms (rx=91.39) with their matrix transforms flattened
  * (outer scale×translate composed into the rect's own matrix) so each element
  * carries exactly one transform. No nested groups, no polygon approximation.
@@ -43,7 +43,7 @@ const EscapeXML = (Text: string): string =>
 /**
  * Land brand glyph sourced from Public/Asset/Logo/Glyph/Land.svg.
  *
- * The source uses <rect rx="91.3889" transform="matrix(...)"> — rounded
+ * The source uses <rect rx="91.3889" transform="matrix(...)"> - rounded
  * parallelograms. To avoid nested transforms (which break in many crawlers)
  * the outer translate(690,138) scale(0.25) is composed directly into each
  * rect's matrix, producing a single flat transform per element:

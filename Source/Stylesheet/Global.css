@@ -57,7 +57,7 @@ main > astro-island:has(> :first-child) {
 	contain-intrinsic-block-size: auto;
 }
 
-/* CLS prevention: Header island — reserve the exact header bar height (h-14 = 3.5rem)
+/* CLS prevention: Header island - reserve the exact header bar height (h-14 = 3.5rem)
  * so the sticky header doesn't shift content when it hydrates. */
 main ~ astro-island,
 body > astro-island {

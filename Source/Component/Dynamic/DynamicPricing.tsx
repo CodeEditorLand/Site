@@ -218,23 +218,53 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							</div>
 
 							<div className="flex flex-1 flex-col p-6">
-								<ul className="flex-1 space-y-3">
+								<ul
+									className={`flex-1 ${
+										Tier.Features.length > 8
+											? "grid grid-cols-2 gap-x-4 gap-y-3"
+											: "space-y-3"
+									}`}>
 									{Tier.Features.map(
-										(Feature, FeatureIndex) => (
-											<li
-												key={FeatureIndex}
-												className="flex items-start justify-between gap-2">
-												<span className="text-sm">
-													{Feature}
-												</span>
-												<IconTooltip
-													Label="Included"
-													Icon={lucide.Check}
-													SizeClass="h-4 w-4 shrink-0"
-													ClassName="StaccatoCheckmark mt-0.5 text-primary"
-												/>
-											</li>
-										),
+										(Feature, FeatureIndex) => {
+											const NewlineIndex =
+												Feature.indexOf("\n");
+											const HasSplit =
+												NewlineIndex !== -1;
+											const Name = HasSplit
+												? Feature.slice(
+														0,
+														NewlineIndex,
+													)
+												: Feature;
+											const Desc = HasSplit
+												? Feature.slice(
+														NewlineIndex + 1,
+													)
+												: null;
+
+											return (
+												<li
+													key={FeatureIndex}
+													className="flex items-start justify-between gap-2">
+													<span className="min-w-0 flex-1">
+														<span className="block text-sm font-medium">
+															{Name}
+														</span>
+														{Desc && (
+															<span className="block text-xs text-muted-foreground">
+																{Desc}
+															</span>
+														)}
+													</span>
+													<IconTooltip
+														Label="Included"
+														Icon={lucide.Check}
+														SizeClass="h-4 w-4 shrink-0"
+														ClassName="StaccatoCheckmark mt-0.5 text-primary"
+													/>
+												</li>
+											);
+										},
 									)}
 								</ul>
 							</div>

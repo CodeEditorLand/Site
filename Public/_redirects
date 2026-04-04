@@ -1,23 +1,23 @@
-# Cloudflare Pages — full route map
+# Cloudflare Pages - full route map
 #
 # Two rule types are used:
 #
-#   301/302  Redirect  — browser changes URL (for bare/alias paths with no page)
-#   200      Rewrite   — serve directory index without trailing-slash redirect
+#   301/302  Redirect  - browser changes URL (for bare/alias paths with no page)
+#   200      Rewrite   - serve directory index without trailing-slash redirect
 #                        (prevents CF Pages' internal 301 looping)
 #
 # Execution order (CF Pages):
-#   1. _redirects                 — consulted first (no CF Functions in use)
-#   2. Static asset serving       — exact-match files (/_astro/*, /Asset/*, etc.)
-#   3. /* /Visit/ 200 catch-all   — anything else → Visit dispatch center
+#   1. _redirects                 - consulted first (no CF Functions in use)
+#   2. Static asset serving       - exact-match files (/_astro/*, /Asset/*, etc.)
+#   3. /* /Visit/ 200 catch-all   - anything else → Visit dispatch center
 #
 # Rule ordering (first match wins):
-#   1. Bare-path dispatchers (301) — known paths with no page file
-#   2. Trailing-slash rewrites (200) — all canonical page paths
-#   3. Asset pass-throughs (200)  — before catch-all so assets are never
+#   1. Bare-path dispatchers (301) - known paths with no page file
+#   2. Trailing-slash rewrites (200) - all canonical page paths
+#   3. Asset pass-throughs (200)  - before catch-all so assets are never
 #                                   swallowed by /* (CF applies _redirects
 #                                   before static file serving for 200 rewrites)
-#   4. /* catch-all → /Visit/ 200 — universal dispatch for unknown paths
+#   4. /* catch-all → /Visit/ 200 - universal dispatch for unknown paths
 #
 # ────────────────────────────────────────────────────────────────────────────
 # BARE-PATH DISPATCHERS (301)
@@ -83,7 +83,7 @@
 # ── Verify ───────────────────────────────────────────────────────────────────
 /Verify                   /Verify/                  200
 
-# ── Home (root index — must be explicit or /* catches it and loops) ──────────
+# ── Home (root index - must be explicit or /* catches it and loops) ──────────
 /                         /                         200
 
 # ── Visit (dispatch center itself) ───────────────────────────────────────────
@@ -94,7 +94,7 @@
 # These must appear BEFORE the /* catch-all. CF Pages applies _redirects rules
 # before serving static files for 200 proxy rewrites, so without these a
 # wildcard /* rule would serve /Visit/index.html for every JS/CSS/image request.
-# Each rule maps the path to itself — CF serves the actual file content.
+# Each rule maps the path to itself - CF serves the actual file content.
 # ────────────────────────────────────────────────────────────────────────────
 
 /_astro/*                 /_astro/:splat            200
@@ -113,12 +113,12 @@
 # UNIVERSAL CATCH-ALL → Visit dispatch center
 #
 # Any path that has not been matched by the specific rules above lands here.
-# CF Pages serves /Visit/index.html as a 200 rewrite — the browser URL stays
+# CF Pages serves /Visit/index.html as a 200 rewrite - the browser URL stays
 # as the original path. The Visit page's inline script then resolves the path
 # against the baked-in route map and issues a window.location.replace() to
 # the correct canonical URL, or to / for truly unknown paths.
 #
-# This rule MUST be last — first match wins and all known routes are above.
+# This rule MUST be last - first match wins and all known routes are above.
 # ────────────────────────────────────────────────────────────────────────────
 
 /*                        /Visit/                   200

@@ -1,5 +1,5 @@
 /**
- * AccountPage — orchestrates sign-in, sign-up, forgot-password, and
+ * AccountPage - orchestrates sign-in, sign-up, forgot-password, and
  * reset-password views as a single-page flow.
  *
  * Switches between views based on Route prop ("SignIn" | "SignUp" |

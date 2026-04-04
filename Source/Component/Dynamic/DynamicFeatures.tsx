@@ -49,7 +49,7 @@ const FeatureIconLabelMap: Record<string, string> = {
 	Cpu: "Runs at native CPU speed",
 	Globe: "Ships to every OS from one codebase",
 	Wrench: "Best-in-class developer toolchain",
-	Heart: "CC0 — free to use, fork, and ship",
+	Heart: "CC0 - free to use, fork, and ship",
 	Sparkles: "Packed with capabilities",
 	Code: "Write and ship faster",
 	Layers: "Type errors caught at compile time",

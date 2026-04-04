@@ -228,7 +228,7 @@ const MockContent: PortalContent = {
 
 // ─── Tests ───
 
-describe("DynamicPortal — Enterprise SSO tier", () => {
+describe("DynamicPortal - Enterprise SSO tier", () => {
 	it("renders Auth0 Organization ID input", () => {
 		render(<DynamicPortal Content={MockContent} />);
 

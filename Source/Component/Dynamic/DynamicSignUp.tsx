@@ -1,5 +1,5 @@
 /**
- * DynamicSignUp — account registration form for the Cloud tier.
+ * DynamicSignUp - account registration form for the Cloud tier.
  *
  * Collects email, password (with strength indicator and visibility toggle),
  * and display name. Submits to Auth0 via Auth0AccountGate.

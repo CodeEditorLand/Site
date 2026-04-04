@@ -9,7 +9,7 @@ const MetaTitle = T("common.error.404", {
 	defaultValue: "404 - Page Not Found",
 });
 const MetaDescription = T("common.error.pageNotFound", {
-	defaultValue: "The page you're looking for doesn't exist.",
+	defaultValue: "The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need.",
 });
 ---
 
@@ -29,7 +29,7 @@ const MetaDescription = T("common.error.pageNotFound", {
 			<p class="StaccatoBreath mb-8 text-xl text-muted-foreground">
 				{
 					T("common.error.pageNotFound", {
-						defaultValue: "Page not found",
+						defaultValue: "The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need.",
 					})
 				}
 			</p>
@@ -38,7 +38,7 @@ const MetaDescription = T("common.error.pageNotFound", {
 				class="StaccatoButton inline-flex h-10 items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 py-2 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 				{
 					T("common.button.backToHome", {
-						defaultValue: "Back to Home",
+						defaultValue: "Return to Homepage",
 					})
 				}&#x2001;&rarr;
 			</a>

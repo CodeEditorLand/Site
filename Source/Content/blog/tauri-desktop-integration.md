@@ -22,7 +22,7 @@ APIs through Rust.
 VS Code ships an entire Chromium browser alongside Node.js. Every running window
 carries hundreds of megabytes of memory overhead before a single extension
 loads. Tauri sidesteps this by rendering the UI through macOS WebKit, Windows
-WebView2, or Linux WebKitGTK — the same rendering engines the OS already
+WebView2, or Linux WebKitGTK - the same rendering engines the OS already
 maintains and patches.
 
 The result is a smaller download, faster startup, and tighter OS integration.
@@ -45,16 +45,16 @@ async fn ReadFileContent(Path: &str) -> Result<String, MountainError> {
 ```
 
 Every Tauri command is an `async fn` invoked from the TypeScript frontend over
-IPC. Errors are explicit in the return type — no silent swallowing.
+IPC. Errors are explicit in the return type - no silent swallowing.
 
 ## IPC: Vine and Mist
 
 Communication between the webview and the Rust backend flows through two IPC
 layers:
 
-- **Vine** — gRPC-style protocol definitions compiled with `tonic`. Used for
+- **Vine** - gRPC-style protocol definitions compiled with `tonic`. Used for
   structured, high-throughput messages like language server traffic.
-- **Mist** — WebSocket transport for real-time events such as terminal output
+- **Mist** - WebSocket transport for real-time events such as terminal output
   and file-watcher notifications.
 
 Both layers are strongly typed end-to-end: a Protobuf schema generates Rust
@@ -88,4 +88,4 @@ This work is funded through the
 [NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
 operated by PlayForm (Sofia, Bulgaria) under the NLnet Foundation. The grant
 specifically supports the elimination of Electron dependencies in open-source
-developer tooling — making Tauri integration a core deliverable.
+developer tooling - making Tauri integration a core deliverable.

@@ -1,5 +1,5 @@
 /**
- * I18n Client — browser-side i18next initialization with lazy namespace loading.
+ * I18n Client - browser-side i18next initialization with lazy namespace loading.
  *
  * Supports 5 locales (en, bg, de, fr, es) with 10 namespaces loaded on demand.
  * Two-phase init: starts with lng:"en", then switches to detected locale
@@ -168,7 +168,7 @@ const PageNamespaceLoader: Record<
 
 /**
  * Full locale loader: fetches ALL namespaces for a locale.
- * Used by SwitchLocale() when changing language at runtime —
+ * Used by SwitchLocale() when changing language at runtime -
  * loads both core and page namespaces for the target locale.
  */
 const FullLocaleLoader: Record<

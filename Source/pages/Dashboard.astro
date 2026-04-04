@@ -21,7 +21,7 @@ const MetaTitle = T("meta.dashboard.title", {
 });
 
 const MetaDescription = T("meta.dashboard.description", {
-	defaultValue: "Your Code Editor Land account dashboard.",
+	defaultValue: "Manage your account, download, and setting.\nYour Code Editor Land dashboard.",
 });
 ---
 
@@ -82,7 +82,7 @@ const MetaDescription = T("meta.dashboard.description", {
 						<h1 class="text-4xl font-bold tracking-tight">
 							{
 								T("common.dashboard.pageTitle", {
-									defaultValue: "Welcome",
+									defaultValue: "Dashboard",
 								})
 							}
 						</h1>
@@ -90,7 +90,7 @@ const MetaDescription = T("meta.dashboard.description", {
 							{
 								T("common.dashboard.pageSubtitle", {
 									defaultValue:
-										"Manage your Code Editor Land account and preferences.",
+										"Your Land account, downloads, and editor connection.",
 								})
 							}
 						</p>
@@ -163,7 +163,7 @@ const MetaDescription = T("meta.dashboard.description", {
 						{
 							T("common.dashboard.downloads.description", {
 								defaultValue:
-									"Download the latest version of Code Editor Land for your platform.",
+									"Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
 							})
 						}
 					</p>
@@ -257,7 +257,7 @@ const MetaDescription = T("meta.dashboard.description", {
 										"common.dashboard.telemetry.production.title",
 										{
 											defaultValue:
-												"Production Build Telemetry",
+												"Zero Telemetry by Default",
 										},
 									)
 								}
@@ -268,7 +268,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.production.description",
 									{
 										defaultValue:
-											"Telemetry is disabled by default.\n\nThe Telemetry Cargo feature is not in default features.\n\nAll tracing compiles to zero-cost no-ops.",
+											"The Telemetry Cargo feature is not in default features.\n\nAll tracing compiles to zero-cost no-ops.\n\nNothing is sent anywhere unless you explicitly opt in.",
 									},
 								)}
 								Terms
@@ -290,7 +290,7 @@ const MetaDescription = T("meta.dashboard.description", {
 							<h3 class="mt-2 font-medium">
 								{
 									T("common.dashboard.telemetry.otel.title", {
-										defaultValue: "OpenTelemetry (Opt-In)",
+										defaultValue: "OpenTelemetry (Opt-In Only)",
 									})
 								}
 							</h3>
@@ -320,7 +320,7 @@ const MetaDescription = T("meta.dashboard.description", {
 						<h3 class="mt-2 font-medium">
 							{
 								T("common.dashboard.telemetry.effect.title", {
-									defaultValue: "Effect-TS Local Telemetry",
+									defaultValue: "Effect-TS Local Instrumentation",
 								})
 							}
 						</h3>
@@ -330,7 +330,7 @@ const MetaDescription = T("meta.dashboard.description", {
 								"common.dashboard.telemetry.effect.description",
 								{
 									defaultValue:
-										"Cocoon extension host uses TelemetryService for internal RPC instrumentation and bootstrap timing.\n\nAll data stays local.",
+										"Cocoon uses TelemetryService for internal RPC and bootstrap timing.\n\nAll data stays local.",
 								},
 							)}
 							Terms
@@ -353,7 +353,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					{
 						T("common.dashboard.buildLog.subtitle", {
 							defaultValue:
-								"Active build variant and deployment mode. Available via Local-First Air Daemon connection.",
+								"Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
 						})
 					}
 				</p>
@@ -821,7 +821,7 @@ const MetaDescription = T("meta.dashboard.description", {
 										"common.dashboard.settings.sync.description",
 										{
 											defaultValue:
-												"Synchronize your editor preferences across devices.",
+												"Your editor preferences follow you across every device automatically.",
 										},
 									)
 								}
@@ -853,7 +853,7 @@ const MetaDescription = T("meta.dashboard.description", {
 										"common.dashboard.settings.extensionSync.description",
 										{
 											defaultValue:
-												"Keep your installed extensions in sync across machines.",
+												"Your installed extensions stay in sync across all machines.",
 										},
 									)
 								}

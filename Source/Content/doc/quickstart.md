@@ -22,7 +22,7 @@ it automatically.
 ## Install Extensions
 
 Open the Extensions panel from the sidebar (or press `Cmd+Shift+X` /
-`Ctrl+Shift+X`). Search for the extensions you need — Land uses the
+`Ctrl+Shift+X`). Search for the extensions you need - Land uses the
 [Open VSX Registry](https://open-vsx.org) by default.
 
 If you already have VS Code extensions installed in `~/.vscode/extensions/`,

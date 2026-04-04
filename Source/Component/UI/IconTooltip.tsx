@@ -99,7 +99,7 @@ const IconTooltip = ({
 };
 
 /**
- * DocHref Inventory — candidate icon-to-doc mappings for future linking.
+ * DocHref Inventory - candidate icon-to-doc mappings for future linking.
  *
  * When DocHref is wired up, these icons would link to the corresponding
  * documentation page. Paths are relative to the site root (/Doc/{slug}).

@@ -24,9 +24,9 @@ through external servers.
 Air broadcasts a `_land-air._tcp` mDNS service record on the local network. Each
 record contains:
 
-- **Instance ID** — a UUID generated on first launch.
-- **Port** — the WebSocket listen port (default: 18230).
-- **Protocol version** — currently `air/1`.
+- **Instance ID** - a UUID generated on first launch.
+- **Port** - the WebSocket listen port (default: 18230).
+- **Protocol version** - currently `air/1`.
 
 When a peer is discovered, the initiating daemon opens a WebSocket connection
 and performs a mutual authentication handshake using pre-shared keys exchanged
@@ -48,12 +48,12 @@ No certificate authority or TLS infrastructure is required.
 Once authenticated, peers exchange file state using a content-addressed
 protocol:
 
-1. **Manifest exchange** — each peer sends a manifest listing file paths and
+1. **Manifest exchange** - each peer sends a manifest listing file paths and
    their BLAKE3 hashes.
-2. **Delta request** — the receiver identifies files whose hashes differ and
+2. **Delta request** - the receiver identifies files whose hashes differ and
    requests the content.
-3. **Content transfer** — files are sent as compressed (zstd) byte frames.
-4. **Acknowledgment** — the receiver confirms receipt and updates its manifest.
+3. **Content transfer** - files are sent as compressed (zstd) byte frames.
+4. **Acknowledgment** - the receiver confirms receipt and updates its manifest.
 
 Only changed files are transferred. Unchanged files are never re-sent.
 
@@ -61,10 +61,10 @@ Only changed files are transferred. Unchanged files are never re-sent.
 
 When both peers have modified the same file since the last sync:
 
-- **Default: last-write-wins** — the file with the more recent modification
+- **Default: last-write-wins** - the file with the more recent modification
   timestamp is accepted. The overwritten version is saved to a
   `.land/conflicts/` directory.
-- **Manual merge** — the user is notified and can open a three-way merge view in
+- **Manual merge** - the user is notified and can open a three-way merge view in
   the editor to resolve conflicts.
 
 Conflict resolution strategy is configurable per workspace.
@@ -73,7 +73,7 @@ Conflict resolution strategy is configurable per workspace.
 
 Air never blocks the editor. If no peers are available, the editor operates
 normally. Sync resumes automatically when connectivity is restored. There is no
-"offline mode" toggle — the editor is always fully functional.
+"offline mode" toggle - the editor is always fully functional.
 
 ## Self-Hosted Cloud Backup
 

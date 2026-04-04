@@ -10,15 +10,15 @@ const VerifyContent = {
 	Verification: {
 		Pending: {
 			Title: T("verify.pending.title", {
-				defaultValue: "Verify Your Email",
+				defaultValue: "Verify Your Email Address",
 			}),
 			Description: T("verify.pending.description", {
 				defaultValue:
-					"We've sent a verification link to your email address.",
+					"A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 7 days.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share this email with anyone.",
 			}),
 			ResendButton: {
 				Text: T("verify.pending.resendButton", {
-					defaultValue: "Resend Verification Email",
+					defaultValue: "Email verified!",
 				}),
 				Variant: "default",
 				FullWidth: true,
@@ -26,14 +26,14 @@ const VerifyContent = {
 		},
 		Success: {
 			Title: T("verify.success.title", {
-				defaultValue: "Email Verified Successfully!",
+				defaultValue: "Continue to Homepage",
 			}),
 			Description: T("verify.success.description", {
 				defaultValue: "Your email address has been verified.",
 			}),
 			ContinueButton: {
 				Text: T("verify.success.continueButton", {
-					defaultValue: "Continue to Dashboard",
+					defaultValue: "Verification failed",
 				}),
 				Variant: "default",
 				FullWidth: true,
@@ -41,7 +41,7 @@ const VerifyContent = {
 		},
 		Error: {
 			Title: T("verify.error.title", {
-				defaultValue: "Verification Failed",
+				defaultValue: "Back to Sign In",
 			}),
 			Description: T("verify.error.description", {
 				defaultValue: "An error occurred during verification.",
@@ -62,7 +62,7 @@ const Reason = Astro.url.searchParams.get("reason");
 const Route = Token ? "verify" : Reason ? "failure" : "pending";
 
 const MetaTitle = T("meta.verify.title", {
-	defaultValue: "Verify Email - Land",
+	defaultValue: "A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 7 days.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share this email with anyone.",
 });
 const MetaDescription = T("verify.pending.description", {
 	defaultValue: "Verify your email address to activate your account.",
