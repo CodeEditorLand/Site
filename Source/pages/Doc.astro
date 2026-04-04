@@ -11,7 +11,7 @@ const DocEntries = (await getCollection("doc")).sort(
 );
 
 const SidebarSections = DocEntries.map((Entry) => ({
-	Id: Entry.slug,
+	Id: Entry.id,
 	Label: Entry.data.title,
 }));
 

@@ -45,7 +45,7 @@ export const GET: APIRoute = async ({ params }) => {
 			const { getCollection } = await import("astro:content");
 
 			const BlogEntry = (await getCollection("blog")).find(
-				(Entry) => Entry.slug === BlogSlug,
+				(Entry) => Entry.id === BlogSlug,
 			);
 
 			if (BlogEntry) {
@@ -75,8 +75,8 @@ export const GET: APIRoute = async ({ params }) => {
 		try {
 			const { getCollection } = await import("astro:content");
 
-			const DocEntry = (await getCollection("docs")).find(
-				(Entry) => Entry.slug === DocSlug,
+			const DocEntry = (await getCollection("doc")).find(
+				(Entry) => Entry.id === DocSlug,
 			);
 
 			if (DocEntry) {
@@ -135,7 +135,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		const BlogEntry = await getCollection("blog");
 
 		BlogPath = BlogEntry.map((Entry) => ({
-			params: { Slug: `Blog/${Entry.slug}` },
+			params: { Slug: `Blog/${Entry.id}` },
 		}));
 	} catch {
 		// Blog collection may not exist yet
@@ -147,10 +147,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 	try {
 		const { getCollection } = await import("astro:content");
 
-		const DocEntry = await getCollection("docs");
+		const DocEntry = await getCollection("doc");
 
 		DocPath = DocEntry.map((Entry) => ({
-			params: { Slug: `Doc/${Entry.slug}` },
+			params: { Slug: `Doc/${Entry.id}` },
 		}));
 	} catch {
 		// Doc collection may not exist yet

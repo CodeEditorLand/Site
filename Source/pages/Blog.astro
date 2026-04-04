@@ -36,7 +36,7 @@ const BlogEntries = (await getCollection("blog")).sort((A, B) =>
 );
 
 const Posts = BlogEntries.map((Entry) => ({
-	Slug: Entry.slug,
+	Slug: Entry.id,
 	Title: Entry.data.title,
 	Summary: Entry.data.summary,
 	PublishedAt: Entry.data.publishedAt,

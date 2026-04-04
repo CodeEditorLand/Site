@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 
 import { DynamicDocSidebar } from "../../Component/Dynamic/DynamicDocSidebar";
 import { Header } from "../../Component/Layout/Header";
@@ -9,25 +9,25 @@ import { GetI18n } from "../../Library/I18n/Server";
 export async function getStaticPaths() {
 	const Entries = await getCollection("doc");
 	return Entries.map((Entry) => ({
-		params: { Slug: Entry.slug },
+		params: { Slug: Entry.id },
 		props: { Entry },
 	}));
 }
 
 const { Entry } = Astro.props;
-const { Content } = await Entry.render();
+const { Content } = await render(Entry);
 
 const AllEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
 );
 
 const SidebarSections = AllEntries.map((E) => ({
-	Id: E.slug,
+	Id: E.id,
 	Label: E.data.title,
 }));
 
 // Sorted list for prev/next navigation
-const CurrentIndex = AllEntries.findIndex((E) => E.slug === Entry.slug);
+const CurrentIndex = AllEntries.findIndex((E) => E.id === Entry.id);
 const PrevEntry = CurrentIndex > 0 ? AllEntries[CurrentIndex - 1] : null;
 const NextEntry =
 	CurrentIndex < AllEntries.length - 1 ? AllEntries[CurrentIndex + 1] : null;
@@ -41,7 +41,7 @@ const MetaDescription = Entry.data.description;
 <Base
 	Title={MetaTitle}
 	Description={MetaDescription}
-	Url={`https://editor.land/Doc/${Entry.slug}`}
+	Url={`https://editor.land/Doc/${Entry.id}`}
 	lang="en">
 	<Header client:load />
 
@@ -61,7 +61,7 @@ const MetaDescription = Entry.data.description;
 					</p>
 					<DynamicDocSidebar
 						Sections={SidebarSections}
-						ActiveId={Entry.slug}
+						ActiveId={Entry.id}
 						client:load
 					/>
 				</div>
@@ -132,7 +132,7 @@ const MetaDescription = Entry.data.description;
 						<div class="mt-12 flex justify-between border-t border-[var(--ColorBorder)] pt-8 text-sm">
 							{PrevEntry ? (
 								<a
-									href={`/Doc/${PrevEntry.slug}`}
+									href={`/Doc/${PrevEntry.id}`}
 									class="StaccatoButton text-primary hover:underline">
 									{PrevEntry.data.title}
 									<span class="InlineSeparator">←</span>
@@ -142,7 +142,7 @@ const MetaDescription = Entry.data.description;
 							)}
 							{NextEntry && (
 								<a
-									href={`/Doc/${NextEntry.slug}`}
+									href={`/Doc/${NextEntry.id}`}
 									class="StaccatoButton text-primary hover:underline">
 									{NextEntry.data.title}
 									<span class="InlineSeparator">→</span>

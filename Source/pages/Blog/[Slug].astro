@@ -1,5 +1,5 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, render } from "astro:content";
 
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
@@ -8,13 +8,13 @@ import { GetI18n } from "../../Library/I18n/Server";
 export async function getStaticPaths() {
 	const Entries = await getCollection("blog");
 	return Entries.map((Entry) => ({
-		params: { Slug: Entry.slug },
+		params: { Slug: Entry.id },
 		props: { Entry },
 	}));
 }
 
 const { Entry } = Astro.props;
-const { Content } = await Entry.render();
+const { Content } = await render(Entry);
 
 const T = GetI18n();
 
@@ -25,7 +25,7 @@ const MetaDescription = Entry.data.summary;
 <Base
 	Title={MetaTitle}
 	Description={MetaDescription}
-	Url={`https://editor.land/Blog/${Entry.slug}`}
+	Url={`https://editor.land/Blog/${Entry.id}`}
 	lang="en">
 	<Header client:load />
 
