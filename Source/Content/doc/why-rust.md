@@ -3,16 +3,17 @@ title: "Why Rust"
 section: "Technology"
 order: 26
 description:
-    "Memory safety without garbage collection, native speed, and fearless concurrency."
+    "Memory safety without garbage collection, native speed, and fearless
+    concurrency."
 ---
 
 # Why Rust
 
 Land is a code editor. It must respond to every keystroke in under 16
-milliseconds. It must parse, highlight, index, and autocomplete across files that
-span millions of lines. It must do all of this without freezing, crashing, or
-leaking memory over days of continuous use. Rust is the language that makes these
-guarantees possible at compile time rather than at runtime.
+milliseconds. It must parse, highlight, index, and autocomplete across files
+that span millions of lines. It must do all of this without freezing, crashing,
+or leaking memory over days of continuous use. Rust is the language that makes
+these guarantees possible at compile time rather than at runtime.
 
 ## Memory Safety Without a Garbage Collector
 
@@ -65,9 +66,9 @@ Rust powers the majority of Land's backend:
 - **Mist** manages WebSocket connections between the frontend and backend.
 
 Every element that touches the operating system, processes bytes, or coordinates
-concurrent work is written in Rust. The language is not an implementation detail.
-It is a structural decision that shapes the reliability and performance of the
-entire editor.
+concurrent work is written in Rust. The language is not an implementation
+detail. It is a structural decision that shapes the reliability and performance
+of the entire editor.
 
 ## See Also
 

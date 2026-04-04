@@ -2,8 +2,7 @@
 title: "Why WebAssembly"
 section: "Technology"
 order: 31
-description:
-    "Capability-based extension isolation enforced by the runtime."
+description: "Capability-based extension isolation enforced by the runtime."
 ---
 
 # Why WebAssembly
@@ -43,16 +42,16 @@ file system to traverse. There is no ambient authority to exploit.
 
 This is the capability model. Instead of granting broad access and then
 restricting it, Land grants nothing by default and then adds specific
-capabilities. The result is a minimal attack surface that grows only as the
-user explicitly permits.
+capabilities. The result is a minimal attack surface that grows only as the user
+explicitly permits.
 
 ## Memory Limits
 
 Each WASM extension runs with a configurable memory ceiling. If an extension
 attempts to allocate beyond its limit, the allocation fails deterministically.
 The host is not affected. Other extensions continue running. There is no
-out-of-memory crash that takes down the editor, and there is no single
-extension that can consume all available RAM.
+out-of-memory crash that takes down the editor, and there is no single extension
+that can consume all available RAM.
 
 ## Resource Controls
 
@@ -68,8 +67,8 @@ of instruction-level metering.
 WebAssembly is a deterministic execution environment. Given the same inputs, a
 WASM module produces the same outputs on every platform. This property makes
 extensions reproducible and testable. A bug reported on macOS can be reproduced
-on Linux with identical behavior, because the execution semantics are defined
-by the WASM specification, not by the host operating system.
+on Linux with identical behavior, because the execution semantics are defined by
+the WASM specification, not by the host operating system.
 
 ## Where WebAssembly Appears in Land
 

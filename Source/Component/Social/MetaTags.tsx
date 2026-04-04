@@ -24,7 +24,9 @@ export default ({
 	noIndex = false,
 }: MetaTagsProperty) => {
 	const SafeTitle = title || siteName;
-	const SafeDescription = description || "The next-generation code editor";
+	const SafeDescription =
+		description ||
+		"No Electron. No Chromium. Every extension runs unchanged.";
 
 	const BaseURL = "https://editor.land";
 	const SiteURL = url.startsWith("http")

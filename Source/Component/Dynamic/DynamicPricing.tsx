@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { IconTooltip } from "../UI/IconTooltip.js";
 import { RichText } from "../UI/RichText.js";
 import { DynamicButton } from "./DynamicButton.js";
-
 // RichText is used with Terms={true} throughout so element names, tool names,
 // protocols, and licenses are auto-badged with logos from the term dictionary.
 import type Property from "./Interface/Property/Pricing.js";
@@ -16,19 +15,19 @@ import type Property from "./Interface/Property/Pricing.js";
  */
 const ElementColorMap: Record<string, string> = {
 	Mountain: "var(--ExtensionRust)",
-	Cocoon:   "var(--ExtensionEffectTypeScript)",
-	Wind:     "var(--LanguageTypeScript)",
-	Sky:      "var(--ExtensionAstro)",
-	Air:      "var(--ExtensionRust)",
-	Echo:     "var(--ExtensionRust)",
-	Common:   "var(--LanguageRust)",
-	Vine:     "var(--SpinegRPC)",
-	Grove:    "var(--SpineWASM)",
-	Mist:     "var(--SpineIPC)",
-	Rest:     "var(--ToolOxc)",
-	Output:   "var(--ToolEsBuild)",
-	SideCar:  "var(--RuntimeNode)",
-	Worker:   "var(--LanguageJavaScript)",
+	Cocoon: "var(--ExtensionEffectTypeScript)",
+	Wind: "var(--LanguageTypeScript)",
+	Sky: "var(--ExtensionAstro)",
+	Air: "var(--ExtensionRust)",
+	Echo: "var(--ExtensionRust)",
+	Common: "var(--LanguageRust)",
+	Vine: "var(--SpinegRPC)",
+	Grove: "var(--SpineWASM)",
+	Mist: "var(--SpineIPC)",
+	Rest: "var(--ToolOxc)",
+	Output: "var(--ToolEsBuild)",
+	SideCar: "var(--RuntimeNode)",
+	Worker: "var(--LanguageJavaScript)",
 	Maintain: "var(--ToolBiome)",
 };
 
@@ -122,7 +121,6 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									? "border-primary"
 									: "border-[var(--Border)]"
 							}`}>
-
 							{/* ── Card header ───────────────────────────── */}
 							<div className="border-b border-[var(--Border)] p-6">
 								{Tier.Popular && (
@@ -152,7 +150,6 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 
 							{/* ── Card body ─────────────────────────────── */}
 							<div className="flex flex-1 flex-col p-6">
-
 								{/* Elements section */}
 								{Tier.Elements && Tier.Elements.length > 0 && (
 									<>
@@ -164,11 +161,14 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 												(Element, Index) => {
 													const Parts =
 														Element.split("\n");
-													const NameLine = Parts[0] ?? "";
+													const NameLine =
+														Parts[0] ?? "";
 													const Sub1 = Parts[1];
 													const Sub2 = Parts[2];
 													const AccentColor =
-														GetElementColor(NameLine);
+														GetElementColor(
+															NameLine,
+														);
 													return (
 														<li
 															key={Index}
@@ -178,16 +178,35 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																style={{
 																	color: AccentColor,
 																}}>
-																<RichText Text={NameLine} Terms={true} />
+																<RichText
+																	Text={
+																		NameLine
+																	}
+																	Terms={true}
+																/>
 															</span>
 															{Sub1 && (
 																<span className="text-xs text-foreground">
-																	<RichText Text={Sub1} Terms={true} />
+																	<RichText
+																		Text={
+																			Sub1
+																		}
+																		Terms={
+																			true
+																		}
+																	/>
 																</span>
 															)}
 															{Sub2 && (
 																<span className="text-xs text-muted-foreground">
-																	<RichText Text={Sub2} Terms={true} />
+																	<RichText
+																		Text={
+																			Sub2
+																		}
+																		Terms={
+																			true
+																		}
+																	/>
 																</span>
 															)}
 														</li>
@@ -217,7 +236,10 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 														key={FeatureIndex}
 														className="flex items-start justify-between gap-2">
 														<span className="min-w-0 flex-1 text-sm">
-															<RichText Text={Feature} Terms={true} />
+															<RichText
+																Text={Feature}
+																Terms={true}
+															/>
 														</span>
 														<IconTooltip
 															Label="Included"

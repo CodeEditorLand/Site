@@ -23,10 +23,7 @@ const SectionOrder = [
 	"License",
 ];
 
-const GroupedBySection = new Map<
-	string,
-	{ Id: string; Label: string }[]
->();
+const GroupedBySection = new Map<string, { Id: string; Label: string }[]>();
 
 for (const Entry of DocEntries) {
 	const Section = Entry.data.section ?? "Other";
@@ -39,13 +36,13 @@ for (const Entry of DocEntries) {
 	});
 }
 
-const SidebarSections = SectionOrder
-	.filter((Section) => GroupedBySection.has(Section))
-	.map((Section) => ({
-		Id: Section.toLowerCase().replace(/\s+/g, "-"),
-		Label: Section,
-		Children: GroupedBySection.get(Section)!,
-	}));
+const SidebarSections = SectionOrder.filter((Section) =>
+	GroupedBySection.has(Section),
+).map((Section) => ({
+	Id: Section.toLowerCase().replace(/\s+/g, "-"),
+	Label: Section,
+	Children: GroupedBySection.get(Section)!,
+}));
 
 const T = GetI18n();
 
@@ -58,179 +55,23 @@ const MetaDescription = T("meta.docs.description", {
 		"Browse the Code Editor Land documentation, architecture guides, and developer resources.",
 });
 
-// Data-driven architecture - replaces 450 lines of manual JSX
+// Element names for compact link grid
 const Element = [
-	{
-		Name: "Mountain",
-		Emoji: "⛰️",
-		Repo: "Mountain",
-		Description: T("common.docs.architecture.mountain.description", {
-			defaultValue: "VS Code's main process is Electron: a bundled Chromium instance plus Node.js. Every window adds another renderer process heap. Every OS interaction crosses a JSON IPC pipe.\n\nMountain replaces it entirely with a Rust binary using Tauri. The OS's own WebView renders the UI. File dialogs, clipboard, and window management go directly to the OS. Authentication tokens live in the keychain. RAM footprint drops 60-80% per window.",
-		}),
-		Subtitle: T("common.docs.architecture.mountain.subtitle", {
-			defaultValue: "No Electron. No Chromium. No IPC tax.",
-		}),
-	},
-	{
-		Name: "Cocoon",
-		Emoji: "🦋",
-		Repo: "Cocoon",
-		Description: T("common.docs.architecture.cocoon.description", {
-			defaultValue: "VS Code's extension host is a single Node.js event loop. One hung Promise blocks every other extension in the process. There is no way to cancel an in-flight operation.\n\nCocoon intercepts require and import at the module level. Every VS Code API call becomes a typed Effect running on a fiber scheduler. Extensions activate concurrently. A hung operation times out and the fiber is interrupted. The full VS Code API surface is preserved. Nothing needs to be rewritten.",
-		}),
-		Subtitle: T("common.docs.architecture.cocoon.subtitle", {
-			defaultValue: "Every VS Code extension runs. Nothing blocks.",
-		}),
-	},
-	{
-		Name: "Wind",
-		Emoji: "🌀",
-		Repo: "Wind",
-		Description: T("common.docs.architecture.wind.description", {
-			defaultValue: "VS Code's workbench lives in the Chromium renderer. Every panel interaction that touches files or state crosses the Electron IPC bridge twice: serialize, pipe, deserialize.\n\nWind re-implements the VS Code Workbench as composable Effect-TS Layers. File dialogs, clipboard, configuration, and output channels each become a typed service. OS calls go through Mountain's Tauri bindings directly. Refactoring a service breaks its consumers at compile time, not silently.",
-		}),
-		Subtitle: T("common.docs.architecture.wind.subtitle", {
-			defaultValue: "Workbench actions hit the OS. No proxy.",
-		}),
-	},
-	{
-		Name: "Sky",
-		Emoji: "🌤️",
-		Repo: "Sky",
-		Description: T("common.docs.architecture.sky.description", {
-			defaultValue: "Three workbench layouts — full desktop, embedded, minimal — each built from Astro components with instant hot-reload. Tauri reloads Sky immediately on any component change.\n\nHigh-fidelity VS Code UI compatibility with a significantly smaller footprint. No special Electron magic. Just web components rendered by the OS's own WebView.",
-		}),
-		Subtitle: T("common.docs.architecture.sky.subtitle", {
-			defaultValue: "Every panel is a component. Instant hot-reload.",
-		}),
-	},
-	{
-		Name: "Air",
-		Emoji: "💨",
-		Repo: "Air",
-		Description: T("common.docs.architecture.air.description", {
-			defaultValue:
-				"VS Code cold-starts slowly because everything initializes fresh each launch: extension host, language servers, file index. Updates require a full restart that kills open terminals and in-progress work.\n\nAir is a persistent background daemon. It pre-downloads and PGP-verifies the next version between sessions. It pre-indexes workspace changes while the editor is closed. When you launch Land, the expensive work is already done. You never see a Restart to Update prompt.",
-		}),
-		Subtitle: T("common.docs.architecture.air.subtitle", {
-			defaultValue: "Already updated before you decide to update.",
-		}),
-	},
-	{
-		Name: "Echo",
-		Emoji: "📣",
-		Repo: "Echo",
-		Description: T("common.docs.architecture.echo.description", {
-			defaultValue:
-				"VS Code's background tasks — file indexing, symbol scanning, git blame — run in a single-threaded Node.js process. Heavy indexing freezes everything on that thread. The only escape is spawning more processes, adding memory and IPC overhead.\n\nEcho is a lock-free work-stealing scheduler built on Rust's crossbeam-deque. Every task runs in a supervised worker pool spanning all CPU cores. Heavy indexing and analysis never block the editor. Tasks cannot outlive their scope: teardown is guaranteed.",
-		}),
-		Subtitle: T("common.docs.architecture.echo.subtitle", {
-			defaultValue: "Every CPU core working. Nothing blocking.",
-		}),
-	},
-	{
-		Name: "Common",
-		Emoji: "📦",
-		Repo: "Common",
-		Description: T("common.docs.architecture.common.description", {
-			defaultValue: "VS Code's codebase imports concrete implementations. Testing requires mocking entire modules. There is no dependency injection at the architecture level.\n\nCommon defines pure abstract traits with zero concrete implementations. Every element builds on typed effects and composable building blocks. Mock any trait and test any element without launching a window, a WebView, or a sidecar.",
-		}),
-		Subtitle: T("common.docs.architecture.common.subtitle", {
-			defaultValue: "Test any element. No running editor required.",
-		}),
-	},
-	{
-		Name: "Vine",
-		Emoji: "🌿",
-		Repo: "Vine",
-		Description: T("common.docs.architecture.vine.description", {
-			defaultValue: "Electron's IPC is untyped: you send a string event name and hope the handler matches. Refactoring a message field breaks things silently in production.\n\nVine starts every inter-process interface as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate. A message field change fails at the compiler. gRPC over a Unix domain socket runs at memory-copy speed: microseconds for messages under 64KB.",
-		}),
-		Subtitle: T("common.docs.architecture.vine.subtitle", {
-			defaultValue: "Typed IPC. Change a field, break every consumer at compile time.",
-		}),
-	},
-	{
-		Name: "Mist",
-		Emoji: "🌫️",
-		Repo: "Mist",
-		Description: T("common.docs.architecture.mist.description", {
-			defaultValue:
-				"Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
-		}),
-		Subtitle: T("common.docs.architecture.mist.subtitle", {
-			defaultValue: "DNS Sandbox Local *.editor.land Resolution",
-		}),
-	},
-	{
-		Name: "Rest",
-		Emoji: "⚡",
-		Repo: "Rest",
-		Description: T("common.docs.architecture.rest.description", {
-			defaultValue:
-				"VS Code's TypeScript build uses tsc with Node.js overhead on every incremental compile. Build times grow with project size.\n\nRest is a drop-in replacement powered by OXC: the same parser VS Code uses internally, implemented in Rust. 100% compatible output at 2-3x the speed of esbuild. Zero Node.js overhead in the build path.",
-		}),
-		Subtitle: T("common.docs.architecture.rest.subtitle", {
-			defaultValue: "VS Code's TypeScript build step. 2-3x faster.",
-		}),
-	},
-	{
-		Name: "Output",
-		Emoji: "📤",
-		Repo: "Output",
-		Description: T("common.docs.architecture.output.description", {
-			defaultValue: "VS Code's build process produces artifacts that differ between machines and CI environments. Debugging production issues requires reproducing exact build conditions.\n\nOutput processes TypeScript from VS Code, Land, and Rest into fully bundled artifacts through a plugin-routed architecture. Every bundle is deterministic and checksum-verified. Same commit always produces the same output.",
-		}),
-		Subtitle: T("common.docs.architecture.output.subtitle", {
-			defaultValue: "Same commit. Same output. Every time.",
-		}),
-	},
-	{
-		Name: "Grove",
-		Emoji: "🌳",
-		Repo: "Grove",
-		Description: T("common.docs.architecture.grove.description", {
-			defaultValue: "VS Code extensions run with full Node.js capabilities in a shared process. A malicious or buggy extension can access any file, make any network request, and read another extension's state. The extension sandbox is a policy document, not a technical boundary.\n\nGrove runs extensions compiled to WASM inside WASMtime with capability-based security. An extension can only touch what you explicitly grant: a directory, a network endpoint, an IPC channel. The boundary is enforced by the runtime, not by hope.",
-		}),
-		Subtitle: T("common.docs.architecture.grove.subtitle", {
-			defaultValue: "Extension isolation enforced by hardware.",
-		}),
-	},
-	{
-		Name: "Worker",
-		Emoji: "⚙️",
-		Repo: "Worker",
-		Description: T("common.docs.architecture.worker.description", {
-			defaultValue: "The editor shell stays functional and authenticated even when the network drops. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically without any user action.\n\nCaching, offline support, and dynamic CSS imports all managed through the Service Worker layer.",
-		}),
-		Subtitle: T("common.docs.architecture.worker.subtitle", {
-			defaultValue: "Offline-capable. Auth tokens encrypted. Auto-refreshed.",
-		}),
-	},
-	{
-		Name: "SideCar",
-		Emoji: "🚂",
-		Repo: "SideCar",
-		Description: T("common.docs.architecture.sidecar.description", {
-			defaultValue:
-				"VS Code ships one Node.js binary and detects the platform at runtime, with fallback chains that fail in edge cases (Alpine Linux, custom glibc versions, ARM configurations).\n\nSideCar packages the exact Node.js binary for each target triple at compile time: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others. Cocoon always gets the binary that matches the host. No runtime detection, no fallback chains, no surprises.",
-		}),
-		Subtitle: T("common.docs.architecture.sidecar.subtitle", {
-			defaultValue: "The right Node.js binary. Compiled in. No detection.",
-		}),
-	},
-	{
-		Name: "Maintain",
-		Emoji: "🔧",
-		Repo: "Maintain",
-		Description: T("common.docs.architecture.maintain.description", {
-			defaultValue:
-				"Build pipelines that change behavior based on environment variables, implicit tool versions, or undeclared dependencies make debugging production issues impossible.\n\nMaintain builds the entire Land ecosystem with Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation. The same commit always produces the same output across all machines.",
-		}),
-		Subtitle: T("common.docs.architecture.maintain.subtitle", {
-			defaultValue: "Deterministic builds. Same commit, same output, guaranteed.",
-		}),
-	},
+	{ Name: "Mountain" },
+	{ Name: "Cocoon" },
+	{ Name: "Wind" },
+	{ Name: "Sky" },
+	{ Name: "Air" },
+	{ Name: "Echo" },
+	{ Name: "Common" },
+	{ Name: "Vine" },
+	{ Name: "Mist" },
+	{ Name: "Rest" },
+	{ Name: "Output" },
+	{ Name: "Grove" },
+	{ Name: "Worker" },
+	{ Name: "SideCar" },
+	{ Name: "Maintain" },
 ];
 ---
 
@@ -333,7 +174,7 @@ const Element = [
 							{
 								T("common.docs.gettingStarted.description", {
 									defaultValue:
-										"The README walks you through installation, first build, and the six-element architecture. No prior Rust or Tauri knowledge required.",
+										"The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required.",
 								})
 							}
 						</p>
@@ -347,7 +188,8 @@ const Element = [
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.issueTracker.title", {
-									defaultValue: "Report a Bug or Request a Feature",
+									defaultValue:
+										"Report a Bug or Request a Feature",
 								})
 							}
 						</h2>
@@ -384,52 +226,48 @@ const Element = [
 
 				<!-- Guides: grouped by section -->
 				{
-					SectionOrder
-						.filter((Section) => GroupedBySection.has(Section))
-						.map((Section) => {
-							const Entries = DocEntries.filter(
-								(E) => E.data.section === Section,
-							);
-							if (Entries.length === 0) return null;
-							return (
-								<section class="mt-12" id={Section.toLowerCase().replace(/\s+/g, "-")}>
-									<h2 class="mb-6 text-2xl font-semibold">
-										{Section}
-									</h2>
-									<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-										{Entries.map((Entry) => (
-											<a
-												href={`/Doc/${Entry.id}`}
-												class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-												<h3 class="font-medium">
-													{Entry.data.title}
-												</h3>
-												{Entry.data.description && (
-													<p class="mt-1 text-xs text-muted-foreground">
-														{Entry.data.description}
-													</p>
-												)}
-											</a>
-										))}
-									</div>
-								</section>
-							);
-						})
+					SectionOrder.filter((Section) =>
+						GroupedBySection.has(Section),
+					).map((Section) => {
+						const Entries = DocEntries.filter(
+							(E) => E.data.section === Section,
+						);
+						if (Entries.length === 0) return null;
+						return (
+							<section
+								class="mt-12"
+								id={Section.toLowerCase().replace(/\s+/g, "-")}>
+								<h2 class="mb-6 text-2xl font-semibold">
+									{Section}
+								</h2>
+								<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+									{Entries.map((Entry) => (
+										<a
+											href={`/Doc/${Entry.id}`}
+											class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+											<h3 class="font-medium">
+												{Entry.data.title}
+											</h3>
+											{Entry.data.description && (
+												<p class="mt-1 text-xs text-muted-foreground">
+													{Entry.data.description}
+												</p>
+											)}
+										</a>
+									))}
+								</div>
+							</section>
+						);
+					})
 				}
 
-				<!-- Architecture Section - data-driven -->
+				<!-- Architecture Summary -->
 				<section class="mt-12">
-					<a
-						href="https://github.com/CodeEditorLand"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="mb-2 inline-block text-sm text-[var(--Primary)] hover:underline">
-						github.com/CodeEditorLand
-					</a>
 					<h2 class="mb-6 text-2xl font-semibold">
 						{
 							T("common.docs.architecture.heading", {
-								defaultValue: "How Land Replaces VS Code's Electron Stack",
+								defaultValue:
+									"How Land Replaces VS Code's Electron Stack",
 							})
 						}
 					</h2>
@@ -439,32 +277,22 @@ const Element = [
 							{
 								T("common.docs.architecture.intro", {
 									defaultValue:
-										"VS Code runs on Electron: a Chromium browser, a Node.js runtime, and a single-threaded extension host. Land replaces each of these piece by piece with elements that preserve the VS Code extension API while eliminating the architectural constraints that cause the RAM tax, the blocked editor, and the slow startup. Each of the fifteen elements is an independent open-source repository:",
+										"VS Code runs on Electron: a Chromium browser, a Node.js runtime, and a single-threaded extension host. Land replaces each piece with an independent element that preserves the VS Code extension API while eliminating the architectural constraints. Browse individual elements in the Element section above, or explore all fifteen repositories on GitHub.",
 								})
 							}
 						</p>
-						<ul class="space-y-4 text-sm">
+						<div class="flex flex-wrap gap-3">
 							{
 								Element.map((E) => (
-									<li>
-										<a
-											href={`https://github.com/CodeEditorLand/${E.Repo}`}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="font-semibold text-[var(--Primary)] hover:underline">
-											{E.Name}&#x2001;{E.Emoji}
-										</a>
-										<p class="mt-1 text-muted-foreground">
-											{E.Description}
-										</p>
-										<p class="text-muted-foreground/70 text-xs">
-											{E.Subtitle}
-										</p>
-									</li>
+									<a
+										href={`/Doc/${E.Name.toLowerCase()}`}
+										class="inline-flex items-center gap-1 border border-[var(--Border)] bg-white px-3 py-1.5 text-sm transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+										{E.Name}
+									</a>
 								))
 							}
-						</ul>
-						<div class="mt-6 border-t border-[var(--Border)] pt-4">
+						</div>
+						<div class="mt-4 border-t border-[var(--Border)] pt-4">
 							<a
 								href="https://github.com/CodeEditorLand"
 								target="_blank"
@@ -496,13 +324,20 @@ const Element = [
 							{
 								T("common.docs.workers.intro", {
 									defaultValue:
-										"Five Cloudflare Workers power the Land backend infrastructure:",
+										"Four Cloudflare Workers power the Land backend infrastructure:",
 								})
 							}
 						</p>
 						<ul class="space-y-3 text-sm">
 							<li>
-								<span class="font-semibold">Auth</span>
+								<a
+									href="https://codeeditorland-auth.playform.workers.dev"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="font-semibold text-[var(--Primary)] hover:underline"
+									>Auth<span class="InlineSeparator">↗</span
+									></a
+								>
 								<span class="text-muted-foreground">
 									{" - "}
 									{
@@ -514,7 +349,15 @@ const Element = [
 								</span>
 							</li>
 							<li>
-								<span class="font-semibold">Download</span>
+								<a
+									href="https://codeeditorland-download.playform.workers.dev"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="font-semibold text-[var(--Primary)] hover:underline"
+									>Download<span class="InlineSeparator"
+										>↗</span
+									></a
+								>
 								<span class="text-muted-foreground">
 									{" - "}
 									{
@@ -526,7 +369,14 @@ const Element = [
 								</span>
 							</li>
 							<li>
-								<span class="font-semibold">Status</span>
+								<a
+									href="https://codeeditorland-status.playform.workers.dev"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="font-semibold text-[var(--Primary)] hover:underline"
+									>Status<span class="InlineSeparator">↗</span
+									></a
+								>
 								<span class="text-muted-foreground">
 									{" - "}
 									{
@@ -538,18 +388,370 @@ const Element = [
 								</span>
 							</li>
 							<li>
-								<span class="font-semibold">Analytics</span>
+								<a
+									href="https://codeeditorland-analytics.playform.workers.dev"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="font-semibold text-[var(--Primary)] hover:underline"
+									>Analytics<span class="InlineSeparator"
+										>↗</span
+									></a
+								>
 								<span class="text-muted-foreground">
 									{" - "}
 									{
 										T("common.docs.workers.analytics", {
 											defaultValue:
-												"Back to top",
+												"Privacy-first usage telemetry routed through Cloudflare Analytics Engine",
 										})
 									}
 								</span>
 							</li>
 						</ul>
+					</div>
+				</section>
+
+				<!-- Live Deployments -->
+				<section class="mt-12">
+					<h2 class="mb-6 text-2xl font-semibold">
+						{
+							T("common.docs.deployments.heading", {
+								defaultValue: "Live Deployments",
+							})
+						}
+					</h2>
+					<div
+						class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+						<p class="mb-4 text-muted-foreground">
+							{
+								T("common.docs.deployments.intro", {
+									defaultValue:
+										"All Land services are deployed on Cloudflare's edge network:",
+								})
+							}
+						</p>
+						<div
+							class="grid grid-cols-1 gap-3 text-sm md:grid-cols-2">
+							<a
+								href="https://editor.land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.website", {
+											defaultValue: "Editor.Land",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.website.description",
+											{
+												defaultValue:
+													"Marketing website (Cloudflare Pages)",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Status.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.status", {
+											defaultValue: "Status",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.status.description",
+											{
+												defaultValue:
+													"Uptime dashboard (Cloudflare Pages)",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Mountain.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T(
+											"common.docs.deployments.rustMountain",
+											{
+												defaultValue:
+													"Rust API: Mountain",
+											},
+										)
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustMountain.description",
+											{
+												defaultValue:
+													"rustdoc for Mountain, Echo, Common, Air, SideCar",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Rest.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.rustRest", {
+											defaultValue: "Rust API: Rest",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustRest.description",
+											{
+												defaultValue:
+													"rustdoc for OXC-powered TypeScript compiler",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Maintain.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T(
+											"common.docs.deployments.rustMaintain",
+											{
+												defaultValue:
+													"Rust API: Maintain",
+											},
+										)
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustMaintain.description",
+											{
+												defaultValue:
+													"rustdoc for build orchestrator",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Common.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T(
+											"common.docs.deployments.rustCommon",
+											{
+												defaultValue:
+													"Rust API: Common",
+											},
+										)
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustCommon.description",
+											{
+												defaultValue:
+													"rustdoc for abstract traits and DTOs",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Echo.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.rustEcho", {
+											defaultValue: "Rust API: Echo",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustEcho.description",
+											{
+												defaultValue:
+													"rustdoc for work-stealing scheduler",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Air.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.rustAir", {
+											defaultValue: "Rust API: Air",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustAir.description",
+											{
+												defaultValue:
+													"rustdoc for background daemon",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.SideCar.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T(
+											"common.docs.deployments.rustSideCar",
+											{
+												defaultValue:
+													"Rust API: SideCar",
+											},
+										)
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustSideCar.description",
+											{
+												defaultValue:
+													"rustdoc for Node.js binary distribution",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Rust.Documentation.Land.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.rustLand", {
+											defaultValue:
+												"Rust API: Land (Workspace)",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustLand.description",
+											{
+												defaultValue:
+													"rustdoc for the top-level workspace",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="https://Knowledge.Editor.Land"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T("common.docs.deployments.knowledge", {
+											defaultValue: "Knowledge Base",
+										})
+									}</span
+								>
+								<span class="InlineSeparator">↗</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.knowledge.description",
+											{
+												defaultValue:
+													"Architecture knowledge graph (Cloudflare Pages)",
+											},
+										)
+									}
+								</p>
+							</a>
+							<a
+								href="/Doc/Rust"
+								class="block border border-[var(--Border)] bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								<span class="font-semibold"
+									>{
+										T(
+											"common.docs.deployments.rustInteractive",
+											{
+												defaultValue:
+													"Rust API (Interactive)",
+											},
+										)
+									}</span
+								>
+								<span class="InlineSeparator">→</span>
+								<p class="mt-1 text-xs text-muted-foreground">
+									{
+										T(
+											"common.docs.deployments.rustInteractive.description",
+											{
+												defaultValue:
+													"Browse all rustdoc sites with embedded iframes",
+											},
+										)
+									}
+								</p>
+							</a>
+						</div>
 					</div>
 				</section>
 

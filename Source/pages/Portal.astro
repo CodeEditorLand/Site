@@ -40,7 +40,8 @@ const PortalContent = {
 			{
 				Heading: "Backup",
 				Description: T("account.portal.cloud.feature.backup", {
-					defaultValue: "Encrypted cloud backup of all configurations",
+					defaultValue:
+						"Encrypted cloud backup of all configurations",
 				}),
 				Icon: ["Cloud", "HardDrive", "Shield"],
 			},
@@ -54,7 +55,8 @@ const PortalContent = {
 			{
 				Heading: "Extensions",
 				Description: T("account.portal.cloud.feature.extension", {
-					defaultValue: "Install extensions from the marketplace in one click",
+					defaultValue:
+						"Install extensions from the marketplace in one click",
 				}),
 				Icon: ["Puzzle", "Cloud", "Box"],
 			},
@@ -83,7 +85,8 @@ const PortalContent = {
 				defaultValue: "Full audit log every action recorded",
 			}),
 			T("account.portal.cloud.capability.cert", {
-				defaultValue: "Developer certificates provisioned automatically",
+				defaultValue:
+					"Developer certificates provisioned automatically",
 			}),
 		],
 	},
@@ -106,7 +109,8 @@ const PortalContent = {
 			{
 				Heading: "GitHub",
 				Description: T("account.portal.provider.feature.github", {
-					defaultValue: "No new password Your GitHub identity is enough",
+					defaultValue:
+						"No new password Your GitHub identity is enough",
 				}),
 				Icon: ["/Image/GitHub.svg", "KeyRound", "Settings"],
 			},
@@ -120,14 +124,16 @@ const PortalContent = {
 			{
 				Heading: "Repository",
 				Description: T("account.portal.provider.feature.repo", {
-					defaultValue: "Theme and keybindings follow your provider identity",
+					defaultValue:
+						"Theme and keybindings follow your provider identity",
 				}),
 				Icon: ["GitBranch", "Settings", "HardDrive"],
 			},
 			{
 				Heading: "Team",
 				Description: T("account.portal.provider.feature.team", {
-					defaultValue: "Organization and team membership synced automatically",
+					defaultValue:
+						"Organization and team membership synced automatically",
 				}),
 				Icon: ["Users", "RefreshCw", "Building2"],
 			},
@@ -145,7 +151,8 @@ const PortalContent = {
 				defaultValue: "OAuth 2.0 with PKCE S256 on every flow",
 			}),
 			T("account.portal.provider.capability.scope", {
-				defaultValue: "Email and profile scope only nothing else requested",
+				defaultValue:
+					"Email and profile scope only nothing else requested",
 			}),
 			T("account.portal.provider.capability.token", {
 				defaultValue: "Refresh token rotation on every sign-in",
@@ -157,7 +164,8 @@ const PortalContent = {
 				defaultValue: "Organization-level access policies",
 			}),
 			T("account.portal.provider.capability.cert", {
-				defaultValue: "Developer certificates provisioned automatically",
+				defaultValue:
+					"Developer certificates provisioned automatically",
 			}),
 		],
 	},
@@ -196,7 +204,8 @@ const PortalContent = {
 			{
 				Heading: "Deploy",
 				Description: T("account.portal.localfirst.feature.deploy", {
-					defaultValue: "Deploy changes directly to the running editor",
+					defaultValue:
+						"Deploy changes directly to the running editor",
 				}),
 				Icon: ["Rocket", "HardDrive"],
 			},
@@ -212,7 +221,7 @@ const PortalContent = {
 				Heading: "VS Code Parity",
 				Description: T("account.portal.localfirst.feature.parity", {
 					defaultValue:
-						"Full VS Code feature parity nothing missing",
+						"Every VS Code extension runs unchanged nothing missing",
 				}),
 				Icon: ["Monitor", "RefreshCw"],
 			},
@@ -235,25 +244,31 @@ const PortalContent = {
 		],
 		Capability: [
 			T("account.portal.localfirst.capability.jwt", {
-				defaultValue: "JWT ES384 certificates 5 min expiry, rotated on reconnect",
+				defaultValue:
+					"JWT ES384 certificates 5 min expiry, rotated on reconnect",
 			}),
 			T("account.portal.localfirst.capability.mtls", {
-				defaultValue: "mTLS mutual authentication daemon and browser both verified",
+				defaultValue:
+					"mTLS mutual authentication daemon and browser both verified",
 			}),
 			T("account.portal.localfirst.capability.crdt", {
-				defaultValue: "CRDT state synchronization for conflict-free offline editing",
+				defaultValue:
+					"CRDT state synchronization for conflict-free offline editing",
 			}),
 			T("account.portal.localfirst.capability.team", {
-				defaultValue: "Team management runs fully local no cloud dependency",
+				defaultValue:
+					"Team management runs fully local no cloud dependency",
 			}),
 			T("account.portal.localfirst.capability.cert", {
-				defaultValue: "Local certificate authority no external CA calls",
+				defaultValue:
+					"Local certificate authority no external CA calls",
 			}),
 			T("account.portal.localfirst.capability.ws", {
 				defaultValue: "WebSocket live connection over loopback only",
 			}),
 			T("account.portal.localfirst.capability.rbac", {
-				defaultValue: "Local RBAC policies enforced at the daemon layer",
+				defaultValue:
+					"Local RBAC policies enforced at the daemon layer",
 			}),
 			T("account.portal.localfirst.capability.backup", {
 				defaultValue: "Encrypted local backup of all workspace state",
@@ -286,7 +301,8 @@ const PortalContent = {
 			{
 				Heading: "Azure AD",
 				Description: T("account.portal.enterprise.feature.azure", {
-					defaultValue: "Azure AD / Entra ID your Microsoft identity works",
+					defaultValue:
+						"Azure AD / Entra ID your Microsoft identity works",
 				}),
 				Icon: ["/Image/Microsoft.svg", "Cloud", "Building2"],
 			},
@@ -307,27 +323,31 @@ const PortalContent = {
 			{
 				Heading: "Groups",
 				Description: T("account.portal.enterprise.feature.group", {
-					defaultValue: "IdP group to CEL role mapping least privilege automatic",
+					defaultValue:
+						"IdP group to CEL role mapping least privilege automatic",
 				}),
 				Icon: ["Users", "KeyRound", "Shield"],
 			},
 			{
 				Heading: "Audit",
 				Description: T("account.portal.enterprise.feature.audit", {
-					defaultValue: "SOC 2 logs exported to your SIEM in CEF or JSON",
+					defaultValue:
+						"SOC 2 logs exported to your SIEM in CEF or JSON",
 				}),
 				Icon: ["FileText", "Shield", "Lock"],
 			},
 		],
 		Capability: [
 			T("account.portal.enterprise.capability.oidc", {
-				defaultValue: "OIDC Discovery auto-configured from your IdP metadata URL",
+				defaultValue:
+					"OIDC Discovery auto-configured from your IdP metadata URL",
 			}),
 			T("account.portal.enterprise.capability.jit", {
 				defaultValue: "Just-in-time provisioning on first sign-in",
 			}),
 			T("account.portal.enterprise.capability.mfa", {
-				defaultValue: "MFA enforced via IdP authentication context class",
+				defaultValue:
+					"MFA enforced via IdP authentication context class",
 			}),
 			T("account.portal.enterprise.capability.session", {
 				defaultValue: "Session duration controlled by IdP policy",

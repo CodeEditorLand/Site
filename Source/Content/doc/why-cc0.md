@@ -19,7 +19,8 @@ apply. The code belongs to everyone.
 CC0 is not a license in the traditional sense. It is a waiver. The author
 irrevocably surrenders all copyright and related rights to the fullest extent
 permitted by law. In jurisdictions where full waiver is not legally possible,
-CC0 includes a fallback permissive license that grants all rights unconditionally.
+CC0 includes a fallback permissive license that grants all rights
+unconditionally.
 
 For users, this means:
 
@@ -28,15 +29,16 @@ For users, this means:
 - You can modify Land without publishing your changes.
 - You can use Land in government, military, healthcare, or any regulated
   environment without legal review of license compatibility.
-- You do not need to include a copyright notice, license file, or attribution
-  of any kind.
+- You do not need to include a copyright notice, license file, or attribution of
+  any kind.
 
 ## Why Not MIT
 
 MIT is permissive, but it still requires attribution. Every binary that includes
-MIT-licensed code must ship a copy of the license text and the original copyright
-notice. For a project with hundreds of dependencies, this creates a cascade of
-`NOTICES` files and legal compliance work. CC0 eliminates that burden entirely.
+MIT-licensed code must ship a copy of the license text and the original
+copyright notice. For a project with hundreds of dependencies, this creates a
+cascade of `NOTICES` files and legal compliance work. CC0 eliminates that burden
+entirely.
 
 ## Why Not Apache 2.0
 
@@ -67,10 +69,10 @@ replaces the need for restrictive licensing as a revenue protection mechanism.
 ## Where CC0 Applies
 
 CC0 covers the entire Land project: all 15 elements, the website, the
-documentation, the build tooling, and the CI/CD infrastructure. Every
-repository under the CodeEditorLand GitHub organization carries the same
-dedication. There are no dual-licensed components, no "community edition"
-restrictions, and no features gated behind a proprietary license.
+documentation, the build tooling, and the CI/CD infrastructure. Every repository
+under the CodeEditorLand GitHub organization carries the same dedication. There
+are no dual-licensed components, no "community edition" restrictions, and no
+features gated behind a proprietary license.
 
 ## The Philosophical Position
 

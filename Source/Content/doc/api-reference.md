@@ -99,14 +99,23 @@ handles initialization, capabilities negotiation, and shutdown automatically.
 
 ## Rust API Documentation
 
-Generated `rustdoc` output for the Rust crates is hosted on Cloudflare Pages:
+Generated `rustdoc` output for the Rust crates:
 
-- [Mountain Crates](https://rust-documentation-mountain-land.pages.dev) -
-  Mountain, Echo, Common, CommonLibrary, Air, AirLibrary, SideCar, Download
-- [Rest Crates](https://rust-documentation-rest-land.pages.dev) - Rest bundler
-  documentation
-- [Maintain Crates](https://rust-documentation-maintain-land.pages.dev) - CI/CD
-  and maintenance tooling
+- [Mountain Crates](https://Rust.Documentation.Mountain.Editor.Land) — Mountain,
+  Echo, Common, CommonLibrary, Air, AirLibrary, SideCar, Download
+- [Common Crate](https://Rust.Documentation.Common.Editor.Land) — Abstract
+  traits, ActionEffect system, DTOs
+- [Echo Crate](https://Rust.Documentation.Echo.Editor.Land) — Work-stealing
+  scheduler
+- [Air Crate](https://Rust.Documentation.Air.Editor.Land) — Background daemon
+- [SideCar Crate](https://Rust.Documentation.SideCar.Editor.Land) — Node.js
+  binary distribution
+- [Rest Crates](https://Rust.Documentation.Rest.Editor.Land) — OXC-powered
+  TypeScript compiler
+- [Maintain Crates](https://Rust.Documentation.Maintain.Editor.Land) — Build
+  orchestrator
+- [Land Workspace](https://Rust.Documentation.Land.Editor.Land) — Top-level
+  workspace
 
 ### Crate Index
 
@@ -131,4 +140,4 @@ Generated `rustdoc` output for the Rust crates is hosted on Cloudflare Pages:
 ## Further Reading
 
 - [VS Code API Documentation](https://code.visualstudio.com/api/references/vscode-api)
-  - the upstream reference that Land implements.
+    - the upstream reference that Land implements.

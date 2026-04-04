@@ -48,16 +48,17 @@ Electron applications run backend logic in Node.js. Tauri applications run
 backend logic in Rust. This means Land's native layer (file system access,
 process management, cryptographic operations, network communication) is compiled
 to native code with no garbage collector, no event loop contention, and no V8
-overhead. The frontend communicates with this backend through Tauri's IPC bridge,
-which Land extends with gRPC via the Vine element for typed, schema-driven
-messaging.
+overhead. The frontend communicates with this backend through Tauri's IPC
+bridge, which Land extends with gRPC via the Vine element for typed,
+schema-driven messaging.
 
 ## Plugin Architecture
 
 Tauri 2.0 introduced a plugin system that allows Rust crates to extend the
 native layer. Land uses Tauri plugins for deep OS integration: system tray
 management, file dialogs, notification delivery, and auto-update. Each plugin is
-a self-contained Rust crate with its own lifecycle, permissions, and API surface.
+a self-contained Rust crate with its own lifecycle, permissions, and API
+surface.
 
 ## Where Tauri Appears in Land
 

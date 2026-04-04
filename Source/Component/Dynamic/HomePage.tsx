@@ -169,14 +169,18 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged."
+								"Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged.",
 						},
 					),
 				},
 				{
 					Id: "architecture",
 					Icon: "Cpu",
-					Icons: ["/Image/EffectTS.svg", "/Image/TypeScript.svg", "Layers"],
+					Icons: [
+						"/Image/EffectTS.svg",
+						"/Image/TypeScript.svg",
+						"Layers",
+					],
 					Title: T("home:features.item.documentation.title", {
 						defaultValue: "Fibers, not Promises.",
 					}),
@@ -206,7 +210,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "tooling",
 					Icon: "Wrench",
-					Icons: ["/Image/Rust.svg", "/Image/Biome.svg", "/Image/EffectTS.svg"],
+					Icons: [
+						"/Image/Rust.svg",
+						"/Image/Biome.svg",
+						"/Image/EffectTS.svg",
+					],
 					Title: T("home:features.item.cicdIntegration.title", {
 						defaultValue: "No Restart to Update.",
 					}),
@@ -214,7 +222,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt."
+								"VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt.",
 						},
 					),
 				},
@@ -229,7 +237,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.collaboration.description",
 						{
 							defaultValue:
-								"Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches."
+								"Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches.",
 						},
 					),
 				},
@@ -239,7 +247,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Pricing: {
 			Title: T("home:roadmap.title", {
-				defaultValue: "The Architecture Is Built. Here Is What Comes Next.",
+				defaultValue:
+					"The Architecture Is Built. Here Is What Comes Next.",
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
@@ -258,36 +267,46 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
 						T("home:roadmap.tiers.current.elements.mountain", {
-							defaultValue: "Mountain ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
+							defaultValue:
+								"Mountain ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
 						}),
 						T("home:roadmap.tiers.current.elements.cocoon", {
-							defaultValue: "Cocoon 🦋\nExtension Host\nFull VS Code API via Effect-TS, every extension unchanged",
+							defaultValue:
+								"Cocoon 🦋\nExtension Host\nFull VS Code API via Effect-TS, every extension unchanged",
 						}),
 						T("home:roadmap.tiers.current.elements.wind", {
-							defaultValue: "Wind 🍃\nWorkbench Shell\nEffect-TS layers, direct OS calls, no IPC proxy",
+							defaultValue:
+								"Wind 🍃\nWorkbench Shell\nEffect-TS layers, direct OS calls, no IPC proxy",
 						}),
 						T("home:roadmap.tiers.current.elements.sky", {
-							defaultValue: "Sky 🌌\nAstro UI Layer\nEvery panel a component, instant hot-reload",
+							defaultValue:
+								"Sky 🌌\nAstro UI Layer\nEvery panel a component, instant hot-reload",
 						}),
 						T("home:roadmap.tiers.current.elements.air", {
-							defaultValue: "Air 🪁\nBackground Daemon\nPre-stages updates, no Restart to Update prompt",
+							defaultValue:
+								"Air 🪁\nBackground Daemon\nPre-stages updates, no Restart to Update prompt",
 						}),
 						T("home:roadmap.tiers.current.elements.echo", {
-							defaultValue: "Echo 📣\nWork-Stealing Scheduler\nAll CPU cores, heavy tasks never block the editor",
+							defaultValue:
+								"Echo 📣\nWork-Stealing Scheduler\nAll CPU cores, heavy tasks never block the editor",
 						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "Every extension runs unchanged no rewrites",
+							defaultValue:
+								"Every extension runs unchanged no rewrites",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
-							defaultValue: "No Electron OS's own renderer 70% less RAM",
+							defaultValue:
+								"No Electron OS's own renderer 70% less RAM",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "Fibers, not Promises interruptible concurrent",
+							defaultValue:
+								"Fibers, not Promises interruptible concurrent",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "Telemetry is a compile flag absent, not disabled",
+							defaultValue:
+								"Telemetry is a compile flag absent, not disabled",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
 							defaultValue: "CC0 public domain no restrictions",
@@ -317,42 +336,53 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
 						T("home:roadmap.tiers.future.elements.vine", {
-							defaultValue: "Vine 🌿\nProtocol In Progress\nMountain and Grove channel completing",
+							defaultValue:
+								"Vine 🌿\nProtocol In Progress\nMountain and Grove channel completing",
 						}),
 						T("home:roadmap.tiers.future.elements.cocoon", {
-							defaultValue: "Cocoon 🦋\nExtension Compatibility Pass\nHigh-fidelity VS Code API coverage",
+							defaultValue:
+								"Cocoon 🦋\nExtension Compatibility Pass\nHigh-fidelity VS Code API coverage",
 						}),
 						T("home:roadmap.tiers.future.elements.grove", {
-							defaultValue: "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-based extension isolation",
+							defaultValue:
+								"Grove 🌳\nWASM Sandbox Stabilizing\nCapability-based extension isolation",
 						}),
 						T("home:roadmap.tiers.future.elements.rest", {
-							defaultValue: "Rest ⛱️\nSource Map Support\nOXC transformer integration in progress",
+							defaultValue:
+								"Rest ⛱️\nSource Map Support\nOXC transformer integration in progress",
 						}),
 						T("home:roadmap.tiers.future.elements.echo", {
-							defaultValue: "Echo 📣\nScheduler Optimization\nFaster steal, lower latency",
+							defaultValue:
+								"Echo 📣\nScheduler Optimization\nFaster steal, lower latency",
 						}),
 						T("home:roadmap.tiers.future.elements.air", {
-							defaultValue: "Air 🪁\nSigned CDN Delivery\nCloudflare Workers distribution",
+							defaultValue:
+								"Air 🪁\nSigned CDN Delivery\nCloudflare Workers distribution",
 						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.future.features.1", {
-							defaultValue: "VS Code Marketplace every extension installs unchanged",
+							defaultValue:
+								"VS Code Marketplace every extension installs unchanged",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Grove hardware-enforced extension isolation",
+							defaultValue:
+								"Grove hardware-enforced extension isolation",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "Vine typed at the wire all IPC finalized",
+							defaultValue:
+								"Vine typed at the wire all IPC finalized",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "Cross-platform native installer via Tauri",
+							defaultValue:
+								"Cross-platform native installer via Tauri",
 						}),
 						T("home:roadmap.tiers.future.features.5", {
 							defaultValue: "Source map generation via OXC",
 						}),
 						T("home:roadmap.tiers.future.features.6", {
-							defaultValue: "Cloudflare Workers download distribution live",
+							defaultValue:
+								"Cloudflare Workers download distribution live",
 						}),
 					],
 					CTA: {
@@ -381,7 +411,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Air",
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
-						defaultValue: "Background Daemon Silent Update Crypto-Signed",
+						defaultValue:
+							"Background Daemon Silent Update Crypto-Signed",
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
@@ -394,7 +425,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Cocoon",
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
-						defaultValue: "Extension Host Full VS Code API Effect-TS Shim",
+						defaultValue:
+							"Extension Host Full VS Code API Effect-TS Shim",
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
@@ -407,7 +439,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Common",
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
-						defaultValue: "Shared Foundation Abstract Trait Zero Implementation",
+						defaultValue:
+							"Shared Foundation Abstract Trait Zero Implementation",
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
@@ -433,7 +466,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Grove",
 					Author: "Grove",
 					Role: T("home:architecture.grove.subtitle", {
-						defaultValue: "Secure WASM Sandbox WASMtime Capability-Based Isolation",
+						defaultValue:
+							"Secure WASM Sandbox WASMtime Capability-Based Isolation",
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
@@ -446,7 +480,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Maintain",
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
-						defaultValue: "Build Orchestrator Rhai Scripting TOML/JSON5 Config",
+						defaultValue:
+							"Build Orchestrator Rhai Scripting TOML/JSON5 Config",
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
@@ -459,7 +494,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Mist",
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
-						defaultValue: "DNS Sandbox Local *.editor.land Resolution",
+						defaultValue:
+							"DNS Sandbox Local *.editor.land Resolution",
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
@@ -472,7 +508,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Mountain",
 					Author: "Mountain",
 					Role: T("home:architecture.mountain.subtitle", {
-						defaultValue: "Native Rust Backend Replaces Electron Main Process",
+						defaultValue:
+							"Native Rust Backend Replaces Electron Main Process",
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
@@ -485,7 +522,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Output",
 					Author: "Output",
 					Role: T("home:architecture.output.subtitle", {
-						defaultValue: "Compilation Pipeline Deterministic Bundle Checksum",
+						defaultValue:
+							"Compilation Pipeline Deterministic Bundle Checksum",
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
@@ -498,11 +536,12 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Rest",
 					Author: "Rest",
 					Role: T("home:architecture.rest.subtitle", {
-						defaultValue: "TypeScript Compiler Rust + OXC 2-3x Faster",
+						defaultValue:
+							"TypeScript Compiler Rust + OXC 2-3x Faster",
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
-							"A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
+							"OXC-powered TypeScript compiler implemented in Rust. 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
 					}),
 				},
 				{
@@ -511,7 +550,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/SideCar",
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
-						defaultValue: "Binary Distributor Node.js Runtime Per Platform",
+						defaultValue:
+							"Binary Distributor Node.js Runtime Per Platform",
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
@@ -524,7 +564,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Sky",
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
-						defaultValue: "Visual UI Layer Astro Component Instant Hot-Reload",
+						defaultValue:
+							"Visual UI Layer Astro Component Instant Hot-Reload",
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
@@ -537,7 +578,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Vine",
 					Author: "Vine",
 					Role: T("home:architecture.vine.subtitle", {
-						defaultValue: "gRPC Backbone Contract-First .proto Definition",
+						defaultValue:
+							"gRPC Backbone Contract-First .proto Definition",
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
@@ -550,7 +592,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Wind",
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
-						defaultValue: "VS Code Workbench Reimplemented Effect-TS Layer Native OS API",
+						defaultValue:
+							"VS Code Workbench Reimplemented Effect-TS Layer Native OS API",
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
@@ -563,7 +606,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Href: "https://github.com/CodeEditorLand/Worker",
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {
-						defaultValue: "Service Worker Offline Support AES-GCM Auth",
+						defaultValue:
+							"Service Worker Offline Support AES-GCM Auth",
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
@@ -589,7 +633,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Description: T(
 						"download:card.platform.macos.universalBadge",
 						{
-							defaultValue: "Universal Binary: Apple Silicon and Intel",
+							defaultValue:
+								"Universal Binary: Apple Silicon and Intel",
 						},
 					),
 					Version: "Pre-release",

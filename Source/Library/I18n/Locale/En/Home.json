@@ -209,7 +209,7 @@
 		},
 		"rest": {
 			"subtitle": "TypeScript Compiler Rust + OXC 2-3x Faster",
-			"description": "A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead."
+			"description": "OXC-powered TypeScript compiler implemented in Rust. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead."
 		},
 		"sidecar": {
 			"subtitle": "Binary Distributor Node.js Runtime Per Platform",

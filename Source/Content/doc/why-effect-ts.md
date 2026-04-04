@@ -3,16 +3,17 @@ title: "Why Effect-TS"
 section: "Technology"
 order: 28
 description:
-    "Typed errors, structured concurrency, and dependency injection for TypeScript."
+    "Typed errors, structured concurrency, and dependency injection for
+    TypeScript."
 ---
 
 # Why Effect-TS
 
 TypeScript's type system is powerful, but its concurrency model is not. Promises
 lose error types. Async functions cannot be interrupted. Dependency injection
-requires external frameworks. Effect-TS solves all three problems within the type
-system itself, and that is why Land uses it for its TypeScript extension host and
-workbench layers.
+requires external frameworks. Effect-TS solves all three problems within the
+type system itself, and that is why Land uses it for its TypeScript extension
+host and workbench layers.
 
 ## Typed Error Channels
 
@@ -63,9 +64,9 @@ Two elements rely on Effect-TS as their concurrency and composition backbone:
   and clean shutdown when extensions misbehave.
 
 - **Wind** is the workbench layer. It manages editor state, view containers,
-  panel layouts, and command dispatch. Effect-TS provides Wind with a
-  composable service architecture where each UI subsystem declares its
-  dependencies and the runtime wires them together.
+  panel layouts, and command dispatch. Effect-TS provides Wind with a composable
+  service architecture where each UI subsystem declares its dependencies and the
+  runtime wires them together.
 
 ## Why Not Raw Promises
 

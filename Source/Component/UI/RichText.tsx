@@ -232,7 +232,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 			const Logo = TermLogo[Segment.Value];
 			return (
 				<span
-					className={`inline-flex items-center align-middle rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] leading-normal font-medium ${CategoryStyle[Segment.Category]}`}
+					className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[Segment.Category]}`}
 					title={`${CategoryLabel[Segment.Category]}: ${Segment.Value}`}
 					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}>
 					{Segment.Value}
@@ -350,7 +350,7 @@ const LineNode = ({
 						)}
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
-								className={`inline-flex items-center align-middle rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] leading-normal font-medium ${CategoryStyle[TermDictionary.get(Item)!]}`}
+								className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
 								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}>
 								{Item}
 							</span>
@@ -389,7 +389,7 @@ const LineNode = ({
 						)}
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
-								className={`inline-flex items-center align-middle rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] leading-normal font-medium ${CategoryStyle[TermDictionary.get(Item)!]}`}
+								className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
 								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}>
 								{Item}
 							</span>

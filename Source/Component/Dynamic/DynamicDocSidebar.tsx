@@ -14,34 +14,39 @@ const DynamicDocSidebar = ({
 	Sections: DocSection[];
 	ActiveId?: string;
 }) => {
-	const [OpenSection, SetOpenSection] = useState<string | null>(null);
+	const [CollapsedSections, SetCollapsedSections] = useState<Set<string>>(
+		new Set(),
+	);
+
+	const ToggleSection = (Id: string) => {
+		SetCollapsedSections((Previous) => {
+			const Next = new Set(Previous);
+			if (Next.has(Id)) {
+				Next.delete(Id);
+			} else {
+				Next.add(Id);
+			}
+			return Next;
+		});
+	};
 
 	return (
 		<nav aria-label="Documentation sections">
 			<ul role="list" className="space-y-1">
 				{Sections.map((Section) => {
-					const IsActive = ActiveId === Section.Id;
 					const HasChildren =
 						Section.Children && Section.Children.length > 0;
-					const IsOpen = OpenSection === Section.Id;
+					const IsOpen = !CollapsedSections.has(Section.Id);
 
 					if (HasChildren) {
 						return (
 							<li key={Section.Id}>
 								<Collapsible
 									open={IsOpen}
-									onOpenChange={(Open) =>
-										SetOpenSection(Open ? Section.Id : null)
+									onOpenChange={() =>
+										ToggleSection(Section.Id)
 									}>
-									<CollapsibleTrigger
-										className={`flex w-full items-center justify-between px-3 py-2 text-sm font-medium transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)] ${
-											IsActive
-												? "bg-[var(--ColorSecondary)]"
-												: ""
-										}`}
-										aria-current={
-											IsActive ? "page" : undefined
-										}>
+									<CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
 										<span>{Section.Label}</span>
 										<span
 											aria-hidden="true"
@@ -86,25 +91,13 @@ const DynamicDocSidebar = ({
 						<li key={Section.Id}>
 							<a
 								href={`/Doc/${Section.Id}`}
-								aria-current={IsActive ? "page" : undefined}
-								className={`block px-3 py-2 text-sm transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)] ${
-									IsActive
-										? "bg-[var(--ColorSecondary)] font-medium"
-										: "text-muted-foreground"
-								}`}>
+								className="block px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
 								{Section.Label}
 							</a>
 						</li>
 					);
 				})}
 			</ul>
-			<div className="mt-3 border-t border-[var(--ColorBorder)] pt-3">
-				<a
-					href="/Doc/Rust"
-					className="block px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
-					Rust API
-				</a>
-			</div>
 		</nav>
 	);
 };

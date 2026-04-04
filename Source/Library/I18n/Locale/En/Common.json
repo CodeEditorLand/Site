@@ -79,7 +79,7 @@
 			},
 			"rest": {
 				"subtitle": "VS Code's TypeScript build step. 2-3x faster.",
-				"description": "VS Code's TypeScript build uses tsc with Node.js overhead on every incremental compile. Build times grow with project size.\n\nRest is a drop-in replacement powered by OXC: the same parser VS Code uses internally, implemented in Rust. 100% compatible output at 2-3x the speed of esbuild. Zero Node.js overhead in the build path."
+				"description": "VS Code's TypeScript build uses tsc with Node.js overhead on every incremental compile. Build times grow with project size.\n\nRest is an OXC-powered TypeScript compiler implemented in Rust. 100% compatible output at 2-3x the speed of esbuild. Zero Node.js overhead in the build path."
 			},
 			"output": {
 				"subtitle": "Same commit. Same output. Every time.",

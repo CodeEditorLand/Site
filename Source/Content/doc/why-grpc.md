@@ -3,7 +3,8 @@ title: "Why gRPC"
 section: "Technology"
 order: 29
 description:
-    "Typed contracts at the wire: change a field, break every consumer at compile time."
+    "Typed contracts at the wire: change a field, break every consumer at
+    compile time."
 ---
 
 # Why gRPC
@@ -27,19 +28,19 @@ test. It is a compile-time guarantee.
 
 From each .proto file, Land generates Rust structs (via tonic/prost) and
 TypeScript types (via ts-proto). The Rust backend and the TypeScript frontend
-speak the same protocol, defined once. There is no manual serialization code,
-no hand-written type definitions to keep in sync, and no JSON parsing ambiguity.
-If the schema says a field is a `uint64`, the Rust code receives a `u64` and
-the TypeScript code receives a `bigint`. No casting. No guessing.
+speak the same protocol, defined once. There is no manual serialization code, no
+hand-written type definitions to keep in sync, and no JSON parsing ambiguity. If
+the schema says a field is a `uint64`, the Rust code receives a `u64` and the
+TypeScript code receives a `bigint`. No casting. No guessing.
 
 ## Binary Encoding
 
 Protocol Buffers use a compact binary encoding. Messages are smaller and faster
-to serialize than their JSON equivalents. For an editor exchanging syntax tokens,
-diagnostic markers, and file change events at high frequency, the bandwidth
-and CPU savings compound. The binary format also eliminates an entire class of
-bugs related to JSON quirks: no surprise `undefined` vs `null`, no number
-precision loss, no key ordering ambiguity.
+to serialize than their JSON equivalents. For an editor exchanging syntax
+tokens, diagnostic markers, and file change events at high frequency, the
+bandwidth and CPU savings compound. The binary format also eliminates an entire
+class of bugs related to JSON quirks: no surprise `undefined` vs `null`, no
+number precision loss, no key ordering ambiguity.
 
 ## Unix Domain Socket Transport
 

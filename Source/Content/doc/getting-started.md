@@ -8,8 +8,9 @@ description: "Install and run Code Editor Land on your machine."
 # Getting Started
 
 Code Editor Land is a native code editor built with Rust (Tauri) and TypeScript.
-It is a drop-in replacement for VS Code with a modern, high-performance
-architecture that eliminates the Electron dependency.
+Every VS Code extension runs unchanged. The Electron dependency is eliminated,
+replaced by an architecture that uses the OS's own renderer and Effect-TS
+structured concurrency.
 
 ## Requirements
 

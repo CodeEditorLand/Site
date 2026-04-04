@@ -71,11 +71,10 @@ definitions from `.vscode/tasks.json`:
 The task output appears in the integrated terminal panel at the bottom of the
 window.
 
-## Next Steps
+## See Also
 
-- Read the [Configuration](/Doc/configuration) guide for detailed settings
-  reference.
-- Explore the [Extension Development](/Doc/extension-development) guide to build
-  your own extensions.
-- See the [Architecture Overview](/Doc/architecture) to understand how Land is
-  structured internally.
+- [Getting Started](/Doc/getting-started)
+- [Installation](/Doc/installation)
+- [Configuration](/Doc/configuration)
+- [Extension Development](/Doc/extension-development)
+- [Architecture Overview](/Doc/architecture)

@@ -120,7 +120,9 @@ describe("DynamicPricing", () => {
 						Tiers: [
 							{
 								...MakeTier("free", "Free"),
-								Elements: ["Air\u2001\uD83E\uDE81\nBackground Daemon\nSilent updates"],
+								Elements: [
+									"Air\u2001\uD83E\uDE81\nBackground Daemon\nSilent updates",
+								],
 							},
 						],
 					}}
@@ -140,7 +142,9 @@ describe("DynamicPricing", () => {
 						Tiers: [
 							{
 								...MakeTier("free", "Free"),
-								Elements: ["Mountain\u2001\u26f0\ufe0f\nNative Process Manager\nReplaces Electron"],
+								Elements: [
+									"Mountain\u2001\u26f0\ufe0f\nNative Process Manager\nReplaces Electron",
+								],
 							},
 						],
 					}}

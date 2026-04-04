@@ -34,10 +34,7 @@ const SectionOrder = [
 	"License",
 ];
 
-const GroupedBySection = new Map<
-	string,
-	{ Id: string; Label: string }[]
->();
+const GroupedBySection = new Map<string, { Id: string; Label: string }[]>();
 
 for (const E of AllEntries) {
 	const Section = E.data.section ?? "Other";
@@ -50,13 +47,13 @@ for (const E of AllEntries) {
 	});
 }
 
-const SidebarSections = SectionOrder
-	.filter((Section) => GroupedBySection.has(Section))
-	.map((Section) => ({
-		Id: Section.toLowerCase().replace(/\s+/g, "-"),
-		Label: Section,
-		Children: GroupedBySection.get(Section)!,
-	}));
+const SidebarSections = SectionOrder.filter((Section) =>
+	GroupedBySection.has(Section),
+).map((Section) => ({
+	Id: Section.toLowerCase().replace(/\s+/g, "-"),
+	Label: Section,
+	Children: GroupedBySection.get(Section)!,
+}));
 
 // Sorted list for prev/next navigation
 const CurrentIndex = AllEntries.findIndex((E) => E.id === Entry.id);
