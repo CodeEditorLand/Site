@@ -5,13 +5,10 @@
  * social sharing cards. Text occupies the left ~620 px; the Land brand glyph
  * occupies the right column (x 690–1160, y 138–538).
  *
- * The glyph uses two pre-baked <polygon> elements — no SVG transforms, no
- * matrix operations — so it renders identically in every crawler, bot, and
- * minimal SVG renderer. Coordinates are the four corners of each parallelogram
- * at 0.25× scale + translate(690, 138) of the 1880×1600 intrinsic viewBox:
- *
- *   matrix(-0.93358 0.358368 0 1 940  0.24)  → upper parallelogram
- *   matrix(-0.93358 0.358368 0 1 1880 618.2) → lower parallelogram
+ * The glyph is borrowed verbatim from Public/Asset/Logo/Glyph/Land.svg —
+ * two rounded parallelograms (rx=91.39) with their matrix transforms flattened
+ * (outer scale×translate composed into the rect's own matrix) so each element
+ * carries exactly one transform. No nested groups, no polygon approximation.
  */
 
 const WrapText = (Text: string, MaxCharacter: number): string[] => {
@@ -44,17 +41,28 @@ const EscapeXML = (Text: string): string =>
 		.replace(/'/g, "&apos;");
 
 /**
- * Land brand glyph — two parallelograms pre-baked at OG card pixel coords.
+ * Land brand glyph sourced from Public/Asset/Logo/Glyph/Land.svg.
  *
- * Pre-computed from Glyph/Land.svg (1880×1600) at scale=0.25, translate(690,138):
- *   Upper: corners (925,138) (690,228) (690,383) (925,293)
- *   Lower: corners (1160,293) (925,383) (925,538) (1160,448)
+ * The source uses <rect rx="91.3889" transform="matrix(...)"> — rounded
+ * parallelograms. To avoid nested transforms (which break in many crawlers)
+ * the outer translate(690,138) scale(0.25) is composed directly into each
+ * rect's matrix, producing a single flat transform per element:
  *
- * No transforms used — direct <polygon> for maximum renderer compatibility.
+ *   outer [0.25 0 0 0.25 690 138] × inner [-0.93358 0.358368 0 1 e f]
+ *   ──────────────────────────────────────────────────────────────────
+ *   Rect 1 (e=940,  f=0.24)  → matrix(-0.23340 0.08959 0 0.25 925   138)
+ *   Rect 2 (e=1880, f=618.2) → matrix(-0.23340 0.08959 0 0.25 1160  292.55)
+ *
+ * rx="91.3889" is preserved so rounded corners render correctly.
+ * Final extent on 1200×675 canvas: x 690–1160, y 138–538.
  */
 const LogoGlyph = (): string =>
-	`<polygon points="925,138 690,228 690,383 925,293" fill="#151515" fill-opacity="0.20" />
-	<polygon points="1160,293 925,383 925,538 1160,448" fill="#151515" fill-opacity="0.20" />`;
+	`<rect width="1005.28" height="620.771" rx="91.3889"
+		transform="matrix(-0.23340 0.08959 0 0.25 925 138)"
+		fill="#151515" fill-opacity="0.20" />
+	<rect width="1005.28" height="620.771" rx="91.3889"
+		transform="matrix(-0.23340 0.08959 0 0.25 1160 292.55)"
+		fill="#151515" fill-opacity="0.20" />`;
 
 /**
  * Generates an OpenGraph SVG card at 1200×675 (exact 16:9).
