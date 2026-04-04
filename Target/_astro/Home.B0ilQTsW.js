@@ -10,7 +10,7 @@ Publish to all three platforms with a single command.`,title:"One Build, Every P
 
 NLnet-funded and built entirely in the open.`,title:"Free Forever, No Strings"},cicdIntegration:{description:`Rust, Tauri, Effect-TS, and Biome form a stack chosen for correctness and developer velocity.
 
-Familiar tools, no compromises.`,title:"Best-in-Class Toolchain"}},subtitle:"Six features that explain why Land is faster, safer, and more open than every Electron-based editor.",title:"Built Different. Measurably Better."},t={badge:"Native Speed · No Electron · CC0",subtitle:`Stop handing VS Code a gigabyte of RAM.
+Familiar tools, no compromises.`,title:"Best-in-Class Toolchain"}},subtitle:"Six features that explain why Land is faster, safer, and more open than every Electron-based editor.",title:"Built Different. Measurably Better."},t={badge:"Native Speed   No Electron   CC0",subtitle:`Stop handing VS Code a gigabyte of RAM.
 
 Land is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.`,title:"The Future of Code Editing",titleHighlight:"Land",atScale:"starts here",cta:{primary:"Download",secondary:"Learn More"},scene:{description:"Animated architecture visualization",hub:"Core Architecture",components:{button:"Rust Core",colors:"Tauri UI",typography:"Effect-TS Services",components:"gRPC IPC",spacing:"Extension Host",icons:"Cross-Platform",docs:"VS Code API",versions:"Open Source CC0"}}},n={docs:"Docs",downloads:"Download",features:"Features",github:"GitHub"},o={subtitle:`Code Editor Land is completely free.
 

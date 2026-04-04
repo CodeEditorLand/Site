@@ -11,9 +11,8 @@ export const GET: APIRoute = async () => {
 	const GenerateOpenGraphSvg = (await import("../Function/OpenGraph.js"))
 		.default;
 
-	const PageMetadata = (
-		await import("../Function/OpenGraph/PageMetadata.js")
-	).default;
+	const PageMetadata = (await import("../Function/OpenGraph/PageMetadata.js"))
+		.default;
 
 	const Meta = PageMetadata[""];
 

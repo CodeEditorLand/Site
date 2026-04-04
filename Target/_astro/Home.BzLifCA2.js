@@ -10,7 +10,7 @@ Cocoon хостът огледва пълната VS Code API повърхнос
 
 Финансиран от NLnet и разработван изцяло публично.`,title:"Безплатен завинаги. Без условия."},cicdIntegration:{description:`Rust, Tauri, Effect-TS и Biome формират стек, избран за коректност и продуктивност на разработчика.
 
-Познати инструменти, без компромиси.`,title:"Инструменти от най-висок клас"}},subtitle:"Шест функции, обясняващи защо Land е по-бърз, по-сигурен и по-отворен от всеки редактор базиран на Electron.",title:"Различен по дизайн. По-добър по измерване."},n={badge:"Нативна скорост · Без Electron · CC0",subtitle:`Спрете да давате на VS Code гигабайт RAM.
+Познати инструменти, без компромиси.`,title:"Инструменти от най-висок клас"}},subtitle:"Шест функции, обясняващи защо Land е по-бърз, по-сигурен и по-отворен от всеки редактор базиран на Electron.",title:"Различен по дизайн. По-добър по измерване."},n={badge:"Нативна скорост   Без Electron   CC0",subtitle:`Спрете да давате на VS Code гигабайт RAM.
 
 Land е изграден на Rust, Tauri и Effect-TS. Достатъчно бърз, за да го усетите веднага.`,title:"Бъдещето на редактирането на код",titleHighlight:"Land",atScale:"започва тук",cta:{primary:"Изтегляне",secondary:"Научете повече"},scene:{description:"Анимирана визуализация на архитектурата",hub:"Основна архитектура",components:{button:"Rust ядро",colors:"Tauri UI",typography:"Effect-TS услуги",components:"gRPC IPC",spacing:"Extension Host",icons:"Крос-платформен",docs:"VS Code API",versions:"Отворен код CC0"}}},e={docs:"Документация",downloads:"Изтегляне",features:"Функции",github:"GitHub"},o={subtitle:`Code Editor Land е напълно безплатен.
 

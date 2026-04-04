@@ -59,7 +59,11 @@ const RustDocSite = [
 					<a
 						href="/Doc"
 						class="transition-colors hover:text-foreground">
-						{T("common.docs.pageTitle", { defaultValue: "Documentation" })}
+						{
+							T("common.docs.pageTitle", {
+								defaultValue: "Documentation",
+							})
+						}
 					</a>
 				</li>
 				<li class="mx-2">/</li>
@@ -75,13 +79,16 @@ const RustDocSite = [
 				Rust API Documentation
 			</h1>
 			<p class="text-lg text-muted-foreground">
-				Generated <code>rustdoc</code> output for Land's Rust crates.
-				Select a crate group below, or open directly in a new tab.
+				Generated <code>rustdoc</code> output for Land's Rust crates. Select
+				a crate group below, or open directly in a new tab.
 			</p>
 		</header>
 
 		<!-- Crate selector cards -->
-		<div class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3" role="group" aria-label="Rust crate documentation sets">
+		<div
+			class="mb-6 grid grid-cols-1 gap-4 md:grid-cols-3"
+			role="group"
+			aria-label="Rust crate documentation sets">
 			{
 				RustDocSite.map((Site) => (
 					<a
@@ -169,11 +176,10 @@ const RustDocSite = [
 			// Update tab styles
 			Tabs.forEach((OtherTab) => {
 				OtherTab.setAttribute("aria-selected", "false");
-				OtherTab.className = OtherTab.className
-					.replace(
-						"border-[var(--Primary)] bg-[var(--Primary)] text-white",
-						"border-[var(--Border)] bg-white text-muted-foreground hover:bg-[var(--Secondary)]",
-					);
+				OtherTab.className = OtherTab.className.replace(
+					"border-[var(--Primary)] bg-[var(--Primary)] text-white",
+					"border-[var(--Border)] bg-white text-muted-foreground hover:bg-[var(--Secondary)]",
+				);
 			});
 			Tab.setAttribute("aria-selected", "true");
 			Tab.className = Tab.className.replace(
