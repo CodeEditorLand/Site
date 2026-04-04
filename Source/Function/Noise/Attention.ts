@@ -55,7 +55,7 @@ export default (async () => {
 	 */
 	const ScatterOpacity = (
 		Index: number,
-		Min: number = 0.7,
+		Min: number = 0.85,
 		Max: number = 1.0,
 	): number => {
 		const Raw = LayoutNoise(Index * 0.47, Index * 0.67);
