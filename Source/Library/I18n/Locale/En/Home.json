@@ -3,36 +3,36 @@
 		"badge": "Features",
 		"item": {
 			"designTokens": {
-				"description": "Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable.\n\nNo Electron bloat.",
-				"title": "Performance First"
+				"description": "Stop handing VS Code a gigabyte of RAM just to open a file.\n\nLand's Rust core with gRPC IPC responds in microseconds. Even with hundreds of files open.",
+				"title": "No Lag, Ever"
 			},
 			"componentLibrary": {
-				"description": "Run your existing VS Code extensions with high fidelity through the Cocoon extension host.\n\nNo changes needed.",
-				"title": "VS Code Compatibility"
+				"description": "Your entire VS Code extension library works out of the box.\n\nThe Cocoon host mirrors the full VS Code API surface. Nothing needs rewriting.",
+				"title": "Your Extensions, Unchanged"
 			},
 			"documentation": {
-				"description": "Effect-TS native UI services provide type safety, structured concurrency, and excellent error handling.",
-				"title": "Effect-TS Architecture"
+				"description": "Effect-TS gives you typed services, structured concurrency, and traced errors.\n\nBugs are caught at compile time, not at 3 am.",
+				"title": "Type-Safe End to End"
 			},
 			"versionControl": {
-				"description": "One codebase, native deployments for macOS, Windows, and Linux with Tauri.\n\nWrite once, run everywhere.",
-				"title": "Cross-Platform"
+				"description": "One codebase compiles to fully native apps on macOS, Windows, and Linux via Tauri.\n\nPublish to all three platforms with a single command.",
+				"title": "One Build, Every Platform"
 			},
 			"collaboration": {
-				"description": "Completely free to use, modify, and distribute.\n\nLicensed under Creative Commons CC0.\n\nNo strings attached.",
-				"title": "Open Source"
+				"description": "CC0 public domain. Use it, fork it, ship it, even sell it.\n\nNLnet-funded and built entirely in the open.",
+				"title": "Free Forever, No Strings"
 			},
 			"cicdIntegration": {
-				"description": "Built on proven open-source technologies:\nRust, Tauri, Effect-TS, and the VS Code platform.\n\nFamiliar and powerful.",
-				"title": "Modern Tooling"
+				"description": "Rust, Tauri, Effect-TS, and Biome form a stack chosen for correctness and developer velocity.\n\nFamiliar tools, no compromises.",
+				"title": "Best-in-Class Toolchain"
 			}
 		},
-		"subtitle": "Discover what makes Code Editor Land the most advanced code editor available.",
-		"title": "Built for Performance, Designed for Developers"
+		"subtitle": "Six features that explain why Land is faster, safer, and more open than every Electron-based editor.",
+		"title": "Built Different. Measurably Better."
 	},
 	"hero": {
-		"badge": "New: Effect-TS Architecture",
-		"subtitle": "A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS.\n\nExperience the editor that reimagines VS Code for the modern era.",
+		"badge": "Native Speed · No Electron · CC0",
+		"subtitle": "Stop handing VS Code a gigabyte of RAM.\n\nLand is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",
 		"atScale": "starts here",
@@ -111,72 +111,72 @@
 		"attributionNote": "Representative community member"
 	},
 	"roadmap": {
-		"title": "Roadmap & Expectancy",
-		"subtitle": "Funded by the NGI0 Commons Fund.\n\nOpen source, free forever, built in public.",
+		"title": "Roadmap & What to Expect",
+		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nBuilt in public, free forever, no roadmap surprises.",
 		"tiers": {
 			"current": {
-				"name": "Current Phase",
-				"description": "Foundation and core editor scaffold.\n\nActive development.",
+				"name": "Active Now",
+				"description": "The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"1": "Mountain: Rust/Tauri native backend",
-					"2": "Cocoon: VS Code extension host via Effect-TS",
-					"3": "Wind: Workbench re-implementation",
-					"4": "Sky: Editor interface rendering",
-					"5": "Air: Update daemon and crypto signing",
-					"6": "Echo: Work-stealing task scheduler"
+					"1": "Mountain: native process manager, replaces Electron",
+					"2": "Cocoon: extension host, your VS Code extensions work unchanged",
+					"3": "Wind: full workbench shell, panels and sidebars",
+					"4": "Sky: visual layer, themes and layouts",
+					"5": "Air: silent updates, cryptographically signed",
+					"6": "Echo: work-stealing scheduler, uses every CPU core"
 				},
 				"button": "View on GitHub"
 			},
 			"next": {
-				"name": "Next Milestone",
-				"description": "Extension ecosystem and platform stability.",
+				"name": "Coming Next",
+				"description": "Extension ecosystem polish and first stable release across all three platforms.",
 				"features": {
-					"1": "High-fidelity VS Code extension compatibility",
-					"2": "Cross-platform installer and auto-update",
-					"3": "gRPC IPC protocol finalization",
-					"4": "Settings sync and cloud-optional portal"
+					"1": "High-fidelity VS Code extension compatibility pass",
+					"2": "Cross-platform installer with silent auto-update",
+					"3": "gRPC IPC protocol finalized and documented",
+					"4": "Settings sync with cloud-optional portal"
 				},
 				"button": "Track Progress"
 			},
 			"future": {
 				"name": "Long-Term Vision",
-				"description": "Full-featured editor replacing Electron-based tools.",
+				"description": "A full-featured, Electron-free editor that handles every workflow a modern developer needs.",
 				"features": {
-					"1": "Native mobile editing (iOS, Android)",
-					"2": "Collaborative real-time editing",
-					"3": "AI-assisted development tooling",
-					"4": "Plugin marketplace and ecosystem"
+					"1": "Native mobile editing: iOS and Android",
+					"2": "Collaborative real-time editing built in",
+					"3": "AI-assisted development, privacy-first",
+					"4": "Open plugin marketplace and extension ecosystem"
 				},
 				"button": "Learn More"
 			}
 		}
 	},
 	"architecture": {
-		"title": "Architecture",
-		"subtitle": "Land replaces VS Code's Electron stack with a modular, high-performance architecture.\n\nEach element is a standalone repository.",
+		"title": "Under the Hood",
+		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nEach component is a standalone open-source repository you can read, fork, or contribute to.",
 		"mountain": {
-			"description": "Manages Window, File System, and Process lifecycle.\n\nThe native Rust/Tauri backend that replaces Electron's main process.",
-			"subtitle": "Rust/Tauri native backend"
+			"description": "Replaces Electron's main process with a native Rust/Tauri backend.\n\nWindow, file system, and process lifecycle run at native speed with no JavaScript overhead.",
+			"subtitle": "Native speed without Electron overhead"
 		},
 		"cocoon": {
-			"description": "Runs VS Code extensions via Effect-TS with high-fidelity API compatibility.\n\nNo changes needed to existing extensions.",
-			"subtitle": "TypeScript extension host"
+			"description": "Runs your existing VS Code extensions via Effect-TS with high-fidelity API compatibility.\n\nInstall them and they just work. No rewrites, no patches.",
+			"subtitle": "Your extensions, completely unchanged"
 		},
 		"wind": {
-			"description": "Re-implementation of the VS Code Workbench.\n\nProvides the editor shell, panels, sidebars, and activity bar.",
-			"subtitle": "TypeScript UI service"
+			"description": "A clean re-implementation of the VS Code Workbench in TypeScript.\n\nPanels, sidebars, and the activity bar. Familiar layout, no Electron dependency.",
+			"subtitle": "Full workbench shell, rebuilt clean"
 		},
 		"sky": {
-			"description": "Renders the editor interface using Astro components.\n\nHandles themes, layouts, and the visual presentation layer.",
-			"subtitle": "Astro UI component"
+			"description": "Renders the editor UI using Astro components.\n\nThemes, layouts, and the visual layer load fast and stay consistent across platforms.",
+			"subtitle": "Themes and layouts, fast by default"
 		},
 		"air": {
-			"description": "Background daemon for automatic updates, downloads, and cryptographic signing.\n\nKeeps Land up to date silently.",
-			"subtitle": "Rust background daemon"
+			"description": "A background daemon that keeps Land current without interrupting you.\n\nEvery update is cryptographically signed before it is applied.",
+			"subtitle": "Silent updates, always signed"
 		},
 		"echo": {
-			"description": "High-performance work-stealing executor.\n\nSchedules and distributes tasks across cores for maximum throughput.",
-			"subtitle": "Rust task scheduler"
+			"description": "A work-stealing task executor that saturates every CPU core.\n\nHeavy indexing and analysis happen in the background. The editor stays responsive.",
+			"subtitle": "Uses every CPU core you have"
 		}
 	}
 }

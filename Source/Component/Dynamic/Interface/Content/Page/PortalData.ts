@@ -33,7 +33,7 @@ const PortalData: PortalContent = {
 		Identifier: "Cloud",
 		Title: "Cloud",
 		Subtitle:
-			"Sign in once and every device is in sync \u2014 workspace state encrypted end to end, never readable in transit.",
+			"Sign in once and every device is in sync. Workspace state encrypted end to end, never readable in transit.",
 		Color: "var(--TierCloud)",
 		BorderColor: "var(--TierCloudFore)",
 		Icon: "Cloud",
@@ -43,7 +43,7 @@ const PortalData: PortalContent = {
 			{
 				Heading: "Your data never leaves in plaintext",
 				Description:
-					"AES-256-GCM encrypts all workspace state in transit and at rest \u2014 the relay sees only ciphertext.",
+					"AES-256-GCM encrypts all workspace state in transit and at rest. The relay sees only ciphertext.",
 				Icon: ["Lock", "Shield", "Zap"],
 			},
 			{
@@ -61,22 +61,22 @@ const PortalData: PortalContent = {
 			{
 				Heading: "Push once, live in under 60 s",
 				Description:
-					"Changes reach your cloud environment in seconds \u2014 no manual deploy steps, no waiting for a CI queue.",
+					"Changes reach your cloud environment in seconds. No manual deploy steps, no waiting for a CI queue.",
 				Icon: ["Rocket", "GitBranch", "Timer"],
 			},
 			{
 				Heading: "Every action on record",
 				Description:
-					"Login events, extension installs, and settings changes are all captured in the audit log \u2014 nothing hidden.",
+					"Login events, extension installs, and settings changes are all captured in the audit log. Nothing hidden.",
 				Icon: ["FileText", "Activity", "Search"],
 			},
 		],
 		Capability: [
-			"WebSocket reconnect with exponential back-off \u2014 drops heal automatically",
-			"JWT RS256 \u2014 15 min access \u00b7 30 day refresh, rotated on sign-in",
-			"Rate-limited per IP and per account \u2014 brute force blocked at the gateway",
-			"CORS-hardened API gateway \u2014 no cross-origin leakage",
-			"Global CDN edge caching \u2014 assets served fast regardless of region",
+			"WebSocket reconnect with exponential back-off: drops heal automatically",
+			"JWT RS256: 15 min access \u00b7 30 day refresh, rotated on sign-in",
+			"Rate-limited per IP and per account: brute force blocked at the gateway",
+			"CORS-hardened API gateway: no cross-origin leakage",
+			"Global CDN edge caching: assets served fast regardless of region",
 		],
 	},
 
@@ -84,7 +84,7 @@ const PortalData: PortalContent = {
 		Identifier: "Provider",
 		Title: "Provider",
 		Subtitle:
-			"Use the developer identity you already have \u2014 we request only your email, never repository or org access.",
+			"Use the developer identity you already have. We request only your email. We never request repository or org access.",
 		Color: "var(--TierProvider)",
 		BorderColor: "var(--TierProviderFore)",
 		Icon: "GitFork",
@@ -94,17 +94,17 @@ const PortalData: PortalContent = {
 			{
 				Heading: "No new password to remember",
 				Description:
-					"Authenticate via your existing GitHub account. Repository scopes are never requested \u2014 only your identity.",
+					"Authenticate via your existing GitHub account. Repository scopes are never requested. Only your identity.",
 				Icon: ["/Image/GitHub.svg", "GitBranch", "FolderGit"],
 			},
 			{
 				Heading: "Use your Google account, nothing extra granted",
 				Description:
-					"Sign in with Google using only the email and profile scopes \u2014 Drive, Docs, and everything else stays untouched.",
+					"Sign in with Google using only the email and profile scopes. Drive, Docs, and everything else stays untouched.",
 				Icon: ["/Image/Google.svg", "Globe", "Fingerprint"],
 			},
 			{
-				Heading: "Self-hosted or gitlab.com \u2014 both work",
+				Heading: "Self-hosted or gitlab.com. Both work",
 				Description:
 					"Connect any GitLab instance via OAuth 2.0 PKCE. Your company\u2019s self-hosted GitLab works out of the box.",
 				Icon: ["/Image/GitLab.svg", "GitCommit", "GitPullRequest"],
@@ -116,18 +116,18 @@ const PortalData: PortalContent = {
 				Icon: ["Settings", "Sliders", "RefreshCw"],
 			},
 			{
-				Heading: "We see your email \u2014 nothing else",
+				Heading: "We see your email. Nothing else",
 				Description:
-					"CEL requests only read:user and user:email. No repository data, no org membership, no billing info \u2014 ever.",
+					"CEL requests only read:user and user:email. No repository data, no org membership, no billing info. Ever.",
 				Icon: ["Lock", "Shield", "CheckCircle"],
 			},
 		],
 		Capability: [
-			"PKCE S256 code challenge \u2014 auth code interception is impossible",
-			"State parameter CSRF protection \u2014 phishing tokens are rejected",
-			"Tokens in HttpOnly Secure cookies \u2014 JavaScript can\u2019t touch them",
-			"Provider token never stored server-side \u2014 no server breach risk",
-			"Account merge across providers \u2014 one identity regardless of how you sign in",
+			"PKCE S256 code challenge: auth code interception is impossible",
+			"State parameter CSRF protection: phishing tokens are rejected",
+			"Tokens in HttpOnly Secure cookies: JavaScript can\u2019t touch them",
+			"Provider token never stored server-side: no server breach risk",
+			"Account merge across providers: one identity regardless of how you sign in",
 		],
 	},
 
@@ -135,7 +135,7 @@ const PortalData: PortalContent = {
 		Identifier: "LocalFirst",
 		Title: "Local-First",
 		Subtitle:
-			"No internet? No problem. The Air Daemon runs entirely on your machine \u2014 your code and credentials never leave it.",
+			"No internet? No problem. The Air Daemon runs entirely on your machine. Your code and credentials never leave it.",
 		Color: "var(--TierLocalFirst)",
 		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "Wifi",
@@ -143,21 +143,21 @@ const PortalData: PortalContent = {
 		Protocol: "Air Daemon \u00b7 mTLS \u00b7 JWT ES384",
 		Feature: [
 			{
-				Heading: "Connects over loopback \u2014 never leaves your machine",
+				Heading: "Connects over loopback. Never leaves your machine",
 				Description:
-					"The browser talks to your Air Daemon over a loopback WebSocket secured by mTLS \u2014 traffic never hits the network.",
+					"The browser talks to your Air Daemon over a loopback WebSocket secured by mTLS. Traffic never hits the network.",
 				Icon: ["Wifi", "Network", "Radio"],
 			},
 			{
 				Heading: "Cryptographic trust, no cloud CA needed",
 				Description:
-					"The daemon issues short-lived ES384 JWT certificates locally \u2014 no certificate authority call ever leaves your machine.",
+					"The daemon issues short-lived ES384 JWT certificates locally. No certificate authority call ever leaves your machine.",
 				Icon: ["Key", "Fingerprint", "Lock"],
 			},
 			{
 				Heading: "Full editor power, internet optional",
 				Description:
-					"Editing, terminal, debugger, and extensions all function with zero internet \u2014 ideal for secure or air-gapped environments.",
+					"Editing, terminal, debugger, and extensions all function with zero internet. Ideal for secure or air-gapped environments.",
 				Icon: ["WifiOff", "HardDrive", "Cpu"],
 			},
 			{
@@ -174,11 +174,11 @@ const PortalData: PortalContent = {
 			},
 		],
 		Capability: [
-			"mTLS mutual auth \u2014 both daemon and browser verify each other",
-			"JWT ES384 \u2014 5 min expiry, rotated on every reconnect",
-			"Loopback-only binding \u2014 your LAN and internet never see the port",
+			"mTLS mutual auth: both daemon and browser verify each other",
+			"JWT ES384: 5 min expiry, rotated on every reconnect",
+			"Loopback-only binding: your LAN and internet never see the port",
 			"Auto-restart via launchd / systemd / WinSVC on crash or reboot",
-			"CRL revocation on daemon uninstall \u2014 old certificates instantly invalidated",
+			"CRL revocation on daemon uninstall: old certificates instantly invalidated",
 		],
 	},
 
@@ -186,7 +186,7 @@ const PortalData: PortalContent = {
 		Identifier: "Enterprise",
 		Title: "Enterprise",
 		Subtitle:
-			"Your IT team controls every seat \u2014 OIDC, SAML 2.0, and SCIM mean zero manual provisioning and full directory governance.",
+			"Your IT team controls every seat. OIDC, SAML 2.0, and SCIM mean zero manual provisioning and full directory governance.",
 		Color: "var(--PlatformDesktopFore)",
 		BorderColor: "var(--PlatformDesktop)",
 		Icon: "Building2",
@@ -196,7 +196,7 @@ const PortalData: PortalContent = {
 			{
 				Heading: "One login unlocks every tool",
 				Description:
-					"Federate via Okta, Azure AD, PingFederate, or any OIDC / SAML 2.0-compliant IdP \u2014 developers never manage a separate CEL password.",
+					"Federate via Okta, Azure AD, PingFederate, or any OIDC / SAML 2.0-compliant IdP. Developers never manage a separate CEL password.",
 				Icon: [
 					"/Image/Okta.svg",
 					"/Image/Microsoft.svg",
@@ -207,34 +207,34 @@ const PortalData: PortalContent = {
 			{
 				Heading: "New developers ready in minutes, not days",
 				Description:
-					"SCIM syncs users and groups automatically \u2014 create, update, or deactivate seats straight from your corporate directory.",
+					"SCIM syncs users and groups automatically. Create, update, or deactivate seats straight from your corporate directory.",
 				Icon: ["UserPlus", "Users", "Building2"],
 			},
 			{
 				Heading: "Least privilege, enforced automatically",
 				Description:
-					"IdP groups map directly to CEL roles. Access is scoped at the API gateway \u2014 no manual role assignment, no privilege drift.",
+					"IdP groups map directly to CEL roles. Access is scoped at the API gateway. No manual role assignment, no privilege drift.",
 				Icon: ["Layers", "Lock", "Blocks"],
 			},
 			{
 				Heading: "SOC 2 logs flow straight to your SIEM",
 				Description:
-					"Every sign-in, role change, and extension install is exported in CEF or JSON \u2014 your security team gets exactly what auditors require.",
+					"Every sign-in, role change, and extension install is exported in CEF or JSON. Your security team gets exactly what auditors require.",
 				Icon: ["FileText", "AlertTriangle", "Info"],
 			},
 			{
 				Heading: "Personal accounts can\u2019t touch org workspaces",
 				Description:
-					"Login is locked to verified corporate domains \u2014 contractors and personal accounts are blocked at the identity layer.",
+					"Login is locked to verified corporate domains. Contractors and personal accounts are blocked at the identity layer.",
 				Icon: ["Hash", "Globe", "CheckCircle"],
 			},
 		],
 		Capability: [
-			"OIDC Discovery \u2014 auto-configured from your IdP metadata URL, zero manual setup",
-			"SAML 2.0 SP-initiated and IdP-initiated flows \u2014 both supported out of the box",
-			"SCIM 2.0 Groups + Users with patch \u2014 directory changes reflect instantly",
-			"Session duration enforced by IdP policy \u2014 IT controls how long tokens live",
-			"Force MFA via IdP authentication context \u2014 second factor is never optional",
+			"OIDC Discovery: auto-configured from your IdP metadata URL, zero manual setup",
+			"SAML 2.0 SP-initiated and IdP-initiated flows: both supported out of the box",
+			"SCIM 2.0 Groups + Users with patch: directory changes reflect instantly",
+			"Session duration enforced by IdP policy: IT controls how long tokens live",
+			"Force MFA via IdP authentication context: second factor is never optional",
 		],
 	},
 };

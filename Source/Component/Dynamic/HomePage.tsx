@@ -29,7 +29,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Hero: {
 			Badge: {
 				Text: T("home:hero.badge", {
-					defaultValue: "New: Effect-TS Architecture\u2001🎉",
+					defaultValue: "Native Speed \u00b7 No Electron \u00b7 CC0",
 				}),
 				Variant: "secondary",
 			},
@@ -41,7 +41,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:hero.subtitle", {
 				defaultValue:
-					"A lightning-fast, type-safe editor built with Rust, Tauri, and Effect-TS.\nExperience the editor that reimagines VS Code for the modern era.",
+					"Stop handing VS Code a gigabyte of RAM.\n\nLand is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.",
 			}),
 			PrimaryCta: {
 				Text: T("common:button.download", {
@@ -65,11 +65,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "1",
 					Title: "Rust Core",
+					Tooltip: "Runs at native CPU speed. Zero Electron overhead.",
 					Colors: ["var(--ExtensionRust)", "var(--Mute)"],
 				},
 				{
 					Id: "2",
 					Title: "Tauri UI",
+					Tooltip: "30\u00d7 lighter than Electron, native look on every OS",
 					Colors: [
 						"var(--ExtensionTauri)",
 						"var(--Primary)",
@@ -80,6 +82,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "3",
 					Title: "Effect-TS Services",
+					Tooltip: "Type errors caught at compile time, not in production",
 					Colors: [
 						"var(--ExtensionEffectTypeScript)",
 						"var(--ExtensionEffectTypeScriptFore)",
@@ -89,16 +92,19 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "4",
 					Title: "gRPC IPC",
+					Tooltip: "Sub-millisecond communication between processes",
 					Colors: ["var(--SpinegRPC)", "var(--SpineIPC)"],
 				},
 				{
 					Id: "5",
 					Title: "Extension Host",
+					Tooltip: "Your VS Code extensions run completely unchanged",
 					Colors: ["var(--TierProvider)"],
 				},
 				{
 					Id: "6",
 					Title: "Cross-Platform",
+					Tooltip: "One codebase, native on macOS, Windows, and Linux",
 					Colors: [
 						"var(--OSMacOS)",
 						"var(--OSWindows)",
@@ -108,11 +114,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "7",
 					Title: "VS Code API",
+					Tooltip: "Full VS Code API surface. No extension rewrites needed.",
 					Colors: ["var(--SpineIPC)"],
 				},
 				{
 					Id: "8",
 					Title: "Open Source CC0",
+					Tooltip: "Free to use, fork, and ship. No restrictions, ever.",
 					Colors: ["var(--SpinegRPC)", "var(--ExtensionTauri)"],
 				},
 			],
@@ -122,11 +130,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Features: {
 			Title: T("home:features.title", {
-				defaultValue: "Built for Performance, Designed for Developers",
+				defaultValue: "Built Different. Measurably Better.",
 			}),
 			Subtitle: T("home:features.subtitle", {
 				defaultValue:
-					"Discover what makes Code Editor Land the most advanced code editor available.",
+					"Six features that explain why Land is faster, safer, and more open than every Electron-based editor.",
 			}),
 			Features: [
 				{
@@ -134,13 +142,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Zap",
 					Icons: ["Zap", "Cpu", "Server"],
 					Title: T("home:features.item.designTokens.title", {
-						defaultValue: "Performance First",
+						defaultValue: "No Lag, Ever",
 					}),
 					Description: T(
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"Native Rust backend with gRPC IPC ensures every operation is fast, responsive, and reliable.\nNo Electron bloat.",
+								"Stop handing VS Code a gigabyte of RAM just to open a file.\n\nLand's Rust core with gRPC IPC responds in microseconds. Even with hundreds of files open.",
 						},
 					),
 				},
@@ -149,13 +157,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Box",
 					Icons: ["Box", "Puzzle", "Code"],
 					Title: T("home:features.item.componentLibrary.title", {
-						defaultValue: "VS Code Compatibility",
+						defaultValue: "Your Extensions, Unchanged",
 					}),
 					Description: T(
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Run your existing VS Code extensions with high fidelity through the Cocoon extension host.\nNo changes needed.",
+								"Your entire VS Code extension library works out of the box.\n\nThe Cocoon host mirrors the full VS Code API surface. Nothing needs rewriting.",
 						},
 					),
 				},
@@ -164,13 +172,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Cpu",
 					Icons: ["Cpu", "Layers", "Shield"],
 					Title: T("home:features.item.documentation.title", {
-						defaultValue: "Effect-TS Architecture",
+						defaultValue: "Type-Safe End to End",
 					}),
 					Description: T(
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"Effect-TS native UI services provide type safety, structured concurrency, and excellent error handling.",
+								"Effect-TS gives you typed services, structured concurrency, and traced errors.\n\nBugs are caught at compile time, not at 3 am.",
 						},
 					),
 				},
@@ -179,13 +187,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Globe",
 					Icons: ["Globe", "Package", "Database"],
 					Title: T("home:features.item.versionControl.title", {
-						defaultValue: "Cross-Platform",
+						defaultValue: "One Build, Every Platform",
 					}),
 					Description: T(
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"One codebase, native deployments for macOS, Windows, and Linux with Tauri.\nWrite once, run everywhere.",
+								"One codebase compiles to fully native apps on macOS, Windows, and Linux via Tauri.\n\nPublish to all three platforms with a single command.",
 						},
 					),
 				},
@@ -194,13 +202,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Wrench",
 					Icons: ["Wrench", "Cpu", "Globe"],
 					Title: T("home:features.item.cicdIntegration.title", {
-						defaultValue: "Modern Tooling",
+						defaultValue: "Best-in-Class Toolchain",
 					}),
 					Description: T(
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"Built on proven open-source technologies: Rust, Tauri, Effect-TS, and the VS Code platform.\nFamiliar and powerful.",
+								"Rust, Tauri, Effect-TS, and Biome form a stack chosen for correctness and developer velocity.\n\nFamiliar tools, no compromises.",
 						},
 					),
 				},
@@ -209,13 +217,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Heart",
 					Icons: ["Heart", "Globe", "Shield"],
 					Title: T("home:features.item.collaboration.title", {
-						defaultValue: "Open Source",
+						defaultValue: "Free Forever, No Strings",
 					}),
 					Description: T(
 						"home:features.item.collaboration.description",
 						{
 							defaultValue:
-								"Licensed under Creative Commons CC0 - completely free to use, modify, and distribute.\nNo strings attached.",
+								"CC0 public domain. Use it, fork it, ship it, even sell it.\n\nNLnet-funded and built entirely in the open.",
 						},
 					),
 				},
@@ -225,43 +233,43 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Pricing: {
 			Title: T("home:roadmap.title", {
-				defaultValue: "Roadmap & Expectancy",
+				defaultValue: "Roadmap & What to Expect",
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Funded by the NGI0 Commons Fund.\nOpen source, free forever, built in public.",
+					"Funded by NLnet NGI0 Commons Fund.\n\nBuilt in public, free forever, no roadmap surprises.",
 			}),
 			Tiers: [
 				{
 					Id: "current",
 					Name: T("home:roadmap.tiers.current.name", {
-						defaultValue: "Current Phase",
+						defaultValue: "Active Now",
 					}),
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"Foundation and core editor scaffold.\nActive development.",
+							"The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "Mountain: Rust/Tauri native backend",
+							defaultValue: "Mountain: native process manager, replaces Electron",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
 							defaultValue:
-								"Cocoon: VS Code extension host via Effect-TS",
+								"Cocoon: extension host, your VS Code extensions work unchanged",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "Wind: Workbench re-implementation",
+							defaultValue: "Wind: full workbench shell, panels and sidebars",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "Sky: Editor interface rendering",
+							defaultValue: "Sky: visual layer, themes and layouts",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
 							defaultValue:
-								"Air: Update daemon and crypto signing",
+								"Air: silent updates, cryptographically signed",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
-							defaultValue: "Echo: Work-stealing task scheduler",
+							defaultValue: "Echo: work-stealing scheduler, uses every CPU core",
 						}),
 					],
 					CTA: {
@@ -276,28 +284,28 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "next",
 					Name: T("home:roadmap.tiers.next.name", {
-						defaultValue: "Next Milestone",
+						defaultValue: "Coming Next",
 					}),
 					Description: T("home:roadmap.tiers.next.description", {
 						defaultValue:
-							"Extension ecosystem and platform stability.",
+							"Extension ecosystem polish and first stable release across all three platforms.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
 						T("home:roadmap.tiers.next.features.1", {
 							defaultValue:
-								"High-fidelity VS Code extension compatibility",
+								"High-fidelity VS Code extension compatibility pass",
 						}),
 						T("home:roadmap.tiers.next.features.2", {
 							defaultValue:
-								"Cross-platform installer and auto-update",
+								"Cross-platform installer with silent auto-update",
 						}),
 						T("home:roadmap.tiers.next.features.3", {
-							defaultValue: "gRPC IPC protocol finalization",
+							defaultValue: "gRPC IPC protocol finalized and documented",
 						}),
 						T("home:roadmap.tiers.next.features.4", {
 							defaultValue:
-								"Settings sync and cloud-optional portal",
+								"Settings sync with cloud-optional portal",
 						}),
 					],
 					CTA: {
@@ -316,22 +324,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"Full-featured editor replacing Electron-based tools.",
+							"A full-featured, Electron-free editor that handles every workflow a modern developer needs.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
 						T("home:roadmap.tiers.future.features.1", {
 							defaultValue:
-								"Native mobile editing (iOS, Android)",
+								"Native mobile editing: iOS and Android",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Collaborative real-time editing",
+							defaultValue: "Collaborative real-time editing built in",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "AI-assisted development tooling",
+							defaultValue: "AI-assisted development, privacy-first",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "Plugin marketplace and ecosystem",
+							defaultValue: "Open plugin marketplace and extension ecosystem",
 						}),
 					],
 					CTA: {
@@ -347,77 +355,77 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Testimonials: {
 			Title: T("home:architecture.title", {
-				defaultValue: "Architecture",
+				defaultValue: "Under the Hood",
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code's Electron stack with a modular, high-performance architecture.\nEach element is a standalone repository.",
+					"Land replaces VS Code's Electron stack element by element.\n\nEach component is a standalone open-source repository you can read, fork, or contribute to.",
 			}),
 			Testimonials: [
 				{
 					Id: "mountain",
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"Manages Window, File System, and Process lifecycle.\nThe native Rust/Tauri backend that replaces Electron's main process.",
+							"Replaces Electron's main process with a native Rust/Tauri backend.\n\nWindow, file system, and process lifecycle run at native speed with no JavaScript overhead.",
 					}),
 					Author: "Mountain",
 					Role: T("home:architecture.mountain.subtitle", {
-						defaultValue: "Rust/Tauri native backend",
+						defaultValue: "Native speed without Electron overhead",
 					}),
 				},
 				{
 					Id: "cocoon",
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
-							"Runs VS Code extensions via Effect-TS with high-fidelity API compatibility.\nNo changes needed to existing extensions.",
+							"Runs your existing VS Code extensions via Effect-TS with high-fidelity API compatibility.\n\nInstall them and they just work. No rewrites, no patches.",
 					}),
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
-						defaultValue: "TypeScript extension host",
+						defaultValue: "Your extensions, completely unchanged",
 					}),
 				},
 				{
 					Id: "wind",
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"Re-implementation of the VS Code Workbench.\nProvides the editor shell, panels, sidebars, and activity bar.",
+							"A clean re-implementation of the VS Code Workbench in TypeScript.\n\nPanels, sidebars, and the activity bar. Familiar layout, no Electron dependency.",
 					}),
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
-						defaultValue: "TypeScript UI service",
+						defaultValue: "Full workbench shell, rebuilt clean",
 					}),
 				},
 				{
 					Id: "sky",
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"Renders the editor interface using Astro components.\nHandles themes, layouts, and the visual presentation layer.",
+							"Renders the editor UI using Astro components.\n\nThemes, layouts, and the visual layer load fast and stay consistent across platforms.",
 					}),
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
-						defaultValue: "Astro UI component",
+						defaultValue: "Themes and layouts, fast by default",
 					}),
 				},
 				{
 					Id: "air",
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"Background daemon for automatic updates, downloads, and cryptographic signing.\nKeeps Land up to date silently.",
+							"A background daemon that keeps Land current without interrupting you.\n\nEvery update is cryptographically signed before it is applied.",
 					}),
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
-						defaultValue: "Rust background daemon",
+						defaultValue: "Silent updates, always signed",
 					}),
 				},
 				{
 					Id: "echo",
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"High-performance work-stealing executor.\nSchedules and distributes tasks across cores for maximum throughput.",
+							"A work-stealing task executor that saturates every CPU core.\n\nHeavy indexing and analysis happen in the background. The editor stays responsive.",
 					}),
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
-						defaultValue: "Rust task scheduler",
+						defaultValue: "Uses every CPU core you have",
 					}),
 				},
 			],

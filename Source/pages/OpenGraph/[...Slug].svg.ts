@@ -121,10 +121,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		await import("../../Function/OpenGraph/PageMetadata.js")
 	).default;
 
-	// Static pages
-	const StaticPath = Object.keys(PageMetadata).map((Slug) => ({
-		params: { Slug: Slug || undefined },
-	}));
+	// Static pages — skip the home slug ("") which is served by /OpenGraph.svg.ts
+	const StaticPath = Object.keys(PageMetadata)
+		.filter((Slug) => Slug !== "")
+		.map((Slug) => ({ params: { Slug } }));
 
 	// Blog entries
 	let BlogPath: { params: { Slug: string } }[] = [];

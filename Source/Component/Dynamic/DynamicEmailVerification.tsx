@@ -153,7 +153,7 @@ const DynamicEmailVerification = ({
 												"Resend in {{seconds}}s",
 											seconds: ResendCooldown,
 										})
-									: Content.Pending.ResendButton.Text,
+									: Content.Pending.ResendButton.Text ?? "",
 							FullWidth: true,
 							Disabled: !Email || ResendCooldown > 0,
 						}}
@@ -214,7 +214,7 @@ const DynamicEmailVerification = ({
 						...Content.Success.ContinueButton,
 						FullWidth: true,
 					}}
-					OnAction={() => OnNavigate?.("/Dashboard")}}
+					OnAction={() => OnNavigate?.("/Dashboard")}
 				/>
 				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">
