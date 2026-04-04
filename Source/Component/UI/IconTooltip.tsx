@@ -98,6 +98,33 @@ const IconTooltip = ({
 	);
 };
 
+/**
+ * DocHref Inventory — candidate icon-to-doc mappings for future linking.
+ *
+ * When DocHref is wired up, these icons would link to the corresponding
+ * documentation page. Paths are relative to the site root (/Doc/{slug}).
+ *
+ * Lucide Icon   | Label            | Suggested DocHref
+ * --------------|------------------|---------------------------
+ * Code          | Code             | /Doc/Architecture
+ * Cpu           | CPU              | /Doc/Architecture
+ * Terminal      | Terminal         | /Doc/Getting-Started
+ * Puzzle        | Extensions       | /Doc/Extension-Development
+ * Settings      | Configuration    | /Doc/Configuration
+ * Lock          | Encryption       | /Doc/Local-First-Protocol
+ * Shield        | Security         | /Doc/Local-First-Protocol
+ * KeyRound      | Single Sign-On   | /Doc/API-Reference
+ * RefreshCw     | Sync             | /Doc/Local-First-Protocol
+ * GitBranch     | Repository       | /Doc/Contributing
+ *
+ * Brand SVGs (img children, not Lucide):
+ * GitHub        | GitHub           | https://github.com/CodeEditorLand
+ * GitLab        | GitLab           | /Doc/Contributing
+ * Okta          | Okta             | /Doc/API-Reference
+ * Microsoft     | Microsoft Azure AD | /Doc/API-Reference
+ * Google        | Google           | /Doc/API-Reference
+ */
+
 export { IconTooltip };
 export type { IconTooltipProperty };
 export default IconTooltip;

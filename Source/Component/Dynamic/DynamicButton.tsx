@@ -39,6 +39,8 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 		Disabled = false,
 		FullWidth = false,
 		ClassName,
+		Href,
+		OnClick,
 		...props
 	} = Content;
 
@@ -53,12 +55,10 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 			className={`StaccatoButton ${FullWidth ? "w-full" : ""} ${ClassName || ""}`}
 			aria-busy={IsLoading || undefined}
 			onClick={() => {
-				if (!IsLoading && OnAction) {
-					OnAction();
-				}
-				if (!IsLoading && Content.OnClick) {
-					Content.OnClick();
-				}
+				if (IsLoading) return;
+				if (OnAction) OnAction();
+				if (OnClick) OnClick();
+				if (Href) window.location.href = Href;
 			}}
 			{...props}>
 			{Text}

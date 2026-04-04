@@ -50,6 +50,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				Variant: "default",
 				Size: "lg",
 				Icon: "Download",
+				Href: "/Download",
 			},
 			SecondaryCta: {
 				Text: T("common:button.learnMore", {
@@ -58,6 +59,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				Variant: "outline",
 				Size: "lg",
 				Icon: "ExternalLink",
+				Href: "https://github.com/CodeEditorLand/Land#readme",
 			},
 			FloatingCards: [
 				{
@@ -267,6 +269,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 							defaultValue: "View on GitHub",
 						}),
 						Variant: "default",
+						Href: "https://github.com/CodeEditorLand/Land",
 					},
 					Popular: true,
 				},
@@ -302,6 +305,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 							defaultValue: "Track Progress",
 						}),
 						Variant: "outline",
+						Href: "https://github.com/CodeEditorLand/Land/milestones",
 					},
 					Popular: false,
 				},
@@ -335,6 +339,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 							defaultValue: "Learn More",
 						}),
 						Variant: "outline",
+						Href: "https://github.com/CodeEditorLand/Land#readme",
 					},
 					Popular: false,
 				},

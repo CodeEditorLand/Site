@@ -134,7 +134,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 	}, [HeroConfiguration.RespectReducedMotion]);
 
 	const HandleHeroClick = () => {
-		if (PrimaryCTA?.href) {
+		if (PrimaryCTA?.Href) {
 			window.location.href = PrimaryCTA.Href;
 		}
 	};

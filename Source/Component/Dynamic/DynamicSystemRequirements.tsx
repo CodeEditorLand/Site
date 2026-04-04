@@ -2,6 +2,7 @@ import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
+import { IconTooltip } from "../UI/IconTooltip.js";
 import { RichText } from "../UI/RichText.js";
 import type RequirementItem from "./Interface/Item/Requirement.js";
 import type Property from "./Interface/Property/Requirement/System.js";
@@ -59,9 +60,19 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					{" "}
 					<div className="mt-1 shrink-0">
 						{Variant === "minimum" ? (
-							<lucide.Cpu className="h-4 w-4 text-muted-foreground" />
+							<IconTooltip
+								Label="Processor"
+								Icon={lucide.Cpu}
+								Color="var(--PlatformDesktopFore)"
+								SizeClass="h-4 w-4"
+							/>
 						) : (
-							<lucide.Monitor className="h-4 w-4 text-muted-foreground" />
+							<IconTooltip
+								Label="Display"
+								Icon={lucide.Monitor}
+								Color="var(--PlatformDesktopFore)"
+								SizeClass="h-4 w-4"
+							/>
 						)}
 					</div>
 				</div>

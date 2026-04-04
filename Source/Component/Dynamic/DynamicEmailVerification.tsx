@@ -214,7 +214,7 @@ const DynamicEmailVerification = ({
 						...Content.Success.ContinueButton,
 						FullWidth: true,
 					}}
-					OnAction={() => OnNavigate?.("/")}
+					OnAction={() => OnNavigate?.("/Dashboard")}}
 				/>
 				<div className="flex items-center justify-center pt-4">
 					<CardTitle className="text-2xl">

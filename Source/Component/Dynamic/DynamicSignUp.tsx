@@ -1,3 +1,4 @@
+import * as lucide from "lucide-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -43,6 +44,7 @@ const DynamicSignUp = ({
 	const [Email, SetEmail] = useState("");
 	const [Password, SetPassword] = useState("");
 	const [ConfirmPassword, SetConfirmPassword] = useState("");
+	const [ShowPassword, SetShowPassword] = useState(false);
 	const [TermsAccepted, SetTermsAccepted] = useState(false);
 	const { t: T } = useTranslation("account");
 	const [Errors, SetErrors] = useState<{
