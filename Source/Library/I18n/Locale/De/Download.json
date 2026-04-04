@@ -16,48 +16,48 @@
 		}
 	},
 	"page": {
-		"subtitle": "Verfügbar für macOS, Windows und Linux.\n\nSchnell, nativ und kostenlos.",
+		"subtitle": "Nativ auf macOS, Windows und Linux.\n\nKostenlos, kein Tracking, volle VS Code-Erweiterungsunterstützung.",
 		"title": "Land herunterladen"
 	},
 	"previousReleases": {
-		"description": "Laden Sie bei Bedarf ältere Versionen herunter.",
+		"description": "Laden Sie eine ältere Version herunter, wenn Sie eine bestimmte Version festhalten müssen.",
 		"title": "Frühere Versionen"
 	},
-	"subtitle": "Verfügbar für macOS, Windows und Linux.\n\nGebaut mit Tauri, angetrieben von Rust.",
+	"subtitle": "Nativ auf macOS, Windows und Linux.\n\nMit Tauri gebaut. Von Rust angetrieben. Mit PGP verifiziert.",
 	"systemRequirements": {
 		"minimum": "Mindestanforderungen",
-		"recommended": "Empfohlen",
-		"subtitle": "Stellen Sie sicher, dass Ihr System diese Anforderungen erfüllt, bevor Sie herunterladen.",
+		"recommended": "Empfohlen für das beste Erlebnis",
+		"subtitle": "Eine kurze Überprüfung vor dem Herunterladen erspart eine Neuinstallation.",
 		"supportedOS": "Unterstützte Betriebssysteme",
 		"title": "Systemanforderungen"
 	},
 	"title": "Land herunterladen",
 	"verification": {
-		"description": "Land-Versionen sind mit PGP signiert.\n\nÜberprüfen Sie Ihren Download, um die Integrität sicherzustellen.",
-		"downloadButton": "PGP-Schlüssel herunterladen",
-		"title": "Download überprüfen",
-		"verifyButton": "Download überprüfen"
+		"description": "Jedes Land-Release wird vor der Auslieferung PGP-signiert.\n\nÜberprüfen Sie Ihren Download, um zu bestätigen, dass Sie genau das erhalten haben, was gebaut wurde.",
+		"downloadButton": "PGP-Public-Key herunterladen",
+		"title": "Jedes Release ist signiert. Überprüfen Sie Ihres.",
+		"verifyButton": "Download verifizieren"
 	},
 	"labels": {
 		"version": "Version:",
 		"size": "Größe:",
 		"requirements": "Anforderungen:",
-		"loading": "Downloads werden geladen...",
+		"loading": "Verfügbare Downloads werden geladen...",
 		"errorTitle": "Downloads konnten nicht geladen werden",
-		"downloadFailed": "Download fehlgeschlagen.\n\nBitte versuchen Sie es erneut.",
-		"downloadFor": "Herunterladen für {{platform}}",
+		"downloadFailed": "Download fehlgeschlagen. Bitte erneut versuchen.",
+		"downloadFor": "Für {{platform}} herunterladen",
 		"copiedToClipboard": "{{label}} in die Zwischenablage kopiert!",
 		"failedToCopy": "{{label}} konnte nicht kopiert werden",
 		"sha256Checksum": "SHA-256-Prüfsumme",
 		"pgpSignature": "PGP-Signatur",
-		"verificationInstructions": "Verifizierungsanweisungen",
-		"downloadVerification": "Download-Verifizierung",
+		"verificationInstructions": "Verifikationsanleitung",
+		"downloadVerification": "Download-Verifikation",
 		"integrityCheck": "Integritätsprüfung",
 		"copy": "Kopieren",
 		"signedWithKeyId": "Signiert mit Schlüssel-ID: {{keyId}}"
 	},
 	"transparency": {
-		"title": "Build-Transparenz",
-		"subtitle": "Vollständige Offenlegung zu Telemetrie, Build-Varianten und Bereitstellung.\n\nAlles im Quellcode nachprüfbar."
+		"title": "Nichts verborgen. Vollständige Build-Offenlegung.",
+		"subtitle": "Standardmäßig kein Telemetrie. Build-Varianten, Deployment-Ziele und Signierungsschlüssel sind öffentlich.\n\nÜberprüfen Sie alles im Quellcode."
 	}
 }

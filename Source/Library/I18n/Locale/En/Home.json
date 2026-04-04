@@ -118,12 +118,21 @@
 				"name": "Active Now",
 				"description": "The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"mountain": "Mountain ⛰️ Native Process Manager Replaces Electron",
-					"cocoon": "Cocoon 🦋 Extension Host VS Code Extensions Unchanged",
-					"wind": "Wind 🍃 Full Workbench Shell Panels and Sidebars",
-					"sky": "Sky 🌌 Visual Layer Themes and Layouts",
-					"air": "Air 🪁 Silent Update Crypto-Signed",
-					"echo": "Echo 📣 Work-Stealing Scheduler Every CPU Core"
+					"mountain": "Mountain ⛰️\nNative Process Manager\nReplaces Electron's main process",
+					"cocoon": "Cocoon 🦋\nExtension Host\nVS Code extensions run unchanged",
+					"wind": "Wind 🍃\nWorkbench Shell\nPanels, sidebars, activity bar reimplemented",
+					"sky": "Sky 🌌\nAstro UI Layer\nEvery panel is a component, instant hot-reload",
+					"air": "Air 🪁\nBackground Daemon\nSilent updates, crypto-signed",
+					"echo": "Echo 📣\nWork-Stealing Scheduler\nSaturates every CPU core",
+					"vine": "Vine 🌿\ngRPC Backbone\nContract-first .proto definitions",
+					"mist": "Mist 🌫️\nDNS Sandbox\n*.editor.land resolves locally",
+					"rest": "Rest ⛱️\nTypeScript Compiler\nRust + OXC, 2-3x faster than esbuild",
+					"grove": "Grove 🌳\nWASMtime Sandbox\nCapability-based extension isolation",
+					"common": "Common 👨🏻‍🏭\nAbstract Rust Foundation\nTyped effects, zero concrete implementations",
+					"output": "Output ⚫\nCompilation Pipeline\nDeterministic checksummed bundles",
+					"sidecar": "SideCar ⚙️\nNode.js Distributor\nCross-platform binary per target triple",
+					"worker": "Worker 🍩\nService Worker\nOffline support, AES-GCM auth",
+					"maintain": "Maintain 💪🏻\nBuild Orchestrator\nRhai scripting, TOML/JSON5 config"
 				},
 				"button": "View on GitHub"
 			},

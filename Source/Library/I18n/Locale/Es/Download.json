@@ -16,39 +16,39 @@
 		}
 	},
 	"page": {
-		"subtitle": "Disponible para macOS, Windows y Linux.\n\nRápido, nativo y gratuito.",
+		"subtitle": "Nativo en macOS, Windows y Linux.\n\nGratuito, sin rastreo, compatibilidad total con extensiones de VS Code.",
 		"title": "Descargar Land"
 	},
 	"previousReleases": {
-		"description": "Descargue versiones anteriores si es necesario.",
+		"description": "Descargue una versión anterior si necesita fijar a una versión específica.",
 		"title": "Versiones anteriores"
 	},
-	"subtitle": "Disponible para macOS, Windows y Linux.\n\nConstruido con Tauri, impulsado por Rust.",
+	"subtitle": "Nativo en macOS, Windows y Linux.\n\nConstruido con Tauri. Impulsado por Rust. Verificado con PGP.",
 	"systemRequirements": {
-		"minimum": "Requisitos minimos",
-		"recommended": "Recomendado",
-		"subtitle": "Asegurese de que su sistema cumple estos requisitos antes de descargar.",
+		"minimum": "Requisitos mínimos",
+		"recommended": "Recomendado para la mejor experiencia",
+		"subtitle": "Una verificación rápida antes de descargar evita una reinstalación.",
 		"supportedOS": "Sistemas operativos compatibles",
 		"title": "Requisitos del sistema"
 	},
 	"title": "Descargar Land",
 	"verification": {
-		"description": "Las versiones de Land están firmadas con PGP.\n\nVerifique su descarga para garantizar la integridad.",
-		"downloadButton": "Descargar clave publica PGP",
-		"title": "Verifique su descarga",
+		"description": "Cada versión de Land está firmada con PGP antes de su distribución.\n\nVerifique su descarga para confirmar que obtuvo exactamente lo que fue compilado.",
+		"downloadButton": "Descargar clave PGP pública",
+		"title": "Cada versión está firmada. Verifique la suya.",
 		"verifyButton": "Verificar descarga"
 	},
 	"labels": {
-		"version": "Version:",
-		"size": "Tamano:",
+		"version": "Versión:",
+		"size": "Tamaño:",
 		"requirements": "Requisitos:",
-		"loading": "Cargando descargas...",
+		"loading": "Cargando descargas disponibles...",
 		"errorTitle": "No se pudieron cargar las descargas",
-		"downloadFailed": "Descarga fallida.\n\nPor favor, inténtelo de nuevo.",
+		"downloadFailed": "Descarga fallida. Por favor, inténtelo de nuevo.",
 		"downloadFor": "Descargar para {{platform}}",
 		"copiedToClipboard": "{{label}} copiado al portapapeles!",
 		"failedToCopy": "Error al copiar {{label}}",
-		"sha256Checksum": "Suma de comprobación SHA-256",
+		"sha256Checksum": "Suma de verificación SHA-256",
 		"pgpSignature": "Firma PGP",
 		"verificationInstructions": "Instrucciones de verificación",
 		"downloadVerification": "Verificación de descarga",
@@ -57,7 +57,7 @@
 		"signedWithKeyId": "Firmado con ID de clave: {{keyId}}"
 	},
 	"transparency": {
-		"title": "Transparencia de compilacion",
-		"subtitle": "Divulgación completa sobre telemetría, variantes de compilación y despliegue.\n\nVerifique todo en el código fuente."
+		"title": "Nada oculto. Divulgación completa de la compilación.",
+		"subtitle": "Sin telemetría por defecto. Las variantes de compilación, destinos de implementación y claves de firma son públicos.\n\nVerifique todo en el código fuente."
 	}
 }

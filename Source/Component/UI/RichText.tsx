@@ -54,9 +54,22 @@ const TermDictionary = new Map<string, TermCategory>([
 	["OXC", "Tool"],
 	["SWC", "Tool"],
 	["Electron", "Tool"],
-	// License
+	["TypeScript", "Tool"],
+	["Astro", "Tool"],
+	["Vite", "Tool"],
+	["React", "Tool"],
+	["Tailwind", "Tool"],
+	["Node.js", "Tool"],
+	["Biome", "Tool"],
+	["Cloudflare", "Tool"],
+	["Auth0", "Tool"],
+	["pnpm", "Tool"],
+	["esbuild", "Tool"],
+	// License / Funding
 	["CC0", "License"],
 	["PGP", "License"],
+	["NLnet", "License"],
+	["NGI0", "License"],
 ]);
 
 const CategoryStyle: Record<TermCategory, string> = {
@@ -81,7 +94,28 @@ const TermLogo: Record<string, string> = {
 	Rust: "/Image/Rust.svg",
 	Tauri: "/Image/Tauri.svg",
 	"Effect-TS": "/Image/EffectTS.svg",
-	Cargo: "/Image/Rust.svg",
+	Cargo: "/Image/Cargo.svg",
+	TypeScript: "/Image/TypeScript.svg",
+	Astro: "/Image/Astro.svg",
+	Vite: "/Image/Vite.svg",
+	React: "/Image/React.svg",
+	Tailwind: "/Image/Tailwind.svg",
+	"Node.js": "/Image/NodeJS.svg",
+	WASM: "/Image/WASM.svg",
+	gRPC: "/Image/gRPC.svg",
+	Biome: "/Image/Biome.svg",
+	CC0: "/Image/CC0.svg",
+	NLnet: "/Image/NLnet.svg",
+	Cloudflare: "/Image/Cloudflare.svg",
+	Auth0: "/Image/Auth0.svg",
+	OXC: "/Image/OXC.svg",
+	SWC: "/Image/SWC.svg",
+	Electron: "/Image/Electron.svg",
+	Rhai: "/Image/Rhai.svg",
+	OpenTelemetry: "/Image/OpenTelemetry.svg",
+	OTEL: "/Image/OpenTelemetry.svg",
+	pnpm: "/Image/pnpm.svg",
+	esbuild: "/Image/esbuild.svg",
 };
 
 // ─── Segment types ────────────────────────────────────────────────────────────

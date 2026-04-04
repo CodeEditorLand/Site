@@ -1,2 +1,0 @@
-const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/Staccato.BOjCpHmf.js","_astro/Doc.hc4NJEMu.js"])))=>i.map(i=>d[i]);
-import{_ as o}from"./Doc.hc4NJEMu.js";const d=window.matchMedia("(prefers-reduced-motion: reduce)").matches;if(!d){const e=await(await o(()=>import("./Staccato.BOjCpHmf.js"),__vite__mapDeps([0,1]))).default;e.Start();const t=()=>e.SeedSelector('[class*="Staccato"]'),a=()=>{typeof requestIdleCallback<"u"?requestIdleCallback(t):setTimeout(t,0)};document.readyState==="complete"?a():window.addEventListener("load",a,{once:!0})}

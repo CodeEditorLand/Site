@@ -244,22 +244,36 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 												} technology stack`}>
 												{Feature.Icons.map(
 													(IconName, IconIndex) => {
+														const IsBrandSvg =
+															IconName.startsWith(
+																"/",
+															);
+
 														const StackIcon =
-															FeatureIconRegistry[
-																IconName
-															];
+															IsBrandSvg
+																? null
+																: FeatureIconRegistry[
+																		IconName
+																	];
 
 														const StackLabel =
 															FeatureIconLabelMap[
 																IconName
-															] ?? IconName;
+															] ??
+															IconName.replace(
+																/^\/Image\/|\.svg$/g,
+																"",
+															);
 
 														const StackColor =
 															IconSemanticColorMap[
 																IconName
 															] ?? FeatureColor;
 
-														if (!StackIcon) {
+														if (
+															!IsBrandSvg &&
+															!StackIcon
+														) {
 															return null;
 														}
 
@@ -280,18 +294,38 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 																		}
 																	</>
 																)}
-																<IconTooltip
-																	Label={
-																		StackLabel
-																	}
-																	Icon={
-																		StackIcon
-																	}
-																	Color={
-																		StackColor
-																	}
-																	SizeClass="h-4 w-4"
-																/>
+																{IsBrandSvg ? (
+																	<IconTooltip
+																		Label={
+																			StackLabel
+																		}>
+																		<img
+																			src={
+																				IconName
+																			}
+																			alt={
+																				StackLabel
+																			}
+																			width="16"
+																			height="16"
+																			className="inline h-4 w-4"
+																			aria-hidden="true"
+																		/>
+																	</IconTooltip>
+																) : (
+																	<IconTooltip
+																		Label={
+																			StackLabel
+																		}
+																		Icon={
+																			StackIcon!
+																		}
+																		Color={
+																			StackColor
+																		}
+																		SizeClass="h-4 w-4"
+																	/>
+																)}
 															</span>
 														);
 													},

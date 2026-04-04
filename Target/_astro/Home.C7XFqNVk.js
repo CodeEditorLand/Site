@@ -30,9 +30,39 @@ No more Electron memory bloat.`,5:`The open-source commitment means I can contri
 
 This is the editor I've been waiting for.`,6:`The gRPC-based architecture is a masterclass in system design.
 
-Land is the future of desktop editors.`},subtitle:"Community voices on the future of code editing.",title:"What developers are saying",badge:"Testimonial",attribution:"Community Feedback",attributionNote:"Representative community member"},a={title:"Roadmap & What to Expect",subtitle:`Funded by NLnet NGI0 Commons Fund.
+Land is the future of desktop editors.`},subtitle:"Community voices on the future of code editing.",title:"What developers are saying",badge:"Testimonial",attribution:"Community Feedback",attributionNote:"Representative community member"},r={title:"Roadmap & What to Expect",subtitle:`Funded by NLnet NGI0 Commons Fund.
 
-Built in public, free forever, no roadmap surprises.`,tiers:{current:{name:"Active Now",description:"The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",features:{mountain:"Mountain ⛰️ Native Process Manager Replaces Electron",cocoon:"Cocoon 🦋 Extension Host VS Code Extensions Unchanged",wind:"Wind 🍃 Full Workbench Shell Panels and Sidebars",sky:"Sky 🌌 Visual Layer Themes and Layouts",air:"Air 🪁 Silent Update Crypto-Signed",echo:"Echo 📣 Work-Stealing Scheduler Every CPU Core"},button:"View on GitHub"},next:{name:"Coming Next",description:"Extension ecosystem polish and first stable release across all three platforms.",features:{1:"High-fidelity VS Code extension compatibility pass",2:"Cross-platform installer with silent auto-update",3:"gRPC IPC protocol finalized and documented",4:"Settings sync with cloud-optional portal"},button:"Track Progress"},future:{name:"Long-Term Vision",description:"A full-featured, Electron-free editor that handles every workflow a modern developer needs.",features:{1:"Native mobile editing: iOS and Android",2:"Collaborative real-time editing built in",3:"AI-assisted development, privacy-first",4:"Open plugin marketplace and extension ecosystem"},button:"Learn More"}}},r={title:"Under the Hood",subtitle:`Land replaces VS Code's Electron stack element by element.
+Built in public, free forever, no roadmap surprises.`,tiers:{current:{name:"Active Now",description:"The six core elements are in active development. Each is a standalone repository you can inspect and contribute to today.",features:{mountain:`Mountain ⛰️
+Native Process Manager
+Replaces Electron's main process`,cocoon:`Cocoon 🦋
+Extension Host
+VS Code extensions run unchanged`,wind:`Wind 🍃
+Workbench Shell
+Panels, sidebars, activity bar reimplemented`,sky:`Sky 🌌
+Astro UI Layer
+Every panel is a component, instant hot-reload`,air:`Air 🪁
+Background Daemon
+Silent updates, crypto-signed`,echo:`Echo 📣
+Work-Stealing Scheduler
+Saturates every CPU core`,vine:`Vine 🌿
+gRPC Backbone
+Contract-first .proto definitions`,mist:`Mist 🌫️
+DNS Sandbox
+*.editor.land resolves locally`,rest:`Rest ⛱️
+TypeScript Compiler
+Rust + OXC, 2-3x faster than esbuild`,grove:`Grove 🌳
+WASMtime Sandbox
+Capability-based extension isolation`,common:`Common 👨🏻‍🏭
+Abstract Rust Foundation
+Typed effects, zero concrete implementations`,output:`Output ⚫
+Compilation Pipeline
+Deterministic checksummed bundles`,sidecar:`SideCar ⚙️
+Node.js Distributor
+Cross-platform binary per target triple`,worker:`Worker 🍩
+Service Worker
+Offline support, AES-GCM auth`,maintain:`Maintain 💪🏻
+Build Orchestrator
+Rhai scripting, TOML/JSON5 config`},button:"View on GitHub"},next:{name:"Coming Next",description:"Extension ecosystem polish and first stable release across all three platforms.",features:{1:"High-fidelity VS Code extension compatibility pass",2:"Cross-platform installer with silent auto-update",3:"gRPC IPC protocol finalized and documented",4:"Settings sync with cloud-optional portal"},button:"Track Progress"},future:{name:"Long-Term Vision",description:"A full-featured, Electron-free editor that handles every workflow a modern developer needs.",features:{1:"Native mobile editing: iOS and Android",2:"Collaborative real-time editing built in",3:"AI-assisted development, privacy-first",4:"Open plugin marketplace and extension ecosystem"},button:"Learn More"}}},a={title:"Under the Hood",subtitle:`Land replaces VS Code's Electron stack element by element.
 
 Fifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.`,air:{subtitle:"Background Daemon Silent Update Crypto-Signed",description:`Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.
 
@@ -64,4 +94,4 @@ Typed at the wire, typed at the call site, verified at compile time. Refactor a 
 
 Native OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.`},worker:{subtitle:"Service Worker Offline Support AES-GCM Auth",description:`Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.
 
-The shell stays functional and authenticated even when the network drops.`}},s={features:e,hero:t,nav:n,pricing:i,testimonials:o,roadmap:a,architecture:r};export{r as architecture,s as default,e as features,t as hero,n as nav,i as pricing,a as roadmap,o as testimonials};
+The shell stays functional and authenticated even when the network drops.`}},s={features:e,hero:t,nav:n,pricing:i,testimonials:o,roadmap:r,architecture:a};export{a as architecture,s as default,e as features,t as hero,n as nav,i as pricing,r as roadmap,o as testimonials};
