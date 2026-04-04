@@ -186,7 +186,7 @@ const PortalData: PortalContent = {
 		Identifier: "Enterprise",
 		Title: "Enterprise",
 		Subtitle:
-			"OIDC Discovery, SAML 2.0, and SCIM provisioning. Managed by your IT team.",
+			"Your IT team controls every seat \u2014 OIDC, SAML 2.0, and SCIM mean zero manual provisioning and full directory governance.",
 		Color: "var(--PlatformDesktopFore)",
 		BorderColor: "var(--PlatformDesktop)",
 		Icon: "Building2",
@@ -194,9 +194,9 @@ const PortalData: PortalContent = {
 		Protocol: "OIDC \u00b7 SAML 2.0 \u00b7 SCIM 2.0",
 		Feature: [
 			{
-				Heading: "Single Sign-On",
+				Heading: "One login unlocks every tool",
 				Description:
-					"Federate via Okta, Azure AD, PingFederate, or any SAML 2.0 / OIDC-compliant IdP.",
+					"Federate via Okta, Azure AD, PingFederate, or any OIDC / SAML 2.0-compliant IdP \u2014 developers never manage a separate CEL password.",
 				Icon: [
 					"/Image/Okta.svg",
 					"/Image/Microsoft.svg",
@@ -205,36 +205,36 @@ const PortalData: PortalContent = {
 				],
 			},
 			{
-				Heading: "SCIM provisioning",
+				Heading: "New developers ready in minutes, not days",
 				Description:
-					"Automate user and group lifecycle \u2014 create, update, and deactivate from your directory.",
+					"SCIM syncs users and groups automatically \u2014 create, update, or deactivate seats straight from your corporate directory.",
 				Icon: ["UserPlus", "Users", "Building2"],
 			},
 			{
-				Heading: "Role-based access",
+				Heading: "Least privilege, enforced automatically",
 				Description:
-					"Map IdP groups to CEL roles. Least-privilege enforced at the API gateway layer.",
+					"IdP groups map directly to CEL roles. Access is scoped at the API gateway \u2014 no manual role assignment, no privilege drift.",
 				Icon: ["Layers", "Lock", "Blocks"],
 			},
 			{
-				Heading: "Audit and compliance",
+				Heading: "SOC 2 logs flow straight to your SIEM",
 				Description:
-					"SOC 2 Type II event logs exported to your SIEM in CEF or JSON format.",
+					"Every sign-in, role change, and extension install is exported in CEF or JSON \u2014 your security team gets exactly what auditors require.",
 				Icon: ["FileText", "AlertTriangle", "Info"],
 			},
 			{
-				Heading: "Domain enforcement",
+				Heading: "Personal accounts can\u2019t touch org workspaces",
 				Description:
-					"Lock login to verified corporate domains. Personal accounts cannot access org workspaces.",
+					"Login is locked to verified corporate domains \u2014 contractors and personal accounts are blocked at the identity layer.",
 				Icon: ["Hash", "Globe", "CheckCircle"],
 			},
 		],
 		Capability: [
-			"OIDC Discovery endpoint \u2014 auto-configured from IdP metadata URL",
-			"SAML 2.0 SP-initiated and IdP-initiated flows",
-			"SCIM 2.0 Groups + Users with patch operations",
-			"Session duration enforced by IdP policy",
-			"Force MFA via IdP authentication context class",
+			"OIDC Discovery \u2014 auto-configured from your IdP metadata URL, zero manual setup",
+			"SAML 2.0 SP-initiated and IdP-initiated flows \u2014 both supported out of the box",
+			"SCIM 2.0 Groups + Users with patch \u2014 directory changes reflect instantly",
+			"Session duration enforced by IdP policy \u2014 IT controls how long tokens live",
+			"Force MFA via IdP authentication context \u2014 second factor is never optional",
 		],
 	},
 };
