@@ -34,7 +34,22 @@ Land ist die Zukunft der Desktop-Editoren.`},subtitle:"Community-Stimmen zur Zuk
 
 Open Source, kostenlos für immer, öffentlich entwickelt.`,tiers:{current:{name:"Aktuelle Phase",description:`Grundlagen und Kern-Editor-Gerüst.
 
-Aktive Entwicklung.`,features:{1:"Mountain: Rust/Tauri natives Backend",2:"Cocoon: VS Code Extension Host via Effect-TS",3:"Wind: Workbench-Neuimplementierung",4:"Sky: Editor-Interface-Rendering",5:"Air: Update-Daemon und Krypto-Signierung",6:"Echo: Work-Stealing-Task-Scheduler"},button:"Auf GitHub ansehen"},next:{name:"Nächster Meilenstein",description:"Erweiterungs-Ökosystem und Plattformstabilität.",features:{1:"Hochwertige VS Code-Erweiterungskompatibilität",2:"Cross-Platform-Installer und Auto-Update",3:"gRPC-IPC-Protokollfinalisierung",4:"Einstellungssync und cloud-optionales Portal"},button:"Fortschritt verfolgen"},future:{name:"Langfristige Vision",description:"Voll ausgestatteter Editor als Ersatz für Electron-basierte Tools.",features:{1:"Natives mobiles Bearbeiten (iOS, Android)",2:"Kollaboratives Echtzeit-Bearbeiten",3:"KI-gestützte Entwicklungswerkzeuge",4:"Plugin-Marktplatz und Ökosystem"},button:"Mehr erfahren"}}},o={title:"Architektur",subtitle:`Land ersetzt VS Codes Electron-Stack durch eine modulare, hochleistungsfähige Architektur.
+Aktive Entwicklung.`,features:{mountain:`Mountain ⛰️
+Rust/Tauri natives Backend`,cocoon:`Cocoon 🦋
+VS Code Extension Host via Effect-TS`,wind:`Wind 🍃
+Workbench-Neuimplementierung`,sky:`Sky 🌌
+Editor-Interface-Rendering`,air:`Air 🪁
+Update-Daemon und Krypto-Signierung`,echo:`Echo 📣
+Work-Stealing-Task-Scheduler`,common:`Common 👨🏻‍🏭
+Abstract Rust foundation, typed effects, zero concrete implementations`,grove:`Grove 🌳
+WASMtime sandbox, capability-based extension isolation`,maintain:`Maintain 💪🏻
+Build orchestrator, Rhai scripting, TOML/JSON5 config`,mist:`Mist 🌫️
+DNS sandbox, all *.editor.land traffic resolves locally`,output:`Output ⚫
+Compilation pipeline, deterministic checksummed bundles`,rest:`Rest ⛱️
+TypeScript compiler in Rust + OXC, 2–3× faster than esbuild`,sidecar:`SideCar ⚙️
+Cross-platform Node.js binary distributor per target triple`,vine:`Vine 🌿
+gRPC backbone, contract-first .proto definitions`,worker:`Worker 🍩
+Service Worker, offline support, AES-GCM encrypted auth`},button:"Auf GitHub ansehen"},next:{name:"Nächster Meilenstein",description:"Erweiterungs-Ökosystem und Plattformstabilität.",features:{1:"Hochwertige VS Code-Erweiterungskompatibilität",2:"Cross-Platform-Installer und Auto-Update",3:"gRPC-IPC-Protokollfinalisierung",4:"Einstellungssync und cloud-optionales Portal"},button:"Fortschritt verfolgen"},future:{name:"Langfristige Vision",description:"Voll ausgestatteter Editor als Ersatz für Electron-basierte Tools.",features:{1:"Natives mobiles Bearbeiten (iOS, Android)",2:"Kollaboratives Echtzeit-Bearbeiten",3:"KI-gestützte Entwicklungswerkzeuge",4:"Plugin-Marktplatz und Ökosystem"},button:"Mehr erfahren"}}},o={title:"Architektur",subtitle:`Land ersetzt VS Codes Electron-Stack durch eine modulare, hochleistungsfähige Architektur.
 
 Jedes Element ist ein eigenständiges Repository.`,mountain:{description:`Verwaltet Fenster-, Dateisystem- und Prozess-Lebenszyklus.
 

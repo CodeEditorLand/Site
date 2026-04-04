@@ -1,6 +1,6 @@
 {
 	"features": {
-		"badge": "Features",
+		"badge": "Feature",
 		"item": {
 			"designTokens": {
 				"description": "Stop handing VS Code a gigabyte of RAM just to open a file.\n\nLand's Rust core with gRPC IPC responds in microseconds. Even with hundreds of files open.",
@@ -106,7 +106,7 @@
 		},
 		"subtitle": "Community voices on the future of code editing.",
 		"title": "What developers are saying",
-		"badge": "Testimonials",
+		"badge": "Testimonial",
 		"attribution": "Community Feedback",
 		"attributionNote": "Representative community member"
 	},
@@ -118,21 +118,21 @@
 				"name": "Active Now",
 				"description": "All fifteen elements are in active development. Each is a standalone repository you can inspect and contribute to today.",
 				"features": {
-					"air": "Air 🪁\nBackground daemon, silent auto-updates, crypto-signed",
-					"cocoon": "Cocoon 🦋\nExtension host - full VS Code API via Effect-TS shims",
-					"common": "Common 👨🏻‍🏭\nAbstract Rust foundation, typed effects, zero concrete implementations",
-					"echo": "Echo 📣\nLock-free work-stealing scheduler, saturates every CPU core",
-					"grove": "Grove 🌳\nWASMtime sandbox, capability-based extension isolation",
-					"maintain": "Maintain 💪🏻\nBuild orchestrator, Rhai scripting, TOML/JSON5 config",
-					"mist": "Mist 🌫️\nDNS sandbox, all *.editor.land traffic resolves locally",
-					"mountain": "Mountain ⛰️\nNative Rust/Tauri backend, replaces Electron’s main process",
-					"output": "Output ⚫\nCompilation pipeline, deterministic checksummed bundles",
-					"rest": "Rest ⛱️\nTypeScript compiler in Rust + OXC, 2–3× faster than esbuild",
-					"sidecar": "SideCar ⚙️\nCross-platform Node.js binary distributor per target triple",
-					"sky": "Sky 🌌\nAstro UI layer - every panel is a component, instant hot-reload",
-					"vine": "Vine 🌿\ngRPC backbone, contract-first .proto definitions",
-					"wind": "Wind 🍃\nVS Code Workbench reimplemented in TypeScript + Effect-TS",
-					"worker": "Worker 🍩\nService Worker, offline support, AES-GCM encrypted auth"
+					"air": "Air 🪁 Background Daemon Silent Auto-Update Crypto-Signed",
+					"cocoon": "Cocoon 🦋 Extension Host Full VS Code API Effect-TS Shim",
+					"common": "Common 👨🏻‍🏭 Abstract Rust Foundation Typed Effect Zero Concrete Implementation",
+					"echo": "Echo 📣 Lock-Free Work-Stealing Scheduler Every CPU Core",
+					"grove": "Grove 🌳 WASMtime Sandbox Capability-Based Isolation",
+					"maintain": "Maintain 💪🏻 Build Orchestrator Rhai Scripting TOML/JSON5 Config",
+					"mist": "Mist 🌫️ DNS Sandbox Local *.editor.land Resolution",
+					"mountain": "Mountain ⛰️ Native Rust/Tauri Backend Replaces Electron Main Process",
+					"output": "Output ⚫ Compilation Pipeline Deterministic Bundle Checksum",
+					"rest": "Rest ⛱️ TypeScript Compiler Rust + OXC 2-3x Faster",
+					"sidecar": "SideCar ⚙️ Binary Distributor Node.js Runtime Per Platform",
+					"sky": "Sky 🌌 Astro UI Layer Instant Hot-Reload",
+					"vine": "Vine 🌿 gRPC Backbone Contract-First .proto Definition",
+					"wind": "Wind 🍃 VS Code Workbench Reimplemented TypeScript + Effect-TS",
+					"worker": "Worker 🍩 Service Worker Offline Support AES-GCM Auth"
 				},
 				"button": "View on GitHub"
 			},
@@ -164,64 +164,64 @@
 		"title": "Under the Hood",
 		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
 		"air": {
-			"description": "Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt.",
-			"subtitle": "Background daemon silent updates crypto-signed"
+			"subtitle": "Background Daemon Silent Update Crypto-Signed",
+			"description": "Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt."
 		},
 		"cocoon": {
-			"description": "A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks.",
-			"subtitle": "Extension host full VS Code API Effect-TS shims"
+			"subtitle": "Extension Host Full VS Code API Effect-TS Shim",
+			"description": "A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks."
 		},
 		"common": {
-			"description": "The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
-			"subtitle": "Shared foundation abstract traits zero implementations"
+			"subtitle": "Shared Foundation Abstract Trait Zero Implementation",
+			"description": "The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar."
 		},
 		"echo": {
-			"description": "A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
-			"subtitle": "Work-stealing scheduler saturates every CPU core"
+			"subtitle": "Work-Stealing Scheduler Every CPU Core",
+			"description": "A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor."
 		},
 		"grove": {
-			"description": "Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
-			"subtitle": "Secure WASM sandbox WASMtime capability-based isolation"
+			"subtitle": "Secure WASM Sandbox WASMtime Capability-Based Isolation",
+			"description": "Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant."
 		},
 		"maintain": {
-			"description": "Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
-			"subtitle": "Build orchestrator Rhai scripting TOML/JSON5 config"
+			"subtitle": "Build Orchestrator Rhai Scripting TOML/JSON5 Config",
+			"description": "Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises."
 		},
 		"mist": {
-			"description": "Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
-			"subtitle": "DNS sandbox *.editor.land resolves to 127.0.0.1"
+			"subtitle": "DNS Sandbox Local *.editor.land Resolution",
+			"description": "Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world."
 		},
 		"mountain": {
-			"description": "Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk.",
-			"subtitle": "Native Rust backend replaces Electrons main process"
+			"subtitle": "Native Rust Backend Replaces Electron Main Process",
+			"description": "Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk."
 		},
 		"output": {
-			"description": "Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
-			"subtitle": "Compilation pipeline deterministic bundles checksums"
+			"subtitle": "Compilation Pipeline Deterministic Bundle Checksum",
+			"description": "Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified."
 		},
 		"rest": {
-			"description": "A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
-			"subtitle": "TypeScript compiler Rust + OXC 2-3x faster than esbuild"
+			"subtitle": "TypeScript Compiler Rust + OXC 2-3x Faster",
+			"description": "A drop-in replacement for VS Code TypeScript build step. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead."
 		},
 		"sidecar": {
-			"description": "Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
-			"subtitle": "Binary distributor correct Node.js runtime per platform"
+			"subtitle": "Binary Distributor Node.js Runtime Per Platform",
+			"description": "Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains."
 		},
 		"sky": {
-			"description": "Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
-			"subtitle": "Visual UI layer Astro components instant Tauri hot-reload"
+			"subtitle": "Visual UI Layer Astro Component Instant Hot-Reload",
+			"description": "Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint."
 		},
 		"vine": {
-			"description": "Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
-			"subtitle": "gRPC backbone contract-first .proto definitions"
+			"subtitle": "gRPC Backbone Contract-First .proto Definition",
+			"description": "Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently."
 		},
 		"wind": {
-			"description": "A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
-			"subtitle": "VS Code Workbench reimplemented Effect-TS layers native OS APIs"
+			"subtitle": "VS Code Workbench Reimplemented Effect-TS Layer Native OS API",
+			"description": "A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip."
 		},
 		"worker": {
-			"description": "Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
-			"subtitle": "Service Worker offline support AES-GCM encrypted auth"
+			"subtitle": "Service Worker Offline Support AES-GCM Auth",
+			"description": "Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops."
 		}
 	}
 }
