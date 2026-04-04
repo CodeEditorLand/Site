@@ -37,11 +37,11 @@ const GetElementColor = (Line: string): string => {
 };
 
 /**
- * Dynamic Pricing — two-column layout (Free + Future).
+ * Dynamic Pricing - two-column layout (Free + Future).
  * Each tier card shows:
- *   Elements section — colored multi-line rows (name / descriptor / detail)
+ *   Elements section - colored multi-line rows (name / descriptor / detail)
  *   Separator
- *   Features section — icon checklist
+ *   Features section - icon checklist
  */
 const DynamicPricing = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("home");

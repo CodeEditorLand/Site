@@ -59,7 +59,7 @@
 			},
 			"sky": {
 				"subtitle": "Every panel is a component. Instant hot-reload.",
-				"description": "Three workbench layouts — full desktop, embedded, minimal — each built from Astro components with instant hot-reload. Tauri reloads Sky immediately on any component change.\n\nHigh-fidelity VS Code UI compatibility with a significantly smaller footprint. No special Electron magic. Just web components rendered by the OS's own WebView."
+				"description": "Three workbench layouts - full desktop, embedded, minimal - each built from Astro components with instant hot-reload. Tauri reloads Sky immediately on any component change.\n\nHigh-fidelity VS Code UI compatibility with a significantly smaller footprint. No special Electron magic. Just web components rendered by the OS's own WebView."
 			},
 			"air": {
 				"subtitle": "Already updated before you decide to update.",
@@ -67,7 +67,7 @@
 			},
 			"echo": {
 				"subtitle": "Every CPU core working. Nothing blocking.",
-				"description": "VS Code's background tasks — file indexing, symbol scanning, git blame — run in a single-threaded Node.js process. Heavy indexing freezes everything on that thread. The only escape is spawning more processes, adding memory and IPC overhead.\n\nEcho is a lock-free work-stealing scheduler built on Rust's crossbeam-deque. Every task runs in a supervised worker pool spanning all CPU cores. Heavy indexing and analysis never block the editor. Tasks cannot outlive their scope: teardown is guaranteed."
+				"description": "VS Code's background tasks - file indexing, symbol scanning, git blame - run in a single-threaded Node.js process. Heavy indexing freezes everything on that thread. The only escape is spawning more processes, adding memory and IPC overhead.\n\nEcho is a lock-free work-stealing scheduler built on Rust's crossbeam-deque. Every task runs in a supervised worker pool spanning all CPU cores. Heavy indexing and analysis never block the editor. Tasks cannot outlive their scope: teardown is guaranteed."
 			},
 			"common": {
 				"subtitle": "Test any element. No running editor required.",

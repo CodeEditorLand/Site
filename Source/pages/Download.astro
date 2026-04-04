@@ -13,7 +13,7 @@ const TransparencyContent = {
 	}),
 	Subtitle: T("download.transparency.subtitle", {
 		defaultValue:
-			"VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent — it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable.",
+			"VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent - it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable.",
 	}),
 	Policy: [
 		{
@@ -46,7 +46,7 @@ const TransparencyContent = {
 			Identifier: "zero-cost-noop",
 			Title: "Absent code has zero runtime cost.",
 			Description:
-				"VS Code's telemetry code occupies memory and CPU even when \"disabled\" — the functions exist, the branches run, the results are just dropped. Rust's cfg(feature) gates eliminate dead code at compile time. A feature that is not compiled in costs exactly zero.",
+				"VS Code's telemetry code occupies memory and CPU even when \"disabled\" - the functions exist, the branches run, the results are just dropped. Rust's cfg(feature) gates eliminate dead code at compile time. A feature that is not compiled in costs exactly zero.",
 			Icon: "Zap",
 			Status: "Active" as const,
 			Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
@@ -64,7 +64,7 @@ const TransparencyContent = {
 			Identifier: "effect-ts-local",
 			Title: "Extension host timing stays in the process.",
 			Description:
-				"Cocoon uses Effect-TS's TelemetryService to track internal RPC and bootstrap timing — the data used to make the extension host faster. Nothing leaves the process. TelemetryMock layer for zero-overhead testing.",
+				"Cocoon uses Effect-TS's TelemetryService to track internal RPC and bootstrap timing - the data used to make the extension host faster. Nothing leaves the process. TelemetryMock layer for zero-overhead testing.",
 			Icon: "Layers",
 			Status: "Active" as const,
 			Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",

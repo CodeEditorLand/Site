@@ -58,6 +58,6 @@
 	},
 	"transparency": {
 		"title": "VS Code Phones Home. Land Does Not.",
-		"subtitle": "VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent — it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable."
+		"subtitle": "VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent - it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable."
 	}
 }
