@@ -85,7 +85,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 	return (
 		<section
 			id="pricing"
-			aria-label="Roadmap"
+			aria-labelledby="PricingHeading"
 			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
 				ClassName || ""
 			}`}>
@@ -93,7 +93,9 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
 						{Title && (
-							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+							<h2
+								id="PricingHeading"
+								className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
 								{Title}
 							</h2>
 						)}

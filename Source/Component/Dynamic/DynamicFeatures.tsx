@@ -196,7 +196,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 							FeatureColorMap[Feature.Id] ?? "var(--Primary)";
 
 						return (
-							<div
+							<article
 								key={Feature.Id}
 								className="FeatureCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none border border-[var(--Border)] bg-white p-6">
 								<div className="flex items-start justify-between">
@@ -282,7 +282,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											</span>
 										)}
 								</p>
-							</div>
+							</article>
 						);
 					})}
 				</div>

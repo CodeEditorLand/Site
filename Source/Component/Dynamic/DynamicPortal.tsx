@@ -1024,14 +1024,19 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 			ref={SectionReference}
 			id="portal"
 			className="PortalSection"
-			aria-label="Authentication Portal">
+			aria-labelledby="PortalHeading">
 			<div className="container mx-auto px-4">
 				<div className="PortalHeader StaccatoBreath">
-					<h1 className="PortalTitle">{Content.Title}</h1>
+					<h1 id="PortalHeading" className="PortalTitle">
+						{Content.Title}
+					</h1>
 					<p className="PortalSubtitle">{Content.Subtitle}</p>
 				</div>
 
-				<div className="PortalTierGrid">
+				<div
+					className="PortalTierGrid"
+					role="group"
+					aria-label="Authentication tiers">
 					<PortalTierRow
 						Content={Content.Cloud}
 						Index={0}
