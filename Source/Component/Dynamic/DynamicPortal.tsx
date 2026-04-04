@@ -271,6 +271,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const [OktaDomain, SetOktaDomain] = useState("");
 	const [AzureTenant, SetAzureTenant] = useState("");
 	const [SamlMetadata, SetSamlMetadata] = useState("");
+	const [OrganizationId, SetOrganizationId] = useState("");
 	const { t: T } = useTranslation("account");
 
 	const HandleEnterpriseLogin = (
@@ -281,6 +282,9 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 		Params.set("connection", Connection);
 		if (OrganizationDomain.trim()) {
 			Params.set("login_hint", OrganizationDomain.trim());
+		}
+		if (OrganizationId.trim()) {
+			Params.set("organization", OrganizationId.trim());
 		}
 		if (Extra) {
 			for (const [Key, Value] of Object.entries(Extra)) {
@@ -295,9 +299,12 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 	const HandleDomainSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
 		if (!OrganizationDomain.trim()) return;
-		window.location.href = `/Account/SignIn?login_hint=${encodeURIComponent(
-			OrganizationDomain.trim(),
-		)}`;
+		const DomainParams = new URLSearchParams();
+		DomainParams.set("login_hint", OrganizationDomain.trim());
+		if (OrganizationId.trim()) {
+			DomainParams.set("organization", OrganizationId.trim());
+		}
+		window.location.href = `/Account/SignIn?${DomainParams.toString()}`;
 	};
 
 	return (
@@ -342,6 +349,21 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 
 			<DynamicInput
 				Content={{
+					Label: T("portal.enterprise.orgIdLabel", {
+						defaultValue: "Auth0 Organization ID (optional)",
+					}),
+					Placeholder: T("portal.enterprise.orgIdPlaceholder", {
+						defaultValue: "org_xxxxxxxxxxxxxxxx",
+					}),
+					Type: "text",
+					Required: false,
+					OnChange: SetOrganizationId,
+				}}
+				Id="portal-enterprise-org-id"
+			/>
+
+			<DynamicInput
+				Content={{
 					Label: T("portal.enterprise.oktaDomainLabel", {
 						defaultValue: "Okta Domain",
 					}),
@@ -367,14 +389,15 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					defaultValue: "Continue with Okta",
 				})}
 				{"\u2001"}
-				<img
-					src="/Image/Okta.svg"
-					alt="Okta"
-					title="Okta"
-					width="20"
-					height="20"
-					className="h-5 w-5"
-				/>
+				<IconTooltip Label="Okta">
+					<img
+						src="/Image/Okta.svg"
+						alt="Okta"
+						width="20"
+						height="20"
+						className="h-5 w-5"
+					/>
+				</IconTooltip>
 			</Button>
 
 			<DynamicInput
@@ -404,14 +427,15 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 					defaultValue: "Continue with Azure AD",
 				})}
 				{"\u2001"}
-				<img
-					src="/Image/Microsoft.svg"
-					alt="Microsoft"
-					title="Microsoft Azure AD"
-					width="20"
-					height="20"
-					className="h-5 w-5"
-				/>
+				<IconTooltip Label="Microsoft Azure AD">
+					<img
+						src="/Image/Microsoft.svg"
+						alt="Microsoft"
+						width="20"
+						height="20"
+						className="h-5 w-5"
+					/>
+				</IconTooltip>
 			</Button>
 
 			<DynamicInput
@@ -451,7 +475,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			<p className="text-center text-xs text-muted-foreground">
 				{T("portal.enterprise.note", {
 					defaultValue:
-						"OIDC Discovery \u2001+\u2001 SAML 2.0 \u2001+\u2001 SCIM provisioning",
+						"OpenID Connect Discovery \u2001+\u2001 SAML 2.0 Assertion \u2001+\u2001 SCIM 2.0 User Provisioning",
 				})}
 			</p>
 		</div>
@@ -625,14 +649,15 @@ const PortalTierRow = ({
 										defaultValue: "Continue with GitHub",
 									})}
 									{"\u2001"}
-									<img
-										src="/Image/GitHub.svg"
-										alt="GitHub"
-										title="GitHub"
-										width="20"
-										height="20"
-										className="h-5 w-5"
-									/>
+									<IconTooltip Label="GitHub">
+										<img
+											src="/Image/GitHub.svg"
+											alt="GitHub"
+											width="20"
+											height="20"
+											className="h-5 w-5"
+										/>
+									</IconTooltip>
 								</Button>
 								<Button
 									className="StaccatoButton w-full"
@@ -646,14 +671,15 @@ const PortalTierRow = ({
 										defaultValue: "Continue with Google",
 									})}
 									{"\u2001"}
-									<img
-										src="/Image/Google.svg"
-										alt="Google"
-										title="Google"
-										width="20"
-										height="20"
-										className="h-5 w-5"
-									/>
+									<IconTooltip Label="Google">
+										<img
+											src="/Image/Google.svg"
+											alt="Google"
+											width="20"
+											height="20"
+											className="h-5 w-5"
+										/>
+									</IconTooltip>
 								</Button>
 								<Button
 									className="StaccatoButton w-full"
@@ -667,20 +693,21 @@ const PortalTierRow = ({
 										defaultValue: "Continue with GitLab",
 									})}
 									{"\u2001"}
-									<img
-										src="/Image/GitLab.svg"
-										alt="GitLab"
-										title="GitLab"
-										width="20"
-										height="20"
-										className="h-5 w-5"
-									/>
+									<IconTooltip Label="GitLab">
+										<img
+											src="/Image/GitLab.svg"
+											alt="GitLab"
+											width="20"
+											height="20"
+											className="h-5 w-5"
+										/>
+									</IconTooltip>
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
 								<p className="text-center text-xs text-muted-foreground">
 									{T("portal.provider.oauthNote", {
 										defaultValue:
-											"OAuth 2.0 \u00b7 Linked to your preferences",
+											"OAuth 2.0 \u00b7 Profile + Email scope \u00b7 Linked to your preferences",
 									})}
 								</p>
 							</div>
