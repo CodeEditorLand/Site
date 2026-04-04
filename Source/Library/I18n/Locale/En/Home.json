@@ -31,7 +31,7 @@
 		"title": "Built Different. Measurably Better."
 	},
 	"hero": {
-		"badge": "Native Speed · No Electron · CC0",
+		"badge": "Native Speed \u2001 No Electron \u2001 CC0",
 		"subtitle": "Stop handing VS Code a gigabyte of RAM.\n\nLand is built on Rust, Tauri, and Effect-TS. Fast enough that you notice immediately.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",

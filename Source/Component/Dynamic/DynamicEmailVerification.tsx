@@ -153,7 +153,7 @@ const DynamicEmailVerification = ({
 												"Resend in {{seconds}}s",
 											seconds: ResendCooldown,
 										})
-									: Content.Pending.ResendButton.Text ?? "",
+									: (Content.Pending.ResendButton.Text ?? ""),
 							FullWidth: true,
 							Disabled: !Email || ResendCooldown > 0,
 						}}

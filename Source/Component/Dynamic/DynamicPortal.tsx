@@ -707,7 +707,7 @@ const PortalTierRow = ({
 								<p className="text-center text-xs text-muted-foreground">
 									{T("portal.provider.oauthNote", {
 										defaultValue:
-											"OAuth 2.0 \u00b7 Profile + Email scope \u00b7 Linked to your preferences",
+											"OAuth 2.0 \u2001 Profile + Email scope \u2001 Linked to your preferences",
 									})}
 								</p>
 							</div>
@@ -759,7 +759,7 @@ const PortalTierRow = ({
 								<p className="text-center text-xs text-muted-foreground">
 									{T("portal.localfirst.note", {
 										defaultValue:
-											"Zero cloud dependency \u00b7 JWT certificates \u00b7 mTLS",
+											"Zero cloud dependency \u2001 JWT certificates \u2001 mTLS",
 									})}
 								</p>
 							</div>

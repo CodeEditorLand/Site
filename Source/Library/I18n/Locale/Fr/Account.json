@@ -143,7 +143,7 @@
 			"continueGitHub": "Continuer avec GitHub",
 			"continueGoogle": "Continuer avec Google",
 			"continueGitLab": "Continuer avec GitLab",
-			"oauthNote": "OAuth 2.0 · Lie a vos preferences",
+			"oauthNote": "OAuth 2.0 \u2001 Lie a vos preferences",
 			"feature": {
 				"github": "Identite GitHub liee aux preferences",
 				"sso": "Authentification unique pour tous les services Land",
@@ -166,7 +166,7 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Analyse en cours...",
 			"connect": "Se connecter au Air Daemon",
-			"note": "Zero dependance au cloud · Certificats JWT · mTLS",
+			"note": "Zero dependance au cloud \u2001 Certificats JWT \u2001 mTLS",
 			"feature": {
 				"daemon": "Connexion directe du Air Daemon a Land/Element",
 				"build": "Lancez des compilations directement via la console du site web",
@@ -197,7 +197,7 @@
 			"continueOkta": "Continuer avec Okta",
 			"continueAzure": "Continuer avec Azure AD",
 			"continueSAML": "Continuer avec SAML",
-			"note": "OIDC Discovery · SAML 2.0 · Provisionnement SCIM",
+			"note": "OIDC Discovery \u2001 SAML 2.0 \u2001 Provisionnement SCIM",
 			"feature": {
 				"okta": "Integration SSO Okta",
 				"azure": "Support Azure AD / Entra ID",

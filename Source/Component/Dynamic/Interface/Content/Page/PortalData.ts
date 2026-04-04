@@ -38,7 +38,7 @@ const PortalData: PortalContent = {
 		BorderColor: "var(--TierCloudFore)",
 		Icon: "Cloud",
 		Badge: "Hosted",
-		Protocol: "HTTPS \u00b7 WebSocket \u00b7 JWT RS256",
+		Protocol: "HTTPS \u2001 WebSocket \u2001 JWT RS256",
 		Feature: [
 			{
 				Heading: "Your data never leaves in plaintext",
@@ -73,7 +73,7 @@ const PortalData: PortalContent = {
 		],
 		Capability: [
 			"WebSocket reconnect with exponential back-off: drops heal automatically",
-			"JWT RS256: 15 min access \u00b7 30 day refresh, rotated on sign-in",
+			"JWT RS256: 15 min access \u2001 30 day refresh, rotated on sign-in",
 			"Rate-limited per IP and per account: brute force blocked at the gateway",
 			"CORS-hardened API gateway: no cross-origin leakage",
 			"Global CDN edge caching: assets served fast regardless of region",
@@ -89,7 +89,7 @@ const PortalData: PortalContent = {
 		BorderColor: "var(--TierProviderFore)",
 		Icon: "GitFork",
 		Badge: "OAuth",
-		Protocol: "OAuth 2.0 \u00b7 PKCE \u00b7 OpenID Connect",
+		Protocol: "OAuth 2.0 \u2001 PKCE \u2001 OpenID Connect",
 		Feature: [
 			{
 				Heading: "No new password to remember",
@@ -140,7 +140,7 @@ const PortalData: PortalContent = {
 		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "Wifi",
 		Badge: "Offline",
-		Protocol: "Air Daemon \u00b7 mTLS \u00b7 JWT ES384",
+		Protocol: "Air Daemon \u2001 mTLS \u2001 JWT ES384",
 		Feature: [
 			{
 				Heading: "Connects over loopback. Never leaves your machine",
@@ -191,7 +191,7 @@ const PortalData: PortalContent = {
 		BorderColor: "var(--PlatformDesktop)",
 		Icon: "Building2",
 		Badge: "Enterprise",
-		Protocol: "OIDC \u00b7 SAML 2.0 \u00b7 SCIM 2.0",
+		Protocol: "OIDC \u2001 SAML 2.0 \u2001 SCIM 2.0",
 		Feature: [
 			{
 				Heading: "One login unlocks every tool",

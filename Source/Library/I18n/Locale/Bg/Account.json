@@ -147,7 +147,7 @@
 			"continueGitHub": "Продължете с GitHub",
 			"continueGoogle": "Продължете с Google",
 			"continueGitLab": "Продължете с GitLab",
-			"oauthNote": "OAuth 2.0 \u00b7 Само имейл обхват \u00b7 Свързан с предпочитанията ви",
+			"oauthNote": "OAuth 2.0 \u2001 Само имейл обхват \u2001 Свързан с предпочитанията ви",
 			"feature": {
 				"github": "Без нова парола: GitHub идентичността ви е достатъчна",
 				"sso": "Единичен вход за всички Land услуги",
@@ -170,7 +170,7 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Сканиране...",
 			"connect": "Свържете се с Air Daemon",
-			"note": "Нулева зависимост от облака \u00b7 JWT сертификати \u00b7 mTLS",
+			"note": "Нулева зависимост от облака \u2001 JWT сертификати \u2001 mTLS",
 			"feature": {
 				"daemon": "Браузърът се свързва с Air Daemon чрез криптиран loopback",
 				"build": "Стартирайте билдове директно от конзолата на уебсайта",

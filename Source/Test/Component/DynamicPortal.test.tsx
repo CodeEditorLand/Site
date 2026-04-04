@@ -121,7 +121,9 @@ vi.mock("../../Component/UI/Button", () => ({
 		type?: string;
 		[Key: string]: unknown;
 	}) => (
-		<button type={(type as "button" | "submit") ?? "button"} onClick={onClick}>
+		<button
+			type={(type as "button" | "submit") ?? "button"}
+			onClick={onClick}>
 			{children}
 		</button>
 	),
@@ -314,6 +316,8 @@ describe("DynamicPortal — Enterprise SSO tier", () => {
 
 		render(<DynamicPortal Content={ContentWithoutEnterprise} />);
 
-		expect(screen.queryByText("Continue with Okta")).not.toBeInTheDocument();
+		expect(
+			screen.queryByText("Continue with Okta"),
+		).not.toBeInTheDocument();
 	});
 });

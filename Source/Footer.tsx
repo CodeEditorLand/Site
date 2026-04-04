@@ -42,7 +42,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 
 			<div className="flex flex-col items-center gap-2 py-4 text-xs text-muted-foreground sm:flex-row sm:gap-4">
 				<span className="hidden sm:inline" aria-hidden="true">
-					&middot;
+					&#x2001;
 				</span>
 				<a
 					href="https://editor.land"
@@ -50,7 +50,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 					CodeEditorLand
 				</a>
 				<span className="hidden sm:inline" aria-hidden="true">
-					&middot;
+					&#x2001;
 				</span>
 				<a
 					href="https://PlayForm.Cloud"

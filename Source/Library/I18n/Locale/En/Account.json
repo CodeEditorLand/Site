@@ -147,7 +147,7 @@
 			"continueGitHub": "Continue with GitHub",
 			"continueGoogle": "Continue with Google",
 			"continueGitLab": "Continue with GitLab",
-			"oauthNote": "OAuth 2.0 \u00b7 Email scope only \u00b7 Linked to your preferences",
+			"oauthNote": "OAuth 2.0 \u2001 Email scope only \u2001 Linked to your preferences",
 			"feature": {
 				"github": "No new password — your GitHub identity is enough",
 				"sso": "Single sign-on across all Land services",
@@ -170,7 +170,7 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Scanning...",
 			"connect": "Connect to Air Daemon",
-			"note": "Zero cloud dependency \u00b7 JWT certificates \u00b7 mTLS",
+			"note": "Zero cloud dependency \u2001 JWT certificates \u2001 mTLS",
 			"feature": {
 				"daemon": "Browser connects to Air Daemon over encrypted loopback",
 				"build": "Launch builds directly from the website console",

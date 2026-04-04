@@ -147,7 +147,7 @@
 			"continueGitHub": "Weiter mit GitHub",
 			"continueGoogle": "Weiter mit Google",
 			"continueGitLab": "Weiter mit GitLab",
-			"oauthNote": "OAuth 2.0 · Verknüpft mit Ihren Präferenzen",
+			"oauthNote": "OAuth 2.0 \u2001 Verknüpft mit Ihren Präferenzen",
 			"feature": {
 				"github": "GitHub-Identität verknüpft mit Präferenzen",
 				"sso": "Einmalanmeldung für alle Land-Dienste",
@@ -170,7 +170,7 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Wird gescannt...",
 			"connect": "Mit Air Daemon verbinden",
-			"note": "Keine Cloud-Abhängigkeit · JWT-Zertifikate · mTLS",
+			"note": "Keine Cloud-Abhängigkeit \u2001 JWT-Zertifikate \u2001 mTLS",
 			"feature": {
 				"daemon": "Direkte Air Daemon-Verbindung zu Land/Element",
 				"build": "Builds direkt über die Website-Konsole starten",
@@ -207,7 +207,7 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML-Metadaten-URL",
 			"samlMetadataPlaceholder": "https://ihr-idp.com/metadata.xml",
-			"note": "OIDC Discovery · SAML 2.0 · SCIM-Bereitstellung",
+			"note": "OIDC Discovery \u2001 SAML 2.0 \u2001 SCIM-Bereitstellung",
 			"feature": {
 				"okta": "Okta SSO-Integration",
 				"azure": "Azure AD / Entra ID-Unterstützung",

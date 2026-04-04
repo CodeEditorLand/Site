@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { UseAnalytics } from "./AnalyticsProvider";
 
 const PageviewTracker = () => {
+	const Analytics = UseAnalytics();
 	const [IsMounted, SetIsMounted] = useState(false);
 	const HasTrackedReference = useRef(false);
 	const TrackPageViewReference = useRef<
@@ -16,10 +17,9 @@ const PageviewTracker = () => {
 	}, []);
 
 	useEffect(() => {
-		if (!IsMounted) return;
+		if (!Analytics || !IsMounted) return;
 
-		const { trackPageView: TrackPageView } = UseAnalytics();
-		TrackPageViewReference.current = TrackPageView;
+		TrackPageViewReference.current = Analytics.trackPageView;
 
 		const HandleRouteChange = () => {
 			if (HasTrackedReference.current) return;
@@ -72,7 +72,7 @@ const PageviewTracker = () => {
 			history.pushState = OriginalPushState;
 			history.replaceState = OriginalReplaceState;
 		};
-	}, [IsMounted]);
+	}, [IsMounted, Analytics]);
 
 	return null;
 };

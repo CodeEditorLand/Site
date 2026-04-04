@@ -29,7 +29,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Hero: {
 			Badge: {
 				Text: T("home:hero.badge", {
-					defaultValue: "Native Speed \u00b7 No Electron \u00b7 CC0",
+					defaultValue: "Native Speed \u2001 No Electron \u2001 CC0",
 				}),
 				Variant: "secondary",
 			},
@@ -65,13 +65,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "1",
 					Title: "Rust Core",
-					Tooltip: "Runs at native CPU speed. Zero Electron overhead.",
+					Tooltip:
+						"Runs at native CPU speed. Zero Electron overhead.",
 					Colors: ["var(--ExtensionRust)", "var(--Mute)"],
 				},
 				{
 					Id: "2",
 					Title: "Tauri UI",
-					Tooltip: "30\u00d7 lighter than Electron, native look on every OS",
+					Tooltip:
+						"30\u00d7 lighter than Electron, native look on every OS",
 					Colors: [
 						"var(--ExtensionTauri)",
 						"var(--Primary)",
@@ -82,7 +84,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "3",
 					Title: "Effect-TS Services",
-					Tooltip: "Type errors caught at compile time, not in production",
+					Tooltip:
+						"Type errors caught at compile time, not in production",
 					Colors: [
 						"var(--ExtensionEffectTypeScript)",
 						"var(--ExtensionEffectTypeScriptFore)",
@@ -104,7 +107,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "6",
 					Title: "Cross-Platform",
-					Tooltip: "One codebase, native on macOS, Windows, and Linux",
+					Tooltip:
+						"One codebase, native on macOS, Windows, and Linux",
 					Colors: [
 						"var(--OSMacOS)",
 						"var(--OSWindows)",
@@ -114,13 +118,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "7",
 					Title: "VS Code API",
-					Tooltip: "Full VS Code API surface. No extension rewrites needed.",
+					Tooltip:
+						"Full VS Code API surface. No extension rewrites needed.",
 					Colors: ["var(--SpineIPC)"],
 				},
 				{
 					Id: "8",
 					Title: "Open Source CC0",
-					Tooltip: "Free to use, fork, and ship. No restrictions, ever.",
+					Tooltip:
+						"Free to use, fork, and ship. No restrictions, ever.",
 					Colors: ["var(--SpinegRPC)", "var(--ExtensionTauri)"],
 				},
 			],
@@ -252,24 +258,28 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Price: { Monthly: 0, Yearly: 0 },
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
-							defaultValue: "Mountain: native process manager, replaces Electron",
+							defaultValue:
+								"Mountain: native process manager, replaces Electron",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
 							defaultValue:
 								"Cocoon: extension host, your VS Code extensions work unchanged",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
-							defaultValue: "Wind: full workbench shell, panels and sidebars",
+							defaultValue:
+								"Wind: full workbench shell, panels and sidebars",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
-							defaultValue: "Sky: visual layer, themes and layouts",
+							defaultValue:
+								"Sky: visual layer, themes and layouts",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
 							defaultValue:
 								"Air: silent updates, cryptographically signed",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
-							defaultValue: "Echo: work-stealing scheduler, uses every CPU core",
+							defaultValue:
+								"Echo: work-stealing scheduler, uses every CPU core",
 						}),
 					],
 					CTA: {
@@ -301,7 +311,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 								"Cross-platform installer with silent auto-update",
 						}),
 						T("home:roadmap.tiers.next.features.3", {
-							defaultValue: "gRPC IPC protocol finalized and documented",
+							defaultValue:
+								"gRPC IPC protocol finalized and documented",
 						}),
 						T("home:roadmap.tiers.next.features.4", {
 							defaultValue:
@@ -333,13 +344,16 @@ const HomePage = ({ Content, ClassName }: Property) => {
 								"Native mobile editing: iOS and Android",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Collaborative real-time editing built in",
+							defaultValue:
+								"Collaborative real-time editing built in",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue: "AI-assisted development, privacy-first",
+							defaultValue:
+								"AI-assisted development, privacy-first",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
-							defaultValue: "Open plugin marketplace and extension ecosystem",
+							defaultValue:
+								"Open plugin marketplace and extension ecosystem",
 						}),
 					],
 					CTA: {

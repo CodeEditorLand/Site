@@ -336,7 +336,9 @@ const DynamicResetPassword = ({
 												: "Show confirm password"
 										}
 										onClick={() =>
-											SetShowConfirmPassword(!ShowConfirmPassword)
+											SetShowConfirmPassword(
+												!ShowConfirmPassword,
+											)
 										}>
 										{ShowConfirmPassword ? (
 											<lucide.EyeOff

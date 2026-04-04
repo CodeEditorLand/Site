@@ -104,7 +104,8 @@
 		)
 		scale(var(--AttentionScale, 1));
 	/* border-width removed: it triggers layout (CLS). Use outline for shimmer. */
-	outline: calc(var(--StaccatoBorder) * 0.25px) solid hsl(0 0% calc(82% + var(--StaccatoBorder) * 5%));
+	outline: calc(var(--StaccatoBorder) * 0.25px) solid
+		hsl(0 0% calc(82% + var(--StaccatoBorder) * 5%));
 	outline-offset: -1px;
 	opacity: var(--AttentionOpacity, 1);
 	transition:
@@ -325,7 +326,10 @@
 }
 
 .StaccatoBreath {
-	opacity: max(0.8, calc(var(--AttentionOpacity, 0.9) + var(--StaccatoRaw) * 0.1));
+	opacity: max(
+		0.8,
+		calc(var(--AttentionOpacity, 0.9) + var(--StaccatoRaw) * 0.1)
+	);
 	/* 1.6s > commit interval (500ms) so the element is always mid-transition
 	   between two noise states — continuous breathing, never a hard jump */
 	transition: opacity 1.6s ease;
