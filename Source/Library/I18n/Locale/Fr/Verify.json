@@ -37,5 +37,13 @@
 	"resendFailed": "Echec du renvoi de l'e-mail.\nVeuillez reessayer.",
 	"emailLabel": "E-mail",
 	"emailPlaceholder": "Entrez votre e-mail pour renvoyer la verification",
-	"resendSuccess": "E-mail de verification renvoye !"
+	"resendSuccess": "E-mail de verification renvoye !",
+	"resendCooldown": "Renvoyer dans {{seconds}}s",
+	"resend": {
+		"success": "E-mail de verification envoye avec succes."
+	},
+	"token": {
+		"invalid": "Ce lien de verification est invalide.",
+		"expired": "Ce lien de verification a expire. Veuillez en demander un nouveau."
+	}
 }

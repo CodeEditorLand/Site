@@ -8,13 +8,15 @@
 			"title": "Producto",
 			"features": "Funciones",
 			"downloads": "Descargar",
-			"docs": "Documentacion"
+			"docs": "Documentacion",
+			"blog": "Blog"
 		},
 		"company": {
 			"title": "Comunidad",
 			"issues": "Discusiones",
 			"contributing": "Contribuir",
-			"github": "GitHub"
+			"github": "GitHub",
+			"enterprise": "Empresarial"
 		},
 		"legal": {
 			"title": "Legal",
@@ -22,6 +24,12 @@
 			"terms": "Terminos",
 			"license": "Licencia"
 		}
+	},
+	"social": {
+		"github": "GitHub",
+		"twitter": "X (Twitter)",
+		"discord": "Discord",
+		"linkedin": "LinkedIn"
 	},
 	"bottomBar": {
 		"copyright": "© {{year}} Code Editor Land.\nTodos los derechos reservados.",

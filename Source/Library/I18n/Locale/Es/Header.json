@@ -11,8 +11,18 @@
 	},
 	"actions": {
 		"signIn": "Iniciar sesion",
+		"signUp": "Registrarse",
 		"editorPortal": "Portal del editor",
 		"getStarted": "Obtener Land",
-		"logout": "Cerrar sesion"
+		"logout": "Cerrar sesion",
+		"loading": "Cargando\u2026"
+	},
+	"user": {
+		"avatarAlt": "Menu de usuario",
+		"menu": {
+			"dashboard": "Panel de control",
+			"account": "Cuenta",
+			"signOut": "Cerrar sesion"
+		}
 	}
 }

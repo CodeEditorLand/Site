@@ -68,6 +68,42 @@
 			"echo": {
 				"description": "Високопроизводителен изпълнител с кражба на работа",
 				"subtitle": "Rust планировчик на задачи"
+			},
+			"common": {
+				"description": "Абстрактна основна библиотека - дефиниции на trait-ове и DTO-та",
+				"subtitle": "Rust основна библиотека"
+			},
+			"vine": {
+				"description": "Дефиниция и имплементация на gRPC протокол",
+				"subtitle": "Protobuf/Rust IPC"
+			},
+			"rest": {
+				"description": "JS бъндлер за VS Code платформен код",
+				"subtitle": "Rust/OXC бъндлер"
+			},
+			"output": {
+				"description": "Бъндлирани JS артефакти от Rest",
+				"subtitle": "JavaScript изпълним бъндъл"
+			},
+			"mist": {
+				"description": "WebSocket комуникационен слой",
+				"subtitle": "Rust WebSocket"
+			},
+			"grove": {
+				"description": "Нативен WASM и Rhai хост за разширения",
+				"subtitle": "Rust/WASM хост за разширения"
+			},
+			"worker": {
+				"description": "Web Workers за фронтенда",
+				"subtitle": "TypeScript Web Workers"
+			},
+			"sidecar": {
+				"description": "Предварително компилирани Node.js файлове",
+				"subtitle": "Крос-платформен Node.js"
+			},
+			"maintain": {
+				"description": "CI/CD и скриптове за поддръжка",
+				"subtitle": "Инструменти за компилация"
 			}
 		},
 		"repositories": {
@@ -181,7 +217,7 @@
 			"teamSize": "Размер на екипа",
 			"teamSizePlaceholder": "Изберете размер на екипа",
 			"message": "Как можем да помогнем?",
-			"messagePlaceholder": "Разкажете ни за вашите изисквания, нуди за внедряване или въпроси.",
+			"messagePlaceholder": "Разкажете ни за вашите изисквания, нужди за внедряване или въпроси.",
 			"submitButton": "Изпратете запитване"
 		},
 		"features": {

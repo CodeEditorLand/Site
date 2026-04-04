@@ -17,7 +17,8 @@
 		"errorToast": "Неуспешно изпращане на имейл за нулиране",
 		"emailRequired": "Имейлът е задължителен",
 		"resendSuccess": "Имейлът за нулиране е изпратен отново",
-		"resendError": "Неуспешно повторно изпращане на имейл"
+		"resendError": "Неуспешно повторно изпращане на имейл",
+		"emailSent": "Имейл за нулиране е изпратен във входящата ви поща"
 	},
 	"resetPassword": {
 		"checkingMessage": "Проверка на токена за нулиране, моля изчакайте...",
@@ -65,7 +66,9 @@
 		"or": "Или",
 		"noAccount": "Нямате профил?",
 		"successToast": "Успешен вход",
-		"errorToast": "Невалидни данни за вход"
+		"errorToast": "Невалидни данни за вход",
+		"showPassword": "Покажи паролата",
+		"hidePassword": "Скрий паролата"
 	},
 	"signUp": {
 		"confirmPasswordLabel": "Потвърдете паролата",
@@ -101,7 +104,12 @@
 		"and": "и",
 		"successToast": "Профилът е създаден успешно",
 		"errorToast": "Неуспешно създаване на профил",
-		"confirmPasswordMismatch": "Паролите не съвпадат"
+		"confirmPasswordMismatch": "Паролите не съвпадат",
+		"passwordStrength": {
+			"weak": "Слаба парола",
+			"medium": "Средна парола",
+			"strong": "Силна парола"
+		}
 	},
 	"common": {
 		"and": "и"
@@ -113,6 +121,10 @@
 			"title": "Облачен профил",
 			"subtitle": "Сигурен онлайн вход с пълна облачна синхронизация.\nВашите настройки, разширения и предпочитания се съхраняват и синхронизират между всички устройства.",
 			"signIn": "Сигурен вход",
+			"emailLabel": "Имейл",
+			"emailPlaceholder": "name@example.com",
+			"passwordLabel": "Парола",
+			"passwordPlaceholder": "Въведете паролата си",
 			"feature": {
 				"sync": "Синхронизация на настройки между устройства",
 				"backup": "Автоматично облачно архивиране на конфигурации",
@@ -189,6 +201,12 @@
 			"continueOkta": "Продължете с Okta",
 			"continueAzure": "Продължете с Azure AD",
 			"continueSAML": "Продължете с SAML",
+			"oktaDomainLabel": "Okta домейн",
+			"oktaDomainPlaceholder": "вашата-орг.okta.com",
+			"azureTenantLabel": "Azure AD идентификатор на наемател",
+			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"samlMetadataLabel": "URL на SAML метаданни",
+			"samlMetadataPlaceholder": "https://вашият-idp.com/metadata.xml",
 			"note": "OIDC Discovery · SAML 2.0 · SCIM осигуряване",
 			"feature": {
 				"okta": "Okta SSO интеграция",
@@ -221,5 +239,13 @@
 	"dashboard": "Към таблото",
 	"logout": "Изход",
 	"emailNotVerified": "Имейлът не е потвърден. Проверете входящата си поща.",
-	"redirecting": "Пренасочване към вход..."
+	"redirecting": "Пренасочване към вход...",
+	"dashboardPage": {
+		"title": "Табло",
+		"welcome": "Добре дошли отново",
+		"downloadsHeading": "Изтегляния",
+		"signOut": "Изход",
+		"loading": "Зареждане на профила\u2026",
+		"error": "Неуспешно зареждане на профила."
+	}
 }

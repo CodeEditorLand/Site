@@ -17,7 +17,8 @@
 		"errorToast": "Echec de l'envoi de l'e-mail de reinitialisation",
 		"emailRequired": "L'e-mail est requis",
 		"resendSuccess": "E-mail de reinitialisation renvoye",
-		"resendError": "Echec du renvoi de l'e-mail"
+		"resendError": "Echec du renvoi de l'e-mail",
+		"emailSent": "E-mail de reinitialisation envoye dans votre boite de reception"
 	},
 	"resetPassword": {
 		"checkingMessage": "Validation de votre jeton de reinitialisation, veuillez patienter...",
@@ -65,7 +66,9 @@
 		"or": "Ou",
 		"noAccount": "Vous n'avez pas de compte ?",
 		"successToast": "Connexion reussie",
-		"errorToast": "Identifiants invalides"
+		"errorToast": "Identifiants invalides",
+		"showPassword": "Afficher le mot de passe",
+		"hidePassword": "Masquer le mot de passe"
 	},
 	"signUp": {
 		"confirmPasswordLabel": "Confirmer le mot de passe",
@@ -101,7 +104,12 @@
 		"and": "et",
 		"successToast": "Compte cree avec succes",
 		"errorToast": "Echec de la creation du compte",
-		"confirmPasswordMismatch": "Les mots de passe ne correspondent pas"
+		"confirmPasswordMismatch": "Les mots de passe ne correspondent pas",
+		"passwordStrength": {
+			"weak": "Mot de passe faible",
+			"medium": "Mot de passe moyen",
+			"strong": "Mot de passe fort"
+		}
 	},
 	"common": {
 		"and": "et"
@@ -221,5 +229,13 @@
 	"dashboard": "Aller au tableau de bord",
 	"logout": "Deconnexion",
 	"emailNotVerified": "E-mail non verifie.\nVerifiez votre boite de reception.",
-	"redirecting": "Redirection vers la connexion..."
+	"redirecting": "Redirection vers la connexion...",
+	"dashboardPage": {
+		"title": "Tableau de bord",
+		"welcome": "Bon retour",
+		"downloadsHeading": "Telechargements",
+		"signOut": "Deconnexion",
+		"loading": "Chargement du compte\u2026",
+		"error": "Echec du chargement du compte."
+	}
 }
