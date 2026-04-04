@@ -5,16 +5,30 @@ import type Property from "./Interface/Property/Testimonial.js";
 
 /**
  * Semantic color map per architecture element ID - maps each element to its design token.
- * Mountain/Air/Echo: ExtensionRust (Rust backend), Cocoon: ExtensionEffectTypeScript,
- * Wind: LanguageTypeScript (TS workbench), Sky: ExtensionTauri (UI rendering).
+ * Rust backends (Mountain/Air/Echo/Common): ExtensionRust/LanguageRust.
+ * Effect-TS layer (Cocoon): ExtensionEffectTypeScript.
+ * TypeScript workbench (Wind/Worker): LanguageTypeScript/LanguageJavaScript.
+ * Astro UI (Sky): ExtensionAstro. WASM sandbox (Grove): SpineWASM.
+ * gRPC contracts (Vine): SpinegRPC. Network (Mist): SpineIPC.
+ * Toolchain (Rest/Output/Maintain): ToolOxc/ToolEsBuild/ToolBiome.
+ * Node runtime (SideCar): RuntimeNode.
  */
 const TestimonialColorMap: Record<string, string> = {
-	mountain: "var(--ExtensionRust)",
-	cocoon: "var(--ExtensionEffectTypeScript)",
-	wind: "var(--LanguageTypeScript)",
-	sky: "var(--ExtensionTauri)",
 	air: "var(--ExtensionRust)",
+	cocoon: "var(--ExtensionEffectTypeScript)",
+	common: "var(--LanguageRust)",
 	echo: "var(--ExtensionRust)",
+	grove: "var(--SpineWASM)",
+	maintain: "var(--ToolBiome)",
+	mist: "var(--SpineIPC)",
+	mountain: "var(--ExtensionRust)",
+	output: "var(--ToolEsBuild)",
+	rest: "var(--ToolOxc)",
+	sidecar: "var(--RuntimeNode)",
+	sky: "var(--ExtensionAstro)",
+	vine: "var(--SpinegRPC)",
+	wind: "var(--LanguageTypeScript)",
+	worker: "var(--LanguageJavaScript)",
 };
 
 /**
@@ -139,42 +153,36 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										)}
 									</div>
 								</blockquote>
-								<div className="flex items-center gap-4">
-									{Testimonial.Avatar ? (
-										<img
-											src={Testimonial.Avatar}
-											alt={`Photo of ${Testimonial.Author}`}
-											width="48"
-											height="48"
-											className="StaccatoAvatar size-12 rounded-none border border-[var(--Border)] object-cover"
-											loading="lazy"
-										/>
-									) : (
-										<div
-											className="StaccatoAvatar flex size-12 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
-											aria-hidden="true">
-											<span className="text-lg font-semibold">
-												{(
-													Testimonial.Author || "?"
-												).charAt(0)}
-											</span>
-										</div>
-									)}
-									<div>
-										<cite className="font-semibold not-italic">
-											{Testimonial.Author}
-										</cite>
-										{(Testimonial.Role ||
-											Testimonial.Company) && (
-											<p className="StaccatoBreath text-sm text-muted-foreground">
-												{Testimonial.Role}
-												{Testimonial.Role &&
-													Testimonial.Company &&
-													", "}
-												{Testimonial.Company}
-											</p>
+								<div>
+									<cite className="font-semibold not-italic">
+										{Testimonial.Href ? (
+											<a
+												href={Testimonial.Href}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="hover:underline">
+												{Testimonial.Author}
+											</a>
+										) : (
+											Testimonial.Author
 										)}
-									</div>
+										{Testimonial.Emoji && (
+											<span aria-hidden="true">
+												{"\u2001"}
+												{Testimonial.Emoji}
+											</span>
+										)}
+									</cite>
+									{(Testimonial.Role ||
+										Testimonial.Company) && (
+										<p className="StaccatoBreath text-sm text-muted-foreground">
+											{Testimonial.Role}
+											{Testimonial.Role &&
+												Testimonial.Company &&
+												", "}
+											{Testimonial.Company}
+										</p>
+									)}
 								</div>
 							</article>
 						);

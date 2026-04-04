@@ -5,5 +5,7 @@ export default interface Interface {
 	Role?: string;
 	Company?: string;
 	Avatar?: string;
+	Emoji?: string;
+	Href?: string;
 	Rating?: 1 | 2 | 3 | 4 | 5;
 }

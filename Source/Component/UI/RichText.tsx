@@ -10,7 +10,8 @@ type TermCategory =
 	| "Telemetry"
 	| "Protocol"
 	| "Feature"
-	| "License";
+	| "License"
+	| "Tool";
 
 const TermDictionary = new Map<string, TermCategory>([
 	// Architecture elements
@@ -45,6 +46,13 @@ const TermDictionary = new Map<string, TermCategory>([
 	["WebSocket", "Protocol"],
 	["WASM", "Protocol"],
 	["Rhai", "Protocol"],
+	// Tools / Frameworks
+	["Tauri", "Tool"],
+	["Effect-TS", "Tool"],
+	["Cargo", "Tool"],
+	["OXC", "Tool"],
+	["SWC", "Tool"],
+	["Electron", "Tool"],
 	// License
 	["CC0", "License"],
 	["PGP", "License"],
@@ -56,6 +64,7 @@ const CategoryStyle: Record<TermCategory, string> = {
 	Protocol: "border-purple-200 bg-purple-50 text-purple-700",
 	Feature: "border-orange-200 bg-orange-50 text-orange-700",
 	License: "border-green-200 bg-green-50 text-green-700",
+	Tool: "border-sky-200 bg-sky-50 text-sky-700",
 };
 
 const CategoryLabel: Record<TermCategory, string> = {
@@ -64,6 +73,12 @@ const CategoryLabel: Record<TermCategory, string> = {
 	Protocol: "Protocol",
 	Feature: "Compile feature flag",
 	License: "License / Security",
+	Tool: "Build tool / Framework",
+};
+
+const TermLogo: Record<string, string> = {
+	Tauri: "/Image/Tauri.svg",
+	"Effect-TS": "/Image/EffectTS.svg",
 };
 
 // ─── Segment types ────────────────────────────────────────────────────────────
@@ -176,15 +191,27 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 					{Segment.Value}
 				</em>
 			);
-		case "Term":
+		case "Term": {
+			const Logo = TermLogo[Segment.Value];
 			return (
 				<span
-					className={`inline-flex items-center rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] font-medium ${CategoryStyle[Segment.Category]}`}
+					className={`inline-flex items-center gap-1 rounded-none border px-1.5 py-0.5 font-mono text-[0.78em] font-medium ${CategoryStyle[Segment.Category]}`}
 					title={`${CategoryLabel[Segment.Category]}: ${Segment.Value}`}
 					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}>
+					{Logo && (
+						<img
+							src={Logo}
+							alt=""
+							width={12}
+							height={12}
+							className="opacity-60"
+							aria-hidden="true"
+						/>
+					)}
 					{Segment.Value}
 				</span>
 			);
+		}
 		default:
 			return <>{Segment.Value}</>;
 	}
