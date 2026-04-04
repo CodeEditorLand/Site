@@ -169,7 +169,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged."mostly works." Not "works except for X." Unchanged.",
+								"Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged."
 						},
 					),
 				},
@@ -214,9 +214,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt."Restart to Update" prompt kills every open terminal, unsaved diff, and in-progress language server. The update cannot wait.
-
-Air pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt, no restart, no lost state.",
+								"VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt."
 						},
 					),
 				},
@@ -231,9 +229,7 @@ Air pre-downloads and PGP-verifies the next version while you work. The update s
 						"home:features.item.collaboration.description",
 						{
 							defaultValue:
-								"Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches."open source" editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.
-
-The entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches. No restrictions of any kind.",
+								"Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches."
 						},
 					),
 				},
