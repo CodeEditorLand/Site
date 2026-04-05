@@ -299,22 +299,23 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				"# Cloudflare Pages - full route map (auto-generated)",
 			);
 			RedirectLine.push("#");
-			RedirectLine.push("# Two rule types:");
 			RedirectLine.push(
-				"#   301  Redirect  - browser changes URL (bare/alias paths)",
+				"# All rules use 200 (rewrite) to serve content directly.",
 			);
 			RedirectLine.push(
-				"#   200  Rewrite   - serve directory index without trailing-slash redirect",
+				"# This prevents the service worker from breaking on redirect chains.",
 			);
 			RedirectLine.push("");
 
-			// ── Bare-path dispatchers (301) ──
-			RedirectLine.push("# ── BARE-PATH DISPATCHERS (301) ──");
+			// ── Bare-path dispatchers (200) ──
+			RedirectLine.push("# ── BARE-PATH DISPATCHERS (200) ──");
 
 			for (const [Source, Target] of BarePathDispatcher) {
-				RedirectLine.push(`${Pad(Source, 26)}${Pad(Target, 26)}301`);
 				RedirectLine.push(
-					`${Pad(Source + "/", 26)}${Pad(Target, 26)}301`,
+					`${Pad(Source, 26)}${Pad(Target + "/", 26)}200`,
+				);
+				RedirectLine.push(
+					`${Pad(Source + "/", 26)}${Pad(Target + "/", 26)}200`,
 				);
 			}
 
@@ -384,15 +385,15 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			);
 
 			RedirectLine.push(
-				`# ── VARIANT REDIRECTS (301) — ${SortedVariant.length} rules ──`,
+				`# ── VARIANT REWRITES (200) — ${SortedVariant.length} rules ──`,
 			);
 			RedirectLine.push(
-				"# Case permutations, plurals, aliases → canonical.",
+				"# Case permutations, plurals, aliases → canonical content.",
 			);
 
 			for (const [Source, Destination] of SortedVariant) {
 				RedirectLine.push(
-					`${Pad(Source, 38)}${Pad(Destination, 38)}301`,
+					`${Pad(Source, 38)}${Pad(Destination, 38)}200`,
 				);
 			}
 

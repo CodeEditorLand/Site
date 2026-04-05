@@ -863,6 +863,13 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 		return;
 	}
 
+	// Client requests immediate activation (for waiting SW)
+	if (Data.Type === "skipWaiting") {
+		__DEV__ && Log("skipWaiting requested by client.");
+		self.skipWaiting();
+		return;
+	}
+
 	// Legacy: old clients post { Version: "New" }
 	if (Event.data?.Version === "New") {
 		__DEV__ && Log("Legacy version message received.");
