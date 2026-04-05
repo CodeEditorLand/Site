@@ -10,11 +10,11 @@
     }
   ],
   "entries": {
-    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/cc0-open-source.md": "blog",
-    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/effect-ts-architecture.md": "blog",
-    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/local-first-philosophy.md": "blog",
-    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/tauri-desktop-integration.md": "blog",
-    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/vscode-compatibility.md": "blog",
+    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/cc0opensource.md": "blog",
+    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/effecttypescriptarchitecture.md": "blog",
+    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/localfirstphilosophy.md": "blog",
+    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/tauridesktopintegration.md": "blog",
+    "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/blog/vscodecompatibility.md": "blog",
     "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/doc/air.md": "doc",
     "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/doc/api-reference.md": "doc",
     "file:///volumes/corsair/developer/macos/application/codeeditorland/website/source/content/doc/architecture.md": "doc",

@@ -259,14 +259,136 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			logger.info("Wrote service-worker.js (compiled with esbuild)");
 
 			// ── 5. Cloudflare _redirects ──
-			// Public/_redirects uses 200 (rewrite) rules, NOT 301 redirects.
-			// 200 rewrites serve directory content directly, preventing CF Pages'
-			// internal trailing-slash 301 from firing before [[Path]].ts can strip
-			// it - which was the source of the /Account/SignIn ↔ /Account/SignIn/
-			// infinite redirect loop.
-			// The [[Path]].ts edge function still handles all variant → canonical
-			// redirects (case-insensitive, semantic aliases, etc.) with correct
-			// case-sensitive logic before _redirects is consulted.
+			// Auto-generated from the build output. 200 (rewrite) rules serve
+			// directory content directly, preventing CF Pages' internal
+			// trailing-slash 301 from firing (which caused infinite redirect
+			// loops). Written to both Target/ (deployed) and Public/ (source).
+
+			// Bare-path dispatchers: parent paths with no page → default child
+			const BarePathDispatcher: [string, string][] = [
+				["/Account", "/Account/SignIn"],
+				["/Legal", "/Legal/Term"],
+				["/Contact", "/Contact/Sale"],
+			];
+
+			// Asset prefixes and files that must be served before the catch-all
+			const AssetPrefix: [string, string][] = [
+				["/_astro/*", "/_astro/:splat"],
+				["/Asset/*", "/Asset/:splat"],
+				["/Favicon/*", "/Favicon/:splat"],
+				["/Image/*", "/Image/:splat"],
+				["/OpenGraph/*", "/OpenGraph/:splat"],
+			];
+
+			const AssetFile = [
+				"/OpenGraph.svg",
+				"/RouteMap.json",
+				"/service-worker.js",
+				"/sitemap-index.xml",
+				"/sitemap-0.xml",
+				"/robots.txt",
+			];
+
+			const Pad = (Value: string, Width: number): string =>
+				Value + " ".repeat(Math.max(1, Width - Value.length));
+
+			const RedirectLine: string[] = [];
+
+			// Header
+			RedirectLine.push(
+				"# Cloudflare Pages - full route map (auto-generated)",
+			);
+			RedirectLine.push("#");
+			RedirectLine.push("# Two rule types:");
+			RedirectLine.push(
+				"#   301  Redirect  - browser changes URL (bare/alias paths)",
+			);
+			RedirectLine.push(
+				"#   200  Rewrite   - serve directory index without trailing-slash redirect",
+			);
+			RedirectLine.push("");
+
+			// ── Bare-path dispatchers (301) ──
+			RedirectLine.push("# ── BARE-PATH DISPATCHERS (301) ──");
+
+			for (const [Source, Target] of BarePathDispatcher) {
+				RedirectLine.push(`${Pad(Source, 26)}${Pad(Target, 26)}301`);
+				RedirectLine.push(
+					`${Pad(Source + "/", 26)}${Pad(Target, 26)}301`,
+				);
+			}
+
+			RedirectLine.push("");
+
+			// ── Trailing-slash rewrites (200) ──
+			RedirectLine.push("# ── TRAILING-SLASH REWRITES (200) ──");
+			RedirectLine.push(
+				"# Auto-generated from build output. One rule per page.",
+			);
+
+			const SortedCanonical = [...RouteMap.Canonical].sort();
+
+			for (const Path of SortedCanonical) {
+				if (Path === "/") {
+					RedirectLine.push(`${Pad("/", 26)}${Pad("/", 26)}200`);
+				} else {
+					RedirectLine.push(
+						`${Pad(Path, 26)}${Pad(Path + "/", 26)}200`,
+					);
+				}
+			}
+
+			RedirectLine.push("");
+
+			// ── Asset pass-throughs (200) ──
+			RedirectLine.push("# ── ASSET PASS-THROUGHS (200) ──");
+
+			for (const [Source, Destination] of AssetPrefix) {
+				RedirectLine.push(
+					`${Pad(Source, 26)}${Pad(Destination, 26)}200`,
+				);
+			}
+
+			for (const FilePath of AssetFile) {
+				RedirectLine.push(
+					`${Pad(FilePath, 26)}${Pad(FilePath, 26)}200`,
+				);
+			}
+
+			RedirectLine.push("");
+
+			// ── Catch-all → Visit dispatch center ──
+			RedirectLine.push("# ── CATCH-ALL → Visit ──");
+			RedirectLine.push(`${Pad("/*", 26)}${Pad("/Visit/", 26)}200`);
+
+			const RedirectContent = RedirectLine.join("\n") + "\n";
+
+			// Write to Target/_redirects (deployed immediately)
+			await WriteFile(
+				Join(OutputDirectory, "_redirects"),
+				RedirectContent,
+				"utf-8",
+			);
+
+			// Write to Public/_redirects (source, version control)
+			const PublicDirectory = Resolve(
+				FileURLToPath(import.meta.url),
+				"..",
+				"..",
+				"..",
+				"..",
+				"Public",
+			);
+
+			await WriteFile(
+				Join(PublicDirectory, "_redirects"),
+				RedirectContent,
+				"utf-8",
+			);
+
+			logger.info(
+				`Generated _redirects (${SortedCanonical.length} page rewrites)`,
+			);
 
 			// ── 6. Post-process sitemap for PascalCase URLs ──
 			// @astrojs/sitemap generates URLs from built pages (lowercase).
