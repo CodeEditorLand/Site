@@ -320,6 +320,84 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			RedirectLine.push("");
 
+			// ── Variant redirects (301) ──
+			// From RouteMap.Variant (case permutations, plurals, aliases)
+			// plus all-lowercase variants for every canonical path.
+			// These ensure case-insensitive URL access works without the
+			// service worker (first visit, SW not yet installed).
+
+			const CanonicalSet = new Set(RouteMap.Canonical);
+			const BarePathSource = new Set(
+				BarePathDispatcher.flatMap(([Source]) => [
+					Source,
+					Source + "/",
+				]),
+			);
+
+			// Collect all variant → destination pairs (deduped by source)
+			const VariantRedirect = new Map<string, string>();
+
+			// 1. RouteMap.Variant entries (top-level page variants)
+			for (const [Source, Target] of Object.entries(RouteMap.Variant)) {
+				const Destination = Target === "/" ? "/" : Target + "/";
+
+				// Skip self-redirects and bare-path dispatcher sources
+				if (Source === Destination || BarePathSource.has(Source)) {
+					continue;
+				}
+
+				// Skip if source is a canonical path (handled by rewrites)
+				if (CanonicalSet.has(Source)) {
+					continue;
+				}
+
+				VariantRedirect.set(Source, Destination);
+			}
+
+			// 2. All-lowercase variants for every canonical path
+			// Covers /doc/installation, /blog/cc0opensource, etc.
+			for (const Path of RouteMap.Canonical) {
+				if (Path === "/") continue;
+
+				const Lower = Path.toLowerCase();
+				const Destination = Path + "/";
+
+				// Without trailing slash
+				if (Lower !== Path && !VariantRedirect.has(Lower)) {
+					VariantRedirect.set(Lower, Destination);
+				}
+
+				// With trailing slash
+				const LowerSlash = Lower + "/";
+
+				if (
+					LowerSlash !== Destination &&
+					!VariantRedirect.has(LowerSlash)
+				) {
+					VariantRedirect.set(LowerSlash, Destination);
+				}
+			}
+
+			// Sort and emit
+			const SortedVariant = [...VariantRedirect.entries()].sort(
+				([A], [B]) => A.localeCompare(B),
+			);
+
+			RedirectLine.push(
+				`# ── VARIANT REDIRECTS (301) — ${SortedVariant.length} rules ──`,
+			);
+			RedirectLine.push(
+				"# Case permutations, plurals, aliases → canonical.",
+			);
+
+			for (const [Source, Destination] of SortedVariant) {
+				RedirectLine.push(
+					`${Pad(Source, 38)}${Pad(Destination, 38)}301`,
+				);
+			}
+
+			RedirectLine.push("");
+
 			// ── Trailing-slash rewrites (200) ──
 			RedirectLine.push("# ── TRAILING-SLASH REWRITES (200) ──");
 			RedirectLine.push(
@@ -387,7 +465,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			);
 
 			logger.info(
-				`Generated _redirects (${SortedCanonical.length} page rewrites)`,
+				`Generated _redirects (${SortedVariant.length} variant redirects, ${SortedCanonical.length} page rewrites)`,
 			);
 
 			// ── 6. Post-process sitemap for PascalCase URLs ──
