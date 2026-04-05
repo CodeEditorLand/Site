@@ -251,12 +251,12 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			const ServiceWorkerPath = Join(
 				OutputDirectory,
-				"service-worker.js",
+				"Worker.js",
 			);
 
 			await WriteFile(ServiceWorkerPath, ServiceWorkerCode, "utf-8");
 
-			logger.info("Wrote service-worker.js (compiled with esbuild)");
+			logger.info("Wrote Worker.js (compiled with esbuild)");
 
 			// ── 5. Cloudflare _redirects ──
 			// Auto-generated from the build output. 200 (rewrite) rules serve
@@ -283,7 +283,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			const AssetFile = [
 				"/OpenGraph.svg",
 				"/RouteMap.json",
-				"/service-worker.js",
+				"/Worker.js",
 				"/sitemap-index.xml",
 				"/sitemap-0.xml",
 				"/robots.txt",

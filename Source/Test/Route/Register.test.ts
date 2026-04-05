@@ -11,10 +11,10 @@ describe("SW Registration logic", () => {
 
 	it("registration uses correct path and scope", () => {
 		// Verify the constants from Register.ts
-		const Path = "/service-worker.js";
+		const Path = "/Worker.js";
 		const Scope = "/";
 
-		expect(Path).toBe("/service-worker.js");
+		expect(Path).toBe("/Worker.js");
 		expect(Scope).toBe("/");
 	});
 
@@ -22,7 +22,7 @@ describe("SW Registration logic", () => {
 		// Replicate the policy validation regex from Policy.ts
 		const ValidPattern = /^\/[^\\:]+\.(js|mjs)(\?.*)?$/;
 
-		expect(ValidPattern.test("/service-worker.js")).toBe(true);
+		expect(ValidPattern.test("/Worker.js")).toBe(true);
 		expect(ValidPattern.test("/sw.js")).toBe(true);
 		expect(ValidPattern.test("/path/to/worker.mjs")).toBe(true);
 		expect(ValidPattern.test("/worker.js?v=123")).toBe(true);

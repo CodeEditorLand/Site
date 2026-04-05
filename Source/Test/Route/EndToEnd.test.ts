@@ -331,7 +331,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 				.replace(/__DEV__/g, "false");
 
 			// Write the injected SW
-			const ServiceWorkerPath = join(TempDirectory, "service-worker.js");
+			const ServiceWorkerPath = join(TempDirectory, "Worker.js");
 
 			await writeFile(ServiceWorkerPath, ServiceWorkerCode);
 
@@ -365,7 +365,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 	it("SW registration constants match SW expectations", () => {
 		// Verify the contract between Register.ts and ServiceWorker.ts
-		const RegistrationPath = "/service-worker.js";
+		const RegistrationPath = "/Worker.js";
 		const RegistrationScope = "/";
 
 		// SW validates its own script path

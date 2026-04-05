@@ -1756,7 +1756,7 @@
 /OpenGraph/*              /OpenGraph/:splat         200
 /OpenGraph.svg            /OpenGraph.svg            200
 /RouteMap.json            /RouteMap.json            200
-/service-worker.js        /service-worker.js        200
+/Worker.js                /Worker.js                200
 /sitemap-index.xml        /sitemap-index.xml        200
 /sitemap-0.xml            /sitemap-0.xml            200
 /robots.txt               /robots.txt               200

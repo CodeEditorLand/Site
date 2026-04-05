@@ -5,7 +5,6 @@
  * Two-phase init: starts with lng:"en", then switches to detected locale
  * post-hydration to avoid SSR/client mismatch.
  *
- * See /Astro-I18n-Hydration skill for the hydration pattern.
  */
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";

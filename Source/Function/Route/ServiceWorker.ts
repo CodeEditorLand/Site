@@ -10,7 +10,6 @@
  * version increment, and dev mode flag. See Integration.ts for the
  * injection logic.
  *
- * Compiled with esbuild via /SW-Esbuild skill.
  */
 /// <reference lib="webworker" />
 
