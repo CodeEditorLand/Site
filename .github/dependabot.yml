@@ -9,7 +9,6 @@ updates:
 
     - package-ecosystem: "npm"
       directory: "/"
-      target-branch: "Alternative"
       schedule:
           interval: "daily"
       versioning-strategy: increase
