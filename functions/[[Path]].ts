@@ -145,7 +145,10 @@ const ResolvePath = (RequestPath: string): string | null => {
 	return null;
 };
 
-export const onRequest: PagesFunction = async (Context) => {
+export const onRequest: PagesFunction = async (Context: {
+	request: { url: string | URL };
+	next: () => any;
+}) => {
 	const URL = new globalThis.URL(Context.request.url);
 	const Path = URL.pathname;
 
