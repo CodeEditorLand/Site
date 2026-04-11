@@ -385,7 +385,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			);
 
 			RedirectLine.push(
-				`# ── VARIANT REWRITES (200) — ${SortedVariant.length} rules ──`,
+				`# ── VARIANT REWRITES (200) - ${SortedVariant.length} rules ──`,
 			);
 			RedirectLine.push(
 				"# Case permutations, plurals, aliases → canonical content.",

@@ -162,7 +162,7 @@ if ("serviceWorker" in navigator && !__DEV__) {
 	// Reload the page so the new route map / cache version takes effect.
 	// Guard with sessionStorage to prevent infinite reload loops.
 	navigator.serviceWorker.addEventListener("controllerchange", () => {
-		__DEV__ && Log("Controller changed — new SW is active.");
+		__DEV__ && Log("Controller changed - new SW is active.");
 
 		// Ask the new controller for its version
 		navigator.serviceWorker.controller?.postMessage({
@@ -202,7 +202,7 @@ if ("serviceWorker" in navigator && !__DEV__) {
 			const StoredVersion = sessionStorage.getItem(VersionKey);
 
 			if (!StoredVersion) {
-				// First time seeing this — request the actual version
+				// First time seeing this - request the actual version
 				navigator.serviceWorker.controller?.postMessage({
 					Type: "Version:Check",
 				});
