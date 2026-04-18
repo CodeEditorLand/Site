@@ -69,9 +69,7 @@ if ("serviceWorker" in navigator && !__DEV__) {
 	};
 
 	// ── Prompt a waiting SW to activate immediately ──
-	const ActivateWaiting = (
-		Registration: ServiceWorkerRegistration,
-	): void => {
+	const ActivateWaiting = (Registration: ServiceWorkerRegistration): void => {
 		const Waiting = Registration.waiting;
 
 		if (Waiting) {
@@ -101,7 +99,8 @@ if ("serviceWorker" in navigator && !__DEV__) {
 				},
 			);
 
-			__DEV__ && Log("Registration succeeded. Scope:", Registration.scope);
+			__DEV__ &&
+				Log("Registration succeeded. Scope:", Registration.scope);
 
 			// ── Handle a SW that is already waiting (e.g., installed while
 			// a previous tab was still open) ──

@@ -32,9 +32,9 @@ const FeatureIconRegistry: Record<string, lucide.LucideIcon> = {
  */
 const FeatureColorMap: Record<string, string> = {
 	performance: "var(--ExtensionRust)",
-	compatibility: "var(--SpineIPC)",
+	compatibility: "var(--SpineWASM)",
 	architecture: "var(--ExtensionEffectTypeScript)",
-	"cross-platform": "var(--OSMacOS)",
+	"cross-platform": "var(--ExtensionTauri)",
 	tooling: "var(--ToolBiome)",
 	opensource: "var(--SpinegRPC)",
 };
@@ -77,19 +77,19 @@ const FeatureIconLabelMap: Record<string, string> = {
  */
 const IconSemanticColorMap: Record<string, string> = {
 	Zap: "var(--ExtensionRust)",
-	Cpu: "var(--ExtensionEffectTypeScript)",
-	Server: "var(--PlatformDesktop)",
-	Box: "var(--SpineIPC)",
-	Puzzle: "var(--SpineWASM)",
-	Code: "var(--SpineIPC)",
-	Layers: "var(--ExtensionEffectTypeScript)",
-	Shield: "var(--SpineWASMFore)",
-	Globe: "var(--OSMacOS)",
-	Package: "var(--ExtensionTauri)",
+	Cpu: "var(--LanguageRust)",
+	Server: "var(--SpinegRPC)",
+	Box: "var(--SpineWASM)",
+	Puzzle: "var(--ExtensionEffectTypeScript)",
+	Code: "var(--LanguageTypeScript)",
+	Layers: "var(--SpineTCP)",
+	Shield: "var(--ExtensionTauri)",
+	Globe: "var(--ExtensionTauri)",
+	Package: "var(--ToolEsBuild)",
 	Database: "var(--SpineTCP)",
-	Wrench: "var(--SpinegRPC)",
+	Wrench: "var(--ToolBiome)",
 	Heart: "var(--ExtensionRust)",
-	Sparkles: "var(--ExtensionTauri)",
+	Sparkles: "var(--ToolOxc)",
 };
 
 /**

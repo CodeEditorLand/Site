@@ -249,10 +249,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 					.replace(/^export\s+default\s+\{\s*\};\s*$/m, "")
 					.trimEnd() + "\n";
 
-			const ServiceWorkerPath = Join(
-				OutputDirectory,
-				"Worker.js",
-			);
+			const ServiceWorkerPath = Join(OutputDirectory, "Worker.js");
 
 			await WriteFile(ServiceWorkerPath, ServiceWorkerCode, "utf-8");
 

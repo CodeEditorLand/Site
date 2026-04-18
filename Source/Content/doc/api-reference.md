@@ -129,7 +129,7 @@ Generated `rustdoc` output for the Rust crates:
 | `AirLibrary`    | Air shared library          | [Local-First Protocol](/Doc/local-first-protocol)   |
 | `Download`      | Binary download logic       | [Local-First Protocol](/Doc/local-first-protocol)   |
 | `SideCar`       | Node.js binary management   | [Architecture](/Doc/architecture)                   |
-| `Maintain`      | Build orchestrator               | [Contributing](/Doc/contributing)                   |
+| `Maintain`      | Build orchestrator          | [Contributing](/Doc/contributing)                   |
 | `Grove`         | WASM extension host         | [Extension Development](/Doc/extension-development) |
 
 ## See Also

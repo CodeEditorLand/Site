@@ -447,10 +447,10 @@
 		--ToolEsBuildSurface: color-mix(in srgb, #ffcf00 4%, #ffffff);
 		--ToolEsBuildFore: #78350f;
 
-		--ToolBiome: #60a5fa;
-		--ToolBiomeMute: color-mix(in srgb, #60a5fa 10%, #ffffff);
-		--ToolBiomeSurface: color-mix(in srgb, #60a5fa 4%, #ffffff);
-		--ToolBiomeFore: #1d4ed8;
+		--ToolBiome: #f7891c;
+		--ToolBiomeMute: color-mix(in srgb, #f7891c 10%, #ffffff);
+		--ToolBiomeSurface: color-mix(in srgb, #f7891c 4%, #ffffff);
+		--ToolBiomeFore: #9a3412;
 
 		--ToolOxc: #f97316;
 		--ToolOxcMute: color-mix(in srgb, #f97316 10%, #ffffff);
