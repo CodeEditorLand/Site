@@ -406,7 +406,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Testimonials: [
 				{
-					Id: "air",
+					Id: "Air",
 					Emoji: "\uD83E\uDE81",
 					Href: "https://github.com/CodeEditorLand/Air",
 					Author: "Air",
@@ -420,7 +420,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "cocoon",
+					Id: "Cocoon",
 					Emoji: "\uD83E\uDD8B",
 					Href: "https://github.com/CodeEditorLand/Cocoon",
 					Author: "Cocoon",
@@ -434,7 +434,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "common",
+					Id: "Common",
 					Emoji: "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED",
 					Href: "https://github.com/CodeEditorLand/Common",
 					Author: "Common",
@@ -448,7 +448,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "echo",
+					Id: "Echo",
 					Emoji: "\uD83D\uDCE3",
 					Href: "https://github.com/CodeEditorLand/Echo",
 					Author: "Echo",
@@ -461,7 +461,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "grove",
+					Id: "Grove",
 					Emoji: "\uD83C\uDF33",
 					Href: "https://github.com/CodeEditorLand/Grove",
 					Author: "Grove",
@@ -475,7 +475,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "maintain",
+					Id: "Maintain",
 					Emoji: "\uD83D\uDCAA\uD83C\uDFFB",
 					Href: "https://github.com/CodeEditorLand/Maintain",
 					Author: "Maintain",
@@ -489,7 +489,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "mist",
+					Id: "Mist",
 					Emoji: "\uD83C\uDF2B\uFE0F",
 					Href: "https://github.com/CodeEditorLand/Mist",
 					Author: "Mist",
@@ -503,7 +503,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "mountain",
+					Id: "Mountain",
 					Emoji: "\u26F0\uFE0F",
 					Href: "https://github.com/CodeEditorLand/Mountain",
 					Author: "Mountain",
@@ -517,7 +517,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "output",
+					Id: "Output",
 					Emoji: "\u26AB",
 					Href: "https://github.com/CodeEditorLand/Output",
 					Author: "Output",
@@ -531,7 +531,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "rest",
+					Id: "Rest",
 					Emoji: "\u26F1\uFE0F",
 					Href: "https://github.com/CodeEditorLand/Rest",
 					Author: "Rest",
@@ -545,8 +545,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "sidecar",
-					Emoji: "\u2699\uFE0F",
+					Id: "SideCar",
+					Emoji: "\uD83D\uDE83",
 					Href: "https://github.com/CodeEditorLand/SideCar",
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
@@ -559,7 +559,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "sky",
+					Id: "Sky",
 					Emoji: "\uD83C\uDF0C",
 					Href: "https://github.com/CodeEditorLand/Sky",
 					Author: "Sky",
@@ -573,7 +573,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "vine",
+					Id: "Vine",
 					Emoji: "\uD83C\uDF3F",
 					Href: "https://github.com/CodeEditorLand/Vine",
 					Author: "Vine",
@@ -587,7 +587,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "wind",
+					Id: "Wind",
 					Emoji: "\uD83C\uDF43",
 					Href: "https://github.com/CodeEditorLand/Wind",
 					Author: "Wind",
@@ -601,7 +601,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 				{
-					Id: "worker",
+					Id: "Worker",
 					Emoji: "\uD83C\uDF69",
 					Href: "https://github.com/CodeEditorLand/Worker",
 					Author: "Worker",

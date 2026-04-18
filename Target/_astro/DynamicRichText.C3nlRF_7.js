@@ -1,1 +1,0 @@
-import"./Vendor/React.CdNQNsXv.js";import{D as i,D as m}from"./DynamicRichText.DlltAvly.js";export{i as DynamicRichText,m as default};

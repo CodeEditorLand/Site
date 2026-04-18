@@ -14,21 +14,21 @@ import type Property from "./Interface/Property/Testimonial.js";
  * Node runtime (SideCar): RuntimeNode.
  */
 const TestimonialColorMap: Record<string, string> = {
-	air: "var(--ExtensionRust)",
-	cocoon: "var(--ExtensionEffectTypeScript)",
-	common: "var(--LanguageRust)",
-	echo: "var(--ExtensionRust)",
-	grove: "var(--SpineWASM)",
-	maintain: "var(--ToolBiome)",
-	mist: "var(--SpineIPC)",
-	mountain: "var(--ExtensionRust)",
-	output: "var(--ToolEsBuild)",
-	rest: "var(--ToolOxc)",
-	sidecar: "var(--RuntimeNode)",
-	sky: "var(--ExtensionAstro)",
-	vine: "var(--SpinegRPC)",
-	wind: "var(--LanguageTypeScript)",
-	worker: "var(--LanguageJavaScript)",
+	Air: "var(--ExtensionRust)",
+	Cocoon: "var(--ExtensionEffectTypeScript)",
+	Common: "var(--LanguageRust)",
+	Echo: "var(--ExtensionRust)",
+	Grove: "var(--SpineWASM)",
+	Maintain: "var(--ToolBiome)",
+	Mist: "var(--SpineIPC)",
+	Mountain: "var(--ExtensionRust)",
+	Output: "var(--ToolEsBuild)",
+	Rest: "var(--ToolOxc)",
+	SideCar: "var(--RuntimeNode)",
+	Sky: "var(--ExtensionAstro)",
+	Vine: "var(--SpinegRPC)",
+	Wind: "var(--LanguageTypeScript)",
+	Worker: "var(--LanguageJavaScript)",
 };
 
 /**

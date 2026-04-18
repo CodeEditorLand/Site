@@ -11,7 +11,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) — 1675 rules ──
+# ── VARIANT REWRITES (200) - 1675 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /ac/forgotpassword                    /Account/ForgotPassword/              200
 /Ac/forgotpassword                    /Account/ForgotPassword/              200
