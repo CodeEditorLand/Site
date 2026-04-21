@@ -81,7 +81,7 @@
 		"cssnano-preset-advanced": "7.0.13",
 		"dotenv": "17.4.2",
 		"embla-carousel-react": "8.6.0",
-		"firebase": "12.12.0",
+		"firebase": "12.12.1",
 		"i18next": "26.0.5",
 		"input-otp": "1.4.2",
 		"lucide-react": "1.8.0",
