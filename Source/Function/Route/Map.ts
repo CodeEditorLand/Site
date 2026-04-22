@@ -214,7 +214,7 @@ const GenerateNumberVariant = (Segment: string): string[] => {
 	return Result;
 };
 
-// Generate abbreviation prefixes for a segment (2–4 chars)
+// Generate abbreviation prefixes for a segment (2-4 chars)
 const GenerateAbbreviationPrefix = (PascalSegment: string): string[] => {
 	const Lower = PascalSegment.toLowerCase();
 	const Upper = PascalSegment.toUpperCase();

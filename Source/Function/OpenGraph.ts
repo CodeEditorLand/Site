@@ -3,7 +3,7 @@
  *
  * Produces a 1200×675 (16:9) SVG string suitable for og:image / twitter:image
  * social sharing cards. Text occupies the left ~620 px; the Land brand glyph
- * occupies the right column (x 690–1160, y 138–538).
+ * occupies the right column (x 690-1160, y 138-538).
  *
  * The glyph is borrowed verbatim from Public/Asset/Logo/Glyph/Land.svg -
  * two rounded parallelograms (rx=91.39) with their matrix transforms flattened
@@ -54,7 +54,7 @@ const EscapeXML = (Text: string): string =>
  *   Rect 2 (e=1880, f=618.2) → matrix(-0.23340 0.08959 0 0.25 1160  292.55)
  *
  * rx="91.3889" is preserved so rounded corners render correctly.
- * Final extent on 1200×675 canvas: x 690–1160, y 138–538.
+ * Final extent on 1200×675 canvas: x 690-1160, y 138-538.
  */
 const LogoGlyph = (): string =>
 	`<rect width="1005.28" height="620.771" rx="91.3889"
@@ -79,7 +79,7 @@ const GenerateOpenGraphSvg = (
 	const Width = 1200;
 	const Height = 675; // 16:9
 
-	// Text column: x 72–660. Glyph starts at x=690.
+	// Text column: x 72-660. Glyph starts at x=690.
 	const TitleLine = WrapText(Title, 22);
 	const DescriptionLine = WrapText(Description, 48);
 
@@ -118,7 +118,7 @@ const GenerateOpenGraphSvg = (
 	<!-- Top accent line -->
 	<rect width="${Width}" height="4" fill="#151515" fill-opacity="0.12" />
 
-	<!-- Land logo glyph: upper + lower parallelogram, x 690–1160, y 138–538 -->
+	<!-- Land logo glyph: upper + lower parallelogram, x 690-1160, y 138-538 -->
 	${LogoGlyph()}
 
 	<!-- Section badge -->

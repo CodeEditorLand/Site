@@ -129,7 +129,7 @@
 					"maintain": "Maintain 💪🏻\nBuild orchestrator, Rhai scripting, TOML/JSON5 config",
 					"mist": "Mist 🌫️\nDNS sandbox, all *.editor.land traffic resolves locally",
 					"output": "Output ⚫\nCompilation pipeline, deterministic checksummed bundles",
-					"rest": "Rest ⛱️\nTypeScript compiler in Rust + OXC, 2–3× faster than esbuild",
+					"rest": "Rest ⛱️\nTypeScript compiler in Rust + OXC, 2-3× faster than esbuild",
 					"sidecar": "SideCar ⚙️\nCross-platform Node.js binary distributor per target triple",
 					"vine": "Vine 🌿\ngRPC backbone, contract-first .proto definitions",
 					"worker": "Worker 🍩\nService Worker, offline support, AES-GCM encrypted auth"

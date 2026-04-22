@@ -452,7 +452,7 @@ const ReadStaccatoRaw = (): number => {
 };
 
 /**
- * Lerp a value toward a target by factor α (0–1).
+ * Lerp a value toward a target by factor α (0-1).
  * At α = 0.12, a step of ~0.3ms toward target gives organic character timing.
  */
 const Lerp = (Current: number, Target: number, Alpha: number): number =>
