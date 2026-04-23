@@ -34,7 +34,7 @@
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^5.0.3",
+		"@astrojs/mdx": "5.0.4",
 		"@astrojs/react": "5.0.4",
 		"@astrojs/sitemap": "3.7.2",
 		"@auth0/auth0-react": "~2.16.2",
