@@ -34,8 +34,8 @@
 		"test:watch": "vitest"
 	},
 	"dependencies": {
-		"@astrojs/mdx": "^5.0.4",
-		"@astrojs/react": "5.0.3",
+		"@astrojs/mdx": "5.0.4",
+		"@astrojs/react": "5.0.4",
 		"@astrojs/sitemap": "3.7.2",
 		"@auth0/auth0-react": "~2.16.2",
 		"@playform/build": "0.3.1",
@@ -70,7 +70,7 @@
 		"@tailwindcss/aspect-ratio": "0.4.2",
 		"@tailwindcss/forms": "0.5.11",
 		"@tailwindcss/typography": "0.5.19",
-		"astro": "6.1.8",
+		"astro": "6.1.9",
 		"astro-capo": "0.0.1",
 		"astrojs-service-worker": "2.0.0",
 		"autoprefixer": "10.5.0",
