@@ -412,11 +412,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
 						defaultValue:
-							"Background Daemon\u2001Silent Update\u2001Crypto-Signed",
+							"Background Daemon - Silent Updater - Workspace Indexer",
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt.",
+							"Rust daemon with Daemon, Downloader, Updates, Security, Indexing, Authentication, Resilience, and HealthCheck modules\nRuns after the editor closes\nDownloads the next release, verifies its PGP signature, and stages it on disk\nIndexes the workspace for instant search\nThe next launch opens on the new version with no prompt",
 					}),
 				},
 				{
@@ -426,11 +426,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
 						defaultValue:
-							"Extension Host\u2001Full VS Code API\u2001Effect-TS Shim",
+							"Extension Host - Full VS Code API - Effect-TS Fiber Shim",
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
-							"A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks.",
+							"Node.js sidecar that intercepts require and import at the module resolver level\nRoutes every VS Code API call through a complete Effect-TS service layer\nNo patches applied to extensions\nInstall any extension from the marketplace and it runs unchanged",
 					}),
 				},
 				{
@@ -440,11 +440,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
 						defaultValue:
-							"Shared Foundation\u2001Abstract Trait\u2001Zero Implementation",
+							"Shared Foundation - Abstract Traits - Zero Concrete Implementation",
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
-							"The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar.",
+							"Pure abstract core shared by every Land element\nDefines typed Effect-TS effects, composable service traits, and reusable building blocks\nContains no concrete implementations\nMock any trait and test any element without a running window, webview, or sidecar",
 					}),
 				},
 				{
@@ -454,11 +454,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
 						defaultValue:
-							"Work-Stealing Scheduler\u2001Every CPU Core",
+							"Work-Stealing Scheduler - crossbeam-deque - Supervised Worker Pool",
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor.",
+							"Lock-free concurrency runtime built on crossbeam-deque\nEvery task runs inside a supervised worker pool\nNo fire-and-forget spawns — graceful startup and shutdown are guaranteed\nHeavy indexing and analysis run across all CPU cores without blocking the editor thread",
 					}),
 				},
 				{
@@ -468,11 +468,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Grove",
 					Role: T("home:architecture.grove.subtitle", {
 						defaultValue:
-							"Secure WASM Sandbox\u2001WASMtime\u2001Capability-Based Isolation",
+							"WASM Sandbox - Wasmtime Runtime - Capability-Based Isolation",
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
-							"Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant.",
+							"Runs extensions compiled to WebAssembly inside Wasmtime\nConfigurable per-extension resource limits and capability-based security grants\nSupports gRPC, IPC, and WASM transport channels\nAn extension can only access what you explicitly permit",
 					}),
 				},
 				{
@@ -482,11 +482,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
 						defaultValue:
-							"Build Orchestrator\u2001Rhai Scripting\u2001TOML/JSON5 Config",
+							"Build Orchestrator - Embedded Rhai Scripting - TOML/JSON5 Config",
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
-							"Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises.",
+							"Drives build pipelines for the entire Land ecosystem\nEmbedded Rhai scripting handles flexible per-element build logic\nTOML and JSON5 configurations are validated at compile time\nSame commit always produces the same artifact — no environment-dependent output",
 					}),
 				},
 				{
@@ -496,11 +496,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
 						defaultValue:
-							"DNS Sandbox\u2001Local *.editor.land Resolution",
+							"Local DNS Sandbox - *.editor.land Resolution - Network Boundary",
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
-							"Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world.",
+							"Creates a sandboxed DNS zone that resolves every *.editor.land hostname to 127.0.0.1\nAll Land inter-service traffic flows through this local layer\nNo Land service hostname is resolvable on the public internet\nClean network boundary between the editor and external traffic",
 					}),
 				},
 				{
@@ -510,11 +510,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Mountain",
 					Role: T("home:architecture.mountain.subtitle", {
 						defaultValue:
-							"Native Rust Backend\u2001Replaces Electron Main Process",
+							"Native Rust Backend - Tauri - Replaces Electron Main Process",
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open, and opens hidden until Sky signals ready - panels render with data on first paint. Authentication tokens live in the OS keychain, never on disk.",
+							"Handles windows, file I/O, child processes, and extension IPC via Rust and Tauri\nResponds in microseconds where Electron takes milliseconds\nOpens hidden until Sky signals ready — panels render with data on first paint\nAuthentication tokens live in the OS keychain, never written to disk",
 					}),
 				},
 				{
@@ -524,11 +524,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Output",
 					Role: T("home:architecture.output.subtitle", {
 						defaultValue:
-							"Compilation Pipeline\u2001Deterministic Bundle\u2001Checksum",
+							"Compilation Pipeline - Plugin-Routed - Deterministic Checksum",
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
-							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified.",
+							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts\nA plugin-routed architecture handles each source type on its own dedicated path\nEvery bundle is deterministic — same commit always produces the same checksum-verified output",
 					}),
 				},
 				{
@@ -538,11 +538,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Rest",
 					Role: T("home:architecture.rest.subtitle", {
 						defaultValue:
-							"TypeScript Compiler\u2001Rust + OXC\u20012-3x Faster",
+							"TypeScript Compiler - OXC - Rust-Native - 2-3x esbuild Speed",
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
-							"OXC-powered TypeScript compiler implemented in Rust. 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead.",
+							"OXC-powered TypeScript compiler written in Rust\n100% compatible output at 2-3x the speed of esbuild\nZero Node.js overhead in the compilation path\nSource map support via OXC transformer is in active development",
 					}),
 				},
 				{
@@ -552,11 +552,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
 						defaultValue:
-							"Binary Distributor\u2001Node.js Runtime\u2001Per Platform",
+							"Binary Distributor - Compile-Time Target Triple Selection - Per-Platform Node.js",
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
-							"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains.",
+							"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple\nSupports aarch64-apple-darwin, x86_64-pc-windows-msvc, and four additional platforms\nCocoon always receives the binary that matches the host exactly\nNo runtime detection, no fallback chains",
 					}),
 				},
 				{
@@ -566,11 +566,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
 						defaultValue:
-							"Visual UI Layer\u2001Astro Component\u2001Instant Hot-Reload",
+							"Visual UI Layer - Astro Components - Three Workbench Layouts",
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"Every panel, sidebar, and tab bar is an Astro component. Status bar items surface through VS Code's native mechanism. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint.",
+							"Every panel, sidebar, and tab bar is an Astro component\nStatus bar items surface through VS Code's native status bar mechanism\nThree workbench layouts: full desktop, embedded, and minimal\nTauri reloads Sky instantly on any component change — no full restart required",
 					}),
 				},
 				{
@@ -580,11 +580,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Vine",
 					Role: T("home:architecture.vine.subtitle", {
 						defaultValue:
-							"gRPC Backbone\u2001Contract-First\u2001.proto Definition",
+							"gRPC Backbone - Contract-First - .proto Definitions",
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
-							"Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently.",
+							"Every inter-process service interface starts as a .proto file\nGenerated Rust and TypeScript stubs are the only way Land processes communicate\nTyped at the wire, typed at the call site, verified at compile time\nRefactor a message field and every consumer breaks loudly instead of silently",
 					}),
 				},
 				{
@@ -594,11 +594,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
 						defaultValue:
-							"VS Code Workbench Reimplemented\u2001Effect-TS Layer\u2001Native OS API",
+							"VS Code Workbench Reimplemented - Effect-TS Layers - Native OS API",
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip.",
+							"TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar\nEvery service is a composable Effect-TS Layer — file dialogs, clipboard, configuration, output channels\nNative OS calls via Tauri\nNo Electron IPC proxy, no renderer-to-main roundtrip",
 					}),
 				},
 				{
@@ -608,11 +608,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {
 						defaultValue:
-							"Service Worker\u2001Offline Support\u2001AES-GCM Auth",
+							"Service Worker - Offline Cache - AES-GCM Auth - HMAC Request Signing",
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
-							"Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops.",
+							"Manages caching, offline support, and dynamic CSS imports for the editor shell\nAuth tokens are AES-GCM encrypted and stored in memory\nEvery outbound request is HMAC-signed\nTokens refresh automatically — the shell stays functional when the network drops",
 					}),
 				},
 			],
