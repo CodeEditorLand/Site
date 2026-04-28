@@ -3,85 +3,112 @@ title: "Local-First Protocol"
 section: "Architecture"
 order: 5
 description:
-    "Air Daemon protocol specification: discovery, sync, conflict resolution."
+    "Air Daemon protocol design: discovery, sync, and conflict resolution."
 ---
 
 # Local-First Protocol
 
-The Air Daemon provides optional peer-to-peer synchronization between Land
-instances. This document describes the protocol used for discovery, data
-transfer, and conflict resolution.
+> **Note: The peer-to-peer sync protocol described here is the design
+> specification for the Air Daemon. Air exists as an active Rust background
+> daemon, but the full sync protocol — including mDNS discovery, mutual
+> authentication, and content-addressed delta transfer — is under active
+> development. Specific constants, port numbers, and file paths in this
+> document reflect the intended design, not a confirmed working
+> implementation. This page will be updated as features ship.**
 
-## Overview
+The Air Daemon provides optional peer-to-peer synchronisation between Land
+instances. This document describes the design of the protocol used for
+discovery, data transfer, and conflict resolution. All synchronisation is
+local-network-first: no data passes through external servers.
 
-Air is a background daemon that runs alongside the editor. It exposes a
-WebSocket server on the local machine and discovers peers on the same network
-using mDNS (Bonjour/Avahi). All communication is encrypted. No data passes
-through external servers.
+---
+
+## Design Principles
+
+Land's sync layer is built on three commitments:
+
+- **Local-first** — the editor is always fully functional without network
+  access. Sync is additive, never blocking.
+- **No central relay** — peers discover and communicate with each other
+  directly on the local network. There is no Land-operated server in the
+  data path.
+- **Encrypted by default** — all peer communication is encrypted at the
+  frame level using established cryptographic primitives. No certificate
+  authority or TLS infrastructure is required.
+
+---
 
 ## Discovery
 
-Air broadcasts a `_land-air._tcp` mDNS service record on the local network. Each
-record contains:
+Air is designed to broadcast an mDNS service record on the local network.
+Each record will contain an instance ID (a UUID generated on first launch),
+a listen port, and a protocol version identifier. When a peer is discovered,
+the initiating daemon opens a connection and performs a mutual authentication
+handshake using pre-shared keys exchanged out-of-band (such as a QR code or
+manual key entry).
 
-- **Instance ID** - a UUID generated on first launch.
-- **Port** - the WebSocket listen port (default: 18230).
-- **Protocol version** - currently `air/1`.
-
-When a peer is discovered, the initiating daemon opens a WebSocket connection
-and performs a mutual authentication handshake using pre-shared keys exchanged
-through a QR code or manual entry.
+---
 
 ## Authentication
 
-Air uses NaCl (libsodium) for all cryptographic operations:
+Air is designed to use NaCl (libsodium) for all cryptographic operations.
+The intended scheme is:
 
 1. Each instance generates a Curve25519 key pair on first launch.
-2. Pairing exchanges public keys out-of-band (QR code, file, or manual paste).
-3. Every WebSocket frame is encrypted with `crypto_box` (X25519 + XSalsa20 +
+2. Pairing exchanges public keys out-of-band.
+3. Every frame is encrypted using `crypto_box` (X25519 + XSalsa20 +
    Poly1305).
 
-No certificate authority or TLS infrastructure is required.
+This eliminates the need for a certificate authority, a PKI, or TLS
+negotiation. Trust is established directly between two instances via
+key exchange.
+
+---
 
 ## Sync Protocol
 
-Once authenticated, peers exchange file state using a content-addressed
-protocol:
+Once authenticated, the design calls for peers to exchange file state using
+a content-addressed protocol:
 
-1. **Manifest exchange** - each peer sends a manifest listing file paths and
-   their BLAKE3 hashes.
-2. **Delta request** - the receiver identifies files whose hashes differ and
-   requests the content.
-3. **Content transfer** - files are sent as compressed (zstd) byte frames.
-4. **Acknowledgment** - the receiver confirms receipt and updates its manifest.
+1. **Manifest exchange** — each peer sends a manifest listing file paths
+   and their content hashes (BLAKE3).
+2. **Delta request** — the receiver identifies files whose hashes differ
+   and requests only those.
+3. **Content transfer** — changed files are sent as compressed byte frames.
+4. **Acknowledgment** — the receiver confirms receipt and updates its
+   manifest.
 
-Only changed files are transferred. Unchanged files are never re-sent.
+Only changed files are transferred. This design avoids re-sending content
+that both peers already have.
+
+---
 
 ## Conflict Resolution
 
-When both peers have modified the same file since the last sync:
+When both peers have modified the same file since the last sync, the
+intended behaviour is:
 
-- **Default: last-write-wins** - the file with the more recent modification
-  timestamp is accepted. The overwritten version is saved to a
-  `.land/conflicts/` directory.
-- **Manual merge** - the user is notified and can open a three-way merge view in
-  the editor to resolve conflicts.
+- **Default: last-write-wins** — the file with the more recent modification
+  timestamp is accepted. The overwritten version is preserved in a
+  conflicts directory within the workspace.
+- **Manual merge** — the user is notified and can open a three-way merge
+  view to resolve conflicts.
 
-Conflict resolution strategy is configurable per workspace.
+Conflict resolution strategy is intended to be configurable per workspace.
+
+---
 
 ## Offline-First Guarantees
 
-Air never blocks the editor. If no peers are available, the editor operates
-normally. Sync resumes automatically when connectivity is restored. There is no
-"offline mode" toggle - the editor is always fully functional.
+Air is designed never to block the editor. If no peers are available, the
+editor operates normally. Sync is intended to resume automatically when
+connectivity is restored. There is no "offline mode" toggle — the editor
+is always fully functional regardless of network state.
 
-## Self-Hosted Cloud Backup
-
-Air can optionally push snapshots to an S3-compatible bucket or WebDAV endpoint.
-This provides off-site backup without depending on a proprietary cloud service.
-Configure the endpoint in `~/.land/settings/Air.json`.
+---
 
 ## See Also
 
 - [Architecture Overview](/Doc/architecture)
+- [Air](/Doc/air)
 - [Configuration](/Doc/configuration)
