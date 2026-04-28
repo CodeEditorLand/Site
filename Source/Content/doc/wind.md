@@ -2,43 +2,90 @@
 title: "Wind"
 section: "Element"
 order: 13
-description: "The workbench service layer that eliminates Electron's IPC proxy"
+description: "The Effect-TS service layer that provides typed workbench interfaces to Sky."
 ---
 
 # Wind
 
-## The Problem Wind Solves
+Wind is the workbench service layer for Editor.Land. It is written in
+TypeScript using [Effect-TS](https://effect.website) and provides typed Layer
+interfaces for workbench concerns — file dialogs, clipboard, configuration,
+output channels, status bar, command registry — that Sky's UI components
+consume. Wind sits between Sky (the UI) and Mountain (the Rust kernel), so that
+UI components never call Tauri IPC directly.
 
-In VS Code, the workbench (panels, sidebars, status bar, command palette) lives
-in the Chromium renderer process. Every interaction that touches the file
-system, terminal, or extension state crosses the Electron IPC bridge twice:
-renderer to main, main to renderer. This is a serialized JSON pipe. On
-high-frequency events like typing, scrolling, and hover tooltips, this adds
-latency.
+---
 
-## How Wind Eliminates It
+## The Effect-TS Layer Model
 
-Wind re-implements the VS Code Workbench in TypeScript as composable Effect-TS
-Layers. Each workbench service (file dialogs, clipboard, configuration, output
-channels, status bar) is a typed Layer that can be provided, mocked, or replaced
-without touching other services. OS calls go directly through Mountain's Tauri
-bindings with no IPC proxy.
+VS Code's workbench uses an untyped service container (`createDecorator`) where
+services are retrieved by string key at runtime. Wind replaces this with
+Effect-TS Layers: each service is a typed interface with a concrete
+implementation that can be provided, swapped, or mocked at the Layer level.
 
-## What You Experience
+This has one concrete practical benefit beyond type safety: workbench logic can
+be tested by providing mock Layer implementations without a running Tauri
+instance or Mountain process. A test that exercises the command registry or
+status bar service does not need a desktop window to run.
 
-File dialogs open natively. Clipboard reads are synchronous. Configuration
-changes propagate through the Effect runtime without JSON serialization. The
-workbench can be tested in isolation by providing mock layers instead of a
-running Tauri instance.
+---
 
-## Key Technologies
+## Wind and the Tauri IPC Boundary
 
-Wind is written in TypeScript with Effect-TS. It consumes Tauri's API bindings
-directly and implements the VS Code workbench service interfaces.
+Wind routes all native calls — file reads, clipboard access, terminal spawn,
+configuration persistence — through Tauri's typed IPC to Mountain. This is
+still an IPC mechanism: calls cross a process boundary and the arguments are
+serialized. The difference from Electron's IPC is that Tauri's bindings are
+typed at the call site (no raw `ipcRenderer.send('event-name', payload)`) and
+the receiving end in Mountain is a Rust function with a matching type signature
+rather than an untyped event handler.
+
+In-process state — UI panel layout, command palette state, active editor
+tabs — propagates through the Effect runtime without crossing the IPC boundary
+at all. Only calls that require native OS access (disk, clipboard, process
+spawn) go to Mountain.
+
+---
+
+## Current Status
+
+Wind is an active part of the `debug-mountain` profile. The re-implementation
+of VS Code's full workbench service surface is ongoing work.
+
+**Confirmed working:**
+- The Effect-TS Layer infrastructure is in place and consumed by Sky.
+- Core workbench services (file dialogs, output channels, status bar,
+  configuration read) are implemented and route through Tauri IPC to Mountain.
+- The Layer model allows mock substitution for testing without a running
+  desktop instance.
+
+**In progress or unconfirmed:**
+- Complete coverage of the VS Code workbench service surface. Not all
+  `vscode.*` workbench APIs have a corresponding Wind Layer implementation
+  yet.
+- Clipboard behaviour: Tauri's clipboard API is async on some platforms;
+  synchronous clipboard access is not confirmed across all supported
+  configurations.
+- Notebook, chat, and language model panel services are not implemented,
+  consistent with the unimplemented `vscode.notebook.*`, `vscode.chat.*`,
+  and `vscode.lm.*` APIs in Cocoon.
+
+---
+
+## Relationship to Sky
+
+Sky renders UI components. Wind provides the services those components depend
+on. A Sky component that shows the active file path does not read the file
+system — it subscribes to a Wind Layer that holds that state and re-renders
+when the Layer emits a change. Sky components are kept free of direct IPC calls
+so that the same component can render correctly in the `debug` browser profile
+(where Mountain is absent) using a mock Wind Layer.
+
+---
 
 ## See Also
 
 - [Architecture Overview](/Doc/architecture)
-- [Sky: UI Components](/Doc/sky)
-- [Mountain: Native Backend](/Doc/mountain)
+- [Sky: Workbench UI](/Doc/sky)
+- [Mountain: Native Kernel](/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Wind)
