@@ -29,8 +29,9 @@ product**. The following is a factual account of what is and is not working.
 
 These capabilities are verified by build and agent run logs:
 
-- The editor boots on macOS in approximately 3 seconds with 47 extensions
-  active, using around 600 MB of RAM (Mountain ~280 MB + Cocoon ~320 MB).
+- The editor boots on macOS in approximately 3 seconds (wall-clock, from
+  launch to fully usable with 47 extensions active), using around 600 MB of
+  RAM (Mountain ~280 MB + Cocoon ~320 MB).
 - Cocoon (the Node-based extension host) activates 47 extension manifests in
   parallel using an 8-wide worker pool (`Parallel8` in
   `TierExtensionActivation`).
@@ -70,13 +71,15 @@ editor restarts), a Watcher sidecar (so inotify/FSEvents fan-out does not
 crowd Mountain's main loop), and a Search sidecar (to offload ripgrep from the
 main Rust binary).
 
-Cold-boot time today is approximately **2.4 seconds** on an Apple Silicon Mac
-with 47 extensions, versus approximately 2.5 seconds for VS Code on the same
-hardware. The largest single cost in Land's boot is a sequential dynamic-import
-loop that loads 3,385 workbench modules one at a time; switching to a single
-bundled output is projected to save approximately 550 ms. Lazy-spawning Cocoon
-after first paint saves a further ~200 ms. Combined, those two changes are
-projected to bring cold-boot time to approximately **1.65 seconds**.
+Cold-boot time to **first paint** is approximately **2.4 seconds** on Apple
+Silicon with 47 extensions, versus approximately 2.5 seconds for VS Code on
+the same hardware. Wall-clock time to fully usable (all extensions activated)
+is approximately 3 seconds. The largest single cost in Land's boot is a
+sequential dynamic-import loop that loads 3,385 workbench modules one at a
+time; switching to a single bundled output is projected to save approximately
+550 ms. Lazy-spawning Cocoon after first paint saves a further ~200 ms.
+Combined, those two changes are projected to bring cold-boot to first paint to
+approximately **1.65 seconds**.
 
 ---
 
@@ -98,8 +101,10 @@ the extension ecosystem to change.
 
 ## The Elements
 
-Editor.Land is composed of named elements. Each has a dedicated documentation
-page with implementation details, current status, and known gaps.
+Editor.Land is composed of named elements. The table below covers the nine
+core active elements. Additional elements (Grove, Mist, Worker, SideCar,
+Maintain, Rest) are planned or in progress — see the
+[Architecture Overview](/Doc/architecture) for the complete status table.
 
 | Element | Language | Role |
 |---|---|---|
