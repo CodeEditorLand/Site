@@ -2,77 +2,110 @@
 title: "Installation"
 section: "Start"
 order: 2
-description:
-    "Download and install Code Editor Land on macOS, Windows, and Linux."
+description: "Build requirements and source installation steps for macOS."
 ---
 
 # Installation
 
-Code Editor Land provides pre-built binaries for all major platforms. You can
-also install via package managers or build from source.
+Editor.Land is source-only. There are no pre-built binaries, no Homebrew tap,
+no winget package, and no apt repository at this time. The instructions below
+cover building from source on macOS, which is the only supported platform
+today.
 
-## System Requirements
+---
 
-| Platform | Minimum Version                 | Architecture    |
-| -------- | ------------------------------- | --------------- |
-| macOS    | 13.0 (Ventura)                  | aarch64, x86_64 |
-| Windows  | 11 (22H2)                       | x86_64          |
-| Linux    | Ubuntu 22.04 / Fedora 38 / Arch | x86_64, aarch64 |
+## Supported Platforms
 
-All platforms require at least 4 GB of RAM and 500 MB of disk space. Linux
-requires WebKitGTK 4.1 and GStreamer for the webview runtime.
+| Platform | Status | Notes |
+|---|---|---|
+| **macOS 13+ (aarch64)** | Supported | Apple Silicon — primary development target |
+| **macOS 13+ (x86_64)** | Supported | Intel Mac — tested |
+| **Windows 11** | Planned | WebView2 integration not yet implemented |
+| **Linux** | Planned | WebKitGTK integration not yet implemented |
 
-## Download
+---
 
-Download the latest release from the [Download](/Download) page. Binaries are
-signed and can be verified against the published checksums.
+## Build Requirements
 
-## Package Managers
+| Dependency | Minimum Version | Install |
+|---|---|---|
+| Rust | 1.95.0 | [rustup.rs](https://rustup.rs) |
+| Node.js | 20 | [nodejs.org](https://nodejs.org) |
+| pnpm | 9 | `npm install -g pnpm` |
+| Xcode CLI | Latest | `xcode-select --install` |
+| macOS | 13.0 (Ventura) | — |
 
-### macOS (Homebrew)
+---
 
-```bash
-brew tap CodeEditorLand/Land
-brew install land
-```
+## Steps
 
-### Linux (apt)
-
-```bash
-curl -fsSL https://apt.codeeditorland.com/key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/land.gpg
-echo "deb [signed-by=/usr/share/keyrings/land.gpg] https://apt.codeeditorland.com stable main" | sudo tee /etc/apt/sources.list.d/land.list
-sudo apt update && sudo apt install land
-```
-
-### Windows (winget)
-
-```powershell
-winget install CodeEditorLand.Land
-```
-
-## Build from Source
-
-If you prefer to compile from source, ensure you have Rust 1.95.0+, Node.js 20+,
-and pnpm 9+ installed.
+**1. Clone the repository with submodules**
 
 ```bash
 git clone --recurse-submodules https://github.com/CodeEditorLand/Land.git
 cd Land
+```
+
+The `--recurse-submodules` flag is required. The Land repository uses Git
+submodules to reference each element (Mountain, Cocoon, Sky, Wind, Vine, and
+others) as a pinned commit. Cloning without this flag produces an incomplete
+source tree.
+
+**2. Install Node.js dependencies**
+
+```bash
 pnpm install
+```
+
+This installs the TypeScript dependencies for Cocoon, Sky, Wind, and the build
+toolchain. It does not build the Rust components.
+
+**3. Start the development build**
+
+```bash
+cargo tauri dev
+```
+
+This compiles Mountain and its dependencies, starts the Tauri application, and
+opens the editor window. The first run compiles all Rust dependencies from
+scratch and takes several minutes. Subsequent runs use Cargo's incremental
+compilation cache.
+
+---
+
+## Release Build
+
+To produce a release `.app` bundle on macOS:
+
+```bash
 cargo tauri build
 ```
 
-The compiled binary appears in `target/release/`. On macOS, a `.app` bundle is
-generated in `target/release/bundle/macos/`.
+The `.app` bundle is written to `src-tauri/target/release/bundle/macos/`. This
+path reflects the standard Tauri project layout; verify against the actual
+output if the project structure has changed.
+
+---
 
 ## Updating
 
-Land checks for updates automatically through the Air daemon. When a new version
-is available, a notification appears in the editor. You can also update manually
-through your package manager or by downloading a new release.
+There is no automatic update mechanism active today. To update, pull the latest
+commits and rebuild:
+
+```bash
+git pull --recurse-submodules
+pnpm install
+cargo tauri dev
+```
+
+The Air daemon is designed to handle automatic update checks and downloads in a
+future release. It is not active in the current build.
+
+---
 
 ## See Also
 
 - [Getting Started](/Doc/getting-started)
-- [Configuration](/Doc/configuration)
-- [Troubleshooting](/Doc/troubleshooting)
+- [Architecture Overview](/Doc/architecture)
+- [Air: Update Daemon](/Doc/air)
+- [Contributing](/Doc/contributing)
