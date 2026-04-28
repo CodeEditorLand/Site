@@ -2,16 +2,51 @@
 title: "API Reference"
 section: "Development"
 order: 8
-description:
-    "Overview of the Land extension API: commands, configuration, views, and
-    webviews."
+description: "VS Code extension API coverage in Editor.Land: what works, what no-ops, and what is not yet implemented."
 ---
 
 # API Reference
 
-Land implements the VS Code extension API with full type compatibility.
-Extensions written against `@types/vscode` compile and run without modification.
-This page provides an overview of the major API surfaces.
+Editor.Land implements the VS Code extension API through Cocoon, the Node.js
+extension host. Extensions written against `@types/vscode` compile against
+Cocoon's stubs without modification. Whether they run correctly depends on
+which API surfaces they use.
+
+---
+
+## Coverage Status
+
+The API surface is divided into three categories:
+
+**Implemented** — The API is active in the `debug-mountain` profile. Extensions
+using it behave as expected.
+
+**Partial** — The API is present and callable but not all methods or
+behaviours are implemented. Some calls may silently no-op or return empty
+results.
+
+**Not implemented** — The namespace exists in Cocoon's type stubs so
+extensions compile, but the runtime calls do nothing. Extensions that depend
+on these APIs activate but their features do not work.
+
+| Namespace | Status | Notes |
+|---|---|---|
+| `vscode.commands` | Implemented | Register, execute, command palette |
+| `vscode.workspace.fs` | Implemented | Routes through Mountain's FS layer via Vine |
+| `vscode.window.createTerminal` | Implemented | Routes through Mountain's pty layer via Vine |
+| `vscode.debug` | Implemented | DAP bridge in Mountain, routes via Vine |
+| `vscode.languages` | Implemented | LSP client via `vscode-languageclient` |
+| `vscode.workspace.getConfiguration` | Implemented | Reads workspace and user settings |
+| `vscode.window` (core) | Partial | showInformationMessage, createWebviewPanel, registerTreeDataProvider work; some view APIs unconfirmed |
+| `vscode.window.createTreeView` | Partial | Tree data provider registration works; inline actions and welcome content unconfirmed |
+| `vscode.tasks` | Partial | Task definition reading works; full task runner execution unconfirmed |
+| `vscode.extensions` | Partial | getExtension and activate work; some metadata fields unconfirmed |
+| `vscode.lm` | Not implemented | Language model / Copilot APIs — no-op |
+| `vscode.chat` | Not implemented | Chat panel APIs — no-op |
+| `vscode.notebook` | Not implemented | Notebook document and editor APIs — no-op |
+| `vscode.tests` | Not implemented | Test explorer and runner APIs — no-op |
+
+---
 
 ## Commands
 
@@ -19,19 +54,21 @@ Register a command with `vscode.commands.registerCommand`:
 
 ```typescript
 const Disposable = vscode.commands.registerCommand(
-	"MyExtension.SayHello",
-	() => {
-		vscode.window.showInformationMessage("Hello from Land!");
-	},
+  "MyExtension.SayHello",
+  () => {
+    vscode.window.showInformationMessage("Hello from Land!");
+  },
 );
 ```
 
 Commands declared in `package.json` under `contributes.commands` appear in the
-command palette automatically.
+command palette. This is one of the more reliably implemented API surfaces.
+
+---
 
 ## Configuration
 
-Extensions read and write settings through the `WorkspaceConfiguration` API:
+Extensions read settings through the `WorkspaceConfiguration` API:
 
 ```typescript
 const Config = vscode.workspace.getConfiguration("MyExtension");
@@ -40,7 +77,10 @@ const FontSize = Config.get<number>("FontSize", 14);
 
 Configuration keys are declared in `contributes.configuration` in your extension
 manifest. Land validates configuration values against the JSON Schema you
-provide.
+provide. The specific user settings file path has not been independently
+confirmed — see [Configuration](/Doc/configuration) for details.
+
+---
 
 ## Keybindings
 
@@ -48,96 +88,92 @@ Declare keybindings in `contributes.keybindings`:
 
 ```json
 {
-	"command": "MyExtension.SayHello",
-	"key": "ctrl+shift+h",
-	"mac": "cmd+shift+h",
-	"when": "editorTextFocus"
+  "command": "MyExtension.SayHello",
+  "key": "ctrl+shift+h",
+  "mac": "cmd+shift+h",
+  "when": "editorTextFocus"
 }
 ```
 
-The `when` clause supports the same context keys as VS Code, including
-`editorLangId`, `resourceScheme`, and custom context keys set by your extension.
+The `when` clause uses the same context key syntax as VS Code. Custom context
+keys set via `vscode.commands.executeCommand('setContext', ...)` are supported.
+
+---
 
 ## Tree Views
 
-Register a tree view provider to add a custom panel in the sidebar:
+Register a tree view provider:
 
 ```typescript
 vscode.window.registerTreeDataProvider(
-	"MyExtension.TreeView",
-	MyTreeDataProvider,
+  "MyExtension.TreeView",
+  MyTreeDataProvider,
 );
 ```
 
 Declare the view container and view in `contributes.viewsContainers` and
-`contributes.views`.
+`contributes.views`. Tree data provider registration routes through Cocoon's
+fiber scheduler. Inline actions and welcome content are not confirmed.
+
+---
 
 ## Webview Panels
 
-Create rich HTML-based UI panels:
+Create HTML-based UI panels:
 
 ```typescript
 const Panel = vscode.window.createWebviewPanel(
-	"MyExtension.Preview",
-	"Preview",
-	vscode.ViewColumn.Beside,
-	{ enableScripts: true },
+  "MyExtension.Preview",
+  "Preview",
+  vscode.ViewColumn.Beside,
+  { enableScripts: true },
 );
 
 Panel.webview.html = "<html><body><h1>Preview</h1></body></html>";
 ```
 
-Webview panels run in a sandboxed iframe with a Content Security Policy. Use
+Webview panels run in a sandboxed context with a Content Security Policy. Use
 `Panel.webview.postMessage()` and `Panel.webview.onDidReceiveMessage` for
-bidirectional communication.
+bidirectional communication between the extension and the webview.
+
+---
 
 ## Language Server Protocol
 
-Land supports LSP servers out of the box through the `vscode-languageclient`
-package. Point your extension at a language server binary and the LSP client
-handles initialization, capabilities negotiation, and shutdown automatically.
+Land supports LSP servers through the `vscode-languageclient` package. Point
+your extension at a language server binary and the LSP client handles
+initialization, capabilities negotiation, and shutdown. This routes through
+Cocoon's `vscode.languages` implementation, which is one of the more complete
+API surfaces.
+
+---
 
 ## Rust API Documentation
 
-Generated `rustdoc` output for the Rust crates:
+Generated `rustdoc` output is planned for the Rust crates listed below. The
+URLs follow the pattern `https://Rust.Documentation.*.Editor.Land` — these
+may not yet resolve to hosted documentation. Check the
+[source repositories](https://github.com/CodeEditorLand) directly if the
+links are unavailable.
 
-- [Mountain Crates](https://Rust.Documentation.Mountain.Editor.Land) - Mountain,
-  Echo, Common, CommonLibrary, Air, AirLibrary, SideCar, Download
-- [Common Crate](https://Rust.Documentation.Common.Editor.Land) - Abstract
-  traits, ActionEffect system, DTOs
-- [Echo Crate](https://Rust.Documentation.Echo.Editor.Land) - Work-stealing
-  scheduler
-- [Air Crate](https://Rust.Documentation.Air.Editor.Land) - Background daemon
-- [SideCar Crate](https://Rust.Documentation.SideCar.Editor.Land) - Node.js
-  binary distribution
-- [Rest Crates](https://Rust.Documentation.Rest.Editor.Land) - OXC-powered
-  TypeScript compiler
-- [Maintain Crates](https://Rust.Documentation.Maintain.Editor.Land) - Build
-  orchestrator
-- [Land Workspace](https://Rust.Documentation.Land.Editor.Land) - Top-level
-  workspace
+| Crate | Description | Element |
+|---|---|---|
+| `Mountain` | Tauri native kernel | [Mountain](/Doc/mountain) |
+| `Echo` | Work-stealing task scheduler | [Echo](/Doc/echo) |
+| `Common` | Shared IPC event type definitions | [Architecture](/Doc/architecture) |
+| `CommonLibrary` | Shared utility functions | [Architecture](/Doc/architecture) |
+| `Air` | Background update daemon | [Air](/Doc/air) |
+| `AirLibrary` | Air shared library | [Air](/Doc/air) |
+| `Download` | Binary download logic | [Air](/Doc/air) |
+| `SideCar` | Pre-built Node.js binaries | [Architecture](/Doc/architecture) |
+| `Maintain` | Build orchestrator | [Contributing](/Doc/contributing) |
+| `Grove` | WASM extension host *(planned)* | [Architecture](/Doc/architecture) |
 
-### Crate Index
-
-| Crate           | Description                 | Element                                             |
-| --------------- | --------------------------- | --------------------------------------------------- |
-| `Mountain`      | Tauri native backend        | [Architecture](/Doc/architecture)                   |
-| `Echo`          | Work-stealing task executor | [Architecture](/Doc/architecture)                   |
-| `Common`        | Abstract traits and DTOs    | [Architecture](/Doc/architecture)                   |
-| `CommonLibrary` | Shared utility functions    | [Architecture](/Doc/architecture)                   |
-| `Air`           | Background daemon           | [Local-First Protocol](/Doc/local-first-protocol)   |
-| `AirLibrary`    | Air shared library          | [Local-First Protocol](/Doc/local-first-protocol)   |
-| `Download`      | Binary download logic       | [Local-First Protocol](/Doc/local-first-protocol)   |
-| `SideCar`       | Node.js binary management   | [Architecture](/Doc/architecture)                   |
-| `Maintain`      | Build orchestrator          | [Contributing](/Doc/contributing)                   |
-| `Grove`         | WASM extension host         | [Extension Development](/Doc/extension-development) |
+---
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
+- [Cocoon: Extension Host](/Doc/cocoon)
 - [Extension Development](/Doc/extension-development)
-
-## Further Reading
-
+- [Architecture Overview](/Doc/architecture)
 - [VS Code API Documentation](https://code.visualstudio.com/api/references/vscode-api)
-    - the upstream reference that Land implements.
