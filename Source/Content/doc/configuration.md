@@ -2,115 +2,140 @@
 title: "Configuration"
 section: "Usage"
 order: 6
-description:
-    "Settings, keybindings, themes, and language configuration reference."
+description: "Settings, keybindings, themes, and language configuration in Editor.Land."
 ---
 
 # Configuration
 
-Land stores all configuration locally in `~/.land/settings/`. Configuration
-files use JSON format and support comments (`//` and `/* */`).
+Editor.Land stores configuration locally in JSON files that support comments
+(`//` and `/* */`). The exact file paths depend on the platform and build
+profile. To locate the active settings file on your system, open the command
+palette (`Cmd+Shift+P`) and search for **Preferences: Open Settings (JSON)**.
 
-## Settings
+---
 
-Open settings with `Cmd+,` (macOS) or `Ctrl+,` (Windows/Linux). Land reads
-settings from three levels, merged in order of precedence:
+## Settings Precedence
 
-1. **Default** - built-in defaults shipped with Land.
-2. **User** - `~/.land/settings/Settings.json`.
-3. **Workspace** - `.land/settings.json` in the workspace root (or
-   `.vscode/settings.json` for compatibility).
+Land merges settings from three levels in order of increasing precedence:
+
+1. **Default** — built-in defaults shipped with Land.
+2. **User** — the user-level settings file (locate via command palette).
+3. **Workspace** — a settings file in the workspace root. Land is designed to
+   read `.vscode/settings.json` for compatibility with existing VS Code
+   workspaces.
+
+---
+
+## Setting Keys
+
+Land uses PascalCase for setting keys (`Editor.FontSize`, `Workbench.ColorTheme`)
+rather than VS Code's `camelCase` (`editor.fontSize`). Whether VS Code-style
+`camelCase` keys are automatically mapped to their PascalCase equivalents is
+not confirmed in the current build. Use PascalCase keys to be safe.
 
 ### Common Settings
 
 ```json
 {
-	"Editor.FontFamily": "'JetBrains Mono', monospace",
-	"Editor.FontSize": 14,
-	"Editor.TabSize": 4,
-	"Editor.InsertSpaces": false,
-	"Editor.FormatOnSave": true,
-	"Editor.WordWrap": "on",
-	"Editor.Minimap.Enabled": false,
-	"Files.AutoSave": "afterDelay",
-	"Files.AutoSaveDelay": 1000,
-	"Terminal.Integrated.FontSize": 13,
-	"Workbench.ColorTheme": "Default Dark+",
-	"Workbench.IconTheme": "Default File Icons"
+  "Editor.FontFamily": "'JetBrains Mono', monospace",
+  "Editor.FontSize": 14,
+  "Editor.TabSize": 4,
+  "Editor.InsertSpaces": false,
+  "Editor.FormatOnSave": true,
+  "Editor.WordWrap": "on",
+  "Editor.Minimap.Enabled": false,
+  "Files.AutoSave": "afterDelay",
+  "Files.AutoSaveDelay": 1000,
+  "Terminal.Integrated.FontSize": 13,
+  "Workbench.ColorTheme": "Default Dark+",
+  "Workbench.IconTheme": "Default File Icons"
 }
 ```
 
-Land uses PascalCase for setting keys. VS Code-style `camelCase` keys are
-accepted and mapped to their PascalCase equivalents automatically.
+---
 
 ## Keybindings
 
-Edit keybindings with **Preferences: Open Keyboard Shortcuts (JSON)** from the
-command palette. The file is located at `~/.land/settings/Keybindings.json`:
+Open the keybindings file via **Preferences: Open Keyboard Shortcuts (JSON)**
+from the command palette. Each entry is a JSON object with `key`, `command`,
+and an optional `when` clause:
 
 ```json
 [
-	{
-		"key": "cmd+shift+f",
-		"command": "Workbench.Action.FindInFiles"
-	},
-	{
-		"key": "cmd+b",
-		"command": "Workbench.Action.ToggleSidebarVisibility"
-	},
-	{
-		"key": "ctrl+`",
-		"command": "Workbench.Action.Terminal.ToggleTerminal"
-	}
+  {
+    "key": "cmd+shift+f",
+    "command": "Workbench.Action.FindInFiles"
+  },
+  {
+    "key": "cmd+b",
+    "command": "Workbench.Action.ToggleSidebarVisibility"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "Workbench.Action.Terminal.ToggleTerminal"
+  }
 ]
 ```
 
-Each entry supports a `when` clause for context-dependent bindings (e.g.,
-`"when": "editorTextFocus"`).
+The `when` clause uses the same context key syntax as VS Code
+(e.g. `"when": "editorTextFocus"`).
+
+---
 
 ## Themes
 
-Land supports VS Code color themes without modification. Install themes from the
-extensions panel or place a `.vsix` theme file in `~/.land/extensions/`.
+Land supports VS Code color themes without modification. Install a theme by
+placing its `.vsix` file in the extensions directory and installing it via the
+command palette (**Extensions: Install from VSIX**). The extensions panel UI
+for browsing and installing themes is not yet implemented.
 
-To create a custom theme, add a JSON file to `~/.land/themes/` following the
-[VS Code color theme reference](https://code.visualstudio.com/api/references/theme-color).
+To create a custom theme, follow the
+[VS Code color theme reference](https://code.visualstudio.com/api/references/theme-color)
+— the token format is identical. The directory to place custom theme files in
+has not been independently confirmed; use the command palette to locate the
+themes directory on your system.
 
-## Language Configuration
+---
 
-Language-specific settings are nested under a language identifier:
+## Language-Specific Settings
+
+Language-specific overrides use a language identifier key:
 
 ```json
 {
-	"[rust]": {
-		"Editor.TabSize": 4,
-		"Editor.FormatOnSave": true,
-		"Editor.DefaultFormatter": "rust-lang.rust-analyzer"
-	},
-	"[typescript]": {
-		"Editor.TabSize": 4,
-		"Editor.DefaultFormatter": "biomejs.biome"
-	}
+  "[rust]": {
+    "Editor.TabSize": 4,
+    "Editor.FormatOnSave": true,
+    "Editor.DefaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[typescript]": {
+    "Editor.TabSize": 4,
+    "Editor.DefaultFormatter": "biomejs.biome"
+  }
 }
 ```
 
-## JSON Schema Validation
+This syntax is the same as VS Code's language-specific settings.
 
-Land validates settings files against a built-in JSON Schema. Unrecognized keys
-produce a warning. Extensions can contribute additional schema entries through
-`contributes.configuration` in their manifest.
+---
 
-## Environment Variables
+## Current Limitations
 
-Land respects the following environment variables:
+- **File paths are not yet publicly documented.** The user data directory,
+  extensions directory, and themes directory paths depend on the build profile
+  and platform. Use the command palette to locate them rather than hardcoding
+  paths.
+- **JSON Schema validation** of unrecognised keys (producing warnings) is
+  a planned feature of the Wind configuration service and is not confirmed
+  as active in the current build.
+- **macOS only.** Configuration is only tested on macOS 13+. Windows and
+  Linux are not yet supported.
 
-| Variable          | Purpose                                              |
-| ----------------- | ---------------------------------------------------- |
-| `LAND_USER_DATA`  | Override the user data directory                     |
-| `LAND_EXTENSIONS` | Override the extensions directory                    |
-| `LAND_LOG_LEVEL`  | Set log verbosity (`error`, `warn`, `info`, `debug`) |
+---
 
 ## See Also
 
+- [Getting Started](/Doc/getting-started)
 - [Installation](/Doc/installation)
 - [Extension Development](/Doc/extension-development)
+- [Wind: Service Layer](/Doc/wind)
