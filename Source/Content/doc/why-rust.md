@@ -73,9 +73,9 @@ Rust powers the majority of Land's backend:
   communication.
 - **Rest** bundles JavaScript using the OXC toolchain, written entirely in
   Rust.
-- **Grove** *(Planned)* — designed to host WASM extensions in a sandboxed
+- **Grove** *(Planned)* - designed to host WASM extensions in a sandboxed
   WASMtime runtime. Not yet active.
-- **Mist** *(Planned)* — designed to sandbox DNS resolution for the
+- **Mist** *(Planned)* - designed to sandbox DNS resolution for the
   `*.editor.land` zone. Not yet active.
 
 Every element that touches the operating system, processes bytes, or

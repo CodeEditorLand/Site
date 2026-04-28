@@ -12,7 +12,7 @@ pre-built installers, no package manager releases, and no public download page
 yet. The only supported way to run the editor today is to build from source on
 macOS.
 
-This is not a caveat — it is the current state of the project, stated directly
+This is not a caveat - it is the current state of the project, stated directly
 so you can make an informed decision about whether to proceed.
 
 ---
@@ -42,7 +42,7 @@ All of the following must be installed before building:
 - **Node.js** 20 or later
 - **pnpm** 9 or later (`npm install -g pnpm`)
 - **Xcode Command Line Tools** (`xcode-select --install`)
-- **macOS 13.0 (Ventura) or later** — earlier macOS versions are not tested
+- **macOS 13.0 (Ventura) or later** - earlier macOS versions are not tested
 
 ---
 

@@ -13,7 +13,7 @@ description: "Cross-platform Node.js binary distribution compiled per target tri
 > full element status table.
 
 SideCar is designed to package the exact Node.js binary for each target
-platform at compile time — no runtime detection, no fallback chains. The
+platform at compile time - no runtime detection, no fallback chains. The
 binary that ships is the binary that runs.
 
 ---
@@ -41,7 +41,7 @@ its checksum, and embeds it into the application bundle. The runtime code
 contains no platform detection logic.
 
 The target triples in the planned build matrix include:
-- `aarch64-apple-darwin` (Apple Silicon macOS) — current primary target
+- `aarch64-apple-darwin` (Apple Silicon macOS) - current primary target
 - `x86_64-apple-darwin` (Intel macOS)
 - `x86_64-unknown-linux-gnu` (Linux glibc)
 - `x86_64-unknown-linux-musl` (Alpine/musl Linux)
@@ -56,7 +56,7 @@ Linux and Windows targets are planned. The current build runs on
 
 When SideCar is fully implemented and the build matrix is active, the editor
 will start with the correct Node.js binary already in place for the target
-platform — no detection step, no fallback chain. If the build succeeded for
+platform - no detection step, no fallback chain. If the build succeeded for
 your target triple, the binary is already there.
 
 ---

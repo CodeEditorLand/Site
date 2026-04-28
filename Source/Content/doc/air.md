@@ -14,7 +14,7 @@ downloading update payloads, and verifying their integrity before they are
 applied.
 
 Air is listed in Layer 1 of the architecture alongside Mountain as part of the
-native shell. It is not embedded in Mountain's binary — it is a peer process
+native shell. It is not embedded in Mountain's binary - it is a peer process
 with its own lifecycle.
 
 ---
@@ -23,10 +23,10 @@ with its own lifecycle.
 
 Based on the architecture definition, Air's responsibilities are:
 
-- **Update checks** — polling for new releases of Editor.Land.
-- **Download management** — fetching release payloads in the background so
+- **Update checks** - polling for new releases of Editor.Land.
+- **Download management** - fetching release payloads in the background so
   they are available when the user chooses to update.
-- **Crypto signing / verification** — verifying the integrity of downloaded
+- **Crypto signing / verification** - verifying the integrity of downloaded
   releases before they are applied. The specific signing algorithm (PGP,
   Sigstore, or another mechanism) is not yet documented.
 
@@ -52,7 +52,7 @@ about what is confirmed working versus what is planned.
 - Pre-indexing of workspace changes between sessions.
 - Language server cache warm-up between sessions.
 
-The last two items — pre-indexing and warm-cache — are not confirmed as
+The last two items - pre-indexing and warm-cache - are not confirmed as
 features of Air's current implementation. They may be planned capabilities;
 they are not documented as working today.
 
@@ -63,7 +63,7 @@ they are not documented as working today.
 Air is not responsible for cold-boot time. The editor's cold-boot sequence
 (Mountain start, Cocoon activation, Sky render) runs independently of whether
 Air is running. Verified cold-boot time on Apple Silicon macOS with 47
-extensions is approximately 2,400 ms — this is a Mountain + Cocoon + Sky
+extensions is approximately 2,400 ms - this is a Mountain + Cocoon + Sky
 number, not an Air number.
 
 ---

@@ -27,7 +27,7 @@ yo code
 Select **New Extension (TypeScript)** and fill in the prompts. The generator
 creates a directory with `package.json`, `tsconfig.json`, and a `src/` folder
 containing an `Extension.ts` entry point. This step is entirely independent of
-Land — it uses the standard VS Code extension scaffolding toolchain.
+Land - it uses the standard VS Code extension scaffolding toolchain.
 
 ---
 
@@ -85,7 +85,7 @@ formatters, data transformations).
 
 **Integration tests** that require the editor runtime use `@vscode/test-electron`
 in the VS Code ecosystem. Using this package with Land requires configuring it
-to point at Land's binary rather than VS Code's Electron binary — this
+to point at Land's binary rather than VS Code's Electron binary - this
 configuration is not yet documented for Land specifically. Until it is, use unit
 tests for logic and manual testing in the development build for editor
 integration.
@@ -115,9 +115,9 @@ extensions panel UI and Open VSX Registry browsing are not yet implemented.
 
 Distribution options today:
 
-- **Share the `.vsix` file directly** — users install it via the command
+- **Share the `.vsix` file directly** - users install it via the command
   palette or by placing it in the extensions directory.
-- **Publish to Open VSX** — the Open VSX Registry
+- **Publish to Open VSX** - the Open VSX Registry
   ([open-vsx.org](https://open-vsx.org)) is the planned default registry for
   Land. Publishing there now means your extension is available when marketplace
   integration is implemented. The publish workflow:
@@ -125,7 +125,7 @@ Distribution options today:
   npx ovsx publish MyExtension-0.0.1.vsix -p YOUR_TOKEN
   ```
   Publishing to Open VSX does not make the extension available to Land users
-  through any in-editor browser today — there is no in-editor extension
+  through any in-editor browser today - there is no in-editor extension
   browser in the current build.
 
 ---
@@ -135,20 +135,20 @@ Distribution options today:
 The following API surfaces are implemented in Cocoon and work reliably for
 extension use today:
 
-- `vscode.commands` — register, execute, command palette
-- `vscode.workspace.fs` — file read/write via Mountain's FS layer
-- `vscode.window.createTerminal` — pty via Mountain
-- `vscode.debug` — DAP bridge via Mountain
-- `vscode.languages` — LSP client via `vscode-languageclient`
-- `vscode.workspace.getConfiguration` — settings read
+- `vscode.commands` - register, execute, command palette
+- `vscode.workspace.fs` - file read/write via Mountain's FS layer
+- `vscode.window.createTerminal` - pty via Mountain
+- `vscode.debug` - DAP bridge via Mountain
+- `vscode.languages` - LSP client via `vscode-languageclient`
+- `vscode.workspace.getConfiguration` - settings read
 
-The following are **not implemented** — extensions using them compile but
+The following are **not implemented** - extensions using them compile but
 their features silently no-op at runtime:
 
-- `vscode.lm.*` — language model / Copilot
-- `vscode.chat.*` — chat panel
-- `vscode.notebook.*` — notebook documents and editors
-- `vscode.tests.*` — test explorer and runner
+- `vscode.lm.*` - language model / Copilot
+- `vscode.chat.*` - chat panel
+- `vscode.notebook.*` - notebook documents and editors
+- `vscode.tests.*` - test explorer and runner
 
 See [API Reference](/Doc/api-reference) for the full coverage table.
 

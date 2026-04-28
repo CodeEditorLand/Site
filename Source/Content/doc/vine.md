@@ -27,8 +27,8 @@ request and response messages. The generated Rust stubs (via
 [tonic](https://github.com/hyperium/tonic)) and TypeScript stubs are the only
 way Mountain and Cocoon communicate. If a message field is renamed or removed,
 the Rust build and the TypeScript build each fail at their own compile step.
-There is no single cross-language compile — the two languages validate
-independently — but neither side can silently drift from the schema.
+There is no single cross-language compile - the two languages validate
+independently - but neither side can silently drift from the schema.
 
 ---
 
@@ -38,13 +38,13 @@ The current Vine.proto schema is approximately **825 lines**. It defines the
 service interfaces for the calls that Cocoon makes into Mountain during normal
 editor operation, including:
 
-- **File system operations** — read, write, stat, watch, and delete calls
+- **File system operations** - read, write, stat, watch, and delete calls
   that back the `vscode.workspace.fs.*` API.
-- **Terminal (pty) management** — spawn, resize, write, and close calls
+- **Terminal (pty) management** - spawn, resize, write, and close calls
   that back `vscode.window.createTerminal`.
-- **DAP bridge** — the Debug Adapter Protocol proxy calls that back
+- **DAP bridge** - the Debug Adapter Protocol proxy calls that back
   `vscode.debug.startDebugging`.
-- **Process lifecycle** — extension host registration, heartbeat, and
+- **Process lifecycle** - extension host registration, heartbeat, and
   shutdown coordination between Mountain and Cocoon.
 
 Vine is versioned through the protobuf schema itself. Adding a new optional
@@ -57,7 +57,7 @@ change.
 ## Transport
 
 Mountain runs the gRPC server. Cocoon connects as the gRPC client when it
-spawns. The transport is a local socket connection — both processes run on the
+spawns. The transport is a local socket connection - both processes run on the
 same machine, so no network stack is involved. The latency of the full
 Mountain↔Cocoon round-trip (including the Rust FS layer) is approximately
 **8 ms p99 for cached file reads** and **60 ms p99 for cold reads** on Apple

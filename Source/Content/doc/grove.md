@@ -14,7 +14,7 @@ description: "The planned WASM sandbox that will isolate extensions with capabil
 Grove is the planned WebAssembly sandbox for Editor.Land extensions. Where
 Cocoon runs extensions in a Node.js process today, Grove is designed to run
 extensions compiled to WebAssembly inside WASMtime with capability-based
-security — so that an extension can only touch resources explicitly granted to
+security - so that an extension can only touch resources explicitly granted to
 it.
 
 ---

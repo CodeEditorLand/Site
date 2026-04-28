@@ -19,23 +19,23 @@ so that the extension host (Cocoon) and the workbench UI (Sky) do not.
 
 Mountain owns the following concerns:
 
-- **File system** — all `vscode.workspace.fs.*` calls route through Mountain's
+- **File system** - all `vscode.workspace.fs.*` calls route through Mountain's
   Rust file system layer via Tauri IPC. Cached reads return at approximately
   8 ms p99 latency; cold reads at approximately 60 ms p99 on Apple Silicon.
-- **gRPC server** — Mountain runs the server side of the Vine protocol,
+- **gRPC server** - Mountain runs the server side of the Vine protocol,
   accepting connections from Cocoon (the extension host) over a local gRPC
   socket.
-- **Terminal (pty)** — Mountain spawns and manages pseudo-terminals for
+- **Terminal (pty)** - Mountain spawns and manages pseudo-terminals for
   `window.createTerminal`. Each pty runs as a child process under Mountain's
   supervision.
-- **DAP bridge** — `debug.startDebugging` is routed through Mountain, which
+- **DAP bridge** - `debug.startDebugging` is routed through Mountain, which
   acts as a Debug Adapter Protocol proxy between Sky and the language-specific
   debug adapter.
-- **IPC broker** — Mountain is the single point through which Sky (the
+- **IPC broker** - Mountain is the single point through which Sky (the
   WKWebView UI) and Cocoon (the Node extension host) exchange typed events.
   All Sky↔Mountain communication uses Tauri's typed IPC. All
   Mountain↔Cocoon communication uses gRPC over Vine.
-- **Echo host** — The work-stealing task scheduler (Echo) is embedded inside
+- **Echo host** - The work-stealing task scheduler (Echo) is embedded inside
   Mountain's Rust binary. Echo dispatches parallel jobs such as file indexing
   and search within the Mountain process.
 
@@ -50,8 +50,8 @@ its six concurrent processes: main, renderer, extension host, pty host, file
 watcher, and shared process.
 
 Tauri uses the WebView the operating system already provides. No Chromium is
-bundled. Mountain currently runs as two processes — Mountain (Rust) and Cocoon
-(Node) — instead of six. On the same 47-extension workload measured on Apple
+bundled. Mountain currently runs as two processes - Mountain (Rust) and Cocoon
+(Node) - instead of six. On the same 47-extension workload measured on Apple
 Silicon macOS, the total RSS is approximately **600 MB** (Mountain ~280 MB,
 Cocoon ~320 MB), compared to approximately **810 MB** for VS Code. That is
 around a 25% reduction, not a wholesale elimination of overhead. The remaining
@@ -69,8 +69,8 @@ with 47 extensions loaded. Numbers will differ on other hardware.
 |---|---|---|---|
 | Cold-boot time | ~2,400 ms | ~2,500 ms | Measured from launch to first editor frame |
 | Total RSS | ~600 MB | ~810 MB | 47 extensions, same workspace |
-| Cached file read (p99) | ~8 ms | — | Tauri IPC + Rust FS cache |
-| Cold file read (p99) | ~60 ms | — | No cache, first access |
+| Cached file read (p99) | ~8 ms | - | Tauri IPC + Rust FS cache |
+| Cold file read (p99) | ~60 ms | - | No cache, first access |
 | Extension activation | 47 manifests parallel | sequential | Cocoon `Parallel8` worker pool |
 
 The largest remaining boot cost in Land is a sequential dynamic-import loop
@@ -101,13 +101,13 @@ to approximately **1,650 ms**.
 
 Mountain is only active in two of the three build profiles:
 
-- **`debug`** — Mountain does not run. The workbench opens as a plain web app.
+- **`debug`** - Mountain does not run. The workbench opens as a plain web app.
   File system, pty, and DAP APIs are unavailable. Used for fast UI iteration
   without a Rust build step.
-- **`debug-mountain`** — Mountain runs as a Tauri desktop application.
+- **`debug-mountain`** - Mountain runs as a Tauri desktop application.
   Cocoon spawns as the extension host. The full supported API surface is
   active. This is the primary development target.
-- **`debug-electron`** — Mountain does not run. The editor runs inside
+- **`debug-electron`** - Mountain does not run. The editor runs inside
   Electron for compatibility testing. Not actively maintained.
 
 ---

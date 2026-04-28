@@ -458,7 +458,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"Lock-free concurrency runtime built on crossbeam-deque\nEvery task runs inside a supervised worker pool\nNo fire-and-forget spawns — graceful startup and shutdown are guaranteed\nHeavy indexing and analysis run across all CPU cores without blocking the editor thread",
+							"Lock-free concurrency runtime built on crossbeam-deque\nEvery task runs inside a supervised worker pool\nNo fire-and-forget spawns - graceful startup and shutdown are guaranteed\nHeavy indexing and analysis run across all CPU cores without blocking the editor thread",
 					}),
 				},
 				{
@@ -486,7 +486,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
-							"Drives build pipelines for the entire Land ecosystem\nEmbedded Rhai scripting handles flexible per-element build logic\nTOML and JSON5 configurations are validated at compile time\nSame commit always produces the same artifact — no environment-dependent output",
+							"Drives build pipelines for the entire Land ecosystem\nEmbedded Rhai scripting handles flexible per-element build logic\nTOML and JSON5 configurations are validated at compile time\nSame commit always produces the same artifact - no environment-dependent output",
 					}),
 				},
 				{
@@ -514,7 +514,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"Handles windows, file I/O, child processes, and extension IPC via Rust and Tauri\nResponds in microseconds where Electron takes milliseconds\nOpens hidden until Sky signals ready — panels render with data on first paint\nAuthentication tokens live in the OS keychain, never written to disk",
+							"Handles windows, file I/O, child processes, and extension IPC via Rust and Tauri\nResponds in microseconds where Electron takes milliseconds\nOpens hidden until Sky signals ready - panels render with data on first paint\nAuthentication tokens live in the OS keychain, never written to disk",
 					}),
 				},
 				{
@@ -528,7 +528,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
-							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts\nA plugin-routed architecture handles each source type on its own dedicated path\nEvery bundle is deterministic — same commit always produces the same checksum-verified output",
+							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts\nA plugin-routed architecture handles each source type on its own dedicated path\nEvery bundle is deterministic - same commit always produces the same checksum-verified output",
 					}),
 				},
 				{
@@ -570,7 +570,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"Every panel, sidebar, and tab bar is an Astro component\nStatus bar items surface through VS Code's native status bar mechanism\nThree workbench layouts: full desktop, embedded, and minimal\nTauri reloads Sky instantly on any component change — no full restart required",
+							"Every panel, sidebar, and tab bar is an Astro component\nStatus bar items surface through VS Code's native status bar mechanism\nThree workbench layouts: full desktop, embedded, and minimal\nTauri reloads Sky instantly on any component change - no full restart required",
 					}),
 				},
 				{
@@ -598,7 +598,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar\nEvery service is a composable Effect-TS Layer — file dialogs, clipboard, configuration, output channels\nNative OS calls via Tauri\nNo Electron IPC proxy, no renderer-to-main roundtrip",
+							"TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar\nEvery service is a composable Effect-TS Layer - file dialogs, clipboard, configuration, output channels\nNative OS calls via Tauri\nNo Electron IPC proxy, no renderer-to-main roundtrip",
 					}),
 				},
 				{
@@ -612,7 +612,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
-							"Manages caching, offline support, and dynamic CSS imports for the editor shell\nAuth tokens are AES-GCM encrypted and stored in memory\nEvery outbound request is HMAC-signed\nTokens refresh automatically — the shell stays functional when the network drops",
+							"Manages caching, offline support, and dynamic CSS imports for the editor shell\nAuth tokens are AES-GCM encrypted and stored in memory\nEvery outbound request is HMAC-signed\nTokens refresh automatically - the shell stays functional when the network drops",
 					}),
 				},
 			],

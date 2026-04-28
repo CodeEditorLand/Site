@@ -16,8 +16,8 @@ they expect. Internally those calls are typed Effects running on a supervised
 fiber scheduler.
 
 Cocoon communicates with Mountain (the Rust kernel) over gRPC using the Vine
-protocol. Every API call that requires native OS access — file reads, terminal
-spawn, DAP bridge — crosses that gRPC boundary into Mountain.
+protocol. Every API call that requires native OS access - file reads, terminal
+spawn, DAP bridge - crosses that gRPC boundary into Mountain.
 
 ---
 
@@ -32,12 +32,12 @@ the editor starts, Cocoon reads all installed extension manifests and groups
 them by activation tier. It then dispatches activation using a pool of 8
 concurrent workers (`Parallel8`). On a 47-extension workload on Apple Silicon
 macOS, this brings total activation time to approximately 3 seconds from
-launch — the same order of magnitude as VS Code on the same hardware.
+launch - the same order of magnitude as VS Code on the same hardware.
 
 Each extension runs inside its own fiber scope. If one extension's activation
 hangs on an unresolved Promise, other extensions' fibers continue running
 unaffected. A synchronous CPU-bound loop inside an extension will still occupy
-its fiber thread for the duration of that loop — fiber isolation does not
+its fiber thread for the duration of that loop - fiber isolation does not
 preempt synchronous work. What it prevents is one extension's asynchronous
 stall propagating to all others.
 
@@ -56,7 +56,7 @@ verified working in the `debug-mountain` profile:
 | `languages.register*Provider` | Working |
 | `commands.executeCommand` | Working |
 | `debug.startDebugging` | Working (via Mountain DAP bridge) |
-| `vscode.tasks.*` | Partial — task resolver not yet complete |
+| `vscode.tasks.*` | Partial - task resolver not yet complete |
 | `vscode.lm.*` | Not implemented |
 | `vscode.chat.*` | Not implemented |
 | `vscode.notebook.*` | Not implemented |
@@ -74,12 +74,12 @@ Effect-TS provides the concurrency model inside Cocoon. Each extension's API
 calls are modelled as typed Effects rather than raw Promises. This gives Cocoon
 three capabilities that the original VS Code extension host does not have:
 
-- **Interruption** — an in-flight Effect can be cancelled if its scope is
+- **Interruption** - an in-flight Effect can be cancelled if its scope is
   closed (e.g. when an extension is deactivated or the editor window closes).
-- **Supervision** — fiber scopes are supervised. If a child fiber fails
+- **Supervision** - fiber scopes are supervised. If a child fiber fails
   unexpectedly, the parent scope can restart it or propagate the failure
   without taking down the entire process.
-- **Tracing** — Effects carry structured trace spans, which makes it possible
+- **Tracing** - Effects carry structured trace spans, which makes it possible
   to profile which extension call is taking time without instrumenting each
   extension individually.
 

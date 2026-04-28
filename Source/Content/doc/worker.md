@@ -15,7 +15,7 @@ description: "The planned Service Worker layer for authentication, caching, and 
 Worker is the planned Service Worker layer for Editor.Land's web deployment
 path. Editor.Land today is a native desktop application built with Tauri.
 Worker is designed for a future scenario where Land runs in a browser or
-hybrid context — handling authentication, request signing, caching, and
+hybrid context - handling authentication, request signing, caching, and
 offline support in a background thread that never blocks the editor UI.
 
 ---

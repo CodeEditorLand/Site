@@ -10,7 +10,7 @@ description: "How Editor.Land's elements fit together: two processes, two IPC ch
 Editor.Land runs as **two processes** on a typical macOS session: Mountain (the
 Rust kernel) and Cocoon (the Node.js extension host). A third background process,
 Air, handles updates and downloads independently. The editor UI (Sky) runs
-inside WKWebView as part of Mountain's Tauri application — it is not a
+inside WKWebView as part of Mountain's Tauri application - it is not a
 separate process.
 
 This is a significant structural difference from VS Code, which runs six
@@ -73,21 +73,21 @@ the current development state honestly: Active means verified working in the
 means the repo exists and the design is defined but production use is not
 yet confirmed.
 
-### Layer 1 — Native Shell
+### Layer 1 - Native Shell
 
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Mountain**](/Doc/mountain) | Rust + Tauri | Native kernel: file system, gRPC server, terminal pty, DAP bridge, IPC broker | Active |
 | [**Air**](/Doc/air) | Rust | Background daemon: update checks, downloads, release signing | In Progress |
 
-### Layer 2 — IPC
+### Layer 2 - IPC
 
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Vine**](/Doc/vine) | Protobuf | gRPC schema and generated stubs for Mountain↔Cocoon communication | Active |
 | **Mist** | Rust | WebSocket communication layer | Planned |
 
-### Layer 3 — Extension Host
+### Layer 3 - Extension Host
 
 | Element | Language | Role | Status |
 |---|---|---|---|
@@ -95,14 +95,14 @@ yet confirmed.
 | **Grove** | Rust | WASM and Rhai extension host (alternative to Cocoon for non-Node extensions) | Planned |
 | **Worker** | TypeScript | Web Workers for frontend parallel tasks | Planned |
 
-### Layer 4 — UI
+### Layer 4 - UI
 
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Wind**](/Doc/wind) | TypeScript | Effect-TS service layer: typed workbench interfaces consumed by Sky | Active |
 | [**Sky**](/Doc/sky) | Astro + React | Workbench UI: the editor interface rendered in WKWebView | Active |
 
-### Layer 5 — Build Toolchain
+### Layer 5 - Build Toolchain
 
 | Element | Language | Role | Status |
 |---|---|---|---|

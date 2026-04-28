@@ -36,7 +36,7 @@ routes through Mountain's file system layer via Tauri IPC.
 
 If you have an existing `.vscode/` directory with workspace settings, Land
 is designed to read it. Whether all settings keys are correctly mapped to
-Land's configuration system is not fully confirmed — see
+Land's configuration system is not fully confirmed - see
 [Configuration](/Doc/configuration) for what is verified.
 
 ---
@@ -118,10 +118,10 @@ and will be compatible when task execution is complete:
 Extensions that use the following APIs activate but their specific features
 silently no-op:
 
-- `vscode.lm.*` — language model / Copilot
-- `vscode.chat.*` — chat panel
-- `vscode.notebook.*` — notebook UI
-- `vscode.tests.*` — test explorer
+- `vscode.lm.*` - language model / Copilot
+- `vscode.chat.*` - chat panel
+- `vscode.notebook.*` - notebook UI
+- `vscode.tests.*` - test explorer
 
 See [Cocoon](/Doc/cocoon) for the full API coverage table.
 

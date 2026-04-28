@@ -18,14 +18,14 @@ which API surfaces they use.
 
 The API surface is divided into three categories:
 
-**Implemented** — The API is active in the `debug-mountain` profile. Extensions
+**Implemented** - The API is active in the `debug-mountain` profile. Extensions
 using it behave as expected.
 
-**Partial** — The API is present and callable but not all methods or
+**Partial** - The API is present and callable but not all methods or
 behaviours are implemented. Some calls may silently no-op or return empty
 results.
 
-**Not implemented** — The namespace exists in Cocoon's type stubs so
+**Not implemented** - The namespace exists in Cocoon's type stubs so
 extensions compile, but the runtime calls do nothing. Extensions that depend
 on these APIs activate but their features do not work.
 
@@ -41,10 +41,10 @@ on these APIs activate but their features do not work.
 | `vscode.window.createTreeView` | Partial | Tree data provider registration works; inline actions and welcome content unconfirmed |
 | `vscode.tasks` | Partial | Task definition reading works; full task runner execution unconfirmed |
 | `vscode.extensions` | Partial | getExtension and activate work; some metadata fields unconfirmed |
-| `vscode.lm` | Not implemented | Language model / Copilot APIs — no-op |
-| `vscode.chat` | Not implemented | Chat panel APIs — no-op |
-| `vscode.notebook` | Not implemented | Notebook document and editor APIs — no-op |
-| `vscode.tests` | Not implemented | Test explorer and runner APIs — no-op |
+| `vscode.lm` | Not implemented | Language model / Copilot APIs - no-op |
+| `vscode.chat` | Not implemented | Chat panel APIs - no-op |
+| `vscode.notebook` | Not implemented | Notebook document and editor APIs - no-op |
+| `vscode.tests` | Not implemented | Test explorer and runner APIs - no-op |
 
 ---
 
@@ -78,7 +78,7 @@ const FontSize = Config.get<number>("FontSize", 14);
 Configuration keys are declared in `contributes.configuration` in your extension
 manifest. Land validates configuration values against the JSON Schema you
 provide. The specific user settings file path has not been independently
-confirmed — see [Configuration](/Doc/configuration) for details.
+confirmed - see [Configuration](/Doc/configuration) for details.
 
 ---
 
@@ -151,7 +151,7 @@ API surfaces.
 ## Rust API Documentation
 
 Generated `rustdoc` output is planned for the Rust crates listed below. The
-URLs follow the pattern `https://Rust.Documentation.*.Editor.Land` — these
+URLs follow the pattern `https://Rust.Documentation.*.Editor.Land` - these
 may not yet resolve to hosted documentation. Check the
 [source repositories](https://github.com/CodeEditorLand) directly if the
 links are unavailable.

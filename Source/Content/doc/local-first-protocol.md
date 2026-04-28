@@ -10,8 +10,8 @@ description:
 
 > **Note: The peer-to-peer sync protocol described here is the design
 > specification for the Air Daemon. Air exists as an active Rust background
-> daemon, but the full sync protocol — including mDNS discovery, mutual
-> authentication, and content-addressed delta transfer — is under active
+> daemon, but the full sync protocol - including mDNS discovery, mutual
+> authentication, and content-addressed delta transfer - is under active
 > development. Specific constants, port numbers, and file paths in this
 > document reflect the intended design, not a confirmed working
 > implementation. This page will be updated as features ship.**
@@ -27,12 +27,12 @@ local-network-first: no data passes through external servers.
 
 Land's sync layer is built on three commitments:
 
-- **Local-first** — the editor is always fully functional without network
+- **Local-first** - the editor is always fully functional without network
   access. Sync is additive, never blocking.
-- **No central relay** — peers discover and communicate with each other
+- **No central relay** - peers discover and communicate with each other
   directly on the local network. There is no Land-operated server in the
   data path.
-- **Encrypted by default** — all peer communication is encrypted at the
+- **Encrypted by default** - all peer communication is encrypted at the
   frame level using established cryptographic primitives. No certificate
   authority or TLS infrastructure is required.
 
@@ -70,12 +70,12 @@ key exchange.
 Once authenticated, the design calls for peers to exchange file state using
 a content-addressed protocol:
 
-1. **Manifest exchange** — each peer sends a manifest listing file paths
+1. **Manifest exchange** - each peer sends a manifest listing file paths
    and their content hashes (BLAKE3).
-2. **Delta request** — the receiver identifies files whose hashes differ
+2. **Delta request** - the receiver identifies files whose hashes differ
    and requests only those.
-3. **Content transfer** — changed files are sent as compressed byte frames.
-4. **Acknowledgment** — the receiver confirms receipt and updates its
+3. **Content transfer** - changed files are sent as compressed byte frames.
+4. **Acknowledgment** - the receiver confirms receipt and updates its
    manifest.
 
 Only changed files are transferred. This design avoids re-sending content
@@ -88,10 +88,10 @@ that both peers already have.
 When both peers have modified the same file since the last sync, the
 intended behaviour is:
 
-- **Default: last-write-wins** — the file with the more recent modification
+- **Default: last-write-wins** - the file with the more recent modification
   timestamp is accepted. The overwritten version is preserved in a
   conflicts directory within the workspace.
-- **Manual merge** — the user is notified and can open a three-way merge
+- **Manual merge** - the user is notified and can open a three-way merge
   view to resolve conflicts.
 
 Conflict resolution strategy is intended to be configurable per workspace.
@@ -102,7 +102,7 @@ Conflict resolution strategy is intended to be configurable per workspace.
 
 Air is designed never to block the editor. If no peers are available, the
 editor operates normally. Sync is intended to resume automatically when
-connectivity is restored. There is no "offline mode" toggle — the editor
+connectivity is restored. There is no "offline mode" toggle - the editor
 is always fully functional regardless of network state.
 
 ---

@@ -11,7 +11,7 @@ Sky is the workbench UI for Editor.Land. It is built with
 [Astro](https://astro.build) and React, and it runs inside WKWebView on macOS
 when the editor is launched in native mode. Sky consumes typed service
 interfaces from Wind (the Effect-TS service layer) for all state that crosses
-the UI boundary — open files, panel layout, extension contributions, language
+the UI boundary - open files, panel layout, extension contributions, language
 server results.
 
 Sky communicates with Mountain (the Rust kernel) exclusively through Tauri's
@@ -24,7 +24,7 @@ that Mountain fulfils.
 ## Sky and Wind
 
 Sky and Wind are two distinct layers that work together. Wind defines the
-Effect-TS service interfaces — the typed contracts for workbench state. Sky
+Effect-TS service interfaces - the typed contracts for workbench state. Sky
 consumes those interfaces to render the actual UI components. The separation
 means UI components do not hold raw state; they subscribe to Wind services and
 re-render when those services emit changes.
@@ -39,16 +39,16 @@ than VS Code's untyped `createDecorator` approach.
 
 Sky's runtime environment depends on which build profile is active:
 
-- **`debug`** — Sky runs as a plain web app in the browser. No Tauri webview,
+- **`debug`** - Sky runs as a plain web app in the browser. No Tauri webview,
   no Mountain process. Tauri IPC calls are stubbed or unavailable. This mode
-  is used for fast UI iteration — Astro's dev server with HMR is active, so
+  is used for fast UI iteration - Astro's dev server with HMR is active, so
   component changes reflect without a full page reload. File system, terminal,
   and debug APIs do not work in this profile.
-- **`debug-mountain`** — Sky runs inside WKWebView within the Tauri desktop
+- **`debug-mountain`** - Sky runs inside WKWebView within the Tauri desktop
   application. Mountain is running. Tauri IPC calls resolve through the Rust
   kernel. This is the primary development target and the only profile where the
   full editor experience is available.
-- **`debug-electron`** — Sky runs inside Electron's renderer. This profile
+- **`debug-electron`** - Sky runs inside Electron's renderer. This profile
   exists for compatibility testing and is not actively maintained.
 
 ---
@@ -78,8 +78,8 @@ reflects what is verified versus what is in progress:
 ## VS Code UI Compatibility
 
 Sky reimplements the VS Code workbench UI rather than forking it. The goal is
-behavioural compatibility — panels, tabs, the command palette, the status bar,
-and the activity bar should behave as a VS Code user expects — without
+behavioural compatibility - panels, tabs, the command palette, the status bar,
+and the activity bar should behave as a VS Code user expects - without
 carrying Electron's renderer process or VS Code's original webpack bundle.
 
 This is ongoing work. Some workbench surfaces are complete; others are

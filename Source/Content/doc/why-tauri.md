@@ -44,7 +44,7 @@ engine.
 
 Electron applications commonly consume 300 to 500 megabytes of RAM at idle.
 Tauri applications using the system WebView typically idle between 60 and 120
-megabytes. This is the same reduction — 60 to 80 percent — that the numbers
+megabytes. This is the same reduction - 60 to 80 percent - that the numbers
 predict. For a code editor that users leave open all day alongside browsers,
 terminals, and build tools, that difference reclaims real working memory.
 

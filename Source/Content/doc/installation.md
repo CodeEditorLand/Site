@@ -18,8 +18,8 @@ today.
 
 | Platform | Status | Notes |
 |---|---|---|
-| **macOS 13+ (aarch64)** | Supported | Apple Silicon — primary development target |
-| **macOS 13+ (x86_64)** | Supported | Intel Mac — tested |
+| **macOS 13+ (aarch64)** | Supported | Apple Silicon - primary development target |
+| **macOS 13+ (x86_64)** | Supported | Intel Mac - tested |
 | **Windows 11** | Planned | WebView2 integration not yet implemented |
 | **Linux** | Planned | WebKitGTK integration not yet implemented |
 
@@ -33,7 +33,7 @@ today.
 | Node.js | 20 | [nodejs.org](https://nodejs.org) |
 | pnpm | 9 | `npm install -g pnpm` |
 | Xcode CLI | Latest | `xcode-select --install` |
-| macOS | 13.0 (Ventura) | — |
+| macOS | 13.0 (Ventura) | - |
 
 ---
 

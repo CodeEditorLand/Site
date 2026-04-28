@@ -94,7 +94,7 @@ This matters for contributors and users alike. Contributors do not need to
 learn a new extension model. Users do not need to migrate their installed
 extensions. The bet is that a Rust kernel, a typed gRPC IPC layer, native
 OS-level file watching, and a work-stealing task scheduler can deliver
-measurably better performance on the same API surface — without requiring
+measurably better performance on the same API surface - without requiring
 the extension ecosystem to change.
 
 ---
@@ -103,7 +103,7 @@ the extension ecosystem to change.
 
 Editor.Land is composed of named elements. The table below covers the nine
 core active elements. Additional elements (Grove, Mist, Worker, SideCar,
-Maintain, Rest) are planned or in progress — see the
+Maintain, Rest) are planned or in progress - see the
 [Architecture Overview](/Doc/architecture) for the complete status table.
 
 | Element | Language | Role |
@@ -124,13 +124,13 @@ Maintain, Rest) are planned or in progress — see the
 
 Three build profiles exist for different development scenarios:
 
-- **`debug`** — Browser-only. The workbench opens as a web app with no native
+- **`debug`** - Browser-only. The workbench opens as a web app with no native
   kernel. File system, terminal, and extension APIs that require Mountain are
   unavailable. Used for UI iteration without a Rust build.
-- **`debug-mountain`** — Full native mode. Mountain runs as a Tauri desktop
+- **`debug-mountain`** - Full native mode. Mountain runs as a Tauri desktop
   application, Cocoon spawns as the extension host, and the full supported
   extension API surface is active. This is the primary development target.
-- **`debug-electron`** — Electron wrapper (legacy). Exists for compatibility
+- **`debug-electron`** - Electron wrapper (legacy). Exists for compatibility
   testing against the Electron-based VS Code host. Not actively maintained.
 
 ---
@@ -140,7 +140,7 @@ Three build profiles exist for different development scenarios:
 This documentation describes the project as it is, not as we would like it
 to be. Numbers are sourced from build logs and profiler output on Apple Silicon
 hardware; they will differ on other machines. Features listed as unimplemented
-are unimplemented — we will update this page when they land.
+are unimplemented - we will update this page when they land.
 
 The source files for this documentation are in the
 [NikolaRHristov/CodeEditorLand](https://github.com/NikolaRHristov/CodeEditorLand)
