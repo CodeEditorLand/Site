@@ -2,53 +2,66 @@
 title: "Worker"
 section: "Element"
 order: 24
-description:
-    "The Service Worker that keeps the editor authenticated and offline-capable."
+description: "The planned Service Worker layer for authentication, caching, and offline support."
 ---
 
 # Worker
 
-Worker is the Service Worker layer for Code Editor Land. It manages
-authentication, request signing, caching, offline support, and dynamic CSS
-imports, all running in a background thread that never blocks the editor UI.
+> **Status: Planned.** Worker is not active in the current build. The design
+> below describes the intended architecture for a future web deployment path.
+> See the [Architecture Overview](/Doc/architecture) for the full element
+> status table.
 
-## The Problem
+Worker is the planned Service Worker layer for Editor.Land's web deployment
+path. Editor.Land today is a native desktop application built with Tauri.
+Worker is designed for a future scenario where Land runs in a browser or
+hybrid context — handling authentication, request signing, caching, and
+offline support in a background thread that never blocks the editor UI.
 
-Traditional web-based editors handle authentication in the main thread. Token
-refresh interrupts the user. Network failures surface as cryptic error modals.
-Storing tokens in localStorage or cookies exposes them to XSS attacks. Every
-request carrying a plain-text bearer token is one compromised endpoint away from
-full account takeover.
+---
 
-## How Worker Eliminates It
+## The Problem Worker Is Designed to Solve
 
-Worker encrypts all authentication tokens with AES-GCM before storing them. The
-encryption key never leaves the Service Worker scope, making tokens inaccessible
-to page-level JavaScript and immune to XSS extraction.
+Web-based editors handle authentication in the main thread. Token refresh
+interrupts the user. Network failures surface as cryptic error modals. Storing
+tokens in localStorage or cookies exposes them to XSS attacks. Every request
+carrying a plain-text bearer token is one compromised endpoint away from full
+account takeover.
 
-Every outbound request is HMAC-signed. The server can verify that a request
-originated from an authenticated Worker instance, not from a replayed token or a
-forged client.
+---
 
-Token refresh happens automatically in the background. When a token approaches
-expiry, Worker obtains a new one, encrypts it, and swaps it in. The editor never
-pauses and never shows a re-login prompt. Worker also caches critical assets and
-API responses. When the network is unavailable, the editor continues with cached
-data. When connectivity returns, Worker synchronizes silently.
+## How Worker Is Designed to Eliminate It
 
-## What You Experience
+Worker will encrypt all authentication tokens with AES-GCM before storing
+them. The encryption key will never leave the Service Worker scope, making
+tokens inaccessible to page-level JavaScript.
 
-You open the editor and you are authenticated. You lose network and the editor
-keeps working. You regain network and everything synchronizes. You never see a
-login prompt mid-session. You never lose work to a dropped connection.
+Every outbound request will be HMAC-signed. The server will be able to verify
+that a request originated from an authenticated Worker instance, not from a
+replayed token or a forged client.
 
-Dynamic CSS imports (theme files, syntax highlighting stylesheets) load through
-Worker's cache, eliminating flash-of-unstyled-content on slow connections.
+Token refresh will happen automatically in the background. Worker will also
+cache critical assets and API responses so the editor can continue working when
+the network is unavailable, synchronising silently when connectivity returns.
+
+---
+
+## What Worker Will Enable
+
+When Worker is implemented for the web deployment path, the authentication
+experience will be seamless: open the editor, already authenticated, no
+re-login prompts mid-session. Dynamic CSS imports (theme files, syntax
+highlighting stylesheets) will load through Worker's cache, eliminating
+flash-of-unstyled-content on slow connections.
+
+---
 
 ## Key Technologies
 
-Service Workers, AES-GCM Encryption, HMAC Request Signing, SubtleCrypto, Cache
-API, Offline-First Architecture.
+Service Workers, AES-GCM Encryption, HMAC Request Signing, SubtleCrypto,
+Cache API, Offline-First Architecture.
+
+---
 
 ## See Also
 

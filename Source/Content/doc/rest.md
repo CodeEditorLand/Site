@@ -2,53 +2,62 @@
 title: "Rest"
 section: "Element"
 order: 21
-description:
-    "The OXC-powered TypeScript compiler that runs 2-3x faster than esbuild."
+description: "The OXC-powered TypeScript compiler for Editor.Land's build pipeline."
 ---
 
 # Rest
 
-Rest is the TypeScript compiler and bundler for Code Editor Land. It replaces
-the traditional tsc + Node.js pipeline with OXC, a Rust-native parser and
-transformer that produces 100% compatible output at 2-3x esbuild speed.
+Rest is the TypeScript compiler and bundler for Editor.Land. It is built on
+OXC (Oxidation Compiler), a Rust-native TypeScript parser and transformer,
+combined with esbuild for final bundling.
+
+---
 
 ## The Problem
 
-VS Code builds its TypeScript source with tsc running inside Node.js. The entire
-compile step carries the overhead of a JavaScript runtime: garbage collection
-pauses, JIT warmup, single-threaded type checking. A clean build of the VS Code
-workbench takes minutes.
+VS Code builds its TypeScript source with tsc running inside Node.js. The
+entire compile step carries the overhead of a JavaScript runtime: garbage
+collection pauses, JIT warmup, single-threaded type checking. A clean build
+of the VS Code workbench takes minutes.
 
-Even modern alternatives like esbuild, while dramatically faster than tsc, still
-run inside a Go runtime with its own garbage collector and bridge overhead when
-interacting with JavaScript tooling.
+Even modern alternatives like esbuild, while dramatically faster than tsc,
+still run inside a Go runtime with its own garbage collector.
 
-## How Rest Eliminates It
+---
 
-Rest is built on OXC (Oxidation Compiler), a Rust-native TypeScript parser and
-code generator. Parsing, transformation, and code emission all happen in native
-code with zero garbage collection pauses.
+## How Rest Addresses It
+
+Rest is built on OXC, a Rust-native TypeScript parser and code generator.
+Parsing, transformation, and code emission happen in native code with no
+garbage collection pauses.
 
 OXC handles TypeScript syntax stripping, JSX transformation, and module
-resolution natively. Rest wraps OXC with a plugin-routed architecture that feeds
-transformed output into esbuild for final bundling, combining OXC's parsing
-speed with esbuild's battle-tested code splitting.
+resolution natively. Rest wraps OXC with a plugin-routed architecture that
+feeds transformed output into esbuild for final bundling, combining OXC's
+parsing speed with esbuild's battle-tested code splitting.
 
-The result: 2-3x faster than esbuild alone, and an order of magnitude faster
-than tsc.
+OXC's own benchmarks show significant speed improvements over esbuild and tsc
+for equivalent workloads. Rest's measured build times in Land's specific
+pipeline have not been independently published yet.
+
+---
 
 ## What You Experience
 
-Clean builds complete in seconds, not minutes. Incremental rebuilds during
-development are near-instant. The compile step disappears from your workflow.
-You save a file and see the result before your hand leaves the keyboard.
+Clean builds complete faster than a tsc-based pipeline. Incremental rebuilds
+during development are substantially faster than running tsc directly. The
+exact improvement depends on the size of the TypeScript surface being compiled.
 
-CI pipelines benefit equally. Build times drop, runner minutes shrink, and merge
-queues move faster.
+CI pipelines benefit equally: build times drop and merge queues move faster
+compared to a tsc baseline.
+
+---
 
 ## Key Technologies
 
 Rust, OXC, esbuild, Plugin-Routed Bundling, Zero-GC TypeScript Compilation.
+
+---
 
 ## See Also
 
