@@ -2,42 +2,80 @@
 title: "Contributing"
 section: "Community"
 order: 9
-description: "How to contribute code, documentation, or translations."
+description: "How to contribute code, documentation, or translations to Editor.Land."
 ---
 
-# Contributing to Code Editor Land
+# Contributing to Editor.Land
 
-Code Editor Land is open source and welcomes contributions from everyone. The
-full contributing guide is at
+Editor.Land is open source and welcomes contributions. The full contributing
+guide is at
 [CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md)
 on GitHub.
 
+---
+
 ## Quick Start
 
-1. **Fork and clone** with submodules:
+1. **Fork and clone** the repository with submodules:
 
-    ```bash
-    git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git
-    ```
+   ```bash
+   git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git
+   cd Land
+   ```
 
 2. **Install dependencies:**
 
-    ```bash
-    cd Land && pnpm install && cargo build
-    ```
+   ```bash
+   pnpm install
+   ```
 
-3. **Create a branch** and make your changes following the
-   [PascalCase naming convention](/Doc/architecture).
+3. **Start the development build:**
 
-4. **Open a pull request** against the `Current` branch with a description of
-   what changed and why.
+   ```bash
+   cargo tauri dev
+   ```
+
+   This compiles Mountain and opens the editor window. The first run takes
+   several minutes due to Rust dependency compilation.
+
+4. **Create a branch** from `Current` and make your changes. The project uses
+   PascalCase naming for files, identifiers, and settings keys throughout the
+   codebase.
+
+5. **Open a pull request** against the `Current` branch with a clear
+   description of what changed and why.
+
+---
 
 ## Ways to Contribute
 
-- **Code** - Rust or TypeScript fixes, features, or performance improvements
-- **Documentation** - Guides, examples, and translations
-- **Testing** - Bug reports, reproductions, and test coverage
-- **Design** - UI/UX improvements for the editor or website
+- **Code** — Rust or TypeScript fixes, features, or performance improvements
+- **Documentation** — Correcting inaccuracies, adding missing context, or
+  improving clarity on any doc page
+- **Testing** — Bug reports with reproductions, test coverage for Cocoon or
+  Mountain
+- **Design** — UI/UX improvements for the editor or this website
+
+---
+
+## Submodule Workflow
+
+Each Land element (Mountain, Cocoon, Sky, Wind, Vine, and others) is a
+separate Git repository referenced as a submodule. When working on a specific
+element:
+
+```bash
+cd Land/Mountain   # or whichever element
+git checkout -b MyFeatureBranch
+# make changes
+git commit -m "Description"
+```
+
+Then update the submodule reference in the parent Land repo and open pull
+requests against both the element repo and the Land repo if the change affects
+the pinned submodule commit.
+
+---
 
 ## Code of Conduct
 
@@ -45,14 +83,20 @@ All participants are expected to be respectful. Read the full
 [Code of Conduct](https://github.com/CodeEditorLand/Land/blob/Current/CODE_OF_CONDUCT.md)
 before engaging.
 
+---
+
 ## Funding
 
-Code Editor Land is funded through the
-[NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
-operated by PlayForm (Sofia, Bulgaria) under the
+Editor.Land is funded through the
+[NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
+operated by [PlayForm](https://playform.cloud) (Sofia, Bulgaria) under the
 [NLnet Foundation](https://nlnet.nl).
+
+---
 
 ## See Also
 
 - [Getting Started](/Doc/getting-started)
+- [Installation](/Doc/installation)
 - [Extension Development](/Doc/extension-development)
+- [Architecture Overview](/Doc/architecture)
