@@ -34,7 +34,8 @@ Sky's UI components call Wind service interfaces. Wind routes native calls
 IPC to Mountain. This is the primary path for all user-initiated actions in
 the editor UI. The IPC server is implemented in
 `Source/IPC/TauriIPCServer.rs` inside Mountain; the entry points are
-`mountain_ipc_receive_message` and `mountain_ipc_get_status`.
+`mountain_ipc_receive_message` and `mountain_ipc_get_status`. Fourteen
+commands are registered at startup through the `Binary::IPC` module.
 
 **Channel 2: Mountain ↔ Cocoon (bidirectional gRPC / Vine)**
 The Vine protocol runs as two gRPC channels between Mountain and Cocoon:
@@ -54,6 +55,25 @@ operation does not block Sky's Tauri IPC calls to Mountain.
 Command dispatch (`command.*`) is handled directly by Mountain's
 `Track/Effect/CreateEffectForRequest` layer since April 2026. Cocoon no
 longer proxies command dispatch.
+
+---
+
+## Startup Pipeline
+
+Mountain's binary follows a deterministic startup sequence defined in
+`Source/Binary/mod.rs`:
+
+```
+main.rs ─► Binary::Main (Entry) ─► Build ─► Register ─► Initialize ─► Services
+                                                                       │
+                                                              Vine + Cocoon start
+```
+
+`Build` configures the Tauri application builder (localhost plugin, logging,
+window). `Register` wires all commands and the IPC server. `Initialize` parses
+CLI flags, selects the runtime port, and constructs `ApplicationState`.
+`Services` starts VineStart and CocoonStart, then hands control to the Tauri
+event loop.
 
 ---
 
@@ -186,10 +206,13 @@ capabilities are declared explicitly in the `capabilities/` directory.
 
 ---
 
-## API Gaps (In Progress)
+## Extension API Notes
 
-Extensions that use the following APIs activate but the specific features
-silently no-op:
+The vast majority of `vscode.*` APIs — file system, terminal, language server
+protocol, diagnostics, status bar, tree views, custom editors, and webview
+panels — are routed and active. The following APIs have stub implementations
+that allow extensions declaring them to activate without crashing, while the
+underlying features are not yet wired to a backend:
 
 - `vscode.lm.*` — language model / Copilot
 - `vscode.chat.*` — chat panel
