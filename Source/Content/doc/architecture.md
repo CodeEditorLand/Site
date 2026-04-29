@@ -13,8 +13,8 @@ process, Air, handles updates and downloads independently. The editor UI (Sky)
 runs inside the OS WebView as part of Mountain's Tauri application — it is
 not a separate process.
 
-The OS WebView is WKWebView on macOS, WebView2 on Windows (bootstrapper
-embedded in the installer), and WebKitGTK on Linux. No Chromium is bundled.
+The OS WebView is WKWebView on macOS, WebView2 on Windows, and WebKitGTK on
+Linux (in progress). No Chromium is bundled.
 
 This is a significant structural difference from VS Code, which runs six
 concurrent processes on the same workload (main, renderer, extension host,
@@ -36,15 +36,24 @@ the editor UI. The IPC server is implemented in
 `Source/IPC/TauriIPCServer.rs` inside Mountain; the entry points are
 `mountain_ipc_receive_message` and `mountain_ipc_get_status`.
 
-**Channel 2: Mountain ↔ Cocoon (gRPC / Vine)**
-Mountain runs a gRPC server. Cocoon connects as the gRPC client when it
-spawns. All communication between the extension host and the native kernel
-goes through the Vine protocol. The socket is secured by a TLS certificate
-generated at startup using `rcgen` + `p256`. This is the path for extension
-API calls that require native OS access.
+**Channel 2: Mountain ↔ Cocoon (bidirectional gRPC / Vine)**
+The Vine protocol runs as two gRPC channels between Mountain and Cocoon:
 
-These two channels are independent. A slow Cocoon operation does not block
-Sky's Tauri IPC calls to Mountain, and vice versa.
+- **Mountain as server (port 50051)** — Cocoon dials Mountain to send
+  notifications, fire events into the kernel, and deliver extension results
+  (diagnostics, completions, hover data).
+- **Cocoon as server (port 50052)** — Mountain dials Cocoon to invoke
+  extension host methods (`InitializeExtensionHost`, `$activateByEvent`,
+  `$provideHover`, `$acceptModelChanged`, and the full `CocoonService`
+  interface defined in Vine's `Vine.proto`).
+
+Both sockets are secured by TLS certificates generated at startup using
+`rcgen` + `p256`. These two channels are independent; a slow Cocoon
+operation does not block Sky's Tauri IPC calls to Mountain.
+
+Command dispatch (`command.*`) is handled directly by Mountain's
+`Track/Effect/CreateEffectForRequest` layer since April 2026. Cocoon no
+longer proxies command dispatch.
 
 ---
 
@@ -57,7 +66,7 @@ Two representative paths through the system:
 Keypress in Sky (OS WebView)
   → Wind Layer (Effect-TS, in-process)
   → Tauri IPC → Mountain (Rust)
-  → Mountain notifies Cocoon via Vine gRPC
+  → Mountain notifies Cocoon via Vine gRPC (port 50052 → CocoonService)
   → Cocoon fires onDidChangeTextDocument handlers in extension fibers
   → Extension results return via Vine → Mountain → Tauri IPC → Sky re-renders
 ```
@@ -65,7 +74,7 @@ Keypress in Sky (OS WebView)
 **Extension calls vscode.workspace.fs.readFile (extension API path):**
 ```
 Cocoon (Node.js fiber)
-  → Vine gRPC → Mountain (Rust)
+  → Vine gRPC (port 50051 → Mountain)
   → Mountain reads file via Tokio async FS (~8 ms p99 cached, ~60 ms p99 cold)
   → Response returns via Vine → Cocoon resolves the Thenable
 ```
@@ -99,7 +108,7 @@ is defined but not yet in production use.
 
 | Element | Language | Role | Status |
 |---|---|---|---|
-| [**Vine**](/Doc/vine) | Protobuf | gRPC schema and generated stubs for Mountain↔Cocoon communication | Active |
+| [**Vine**](/Doc/vine) | Protobuf | gRPC schema and generated stubs for Mountain↔Cocoon bidirectional communication | Active |
 | [**Mist**](/Doc/mist) | Rust | WebSocket communication layer (`MistNative` feature, enabled by default) | Active |
 
 ### Layer 3 — Extension Host
@@ -107,7 +116,7 @@ is defined but not yet in production use.
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Cocoon**](/Doc/cocoon) | TypeScript / Node | Runs VS Code extensions via `vscode.*` API on Effect-TS fibers | Active |
-| **Grove** | Rust | WASM and Rhai extension host (alternative to Cocoon for non-Node extensions) | Planned |
+| [**Grove**](/Doc/grove) | Rust | WASM and Rhai extension host (alternative to Cocoon for non-Node extensions) | In Progress |
 | **Worker** | TypeScript | Web Workers for frontend parallel tasks | Planned |
 
 ### Layer 4 — UI

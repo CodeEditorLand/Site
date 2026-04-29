@@ -2,7 +2,7 @@
 title: "Mountain"
 section: "Element"
 order: 11
-description: "The Rust + Tauri native kernel that replaces Electron in Editor.Land. Runs on macOS, Windows, and Linux."
+description: "The Rust + Tauri native kernel that replaces Electron in Editor.Land. Runs on macOS and Windows today, with Linux in progress."
 ---
 
 # Mountain
@@ -13,9 +13,6 @@ process entirely. The operating system's own WebView renders the editor UI:
 WKWebView on macOS, WebView2 on Windows, and WebKitGTK on Linux. Mountain
 handles everything that requires native OS access so that the extension host
 (Cocoon) and the workbench UI (Sky) do not.
-
-The project's own source doc puts it directly: *"Where Electron takes
-milliseconds, Mountain responds in microseconds."*
 
 ---
 
@@ -60,8 +57,11 @@ named modules matching the `Source/` directory tree:
 - **`IPC`** — Tauri IPC server (`mountain_ipc_receive_message`,
   `mountain_ipc_get_status`). Sky calls these to route workbench events to
   Mountain and receive state back.
-- **`Vine`** — the gRPC server/client for Cocoon extension host communication.
-  Mountain runs the server side; Cocoon connects as client.
+- **`Vine`** — the bidirectional gRPC layer for Cocoon extension host
+  communication. Mountain runs a gRPC server on port 50051 (Cocoon dials in);
+  Mountain also acts as gRPC client dialing Cocoon's server on port 50052
+  (`CocoonService` — `ProcessMountainRequest`, `SendMountainNotification`,
+  `CancelOperation`). Both sockets use TLS from `rcgen` + `p256`.
 - **`RPC`** — service implementations for each Vine gRPC service.
 - **`Air`** — client for the Air background daemon (update checks, release
   signing). Optional feature flag: `AirIntegration`.
@@ -69,7 +69,8 @@ named modules matching the `Source/` directory tree:
 ### Services
 
 - **`ProcessManagement`** — sidecar process lifecycle: launch, monitor,
-  restart. Manages the Cocoon Node.js process and any future sidecars.
+  restart. Manages the Cocoon Node.js sidecar process (which itself runs both
+  a gRPC client and server) and any future sidecars.
 - **`FileSystem`** — native `FileExplorerViewProvider` that powers the
   Explorer sidebar. Reads workspace folders and provides directory listings
   over Tauri IPC using async Tokio I/O.
@@ -87,6 +88,8 @@ named modules matching the `Source/` directory tree:
 - **`Command`** — native Tauri command handlers.
 - **`Track`** — central command dispatcher (`DispatchFrontendCommand`,
   `ResolveUIRequest`) routing Sky UI requests to provider implementations.
+  All `command.*` dispatch is handled here; Cocoon no longer proxies command
+  routing (path removed April 2026).
 - **`LandFixTier`** — tier-gating runtime banner; reads `.env.Land` and
   validates declared tier feature flags at startup.
 
@@ -126,7 +129,7 @@ available to all Sky and extension callers via `vscode.commands.executeCommand`:
 |---|---|
 | `tauri` | Desktop application framework; window, WebView, tray, plugin host |
 | `tokio` (full) | Async runtime for all I/O, gRPC, and process management |
-| `tonic` / `prost` | gRPC server (Vine protocol) |
+| `tonic` / `prost` | gRPC server and client (Vine protocol, both directions) |
 | `portable-pty` | Cross-platform pseudo-terminal for `window.createTerminal` |
 | `arboard` | Cross-platform clipboard access |
 | `keyring` | OS keychain store (macOS Keychain, Windows Credential Manager, Linux Secret Service) |
@@ -135,7 +138,7 @@ available to all Sky and extension callers via `vscode.commands.executeCommand`:
 | `globset` | Compiled glob pattern matching for file watcher exclusions |
 | `ignore` | `.gitignore`-aware directory traversal |
 | `opentelemetry` + `posthog-rs` | Optional telemetry and analytics |
-| `rcgen` + `rustls` + `p256` | TLS certificate generation for gRPC socket |
+| `rcgen` + `rustls` + `p256` | TLS certificate generation for both gRPC sockets |
 | `tauri-plugin-localhost` | Serves Sky assets over `localhost` during development |
 | `sysinfo` | Process and system metrics |
 
@@ -149,9 +152,11 @@ Mountain owns the following concerns:
   Mountain's Rust async I/O layer via Tauri IPC. Cached reads return at
   approximately 8 ms p99 latency; cold reads at approximately 60 ms p99 on
   Apple Silicon.
-- **gRPC server** — Mountain runs the server side of the Vine protocol,
-  accepting connections from Cocoon over a local gRPC socket secured by
-  an rcgen-generated TLS certificate.
+- **Bidirectional gRPC** — Mountain runs the Vine gRPC server on port 50051
+  and also acts as gRPC client connecting to Cocoon's server on port 50052.
+  Both directions are used during normal operation: Mountain pushing workspace
+  events into Cocoon, and Mountain querying Cocoon for extension-provided
+  language features and tree-view data.
 - **Terminal (pty)** — Mountain spawns and manages pseudo-terminals for
   `window.createTerminal` using `portable-pty` on all platforms.
 - **Clipboard** — `arboard` provides cross-platform clipboard read/write.
