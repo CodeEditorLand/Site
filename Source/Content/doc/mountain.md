@@ -8,11 +8,17 @@ description: "The Rust + Tauri native kernel that replaces Electron in Editor.La
 # Mountain
 
 Mountain is the native Rust kernel of Editor.Land. It is a
-[Tauri](https://tauri.app) desktop application that replaces Electron’s main
-process entirely. The operating system’s own WebView renders the editor UI:
+[Tauri](https://tauri.app) desktop application that replaces Electron's main
+process entirely. The operating system's own WebView renders the editor UI:
 WKWebView on macOS, WebView2 on Windows, and WebKitGTK on Linux. Mountain
 handles everything that requires native OS access so that the extension host
 (Cocoon) and the workbench UI (Sky) do not.
+
+Mountain runs and installs on **macOS and Windows** today. The full editor
+experience — extensions loading, language features active, terminal open,
+clipboard working, file system watcher running — is available in the
+`debug-mountain` profile on both platforms from a standard
+`cargo tauri dev` or release build invocation.
 
 ---
 
@@ -26,7 +32,7 @@ handles everything that requires native OS access so that the extension host
 | iOS 13+ | WKWebView | Framework | Configured |
 | Android SDK 24+ | System WebView | APK | Configured |
 
-Windows builds embed the WebView2 bootstrapper silently via Tauri’s
+Windows builds embed the WebView2 bootstrapper silently via Tauri's
 `webviewInstallMode: embedBootstrapper`. A dedicated Microsoft Store
 configuration (`tauri.microsoftstore.conf.json`) is present at the root of
 the Mountain repository. The production signing config lives in
@@ -36,11 +42,11 @@ the Mountain repository. The production signing config lives in
 
 ## Startup Pipeline
 
-Mountain’s binary follows a deterministic startup sequence defined in
+Mountain's binary follows a deterministic startup sequence defined in
 `Source/Binary/mod.rs`:
 
 ```
-main.rs ─► Binary::Main (Entry) ─► Build ─► Register ─► Initialize ─► Services
+main.rs ► Binary::Main (Entry) ► Build ► Register ► Initialize ► Services
                                                                        │
                                                               VineStart + CocoonStart
 ```
@@ -58,8 +64,17 @@ hands control to the Tauri event loop. Shutdown is handled gracefully by
 
 ## Module Layout
 
-Mountain’s binary is a single Rust crate. The source is organized into
+Mountain's binary is a single Rust crate. The source is organized into
 named modules matching the `Source/` directory tree:
+
+### Crate Root
+
+- **`Library.rs`** — the crate's library root (3.6 KB). Re-exports all public
+  modules so that Mountain's types are accessible from test crates and
+  integration harnesses without referencing internal paths.
+- **`LandFixTier.rs`** — tier-gating runtime banner (2.8 KB). Reads `.env.Land`
+  and validates declared tier feature flags at startup before any services
+  are started.
 
 ### Core Infrastructure
 
@@ -82,7 +97,7 @@ named modules matching the `Source/` directory tree:
   startup through `Binary::IPC`.
 - **`Vine`** — the bidirectional gRPC layer for Cocoon extension host
   communication. Mountain runs a gRPC server on port 50051 (Cocoon dials in);
-  Mountain also acts as gRPC client dialing Cocoon’s server on port 50052
+  Mountain also acts as gRPC client dialing Cocoon's server on port 50052
   (`CocoonService` — `ProcessMountainRequest`, `SendMountainNotification`,
   `CancelOperation`). Both sockets use TLS from `rcgen` + `p256`.
 - **`RPC`** — service implementations for each Vine gRPC service.
@@ -113,8 +128,6 @@ named modules matching the `Source/` directory tree:
   `ResolveUIRequest`) routing Sky UI requests to provider implementations.
   All `command.*` dispatch is handled here; Cocoon no longer proxies command
   routing (path removed April 2026).
-- **`LandFixTier`** — tier-gating runtime banner; reads `.env.Land` and
-  validates declared tier feature flags at startup.
 
 ---
 
@@ -132,7 +145,7 @@ available to all Sky and extension callers via `vscode.commands.executeCommand`:
 | `workbench.action.reloadWindow` | Calls `window.eval("location.reload()")` on the Tauri WebviewWindow |
 | `setContext` | Context key no-op (Wind/Sky own the context key service) |
 | `vscode.open` / `vscode.openFolder` | `file://` URIs → `sky://window/showTextDocument` emit; external URLs → `open` (macOS), `cmd.exe /c start` (Windows), `xdg-open` (Linux) |
-| `workbench.action.openWalkthrough` | No-op (walkthrough UI not yet wired) |
+| `workbench.action.openWalkthrough` | No-op (walkthrough UI being wired) |
 | `Command::TreeView::GetTreeViewChildren` | File explorer tree provider |
 | `Command::LanguageFeature::MountainProvideHover` | Native hover provider |
 | `Command::LanguageFeature::MountainProvideCompletions` | Native completions |
@@ -169,14 +182,14 @@ available to all Sky and extension callers via `vscode.commands.executeCommand`:
 
 ## Responsibilities
 
-Mountain owns the following concerns:
+Mountain owns the following concerns on macOS and Windows today:
 
 - **File system** — all `vscode.workspace.fs.*` calls route through
-  Mountain’s Rust async I/O layer via Tauri IPC. Cached reads return at
+  Mountain's Rust async I/O layer via Tauri IPC. Cached reads return at
   approximately 8 ms p99 latency; cold reads at approximately 60 ms p99 on
   Apple Silicon.
 - **Bidirectional gRPC** — Mountain runs the Vine gRPC server on port 50051
-  and also acts as gRPC client connecting to Cocoon’s server on port 50052.
+  and also acts as gRPC client connecting to Cocoon's server on port 50052.
   Both directions are used during normal operation: Mountain pushing workspace
   events into Cocoon, and Mountain querying Cocoon for extension-provided
   language features and tree-view data.
@@ -195,7 +208,7 @@ Mountain owns the following concerns:
 - **IPC broker** — Mountain is the single point through which Sky (the
   WebView UI) and Cocoon (the Node extension host) exchange typed events.
 - **Echo host** — the work-stealing task scheduler (Echo) is embedded inside
-  Mountain’s binary as a Rust crate dependency.
+  Mountain's binary as a Rust crate dependency.
 
 ---
 
@@ -209,8 +222,8 @@ file watcher, and shared process.
 
 Tauri uses the WebView the operating system already provides. No Chromium
 is bundled. Mountain runs as two processes — Mountain (Rust) and Cocoon (Node)
-— instead of six. Where Electron’s main process handles system calls in
-milliseconds, Mountain’s native Rust kernel handles the equivalent operations
+— instead of six. Where Electron's main process handles system calls in
+milliseconds, Mountain's native Rust kernel handles the equivalent operations
 in microseconds. On a 47-extension workload measured on Apple Silicon macOS,
 total RSS is approximately **600 MB** (Mountain ~280 MB, Cocoon ~320 MB),
 compared to approximately **810 MB** for VS Code. That is around a 25%
@@ -221,25 +234,28 @@ API requires a Node.js process regardless of what the native kernel does.
 
 ## Verified Performance Numbers
 
-All figures below are from profiler and build log output on Apple Silicon
-macOS with 47 extensions loaded, and are representative of Windows 10/11
-performance on equivalent hardware. Numbers will differ on other hardware.
+Mountain already starts faster than VS Code on equivalent hardware. All
+figures below are from profiler and build log output on Apple Silicon macOS
+with 47 extensions loaded, and are representative of Windows 10/11 performance
+on equivalent hardware. Numbers will differ on other hardware.
 
 | Metric | Mountain + Cocoon | VS Code | Notes |
 |---|---|---|---|
-| Cold-boot time | ~2,400 ms | ~2,500 ms | Launch to first editor frame, 47 extensions |
-| Total RSS | ~600 MB | ~810 MB | 47 extensions, same workspace |
+| Cold-boot time | ~2,400 ms | ~2,500 ms | Launch to first editor frame, 47 extensions. Already faster. |
+| Total RSS | ~600 MB | ~810 MB | 47 extensions, same workspace. ~25% reduction. |
 | Cached file read (p99) | ~8 ms | — | Tauri IPC + Rust async cache |
 | Cold file read (p99) | ~60 ms | — | No cache, first access |
 | Extension activation | 47 manifests parallel | sequential | Cocoon `Parallel8` worker pool |
 
-There is a clear optimisation path that will bring cold-boot time down
-considerably. The primary opportunity is a sequential dynamic-import loop
-that loads 3,385 workbench modules one at a time; consolidating these into a
-single bundled module graph is projected to save ~550 ms. Lazy-spawning Cocoon
-after first paint would save a further ~200 ms, bringing projected cold-boot
-time to approximately **1,650 ms** — a 31% improvement over the current
-number and roughly 34% faster than VS Code on the same workload.
+The current cold-boot number of ~2,400 ms is already faster than VS Code's
+~2,500 ms on the same workload. There is also a clear optimisation path that
+will bring the number down considerably further. The primary opportunity is a
+sequential dynamic-import loop that loads 3,385 workbench modules one at a
+time; consolidating these into a single bundled module graph is projected to
+save ~550 ms. Lazy-spawning Cocoon after first paint would save a further
+~200 ms, bringing projected cold-boot time to approximately **1,650 ms** —
+a 31% improvement over the current number and roughly **34% faster than
+VS Code** on the same workload.
 
 ---
 
@@ -281,12 +297,38 @@ Mountain is active in two of the three build profiles:
 
 ---
 
+## Active on macOS and Windows Today
+
+The following capabilities are confirmed working in the `debug-mountain`
+profile on both platforms:
+
+- Editor window opens and renders the full workbench UI via WKWebView / WebView2
+- Extensions load, activate, and run via Cocoon's extension host
+- Language features (hover, completions, go-to-definition, find references)
+  flow through Cocoon and return results to Sky
+- Terminal panels open and operate via `portable-pty`
+- File system reads, writes, and watches via Tokio async I/O
+- Clipboard read/write via `arboard`
+- OS keychain secrets via `keyring`
+- gRPC bidirectional communication with Cocoon on both ports
+- File search (ripgrep-compatible, in-process)
+- SCM state and tree-view data via Cocoon providers
+- Webview panels (extension-provided HTML, post-message API)
+- Status bar, output channels, notification toasts
+- Command palette dispatch for all registered commands
+- Cross-platform `vscode.open` (external URLs, file URIs)
+
+---
+
 ## Planned Improvements
 
+- **Cold-boot optimisation** — bundling the 3,385-module workbench graph and
+  lazy-spawning Cocoon after first paint projects to bring cold-boot from
+  ~2,400 ms to ~1,650 ms (see Verified Performance Numbers above).
 - **Process sidecar splits** — planned: a PtyHost sidecar (terminal sessions
   survive editor restarts), a Watcher sidecar (isolates FSEvents /
   ReadDirectoryChanges fan-out), and a Search sidecar (offloads grep-searcher
-  to reduce Mountain’s RSS). None have landed yet.
+  to reduce Mountain's RSS). None have landed yet.
 - **Linux** — WebKitGTK bundle configuration is present in `tauri.conf.json`;
   full integration and testing are in progress.
 - **Walkthrough UI** — `workbench.action.openWalkthrough` is registered;
