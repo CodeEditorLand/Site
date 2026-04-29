@@ -2,69 +2,104 @@
 title: "Worker"
 section: "Element"
 order: 24
-description: "The planned Service Worker layer for authentication, caching, and offline support."
+description: "The Service Worker that serves VS Code application assets inside WKWebView and WebView2."
 ---
 
 # Worker
 
-> **Status: Planned.** Worker is not active in the current build. The design
-> below describes the intended architecture for a future web deployment path.
-> See the [Architecture Overview](/Doc/architecture) for the full element
-> status table.
+Worker is the Service Worker layer for Editor.Land. It runs inside the
+WebView (WKWebView on macOS, WebView2 on Windows) and intercepts all
+requests for the `/Static/Application/` asset tree — serving them from
+cache with a cache-first strategy, handling CSS-as-JS-module conversion,
+and notifying the editor when a new build version is available.
 
-Worker is the planned Service Worker layer for Editor.Land's web deployment
-path. Editor.Land today is a native desktop application built with Tauri.
-Worker is designed for a future scenario where Land runs in a browser or
-hybrid context - handling authentication, request signing, caching, and
-offline support in a background thread that never blocks the editor UI.
+Worker is implemented and active in the current `debug-mountain` build.
+The main implementation is `Source/Worker.ts` (~11 KB).
 
 ---
 
-## The Problem Worker Is Designed to Solve
+## Why a Service Worker Inside a Native App
 
-Web-based editors handle authentication in the main thread. Token refresh
-interrupts the user. Network failures surface as cryptic error modals. Storing
-tokens in localStorage or cookies exposes them to XSS attacks. Every request
-carrying a plain-text bearer token is one compromised endpoint away from full
-account takeover.
+Editor.Land serves the VS Code workbench from a local HTTP server run by
+Mountain. The workbench consists of thousands of files in
+`/Static/Application/`. Loading all of them from the local server on every
+launch would be slow and redundant.
 
----
-
-## How Worker Is Designed to Eliminate It
-
-Worker will encrypt all authentication tokens with AES-GCM before storing
-them. The encryption key will never leave the Service Worker scope, making
-tokens inaccessible to page-level JavaScript.
-
-Every outbound request will be HMAC-signed. The server will be able to verify
-that a request originated from an authenticated Worker instance, not from a
-replayed token or a forged client.
-
-Token refresh will happen automatically in the background. Worker will also
-cache critical assets and API responses so the editor can continue working when
-the network is unavailable, synchronising silently when connectivity returns.
+By running a Service Worker inside the WebView, Worker intercepts those
+requests and serves assets directly from the browser cache after the first
+load. The result is a near-instant workbench on every launch after the initial
+cache warm.
 
 ---
 
-## What Worker Will Enable
+## Cache Architecture
 
-When Worker is implemented for the web deployment path, the authentication
-experience will be seamless: open the editor, already authenticated, no
-re-login prompts mid-session. Dynamic CSS imports (theme files, syntax
-highlighting stylesheets) will load through Worker's cache, eliminating
-flash-of-unstyled-content on slow connections.
+Worker maintains two versioned cache stores. Both are stamped with a build
+`INCREMENT` constant injected at compile time:
+
+| Cache | Purpose |
+|---|---|
+| `Core-{INCREMENT}` | Navigation responses — workbench HTML shell |
+| `Asset-{INCREMENT}` | Application asset files under `/Static/Application/` |
+
+When a new build is deployed, the `INCREMENT` changes. On activate, Worker
+deletes all caches whose names are not in the current set, removing stale
+assets automatically. Clients receive a `{ Version: "New" }` postMessage when
+a new version activates, so the editor can prompt for a refresh.
+
+---
+
+## Fetch Strategies
+
+Worker applies three distinct strategies based on request type:
+
+**Navigation requests** (the workbench HTML shell) use **network-first**:
+fetch from Mountain's local server, cache the response, fall back to cache
+if the network is unavailable.
+
+**`/Static/Application/` asset requests** use **cache-first**: serve from
+`Asset-{INCREMENT}` if present; fetch from the local server and cache on miss.
+
+**`/Static/Application/*.css` requests** are intercepted and converted to JS
+modules: Worker synthesises a JavaScript response containing
+`window._LOAD_CSS_WORKER('{path}'); export default {};` and caches it. This
+is the runtime side of the CSS loading mechanism Output's `StripCSSImport`
+plugin sets up — the static import chain becomes a runtime loader call
+handled by the WebView's own CSS injection path.
+
+---
+
+## Source Structure
+
+| Path | Role |
+|---|---|
+| `Source/Worker.ts` | Main Service Worker implementation (~11 KB) |
+| `Source/Worker/` | Sub-modules (cache utilities, strategy helpers) |
+| `Source/Configuration/` | Build-time configuration injection |
+| `Source/Run.sh` | Development runner |
+| `Source/prepublishOnly.sh` | Publish pipeline script |
+
+---
+
+## Security Boundary
+
+Worker validates the origin of every `message` event — messages from origins
+that are neither `self.location.origin` nor the configured `BASE_REMOTE` are
+discarded. This prevents page-level code from arbitrary origin from
+manipulating the Service Worker's cache.
 
 ---
 
 ## Key Technologies
 
-Service Workers, AES-GCM Encryption, HMAC Request Signing, SubtleCrypto,
-Cache API, Offline-First Architecture.
+Service Workers, Cache API, CSS-as-JS-Module Interception, Cache Versioning,
+Client Version Notification.
 
 ---
 
 ## See Also
 
 - [Architecture Overview](/Doc/architecture)
-- [Air](/Doc/air)
+- [Output: Build Pipeline](/Doc/output)
+- [Mountain: Native Kernel](/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Worker)

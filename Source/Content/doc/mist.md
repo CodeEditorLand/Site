@@ -2,23 +2,25 @@
 title: "Mist"
 section: "Element"
 order: 20
-description: "The planned DNS sandbox that will resolve *.editor.land locally."
+description: "The DNS sandbox that resolves *.editor.land locally, eliminating public DNS dependency."
 ---
 
 # Mist
 
-> **Status: Planned.** Mist is not active in the current build. The design
-> below describes the intended architecture. See the
-> [Architecture Overview](/Doc/architecture) for the full element status table.
+Mist is the local DNS layer for Editor.Land. It resolves every
+`*.editor.land` domain to `127.0.0.1` so that all editor-internal service
+communication happens over loopback — no packet leaves the network interface
+for editor traffic.
 
-Mist is the planned network boundary for Editor.Land. It is designed to create
-a fully sandboxed DNS zone that resolves every `*.editor.land` domain to
-`127.0.0.1`, so that editor-internal services communicate over loopback without
-any packet leaving the network interface.
+Mist is implemented in Rust and in active development. The DNS server
+(`Server.rs`), zone resolver (`Resolver.rs`), zone authority (`Zone.rs`),
+forward security module (`ForwardSecurity.rs`), and integration tests are all
+confirmed present in the
+[Mist repository](https://github.com/CodeEditorLand/Mist).
 
 ---
 
-## The Problem Mist Is Designed to Solve
+## The Problem Mist Solves
 
 VS Code extensions, update checks, and telemetry endpoints all resolve against
 public DNS. Even with telemetry disabled, DNS queries can leak metadata about
@@ -31,30 +33,42 @@ stutters while waiting.
 
 ---
 
-## How Mist Is Designed to Eliminate It
+## How Mist Works
 
-Mist will intercept all DNS queries for the `*.editor.land` zone before they
-reach the system resolver. Every query will resolve instantly to `127.0.0.1`.
-The editor's internal services will communicate over loopback.
+Mist intercepts all DNS queries for the `*.editor.land` zone before they reach
+the system resolver. Every query resolves instantly to `127.0.0.1`. The
+editor's internal services communicate over loopback.
 
-For domains outside the `*.editor.land` zone, Mist will pass queries through
-to the system resolver unchanged. All other applications will behave exactly
-as before.
+For domains outside the `*.editor.land` zone, Mist passes queries through to
+the system resolver unchanged. All other applications behave exactly as before.
 
 ---
 
-## What Mist Will Enable
+## Source Structure
 
-When Mist is implemented, the editor will start and operate without any public
-DNS dependency. On airgapped machines, the editor will work at full speed
-because it will never wait for a DNS response from outside. On corporate
-networks, no outbound DNS traffic will be visible from the editor process.
+| Path | Role |
+|---|---|
+| `Source/Server.rs` | DNS server — listens for queries and dispatches to resolver (~5.8 KB) |
+| `Source/Resolver.rs` | DNS resolver — zone lookup and response construction (~2 KB) |
+| `Source/Zone.rs` | Zone authority — `*.editor.land` zone definitions (~3.5 KB) |
+| `Source/ForwardSecurity.rs` | Forward security for pass-through queries (~1.2 KB) |
+| `Source/lib.rs` | Crate root re-exports (~5.6 KB) |
+| `tests/` | Integration tests |
+
+---
+
+## What Mist Enables
+
+With Mist active, the editor starts and operates without any public DNS
+dependency. On airgapped machines, the editor works at full speed because it
+never waits for a DNS response from outside. On corporate networks, no outbound
+DNS traffic is visible from the editor process for editor-internal services.
 
 ---
 
 ## Key Technologies
 
-Rust, DNS-over-Loopback, Sandboxed Zone Resolution.
+Rust, DNS-over-Loopback, Sandboxed Zone Resolution, Forward Security.
 
 ---
 
