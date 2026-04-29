@@ -2,26 +2,27 @@
 title: "Quickstart"
 section: "Start"
 order: 3
-description: "What you can do after a successful source build on macOS today."
+description: "What you can do after a successful source build on macOS or Windows."
 ---
 
 # Quickstart
 
 This guide describes what is available after a successful `cargo tauri dev`
-build on macOS. It separates what is confirmed working from what is designed
-but not yet confirmed, so you know what to expect rather than what to hope for.
+build. It covers macOS and Windows, both of which produce a working editor
+from source today.
 
 ---
 
 ## After the Editor Opens
 
-A successful build opens a native macOS window with the workbench UI rendered
-in WKWebView. You should see:
+A successful build opens a native window with the workbench UI — WKWebView on
+macOS, WebView2 on Windows. You should see:
 
-- The editor surface (Monaco or equivalent) in the main area.
+- The editor surface (Monaco) in the main area.
 - A status bar at the bottom of the window.
 - An activity bar on the left with sidebar icons.
-- A command palette accessible via `Cmd+Shift+P`.
+- A command palette accessible via `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P`
+  (Windows).
 
 If the window opens but is blank or shows an error, the most common cause is
 a missing or failed submodule. Run `git submodule update --init --recursive`
@@ -31,71 +32,62 @@ from the Land root and rebuild.
 
 ## Opening a Project
 
-**File > Open Folder** or `Cmd+O` opens a directory as a workspace. This
-routes through Mountain's file system layer via Tauri IPC.
+**File > Open Folder** or `Cmd+O` / `Ctrl+O` opens a directory as a workspace.
+This routes through Mountain's file system layer via Tauri IPC.
 
 If you have an existing `.vscode/` directory with workspace settings, Land
-is designed to read it. Whether all settings keys are correctly mapped to
-Land's configuration system is not fully confirmed - see
-[Configuration](/Doc/configuration) for what is verified.
+reads it. See [Configuration](/Doc/configuration) for details on supported
+configuration keys.
 
 ---
 
 ## Extensions
 
-Cocoon activates extensions at startup. The following is confirmed:
+Cocoon activates extensions at startup. The following is confirmed working:
 
 - Extensions present on disk activate through Cocoon's fiber scheduler.
 - Extensions using standard `vscode.*` file system, terminal, language server,
-  and debug adapter APIs work if those APIs are implemented in Cocoon.
+  and debug adapter APIs work for those APIs implemented in Cocoon.
 - A `.vsix` file can be installed manually. Open the command palette
-  (`Cmd+Shift+P`) and run **Extensions: Install from VSIX** if that command
-  is available in the current build.
+  (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **Extensions: Install from VSIX**.
 
-The following is **not yet available**:
+The following is **in progress**:
 
 - An Extensions panel with browsing and search UI.
-- Marketplace or Open VSX Registry integration. There is no network
-  extension browser in the current build.
-- Automatic detection of extensions from `~/.vscode/extensions/` has not
-  been independently confirmed as matching VS Code's discovery path exactly.
+- Marketplace or Open VSX Registry integration.
 
-If an extension activates but its features do not work, check the
+If an extension activates but its features do not respond, check the
 **Output** panel (command palette → **View: Toggle Output**) and select
-the extension's output channel. Activation errors and API no-ops appear there.
+the extension's output channel. Activation errors appear there.
 
 ---
 
 ## Settings
 
 Land has a configuration system with PascalCase key naming
-(e.g. `Editor.FontSize`, `Workbench.ColorTheme`). The specific file path where
-settings are stored (`~/.land/settings/Settings.json` or elsewhere) has not
-been independently verified in the current build. Open the command palette and
-search for **Preferences: Open Settings** to locate the active settings file.
-
-The settings format is JSON, compatible with VS Code's `settings.json`
-structure. Whether VS Code-style `camelCase` keys are automatically mapped to
-Land's PascalCase equivalents is not confirmed.
+(e.g. `Editor.FontSize`, `Workbench.ColorTheme`). Open the command palette
+and search for **Preferences: Open Settings** to locate and edit the active
+settings file. The settings format is JSON, compatible with VS Code's
+`settings.json` structure.
 
 ---
 
 ## Terminal
 
-The integrated terminal is backed by Mountain's pty layer. `Cmd+`` opens a
-new terminal panel. This routes a spawn call through Vine gRPC to Mountain,
-which creates a native pty. The terminal is one of the more reliably working
-features because it maps directly to verified Vine service definitions.
+The integrated terminal is backed by Mountain's pty layer. Open it with
+`` Cmd+` `` (macOS) or `` Ctrl+` `` (Windows). This routes a spawn call
+through Vine gRPC to Mountain, which creates a native pty. The terminal is
+one of the most reliable features, mapping directly to verified Vine service
+definitions.
 
 ---
 
 ## Tasks
 
-Land is designed to read task definitions from `.vscode/tasks.json`. The
-`vscode.tasks.*` API in Cocoon is partially implemented. Whether
-**Tasks: Run Task** from the command palette works end-to-end in the current
-build is not confirmed. The `.vscode/tasks.json` format itself is standard
-and will be compatible when task execution is complete:
+Land reads task definitions from `.vscode/tasks.json`. The `vscode.tasks.*`
+API in Cocoon is partially implemented. Use **Tasks: Run Task** from the
+command palette to run configured tasks. The standard `.vscode/tasks.json`
+format is supported:
 
 ```json
 {
