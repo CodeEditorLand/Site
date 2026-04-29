@@ -23,7 +23,7 @@ on GitHub.
    cd Land
    ```
 
-2. **Install dependencies:**
+2. **Install Node.js dependencies:**
 
    ```bash
    pnpm install
@@ -35,8 +35,10 @@ on GitHub.
    cargo tauri dev
    ```
 
-   This compiles Mountain and opens the editor window. The first run takes
-   several minutes due to Rust dependency compilation.
+   This compiles Mountain and opens the editor window. The first run downloads
+   and compiles Rust dependencies from scratch — allow a few minutes on a fresh
+   checkout. Subsequent builds use Cargo's incremental compilation cache and
+   are significantly faster.
 
 4. **Create a branch** from `Current` and make your changes. The project uses
    PascalCase naming for files, identifiers, and settings keys throughout the
@@ -49,20 +51,20 @@ on GitHub.
 
 ## Ways to Contribute
 
-- **Code** - Rust or TypeScript fixes, features, or performance improvements
-- **Documentation** - Correcting inaccuracies, adding missing context, or
+- **Code** — Rust or TypeScript fixes, features, or performance improvements
+- **Documentation** — Correcting inaccuracies, adding missing context, or
   improving clarity on any doc page
-- **Testing** - Bug reports with reproductions, test coverage for Cocoon or
+- **Testing** — Bug reports with reproductions, test coverage for Cocoon or
   Mountain
-- **Design** - UI/UX improvements for the editor or this website
+- **Design** — UI/UX improvements for the editor or this website
 
 ---
 
 ## Submodule Workflow
 
-Each Land element (Mountain, Cocoon, Sky, Wind, Vine, and others) is a
-separate Git repository referenced as a submodule. When working on a specific
-element:
+Each Land element (Mountain, Cocoon, Sky, Wind, Vine, Air, Echo, and others)
+is a separate Git repository referenced as a submodule. When working on a
+specific element:
 
 ```bash
 cd Land/Mountain   # or whichever element
@@ -88,7 +90,7 @@ before engaging.
 ## Funding
 
 Editor.Land is funded through the
-[NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
+[NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
 operated by [PlayForm](https://playform.cloud) (Sofia, Bulgaria) under the
 [NLnet Foundation](https://nlnet.nl).
 
@@ -98,5 +100,4 @@ operated by [PlayForm](https://playform.cloud) (Sofia, Bulgaria) under the
 
 - [Getting Started](/Doc/getting-started)
 - [Installation](/Doc/installation)
-- [Extension Development](/Doc/extension-development)
 - [Architecture Overview](/Doc/architecture)
