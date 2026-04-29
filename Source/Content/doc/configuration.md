@@ -10,7 +10,8 @@ description: "Settings, keybindings, themes, and language configuration in Edito
 Editor.Land stores configuration locally in JSON files that support comments
 (`//` and `/* */`). The exact file paths depend on the platform and build
 profile. To locate the active settings file on your system, open the command
-palette (`Cmd+Shift+P`) and search for **Preferences: Open Settings (JSON)**.
+palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows) and search for
+**Preferences: Open Settings (JSON)**.
 
 ---
 
@@ -18,20 +19,20 @@ palette (`Cmd+Shift+P`) and search for **Preferences: Open Settings (JSON)**.
 
 Land merges settings from three levels in order of increasing precedence:
 
-1. **Default** - built-in defaults shipped with Land.
-2. **User** - the user-level settings file (locate via command palette).
-3. **Workspace** - a settings file in the workspace root. Land is designed to
-   read `.vscode/settings.json` for compatibility with existing VS Code
-   workspaces.
+1. **Default** — built-in defaults shipped with Land.
+2. **User** — the user-level settings file (locate via command palette).
+3. **Workspace** — a settings file in the workspace root. Land reads
+   `.vscode/settings.json` for compatibility with existing VS Code workspaces.
 
 ---
 
 ## Setting Keys
 
-Land uses PascalCase for setting keys (`Editor.FontSize`, `Workbench.ColorTheme`)
-rather than VS Code's `camelCase` (`editor.fontSize`). Whether VS Code-style
-`camelCase` keys are automatically mapped to their PascalCase equivalents is
-not confirmed in the current build. Use PascalCase keys to be safe.
+Land uses PascalCase for setting keys (`Editor.FontSize`,
+`Workbench.ColorTheme`) rather than VS Code's `camelCase` (`editor.fontSize`).
+Whether VS Code-style `camelCase` keys are automatically mapped to their
+PascalCase equivalents is not confirmed in the current build. Use PascalCase
+keys to be safe.
 
 ### Common Settings
 
@@ -63,11 +64,11 @@ and an optional `when` clause:
 ```json
 [
   {
-    "key": "cmd+shift+f",
+    "key": "ctrl+shift+f",
     "command": "Workbench.Action.FindInFiles"
   },
   {
-    "key": "cmd+b",
+    "key": "ctrl+b",
     "command": "Workbench.Action.ToggleSidebarVisibility"
   },
   {
@@ -77,23 +78,23 @@ and an optional `when` clause:
 ]
 ```
 
-The `when` clause uses the same context key syntax as VS Code
-(e.g. `"when": "editorTextFocus"`).
+Use `cmd` instead of `ctrl` on macOS. The `when` clause uses the same
+context key syntax as VS Code (e.g. `"when": "editorTextFocus"`).
 
 ---
 
 ## Themes
 
 Land supports VS Code color themes without modification. Install a theme by
-placing its `.vsix` file in the extensions directory and installing it via the
-command palette (**Extensions: Install from VSIX**). The extensions panel UI
-for browsing and installing themes is not yet implemented.
+placing its `.vsix` file in the extensions directory and installing it via
+the command palette (**Extensions: Install from VSIX**). The extensions panel
+UI for browsing and installing themes is not yet implemented.
 
 To create a custom theme, follow the
 [VS Code color theme reference](https://code.visualstudio.com/api/references/theme-color)
-- the token format is identical. The directory to place custom theme files in
-has not been independently confirmed; use the command palette to locate the
-themes directory on your system.
+— the token format is identical. Use the command palette to locate the
+themes directory on your system, as exact paths vary by platform and build
+profile.
 
 ---
 
@@ -128,8 +129,8 @@ This syntax is the same as VS Code's language-specific settings.
 - **JSON Schema validation** of unrecognised keys (producing warnings) is
   a planned feature of the Wind configuration service and is not confirmed
   as active in the current build.
-- **macOS only.** Configuration is only tested on macOS 13+. Windows and
-  Linux are not yet supported.
+- **Linux** is not yet a supported platform. Configuration on Linux has not
+  been tested.
 
 ---
 
@@ -137,5 +138,4 @@ This syntax is the same as VS Code's language-specific settings.
 
 - [Getting Started](/Doc/getting-started)
 - [Installation](/Doc/installation)
-- [Extension Development](/Doc/extension-development)
 - [Wind: Service Layer](/Doc/wind)

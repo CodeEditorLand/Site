@@ -2,14 +2,13 @@
 title: "Troubleshooting"
 section: "Support"
 order: 10
-description: "Common issues and their solutions when running Editor.Land on macOS."
+description: "Common issues and their solutions when running Editor.Land on macOS or Windows."
 ---
 
 # Troubleshooting
 
 This page covers the most common issues encountered when running Editor.Land
-on macOS, along with diagnosis steps and fixes. Editor.Land currently runs on
-**macOS 13+** only. If you are on an older macOS version, upgrade first.
+on **macOS 13+** and **Windows 10/11**, along with diagnosis steps and fixes.
 
 ---
 
@@ -17,17 +16,27 @@ on macOS, along with diagnosis steps and fixes. Editor.Land currently runs on
 
 **Symptoms:** The window opens but shows a white or black screen with no UI.
 
-**Diagnosis:**
+**Diagnosis on macOS:**
 
 Launch Land from the terminal via `cargo tauri dev` and watch the console
 output for errors. WebKit or renderer errors will appear there. If you are
 running a pre-built binary, open **Console.app**, filter by the Land process
 name, and look for errors at or around the launch timestamp.
 
+**Diagnosis on Windows:**
+
+Launch via `cargo tauri dev` in a terminal window. WebView2 errors are
+written to standard output. If you are running a pre-built binary, open
+**Event Viewer**, navigate to **Windows Logs → Application**, and filter for
+the Land process name.
+
 **Fixes:**
 
-- Confirm you are running **macOS 13.0 or later**. Older WebKit versions do
-  not support all CSS features Land's UI requires.
+- **macOS:** Confirm you are running **macOS 13.0 or later**. Older WebKit
+  versions do not support all CSS features Land's UI requires.
+- **Windows:** Confirm the **WebView2 Runtime** is installed. Download it
+  from [microsoft.com/edge/webview2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
+  if missing. The Evergreen Bootstrapper is the simplest install option.
 - If the console shows GPU-related errors, try quitting other GPU-intensive
   applications and relaunching.
 - If you built from source, ensure the build completed without errors:
@@ -48,15 +57,15 @@ commands it contributes do not appear in the command palette.
 
 1. Check the Output panel. Select **Extension Host** from the channel dropdown
    to see activation errors and log output from Cocoon.
-2. Look for activation event mismatches - if the extension declares
+2. Look for activation event mismatches — if the extension declares
    `activationEvents` that Land does not fire, it will never activate.
 
 **Fixes:**
 
 - Check the `engines.vscode` field in the extension's `package.json`. If it
   requires a VS Code version whose API surface is not yet implemented in
-  Cocoon, the extension may silently fail. See [API Reference](/Doc/api-reference)
-  for the current coverage table.
+  Cocoon, the extension may silently fail. See
+  [API Reference](/Doc/api-reference) for the current coverage table.
 - If the extension uses an API namespace listed as **Not Implemented** in the
   API Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`,
   `vscode.tests`), those calls will no-op at runtime.
@@ -70,9 +79,10 @@ commands it contributes do not appear in the command palette.
 
 **Diagnosis:**
 
-Open **Activity Monitor** (macOS), filter by process name, and identify
-which process is consuming CPU - the main Land process, a language server
-child process, or Node.js (the Cocoon extension host).
+Open **Activity Monitor** on macOS or **Task Manager** on Windows, filter by
+process name, and identify which process is consuming CPU — the main Land
+process, a language server child process, or Node.js (the Cocoon extension
+host).
 
 **Fixes:**
 
@@ -96,26 +106,38 @@ child process, or Node.js (the Cocoon extension host).
 
 ---
 
-## Permission Errors on macOS
+## Permission Errors
 
-**Symptoms:** Land cannot access files outside your home directory, or shows
-"operation not permitted" errors when opening a project.
+**Symptoms:** Land cannot access files, or shows "operation not permitted" /
+"access denied" errors when opening a project.
 
-**Diagnosis:** macOS requires explicit user consent for file access outside
-standard directories. This is enforced by the TCC (Transparency, Consent, and
-Control) system regardless of file ownership.
+### macOS
 
-**Fixes:**
+macOS requires explicit user consent for file access outside standard
+directories, enforced by the TCC (Transparency, Consent, and Control) system
+regardless of file ownership.
 
 1. Open **System Settings → Privacy & Security → Files and Folders**.
 2. Find Land in the list and grant access to the directories it needs.
-3. If Land does not appear in the list, try opening a folder from within Land
-   using **File → Open Folder** so macOS can prompt for consent.
-4. If permissions appear stuck, you can reset the TCC entry for Land. The
-   bundle identifier used by Land follows the pattern `com.codeeditorland.*`
-   - check the exact identifier in the built `.app` bundle's `Info.plist`
-   before running any `tccutil reset` command, as using the wrong identifier
-   has no effect.
+3. If Land does not appear, try opening a folder from within Land using
+   **File → Open Folder** so macOS can prompt for consent.
+4. If permissions appear stuck, you can reset the TCC entry. The bundle
+   identifier follows the pattern `com.codeeditorland.*` — check the exact
+   identifier in the built `.app` bundle's `Info.plist` before running any
+   `tccutil reset` command.
+
+### Windows
+
+- Ensure the directory you are opening is not under a path blocked by
+  **Windows Defender Controlled Folder Access**. If it is, add Land as an
+  allowed application in **Windows Security → Virus & threat protection →
+  Ransomware protection**.
+- Verify NTFS permissions on the target directory. Right-click the folder,
+  select **Properties → Security**, and confirm your user account has Read
+  and Write permissions.
+- If running a dev build, ensure you launched the terminal as your normal
+  user (not as Administrator), as some paths behave differently under
+  elevated contexts.
 
 ---
 
@@ -123,8 +145,9 @@ Control) system regardless of file ownership.
 
 If none of the above resolves your issue:
 
-1. Collect as much diagnostic information as possible: your macOS version,
-   Land build date or commit SHA, and the exact steps to reproduce.
+1. Collect diagnostic information: your OS version (macOS version or Windows
+   version and build number), Land build date or commit SHA, and the exact
+   steps to reproduce.
 2. If you built from source, run `cargo tauri dev` and copy any error output
    from the terminal.
 3. Open an issue at
@@ -137,5 +160,6 @@ If none of the above resolves your issue:
 ## See Also
 
 - [Installation](/Doc/installation)
+- [Getting Started](/Doc/getting-started)
 - [Configuration](/Doc/configuration)
 - [API Reference](/Doc/api-reference)
