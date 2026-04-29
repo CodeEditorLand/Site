@@ -2,16 +2,16 @@
 title: "Vine"
 section: "Element"
 order: 17
-description: "The protobuf schema and gRPC transport layer connecting Mountain and Cocoon."
+description: "The protobuf schema and bidirectional gRPC transport layer connecting Mountain and Cocoon."
 ---
 
 # Vine
 
 Vine is the wire protocol for Editor.Land. It is a hand-written Protocol
 Buffers schema (approximately 825 lines of `.proto` definitions) that defines
-the gRPC service interfaces used between Mountain (the Rust kernel) and Cocoon
-(the Node.js extension host). All inter-process communication that crosses the
-Mountain↔Cocoon boundary goes through Vine.
+the bidirectional gRPC service interfaces used between Mountain (the Rust
+kernel) and Cocoon (the Node.js extension host). All inter-process
+communication that crosses the Mountain↔Cocoon boundary goes through Vine.
 
 ---
 
@@ -27,52 +27,68 @@ request and response messages. The generated Rust stubs (via
 [tonic](https://github.com/hyperium/tonic)) and TypeScript stubs are the only
 way Mountain and Cocoon communicate. If a message field is renamed or removed,
 the Rust build and the TypeScript build each fail at their own compile step.
-There is no single cross-language compile - the two languages validate
-independently - but neither side can silently drift from the schema.
+There is no single cross-language compile — the two languages validate
+independently — but neither side can silently drift from the schema.
 
 ---
 
 ## What the Schema Covers
 
-The current Vine.proto schema is approximately **825 lines**. It defines the
-service interfaces for the calls that Cocoon makes into Mountain during normal
-editor operation, including:
+The current Vine.proto schema is approximately **825 lines**. It defines
+service interfaces for both directions of the Mountain↔Cocoon communication:
 
-- **File system operations** - read, write, stat, watch, and delete calls
+**Cocoon → Mountain (port 50051, `MountainService`):**
+- **File system operations** — read, write, stat, watch, and delete calls
   that back the `vscode.workspace.fs.*` API.
-- **Terminal (pty) management** - spawn, resize, write, and close calls
+- **Terminal (pty) management** — spawn, resize, write, and close calls
   that back `vscode.window.createTerminal`.
-- **DAP bridge** - the Debug Adapter Protocol proxy calls that back
+- **DAP bridge** — the Debug Adapter Protocol proxy calls that back
   `vscode.debug.startDebugging`.
-- **Process lifecycle** - extension host registration, heartbeat, and
-  shutdown coordination between Mountain and Cocoon.
+- **Process lifecycle** — extension host registration, heartbeat, and
+  shutdown coordination.
+
+**Mountain → Cocoon (port 50052, `CocoonService`):**
+- **Extension host lifecycle** — `InitializeExtensionHost`, `$deltaExtensions`,
+  `$activateByEvent`, `$startExtensionHost`.
+- **Language feature invocations** — `$provideHover`, `$provideCompletionItems`,
+  `$provideDefinition`, `$provideReferences`, and related methods.
+- **Document content** — `$acceptModelChanged` delivers text change deltas from
+  Mountain to Cocoon's document content cache.
+- **Notifications and requests** — `SendMountainNotification`,
+  `ProcessMountainRequest`, `CancelOperation`.
 
 Vine is versioned through the protobuf schema itself. Adding a new optional
 field is backwards-compatible; removing or renaming a field requires updating
-both the Mountain server implementation and the Cocoon client stubs in the same
-change.
+both the Mountain implementation and the Cocoon stubs in the same change.
 
 ---
 
 ## Transport
 
-Mountain runs the gRPC server. Cocoon connects as the gRPC client when it
-spawns. The transport is a local socket connection - both processes run on the
-same machine, so no network stack is involved. The latency of the full
-Mountain↔Cocoon round-trip (including the Rust FS layer) is approximately
-**8 ms p99 for cached file reads** and **60 ms p99 for cold reads** on Apple
-Silicon macOS. These numbers reflect the complete stack from a `workspace.fs.*`
-call in Cocoon to the response from Mountain's file system layer; they are not
-isolated transport measurements.
+Both Mountain and Cocoon run gRPC servers; both also act as gRPC clients:
+
+- **Mountain server (port 50051)** — Cocoon dials Mountain at startup for
+  file system, pty, DAP, and lifecycle calls.
+- **Cocoon server (port 50052)** — Mountain dials Cocoon to invoke extension
+  host methods and deliver workspace notifications.
+
+Both sockets are local — both processes run on the same machine, so no network
+stack is involved. Each socket is secured by a TLS certificate generated at
+startup using `rcgen` + `p256`. The latency of the full Mountain↔Cocoon
+round-trip (including the Rust FS layer) is approximately **8 ms p99 for
+cached file reads** and **60 ms p99 for cold reads** on Apple Silicon macOS.
+These numbers reflect the complete stack from a `workspace.fs.*` call in Cocoon
+to the response from Mountain's file system layer; they are not isolated
+transport measurements.
 
 ---
 
 ## Relationship to Mist
 
 [`architecture.md`](/Doc/architecture) lists Mist as a separate WebSocket
-communication layer. Mist handles Sky (the WKWebView UI)↔Mountain communication
-over WebSockets, which is a different transport from Vine's gRPC. Vine is
-specifically the Mountain↔Cocoon layer. The two protocols are not
+communication layer. Mist handles Sky (the OS WebView UI)↔Mountain
+communication over WebSockets, which is a different transport from Vine's gRPC.
+Vine is specifically the Mountain↔Cocoon layer. The two protocols are not
 interchangeable and serve different parts of the system.
 
 ---
