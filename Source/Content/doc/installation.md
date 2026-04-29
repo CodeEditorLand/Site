@@ -80,8 +80,9 @@ cargo tauri dev
 
 This compiles Mountain and its dependencies, starts the Tauri application, and
 opens the editor window. The first run compiles all Rust dependencies from
-scratch and takes several minutes. Subsequent runs use Cargo's incremental
-compilation cache and are significantly faster.
+scratch, which takes a few minutes on a fresh checkout. Subsequent runs rely on
+Cargo's incremental compilation cache and are noticeably fast — comparable to
+any well-structured Rust workspace.
 
 ---
 
@@ -105,8 +106,9 @@ The installer is written to `src-tauri/target/release/bundle/msi/`.
 
 ## Updating
 
-There is no automatic update mechanism active today. To update, pull the latest
-commits and rebuild:
+Mountain includes an `Update` module that manages update check state at the
+backend level. Automatic update delivery to the UI is not yet surfaced through
+a user-facing prompt. To update manually, pull the latest commits and rebuild:
 
 ```bash
 git pull --recurse-submodules
@@ -114,8 +116,8 @@ pnpm install
 cargo tauri dev
 ```
 
-The Air daemon is designed to handle automatic update checks and downloads in a
-future release.
+The Air module — active in the compiled binary today — manages daemon-level
+lifecycle and is the foundation for surfacing update notifications in the UI.
 
 ---
 
