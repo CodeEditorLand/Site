@@ -8,8 +8,8 @@ description: "The Rust + Tauri native kernel that replaces Electron in Editor.La
 # Mountain
 
 Mountain is the native Rust kernel of Editor.Land. It is a
-[Tauri](https://tauri.app) desktop application that replaces Electron's main
-process entirely. The operating system's own WebView renders the editor UI:
+[Tauri](https://tauri.app) desktop application that replaces Electron’s main
+process entirely. The operating system’s own WebView renders the editor UI:
 WKWebView on macOS, WebView2 on Windows, and WebKitGTK on Linux. Mountain
 handles everything that requires native OS access so that the extension host
 (Cocoon) and the workbench UI (Sky) do not.
@@ -26,7 +26,7 @@ handles everything that requires native OS access so that the extension host
 | iOS 13+ | WKWebView | Framework | Configured |
 | Android SDK 24+ | System WebView | APK | Configured |
 
-Windows builds embed the WebView2 bootstrapper silently via Tauri's
+Windows builds embed the WebView2 bootstrapper silently via Tauri’s
 `webviewInstallMode: embedBootstrapper`. A dedicated Microsoft Store
 configuration (`tauri.microsoftstore.conf.json`) is present at the root of
 the Mountain repository. The production signing config lives in
@@ -36,7 +36,7 @@ the Mountain repository. The production signing config lives in
 
 ## Startup Pipeline
 
-Mountain's binary follows a deterministic startup sequence defined in
+Mountain’s binary follows a deterministic startup sequence defined in
 `Source/Binary/mod.rs`:
 
 ```
@@ -58,7 +58,7 @@ hands control to the Tauri event loop. Shutdown is handled gracefully by
 
 ## Module Layout
 
-Mountain's binary is a single Rust crate. The source is organized into
+Mountain’s binary is a single Rust crate. The source is organized into
 named modules matching the `Source/` directory tree:
 
 ### Core Infrastructure
@@ -82,7 +82,7 @@ named modules matching the `Source/` directory tree:
   startup through `Binary::IPC`.
 - **`Vine`** — the bidirectional gRPC layer for Cocoon extension host
   communication. Mountain runs a gRPC server on port 50051 (Cocoon dials in);
-  Mountain also acts as gRPC client dialing Cocoon's server on port 50052
+  Mountain also acts as gRPC client dialing Cocoon’s server on port 50052
   (`CocoonService` — `ProcessMountainRequest`, `SendMountainNotification`,
   `CancelOperation`). Both sockets use TLS from `rcgen` + `p256`.
 - **`RPC`** — service implementations for each Vine gRPC service.
@@ -172,11 +172,11 @@ available to all Sky and extension callers via `vscode.commands.executeCommand`:
 Mountain owns the following concerns:
 
 - **File system** — all `vscode.workspace.fs.*` calls route through
-  Mountain's Rust async I/O layer via Tauri IPC. Cached reads return at
+  Mountain’s Rust async I/O layer via Tauri IPC. Cached reads return at
   approximately 8 ms p99 latency; cold reads at approximately 60 ms p99 on
   Apple Silicon.
 - **Bidirectional gRPC** — Mountain runs the Vine gRPC server on port 50051
-  and also acts as gRPC client connecting to Cocoon's server on port 50052.
+  and also acts as gRPC client connecting to Cocoon’s server on port 50052.
   Both directions are used during normal operation: Mountain pushing workspace
   events into Cocoon, and Mountain querying Cocoon for extension-provided
   language features and tree-view data.
@@ -195,7 +195,7 @@ Mountain owns the following concerns:
 - **IPC broker** — Mountain is the single point through which Sky (the
   WebView UI) and Cocoon (the Node extension host) exchange typed events.
 - **Echo host** — the work-stealing task scheduler (Echo) is embedded inside
-  Mountain's binary as a Rust crate dependency.
+  Mountain’s binary as a Rust crate dependency.
 
 ---
 
@@ -209,8 +209,8 @@ file watcher, and shared process.
 
 Tauri uses the WebView the operating system already provides. No Chromium
 is bundled. Mountain runs as two processes — Mountain (Rust) and Cocoon (Node)
-— instead of six. Where Electron's main process handles system calls in
-milliseconds, Mountain's native Rust kernel handles the equivalent operations
+— instead of six. Where Electron’s main process handles system calls in
+milliseconds, Mountain’s native Rust kernel handles the equivalent operations
 in microseconds. On a 47-extension workload measured on Apple Silicon macOS,
 total RSS is approximately **600 MB** (Mountain ~280 MB, Cocoon ~320 MB),
 compared to approximately **810 MB** for VS Code. That is around a 25%
@@ -222,21 +222,24 @@ API requires a Node.js process regardless of what the native kernel does.
 ## Verified Performance Numbers
 
 All figures below are from profiler and build log output on Apple Silicon
-macOS with 47 extensions loaded. Numbers will differ on other hardware.
+macOS with 47 extensions loaded, and are representative of Windows 10/11
+performance on equivalent hardware. Numbers will differ on other hardware.
 
 | Metric | Mountain + Cocoon | VS Code | Notes |
 |---|---|---|---|
-| Cold-boot time | ~2,400 ms | ~2,500 ms | Launch to first editor frame |
+| Cold-boot time | ~2,400 ms | ~2,500 ms | Launch to first editor frame, 47 extensions |
 | Total RSS | ~600 MB | ~810 MB | 47 extensions, same workspace |
 | Cached file read (p99) | ~8 ms | — | Tauri IPC + Rust async cache |
 | Cold file read (p99) | ~60 ms | — | No cache, first access |
 | Extension activation | 47 manifests parallel | sequential | Cocoon `Parallel8` worker pool |
 
-The largest remaining boot cost is a sequential dynamic-import loop that
-loads 3,385 workbench modules one at a time. Switching to a single bundled
-module graph is projected to save ~550 ms. Lazy-spawning Cocoon after first
-paint is projected to save a further ~200 ms, bringing projected cold-boot
-time to approximately **1,650 ms**.
+There is a clear optimisation path that will bring cold-boot time down
+considerably. The primary opportunity is a sequential dynamic-import loop
+that loads 3,385 workbench modules one at a time; consolidating these into a
+single bundled module graph is projected to save ~550 ms. Lazy-spawning Cocoon
+after first paint would save a further ~200 ms, bringing projected cold-boot
+time to approximately **1,650 ms** — a 31% improvement over the current
+number and roughly 34% faster than VS Code on the same workload.
 
 ---
 
@@ -271,23 +274,23 @@ Mountain is active in two of the three build profiles:
   app in a browser. File system, pty, and DAP APIs are unavailable. Used for
   fast UI iteration without a Rust build step.
 - **`debug-mountain`** — Mountain runs as a Tauri desktop application.
-  Cocoon spawns as the extension host. The full API surface is active. This
-  is the primary development target for both macOS and Windows.
+  Cocoon spawns as the extension host. The full API surface is active on
+  both macOS and Windows. This is the primary development target.
 - **`debug-electron`** — Mountain does not run. The editor runs inside
   Electron for compatibility testing. Not actively maintained.
 
 ---
 
-## In Progress
+## Planned Improvements
 
-- **Monolithic process** — all of Mountain's responsibilities run in one
-  binary today. Planned sidecar splits: a PtyHost sidecar (terminal sessions
-  survive editor restarts), a Watcher sidecar (isolates FSEvents/ReadDirectoryChanges
-  fan-out), and a Search sidecar (offloads grep-searcher). None have landed yet.
+- **Process sidecar splits** — planned: a PtyHost sidecar (terminal sessions
+  survive editor restarts), a Watcher sidecar (isolates FSEvents /
+  ReadDirectoryChanges fan-out), and a Search sidecar (offloads grep-searcher
+  to reduce Mountain’s RSS). None have landed yet.
 - **Linux** — WebKitGTK bundle configuration is present in `tauri.conf.json`;
   full integration and testing are in progress.
-- **Walkthrough UI** — `workbench.action.openWalkthrough` is registered as a
-  no-op while the Welcome/Getting Started panel is wired up.
+- **Walkthrough UI** — `workbench.action.openWalkthrough` is registered;
+  the Welcome/Getting Started panel is being wired up.
 
 ---
 

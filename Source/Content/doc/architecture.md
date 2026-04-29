@@ -10,7 +10,7 @@ description: "How Editor.Land's elements fit together: two processes, two IPC ch
 Editor.Land runs as **two processes** on a typical desktop session: Mountain
 (the Rust kernel) and Cocoon (the Node.js extension host). A third background
 process, Air, handles updates and downloads independently. The editor UI (Sky)
-runs inside the OS WebView as part of Mountain's Tauri application — it is
+runs inside the OS WebView as part of Mountain’s Tauri application — it is
 not a separate process.
 
 The OS WebView is WKWebView on macOS, WebView2 on Windows, and WebKitGTK on
@@ -29,8 +29,8 @@ VS Code ~810 MB RSS.
 The architecture has two distinct inter-process communication paths:
 
 **Channel 1: Sky ↔ Mountain (Tauri IPC)**
-Sky's UI components call Wind service interfaces. Wind routes native calls
-(file reads, terminal spawn, clipboard, configuration) through Tauri's typed
+Sky’s UI components call Wind service interfaces. Wind routes native calls
+(file reads, terminal spawn, clipboard, configuration) through Tauri’s typed
 IPC to Mountain. This is the primary path for all user-initiated actions in
 the editor UI. The IPC server is implemented in
 `Source/IPC/TauriIPCServer.rs` inside Mountain; the entry points are
@@ -46,13 +46,13 @@ The Vine protocol runs as two gRPC channels between Mountain and Cocoon:
 - **Cocoon as server (port 50052)** — Mountain dials Cocoon to invoke
   extension host methods (`InitializeExtensionHost`, `$activateByEvent`,
   `$provideHover`, `$acceptModelChanged`, and the full `CocoonService`
-  interface defined in Vine's `Vine.proto`).
+  interface defined in Vine’s `Vine.proto`).
 
 Both sockets are secured by TLS certificates generated at startup using
 `rcgen` + `p256`. These two channels are independent; a slow Cocoon
-operation does not block Sky's Tauri IPC calls to Mountain.
+operation does not block Sky’s Tauri IPC calls to Mountain.
 
-Command dispatch (`command.*`) is handled directly by Mountain's
+Command dispatch (`command.*`) is handled directly by Mountain’s
 `Track/Effect/CreateEffectForRequest` layer since April 2026. Cocoon no
 longer proxies command dispatch.
 
@@ -60,7 +60,7 @@ longer proxies command dispatch.
 
 ## Startup Pipeline
 
-Mountain's binary follows a deterministic startup sequence defined in
+Mountain’s binary follows a deterministic startup sequence defined in
 `Source/Binary/mod.rs`:
 
 ```
@@ -113,16 +113,16 @@ Cocoon executes vscode.open command
 ## Elements by Layer
 
 Elements are grouped by architectural layer. **Active** means the element is
-running in the `debug-mountain` profile and verified working. **In Progress**
-means partially implemented. **Configured** means the build target or design
-is defined but not yet in production use.
+running in the `debug-mountain` profile and verified working on macOS and
+Windows. **In Progress** means partially implemented. **Configured** means
+the build target or design is defined but not yet in production use.
 
 ### Layer 1 — Native Shell
 
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Mountain**](/Doc/mountain) | Rust + Tauri | Native kernel: file system, gRPC server, terminal pty, clipboard, keychain, search, DAP bridge, IPC broker | Active |
-| [**Air**](/Doc/air) | Rust | Background daemon: update checks, downloads, release signing | Active |
+| [**Air**](/Doc/air) | Rust | Background daemon: update checks, downloads, release signing, platform-native service lifecycle | Active |
 
 ### Layer 2 — IPC
 
@@ -153,28 +153,29 @@ is defined but not yet in production use.
 | [**Rest**](/Doc/rest) | Rust / OXC | Transforms and bundles VS Code platform code (NLS, loader shims, workbench modules) | Active |
 | **Output** | JavaScript | Build artifact directory produced by Rest; not a running process | Active |
 | **Common** | Rust / TypeScript | Shared IPC event type definitions and `ActionEffect` traits used across Mountain and Cocoon | Active |
-| **SideCar** | Cross-platform | Pre-built Node.js binaries for Cocoon's extension host on each target platform | Active |
+| **SideCar** | Cross-platform | Pre-built Node.js binaries for Cocoon’s extension host on each target platform | Active |
 | **Maintain** | Shell / Build tooling | CI/CD scripts, release automation, workspace maintenance | Active |
 
 ---
 
-## The Nine Active Elements
+## Eleven Active Elements
 
-Of the fifteen elements listed above, nine are active in the primary
-development path today: Mountain, Cocoon, Sky, Wind, Vine, Echo, Air,
-Rest, and Common. The remaining six (Mist, Grove, Worker, SideCar, Output,
-Maintain) are either build artifacts, emerging capabilities, or support
-tooling rather than primary runtime elements.
+Of the fifteen elements listed above, eleven are active in the primary
+development path today: Mountain, Cocoon, Sky, Wind, Vine, Mist, Echo, Air,
+Rest, Common, and SideCar. The remaining four — Grove (WASM extension host,
+in progress), Worker (planned), Output (build artifact, no runtime process),
+and Maintain (CI tooling) — are either emerging capabilities, build
+artifacts, or support tooling.
 
-Echo is embedded inside Mountain's binary rather than running as a separate
+Echo is embedded inside Mountain’s binary rather than running as a separate
 process. See [Echo](/Doc/echo) for details.
 
 ---
 
 ## Platform Targets
 
-Mountain's `tauri.conf.json` declares bundle configuration for all supported
-and planned targets:
+Mountain’s `tauri.conf.json` declares bundle configuration for all supported
+and planned targets. macOS and Windows are both fully active today:
 
 | Platform | Minimum version | Build artifact | Notes |
 |---|---|---|---|
@@ -191,13 +192,13 @@ The `land.editor.binary` application identifier and the custom URI scheme
 
 ## Security Model
 
-The Tauri Content Security Policy in Mountain's config explicitly allows these
+The Tauri Content Security Policy in Mountain’s config explicitly allows these
 custom URI schemes alongside `https:`:
 
-- **`land:`** — Mountain's own asset serving scheme
+- **`land:`** — Mountain’s own asset serving scheme
 - **`vscode-file:`** — VS Code platform file assets (workbench modules, icons)
 - **`vscode-webview:`** — Extension webview panel frames
-- **`ipc:`** — Tauri's in-process IPC channel
+- **`ipc:`** — Tauri’s in-process IPC channel
 
 This means extension webviews load in isolated frames (`vscode-webview:`)
 with the same origin separation as VS Code. Mountain uses the `brownfield`
