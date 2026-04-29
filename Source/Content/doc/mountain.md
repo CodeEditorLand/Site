@@ -34,6 +34,28 @@ the Mountain repository. The production signing config lives in
 
 ---
 
+## Startup Pipeline
+
+Mountain's binary follows a deterministic startup sequence defined in
+`Source/Binary/mod.rs`:
+
+```
+main.rs ─► Binary::Main (Entry) ─► Build ─► Register ─► Initialize ─► Services
+                                                                       │
+                                                              VineStart + CocoonStart
+```
+
+`Build` configures the Tauri application builder (`TauriBuild`, `WindowBuild`,
+`LocalhostPlugin`, `LoggingPlugin`). `Register` wires all commands
+(`CommandRegister`, `IPCServerRegister`, `AdvancedFeaturesRegister`,
+`WindSyncRegister`, `StatusReporterRegister`). `Initialize` parses CLI flags,
+selects the runtime port (`PortSelector`), and constructs `ApplicationState`
+(`StateBuild`). `Services` starts `VineStart` and `CocoonStart`, then
+hands control to the Tauri event loop. Shutdown is handled gracefully by
+`RuntimeShutdown` and `SchedulerShutdown`.
+
+---
+
 ## Module Layout
 
 Mountain's binary is a single Rust crate. The source is organized into
@@ -56,7 +78,8 @@ named modules matching the `Source/` directory tree:
 
 - **`IPC`** — Tauri IPC server (`mountain_ipc_receive_message`,
   `mountain_ipc_get_status`). Sky calls these to route workbench events to
-  Mountain and receive state back.
+  Mountain and receive state back. Fourteen commands are registered at
+  startup through `Binary::IPC`.
 - **`Vine`** — the bidirectional gRPC layer for Cocoon extension host
   communication. Mountain runs a gRPC server on port 50051 (Cocoon dials in);
   Mountain also acts as gRPC client dialing Cocoon's server on port 50052
@@ -186,7 +209,9 @@ file watcher, and shared process.
 
 Tauri uses the WebView the operating system already provides. No Chromium
 is bundled. Mountain runs as two processes — Mountain (Rust) and Cocoon (Node)
-— instead of six. On a 47-extension workload measured on Apple Silicon macOS,
+— instead of six. Where Electron's main process handles system calls in
+milliseconds, Mountain's native Rust kernel handles the equivalent operations
+in microseconds. On a 47-extension workload measured on Apple Silicon macOS,
 total RSS is approximately **600 MB** (Mountain ~280 MB, Cocoon ~320 MB),
 compared to approximately **810 MB** for VS Code. That is around a 25%
 reduction. The remaining cost is Cocoon: running the VS Code extension
