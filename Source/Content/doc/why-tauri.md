@@ -22,10 +22,10 @@ running instance loads its own copy of the Chromium renderer into memory. On
 a machine with three Electron applications open, that is three separate
 Chromium processes consuming RAM.
 
-Tauri uses the WebView that the operating system already provides: WebKit on
-macOS, WebView2 on Windows, and WebKitGTK on Linux. The user already has this
-component installed and running. Land does not need to bundle it, ship it, or
-update it independently from the OS.
+Tauri uses the WebView that the operating system already provides: WKWebView on
+macOS and WebView2 on Windows. The user already has this component installed
+and running. Land does not need to bundle it, ship it, or update it
+independently from the OS.
 
 ---
 
@@ -44,17 +44,17 @@ engine.
 
 Electron applications commonly consume 300 to 500 megabytes of RAM at idle.
 Tauri applications using the system WebView typically idle between 60 and 120
-megabytes. This is the same reduction - 60 to 80 percent - that the numbers
-predict. For a code editor that users leave open all day alongside browsers,
-terminals, and build tools, that difference reclaims real working memory.
+megabytes. This is the same 60 to 80 percent reduction the numbers predict.
+For a code editor that users leave open all day alongside browsers, terminals,
+and build tools, that difference reclaims real working memory.
 
 ---
 
 ## Rust Backend, Not Node.js
 
 Electron applications run backend logic in Node.js. Tauri applications run
-backend logic in Rust. This means Land's native layer (file system access,
-process management, cryptographic operations, network communication) is
+backend logic in Rust. This means Land's native layer — file system access,
+process management, cryptographic operations, network communication — is
 compiled to native code with no garbage collector, no event loop contention,
 and no V8 overhead. The frontend communicates with this backend through
 Tauri's IPC bridge, which Land extends with gRPC via the Vine element for
@@ -82,15 +82,15 @@ Mountain.
 
 ---
 
-## Trade-Offs
+## Platform Support
 
-Using the system WebView means Land depends on the OS vendor's rendering
-engine. Rendering behaviour can differ between macOS, Windows, and Linux.
-Land mitigates this by targeting a well-defined subset of web platform
-features. Currently Land builds and is tested on **macOS 13+** only; Windows
-and Linux WebView support is part of the cross-platform roadmap. The
-trade-off is worth it: users get a lighter, faster application, and Land
-avoids the maintenance burden of bundling and patching a private browser.
+Land currently builds, installs, and runs on **macOS 13+** (WKWebView) and
+**Windows 10/11** (WebView2). Using the system WebView means Land depends on
+the OS vendor's rendering engine, so Land targets a well-defined subset of web
+platform features to ensure consistent behaviour across both platforms. Linux
+(WebKitGTK) is the remaining platform on the roadmap. The trade-off is worth
+it: users get a lighter, faster application, and Land avoids the maintenance
+burden of bundling and patching a private browser engine.
 
 ---
 

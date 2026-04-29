@@ -63,7 +63,7 @@ platform.
 Rust powers the majority of Land's backend:
 
 - **Mountain** handles window management, file system access, and process
-  lifecycle through Tauri.
+  lifecycle through Tauri on macOS and Windows.
 - **Air** runs the background daemon for updates, cryptographic signing, and
   network calls.
 - **Echo** provides work-stealing task execution for CPU-bound operations.
@@ -73,10 +73,14 @@ Rust powers the majority of Land's backend:
   communication.
 - **Rest** bundles JavaScript using the OXC toolchain, written entirely in
   Rust.
-- **Grove** *(Planned)* - designed to host WASM extensions in a sandboxed
-  WASMtime runtime. Not yet active.
-- **Mist** *(Planned)* - designed to sandbox DNS resolution for the
-  `*.editor.land` zone. Not yet active.
+- **SideCar** resolves and ships the correct Node.js binary per target triple
+  at compile time, with confirmed builds for macOS, Windows, and Linux.
+- **Grove** hosts WASM extensions in a WASMtime runtime with capability-based
+  security — gRPC protocol, WASMtime host, API surface, and transport layer
+  are implemented and integration with the primary build is in progress.
+- **Mist** provides local DNS resolution for `*.editor.land` — full DNS
+  server (Server.rs, Resolver.rs, Zone.rs, ForwardSecurity.rs) implemented
+  and in active development.
 
 Every element that touches the operating system, processes bytes, or
 coordinates concurrent work is written in Rust. The language is not an

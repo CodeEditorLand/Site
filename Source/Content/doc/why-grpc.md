@@ -48,15 +48,16 @@ entire class of bugs related to JSON quirks: no surprise `undefined` vs
 
 ---
 
-## Unix Domain Socket Transport
+## Low-Latency Local Transport
 
-Land's gRPC channels run over Unix domain sockets on macOS, which avoids any
-TCP handshake, TLS overhead, or network stack traversal. Message latency is
-measured in microseconds. For an editor where every keystroke triggers a round
-trip to the language server, low IPC latency is the difference between
-"instant" and "sluggish." Named pipe transport on Windows and Linux is
-architecturally identical but depends on those platforms being supported;
-currently only macOS is active.
+Land's gRPC channels run over Unix domain sockets on macOS and named pipes on
+Windows — both avoid any TCP handshake, TLS overhead, or network stack
+traversal. Message latency is measured in microseconds. For an editor where
+every keystroke triggers a round trip to the language server, low IPC latency
+is the difference between "instant" and "sluggish." The transport is
+architecturally identical on both platforms: a local socket path on macOS,
+an equivalent named pipe on Windows. Linux support follows the same pattern
+and is on the roadmap.
 
 ---
 
