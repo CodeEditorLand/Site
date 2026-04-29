@@ -42,6 +42,21 @@ pipeline have not been independently published yet.
 
 ---
 
+## Source Structure
+
+Rest's source tree (confirmed in the
+[repository](https://github.com/CodeEditorLand/Rest)):
+
+| Path | Role |
+|---|---|
+| `Source/Binary.rs` | Binary entry point |
+| `Source/Main.rs` | Main function |
+| `Source/Library.rs` | Crate root re-exports |
+| `Source/Fn/` | Core function modules |
+| `Source/Struct/` | Data structure definitions |
+
+---
+
 ## What You Experience
 
 Clean builds complete faster than a tsc-based pipeline. Incremental rebuilds
