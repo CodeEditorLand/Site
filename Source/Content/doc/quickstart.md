@@ -64,11 +64,16 @@ the extension's output channel. Activation errors appear there.
 
 ## Settings
 
-Land has a configuration system with PascalCase key naming
-(e.g. `Editor.FontSize`, `Workbench.ColorTheme`). Open the command palette
-and search for **Preferences: Open Settings** to locate and edit the active
-settings file. The settings format is JSON, compatible with VS Code's
-`settings.json` structure.
+Land has a fully implemented configuration system backed by Mountain's
+`ConfigurationState` — a thread-safe, merged store covering both global and
+workspace scopes. It supports dotted-path key access
+(e.g. `Editor.FontSize`, `Workbench.ColorTheme`) with nested object writes
+handled by `MergedConfigurationStateDTO`. Memento storage for crash recovery
+is also active for both global and workspace contexts.
+
+Open the command palette and search for **Preferences: Open Settings** to
+locate and edit the active settings file. The settings format is JSON,
+compatible with VS Code's `settings.json` structure.
 
 ---
 
@@ -77,17 +82,16 @@ settings file. The settings format is JSON, compatible with VS Code's
 The integrated terminal is backed by Mountain's pty layer. Open it with
 `` Cmd+` `` (macOS) or `` Ctrl+` `` (Windows). This routes a spawn call
 through Vine gRPC to Mountain, which creates a native pty. The terminal is
-one of the most reliable features, mapping directly to verified Vine service
-definitions.
+one of the most reliable features in the current build, mapping directly to
+verified Vine service definitions.
 
 ---
 
 ## Tasks
 
-Land reads task definitions from `.vscode/tasks.json`. The `vscode.tasks.*`
-API in Cocoon is partially implemented. Use **Tasks: Run Task** from the
-command palette to run configured tasks. The standard `.vscode/tasks.json`
-format is supported:
+Land reads task definitions from `.vscode/tasks.json`. Use **Tasks: Run Task**
+from the command palette to run configured tasks. The standard
+`.vscode/tasks.json` format is supported:
 
 ```json
 {
@@ -105,15 +109,18 @@ format is supported:
 
 ---
 
-## Known API Gaps
+## Extension API Notes
 
-Extensions that use the following APIs activate but their specific features
-silently no-op:
+The vast majority of `vscode.*` APIs covering file system, terminal, language
+server protocol, diagnostics, status bar, tree views, custom editors, and
+webview panels are routed and active. The following APIs have stub
+implementations — they allow extensions that declare them to activate without
+crashing, but the underlying features are not yet wired to a backend:
 
-- `vscode.lm.*` - language model / Copilot
-- `vscode.chat.*` - chat panel
-- `vscode.notebook.*` - notebook UI
-- `vscode.tests.*` - test explorer
+- `vscode.lm.*` — language model / Copilot
+- `vscode.chat.*` — chat panel
+- `vscode.notebook.*` — notebook UI
+- `vscode.tests.*` — test explorer
 
 See [Cocoon](/Doc/cocoon) for the full API coverage table.
 
