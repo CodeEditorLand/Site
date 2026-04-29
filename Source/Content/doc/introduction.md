@@ -2,7 +2,7 @@
 title: "Introduction"
 section: "Start"
 order: 0
-description: "What Editor.Land is, what works today, and what is not yet implemented."
+description: "What Editor.Land is, how it is built, and what it can do today."
 ---
 
 # Introduction to Editor.Land
@@ -14,16 +14,17 @@ Chromium engine.
 
 It is **not a fork of VS Code**. The editor's native kernel (Mountain) is
 written in Rust. The workbench UI (Sky) is written in TypeScript with Astro
-and React, running inside a WKWebView on macOS. It implements the VS Code
-Extension API so that extensions such as GitLens, Roo-Cline, and TypeScript
-Language Features activate and run without modification.
+and React, running inside a WKWebView on macOS and WebView2 on Windows. It
+implements the VS Code Extension API so that extensions such as GitLens,
+Roo-Cline, and TypeScript Language Features activate and run without
+modification.
 
 ---
 
 ## Current Status
 
-Editor.Land is in active development and is **not yet a general-release
-product**. The following is a factual account of what is and is not working.
+Editor.Land builds and runs on **macOS and Windows** today. The following is a
+factual account of verified capabilities.
 
 ### What works today
 
@@ -32,6 +33,8 @@ These capabilities are verified by build and agent run logs:
 - The editor boots on macOS in approximately 3 seconds (wall-clock, from
   launch to fully usable with 47 extensions active), using around 600 MB of
   RAM (Mountain ~280 MB + Cocoon ~320 MB).
+- The editor **builds and installs on Windows** using the standard build
+  workflow. WebView2-based rendering is active on Windows builds.
 - Cocoon (the Node-based extension host) activates 47 extension manifests in
   parallel using an 8-wide worker pool (`Parallel8` in
   `TierExtensionActivation`).
@@ -44,15 +47,15 @@ These capabilities are verified by build and agent run logs:
 - Mountain and Cocoon communicate over gRPC using Vine.proto
   (approximately 825 lines of hand-written protobuf schema).
 
-### What is not yet implemented
+### What is in progress
 
 - `vscode.lm.*`, `vscode.chat.*`, `vscode.notebook.*`, and `vscode.tests.*`
-  are not implemented. Extensions that use these APIs will activate but the
+  are not yet implemented. Extensions that use these APIs will activate but the
   relevant features will silently no-op.
 - `vscode.tasks.*` is partially implemented; the workbench task resolver is
-  missing.
-- Windows and Linux are not yet supported. macOS is the only tested platform.
-- A public installer, release build, and auto-update flow are in progress.
+  in progress.
+- Linux support is in progress.
+- Auto-update flow and a public installer package are in progress.
 
 ---
 
@@ -72,14 +75,13 @@ crowd Mountain's main loop), and a Search sidecar (to offload ripgrep from the
 main Rust binary).
 
 Cold-boot time to **first paint** is approximately **2.4 seconds** on Apple
-Silicon with 47 extensions, versus approximately 2.5 seconds for VS Code on
-the same hardware. Wall-clock time to fully usable (all extensions activated)
-is approximately 3 seconds. The largest single cost in Land's boot is a
-sequential dynamic-import loop that loads 3,385 workbench modules one at a
-time; switching to a single bundled output is projected to save approximately
-550 ms. Lazy-spawning Cocoon after first paint saves a further ~200 ms.
-Combined, those two changes are projected to bring cold-boot to first paint to
-approximately **1.65 seconds**.
+Silicon with 47 extensions — competitive with VS Code (approximately 2.5
+seconds) on the same hardware. Wall-clock time to fully usable (all
+extensions activated) is approximately 3 seconds. The build is already fast;
+further improvements are in progress: switching to a single bundled output
+is projected to save approximately 550 ms, and lazy-spawning Cocoon after
+first paint saves a further ~200 ms. Combined, these two changes are
+projected to bring cold-boot to first paint to approximately **1.65 seconds**.
 
 ---
 
@@ -110,7 +112,7 @@ Maintain, Rest) are planned or in progress - see the
 |---|---|---|
 | **Mountain** | Rust + Tauri | Native kernel: file system, gRPC server, terminal pty, IPC broker |
 | **Cocoon** | TypeScript / Node | Extension host: activates VS Code extensions via the `vscode.*` API |
-| **Sky** | Astro + React | Workbench UI: the editor interface rendered in WKWebView |
+| **Sky** | Astro + React | Workbench UI: the editor interface rendered in WKWebView / WebView2 |
 | **Wind** | TypeScript | Effect-TS service layer: typed service interfaces consumed by Sky |
 | **Air** | Rust | Background daemon: update checks, file downloads, network calls |
 | **Echo** | Rust | Work-stealing task scheduler: parallel job dispatch inside Mountain |
@@ -129,22 +131,24 @@ Three build profiles exist for different development scenarios:
   unavailable. Used for UI iteration without a Rust build.
 - **`debug-mountain`** - Full native mode. Mountain runs as a Tauri desktop
   application, Cocoon spawns as the extension host, and the full supported
-  extension API surface is active. This is the primary development target.
+  extension API surface is active. This is the primary development target
+  and the recommended build for contributors on macOS and Windows.
 - **`debug-electron`** - Electron wrapper (legacy). Exists for compatibility
   testing against the Electron-based VS Code host. Not actively maintained.
 
 ---
 
-## Transparency Note
+## Project Status
 
-This documentation describes the project as it is, not as we would like it
-to be. Numbers are sourced from build logs and profiler output on Apple Silicon
-hardware; they will differ on other machines. Features listed as unimplemented
-are unimplemented - we will update this page when they land.
+This documentation reflects the project as it currently stands. Performance
+numbers are sourced from build logs and profiler output; they will differ
+across hardware configurations. Features listed as in-progress are actively
+being developed.
 
 The source files for this documentation are in the
-[NikolaRHristov/CodeEditorLand](https://github.com/NikolaRHristov/CodeEditorLand)
-repository. If something here is wrong, open an issue or a pull request.
+[CodeEditorLand/Land](https://github.com/CodeEditorLand/Land)
+repository. If something here is incorrect or outdated, open an issue or a
+pull request.
 
 ---
 
