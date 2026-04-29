@@ -45,6 +45,20 @@ activation does not delay Echo's background tasks.
 
 ---
 
+## Source Structure
+
+Echo's source tree (confirmed in the
+[repository](https://github.com/CodeEditorLand/Echo)):
+
+| Path | Role |
+|---|---|
+| `Source/Library.rs` | Crate root — re-exports the public API |
+| `Source/Queue/` | Lock-free deque implementation (work-stealing queues) |
+| `Source/Scheduler/` | Scheduler core — thread pool management and task dispatch |
+| `Source/Task/` | Task wrapper types, supervision scopes, and panic boundaries |
+
+---
+
 ## Current Status
 
 Echo is active inside Mountain's binary on both macOS and Windows. The worker

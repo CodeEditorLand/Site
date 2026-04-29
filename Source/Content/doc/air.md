@@ -21,16 +21,50 @@ build.
 
 ---
 
-## Responsibilities
+## Source Structure
 
-Air covers a wide surface area:
+Air's source tree (confirmed in the
+[repository](https://github.com/CodeEditorLand/Air)):
+
+| Path | Role |
+|---|---|
+| `Source/Binary.rs` | Main daemon entry point (~66 KB) — startup, argument parsing, runtime wiring |
+| `Source/Binary/` | Sub-modules for the binary target |
+| `Source/Library.rs` | Crate root re-exports |
+| `Source/ApplicationState/` | Runtime state management |
+| `Source/Authentication/` | Credential management and privilege isolation |
+| `Source/CLI/` | Command-line interface for daemon control |
+| `Source/Configuration/` | Configuration loading and validation |
+| `Source/Daemon/` | Single-instance management, PID file, lock acquisition |
+| `Source/Downloader/` | Release payload download management |
+| `Source/HTTP/` | HTTP client for update checks and download requests |
+| `Source/HealthCheck/` | Daemon status reporting and runtime counters |
+| `Source/Indexing/` | Workspace metadata computed outside active sessions |
+| `Source/Initialize/` | Daemon startup and environment initialisation |
+| `Source/Logging/` | Structured log output |
+| `Source/Metrics/` | Runtime observability counters |
+| `Source/Mountain/` | Mountain integration — Air↔Mountain coordination |
+| `Source/Plugins/` | Background task extensions |
+| `Source/Resilience/` | Crash recovery and restart coordination |
+| `Source/Security/` | Security module |
+| `Source/Tracing/` | Structured tracing (dev-log in debug builds) |
+| `Source/Updates/` | Release checking and staged rollout logic |
+| `Source/Vine/` | Vine gRPC client stubs — Air communicates with Mountain via the Vine protocol |
+
+---
+
+## Responsibilities
 
 - **Update checks** — polling for new releases of Editor.Land and scheduling
   downloads in the background.
-- **Download management** — fetching release payloads so they are available
-  when the user chooses to update, without blocking the editor.
+- **Download management** — fetching release payloads via the `Downloader` and
+  `HTTP` modules so they are available when the user chooses to update, without
+  blocking the editor.
 - **Release signing and verification** — verifying the integrity of downloaded
   releases using the signing infrastructure defined in the Air crate.
+- **CLI interface** — the `CLI` module exposes daemon-control commands
+  (`start`, `stop`, `status`, `update`) for use from a terminal or by platform
+  service managers.
 - **Daemon lifecycle management** — PID file creation, checksum-based integrity
   verification, stale PID detection, and atomic lock acquisition with rollback
   on failure. Race conditions are guarded by a Tokio `Mutex`; all file writes
@@ -43,6 +77,9 @@ Air covers a wide surface area:
     environment variables.
   - **Windows** — Windows Service Control Manager registration via the SCManager
     API; the `Air.pid` file is placed at `C:\ProgramData\Air\Air.pid`.
+- **Mountain integration** — the `Source/Mountain/` module handles Air↔Mountain
+  coordination; the `Source/Vine/` module provides the Vine gRPC client stubs
+  used for that communication channel.
 - **Health monitoring** — `HealthCheck` and `Metrics` modules report daemon
   status and expose runtime counters for observability.
 - **Authentication and security** — dedicated `Authentication` and `Security`

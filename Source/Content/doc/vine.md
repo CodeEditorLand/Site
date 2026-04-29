@@ -7,11 +7,19 @@ description: "The protobuf schema and bidirectional gRPC transport layer connect
 
 # Vine
 
-Vine is the wire protocol for Editor.Land. It is a hand-written Protocol
-Buffers schema (approximately 825 lines of `.proto` definitions) that defines
-the bidirectional gRPC service interfaces used between Mountain (the Rust
-kernel) and Cocoon (the Node.js extension host). All inter-process
-communication that crosses the Mountain↔Cocoon boundary goes through Vine.
+Vine is the wire protocol for Editor.Land — a set of Protocol Buffers schemas
+(`.proto` files) that define the bidirectional gRPC service interfaces used
+between Mountain (the Rust kernel) and Cocoon (the Node.js extension host).
+All inter-process communication that crosses the Mountain↔Cocoon boundary goes
+through Vine.
+
+**Where the implementation lives today:** The working proto definitions and
+gRPC server code currently reside inside Mountain's own
+`Source/Vine/` directory, and the Cocoon gRPC client lives at
+`Services/MountainGRPCClient.ts`. The standalone
+[Vine repository](https://github.com/CodeEditorLand/Vine) is the future home
+for these schemas as a published, independently versioned package — it is
+actively being populated as the protocol stabilises.
 
 ---
 
@@ -32,12 +40,24 @@ independently — but neither side can silently drift from the schema.
 
 ---
 
+## Protocol Schema Family
+
+Vine is the umbrella name for a family of three `.proto` files:
+
+| Schema | Purpose |
+|---|---|
+| `Vine.proto` | Core Mountain↔Cocoon communication (file system, pty, DAP, lifecycle) |
+| `Spine.proto` | Extension host coordination — action/response pattern for command execution |
+| `Grove.proto` | Grove-specific extensions for the planned Rust/WASM extension host |
+
+---
+
 ## What the Schema Covers
 
-The current Vine.proto schema is approximately **825 lines**. It defines
-service interfaces for both directions of the Mountain↔Cocoon communication:
+Service interfaces defined for both directions of the Mountain↔Cocoon
+communication:
 
-**Cocoon → Mountain (port 50051, `MountainService`):**
+**Cocoon → Mountain (`MountainService`):**
 - **File system operations** — read, write, stat, watch, and delete calls
   that back the `vscode.workspace.fs.*` API.
 - **Terminal (pty) management** — spawn, resize, write, and close calls
@@ -47,7 +67,7 @@ service interfaces for both directions of the Mountain↔Cocoon communication:
 - **Process lifecycle** — extension host registration, heartbeat, and
   shutdown coordination.
 
-**Mountain → Cocoon (port 50052, `CocoonService`):**
+**Mountain → Cocoon (`CocoonService`):**
 - **Extension host lifecycle** — `InitializeExtensionHost`, `$deltaExtensions`,
   `$activateByEvent`, `$startExtensionHost`.
 - **Language feature invocations** — `$provideHover`, `$provideCompletionItems`,
@@ -67,20 +87,18 @@ both the Mountain implementation and the Cocoon stubs in the same change.
 
 Both Mountain and Cocoon run gRPC servers; both also act as gRPC clients:
 
-- **Mountain server (port 50051)** — Cocoon dials Mountain at startup for
-  file system, pty, DAP, and lifecycle calls.
-- **Cocoon server (port 50052)** — Mountain dials Cocoon to invoke extension
-  host methods and deliver workspace notifications.
+- **Mountain server** — Cocoon dials Mountain at startup for file system, pty,
+  DAP, and lifecycle calls.
+- **Cocoon server** — Mountain dials Cocoon to invoke extension host methods
+  and deliver workspace notifications.
 
 Both sockets are strictly local — both processes run on the same machine, so
 no external network traffic is involved. Each socket is secured with a TLS
 certificate generated at startup using `rcgen` + `p256`, ensuring that even
-local inter-process traffic is authenticated and encrypted. The round-trip
-latency of the complete Mountain↔Cocoon stack (including the Rust FS layer)
-is approximately **8 ms p99 for cached file reads** and **60 ms p99 for cold
-reads** on Apple Silicon macOS. These numbers reflect the full stack from a
-`workspace.fs.*` call in Cocoon through Mountain's file system layer and back;
-they are not isolated transport measurements.
+local inter-process traffic is authenticated and encrypted.
+
+Vine is designed for transport agnosticism: TCP and IPC are the current backends;
+WASM host functions are the planned backend for the Grove extension host.
 
 ---
 
@@ -94,6 +112,19 @@ interchangeable and serve different parts of the system.
 
 ---
 
+## Development Status
+
+| Feature | Status |
+|---|---|
+| `Spine.proto` — extension host coordination | ✅ Specified |
+| `Vine.proto` — Mountain↔Cocoon gRPC (in Mountain) | ✅ Active |
+| Standalone Vine package (published `.proto` files) | 🔄 In progress |
+| `Grove.proto` — WASM extension host protocol | 🔄 In progress |
+| Health monitoring / heartbeat | 🔄 In progress |
+| Transport agnosticism (WASM host functions) | 📋 Planned |
+
+---
+
 ## What Is Next
 
 - The schema does not yet cover the `vscode.lm.*`, `vscode.chat.*`,
@@ -101,6 +132,8 @@ interchangeable and serve different parts of the system.
   yet implemented in Cocoon, so no Vine service definitions exist for them.
 - The `vscode.tasks.*` task resolver is partially implemented; the
   corresponding Vine service methods are being completed.
+- The standalone Vine package will be published once the schema stabilises,
+  so downstream Rust crates and TypeScript clients can depend on it directly.
 
 ---
 
