@@ -47,20 +47,26 @@ activation does not delay Echo's background tasks.
 
 ## Current Status
 
-Echo is active inside Mountain's binary. The worker pool infrastructure runs
-in the `debug-mountain` profile on macOS and Windows.
+Echo is active inside Mountain's binary on both macOS and Windows. The worker
+pool infrastructure runs in the `debug-mountain` build profile and is part of
+the standard release build.
 
 **Confirmed working:**
-- Echo's worker pool is active inside Mountain when running in the
-  `debug-mountain` profile.
+- Echo's worker pool initialises and runs inside Mountain on macOS (Apple
+  Silicon and Intel) and Windows 10/11.
 - File system operations dispatched through Mountain route through Echo's
   async runtime.
 - In-process file search runs through Mountain's `grep-regex` +
   `grep-searcher` integration — ripgrep-compatible search without spawning
   a child process — dispatched through the Echo task layer.
+- Task supervision with panic-boundary scopes: a panicking task is caught at
+  the scope boundary and reported without taking down the Mountain process.
+- Graceful shutdown: Mountain signals Echo's pool to drain before exit; no
+  task outlives its scope.
 
 **In Progress:**
-- Workspace-wide symbol indexing dispatched through Echo's work-stealing pool.
+- Workspace-wide symbol indexing dispatched through Echo's work-stealing pool
+  (infrastructure present; index computation routines being connected).
 - Build pipeline jobs submitted to Echo for parallel execution.
 
 ---

@@ -72,14 +72,15 @@ Both Mountain and Cocoon run gRPC servers; both also act as gRPC clients:
 - **Cocoon server (port 50052)** — Mountain dials Cocoon to invoke extension
   host methods and deliver workspace notifications.
 
-Both sockets are local — both processes run on the same machine, so no network
-stack is involved. Each socket is secured by a TLS certificate generated at
-startup using `rcgen` + `p256`. The latency of the full Mountain↔Cocoon
-round-trip (including the Rust FS layer) is approximately **8 ms p99 for
-cached file reads** and **60 ms p99 for cold reads** on Apple Silicon macOS.
-These numbers reflect the complete stack from a `workspace.fs.*` call in Cocoon
-to the response from Mountain's file system layer; they are not isolated
-transport measurements.
+Both sockets are strictly local — both processes run on the same machine, so
+no external network traffic is involved. Each socket is secured with a TLS
+certificate generated at startup using `rcgen` + `p256`, ensuring that even
+local inter-process traffic is authenticated and encrypted. The round-trip
+latency of the complete Mountain↔Cocoon stack (including the Rust FS layer)
+is approximately **8 ms p99 for cached file reads** and **60 ms p99 for cold
+reads** on Apple Silicon macOS. These numbers reflect the full stack from a
+`workspace.fs.*` call in Cocoon through Mountain's file system layer and back;
+they are not isolated transport measurements.
 
 ---
 
@@ -93,13 +94,13 @@ interchangeable and serve different parts of the system.
 
 ---
 
-## Current Limitations
+## What Is Next
 
 - The schema does not yet cover the `vscode.lm.*`, `vscode.chat.*`,
   `vscode.notebook.*`, or `vscode.tests.*` namespaces. Those APIs are not
-  implemented in Cocoon, so no Vine service definitions exist for them yet.
+  yet implemented in Cocoon, so no Vine service definitions exist for them.
 - The `vscode.tasks.*` task resolver is partially implemented; the
-  corresponding Vine service methods are incomplete.
+  corresponding Vine service methods are being completed.
 
 ---
 
