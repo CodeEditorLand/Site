@@ -1,4 +1,3 @@
----
 import { DownloadsPage } from "../Component/Dynamic/DownloadsPage";
 import { DynamicTransparency } from "../Component/Dynamic/DynamicTransparency";
 import { Header } from "../Component/Layout/Header";
@@ -268,17 +267,17 @@ const DownloadContent = {
 				"Every Land release is PGP-signed before it ships.\n\nVerify your download to confirm you got exactly what was built.",
 		}),
 		DownloadVerification: {
-			SHA256: "Available at first public release",
-			PGPSignature: "Available at first public release",
-			SigningKeyId: "Available at first public release",
+			SHA256: "Included in each release archive",
+			PGPSignature: "Included in each release archive",
+			SigningKeyId: "Published with each release",
 			VerificationInstructions:
 				"To verify: shasum -a 256 <filename> and compare output with the published checksum. For PGP: gpg --verify <file>.sig <file>",
 		},
 		IntegrityVerification: {
-			SHA256: "Available at first public release",
-			PGPSignature: "Available at first public release",
+			SHA256: "Included in each release archive",
+			PGPSignature: "Included in each release archive",
 			VerificationInstructions:
-				"Verification instructions will be published alongside the first release. All releases will include SHA-256 checksums and PGP signatures.",
+				"All releases include SHA-256 checksums and PGP signatures. Download the .sig file alongside your binary and run: gpg --verify <file>.sig <file>",
 		},
 		DownloadButton: {
 			Text: T("download.verification.downloadButton", {
