@@ -29,17 +29,18 @@ should function at full capacity with zero network access.
 
 ### Settings and State
 
-Land stores all configuration in a local JSON file hierarchy under
-`~/.land/settings/`. There is no cloud sync enabled by default. Your
-keybindings, themes, and workspace state never leave the machine unless you
-explicitly configure synchronization.
+Land stores all configuration in a local JSON file hierarchy. There is no cloud
+sync enabled by default. Your keybindings, themes, and workspace state never
+leave the machine unless you explicitly configure synchronization. See
+[Configuration](/Doc/configuration) for the exact settings file locations on
+each platform.
 
 ### Extensions
 
-Extensions are installed to `~/.land/extensions/` (or the existing
-`~/.vscode/extensions/` directory for compatibility). The extension marketplace
-can be self-hosted. Land does not phone home to verify extension licenses or
-collect telemetry on extension usage.
+Extensions are installed to a local extensions directory (or the existing
+`~/.vscode/extensions/` directory for compatibility with existing VS Code
+installs). The extension marketplace can be self-hosted. Land does not phone home
+to verify extension licenses or collect telemetry on extension usage.
 
 ### Telemetry
 
@@ -50,15 +51,15 @@ Foundation. No data is shared with third parties.
 ## Air Daemon: Sync When You Want It
 
 The **Air** element provides optional peer-to-peer synchronization through the
-Air Daemon. Air uses WebSocket discovery on the local network to find other Land
-instances. When two machines connect:
+Air Daemon. Air uses mDNS discovery on the local network to find other Land
+instances without requiring a central server. When two machines connect:
 
-1. **Delta sync** - only changed files transfer, using content-addressed
-   hashing.
-2. **Conflict resolution** - last-write-wins by default, with a merge UI for
+1. **Delta sync** — only changed files transfer, using content-addressed
+   hashing (BLAKE3).
+2. **Conflict resolution** — last-write-wins by default, with a merge UI for
    manual resolution.
-3. **Encryption** - all sync traffic is encrypted with NaCl (libsodium)
-   box/secretbox. Keys stay on your devices.
+3. **Encryption** — all sync traffic is encrypted with NaCl (libsodium)
+   `crypto_box` (X25519 + XSalsa20 + Poly1305). Keys stay on your devices.
 
 Air never routes through a central server. If you want cloud backup, you point
 Air at your own S3-compatible bucket or WebDAV endpoint.
@@ -68,10 +69,10 @@ Air at your own S3-compatible bucket or WebDAV endpoint.
 Because Land is CC0 1.0 Universal (public domain), there is no vendor lock-in at
 any level:
 
-- **Source code** - fork and modify without restriction.
-- **Data format** - standard JSON, SQLite, and plain-text files.
-- **Extensions** - compatible with the VS Code extension API.
-- **Sync protocol** - documented and self-hostable.
+- **Source code** — fork and modify without restriction.
+- **Data format** — standard JSON, SQLite, and plain-text files.
+- **Extensions** — compatible with the VS Code extension API.
+- **Sync protocol** — documented and self-hostable.
 
 You can switch away from Land tomorrow and take everything with you. That is the
 point.
@@ -82,7 +83,7 @@ point.
 | ---------------- | ---------------------------------- | ------------------------- |
 | Settings storage | Cloud Sync (Microsoft)             | Local files               |
 | Telemetry        | Opt-out                            | Opt-in                    |
-| Sync protocol    | Proprietary                        | Open (Air Daemon)         |
+| Sync protocol    | Proprietary                        | Open (Air Daemon, mDNS)   |
 | Extension source | Microsoft Marketplace              | Self-hostable marketplace |
 | License          | MIT (source), proprietary (binary) | CC0 1.0 Universal         |
 
