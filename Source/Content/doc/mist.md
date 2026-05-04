@@ -9,7 +9,7 @@ description: "The DNS sandbox that resolves *.editor.land locally, eliminating p
 
 Mist is the local DNS layer for Editor.Land. It resolves every
 `*.editor.land` domain to `127.0.0.1` so that all editor-internal service
-communication happens over loopback — no packet leaves the network interface
+communication happens over loopback - no packet leaves the network interface
 for editor traffic.
 
 Mist is implemented in Rust and in active development. The DNS server
@@ -48,9 +48,9 @@ the system resolver unchanged. All other applications behave exactly as before.
 
 | Path | Role |
 |---|---|
-| `Source/Server.rs` | DNS server — listens for queries and dispatches to resolver (~5.8 KB) |
-| `Source/Resolver.rs` | DNS resolver — zone lookup and response construction (~2 KB) |
-| `Source/Zone.rs` | Zone authority — `*.editor.land` zone definitions (~3.5 KB) |
+| `Source/Server.rs` | DNS server - listens for queries and dispatches to resolver (~5.8 KB) |
+| `Source/Resolver.rs` | DNS resolver - zone lookup and response construction (~2 KB) |
+| `Source/Zone.rs` | Zone authority - `*.editor.land` zone definitions (~3.5 KB) |
 | `Source/ForwardSecurity.rs` | Forward security for pass-through queries (~1.2 KB) |
 | `Source/lib.rs` | Crate root re-exports (~5.6 KB) |
 | `tests/` | Integration tests |

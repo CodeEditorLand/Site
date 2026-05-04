@@ -51,7 +51,7 @@ entire class of bugs related to JSON quirks: no surprise `undefined` vs
 ## Low-Latency Local Transport
 
 Land's gRPC channels run over Unix domain sockets on macOS and named pipes on
-Windows — both avoid any TCP handshake, TLS overhead, or network stack
+Windows - both avoid any TCP handshake, TLS overhead, or network stack
 traversal. Message latency is measured in microseconds. For an editor where
 every keystroke triggers a round trip to the language server, low IPC latency
 is the difference between "instant" and "sluggish." The transport is

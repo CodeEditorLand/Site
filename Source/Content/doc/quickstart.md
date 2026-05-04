@@ -15,7 +15,7 @@ from source today.
 
 ## After the Editor Opens
 
-A successful build opens a native window with the workbench UI — WKWebView on
+A successful build opens a native window with the workbench UI - WKWebView on
 macOS, WebView2 on Windows. You should see:
 
 - The editor surface (Monaco) in the main area.
@@ -65,7 +65,7 @@ the extension's output channel. Activation errors appear there.
 ## Settings
 
 Land has a fully implemented configuration system backed by Mountain's
-`ConfigurationState` — a thread-safe, merged store covering both global and
+`ConfigurationState` - a thread-safe, merged store covering both global and
 workspace scopes. It supports dotted-path key access
 (e.g. `Editor.FontSize`, `Workbench.ColorTheme`) with nested object writes
 handled by `MergedConfigurationStateDTO`. Memento storage for crash recovery
@@ -114,13 +114,13 @@ from the command palette to run configured tasks. The standard
 The vast majority of `vscode.*` APIs covering file system, terminal, language
 server protocol, diagnostics, status bar, tree views, custom editors, and
 webview panels are routed and active. The following APIs have stub
-implementations — they allow extensions that declare them to activate without
+implementations - they allow extensions that declare them to activate without
 crashing, but the underlying features are not yet wired to a backend:
 
-- `vscode.lm.*` — language model / Copilot
-- `vscode.chat.*` — chat panel
-- `vscode.notebook.*` — notebook UI
-- `vscode.tests.*` — test explorer
+- `vscode.lm.*` - language model / Copilot
+- `vscode.chat.*` - chat panel
+- `vscode.notebook.*` - notebook UI
+- `vscode.tests.*` - test explorer
 
 See [Cocoon](/Doc/cocoon) for the full API coverage table.
 

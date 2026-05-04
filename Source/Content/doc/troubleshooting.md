@@ -57,7 +57,7 @@ commands it contributes do not appear in the command palette.
 
 1. Check the Output panel. Select **Extension Host** from the channel dropdown
    to see activation errors and log output from Cocoon.
-2. Look for activation event mismatches — if the extension declares
+2. Look for activation event mismatches - if the extension declares
    `activationEvents` that Land does not fire, it will never activate.
 
 **Fixes:**
@@ -80,7 +80,7 @@ commands it contributes do not appear in the command palette.
 **Diagnosis:**
 
 Open **Activity Monitor** on macOS or **Task Manager** on Windows, filter by
-process name, and identify which process is consuming CPU — the main Land
+process name, and identify which process is consuming CPU - the main Land
 process, a language server child process, or Node.js (the Cocoon extension
 host).
 
@@ -122,7 +122,7 @@ regardless of file ownership.
 3. If Land does not appear, try opening a folder from within Land using
    **File → Open Folder** so macOS can prompt for consent.
 4. If permissions appear stuck, you can reset the TCC entry. The bundle
-   identifier follows the pattern `com.codeeditorland.*` — check the exact
+   identifier follows the pattern `com.codeeditorland.*` - check the exact
    identifier in the built `.app` bundle's `Info.plist` before running any
    `tccutil reset` command.
 

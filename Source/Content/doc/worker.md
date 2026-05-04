@@ -9,7 +9,7 @@ description: "The Service Worker that serves VS Code application assets inside W
 
 Worker is the Service Worker layer for Editor.Land. It runs inside the
 WebView (WKWebView on macOS, WebView2 on Windows) and intercepts all
-requests for the `/Static/Application/` asset tree — serving them from
+requests for the `/Static/Application/` asset tree - serving them from
 cache with a cache-first strategy, handling CSS-as-JS-module conversion,
 and notifying the editor when a new build version is available.
 
@@ -39,7 +39,7 @@ Worker maintains two versioned cache stores. Both are stamped with a build
 
 | Cache | Purpose |
 |---|---|
-| `Core-{INCREMENT}` | Navigation responses — workbench HTML shell |
+| `Core-{INCREMENT}` | Navigation responses - workbench HTML shell |
 | `Asset-{INCREMENT}` | Application asset files under `/Static/Application/` |
 
 When a new build is deployed, the `INCREMENT` changes. On activate, Worker
@@ -64,7 +64,7 @@ if the network is unavailable.
 modules: Worker synthesises a JavaScript response containing
 `window._LOAD_CSS_WORKER('{path}'); export default {};` and caches it. This
 is the runtime side of the CSS loading mechanism Output's `StripCSSImport`
-plugin sets up — the static import chain becomes a runtime loader call
+plugin sets up - the static import chain becomes a runtime loader call
 handled by the WebView's own CSS injection path.
 
 ---
@@ -83,7 +83,7 @@ handled by the WebView's own CSS injection path.
 
 ## Security Boundary
 
-Worker validates the origin of every `message` event — messages from origins
+Worker validates the origin of every `message` event - messages from origins
 that are neither `self.location.origin` nor the configured `BASE_REMOTE` are
 discarded. This prevents page-level code from arbitrary origin from
 manipulating the Service Worker's cache.

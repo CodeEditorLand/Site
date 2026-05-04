@@ -84,7 +84,7 @@ Promises work well for simple request-response flows. They break down when
 you need cancellation, supervision, typed errors, retries with backoff, or
 resource finalization. An extension host must handle all of these. Building
 that infrastructure on raw promises would mean reimplementing what Effect-TS
-already provides — tested, documented, and type-safe.
+already provides - tested, documented, and type-safe.
 
 ---
 

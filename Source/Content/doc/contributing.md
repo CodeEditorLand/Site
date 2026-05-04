@@ -36,7 +36,7 @@ on GitHub.
    ```
 
    This compiles Mountain and opens the editor window. The first run downloads
-   and compiles Rust dependencies from scratch — allow a few minutes on a fresh
+   and compiles Rust dependencies from scratch - allow a few minutes on a fresh
    checkout. Subsequent builds use Cargo's incremental compilation cache and
    are significantly faster.
 
@@ -51,12 +51,12 @@ on GitHub.
 
 ## Ways to Contribute
 
-- **Code** — Rust or TypeScript fixes, features, or performance improvements
-- **Documentation** — Correcting inaccuracies, adding missing context, or
+- **Code** - Rust or TypeScript fixes, features, or performance improvements
+- **Documentation** - Correcting inaccuracies, adding missing context, or
   improving clarity on any doc page
-- **Testing** — Bug reports with reproductions, test coverage for Cocoon or
+- **Testing** - Bug reports with reproductions, test coverage for Cocoon or
   Mountain
-- **Design** — UI/UX improvements for the editor or this website
+- **Design** - UI/UX improvements for the editor or this website
 
 ---
 

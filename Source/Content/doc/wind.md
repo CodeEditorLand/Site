@@ -26,26 +26,26 @@ services are confirmed working on both platforms.
 
 Wind’s source tree (`Source/`) is organized by concern:
 
-- **`Bootstrap/`** — process startup and Layer composition. The bootstrap
+- **`Bootstrap/`** - process startup and Layer composition. The bootstrap
   module assembles the full Layer stack and provides it to Sky’s entry point.
-- **`Configuration/`** — workspace and user configuration reading, watching,
+- **`Configuration/`** - workspace and user configuration reading, watching,
   and typed access. Routes through Tauri IPC to Mountain’s configuration
   store.
-- **`Effect/`** — Effect-TS utilities and helpers shared across Wind layers.
-- **`FileSystem/`** — virtual file system abstractions. Routes file reads,
+- **`Effect/`** - Effect-TS utilities and helpers shared across Wind layers.
+- **`FileSystem/`** - virtual file system abstractions. Routes file reads,
   writes, and watches through Mountain.
-- **`Function/`** — pure functional utilities with no service dependencies.
-- **`IPC/`** — the typed Tauri IPC channel implementation and the `SkyEvent`
+- **`Function/`** - pure functional utilities with no service dependencies.
+- **`IPC/`** - the typed Tauri IPC channel implementation and the `SkyEvent`
   registry (see below).
-- **`Service/`** — concrete service implementations, including
+- **`Service/`** - concrete service implementations, including
   `TauriMainProcessService` which wraps all Tauri `invoke` calls used by
   workbench services.
-- **`Telemetry/`** — usage telemetry routing.
-- **`Types/`** — shared TypeScript type definitions.
-- **`Utility/`** — general-purpose helpers.
-- **`Workbench/`** — workbench-specific service implementations for panels,
+- **`Telemetry/`** - usage telemetry routing.
+- **`Types/`** - shared TypeScript type definitions.
+- **`Utility/`** - general-purpose helpers.
+- **`Workbench/`** - workbench-specific service implementations for panels,
   layout, tabs, and the activity bar.
-- **`Preload.ts`** (16 KB) — the preload script injected into the Tauri
+- **`Preload.ts`** (16 KB) - the preload script injected into the Tauri
   WebView context. It exposes the typed IPC bridge that Sky components use
   at runtime before the full Layer stack is initialized.
 
@@ -90,7 +90,7 @@ Workspace. URI strings follow a canonical kebab-case convention
 
 Wind routes all native calls: file reads, clipboard access, terminal spawn,
 configuration persistence. These go through Tauri’s typed IPC to Mountain.
-Calls cross a process boundary and arguments are serialized — but the
+Calls cross a process boundary and arguments are serialized - but the
 difference from Electron’s IPC is that Tauri’s bindings are typed at the
 call site (no raw `ipcRenderer.send('event-name', payload)`) and the
 receiving end in Mountain is a Rust function with a matching type signature

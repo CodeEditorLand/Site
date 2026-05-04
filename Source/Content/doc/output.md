@@ -10,7 +10,7 @@ description: "The VS Code build transformation pipeline that adapts VS Code's co
 Output is the VS Code build transformation pipeline for Editor.Land. It takes
 the upstream VS Code compiled tree (populated into `Target/Microsoft/VSCode/`
 by the build step) and applies a set of TypeScript transform plugins that adapt
-it for Land's native stack — replacing Electron IPC with the Mountain gRPC
+it for Land's native stack - replacing Electron IPC with the Mountain gRPC
 channel, injecting WebView polyfills, rewriting worker URLs, and patching
 service registrations.
 
@@ -71,10 +71,10 @@ specific files it targets:
 Output's transformed `Target/Microsoft/VSCode/` tree is consumed by Sky in two
 different ways:
 
-- **Sky's `/Static/Application/` copy** — static files served directly by
+- **Sky's `/Static/Application/` copy** - static files served directly by
   Mountain's HTTP layer to the WebView at runtime. These files use dynamic
   imports and runtime CSS loading.
-- **Sky's Vite bundler walk** — Vite follows the module graph from
+- **Sky's Vite bundler walk** - Vite follows the module graph from
   Output's Target before `astro:build:done` fires. This path requires static
   imports so Rollup can emit hashed chunks; CSS is extracted by Vite's native
   pipeline.
@@ -91,7 +91,7 @@ for the static path. The two output trees diverge here by design.
 
 | Path | Role |
 |---|---|
-| `Source/ApplyPipeline.ts` | Pipeline runner — composes and executes the transform plugin list |
+| `Source/ApplyPipeline.ts` | Pipeline runner - composes and executes the transform plugin list |
 | `Source/ESBuild.ts` | esbuild integration |
 | `Source/ESBuild/` | esbuild configuration sub-modules |
 | `Source/Plugin/` | Transform plugin definitions (one file per plugin) |

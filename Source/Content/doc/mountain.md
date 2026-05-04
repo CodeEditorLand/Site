@@ -15,8 +15,8 @@ handles everything that requires native OS access so that the extension host
 (Cocoon) and the workbench UI (Sky) do not.
 
 Mountain runs and installs on **macOS and Windows** today. The full editor
-experience — extensions loading, language features active, terminal open,
-clipboard working, file system watcher running — is available in the
+experience - extensions loading, language features active, terminal open,
+clipboard working, file system watcher running - is available in the
 `debug-mountain` profile on both platforms from a standard
 `cargo tauri dev` or release build invocation.
 
@@ -69,62 +69,62 @@ named modules matching the `Source/` directory tree:
 
 ### Crate Root
 
-- **`Library.rs`** — the crate's library root (3.6 KB). Re-exports all public
+- **`Library.rs`** - the crate's library root (3.6 KB). Re-exports all public
   modules so that Mountain's types are accessible from test crates and
   integration harnesses without referencing internal paths.
-- **`LandFixTier.rs`** — tier-gating runtime banner (2.8 KB). Reads `.env.Land`
+- **`LandFixTier.rs`** - tier-gating runtime banner (2.8 KB). Reads `.env.Land`
   and validates declared tier feature flags at startup before any services
   are started.
 
 ### Core Infrastructure
 
-- **`ApplicationState`** — thread-safe, centralized app state shared across
+- **`ApplicationState`** - thread-safe, centralized app state shared across
   all Tauri commands via `Arc<ApplicationState>`. All state mutations lock
   through `parking_lot` mutexes.
-- **`Environment`** — capability provider interfaces: file system, processes,
+- **`Environment`** - capability provider interfaces: file system, processes,
   extensions. The effect system in `Common` defines `Requires<T>` trait
   bounds; `Environment` satisfies them.
-- **`RunTime`** — the `ApplicationRunTime` effect executor. Business logic is
+- **`RunTime`** - the `ApplicationRunTime` effect executor. Business logic is
   expressed as typed `ActionEffect`s and executed through `RunTime.Run(...)`.
   This keeps all async logic composable and testable.
-- **`Error`** — centralized error handling types for the whole crate.
+- **`Error`** - centralized error handling types for the whole crate.
 
 ### Communication
 
-- **`IPC`** — Tauri IPC server (`mountain_ipc_receive_message`,
+- **`IPC`** - Tauri IPC server (`mountain_ipc_receive_message`,
   `mountain_ipc_get_status`). Sky calls these to route workbench events to
   Mountain and receive state back. Fourteen commands are registered at
   startup through `Binary::IPC`.
-- **`Vine`** — the bidirectional gRPC layer for Cocoon extension host
+- **`Vine`** - the bidirectional gRPC layer for Cocoon extension host
   communication. Mountain runs a gRPC server on port 50051 (Cocoon dials in);
   Mountain also acts as gRPC client dialing Cocoon's server on port 50052
-  (`CocoonService` — `ProcessMountainRequest`, `SendMountainNotification`,
+  (`CocoonService` - `ProcessMountainRequest`, `SendMountainNotification`,
   `CancelOperation`). Both sockets use TLS from `rcgen` + `p256`.
-- **`RPC`** — service implementations for each Vine gRPC service.
-- **`Air`** — client for the Air background daemon (update checks, release
+- **`RPC`** - service implementations for each Vine gRPC service.
+- **`Air`** - client for the Air background daemon (update checks, release
   signing). Optional feature flag: `AirIntegration`.
 
 ### Services
 
-- **`ProcessManagement`** — sidecar process lifecycle: launch, monitor,
+- **`ProcessManagement`** - sidecar process lifecycle: launch, monitor,
   restart. Manages the Cocoon Node.js sidecar process (which itself runs both
   a gRPC client and server) and any future sidecars.
-- **`FileSystem`** — native `FileExplorerViewProvider` that powers the
+- **`FileSystem`** - native `FileExplorerViewProvider` that powers the
   Explorer sidebar. Reads workspace folders and provides directory listings
   over Tauri IPC using async Tokio I/O.
-- **`ExtensionManagement`** — extension discovery, scanning, and activation.
+- **`ExtensionManagement`** - extension discovery, scanning, and activation.
   The `TierExtensionScanParallel` feature flag enables parallel manifest
   scanning.
-- **`Workspace`** — `.code-workspace` file parsing and multi-root workspace
+- **`Workspace`** - `.code-workspace` file parsing and multi-root workspace
   support.
-- **`Telemetry`** — optional OpenTelemetry tracing and PostHog event
+- **`Telemetry`** - optional OpenTelemetry tracing and PostHog event
   reporting, behind the `Telemetry` feature flag.
-- **`Update`** — in-process update check and download coordination with Air.
+- **`Update`** - in-process update check and download coordination with Air.
 
 ### Commands
 
-- **`Command`** — native Tauri command handlers.
-- **`Track`** — central command dispatcher (`DispatchFrontendCommand`,
+- **`Command`** - native Tauri command handlers.
+- **`Track`** - central command dispatcher (`DispatchFrontendCommand`,
   `ResolveUIRequest`) routing Sky UI requests to provider implementations.
   All `command.*` dispatch is handled here; Cocoon no longer proxies command
   routing (path removed April 2026).
@@ -184,30 +184,30 @@ available to all Sky and extension callers via `vscode.commands.executeCommand`:
 
 Mountain owns the following concerns on macOS and Windows today:
 
-- **File system** — all `vscode.workspace.fs.*` calls route through
+- **File system** - all `vscode.workspace.fs.*` calls route through
   Mountain's Rust async I/O layer via Tauri IPC. Cached reads return at
   approximately 8 ms p99 latency; cold reads at approximately 60 ms p99 on
   Apple Silicon.
-- **Bidirectional gRPC** — Mountain runs the Vine gRPC server on port 50051
+- **Bidirectional gRPC** - Mountain runs the Vine gRPC server on port 50051
   and also acts as gRPC client connecting to Cocoon's server on port 50052.
   Both directions are used during normal operation: Mountain pushing workspace
   events into Cocoon, and Mountain querying Cocoon for extension-provided
   language features and tree-view data.
-- **Terminal (pty)** — Mountain spawns and manages pseudo-terminals for
+- **Terminal (pty)** - Mountain spawns and manages pseudo-terminals for
   `window.createTerminal` using `portable-pty` on all platforms.
-- **Clipboard** — `arboard` provides cross-platform clipboard read/write.
-- **Keychain** — secrets stored in the OS keychain via `keyring`, not in
+- **Clipboard** - `arboard` provides cross-platform clipboard read/write.
+- **Keychain** - secrets stored in the OS keychain via `keyring`, not in
   plaintext config files.
-- **DAP bridge** — `debug.startDebugging` is routed through Mountain, which
+- **DAP bridge** - `debug.startDebugging` is routed through Mountain, which
   acts as a Debug Adapter Protocol proxy between Sky and the debug adapter.
-- **File search** — `grep-regex` + `grep-searcher` provide ripgrep-compatible
+- **File search** - `grep-regex` + `grep-searcher` provide ripgrep-compatible
   in-process search without spawning a child process.
-- **File watcher** — `notify` watches workspace folders for changes; the
+- **File watcher** - `notify` watches workspace folders for changes; the
   `TierFileWatcherLayer4` feature flag gates an experimental higher-throughput
   watcher path.
-- **IPC broker** — Mountain is the single point through which Sky (the
+- **IPC broker** - Mountain is the single point through which Sky (the
   WebView UI) and Cocoon (the Node extension host) exchange typed events.
-- **Echo host** — the work-stealing task scheduler (Echo) is embedded inside
+- **Echo host** - the work-stealing task scheduler (Echo) is embedded inside
   Mountain's binary as a Rust crate dependency.
 
 ---
@@ -221,8 +221,8 @@ across its six concurrent processes: main, renderer, extension host, pty host,
 file watcher, and shared process.
 
 Tauri uses the WebView the operating system already provides. No Chromium
-is bundled. Mountain runs as two processes — Mountain (Rust) and Cocoon (Node)
-— instead of six. Where Electron's main process handles system calls in
+is bundled. Mountain runs as two processes - Mountain (Rust) and Cocoon (Node)
+- instead of six. Where Electron's main process handles system calls in
 milliseconds, Mountain's native Rust kernel handles the equivalent operations
 in microseconds. On a 47-extension workload measured on Apple Silicon macOS,
 total RSS is approximately **600 MB** (Mountain ~280 MB, Cocoon ~320 MB),
@@ -243,8 +243,8 @@ on equivalent hardware. Numbers will differ on other hardware.
 |---|---|---|---|
 | Cold-boot time | ~2,400 ms | ~2,500 ms | Launch to first editor frame, 47 extensions. Already faster. |
 | Total RSS | ~600 MB | ~810 MB | 47 extensions, same workspace. ~25% reduction. |
-| Cached file read (p99) | ~8 ms | — | Tauri IPC + Rust async cache |
-| Cold file read (p99) | ~60 ms | — | No cache, first access |
+| Cached file read (p99) | ~8 ms | - | Tauri IPC + Rust async cache |
+| Cold file read (p99) | ~60 ms | - | No cache, first access |
 | Extension activation | 47 manifests parallel | sequential | Cocoon `Parallel8` worker pool |
 
 The current cold-boot number of ~2,400 ms is already faster than VS Code's
@@ -253,7 +253,7 @@ will bring the number down considerably further. The primary opportunity is a
 sequential dynamic-import loop that loads 3,385 workbench modules one at a
 time; consolidating these into a single bundled module graph is projected to
 save ~550 ms. Lazy-spawning Cocoon after first paint would save a further
-~200 ms, bringing projected cold-boot time to approximately **1,650 ms** —
+~200 ms, bringing projected cold-boot time to approximately **1,650 ms** -
 a 31% improvement over the current number and roughly **34% faster than
 VS Code** on the same workload.
 
@@ -286,13 +286,13 @@ tier features. The default feature set enables `ExtensionHostCocoon`,
 
 Mountain is active in two of the three build profiles:
 
-- **`debug`** — Mountain does not run. The workbench opens as a plain web
+- **`debug`** - Mountain does not run. The workbench opens as a plain web
   app in a browser. File system, pty, and DAP APIs are unavailable. Used for
   fast UI iteration without a Rust build step.
-- **`debug-mountain`** — Mountain runs as a Tauri desktop application.
+- **`debug-mountain`** - Mountain runs as a Tauri desktop application.
   Cocoon spawns as the extension host. The full API surface is active on
   both macOS and Windows. This is the primary development target.
-- **`debug-electron`** — Mountain does not run. The editor runs inside
+- **`debug-electron`** - Mountain does not run. The editor runs inside
   Electron for compatibility testing. Not actively maintained.
 
 ---
@@ -322,16 +322,16 @@ profile on both platforms:
 
 ## Planned Improvements
 
-- **Cold-boot optimisation** — bundling the 3,385-module workbench graph and
+- **Cold-boot optimisation** - bundling the 3,385-module workbench graph and
   lazy-spawning Cocoon after first paint projects to bring cold-boot from
   ~2,400 ms to ~1,650 ms (see Verified Performance Numbers above).
-- **Process sidecar splits** — planned: a PtyHost sidecar (terminal sessions
+- **Process sidecar splits** - planned: a PtyHost sidecar (terminal sessions
   survive editor restarts), a Watcher sidecar (isolates FSEvents /
   ReadDirectoryChanges fan-out), and a Search sidecar (offloads grep-searcher
   to reduce Mountain's RSS). None have landed yet.
-- **Linux** — WebKitGTK bundle configuration is present in `tauri.conf.json`;
+- **Linux** - WebKitGTK bundle configuration is present in `tauri.conf.json`;
   full integration and testing are in progress.
-- **Walkthrough UI** — `workbench.action.openWalkthrough` is registered;
+- **Walkthrough UI** - `workbench.action.openWalkthrough` is registered;
   the Welcome/Getting Started panel is being wired up.
 
 ---

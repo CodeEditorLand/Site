@@ -28,28 +28,28 @@ on **macOS and Windows** and launches automatically from Mountain on
 Cocoon’s source tree is organized into the following top-level directories
 under `Source/`:
 
-- **`Bootstrap/`** — process entry point, gRPC server startup, and service
+- **`Bootstrap/`** - process entry point, gRPC server startup, and service
   composition. Assembles the full service stack and starts the gRPC server.
-- **`Configuration/`** — workspace and user configuration read/watch layer.
-- **`Effect/`** — Effect-TS utilities and helpers shared across Cocoon services.
-- **`Generated/`** — Protobuf-generated TypeScript stubs from the Vine `.proto`
+- **`Configuration/`** - workspace and user configuration read/watch layer.
+- **`Effect/`** - Effect-TS utilities and helpers shared across Cocoon services.
+- **`Generated/`** - Protobuf-generated TypeScript stubs from the Vine `.proto`
   file. Used by both the gRPC server and the Mountain client.
-- **`IPC/`** — typed IPC channel helpers and the `SkyEvent` registry mirror.
-- **`Integration/`** — integration points with external systems.
-- **`Interfaces/`** — shared TypeScript interface definitions used across services.
-- **`Orchestration/`** — high-level orchestration logic coordinating the
+- **`IPC/`** - typed IPC channel helpers and the `SkyEvent` registry mirror.
+- **`Integration/`** - integration points with external systems.
+- **`Interfaces/`** - shared TypeScript interface definitions used across services.
+- **`Orchestration/`** - high-level orchestration logic coordinating the
   extension host lifecycle and cross-service workflows.
-- **`PatchProcess/`** — patching utilities applied to VS Code platform modules
+- **`PatchProcess/`** - patching utilities applied to VS Code platform modules
   at load time to adapt them for the Land runtime environment.
-- **`Platform/`** — platform-specific adapters (macOS / Windows paths,
+- **`Platform/`** - platform-specific adapters (macOS / Windows paths,
   environment detection).
-- **`Scripts/`** — build and maintenance scripts.
-- **`Services/`** — the core service layer (see Service Modules below).
-- **`Telemetry/`** — usage telemetry routing.
-- **`TypeConverter/`** — bidirectional converters between Vine protobuf types
+- **`Scripts/`** - build and maintenance scripts.
+- **`Services/`** - the core service layer (see Service Modules below).
+- **`Telemetry/`** - usage telemetry routing.
+- **`TypeConverter/`** - bidirectional converters between Vine protobuf types
   and the `vscode.*` TypeScript types that extensions consume.
-- **`Utility/`** — general-purpose helpers with no service dependencies.
-- **`WebviewPanel/`** — implementation of the `vscode.WebviewPanel` API,
+- **`Utility/`** - general-purpose helpers with no service dependencies.
+- **`WebviewPanel/`** - implementation of the `vscode.WebviewPanel` API,
   routing webview HTML and messages through Mountain’s WebView IPC.
 
 ---
@@ -59,51 +59,51 @@ under `Source/`:
 The `Source/Services/` directory contains the full working service layer.
 Key files and subdirectories:
 
-- **`GRPCServerService.ts`** (37 KB) — the main gRPC server. Implements the
+- **`GRPCServerService.ts`** (37 KB) - the main gRPC server. Implements the
   three Vine RPC operations (`ProcessMountainRequest`,
   `SendMountainNotification`, `CancelOperation`), routes all incoming
   requests through the handler chain, and manages bidirectional streaming
   connections with a 10-second keepalive loop.
-- **`MountainClientService.ts`** (44 KB) — Cocoon’s typed client for calling
+- **`MountainClientService.ts`** (44 KB) - Cocoon’s typed client for calling
   Mountain over the Vine gRPC channel (port 50051). Every notification and
   event Cocoon sends into Mountain goes through this service.
-- **`MountainGRPCClient.ts`** (31 KB) — the low-level gRPC stub wrapper that
+- **`MountainGRPCClient.ts`** (31 KB) - the low-level gRPC stub wrapper that
   `MountainClientService` builds on.
-- **`APIFactoryService.ts`** (23 KB) — builds the complete `vscode.*`
+- **`APIFactoryService.ts`** (23 KB) - builds the complete `vscode.*`
   namespace object that every extension receives as its API. Each
   `vscode.workspace.*`, `vscode.window.*`, and `vscode.languages.*` surface
   is constructed here as a typed façade over Cocoon’s Effect-TS services.
 - **`ModuleInterceptor.ts`** (33 KB) + **`ModuleInterceptorService.ts`** (18 KB)
-  + **`ModuleInterceptor/`** — Cocoon’s replacement for VS Code’s AMD loader.
+  + **`ModuleInterceptor/`** - Cocoon’s replacement for VS Code’s AMD loader.
   Intercepts `require()` calls from extensions and VS Code platform modules
   and redirects them to Land’s module graph without Electron’s sandboxed
   renderer or webpack’s runtime chunk loader.
-- **`EchoActionClient.ts`** (12 KB) — Cocoon’s client for the Echo work-stealing
+- **`EchoActionClient.ts`** (12 KB) - Cocoon’s client for the Echo work-stealing
   task scheduler embedded in Mountain. Long-running extension tasks (language
   server warmup, background indexing) are dispatched through Echo rather than
   blocking the gRPC dispatch loop.
-- **`Extension.ts`** (17 KB) — extension loading, manifest parsing, and the
+- **`Extension.ts`** (17 KB) - extension loading, manifest parsing, and the
   activation lifecycle (`activate()` / `deactivate()`).
-- **`ExtensionContext.ts`** (17 KB) — implements the `vscode.ExtensionContext`
+- **`ExtensionContext.ts`** (17 KB) - implements the `vscode.ExtensionContext`
   object passed to each extension’s `activate()` function.
-- **`ExtensionHostService.ts`** (5.7 KB) — top-level extension host coordinator.
-- **`Workspace.ts`** (28 KB) — `vscode.workspace.*` implementation: text
+- **`ExtensionHostService.ts`** (5.7 KB) - top-level extension host coordinator.
+- **`Workspace.ts`** (28 KB) - `vscode.workspace.*` implementation: text
   document management, workspace folder events, file system watchers.
-- **`Command.ts`** (16 KB) — `vscode.commands.*` implementation: command
+- **`Command.ts`** (16 KB) - `vscode.commands.*` implementation: command
   registration, execution, and the contributed-command dispatch table.
-- **`Configuration.ts`** (15 KB) — `vscode.workspace.getConfiguration()`
+- **`Configuration.ts`** (15 KB) - `vscode.workspace.getConfiguration()`
   implementation.
-- **`DualTrack.ts`** (17 KB) — per-method and per-domain deferral knob (see
+- **`DualTrack.ts`** (17 KB) - per-method and per-domain deferral knob (see
   DualTrack section below).
-- **`LanguageProviderRegistry.ts`** (4.8 KB) — tracks registered hover,
+- **`LanguageProviderRegistry.ts`** (4.8 KB) - tracks registered hover,
   completion, definition, and reference providers by language ID.
-- **`SecurityService.ts`** (18 KB) — validates extension permissions and
+- **`SecurityService.ts`** (18 KB) - validates extension permissions and
   enforces capability boundaries.
-- **`Health.ts`** (17 KB) — health monitoring: tracks gRPC server state,
+- **`Health.ts`** (17 KB) - health monitoring: tracks gRPC server state,
   service liveness, and surfaces diagnostics to Mountain on request.
-- **`PerformanceMonitoringService.ts`** (16 KB) — in-process performance
+- **`PerformanceMonitoringService.ts`** (16 KB) - in-process performance
   instrumentation for gRPC request latency and extension activation timing.
-- **`Handler/`** — five domain handler modules (see Handler Modules below).
+- **`Handler/`** - five domain handler modules (see Handler Modules below).
 
 ---
 
@@ -112,10 +112,10 @@ Key files and subdirectories:
 Cocoon communicates with Mountain (the Rust kernel) over two gRPC channels
 defined by the Vine protocol:
 
-- **Cocoon as server (port 50052)** — Mountain dials Cocoon to invoke extension
+- **Cocoon as server (port 50052)** - Mountain dials Cocoon to invoke extension
   host lifecycle methods, language feature providers, and document notifications.
   The port is configurable via the `COCOON_GRPC_PORT` environment variable.
-- **Cocoon as client (port 50051)** — Cocoon dials Mountain to send
+- **Cocoon as client (port 50051)** - Cocoon dials Mountain to send
   notifications and fire events back into the kernel (file-open, diagnostics
   push, tree-view refresh). The Mountain port is configurable via
   `MOUNTAIN_GRPC_PORT`.
@@ -128,12 +128,12 @@ to 100 MB in each direction.
 
 Cocoon’s gRPC server exposes three operations:
 
-- `ProcessMountainRequest` — synchronous unary RPC that Mountain calls to
+- `ProcessMountainRequest` - synchronous unary RPC that Mountain calls to
   invoke extension host methods and receive a typed response.
-- `SendMountainNotification` — fire-and-forget unary RPC that Mountain uses
+- `SendMountainNotification` - fire-and-forget unary RPC that Mountain uses
   to push document and workspace state changes into Cocoon without waiting
   for a return value.
-- `CancelOperation` — unary RPC that Mountain uses to cancel a request by
+- `CancelOperation` - unary RPC that Mountain uses to cancel a request by
   its `RequestIdentifier`. Cocoon tracks all in-flight requests and invokes
   the registered cancel handler when this arrives.
 
@@ -144,26 +144,26 @@ Cocoon’s gRPC server exposes three operations:
 All incoming requests are dispatched through a layered routing table in
 `GRPCServerService`. The routing logic handles these method shapes:
 
-- **`service.method`** (e.g., `extension.activate`, `configuration.get`) —
+- **`service.method`** (e.g., `extension.activate`, `configuration.get`) -
   routed through `RequestRoutingHandler` first.
 - **`$provideHover`, `$provideCompletions`, `$provideDefinition`, and any
-  `$provide[A-Z]*`** — delegated to `LanguageProviderHandler`. Mountain calls
+  `$provide[A-Z]*`** - delegated to `LanguageProviderHandler`. Mountain calls
   these when Sky’s editor surface requests language intelligence for the active
   document.
-- **`$provideTreeChildren`** — dispatched explicitly through
+- **`$provideTreeChildren`** - dispatched explicitly through
   `RequestRoutingHandler` before the generic `$provide[A-Z]` regex fires.
-- **`InitializeExtensionHost`** — Mountain’s handshake that delivers extension
+- **`InitializeExtensionHost`** - Mountain’s handshake that delivers extension
   manifest data, workspace folders, and configuration.
-- **`$deltaExtensions`** — incremental extension manifest updates.
-- **`$activateByEvent`** — lazy activation for a specific event string
+- **`$deltaExtensions`** - incremental extension manifest updates.
+- **`$activateByEvent`** - lazy activation for a specific event string
   (e.g., `onLanguage:typescript`).
-- **`$startExtensionHost`** — Mountain signals that initialization is complete.
-- **`$deltaWorkspaceFolders`** — incremental workspace folder updates.
-- **`ExtHostCommands$ExecuteContributedCommand`** — contributed extension
+- **`$startExtensionHost`** - Mountain signals that initialization is complete.
+- **`$deltaWorkspaceFolders`** - incremental workspace folder updates.
+- **`ExtHostCommands$ExecuteContributedCommand`** - contributed extension
   command dispatch.
-- **`ExtHostAuthentication$*`** — authentication surface calls return `null`
+- **`ExtHostAuthentication$*`** - authentication surface calls return `null`
   gracefully while a full provider registry is wired.
-- **`$shutdown`** — clean shutdown acknowledgement.
+- **`$shutdown`** - clean shutdown acknowledgement.
 
 ---
 
@@ -172,18 +172,18 @@ All incoming requests are dispatched through a layered routing table in
 Domain logic is separated from the gRPC transport layer into five handler
 modules under `Source/Services/Handler/`:
 
-- **`ExtensionHostHandler`** — extension host lifecycle: `InitializeExtensionHost`,
+- **`ExtensionHostHandler`** - extension host lifecycle: `InitializeExtensionHost`,
   `$deltaExtensions`, `$activateByEvent`, `$startExtensionHost`. Maintains the
   extension registry and activation-event index.
-- **`LanguageProviderHandler`** — all `$provide[A-Z]*` language feature
+- **`LanguageProviderHandler`** - all `$provide[A-Z]*` language feature
   invocations. Reads document content from the live `documentContentCache`.
-- **`DocumentContentHandler`** — `$acceptModelChanged`, `$acceptModelOpen`,
+- **`DocumentContentHandler`** - `$acceptModelChanged`, `$acceptModelOpen`,
   `$acceptModelClose`, `$acceptModelSave`. Keeps the `documentContentCache`
   synchronized with Mountain’s document state.
-- **`NotificationHandler`** — routes incoming Mountain notifications and emits
+- **`NotificationHandler`** - routes incoming Mountain notifications and emits
   `didOpenTextDocument`, `didChangeTextDocument`, `didCloseTextDocument`, and
   `didSaveTextDocument` events on the workspace event emitter.
-- **`RequestRoutingHandler`** — handles `service.method` patterns and special
+- **`RequestRoutingHandler`** - handles `service.method` patterns and special
   cases. Returns `undefined` for any method it does not own.
 
 Handlers receive a `HandlerContext` object built with live property descriptors
@@ -203,8 +203,8 @@ built-in module resolver.
 
 This is what allows unmodified VS Code extensions to run inside Cocoon without
 repackaging. The `PatchProcess/` directory applies targeted patches to a small
-number of VS Code platform files at startup — those that hard-code Electron
-or browser assumptions — so the rest of the platform code runs without
+number of VS Code platform files at startup - those that hard-code Electron
+or browser assumptions - so the rest of the platform code runs without
 modification.
 
 ---

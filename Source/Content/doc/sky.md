@@ -57,7 +57,7 @@ and platform modules that call `vscode.l10n.*`.
 `TelemetryBridge.astro` connects Sky’s in-page telemetry events to
 Mountain’s PostHog reporter (behind the `Telemetry` feature flag).
 
-`Bundled/` holds the output of the Rest/Output build pipeline — the
+`Bundled/` holds the output of the Rest/Output build pipeline - the
 bundled VS Code workbench module graph that Sky loads inside the WebView.
 
 ---
@@ -135,17 +135,17 @@ canonical form so Sky only ever sees a single consistent shape per event.
 
 Sky’s runtime environment depends on which build profile is active:
 
-- **`debug`** — Sky runs as a plain web app in the browser. `Browser.astro`
+- **`debug`** - Sky runs as a plain web app in the browser. `Browser.astro`
   is the entry point; no Tauri WebView, no Mountain process. Astro’s dev
   server with HMR is active so component changes reflect without a full
   page reload. File system, terminal, and debug APIs are unavailable.
   Used for rapid UI iteration.
-- **`debug-mountain`** — Sky runs inside WKWebView (macOS) or WebView2
+- **`debug-mountain`** - Sky runs inside WKWebView (macOS) or WebView2
   (Windows) via `Mountain.astro`. Mountain is running; all Tauri IPC
   calls resolve through the Rust kernel. This is the primary development
   target for both platforms and the only profile where the full editor
   experience is available.
-- **`debug-electron`** — `Workbench/Electron/` provides compatibility shims
+- **`debug-electron`** - `Workbench/Electron/` provides compatibility shims
   for running Sky inside Electron’s renderer. This profile exists for
   compatibility testing and is not actively maintained.
 
@@ -179,7 +179,7 @@ Windows. The workbench builds, installs, and runs correctly on both platforms.
   modules loaded sequentially at cold boot. The application is fully functional
   today. The Rest/Output pipeline is being extended to bundle this graph into
   a single pre-linked module, which is projected to cut cold-boot time by
-  ~550 ms. This is a well-scoped, in-progress optimisation — not a blocker.
+  ~550 ms. This is a well-scoped, in-progress optimisation - not a blocker.
 - Notebook UI, chat panel, and language model UI panels are on the roadmap,
   consistent with the planned `vscode.notebook.*`, `vscode.chat.*`, and
   `vscode.lm.*` API work in Cocoon.

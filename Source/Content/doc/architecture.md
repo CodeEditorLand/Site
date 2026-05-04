@@ -10,7 +10,7 @@ description: "How Editor.Land's elements fit together: two processes, two IPC ch
 Editor.Land runs as **two processes** on a typical desktop session: Mountain
 (the Rust kernel) and Cocoon (the Node.js extension host). A third background
 process, Air, handles updates and downloads independently. The editor UI (Sky)
-runs inside the OS WebView as part of Mountain's Tauri application — it is
+runs inside the OS WebView as part of Mountain's Tauri application - it is
 not a separate process.
 
 The OS WebView is WKWebView on macOS, WebView2 on Windows, and WebKitGTK on
@@ -22,7 +22,7 @@ pty host, file watcher, shared process). The resource comparison on a
 47-extension workload on Apple Silicon macOS: Land ~600 MB RSS versus
 VS Code ~810 MB RSS. Cold-boot time is already competitive with VS Code
 (~2,400 ms versus ~2,500 ms on the same workload), with a clear optimisation
-path to approximately **1,650 ms** — roughly 34% faster than VS Code on the
+path to approximately **1,650 ms** - roughly 34% faster than VS Code on the
 same hardware.
 
 ---
@@ -43,10 +43,10 @@ commands are registered at startup through the `Binary::IPC` module.
 **Channel 2: Mountain ↔ Cocoon (bidirectional gRPC / Vine)**
 The Vine protocol runs as two gRPC channels between Mountain and Cocoon:
 
-- **Mountain as server (port 50051)** — Cocoon dials Mountain to send
+- **Mountain as server (port 50051)** - Cocoon dials Mountain to send
   notifications, fire events into the kernel, and deliver extension results
   (diagnostics, completions, hover data).
-- **Cocoon as server (port 50052)** — Mountain dials Cocoon to invoke
+- **Cocoon as server (port 50052)** - Mountain dials Cocoon to invoke
   extension host methods (`InitializeExtensionHost`, `$activateByEvent`,
   `$provideHover`, `$acceptModelChanged`, and the full `CocoonService`
   interface defined in Vine's `Vine.proto`).
@@ -120,7 +120,7 @@ running in the `debug-mountain` profile and verified working on macOS and
 Windows. **In Progress** means partially implemented. **Configured** means
 the build target or design is defined but not yet in production use.
 
-### Layer 1 — Native Shell
+### Layer 1 - Native Shell
 
 | Element | Language | Role | Status |
 |---|---|---|---|
@@ -128,14 +128,14 @@ the build target or design is defined but not yet in production use.
 | [**Echo**](/Doc/echo) | Rust | Work-stealing task scheduler embedded inside Mountain's binary; dispatches background extension tasks without blocking the gRPC loop | Active |
 | [**Air**](/Doc/air) | Rust | Background daemon: update checks, downloads, release signing, platform-native service lifecycle | Active |
 
-### Layer 2 — IPC
+### Layer 2 - IPC
 
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Vine**](/Doc/vine) | Protobuf | gRPC schema and generated stubs for Mountain↔Cocoon bidirectional communication | Active |
 | [**Mist**](/Doc/mist) | Rust | WebSocket communication layer (`MistNative` feature, enabled by default) | Active |
 
-### Layer 3 — Extension Host
+### Layer 3 - Extension Host
 
 | Element | Language | Role | Status |
 |---|---|---|---|
@@ -143,14 +143,14 @@ the build target or design is defined but not yet in production use.
 | [**Grove**](/Doc/grove) | Rust | WASM and Rhai extension host (alternative to Cocoon for non-Node extensions) | In Progress |
 | **Worker** | TypeScript | Web Workers for frontend parallel tasks | Planned |
 
-### Layer 4 — UI
+### Layer 4 - UI
 
 | Element | Language | Role | Status |
 |---|---|---|---|
 | [**Wind**](/Doc/wind) | TypeScript | Effect-TS service layer: typed workbench interfaces consumed by Sky | Active |
 | [**Sky**](/Doc/sky) | Astro | Workbench UI: the editor interface rendered in the OS WebView | Active |
 
-### Layer 5 — Build Toolchain
+### Layer 5 - Build Toolchain
 
 | Element | Language | Role | Status |
 |---|---|---|---|
@@ -166,9 +166,9 @@ the build target or design is defined but not yet in production use.
 
 Of the fifteen elements listed above, twelve are active in the primary
 development path today: Mountain, Echo, Cocoon, Sky, Wind, Vine, Mist, Air,
-Rest, Common, SideCar, and Maintain. The remaining three — Grove (WASM
+Rest, Common, SideCar, and Maintain. The remaining three - Grove (WASM
 extension host, in progress), Worker (planned), and Output (build artifact,
-no runtime process) — are either emerging capabilities or build artifacts.
+no runtime process) - are either emerging capabilities or build artifacts.
 
 Echo is embedded inside Mountain's binary rather than running as a separate
 process. See [Echo](/Doc/echo) for details.
@@ -184,7 +184,7 @@ and planned targets. macOS and Windows are both fully active today:
 |---|---|---|---|
 | macOS | 10.15 (Catalina) | `.app`, `.dmg` | Active |
 | Windows | 10 / 11 | `.msi`, Microsoft Store | Active; WebView2 bootstrapper embedded |
-| Linux | — | `.AppImage`, `.deb`, `.rpm` | In Progress |
+| Linux | - | `.AppImage`, `.deb`, `.rpm` | In Progress |
 | iOS | 13.0 | Framework | Configured |
 | Android | SDK 24 | APK | Configured |
 
@@ -198,28 +198,28 @@ The `land.editor.binary` application identifier and the custom URI scheme
 The Tauri Content Security Policy in Mountain's config explicitly allows these
 custom URI schemes alongside `https:`:
 
-- **`land:`** — Mountain's own asset serving scheme
-- **`vscode-file:`** — VS Code platform file assets (workbench modules, icons)
-- **`vscode-webview:`** — Extension webview panel frames
-- **`ipc:`** — Tauri's in-process IPC channel
+- **`land:`** - Mountain's own asset serving scheme
+- **`vscode-file:`** - VS Code platform file assets (workbench modules, icons)
+- **`vscode-webview:`** - Extension webview panel frames
+- **`ipc:`** - Tauri's in-process IPC channel
 
 This means extension webviews load in isolated frames (`vscode-webview:`)
 with the same origin separation as VS Code. Mountain uses the `brownfield`
-security pattern — no Tauri-injected APIs are automatically available;
+security pattern - no Tauri-injected APIs are automatically available;
 capabilities are declared explicitly in the `capabilities/` directory.
 
 ---
 
 ## Extension API Notes
 
-The vast majority of `vscode.*` APIs — file system, terminal, language server
+The vast majority of `vscode.*` APIs - file system, terminal, language server
 protocol, diagnostics, status bar, tree views, custom editors, and webview
-panels — are routed and active. The following APIs have planned backend
+panels - are routed and active. The following APIs have planned backend
 wiring that is not yet complete:
 
-- `vscode.lm.*` — language model / Copilot integration
-- `vscode.chat.*` — chat panel UI
-- `vscode.notebook.*` — notebook UI
+- `vscode.lm.*` - language model / Copilot integration
+- `vscode.chat.*` - chat panel UI
+- `vscode.notebook.*` - notebook UI
 
 Note that test runner infrastructure is already wired at the event level:
 `sky://test/registered`, `sky://test/run-started`, and

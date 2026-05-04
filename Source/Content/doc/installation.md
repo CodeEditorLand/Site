@@ -81,7 +81,7 @@ cargo tauri dev
 This compiles Mountain and its dependencies, starts the Tauri application, and
 opens the editor window. The first run compiles all Rust dependencies from
 scratch, which takes a few minutes on a fresh checkout. Subsequent runs rely on
-Cargo's incremental compilation cache and are noticeably fast — comparable to
+Cargo's incremental compilation cache and are noticeably fast - comparable to
 any well-structured Rust workspace.
 
 ---
@@ -90,13 +90,13 @@ any well-structured Rust workspace.
 
 To produce a release bundle:
 
-**macOS** — outputs a `.app` bundle:
+**macOS** - outputs a `.app` bundle:
 ```bash
 cargo tauri build
 ```
 The `.app` bundle is written to `src-tauri/target/release/bundle/macos/`.
 
-**Windows** — outputs an `.msi` installer:
+**Windows** - outputs an `.msi` installer:
 ```bash
 cargo tauri build
 ```
@@ -116,7 +116,7 @@ pnpm install
 cargo tauri dev
 ```
 
-The Air module — active in the compiled binary today — manages daemon-level
+The Air module - active in the compiled binary today - manages daemon-level
 lifecycle and is the foundation for surfacing update notifications in the UI.
 
 ---

@@ -75,7 +75,7 @@ crowd Mountain's main loop), and a Search sidecar (to offload ripgrep from the
 main Rust binary).
 
 Cold-boot time to **first paint** is approximately **2.4 seconds** on Apple
-Silicon with 47 extensions — competitive with VS Code (approximately 2.5
+Silicon with 47 extensions - competitive with VS Code (approximately 2.5
 seconds) on the same hardware. Wall-clock time to fully usable (all
 extensions activated) is approximately 3 seconds. The build is already fast;
 further improvements are in progress: switching to a single bundled output

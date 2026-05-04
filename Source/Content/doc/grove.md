@@ -2,7 +2,7 @@
 title: "Grove"
 section: "Element"
 order: 18
-description: "The WASMtime and Rhai extension sandbox — capability-based security for Editor.Land extensions."
+description: "The WASMtime and Rhai extension sandbox - capability-based security for Editor.Land extensions."
 ---
 
 # Grove
@@ -10,7 +10,7 @@ description: "The WASMtime and Rhai extension sandbox — capability-based secur
 Grove is the WebAssembly and Rhai extension host for Editor.Land. Where
 Cocoon runs VS Code extensions in a Node.js process, Grove runs extensions
 compiled to WebAssembly (inside WASMtime) or written in
-[Rhai](https://rhai.rs) script — both with capability-based security, so
+[Rhai](https://rhai.rs) script - both with capability-based security, so
 that an extension can only touch resources explicitly granted to it at the
 runtime level.
 
@@ -47,7 +47,7 @@ permissions per-app, per-resource, at install time or on first use. Grove
 brings that model to editor extensions.
 
 For extensions that do not need WASM compilation, Grove also supports
-[Rhai](https://rhai.rs) — a lightweight, embeddable scripting language written
+[Rhai](https://rhai.rs) - a lightweight, embeddable scripting language written
 in Rust. Rhai extensions run inside the same capability sandbox without
 requiring a WASM toolchain.
 

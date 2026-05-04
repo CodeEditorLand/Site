@@ -8,7 +8,7 @@ description: "Cross-platform Node.js binary distribution compiled per target tri
 # SideCar
 
 SideCar packages the correct Node.js binary for each target platform at
-compile time — no runtime detection, no fallback chains. The binary that
+compile time - no runtime detection, no fallback chains. The binary that
 ships is the binary that runs.
 
 ---
@@ -62,7 +62,7 @@ All four target triple directories are confirmed present in the
 | `Source/main.rs` | Entry point |
 | `Source/Source/` | Sub-modules |
 | `Cache.json` | Cached binary metadata per target triple |
-| `build.rs` | Cargo build script — target triple resolution at compile time |
+| `build.rs` | Cargo build script - target triple resolution at compile time |
 | `Resource/` | Bundled resources |
 
 ---
@@ -70,7 +70,7 @@ All four target triple directories are confirmed present in the
 ## What SideCar Enables
 
 The editor starts with the correct Node.js binary already in place for the
-target platform — no detection step, no fallback chain. If the build succeeded
+target platform - no detection step, no fallback chain. If the build succeeded
 for your target triple, the binary is already there. This removes an entire
 category of platform-specific runtime failures that exist in Electron-based
 editors.

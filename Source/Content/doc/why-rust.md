@@ -76,9 +76,9 @@ Rust powers the majority of Land's backend:
 - **SideCar** resolves and ships the correct Node.js binary per target triple
   at compile time, with confirmed builds for macOS, Windows, and Linux.
 - **Grove** hosts WASM extensions in a WASMtime runtime with capability-based
-  security — gRPC protocol, WASMtime host, API surface, and transport layer
+  security - gRPC protocol, WASMtime host, API surface, and transport layer
   are implemented and integration with the primary build is in progress.
-- **Mist** provides local DNS resolution for `*.editor.land` — full DNS
+- **Mist** provides local DNS resolution for `*.editor.land` - full DNS
   server (Server.rs, Resolver.rs, Zone.rs, ForwardSecurity.rs) implemented
   and in active development.
 

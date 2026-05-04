@@ -14,7 +14,7 @@ verifying their integrity before they are applied, and managing its own
 lifecycle as a platform-native service on Linux, macOS, and Windows.
 
 Air is listed in Layer 1 of the architecture alongside Mountain as part of the
-native shell. It is not embedded in Mountain's binary — it is a peer process
+native shell. It is not embedded in Mountain's binary - it is a peer process
 with its own full lifecycle. Mountain integrates with Air through the
 `AirIntegration` feature flag, which is enabled by default in the standard
 build.
@@ -28,7 +28,7 @@ Air's source tree (confirmed in the
 
 | Path | Role |
 |---|---|
-| `Source/Binary.rs` | Main daemon entry point (~66 KB) — startup, argument parsing, runtime wiring |
+| `Source/Binary.rs` | Main daemon entry point (~66 KB) - startup, argument parsing, runtime wiring |
 | `Source/Binary/` | Sub-modules for the binary target |
 | `Source/Library.rs` | Crate root re-exports |
 | `Source/ApplicationState/` | Runtime state management |
@@ -43,55 +43,55 @@ Air's source tree (confirmed in the
 | `Source/Initialize/` | Daemon startup and environment initialisation |
 | `Source/Logging/` | Structured log output |
 | `Source/Metrics/` | Runtime observability counters |
-| `Source/Mountain/` | Mountain integration — Air↔Mountain coordination |
+| `Source/Mountain/` | Mountain integration - Air↔Mountain coordination |
 | `Source/Plugins/` | Background task extensions |
 | `Source/Resilience/` | Crash recovery and restart coordination |
 | `Source/Security/` | Security module |
 | `Source/Tracing/` | Structured tracing (dev-log in debug builds) |
 | `Source/Updates/` | Release checking and staged rollout logic |
-| `Source/Vine/` | Vine gRPC client stubs — Air communicates with Mountain via the Vine protocol |
+| `Source/Vine/` | Vine gRPC client stubs - Air communicates with Mountain via the Vine protocol |
 
 ---
 
 ## Responsibilities
 
-- **Update checks** — polling for new releases of Editor.Land and scheduling
+- **Update checks** - polling for new releases of Editor.Land and scheduling
   downloads in the background.
-- **Download management** — fetching release payloads via the `Downloader` and
+- **Download management** - fetching release payloads via the `Downloader` and
   `HTTP` modules so they are available when the user chooses to update, without
   blocking the editor.
-- **Release signing and verification** — verifying the integrity of downloaded
+- **Release signing and verification** - verifying the integrity of downloaded
   releases using the signing infrastructure defined in the Air crate.
-- **CLI interface** — the `CLI` module exposes daemon-control commands
+- **CLI interface** - the `CLI` module exposes daemon-control commands
   (`start`, `stop`, `status`, `update`) for use from a terminal or by platform
   service managers.
-- **Daemon lifecycle management** — PID file creation, checksum-based integrity
+- **Daemon lifecycle management** - PID file creation, checksum-based integrity
   verification, stale PID detection, and atomic lock acquisition with rollback
   on failure. Race conditions are guarded by a Tokio `Mutex`; all file writes
   use atomic temp-file rename to avoid partial state.
-- **Platform-native service integration** — Air generates and installs its own
+- **Platform-native service integration** - Air generates and installs its own
   service descriptor on each supported platform:
-  - **Linux** — systemd unit file with hardened sandbox options
+  - **Linux** - systemd unit file with hardened sandbox options
     (`NoNewPrivileges`, `PrivateTmp`, `ProtectSystem=strict`).
-  - **macOS** — launchd `.plist` with keep-alive, resource limits, and
+  - **macOS** - launchd `.plist` with keep-alive, resource limits, and
     environment variables.
-  - **Windows** — Windows Service Control Manager registration via the SCManager
+  - **Windows** - Windows Service Control Manager registration via the SCManager
     API; the `Air.pid` file is placed at `C:\ProgramData\Air\Air.pid`.
-- **Mountain integration** — the `Source/Mountain/` module handles Air↔Mountain
+- **Mountain integration** - the `Source/Mountain/` module handles Air↔Mountain
   coordination; the `Source/Vine/` module provides the Vine gRPC client stubs
   used for that communication channel.
-- **Health monitoring** — `HealthCheck` and `Metrics` modules report daemon
+- **Health monitoring** - `HealthCheck` and `Metrics` modules report daemon
   status and expose runtime counters for observability.
-- **Authentication and security** — dedicated `Authentication` and `Security`
+- **Authentication and security** - dedicated `Authentication` and `Security`
   modules handle credential management and privilege isolation.
-- **Resilience** — the `Resilience` module provides crash recovery and
+- **Resilience** - the `Resilience` module provides crash recovery and
   restart coordination. The daemon can request its own graceful shutdown and
   clear that request for restart scenarios without losing state.
-- **Tracing and logging** — structured tracing via the `Tracing` and `Logging`
+- **Tracing and logging** - structured tracing via the `Tracing` and `Logging`
   modules; structured dev-log output is enabled in debug builds.
-- **Plugin system** — a `Plugins` module allows extension of Air's background
+- **Plugin system** - a `Plugins` module allows extension of Air's background
   task surface without modifying the core daemon.
-- **Indexing** — an `Indexing` module handles workspace metadata that needs to
+- **Indexing** - an `Indexing` module handles workspace metadata that needs to
   be computed outside of an active editing session.
 
 ---

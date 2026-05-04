@@ -53,8 +53,8 @@ and build tools, that difference reclaims real working memory.
 ## Rust Backend, Not Node.js
 
 Electron applications run backend logic in Node.js. Tauri applications run
-backend logic in Rust. This means Land's native layer — file system access,
-process management, cryptographic operations, network communication — is
+backend logic in Rust. This means Land's native layer - file system access,
+process management, cryptographic operations, network communication - is
 compiled to native code with no garbage collector, no event loop contention,
 and no V8 overhead. The frontend communicates with this backend through
 Tauri's IPC bridge, which Land extends with gRPC via the Vine element for

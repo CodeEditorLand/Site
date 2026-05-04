@@ -19,9 +19,9 @@ palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows) and search for
 
 Land merges settings from three levels in order of increasing precedence:
 
-1. **Default** — built-in defaults shipped with Land.
-2. **User** — the user-level settings file (locate via command palette).
-3. **Workspace** — a settings file in the workspace root. Land reads
+1. **Default** - built-in defaults shipped with Land.
+2. **User** - the user-level settings file (locate via command palette).
+3. **Workspace** - a settings file in the workspace root. Land reads
    `.vscode/settings.json` for compatibility with existing VS Code workspaces.
 
 ---
@@ -92,7 +92,7 @@ UI for browsing and installing themes is not yet implemented.
 
 To create a custom theme, follow the
 [VS Code color theme reference](https://code.visualstudio.com/api/references/theme-color)
-— the token format is identical. Use the command palette to locate the
+- the token format is identical. Use the command palette to locate the
 themes directory on your system, as exact paths vary by platform and build
 profile.
 
