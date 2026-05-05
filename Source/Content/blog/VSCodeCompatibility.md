@@ -58,18 +58,17 @@ Some VS Code APIs depend on Electron internals that do not exist in Tauri:
   minor adjustments.
 - **Notebook API** - Not yet implemented. Extensions using `NotebookSerializer`
   or custom notebook renderers compile against Cocoon's stubs but their notebook
-  features do not activate at runtime. Standard non-notebook features of the same
-  extension continue to work.
+  features do not activate at runtime. Standard non-notebook features of the
+  same extension continue to work.
 
 ## Marketplace Integration
 
 Land is designed to consume extensions from multiple sources. The in-editor
-browsing and install UI is currently in active development. Today you can install
-extensions by:
+browsing and install UI is currently in active development. Today you can
+install extensions by:
 
-1. **Local `.vsix` files** - Install via the command palette
-   (**Extensions: Install from VSIX**) or by placing the file in the extensions
-   directory.
+1. **Local `.vsix` files** - Install via the command palette (**Extensions:
+   Install from VSIX**) or by placing the file in the extensions directory.
 2. **Open VSX Registry** - The planned default marketplace, fully open source.
    Registry browsing from inside the editor is under development.
 3. **Self-hosted registry** - Organizations can configure a private registry for

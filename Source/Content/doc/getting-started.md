@@ -7,23 +7,23 @@ description: "How to build and run Editor.Land from source on macOS or Windows."
 
 # Getting Started
 
-Editor.Land is in active development and is currently source-only. There are
-no pre-built installers or package manager releases yet. The supported way to
-run the editor today is to build from source on **macOS or Windows**.
+Editor.Land is in active development and is currently source-only. There are no
+pre-built installers or package manager releases yet. The supported way to run
+the editor today is to build from source on **macOS or Windows**.
 
 ---
 
 ## What Works Today
 
-On Apple Silicon or Intel macOS (13.0 Ventura or later) and on Windows 10/11,
-a successful build produces a working editor that:
+On Apple Silicon or Intel macOS (13.0 Ventura or later) and on Windows 10/11, a
+successful build produces a working editor that:
 
-- Opens a native window with the workbench UI (WKWebView on macOS, WebView2
-  on Windows).
+- Opens a native window with the workbench UI (WKWebView on macOS, WebView2 on
+  Windows).
 - Loads VS Code extensions from disk and activates them through Cocoon, the
   Node.js extension host.
-- Provides file system, terminal, and debug adapter access through Mountain,
-  the Rust kernel.
+- Provides file system, terminal, and debug adapter access through Mountain, the
+  Rust kernel.
 - Runs the full gRPC-based IPC stack between Mountain and Cocoon via Vine.
 
 The following are **in progress**: a Homebrew tap, a winget package, an apt
@@ -40,8 +40,8 @@ All of the following must be installed before building:
 - **pnpm** 9 or later (`npm install -g pnpm`)
 - **macOS:** Xcode Command Line Tools (`xcode-select --install`), macOS 13.0
   (Ventura) or later
-- **Windows:** WebView2 Runtime (included with Windows 11; available
-  separately for Windows 10), Visual Studio Build Tools with the C++ workload
+- **Windows:** WebView2 Runtime (included with Windows 11; available separately
+  for Windows 10), Visual Studio Build Tools with the C++ workload
 
 ---
 
@@ -66,11 +66,11 @@ Cargo's incremental compilation.
 
 ## Extension Loading
 
-Cocoon discovers extensions from the filesystem at startup. The exact
-extension discovery path in the current build has not been independently
-confirmed to match VS Code's `~/.vscode/extensions` directory exactly.
-If an extension you expect to appear does not load, check the Cocoon
-output channel in the editor's Output panel for activation errors.
+Cocoon discovers extensions from the filesystem at startup. The exact extension
+discovery path in the current build has not been independently confirmed to
+match VS Code's `~/.vscode/extensions` directory exactly. If an extension you
+expect to appear does not load, check the Cocoon output channel in the editor's
+Output panel for activation errors.
 
 ---
 
@@ -78,11 +78,11 @@ output channel in the editor's Output panel for activation errors.
 
 - **Linux not yet supported.** Linux (WebKitGTK) is planned and in progress.
 - **No marketplace integration.** Extensions must be installed manually as
-  `.vsix` files or sourced from disk. Marketplace API access is not
-  yet implemented.
+  `.vsix` files or sourced from disk. Marketplace API access is not yet
+  implemented.
 - **API gaps.** `vscode.lm.*`, `vscode.chat.*`, `vscode.notebook.*`, and
-  `vscode.tests.*` are not implemented. Extensions using these APIs activate
-  but the specific features silently no-op.
+  `vscode.tests.*` are not implemented. Extensions using these APIs activate but
+  the specific features silently no-op.
 
 ---
 

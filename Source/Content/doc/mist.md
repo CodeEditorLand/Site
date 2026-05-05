@@ -2,15 +2,16 @@
 title: "Mist"
 section: "Element"
 order: 20
-description: "The DNS sandbox that resolves *.editor.land locally, eliminating public DNS dependency."
+description:
+    "The DNS sandbox that resolves *.editor.land locally, eliminating public DNS
+    dependency."
 ---
 
 # Mist
 
-Mist is the local DNS layer for Editor.Land. It resolves every
-`*.editor.land` domain to `127.0.0.1` so that all editor-internal service
-communication happens over loopback - no packet leaves the network interface
-for editor traffic.
+Mist is the local DNS layer for Editor.Land. It resolves every `*.editor.land`
+domain to `127.0.0.1` so that all editor-internal service communication happens
+over loopback - no packet leaves the network interface for editor traffic.
 
 Mist is implemented in Rust and in active development. The DNS server
 (`Server.rs`), zone resolver (`Resolver.rs`), zone authority (`Zone.rs`),
@@ -36,24 +37,24 @@ stutters while waiting.
 ## How Mist Works
 
 Mist intercepts all DNS queries for the `*.editor.land` zone before they reach
-the system resolver. Every query resolves instantly to `127.0.0.1`. The
-editor's internal services communicate over loopback.
+the system resolver. Every query resolves instantly to `127.0.0.1`. The editor's
+internal services communicate over loopback.
 
-For domains outside the `*.editor.land` zone, Mist passes queries through to
-the system resolver unchanged. All other applications behave exactly as before.
+For domains outside the `*.editor.land` zone, Mist passes queries through to the
+system resolver unchanged. All other applications behave exactly as before.
 
 ---
 
 ## Source Structure
 
-| Path | Role |
-|---|---|
-| `Source/Server.rs` | DNS server - listens for queries and dispatches to resolver (~5.8 KB) |
-| `Source/Resolver.rs` | DNS resolver - zone lookup and response construction (~2 KB) |
-| `Source/Zone.rs` | Zone authority - `*.editor.land` zone definitions (~3.5 KB) |
-| `Source/ForwardSecurity.rs` | Forward security for pass-through queries (~1.2 KB) |
-| `Source/lib.rs` | Crate root re-exports (~5.6 KB) |
-| `tests/` | Integration tests |
+| Path                        | Role                                                                  |
+| --------------------------- | --------------------------------------------------------------------- |
+| `Source/Server.rs`          | DNS server - listens for queries and dispatches to resolver (~5.8 KB) |
+| `Source/Resolver.rs`        | DNS resolver - zone lookup and response construction (~2 KB)          |
+| `Source/Zone.rs`            | Zone authority - `*.editor.land` zone definitions (~3.5 KB)           |
+| `Source/ForwardSecurity.rs` | Forward security for pass-through queries (~1.2 KB)                   |
+| `Source/lib.rs`             | Crate root re-exports (~5.6 KB)                                       |
+| `tests/`                    | Integration tests                                                     |
 
 ---
 

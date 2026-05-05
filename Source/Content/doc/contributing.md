@@ -2,7 +2,8 @@
 title: "Contributing"
 section: "Community"
 order: 9
-description: "How to contribute code, documentation, or translations to Editor.Land."
+description:
+    "How to contribute code, documentation, or translations to Editor.Land."
 ---
 
 # Contributing to Editor.Land
@@ -18,34 +19,34 @@ on GitHub.
 
 1. **Fork and clone** the repository with submodules:
 
-   ```bash
-   git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git
-   cd Land
-   ```
+    ```bash
+    git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git
+    cd Land
+    ```
 
 2. **Install Node.js dependencies:**
 
-   ```bash
-   pnpm install
-   ```
+    ```bash
+    pnpm install
+    ```
 
 3. **Start the development build:**
 
-   ```bash
-   cargo tauri dev
-   ```
+    ```bash
+    cargo tauri dev
+    ```
 
-   This compiles Mountain and opens the editor window. The first run downloads
-   and compiles Rust dependencies from scratch - allow a few minutes on a fresh
-   checkout. Subsequent builds use Cargo's incremental compilation cache and
-   are significantly faster.
+    This compiles Mountain and opens the editor window. The first run downloads
+    and compiles Rust dependencies from scratch - allow a few minutes on a fresh
+    checkout. Subsequent builds use Cargo's incremental compilation cache and
+    are significantly faster.
 
 4. **Create a branch** from `Current` and make your changes. The project uses
    PascalCase naming for files, identifiers, and settings keys throughout the
    codebase.
 
-5. **Open a pull request** against the `Current` branch with a clear
-   description of what changed and why.
+5. **Open a pull request** against the `Current` branch with a clear description
+   of what changed and why.
 
 ---
 
@@ -62,12 +63,12 @@ on GitHub.
 
 ## Submodule Workflow
 
-Each Land element (Mountain, Cocoon, Sky, Wind, Vine, Air, Echo, and others)
-is a separate Git repository referenced as a submodule. When working on a
-specific element:
+Each Land element (Mountain, Cocoon, Sky, Wind, Vine, Air, Echo, and others) is
+a separate Git repository referenced as a submodule. When working on a specific
+element:
 
 ```bash
-cd Land/Mountain   # or whichever element
+cd Land/Mountain # or whichever element
 git checkout -b MyFeatureBranch
 # make changes
 git commit -m "Description"

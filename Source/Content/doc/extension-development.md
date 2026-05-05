@@ -2,16 +2,18 @@
 title: "Extension Development"
 section: "Development"
 order: 7
-description: "Build and test extensions for Editor.Land using the VS Code extension toolchain."
+description:
+    "Build and test extensions for Editor.Land using the VS Code extension
+    toolchain."
 ---
 
 # Extension Development
 
 Editor.Land runs VS Code extensions through Cocoon, the Node.js extension host.
 If you have built a VS Code extension before, the scaffolding, structure,
-TypeScript compilation, and packaging steps are identical. This guide covers
-the workflow from scaffolding to distribution, with clear notes on what is
-confirmed working in Land today versus what is planned.
+TypeScript compilation, and packaging steps are identical. This guide covers the
+workflow from scaffolding to distribution, with clear notes on what is confirmed
+working in Land today versus what is planned.
 
 ---
 
@@ -61,11 +63,11 @@ The `--extensionDevelopmentPath` flag instructs Cocoon to load the extension at
 the specified path in addition to any normally discovered extensions. Whether
 this flag is fully wired through Tauri's CLI argument passing to Cocoon has not
 been independently confirmed. If the flag does not take effect, place the
-extension directory in the location Cocoon discovers extensions from and
-restart the editor.
+extension directory in the location Cocoon discovers extensions from and restart
+the editor.
 
-For TypeScript changes to take effect, run `tsc --watch` in a separate
-terminal alongside `cargo tauri dev`.
+For TypeScript changes to take effect, run `tsc --watch` in a separate terminal
+alongside `cargo tauri dev`.
 
 ---
 
@@ -83,12 +85,12 @@ node --test
 This is the recommended approach for testing pure extension logic (parsers,
 formatters, data transformations).
 
-**Integration tests** that require the editor runtime use `@vscode/test-electron`
-in the VS Code ecosystem. Using this package with Land requires configuring it
-to point at Land's binary rather than VS Code's Electron binary - this
-configuration is not yet documented for Land specifically. Until it is, use unit
-tests for logic and manual testing in the development build for editor
-integration.
+**Integration tests** that require the editor runtime use
+`@vscode/test-electron` in the VS Code ecosystem. Using this package with Land
+requires configuring it to point at Land's binary rather than VS Code's Electron
+binary - this configuration is not yet documented for Land specifically. Until
+it is, use unit tests for logic and manual testing in the development build for
+editor integration.
 
 ---
 
@@ -102,9 +104,9 @@ vsce package
 ```
 
 This produces `MyExtension-0.0.1.vsix`. The `.vsix` format is the same as VS
-Code's. An extension packaged this way can be installed in Land manually via
-the command palette (**Extensions: Install from VSIX**), subject to that
-command being available in the current build.
+Code's. An extension packaged this way can be installed in Land manually via the
+command palette (**Extensions: Install from VSIX**), subject to that command
+being available in the current build.
 
 ---
 
@@ -115,18 +117,18 @@ extensions panel UI and Open VSX Registry browsing are not yet implemented.
 
 Distribution options today:
 
-- **Share the `.vsix` file directly** - users install it via the command
-  palette or by placing it in the extensions directory.
+- **Share the `.vsix` file directly** - users install it via the command palette
+  or by placing it in the extensions directory.
 - **Publish to Open VSX** - the Open VSX Registry
   ([open-vsx.org](https://open-vsx.org)) is the planned default registry for
   Land. Publishing there now means your extension is available when marketplace
   integration is implemented. The publish workflow:
-  ```bash
-  npx ovsx publish MyExtension-0.0.1.vsix -p YOUR_TOKEN
-  ```
-  Publishing to Open VSX does not make the extension available to Land users
-  through any in-editor browser today - there is no in-editor extension
-  browser in the current build.
+    ```bash
+    npx ovsx publish MyExtension-0.0.1.vsix -p YOUR_TOKEN
+    ```
+    Publishing to Open VSX does not make the extension available to Land users
+    through any in-editor browser today - there is no in-editor extension
+    browser in the current build.
 
 ---
 
@@ -142,8 +144,8 @@ extension use today:
 - `vscode.languages` - LSP client via `vscode-languageclient`
 - `vscode.workspace.getConfiguration` - settings read
 
-The following are **not implemented** - extensions using them compile but
-their features silently no-op at runtime:
+The following are **not implemented** - extensions using them compile but their
+features silently no-op at runtime:
 
 - `vscode.lm.*` - language model / Copilot
 - `vscode.chat.*` - chat panel

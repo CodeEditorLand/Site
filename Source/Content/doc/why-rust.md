@@ -2,7 +2,9 @@
 title: "Why Rust"
 section: "Technology"
 order: 26
-description: "Memory safety without garbage collection, native speed, and fearless concurrency."
+description:
+    "Memory safety without garbage collection, native speed, and fearless
+    concurrency."
 ---
 
 # Why Rust
@@ -19,11 +21,11 @@ these guarantees possible at compile time rather than at runtime.
 
 C and C++ editors have historically shipped with entire classes of
 vulnerabilities: buffer overflows, use-after-free, double-free, and dangling
-pointers. Garbage-collected languages like Go or Java eliminate those bugs,
-but they introduce unpredictable pauses. A GC pause of even 10 milliseconds
-is visible to a user who is typing. Rust eliminates both problems. The
-ownership system enforces memory safety at compile time. There is no garbage
-collector to pause the editor, and there are no dangling pointers to crash it.
+pointers. Garbage-collected languages like Go or Java eliminate those bugs, but
+they introduce unpredictable pauses. A GC pause of even 10 milliseconds is
+visible to a user who is typing. Rust eliminates both problems. The ownership
+system enforces memory safety at compile time. There is no garbage collector to
+pause the editor, and there are no dangling pointers to crash it.
 
 ---
 
@@ -43,18 +45,17 @@ compiles, the concurrency is sound. This is what the Rust community calls
 
 Rust compiles to native machine code with no runtime overhead. There is no
 interpreter, no JIT warmup, and no virtual machine. The generated code is
-competitive with hand-tuned C, and in many benchmarks it matches or exceeds
-it due to aliasing guarantees that allow more aggressive optimization.
+competitive with hand-tuned C, and in many benchmarks it matches or exceeds it
+due to aliasing guarantees that allow more aggressive optimization.
 
 ---
 
 ## The Cargo Ecosystem
 
 Rust's package manager, Cargo, provides deterministic builds, integrated
-testing, documentation generation, and access to over 150,000 crates. Land
-uses Cargo workspaces to manage its Rust elements as a single coordinated
-build. Dependencies are pinned, audited, and reproducible across every
-platform.
+testing, documentation generation, and access to over 150,000 crates. Land uses
+Cargo workspaces to manage its Rust elements as a single coordinated build.
+Dependencies are pinned, audited, and reproducible across every platform.
 
 ---
 
@@ -69,23 +70,21 @@ Rust powers the majority of Land's backend:
 - **Echo** provides work-stealing task execution for CPU-bound operations.
 - **Common** defines abstract traits and data transfer objects shared across
   elements.
-- **Vine** implements gRPC protocol definitions for inter-process
-  communication.
-- **Rest** bundles JavaScript using the OXC toolchain, written entirely in
-  Rust.
-- **SideCar** resolves and ships the correct Node.js binary per target triple
-  at compile time, with confirmed builds for macOS, Windows, and Linux.
+- **Vine** implements gRPC protocol definitions for inter-process communication.
+- **Rest** bundles JavaScript using the OXC toolchain, written entirely in Rust.
+- **SideCar** resolves and ships the correct Node.js binary per target triple at
+  compile time, with confirmed builds for macOS, Windows, and Linux.
 - **Grove** hosts WASM extensions in a WASMtime runtime with capability-based
-  security - gRPC protocol, WASMtime host, API surface, and transport layer
-  are implemented and integration with the primary build is in progress.
-- **Mist** provides local DNS resolution for `*.editor.land` - full DNS
-  server (Server.rs, Resolver.rs, Zone.rs, ForwardSecurity.rs) implemented
-  and in active development.
+  security - gRPC protocol, WASMtime host, API surface, and transport layer are
+  implemented and integration with the primary build is in progress.
+- **Mist** provides local DNS resolution for `*.editor.land` - full DNS server
+  (Server.rs, Resolver.rs, Zone.rs, ForwardSecurity.rs) implemented and in
+  active development.
 
-Every element that touches the operating system, processes bytes, or
-coordinates concurrent work is written in Rust. The language is not an
-implementation detail. It is a structural decision that shapes the reliability
-and performance of the entire editor.
+Every element that touches the operating system, processes bytes, or coordinates
+concurrent work is written in Rust. The language is not an implementation
+detail. It is a structural decision that shapes the reliability and performance
+of the entire editor.
 
 ---
 

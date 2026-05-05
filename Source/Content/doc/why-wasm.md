@@ -7,12 +7,11 @@ description: "Capability-based extension isolation enforced by the runtime."
 
 # Why WebAssembly
 
-Extensions are the most dangerous code a code editor runs. They are written
-by third parties, downloaded from registries, and executed with access to the
-user's files and network. The traditional approach is to trust them and hope
-for the best. Land's approach is different: running extensions inside
-WebAssembly, where the runtime itself enforces what each extension can and
-cannot do.
+Extensions are the most dangerous code a code editor runs. They are written by
+third parties, downloaded from registries, and executed with access to the
+user's files and network. The traditional approach is to trust them and hope for
+the best. Land's approach is different: running extensions inside WebAssembly,
+where the runtime itself enforces what each extension can and cannot do.
 
 The [Grove](/Doc/grove) element is Land's WASM extension host. Its WASMtime
 host, gRPC protocol definitions, API surface, and transport layer are
@@ -25,9 +24,9 @@ implemented. Integration with the primary build is in active progress.
 Most extension sandboxes work by checking permissions at API boundaries. The
 extension calls `readFile()`, and the host checks whether the extension has
 file-read permission. This model is fragile. A single missed check, a single
-confused-deputy bug, or a single API that exposes more than intended breaks
-the entire security boundary. The sandbox exists only as long as every API
-call is correctly guarded.
+confused-deputy bug, or a single API that exposes more than intended breaks the
+entire security boundary. The sandbox exists only as long as every API call is
+correctly guarded.
 
 ---
 
@@ -35,9 +34,9 @@ call is correctly guarded.
 
 WebAssembly modules run in a linear memory space that the host allocates. The
 module cannot read or write memory outside that space. This is not a policy
-check. It is enforced by the runtime's memory model. A WASM module cannot
-access the host's heap, cannot read other modules' memory, and cannot execute
-arbitrary system calls. The isolation boundary is structural, not procedural.
+check. It is enforced by the runtime's memory model. A WASM module cannot access
+the host's heap, cannot read other modules' memory, and cannot execute arbitrary
+system calls. The isolation boundary is structural, not procedural.
 
 ---
 
@@ -70,19 +69,18 @@ out-of-memory crash that takes down the editor.
 Beyond memory, Grove enforces CPU time budgets. An extension that enters an
 infinite loop or performs excessive computation is interrupted after its time
 slice expires. This is possible because Wasmtime supports epoch-based
-interruption, which checks execution progress at configurable intervals
-without the overhead of instruction-level metering.
+interruption, which checks execution progress at configurable intervals without
+the overhead of instruction-level metering.
 
 ---
 
 ## Deterministic Behavior
 
-WebAssembly is a deterministic execution environment. Given the same inputs,
-a WASM module produces the same outputs on every platform. This makes
-extensions reproducible and testable. A bug reported on macOS can be
-reproduced on Windows with identical behaviour, because the execution
-semantics are defined by the WASM specification, not by the host operating
-system.
+WebAssembly is a deterministic execution environment. Given the same inputs, a
+WASM module produces the same outputs on every platform. This makes extensions
+reproducible and testable. A bug reported on macOS can be reproduced on Windows
+with identical behaviour, because the execution semantics are defined by the
+WASM specification, not by the host operating system.
 
 ---
 
@@ -90,10 +88,10 @@ system.
 
 Grove complements Cocoon, which runs VS Code extensions in a Node.js process.
 The two hosts serve different needs: Cocoon provides compatibility with the
-existing VS Code extension ecosystem today; Grove provides a secure,
-performant runtime for new extensions that prioritise safety and resource
-isolation. Grove also hosts [Rhai](https://rhai.rs) scripts for lightweight
-automation tasks that do not require the full WASM machinery.
+existing VS Code extension ecosystem today; Grove provides a secure, performant
+runtime for new extensions that prioritise safety and resource isolation. Grove
+also hosts [Rhai](https://rhai.rs) scripts for lightweight automation tasks that
+do not require the full WASM machinery.
 
 ---
 

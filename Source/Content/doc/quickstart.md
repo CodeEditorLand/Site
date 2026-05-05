@@ -2,14 +2,15 @@
 title: "Quickstart"
 section: "Start"
 order: 3
-description: "What you can do after a successful source build on macOS or Windows."
+description:
+    "What you can do after a successful source build on macOS or Windows."
 ---
 
 # Quickstart
 
 This guide describes what is available after a successful `cargo tauri dev`
-build. It covers macOS and Windows, both of which produce a working editor
-from source today.
+build. It covers macOS and Windows, both of which produce a working editor from
+source today.
 
 ---
 
@@ -24,9 +25,9 @@ macOS, WebView2 on Windows. You should see:
 - A command palette accessible via `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P`
   (Windows).
 
-If the window opens but is blank or shows an error, the most common cause is
-a missing or failed submodule. Run `git submodule update --init --recursive`
-from the Land root and rebuild.
+If the window opens but is blank or shows an error, the most common cause is a
+missing or failed submodule. Run `git submodule update --init --recursive` from
+the Land root and rebuild.
 
 ---
 
@@ -35,8 +36,8 @@ from the Land root and rebuild.
 **File > Open Folder** or `Cmd+O` / `Ctrl+O` opens a directory as a workspace.
 This routes through Mountain's file system layer via Tauri IPC.
 
-If you have an existing `.vscode/` directory with workspace settings, Land
-reads it. See [Configuration](/Doc/configuration) for details on supported
+If you have an existing `.vscode/` directory with workspace settings, Land reads
+it. See [Configuration](/Doc/configuration) for details on supported
 configuration keys.
 
 ---
@@ -56,9 +57,9 @@ The following is **in progress**:
 - An Extensions panel with browsing and search UI.
 - Marketplace or Open VSX Registry integration.
 
-If an extension activates but its features do not respond, check the
-**Output** panel (command palette → **View: Toggle Output**) and select
-the extension's output channel. Activation errors appear there.
+If an extension activates but its features do not respond, check the **Output**
+panel (command palette → **View: Toggle Output**) and select the extension's
+output channel. Activation errors appear there.
 
 ---
 
@@ -66,24 +67,24 @@ the extension's output channel. Activation errors appear there.
 
 Land has a fully implemented configuration system backed by Mountain's
 `ConfigurationState` - a thread-safe, merged store covering both global and
-workspace scopes. It supports dotted-path key access
-(e.g. `Editor.FontSize`, `Workbench.ColorTheme`) with nested object writes
-handled by `MergedConfigurationStateDTO`. Memento storage for crash recovery
-is also active for both global and workspace contexts.
+workspace scopes. It supports dotted-path key access (e.g. `Editor.FontSize`,
+`Workbench.ColorTheme`) with nested object writes handled by
+`MergedConfigurationStateDTO`. Memento storage for crash recovery is also active
+for both global and workspace contexts.
 
-Open the command palette and search for **Preferences: Open Settings** to
-locate and edit the active settings file. The settings format is JSON,
-compatible with VS Code's `settings.json` structure.
+Open the command palette and search for **Preferences: Open Settings** to locate
+and edit the active settings file. The settings format is JSON, compatible with
+VS Code's `settings.json` structure.
 
 ---
 
 ## Terminal
 
 The integrated terminal is backed by Mountain's pty layer. Open it with
-`` Cmd+` `` (macOS) or `` Ctrl+` `` (Windows). This routes a spawn call
-through Vine gRPC to Mountain, which creates a native pty. The terminal is
-one of the most reliable features in the current build, mapping directly to
-verified Vine service definitions.
+`` Cmd+` `` (macOS) or `` Ctrl+` `` (Windows). This routes a spawn call through
+Vine gRPC to Mountain, which creates a native pty. The terminal is one of the
+most reliable features in the current build, mapping directly to verified Vine
+service definitions.
 
 ---
 
@@ -95,15 +96,15 @@ from the command palette to run configured tasks. The standard
 
 ```json
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "Build",
-      "type": "shell",
-      "command": "cargo build",
-      "group": "build"
-    }
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build",
+			"type": "shell",
+			"command": "cargo build",
+			"group": "build"
+		}
+	]
 }
 ```
 

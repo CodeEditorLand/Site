@@ -2,15 +2,17 @@
 title: "API Reference"
 section: "Development"
 order: 8
-description: "VS Code extension API coverage in Editor.Land: what works, what no-ops, and what is not yet implemented."
+description:
+    "VS Code extension API coverage in Editor.Land: what works, what no-ops, and
+    what is not yet implemented."
 ---
 
 # API Reference
 
 Editor.Land implements the VS Code extension API through Cocoon, the Node.js
 extension host. Extensions written against `@types/vscode` compile against
-Cocoon's stubs without modification. Whether they run correctly depends on
-which API surfaces they use.
+Cocoon's stubs without modification. Whether they run correctly depends on which
+API surfaces they use.
 
 ---
 
@@ -21,30 +23,29 @@ The API surface is divided into three categories:
 **Implemented** - The API is active in the `debug-mountain` profile. Extensions
 using it behave as expected.
 
-**Partial** - The API is present and callable but not all methods or
-behaviours are implemented. Some calls may silently no-op or return empty
-results.
+**Partial** - The API is present and callable but not all methods or behaviours
+are implemented. Some calls may silently no-op or return empty results.
 
-**Not implemented** - The namespace exists in Cocoon's type stubs so
-extensions compile, but the runtime calls do nothing. Extensions that depend
-on these APIs activate but their features do not work.
+**Not implemented** - The namespace exists in Cocoon's type stubs so extensions
+compile, but the runtime calls do nothing. Extensions that depend on these APIs
+activate but their features do not work.
 
-| Namespace | Status | Notes |
-|---|---|---|
-| `vscode.commands` | Implemented | Register, execute, command palette |
-| `vscode.workspace.fs` | Implemented | Routes through Mountain's FS layer via Vine |
-| `vscode.window.createTerminal` | Implemented | Routes through Mountain's pty layer via Vine |
-| `vscode.debug` | Implemented | DAP bridge in Mountain, routes via Vine |
-| `vscode.languages` | Implemented | LSP client via `vscode-languageclient` |
-| `vscode.workspace.getConfiguration` | Implemented | Reads workspace and user settings |
-| `vscode.window` (core) | Partial | showInformationMessage, createWebviewPanel, registerTreeDataProvider work; some view APIs unconfirmed |
-| `vscode.window.createTreeView` | Partial | Tree data provider registration works; inline actions and welcome content unconfirmed |
-| `vscode.tasks` | Partial | Task definition reading works; full task runner execution unconfirmed |
-| `vscode.extensions` | Partial | getExtension and activate work; some metadata fields unconfirmed |
-| `vscode.lm` | Not implemented | Language model / Copilot APIs - no-op |
-| `vscode.chat` | Not implemented | Chat panel APIs - no-op |
-| `vscode.notebook` | Not implemented | Notebook document and editor APIs - no-op |
-| `vscode.tests` | Not implemented | Test explorer and runner APIs - no-op |
+| Namespace                           | Status          | Notes                                                                                                 |
+| ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------- |
+| `vscode.commands`                   | Implemented     | Register, execute, command palette                                                                    |
+| `vscode.workspace.fs`               | Implemented     | Routes through Mountain's FS layer via Vine                                                           |
+| `vscode.window.createTerminal`      | Implemented     | Routes through Mountain's pty layer via Vine                                                          |
+| `vscode.debug`                      | Implemented     | DAP bridge in Mountain, routes via Vine                                                               |
+| `vscode.languages`                  | Implemented     | LSP client via `vscode-languageclient`                                                                |
+| `vscode.workspace.getConfiguration` | Implemented     | Reads workspace and user settings                                                                     |
+| `vscode.window` (core)              | Partial         | showInformationMessage, createWebviewPanel, registerTreeDataProvider work; some view APIs unconfirmed |
+| `vscode.window.createTreeView`      | Partial         | Tree data provider registration works; inline actions and welcome content unconfirmed                 |
+| `vscode.tasks`                      | Partial         | Task definition reading works; full task runner execution unconfirmed                                 |
+| `vscode.extensions`                 | Partial         | getExtension and activate work; some metadata fields unconfirmed                                      |
+| `vscode.lm`                         | Not implemented | Language model / Copilot APIs - no-op                                                                 |
+| `vscode.chat`                       | Not implemented | Chat panel APIs - no-op                                                                               |
+| `vscode.notebook`                   | Not implemented | Notebook document and editor APIs - no-op                                                             |
+| `vscode.tests`                      | Not implemented | Test explorer and runner APIs - no-op                                                                 |
 
 ---
 
@@ -54,10 +55,10 @@ Register a command with `vscode.commands.registerCommand`:
 
 ```typescript
 const Disposable = vscode.commands.registerCommand(
-  "MyExtension.SayHello",
-  () => {
-    vscode.window.showInformationMessage("Hello from Land!");
-  },
+	"MyExtension.SayHello",
+	() => {
+		vscode.window.showInformationMessage("Hello from Land!");
+	},
 );
 ```
 
@@ -88,10 +89,10 @@ Declare keybindings in `contributes.keybindings`:
 
 ```json
 {
-  "command": "MyExtension.SayHello",
-  "key": "ctrl+shift+h",
-  "mac": "cmd+shift+h",
-  "when": "editorTextFocus"
+	"command": "MyExtension.SayHello",
+	"key": "ctrl+shift+h",
+	"mac": "cmd+shift+h",
+	"when": "editorTextFocus"
 }
 ```
 
@@ -106,8 +107,8 @@ Register a tree view provider:
 
 ```typescript
 vscode.window.registerTreeDataProvider(
-  "MyExtension.TreeView",
-  MyTreeDataProvider,
+	"MyExtension.TreeView",
+	MyTreeDataProvider,
 );
 ```
 
@@ -123,10 +124,10 @@ Create HTML-based UI panels:
 
 ```typescript
 const Panel = vscode.window.createWebviewPanel(
-  "MyExtension.Preview",
-  "Preview",
-  vscode.ViewColumn.Beside,
-  { enableScripts: true },
+	"MyExtension.Preview",
+	"Preview",
+	vscode.ViewColumn.Beside,
+	{ enableScripts: true },
 );
 
 Panel.webview.html = "<html><body><h1>Preview</h1></body></html>";
@@ -150,24 +151,24 @@ API surfaces.
 
 ## Rust API Documentation
 
-Generated `rustdoc` output is planned for the Rust crates listed below. The
-URLs follow the pattern `https://Rust.Documentation.*.Editor.Land` - these
-may not yet resolve to hosted documentation. Check the
-[source repositories](https://github.com/CodeEditorLand) directly if the
-links are unavailable.
+Generated `rustdoc` output is planned for the Rust crates listed below. The URLs
+follow the pattern `https://Rust.Documentation.*.Editor.Land` - these may not
+yet resolve to hosted documentation. Check the
+[source repositories](https://github.com/CodeEditorLand) directly if the links
+are unavailable.
 
-| Crate | Description | Element |
-|---|---|---|
-| `Mountain` | Tauri native kernel | [Mountain](/Doc/mountain) |
-| `Echo` | Work-stealing task scheduler | [Echo](/Doc/echo) |
-| `Common` | Shared IPC event type definitions | [Architecture](/Doc/architecture) |
-| `CommonLibrary` | Shared utility functions | [Architecture](/Doc/architecture) |
-| `Air` | Background update daemon | [Air](/Doc/air) |
-| `AirLibrary` | Air shared library | [Air](/Doc/air) |
-| `Download` | Binary download logic | [Air](/Doc/air) |
-| `SideCar` | Pre-built Node.js binaries | [Architecture](/Doc/architecture) |
-| `Maintain` | Build orchestrator | [Contributing](/Doc/contributing) |
-| `Grove` | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](/Doc/grove) |
+| Crate           | Description                                                                                                                             | Element                           |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](/Doc/mountain)         |
+| `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](/Doc/echo)                 |
+| `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](/Doc/architecture) |
+| `CommonLibrary` | Shared utility functions                                                                                                                | [Architecture](/Doc/architecture) |
+| `Air`           | Background update daemon                                                                                                                | [Air](/Doc/air)                   |
+| `AirLibrary`    | Air shared library                                                                                                                      | [Air](/Doc/air)                   |
+| `Download`      | Binary download logic                                                                                                                   | [Air](/Doc/air)                   |
+| `SideCar`       | Pre-built Node.js binaries                                                                                                              | [Architecture](/Doc/architecture) |
+| `Maintain`      | Build orchestrator                                                                                                                      | [Contributing](/Doc/contributing) |
+| `Grove`         | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](/Doc/grove)               |
 
 ---
 

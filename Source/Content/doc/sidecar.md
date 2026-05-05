@@ -2,22 +2,23 @@
 title: "SideCar"
 section: "Element"
 order: 23
-description: "Cross-platform Node.js binary distribution compiled per target triple."
+description:
+    "Cross-platform Node.js binary distribution compiled per target triple."
 ---
 
 # SideCar
 
-SideCar packages the correct Node.js binary for each target platform at
-compile time - no runtime detection, no fallback chains. The binary that
-ships is the binary that runs.
+SideCar packages the correct Node.js binary for each target platform at compile
+time - no runtime detection, no fallback chains. The binary that ships is the
+binary that runs.
 
 ---
 
 ## The Problem
 
-VS Code ships a single Node.js binary and detects the platform at runtime.
-A chain of fallback logic handles architecture mismatches, Rosetta translation
-on Apple Silicon, musl versus glibc on Linux, and missing shared libraries on
+VS Code ships a single Node.js binary and detects the platform at runtime. A
+chain of fallback logic handles architecture mismatches, Rosetta translation on
+Apple Silicon, musl versus glibc on Linux, and missing shared libraries on
 minimal containers.
 
 When the detection works, it works silently. When it fails, the error messages
@@ -42,28 +43,28 @@ The runtime code contains no platform detection logic.
 All four target triple directories are confirmed present in the
 [SideCar repository](https://github.com/CodeEditorLand/SideCar):
 
-| Triple | Platform |
-|---|---|
-| `aarch64-apple-darwin` | Apple Silicon macOS |
-| `x86_64-apple-darwin` | Intel macOS |
-| `aarch64-unknown-linux-gnu` | ARM64 Linux (glibc) |
-| `x86_64-unknown-linux-gnu` | x86-64 Linux (glibc) |
-| `x86_64-pc-windows-msvc` | Windows 10/11 (MSVC) |
+| Triple                      | Platform             |
+| --------------------------- | -------------------- |
+| `aarch64-apple-darwin`      | Apple Silicon macOS  |
+| `x86_64-apple-darwin`       | Intel macOS          |
+| `aarch64-unknown-linux-gnu` | ARM64 Linux (glibc)  |
+| `x86_64-unknown-linux-gnu`  | x86-64 Linux (glibc) |
+| `x86_64-pc-windows-msvc`    | Windows 10/11 (MSVC) |
 
 ---
 
 ## Source Structure
 
-| Path | Role |
-|---|---|
-| `Source/Download.rs` | Node.js binary download, checksum verification (~25 KB) |
-| `Source/Spawn.rs` | Binary spawn and process management |
-| `Source/Library.rs` | Crate root re-exports |
-| `Source/main.rs` | Entry point |
-| `Source/Source/` | Sub-modules |
-| `Cache.json` | Cached binary metadata per target triple |
-| `build.rs` | Cargo build script - target triple resolution at compile time |
-| `Resource/` | Bundled resources |
+| Path                 | Role                                                          |
+| -------------------- | ------------------------------------------------------------- |
+| `Source/Download.rs` | Node.js binary download, checksum verification (~25 KB)       |
+| `Source/Spawn.rs`    | Binary spawn and process management                           |
+| `Source/Library.rs`  | Crate root re-exports                                         |
+| `Source/main.rs`     | Entry point                                                   |
+| `Source/Source/`     | Sub-modules                                                   |
+| `Cache.json`         | Cached binary metadata per target triple                      |
+| `build.rs`           | Cargo build script - target triple resolution at compile time |
+| `Resource/`          | Bundled resources                                             |
 
 ---
 
@@ -79,8 +80,8 @@ editors.
 
 ## In Progress
 
-- `x86_64-unknown-linux-musl` (Alpine/musl Linux) triple is not yet in the
-  build matrix.
+- `x86_64-unknown-linux-musl` (Alpine/musl Linux) triple is not yet in the build
+  matrix.
 - Full integration test coverage across all five current triples.
 
 ---

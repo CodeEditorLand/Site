@@ -39,8 +39,8 @@ each platform.
 
 Extensions are installed to a local extensions directory (or the existing
 `~/.vscode/extensions/` directory for compatibility with existing VS Code
-installs). The extension marketplace can be self-hosted. Land does not phone home
-to verify extension licenses or collect telemetry on extension usage.
+installs). The extension marketplace can be self-hosted. Land does not phone
+home to verify extension licenses or collect telemetry on extension usage.
 
 ### Telemetry
 
@@ -54,8 +54,8 @@ The **Air** element provides optional peer-to-peer synchronization through the
 Air Daemon. Air uses mDNS discovery on the local network to find other Land
 instances without requiring a central server. When two machines connect:
 
-1. **Delta sync** - only changed files transfer, using content-addressed
-   hashing (BLAKE3).
+1. **Delta sync** - only changed files transfer, using content-addressed hashing
+   (BLAKE3).
 2. **Conflict resolution** - last-write-wins by default, with a merge UI for
    manual resolution.
 3. **Encryption** - all sync traffic is encrypted with NaCl (libsodium)

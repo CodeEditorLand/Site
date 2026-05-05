@@ -2,7 +2,8 @@
 title: "Configuration"
 section: "Usage"
 order: 6
-description: "Settings, keybindings, themes, and language configuration in Editor.Land."
+description:
+    "Settings, keybindings, themes, and language configuration in Editor.Land."
 ---
 
 # Configuration
@@ -38,18 +39,18 @@ keys to be safe.
 
 ```json
 {
-  "Editor.FontFamily": "'JetBrains Mono', monospace",
-  "Editor.FontSize": 14,
-  "Editor.TabSize": 4,
-  "Editor.InsertSpaces": false,
-  "Editor.FormatOnSave": true,
-  "Editor.WordWrap": "on",
-  "Editor.Minimap.Enabled": false,
-  "Files.AutoSave": "afterDelay",
-  "Files.AutoSaveDelay": 1000,
-  "Terminal.Integrated.FontSize": 13,
-  "Workbench.ColorTheme": "Default Dark+",
-  "Workbench.IconTheme": "Default File Icons"
+	"Editor.FontFamily": "'JetBrains Mono', monospace",
+	"Editor.FontSize": 14,
+	"Editor.TabSize": 4,
+	"Editor.InsertSpaces": false,
+	"Editor.FormatOnSave": true,
+	"Editor.WordWrap": "on",
+	"Editor.Minimap.Enabled": false,
+	"Files.AutoSave": "afterDelay",
+	"Files.AutoSaveDelay": 1000,
+	"Terminal.Integrated.FontSize": 13,
+	"Workbench.ColorTheme": "Default Dark+",
+	"Workbench.IconTheme": "Default File Icons"
 }
 ```
 
@@ -58,43 +59,43 @@ keys to be safe.
 ## Keybindings
 
 Open the keybindings file via **Preferences: Open Keyboard Shortcuts (JSON)**
-from the command palette. Each entry is a JSON object with `key`, `command`,
-and an optional `when` clause:
+from the command palette. Each entry is a JSON object with `key`, `command`, and
+an optional `when` clause:
 
 ```json
 [
-  {
-    "key": "ctrl+shift+f",
-    "command": "Workbench.Action.FindInFiles"
-  },
-  {
-    "key": "ctrl+b",
-    "command": "Workbench.Action.ToggleSidebarVisibility"
-  },
-  {
-    "key": "ctrl+`",
-    "command": "Workbench.Action.Terminal.ToggleTerminal"
-  }
+	{
+		"key": "ctrl+shift+f",
+		"command": "Workbench.Action.FindInFiles"
+	},
+	{
+		"key": "ctrl+b",
+		"command": "Workbench.Action.ToggleSidebarVisibility"
+	},
+	{
+		"key": "ctrl+`",
+		"command": "Workbench.Action.Terminal.ToggleTerminal"
+	}
 ]
 ```
 
-Use `cmd` instead of `ctrl` on macOS. The `when` clause uses the same
-context key syntax as VS Code (e.g. `"when": "editorTextFocus"`).
+Use `cmd` instead of `ctrl` on macOS. The `when` clause uses the same context
+key syntax as VS Code (e.g. `"when": "editorTextFocus"`).
 
 ---
 
 ## Themes
 
 Land supports VS Code color themes without modification. Install a theme by
-placing its `.vsix` file in the extensions directory and installing it via
-the command palette (**Extensions: Install from VSIX**). The extensions panel
-UI for browsing and installing themes is not yet implemented.
+placing its `.vsix` file in the extensions directory and installing it via the
+command palette (**Extensions: Install from VSIX**). The extensions panel UI for
+browsing and installing themes is not yet implemented.
 
 To create a custom theme, follow the
 [VS Code color theme reference](https://code.visualstudio.com/api/references/theme-color)
-- the token format is identical. Use the command palette to locate the
-themes directory on your system, as exact paths vary by platform and build
-profile.
+
+- the token format is identical. Use the command palette to locate the themes
+  directory on your system, as exact paths vary by platform and build profile.
 
 ---
 
@@ -104,15 +105,15 @@ Language-specific overrides use a language identifier key:
 
 ```json
 {
-  "[rust]": {
-    "Editor.TabSize": 4,
-    "Editor.FormatOnSave": true,
-    "Editor.DefaultFormatter": "rust-lang.rust-analyzer"
-  },
-  "[typescript]": {
-    "Editor.TabSize": 4,
-    "Editor.DefaultFormatter": "biomejs.biome"
-  }
+	"[rust]": {
+		"Editor.TabSize": 4,
+		"Editor.FormatOnSave": true,
+		"Editor.DefaultFormatter": "rust-lang.rust-analyzer"
+	},
+	"[typescript]": {
+		"Editor.TabSize": 4,
+		"Editor.DefaultFormatter": "biomejs.biome"
+	}
 }
 ```
 
@@ -126,11 +127,11 @@ This syntax is the same as VS Code's language-specific settings.
   extensions directory, and themes directory paths depend on the build profile
   and platform. Use the command palette to locate them rather than hardcoding
   paths.
-- **JSON Schema validation** of unrecognised keys (producing warnings) is
-  a planned feature of the Wind configuration service and is not confirmed
-  as active in the current build.
-- **Linux** is not yet a supported platform. Configuration on Linux has not
-  been tested.
+- **JSON Schema validation** of unrecognised keys (producing warnings) is a
+  planned feature of the Wind configuration service and is not confirmed as
+  active in the current build.
+- **Linux** is not yet a supported platform. Configuration on Linux has not been
+  tested.
 
 ---
 
