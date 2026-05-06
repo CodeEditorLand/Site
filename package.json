@@ -78,7 +78,7 @@
 		"clsx": "2.1.1",
 		"cmdk": "1.1.1",
 		"cssnano": "7.1.9",
-		"cssnano-preset-advanced": "7.0.16",
+		"cssnano-preset-advanced": "8.0.0",
 		"dotenv": "17.4.2",
 		"embla-carousel-react": "8.6.0",
 		"firebase": "12.12.1",
