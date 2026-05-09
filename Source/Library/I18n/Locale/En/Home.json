@@ -31,7 +31,7 @@
 		"title": "VS Code. Without Electron."
 	},
 	"hero": {
-		"badge": "No Electron   No Restart to Update   CC0",
+		"badge": "No Electron No Chromium CC0",
 		"subtitle": "VS Code runs on Electron. That means Chromium, Node.js, and a gigabyte of RAM just to open a file.\n\nLand replaces the entire Electron stack with Rust, Tauri, and Effect-TS. The difference is felt on first launch.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",

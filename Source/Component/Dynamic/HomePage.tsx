@@ -29,7 +29,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Hero: {
 			Badge: {
 				Text: T("home:hero.badge", {
-					defaultValue: "No Electron   No Restart to Update   CC0",
+					defaultValue: "No Electron   No Chromium   CC0",
 				}),
 				Variant: "secondary",
 			},
