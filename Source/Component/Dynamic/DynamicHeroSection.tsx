@@ -144,7 +144,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start overflow-hidden pb-8 pt-16 lg:min-h-[200dvh] lg:items-center lg:pb-0 lg:pt-24 ${ClassName || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start overflow-hidden pb-12 pt-20 lg:min-h-[200dvh] lg:items-center lg:pb-0 lg:pt-32 ${ClassName || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -159,12 +159,12 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				{Content.Badge && (
 					<DynamicBadge
 						Content={Content.Badge}
-						ClassName="StaccatoBadge mb-6"
+						ClassName="StaccatoBadge mb-8"
 					/>
 				)}
 
 				{/* Title:subtle color shift */}
-				<h1 className="StaccatoColorShift mx-auto mb-6 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
+				<h1 className="StaccatoColorShift mx-auto mb-10 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
 					{Title}{" "}
 					{TitleHighlight && (
 						<span className="text-primary">{TitleHighlight}</span>
@@ -172,24 +172,24 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				</h1>
 
 				{/* CTAs:noise-driven button states */}
-				<div className="mb-6 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
+				<div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
 					<DynamicButton Content={PrimaryCTA} />
 					{SecondaryCTA && <DynamicButton Content={SecondaryCTA} />}
 				</div>
 
 				{/* Subtitle:breathing opacity */}
-				<div className="StaccatoBreath mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
+				<div className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
 					<RichText Text={Subtitle} />
 				</div>
 
 				{/* Tech stack section label - accessible, outside aria-hidden */}
-				<p className="mb-5 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+				<p className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
 					Tech Stack
 				</p>
 
 				{/* Tech stack visualization */}
 				<div
-					className="relative mx-auto max-w-5xl px-6 py-8 lg:px-10 lg:py-12"
+					className="relative mx-auto max-w-5xl px-6 py-12 lg:px-10 lg:py-16"
 					aria-hidden="true">
 					{/* Mobile + Tablet: wrap grid */}
 					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">

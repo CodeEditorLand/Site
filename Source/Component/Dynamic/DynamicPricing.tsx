@@ -89,12 +89,12 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 		<section
 			id="pricing"
 			aria-labelledby="PricingHeading"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${
 				ClassName || ""
 			}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mb-16 text-center">
+					<div className="StaccatoBreath mb-20 text-center">
 						{Title && (
 							<h2
 								id="PricingHeading"
@@ -112,7 +112,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+					className="mx-auto grid max-w-4xl grid-cols-1 gap-12 md:grid-cols-2">
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.Id}
@@ -122,7 +122,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									: "border-[var(--Border)]"
 							}`}>
 							{/* ── Card header ───────────────────────────── */}
-							<div className="border-b border-[var(--Border)] p-6">
+							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
 									<div className="mb-2">
 										<span className="StaccatoBadge StaccatoRhythmBeat text-xs font-semibold uppercase tracking-wider text-primary">
@@ -149,7 +149,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							</div>
 
 							{/* ── Card body ─────────────────────────────── */}
-							<div className="flex flex-1 flex-col p-6">
+							<div className="flex flex-1 flex-col p-8">
 								{/* Elements section */}
 								{Tier.Elements && Tier.Elements.length > 0 && (
 									<>

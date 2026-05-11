@@ -257,7 +257,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 	return (
 		<header className="Header sticky top-0 z-50 w-full" role="banner">
 			{/* Primary bar */}
-			<div className="container mx-auto flex h-14 items-center justify-between px-4">
+			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Left: logo always + inline nav on lg+, hamburger on md only */}
 				<div className="flex items-center gap-3">
 					<a
@@ -293,7 +293,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 								<a
 									key={Index}
 									href={Link.Href}
-									className="StaccatoNavLink HeaderSubLink relative flex items-center px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 									{...(Link.Href.startsWith("http")
 										? {
 												target: "_blank",

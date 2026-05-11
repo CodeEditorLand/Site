@@ -38,7 +38,7 @@
 		"@astrojs/react": "5.0.4",
 		"@astrojs/sitemap": "3.7.2",
 		"@auth0/auth0-react": "~2.16.2",
-		"@playform/build": "0.3.1",
+		"@playform/build": "0.3.2",
 		"@playform/compress": "0.2.3",
 		"@playform/inline": "0.1.4",
 		"@radix-ui/react-accordion": "1.2.12",
@@ -82,7 +82,7 @@
 		"dotenv": "17.4.2",
 		"embla-carousel-react": "8.6.0",
 		"firebase": "12.13.0",
-		"i18next": "26.0.10",
+		"i18next": "26.1.0",
 		"input-otp": "1.4.2",
 		"lucide-react": "1.14.0",
 		"next-themes": "0.4.6",
@@ -102,7 +102,7 @@
 		"sass": "1.99.0",
 		"simplex-noise": "4.0.3",
 		"sonner": "2.0.7",
-		"tailwind-merge": "3.5.0",
+		"tailwind-merge": "3.6.0",
 		"typescript": "6.0.3",
 		"ulid": "3.0.2",
 		"vaul": "1.1.2",
@@ -125,8 +125,8 @@
 		"happy-dom": "20.9.0",
 		"jsdom": "29.1.1",
 		"tailwindcss": "3.4.19",
-		"vite": "8.0.11",
-		"vitest": "4.1.5"
+		"vite": "8.0.12",
+		"vitest": "4.1.6"
 	},
 	"packageManager": "pnpm@10.28.2",
 	"publishConfig": {

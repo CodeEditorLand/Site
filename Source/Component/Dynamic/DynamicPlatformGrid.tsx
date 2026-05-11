@@ -274,7 +274,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 		<section
 			id="download"
 			aria-label="Downloads"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${ClassName || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">

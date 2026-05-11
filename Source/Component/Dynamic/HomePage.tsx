@@ -806,7 +806,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicHeroSection Content={Hero} />
 				</ErrorBoundary>
-				<div className="py-12" />
+				<div className="py-20" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -817,7 +817,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicFeatures Content={Features} />
 				</ErrorBoundary>
-				<div className="py-16" />
+				<div className="py-24" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -828,7 +828,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicPricing Content={Pricing} />
 				</ErrorBoundary>
-				<div className="py-16" />
+				<div className="py-24" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -839,7 +839,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicTestimonials Content={Testimonials} />
 				</ErrorBoundary>
-				<div className="py-16" />
+				<div className="py-24" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<SkeletonCard className="min-h-[30dvh]" />

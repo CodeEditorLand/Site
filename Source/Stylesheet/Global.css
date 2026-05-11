@@ -84,7 +84,7 @@ body > astro-island {
 #testimonials,
 #download {
 	content-visibility: auto;
-	contain-intrinsic-block-size: 600px;
+	contain-intrinsic-block-size: 800px;
 }
 
 /* Text Selection Highlighting */

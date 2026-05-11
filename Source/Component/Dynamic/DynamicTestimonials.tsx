@@ -99,10 +99,10 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 		<section
 			id="testimonials"
 			aria-label="Architecture"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-16 ${ClassName || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mb-16 text-center">
+					<div className="StaccatoBreath mb-20 text-center">
 						{Title && (
 							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
 								{Title}
@@ -118,7 +118,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className={`StaccatoMorphGap grid ${ColumnClass[Columns]} mx-auto gap-8`}>
+					className={`StaccatoMorphGap grid ${ColumnClass[Columns]} mx-auto gap-12`}>
 					{Testimonials.map((Testimonial) => {
 						const AccentColor =
 							TestimonialColorMap[Testimonial.Id] ??
@@ -126,7 +126,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						return (
 							<article
 								key={Testimonial.Id}
-								className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-6"
+								className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-8"
 								style={{
 									borderLeftColor: AccentColor,
 									borderLeftWidth: "2px",
