@@ -72,8 +72,9 @@ Rust powers the majority of Land's backend:
   elements.
 - **Vine** implements gRPC protocol definitions for inter-process communication.
 - **Rest** bundles JavaScript using the OXC toolchain, written entirely in Rust.
-- **SideCar** resolves and ships the correct Node.js binary per target triple at
-  compile time, with confirmed builds for macOS, Windows, and Linux.
+- **SideCar** downloads and organizes Node.js binaries per target triple at build
+  time, enabling Cocoon to run with the correct Node.js version on macOS, Windows,
+  and Linux without runtime detection.
 - **Grove** hosts WASM extensions in a WASMtime runtime with capability-based
   security - gRPC protocol, WASMtime host, API surface, and transport layer are
   implemented and integration with the primary build is in progress.
