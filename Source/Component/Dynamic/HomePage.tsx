@@ -108,7 +108,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "6",
 					Title: "Cross-Platform",
 					Tooltip:
-						"One codebase, native on macOS, Windows, and Linux",
+						"One codebase, native on macOS and Windows (Linux in progress)",
 					Colors: [
 						"var(--OSMacOS)",
 						"var(--OSWindows)",

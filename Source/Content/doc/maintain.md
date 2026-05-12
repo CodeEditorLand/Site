@@ -49,8 +49,8 @@ You run a single command and the build either succeeds or fails with a clear,
 actionable error. Build scripts are readable: Rhai's syntax is close to Rust, so
 anyone who can read the application code can read the build logic.
 
-Editor.Land currently builds and runs on **macOS 13+**. Cross-platform build
-support (Linux, Windows) is part of the roadmap but not yet active.
+Editor.Land currently builds and runs on **macOS 13+** and **Windows 10/11**.
+Linux (WebKitGTK) build support is part of the roadmap but not yet active.
 
 ---
 
