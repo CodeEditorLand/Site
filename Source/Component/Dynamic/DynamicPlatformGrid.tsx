@@ -389,7 +389,9 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 														</p>
 													)}
 													{Platform.Signature && (
-														<p>PGP Signed: ✓</p>
+														<p>
+															Signature: available
+														</p>
 													)}
 												</div>
 											),

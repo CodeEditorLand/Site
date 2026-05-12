@@ -8,7 +8,7 @@ import type Property from "./Interface/Property/Information/Verification.js";
 
 /**
  * Dynamic VerificationInfo component for displaying binary verification info
- * Shows SHA-256 checksums and PGP signatures with copy functionality
+ * Shows SHA-256 checksums and release signatures with copy functionality
  */
 const DynamicVerificationInfo = ({
 	Content,
@@ -86,7 +86,7 @@ const DynamicVerificationInfo = ({
 					<div className="flex items-center">
 						<span className="font-semibold">
 							{T("labels.pgpSignature", {
-								defaultValue: "PGP Signature",
+								defaultValue: "Release Signature",
 							})}
 						</span>
 						{"\u2001"}
@@ -102,12 +102,12 @@ const DynamicVerificationInfo = ({
 						<button
 							type="button"
 							className="border border-[var(--Border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
-							aria-label="Copy PGP signature to clipboard"
+							aria-label="Copy release signature to clipboard"
 							onClick={() =>
 								CopyToClipboard(
 									Information.PGPSignature || "",
 									T("labels.pgpSignature", {
-										defaultValue: "PGP signature",
+										defaultValue: "release signature",
 									}),
 								)
 							}>

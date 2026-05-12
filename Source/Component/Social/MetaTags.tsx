@@ -26,7 +26,7 @@ export default ({
 	const SafeTitle = title || siteName;
 	const SafeDescription =
 		description ||
-		"No Electron. No Chromium. Every extension runs unchanged.";
+		"Rust and Tauri editor stack with VS Code API compatibility in progress.";
 
 	const BaseURL = "https://editor.land";
 	const SiteURL = url.startsWith("http")

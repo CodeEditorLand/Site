@@ -3,76 +3,60 @@ title: "Grove"
 section: "Element"
 order: 18
 description:
-    "The WASMtime and Rhai extension sandbox - capability-based security for
+    "The Wasmtime extension-host path - capability-based security for
     Editor.Land extensions."
 ---
 
 # Grove
 
-Grove is the WebAssembly and Rhai extension host for Editor.Land. Where Cocoon
-runs VS Code extensions in a Node.js process, Grove runs extensions compiled to
-WebAssembly (inside WASMtime) or written in [Rhai](https://rhai.rs) script -
-both with capability-based security, so that an extension can only touch
-resources explicitly granted to it at the runtime level.
+Grove is the WebAssembly extension-host path for Editor.Land. Where Cocoon runs
+VS Code extensions in a Node.js process, Grove contains a Wasmtime-backed path
+for extensions compiled to WebAssembly with capability-oriented boundaries.
 
-Grove is in active development. The gRPC protocol definitions (`Proto/`),
-WASMtime host (`Source/Host/`), API surface (`Source/API/`), transport layer
-(`Source/Transport/`), and service registrations (`Source/Services/`) are
-already implemented. Full integration with the primary `debug-mountain` build is
-the remaining step.
+Grove is WIP in the primary editor flow. The gRPC protocol definitions
+(`Proto/`), Wasmtime host (`Source/Host/`), API surface (`Source/API/`),
+transport layer (`Source/Transport/`), service registrations
+(`Source/Services/`), and WASM runtime integration (`Source/WASM/`) are present
+in source. Full integration with the primary `debug-mountain` build is still in
+progress.
 
 ---
 
 ## The Problem Grove Solves
 
-VS Code extensions run with full Node.js capabilities in a shared process. A
-malicious extension can read the file system, make network requests, and access
-other extensions' state. The "extension sandbox" is a policy document, not a
-technical boundary.
-
-This coupling also means users have no way to verify what an extension actually
-does at runtime. Trust is all-or-nothing.
+VS Code extensions run with broad Node.js capabilities in a shared process.
+Grove is the path for extensions that can trade raw Node compatibility for a
+runtime boundary with explicit capabilities.
 
 ---
 
 ## How Grove Addresses It
 
-Grove runs extensions inside WASMtime with capability-based security. An
-extension can only touch resources explicitly granted to it: a specific
-directory, a network endpoint, a named IPC channel. No implicit ambient
-authority. The WASM sandbox is a technical boundary enforced by the runtime, not
-a policy document.
+Grove uses Wasmtime as its WebAssembly runtime. The host can grant specific
+resources to a module instead of giving ambient access to the whole system. That
+model is useful for a future extension marketplace where permissions can be
+shown to users before code runs.
 
-This is the same model mobile operating systems use: iOS and Android grant
-permissions per-app, per-resource, at install time or on first use. Grove brings
-that model to editor extensions.
-
-For extensions that do not need WASM compilation, Grove also supports
-[Rhai](https://rhai.rs) - a lightweight, embeddable scripting language written
-in Rust. Rhai extensions run inside the same capability sandbox without
-requiring a WASM toolchain.
+This is real source, but it is not the current compatibility story for existing
+VS Code extensions. Cocoon remains the active unmodified-extension path.
 
 ---
 
 ## Source Structure
 
-All confirmed present in the
-[Grove repository](https://github.com/CodeEditorLand/Grove):
+Confirmed present in the Grove source tree:
 
 | Path                | Role                                                  |
 | ------------------- | ----------------------------------------------------- |
 | `Source/API/`       | Public API surface exposed to hosted extensions       |
 | `Source/Binary/`    | Binary entry point                                    |
 | `Source/Common/`    | Shared types and utilities                            |
-| `Source/DevLog.rs`  | Development logging (~10 KB)                          |
-| `Source/Host/`      | WASMtime host implementation                          |
-| `Source/Protocol/`  | Protocol definitions for host–guest communication     |
+| `Source/Host/`      | Wasmtime host implementation                          |
+| `Source/Protocol/`  | Protocol definitions for host-guest communication     |
 | `Source/Services/`  | Service registrations inside the sandbox              |
 | `Source/Transport/` | Transport layer for IPC between Grove and Mountain    |
 | `Source/WASM/`      | WASM runtime integration                              |
-| `Source/lib.rs`     | Crate root re-exports                                 |
-| `Source/main.rs`    | Entry point (~8 KB)                                   |
-| `Proto/`            | gRPC `.proto` definitions for Grove–Mountain protocol |
+| `Proto/`            | gRPC `.proto` definitions for Grove-Mountain protocol |
 | `Tests/`            | Integration tests                                     |
 | `build.rs`          | Cargo build script                                    |
 
@@ -80,20 +64,23 @@ All confirmed present in the
 
 ## What Grove Enables
 
-When Grove is fully integrated, an extension marketplace with meaningful
-security guarantees becomes possible. Users will be able to install extensions
-with knowledge of exactly what resources each one can access. The sandbox is
-enforced by WASMtime or the Rhai runtime, not by trust in the extension author.
+When Grove is fully integrated, an extension marketplace with stronger security
+guarantees becomes possible. Users should be able to see what resources an
+extension can access, and Grove can enforce that through Wasmtime and explicit
+capability grants.
 
-Extension authors targeting Grove declare capabilities in their manifest.
-WASM-compiled extensions use the WASMtime host; Rhai extensions use the embedded
-Rhai engine. Both share the same capability grant model.
+---
+
+## Status
+
+Grove should be shown as `WIP` in product copy, not as a shipped replacement for
+Cocoon. It is source-backed work in progress.
 
 ---
 
 ## Key Technologies
 
-Rust, WASMtime, WebAssembly, Rhai, gRPC, Capability-Based Security.
+Rust, Wasmtime, WebAssembly, gRPC, Capability-Based Security.
 
 ---
 

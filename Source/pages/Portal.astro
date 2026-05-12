@@ -8,32 +8,33 @@ const T = GetI18n();
 
 const PortalContent = {
 	Title: T("account.portal.title", {
-		defaultValue: "Sign In to CodeEditorLand",
+		defaultValue: "CodeEditorLand Portal Roadmap",
 	}),
 	Subtitle: T("account.portal.subtitle", {
 		defaultValue:
-			"Pick the tier that matches how you work. Cloud sync, OAuth identity, local-first daemon, or enterprise SSO.",
+			"Account sign-in exists in WebSite. Cloud sync, provider identity, local-first daemon control, and enterprise SSO are planned portal surfaces, not required for the local editor path.",
 	}),
 
 	Cloud: {
 		Identifier: "Cloud" as const,
 		Title: T("account.portal.cloud.title", {
-			defaultValue: "Cloud",
+			defaultValue: "Cloud Plan",
 		}),
 		Subtitle: T("account.portal.cloud.subtitle", {
 			defaultValue:
-				"Sign in once and every device is in sync.\n\nWorkspace state encrypted end to end, never readable in transit.",
+				"Planned hosted sync for users who want account-backed state.\n\nThe local editor should remain useful without this service.",
 		}),
 		Color: "var(--TierCloud)",
 		BorderColor: "var(--TierCloudFore)",
 		Icon: "Cloud",
 		Badge: "Online",
 		Protocol: "HTTPS / TLS 1.3",
+		Status: "ComingSoon" as const,
 		Feature: [
 			{
 				Heading: "Sync",
 				Description: T("account.portal.cloud.feature.sync", {
-					defaultValue: "Workspace stays in sync across every device",
+					defaultValue: "Planned workspace sync across devices",
 				}),
 				Icon: ["RefreshCw", "Cloud", "Monitor"],
 			},
@@ -41,14 +42,14 @@ const PortalContent = {
 				Heading: "Backup",
 				Description: T("account.portal.cloud.feature.backup", {
 					defaultValue:
-						"Encrypted cloud backup of all configurations",
+						"Planned encrypted backup for selected configuration",
 				}),
 				Icon: ["Cloud", "HardDrive", "Shield"],
 			},
 			{
 				Heading: "Team",
 				Description: T("account.portal.cloud.feature.team", {
-					defaultValue: "Shared team workspaces included",
+					defaultValue: "Planned shared team workspace support",
 				}),
 				Icon: ["Users", "Settings"],
 			},
@@ -56,37 +57,37 @@ const PortalContent = {
 				Heading: "Extensions",
 				Description: T("account.portal.cloud.feature.extension", {
 					defaultValue:
-						"Install extensions from the marketplace in one click",
+						"Marketplace installation is planned after local extension paths stabilize",
 				}),
 				Icon: ["Puzzle", "Cloud", "Box"],
 			},
 			{
 				Heading: "Remote",
 				Description: T("account.portal.cloud.feature.remote", {
-					defaultValue: "Remote development server integration",
+					defaultValue: "Remote development integration is planned",
 				}),
 				Icon: ["Server", "Monitor", "Wifi"],
 			},
 		],
 		Capability: [
 			T("account.portal.cloud.capability.jwt", {
-				defaultValue: "JWT RS256 tokens 15-min access, 30-day refresh",
+				defaultValue: "Planned account tokens for hosted services",
 			}),
 			T("account.portal.cloud.capability.okta", {
-				defaultValue: "Okta SSO integration available",
+				defaultValue: "Okta SSO belongs to the enterprise plan",
 			}),
 			T("account.portal.cloud.capability.mfa", {
-				defaultValue: "Multi-factor authentication supported",
+				defaultValue:
+					"MFA support depends on the configured identity provider",
 			}),
 			T("account.portal.cloud.capability.rbac", {
-				defaultValue: "Role-based access control at the gateway layer",
+				defaultValue: "Gateway RBAC is planned",
 			}),
 			T("account.portal.cloud.capability.audit", {
-				defaultValue: "Full audit log every action recorded",
+				defaultValue: "Audit logging is planned",
 			}),
 			T("account.portal.cloud.capability.cert", {
-				defaultValue:
-					"Developer certificates provisioned automatically",
+				defaultValue: "Developer certificate automation is planned",
 			}),
 		],
 	},
@@ -94,30 +95,32 @@ const PortalContent = {
 	Provider: {
 		Identifier: "Provider" as const,
 		Title: T("account.portal.provider.title", {
-			defaultValue: "Provider",
+			defaultValue: "Provider Plan",
 		}),
 		Subtitle: T("account.portal.provider.subtitle", {
 			defaultValue:
-				"Use the developer identity you already have.\n\nWe request only your email - no repository access, no org data, ever.",
+				"Use a developer identity provider where the WebSite account flow supports it.\n\nProvider scopes should stay minimal and be documented per provider before launch.",
 		}),
 		Color: "var(--TierProvider)",
 		BorderColor: "var(--TierProviderFore)",
 		Icon: "GitFork",
 		Badge: "OAuth 2.0",
 		Protocol: "OAuth 2.0 / PKCE",
+		Status: "ComingSoon" as const,
 		Feature: [
 			{
 				Heading: "GitHub",
 				Description: T("account.portal.provider.feature.github", {
 					defaultValue:
-						"No new password Your GitHub identity is enough",
+						"GitHub identity is planned as a low-friction sign-in option",
 				}),
 				Icon: ["/Image/GitHub.svg", "KeyRound", "Settings"],
 			},
 			{
 				Heading: "SSO",
 				Description: T("account.portal.provider.feature.sso", {
-					defaultValue: "Single sign-on across all Land services",
+					defaultValue:
+						"Single sign-on across Land services is planned",
 				}),
 				Icon: ["KeyRound", "Shield", "Globe"],
 			},
@@ -125,7 +128,7 @@ const PortalContent = {
 				Heading: "Repository",
 				Description: T("account.portal.provider.feature.repo", {
 					defaultValue:
-						"Theme and keybindings follow your provider identity",
+						"Settings sync tied to provider identity is planned",
 				}),
 				Icon: ["GitBranch", "Settings", "HardDrive"],
 			},
@@ -133,7 +136,7 @@ const PortalContent = {
 				Heading: "Team",
 				Description: T("account.portal.provider.feature.team", {
 					defaultValue:
-						"Organization and team membership synced automatically",
+						"Organization and team membership sync is planned",
 				}),
 				Icon: ["Users", "RefreshCw", "Building2"],
 			},
@@ -141,31 +144,32 @@ const PortalContent = {
 				Heading: "CI/CD",
 				Description: T("account.portal.provider.feature.ci", {
 					defaultValue:
-						"CI/CD pipeline integration with build triggers",
+						"CI/CD integration belongs to later portal work",
 				}),
 				Icon: ["CirclePlay", "Rocket", "GitBranch"],
 			},
 		],
 		Capability: [
 			T("account.portal.provider.capability.oauth", {
-				defaultValue: "OAuth 2.0 with PKCE S256 on every flow",
+				defaultValue:
+					"OAuth 2.0 / PKCE support where provider flows are enabled",
 			}),
 			T("account.portal.provider.capability.scope", {
 				defaultValue:
-					"Email and profile scope only nothing else requested",
+					"Provider scopes should stay limited and documented",
 			}),
 			T("account.portal.provider.capability.token", {
-				defaultValue: "Refresh token rotation on every sign-in",
+				defaultValue:
+					"Refresh token handling depends on provider configuration",
 			}),
 			T("account.portal.provider.capability.webhook", {
-				defaultValue: "Webhook event subscriptions",
+				defaultValue: "Webhook subscriptions are planned",
 			}),
 			T("account.portal.provider.capability.org", {
-				defaultValue: "Organization-level access policies",
+				defaultValue: "Organization-level access policies are planned",
 			}),
 			T("account.portal.provider.capability.cert", {
-				defaultValue:
-					"Developer certificates provisioned automatically",
+				defaultValue: "Developer certificate automation is planned",
 			}),
 		],
 	},
@@ -177,19 +181,20 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.localfirst.subtitle", {
 			defaultValue:
-				"No internet? No problem. The Air Daemon runs entirely on your machine.\n\nYour code and credentials never leave it.",
+				"Land's editor direction is local-first. Air contains daemon and service code for updates, downloads, authentication, indexing, and health.\n\nBrowser-to-daemon portal control is planned rather than treated as shipped UI.",
 		}),
 		Color: "var(--TierLocalFirst)",
 		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "HardDrive",
 		Badge: "Local-First",
-		Protocol: "mTLS / CRDTs / WebSocket",
+		Protocol: "mTLS / WebSocket planned",
+		Status: "ComingSoon" as const,
 		Feature: [
 			{
 				Heading: "Air Daemon",
 				Description: T("account.portal.localfirst.feature.daemon", {
 					defaultValue:
-						"Browser connects to Air Daemon over encrypted loopback",
+						"Browser-to-daemon loopback control is planned",
 				}),
 				Icon: ["Wifi", "Server", "Lock"],
 			},
@@ -197,7 +202,7 @@ const PortalContent = {
 				Heading: "Build",
 				Description: T("account.portal.localfirst.feature.build", {
 					defaultValue:
-						"Launch builds directly from the website console",
+						"Launching builds from the website console is planned",
 				}),
 				Icon: ["Hammer", "Monitor", "Globe"],
 			},
@@ -205,23 +210,22 @@ const PortalContent = {
 				Heading: "Deploy",
 				Description: T("account.portal.localfirst.feature.deploy", {
 					defaultValue:
-						"Deploy changes directly to the running editor",
+						"Deploying changes into a running editor is planned",
 				}),
 				Icon: ["Rocket", "HardDrive"],
 			},
 			{
 				Heading: "Configure",
 				Description: T("account.portal.localfirst.feature.configure", {
-					defaultValue:
-						"Full editor configuration and settings management",
+					defaultValue: "Editor configuration management is planned",
 				}),
 				Icon: ["Settings", "Monitor"],
 			},
 			{
-				Heading: "VS Code Parity",
+				Heading: "Extensions",
 				Description: T("account.portal.localfirst.feature.parity", {
 					defaultValue:
-						"Every VS Code extension runs unchanged nothing missing",
+						"Installed VS Code extensions run unmodified through the Cocoon path when their APIs are implemented",
 				}),
 				Icon: ["Monitor", "RefreshCw"],
 			},
@@ -229,7 +233,7 @@ const PortalContent = {
 				Heading: "Offline",
 				Description: T("account.portal.localfirst.feature.offline", {
 					defaultValue:
-						"Complete offline operation No cloud login required",
+						"Local editor operation should not require a cloud login",
 				}),
 				Icon: ["WifiOff", "Shield", "HardDrive"],
 			},
@@ -237,41 +241,38 @@ const PortalContent = {
 				Heading: "Embedded SaaS",
 				Description: T("account.portal.localfirst.feature.bake", {
 					defaultValue:
-						"Embed the portal directly into the editor as built-in SaaS",
+						"Embedding portal surfaces into the editor is planned",
 				}),
 				Icon: ["Box", "Monitor", "Globe"],
 			},
 		],
 		Capability: [
 			T("account.portal.localfirst.capability.jwt", {
-				defaultValue:
-					"JWT ES384 certificates 5 min expiry, rotated on reconnect",
+				defaultValue: "Short-lived local credentials are planned",
 			}),
 			T("account.portal.localfirst.capability.mtls", {
 				defaultValue:
-					"mTLS mutual authentication daemon and browser both verified",
+					"mTLS mutual authentication is planned for daemon control",
 			}),
 			T("account.portal.localfirst.capability.crdt", {
 				defaultValue:
-					"CRDT state synchronization for conflict-free offline editing",
+					"CRDT state synchronization is a design direction, not shipped editor behavior",
 			}),
 			T("account.portal.localfirst.capability.team", {
-				defaultValue:
-					"Team management runs fully local no cloud dependency",
+				defaultValue: "Fully local team management is planned",
 			}),
 			T("account.portal.localfirst.capability.cert", {
 				defaultValue:
-					"Local certificate authority no external CA calls",
+					"Local certificate authority code exists in Mountain; portal integration is planned",
 			}),
 			T("account.portal.localfirst.capability.ws", {
-				defaultValue: "WebSocket live connection over loopback only",
+				defaultValue: "WebSocket loopback connection is planned",
 			}),
 			T("account.portal.localfirst.capability.rbac", {
-				defaultValue:
-					"Local RBAC policies enforced at the daemon layer",
+				defaultValue: "Local RBAC policies are planned",
 			}),
 			T("account.portal.localfirst.capability.backup", {
-				defaultValue: "Encrypted local backup of all workspace state",
+				defaultValue: "Encrypted local backup is planned",
 			}),
 		],
 	},
@@ -279,84 +280,81 @@ const PortalContent = {
 	Enterprise: {
 		Identifier: "Enterprise" as const,
 		Title: T("account.portal.enterprise.title", {
-			defaultValue: "Enterprise",
+			defaultValue: "Enterprise Plan",
 		}),
 		Subtitle: T("account.portal.enterprise.subtitle", {
 			defaultValue:
-				"Your IT team controls every seat.\n\nOIDC, SAML 2.0, and SCIM mean zero manual provisioning and full directory governance.",
+				"Enterprise identity is a planned portal surface.\n\nOIDC, SAML 2.0, SCIM, and compliance documentation should only be presented as available when a deployment has those integrations configured.",
 		}),
 		Color: "var(--PlatformDesktopFore)",
 		BorderColor: "var(--PlatformDesktop)",
 		Icon: "Shield",
-		Badge: "OIDC / SAML",
-		Protocol: "OIDC / SAML 2.0 / SCIM",
+		Badge: "Planned",
+		Protocol: "OIDC / SAML 2.0 / SCIM planned",
+		Status: "ComingSoon" as const,
 		Feature: [
 			{
 				Heading: "Okta",
 				Description: T("account.portal.enterprise.feature.okta", {
-					defaultValue: "Okta SSO one login unlocks everything",
+					defaultValue: "Okta SSO integration is planned",
 				}),
 				Icon: ["/Image/Okta.svg", "KeyRound", "Shield"],
 			},
 			{
 				Heading: "Azure AD",
 				Description: T("account.portal.enterprise.feature.azure", {
-					defaultValue:
-						"Azure AD / Entra ID your Microsoft identity works",
+					defaultValue: "Azure AD / Entra ID integration is planned",
 				}),
 				Icon: ["/Image/Microsoft.svg", "Cloud", "Building2"],
 			},
 			{
 				Heading: "SAML 2.0",
 				Description: T("account.portal.enterprise.feature.saml", {
-					defaultValue: "SAML 2.0 for any legacy enterprise IdP",
+					defaultValue: "SAML 2.0 support is planned",
 				}),
 				Icon: ["Shield", "Lock", "Building2"],
 			},
 			{
 				Heading: "SCIM",
 				Description: T("account.portal.enterprise.feature.scim", {
-					defaultValue: "SCIM provisioning new devs ready in minutes",
+					defaultValue: "SCIM provisioning is planned",
 				}),
 				Icon: ["UserPlus", "RefreshCw", "Users"],
 			},
 			{
 				Heading: "Groups",
 				Description: T("account.portal.enterprise.feature.group", {
-					defaultValue:
-						"IdP group to CEL role mapping least privilege automatic",
+					defaultValue: "IdP group to Land role mapping is planned",
 				}),
 				Icon: ["Users", "KeyRound", "Shield"],
 			},
 			{
 				Heading: "Audit",
 				Description: T("account.portal.enterprise.feature.audit", {
-					defaultValue:
-						"SOC 2 logs exported to your SIEM in CEF or JSON",
+					defaultValue: "Audit export is planned",
 				}),
 				Icon: ["FileText", "Shield", "Lock"],
 			},
 		],
 		Capability: [
 			T("account.portal.enterprise.capability.oidc", {
-				defaultValue:
-					"OIDC Discovery auto-configured from your IdP metadata URL",
+				defaultValue: "OIDC discovery is planned",
 			}),
 			T("account.portal.enterprise.capability.jit", {
-				defaultValue: "Just-in-time provisioning on first sign-in",
+				defaultValue: "Just-in-time provisioning is planned",
 			}),
 			T("account.portal.enterprise.capability.mfa", {
-				defaultValue:
-					"MFA enforced via IdP authentication context class",
+				defaultValue: "MFA enforcement depends on the configured IdP",
 			}),
 			T("account.portal.enterprise.capability.session", {
-				defaultValue: "Session duration controlled by IdP policy",
+				defaultValue: "Session duration policy is planned",
 			}),
 			T("account.portal.enterprise.capability.ca", {
-				defaultValue: "Organization CA certificates managed by IT",
+				defaultValue:
+					"Organization CA certificate management is planned",
 			}),
 			T("account.portal.enterprise.capability.compliance", {
-				defaultValue: "SOC 2 Type II / GDPR compliance documentation",
+				defaultValue: "Compliance documentation is planned",
 			}),
 		],
 	},
@@ -385,7 +383,7 @@ const MetaTitle = T("meta.portal.title", {
 });
 const MetaDescription = T("meta.portal.description", {
 	defaultValue:
-		"Cloud, Provider, or Local-First.\nChoose your authentication method for Code Editor Land.",
+		"CodeEditorLand account sign-in and planned portal modes for cloud, provider, local-first, and enterprise workflows.",
 });
 ---
 
@@ -432,7 +430,7 @@ const MetaDescription = T("meta.portal.description", {
 			</picture>
 			<span
 				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-				No Telemetry&#x2001;<span
+				Telemetry Feature Gated&#x2001;<span
 					class="h-1.5 w-1.5 rounded-none bg-green-500"
 					aria-hidden="true"></span>
 			</span>
@@ -442,11 +440,11 @@ const MetaDescription = T("meta.portal.description", {
 			</span>
 			<span
 				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-				Auth0 + OAuth 2.0 + mTLS
+				Auth0 + OAuth 2.0
 			</span>
 			<span
 				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-				OIDC / SAML / Okta&#x2001;<span
+				OIDC / SAML / Okta Planned&#x2001;<span
 					class="h-1.5 w-1.5 rounded-none bg-green-500"
 					aria-hidden="true"></span>
 			</span>

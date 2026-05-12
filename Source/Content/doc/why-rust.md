@@ -9,11 +9,10 @@ description:
 
 # Why Rust
 
-Land is a code editor. It must respond to every keystroke in under 16
-milliseconds. It must parse, highlight, index, and autocomplete across files
-that span millions of lines. It must do all of this without freezing, crashing,
-or leaking memory over days of continuous use. Rust is the language that makes
-these guarantees possible at compile time rather than at runtime.
+Land is a code editor. It needs native services for files, terminals, search,
+processes, and long-running background work. Rust gives those services memory
+safety, strong concurrency tools, and predictable resource ownership without a
+garbage collector.
 
 ---
 
@@ -55,7 +54,9 @@ due to aliasing guarantees that allow more aggressive optimization.
 Rust's package manager, Cargo, provides deterministic builds, integrated
 testing, documentation generation, and access to over 150,000 crates. Land uses
 Cargo workspaces to manage its Rust elements as a single coordinated build.
-Dependencies are pinned, audited, and reproducible across every platform.
+Dependencies are pinned through Cargo manifests and the workspace lockfile.
+Reproducibility should be described per release profile once public artifacts
+are published.
 
 ---
 
@@ -63,29 +64,27 @@ Dependencies are pinned, audited, and reproducible across every platform.
 
 Rust powers the majority of Land's backend:
 
-- **Mountain** handles window management, file system access, and process
-  lifecycle through Tauri on macOS and Windows.
-- **Air** runs the background daemon for updates, cryptographic signing, and
-  network calls.
+- **Mountain** handles window management, file system access, process lifecycle,
+  terminals, IPC, and Cocoon startup through Tauri.
+- **Air** contains background services for updates, downloads, integrity checks,
+  authentication, indexing, health, and network calls.
 - **Echo** provides work-stealing task execution for CPU-bound operations.
 - **Common** defines abstract traits and data transfer objects shared across
   elements.
 - **Vine** implements gRPC protocol definitions for inter-process communication.
-- **Rest** bundles JavaScript using the OXC toolchain, written entirely in Rust.
-- **SideCar** downloads and organizes Node.js binaries per target triple at build
-  time, enabling Cocoon to run with the correct Node.js version on macOS, Windows,
-  and Linux without runtime detection.
-- **Grove** hosts WASM extensions in a WASMtime runtime with capability-based
-  security - gRPC protocol, WASMtime host, API surface, and transport layer are
-  implemented and integration with the primary build is in progress.
-- **Mist** provides local DNS resolution for `*.editor.land` - full DNS server
-  (Server.rs, Resolver.rs, Zone.rs, ForwardSecurity.rs) implemented and in
-  active development.
+- **Rest** contains OXC-based TypeScript transform work for the output pipeline.
+- **SideCar** downloads and organizes Node.js binaries per target triple at
+  build time, enabling Cocoon to run with the correct Node.js version on macOS,
+  Windows, and Linux without runtime detection.
+- **Grove** contains a Wasmtime-backed WebAssembly host path with gRPC protocol,
+  API surface, and transport code. Integration with the primary build is in
+  progress.
+- **Mist** provides local DNS, resolver, WebSocket, zone, and forward-security
+  code for local service-boundary work.
 
 Every element that touches the operating system, processes bytes, or coordinates
-concurrent work is written in Rust. The language is not an implementation
-detail. It is a structural decision that shapes the reliability and performance
-of the entire editor.
+concurrent native work uses Rust where the repository has a Rust element for
+that role. The language is a structural decision, not decoration.
 
 ---
 

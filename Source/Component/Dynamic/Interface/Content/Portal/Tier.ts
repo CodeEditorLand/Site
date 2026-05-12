@@ -10,6 +10,7 @@ export interface TierItem {
 	Heading: string;
 	Description: string;
 	Icon?: string[];
+	Status?: "Ready" | "ComingSoon" | "WIP";
 }
 
 export default interface Interface {
@@ -22,6 +23,7 @@ export default interface Interface {
 	Icon: string;
 	Feature: TierItem[];
 	Capability: string[];
+	Status?: "Ready" | "ComingSoon" | "WIP";
 	Protocol?: string;
 	Badge?: string;
 	/** Optional: highlight a specific release version in the tier panel */

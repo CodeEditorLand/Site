@@ -6,12 +6,12 @@ import { GetI18n } from "../../Library/I18n/Server";
 const T = GetI18n();
 
 const MetaTitle = T("meta.legal.privacy.title", {
-    defaultValue: "Privacy Policy | Code Editor Land",
+	defaultValue: "Privacy Policy | Code Editor Land",
 });
 
 const MetaDescription = T("meta.legal.privacy.description", {
-    defaultValue:
-        "Privacy Policy for Code Editor Land - Learn how we collect, use, and protect your personal data in connection with our website, editor, and related services.",
+	defaultValue:
+		"Privacy Policy for Code Editor Land - Learn how we collect, use, and protect your personal data in connection with our website, editor, and related services.",
 });
 
 const EffectiveDate = "March 26, 2026";
@@ -19,828 +19,860 @@ const LastUpdated = "March 26, 2026";
 ---
 
 <Base
-    Title={MetaTitle}
-    Description={MetaDescription}
-    Url="https://editor.land/Legal/Privacy"
-    lang="en">
-    <Header client:load />
-    <div class="container mx-auto max-w-4xl px-4 py-16">
-        <nav aria-label="Breadcrumb" class="mb-8">
-            <ol
-                class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
-                <li>
-                    <a href="/" class="transition-colors hover:text-foreground"
-                        >Home</a
-                    >
-                </li>
-                <li class="mx-2">/</li>
-                <li>
-                    <span class="font-medium text-foreground"
-                        >Privacy Policy</span
-                    >
-                </li>
-            </ol>
-        </nav>
-
-        <header class="mb-12">
-            <h1 class="mb-4 text-4xl font-bold tracking-tight">
-                Privacy Policy
-            </h1>
-            <div class="space-y-1 text-sm text-muted-foreground">
-                <p><strong>Effective Date:</strong> {EffectiveDate}</p>
-                <p><strong>Last Updated:</strong> {LastUpdated}</p>
-            </div>
-        </header>
-
-        <article class="prose prose-slate max-w-none">
-            <ul>
-                <li><a href="#privacy-policy">PRIVACY POLICY</a>
-                    <ul>
-                        <li><a href="#introduction">Introduction</a></li>
-                        <li><a href="#definitions">Definitions</a></li>
-                        <li>
-                            <a href="#information-collection-and-use"
-                                >Information Collection and Use</a
-                            >
-                        </li>
-                        <li>
-                            <a href="#types-of-data-collected"
-                                >Types of Data Collected</a
-                            >
-                        </li>
-                        <li><a href="#use-of-data">Use of Data</a></li>
-                        <li><a href="#retention-of-data">Retention of Data</a></li>
-                        <li><a href="#transfer-of-data">Transfer of Data</a></li>
-                        <li><a href="#disclosure-of-data">Disclosure of Data</a></li>
-                        <li><a href="#security-of-data">Security of Data</a></li>
-                        <li>
-                            <a
-                                href="#your-data-protection-rights-under-general-data-protection-regulation-gdpr"
-                                >Your Data Protection Rights Under General Data
-                                Protection Regulation (GDPR)</a
-                            >
-                        </li>
-                        <li>
-                            <a
-                                href="#your-data-protection-rights-under-the-california-privacy-protection-act-caloppa"
-                                >Your Data Protection Rights under the California
-                                Privacy Protection Act (CalOPPA)</a
-                            >
-                        </li>
-                        <li>
-                            <a
-                                href="#your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa"
-                                >Your Data Protection Rights under the California
-                                Consumer Privacy Act (CCPA)</a
-                            >
-                        </li>
-                        <li><a href="#service-providers">Service Providers</a></li>
-                        <li><a href="#payments">Payments</a></li>
-                        <li>
-                            <a href="#links-to-other-sites"
-                                >Links to Other Sites</a
-                            >
-                        </li>
-                        <li>
-                            <a href="#childrens-privacy">Children's Privacy</a>
-                        </li>
-                        <li>
-                            <a href="#changes-to-this-privacy-policy"
-                                >Changes to This Privacy Policy</a
-                            >
-                        </li>
-                        <li><a href="#contact-us">Contact Us</a></li>
-                    </ul>
-                </li>
-            </ul>
-
-            <h1 id="privacy-policy">PRIVACY POLICY</h1>
-
-            <p>
-                <strong>Effective date:</strong> {EffectiveDate}<br />
-                <strong>Last updated:</strong> {LastUpdated}
-            </p>
-
-            <h2 id="introduction">Introduction</h2>
-
-            <p>
-                Welcome to Code Editor Land.
-            </p>
-
-            <p>
-                Code Editor Land, operated by PlayForm in Sofia, Bulgaria
-                (“<strong>us</strong>”, “<strong>we</strong>”, or
-                “<strong>our</strong>”), operates
-                <a href="https://editor.land">https://editor.land</a>, the Land
-                desktop editor, related APIs, account systems, synchronization
-                features, documentation, downloads, and associated services
-                (collectively, the “<strong>Service</strong>”).
-            </p>
-
-            <p>
-                This Privacy Policy governs your use of our Service and explains
-                how we collect, safeguard, use, and disclose information that
-                results from your use of the Service.
-            </p>
-
-            <p>
-                We use your data to provide and improve Service. By using
-                Service, you agree to the collection and use of information in
-                accordance with this policy. Unless otherwise defined in this
-                Privacy Policy, the terms used in this Privacy Policy have the
-                same meanings as in our Terms of Service.
-            </p>
-
-            <p>
-                Our Terms of Service govern all use of our Service and together
-                with this Privacy Policy constitute your agreement with us.
-            </p>
-
-            <h2 id="definitions">Definitions</h2>
-
-            <p>
-                <strong>SERVICE</strong> means the
-                <a href="https://editor.land">https://editor.land</a> website,
-                the Code Editor Land desktop application, and related services
-                operated by PlayForm for the Code Editor Land project.
-            </p>
-
-            <p>
-                <strong>PERSONAL DATA</strong> means data about a living
-                individual who can be identified from those data, or from those
-                data together with other information either in our possession or
-                likely to come into our possession.
-            </p>
-
-            <p>
-                <strong>USAGE DATA</strong> is data collected automatically
-                either generated by the use of Service or from Service
-                infrastructure itself, such as page visits, feature usage,
-                performance signals, or diagnostic information.
-            </p>
-
-            <p>
-                <strong>COOKIES</strong> are small files stored on your device
-                that help remember preferences, maintain sessions, or support
-                analytics and security functions.
-            </p>
-
-            <p>
-                <strong>DATA CONTROLLER</strong> means the natural or legal
-                person who determines the purposes for which and the manner in
-                which any personal data are processed. For the purpose of this
-                Privacy Policy, we are the Data Controller of your data.
-            </p>
-
-            <p>
-                <strong>DATA PROCESSORS (OR SERVICE PROVIDERS)</strong> means
-                any natural or legal person who processes the data on behalf of
-                the Data Controller. We may use the services of various Service
-                Providers in order to process your data more effectively.
-            </p>
-
-            <p>
-                <strong>DATA SUBJECT</strong> is any living individual who is
-                the subject of Personal Data.
-            </p>
-
-            <p>
-                <strong>USER</strong> means the individual using our Service.
-                The User corresponds to the Data Subject, who is the subject of
-                Personal Data.
-            </p>
-
-            <h2 id="information-collection-and-use">
-                Information Collection and Use
-            </h2>
-
-            <p>
-                We collect several different types of information for various
-                purposes to provide, maintain, secure, and improve our Service
-                to you.
-            </p>
-
-            <h2 id="types-of-data-collected">Types of Data Collected</h2>
-
-            <p><strong>Personal Data</strong></p>
-
-            <p>
-                While using our Service, we may ask you to provide us with
-                certain personally identifiable information that can be used to
-                contact or identify you (“<strong>Personal Data</strong>”).
-                Personally identifiable information may include, but is not
-                limited to:
-            </p>
-
-            <p>a. Email address.</p>
-
-            <p>b. Username, display name, and account profile information.</p>
-
-            <p>c. Authentication details and linked identity provider data.</p>
-
-            <p>
-                d. Communications you send to us, including support messages,
-                legal notices, feedback, and bug reports.
-            </p>
-
-            <p>
-                e. Optional profile details such as avatar, biography, or other
-                information you choose to provide.
-            </p>
-
-            <p>
-                If you sign in through GitHub OAuth, we may receive your GitHub
-                account ID, username, email address as provided by GitHub, and
-                avatar URL. We do not state here that we access your private
-                repositories unless we explicitly request and disclose that
-                permission separately.
-            </p>
-
-            <p>
-                We may use your Personal Data to contact you with service
-                notices, security alerts, account information, newsletters,
-                marketing or promotional materials, and other information that
-                may be of interest to you. You may opt out of receiving any, or
-                all, of these communications from us by following the
-                unsubscribe link or by emailing
-                <a href="mailto:privacy@editor.land">privacy@editor.land</a> or
-                <a href="mailto:support@editor.land">support@editor.land</a>.
-            </p>
-
-            <p><strong>Usage Data</strong></p>
-
-            <p>
-                We may also collect information that your browser, device, or
-                application sends whenever you visit our Service or when you
-                access Service by or through a desktop or mobile device
-                (“<strong>Usage Data</strong>”).
-            </p>
-
-            <p>
-                This Usage Data may include information such as your Internet
-                Protocol address (for example, IP address), browser type,
-                browser version, operating system, device type, language
-                settings, the pages of our Service that you visit, the time and
-                date of your visit, the time spent on those pages, unique device
-                identifiers, crash diagnostics, performance information, feature
-                usage, and other diagnostic data.
-            </p>
-
-            <p>
-                When you access Service with the desktop application or another
-                device, this Usage Data may include information such as device
-                type, device unique ID, IP address, operating system, app
-                version, extension activity, startup performance, memory usage,
-                error logs, and other diagnostic data related to Service
-                operation.
-            </p>
-
-            <p><strong>Tracking Data</strong></p>
-
-            <p>
-                We use cookies and similar tracking technologies to track the
-                activity on our Service and hold certain information.
-            </p>
-
-            <p>
-                Tracking technologies used may include cookies, local storage,
-                beacons, tags, scripts, or similar technologies to collect and
-                track information and to improve and analyze our Service.
-            </p>
-
-            <p>
-                We may use essential cookies for authentication and security,
-                preference cookies to remember settings such as theme or editor
-                preferences, and analytics cookies or similar technologies to
-                understand how the Service is used.
-            </p>
-
-            <p>
-                You can instruct your browser to refuse all cookies or to
-                indicate when a cookie is being sent. However, if you do not
-                accept some cookies, you may not be able to use some portions of
-                our Service.
-            </p>
-
-            <h2 id="use-of-data">Use of Data</h2>
-
-            <p>
-                Code Editor Land uses the collected data for various purposes:
-            </p>
-
-            <p>a. to provide and maintain our Service;</p>
-
-            <p>b. to create and manage user accounts;</p>
-
-            <p>c. to authenticate users and maintain account security;</p>
-
-            <p>
-                d. to provide synchronization, settings storage, and related
-                cloud features where enabled;
-            </p>
-
-            <p>e. to notify you about changes to our Service;</p>
-
-            <p>f. to allow you to participate in interactive features of our Service when you choose to do so;</p>
-
-            <p>g. to provide customer support;</p>
-
-            <p>h. to gather analysis or valuable information so that we can improve our Service;</p>
-
-            <p>i. to monitor the usage of our Service;</p>
-
-            <p>j. to detect, prevent, and address technical issues, fraud, abuse, and security incidents;</p>
-
-            <p>k. to fulfill any other purpose for which you provide it;</p>
-
-            <p>
-                l. to carry out our obligations and enforce our rights arising
-                from any contracts entered into between you and us, including
-                for subscriptions, billing, or collection where applicable;
-            </p>
-
-            <p>
-                m. to provide you with notices about your account and/or
-                subscription, including expiration and renewal notices,
-                email-instructions, and support messages;
-            </p>
-
-            <p>
-                n. to provide you with news, special offers and general
-                information about other goods, services, and events which we
-                offer that are similar to those that you have already used or
-                enquired about unless you have opted not to receive such
-                information;
-            </p>
-
-            <p>o. in any other way we may describe when you provide the information;</p>
-
-            <p>p. for any other purpose with your consent.</p>
-
-            <h2 id="retention-of-data">Retention of Data</h2>
-
-            <p>
-                We will retain your Personal Data only for as long as is
-                necessary for the purposes set out in this Privacy Policy. We
-                will retain and use your Personal Data to the extent necessary
-                to comply with our legal obligations, resolve disputes, enforce
-                our legal agreements and policies, maintain security records,
-                and support the continued operation of the Service.
-            </p>
-
-            <p>
-                We will also retain Usage Data for internal analysis purposes.
-                Usage Data is generally retained for a shorter period, except
-                when this data is used to strengthen the security or to improve
-                the functionality of our Service, or when we are legally
-                obligated to retain this data for longer time periods.
-            </p>
-
-            <p>
-                Where technically feasible, we may delete, aggregate, or
-                anonymize data once it is no longer needed for identifiable
-                processing purposes.
-            </p>
-
-            <h2 id="transfer-of-data">Transfer of Data</h2>
-
-            <p>
-                Your information, including Personal Data, may be transferred
-                to — and maintained on — computers located outside of your
-                state, province, country, or other governmental jurisdiction
-                where the data protection laws may differ from those of your
-                jurisdiction.
-            </p>
-
-            <p>
-                Our infrastructure and service providers may process data in
-                multiple jurisdictions, including the European Union, the United
-                States, and other countries where our providers operate.
-            </p>
-
-            <p>
-                If you are located outside Bulgaria and choose to provide
-                information to us, please note that we may transfer the data,
-                including Personal Data, to other countries and process it
-                there.
-            </p>
-
-            <p>
-                Your consent to this Privacy Policy followed by your submission
-                of such information represents your agreement to that transfer.
-            </p>
-
-            <p>
-                We will take all steps reasonably necessary to ensure that your
-                data is treated securely and in accordance with this Privacy
-                Policy and no transfer of your Personal Data will take place to
-                an organization or a country unless there are adequate controls
-                in place including the security of your data and other personal
-                information.
-            </p>
-
-            <h2 id="disclosure-of-data">Disclosure of Data</h2>
-
-            <p>
-                We may disclose personal information that we collect, or you
-                provide:
-            </p>
-
-            <p>
-                a. <strong>Disclosure for Law Enforcement.</strong> Under
-                certain circumstances, we may be required to disclose your
-                Personal Data if required to do so by law or in response to
-                valid requests by public authorities.
-            </p>
-
-            <p>
-                b. <strong>Business Transaction.</strong> If we or our
-                affiliates are involved in a merger, acquisition, financing due
-                diligence, reorganization, bankruptcy, dissolution, or asset
-                sale, your Personal Data may be transferred as part of that
-                transaction.
-            </p>
-
-            <p>c. <strong>Other cases. We may disclose your information also:</strong></p>
-
-            <p>i. to our service providers and infrastructure partners;</p>
-
-            <p>ii. to fulfill the purpose for which you provide it;</p>
-
-            <p>iii. with your consent in any other cases;</p>
-
-            <p>
-                iv. if we believe disclosure is necessary or appropriate to
-                protect the rights, property, or safety of the Company, our
-                users, or others;
-            </p>
-
-            <p>v. to enforce our Terms of Service or other agreements;</p>
-
-            <p>vi. to detect, prevent, or otherwise address fraud, abuse, security, or technical issues.</p>
-
-            <p>
-                We do not describe our practices as selling personal data for
-                monetary consideration in this policy.
-            </p>
-
-            <h2 id="security-of-data">Security of Data</h2>
-
-            <p>
-                The security of your data is important to us, but remember that
-                no method of transmission over the Internet or method of
-                electronic storage is 100% secure. While we strive to use
-                commercially acceptable means to protect your Personal Data, we
-                cannot guarantee its absolute security.
-            </p>
-
-            <p>
-                We may use safeguards such as encryption in transit, access
-                controls, authentication protections, logging, rate limiting,
-                infrastructure security controls, and periodic reviews designed
-                to reduce security risk.
-            </p>
-
-            <h2
-                id="your-data-protection-rights-under-general-data-protection-regulation-gdpr">
-                Your Data Protection Rights Under General Data Protection
-                Regulation (GDPR)
-            </h2>
-
-            <p>
-                If you are a resident of the European Union or European Economic
-                Area, you have certain data protection rights under GDPR. We aim
-                to take reasonable steps to allow you to correct, amend, delete,
-                or limit the use of your Personal Data.
-            </p>
-
-            <p>
-                If you wish to be informed what Personal Data we hold about you
-                and if you want it to be removed from our systems, please email
-                us at <a href="mailto:privacy@editor.land">privacy@editor.land</a>.
-            </p>
-
-            <p>
-                In certain circumstances, you have the following data protection
-                rights:
-            </p>
-
-            <p>
-                a. the right to access, update, or delete the information we
-                have on you;
-            </p>
-
-            <p>
-                b. the right of rectification. You have the right to have your
-                information rectified if that information is inaccurate or
-                incomplete;
-            </p>
-
-            <p>
-                c. the right to object. You have the right to object to our
-                processing of your Personal Data;
-            </p>
-
-            <p>
-                d. the right of restriction. You have the right to request that
-                we restrict the processing of your personal information;
-            </p>
-
-            <p>
-                e. the right to data portability. You have the right to be
-                provided with a copy of your Personal Data in a structured,
-                machine-readable, and commonly used format;
-            </p>
-
-            <p>
-                f. the right to withdraw consent. You also have the right to
-                withdraw your consent at any time where we rely on your consent
-                to process your personal information.
-            </p>
-
-            <p>
-                Please note that we may ask you to verify your identity before
-                responding to such requests. Please also note that we may not be
-                able to provide some portions of Service without certain
-                necessary data.
-            </p>
-
-            <p>
-                You have the right to complain to a data protection authority
-                about our collection and use of your Personal Data. For more
-                information, please contact your local data protection authority.
-            </p>
-
-            <h2
-                id="your-data-protection-rights-under-the-california-privacy-protection-act-caloppa">
-                Your Data Protection Rights under the California Privacy
-                Protection Act (CalOPPA)
-            </h2>
-
-            <p>
-                CalOPPA requires commercial websites and online services that
-                collect personally identifiable information from California
-                consumers to post a conspicuous privacy policy describing the
-                information being collected and how it is shared.
-            </p>
-
-            <p>According to CalOPPA, we agree to the following:</p>
-
-            <p>a. users can visit our public website pages anonymously where account access is not required;</p>
-
-            <p>
-                b. our Privacy Policy link includes the word “Privacy”, and can
-                easily be found on the page specified above on the home page of
-                our website;
-            </p>
-
-            <p>
-                c. users will be notified of any privacy policy changes on this
-                Privacy Policy page;
-            </p>
-
-            <p>
-                d. users are able to change or request correction of personal
-                information by emailing us at
-                <a href="mailto:privacy@editor.land">privacy@editor.land</a>.
-            </p>
-
-            <p><strong>Our Policy on “Do Not Track” Signals:</strong></p>
-
-            <p>
-                Some browsers incorporate a Do Not Track feature that signals to
-                websites that you visit that you do not want your online
-                activity tracked. Because there is not yet a common
-                understanding of how to interpret Do Not Track signals, our
-                Service may not respond uniformly to all such signals.
-            </p>
-
-            <h2
-                id="your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa">
-                Your Data Protection Rights under the California Consumer
-                Privacy Act (CCPA)
-            </h2>
-
-            <p>
-                If you are a California resident, you may be entitled to learn
-                what data we collect about you, request deletion of your data,
-                and request information about how your personal information is
-                disclosed, subject to applicable exceptions and verification
-                requirements.
-            </p>
-
-            <p>
-                To exercise your data protection rights, you can make certain
-                requests and ask us:
-            </p>
-
-            <p>
-                a. <strong>What personal information we have about you.</strong>
-                If you make this request, we may provide the categories of
-                personal information we collected about you, the categories of
-                sources from which we collected that information, the business
-                purpose for collecting it, the categories of third parties with
-                whom we share it, and the specific pieces of personal
-                information we hold about you as required by applicable law.
-            </p>
-
-            <p>
-                b. <strong>To delete your personal information.</strong> If you
-                make this request, we will delete the personal information we
-                hold about you from our records, subject to applicable
-                exceptions, and direct service providers to do the same where
-                required.
-            </p>
-
-            <p>
-                c. <strong>To correct inaccurate personal information.</strong>
-                If you believe information we maintain about you is inaccurate,
-                you may request correction.
-            </p>
-
-            <p>
-                d. <strong>To limit certain uses or disclosures where
-                applicable.</strong> We do not describe this Service as selling
-                personal information for monetary consideration, but you may
-                still contact us regarding your privacy choices and any
-                applicable rights.
-            </p>
-
-            <p>
-                Please note that if you ask us to delete or restrict certain
-                data, it may impact your experience with us, and you may not be
-                able to use certain functions that require your personal
-                information to operate. We will not discriminate against you for
-                exercising your privacy rights.
-            </p>
-
-            <p>
-                To exercise your California privacy rights described above,
-                please send your request by email to
-                <a href="mailto:privacy@editor.land">privacy@editor.land</a>.
-            </p>
-
-            <h2 id="service-providers">Service Providers</h2>
-
-            <p>
-                We may employ third-party companies and individuals to
-                facilitate our Service (“<strong>Service Providers</strong>”),
-                provide Service on our behalf, perform Service-related services,
-                or assist us in analyzing how our Service is used.
-            </p>
-
-            <p>
-                These third parties may have access to your Personal Data only
-                to perform these tasks on our behalf and are obligated not to
-                disclose or use it for any other purpose, subject to their own
-                legal and contractual obligations.
-            </p>
-
-            <p>
-                Providers we may use can include infrastructure, hosting,
-                security, analytics, authentication, communication, storage, and
-                developer platform vendors such as Cloudflare, Google Firebase,
-                GitHub authentication integrations, and similar operational
-                providers used to support the Service.
-            </p>
-
-            <h2 id="payments">Payments</h2>
-
-            <p>
-                We may provide paid products and/or services within Service. In
-                that case, we may use third-party services for payment
-                processing.
-            </p>
-
-            <p>
-                We will not knowingly store or collect your full payment card
-                details ourselves when a third-party payment processor is used.
-                That information is provided directly to our third-party payment
-                processors whose use of your personal information is governed by
-                their own privacy policies.
-            </p>
-
-            <p>
-                If paid products are offered, the applicable payment processor
-                and its privacy terms will be identified at the time of payment.
-            </p>
-
-            <h2 id="links-to-other-sites">Links to Other Sites</h2>
-
-            <p>
-                Our Service may contain links to other sites that are not
-                operated by us. If you click a third-party link, you will be
-                directed to that third party’s site. We strongly advise you to
-                review the Privacy Policy of every site you visit.
-            </p>
-
-            <p>
-                We have no control over and assume no responsibility for the
-                content, privacy policies, or practices of any third-party sites
-                or services.
-            </p>
-
-            <h2 id="childrens-privacy">Children's Privacy</h2>
-
-            <p>
-                Our Service is not directed to children under the age of 13, or
-                a higher age where required by applicable law. We do not
-                knowingly collect personally identifiable information from
-                children without the legally required consent.
-            </p>
-
-            <p>
-                If you become aware that a child has provided us with Personal
-                Data, please contact us. If we become aware that we have
-                collected Personal Data from a child without appropriate consent,
-                we take steps to remove that information from our systems.
-            </p>
-
-            <h2 id="changes-to-this-privacy-policy">
-                Changes to This Privacy Policy
-            </h2>
-
-            <p>
-                We may update our Privacy Policy from time to time. We will
-                notify you of any changes by posting the new Privacy Policy on
-                this page and updating the effective or last updated date at the
-                top of this Privacy Policy.
-            </p>
-
-            <p>
-                Where required, we may also let you know via email, account
-                notice, or another prominent notice on our Service before the
-                change becomes effective.
-            </p>
-
-            <p>
-                You are advised to review this Privacy Policy periodically for
-                any changes. Changes to this Privacy Policy are effective when
-                they are posted on this page.
-            </p>
-
-            <h2 id="contact-us">Contact Us</h2>
-
-            <p>
-                If you have any questions about this Privacy Policy, please
-                contact us:
-            </p>
-
-            <p>
-                By email:
-                <a href="mailto:privacy@editor.land">privacy@editor.land</a>,
-                <a href="mailto:legal@editor.land">legal@editor.land</a>, or
-                <a href="mailto:support@editor.land">support@editor.land</a>.
-            </p>
-
-            <p>
-                By GitHub Issues:
-                <a
-                    href="https://github.com/CodeEditorLand/Land/issues"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    >https://github.com/CodeEditorLand/Land/issues</a
-                >.
-            </p>
-
-            <p>
-                By mail: PlayForm / Code Editor Land, Sofia, Bulgaria.
-            </p>
-        </article>
-
-        <div class="mt-12 border-t pt-8">
-            <a
-                href="#top"
-                class="StaccatoButton text-sm text-primary hover:underline"
-                >Back to top<span class="InlineSeparator">↑</span></a
-            >
-        </div>
-
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "WebPage",
-                "name": "Privacy Policy",
-                "description": "Privacy Policy for Code Editor Land",
-                "url": "https://editor.land/legal/privacy",
-                "datePublished": "2026-03-26T00:00:00Z",
-                "dateModified": "2026-03-26T00:00:00Z",
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Code Editor Land",
-                    "url": "https://editor.land",
-                    "logo": {
-                        "@type": "ImageObject",
-                        "url": "https://editor.land/Favicon/favicon.svg"
-                    }
-                },
-                "inLanguage": "en",
-                "isPartOf": {
-                    "@type": "WebSite",
-                    "name": "Code Editor Land",
-                    "url": "https://editor.land"
-                }
-            }
-        </script>
-    </div>
+	Title={MetaTitle}
+	Description={MetaDescription}
+	Url="https://editor.land/Legal/Privacy"
+	lang="en">
+	<Header client:load />
+	<div class="container mx-auto max-w-4xl px-4 py-16">
+		<nav aria-label="Breadcrumb" class="mb-8">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>Home</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground"
+						>Privacy Policy</span
+					>
+				</li>
+			</ol>
+		</nav>
+
+		<header class="mb-12">
+			<h1 class="mb-4 text-4xl font-bold tracking-tight">
+				Privacy Policy
+			</h1>
+			<div class="space-y-1 text-sm text-muted-foreground">
+				<p><strong>Effective Date:</strong> {EffectiveDate}</p>
+				<p><strong>Last Updated:</strong> {LastUpdated}</p>
+			</div>
+		</header>
+
+		<article class="prose prose-slate max-w-none">
+			<ul>
+				<li>
+					<a href="#privacy-policy">PRIVACY POLICY</a>
+					<ul>
+						<li><a href="#introduction">Introduction</a></li>
+						<li><a href="#definitions">Definitions</a></li>
+						<li>
+							<a href="#information-collection-and-use"
+								>Information Collection and Use</a
+							>
+						</li>
+						<li>
+							<a href="#types-of-data-collected"
+								>Types of Data Collected</a
+							>
+						</li>
+						<li><a href="#use-of-data">Use of Data</a></li>
+						<li>
+							<a href="#retention-of-data">Retention of Data</a>
+						</li>
+						<li>
+							<a href="#transfer-of-data">Transfer of Data</a>
+						</li>
+						<li>
+							<a href="#disclosure-of-data">Disclosure of Data</a>
+						</li>
+						<li>
+							<a href="#security-of-data">Security of Data</a>
+						</li>
+						<li>
+							<a
+								href="#your-data-protection-rights-under-general-data-protection-regulation-gdpr"
+								>Your Data Protection Rights Under General Data
+								Protection Regulation (GDPR)</a
+							>
+						</li>
+						<li>
+							<a
+								href="#your-data-protection-rights-under-the-california-privacy-protection-act-caloppa"
+								>Your Data Protection Rights under the
+								California Privacy Protection Act (CalOPPA)</a
+							>
+						</li>
+						<li>
+							<a
+								href="#your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa"
+								>Your Data Protection Rights under the
+								California Consumer Privacy Act (CCPA)</a
+							>
+						</li>
+						<li>
+							<a href="#service-providers">Service Providers</a>
+						</li>
+						<li><a href="#payments">Payments</a></li>
+						<li>
+							<a href="#links-to-other-sites"
+								>Links to Other Sites</a
+							>
+						</li>
+						<li>
+							<a href="#childrens-privacy">Children's Privacy</a>
+						</li>
+						<li>
+							<a href="#changes-to-this-privacy-policy"
+								>Changes to This Privacy Policy</a
+							>
+						</li>
+						<li><a href="#contact-us">Contact Us</a></li>
+					</ul>
+				</li>
+			</ul>
+
+			<h1 id="privacy-policy">PRIVACY POLICY</h1>
+
+			<p>
+				<strong>Effective date:</strong>
+				{EffectiveDate}<br />
+				<strong>Last updated:</strong>
+				{LastUpdated}
+			</p>
+
+			<h2 id="introduction">Introduction</h2>
+
+			<p>Welcome to Code Editor Land.</p>
+
+			<p>
+				Code Editor Land, operated by PlayForm in Sofia, Bulgaria (“<strong
+					>us</strong
+				>”, “<strong>we</strong>”, or “<strong>our</strong>”), operates
+				<a href="https://editor.land">https://editor.land</a>, the Land
+				desktop editor, related APIs, account systems, synchronization
+				features, documentation, downloads, and associated services
+				(collectively, the “<strong>Service</strong>”).
+			</p>
+
+			<p>
+				This Privacy Policy governs your use of our Service and explains
+				how we collect, safeguard, use, and disclose information that
+				results from your use of the Service.
+			</p>
+
+			<p>
+				We use your data to provide and improve Service. By using
+				Service, you agree to the collection and use of information in
+				accordance with this policy. Unless otherwise defined in this
+				Privacy Policy, the terms used in this Privacy Policy have the
+				same meanings as in our Terms of Service.
+			</p>
+
+			<p>
+				Our Terms of Service govern all use of our Service and together
+				with this Privacy Policy constitute your agreement with us.
+			</p>
+
+			<h2 id="definitions">Definitions</h2>
+
+			<p>
+				<strong>SERVICE</strong> means the
+				<a href="https://editor.land">https://editor.land</a> website, the
+				Code Editor Land desktop application, and related services operated
+				by PlayForm for the Code Editor Land project.
+			</p>
+
+			<p>
+				<strong>PERSONAL DATA</strong> means data about a living individual
+				who can be identified from those data, or from those data together
+				with other information either in our possession or likely to come
+				into our possession.
+			</p>
+
+			<p>
+				<strong>USAGE DATA</strong> is data collected automatically either
+				generated by the use of Service or from Service infrastructure itself,
+				such as page visits, feature usage, performance signals, or diagnostic
+				information.
+			</p>
+
+			<p>
+				<strong>COOKIES</strong> are small files stored on your device that
+				help remember preferences, maintain sessions, or support analytics
+				and security functions.
+			</p>
+
+			<p>
+				<strong>DATA CONTROLLER</strong> means the natural or legal person
+				who determines the purposes for which and the manner in which any
+				personal data are processed. For the purpose of this Privacy Policy,
+				we are the Data Controller of your data.
+			</p>
+
+			<p>
+				<strong>DATA PROCESSORS (OR SERVICE PROVIDERS)</strong> means any
+				natural or legal person who processes the data on behalf of the Data
+				Controller. We may use the services of various Service Providers in
+				order to process your data more effectively.
+			</p>
+
+			<p>
+				<strong>DATA SUBJECT</strong> is any living individual who is the
+				subject of Personal Data.
+			</p>
+
+			<p>
+				<strong>USER</strong> means the individual using our Service. The
+				User corresponds to the Data Subject, who is the subject of Personal
+				Data.
+			</p>
+
+			<h2 id="information-collection-and-use">
+				Information Collection and Use
+			</h2>
+
+			<p>
+				We collect several different types of information for various
+				purposes to provide, maintain, secure, and improve our Service
+				to you.
+			</p>
+
+			<h2 id="types-of-data-collected">Types of Data Collected</h2>
+
+			<p><strong>Personal Data</strong></p>
+
+			<p>
+				While using our Service, we may ask you to provide us with
+				certain personally identifiable information that can be used to
+				contact or identify you (“<strong>Personal Data</strong>”).
+				Personally identifiable information may include, but is not
+				limited to:
+			</p>
+
+			<p>a. Email address.</p>
+
+			<p>b. Username, display name, and account profile information.</p>
+
+			<p>c. Authentication details and linked identity provider data.</p>
+
+			<p>
+				d. Communications you send to us, including support messages,
+				legal notices, feedback, and bug reports.
+			</p>
+
+			<p>
+				e. Optional profile details such as avatar, biography, or other
+				information you choose to provide.
+			</p>
+
+			<p>
+				If you sign in through GitHub OAuth, we may receive your GitHub
+				account ID, username, email address as provided by GitHub, and
+				avatar URL. We do not state here that we access your private
+				repositories unless we explicitly request and disclose that
+				permission separately.
+			</p>
+
+			<p>
+				We may use your Personal Data to contact you with service
+				notices, security alerts, account information, newsletters,
+				marketing or promotional materials, and other information that
+				may be of interest to you. You may opt out of receiving any, or
+				all, of these communications from us by following the
+				unsubscribe link or by emailing
+				<a href="mailto:privacy@editor.land">privacy@editor.land</a> or
+				<a href="mailto:support@editor.land">support@editor.land</a>.
+			</p>
+
+			<p><strong>Usage Data</strong></p>
+
+			<p>
+				We may also collect information that your browser, device, or
+				application sends whenever you visit our Service or when you
+				access Service by or through a desktop or mobile device (“<strong
+					>Usage Data</strong
+				>”).
+			</p>
+
+			<p>
+				This Usage Data may include information such as your Internet
+				Protocol address (for example, IP address), browser type,
+				browser version, operating system, device type, language
+				settings, the pages of our Service that you visit, the time and
+				date of your visit, the time spent on those pages, unique device
+				identifiers, crash diagnostics, performance information, feature
+				usage, and other diagnostic data.
+			</p>
+
+			<p>
+				When you access Service with the desktop application or another
+				device, this Usage Data may include information such as device
+				type, device unique ID, IP address, operating system, app
+				version, extension activity, startup performance, memory usage,
+				error logs, and other diagnostic data related to Service
+				operation.
+			</p>
+
+			<p><strong>Tracking Data</strong></p>
+
+			<p>
+				We use cookies and similar tracking technologies to track the
+				activity on our Service and hold certain information.
+			</p>
+
+			<p>
+				Tracking technologies used may include cookies, local storage,
+				beacons, tags, scripts, or similar technologies to collect and
+				track information and to improve and analyze our Service.
+			</p>
+
+			<p>
+				We may use essential cookies for authentication and security,
+				preference cookies to remember settings such as theme or editor
+				preferences, and analytics cookies or similar technologies to
+				understand how the Service is used.
+			</p>
+
+			<p>
+				You can instruct your browser to refuse all cookies or to
+				indicate when a cookie is being sent. However, if you do not
+				accept some cookies, you may not be able to use some portions of
+				our Service.
+			</p>
+
+			<h2 id="use-of-data">Use of Data</h2>
+
+			<p>
+				Code Editor Land uses the collected data for various purposes:
+			</p>
+
+			<p>a. to provide and maintain our Service;</p>
+
+			<p>b. to create and manage user accounts;</p>
+
+			<p>c. to authenticate users and maintain account security;</p>
+
+			<p>
+				d. to provide synchronization, settings storage, and related
+				cloud features where enabled;
+			</p>
+
+			<p>e. to notify you about changes to our Service;</p>
+
+			<p>
+				f. to allow you to participate in interactive features of our
+				Service when you choose to do so;
+			</p>
+
+			<p>g. to provide customer support;</p>
+
+			<p>
+				h. to gather analysis or valuable information so that we can
+				improve our Service;
+			</p>
+
+			<p>i. to monitor the usage of our Service;</p>
+
+			<p>
+				j. to detect, prevent, and address technical issues, fraud,
+				abuse, and security incidents;
+			</p>
+
+			<p>k. to fulfill any other purpose for which you provide it;</p>
+
+			<p>
+				l. to carry out our obligations and enforce our rights arising
+				from any contracts entered into between you and us, including
+				for subscriptions, billing, or collection where applicable;
+			</p>
+
+			<p>
+				m. to provide you with notices about your account and/or
+				subscription, including expiration and renewal notices,
+				email-instructions, and support messages;
+			</p>
+
+			<p>
+				n. to provide you with news, special offers and general
+				information about other goods, services, and events which we
+				offer that are similar to those that you have already used or
+				enquired about unless you have opted not to receive such
+				information;
+			</p>
+
+			<p>
+				o. in any other way we may describe when you provide the
+				information;
+			</p>
+
+			<p>p. for any other purpose with your consent.</p>
+
+			<h2 id="retention-of-data">Retention of Data</h2>
+
+			<p>
+				We will retain your Personal Data only for as long as is
+				necessary for the purposes set out in this Privacy Policy. We
+				will retain and use your Personal Data to the extent necessary
+				to comply with our legal obligations, resolve disputes, enforce
+				our legal agreements and policies, maintain security records,
+				and support the continued operation of the Service.
+			</p>
+
+			<p>
+				We will also retain Usage Data for internal analysis purposes.
+				Usage Data is generally retained for a shorter period, except
+				when this data is used to strengthen the security or to improve
+				the functionality of our Service, or when we are legally
+				obligated to retain this data for longer time periods.
+			</p>
+
+			<p>
+				Where technically feasible, we may delete, aggregate, or
+				anonymize data once it is no longer needed for identifiable
+				processing purposes.
+			</p>
+
+			<h2 id="transfer-of-data">Transfer of Data</h2>
+
+			<p>
+				Your information, including Personal Data, may be transferred to
+				- and maintained on - computers located outside of your state,
+				province, country, or other governmental jurisdiction where the
+				data protection laws may differ from those of your jurisdiction.
+			</p>
+
+			<p>
+				Our infrastructure and service providers may process data in
+				multiple jurisdictions, including the European Union, the United
+				States, and other countries where our providers operate.
+			</p>
+
+			<p>
+				If you are located outside Bulgaria and choose to provide
+				information to us, please note that we may transfer the data,
+				including Personal Data, to other countries and process it
+				there.
+			</p>
+
+			<p>
+				Your consent to this Privacy Policy followed by your submission
+				of such information represents your agreement to that transfer.
+			</p>
+
+			<p>
+				We will take all steps reasonably necessary to ensure that your
+				data is treated securely and in accordance with this Privacy
+				Policy and no transfer of your Personal Data will take place to
+				an organization or a country unless there are adequate controls
+				in place including the security of your data and other personal
+				information.
+			</p>
+
+			<h2 id="disclosure-of-data">Disclosure of Data</h2>
+
+			<p>
+				We may disclose personal information that we collect, or you
+				provide:
+			</p>
+
+			<p>
+				a. <strong>Disclosure for Law Enforcement.</strong> Under certain
+				circumstances, we may be required to disclose your Personal Data if
+				required to do so by law or in response to valid requests by public
+				authorities.
+			</p>
+
+			<p>
+				b. <strong>Business Transaction.</strong> If we or our affiliates
+				are involved in a merger, acquisition, financing due diligence, reorganization,
+				bankruptcy, dissolution, or asset sale, your Personal Data may be
+				transferred as part of that transaction.
+			</p>
+
+			<p>
+				c. <strong
+					>Other cases. We may disclose your information also:</strong>
+			</p>
+
+			<p>i. to our service providers and infrastructure partners;</p>
+
+			<p>ii. to fulfill the purpose for which you provide it;</p>
+
+			<p>iii. with your consent in any other cases;</p>
+
+			<p>
+				iv. if we believe disclosure is necessary or appropriate to
+				protect the rights, property, or safety of the Company, our
+				users, or others;
+			</p>
+
+			<p>v. to enforce our Terms of Service or other agreements;</p>
+
+			<p>
+				vi. to detect, prevent, or otherwise address fraud, abuse,
+				security, or technical issues.
+			</p>
+
+			<p>
+				We do not describe our practices as selling personal data for
+				monetary consideration in this policy.
+			</p>
+
+			<h2 id="security-of-data">Security of Data</h2>
+
+			<p>
+				The security of your data is important to us, but remember that
+				no method of transmission over the Internet or method of
+				electronic storage is 100% secure. While we strive to use
+				commercially acceptable means to protect your Personal Data, we
+				cannot guarantee its absolute security.
+			</p>
+
+			<p>
+				We may use safeguards such as encryption in transit, access
+				controls, authentication protections, logging, rate limiting,
+				infrastructure security controls, and periodic reviews designed
+				to reduce security risk.
+			</p>
+
+			<h2
+				id="your-data-protection-rights-under-general-data-protection-regulation-gdpr">
+				Your Data Protection Rights Under General Data Protection
+				Regulation (GDPR)
+			</h2>
+
+			<p>
+				If you are a resident of the European Union or European Economic
+				Area, you have certain data protection rights under GDPR. We aim
+				to take reasonable steps to allow you to correct, amend, delete,
+				or limit the use of your Personal Data.
+			</p>
+
+			<p>
+				If you wish to be informed what Personal Data we hold about you
+				and if you want it to be removed from our systems, please email
+				us at <a href="mailto:privacy@editor.land"
+					>privacy@editor.land</a
+				>.
+			</p>
+
+			<p>
+				In certain circumstances, you have the following data protection
+				rights:
+			</p>
+
+			<p>
+				a. the right to access, update, or delete the information we
+				have on you;
+			</p>
+
+			<p>
+				b. the right of rectification. You have the right to have your
+				information rectified if that information is inaccurate or
+				incomplete;
+			</p>
+
+			<p>
+				c. the right to object. You have the right to object to our
+				processing of your Personal Data;
+			</p>
+
+			<p>
+				d. the right of restriction. You have the right to request that
+				we restrict the processing of your personal information;
+			</p>
+
+			<p>
+				e. the right to data portability. You have the right to be
+				provided with a copy of your Personal Data in a structured,
+				machine-readable, and commonly used format;
+			</p>
+
+			<p>
+				f. the right to withdraw consent. You also have the right to
+				withdraw your consent at any time where we rely on your consent
+				to process your personal information.
+			</p>
+
+			<p>
+				Please note that we may ask you to verify your identity before
+				responding to such requests. Please also note that we may not be
+				able to provide some portions of Service without certain
+				necessary data.
+			</p>
+
+			<p>
+				You have the right to complain to a data protection authority
+				about our collection and use of your Personal Data. For more
+				information, please contact your local data protection
+				authority.
+			</p>
+
+			<h2
+				id="your-data-protection-rights-under-the-california-privacy-protection-act-caloppa">
+				Your Data Protection Rights under the California Privacy
+				Protection Act (CalOPPA)
+			</h2>
+
+			<p>
+				CalOPPA requires commercial websites and online services that
+				collect personally identifiable information from California
+				consumers to post a conspicuous privacy policy describing the
+				information being collected and how it is shared.
+			</p>
+
+			<p>According to CalOPPA, we agree to the following:</p>
+
+			<p>
+				a. users can visit our public website pages anonymously where
+				account access is not required;
+			</p>
+
+			<p>
+				b. our Privacy Policy link includes the word “Privacy”, and can
+				easily be found on the page specified above on the home page of
+				our website;
+			</p>
+
+			<p>
+				c. users will be notified of any privacy policy changes on this
+				Privacy Policy page;
+			</p>
+
+			<p>
+				d. users are able to change or request correction of personal
+				information by emailing us at
+				<a href="mailto:privacy@editor.land">privacy@editor.land</a>.
+			</p>
+
+			<p><strong>Our Policy on “Do Not Track” Signals:</strong></p>
+
+			<p>
+				Some browsers incorporate a Do Not Track feature that signals to
+				websites that you visit that you do not want your online
+				activity tracked. Because there is not yet a common
+				understanding of how to interpret Do Not Track signals, our
+				Service may not respond uniformly to all such signals.
+			</p>
+
+			<h2
+				id="your-data-protection-rights-under-the-california-consumer-privacy-act-ccpa">
+				Your Data Protection Rights under the California Consumer
+				Privacy Act (CCPA)
+			</h2>
+
+			<p>
+				If you are a California resident, you may be entitled to learn
+				what data we collect about you, request deletion of your data,
+				and request information about how your personal information is
+				disclosed, subject to applicable exceptions and verification
+				requirements.
+			</p>
+
+			<p>
+				To exercise your data protection rights, you can make certain
+				requests and ask us:
+			</p>
+
+			<p>
+				a. <strong>What personal information we have about you.</strong>
+				If you make this request, we may provide the categories of personal
+				information we collected about you, the categories of sources from
+				which we collected that information, the business purpose for collecting
+				it, the categories of third parties with whom we share it, and the
+				specific pieces of personal information we hold about you as required
+				by applicable law.
+			</p>
+
+			<p>
+				b. <strong>To delete your personal information.</strong> If you make
+				this request, we will delete the personal information we hold about
+				you from our records, subject to applicable exceptions, and direct
+				service providers to do the same where required.
+			</p>
+
+			<p>
+				c. <strong>To correct inaccurate personal information.</strong>
+				If you believe information we maintain about you is inaccurate, you
+				may request correction.
+			</p>
+
+			<p>
+				d. <strong
+					>To limit certain uses or disclosures where applicable.</strong
+				> We do not describe this Service as selling personal information
+				for monetary consideration, but you may still contact us regarding
+				your privacy choices and any applicable rights.
+			</p>
+
+			<p>
+				Please note that if you ask us to delete or restrict certain
+				data, it may impact your experience with us, and you may not be
+				able to use certain functions that require your personal
+				information to operate. We will not discriminate against you for
+				exercising your privacy rights.
+			</p>
+
+			<p>
+				To exercise your California privacy rights described above,
+				please send your request by email to
+				<a href="mailto:privacy@editor.land">privacy@editor.land</a>.
+			</p>
+
+			<h2 id="service-providers">Service Providers</h2>
+
+			<p>
+				We may employ third-party companies and individuals to
+				facilitate our Service (“<strong>Service Providers</strong>”),
+				provide Service on our behalf, perform Service-related services,
+				or assist us in analyzing how our Service is used.
+			</p>
+
+			<p>
+				These third parties may have access to your Personal Data only
+				to perform these tasks on our behalf and are obligated not to
+				disclose or use it for any other purpose, subject to their own
+				legal and contractual obligations.
+			</p>
+
+			<p>
+				Providers we may use can include infrastructure, hosting,
+				security, analytics, authentication, communication, storage, and
+				developer platform vendors such as Cloudflare, Google Firebase,
+				GitHub authentication integrations, and similar operational
+				providers used to support the Service.
+			</p>
+
+			<h2 id="payments">Payments</h2>
+
+			<p>
+				We may provide paid products and/or services within Service. In
+				that case, we may use third-party services for payment
+				processing.
+			</p>
+
+			<p>
+				We will not knowingly store or collect your full payment card
+				details ourselves when a third-party payment processor is used.
+				That information is provided directly to our third-party payment
+				processors whose use of your personal information is governed by
+				their own privacy policies.
+			</p>
+
+			<p>
+				If paid products are offered, the applicable payment processor
+				and its privacy terms will be identified at the time of payment.
+			</p>
+
+			<h2 id="links-to-other-sites">Links to Other Sites</h2>
+
+			<p>
+				Our Service may contain links to other sites that are not
+				operated by us. If you click a third-party link, you will be
+				directed to that third party’s site. We strongly advise you to
+				review the Privacy Policy of every site you visit.
+			</p>
+
+			<p>
+				We have no control over and assume no responsibility for the
+				content, privacy policies, or practices of any third-party sites
+				or services.
+			</p>
+
+			<h2 id="childrens-privacy">Children's Privacy</h2>
+
+			<p>
+				Our Service is not directed to children under the age of 13, or
+				a higher age where required by applicable law. We do not
+				knowingly collect personally identifiable information from
+				children without the legally required consent.
+			</p>
+
+			<p>
+				If you become aware that a child has provided us with Personal
+				Data, please contact us. If we become aware that we have
+				collected Personal Data from a child without appropriate
+				consent, we take steps to remove that information from our
+				systems.
+			</p>
+
+			<h2 id="changes-to-this-privacy-policy">
+				Changes to This Privacy Policy
+			</h2>
+
+			<p>
+				We may update our Privacy Policy from time to time. We will
+				notify you of any changes by posting the new Privacy Policy on
+				this page and updating the effective or last updated date at the
+				top of this Privacy Policy.
+			</p>
+
+			<p>
+				Where required, we may also let you know via email, account
+				notice, or another prominent notice on our Service before the
+				change becomes effective.
+			</p>
+
+			<p>
+				You are advised to review this Privacy Policy periodically for
+				any changes. Changes to this Privacy Policy are effective when
+				they are posted on this page.
+			</p>
+
+			<h2 id="contact-us">Contact Us</h2>
+
+			<p>
+				If you have any questions about this Privacy Policy, please
+				contact us:
+			</p>
+
+			<p>
+				By email:
+				<a href="mailto:privacy@editor.land">privacy@editor.land</a>,
+				<a href="mailto:legal@editor.land">legal@editor.land</a>, or
+				<a href="mailto:support@editor.land">support@editor.land</a>.
+			</p>
+
+			<p>
+				By GitHub Issues:
+				<a
+					href="https://github.com/CodeEditorLand/Land/issues"
+					target="_blank"
+					rel="noopener noreferrer"
+					>https://github.com/CodeEditorLand/Land/issues</a
+				>.
+			</p>
+
+			<p>By mail: PlayForm / Code Editor Land, Sofia, Bulgaria.</p>
+		</article>
+
+		<div class="mt-12 border-t pt-8">
+			<a
+				href="#top"
+				class="StaccatoButton text-sm text-primary hover:underline"
+				>Back to top<span class="InlineSeparator">↑</span></a
+			>
+		</div>
+
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "WebPage",
+				"name": "Privacy Policy",
+				"description": "Privacy Policy for Code Editor Land",
+				"url": "https://editor.land/legal/privacy",
+				"datePublished": "2026-03-26T00:00:00Z",
+				"dateModified": "2026-03-26T00:00:00Z",
+				"publisher": {
+					"@type": "Organization",
+					"name": "Code Editor Land",
+					"url": "https://editor.land",
+					"logo": {
+						"@type": "ImageObject",
+						"url": "https://editor.land/Favicon/favicon.svg"
+					}
+				},
+				"inLanguage": "en",
+				"isPartOf": {
+					"@type": "WebSite",
+					"name": "Code Editor Land",
+					"url": "https://editor.land"
+				}
+			}
+		</script>
+	</div>
 </Base>

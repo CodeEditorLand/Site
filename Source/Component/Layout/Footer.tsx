@@ -36,7 +36,7 @@ const Footer = ({ Content }: FooterProps) => {
 			Name: T("brand.name", { defaultValue: "Code Editor Land" }),
 			Description: T("brand.description", {
 				defaultValue:
-					"No Electron. No Chromium. Every extension runs unchanged.\n\nOpen source and free forever.",
+					"Rust and Tauri editor stack with VS Code API compatibility in progress.\n\nOpen source and free forever.",
 			}),
 		},
 		Columns: [

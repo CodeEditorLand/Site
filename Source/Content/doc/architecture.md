@@ -3,240 +3,150 @@ title: "Architecture Overview"
 section: "Architecture"
 order: 4
 description:
-    "How Editor.Land's elements fit together: two processes, two IPC channels,
-    one extension API."
+    "How Editor.Land's elements fit together: Mountain, Cocoon, Sky, Air, and
+    typed IPC."
 ---
 
 # Architecture Overview
 
-Editor.Land runs as **two processes** on a typical desktop session: Mountain
-(the Rust kernel) and Cocoon (the Node.js extension host). A third background
-process, Air, handles updates and downloads independently. The editor UI (Sky)
-runs inside the OS WebView as part of Mountain's Tauri application - it is not a
-separate process.
+Editor.Land is split into named elements so the public architecture can be
+checked against source instead of guessed from a diagram. The primary desktop
+path is Mountain, the Rust + Tauri shell, running Sky in the operating system
+WebView and Cocoon as the Node.js extension host.
 
-The OS WebView is WKWebView on macOS, WebView2 on Windows, and WebKitGTK on
-Linux (in progress). No Chromium is bundled.
+Air contains background service code for downloads, updates, authentication,
+indexing, health, and Vine IPC. Whether Air is part of a given build depends on
+the selected profile and feature flags.
 
-This is a significant structural difference from VS Code, which runs six
-concurrent processes on the same workload (main, renderer, extension host, pty
-host, file watcher, shared process). The resource comparison on a 47-extension
-workload on Apple Silicon macOS: Land ~600 MB RSS versus VS Code ~810 MB RSS.
-Cold-boot time is already competitive with VS Code (~2,400 ms versus ~2,500 ms
-on the same workload), with a clear optimisation path to approximately **1,650
-ms** - roughly 34% faster than VS Code on the same hardware.
+The Mountain desktop path does not bundle Chromium. Tauri uses WKWebView on
+macOS, WebView2 on Windows, and WebKitGTK on Linux. The repository contains
+cross-platform configuration, while public installers and full platform
+verification are still release work.
 
----
-
-## Two IPC Channels
-
-The architecture has two distinct inter-process communication paths:
-
-**Channel 1: Sky ↔ Mountain (Tauri IPC)** Sky's UI components call Wind service
-interfaces. Wind routes native calls (file reads, terminal spawn, clipboard,
-configuration) through Tauri's typed IPC to Mountain. This is the primary path
-for all user-initiated actions in the editor UI. The IPC server is implemented
-in `Source/IPC/TauriIPCServer.rs` inside Mountain; the entry points are
-`mountain_ipc_receive_message` and `mountain_ipc_get_status`. Fourteen commands
-are registered at startup through the `Binary::IPC` module.
-
-**Channel 2: Mountain ↔ Cocoon (bidirectional gRPC / Vine)** The Vine protocol
-runs as two gRPC channels between Mountain and Cocoon:
-
-- **Mountain as server (port 50051)** - Cocoon dials Mountain to send
-  notifications, fire events into the kernel, and deliver extension results
-  (diagnostics, completions, hover data).
-- **Cocoon as server (port 50052)** - Mountain dials Cocoon to invoke extension
-  host methods (`InitializeExtensionHost`, `$activateByEvent`, `$provideHover`,
-  `$acceptModelChanged`, and the full `CocoonService` interface defined in
-  Vine's `Vine.proto`).
-
-Both sockets are secured by TLS certificates generated at startup using
-`rcgen` + `p256`. These two channels are independent; a slow Cocoon operation
-does not block Sky's Tauri IPC calls to Mountain.
-
-Command dispatch (`command.*`) is handled directly by Mountain's
-`Track/Effect/CreateEffectForRequest` layer since April 2026. Cocoon no longer
-proxies command dispatch.
+Public performance numbers are intentionally not listed here until there is a
+published, repeatable benchmark suite. The source supports the architectural
+claim: native Rust services, typed IPC, no bundled Chromium in the Tauri path,
+and a separate extension host.
 
 ---
 
-## Startup Pipeline
+## IPC Channels
 
-Mountain's binary follows a deterministic startup sequence defined in
-`Source/Binary/mod.rs`:
+The architecture has two main communication paths.
 
-```
-main.rs ► Binary::Main (Entry) ► Build ► Register ► Initialize ► Services
-                                                                       │
-                                                              Vine + Cocoon start
-```
+**Sky to Mountain - Tauri IPC**
 
-`Build` configures the Tauri application builder (localhost plugin, logging,
-window). `Register` wires all commands and the IPC server. `Initialize` parses
-CLI flags, selects the runtime port, and constructs `ApplicationState`.
-`Services` starts VineStart and CocoonStart, then hands control to the Tauri
-event loop.
+Sky's UI and Wind service layer call Mountain through Tauri IPC. The Mountain
+implementation lives in `Source/IPC/TauriIPCServer.rs`, including the
+`mountain_ipc_receive_message` and `mountain_ipc_get_status` entry points. This
+path handles native work such as files, terminals, clipboard, search,
+configuration, and workbench events.
 
----
+**Mountain to Cocoon - Vine gRPC**
 
-## Data Flow
+Mountain and Cocoon communicate over a bidirectional gRPC protocol described by
+Vine proto files. Mountain owns the Rust-side services and Cocoon owns the
+TypeScript-side extension-host services. The protocol covers extension-host
+startup, document notifications, language providers, tree views, command
+execution, cancellation, and streaming routes where implemented.
 
-Two representative paths through the system:
-
-**User types a character (UI path):**
-
-```
-Keypress in Sky (OS WebView)
-  → Wind Layer (Effect-TS, in-process)
-  → Tauri IPC → Mountain (Rust)
-  → Mountain notifies Cocoon via Vine gRPC (port 50052 → CocoonService)
-  → Cocoon fires onDidChangeTextDocument handlers in extension fibers
-  → Extension results return via Vine → Mountain → Tauri IPC → Sky re-renders
-```
-
-**Extension calls vscode.workspace.fs.readFile (extension API path):**
-
-```
-Cocoon (Node.js fiber)
-  → Vine gRPC (port 50051 → Mountain)
-  → Mountain reads file via Tokio async FS (~8 ms p99 cached, ~60 ms p99 cold)
-  → Response returns via Vine → Cocoon resolves the Thenable
-```
-
-**Extension calls vscode.open for external URL (cross-platform path):**
-
-```
-Cocoon executes vscode.open command
-  → Mountain::Command::Bootstrap routes to CommandVscodeOpen
-  → macOS: spawn open(1)
-  → Windows: spawn cmd.exe /c start
-  → Linux: spawn xdg-open
-```
+These paths are independent enough that the website should not describe every
+service call as flowing through one universal bus. Tauri IPC, Vine gRPC, and
+local service code each have their own job.
 
 ---
 
-## Elements by Layer
+## Startup Shape
 
-Elements are grouped by architectural layer. **Active** means the element is
-running in the `debug-mountain` profile and verified working on macOS and
-Windows. **In Progress** means partially implemented. **Configured** means the
-build target or design is defined but not yet in production use.
+Mountain's startup path is organized around build, registration, initialization,
+and services:
 
-### Layer 1 - Native Shell
+```text
+main.rs -> Binary::Main -> Build -> Register -> Initialize -> Services
+```
 
-| Element                       | Language     | Role                                                                                                                                 | Status |
-| ----------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------ |
-| [**Mountain**](/Doc/mountain) | Rust + Tauri | Native kernel: file system, gRPC server, terminal pty, clipboard, keychain, search, DAP bridge, IPC broker                           | Active |
-| [**Echo**](/Doc/echo)         | Rust         | Work-stealing task scheduler embedded inside Mountain's binary; dispatches background extension tasks without blocking the gRPC loop | Active |
-| [**Air**](/Doc/air)           | Rust         | Background daemon: update checks, downloads, release signing, platform-native service lifecycle                                      | Active |
-
-### Layer 2 - IPC
-
-| Element               | Language | Role                                                                            | Status |
-| --------------------- | -------- | ------------------------------------------------------------------------------- | ------ |
-| [**Vine**](/Doc/vine) | Protobuf | gRPC schema and generated stubs for Mountain↔Cocoon bidirectional communication | Active |
-| [**Mist**](/Doc/mist) | Rust     | WebSocket communication layer (`MistNative` feature, enabled by default)        | Active |
-
-### Layer 3 - Extension Host
-
-| Element                   | Language          | Role                                                                         | Status      |
-| ------------------------- | ----------------- | ---------------------------------------------------------------------------- | ----------- |
-| [**Cocoon**](/Doc/cocoon) | TypeScript / Node | Runs VS Code extensions via `vscode.*` API on Effect-TS fibers               | Active      |
-| [**Grove**](/Doc/grove)   | Rust              | WASM and Rhai extension host (alternative to Cocoon for non-Node extensions) | In Progress |
-| **Worker**                | TypeScript        | Web Workers for frontend parallel tasks                                      | Planned     |
-
-### Layer 4 - UI
-
-| Element               | Language   | Role                                                                | Status |
-| --------------------- | ---------- | ------------------------------------------------------------------- | ------ |
-| [**Wind**](/Doc/wind) | TypeScript | Effect-TS service layer: typed workbench interfaces consumed by Sky | Active |
-| [**Sky**](/Doc/sky)   | Astro      | Workbench UI: the editor interface rendered in the OS WebView       | Active |
-
-### Layer 5 - Build Toolchain
-
-| Element               | Language              | Role                                                                                        | Status |
-| --------------------- | --------------------- | ------------------------------------------------------------------------------------------- | ------ |
-| [**Rest**](/Doc/rest) | Rust / OXC            | Transforms and bundles VS Code platform code (NLS, loader shims, workbench modules)         | Active |
-| **Output**            | JavaScript            | Build artifact directory produced by Rest; not a running process                            | Active |
-| **Common**            | Rust / TypeScript     | Shared IPC event type definitions and `ActionEffect` traits used across Mountain and Cocoon | Active |
-| **SideCar**           | Cross-platform        | Pre-built Node.js binaries for Cocoon's extension host on each target platform              | Active |
-| **Maintain**          | Shell / Build tooling | CI/CD scripts, release automation, workspace maintenance                                    | Active |
+`Build` configures the Tauri application. `Register` wires commands and IPC.
+`Initialize` prepares runtime state. `Services` starts the Vine and Cocoon paths
+before the Tauri event loop owns the desktop session.
 
 ---
 
-## Eleven Active Elements
+## Extension Path
 
-Of the fifteen elements listed above, twelve are active in the primary
-development path today: Mountain, Echo, Cocoon, Sky, Wind, Vine, Mist, Air,
-Rest, Common, SideCar, and Maintain. The remaining three - Grove (WASM extension
-host, in progress), Worker (planned), and Output (build artifact, no runtime
-process) - are either emerging capabilities or build artifacts.
+Cocoon is the active VS Code extension-host compatibility path. It loads
+existing extension entry points, supplies a `vscode` API object, and routes
+implemented API calls through Effect-TS services and Mountain.
 
-Echo is embedded inside Mountain's binary rather than running as a separate
-process. See [Echo](/Doc/echo) for details.
+Mountain scans installed extensions, reads manifests, handles VSIX install and
+uninstall routes, and notifies Cocoon with extension changes. Output keeps the
+VS Code extension scanner and offline gallery channels wired for sideloaded
+extensions.
+
+That supports this claim: installed VS Code extensions run unmodified through
+the Cocoon path when the APIs they use are implemented. The website should not
+claim marketplace-wide perfection unless it points to a public validation
+matrix.
+
+---
+
+## Elements By Layer
+
+| Element                       | Role                                                                   | Source status                           |
+| ----------------------------- | ---------------------------------------------------------------------- | --------------------------------------- |
+| [**Mountain**](/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge | Primary desktop path                    |
+| [**Cocoon**](/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code           | Primary extension path                  |
+| [**Sky**](/Doc/sky)           | Astro workbench routes and WebView bridge                              | UI source present                       |
+| [**Wind**](/Doc/wind)         | Effect-TS workbench service layer                                      | UI service source present               |
+| [**Vine**](/Doc/vine)         | Protocol contracts and generated IPC stubs                             | Active protocol layer                   |
+| [**Air**](/Doc/air)           | Background services for updates, downloads, auth, indexing, and health | Source present, profile-dependent       |
+| [**Echo**](/Doc/echo)         | Rust scheduler primitives for bounded background work                  | Source present                          |
+| [**Mist**](/Doc/mist)         | Local DNS, resolver, WebSocket, and secure service-boundary code       | Source present, integration in progress |
+| [**Grove**](/Doc/grove)       | Wasmtime-backed WebAssembly host path                                  | Source present, integration in progress |
+| [**Rest**](/Doc/rest)         | OXC-based TypeScript transform work                                    | Source present                          |
+| [**Output**](/Doc/output)     | Plugin-routed output and VS Code platform transforms                   | Build pipeline source present           |
+| [**Common**](/Doc/common)     | Shared Rust and TypeScript contracts                                   | Shared source present                   |
+| [**SideCar**](/Doc/sidecar)   | Host-specific sidecar binary packaging                                 | Source present                          |
+| [**Maintain**](/Doc/maintain) | Build and maintenance scripts                                          | Source present                          |
+| **Worker**                    | Browser-worker support for web shell concerns                          | Source present, release scope varies    |
 
 ---
 
 ## Platform Targets
 
-Mountain's `tauri.conf.json` declares bundle configuration for all supported and
-planned targets. macOS and Windows are both fully active today:
+Mountain's Tauri configuration includes macOS, Windows, Linux, iOS, and Android
+target settings. The default development configuration is not the same thing as
+published installer coverage, so the website should say "configured" unless a
+release artifact is actually available.
 
-| Platform | Minimum version  | Build artifact              | Notes                                  |
-| -------- | ---------------- | --------------------------- | -------------------------------------- |
-| macOS    | 10.15 (Catalina) | `.app`, `.dmg`              | Active                                 |
-| Windows  | 10 / 11          | `.msi`, Microsoft Store     | Active; WebView2 bootstrapper embedded |
-| Linux    | -                | `.AppImage`, `.deb`, `.rpm` | In Progress                            |
-| iOS      | 13.0             | Framework                   | Configured                             |
-| Android  | SDK 24           | APK                         | Configured                             |
-
-The `land.editor.binary` application identifier and the custom URI scheme
-(`land:`) are consistent across all platforms.
+| Platform | Source status                                                          |
+| -------- | ---------------------------------------------------------------------- |
+| macOS    | Primary development target and Tauri bundle path                       |
+| Windows  | Tauri configuration exists, including WebView2 bootstrapper settings   |
+| Linux    | Tauri configuration exists, integration still needs release validation |
+| iOS      | Tauri mobile configuration exists                                      |
+| Android  | Tauri mobile configuration exists                                      |
 
 ---
 
 ## Security Model
 
-The Tauri Content Security Policy in Mountain's config explicitly allows these
-custom URI schemes alongside `https:`:
+Mountain's configuration declares custom schemes such as `land:`,
+`vscode-file:`, and `vscode-webview:`. Extension webviews should be described as
+isolated through the WebView and scheme model, not as a finished universal
+sandbox for all extension behavior.
 
-- **`land:`** - Mountain's own asset serving scheme
-- **`vscode-file:`** - VS Code platform file assets (workbench modules, icons)
-- **`vscode-webview:`** - Extension webview panel frames
-- **`ipc:`** - Tauri's in-process IPC channel
-
-This means extension webviews load in isolated frames (`vscode-webview:`) with
-the same origin separation as VS Code. Mountain uses the `brownfield` security
-pattern - no Tauri-injected APIs are automatically available; capabilities are
-declared explicitly in the `capabilities/` directory.
+Grove adds a WebAssembly host path with Wasmtime and capability-oriented
+modules. That is real source, but it is not the primary VS Code extension path
+today. Cocoon remains the active compatibility host.
 
 ---
 
 ## Extension API Notes
 
-The vast majority of `vscode.*` APIs - file system, terminal, language server
-protocol, diagnostics, status bar, tree views, custom editors, and webview
-panels - are routed and active. The following APIs have planned backend wiring
-that is not yet complete:
+Implemented and routed APIs include core workbench and extension-host surfaces
+such as commands, workspace, window, terminals, webviews, tree views,
+diagnostics, language providers, output channels, and document events.
 
-- `vscode.lm.*` - language model / Copilot integration
-- `vscode.chat.*` - chat panel UI
-- `vscode.notebook.*` - notebook UI
-
-Note that test runner infrastructure is already wired at the event level:
-`sky://test/registered`, `sky://test/run-started`, and
-`sky://test/run-status-changed` are active in the SkyEvent registry. The
-`vscode.tests.*` API wiring in Cocoon is in progress.
-
-See [Cocoon](/Doc/cocoon) for the full API coverage detail.
-
----
-
-## See Also
-
-- [Introduction](/Doc/introduction)
-- [Mountain: Native Kernel](/Doc/mountain)
-- [Cocoon: Extension Host](/Doc/cocoon)
-- [Vine: Wire Protocol](/Doc/vine)
-- [Local-First Protocol](/Doc/local-first-protocol)
+Long-tail areas such as chat, language-model APIs, notebooks, tests, and some
+custom-editor cases should be presented as in progress unless their behavior is
+verified in source and in a runnable scenario.

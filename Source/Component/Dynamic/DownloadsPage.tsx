@@ -27,7 +27,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("download:page.subtitle", {
 				defaultValue:
-					"Native on macOS, Windows, and Linux.\n\nZero cost, zero tracking, full VS Code extension support.",
+					"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 			}),
 			Platforms: [],
 			ShowVerification: true,
@@ -93,28 +93,28 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 		},
 		VerificationInfo: {
 			Title: T("download:verification.title", {
-				defaultValue: "Every Release is Signed. Verify Yours.",
+				defaultValue: "Verification Will Ship With Public Releases.",
 			}),
 			Description: T("download:verification.description", {
 				defaultValue:
-					"Every Land release is PGP-signed before it ships.\n\nVerify your download to confirm you got exactly what was built.",
+					"Release downloads will publish checksum and signature material when public installers are available.",
 			}),
 			DownloadVerification: {
 				SHA256: "Available at first public release",
 				PGPSignature: "Available at first public release",
 				SigningKeyId: "Available at first public release",
 				VerificationInstructions:
-					"To verify: shasum -a 256 <filename> and compare output with the published checksum.\nFor PGP: gpg --verify <file>.sig <file>",
+					"Verification instructions will be published beside the installer, checksum, and signature artifacts.",
 			},
 			IntegrityVerification: {
 				SHA256: "Available at first public release",
 				PGPSignature: "Available at first public release",
 				VerificationInstructions:
-					"Verification instructions will be published alongside the first release. All releases will include SHA-256 checksums and PGP signatures.",
+					"Air contains checksum and integrity code. Public release verification material will be published with the installers.",
 			},
 			DownloadButton: {
 				Text: T("download:verification.downloadButton", {
-					defaultValue: "Download PGP Public Key",
+					defaultValue: "View Verification Plan",
 				}),
 				Variant: "outline",
 				Size: "default",

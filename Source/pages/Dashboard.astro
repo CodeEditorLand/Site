@@ -101,7 +101,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					class="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
 					<span
 						class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-						No Telemetry{"\u2001"}<span
+						Telemetry Feature Gated{"\u2001"}<span
 							class="h-1.5 w-1.5 rounded-none bg-green-500"
 							aria-hidden="true"></span>
 					</span>
@@ -111,7 +111,7 @@ const MetaDescription = T("meta.dashboard.description", {
 					</span>
 					<span
 						class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-						PGP Signed
+						Signing Planned
 					</span>
 					<span
 						class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700">
@@ -249,7 +249,7 @@ const MetaDescription = T("meta.dashboard.description", {
 								</span>
 								<span
 									class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-medium text-muted-foreground">
-									No Telemetry
+									Feature Gated
 								</span>
 							</div>
 							<h3 class="mt-2 font-medium">
@@ -258,7 +258,7 @@ const MetaDescription = T("meta.dashboard.description", {
 										"common.dashboard.telemetry.production.title",
 										{
 											defaultValue:
-												"Absent from the binary. Not just disabled.",
+												"Feature-gated by build profile.",
 										},
 									)
 								}
@@ -269,7 +269,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.production.description",
 									{
 										defaultValue:
-											"VS Code's telemetry can be reduced via settings, but the code paths remain in the binary.\n\nThe Telemetry Cargo feature is not in Land's default features. All tracing compiles to zero-cost no-ops. Nothing is sent anywhere because there is nothing to send.",
+											"Land keeps telemetry and tracing behind feature paths. Public builds should state which profile was used before claiming what can or cannot be emitted.",
 									},
 								)}
 								Terms
@@ -302,7 +302,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.otel.description",
 									{
 										defaultValue:
-											"Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure.",
+											"Tracing infrastructure exists in source for deployments that choose it. The endpoint and feature profile should be documented before a build presents traces as enabled.",
 									},
 								)}
 								Terms
@@ -333,7 +333,7 @@ const MetaDescription = T("meta.dashboard.description", {
 								"common.dashboard.telemetry.effect.description",
 								{
 									defaultValue:
-										"Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing.",
+										"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation.",
 								},
 							)}
 							Terms
@@ -400,7 +400,7 @@ const MetaDescription = T("meta.dashboard.description", {
 								<span class="text-muted-foreground"
 									>Features</span
 								>
-								<span>80-90%</span>
+								<span>Active Source Path</span>
 							</div>
 							<div class="flex justify-between">
 								<span class="text-muted-foreground"

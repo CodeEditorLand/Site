@@ -3,51 +3,48 @@ title: "Common"
 section: "Element"
 order: 19
 description:
-    "The abstract foundation that makes every element testable in isolation."
+    "Shared Rust and TypeScript contracts used across Editor.Land elements."
 ---
 
 # Common
 
-Every Element in Code Editor Land depends on shared contracts: data types, error
-enums, configuration schemas, trait definitions. Common is the crate that holds
-all of them, and it holds nothing else. No concrete implementations, no runtime
-behavior, no side effects.
+Common is the shared contract layer for Editor.Land. It contains Rust and
+TypeScript types, traits, configuration helpers, DTOs, testing helpers, and
+service-boundary definitions that multiple elements depend on.
 
-## The Problem
+It is not a standalone runtime process. It should not be described as having no
+concrete code at all, because the source includes helpers and dependencies that
+support shared behavior. The accurate claim is narrower: Common centralizes
+cross-element contracts so elements do not invent their own incompatible shapes.
 
-VS Code modules import concrete implementations directly. Testing a single
-component means mocking entire subsystems: the file system, the window manager,
-the extension host. A unit test that should take milliseconds instead launches
-half the editor.
+---
 
-This tight coupling also means that changing one module can silently break
-another. There is no compile-time guarantee that a contract is being respected,
-because there is no formal contract to begin with.
+## What Common Provides
 
-## How Common Eliminates It
+- Shared data transfer objects.
+- Trait and provider contracts for native services.
+- Configuration inspection helpers.
+- Testing support used by element-level code.
+- TypeScript package contracts for frontend and service code.
 
-Common defines pure abstract traits for every cross-element boundary. Each trait
-specifies inputs, outputs, and error types. Zero concrete code lives in this
-crate.
+---
 
-When Element A depends on Element B, it depends on the trait defined in Common,
-not on B's implementation. The Rust compiler enforces the contract at build
-time. If B changes its signature, every consumer fails to compile immediately,
-not at runtime six months later.
+## Why It Matters
 
-## What You Experience
+When a service boundary changes in Common, dependent Rust code gets compiler
+feedback. That keeps cross-element changes visible. It also gives tests a place
+to depend on contracts instead of launching a full editor session for every
+small unit.
 
-You can test any Element in complete isolation. Mock any trait, inject it into
-the component under test, and verify behavior without launching a window, a
-WebView, or a sidecar process. Tests run in milliseconds.
+---
 
-Refactoring becomes safe. Rename a method on a trait and the compiler tells you
-every call site that needs updating. No grep, no "find all references" in an
-editor that may miss dynamic calls.
+## Status
 
-## Key Technologies
+Common is source-backed and active as a shared library layer. Claims about
+"complete isolation" or "zero implementation" should be avoided unless they are
+qualified to a specific trait or test harness.
 
-Rust, Trait Objects, Zero-Cost Abstractions, Compile-Time Contract Enforcement.
+---
 
 ## See Also
 

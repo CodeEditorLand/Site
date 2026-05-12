@@ -120,13 +120,31 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								Tier.Highlighted || Tier.Popular
 									? "border-primary"
 									: "border-[var(--Border)]"
-							}`}>
+							} ${
+								Tier.Status && Tier.Status !== "Ready"
+									? "opacity-75"
+									: ""
+							}`}
+							aria-disabled={
+								Tier.Status && Tier.Status !== "Ready"
+									? true
+									: undefined
+							}>
 							{/* ── Card header ───────────────────────────── */}
 							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
 									<div className="mb-2">
 										<span className="StaccatoBadge StaccatoRhythmBeat text-xs font-semibold uppercase tracking-wider text-primary">
 											{PopularLabel}
+										</span>
+									</div>
+								)}
+								{Tier.Status && Tier.Status !== "Ready" && (
+									<div className="mb-2">
+										<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+											{Tier.Status === "WIP"
+												? "WIP"
+												: "Coming Soon"}
 										</span>
 									</div>
 								)}
@@ -172,7 +190,13 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 													return (
 														<li
 															key={Index}
-															className="flex flex-col gap-0.5">
+															className={`flex flex-col gap-0.5 ${
+																Tier.Status &&
+																Tier.Status !==
+																	"Ready"
+																	? "opacity-70"
+																	: ""
+															}`}>
 															<span
 																className="text-sm font-semibold"
 																style={{
@@ -234,19 +258,38 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 												(Feature, FeatureIndex) => (
 													<li
 														key={FeatureIndex}
-														className="flex items-start justify-between gap-2">
+														className={`flex items-start justify-between gap-2 ${
+															Tier.Status &&
+															Tier.Status !==
+																"Ready"
+																? "opacity-70"
+																: ""
+														}`}>
 														<span className="min-w-0 flex-1 text-sm">
 															<RichText
 																Text={Feature}
 																Terms={true}
 															/>
 														</span>
-														<IconTooltip
-															Label="Included"
-															Icon={lucide.Check}
-															SizeClass="h-4 w-4 shrink-0"
-															ClassName="StaccatoCheckmark mt-0.5 text-primary"
-														/>
+														{Tier.Status &&
+														Tier.Status !==
+															"Ready" ? (
+															<span className="StaccatoBadge shrink-0 border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+																{Tier.Status ===
+																"WIP"
+																	? "WIP"
+																	: "Coming Soon"}
+															</span>
+														) : (
+															<IconTooltip
+																Label="Included"
+																Icon={
+																	lucide.Check
+																}
+																SizeClass="h-4 w-4 shrink-0"
+																ClassName="StaccatoCheckmark mt-0.5 text-primary"
+															/>
+														)}
 													</li>
 												),
 											)}

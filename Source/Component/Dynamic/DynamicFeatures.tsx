@@ -44,19 +44,19 @@ const FeatureColorMap: Record<string, string> = {
  * These flow into aria-label, title, and Radix tooltip text via IconTooltip.
  */
 const FeatureIconLabelMap: Record<string, string> = {
-	Zap: "Responds in microseconds, every time",
-	Box: "Your VS Code extensions run unchanged",
+	Zap: "Native services keep heavy work outside the WebView",
+	Box: "Unmodified VS Code extensions run through Cocoon",
 	Cpu: "Runs at native CPU speed",
-	Globe: "Ships to every OS from one codebase",
+	Globe: "Targets macOS, Windows, and Linux from one source tree",
 	Wrench: "Best-in-class developer toolchain",
 	Heart: "CC0 - free to use, fork, and ship",
 	Sparkles: "Packed with capabilities",
-	Code: "Write and ship faster",
+	Code: "Code and build tooling",
 	Layers: "Type errors caught at compile time",
 	Package: "Deploys as one native bundle",
-	Puzzle: "Extensions install and run unchanged",
-	Server: "Always-on relay, zero downtime",
-	Shield: "Every request verified, zero trust",
+	Puzzle: "Installed extensions run unmodified where their APIs are implemented",
+	Server: "Service route or planned relay",
+	Shield: "Verified request path where implemented",
 	Database: "Your data stays on your machine",
 };
 

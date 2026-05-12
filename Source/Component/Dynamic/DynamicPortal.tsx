@@ -94,20 +94,20 @@ const IconLabelMap: Record<string, string> = {
 	Activity: "Monitor health in real time",
 	AlertTriangle: "Catch issues before they reach users",
 	Blocks: "Composable access control",
-	Box: "Install extensions in one click",
-	BrainCircuit: "AI-powered completions built in",
+	Box: "Extension installation path",
+	BrainCircuit: "AI capability path",
 	Building2: "Organization-wide access control",
 	Check: "Requirement met",
 	CheckCircle: "Your identity is confirmed",
 	ChevronRight: "Continue",
 	CirclePlay: "Automate your release pipeline",
-	Cloud: "Your workspace syncs everywhere",
-	Code: "Write and ship faster",
+	Cloud: "Planned workspace sync",
+	Code: "Code and build tooling",
 	Cpu: "Runs at native CPU speed",
 	Database: "Your data stored safely",
-	Download: "Install in one click",
+	Download: "Download path",
 	ExternalLink: "Opens external resource",
-	FileText: "Every action on record",
+	FileText: "Audit record path",
 	Fingerprint: "Proves it's really you",
 	FlaskConical: "Tested before it ships to you",
 	FolderGit: "Your code, version-controlled",
@@ -115,32 +115,32 @@ const IconLabelMap: Record<string, string> = {
 	GitCommit: "Changes tracked forever",
 	GitFork: "Your code history, always intact",
 	GitPullRequest: "Review before it merges",
-	Globe: "Works anywhere in the world",
-	Hammer: "Compiles without the wait",
+	Globe: "Network or platform route",
+	Hammer: "Build tooling",
 	HardDrive: "Lives on your machine, not the cloud",
 	Hash: "Cryptographically verified",
 	Info: "More detail available",
-	Key: "Only you can get in",
-	KeyRound: "One login for every tool",
-	Laptop: "Native on your desktop",
+	Key: "Identity key",
+	KeyRound: "Identity provider route",
+	Laptop: "Desktop path",
 	Layers: "Type errors caught at compile time",
 	LifeBuoy: "Help when you need it",
 	Link2: "Connections stay live",
-	Lock: "End-to-end encrypted",
-	Monitor: "Full multi-monitor workspace",
+	Lock: "Encrypted or permissioned route",
+	Monitor: "Workbench surface",
 	Network: "Connects over your local network",
 	Package: "Shipped as one native bundle",
 	PackageOpen: "Inspect every line of code",
-	Puzzle: "Your VS Code extensions, unmodified",
+	Puzzle: "Unmodified extension path",
 	Radio: "Always listening for reconnects",
 	RefreshCcw: "Restarts cleanly every time",
 	RefreshCw: "Your preferences follow you",
-	Rocket: "Ship to production in under 60 s",
+	Rocket: "Release path",
 	RotateCcw: "Roll back in seconds",
 	Search: "Find anything in your codebase",
-	Server: "Always-on relay server",
+	Server: "Service route",
 	Settings: "Everything configurable by you",
-	Shield: "Zero trust - every request verified",
+	Shield: "Verification boundary",
 	Sliders: "Fine-tune every detail",
 	Terminal: "Full shell access, right here",
 	Timer: "Deploys in under 60 s",
@@ -266,7 +266,13 @@ const IconColorMap: Record<string, string> = {
  * Enterprise SSO form with organization domain input and Auth0 redirect buttons.
  * Routes through Auth0 Enterprise Connections (Okta, Azure AD, SAML).
  */
-const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
+const EnterpriseSSOForm = ({
+	Content,
+	Disabled,
+}: {
+	Content: TierContent;
+	Disabled?: boolean;
+}) => {
 	const [OrganizationDomain, SetOrganizationDomain] = useState("");
 	const [OktaDomain, SetOktaDomain] = useState("");
 	const [AzureTenant, SetAzureTenant] = useState("");
@@ -278,6 +284,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 		Connection: string,
 		Extra?: Record<string, string>,
 	) => {
+		if (Disabled) return;
 		const Params = new URLSearchParams();
 		Params.set("connection", Connection);
 		if (OrganizationDomain.trim()) {
@@ -298,6 +305,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 
 	const HandleDomainSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
+		if (Disabled) return;
 		if (!OrganizationDomain.trim()) return;
 		const DomainParams = new URLSearchParams();
 		DomainParams.set("login_hint", OrganizationDomain.trim());
@@ -332,6 +340,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 				<Button
 					type="submit"
 					className="StaccatoButton w-full"
+					disabled={Disabled}
 					style={{
 						backgroundColor: Content.Color,
 						borderColor: Content.BorderColor,
@@ -379,6 +388,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			<Button
 				className="StaccatoButton w-full"
 				variant="outline"
+				disabled={Disabled}
 				style={{ borderColor: Content.BorderColor }}
 				onClick={() =>
 					HandleEnterpriseLogin("okta", {
@@ -417,6 +427,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			<Button
 				className="StaccatoButton w-full"
 				variant="outline"
+				disabled={Disabled}
 				style={{ borderColor: Content.BorderColor }}
 				onClick={() =>
 					HandleEnterpriseLogin("waad", {
@@ -458,6 +469,7 @@ const EnterpriseSSOForm = ({ Content }: { Content: TierContent }) => {
 			<Button
 				className="StaccatoButton w-full"
 				variant="outline"
+				disabled={Disabled}
 				style={{ borderColor: Content.BorderColor }}
 				onClick={() =>
 					HandleEnterpriseLogin("samlp", {
@@ -529,6 +541,14 @@ const PortalTierRow = ({
 	const IsProvider = Content.Identifier === "Provider";
 	const IsLocalFirst = Content.Identifier === "LocalFirst";
 	const IsEnterprise = Content.Identifier === "Enterprise";
+	const StatusLabel =
+		Content.Status === "ComingSoon"
+			? "Coming Soon"
+			: Content.Status === "WIP"
+				? "WIP"
+				: undefined;
+	const IsUnavailable =
+		Content.Status === "ComingSoon" || Content.Status === "WIP";
 
 	const TierBorderClass = IsCloud
 		? "PortalTierCloud"
@@ -541,8 +561,11 @@ const PortalTierRow = ({
 	return (
 		<div
 			ref={RowReference}
-			className={`PortalTierRow ${TierBorderClass} StaccatoCard StaccatoBorderShimmer`}
+			className={`PortalTierRow ${TierBorderClass} StaccatoCard StaccatoBorderShimmer ${
+				IsUnavailable ? "opacity-70" : ""
+			}`}
 			role="region"
+			aria-disabled={IsUnavailable}
 			aria-label={`${Content.Title} authentication tier`}>
 			{/* Left: Login Box */}
 			<div className="PortalTierLogin">
@@ -552,6 +575,11 @@ const PortalTierRow = ({
 							<CardTitle className="text-xl">
 								{Content.Title}
 							</CardTitle>
+							{StatusLabel && (
+								<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+									{StatusLabel}
+								</span>
+							)}
 							{/* Tier header icon - tooltip shows tier identity label on hover */}
 							<div className="PortalTierIconWrapper">
 								<IconTooltip
@@ -570,6 +598,7 @@ const PortalTierRow = ({
 								className="space-y-4"
 								onSubmit={(Event) => {
 									Event.preventDefault();
+									if (IsUnavailable) return;
 									// Navigate to Auth0 Universal Login (database connection).
 									// Auth0AccountGate on /Account/SignIn handles the redirect.
 									window.location.href = "/Account/SignIn";
@@ -616,6 +645,7 @@ const PortalTierRow = ({
 								<Button
 									type="submit"
 									className="StaccatoButton w-full"
+									disabled={IsUnavailable}
 									style={{
 										backgroundColor: Content.Color,
 										borderColor: Content.BorderColor,
@@ -640,6 +670,7 @@ const PortalTierRow = ({
 								<Button
 									className="StaccatoButton w-full"
 									variant="outline"
+									disabled={IsUnavailable}
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => {
 										window.location.href =
@@ -662,6 +693,7 @@ const PortalTierRow = ({
 								<Button
 									className="StaccatoButton w-full"
 									variant="outline"
+									disabled={IsUnavailable}
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => {
 										window.location.href =
@@ -684,6 +716,7 @@ const PortalTierRow = ({
 								<Button
 									className="StaccatoButton w-full"
 									variant="outline"
+									disabled={IsUnavailable}
 									style={{ borderColor: Content.BorderColor }}
 									onClick={() => {
 										window.location.href =
@@ -733,6 +766,7 @@ const PortalTierRow = ({
 								</div>
 								<Button
 									className="StaccatoButton w-full"
+									disabled={IsUnavailable}
 									style={{
 										backgroundColor: Content.Color,
 										borderColor: Content.BorderColor,
@@ -766,7 +800,10 @@ const PortalTierRow = ({
 						)}
 
 						{IsEnterprise && (
-							<EnterpriseSSOForm Content={Content} />
+							<EnterpriseSSOForm
+								Content={Content}
+								Disabled={IsUnavailable}
+							/>
 						)}
 					</CardContent>
 				</Card>
@@ -807,9 +844,25 @@ const PortalTierRow = ({
 						{Content.Feature.map((Feature, FeatureIndex) => (
 							<li
 								key={FeatureIndex}
-								className="PortalTierFeatureItem">
-								<span className="text-sm font-medium">
+								className={`PortalTierFeatureItem ${
+									(Feature.Status ?? Content.Status) &&
+									(Feature.Status ?? Content.Status) !==
+										"Ready"
+										? "opacity-60"
+										: ""
+								}`}>
+								<span className="flex flex-wrap items-center gap-2 text-sm font-medium">
 									{Feature.Heading}
+									{(Feature.Status ?? Content.Status) &&
+										(Feature.Status ?? Content.Status) !==
+											"Ready" && (
+											<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+												{(Feature.Status ??
+													Content.Status) === "WIP"
+													? "WIP"
+													: "Coming Soon"}
+											</span>
+										)}
 								</span>
 								<span className="text-xs text-muted-foreground">
 									{Feature.Description}
@@ -936,13 +989,23 @@ const PortalTierRow = ({
 								(CapabilityText, CapabilityIndex) => (
 									<div
 										key={CapabilityIndex}
-										className="PortalTierCapabilityItem StaccatoBreath">
+										className={`PortalTierCapabilityItem StaccatoBreath ${
+											IsUnavailable ? "opacity-60" : ""
+										}`}>
 										<span className="text-xs">
 											{CapabilityText}
 										</span>
+										{StatusLabel && (
+											<>
+												{"\u2001"}
+												<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+													{StatusLabel}
+												</span>
+											</>
+										)}
 										{"\u2001"}
 										<IconTooltip
-											Label="Zero trust - every request verified"
+											Label="Verification boundary"
 											Icon={lucide.Shield}
 											Color={
 												IconColorMap["Shield"] ??

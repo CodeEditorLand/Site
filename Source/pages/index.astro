@@ -7,12 +7,11 @@ import { GetI18n } from "../Library/I18n/Server";
 const T = GetI18n();
 
 const MetaTitle = T("meta.home.title", {
-	defaultValue:
-		"Code Editor Land | No Electron. No Chromium. Every Extension Runs Unchanged.",
+	defaultValue: "Code Editor Land | Rust and Tauri Editor Stack",
 });
 const MetaDescription = T("meta.home.description", {
 	defaultValue:
-		"Code Editor Land is a high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code compatibility without the Electron bloat. Builds and installs on macOS and Windows. Every extension runs unchanged.",
+		"Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
 });
 ---
 
@@ -26,17 +25,17 @@ const MetaDescription = T("meta.home.description", {
 				"name": "Code Editor Land",
 				"alternateName": "Land",
 				"description":
-					"A high-performance, resource-efficient code editor built with Rust and Tauri. Experience VS Code compatibility without the Electron bloat. Builds and installs on macOS and Windows.",
+					"An open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
 				"url": "https://editor.land",
 				"applicationCategory": "DeveloperApplication",
-				"operatingSystem": "macOS, Windows",
+				"operatingSystem": "macOS, Windows, Linux",
 				"offers": {
 					"@type": "Offer",
 					"price": "0",
 					"priceCurrency": "USD",
 				},
 				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
-				"softwareVersion": "Active Release",
+				"softwareVersion": "Pre-release",
 				"downloadUrl": "https://editor.land/Download",
 				"screenshot": "https://editor.land/Favicon/og-image.png",
 				"author": [
@@ -67,9 +66,9 @@ const MetaDescription = T("meta.home.description", {
 				},
 				"featureList": [
 					"Native Rust backend with gRPC IPC",
-					"VS Code extension compatibility",
+					"VS Code API compatibility through Cocoon",
 					"Effect-TS type-safe UI services",
-					"Builds and installs on macOS and Windows",
+					"Source build targets for macOS, Windows, and Linux",
 					"Open source under CC0 license",
 				],
 				"isAccessibleForFree": true,
@@ -95,7 +94,7 @@ const MetaDescription = T("meta.home.description", {
 		</picture>
 		<span
 			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-			No Telemetry&#x2001;<span
+			Telemetry Feature Gated&#x2001;<span
 				class="h-1.5 w-1.5 rounded-none bg-green-500"
 				aria-hidden="true"></span>
 		</span>
@@ -130,7 +129,7 @@ const MetaDescription = T("meta.home.description", {
 		</span>
 		<span
 			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			VS Code Compatible
+			VS Code API In Progress
 		</span>
 		<a
 			href="https://PlayForm.Cloud"

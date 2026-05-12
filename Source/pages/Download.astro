@@ -9,44 +9,44 @@ const T = GetI18n();
 
 const TransparencyContent = {
 	Title: T("download.transparency.title", {
-		defaultValue: "VS Code Phones Home. Land Does Not.",
+		defaultValue: "Telemetry Is Compile-Gated in Land.",
 	}),
 	Subtitle: T("download.transparency.subtitle", {
 		defaultValue:
-			"VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent - it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable.",
+			"Land keeps telemetry and tracing behind explicit feature paths in the native code. The default public message is simple: do not claim silent uploads, and do not imply diagnostics are sent unless a build enables that infrastructure.",
 	}),
 	Policy: [
 		{
 			Identifier: "no-telemetry-default",
-			Title: "Not disabled. Absent.",
+			Title: "Compile-gated by default.",
 			Description:
-				"VS Code's telemetry can be reduced via settings, but the code paths remain in the binary. Land's Telemetry feature is not compiled in by default. The code does not exist in the binary. There is nothing to disable.",
+				"Land uses Rust feature gates for telemetry and tracing paths. Public builds should describe which feature profile was used instead of relying on a blanket privacy slogan.",
 			Icon: "EyeOff",
 			Status: "Disabled" as const,
-			Detail: "Telemetry is a Cargo feature flag, not in default features. Must be explicitly opted in at compile time.",
+			Detail: "Telemetry-related code is behind feature paths and should be documented per build profile.",
 		},
 		{
 			Identifier: "no-crash-reporter",
-			Title: "No crash reporter. No upload. No Microsoft endpoints.",
+			Title: "No Microsoft endpoint dependency.",
 			Description:
-				"VS Code (not VSCodium) includes Microsoft telemetry endpoints that make network calls regardless of settings. Land's CC0 base has all of these removed at the source level. No external error endpoints, no silent uploads.",
+				"Land is built from a CC0 Code-OSS-derived base with Microsoft service dependencies removed or replaced where the source path requires it. Crash reporting should be documented by the release profile that enables it.",
 			Icon: "Shield",
 			Status: "Disabled" as const,
-			Detail: "CC0-licensed Code-OSS base with all Microsoft telemetry endpoints removed.",
+			Detail: "CC0-licensed Code-OSS-derived base with Land-owned service wiring.",
 		},
 		{
 			Identifier: "no-phone-home",
-			Title: "No DO_NOT_TRACK header needed.",
+			Title: "No blanket tracking claim.",
 			Description:
-				"There is nothing to track. No usage analytics, no pageview beacons, no feature flag pings. The concept of opting out does not apply when there is no telemetry system.",
+				"The editor should say exactly which runtime services are enabled. Website analytics, account auth, and editor telemetry are separate systems and should not be collapsed into one claim.",
 			Icon: "Lock",
 			Status: "Disabled" as const,
 		},
 		{
 			Identifier: "zero-cost-noop",
-			Title: "Absent code has zero runtime cost.",
+			Title: "Disabled feature paths stay out of the runtime.",
 			Description:
-				"VS Code's telemetry code occupies memory and CPU even when \"disabled\" - the functions exist, the branches run, the results are just dropped. Rust's cfg(feature) gates eliminate dead code at compile time. A feature that is not compiled in costs exactly zero.",
+				"Rust `cfg(feature)` gates can remove disabled code paths at compile time. That is the claim Land can make when a published build profile shows which features were compiled.",
 			Icon: "Zap",
 			Status: "Active" as const,
 			Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
@@ -55,7 +55,7 @@ const TransparencyContent = {
 			Identifier: "opt-in-otel",
 			Title: "Need traces? Opt in. Your infrastructure only.",
 			Description:
-				"Running Land in a production deployment and need distributed traces? Enable OpenTelemetry with a single compile flag. Metrics, spans, and distributed tracing on your own infrastructure. No external transmission.",
+				"Tracing infrastructure exists in source for deployments that choose it. Public docs should name the endpoint and build feature before presenting it as enabled.",
 			Icon: "Eye",
 			Status: "Optional" as const,
 			Detail: "cargo build --features Telemetry\nSub-features: MetricsCollection, DistributedTracing.",
@@ -64,7 +64,7 @@ const TransparencyContent = {
 			Identifier: "effect-ts-local",
 			Title: "Extension host timing stays in the process.",
 			Description:
-				"Cocoon uses Effect-TS's TelemetryService to track internal RPC and bootstrap timing - the data used to make the extension host faster. Nothing leaves the process. TelemetryMock layer for zero-overhead testing.",
+				"Cocoon has internal timing and service diagnostics for extension-host work. Unless a transport is configured, that data is local process instrumentation rather than an external product-analytics claim.",
 			Icon: "Layers",
 			Status: "Active" as const,
 			Detail: "Effect-TS TelemetryService with TelemetryMock layer for zero-overhead testing.",
@@ -76,7 +76,7 @@ const TransparencyContent = {
 			Name: "debug",
 			Tier: "Debug" as const,
 			Workbench: "Browser",
-			Feature: "70-80%",
+			Feature: "Browser UI",
 			Status: "Available" as const,
 		},
 		{
@@ -84,7 +84,7 @@ const TransparencyContent = {
 			Name: "debug-mountain",
 			Tier: "Debug" as const,
 			Workbench: "Mountain",
-			Feature: "80-90%",
+			Feature: "Mountain UI",
 			Status: "Recommended" as const,
 		},
 		{
@@ -92,7 +92,7 @@ const TransparencyContent = {
 			Name: "debug-electron",
 			Tier: "Debug" as const,
 			Workbench: "Electron",
-			Feature: "95%+",
+			Feature: "Legacy Check",
 			Status: "Legacy" as const,
 		},
 		{
@@ -100,7 +100,7 @@ const TransparencyContent = {
 			Name: "production",
 			Tier: "Release" as const,
 			Workbench: "Mountain",
-			Feature: "80-90%",
+			Feature: "Release Path",
 			Status: "Recommended" as const,
 		},
 		{
@@ -108,7 +108,7 @@ const TransparencyContent = {
 			Name: "release",
 			Tier: "Release" as const,
 			Workbench: "Mountain",
-			Feature: "100%",
+			Feature: "Bundle Path",
 			Status: "Available" as const,
 		},
 		{
@@ -116,7 +116,7 @@ const TransparencyContent = {
 			Name: "web-browser",
 			Tier: "Release" as const,
 			Workbench: "Browser",
-			Feature: "70-80%",
+			Feature: "Web Path",
 			Status: "Available" as const,
 		},
 		{
@@ -177,10 +177,15 @@ const TransparencyContent = {
 			Identifier: "production-release",
 			Name: "Release Build",
 			Description:
-				"Optimized, signed, and ready to ship. Full bundling with PGP signatures for every artifact.",
+				"Optimized release packaging path. Public signing and published verification artifacts are still being prepared.",
 			Icon: "Server",
 			Command: "bash Maintain/Release/Build.sh --profile production",
-			Feature: ["Optimized", "PGP Signed", "Clean Build", "Packaged"],
+			Feature: [
+				"Optimized",
+				"Signing Planned",
+				"Clean Build",
+				"Packaged",
+			],
 		},
 		{
 			Identifier: "web-only",
@@ -207,7 +212,7 @@ const DownloadContent = {
 		Title: T("download.page.title", { defaultValue: "Download Land" }),
 		Subtitle: T("download.page.subtitle", {
 			defaultValue:
-				"Native on macOS, Windows, and Linux.\n\nZero cost, zero tracking, full VS Code extension support.",
+				"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 		}),
 		Platforms: [], // Will be fetched by DynamicPlatformGrid
 		ShowVerification: true,
@@ -261,28 +266,28 @@ const DownloadContent = {
 	},
 	VerificationInfo: {
 		Title: T("download.verification.title", {
-			defaultValue: "Every Release is Signed. Verify Yours.",
+			defaultValue: "Verification Will Ship With Public Releases.",
 		}),
 		Description: T("download.verification.description", {
 			defaultValue:
-				"Every Land release is PGP-signed before it ships.\n\nVerify your download to confirm you got exactly what was built.",
+				"Release downloads will publish checksum and signature material when public installers are available.",
 		}),
 		DownloadVerification: {
-			SHA256: "Included in each release archive",
-			PGPSignature: "Included in each release archive",
+			SHA256: "Available with public release artifacts",
+			PGPSignature: "Available with public release artifacts",
 			SigningKeyId: "Published with each release",
 			VerificationInstructions:
-				"To verify: shasum -a 256 <filename> and compare output with the published checksum. For PGP: gpg --verify <file>.sig <file>",
+				"Verification instructions will be published beside the installer, checksum, and signature artifacts.",
 		},
 		IntegrityVerification: {
-			SHA256: "Included in each release archive",
-			PGPSignature: "Included in each release archive",
+			SHA256: "Available with public release artifacts",
+			PGPSignature: "Available with public release artifacts",
 			VerificationInstructions:
-				"All releases include SHA-256 checksums and PGP signatures. Download the .sig file alongside your binary and run: gpg --verify <file>.sig <file>",
+				"Air contains checksum and integrity code. Public release verification material will be published with the installers.",
 		},
 		DownloadButton: {
 			Text: T("download.verification.downloadButton", {
-				defaultValue: "Download PGP Public Key",
+				defaultValue: "View Verification Plan",
 			}),
 			Variant: "outline",
 			Size: "default",
@@ -314,11 +319,11 @@ const DownloadContent = {
 
 const MetaTitle = T("meta.downloads.title", {
 	defaultValue:
-		"Download Code Editor Land | No Electron. No Chromium. Every Extension Runs Unchanged.",
+		"Download Code Editor Land | Source Builds and Public Release Prep",
 });
 const MetaDescription = T("meta.downloads.description", {
 	defaultValue:
-		"Download Code Editor Land for macOS, Windows, and Linux.\nAll releases are signed and verified for your security.",
+		"Code Editor Land source builds target macOS, Windows, and Linux. Public installers, signing, and verification artifacts are still being prepared.",
 });
 ---
 
@@ -336,7 +341,7 @@ const MetaDescription = T("meta.downloads.description", {
 		</picture>
 		<span
 			class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
-			No Telemetry&#x2001;<span
+			Telemetry Feature Gated&#x2001;<span
 				class="h-1.5 w-1.5 rounded-none bg-green-500"
 				aria-hidden="true"></span>
 		</span>
@@ -346,7 +351,7 @@ const MetaDescription = T("meta.downloads.description", {
 		</span>
 		<span
 			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			PGP Signed
+			Signing Planned
 		</span>
 		<span
 			class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 align-middle font-medium text-blue-700">
@@ -383,11 +388,11 @@ const MetaDescription = T("meta.downloads.description", {
 		</span>
 		<span
 			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			macOS + Windows + Linux
+			macOS + Windows + Linux Targets
 		</span>
 		<span
 			class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
-			VS Code Extensions
+			Unmodified Extensions
 		</span>
 	</div>
 	<DownloadsPage

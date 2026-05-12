@@ -14,4 +14,5 @@ export default interface Interface {
 	CTA: ButtonContent;
 	Highlighted?: boolean;
 	Popular?: boolean;
+	Status?: "Ready" | "ComingSoon" | "WIP";
 }

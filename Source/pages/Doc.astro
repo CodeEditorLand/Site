@@ -277,7 +277,7 @@ const Element = [
 							{
 								T("common.docs.architecture.intro", {
 									defaultValue:
-										"VS Code runs on Electron: a Chromium browser, a Node.js runtime, and a single-threaded extension host. Land replaces each piece with an independent element that preserves the VS Code extension API while eliminating the architectural constraints. Browse individual elements in the Element section above, or explore all fifteen repositories on GitHub.",
+										"VS Code runs on Electron: a Chromium browser, a Node.js runtime, and an extension-host model. Land replaces those pieces with independent elements while preserving the VS Code extension API as the compatibility target. Browse individual elements in the Element section above, or explore the workspace on GitHub.",
 								})
 							}
 						</p>
@@ -426,7 +426,7 @@ const Element = [
 							{
 								T("common.docs.deployments.intro", {
 									defaultValue:
-										"All Land services are deployed on Cloudflare's edge network:",
+										"Public website and documentation surfaces are deployed separately from the local editor runtime:",
 								})
 							}
 						</p>

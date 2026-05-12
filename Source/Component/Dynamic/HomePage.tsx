@@ -41,7 +41,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:hero.subtitle", {
 				defaultValue:
-					"VS Code runs on Electron. That means Chromium, Node.js, and a gigabyte of RAM just to open a file.\n\nLand replaces the entire Electron stack with Rust, Tauri, and Effect-TS. The difference is felt on first launch.",
+					"VS Code runs on Electron. Land is rebuilding the editor stack around Rust, Tauri, and Effect-TS while keeping the VS Code extension API as the compatibility target.\n\nThe primary path is source-build first today, with public installers and long-tail extension coverage still in progress.",
 			}),
 			PrimaryCta: {
 				Text: T("common:button.download", {
@@ -66,14 +66,14 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "1",
 					Title: "Rust Core",
 					Tooltip:
-						"Runs at native CPU speed. Zero Electron overhead.",
+						"Native backend code for editor services, IPC, files, terminals, and process control.",
 					Colors: ["var(--ExtensionRust)", "var(--Mute)"],
 				},
 				{
 					Id: "2",
 					Title: "Tauri UI",
 					Tooltip:
-						"30\u00d7 lighter than Electron, native look on every OS",
+						"Uses the operating system WebView instead of bundling Chromium.",
 					Colors: [
 						"var(--ExtensionTauri)",
 						"var(--Primary)",
@@ -85,7 +85,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "3",
 					Title: "Effect-TS Services",
 					Tooltip:
-						"Type errors caught at compile time, not in production",
+						"Typed services, scoped resources, cancellation, and supervised async work.",
 					Colors: [
 						"var(--ExtensionEffectTypeScript)",
 						"var(--ExtensionEffectTypeScriptFore)",
@@ -95,20 +95,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "4",
 					Title: "gRPC IPC",
-					Tooltip: "Sub-millisecond communication between processes",
+					Tooltip:
+						"Typed protocol surfaces between Mountain, Cocoon, Air, and related services.",
 					Colors: ["var(--SpinegRPC)", "var(--SpineIPC)"],
 				},
 				{
 					Id: "5",
 					Title: "Extension Host",
-					Tooltip: "Your VS Code extensions run completely unchanged",
+					Tooltip:
+						"Unmodified VS Code extensions run through Cocoon when their API surface is implemented.",
 					Colors: ["var(--TierProvider)"],
 				},
 				{
 					Id: "6",
 					Title: "Cross-Platform",
 					Tooltip:
-						"One codebase, native on macOS and Windows (Linux in progress)",
+						"Source and Tauri bundle configuration target macOS, Windows, and Linux.",
 					Colors: [
 						"var(--OSMacOS)",
 						"var(--OSWindows)",
@@ -119,7 +121,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "7",
 					Title: "VS Code API",
 					Tooltip:
-						"Full VS Code API surface. No extension rewrites needed.",
+						"Compatibility target for commands, workspace, windows, terminals, webviews, language features, and extension activation.",
 					Colors: ["var(--SpineIPC)"],
 				},
 				{
@@ -140,7 +142,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:features.subtitle", {
 				defaultValue:
-					"The extension ecosystem you already rely on, running on a stack designed for performance.",
+					"The editor pieces are being rebuilt around native services, typed IPC, and a compatibility host that can be checked against real source.",
 			}),
 			Features: [
 				{
@@ -148,13 +150,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Zap",
 					Icons: ["/Image/Rust.svg", "/Image/Tauri.svg", "Zap"],
 					Title: T("home:features.item.designTokens.title", {
-						defaultValue: "No more frozen cursors.",
+						defaultValue: "Native services where they count.",
 					}),
 					Description: T(
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"VS Code with a medium project uses 500 MB to 1.5 GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.\n\nMountain runs native Rust and Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks.",
+								"Mountain contains Rust services for windows, files, terminals, child processes, clipboard, and extension IPC. Echo provides scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming public benchmark numbers before a reproducible suite exists.",
 						},
 					),
 				},
@@ -163,13 +165,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Box",
 					Icons: ["/Image/EffectTS.svg", "Box", "Puzzle"],
 					Title: T("home:features.item.componentLibrary.title", {
-						defaultValue: "Every extension runs unchanged.",
+						defaultValue: "Unmodified extensions, no fork path.",
 					}),
 					Description: T(
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged.",
+								"Cocoon hosts existing VS Code extension code and provides the `vscode` API shim. Mountain scans installed extensions, reads manifests, handles VSIX install and uninstall routes, and notifies Cocoon when extensions change.\n\nThat supports a strong claim: extensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension's API usage and on services that are still being filled in.",
 						},
 					),
 				},
@@ -188,7 +190,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other on that event loop.\n\nEffect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Bugs that reach production in VS Code never compile in Land.",
+								"Effect-TS gives Cocoon typed errors, scoped resources, cancellation, and supervised concurrency for extension-host work.\n\nThat does not magically remove every runtime bug, but it does make failure paths explicit in the services Land controls.",
 						},
 					),
 				},
@@ -197,13 +199,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Icon: "Globe",
 					Icons: ["/Image/Tauri.svg", "Globe", "Package"],
 					Title: T("home:features.item.versionControl.title", {
-						defaultValue: "One codebase, every platform.",
+						defaultValue: "One source tree, configured targets.",
 					}),
 					Description: T(
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"Building native apps for three operating systems used to mean three rendering engines, three toolchains, and three deployment pipelines.\n\nTauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux. No bundled Chromium.",
+								"Tauri uses the operating system WebView on each platform, so the Mountain desktop path does not bundle Chromium.\n\nThe repository includes macOS, Windows, and Linux build configuration. Public installer coverage is still being completed.",
 						},
 					),
 				},
@@ -216,13 +218,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"/Image/EffectTS.svg",
 					],
 					Title: T("home:features.item.cicdIntegration.title", {
-						defaultValue: "No Restart to Update.",
+						defaultValue: "Update plumbing in progress.",
 					}),
 					Description: T(
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt.",
+								"Air contains Rust services for update checks, downloads, authentication, indexing, health, and a Vine gRPC server.\n\nThose services are real source today. The public updater flow, signing story, and release distribution path are still being finished.",
 						},
 					),
 				},
@@ -252,7 +254,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone demonstrates the stack works, not a feature we are catching up on.",
+					"Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is described as source status, integration status, or release work so the website does not outrun the code.",
 			}),
 			Tiers: [
 				{
@@ -262,7 +264,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"All fifteen elements are in active development and independently deployable. The runtime is faster than VS Code. The extension API is implemented. Each element is a standalone repository you can inspect and contribute to today.",
+							"The fifteen element directories are present in the Land workspace. The active desktop path is Mountain, Cocoon, Sky, Wind, Vine, Common, Echo, Air, Mist, Rest, Output, SideCar, and Maintain. Grove and Worker are present with integration scope that differs by build profile.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
@@ -272,47 +274,48 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						}),
 						T("home:roadmap.tiers.current.elements.cocoon", {
 							defaultValue:
-								"Cocoon 🦋\nExtension Host\nFull VS Code API via Effect-TS, every extension unchanged",
+								"Cocoon 🦋\nExtension Host\nUnmodified VS Code extensions through Effect-TS routes",
 						}),
 						T("home:roadmap.tiers.current.elements.wind", {
 							defaultValue:
-								"Wind 🍃\nWorkbench Shell\nEffect-TS layers, direct OS calls, no IPC proxy",
+								"Wind 🍃\nWorkbench Shell\nEffect-TS layers for native workbench services",
 						}),
 						T("home:roadmap.tiers.current.elements.sky", {
 							defaultValue:
-								"Sky 🌌\nAstro UI Layer\nEvery panel a component, instant hot-reload",
+								"Sky 🌌\nAstro UI Layer\nWorkbench routes and WebView bridge",
 						}),
 						T("home:roadmap.tiers.current.elements.air", {
 							defaultValue:
-								"Air 🪁\nBackground Daemon\nPre-stages updates, no Restart to Update prompt",
+								"Air 🪁\nBackground Services\nUpdates, downloads, auth, indexing, and health",
 						}),
 						T("home:roadmap.tiers.current.elements.echo", {
 							defaultValue:
-								"Echo 📣\nWork-Stealing Scheduler\nAll CPU cores, heavy tasks never block the editor",
+								"Echo 📣\nScheduler Primitives\nBounded background work for Rust services",
 						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.current.features.1", {
 							defaultValue:
-								"Every extension runs unchanged no rewrites",
+								"Installed extensions run unmodified through Cocoon",
 						}),
 						T("home:roadmap.tiers.current.features.2", {
 							defaultValue:
-								"No Electron OS's own renderer 70% less RAM",
+								"Tauri desktop path uses the operating system WebView",
 						}),
 						T("home:roadmap.tiers.current.features.3", {
 							defaultValue:
-								"Fibers, not Promises interruptible concurrent",
+								"Effect fibers for cancellable service work",
 						}),
 						T("home:roadmap.tiers.current.features.4", {
 							defaultValue:
-								"Telemetry is a compile flag absent, not disabled",
+								"Telemetry features are compile-gated in Rust",
 						}),
 						T("home:roadmap.tiers.current.features.5", {
 							defaultValue: "CC0 public domain no restrictions",
 						}),
 						T("home:roadmap.tiers.current.features.6", {
-							defaultValue: "macOS Windows Linux",
+							defaultValue:
+								"macOS primary path, Windows and Linux configured",
 						}),
 					],
 					CTA: {
@@ -329,23 +332,24 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Name: T("home:roadmap.tiers.future.name", {
 						defaultValue: "v1.0",
 					}),
+					Status: "WIP",
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",
+							"Active milestones across the element repos. These items are integration and release goals, not claims that the public build already ships them.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
 						T("home:roadmap.tiers.future.elements.vine", {
 							defaultValue:
-								"Vine 🌿\nProtocol In Progress\nMountain and Grove channel completing",
+								"Vine 🌿\nProtocol In Progress\nMountain, Cocoon, Air, and Grove contracts",
 						}),
 						T("home:roadmap.tiers.future.elements.cocoon", {
 							defaultValue:
-								"Cocoon 🦋\nExtension Compatibility Pass\nHigh-fidelity VS Code API coverage",
+								"Cocoon 🦋\nExtension Compatibility Pass\nLong-tail VS Code API coverage",
 						}),
 						T("home:roadmap.tiers.future.elements.grove", {
 							defaultValue:
-								"Grove 🌳\nWASM Sandbox Stabilizing\nCapability-based extension isolation",
+								"Grove 🌳\nWASM Host Stabilizing\nCapability-based extension isolation path",
 						}),
 						T("home:roadmap.tiers.future.elements.rest", {
 							defaultValue:
@@ -357,32 +361,30 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						}),
 						T("home:roadmap.tiers.future.elements.air", {
 							defaultValue:
-								"Air 🪁\nSigned CDN Delivery\nCloudflare Workers distribution",
+								"Air 🪁\nRelease Delivery\nSigning and distribution path",
 						}),
 					],
 					Features: [
 						T("home:roadmap.tiers.future.features.1", {
 							defaultValue:
-								"VS Code Marketplace every extension installs unchanged",
+								"Marketplace installation path under review",
 						}),
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue:
-								"Grove hardware-enforced extension isolation",
+							defaultValue: "Grove Wasmtime host integration",
 						}),
 						T("home:roadmap.tiers.future.features.3", {
-							defaultValue:
-								"Vine typed at the wire all IPC finalized",
+							defaultValue: "Vine typed IPC coverage expanding",
 						}),
 						T("home:roadmap.tiers.future.features.4", {
 							defaultValue:
-								"Cross-platform native installer via Tauri",
+								"Cross-platform public installers via Tauri",
 						}),
 						T("home:roadmap.tiers.future.features.5", {
 							defaultValue: "Source map generation via OXC",
 						}),
 						T("home:roadmap.tiers.future.features.6", {
 							defaultValue:
-								"Cloudflare Workers download distribution live",
+								"Download distribution and verification publishing",
 						}),
 					],
 					CTA: {
@@ -402,7 +404,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code's Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
+					"Land replaces VS Code's Electron stack element by element.\n\nThe element directories are inspectable in source, but each one is described here by what the current code supports or is actively wiring.",
 			}),
 			Testimonials: [
 				{
@@ -412,11 +414,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
 						defaultValue:
-							"Background Daemon - Silent Updater - Workspace Indexer",
+							"Background Services - Downloader - Workspace Indexer",
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"Rust daemon with Daemon, Downloader, Updates, Security, Indexing, Authentication, Resilience, and HealthCheck modules\nRuns after the editor closes\nDownloads the next release, verifies its PGP signature, and stages it on disk\nIndexes the workspace for instant search\nThe next launch opens on the new version with no prompt",
+							"Rust services for downloads, updates, authentication, indexing, resilience, health, and Vine IPC\nRelease signing and public installer delivery are still being completed\nDesigned to keep update and indexing work outside the main editor surface",
 					}),
 				},
 				{
@@ -426,11 +428,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
 						defaultValue:
-							"Extension Host - Full VS Code API - Effect-TS Fiber Shim",
+							"Extension Host - Unmodified VS Code Extensions - Effect-TS Services",
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
-							"Node.js sidecar that intercepts require and import at the module resolver level\nRoutes every VS Code API call through a complete Effect-TS service layer\nNo patches applied to extensions\nInstall any extension from the marketplace and it runs unchanged",
+							"Node.js sidecar for VS Code extension-host compatibility\nRuns existing extension entry points without rewriting their source\nRoutes implemented API calls through Effect-TS services and the Mountain bridge\nCore commands, workspace, window, terminal, webview, and language-provider surfaces exist in source",
 					}),
 				},
 				{
@@ -440,11 +442,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
 						defaultValue:
-							"Shared Foundation - Abstract Traits - Zero Concrete Implementation",
+							"Shared Foundation - Traits - Cross-Element Types",
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
-							"Pure abstract core shared by every Land element\nDefines typed Effect-TS effects, composable service traits, and reusable building blocks\nContains no concrete implementations\nMock any trait and test any element without a running window, webview, or sidecar",
+							"Shared Rust crate and TypeScript package for cross-element contracts\nDefines reusable traits, DTOs, utility types, and service boundaries\nNot a standalone runtime process\nKeeps shared interfaces visible instead of scattering them through elements",
 					}),
 				},
 				{
@@ -458,7 +460,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
-							"Lock-free concurrency runtime built on crossbeam-deque\nEvery task runs inside a supervised worker pool\nNo fire-and-forget spawns - graceful startup and shutdown are guaranteed\nHeavy indexing and analysis run across all CPU cores without blocking the editor thread",
+							"Scheduler primitives built around supervised Rust worker pools\nUsed by native services that need bounded background execution\nThe source supports cancellation and shutdown paths without promising that every workload already routes through Echo",
 					}),
 				},
 				{
@@ -472,7 +474,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
-							"Runs extensions compiled to WebAssembly inside Wasmtime\nConfigurable per-extension resource limits and capability-based security grants\nSupports gRPC, IPC, and WASM transport channels\nAn extension can only access what you explicitly permit",
+							"Contains a Wasmtime-backed WebAssembly host path and Grove gRPC protocol definitions\nIncludes transport and capability-oriented modules for extension isolation work\nPrimary VS Code compatibility still runs through Cocoon while Grove integration matures",
 					}),
 				},
 				{
@@ -482,11 +484,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
 						defaultValue:
-							"Build Orchestrator - Embedded Rhai Scripting - TOML/JSON5 Config",
+							"Build Orchestrator - Configuration - Release Profiles",
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
-							"Drives build pipelines for the entire Land ecosystem\nEmbedded Rhai scripting handles flexible per-element build logic\nTOML and JSON5 configurations are validated at compile time\nSame commit always produces the same artifact - no environment-dependent output",
+							"Coordinates development, debug, and release build profiles across Land elements\nKeeps profile names and build scripts visible for contributors\nDeterministic release claims are held until the public release pipeline is fully published",
 					}),
 				},
 				{
@@ -500,7 +502,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
-							"Creates a sandboxed DNS zone that resolves every *.editor.land hostname to 127.0.0.1\nAll Land inter-service traffic flows through this local layer\nNo Land service hostname is resolvable on the public internet\nClean network boundary between the editor and external traffic",
+							"Provides local DNS, resolver, WebSocket, zone, and forward-security code\nMountain has a native Mist feature path, but not every internal route flows through Mist yet\nThe goal is a clean local service boundary without exposing private service names publicly",
 					}),
 				},
 				{
@@ -514,7 +516,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
-							"Handles windows, file I/O, child processes, and extension IPC via Rust and Tauri\nResponds in microseconds where Electron takes milliseconds\nOpens hidden until Sky signals ready - panels render with data on first paint\nAuthentication tokens live in the OS keychain, never written to disk",
+							"Handles windows, file I/O, child processes, terminals, clipboard, and extension IPC through Rust and Tauri\nIncludes Vine and Cocoon bridge code for the primary desktop path\nUses native integrations such as keyring where the feature path requires them",
 					}),
 				},
 				{
@@ -528,7 +530,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
-							"Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts\nA plugin-routed architecture handles each source type on its own dedicated path\nEvery bundle is deterministic - same commit always produces the same checksum-verified output",
+							"Processes TypeScript and platform code through plugin-routed transforms\nContains the dynamic import rewrite and bundling support used by the output pipeline\nChecksum and release guarantees should come from the published pipeline, not from marketing copy",
 					}),
 				},
 				{
@@ -538,11 +540,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Rest",
 					Role: T("home:architecture.rest.subtitle", {
 						defaultValue:
-							"TypeScript Compiler - OXC - Rust-Native - 2-3x esbuild Speed",
+							"TypeScript Transform Pipeline - OXC - Rust-Native",
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
-							"OXC-powered TypeScript compiler written in Rust\n100% compatible output at 2-3x the speed of esbuild\nZero Node.js overhead in the compilation path\nSource map support via OXC transformer is in active development",
+							"OXC-based transform work for TypeScript and VS Code platform code\nMeant to reduce reliance on Node-hosted compilation paths over time\nSource maps and public benchmark claims remain integration work",
 					}),
 				},
 				{
@@ -556,7 +558,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
-							"Packages and selects the exact Node.js sidecar binary at compile time based on the target triple\nSupports aarch64-apple-darwin, x86_64-pc-windows-msvc, and four additional platforms\nCocoon always receives the binary that matches the host exactly\nNo runtime detection, no fallback chains",
+							"Packages host-specific sidecar binaries for the Cocoon path\nKeeps target triples and selection logic in source rather than hidden installer scripts\nAdditional platform packaging remains tied to the release pipeline",
 					}),
 				},
 				{
@@ -570,7 +572,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
-							"Every panel, sidebar, and tab bar is an Astro component\nStatus bar items surface through VS Code's native status bar mechanism\nThree workbench layouts: full desktop, embedded, and minimal\nTauri reloads Sky instantly on any component change - no full restart required",
+							"Astro workbench routes and WebView bridge code for the editor UI\nSupports the visual shell that Mountain loads through Tauri\nPanel and layout coverage should be checked against the current Sky routes",
 					}),
 				},
 				{
@@ -584,7 +586,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
-							"Every inter-process service interface starts as a .proto file\nGenerated Rust and TypeScript stubs are the only way Land processes communicate\nTyped at the wire, typed at the call site, verified at compile time\nRefactor a message field and every consumer breaks loudly instead of silently",
+							"Protocol contracts live in .proto files for Mountain, Cocoon, Air, Grove, and related services\nGenerated stubs give Rust and TypeScript a shared wire shape where the route is implemented\nCoverage is expanding across the IPC surface",
 					}),
 				},
 				{
@@ -594,11 +596,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
 						defaultValue:
-							"VS Code Workbench Reimplemented - Effect-TS Layers - Native OS API",
+							"Workbench Services - Effect-TS Layers - Native Bridges",
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
-							"TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar\nEvery service is a composable Effect-TS Layer - file dialogs, clipboard, configuration, output channels\nNative OS calls via Tauri\nNo Electron IPC proxy, no renderer-to-main roundtrip",
+							"TypeScript workbench services for panels, sidebars, activity bar, configuration, and output channels\nEffect-TS layers keep service dependencies explicit\nNative OS calls use the Tauri bridge where the Mountain path implements them",
 					}),
 				},
 				{
@@ -608,11 +610,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {
 						defaultValue:
-							"Service Worker - Offline Cache - AES-GCM Auth - HMAC Request Signing",
+							"Service Worker - Offline Cache - CSS Import Support",
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
-							"Manages caching, offline support, and dynamic CSS imports for the editor shell\nAuth tokens are AES-GCM encrypted and stored in memory\nEvery outbound request is HMAC-signed\nTokens refresh automatically - the shell stays functional when the network drops",
+							"Manages browser-worker support for caching and dynamic CSS imports where the web shell needs it\nSecurity-sensitive auth claims are kept out until the active Worker code and release profile prove them end to end",
 					}),
 				},
 			],
@@ -622,7 +624,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			Title: T("download:title", { defaultValue: "Download Land" }),
 			Subtitle: T("download:subtitle", {
 				defaultValue:
-					"Native on macOS, Windows, and Linux.\n\nBuilt with Tauri. Powered by Rust. Verified with PGP.",
+					"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 			}),
 			Platforms: [
 				{
@@ -699,7 +701,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				}),
 				Description: T("common:brand.tagline", {
 					defaultValue:
-						"Faster than VS Code. Lighter than Electron. Free forever.",
+						"Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever.",
 				}),
 			},
 			Social: {

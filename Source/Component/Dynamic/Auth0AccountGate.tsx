@@ -11,11 +11,11 @@ import { Button } from "../UI/Button";
  * Auth0 redirect-based account gate.
  *
  * - "signin" route: triggers loginWithRedirect()
- * - "signup" route: triggers loginWithRedirect({ screen_hint: "signup" })
+ * - "signup" route: shows a Coming Soon state while registration is disabled
  * - If already authenticated: shows user profile + logout
  *
  * This replaces custom email/password forms - Auth0 Universal Login
- * handles all UI (login, signup, password reset, MFA, social, enterprise SSO).
+ * handles enabled Auth0 UI such as login, password reset, MFA, social, and SSO.
  */
 export default ({
 	Route,
@@ -51,6 +51,7 @@ export default ({
 	} = useAuth0();
 
 	const { t: T } = useTranslation("account");
+	const RegistrationEnabled = false;
 
 	// Build enterprise SSO params (Okta, SAML, Azure AD, etc.)
 	const EnterpriseParams: Record<string, string> = {};
@@ -85,6 +86,7 @@ export default ({
 	// Auto-redirect to Auth0 Universal Login if not authenticated
 	useEffect(() => {
 		if (IsLoading || IsAuthenticated) return;
+		if (Route === "signup" && !RegistrationEnabled) return;
 
 		if (Route === "signup") {
 			Signup();
@@ -92,6 +94,39 @@ export default ({
 			LoginWithParams();
 		}
 	}, [IsLoading, IsAuthenticated, Route]);
+
+	if (Route === "signup" && !RegistrationEnabled) {
+		return (
+			<div className="flex min-h-screen flex-col">
+				<Header
+					{...(HeaderContent ? { content: HeaderContent } : {})}
+				/>
+				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-5 px-4 text-center">
+					<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+						Coming Soon
+					</span>
+					<h1 className="text-2xl font-semibold">
+						{T("registrationComingSoon.title", {
+							defaultValue: "Registration is not open yet",
+						})}
+					</h1>
+					<p className="text-sm text-muted-foreground">
+						{T("registrationComingSoon.description", {
+							defaultValue:
+								"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
+						})}
+					</p>
+					<Button variant="outline" asChild>
+						<a href="/Account/SignIn">
+							{T("registrationComingSoon.signIn", {
+								defaultValue: "Sign In",
+							})}
+						</a>
+					</Button>
+				</div>
+			</div>
+		);
+	}
 
 	if (IsLoading) {
 		return (
