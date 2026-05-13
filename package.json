@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@astrojs/mdx": "5.0.4",
-		"@astrojs/react": "5.0.4",
+		"@astrojs/react": "5.0.5",
 		"@astrojs/sitemap": "3.7.2",
 		"@auth0/auth0-react": "~2.16.2",
 		"@playform/build": "0.3.2",
