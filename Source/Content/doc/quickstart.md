@@ -37,7 +37,7 @@ the Land root and rebuild.
 This routes through Mountain's file system layer via Tauri IPC.
 
 If you have an existing `.vscode/` directory with workspace settings, Land reads
-it. See [Configuration](/Doc/configuration) for details on supported
+it. See [Configuration](https://Editor.Land/Doc/configuration) for details on supported
 configuration keys.
 
 ---
@@ -123,14 +123,14 @@ crashing, but the underlying features are not yet wired to a backend:
 - `vscode.notebook.*` - notebook UI
 - `vscode.tests.*` - test explorer
 
-See [Cocoon](/Doc/cocoon) for the full API coverage table.
+See [Cocoon](https://Editor.Land/Doc/cocoon) for the full API coverage table.
 
 ---
 
 ## See Also
 
-- [Getting Started](/Doc/getting-started)
-- [Installation](/Doc/installation)
-- [Configuration](/Doc/configuration)
-- [Cocoon: Extension Host](/Doc/cocoon)
-- [Architecture Overview](/Doc/architecture)
+- [Getting Started](https://Editor.Land/Doc/getting-started)
+- [Installation](https://Editor.Land/Doc/installation)
+- [Configuration](https://Editor.Land/Doc/configuration)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)

@@ -49,7 +49,7 @@ Tauri IPC details directly into the component.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Sky](/Doc/sky)
-- [Mountain](/Doc/mountain)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Sky](https://Editor.Land/Doc/sky)
+- [Mountain](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Wind)

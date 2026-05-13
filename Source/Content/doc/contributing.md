@@ -99,6 +99,6 @@ operated by [PlayForm](https://playform.cloud) (Sofia, Bulgaria) under the
 
 ## See Also
 
-- [Getting Started](/Doc/getting-started)
-- [Installation](/Doc/installation)
-- [Architecture Overview](/Doc/architecture)
+- [Getting Started](https://Editor.Land/Doc/getting-started)
+- [Installation](https://Editor.Land/Doc/installation)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)

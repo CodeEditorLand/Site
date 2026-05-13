@@ -142,7 +142,7 @@ profile when making behavior claims.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Cocoon](/Doc/cocoon)
-- [Vine](/Doc/vine)
-- [Air](/Doc/air)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Cocoon](https://Editor.Land/Doc/cocoon)
+- [Vine](https://Editor.Land/Doc/vine)
+- [Air](https://Editor.Land/Doc/air)

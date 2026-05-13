@@ -137,6 +137,6 @@ This syntax is the same as VS Code's language-specific settings.
 
 ## See Also
 
-- [Getting Started](/Doc/getting-started)
-- [Installation](/Doc/installation)
-- [Wind: Service Layer](/Doc/wind)
+- [Getting Started](https://Editor.Land/Doc/getting-started)
+- [Installation](https://Editor.Land/Doc/installation)
+- [Wind: Service Layer](https://Editor.Land/Doc/wind)

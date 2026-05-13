@@ -128,7 +128,7 @@ lifecycle and is the foundation for surfacing update notifications in the UI.
 
 ## See Also
 
-- [Getting Started](/Doc/getting-started)
-- [Architecture Overview](/Doc/architecture)
-- [Air: Update Daemon](/Doc/air)
-- [Contributing](/Doc/contributing)
+- [Getting Started](https://Editor.Land/Doc/getting-started)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Air: Update Daemon](https://Editor.Land/Doc/air)
+- [Contributing](https://Editor.Land/Doc/contributing)

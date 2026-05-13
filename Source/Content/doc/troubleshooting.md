@@ -66,7 +66,7 @@ commands it contributes do not appear in the command palette.
 
 - Check the `engines.vscode` field in the extension's `package.json`. If it
   requires a VS Code version whose API surface is not yet implemented in Cocoon,
-  the extension may silently fail. See [API Reference](/Doc/api-reference) for
+  the extension may silently fail. See [API Reference](https://Editor.Land/Doc/api-reference) for
   the current coverage table.
 - If the extension uses an API namespace listed as **Not Implemented** in the
   API Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`, `vscode.tests`),
@@ -161,7 +161,7 @@ If none of the above resolves your issue:
 
 ## See Also
 
-- [Installation](/Doc/installation)
-- [Getting Started](/Doc/getting-started)
-- [Configuration](/Doc/configuration)
-- [API Reference](/Doc/api-reference)
+- [Installation](https://Editor.Land/Doc/installation)
+- [Getting Started](https://Editor.Land/Doc/getting-started)
+- [Configuration](https://Editor.Land/Doc/configuration)
+- [API Reference](https://Editor.Land/Doc/api-reference)

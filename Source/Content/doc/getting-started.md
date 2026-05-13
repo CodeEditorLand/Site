@@ -88,7 +88,7 @@ Output panel for activation errors.
 
 ## See Also
 
-- [Installation](/Doc/installation)
-- [Architecture Overview](/Doc/architecture)
-- [Cocoon: Extension Host](/Doc/cocoon)
-- [Mountain: Native Kernel](/Doc/mountain)
+- [Installation](https://Editor.Land/Doc/installation)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Mountain: Native Kernel](https://Editor.Land/Doc/mountain)

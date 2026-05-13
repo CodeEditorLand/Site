@@ -48,6 +48,6 @@ qualified to a specific trait or test harness.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Mountain](/Doc/mountain)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Mountain](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Common)

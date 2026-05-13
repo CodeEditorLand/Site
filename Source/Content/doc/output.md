@@ -111,8 +111,8 @@ Tauri/Mountain IPC Replacement.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Rest](/Doc/rest)
-- [Mountain: Native Kernel](/Doc/mountain)
-- [Sky: WebView UI](/Doc/sky)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Rest](https://Editor.Land/Doc/rest)
+- [Mountain: Native Kernel](https://Editor.Land/Doc/mountain)
+- [Sky: WebView UI](https://Editor.Land/Doc/sky)
 - [Source Code](https://github.com/CodeEditorLand/Output)

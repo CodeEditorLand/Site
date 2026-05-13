@@ -63,6 +63,6 @@ Orchestration, Capability-Based Sandboxing.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Output](/Doc/output)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Output](https://Editor.Land/Doc/output)
 - [Source Code](https://github.com/CodeEditorLand/Maintain)

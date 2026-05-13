@@ -108,7 +108,7 @@ host.
 
 ## Relationship to Mist
 
-[`architecture.md`](/Doc/architecture) lists Mist as a separate WebSocket
+[`architecture.md`](https://Editor.Land/Doc/architecture) lists Mist as a separate WebSocket
 communication layer. Mist handles Sky (the OS WebView UI)↔Mountain communication
 over WebSockets, which is a different transport from Vine's gRPC. Vine is
 specifically the Mountain↔Cocoon layer. The two protocols are not
@@ -143,7 +143,7 @@ interchangeable and serve different parts of the system.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Mountain: Native Kernel](/Doc/mountain)
-- [Cocoon: Extension Host](/Doc/cocoon)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Mountain: Native Kernel](https://Editor.Land/Doc/mountain)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Vine)

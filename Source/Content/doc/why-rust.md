@@ -90,7 +90,7 @@ that role. The language is a structural decision, not decoration.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Why Tauri](/Doc/why-tauri)
-- [Why gRPC](/Doc/why-grpc)
-- [Why WebAssembly](/Doc/why-wasm)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Why Tauri](https://Editor.Land/Doc/why-tauri)
+- [Why gRPC](https://Editor.Land/Doc/why-grpc)
+- [Why WebAssembly](https://Editor.Land/Doc/why-wasm)

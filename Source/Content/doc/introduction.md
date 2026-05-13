@@ -90,7 +90,7 @@ source status and integration status, not by broad product promises.
 
 ## See Also
 
-- [Getting Started](/Doc/getting-started)
-- [Architecture Overview](/Doc/architecture)
-- [Mountain](/Doc/mountain)
-- [Cocoon](/Doc/cocoon)
+- [Getting Started](https://Editor.Land/Doc/getting-started)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Mountain](https://Editor.Land/Doc/mountain)
+- [Cocoon](https://Editor.Land/Doc/cocoon)

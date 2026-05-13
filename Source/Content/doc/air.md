@@ -59,7 +59,7 @@ Confirmed source areas include:
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Mountain](/Doc/mountain)
-- [Local-First Protocol](/Doc/local-first-protocol)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Mountain](https://Editor.Land/Doc/mountain)
+- [Local-First Protocol](https://Editor.Land/Doc/local-first-protocol)
 - [Source Code](https://github.com/CodeEditorLand/Air)

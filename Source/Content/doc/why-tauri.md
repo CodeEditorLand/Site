@@ -47,6 +47,6 @@ for that platform.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Why Rust](/Doc/why-rust)
-- [Why gRPC](/Doc/why-grpc)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Why Rust](https://Editor.Land/Doc/why-rust)
+- [Why gRPC](https://Editor.Land/Doc/why-grpc)

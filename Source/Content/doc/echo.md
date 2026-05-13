@@ -100,6 +100,6 @@ holding file handles or sockets after shutdown.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Mountain: Native Kernel](/Doc/mountain)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Mountain: Native Kernel](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Echo)

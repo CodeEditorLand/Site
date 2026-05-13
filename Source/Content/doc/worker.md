@@ -38,7 +38,7 @@ Use `WIP` where the active release profile has not been verified.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Output](/Doc/output)
-- [Mountain](/Doc/mountain)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Output](https://Editor.Land/Doc/output)
+- [Mountain](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Worker)

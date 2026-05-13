@@ -100,5 +100,5 @@ the reason Land uses it.
 
 ## See Also
 
-- [Contributing](/Doc/contributing)
-- [Architecture Overview](/Doc/architecture)
+- [Contributing](https://Editor.Land/Doc/contributing)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)

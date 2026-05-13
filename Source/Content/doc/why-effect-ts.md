@@ -92,6 +92,6 @@ provides - tested, documented, and type-safe.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Cocoon: Extension Host](/Doc/cocoon)
-- [Why Rust](/Doc/why-rust)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Why Rust](https://Editor.Land/Doc/why-rust)

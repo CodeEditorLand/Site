@@ -41,6 +41,6 @@ traffic already flows through Mist.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Air](/Doc/air)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Air](https://Editor.Land/Doc/air)
 - [Source Code](https://github.com/CodeEditorLand/Mist)

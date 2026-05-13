@@ -79,7 +79,7 @@ const FontSize = Config.get<number>("FontSize", 14);
 Configuration keys are declared in `contributes.configuration` in your extension
 manifest. Land validates configuration values against the JSON Schema you
 provide. The specific user settings file path has not been independently
-confirmed - see [Configuration](/Doc/configuration) for details.
+confirmed - see [Configuration](https://Editor.Land/Doc/configuration) for details.
 
 ---
 
@@ -159,22 +159,22 @@ are unavailable.
 
 | Crate           | Description                                                                                                                             | Element                           |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](/Doc/mountain)         |
-| `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](/Doc/echo)                 |
-| `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](/Doc/architecture) |
-| `CommonLibrary` | Shared utility functions                                                                                                                | [Architecture](/Doc/architecture) |
-| `Air`           | Background update daemon                                                                                                                | [Air](/Doc/air)                   |
-| `AirLibrary`    | Air shared library                                                                                                                      | [Air](/Doc/air)                   |
-| `Download`      | Binary download logic                                                                                                                   | [Air](/Doc/air)                   |
-| `SideCar`       | Pre-built Node.js binaries                                                                                                              | [Architecture](/Doc/architecture) |
-| `Maintain`      | Build orchestrator                                                                                                                      | [Contributing](/Doc/contributing) |
-| `Grove`         | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](/Doc/grove)               |
+| `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](https://Editor.Land/Doc/mountain)         |
+| `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](https://Editor.Land/Doc/echo)                 |
+| `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](https://Editor.Land/Doc/architecture) |
+| `CommonLibrary` | Shared utility functions                                                                                                                | [Architecture](https://Editor.Land/Doc/architecture) |
+| `Air`           | Background update daemon                                                                                                                | [Air](https://Editor.Land/Doc/air)                   |
+| `AirLibrary`    | Air shared library                                                                                                                      | [Air](https://Editor.Land/Doc/air)                   |
+| `Download`      | Binary download logic                                                                                                                   | [Air](https://Editor.Land/Doc/air)                   |
+| `SideCar`       | Pre-built Node.js binaries                                                                                                              | [Architecture](https://Editor.Land/Doc/architecture) |
+| `Maintain`      | Build orchestrator                                                                                                                      | [Contributing](https://Editor.Land/Doc/contributing) |
+| `Grove`         | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](https://Editor.Land/Doc/grove)               |
 
 ---
 
 ## See Also
 
-- [Cocoon: Extension Host](/Doc/cocoon)
-- [Extension Development](/Doc/extension-development)
-- [Architecture Overview](/Doc/architecture)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Extension Development](https://Editor.Land/Doc/extension-development)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [VS Code API Documentation](https://code.visualstudio.com/api/references/vscode-api)

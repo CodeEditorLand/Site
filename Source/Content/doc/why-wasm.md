@@ -12,7 +12,7 @@ touch files, spawn tools, open network connections, and react to workspace
 state. Grove is Land's WIP path for extensions that can run inside a WebAssembly
 runtime instead of broad Node.js access.
 
-The [Grove](/Doc/grove) source contains a Wasmtime host, gRPC protocol
+The [Grove](https://Editor.Land/Doc/grove) source contains a Wasmtime host, gRPC protocol
 definitions, API surface, transport layer, and WASM runtime integration. The
 primary VS Code extension compatibility path remains Cocoon.
 
@@ -56,7 +56,7 @@ serve different needs and should not be described as interchangeable.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Grove](/Doc/grove)
-- [Why Rust](/Doc/why-rust)
-- [Cocoon: Extension Host](/Doc/cocoon)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Grove](https://Editor.Land/Doc/grove)
+- [Why Rust](https://Editor.Land/Doc/why-rust)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)

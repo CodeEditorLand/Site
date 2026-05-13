@@ -105,6 +105,6 @@ functional regardless of network state.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Air](/Doc/air)
-- [Configuration](/Doc/configuration)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Air](https://Editor.Land/Doc/air)
+- [Configuration](https://Editor.Land/Doc/configuration)

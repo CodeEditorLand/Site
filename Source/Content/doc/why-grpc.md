@@ -51,7 +51,7 @@ copy should name the route instead of saying all communication uses one channel.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Why Rust](/Doc/why-rust)
-- [Why Tauri](/Doc/why-tauri)
-- [API Reference](/Doc/api-reference)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Why Rust](https://Editor.Land/Doc/why-rust)
+- [Why Tauri](https://Editor.Land/Doc/why-tauri)
+- [API Reference](https://Editor.Land/Doc/api-reference)

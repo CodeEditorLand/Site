@@ -201,7 +201,7 @@ than silently broken.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Wind: Service Layer](/Doc/wind)
-- [Mountain: Native Kernel](/Doc/mountain)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Wind: Service Layer](https://Editor.Land/Doc/wind)
+- [Mountain: Native Kernel](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Sky)

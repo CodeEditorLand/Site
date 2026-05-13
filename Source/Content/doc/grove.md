@@ -86,6 +86,6 @@ Rust, Wasmtime, WebAssembly, gRPC, Capability-Based Security.
 
 ## See Also
 
-- [Architecture Overview](/Doc/architecture)
-- [Cocoon: Extension Host](/Doc/cocoon)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Grove)

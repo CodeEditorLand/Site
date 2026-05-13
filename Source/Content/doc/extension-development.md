@@ -152,12 +152,12 @@ features silently no-op at runtime:
 - `vscode.notebook.*` - notebook documents and editors
 - `vscode.tests.*` - test explorer and runner
 
-See [API Reference](/Doc/api-reference) for the full coverage table.
+See [API Reference](https://Editor.Land/Doc/api-reference) for the full coverage table.
 
 ---
 
 ## See Also
 
-- [API Reference](/Doc/api-reference)
-- [Cocoon: Extension Host](/Doc/cocoon)
-- [Contributing](/Doc/contributing)
+- [API Reference](https://Editor.Land/Doc/api-reference)
+- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Contributing](https://Editor.Land/Doc/contributing)
