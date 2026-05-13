@@ -97,7 +97,7 @@
 		"react-dom": "19.2.6",
 		"react-hook-form": "7.75.0",
 		"react-i18next": "17.0.7",
-		"react-resizable-panels": "4.11.0",
+		"react-resizable-panels": "4.11.1",
 		"recharts": "3.8.1",
 		"sass": "1.99.0",
 		"simplex-noise": "4.0.3",
