@@ -109,7 +109,7 @@
 		"zod": "4.4.3"
 	},
 	"devDependencies": {
-		"@astrojs/ts-plugin": "1.10.7",
+		"@astrojs/ts-plugin": "1.10.8",
 		"@tailwindcss/postcss": "4.3.0",
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/react": "16.3.2",
