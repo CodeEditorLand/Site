@@ -1,0 +1,61 @@
+const logo = "Land";
+const nav$1 = {"features":"Функции","download":"Изтегляне","docs":"Документация","blog":"Блог","contributing":"Принос","dashboard":"Табло","github":"GitHub"};
+const actions = {"signIn":"Вход","signUp":"Регистрация","editorPortal":"Портал на редактора","getStarted":"Вземете Land","logout":"Изход","loading":"Зареждане…"};
+const user = {"avatarAlt":"Потребителско меню","menu":{"dashboard":"Табло","account":"Профил","signOut":"Изход"}};
+const BgHeader = {
+  logo,
+  nav: nav$1,
+  actions,
+  user,
+};
+
+const Header = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	actions,
+	default: BgHeader,
+	logo,
+	nav: nav$1,
+	user
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const Doc = {
+  "sidebar.title": "Dokumentation",
+  "sidebar.elements": "Elemente",
+  "sidebar.gettingStarted": "Erste Schritte",
+};
+
+const Doc$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	default: Doc
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const features = {"badge":"Características","item":{"designTokens":{"description":"Deje de darle a VS Code un gigabyte de RAM solo para abrir un archivo.\n\nEl núcleo Rust de Land con gRPC IPC responde en microsegundos. Incluso con cientos de archivos abiertos.","title":"Sin lag, nunca"},"componentLibrary":{"description":"Toda su biblioteca de extensiones de VS Code funciona de inmediato.\n\nEl host Cocoon refleja la superficie completa de la API de VS Code. Nada necesita ser reescrito.","title":"Sus extensiones, sin cambios"},"documentation":{"description":"Effect-TS proporciona servicios tipados, concurrencia estructurada y errores rastreados.\n\nLos errores se detectan en tiempo de compilación, no a las 3 de la mañana.","title":"Tipado seguro de extremo a extremo"},"versionControl":{"description":"Un codebase compila en aplicaciones completamente nativas en macOS, Windows y Linux vía Tauri.\n\nPublique para las tres plataformas con un solo comando.","title":"Una compilación, cada plataforma"},"collaboration":{"description":"CC0 dominio público. Úselo, bifúrquelo, distribúyalo, incluso véndalo.\n\nFinanciado por NLnet y construido completamente en público.","title":"Gratis para siempre, sin condiciones"},"cicdIntegration":{"description":"Rust, Tauri, Effect-TS y Biome forman un stack elegido por su corrección y velocidad de desarrollo.\n\nHerramientas conocidas, sin compromisos.","title":"Cadena de herramientas de primer nivel"}},"subtitle":"Seis razones por las que Land es más rápido, más seguro y más abierto que cualquier editor basado en Electron.","title":"Diferente por diseño. Mejor de forma medible."};
+const hero = {"badge":"Velocidad nativa Sin Electron CC0","subtitle":"Deje de darle a VS Code un gigabyte de RAM.\n\nLand está construido con Rust, Tauri y Effect-TS. Rápido de forma nativa. Sin Electron. Gratis para siempre.","title":"El editor de código que usted merece","titleHighlight":"Land","atScale":"comienza aquí","cta":{"primary":"Descargar","secondary":"Saber más"},"scene":{"description":"Visualización animada de la arquitectura","hub":"Arquitectura central","components":{"button":"Núcleo Rust","colors":"Tauri UI","typography":"Servicios Effect-TS","components":"gRPC IPC","spacing":"Extension Host","icons":"Multiplataforma","docs":"VS Code API","versions":"Código abierto CC0"}}};
+const nav = {"docs":"Documentación","downloads":"Descargar","features":"Características","github":"GitHub"};
+const pricing = {"subtitle":"Code Editor Land es completamente gratuito.\n\nSin niveles, sin suscripciones, sin restricciones.","labels":{"monthly":"Mensual","yearly":"Anual","savings":"(Ahorre hasta un 20%)","popular":"Más popular","perMonth":"/mes","perYear":"/año","free":"Gratis"},"toggle":{"toMonthly":"Cambiar a facturación {{label}}","toYearly":"Cambiar a facturación {{label}}"},"tiers":{"free":{"name":"Comunidad","description":"Para todos.\n\nFunciones completas del editor, completamente gratis.","features":{"1":"Compatibilidad completa con VS Code","2":"Todas las extensiones compatibles","3":"Rendimiento nativo de Rust","4":"Multiplataforma (macOS, Windows, Linux)","5":"UI con seguridad de tipos Effect-TS","6":"Arquitectura basada en gRPC","7":"Código abierto (licencia CC0)"},"button":"Descargar ahora"}},"title":"Gratis para siempre, código abierto","badge":"Precios"};
+const testimonials = {"quote":{"1":"Una alternativa abierta enfocada en el rendimiento.\n\nLand es exactamente lo que VS Code necesitaba.\n\nEs increíblemente rápido.","2":"La arquitectura Effect-TS es hermosa de usar.\n\nLa seguridad de tipos detecta errores antes de que ocurran.","3":"Ejecutar mis extensiones existentes sin cambios es revolucionario.\n\nLa compatibilidad es impresionante.","4":"Por fin un editor que respeta mis recursos del sistema.\n\nNo más sobrecarga de memoria de Electron.","5":"El compromiso con el código abierto significa que puedo contribuir y personalizar.\n\nEste es el editor que estaba esperando.","6":"La arquitectura basada en gRPC es una clase magistral en diseño de sistemas.\n\nLand es el futuro de los editores de escritorio."},"subtitle":"Voces de la comunidad sobre el futuro de la edición de código.","title":"Lo que dicen los desarrolladores","badge":"Testimonios","attribution":"Comentarios de la comunidad","attributionNote":"Miembro representativo de la comunidad"};
+const roadmap = {"title":"Hoja de ruta y qué esperar","subtitle":"Financiado por el NLnet NGI0 Commons Fund.\n\nConstruido en público, gratis para siempre, sin sorpresas en la hoja de ruta.","tiers":{"current":{"name":"Activo ahora","description":"Los quince elementos principales están en desarrollo activo. Cada uno es un repositorio independiente que puede inspeccionar y al que puede contribuir hoy.","features":{"mountain":"Mountain ⛰️\nbackend nativo Rust/Tauri","cocoon":"Cocoon 🦋\nhost de extensiones VS Code via Effect-TS","wind":"Wind 🍃\nreimplementación del Workbench","sky":"Sky 🌌\nrenderizado de la interfaz del editor","air":"Air 🪁\ndemonio de actualización y firma criptográfica","echo":"Echo 📣\nprogramador de tareas con robo de trabajo","common":"Common 👨🏻‍🏭\nAbstract Rust foundation, typed effects, zero concrete implementations","grove":"Grove 🌳\nWASMtime sandbox, capability-based extension isolation","maintain":"Maintain 💪🏻\nBuild orchestrator, Rhai scripting, TOML/JSON5 config","mist":"Mist 🌫️\nDNS sandbox, all *.editor.land traffic resolves locally","output":"Output ⚫\nCompilation pipeline, deterministic checksummed bundles","rest":"Rest ⛱️\nTypeScript compiler in Rust + OXC, 2-3× faster than esbuild","sidecar":"SideCar ⚙️\nCross-platform Node.js binary distributor per target triple","vine":"Vine 🌿\ngRPC backbone, contract-first .proto definitions","worker":"Worker 🍩\nService Worker, offline support, AES-GCM encrypted auth"},"button":"Ver en GitHub"},"next":{"name":"Próximamente","description":"Refinamiento del ecosistema de extensiones y primera versión estable en las tres plataformas.","features":{"1":"Compatibilidad de alta fidelidad con extensiones VS Code","2":"Instalador multiplataforma y actualización automática","3":"Finalización del protocolo gRPC IPC","4":"Sincronización de configuración y portal cloud opcional"},"button":"Seguir el progreso"},"future":{"name":"Visión a largo plazo","description":"Land se convierte en el IDE nativo multiplataforma líder. Sandbox completo de plugins, extensiones WASM e integración de IA nativa.","features":{"1":"Edición móvil nativa (iOS, Android)","2":"Edición colaborativa en tiempo real","3":"Herramientas de desarrollo asistidas por IA","4":"Mercado de plugins y ecosistema"},"button":"Saber más"}}};
+const architecture = {"title":"Arquitectura","subtitle":"Land reemplaza la pila Electron de VS Code con una arquitectura modular y de alto rendimiento.\n\nCada elemento es un repositorio independiente.","mountain":{"description":"Gestiona el ciclo de vida de ventanas, sistema de archivos y procesos.\n\nEl backend nativo Rust/Tauri que reemplaza el proceso principal de Electron.","subtitle":"Gestor de procesos nativo"},"cocoon":{"description":"Ejecuta extensiones VS Code via Effect-TS con compatibilidad API de alta fidelidad.\n\nSin cambios necesarios en las extensiones existentes.","subtitle":"Host de extensiones sin reescrituras"},"wind":{"description":"Reimplementación del VS Code Workbench.\n\nProporciona el shell del editor, paneles, barras laterales y barra de actividad.","subtitle":"Shell completo del workbench"},"sky":{"description":"Renderiza la interfaz del editor usando componentes Astro.\n\nGestiona temas, diseños y la capa de presentación visual.","subtitle":"Capa de temas y diseño"},"air":{"description":"Demonio en segundo plano para actualizaciones automáticas, descargas y firma criptográfica.\n\nMantiene Land actualizado silenciosamente.","subtitle":"Actualizaciones silenciosas, siempre firmadas"},"echo":{"description":"Ejecutor de robo de trabajo de alto rendimiento.\n\nPlanifica y distribuye tareas entre núcleos para máximo rendimiento.","subtitle":"Usa todos los núcleos de CPU"},"heading":"Cómo funciona la arquitectura","intro":"Land reemplaza el stack Electron de VS Code elemento por elemento."};
+const EsHome = {
+  features,
+  hero,
+  nav,
+  pricing,
+  testimonials,
+  roadmap,
+  architecture,
+};
+
+const Home = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	architecture,
+	default: EsHome,
+	features,
+	hero,
+	nav,
+	pricing,
+	roadmap,
+	testimonials
+}, Symbol.toStringTag, { value: 'Module' }));
+
+export { BgHeader as B, Doc$1 as D, EsHome as E, Header as H, Home as a };
