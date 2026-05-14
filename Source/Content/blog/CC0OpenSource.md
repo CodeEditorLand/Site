@@ -12,8 +12,8 @@ readTime: 6
 
 Code Editor Land is released under
 [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) - a
-public domain dedication. This means the entire codebase, including every Rust
-crate, TypeScript package, and build script, carries no copyright restrictions
+public domain dedication. This means the entire codebase, including every `Rust`
+crate, `TypeScript` package, and build script, carries no copyright restrictions
 whatsoever.
 
 ## What CC0 Actually Means
@@ -62,6 +62,20 @@ should not need a lawyer to decide whether you can embed a snippet from your
 editor's source into your project.
 
 CC0 eliminates that question entirely.
+
+## The Architecture Decision
+
+A CC0 dedication is a deliberate architectural choice, not just a legal one. It
+shapes how the codebase is organized. When every component carries no
+restrictions, there is no need for licensing headers on every file, no license
+compliance tooling in CI, and no per-component license auditing. The build
+pipeline stays lean. The `Maintain` element focuses on code quality and
+refactoring (GritQL queries, automated fixes) rather than license compliance.
+
+Every Land element -- `Mountain`, `Cocoon`, `Sky`, `Wind`, `Vine`, `Air`,
+`Echo`, and the rest -- shares the same public domain status. This means
+components can be extracted, combined, or embedded without license compatibility
+analysis.
 
 ## How NLnet Makes This Possible
 

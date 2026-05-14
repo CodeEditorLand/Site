@@ -9,8 +9,8 @@ description:
 
 # Troubleshooting
 
-This page covers the most common issues encountered when running Editor.Land on
-**macOS 13+** and **Windows 10/11**, along with diagnosis steps and fixes.
+This page covers the most common issues encountered when running `Editor.Land`
+on **macOS 13+** and **Windows 10/11**, along with diagnosis steps and fixes.
 
 ---
 
@@ -27,7 +27,7 @@ look for errors at or around the launch timestamp.
 
 **Diagnosis on Windows:**
 
-Launch via `cargo tauri dev` in a terminal window. WebView2 errors are written
+Launch via `cargo tauri dev` in a terminal window. `WebView2` errors are written
 to standard output. If you are running a pre-built binary, open **Event
 Viewer**, navigate to **Windows Logs → Application**, and filter for the Land
 process name.
@@ -36,7 +36,7 @@ process name.
 
 - **macOS:** Confirm you are running **macOS 13.0 or later**. Older WebKit
   versions do not support all CSS features Land's UI requires.
-- **Windows:** Confirm the **WebView2 Runtime** is installed. Download it from
+- **Windows:** Confirm the **`WebView2` Runtime** is installed. Download it from
   [microsoft.com/edge/webview2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
   if missing. The Evergreen Bootstrapper is the simplest install option.
 - If the console shows GPU-related errors, try quitting other GPU-intensive
@@ -57,20 +57,21 @@ commands it contributes do not appear in the command palette.
 
 **Diagnosis:**
 
-1. Check the Output panel. Select **Extension Host** from the channel dropdown
-   to see activation errors and log output from Cocoon.
+1. Check the `Output` panel. Select **Extension Host** from the channel dropdown
+   to see activation errors and log output from `Cocoon`.
 2. Look for activation event mismatches - if the extension declares
    `activationEvents` that Land does not fire, it will never activate.
 
 **Fixes:**
 
 - Check the `engines.vscode` field in the extension's `package.json`. If it
-  requires a VS Code version whose API surface is not yet implemented in Cocoon,
-  the extension may silently fail. See [API Reference](https://Editor.Land/Doc/api-reference) for
-  the current coverage table.
-- If the extension uses an API namespace listed as **Not Implemented** in the
-  API Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`, `vscode.tests`),
-  those calls will no-op at runtime.
+  requires a `VS Code` version whose `API` surface is not yet implemented in
+  `Cocoon`, the extension may silently fail. See
+  [`API` Reference](https://Editor.Land/Doc/api-reference) for the current
+  coverage table.
+- If the extension uses an `API` namespace listed as **Not Implemented** in the
+  `API` Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`,
+  `vscode.tests`), those calls will no-op at runtime.
 - Try reinstalling the extension: remove it, restart Land, then install again.
 
 ---
@@ -83,7 +84,7 @@ commands it contributes do not appear in the command palette.
 
 Open **Activity Monitor** on macOS or **Task Manager** on Windows, filter by
 process name, and identify which process is consuming CPU - the main Land
-process, a language server child process, or Node.js (the Cocoon extension
+process, a language server child process, or `Node.js` (the `Cocoon` extension
 host).
 
 **Fixes:**
@@ -164,4 +165,4 @@ If none of the above resolves your issue:
 - [Installation](https://Editor.Land/Doc/installation)
 - [Getting Started](https://Editor.Land/Doc/getting-started)
 - [Configuration](https://Editor.Land/Doc/configuration)
-- [API Reference](https://Editor.Land/Doc/api-reference)
+- [`API` Reference](https://Editor.Land/Doc/api-reference)

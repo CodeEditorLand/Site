@@ -8,7 +8,7 @@ description:
 
 # Contributing to Editor.Land
 
-Editor.Land is open source and welcomes contributions. The full contributing
+`Editor.Land` is open source and welcomes contributions. The full contributing
 guide is at
 [CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md)
 on GitHub.
@@ -24,7 +24,7 @@ on GitHub.
     cd Land
     ```
 
-2. **Install Node.js dependencies:**
+2. **Install `Node.js` dependencies:**
 
     ```bash
     pnpm install
@@ -33,13 +33,22 @@ on GitHub.
 3. **Start the development build:**
 
     ```bash
-    cargo tauri dev
+    pnpm cross-env \
+    	NODE_ENV=development \
+    	NODE_VERSION=22 \
+    	Clean=true \
+    	Browser=true \
+    	Dependency=Microsoft/VSCode \
+    	Bundle=false \
+    	Compile=false \
+    	NODE_OPTIONS=--max-old-space-size=16384 \
+    	pnpm tauri dev
     ```
 
-    This compiles Mountain and opens the editor window. The first run downloads
-    and compiles Rust dependencies from scratch - allow a few minutes on a fresh
-    checkout. Subsequent builds use Cargo's incremental compilation cache and
-    are significantly faster.
+    This compiles `Mountain` and opens the editor window. The first run
+    downloads and compiles `Rust` dependencies from scratch - allow a few
+    minutes on a fresh checkout. Subsequent builds use `Cargo`'s incremental
+    compilation cache and are significantly faster.
 
 4. **Create a branch** from `Current` and make your changes. The project uses
    PascalCase naming for files, identifiers, and settings keys throughout the
@@ -52,20 +61,20 @@ on GitHub.
 
 ## Ways to Contribute
 
-- **Code** - Rust or TypeScript fixes, features, or performance improvements
+- **Code** - `Rust` or `TypeScript` fixes, features, or performance improvements
 - **Documentation** - Correcting inaccuracies, adding missing context, or
   improving clarity on any doc page
-- **Testing** - Bug reports with reproductions, test coverage for Cocoon or
-  Mountain
+- **Testing** - Bug reports with reproductions, test coverage for `Cocoon` or
+  `Mountain`
 - **Design** - UI/UX improvements for the editor or this website
 
 ---
 
 ## Submodule Workflow
 
-Each Land element (Mountain, Cocoon, Sky, Wind, Vine, Air, Echo, and others) is
-a separate Git repository referenced as a submodule. When working on a specific
-element:
+Each Land element (`Mountain`, `Cocoon`, `Sky`, `Wind`, `Vine`, `Air`, `Echo`,
+and others) is a separate Git repository referenced as a submodule. When working
+on a specific element:
 
 ```bash
 cd Land/Mountain # or whichever element
@@ -90,7 +99,7 @@ before engaging.
 
 ## Funding
 
-Editor.Land is funded through the
+`Editor.Land` is funded through the
 [NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
 operated by [PlayForm](https://playform.cloud) (Sofia, Bulgaria) under the
 [NLnet Foundation](https://nlnet.nl).

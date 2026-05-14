@@ -8,12 +8,12 @@ description:
 
 # Echo
 
-Echo is a work-stealing task scheduler written in Rust. It is not a separate
-process - it is embedded directly inside Mountain's binary. When Mountain needs
-to dispatch parallel work (file indexing, search, background jobs), it submits
-tasks to Echo's worker pool rather than spawning child processes.
+`Echo` is a work-stealing task scheduler written in `Rust`. It is not a separate
+process - it is embedded directly inside `Mountain`'s binary. When `Mountain`
+needs to dispatch parallel work (file indexing, search, background jobs), it
+submits tasks to `Echo`'s worker pool rather than spawning child processes.
 
-Echo is built on [crossbeam-deque](https://github.com/crossbeam-rs/crossbeam)
+`Echo` is built on [crossbeam-deque](https://github.com/crossbeam-rs/crossbeam)
 for lock-free work stealing and [tokio](https://tokio.rs) for async I/O.
 
 ---
@@ -34,21 +34,22 @@ caller to manage thread lifetimes manually.
 
 ## How Echo Relates to Mountain
 
-VS Code dispatches background work (file indexing, symbol scanning, search)
-through its shared process and extension host, both of which are Node.js. Heavy
-batches compete with extension event handlers on the same event loop.
+`VS Code` dispatches background work (file indexing, symbol scanning, search)
+through its shared process and extension host, both of which are `Node.js`.
+Heavy batches compete with extension event handlers on the same event loop.
 
-Because Echo runs inside Mountain's Rust binary, background work dispatched
-through Echo runs on native threads outside the Node.js event loop entirely.
-Cocoon's fiber scheduler and Echo's worker pool are independent - a saturated
-Echo pool does not delay Cocoon's extension fibers, and a slow extension
-activation does not delay Echo's background tasks.
+Because `Echo` runs inside `Mountain`'s `Rust` binary, background work
+dispatched through `Echo` runs on native threads outside the `Node.js` event
+loop entirely. `Cocoon`'s fiber scheduler and `Echo`'s worker pool are
+independent - a saturated `Echo` pool does not delay `Cocoon`'s extension
+fibers, and a slow extension activation does not delay `Echo`'s background
+tasks.
 
 ---
 
 ## Source Structure
 
-Echo's source tree (confirmed in the
+`Echo`'s source tree (confirmed in the
 [repository](https://github.com/CodeEditorLand/Echo)):
 
 | Path                | Role                                                         |
@@ -62,44 +63,44 @@ Echo's source tree (confirmed in the
 
 ## Current Status
 
-Echo is active inside Mountain's binary on both macOS and Windows. The worker
-pool infrastructure runs in the `debug-mountain` build profile and is part of
-the standard release build.
+`Echo` is active inside `Mountain`'s binary on both macOS and Windows. The
+worker pool infrastructure runs in the `debug-mountain` build profile and is
+part of the standard release build.
 
 **Confirmed working:**
 
-- Echo's worker pool initialises and runs inside Mountain on macOS (Apple
+- `Echo`'s worker pool initialises and runs inside `Mountain` on macOS (Apple
   Silicon and Intel) and Windows 10/11.
-- File system operations dispatched through Mountain route through Echo's async
-  runtime.
-- In-process file search runs through Mountain's `grep-regex` + `grep-searcher`
-  integration - ripgrep-compatible search without spawning a child process -
-  dispatched through the Echo task layer.
+- File system operations dispatched through `Mountain` route through `Echo`'s
+  async runtime.
+- In-process file search runs through `Mountain`'s `grep-regex` +
+  `grep-searcher` integration - ripgrep-compatible search without spawning a
+  child process - dispatched through the `Echo` task layer.
 - Task supervision with panic-boundary scopes: a panicking task is caught at the
-  scope boundary and reported without taking down the Mountain process.
-- Graceful shutdown: Mountain signals Echo's pool to drain before exit; no task
-  outlives its scope.
+  scope boundary and reported without taking down the `Mountain` process.
+- Graceful shutdown: `Mountain` signals `Echo`'s pool to drain before exit; no
+  task outlives its scope.
 
 **In Progress:**
 
-- Workspace-wide symbol indexing dispatched through Echo's work-stealing pool
+- Workspace-wide symbol indexing dispatched through `Echo`'s work-stealing pool
   (infrastructure present; index computation routines being connected).
-- Build pipeline jobs submitted to Echo for parallel execution.
+- Build pipeline jobs submitted to `Echo` for parallel execution.
 
 ---
 
 ## Supervision and Shutdown
 
-Echo tasks run inside supervised scopes. Each task has a parent scope; if a task
-panics, the panic is caught at the scope boundary and reported without taking
-down the Mountain process. When the editor closes, Mountain signals Echo's pool
-to drain - no task outlives its scope, which prevents orphaned threads from
-holding file handles or sockets after shutdown.
+`Echo` tasks run inside supervised scopes. Each task has a parent scope; if a
+task panics, the panic is caught at the scope boundary and reported without
+taking down the `Mountain` process. When the editor closes, `Mountain` signals
+`Echo`'s pool to drain - no task outlives its scope, which prevents orphaned
+threads from holding file handles or sockets after shutdown.
 
 ---
 
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Mountain: Native Kernel](https://Editor.Land/Doc/mountain)
+- [`Mountain`: Native Kernel](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Echo)

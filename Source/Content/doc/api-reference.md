@@ -9,26 +9,27 @@ description:
 
 # API Reference
 
-Editor.Land implements the VS Code extension API through Cocoon, the Node.js
-extension host. Extensions written against `@types/vscode` compile against
-Cocoon's stubs without modification. Whether they run correctly depends on which
-API surfaces they use.
+`Editor.Land` implements the `VS Code` extension `API` through `Cocoon`, the
+`Node.js` extension host. Extensions written against `@types/vscode` compile
+against `Cocoon`'s stubs without modification. Whether they run correctly
+depends on which `API` surfaces they use.
 
 ---
 
 ## Coverage Status
 
-The API surface is divided into three categories:
+The `API` surface is divided into three categories:
 
-**Implemented** - The API is active in the `debug-mountain` profile. Extensions
-using it behave as expected.
+**Implemented** - The `API` is active in the `debug-mountain` profile.
+Extensions using it behave as expected.
 
-**Partial** - The API is present and callable but not all methods or behaviours
-are implemented. Some calls may silently no-op or return empty results.
+**Partial** - The `API` is present and callable but not all methods or
+behaviours are implemented. Some calls may silently no-op or return empty
+results.
 
-**Not implemented** - The namespace exists in Cocoon's type stubs so extensions
-compile, but the runtime calls do nothing. Extensions that depend on these APIs
-activate but their features do not work.
+**Not implemented** - The namespace exists in `Cocoon`'s type stubs so
+extensions compile, but the runtime calls do nothing. Extensions that depend on
+these `APIs` activate but their features do not work.
 
 | Namespace                           | Status          | Notes                                                                                                 |
 | ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------- |
@@ -63,13 +64,13 @@ const Disposable = vscode.commands.registerCommand(
 ```
 
 Commands declared in `package.json` under `contributes.commands` appear in the
-command palette. This is one of the more reliably implemented API surfaces.
+command palette. This is one of the more reliably implemented `API` surfaces.
 
 ---
 
 ## Configuration
 
-Extensions read settings through the `WorkspaceConfiguration` API:
+Extensions read settings through the `WorkspaceConfiguration` `API`:
 
 ```typescript
 const Config = vscode.workspace.getConfiguration("MyExtension");
@@ -77,9 +78,10 @@ const FontSize = Config.get<number>("FontSize", 14);
 ```
 
 Configuration keys are declared in `contributes.configuration` in your extension
-manifest. Land validates configuration values against the JSON Schema you
+manifest. Land validates configuration values against the `JSON` Schema you
 provide. The specific user settings file path has not been independently
-confirmed - see [Configuration](https://Editor.Land/Doc/configuration) for details.
+confirmed - see [Configuration](https://Editor.Land/Doc/configuration) for
+details.
 
 ---
 
@@ -96,7 +98,7 @@ Declare keybindings in `contributes.keybindings`:
 }
 ```
 
-The `when` clause uses the same context key syntax as VS Code. Custom context
+The `when` clause uses the same context key syntax as `VS Code`. Custom context
 keys set via `vscode.commands.executeCommand('setContext', ...)` are supported.
 
 ---
@@ -113,7 +115,7 @@ vscode.window.registerTreeDataProvider(
 ```
 
 Declare the view container and view in `contributes.viewsContainers` and
-`contributes.views`. Tree data provider registration routes through Cocoon's
+`contributes.views`. Tree data provider registration routes through `Cocoon`'s
 fiber scheduler. Inline actions and welcome content are not confirmed.
 
 ---
@@ -144,21 +146,21 @@ bidirectional communication between the extension and the webview.
 Land supports LSP servers through the `vscode-languageclient` package. Point
 your extension at a language server binary and the LSP client handles
 initialization, capabilities negotiation, and shutdown. This routes through
-Cocoon's `vscode.languages` implementation, which is one of the more complete
-API surfaces.
+`Cocoon`'s `vscode.languages` implementation, which is one of the more complete
+`API` surfaces.
 
 ---
 
 ## Rust API Documentation
 
-Generated `rustdoc` output is planned for the Rust crates listed below. The URLs
-follow the pattern `https://Rust.Documentation.*.Editor.Land` - these may not
-yet resolve to hosted documentation. Check the
+Generated `rustdoc` output is planned for the `Rust` crates listed below. The
+URLs follow the pattern `https://Rust.Documentation.*.Editor.Land` - these may
+not yet resolve to hosted documentation. Check the
 [source repositories](https://github.com/CodeEditorLand) directly if the links
 are unavailable.
 
-| Crate           | Description                                                                                                                             | Element                           |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| Crate           | Description                                                                                                                             | Element                                              |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
 | `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](https://Editor.Land/Doc/mountain)         |
 | `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](https://Editor.Land/Doc/echo)                 |
 | `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](https://Editor.Land/Doc/architecture) |
@@ -174,7 +176,7 @@ are unavailable.
 
 ## See Also
 
-- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
 - [Extension Development](https://Editor.Land/Doc/extension-development)
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [VS Code API Documentation](https://code.visualstudio.com/api/references/vscode-api)
+- [`VS Code` `API` Documentation](https://code.visualstudio.com/api/references/vscode-api)

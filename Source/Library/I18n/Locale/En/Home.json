@@ -3,36 +3,36 @@
 		"badge": "Feature",
 		"item": {
 			"designTokens": {
-				"title": "No more frozen cursors.",
-				"description": "VS Code with a medium project uses 500 MB to 1.5 GB RAM across three Chromium processes. One extension event handler that never resolves freezes everything on that thread.\n\nMountain runs native Rust and Tauri. Echo runs every background task on a work-stealing thread pool. The editor thread never blocks."
+				"title": "Native services where they count.",
+				"description": "Mountain contains Rust services for windows, files, terminals, child processes, clipboard, and extension IPC. Echo provides scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming public benchmark numbers before a reproducible suite exists."
 			},
 			"componentLibrary": {
-				"title": "Every extension runs unchanged.",
-				"description": "Porting your extension library to a new editor is weeks of work you should never have to do.\n\nCocoon mirrors the full VS Code API surface via Effect-TS fibers. Install an extension and it works. Not mostly works. Unchanged."
+				"title": "Unmodified extensions, no fork path.",
+				"description": "Cocoon hosts existing VS Code extension code and provides the vscode API shim. Mountain scans installed extensions, reads manifests, handles VSIX install and uninstall routes, and notifies Cocoon when extensions change.\n\nThat supports a strong claim: extensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension API usage and on services still being filled in."
 			},
 			"documentation": {
 				"title": "Fibers, not Promises.",
-				"description": "VS Code Promises cannot be interrupted, raced, or run in parallel. A hung async operation in one extension stalls every other on that event loop.\n\nEffect-TS fibers can be interrupted, raced, and run concurrently across CPU cores. Bugs that reach production in VS Code never compile in Land."
+				"description": "Effect-TS gives Cocoon typed errors, scoped resources, cancellation, and supervised concurrency for extension-host work.\n\nThat does not magically remove every runtime bug, but it does make failure paths explicit in the services Land controls."
 			},
 			"versionControl": {
-				"title": "One codebase, every platform.",
-				"description": "Building native apps for three operating systems used to mean three rendering engines, three toolchains, and three deployment pipelines.\n\nTauri uses the OS's own WebView on each platform. One Rust codebase compiles to native macOS, Windows, and Linux. No bundled Chromium."
+				"title": "One source tree, configured targets.",
+				"description": "Tauri uses the operating system WebView on each platform, so the Mountain desktop path does not bundle Chromium.\n\nThe repository includes macOS, Windows, and Linux build configuration. Public installer coverage is still being completed."
 			},
 			"cicdIntegration": {
-				"title": "No Restart to Update.",
-				"description": "VS Code's Restart to Update prompt kills every open terminal, unsaved diff, and in-progress language server.\n\nAir pre-downloads and PGP-verifies the next version while you work. The update stages between sessions. The next launch opens on the new version with no prompt."
+				"title": "Update plumbing in progress.",
+				"description": "Air contains Rust services for update checks, downloads, authentication, indexing, health, and a Vine gRPC server.\n\nThose services are real source today. The public updater flow, signing story, and release distribution path are still being finished."
 			},
 			"collaboration": {
 				"title": "CC0. No restrictions.",
 				"description": "Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches."
 			}
 		},
-		"subtitle": "The extension ecosystem you already rely on, running on a stack designed for performance.",
+		"subtitle": "The editor pieces are being rebuilt around native services, typed IPC, and a compatibility host that can be checked against real source.",
 		"title": "VS Code. Without Electron."
 	},
 	"hero": {
-		"badge": "No Electron No Chromium CC0",
-		"subtitle": "VS Code runs on Electron. That means Chromium, Node.js, and a gigabyte of RAM just to open a file.\n\nLand replaces the entire Electron stack with Rust, Tauri, and Effect-TS. The difference is felt on first launch.",
+		"badge": "No Electron   No Chromium   CC0",
+		"subtitle": "VS Code runs on Electron. Land is rebuilding the editor stack around Rust, Tauri, and Effect-TS while keeping the VS Code extension API as the compatibility target.\n\nThe primary path is source-build first today, with public installers and long-tail extension coverage still in progress.",
 		"title": "The Future of Code Editing",
 		"titleHighlight": "Land",
 		"atScale": "starts here",
@@ -95,74 +95,59 @@
 		"title": "Free Forever, Open Source",
 		"badge": "Pricing"
 	},
-	"testimonials": {
-		"quote": {
-			"1": "A performance-focused, open alternative.\n\nLand is exactly what VS Code needed.\n\nIt's incredibly fast.",
-			"2": "The Effect-TS architecture is beautiful to work with.\n\nThe type safety catches bugs before they happen.",
-			"3": "Running my existing extensions with no changes is a game-changer.\n\nThe compatibility is impressive.",
-			"4": "Finally, an editor that respects my system resources.\n\nNo more Electron memory bloat.",
-			"5": "The open-source commitment means I can contribute and customize.\n\nThis is the editor I've been waiting for.",
-			"6": "The gRPC-based architecture is a masterclass in system design.\n\nLand is the future of desktop editors."
-		},
-		"subtitle": "Community voices on the future of code editing.",
-		"title": "What developers are saying",
-		"badge": "Testimonial",
-		"attribution": "Community Feedback",
-		"attributionNote": "Representative community member"
-	},
 	"roadmap": {
 		"title": "The Architecture Is Built. Here Is What Comes Next.",
-		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone demonstrates the stack works, not a feature we are catching up on.",
+		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is described as source status, integration status, or release work so the website does not outrun the code.",
 		"tiers": {
 			"current": {
 				"name": "Active Now",
-				"description": "All fifteen elements are in active development and independently deployable. The runtime is faster than VS Code. The extension API is implemented. Each element is a standalone repository you can inspect and contribute to today.",
+				"description": "The fifteen element directories are present in the Land workspace. The active desktop path is Mountain, Cocoon, Sky, Wind, Vine, Common, Echo, Air, Mist, Rest, Output, SideCar, and Maintain. Grove and Worker are present with integration scope that differs by build profile.",
 				"features": {
-					"1": "Every extension runs unchanged no rewrites",
-					"2": "No Electron OS's own renderer 70% less RAM",
-					"3": "Fibers, not Promises interruptible concurrent",
-					"4": "Telemetry is a compile flag absent, not disabled",
-					"5": "CC0 public domain no restrictions",
-					"6": "macOS Windows Linux"
+					"1": "Installed extensions run unmodified through Cocoon",
+					"2": "Tauri desktop path uses the operating system WebView",
+					"3": "Effect fibers for cancellable service work",
+					"4": "Telemetry features are compile-gated in Rust",
+					"5": "CC0 public domain no restrictions",
+					"6": "macOS primary path, Windows and Linux configured"
 				},
 				"button": "View on GitHub",
 				"elements": {
-					"mountain": "Mountain ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
-					"cocoon": "Cocoon 🦋\nExtension Host\nFull VS Code API via Effect-TS, every extension unchanged",
-					"wind": "Wind 🍃\nWorkbench Shell\nEffect-TS layers, direct OS calls, no IPC proxy",
-					"sky": "Sky 🌌\nAstro UI Layer\nEvery panel a component, instant hot-reload",
-					"air": "Air 🪁\nBackground Daemon\nPre-stages updates, no Restart to Update prompt",
-					"echo": "Echo 📣\nWork-Stealing Scheduler\nAll CPU cores, heavy tasks never block the editor"
+					"mountain": "Mountain   ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
+					"cocoon": "Cocoon   🦋\nExtension Host\nUnmodified VS Code extensions through Effect-TS routes",
+					"wind": "Wind   🍃\nWorkbench Shell\nEffect-TS layers for native workbench services",
+					"sky": "Sky   🌌\nAstro UI Layer\nWorkbench routes and WebView bridge",
+					"air": "Air   🪁\nBackground Services\nUpdates, downloads, auth, indexing, and health",
+					"echo": "Echo   📣\nScheduler Primitives\nBounded background work for Rust services"
 				}
 			},
 			"next": {
 				"name": "Extension Compatibility Complete",
 				"description": "The VS Code marketplace works end-to-end. Language servers initialize in parallel. IntelliSense is ready before you finish the first keystroke.",
 				"features": {
-					"1": "Full marketplace every extension installs and activates",
-					"2": "Language servers in parallel via Echo's thread pool",
-					"3": "Vine gRPC protocol stabilized typed IPC at every boundary",
-					"4": "Air daemon live silent updates staged between sessions"
+					"1": "Full marketplace   every extension installs and activates",
+					"2": "Language servers in parallel via Echo thread pool",
+					"3": "Vine gRPC protocol stabilized   typed IPC at every boundary",
+					"4": "Air daemon live   silent updates staged between sessions"
 				}
 			},
 			"future": {
 				"name": "v1.0",
-				"description": "Active milestones across all fifteen elements. Each item is grounded in an open README or open source commit.",
+				"description": "Active milestones across the element repos. These items are integration and release goals, not claims that the public build already ships them.",
 				"features": {
-					"1": "VS Code Marketplace every extension installs unchanged",
-					"2": "Grove hardware-enforced extension isolation",
-					"3": "Vine typed at the wire all IPC finalized",
-					"4": "Cross-platform native installer via Tauri",
+					"1": "Marketplace installation path under review",
+					"2": "Grove Wasmtime host integration",
+					"3": "Vine typed IPC coverage expanding",
+					"4": "Cross-platform public installers via Tauri",
 					"5": "Source map generation via OXC",
-					"6": "Cloudflare Workers download distribution live"
+					"6": "Download distribution and verification publishing"
 				},
 				"elements": {
-					"vine": "Vine 🌿\nProtocol In Progress\nMountain and Grove channel completing",
-					"cocoon": "Cocoon 🦋\nExtension Compatibility Pass\nHigh-fidelity VS Code API coverage",
-					"grove": "Grove 🌳\nWASM Sandbox Stabilizing\nCapability-based extension isolation",
-					"rest": "Rest ⛱️\nSource Map Support\nOXC transformer integration in progress",
-					"echo": "Echo 📣\nScheduler Optimization\nFaster steal, lower latency",
-					"air": "Air 🪁\nSigned CDN Delivery\nCloudflare Workers distribution"
+					"vine": "Vine   🌿\nProtocol In Progress\nMountain, Cocoon, Air, and Grove contracts",
+					"cocoon": "Cocoon   🦋\nExtension Compatibility Pass\nLong-tail VS Code API coverage",
+					"grove": "Grove   🌳\nWASM Host Stabilizing\nCapability-based extension isolation path",
+					"rest": "Rest   ⛱️\nSource Map Support\nOXC transformer integration in progress",
+					"echo": "Echo   📣\nScheduler Optimization\nFaster steal, lower latency",
+					"air": "Air   🪁\nRelease Delivery\nSigning and distribution path"
 				},
 				"button": "Track Progress"
 			}
@@ -170,66 +155,66 @@
 	},
 	"architecture": {
 		"title": "Under the Hood",
-		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nFifteen standalone open-source repositories, each one inspectable, forkable, and ready for contributions today.",
+		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nThe element directories are inspectable in source, but each one is described here by what the current code supports or is actively wiring.",
 		"air": {
-			"subtitle": "Background Daemon Silent Update Crypto-Signed",
-			"description": "Runs in the background after you close the editor. Downloads updates, verifies cryptographic signatures, and indexes your workspace for instant search.\n\nThe next launch is already on the latest version. You never see a restart-to-update prompt."
+			"subtitle": "Background Services - Downloader - Workspace Indexer",
+			"description": "Rust services for downloads, updates, authentication, indexing, resilience, health, and Vine IPC\nRelease signing and public installer delivery are still being completed\nDesigned to keep update and indexing work outside the main editor surface"
 		},
 		"cocoon": {
-			"subtitle": "Extension Host Full VS Code API Effect-TS Shim",
-			"description": "A Node.js sidecar that intercepts require and import at the module level and routes them through a complete Effect-TS service layer mirroring the VS Code API.\n\nInstall any extension. It runs unchanged. No patches, no rewrites, no compatibility hacks."
+			"subtitle": "Extension Host - Unmodified VS Code Extensions - Effect-TS Services",
+			"description": "Node.js sidecar for VS Code extension-host compatibility\nRuns existing extension entry points without rewriting their source\nRoutes implemented API calls through Effect-TS services and the Mountain bridge\nCore commands, workspace, window, terminal, webview, and language-provider surfaces exist in source"
 		},
 		"common": {
-			"subtitle": "Shared Foundation Abstract Trait Zero Implementation",
-			"description": "The pure abstract core of Land. Defines typed effects, composable building blocks, and abstract traits that every element builds on, with no concrete implementations.\n\nMock any trait and test any element without a running window, webview, or sidecar."
+			"subtitle": "Shared Foundation - Traits - Cross-Element Types",
+			"description": "Shared Rust crate and TypeScript package for cross-element contracts\nDefines reusable traits, DTOs, utility types, and service boundaries\nNot a standalone runtime process\nKeeps shared interfaces visible instead of scattering them through elements"
 		},
 		"echo": {
-			"subtitle": "Work-Stealing Scheduler Every CPU Core",
-			"description": "A lock-free concurrency runtime built on crossbeam-deque. Every task runs inside a supervised worker pool: no fire-and-forget spawns, graceful startup and shutdown guaranteed.\n\nHeavy indexing and analysis run in the background without ever blocking the editor."
+			"subtitle": "Work-Stealing Scheduler - crossbeam-deque - Supervised Worker Pool",
+			"description": "Scheduler primitives built around supervised Rust worker pools\nUsed by native services that need bounded background execution\nThe source supports cancellation and shutdown paths without promising that every workload already routes through Echo"
 		},
 		"grove": {
-			"subtitle": "Secure WASM Sandbox WASMtime Capability-Based Isolation",
-			"description": "Runs VS Code extensions compiled to WebAssembly inside WASMtime with configurable resource limits and capability-based security. Supports gRPC, IPC, and WASM transports.\n\nThe path to a true sandboxed extension model where an extension can only touch what you explicitly grant."
+			"subtitle": "WASM Sandbox - Wasmtime Runtime - Capability-Based Isolation",
+			"description": "Contains a Wasmtime-backed WebAssembly host path and Grove gRPC protocol definitions\nIncludes transport and capability-oriented modules for extension isolation work\nPrimary VS Code compatibility still runs through Cocoon while Grove integration matures"
 		},
 		"maintain": {
-			"subtitle": "Build Orchestrator Rhai Scripting TOML/JSON5 Config",
-			"description": "Build pipelines for the entire Land ecosystem. Embedded Rhai scripting for flexible build logic, compile-time validated TOML and JSON5 configurations, and deterministic artifact generation.\n\nSame commit always produces the same output. No environment surprises."
+			"subtitle": "Build Orchestrator - Configuration - Release Profiles",
+			"description": "Coordinates development, debug, and release build profiles across Land elements\nKeeps profile names and build scripts visible for contributors\nDeterministic release claims are held until the public release pipeline is fully published"
 		},
 		"mist": {
-			"subtitle": "DNS Sandbox Local *.editor.land Resolution",
-			"description": "Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world."
+			"subtitle": "Local DNS Sandbox - *.editor.land Resolution - Network Boundary",
+			"description": "Provides local DNS, resolver, WebSocket, zone, and forward-security code\nMountain has a native Mist feature path, but not every internal route flows through Mist yet\nThe goal is a clean local service boundary without exposing private service names publicly"
 		},
 		"mountain": {
-			"subtitle": "Native Rust Backend Replaces Electron Main Process",
-			"description": "Handles windows, files, processes, and extension IPC via Rust and Tauri. Where Electron takes milliseconds, Mountain responds in microseconds.\n\nStarts faster, uses less RAM, stays responsive with hundreds of files open. Authentication tokens live in the OS keychain, never on disk."
+			"subtitle": "Native Rust Backend - Tauri - Replaces Electron Main Process",
+			"description": "Handles windows, file I/O, child processes, terminals, clipboard, and extension IPC through Rust and Tauri\nIncludes Vine and Cocoon bridge code for the primary desktop path\nUses native integrations such as keyring where the feature path requires them"
 		},
 		"output": {
-			"subtitle": "Compilation Pipeline Deterministic Bundle Checksum",
-			"description": "Processes TypeScript from VS Code, Land, and the Rest compiler into fully bundled artifacts. A plugin-routed architecture handles each source type on its own path.\n\nSame commit, same output. Every bundle is deterministic and checksum-verified."
+			"subtitle": "Compilation Pipeline - Plugin-Routed - Deterministic Checksum",
+			"description": "Processes TypeScript and platform code through plugin-routed transforms\nContains the dynamic import rewrite and bundling support used by the output pipeline\nChecksum and release guarantees should come from the published pipeline, not from marketing copy"
 		},
 		"rest": {
-			"subtitle": "TypeScript Compiler Rust + OXC 2-3x Faster",
-			"description": "OXC-powered TypeScript compiler implemented in Rust. Powered by OXC, the same parser VS Code uses internally, for 100% compatible output at 2-3x the speed of esbuild.\n\nRust-native, zero Node.js overhead."
+			"subtitle": "TypeScript Transform Pipeline - OXC - Rust-Native",
+			"description": "OXC-based transform work for TypeScript and VS Code platform code\nMeant to reduce reliance on Node-hosted compilation paths over time\nSource maps and public benchmark claims remain integration work"
 		},
 		"sidecar": {
-			"subtitle": "Binary Distributor Node.js Runtime Per Platform",
-			"description": "Packages and selects the exact Node.js sidecar binary at compile time based on the target triple: aarch64-apple-darwin, x86_64-pc-windows-msvc, and four others.\n\nCocoon always gets the binary that matches the host exactly. No runtime detection, no fallback chains."
+			"subtitle": "Binary Distributor - Compile-Time Target Triple Selection - Per-Platform Node.js",
+			"description": "Packages host-specific sidecar binaries for the Cocoon path\nKeeps target triples and selection logic in source rather than hidden installer scripts\nAdditional platform packaging remains tied to the release pipeline"
 		},
 		"sky": {
-			"subtitle": "Visual UI Layer Astro Component Instant Hot-Reload",
-			"description": "Every panel, sidebar, tab bar, and status bar is an Astro component. Three workbench layouts for full desktop, embedded, and minimal deployments.\n\nTauri reloads Sky instantly on any component change. High-fidelity VS Code UI compatibility with a significantly smaller footprint."
+			"subtitle": "Visual UI Layer - Astro Components - Three Workbench Layouts",
+			"description": "Astro workbench routes and WebView bridge code for the editor UI\nSupports the visual shell that Mountain loads through Tauri\nPanel and layout coverage should be checked against the current Sky routes"
 		},
 		"vine": {
-			"subtitle": "gRPC Backbone Contract-First .proto Definition",
-			"description": "Every inter-process service interface starts as a .proto file. The generated Rust and TypeScript stubs are the only way Land processes communicate.\n\nTyped at the wire, typed at the call site, verified at compile time. Refactor a message field and every consumer breaks loudly instead of silently."
+			"subtitle": "gRPC Backbone - Contract-First - .proto Definitions",
+			"description": "Protocol contracts live in .proto files for Mountain, Cocoon, Air, Grove, and related services\nGenerated stubs give Rust and TypeScript a shared wire shape where the route is implemented\nCoverage is expanding across the IPC surface"
 		},
 		"wind": {
-			"subtitle": "VS Code Workbench Reimplemented Effect-TS Layer Native OS API",
-			"description": "A clean TypeScript re-implementation of the VS Code Workbench: panels, sidebars, activity bar. Every service is a composable Effect-TS Layer: file dialogs, clipboard, configuration, and output channels.\n\nNative OS calls via Tauri. No Electron IPC proxy. No renderer-to-main roundtrip."
+			"subtitle": "Workbench Services - Effect-TS Layers - Native Bridges",
+			"description": "TypeScript workbench services for panels, sidebars, activity bar, configuration, and output channels\nEffect-TS layers keep service dependencies explicit\nNative OS calls use the Tauri bridge where the Mountain path implements them"
 		},
 		"worker": {
-			"subtitle": "Service Worker Offline Support AES-GCM Auth",
-			"description": "Manages caching, offline support, and dynamic CSS imports from JavaScript modules in the editor shell. Auth tokens are AES-GCM encrypted, requests are HMAC-signed, and tokens refresh automatically.\n\nThe shell stays functional and authenticated even when the network drops."
+			"subtitle": "Service Worker - Offline Cache - CSS Import Support",
+			"description": "Manages browser-worker support for caching and dynamic CSS imports where the web shell needs it\nSecurity-sensitive auth claims are kept out until the active Worker code and release profile prove them end to end"
 		}
 	}
 }

@@ -16,8 +16,8 @@ source today.
 
 ## After the Editor Opens
 
-A successful build opens a native window with the workbench UI - WKWebView on
-macOS, WebView2 on Windows. You should see:
+A successful build opens a native window with the `workbench` UI - `WKWebView`
+on macOS, `WebView2` on Windows. You should see:
 
 - The editor surface (Monaco) in the main area.
 - A status bar at the bottom of the window.
@@ -34,21 +34,21 @@ the Land root and rebuild.
 ## Opening a Project
 
 **File > Open Folder** or `Cmd+O` / `Ctrl+O` opens a directory as a workspace.
-This routes through Mountain's file system layer via Tauri IPC.
+This routes through `Mountain`'s file system layer via `Tauri` `IPC`.
 
 If you have an existing `.vscode/` directory with workspace settings, Land reads
-it. See [Configuration](https://Editor.Land/Doc/configuration) for details on supported
-configuration keys.
+it. See [Configuration](https://Editor.Land/Doc/configuration) for details on
+supported configuration keys.
 
 ---
 
 ## Extensions
 
-Cocoon activates extensions at startup. The following is confirmed working:
+`Cocoon` activates extensions at startup. The following is confirmed working:
 
-- Extensions present on disk activate through Cocoon's fiber scheduler.
+- Extensions present on disk activate through `Cocoon`'s fiber scheduler.
 - Extensions using standard `vscode.*` file system, terminal, language server,
-  and debug adapter APIs work for those APIs implemented in Cocoon.
+  and debug adapter `APIs` work for those `APIs` implemented in `Cocoon`.
 - A `.vsix` file can be installed manually. Open the command palette
   (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **Extensions: Install from VSIX**.
 
@@ -57,15 +57,15 @@ The following is **in progress**:
 - An Extensions panel with browsing and search UI.
 - Marketplace or Open VSX Registry integration.
 
-If an extension activates but its features do not respond, check the **Output**
-panel (command palette → **View: Toggle Output**) and select the extension's
-output channel. Activation errors appear there.
+If an extension activates but its features do not respond, check the
+**`Output`** panel (command palette → **View: Toggle `Output`**) and select the
+extension's output channel. Activation errors appear there.
 
 ---
 
 ## Settings
 
-Land has a fully implemented configuration system backed by Mountain's
+Land has a fully implemented configuration system backed by `Mountain`'s
 `ConfigurationState` - a thread-safe, merged store covering both global and
 workspace scopes. It supports dotted-path key access (e.g. `Editor.FontSize`,
 `Workbench.ColorTheme`) with nested object writes handled by
@@ -73,18 +73,18 @@ workspace scopes. It supports dotted-path key access (e.g. `Editor.FontSize`,
 for both global and workspace contexts.
 
 Open the command palette and search for **Preferences: Open Settings** to locate
-and edit the active settings file. The settings format is JSON, compatible with
-VS Code's `settings.json` structure.
+and edit the active settings file. The settings format is `JSON`, compatible
+with `VS Code`'s `settings.json` structure.
 
 ---
 
 ## Terminal
 
-The integrated terminal is backed by Mountain's pty layer. Open it with
+The integrated terminal is backed by `Mountain`'s pty layer. Open it with
 `` Cmd+` `` (macOS) or `` Ctrl+` `` (Windows). This routes a spawn call through
-Vine gRPC to Mountain, which creates a native pty. The terminal is one of the
-most reliable features in the current build, mapping directly to verified Vine
-service definitions.
+`Vine` `gRPC` to `Mountain`, which creates a native pty. The terminal is one of
+the most reliable features in the current build, mapping directly to verified
+`Vine` service definitions.
 
 ---
 
@@ -112,9 +112,9 @@ from the command palette to run configured tasks. The standard
 
 ## Extension API Notes
 
-The vast majority of `vscode.*` APIs covering file system, terminal, language
+The vast majority of `vscode.*` `APIs` covering file system, terminal, language
 server protocol, diagnostics, status bar, tree views, custom editors, and
-webview panels are routed and active. The following APIs have stub
+webview panels are routed and active. The following `APIs` have stub
 implementations - they allow extensions that declare them to activate without
 crashing, but the underlying features are not yet wired to a backend:
 
@@ -123,7 +123,8 @@ crashing, but the underlying features are not yet wired to a backend:
 - `vscode.notebook.*` - notebook UI
 - `vscode.tests.*` - test explorer
 
-See [Cocoon](https://Editor.Land/Doc/cocoon) for the full API coverage table.
+See [`Cocoon`](https://Editor.Land/Doc/cocoon) for the full `API` coverage
+table.
 
 ---
 
@@ -132,5 +133,5 @@ See [Cocoon](https://Editor.Land/Doc/cocoon) for the full API coverage table.
 - [Getting Started](https://Editor.Land/Doc/getting-started)
 - [Installation](https://Editor.Land/Doc/installation)
 - [Configuration](https://Editor.Land/Doc/configuration)
-- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
 - [Architecture Overview](https://Editor.Land/Doc/architecture)

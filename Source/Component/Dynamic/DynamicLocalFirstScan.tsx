@@ -280,24 +280,24 @@ const LocalFirstScanInner = () => {
 								</span>
 							</div>
 							<div className="flex flex-wrap gap-2 pt-1">
-								<span className="inline-flex items-center border border-green-200 bg-green-50 px-2 py-0.5 text-xs text-green-700">
-									mTLS{"\u2001"}
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+									Peer-to-peer design{"\u2001"}
 									<span
-										className="h-1 w-1 rounded-none bg-green-500"
+										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-green-200 bg-green-50 px-2 py-0.5 text-xs text-green-700">
-									CRDTs{"\u2001"}
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+									Local-first{"\u2001"}
 									<span
-										className="h-1 w-1 rounded-none bg-green-500"
+										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-green-200 bg-green-50 px-2 py-0.5 text-xs text-green-700">
-									Zero Cloud{"\u2001"}
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+									No cloud required{"\u2001"}
 									<span
-										className="h-1 w-1 rounded-none bg-green-500"
+										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>

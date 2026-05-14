@@ -8,15 +8,15 @@ description:
 
 # SideCar
 
-SideCar packages the correct Node.js binary for each target platform at compile
-time - no runtime detection, no fallback chains. The binary that ships is the
-binary that runs.
+`SideCar` packages the correct `Node.js` binary for each target platform at
+compile time - no runtime detection, no fallback chains. The binary that ships
+is the binary that runs.
 
 ---
 
 ## The Problem
 
-VS Code ships a single Node.js binary and detects the platform at runtime. A
+`VS Code` ships a single `Node.js` binary and detects the platform at runtime. A
 chain of fallback logic handles architecture mismatches, Rosetta translation on
 Apple Silicon, musl versus glibc on Linux, and missing shared libraries on
 minimal containers.
@@ -30,9 +30,9 @@ fallback was selected and why it broke.
 
 ## How SideCar Eliminates It
 
-SideCar resolves the platform question at compile time, not runtime. The build
-matrix defines supported target triples explicitly. For each triple, SideCar
-downloads the corresponding Node.js binary from the official release, verifies
+`SideCar` resolves the platform question at compile time, not runtime. The build
+matrix defines supported target triples explicitly. For each triple, `SideCar`
+downloads the corresponding `Node.js` binary from the official release, verifies
 its checksum, and makes it available as the canonical binary for that target.
 The runtime code contains no platform detection logic.
 
@@ -41,7 +41,7 @@ The runtime code contains no platform detection logic.
 ## Supported Target Triples
 
 All four target triple directories are confirmed present in the
-[SideCar repository](https://github.com/CodeEditorLand/SideCar):
+[`SideCar` repository](https://github.com/CodeEditorLand/SideCar):
 
 | Triple                      | Platform             |
 | --------------------------- | -------------------- |
@@ -70,10 +70,10 @@ All four target triple directories are confirmed present in the
 
 ## What SideCar Enables
 
-The editor starts with the correct Node.js binary already in place for the
+The editor starts with the correct `Node.js` binary already in place for the
 target platform - no detection step, no fallback chain. If the build succeeded
 for your target triple, the binary is already there. This removes an entire
-category of platform-specific runtime failures that exist in Electron-based
+category of platform-specific runtime failures that exist in `Electron`-based
 editors.
 
 ---
@@ -88,7 +88,7 @@ editors.
 
 ## Key Technologies
 
-Rust, Target Triple Resolution, Compile-Time Binary Selection, Checksum
+`Rust`, Target Triple Resolution, Compile-Time Binary Selection, Checksum
 Verification, Cross-Platform Distribution.
 
 ---
@@ -96,5 +96,5 @@ Verification, Cross-Platform Distribution.
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Cocoon](https://Editor.Land/Doc/cocoon)
+- [`Cocoon`](https://Editor.Land/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/SideCar)

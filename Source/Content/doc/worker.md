@@ -9,11 +9,11 @@ description:
 
 # Worker
 
-Worker is the browser-worker layer for Editor.Land surfaces that need cached
+`Worker` is the browser-worker layer for `Editor.Land` surfaces that need cached
 assets, versioned application files, or dynamic CSS import handling. It belongs
 to the web shell and WebView side of the system.
 
-Worker should be shown as source-backed, with release scope depending on the
+`Worker` should be shown as source-backed, with release scope depending on the
 active build profile.
 
 ---
@@ -30,7 +30,7 @@ active build profile.
 
 ## Status
 
-Worker is useful infrastructure, but public copy should avoid claiming that it
+`Worker` is useful infrastructure, but public copy should avoid claiming that it
 intercepts all editor requests or guarantees offline behavior for every asset.
 Use `WIP` where the active release profile has not been verified.
 
@@ -39,6 +39,6 @@ Use `WIP` where the active release profile has not been verified.
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Output](https://Editor.Land/Doc/output)
-- [Mountain](https://Editor.Land/Doc/mountain)
+- [`Output`](https://Editor.Land/Doc/output)
+- [`Mountain`](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Worker)

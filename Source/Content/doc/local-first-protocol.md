@@ -9,14 +9,14 @@ description:
 # Local-First Protocol
 
 > **Note: The peer-to-peer sync protocol described here is the design
-> specification for the Air Daemon. Air exists as an active Rust background
-> daemon, but the full sync protocol - including mDNS discovery, mutual
-> authentication, and content-addressed delta transfer - is under active
+> specification for the `Air` Daemon. `Air` exists as an active `Rust`
+> background daemon, but the full sync protocol - including `mDNS` discovery,
+> mutual authentication, and content-addressed delta transfer - is under active
 > development. Specific constants, port numbers, and file paths in this document
 > reflect the intended design, not a confirmed working implementation. This page
 > will be updated as features ship.**
 
-The Air Daemon provides optional peer-to-peer synchronisation between Land
+The `Air` Daemon provides optional peer-to-peer synchronisation between Land
 instances. This document describes the design of the protocol used for
 discovery, data transfer, and conflict resolution. All synchronisation is
 local-network-first: no data passes through external servers.
@@ -39,9 +39,9 @@ Land's sync layer is built on three commitments:
 
 ## Discovery
 
-Air is designed to broadcast an mDNS service record on the local network. Each
-record will contain an instance ID (a UUID generated on first launch), a listen
-port, and a protocol version identifier. When a peer is discovered, the
+`Air` is designed to broadcast an `mDNS` service record on the local network.
+Each record will contain an instance ID (a UUID generated on first launch), a
+listen port, and a protocol version identifier. When a peer is discovered, the
 initiating daemon opens a connection and performs a mutual authentication
 handshake using pre-shared keys exchanged out-of-band (such as a QR code or
 manual key entry).
@@ -50,8 +50,8 @@ manual key entry).
 
 ## Authentication
 
-Air is designed to use NaCl (libsodium) for all cryptographic operations. The
-intended scheme is:
+`Air` is designed to use `NaCl` (libsodium) for all cryptographic operations.
+The intended scheme is:
 
 1. Each instance generates a Curve25519 key pair on first launch.
 2. Pairing exchanges public keys out-of-band.
@@ -96,15 +96,15 @@ Conflict resolution strategy is intended to be configurable per workspace.
 
 ## Offline-First Guarantees
 
-Air is designed never to block the editor. If no peers are available, the editor
-operates normally. Sync is intended to resume automatically when connectivity is
-restored. There is no "offline mode" toggle - the editor is always fully
-functional regardless of network state.
+`Air` is designed never to block the editor. If no peers are available, the
+editor operates normally. Sync is intended to resume automatically when
+connectivity is restored. There is no "offline mode" toggle - the editor is
+always fully functional regardless of network state.
 
 ---
 
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Air](https://Editor.Land/Doc/air)
+- [`Air`](https://Editor.Land/Doc/air)
 - [Configuration](https://Editor.Land/Doc/configuration)

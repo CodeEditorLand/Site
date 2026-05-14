@@ -9,11 +9,11 @@ description:
 
 # Extension Development
 
-Editor.Land runs VS Code extensions through Cocoon, the Node.js extension host.
-If you have built a VS Code extension before, the scaffolding, structure,
-TypeScript compilation, and packaging steps are identical. This guide covers the
-workflow from scaffolding to distribution, with clear notes on what is confirmed
-working in Land today versus what is planned.
+`Editor.Land` runs `VS Code` extensions through `Cocoon`, the `Node.js`
+extension host. If you have built a `VS Code` extension before, the scaffolding,
+structure, `TypeScript` compilation, and packaging steps are identical. This
+guide covers the workflow from scaffolding to distribution, with clear notes on
+what is confirmed working in Land today versus what is planned.
 
 ---
 
@@ -26,10 +26,10 @@ npm install -g yo generator-code
 yo code
 ```
 
-Select **New Extension (TypeScript)** and fill in the prompts. The generator
+Select **New Extension (`TypeScript`)** and fill in the prompts. The generator
 creates a directory with `package.json`, `tsconfig.json`, and a `src/` folder
 containing an `Extension.ts` entry point. This step is entirely independent of
-Land - it uses the standard VS Code extension scaffolding toolchain.
+Land - it uses the standard `VS Code` extension scaffolding toolchain.
 
 ---
 
@@ -46,7 +46,7 @@ MyExtension/
 ```
 
 The `main` field in `package.json` points to the compiled JavaScript output
-(typically `out/Extension.js`). Cocoon reads `package.json` at activation time
+(typically `out/Extension.js`). `Cocoon` reads `package.json` at activation time
 to discover contributed commands, configuration, and activation events.
 
 ---
@@ -59,15 +59,15 @@ To load your extension into a running Land instance from source:
 cargo tauri dev -- --extensionDevelopmentPath=/path/to/MyExtension
 ```
 
-The `--extensionDevelopmentPath` flag instructs Cocoon to load the extension at
-the specified path in addition to any normally discovered extensions. Whether
-this flag is fully wired through Tauri's CLI argument passing to Cocoon has not
-been independently confirmed. If the flag does not take effect, place the
-extension directory in the location Cocoon discovers extensions from and restart
-the editor.
+The `--extensionDevelopmentPath` flag instructs `Cocoon` to load the extension
+at the specified path in addition to any normally discovered extensions. Whether
+this flag is fully wired through `Tauri`'s CLI argument passing to `Cocoon` has
+not been independently confirmed. If the flag does not take effect, place the
+extension directory in the location `Cocoon` discovers extensions from and
+restart the editor.
 
-For TypeScript changes to take effect, run `tsc --watch` in a separate terminal
-alongside `cargo tauri dev`.
+For `TypeScript` changes to take effect, run `tsc --watch` in a separate
+terminal alongside `cargo tauri dev`.
 
 ---
 
@@ -86,11 +86,11 @@ This is the recommended approach for testing pure extension logic (parsers,
 formatters, data transformations).
 
 **Integration tests** that require the editor runtime use
-`@vscode/test-electron` in the VS Code ecosystem. Using this package with Land
-requires configuring it to point at Land's binary rather than VS Code's Electron
-binary - this configuration is not yet documented for Land specifically. Until
-it is, use unit tests for logic and manual testing in the development build for
-editor integration.
+`@vscode/test-electron` in the `VS Code` ecosystem. Using this package with Land
+requires configuring it to point at Land's binary rather than `VS Code`'s
+`Electron` binary - this configuration is not yet documented for Land
+specifically. Until it is, use unit tests for logic and manual testing in the
+development build for editor integration.
 
 ---
 
@@ -134,13 +134,13 @@ Distribution options today:
 
 ## API Coverage
 
-The following API surfaces are implemented in Cocoon and work reliably for
+The following `API` surfaces are implemented in `Cocoon` and work reliably for
 extension use today:
 
 - `vscode.commands` - register, execute, command palette
-- `vscode.workspace.fs` - file read/write via Mountain's FS layer
-- `vscode.window.createTerminal` - pty via Mountain
-- `vscode.debug` - DAP bridge via Mountain
+- `vscode.workspace.fs` - file read/write via `Mountain`'s FS layer
+- `vscode.window.createTerminal` - pty via `Mountain`
+- `vscode.debug` - DAP bridge via `Mountain`
 - `vscode.languages` - LSP client via `vscode-languageclient`
 - `vscode.workspace.getConfiguration` - settings read
 
@@ -152,12 +152,13 @@ features silently no-op at runtime:
 - `vscode.notebook.*` - notebook documents and editors
 - `vscode.tests.*` - test explorer and runner
 
-See [API Reference](https://Editor.Land/Doc/api-reference) for the full coverage table.
+See [`API` Reference](https://Editor.Land/Doc/api-reference) for the full
+coverage table.
 
 ---
 
 ## See Also
 
-- [API Reference](https://Editor.Land/Doc/api-reference)
-- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [`API` Reference](https://Editor.Land/Doc/api-reference)
+- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
 - [Contributing](https://Editor.Land/Doc/contributing)

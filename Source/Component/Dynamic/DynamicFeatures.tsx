@@ -44,20 +44,19 @@ const FeatureColorMap: Record<string, string> = {
  * These flow into aria-label, title, and Radix tooltip text via IconTooltip.
  */
 const FeatureIconLabelMap: Record<string, string> = {
-	Zap: "Native services keep heavy work outside the WebView",
-	Box: "Unmodified VS Code extensions run through Cocoon",
-	Cpu: "Runs at native CPU speed",
-	Globe: "Targets macOS, Windows, and Linux from one source tree",
-	Wrench: "Best-in-class developer toolchain",
-	Heart: "CC0 - free to use, fork, and ship",
-	Sparkles: "Packed with capabilities",
-	Code: "Code and build tooling",
-	Layers: "Type errors caught at compile time",
-	Package: "Deploys as one native bundle",
+	Zap: "Mountain handles native window, file, and terminal services outside the WebView",
+	Box: "Cocoon hosts VS Code extensions with high-fidelity API compatibility",
+	Cpu: "Rust services run at native CPU speed without Electron overhead",
+	Globe: "Targets macOS, Windows, and Linux from one Tauri source tree",
+	Wrench: "Rust, Tauri, Effect-TS, Biome, and OXC form the toolchain",
+	Heart: "CC0 public domain - free to use, fork, and ship",
+	Layers: "Effect-TS catches type errors at compile time",
 	Puzzle: "Installed extensions run unmodified where their APIs are implemented",
-	Server: "Service route or planned relay",
+	Server: "Vine gRPC route or planned relay",
 	Shield: "Verified request path where implemented",
-	Database: "Your data stays on your machine",
+	Sparkles: "Active development across all elements",
+	Code: "Rust, TypeScript, and build tooling",
+	Package: "Tauri bundles to native packages, no Chromium",
 };
 
 /**

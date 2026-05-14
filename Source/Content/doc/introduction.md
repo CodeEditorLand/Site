@@ -8,11 +8,11 @@ description:
 
 # Introduction to Editor.Land
 
-Editor.Land is an open-source code editor stack built around Rust, Tauri,
-Effect-TS, and a VS Code-compatible extension host. Mountain is the Rust + Tauri
-desktop shell. Sky and Wind provide the workbench UI and service layer. Cocoon
-runs unmodified VS Code extension entry points through a `vscode` API shim where
-the API surface is implemented.
+`Editor.Land` is an open-source code editor stack built around `Rust`, `Tauri`,
+`Effect-TS`, and a `VS Code`-compatible extension host. `Mountain` is the
+`Rust` + `Tauri` desktop shell. `Sky` and `Wind` provide the `workbench` UI and
+service layer. `Cocoon` runs unmodified `VS Code` extension entry points through
+a `vscode` `API` shim where the `API` surface is implemented.
 
 The project is source-build first today. Public installers, release signing, and
 a full extension validation matrix are still in progress.
@@ -23,19 +23,19 @@ a full extension validation matrix are still in progress.
 
 The source supports these claims:
 
-- Mountain provides the Tauri desktop shell, native services, IPC, and Cocoon
-  bridge.
-- Cocoon runs existing VS Code extension entry points without rewriting their
-  source when the APIs they use are implemented.
-- Mountain scans installed extensions, reads manifests, handles local VSIX
-  install and uninstall routes, and notifies Cocoon when extension state
+- `Mountain` provides the `Tauri` desktop shell, native services, `IPC`, and
+  `Cocoon` bridge.
+- `Cocoon` runs existing `VS Code` extension entry points without rewriting
+  their source when the `APIs` they use are implemented.
+- `Mountain` scans installed extensions, reads manifests, handles local VSIX
+  install and uninstall routes, and notifies `Cocoon` when extension state
   changes.
-- Vine provides `.proto` contracts and generated IPC stubs for routes such as
-  Mountain to Cocoon and Air to Mountain.
-- Air contains background service code for updates, downloads, integrity,
-  authentication, indexing, health, and Vine IPC.
-- Grove contains a Wasmtime-backed WebAssembly host path, but that path is WIP
-  for the primary editor flow.
+- `Vine` provides `.proto` contracts and generated `IPC` stubs for routes such
+  as `Mountain` to `Cocoon` and `Air` to `Mountain`.
+- `Air` contains background service code for updates, downloads, integrity,
+  authentication, indexing, health, and `Vine` `IPC`.
+- `Grove` contains a Wasmtime-backed `WebAssembly` host path, but that path is
+  WIP for the primary editor flow.
 
 Performance numbers are intentionally left out until a repeatable public
 benchmark suite is published.
@@ -48,14 +48,14 @@ benchmark suite is published.
 - Release signing and verification artifacts.
 - Marketplace browsing and install flows beyond local or sideloaded extension
   sources.
-- Chat, language-model, notebook, tests, and other long-tail VS Code APIs.
-- Grove integration into the primary build.
+- Chat, language-model, notebook, tests, and other long-tail `VS Code` `APIs`.
+- `Grove` integration into the primary build.
 
 ---
 
 ## Elements
 
-Editor.Land is composed of named elements. Each element should be described by
+`Editor.Land` is composed of named elements. Each element should be described by
 source status and integration status, not by broad product promises.
 
 | Element      | Role                                                                 |
@@ -80,10 +80,10 @@ source status and integration status, not by broad product promises.
 
 ## Build Profiles
 
-- **`debug`** - browser-oriented UI development without the full Mountain
+- **`debug`** - browser-oriented UI development without the full `Mountain`
   desktop shell.
-- **`debug-mountain`** - primary Tauri desktop development profile with Mountain
-  and Cocoon.
+- **`debug-mountain`** - primary `Tauri` desktop development profile with
+  `Mountain` and `Cocoon`.
 - **`debug-electron`** - legacy compatibility path for comparison work.
 
 ---
@@ -92,5 +92,5 @@ source status and integration status, not by broad product promises.
 
 - [Getting Started](https://Editor.Land/Doc/getting-started)
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Mountain](https://Editor.Land/Doc/mountain)
-- [Cocoon](https://Editor.Land/Doc/cocoon)
+- [`Mountain`](https://Editor.Land/Doc/mountain)
+- [`Cocoon`](https://Editor.Land/Doc/cocoon)

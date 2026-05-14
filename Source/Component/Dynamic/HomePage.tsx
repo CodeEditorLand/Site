@@ -66,14 +66,14 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "1",
 					Title: "Rust Core",
 					Tooltip:
-						"Native backend code for editor services, IPC, files, terminals, and process control.",
+						"Mountain implements the Common trait definitions in Rust. Handles windows, files, terminals, IPC, and process control through Tauri.",
 					Colors: ["var(--ExtensionRust)", "var(--Mute)"],
 				},
 				{
 					Id: "2",
 					Title: "Tauri UI",
 					Tooltip:
-						"Uses the operating system WebView instead of bundling Chromium.",
+						"Sky renders Astro components in the operating system WebView. Wind manages workbench state through Effect-TS layers.",
 					Colors: [
 						"var(--ExtensionTauri)",
 						"var(--Primary)",
@@ -85,7 +85,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "3",
 					Title: "Effect-TS Services",
 					Tooltip:
-						"Typed services, scoped resources, cancellation, and supervised async work.",
+						"Cocoon and Wind use Effect-TS for typed errors, scoped resources, cancellation, and supervised concurrency.",
 					Colors: [
 						"var(--ExtensionEffectTypeScript)",
 						"var(--ExtensionEffectTypeScriptFore)",
@@ -96,21 +96,21 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "4",
 					Title: "gRPC IPC",
 					Tooltip:
-						"Typed protocol surfaces between Mountain, Cocoon, Air, and related services.",
+						"Vine defines .proto contracts for typed communication between Mountain, Cocoon, Air, and Grove.",
 					Colors: ["var(--SpinegRPC)", "var(--SpineIPC)"],
 				},
 				{
 					Id: "5",
 					Title: "Extension Host",
 					Tooltip:
-						"Unmodified VS Code extensions run through Cocoon when their API surface is implemented.",
+						"Cocoon runs unmodified VS Code extensions by providing the vscode API shim and routing calls through Effect-TS to Mountain.",
 					Colors: ["var(--TierProvider)"],
 				},
 				{
 					Id: "6",
 					Title: "Cross-Platform",
 					Tooltip:
-						"Source and Tauri bundle configuration target macOS, Windows, and Linux.",
+						"Tauri bundles to native macOS, Windows, and Linux packages using the OS WebView. Build configuration targets all three.",
 					Colors: [
 						"var(--OSMacOS)",
 						"var(--OSWindows)",
@@ -121,14 +121,14 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "7",
 					Title: "VS Code API",
 					Tooltip:
-						"Compatibility target for commands, workspace, windows, terminals, webviews, language features, and extension activation.",
+						"Cocoon implements the VS Code API surface with Effect-TS fibers: commands, workspace, terminals, webviews, and language features.",
 					Colors: ["var(--SpineIPC)"],
 				},
 				{
 					Id: "8",
 					Title: "Open Source CC0",
 					Tooltip:
-						"Free to use, fork, and ship. No restrictions, ever.",
+						"All fifteen element repos are under CC0 1.0 Universal. Funded by NLnet NGI0 Commons Fund.",
 					Colors: ["var(--SpinegRPC)", "var(--ExtensionTauri)"],
 				},
 			],
@@ -156,7 +156,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"Mountain contains Rust services for windows, files, terminals, child processes, clipboard, and extension IPC. Echo provides scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming public benchmark numbers before a reproducible suite exists.",
+								"Mountain runs native Rust and Tauri for window management, file I/O, child processes, terminal IPC, and extension communication. Echo provides work-stealing scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming benchmark numbers before a reproducible suite exists.",
 						},
 					),
 				},
@@ -171,7 +171,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Cocoon hosts existing VS Code extension code and provides the `vscode` API shim. Mountain scans installed extensions, reads manifests, handles VSIX install and uninstall routes, and notifies Cocoon when extensions change.\n\nThat supports a strong claim: extensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension's API usage and on services that are still being filled in.",
+								"Cocoon hosts existing VS Code extension code and provides the vscode API shim using Effect-TS fibers. Mountain scans installed extensions, reads package.json manifests, handles VSIX install paths, and notifies Cocoon when extensions change.\n\nExtensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension API usage and on services still being filled in.",
 						},
 					),
 				},
@@ -190,7 +190,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"Effect-TS gives Cocoon typed errors, scoped resources, cancellation, and supervised concurrency for extension-host work.\n\nThat does not magically remove every runtime bug, but it does make failure paths explicit in the services Land controls.",
+								"Effect-TS gives Cocoon typed errors, scoped resources, explicit cancellability, and supervised concurrency for extension-host work.\n\nThat does not remove every runtime bug, but it does make failure paths explicit and traceable through the services Land controls.",
 						},
 					),
 				},
@@ -205,7 +205,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"Tauri uses the operating system WebView on each platform, so the Mountain desktop path does not bundle Chromium.\n\nThe repository includes macOS, Windows, and Linux build configuration. Public installer coverage is still being completed.",
+								"Tauri uses the OS WebView on each platform instead of a bundled Chromium instance. Mountain's desktop path has no embedded browser engine.\n\nThe repository includes macOS, Windows, and Linux build configuration. macOS is the primary path, with Windows and Linux installer coverage still being completed.",
 						},
 					),
 				},
@@ -409,7 +409,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			Testimonials: [
 				{
 					Id: "Air",
-					Emoji: "\uD83E\uDE81",
+					Emoji: "🪁",
 					Href: "https://github.com/CodeEditorLand/Air",
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
@@ -423,7 +423,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Cocoon",
-					Emoji: "\uD83E\uDD8B",
+					Emoji: "🦋",
 					Href: "https://github.com/CodeEditorLand/Cocoon",
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
@@ -437,7 +437,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Common",
-					Emoji: "\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDFED",
+					Emoji: "👨🏻‍🏭",
 					Href: "https://github.com/CodeEditorLand/Common",
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
@@ -451,7 +451,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Echo",
-					Emoji: "\uD83D\uDCE3",
+					Emoji: "📣",
 					Href: "https://github.com/CodeEditorLand/Echo",
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
@@ -465,7 +465,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Grove",
-					Emoji: "\uD83C\uDF33",
+					Emoji: "🌳",
 					Href: "https://github.com/CodeEditorLand/Grove",
 					Author: "Grove",
 					Role: T("home:architecture.grove.subtitle", {
@@ -479,7 +479,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Maintain",
-					Emoji: "\uD83D\uDCAA\uD83C\uDFFB",
+					Emoji: "💪🏻",
 					Href: "https://github.com/CodeEditorLand/Maintain",
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
@@ -493,7 +493,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Mist",
-					Emoji: "\uD83C\uDF2B\uFE0F",
+					Emoji: "🌫️",
 					Href: "https://github.com/CodeEditorLand/Mist",
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
@@ -549,7 +549,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "SideCar",
-					Emoji: "\uD83D\uDE83",
+					Emoji: "🚃",
 					Href: "https://github.com/CodeEditorLand/SideCar",
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
@@ -563,7 +563,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Sky",
-					Emoji: "\uD83C\uDF0C",
+					Emoji: "🌌",
 					Href: "https://github.com/CodeEditorLand/Sky",
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
@@ -577,7 +577,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Vine",
-					Emoji: "\uD83C\uDF3F",
+					Emoji: "🌿",
 					Href: "https://github.com/CodeEditorLand/Vine",
 					Author: "Vine",
 					Role: T("home:architecture.vine.subtitle", {
@@ -591,7 +591,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Wind",
-					Emoji: "\uD83C\uDF43",
+					Emoji: "🍃",
 					Href: "https://github.com/CodeEditorLand/Wind",
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
@@ -605,7 +605,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Worker",
-					Emoji: "\uD83C\uDF69",
+					Emoji: "🍩",
 					Href: "https://github.com/CodeEditorLand/Worker",
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {

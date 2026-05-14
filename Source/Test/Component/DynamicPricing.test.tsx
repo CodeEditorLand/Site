@@ -99,7 +99,7 @@ describe("DynamicPricing", () => {
 								...MakeTier("free", "Free"),
 								Elements: [
 									"Mountain\u2001\u26f0\ufe0f\nNative Process Manager\nReplaces Electron",
-									"Cocoon\u2001\uD83E\uDD8B\nExtension Host\nVS Code extensions run unchanged",
+									"Cocoon\u2001🦋\nExtension Host\nVS Code extensions run unchanged",
 								],
 							},
 						],
@@ -121,7 +121,7 @@ describe("DynamicPricing", () => {
 							{
 								...MakeTier("free", "Free"),
 								Elements: [
-									"Air\u2001\uD83E\uDE81\nBackground Daemon\nSilent updates",
+									"Air\u2001🪁\nBackground Daemon\nSilent updates",
 								],
 							},
 						],

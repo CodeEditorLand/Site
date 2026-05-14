@@ -9,22 +9,22 @@ description:
 
 # Wind
 
-Wind is the TypeScript and Effect-TS workbench service layer. It sits between
-Sky and Mountain so UI components can depend on typed services instead of raw
-Tauri calls.
+`Wind` is the `TypeScript` and `Effect-TS` `workbench` service layer. It sits
+between `Sky` and `Mountain` so UI components can depend on typed services
+instead of raw `Tauri` calls.
 
 ---
 
 ## Source Layout
 
-Wind source areas include:
+`Wind` source areas include:
 
 - **`Bootstrap/`** - process startup and layer composition.
 - **`Configuration/`** - configuration reading, watching, and typed access.
-- **`Effect/`** - Effect-TS utilities shared across Wind layers.
+- **`Effect/`** - `Effect-TS` utilities shared across `Wind` layers.
 - **`FileSystem/`** - virtual file-system service abstractions.
-- **`IPC/`** - typed Tauri IPC helpers and the `SkyEvent` registry.
-- **`Service/`** - workbench service implementations and Tauri wrappers.
+- **`IPC/`** - typed `Tauri` `IPC` helpers and the `SkyEvent` registry.
+- **`Service/`** - `workbench` service implementations and `Tauri` wrappers.
 - **`Workbench/`** - panels, layout, tabs, activity bar, and related services.
 - **`Preload.ts`** - WebView preload support for the typed bridge.
 
@@ -32,24 +32,24 @@ Wind source areas include:
 
 ## Status
 
-Wind is active source for the Mountain workbench path. Core service surfaces are
-present, and more coverage is added as Mountain and Cocoon expose additional
-routes. Claims about platform parity or complete workbench coverage should name
-the route being verified.
+`Wind` is active source for the `Mountain` `workbench` path. Core service
+surfaces are present, and more coverage is added as `Mountain` and `Cocoon`
+expose additional routes. Claims about platform parity or complete `workbench`
+coverage should name the route being verified.
 
 ---
 
 ## Relationship To Sky
 
-Sky renders UI components. Wind provides the services those components depend
-on. A component can use a Wind layer for state or native work without embedding
-Tauri IPC details directly into the component.
+`Sky` renders UI components. `Wind` provides the services those components
+depend on. A component can use a `Wind` layer for state or native work without
+embedding `Tauri` `IPC` details directly into the component.
 
 ---
 
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Sky](https://Editor.Land/Doc/sky)
-- [Mountain](https://Editor.Land/Doc/mountain)
+- [`Sky`](https://Editor.Land/Doc/sky)
+- [`Mountain`](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Wind)

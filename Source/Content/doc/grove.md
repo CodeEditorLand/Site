@@ -9,42 +9,43 @@ description:
 
 # Grove
 
-Grove is the WebAssembly extension-host path for Editor.Land. Where Cocoon runs
-VS Code extensions in a Node.js process, Grove contains a Wasmtime-backed path
-for extensions compiled to WebAssembly with capability-oriented boundaries.
+`Grove` is the `WebAssembly` extension-host path for `Editor.Land`. Where
+`Cocoon` runs `VS Code` extensions in a `Node.js` process, `Grove` contains a
+Wasmtime-backed path for extensions compiled to `WebAssembly` with
+capability-oriented boundaries.
 
-Grove is WIP in the primary editor flow. The gRPC protocol definitions
-(`Proto/`), Wasmtime host (`Source/Host/`), API surface (`Source/API/`),
+`Grove` is WIP in the primary editor flow. The `gRPC` protocol definitions
+(`Proto/`), Wasmtime host (`Source/Host/`), `API` surface (`Source/API/`),
 transport layer (`Source/Transport/`), service registrations
-(`Source/Services/`), and WASM runtime integration (`Source/WASM/`) are present
-in source. Full integration with the primary `debug-mountain` build is still in
-progress.
+(`Source/Services/`), and `WASM` runtime integration (`Source/WASM/`) are
+present in source. Full integration with the primary `debug-mountain` build is
+still in progress.
 
 ---
 
 ## The Problem Grove Solves
 
-VS Code extensions run with broad Node.js capabilities in a shared process.
-Grove is the path for extensions that can trade raw Node compatibility for a
+`VS Code` extensions run with broad `Node.js` capabilities in a shared process.
+`Grove` is the path for extensions that can trade raw Node compatibility for a
 runtime boundary with explicit capabilities.
 
 ---
 
 ## How Grove Addresses It
 
-Grove uses Wasmtime as its WebAssembly runtime. The host can grant specific
+`Grove` uses Wasmtime as its `WebAssembly` runtime. The host can grant specific
 resources to a module instead of giving ambient access to the whole system. That
 model is useful for a future extension marketplace where permissions can be
 shown to users before code runs.
 
 This is real source, but it is not the current compatibility story for existing
-VS Code extensions. Cocoon remains the active unmodified-extension path.
+`VS Code` extensions. `Cocoon` remains the active unmodified-extension path.
 
 ---
 
 ## Source Structure
 
-Confirmed present in the Grove source tree:
+Confirmed present in the `Grove` source tree:
 
 | Path                | Role                                                  |
 | ------------------- | ----------------------------------------------------- |
@@ -64,28 +65,28 @@ Confirmed present in the Grove source tree:
 
 ## What Grove Enables
 
-When Grove is fully integrated, an extension marketplace with stronger security
-guarantees becomes possible. Users should be able to see what resources an
-extension can access, and Grove can enforce that through Wasmtime and explicit
-capability grants.
+When `Grove` is fully integrated, an extension marketplace with stronger
+security guarantees becomes possible. Users should be able to see what resources
+an extension can access, and `Grove` can enforce that through Wasmtime and
+explicit capability grants.
 
 ---
 
 ## Status
 
-Grove should be shown as `WIP` in product copy, not as a shipped replacement for
-Cocoon. It is source-backed work in progress.
+`Grove` should be shown as `WIP` in product copy, not as a shipped replacement
+for `Cocoon`. It is source-backed work in progress.
 
 ---
 
 ## Key Technologies
 
-Rust, Wasmtime, WebAssembly, gRPC, Capability-Based Security.
+`Rust`, Wasmtime, `WebAssembly`, `gRPC`, Capability-Based Security.
 
 ---
 
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Cocoon: Extension Host](https://Editor.Land/Doc/cocoon)
+- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Grove)

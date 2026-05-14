@@ -9,10 +9,10 @@ description:
 
 # Mist
 
-Mist is the local service-boundary element for Editor.Land. The source contains
-DNS server, resolver, zone, WebSocket, and forward-security code. Mountain has a
-native Mist feature path, but not every internal editor route flows through Mist
-yet.
+`Mist` is the local service-boundary element for `Editor.Land`. The source
+contains DNS server, resolver, zone, WebSocket, and forward-security code.
+`Mountain` has a native `Mist` feature path, but not every internal editor route
+flows through `Mist` yet.
 
 ---
 
@@ -33,14 +33,14 @@ Confirmed source areas include:
 
 ## Status
 
-Mist is source-backed and WIP for full integration. Public copy should describe
-the local DNS and service-boundary direction without promising that all editor
-traffic already flows through Mist.
+`Mist` is source-backed and WIP for full integration. Public copy should
+describe the local DNS and service-boundary direction without promising that all
+editor traffic already flows through `Mist`.
 
 ---
 
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Air](https://Editor.Land/Doc/air)
+- [`Air`](https://Editor.Land/Doc/air)
 - [Source Code](https://github.com/CodeEditorLand/Mist)

@@ -4,7 +4,7 @@
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "Faster than VS Code. Lighter than Electron. Free forever."
+		"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. CC0 public domain."
 	},
 	"breadcrumb": {
 		"home": "Home"

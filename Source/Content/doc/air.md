@@ -9,11 +9,11 @@ description:
 
 # Air
 
-Air is the Rust background-services element for Editor.Land. The source contains
-modules for updates, downloads, authentication, indexing, security, health,
-resilience, configuration, logging, metrics, and Vine IPC.
+`Air` is the `Rust` background-services element for `Editor.Land`. The source
+contains modules for updates, downloads, authentication, indexing, security,
+health, resilience, configuration, logging, metrics, and `Vine` `IPC`.
 
-Air should be described as source-backed service plumbing. The public updater,
+`Air` should be described as source-backed service plumbing. The public updater,
 release signing story, and installer distribution path are still being prepared.
 
 ---
@@ -40,11 +40,12 @@ Confirmed source areas include:
 ## Responsibilities
 
 - Checking update metadata where a build profile enables that route.
-- Downloading files or release payloads through Air's downloader and HTTP code.
+- Downloading files or release payloads through `Air`'s downloader and HTTP
+  code.
 - Verifying file integrity through checksum-oriented security helpers.
 - Reporting daemon health and runtime status.
 - Running indexing work outside the active editor surface.
-- Coordinating with Mountain through Air integration and Vine IPC.
+- Coordinating with `Mountain` through `Air` integration and `Vine` `IPC`.
 
 ---
 
@@ -52,7 +53,7 @@ Confirmed source areas include:
 
 - Public release artifacts with published checksums and signatures.
 - End-to-end staged update flow in a public installer.
-- Release-channel documentation that names which Air services are enabled.
+- Release-channel documentation that names which `Air` services are enabled.
 - Platform service setup that is validated per operating system.
 
 ---
@@ -60,6 +61,6 @@ Confirmed source areas include:
 ## See Also
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Mountain](https://Editor.Land/Doc/mountain)
+- [`Mountain`](https://Editor.Land/Doc/mountain)
 - [Local-First Protocol](https://Editor.Land/Doc/local-first-protocol)
 - [Source Code](https://github.com/CodeEditorLand/Air)
