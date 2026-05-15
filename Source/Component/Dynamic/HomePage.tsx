@@ -754,7 +754,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 							Label: T("footer:columns.company.contributing", {
 								defaultValue: "Contributing",
 							}),
-							Href: "https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md",
+							Href: "https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md",
 						},
 					],
 				},

@@ -10,7 +10,7 @@ description:
 
 `Editor.Land` is open source and welcomes contributions. The full contributing
 guide is at
-[CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/blob/Current/CONTRIBUTING.md)
+[CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md)
 on GitHub.
 
 ---
@@ -92,7 +92,7 @@ the pinned submodule commit.
 ## Code of Conduct
 
 All participants are expected to be respectful. Read the full
-[Code of Conduct](https://github.com/CodeEditorLand/Land/blob/Current/CODE_OF_CONDUCT.md)
+[Code of Conduct](https://github.com/CodeEditorLand/Land/tree/Current/CODE_OF_CONDUCT.md)
 before engaging.
 
 ---

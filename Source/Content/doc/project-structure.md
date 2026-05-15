@@ -2,12 +2,16 @@
 title: "Project Structure"
 section: "Reference"
 order: 46
-description: "Overview of the Element directory organization, funding configuration, dependabot setup, and CI/CD workflow patterns."
+description:
+    "Overview of the Element directory organization, funding configuration,
+    dependabot setup, and CI/CD workflow patterns."
 ---
 
 # Project Structure
 
-The Land monorepo uses Git submodules to compose 15 independent Elements under `Land/Element/`. Each Element is its own repository with its own versioning, changelog, and CI pipeline.
+The Land monorepo uses Git submodules to compose 15 independent Elements under
+`Land/Element/`. Each Element is its own repository with its own versioning,
+changelog, and CI pipeline.
 
 ---
 
@@ -58,19 +62,24 @@ ElementName/
 
 ### Elements Without Dedicated .github/ Directory
 
-Some smaller or placeholder elements (Grove, Vine, Mist) did not have a `.github/` directory with `Update.md` at the time of documentation. Grove has workflows and dependabot under `.github/` but its changelog lives in `CHANGELOG.md` at the root.
+Some smaller or placeholder elements (Grove, Vine, Mist) did not have a
+`.github/` directory with `Update.md` at the time of documentation. Grove has
+workflows and dependabot under `.github/` but its changelog lives in
+`CHANGELOG.md` at the root.
 
 ---
 
 ## Funding Configuration
 
-All elements with a `.github/FUNDING.yml` file point to the same Open Collective:
+All elements with a `.github/FUNDING.yml` file point to the same Open
+Collective:
 
 ```yaml
 open_collective: code-editor-land
 ```
 
 Elements with FUNDING.yml (8 of 15):
+
 - Element (umbrella)
 - Echo
 - Mountain
@@ -81,9 +90,11 @@ Elements with FUNDING.yml (8 of 15):
 - Maintain
 
 Elements without a dedicated FUNDING.yml (7):
+
 - Air, Cocoon, Common, Grove, Mist, Output, Vine, Worker
 
-All funding converges on the [Open Collective for Code Editor Land](https://opencollective.com/code-editor-land).
+All funding converges on the
+[Open Collective for Code Editor Land](https://opencollective.com/code-editor-land).
 
 ---
 
@@ -101,31 +112,34 @@ updates:
           interval: "daily"
 ```
 
-Rust elements (Mountain, Air, Common, Echo, Grove, Mist, Maintain, Rest, SideCar, Vine) add:
+Rust elements (Mountain, Air, Common, Echo, Grove, Mist, Maintain, Rest,
+SideCar, Vine) add:
 
 ```yaml
-    - package-ecosystem: "cargo"
-      directory: "/"
-      schedule:
-          interval: "daily"
-      versioning-strategy: lockfile-only
+- package-ecosystem: "cargo"
+  directory: "/"
+  schedule:
+      interval: "daily"
+  versioning-strategy: lockfile-only
 ```
 
 TypeScript/JS elements (Wind, Cocoon, Output, Sky, Worker) add:
 
 ```yaml
-    - package-ecosystem: "npm"
-      directory: "/"
-      schedule:
-          interval: "daily"
-      versioning-strategy: increase
-      ignore:
-          - dependency-name: "tailwindcss"
-            versions:
-                - "^4.0.0"
+- package-ecosystem: "npm"
+  directory: "/"
+  schedule:
+      interval: "daily"
+  versioning-strategy: increase
+  ignore:
+      - dependency-name: "tailwindcss"
+        versions:
+            - "^4.0.0"
 ```
 
-Key policy: all dependencies update daily. Cargo uses lockfile-only to preserve the source tree; npm uses `increase` to bump package.json. Tailwind 4.x is explicitly ignored across JS elements.
+Key policy: all dependencies update daily. Cargo uses lockfile-only to preserve
+the source tree; npm uses `increase` to bump package.json. Tailwind 4.x is
+explicitly ignored across JS elements.
 
 ---
 
@@ -134,31 +148,45 @@ Key policy: all dependencies update daily. Cargo uses lockfile-only to preserve 
 Five standard workflow types appear across elements:
 
 ### Rust.yml
-Present in: Mountain, Air, Common, Echo, Grove, Mist, Rest, SideCar, Vine, Maintain
 
-Runs on push/PR to `Current` branch. Builds with both `stable` and `nightly` toolchains using `cargo build --release --all-features`. Caches Cargo registry and target directories.
+Present in: Mountain, Air, Common, Echo, Grove, Mist, Rest, SideCar, Vine,
+Maintain
+
+Runs on push/PR to `Current` branch. Builds with both `stable` and `nightly`
+toolchains using `cargo build --release --all-features`. Caches Cargo registry
+and target directories.
 
 ### Node.yml
+
 Present in: Wind, Cocoon, Worker
 
-Runs on push/PR to `Current`. Pre-publishes with pnpm across a Node version matrix (18, 19, 20). Uploads build artefacts.
+Runs on push/PR to `Current`. Pre-publishes with pnpm across a Node version
+matrix (18, 19, 20). Uploads build artefacts.
 
 ### NPM.yml
+
 Present in: Echo, Wind, Worker
 
-Publishes packages on release creation. Runs against Node 24 with `npm publish --legacy-peer-deps --ignore-scripts`.
+Publishes packages on release creation. Runs against Node 24 with
+`npm publish --legacy-peer-deps --ignore-scripts`.
 
 ### GitHub.yml
+
 Present in all elements with CI configuration.
 
-Auto-assigns new issues and PRs to the repository maintainer using `pozil/auto-assign-issue`.
+Auto-assigns new issues and PRs to the repository maintainer using
+`pozil/auto-assign-issue`.
 
 ### Auto.yml
+
 Present in: Echo, Worker
 
-Scheduled daily (`cron: 0 0 * * *`). Updates `.github/Update.md` with current timestamp and commits the change. This is how the single-line Update.md files are maintained.
+Scheduled daily (`cron: 0 0 * * *`). Updates `.github/Update.md` with current
+timestamp and commits the change. This is how the single-line Update.md files
+are maintained.
 
 ### Cloudflare.yml
+
 Present in: Echo
 
 Cloudflare Workers deployment pipeline.
@@ -167,4 +195,7 @@ Cloudflare Workers deployment pipeline.
 
 ## Default Environment Variables
 
-All CI workflows set the same 30+ telemetry-opt-out environment variables to prevent third-party analytics from cloud build hosts (Adblock, Astro, Azure, Docker, Gatsby, Homebrew, InfluxDB, Next.js, Nuxt, PowerShell, Stripe, Terraform, VCPkg, and others).
+All CI workflows set the same 30+ telemetry-opt-out environment variables to
+prevent third-party analytics from cloud build hosts (Adblock, Astro, Azure,
+Docker, Gatsby, Homebrew, InfluxDB, Next.js, Nuxt, PowerShell, Stripe,
+Terraform, VCPkg, and others).
