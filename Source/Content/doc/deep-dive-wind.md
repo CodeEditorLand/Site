@@ -10,15 +10,15 @@ description:
 
 # Wind - Deep Dive
 
-Wind is the frontend service layer in the Land ecosystem. It provides VSCode API
+Wind is the frontend service layer in the Land project. It provides VSCode API
 compatibility through Effect-TS native implementations and a Tauri
 anti-corruption layer, enabling Sky's VSCode-based UI components to communicate
 with the Mountain Rust backend.
 
-## Core Architecture
+## Core Architecture 🏗️
 
 | Principle                       | Description                                                                        | Key Components                           |
-| :------------------------------ | :--------------------------------------------------------------------------------- | :--------------------------------------- |
+| ------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------- |
 | High-Fidelity Emulation         | VSCode renderer environment emulation so Sky reuses VSCode UI with minimal changes | `Preload.ts`, `Platform/VSCode/*`        |
 | Effect-TS Native                | Entire service layer built with Effect-TS layer composition                        | All `Effect`-based modules               |
 | Anti-Corruption Layer           | Clean abstraction over Tauri APIs, isolating platform specifics                    | `Integration/Tauri/Wrap/*`, `Preload.ts` |
@@ -26,7 +26,7 @@ with the Mountain Rust backend.
 | Performance Optimization        | Efficient bundling and API shimming                                                | `Configuration/ESBuild/*`                |
 | Security Hardening              | CSP and secure API boundaries for the Tauri webview                                | `Preload.ts` security patterns           |
 
-## Component Breakdown
+## Component Breakdown 🧩
 
 ### Preload.ts (Environmental Foundation)
 
@@ -68,7 +68,7 @@ global object with:
 - **Error Transformation** - Converts integration-level errors to
   application-level types.
 
-## VSCode Environment Emulation
+## VSCode Environment Emulation 🖥️
 
 Wind ensures API compatibility through:
 
@@ -78,10 +78,10 @@ Wind ensures API compatibility through:
 3. **Error Handling Compatibility** - Error types match VSCode expectations.
 4. **Asynchronous Semantics** - Proper sequencing and error propagation.
 
-## Service Call Latency
+## Service Call Latency ⏱️
 
 | Layer                | Time    |
-| :------------------- | :------ |
+| -------------------- | ------- |
 | VSCode API Shim      | ~0.02ms |
 | Effect Orchestration | ~0.05ms |
 | Tauri Integration    | ~0.03ms |
@@ -90,13 +90,13 @@ Wind ensures API compatibility through:
 Native execution time is variable and OS-dependent. Full-stack calls include
 Mountain backend processing and gRPC round-trips.
 
-## Security Architecture
+## Security Architecture 🔒
 
 Wind protects the Tauri webview through CSP enforcement, API boundary security,
 input validation at all boundaries, and error containment that prevents
 information leakage.
 
-## Ecosystem Integration
+## Platform Integration 🔗
 
 ```text
 Sky UI -[calls]-> Wind App Services -[orchestrates]-> Tauri Integration -[invokes]-> Mountain Track
@@ -108,3 +108,10 @@ Sky UI -[calls]-> Wind App Services -[orchestrates]-> Tauri Integration -[invoke
 Wind bridges the Sky UI component layer and the Mountain Rust backend,
 translating VSCode-style API calls into typed Tauri commands and returning
 results as Effect resolutions.
+
+## Related Documentation 📖
+
+- [Wind overview](https://Editor.Land/Doc/wind)
+- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [Sky UI layer](https://Editor.Land/Doc/deep-dive-sky)
+- [Mountain Rust backend](https://Editor.Land/Doc/deep-dive-mountain)

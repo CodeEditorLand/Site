@@ -13,7 +13,7 @@ Echo is a work-stealing scheduler providing high-performance task execution for
 Mountain's ApplicationRunTime and other components requiring async task
 management.
 
-## Architecture
+## Architecture 🏗️
 
 Built on `crossbeam-deque` for lock-free work-stealing queues. Supports three
 priority levels (High, Normal, Low) for latency-sensitive operations.
@@ -21,7 +21,7 @@ priority levels (High, Normal, Low) for latency-sensitive operations.
 ### Core Components
 
 | Module             | Role                                                                        |
-| :----------------- | :-------------------------------------------------------------------------- |
+| ------------------ | --------------------------------------------------------------------------- |
 | `Task`             | Unit of work with priority, generic future support, execution context       |
 | `Queue`            | Lock-free work-stealing queue using `crossbeam_deque::Worker` and `Stealer` |
 | `Scheduler`        | Master coordinator with fluent builder API and worker pool                  |
@@ -37,10 +37,10 @@ priority levels (High, Normal, Low) for latency-sensitive operations.
 - **Priority-aware**: High/Normal/Low queues interleaved by worker threads
 - **Failure resilient**: Task failure does not crash the worker pool
 
-## Performance
+## Performance ⚡
 
 | Metric                     | Value                        |
-| :------------------------- | :--------------------------- |
+| -------------------------- | ---------------------------- |
 | Task submission latency    | ~0.05ms                      |
 | Queue operations           | ~0.02ms (lock-free push/pop) |
 | Work-stealing transfer     | ~0.1ms                       |
@@ -51,7 +51,7 @@ priority levels (High, Normal, Low) for latency-sensitive operations.
 
 Scales linearly with available CPU cores.
 
-## Integration with Mountain
+## Integration with Mountain 🔗
 
 Echo is integrated as Mountain's primary scheduler:
 
@@ -65,8 +65,8 @@ Mountain ApplicationRunTime
 
 Effect execution overhead when integrated: < 1 microsecond.
 
-## Related
+## Related Documentation 📖
 
-- [Echo overview](/doc/echo)
-- [Mountain ApplicationRunTime](/doc/deep-dive-mountain)
-- [Common ActionEffect system](/doc/deep-dive-common)
+- [Echo overview](https://Editor.Land/Doc/echo)
+- [Mountain ApplicationRunTime](https://Editor.Land/Doc/deep-dive-mountain)
+- [Common ActionEffect system](https://Editor.Land/Doc/deep-dive-common)

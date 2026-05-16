@@ -11,9 +11,9 @@ description:
 
 Worker provides Service Worker functionality including intelligent caching,
 dynamic CSS loading, and offline capabilities for web applications in the Land
-ecosystem.
+project.
 
-## Architecture
+## Architecture 🏗️
 
 Three-phase design: Service Worker bootstrap, multi-tier caching, and dynamic
 CSS loading system.
@@ -21,12 +21,12 @@ CSS loading system.
 ### Core Files
 
 | File               | Purpose                                                                 |
-| :----------------- | :---------------------------------------------------------------------- |
+| ------------------ | ----------------------------------------------------------------------- |
 | Source/Worker.js   | Main Service Worker implementation with fetch event handling            |
 | Source/Load.js     | Client-side CSS loading coordination                                    |
 | Source/Register.js | Service Worker registration, update detection, and lifecycle management |
 
-## Caching Strategy
+## Caching Strategy 💾
 
 Two-tier caching with distinct strategies:
 
@@ -44,7 +44,7 @@ Two-tier caching with distinct strategies:
 
 Pre-caching at install phase, runtime caching at fetch events.
 
-## Dynamic CSS Loading
+## Dynamic CSS Loading 🎨
 
 Two-phase system prevents infinite interception loops:
 
@@ -60,32 +60,32 @@ interception terminates.
 ### Performance
 
 | Metric           | Worker         | Without Worker | Improvement         |
-| :--------------- | :------------- | :------------- | :------------------ |
+| ---------------- | -------------- | -------------- | ------------------- |
 | CSS Loading Time | ~15-65ms       | ~50-200ms      | ~70% faster         |
 | Cache Hit Ratio  | >95%           | N/A            | Significant         |
 | Bandwidth Usage  | ~60% reduction | Baseline       | Significant savings |
 
-## Version Management
+## Version Management 📌
 
 - Content hashing detects meaningful changes beyond file size
 - New Service Workers enter waiting state until clients are ready
 - Register.js orchestrates controlled reload cycles
 - Previous version caches retained as rollback fallback
 
-## Progressive Enhancement
+## Progressive Enhancement 📈
 
 1. Basic functionality without Service Worker
 2. Enhanced performance with caching
 3. Advanced features with dynamic asset transformation
 4. Offline capabilities with update management
 
-## Security
+## Security 🔒
 
 - Generated JavaScript modules validated for CSP compliance
 - Cryptographic signature verification for critical assets
 - Strict CORS enforcement for intercepted requests
 - No external telemetry, fully local operation
 
-## Related
+## Related Documentation 📖
 
-- [Worker overview](/doc/worker)
+- [Worker overview](https://Editor.Land/Doc/worker)

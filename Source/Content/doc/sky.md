@@ -17,7 +17,7 @@ for all state that crosses the UI boundary, including open files, panel layout,
 extension contributions, and language server results.
 
 `Sky` communicates with `Mountain` (the `Rust` kernel) exclusively through
-`Tauri`’s typed `IPC`. It does not call the file system, spawn terminals, or
+`Tauri`'s typed `IPC`. It does not call the file system, spawn terminals, or
 talk to the Debug Adapter Protocol directly. Every native operation is a typed
 `IPC` call that `Mountain` fulfils. This strict boundary means the same `Sky`
 component tree can run in a browser during development (with `Wind` stubs) and
@@ -25,7 +25,7 @@ in the real desktop application without any code change.
 
 ---
 
-## Source Layout 🗺️
+## Source Layout 🗺️
 
 `Sky`'s source tree is compact and purpose-built:
 
@@ -47,18 +47,18 @@ Source/
 ```
 
 `Mountain.astro` is the file that matters most for the native desktop
-experience. It bootstraps the `Tauri` WebView context, loads `Wind`’s Layer
+experience. It bootstraps the `Tauri` WebView context, loads `Wind`'s Layer
 stack, and hands control to `Default.astro` which renders the `workbench` shell.
 All `Wind` service subscriptions, `IPC` channel initialization, and the
 `Sky`Event listener registry are wired in `Mountain.astro` before the first
 frame paints.
 
 `NLS.astro` injects the National Language Support data bundle into the
-`workbench` so that `VS Code`’s UI string catalog is available to extensions and
+`workbench` so that `VS Code`'s UI string catalog is available to extensions and
 platform modules that call `vscode.l10n.*`.
 
-`TelemetryBridge.astro` connects `Sky`’s in-page telemetry events to
-`Mountain`’s `PostHog` reporter (behind the `Telemetry` feature flag).
+`TelemetryBridge.astro` connects `Sky`'s in-page telemetry events to
+`Mountain`'s `PostHog` reporter (behind the `Telemetry` feature flag).
 
 `Bundled/` holds the output of the `Rest`/`Output` build pipeline - the bundled
 VS Code `workbench` module graph that `Sky` loads inside the WebView.
@@ -74,8 +74,8 @@ means UI components do not hold raw state. They subscribe to `Wind` services and
 re-render when those services emit changes.
 
 This is the same model `VS Code` uses internally (a service container with
-injected dependencies), implemented with `Effect-TS`’s typed Layer system rather
-than `VS Code`’s untyped `createDecorator` approach. The practical result is
+injected dependencies), implemented with `Effect-TS`'s typed Layer system rather
+than `VS Code`'s untyped `createDecorator` approach. The practical result is
 that every `Sky` component is testable without a running desktop window.
 
 ---
@@ -133,12 +133,12 @@ ever sees a single consistent shape per event.
 
 ---
 
-## Build Profile Behaviour ⚙️
+## Build Profile Behaviour ⚙️
 
 `Sky`'s runtime environment depends on which build profile is active:
 
 - **`debug`** - `Sky` runs as a plain web app in the browser. `Browser.astro` is
-  the entry point; no `Tauri` WebView, no `Mountain` process. `Astro`’s dev
+  the entry point; no `Tauri` WebView, no `Mountain` process. `Astro`'s dev
   server with HMR is active so component changes reflect without a full page
   reload. File system, terminal, and debug `APIs` are unavailable. Used for
   rapid UI iteration.
@@ -148,12 +148,12 @@ ever sees a single consistent shape per event.
   both platforms and the only profile where the full editor experience is
   available.
 - **`debug-electron`** - `Workbench/Electron/` provides compatibility shims for
-  running `Sky` inside `Electron`’s renderer. This profile exists for
+  running `Sky` inside `Electron`'s renderer. This profile exists for
   compatibility testing and is not actively maintained.
 
 ---
 
-## Current Status 🚀
+## Current Status 🚀
 
 `Sky` is the active UI layer for the `debug-mountain` profile on macOS and
 Windows. The `workbench` builds, installs, and runs correctly on both platforms.
@@ -175,7 +175,7 @@ Windows. The `workbench` builds, installs, and runs correctly on both platforms.
 - `Wind` service subscriptions drive UI state updates without full-page reloads.
 - NLS data bundle loads correctly, making `VS Code` UI strings and extension
   localisation available via `vscode.l10n.*`.
-- TelemetryBridge connects in-page events to `Mountain`’s reporter.
+- TelemetryBridge connects in-page events to `Mountain`'s reporter.
 
 **Optimisation roadmap:**
 
@@ -195,13 +195,13 @@ Windows. The `workbench` builds, installs, and runs correctly on both platforms.
 `Sky` reimplements the `VS Code` `workbench` UI rather than forking it. The goal
 is behavioural compatibility: panels, tabs, the command palette, the status bar,
 and the activity bar behave as a `VS Code` user expects, without carrying
-`Electron`’s renderer process or `VS Code`’s original webpack bundle. The
+`Electron`'s renderer process or `VS Code`'s original webpack bundle. The
 surfaces that are complete work correctly today. Incomplete surfaces are absent
 rather than silently broken.
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Wind`: Service Layer](https://Editor.Land/Doc/wind)

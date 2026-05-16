@@ -65,15 +65,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "1",
 					Title: "Rust Core",
-			Tooltip:
-					"Mountain implements Common traits in Rust via Tauri. Handles windows, files, terminals, process control, and gRPC IPC through the Vine protocol. The ActionEffect system treats every operation as declarative data dispatched across layers.",
+					Tooltip:
+						"Mountain implements Common traits in Rust via Tauri. Handles windows, files, terminals, process control, and gRPC IPC through the Vine protocol. The ActionEffect system treats every operation as declarative data dispatched across layers.",
 					Colors: ["var(--ExtensionRust)", "var(--Mute)"],
 				},
 				{
 					Id: "2",
 					Title: "Tauri UI",
-			Tooltip:
-					"Sky renders the editor interface in the OS WebView via Astro and routes Tauri events through SkyBridge to VS Code workbench APIs. Multiple workbench layouts adapt the UI layer to different runtimes: browser proxy, Mountain-native, or Electron.",
+					Tooltip:
+						"Sky renders the editor interface in the OS WebView via Astro and routes Tauri events through SkyBridge to VS Code workbench APIs. Multiple workbench layouts adapt the UI layer to different runtimes: browser proxy, Mountain-native, or Electron.",
 					Colors: [
 						"var(--ExtensionTauri)",
 						"var(--Primary)",
@@ -84,8 +84,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "3",
 					Title: "Effect-TS Services",
-			Tooltip:
-					"Cocoon and Wind use Effect-TS for typed errors, scoped resources, cancellation, and supervised concurrency. Wind composes workbench services into Layer stacks that make dependency paths traceable at compile time - one stack per runtime target.",
+					Tooltip:
+						"Cocoon and Wind use Effect-TS for typed errors, scoped resources, cancellation, and supervised concurrency. Wind composes workbench services into Layer stacks that make dependency paths traceable at compile time - one stack per runtime target.",
 					Colors: [
 						"var(--ExtensionEffectTypeScript)",
 						"var(--ExtensionEffectTypeScriptFore)",
@@ -95,22 +95,22 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "4",
 					Title: "gRPC IPC",
-			Tooltip:
-					"Vine defines the gRPC protocol layer between Mountain, Cocoon, Air, and Grove. Proto definitions currently live in Mountain and Cocoon while Vine consolidates. Every gRPC call is a typed contract - the wire format is the interface.",
+					Tooltip:
+						"Vine defines the gRPC protocol layer between Mountain, Cocoon, Air, and Grove. Proto definitions currently live in Mountain and Cocoon while Vine consolidates. Every gRPC call is a typed contract - the wire format is the interface.",
 					Colors: ["var(--SpinegRPC)", "var(--SpineIPC)"],
 				},
 				{
 					Id: "5",
 					Title: "Extension Host",
-			Tooltip:
-					"Cocoon runs VS Code extensions via dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC. Effect-TS services implement the vscode API shim across both tracks.",
+					Tooltip:
+						"Cocoon runs VS Code extensions via dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC. Effect-TS services implement the vscode API shim across both tracks.",
 					Colors: ["var(--TierProvider)"],
 				},
 				{
 					Id: "6",
 					Title: "Cross-Platform",
-			Tooltip:
-					"Tauri bundles to native macOS, Windows, and Linux packages using the OS WebView - no embedded Chromium. Per-platform build configuration and binary management keep cross-compilation paths explicit rather than hidden in installer scripts.",
+					Tooltip:
+						"Tauri bundles to native macOS, Windows, and Linux packages using the OS WebView - no embedded Chromium. Per-platform build configuration and binary management keep cross-compilation paths explicit rather than hidden in installer scripts.",
 					Colors: [
 						"var(--OSMacOS)",
 						"var(--OSWindows)",
@@ -120,15 +120,15 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				{
 					Id: "7",
 					Title: "VS Code API",
-			Tooltip:
-					"Cocoon implements the VS Code API surface through Effect-TS services: commands, workspace, terminals, webviews, language providers, and diagnostics. The dual-track architecture preserves compatibility with published extension APIs while routing through native services.",
+					Tooltip:
+						"Cocoon implements the VS Code API surface through Effect-TS services: commands, workspace, terminals, webviews, language providers, and diagnostics. The dual-track architecture preserves compatibility with published extension APIs while routing through native services.",
 					Colors: ["var(--SpineIPC)"],
 				},
 				{
 					Id: "8",
 					Title: "Open Source CC0",
-			Tooltip:
-					"All 15 element repos are under CC0 1.0 Universal public domain. No attribution required, no compliance restrictions. Funded by NLnet NGI0 Commons Fund.",
+					Tooltip:
+						"All 15 element repos are under CC0 1.0 Universal public domain. No attribution required, no compliance restrictions. Funded by NLnet NGI0 Commons Fund.",
 					Colors: ["var(--SpinegRPC)", "var(--ExtensionTauri)"],
 				},
 			],

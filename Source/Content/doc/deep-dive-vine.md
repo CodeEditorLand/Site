@@ -12,7 +12,7 @@ description:
 Vine is the contract-first gRPC protocol layer defining strongly-typed
 inter-process communication contracts between Mountain, Cocoon, Grove, and Air.
 
-## Architecture
+## Architecture 🏗️
 
 The proto files are the source of truth. Generated Rust code from tonic/prost is
 used by Mountain for the server implementation and by Cocoon/Grove for client
@@ -21,7 +21,7 @@ stubs.
 ### Protocol Files
 
 | Proto File  | Purpose                                                       |
-| :---------- | :------------------------------------------------------------ |
+| ----------- | ------------------------------------------------------------- |
 | Vine.proto  | Core protocol: Mountain to Cocoon commands, events, handshake |
 | Spine.proto | Extension host coordination: action/response pattern          |
 | Grove.proto | Grove-specific: WASM host function calls, extension lifecycle |
@@ -30,38 +30,38 @@ stubs.
 ### Modules
 
 | Path                                                     |
-| :------------------------------------------------------- | ----------------------------------------------- |
+| -------------------------------------------------------- | ----------------------------------------------- |
 | Source/lib.rs - Library root, re-exports generated types |
 | Source/Message/                                          | Structured message types shared across services |
 | Source/Service/                                          | gRPC service trait implementations              |
 | Source/Client/                                           | Protocol client helpers for consumer crates     |
 
-## Communication Patterns
+## Communication Patterns 📡
 
 | Pattern                 | Use Case                                                |
-| :---------------------- | :------------------------------------------------------ |
+| ----------------------- | ------------------------------------------------------- |
 | Unary RPC               | Commands and queries                                    |
 | Server streaming        | Mountain streams terminal output, diagnostics to Cocoon |
 | Client streaming        | Cocoon sends batched registration at startup            |
 | Bidirectional streaming | Spine protocol real-time extension host coordination    |
 
-## Ports and Transport
+## Ports and Transport 🌐
 
 | Service     | Port     | Transport                                         |
-| :---------- | :------- | :------------------------------------------------ |
+| ----------- | -------- | ------------------------------------------------- |
 | Vine/Cocoon | 50052    | TCP loopback                                      |
 | Air daemon  | 50053    | TCP loopback                                      |
 | TLS         | Disabled | Loopback only, Mist DNS provides network boundary |
 
-## Client Implementations
+## Client Implementations 📱
 
 | Element    | Implementation                                  |
-| :--------- | :---------------------------------------------- |
+| ---------- | ----------------------------------------------- |
 | Cocoon     | @grpc/grpc-js Node.js client                    |
 | Grove      | tonic Rust client                               |
 | Air daemon | tonic gRPC server (Mountain connects as client) |
 
-## Request Flow Example
+## Request Flow Example 📋
 
 ```
 Wind UI -> Mountain Tauri invoke (executeCommand)
@@ -73,8 +73,8 @@ Wind UI -> Mountain Tauri invoke (executeCommand)
 
 Proto files compiled at build time by prost-build in Mountain build script.
 
-## Related
+## Related Documentation 📖
 
-- [Vine overview](/doc/vine)
-- [Cocoon gRPC client](/doc/deep-dive-cocoon)
-- [Mountain gRPC server](/doc/deep-dive-mountain)
+- [Vine overview](https://Editor.Land/Doc/vine)
+- [Cocoon gRPC client](https://Editor.Land/Doc/deep-dive-cocoon)
+- [Mountain gRPC server](https://Editor.Land/Doc/deep-dive-mountain)

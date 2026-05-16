@@ -10,14 +10,14 @@ description:
 # Cocoon - Deep Dive
 
 Cocoon is the Node.js sidecar that provides VSCode extension host compatibility
-within the Land ecosystem. It uses Effect-TS for service composition, gRPC for
+within the Land project. It uses Effect-TS for service composition, gRPC for
 communication with Mountain, and sophisticated module interception to route
 `vscode` API calls to native implementations.
 
-## Core Architecture
+## Core Architecture 🏗️
 
 | Principle               | Description                                                                          | Key Components               |
-| :---------------------- | :----------------------------------------------------------------------------------- | :--------------------------- |
+| ----------------------- | ------------------------------------------------------------------------------------ | ---------------------------- |
 | High-Fidelity API Shim  | Comprehensive `IExtHost*` service implementations for VSCode extension compatibility | All `Service/*` modules      |
 | Effect-TS Native        | Entire application built with Effect-TS layer composition                            | `AppLayer`, all services     |
 | Module Interception     | Patches `require()` and `import` to route `vscode` module calls                      | `Core/RequireInterceptor.ts` |
@@ -25,7 +25,7 @@ communication with Mountain, and sophisticated module interception to route
 | Process Hardening       | Signal handling, parent monitoring, log piping, uncaught exception boundaries        | `PatchProcess/*`             |
 | Extensible Architecture | Service provider pattern for easy addition of new API implementations                | `AppLayer` composition       |
 
-## Component Breakdown
+## Component Breakdown 🧩
 
 ### Index.ts (Orchestrator)
 
@@ -52,7 +52,7 @@ parent, and wraps the application in a top-level error boundary.
 Each VSCode service is implemented as an Effect-TS layer:
 
 | VSCode Service      | Cocoon Service    | Communication |
-| :------------------ | :---------------- | :------------ |
+| ------------------- | ----------------- | ------------- |
 | `vscode.commands`   | CommandsProvider  | Vine gRPC     |
 | `vscode.workspace`  | WorkspaceProvider | Vine gRPC     |
 | `vscode.window`     | WindowProvider    | Vine gRPC     |
@@ -65,7 +65,7 @@ Manages bidirectional gRPC with advanced patterns: bidirectional streaming for
 terminal I/O and file watching, request batching, automatic reconnection with
 exponential backoff, and protocol buffer optimization.
 
-## Source Validation Status
+## Source Validation Status ✅
 
 Cocoon has been validated against Microsoft's VSCode source repositories. Core
 features -- extension activation, lifecycle, API factory, module interception,
@@ -78,3 +78,9 @@ Key API calls flow through a consistent path: extension
 ApiFactory, WindowProvider, gRPC serialization, Mountain's Vine server, native
 dialog display, and response flows back along the same chain. Total API call
 latency is approximately 0.42ms plus network and Mountain processing time.
+
+## Related Documentation 📖
+
+- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Cocoon GitHub repository](https://github.com/CodeEditorLand/Cocoon)

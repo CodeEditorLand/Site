@@ -12,7 +12,7 @@ Output is a JavaScript/TypeScript build package that wraps esbuild. It compiles
 VSCode TypeScript source and CodeEditorLand editor code into JavaScript bundles
 consumed by Sky, Wind, and Cocoon.
 
-## Architecture
+## Architecture 🏗️
 
 Two compiler modes: default esbuild pipeline and optional Rest (OXC-based)
 pipeline, selectable via environment variable.
@@ -20,7 +20,7 @@ pipeline, selectable via environment variable.
 ### Modules
 
 | Path                                                                               |
-| :--------------------------------------------------------------------------------- |
+| ---------------------------------------------------------------------------------- |
 | `Source/prepublishOnly.sh` - Main build entry script                               |
 | `Source/Run.sh` - Development watch script                                         |
 | `Source/ESBuild/Output.ts` - esbuild programmatic configuration                    |
@@ -31,7 +31,7 @@ pipeline, selectable via environment variable.
 | `Configuration/ESBuild/Microsoft/VSCode.js` - esbuild config for VSCode dependency |
 | `Configuration/ESBuild/CodeEditorLand/Editor.js` - esbuild config for editor       |
 
-## Build Pipeline
+## Build Pipeline 🔧
 
 Default path (esbuild):
 
@@ -46,19 +46,19 @@ Rest path (`Compiler=Rest`):
 3. esbuild reads Rest output, applies bundling and merging
 4. Final artifacts land in `Target/Microsoft/VSCode/`
 
-## Integration
+## Integration 🔗
 
 | Element | Direction | Mechanism                                 |
-| :------ | :-------- | :---------------------------------------- |
+| ------- | --------- | ----------------------------------------- |
 | Rest    | Consumer  | Process invocation via RestPlugin         |
 | Sky     | Provider  | `@codeeditorland/output` npm package      |
 | Wind    | Provider  | `@codeeditorland/output` npm package      |
 | Cocoon  | Provider  | File path reference from Target directory |
 
-## Configuration
+## Configuration ⚙️
 
 | Variable           | Default      | Description                       |
-| :----------------- | :----------- | :-------------------------------- |
+| ------------------ | ------------ | --------------------------------- |
 | `Compiler`         | `esbuild`    | Set to `Rest` for OXC compilation |
 | `REST_BINARY_PATH` | auto-detect  | Override Rest binary location     |
 | `REST_VERBOSE`     | `false`      | Enable verbose Rest logging       |
@@ -67,9 +67,9 @@ Rest path (`Compiler=Rest`):
 Rest mode runs 2-3x faster on TypeScript-heavy codebases but requires the Rest
 binary in the build environment.
 
-## Related
+## Related Documentation 📖
 
-- [Output overview](/doc/output)
-- [Rest compiler reference](/doc/deep-dive-rest)
-- [Sky UI layer](/doc/deep-dive-sky)
-- [Wind service layer](/doc/deep-dive-wind)
+- [Output overview](https://Editor.Land/Doc/output)
+- [Rest compiler reference](https://Editor.Land/Doc/deep-dive-rest)
+- [Sky UI layer](https://Editor.Land/Doc/deep-dive-sky)
+- [Wind service layer](https://Editor.Land/Doc/deep-dive-wind)

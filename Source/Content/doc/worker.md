@@ -18,7 +18,7 @@ active build profile.
 
 ---
 
-## Source Areas
+## Source Areas 🗺️
 
 - `Source/Worker.ts`
 - `Source/Worker/`
@@ -28,7 +28,7 @@ active build profile.
 
 ---
 
-## Status 🚀
+## Status 🚀
 
 `Worker` is useful infrastructure, but public copy should avoid claiming that it
 intercepts all editor requests or guarantees offline behavior for every asset.
@@ -36,7 +36,7 @@ Use `WIP` where the active release profile has not been verified.
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Output`](https://Editor.Land/Doc/output)

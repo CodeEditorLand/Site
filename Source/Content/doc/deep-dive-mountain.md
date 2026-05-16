@@ -10,7 +10,7 @@ description:
 
 # Mountain - Deep Dive
 
-Mountain is the core Rust binary in the Land ecosystem. It provides native
+Mountain is the core Rust binary in the Land project. It provides native
 implementations of VSCode-compatible services, manages the application lifecycle
 via Tauri, and orchestrates all sidecar processes (Cocoon, Air) through gRPC.
 
@@ -66,8 +66,8 @@ Mountain provides concrete implementations for three major service areas:
 
 ## Naming Convention
 
-Mountain (and the broader Land ecosystem) uses PascalCase for all Rust elements
--- structs, enums, traits, functions, methods, modules, fields, local variables,
+Mountain (and the broader Land project) uses PascalCase for all Rust elements --
+structs, enums, traits, functions, methods, modules, fields, local variables,
 and file names. This intentional departure from Rust conventions ensures:
 
 - Direct mapping between Rust DTOs, Protocol Buffer messages, and TypeScript

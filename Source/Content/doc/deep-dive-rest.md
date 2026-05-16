@@ -13,7 +13,7 @@ Rest is a Rust binary that uses the OXC toolchain to compile TypeScript 2-3x
 faster than esbuild while producing output compatible with VSCode's build
 process.
 
-## Architecture
+## Architecture 🏗️
 
 Compilation pipeline: source files pass through OXC parser, transformer, and
 code generator in sequence. Optional parallel mode processes multiple files
@@ -22,7 +22,7 @@ concurrently.
 ### Modules
 
 | Path                                                                                     |
-| :--------------------------------------------------------------------------------------- |
+| ---------------------------------------------------------------------------------------- |
 | `Source/Library.rs` - Binary entry point, CLI parsing, compiler dispatch                 |
 | `Source/Fn/OXC/Compiler.rs` - Main orchestration: parser, transformer, codegen           |
 | `Source/Fn/OXC/Parser.rs` - Wraps `oxc_parser` with error normalization                  |
@@ -35,7 +35,7 @@ concurrently.
 | `Source/Fn/Worker/` - Worker thread support for parallel compilation                     |
 | `Source/Struct/CompilerConfig.rs` - Configuration: decorators, class fields, source maps |
 
-## Compilation Flow
+## Compilation Flow 🔄
 
 ```
 CLI / RestPlugin -> Compiler
@@ -54,31 +54,31 @@ Transformer applies:
 When `--Parallel` is specified, file compilation fans out across Tokio worker
 threads.
 
-## VSCode Compatibility Settings
+## VSCode Compatibility Settings ⚙️
 
 | Option             | Value            | Description                              |
-| :----------------- | :--------------- | :--------------------------------------- |
+| ------------------ | ---------------- | ---------------------------------------- |
 | Decorator metadata | `true`           | Required for VSCode dependency injection |
 | Class fields mode  | `false`          | Matches VSCode's gulp build behavior     |
 | Source maps        | development only | Inline maps for debug builds             |
 
-## Configuration
+## Configuration ⚙️
 
 | CLI Flag     | Default  | Description                         |
-| :----------- | :------- | :---------------------------------- |
+| ------------ | -------- | ----------------------------------- |
 | `--Input`    | required | Directory or file to compile        |
 | `--Output`   | required | Destination for compiled JavaScript |
 | `--Parallel` | off      | Multi-core parallel compilation     |
 
-## Integration
+## Integration 🔗
 
 | Element | Direction | Mechanism                                     |
-| :------ | :-------- | :-------------------------------------------- |
+| ------- | --------- | --------------------------------------------- |
 | Output  | Consumer  | Process invocation / esbuild plugin           |
 | Cocoon  | Indirect  | Loads JS from `Target/Microsoft/VSCode/`      |
 | Sky     | Indirect  | Loads VSCode UI components via Output package |
 
-## Related
+## Related Documentation 📖
 
-- [Rest overview](/doc/rest)
-- [Output build orchestration](/doc/deep-dive-output)
+- [Rest overview](https://Editor.Land/Doc/rest)
+- [Output build orchestration](https://Editor.Land/Doc/deep-dive-output)

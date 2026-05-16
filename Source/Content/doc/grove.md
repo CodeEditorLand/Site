@@ -43,7 +43,7 @@ This is real source, but it is not the current compatibility story for existing
 
 ---
 
-## Source Structure 🗺️
+## Source Structure 🗺️
 
 Confirmed present in the `Grove` source tree:
 
@@ -72,7 +72,7 @@ explicit capability grants.
 
 ---
 
-## Status 🚀
+## Status 🚀
 
 `Grove` should be shown as `WIP` in product copy, not as a shipped replacement
 for `Cocoon`. It is source-backed work in progress.
@@ -85,7 +85,7 @@ for `Cocoon`. It is source-backed work in progress.
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)

@@ -89,7 +89,7 @@ hook for the static path. The two output trees diverge here by design.
 
 ---
 
-## Source Structure
+## Source Structure 🗺️
 
 | Path                      | Role                                                              |
 | ------------------------- | ----------------------------------------------------------------- |
@@ -110,7 +110,7 @@ Polyfills, `Tauri`/`Mountain` `IPC` Replacement.
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Rest`](https://Editor.Land/Doc/rest)

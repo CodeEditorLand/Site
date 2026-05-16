@@ -14,17 +14,17 @@ structures that enable type-safe, testable service implementations across Rust
 and TypeScript boundaries. It has zero dependencies on Tauri, gRPC, or
 application logic.
 
-## Architecture Principles
+## Architecture Principles 🎯
 
 | Principle                | Description                                                                            |
-| :----------------------- | :------------------------------------------------------------------------------------- |
+| ------------------------ | -------------------------------------------------------------------------------------- |
 | Pure Abstraction         | All capabilities defined as abstract `async trait`s with no concrete implementation    |
 | Declarative Effects      | Operations represented as `ActionEffect` values, separating description from execution |
 | Trait-Based DI           | Dependency injection via `Environment` and `Requires` traits                           |
 | Universal Error Handling | Single `CommonError` enum covering all failure scenarios                               |
 | Contract-First           | DTOs and error types defined first, establishing stable contracts                      |
 
-## ActionEffect System
+## ActionEffect System ⚡
 
 An `ActionEffect<C, E, T>` describes an operation parameterized by:
 
@@ -43,7 +43,7 @@ pub struct ActionEffect<TCapability, TError, TOutput> {
 Effects compose via `and_then` (sequential), `zip` (parallel), and `fallback`
 (error recovery). Execution overhead is ~17ns per effect.
 
-## Environment System
+## Environment System 🌍
 
 The `Environment` trait system implements capability-based architecture:
 
@@ -52,12 +52,12 @@ The `Environment` trait system implements capability-based architecture:
 3. `ApplicationRunTime` resolves and provides capabilities at runtime
 4. Effect executes with the provided capability
 
-## Service Contracts (Traits)
+## Service Contracts (Traits) 📋
 
 Common defines async traits that VSCode services are lifted into:
 
 | VSCode Service          | Common Trait           |
-| :---------------------- | :--------------------- |
+| ----------------------- | ---------------------- |
 | `IFileService`          | `FileSystemService`    |
 | `IWorkspaceService`     | `WorkspaceService`     |
 | `IConfigurationService` | `ConfigurationService` |
@@ -66,9 +66,9 @@ Common defines async traits that VSCode services are lifted into:
 
 Implementations live in Mountain (Rust) and Wind (Effect-TS).
 
-## Cross-Language Architecture
+## Cross-Language Architecture 🌐
 
-DTOs ensure consistent data structures across the ecosystem:
+DTOs ensure consistent data structures across the project:
 
 - Rust backend serializes to protocol buffers
 - TypeScript frontend deserializes from gRPC
@@ -82,7 +82,7 @@ DTOs --shared--> All consumers
 Errors --shared--> All consumers
 ```
 
-## Related
+## Related Documentation 📖
 
-- [Common overview](/doc/common)
-- [Mountain implementation details](/doc/deep-dive-mountain)
+- [Common overview](https://Editor.Land/Doc/common)
+- [Mountain implementation details](https://Editor.Land/Doc/deep-dive-mountain)

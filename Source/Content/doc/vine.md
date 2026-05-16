@@ -143,7 +143,7 @@ two protocols are not interchangeable and serve different parts of the system.
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Mountain`: Native Kernel](https://Editor.Land/Doc/mountain)
