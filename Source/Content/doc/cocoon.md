@@ -20,7 +20,7 @@ Marketplace-wide coverage still needs a public validation matrix.
 
 ---
 
-## Source Layout
+## Source Layout 🗺️
 
 Key `Cocoon` source areas:
 
@@ -39,7 +39,7 @@ Key `Cocoon` source areas:
 
 ---
 
-## Extension-Host Services
+## Extension-Host Services 🔌
 
 `Cocoon` contains source paths for:
 
@@ -81,7 +81,7 @@ every extension has runtime parity yet.
 
 ---
 
-## Status
+## Status 🚀
 
 `Cocoon` should be shown as active for unmodified extension execution and WIP
 for long-tail `API` coverage. Claims about specific extension categories should
@@ -89,7 +89,7 @@ link to tests or a validation matrix.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Mountain`](https://Editor.Land/Doc/mountain)

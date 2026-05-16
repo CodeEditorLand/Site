@@ -23,7 +23,7 @@
 		"description": "Download an older version if you need to pin to a specific release.",
 		"title": "Previous Releases"
 	},
-	"subtitle": "Native on macOS, Windows, and Linux.\n\nBuilt with Tauri. Powered by Rust. Verified with PGP.",
+	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 	"systemRequirements": {
 		"minimum": "Minimum Requirements",
 		"recommended": "Recommended for the Best Experience",

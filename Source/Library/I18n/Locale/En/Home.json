@@ -4,23 +4,23 @@
 		"item": {
 			"designTokens": {
 				"title": "Native services where they count.",
-				"description": "Mountain contains Rust services for windows, files, terminals, child processes, clipboard, and extension IPC. Echo provides scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming public benchmark numbers before a reproducible suite exists."
+				"description": "Mountain handles window management, file I/O, child processes, terminal IPC, and extension communication through Tauri - using the ActionEffect system for declarative, dispatchable operations. Echo provides work-stealing scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming benchmark numbers before a reproducible suite exists."
 			},
 			"componentLibrary": {
 				"title": "Unmodified extensions, no fork path.",
-				"description": "Cocoon hosts existing VS Code extension code and provides the vscode API shim. Mountain scans installed extensions, reads manifests, handles VSIX install and uninstall routes, and notifies Cocoon when extensions change.\n\nThat supports a strong claim: extensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension API usage and on services still being filled in."
+				"description": "Cocoon hosts existing VS Code extensions using Effect-TS through a dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC. The vscode API shim covers commands, workspace, terminals, webviews, language providers, and diagnostics.\n\nExtensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension API usage and on services still being filled in."
 			},
 			"documentation": {
 				"title": "Fibers, not Promises.",
-				"description": "Effect-TS gives Cocoon typed errors, scoped resources, cancellation, and supervised concurrency for extension-host work.\n\nThat does not magically remove every runtime bug, but it does make failure paths explicit in the services Land controls."
+				"description": "Effect-TS gives Cocoon and Wind typed errors, scoped resources, explicit cancellability, and supervised concurrency for extension-host and workbench services. Wind composes services into Layer stacks that target specific runtimes - native, compatibility, or test - with compile-time dependency tracking.\n\nThat does not remove every runtime bug, but it does make failure paths explicit and traceable through the services Land controls."
 			},
 			"versionControl": {
 				"title": "One source tree, configured targets.",
-				"description": "Tauri uses the operating system WebView on each platform, so the Mountain desktop path does not bundle Chromium.\n\nThe repository includes macOS, Windows, and Linux build configuration. Public installer coverage is still being completed."
+				"description": "Tauri uses the OS WebView on each platform instead of a bundled Chromium instance. Mountain's desktop path has no embedded browser engine. Per-platform binary management keeps cross-compilation paths explicit and reproducible.\n\nThe repository includes macOS, Windows, and Linux build configuration. macOS is the primary path, with Windows and Linux installer coverage still being completed."
 			},
 			"cicdIntegration": {
 				"title": "Update plumbing in progress.",
-				"description": "Air contains Rust services for update checks, downloads, authentication, indexing, health, and a Vine gRPC server.\n\nThose services are real source today. The public updater flow, signing story, and release distribution path are still being finished."
+				"description": "Air provides persistent background services for update downloads and verification, file indexing, cryptographic signing, and health monitoring. Runs as an independent daemon - persists when the main window closes.\n\nThose services are real source today. The public updater flow, signing story, and release distribution path are still being finished."
 			},
 			"collaboration": {
 				"title": "CC0. No restrictions.",
@@ -158,63 +158,63 @@
 		"subtitle": "Land replaces VS Code's Electron stack element by element.\n\nThe element directories are inspectable in source, but each one is described here by what the current code supports or is actively wiring.",
 		"air": {
 			"subtitle": "Background Services - Downloader - Workspace Indexer",
-			"description": "Rust services for downloads, updates, authentication, indexing, resilience, health, and Vine IPC\nRelease signing and public installer delivery are still being completed\nDesigned to keep update and indexing work outside the main editor surface"
+			"description": "Persistent background daemon that offloads heavy operations from Mountain: update downloads with staged atomic rollback, file indexing and symbol extraction, cryptographic signing and authentication, health monitoring with multi-level checks.\nPrometheus-compatible metrics and distributed tracing with sampling.\nRuns independently - persists when the main window closes.\nRelease signing and public installer delivery are still being completed"
 		},
 		"cocoon": {
 			"subtitle": "Extension Host - Unmodified VS Code Extensions - Effect-TS Services",
-			"description": "Node.js sidecar for VS Code extension-host compatibility\nRuns existing extension entry points without rewriting their source\nRoutes implemented API calls through Effect-TS services and the Mountain bridge\nCore commands, workspace, window, terminal, webview, and language-provider surfaces exist in source"
+			"description": "Node.js sidecar that hosts and executes VS Code extensions. Dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC.\nEffect-TS provides typed errors, scoped resources, and supervised concurrency across all services.\nCodegen pipeline walks VS Code extHost source to emit type schemas.\nCore API surfaces: commands, workspace, window, terminal, webview, language providers, and diagnostics."
 		},
 		"common": {
 			"subtitle": "Shared Foundation - Traits - Cross-Element Types",
-			"description": "Shared Rust crate and TypeScript package for cross-element contracts\nDefines reusable traits, DTOs, utility types, and service boundaries\nNot a standalone runtime process\nKeeps shared interfaces visible instead of scattering them through elements"
+			"description": "Pure abstract library - defines the contracts that all Rust components implement, not the implementations themselves.\nAsync traits for every service domain: FileSystem, Terminal, Clipboard, Window, Configuration, Storage, Search, and more.\nThe ActionEffect system treats every operation as declarative data - commands, events, and queries share a single type hierarchy across all layers.\nTransport-agnostic: supports gRPC, IPC, and WASM strategies. Dual-pipe telemetry (PostHog + OTLP)."
 		},
 		"echo": {
 			"subtitle": "Work-Stealing Scheduler - crossbeam-deque - Supervised Worker Pool",
-			"description": "Scheduler primitives built around supervised Rust worker pools\nUsed by native services that need bounded background execution\nThe source supports cancellation and shutdown paths without promising that every workload already routes through Echo"
+			"description": "Work-stealing task scheduler with lock-free queues for bounded background execution.\nPriority tiers (High/Normal/Low) ensure UI responsiveness stays predictable under I/O load.\nWorkers consume from local queues and steal from peers when idle. Integrates with the ActionEffect system for cancelable, supervised tasks.\nGraceful shutdown paths keep resources from leaking when services terminate."
 		},
 		"grove": {
 			"subtitle": "WASM Sandbox - Wasmtime Runtime - Capability-Based Isolation",
-			"description": "Contains a Wasmtime-backed WebAssembly host path and Grove gRPC protocol definitions\nIncludes transport and capability-oriented modules for extension isolation work\nPrimary VS Code compatibility still runs through Cocoon while Grove integration matures"
+			"description": "WebAssembly sandbox for running extensions in capability-isolated environments.\nWASMtime provides memory limits, resource controls, and fine-grained capability gates - extensions cannot access host APIs unless explicitly granted.\nMultiple transport strategies: gRPC, IPC, or direct WASM host function calls. Shares the same VS Code API surface as Cocoon.\nComplements Cocoon's Node.js path with a sandboxed execution alternative."
 		},
 		"maintain": {
 			"subtitle": "Build Orchestrator - Configuration - Release Profiles",
-			"description": "Coordinates development, debug, and release build profiles across Land elements\nKeeps profile names and build scripts visible for contributors\nDeterministic release claims are held until the public release pipeline is fully published"
+			"description": "Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\nManages development, debug, and release build profiles across the Land ecosystem.\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\nDeterministic release claims are held until the public release pipeline is fully published."
 		},
 		"mist": {
 			"subtitle": "Local DNS Sandbox - *.editor.land Resolution - Network Boundary",
-			"description": "Provides local DNS, resolver, WebSocket, zone, and forward-security code\nMountain has a native Mist feature path, but not every internal route flows through Mist yet\nThe goal is a clean local service boundary without exposing private service names publicly"
+			"description": "Local DNS server authoritative for the editor.land zone - all subdomains resolve to loopback, keeping internal services off the network.\nForward allowlisting controls which external domains sidecar processes can reach; everything else is blocked at the DNS layer.\nECDSA DNSSEC signing verifies zone integrity. Loopback binding only - no external port exposure.\nProvides network isolation for Cocoon and Air processes so they cannot leak data to arbitrary hosts."
 		},
 		"mountain": {
 			"subtitle": "Native Rust Backend - Tauri - Replaces Electron Main Process",
-			"description": "Handles windows, file I/O, child processes, terminals, clipboard, and extension IPC through Rust and Tauri\nIncludes Vine and Cocoon bridge code for the primary desktop path\nUses native integrations such as keyring where the feature path requires them"
+			"description": "Primary native backend and Tauri application shell - replaces the Electron main process entirely.\nImplements all service traits from Common through the declarative ActionEffect system: windows, files, terminals, clipboard, dialogs, process control, and OS keychain.\nHosts the gRPC server for cross-process communication with Cocoon, Air, and Grove.\nOrchestrates sidecar lifecycle and manages application state across all connected processes."
 		},
 		"output": {
 			"subtitle": "Compilation Pipeline - Plugin-Routed - Deterministic Checksum",
-			"description": "Processes TypeScript and platform code through plugin-routed transforms\nContains the dynamic import rewrite and bundling support used by the output pipeline\nChecksum and release guarantees should come from the published pipeline, not from marketing copy"
+			"description": "Build orchestration for VS Code platform source code. Dual-compiler pipeline: primary ESBuild with an optional Rust-native compiler path for faster TypeScript compilation.\nPlugin-routed transforms handle module resolution remapping, define substitution, CSS import interception, and dead code elimination.\nEnvironment-variable-driven compiler selection. Platform code markers separate platform-specific and cross-platform code at the source level.\nConsumed by Cocoon, Sky, and Wind as the shared compilation output."
 		},
 		"rest": {
 			"subtitle": "TypeScript Transform Pipeline - OXC - Rust-Native",
-			"description": "OXC-based transform work for TypeScript and VS Code platform code\nMeant to reduce reliance on Node-hosted compilation paths over time\nSource maps and public benchmark claims remain integration work"
+			"description": "Rust-native TypeScript compilation pipeline built on the OXC toolchain - parser, transformer, and codegen in one process.\nHandles decorator metadata emission, legacy class field semantics, JSX, and parallel compilation.\nSelectable as an alternative compiler to reduce reliance on Node-hosted compilation paths.\nSource maps and public benchmark claims remain integration work."
 		},
 		"sidecar": {
 			"subtitle": "Binary Distributor - Compile-Time Target Triple Selection - Per-Platform Node.js",
-			"description": "Packages host-specific sidecar binaries for the Cocoon path\nKeeps target triples and selection logic in source rather than hidden installer scripts\nAdditional platform packaging remains tied to the release pipeline"
+			"description": "Manages pre-compiled platform-specific Node.js binaries for each target platform.\nCompile-time binary selection ensures the right runtime is available without runtime detection or download delays.\nIntegrity verification and cache management keep sidecar deployments deterministic and reproducible across build environments."
 		},
 		"sky": {
 			"subtitle": "Visual UI Layer - Astro Components - Three Workbench Layouts",
-			"description": "Astro workbench routes and WebView bridge code for the editor UI\nSupports the visual shell that Mountain loads through Tauri\nPanel and layout coverage should be checked against the current Sky routes"
+			"description": "Renders the editor interface in the OS WebView using Astro component islands for efficient rendering.\nSkyBridge routes Tauri events to VS Code workbench APIs, translating runtime channels into workbench calls.\nSupports multiple workbench layouts that adapt the UI layer to different runtimes: browser proxy, Mountain-native, or Electron.\nSmart variant selection with conditional imports and tree-shaking keeps the bundle size target-specific."
 		},
 		"vine": {
 			"subtitle": "gRPC Backbone - Contract-First - .proto Definitions",
-			"description": "Protocol contracts live in .proto files for Mountain, Cocoon, Air, Grove, and related services\nGenerated stubs give Rust and TypeScript a shared wire shape where the route is implemented\nCoverage is expanding across the IPC surface"
+			"description": "Protocol definitions for gRPC communication between Mountain, Cocoon, Air, and Grove.\nCurrent proto contracts live in Mountain/Proto/ and Cocoon: Vine.proto for editor-host IPC, Spine.proto for extension coordination, and Grove.proto for WASM extension protocols.\nCentralized consolidation into the Vine element is planned as the protocol surface stabilizes."
 		},
 		"wind": {
 			"subtitle": "Workbench Services - Effect-TS Layers - Native Bridges",
-			"description": "TypeScript workbench services for panels, sidebars, activity bar, configuration, and output channels\nEffect-TS layers keep service dependencies explicit\nNative OS calls use the Tauri bridge where the Mountain path implements them"
+			"description": "UI service layer that recreates the VS Code workbench environment inside the Tauri WebView.\nEffect-TS services cover IPC, Configuration, Editor, Terminal, Clipboard, Dialog, FileSystem, Window, and Search - each with explicit typed error handling and compile-time dependency tracking.\nComposed into Layer stacks that target specific runtimes: Tauri (native), Electron (compatibility), and Test (isolated).\nPreload shim establishes the bridge between VS Code workbench expectations and the Tauri runtime environment."
 		},
 		"worker": {
 			"subtitle": "Service Worker - Offline Cache - CSS Import Support",
-			"description": "Manages browser-worker support for caching and dynamic CSS imports where the web shell needs it\nSecurity-sensitive auth claims are kept out until the active Worker code and release profile prove them end to end"
+			"description": "Service worker that provides offline caching and dynamic CSS import handling for the web shell.\nNetwork-first strategy for navigation requests, cache-first for static assets.\nIntercepts JavaScript imports of CSS files and injects them as <link> tags - handles VS Code's pattern of importing stylesheets as JS modules.\nAutomatic update detection with client reload when a new version is available."
 		}
 	}
 }

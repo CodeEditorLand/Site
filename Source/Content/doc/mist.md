@@ -16,7 +16,7 @@ flows through `Mist` yet.
 
 ---
 
-## Source Structure
+## Source Structure 🗺️
 
 Confirmed source areas include:
 
@@ -31,7 +31,7 @@ Confirmed source areas include:
 
 ---
 
-## Status
+## Status 🚀
 
 `Mist` is source-backed and WIP for full integration. Public copy should
 describe the local DNS and service-boundary direction without promising that all
@@ -39,7 +39,7 @@ editor traffic already flows through `Mist`.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Air`](https://Editor.Land/Doc/air)

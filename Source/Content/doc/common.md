@@ -38,7 +38,7 @@ small unit.
 
 ---
 
-## Status
+## Status 🚀
 
 `Common` is source-backed and active as a shared library layer. Claims about
 "complete isolation" or "zero implementation" should be avoided unless they are
@@ -46,7 +46,7 @@ qualified to a specific trait or test harness.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Mountain`](https://Editor.Land/Doc/mountain)

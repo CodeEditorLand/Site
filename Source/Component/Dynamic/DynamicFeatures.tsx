@@ -44,19 +44,19 @@ const FeatureColorMap: Record<string, string> = {
  * These flow into aria-label, title, and Radix tooltip text via IconTooltip.
  */
 const FeatureIconLabelMap: Record<string, string> = {
-	Zap: "Mountain handles native window, file, and terminal services outside the WebView",
-	Box: "Cocoon hosts VS Code extensions with high-fidelity API compatibility",
-	Cpu: "Rust services run at native CPU speed without Electron overhead",
-	Globe: "Targets macOS, Windows, and Linux from one Tauri source tree",
+	Zap: "Mountain runs native services through Tauri outside the WebView, dispatched via the ActionEffect system",
+	Box: "Cocoon hosts VS Code extensions with Effect-TS across a dual-track architecture",
+	Cpu: "Rust services run at native speed without Electron overhead",
+	Globe: "One Tauri source tree compiles to macOS, Windows, and Linux",
 	Wrench: "Rust, Tauri, Effect-TS, Biome, and OXC form the toolchain",
 	Heart: "CC0 public domain - free to use, fork, and ship",
-	Layers: "Effect-TS catches type errors at compile time",
-	Puzzle: "Installed extensions run unmodified where their APIs are implemented",
-	Server: "Vine gRPC route or planned relay",
+	Layers: "Effect-TS provides typed errors and dependency injection across Wind and Cocoon service layers",
+	Puzzle: "Extensions run unmodified through Cocoon where their APIs are implemented",
+	Server: "gRPC connects Mountain, Cocoon, Air, and Grove via typed protocol contracts",
 	Shield: "Verified request path where implemented",
-	Sparkles: "Active development across all elements",
-	Code: "Rust, TypeScript, and build tooling",
-	Package: "Tauri bundles to native packages, no Chromium",
+	Sparkles: "Active development across all element repos",
+	Code: "Rust and TypeScript across native and service layers",
+	Package: "Tauri bundles to native platform packages with no Chromium",
 };
 
 /**
@@ -199,16 +199,16 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 								key={Feature.Id}
 								title={
 									Feature.Id === "performance"
-										? "Rust backend via Tauri 2.0 with gRPC IPC for native speed without Electron overhead."
+										? "Mountain and Echo run native Rust services through Tauri outside the WebView, dispatched via ActionEffect."
 										: Feature.Id === "compatibility"
-											? "Cocoon extension host runs VS Code extensions via Effect-TS with high-fidelity API compatibility."
+											? "Cocoon extension host runs unmodified VS Code extensions via Effect-TS across a dual-track architecture."
 											: Feature.Id === "architecture"
-												? "Effect-TS provides type-safe services, structured concurrency, and dependency injection in the UI layer."
+												? "Effect-TS Layer stacks provide typed errors, structured concurrency, and compile-time dependency tracking."
 												: Feature.Id ===
 													  "cross-platform"
-													? "Tauri 2.0 compiles one codebase to native macOS, Windows, and Linux apps via platform WebViews."
+													? "Tauri compiles one codebase to native macOS, Windows, and Linux apps via platform WebViews."
 													: Feature.Id === "tooling"
-														? "Built on Rust, Tauri, Effect-TS, Biome formatter, and the VS Code platform for modern DX."
+														? "Built on Rust, Tauri, Effect-TS, Biome, and OXC for modern developer tooling."
 														: Feature.Id ===
 															  "opensource"
 															? "CC0 1.0 Universal public domain dedication. Funded by NLnet NGI0 Commons Fund."

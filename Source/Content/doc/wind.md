@@ -15,7 +15,7 @@ instead of raw `Tauri` calls.
 
 ---
 
-## Source Layout
+## Source Layout 🗺️
 
 `Wind` source areas include:
 
@@ -30,7 +30,7 @@ instead of raw `Tauri` calls.
 
 ---
 
-## Status
+## Status 🚀
 
 `Wind` is active source for the `Mountain` `workbench` path. Core service
 surfaces are present, and more coverage is added as `Mountain` and `Cocoon`
@@ -47,7 +47,7 @@ embedding `Tauri` `IPC` details directly into the component.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Sky`](https://Editor.Land/Doc/sky)

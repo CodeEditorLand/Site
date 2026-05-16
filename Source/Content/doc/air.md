@@ -18,7 +18,7 @@ release signing story, and installer distribution path are still being prepared.
 
 ---
 
-## Source Structure
+## Source Structure 🗺️
 
 Confirmed source areas include:
 
@@ -37,7 +37,7 @@ Confirmed source areas include:
 
 ---
 
-## Responsibilities
+## Responsibilities 🔌
 
 - Checking update metadata where a build profile enables that route.
 - Downloading files or release payloads through `Air`'s downloader and HTTP
@@ -49,7 +49,7 @@ Confirmed source areas include:
 
 ---
 
-## Coming Soon
+## Coming Soon 🚀
 
 - Public release artifacts with published checksums and signatures.
 - End-to-end staged update flow in a public installer.
@@ -58,7 +58,7 @@ Confirmed source areas include:
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Mountain`](https://Editor.Land/Doc/mountain)

@@ -53,7 +53,7 @@ All four target triple directories are confirmed present in the
 
 ---
 
-## Source Structure
+## Source Structure 🗺️
 
 | Path                 | Role                                                          |
 | -------------------- | ------------------------------------------------------------- |
@@ -93,7 +93,7 @@ Verification, Cross-Platform Distribution.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Cocoon`](https://Editor.Land/Doc/cocoon)

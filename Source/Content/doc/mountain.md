@@ -21,7 +21,7 @@ benchmark.
 
 ---
 
-## Platform Configuration
+## Platform Configuration ⚙️
 
 | Platform | WebView        | Source status                                               |
 | -------- | -------------- | ----------------------------------------------------------- |
@@ -37,7 +37,7 @@ public release pages should keep installer claims separate from source support.
 
 ---
 
-## Startup Pipeline
+## Startup Pipeline 🚀
 
 `Mountain`'s binary is organized around build, registration, initialization, and
 services:
@@ -72,7 +72,7 @@ the `Vine` and `Cocoon` path before handing control to the `Tauri` event loop.
 
 ---
 
-## Native Responsibilities
+## Native Responsibilities 🔌
 
 `Mountain` owns the native work that should not live inside a browser runtime:
 
@@ -104,7 +104,7 @@ every marketplace extension works needs a validation matrix.
 
 ---
 
-## Feature Flags
+## Feature Flags ⚙️
 
 `Mountain` uses `Cargo` feature flags for capability gates and experimental
 tiers. The default feature set includes paths such as `ExtensionHostCocoon`,
@@ -144,7 +144,7 @@ profile when making behavior claims.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Cocoon`](https://Editor.Land/Doc/cocoon)

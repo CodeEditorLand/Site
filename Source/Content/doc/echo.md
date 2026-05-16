@@ -47,7 +47,7 @@ tasks.
 
 ---
 
-## Source Structure
+## Source Structure 🗺️
 
 `Echo`'s source tree (confirmed in the
 [repository](https://github.com/CodeEditorLand/Echo)):
@@ -61,7 +61,7 @@ tasks.
 
 ---
 
-## Current Status
+## Current Status 🚀
 
 `Echo` is active inside `Mountain`'s binary on both macOS and Windows. The
 worker pool infrastructure runs in the `debug-mountain` build profile and is
@@ -99,7 +99,7 @@ threads from holding file handles or sockets after shutdown.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Mountain`: Native Kernel](https://Editor.Land/Doc/mountain)

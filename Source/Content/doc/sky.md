@@ -25,9 +25,9 @@ in the real desktop application without any code change.
 
 ---
 
-## Source Layout
+## Source Layout 🗺️
 
-`Sky`’s source tree is compact and purpose-built:
+`Sky`'s source tree is compact and purpose-built:
 
 ```
 Source/
@@ -133,9 +133,9 @@ ever sees a single consistent shape per event.
 
 ---
 
-## Build Profile Behaviour
+## Build Profile Behaviour ⚙️
 
-`Sky`’s runtime environment depends on which build profile is active:
+`Sky`'s runtime environment depends on which build profile is active:
 
 - **`debug`** - `Sky` runs as a plain web app in the browser. `Browser.astro` is
   the entry point; no `Tauri` WebView, no `Mountain` process. `Astro`’s dev
@@ -153,7 +153,7 @@ ever sees a single consistent shape per event.
 
 ---
 
-## Current Status
+## Current Status 🚀
 
 `Sky` is the active UI layer for the `debug-mountain` profile on macOS and
 Windows. The `workbench` builds, installs, and runs correctly on both platforms.
@@ -201,7 +201,7 @@ rather than silently broken.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Wind`: Service Layer](https://Editor.Land/Doc/wind)

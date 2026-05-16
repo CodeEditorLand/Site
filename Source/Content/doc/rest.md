@@ -18,7 +18,7 @@ actual pipeline.
 
 ---
 
-## Source Structure
+## Source Structure 🗺️
 
 Confirmed source areas include:
 
@@ -32,7 +32,7 @@ Confirmed source areas include:
 
 ---
 
-## Status
+## Status 🚀
 
 `Rest` is WIP build-tooling work. It should be labeled `WIP` anywhere the
 website talks about replacing or outperforming other compilers. `Output`
@@ -41,7 +41,7 @@ validation before they become product claims.
 
 ---
 
-## See Also
+## Related Documentation 📖
 
 - [Architecture Overview](https://Editor.Land/Doc/architecture)
 - [`Output`](https://Editor.Land/Doc/output)
