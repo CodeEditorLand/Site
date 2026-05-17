@@ -259,7 +259,7 @@ tree.
 ## Mist
 
 DNS isolation element - Hickory-DNS authoritative server resolving
-`*.editor.land` to loopback.
+`*.land.playform.cloud` to loopback.
 
 ### v2.1 - Full Workbench Lift (April 2026)
 
@@ -273,7 +273,7 @@ DNS isolation element - Hickory-DNS authoritative server resolving
   (authoritative zone), `Resolver.rs` (HTTP-client integration with IP
   validation), `ForwardSecurity.rs` (forward allowlist).
 - Integration: Mountain starts server, Air uses it for secure HTTP, SideCar
-  spawns Node with DNS override, Cocoon resolves `editor.land`.
+  spawns Node with DNS override, Cocoon resolves `land.playform.cloud`.
 
 ### v0.0 - Project Inception (April 2025)
 

@@ -175,12 +175,12 @@ describe("Integration: Build output structure", () => {
 		try {
 			const SitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://editor.land/download</loc></url>
-<url><loc>https://editor.land/doc</loc></url>
-<url><loc>https://editor.land/blog</loc></url>
-<url><loc>https://editor.land/portal</loc></url>
-<url><loc>https://editor.land/account/signin</loc></url>
-<url><loc>https://editor.land/legal/term</loc></url>
+<url><loc>https://land.playform.cloud/download</loc></url>
+<url><loc>https://land.playform.cloud/doc</loc></url>
+<url><loc>https://land.playform.cloud/blog</loc></url>
+<url><loc>https://land.playform.cloud/portal</loc></url>
+<url><loc>https://land.playform.cloud/account/signin</loc></url>
+<url><loc>https://land.playform.cloud/legal/term</loc></url>
 </urlset>`;
 
 			await writeFile(
@@ -212,22 +212,22 @@ describe("Integration: Build output structure", () => {
 				"utf-8",
 			);
 
-			expect(Final).toContain("<loc>https://editor.land/Download</loc>");
-			expect(Final).toContain("<loc>https://editor.land/Doc</loc>");
-			expect(Final).toContain("<loc>https://editor.land/Blog</loc>");
-			expect(Final).toContain("<loc>https://editor.land/Portal</loc>");
+			expect(Final).toContain("<loc>https://land.playform.cloud/Download</loc>");
+			expect(Final).toContain("<loc>https://land.playform.cloud/Doc</loc>");
+			expect(Final).toContain("<loc>https://land.playform.cloud/Blog</loc>");
+			expect(Final).toContain("<loc>https://land.playform.cloud/Portal</loc>");
 			expect(Final).toContain(
-				"<loc>https://editor.land/Account/SignIn</loc>",
+				"<loc>https://land.playform.cloud/Account/SignIn</loc>",
 			);
 			expect(Final).toContain(
-				"<loc>https://editor.land/Legal/Term</loc>",
+				"<loc>https://land.playform.cloud/Legal/Term</loc>",
 			);
 
 			// Original lowercase should be gone
 			expect(Final).not.toContain(
-				"<loc>https://editor.land/download</loc>",
+				"<loc>https://land.playform.cloud/download</loc>",
 			);
-			expect(Final).not.toContain("<loc>https://editor.land/doc</loc>");
+			expect(Final).not.toContain("<loc>https://land.playform.cloud/doc</loc>");
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}

@@ -28,7 +28,7 @@ export default ({
 		description ||
 		"Rust and Tauri editor stack with VS Code API compatibility in progress.";
 
-	const BaseURL = "https://editor.land";
+	const BaseURL = "https://land.playform.cloud";
 	const SiteURL = url.startsWith("http")
 		? url
 		: url.startsWith("/")
@@ -58,7 +58,7 @@ export default ({
 				{
 					"@type": "Organization",
 					"name": "Code Editor Land",
-					"url": "https://editor.land",
+					"url": "https://land.playform.cloud",
 				},
 				{
 					"@type": "Organization",
@@ -90,7 +90,7 @@ export default ({
 				content={
 					image.startsWith("http")
 						? image
-						: `https://editor.land${image}`
+						: `https://land.playform.cloud${image}`
 				}
 			/>
 			<meta property="og:image:width" content="1200" />
@@ -111,7 +111,7 @@ export default ({
 				content={
 					image.startsWith("http")
 						? image
-						: `https://editor.land${image}`
+						: `https://land.playform.cloud${image}`
 				}
 			/>
 			<meta name="twitter:site" content="@CodeEditorLand" />

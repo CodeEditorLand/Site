@@ -294,7 +294,7 @@ describe("Auth route bypass", () => {
 });
 
 describe("API request detection with Bearer token injection", () => {
-	const SelfOrigin = "https://editor.land";
+	const SelfOrigin = "https://land.playform.cloud";
 
 	it("detects same-origin /api/ paths as API requests", () => {
 		expect(IsApiRequest("/api/user", SelfOrigin, SelfOrigin)).toBe(true);

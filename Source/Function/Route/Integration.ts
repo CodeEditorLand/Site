@@ -484,8 +484,8 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 					for (const [BuiltPath, PascalPath] of Object.entries(
 						PascalCaseCanonical,
 					)) {
-						// Replace <loc>https://editor.land/downloads</loc>
-						// with    <loc>https://editor.land/Download</loc>
+						// Replace <loc>https://land.playform.cloud/downloads</loc>
+						// with    <loc>https://land.playform.cloud/Download</loc>
 						// Also handle trailing slashes and bare paths
 						const Pattern = new RegExp(
 							`(<loc>[^<]*?)${BuiltPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(/?)(<\\/loc>)`,

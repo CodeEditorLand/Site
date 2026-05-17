@@ -498,11 +498,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
 						defaultValue:
-							"Local DNS Sandbox - *.editor.land Resolution - Network Boundary",
+							"Local DNS Sandbox - *.land.playform.cloud Resolution - Network Boundary",
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
-							"Local DNS server authoritative for the editor.land zone - all subdomains resolve to loopback, keeping internal services off the network.\nForward allowlisting controls which external domains sidecar processes can reach; everything else is blocked at the DNS layer.\nECDSA DNSSEC signing verifies zone integrity. Loopback binding only - no external port exposure.\nProvides network isolation for Cocoon and Air processes so they cannot leak data to arbitrary hosts.",
+							"Local DNS server authoritative for the land.playform.cloud zone - all subdomains resolve to loopback, keeping internal services off the network.\nForward allowlisting controls which external domains sidecar processes can reach; everything else is blocked at the DNS layer.\nECDSA DNSSEC signing verifies zone integrity. Loopback binding only - no external port exposure.\nProvides network isolation for Cocoon and Air processes so they cannot leak data to arbitrary hosts.",
 					}),
 				},
 				{
