@@ -109,7 +109,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/check": "0.9.9",
-		"@astrojs/ts-plugin": "1.10.8",
+		"@astrojs/ts-plugin": "1.10.9",
 		"@tailwindcss/postcss": "4.3.0",
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/react": "16.3.2",
