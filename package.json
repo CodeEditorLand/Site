@@ -117,7 +117,7 @@
 		"@types/postcss-import": "14.0.3",
 		"@types/postcss-reporter": "7.0.5",
 		"@types/postcss-url": "10.0.4",
-		"@types/react": "19.2.14",
+		"@types/react": "19.2.15",
 		"@types/react-dom": "19.2.3",
 		"@types/trusted-types": "2.0.7",
 		"@vitejs/plugin-react": "6.0.2",
