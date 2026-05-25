@@ -25,7 +25,7 @@ const LastUpdated = "March 26, 2026";
 	lang="en">
 	<Header client:load />
 	<div class="container mx-auto max-w-4xl px-4 py-16">
-		<nav aria-label="Breadcrumb" class="mb-8">
+		<nav aria-label="Breadcrumb" class="LegalPrintHide mb-8">
 			<ol
 				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
@@ -52,8 +52,8 @@ const LastUpdated = "March 26, 2026";
 			</div>
 		</header>
 
-		<article class="prose prose-slate max-w-none">
-			<ul>
+		<article class="LegalCard prose prose-slate max-w-none">
+			<ul class="LegalPrintHide">
 				<li>
 					<a href="#terms-of-service">TERMS OF SERVICE</a>
 					<ul>
@@ -216,15 +216,16 @@ const LastUpdated = "March 26, 2026";
 
 			<p>You represent and warrant that:</p>
 
-			<p>
-				a) you have the legal right to use any credit card(s) or other
-				payment method(s) in connection with any Purchase; and
-			</p>
-
-			<p>
-				b) the information you supply to us is true, correct and
-				complete.
-			</p>
+			<ol class="LegalList">
+				<li>
+					you have the legal right to use any credit card(s) or other
+					payment method(s) in connection with any Purchase; and
+				</li>
+				<li>
+					the information you supply to us is true, correct and
+					complete.
+				</li>
+			</ol>
 
 			<p>
 				We may employ the use of third-party services for the purpose of
@@ -320,11 +321,12 @@ const LastUpdated = "March 26, 2026";
 				you have selected.
 			</p>
 
-			<p>
-				At any time and without notice, we reserve the right to a)
-				modify Terms of Service of Free Trial offer, or b) cancel such
-				Free Trial offer.
-			</p>
+			<p>At any time and without notice, we reserve the right to:</p>
+
+			<ol class="LegalList">
+				<li>modify Terms of Service of Free Trial offer, or</li>
+				<li>cancel such Free Trial offer.</li>
+			</ol>
 
 			<h2 id="fee-changes">Fee Changes</h2>
 
@@ -373,19 +375,20 @@ const LastUpdated = "March 26, 2026";
 				warrant that:
 			</p>
 
-			<p>
-				a) Content is yours (you own it) and/or you have the right to
-				use it and the right to grant us the rights and license as
-				provided in these Terms; and
-			</p>
-
-			<p>
-				b) that the posting of your Content on or through Service does
-				not violate the privacy rights, publicity rights, copyrights,
-				contract rights or any other rights of any person or entity. We
-				reserve the right to terminate the account of anyone found to be
-				infringing on a copyright.
-			</p>
+			<ol class="LegalList">
+				<li>
+					Content is yours (you own it) and/or you have the right to
+					use it and the right to grant us the rights and license as
+					provided in these Terms; and
+				</li>
+				<li>
+					that the posting of your Content on or through Service does
+					not violate the privacy rights, publicity rights,
+					copyrights, contract rights or any other rights of any
+					person or entity. We reserve the right to terminate the
+					account of anyone found to be infringing on a copyright.
+				</li>
+			</ol>
 
 			<p>
 				You retain any and all of your rights to any Content you submit,
@@ -962,7 +965,7 @@ const LastUpdated = "March 26, 2026";
 			<p>By mail: PlayForm / Code Editor Land, Sofia, Bulgaria.</p>
 		</article>
 
-		<div class="mt-12 border-t pt-8">
+		<div class="LegalPrintHide mt-12 border-t pt-8">
 			<a
 				href="#top"
 				class="StaccatoButton text-primary hover:underline"

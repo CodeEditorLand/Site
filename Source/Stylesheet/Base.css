@@ -780,3 +780,96 @@
 		color: var(--Foreground);
 	}
 }
+
+/* ─────────────────────────────────────────────────────────────
+ LEGAL / POLICY PAGES
+ White card surface for legal/terms/privacy/license pages,
+ matching the rest of the site's card system, plus print rules.
+ ───────────────────────────────────────────────────────────── */
+@layer components {
+	.LegalCard {
+		background-color: var(--Background);
+		color: var(--Foreground);
+		padding: 2rem;
+		border: 1px solid var(--Border);
+		border-radius: 0;
+	}
+
+	@media (min-width: 768px) {
+		.LegalCard {
+			padding: 3rem;
+		}
+	}
+
+	.LegalCard ol.LegalList {
+		list-style-type: lower-alpha;
+		padding-left: 1.75rem;
+		margin: 0.75rem 0 1rem 0;
+	}
+
+	.LegalCard ol.LegalList > li {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+	}
+
+	.LegalCard ol.LegalListRoman {
+		list-style-type: lower-roman;
+		padding-left: 1.75rem;
+		margin: 0.75rem 0 1rem 0;
+	}
+
+	.LegalCard ol.LegalListRoman > li {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+	}
+}
+
+@media print {
+	.LegalPrintHide,
+	header[role="banner"],
+	nav[aria-label="Breadcrumb"],
+	footer {
+		display: none !important;
+	}
+
+	html,
+	body {
+		background: #ffffff !important;
+		color: #000000 !important;
+	}
+
+	.LegalCard {
+		border: none !important;
+		padding: 0 !important;
+		box-shadow: none !important;
+		background: #ffffff !important;
+		color: #000000 !important;
+		max-width: 100% !important;
+	}
+
+	.LegalCard a {
+		color: #000000 !important;
+		text-decoration: underline;
+	}
+
+	.LegalCard a[href^="http"]::after,
+	.LegalCard a[href^="mailto:"]::after {
+		content: " (" attr(href) ")";
+		font-size: 0.85em;
+		color: #333333;
+	}
+
+	.LegalCard h1,
+	.LegalCard h2,
+	.LegalCard h3 {
+		page-break-after: avoid;
+		break-after: avoid;
+	}
+
+	.LegalCard ol,
+	.LegalCard ul,
+	.LegalCard p {
+		page-break-inside: avoid;
+		break-inside: avoid;
+	}
+}

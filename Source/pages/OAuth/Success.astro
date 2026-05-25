@@ -1,4 +1,5 @@
 ---
+import Auth0CallbackHandler from "../../Component/Dynamic/Auth0CallbackHandler";
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -37,6 +38,7 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
 	<Header client:load />
+	<Auth0CallbackHandler client:only="react" />
 	<section class="flex min-h-screen items-center justify-center py-20">
 		<div class="container mx-auto px-4">
 			<div class="mx-auto max-w-md text-center">
@@ -107,7 +109,11 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 	function HandleOAuthSuccess(): void {
 		const SearchParameters = new URLSearchParams(window.location.search);
 		const Token = SearchParameters.get("token");
+		const Code = SearchParameters.get("code");
 		const ErrorParameter = SearchParameters.get("error");
+
+		// Auth0 PKCE callback - let Auth0CallbackHandler React island handle it
+		if (Code && !Token) return;
 
 		const LoadingState = document.getElementById("LoadingState");
 		const SuccessState = document.getElementById("SuccessState");
