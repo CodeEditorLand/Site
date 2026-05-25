@@ -119,13 +119,13 @@ const DashboardUserInner = () => {
 
 	if (AuthError) {
 		return (
-			<div className="space-y-3 text-sm" role="alert" aria-live="polite">
-				<p className="text-sm text-destructive">
+			<div className="space-y-3" role="alert" aria-live="polite">
+				<p className="text-destructive">
 					{T("dashboard.error", {
 						defaultValue: "Failed to load account.",
 					})}
 				</p>
-				<p className="text-xs text-muted-foreground">
+				<p className="text-muted-foreground">
 					{AuthError.message}
 				</p>
 				<Button
@@ -140,8 +140,8 @@ const DashboardUserInner = () => {
 
 	if (!IsAuthenticated || !User) {
 		return (
-			<div className="space-y-3 text-sm">
-				<p className="text-sm text-muted-foreground">
+			<div className="space-y-3">
+				<p className="text-muted-foreground">
 					{T("dashboard.account.notSignedIn", {
 						defaultValue: "Sign in to see your account details.",
 					})}
@@ -149,7 +149,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={() => Login()}
-					className="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-4 py-1.5 text-sm font-medium text-white transition-all hover:opacity-90">
+					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-4 py-1.5 font-medium text-white transition-all hover:opacity-90">
 					{T("dashboard.account.signInButton", {
 						defaultValue: "Sign In",
 					})}
@@ -181,7 +181,7 @@ const DashboardUserInner = () => {
 	] as string | undefined;
 
 	return (
-		<div className="space-y-3 text-sm">
+		<div className="space-y-3">
 			{/* Avatar */}
 			<div className="flex justify-center pb-2">
 				{User.picture ? (
@@ -192,7 +192,7 @@ const DashboardUserInner = () => {
 						width="48"
 						height="48"
 						loading="lazy"
-						className="h-12 w-12 rounded-none border border-[var(--Border)]"
+						className="h-12 w-12 rounded-none "
 						onError={(Event) => {
 							(Event.target as HTMLImageElement).style.display =
 								"none";
@@ -203,7 +203,7 @@ const DashboardUserInner = () => {
 					/>
 				) : null}
 				<div
-					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none border border-[var(--Border)] bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
+					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
 					aria-hidden="true">
 					{DisplayName.slice(0, 1).toUpperCase()}
 				</div>
@@ -306,7 +306,7 @@ const DashboardUserInner = () => {
 
 			{/* Enterprise SSO Banner */}
 			{IsEnterprise && (
-				<div className="mt-2 border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-700">
+				<div className="mt-2 border border-green-200 bg-green-50 px-3 py-2 text-green-700">
 					{T("dashboard.account.enterpriseSSO", {
 						defaultValue: "Enterprise SSO active",
 					})}
@@ -316,7 +316,7 @@ const DashboardUserInner = () => {
 
 			{/* Email Not Verified Warning */}
 			{User.email_verified === false && (
-				<div className="mt-2 border border-yellow-200 bg-yellow-50 px-3 py-2 text-xs text-yellow-700">
+				<div className="mt-2 border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
 					{T("dashboard.account.emailNotVerified", {
 						defaultValue: "Email not verified. Check your inbox.",
 					})}
@@ -328,7 +328,7 @@ const DashboardUserInner = () => {
 			<div className="mt-3 flex gap-2">
 				<a
 					href="/Account"
-					className="StaccatoButton inline-flex flex-1 items-center justify-center border border-[var(--Border)] bg-white px-3 py-1.5 text-xs font-medium transition-all hover:bg-[var(--Secondary)]">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-white px-3 py-1.5 font-medium transition-all hover:bg-[var(--Secondary)]">
 					{T("dashboard.account.manageButton", {
 						defaultValue: "Manage",
 					})}
@@ -336,7 +336,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={HandleSignOut}
-					className="StaccatoButton inline-flex flex-1 items-center justify-center border border-[var(--Border)] bg-white px-3 py-1.5 text-xs font-medium text-red-600 transition-all hover:bg-red-50">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-white px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50">
 					{T("dashboard.account.signOutButton", {
 						defaultValue: "Sign Out",
 					})}

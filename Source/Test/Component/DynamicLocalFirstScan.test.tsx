@@ -14,9 +14,9 @@ vi.mock("react-i18next", () => ({
 // ─── Inline component implementing LocalFirst scan interface ───
 // The DynamicLocalFirstScan component does not exist as a standalone file yet.
 // This test suite defines the component contract based on:
-//   - Interface/Property/Portal/LocalFirst.ts (DaemonStatus, OnConnect, IsLoading)
-//   - Interface/Content/Portal/LocalFirst.ts (Title, Description, ConnectButton, etc.)
-//   - The local-first section in DynamicPortal.tsx (daemon scan, WebSocket, download)
+// - Interface/Property/Portal/LocalFirst.ts (DaemonStatus, OnConnect, IsLoading)
+// - Interface/Content/Portal/LocalFirst.ts (Title, Description, ConnectButton, etc.)
+// - The local-first section in DynamicPortal.tsx (daemon scan, WebSocket, download)
 //
 // The inline component below satisfies the interface and validates the expected
 // behavior. When the real component is created, swap the import.
@@ -46,10 +46,10 @@ interface LocalFirstScanProperty {
  * Reference implementation for test purposes.
  *
  * Behavior:
- *   - "Scanning" status: pulsing scan indicator
- *   - "Connected" status: success indicator
- *   - "Disconnected" status: failure indicator + download link
- *   - IsLoading: disabled connect button
+ * - "Scanning" status: pulsing scan indicator
+ * - "Connected" status: success indicator
+ * - "Disconnected" status: failure indicator + download link
+ * - IsLoading: disabled connect button
  */
 const DynamicLocalFirstScan = ({
 	Content,

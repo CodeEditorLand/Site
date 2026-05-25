@@ -46,7 +46,7 @@ const DynamicDocSidebar = ({
 									onOpenChange={() =>
 										ToggleSection(Section.Id)
 									}>
-									<CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 text-sm font-medium transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
+									<CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 font-medium transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
 										<span>{Section.Label}</span>
 										<span
 											aria-hidden="true"
@@ -70,7 +70,7 @@ const DynamicDocSidebar = ({
 																	? "page"
 																	: undefined
 															}
-															className={`block px-2 py-1 text-sm transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)] ${
+															className={`block px-2 py-1 transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)] ${
 																IsChildActive
 																	? "bg-[var(--ColorSecondary)] font-medium"
 																	: "text-muted-foreground"
@@ -91,7 +91,7 @@ const DynamicDocSidebar = ({
 						<li key={Section.Id}>
 							<a
 								href={`/Doc/${Section.Id}`}
-								className="block px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
+								className="block px-3 py-2 text-muted-foreground transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
 								{Section.Label}
 							</a>
 						</li>

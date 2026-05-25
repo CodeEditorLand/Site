@@ -59,13 +59,13 @@ const DynamicVerificationInfo = ({
 							aria-hidden="true"
 						/>
 					</div>
-					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
-						<code className="flex-1 truncate font-mono text-sm">
+					<div className="bg-muted/50 flex items-center gap-2 p-3">
+						<code className="flex-1 truncate font-mono">
 							{Information.SHA256}
 						</code>
 						<button
 							type="button"
-							className="border border-[var(--Border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
+							className=" px-3 py-1 transition-colors hover:bg-accent"
 							aria-label="Copy SHA-256 checksum to clipboard"
 							onClick={() =>
 								CopyToClipboard(
@@ -95,13 +95,13 @@ const DynamicVerificationInfo = ({
 							aria-hidden="true"
 						/>
 					</div>
-					<div className="bg-muted/50 flex items-center gap-2 border border-[var(--Border)] p-3">
-						<code className="flex-1 truncate font-mono text-sm">
+					<div className="bg-muted/50 flex items-center gap-2 p-3">
+						<code className="flex-1 truncate font-mono">
 							{Information.PGPSignature}
 						</code>
 						<button
 							type="button"
-							className="border border-[var(--Border)] px-3 py-1 text-xs transition-colors hover:bg-accent"
+							className=" px-3 py-1 transition-colors hover:bg-accent"
 							aria-label="Copy release signature to clipboard"
 							onClick={() =>
 								CopyToClipboard(
@@ -115,7 +115,7 @@ const DynamicVerificationInfo = ({
 						</button>
 					</div>
 					{Information.SigningKeyId && (
-						<p className="text-xs text-muted-foreground">
+						<p className="text-muted-foreground">
 							{T("labels.signedWithKeyId", {
 								defaultValue: "Signed with key ID: {{keyId}}",
 								keyId: Information.SigningKeyId,
@@ -132,7 +132,7 @@ const DynamicVerificationInfo = ({
 							defaultValue: "Verification Instructions",
 						})}
 					</h5>
-					<div className="text-sm text-muted-foreground">
+					<div className="text-muted-foreground">
 						<RichText Text={Information.VerificationInstructions} />
 					</div>
 				</div>
@@ -182,7 +182,7 @@ const DynamicVerificationInfo = ({
 
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						{/* Download Verification */}
-						<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
+						<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-white p-6">
 							<h3 className="mb-4 flex items-center text-xl font-semibold">
 								{T("labels.downloadVerification", {
 									defaultValue: "Download Verification",

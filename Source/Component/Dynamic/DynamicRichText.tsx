@@ -8,7 +8,7 @@ import { RichText, type RichTextProps } from "../UI/RichText.js";
  * breaks, inline code (backticks), or other RichText markup.
  *
  * Usage in .astro:
- *   <DynamicRichText client:load Text={T("some.key")} ClassName="text-sm text-muted-foreground" />
+ * <DynamicRichText client:load Text={T("some.key")} ClassName="text-muted-foreground" />
  */
 const DynamicRichText = (Props: RichTextProps) => <RichText {...Props} />;
 

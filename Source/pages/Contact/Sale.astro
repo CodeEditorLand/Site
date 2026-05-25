@@ -26,7 +26,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
@@ -51,14 +51,14 @@ const MetaDescription = T("meta.contact.sales.description", {
 
 		<!-- Page Header -->
 		<header class="mb-12">
-			<h1 class="mb-4 text-4xl font-bold tracking-tight">
+			<h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">
 				{
 					T("common.sales.pageTitle", {
 						defaultValue: "Enterprise Inquiries",
 					})
 				}
 			</h1>
-			<p class="whitespace-pre-line text-lg text-muted-foreground">
+			<p class="whitespace-pre-line text-[var(--MuteForeground)]">
 				{
 					T("common.sales.pageSubtitle", {
 						defaultValue:
@@ -72,10 +72,10 @@ const MetaDescription = T("meta.contact.sales.description", {
 			<!-- Contact via GitHub Issues -->
 			<div class="lg:col-span-2">
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-8">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-8">
 					<div class="mb-6 border-l-4 border-[var(--Primary)] pl-4">
 						<p
-							class="mb-1 text-sm font-medium text-[var(--Primary)]">
+							class="mb-1 font-medium text-[var(--Primary)]">
 							{
 								T("common.sales.contact.heading", {
 									defaultValue: "How to Reach Us",
@@ -83,7 +83,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 							}
 						</p>
 						<p
-							class="whitespace-pre-line text-sm text-muted-foreground">
+							class="whitespace-pre-line text-muted-foreground">
 							{
 								T("common.sales.contact.githubNote", {
 									defaultValue:
@@ -97,7 +97,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 						href="https://github.com/CodeEditorLand/Land/issues/new?title=Enterprise+Inquiry&labels=enterprise"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoButton mb-4 inline-flex items-center border border-[var(--Border)] bg-[var(--Primary)] px-8 py-2 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						class="StaccatoButton mb-4 inline-flex items-center bg-[var(--Primary)] px-8 py-2 font-medium text-white transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>{
 							T("common.sales.contact.openIssueButton", {
 								defaultValue: "Open GitHub Issue",
@@ -112,7 +112,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 						}
 					</h2>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T("common.sales.contact.openIssueDescription", {
 								defaultValue:
@@ -122,8 +122,8 @@ const MetaDescription = T("meta.contact.sales.description", {
 					</p>
 
 					<div
-						class="mt-8 border border-[var(--Border)] bg-[var(--Secondary)] p-4">
-						<p class="text-xs text-muted-foreground">
+						class="mt-8 bg-[var(--Secondary)] p-4">
+						<p class="text-muted-foreground">
 							<strong
 								>{
 									T(
@@ -149,7 +149,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 			<!-- Sidebar -->
 			<div class="space-y-6">
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 					<h3 class="mb-3 font-semibold">
 						{
 							T("common.sales.features.heading", {
@@ -157,7 +157,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 							})
 						}
 					</h3>
-					<ul class="space-y-2 text-sm text-muted-foreground">
+					<ul class="space-y-2 text-muted-foreground">
 						<li>
 							{
 								T("common.sales.features.prioritySupport", {
@@ -210,7 +210,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 				</div>
 
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 					<a
 						href="mailto:enterprise@land.playform.cloud"
 						class="StaccatoButton font-medium text-[var(--Primary)] hover:underline"
@@ -226,7 +226,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 						}
 					</h3>
 					<p
-						class="mb-2 whitespace-pre-line text-sm text-muted-foreground">
+						class="mb-2 whitespace-pre-line text-muted-foreground">
 						{
 							T("common.sales.contact.description", {
 								defaultValue:
@@ -234,7 +234,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 							})
 						}
 					</p>
-					<p class="text-xs text-muted-foreground">
+					<p class="text-muted-foreground">
 						{
 							T("common.sales.contact.operatedBy", {
 								defaultValue:
@@ -245,7 +245,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 				</div>
 
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 					<h3 class="mb-3 font-semibold">
 						{
 							T("common.sales.openSource.heading", {
@@ -254,7 +254,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 						}
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T("common.sales.openSource.description", {
 								defaultValue:
@@ -270,7 +270,7 @@ const MetaDescription = T("meta.contact.sales.description", {
 		<div class="mt-12 border-t pt-8">
 			<a
 				href="#top"
-				class="StaccatoButton text-sm text-primary hover:underline"
+				class="StaccatoButton text-primary hover:underline"
 				>{
 					T("common.button.backToTop", {
 						defaultValue: "Back to top",

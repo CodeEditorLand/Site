@@ -389,16 +389,16 @@ const MetaDescription = T("meta.portal.description", {
 
 <Base Title={MetaTitle} Description={MetaDescription}>
 	<!-- Portal is the auth gateway itself; use the plain header so the
-	     Auth0-aware DynamicAuthHeader does not place a "Sign In" link on
-	     the auth-selection page, and more importantly does not instantiate
-	     Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
+	 Auth0-aware DynamicAuthHeader does not place a "Sign In" link on
+	 the auth-selection page, and more importantly does not instantiate
+	 Auth0AccountGate (which auto-calls loginWithRedirect() on mount). -->
 	<Header client:load />
 
 	<main id="main-content">
 		<!-- Breadcrumb -->
 		<nav
 			aria-label="Breadcrumb"
-			class="container mx-auto px-4 pt-6 text-sm text-muted-foreground">
+			class="container mx-auto px-4 pt-6 text-muted-foreground">
 			<ol class="flex flex-wrap items-center space-x-2">
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground">
@@ -419,7 +419,7 @@ const MetaDescription = T("meta.portal.description", {
 		</nav>
 
 		<div
-			class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-xs text-muted-foreground">
+			class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-muted-foreground">
 			<picture>
 				<img
 					alt="Land"
@@ -435,11 +435,11 @@ const MetaDescription = T("meta.portal.description", {
 					aria-hidden="true"></span>
 			</span>
 			<span
-				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+				class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
 				CC0 Licensed
 			</span>
 			<span
-				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+				class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
 				Auth0 + OAuth 2.0
 			</span>
 			<span
@@ -452,7 +452,7 @@ const MetaDescription = T("meta.portal.description", {
 				href="https://PlayForm.Cloud"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
+				class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
 				PlayForm
 			</a>
 		</div>

@@ -7,12 +7,12 @@ import { useTranslation } from "react-i18next";
  * Local-First Air Daemon scanner.
  *
  * Attempts WebSocket connections to the Air Daemon on two ports:
- *   - ws://localhost:7979 (primary)
- *   - ws://localhost:7878 (fallback)
+ * - ws://localhost:7979 (primary)
+ * - ws://localhost:7878 (fallback)
  *
  * Shows scan animation while probing, then displays:
- *   - Connected: green status with daemon version
- *   - Not found: gray status with download link
+ * - Connected: green status with daemon version
+ * - Not found: gray status with download link
  *
  * Designed for /Dashboard?mode=local query param.
  * Timeout: 3 seconds per endpoint.
@@ -100,7 +100,7 @@ const ScanAnimation = () => (
 				style={{ animationDelay: "300ms" }}
 			/>
 		</div>
-		<span className="text-sm text-muted-foreground">
+		<span className="text-muted-foreground">
 			Scanning for Air Daemon...
 		</span>
 	</div>
@@ -165,7 +165,7 @@ const LocalFirstScanInner = () => {
 	}, []);
 
 	return (
-		<div className="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+		<div className="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 			<div className="flex items-center gap-4">
 				<picture>
 					<img
@@ -183,7 +183,7 @@ const LocalFirstScanInner = () => {
 							})}
 						</h3>
 						{Status === "Scanning" && (
-							<span className="inline-flex items-center border border-orange-200 bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-700">
+							<span className="inline-flex items-center border border-orange-200 bg-orange-50 px-2.5 py-0.5 font-medium text-orange-700">
 								{T("dashboard.localFirst.scanning", {
 									defaultValue: "Scanning",
 								})}
@@ -195,7 +195,7 @@ const LocalFirstScanInner = () => {
 							</span>
 						)}
 						{Status === "Connected" && (
-							<span className="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700">
+							<span className="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
 								{T("dashboard.localFirst.connected", {
 									defaultValue: "Connected",
 								})}
@@ -207,7 +207,7 @@ const LocalFirstScanInner = () => {
 							</span>
 						)}
 						{Status === "NotFound" && (
-							<span className="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+							<span className="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium text-muted-foreground">
 								{T("dashboard.localFirst.notFound", {
 									defaultValue: "Not Detected",
 								})}
@@ -230,7 +230,7 @@ const LocalFirstScanInner = () => {
 									style={{ width: `${ScanProgress}%` }}
 								/>
 							</div>
-							<p className="mt-1 text-xs text-muted-foreground">
+							<p className="mt-1 text-muted-foreground">
 								{T("dashboard.localFirst.scanDescription", {
 									defaultValue:
 										"Checking ws://localhost:7979 and ws://localhost:7878",
@@ -242,12 +242,12 @@ const LocalFirstScanInner = () => {
 					{/* Connected State */}
 					{Status === "Connected" && DaemonDetail && (
 						<div className="mt-3 space-y-2">
-							<p className="text-sm text-green-700">
+							<p className="text-green-700">
 								{T("dashboard.localFirst.connectedMessage", {
 									defaultValue: "Connected to Air Daemon",
 								})}
 							</p>
-							<div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+							<div className="flex flex-wrap gap-3 text-muted-foreground">
 								<span className="flex items-center gap-1">
 									<span className="font-medium">
 										{T("dashboard.localFirst.portLabel", {
@@ -280,21 +280,21 @@ const LocalFirstScanInner = () => {
 								</span>
 							</div>
 							<div className="flex flex-wrap gap-2 pt-1">
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
 									Peer-to-peer design{"\u2001"}
 									<span
 										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
 									Local-first{"\u2001"}
 									<span
 										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-xs text-blue-700">
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
 									No cloud required{"\u2001"}
 									<span
 										className="h-1 w-1 rounded-none bg-blue-500"
@@ -308,7 +308,7 @@ const LocalFirstScanInner = () => {
 					{/* Not Found State */}
 					{Status === "NotFound" && (
 						<div className="mt-3 space-y-3">
-							<p className="text-sm text-muted-foreground">
+							<p className="text-muted-foreground">
 								{T("dashboard.localFirst.notFoundMessage", {
 									defaultValue:
 										"Air Daemon not detected. Launch Code Editor Land to enable local-first features.",
@@ -317,7 +317,7 @@ const LocalFirstScanInner = () => {
 							<div className="flex flex-wrap gap-3">
 								<a
 									href="/Download"
-									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 text-sm font-medium text-orange-700 transition-all hover:bg-orange-100">
+									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100">
 									{T("dashboard.localFirst.downloadButton", {
 										defaultValue: "Download Land",
 									})}
@@ -328,7 +328,7 @@ const LocalFirstScanInner = () => {
 								<button
 									type="button"
 									onClick={() => window.location.reload()}
-									className="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
+									className="StaccatoButton inline-flex items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
 									{T("dashboard.localFirst.retryButton", {
 										defaultValue: "Retry Scan",
 									})}

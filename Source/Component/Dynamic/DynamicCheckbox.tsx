@@ -70,7 +70,7 @@ const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 						</Label>
 					)}
 					{Description && (
-						<p className="text-sm text-muted-foreground">
+						<p className="text-muted-foreground">
 							{Description}
 						</p>
 					)}

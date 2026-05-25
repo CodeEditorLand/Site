@@ -105,8 +105,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Icon: "LogIn",
 			},
 			{
-				Text: T("actions.editorPortal", "Editor Portal"),
-				Variant: "outline",
+				Text: T("actions.editorPortal", "Portal"),
+				Variant: "ghost",
 				Size: "default",
 				Href: "/Portal",
 				Icon: "Monitor",
@@ -162,7 +162,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 					<a
 						key={Index}
 						href={Link.Href}
-						className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-3 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-3 font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						onClick={OnClick}
 						{...(Link.Href.startsWith("http")
 							? { target: "_blank", rel: "noopener noreferrer" }
@@ -293,7 +293,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 								<a
 									key={Index}
 									href={Link.Href}
-									className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 									{...(Link.Href.startsWith("http")
 										? {
 												target: "_blank",
@@ -360,7 +360,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 			{/* Tablet nav dropdown (md only, hidden on lg+) */}
 			{NavMenuOpen && (
 				<div
-					className="NavDropdown hidden border-t border-[var(--Border)] bg-white md:block lg:hidden"
+					className="NavDropdown hidden bg-white md:block lg:hidden"
 					role="dialog"
 					aria-label="Navigation menu">
 					<nav
@@ -374,7 +374,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 			{/* Mobile full menu: nav + locale + actions */}
 			{MobileMenuOpen && (
 				<div
-					className="border-t border-[var(--Border)] bg-white md:hidden"
+					className="bg-white md:hidden"
 					role="dialog"
 					aria-label="Mobile navigation menu">
 					<nav

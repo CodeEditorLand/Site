@@ -133,7 +133,7 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 					</div>
 				)}
 
-				<div className="StaccatoCard StaccatoBorderShimmer mx-auto max-w-5xl overflow-hidden rounded-none border border-[var(--Border)] bg-white">
+				<div className="StaccatoCard StaccatoBorderShimmer mx-auto max-w-5xl overflow-hidden rounded-none bg-white">
 					<DynamicTable<ReleaseVersion>
 						Content={{
 							Columns: ColumnDefinitions,

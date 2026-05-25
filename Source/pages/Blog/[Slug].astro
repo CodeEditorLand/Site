@@ -33,7 +33,7 @@ const MetaDescription = Entry.data.summary;
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
@@ -71,7 +71,7 @@ const MetaDescription = Entry.data.summary;
 				Entry.data.tags.length > 0 && (
 					<div class="mb-4 flex flex-wrap gap-2">
 						{Entry.data.tags.map((Tag: string) => (
-							<span class="border border-[var(--ColorBorder)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+							<span class=" px-2 py-0.5 font-medium text-muted-foreground">
 								{Tag}
 							</span>
 						))}
@@ -80,13 +80,13 @@ const MetaDescription = Entry.data.summary;
 			}
 			<h1
 				id="main-content"
-				class="mb-4 text-4xl font-bold tracking-tight">
+				class="text-2xl font-semibold tracking-tight sm:text-3xl">
 				{Entry.data.title}
 			</h1>
-			<p class="mb-4 text-lg text-muted-foreground">
+			<p class="mb-4 text-[var(--MuteForeground)]">
 				{Entry.data.summary}
 			</p>
-			<div class="flex items-center gap-4 text-sm text-muted-foreground">
+			<div class="flex items-center gap-4 text-muted-foreground">
 				<span>{Entry.data.author}</span>
 				<span>&#x2001;</span>
 				<time datetime={Entry.data.publishedAt}
@@ -108,7 +108,7 @@ const MetaDescription = Entry.data.summary;
 		<div class="mt-12 border-t pt-8">
 			<a
 				href="/Blog"
-				class="StaccatoButton text-sm text-primary hover:underline"
+				class="StaccatoButton text-primary hover:underline"
 				>{T("page.title", { ns: "blog", defaultValue: "Blog" })}<span
 					class="InlineSeparator">←</span
 				></a

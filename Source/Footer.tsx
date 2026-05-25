@@ -40,7 +40,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				</li>
 			</ul>
 
-			<div className="flex flex-col items-center gap-2 py-4 text-xs text-muted-foreground sm:flex-row sm:gap-4">
+			<div className="flex flex-col items-center gap-2 py-4 text-muted-foreground sm:flex-row sm:gap-4">
 				<span className="hidden sm:inline" aria-hidden="true">
 					&#x2001;
 				</span>

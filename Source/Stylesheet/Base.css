@@ -7,58 +7,59 @@
 @layer theme {
 	:root {
 		/* ─────────────────────────────────────────────────────────────
-		   SEMANTIC SURFACE TOKENS - Flat White Theme
-		   Neutrals now derived from warm ColorSlate/ColorNeutral scale.
-		   No dark mode. No gradients. No shadows. No rounded corners.
-		   ───────────────────────────────────────────────────────────── */
+		 SEMANTIC SURFACE TOKENS - Flat White Theme
+		 Neutrals now derived from warm ColorSlate/ColorNeutral scale.
+		 No dark mode. No gradients. No shadows. No rounded corners.
+		 ───────────────────────────────────────────────────────────── */
 		--Background: 0 0% 100%;
 		--Foreground: #1a1a1a;
 		--Card: #ffffff;
 		--CardForeground: #1a1a1a;
 		--Popover: #ffffff;
 		--PopoverForeground: #1a1a1a;
-		--Primary: #2563eb;
+		/* Primary → near-black (logo-aligned). Page reads as flat black/white/gray; saturated blue is dropped as the default action color. */
+		--Primary: #1a1a1a;
 		--PrimaryForeground: #ffffff;
 
-		/* Secondary → warm ColorSlate100 (was cool blue-gray #f0f4f8) */
-		--Secondary: #f5f0e8;
+		/* Secondary → neutral zinc-100 (logo-aligned, no warmth) */
+		--Secondary: #f4f4f5;
 		--SecondaryForeground: #1a1a1a;
 
-		/* Mute → warm ColorSlate50 (was neutral #f5f5f5) */
-		--Mute: #faf8f5;
-		--MuteForeground: #4b5563;
+		/* Mute → neutral zinc-50 */
+		--Mute: #fafafa;
+		--MuteForeground: #71717a;
 
-		/* Accent → warm ColorSlate100 aligned with Secondary */
-		--Accent: #f5f0e8;
+		/* Accent → neutral zinc-100 aligned with Secondary */
+		--Accent: #f4f4f5;
 		--AccentForeground: #1a1a1a;
 
 		--Destruct: #dc2626;
 		--DestructForeground: #ffffff;
 
-		/* Border → warm-tinted black (replaces cool-neutral rgba(0,0,0,0.08)) */
-		--Border: rgba(26, 20, 10, 0.08);
+		/* Border → neutral hairline (used only where strictly needed; cards/buttons drop the border entirely) */
+		--Border: rgba(0, 0, 0, 0.08);
 		--Input: #ffffff;
-		--Ring: #2563eb;
+		--Ring: #1a1a1a;
 
 		/* Component background tokens */
 		--BackgroundWhite: 0 0% 100%;
 		--InputBackground: #ffffff;
 		--PopoverBackground: #ffffff;
 
-		/* Surface depth layers (warm, derived from ColorSlate scale) */
+		/* Surface depth layers (neutral zinc scale; logo-aligned) */
 		--Surface0: #ffffff;
-		--Surface1: #faf8f5;
-		--Surface2: #f5f0e8;
-		--Surface3: #eae3d2;
-		--Surface4: #dfd6bd;
+		--Surface1: #fafafa;
+		--Surface2: #f4f4f5;
+		--Surface3: #e7e7e9;
+		--Surface4: #d4d4d8;
 
 		/* ─────────────────────────────────────────────────────────────
-		   PROTOCOL SPINE COLORS
-		   Primary: saturated brand hue
-		   Mute:    12% on white  - pill/chip backgrounds
-		   Surface: 5% on white   - hover/active area tints
-		   Fore:    foreground on white context
-		   ───────────────────────────────────────────────────────────── */
+		 PROTOCOL SPINE COLORS
+		 Primary: saturated brand hue
+		 Mute: 12% on white - pill/chip backgrounds
+		 Surface: 5% on white - hover/active area tints
+		 Fore: foreground on white context
+		 ───────────────────────────────────────────────────────────── */
 		--SpinegRPC: #22c55e;
 		--SpinegRPCMute: color-mix(in srgb, #22c55e 12%, #ffffff);
 		--SpinegRPCSurface: color-mix(in srgb, #22c55e 5%, #ffffff);
@@ -80,9 +81,9 @@
 		--SpineWASMFore: #7e22ce;
 
 		/* ─────────────────────────────────────────────────────────────
-		   AUTHENTICATION TIER COLORS
-		   (aliased from Spine - retain all existing Mute tokens)
-		   ───────────────────────────────────────────────────────────── */
+		 AUTHENTICATION TIER COLORS
+		 (aliased from Spine - retain all existing Mute tokens)
+		 ───────────────────────────────────────────────────────────── */
 		--TierCloud: var(--SpineIPC);
 		--TierCloudMute: var(--SpineIPCMute);
 		--TierCloudSurface: var(--SpineIPCSurface);
@@ -99,9 +100,9 @@
 		--TierLocalFirstFore: var(--SpineTCPFore);
 
 		/* ─────────────────────────────────────────────────────────────
-		   FRAMEWORK / EXTENSION COLORS
-		   Each entry: Primary | Mute (10%) | Surface (4%) | Fore
-		   ───────────────────────────────────────────────────────────── */
+		 FRAMEWORK / EXTENSION COLORS
+		 Each entry: Primary | Mute (10%) | Surface (4%) | Fore
+		 ───────────────────────────────────────────────────────────── */
 		--ExtensionRust: #f87171;
 		--ExtensionRustMute: color-mix(in srgb, #f87171 10%, #ffffff);
 		--ExtensionRustSurface: color-mix(in srgb, #f87171 4%, #ffffff);
@@ -191,10 +192,10 @@
 		--ExtensionElectronFore: #155e75;
 
 		/* ─────────────────────────────────────────────────────────────
-		   LANGUAGE COLORS
-		   Canonical brand hues per language.
-		   Each: Primary | Mute (10%) | Surface (4%) | Fore
-		   ───────────────────────────────────────────────────────────── */
+		 LANGUAGE COLORS
+		 Canonical brand hues per language.
+		 Each: Primary | Mute (10%) | Surface (4%) | Fore
+		 ───────────────────────────────────────────────────────────── */
 		--LanguageTypeScript: #3178c6;
 		--LanguageTypeScriptMute: color-mix(in srgb, #3178c6 10%, #ffffff);
 		--LanguageTypeScriptSurface: color-mix(in srgb, #3178c6 4%, #ffffff);
@@ -306,8 +307,8 @@
 		--LanguageNixFore: #3730a3;
 
 		/* ─────────────────────────────────────────────────────────────
-		   RUNTIME COLORS
-		   ───────────────────────────────────────────────────────────── */
+		 RUNTIME COLORS
+		 ───────────────────────────────────────────────────────────── */
 		--RuntimeNode: #5fa04e;
 		--RuntimeNodeMute: color-mix(in srgb, #5fa04e 10%, #ffffff);
 		--RuntimeNodeSurface: color-mix(in srgb, #5fa04e 4%, #ffffff);
@@ -329,8 +330,8 @@
 		--RuntimeWASMFore: var(--SpineWASMFore);
 
 		/* ─────────────────────────────────────────────────────────────
-		   DATABASE COLORS
-		   ───────────────────────────────────────────────────────────── */
+		 DATABASE COLORS
+		 ───────────────────────────────────────────────────────────── */
 		--DatabasePostgres: #336791;
 		--DatabasePostgresMute: color-mix(in srgb, #336791 10%, #ffffff);
 		--DatabasePostgresSurface: color-mix(in srgb, #336791 4%, #ffffff);
@@ -377,8 +378,8 @@
 		--DatabaseSupabaseFore: #065f46;
 
 		/* ─────────────────────────────────────────────────────────────
-		   CLOUD / DEPLOYMENT PLATFORM COLORS
-		   ───────────────────────────────────────────────────────────── */
+		 CLOUD / DEPLOYMENT PLATFORM COLORS
+		 ───────────────────────────────────────────────────────────── */
 		--CloudAWS: #ff9900;
 		--CloudAWSMute: color-mix(in srgb, #ff9900 10%, #ffffff);
 		--CloudAWSSurface: color-mix(in srgb, #ff9900 4%, #ffffff);
@@ -420,8 +421,8 @@
 		--CloudRailwayFore: #0b0d0e;
 
 		/* ─────────────────────────────────────────────────────────────
-		   BUILD TOOL / BUNDLER COLORS
-		   ───────────────────────────────────────────────────────────── */
+		 BUILD TOOL / BUNDLER COLORS
+		 ───────────────────────────────────────────────────────────── */
 		--ToolVite: #646cff;
 		--ToolViteMute: color-mix(in srgb, #646cff 10%, #ffffff);
 		--ToolViteSurface: color-mix(in srgb, #646cff 4%, #ffffff);
@@ -458,8 +459,8 @@
 		--ToolOxcFore: #c2410c;
 
 		/* ─────────────────────────────────────────────────────────────
-		   OPERATING SYSTEM COLORS
-		   ───────────────────────────────────────────────────────────── */
+		 OPERATING SYSTEM COLORS
+		 ───────────────────────────────────────────────────────────── */
 		--OSLinux: #fcc624;
 		--OSLinuxMute: color-mix(in srgb, #fcc624 10%, #ffffff);
 		--OSLinuxSurface: color-mix(in srgb, #fcc624 4%, #ffffff);
@@ -486,8 +487,8 @@
 		--OSIOSFore: #000000;
 
 		/* ─────────────────────────────────────────────────────────────
-		   PLATFORM INDICATOR COLORS
-		   ───────────────────────────────────────────────────────────── */
+		 PLATFORM INDICATOR COLORS
+		 ───────────────────────────────────────────────────────────── */
 		--PlatformWeb: #60a5fa;
 		--PlatformWebMute: color-mix(in srgb, #60a5fa 10%, #ffffff);
 		--PlatformWebSurface: color-mix(in srgb, #60a5fa 4%, #ffffff);
@@ -519,10 +520,10 @@
 		--PlatformEmbeddedFore: #c2410c;
 
 		/* ─────────────────────────────────────────────────────────────
-		   IDENTITY PROVIDER / OAUTH ICON-PAIR COLORS
-		   Each provider: Primary brand | Mute bg | Surface hover | Fore text
-		   These drive the icon+label chips in the Auth Portal.
-		   ───────────────────────────────────────────────────────────── */
+		 IDENTITY PROVIDER / OAUTH ICON-PAIR COLORS
+		 Each provider: Primary brand | Mute bg | Surface hover | Fore text
+		 These drive the icon+label chips in the Auth Portal.
+		 ───────────────────────────────────────────────────────────── */
 		--ProviderGitHub: #171515;
 		--ProviderGitHubMute: color-mix(in srgb, #171515 10%, #ffffff);
 		--ProviderGitHubSurface: color-mix(in srgb, #171515 4%, #ffffff);
@@ -569,8 +570,8 @@
 		--ProviderAppleFore: #000000;
 
 		/* ─────────────────────────────────────────────────────────────
-		   CHART COLORS (data visualization)
-		   ───────────────────────────────────────────────────────────── */
+		 CHART COLORS (data visualization)
+		 ───────────────────────────────────────────────────────────── */
 		--Chart1: #3b82f6;
 		--Chart2: #22c55e;
 		--Chart3: #f97316;
@@ -581,8 +582,8 @@
 		--Chart8: #8b5cf6;
 
 		/* ─────────────────────────────────────────────────────────────
-		   SPACING SYSTEM
-		   ───────────────────────────────────────────────────────────── */
+		 SPACING SYSTEM
+		 ───────────────────────────────────────────────────────────── */
 		--Spacing: 0.25rem;
 
 		/* Container sizes */
@@ -597,6 +598,12 @@
 		--BorderWidth: 1px;
 		--BorderStyle: solid;
 		--BorderRadius: 0;
+
+		/* Logo curve ≈ 14.7% of short side on the parallelogram glyph.
+		 Applied to interactive surfaces (buttons, inputs) where the
+		 gentle rounding echoes the logo; cards stay flat. */
+		--RadiusButton: 6px;
+		--RadiusInput: 6px;
 	}
 }
 
@@ -622,13 +629,19 @@
 		outline-offset: 2px;
 	}
 
-	.Card,
+	.Card {
+		border-radius: var(--BorderRadius) !important;
+	}
+
 	.Input,
 	.Textarea,
 	.Select,
-	.SelectTrigger,
+	.SelectTrigger {
+		border-radius: var(--RadiusInput) !important;
+	}
+
 	.Button {
-		border-radius: var(--BorderRadius) !important;
+		border-radius: var(--RadiusButton) !important;
 	}
 
 	.Badge,
@@ -648,7 +661,6 @@
 
 	.Frosted {
 		background: #ffffff;
-		border: var(--BorderWidth) solid var(--Border);
 	}
 }
 
@@ -662,29 +674,26 @@
 	.ButtonPrimary {
 		background-color: var(--Primary);
 		color: var(--PrimaryForeground);
-		border: var(--BorderWidth) solid var(--Border);
 	}
 
 	.ButtonPrimary:hover {
-		background-color: color-mix(in srgb, var(--Primary) 90%, transparent);
+		background-color: color-mix(in srgb, var(--Primary) 85%, transparent);
 	}
 
 	.ButtonSecondary {
 		background-color: var(--Secondary);
 		color: var(--SecondaryForeground);
-		border: var(--BorderWidth) solid var(--Border);
 	}
 	.ButtonSecondary:hover {
-		background-color: color-mix(in srgb, var(--Secondary) 80%, transparent);
+		background-color: var(--Surface3);
 	}
 
 	.ButtonOutline {
-		border: var(--BorderWidth) solid var(--Border);
 		background-color: var(--Background);
+		color: var(--Foreground);
 	}
 	.ButtonOutline:hover {
-		background-color: var(--Accent);
-		color: var(--AccentForeground);
+		background-color: var(--Mute);
 	}
 
 	.ButtonGhost {
@@ -698,12 +707,10 @@
 	.Card {
 		background-color: var(--Card);
 		color: var(--CardForeground);
-		border: var(--BorderWidth) solid var(--Border);
 	}
 
 	.Input {
-		border: var(--BorderWidth) solid var(--Border);
-		background-color: var(--Background);
+		background-color: var(--Mute);
 		padding: 0.375rem 0.75rem;
 		font-size: 0.875rem;
 		line-height: 1.25rem;

@@ -19,7 +19,7 @@ import { Skeleton } from "../UI/Skeleton";
  *
  * Loading state: skeleton matching avatar size (no layout shift).
  * Authenticated state: Radix Avatar (picture + initials fallback)
- *   with Radix DropdownMenu - Dashboard, Account, Sign Out items.
+ * with Radix DropdownMenu - Dashboard, Account, Sign Out items.
  * Unauthenticated state: Sign In link button.
  */
 export default ({
@@ -53,7 +53,7 @@ export default ({
 		return (
 			<a
 				href={SignInHref}
-				className="inline-flex items-center text-sm font-medium text-foreground hover:underline"
+				className="inline-flex items-center font-medium text-foreground hover:underline"
 				aria-label={T("actions.signIn", { defaultValue: "Sign In" })}>
 				{T("actions.signIn", { defaultValue: "Sign In" })}
 				{"\u2001"}
@@ -102,7 +102,7 @@ export default ({
 								name: DisplayName,
 							})}
 						/>
-						<AvatarFallback className="text-xs">
+						<AvatarFallback className="">
 							{Initials}
 						</AvatarFallback>
 					</Avatar>

@@ -20,8 +20,8 @@
 	--AttentionOpacity: 1;
 
 	/* Per-element seed - set ONCE per page load by SeedSelector.
-	   Drives static unique offsets so the layout looks different each
-	   visit yet is always structurally recognisable. */
+	 Drives static unique offsets so the layout looks different each
+	 visit yet is always structurally recognisable. */
 	--StaccatoSeed: 0;
 	--StaccatoSeedPhase: 0;
 
@@ -33,13 +33,13 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 1 - STATIC SEED OFFSETS
-   ─────────────────────────────────────────────────────────────────
-   Transforms are driven by --StaccatoSeed / --StaccatoSeedPhase,
-   which are set ONCE on page load (never on each frame).
-   Each element lands at a unique, stable position.
-   Hover lerps cleanly back to the identity / elevated state.
-   ══════════════════════════════════════════════════════════════════ */
+ TIER 1 - STATIC SEED OFFSETS
+ ─────────────────────────────────────────────────────────────────
+ Transforms are driven by --StaccatoSeed / --StaccatoSeedPhase,
+ which are set ONCE on page load (never on each frame).
+ Each element lands at a unique, stable position.
+ Hover lerps cleanly back to the identity / elevated state.
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoTranslate {
 	transform: translate(
@@ -89,7 +89,8 @@
 	transform: rotate(0deg);
 }
 
-/* Card - seed scatter + attention vars for scroll-reveal entry */
+/* Card - seed scatter + attention vars for scroll-reveal entry.
+ Borderless redesign: no outline shimmer. Cards separate via background fill. */
 .StaccatoCard {
 	transform: translate(
 			calc(var(--StaccatoSeed, 0) * 3px + var(--AttentionOffsetX, 0px)),
@@ -103,14 +104,9 @@
 			)
 		)
 		scale(var(--AttentionScale, 1));
-	/* border-width removed: it triggers layout (CLS). Use outline for shimmer. */
-	outline: calc(var(--StaccatoBorder) * 0.25px) solid
-		hsl(0 0% calc(82% + var(--StaccatoBorder) * 5%));
-	outline-offset: -1px;
 	opacity: var(--AttentionOpacity, 1);
-	transition:
-		transform var(--StaccatoLerp) cubic-bezier(0.25, 0.46, 0.45, 0.94),
-		outline 0.15s ease;
+	transition: transform var(--StaccatoLerp)
+		cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	transition-delay: var(--AttentionDelay, 0ms);
 }
 .StaccatoCard:hover {
@@ -140,10 +136,10 @@
 	transition: transform 0.5s ease;
 }
 .StaccatoButton:hover {
-	transform: translateY(-2px) scale(1.01);
+	transform: translateY(-1px);
 }
 .StaccatoButton:active {
-	transform: translate(0, 1px) scale(0.98);
+	transform: translateY(0);
 }
 .StaccatoButton:focus-visible {
 	outline: 2px solid var(--Primary);
@@ -256,27 +252,27 @@
 }
 
 /* Morphing - seed-based (set once, not live animated)
-   NOTE: padding and gap are LAYOUT properties and cause CLS.
-   Only border-radius (paint-only) is safe here. */
+ NOTE: padding and gap are LAYOUT properties and cause CLS.
+ Only border-radius (paint-only) is safe here. */
 .StaccatoMorphRadius {
 	border-radius: calc(max(var(--StaccatoSeed, 0), 0px) * 1.5px);
 }
 .StaccatoMorphPadding {
 	/* Disabled: padding changes cause CLS (layout shift).
-	   padding: calc(1rem + var(--StaccatoSeed, 0) * 0.08rem); */
+	 padding: calc(1rem + var(--StaccatoSeed, 0) * 0.08rem); */
 }
 .StaccatoMorphGap {
 	/* Disabled: gap changes cause CLS (layout shift).
-	   gap: calc(1rem + var(--StaccatoSeed, 0) * 0.15rem); */
+	 gap: calc(1rem + var(--StaccatoSeed, 0) * 0.15rem); */
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 2 - LIVE FLOAT (only elements that SHOULD move)
-   ─────────────────────────────────────────────────────────────────
-   Hero decorative elements and the hero CTA keep live animated
-   transforms. Amplitudes are low. Hover drains the noise signal
-   and settles at the attention anchor or a clean elevated state.
-   ══════════════════════════════════════════════════════════════════ */
+ TIER 2 - LIVE FLOAT (only elements that SHOULD move)
+ ─────────────────────────────────────────────────────────────────
+ Hero decorative elements and the hero CTA keep live animated
+ transforms. Amplitudes are low. Hover drains the noise signal
+ and settles at the attention anchor or a clean elevated state.
+ ══════════════════════════════════════════════════════════════════ */
 
 /* Hero decorative particles / illustrations - gentle continuous float */
 .StaccatoFloat {
@@ -315,11 +311,11 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 3 - FLASHING LIGHTS (live opacity / color / border / glow)
-   ─────────────────────────────────────────────────────────────────
-   NO position changes. Only opacity, hue, border-color, outline.
-   These are the "alive" elements. Everything else is seed-static.
-   ══════════════════════════════════════════════════════════════════ */
+ TIER 3 - FLASHING LIGHTS (live opacity / color / border / glow)
+ ─────────────────────────────────────────────────────────────────
+ NO position changes. Only opacity, hue, border-color, outline.
+ These are the "alive" elements. Everything else is seed-static.
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoOpacity {
 	opacity: max(0.8, calc(0.82 + var(--StaccatoRaw) * 0.18));
@@ -331,7 +327,7 @@
 		calc(var(--AttentionOpacity, 0.9) + var(--StaccatoRaw) * 0.1)
 	);
 	/* 1.6s > commit interval (500ms) so the element is always mid-transition
-	   between two noise states - continuous breathing, never a hard jump */
+	 between two noise states - continuous breathing, never a hard jump */
 	transition: opacity 1.6s ease;
 }
 .StaccatoBreath:hover {
@@ -363,7 +359,8 @@
 }
 
 .StaccatoBorderShimmer {
-	border-color: hsl(0 0% calc(82% + var(--StaccatoBorder) * 5%));
+	/* Borderless redesign: no-op. Kept as a class so existing markup
+	 doesn't break, but the shimmer animation is intentionally removed. */
 }
 
 .StaccatoOutlineGlow {
@@ -422,8 +419,8 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TIER 4 - SCROLL-LINKED PARALLAX (not noise jitter)
-   ══════════════════════════════════════════════════════════════════ */
+ TIER 4 - SCROLL-LINKED PARALLAX (not noise jitter)
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoParallaxNear {
 	transform: translateY(calc(var(--ScrollProgress) * -20px));
@@ -436,8 +433,8 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   INTERSECTION OBSERVER ENTRY ANIMATION
-   ══════════════════════════════════════════════════════════════════ */
+ INTERSECTION OBSERVER ENTRY ANIMATION
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoVisible {
 	animation: StaccatoFadeIn 1s ease-out both;
@@ -460,17 +457,17 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   feTURBULENCE DISPLACEMENT (opt-in, hover only)
-   ══════════════════════════════════════════════════════════════════ */
+ feTURBULENCE DISPLACEMENT (opt-in, hover only)
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoTurbulence:hover {
 	filter: url(#StaccatoTurbulence);
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   INLINE SEPARATOR
-   U+2001 em quad · pipe · em quad between text and trailing icon
-   ══════════════════════════════════════════════════════════════════ */
+ INLINE SEPARATOR
+ U+2001 em quad · pipe · em quad between text and trailing icon
+ ══════════════════════════════════════════════════════════════════ */
 
 .InlineSeparator {
 	display: inline-flex;
@@ -485,8 +482,8 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   HOVER / FOCUS LERP (JS-driven via Attention.ts)
-   ══════════════════════════════════════════════════════════════════ */
+ HOVER / FOCUS LERP (JS-driven via Attention.ts)
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoHover,
 .StaccatoFocus {
@@ -510,10 +507,10 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   TYPEWRITER CURSOR
-   Blinks via --StaccatoRhythm so it syncs with the noise engine.
-   Used by RichText during locale-switch character-reveal animation.
-   ══════════════════════════════════════════════════════════════════ */
+ TYPEWRITER CURSOR
+ Blinks via --StaccatoRhythm so it syncs with the noise engine.
+ Used by RichText during locale-switch character-reveal animation.
+ ══════════════════════════════════════════════════════════════════ */
 
 .StaccatoCursor {
 	display: inline-block;
@@ -533,8 +530,8 @@
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   REDUCED MOTION
-   ══════════════════════════════════════════════════════════════════ */
+ REDUCED MOTION
+ ══════════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
 	.StaccatoTranslate,

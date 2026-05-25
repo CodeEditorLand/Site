@@ -33,7 +33,7 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 	const {
 		Text,
 		Icon,
-		Variant = "default",
+		Variant = "ghost",
 		Size = "default",
 		Type = "button",
 		Disabled = false,

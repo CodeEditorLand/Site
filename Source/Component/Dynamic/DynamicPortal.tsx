@@ -13,19 +13,19 @@ import type TierContent from "./Interface/Content/Portal/Tier.js";
  * Icon registry for tier icons.
  *
  * Covers the full CodeEditorLand technology stack:
- *   - Core runtime:        Cpu, Zap, Layers, Network, Radio, Timer
- *   - Platform/OS:         Laptop, Monitor, HardDrive, Server, Terminal
- *   - Language/build:      Code, Wrench, Package, PackageOpen, Hammer, FlaskConical
- *   - Git/VCS:             GitBranch, GitFork, GitCommit, GitPullRequest, FolderGit
- *   - Identity/crypto:     Key, KeyRound, Lock, Hash, Fingerprint, Shield
- *   - Cloud/sync:          Cloud, RefreshCw, RefreshCcw, RotateCcw, Database
- *   - Auth/provisioning:   UserPlus, Users, Building2, Blocks
- *   - Extensions/plugins:  Puzzle, Box, CirclePlay, Rocket
- *   - Connectivity:        Wifi, WifiOff, Globe, Unplug, Link2, ExternalLink
- *   - Audit/docs:          FileText, Activity, AlertTriangle, Info
- *   - Settings/config:     Settings, Sliders, CheckCircle, Check, ChevronRight
- *   - AI/intelligence:     BrainCircuit
- *   - Support/lifecycle:   LifeBuoy, Download, Search
+ * - Core runtime: Cpu, Zap, Layers, Network, Radio, Timer
+ * - Platform/OS: Laptop, Monitor, HardDrive, Server, Terminal
+ * - Language/build: Code, Wrench, Package, PackageOpen, Hammer, FlaskConical
+ * - Git/VCS: GitBranch, GitFork, GitCommit, GitPullRequest, FolderGit
+ * - Identity/crypto: Key, KeyRound, Lock, Hash, Fingerprint, Shield
+ * - Cloud/sync: Cloud, RefreshCw, RefreshCcw, RotateCcw, Database
+ * - Auth/provisioning: UserPlus, Users, Building2, Blocks
+ * - Extensions/plugins: Puzzle, Box, CirclePlay, Rocket
+ * - Connectivity: Wifi, WifiOff, Globe, Unplug, Link2, ExternalLink
+ * - Audit/docs: FileText, Activity, AlertTriangle, Info
+ * - Settings/config: Settings, Sliders, CheckCircle, Check, ChevronRight
+ * - AI/intelligence: BrainCircuit
+ * - Support/lifecycle: LifeBuoy, Download, Search
  */
 const TierIconRegistry: Record<string, lucide.LucideIcon> = {
 	Activity: lucide.Activity,
@@ -157,24 +157,24 @@ const IconLabelMap: Record<string, string> = {
  * Semantic icon color map - per-icon, domain-grouped, tier-independent.
  *
  * Each color group represents a function domain. Colors are chosen to be:
- *   - Visually distinct from each other
- *   - Visually distinct from the 4 tier border colors
- *     (Cloud #3b82f6, Provider #8b5cf6, LocalFirst #f97316, Enterprise #374151)
- *   - Readable at 16px on both light and dark surfaces
+ * - Visually distinct from each other
+ * - Visually distinct from the 4 tier border colors
+ * (Cloud #3b82f6, Provider #8b5cf6, LocalFirst #f97316, Enterprise #374151)
+ * - Readable at 16px on both light and dark surfaces
  *
  * Groups:
- *   Identity/crypto   → indigo   #6366f1
- *   Network/connect   → sky      #0ea5e9
- *   Storage/hardware  → slate    #64748b
- *   Build/code        → emerald  #10b981
- *   Git/VCS           → amber    #f59e0b
- *   Cloud/sync/deploy → blue     #3b82f6
- *   Auth/provision    → violet   #7c3aed
- *   Audit/docs        → teal     #14b8a6
- *   Settings/config   → slate-4  #94a3b8
- *   Connectivity misc → orange   #f97316
- *   AI                → purple   #a855f7
- *   Support/lifecycle → pink     #ec4899
+ * Identity/crypto → indigo #6366f1
+ * Network/connect → sky #0ea5e9
+ * Storage/hardware → slate #64748b
+ * Build/code → emerald #10b981
+ * Git/VCS → amber #f59e0b
+ * Cloud/sync/deploy → blue #3b82f6
+ * Auth/provision → violet #7c3aed
+ * Audit/docs → teal #14b8a6
+ * Settings/config → slate-4 #94a3b8
+ * Connectivity misc → orange #f97316
+ * AI → purple #a855f7
+ * Support/lifecycle → pink #ec4899
  */
 const IconColorMap: Record<string, string> = {
 	// Identity / crypto - TierEnterprise (charcoal → SpineWASM for identity)
@@ -484,7 +484,7 @@ const EnterpriseSSOForm = ({
 			</Button>
 
 			<div className="PortalTierDivider StaccatoSeparator" />
-			<p className="text-center text-xs text-muted-foreground">
+			<p className="text-center text-muted-foreground">
 				{T("portal.enterprise.note", {
 					defaultValue:
 						"OpenID Connect Discovery \u2001+\u2001 SAML 2.0 Assertion \u2001+\u2001 SCIM 2.0 User Provisioning",
@@ -576,7 +576,7 @@ const PortalTierRow = ({
 								{Content.Title}
 							</CardTitle>
 							{StatusLabel && (
-								<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+								<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 									{StatusLabel}
 								</span>
 							)}
@@ -737,7 +737,7 @@ const PortalTierRow = ({
 									</IconTooltip>
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
-								<p className="text-center text-xs text-muted-foreground">
+								<p className="text-center text-muted-foreground">
 									{T("portal.provider.oauthNote", {
 										defaultValue:
 											"OAuth 2.0 \u2001 Profile + Email scope \u2001 Linked to your preferences",
@@ -751,12 +751,12 @@ const PortalTierRow = ({
 								className="space-y-4"
 								aria-label="Local-first connection">
 								<div className="PortalTierDaemonStatus StaccatoBreath">
-									<span className="text-xs font-medium">
+									<span className="font-medium">
 										{T("portal.localfirst.daemonLabel", {
 											defaultValue: "Air Daemon",
 										})}
 									</span>
-									<span className="ml-auto text-xs text-muted-foreground">
+									<span className="ml-auto text-muted-foreground">
 										{T("portal.localfirst.daemonStatus", {
 											defaultValue: "Scanning...",
 										})}
@@ -790,7 +790,7 @@ const PortalTierRow = ({
 									/>
 								</Button>
 								<div className="PortalTierDivider StaccatoSeparator" />
-								<p className="text-center text-xs text-muted-foreground">
+								<p className="text-center text-muted-foreground">
 									{T("portal.localfirst.note", {
 										defaultValue:
 											"Zero cloud dependency \u2001 JWT certificates \u2001 mTLS",
@@ -851,12 +851,12 @@ const PortalTierRow = ({
 										? "opacity-60"
 										: ""
 								}`}>
-								<span className="flex flex-wrap items-center gap-2 text-sm font-medium">
+								<span className="flex flex-wrap items-center gap-2 font-medium">
 									{Feature.Heading}
 									{(Feature.Status ?? Content.Status) &&
 										(Feature.Status ?? Content.Status) !==
 											"Ready" && (
-											<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+											<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 												{(Feature.Status ??
 													Content.Status) === "WIP"
 													? "WIP"
@@ -864,7 +864,7 @@ const PortalTierRow = ({
 											</span>
 										)}
 								</span>
-								<span className="text-xs text-muted-foreground">
+								<span className="text-muted-foreground">
 									{Feature.Description}
 									{Feature.Icon &&
 										Feature.Icon.length > 0 && (
@@ -992,13 +992,13 @@ const PortalTierRow = ({
 										className={`PortalTierCapabilityItem StaccatoBreath ${
 											IsUnavailable ? "opacity-60" : ""
 										}`}>
-										<span className="text-xs">
+										<span className="">
 											{CapabilityText}
 										</span>
 										{StatusLabel && (
 											<>
 												{"\u2001"}
-												<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+												<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 													{StatusLabel}
 												</span>
 											</>
@@ -1022,7 +1022,7 @@ const PortalTierRow = ({
 
 				{Content.Protocol && (
 					<div className="PortalTierProtocol">
-						<span className="text-xs font-medium text-muted-foreground">
+						<span className="font-medium text-muted-foreground">
 							{Labels?.Protocol ?? "Protocol:"}
 						</span>
 						<code
@@ -1034,11 +1034,11 @@ const PortalTierRow = ({
 				)}
 
 				<div className="PortalTierSettingsManaged StaccatoBorderShimmer">
-					<span className="text-xs font-medium">
+					<span className="font-medium">
 						{Labels?.SettingsManaged ?? "Settings Managed"}
 					</span>
 					{"\u2001"}
-					<span className="text-xs text-muted-foreground">
+					<span className="text-muted-foreground">
 						{Labels?.AllTiers ?? "Included in all tiers"}
 					</span>
 					{"\u2001"}
@@ -1061,10 +1061,10 @@ const PortalTierRow = ({
  * DynamicPortal: Three-tier authentication portal.
  *
  * Three distinct rows, each color-coded by Protocol Spine:
- *   Cloud (IPC blue): Secure online login
- *   Provider (WASM purple): GitHub/OAuth authentication
- *   LocalFirst (TCP orange): Air Daemon local-first connection
- *   Enterprise (charcoal): OIDC/SAML/SCIM enterprise SSO
+ * Cloud (IPC blue): Secure online login
+ * Provider (WASM purple): GitHub/OAuth authentication
+ * LocalFirst (TCP orange): Air Daemon local-first connection
+ * Enterprise (charcoal): OIDC/SAML/SCIM enterprise SSO
  *
  * Layout: Login box (left, white bg) | Feature description (right)
  * Staccato noise integration on all interactive elements.
@@ -1073,14 +1073,14 @@ const PortalTierRow = ({
  * Feature.Icon[] arrays accept both Lucide registry keys and /Image/*.svg paths.
  *
  * Icon accessibility (IconTooltip):
- *   Every icon in the tier header, feature stack, capability list, and
- *   settings footer is wrapped in <IconTooltip> - three layers:
- *     1. aria-label on the trigger <span>  - screen reader announcement
- *     2. title on the trigger <span>       - native browser tooltip fallback
- *     3. Radix TooltipContent              - styled hover tooltip (sighted users)
- *   DocHref prop is reserved for future doc-link integration.
- *   Button-chrome icons (Lock, Wifi, Building2) that follow visible button
- *   text are exempted and keep aria-hidden="true" - they are decorative there.
+ * Every icon in the tier header, feature stack, capability list, and
+ * settings footer is wrapped in <IconTooltip> - three layers:
+ * 1. aria-label on the trigger <span> - screen reader announcement
+ * 2. title on the trigger <span> - native browser tooltip fallback
+ * 3. Radix TooltipContent - styled hover tooltip (sighted users)
+ * DocHref prop is reserved for future doc-link integration.
+ * Button-chrome icons (Lock, Wifi, Building2) that follow visible button
+ * text are exempted and keep aria-hidden="true" - they are decorative there.
  */
 const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 	const SectionReference = useRef<HTMLElement>(null);

@@ -113,7 +113,7 @@ const VerifyPage = ({
 									</p>
 									<button
 										type="button"
-										className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none border border-[var(--Border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
+										className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
 										onClick={() => Navigate("/")}>
 										{"Continue to Homepage"}
 									</button>
@@ -152,7 +152,7 @@ const VerifyPage = ({
 											? `Error: ${Reason}`
 											: "This verification link is invalid or has expired."}
 									</p>
-									<p className="mb-6 text-sm text-muted-foreground">
+									<p className="mb-6 text-muted-foreground">
 										{
 											"Please request a new verification email or contact support if the problem persists."
 										}
@@ -160,13 +160,13 @@ const VerifyPage = ({
 									<div className="flex justify-center gap-4">
 										<button
 											type="button"
-											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none border border-[var(--Border)] bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary"
+											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary"
 											onClick={() => Navigate("/Verify")}>
 											{"Send New Verification Email"}
 										</button>
 										<button
 											type="button"
-											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none border border-[var(--Border)] bg-background px-4 py-2 text-sm font-medium transition-all hover:bg-accent"
+											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-background px-4 py-2 font-medium transition-all hover:bg-accent"
 											onClick={() =>
 												Navigate("/Account/SignIn")
 											}>

@@ -162,7 +162,7 @@ const DynamicEmailVerification = ({
 
 					{ResendSuccess && (
 						<p
-							className="text-center text-xs text-green-600"
+							className="text-center text-green-600"
 							role="status">
 							{Content.Pending.ResendSuccessMessage ||
 								T("resendSuccess", {
@@ -172,7 +172,7 @@ const DynamicEmailVerification = ({
 					)}
 
 					{Content.Pending.EmailSentMessage && (
-						<p className="text-center text-xs text-muted-foreground">
+						<p className="text-center text-muted-foreground">
 							{Content.Pending.EmailSentMessage}
 						</p>
 					)}
@@ -226,7 +226,7 @@ const DynamicEmailVerification = ({
 						aria-hidden="true"
 					/>
 				</div>
-				<CardDescription className="text-xs">
+				<CardDescription className="">
 					{Content.Success.Description}
 				</CardDescription>
 			</CardHeader>
@@ -253,7 +253,7 @@ const DynamicEmailVerification = ({
 						aria-hidden="true"
 					/>
 				</div>
-				<CardDescription className="text-xs">
+				<CardDescription className="">
 					{ErrorMessage || Content.Error.Description}
 				</CardDescription>
 			</CardHeader>

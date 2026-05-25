@@ -170,7 +170,7 @@ const AccountProfileInner = () => {
 				className="mx-auto max-w-2xl space-y-4 px-4 py-16"
 				role="alert"
 				aria-live="polite">
-				<p className="text-sm text-destructive">
+				<p className="text-destructive">
 					{T("error", {
 						defaultValue: "Authentication error",
 					})}
@@ -196,7 +196,7 @@ const AccountProfileInner = () => {
 				<button
 					type="button"
 					onClick={() => Login()}
-					className="StaccatoButton inline-flex items-center justify-center border border-[var(--Border)] bg-[var(--Primary)] px-6 py-2 text-sm font-medium text-white transition-all hover:opacity-90">
+					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-white transition-all hover:opacity-90">
 					{T("signInButton", { defaultValue: "Sign In" })}
 				</button>
 			</div>
@@ -244,17 +244,17 @@ const AccountProfileInner = () => {
 						title={User.name || "User avatar"}
 						width="80"
 						height="80"
-						className="h-20 w-20 shrink-0 rounded-none border border-[var(--Border)]"
+						className="h-20 w-20 shrink-0 rounded-none "
 					/>
 				) : (
-					<div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-[var(--Mute)] text-2xl font-bold text-muted-foreground">
+					<div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] text-2xl font-bold text-muted-foreground">
 						{DisplayName.slice(0, 2).toUpperCase()}
 					</div>
 				)}
 				<div className="flex-1">
 					<h2 className="text-2xl font-bold">{DisplayName}</h2>
 					<div className="mt-1 flex items-center gap-2">
-						<span className="text-sm text-muted-foreground">
+						<span className="text-muted-foreground">
 							{User.email || "--"}
 						</span>
 						{User.email_verified === true && (
@@ -278,7 +278,7 @@ const AccountProfileInner = () => {
 					</div>
 					<div className="mt-2 flex flex-wrap gap-2">
 						<span
-							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-xs font-medium ${TierColor.Text}`}>
+							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 font-medium ${TierColor.Text}`}>
 							{Tier}
 							{"\u2001"}
 							<span
@@ -287,7 +287,7 @@ const AccountProfileInner = () => {
 							/>
 						</span>
 						{ProviderIcon && (
-							<span className="inline-flex items-center gap-1 border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+							<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 								<img
 									src={ProviderIcon}
 									alt={ProviderLabel}
@@ -299,7 +299,7 @@ const AccountProfileInner = () => {
 							</span>
 						)}
 						{!ProviderIcon && (
-							<span className="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+							<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 								{ProviderLabel}
 							</span>
 						)}
@@ -309,7 +309,7 @@ const AccountProfileInner = () => {
 
 			{/* Enterprise SSO Banner */}
 			{IsEnterprise && (
-				<div className="border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+				<div className="border border-green-200 bg-green-50 px-4 py-3 text-green-700">
 					Enterprise SSO active
 					{"\u2001"}
 					<span
@@ -326,7 +326,7 @@ const AccountProfileInner = () => {
 
 			{/* Email Not Verified Warning */}
 			{User.email_verified === false && (
-				<div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-700">
+				<div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-yellow-700">
 					{T("emailNotVerified", {
 						defaultValue:
 							"Your email is not verified. Check your inbox for a verification link.",
@@ -335,7 +335,7 @@ const AccountProfileInner = () => {
 			)}
 
 			{/* Profile Details */}
-			<div className="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
+			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
 				<div className="border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
 						{T("profileSection", {
@@ -344,15 +344,15 @@ const AccountProfileInner = () => {
 					</h3>
 				</div>
 				<div className="divide-y divide-[var(--Border)]">
-					<div className="flex justify-between px-6 py-3 text-sm">
+					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Name</span>
 						<span className="font-medium">{DisplayName}</span>
 					</div>
-					<div className="flex justify-between px-6 py-3 text-sm">
+					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Email</span>
 						<span>{User.email || "--"}</span>
 					</div>
-					<div className="flex justify-between px-6 py-3 text-sm">
+					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Provider</span>
 						<span className="flex items-center gap-1.5">
 							{ProviderIcon && (
@@ -367,10 +367,10 @@ const AccountProfileInner = () => {
 							{ProviderLabel}
 						</span>
 					</div>
-					<div className="flex justify-between px-6 py-3 text-sm">
+					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Tier</span>
 						<span
-							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-xs font-medium ${TierColor.Text}`}>
+							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 font-medium ${TierColor.Text}`}>
 							{Tier}
 							{"\u2001"}
 							<span
@@ -379,13 +379,13 @@ const AccountProfileInner = () => {
 							/>
 						</span>
 					</div>
-					<div className="flex justify-between px-6 py-3 text-sm">
+					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">User ID</span>
-						<code className="text-xs text-muted-foreground">
+						<code className="text-muted-foreground">
 							{User.sub || "--"}
 						</code>
 					</div>
-					<div className="flex justify-between px-6 py-3 text-sm">
+					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">
 							Member Since
 						</span>
@@ -393,7 +393,7 @@ const AccountProfileInner = () => {
 					</div>
 					{IsEnterprise &&
 						(OrganizationName || OrganizationIdentifier) && (
-							<div className="flex justify-between px-6 py-3 text-sm">
+							<div className="flex justify-between px-6 py-3">
 								<span className="text-muted-foreground">
 									Organization
 								</span>
@@ -406,7 +406,7 @@ const AccountProfileInner = () => {
 			</div>
 
 			{/* Actions */}
-			<div className="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white">
+			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
 				<div className="border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
 						{T("actionsSection", {
@@ -419,7 +419,7 @@ const AccountProfileInner = () => {
 						href={`https://${Auth0Domain}/u/profile`}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="StaccatoButton inline-flex w-full items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
+						className="StaccatoButton inline-flex w-full items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
 						{T("manageAuth0", {
 							defaultValue: "Manage Account Settings",
 						})}
@@ -427,7 +427,7 @@ const AccountProfileInner = () => {
 					</a>
 					<a
 						href="/Dashboard"
-						className="StaccatoButton inline-flex w-full items-center justify-center border border-[var(--Border)] bg-white px-4 py-2 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
+						className="StaccatoButton inline-flex w-full items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
 						{T("goToDashboard", {
 							defaultValue: "Go to Dashboard",
 						})}
@@ -436,7 +436,7 @@ const AccountProfileInner = () => {
 					<button
 						type="button"
 						onClick={HandleSignOut}
-						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 transition-all hover:bg-red-50">
+						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-white px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50">
 						{T("signOut", {
 							defaultValue: "Sign Out",
 						})}

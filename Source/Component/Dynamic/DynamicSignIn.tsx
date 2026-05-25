@@ -90,7 +90,7 @@ const DynamicSignIn = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+											className="bg-destructive/10 rounded-none p-3 text-destructive"
 											role="alert">
 											{ErrorMessage}
 										</div>
@@ -162,7 +162,7 @@ const DynamicSignIn = ({
 									<div className="absolute inset-0 flex items-center">
 										<span className="StaccatoSeparator w-full border-t" />
 									</div>
-									<div className="relative flex justify-center text-xs uppercase">
+									<div className="relative flex justify-center uppercase">
 										<span className="bg-background px-2 text-muted-foreground">
 											{"Or"}
 										</span>
@@ -180,7 +180,7 @@ const DynamicSignIn = ({
 								/>
 							)}
 						</CardContent>
-						<CardFooter className="flex flex-col gap-3 text-center text-sm">
+						<CardFooter className="flex flex-col gap-3 text-center">
 							{FooterLinks?.SignUp && (
 								<div>
 									<button
@@ -194,7 +194,7 @@ const DynamicSignIn = ({
 										}>
 										{FooterLinks.SignUp.Label}
 									</button>
-									<p className="mt-1 text-xs text-muted-foreground">
+									<p className="mt-1 text-muted-foreground">
 										Don't have an account?
 									</p>
 								</div>
@@ -212,7 +212,7 @@ const DynamicSignIn = ({
 										}>
 										{FooterLinks.ForgotPassword.Label}
 									</button>
-									<p className="mt-1 text-xs text-muted-foreground">
+									<p className="mt-1 text-muted-foreground">
 										Forgot your password?
 									</p>
 								</div>

@@ -29,23 +29,23 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		Hero: {
 			Badge: {
 				Text: T("home:hero.badge", {
-					defaultValue: "No Electron   No Chromium   CC0",
+					defaultValue: "No Electron No Chromium CC0",
 				}),
 				Variant: "secondary",
 			},
 			Title: T("home:hero.title", {
-				defaultValue: "The Future of Code Editing",
+				defaultValue: "",
 			}),
 			TitleHighlight: T("home:hero.titleHighlight", {
 				defaultValue: "Land",
 			}),
 			Subtitle: T("home:hero.subtitle", {
 				defaultValue:
-					"VS Code runs on Electron. Land is rebuilding the editor stack around Rust, Tauri, and Effect-TS while keeping the VS Code extension API as the compatibility target.\n\nThe primary path is source-build first today, with public installers and long-tail extension coverage still in progress.",
+					"A code editor rebuilt on Rust, Tauri, and Effect-TS. VS Code extension API compatibility is the target. Source-build today; installers in progress.",
 			}),
 			PrimaryCta: {
 				Text: T("common:button.download", {
-					defaultValue: "Download Land Free",
+					defaultValue: "Download",
 				}),
 				Variant: "default",
 				Size: "lg",
@@ -54,9 +54,9 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			},
 			SecondaryCta: {
 				Text: T("common:button.learnMore", {
-					defaultValue: "See What Makes Land Different",
+					defaultValue: "Source",
 				}),
-				Variant: "outline",
+				Variant: "ghost",
 				Size: "lg",
 				Icon: "ExternalLink",
 				Href: "https://github.com/CodeEditorLand/Land#readme",
@@ -138,11 +138,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Features: {
 			Title: T("home:features.title", {
-				defaultValue: "VS Code. Without Electron.",
+				defaultValue: "Built differently",
 			}),
 			Subtitle: T("home:features.subtitle", {
 				defaultValue:
-					"The editor pieces are being rebuilt around native services, typed IPC, and a compatibility host that can be checked against real source.",
+					"Native services, typed IPC, and a compatibility host you can read in source.",
 			}),
 			Features: [
 				{
@@ -249,12 +249,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Pricing: {
 			Title: T("home:roadmap.title", {
-				defaultValue:
-					"The Architecture Is Built. Here Is What Comes Next.",
+				defaultValue: "What's shipping",
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is described as source status, integration status, or release work so the website does not outrun the code.",
+					"Milestones are described as source, integration, or release status. Funded by NLnet NGI0 Commons Fund.",
 			}),
 			Tiers: [
 				{
@@ -400,11 +399,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Testimonials: {
 			Title: T("home:architecture.title", {
-				defaultValue: "Under the Hood",
+				defaultValue: "Under the hood",
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code's Electron stack element by element.\n\nThe element directories are inspectable in source, but each one is described here by what the current code supports or is actively wiring.",
+					"Fifteen elements replace VS Code's Electron stack piece by piece. Each one is described here by what its current source supports.",
 			}),
 			Testimonials: [
 				{
@@ -621,10 +620,10 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			Columns: 3,
 		},
 		Download: {
-			Title: T("download:title", { defaultValue: "Download Land" }),
+			Title: T("download:title", { defaultValue: "Download" }),
 			Subtitle: T("download:subtitle", {
 				defaultValue:
-					"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+					"Source builds today. Public installers, signing, and verification artifacts are being prepared.",
 			}),
 			Platforms: [
 				{
@@ -700,8 +699,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					defaultValue: "Code Editor Land",
 				}),
 				Description: T("common:brand.tagline", {
-					defaultValue:
-						"Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever.",
+					defaultValue: "Rust and Tauri editor stack. CC0.",
 				}),
 			},
 			Social: {
@@ -808,7 +806,6 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicHeroSection Content={Hero} />
 				</ErrorBoundary>
-				<div className="py-20" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -819,7 +816,6 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicFeatures Content={Features} />
 				</ErrorBoundary>
-				<div className="py-24" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -830,7 +826,6 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicPricing Content={Pricing} />
 				</ErrorBoundary>
-				<div className="py-24" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-3">
@@ -841,7 +836,6 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					)}>
 					<DynamicTestimonials Content={Testimonials} />
 				</ErrorBoundary>
-				<div className="py-24" />
 				<ErrorBoundary
 					FallbackComponent={() => (
 						<SkeletonCard className="min-h-[30dvh]" />

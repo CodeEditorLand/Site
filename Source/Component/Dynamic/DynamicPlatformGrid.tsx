@@ -274,17 +274,17 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 		<section
 			id="download"
 			aria-label="Downloads"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${ClassName || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-24 sm:py-32 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mb-16 text-center">
+					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
 						{Title && (
-							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+							<h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
 								{Title}
 							</h2>
 						)}
 						{Subtitle && (
-							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -328,7 +328,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							},
 							Body: {
 								content: (
-									<div className="space-y-2 text-sm text-muted-foreground">
+									<div className="space-y-2 text-muted-foreground">
 										<div className="flex justify-between">
 											<span>{VersionLabel}</span>
 											<span className="font-medium text-foreground">
@@ -360,7 +360,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 																	key={
 																		RequirementIndex
 																	}
-																	className="text-xs">
+																	className="">
 																	{
 																		Requirement
 																	}
@@ -377,7 +377,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 								? {
 										Footer: {
 											content: (
-												<div className="text-xs text-muted-foreground">
+												<div className="text-muted-foreground">
 													{Platform.Checksum && (
 														<p>
 															SHA-256:{" "}

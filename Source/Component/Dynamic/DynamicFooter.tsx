@@ -80,7 +80,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 							{Brand.Name}
 						</h3>
 						{Brand.Description && (
-							<div className="mb-4 text-sm text-muted-foreground">
+							<div className="mb-4 text-muted-foreground">
 								<RichText Text={Brand.Description} />
 							</div>
 						)}
@@ -124,7 +124,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 									<li key={LinkIndex}>
 										<a
 											href={Link.Href}
-											className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+											className="text-muted-foreground transition-colors hover:text-foreground">
 											{Link.Label}
 										</a>
 									</li>
@@ -137,7 +137,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 				{/* Bottom Bar */}
 				{BottomBar && (
 					<div className="flex flex-col items-center justify-between space-y-4 border-t pt-8 md:flex-row md:space-y-0">
-						<div className="text-sm text-muted-foreground">
+						<div className="text-muted-foreground">
 							<RichText
 								Text={
 									BottomBar.Copyright ||
@@ -146,7 +146,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 							/>
 						</div>
 						{BottomBar.MadeWith && (
-							<div className="text-sm text-muted-foreground">
+							<div className="text-muted-foreground">
 								{Brand.Name}
 								{"\u2001"}
 								<span aria-hidden="true">❤️</span>

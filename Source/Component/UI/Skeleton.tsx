@@ -17,7 +17,7 @@ function SkeletonCard({ className }: React.ComponentProps<"div">) {
 	return (
 		<div
 			className={cn(
-				"border border-[var(--Border)] bg-white p-6",
+				" bg-white p-6",
 				className,
 			)}>
 			<Skeleton className="mb-4 h-6 w-3/4 bg-[var(--Secondary)]" />
@@ -35,7 +35,7 @@ function SkeletonFeatureCard({ className }: React.ComponentProps<"div">) {
 	return (
 		<div
 			className={cn(
-				"border border-[var(--Border)] bg-white p-6",
+				" bg-white p-6",
 				className,
 			)}>
 			<div className="mb-4 flex items-start justify-between">
@@ -56,8 +56,8 @@ function SkeletonFeatureCard({ className }: React.ComponentProps<"div">) {
 function SkeletonPricingTier({ className }: React.ComponentProps<"div">) {
 	return (
 		<div
-			className={cn("border border-[var(--Border)] bg-white", className)}>
-			<div className="border-b border-[var(--Border)] p-6">
+			className={cn(" bg-white", className)}>
+			<div className="p-6">
 				<Skeleton className="mb-4 h-9 w-full bg-[var(--Secondary)]" />
 				<Skeleton className="mb-2 h-6 w-1/3 bg-[var(--Secondary)]" />
 				<Skeleton className="mb-4 h-4 w-2/3 bg-[var(--Secondary)]" />

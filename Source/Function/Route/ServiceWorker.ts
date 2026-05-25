@@ -21,8 +21,8 @@ declare const __INCREMENT__: string;
 
 // ─── Build-time injected data ───
 // The Astro integration replaces these markers at build time:
-//   __ROUTE_MAP_CANONICAL__ → JSON array of canonical PascalCase paths
-//   __ROUTE_MAP_VARIANT__   → JSON object of variant → canonical mappings
+// __ROUTE_MAP_CANONICAL__ → JSON array of canonical PascalCase paths
+// __ROUTE_MAP_VARIANT__ → JSON object of variant → canonical mappings
 
 declare const __ROUTE_MAP_CANONICAL__: string[];
 
@@ -568,12 +568,12 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 // ─── Fetch ───
 // Layered request handler - mirrors a CF Pages Function / server adapter:
 //
-//   Layer 1  Route redirect     - normalize variant URLs → PascalCase canonical
-//   Layer 2  Auth gate          - guard protected routes, bypass auth routes
-//   Layer 3  API pre-process    - inject Bearer token on Workers API calls
-//   Layer 4  Page cache         - network-first for navigation (offline fallback)
-//   Layer 5  Asset cache        - cache-first for hashed static assets
-//   Layer 6  Pass-through       - everything else → network
+// Layer 1 Route redirect - normalize variant URLs → PascalCase canonical
+// Layer 2 Auth gate - guard protected routes, bypass auth routes
+// Layer 3 API pre-process - inject Bearer token on Workers API calls
+// Layer 4 Page cache - network-first for navigation (offline fallback)
+// Layer 5 Asset cache - cache-first for hashed static assets
+// Layer 6 Pass-through - everything else → network
 
 self.addEventListener("fetch", (Event: FetchEvent) => {
 	const Request = Event.request;
@@ -779,10 +779,10 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 // so it can inject it on subsequent API requests without reading from DOM APIs.
 //
 // Message shapes:
-//   { Type: "Auth:Write",   Token: string, ExpiresAt: number, UserId: string }
-//   { Type: "Auth:Clear"   }
-//   { Type: "Auth:Read"    }  → SW replies with { Type: "Auth:State", State: AuthState | null }
-//   { Type: "Auth:Refresh" }  → triggers MaybeRefreshToken, replies with { Type: "Auth:State", State }
+// { Type: "Auth:Write", Token: string, ExpiresAt: number, UserId: string }
+// { Type: "Auth:Clear" }
+// { Type: "Auth:Read" } → SW replies with { Type: "Auth:State", State: AuthState | null }
+// { Type: "Auth:Refresh" } → triggers MaybeRefreshToken, replies with { Type: "Auth:State", State }
 
 self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 	if (Event.origin !== self.location.origin && Event.origin !== BASE_REMOTE) {

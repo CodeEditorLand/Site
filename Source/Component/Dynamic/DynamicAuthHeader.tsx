@@ -12,7 +12,7 @@ import DynamicAuthStatus from "./DynamicAuthStatus";
  * DynamicAuthStatus that shows username/avatar when logged in.
  *
  * Usage in .astro:
- *   <DynamicAuthHeader client:load Domain={Auth0Domain} ClientIdentifier={Auth0ClientIdentifier} />
+ * <DynamicAuthHeader client:load Domain={Auth0Domain} ClientIdentifier={Auth0ClientIdentifier} />
  */
 export default ({
 	Domain,

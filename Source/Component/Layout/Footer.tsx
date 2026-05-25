@@ -35,8 +35,7 @@ const Footer = ({ Content }: FooterProps) => {
 		Brand: {
 			Name: T("brand.name", { defaultValue: "Code Editor Land" }),
 			Description: T("brand.description", {
-				defaultValue:
-					"Rust and Tauri editor stack with VS Code API compatibility in progress.\n\nOpen source and free forever.",
+				defaultValue: "Rust and Tauri editor stack. CC0.",
 			}),
 		},
 		Columns: [
@@ -138,7 +137,7 @@ const Footer = ({ Content }: FooterProps) => {
 					{FooterData.Columns?.map((Column, ColumnIndex) => (
 						<nav key={ColumnIndex} aria-label={Column.Title}>
 							<h4 className="mb-4 font-medium">{Column.Title}</h4>
-							<ul className="space-y-2 text-sm text-muted-foreground">
+							<ul className="space-y-2 text-muted-foreground">
 								{Column.Links.map((Link, LinkIndex) => (
 									<li key={LinkIndex}>
 										<a
@@ -161,8 +160,8 @@ const Footer = ({ Content }: FooterProps) => {
 
 				<Separator className="StaccatoSeparator my-8" />
 
-				<div className="StaccatoCard StaccatoBorderShimmer mb-6 border border-[var(--Border)] bg-white p-4">
-					<p className="text-xs leading-relaxed text-muted-foreground">
+				<div className="StaccatoCard mb-6 bg-[var(--Mute)] p-4">
+					<p className="leading-relaxed text-muted-foreground">
 						{T(
 							"funding.prefix",
 							"This project has been funded through the ",
@@ -235,7 +234,7 @@ const Footer = ({ Content }: FooterProps) => {
 							</IconTooltip>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
-						<p className="text-sm text-muted-foreground">
+						<p className="text-muted-foreground">
 							{T("bottomBar.copyright", {
 								year: new Date().getFullYear(),
 								defaultValue: `© ${new Date().getFullYear()} Code Editor Land. All rights reserved.`,
@@ -247,7 +246,7 @@ const Footer = ({ Content }: FooterProps) => {
 							href="https://PlayForm.Cloud"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-xs text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="PlayForm (opens in new tab)">
 							PlayForm
 							<span className="InlineSeparator">&#x2192;</span>

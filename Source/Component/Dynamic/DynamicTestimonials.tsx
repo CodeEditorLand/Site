@@ -99,17 +99,17 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 		<section
 			id="testimonials"
 			aria-label="Architecture"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${ClassName || ""}`}>
+			className={`flex min-h-[100dvh] w-full flex-col justify-center bg-[var(--Mute)] py-24 sm:py-32 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mb-20 text-center">
+					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
 						{Title && (
-							<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+							<h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
 								{Title}
 							</h2>
 						)}
 						{Subtitle && (
-							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -126,7 +126,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						return (
 							<article
 								key={Testimonial.Id}
-								className="TestimonialCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border border-[var(--Border)] bg-white p-8"
+								className="TestimonialCard StaccatoCard flex flex-col rounded-none bg-white p-8"
 								style={{
 									borderLeftColor: AccentColor,
 									borderLeftWidth: "2px",
@@ -175,7 +175,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									</cite>
 									{(Testimonial.Role ||
 										Testimonial.Company) && (
-										<p className="StaccatoBreath text-sm text-muted-foreground">
+										<p className="StaccatoBreath text-muted-foreground">
 											{Testimonial.Role}
 											{Testimonial.Role &&
 												Testimonial.Company &&

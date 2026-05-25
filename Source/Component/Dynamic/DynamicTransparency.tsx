@@ -119,7 +119,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none border border-[var(--Border)] bg-white p-6">
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-white p-6">
 									<div className="flex items-start justify-between">
 										<h4 className="text-lg font-semibold">
 											{Item.Title}
@@ -141,7 +141,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											</Badge>
 											{Icon && (
 												<div
-													className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
+													className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-secondary"
 													aria-hidden="true">
 													<Icon
 														className="StaccatoIcon h-5 w-5 text-primary"
@@ -155,7 +155,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										<RichText Text={Item.Description} />
 									</div>
 									{Item.Detail && (
-										<div className="text-muted-foreground/70 text-xs">
+										<div className="text-muted-foreground/70">
 											<RichText
 												Text={Item.Detail}
 												Terms
@@ -182,19 +182,19 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 						<table className="w-full border-collapse">
 							<thead>
 								<tr className="border-b border-[var(--Border)]">
-									<th className="px-4 py-3 text-left text-sm font-semibold">
+									<th className="px-4 py-3 text-left font-semibold">
 										Profile
 									</th>
-									<th className="px-4 py-3 text-left text-sm font-semibold">
+									<th className="px-4 py-3 text-left font-semibold">
 										Tier
 									</th>
-									<th className="px-4 py-3 text-left text-sm font-semibold">
+									<th className="px-4 py-3 text-left font-semibold">
 										Workbench
 									</th>
-									<th className="px-4 py-3 text-left text-sm font-semibold">
+									<th className="px-4 py-3 text-left font-semibold">
 										Features
 									</th>
-									<th className="px-4 py-3 text-left text-sm font-semibold">
+									<th className="px-4 py-3 text-left font-semibold">
 										Status
 									</th>
 								</tr>
@@ -204,23 +204,23 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 									<tr
 										key={Item.Identifier}
 										className="border-b border-[var(--Border)] last:border-b-0">
-										<td className="px-4 py-3 font-mono text-sm">
+										<td className="px-4 py-3 font-mono">
 											{Item.Name}
 										</td>
-										<td className="px-4 py-3 text-sm">
+										<td className="px-4 py-3">
 											<Badge
 												variant="outline"
 												className="StaccatoBadge">
 												{Item.Tier}
 											</Badge>
 										</td>
-										<td className="px-4 py-3 text-sm">
+										<td className="px-4 py-3">
 											{Item.Workbench}
 										</td>
-										<td className="px-4 py-3 text-sm text-muted-foreground">
+										<td className="px-4 py-3 text-muted-foreground">
 											{Item.Feature}
 										</td>
-										<td className="px-4 py-3 text-sm">
+										<td className="px-4 py-3">
 											<Badge className="StaccatoBadge">
 												{Item.Status}
 												{"\u2001"}
@@ -251,14 +251,14 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none border border-[var(--Border)] bg-white p-6">
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-white p-6">
 									<div className="flex items-start justify-between">
 										<h4 className="text-lg font-semibold">
 											{Item.Name}
 										</h4>
 										{Icon && (
 											<div
-												className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary"
+												className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-secondary"
 												aria-hidden="true">
 												<Icon
 													className="StaccatoIcon h-5 w-5 text-primary"
@@ -270,7 +270,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 									<div className="StaccatoBreath text-muted-foreground">
 										<RichText Text={Item.Description} />
 									</div>
-									<div className="flex items-baseline rounded-none border border-[var(--Border)] bg-secondary px-3 py-2 text-xs">
+									<div className="flex items-baseline rounded-none bg-secondary px-3 py-2">
 										<code className="font-mono">
 											{Item.Command}
 										</code>
@@ -287,7 +287,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											}}
 											aria-label="Copy command"
 											title="Copy command"
-											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100">
+											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100">
 											<lucide.Copy
 												className="h-[0.65em] w-[0.65em]"
 												aria-hidden="true"
@@ -300,7 +300,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 												<Badge
 													key={Index}
 													variant="outline"
-													className="StaccatoBadge text-xs">
+													className="StaccatoBadge">
 													{FeatureName}
 												</Badge>
 											),
@@ -319,7 +319,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							href={SourceURL}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground">
+							className="inline-flex items-center text-muted-foreground underline underline-offset-4 hover:text-foreground">
 							Verify in source code
 							<span className="InlineSeparator">
 								<lucide.Code

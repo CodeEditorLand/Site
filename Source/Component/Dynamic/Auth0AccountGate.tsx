@@ -102,7 +102,7 @@ export default ({
 					{...(HeaderContent ? { content: HeaderContent } : {})}
 				/>
 				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-5 px-4 text-center">
-					<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-3 py-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+					<span className="StaccatoBadge bg-[var(--Mute)] px-3 py-1 font-semibold uppercase tracking-wider text-muted-foreground">
 						Coming Soon
 					</span>
 					<h1 className="text-2xl font-semibold">
@@ -110,7 +110,7 @@ export default ({
 							defaultValue: "Registration is not open yet",
 						})}
 					</h1>
-					<p className="text-sm text-muted-foreground">
+					<p className="text-muted-foreground">
 						{T("registrationComingSoon.description", {
 							defaultValue:
 								"Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
@@ -135,7 +135,7 @@ export default ({
 					{...(HeaderContent ? { content: HeaderContent } : {})}
 				/>
 				<div className="flex flex-1 items-center justify-center">
-					<p className="text-sm text-muted-foreground">
+					<p className="text-muted-foreground">
 						{T("loading", { defaultValue: "Loading..." })}
 					</p>
 				</div>
@@ -150,7 +150,7 @@ export default ({
 					{...(HeaderContent ? { content: HeaderContent } : {})}
 				/>
 				<div className="flex flex-1 flex-col items-center justify-center gap-4 px-4">
-					<p className="text-sm text-destructive">
+					<p className="text-destructive">
 						{T("error", {
 							defaultValue: "Authentication error",
 						})}
@@ -202,18 +202,18 @@ export default ({
 							title={User.name || "User avatar"}
 							width="64"
 							height="64"
-							className="h-16 w-16 rounded-none border border-[var(--Border)]"
+							className="h-16 w-16 rounded-none "
 						/>
 					)}
 
 					<h2 className="text-lg font-semibold">{DisplayName}</h2>
 
-					<p className="text-sm text-muted-foreground">
+					<p className="text-muted-foreground">
 						{User.email}
 					</p>
 
 					{User.email_verified === false && (
-						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-xs text-yellow-700">
+						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
 							{T("emailNotVerified", {
 								defaultValue:
 									"Email not verified. Check your inbox.",
@@ -230,7 +230,7 @@ export default ({
 		<div className="flex min-h-screen flex-col">
 			<Header {...(HeaderContent ? { Content: HeaderContent } : {})} />
 			<div className="flex flex-1 items-center justify-center">
-				<p className="text-sm text-muted-foreground">
+				<p className="text-muted-foreground">
 					{T("redirecting", {
 						defaultValue: "Redirecting to sign in...",
 					})}

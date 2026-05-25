@@ -1,18 +1,22 @@
 :root {
 	/* ─────────────────────────────────────────────────────────────
-	   BORDER / RADIUS TOKENS
-	   ───────────────────────────────────────────────────────────── */
+	 BORDER / RADIUS TOKENS
+	 ───────────────────────────────────────────────────────────── */
 	--BorderWidth: 1px;
 	--BorderRadius: 0;
 
+	/* Logo-aligned radius for interactive surfaces. Cards stay flat. */
+	--RadiusButton: 6px;
+	--RadiusInput: 6px;
+
 	/* ─────────────────────────────────────────────────────────────
-	   SPACING SCALE (4px grid)
-	   ───────────────────────────────────────────────────────────── */
+	 SPACING SCALE (4px grid)
+	 ───────────────────────────────────────────────────────────── */
 	--Spacing0: 0;
-	--Spacing0Point5: 0.125rem; /*  2px */
-	--Spacing1: 0.25rem; /*  4px */
-	--Spacing1Point5: 0.375rem; /*  6px */
-	--Spacing2: 0.5rem; /*  8px */
+	--Spacing0Point5: 0.125rem; /* 2px */
+	--Spacing1: 0.25rem; /* 4px */
+	--Spacing1Point5: 0.375rem; /* 6px */
+	--Spacing2: 0.5rem; /* 8px */
 	--Spacing2Point5: 0.625rem; /* 10px */
 	--Spacing3: 0.75rem; /* 12px */
 	--Spacing3Point5: 0.875rem; /* 14px */
@@ -34,108 +38,110 @@
 	--Spacing64: 16rem; /* 256px */
 
 	/* ─────────────────────────────────────────────────────────────
-	   SEMANTIC COLOR TOKENS - Flat White Theme
-	   Warm neutral convergence: Secondary/Mute/Accent now pull from
-	   the warm ColorSlate scale rather than cool blue-gray.
-	   ───────────────────────────────────────────────────────────── */
+	 SEMANTIC COLOR TOKENS - Flat White & Gray Theme
+	 Neutral zinc scale; matches the Land logo's geometric palette
+	 (near-black slabs on white). No warm tints.
+	 ───────────────────────────────────────────────────────────── */
 	--ColorBackground: #ffffff;
 	--ColorForeground: #1a1a1a;
-	--ColorBorder: rgba(26, 20, 10, 0.08);
-	--ColorPrimary: #2563eb;
-	--ColorSecondary: #f5f0e8;
-	--ColorAccent: #f5f0e8;
-	--ColorMute: #faf8f5;
-	--ColorMuteForeground: #4b5563;
+	--ColorBorder: rgba(0, 0, 0, 0.08);
+	--ColorPrimary: #1a1a1a;
+	--ColorSecondary: #f4f4f5;
+	--ColorAccent: #f4f4f5;
+	--ColorMute: #fafafa;
+	--ColorMuteForeground: #71717a;
 	--ColorCard: #ffffff;
 	--ColorCardForeground: #1a1a1a;
 	--ColorPopover: #ffffff;
 	--ColorPopoverForeground: #1a1a1a;
-	--ColorRing: #2563eb;
+	--ColorRing: #1a1a1a;
 	--ColorDestruct: #dc2626;
 	--ColorSuccess: #34d399;
 	--ColorWarning: #fbbf24;
 
-	/* Surface depth layers */
+	/* Surface depth layers (neutral zinc) */
 	--ColorSurface0: #ffffff;
-	--ColorSurface1: #faf8f5;
-	--ColorSurface2: #f5f0e8;
-	--ColorSurface3: #eae3d2;
-	--ColorSurface4: #dfd6bd;
+	--ColorSurface1: #fafafa;
+	--ColorSurface2: #f4f4f5;
+	--ColorSurface3: #e7e7e9;
+	--ColorSurface4: #d4d4d8;
 
 	/* ─────────────────────────────────────────────────────────────
-	   WARM NEUTRAL SCALE
-	   All scales warm-shifted. Used as surface depth references.
-	   ───────────────────────────────────────────────────────────── */
+	 NEUTRAL GRAY SCALE
+	 Pure neutral scales (Tailwind zinc-equivalent values).
+	 Used as surface depth references; matches the logo's flat
+	 white-and-gray vocabulary.
+	 ───────────────────────────────────────────────────────────── */
 
-	/* Slate (warm cream) */
-	--ColorSlate50: #faf8f5;
-	--ColorSlate100: #f5f0e8;
-	--ColorSlate200: #eae3d2;
-	--ColorSlate300: #dfd6bd;
-	--ColorSlate400: #d4c9a8;
-	--ColorSlate500: #c9bb93;
-	--ColorSlate600: #bfa27c;
-	--ColorSlate700: #b68a65;
-	--ColorSlate800: #ad7250;
-	--ColorSlate900: #a3583b;
-	--ColorSlate950: #9a4227;
+	/* Slate → neutral gray */
+	--ColorSlate50: #fafafa;
+	--ColorSlate100: #f4f4f5;
+	--ColorSlate200: #e4e4e7;
+	--ColorSlate300: #d4d4d8;
+	--ColorSlate400: #a1a1aa;
+	--ColorSlate500: #71717a;
+	--ColorSlate600: #52525b;
+	--ColorSlate700: #3f3f46;
+	--ColorSlate800: #27272a;
+	--ColorSlate900: #18181b;
+	--ColorSlate950: #09090b;
 
-	/* Gray (warm parchment) */
-	--ColorGray50: #f9f9f7;
-	--ColorGray100: #f2f2ef;
-	--ColorGray200: #e6e6e0;
-	--ColorGray300: #d9d9d2;
-	--ColorGray400: #cccccc;
-	--ColorGray500: #bfbfb5;
-	--ColorGray600: #b3b3a7;
-	--ColorGray700: #a6a699;
-	--ColorGray800: #99998b;
-	--ColorGray900: #8c8c7d;
-	--ColorGray950: #808071;
+	/* Gray → neutral gray */
+	--ColorGray50: #fafafa;
+	--ColorGray100: #f4f4f5;
+	--ColorGray200: #e4e4e7;
+	--ColorGray300: #d4d4d8;
+	--ColorGray400: #a1a1aa;
+	--ColorGray500: #71717a;
+	--ColorGray600: #52525b;
+	--ColorGray700: #3f3f46;
+	--ColorGray800: #27272a;
+	--ColorGray900: #18181b;
+	--ColorGray950: #09090b;
 
-	/* Zinc (warm sand) */
-	--ColorZinc50: #f8f7f5;
-	--ColorZinc100: #f1f0eb;
-	--ColorZinc200: #e3e1d7;
-	--ColorZinc300: #d6d3c3;
-	--ColorZinc400: #c8c4af;
-	--ColorZinc500: #bbb69b;
-	--ColorZinc600: #ada887;
-	--ColorZinc700: #a0a973;
-	--ColorZinc800: #929b5f;
-	--ColorZinc900: #868b4b;
-	--ColorZinc950: #7a7b37;
+	/* Zinc → neutral gray */
+	--ColorZinc50: #fafafa;
+	--ColorZinc100: #f4f4f5;
+	--ColorZinc200: #e4e4e7;
+	--ColorZinc300: #d4d4d8;
+	--ColorZinc400: #a1a1aa;
+	--ColorZinc500: #71717a;
+	--ColorZinc600: #52525b;
+	--ColorZinc700: #3f3f46;
+	--ColorZinc800: #27272a;
+	--ColorZinc900: #18181b;
+	--ColorZinc950: #09090b;
 
-	/* Neutral (warm linen) */
-	--ColorNeutral50: #faf9f7;
-	--ColorNeutral100: #f5f2ed;
-	--ColorNeutral200: #ebe5da;
-	--ColorNeutral300: #e0d8c6;
-	--ColorNeutral400: #d6cbb3;
-	--ColorNeutral500: #ccbfa0;
-	--ColorNeutral600: #c2b38d;
-	--ColorNeutral700: #b8a77a;
-	--ColorNeutral800: #ae9b67;
-	--ColorNeutral900: #a49f54;
-	--ColorNeutral950: #9a933f;
+	/* Neutral → neutral gray */
+	--ColorNeutral50: #fafafa;
+	--ColorNeutral100: #f4f4f5;
+	--ColorNeutral200: #e4e4e7;
+	--ColorNeutral300: #d4d4d8;
+	--ColorNeutral400: #a1a1aa;
+	--ColorNeutral500: #71717a;
+	--ColorNeutral600: #52525b;
+	--ColorNeutral700: #3f3f46;
+	--ColorNeutral800: #27272a;
+	--ColorNeutral900: #18181b;
+	--ColorNeutral950: #09090b;
 
-	/* Stone (warm chalk) */
-	--ColorStone50: #faf9f8;
-	--ColorStone100: #f5f4f1;
-	--ColorStone200: #ebeae3;
-	--ColorStone300: #e0e0d6;
-	--ColorStone400: #d6d6c8;
-	--ColorStone500: #ccccbb;
-	--ColorStone600: #c2c2ad;
-	--ColorStone700: #b8b8a0;
-	--ColorStone800: #aeae93;
-	--ColorStone900: #a4a486;
-	--ColorStone950: #9a9a79;
+	/* Stone → neutral gray */
+	--ColorStone50: #fafafa;
+	--ColorStone100: #f4f4f5;
+	--ColorStone200: #e4e4e7;
+	--ColorStone300: #d4d4d8;
+	--ColorStone400: #a1a1aa;
+	--ColorStone500: #71717a;
+	--ColorStone600: #52525b;
+	--ColorStone700: #3f3f46;
+	--ColorStone800: #27272a;
+	--ColorStone900: #18181b;
+	--ColorStone950: #09090b;
 
 	/* ─────────────────────────────────────────────────────────────
-	   CHROMATIC SCALES
-	   Warm-shifted where applicable. Full 50-950 stops.
-	   ───────────────────────────────────────────────────────────── */
+	 CHROMATIC SCALES
+	 Warm-shifted where applicable. Full 50-950 stops.
+	 ───────────────────────────────────────────────────────────── */
 
 	/* Red */
 	--ColorRed50: #fceaea;
@@ -359,11 +365,11 @@
 	--ColorRose950: #603343;
 
 	/* ─────────────────────────────────────────────────────────────
-	   TECHNOLOGY COLOR ALIASES
-	   Mirror Base.css token names so both files are in sync.
-	   These are flat references - no color-mix() here; computed
-	   values live in Base.css :root.
-	   ───────────────────────────────────────────────────────────── */
+	 TECHNOLOGY COLOR ALIASES
+	 Mirror Base.css token names so both files are in sync.
+	 These are flat references - no color-mix() here; computed
+	 values live in Base.css :root.
+	 ───────────────────────────────────────────────────────────── */
 
 	/* Protocol Spine */
 	--ColorSpinegRPC: #22c55e;

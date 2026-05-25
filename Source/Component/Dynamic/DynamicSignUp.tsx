@@ -113,7 +113,7 @@ const DynamicSignUp = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+											className="bg-destructive/10 rounded-none p-3 text-destructive"
 											role="alert">
 											{ErrorMessage}
 										</div>
@@ -216,12 +216,12 @@ const DynamicSignUp = ({
 																? "var(--ColorSuccess, #16a34a)"
 																: Password.length >=
 																			8 &&
-																	  Segment <
+																	 Segment <
 																			2
 																	? "var(--ColorWarning, #ca8a04)"
 																	: Password.length >=
 																				6 &&
-																		  Segment <
+																		 Segment <
 																				1
 																		? "var(--ColorDestruct, #dc2626)"
 																		: "var(--Border, #e5e7eb)",
@@ -266,7 +266,7 @@ const DynamicSignUp = ({
 									<div className="absolute inset-0 flex items-center">
 										<span className="StaccatoSeparator w-full border-t" />
 									</div>
-									<div className="relative flex justify-center text-xs uppercase">
+									<div className="relative flex justify-center uppercase">
 										<span className="bg-background px-2 text-muted-foreground">
 											{"Or"}
 										</span>
@@ -293,7 +293,7 @@ const DynamicSignUp = ({
 								</div>
 							)}
 						</CardContent>
-						<CardFooter className="flex flex-col gap-3 text-center text-sm">
+						<CardFooter className="flex flex-col gap-3 text-center">
 							{FooterLinks?.SignIn && (
 								<div>
 									<button
@@ -307,7 +307,7 @@ const DynamicSignUp = ({
 										}>
 										{FooterLinks.SignIn.Label}
 									</button>
-									<p className="mt-1 text-xs text-muted-foreground">
+									<p className="mt-1 text-muted-foreground">
 										Already have an account?
 									</p>
 								</div>

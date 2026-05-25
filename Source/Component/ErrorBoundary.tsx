@@ -59,14 +59,14 @@ export class ErrorBoundary extends Component<
 						<h2 className="mb-2 text-xl font-semibold text-[var(--Foreground)]">
 							Something went wrong
 						</h2>
-						<p className="mb-6 text-sm text-[var(--MuteForeground)]">
+						<p className="mb-6 text-[var(--MuteForeground)]">
 							{CaughtError.message ||
 								"An unexpected error occurred. Please try again."}
 						</p>
 						<button
 							type="button"
 							onClick={this.HandleRetry}
-							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-white px-4 py-2 text-sm font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-white">
+							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-white px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-white">
 							Try again
 						</button>
 					</div>

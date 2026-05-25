@@ -193,7 +193,7 @@ const CopyInlineButton = ({ Code }: { Code: string }) => {
 			onClick={HandleCopy}
 			aria-label={Copied ? "Copied" : "Copy to clipboard"}
 			title={Copied ? "Copied" : "Copy to clipboard"}
-			className="ml-1 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--Ring)]">
+			className="ml-1 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--Ring)]">
 			{Copied ? (
 				<lucide.Check
 					className="h-[0.65em] w-[0.65em] text-green-600"
@@ -216,7 +216,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 		case "Code":
 			return (
 				<span className="inline-flex items-baseline">
-					<code className="rounded-none border border-[var(--Border)] bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+					<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
 						{Segment.Value}
 					</code>
 					<CopyInlineButton Code={Segment.Value} />
@@ -309,7 +309,7 @@ const LineNode = ({
 					{EnableMatch[1]}
 				</span>
 				<span className="inline-flex items-baseline">
-					<code className="rounded-none border border-[var(--Border)] bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+					<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
 						{Command}
 					</code>
 					<CopyInlineButton Code={Command} />
@@ -394,7 +394,7 @@ const LineNode = ({
 								{Item}
 							</span>
 						) : (
-							<code className="rounded-none border border-[var(--Border)] bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+							<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
 								{Item}
 							</code>
 						)}
@@ -416,7 +416,7 @@ const LineNode = ({
 	if (IsCommandString(Trimmed)) {
 		return (
 			<span className="inline-flex items-baseline">
-				<code className="rounded-none border border-[var(--Border)] bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+				<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
 					{Trimmed}
 				</code>
 				<CopyInlineButton Code={Trimmed} />

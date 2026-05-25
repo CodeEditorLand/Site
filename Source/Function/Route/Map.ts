@@ -274,9 +274,9 @@ const GenerateCompoundVariant = (PascalSegment: string): string[] => {
 // Generate ALL variants for a full canonical path.
 // For single-segment paths like "/Download", generates all case/number/abbrev variants.
 // For multi-segment paths like "/Account/SignIn", generates a selective cross-product:
-//   - Each segment's case variants × other segments in lowercase
-//   - Full lowercase, full uppercase
-//   - Hyphenated/flat compound alternatives for each segment
+// - Each segment's case variants × other segments in lowercase
+// - Full lowercase, full uppercase
+// - Hyphenated/flat compound alternatives for each segment
 export const GeneratePathVariant = (
 	CanonicalPath: string,
 	BuiltPath: string,

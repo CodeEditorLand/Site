@@ -5,20 +5,21 @@ import React from "react";
 import { cn } from "./Utility";
 
 const ButtonVariants = cva(
-	"inline-flex items-center justify-center gap-0 whitespace-nowrap border text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-[var(--Ring)] focus-visible:ring-[var(--Ring)]/50 focus-visible:ring-[1px] aria-invalid:ring-[var(--Destruct)]/20 aria-invalid:border-[var(--Destruct)]",
+	"inline-flex items-center justify-center gap-0 whitespace-nowrap rounded-[var(--RadiusButton)] font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-[var(--Ring)]/40 focus-visible:ring-[2px] aria-invalid:ring-[var(--Destruct)]/20",
 	{
 		variants: {
 			variant: {
 				default:
-					"bg-[var(--Primary)] text-[var(--PrimaryForeground)] hover:opacity-90",
+					"bg-[var(--Foreground)] text-[var(--Background)] hover:bg-[var(--Foreground)]/85",
 				destructive:
-					"bg-[var(--Destruct)] text-white hover:opacity-90 focus-visible:ring-[var(--Destruct)]/20",
+					"bg-[var(--Destruct)] text-white hover:bg-[var(--Destruct)]/85 focus-visible:ring-[var(--Destruct)]/20",
 				outline:
-					"border border-[var(--Border)] bg-[var(--Background)] text-[var(--Foreground)] hover:bg-[var(--Secondary)] hover:text-[var(--SecondaryForeground)]",
+					"bg-[var(--Background)] text-[var(--Foreground)] hover:bg-[var(--Mute)]",
 				secondary:
-					"bg-[var(--Secondary)] text-[var(--SecondaryForeground)] hover:opacity-80",
-				ghost: "hover:bg-[var(--Secondary)] hover:text-[var(--SecondaryForeground)]",
-				link: "text-[var(--Primary)] underline-offset-4 hover:underline",
+					"bg-[var(--Secondary)] text-[var(--SecondaryForeground)] hover:bg-[var(--Surface3)]",
+				ghost:
+					"text-[var(--Foreground)] hover:bg-[var(--Mute)]",
+				link: "text-[var(--Foreground)] underline-offset-4 hover:underline",
 			},
 			size: {
 				default: "h-9 px-4 py-2 has-[>svg]:px-3",

@@ -38,18 +38,18 @@ interface IconTooltipProperty {
  * IconTooltip - single source of truth for icon accessibility across the site.
  *
  * Provides three layers of label exposure:
- *   1. aria-label on the trigger <span>  - screen readers announce the label
- *   2. title on the trigger <span>       - native browser tooltip fallback
- *   3. Radix TooltipContent              - styled hover tooltip for sighted users
+ * 1. aria-label on the trigger <span> - screen readers announce the label
+ * 2. title on the trigger <span> - native browser tooltip fallback
+ * 3. Radix TooltipContent - styled hover tooltip for sighted users
  *
  * Usage with Lucide icon:
- *   <IconTooltip Label="Sync" Icon={RefreshCw} Color="#3b82f6" />
+ * <IconTooltip Label="Sync" Icon={RefreshCw} Color="#3b82f6" />
  *
  * Usage wrapping an <img> brand mark:
- *   <IconTooltip Label="GitHub">
- *     <img src="/Image/GitHub.svg" alt="GitHub" width="16" height="16"
- *          className="h-4 w-4" />
- *   </IconTooltip>
+ * <IconTooltip Label="GitHub">
+ * <img src="/Image/GitHub.svg" alt="GitHub" width="16" height="16"
+ * className="h-4 w-4" />
+ * </IconTooltip>
  *
  * DocHref is reserved for future documentation links - pass it now so
  * the data is threaded through and the tooltip can evolve to a link
@@ -104,25 +104,25 @@ const IconTooltip = ({
  * When DocHref is wired up, these icons would link to the corresponding
  * documentation page. Paths are relative to the site root (/Doc/{slug}).
  *
- * Lucide Icon   | Label            | Suggested DocHref
+ * Lucide Icon | Label | Suggested DocHref
  * --------------|------------------|---------------------------
- * Code          | Code             | /Doc/Architecture
- * Cpu           | CPU              | /Doc/Architecture
- * Terminal      | Terminal         | /Doc/Getting-Started
- * Puzzle        | Extensions       | /Doc/Extension-Development
- * Settings      | Configuration    | /Doc/Configuration
- * Lock          | Encryption       | /Doc/Local-First-Protocol
- * Shield        | Security         | /Doc/Local-First-Protocol
- * KeyRound      | Single Sign-On   | /Doc/API-Reference
- * RefreshCw     | Sync             | /Doc/Local-First-Protocol
- * GitBranch     | Repository       | /Doc/Contributing
+ * Code | Code | /Doc/Architecture
+ * Cpu | CPU | /Doc/Architecture
+ * Terminal | Terminal | /Doc/Getting-Started
+ * Puzzle | Extensions | /Doc/Extension-Development
+ * Settings | Configuration | /Doc/Configuration
+ * Lock | Encryption | /Doc/Local-First-Protocol
+ * Shield | Security | /Doc/Local-First-Protocol
+ * KeyRound | Single Sign-On | /Doc/API-Reference
+ * RefreshCw | Sync | /Doc/Local-First-Protocol
+ * GitBranch | Repository | /Doc/Contributing
  *
  * Brand SVGs (img children, not Lucide):
- * GitHub        | GitHub           | https://github.com/CodeEditorLand
- * GitLab        | GitLab           | /Doc/Contributing
- * Okta          | Okta             | /Doc/API-Reference
- * Microsoft     | Microsoft Azure AD | /Doc/API-Reference
- * Google        | Google           | /Doc/API-Reference
+ * GitHub | GitHub | https://github.com/CodeEditorLand
+ * GitLab | GitLab | /Doc/Contributing
+ * Okta | Okta | /Doc/API-Reference
+ * Microsoft | Microsoft Azure AD | /Doc/API-Reference
+ * Google | Google | /Doc/API-Reference
  */
 
 export { IconTooltip };

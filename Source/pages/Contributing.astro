@@ -26,7 +26,7 @@ const MetaDescription = T("meta.contributing.description", {
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
@@ -51,14 +51,14 @@ const MetaDescription = T("meta.contributing.description", {
 
 		<!-- Page Header -->
 		<header class="mb-12">
-			<h1 class="mb-4 text-4xl font-bold tracking-tight">
+			<h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">
 				{
 					T("common.contributing.pageTitle", {
 						defaultValue: "Contributing",
 					})
 				}
 			</h1>
-			<p class="whitespace-pre-line text-lg text-muted-foreground">
+			<p class="whitespace-pre-line text-[var(--MuteForeground)]">
 				{
 					T("common.contributing.pageSubtitle", {
 						defaultValue:
@@ -82,7 +82,7 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					class="StaccatoCard StaccatoBorderShimmer block bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 					<h3 class="mb-2 text-xl font-semibold">
 						{
 							T("common.contributing.guide.title", {
@@ -91,7 +91,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}<span class="InlineSeparator">→</span>
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T("common.contributing.guide.description", {
 								defaultValue:
@@ -105,7 +105,7 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Land/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					class="StaccatoCard StaccatoBorderShimmer block bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 					<h3 class="mb-2 text-xl font-semibold">
 						{
 							T("common.contributing.goodFirstIssues.title", {
@@ -114,7 +114,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}<span class="InlineSeparator">→</span>
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T(
 								"common.contributing.goodFirstIssues.description",
@@ -139,11 +139,11 @@ const MetaDescription = T("meta.contributing.description", {
 				}
 			</h2>
 			<div
-				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+				class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 				<ol class="space-y-6">
 					<li class="flex items-start gap-4">
 						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--Border)] bg-[var(--Secondary)] text-sm font-semibold"
+							class="flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--Secondary)] font-semibold"
 							>1</span
 						>
 						<div>
@@ -155,7 +155,7 @@ const MetaDescription = T("meta.contributing.description", {
 								}
 							</h3>
 							<p
-								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
+								class="mt-1 whitespace-pre-line text-muted-foreground">
 								{
 									T("common.contributing.step1.description", {
 										defaultValue:
@@ -164,12 +164,12 @@ const MetaDescription = T("meta.contributing.description", {
 								}
 							</p>
 							<pre
-								class="mt-2 overflow-x-auto border border-[var(--Border)] bg-[var(--Mute)] p-3 font-mono text-xs">git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git</pre>
+								class="mt-2 overflow-x-auto bg-[var(--Mute)] p-3 font-mono">git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git</pre>
 						</div>
 					</li>
 					<li class="flex items-start gap-4">
 						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--Border)] bg-[var(--Secondary)] text-sm font-semibold"
+							class="flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--Secondary)] font-semibold"
 							>2</span
 						>
 						<div>
@@ -181,7 +181,7 @@ const MetaDescription = T("meta.contributing.description", {
 								}
 							</h3>
 							<p
-								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
+								class="mt-1 whitespace-pre-line text-muted-foreground">
 								{
 									T("common.contributing.step2.description", {
 										defaultValue:
@@ -190,12 +190,12 @@ const MetaDescription = T("meta.contributing.description", {
 								}
 							</p>
 							<pre
-								class="mt-2 overflow-x-auto border border-[var(--Border)] bg-[var(--Mute)] p-3 font-mono text-xs">cd Land && pnpm install && cargo build</pre>
+								class="mt-2 overflow-x-auto bg-[var(--Mute)] p-3 font-mono">cd Land && pnpm install && cargo build</pre>
 						</div>
 					</li>
 					<li class="flex items-start gap-4">
 						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--Border)] bg-[var(--Secondary)] text-sm font-semibold"
+							class="flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--Secondary)] font-semibold"
 							>3</span
 						>
 						<div>
@@ -207,7 +207,7 @@ const MetaDescription = T("meta.contributing.description", {
 								}
 							</h3>
 							<p
-								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
+								class="mt-1 whitespace-pre-line text-muted-foreground">
 								{
 									T("common.contributing.step3.description", {
 										defaultValue:
@@ -219,7 +219,7 @@ const MetaDescription = T("meta.contributing.description", {
 					</li>
 					<li class="flex items-start gap-4">
 						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center border border-[var(--Border)] bg-[var(--Secondary)] text-sm font-semibold"
+							class="flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--Secondary)] font-semibold"
 							>4</span
 						>
 						<div>
@@ -231,7 +231,7 @@ const MetaDescription = T("meta.contributing.description", {
 								}
 							</h3>
 							<p
-								class="mt-1 whitespace-pre-line text-sm text-muted-foreground">
+								class="mt-1 whitespace-pre-line text-muted-foreground">
 								{
 									T("common.contributing.step4.description", {
 										defaultValue:
@@ -268,11 +268,11 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Mountain"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium"
 						>Mountain&#x2001;&#x26F0;&#xFE0F;</span
 					>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Native backend</span
 					>
 				</a>
@@ -280,9 +280,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Cocoon"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Cocoon&#x2001;&#x1F98B;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Extension host</span
 					>
 				</a>
@@ -290,9 +290,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Wind"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Wind&#x2001;&#x1F343;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Workbench shell</span
 					>
 				</a>
@@ -300,9 +300,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Sky"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Sky&#x2001;&#x1F30C;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>UI components</span
 					>
 				</a>
@@ -310,9 +310,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Air"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Air&#x2001;&#x1FA81;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Background daemon</span
 					>
 				</a>
@@ -320,9 +320,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Echo"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Echo&#x2001;&#x1F4E3;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Work-stealing scheduler</span
 					>
 				</a>
@@ -330,11 +330,11 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Common"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium"
 						>Common&#x2001;&#x1F468;&#x1F3FB;&#x200D;&#x1F3ED;</span
 					>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Traits &amp; DTOs</span
 					>
 				</a>
@@ -342,9 +342,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Vine"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Vine&#x2001;&#x1F33F;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>gRPC protocol</span
 					>
 				</a>
@@ -352,10 +352,10 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Rest"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Rest&#x2001;&#x26F1;&#xFE0F;</span
 					>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>TypeScript compiler</span
 					>
 				</a>
@@ -363,9 +363,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Output"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Output&#x2001;&#x26AB;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Build output</span
 					>
 				</a>
@@ -373,11 +373,11 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Mist"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium"
 						>Mist&#x2001;&#x1F32B;&#xFE0F;</span
 					>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>DNS resolver</span
 					>
 				</a>
@@ -385,9 +385,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Grove"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Grove&#x2001;&#x1F333;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>WASM sandbox</span
 					>
 				</a>
@@ -395,9 +395,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/SideCar"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">SideCar&#x2001;&#x1F683;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Node.js binary distributor</span
 					>
 				</a>
@@ -405,9 +405,9 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Worker"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium">Worker&#x2001;&#x1F369;</span>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Web Worker pool</span
 					>
 				</a>
@@ -415,16 +415,16 @@ const MetaDescription = T("meta.contributing.description", {
 					href="https://github.com/CodeEditorLand/Maintain"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-3 text-center transition-colors hover:bg-[var(--Secondary)]">
 					<span class="font-medium"
 						>Maintain&#x2001;&#x1F4AA;&#x1F3FB;</span
 					>
-					<span class="block text-xs text-muted-foreground"
+					<span class="block text-muted-foreground"
 						>Build orchestrator</span
 					>
 				</a>
 			</div>
-			<p class="mt-4 whitespace-pre-line text-sm text-muted-foreground">
+			<p class="mt-4 whitespace-pre-line text-muted-foreground">
 				{
 					T("common.contributing.elements.docs", {
 						defaultValue:
@@ -445,7 +445,7 @@ const MetaDescription = T("meta.contributing.description", {
 			</h2>
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.code.title", {
@@ -454,7 +454,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}&#x2001;&#x1F4BB;
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T("common.contributing.ways.code.description", {
 								defaultValue:
@@ -464,7 +464,7 @@ const MetaDescription = T("meta.contributing.description", {
 					</p>
 				</div>
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.documentation.title", {
@@ -473,7 +473,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}&#x2001;&#x1F4D6;
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T(
 								"common.contributing.ways.documentation.description",
@@ -486,7 +486,7 @@ const MetaDescription = T("meta.contributing.description", {
 					</p>
 				</div>
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.testing.title", {
@@ -495,7 +495,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}&#x2001;&#x1F9EA;
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T("common.contributing.ways.testing.description", {
 								defaultValue:
@@ -505,7 +505,7 @@ const MetaDescription = T("meta.contributing.description", {
 					</p>
 				</div>
 				<div
-					class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-5">
+					class="StaccatoCard StaccatoBorderShimmer bg-white p-5">
 					<h3 class="mb-2 font-semibold">
 						{
 							T("common.contributing.ways.design.title", {
@@ -514,7 +514,7 @@ const MetaDescription = T("meta.contributing.description", {
 						}&#x2001;&#x1F3A8;
 					</h3>
 					<p
-						class="whitespace-pre-line text-sm text-muted-foreground">
+						class="whitespace-pre-line text-muted-foreground">
 						{
 							T("common.contributing.ways.design.description", {
 								defaultValue:
@@ -536,7 +536,7 @@ const MetaDescription = T("meta.contributing.description", {
 				}
 			</h2>
 			<div
-				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+				class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
 					<a
 						href="https://nlnet.nl/project/Land/"
@@ -593,7 +593,7 @@ const MetaDescription = T("meta.contributing.description", {
 				}
 			</h2>
 			<div
-				class="StaccatoCard StaccatoBorderShimmer border border-[var(--Border)] bg-white p-6">
+				class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
 				<a
 					href="https://github.com/CodeEditorLand/Land/tree/Current/CODE_OF_CONDUCT.md"
 					target="_blank"
@@ -616,7 +616,7 @@ const MetaDescription = T("meta.contributing.description", {
 		<div class="mt-12 border-t pt-8">
 			<a
 				href="#top"
-				class="StaccatoButton text-sm text-primary hover:underline"
+				class="StaccatoButton text-primary hover:underline"
 				>{
 					T("common.button.backToTop", {
 						defaultValue: "Back to top",

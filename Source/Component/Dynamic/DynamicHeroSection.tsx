@@ -164,26 +164,25 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				)}
 
 				{/* Title:subtle color shift */}
-				<h1 className="StaccatoColorShift mx-auto mb-10 max-w-4xl text-4xl tracking-tight md:text-6xl lg:text-7xl">
-					{Title}{" "}
-					{TitleHighlight && (
-						<span className="text-primary">{TitleHighlight}</span>
-					)}
+				<h1 className="StaccatoColorShift mx-auto max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl lg:text-8xl">
+					{Title}
+					{Title && TitleHighlight ? " " : ""}
+					{TitleHighlight && <span>{TitleHighlight}</span>}
 				</h1>
 
-				{/* CTAs:noise-driven button states */}
-				<div className="mb-12 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
+				{/* Subtitle: small grayed help text directly under the title */}
+				<div className="StaccatoBreath mx-auto mt-3 max-w-2xl text-[var(--MuteForeground)]">
+					<RichText Text={Subtitle} />
+				</div>
+
+				{/* Wide top padding before CTAs (body) */}
+				<div className="mt-16 mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
 					<DynamicButton Content={PrimaryCTA} />
 					{SecondaryCTA && <DynamicButton Content={SecondaryCTA} />}
 				</div>
 
-				{/* Subtitle:breathing opacity */}
-				<div className="StaccatoBreath mx-auto mb-12 max-w-2xl text-lg text-muted-foreground">
-					<RichText Text={Subtitle} />
-				</div>
-
 				{/* Tech stack section label - accessible, outside aria-hidden */}
-				<p className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+				<p className="mb-8 font-semibold uppercase tracking-[0.16em] text-muted-foreground">
 					Tech Stack
 				</p>
 
@@ -242,7 +241,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Card.Id}
-									className="StaccatoCard border border-[var(--Border)] bg-white p-3"
+									className="StaccatoCard bg-[var(--Mute)] p-3"
 									style={{
 										transitionDelay: `${Index * 50}ms`,
 									}}>
@@ -255,7 +254,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 										/>
 									</div>
 									<div className="text-center">
-										<div className="text-xs font-medium text-foreground">
+										<div className="font-medium text-foreground">
 											{Card.Title}
 										</div>
 										{Card.Colors &&
@@ -265,7 +264,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 														(Color, ColorIndex) => (
 															<div
 																key={ColorIndex}
-																className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
+																className="StaccatoRhythmDot h-3 w-3 bg-[var(--Mute)]"
 																style={{
 																	backgroundColor:
 																		Color,
@@ -287,7 +286,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 						className="relative hidden min-h-[80vh] lg:block"
 						style={{ perspective: "1000px" }}>
 						{/* Central Hub:logo with micro-movement */}
-						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden border border-[var(--Border)] bg-white">
+						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden bg-[var(--Mute)]">
 							<img
 								src="/Asset/Logo/Glyph/Land.svg"
 								alt="Code Editor Land"
@@ -356,7 +355,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Card.Id}
-									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute z-50 w-36 transform-gpu border border-[var(--Border)] bg-white p-3"
+									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute z-50 w-36 transform-gpu bg-[var(--Mute)] p-3"
 									style={{
 										top: `${CenterY}%`,
 										left: `${CenterX}%`,
@@ -371,7 +370,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 										/>
 									</div>
 									<div className="text-center">
-										<div className="text-xs font-medium text-foreground">
+										<div className="font-medium text-foreground">
 											{Card.Title}
 										</div>
 										{Card.Colors &&
@@ -381,7 +380,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 														(Color, ColorIndex) => (
 															<div
 																key={ColorIndex}
-																className="StaccatoRhythmDot h-3 w-3 border border-[var(--Border)]"
+																className="StaccatoRhythmDot h-3 w-3 bg-[var(--Mute)]"
 																style={{
 																	backgroundColor:
 																		Color,

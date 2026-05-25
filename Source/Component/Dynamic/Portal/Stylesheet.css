@@ -1,9 +1,9 @@
 /* ─── Portal Authentication Tiers ─────────────────────────
  *
  * Three-tier color system derived from Protocol Spine:
- *   Cloud     = IPC blue   (#3b82f6 / --SpineIPC)
- *   Provider  = WASM purple (#a855f7 / --SpineWASM)
- *   LocalFirst = TCP orange  (#f97316 / --SpineTCP)
+ * Cloud = IPC blue (#3b82f6 / --SpineIPC)
+ * Provider = WASM purple (#a855f7 / --SpineWASM)
+ * LocalFirst = TCP orange (#f97316 / --SpineTCP)
  *
  * Layout: Login box (left, white bg) | Feature description (right)
  * All borders use the tier's protocol color.

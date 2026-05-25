@@ -65,14 +65,14 @@ const FeatureIconLabelMap: Record<string, string> = {
  * it appears in. This ensures visual delineation across the color matrix.
  *
  * Groups:
- *   Rust/perf    → ExtensionRust (red)
- *   VS Code/ext  → SpineIPC (blue)
- *   Effect-TS    → ExtensionEffectTypeScript (cyan)
- *   Platform/OS  → OSMacOS (gray)
- *   Build tools  → ToolBiome (emerald via SpinegRPC)
- *   Open source  → SpinegRPC (green)
- *   Security     → SpineWASM (purple)
- *   Storage      → SpineTCP (orange)
+ * Rust/perf → ExtensionRust (red)
+ * VS Code/ext → SpineIPC (blue)
+ * Effect-TS → ExtensionEffectTypeScript (cyan)
+ * Platform/OS → OSMacOS (gray)
+ * Build tools → ToolBiome (emerald via SpinegRPC)
+ * Open source → SpinegRPC (green)
+ * Security → SpineWASM (purple)
+ * Storage → SpineTCP (orange)
  */
 const IconSemanticColorMap: Record<string, string> = {
 	Zap: "var(--ExtensionRust)",
@@ -159,21 +159,21 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 		<section
 			id="features"
 			aria-labelledby="FeaturesHeading"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${
+			className={`flex min-h-[100dvh] w-full flex-col justify-center bg-[var(--Mute)] py-24 sm:py-32 ${
 				ClassName || ""
 			}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mb-20 text-center">
+					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
 						{Title && (
 							<h2
 								id="FeaturesHeading"
-								className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+								className="text-2xl font-semibold tracking-tight sm:text-3xl">
 								{Title}
 							</h2>
 						)}
 						{Subtitle && (
-							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -205,22 +205,22 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											: Feature.Id === "architecture"
 												? "Effect-TS Layer stacks provide typed errors, structured concurrency, and compile-time dependency tracking."
 												: Feature.Id ===
-													  "cross-platform"
+													 "cross-platform"
 													? "Tauri compiles one codebase to native macOS, Windows, and Linux apps via platform WebViews."
 													: Feature.Id === "tooling"
 														? "Built on Rust, Tauri, Effect-TS, Biome, and OXC for modern developer tooling."
 														: Feature.Id ===
-															  "opensource"
+															 "opensource"
 															? "CC0 1.0 Universal public domain dedication. Funded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
-								className="FeatureCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-6 rounded-none border border-[var(--Border)] bg-white p-8">
+								className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8">
 								<div className="flex items-start justify-between">
 									<h3 className="text-xl font-semibold">
 										{Feature.Title}
 									</h3>
 									{/* Card header icon - wrapped in IconTooltip so hover + screen reader both work */}
-									<div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-[var(--Border)] bg-secondary">
+									<div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)]">
 										<IconTooltip
 											Label={IconLabel}
 											Icon={Icon ?? lucide.Sparkles}

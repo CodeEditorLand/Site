@@ -48,10 +48,10 @@ const EscapeXML = (Text: string): string =>
  * the outer translate(690,138) scale(0.25) is composed directly into each
  * rect's matrix, producing a single flat transform per element:
  *
- *   outer [0.25 0 0 0.25 690 138] × inner [-0.93358 0.358368 0 1 e f]
- *   ──────────────────────────────────────────────────────────────────
- *   Rect 1 (e=940,  f=0.24)  → matrix(-0.23340 0.08959 0 0.25 925   138)
- *   Rect 2 (e=1880, f=618.2) → matrix(-0.23340 0.08959 0 0.25 1160  292.55)
+ * outer [0.25 0 0 0.25 690 138] × inner [-0.93358 0.358368 0 1 e f]
+ * ──────────────────────────────────────────────────────────────────
+ * Rect 1 (e=940, f=0.24) → matrix(-0.23340 0.08959 0 0.25 925 138)
+ * Rect 2 (e=1880, f=618.2) → matrix(-0.23340 0.08959 0 0.25 1160 292.55)
  *
  * rx="91.3889" is preserved so rounded corners render correctly.
  * Final extent on 1200×675 canvas: x 690-1160, y 138-538.
@@ -67,9 +67,9 @@ const LogoGlyph = (): string =>
 /**
  * Generates an OpenGraph SVG card at 1200×675 (exact 16:9).
  *
- * @param Title       Page title displayed prominently on the left
+ * @param Title Page title displayed prominently on the left
  * @param Description Smaller text below the title
- * @param Section     Optional badge label (e.g. "Blog", "Doc", "Home")
+ * @param Section Optional badge label (e.g. "Blog", "Doc", "Home")
  */
 const GenerateOpenGraphSvg = (
 	Title: string,

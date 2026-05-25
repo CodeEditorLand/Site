@@ -97,7 +97,7 @@ const RustDocSite = [
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground">
 						{T("common.breadcrumb.home", { defaultValue: "Home" })}
@@ -127,7 +127,7 @@ const RustDocSite = [
 			<h1 class="mb-3 text-4xl font-bold tracking-tight">
 				Rust API Documentation
 			</h1>
-			<p class="text-lg text-muted-foreground">
+			<p class="text-[var(--MuteForeground)]">
 				Generated <code>rustdoc</code> output for Land's Rust crates. Select
 				a crate below, or open directly in a new tab.
 			</p>
@@ -144,12 +144,12 @@ const RustDocSite = [
 						href={Site.Url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block border border-[var(--Border)] bg-white p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-white p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 						<p class="font-medium text-[var(--Primary)]">
 							{Site.Label}
 							<span class="InlineSeparator">↗</span>
 						</p>
-						<p class="mt-1 text-xs text-muted-foreground">
+						<p class="mt-1 text-muted-foreground">
 							{Site.Description}
 						</p>
 					</a>
@@ -159,7 +159,7 @@ const RustDocSite = [
 
 		<!-- Iframe embed with switcher -->
 		<div
-			class="StaccatoCard StaccatoBorderShimmer overflow-hidden border border-[var(--Border)] bg-white">
+			class="StaccatoCard StaccatoBorderShimmer overflow-hidden bg-white">
 			<!-- Tab bar -->
 			<div
 				class="flex flex-wrap items-center gap-1 border-b border-[var(--Border)] px-4 py-2"
@@ -174,7 +174,7 @@ const RustDocSite = [
 							aria-controls="RustDocFrame"
 							data-id={Site.Id}
 							data-rustdoc-url={Site.Url}
-							class={`RustDocTab border px-3 py-1 text-xs font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
+							class={`RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
 								Index === 0
 									? "border-[var(--Primary)] bg-[var(--Primary)] text-white"
 									: "border-[var(--Border)] bg-white text-muted-foreground hover:bg-[var(--Secondary)]"
@@ -199,7 +199,7 @@ const RustDocSite = [
 		<div class="mt-8 border-t pt-6">
 			<a
 				href="/Doc"
-				class="StaccatoButton text-sm text-primary hover:underline">
+				class="StaccatoButton text-primary hover:underline">
 				{T("common.docs.pageTitle", { defaultValue: "Documentation" })}
 				<span class="InlineSeparator">←</span>
 			</a>
@@ -212,7 +212,7 @@ const RustDocSite = [
 	const Frame = document.getElementById("RustDocFrame") as HTMLIFrameElement;
 
 	const BaseClass =
-		"RustDocTab border px-3 py-1 text-xs font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]";
+		"RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]";
 	const ActiveClass =
 		"border-[var(--Primary)] bg-[var(--Primary)] text-white";
 	const InactiveClass =

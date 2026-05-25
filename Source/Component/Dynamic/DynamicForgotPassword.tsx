@@ -70,7 +70,7 @@ const DynamicForgotPassword = ({
 									<div aria-live="polite" aria-atomic="true">
 										{(ErrorMessage || InternalError) && (
 											<div
-												className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+												className="bg-destructive/10 rounded-none p-3 text-destructive"
 												role="alert">
 												{ErrorMessage || InternalError}
 											</div>
@@ -136,7 +136,7 @@ const DynamicForgotPassword = ({
 												}}
 												OnAction={() => OnResend?.()}
 											/>
-											<p className="mt-2 text-xs text-muted-foreground">
+											<p className="mt-2 text-muted-foreground">
 												Didn't receive the email?
 											</p>
 										</div>

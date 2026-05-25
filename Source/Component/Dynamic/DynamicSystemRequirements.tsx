@@ -100,7 +100,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					ref={GridReference}
 					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-[var(--Border)] bg-white p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-white p-6">
 						<h3 className="mb-6 text-xl font-semibold">
 							{T(
 								"systemRequirements.minimum",
@@ -141,7 +141,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							{Content.Os.map((OperatingSystem, Index) => (
 								<span
 									key={Index}
-									className="border border-[var(--Border)] bg-secondary px-4 py-2 text-sm font-medium">
+									className=" bg-secondary px-4 py-2 font-medium">
 									{OperatingSystem}
 								</span>
 							))}

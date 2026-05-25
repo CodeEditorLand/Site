@@ -8,26 +8,26 @@
 //
 // Time horizons:
 //
-//   T0 - Cold start (no SW): Cloudflare's _redirects `/* /Visit/ 200` rule
-//        proxies this page for any path that has no static file. The client
-//        script resolves the original path from window.location and redirects.
+// T0 - Cold start (no SW): Cloudflare's _redirects `/* /Visit/ 200` rule
+// proxies this page for any path that has no static file. The client
+// script resolves the original path from window.location and redirects.
 //
-//   T1 - SW just installed: SW registers, page reloads. From T2 onwards,
-//        the SW intercepts ALL navigations before they reach CF or this page.
+// T1 - SW just installed: SW registers, page reloads. From T2 onwards,
+// the SW intercepts ALL navigations before they reach CF or this page.
 //
-//   T2 - SW active, known variant: SW's ResolveRoute() handles it with a
-//        301 redirect in-browser - this page is never served. /Visit itself
-//        is mapped to "/" in SemanticAlias so the SW redirects it directly.
+// T2 - SW active, known variant: SW's ResolveRoute() handles it with a
+// 301 redirect in-browser - this page is never served. /Visit itself
+// is mapped to "/" in SemanticAlias so the SW redirects it directly.
 //
-//   T3 - SW active, truly unknown path: SW passes to network → CF returns
-//        this page's content (200 rewrite) → client script → home.
+// T3 - SW active, truly unknown path: SW passes to network → CF returns
+// this page's content (200 rewrite) → client script → home.
 //
 // Design constraints:
-//   - No React, no hydration, no Base.astro layout - minimal HTML only.
-//     Every ms counts; this page is a redirect trampoline, not a destination.
-//   - Route map is embedded at SSG time via define:vars - no RouteMap.json
-//     fetch needed, works on first visit with no network round-trips.
-//   - window.location.replace() is used for all redirects - no history entry.
+// - No React, no hydration, no Base.astro layout - minimal HTML only.
+// Every ms counts; this page is a redirect trampoline, not a destination.
+// - Route map is embedded at SSG time via define:vars - no RouteMap.json
+// fetch needed, works on first visit with no network round-trips.
+// - window.location.replace() is used for all redirects - no history entry.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {

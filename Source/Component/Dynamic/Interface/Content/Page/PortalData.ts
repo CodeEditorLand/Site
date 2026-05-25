@@ -8,14 +8,14 @@ import type PortalContent from "./Portal.js";
  * strings via i18n; Icon arrays are locale-invariant.
  *
  * Color palette aligns with Protocol Spine identity:
- *   Cloud      → IPC blue     #3b82f6 / #2563eb
- *   Provider   → WASM purple  #8b5cf6 / #7c3aed
- *   LocalFirst → TCP orange   #f97316 / #ea580c
- *   Enterprise → charcoal     #374151 / #1f2937
+ * Cloud → IPC blue #3b82f6 / #2563eb
+ * Provider → WASM purple #8b5cf6 / #7c3aed
+ * LocalFirst → TCP orange #f97316 / #ea580c
+ * Enterprise → charcoal #374151 / #1f2937
  *
  * Feature.Icon[] values reference either:
- *   - A key in TierIconRegistry (DynamicPortal.tsx) - e.g. "Shield", "Cpu"
- *   - A Public image path - e.g. "/Image/GitHub.svg"
+ * - A key in TierIconRegistry (DynamicPortal.tsx) - e.g. "Shield", "Cpu"
+ * - A Public image path - e.g. "/Image/GitHub.svg"
  */
 const PortalData: PortalContent = {
 	Title: "Sign In to CodeEditorLand",

@@ -39,9 +39,9 @@ const GetElementColor = (Line: string): string => {
 /**
  * Dynamic Pricing - two-column layout (Free + Future).
  * Each tier card shows:
- *   Elements section - colored multi-line rows (name / descriptor / detail)
- *   Separator
- *   Features section - icon checklist
+ * Elements section - colored multi-line rows (name / descriptor / detail)
+ * Separator
+ * Features section - icon checklist
  */
 const DynamicPricing = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("home");
@@ -89,21 +89,21 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 		<section
 			id="pricing"
 			aria-labelledby="PricingHeading"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${
+			className={`flex min-h-[100dvh] w-full flex-col justify-center py-24 sm:py-32 ${
 				ClassName || ""
 			}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mb-20 text-center">
+					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
 						{Title && (
 							<h2
 								id="PricingHeading"
-								className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+								className="text-2xl font-semibold tracking-tight sm:text-3xl">
 								{Title}
 							</h2>
 						)}
 						{Subtitle && (
-							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
+							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -116,10 +116,10 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.Id}
-							className={`PricingCard StaccatoCard StaccatoBorderShimmer flex flex-col rounded-none border bg-white ${
+							className={`PricingCard StaccatoCard flex flex-col rounded-none bg-white ${
 								Tier.Highlighted || Tier.Popular
-									? "border-primary"
-									: "border-[var(--Border)]"
+									? ""
+									: ""
 							} ${
 								Tier.Status && Tier.Status !== "Ready"
 									? "opacity-75"
@@ -134,14 +134,14 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
 									<div className="mb-2">
-										<span className="StaccatoBadge StaccatoRhythmBeat text-xs font-semibold uppercase tracking-wider text-primary">
+										<span className="StaccatoBadge StaccatoRhythmBeat font-semibold uppercase tracking-wider text-primary">
 											{PopularLabel}
 										</span>
 									</div>
 								)}
 								{Tier.Status && Tier.Status !== "Ready" && (
 									<div className="mb-2">
-										<span className="StaccatoBadge border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+										<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-semibold uppercase tracking-wider text-muted-foreground">
 											{Tier.Status === "WIP"
 												? "WIP"
 												: "Coming Soon"}
@@ -160,7 +160,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									{Tier.Name}
 								</h3>
 								{Tier.Description && (
-									<div className="StaccatoBreath text-sm text-muted-foreground">
+									<div className="StaccatoBreath text-muted-foreground">
 										<RichText Text={Tier.Description} />
 									</div>
 								)}
@@ -171,7 +171,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								{/* Elements section */}
 								{Tier.Elements && Tier.Elements.length > 0 && (
 									<>
-										<p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+										<p className="mb-3 font-semibold uppercase tracking-wider text-muted-foreground">
 											Elements
 										</p>
 										<ul className="space-y-3">
@@ -198,7 +198,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																	: ""
 															}`}>
 															<span
-																className="text-sm font-semibold"
+																className="font-semibold"
 																style={{
 																	color: AccentColor,
 																}}>
@@ -210,7 +210,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																/>
 															</span>
 															{Sub1 && (
-																<span className="text-xs text-foreground">
+																<span className="text-foreground">
 																	<RichText
 																		Text={
 																			Sub1
@@ -222,7 +222,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																</span>
 															)}
 															{Sub2 && (
-																<span className="text-xs text-muted-foreground">
+																<span className="text-muted-foreground">
 																	<RichText
 																		Text={
 																			Sub2
@@ -249,7 +249,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									<>
 										{Tier.Elements &&
 											Tier.Elements.length > 0 && (
-												<p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+												<p className="mb-3 font-semibold uppercase tracking-wider text-muted-foreground">
 													Roadmap
 												</p>
 											)}
@@ -265,7 +265,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																? "opacity-70"
 																: ""
 														}`}>
-														<span className="min-w-0 flex-1 text-sm">
+														<span className="min-w-0 flex-1">
 															<RichText
 																Text={Feature}
 																Terms={true}
@@ -274,7 +274,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 														{Tier.Status &&
 														Tier.Status !==
 															"Ready" ? (
-															<span className="StaccatoBadge shrink-0 border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+															<span className="StaccatoBadge shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 																{Tier.Status ===
 																"WIP"
 																	? "WIP"

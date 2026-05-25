@@ -153,7 +153,7 @@ const DynamicResetPassword = ({
 											aria-hidden="true"
 										/>
 									</div>
-									<p className="text-xs text-muted-foreground">
+									<p className="text-muted-foreground">
 										{InvalidTokenMessage ||
 											"This password reset link is invalid or has expired. Please request a new one."}
 									</p>
@@ -198,7 +198,7 @@ const DynamicResetPassword = ({
 											aria-hidden="true"
 										/>
 									</div>
-									<p className="text-xs text-muted-foreground">
+									<p className="text-muted-foreground">
 										{SuccessMessage ||
 											"Your password has been reset successfully. You can now sign in with your new password."}
 									</p>
@@ -229,7 +229,7 @@ const DynamicResetPassword = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-destructive/10 rounded-none p-3 text-sm text-destructive"
+											className="bg-destructive/10 rounded-none p-3 text-destructive"
 											role="alert">
 											{ErrorMessage}
 										</div>
@@ -298,12 +298,12 @@ const DynamicResetPassword = ({
 																? "var(--ColorSuccess, #16a34a)"
 																: Password.length >=
 																			8 &&
-																	  Segment <
+																	 Segment <
 																			2
 																	? "var(--ColorWarning, #ca8a04)"
 																	: Password.length >=
 																				6 &&
-																		  Segment <
+																		 Segment <
 																				1
 																		? "var(--ColorDestruct, #dc2626)"
 																		: "var(--Border, #e5e7eb)",
