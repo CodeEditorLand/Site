@@ -15,7 +15,7 @@ module.exports = {
 				},
 			},
 		]),
-		require("tailwindcss/nesting"),
+		require("postcss-nested"),
 		require("tailwindcss")("./tailwind.config.js"),
 		require("postcss-combine-media-query"),
 		require("postcss-combine-duplicated-selectors")({
