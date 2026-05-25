@@ -1,1 +1,0 @@
-const _={Speed:"undefined"!=typeof __NOISE_SPEED__?__NOISE_SPEED__:1e-4,Step:"undefined"!=typeof __NOISE_STEP__?__NOISE_STEP__:20,ChannelSpeed:{Phase:.18,Color:.07,Rhythm:.6,Morph:.25,Border:.1,Glow:.28}};export{_ as default};
