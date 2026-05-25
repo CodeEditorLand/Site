@@ -39,7 +39,7 @@ export default {
 			},
 			colors: {
 				/* Design system tokens - maps Tailwind utilities to CSS custom properties in Base.css */
-				background: "hsl(var(--Background))",
+				background: "var(--Background)",
 				foreground: "var(--Foreground)",
 				card: {
 					DEFAULT: "var(--Card)",

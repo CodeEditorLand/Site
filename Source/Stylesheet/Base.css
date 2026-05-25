@@ -11,7 +11,7 @@
 		 Neutrals now derived from warm ColorSlate/ColorNeutral scale.
 		 No dark mode. No gradients. No shadows. No rounded corners.
 		 ───────────────────────────────────────────────────────────── */
-		--Background: 0 0% 100%;
+		--Background: #ffffff;
 		--Foreground: #1a1a1a;
 		--Card: #ffffff;
 		--CardForeground: #1a1a1a;
@@ -42,7 +42,7 @@
 		--Ring: #1a1a1a;
 
 		/* Component background tokens */
-		--BackgroundWhite: 0 0% 100%;
+		--BackgroundWhite: #ffffff;
 		--InputBackground: #ffffff;
 		--PopoverBackground: #ffffff;
 
