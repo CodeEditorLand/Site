@@ -90,7 +90,6 @@
 		"postcss-combine-duplicated-selectors": "10.0.3",
 		"postcss-combine-media-query": "2.1.0",
 		"postcss-import": "16.1.1",
-		"postcss-nested": "8.1.1",
 		"postcss-reporter": "7.1.0",
 		"postcss-url": "10.1.4",
 		"react": "19.2.6",
