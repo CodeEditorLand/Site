@@ -199,19 +199,19 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 								key={Feature.Id}
 								title={
 									Feature.Id === "performance"
-										? "Mountain and Echo run native Rust services through Tauri outside the WebView, dispatched via ActionEffect."
+										? "Mountain and Echo run native Rust services\nthrough Tauri outside the WebView,\ndispatched via ActionEffect."
 										: Feature.Id === "compatibility"
-											? "Cocoon extension host runs unmodified VS Code extensions via Effect-TS across a dual-track architecture."
+											? "Cocoon extension host runs\nunmodified VS Code extensions\nvia Effect-TS across a dual-track architecture."
 											: Feature.Id === "architecture"
-												? "Effect-TS Layer stacks provide typed errors, structured concurrency, and compile-time dependency tracking."
+												? "Effect-TS Layer stacks provide:\n• Typed errors\n• Structured concurrency\n• Compile-time dependency tracking"
 												: Feature.Id ===
 													 "cross-platform"
-													? "Tauri compiles one codebase to native macOS, Windows, and Linux apps via platform WebViews."
+													? "Tauri compiles one codebase\nto native macOS, Windows, and Linux apps\nvia platform WebViews."
 													: Feature.Id === "tooling"
-														? "Built on Rust, Tauri, Effect-TS, Biome, and OXC for modern developer tooling."
+														? "Built on:\n• Rust\n• Tauri\n• Effect-TS\n• Biome\n• OXC\n\nFor modern developer tooling."
 														: Feature.Id ===
 															 "opensource"
-															? "CC0 1.0 Universal public domain dedication. Funded by NLnet NGI0 Commons Fund."
+															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
 								className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8">
