@@ -132,6 +132,5 @@
 	"publishConfig": {
 		"access": "restricted",
 		"provenance": true
-	},
-	"packageManager": "pnpm@11.2.2"
+	}
 }

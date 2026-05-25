@@ -1,7 +1,0 @@
-onlyBuiltDependencies:
-  - "@firebase/util"
-  - "@parcel/watcher"
-  - browser-tabs-lock
-  - esbuild
-  - protobufjs
-  - sharp
