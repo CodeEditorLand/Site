@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/Staccato.IFY10rRz.js","_astro/Download.D1Gkj5BO.js"])))=>i.map(i=>d[i]);
+import{_ as e}from"./Download.D1Gkj5BO.js";if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){const t=await e(()=>import("./Staccato.IFY10rRz.js"),__vite__mapDeps([0,1])),a=await t.default;a.Start();const o=()=>a.SeedSelector('[class*="Staccato"]'),d=()=>{"undefined"!=typeof requestIdleCallback?requestIdleCallback(o):setTimeout(o,0)};"complete"===document.readyState?d():window.addEventListener("load",d,{once:!0})}
