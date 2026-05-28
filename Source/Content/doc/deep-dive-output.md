@@ -12,7 +12,7 @@ Output is a JavaScript/TypeScript build package that wraps esbuild. It compiles
 VSCode TypeScript source and CodeEditorLand editor code into JavaScript bundles
 consumed by Sky, Wind, and Cocoon.
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 Two compiler modes: default esbuild pipeline and optional Rest (OXC-based)
 pipeline, selectable via environment variable.
@@ -31,7 +31,7 @@ pipeline, selectable via environment variable.
 | `Configuration/ESBuild/Microsoft/VSCode.js` - esbuild config for VSCode dependency |
 | `Configuration/ESBuild/CodeEditorLand/Editor.js` - esbuild config for editor       |
 
-## Build Pipeline 🔧
+## Build Pipeline 🔧
 
 Default path (esbuild):
 
@@ -46,7 +46,7 @@ Rest path (`Compiler=Rest`):
 3. esbuild reads Rest output, applies bundling and merging
 4. Final artifacts land in `Target/Microsoft/VSCode/`
 
-## Integration 🔗
+## Integration 🔗
 
 | Element | Direction | Mechanism                                 |
 | ------- | --------- | ----------------------------------------- |
@@ -55,7 +55,7 @@ Rest path (`Compiler=Rest`):
 | Wind    | Provider  | `@codeeditorland/output` npm package      |
 | Cocoon  | Provider  | File path reference from Target directory |
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 | Variable           | Default      | Description                       |
 | ------------------ | ------------ | --------------------------------- |
@@ -67,7 +67,7 @@ Rest path (`Compiler=Rest`):
 Rest mode runs 2-3x faster on TypeScript-heavy codebases but requires the Rest
 binary in the build environment.
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Output overview](https://Editor.Land/Doc/output)
 - [Rest compiler reference](https://Editor.Land/Doc/deep-dive-rest)

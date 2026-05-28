@@ -14,7 +14,7 @@ alongside Mountain and offloads resource-intensive operations -- update
 checking, artifact downloads, cryptographic authentication -- so the editor
 remains responsive.
 
-## Architecture 🚀
+## Architecture 🚀
 
 Air is a standalone Rust binary built around a central gRPC server on
 port 50053. It receives task delegation from Mountain via the `Vine/Air.proto`
@@ -24,7 +24,7 @@ protocol and streams progress events back.
 Mountain Core -[gRPC]-> Air gRPC Server (port 50053) -[routes]-> Update/Download/Auth/Health modules
 ```
 
-## Key Modules 🧩
+## Key Modules 🧩
 
 | Path                     | Responsibility                                           |
 | ------------------------ | -------------------------------------------------------- |
@@ -43,7 +43,7 @@ Mountain Core -[gRPC]-> Air gRPC Server (port 50053) -[routes]-> Update/Download
 | `Source/Security/`       | Signature verification and secure storage                |
 | `Source/Configuration/`  | Runtime config loading and hot-reload                    |
 
-## Data Flow 🔄
+## Data Flow 🔄
 
 Mountain delegates an update check to Air over gRPC. Air queries the update
 server, returns release metadata, and upon Mountain's request begins a resilient
@@ -54,7 +54,7 @@ download. Progress events stream back to Mountain via bidirectional gRPC.
 - Air: `[::1]:50053`
 - Cocoon: `[::1]:50052`
 
-## Integration Points 🔗
+## Integration Points 🔗
 
 | Connecting Element | Direction     | Mechanism                  | Description                                                         |
 | ------------------ | ------------- | -------------------------- | ------------------------------------------------------------------- |
@@ -62,7 +62,7 @@ download. Progress events stream back to Mountain via bidirectional gRPC.
 | Mist               | Inbound       | Local DNS resolver         | Air's HTTP client uses Mist for secure DNS                          |
 | Vine               | Inbound       | Protocol definition        | `Air.proto` defines service contracts; tonic generates server stubs |
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 | Parameter                | Source                          | Description                                    |
 | ------------------------ | ------------------------------- | ---------------------------------------------- |
@@ -75,7 +75,7 @@ download. Progress events stream back to Mountain via bidirectional gRPC.
 Air is spawned automatically by Mountain at startup. Mountain checks for an
 existing Air process before spawning a new instance to prevent duplicates.
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture overview](https://Editor.Land/Doc/architecture)
 - [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)

@@ -14,7 +14,7 @@ Sky renders the complete editor interface inside the Tauri webview using Astro.
 It consumes state and services from the Wind service layer and communicates with
 the Mountain Rust backend through Tauri IPC.
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 Sky is organized into three tiers:
 
@@ -27,7 +27,7 @@ Pages (Tauri webview entry points)
         +-- Function utilities (Debug, Shared, Meta, Markup)
 ```
 
-## Key Modules 📁
+## Key Modules 📁
 
 | Path                                             | Description                                                              |
 | ------------------------------------------------ | ------------------------------------------------------------------------ |
@@ -47,7 +47,7 @@ Pages (Tauri webview entry points)
 | `Source/Function/Shared.ts`                      | Shared runtime utilities                                                 |
 | `astro.config.ts`                                | Astro build config, Vite aliases, output to `Target/`                    |
 
-## Startup Sequence 🚀
+## Startup Sequence 🚀
 
 1. Tauri loads the webview pointing at Sky's built output.
 2. The page route reads environment variables and selects a workbench variant.
@@ -57,13 +57,13 @@ Pages (Tauri webview entry points)
 6. Sky listens for Tauri events from Mountain (`sky://terminal/data`,
    `sky://scm/update-group`, `sky://configuration/changed`).
 
-## Data Flow 🔄
+## Data Flow 🔄
 
 User interaction triggers a Sky component, which calls a Wind service method.
 Wind invokes a Tauri command, Mountain's Rust handler processes it and returns.
 The result resolves through Wind back to Sky, which re-renders.
 
-## Workbench Variants 🖥️
+## Workbench Variants 🖥️
 
 | Variant         | Description                          | Status      |
 | --------------- | ------------------------------------ | ----------- |
@@ -76,7 +76,7 @@ The result resolves through Wind back to Sky, which re-renders.
 When no variant flag is set, `index.astro` loads `Workbench/Default.astro`. The
 recommended deployment sets `Mountain=true`.
 
-## Integration Points 🔗
+## Integration Points 🔗
 
 | Connecting Element | Direction     | Mechanism          | Description                                         |
 | ------------------ | ------------- | ------------------ | --------------------------------------------------- |
@@ -85,7 +85,7 @@ recommended deployment sets `Mountain=true`.
 | Output             | Inbound       | Static bundle      | VSCode core UI from `@codeeditorland/output`        |
 | Worker             | Inbound       | Web Worker API     | Background processing from `@codeeditorland/worker` |
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Sky overview](https://Editor.Land/Doc/sky)
 - [Architecture overview](https://Editor.Land/Doc/architecture)

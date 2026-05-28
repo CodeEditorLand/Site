@@ -52,6 +52,69 @@
 				"icons": "Cross-Platform",
 				"docs": "VS Code API",
 				"versions": "Open Source CC0"
+			},
+			"cards": {
+				"1": {
+					"title": "Rust-Kern",
+					"tooltip": [
+						"Mountain implements Common traits in Rust via Tauri.",
+						"Handles windows, files, terminals, process control, and gRPC IPC through the Vine protocol.",
+						"The ActionEffect system treats every operation as declarative data dispatched across layers."
+					]
+				},
+				"2": {
+					"title": "Tauri UI",
+					"tooltip": [
+						"Sky renders the editor interface in the OS WebView via Astro and routes Tauri events through SkyBridge to VS Code workbench APIs.",
+						"Multiple workbench layouts adapt the UI layer to different runtimes: browser proxy, Mountain-native, or Electron."
+					]
+				},
+				"3": {
+					"title": "Effect-TS-Dienste",
+					"tooltip": [
+						"Cocoon and Wind use Effect-TS for typed errors, scoped resources, cancellation, and supervised concurrency.",
+						"Wind composes workbench services into Layer stacks that make dependency paths traceable at compile time - one stack per runtime target."
+					]
+				},
+				"4": {
+					"title": "gRPC IPC",
+					"tooltip": [
+						"Vine defines the gRPC protocol layer between Mountain, Cocoon, Air, and Grove.",
+						"Proto definitions currently live in Mountain and Cocoon while Vine consolidates.",
+						"Every gRPC call is a typed contract - the wire format is the interface."
+					]
+				},
+				"5": {
+					"title": "Extension Host",
+					"tooltip": [
+						"Cocoon runs VS Code extensions via dual-track architecture:",
+						"Track A loads unmodified extHost sources for maximum compatibility,",
+						"Track B routes I/O-heavy operations to Mountain through gRPC.",
+						"Effect-TS services implement the vscode API shim across both tracks."
+					]
+				},
+				"6": {
+					"title": "Cross-Platform",
+					"tooltip": [
+						"Tauri bundles to native macOS, Windows, and Linux packages using the OS WebView - no embedded Chromium.",
+						"Per-platform build configuration and binary management keep cross-compilation paths explicit rather than hidden in installer scripts."
+					]
+				},
+				"7": {
+					"title": "VS Code API",
+					"tooltip": [
+						"Cocoon implements the VS Code API surface through Effect-TS services: commands, workspace, terminals, webviews, language providers, and diagnostics.",
+						"The dual-track architecture preserves compatibility with published extension APIs while routing through native services."
+					]
+				},
+				"8": {
+					"title": "Open Source CC0",
+					"tooltip": [
+						"All 15 element repos are under CC0 1.0 Universal public domain.",
+						"No attribution required, no compliance restrictions.",
+						"Funded by NLnet NGI0 Commons Fund."
+					]
+				}
 			}
 		}
 	},

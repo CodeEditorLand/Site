@@ -12,7 +12,7 @@ description:
 Vine is the contract-first gRPC protocol layer defining strongly-typed
 inter-process communication contracts between Mountain, Cocoon, Grove, and Air.
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 The proto files are the source of truth. Generated Rust code from tonic/prost is
 used by Mountain for the server implementation and by Cocoon/Grove for client
@@ -36,7 +36,7 @@ stubs.
 | Source/Service/                                          | gRPC service trait implementations              |
 | Source/Client/                                           | Protocol client helpers for consumer crates     |
 
-## Communication Patterns 📡
+## Communication Patterns 📡
 
 | Pattern                 | Use Case                                                |
 | ----------------------- | ------------------------------------------------------- |
@@ -45,7 +45,7 @@ stubs.
 | Client streaming        | Cocoon sends batched registration at startup            |
 | Bidirectional streaming | Spine protocol real-time extension host coordination    |
 
-## Ports and Transport 🌐
+## Ports and Transport 🌐
 
 | Service     | Port     | Transport                                         |
 | ----------- | -------- | ------------------------------------------------- |
@@ -53,7 +53,7 @@ stubs.
 | Air daemon  | 50053    | TCP loopback                                      |
 | TLS         | Disabled | Loopback only, Mist DNS provides network boundary |
 
-## Client Implementations 📱
+## Client Implementations 📱
 
 | Element    | Implementation                                  |
 | ---------- | ----------------------------------------------- |
@@ -61,7 +61,7 @@ stubs.
 | Grove      | tonic Rust client                               |
 | Air daemon | tonic gRPC server (Mountain connects as client) |
 
-## Request Flow Example 📋
+## Request Flow Example 📋
 
 ```
 Wind UI -> Mountain Tauri invoke (executeCommand)
@@ -73,7 +73,7 @@ Wind UI -> Mountain Tauri invoke (executeCommand)
 
 Proto files compiled at build time by prost-build in Mountain build script.
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Vine overview](https://Editor.Land/Doc/vine)
 - [Cocoon gRPC client](https://Editor.Land/Doc/deep-dive-cocoon)

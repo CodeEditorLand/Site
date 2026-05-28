@@ -12,7 +12,7 @@ Maintain is the build system and CI/CD toolkit for the Land project. It
 orchestrates builds across all elements, embeds a Rhai scripting engine for
 flexible automation, and performs type-safe TOML/JSON5 configuration editing.
 
-## Architecture 🚀
+## Architecture 🚀
 
 Maintain is a Rust binary and library. The CLI layer delegates to the Rhai
 engine or direct build functions. Configuration editing uses `toml_edit` and
@@ -35,7 +35,7 @@ package.json | | `Source/Build/Pascalize.rs` - PascalCase naming utilities | |
 `Source/Build/Rhai/ConfigLoader.rs` - Rhai build script loading | |
 `Source/Build/Rhai/ScriptRunner.rs` - Script execution with Land API |
 
-## Data Flow 🔄
+## Data Flow 🔄
 
 Developer runs a shell script (e.g. `Release.sh`) which calls Maintain CLI. The
 CLI:
@@ -46,7 +46,7 @@ CLI:
 4. Updates Cargo.toml if version bump needed
 5. Reports build summary with timing
 
-## Build Script Entry Points 📜
+## Build Script Entry Points 📜
 
 || Script | Purpose | || ----------------- | -----------------------------------
 | | `Debug.sh` | Full debug build of all elements | | `Dev-Mountain.sh` |
@@ -54,13 +54,13 @@ Hot-reload development mode | | `Release.sh` | Optimized release build | |
 `Profile.sh` | Release build with profiling | | `Debug/All.sh` | Debug all
 including frontend | | `Debug/Wind.sh` | Debug Wind TypeScript services only |
 
-## Integration Points 🔗
+## Integration Points 🔗
 
 Maintain builds all Rust elements (Mountain, Air, Echo, Rest, SideCar) as
 subprocess targets, and triggers TypeScript builds (Output, Wind, Sky) via
 pnpm/Turborepo.
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 || CLI Flag | Description | || ------------------- |
 ---------------------------------------- | | `debug` / `release` | Build mode
@@ -68,7 +68,7 @@ and optimization level | | `--target` | Rust target triple for cross-compilation
 | | `--element` | Build specific element only | | `--script` | Override default
 Rhai build script | | `--verbose` | Detailed subprocess logging |
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture overview](https://Editor.Land/Doc/architecture)
 - [Maintain GitHub repository](https://github.com/CodeEditorLand/Maintain)

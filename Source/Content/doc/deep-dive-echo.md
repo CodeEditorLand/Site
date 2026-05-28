@@ -13,7 +13,7 @@ Echo is a work-stealing scheduler providing high-performance task execution for
 Mountain's ApplicationRunTime and other components requiring async task
 management.
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 Built on `crossbeam-deque` for lock-free work-stealing queues. Supports three
 priority levels (High, Normal, Low) for latency-sensitive operations.
@@ -37,7 +37,7 @@ priority levels (High, Normal, Low) for latency-sensitive operations.
 - **Priority-aware**: High/Normal/Low queues interleaved by worker threads
 - **Failure resilient**: Task failure does not crash the worker pool
 
-## Performance ⚡
+## Performance ⚡
 
 | Metric                     | Value                        |
 | -------------------------- | ---------------------------- |
@@ -51,7 +51,7 @@ priority levels (High, Normal, Low) for latency-sensitive operations.
 
 Scales linearly with available CPU cores.
 
-## Integration with Mountain 🔗
+## Integration with Mountain 🔗
 
 Echo is integrated as Mountain's primary scheduler:
 
@@ -65,7 +65,7 @@ Mountain ApplicationRunTime
 
 Effect execution overhead when integrated: < 1 microsecond.
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Echo overview](https://Editor.Land/Doc/echo)
 - [Mountain ApplicationRunTime](https://Editor.Land/Doc/deep-dive-mountain)

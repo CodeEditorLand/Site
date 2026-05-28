@@ -12,7 +12,7 @@ description:
 Grove is a native, sandboxed Rust/WASM extension host that runs VS Code
 extensions compiled to WebAssembly, complementing the Node.js-based Cocoon host.
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 Five-layer design: extension host controller, WASM runtime, VS Code API bridge,
 transport layer, and shared utilities.
@@ -27,7 +27,7 @@ transport layer, and shared utilities.
 | API                       | `vscode.rs`, `types.rs` matching VS Code TypeScript types                                    |
 | Protocol/Services         | `SpineConnection.rs`, host services, shared utilities                                        |
 
-## Data Flow 🔄
+## Data Flow 🔄
 
 1. Mountain sends `ActivateExtension` via Grove.proto
 2. Grove loads extension manifest and compiles WASM module
@@ -36,14 +36,14 @@ transport layer, and shared utilities.
 5. HostBridge dispatches, Grove forwards service call to Mountain via Transport
 6. Mountain returns result, passed back through WASM to extension
 
-## WASM Runtime ⚡
+## WASM Runtime ⚡
 
 - **Engine**: WASMtime with per-extension memory limits
 - **Module loading**: Compilation and caching of WASM files
 - **Memory management**: Linear memory allocation and bounds enforcement
 - **Host bridge**: Registered functions available to extension WASM code
 
-## Transport Options 🚚
+## Transport Options 🚚
 
 Selectable via Cargo features:
 
@@ -54,7 +54,7 @@ Selectable via Cargo features:
 | `ipc`   | Unix/Windows IPC transport (Unix only) |
 | `all`   | All features enabled                   |
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 | Option          | Default          | Description                                       |
 | --------------- | ---------------- | ------------------------------------------------- |
@@ -63,7 +63,7 @@ Selectable via Cargo features:
 | Memory limit    | platform default | Per-extension WASM memory ceiling                 |
 | WASM target     | `wasm32-wasi`    | Extensions must target this ABI                   |
 
-## Integration 🔗
+## Integration 🔗
 
 | Element  | Direction     | Mechanism            | Description                                  |
 | :------- | :------------ | :------------------- | :------------------------------------------- |

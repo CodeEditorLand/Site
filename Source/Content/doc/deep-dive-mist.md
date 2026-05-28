@@ -12,7 +12,7 @@ Mist operates a local authoritative DNS server for the `land.playform.cloud` zon
 ensuring all private network communication stays on loopback and preventing
 sidecars from reaching unauthorized external hosts.
 
-## Architecture 🚀
+## Architecture 🚀
 
 Built on Hickory DNS. Two zones: an authoritative `land.playform.cloud` zone and a
 restricted forward allowlist.
@@ -27,7 +27,7 @@ restricted forward allowlist.
 `Source/resolver.rs` - DNS client pointed at the local server for consumer use |
 | `Source/forward_security.rs` - Forward allowlist enforcement |
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 | Parameter          | Value                                                  |
 | ------------------ | ------------------------------------------------------ |
@@ -38,19 +38,19 @@ restricted forward allowlist.
 | DNSSEC             | ECDSA P-256 zone signing                               |
 | Transport          | UDP + TCP                                              |
 
-## Startup Sequence 🏁
+## Startup Sequence 🏁
 
 1. Mountain calls `Mist::start(5380)` during initialization
 2. Mist binds to port; portpicker selects alternative if unavailable
 3. Bound port stored in Mountain's `DnsPort` managed Tauri state
 4. Mountain passes port to Air, SideCar, and Cocoon for DNS client configuration
 
-## Resolution Flow 🔍
+## Resolution Flow 🔍
 
 For `api.land.playform.cloud`: query resolves to `127.0.0.1` (authoritative, with
 RRSIG). For external domains not in allowlist: query returns `REFUSED`.
 
-## Integration Points 🔗
+## Integration Points 🔗
 
 | Element  | Direction | Mechanism                                                     |
 | -------- | --------- | ------------------------------------------------------------- |
@@ -59,7 +59,7 @@ RRSIG). For external domains not in allowlist: query returns `REFUSED`.
 | SideCar  | Consumer  | Environment variable passed to Node.js processes              |
 | Cocoon   | Consumer  | Resolves `cocoon.land.playform.cloud` and gRPC addresses through Mist |
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Architecture overview](https://Land.PlayForm.Cloud/Doc/architecture)
 - [Mist GitHub repository](https://github.com/CodeEditorLand/Mist)

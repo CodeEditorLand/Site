@@ -15,7 +15,7 @@ compatibility through Effect-TS native implementations and a Tauri
 anti-corruption layer, enabling Sky's VSCode-based UI components to communicate
 with the Mountain Rust backend.
 
-## Core Architecture 🏗️
+## Core Architecture 🏗️
 
 | Principle                       | Description                                                                        | Key Components                           |
 | ------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------- |
@@ -26,7 +26,7 @@ with the Mountain Rust backend.
 | Performance Optimization        | Efficient bundling and API shimming                                                | `Configuration/ESBuild/*`                |
 | Security Hardening              | CSP and secure API boundaries for the Tauri webview                                | `Preload.ts` security patterns           |
 
-## Component Breakdown 🧩
+## Component Breakdown 🧩
 
 ### Preload.ts (Environmental Foundation)
 
@@ -68,7 +68,7 @@ global object with:
 - **Error Transformation** - Converts integration-level errors to
   application-level types.
 
-## VSCode Environment Emulation 🖥️
+## VSCode Environment Emulation 🖥️
 
 Wind ensures API compatibility through:
 
@@ -78,7 +78,7 @@ Wind ensures API compatibility through:
 3. **Error Handling Compatibility** - Error types match VSCode expectations.
 4. **Asynchronous Semantics** - Proper sequencing and error propagation.
 
-## Service Call Latency ⏱️
+## Service Call Latency ⏱️
 
 | Layer                | Time    |
 | -------------------- | ------- |
@@ -90,13 +90,13 @@ Wind ensures API compatibility through:
 Native execution time is variable and OS-dependent. Full-stack calls include
 Mountain backend processing and gRPC round-trips.
 
-## Security Architecture 🔒
+## Security Architecture 🔒
 
 Wind protects the Tauri webview through CSP enforcement, API boundary security,
 input validation at all boundaries, and error containment that prevents
 information leakage.
 
-## Platform Integration 🔗
+## Platform Integration 🔗
 
 ```text
 Sky UI -[calls]-> Wind App Services -[orchestrates]-> Tauri Integration -[invokes]-> Mountain Track
@@ -109,7 +109,7 @@ Wind bridges the Sky UI component layer and the Mountain Rust backend,
 translating VSCode-style API calls into typed Tauri commands and returning
 results as Effect resolutions.
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Wind overview](https://Editor.Land/Doc/wind)
 - [Architecture overview](https://Editor.Land/Doc/architecture)

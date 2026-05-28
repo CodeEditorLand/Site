@@ -1,4 +1,5 @@
 /* Header - flat white bar with subtle bottom border */
+
 .Header {
 	background: #ffffff;
 	border-bottom: 1px solid var(--Border);
@@ -13,6 +14,7 @@
 }
 
 /* Nav dropdown (desktop hamburger panel) */
+
 .NavDropdown {
 	background: #ffffff;
 	border-bottom: 1px solid var(--Border);
@@ -24,6 +26,7 @@
 }
 
 /* Full gray hover overlay */
+
 .HeaderSubLink::before {
 	content: "";
 	position: absolute;

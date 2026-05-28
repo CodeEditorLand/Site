@@ -49,6 +49,7 @@
 	transition: transform var(--StaccatoLerp)
 		cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .StaccatoTranslate:hover {
 	transform: none;
 }
@@ -57,6 +58,7 @@
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.03));
 	transition: transform var(--StaccatoLerp) ease;
 }
+
 .StaccatoScale:hover {
 	transform: scale(1);
 }
@@ -65,6 +67,7 @@
 	transform: skewX(calc(var(--StaccatoSeed, 0) * 1.5deg));
 	transition: transform var(--StaccatoLerp) ease;
 }
+
 .StaccatoSkew:hover {
 	transform: skewX(0deg);
 }
@@ -77,6 +80,7 @@
 	transition: transform var(--StaccatoLerp)
 		cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .StaccatoJitter:hover {
 	transform: none;
 }
@@ -85,12 +89,14 @@
 	transform: rotate(calc(var(--StaccatoSeed, 0) * 1.5deg));
 	transition: transform var(--StaccatoLerp) ease;
 }
+
 .StaccatoRotate:hover {
 	transform: rotate(0deg);
 }
 
 /* Card - seed scatter + attention vars for scroll-reveal entry.
  Borderless redesign: no outline shimmer. Cards separate via background fill. */
+
 .StaccatoCard {
 	transform: translate(
 			calc(var(--StaccatoSeed, 0) * 3px + var(--AttentionOffsetX, 0px)),
@@ -109,6 +115,7 @@
 		cubic-bezier(0.25, 0.46, 0.45, 0.94);
 	transition-delay: var(--AttentionDelay, 0ms);
 }
+
 .StaccatoCard:hover {
 	/* Drain seed & rotation - settle at attention anchor */
 	transform: translate(
@@ -120,6 +127,7 @@
 }
 
 /* Logo - near-zero seed offset, not structural movement */
+
 .StaccatoLogo {
 	transition: transform 0.6s ease;
 }
@@ -128,6 +136,7 @@
 } */
 
 /* Button - tiny seed texture; hover elevates cleanly */
+
 .StaccatoButton {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 0.5px),
@@ -135,18 +144,22 @@
 	);
 	transition: transform 0.5s ease;
 }
+
 .StaccatoButton:hover {
 	transform: translateY(-1px);
 }
+
 .StaccatoButton:active {
 	transform: translateY(0);
 }
+
 .StaccatoButton:focus-visible {
 	outline: 2px solid var(--Primary);
 	outline-offset: 3px;
 }
 
 /* Nav link - tiny seed offset; hover lifts to clean state */
+
 .StaccatoNavLink {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 1px),
@@ -154,11 +167,13 @@
 	);
 	transition: transform 0.5s ease;
 }
+
 .StaccatoNavLink:hover {
 	transform: translateY(-1px);
 }
 
 /* Icon - seed position + live opacity shimmer ("flashing light") */
+
 .StaccatoIcon {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 1px),
@@ -170,6 +185,7 @@
 		opacity 1.4s ease;
 }
 /* Normalize when icon is hovered directly or when a parent link/button is */
+
 .StaccatoIcon:hover,
 :is(a, button, [role="button"]):hover .StaccatoIcon {
 	transform: none;
@@ -177,6 +193,7 @@
 }
 
 /* Avatar - seed scatter */
+
 .StaccatoAvatar {
 	transform: translate(
 			calc(var(--StaccatoSeed, 0) * 2px),
@@ -185,39 +202,47 @@
 		scale(calc(1 + var(--StaccatoSeed, 0) * 0.015));
 	transition: transform var(--StaccatoLerp) ease;
 }
+
 .StaccatoAvatar:hover {
 	transform: none;
 }
 
 /* Price - seed micro-scale only (letter-spacing causes CLS) */
+
 .StaccatoPrice {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.005));
 	transition: transform var(--StaccatoLerp) ease;
 }
+
 .StaccatoPrice:hover {
 	transform: scale(1);
 }
 
 /* Checkmark - seed scale; live opacity shine is a "flashing light" */
+
 .StaccatoCheckmark {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.03));
 	opacity: max(0.5, calc(0.82 + var(--StaccatoRaw) * 0.18));
 	transition: transform var(--StaccatoLerp) ease;
 }
+
 .StaccatoCheckmark:hover {
 	transform: scale(1);
 }
 
 /* Toggle - seed micro-scale */
+
 .StaccatoToggle {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.008));
 	transition: transform 0.5s ease;
 }
+
 .StaccatoToggle:hover {
 	transform: scale(1);
 }
 
 /* Social icons - seed scatter; hover = clean lift + full opacity */
+
 .StaccatoSocial {
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 2px),
@@ -228,12 +253,14 @@
 		transform 0.5s ease,
 		opacity 1.4s ease;
 }
+
 .StaccatoSocial:hover {
 	transform: translateY(-2px) scale(1.08);
 	opacity: 1;
 }
 
 /* Badge - seed micro-scale; tiny live opacity pulse */
+
 .StaccatoBadge {
 	transform: scale(calc(1 + var(--StaccatoSeed, 0) * 0.015));
 	opacity: calc(0.93 + var(--StaccatoRaw) * 0.07);
@@ -241,11 +268,13 @@
 		transform 0.5s ease,
 		opacity 1.4s ease;
 }
+
 .StaccatoBadge:hover,
 :is(a, button, [role="button"]):hover .StaccatoBadge {
 	transform: scale(1);
 	opacity: 1;
 }
+
 .StaccatoBadge .StaccatoDot {
 	opacity: max(0.5, calc(0.5 + var(--StaccatoRhythm) * 0.5));
 	transform: scale(calc(0.9 + var(--StaccatoRhythm) * 0.2));
@@ -254,13 +283,16 @@
 /* Morphing - seed-based (set once, not live animated)
  NOTE: padding and gap are LAYOUT properties and cause CLS.
  Only border-radius (paint-only) is safe here. */
+
 .StaccatoMorphRadius {
 	border-radius: calc(max(var(--StaccatoSeed, 0), 0px) * 1.5px);
 }
+
 .StaccatoMorphPadding {
 	/* Disabled: padding changes cause CLS (layout shift).
 	 padding: calc(1rem + var(--StaccatoSeed, 0) * 0.08rem); */
 }
+
 .StaccatoMorphGap {
 	/* Disabled: gap changes cause CLS (layout shift).
 	 gap: calc(1rem + var(--StaccatoSeed, 0) * 0.15rem); */
@@ -275,6 +307,7 @@
  ══════════════════════════════════════════════════════════════════ */
 
 /* Hero decorative particles / illustrations - gentle continuous float */
+
 .StaccatoFloat {
 	transform: translate(
 			calc(var(--StaccatoRaw) * 6px + var(--AttentionOffsetX, 0px)),
@@ -282,6 +315,7 @@
 		)
 		rotate(var(--AttentionRotation, 0deg)) scale(var(--AttentionScale, 1));
 }
+
 .StaccatoFloat:hover {
 	/* Drain noise - land at the attention anchor only */
 	transform: translate(
@@ -294,6 +328,7 @@
 }
 
 /* Hero CTA - subtle live float, hover normalises */
+
 .StaccatoHeroButton {
 	cursor: pointer;
 	transform: translate(
@@ -303,9 +338,11 @@
 		scale(calc(1 + var(--StaccatoRhythm) * 0.004));
 	transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
 .StaccatoHeroButton:hover {
 	transform: scale(1.008);
 }
+
 .StaccatoHeroButton:active {
 	transform: translate(0, 1px) scale(0.995);
 }
@@ -330,6 +367,7 @@
 	 between two noise states - continuous breathing, never a hard jump */
 	transition: opacity 1.6s ease;
 }
+
 .StaccatoBreath:hover {
 	opacity: 1;
 }
@@ -370,43 +408,52 @@
 }
 
 /* Glow / shadow: flat white design - intentional no-ops */
+
 .StaccatoGlow {
 	/* no box-shadow on flat white */
 }
+
 .StaccatoShadowLift {
 	/* no box-shadow on flat white */
 }
 
 /* Input focus: live border-color only */
+
 .StaccatoInput:focus-within {
 	border-color: hsl(0 0% calc(60% + var(--StaccatoGlow) * 15%));
 }
 
 /* Star rating: opacity + brightness shimmer only */
+
 .StaccatoStar {
 	opacity: calc(0.9 + var(--StaccatoColor) * 0.1);
 	filter: brightness(calc(1 + var(--StaccatoColor) * 0.05));
 	transition: opacity 1.4s ease;
 }
+
 .StaccatoStar:hover {
 	opacity: 1;
 	filter: brightness(1);
 }
 
 /* Rhythm dot - live opacity for loading indicators, status pips */
+
 .StaccatoRhythmBeat {
 	transform: scale(calc(1 + var(--StaccatoRhythm) * 0.01));
 }
+
 .StaccatoRhythmDot {
 	opacity: max(0.5, calc(0.4 + var(--StaccatoRhythm) * 0.6));
 }
 
 /* Loading spinner */
+
 .StaccatoSpinner {
 	opacity: max(0.5, calc(0.65 + var(--StaccatoRaw) * 0.35));
 }
 
 /* Separator / divider - opacity only; micro-scale kept but near-zero */
+
 .StaccatoSeparator {
 	opacity: calc(0.18 + var(--StaccatoRaw) * 0.07);
 	transform: scaleX(calc(1 + var(--StaccatoMorph) * 0.003));
@@ -425,9 +472,11 @@
 .StaccatoParallaxNear {
 	transform: translateY(calc(var(--ScrollProgress) * -20px));
 }
+
 .StaccatoParallaxMid {
 	transform: translateY(calc(var(--ScrollProgress) * -12px));
 }
+
 .StaccatoParallaxFar {
 	transform: translateY(calc(var(--ScrollProgress) * -6px));
 }
@@ -476,6 +525,7 @@
 	font-size: 1.15em;
 	line-height: 1;
 }
+
 .InlineSeparator::before {
 	content: "\2001\007C\2001";
 	opacity: 0.2;
@@ -525,6 +575,7 @@
 }
 
 /* Width-locked container during typewriter animation */
+
 .StaccatoTypewriter {
 	display: inline-block;
 }

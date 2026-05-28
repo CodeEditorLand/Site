@@ -12,8 +12,8 @@ import {
 } from "./Tooltip.js";
 
 interface IconTooltipProperty {
-	/** Human-readable label - drives aria-label, title, and tooltip text. */
-	Label: string;
+	/** Human-readable label - drives aria-label, title, and tooltip text. Pass an array for multi-line tooltips. */
+	Label: string | string[];
 	/** Lucide icon component to render inside the trigger. */
 	Icon?: LucideIcon;
 	/** CSS color string for the icon stroke (Lucide only). */
@@ -64,7 +64,9 @@ const IconTooltip = ({
 	DocHref: _DocHref,
 	children,
 }: IconTooltipProperty) => {
-	if (process.env.NODE_ENV === "development" && !Label) {
+	const LabelFlat = Array.isArray(Label) ? Label.join(" ") : Label;
+
+	if (process.env.NODE_ENV === "development" && !LabelFlat) {
 		console.warn("IconTooltip: Label (aria-label) is required");
 	}
 
@@ -86,13 +88,19 @@ const IconTooltip = ({
 				<TooltipTrigger asChild tabIndex={-1}>
 					<span
 						className="inline-flex items-center"
-						aria-label={Label}
-						title={Label}
+						aria-label={LabelFlat}
+						title={LabelFlat}
 						role="img">
 						{Content}
 					</span>
 				</TooltipTrigger>
-				<TooltipContent>{Label}</TooltipContent>
+				<TooltipContent>
+					{Array.isArray(Label)
+						? Label.map((Line, Index) => (
+								<p key={Index}>{Line}</p>
+							))
+						: Label}
+				</TooltipContent>
 			</Tooltip>
 		</TooltipProvider>
 	);
