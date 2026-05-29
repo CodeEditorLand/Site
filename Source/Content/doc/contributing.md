@@ -8,6 +8,10 @@ description:
 
 # Contributing to Editor.Land
 
+> **Updated 2026-05-29** - Build steps updated to Node 24 and
+> `Maintain/Debug/Build.sh`. Submodule paths corrected. Canonical source:
+> [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
+
 `Editor.Land` is open source and welcomes contributions. The full contributing
 guide is at
 [CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md)
@@ -24,25 +28,33 @@ on GitHub.
     cd Land
     ```
 
-2. **Install `Node.js` dependencies:**
+2. **Compile the VS Code Editor submodule** _(mandatory before building Land)_
+
+    Node 24 is required for this step. The version is pinned in
+    `Dependency/Microsoft/Dependency/Editor/.nvmrc`.
 
     ```bash
+    cd Dependency/Microsoft/Dependency/Editor
+    nvm use 24
+    git fetch --all
+    git reset --hard Parent/main
+    git clean -dfx
+    pnpm install
+    pnpm run compile
+    pnpm run compile-extensions-build
+    ```
+
+3. **Install `Node.js` dependencies:**
+
+    ```bash
+    cd Land # back to repository root
     pnpm install
     ```
 
-3. **Start the development build:**
+4. **Start the development build:**
 
     ```bash
-    pnpm cross-env \
-    	NODE_ENV=development \
-    	NODE_VERSION=22 \
-    	Clean=true \
-    	Browser=true \
-    	Dependency=Microsoft/VSCode \
-    	Bundle=false \
-    	Compile=false \
-    	NODE_OPTIONS=--max-old-space-size=16384 \
-    	pnpm tauri dev
+    ./Maintain/Debug/Build.sh --profile debug-electron-bundled
     ```
 
     This compiles `Mountain` and opens the editor window. The first run
@@ -50,11 +62,11 @@ on GitHub.
     minutes on a fresh checkout. Subsequent builds use `Cargo`'s incremental
     compilation cache and are significantly faster.
 
-4. **Create a branch** from `Current` and make your changes. The project uses
+5. **Create a branch** from `Current` and make your changes. The project uses
    PascalCase naming for files, identifiers, and settings keys throughout the
    codebase.
 
-5. **Open a pull request** against the `Current` branch with a clear description
+6. **Open a pull request** against the `Current` branch with a clear description
    of what changed and why.
 
 ---
@@ -77,7 +89,7 @@ and others) is a separate Git repository referenced as a submodule. When working
 on a specific element:
 
 ```bash
-cd Land/Mountain # or whichever element
+cd Land/Element/Mountain # or whichever element
 git checkout -b MyFeatureBranch
 # make changes
 git commit -m "Description"

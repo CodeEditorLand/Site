@@ -125,9 +125,7 @@ const DashboardUserInner = () => {
 						defaultValue: "Failed to load account.",
 					})}
 				</p>
-				<p className="text-muted-foreground">
-					{AuthError.message}
-				</p>
+				<p className="text-muted-foreground">{AuthError.message}</p>
 				<Button
 					variant="outline"
 					size="sm"
@@ -192,7 +190,7 @@ const DashboardUserInner = () => {
 						width="48"
 						height="48"
 						loading="lazy"
-						className="h-12 w-12 rounded-none "
+						className="h-12 w-12 rounded-none"
 						onError={(Event) => {
 							(Event.target as HTMLImageElement).style.display =
 								"none";

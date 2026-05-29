@@ -161,9 +161,7 @@ const DynamicEmailVerification = ({
 					/>
 
 					{ResendSuccess && (
-						<p
-							className="text-center text-green-600"
-							role="status">
+						<p className="text-center text-green-600" role="status">
 							{Content.Pending.ResendSuccessMessage ||
 								T("resendSuccess", {
 									defaultValue: "Verification email resent!",

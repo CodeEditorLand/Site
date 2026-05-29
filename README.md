@@ -65,7 +65,7 @@ and shadcn/ui. Fully internationalized across 5 locales.
 
 ## Development 🛠️
 
-**Prerequisites:** Node.js 20+, pnpm 10+
+**Prerequisites:** Node.js 24+, pnpm 10+
 
 ```bash
 cd WebSite

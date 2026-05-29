@@ -110,28 +110,27 @@ verified release artifact. Today:
 
 ## Build Commands
 
-The development command that drives Tauri:
+> **Updated 2026-05-29** - The build system has moved to the
+> `Maintain/Debug/Build.sh` profile runner and Node 24. See the current
+> [Installation guide](https://Editor.Land/Doc/installation) for up-to-date
+> steps.
+
+The development build:
 
 ```bash
-pnpm cross-env \
-	NODE_ENV=development \
-	NODE_VERSION=22 \
-	Clean=true \
-	Browser=true \
-	Dependency=Microsoft/VSCode \
-	Bundle=false \
-	Compile=false \
-	NODE_OPTIONS=--max-old-space-size=16384 \
-	pnpm tauri dev
+./Maintain/Debug/Build.sh --profile debug-electron-bundled
 ```
 
-`Bundle` and `Compile` are `false` because `tauri dev` uses Vite, which handles
-module bundling on-the-fly for hot-reloading.
+For a lighter iteration build:
+
+```bash
+./Maintain/Debug/Build.sh --profile debug-mountain
+```
 
 For production:
 
 ```bash
-pnpm cross-env NODE_ENV=production pnpm tauri build
+./Maintain/Release/Build.sh --profile production-electron-bundled
 ```
 
 ## NLnet Funding

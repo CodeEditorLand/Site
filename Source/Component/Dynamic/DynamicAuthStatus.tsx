@@ -102,9 +102,7 @@ export default ({
 								name: DisplayName,
 							})}
 						/>
-						<AvatarFallback className="">
-							{Initials}
-						</AvatarFallback>
+						<AvatarFallback className="">{Initials}</AvatarFallback>
 					</Avatar>
 				</button>
 			</DropdownMenuTrigger>

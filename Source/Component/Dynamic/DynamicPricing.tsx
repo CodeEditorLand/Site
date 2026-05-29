@@ -117,9 +117,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 						<div
 							key={Tier.Id}
 							className={`PricingCard StaccatoCard flex flex-col rounded-none bg-white ${
-								Tier.Highlighted || Tier.Popular
-									? ""
-									: ""
+								Tier.Highlighted || Tier.Popular ? "" : ""
 							} ${
 								Tier.Status && Tier.Status !== "Ready"
 									? "opacity-75"

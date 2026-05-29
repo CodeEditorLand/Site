@@ -141,7 +141,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							{Content.Os.map((OperatingSystem, Index) => (
 								<span
 									key={Index}
-									className=" bg-secondary px-4 py-2 font-medium">
+									className="bg-secondary px-4 py-2 font-medium">
 									{OperatingSystem}
 								</span>
 							))}

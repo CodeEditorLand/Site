@@ -26,10 +26,10 @@ const HomePage = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation(["home", "common", "download", "footer"]);
 
 	const TArr = (Key: string, Fallback: string[]) =>
-		(T(Key, {
+		T(Key, {
 			returnObjects: true,
 			defaultValue: Fallback,
-		}) as unknown) as string[];
+		}) as unknown as string[];
 
 	const ResolvedContent: Interface = Content || {
 		Hero: {

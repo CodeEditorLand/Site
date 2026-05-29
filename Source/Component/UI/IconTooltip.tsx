@@ -96,9 +96,7 @@ const IconTooltip = ({
 				</TooltipTrigger>
 				<TooltipContent>
 					{Array.isArray(Label)
-						? Label.map((Line, Index) => (
-								<p key={Index}>{Line}</p>
-							))
+						? Label.map((Line, Index) => <p key={Index}>{Line}</p>)
 						: Label}
 				</TooltipContent>
 			</Tooltip>

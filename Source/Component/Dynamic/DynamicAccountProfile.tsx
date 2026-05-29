@@ -25,7 +25,7 @@ export default ({
 	ClientIdentifier?: string;
 }) => (
 	<Auth0Provider
-		Children={<AccountProfileInner />}
+		Children={<AccountProfileInner Domain={Domain} />}
 		{...(Domain ? { Domain } : {})}
 		{...(ClientIdentifier ? { ClientIdentifier } : {})}
 	/>
@@ -129,7 +129,7 @@ const TierColorMap: Record<
 	},
 };
 
-const AccountProfileInner = () => {
+const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 	const {
 		isLoading: IsLoading,
 		isAuthenticated: IsAuthenticated,
@@ -228,10 +228,7 @@ const AccountProfileInner = () => {
 		"org_id"
 	] as string | undefined;
 
-	const Auth0Domain =
-		typeof window !== "undefined"
-			? "dev-o5qwc17ra258xn81.eu.auth0.com"
-			: "";
+	const Auth0Domain = Domain;
 
 	return (
 		<div className="mx-auto max-w-2xl space-y-8 px-4 py-16">
@@ -244,7 +241,7 @@ const AccountProfileInner = () => {
 						title={User.name || "User avatar"}
 						width="80"
 						height="80"
-						className="h-20 w-20 shrink-0 rounded-none "
+						className="h-20 w-20 shrink-0 rounded-none"
 					/>
 				) : (
 					<div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] text-2xl font-bold text-muted-foreground">

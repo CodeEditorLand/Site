@@ -17,8 +17,7 @@ const ButtonVariants = cva(
 					"bg-[var(--Background)] text-[var(--Foreground)] hover:bg-[var(--Mute)]",
 				secondary:
 					"bg-[var(--Secondary)] text-[var(--SecondaryForeground)] hover:bg-[var(--Surface3)]",
-				ghost:
-					"text-[var(--Foreground)] hover:bg-[var(--Mute)]",
+				ghost: "text-[var(--Foreground)] hover:bg-[var(--Mute)]",
 				link: "text-[var(--Foreground)] underline-offset-4 hover:underline",
 			},
 			size: {

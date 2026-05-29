@@ -62,7 +62,7 @@ path for bundling.
 | ---------------- | ---------------------------------------------------------- |
 | Directory layout | `[target-triple]/[NAME]/[version]/bin/`                    |
 | Target triples   | All Tauri-supported platform identifiers                   |
-| Node.js version  | `22` (default, controlled by `--node-version`)             |
+| Node.js version  | `24` (default, controlled by `--node-version`)             |
 | Cache file       | `Cache.json` mapping triple/name/major to resolved version |
 | Git LFS          | Auto-updated `.gitattributes` for all binary files         |
 

@@ -106,7 +106,7 @@ const Posts = BlogEntries.map((Entry) => ({
 									{Post.Tags.length > 0 && (
 										<div class="mb-3 flex flex-wrap gap-2">
 											{Post.Tags.map((Tag) => (
-												<span class=" px-2 py-0.5 font-medium text-muted-foreground">
+												<span class="px-2 py-0.5 font-medium text-muted-foreground">
 													{Tag}
 												</span>
 											))}
@@ -132,9 +132,7 @@ const Posts = BlogEntries.map((Entry) => ({
 
 		<!-- Back to top -->
 		<div class="mt-12 border-t pt-8">
-			<a
-				href="#top"
-				class="StaccatoButton text-primary hover:underline"
+			<a href="#top" class="StaccatoButton text-primary hover:underline"
 				>{
 					T("common.button.backToTop", {
 						defaultValue: "Back to top",

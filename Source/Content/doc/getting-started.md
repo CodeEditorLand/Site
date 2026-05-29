@@ -7,6 +7,10 @@ description: "How to build and run Editor.Land from source on macOS or Windows."
 
 # Getting Started
 
+> **Updated 2026-05-29** - Build process updated to Node 24 and the
+> `Maintain/Debug/Build.sh` profile system. Canonical source:
+> [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
+
 `Editor.Land` is in active development and is currently source-only. There are
 no pre-built installers or package manager releases yet. The supported way to
 run the editor today is to build from source on **macOS or Windows**.
@@ -36,9 +40,13 @@ repository, and an automated update mechanism.
 
 All of the following must be installed before building:
 
-- **`Rust`** 1.85+ or later (install via [rustup](https://rustup.rs))
-- **`Node.js`** 22 or later
-- **pnpm** 9 or later (`npm install -g pnpm`)
+- **`Rust`** nightly (install via [rustup](https://rustup.rs), then
+  `rustup default nightly`)
+- **`Node.js`** 24 - required to compile the VS Code Editor submodule (version
+  pinned in `Dependency/Microsoft/Dependency/Editor/.nvmrc`)
+- **`nvm`** - recommended for switching Node versions
+  ([nvm-sh/nvm](https://github.com/nvm-sh/nvm))
+- **`pnpm`** 9 or later (`npm install -g pnpm`)
 - **macOS:** Xcode Command Line Tools (`xcode-select --install`), macOS 13.0
   (Ventura) or later
 - **Windows:** `WebView2` Runtime (included with Windows 11; available
@@ -48,29 +56,50 @@ All of the following must be installed before building:
 
 ## Building from Source
 
+The build is a **two-step linear flow.** Do not pull submodules recursively -
+each submodule is managed independently on its own branch.
+
+### Step 1 - Compile the VS Code Editor submodule _(mandatory)_
+
+`Cocoon` (the extension host) and `Output` (the platform bundle) both depend on
+the compiled output of the VS Code Editor submodule. This step must complete
+before Step 2 will succeed.
+
 ```bash
-git clone --recurse-submodules https://github.com/CodeEditorLand/Land.git
-cd Land
+cd Dependency/Microsoft/Dependency/Editor
+
+# Node 24 is required here - reads .nvmrc automatically
+nvm use 24
+
+git fetch --all
+git reset --hard Parent/main
+git clean -dfx
+
 pnpm install
-pnpm cross-env \
-	NODE_ENV=development \
-	NODE_VERSION=22 \
-	Clean=true \
-	Browser=true \
-	Dependency=Microsoft/VSCode \
-	Bundle=false \
-	Compile=false \
-	NODE_OPTIONS=--max-old-space-size=16384 \
-	pnpm tauri dev
+pnpm run compile
+pnpm run compile-extensions-build
 ```
 
-This starts the `Tauri` development server and opens the editor window.
-`Mountain` is running, `Cocoon` activates extensions, and `Sky` renders the
-`workbench` UI.
+### Step 2 - Build the Land application
+
+```bash
+cd Land # back to repository root
+./Maintain/Debug/Build.sh --profile debug-electron-bundled
+```
 
 The first build takes several minutes because it compiles `Mountain`'s `Rust`
 dependencies from scratch. Subsequent builds are significantly faster due to
 `Cargo`'s incremental compilation.
+
+For a quick iteration build without the full bundling pass:
+
+```bash
+./Maintain/Debug/Build.sh --profile debug-mountain
+```
+
+See
+[BuildPipeline.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md)
+for the full profile matrix.
 
 ---
 

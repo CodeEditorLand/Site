@@ -176,7 +176,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				</div>
 
 				{/* Wide top padding before CTAs (body) */}
-				<div className="mt-16 mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
+				<div className="mb-16 mt-16 flex flex-col items-center justify-center gap-4 sm:flex-row sm:[&>button]:w-auto">
 					<DynamicButton Content={PrimaryCTA} />
 					{SecondaryCTA && <DynamicButton Content={SecondaryCTA} />}
 				</div>

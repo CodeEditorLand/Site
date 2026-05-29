@@ -9,10 +9,10 @@ description:
 
 # Mist
 
-`Mist` is the local service-boundary element for `Land.PlayForm.Cloud`. The source
-contains DNS server, resolver, zone, WebSocket, and forward-security code.
-`Mountain` has a native `Mist` feature path, but not every internal editor route
-flows through `Mist` yet.
+`Mist` is the local service-boundary element for `Land.PlayForm.Cloud`. The
+source contains DNS server, resolver, zone, WebSocket, and forward-security
+code. `Mountain` has a native `Mist` feature path, but not every internal editor
+route flows through `Mist` yet.
 
 ---
 
@@ -20,14 +20,14 @@ flows through `Mist` yet.
 
 Confirmed source areas include:
 
-| Path                        | Role                                  |
-| --------------------------- | ------------------------------------- |
-| `Source/Server.rs`          | DNS server                            |
-| `Source/Resolver.rs`        | Zone lookup and response construction |
-| `Source/Zone.rs`            | `*.land.playform.cloud` zone definitions      |
-| `Source/WebSocket.rs`       | WebSocket service code                |
-| `Source/ForwardSecurity.rs` | Forward-security helpers              |
-| `tests/`                    | Integration tests                     |
+| Path                        | Role                                     |
+| --------------------------- | ---------------------------------------- |
+| `Source/Server.rs`          | DNS server                               |
+| `Source/Resolver.rs`        | Zone lookup and response construction    |
+| `Source/Zone.rs`            | `*.land.playform.cloud` zone definitions |
+| `Source/WebSocket.rs`       | WebSocket service code                   |
+| `Source/ForwardSecurity.rs` | Forward-security helpers                 |
+| `tests/`                    | Integration tests                        |
 
 ---
 

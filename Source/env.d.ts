@@ -1,23 +1,32 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
-// Environment variables from .env
+// PUBLIC_* vars - exposed to the browser via import.meta.env
 interface ImportMetaEnv {
 	readonly PUBLIC_AUTH_WORKER_URL: string;
 	readonly PUBLIC_DOWNLOAD_WORKER_URL: string;
 	readonly PUBLIC_ANALYTICS_WORKER_URL: string;
 	readonly PUBLIC_STATUS_WORKER_URL: string;
 	readonly PUBLIC_FRONTEND_URL: string;
-	// Firebase (optional)
-	readonly PUBLIC_FIREBASE_API_KEY?: string;
-	readonly PUBLIC_FIREBASE_AUTH_DOMAIN?: string;
-	readonly PUBLIC_FIREBASE_PROJECT_ID?: string;
-	readonly PUBLIC_FIREBASE_STORAGE_BUCKET?: string;
-	readonly PUBLIC_FIREBASE_MESSAGING_SENDER_ID?: string;
-	readonly PUBLIC_FIREBASE_APP_ID?: string;
-	readonly PUBLIC_FIREBASE_MEASUREMENT_ID?: string;
+	readonly PUBLIC_ANALYTICS_KEY?: string;
 }
 
 interface ImportMeta {
 	readonly env: ImportMetaEnv;
+}
+
+// Server-only vars - read via process.env in Astro frontmatter / config files.
+// Never exposed to the browser. Auth0 SPA type uses PKCE - no client secret.
+declare namespace NodeJS {
+	interface ProcessEnv {
+		// Auth0 SPA application (Single Page Application type - no client secret)
+		AUTH0_DOMAIN?: string;
+		AUTH0_CLIENT_ID?: string;
+		// Enterprise SSO (optional)
+		AUTH0_ORGANIZATION?: string;
+		AUTH0_CONNECTION?: string;
+		OKTA_DOMAIN?: string;
+		// Build / deploy
+		SITE_ENVIRONMENT?: string;
+	}
 }

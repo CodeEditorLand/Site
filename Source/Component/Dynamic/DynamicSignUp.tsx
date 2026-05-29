@@ -216,12 +216,12 @@ const DynamicSignUp = ({
 																? "var(--ColorSuccess, #16a34a)"
 																: Password.length >=
 																			8 &&
-																	 Segment <
+																	  Segment <
 																			2
 																	? "var(--ColorWarning, #ca8a04)"
 																	: Password.length >=
 																				6 &&
-																		 Segment <
+																		  Segment <
 																				1
 																		? "var(--ColorDestruct, #dc2626)"
 																		: "var(--Border, #e5e7eb)",

@@ -17,8 +17,8 @@ import type { ReactNode } from "react";
  */
 export default ({
 	Children,
-	Domain = "dev-o5qwc17ra258xn81.eu.auth0.com",
-	ClientIdentifier = "YPifTeOpZzlXLYKQ1A5XmRUJxGxwUqRC",
+	Domain = "",
+	ClientIdentifier = "",
 	Organization,
 }: {
 	Children: ReactNode;
@@ -31,7 +31,6 @@ export default ({
 		domain={Domain}
 		clientId={ClientIdentifier}
 		cacheLocation="localstorage"
-		useRefreshTokens={true}
 		{...(Organization ? { organization: Organization } : {})}
 		authorizationParams={{
 			redirect_uri:

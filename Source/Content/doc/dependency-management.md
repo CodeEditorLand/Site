@@ -125,7 +125,7 @@ migrations.
 
 JavaScript elements let Dependabot bump package.json ranges directly. This keeps
 the dependency surface fresh but requires CI to catch incompatibilities. The
-Node.yml matrix (Node 18-20) and pre-publish checks serve as the safety net.
+Node.yml matrix (Node 24) and pre-publish checks serve as the safety net.
 Tailwind 4.x is the single explicit exclude, as its rewrite broke the SCSS-based
 configuration surface the UI layer depends on.
 

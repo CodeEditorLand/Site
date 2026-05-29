@@ -212,10 +212,18 @@ describe("Integration: Build output structure", () => {
 				"utf-8",
 			);
 
-			expect(Final).toContain("<loc>https://land.playform.cloud/Download</loc>");
-			expect(Final).toContain("<loc>https://land.playform.cloud/Doc</loc>");
-			expect(Final).toContain("<loc>https://land.playform.cloud/Blog</loc>");
-			expect(Final).toContain("<loc>https://land.playform.cloud/Portal</loc>");
+			expect(Final).toContain(
+				"<loc>https://land.playform.cloud/Download</loc>",
+			);
+			expect(Final).toContain(
+				"<loc>https://land.playform.cloud/Doc</loc>",
+			);
+			expect(Final).toContain(
+				"<loc>https://land.playform.cloud/Blog</loc>",
+			);
+			expect(Final).toContain(
+				"<loc>https://land.playform.cloud/Portal</loc>",
+			);
 			expect(Final).toContain(
 				"<loc>https://land.playform.cloud/Account/SignIn</loc>",
 			);
@@ -227,7 +235,9 @@ describe("Integration: Build output structure", () => {
 			expect(Final).not.toContain(
 				"<loc>https://land.playform.cloud/download</loc>",
 			);
-			expect(Final).not.toContain("<loc>https://land.playform.cloud/doc</loc>");
+			expect(Final).not.toContain(
+				"<loc>https://land.playform.cloud/doc</loc>",
+			);
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}

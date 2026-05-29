@@ -169,7 +169,9 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 							: {})}>
 						<span className="HeaderLinkLabel">{Link.Label}</span>
 						{Icon && (
-							<span aria-hidden="true" className="inline-flex items-center">
+							<span
+								aria-hidden="true"
+								className="inline-flex items-center">
 								{"\u2001"}
 								<IconTooltip
 									Label={Link.Label}
@@ -300,9 +302,13 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 												rel: "noopener noreferrer",
 											}
 										: {})}>
-									<span className="HeaderLinkLabel">{Link.Label}</span>
+									<span className="HeaderLinkLabel">
+										{Link.Label}
+									</span>
 									{Icon && (
-										<span aria-hidden="true" className="inline-flex items-center">
+										<span
+											aria-hidden="true"
+											className="inline-flex items-center">
 											{"\u2001"}
 											<IconTooltip
 												Label={Link.Label}

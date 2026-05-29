@@ -15,11 +15,7 @@ function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
  */
 function SkeletonCard({ className }: React.ComponentProps<"div">) {
 	return (
-		<div
-			className={cn(
-				" bg-white p-6",
-				className,
-			)}>
+		<div className={cn("bg-white p-6", className)}>
 			<Skeleton className="mb-4 h-6 w-3/4 bg-[var(--Secondary)]" />
 			<Skeleton className="mb-2 h-4 w-full bg-[var(--Secondary)]" />
 			<Skeleton className="h-4 w-5/6 bg-[var(--Secondary)]" />
@@ -33,11 +29,7 @@ function SkeletonCard({ className }: React.ComponentProps<"div">) {
  */
 function SkeletonFeatureCard({ className }: React.ComponentProps<"div">) {
 	return (
-		<div
-			className={cn(
-				" bg-white p-6",
-				className,
-			)}>
+		<div className={cn("bg-white p-6", className)}>
 			<div className="mb-4 flex items-start justify-between">
 				<Skeleton className="h-6 w-1/2 bg-[var(--Secondary)]" />
 				<Skeleton className="h-10 w-10 shrink-0 bg-[var(--Secondary)]" />
@@ -55,8 +47,7 @@ function SkeletonFeatureCard({ className }: React.ComponentProps<"div">) {
  */
 function SkeletonPricingTier({ className }: React.ComponentProps<"div">) {
 	return (
-		<div
-			className={cn(" bg-white", className)}>
+		<div className={cn("bg-white", className)}>
 			<div className="p-6">
 				<Skeleton className="mb-4 h-9 w-full bg-[var(--Secondary)]" />
 				<Skeleton className="mb-2 h-6 w-1/3 bg-[var(--Secondary)]" />

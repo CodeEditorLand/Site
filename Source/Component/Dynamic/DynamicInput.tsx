@@ -77,9 +77,7 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 				</p>
 			)}
 			{!Error && HelperText && (
-				<p
-					id={HelperIdentifier}
-					className="text-muted-foreground">
+				<p id={HelperIdentifier} className="text-muted-foreground">
 					{HelperText}
 				</p>
 			)}

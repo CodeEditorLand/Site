@@ -51,7 +51,7 @@ Maintain
 
 1. Checks out the repository.
 2. Sets up pnpm (v9.3.0) with recursive install.
-3. Sets up Node.js (matrix: 18, 19, 20) with pnpm caching.
+3. Sets up Node.js 24 with pnpm caching.
 4. Runs `pnpm install`.
 5. Runs `pnpm run prepublishOnly`.
 6. Uploads `./Target` as a build artefact.

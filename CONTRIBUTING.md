@@ -50,7 +50,7 @@ development workflow, coding standards, and pull request process.
 
 #### Prerequisites
 
-- **Node.js 20+** - Download from [nodejs.org](https://nodejs.org/)
+- **Node.js 24+** - Download from [nodejs.org](https://nodejs.org/)
 - **pnpm 9+** (recommended) or npm/yarn
 - **Git** for version control
 - **Wrangler CLI** (for Workers development): `npm install -g wrangler`
@@ -130,9 +130,13 @@ pnpm deploy
 
 #### Environment Configuration
 
-Create local environment files:
+Copy the example and fill in your Auth0 credentials:
 
-**WebSite/.env** (from example):
+```bash
+cp WebSite/.env.example WebSite/.env
+```
+
+**WebSite/.env** - minimum required for local dev:
 
 ```env
 PUBLIC_AUTH_WORKER_URL=http://localhost:8787
@@ -140,7 +144,23 @@ PUBLIC_DOWNLOAD_WORKER_URL=http://localhost:8788
 PUBLIC_ANALYTICS_WORKER_URL=http://localhost:8789
 PUBLIC_STATUS_WORKER_URL=http://localhost:8790
 PUBLIC_FRONTEND_URL=http://localhost:4321
+
+# Auth0 - create a Single Page Application at manage.auth0.com
+# No client secret needed: SPA type uses PKCE (secret-free by design)
+AUTH0_DOMAIN=<your-tenant>.eu.auth0.com
+AUTH0_CLIENT_ID=<your-client-id>
 ```
+
+In your Auth0 application settings, add these for local development:
+
+| Field                 | Value                                 |
+| --------------------- | ------------------------------------- |
+| Allowed Callback URLs | `http://localhost:4321/OAuth/Success` |
+| Allowed Logout URLs   | `http://localhost:4321`               |
+| Allowed Web Origins   | `http://localhost:4321`               |
+
+See `.env.example` for the full reference including enterprise SSO and
+production Cloudflare Pages setup.
 
 **Workers/.env** (for local development with wrangler):
 

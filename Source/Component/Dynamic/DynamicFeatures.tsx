@@ -205,12 +205,12 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											: Feature.Id === "architecture"
 												? "Effect-TS Layer stacks provide:\n• Typed errors\n• Structured concurrency\n• Compile-time dependency tracking"
 												: Feature.Id ===
-													 "cross-platform"
+													  "cross-platform"
 													? "Tauri compiles one codebase\nto native macOS, Windows, and Linux apps\nvia platform WebViews."
 													: Feature.Id === "tooling"
 														? "Built on:\n• Rust\n• Tauri\n• Effect-TS\n• Biome\n• OXC\n\nFor modern developer tooling."
 														: Feature.Id ===
-															 "opensource"
+															  "opensource"
 															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}

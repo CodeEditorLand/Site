@@ -71,7 +71,7 @@ const MetaDescription = Entry.data.summary;
 				Entry.data.tags.length > 0 && (
 					<div class="mb-4 flex flex-wrap gap-2">
 						{Entry.data.tags.map((Tag: string) => (
-							<span class=" px-2 py-0.5 font-medium text-muted-foreground">
+							<span class="px-2 py-0.5 font-medium text-muted-foreground">
 								{Tag}
 							</span>
 						))}
@@ -106,9 +106,7 @@ const MetaDescription = Entry.data.summary;
 
 		<!-- Back to Blog -->
 		<div class="mt-12 border-t pt-8">
-			<a
-				href="/Blog"
-				class="StaccatoButton text-primary hover:underline"
+			<a href="/Blog" class="StaccatoButton text-primary hover:underline"
 				>{T("page.title", { ns: "blog", defaultValue: "Blog" })}<span
 					class="InlineSeparator">←</span
 				></a

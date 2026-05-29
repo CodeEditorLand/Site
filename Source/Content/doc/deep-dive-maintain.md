@@ -20,8 +20,8 @@ engine or direct build functions. Configuration editing uses `toml_edit` and
 
 ### Modules
 
-|| Path | ||
----------------------------------------------------------------------------------------
+## || Path | ||
+
 | | `Source/Library.rs` - Entry point, wires CLI, logging, error handling | |
 `Source/Build/CLI.rs` - `clap`-based CLI: debug, release, profile, dev | |
 `Source/Build/Definition.rs` - Build group definitions with ordering | |

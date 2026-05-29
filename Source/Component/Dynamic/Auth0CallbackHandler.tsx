@@ -36,8 +36,14 @@ const Handler = () => {
 	return null;
 };
 
-export default () => (
-	<Auth0ProviderWrapper>
+export default ({
+	Domain,
+	ClientIdentifier,
+}: {
+	Domain?: string;
+	ClientIdentifier?: string;
+} = {}) => (
+	<Auth0ProviderWrapper Domain={Domain} ClientIdentifier={ClientIdentifier}>
 		<Handler />
 	</Auth0ProviderWrapper>
 );

@@ -202,15 +202,13 @@ export default ({
 							title={User.name || "User avatar"}
 							width="64"
 							height="64"
-							className="h-16 w-16 rounded-none "
+							className="h-16 w-16 rounded-none"
 						/>
 					)}
 
 					<h2 className="text-lg font-semibold">{DisplayName}</h2>
 
-					<p className="text-muted-foreground">
-						{User.email}
-					</p>
+					<p className="text-muted-foreground">{User.email}</p>
 
 					{User.email_verified === false && (
 						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
