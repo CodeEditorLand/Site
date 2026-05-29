@@ -126,9 +126,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 		}
 	};
 
-	const MailtoHref = Validate()
-		? BuildMailtoHref(Config, Values, Year, PairId)
-		: `mailto:${Config.To}`;
+	// Never call Validate() during render - it calls SetErrors which triggers
+	// a state update causing an infinite re-render loop during SSR prerender.
+	// Always build the full href; validation fires only on user interaction.
+	const MailtoHref = BuildMailtoHref(Config, Values, Year, PairId);
 
 	const BadgeColor = Config.Destructive
 		? "border-red-200 bg-red-50 text-red-700"

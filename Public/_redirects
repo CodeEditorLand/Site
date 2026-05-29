@@ -11,7 +11,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 1755 rules ──
+# ── VARIANT REWRITES (200) - 1781 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /ac/forgotpassword                    /Account/ForgotPassword/              200
 /Ac/forgotpassword                    /Account/ForgotPassword/              200
@@ -731,6 +731,30 @@
 /Contact-sales                        /Contact/Sale/                        200
 /CONTACT-SALES                        /Contact/Sale/                        200
 /contact-sales/                       /Contact/Sale/                        200
+/contact/amend                        /Contact/Amend/                       200
+/contact/amend/                       /Contact/Amend/                       200
+/contact/claim                        /Contact/Claim/                       200
+/contact/claim/                       /Contact/Claim/                       200
+/contact/deals                        /Contact/Deals/                       200
+/contact/deals/                       /Contact/Deals/                       200
+/contact/erase                        /Contact/Erase/                       200
+/contact/erase/                       /Contact/Erase/                       200
+/contact/guard                        /Contact/Guard/                       200
+/contact/guard/                       /Contact/Guard/                       200
+/contact/hails                        /Contact/Hails/                       200
+/contact/hails/                       /Contact/Hails/                       200
+/contact/leave                        /Contact/Leave/                       200
+/contact/leave/                       /Contact/Leave/                       200
+/contact/legal                        /Contact/Legal/                       200
+/contact/legal/                       /Contact/Legal/                       200
+/contact/lodge                        /Contact/Lodge/                       200
+/contact/lodge/                       /Contact/Lodge/                       200
+/contact/pause                        /Contact/Pause/                       200
+/contact/pause/                       /Contact/Pause/                       200
+/contact/query                        /Contact/Query/                       200
+/contact/query/                       /Contact/Query/                       200
+/contact/reach                        /Contact/Reach/                       200
+/contact/reach/                       /Contact/Reach/                       200
 /contact/sale                         /Contact/Sale/                        200
 /contact/salE                         /Contact/Sale/                        200
 /contact/saLE                         /Contact/Sale/                        200
@@ -781,6 +805,8 @@
 /contact/sales/                       /Contact/Sale/                        200
 /contact/Sales/                       /Contact/Sale/                        200
 /contact/SALES/                       /Contact/Sale/                        200
+/contact/scout                        /Contact/Scout/                       200
+/contact/scout/                       /Contact/Scout/                       200
 /contacts/sale                        /Contact/Sale/                        200
 /Contacts/sale                        /Contact/Sale/                        200
 /CONTACTS/sale                        /Contact/Sale/                        200
@@ -1786,7 +1812,20 @@
 /Blog/LocalFirstPhilosophy /Blog/LocalFirstPhilosophy/ 200
 /Blog/TauriDesktopIntegration /Blog/TauriDesktopIntegration/ 200
 /Blog/VSCodeCompatibility /Blog/VSCodeCompatibility/ 200
+/Contact/Amend            /Contact/Amend/           200
+/Contact/Claim            /Contact/Claim/           200
+/Contact/Deals            /Contact/Deals/           200
+/Contact/Erase            /Contact/Erase/           200
+/Contact/Guard            /Contact/Guard/           200
+/Contact/Hails            /Contact/Hails/           200
+/Contact/Leave            /Contact/Leave/           200
+/Contact/Legal            /Contact/Legal/           200
+/Contact/Lodge            /Contact/Lodge/           200
+/Contact/Pause            /Contact/Pause/           200
+/Contact/Query            /Contact/Query/           200
+/Contact/Reach            /Contact/Reach/           200
 /Contact/Sale             /Contact/Sale/            200
+/Contact/Scout            /Contact/Scout/           200
 /Contributing             /Contributing/            200
 /Dashboard                /Dashboard/               200
 /Doc                      /Doc/                     200
