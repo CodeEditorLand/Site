@@ -86,7 +86,7 @@ export default ({
 		Auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 
 	return (
-		<DropdownMenu>
+		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger asChild>
 				<button
 					type="button"
