@@ -32,6 +32,7 @@ interface NavigationLink {
 	Label: string;
 	Href: string;
 	Icon?: string;
+	Tooltip?: string | string[];
 }
 
 export interface HeaderContent {
@@ -44,6 +45,7 @@ export interface HeaderContent {
 		Size?: string;
 		Href?: string;
 		Icon?: string;
+		Tooltip?: string | string[];
 	}>;
 }
 
@@ -64,36 +66,49 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Label: T("nav.features", "Features"),
 				Href: "/#features",
 				Icon: "Sparkles",
+				Tooltip: ["/#features", "Editor feature overview"],
 			},
 			{
 				Label: T("nav.download", "Download"),
 				Href: "/Download",
 				Icon: "Download",
+				Tooltip: ["/Download", "Builds for macOS, Windows, Linux"],
 			},
 			{
-				Label: T("nav.docs", "Docs"),
+				Label: T("nav.docs", "Documentation"),
 				Href: "/Doc",
 				Icon: "BookOpen",
+				Tooltip: ["/Doc", "Developer documentation"],
 			},
 			{
 				Label: T("nav.blog", "Blog"),
 				Href: "/Blog",
 				Icon: "Newspaper",
+				Tooltip: ["/Blog", "Technical articles and project updates"],
 			},
 			{
 				Label: T("nav.contributing", "Contributing"),
 				Href: "/Contributing",
 				Icon: "Users",
+				Tooltip: ["/Contributing", "Contribution guide and open issues"],
 			},
 			{
 				Label: T("nav.dashboard", "Dashboard"),
 				Href: "/Dashboard",
 				Icon: "LayoutDashboard",
+				Tooltip: [
+					"/Dashboard",
+					"Account, downloads, editor connection",
+				],
 			},
 			{
 				Label: T("nav.github", "GitHub"),
 				Href: "https://github.com/CodeEditorLand/Land",
 				Icon: "GitFork",
+				Tooltip: [
+					"github.com/CodeEditorLand/Land",
+					"Source repository - opens in new tab",
+				],
 			},
 		],
 		Actions: [
@@ -103,6 +118,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Size: "default",
 				Href: "/Account/SignIn",
 				Icon: "LogIn",
+				Tooltip: ["/Account/SignIn", "Sign in to your Land account"],
 			},
 			{
 				Text: T("actions.editorPortal", "Portal"),
@@ -110,6 +126,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Size: "default",
 				Href: "/Portal",
 				Icon: "Monitor",
+				Tooltip: ["/Portal", "Cloud, Provider, Local-First tiers"],
 			},
 			{
 				Text: T("actions.getStarted", "Get Land"),
@@ -117,6 +134,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Size: "default",
 				Href: "/Download",
 				Icon: "Download",
+				Tooltip: ["/Download", "Download the latest Land build"],
 			},
 		],
 	};
@@ -138,7 +156,11 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 		);
 	};
 
-	const RenderActionIcon = (IconName?: string, Label?: string) => {
+	const RenderActionIcon = (
+		IconName?: string,
+		Label?: string,
+		Tooltip?: string | string[],
+	) => {
 		if (!IconName) return null;
 		const Icon = IconRegistry[IconName];
 		if (!Icon) return null;
@@ -146,7 +168,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 			<>
 				{"\u2001"}
 				<IconTooltip
-					Label={Label || IconName}
+					Label={Tooltip || Label || IconName}
 					Icon={Icon}
 					SizeClass="h-4 w-4"
 				/>
@@ -174,7 +196,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 								className="inline-flex items-center">
 								{"\u2001"}
 								<IconTooltip
-									Label={Link.Label}
+									Label={Link.Tooltip || Link.Label}
 									Icon={Icon}
 									SizeClass="h-4 w-4"
 									ClassName="StaccatoIcon"
@@ -221,7 +243,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 							asChild>
 							<a href={Action.Href} onClick={OnClick}>
 								{Action.Text}
-								{RenderActionIcon(Action.Icon, Action.Text)}
+								{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
 							</a>
 						</Button>
 					))}
@@ -248,7 +270,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						asChild>
 						<a href={Action.Href} onClick={OnClick}>
 							{Action.Text}
-							{RenderActionIcon(Action.Icon, Action.Text)}
+							{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
 						</a>
 					</Button>
 				))
@@ -311,7 +333,9 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 											className="inline-flex items-center">
 											{"\u2001"}
 											<IconTooltip
-												Label={Link.Label}
+												Label={
+													Link.Tooltip || Link.Label
+												}
 												Icon={Icon}
 												SizeClass="h-3.5 w-3.5"
 												ClassName="StaccatoIcon"

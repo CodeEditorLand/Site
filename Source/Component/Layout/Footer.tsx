@@ -51,7 +51,7 @@ const Footer = ({ Content }: FooterProps) => {
 						Href: "/Download",
 					},
 					{
-						Label: T("columns.product.docs", "Docs"),
+						Label: T("columns.product.docs", "Documentation"),
 						Href: "/Doc",
 					},
 					{

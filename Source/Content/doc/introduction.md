@@ -65,7 +65,7 @@ source status and integration status, not by broad product promises.
 | **Sky**      | Astro workbench routes and WebView bridge                            |
 | **Wind**     | Effect-TS workbench service layer                                    |
 | **Vine**     | Protocol contracts and generated IPC stubs                           |
-| **Air**      | Background services for update, download, auth, indexing, and health |
+| **Air**      | Background services for update, download, authentication, indexing, and health |
 | **Echo**     | Rust scheduler primitives                                            |
 | **Mist**     | Local DNS and service-boundary work                                  |
 | **Grove**    | WIP Wasmtime extension-host path                                     |

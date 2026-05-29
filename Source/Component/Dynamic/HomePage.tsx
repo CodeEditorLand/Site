@@ -768,7 +768,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						},
 						{
 							Label: T("footer:columns.product.docs", {
-								defaultValue: "Docs",
+								defaultValue: "Documentation",
 							}),
 							Href: "https://github.com/CodeEditorLand/Land#readme",
 						},

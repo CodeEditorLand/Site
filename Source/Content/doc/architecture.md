@@ -98,7 +98,7 @@ matrix.
 | [**Sky**](https://Editor.Land/Doc/sky)           | Astro workbench routes and WebView bridge                              | UI source present                       |
 | [**Wind**](https://Editor.Land/Doc/wind)         | Effect-TS workbench service layer                                      | UI service source present               |
 | [**Vine**](https://Editor.Land/Doc/vine)         | Protocol contracts and generated IPC stubs                             | Active protocol layer                   |
-| [**Air**](https://Editor.Land/Doc/air)           | Background services for updates, downloads, auth, indexing, and health | Source present, profile-dependent       |
+| [**Air**](https://Editor.Land/Doc/air)           | Background services for updates, downloads, authentication, indexing, and health | Source present, profile-dependent       |
 | [**Echo**](https://Editor.Land/Doc/echo)         | Rust scheduler primitives for bounded background work                  | Source present                          |
 | [**Mist**](https://Editor.Land/Doc/mist)         | DNS isolation, resolver, and secure service-boundary code              | Source present, integration in progress |
 | [**Grove**](https://Editor.Land/Doc/grove)       | Wasmtime-backed WebAssembly host path                                  | Source present, integration in progress |
