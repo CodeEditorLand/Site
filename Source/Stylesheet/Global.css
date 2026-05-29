@@ -128,6 +128,21 @@ html {
 	scrollbar-color: rgba(26, 26, 26, 0.18) transparent;
 }
 
+/* ─── Masonry card responsive col-span ───────────────────────────
+ * The --masonry-col CSS custom property is set via inline style.
+ * Below lg the card resets to span-1 so the 1-col / 2-col grid
+ * takes over; above lg it uses the noise-computed value. */
+
+.MasonryCard {
+	grid-column: span 1;
+}
+
+@media (min-width: 1024px) {
+	.MasonryCard {
+		grid-column: span var(--masonry-col, 6);
+	}
+}
+
 /* ─────────────────────────────────────────────────────────────── */
 
 /* Accessibility: links must be distinguishable by more than color alone.

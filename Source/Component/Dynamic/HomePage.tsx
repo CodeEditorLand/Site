@@ -660,7 +660,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 				},
 			],
-			Columns: 3,
+			Columns: "masonry",
 		},
 		Download: {
 			Title: T("download:title", { defaultValue: "Download" }),
