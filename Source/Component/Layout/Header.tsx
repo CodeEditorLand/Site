@@ -90,7 +90,10 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Label: T("nav.contributing", "Contributing"),
 				Href: "/Contributing",
 				Icon: "Users",
-				Tooltip: ["/Contributing", "Contribution guide and open issues"],
+				Tooltip: [
+					"/Contributing",
+					"Contribution guide and open issues",
+				],
 			},
 			{
 				Label: T("nav.dashboard", "Dashboard"),
@@ -243,7 +246,11 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 							asChild>
 							<a href={Action.Href} onClick={OnClick}>
 								{Action.Text}
-								{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
+								{RenderActionIcon(
+									Action.Icon,
+									Action.Text,
+									Action.Tooltip,
+								)}
 							</a>
 						</Button>
 					))}
@@ -270,7 +277,11 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						asChild>
 						<a href={Action.Href} onClick={OnClick}>
 							{Action.Text}
-							{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
+							{RenderActionIcon(
+								Action.Icon,
+								Action.Text,
+								Action.Tooltip,
+							)}
 						</a>
 					</Button>
 				))
