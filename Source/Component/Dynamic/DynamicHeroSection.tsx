@@ -237,6 +237,27 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							};
 
 							const IconComponent = GetIcon();
+								// Map card titles to Spine protocol colors
+								const GetIconColor = (): string => {
+									const Title = Card.Title.toLowerCase();
+									if (Title.includes("rust") || Title.includes("core"))
+										return "var(--SpineTCP)";
+									if (Title.includes("tauri") || Title.includes("ui"))
+										return "var(--SpineIPC)";
+									if (Title.includes("effect") || Title.includes("service"))
+										return "var(--SpineWASM)";
+									if (Title.includes("grpc") || Title.includes("ipc"))
+										return "var(--SpinegRPC)";
+									if (Title.includes("extension"))
+										return "var(--SpineWASM)";
+									if (Title.includes("cross") || Title.includes("platform"))
+										return "var(--SpineIPC)";
+									if (Title.includes("vs code") || Title.includes("api"))
+										return "var(--SpinegRPC)";
+									if (Title.includes("open") || Title.includes("source"))
+										return "var(--SpineTCP)";
+									return "var(--SpineIPC)";
+								};
 
 							return (
 								<div
@@ -250,7 +271,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 											Label={Card.Tooltip ?? Card.Title}
 											Icon={IconComponent}
 											SizeClass="h-6 w-6"
-											ClassName="text-primary"
+											Color={GetIconColor()}
 										/>
 									</div>
 									<div className="text-center">
@@ -351,6 +372,27 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							};
 
 							const IconComponent = GetIcon();
+								// Map card titles to Spine protocol colors
+								const GetIconColor = (): string => {
+									const Title = Card.Title.toLowerCase();
+									if (Title.includes("rust") || Title.includes("core"))
+										return "var(--SpineTCP)";
+									if (Title.includes("tauri") || Title.includes("ui"))
+										return "var(--SpineIPC)";
+									if (Title.includes("effect") || Title.includes("service"))
+										return "var(--SpineWASM)";
+									if (Title.includes("grpc") || Title.includes("ipc"))
+										return "var(--SpinegRPC)";
+									if (Title.includes("extension"))
+										return "var(--SpineWASM)";
+									if (Title.includes("cross") || Title.includes("platform"))
+										return "var(--SpineIPC)";
+									if (Title.includes("vs code") || Title.includes("api"))
+										return "var(--SpinegRPC)";
+									if (Title.includes("open") || Title.includes("source"))
+										return "var(--SpineTCP)";
+									return "var(--SpineIPC)";
+								};
 
 							return (
 								<div
@@ -366,7 +408,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 											Label={Card.Tooltip ?? Card.Title}
 											Icon={IconComponent}
 											SizeClass="h-8 w-8"
-											ClassName="text-primary"
+											Color={GetIconColor()}
 										/>
 									</div>
 									<div className="text-center">
