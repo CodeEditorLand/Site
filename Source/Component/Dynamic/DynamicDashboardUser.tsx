@@ -2,8 +2,7 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { Eye, EyeOff } from "lucide-react";
-import type { ReactNode } from "react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
@@ -202,7 +201,9 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={() => SetPIIVisible((v) => !v)}
-					aria-label={PIIVisible ? "Hide personal data" : "Show personal data"}
+					aria-label={
+						PIIVisible ? "Hide personal data" : "Show personal data"
+					}
 					className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 					{PIIVisible ? (
 						<EyeOff className="h-4 w-4" aria-hidden="true" />
@@ -236,7 +237,9 @@ const DashboardUserInner = () => {
 				<div
 					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
 					aria-hidden="true">
-					<Pii visible={PIIVisible}>{DisplayName.slice(0, 1).toUpperCase()}</Pii>
+					<Pii visible={PIIVisible}>
+						{DisplayName.slice(0, 1).toUpperCase()}
+					</Pii>
 				</div>
 			</div>
 
@@ -245,7 +248,9 @@ const DashboardUserInner = () => {
 				<span className="text-muted-foreground">
 					{T("dashboard.account.nameLabel", { defaultValue: "Name" })}
 				</span>
-				<span className="font-medium"><Pii visible={PIIVisible}>{DisplayName}</Pii></span>
+				<span className="font-medium">
+					<Pii visible={PIIVisible}>{DisplayName}</Pii>
+				</span>
 			</div>
 
 			{/* Email + Verified Badge */}
@@ -320,7 +325,9 @@ const DashboardUserInner = () => {
 						})}
 					</span>
 					<span className="font-medium">
-						<Pii visible={PIIVisible}>{OrganizationName || OrganizationIdentifier}</Pii>
+						<Pii visible={PIIVisible}>
+							{OrganizationName || OrganizationIdentifier}
+						</Pii>
 					</span>
 				</div>
 			)}
@@ -332,7 +339,9 @@ const DashboardUserInner = () => {
 						defaultValue: "Member Since",
 					})}
 				</span>
-				<span className="text-muted-foreground"><Pii visible={PIIVisible}>{MemberSince}</Pii></span>
+				<span className="text-muted-foreground">
+					<Pii visible={PIIVisible}>{MemberSince}</Pii>
+				</span>
 			</div>
 
 			{/* Enterprise SSO Banner */}

@@ -54,21 +54,21 @@ const Halton = (Index: number): number => {
  * The Halton sequence distributes row indices across all five buckets
  * without any two identical ratios appearing on consecutive rows.
  *
- *  50/50  → [6, 6]
- *  58/42  → [7, 5]   ≈ 3:2
- *  42/58  → [5, 7]   ≈ 2:3
- *  67/33  → [8, 4]   = 2:1
- *  33/67  → [4, 8]   = 1:2
+ *  50/50  -> [6, 6]
+ *  58/42  -> [7, 5]   ~= 3:2
+ *  42/58  -> [5, 7]   ~= 2:3
+ *  67/33  -> [8, 4]   = 2:1
+ *  33/67  -> [4, 8]   = 1:2
  */
 const ROW_RATIOS: readonly [number, number][] = [
-	[5, 7], // 42/58 (Halton 0.5  → bucket 2)
-	[7, 5], // 58/42 (Halton 0.25 → bucket 1)
-	[8, 4], // 67/33 (Halton 0.75 → bucket 3)
-	[6, 6], // 50/50 (Halton 0.125→ bucket 0)
-	[8, 4], // 67/33 (Halton 0.625→ bucket 3)
-	[7, 5], // 58/42 (Halton 0.375→ bucket 1)
-	[4, 8], // 33/67 (Halton 0.875→ bucket 4)
-	[6, 6], // 50/50 (Halton 0.062→ bucket 0)
+	[5, 7], // 42/58 (Halton 0.5  -> bucket 2)
+	[7, 5], // 58/42 (Halton 0.25 -> bucket 1)
+	[8, 4], // 67/33 (Halton 0.75 -> bucket 3)
+	[6, 6], // 50/50 (Halton 0.125-> bucket 0)
+	[8, 4], // 67/33 (Halton 0.625-> bucket 3)
+	[7, 5], // 58/42 (Halton 0.375-> bucket 1)
+	[4, 8], // 33/67 (Halton 0.875-> bucket 4)
+	[6, 6], // 50/50 (Halton 0.062-> bucket 0)
 ] as const;
 
 /**
@@ -76,7 +76,7 @@ const ROW_RATIOS: readonly [number, number][] = [
  * Indexing pre-computed via Halton to guarantee unique-ratio spread.
  */
 const GetRowRatio = (RowIndex: number): [number, number] => {
-	const Noise = Halton(RowIndex + 1); // skip 0 → starts at 0.5
+	const Noise = Halton(RowIndex + 1); // skip 0 -> starts at 0.5
 	const BucketIndex = Math.min(Math.floor(Noise * 5), 4);
 	const BUCKETS: readonly [number, number][] = [
 		[6, 6],
@@ -142,7 +142,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						key={Index}
 						className="StaccatoStar StarRatingSymbol text-yellow-400"
 						aria-hidden="true">
-						{Index < Rating ? "★" : "☆"}
+						{Index < Rating ? "\u2605" : "\u2606"}
 					</span>
 				))}
 			</div>
@@ -242,7 +242,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 											)}
 											{Testimonial.Emoji && (
 												<span aria-hidden="true">
-													{" "}
+													{"\u2001"}
 													{Testimonial.Emoji}
 												</span>
 											)}
@@ -340,7 +340,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										)}
 										{Testimonial.Emoji && (
 											<span aria-hidden="true">
-												{" "}
+												{"\u2001"}
 												{Testimonial.Emoji}
 											</span>
 										)}

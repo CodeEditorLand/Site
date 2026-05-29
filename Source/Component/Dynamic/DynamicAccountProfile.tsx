@@ -2,8 +2,7 @@
 
 import { useAuth0 } from "@auth0/auth0-react";
 import { Eye, EyeOff, Lock, MailCheck, ShieldCheck } from "lucide-react";
-import type { ReactNode } from "react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
@@ -38,7 +37,13 @@ const SourceBadge = ({
 }) => (
 	<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
 		{icon && (
-			<img src={icon} alt={label} width="10" height="10" className="h-2.5 w-2.5" />
+			<img
+				src={icon}
+				alt={label}
+				width="10"
+				height="10"
+				className="h-2.5 w-2.5"
+			/>
 		)}
 		{label}
 	</span>
@@ -79,7 +84,9 @@ const FieldRow = ({
 						</span>
 					)}
 				</div>
-				<div className="mt-1 text-sm text-muted-foreground">{value}</div>
+				<div className="mt-1 text-sm text-muted-foreground">
+					{value}
+				</div>
 			</div>
 		</div>
 		{editHint && (
@@ -164,8 +171,7 @@ const DetectProviderProfileUrl = (Sub?: string): string | null => {
 	if (Sub.startsWith("github|")) return "https://github.com/settings/profile";
 	if (Sub.startsWith("google-oauth2|"))
 		return "https://myaccount.google.com/personal-info";
-	if (Sub.startsWith("gitlab|"))
-		return "https://gitlab.com/-/profile";
+	if (Sub.startsWith("gitlab|")) return "https://gitlab.com/-/profile";
 	return null;
 };
 
@@ -348,7 +354,9 @@ const AccountProfileInner = ({
 					{T("error", { defaultValue: "Authentication error" })}:{" "}
 					{AuthError.message}
 				</p>
-				<Button variant="outline" onClick={() => window.location.reload()}>
+				<Button
+					variant="outline"
+					onClick={() => window.location.reload()}>
 					{T("tryAgain", { defaultValue: "Try again" })}
 				</Button>
 			</div>
@@ -394,11 +402,10 @@ const AccountProfileInner = ({
 	const IsEnterprise = IsEnterpriseUser(User.sub);
 	const IsSocialUser =
 		User.sub !== undefined && !User.sub.startsWith("auth0|");
-	const IsEmailPasswordUser =
-		User.sub?.startsWith("auth0|") === true;
-	const OrganizationName = (User as Record<string, unknown>)[
-		"org_name"
-	] as string | undefined;
+	const IsEmailPasswordUser = User.sub?.startsWith("auth0|") === true;
+	const OrganizationName = (User as Record<string, unknown>)["org_name"] as
+		| string
+		| undefined;
 	const OrganizationIdentifier = (User as Record<string, unknown>)[
 		"org_id"
 	] as string | undefined;
@@ -432,13 +439,14 @@ const AccountProfileInner = ({
 					</h2>
 					<div className="mt-1 flex flex-wrap items-center gap-2">
 						<span className="text-sm text-muted-foreground">
-							<Pii visible={PIIVisible}>
-								{User.email || "--"}
-							</Pii>
+							<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
 						</span>
 						{User.email_verified === true && (
 							<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700">
-								<MailCheck className="h-2.5 w-2.5" aria-hidden="true" />
+								<MailCheck
+									className="h-2.5 w-2.5"
+									aria-hidden="true"
+								/>
 								Verified
 							</span>
 						)}
@@ -495,7 +503,10 @@ const AccountProfileInner = ({
 			{IsEnterprise && (
 				<div className="border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
 					<div className="flex items-center gap-2">
-						<ShieldCheck className="h-4 w-4 shrink-0" aria-hidden="true" />
+						<ShieldCheck
+							className="h-4 w-4 shrink-0"
+							aria-hidden="true"
+						/>
 						<span>
 							Enterprise SSO active
 							{(OrganizationName || OrganizationIdentifier) && (
@@ -512,8 +523,9 @@ const AccountProfileInner = ({
 						</span>
 					</div>
 					<p className="mt-1 pl-6 text-xs text-green-600">
-						Profile fields are managed by your organization's identity
-						provider. Contact your IT administrator to update them.
+						Profile fields are managed by your organization's
+						identity provider. Contact your IT administrator to
+						update them.
 					</p>
 				</div>
 			)}
@@ -530,7 +542,10 @@ const AccountProfileInner = ({
 
 			{/* ── Data storage notice ───────────────────────────────── */}
 			<div className="flex items-start gap-4 border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4">
-				<Lock className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+				<Lock
+					className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
+					aria-hidden="true"
+				/>
 				<div className="flex-1 space-y-1">
 					<div className="flex flex-wrap items-center gap-2">
 						<span className="text-sm font-medium">
@@ -542,8 +557,8 @@ const AccountProfileInner = ({
 						Authentication, profile data, and session tokens are
 						managed by Auth0 (by Okta) and stored on their EU
 						infrastructure. Code Editor Land does not store your
-						password. Social login credentials (Google, GitHub, etc.)
-						remain with your identity provider.
+						password. Social login credentials (Google, GitHub,
+						etc.) remain with your identity provider.
 					</p>
 				</div>
 			</div>
@@ -552,7 +567,9 @@ const AccountProfileInner = ({
 			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
 				<div className="flex items-center justify-between border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
-						{T("profileSection", { defaultValue: "Profile Fields" })}
+						{T("profileSection", {
+							defaultValue: "Profile Fields",
+						})}
 					</h3>
 					<span className="text-xs text-muted-foreground">
 						All data stored in Auth0
@@ -571,7 +588,11 @@ const AccountProfileInner = ({
 								? `Set by your ${ProviderLabel} account. To change it, update your profile at ${ProviderLabel}.`
 								: "Contact support to update your display name."
 						}
-						editHref={IsSocialUser ? ProviderProfileUrl ?? undefined : undefined}
+						editHref={
+							IsSocialUser
+								? (ProviderProfileUrl ?? undefined)
+								: undefined
+						}
 					/>
 
 					{/* Email */}
@@ -605,7 +626,11 @@ const AccountProfileInner = ({
 									? "Email changes require re-verification. Contact support to initiate an email update."
 									: undefined
 						}
-						editHref={IsSocialUser ? ProviderProfileUrl ?? undefined : undefined}
+						editHref={
+							IsSocialUser
+								? (ProviderProfileUrl ?? undefined)
+								: undefined
+						}
 					/>
 
 					{/* Profile picture */}
@@ -626,7 +651,11 @@ const AccountProfileInner = ({
 									</span>
 									<Pii visible={PIIVisible}>
 										<span className="font-mono text-xs text-muted-foreground">
-											{User.picture.split("/").pop()?.slice(0, 24)}…
+											{User.picture
+												.split("/")
+												.pop()
+												?.slice(0, 24)}
+											…
 										</span>
 									</Pii>
 								</span>
@@ -644,7 +673,11 @@ const AccountProfileInner = ({
 								? `Avatar is pulled from your ${ProviderLabel} account on each login.`
 								: "Profile picture URL can be updated via the Auth0 Management API. Contact support."
 						}
-						editHref={IsSocialUser ? ProviderProfileUrl ?? undefined : undefined}
+						editHref={
+							IsSocialUser
+								? (ProviderProfileUrl ?? undefined)
+								: undefined
+						}
 					/>
 
 					{/* Identity provider */}
@@ -693,7 +726,9 @@ const AccountProfileInner = ({
 						label="User ID"
 						value={
 							<code className="font-mono text-xs">
-								<Pii visible={PIIVisible}>{User.sub || "--"}</Pii>
+								<Pii visible={PIIVisible}>
+									{User.sub || "--"}
+								</Pii>
 							</code>
 						}
 						source="Auth0"
@@ -717,7 +752,8 @@ const AccountProfileInner = ({
 								value={
 									<Pii visible={PIIVisible}>
 										<span className="font-medium">
-											{OrganizationName || OrganizationIdentifier}
+											{OrganizationName ||
+												OrganizationIdentifier}
 										</span>
 									</Pii>
 								}
@@ -741,7 +777,10 @@ const AccountProfileInner = ({
 							<div className="flex items-start justify-between gap-4">
 								<div>
 									<div className="flex items-center gap-2 text-sm font-medium">
-										<Lock className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+										<Lock
+											className="h-3.5 w-3.5 text-muted-foreground"
+											aria-hidden="true"
+										/>
 										Password
 										<SourceBadge label="Auth0" />
 										<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600">
@@ -750,8 +789,8 @@ const AccountProfileInner = ({
 									</div>
 									<p className="mt-1 text-xs text-muted-foreground">
 										A reset link is sent to your email. You
-										will not be signed out until you set a new
-										password.
+										will not be signed out until you set a
+										new password.
 									</p>
 								</div>
 								{PasswordResetState === "idle" && (
@@ -768,7 +807,7 @@ const AccountProfileInner = ({
 									</span>
 								)}
 								{PasswordResetState === "sent" && (
-									<span className="shrink-0 inline-flex items-center gap-1 border border-green-200 bg-green-50 px-2 py-1 text-xs text-green-700">
+									<span className="inline-flex shrink-0 items-center gap-1 border border-green-200 bg-green-50 px-2 py-1 text-xs text-green-700">
 										<MailCheck className="h-3 w-3" />
 										Email sent
 									</span>
@@ -786,7 +825,10 @@ const AccountProfileInner = ({
 					{IsSocialUser && (
 						<div className="px-6 py-4">
 							<div className="flex items-center gap-2 text-sm font-medium">
-								<Lock className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+								<Lock
+									className="h-3.5 w-3.5 text-muted-foreground"
+									aria-hidden="true"
+								/>
 								Password
 								<SourceBadge
 									label={ProviderLabel}
@@ -798,9 +840,9 @@ const AccountProfileInner = ({
 							</div>
 							<p className="mt-1 text-xs text-muted-foreground">
 								You signed in via {ProviderLabel}. Password
-								management is handled entirely by {ProviderLabel} -
-								Code Editor Land never receives or stores your
-								password.
+								management is handled entirely by{" "}
+								{ProviderLabel} - Code Editor Land never
+								receives or stores your password.
 								{ProviderProfileUrl && (
 									<>
 										{" "}
@@ -820,7 +862,10 @@ const AccountProfileInner = ({
 					{/* Session */}
 					<div className="px-6 py-4">
 						<div className="flex items-center gap-2 text-sm font-medium">
-							<ShieldCheck className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+							<ShieldCheck
+								className="h-3.5 w-3.5 text-muted-foreground"
+								aria-hidden="true"
+							/>
 							Active Session
 							<SourceBadge label="Auth0" />
 							<span className="inline-flex items-center bg-[var(--Mute)] px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
@@ -840,14 +885,18 @@ const AccountProfileInner = ({
 			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
 				<div className="border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
-						{T("actionsSection", { defaultValue: "Account Actions" })}
+						{T("actionsSection", {
+							defaultValue: "Account Actions",
+						})}
 					</h3>
 				</div>
 				<div className="space-y-3 px-6 py-4">
 					<a
 						href="/Dashboard"
 						className="StaccatoButton inline-flex w-full items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
-						{T("goToDashboard", { defaultValue: "Go to Dashboard" })}
+						{T("goToDashboard", {
+							defaultValue: "Go to Dashboard",
+						})}
 						<span className="InlineSeparator">&rarr;</span>
 					</a>
 					<button
