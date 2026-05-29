@@ -1,0 +1,90 @@
+const actions = {"signIn":"Bei Ihrem Konto anmelden"};
+const brand$1 = {"name":"Code Editor Land","tagline":"Schneller als VS Code. Leichter als Electron. Für immer kostenlos."};
+const breadcrumb = {"home":"Startseite"};
+const button = {"backToHome":"Zur Startseite","backToTop":"Nach oben","download":"Land kostenlos herunterladen","learnMore":"Was Land anders macht","signIn":"Bei Ihrem Account anmelden","signUp":"Kostenloses Konto erstellen"};
+const comingSoon = "Demnächst verfügbar";
+const error = {"404":"404 - Seite nicht gefunden","pageNotFound":"Die gesuchte Seite existiert nicht oder wurde verschoben.\n\nBitte überprüfen Sie die URL auf Tippfehler oder kehren Sie zur Startseite zurück.\n\nWenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie unser Support-Team und wir helfen Ihnen weiter."};
+const label = {"email":"E-Mail-Adresse","password":"Passwort"};
+const nav = {"docs":"Dokumentation","downloads":"Download","github":"GitHub Repository"};
+const docs = {"pageTitle":"Dokumentation","pageSubtitle":"Alles, was Sie zum Installieren, Bauen und Beitragen zu Land benötigen.","gettingStarted":{"title":"In Minuten loslegen","description":"Die README führt Sie durch Installation, ersten Build und die Fünfzehn-Element-Architektur. Keine Rust- oder Tauri-Vorkenntnisse erforderlich."},"issueTracker":{"title":"Einen Bug melden oder ein Feature anfragen","description":"Öffnen Sie ein Issue auf GitHub. Das Team überwacht täglich und kennzeichnet good-first-issue-Aufgaben für neue Mitwirkende."},"architecture":{"heading":"Wie die Architektur funktioniert","intro":"Land ersetzt den Electron-Stack von VS Code Element für Element. Jedes der fünfzehn Elemente ist ein unabhängiges Open-Source-Repository:","mountain":{"description":"Verwaltet Fenster, Dateisystem, Prozesse","subtitle":"Rust/Tauri-nativer Backend"},"cocoon":{"description":"Führt VS Code-Erweiterungen über Effect-TS aus","subtitle":"TypeScript-Erweiterungs-Host"},"wind":{"description":"Neuimplementierung des VS Code-Workbench","subtitle":"TypeScript-UI-Dienste"},"sky":{"description":"Rendert die Editor-Oberfläche","subtitle":"Astro-UI-Komponenten"},"air":{"description":"Updates, Downloads, Kryptosignierung","subtitle":"Rust-Hintergrunddaemon"},"echo":{"description":"Hochleistungsfähiger Work-Stealing-Executor","subtitle":"Rust-Aufgabenplaner"},"common":{"description":"Abstrakte Kernbibliothek - Trait-Definitionen und DTOs","subtitle":"Rust-Kernbibliothek"},"vine":{"description":"gRPC-Protokolldefinition und -Implementierung","subtitle":"Protobuf/Rust IPC"},"rest":{"description":"JS-Bundler für VS Code-Plattformcode","subtitle":"Rust/OXC-Bundler"},"output":{"description":"Gebündelte JS-Artefakte von Rest","subtitle":"JavaScript-Laufzeit-Bundle"},"mist":{"description":"WebSocket-Kommunikationsschicht","subtitle":"Rust WebSocket"},"grove":{"description":"Nativer WASM- und Rhai-Erweiterungs-Host","subtitle":"Rust/WASM-Erweiterungs-Host"},"worker":{"description":"Web Workers für das Frontend","subtitle":"TypeScript Web Workers"},"sidecar":{"description":"Vorgefertigte Node.js-Binärdateien","subtitle":"Plattformübergreifendes Node.js"},"maintain":{"description":"CI/CD und Wartungsskripte","subtitle":"Build-Werkzeuge"}},"repositories":{"heading":"Quell-Repositories","mainMonorepo":"Haupt-Monorepo","tauriBackend":"Tauri-Backend","extensionHost":"Erweiterungs-Host","viewAll":"Alle Repositories anzeigen","windServiceLayer":"UI-Dienstschicht","skyComponentLayer":"UI-Komponentenschicht","airDaemon":"Hintergrunddaemon"}};
+const blog = {"pageTitle":"Blog","pageSubtitle":"Neuigkeiten, Aktualisierungen und technische Artikel vom Team.","comingSoonHeading":"Demnächst verfügbar","comingSoonText":"Wir bereiten Artikel über die Architektur, den Entwicklungsprozess und die Roadmap für Code Editor Land vor.\nSchauen Sie bald wieder vorbei für Updates.","joinDiscussions":"Der Community beitreten","followGitHub":"Auf GitHub folgen","reportIssue":"Problem melden","followNote":"Verfolgen Sie den Fortschritt auf GitHub oder schauen Sie hier nach veröffentlichten Artikeln.","topic":{"architecture":"Tiefgehender Einblick in die Mountain/Cocoon/Wind/Sky/Air/Echo-Elementarchitektur und wie sie Electron ersetzen","effectTS":"Wie Effect-TS typsichere UI-Dienste mit strukturierter Nebenläufigkeit und Fehlerbehandlung ermöglicht","grpc":"gRPC-IPC-Protokolldesign: Rust und TypeScript mit nativer Geschwindigkeit verbinden","extensions":"VS Code-Erweiterungskompatibilität: vorhandene Erweiterungen ohne Änderungen über Cocoon ausführen","ngi":"Entwicklung mit dem NGI0 Commons Fund: Open-Source-Nachhaltigkeit und die europäische Initiative für offenes Internet"},"upcomingTopicsHeading":"Kommende Themen"};
+const contributing = {"pageTitle":"Beitragen","pageSubtitle":"Land ist Open Source und wird öffentlich entwickelt.\n\nJeder Beitrag (Code, Docs, Tests oder Design) geht an echte Nutzer.","guide":{"title":"Beitragsleitfaden","description":"Lesen Sie CONTRIBUTING.md auf GitHub für den vollständigen Einrichtungsweg: Umgebung, Branch-Konventionen und Einreichungsverfahren."},"goodFirstIssues":{"title":"Gute erste Issues","description":"Durchsuchen Sie Issues mit dem Label \"good first issue\", um zugängliche Aufgaben für neue Mitwirkende zu finden."},"howToContribute":{"heading":"So tragen Sie bei"},"step1":{"title":"Forken und klonen","description":"Forken Sie das Land-Repository auf GitHub und klonen Sie es lokal mit Submodulen:"},"step2":{"title":"Umgebung einrichten","description":"Installieren Sie Rust 1.95.0+, Node.js und pnpm. Dann ausführen:"},"step3":{"title":"Änderungen vornehmen","description":"Erstellen Sie einen Branch, nehmen Sie Ihre Änderungen vor und befolgen Sie die PascalCase-Namenskonvention."},"step4":{"title":"Pull Request einreichen","description":"Pushen Sie Ihren Branch und öffnen Sie einen Pull Request gegen den Current-Branch.\n\nBeschreiben Sie, was und warum. Ein Satz genügt."},"ways":{"heading":"Möglichkeiten zur Mitwirkung","code":{"title":"Code","description":"Beheben Sie Bugs, implementieren Sie Features oder verbessern Sie die Performance in Rust oder TypeScript."},"documentation":{"title":"Dokumentation","description":"Verbessern Sie Anleitungen, fügen Sie Beispiele hinzu oder übersetzen Sie Inhalte in andere Sprachen."},"testing":{"title":"Testen","description":"Schreiben Sie Tests, reproduzieren Sie gemeldete Bugs oder helfen Sie bei der Triage offener Issues."},"design":{"title":"Design","description":"Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeit bei."}},"elements":{"heading":"Fünfzehn Elemente, ein Editor","description":"Land besteht aus fünfzehn modularen Elementen, jeweils ein eigenständiges Rust-Crate oder TypeScript-Paket.","docs":"Jedes Element hat seine eigene README mit Architekturdetails. Zu finden in Land/Element/"},"funding":{"heading":"Finanzierung","description":"Land wird durch den NLnet NGI0 Commons Fund finanziert.\n\nDieses Stipendium ermöglicht Vollzeit-Open-Source-Entwicklung.","nlnetIntro":"Code Editor Land wurde finanziert durch den","nlnetFundName":"NGI0 Commons Fund","nlnetEstablishedBy":", einen Fonds, gegründet von","nlnetSuffix":"mit finanzieller Unterstützung des Next-Generation-Internet-Programms der Europäischen Kommission, unter Fördervereinbarung Nr. 101135429.\n\nDiese Finanzierung ermöglicht eine nachhaltige Open-Source-Entwicklung des Projekts.","playformInfo":"Das Projekt wird von PlayForm betrieben, einem Unternehmen mit Sitz in Sofia, Bulgarien.\n\nPlayForm fungiert als Open-Source-Steward für Code Editor Land im Rahmen des NGI0 Commons Fund.","viewProject":"Besuchen Sie die","nlnetProjectPage":"NLnet-Projektseite","viewProjectSuffix":"für weitere Details zum Förderprogramm und den Zielen."},"conduct":{"heading":"Verhaltenskodex","description":"Alle Teilnehmer der Land-Community sollen respektvoll und konstruktiv sein.\n\nLesen Sie den vollständigen Code of Conduct auf GitHub."}};
+const sales = {"pageTitle":"Enterprise-Anfragen","pageSubtitle":"Setzen Sie Land in Ihrer Organisation ein? Melden Sie sich und wir klären die Details gemeinsam.","form":{"firstName":"Vorname","lastName":"Nachname","email":"Geschäftliche E-Mail","company":"Unternehmen","teamSize":"Teamgröße","teamSizePlaceholder":"Teamgröße auswählen","message":"Wie können wir helfen?","messagePlaceholder":"Erzählen Sie uns von Ihren Anforderungen, Bereitstellungsbedürfnissen oder Fragen.","submitButton":"Anfrage senden"},"features":{"heading":"Was Enterprise umfasst","prioritySupport":"Prioritätssupport und garantiertes SLA","customDeployment":"Individuelle Deployment-Optionen Cloud, On-Prem oder Air-Gapped","volumeLicensing":"Volumenlizenzierung für große Teams","accountManagement":"Dedizierter Account-Manager für Ihre Organisation","securityReview":"Sicherheitsüberprüfung und Compliance-Dokumentation","customIntegrations":"Individuelle Integrationen und Entwicklungsarbeit"},"contact":{"heading":"So erreichen Sie uns","directHeading":"Direktkontakt","description":"Bevorzugen Sie E-Mail? Schreiben Sie uns direkt:","githubNote":"Enterprise-Anfragen bearbeiten wir über GitHub Issues.\n\nSo ist Ihre Anfrage nachverfolgbar, für das gesamte Team sichtbar und wird zeitnah beantwortet.","openIssueHeading":"GitHub Issue eröffnen","openIssueDescription":"Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Bedürfnisse Ihrer Organisation.\n\nNennen Sie Firmennamen, Teamgröße, Anwendungsfall und Deployment-Anforderungen.\n\nWir beobachten Issues täglich.","openIssueButton":"GitHub Issue eröffnen","issueIncludeLabel":"Was in Ihrem Issue enthalten sein sollte:","issueIncludeText":"Firmenname, Teamgröße, geplanter Anwendungsfall, Bereitstellungsumgebung (Cloud/On-Premise), Zeitrahmen und spezifische Support- oder Compliance-Anforderungen.","operatedBy":"Betrieben von PlayForm, Sofia, Bulgarien"},"openSource":{"heading":"Weiterhin Open Source","description":"Enterprise-Pläne fügen Support, SLA und individuelle Entwicklung hinzu.\n\nDer Code selbst bleibt CC0. Forken, lesen, ausliefern."}};
+const oauth = {"completing":"Anmeldung wird abgeschlossen...","failed":"Anmeldung fehlgeschlagen","errorGeneric":"Bei der Anmeldung ist ein Fehler aufgetreten. Bitte erneut versuchen.","errorExpired":"Authentifizierungssitzung abgelaufen.\n\nBitte versuchen Sie es erneut.","errorProvider":"OAuth-Anbieter hat einen Fehler zurückgegeben.\n\nBitte versuchen Sie es erneut.","errorNoToken":"Kein Authentifizierungstoken erhalten.","backToSignIn":"Zurück zur Anmeldung","goToDashboard":"Zum Dashboard","success":{"title":"Sie sind angemeldet","redirect":"Weiterleitung zu Ihrem Dashboard..."}};
+const dashboard = {"pageTitle":"Dashboard","pageSubtitle":"Ihr Land-Konto, Downloads und Editor-Verbindung.","breadcrumbLabel":"Dashboard","account":{"heading":"Konto","nameLabel":"Name","emailLabel":"E-Mail","planLabel":"Plan","planFree":"Kostenlos","planEnterprise":"Enterprise","providerLabel":"Anbieter","organizationLabel":"Organisation","memberSinceLabel":"Mitglied seit","notSignedIn":"Melden Sie sich an, um Ihre Kontodaten zu sehen.","signInButton":"Anmelden","emailNotVerified":"E-Mail nicht verifiziert.\nPrüfen Sie Ihren Posteingang.","enterpriseSSO":"Enterprise SSO aktiv"},"downloads":{"heading":"Downloads","description":"Laden Sie den neuesten Land-Build für Ihre Plattform herunter. Nativ auf macOS, Windows und Linux.","goButton":"Zu den Downloads"},"quickLinks":{"heading":"Schnellzugriff","docs":"Dokumentation","community":"Community","reportIssue":"Problem melden","contribute":"Beitragen"},"settings":{"heading":"Einstellungen","sync":{"title":"Einstellungen synchronisieren","description":"Synchronisieren Sie Ihre Editor-Einstellungen geräteübergreifend."},"extensionSync":{"title":"Erweiterungs-Synchronisierung","description":"Halten Sie Ihre installierten Erweiterungen geräteübergreifend synchron."},"account":{"title":"Konto","description":"Aktualisieren Sie Ihr Profil und verwalten Sie Ihr Konto.","manageButton":"Verwalten"}},"telemetry":{"heading":"Telemetrie-Status","production":{"title":"Produktions-Build-Telemetrie","description":"Telemetrie ist standardmäßig deaktiviert.\n\nDas Telemetry-Cargo-Feature ist nicht in den Standardfeatures enthalten.\n\nAlle Traces kompilieren zu kostenlosen No-Ops."},"otel":{"title":"OpenTelemetry (Opt-In)","description":"Aktivieren mit: `cargo build --features Telemetry`.\n\nNur lokales OTEL-Tracing, Metriken und verteilte Spans.\n\nKeine externe Übertragung."},"effect":{"title":"Effect-TS lokale Telemetrie","description":"Der Cocoon-Erweiterungshost verwendet TelemetryService für interne RPC-Instrumentierung und Bootstrap-Zeitmessung.\n\nAlle Daten bleiben lokal."}},"buildLog":{"heading":"Build-Konfiguration","subtitle":"Aktive Build-Variante und Bereitstellungsmodus.\n\nVerfügbar über die Local-First Air Daemon-Verbindung.","profile":{"heading":"Aktives Profil"},"deployment":{"heading":"Bereitstellungsmodus"},"matrix":{"heading":"Testmatrix"}},"portal":{"heading":"Authentifizierungsstufen","subtitle":"Ihre aktuelle Authentifizierungsmethode und verfügbare Stufen."},"editor":{"heading":"Editor-Verbindung","subtitle":"Verbinden Sie die Website mit Ihrer laufenden Land-Editor-Instanz.","status":"Nicht verbunden","description":"Der Air Daemon verbindet dieses Dashboard mit einem laufenden Land-Editor über WebSocket.\n\nStarten Sie Land, um Echtzeit-Build-Protokolle, Telemetrie und Konfigurationsverwaltung zu aktivieren.","connect":"Über Portal verbinden"},"partners":{"heading":"Partner und Danksagungen"}};
+const DeCommon = {
+  actions,
+  brand: brand$1,
+  breadcrumb,
+  button,
+  comingSoon,
+  error,
+  label,
+  nav,
+  docs,
+  blog,
+  contributing,
+  sales,
+  oauth,
+  dashboard,
+};
+
+const Common = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	actions,
+	blog,
+	brand: brand$1,
+	breadcrumb,
+	button,
+	comingSoon,
+	contributing,
+	dashboard,
+	default: DeCommon,
+	docs,
+	error,
+	label,
+	nav,
+	oauth,
+	sales
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const brand = {"name":"Code Editor Land","description":"Der Code-Editor der nächsten Generation.\nOpen Source und für immer kostenlos."};
+const columns = {"product":{"title":"Produkt","features":"Funktionen","downloads":"Herunterladen","docs":"Dokumentation","blog":"Blog"},"company":{"title":"Gemeinschaft","issues":"Diskussionen","contributing":"Mitwirken","github":"GitHub","enterprise":"Enterprise"},"legal":{"title":"Rechtliches","privacy":"Datenschutz","terms":"Nutzungsbedingungen","license":"Lizenz"}};
+const social = {"github":"GitHub","twitter":"X (Twitter)","discord":"Discord","linkedin":"LinkedIn"};
+const bottomBar = {"copyright":"© {{year}} Code Editor Land. Alle Rechte vorbehalten.","builtBy":"Erstellt vom Code Editor Land Team","madeWith":"Erstellt mit"};
+const funding = {"prefix":"Dieses Projekt wurde finanziert durch den ","ngiFund":"NGI0 Commons Fund","nlnetIntro":", einen Fonds der ","nlnet":"NLnet","euSupport":" mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr. 101135429. ","projectPage":"Projektseite anzeigen"};
+const DeFooter = {
+  brand,
+  columns,
+  social,
+  bottomBar,
+  funding,
+};
+
+const Footer = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	bottomBar,
+	brand,
+	columns,
+	default: DeFooter,
+	funding,
+	social
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const Blog = {
+  "meta.title": "Blog | Code Editor Land",
+  "meta.description": "Analyses d'architecture, notes de version et mises à jour.",
+  "page.title": "Blog",
+  "page.subtitle": "Architecture, versions et la route à venir.",
+  "card.readMore": "Lire la suite",
+  "card.minRead": "min de lecture",
+  "empty.title": "Aucun article pour l'instant",
+  "empty.subtitle": "Revenez bientôt pour des mises à jour.",
+};
+
+const Blog$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+	__proto__: null,
+	default: Blog
+}, Symbol.toStringTag, { value: 'Module' }));
+
+export { Blog$1 as B, Common as C, DeCommon as D, Footer as F, DeFooter as a };

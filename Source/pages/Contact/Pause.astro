@@ -1,0 +1,60 @@
+---
+import DynamicContactForm from "../../Component/Dynamic/DynamicContactForm";
+import { Header } from "../../Component/Layout/Header";
+import Base from "../../Layout/Base.astro";
+import { Requests } from "../../Library/Contact/Request.js";
+import { GetI18n } from "../../Library/I18n/Server";
+
+const T = GetI18n();
+
+const Auth0Domain = (
+	await import("../../Function/Configuration/Auth0Domain.js")
+).default;
+const Auth0ClientIdentifier = (
+	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
+).default;
+
+const Config = Requests["PAUSE"];
+---
+
+<Base
+	Title="Restrict Processing | Code Editor Land"
+	Description="Request restriction of processing of your personal data (GDPR Art. 18)."
+	Url="https://land.playform.cloud/Contact/Pause"
+	lang="en">
+	<Header client:load />
+
+	<div class="container mx-auto max-w-5xl px-4">
+		<nav aria-label="Breadcrumb" class="pt-6">
+			<ol
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+				<li>
+					<a href="/" class="transition-colors hover:text-foreground"
+						>Home</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<a
+						href="/Dashboard"
+						class="transition-colors hover:text-foreground"
+						>Dashboard</a
+					>
+				</li>
+				<li class="mx-2">/</li>
+				<li>
+					<span class="font-medium text-foreground"
+						>Restrict Processing</span
+					>
+				</li>
+			</ol>
+		</nav>
+	</div>
+
+	<DynamicContactForm
+		client:load
+		Config={{ Config }}
+		Domain={{ Auth0Domain }}
+		ClientIdentifier={{ Auth0ClientIdentifier }}
+	/>
+</Base>
