@@ -49,7 +49,7 @@ const Posts = BlogEntries.map((Entry) => ({
 <Base
 	Title={MetaTitle}
 	Description={MetaDescription}
-	Url="https://land.playform.cloud/Blog"
+	Url={Astro.url.href}
 	lang="en">
 	<Header client:load />
 

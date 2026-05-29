@@ -30,7 +30,7 @@ const MetaDescription = T("meta.dashboard.description", {
 <Base
 	Title={MetaTitle}
 	Description={MetaDescription}
-	Url="https://land.playform.cloud/Dashboard"
+	Url={Astro.url.href}
 	lang="en">
 	<DynamicAuthHeader
 		client:load
