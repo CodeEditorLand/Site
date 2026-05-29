@@ -791,8 +791,6 @@
 		background-color: var(--Background);
 		color: var(--Foreground);
 		padding: 2rem;
-		border: 1px solid var(--Border);
-		border-radius: 0;
 	}
 
 	@media (min-width: 768px) {

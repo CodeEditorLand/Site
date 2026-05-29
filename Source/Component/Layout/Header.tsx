@@ -167,9 +167,9 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						{...(Link.Href.startsWith("http")
 							? { target: "_blank", rel: "noopener noreferrer" }
 							: {})}>
-						{Link.Label}
+						<span className="HeaderLinkLabel">{Link.Label}</span>
 						{Icon && (
-							<>
+							<span aria-hidden="true" className="inline-flex items-center">
 								{"\u2001"}
 								<IconTooltip
 									Label={Link.Label}
@@ -177,7 +177,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 									SizeClass="h-4 w-4"
 									ClassName="StaccatoIcon"
 								/>
-							</>
+							</span>
 						)}
 					</a>
 				);
@@ -300,9 +300,9 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 												rel: "noopener noreferrer",
 											}
 										: {})}>
-									{Link.Label}
+									<span className="HeaderLinkLabel">{Link.Label}</span>
 									{Icon && (
-										<>
+										<span aria-hidden="true" className="inline-flex items-center">
 											{"\u2001"}
 											<IconTooltip
 												Label={Link.Label}
@@ -310,7 +310,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 												SizeClass="h-3.5 w-3.5"
 												ClassName="StaccatoIcon"
 											/>
-										</>
+										</span>
 									)}
 								</a>
 							);

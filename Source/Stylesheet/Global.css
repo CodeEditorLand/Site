@@ -135,8 +135,8 @@ html {
 a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 		[class*="Social"]
 	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
-		[aria-label]
-	) {
+		[class*="NavLink"]
+	):not([aria-label]) {
 	text-decoration: underline;
 	text-decoration-color: var(--Border);
 	text-underline-offset: 2px;
@@ -145,7 +145,7 @@ a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 a:not([class*="Button"]):not([class*="Logo"]):not([class*="Icon"]):not(
 		[class*="Social"]
 	):not([class*="StaccatoLogo"]):not([class*="StaccatoSocial"]):not(
-		[aria-label]
-	):hover {
+		[class*="NavLink"]
+	):not([aria-label]):hover {
 	text-decoration-color: var(--Primary);
 }

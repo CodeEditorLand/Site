@@ -13,6 +13,19 @@
 	color: var(--Foreground);
 }
 
+/* Nav link label - underline only the text, not the em quad + icon */
+
+.HeaderSubLink .HeaderLinkLabel {
+	text-decoration: underline;
+	text-decoration-color: var(--Border);
+	text-underline-offset: 2px;
+	transition: text-decoration-color 0.15s ease;
+}
+
+.HeaderSubLink:hover .HeaderLinkLabel {
+	text-decoration-color: var(--Primary);
+}
+
 /* Nav dropdown (desktop hamburger panel) */
 
 .NavDropdown {
