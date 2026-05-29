@@ -1,8 +1,10 @@
 export const __INCREMENT__ = `${(await import("./Source/Function/Configuration/Environment.js")).default}-${(await import("ulid")).ulid()}`;
 
 const On = (await import("./Source/Function/Configuration/On.js")).default;
+
 const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 	.default;
+
 const { resolve: Resolve } = await import("node:path");
 
 export default (await import("astro/config")).defineConfig({
@@ -53,6 +55,7 @@ export default (await import("astro/config")).defineConfig({
 
 		(await import("@astrojs/mdx")).default({
 			syntaxHighlight: "shiki",
+
 			shikiConfig: {
 				theme: "github-light",
 			},
@@ -61,11 +64,13 @@ export default (await import("astro/config")).defineConfig({
 		(await import("@astrojs/sitemap")).default({
 			filter: (Page) => {
 				const Lower = Page.toLowerCase();
+
 				return (
 					!Lower.includes("/dashboard") &&
 					!Lower.includes("/account/") &&
 					!Lower.includes("/oauth/")
 				);
+
 				// TODO: Add blog slugs once B1/B2 (Blog Content Collections) are merged
 			},
 		}),
@@ -86,6 +91,7 @@ export default (await import("astro/config")).defineConfig({
 			? [
 					(await import("@playform/inline")).default({
 						Logger: 1,
+
 						Beasties: {
 							pruneSource: false,
 						},
@@ -98,22 +104,29 @@ export default (await import("astro/config")).defineConfig({
 			? [
 					(await import("@playform/compress")).default({
 						Logger: 1,
+
 						HTML: {
 							"html-minifier-terser": {
 								minifyCSS: false,
 							},
 						},
+
 						CSS: {
 							csso: false,
 						},
+
 						JavaScript: {
 							terser: {
 								compress: {
 									passes: 2,
+
 									drop_console: !On,
+
 									dead_code: true,
+
 									unused: true,
 								},
+
 								mangle: !On,
 							},
 						},
@@ -142,22 +155,31 @@ export default (await import("astro/config")).defineConfig({
 			// pre-bundled copy, creating two React instances and triggering
 			// "Invalid hook call" on every SSR render after a dep re-optimization.
 			exclude: ["@auth0/auth0-react"],
+
 			include: [
 				"react",
+
 				"react-dom",
+
 				"react-dom/client",
+
 				"react/jsx-runtime",
+
 				"react/jsx-dev-runtime",
+
 				"firebase/app",
 			],
 		},
 
 		define: {
 			__DEV__: JSON.stringify(On),
+
 			__INCREMENT__: JSON.stringify(__INCREMENT__),
+
 			__NOISE_SPEED__: JSON.stringify(
 				Number(process.env["NOISE_SPEED"]) || undefined,
 			),
+
 			__NOISE_STEP__: JSON.stringify(
 				Number(process.env["NOISE_STEP"]) || undefined,
 			),
@@ -298,6 +320,7 @@ export default (await import("astro/config")).defineConfig({
 
 		resolve: {
 			// dedupe forces Vite to always resolve to one copy of React,
+
 			// even when excluded packages (e.g. @auth0/auth0-react) bring
 			// their own React into the module graph. Without this, two React
 			// instances coexist and any hook call throws "Invalid hook call".
@@ -305,10 +328,15 @@ export default (await import("astro/config")).defineConfig({
 
 			alias: {
 				"@": Resolve("./Source"),
+
 				"@Stylesheet": Resolve("./Source/Stylesheet"),
+
 				"@Function": Resolve("./Source/Function"),
+
 				"@Layout": Resolve("./Source/Layout"),
+
 				"@Script": Resolve("./Source/Script"),
+
 				"@Variable": Resolve("./Source/Variable"),
 			},
 
