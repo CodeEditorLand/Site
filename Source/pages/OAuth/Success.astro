@@ -39,7 +39,7 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} noIndex={true}>
-	<Header client:load />
+	<Header client:only="react" />
 	<Auth0CallbackHandler
 		client:only="react"
 		Domain={Auth0Domain}

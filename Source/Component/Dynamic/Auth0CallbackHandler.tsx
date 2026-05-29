@@ -24,12 +24,7 @@ const Handler = () => {
 		}
 
 		if (isAuthenticated) {
-			LoadingState?.classList.add("hidden");
-			SuccessState?.classList.remove("hidden");
-			SuccessState?.classList.add("flex");
-			setTimeout(() => {
-				window.location.href = "/Dashboard";
-			}, 2000);
+			window.location.replace("/Dashboard");
 		}
 	}, [isLoading, isAuthenticated, error]);
 

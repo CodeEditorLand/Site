@@ -83,6 +83,16 @@ export default ({
 	const Logout = () =>
 		Auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 
+	// Auto-redirect when already authenticated
+	useEffect(() => {
+		if (IsLoading || !IsAuthenticated) return;
+		const Next =
+			typeof window !== "undefined"
+				? new URLSearchParams(window.location.search).get("next")
+				: null;
+		window.location.replace(Next || "/Dashboard");
+	}, [IsLoading, IsAuthenticated]);
+
 	// Auto-redirect to Auth0 Universal Login if not authenticated
 	useEffect(() => {
 		if (IsLoading || IsAuthenticated) return;
