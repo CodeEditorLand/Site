@@ -1,11 +1,29 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { Eye, EyeOff } from "lucide-react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
 import { Button } from "../UI/Button";
 import { Skeleton } from "../UI/Skeleton";
+
+const Pii = ({
+	children,
+	visible,
+}: {
+	children: ReactNode;
+	visible: boolean;
+}) => (
+	<span
+		className={`transition-all duration-200 ${
+			visible ? "" : "select-none blur-sm"
+		}`}>
+		{children}
+	</span>
+);
 
 /**
  * Account profile management component.
@@ -25,7 +43,7 @@ export default ({
 	ClientIdentifier?: string;
 }) => (
 	<Auth0Provider
-		Children={<AccountProfileInner Domain={Domain} />}
+		Children={<AccountProfileInner />}
 		{...(Domain ? { Domain } : {})}
 		{...(ClientIdentifier ? { ClientIdentifier } : {})}
 	/>
@@ -129,7 +147,7 @@ const TierColorMap: Record<
 	},
 };
 
-const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
+const AccountProfileInner = () => {
 	const {
 		isLoading: IsLoading,
 		isAuthenticated: IsAuthenticated,
@@ -140,6 +158,7 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 	} = useAuth0();
 
 	const { t: T } = useTranslation("account");
+	const [PIIVisible, SetPIIVisible] = useState(false);
 
 	const HandleSignOut = () => {
 		ClearAuthFromServiceWorker();
@@ -228,31 +247,34 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 		"org_id"
 	] as string | undefined;
 
-	const Auth0Domain = Domain;
-
 	return (
 		<div className="mx-auto max-w-2xl space-y-8 px-4 py-16">
 			{/* Profile Header */}
 			<div className="flex items-start gap-6">
-				{User.picture ? (
-					<img
-						src={User.picture}
-						alt={User.name || "User avatar"}
-						title={User.name || "User avatar"}
-						width="80"
-						height="80"
-						className="h-20 w-20 shrink-0 rounded-none"
-					/>
-				) : (
-					<div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] text-2xl font-bold text-muted-foreground">
-						{DisplayName.slice(0, 2).toUpperCase()}
-					</div>
-				)}
+				<div
+					className={`shrink-0 transition-all duration-200 ${PIIVisible ? "" : "blur-sm"}`}>
+					{User.picture ? (
+						<img
+							src={User.picture}
+							alt={User.name || "User avatar"}
+							title={User.name || "User avatar"}
+							width="80"
+							height="80"
+							className="h-20 w-20 rounded-none"
+						/>
+					) : (
+						<div className="flex h-20 w-20 items-center justify-center rounded-none bg-[var(--Mute)] text-2xl font-bold text-muted-foreground">
+							{DisplayName.slice(0, 2).toUpperCase()}
+						</div>
+					)}
+				</div>
 				<div className="flex-1">
-					<h2 className="text-2xl font-bold">{DisplayName}</h2>
+					<h2 className="text-2xl font-bold">
+						<Pii visible={PIIVisible}>{DisplayName}</Pii>
+					</h2>
 					<div className="mt-1 flex items-center gap-2">
 						<span className="text-muted-foreground">
-							{User.email || "--"}
+							<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
 						</span>
 						{User.email_verified === true && (
 							<span className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700">
@@ -292,19 +314,30 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 									height="12"
 									className="h-3 w-3"
 								/>
-								{ProviderLabel}
+								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 							</span>
 						)}
 						{!ProviderIcon && (
 							<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
-								{ProviderLabel}
+								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 							</span>
 						)}
 					</div>
 				</div>
-			</div>
+			<button
+				type="button"
+				onClick={() => SetPIIVisible((v) => !v)}
+				aria-label={PIIVisible ? "Hide personal data" : "Show personal data"}
+				className="mt-1 shrink-0 text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+				{PIIVisible ? (
+					<EyeOff className="h-5 w-5" aria-hidden="true" />
+				) : (
+					<Eye className="h-5 w-5" aria-hidden="true" />
+				)}
+			</button>
+		</div>
 
-			{/* Enterprise SSO Banner */}
+		{/* Enterprise SSO Banner */}
 			{IsEnterprise && (
 				<div className="border border-green-200 bg-green-50 px-4 py-3 text-green-700">
 					Enterprise SSO active
@@ -315,7 +348,9 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 					/>
 					{(OrganizationName || OrganizationIdentifier) && (
 						<span className="ml-2 font-medium">
-							{OrganizationName || OrganizationIdentifier}
+							<Pii visible={PIIVisible}>
+								{OrganizationName || OrganizationIdentifier}
+							</Pii>
 						</span>
 					)}
 				</div>
@@ -343,11 +378,13 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 				<div className="divide-y divide-[var(--Border)]">
 					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Name</span>
-						<span className="font-medium">{DisplayName}</span>
+						<span className="font-medium">
+							<Pii visible={PIIVisible}>{DisplayName}</Pii>
+						</span>
 					</div>
 					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Email</span>
-						<span>{User.email || "--"}</span>
+						<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
 					</div>
 					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">Provider</span>
@@ -361,7 +398,7 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 									className="h-3.5 w-3.5"
 								/>
 							)}
-							{ProviderLabel}
+							<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 						</span>
 					</div>
 					<div className="flex justify-between px-6 py-3">
@@ -379,14 +416,14 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">User ID</span>
 						<code className="text-muted-foreground">
-							{User.sub || "--"}
+							<Pii visible={PIIVisible}>{User.sub || "--"}</Pii>
 						</code>
 					</div>
 					<div className="flex justify-between px-6 py-3">
 						<span className="text-muted-foreground">
 							Member Since
 						</span>
-						<span>{MemberSince}</span>
+						<Pii visible={PIIVisible}>{MemberSince}</Pii>
 					</div>
 					{IsEnterprise &&
 						(OrganizationName || OrganizationIdentifier) && (
@@ -395,7 +432,10 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 									Organization
 								</span>
 								<span className="font-medium">
-									{OrganizationName || OrganizationIdentifier}
+									<Pii visible={PIIVisible}>
+										{OrganizationName ||
+											OrganizationIdentifier}
+									</Pii>
 								</span>
 							</div>
 						)}
@@ -412,16 +452,6 @@ const AccountProfileInner = ({ Domain = "" }: { Domain?: string }) => {
 					</h3>
 				</div>
 				<div className="space-y-3 px-6 py-4">
-					<a
-						href={`https://${Auth0Domain}/u/profile`}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="StaccatoButton inline-flex w-full items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
-						{T("manageAuth0", {
-							defaultValue: "Manage Account Settings",
-						})}
-						<span className="InlineSeparator">&#8599;</span>
-					</a>
 					<a
 						href="/Dashboard"
 						className="StaccatoButton inline-flex w-full items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">

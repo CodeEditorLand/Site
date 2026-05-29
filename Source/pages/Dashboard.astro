@@ -2,6 +2,7 @@
 import DynamicAuthHeader from "../Component/Dynamic/DynamicAuthHeader";
 import DynamicDashboardUser from "../Component/Dynamic/DynamicDashboardUser";
 import DynamicLocalFirstScan from "../Component/Dynamic/DynamicLocalFirstScan";
+import DynamicPrivacyRequests from "../Component/Dynamic/DynamicPrivacyRequests";
 import DynamicRichText from "../Component/Dynamic/DynamicRichText";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
@@ -779,6 +780,30 @@ const MetaDescription = T("meta.dashboard.description", {
 						</div>
 					</a>
 				</div>
+			</section>
+
+			<!-- Privacy & Data Rights Section -->
+			<section class="mt-12">
+				<h2 class="mb-2 text-2xl font-semibold">
+					{
+						T("common.dashboard.privacy.heading", {
+							defaultValue: "Privacy & Data Rights",
+						})
+					}
+				</h2>
+				<p class="mb-6 text-muted-foreground">
+					{
+						T("common.dashboard.privacy.subtitle", {
+							defaultValue:
+								"Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days.",
+						})
+					}
+				</p>
+				<DynamicPrivacyRequests
+					client:load
+					Domain={Auth0Domain}
+					ClientIdentifier={Auth0ClientIdentifier}
+				/>
 			</section>
 
 			<!-- Settings Section -->
