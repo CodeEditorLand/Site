@@ -91,23 +91,23 @@ matrix.
 
 ## Elements By Layer
 
-| Element                                          | Role                                                                   | Source status                           |
-| ------------------------------------------------ | ---------------------------------------------------------------------- | --------------------------------------- |
-| [**Mountain**](https://Editor.Land/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge | Primary desktop path                    |
-| [**Cocoon**](https://Editor.Land/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code           | Primary extension path                  |
-| [**Sky**](https://Editor.Land/Doc/sky)           | Astro workbench routes and WebView bridge                              | UI source present                       |
-| [**Wind**](https://Editor.Land/Doc/wind)         | Effect-TS workbench service layer                                      | UI service source present               |
-| [**Vine**](https://Editor.Land/Doc/vine)         | Protocol contracts and generated IPC stubs                             | Active protocol layer                   |
+| Element                                          | Role                                                                             | Source status                           |
+| ------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------- |
+| [**Mountain**](https://Editor.Land/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge           | Primary desktop path                    |
+| [**Cocoon**](https://Editor.Land/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code                     | Primary extension path                  |
+| [**Sky**](https://Editor.Land/Doc/sky)           | Astro workbench routes and WebView bridge                                        | UI source present                       |
+| [**Wind**](https://Editor.Land/Doc/wind)         | Effect-TS workbench service layer                                                | UI service source present               |
+| [**Vine**](https://Editor.Land/Doc/vine)         | Protocol contracts and generated IPC stubs                                       | Active protocol layer                   |
 | [**Air**](https://Editor.Land/Doc/air)           | Background services for updates, downloads, authentication, indexing, and health | Source present, profile-dependent       |
-| [**Echo**](https://Editor.Land/Doc/echo)         | Rust scheduler primitives for bounded background work                  | Source present                          |
-| [**Mist**](https://Editor.Land/Doc/mist)         | DNS isolation, resolver, and secure service-boundary code              | Source present, integration in progress |
-| [**Grove**](https://Editor.Land/Doc/grove)       | Wasmtime-backed WebAssembly host path                                  | Source present, integration in progress |
-| [**Rest**](https://Editor.Land/Doc/rest)         | OXC-based TypeScript transform work                                    | Source present                          |
-| [**Output**](https://Editor.Land/Doc/output)     | Plugin-routed output and VS Code platform transforms                   | Build pipeline source present           |
-| [**Common**](https://Editor.Land/Doc/common)     | Shared Rust and TypeScript contracts                                   | Shared source present                   |
-| [**SideCar**](https://Editor.Land/Doc/sidecar)   | Host-specific sidecar binary packaging                                 | Source present                          |
-| [**Maintain**](https://Editor.Land/Doc/maintain) | Build and maintenance scripts                                          | Source present                          |
-| **Worker**                                       | Browser-worker support for web shell concerns                          | Source present, release scope varies    |
+| [**Echo**](https://Editor.Land/Doc/echo)         | Rust scheduler primitives for bounded background work                            | Source present                          |
+| [**Mist**](https://Editor.Land/Doc/mist)         | DNS isolation, resolver, and secure service-boundary code                        | Source present, integration in progress |
+| [**Grove**](https://Editor.Land/Doc/grove)       | Wasmtime-backed WebAssembly host path                                            | Source present, integration in progress |
+| [**Rest**](https://Editor.Land/Doc/rest)         | OXC-based TypeScript transform work                                              | Source present                          |
+| [**Output**](https://Editor.Land/Doc/output)     | Plugin-routed output and VS Code platform transforms                             | Build pipeline source present           |
+| [**Common**](https://Editor.Land/Doc/common)     | Shared Rust and TypeScript contracts                                             | Shared source present                   |
+| [**SideCar**](https://Editor.Land/Doc/sidecar)   | Host-specific sidecar binary packaging                                           | Source present                          |
+| [**Maintain**](https://Editor.Land/Doc/maintain) | Build and maintenance scripts                                                    | Source present                          |
+| **Worker**                                       | Browser-worker support for web shell concerns                                    | Source present, release scope varies    |
 
 ---
 

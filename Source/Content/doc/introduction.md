@@ -58,23 +58,23 @@ benchmark suite is published.
 `Editor.Land` is composed of named elements. Each element should be described by
 source status and integration status, not by broad product promises.
 
-| Element      | Role                                                                 |
-| ------------ | -------------------------------------------------------------------- |
-| **Mountain** | Rust + Tauri desktop shell and native service host                   |
-| **Cocoon**   | Node.js extension host for unmodified VS Code extension code         |
-| **Sky**      | Astro workbench routes and WebView bridge                            |
-| **Wind**     | Effect-TS workbench service layer                                    |
-| **Vine**     | Protocol contracts and generated IPC stubs                           |
+| Element      | Role                                                                           |
+| ------------ | ------------------------------------------------------------------------------ |
+| **Mountain** | Rust + Tauri desktop shell and native service host                             |
+| **Cocoon**   | Node.js extension host for unmodified VS Code extension code                   |
+| **Sky**      | Astro workbench routes and WebView bridge                                      |
+| **Wind**     | Effect-TS workbench service layer                                              |
+| **Vine**     | Protocol contracts and generated IPC stubs                                     |
 | **Air**      | Background services for update, download, authentication, indexing, and health |
-| **Echo**     | Rust scheduler primitives                                            |
-| **Mist**     | Local DNS and service-boundary work                                  |
-| **Grove**    | WIP Wasmtime extension-host path                                     |
-| **Rest**     | OXC-based TypeScript transform work                                  |
-| **Output**   | Plugin-routed output and VS Code platform transforms                 |
-| **Common**   | Shared Rust and TypeScript contracts                                 |
-| **SideCar**  | Host-specific sidecar binary packaging                               |
-| **Maintain** | Build and maintenance scripts                                        |
-| **Worker**   | Browser-worker support where the web shell needs it                  |
+| **Echo**     | Rust scheduler primitives                                                      |
+| **Mist**     | Local DNS and service-boundary work                                            |
+| **Grove**    | WIP Wasmtime extension-host path                                               |
+| **Rest**     | OXC-based TypeScript transform work                                            |
+| **Output**   | Plugin-routed output and VS Code platform transforms                           |
+| **Common**   | Shared Rust and TypeScript contracts                                           |
+| **SideCar**  | Host-specific sidecar binary packaging                                         |
+| **Maintain** | Build and maintenance scripts                                                  |
+| **Worker**   | Browser-worker support where the web shell needs it                            |
 
 ---
 

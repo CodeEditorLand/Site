@@ -138,6 +138,8 @@
 /* Button - tiny seed texture; hover elevates cleanly */
 
 .StaccatoButton {
+	padding-left: 1rem;
+	padding-right: 1rem;
 	transform: translate(
 		calc(var(--StaccatoSeed, 0) * 0.5px),
 		calc(var(--StaccatoSeedPhase, 0) * 0.3px)
