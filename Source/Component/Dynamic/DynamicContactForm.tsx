@@ -7,6 +7,7 @@ import { useState } from "react";
 import {
 	BuildEmailBody,
 	BuildMailtoHref,
+	GeneratePairId,
 	type RequestConfig,
 } from "../../Library/Contact/Request.js";
 import Auth0Provider from "../Provider/Auth0Provider.js";
@@ -64,6 +65,11 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 		return V;
 	};
 
+	// Stable pair ID for this form session - generated once, never changes.
+	// Appears as CODE-XXXXX in the subject and body so the team can match
+	// a reply to its original submission immediately.
+	const [PairId] = useState<string>(GeneratePairId);
+
 	const [Values, SetValues] =
 		useState<Record<string, string | string[]>>(InitialValues);
 	const [CopyState, SetCopyState] = useState<"idle" | "copied">("idle");
@@ -108,8 +114,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 	const HandleCopy = async () => {
 		if (!Validate()) return;
-		const Body = BuildEmailBody(Config, Values, Year);
-		const Subject = `[${Config.Code}-${Year}] ${Config.Title} Request`;
+		const Body = BuildEmailBody(Config, Values, Year, PairId);
+		const Subject = `[${Config.Code}-${PairId}] ${Config.Title} Request`;
 		const Full = `To: ${Config.To}\nSubject: ${Subject}\n\n${Body}`;
 		try {
 			await navigator.clipboard.writeText(Full);
@@ -121,7 +127,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	};
 
 	const MailtoHref = Validate()
-		? BuildMailtoHref(Config, Values, Year)
+		? BuildMailtoHref(Config, Values, Year, PairId)
 		: `mailto:${Config.To}`;
 
 	const BadgeColor = Config.Destructive
@@ -137,8 +143,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				<div className="flex flex-wrap items-center gap-3">
 					<span
 						className={`inline-flex items-center gap-2 border px-3 py-1 font-mono text-sm font-bold tracking-widest ${BadgeColor}`}
-						title="Income code - reference this in all replies">
-						{Config.Code}
+						title="Pair reference - income code + instance ID. Quote this in all replies.">
+						{Config.Code}-{PairId}
 					</span>
 					{Config.Article && (
 						<span className="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 font-mono text-xs text-muted-foreground">
@@ -389,9 +395,12 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								: "Copy request text"}
 						</div>
 						<div className="text-xs text-muted-foreground">
-							Copies a formatted plain-text version including the
-							income code [{Config.Code}-{Year}] - paste into any
-							email, ticket, or chat.
+							Copies a formatted plain-text version with pair
+							reference{" "}
+							<span className="font-mono">
+								{Config.Code}-{PairId}
+							</span>{" "}
+							- paste into any email, ticket, or chat.
 						</div>
 					</div>
 				</button>
@@ -420,18 +429,21 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				)}
 			</div>
 
-			{/* Income code explanation */}
+			{/* Pair reference explanation */}
 			<div className="border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-xs text-muted-foreground">
 				<span className="font-mono font-semibold text-foreground">
-					Income code {Config.Code}
+					{Config.Code}-{PairId}
 				</span>{" "}
-				is the reference identifier for this request type. Include it in
-				any reply or follow-up so our team can route and track your
-				request immediately. The full reference in your email will be{" "}
+				is your unique pair reference for this submission -{" "}
+				<span className="font-mono">{Config.Code}</span> identifies the
+				request type,{" "}
+				<span className="font-mono">{PairId}</span> is the instance ID.
+				Quote{" "}
 				<span className="font-mono text-foreground">
-					[{Config.Code}-{Year}]
-				</span>
-				.
+					{Config.Code}-{PairId}
+				</span>{" "}
+				in any reply so our team can locate and track your request
+				immediately without searching by email address.
 			</div>
 		</div>
 	);

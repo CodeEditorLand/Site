@@ -867,6 +867,21 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 };
 
 /**
+ * Generate a 5-character uppercase alphanumeric instance ID.
+ * Paired with the income code it forms a unique reference per submission:
+ *   DEALS-K7X2M  /  REACH-3FPQ9  /  ERASE-NM4JW
+ * Call once per form session and store in React state so it stays stable.
+ */
+export const GeneratePairId = (): string => {
+	const Chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 - ambiguous on phone
+	let Id = "";
+	for (let I = 0; I < 5; I++) {
+		Id += Chars[Math.floor(Math.random() * Chars.length)];
+	}
+	return Id;
+};
+
+/**
  * Build a plain-text email body from the form values and request config.
  * Uses CRLF line endings (RFC 2822) and no HTML - clean plain text only.
  */
@@ -874,14 +889,17 @@ export const BuildEmailBody = (
 	Config: RequestConfig,
 	Values: Record<string, string | string[]>,
 	Year: number,
+	PairId: string,
 ): string => {
-	const Code = `[${Config.Code}-${Year}]`;
+	const Ref = `${Config.Code}-${PairId}`;
 	const Lines: string[] = [
 		Config.BodyPreamble,
 		"",
-		`Income Code: ${Code}`,
+		`Reference:    ${Ref}`,
+		`Income Code:  ${Config.Code}`,
+		`Instance ID:  ${PairId}`,
 		`Request Type: ${Config.Title}`,
-		`Date: ${new Date().toISOString().split("T")[0]}`,
+		`Date:         ${new Date().toISOString().split("T")[0]}`,
 		"",
 		"--- Submitted Details ---",
 		"",
@@ -915,16 +933,18 @@ export const BuildEmailBody = (
 
 /**
  * Build a mailto: href with properly encoded plain-text subject and body.
- * Uses %0D%0A (CRLF) for line breaks - required by some mail clients
- * to avoid the body being treated as a single HTML line.
+ * Subject format: [CODE-XXXXX] Title Request - sender@example.com
+ * Uses %0D%0A (CRLF) for line breaks - avoids mail clients treating the
+ * body as a single HTML line.
  */
 export const BuildMailtoHref = (
 	Config: RequestConfig,
 	Values: Record<string, string | string[]>,
 	Year: number,
+	PairId: string,
 ): string => {
-	const Subject = `[${Config.Code}-${Year}] ${Config.Title} Request${Values["email"] ? ` - ${Values["email"]}` : ""}`;
-	const Body = BuildEmailBody(Config, Values, Year);
+	const Subject = `[${Config.Code}-${PairId}] ${Config.Title} Request${Values["email"] ? ` - ${Values["email"]}` : ""}`;
+	const Body = BuildEmailBody(Config, Values, Year, PairId);
 	const EncodedBody = Body.split("\r\n")
 		.map((Line) => encodeURIComponent(Line))
 		.join("%0D%0A");
