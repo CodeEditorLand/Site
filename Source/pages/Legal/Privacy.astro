@@ -142,7 +142,7 @@ const LastUpdated = "May 29, 2026";
 				Code Editor Land, operated by PlayForm in Sofia, Bulgaria ("<strong
 					>us</strong
 				>", "<strong>we</strong>", or "<strong>our</strong>"), operates
-				<a href="https://land.playform.cloud"
+				<a href="/"
 					>https://land.playform.cloud</a
 				>, the Land desktop editor, related APIs, account systems,
 				synchronization features, documentation, downloads, and
@@ -173,7 +173,7 @@ const LastUpdated = "May 29, 2026";
 
 			<p>
 				<strong>SERVICE</strong> means the <a
-					href="https://land.playform.cloud"
+					href="/"
 					>https://land.playform.cloud</a
 				> website, the Code Editor Land desktop application, and related services
 				operated by PlayForm for the Code Editor Land project.
@@ -932,23 +932,23 @@ const LastUpdated = "May 29, 2026";
 					"@type": "WebPage",
 					"name": "Privacy Policy",
 					"description": "Privacy Policy for Code Editor Land",
-					"url": "https://land.playform.cloud/legal/privacy",
+					"url": Astro.url.href,
 					"datePublished": "2026-03-26T00:00:00Z",
 					"dateModified": "2026-05-29T00:00:00Z",
 					"publisher": {
 						"@type": "Organization",
 						"name": "Code Editor Land",
-						"url": "https://land.playform.cloud",
+						"url": Astro.site?.href ?? "",
 						"logo": {
 							"@type": "ImageObject",
-							"url": "https://land.playform.cloud/Favicon/favicon.svg"
+							"url": `${Astro.site?.href ?? ""}Favicon/favicon.svg`
 						}
 					},
 					"inLanguage": "en",
 					"isPartOf": {
 						"@type": "WebSite",
 						"name": "Code Editor Land",
-						"url": "https://land.playform.cloud"
+						"url": Astro.site?.href ?? ""
 					}
 				}
 			</script>

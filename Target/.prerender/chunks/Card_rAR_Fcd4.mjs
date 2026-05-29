@@ -1,0 +1,71 @@
+import { jsx } from 'react/jsx-runtime';
+import React from 'react';
+import { c as cn } from './Base_BgDg_fIU.mjs';
+
+const Card = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      ref,
+      className: cn(
+        "bg-[var(--Card)] text-[var(--CardForeground)]",
+        className
+      ),
+      ...props
+    }
+  );
+});
+Card.displayName = "Card";
+const CardHeader = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      ref,
+      className: cn("flex flex-col space-y-1.5 p-6", className),
+      ...props
+    }
+  );
+});
+CardHeader.displayName = "CardHeader";
+const CardTitle = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(
+    "h3",
+    {
+      ref,
+      className: cn(
+        "text-lg font-semibold leading-none tracking-tight",
+        className
+      ),
+      ...props
+    }
+  );
+});
+CardTitle.displayName = "CardTitle";
+const CardDescription = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(
+    "p",
+    {
+      ref,
+      className: cn("text-muted-foreground", className),
+      ...props
+    }
+  );
+});
+CardDescription.displayName = "CardDescription";
+const CardContent = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx("div", { ref, className: cn("p-6 pt-0", className), ...props });
+});
+CardContent.displayName = "CardContent";
+const CardFooter = React.forwardRef(({ className, ...props }, ref) => {
+  return /* @__PURE__ */ jsx(
+    "div",
+    {
+      ref,
+      className: cn("flex items-center p-6 pt-0", className),
+      ...props
+    }
+  );
+});
+CardFooter.displayName = "CardFooter";
+
+export { Card as C, CardContent as a, CardDescription as b, CardFooter as c, CardHeader as d, CardTitle as e };

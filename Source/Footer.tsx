@@ -44,9 +44,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				<span className="hidden sm:inline" aria-hidden="true">
 					&#x2001;
 				</span>
-				<a
-					href="https://land.playform.cloud"
-					className="transition-colors hover:text-foreground">
+				<a href="/" className="transition-colors hover:text-foreground">
 					CodeEditorLand
 				</a>
 				<span className="hidden sm:inline" aria-hidden="true">
@@ -81,9 +79,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 					</a>
 				</li>
 				<li className="flex items-center gap-2">
-					<a
-						href="https://land.playform.cloud"
-						className="flex items-center">
+					<a href="/" className="flex items-center">
 						<picture>
 							<img
 								alt="Land"

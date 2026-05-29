@@ -343,10 +343,10 @@ legal effect of CC0 on those rights.
 			"@type": "WebPage",
 			"name": "License",
 			"description": "Code Editor Land License - CC0 1.0 Universal",
-			"url": "https://land.playform.cloud/license",
+			"url": Astro.url.href,
 			"license": "https://creativecommons.org/publicdomain/zero/1.0/",
 			"datePublished": "2026-03-26T00:00:00Z",
-			"dateModified": "2026-03-26T00:00:00Z",
+			"dateModified": "2026-05-29T00:00:00Z",
 			"author": [
 				{
 					"@type": "Person",
@@ -356,7 +356,7 @@ legal effect of CC0 on those rights.
 				{
 					"@type": "Organization",
 					"name": "Code Editor Land",
-					"url": "https://land.playform.cloud"
+					"url": Astro.site?.href ?? ""
 				},
 				{
 					"@type": "Organization",
@@ -367,17 +367,17 @@ legal effect of CC0 on those rights.
 			"publisher": {
 				"@type": "Organization",
 				"name": "Code Editor Land",
-				"url": "https://land.playform.cloud",
+				"url": Astro.site?.href ?? "",
 				"logo": {
 					"@type": "ImageObject",
-					"url": "https://land.playform.cloud/Favicon/favicon.svg"
+					"url": `${Astro.site?.href ?? ""}Favicon/favicon.svg`
 				}
 			},
 			"inLanguage": "en",
 			"isPartOf": {
 				"@type": "WebSite",
 				"name": "Code Editor Land",
-				"url": "https://land.playform.cloud"
+				"url": Astro.site?.href ?? ""
 			}
 		}
 	</script>

@@ -13,12 +13,8 @@ const MetaDescription = T("account.signUp.subtitle", {
 		"Account creation is not open yet while the portal flow is being finished.",
 });
 
-const Auth0Domain = (
-	await import("../../Function/Configuration/Auth0Domain.js")
-).default;
-const Auth0ClientIdentifier = (
-	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
-).default;
+const { Auth0Domain, Auth0ClientIdentifier } =
+	await import("../../Function/Configuration/Auth.js");
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>

@@ -3,23 +3,16 @@ import DynamicContactForm from "../../Component/Dynamic/DynamicContactForm";
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { Requests } from "../../Library/Contact/Request.js";
-import { GetI18n } from "../../Library/I18n/Server";
 
-const T = GetI18n();
-
-const Auth0Domain = (
-	await import("../../Function/Configuration/Auth0Domain.js")
-).default;
-const Auth0ClientIdentifier = (
-	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
-).default;
+const { Auth0Domain, Auth0ClientIdentifier } =
+	await import("../../Function/Configuration/Auth.js");
 
 const Config = Requests["AMEND"];
 ---
 
 <Base
-	Title="Correct Your Data | Code Editor Land"
-	Description="Request rectification of inaccurate or incomplete personal data (GDPR Art. 16)."
+	Title={`${Config.Title} | Code Editor Land`}
+	Description={Config.Subtitle}
 	Url={Astro.url.href}
 	lang="en">
 	<Header client:load />
@@ -53,8 +46,8 @@ const Config = Requests["AMEND"];
 
 	<DynamicContactForm
 		client:load
-		Config={{ Config }}
-		Domain={{ Auth0Domain }}
-		ClientIdentifier={{ Auth0ClientIdentifier }}
+		Config={Config}
+		Domain={Auth0Domain}
+		ClientIdentifier={Auth0ClientIdentifier}
 	/>
 </Base>

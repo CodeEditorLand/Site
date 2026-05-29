@@ -28,12 +28,12 @@ export default ({
 		description ||
 		"Rust and Tauri editor stack with VS Code API compatibility in progress.";
 
-	const BaseURL = "https://land.playform.cloud";
-	const SiteURL = url.startsWith("http")
-		? url
-		: url.startsWith("/")
-			? `${BaseURL}${url}`
-			: BaseURL;
+	// url is always Astro.url.href (absolute) when passed from Base.astro.
+	const SiteURL = url;
+	// Origin (scheme + host) for absolutising relative asset paths.
+	const SiteOrigin = SiteURL.startsWith("http")
+		? new URL(SiteURL).origin
+		: "";
 
 	const JSONLD: any = {
 		"@context": "https://schema.org",
@@ -58,7 +58,7 @@ export default ({
 				{
 					"@type": "Organization",
 					"name": "Code Editor Land",
-					"url": "https://land.playform.cloud",
+					"url": SiteOrigin,
 				},
 				{
 					"@type": "Organization",
@@ -88,9 +88,7 @@ export default ({
 			<meta
 				property="og:image"
 				content={
-					image.startsWith("http")
-						? image
-						: `https://land.playform.cloud${image}`
+					image.startsWith("http") ? image : `${SiteOrigin}${image}`
 				}
 			/>
 			<meta property="og:image:width" content="1200" />
@@ -109,9 +107,7 @@ export default ({
 			<meta
 				name="twitter:image"
 				content={
-					image.startsWith("http")
-						? image
-						: `https://land.playform.cloud${image}`
+					image.startsWith("http") ? image : `${SiteOrigin}${image}`
 				}
 			/>
 			<meta name="twitter:site" content="@CodeEditorLand" />

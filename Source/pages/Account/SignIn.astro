@@ -12,12 +12,8 @@ const MetaDescription = T("account.signIn.subtitle", {
 	defaultValue: "Sign in to your Land workspace.",
 });
 
-const Auth0Domain = (
-	await import("../../Function/Configuration/Auth0Domain.js")
-).default;
-const Auth0ClientIdentifier = (
-	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
-).default;
+const { Auth0Domain, Auth0ClientIdentifier } =
+	await import("../../Function/Configuration/Auth.js");
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription}>

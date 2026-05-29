@@ -6,12 +6,8 @@ import { GetI18n } from "../../Library/I18n/Server";
 
 const T = GetI18n();
 
-const Auth0Domain = (
-	await import("../../Function/Configuration/Auth0Domain.js")
-).default;
-const Auth0ClientIdentifier = (
-	await import("../../Function/Configuration/Auth0ClientIdentifier.js")
-).default;
+const { Auth0Domain, Auth0ClientIdentifier } =
+	await import("../../Function/Configuration/Auth.js");
 
 const MetaTitle = T("meta.account.title", {
 	defaultValue: "Account | Code Editor Land",

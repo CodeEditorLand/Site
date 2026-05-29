@@ -156,7 +156,7 @@ const LastUpdated = "May 29, 2026";
 				These Terms of Service (“<strong>Terms</strong>”, “<strong
 					>Terms of Service</strong
 				>”) govern your use of our web pages located at
-				<a href="https://land.playform.cloud"
+				<a href="/"
 					>https://land.playform.cloud</a
 				>, our desktop application, APIs, Cloudflare Workers,
 				documentation, downloads, account services, synchronization
@@ -646,12 +646,12 @@ const LastUpdated = "May 29, 2026";
 				If you are a copyright owner, or authorized on behalf of one,
 				and you believe that the copyrighted work has been copied in a
 				way that constitutes copyright infringement, please submit your
-				claim using the <a href="”/Contact/Claim”"
+				claim using the <a href=”/Contact/Claim”
 					>Copyright &amp; DMCA form</a
 				> (CLAIM) or by emailing <a
-					href="”mailto:copyright@land.playform.cloud”"
+					href=”mailto:copyright@land.playform.cloud”
 					>copyright@land.playform.cloud</a
-				> or <a href="”mailto:legal@land.playform.cloud”"
+				> or <a href=”mailto:legal@land.playform.cloud”
 					>legal@land.playform.cloud</a
 				> and include in your claim a detailed description of the alleged
 				Infringement as detailed below, under “DMCA Notice and Procedure for
@@ -1016,16 +1016,16 @@ const LastUpdated = "May 29, 2026";
 			"@type": "WebPage",
 			"name": "Terms of Service",
 			"description": "Terms of Service for Code Editor Land",
-			"url": "https://land.playform.cloud/legal/terms",
+			"url": Astro.url.href,
 			"datePublished": "2026-03-26T00:00:00Z",
 			"dateModified": "2026-05-29T00:00:00Z",
 			"publisher": {
 				"@type": "Organization",
 				"name": "Code Editor Land",
-				"url": "https://land.playform.cloud",
+				"url": Astro.site?.href ?? "",
 				"logo": {
 					"@type": "ImageObject",
-					"url": "https://land.playform.cloud/Favicon/favicon.svg"
+					"url": `${Astro.site?.href ?? ""}Favicon/favicon.svg`
 				}
 			},
 			"license": "https://creativecommons.org/publicdomain/zero/1.0/",
@@ -1033,7 +1033,7 @@ const LastUpdated = "May 29, 2026";
 			"isPartOf": {
 				"@type": "WebSite",
 				"name": "Code Editor Land",
-				"url": "https://land.playform.cloud"
+				"url": Astro.site?.href ?? ""
 			}
 		}
 	</script>

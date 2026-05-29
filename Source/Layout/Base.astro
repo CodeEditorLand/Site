@@ -19,7 +19,7 @@ const RawPath =
 
 const CanonicalPath = PascalCaseCanonical[RawPath] ?? RawPath;
 
-const DefaultURL = `https://land.playform.cloud${CanonicalPath === "/" ? "" : CanonicalPath}`;
+const DefaultURL = Astro.url.href;
 
 // Compute dynamic OG image path from the current page slug.
 // Home page maps to /OpenGraph.svg (rest param undefined);
@@ -128,8 +128,9 @@ const T = GetI18n();
 			import "@/Library/I18n/Client.js";
 		</script>
 
-		<script type="application/ld+json">
-			{
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify({
 				"@context": "https://schema.org",
 				"@type": "SoftwareApplication",
 				"name": "Code Editor Land",
@@ -138,13 +139,13 @@ const T = GetI18n();
 				"offers": {
 					"@type": "Offer",
 					"price": "0",
-					"priceCurrency": "USD"
+					"priceCurrency": "USD",
 				},
-				"url": "https://land.playform.cloud",
-				"downloadUrl": "https://land.playform.cloud/Download",
-				"license": "https://creativecommons.org/publicdomain/zero/1.0/"
-			}
-		</script>
+				"url": Astro.site?.href ?? "",
+				"downloadUrl": `${Astro.site?.href ?? ""}Download`,
+				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
+			})}
+		/>
 
 		<slot name="Head" />
 

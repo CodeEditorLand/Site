@@ -26,7 +26,7 @@ const MetaDescription = T("meta.home.description", {
 				"alternateName": "Land",
 				"description":
 					"An open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
-				"url": "https://land.playform.cloud",
+				"url": Astro.site?.href ?? "",
 				"applicationCategory": "DeveloperApplication",
 				"operatingSystem": "macOS, Windows, Linux",
 				"offers": {
@@ -36,9 +36,8 @@ const MetaDescription = T("meta.home.description", {
 				},
 				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
 				"softwareVersion": "Pre-release",
-				"downloadUrl": "https://land.playform.cloud/Download",
-				"screenshot":
-					"https://land.playform.cloud/Favicon/og-image.png",
+				"downloadUrl": `${Astro.site?.href ?? ""}Download`,
+				"screenshot": `${Astro.site?.href ?? ""}Favicon/og-image.png`,
 				"author": [
 					{
 						"@type": "Person",
@@ -48,7 +47,7 @@ const MetaDescription = T("meta.home.description", {
 					{
 						"@type": "Organization",
 						"name": "Code Editor Land",
-						"url": "https://land.playform.cloud",
+						"url": Astro.site?.href ?? "",
 					},
 					{
 						"@type": "Organization",
@@ -59,10 +58,10 @@ const MetaDescription = T("meta.home.description", {
 				"publisher": {
 					"@type": "Organization",
 					"name": "Code Editor Land",
-					"url": "https://land.playform.cloud",
+					"url": Astro.site?.href ?? "",
 					"logo": {
 						"@type": "ImageObject",
-						"url": "https://land.playform.cloud/Favicon/favicon.svg",
+						"url": `${Astro.site?.href ?? ""}Favicon/favicon.svg`,
 					},
 				},
 				"featureList": [
@@ -140,7 +139,7 @@ const MetaDescription = T("meta.home.description", {
 			PlayForm
 		</a>
 		<a
-			href="https://land.playform.cloud"
+			href="/"
 			class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground">
 			CodeEditorLand
 		</a>

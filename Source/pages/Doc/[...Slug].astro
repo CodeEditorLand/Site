@@ -70,7 +70,7 @@ const MetaDescription = Entry.data.description;
 <Base
 	Title={MetaTitle}
 	Description={MetaDescription}
-	Url={`https://land.playform.cloud/Doc/${Entry.id}`}
+	Url={Astro.url.href}
 	lang="en">
 	<Header client:load />
 
