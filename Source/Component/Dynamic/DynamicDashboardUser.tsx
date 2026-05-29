@@ -1,11 +1,27 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { Eye, EyeOff } from "lucide-react";
+import type { ReactNode } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
 import { Button } from "../UI/Button";
 import { Skeleton } from "../UI/Skeleton";
+
+const Pii = ({
+	children,
+	visible,
+}: {
+	children: ReactNode;
+	visible: boolean;
+}) => (
+	<span
+		className={`transition-all duration-200 ${visible ? "" : "select-none blur-sm"}`}>
+		{children}
+	</span>
+);
 
 /**
  * Auth0-aware dashboard user panel.
@@ -74,6 +90,7 @@ const DashboardUserInner = () => {
 	} = useAuth0();
 
 	const { t: T } = useTranslation("common");
+	const [PIIVisible, SetPIIVisible] = useState(false);
 
 	// Bridge Auth0 user into localStorage for legacy code
 	if (IsAuthenticated && User) {
@@ -180,8 +197,24 @@ const DashboardUserInner = () => {
 
 	return (
 		<div className="space-y-3">
+			{/* Privacy toggle */}
+			<div className="flex justify-end">
+				<button
+					type="button"
+					onClick={() => SetPIIVisible((v) => !v)}
+					aria-label={PIIVisible ? "Hide personal data" : "Show personal data"}
+					className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					{PIIVisible ? (
+						<EyeOff className="h-4 w-4" aria-hidden="true" />
+					) : (
+						<Eye className="h-4 w-4" aria-hidden="true" />
+					)}
+				</button>
+			</div>
+
 			{/* Avatar */}
-			<div className="flex justify-center pb-2">
+			<div
+				className={`flex justify-center pb-2 transition-all duration-200 ${PIIVisible ? "" : "blur-sm"}`}>
 				{User.picture ? (
 					<img
 						src={User.picture}
@@ -203,7 +236,7 @@ const DashboardUserInner = () => {
 				<div
 					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
 					aria-hidden="true">
-					{DisplayName.slice(0, 1).toUpperCase()}
+					<Pii visible={PIIVisible}>{DisplayName.slice(0, 1).toUpperCase()}</Pii>
 				</div>
 			</div>
 
@@ -212,7 +245,7 @@ const DashboardUserInner = () => {
 				<span className="text-muted-foreground">
 					{T("dashboard.account.nameLabel", { defaultValue: "Name" })}
 				</span>
-				<span className="font-medium">{DisplayName}</span>
+				<span className="font-medium"><Pii visible={PIIVisible}>{DisplayName}</Pii></span>
 			</div>
 
 			{/* Email + Verified Badge */}
@@ -224,7 +257,7 @@ const DashboardUserInner = () => {
 				</span>
 				<span className="flex items-center gap-1.5">
 					<span className="text-muted-foreground">
-						{User.email || "--"}
+						<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
 					</span>
 					{User.email_verified === true && (
 						<span
@@ -274,7 +307,7 @@ const DashboardUserInner = () => {
 							className="h-3.5 w-3.5"
 						/>
 					)}
-					{ProviderLabel}
+					<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 				</span>
 			</div>
 
@@ -287,7 +320,7 @@ const DashboardUserInner = () => {
 						})}
 					</span>
 					<span className="font-medium">
-						{OrganizationName || OrganizationIdentifier}
+						<Pii visible={PIIVisible}>{OrganizationName || OrganizationIdentifier}</Pii>
 					</span>
 				</div>
 			)}
@@ -299,7 +332,7 @@ const DashboardUserInner = () => {
 						defaultValue: "Member Since",
 					})}
 				</span>
-				<span className="text-muted-foreground">{MemberSince}</span>
+				<span className="text-muted-foreground"><Pii visible={PIIVisible}>{MemberSince}</Pii></span>
 			</div>
 
 			{/* Enterprise SSO Banner */}
