@@ -263,7 +263,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.production.description",
 									{
 										defaultValue:
-											"Land keeps telemetry and tracing behind feature paths. Public builds should state which profile was used before claiming what can or cannot be emitted.",
+											"Telemetry and tracing are behind named Rust feature gates. The build profile determines what is compiled in - nothing is emitted unless a specific feature path is enabled.",
 									},
 								)}
 								Terms
@@ -296,7 +296,7 @@ const MetaDescription = T("meta.dashboard.description", {
 									"common.dashboard.telemetry.otel.description",
 									{
 										defaultValue:
-											"Tracing infrastructure exists in source for deployments that choose it. The endpoint and feature profile should be documented before a build presents traces as enabled.",
+											"OpenTelemetry tracing is available in source. Activating it requires an explicit feature flag and a configured endpoint - trace data goes only to infrastructure you control.",
 									},
 								)}
 								Terms

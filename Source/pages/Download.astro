@@ -13,32 +13,32 @@ const TransparencyContent = {
 	}),
 	Subtitle: T("download.transparency.subtitle", {
 		defaultValue:
-			"Land keeps telemetry and tracing behind explicit feature paths in the native code. The default public message is simple: do not claim silent uploads, and do not imply diagnostics are sent unless a build enables that infrastructure.",
+			"Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in.",
 	}),
 	Policy: [
 		{
 			Identifier: "no-telemetry-default",
 			Title: "Compile-gated by default.",
 			Description:
-				"Land uses Rust feature gates for telemetry and tracing paths. Public builds should describe which feature profile was used instead of relying on a blanket privacy slogan.",
+				"Telemetry and tracing code lives behind `cfg(feature)` gates. In a standard build those paths are not compiled in - no collection, no emission, no runtime cost.",
 			Icon: "EyeOff",
 			Status: "Disabled" as const,
-			Detail: "Telemetry-related code is behind feature paths and should be documented per build profile.",
+			Detail: "Telemetry feature paths are excluded from the default build profile.",
 		},
 		{
 			Identifier: "no-crash-reporter",
 			Title: "No Microsoft endpoint dependency.",
 			Description:
-				"Land is built from a CC0 Code-OSS-derived base with Microsoft service dependencies removed or replaced where the source path requires it. Crash reporting should be documented by the release profile that enables it.",
+				"Land is built from a CC0 Code-OSS base with Microsoft service dependencies removed or replaced. The crash reporter, update service, and marketplace endpoints are all replaced with Land-owned wiring or left unconnected.",
 			Icon: "Shield",
 			Status: "Disabled" as const,
-			Detail: "CC0-licensed Code-OSS-derived base with Land-owned service wiring.",
+			Detail: "CC0-licensed Code-OSS base with Land-owned service wiring.",
 		},
 		{
 			Identifier: "no-phone-home",
-			Title: "No blanket tracking claim.",
+			Title: "Three separate systems, three separate controls.",
 			Description:
-				"The editor should say exactly which runtime services are enabled. Website analytics, account auth, and editor telemetry are separate systems and should not be collapsed into one claim.",
+				"Website analytics, account authentication, and editor telemetry are independent systems. Each is controlled by its own feature flag or environment configuration - none of the three implies the others are active.",
 			Icon: "Lock",
 			Status: "Disabled" as const,
 		},
@@ -46,7 +46,7 @@ const TransparencyContent = {
 			Identifier: "zero-cost-noop",
 			Title: "Disabled feature paths stay out of the runtime.",
 			Description:
-				"Rust `cfg(feature)` gates can remove disabled code paths at compile time. That is the claim Land can make when a published build profile shows which features were compiled.",
+				"Rust `cfg(feature)` gates eliminate disabled code paths at compile time, not just at runtime. A published build profile is a verifiable record of exactly which features were included.",
 			Icon: "Zap",
 			Status: "Active" as const,
 			Detail: "Rust cfg(feature) gates eliminate dead code at compile time.",
@@ -55,7 +55,7 @@ const TransparencyContent = {
 			Identifier: "opt-in-otel",
 			Title: "Need traces? Opt in. Your infrastructure only.",
 			Description:
-				"Tracing infrastructure exists in source for deployments that choose it. Public docs should name the endpoint and build feature before presenting it as enabled.",
+				"OpenTelemetry tracing is available in source and activates only when a deployment explicitly enables it with a named feature flag and a configured endpoint. Trace data goes to your infrastructure.",
 			Icon: "Eye",
 			Status: "Optional" as const,
 			Detail: "cargo build --features Telemetry\nSub-features: MetricsCollection, DistributedTracing.",

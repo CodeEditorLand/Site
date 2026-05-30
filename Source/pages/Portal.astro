@@ -12,7 +12,7 @@ const PortalContent = {
 	}),
 	Subtitle: T("account.portal.subtitle", {
 		defaultValue:
-			"Account sign-in exists in WebSite. Cloud sync, provider identity, local-first daemon control, and enterprise SSO are planned portal surfaces, not required for the local editor path.",
+			"Land supports four authentication tiers: Cloud account sync, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
 	}),
 
 	Cloud: {
@@ -99,7 +99,7 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.provider.subtitle", {
 			defaultValue:
-				"Use a developer identity provider where the WebSite account flow supports it.\n\nProvider scopes should stay minimal and be documented per provider before launch.",
+				"Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE. Provider identity links your editor session to source repositories and hosted services you already use.",
 		}),
 		Color: "var(--TierProvider)",
 		BorderColor: "var(--TierProviderFore)",
@@ -156,7 +156,7 @@ const PortalContent = {
 			}),
 			T("account.portal.provider.capability.scope", {
 				defaultValue:
-					"Provider scopes should stay limited and documented",
+					"Minimal OAuth scopes - only what each provider integration requires",
 			}),
 			T("account.portal.provider.capability.token", {
 				defaultValue:
@@ -181,7 +181,7 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.localfirst.subtitle", {
 			defaultValue:
-				"Land's editor direction is local-first. Air contains daemon and service code for updates, downloads, authentication, indexing, and health.\n\nBrowser-to-daemon portal control is planned rather than treated as shipped UI.",
+				"The Air daemon runs as a persistent background process handling updates, file indexing, signing, and health monitoring.\n\nThe portal surface for browser-to-daemon control is in development - the daemon itself is active source today.",
 		}),
 		Color: "var(--TierLocalFirst)",
 		BorderColor: "var(--TierLocalFirstFore)",
@@ -256,7 +256,7 @@ const PortalContent = {
 			}),
 			T("account.portal.localfirst.capability.crdt", {
 				defaultValue:
-					"CRDT state synchronization is a design direction, not shipped editor behavior",
+					"CRDT state synchronization - planned for conflict-free offline edits",
 			}),
 			T("account.portal.localfirst.capability.team", {
 				defaultValue: "Fully local team management is planned",
@@ -284,7 +284,7 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.enterprise.subtitle", {
 			defaultValue:
-				"Enterprise identity is a planned portal surface.\n\nOIDC, SAML 2.0, SCIM, and compliance documentation should only be presented as available when a deployment has those integrations configured.",
+				"Connect Land to your organisation's identity infrastructure via OIDC, SAML 2.0, or SCIM. Enterprise SSO and directory provisioning are in development.",
 		}),
 		Color: "var(--PlatformDesktopFore)",
 		BorderColor: "var(--PlatformDesktop)",
