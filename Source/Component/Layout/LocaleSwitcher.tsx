@@ -56,18 +56,23 @@ const LocaleSwitcher = () => {
 			}
 		};
 		window.addEventListener("scroll", Guard, { passive: true });
-		SwitchLocale(Value).then(() => {
-			requestAnimationFrame(() => {
+		const ReleasePinnedLayout = () => {
+			window.removeEventListener("scroll", Guard);
+			window.scrollTo({ top: ScrollY, behavior: "instant" });
+			if (MainContent) {
+				MainContent.style.minHeight = PreviousMinHeight;
+			}
+		};
+
+		SwitchLocale(Value)
+			.then(() => {
 				requestAnimationFrame(() => {
-					window.removeEventListener("scroll", Guard);
-					window.scrollTo({ top: ScrollY, behavior: "instant" });
-					// Release the pinned height so layout can adapt naturally
-					if (MainContent) {
-						MainContent.style.minHeight = PreviousMinHeight;
-					}
+					requestAnimationFrame(ReleasePinnedLayout);
 				});
+			})
+			.catch(() => {
+				ReleasePinnedLayout();
 			});
-		});
 	};
 
 	return (
