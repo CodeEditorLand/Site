@@ -276,32 +276,36 @@ i18n.use(initReactI18next).init({
 	},
 });
 
-// Load only core namespaces eagerly (4 files instead of 10)
-const EnglishCoreBundle = await CoreLocaleLoader.en();
+// Load core namespaces and switch locale without a top-level await.
+// A top-level await makes the entire chunk async, which races React's
+// live-binding establishment on first navigation and causes createContext
+// to be undefined. Components fall back to their hardcoded defaultValues
+// until AddResources populates them (same visible result, no hydration crash).
+const InitI18n = async (): Promise<void> => {
+	const EnglishCoreBundle = await CoreLocaleLoader.en();
+	AddResources("en", EnglishCoreBundle);
 
-AddResources("en", EnglishCoreBundle);
+	// Phase 2: switch to detected locale after hydration completes.
+	if (DetectedLocale !== "en") {
+		const SwitchAfterHydration = async () => {
+			const FullBundle = await FullLocaleLoader[DetectedLocale]();
+			AddResources(DetectedLocale, FullBundle);
+			await i18n.changeLanguage(DetectedLocale);
+		};
 
-// Phase 2: After React hydration completes, switch to the user's detected
-// locale. Uses FullLocaleLoader so all visible sections (including page-
-// specific content) update simultaneously. requestIdleCallback ensures this
-// runs after the initial hydration pass, preventing any mismatch.
-if (DetectedLocale !== "en") {
-	const SwitchAfterHydration = async () => {
-		const FullBundle = await FullLocaleLoader[DetectedLocale]();
-		AddResources(DetectedLocale, FullBundle);
-		await i18n.changeLanguage(DetectedLocale);
-	};
-
-	if (typeof requestIdleCallback !== "undefined") {
-		requestIdleCallback(() => {
-			SwitchAfterHydration();
-		});
-	} else {
-		setTimeout(() => {
-			SwitchAfterHydration();
-		}, 0);
+		if (typeof requestIdleCallback !== "undefined") {
+			requestIdleCallback(() => {
+				SwitchAfterHydration();
+			});
+		} else {
+			setTimeout(() => {
+				SwitchAfterHydration();
+			}, 0);
+		}
 	}
-}
+};
+
+InitI18n();
 
 /**
  * Lazily load a page-specific namespace for the current (or given) locale.

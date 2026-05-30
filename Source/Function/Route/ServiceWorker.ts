@@ -143,6 +143,11 @@ interface AuthState {
 
 const AUTH_STATE_KEY = "/auth-state";
 
+// In-memory auth state cache - avoids running PBKDF2 (100k iterations) on
+// every navigation. undefined = not yet loaded from cache; null = no session;
+// AuthState = active session. Invalidated by WriteAuthState / ClearAuthState.
+let _CachedAuth: AuthState | null | undefined = undefined;
+
 // ─── Base64 helpers ───
 
 const ByteListToBase64 = (ByteList: Uint8Array): string =>
@@ -180,10 +185,27 @@ const DeriveKey = async (
 };
 
 const ReadAuthState = async (): Promise<AuthState | null> => {
+	// Fast path: serve from in-memory cache to avoid PBKDF2 on every navigation.
+	if (_CachedAuth !== undefined) {
+		if (_CachedAuth === null) return null;
+		if (_CachedAuth.ExpiresAt - 30_000 < Date.now()) {
+			_CachedAuth = null;
+			const Cache = await caches.open(CACHE_AUTH);
+			await Cache.delete(AUTH_STATE_KEY);
+			await Cache.delete("/auth-user-id");
+			__DEV__ && Log("Auth token expired (memory cache), cleared.");
+			return null;
+		}
+		return _CachedAuth;
+	}
+
 	try {
 		const Cache = await caches.open(CACHE_AUTH);
 		const Cached = await Cache.match(AUTH_STATE_KEY);
-		if (!Cached) return null;
+		if (!Cached) {
+			_CachedAuth = null;
+			return null;
+		}
 
 		const Raw = await Cached.json();
 
@@ -201,6 +223,7 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 			const UserIdCached = await Cache.match("/auth-user-id");
 			if (!UserIdCached) {
 				await Cache.delete(AUTH_STATE_KEY);
+				_CachedAuth = null;
 				return null;
 			}
 			const UserId = await UserIdCached.text();
@@ -219,8 +242,10 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 				await Cache.delete(AUTH_STATE_KEY);
 				await Cache.delete("/auth-user-id");
 				__DEV__ && Log("Auth token expired, cleared from cache.");
+				_CachedAuth = null;
 				return null;
 			}
+			_CachedAuth = State;
 			return State;
 		}
 
@@ -228,10 +253,13 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 		const State = Raw as AuthState;
 		if (State.ExpiresAt - 30_000 < Date.now()) {
 			await Cache.delete(AUTH_STATE_KEY);
+			_CachedAuth = null;
 			return null;
 		}
+		_CachedAuth = State;
 		return State;
 	} catch {
+		_CachedAuth = null;
 		return null;
 	}
 };
@@ -267,10 +295,12 @@ const WriteAuthState = async (State: AuthState): Promise<void> => {
 			headers: { "Content-Type": "text/plain" },
 		}),
 	);
+	_CachedAuth = State;
 	__DEV__ && Log("Auth state encrypted and written to cache.");
 };
 
 const ClearAuthState = async (): Promise<void> => {
+	_CachedAuth = null;
 	const Cache = await caches.open(CACHE_AUTH);
 	await Cache.delete(AUTH_STATE_KEY);
 	await Cache.delete("/auth-user-id");
@@ -453,8 +483,18 @@ const MaybeRefreshToken = async (): Promise<void> => {
 		});
 
 		if (!RefreshResponse.ok) {
-			__DEV__ && WarnLog("Token refresh failed, clearing auth state.");
-			await ClearAuthState();
+			// Only clear auth on 401 (token explicitly rejected by the server).
+			// 404 means no auth Worker is deployed; 5xx means transient error.
+			// Neither should log the user out.
+			if (RefreshResponse.status === 401) {
+				__DEV__ && WarnLog("Token refresh 401, clearing auth state.");
+				await ClearAuthState();
+			} else {
+				__DEV__ &&
+					WarnLog(
+						`Token refresh ${RefreshResponse.status}, keeping auth state.`,
+					);
+			}
 			return;
 		}
 
@@ -639,14 +679,29 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					return Response.redirect(SignInURL.href, 302);
 				}
 
-				// Auth route + has session → already signed in, go to Dashboard
-				if (AuthRoute.has(Path) && IsAuthed) {
+				// Auth route + has session → already signed in, redirect away.
+				// Skip if this is an OAuth callback (?code=&state=): some
+				// providers redirect back to an auth route; intercepting that
+				// navigation would discard the code and break the flow.
+				if (
+					AuthRoute.has(Path) &&
+					IsAuthed &&
+					!(_URL.searchParams.has("code") &&
+						_URL.searchParams.has("state"))
+				) {
+					const Next = _URL.searchParams.get("next");
+					const Target =
+						Next &&
+						Next.startsWith("/") &&
+						!Next.startsWith("//")
+							? Next
+							: "/Dashboard";
 					__DEV__ &&
 						Log(
-							`Auth bypass: ${Path} already authed, redirecting to Dashboard`,
+							`Auth bypass: ${Path} already authed, redirecting to ${Target}`,
 						);
 					return Response.redirect(
-						new URL("/Dashboard", _URL.origin).href,
+						new URL(Target, _URL.origin).href,
 						302,
 					);
 				}
@@ -806,8 +861,11 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 	if (!Data || typeof Data.Type !== "string") return;
 
 	if (Data.Type === "Auth:Write") {
-		if (!Data.Token || !Data.ExpiresAt || !Data.UserId) {
+		// UserId may be an empty string (anonymous/local-first sessions) - only
+		// Token and ExpiresAt are truly required.
+		if (!Data.Token || !Data.ExpiresAt || Data.UserId === undefined || Data.UserId === null) {
 			__DEV__ && ErrorLog("Auth:Write missing required fields.");
+			Event.source?.postMessage({ Type: "Auth:Error", Reason: "missing-fields" });
 			return;
 		}
 		Event.waitUntil(

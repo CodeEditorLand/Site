@@ -17,7 +17,7 @@ const WriteAuthToServiceWorker = async (
 		return;
 
 	await new Promise<void>((Resolve) => {
-		const Timeout = setTimeout(Resolve, 2000);
+		const Timeout = setTimeout(Resolve, 5000);
 
 		const OnMessage = (Event: MessageEvent) => {
 			if (Event.data?.Type === "Auth:Written") {

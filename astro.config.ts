@@ -275,14 +275,22 @@ export default (await import("astro/config")).defineConfig({
 
 					manualChunks(Identifier: string) {
 						if (Identifier.includes("node_modules")) {
-							// React + Radix share the same chunk (Radix
-							// imports React internals, splitting them
-							// creates a circular dependency).
+							// React + Radix + i18next share one chunk.
+							// Radix imports React internals (splitting
+							// creates circular deps). i18next/react-i18next
+							// call React.createContext() at module level -
+							// keeping them in a separate async chunk caused
+							// that call to see undefined on first navigation
+							// because the top-level await in Client.ts made
+							// the I18n chunk async, racing React's live
+							// binding establishment.
 							if (
 								Identifier.includes("react-dom") ||
 								Identifier.includes("react/") ||
 								Identifier.includes("scheduler") ||
-								Identifier.includes("@radix-ui")
+								Identifier.includes("@radix-ui") ||
+								Identifier.includes("i18next") ||
+								Identifier.includes("react-i18next")
 							) {
 								return "Vendor/React";
 							}
@@ -297,13 +305,6 @@ export default (await import("astro/config")).defineConfig({
 
 							if (Identifier.includes("firebase")) {
 								return "Vendor/Firebase";
-							}
-
-							if (
-								Identifier.includes("i18next") ||
-								Identifier.includes("react-i18next")
-							) {
-								return "Vendor/I18n";
 							}
 
 							if (

@@ -98,7 +98,7 @@ export default ({
 					navigator.serviceWorker?.controller
 				) {
 					await new Promise<void>((Resolve) => {
-						const Timeout = setTimeout(Resolve, 2000);
+						const Timeout = setTimeout(Resolve, 5000);
 						const OnMessage = (Event: MessageEvent) => {
 							if (Event.data?.Type === "Auth:Written") {
 								clearTimeout(Timeout);
