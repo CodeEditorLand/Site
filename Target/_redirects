@@ -4,8 +4,6 @@
 # This prevents the service worker from breaking on redirect chains.
 
 # ── BARE-PATH DISPATCHERS (200) ──
-/Account                  /Account/SignIn/          200
-/Account/                 /Account/SignIn/          200
 /Legal                    /Legal/Term/              200
 /Legal/                   /Legal/Term/              200
 /Contact                  /Contact/Sale/            200

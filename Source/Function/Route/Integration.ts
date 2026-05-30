@@ -261,9 +261,10 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			// trailing-slash 301 from firing (which caused infinite redirect
 			// loops). Written to both Target/ (deployed) and Public/ (source).
 
-			// Bare-path dispatchers: parent paths with no page → default child
+			// Bare-path dispatchers: parent paths with no page → default child.
+			// /Account has its own index page (DynamicAccountProfile), so it
+			// serves itself rather than defaulting to /Account/SignIn.
 			const BarePathDispatcher: [string, string][] = [
-				["/Account", "/Account/SignIn"],
 				["/Legal", "/Legal/Term"],
 				["/Contact", "/Contact/Sale"],
 			];
