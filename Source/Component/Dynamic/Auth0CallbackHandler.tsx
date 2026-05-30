@@ -76,7 +76,15 @@ const Handler = () => {
 				} catch {
 					// proceed even if SW sync fails
 				}
-				window.location.replace("/Dashboard");
+				let ReturnTo = "/Dashboard";
+				try {
+					const Stored = sessionStorage.getItem("auth0_return_to");
+					if (Stored && Stored.startsWith("/") && !Stored.startsWith("//")) {
+						ReturnTo = Stored;
+						sessionStorage.removeItem("auth0_return_to");
+					}
+				} catch {}
+				window.location.replace(ReturnTo);
 			})();
 		}
 	}, [isLoading, isAuthenticated, error]);

@@ -1,0 +1,1 @@
+import"./Vendor/React.DjoaJckE.js";export{A as default}from"./Footer.DaLckdjP.js";

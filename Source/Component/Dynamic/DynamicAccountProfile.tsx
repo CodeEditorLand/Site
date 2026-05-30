@@ -373,7 +373,15 @@ const AccountProfileInner = ({
 				</p>
 				<button
 					type="button"
-					onClick={() => Login()}
+					onClick={() => {
+							try {
+								sessionStorage.setItem(
+									"auth0_return_to",
+									window.location.pathname,
+								);
+							} catch {}
+							Login();
+						}}
 					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-white transition-all hover:opacity-90">
 					{T("signInButton", { defaultValue: "Sign In" })}
 				</button>
