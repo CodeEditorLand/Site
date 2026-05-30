@@ -160,7 +160,7 @@
 	},
 	"roadmap": {
 		"title": "The Architecture Is Built. Here Is What Comes Next.",
-		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is described as source status, integration status, or release work so the website does not outrun the code.",
+		"subtitle": "Funded by NLnet NGI0 Commons Fund.\n\nEach milestone is labelled by what it represents: active source, integration work in progress, or release preparation.",
 		"tiers": {
 			"current": {
 				"name": "Active Now",
@@ -241,7 +241,7 @@
 		},
 		"maintain": {
 			"subtitle": "Build Orchestrator - Configuration - Release Profiles",
-			"description": "Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\nManages development, debug, and release build profiles across the Land ecosystem.\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\nDeterministic release claims are held until the public release pipeline is fully published."
+			"description": "Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\nManages development, debug, and release build profiles across the Land ecosystem.\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\nRelease pipeline preparation — signing, artifact publication, and distribution — is in progress."
 		},
 		"mist": {
 			"subtitle": "Local DNS Sandbox - *.land.playform.cloud Resolution - Network Boundary",
