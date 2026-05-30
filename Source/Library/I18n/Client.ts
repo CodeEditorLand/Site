@@ -16,8 +16,8 @@ export const LocaleLabel: Record<SupportedLocale, string> = {
 	en: "English",
 	bg: "Bulgarian",
 	de: "Deutsch",
-	fr: "Francais",
-	es: "Espanol",
+	fr: "Français",
+	es: "Español",
 };
 
 const NamespaceList = [

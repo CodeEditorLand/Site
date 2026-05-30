@@ -36,7 +36,7 @@ export default ({
 			redirect_uri:
 				typeof window !== "undefined"
 					? `${window.location.origin}/OAuth/Success`
-					: undefined,
+					: "https://land.playform.cloud/OAuth/Success",
 			...(Organization ? { organization: Organization } : {}),
 		}}>
 		{Children}

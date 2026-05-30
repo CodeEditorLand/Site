@@ -79,9 +79,13 @@ if ("serviceWorker" in navigator && !__DEV__) {
 		}
 	};
 
+	// Tracks whether the SW was controlling this page when the script ran.
+	// Hoisted so the controllerchange message handler can read it.
+	let InitiallyControlled = !!navigator.serviceWorker.controller;
+
 	// ── Main registration flow ──
 	const Control = async () => {
-		const InitiallyControlled = !!navigator.serviceWorker.controller;
+		InitiallyControlled = !!navigator.serviceWorker.controller;
 
 		__DEV__ &&
 			Log(`Page controlled on script start: ${InitiallyControlled}`);
@@ -135,18 +139,6 @@ if ("serviceWorker" in navigator && !__DEV__) {
 
 			await navigator.serviceWorker.ready;
 
-			const Controlled = !!navigator.serviceWorker.controller;
-
-			// First-ever registration: page isn't controlled yet → reload
-			// so the SW can intercept subsequent navigations.
-			if (!InitiallyControlled && !Controlled) {
-				__DEV__ && Log("First registration. Reloading for control.");
-
-				window.location.reload();
-
-				return;
-			}
-
 			// Trigger a background update check (network fetch of the SW
 			// script). If a new version is found, the updatefound listener
 			// above handles it.
@@ -185,9 +177,13 @@ if ("serviceWorker" in navigator && !__DEV__) {
 			if (OldVersion !== NewVersion) {
 				sessionStorage.setItem(VersionKey, NewVersion);
 
-				// Only reload if we had a previous version (not first load)
-				if (OldVersion !== null) {
-					__DEV__ && Log("Version changed. Reloading page.");
+				// Reload when:
+				// 1. Version upgrade (OldVersion existed but changed), OR
+				// 2. First-ever install and page was not already controlled -
+				//    the SW just took over via clients.claim(); reload so it
+				//    can intercept navigations (e.g. auth gate on /Dashboard).
+				if (OldVersion !== null || !InitiallyControlled) {
+					__DEV__ && Log("Reloading page (SW version change or first install).");
 
 					window.location.reload();
 				}
