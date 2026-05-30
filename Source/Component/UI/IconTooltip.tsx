@@ -107,7 +107,7 @@ const IconTooltip = ({
 										{
 											"--StaccatoSeed": Seed,
 											"--StaccatoSeedPhase": Phase,
-											transform: `translate(calc(var(--StaccatoSeed) * 14px), calc(var(--StaccatoSeedPhase) * 10px)) rotate(calc(var(--StaccatoSeed) * 4deg)) scale(1)`,
+											transform: `translate(calc(var(--StaccatoSeed) * 7px), calc(var(--StaccatoSeedPhase) * 5px)) rotate(calc(var(--StaccatoSeed) * 1.5deg)) scale(1)`,
 										} as React.CSSProperties
 									}>
 									{Line}
