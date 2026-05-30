@@ -95,11 +95,23 @@ const IconTooltip = ({
 					</span>
 				</TooltipTrigger>
 				{Array.isArray(Label) ? (
-					<TooltipContent className="flex flex-col items-center gap-1 bg-transparent p-0 [&>svg]:hidden">
+					<TooltipContent className="flex flex-col items-center gap-0 bg-transparent p-0 [&>svg]:hidden">
 						{Label.map((Line, Index) => (
 							<p
 								key={Index}
-								className="w-fit rounded-none bg-primary px-3 py-1 text-primary-foreground">
+								className="StaccatoJitter w-fit rounded-none bg-primary px-3 py-1 text-primary-foreground"
+								style={
+									{
+										"--StaccatoSeed": (
+											Math.random() * 2 -
+											1
+										).toFixed(3),
+										"--StaccatoSeedPhase": (
+											Math.random() * 2 -
+											1
+										).toFixed(3),
+									} as React.CSSProperties
+								}>
 								{Line}
 							</p>
 						))}
