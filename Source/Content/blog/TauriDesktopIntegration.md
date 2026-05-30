@@ -17,8 +17,9 @@ editor use the operating system WebView instead of bundling Chromium, while
 
 The source-backed claim is architectural: no bundled Chromium in the `Tauri`
 desktop path, native `Rust` service code in `Mountain`, and configured targets
-for multiple operating systems. Public size, memory, and startup comparisons
-should come from a repeatable benchmark.
+for multiple operating systems. Published size, memory, and startup numbers
+require a repeatable benchmark run against a defined project and machine
+configuration.
 
 ## The Electron Problem
 

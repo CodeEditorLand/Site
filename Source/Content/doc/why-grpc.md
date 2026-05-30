@@ -47,8 +47,7 @@ routes under one schema model. The current source includes bidirectional
 `Vine` owns the protocol layer. `Mountain` exposes and consumes `gRPC` services.
 `Cocoon` runs a `gRPC` server and client for extension-host work. `Air` and
 `Grove` also define service contracts. Not every internal call goes through
-`gRPC`, so public copy should name the route instead of saying all communication
-uses one channel.
+`gRPC`; each documented route names the specific channel it uses.
 
 ---
 

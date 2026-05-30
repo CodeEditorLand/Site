@@ -12,9 +12,9 @@ description:
 `Editor.Land`'s build pipeline. It is part of the path that reduces reliance on
 Node-hosted `TypeScript` compilation over time.
 
-The source-backed claim is that `Rest` contains `OXC` integration and transform
-work. Public speed claims should wait for a benchmark that runs inside Land's
-actual pipeline.
+`Rest` contains `OXC` integration and transform work. Speed claims require a
+benchmark that runs inside Land's actual pipeline before they appear in product
+copy.
 
 ---
 
@@ -34,10 +34,10 @@ Confirmed source areas include:
 
 ## Status 🚀
 
-`Rest` is WIP build-tooling work. It should be labeled `WIP` anywhere the
-website talks about replacing or outperforming other compilers. `Output`
-compatibility, source maps, and measured pipeline speed need published
-validation before they become product claims.
+`Rest` is build-tooling work in active development. Claims about replacing or
+outperforming other compilers require published validation of `Output`
+compatibility, source maps, and measured pipeline speed before they appear in
+product copy.
 
 ---
 

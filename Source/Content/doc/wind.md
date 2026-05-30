@@ -34,8 +34,8 @@ instead of raw `Tauri` calls.
 
 `Wind` is active source for the `Mountain` `workbench` path. Core service
 surfaces are present, and more coverage is added as `Mountain` and `Cocoon`
-expose additional routes. Claims about platform parity or complete `workbench`
-coverage should name the route being verified.
+expose additional routes. Platform parity and complete `workbench` coverage
+claims name the specific route being verified.
 
 ---
 

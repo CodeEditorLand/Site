@@ -33,9 +33,9 @@ Confirmed source areas include:
 
 ## Status 🚀
 
-`Mist` is source-backed and WIP for full integration. Public copy should
-describe the local DNS and service-boundary direction without promising that all
-editor traffic already flows through `Mist`.
+`Mist` is source-backed and in active integration. It provides local DNS and
+service-boundary infrastructure for `Land.PlayForm.Cloud`. Not all internal
+editor routes flow through `Mist` yet.
 
 ---
 

@@ -13,8 +13,8 @@ Explains the "Extension Development Host" model: a second, isolated instance of
 the application launches to run tests, with the test Cocoon instance
 remote-controlling the main UI.
 
-The actual implementation details should be verified against
-`Mountain/Source/Testing/` and `Cocoon/Source/Services/Extension.ts`.
+Implementation details are in `Mountain/Source/Testing/` and
+`Cocoon/Source/Services/Extension.ts`.
 
 ## Data Flow
 

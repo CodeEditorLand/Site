@@ -74,8 +74,8 @@ explicit capability grants.
 
 ## Status 🚀
 
-`Grove` should be shown as `WIP` in product copy, not as a shipped replacement
-for `Cocoon`. It is source-backed work in progress.
+`Grove` is in active development and is not a shipped replacement for `Cocoon`.
+It is source-backed work in progress.
 
 ---
 

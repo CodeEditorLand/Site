@@ -50,9 +50,9 @@ described by `Vine` proto files. `Mountain` owns the `Rust`-side services and
 extension-host startup, document notifications, language providers, tree views,
 command execution, cancellation, and streaming routes where implemented.
 
-These paths are independent enough that the website should not describe every
-service call as flowing through one universal bus. `Tauri` `IPC`, `Vine` `gRPC`,
-and local service code each have their own job.
+These paths are independent. `Tauri` `IPC`, `Vine` `gRPC`,
+and local service code each have their own job; service calls do not flow through one universal
+bus.
 
 ---
 
@@ -83,9 +83,8 @@ the `VS Code` extension scanner and offline gallery channels wired for
 sideloaded extensions.
 
 That supports this claim: installed `VS Code` extensions run unmodified through
-the `Cocoon` path when the `APIs` they use are implemented. The website should
-not claim marketplace-wide perfection unless it points to a public validation
-matrix.
+the `Cocoon` path when the `APIs` they use are implemented. Marketplace-wide compatibility depends on a
+public validation matrix that is still in preparation.
 
 ---
 
@@ -114,9 +113,8 @@ matrix.
 ## Platform Targets
 
 `Mountain`'s `Tauri` configuration includes macOS, Windows, Linux, iOS, and
-Android target settings. The default development configuration is not the same
-thing as published installer coverage, so the website should say "configured"
-unless a release artifact is actually available.
+Android target settings. Tauri configuration present in source is not the same
+as a published installer; see the table below for per-platform status.
 
 | Platform | Source status                                                          |
 | -------- | ---------------------------------------------------------------------- |
@@ -131,9 +129,9 @@ unless a release artifact is actually available.
 ## Security Model
 
 `Mountain`'s configuration declares custom schemes such as `land:`,
-`vscode-file:`, and `vscode-webview:`. Extension webviews should be described as
-isolated through the WebView and scheme model, not as a finished universal
-sandbox for all extension behavior.
+`vscode-file:`, and `vscode-webview:`. Extension webviews are isolated through
+the WebView and scheme model. A finished universal sandbox covering all extension
+behavior is not claimed.
 
 `Grove` adds a `WebAssembly` host path with Wasmtime and capability-oriented
 modules. That is real source, but it is not the primary `VS Code` extension path
@@ -148,5 +146,4 @@ surfaces such as commands, workspace, window, terminals, webviews, tree views,
 diagnostics, language providers, output channels, and document events.
 
 Long-tail areas such as chat, language-model `APIs`, notebooks, tests, and some
-custom-editor cases should be presented as in progress unless their behavior is
-verified in source and in a runnable scenario.
+custom-editor cases are in progress and not yet verified end-to-end.

@@ -55,7 +55,7 @@ due to aliasing guarantees that allow more aggressive optimization.
 testing, documentation generation, and access to over 150,000 crates. Land uses
 `Cargo` workspaces to manage its `Rust` elements as a single coordinated build.
 Dependencies are pinned through `Cargo` manifests and the workspace lockfile.
-Reproducibility should be described per release profile once public artifacts
+Reproducibility is described per release profile once public artifacts
 are published.
 
 ---

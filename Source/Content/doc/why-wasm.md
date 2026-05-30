@@ -34,9 +34,9 @@ Wasmtime supports explicit resource grants. A host can decide which directories,
 environment values, network endpoints, or `IPC` channels a module receives. If a
 capability is not granted, the module should not see that resource.
 
-End-to-end capability enforcement is still a WIP product path. Public copy
-should describe `Grove` as a source-backed integration effort until release
-profiles and tests prove the full behavior.
+End-to-end capability enforcement is still a WIP product path. `Grove` is a
+source-backed integration effort; release profiles and tests will validate the
+full behavior.
 
 ---
 
@@ -44,7 +44,8 @@ profiles and tests prove the full behavior.
 
 `Grove` is the right place for memory ceilings, CPU budgets, and interruption.
 Wasmtime supports mechanisms that make those controls possible, but budget
-claims should stay labeled `WIP` until they are verified in the active build.
+controls are in active development and have not been verified in the active
+build.
 
 ---
 
@@ -52,7 +53,7 @@ claims should stay labeled `WIP` until they are verified in the active build.
 
 `Cocoon` runs unmodified `VS Code` extension code today. `Grove` is for future
 extensions that prioritize isolation and explicit capabilities. The two hosts
-serve different needs and should not be described as interchangeable.
+serve different needs and are not interchangeable.
 
 ---
 

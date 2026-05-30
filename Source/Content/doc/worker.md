@@ -13,8 +13,8 @@ description:
 assets, versioned application files, or dynamic CSS import handling. It belongs
 to the web shell and WebView side of the system.
 
-`Worker` should be shown as source-backed, with release scope depending on the
-active build profile.
+`Worker` is source-backed, with release scope depending on the active build
+profile.
 
 ---
 
@@ -30,9 +30,9 @@ active build profile.
 
 ## Status 🚀
 
-`Worker` is useful infrastructure, but public copy should avoid claiming that it
-intercepts all editor requests or guarantees offline behavior for every asset.
-Use `WIP` where the active release profile has not been verified.
+`Worker` is useful infrastructure. It intercepts asset and CSS import requests
+for the build profiles where it is active. Offline behavior and full request
+coverage depend on the active release profile.
 
 ---
 

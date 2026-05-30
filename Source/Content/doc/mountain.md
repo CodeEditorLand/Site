@@ -15,9 +15,8 @@ window, native services, `Tauri` `IPC`, `Vine` `gRPC`, and the bridge to
 work runs in `Cocoon`.
 
 The source supports a clear architectural claim: `Mountain` gives Land a native
-desktop path without bundling Chromium. It should not be described with public
-speed or memory numbers until those numbers are published with a repeatable
-benchmark.
+desktop path without bundling Chromium. Speed and memory numbers belong in a
+published benchmark rather than in static documentation.
 
 ---
 
@@ -32,8 +31,8 @@ benchmark.
 | Android  | System WebView | Tauri mobile configuration exists                           |
 
 `tauri.conf.json` and production `Tauri` config files define the desktop bundle
-settings. A configured target is not the same as a published installer, so
-public release pages should keep installer claims separate from source support.
+settings. A configured target is not the same as a published installer; installer
+claims are separate from source support.
 
 ---
 
@@ -87,7 +86,7 @@ the `Vine` and `Cocoon` path before handing control to the `Tauri` event loop.
 - Extension scanning and manifest delivery into `Cocoon`.
 
 These are source-backed responsibilities. Exact latency, memory, and startup
-claims should point to a public benchmark before they appear on the website.
+claims require a public benchmark.
 
 ---
 
@@ -113,8 +112,8 @@ search, watcher, clipboard, extension-scan, configuration, shared-memory, HTTP
 proxy, and diagnostic experiments.
 
 Feature flags are useful public documentation because they show which behavior
-is compiled into a build. They should not be used as shorthand for behavior that
-has not been exercised by the selected profile.
+is compiled into a build. A flag being present does not indicate the behavior has
+been exercised by the selected profile.
 
 ---
 
@@ -127,8 +126,8 @@ has not been exercised by the selected profile.
 - **`debug-electron`** - compatibility path for the legacy `Electron`
   `workbench`.
 
-Release profiles may enable different pieces. Public docs should name the
-profile when making behavior claims.
+Release profiles may enable different pieces. Behavior claims name the profile
+they apply to.
 
 ---
 

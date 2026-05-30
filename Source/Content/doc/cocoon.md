@@ -53,8 +53,8 @@ Key `Cocoon` source areas:
   `SendMountainNotification`, and `CancelOperation`.
 
 Some namespaces exist as stubs or partial routes. Chat, language-model,
-notebook, and tests `APIs` should stay marked WIP until their runtime behavior
-is verified.
+notebook, and tests `APIs` are in active development and their runtime behavior
+has not yet been verified.
 
 ---
 
@@ -65,8 +65,8 @@ extension-host requests to `Cocoon`, and `Cocoon` sends events and results back
 to `Mountain`. The wire shape is generated from protocol definitions rather than
 handwritten `JSON`.
 
-The route is real source, but public docs should name the route being discussed
-instead of saying all editor communication flows through `Cocoon`.
+The route is real source. Not all editor communication flows through `Cocoon`;
+each doc should name the specific route being discussed.
 
 ---
 
@@ -83,9 +83,9 @@ every extension has runtime parity yet.
 
 ## Status 🚀
 
-`Cocoon` should be shown as active for unmodified extension execution and WIP
-for long-tail `API` coverage. Claims about specific extension categories should
-link to tests or a validation matrix.
+`Cocoon` is active for unmodified extension execution and in active development
+for long-tail `API` coverage. Claims about specific extension categories require
+tests or a validation matrix.
 
 ---
 

@@ -20,8 +20,9 @@ changes.
 That means Land can make a strong, useful claim: installed `VS Code` extensions
 run unmodified through `Cocoon` when the APIs they use are implemented.
 
-It should not claim that every marketplace extension works until a public
-validation matrix proves that statement across real extensions and versions.
+Coverage is partial: extensions that rely on unimplemented API surface will not
+activate correctly. No public validation matrix across extensions and versions
+exists yet.
 
 ## How Cocoon Hosts Extensions
 
@@ -99,8 +100,8 @@ Vine protocol with bidirectional streaming for real-time event communication.
 
 Land does not need to connect to the Microsoft Visual Studio Marketplace to run
 installed extension code. The current source is oriented around local extension
-paths and sideloaded packages. Open registry and enterprise registry flows
-should be described as coming soon until the in-editor path is complete.
+paths and sideloaded packages. Open registry and enterprise registry flows are in development and not yet
+available in the editor.
 
 ## Code Generation Pipeline
 

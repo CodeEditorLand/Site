@@ -55,8 +55,8 @@ benchmark suite is published.
 
 ## Elements
 
-`Editor.Land` is composed of named elements. Each element should be described by
-source status and integration status, not by broad product promises.
+`Editor.Land` is composed of named elements. Each element is described by its
+source status and integration status.
 
 | Element      | Role                                                                           |
 | ------------ | ------------------------------------------------------------------------------ |

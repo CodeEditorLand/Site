@@ -40,9 +40,9 @@ communication uses `Vine` `gRPC` where that route is implemented.
 ## Platform Support
 
 The repository contains `Tauri` configuration for macOS, Windows, Linux, iOS,
-and Android. Public pages should describe macOS as the primary development path
-and other platforms as configured or in validation unless a release artifact
-exists for that platform.
+and Android. macOS is the primary development path. Other platforms are
+configured or in validation; release artifacts are listed per platform when
+available.
 
 ---
 

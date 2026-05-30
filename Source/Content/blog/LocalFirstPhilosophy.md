@@ -80,6 +80,5 @@ portal services) on top of a fully local core (`Mountain`, `Cocoon`, `Wind`,
 `Sky`), Land keeps the promise: the editor is yours, on your machine, regardless
 of network state.
 
-The website should keep that constraint separate from unfinished product
-features. Local-first is the design constraint. Portal and cloud sync surfaces
-should be labeled as coming soon until the user-facing flow is complete.
+Local-first is the design constraint. Portal and cloud sync surfaces are in
+development and not yet available in the editor.

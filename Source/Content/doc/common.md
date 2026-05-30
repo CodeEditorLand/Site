@@ -12,10 +12,9 @@ description:
 `TypeScript` types, traits, configuration helpers, DTOs, testing helpers, and
 service-boundary definitions that multiple elements depend on.
 
-It is not a standalone runtime process. It should not be described as having no
-concrete code at all, because the source includes helpers and dependencies that
-support shared behavior. The accurate claim is narrower: `Common` centralizes
-cross-element contracts so elements do not invent their own incompatible shapes.
+It is not a standalone runtime process. The source includes helpers and
+dependencies that support shared behavior. `Common` centralizes cross-element
+contracts so elements do not invent their own incompatible shapes.
 
 ---
 
@@ -40,9 +39,9 @@ small unit.
 
 ## Status 🚀
 
-`Common` is source-backed and active as a shared library layer. Claims about
-"complete isolation" or "zero implementation" should be avoided unless they are
-qualified to a specific trait or test harness.
+`Common` is source-backed and active as a shared library layer. Isolation and
+zero-implementation properties apply only to specific traits or test harnesses,
+not to the element as a whole.
 
 ---
 

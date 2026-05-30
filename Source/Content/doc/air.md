@@ -13,8 +13,8 @@ description:
 contains modules for updates, downloads, authentication, indexing, security,
 health, resilience, configuration, logging, metrics, and `Vine` `IPC`.
 
-`Air` should be described as source-backed service plumbing. The public updater,
-release signing story, and installer distribution path are still being prepared.
+`Air` is source-backed service plumbing. The public updater, release signing
+story, and installer distribution path are still being prepared.
 
 ---
 

@@ -199,7 +199,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"Mountain handles window management, file I/O, child processes, terminal IPC, and extension communication through Tauri - using the ActionEffect system for declarative, dispatchable operations. Echo provides work-stealing scheduler primitives for bounded background work.\n\nThat gives Land a native path to move heavy editor work out of the WebView without claiming benchmark numbers before a reproducible suite exists.",
+								"Mountain handles window management, file I/O, child processes, terminal IPC, and extension communication through Tauri - using the ActionEffect system for declarative, dispatchable operations. Echo provides work-stealing scheduler primitives for bounded background work.\n\nHeavy editor operations run in the native process, not the WebView. The separation is structural: the IPC boundary exists in the source regardless of which features are enabled in a given build.",
 						},
 					),
 				},
@@ -214,7 +214,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Cocoon hosts existing VS Code extensions using Effect-TS through a dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC. The vscode API shim covers commands, workspace, terminals, webviews, language providers, and diagnostics.\n\nExtensions run unmodified through the active compatibility path. Marketplace-wide coverage still depends on each extension API usage and on services still being filled in.",
+								"Cocoon hosts existing VS Code extensions using Effect-TS through a dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC. The vscode API shim covers commands, workspace, terminals, webviews, language providers, and diagnostics.\n\nInstalled extensions run unmodified through the active compatibility path. Coverage across the full marketplace depends on which vscode APIs each extension uses - the core surfaces are implemented; long-tail APIs are an ongoing integration effort.",
 						},
 					),
 				},
@@ -233,7 +233,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"Effect-TS gives Cocoon and Wind typed errors, scoped resources, explicit cancellability, and supervised concurrency for extension-host and workbench services. Wind composes services into Layer stacks that target specific runtimes - native, compatibility, or test - with compile-time dependency tracking.\n\nThat does not remove every runtime bug, but it does make failure paths explicit and traceable through the services Land controls.",
+								"Effect-TS gives Cocoon and Wind typed errors, scoped resources, explicit cancellability, and supervised concurrency for extension-host and workbench services. Wind composes services into Layer stacks that target specific runtimes - native, compatibility, or test - with compile-time dependency tracking.\n\nFailure paths are typed and explicit at every layer. When something goes wrong, the error surface is in the type system rather than a runtime exception.",
 						},
 					),
 				},
@@ -248,7 +248,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"Tauri uses the OS WebView on each platform instead of a bundled Chromium instance. Mountain's desktop path has no embedded browser engine. Per-platform binary management keeps cross-compilation paths explicit and reproducible.\n\nThe repository includes macOS, Windows, and Linux build configuration. macOS is the primary path, with Windows and Linux installer coverage still being completed.",
+								"Tauri uses the OS WebView on each platform instead of a bundled Chromium instance. Mountain's desktop path has no embedded browser engine. Per-platform binary management keeps cross-compilation paths explicit and reproducible.\n\nThe repository includes macOS, Windows, and Linux build configuration. macOS has active installer coverage; Windows and Linux builds are configured and in preparation.",
 						},
 					),
 				},
@@ -267,7 +267,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"Air provides persistent background services for update downloads and verification, file indexing, cryptographic signing, and health monitoring. Runs as an independent daemon - persists when the main window closes.\n\nThose services are real source today. The public updater flow, signing story, and release distribution path are still being finished.",
+								"Air provides persistent background services for update downloads and verification, file indexing, cryptographic signing, and health monitoring. Runs as an independent daemon - persists when the main window closes.\n\nThe daemon and service code are active source. Public installer delivery and the release signing pipeline are in preparation.",
 						},
 					),
 				},
@@ -296,7 +296,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is described as source status, integration status, or release work so the website does not outrun the code.",
+					"Funded by NLnet NGI0 Commons Fund.\n\nEach milestone is labelled by what it represents: active source, integration work in progress, or release preparation.",
 			}),
 			Tiers: [
 				{
@@ -357,7 +357,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						}),
 						T("home:roadmap.tiers.current.features.6", {
 							defaultValue:
-								"macOS primary path, Windows and Linux configured",
+								"macOS, Windows, and Linux build targets in source",
 						}),
 					],
 					CTA: {
@@ -377,7 +377,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Status: "WIP",
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"Active milestones across the element repos. These items are integration and release goals, not claims that the public build already ships them.",
+							"Active milestones across the element repositories - integration work, release preparation, and long-tail API coverage.",
 					}),
 					Price: { Monthly: 0, Yearly: 0 },
 					Elements: [
@@ -446,7 +446,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code's Electron stack element by element.\n\nThe element directories are inspectable in source, but each one is described here by what the current code supports or is actively wiring.",
+					"Land replaces VS Code's Electron stack element by element.\n\nEach element directory is inspectable in source. The descriptions below reflect what the current code implements and what is actively being integrated.",
 			}),
 			Testimonials: [
 				{
@@ -530,7 +530,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
-							"Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\n\nManages build profiles across the Land ecosystem:\n• Development\n• Debug\n• Release\n\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\n\nDeterministic release claims are held until the public release pipeline is fully published.",
+							"Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\n\nManages build profiles across the Land ecosystem:\n• Development\n• Debug\n• Release\n\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\n\nRelease pipeline preparation - signing, artifact publication, and distribution - is in progress.",
 					}),
 				},
 				{
@@ -586,7 +586,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
-							"Rust-native TypeScript compilation pipeline built on the OXC toolchain - parser, transformer, and codegen in one process.\n\nHandles:\n• Decorator metadata emission\n• Legacy class field semantics\n• JSX\n• Parallel compilation\n\nSelectable as an alternative compiler to reduce reliance on Node-hosted compilation paths.\n\nSource maps and public benchmark claims remain integration work.",
+							"Rust-native TypeScript compilation pipeline built on the OXC toolchain - parser, transformer, and codegen in one process.\n\nHandles:\n• Decorator metadata emission\n• Legacy class field semantics\n• JSX\n• Parallel compilation\n\nSelectable as an alternative compiler to reduce reliance on Node-hosted compilation paths.\n\nSource map output and measured pipeline benchmarks are in active development.",
 					}),
 				},
 				{
