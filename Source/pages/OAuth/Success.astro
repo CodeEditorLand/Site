@@ -148,6 +148,47 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 		}
 		localStorage.setItem("session_token", Token);
 
+		// Write token to service worker auth cache so the SW auth gate
+		// on /Dashboard lets the navigation through.
+		const WriteToServiceWorker = (): Promise<void> => {
+			return new Promise<void>((Resolve) => {
+				if (!navigator.serviceWorker?.controller) {
+					Resolve();
+					return;
+				}
+				let UserId = "";
+				try {
+					const Payload = JSON.parse(
+						atob(Token.split(".")[1] ?? "e30="),
+					) as Record<string, unknown>;
+					UserId =
+						(Payload["sub"] as string) ||
+						(Payload["user_id"] as string) ||
+						"";
+				} catch {
+					// non-JWT token - UserId stays empty
+				}
+				const Timeout = setTimeout(Resolve, 2000);
+				const OnMessage = (Event: MessageEvent) => {
+					if (Event.data?.Type === "Auth:Written") {
+						clearTimeout(Timeout);
+						navigator.serviceWorker.removeEventListener(
+							"message",
+							OnMessage,
+						);
+						Resolve();
+					}
+				};
+				navigator.serviceWorker.addEventListener("message", OnMessage);
+				navigator.serviceWorker.controller.postMessage({
+					Type: "Auth:Write",
+					Token,
+					ExpiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+					UserId,
+				});
+			});
+		};
+
 		// Show success state
 		if (LoadingState) LoadingState.classList.add("hidden");
 		if (SuccessState) {
@@ -155,10 +196,10 @@ const GoToDashboardText = T("common.oauth.goToDashboard", {
 			SuccessState.classList.add("flex");
 		}
 
-		// Auto-redirect to Dashboard after 2 seconds
-		setTimeout(() => {
+		// Write to SW then redirect (SW write runs during the 2-second display)
+		WriteToServiceWorker().then(() => {
 			window.location.href = "/Dashboard";
-		}, 2000);
+		});
 	}
 
 	HandleOAuthSuccess();

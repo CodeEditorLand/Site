@@ -238,7 +238,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 					{Segment.Value}
 					{Logo && (
 						<>
-							{" "}
+							{"\u2001"}
 							<img
 								src={Logo}
 								alt=""

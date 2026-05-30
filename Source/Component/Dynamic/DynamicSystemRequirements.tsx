@@ -57,7 +57,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							{Requirement.Value}
 						</span>
 					</div>
-					{" "}
+					{"\u2001"}
 					<div className="mt-1 shrink-0">
 						{Variant === "minimum" ? (
 							<IconTooltip

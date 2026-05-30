@@ -460,7 +460,7 @@ const AccountProfileInner = ({
 						<span
 							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-xs font-medium ${TierColor.Text}`}>
 							{Tier}
-							{" "}
+							{"\u2001"}
 							<span
 								className={`h-1.5 w-1.5 rounded-none ${TierColor.Dot}`}
 								aria-hidden="true"
@@ -709,7 +709,7 @@ const AccountProfileInner = ({
 							<span
 								className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-xs font-medium ${TierColor.Text}`}>
 								{Tier}
-								{" "}
+								{"\u2001"}
 								<span
 									className={`h-1 w-1 rounded-none ${TierColor.Dot}`}
 									aria-hidden="true"

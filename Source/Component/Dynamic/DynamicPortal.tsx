@@ -772,11 +772,54 @@ const PortalTierRow = ({
 										borderColor: Content.BorderColor,
 										color: "#ffffff",
 									}}
-									onClick={() => {
-										// Local-first connection is handled by the
-										// Air Daemon discovery protocol (mTLS/WebSocket).
-										// No Auth0 redirect - navigate to Dashboard
-										// which will initiate local-first handshake.
+									onClick={async () => {
+										// Local-first: write a synthetic SW session so
+										// the auth gate on /Dashboard lets this through.
+										// The Dashboard then handles Air Daemon discovery.
+										try {
+											if (
+												typeof navigator !== "undefined" &&
+												navigator.serviceWorker?.controller
+											) {
+												await new Promise<void>(
+													(Resolve) => {
+														const Timeout =
+															setTimeout(Resolve, 2000);
+														const OnMessage = (
+															Event: MessageEvent,
+														) => {
+															if (
+																Event.data?.Type ===
+																"Auth:Written"
+															) {
+																clearTimeout(Timeout);
+																navigator.serviceWorker.removeEventListener(
+																	"message",
+																	OnMessage,
+																);
+																Resolve();
+															}
+														};
+														navigator.serviceWorker.addEventListener(
+															"message",
+															OnMessage,
+														);
+														navigator.serviceWorker.controller!.postMessage(
+															{
+																Type: "Auth:Write",
+																Token: "local-first",
+																ExpiresAt:
+																	Date.now() +
+																	3600_000,
+																UserId: "local-first",
+															},
+														);
+													},
+												);
+											}
+										} catch {
+											// proceed without SW write
+										}
 										window.location.href =
 											"/Dashboard?mode=local";
 									}}>

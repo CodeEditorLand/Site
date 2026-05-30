@@ -147,7 +147,7 @@ const DynamicResetPassword = ({
 										<h3 className="text-lg font-semibold">
 											Invalid or Expired Token
 										</h3>
-										{" "}
+										{"\u2001"}
 										<lucide.AlertCircle
 											className="h-5 w-5 shrink-0 text-destructive"
 											aria-hidden="true"
@@ -192,7 +192,7 @@ const DynamicResetPassword = ({
 										<h3 className="text-lg font-semibold">
 											Password Reset Successful
 										</h3>
-										{" "}
+										{"\u2001"}
 										<lucide.CheckCircle
 											className="h-5 w-5 shrink-0 text-green-600"
 											aria-hidden="true"

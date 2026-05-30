@@ -218,7 +218,7 @@ const DynamicEmailVerification = ({
 					<CardTitle className="text-2xl">
 						{Content.Success.Title}
 					</CardTitle>
-					{" "}
+					{"\u2001"}
 					<lucide.CheckCircle
 						className="h-5 w-5 shrink-0 text-green-600"
 						aria-hidden="true"
@@ -245,7 +245,7 @@ const DynamicEmailVerification = ({
 					<CardTitle className="text-2xl">
 						{Content.Error.Title}
 					</CardTitle>
-					{" "}
+					{"\u2001"}
 					<lucide.XCircle
 						className="h-5 w-5 shrink-0 text-red-600"
 						aria-hidden="true"
