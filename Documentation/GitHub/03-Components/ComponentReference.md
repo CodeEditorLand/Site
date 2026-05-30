@@ -40,7 +40,10 @@ Sources:
   `DynamicLocalFirstScan.tsx`, `DynamicVerificationInfo.tsx`,
   `DynamicSystemRequirements.tsx`, `DynamicPrivacyRequests.tsx`,
   `DynamicAccountProfile.tsx`, `DynamicTransparency.tsx`,
-  `Dashboard.astro`, `Doc.astro`, `Contact/Sale.astro`.
+  `DynamicSignIn.tsx`, `DynamicSignUp.tsx`, `DynamicResetPassword.tsx`,
+  `DynamicForgotPassword.tsx`, `DynamicEmailVerification.tsx`,
+  `DynamicDashboardUser.tsx`, `DynamicCard.tsx`, `DynamicBlogCard.tsx`,
+  `DynamicHeroSection.tsx`, `Dashboard.astro`, `Doc.astro`, `Contact/Sale.astro`.
 
 ---
 

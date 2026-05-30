@@ -63,10 +63,15 @@ Every category below follows the same tuple per color:
 
 ```
 [Category][Name]          → #hex (primary / saturated)
-[Category][Name]Mute      → color-mix(in srgb, primary 10-12%, white)
-[Category][Name]Surface   → color-mix(in srgb, primary 4-5%, white)
+[Category][Name]Mute      → color-mix(in srgb, primary 12%, white)  [Protocol/Spine only]
+                           color-mix(in srgb, primary 10%, white)  [Framework/Extension only]
+[Category][Name]Surface   → color-mix(in srgb, primary 5%, white)   [Protocol/Spine only]
+                           color-mix(in srgb, primary 4%, white)   [Framework/Extension only]
 [Category][Name]Fore      → #hex (readable foreground on tint)
 ```
+
+Rule: Protocol / Spine groups use **12%** Mute / **5%** Surface.  
+Framework / Extension groups use **10%** Mute / **4%** Surface.
 
 ---
 

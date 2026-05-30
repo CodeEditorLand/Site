@@ -15,8 +15,9 @@ intentional and governed by the Staccato system; everything else is restrained.
 - **No dark mode** product-wide. The default palette is light.
 - **No drop shadows.** Shadows are intentionally absent; elevation is
   communicated through surface layering and the Staccato motion system.
-- **No rounded corners by default.** Cards are flat. Buttons and inputs echo the
-  logo curve at 6px. Badges and avatars use `rounded-full`.
+- **No rounded corners by default.** Cards are flat (`rounded-none`). Buttons
+  and inputs share the same flat policy. `rounded-full` appears only on a
+  spinner and the OAuth success confirmation avatar.
 - **Saturated protocol colors** are never used as page backgrounds. They are
   reserved for chips, badges, icons, and pathway indicators.
 

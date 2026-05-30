@@ -1,6 +1,7 @@
 # Shape & Edge System
 
-**Authority:** `Source/Stylesheet/Base.css`, `tailwind.config.js`
+**Authority:** `Source/Stylesheet/Base.css`, `Source/Component/Dynamic/*.tsx`,  
+`Source/pages/*.astro`, `tailwind.config.js`
 
 ---
 
@@ -27,50 +28,24 @@ Inputs and selects override with `border-[var(--Border)]` in JSX.
 
 ### 2.1 Global Default
 
-```css
-:root {
-	--BorderRadius: 0; /* flat */
-	--RadiusButton: 6px;
-	--RadiusInput: 6px;
-}
-```
-
-Applied via:
-
-```css
-.Card {
-	border-radius: var(--BorderRadius) !important;
-}
-.Input,
-.Textarea,
-.Select,
-.SelectTrigger {
-	border-radius: var(--RadiusInput) !important;
-}
-.Button {
-	border-radius: var(--RadiusButton) !important;
-}
-.Badge,
-[class*="Badge"] {
-	border-radius: 9999px !important;
-}
-.Avatar,
-[class*="Avatar"] {
-	border-radius: 9999px !important;
-}
-```
+Components default to `border-radius: 0` via `rounded-none`. The only explicit
+radius variants seen in current implementation are `rounded-full` (OAuth success
+spinner/avatar) and `rounded-md` on `LocaleSwitcher.tsx`. There is **no shared
+6px radius token**; radius is set per-component directly in JSX.
 
 ### 2.2 Allowed Exceptions
 
-| Element  | Radius          | Rationale                   |
-| -------- | --------------- | --------------------------- |
-| Buttons  | `6px`           | Echoes logo curve           |
-| Inputs   | `6px`           | Consistent with buttons     |
-| Badges   | `9999px` (pill) | Tighter signal for chips    |
-| Avatars  | `9999px` (pill) | Tighter signal for identity |
-| Spinners | `9999px`        | Circular indicator          |
+| Element         | Radius                                        | Rationale                          |
+| --------------- | --------------------------------------------- | ---------------------------------- |
+| Buttons         | `rounded-none` (default; some views may vary) | Flat-white default                 |
+| Inputs          | `rounded-none` (default; some views may vary) | Consistent with buttons            |
+| Locale switcher | `rounded-md`                                  | Composite built-in control variant |
+| Badges          | `9999px` (pill)                               | Tighter signal for chips           |
+| Avatars         | `9999px` (pill)                               | Tighter signal for identity        |
+| Spinners        | `9999px`                                      | Circular indicator                 |
 
-Everything else stays flat (`0`).
+There is no shared 6px radius token or `--RadiusButton` / `--RadiusInput`
+variable; radius is set per-component directly in JSX.
 
 ---
 
@@ -159,7 +134,7 @@ Dynamic `StaccatoBadge` extends with noise motion:
 
 ## 7. Buttons
 
-Radius: `6px` (`--RadiusButton`).
+Buttons use `rounded-none` in JSX; there is no `--RadiusButton` variable.
 
 Size conventions:
 
