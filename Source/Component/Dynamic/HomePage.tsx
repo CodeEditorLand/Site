@@ -181,11 +181,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Features: {
 			Title: T("home:features.title", {
-				defaultValue: "Built differently",
+				defaultValue: "VS Code. Without Electron.",
 			}),
 			Subtitle: T("home:features.subtitle", {
 				defaultValue:
-					"Native services, typed IPC, and a compatibility host you can read in source.",
+					"The editor pieces are being rebuilt around native services, typed IPC, and a compatibility host that can be checked against real source.",
 			}),
 			Features: [
 				{
@@ -292,11 +292,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Pricing: {
 			Title: T("home:roadmap.title", {
-				defaultValue: "What's shipping",
+				defaultValue: "The Architecture Is Built. Here Is What Comes Next.",
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:
-					"Milestones are described as source, integration, or release status. Funded by NLnet NGI0 Commons Fund.",
+					"Funded by NLnet NGI0 Commons Fund.\n\nEvery milestone is described as source status, integration status, or release work so the website does not outrun the code.",
 			}),
 			Tiers: [
 				{
@@ -442,11 +442,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Testimonials: {
 			Title: T("home:architecture.title", {
-				defaultValue: "Under the hood",
+				defaultValue: "Under the Hood",
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Fifteen elements replace VS Code's Electron stack piece by piece. Each one is described here by what its current source supports.",
+					"Land replaces VS Code's Electron stack element by element.\n\nThe element directories are inspectable in source, but each one is described here by what the current code supports or is actively wiring.",
 			}),
 			Testimonials: [
 				{
@@ -663,10 +663,10 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			Columns: "masonry",
 		},
 		Download: {
-			Title: T("download:title", { defaultValue: "Download" }),
+			Title: T("download:title", { defaultValue: "Download Land" }),
 			Subtitle: T("download:subtitle", {
 				defaultValue:
-					"Source builds today. Public installers, signing, and verification artifacts are being prepared.",
+					"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 			}),
 			Platforms: [
 				{
