@@ -94,15 +94,19 @@ const IconTooltip = ({
 						{Content}
 					</span>
 				</TooltipTrigger>
-				<TooltipContent>
-					{Array.isArray(Label)
-						? Label.map((Line, Index) => (
-								<p key={Index} className="mx-auto w-fit">
-									{Line}
-								</p>
-							))
-						: Label}
-				</TooltipContent>
+				{Array.isArray(Label) ? (
+					<TooltipContent className="flex flex-col items-center gap-1 bg-transparent p-0 [&>svg]:hidden">
+						{Label.map((Line, Index) => (
+							<p
+								key={Index}
+								className="w-fit rounded-none bg-primary px-3 py-1 text-primary-foreground">
+								{Line}
+							</p>
+						))}
+					</TooltipContent>
+				) : (
+					<TooltipContent>{Label}</TooltipContent>
+				)}
 			</Tooltip>
 		</TooltipProvider>
 	);
