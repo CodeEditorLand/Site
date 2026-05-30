@@ -31,16 +31,16 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			}),
 			Platforms: [],
 			ShowVerification: true,
-			OnDownload: async (Platform: { name: string; id?: string }) => {
-				if (Platform.id) {
+			OnDownload: async (Platform) => {
+				if (Platform.Id) {
 					try {
 						const { default: DownloadAPI } =
 							await import("../../Library/API/Download.js");
 						const Information = await DownloadAPI.GetInfo(
-							Platform.id,
+							Platform.Id,
 						);
 						window.open(Information.downloadUrl, "_blank");
-						await DownloadAPI.TrackDownload(Platform.id);
+						await DownloadAPI.TrackDownload(Platform.Id);
 					} catch (DownloadError) {
 						console.error("Download failed:", DownloadError);
 						alert(
@@ -153,7 +153,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 
 	return (
 		<div className={`flex min-h-screen flex-col ${ClassName || ""}`}>
-			{HeaderContent !== undefined && <Header content={HeaderContent} />}
+			{HeaderContent !== undefined && <Header Content={HeaderContent} />}
 
 			<div className="flex-1">
 				<DynamicPlatformGrid Content={PlatformGrid} />
