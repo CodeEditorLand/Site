@@ -14,8 +14,8 @@
 		"signUp": "Регистрация",
 		"editorPortal": "Портал на редактора",
 		"getStarted": "Вземете Land",
-		"logout": "Изход",
-		"loading": "Зареждане\u2026"
+		"logout": "Излез от профила",
+		"loading": "Зареждане…"
 	},
 	"user": {
 		"avatarAlt": "Потребителско меню",

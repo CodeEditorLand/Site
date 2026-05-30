@@ -14,8 +14,8 @@
 		"signUp": "Sign Up",
 		"editorPortal": "Editor Portal",
 		"getStarted": "Get Land",
-		"logout": "Logout",
-		"loading": "Loading\u2026"
+		"logout": "Sign Out",
+		"loading": "Loading…"
 	},
 	"user": {
 		"avatarAlt": "User menu",

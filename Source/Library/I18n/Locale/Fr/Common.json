@@ -277,7 +277,10 @@
 			"notSignedIn": "Connectez-vous pour voir les détails de votre compte.",
 			"signInButton": "Se connecter",
 			"emailNotVerified": "E-mail non vérifié.\nVérifiez votre boîte de réception.",
-			"enterpriseSSO": "SSO Entreprise actif"
+			"enterpriseSSO": "SSO Entreprise actif",
+			"emailVerifiedTitle": "Email verified",
+			"emailVerifiedBadge": "Verified",
+			"signOutButton": "Sign Out"
 		},
 		"downloads": {
 			"heading": "Téléchargements",
@@ -344,10 +347,30 @@
 			"subtitle": "Connectez le site web à votre instance Land en cours d'exécution.",
 			"status": "Non connecté",
 			"description": "L'Air Daemon connecte ce tableau de bord à un éditeur Land en cours d'exécution via WebSocket.\n\nLancez Land pour activer les journaux de compilation en temps réel, la télémétrie et la gestion de configuration.",
-			"connect": "Connecter via le portail"
+			"connect": "Connecter via le portail",
+			"scanButton": "Scan for Daemon"
 		},
 		"partners": {
 			"heading": "Partenaires et attributions"
+		},
+		"localFirst": {
+			"title": "Air Daemon",
+			"scanning": "Scanning",
+			"connected": "Connected",
+			"notFound": "Not Detected",
+			"scanDescription": "Checking ws://localhost:7979 and ws://localhost:7878",
+			"connectedMessage": "Connected to Air Daemon",
+			"portLabel": "Port",
+			"versionLabel": "Version",
+			"protocolLabel": "Protocol",
+			"notFoundMessage": "Air Daemon not detected. Launch Code Editor Land to enable local-first features.",
+			"downloadButton": "Download Land",
+			"retryButton": "Retry Scan"
+		},
+		"privacy": {
+			"heading": "Privacy & Data Rights",
+			"subtitle": "Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days."
 		}
-	}
+	},
+	"tryAgain": "Try again"
 }

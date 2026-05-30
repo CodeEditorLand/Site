@@ -223,7 +223,9 @@
 				"session": "Session duration controlled by IdP policy",
 				"ca": "Organization CA certificates managed by IT",
 				"compliance": "SOC 2 Type II / GDPR compliance documentation"
-			}
+			},
+			"orgIdLabel": "Auth0 Organization ID (optional)",
+			"orgIdPlaceholder": "org_xxxxxxxxxxxxxxxx"
 		},
 		"labels": {
 			"included": "Included",
@@ -247,5 +249,10 @@
 		"signOut": "Sign Out",
 		"loading": "Loading account…",
 		"error": "Could not load your account. Please refresh."
-	}
+	},
+	"notSignedIn": "Sign in to manage your account.",
+	"signInButton": "Sign In",
+	"profileSection": "Profile Fields",
+	"actionsSection": "Account Actions",
+	"goToDashboard": "Go to Dashboard"
 }

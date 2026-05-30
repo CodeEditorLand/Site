@@ -53,7 +53,7 @@ const DynamicEmailVerification = ({
 				SetErrorMessage(
 					T("errorGeneric", {
 						defaultValue:
-							"An error occurred during verification. Please try again.",
+							"An error occurred during verification.\nPlease try again.",
 					}),
 				);
 			}
@@ -107,7 +107,7 @@ const DynamicEmailVerification = ({
 		} catch {
 			SetErrorMessage(
 				T("resendFailed", {
-					defaultValue: "Failed to resend email. Please try again.",
+					defaultValue: "Failed to resend email.\nPlease try again.",
 				}),
 			);
 		}

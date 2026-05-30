@@ -223,7 +223,9 @@
 				"session": "Продължителността на сесията се контролира от политиката на IdP",
 				"ca": "CA сертификати на организацията, управлявани от IT",
 				"compliance": "Документация за съответствие с SOC 2 Type II / GDPR"
-			}
+			},
+			"orgIdLabel": "Auth0 Organization ID (optional)",
+			"orgIdPlaceholder": "org_xxxxxxxxxxxxxxxx"
 		},
 		"labels": {
 			"included": "Включено",
@@ -247,5 +249,10 @@
 		"signOut": "Изход",
 		"loading": "Зареждане на профила…",
 		"error": "Неуспешно зареждане на профила. Моля, обновете страницата."
-	}
+	},
+	"notSignedIn": "Sign in to manage your account.",
+	"signInButton": "Sign In",
+	"profileSection": "Profile Fields",
+	"actionsSection": "Account Actions",
+	"goToDashboard": "Go to Dashboard"
 }

@@ -223,7 +223,9 @@
 				"session": "Duración de sesión controlada por la política del IdP",
 				"ca": "Certificados CA de organización gestionados por TI",
 				"compliance": "Documentación de cumplimiento SOC 2 Tipo II / RGPD"
-			}
+			},
+			"orgIdLabel": "Auth0 Organization ID (optional)",
+			"orgIdPlaceholder": "org_xxxxxxxxxxxxxxxx"
 		},
 		"labels": {
 			"included": "Incluido",
@@ -247,5 +249,10 @@
 		"signOut": "Cerrar sesion",
 		"loading": "Cargando cuenta…",
 		"error": "No se pudo cargar la cuenta."
-	}
+	},
+	"notSignedIn": "Sign in to manage your account.",
+	"signInButton": "Sign In",
+	"profileSection": "Profile Fields",
+	"actionsSection": "Account Actions",
+	"goToDashboard": "Go to Dashboard"
 }

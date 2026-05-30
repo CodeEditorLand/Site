@@ -213,7 +213,9 @@
 				"session": "Durée de session contrôlée par la politique de l'IdP",
 				"ca": "Certificats CA d'organisation gérés par l'informatique",
 				"compliance": "Documentation de conformité SOC 2 Type II / RGPD"
-			}
+			},
+			"orgIdLabel": "Auth0 Organization ID (optional)",
+			"orgIdPlaceholder": "org_xxxxxxxxxxxxxxxx"
 		},
 		"labels": {
 			"included": "Inclus",
@@ -237,5 +239,10 @@
 		"signOut": "Deconnexion",
 		"loading": "Chargement du compte…",
 		"error": "Echec du chargement du compte."
-	}
+	},
+	"notSignedIn": "Sign in to manage your account.",
+	"signInButton": "Sign In",
+	"profileSection": "Profile Fields",
+	"actionsSection": "Account Actions",
+	"goToDashboard": "Go to Dashboard"
 }

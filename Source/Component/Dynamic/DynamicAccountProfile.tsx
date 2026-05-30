@@ -535,7 +535,7 @@ const AccountProfileInner = ({
 				<div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-700">
 					{T("emailNotVerified", {
 						defaultValue:
-							"Your email is not verified. Check your inbox for a verification link.",
+							"Email not verified. Check your inbox.",
 					})}
 				</div>
 			)}
