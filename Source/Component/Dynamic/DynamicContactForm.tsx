@@ -435,12 +435,10 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				<span className="font-mono font-semibold text-foreground">
 					{Config.Code}-{PairId}
 				</span>{" "}
-				is your unique pair reference for this submission{" "}
-				-{" "}
-				<span className="font-mono">{Config.Code}</span>{" "}
-				identifies the request type,{" "}
-				<span className="font-mono">{PairId}</span>{" "}
-				is the instance ID. Quote{" "}
+				is your unique pair reference for this submission -{" "}
+				<span className="font-mono">{Config.Code}</span> identifies the
+				request type, <span className="font-mono">{PairId}</span> is the
+				instance ID. Quote{" "}
 				<span className="font-mono text-foreground">
 					{Config.Code}-{PairId}
 				</span>{" "}

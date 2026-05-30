@@ -31,8 +31,8 @@ published benchmark rather than in static documentation.
 | Android  | System WebView | Tauri mobile configuration exists                           |
 
 `tauri.conf.json` and production `Tauri` config files define the desktop bundle
-settings. A configured target is not the same as a published installer; installer
-claims are separate from source support.
+settings. A configured target is not the same as a published installer;
+installer claims are separate from source support.
 
 ---
 
@@ -112,8 +112,8 @@ search, watcher, clipboard, extension-scan, configuration, shared-memory, HTTP
 proxy, and diagnostic experiments.
 
 Feature flags are useful public documentation because they show which behavior
-is compiled into a build. A flag being present does not indicate the behavior has
-been exercised by the selected profile.
+is compiled into a build. A flag being present does not indicate the behavior
+has been exercised by the selected profile.
 
 ---
 

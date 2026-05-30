@@ -73,14 +73,21 @@ function DetectLocale(): SupportedLocale {
  * Core namespace loader: only common, header, footer, meta.
  * These load eagerly on every page for the global UI chrome.
  */
-const LoadEnglishCore = async (): Promise<Partial<Record<Namespace, unknown>>> => {
+const LoadEnglishCore = async (): Promise<
+	Partial<Record<Namespace, unknown>>
+> => {
 	const [common, header, footer, meta] = await Promise.all([
 		import("./Locale/En/Common.json"),
 		import("./Locale/En/Header.json"),
 		import("./Locale/En/Footer.json"),
 		import("./Locale/En/Meta.json"),
 	]);
-	return { common: common.default, header: header.default, footer: footer.default, meta: meta.default };
+	return {
+		common: common.default,
+		header: header.default,
+		footer: footer.default,
+		meta: meta.default,
+	};
 };
 
 /**
@@ -149,84 +156,189 @@ const FullLocaleLoader: Record<
 	() => Promise<Record<Namespace, unknown>>
 > = {
 	en: async () => {
-		const [blog, common, doc, home, download, account, verify, header, footer, meta] =
-			await Promise.all([
-				import("./Locale/En/Blog.json"),
-				import("./Locale/En/Common.json"),
-				import("./Locale/En/Doc.json"),
-				import("./Locale/En/Home.json"),
-				import("./Locale/En/Download.json"),
-				import("./Locale/En/Account.json"),
-				import("./Locale/En/Verify.json"),
-				import("./Locale/En/Header.json"),
-				import("./Locale/En/Footer.json"),
-				import("./Locale/En/Meta.json"),
-			]);
-		return { blog: blog.default, common: common.default, doc: doc.default, home: home.default, download: download.default, account: account.default, verify: verify.default, header: header.default, footer: footer.default, meta: meta.default };
+		const [
+			blog,
+			common,
+			doc,
+			home,
+			download,
+			account,
+			verify,
+			header,
+			footer,
+			meta,
+		] = await Promise.all([
+			import("./Locale/En/Blog.json"),
+			import("./Locale/En/Common.json"),
+			import("./Locale/En/Doc.json"),
+			import("./Locale/En/Home.json"),
+			import("./Locale/En/Download.json"),
+			import("./Locale/En/Account.json"),
+			import("./Locale/En/Verify.json"),
+			import("./Locale/En/Header.json"),
+			import("./Locale/En/Footer.json"),
+			import("./Locale/En/Meta.json"),
+		]);
+		return {
+			blog: blog.default,
+			common: common.default,
+			doc: doc.default,
+			home: home.default,
+			download: download.default,
+			account: account.default,
+			verify: verify.default,
+			header: header.default,
+			footer: footer.default,
+			meta: meta.default,
+		};
 	},
 	bg: async () => {
-		const [blog, common, doc, home, download, account, verify, header, footer, meta] =
-			await Promise.all([
-				import("./Locale/Bg/Blog.json"),
-				import("./Locale/Bg/Common.json"),
-				import("./Locale/Bg/Doc.json"),
-				import("./Locale/Bg/Home.json"),
-				import("./Locale/Bg/Download.json"),
-				import("./Locale/Bg/Account.json"),
-				import("./Locale/Bg/Verify.json"),
-				import("./Locale/Bg/Header.json"),
-				import("./Locale/Bg/Footer.json"),
-				import("./Locale/Bg/Meta.json"),
-			]);
-		return { blog: blog.default, common: common.default, doc: doc.default, home: home.default, download: download.default, account: account.default, verify: verify.default, header: header.default, footer: footer.default, meta: meta.default };
+		const [
+			blog,
+			common,
+			doc,
+			home,
+			download,
+			account,
+			verify,
+			header,
+			footer,
+			meta,
+		] = await Promise.all([
+			import("./Locale/Bg/Blog.json"),
+			import("./Locale/Bg/Common.json"),
+			import("./Locale/Bg/Doc.json"),
+			import("./Locale/Bg/Home.json"),
+			import("./Locale/Bg/Download.json"),
+			import("./Locale/Bg/Account.json"),
+			import("./Locale/Bg/Verify.json"),
+			import("./Locale/Bg/Header.json"),
+			import("./Locale/Bg/Footer.json"),
+			import("./Locale/Bg/Meta.json"),
+		]);
+		return {
+			blog: blog.default,
+			common: common.default,
+			doc: doc.default,
+			home: home.default,
+			download: download.default,
+			account: account.default,
+			verify: verify.default,
+			header: header.default,
+			footer: footer.default,
+			meta: meta.default,
+		};
 	},
 	de: async () => {
-		const [blog, common, doc, home, download, account, verify, header, footer, meta] =
-			await Promise.all([
-				import("./Locale/De/Blog.json"),
-				import("./Locale/De/Common.json"),
-				import("./Locale/De/Doc.json"),
-				import("./Locale/De/Home.json"),
-				import("./Locale/De/Download.json"),
-				import("./Locale/De/Account.json"),
-				import("./Locale/De/Verify.json"),
-				import("./Locale/De/Header.json"),
-				import("./Locale/De/Footer.json"),
-				import("./Locale/De/Meta.json"),
-			]);
-		return { blog: blog.default, common: common.default, doc: doc.default, home: home.default, download: download.default, account: account.default, verify: verify.default, header: header.default, footer: footer.default, meta: meta.default };
+		const [
+			blog,
+			common,
+			doc,
+			home,
+			download,
+			account,
+			verify,
+			header,
+			footer,
+			meta,
+		] = await Promise.all([
+			import("./Locale/De/Blog.json"),
+			import("./Locale/De/Common.json"),
+			import("./Locale/De/Doc.json"),
+			import("./Locale/De/Home.json"),
+			import("./Locale/De/Download.json"),
+			import("./Locale/De/Account.json"),
+			import("./Locale/De/Verify.json"),
+			import("./Locale/De/Header.json"),
+			import("./Locale/De/Footer.json"),
+			import("./Locale/De/Meta.json"),
+		]);
+		return {
+			blog: blog.default,
+			common: common.default,
+			doc: doc.default,
+			home: home.default,
+			download: download.default,
+			account: account.default,
+			verify: verify.default,
+			header: header.default,
+			footer: footer.default,
+			meta: meta.default,
+		};
 	},
 	fr: async () => {
-		const [blog, common, doc, home, download, account, verify, header, footer, meta] =
-			await Promise.all([
-				import("./Locale/Fr/Blog.json"),
-				import("./Locale/Fr/Common.json"),
-				import("./Locale/Fr/Doc.json"),
-				import("./Locale/Fr/Home.json"),
-				import("./Locale/Fr/Download.json"),
-				import("./Locale/Fr/Account.json"),
-				import("./Locale/Fr/Verify.json"),
-				import("./Locale/Fr/Header.json"),
-				import("./Locale/Fr/Footer.json"),
-				import("./Locale/Fr/Meta.json"),
-			]);
-		return { blog: blog.default, common: common.default, doc: doc.default, home: home.default, download: download.default, account: account.default, verify: verify.default, header: header.default, footer: footer.default, meta: meta.default };
+		const [
+			blog,
+			common,
+			doc,
+			home,
+			download,
+			account,
+			verify,
+			header,
+			footer,
+			meta,
+		] = await Promise.all([
+			import("./Locale/Fr/Blog.json"),
+			import("./Locale/Fr/Common.json"),
+			import("./Locale/Fr/Doc.json"),
+			import("./Locale/Fr/Home.json"),
+			import("./Locale/Fr/Download.json"),
+			import("./Locale/Fr/Account.json"),
+			import("./Locale/Fr/Verify.json"),
+			import("./Locale/Fr/Header.json"),
+			import("./Locale/Fr/Footer.json"),
+			import("./Locale/Fr/Meta.json"),
+		]);
+		return {
+			blog: blog.default,
+			common: common.default,
+			doc: doc.default,
+			home: home.default,
+			download: download.default,
+			account: account.default,
+			verify: verify.default,
+			header: header.default,
+			footer: footer.default,
+			meta: meta.default,
+		};
 	},
 	es: async () => {
-		const [blog, common, doc, home, download, account, verify, header, footer, meta] =
-			await Promise.all([
-				import("./Locale/Es/Blog.json"),
-				import("./Locale/Es/Common.json"),
-				import("./Locale/Es/Doc.json"),
-				import("./Locale/Es/Home.json"),
-				import("./Locale/Es/Download.json"),
-				import("./Locale/Es/Account.json"),
-				import("./Locale/Es/Verify.json"),
-				import("./Locale/Es/Header.json"),
-				import("./Locale/Es/Footer.json"),
-				import("./Locale/Es/Meta.json"),
-			]);
-		return { blog: blog.default, common: common.default, doc: doc.default, home: home.default, download: download.default, account: account.default, verify: verify.default, header: header.default, footer: footer.default, meta: meta.default };
+		const [
+			blog,
+			common,
+			doc,
+			home,
+			download,
+			account,
+			verify,
+			header,
+			footer,
+			meta,
+		] = await Promise.all([
+			import("./Locale/Es/Blog.json"),
+			import("./Locale/Es/Common.json"),
+			import("./Locale/Es/Doc.json"),
+			import("./Locale/Es/Home.json"),
+			import("./Locale/Es/Download.json"),
+			import("./Locale/Es/Account.json"),
+			import("./Locale/Es/Verify.json"),
+			import("./Locale/Es/Header.json"),
+			import("./Locale/Es/Footer.json"),
+			import("./Locale/Es/Meta.json"),
+		]);
+		return {
+			blog: blog.default,
+			common: common.default,
+			doc: doc.default,
+			home: home.default,
+			download: download.default,
+			account: account.default,
+			verify: verify.default,
+			header: header.default,
+			footer: footer.default,
+			meta: meta.default,
+		};
 	},
 };
 

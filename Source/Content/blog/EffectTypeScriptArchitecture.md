@@ -140,5 +140,4 @@ The editor has two independent IPC paths, each typed differently:
   streaming for real-time events like document notifications, language provider
   requests, terminal I/O, and extension health.
 
-These paths are independent. Each has its own job and its own error
-surface.
+These paths are independent. Each has its own job and its own error surface.

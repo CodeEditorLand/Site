@@ -183,7 +183,10 @@ if ("serviceWorker" in navigator && !__DEV__) {
 				//    the SW just took over via clients.claim(); reload so it
 				//    can intercept navigations (e.g. auth gate on /Dashboard).
 				if (OldVersion !== null || !InitiallyControlled) {
-					__DEV__ && Log("Reloading page (SW version change or first install).");
+					__DEV__ &&
+						Log(
+							"Reloading page (SW version change or first install).",
+						);
 
 					window.location.reload();
 				}

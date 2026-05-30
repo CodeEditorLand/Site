@@ -292,7 +292,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 		Pricing: {
 			Title: T("home:roadmap.title", {
-				defaultValue: "The Architecture Is Built. Here Is What Comes Next.",
+				defaultValue:
+					"The Architecture Is Built. Here Is What Comes Next.",
 			}),
 			Subtitle: T("home:roadmap.subtitle", {
 				defaultValue:

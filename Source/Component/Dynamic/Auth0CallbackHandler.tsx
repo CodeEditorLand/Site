@@ -42,13 +42,8 @@ const WriteAuthToServiceWorker = async (
 };
 
 const Handler = () => {
-	const {
-		isLoading,
-		isAuthenticated,
-		error,
-		getAccessTokenSilently,
-		user,
-	} = useAuth0();
+	const { isLoading, isAuthenticated, error, getAccessTokenSilently, user } =
+		useAuth0();
 
 	useEffect(() => {
 		if (isLoading) return;
@@ -79,7 +74,11 @@ const Handler = () => {
 				let ReturnTo = "/Dashboard";
 				try {
 					const Stored = sessionStorage.getItem("auth0_return_to");
-					if (Stored && Stored.startsWith("/") && !Stored.startsWith("//")) {
+					if (
+						Stored &&
+						Stored.startsWith("/") &&
+						!Stored.startsWith("//")
+					) {
 						ReturnTo = Stored;
 						sessionStorage.removeItem("auth0_return_to");
 					}

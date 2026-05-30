@@ -50,8 +50,8 @@ described by `Vine` proto files. `Mountain` owns the `Rust`-side services and
 extension-host startup, document notifications, language providers, tree views,
 command execution, cancellation, and streaming routes where implemented.
 
-These paths are independent. `Tauri` `IPC`, `Vine` `gRPC`,
-and local service code each have their own job; service calls do not flow through one universal
+These paths are independent. `Tauri` `IPC`, `Vine` `gRPC`, and local service
+code each have their own job; service calls do not flow through one universal
 bus.
 
 ---
@@ -83,8 +83,9 @@ the `VS Code` extension scanner and offline gallery channels wired for
 sideloaded extensions.
 
 That supports this claim: installed `VS Code` extensions run unmodified through
-the `Cocoon` path when the `APIs` they use are implemented. Marketplace-wide compatibility depends on a
-public validation matrix that is still in preparation.
+the `Cocoon` path when the `APIs` they use are implemented. Marketplace-wide
+compatibility depends on a public validation matrix that is still in
+preparation.
 
 ---
 
@@ -130,8 +131,8 @@ as a published installer; see the table below for per-platform status.
 
 `Mountain`'s configuration declares custom schemes such as `land:`,
 `vscode-file:`, and `vscode-webview:`. Extension webviews are isolated through
-the WebView and scheme model. A finished universal sandbox covering all extension
-behavior is not claimed.
+the WebView and scheme model. A finished universal sandbox covering all
+extension behavior is not claimed.
 
 `Grove` adds a `WebAssembly` host path with Wasmtime and capability-oriented
 modules. That is real source, but it is not the primary `VS Code` extension path

@@ -100,8 +100,8 @@ Vine protocol with bidirectional streaming for real-time event communication.
 
 Land does not need to connect to the Microsoft Visual Studio Marketplace to run
 installed extension code. The current source is oriented around local extension
-paths and sideloaded packages. Open registry and enterprise registry flows are in development and not yet
-available in the editor.
+paths and sideloaded packages. Open registry and enterprise registry flows are
+in development and not yet available in the editor.
 
 ## Code Generation Pipeline
 

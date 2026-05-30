@@ -778,21 +778,29 @@ const PortalTierRow = ({
 										// The Dashboard then handles Air Daemon discovery.
 										try {
 											if (
-												typeof navigator !== "undefined" &&
-												navigator.serviceWorker?.controller
+												typeof navigator !==
+													"undefined" &&
+												navigator.serviceWorker
+													?.controller
 											) {
 												await new Promise<void>(
 													(Resolve) => {
 														const Timeout =
-															setTimeout(Resolve, 2000);
+															setTimeout(
+																Resolve,
+																2000,
+															);
 														const OnMessage = (
 															Event: MessageEvent,
 														) => {
 															if (
-																Event.data?.Type ===
+																Event.data
+																	?.Type ===
 																"Auth:Written"
 															) {
-																clearTimeout(Timeout);
+																clearTimeout(
+																	Timeout,
+																);
 																navigator.serviceWorker.removeEventListener(
 																	"message",
 																	OnMessage,

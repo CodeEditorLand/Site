@@ -686,14 +686,14 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 				if (
 					AuthRoute.has(Path) &&
 					IsAuthed &&
-					!(_URL.searchParams.has("code") &&
-						_URL.searchParams.has("state"))
+					!(
+						_URL.searchParams.has("code") &&
+						_URL.searchParams.has("state")
+					)
 				) {
 					const Next = _URL.searchParams.get("next");
 					const Target =
-						Next &&
-						Next.startsWith("/") &&
-						!Next.startsWith("//")
+						Next && Next.startsWith("/") && !Next.startsWith("//")
 							? Next
 							: "/Dashboard";
 					__DEV__ &&
@@ -863,9 +863,17 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 	if (Data.Type === "Auth:Write") {
 		// UserId may be an empty string (anonymous/local-first sessions) - only
 		// Token and ExpiresAt are truly required.
-		if (!Data.Token || !Data.ExpiresAt || Data.UserId === undefined || Data.UserId === null) {
+		if (
+			!Data.Token ||
+			!Data.ExpiresAt ||
+			Data.UserId === undefined ||
+			Data.UserId === null
+		) {
 			__DEV__ && ErrorLog("Auth:Write missing required fields.");
-			Event.source?.postMessage({ Type: "Auth:Error", Reason: "missing-fields" });
+			Event.source?.postMessage({
+				Type: "Auth:Error",
+				Reason: "missing-fields",
+			});
 			return;
 		}
 		Event.waitUntil(

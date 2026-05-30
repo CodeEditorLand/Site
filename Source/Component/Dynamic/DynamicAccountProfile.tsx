@@ -374,14 +374,14 @@ const AccountProfileInner = ({
 				<button
 					type="button"
 					onClick={() => {
-							try {
-								sessionStorage.setItem(
-									"auth0_return_to",
-									window.location.pathname,
-								);
-							} catch {}
-							Login();
-						}}
+						try {
+							sessionStorage.setItem(
+								"auth0_return_to",
+								window.location.pathname,
+							);
+						} catch {}
+						Login();
+					}}
 					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-white transition-all hover:opacity-90">
 					{T("signInButton", { defaultValue: "Sign In" })}
 				</button>
@@ -542,8 +542,7 @@ const AccountProfileInner = ({
 			{User.email_verified === false && (
 				<div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-700">
 					{T("emailNotVerified", {
-						defaultValue:
-							"Email not verified. Check your inbox.",
+						defaultValue: "Email not verified. Check your inbox.",
 					})}
 				</div>
 			)}
