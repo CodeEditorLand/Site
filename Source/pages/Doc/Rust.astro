@@ -226,8 +226,8 @@ const RustDocSite = [
 
 	Tabs.forEach((Tab) => {
 		Tab.addEventListener("click", () => {
-			const Url = Tab.dataset.rustdocUrl;
-			const Id = Tab.dataset.id;
+			const Url = Tab.dataset["rustdocUrl"];
+			const Id = Tab.dataset["id"];
 			if (!Url || !Frame) return;
 			Frame.src = Url;
 			SetActive(Tab);
@@ -238,7 +238,7 @@ const RustDocSite = [
 	// Restore active tab from URL hash on load
 	const Hash = window.location.hash.slice(1);
 	if (Hash) {
-		const MatchTab = Array.from(Tabs).find((T) => T.dataset.id === Hash);
+		const MatchTab = Array.from(Tabs).find((T) => T.dataset["id"] === Hash);
 		if (MatchTab) MatchTab.click();
 	}
 </script>
