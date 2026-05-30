@@ -73,40 +73,14 @@ function DetectLocale(): SupportedLocale {
  * Core namespace loader: only common, header, footer, meta.
  * These load eagerly on every page for the global UI chrome.
  */
-const CoreLocaleLoader: Record<
-	SupportedLocale,
-	() => Promise<Partial<Record<Namespace, unknown>>>
-> = {
-	en: async () => ({
-		common: (await import("./Locale/En/Common.json")).default,
-		header: (await import("./Locale/En/Header.json")).default,
-		footer: (await import("./Locale/En/Footer.json")).default,
-		meta: (await import("./Locale/En/Meta.json")).default,
-	}),
-	bg: async () => ({
-		common: (await import("./Locale/Bg/Common.json")).default,
-		header: (await import("./Locale/Bg/Header.json")).default,
-		footer: (await import("./Locale/Bg/Footer.json")).default,
-		meta: (await import("./Locale/Bg/Meta.json")).default,
-	}),
-	de: async () => ({
-		common: (await import("./Locale/De/Common.json")).default,
-		header: (await import("./Locale/De/Header.json")).default,
-		footer: (await import("./Locale/De/Footer.json")).default,
-		meta: (await import("./Locale/De/Meta.json")).default,
-	}),
-	fr: async () => ({
-		common: (await import("./Locale/Fr/Common.json")).default,
-		header: (await import("./Locale/Fr/Header.json")).default,
-		footer: (await import("./Locale/Fr/Footer.json")).default,
-		meta: (await import("./Locale/Fr/Meta.json")).default,
-	}),
-	es: async () => ({
-		common: (await import("./Locale/Es/Common.json")).default,
-		header: (await import("./Locale/Es/Header.json")).default,
-		footer: (await import("./Locale/Es/Footer.json")).default,
-		meta: (await import("./Locale/Es/Meta.json")).default,
-	}),
+const LoadEnglishCore = async (): Promise<Partial<Record<Namespace, unknown>>> => {
+	const [common, header, footer, meta] = await Promise.all([
+		import("./Locale/En/Common.json"),
+		import("./Locale/En/Header.json"),
+		import("./Locale/En/Footer.json"),
+		import("./Locale/En/Meta.json"),
+	]);
+	return { common: common.default, header: header.default, footer: footer.default, meta: meta.default };
 };
 
 /**
@@ -302,15 +276,19 @@ i18n.use(initReactI18next).init({
 // to be undefined. Components fall back to their hardcoded defaultValues
 // until AddResources populates them (same visible result, no hydration crash).
 const InitI18n = async (): Promise<void> => {
-	const EnglishCoreBundle = await CoreLocaleLoader.en();
+	const EnglishCoreBundle = await LoadEnglishCore();
 	AddResources("en", EnglishCoreBundle);
 
 	// Phase 2: switch to detected locale after hydration completes.
 	if (DetectedLocale !== "en") {
 		const SwitchAfterHydration = async () => {
-			const FullBundle = await FullLocaleLoader[DetectedLocale]();
-			AddResources(DetectedLocale, FullBundle);
-			await i18n.changeLanguage(DetectedLocale);
+			try {
+				const FullBundle = await FullLocaleLoader[DetectedLocale]();
+				AddResources(DetectedLocale, FullBundle);
+				await i18n.changeLanguage(DetectedLocale);
+			} catch {
+				// Network or parse error - stay on English fallback silently.
+			}
 		};
 
 		if (typeof requestIdleCallback !== "undefined") {
@@ -341,25 +319,23 @@ export const LoadNamespace = async (
 	if (i18n.hasResourceBundle(TargetLocale, NamespaceName)) return;
 
 	const Loader = PageNamespaceLoader[TargetLocale]?.[NamespaceName];
+	const NeedsEnglishFallback =
+		TargetLocale !== "en" && !i18n.hasResourceBundle("en", NamespaceName);
+	const EnglishLoader = NeedsEnglishFallback
+		? PageNamespaceLoader.en[NamespaceName]
+		: undefined;
 
-	if (Loader) {
-		const Bundle = await Loader();
+	// Fetch the locale bundle and English fallback in parallel.
+	const [Bundle, EnglishBundle] = await Promise.all([
+		Loader ? Loader() : Promise.resolve(undefined),
+		EnglishLoader ? EnglishLoader() : Promise.resolve(undefined),
+	]);
+
+	if (Bundle) {
 		i18n.addResourceBundle(TargetLocale, NamespaceName, Bundle, true, true);
 	}
-
-	// Also load for English fallback if not already present
-	if (TargetLocale !== "en" && !i18n.hasResourceBundle("en", NamespaceName)) {
-		const EnglishLoader = PageNamespaceLoader.en[NamespaceName];
-		if (EnglishLoader) {
-			const EnglishBundle = await EnglishLoader();
-			i18n.addResourceBundle(
-				"en",
-				NamespaceName,
-				EnglishBundle,
-				true,
-				true,
-			);
-		}
+	if (EnglishBundle) {
+		i18n.addResourceBundle("en", NamespaceName, EnglishBundle, true, true);
 	}
 };
 
