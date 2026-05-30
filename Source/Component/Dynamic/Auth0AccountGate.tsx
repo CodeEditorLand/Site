@@ -48,6 +48,7 @@ export default ({
 		loginWithRedirect: Login,
 		logout: Auth0Logout,
 		user: User,
+		getAccessTokenSilently: GetToken,
 	} = useAuth0();
 
 	const { t: T } = useTranslation("account");
@@ -83,14 +84,53 @@ export default ({
 	const Logout = () =>
 		Auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 
-	// Auto-redirect when already authenticated
+	// Auto-redirect when already authenticated.
+	// Syncs the Auth0 access token into the SW's CACHE_AUTH first so the
+	// SW auth gate on /Dashboard lets the navigation through.
 	useEffect(() => {
 		if (IsLoading || !IsAuthenticated) return;
-		const Next =
-			typeof window !== "undefined"
-				? new URLSearchParams(window.location.search).get("next")
-				: null;
-		window.location.replace(Next || "/Dashboard");
+
+		(async () => {
+			try {
+				const Token = await GetToken();
+				if (
+					typeof navigator !== "undefined" &&
+					navigator.serviceWorker?.controller
+				) {
+					await new Promise<void>((Resolve) => {
+						const Timeout = setTimeout(Resolve, 2000);
+						const OnMessage = (Event: MessageEvent) => {
+							if (Event.data?.Type === "Auth:Written") {
+								clearTimeout(Timeout);
+								navigator.serviceWorker.removeEventListener(
+									"message",
+									OnMessage,
+								);
+								Resolve();
+							}
+						};
+						navigator.serviceWorker.addEventListener(
+							"message",
+							OnMessage,
+						);
+						navigator.serviceWorker.controller!.postMessage({
+							Type: "Auth:Write",
+							Token,
+							ExpiresAt: Date.now() + 3600_000,
+							UserId: User?.sub ?? "",
+						});
+					});
+				}
+			} catch {
+				// proceed even if SW sync fails
+			}
+
+			const Next =
+				typeof window !== "undefined"
+					? new URLSearchParams(window.location.search).get("next")
+					: null;
+			window.location.replace(Next || "/Dashboard");
+		})();
 	}, [IsLoading, IsAuthenticated]);
 
 	// Auto-redirect to Auth0 Universal Login if not authenticated
