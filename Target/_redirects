@@ -9,8 +9,14 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 1781 rules ──
+# ── VARIANT REWRITES (200) - 1829 rules ──
 # Case permutations, plurals, aliases → canonical content.
+/ac                                   /Account/                             200
+/Ac                                   /Account/                             200
+/AC                                   /Account/                             200
+/ac/                                  /Account/                             200
+/Ac/                                  /Account/                             200
+/AC/                                  /Account/                             200
 /ac/forgotpassword                    /Account/ForgotPassword/              200
 /Ac/forgotpassword                    /Account/ForgotPassword/              200
 /AC/forgotpassword                    /Account/ForgotPassword/              200
@@ -35,6 +41,12 @@
 /ac/signup/                           /Account/SignUp/                      200
 /Ac/signup/                           /Account/SignUp/                      200
 /AC/signup/                           /Account/SignUp/                      200
+/acc                                  /Account/                             200
+/Acc                                  /Account/                             200
+/ACC                                  /Account/                             200
+/acc/                                 /Account/                             200
+/Acc/                                 /Account/                             200
+/ACC/                                 /Account/                             200
 /acc/forgotpassword                   /Account/ForgotPassword/              200
 /Acc/forgotpassword                   /Account/ForgotPassword/              200
 /ACC/forgotpassword                   /Account/ForgotPassword/              200
@@ -59,6 +71,12 @@
 /acc/signup/                          /Account/SignUp/                      200
 /Acc/signup/                          /Account/SignUp/                      200
 /ACC/signup/                          /Account/SignUp/                      200
+/acco                                 /Account/                             200
+/Acco                                 /Account/                             200
+/ACCO                                 /Account/                             200
+/acco/                                /Account/                             200
+/Acco/                                /Account/                             200
+/ACCO/                                /Account/                             200
 /acco/forgotpassword                  /Account/ForgotPassword/              200
 /Acco/forgotpassword                  /Account/ForgotPassword/              200
 /ACCO/forgotpassword                  /Account/ForgotPassword/              200
@@ -84,6 +102,18 @@
 /Acco/signup/                         /Account/SignUp/                      200
 /ACCO/signup/                         /Account/SignUp/                      200
 /account                              /Account/                             200
+/accounT                              /Account/                             200
+/accouNT                              /Account/                             200
+/accoUNT                              /Account/                             200
+/accOUNT                              /Account/                             200
+/acCOUNT                              /Account/                             200
+/aCCOUNT                              /Account/                             200
+/ACcount                              /Account/                             200
+/ACCount                              /Account/                             200
+/ACCOunt                              /Account/                             200
+/ACCOUnt                              /Account/                             200
+/ACCOUNt                              /Account/                             200
+/ACCOUNT                              /Account/                             200
 /account_forgotpassword               /Account/ForgotPassword/              200
 /account_forgotpassword/              /Account/ForgotPassword/              200
 /account_resetpassword                /Account/ResetPassword/               200
@@ -101,6 +131,18 @@
 /account-signup                       /Account/SignUp/                      200
 /account-signup/                      /Account/SignUp/                      200
 /account/                             /Account/                             200
+/accounT/                             /Account/                             200
+/accouNT/                             /Account/                             200
+/accoUNT/                             /Account/                             200
+/accOUNT/                             /Account/                             200
+/acCOUNT/                             /Account/                             200
+/aCCOUNT/                             /Account/                             200
+/ACcount/                             /Account/                             200
+/ACCount/                             /Account/                             200
+/ACCOunt/                             /Account/                             200
+/ACCOUnt/                             /Account/                             200
+/ACCOUNt/                             /Account/                             200
+/ACCOUNT/                             /Account/                             200
 /account/fo                           /Account/ForgotPassword/              200
 /account/Fo                           /Account/ForgotPassword/              200
 /account/FO                           /Account/ForgotPassword/              200
@@ -555,6 +597,12 @@
 /accountforgotpassword/               /Account/ForgotPassword/              200
 /accountresetpassword                 /Account/ResetPassword/               200
 /accountresetpassword/                /Account/ResetPassword/               200
+/accounts                             /Account/                             200
+/Accounts                             /Account/                             200
+/ACCOUNTS                             /Account/                             200
+/accounts/                            /Account/                             200
+/Accounts/                            /Account/                             200
+/ACCOUNTS/                            /Account/                             200
 /accounts/forgotpassword              /Account/ForgotPassword/              200
 /Accounts/forgotpassword              /Account/ForgotPassword/              200
 /ACCOUNTS/forgotpassword              /Account/ForgotPassword/              200

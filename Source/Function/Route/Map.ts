@@ -21,6 +21,7 @@ export const CanonicalPath: Set<string> = new Set([
 	"/License",
 	"/Verify",
 	"/Contact/Sale",
+	"/Account",
 	"/Account/SignIn",
 	"/Account/SignUp",
 	"/Account/ForgotPassword",
