@@ -90,7 +90,7 @@ const FieldRow = ({
 			</div>
 		</div>
 		{editHint && (
-			<p className="mt-1.5 text-xs text-muted-foreground">
+			<p className="mt-1.5 text-sm text-muted-foreground">
 				{editHint}
 				{editHref && (
 					<>
@@ -116,7 +116,7 @@ const Auth0Badge = () => (
 		href="https://auth0.com/privacy"
 		target="_blank"
 		rel="noopener noreferrer"
-		className="inline-flex items-center gap-1.5 border border-[#EB5424]/30 bg-[#EB5424]/5 px-2 py-1 text-xs transition-colors hover:bg-[#EB5424]/10">
+		className="inline-flex items-center gap-1.5 border border-[#EB5424]/30 bg-[#EB5424]/5 px-2 py-1 text-sm transition-colors hover:bg-[#EB5424]/10">
 		<svg
 			width="14"
 			height="14"
@@ -466,7 +466,7 @@ const AccountProfileInner = ({
 					</div>
 					<div className="mt-2 flex flex-wrap gap-2">
 						<span
-							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-xs font-medium ${TierColor.Text}`}>
+							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-sm font-medium ${TierColor.Text}`}>
 							{Tier}
 							{"\u2001"}
 							<span
@@ -475,7 +475,7 @@ const AccountProfileInner = ({
 							/>
 						</span>
 						{ProviderIcon ? (
-							<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+							<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-2 py-0.5 text-sm font-medium text-muted-foreground">
 								<img
 									src={ProviderIcon}
 									alt={ProviderLabel}
@@ -486,7 +486,7 @@ const AccountProfileInner = ({
 								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 							</span>
 						) : (
-							<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 text-xs font-medium text-muted-foreground">
+							<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 text-sm font-medium text-muted-foreground">
 								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 							</span>
 						)}
@@ -530,7 +530,7 @@ const AccountProfileInner = ({
 							)}
 						</span>
 					</div>
-					<p className="mt-1 pl-6 text-xs text-green-600">
+					<p className="mt-1 pl-6 text-sm text-green-600">
 						Profile fields are managed by your organization's
 						identity provider. Contact your IT administrator to
 						update them.
@@ -561,7 +561,7 @@ const AccountProfileInner = ({
 						</span>
 						<Auth0Badge />
 					</div>
-					<p className="text-xs text-muted-foreground">
+					<p className="text-sm text-muted-foreground">
 						Authentication, profile data, and session tokens are
 						managed by Auth0 (by Okta) and stored on their EU
 						infrastructure. Code Editor Land does not store your
@@ -579,7 +579,7 @@ const AccountProfileInner = ({
 							defaultValue: "Profile Fields",
 						})}
 					</h3>
-					<span className="text-xs text-muted-foreground">
+					<span className="text-sm text-muted-foreground">
 						All data stored in Auth0
 					</span>
 				</div>
@@ -658,7 +658,7 @@ const AccountProfileInner = ({
 										/>
 									</span>
 									<Pii visible={PIIVisible}>
-										<span className="font-mono text-xs text-muted-foreground">
+										<span className="font-mono text-sm text-muted-foreground">
 											{User.picture
 												.split("/")
 												.pop()
@@ -715,7 +715,7 @@ const AccountProfileInner = ({
 						label="Portal Tier"
 						value={
 							<span
-								className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-xs font-medium ${TierColor.Text}`}>
+								className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-sm font-medium ${TierColor.Text}`}>
 								{Tier}
 								{"\u2001"}
 								<span
@@ -733,7 +733,7 @@ const AccountProfileInner = ({
 					<FieldRow
 						label="User ID"
 						value={
-							<code className="font-mono text-xs">
+							<code className="font-mono text-sm">
 								<Pii visible={PIIVisible}>
 									{User.sub || "--"}
 								</Pii>
@@ -795,7 +795,7 @@ const AccountProfileInner = ({
 											Editable
 										</span>
 									</div>
-									<p className="mt-1 text-xs text-muted-foreground">
+									<p className="mt-1 text-sm text-muted-foreground">
 										A reset link is sent to your email. You
 										will not be signed out until you set a
 										new password.
@@ -805,23 +805,23 @@ const AccountProfileInner = ({
 									<button
 										type="button"
 										onClick={HandlePasswordReset}
-										className="StaccatoButton shrink-0 bg-white px-3 py-1.5 text-xs font-medium transition-all hover:bg-[var(--Secondary)]">
+										className="StaccatoButton shrink-0 bg-white px-3 py-1.5 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
 										Send Reset Email
 									</button>
 								)}
 								{PasswordResetState === "sending" && (
-									<span className="shrink-0 text-xs text-muted-foreground">
+									<span className="shrink-0 text-sm text-muted-foreground">
 										Sending…
 									</span>
 								)}
 								{PasswordResetState === "sent" && (
-									<span className="inline-flex shrink-0 items-center gap-1 border border-green-200 bg-green-50 px-2 py-1 text-xs text-green-700">
+									<span className="inline-flex shrink-0 items-center gap-1 border border-green-200 bg-green-50 px-2 py-1 text-sm text-green-700">
 										<MailCheck className="h-3 w-3" />
 										Email sent
 									</span>
 								)}
 								{PasswordResetState === "error" && (
-									<span className="shrink-0 text-xs text-red-600">
+									<span className="shrink-0 text-sm text-red-600">
 										Failed. Try again.
 									</span>
 								)}
@@ -846,7 +846,7 @@ const AccountProfileInner = ({
 									Not applicable
 								</span>
 							</div>
-							<p className="mt-1 text-xs text-muted-foreground">
+							<p className="mt-1 text-sm text-muted-foreground">
 								You signed in via {ProviderLabel}. Password
 								management is handled entirely by{" "}
 								{ProviderLabel} - Code Editor Land never
@@ -880,7 +880,7 @@ const AccountProfileInner = ({
 								Read-only
 							</span>
 						</div>
-						<p className="mt-1 text-xs text-muted-foreground">
+						<p className="mt-1 text-sm text-muted-foreground">
 							Session managed by Auth0. Signing out revokes the
 							session token on Auth0's servers and clears local
 							storage. Access token validity: 1 hour.

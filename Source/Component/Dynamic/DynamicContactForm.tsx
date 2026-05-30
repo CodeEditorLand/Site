@@ -143,16 +143,16 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			<div className="space-y-3">
 				<div className="flex flex-wrap items-center gap-3">
 					<span
-						className={`inline-flex items-center gap-2 border px-3 py-1 font-mono text-sm font-bold tracking-widest ${BadgeColor}`}
+						className={`inline-flex items-center gap-2 border px-3 py-1 text-foreground`}
 						title="Pair reference - income code + instance ID. Quote this in all replies.">
 						{Config.Code}-{PairId}
 					</span>
 					{Config.Article && (
-						<span className="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 font-mono text-xs text-muted-foreground">
+						<span className="inline-flex items-center border border-[var(--Border)] bg-[var(--Mute)] px-2 py-0.5 font-mono text-sm text-muted-foreground">
 							{Config.Article}
 						</span>
 					)}
-					<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 font-mono text-xs text-muted-foreground">
+					<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 font-mono text-sm text-muted-foreground">
 						{Config.ResponseDays}d SLA
 					</span>
 				</div>
@@ -160,7 +160,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					{Config.Title}
 				</h1>
 				<p className="text-muted-foreground">{Config.Subtitle}</p>
-				<p className="font-mono text-xs text-muted-foreground">
+				<p className="font-mono text-sm text-muted-foreground">
 					Sends to:{" "}
 					<span className="text-foreground">{Config.To}</span>
 				</p>
@@ -194,7 +194,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									</span>
 								</label>
 								{Error && (
-									<p className="mt-1 text-xs text-red-600">
+									<p className="mt-1 text-sm text-red-600">
 										{Error}
 									</p>
 								)}
@@ -237,7 +237,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									))}
 								</div>
 								{Error && (
-									<p className="mt-1 text-xs text-red-600">
+									<p className="mt-1 text-sm text-red-600">
 										{Error}
 									</p>
 								)}
@@ -275,7 +275,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									))}
 								</select>
 								{Error && (
-									<p className="mt-1 text-xs text-red-600">
+									<p className="mt-1 text-sm text-red-600">
 										{Error}
 									</p>
 								)}
@@ -309,12 +309,12 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									}
 								/>
 								{Field.hint && (
-									<p className="mt-0.5 text-xs text-muted-foreground">
+									<p className="mt-0.5 text-sm text-muted-foreground">
 										{Field.hint}
 									</p>
 								)}
 								{Error && (
-									<p className="mt-1 text-xs text-red-600">
+									<p className="mt-1 text-sm text-red-600">
 										{Error}
 									</p>
 								)}
@@ -348,12 +348,12 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								}
 							/>
 							{Field.hint && (
-								<p className="mt-0.5 text-xs text-muted-foreground">
+								<p className="mt-0.5 text-sm text-muted-foreground">
 									{Field.hint}
 								</p>
 							)}
 							{Error && (
-								<p className="mt-1 text-xs text-red-600">
+								<p className="mt-1 text-sm text-red-600">
 									{Error}
 								</p>
 							)}
@@ -376,7 +376,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 					<Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
 					<div className="flex-1 text-left">
 						<div className="font-medium">Open in email client</div>
-						<div className="text-xs text-muted-foreground">
+						<div className="text-sm text-muted-foreground">
 							Opens your default mail app with the form pre-filled
 							as plain text - ready to review and send.
 						</div>
@@ -395,7 +395,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								? "Copied to clipboard"
 								: "Copy request text"}
 						</div>
-						<div className="text-xs text-muted-foreground">
+						<div className="text-sm text-muted-foreground">
 							Copies a formatted plain-text version with pair
 							reference{" "}
 							<span className="font-mono">
@@ -421,7 +421,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 							<div className="font-medium">
 								Open a conversation
 							</div>
-							<div className="text-xs text-muted-foreground">
+							<div className="text-sm text-muted-foreground">
 								Start a public or private thread - good for
 								questions that benefit from community input.
 							</div>
@@ -431,7 +431,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			</div>
 
 			{/* Pair reference explanation */}
-			<div className="border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-xs text-muted-foreground">
+			<div className="border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-sm text-muted-foreground">
 				<span className="font-mono font-semibold text-foreground">
 					{Config.Code}-{PairId}
 				</span>{" "}

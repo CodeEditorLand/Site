@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 
 // ─── Replicated from ServiceWorker.ts (pure logic) ───
 
-const ProtectedRoute: Set<string> = new Set(["/Dashboard"]);
+const ProtectedRoute: Set<string> = new Set([]);
 
 const AuthRoute: Set<string> = new Set([
 	"/Account/SignIn",
@@ -214,15 +214,10 @@ describe("ServiceWorker Auth:Refresh message", () => {
 });
 
 describe("Protected route auth gate", () => {
-	it("redirects to SignIn when no auth on /Dashboard", () => {
+	it("allows public access to /Dashboard without auth", () => {
 		const Result = EvaluateAuthGate("/Dashboard", false);
 
-		expect(Result.Action).toBe("Redirect");
-
-		if (Result.Action === "Redirect") {
-			expect(Result.Target).toBe("/Account/SignIn?next=/Dashboard");
-			expect(Result.Code).toBe(302);
-		}
+		expect(Result.Action).toBe("Continue");
 	});
 
 	it("continues when authenticated on /Dashboard", () => {
@@ -446,9 +441,8 @@ describe("Auth state expiry logic", () => {
 });
 
 describe("Protected and auth route sets", () => {
-	it("only /Dashboard is protected", () => {
-		expect(ProtectedRoute.size).toBe(1);
-		expect(ProtectedRoute.has("/Dashboard")).toBe(true);
+	it("exposes no protected routes in the public build", () => {
+		expect(ProtectedRoute.size).toBe(0);
 	});
 
 	it("/Portal is NOT protected (public gateway)", () => {

@@ -90,7 +90,7 @@ const VariantMap: Record<string, string> = __ROUTE_MAP_VARIANT__;
 // Enterprise tier picker). It must be publicly accessible - users land here
 // BEFORE they have a session. Only post-auth destinations belong here.
 
-const ProtectedRoute: Set<string> = new Set(["/Dashboard"]);
+const ProtectedRoute: Set<string> = new Set([]);
 
 // Auth-bypass routes - redirect to /Dashboard when a session IS cached.
 // Prevents authenticated users from seeing the sign-in/sign-up pages.

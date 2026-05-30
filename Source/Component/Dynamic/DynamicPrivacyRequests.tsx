@@ -109,7 +109,7 @@ export default () => {
 							<p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">
 								{Channel.Subtitle}
 							</p>
-							<span className="mt-auto font-mono text-xs text-muted-foreground">
+							<span className="mt-auto font-mono text-sm text-muted-foreground">
 								{Channel.To}
 							</span>
 						</a>
