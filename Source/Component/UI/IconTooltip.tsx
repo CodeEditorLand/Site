@@ -96,7 +96,11 @@ const IconTooltip = ({
 				</TooltipTrigger>
 				<TooltipContent>
 					{Array.isArray(Label)
-						? Label.map((Line, Index) => <p key={Index}>{Line}</p>)
+						? Label.map((Line, Index) => (
+								<p key={Index} className="mx-auto w-fit">
+									{Line}
+								</p>
+							))
 						: Label}
 				</TooltipContent>
 			</Tooltip>
