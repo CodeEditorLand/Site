@@ -34,6 +34,7 @@ Related:
 - `FeatureCard StaccatoCard ... space-y-6` - feature section.
 - `PricingCard StaccatoCard ...` - pricing.
 - `MasonryCard TestimonialCard StaccatoCard ...` - testimonial with `--masonry-col`.
+- `TransparencyCard` - transparent / section-specific variant.
 
 Sources:
 - `DynamicFeatures.tsx`, `DynamicPricing.tsx`, `DynamicTestimonials.tsx`,
@@ -57,7 +58,9 @@ Sources:
 | `DynamicForgotPassword` | `DynamicForgotPassword.tsx` | Same |
 | `DynamicEmailVerification` | `DynamicEmailVerification.tsx` | Same |
 | `DynamicCard` / `FeatureCard` | `DynamicCard.tsx` | `FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8` |
-| `DynamicBlogCard` | `DynamicBlogCard.tsx` | `StaccatoCard bg-[var(--ColorCard)] p-6` |
+| `TransparencyCard` | `DynamicTransparency.tsx` | `TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-white p-6` |
+
+`DynamicBlogCard.tsx` does not currently exist as a component in `Source/Component/Dynamic/`.
 
 ---
 
