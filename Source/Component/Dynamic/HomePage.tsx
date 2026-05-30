@@ -51,7 +51,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			PrimaryCta: {
 				Text: T("common:button.download", {
-					defaultValue: "Download",
+					defaultValue: "Download Land Free",
 				}),
 				Variant: "default",
 				Size: "lg",
@@ -60,7 +60,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			},
 			SecondaryCta: {
 				Text: T("common:button.learnMore", {
-					defaultValue: "Source",
+					defaultValue: "See What Makes Land Different",
 				}),
 				Variant: "ghost",
 				Size: "lg",
@@ -741,8 +741,9 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				Name: T("common:brand.name", {
 					defaultValue: "Code Editor Land",
 				}),
-				Description: T("common:brand.tagline", {
-					defaultValue: "Rust and Tauri editor stack. CC0.",
+				Description: T("footer:brand.description", {
+					defaultValue:
+						"No Electron. No Chromium. Every extension runs unchanged.\n\nOpen source and free forever.",
 				}),
 			},
 			Social: {

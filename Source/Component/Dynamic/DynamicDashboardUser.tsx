@@ -138,7 +138,7 @@ const DashboardUserInner = () => {
 			<div className="space-y-3" role="alert" aria-live="polite">
 				<p className="text-destructive">
 					{T("dashboard.error", {
-						defaultValue: "Failed to load account.",
+						defaultValue: "Could not load your account. Please refresh.",
 					})}
 				</p>
 				<p className="text-muted-foreground">{AuthError.message}</p>

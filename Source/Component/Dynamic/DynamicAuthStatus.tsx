@@ -111,7 +111,7 @@ export default ({
 					<a
 						href={DashboardHref}
 						aria-label={T("user.menu.dashboard", {
-							defaultValue: "Go to Dashboard",
+							defaultValue: "Dashboard",
 						})}>
 						{T("user.menu.dashboard", {
 							defaultValue: "Dashboard",
@@ -122,7 +122,7 @@ export default ({
 					<a
 						href={AccountHref}
 						aria-label={T("user.menu.account", {
-							defaultValue: "Manage Account",
+							defaultValue: "Account",
 						})}>
 						{T("user.menu.account", { defaultValue: "Account" })}
 					</a>
@@ -132,7 +132,7 @@ export default ({
 					variant="destructive"
 					onClick={Logout}
 					aria-label={T("user.menu.signOut", {
-						defaultValue: "Sign out",
+						defaultValue: "Sign Out",
 					})}>
 					{T("user.menu.signOut", { defaultValue: "Sign Out" })}
 				</DropdownMenuItem>

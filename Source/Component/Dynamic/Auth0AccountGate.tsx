@@ -241,7 +241,7 @@ export default ({
 						className="w-full"
 						onClick={Logout}>
 						{T("logout", {
-							defaultValue: "Logout",
+							defaultValue: "Sign Out",
 						})}
 					</Button>
 
