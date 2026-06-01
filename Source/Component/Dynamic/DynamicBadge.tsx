@@ -16,11 +16,11 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 		...props
 	} = Content;
 
-	const DotColorMap: Record<string, string> = {
-		green: "bg-green-500",
-		yellow: "bg-yellow-500",
-		red: "bg-red-500",
-		blue: "bg-blue-500",
+	const DotColorTokenMap: Record<string, string> = {
+		green: "var(--SpinegRPC)",
+		yellow: "var(--SpineTCP)",
+		red: "var(--Destruct)",
+		blue: "var(--SpineIPC)",
 	};
 
 	return (
@@ -33,7 +33,12 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 				<>
 					{"\u2001"}
 					<span
-						className={`StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none ${DotColorMap[DotColor]}`}
+						className="StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none"
+						style={{
+							backgroundColor:
+								DotColorTokenMap[DotColor] ??
+								"var(--SpinegRPC)",
+						}}
 						aria-hidden="true"
 					/>
 				</>

@@ -39,6 +39,16 @@ const FeatureColorMap: Record<string, string> = {
 	opensource: "var(--SpinegRPC)",
 };
 
+/** 12% tinted backgrounds for icon containers — matches the *Mute token convention. */
+const FeatureColorMuteMap: Record<string, string> = {
+	performance: "var(--ExtensionRustMute)",
+	compatibility: "var(--SpineWASMMute)",
+	architecture: "var(--ExtensionEffectTypeScriptMute)",
+	"cross-platform": "var(--ExtensionTauriMute)",
+	tooling: "var(--ToolBiomeMute)",
+	opensource: "var(--SpinegRPCMute)",
+};
+
 /**
  * Human-readable labels for every icon in the registry.
  * These flow into aria-label, title, and Radix tooltip text via IconTooltip.
@@ -159,16 +169,18 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 		<section
 			id="features"
 			aria-labelledby="FeaturesHeading"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center bg-[var(--Mute)] py-24 sm:py-32 ${
-				ClassName || ""
-			}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
+					<div className="mx-auto mb-10 max-w-2xl text-center">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
+							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							Features
+						</p>
 						{Title && (
 							<h2
 								id="FeaturesHeading"
-								className="text-2xl font-semibold tracking-tight sm:text-3xl">
+								className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
 								{Title}
 							</h2>
 						)}
@@ -194,6 +206,9 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 						const FeatureColor =
 							FeatureColorMap[Feature.Id] ?? "var(--Primary)";
 
+						const FeatureColorMute =
+							FeatureColorMuteMap[Feature.Id] ?? "var(--Mute)";
+
 						return (
 							<article
 								key={Feature.Id}
@@ -214,23 +229,31 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
-								className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8">
+								className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-card p-8"
+								style={{
+									borderLeftColor: FeatureColor,
+									borderLeftWidth: "2px",
+								}}>
 								<div className="flex items-start justify-between">
-									<h3 className="text-xl font-semibold">
+									<h3 className="font-mono text-sm font-semibold leading-snug">
 										{Feature.Title}
 									</h3>
-									{/* Card header icon - wrapped in IconTooltip so hover + screen reader both work */}
-									<div className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)]">
+									{/* Card header icon — tinted accent bg matches the spine color */}
+									<div
+										className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-none"
+										style={{
+											backgroundColor: FeatureColorMute,
+										}}>
 										<IconTooltip
 											Label={IconLabel}
 											Icon={Icon ?? lucide.Sparkles}
 											Color={FeatureColor}
-											SizeClass="h-5 w-5"
+											SizeClass="h-4 w-4"
 											ClassName="StaccatoIcon"
 										/>
 									</div>
 								</div>
-								<p className="StaccatoBreath text-muted-foreground">
+								<p className="StaccatoBreath text-sm text-muted-foreground line-clamp-5">
 									<RichText Text={Feature.Description} />
 									<br />
 									{Feature.Icons &&

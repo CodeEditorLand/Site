@@ -235,7 +235,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 						className="mb-16 text-center"
 						role="status"
 						aria-live="polite">
-						<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
+						<h2 className="mb-4 font-serif text-4xl font-normal md:text-5xl lg:text-6xl">
 							{LoadingLabel}
 						</h2>
 					</div>
@@ -260,7 +260,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 				aria-label="Downloads">
 				<div className="container mx-auto px-4">
 					<div className="mb-16 text-center" role="alert">
-						<h2 className="mb-4 text-3xl tracking-tight text-red-500 md:text-4xl lg:text-5xl">
+						<h2 className="mb-4 font-serif text-4xl font-normal text-red-500 md:text-5xl lg:text-6xl">
 							{ErrorTitleLabel}
 						</h2>
 						<p className="text-muted-foreground">{ErrorMessage}</p>
@@ -274,12 +274,16 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 		<section
 			id="download"
 			aria-label="Downloads"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-24 sm:py-32 ${ClassName || ""}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
+					<div className="mx-auto mb-10 max-w-2xl text-center">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
+							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							Download
+						</p>
 						{Title && (
-							<h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+							<h2 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
 								{Title}
 							</h2>
 						)}
@@ -328,7 +332,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							},
 							Body: {
 								content: (
-									<div className="space-y-2 text-muted-foreground">
+									<div className="space-y-2 font-mono text-xs text-muted-foreground">
 										<div className="flex justify-between">
 											<span>{VersionLabel}</span>
 											<span className="font-medium text-foreground">
@@ -377,7 +381,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 								? {
 										Footer: {
 											content: (
-												<div className="text-muted-foreground">
+												<div className="font-mono text-xs text-muted-foreground">
 													{Platform.Checksum && (
 														<p>
 															SHA-256:{" "}
