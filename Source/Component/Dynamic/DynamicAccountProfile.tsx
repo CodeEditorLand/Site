@@ -571,7 +571,7 @@ const AccountProfileInner = ({
 			</div>
 
 			{/* ── Profile fields ────────────────────────────────────── */}
-			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
+			<div className="StaccatoCard StaccatoBorderShimmer bg-card">
 				<div className="flex items-center justify-between border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
 						{T("profileSection", {
@@ -773,7 +773,7 @@ const AccountProfileInner = ({
 			</div>
 
 			{/* ── Security ──────────────────────────────────────────── */}
-			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
+			<div className="StaccatoCard StaccatoBorderShimmer bg-card">
 				<div className="border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">Security</h3>
 				</div>
@@ -804,7 +804,7 @@ const AccountProfileInner = ({
 									<button
 										type="button"
 										onClick={HandlePasswordReset}
-										className="StaccatoButton shrink-0 bg-white px-3 py-1.5 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
+										className="StaccatoButton shrink-0 bg-card px-3 py-1.5 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
 										Send Reset Email
 									</button>
 								)}
@@ -889,7 +889,7 @@ const AccountProfileInner = ({
 			</div>
 
 			{/* ── Account actions ───────────────────────────────────── */}
-			<div className="StaccatoCard StaccatoBorderShimmer bg-white">
+			<div className="StaccatoCard StaccatoBorderShimmer bg-card">
 				<div className="border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
 						{T("actionsSection", {
@@ -900,7 +900,7 @@ const AccountProfileInner = ({
 				<div className="space-y-3 px-6 py-4">
 					<a
 						href="/Dashboard"
-						className="StaccatoButton inline-flex w-full items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
+						className="StaccatoButton inline-flex w-full items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
 						{T("goToDashboard", {
 							defaultValue: "Go to Dashboard",
 						})}
@@ -909,7 +909,7 @@ const AccountProfileInner = ({
 					<button
 						type="button"
 						onClick={HandleSignOut}
-						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-white px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50">
+						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-card px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50">
 						{T("signOut", { defaultValue: "Sign Out" })}
 					</button>
 				</div>

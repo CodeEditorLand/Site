@@ -87,7 +87,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 		<section
 			id="Transparency"
 			aria-label="Build Transparency"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-20 ${ClassName || ""}`}>
+			className={`w-full py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
@@ -119,9 +119,9 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-white p-6">
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6">
 									<div className="flex items-start justify-between">
-										<h4 className="text-lg font-semibold">
+										<h4 className="font-mono text-sm font-semibold">
 											{Item.Title}
 										</h4>
 										<div className="ml-4 flex items-center gap-3">
@@ -251,9 +251,9 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-white p-6">
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6">
 									<div className="flex items-start justify-between">
-										<h4 className="text-lg font-semibold">
+										<h4 className="font-mono text-sm font-semibold">
 											{Item.Name}
 										</h4>
 										{Icon && (

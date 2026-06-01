@@ -39,7 +39,7 @@ export default () => {
 		<div className="space-y-12">
 			{/* GDPR Rights */}
 			<div>
-				<h3 className="mb-2 text-lg font-semibold">
+				<h3 className="mb-2 font-mono text-sm font-semibold">
 					Your Rights Under GDPR
 				</h3>
 				<p className="mb-6 text-muted-foreground">
@@ -53,7 +53,7 @@ export default () => {
 						<a
 							key={Right.Code}
 							href={`/Contact/${Right.Slug.charAt(0).toUpperCase()}${Right.Slug.slice(1)}`}
-							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-white p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 							<div className="mb-3 flex items-start justify-between gap-2">
 								<h4 className="font-medium leading-snug">
 									{Right.Title}
@@ -86,7 +86,7 @@ export default () => {
 
 			{/* Support Channels */}
 			<div>
-				<h3 className="mb-2 text-lg font-semibold">
+				<h3 className="mb-2 font-mono text-sm font-semibold">
 					Support & Assistance
 				</h3>
 				<p className="mb-6 text-muted-foreground">
@@ -99,7 +99,7 @@ export default () => {
 						<a
 							key={Channel.Code}
 							href={`/Contact/${Channel.Slug.charAt(0).toUpperCase()}${Channel.Slug.slice(1)}`}
-							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-white p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 							<div className="mb-2 flex items-center justify-between gap-2">
 								<h4 className="font-medium">{Channel.Title}</h4>
 								<span className="shrink-0 font-mono text-[10px] font-bold tracking-widest text-muted-foreground">
@@ -119,14 +119,14 @@ export default () => {
 
 			{/* Delete Account */}
 			<div>
-				<h3 className="mb-2 text-lg font-semibold">Delete Account</h3>
+				<h3 className="mb-2 font-mono text-sm font-semibold">Delete Account</h3>
 				<p className="mb-6 text-muted-foreground">
 					Permanently delete your account and all associated personal
 					data under GDPR Article 17. This action is irreversible.
 				</p>
 				<a
 					href="/Contact/Erase"
-					className="StaccatoCard block border border-red-200 bg-white p-6 transition-all hover:bg-red-50 focus:outline-2 focus:outline-offset-2 focus:outline-red-400">
+					className="StaccatoCard block border border-red-200 bg-card p-6 transition-all hover:bg-red-50 focus:outline-2 focus:outline-offset-2 focus:outline-red-400">
 					<div className="mb-4 flex items-start gap-4">
 						<div className="flex h-10 w-10 shrink-0 items-center justify-center border border-red-200 bg-red-50 text-red-600">
 							<svg

@@ -54,7 +54,7 @@ export class ErrorBoundary extends Component<
 
 			return (
 				<div className="flex min-h-[200px] items-center justify-center p-8">
-					<div className="w-full max-w-md border border-[var(--Destruct)] bg-white p-8 text-center">
+					<div className="w-full max-w-md border border-[var(--Destruct)] bg-card p-8 text-center">
 						<div className="mx-auto mb-4 h-1 w-8 bg-[var(--Destruct)]" />
 						<h2 className="mb-2 text-xl font-semibold text-[var(--Foreground)]">
 							Something went wrong
@@ -66,7 +66,7 @@ export class ErrorBoundary extends Component<
 						<button
 							type="button"
 							onClick={this.HandleRetry}
-							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-white px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-white">
+							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-white">
 							Try again
 						</button>
 					</div>

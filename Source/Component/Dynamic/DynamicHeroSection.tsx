@@ -28,8 +28,12 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 	useEffect(() => {
 		const Scene = SceneReference.current;
+		// Calm/refined direction: the orbital cards stay static at their
+		// anchors instead of drifting on noise (the drift read as dated
+		// parallax). The scene keeps its layout; only the animation is off.
 		if (
 			!Scene ||
+			true ||
 			(HeroConfiguration.RespectReducedMotion &&
 				window.matchMedia("(prefers-reduced-motion: reduce)").matches)
 		) {
@@ -144,7 +148,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start overflow-hidden pb-12 pt-20 lg:min-h-[200dvh] lg:items-center lg:pb-0 lg:pt-32 ${ClassName || ""}`}
+			className={`StaccatoHeroButton relative flex min-h-0 w-full items-start overflow-hidden pb-12 pt-20 lg:items-center lg:pb-24 lg:pt-32 ${ClassName || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
@@ -154,7 +158,22 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			}}
 			role="button"
 			tabIndex={0}>
-			<div className="container mx-auto px-4 text-center">
+			{/* Cyberpunk HUD: hairline blueprint grid, dark theme only.
+			 Faint --Border-colored lines, masked to fade at the edges. */}
+			<div
+				aria-hidden="true"
+				className="pointer-events-none absolute inset-0 hidden dark:block"
+				style={{
+					backgroundImage:
+						"linear-gradient(var(--Border) 1px, transparent 1px), linear-gradient(90deg, var(--Border) 1px, transparent 1px)",
+					backgroundSize: "48px 48px",
+					maskImage:
+						"radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 75%)",
+					WebkitMaskImage:
+						"radial-gradient(ellipse 80% 60% at 50% 40%, black, transparent 75%)",
+				}}
+			/>
+			<div className="container relative mx-auto px-4 text-center">
 				{/* Badge:breathing with rhythm pulse on dot */}
 				{Content.Badge && (
 					<DynamicBadge
@@ -163,11 +182,16 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					/>
 				)}
 
-				{/* Title:subtle color shift */}
-				<h1 className="StaccatoColorShift mx-auto max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl lg:text-8xl">
+				{/* Title: Instrument Serif display. 400 weight, near-zero
+				 tracking and tight leading — the "fancy" high-contrast voice. */}
+				<h1 className="StaccatoColorShift mx-auto max-w-4xl font-serif text-6xl font-normal leading-[0.95] tracking-[-0.01em] md:text-8xl lg:text-9xl">
 					{Title}
 					{Title && TitleHighlight ? " " : ""}
-					{TitleHighlight && <span>{TitleHighlight}</span>}
+					{TitleHighlight && (
+						<span className="italic text-[var(--SpineIPCFore)]">
+							{TitleHighlight}
+						</span>
+					)}
 				</h1>
 
 				{/* Subtitle: small grayed help text directly under the title */}
@@ -181,17 +205,17 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					{SecondaryCTA && <DynamicButton Content={SecondaryCTA} />}
 				</div>
 
-				{/* Tech stack section label - accessible, outside aria-hidden */}
-				<p className="mb-8 font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-					Tech Stack
+				{/* Tech stack section label - mono HUD eyebrow */}
+				<p className="mb-8 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+					<span className="text-[var(--SpinegRPCFore)]">//</span> Tech
+					Stack
 				</p>
 
-				{/* Tech stack visualization */}
+				{/* Tech stack — modern HUD grid (static, grid-aligned, all breakpoints) */}
 				<div
-					className="relative mx-auto max-w-5xl px-6 py-12 lg:px-10 lg:py-16"
+					className="mx-auto max-w-5xl px-6 py-10 lg:px-10"
 					aria-hidden="true">
-					{/* Mobile + Tablet: wrap grid */}
-					<div className="flex flex-wrap items-center justify-center gap-3 lg:hidden">
+					<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 						{FloatingCard.map((Card, Index) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
@@ -283,237 +307,28 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Card.Id}
-									className="StaccatoCard bg-[var(--Mute)] p-3"
-									style={{
-										transitionDelay: `${Index * 50}ms`,
-									}}>
-									<div className="mb-2 flex items-center justify-center">
-										<IconTooltip
-											Label={Card.Tooltip ?? Card.Title}
-											Icon={IconComponent}
-											SizeClass="h-6 w-6"
-											Color={GetIconColor()}
-										/>
-									</div>
-									<div className="text-center">
-										<div className="font-medium text-foreground">
-											{Card.Title}
-										</div>
-										{Card.Colors &&
-											Card.Colors.length > 0 && (
-												<div className="mt-1.5 flex items-center justify-center gap-1.5">
-													{Card.Colors.map(
-														(Color, ColorIndex) => (
-															<div
-																key={ColorIndex}
-																className="StaccatoRhythmDot h-3 w-3 bg-[var(--Mute)]"
-																style={{
-																	backgroundColor:
-																		Color,
-																}}
-															/>
-														),
-													)}
-												</div>
-											)}
-									</div>
+									className="group relative flex items-center gap-3 border border-[var(--Border)] bg-[var(--Card)] p-4 transition-colors hover:border-[color-mix(in_srgb,var(--Foreground)_28%,transparent)] dark:hover:border-[color-mix(in_srgb,var(--Ring)_50%,transparent)]">
+									{/* Spine-accent edge bar */}
+									<span
+										aria-hidden="true"
+										className="absolute left-0 top-0 h-full w-0.5"
+										style={{
+											backgroundColor: GetIconColor(),
+										}}
+									/>
+									<IconComponent
+										className="h-5 w-5 shrink-0"
+										strokeWidth={1.5}
+										style={{ color: GetIconColor() }}
+									/>
+									<span className="truncate font-mono text-xs uppercase tracking-wider text-foreground">
+										{Card.Title}
+									</span>
 								</div>
 							);
 						})}
 					</div>
 
-					{/* Desktop: orbital layout */}
-					<div
-						ref={SceneReference}
-						className="relative hidden min-h-[80vh] lg:block"
-						style={{ perspective: "1000px" }}>
-						{/* Central Hub:logo with micro-movement */}
-						<div className="StaccatoLogo absolute left-1/2 top-1/2 z-10 flex h-32 w-32 -translate-x-1/2 -translate-y-1/2 items-center justify-center overflow-hidden bg-[var(--Mute)]">
-							<img
-								src="/Asset/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width="80"
-								height="80"
-								className="h-20 w-20"
-							/>
-						</div>
-
-						{/* Floating Cards:noise-seeded staccato */}
-						{FloatingCard.map((Card, Index) => {
-							const Total = FloatingCard.length;
-							const Angle =
-								(Index / Total) * 2 * Math.PI - Math.PI / 2;
-							const RadiusX = 44;
-							const RadiusY = 40;
-							const CenterX = 50 + Math.cos(Angle) * RadiusX;
-							const CenterY = 50 + Math.sin(Angle) * RadiusY;
-
-							// Map card titles to appropriate icons
-							const GetIcon = () => {
-								const Title = Card.Title.toLowerCase();
-								if (
-									Title.includes("rust") ||
-									Title.includes("core")
-								)
-									return lucide.Cpu;
-								if (
-									Title.includes("tauri") ||
-									Title.includes("ui")
-								)
-									return lucide.Box;
-								if (
-									Title.includes("effect") ||
-									Title.includes("service")
-								)
-									return lucide.Layers;
-								if (
-									Title.includes("grpc") ||
-									Title.includes("ipc")
-								)
-									return lucide.Network;
-								if (Title.includes("extension"))
-									return lucide.Puzzle;
-								if (
-									Title.includes("cross") ||
-									Title.includes("platform")
-								)
-									return lucide.Globe;
-								if (
-									Title.includes("vs code") ||
-									Title.includes("api")
-								)
-									return lucide.Server;
-								if (
-									Title.includes("open") ||
-									Title.includes("source")
-								)
-									return lucide.Zap;
-								return lucide.Cpu; // default fallicon
-							};
-
-							const IconComponent = GetIcon();
-							// Map card titles to Spine protocol colors
-							const GetIconColor = (): string => {
-								const Title = Card.Title.toLowerCase();
-								if (
-									Title.includes("rust") ||
-									Title.includes("core")
-								)
-									return "var(--SpineTCP)";
-								if (
-									Title.includes("tauri") ||
-									Title.includes("ui")
-								)
-									return "var(--SpineIPC)";
-								if (
-									Title.includes("effect") ||
-									Title.includes("service")
-								)
-									return "var(--SpineWASM)";
-								if (
-									Title.includes("grpc") ||
-									Title.includes("ipc")
-								)
-									return "var(--SpinegRPC)";
-								if (Title.includes("extension"))
-									return "var(--SpineWASM)";
-								if (
-									Title.includes("cross") ||
-									Title.includes("platform")
-								)
-									return "var(--SpineIPC)";
-								if (
-									Title.includes("vs code") ||
-									Title.includes("api")
-								)
-									return "var(--SpinegRPC)";
-								if (
-									Title.includes("open") ||
-									Title.includes("source")
-								)
-									return "var(--SpineTCP)";
-								return "var(--SpineIPC)";
-							};
-
-							return (
-								<div
-									key={Card.Id}
-									className="FloatingCard StaccatoBorderShimmer StaccatoShadowLift absolute z-50 w-36 transform-gpu bg-[var(--Mute)] p-3"
-									style={{
-										top: `${CenterY}%`,
-										left: `${CenterX}%`,
-										transform: "translate(-50%, -50%)",
-									}}>
-									<div className="mb-2 flex items-center justify-center">
-										<IconTooltip
-											Label={Card.Tooltip ?? Card.Title}
-											Icon={IconComponent}
-											SizeClass="h-8 w-8"
-											Color={GetIconColor()}
-										/>
-									</div>
-									<div className="text-center">
-										<div className="font-medium text-foreground">
-											{Card.Title}
-										</div>
-										{Card.Colors &&
-											Card.Colors.length > 0 && (
-												<div className="mt-1.5 flex items-center justify-center gap-1.5">
-													{Card.Colors.map(
-														(Color, ColorIndex) => (
-															<div
-																key={ColorIndex}
-																className="StaccatoRhythmDot h-3 w-3 bg-[var(--Mute)]"
-																style={{
-																	backgroundColor:
-																		Color,
-																}}
-															/>
-														),
-													)}
-												</div>
-											)}
-									</div>
-								</div>
-							);
-						})}
-
-						{/* Connecting Lines:breathing opacity */}
-						{HeroConfiguration.ShowConnectingLines && (
-							<svg
-								className="StaccatoBreath pointer-events-none absolute inset-0 h-full w-full"
-								aria-hidden="true"
-								role="presentation">
-								{FloatingCard.map((Card, Index) => {
-									const Total = FloatingCard.length;
-									const Angle =
-										(Index / Total) * 2 * Math.PI -
-										Math.PI / 2;
-									const RadiusX = 44;
-									const RadiusY = 40;
-									const CenterX =
-										50 + Math.cos(Angle) * RadiusX;
-									const CenterY =
-										50 + Math.sin(Angle) * RadiusY;
-									return (
-										<line
-											key={Card.Id}
-											x1="50%"
-											y1="50%"
-											x2={`${CenterX}%`}
-											y2={`${CenterY}%`}
-											stroke="rgba(79, 79, 79, 0.69)"
-											strokeWidth="0.5"
-											strokeDasharray="4 10"
-											strokeLinecap="round"
-											opacity={0.79 - Index * 0.02}
-										/>
-									);
-								})}
-							</svg>
-						)}
-					</div>
 				</div>
 			</div>
 		</section>

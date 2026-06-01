@@ -156,7 +156,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						{Config.ResponseDays}d SLA
 					</span>
 				</div>
-				<h1 className="text-2xl font-semibold tracking-tight">
+				<h1 className="font-mono text-lg font-semibold tracking-tight">
 					{Config.Title}
 				</h1>
 				<p className="text-muted-foreground">{Config.Subtitle}</p>
@@ -167,7 +167,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			</div>
 
 			{/* Form */}
-			<div className="StaccatoCard space-y-5 bg-white p-6">
+			<div className="StaccatoCard space-y-5 bg-card p-6">
 				{Config.Fields.map((Field) => {
 					const Value = Values[Field.id];
 					const Error = Errors[Field.id];
@@ -262,7 +262,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								</label>
 								<select
 									id={Field.id}
-									className="w-full border border-[var(--Border)] bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
+									className="w-full border border-[var(--Border)] bg-card px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
 									value={(Value as string) || ""}
 									onChange={(E) =>
 										HandleChange(Field.id, E.target.value)
@@ -301,7 +301,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 								<textarea
 									id={Field.id}
 									rows={4}
-									className="w-full border border-[var(--Border)] bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
+									className="w-full border border-[var(--Border)] bg-card px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
 									placeholder={Field.placeholder}
 									value={(Value as string) || ""}
 									onChange={(E) =>
@@ -340,7 +340,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 							<input
 								id={Field.id}
 								type={Field.type}
-								className="w-full border border-[var(--Border)] bg-white px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
+								className="w-full border border-[var(--Border)] bg-card px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--Primary)]"
 								placeholder={Field.placeholder}
 								value={(Value as string) || ""}
 								onChange={(E) =>

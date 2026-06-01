@@ -604,6 +604,94 @@
 		 gentle rounding echoes the logo; cards stay flat. */
 		--RadiusButton: 6px;
 		--RadiusInput: 6px;
+
+		/* ─────────────────────────────────────────────────────────────
+		 TYPOGRAPHY — three faces, each with one job.
+		 Geist (body/UI) · Geist Mono (HUD chrome/code) · Instrument Serif
+		 (display headlines). Loaded in Source/Layout/Base.astro.
+		 ───────────────────────────────────────────────────────────── */
+		--FontSans:
+			"Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Helvetica Neue", Arial, sans-serif;
+		--FontMono:
+			"Geist Mono", ui-monospace, "SFMono-Regular", "SF Mono", Menlo,
+			Consolas, monospace;
+		--FontSerif: "Instrument Serif", Georgia, "Times New Roman", serif;
+	}
+}
+
+/* ─────────────────────────────────────────────────────────────
+ DARK THEME — Cyberpunk terminal-HUD
+ Activated by the .dark class on <html> (darkMode: "class").
+ Overrides only the semantic surface + spine-Fore tokens; the raw
+ ramps in DesignToken.css stay shared, so token-driven components
+ re-skin for free. See .claude/skills/land-design/Reference/Theme.md
+ ───────────────────────────────────────────────────────────── */
+@layer theme {
+	.dark {
+		--Background: #0a0a0c;
+		--Foreground: #e7e7ea;
+		--Card: #0e0e12;
+		--CardForeground: #e7e7ea;
+		--Popover: #0e0e12;
+		--PopoverForeground: #e7e7ea;
+
+		/* Primary inverts: light text-as-action on the dark canvas */
+		--Primary: #e7e7ea;
+		--PrimaryForeground: #0a0a0c;
+		--Secondary: #16161c;
+		--SecondaryForeground: #e7e7ea;
+		--Mute: #111116;
+		--MuteForeground: #8a8a93;
+		--Accent: #16161c;
+		--AccentForeground: #e7e7ea;
+
+		--Destruct: #f87171;
+		--DestructForeground: #0a0a0c;
+
+		/* Hairline grid lines + neon green focus signal */
+		--Border: rgba(255, 255, 255, 0.1);
+		--Input: #0e0e12;
+		--Ring: #22c55e;
+
+		--BackgroundWhite: #0e0e12;
+		--InputBackground: #0e0e12;
+		--PopoverBackground: #0e0e12;
+
+		/* Surface depth (dark) */
+		--Surface0: #0a0a0c;
+		--Surface1: #0e0e12;
+		--Surface2: #16161c;
+		--Surface3: #1d1d25;
+		--Surface4: #26262f;
+
+		/* Frosted overlay on dark */
+		--BackgroundLight: #0e0e12;
+		--BackgroundDark: #0a0a0c;
+
+		/* ── Neon spine accents ──
+		 Hues stay; *Fore brightens for legibility on dark; *Mute/*Surface
+		 become low-alpha tints OF the hue ON the dark canvas. */
+		--SpinegRPCFore: #4ade80;
+		--SpinegRPCMute: color-mix(in srgb, #22c55e 18%, #0a0a0c);
+		--SpinegRPCSurface: color-mix(in srgb, #22c55e 8%, #0a0a0c);
+
+		--SpineIPCFore: #60a5fa;
+		--SpineIPCMute: color-mix(in srgb, #3b82f6 18%, #0a0a0c);
+		--SpineIPCSurface: color-mix(in srgb, #3b82f6 8%, #0a0a0c);
+
+		--SpineTCPFore: #fb923c;
+		--SpineTCPMute: color-mix(in srgb, #f97316 18%, #0a0a0c);
+		--SpineTCPSurface: color-mix(in srgb, #f97316 8%, #0a0a0c);
+
+		--SpineWASMFore: #c084fc;
+		--SpineWASMMute: color-mix(in srgb, #a855f7 18%, #0a0a0c);
+		--SpineWASMSurface: color-mix(in srgb, #a855f7 8%, #0a0a0c);
+	}
+
+	/* The frosted/white surfaces must follow the canvas in dark mode */
+	.dark .Frosted {
+		background: var(--Card);
 	}
 }
 
@@ -655,12 +743,12 @@
 	}
 
 	body {
-		background-color: #ffffff;
+		background-color: var(--Background);
 		color: var(--Foreground);
 	}
 
 	.Frosted {
-		background: #ffffff;
+		background: var(--Background);
 	}
 }
 

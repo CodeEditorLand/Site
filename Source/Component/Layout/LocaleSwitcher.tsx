@@ -78,7 +78,7 @@ const LocaleSwitcher = () => {
 	return (
 		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger
-				className="flex h-9 items-center gap-1.5 rounded-md bg-white px-3 font-medium text-[var(--Foreground)] outline-none ring-offset-white hover:bg-[var(--Mute)] focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-[var(--Mute)]"
+				className="flex h-9 items-center gap-1.5 rounded-md bg-card px-3 font-medium text-[var(--Foreground)] outline-none ring-offset-white hover:bg-[var(--Mute)] focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-[var(--Mute)]"
 				aria-label="Select language">
 				<span>{LocaleLabel[CurrentLocale]}</span>
 				<ChevronDown

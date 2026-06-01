@@ -47,7 +47,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:hero.subtitle", {
 				defaultValue:
-					"A code editor rebuilt on Rust, Tauri, and Effect-TS. VS Code extension API compatibility is the target. Source-build today; installers in progress.",
+					"A native code editor with the soul of VS Code — and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use.",
 			}),
 			PrimaryCta: {
 				Text: T("common:button.download", {
@@ -185,7 +185,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:features.subtitle", {
 				defaultValue:
-					"The editor pieces are being rebuilt around native services, typed IPC, and a compatibility host that can be checked against real source.",
+					"Native speed. VS Code compatibility. No Chromium, no compromises.",
 			}),
 			Features: [
 				{
@@ -199,7 +199,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.designTokens.description",
 						{
 							defaultValue:
-								"Mountain handles window management, file I/O, child processes, terminal IPC, and extension communication through Tauri - using the ActionEffect system for declarative, dispatchable operations. Echo provides work-stealing scheduler primitives for bounded background work.\n\nHeavy editor operations run in the native process, not the WebView. The separation is structural: the IPC boundary exists in the source regardless of which features are enabled in a given build.",
+								"Heavy editor work runs natively — not trapped in a web view. Window management, file I/O, and terminal IPC go straight through a Rust + Tauri services layer.",
 						},
 					),
 				},
@@ -214,7 +214,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.componentLibrary.description",
 						{
 							defaultValue:
-								"Cocoon hosts existing VS Code extensions using Effect-TS through a dual-track architecture: Track A loads unmodified extHost sources for maximum compatibility, Track B routes I/O-heavy operations to Mountain through gRPC. The vscode API shim covers commands, workspace, terminals, webviews, language providers, and diagnostics.\n\nInstalled extensions run unmodified through the active compatibility path. Coverage across the full marketplace depends on which vscode APIs each extension uses - the core surfaces are implemented; long-tail APIs are an ongoing integration effort.",
+								"Your VS Code extensions run unmodified — no forks, no rewrites. A compatibility host speaks the VS Code extension API directly.",
 						},
 					),
 				},
@@ -233,7 +233,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.documentation.description",
 						{
 							defaultValue:
-								"Effect-TS gives Cocoon and Wind typed errors, scoped resources, explicit cancellability, and supervised concurrency for extension-host and workbench services. Wind composes services into Layer stacks that target specific runtimes - native, compatibility, or test - with compile-time dependency tracking.\n\nFailure paths are typed and explicit at every layer. When something goes wrong, the error surface is in the type system rather than a runtime exception.",
+								"Failures are typed, traceable, and cancellable — so the editor fails loudly in development instead of silently in production.",
 						},
 					),
 				},
@@ -248,7 +248,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.versionControl.description",
 						{
 							defaultValue:
-								"Tauri uses the OS WebView on each platform instead of a bundled Chromium instance. Mountain's desktop path has no embedded browser engine. Per-platform binary management keeps cross-compilation paths explicit and reproducible.\n\nThe repository includes macOS, Windows, and Linux build configuration. macOS has active installer coverage; Windows and Linux builds are configured and in preparation.",
+								"Tauri uses the OS WebView on each platform — no bundled Chromium. One codebase compiles to native macOS, Windows, and Linux packages.",
 						},
 					),
 				},
@@ -261,13 +261,13 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"/Image/EffectTS.svg",
 					],
 					Title: T("home:features.item.cicdIntegration.title", {
-						defaultValue: "Update plumbing in progress.",
+						defaultValue: "Background daemon, always running.",
 					}),
 					Description: T(
 						"home:features.item.cicdIntegration.description",
 						{
 							defaultValue:
-								"Air provides persistent background services for update downloads and verification, file indexing, cryptographic signing, and health monitoring. Runs as an independent daemon - persists when the main window closes.\n\nThe daemon and service code are active source. Public installer delivery and the release signing pipeline are in preparation.",
+								"Updates, indexing, signing, and health checks run in a persistent daemon — survives when the main window closes.",
 						},
 					),
 				},
@@ -282,7 +282,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"home:features.item.collaboration.description",
 						{
 							defaultValue:
-								"Most open source editors have license clauses that restrict commercial use, require attribution, or forbid forking the UI.\n\nThe entire Land codebase is CC0 public domain. Use it, fork it, ship it, build commercial products on top of it. No attribution required. No compliance headaches.",
+								"Fork it, ship it, build commercial products on top of it. The entire codebase is CC0 public domain — no attribution required, no compliance headaches.",
 						},
 					),
 				},
@@ -313,27 +313,27 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Elements: [
 						T("home:roadmap.tiers.current.elements.mountain", {
 							defaultValue:
-								"Mountain ⛰️\nNative Backend\nReplaces Electron main process, no bundled Chromium",
+								"Mountain\nNative Backend\nReplaces Electron main process, no bundled Chromium",
 						}),
 						T("home:roadmap.tiers.current.elements.cocoon", {
 							defaultValue:
-								"Cocoon 🦋\nExtension Host\nUnmodified VS Code extensions through Effect-TS routes",
+								"Cocoon\nExtension Host\nUnmodified VS Code extensions through Effect-TS routes",
 						}),
 						T("home:roadmap.tiers.current.elements.wind", {
 							defaultValue:
-								"Wind 🍃\nWorkbench Shell\nEffect-TS layers for native workbench services",
+								"Wind\nWorkbench Shell\nEffect-TS layers for native workbench services",
 						}),
 						T("home:roadmap.tiers.current.elements.sky", {
 							defaultValue:
-								"Sky 🌌\nAstro UI Layer\nWorkbench routes and WebView bridge",
+								"Sky\nAstro UI Layer\nWorkbench routes and WebView bridge",
 						}),
 						T("home:roadmap.tiers.current.elements.air", {
 							defaultValue:
-								"Air 🪁\nBackground Services\nUpdates, downloads, auth, indexing, and health",
+								"Air\nBackground Services\nUpdates, downloads, auth, indexing, and health",
 						}),
 						T("home:roadmap.tiers.current.elements.echo", {
 							defaultValue:
-								"Echo 📣\nScheduler Primitives\nBounded background work for Rust services",
+								"Echo\nScheduler Primitives\nBounded background work for Rust services",
 						}),
 					],
 					Features: [
@@ -384,27 +384,27 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Elements: [
 						T("home:roadmap.tiers.future.elements.vine", {
 							defaultValue:
-								"Vine 🌿\nProtocol In Progress\nMountain, Cocoon, Air, and Grove contracts",
+								"Vine\nProtocol In Progress\nMountain, Cocoon, Air, and Grove contracts",
 						}),
 						T("home:roadmap.tiers.future.elements.cocoon", {
 							defaultValue:
-								"Cocoon 🦋\nExtension Compatibility Pass\nLong-tail VS Code API coverage",
+								"Cocoon\nExtension Compatibility Pass\nLong-tail VS Code API coverage",
 						}),
 						T("home:roadmap.tiers.future.elements.grove", {
 							defaultValue:
-								"Grove 🌳\nWASM Host Stabilizing\nCapability-based extension isolation path",
+								"Grove\nWASM Host Stabilizing\nCapability-based extension isolation path",
 						}),
 						T("home:roadmap.tiers.future.elements.rest", {
 							defaultValue:
-								"Rest ⛱️\nSource Map Support\nOXC transformer integration in progress",
+								"Rest\nSource Map Support\nOXC transformer integration in progress",
 						}),
 						T("home:roadmap.tiers.future.elements.echo", {
 							defaultValue:
-								"Echo 📣\nScheduler Optimization\nFaster steal, lower latency",
+								"Echo\nScheduler Optimization\nFaster steal, lower latency",
 						}),
 						T("home:roadmap.tiers.future.elements.air", {
 							defaultValue:
-								"Air 🪁\nRelease Delivery\nSigning and distribution path",
+								"Air\nRelease Delivery\nSigning and distribution path",
 						}),
 					],
 					Features: [
@@ -447,12 +447,12 @@ const HomePage = ({ Content, ClassName }: Property) => {
 			}),
 			Subtitle: T("home:architecture.subtitle", {
 				defaultValue:
-					"Land replaces VS Code's Electron stack element by element.\n\nEach element directory is inspectable in source. The descriptions below reflect what the current code implements and what is actively being integrated.",
+					"Each element replaces one piece of the Electron stack. All inspectable in source.",
 			}),
 			Testimonials: [
 				{
 					Id: "Air",
-					Emoji: "🪁",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Air",
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
@@ -461,12 +461,12 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"Persistent background daemon that offloads heavy operations from Mountain:\n• Update downloads with staged atomic rollback\n• File indexing and symbol extraction\n• Cryptographic signing and authentication\n• Health monitoring with multi-level checks\n\nPrometheus-compatible metrics and distributed tracing with sampling.\n\nRuns independently - persists when the main window closes.\n\nRelease signing and public installer delivery are still being completed",
+							"Background daemon that runs independently — updates, indexing, signing, and health checks, all outside the main window.\n• Update downloads with staged atomic rollback\n• File indexing and symbol extraction\n• Cryptographic signing and authentication\n• Health monitoring with multi-level checks\n\nPrometheus-compatible metrics and distributed tracing with sampling.",
 					}),
 				},
 				{
 					Id: "Cocoon",
-					Emoji: "🦋",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Cocoon",
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
@@ -480,7 +480,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Common",
-					Emoji: "👨🏻‍🏭",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Common",
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
@@ -494,7 +494,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Echo",
-					Emoji: "📣",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Echo",
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
@@ -508,7 +508,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Grove",
-					Emoji: "🌳",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Grove",
 					Author: "Grove",
 					Role: T("home:architecture.grove.subtitle", {
@@ -522,7 +522,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Maintain",
-					Emoji: "💪🏻",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Maintain",
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
@@ -536,7 +536,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Mist",
-					Emoji: "🌫️",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Mist",
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
@@ -592,7 +592,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "SideCar",
-					Emoji: "🚃",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/SideCar",
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
@@ -606,7 +606,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Sky",
-					Emoji: "🌌",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Sky",
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
@@ -620,7 +620,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Vine",
-					Emoji: "🌿",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Vine",
 					Author: "Vine",
 					Role: T("home:architecture.vine.subtitle", {
@@ -634,7 +634,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Wind",
-					Emoji: "🍃",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Wind",
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
@@ -648,7 +648,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 				},
 				{
 					Id: "Worker",
-					Emoji: "🍩",
+					Emoji: "",
 					Href: "https://github.com/CodeEditorLand/Worker",
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {

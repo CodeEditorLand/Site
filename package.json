@@ -130,5 +130,9 @@
 	"publishConfig": {
 		"access": "restricted",
 		"provenance": true
+	},
+	"devDependencies": {
+		"@testing-library/dom": "^10.4.1",
+		"react-is": "^19.2.6"
 	}
 }

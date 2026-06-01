@@ -2,6 +2,7 @@ import * as lucide from "lucide-react";
 import React from "react";
 
 import { Button } from "../UI/Button";
+import { ThemeToggle } from "../UI/ThemeToggle";
 import type Property from "./Interface/Property/Header.js";
 
 /**
@@ -20,7 +21,7 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 
 	return (
 		<header
-			className={` ${Sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-white ${ClassName || ""} `}>
+			className={` ${Sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-background ${ClassName || ""} `}>
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo */}
 				<div className="flex items-center space-x-3">
@@ -62,6 +63,7 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 
 				{/* Actions */}
 				<div className="flex items-center space-x-4">
+					<ThemeToggle />
 					{Actions.map((Action, Index) => {
 						if (
 							"Type" in Action &&

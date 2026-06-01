@@ -19,7 +19,9 @@ export default {
 				Ease: "cubic-bezier(0.21, 0.1, 0.21, 1)",
 			},
 			fontFamily: {
-				sans: ["Albert Sans", ...fontFamily.sans],
+				sans: ["var(--FontSans)", ...fontFamily.sans],
+				mono: ["var(--FontMono)", ...fontFamily.mono],
+				serif: ["var(--FontSerif)", ...fontFamily.serif],
 			},
 			typography: {
 				DEFAULT: {
