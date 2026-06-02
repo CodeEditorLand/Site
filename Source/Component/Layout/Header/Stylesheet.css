@@ -1,7 +1,9 @@
-/* Header - flat white bar with subtle bottom border */
+/* Header - frosted translucent bar that follows the active theme */
 
 .Header {
-	background: #ffffff;
+	background: color-mix(in srgb, var(--Background) 78%, transparent);
+	backdrop-filter: blur(12px) saturate(140%);
+	-webkit-backdrop-filter: blur(12px) saturate(140%);
 	border-bottom: 1px solid var(--Border);
 }
 
@@ -29,7 +31,7 @@
 /* Nav dropdown (desktop hamburger panel) */
 
 .NavDropdown {
-	background: #ffffff;
+	background: var(--Background);
 	border-bottom: 1px solid var(--Border);
 }
 

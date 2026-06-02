@@ -1,51 +1,28 @@
 #Layout {
-	@apply fixed inset-0 h-screen w-screen overflow-hidden opacity-0;
-
+	position: fixed;
+	inset: 0;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	opacity: 0;
 	z-index: -1;
-	/* contain: strict prevents fixed children from contributing to
-	 document scroll width, eliminating the horizontal overflow bar */
 	contain: strict;
+	pointer-events: none;
 
 	&.Load {
-		@apply opacity-100;
+		opacity: 1;
 	}
 
 	&.Transition {
-		transition: opacity 0.8s ease-out;
-	}
-
-	.Container {
-		@apply absolute left-1/2 top-1/2;
-
-		width: 200vw;
-		height: 200vh;
-
-		transform: translate(
-			calc(-50% + var(--Staccato, 0) * 4px),
-			calc(-50% + var(--StaccatoPhase, 0) * 3px)
-		);
-	}
-
-	.Image {
-		@apply h-full w-full object-cover object-center;
-		opacity: 0.15;
-	}
-
-	#Rock {
-		z-index: -3;
-	}
-
-	#Rock .Image {
-		opacity: 0.2;
-	}
-
-	#Background {
-		z-index: -2;
+		transition: opacity 0.6s ease-out;
 	}
 }
 
-@media (prefers-reduced-motion: reduce) {
-	#Layout .Container {
-		transform: translate(-50%, -50%);
-	}
+#TopoMap {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	/* Contour lines inherit this color — adapts to light/dark theme */
+	color: var(--Foreground);
 }

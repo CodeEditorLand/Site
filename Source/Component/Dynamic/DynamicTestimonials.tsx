@@ -1,7 +1,42 @@
+import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
 import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Testimonial.js";
+
+/**
+ * Architecture-element glyph: maps a codename to a lucide icon so the cards
+ * use the project icon system instead of sprinkled emoji. Falls back to a
+ * neutral square for unknown names. See .claude/skills/land-design.
+ */
+const ElementGlyph = ({ Name }: { Name?: string }) => {
+	const Key = (Name ?? "").toLowerCase();
+	const Map: Record<string, lucide.LucideIcon> = {
+		mountain: lucide.Mountain,
+		cocoon: lucide.Box,
+		wind: lucide.Wind,
+		sky: lucide.Cloud,
+		air: lucide.Wind,
+		echo: lucide.Radio,
+		grove: lucide.Trees,
+		vine: lucide.Sprout,
+		rest: lucide.Umbrella,
+		worker: lucide.HardHat,
+		common: lucide.Boxes,
+		maintain: lucide.Wrench,
+		mist: lucide.CloudFog,
+		output: lucide.FileOutput,
+		sidecar: lucide.Container,
+	};
+	const Icon = Map[Key] ?? lucide.Square;
+	return (
+		<Icon
+			aria-hidden="true"
+			strokeWidth={1.5}
+			className="ml-2 inline h-4 w-4 align-[-3px] text-[var(--MuteForeground)]"
+		/>
+	);
+};
 
 /**
  * Semantic color map per architecture element ID.
@@ -154,12 +189,16 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 			<section
 				id="testimonials"
 				aria-label="Architecture"
-				className={`flex min-h-[100dvh] w-full flex-col justify-center bg-[var(--Mute)] py-24 sm:py-32 ${ClassName || ""}`}>
+				className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
 				<div className="container mx-auto px-4">
 					{(Title || Subtitle) && (
-						<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
+						<div className="mx-auto mb-10 max-w-2xl text-center">
+							<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
+								<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+								Architecture
+							</p>
 							{Title && (
-								<h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+								<h2 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
 									{Title}
 								</h2>
 							)}
@@ -195,7 +234,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							return (
 								<article
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard StaccatoCard flex flex-col rounded-none bg-white p-6 lg:p-8"
+									className="MasonryCard TestimonialCard StaccatoCard flex flex-col gap-3 rounded-none bg-card p-5"
 									style={
 										{
 											borderLeftColor: AccentColor,
@@ -203,61 +242,57 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 											"--masonry-col": ColSpan,
 										} as React.CSSProperties
 									}>
-									<div className="mb-4">
-										{RenderStars(Testimonial.Rating)}
-									</div>
-									<blockquote className="StaccatoBreath mb-6 flex-1">
-										<div className="text-base leading-relaxed lg:text-lg">
-											{(Testimonial.Rating ?? 0) > 0 && (
-												<span
-													className="text-muted-foreground/50"
-													aria-hidden="true">
-													"
-												</span>
-											)}
-											<RichText
-												Text={Testimonial.Quote}
-											/>
-											{(Testimonial.Rating ?? 0) > 0 && (
-												<span
-													className="text-muted-foreground/50"
-													aria-hidden="true">
-													"
-												</span>
+									{/* Name + glyph + GitHub link */}
+									<div className="flex items-center justify-between gap-2">
+										<div className="flex items-center gap-1.5">
+											<span
+												className="font-mono text-sm font-bold"
+												style={{ color: AccentColor }}>
+												{Testimonial.Href ? (
+													<a
+														href={Testimonial.Href}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="hover:underline">
+														{Testimonial.Author}
+													</a>
+												) : (
+													Testimonial.Author
+												)}
+											</span>
+											{Testimonial.Author && (
+												<ElementGlyph
+													Name={Testimonial.Author}
+												/>
 											)}
 										</div>
-									</blockquote>
-									<div>
-										<cite className="font-semibold not-italic">
-											{Testimonial.Href ? (
-												<a
-													href={Testimonial.Href}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="hover:underline">
-													{Testimonial.Author}
-												</a>
-											) : (
-												Testimonial.Author
-											)}
-											{Testimonial.Emoji && (
-												<span aria-hidden="true">
-													{"\u2001"}
-													{Testimonial.Emoji}
-												</span>
-											)}
-										</cite>
-										{(Testimonial.Role ||
-											Testimonial.Company) && (
-											<p className="StaccatoBreath text-muted-foreground">
-												{Testimonial.Role}
-												{Testimonial.Role &&
-													Testimonial.Company &&
-													", "}
-												{Testimonial.Company}
-											</p>
+										{Testimonial.Href && (
+											<lucide.ExternalLink
+												className="h-3 w-3 shrink-0 text-muted-foreground/40"
+												aria-hidden="true"
+											/>
 										)}
 									</div>
+
+									{/* Role → chips split by " - " */}
+									{Testimonial.Role && (
+										<div className="flex flex-wrap gap-1">
+											{Testimonial.Role.split(
+												" - ",
+											).map((Tag, TagIndex) => (
+												<span
+													key={TagIndex}
+													className="bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
+													{Tag}
+												</span>
+											))}
+										</div>
+									)}
+
+									{/* Lead — first line of the quote only */}
+									<p className="text-sm leading-relaxed text-muted-foreground">
+										{Testimonial.Quote.split("\n")[0]}
+									</p>
 								</article>
 							);
 						})}
@@ -271,12 +306,16 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 		<section
 			id="testimonials"
 			aria-label="Architecture"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center bg-[var(--Mute)] py-24 sm:py-32 ${ClassName || ""}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
+					<div className="mx-auto mb-10 max-w-2xl text-center">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
+							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							Architecture
+						</p>
 						{Title && (
-							<h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+							<h2 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
 								{Title}
 							</h2>
 						)}
@@ -298,64 +337,57 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						return (
 							<article
 								key={Testimonial.Id}
-								className="TestimonialCard StaccatoCard flex flex-col rounded-none bg-white p-8"
+								className="TestimonialCard StaccatoCard flex flex-col gap-3 rounded-none bg-card p-5"
 								style={{
 									borderLeftColor: AccentColor,
 									borderLeftWidth: "2px",
 								}}>
-								<div className="mb-4">
-									{RenderStars(Testimonial.Rating)}
-								</div>
-								<blockquote className="StaccatoBreath mb-6 flex-1">
-									<div className="text-lg">
-										{(Testimonial.Rating ?? 0) > 0 && (
-											<span
-												className="text-muted-foreground/50"
-												aria-hidden="true">
-												"
-											</span>
-										)}
-										<RichText Text={Testimonial.Quote} />
-										{(Testimonial.Rating ?? 0) > 0 && (
-											<span
-												className="text-muted-foreground/50"
-												aria-hidden="true">
-												"
-											</span>
+								<div className="flex items-center justify-between gap-2">
+									<div className="flex items-center gap-1.5">
+										<span
+											className="font-mono text-sm font-bold"
+											style={{ color: AccentColor }}>
+											{Testimonial.Href ? (
+												<a
+													href={Testimonial.Href}
+													target="_blank"
+													rel="noopener noreferrer"
+													className="hover:underline">
+													{Testimonial.Author}
+												</a>
+											) : (
+												Testimonial.Author
+											)}
+										</span>
+										{Testimonial.Author && (
+											<ElementGlyph
+												Name={Testimonial.Author}
+											/>
 										)}
 									</div>
-								</blockquote>
-								<div>
-									<cite className="font-semibold not-italic">
-										{Testimonial.Href ? (
-											<a
-												href={Testimonial.Href}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="hover:underline">
-												{Testimonial.Author}
-											</a>
-										) : (
-											Testimonial.Author
-										)}
-										{Testimonial.Emoji && (
-											<span aria-hidden="true">
-												{"\u2001"}
-												{Testimonial.Emoji}
-											</span>
-										)}
-									</cite>
-									{(Testimonial.Role ||
-										Testimonial.Company) && (
-										<p className="StaccatoBreath text-muted-foreground">
-											{Testimonial.Role}
-											{Testimonial.Role &&
-												Testimonial.Company &&
-												", "}
-											{Testimonial.Company}
-										</p>
+									{Testimonial.Href && (
+										<lucide.ExternalLink
+											className="h-3 w-3 shrink-0 text-muted-foreground/40"
+											aria-hidden="true"
+										/>
 									)}
 								</div>
+								{Testimonial.Role && (
+									<div className="flex flex-wrap gap-1">
+										{Testimonial.Role.split(" - ").map(
+											(Tag, TagIndex) => (
+												<span
+													key={TagIndex}
+													className="bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
+													{Tag}
+												</span>
+											),
+										)}
+									</div>
+								)}
+								<p className="text-sm leading-relaxed text-muted-foreground">
+									{Testimonial.Quote.split("\n")[0]}
+								</p>
 							</article>
 						);
 					})}

@@ -1,50 +1,35 @@
 ---
-import { Image } from "astro:assets";
 ---
 
 <div id="Layout">
-	<div id="Background" class="Container">
-		<Image
-			src="/Asset/Background.svg"
-			alt=""
-			role="presentation"
-			class="Image"
-			loading="eager"
-			decoding="async"
-			width={1920}
-			height={1080}
-		/>
-	</div>
+	<!-- Topographic contour map — the product is called "Land" -->
+	<svg
+		id="TopoMap"
+		viewBox="0 0 1440 900"
+		xmlns="http://www.w3.org/2000/svg"
+		aria-hidden="true"
+		preserveAspectRatio="xMidYMid slice">
 
-	<div id="Rock" class="Container">
-		<picture>
-			<source
-				media="(min-width: 1920px)"
-				srcset="/Asset/DesktopLargeRock.webp"
-			/>
+		<!-- Main peak — upper right -->
+		<ellipse cx="1080" cy="260" rx="100" ry="58" transform="rotate(-18 1080 260)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.12"/>
+		<ellipse cx="1080" cy="260" rx="200" ry="118" transform="rotate(-14 1080 260)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.09"/>
+		<ellipse cx="1080" cy="260" rx="320" ry="192" transform="rotate(-10 1080 260)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.07"/>
+		<ellipse cx="1080" cy="260" rx="460" ry="278" transform="rotate(-6 1080 260)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/>
+		<ellipse cx="1080" cy="260" rx="620" ry="370" transform="rotate(-3 1080 260)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.03"/>
+		<ellipse cx="1080" cy="260" rx="800" ry="474" transform="rotate(-1 1080 260)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.02"/>
 
-			<source
-				media="(min-width: 1280px)"
-				srcset="/Asset/DesktopRock.webp"
-			/>
+		<!-- Secondary peak — lower left -->
+		<ellipse cx="280" cy="680" rx="75" ry="48" transform="rotate(22 280 680)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.10"/>
+		<ellipse cx="280" cy="680" rx="160" ry="102" transform="rotate(17 280 680)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.08"/>
+		<ellipse cx="280" cy="680" rx="270" ry="170" transform="rotate(12 280 680)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.06"/>
+		<ellipse cx="280" cy="680" rx="400" ry="248" transform="rotate(7 280 680)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.04"/>
+		<ellipse cx="280" cy="680" rx="550" ry="336" transform="rotate(3 280 680)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.02"/>
 
-			<source
-				media="(min-width: 768px)"
-				srcset="/Asset/TabletRock.webp"
-			/>
-
-			<img
-				src="/Asset/MobileRock.webp"
-				alt=""
-				role="presentation"
-				class="Image"
-				loading="eager"
-				decoding="async"
-				width="2400"
-				height="1309"
-			/>
-		</picture>
-	</div>
+		<!-- Tertiary saddle — center bottom -->
+		<ellipse cx="720" cy="820" rx="60" ry="30" transform="rotate(5 720 820)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.07"/>
+		<ellipse cx="720" cy="820" rx="140" ry="68" transform="rotate(3 720 820)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.05"/>
+		<ellipse cx="720" cy="820" rx="260" ry="124" transform="rotate(1 720 820)" fill="none" stroke="currentColor" stroke-width="1" opacity="0.03"/>
+	</svg>
 </div>
 
 <style>
@@ -54,39 +39,7 @@ import { Image } from "astro:assets";
 <script>
 	(() => {
 		const Layout = document.querySelector<HTMLDivElement>("#Layout");
-
-		const _Image = Array.from(
-			Layout?.querySelectorAll<HTMLImageElement>(".Image") ?? [],
-		);
-
-		if (!Layout || _Image.length === 0) {
-			return;
-		}
-
-		const Load = performance.now();
-
-		Promise.all(
-			_Image.map((_Image) => {
-				if (_Image.complete) {
-					return Promise.resolve();
-				}
-
-				return new Promise((Resolve, Reject) => {
-					_Image.addEventListener("load", Resolve);
-
-					_Image.addEventListener("error", Reject);
-				});
-			}),
-		)
-			.then(() => {
-				if (performance.now() - Load > 50) {
-					Layout.classList.add("Transition");
-				}
-
-				Layout.classList.add("Load");
-			})
-			.catch(() => {
-				Layout.classList.add("Load");
-			});
+		if (!Layout) return;
+		Layout.classList.add("Load");
 	})();
 </script>

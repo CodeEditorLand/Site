@@ -53,7 +53,7 @@
 	display: grid;
 	grid-template-columns: minmax(20rem, 24rem) 1fr;
 	gap: 0;
-	background: #ffffff;
+	background: var(--Card);
 	border: var(--BorderWidth) solid var(--Border);
 	border-left-width: 4px;
 	transition: border-color 0.3s ease;
@@ -95,7 +95,7 @@
 
 .PortalTierLogin {
 	padding: 0;
-	background: #ffffff;
+	background: var(--Card);
 	border-right: var(--BorderWidth) solid var(--Border);
 	min-width: 0;
 }
@@ -239,7 +239,7 @@
 }
 
 .PortalTierProtocolCode {
-	font-family: "JetBrains Mono", "Fira Code", monospace;
+	font-family: var(--FontMono);
 	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.02em;

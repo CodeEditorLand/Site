@@ -100,8 +100,8 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					ref={GridReference}
 					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
 					{/* Minimum Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-white p-6">
-						<h3 className="mb-6 text-xl font-semibold">
+					<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-card p-6">
+						<h3 className="mb-6 font-mono text-sm font-semibold">
 							{T(
 								"systemRequirements.minimum",
 								"Minimum Requirements",
@@ -114,8 +114,8 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					</div>
 
 					{/* Recommended Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-white p-6">
-						<h3 className="mb-6 text-xl font-semibold">
+					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-card p-6">
+						<h3 className="mb-6 font-mono text-sm font-semibold">
 							{T(
 								"systemRequirements.recommended",
 								"Recommended for the Best Experience",
@@ -131,7 +131,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 				{/* OS Support */}
 				{Content.Os && Content.Os.length > 0 && (
 					<div className="mt-12 text-center">
-						<h4 className="mb-4 text-lg font-semibold">
+						<h4 className="mb-4 font-mono text-sm font-semibold">
 							{T(
 								"systemRequirements.supportedOS",
 								"Supported Operating Systems",

@@ -17,68 +17,68 @@ const MetaDescription = T("meta.docs.rust.description", {
 const RustDocSite = [
 	{
 		Id: "Mountain",
-		Label: "Mountain\u2001⛰️",
+		Label: "Mountain",
 		Url: "https://Rust.Documentation.Mountain.Land.PlayForm.Cloud",
 		Description:
 			"Native Rust/Tauri backend: window management, file system, process lifecycle, gRPC server",
 	},
 	{
 		Id: "Common",
-		Label: "Common\u2001👨🏻‍🏭",
+		Label: "Common",
 		Url: "https://Rust.Documentation.Common.Land.PlayForm.Cloud",
 		Description:
 			"Shared traits, DTOs, configuration helpers, and cross-element contracts",
 	},
 	{
 		Id: "Echo",
-		Label: "Echo\u2001📣",
+		Label: "Echo",
 		Url: "https://Rust.Documentation.Echo.Land.PlayForm.Cloud",
 		Description:
 			"Lock-free work-stealing scheduler built on crossbeam-deque",
 	},
 	{
 		Id: "Air",
-		Label: "Air\u2001🪁",
+		Label: "Air",
 		Url: "https://Rust.Documentation.Air.Land.PlayForm.Cloud",
 		Description:
 			"Background services for updates, downloads, integrity checks, authentication, and indexing",
 	},
 	{
 		Id: "Grove",
-		Label: "Grove\u2001🌳",
+		Label: "Grove",
 		Url: "https://Rust.Documentation.Grove.Land.PlayForm.Cloud",
 		Description: "Rust/WASM Extension Host for VS Code extensions",
 	},
 	{
 		Id: "SideCar",
-		Label: "SideCar\u2001🚃",
+		Label: "SideCar",
 		Url: "https://Rust.Documentation.SideCar.Land.PlayForm.Cloud",
 		Description: "Node.js binary distribution compiled per target triple",
 	},
 	{
 		Id: "Mist",
-		Label: "Mist\u2001🌫️",
+		Label: "Mist",
 		Url: "https://Rust.Documentation.Mist.Land.PlayForm.Cloud",
 		Description:
 			"Embedded DNS resolver for local-first hostname resolution",
 	},
 	{
 		Id: "Rest",
-		Label: "Rest\u2001⛱️",
+		Label: "Rest",
 		Url: "https://Rust.Documentation.Rest.Land.PlayForm.Cloud",
 		Description:
 			"OXC-based TypeScript transform work for the output pipeline",
 	},
 	{
 		Id: "Maintain",
-		Label: "Maintain\u2001💪🏻",
+		Label: "Maintain",
 		Url: "https://Rust.Documentation.Maintain.Land.PlayForm.Cloud",
 		Description:
 			"Build orchestrator, configuration, and release profile tooling",
 	},
 	{
 		Id: "Land",
-		Label: "Land\u2001🏞️",
+		Label: "Land",
 		Url: "https://Rust.Documentation.Land.Land.PlayForm.Cloud",
 		Description:
 			"Top-level workspace that ties the Rust element crates together",
@@ -144,7 +144,7 @@ const RustDocSite = [
 						href={Site.Url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-white p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 						<p class="font-medium text-[var(--Primary)]">
 							{Site.Label}
 							<span class="InlineSeparator">↗</span>
@@ -159,7 +159,7 @@ const RustDocSite = [
 
 		<!-- Iframe embed with switcher -->
 		<div
-			class="StaccatoCard StaccatoBorderShimmer overflow-hidden bg-white">
+			class="StaccatoCard StaccatoBorderShimmer overflow-hidden bg-card">
 			<!-- Tab bar -->
 			<div
 				class="flex flex-wrap items-center gap-1 border-b border-[var(--Border)] px-4 py-2"
@@ -177,7 +177,7 @@ const RustDocSite = [
 							class={`RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
 								Index === 0
 									? "border-[var(--Primary)] bg-[var(--Primary)] text-white"
-									: "border-[var(--Border)] bg-white text-muted-foreground hover:bg-[var(--Secondary)]"
+									: "border-[var(--Border)] bg-card text-muted-foreground hover:bg-[var(--Secondary)]"
 							}`}>
 							{Site.Label}
 						</button>
@@ -214,7 +214,7 @@ const RustDocSite = [
 	const ActiveClass =
 		"border-[var(--Primary)] bg-[var(--Primary)] text-white";
 	const InactiveClass =
-		"border-[var(--Border)] bg-white text-muted-foreground hover:bg-[var(--Secondary)]";
+		"border-[var(--Border)] bg-card text-muted-foreground hover:bg-[var(--Secondary)]";
 
 	function SetActive(ActiveTab: HTMLButtonElement): void {
 		Tabs.forEach((Tab) => {

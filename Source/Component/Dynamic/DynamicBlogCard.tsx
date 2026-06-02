@@ -13,9 +13,9 @@ const DynamicBlogCard = ({ Post }: { Post: BlogPost }) => (
 				))}
 			</div>
 		)}
-		<h3 className="mb-2 text-xl font-semibold">{Post.Title}</h3>
-		<p className="mb-4 text-muted-foreground">{Post.Summary}</p>
-		<div className="flex items-center justify-between text-muted-foreground">
+		<h3 className="mb-2 font-mono text-sm font-semibold leading-snug">{Post.Title}</h3>
+		<p className="mb-4 text-sm text-muted-foreground line-clamp-3">{Post.Summary}</p>
+		<div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
 			<span>{Post.Author}</span>
 			<span>{Post.ReadTime} min read</span>
 		</div>

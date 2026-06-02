@@ -165,7 +165,7 @@ const LocalFirstScanInner = () => {
 	}, []);
 
 	return (
-		<div className="StaccatoCard StaccatoBorderShimmer bg-white p-6">
+		<div className="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 			<div className="flex items-center gap-4">
 				<picture>
 					<img
@@ -328,7 +328,7 @@ const LocalFirstScanInner = () => {
 								<button
 									type="button"
 									onClick={() => window.location.reload()}
-									className="StaccatoButton inline-flex items-center justify-center bg-white px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
+									className="StaccatoButton inline-flex items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
 									{T("dashboard.localFirst.retryButton", {
 										defaultValue: "Retry Scan",
 									})}

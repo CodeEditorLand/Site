@@ -1,4 +1,4 @@
-import { MessageCircle, type LucideIcon } from "lucide-react";
+import { Heart, MessageCircle, type LucideIcon } from "lucide-react";
 
 import { RichText } from "../UI/RichText.js";
 import type Property from "./Interface/Property/Footer.js";
@@ -71,12 +71,12 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 	};
 
 	return (
-		<footer className={`bg-muted/50 border-t py-12 ${ClassName || ""}`}>
+		<footer className={`border-t py-12 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				<div className="mb-8 grid grid-cols-2 gap-8 md:grid-cols-4">
 					{/* Brand Column */}
 					<div className="col-span-2 md:col-span-4 lg:col-span-1">
-						<h3 className="mb-2 text-lg font-semibold">
+						<h3 className="mb-2 font-mono text-sm font-semibold">
 							{Brand.Name}
 						</h3>
 						{Brand.Description && (
@@ -116,7 +116,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 					{/* Dynamic Columns */}
 					{Columns.map((Column, ColumnIndex) => (
 						<div key={ColumnIndex}>
-							<h4 className="mb-4 font-semibold">
+							<h4 className="mb-4 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
 								{Column.Title}
 							</h4>
 							<ul className="space-y-2">
@@ -149,7 +149,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 							<div className="text-muted-foreground">
 								{Brand.Name}
 								{"\u2001"}
-								<span aria-hidden="true">❤️</span>
+								<Heart aria-hidden="true" className="inline h-3.5 w-3.5 fill-current align-[-2px] text-[var(--SpineTCPFore)]" />
 							</div>
 						)}
 					</div>

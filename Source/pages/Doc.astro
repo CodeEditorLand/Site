@@ -163,7 +163,7 @@ const Element = [
 						href="https://github.com/CodeEditorLand/Land#readme"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.gettingStarted.title", {
@@ -185,7 +185,7 @@ const Element = [
 						href="https://github.com/CodeEditorLand/Land/issues"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.issueTracker.title", {
@@ -206,7 +206,7 @@ const Element = [
 
 					<a
 						href="/Doc/Rust"
-						class="StaccatoCard StaccatoBorderShimmer block bg-white p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.rustApi.title", {
@@ -245,7 +245,7 @@ const Element = [
 									{Entries.map((Entry) => (
 										<a
 											href={`/Doc/${Entry.id}`}
-											class="StaccatoCard StaccatoBorderShimmer block bg-white p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+											class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 											<h3 class="font-medium">
 												{Entry.data.title}
 											</h3>
@@ -273,7 +273,7 @@ const Element = [
 						}
 					</h2>
 					<div
-						class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 						<p class="mb-4 text-muted-foreground">
 							{
 								T("common.docs.architecture.intro", {
@@ -287,7 +287,7 @@ const Element = [
 								Element.map((E) => (
 									<a
 										href={`/Doc/${E.Name.toLowerCase()}`}
-										class="inline-flex items-center gap-1 bg-white px-3 py-1.5 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+										class="inline-flex items-center gap-1 bg-card px-3 py-1.5 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 										{E.Name}
 									</a>
 								))
@@ -320,7 +320,7 @@ const Element = [
 						}
 					</h2>
 					<div
-						class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 						<p class="mb-4 text-muted-foreground">
 							{
 								T("common.docs.workers.intro", {
@@ -422,7 +422,7 @@ const Element = [
 						}
 					</h2>
 					<div
-						class="StaccatoCard StaccatoBorderShimmer bg-white p-6">
+						class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 						<p class="mb-4 text-muted-foreground">
 							{
 								T("common.docs.deployments.intro", {
@@ -436,7 +436,7 @@ const Element = [
 								href="/"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.website", {
@@ -461,7 +461,7 @@ const Element = [
 								href="https://Status.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.status", {
@@ -486,7 +486,7 @@ const Element = [
 								href="https://Rust.Documentation.Mountain.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T(
@@ -515,7 +515,7 @@ const Element = [
 								href="https://Rust.Documentation.Rest.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustRest", {
@@ -540,7 +540,7 @@ const Element = [
 								href="https://Rust.Documentation.Maintain.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T(
@@ -569,7 +569,7 @@ const Element = [
 								href="https://Rust.Documentation.Common.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T(
@@ -598,7 +598,7 @@ const Element = [
 								href="https://Rust.Documentation.Echo.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustEcho", {
@@ -623,7 +623,7 @@ const Element = [
 								href="https://Rust.Documentation.Air.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustAir", {
@@ -648,7 +648,7 @@ const Element = [
 								href="https://Rust.Documentation.SideCar.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T(
@@ -677,7 +677,7 @@ const Element = [
 								href="https://Rust.Documentation.Land.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustLand", {
@@ -703,7 +703,7 @@ const Element = [
 								href="https://Knowledge.Land.PlayForm.Cloud"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.knowledge", {
@@ -726,7 +726,7 @@ const Element = [
 							</a>
 							<a
 								href="/Doc/Rust"
-								class="block bg-white px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
 								<span class="font-semibold"
 									>{
 										T(

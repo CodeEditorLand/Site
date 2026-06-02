@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
 import { IconTooltip } from "../UI/IconTooltip.js";
+import { ThemeToggle } from "../UI/ThemeToggle";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 import "../Layout/Header/Stylesheet.css";
@@ -65,53 +66,18 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 			{
 				Label: T("nav.features", "Features"),
 				Href: "/#features",
-				Icon: "Sparkles",
-				Tooltip: ["/#features", "Editor feature overview"],
 			},
 			{
 				Label: T("nav.download", "Download"),
 				Href: "/Download",
-				Icon: "Download",
-				Tooltip: ["/Download", "Builds for macOS, Windows, Linux"],
 			},
 			{
 				Label: T("nav.docs", "Documentation"),
 				Href: "/Doc",
-				Icon: "BookOpen",
-				Tooltip: ["/Doc", "Developer documentation"],
-			},
-			{
-				Label: T("nav.blog", "Blog"),
-				Href: "/Blog",
-				Icon: "Newspaper",
-				Tooltip: ["/Blog", "Technical articles and project updates"],
-			},
-			{
-				Label: T("nav.contributing", "Contributing"),
-				Href: "/Contributing",
-				Icon: "Users",
-				Tooltip: [
-					"/Contributing",
-					"Contribution guide and open issues",
-				],
-			},
-			{
-				Label: T("nav.dashboard", "Dashboard"),
-				Href: "/Dashboard",
-				Icon: "LayoutDashboard",
-				Tooltip: [
-					"/Dashboard",
-					"Account, downloads, editor connection",
-				],
 			},
 			{
 				Label: T("nav.github", "GitHub"),
 				Href: "https://github.com/CodeEditorLand/Land",
-				Icon: "GitFork",
-				Tooltip: [
-					"github.com/CodeEditorLand/Land",
-					"Source repository - opens in new tab",
-				],
 			},
 		],
 		Actions: [
@@ -120,16 +86,12 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Variant: "ghost",
 				Size: "default",
 				Href: "/Account/SignIn",
-				Icon: "LogIn",
-				Tooltip: ["/Account/SignIn", "Sign in to your Land account"],
 			},
 			{
 				Text: T("actions.editorPortal", "Portal"),
 				Variant: "ghost",
 				Size: "default",
 				Href: "/Portal",
-				Icon: "Monitor",
-				Tooltip: ["/Portal", "Cloud, Provider, Local-First tiers"],
 			},
 			{
 				Text: T("actions.getStarted", "Get Land"),
@@ -137,26 +99,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				Size: "default",
 				Href: "/Download",
 				Icon: "Download",
-				Tooltip: ["/Download", "Download the latest Land build"],
 			},
 		],
-	};
-
-	const RenderIcon = (IconName?: string, Label?: string) => {
-		if (!IconName) return null;
-		const Icon = IconRegistry[IconName];
-		if (!Icon) return null;
-		return (
-			<>
-				{"\u2001"}
-				<IconTooltip
-					Label={Label || IconName}
-					Icon={Icon}
-					SizeClass="h-3.5 w-3.5"
-					ClassName="StaccatoIcon"
-				/>
-			</>
-		);
 	};
 
 	const RenderActionIcon = (
@@ -181,34 +125,20 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 
 	const NavLinks = ({ OnClick }: { OnClick?: () => void }) => (
 		<>
-			{HeaderData.Navigation?.map((Link, Index) => {
-				const Icon = Link.Icon ? IconRegistry[Link.Icon] : null;
-				return (
-					<a
-						key={Index}
-						href={Link.Href}
-						className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-3 font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						onClick={OnClick}
-						{...(Link.Href.startsWith("http")
-							? { target: "_blank", rel: "noopener noreferrer" }
-							: {})}>
-						<span className="HeaderLinkLabel">{Link.Label}</span>
-						{Icon && (
-							<span
-								aria-hidden="true"
-								className="inline-flex items-center">
-								{"\u2001"}
-								<IconTooltip
-									Label={Link.Tooltip || Link.Label}
-									Icon={Icon}
-									SizeClass="h-4 w-4"
-									ClassName="StaccatoIcon"
-								/>
-							</span>
-						)}
-					</a>
-				);
-			})}
+			{HeaderData.Navigation?.map((Link, Index) => (
+				<a
+					key={Index}
+					href={Link.Href}
+					className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-3 text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					onClick={OnClick}
+					{...(Link.Href.startsWith("http")
+						? { target: "_blank", rel: "noopener noreferrer" }
+						: {})}>
+					<span className="HeaderLinkLabel font-mono text-xs font-medium uppercase tracking-widest">
+						{Link.Label}
+					</span>
+				</a>
+			))}
 		</>
 	);
 
@@ -320,42 +250,22 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 					<nav
 						className="ml-2 hidden items-center lg:flex"
 						aria-label="Main navigation">
-						{HeaderData.Navigation?.map((Link, Index) => {
-							const Icon = Link.Icon
-								? IconRegistry[Link.Icon]
-								: null;
-							return (
-								<a
-									key={Index}
-									href={Link.Href}
-									className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-									{...(Link.Href.startsWith("http")
-										? {
-												target: "_blank",
-												rel: "noopener noreferrer",
-											}
-										: {})}>
-									<span className="HeaderLinkLabel">
-										{Link.Label}
-									</span>
-									{Icon && (
-										<span
-											aria-hidden="true"
-											className="inline-flex items-center">
-											{"\u2001"}
-											<IconTooltip
-												Label={
-													Link.Tooltip || Link.Label
-												}
-												Icon={Icon}
-												SizeClass="h-3.5 w-3.5"
-												ClassName="StaccatoIcon"
-											/>
-										</span>
-									)}
-								</a>
-							);
-						})}
+						{HeaderData.Navigation?.map((Link, Index) => (
+							<a
+								key={Index}
+								href={Link.Href}
+								className="StaccatoNavLink HeaderSubLink relative flex items-center px-4 py-2 text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+								{...(Link.Href.startsWith("http")
+									? {
+											target: "_blank",
+											rel: "noopener noreferrer",
+										}
+									: {})}>
+								<span className="HeaderLinkLabel font-mono text-xs font-medium uppercase tracking-widest">
+									{Link.Label}
+								</span>
+							</a>
+						))}
 					</nav>
 
 					{/* Nav hamburger - tablet only (md, hidden on lg+) */}
@@ -377,6 +287,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				{/* Right: actions (md+) + mobile hamburger */}
 				<div className="flex items-center gap-3">
 					<div className="hidden items-center gap-3 md:flex">
+						<ThemeToggle />
 						<LocaleSwitcher />
 						<ActionButtons />
 					</div>
@@ -401,7 +312,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 			{/* Tablet nav dropdown (md only, hidden on lg+) */}
 			{NavMenuOpen && (
 				<div
-					className="NavDropdown hidden bg-white md:block lg:hidden"
+					className="NavDropdown hidden bg-card md:block lg:hidden"
 					role="dialog"
 					aria-label="Navigation menu">
 					<nav
@@ -415,7 +326,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 			{/* Mobile full menu: nav + locale + actions */}
 			{MobileMenuOpen && (
 				<div
-					className="bg-white md:hidden"
+					className="bg-card md:hidden"
 					role="dialog"
 					aria-label="Mobile navigation menu">
 					<nav

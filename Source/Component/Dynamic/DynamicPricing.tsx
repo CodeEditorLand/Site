@@ -89,16 +89,20 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 		<section
 			id="pricing"
 			aria-labelledby="PricingHeading"
-			className={`flex min-h-[100dvh] w-full flex-col justify-center py-24 sm:py-32 ${
+			className={`w-full py-16 sm:py-20 ${
 				ClassName || ""
 			}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
-					<div className="StaccatoBreath mx-auto mb-24 max-w-2xl text-center">
+					<div className="mx-auto mb-10 max-w-2xl text-center">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
+							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							Roadmap
+						</p>
 						{Title && (
 							<h2
 								id="PricingHeading"
-								className="text-2xl font-semibold tracking-tight sm:text-3xl">
+								className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
 								{Title}
 							</h2>
 						)}
@@ -116,7 +120,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.Id}
-							className={`PricingCard StaccatoCard flex flex-col rounded-none bg-white ${
+							className={`PricingCard StaccatoCard flex flex-col rounded-none bg-card ${
 								Tier.Highlighted || Tier.Popular ? "" : ""
 							} ${
 								Tier.Status && Tier.Status !== "Ready"
@@ -131,8 +135,24 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							{/* ── Card header ───────────────────────────── */}
 							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
-									<div className="mb-2">
-										<span className="StaccatoBadge StaccatoRhythmBeat font-semibold uppercase tracking-wider text-primary">
+									<div className="mb-3">
+										<span
+											className="StaccatoBadge inline-flex items-center border px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest"
+											style={{
+												borderColor:
+													"var(--SpinegRPC)",
+												color: "var(--SpinegRPCFore)",
+												backgroundColor:
+													"var(--SpinegRPCMute)",
+											}}>
+											<span
+												className="StaccatoRhythmDot mr-1.5 h-1.5 w-1.5 rounded-none"
+												style={{
+													backgroundColor:
+														"var(--SpinegRPC)",
+												}}
+												aria-hidden="true"
+											/>
 											{PopularLabel}
 										</span>
 									</div>
@@ -169,7 +189,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								{/* Elements section */}
 								{Tier.Elements && Tier.Elements.length > 0 && (
 									<>
-										<p className="mb-3 font-semibold uppercase tracking-wider text-muted-foreground">
+										<p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
 											Elements
 										</p>
 										<ul className="space-y-3">
@@ -196,7 +216,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																	: ""
 															}`}>
 															<span
-																className="font-semibold"
+																className="font-mono text-sm font-semibold"
 																style={{
 																	color: AccentColor,
 																}}>
@@ -208,7 +228,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																/>
 															</span>
 															{Sub1 && (
-																<span className="text-foreground">
+																<span className="font-mono text-xs text-foreground">
 																	<RichText
 																		Text={
 																			Sub1
@@ -220,7 +240,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																</span>
 															)}
 															{Sub2 && (
-																<span className="text-muted-foreground">
+																<span className="font-mono text-xs text-muted-foreground">
 																	<RichText
 																		Text={
 																			Sub2
@@ -247,7 +267,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									<>
 										{Tier.Elements &&
 											Tier.Elements.length > 0 && (
-												<p className="mb-3 font-semibold uppercase tracking-wider text-muted-foreground">
+												<p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
 													Roadmap
 												</p>
 											)}

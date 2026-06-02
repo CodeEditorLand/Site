@@ -75,6 +75,32 @@ const T = GetI18n();
 			document.documentElement.classList.add("js");
 		</script>
 
+		<!-- Theme: set the .dark class before first paint to avoid a flash.
+		 Stored preference wins; otherwise fall back to the OS color scheme.
+		 See .claude/skills/land-design/Reference/Theme.md -->
+		<script is:inline>
+			(() => {
+				try {
+					const Stored = localStorage.getItem("Theme");
+					const Dark =
+						Stored === "dark" ||
+						(!Stored &&
+							window.matchMedia("(prefers-color-scheme: dark)")
+								.matches);
+					const Root = document.documentElement;
+					Root.classList.toggle("dark", Dark);
+					const Meta = document.querySelector(
+						'meta[name="theme-color"]',
+					);
+					if (Meta)
+						Meta.setAttribute(
+							"content",
+							Dark ? "#0a0a0c" : "#ffffff",
+						);
+				} catch (_) {}
+			})();
+		</script>
+
 		<!-- Dynamic Meta Tags -->
 		<MetaTags
 			title={Title || T("meta.title", { defaultValue: "Land" })}
@@ -101,18 +127,18 @@ const T = GetI18n();
 		<link
 			rel="preload"
 			as="style"
-			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=optional"
+			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=optional"
 		/>
 		<link
 			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=optional"
+			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=optional"
 			media="print"
 			onload="this.media='all'"
 		/>
 		<noscript>
 			<link
 				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=optional"
+				href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=optional"
 			/>
 		</noscript>
 

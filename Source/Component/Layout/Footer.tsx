@@ -129,7 +129,7 @@ const Footer = ({ Content }: FooterProps) => {
 							</span>
 						</a>
 						{FooterData.Brand?.Description && (
-							<p className="mb-6 max-w-md text-muted-foreground">
+							<p className="mb-6 max-w-md whitespace-pre-line text-sm text-muted-foreground">
 								{FooterData.Brand.Description}
 							</p>
 						)}
@@ -137,7 +137,9 @@ const Footer = ({ Content }: FooterProps) => {
 
 					{FooterData.Columns?.map((Column, ColumnIndex) => (
 						<nav key={ColumnIndex} aria-label={Column.Title}>
-							<h4 className="mb-4 font-medium">{Column.Title}</h4>
+							<h4 className="mb-4 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+								{Column.Title}
+							</h4>
 							<ul className="space-y-2 text-muted-foreground">
 								{Column.Links.map((Link, LinkIndex) => (
 									<li key={LinkIndex}>
@@ -161,8 +163,10 @@ const Footer = ({ Content }: FooterProps) => {
 
 				<Separator className="StaccatoSeparator my-8" />
 
-				<div className="StaccatoCard mb-6 bg-[var(--Mute)] p-4">
-					<p className="leading-relaxed text-muted-foreground">
+				<div
+					className="mb-6 border-l-2 py-2 pl-4"
+					style={{ borderLeftColor: "var(--SpinegRPC)" }}>
+					<p className="text-sm leading-relaxed text-muted-foreground">
 						{T(
 							"funding.prefix",
 							"This project has been funded through the ",

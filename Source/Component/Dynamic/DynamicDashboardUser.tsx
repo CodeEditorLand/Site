@@ -1,7 +1,13 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { Eye, EyeOff } from "lucide-react";
+import {
+	Building2,
+	CircleCheck,
+	Eye,
+	EyeOff,
+	TriangleAlert,
+} from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -274,7 +280,7 @@ const DashboardUserInner = () => {
 							{T("dashboard.account.emailVerifiedBadge", {
 								defaultValue: "Verified",
 							})}
-							{"\u2001"}✅
+							{" "}<CircleCheck aria-hidden="true" className="inline h-4 w-4 align-[-3px] text-[var(--SpinegRPCFore)]" />
 						</span>
 					)}
 				</span>
@@ -351,7 +357,7 @@ const DashboardUserInner = () => {
 					{T("dashboard.account.enterpriseSSO", {
 						defaultValue: "Enterprise SSO active",
 					})}
-					{"\u2001"}🏢
+					{" "}<Building2 aria-hidden="true" className="inline h-4 w-4 align-[-3px]" />
 				</div>
 			)}
 
@@ -361,7 +367,7 @@ const DashboardUserInner = () => {
 					{T("dashboard.account.emailNotVerified", {
 						defaultValue: "Email not verified. Check your inbox.",
 					})}
-					{"\u2001"}⚠️
+					{" "}<TriangleAlert aria-hidden="true" className="inline h-4 w-4 align-[-3px]" />
 				</div>
 			)}
 
@@ -369,7 +375,7 @@ const DashboardUserInner = () => {
 			<div className="mt-3 flex gap-2">
 				<a
 					href="/Account"
-					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-white px-3 py-1.5 font-medium transition-all hover:bg-[var(--Secondary)]">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium transition-all hover:bg-[var(--Secondary)]">
 					{T("dashboard.account.manageButton", {
 						defaultValue: "Manage",
 					})}
@@ -377,7 +383,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={HandleSignOut}
-					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-white px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50">
 					{T("dashboard.account.signOutButton", {
 						defaultValue: "Sign Out",
 					})}
