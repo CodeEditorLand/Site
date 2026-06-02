@@ -95,6 +95,6 @@ Verification, Cross-Platform Distribution.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Cocoon`](https://Editor.Land/Doc/cocoon)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Cocoon`](https://land.playform.cloud/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/SideCar)

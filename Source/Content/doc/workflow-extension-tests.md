@@ -104,5 +104,5 @@ Test Completion:
 
 ## See Also
 
-- [Extension Development](https://Editor.Land/Doc/extension-development)
-- [Application Startup and Handshake](https://Editor.Land/Doc/workflow-startup)
+- [Extension Development](https://land.playform.cloud/Doc/extension-development)
+- [Application Startup and Handshake](https://land.playform.cloud/Doc/workflow-startup)

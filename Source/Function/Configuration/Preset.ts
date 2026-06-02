@@ -1,7 +1,7 @@
 import type { default as Configuration } from "./Type/Configuration.js";
 
 export default {
-	Site: "https://Editor.Land",
+	Site: "https://land.playform.cloud",
 	Port: 9999,
 	CompressHTML: true,
 	DevToolbar: false,

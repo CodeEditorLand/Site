@@ -92,6 +92,6 @@ already provides - tested, documented, and type-safe.
 
 ## See Also
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
-- [Why `Rust`](https://Editor.Land/Doc/why-rust)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
+- [Why `Rust`](https://land.playform.cloud/Doc/why-rust)

@@ -101,6 +101,6 @@ threads from holding file handles or sockets after shutdown.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Mountain`: Native Kernel](https://Editor.Land/Doc/mountain)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Mountain`: Native Kernel](https://land.playform.cloud/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Echo)

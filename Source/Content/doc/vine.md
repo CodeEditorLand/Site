@@ -9,7 +9,7 @@ description:
 
 # Vine
 
-`Vine` is the wire protocol for `Editor.Land` - a set of Protocol Buffers
+`Vine` is the wire protocol for `land.playform.cloud` - a set of Protocol Buffers
 schemas (`.proto` files) that define the bidirectional `gRPC` service interfaces
 used between `Mountain` (the `Rust` kernel) and `Cocoon` (the `Node.js`
 extension host). All inter-process communication that crosses the
@@ -110,7 +110,7 @@ extension host.
 
 ## Relationship to Mist
 
-[`architecture.md`](https://Editor.Land/Doc/architecture) lists `Mist` as a
+[`architecture.md`](https://land.playform.cloud/Doc/architecture) lists `Mist` as a
 separate WebSocket communication layer. `Mist` handles `Sky` (the OS WebView
 UI)↔`Mountain` communication over WebSockets, which is a different transport
 from `Vine`'s `gRPC`. `Vine` is specifically the `Mountain`↔`Cocoon` layer. The
@@ -145,7 +145,7 @@ two protocols are not interchangeable and serve different parts of the system.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Mountain`: Native Kernel](https://Editor.Land/Doc/mountain)
-- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Mountain`: Native Kernel](https://land.playform.cloud/Doc/mountain)
+- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Vine)

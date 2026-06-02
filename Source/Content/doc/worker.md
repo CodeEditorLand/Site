@@ -9,7 +9,7 @@ description:
 
 # Worker
 
-`Worker` is the browser-worker layer for `Editor.Land` surfaces that need cached
+`Worker` is the browser-worker layer for `land.playform.cloud` surfaces that need cached
 assets, versioned application files, or dynamic CSS import handling. It belongs
 to the web shell and WebView side of the system.
 
@@ -38,7 +38,7 @@ coverage depend on the active release profile.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Output`](https://Editor.Land/Doc/output)
-- [`Mountain`](https://Editor.Land/Doc/mountain)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Output`](https://land.playform.cloud/Doc/output)
+- [`Mountain`](https://land.playform.cloud/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Worker)

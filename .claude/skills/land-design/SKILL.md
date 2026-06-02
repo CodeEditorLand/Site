@@ -137,7 +137,7 @@ npm run Run          # astro dev --host  →  http://localhost:9999/
 ```
 
 To review visually, drive Chrome DevTools MCP against `http://localhost:9999/` and screenshot.
-The dev server is the source of truth — the production domain `Editor.Land` is currently a
+The dev server is the source of truth — the production domain `land.playform.cloud` is currently a
 parked page (expired), so **always use the local build**.
 
 ## Implementation roadmap (deferred until approved)

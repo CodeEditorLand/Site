@@ -70,5 +70,5 @@ Rhai build script | | `--verbose` | Detailed subprocess logging |
 
 ## Related Documentation 📖
 
-- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [Architecture overview](https://land.playform.cloud/Doc/architecture)
 - [Maintain GitHub repository](https://github.com/CodeEditorLand/Maintain)

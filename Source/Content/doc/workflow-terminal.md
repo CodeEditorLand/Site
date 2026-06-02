@@ -106,4 +106,4 @@ User Input Loop:
 
 ## See Also
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)

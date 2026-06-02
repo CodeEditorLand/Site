@@ -9,7 +9,7 @@ description:
 
 # Sky
 
-`Sky` is the `workbench` UI for `Editor.Land`. It is built with
+`Sky` is the `workbench` UI for `land.playform.cloud`. It is built with
 [`Astro`](https://astro.build) and runs inside the OS WebView when the editor is
 launched in native mode: `WKWebView` on macOS, `WebView2` on Windows. `Sky`
 consumes typed service interfaces from `Wind` (the `Effect-TS` service layer)
@@ -203,7 +203,7 @@ rather than silently broken.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Wind`: Service Layer](https://Editor.Land/Doc/wind)
-- [`Mountain`: Native Kernel](https://Editor.Land/Doc/mountain)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Wind`: Service Layer](https://land.playform.cloud/Doc/wind)
+- [`Mountain`: Native Kernel](https://land.playform.cloud/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Sky)

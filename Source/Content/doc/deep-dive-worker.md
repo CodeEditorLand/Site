@@ -88,4 +88,4 @@ interception terminates.
 
 ## Related Documentation 📖
 
-- [Worker overview](https://Editor.Land/Doc/worker)
+- [Worker overview](https://land.playform.cloud/Doc/worker)

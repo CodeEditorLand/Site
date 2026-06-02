@@ -80,4 +80,4 @@ during initial setup or CI release pipeline.
 
 ## Related Documentation 📖
 
-- [SideCar overview](https://Editor.Land/Doc/sidecar)
+- [SideCar overview](https://land.playform.cloud/Doc/sidecar)

@@ -32,7 +32,7 @@ unprofessional conduct.
 ### Enforcement
 
 Instances of abusive or unacceptable behavior may be reported to
-Community@Editor.Land. All complaints will be reviewed and investigated fairly.
+Community@land.playform.cloud. All complaints will be reviewed and investigated fairly.
 Community leaders will enforce these standards and may take corrective action,
 including warning, temporary banning, or permanent banning from the community.
 
@@ -605,7 +605,7 @@ Issue templates are available for:
 
 - **GitHub Discussions:** For questions, ideas, and general discussion
 - **Discord:** [Land Community](https://discord.gg/land) for real-time chat
-- **Email:** support@Editor.Land for sensitive matters
+- **Email:** support@land.playform.cloud for sensitive matters
 
 ---
 

@@ -9,7 +9,7 @@ description:
 
 # Air
 
-`Air` is the `Rust` background-services element for `Editor.Land`. The source
+`Air` is the `Rust` background-services element for `land.playform.cloud`. The source
 contains modules for updates, downloads, authentication, indexing, security,
 health, resilience, configuration, logging, metrics, and `Vine` `IPC`.
 
@@ -60,7 +60,7 @@ Confirmed source areas include:
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Mountain`](https://Editor.Land/Doc/mountain)
-- [Local-First Protocol](https://Editor.Land/Doc/local-first-protocol)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Mountain`](https://land.playform.cloud/Doc/mountain)
+- [Local-First Protocol](https://land.playform.cloud/Doc/local-first-protocol)
 - [Source Code](https://github.com/CodeEditorLand/Air)

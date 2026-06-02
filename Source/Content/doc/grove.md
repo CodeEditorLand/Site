@@ -4,12 +4,12 @@ section: "Element"
 order: 18
 description:
     "The Wasmtime extension-host path - capability-based security for
-    Editor.Land extensions."
+    land.playform.cloud extensions."
 ---
 
 # Grove
 
-`Grove` is the `WebAssembly` extension-host path for `Editor.Land`. Where
+`Grove` is the `WebAssembly` extension-host path for `land.playform.cloud`. Where
 `Cocoon` runs `VS Code` extensions in a `Node.js` process, `Grove` contains a
 Wasmtime-backed path for extensions compiled to `WebAssembly` with
 capability-oriented boundaries.
@@ -87,6 +87,6 @@ It is source-backed work in progress.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Grove)

@@ -84,5 +84,5 @@ Errors --shared--> All consumers
 
 ## Related Documentation 📖
 
-- [Common overview](https://Editor.Land/Doc/common)
-- [Mountain implementation details](https://Editor.Land/Doc/deep-dive-mountain)
+- [Common overview](https://land.playform.cloud/Doc/common)
+- [Mountain implementation details](https://land.playform.cloud/Doc/deep-dive-mountain)

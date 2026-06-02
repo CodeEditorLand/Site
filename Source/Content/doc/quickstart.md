@@ -37,7 +37,7 @@ the Land root and rebuild.
 This routes through `Mountain`'s file system layer via `Tauri` `IPC`.
 
 If you have an existing `.vscode/` directory with workspace settings, Land reads
-it. See [Configuration](https://Editor.Land/Doc/configuration) for details on
+it. See [Configuration](https://land.playform.cloud/Doc/configuration) for details on
 supported configuration keys.
 
 ---
@@ -123,15 +123,15 @@ crashing, but the underlying features are not yet wired to a backend:
 - `vscode.notebook.*` - notebook UI
 - `vscode.tests.*` - test explorer
 
-See [`Cocoon`](https://Editor.Land/Doc/cocoon) for the full `API` coverage
+See [`Cocoon`](https://land.playform.cloud/Doc/cocoon) for the full `API` coverage
 table.
 
 ---
 
 ## See Also
 
-- [Getting Started](https://Editor.Land/Doc/getting-started)
-- [Installation](https://Editor.Land/Doc/installation)
-- [Configuration](https://Editor.Land/Doc/configuration)
-- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Getting Started](https://land.playform.cloud/Doc/getting-started)
+- [Installation](https://land.playform.cloud/Doc/installation)
+- [Configuration](https://land.playform.cloud/Doc/configuration)
+- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)

@@ -81,6 +81,6 @@ latency is approximately 0.42ms plus network and Mountain processing time.
 
 ## Related Documentation 📖
 
-- [Architecture overview](https://Editor.Land/Doc/architecture)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Architecture overview](https://land.playform.cloud/Doc/architecture)
+- [Mountain deep dive](https://land.playform.cloud/Doc/deep-dive-mountain)
 - [Cocoon GitHub repository](https://github.com/CodeEditorLand/Cocoon)

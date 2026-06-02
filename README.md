@@ -11,7 +11,7 @@
 		</td>
 		<td align="left" valign="middle">
 			<h3 align="left">
-				<a href="https://Editor.Land" target="_blank">
+				<a href="https://land.playform.cloud" target="_blank">
 					<picture>
 						<source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
 						<source media="(prefers-color-scheme: light)" srcset="https://PlayForm.Cloud/Image/GitHub/Land.svg">
@@ -22,7 +22,7 @@
 		</td>
 		<td align="left" valign="middle">
 			<h3 align="left">
-				<a href="https://Editor.Land" target="_blank">
+				<a href="https://land.playform.cloud" target="_blank">
 					Land
 				</a>
 			</h3>
@@ -58,7 +58,7 @@
 [![Tailwind](https://img.shields.io/badge/Tailwind-3.x-38BDF8.svg)](https://tailwindcss.com)
 
 Marketing, download, and account portal for **Land**, hosted at
-[Editor.Land](https://Editor.Land). Built with Astro 5, React 19, Tailwind CSS,
+[land.playform.cloud](https://land.playform.cloud). Built with Astro 5, React 19, Tailwind CSS,
 and shadcn/ui. Fully internationalized across 5 locales.
 
 ---
@@ -132,7 +132,7 @@ Funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund) via
 	<tbody>
 		<tr>
 			<td align="left" valign="middle">
-				<a href="https://Editor.Land">
+				<a href="https://land.playform.cloud">
 					<img width="60" src="https://raw.githubusercontent.com/CodeEditorLand/Asset/refs/heads/Current/Logo/Land.svg" alt="Land">
 				</a>
 			</td>
@@ -158,7 +158,7 @@ Funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund) via
 ---
 
 **Project Maintainers**: Source Open
-([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+([Source/Open@land.playform.cloud](mailto:Source/Open@land.playform.cloud)) |
 [GitHub Repository](https://github.com/CodeEditorLand/WebSite) |
 [Report an Issue](https://github.com/CodeEditorLand/WebSite/issues) |
 [Security Policy](https://github.com/CodeEditorLand/WebSite/security/policy)

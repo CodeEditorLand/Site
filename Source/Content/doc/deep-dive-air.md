@@ -77,6 +77,6 @@ existing Air process before spawning a new instance to prevent duplicates.
 
 ## Related Documentation 📖
 
-- [Architecture overview](https://Editor.Land/Doc/architecture)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Architecture overview](https://land.playform.cloud/Doc/architecture)
+- [Mountain deep dive](https://land.playform.cloud/Doc/deep-dive-mountain)
 - [Air GitHub repository](https://github.com/CodeEditorLand/Air)

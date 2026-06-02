@@ -81,5 +81,5 @@ User clicks file in File Explorer
 
 ## See Also
 
-- [Application Startup and Handshake](https://Editor.Land/Doc/workflow-startup)
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Application Startup and Handshake](https://land.playform.cloud/Doc/workflow-startup)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)

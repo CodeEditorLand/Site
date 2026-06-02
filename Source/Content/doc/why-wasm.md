@@ -12,7 +12,7 @@ touch files, spawn tools, open network connections, and react to workspace
 state. `Grove` is Land's WIP path for extensions that can run inside a
 `WebAssembly` runtime instead of broad `Node.js` access.
 
-The [`Grove`](https://Editor.Land/Doc/grove) source contains a Wasmtime host,
+The [`Grove`](https://land.playform.cloud/Doc/grove) source contains a Wasmtime host,
 `gRPC` protocol definitions, `API` surface, transport layer, and `WASM` runtime
 integration. The primary `VS Code` extension compatibility path remains
 `Cocoon`.
@@ -59,7 +59,7 @@ serve different needs and are not interchangeable.
 
 ## See Also
 
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [`Grove`](https://Editor.Land/Doc/grove)
-- [Why `Rust`](https://Editor.Land/Doc/why-rust)
-- [`Cocoon`: Extension Host](https://Editor.Land/Doc/cocoon)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Grove`](https://land.playform.cloud/Doc/grove)
+- [Why `Rust`](https://land.playform.cloud/Doc/why-rust)
+- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)

@@ -111,5 +111,5 @@ dashboard rollups, prod tree-shake -- comes for free.
 
 ## See Also
 
-- [Telemetry Overview](https://Editor.Land/Doc/telemetry/overview)
-- [SideCar Element](https://Editor.Land/Doc/sidecar)
+- [Telemetry Overview](https://land.playform.cloud/Doc/telemetry/overview)
+- [SideCar Element](https://land.playform.cloud/Doc/sidecar)

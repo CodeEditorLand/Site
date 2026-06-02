@@ -82,5 +82,5 @@ UI: Render UI parts (Activity Bar, Sidebar, etc.)
 
 ## See Also
 
-- [Opening a File from the UI](https://Editor.Land/Doc/workflow-open-file)
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Opening a File from the UI](https://land.playform.cloud/Doc/workflow-open-file)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)

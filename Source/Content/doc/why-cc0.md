@@ -8,7 +8,7 @@ description:
 
 # Why CC0
 
-`Editor.Land` is released under CC0 1.0 Universal, a public domain dedication.
+`land.playform.cloud` is released under CC0 1.0 Universal, a public domain dedication.
 This is the most permissive option available. There are no conditions on use,
 modification, distribution, or commercialization. No attribution is required. No
 license notice must be preserved. No patent clauses apply. The code belongs to
@@ -100,5 +100,5 @@ the reason Land uses it.
 
 ## See Also
 
-- [Contributing](https://Editor.Land/Doc/contributing)
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Contributing](https://land.playform.cloud/Doc/contributing)
+- [Architecture Overview](https://land.playform.cloud/Doc/architecture)

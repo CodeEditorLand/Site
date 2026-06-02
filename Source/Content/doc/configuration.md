@@ -3,12 +3,12 @@ title: "Configuration"
 section: "Usage"
 order: 6
 description:
-    "Settings, keybindings, themes, and language configuration in Editor.Land."
+    "Settings, keybindings, themes, and language configuration in land.playform.cloud."
 ---
 
 # Configuration
 
-`Editor.Land` stores configuration locally in `JSON` files that support comments
+`land.playform.cloud` stores configuration locally in `JSON` files that support comments
 (`//` and `/* */`). The exact file paths depend on the platform and build
 profile. To locate the active settings file on your system, open the command
 palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows) and search for
@@ -137,6 +137,6 @@ This syntax is the same as `VS Code`'s language-specific settings.
 
 ## See Also
 
-- [Getting Started](https://Editor.Land/Doc/getting-started)
-- [Installation](https://Editor.Land/Doc/installation)
-- [`Wind`: Service Layer](https://Editor.Land/Doc/wind)
+- [Getting Started](https://land.playform.cloud/Doc/getting-started)
+- [Installation](https://land.playform.cloud/Doc/installation)
+- [`Wind`: Service Layer](https://land.playform.cloud/Doc/wind)
