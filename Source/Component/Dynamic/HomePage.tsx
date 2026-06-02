@@ -457,7 +457,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
 						defaultValue:
-							"Background Services - Downloader - Workspace Indexer",
+														"Background Services\u2001Downloader\u2001Workspace Indexer",
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
@@ -471,7 +471,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Cocoon",
 					Role: T("home:architecture.cocoon.subtitle", {
 						defaultValue:
-							"Extension Host - Unmodified VS Code Extensions - Effect-TS Services",
+							"Extension Host Unmodified VS Code Extensions Effect-TS Services",
 					}),
 					Quote: T("home:architecture.cocoon.description", {
 						defaultValue:
@@ -485,7 +485,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Common",
 					Role: T("home:architecture.common.subtitle", {
 						defaultValue:
-							"Shared Foundation - Traits - Cross-Element Types",
+							"Shared Foundation Traits Cross-Element Types",
 					}),
 					Quote: T("home:architecture.common.description", {
 						defaultValue:
@@ -499,7 +499,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Echo",
 					Role: T("home:architecture.echo.subtitle", {
 						defaultValue:
-							"Work-Stealing Scheduler - crossbeam-deque - Supervised Worker Pool",
+							"Work-Stealing Scheduler crossbeam-deque Supervised Worker Pool",
 					}),
 					Quote: T("home:architecture.echo.description", {
 						defaultValue:
@@ -513,7 +513,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Grove",
 					Role: T("home:architecture.grove.subtitle", {
 						defaultValue:
-							"WASM Sandbox - Wasmtime Runtime - Capability-Based Isolation",
+							"WASM Sandbox Wasmtime Runtime Capability-Based Isolation",
 					}),
 					Quote: T("home:architecture.grove.description", {
 						defaultValue:
@@ -527,7 +527,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Maintain",
 					Role: T("home:architecture.maintain.subtitle", {
 						defaultValue:
-							"Build Orchestrator - Configuration - Release Profiles",
+							"Build Orchestrator Configuration Release Profiles",
 					}),
 					Quote: T("home:architecture.maintain.description", {
 						defaultValue:
@@ -541,7 +541,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Mist",
 					Role: T("home:architecture.mist.subtitle", {
 						defaultValue:
-							"Local DNS Sandbox - *.land.playform.cloud Resolution - Network Boundary",
+							"Local DNS Sandbox *.land.playform.cloud Resolution Network Boundary",
 					}),
 					Quote: T("home:architecture.mist.description", {
 						defaultValue:
@@ -555,7 +555,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Mountain",
 					Role: T("home:architecture.mountain.subtitle", {
 						defaultValue:
-							"Native Rust Backend - Tauri - Replaces Electron Main Process",
+							"Native Rust Backend Tauri Replaces Electron Main Process",
 					}),
 					Quote: T("home:architecture.mountain.description", {
 						defaultValue:
@@ -569,7 +569,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Output",
 					Role: T("home:architecture.output.subtitle", {
 						defaultValue:
-							"Compilation Pipeline - Plugin-Routed - Deterministic Checksum",
+							"Compilation Pipeline Plugin-Routed Deterministic Checksum",
 					}),
 					Quote: T("home:architecture.output.description", {
 						defaultValue:
@@ -583,7 +583,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Rest",
 					Role: T("home:architecture.rest.subtitle", {
 						defaultValue:
-							"TypeScript Transform Pipeline - OXC - Rust-Native",
+							"TypeScript Transform Pipeline OXC Rust-Native",
 					}),
 					Quote: T("home:architecture.rest.description", {
 						defaultValue:
@@ -597,7 +597,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "SideCar",
 					Role: T("home:architecture.sidecar.subtitle", {
 						defaultValue:
-							"Binary Distributor - Compile-Time Target Triple Selection - Per-Platform Node.js",
+							"Binary Distributor Compile-Time Target Triple Selection Per-Platform Node.js",
 					}),
 					Quote: T("home:architecture.sidecar.description", {
 						defaultValue:
@@ -611,7 +611,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Sky",
 					Role: T("home:architecture.sky.subtitle", {
 						defaultValue:
-							"Visual UI Layer - Astro Components - Three Workbench Layouts",
+							"Visual UI Layer Astro Components Three Workbench Layouts",
 					}),
 					Quote: T("home:architecture.sky.description", {
 						defaultValue:
@@ -625,7 +625,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Vine",
 					Role: T("home:architecture.vine.subtitle", {
 						defaultValue:
-							"gRPC Backbone - Contract-First - .proto Definitions",
+							"gRPC Backbone Contract-First .proto Definitions",
 					}),
 					Quote: T("home:architecture.vine.description", {
 						defaultValue:
@@ -639,7 +639,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Wind",
 					Role: T("home:architecture.wind.subtitle", {
 						defaultValue:
-							"Workbench Services - Effect-TS Layers - Native Bridges",
+							"Workbench Services Effect-TS Layers Native Bridges",
 					}),
 					Quote: T("home:architecture.wind.description", {
 						defaultValue:
@@ -653,7 +653,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Worker",
 					Role: T("home:architecture.worker.subtitle", {
 						defaultValue:
-							"Service Worker - Offline Cache - CSS Import Support",
+							"Service Worker Offline Cache CSS Import Support",
 					}),
 					Quote: T("home:architecture.worker.description", {
 						defaultValue:
