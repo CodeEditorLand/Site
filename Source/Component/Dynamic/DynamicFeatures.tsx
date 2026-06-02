@@ -194,7 +194,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className={`StaccatoMorphGap grid ${
+					className={`StaccatoMorphGap grid items-start min-h-0 ${
 						ColumnClass[Columns]
 					} ${GapClass[Gap]} mx-auto max-w-6xl`}>
 					{Features.map((Feature) => {
@@ -229,7 +229,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
-								className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-card p-8"
+								className="FeatureCard StaccatoCard flex min-h-0 flex-col gap-6 rounded-none bg-card p-8"
 								style={{
 									borderLeftColor: FeatureColor,
 									borderLeftWidth: "2px",
@@ -253,7 +253,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 										/>
 									</div>
 								</div>
-								<p className="StaccatoBreath text-sm text-muted-foreground line-clamp-5">
+								<p className="StaccatoBreath text-sm text-muted-foreground">
 									<RichText Text={Feature.Description} />
 									<br />
 									{Feature.Icons &&

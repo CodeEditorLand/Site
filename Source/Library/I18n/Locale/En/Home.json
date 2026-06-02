@@ -241,7 +241,7 @@
 		},
 		"maintain": {
 			"subtitle": "Build Orchestrator - Configuration - Release Profiles",
-			"description": "Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\nManages development, debug, and release build profiles across the Land ecosystem.\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\nRelease pipeline preparation — signing, artifact publication, and distribution — is in progress."
+			"description": "Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\nManages development, debug, and release build profiles across the Land ecosystem.\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\nRelease pipeline preparation - signing, artifact publication, and distribution - is in progress."
 		},
 		"mist": {
 			"subtitle": "Local DNS Sandbox - *.land.playform.cloud Resolution - Network Boundary",
