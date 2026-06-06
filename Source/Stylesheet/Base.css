@@ -687,6 +687,72 @@
 		--SpineWASMFore: #c084fc;
 		--SpineWASMMute: color-mix(in srgb, #a855f7 18%, #0a0a0c);
 		--SpineWASMSurface: color-mix(in srgb, #a855f7 8%, #0a0a0c);
+
+		/* ── Extension/Framework colors (dark) ──
+		     Mute/Surface mix with dark canvas, Fore brightens for legibility. */
+		--ExtensionRustMute: color-mix(in srgb, #f87171 18%, #0a0a0c);
+		--ExtensionRustSurface: color-mix(in srgb, #f87171 8%, #0a0a0c);
+		--ExtensionRustFore: #fca5a5;
+
+		--ExtensionTauriMute: color-mix(in srgb, #fbbf24 18%, #0a0a0c);
+		--ExtensionTauriSurface: color-mix(in srgb, #fbbf24 8%, #0a0a0c);
+		--ExtensionTauriFore: #fcd34d;
+
+		--ExtensionEffectTypeScriptMute: color-mix(in srgb, #22d3d8 18%, #0a0a0c);
+		--ExtensionEffectTypeScriptSurface: color-mix(in srgb, #22d3d8 8%, #0a0a0c);
+		--ExtensionEffectTypeScriptFore: #67e8f9;
+
+		--ExtensionReactMute: color-mix(in srgb, #60a5fa 18%, #0a0a0c);
+		--ExtensionReactSurface: color-mix(in srgb, #60a5fa 8%, #0a0a0c);
+		--ExtensionReactFore: #93c5fd;
+
+		--ExtensionVueMute: color-mix(in srgb, #4ade80 18%, #0a0a0c);
+		--ExtensionVueSurface: color-mix(in srgb, #4ade80 8%, #0a0a0c);
+		--ExtensionVueFore: #86efac;
+
+		--ExtensionSvelteMute: color-mix(in srgb, #fb923c 18%, #0a0a0c);
+		--ExtensionSvelteSurface: color-mix(in srgb, #fb923c 8%, #0a0a0c);
+		--ExtensionSvelteFore: #fdba74;
+
+		--ExtensionNextMute: color-mix(in srgb, #171717 18%, #0a0a0c);
+		--ExtensionNextSurface: color-mix(in srgb, #171717 8%, #0a0a0c);
+		--ExtensionNextFore: #525252;
+
+		--ExtensionNuxtMute: color-mix(in srgb, #16a34a 18%, #0a0a0c);
+		--ExtensionNuxtSurface: color-mix(in srgb, #16a34a 8%, #0a0a0c);
+		--ExtensionNuxtFore: #4ade80;
+
+		--ExtensionSolidMute: color-mix(in srgb, #446b9e 18%, #0a0a0c);
+		--ExtensionSolidSurface: color-mix(in srgb, #446b9e 8%, #0a0a0c);
+		--ExtensionSolidFore: #7aa2d4;
+
+		--ExtensionAstroMute: color-mix(in srgb, #9333ea 18%, #0a0a0c);
+		--ExtensionAstroSurface: color-mix(in srgb, #9333ea 8%, #0a0a0c);
+		--ExtensionAstroFore: #d8b4fe;
+
+		--ExtensionAngularMute: color-mix(in srgb, #dd0031 18%, #0a0a0c);
+		--ExtensionAngularSurface: color-mix(in srgb, #dd0031 8%, #0a0a0c);
+		--ExtensionAngularFore: #fca5a5;
+
+		--ExtensionEmberMute: color-mix(in srgb, #e04e39 18%, #0a0a0c);
+		--ExtensionEmberSurface: color-mix(in srgb, #e04e39 8%, #0a0a0c);
+		--ExtensionEmberFore: #fda498;
+
+		--ExtensionQwikMute: color-mix(in srgb, #18b6f6 18%, #0a0a0c);
+		--ExtensionQwikSurface: color-mix(in srgb, #18b6f6 8%, #0a0a0c);
+		--ExtensionQwikFore: #7dd3fc;
+
+		--ExtensionRemixMute: color-mix(in srgb, #121212 18%, #0a0a0c);
+		--ExtensionRemixSurface: color-mix(in srgb, #121212 8%, #0a0a0c);
+		--ExtensionRemixFore: #525252;
+
+		--ExtensionTanStackMute: color-mix(in srgb, #ff4154 18%, #0a0a0c);
+		--ExtensionTanStackSurface: color-mix(in srgb, #ff4154 8%, #0a0a0c);
+		--ExtensionTanStackFore: #fb7185;
+
+		--ExtensionElectronMute: color-mix(in srgb, #47848f 18%, #0a0a0c);
+		--ExtensionElectronSurface: color-mix(in srgb, #47848f 8%, #0a0a0c);
+		--ExtensionElectronFore: #88e0ef;
 	}
 
 	/* The frosted/white surfaces must follow the canvas in dark mode */
