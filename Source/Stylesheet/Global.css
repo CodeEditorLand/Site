@@ -36,6 +36,11 @@ body {
 	@apply flex h-full flex-grow flex-col tabular-nums antialiased sm:subpixel-antialiased;
 }
 
+/* Prevent whitespace layout shift in <picture> elements with multiple <source>/<img> */
+picture {
+ font-size: 0;
+}
+
 /* CLS prevention: reserve space for client:load components before hydration.
  * Astro renders an empty astro-island wrapper; this ensures the page
  * doesn't collapse to zero height then jump when JS renders content. */
