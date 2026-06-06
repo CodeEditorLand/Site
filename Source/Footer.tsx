@@ -86,6 +86,13 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 								src="/Asset/Logo/Glyph/Land.svg"
 								width="24"
 								height="24"
+								className="dark:hidden"
+							/><img
+								alt="Land"
+								src="/Asset/Dark/Logo/Glyph/Land.svg"
+								width="24"
+								height="24"
+								className="hidden dark:block"
 							/>
 						</picture>
 					</a>

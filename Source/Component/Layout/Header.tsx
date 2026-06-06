@@ -238,7 +238,14 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 								title="Code Editor Land"
 								width="32"
 								height="32"
-								className="absolute inset-0 h-full w-full"
+								className="absolute inset-0 h-full w-full dark:hidden"
+							/><img
+								src="/Asset/Dark/Logo/Glyph/Land.svg"
+								alt="Code Editor Land"
+								title="Code Editor Land"
+								width="32"
+								height="32"
+								className="absolute inset-0 h-full w-full hidden dark:block"
 							/>
 						</div>
 						<span className="font-semibold">

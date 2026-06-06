@@ -121,7 +121,15 @@ const Footer = ({ Content }: FooterProps) => {
 								title="Code Editor Land"
 								width="32"
 								height="32"
-								className="h-8 w-8"
+								className="h-8 w-8 dark:hidden"
+								aria-hidden="true"
+							/><img
+								src="/Asset/Dark/Logo/Glyph/Land.svg"
+								alt="Code Editor Land"
+								title="Code Editor Land"
+								width="32"
+								height="32"
+								className="h-8 w-8 hidden dark:block"
 								aria-hidden="true"
 							/>
 							<span className="font-semibold">
