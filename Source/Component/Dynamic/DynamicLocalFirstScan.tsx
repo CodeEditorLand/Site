@@ -173,6 +173,13 @@ const LocalFirstScanInner = () => {
 						src="/Asset/Logo/Glyph/Land.svg"
 						width="48"
 						height="48"
+						className="dark:hidden"
+					/><img
+						alt="Land"
+						src="/Asset/Dark/Logo/Glyph/Land.svg"
+						width="48"
+						height="48"
+						className="hidden dark:block"
 					/>
 				</picture>
 				<div className="flex-1">

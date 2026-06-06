@@ -34,7 +34,14 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 							title="Code Editor Land"
 							width="32"
 							height="32"
-							className="h-full w-full"
+							className="h-full w-full dark:hidden"
+						/><img
+							src="/Asset/Dark/Logo/Glyph/Land.svg"
+							alt="Code Editor Land"
+							title="Code Editor Land"
+							width="32"
+							height="32"
+							className="h-full w-full hidden dark:block"
 						/>
 					</div>
 					<span className="font-semibold">{Logo.Text}</span>
