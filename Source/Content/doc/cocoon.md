@@ -10,9 +10,9 @@ description:
 # Cocoon
 
 `Cocoon` is the active `VS Code` extension-host compatibility path for
-`land.playform.cloud`. It is a `Node.js` process that loads existing extension entry
-points, provides a `vscode` `API` object, and routes implemented `API` calls
-through `Effect-TS` services and `Mountain`.
+`land.playform.cloud`. It is a `Node.js` process that loads existing extension
+entry points, provides a `vscode` `API` object, and routes implemented `API`
+calls through `Effect-TS` services and `Mountain`.
 
 The source supports this claim: installed `VS Code` extensions can run
 unmodified through `Cocoon` when the `APIs` they use are implemented.

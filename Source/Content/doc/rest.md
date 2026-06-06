@@ -3,14 +3,15 @@ title: "Rest"
 section: "Element"
 order: 21
 description:
-    "OXC-based TypeScript transform work for land.playform.cloud's output pipeline."
+    "OXC-based TypeScript transform work for land.playform.cloud's output
+    pipeline."
 ---
 
 # Rest
 
 `Rest` is the `Rust` element for `OXC`-based `TypeScript` transform work in
-`land.playform.cloud`'s build pipeline. It is part of the path that reduces reliance on
-Node-hosted `TypeScript` compilation over time.
+`land.playform.cloud`'s build pipeline. It is part of the path that reduces
+reliance on Node-hosted `TypeScript` compilation over time.
 
 `Rest` contains `OXC` integration and transform work. Speed claims require a
 benchmark that runs inside Land's actual pipeline before they appear in product

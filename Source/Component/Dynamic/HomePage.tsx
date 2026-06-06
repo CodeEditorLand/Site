@@ -457,7 +457,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Author: "Air",
 					Role: T("home:architecture.air.subtitle", {
 						defaultValue:
-														"Background Services\u2001Downloader\u2001Workspace Indexer",
+							"Background Services\u2001Downloader\u2001Workspace Indexer",
 					}),
 					Quote: T("home:architecture.air.description", {
 						defaultValue:

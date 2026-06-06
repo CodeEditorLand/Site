@@ -8,11 +8,11 @@ description:
 
 # Why CC0
 
-`land.playform.cloud` is released under CC0 1.0 Universal, a public domain dedication.
-This is the most permissive option available. There are no conditions on use,
-modification, distribution, or commercialization. No attribution is required. No
-license notice must be preserved. No patent clauses apply. The code belongs to
-everyone.
+`land.playform.cloud` is released under CC0 1.0 Universal, a public domain
+dedication. This is the most permissive option available. There are no
+conditions on use, modification, distribution, or commercialization. No
+attribution is required. No license notice must be preserved. No patent clauses
+apply. The code belongs to everyone.
 
 ---
 

@@ -9,12 +9,12 @@ description:
 
 # Output
 
-`Output` is the `VS Code` build transformation pipeline for `land.playform.cloud`. It
-takes the upstream `VS Code` compiled tree (populated into
-`Target/Microsoft/VSCode/` by the build step) and applies a set of `TypeScript`
-transform plugins that adapt it for Land's native stack - replacing `Electron`
-`IPC` with the `Mountain` `gRPC` channel, injecting WebView polyfills, rewriting
-worker URLs, and patching service registrations.
+`Output` is the `VS Code` build transformation pipeline for
+`land.playform.cloud`. It takes the upstream `VS Code` compiled tree (populated
+into `Target/Microsoft/VSCode/` by the build step) and applies a set of
+`TypeScript` transform plugins that adapt it for Land's native stack - replacing
+`Electron` `IPC` with the `Mountain` `gRPC` channel, injecting WebView
+polyfills, rewriting worker URLs, and patching service registrations.
 
 `Output` is a `TypeScript`/`Node.js` package. Its source is in the
 [`Output` repository](https://github.com/CodeEditorLand/Output).
@@ -25,9 +25,9 @@ worker URLs, and patching service registrations.
 
 `VS Code`'s compiled output is written for `Electron`: it expects `ipcRenderer`,
 shared process communication, `Electron`-specific node integration, and a
-browser environment supplied by Chromium. `land.playform.cloud` replaces all of that
-with `Mountain`'s `Rust` kernel, `WebView2` (Windows) or `WKWebView` (macOS),
-and the `Vine` `gRPC` protocol.
+browser environment supplied by Chromium. `land.playform.cloud` replaces all of
+that with `Mountain`'s `Rust` kernel, `WebView2` (Windows) or `WKWebView`
+(macOS), and the `Vine` `gRPC` protocol.
 
 Rather than maintaining a permanent fork of `VS Code`'s `TypeScript` source,
 `Output` applies targeted transforms to the compiled output. The upstream source

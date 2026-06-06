@@ -3,16 +3,17 @@ title: "Configuration"
 section: "Usage"
 order: 6
 description:
-    "Settings, keybindings, themes, and language configuration in land.playform.cloud."
+    "Settings, keybindings, themes, and language configuration in
+    land.playform.cloud."
 ---
 
 # Configuration
 
-`land.playform.cloud` stores configuration locally in `JSON` files that support comments
-(`//` and `/* */`). The exact file paths depend on the platform and build
-profile. To locate the active settings file on your system, open the command
-palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows) and search for
-**Preferences: Open Settings (`JSON`)**.
+`land.playform.cloud` stores configuration locally in `JSON` files that support
+comments (`//` and `/* */`). The exact file paths depend on the platform and
+build profile. To locate the active settings file on your system, open the
+command palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows) and search
+for **Preferences: Open Settings (`JSON`)**.
 
 ---
 

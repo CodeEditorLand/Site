@@ -149,7 +149,10 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 							<div className="text-muted-foreground">
 								{Brand.Name}
 								{"\u2001"}
-								<Heart aria-hidden="true" className="inline h-3.5 w-3.5 fill-current align-[-2px] text-[var(--SpineTCPFore)]" />
+								<Heart
+									aria-hidden="true"
+									className="inline h-3.5 w-3.5 fill-current align-[-2px] text-[var(--SpineTCPFore)]"
+								/>
 							</div>
 						)}
 					</div>

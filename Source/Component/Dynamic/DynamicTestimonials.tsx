@@ -194,7 +194,9 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 					{(Title || Subtitle) && (
 						<div className="mx-auto mb-10 max-w-2xl text-center">
 							<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-								<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+								<span className="text-[var(--SpinegRPCFore)]">
+									//
+								</span>{" "}
 								Architecture
 							</p>
 							{Title && (
@@ -268,7 +270,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										</div>
 										{Testimonial.Href && (
 											<lucide.ExternalLink
-												className="h-3 w-3 shrink-0 text-muted-foreground/40"
+												className="text-muted-foreground/40 h-3 w-3 shrink-0"
 												aria-hidden="true"
 											/>
 										)}
@@ -277,15 +279,15 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									{/* Role → chips split by " - " */}
 									{Testimonial.Role && (
 										<div className="flex flex-wrap gap-1">
-											{Testimonial.Role.split(
-												" - ",
-											).map((Tag, TagIndex) => (
-												<span
-													key={TagIndex}
-													className="bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
-													{Tag}
-												</span>
-											))}
+											{Testimonial.Role.split(" - ").map(
+												(Tag, TagIndex) => (
+													<span
+														key={TagIndex}
+														className="bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground">
+														{Tag}
+													</span>
+												),
+											)}
 										</div>
 									)}
 
@@ -311,7 +313,9 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
 						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							<span className="text-[var(--SpinegRPCFore)]">
+								//
+							</span>{" "}
 							Architecture
 						</p>
 						{Title && (
@@ -367,7 +371,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									</div>
 									{Testimonial.Href && (
 										<lucide.ExternalLink
-											className="h-3 w-3 shrink-0 text-muted-foreground/40"
+											className="text-muted-foreground/40 h-3 w-3 shrink-0"
 											aria-hidden="true"
 										/>
 									)}

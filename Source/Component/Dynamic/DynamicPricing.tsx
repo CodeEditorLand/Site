@@ -89,14 +89,14 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 		<section
 			id="pricing"
 			aria-labelledby="PricingHeading"
-			className={`w-full py-16 sm:py-20 ${
-				ClassName || ""
-			}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
 						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							<span className="text-[var(--SpinegRPCFore)]">
+								//
+							</span>{" "}
 							Roadmap
 						</p>
 						{Title && (
@@ -139,8 +139,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 										<span
 											className="StaccatoBadge inline-flex items-center border px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest"
 											style={{
-												borderColor:
-													"var(--SpinegRPC)",
+												borderColor: "var(--SpinegRPC)",
 												color: "var(--SpinegRPCFore)",
 												backgroundColor:
 													"var(--SpinegRPCMute)",

@@ -95,7 +95,6 @@ img {
 	@apply inline-block select-none align-top outline-2 outline-offset-2 outline-transparent;
 }
 
-
 /* ─── Custom scrollbar - thin, transparent, cross-browser ─── */
 
 /* WebKit / Blink */

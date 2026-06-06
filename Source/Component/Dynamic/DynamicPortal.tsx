@@ -1,3 +1,4 @@
+import { ThemeIcon } from "@Library/Theme";
 import * as lucide from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -400,11 +401,11 @@ const EnterpriseSSOForm = ({
 				})}
 				{"\u2001"}
 				<IconTooltip Label="Okta">
-					<img
+					<ThemeIcon
 						src="/Image/Okta.svg"
 						alt="Okta"
-						width="20"
-						height="20"
+						width={20}
+						height={20}
 						className="h-5 w-5"
 					/>
 				</IconTooltip>
@@ -439,11 +440,11 @@ const EnterpriseSSOForm = ({
 				})}
 				{"\u2001"}
 				<IconTooltip Label="Microsoft Azure AD">
-					<img
+					<ThemeIcon
 						src="/Image/Microsoft.svg"
 						alt="Microsoft"
-						width="20"
-						height="20"
+						width={20}
+						height={20}
 						className="h-5 w-5"
 					/>
 				</IconTooltip>
@@ -681,11 +682,11 @@ const PortalTierRow = ({
 									})}
 									{"\u2001"}
 									<IconTooltip Label="GitHub">
-										<img
+										<ThemeIcon
 											src="/Image/GitHub.svg"
 											alt="GitHub"
-											width="20"
-											height="20"
+											width={20}
+											height={20}
 											className="h-5 w-5"
 										/>
 									</IconTooltip>
@@ -704,11 +705,11 @@ const PortalTierRow = ({
 									})}
 									{"\u2001"}
 									<IconTooltip Label="Google">
-										<img
+										<ThemeIcon
 											src="/Image/Google.svg"
 											alt="Google"
-											width="20"
-											height="20"
+											width={20}
+											height={20}
 											className="h-5 w-5"
 										/>
 									</IconTooltip>
@@ -727,11 +728,11 @@ const PortalTierRow = ({
 									})}
 									{"\u2001"}
 									<IconTooltip Label="GitLab">
-										<img
+										<ThemeIcon
 											src="/Image/GitLab.svg"
 											alt="GitLab"
-											width="20"
-											height="20"
+											width={20}
+											height={20}
 											className="h-5 w-5"
 										/>
 									</IconTooltip>

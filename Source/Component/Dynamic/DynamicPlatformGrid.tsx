@@ -279,7 +279,9 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
 						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							<span className="text-[var(--SpinegRPCFore)]">
+								//
+							</span>{" "}
 							Download
 						</p>
 						{Title && (

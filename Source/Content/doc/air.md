@@ -9,9 +9,9 @@ description:
 
 # Air
 
-`Air` is the `Rust` background-services element for `land.playform.cloud`. The source
-contains modules for updates, downloads, authentication, indexing, security,
-health, resilience, configuration, logging, metrics, and `Vine` `IPC`.
+`Air` is the `Rust` background-services element for `land.playform.cloud`. The
+source contains modules for updates, downloads, authentication, indexing,
+security, health, resilience, configuration, logging, metrics, and `Vine` `IPC`.
 
 `Air` is source-backed service plumbing. The public updater, release signing
 story, and installer distribution path are still being prepared.

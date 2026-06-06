@@ -8,9 +8,9 @@ description:
 
 # Maintain
 
-`Maintain` is the build orchestrator for `land.playform.cloud`. It coordinates `Rest`,
-`Output`, and other build-time elements into a single reproducible pipeline.
-Build logic is written in Rhai scripts rather than shell scripts, and
+`Maintain` is the build orchestrator for `land.playform.cloud`. It coordinates
+`Rest`, `Output`, and other build-time elements into a single reproducible
+pipeline. Build logic is written in Rhai scripts rather than shell scripts, and
 configurations are validated at compile time.
 
 ---
@@ -50,8 +50,9 @@ You run a single command and the build either succeeds or fails with a clear,
 actionable error. Build scripts are readable: Rhai's syntax is close to `Rust`,
 so anyone who can read the application code can read the build logic.
 
-`land.playform.cloud` currently builds and runs on **macOS 13+** and **Windows 10/11**.
-Linux (`WebKitGTK`) build support is part of the roadmap but not yet active.
+`land.playform.cloud` currently builds and runs on **macOS 13+** and **Windows
+10/11**. Linux (`WebKitGTK`) build support is part of the roadmap but not yet
+active.
 
 ---
 

@@ -3,16 +3,16 @@ title: "Architecture Overview"
 section: "Architecture"
 order: 4
 description:
-    "How land.playform.cloud's elements fit together: Mountain, Cocoon, Sky, Air, and
-    typed IPC."
+    "How land.playform.cloud's elements fit together: Mountain, Cocoon, Sky,
+    Air, and typed IPC."
 ---
 
 # Architecture Overview
 
-`land.playform.cloud` is split into named elements so the public architecture can be
-checked against source instead of guessed from a diagram. The primary desktop
-path is `Mountain`, the `Rust` + `Tauri` shell, running `Sky` in the operating
-system WebView and `Cocoon` as the `Node.js` extension host.
+`land.playform.cloud` is split into named elements so the public architecture
+can be checked against source instead of guessed from a diagram. The primary
+desktop path is `Mountain`, the `Rust` + `Tauri` shell, running `Sky` in the
+operating system WebView and `Cocoon` as the `Node.js` extension host.
 
 `Air` contains background service code for downloads, updates, authentication,
 indexing, health, and `Vine` `IPC`. Whether `Air` is part of a given build
@@ -91,8 +91,8 @@ preparation.
 
 ## Elements By Layer
 
-| Element                                          | Role                                                                             | Source status                           |
-| ------------------------------------------------ | -------------------------------------------------------------------------------- | --------------------------------------- |
+| Element                                                  | Role                                                                             | Source status                           |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------- |
 | [**Mountain**](https://land.playform.cloud/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge           | Primary desktop path                    |
 | [**Cocoon**](https://land.playform.cloud/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code                     | Primary extension path                  |
 | [**Sky**](https://land.playform.cloud/Doc/sky)           | Astro workbench routes and WebView bridge                                        | UI source present                       |
@@ -107,7 +107,7 @@ preparation.
 | [**Common**](https://land.playform.cloud/Doc/common)     | Shared Rust and TypeScript contracts                                             | Shared source present                   |
 | [**SideCar**](https://land.playform.cloud/Doc/sidecar)   | Host-specific sidecar binary packaging                                           | Source present                          |
 | [**Maintain**](https://land.playform.cloud/Doc/maintain) | Build and maintenance scripts                                                    | Source present                          |
-| **Worker**                                       | Browser-worker support for web shell concerns                                    | Source present, release scope varies    |
+| **Worker**                                               | Browser-worker support for web shell concerns                                    | Source present, release scope varies    |
 
 ---
 

@@ -9,9 +9,9 @@ description:
 
 # Worker
 
-`Worker` is the browser-worker layer for `land.playform.cloud` surfaces that need cached
-assets, versioned application files, or dynamic CSS import handling. It belongs
-to the web shell and WebView side of the system.
+`Worker` is the browser-worker layer for `land.playform.cloud` surfaces that
+need cached assets, versioned application files, or dynamic CSS import handling.
+It belongs to the web shell and WebView side of the system.
 
 `Worker` is source-backed, with release scope depending on the active build
 profile.

@@ -9,9 +9,9 @@ description:
 
 # Grove
 
-`Grove` is the `WebAssembly` extension-host path for `land.playform.cloud`. Where
-`Cocoon` runs `VS Code` extensions in a `Node.js` process, `Grove` contains a
-Wasmtime-backed path for extensions compiled to `WebAssembly` with
+`Grove` is the `WebAssembly` extension-host path for `land.playform.cloud`.
+Where `Cocoon` runs `VS Code` extensions in a `Node.js` process, `Grove`
+contains a Wasmtime-backed path for extensions compiled to `WebAssembly` with
 capability-oriented boundaries.
 
 `Grove` is WIP in the primary editor flow. The `gRPC` protocol definitions

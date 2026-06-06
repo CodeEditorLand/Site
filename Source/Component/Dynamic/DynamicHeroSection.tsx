@@ -328,7 +328,6 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							);
 						})}
 					</div>
-
 				</div>
 			</div>
 		</section>

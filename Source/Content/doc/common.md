@@ -3,14 +3,15 @@ title: "Common"
 section: "Element"
 order: 19
 description:
-    "Shared Rust and TypeScript contracts used across land.playform.cloud elements."
+    "Shared Rust and TypeScript contracts used across land.playform.cloud
+    elements."
 ---
 
 # Common
 
-`Common` is the shared contract layer for `land.playform.cloud`. It contains `Rust` and
-`TypeScript` types, traits, configuration helpers, DTOs, testing helpers, and
-service-boundary definitions that multiple elements depend on.
+`Common` is the shared contract layer for `land.playform.cloud`. It contains
+`Rust` and `TypeScript` types, traits, configuration helpers, DTOs, testing
+helpers, and service-boundary definitions that multiple elements depend on.
 
 It is not a standalone runtime process. The source includes helpers and
 dependencies that support shared behavior. `Common` centralizes cross-element

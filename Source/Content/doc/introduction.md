@@ -3,16 +3,17 @@ title: "Introduction"
 section: "Start"
 order: 0
 description:
-    "What land.playform.cloud is, how it is built, and what is source-backed today."
+    "What land.playform.cloud is, how it is built, and what is source-backed
+    today."
 ---
 
 # Introduction to land.playform.cloud
 
-`land.playform.cloud` is an open-source code editor stack built around `Rust`, `Tauri`,
-`Effect-TS`, and a `VS Code`-compatible extension host. `Mountain` is the
-`Rust` + `Tauri` desktop shell. `Sky` and `Wind` provide the `workbench` UI and
-service layer. `Cocoon` runs unmodified `VS Code` extension entry points through
-a `vscode` `API` shim where the `API` surface is implemented.
+`land.playform.cloud` is an open-source code editor stack built around `Rust`,
+`Tauri`, `Effect-TS`, and a `VS Code`-compatible extension host. `Mountain` is
+the `Rust` + `Tauri` desktop shell. `Sky` and `Wind` provide the `workbench` UI
+and service layer. `Cocoon` runs unmodified `VS Code` extension entry points
+through a `vscode` `API` shim where the `API` surface is implemented.
 
 The project is source-build first today. Public installers, release signing, and
 a full extension validation matrix are still in progress.
@@ -55,8 +56,8 @@ benchmark suite is published.
 
 ## Elements
 
-`land.playform.cloud` is composed of named elements. Each element is described by its
-source status and integration status.
+`land.playform.cloud` is composed of named elements. Each element is described
+by its source status and integration status.
 
 | Element      | Role                                                                           |
 | ------------ | ------------------------------------------------------------------------------ |

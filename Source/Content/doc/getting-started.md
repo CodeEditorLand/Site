@@ -2,7 +2,8 @@
 title: "Getting Started"
 section: "Start"
 order: 1
-description: "How to build and run land.playform.cloud from source on macOS or Windows."
+description:
+    "How to build and run land.playform.cloud from source on macOS or Windows."
 ---
 
 # Getting Started
@@ -11,9 +12,9 @@ description: "How to build and run land.playform.cloud from source on macOS or W
 > `Maintain/Debug/Build.sh` profile system. Canonical source:
 > [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
 
-`land.playform.cloud` is in active development and is currently source-only. There are
-no pre-built installers or package manager releases yet. The supported way to
-run the editor today is to build from source on **macOS or Windows**.
+`land.playform.cloud` is in active development and is currently source-only.
+There are no pre-built installers or package manager releases yet. The supported
+way to run the editor today is to build from source on **macOS or Windows**.
 
 ---
 

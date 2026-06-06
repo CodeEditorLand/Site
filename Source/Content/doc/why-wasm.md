@@ -12,9 +12,9 @@ touch files, spawn tools, open network connections, and react to workspace
 state. `Grove` is Land's WIP path for extensions that can run inside a
 `WebAssembly` runtime instead of broad `Node.js` access.
 
-The [`Grove`](https://land.playform.cloud/Doc/grove) source contains a Wasmtime host,
-`gRPC` protocol definitions, `API` surface, transport layer, and `WASM` runtime
-integration. The primary `VS Code` extension compatibility path remains
+The [`Grove`](https://land.playform.cloud/Doc/grove) source contains a Wasmtime
+host, `gRPC` protocol definitions, `API` surface, transport layer, and `WASM`
+runtime integration. The primary `VS Code` extension compatibility path remains
 `Cocoon`.
 
 ---

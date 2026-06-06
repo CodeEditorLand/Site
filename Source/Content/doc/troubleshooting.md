@@ -3,14 +3,15 @@ title: "Troubleshooting"
 section: "Support"
 order: 10
 description:
-    "Common issues and their solutions when running land.playform.cloud on macOS or
-    Windows."
+    "Common issues and their solutions when running land.playform.cloud on macOS
+    or Windows."
 ---
 
 # Troubleshooting
 
-This page covers the most common issues encountered when running `land.playform.cloud`
-on **macOS 13+** and **Windows 10/11**, along with diagnosis steps and fixes.
+This page covers the most common issues encountered when running
+`land.playform.cloud` on **macOS 13+** and **Windows 10/11**, along with
+diagnosis steps and fixes.
 
 ---
 
@@ -67,8 +68,8 @@ commands it contributes do not appear in the command palette.
 - Check the `engines.vscode` field in the extension's `package.json`. If it
   requires a `VS Code` version whose `API` surface is not yet implemented in
   `Cocoon`, the extension may silently fail. See
-  [`API` Reference](https://land.playform.cloud/Doc/api-reference) for the current
-  coverage table.
+  [`API` Reference](https://land.playform.cloud/Doc/api-reference) for the
+  current coverage table.
 - If the extension uses an `API` namespace listed as **Not Implemented** in the
   `API` Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`,
   `vscode.tests`), those calls will no-op at runtime.

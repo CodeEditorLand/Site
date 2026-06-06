@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { ThemeIcon } from "@Library/Theme";
 import {
 	Building2,
 	CircleCheck,
@@ -279,8 +280,11 @@ const DashboardUserInner = () => {
 							})}>
 							{T("dashboard.account.emailVerifiedBadge", {
 								defaultValue: "Verified",
-							})}
-							{" "}<CircleCheck aria-hidden="true" className="inline h-4 w-4 align-[-3px] text-[var(--SpinegRPCFore)]" />
+							})}{" "}
+							<CircleCheck
+								aria-hidden="true"
+								className="inline h-4 w-4 align-[-3px] text-[var(--SpinegRPCFore)]"
+							/>
 						</span>
 					)}
 				</span>
@@ -311,11 +315,11 @@ const DashboardUserInner = () => {
 				</span>
 				<span className="flex items-center gap-1.5 text-muted-foreground">
 					{ProviderIcon && (
-						<img
+						<ThemeIcon
 							src={ProviderIcon}
 							alt={ProviderLabel}
-							width="14"
-							height="14"
+							width={14}
+							height={14}
 							className="h-3.5 w-3.5"
 						/>
 					)}
@@ -356,8 +360,11 @@ const DashboardUserInner = () => {
 				<div className="mt-2 border border-green-200 bg-green-50 px-3 py-2 text-green-700">
 					{T("dashboard.account.enterpriseSSO", {
 						defaultValue: "Enterprise SSO active",
-					})}
-					{" "}<Building2 aria-hidden="true" className="inline h-4 w-4 align-[-3px]" />
+					})}{" "}
+					<Building2
+						aria-hidden="true"
+						className="inline h-4 w-4 align-[-3px]"
+					/>
 				</div>
 			)}
 
@@ -366,8 +373,11 @@ const DashboardUserInner = () => {
 				<div className="mt-2 border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
 					{T("dashboard.account.emailNotVerified", {
 						defaultValue: "Email not verified. Check your inbox.",
-					})}
-					{" "}<TriangleAlert aria-hidden="true" className="inline h-4 w-4 align-[-3px]" />
+					})}{" "}
+					<TriangleAlert
+						aria-hidden="true"
+						className="inline h-4 w-4 align-[-3px]"
+					/>
 				</div>
 			)}
 

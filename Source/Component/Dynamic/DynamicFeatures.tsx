@@ -1,3 +1,4 @@
+import { ThemeIcon } from "@Library/Theme";
 import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -73,16 +74,6 @@ const FeatureIconLabelMap: Record<string, string> = {
  * Per-icon semantic color - each icon has its OWN color based on what it
  * represents in the technology stack, independent of which feature card
  * it appears in. This ensures visual delineation across the color matrix.
- *
- * Groups:
- * Rust/perf → ExtensionRust (red)
- * VS Code/ext → SpineIPC (blue)
- * Effect-TS → ExtensionEffectTypeScript (cyan)
- * Platform/OS → OSMacOS (gray)
- * Build tools → ToolBiome (emerald via SpinegRPC)
- * Open source → SpinegRPC (green)
- * Security → SpineWASM (purple)
- * Storage → SpineTCP (orange)
  */
 const IconSemanticColorMap: Record<string, string> = {
 	Zap: "var(--ExtensionRust)",
@@ -174,7 +165,9 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
 						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">//</span>{" "}
+							<span className="text-[var(--SpinegRPCFore)]">
+								//
+							</span>{" "}
 							Features
 						</p>
 						{Title && (
@@ -194,7 +187,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className={`StaccatoMorphGap grid items-start min-h-0 ${
+					className={`StaccatoMorphGap grid min-h-0 items-start ${
 						ColumnClass[Columns]
 					} ${GapClass[Gap]} mx-auto max-w-6xl`}>
 					{Features.map((Feature) => {
@@ -238,7 +231,6 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 									<h3 className="font-mono text-sm font-semibold leading-snug">
 										{Feature.Title}
 									</h3>
-									{/* Card header icon — tinted accent bg matches the spine color */}
 									<div
 										className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-none"
 										style={{
@@ -261,9 +253,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											<span
 												className="inline-flex items-center align-middle"
 												role="img"
-												aria-label={`${
-													Feature.Title
-												} technology stack`}>
+												aria-label={`${Feature.Title} technology stack`}>
 												{Feature.Icons.map(
 													(IconName, IconIndex) => {
 														const IsBrandSvg =
@@ -321,15 +311,19 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 																		Label={
 																			StackLabel
 																		}>
-																		<img
+																		<ThemeIcon
 																			src={
 																				IconName
 																			}
 																			alt={
 																				StackLabel
 																			}
-																			width="16"
-																			height="16"
+																			width={
+																				16
+																			}
+																			height={
+																				16
+																			}
 																			className="inline h-4 w-4"
 																			aria-hidden="true"
 																		/>

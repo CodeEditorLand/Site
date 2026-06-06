@@ -3,8 +3,8 @@ title: "Extension Development"
 section: "Development"
 order: 7
 description:
-    "Build and test extensions for land.playform.cloud using the VS Code extension
-    toolchain."
+    "Build and test extensions for land.playform.cloud using the VS Code
+    extension toolchain."
 ---
 
 # Extension Development
@@ -152,8 +152,8 @@ features silently no-op at runtime:
 - `vscode.notebook.*` - notebook documents and editors
 - `vscode.tests.*` - test explorer and runner
 
-See [`API` Reference](https://land.playform.cloud/Doc/api-reference) for the full
-coverage table.
+See [`API` Reference](https://land.playform.cloud/Doc/api-reference) for the
+full coverage table.
 
 ---
 

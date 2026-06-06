@@ -9,10 +9,10 @@ description:
 
 # Vine
 
-`Vine` is the wire protocol for `land.playform.cloud` - a set of Protocol Buffers
-schemas (`.proto` files) that define the bidirectional `gRPC` service interfaces
-used between `Mountain` (the `Rust` kernel) and `Cocoon` (the `Node.js`
-extension host). All inter-process communication that crosses the
+`Vine` is the wire protocol for `land.playform.cloud` - a set of Protocol
+Buffers schemas (`.proto` files) that define the bidirectional `gRPC` service
+interfaces used between `Mountain` (the `Rust` kernel) and `Cocoon` (the
+`Node.js` extension host). All inter-process communication that crosses the
 `Mountain`↔`Cocoon` boundary goes through `Vine`.
 
 **Where the implementation lives today:** The working proto definitions and
@@ -110,11 +110,12 @@ extension host.
 
 ## Relationship to Mist
 
-[`architecture.md`](https://land.playform.cloud/Doc/architecture) lists `Mist` as a
-separate WebSocket communication layer. `Mist` handles `Sky` (the OS WebView
-UI)↔`Mountain` communication over WebSockets, which is a different transport
-from `Vine`'s `gRPC`. `Vine` is specifically the `Mountain`↔`Cocoon` layer. The
-two protocols are not interchangeable and serve different parts of the system.
+[`architecture.md`](https://land.playform.cloud/Doc/architecture) lists `Mist`
+as a separate WebSocket communication layer. `Mist` handles `Sky` (the OS
+WebView UI)↔`Mountain` communication over WebSockets, which is a different
+transport from `Vine`'s `gRPC`. `Vine` is specifically the `Mountain`↔`Cocoon`
+layer. The two protocols are not interchangeable and serve different parts of
+the system.
 
 ---
 

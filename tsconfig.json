@@ -9,7 +9,8 @@
 		"paths": {
 			"@/*": ["Source/*"],
 			"@Function/*": ["Source/Function/*"],
-			"@Variable/*": ["Source/Variable/*"]
+			"@Variable/*": ["Source/Variable/*"],
+			"@Library/*": ["Source/Library/*"]
 		},
 
 		"emitDeclarationOnly": false,

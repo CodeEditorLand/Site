@@ -3,7 +3,8 @@ title: "Contributing"
 section: "Community"
 order: 9
 description:
-    "How to contribute code, documentation, or translations to land.playform.cloud."
+    "How to contribute code, documentation, or translations to
+    land.playform.cloud."
 ---
 
 # Contributing to land.playform.cloud
@@ -12,8 +13,8 @@ description:
 > `Maintain/Debug/Build.sh`. Submodule paths corrected. Canonical source:
 > [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
 
-`land.playform.cloud` is open source and welcomes contributions. The full contributing
-guide is at
+`land.playform.cloud` is open source and welcomes contributions. The full
+contributing guide is at
 [CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md)
 on GitHub.
 

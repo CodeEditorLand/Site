@@ -119,7 +119,9 @@ export default () => {
 
 			{/* Delete Account */}
 			<div>
-				<h3 className="mb-2 font-mono text-sm font-semibold">Delete Account</h3>
+				<h3 className="mb-2 font-mono text-sm font-semibold">
+					Delete Account
+				</h3>
 				<p className="mb-6 text-muted-foreground">
 					Permanently delete your account and all associated personal
 					data under GDPR Article 17. This action is irreversible.

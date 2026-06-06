@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+import { ThemeIcon } from "@Library/Theme";
 import { Eye, EyeOff, Lock, MailCheck, ShieldCheck } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,7 +27,7 @@ const Pii = ({
 	</span>
 );
 
-// ── Source badge ────────────────────────────────────────────────────────────
+// ── Source badge ────────────────────────────────────────────────────────
 
 const SourceBadge = ({
 	label,
@@ -37,11 +38,11 @@ const SourceBadge = ({
 }) => (
 	<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
 		{icon && (
-			<img
+			<ThemeIcon
 				src={icon}
 				alt={label}
-				width="10"
-				height="10"
+				width={10}
+				height={10}
 				className="h-2.5 w-2.5"
 			/>
 		)}
@@ -476,11 +477,11 @@ const AccountProfileInner = ({
 						</span>
 						{ProviderIcon ? (
 							<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-2 py-0.5 text-sm font-medium text-muted-foreground">
-								<img
+								<ThemeIcon
 									src={ProviderIcon}
 									alt={ProviderLabel}
-									width="12"
-									height="12"
+									width={12}
+									height={12}
 									className="h-3 w-3"
 								/>
 								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
@@ -693,11 +694,11 @@ const AccountProfileInner = ({
 						value={
 							<span className="flex items-center gap-1.5">
 								{ProviderIcon && (
-									<img
+									<ThemeIcon
 										src={ProviderIcon}
 										alt={ProviderLabel}
-										width="14"
-										height="14"
+										width={14}
+										height={14}
 										className="h-3.5 w-3.5"
 									/>
 								)}

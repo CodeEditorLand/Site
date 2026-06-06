@@ -37,7 +37,9 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 			variant="ghost"
 			size="icon"
 			onClick={Toggle}
-			aria-label={IsDark ? "Switch to light theme" : "Switch to dark theme"}
+			aria-label={
+				IsDark ? "Switch to light theme" : "Switch to dark theme"
+			}
 			title={IsDark ? "Light" : "Dark"}
 			className={ClassName}>
 			{/* Both icons render; CSS shows the relevant one per theme so the
