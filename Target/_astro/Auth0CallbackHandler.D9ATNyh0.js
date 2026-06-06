@@ -1,1 +1,0 @@
-import"./Vendor/React.cF6GepmV.js";export{A as default}from"./Footer.CbSUZM-e.js";
