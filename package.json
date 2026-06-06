@@ -35,8 +35,8 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.9",
-		"@astrojs/mdx": "6.0.1",
-		"@astrojs/react": "5.0.6",
+		"@astrojs/mdx": "6.0.2",
+		"@astrojs/react": "5.0.7",
 		"@astrojs/sitemap": "3.7.3",
 		"@astrojs/ts-plugin": "1.10.9",
 		"@auth0/auth0-react": "~2.17.0",
@@ -79,11 +79,11 @@
 		"@types/postcss-import": "14.0.3",
 		"@types/postcss-reporter": "7.0.5",
 		"@types/postcss-url": "10.0.4",
-		"@types/react": "19.2.15",
+		"@types/react": "19.2.17",
 		"@types/react-dom": "19.2.3",
 		"@types/trusted-types": "2.0.7",
 		"@vitejs/plugin-react": "6.0.2",
-		"astro": "6.4.2",
+		"astro": "6.4.4",
 		"astro-capo": "0.0.1",
 		"astrojs-service-worker": "2.0.0",
 		"autoprefixer": "10.5.0",
@@ -96,8 +96,8 @@
 		"embla-carousel-react": "8.6.0",
 		"esbuild": "0.28.0",
 		"firebase": "12.14.0",
-		"happy-dom": "20.9.0",
-		"i18next": "26.3.0",
+		"happy-dom": "20.10.1",
+		"i18next": "26.3.1",
 		"input-otp": "1.4.2",
 		"jsdom": "29.1.1",
 		"lucide-react": "1.17.0",
@@ -108,10 +108,10 @@
 		"postcss-import": "16.1.1",
 		"postcss-reporter": "7.1.0",
 		"postcss-url": "10.1.4",
-		"react": "19.2.6",
+		"react": "19.2.7",
 		"react-day-picker": "10.0.1",
-		"react-dom": "19.2.6",
-		"react-hook-form": "7.76.1",
+		"react-dom": "19.2.7",
+		"react-hook-form": "7.77.0",
 		"react-i18next": "17.0.8",
 		"react-resizable-panels": "4.11.2",
 		"recharts": "3.8.1",
@@ -123,8 +123,8 @@
 		"typescript": "6.0.3",
 		"ulid": "3.0.2",
 		"vaul": "1.1.2",
-		"vite": "8.0.14",
-		"vitest": "4.1.7",
+		"vite": "8.0.16",
+		"vitest": "4.1.8",
 		"zod": "4.4.3"
 	},
 	"publishConfig": {
@@ -133,6 +133,6 @@
 	},
 	"devDependencies": {
 		"@testing-library/dom": "^10.4.1",
-		"react-is": "^19.2.6"
+		"react-is": "^19.2.7"
 	}
 }
