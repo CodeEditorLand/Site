@@ -1,15 +1,13 @@
 <svg width="2048" height="2048" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
-	<g clip-path="url(#clip0_106_32)">
-		<rect width="2048" height="2048" rx="21" transform="matrix(-1 0 0 1 2048 0)" fill="#151515"
-			fill-opacity="0.21" />
-		<rect width="2111.08" height="1303.62" rx="191.917" transform="matrix(-0.93358 0.358368 0 1 1023.68 -655.946)"
-			fill="#EAEAEA" fill-opacity="0.21" />
-		<rect width="2111.08" height="1303.62" rx="191.917" transform="matrix(-0.93358 0.358368 0 1 2997.68 641.776)"
-			fill="#EAEAEA" fill-opacity="0.21" />
-	</g>
-	<defs>
-		<clipPath id="clip0_106_32">
-			<rect width="2048" height="2048" rx="21" transform="matrix(-1 0 0 1 2048 0)" fill="white" />
-		</clipPath>
-	</defs>
+<g clip-path="url(#clip0_106_32)">
+<rect width="2048" height="2048" rx="21" transform="matrix(-1 0 0 1 2048 0)" fill="#151515" fill-opacity="0.21"/>
+<path d="M3291.4 -656.5H-654.5V3289.4H3291.4V-656.5Z" fill="white"/>
+<path d="M948.522 206.666H331.976V2426.23H948.522V206.666Z" fill="#151515"/>
+<path d="M2428.23 1809.69H331.976V2426.23H2428.23V1809.69Z" fill="#151515"/>
+</g>
+<defs>
+<clipPath id="clip0_106_32">
+<rect width="2048" height="2048" rx="21" transform="matrix(-1 0 0 1 2048 0)" fill="white"/>
+</clipPath>
+</defs>
 </svg>
