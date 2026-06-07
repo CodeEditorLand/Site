@@ -121,24 +121,26 @@ const T = GetI18n();
 		 stylesheet as a high-priority fetch. The font CSS file itself is small
 		 (~1 KB) and declares the @font-face rules that trigger woff2 downloads.
 		 Preloading the stylesheet eliminates the render-blocking parser delay
-		 while keeping font-display: optional to prevent CLS from font swap. -->
+		 while using font-display: swap for reliable loading. CLS from font swap
+		 is prevented by font-size-adjust: 0.52 in Global.css (matches Geist's
+		 x-height ratio). -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
 			rel="preload"
 			as="style"
-			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=optional"
+			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
 		/>
 		<link
 			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=optional"
+			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
 			media="print"
 			onload="this.media='all'"
 		/>
 		<noscript>
 			<link
 				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=optional"
+				href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
 			/>
 		</noscript>
 
