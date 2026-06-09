@@ -3,7 +3,7 @@ title: "VS Code Extension Compatibility in Land"
 summary:
     "How Land runs unmodified VS Code extensions, and where coverage still needs
     validation."
-publishedAt: "2026-04-03"
+publishedAt: "2026-05-23"
 tags: ["Extensions", "VS Code", "Compatibility"]
 author: "CodeEditorLand"
 readTime: 6
@@ -20,7 +20,8 @@ changes.
 That means Land can make a strong, useful claim: installed `VS Code` extensions
 run unmodified through `Cocoon` when the APIs they use are implemented.
 
-Coverage is partial: extensions that rely on unimplemented API surface will not
+Current weighted coverage across the measured `vscode.*` namespaces is
+approximately 88%. Extensions that rely on unimplemented API surface will not
 activate correctly. No public validation matrix across extensions and versions
 exists yet.
 
@@ -38,9 +39,10 @@ Host environment:
 - `PatchProcess` hardens the environment immediately: patches `process.exit`,
   handles uncaught exceptions, pipes logs to `Mountain`, and terminates if the
   parent process exits.
-- `Effect/Bootstrap.ts` coordinates initialization stages: environment
-  detection, configuration loading, gRPC connection, module interceptor setup,
-  extension registry, and health checks.
+- `Effect/Bootstrap.ts` coordinates initialization stages: `RPCServer` binds
+  first, then `MountainConnection` connects to Mountain's Vine server. This
+  ordering matters - Mountain waits for Cocoon's gRPC port to be ready before
+  proceeding.
 - The `AppLayer` (wired via `Service/Mapping.ts`) composes all Effect-TS service
   layers into a single runnable unit.
 
@@ -75,6 +77,18 @@ Vine protocol with bidirectional streaming for real-time event communication.
 
 ## What Is Source-Backed Today
 
+Weighted coverage across the actively measured namespaces is approximately 88%:
+
+| Namespace                    | Coverage |
+| ---------------------------- | -------- |
+| `vscode.window` (TextEditor) | ~95%     |
+| `vscode.workspace`           | ~96%     |
+| `vscode.scm`                 | ~95%     |
+| `vscode.window` (overall)    | ~95%     |
+| `vscode.languages` / LSP     | ~95%     |
+
+Source-backed surfaces include:
+
 - `Cocoon` hosts existing extension code instead of asking authors to fork or
   rewrite their extension.
 - `Mountain` contains extension scanning, manifest parsing, local VSIX install
@@ -84,17 +98,33 @@ Vine protocol with bidirectional streaming for real-time event communication.
 - Core surfaces such as commands, workspace, window, terminals, webviews,
   language providers, diagnostics, output channels, and document events have
   active source paths.
+- File system event notifications: `$acceptDidCreateFiles`,
+  `$acceptDidDeleteFiles`, and `$acceptDidRenameFiles` are fired to `Cocoon`
+  when the underlying operations complete.
+- Encrypted secret storage (`encryption:encrypt` / `encryption:decrypt`) backed
+  by AES-256-GCM with a machine-stable key.
+- File descriptor table (`file:open`, `file:close`) and file watcher
+  registration (`file:watch`, `file:unwatch`).
+- Expanded PTY handlers: `localPty:attachToProcess`,
+  `localPty:detachFromProcess`, `localPty:reviveTerminalProcesses`,
+  `localPty:freePortKillProcess`.
+- Fifteen-plus `nativeHost:*` handlers covering clipboard, dialog, environment
+  paths, process management, shell command installation, and window control.
 
 ## In Progress
 
 - Marketplace browsing and install flows beyond local or sideloaded extension
   sources.
-- Chat, language-model, notebook, tests, and other long-tail `VS Code` APIs.
-- A public extension validation matrix that names extensions, versions,
-  platforms, and the APIs they exercised.
 - `vscode.lm.*`, `vscode.chat.*`, `vscode.notebook.*`, and `vscode.tests.*` are
   not implemented. Extensions using these APIs activate but the specific
   features silently no-op.
+- A public extension validation matrix that names extensions, versions,
+  platforms, and the APIs they exercised.
+- Inline completion provider registration
+  (`register_inline_completion_item_provider`) requires a Mountain gRPC entry;
+  Copilot inline completions do not yet work end-to-end.
+- Real OAuth flows for `vscode.authentication` (GitHub, Copilot); the current
+  implementation returns empty session lists.
 
 ## Marketplace Integration
 

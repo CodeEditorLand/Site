@@ -5,7 +5,7 @@ title:
 summary:
     "The complete end-to-end process from launching the native binary to a fully
     initialized editor with running extensions."
-publishedAt: "2026-05-15"
+publishedAt: "2026-05-22"
 tags: ["Architecture", "Bootstrap", "Mountain", "Cocoon", "IPC"]
 author: "CodeEditorLand"
 readTime: 8
@@ -39,14 +39,14 @@ The background task then runs three operations in sequence:
   from disk into `AppState`.
 - `ExtensionManagement` scans extension directories, reads manifests, and
   populates the extension list in `AppState`.
-- `vine::server::Initialize` starts the gRPC server that will listen for
+- `vine::server::Initialize` starts the Vine gRPC server that will listen for
   connections from Cocoon.
 
 Finally, `handlers::process_management::InitializeCocoon` is called. This
 executes `LaunchAndManageCocoonSidecar` from
 `ProcessManagement/CocoonManagement.rs`.
 
-## Phase 2: The Cocoon Sidecar Spawns
+## Phase 2: The Cocoon Sidecar Spawns and Bootstraps
 
 `LaunchAndManageCocoonSidecar` constructs a detailed environment block for the
 child process, including `VSCODE_PARENT_PID` for automatic shutdown if Mountain
@@ -58,11 +58,33 @@ node ./Element/Cocoon/Scripts/cocoon/bootstrap-fork.js
 
 Cocoon is now a separate Node.js process. Its first action is hardening:
 `PatchProcess` patches `process.exit`, pipes `console.log` to Mountain, and
-registers an uncaught exception handler. Then `IpcProvider` starts Cocoon's gRPC
-client.
+registers an uncaught exception handler.
 
-Upon successful connection to Mountain's Vine gRPC server, Cocoon sends the
-`$initialHandshake` notification and waits for the response.
+Cocoon's bootstrap then runs its stages in a specific order that is critical to
+correct operation:
+
+**Stage 1 -- RPCServer binds first.** Cocoon starts its own gRPC server on port
+`NetworkCocoonPort` (default 50052). This is the server that Mountain calls back
+into during and after the handshake. The server must be listening before any
+connection to Mountain is attempted, because Mountain will try to reach Cocoon
+immediately upon receiving the initial handshake signal.
+
+**Stage 2 -- MountainConnection connects second.** Only after the RPCServer is
+bound does Cocoon start its gRPC client and connect to Mountain's Vine server.
+The connection uses a retry loop with reduced probe retries (3 attempts) and a
+maximum of 5 overall attempts. The gRPC channel budget for Mountain to reach
+back into Cocoon is 30 seconds.
+
+**Why this order matters.** The original bootstrap ran MountainConnection
+(connecting outward to Mountain) before starting RPCServer (Cocoon's own inbound
+server). Mountain receives the initial connection, immediately tries to call
+back into Cocoon to deliver initialization data, and times out after 20 seconds
+waiting for a server that Cocoon had not yet started. The fix reverses the stage
+order so Cocoon's inbound gRPC port is ready before it announces itself to
+Mountain.
+
+Upon successful connection, Cocoon sends the `$initialHandshake` notification
+and waits for the response from Mountain.
 
 ## Phase 3: The Handshake
 
@@ -74,6 +96,8 @@ gathering:
 - Extension manifest data
 - Configuration snapshots
 - Feature flags and tier settings
+- Required `ISandboxConfiguration` fields including `profiles`, `logsPath`,
+  `dataFolderName`, `mainPid`, and OS metadata
 
 This payload is sent back to Cocoon via `initExtensionHost` gRPC request. Cocoon
 receives it and creates the `InitDataLayer`, then runs `FullAppInitialization`.
@@ -115,7 +139,7 @@ The three processes are now running and communicating:
 | Wind/Sky | TypeScript | Tauri IPC (`invoke` system)   |
 
 Two independent IPC paths exist by design. Tauri IPC handles native work: files,
-terminals, clipboard, search, and configuration work. Vine gRPC handles
+terminals, clipboard, search, and configuration. Vine gRPC handles
 extension-host startup, document notifications, language provider requests,
 cancellation, and streaming routes.
 
@@ -123,10 +147,12 @@ cancellation, and streaming routes.
 
 The startup order is not arbitrary. Mountain must be fully initialized before
 Cocoon spawns, because Cocoon needs configuration and extension data to
-bootstrap. The handshake ensures Cocoon does not start activating extensions
-until Mountain is ready to receive proxied API calls. The UI loads in parallel
-with the handshake, but the workbench cannot render useful state until both
-Mountain and Cocoon have completed their initialization.
+bootstrap. Within Cocoon's own bootstrap, the inbound gRPC server must be ready
+before the outbound connection to Mountain is established, because Mountain
+immediately tries to call back with initialization data once the handshake
+signal arrives. The UI loads in parallel with the handshake, but the workbench
+cannot render useful state until both Mountain and Cocoon have completed their
+initialization.
 
 This is the foundational workflow. Every user action -- opening a file, running
 a command, triggering a language feature -- flows through the state established

@@ -5,7 +5,7 @@ title:
 summary:
     "How Cocoon runs VS Code extensions in supervised Effect-TS fibers with
     module interception and gRPC-backed API shims."
-publishedAt: "2026-05-15"
+publishedAt: "2026-05-23"
 tags: ["Extensions", "Cocoon", "Effect-TS", "Architecture", "Modules"]
 author: "CodeEditorLand"
 readTime: 10
@@ -53,10 +53,17 @@ order:
 
 1. Environment detection (OS, Node version, platform data)
 2. Configuration loading
-3. gRPC connection establishment
-4. Module interceptor installation
-5. Extension registry population
-6. Health check setup
+3. RPCServer startup - Cocoon binds its gRPC port (Phase 2, fixed 2026-05-22)
+4. MountainConnection - connects outbound to Mountain's Vine server (Phase 3)
+5. Module interceptor installation
+6. Extension registry population
+7. Health check setup
+
+The ordering of steps 3 and 4 matters. Previously these were reversed: Cocoon
+attempted the outbound Mountain connection before its own gRPC port was bound.
+Mountain's connection budget expired after 20 seconds waiting for a port that
+was not yet listening. The fix ensures `RPCServer` is up before
+`MountainConnection` fires.
 
 When the gRPC connection to Mountain's Vine server succeeds, Cocoon sends the
 `$initialHandshake` notification and waits for `initExtensionHost` to return
@@ -202,6 +209,17 @@ updates would lag behind and introduce compatibility gaps.
 
 ## What Works and What Does Not
 
+Weighted coverage across the actively measured `vscode.*` namespaces is
+approximately 88%:
+
+| Namespace                    | Coverage |
+| ---------------------------- | -------- |
+| `vscode.window` (TextEditor) | ~95%     |
+| `vscode.workspace`           | ~96%     |
+| `vscode.scm`                 | ~95%     |
+| `vscode.window` (overall)    | ~95%     |
+| `vscode.languages` / LSP     | ~95%     |
+
 Source-backed compatibility today:
 
 - Core extension activation and lifecycle
@@ -209,6 +227,18 @@ Source-backed compatibility today:
   diagnostics, output channels, and document events
 - ESM module interception (beyond what VS Code's own extension host supports)
 - Typed error handling and resource cleanup through Effect-TS fibers
+- File system event notifications: `$acceptDidCreateFiles`,
+  `$acceptDidDeleteFiles`, and `$acceptDidRenameFiles` fired to Cocoon on
+  underlying operation completion
+- Encrypted secret storage (`encryption:encrypt` / `encryption:decrypt`) using
+  AES-256-GCM with a machine-stable key derived from the hardware UUID
+- File descriptor table (`file:open`, `file:close`) and file watcher
+  registration (`file:watch`, `file:unwatch`)
+- Expanded PTY handlers: `localPty:attachToProcess`,
+  `localPty:detachFromProcess`, `localPty:reviveTerminalProcesses`,
+  `localPty:freePortKillProcess`
+- Fifteen-plus `nativeHost:*` handlers covering clipboard, dialog, environment
+  paths, process management, shell command installation, and window control
 
 Not yet implemented:
 

@@ -36,7 +36,7 @@
 		"pageSubtitle": "Everything you need to install, build, and contribute to Land.",
 		"gettingStarted": {
 			"title": "Get Started in Minutes",
-			"description": "The README walks you through installation, first build, and the six-element architecture. No prior Rust or Tauri knowledge required."
+			"description": "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required."
 		},
 		"issueTracker": {
 			"title": "Report a Bug or Request a Feature",
@@ -47,7 +47,7 @@
 			"intro": "VS Code runs on Electron: a Chromium browser, a Node.js runtime, and a single-threaded extension host. Land replaces each of these piece by piece with elements that preserve the VS Code extension API while eliminating the architectural constraints that cause the RAM tax, the blocked editor, and the slow startup. Each of the fifteen elements is an independent open-source repository:",
 			"mountain": {
 				"subtitle": "No Electron. No Chromium. No IPC tax.",
-				"description": "VS Code's main process is Electron: a bundled Chromium instance plus Node.js. Every window adds another renderer process heap. Every OS interaction crosses a JSON IPC pipe.\n\nMountain replaces it entirely with a Rust binary using Tauri. The OS's own WebView renders the UI. File dialogs, clipboard, and window management go directly to the OS. Authentication tokens live in the keychain. RAM footprint drops 60-80% per window."
+				"description": "VS Code's main process is Electron: a bundled Chromium instance plus Node.js. Every window adds another renderer process heap. Every OS interaction crosses a JSON IPC pipe.\n\nMountain replaces it entirely with a Rust binary using Tauri. The OS's own WebView renders the UI. File dialogs, clipboard, and window management go directly to the OS. Authentication tokens live in the native OS keychain."
 			},
 			"cocoon": {
 				"subtitle": "Every VS Code extension runs. Nothing blocks.",
@@ -79,7 +79,7 @@
 			},
 			"rest": {
 				"subtitle": "VS Code's TypeScript build step. 2-3x faster.",
-				"description": "VS Code's TypeScript build uses tsc with Node.js overhead on every incremental compile. Build times grow with project size.\n\nRest is an OXC-powered TypeScript compiler implemented in Rust. 100% compatible output at 2-3x the speed of esbuild. Zero Node.js overhead in the build path."
+				"description": "VS Code's TypeScript build uses tsc with Node.js overhead on every incremental compile. Build times grow with project size.\n\nRest is an OXC-powered TypeScript compiler implemented in Rust. Zero Node.js overhead in the build path. Source map support and public benchmarks are in progress."
 			},
 			"output": {
 				"subtitle": "Same commit. Same output. Every time.",
