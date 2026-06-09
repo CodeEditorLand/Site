@@ -141,253 +141,127 @@ export const SemanticAlias: Record<string, string> = {
 	"/auth-callback": "/OAuth/Success",
 };
 
-// ─── Dynamic variant generation ───
-// Generates all reasonable case permutations, singular/plural forms,
-// abbreviation prefixes, and hyphenated variants for each PascalCase
-// canonical path. The SW normalizes to lowercase at runtime, so these
-// are primarily for _redirects (Cloudflare) and RouteMap.json (404 fallback).
+// ─── Simplified variant generation ───
+// Generates the practically useful URL variants:
+//   - lowercase  (most common non-canonical form typed by users / crawlers)
+//   - UPPERCASE  (protocol-level or legacy clients)
+//   - PascalCase (the canonical form - excluded as "not a variant")
+//   - TitleCase  (first-letter-upper, rest-lower - same as PascalCase for one-word segments)
+//   - kebab-case, snake_case, concatenated  (for compound PascalCase segments like ForgotPassword)
+//   - flat forms for multi-segment paths  (/accountsignin, /account-signin)
+//
+// Deliberately omitted (no real user ever types these):
+//   - Progressive-case mixing  (ACcount, aCCOUNT, …)
+//   - Abbreviation prefixes    (/ac, /acc, /acco → /Account)
 
-// Generate case variants for a single segment.
-// For "Account" → account, ACCOUNT, Account, ACcount, ACCount, ACCOunt,
-// ACCOUnt, ACCOUNt, ACCOUNT, Acc, ACC, acc, acco, ACCO, etc.
-const GenerateSegmentCaseVariant = (PascalSegment: string): string[] => {
-	const Lower = PascalSegment.toLowerCase();
-	const Upper = PascalSegment.toUpperCase();
-	const Variant = new Set<string>();
-
-	// Basic forms
-	Variant.add(Lower);
-	Variant.add(Upper);
-	Variant.add(PascalSegment);
-
-	// Title case (first letter upper, rest lower)
-	Variant.add(
-		PascalSegment.charAt(0).toUpperCase() +
-			PascalSegment.slice(1).toLowerCase(),
-	);
-
-	// Progressive uppercase from start:
-	// ACcount, ACCount, ACCOunt, ACCOUnt, ACCOUNt, ACCOUNT
-	for (let Index = 1; Index <= PascalSegment.length; Index++) {
-		Variant.add(Upper.slice(0, Index) + Lower.slice(Index));
-	}
-
-	// Progressive lowercase from start:
-	// aCCOUNT, acCOUNT, accOUNT, accoUNT, accouNT, accountT
-	for (let Index = 1; Index < PascalSegment.length; Index++) {
-		Variant.add(Lower.slice(0, Index) + Upper.slice(Index));
-	}
-
-	return [...Variant];
-};
-
-// Generate singular/plural variants for a segment
-const GenerateNumberVariant = (Segment: string): string[] => {
+// Case variants for one segment: lower, UPPER, PascalCase, TitleCase
+const SegmentCases = (Segment: string): string[] => {
 	const Lower = Segment.toLowerCase();
-	const Result = [Lower];
+	const Upper = Segment.toUpperCase();
+	const Title =
+		Segment.charAt(0).toUpperCase() + Segment.slice(1).toLowerCase();
 
-	// Plural → singular
-	if (Lower.endsWith("ies") && Lower.length > 4) {
-		Result.push(Lower.slice(0, -3) + "y");
-	} else if (
-		Lower.endsWith("ses") ||
-		Lower.endsWith("xes") ||
-		Lower.endsWith("zes") ||
-		Lower.endsWith("ches") ||
-		Lower.endsWith("shes")
-	) {
-		Result.push(Lower.slice(0, -2));
-	} else if (
+	return [...new Set([Lower, Upper, Segment, Title])];
+};
+
+// Singular ↔ plural for one lowercase segment
+const SegmentNumber = (Lower: string): string[] => {
+	const Result = new Set([Lower]);
+
+	if (Lower.endsWith("ies") && Lower.length > 4)
+		Result.add(Lower.slice(0, -3) + "y");
+	else if (/(?:ses|xes|zes|ches|shes)$/.test(Lower))
+		Result.add(Lower.slice(0, -2));
+	else if (
 		Lower.endsWith("s") &&
-		!Lower.endsWith("ss") &&
-		!Lower.endsWith("us") &&
-		!Lower.endsWith("is") &&
+		!/(?:ss|us|is)$/.test(Lower) &&
 		Lower.length > 2
-	) {
-		Result.push(Lower.slice(0, -1));
-	}
+	)
+		Result.add(Lower.slice(0, -1));
 
-	// Singular → plural
-	if (!Lower.endsWith("s")) {
-		Result.push(Lower + "s");
-	}
+	if (!Lower.endsWith("s")) Result.add(Lower + "s");
 
-	return Result;
+	return [...Result];
 };
 
-// Generate abbreviation prefixes for a segment (2-4 chars)
-const GenerateAbbreviationPrefix = (PascalSegment: string): string[] => {
-	const Lower = PascalSegment.toLowerCase();
-	const Upper = PascalSegment.toUpperCase();
-	const Prefix: string[] = [];
+// Compound variants for a PascalCase segment: kebab, snake, concat, dot
+// e.g. "ForgotPassword" → ["forgot-password", "forgot_password", "forgotpassword", "forgot.password"]
+const SegmentCompound = (Segment: string): string[] => {
+	const Words = Segment.match(/[A-Z][a-z]*/g);
 
-	// Only generate prefixes if the segment is long enough (> 4 chars)
-	// to avoid ambiguity with very short segments
-	if (Lower.length > 4) {
-		for (
-			let Length = 2;
-			Length <= Math.min(4, Lower.length - 1);
-			Length++
-		) {
-			Prefix.push(Lower.slice(0, Length));
-			Prefix.push(Upper.slice(0, Length));
+	if (!Words || Words.length < 2) return [];
 
-			// Title case prefix
-			Prefix.push(Upper.charAt(0) + Lower.slice(1, Length));
-		}
-	}
+	const Lower = Words.map((W) => W.toLowerCase());
 
-	return Prefix;
+	return [
+		Lower.join("-"),
+		Lower.join("_"),
+		Lower.join(""),
+		Lower.join("."),
+	];
 };
 
-// Generate hyphen/underscore/concatenated variants for compound segments
-const GenerateCompoundVariant = (PascalSegment: string): string[] => {
-	// Find word boundaries in PascalCase: "ForgotPassword" → ["Forgot", "Password"]
-	const Word = PascalSegment.match(/[A-Z][a-z]*/g);
-
-	if (!Word || Word.length < 2) {
-		return [];
-	}
-
-	const Lower = Word.map((W) => W.toLowerCase());
-	const Variant: string[] = [];
-
-	// Hyphenated: forgot-password
-	Variant.push(Lower.join("-"));
-
-	// Underscored: forgot_password
-	Variant.push(Lower.join("_"));
-
-	// Concatenated (no separator): forgotpassword
-	Variant.push(Lower.join(""));
-
-	// Dot-separated: forgot.password
-	Variant.push(Lower.join("."));
-
-	// Reversed hyphenated: password-forgot
-	if (Lower.length === 2) {
-		Variant.push([...Lower].reverse().join("-"));
-	}
-
-	return Variant;
-};
-
-// Generate ALL variants for a full canonical path.
-// For single-segment paths like "/Download", generates all case/number/abbrev variants.
-// For multi-segment paths like "/Account/SignIn", generates a selective cross-product:
-// - Each segment's case variants × other segments in lowercase
-// - Full lowercase, full uppercase
-// - Hyphenated/flat compound alternatives for each segment
-export const GeneratePathVariant = (
-	CanonicalPath: string,
-	BuiltPath: string,
-): string[] => {
+// Generate all variants for a full canonical path (excluding the canonical itself).
+export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 	if (CanonicalPath === "/") return [];
 
-	const CanonicalSegment = CanonicalPath.slice(1).split("/");
-	const BuiltSegment = BuiltPath.slice(1).split("/");
-
-	// Per-segment variant sets
-	const SegmentVariant: string[][] = CanonicalSegment.map(
-		(Segment, Index) => {
-			const AllVariant = new Set<string>();
-
-			// Case permutations
-			for (const Variant of GenerateSegmentCaseVariant(Segment)) {
-				AllVariant.add(Variant);
-			}
-
-			// Singular/plural
-			for (const Variant of GenerateNumberVariant(Segment)) {
-				AllVariant.add(Variant);
-
-				// Also add case variants of plural/singular forms
-				AllVariant.add(Variant.toUpperCase());
-				AllVariant.add(
-					Variant.charAt(0).toUpperCase() + Variant.slice(1),
-				);
-			}
-
-			// Abbreviation prefixes
-			for (const Prefix of GenerateAbbreviationPrefix(Segment)) {
-				AllVariant.add(Prefix);
-			}
-
-			// Compound variants (hyphenated, underscored, etc.)
-			for (const Compound of GenerateCompoundVariant(Segment)) {
-				AllVariant.add(Compound);
-
-				// Also uppercase and title-case of compound
-				AllVariant.add(Compound.toUpperCase());
-				AllVariant.add(
-					Compound.charAt(0).toUpperCase() + Compound.slice(1),
-				);
-			}
-
-			// Include original built segment
-			if (BuiltSegment[Index]) {
-				AllVariant.add(BuiltSegment[Index]);
-			}
-
-			return [...AllVariant];
-		},
-	);
-
+	const Segments = CanonicalPath.slice(1).split("/");
 	const Result = new Set<string>();
 
-	if (SegmentVariant.length === 1) {
-		// Single-segment path: all variants directly
-		for (const Variant of SegmentVariant[0]!) {
-			Result.add("/" + Variant);
-		}
-	} else {
-		// Multi-segment path: selective cross-product.
-		// For each segment position, vary that segment while keeping
-		// all other segments at their lowercase form.
-		const LowercaseSegment = CanonicalSegment.map((S) => S.toLowerCase());
+	if (Segments.length === 1) {
+		const Seg = Segments[0]!;
+		const Lower = Seg.toLowerCase();
 
-		for (let Position = 0; Position < SegmentVariant.length; Position++) {
-			for (const Variant of SegmentVariant[Position]!) {
-				const Part = [...LowercaseSegment];
-				Part[Position] = Variant;
-				Result.add("/" + Part.join("/"));
+		// lowercase, UPPERCASE, TitleCase
+		for (const C of SegmentCases(Seg)) Result.add("/" + C);
+
+		// singular/plural of the lowercase form
+		for (const N of SegmentNumber(Lower)) {
+			Result.add("/" + N);
+			Result.add("/" + N.toUpperCase());
+		}
+
+		// compound variants (only relevant for multi-word segments)
+		for (const V of SegmentCompound(Seg)) Result.add("/" + V);
+	} else {
+		const LowerSegs = Segments.map((S) => S.toLowerCase());
+
+		// Full lowercase - most important
+		Result.add("/" + LowerSegs.join("/"));
+		// Full UPPERCASE
+		Result.add("/" + Segments.map((S) => S.toUpperCase()).join("/"));
+
+		// For each segment position, vary that segment while the rest stay lowercase
+		for (let I = 0; I < Segments.length; I++) {
+			const Seg = Segments[I]!;
+
+			// case variants of this segment
+			for (const C of SegmentCases(Seg)) {
+				const Parts = [...LowerSegs];
+				Parts[I] = C;
+				Result.add("/" + Parts.join("/"));
+			}
+
+			// compound variants (kebab etc.) for this segment
+			for (const V of SegmentCompound(Seg)) {
+				const Parts = [...LowerSegs];
+				Parts[I] = V;
+				Result.add("/" + Parts.join("/"));
 			}
 		}
 
-		// Full uppercase
-		Result.add(CanonicalPath.toUpperCase());
-
-		// Full lowercase
-		Result.add(CanonicalPath.toLowerCase());
-
-		// Built path
-		Result.add(BuiltPath);
-
-		// Flat (no slashes) variant for the full path
-		// e.g., /Account/SignIn → /accountsignin, /account-signin
-		const FlatLower = LowercaseSegment.join("");
-		const FlatHyphen = LowercaseSegment.join("-");
-		const FlatUnderscore = LowercaseSegment.join("_");
-
-		Result.add("/" + FlatLower);
-		Result.add("/" + FlatHyphen);
-		Result.add("/" + FlatUnderscore);
+		// Flat forms: /accountsignin, /account-signin, /account_signin
+		Result.add("/" + LowerSegs.join(""));
+		Result.add("/" + LowerSegs.join("-"));
+		Result.add("/" + LowerSegs.join("_"));
 	}
 
-	// Add trailing-slash variants for every entry
-	const WithSlash: string[] = [];
-
-	for (const Path of Result) {
-		if (Path !== "/" && !Path.endsWith("/")) {
-			WithSlash.push(Path + "/");
-		}
+	// Trailing-slash duplicates for every entry found so far
+	for (const Path of [...Result]) {
+		if (!Path.endsWith("/")) Result.add(Path + "/");
 	}
 
-	for (const Path of WithSlash) {
-		Result.add(Path);
-	}
-
-	// Remove the canonical itself (it's not a "variant")
+	// The canonical itself is not a variant
 	Result.delete(CanonicalPath);
 
 	return [...Result];
@@ -447,38 +321,22 @@ const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
 		if (CanonicalPath.has(Built)) {
 			Canonical.push(Built);
 
-			// Generate ALL variants dynamically
-			for (const VariantPath of GeneratePathVariant(Built, Built)) {
-				// Don't overwrite existing mappings (first mapping wins)
+			// Generate simplified variants
+			for (const VariantPath of GeneratePathVariant(Built)) {
 				if (!Variant[VariantPath]) {
 					Variant[VariantPath] = Built;
 				}
 			}
 		} else {
-			// Not a known canonical - use as-is
 			Canonical.push(Built);
 		}
 	}
 
-	// Add semantic aliases
+	// Add semantic aliases (lowercase + trailing slash only - they are already lowercase)
 	for (const [Alias, Target] of Object.entries(SemanticAlias)) {
 		if (Canonical.includes(Target) || Target === "/") {
 			Variant[Alias] = Target;
-
-			// Also add lowercase, uppercase, title-case of alias
-			const Lower = Alias.toLowerCase();
-			const Upper = Alias.toUpperCase();
-			const Title =
-				Alias.charAt(1).toUpperCase() + Alias.slice(2).toLowerCase();
-
-			if (Lower !== Alias) Variant[Lower] = Target;
-			if (Upper !== Alias) Variant[Upper] = Target;
-
-			Variant["/" + Title] = Target;
-
-			// Trailing slash variants
 			Variant[Alias + "/"] = Target;
-			Variant[Lower + "/"] = Target;
 		}
 	}
 

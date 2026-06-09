@@ -12,6 +12,11 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						className="Icon flex items-center"
 						aria-label="GitHub">
 						<picture>
+							<source
+								srcSet="/Dark/Image/GitHub.svg"
+								media="(prefers-color-scheme: dark)"
+								data-theme-dark=""
+							/>
 							<img
 								alt="GitHub"
 								src="/Image/GitHub.svg"
