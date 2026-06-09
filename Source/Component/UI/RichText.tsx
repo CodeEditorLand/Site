@@ -119,6 +119,7 @@ const TermLogo: Record<string, string> = {
 	SWC: "/Image/SWC.svg",
 	Electron: "/Image/Electron.svg",
 	Rhai: "/Image/Rhai.svg",
+	Telemetry: "/Image/OpenTelemetry.svg",
 	OpenTelemetry: "/Image/OpenTelemetry.svg",
 	OTEL: "/Image/OpenTelemetry.svg",
 	pnpm: "/Image/pnpm.svg",
