@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="32" role="img" aria-label="Made with Tauri">
+  <title>Made with Tauri</title>
+  <rect width="160" height="32" rx="0" fill="#1a1a1a"/>
+  <rect x="106" width="54" height="32" rx="0" fill="#24C8DB"/>
+  <!-- Tauri wordmark area separator -->
+  <line x1="106" y1="0" x2="106" y2="32" stroke="#24C8DB" stroke-width="1"/>
+  <!-- Left label -->
+  <text x="10" y="20" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" font-weight="500" fill="#e7e7ea" letter-spacing="0.04em">MADE WITH</text>
+  <!-- Right label -->
+  <text x="114" y="20" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" font-weight="600" fill="#0a0a0c" letter-spacing="0.04em">TAURI</text>
+</svg>

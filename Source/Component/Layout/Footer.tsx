@@ -277,14 +277,21 @@ const Footer = ({ Content }: FooterProps) => {
 								rel="noopener noreferrer"
 								className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 								aria-label="Made with Tauri (opens in new tab)">
-								<img
-									src="https://editor.land/Image/GitHub/Made/Tauri.svg"
-									alt="Made with Tauri"
-									width="160"
-									height="32"
-									className="h-8 dark:rounded dark:bg-white/90 dark:px-2"
-									loading="lazy"
-								/>
+								<picture>
+									<source
+										srcSet="/Dark/Image/GitHub/Made/Tauri.svg"
+										media="(prefers-color-scheme: dark)"
+										data-theme-dark=""
+									/>
+									<img
+										src="/Image/GitHub/Made/Tauri.svg"
+										alt="Made with Tauri"
+										width="160"
+										height="32"
+										className="h-8"
+										loading="lazy"
+									/>
+								</picture>
 							</a>
 						)}
 					</div>

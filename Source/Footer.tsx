@@ -74,12 +74,17 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						rel="noopener noreferrer"
 						className="flex">
 						<picture>
+							<source
+								srcSet="/Dark/Image/GitHub/Made/Tauri.svg"
+								media="(prefers-color-scheme: dark)"
+								data-theme-dark=""
+							/>
 							<img
 								alt="Made With Tauri"
-								src="https://editor.land/Image/GitHub/Made/Tauri.svg"
+								src="/Image/GitHub/Made/Tauri.svg"
 								width="160"
 								height="32"
-								className="dark:rounded dark:bg-white/90 dark:px-2"
+								className=""
 							/>
 						</picture>
 					</a>
