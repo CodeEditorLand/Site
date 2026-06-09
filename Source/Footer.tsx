@@ -56,7 +56,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 					&#x2001;
 				</span>
 				<a
-					href="https://editor.land"
+					href="https://PlayForm.Cloud"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="transition-colors hover:text-foreground">

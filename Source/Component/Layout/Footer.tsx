@@ -262,7 +262,7 @@ const Footer = ({ Content }: FooterProps) => {
 					</div>
 					<div className="flex flex-wrap items-center gap-4">
 						<a
-							href="https://editor.land"
+							href="https://PlayForm.Cloud"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"

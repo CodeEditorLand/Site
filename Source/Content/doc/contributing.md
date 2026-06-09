@@ -114,7 +114,7 @@ before engaging.
 
 `editor.land` is funded through the
 [NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
-operated by [PlayForm](https://editor.land) (Sofia, Bulgaria) under the
+operated by [PlayForm](https://PlayForm.Cloud) (Sofia, Bulgaria) under the
 [NLnet Foundation](https://nlnet.nl).
 
 ---
