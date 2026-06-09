@@ -1,1 +1,0 @@
-import"./Vendor/React.DFG-iijt.js";export{A as default}from"./Footer.ChFpZHlR.js";

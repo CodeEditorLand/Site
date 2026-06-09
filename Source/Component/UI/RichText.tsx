@@ -3,6 +3,8 @@
 import * as lucide from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
+import { ThemeIcon } from "@Library/Theme";
+
 // ─── Term dictionary ──────────────────────────────────────────────────────────
 
 type TermCategory =
@@ -244,7 +246,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 					{Logo && (
 						<>
 							{"\u2001"}
-							<img
+							<ThemeIcon
 								src={Logo}
 								alt=""
 								width={12}

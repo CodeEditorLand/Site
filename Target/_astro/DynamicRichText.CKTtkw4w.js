@@ -1,1 +1,0 @@
-import"./Vendor/React.DFG-iijt.js";export{D as DynamicRichText,D as default}from"./DynamicRichText._P7-zx6a.js";
