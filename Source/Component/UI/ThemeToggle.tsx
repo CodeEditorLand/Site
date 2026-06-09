@@ -31,6 +31,7 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	const Toggle = () => {
 		const Next = !document.documentElement.classList.contains("dark");
 		document.documentElement.classList.toggle("dark", Next);
+		document.documentElement.style.colorScheme = Next ? "dark" : "light";
 		try {
 			localStorage.setItem("Theme", Next ? "dark" : "light");
 		} catch (_) {}

@@ -89,6 +89,10 @@ const T = GetI18n();
 								.matches);
 					const Root = document.documentElement;
 					Root.classList.toggle("dark", Dark);
+					// Tell the browser which color scheme is active so that
+					// prefers-color-scheme media queries in <picture> evaluate
+					// against the user's stored choice, not just the OS setting.
+					Root.style.colorScheme = Dark ? "dark" : "light";
 					const Meta = document.querySelector(
 						'meta[name="theme-color"]',
 					);
@@ -97,26 +101,39 @@ const T = GetI18n();
 							"content",
 							Dark ? "#0a0a0c" : "#ffffff",
 						);
-					// Sync <picture> sources to the resolved theme so that
-					// explicit dark-mode override overrides prefers-color-scheme.
-					// Runs after DOMContentLoaded so all <source> elements exist.
-					const Sync = () =>
-						document
-							.querySelectorAll("source[data-theme-dark]")
-							.forEach((S) => {
-								S.media = Dark
-									? "all"
-									: "(prefers-color-scheme: dark)";
-							});
-					if (
-						document.readyState === "loading"
-					)
-						document.addEventListener(
-							"DOMContentLoaded",
-							Sync,
-							{ once: true },
-						);
-					else Sync();
+					// Also set source[data-theme-dark].media directly so that
+					// browsers which don't propagate color-scheme to picture still
+					// show the right image on first paint.
+					// MutationObserver fires as each <source> is inserted during
+					// HTML parsing - before the browser evaluates which source to
+					// load - so no flash even when OS and stored preference differ.
+					const SyncSource = (S) => {
+						S.media = Dark ? "all" : "(prefers-color-scheme: dark)";
+					};
+					const Observer = new MutationObserver(() => {
+						Root.querySelectorAll(
+							"source[data-theme-dark]:not([data-ts])",
+						).forEach((S) => {
+							S.setAttribute("data-ts", "");
+							SyncSource(S);
+						});
+					});
+					Observer.observe(Root, {
+						subtree: true,
+						childList: true,
+					});
+					// Disconnect after full parse; also catch any sources that
+					// arrived before the observer was ready.
+					document.addEventListener(
+						"DOMContentLoaded",
+						() => {
+							Root.querySelectorAll(
+								"source[data-theme-dark]",
+							).forEach(SyncSource);
+							Observer.disconnect();
+						},
+						{ once: true },
+					);
 				} catch (_) {}
 			})();
 		</script>
