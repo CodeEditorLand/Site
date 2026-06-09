@@ -113,7 +113,7 @@ verified release artifact. Today:
 
 > **Updated 2026-05-29** - The build system has moved to the
 > `Maintain/Debug/Build.sh` profile runner and Node 24. See the current
-> [Installation guide](https://land.playform.cloud/Doc/installation) for
+> [Installation guide](https://editor.land/Doc/installation) for
 > up-to-date steps.
 
 The development build:

@@ -11,18 +11,18 @@
 		</td>
 		<td align="left" valign="middle">
 			<h3 align="left">
-				<a href="https://land.playform.cloud" target="_blank">
+				<a href="https://editor.land" target="_blank">
 					<picture>
-						<source media="(prefers-color-scheme: dark)" srcset="https://PlayForm.Cloud/Dark/Image/GitHub/Land.svg">
-						<source media="(prefers-color-scheme: light)" srcset="https://PlayForm.Cloud/Image/GitHub/Land.svg">
-						<img width="28" alt="Land Logo" src="https://PlayForm.Cloud/Image/GitHub/Land.svg">
+						<source media="(prefers-color-scheme: dark)" srcset="https://editor.land/Dark/Image/GitHub/Land.svg">
+						<source media="(prefers-color-scheme: light)" srcset="https://editor.land/Image/GitHub/Land.svg">
+						<img width="28" alt="Land Logo" src="https://editor.land/Image/GitHub/Land.svg">
 					</picture>
 				</a>
 			</h3>
 		</td>
 		<td align="left" valign="middle">
 			<h3 align="left">
-				<a href="https://land.playform.cloud" target="_blank">
+				<a href="https://editor.land" target="_blank">
 					Land
 				</a>
 			</h3>
@@ -58,7 +58,7 @@
 [![Tailwind](https://img.shields.io/badge/Tailwind-3.x-38BDF8.svg)](https://tailwindcss.com)
 
 Marketing, download, and account portal for **Land**, hosted at
-[land.playform.cloud](https://land.playform.cloud). Built with Astro 5, React 19, Tailwind CSS,
+[editor.land](https://editor.land). Built with Astro 5, React 19, Tailwind CSS,
 and shadcn/ui. Fully internationalized across 5 locales.
 
 ---
@@ -132,12 +132,12 @@ Funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund) via
 	<tbody>
 		<tr>
 			<td align="left" valign="middle">
-				<a href="https://land.playform.cloud">
+				<a href="https://editor.land">
 					<img width="60" src="https://raw.githubusercontent.com/CodeEditorLand/Asset/refs/heads/Current/Logo/Land.svg" alt="Land">
 				</a>
 			</td>
 			<td align="left" valign="middle">
-				<a href="https://PlayForm.Cloud">
+				<a href="https://editor.land">
 					<img width="76" src="https://raw.githubusercontent.com/PlayForm/Asset/refs/heads/Current/Logo/PlayForm.svg" alt="PlayForm">
 				</a>
 			</td>
@@ -158,7 +158,7 @@ Funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund) via
 ---
 
 **Project Maintainers**: Source Open
-([Source/Open@land.playform.cloud](mailto:Source/Open@land.playform.cloud)) |
+([Source/Open@editor.land](mailto:Source/Open@editor.land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/WebSite) |
 [Report an Issue](https://github.com/CodeEditorLand/WebSite/issues) |
 [Security Policy](https://github.com/CodeEditorLand/WebSite/security/policy)

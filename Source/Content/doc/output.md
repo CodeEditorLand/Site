@@ -4,13 +4,13 @@ section: "Element"
 order: 22
 description:
     "The VS Code build transformation pipeline that adapts VS Code's compiled
-    output for land.playform.cloud's native stack."
+    output for editor.land's native stack."
 ---
 
 # Output
 
 `Output` is the `VS Code` build transformation pipeline for
-`land.playform.cloud`. It takes the upstream `VS Code` compiled tree (populated
+`editor.land`. It takes the upstream `VS Code` compiled tree (populated
 into `Target/Microsoft/VSCode/` by the build step) and applies a set of
 `TypeScript` transform plugins that adapt it for Land's native stack - replacing
 `Electron` `IPC` with the `Mountain` `gRPC` channel, injecting WebView
@@ -25,7 +25,7 @@ polyfills, rewriting worker URLs, and patching service registrations.
 
 `VS Code`'s compiled output is written for `Electron`: it expects `ipcRenderer`,
 shared process communication, `Electron`-specific node integration, and a
-browser environment supplied by Chromium. `land.playform.cloud` replaces all of
+browser environment supplied by Chromium. `editor.land` replaces all of
 that with `Mountain`'s `Rust` kernel, `WebView2` (Windows) or `WKWebView`
 (macOS), and the `Vine` `gRPC` protocol.
 
@@ -112,8 +112,8 @@ Polyfills, `Tauri`/`Mountain` `IPC` Replacement.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Rest`](https://land.playform.cloud/Doc/rest)
-- [`Mountain`: Native Kernel](https://land.playform.cloud/Doc/mountain)
-- [`Sky`: WebView UI](https://land.playform.cloud/Doc/sky)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Rest`](https://editor.land/Doc/rest)
+- [`Mountain`: Native Kernel](https://editor.land/Doc/mountain)
+- [`Sky`: WebView UI](https://editor.land/Doc/sky)
 - [Source Code](https://github.com/CodeEditorLand/Output)

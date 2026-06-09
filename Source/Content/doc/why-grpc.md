@@ -53,7 +53,7 @@ routes under one schema model. The current source includes bidirectional
 
 ## See Also
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [Why `Rust`](https://land.playform.cloud/Doc/why-rust)
-- [Why `Tauri`](https://land.playform.cloud/Doc/why-tauri)
-- [`API` Reference](https://land.playform.cloud/Doc/api-reference)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [Why `Rust`](https://editor.land/Doc/why-rust)
+- [Why `Tauri`](https://editor.land/Doc/why-tauri)
+- [`API` Reference](https://editor.land/Doc/api-reference)

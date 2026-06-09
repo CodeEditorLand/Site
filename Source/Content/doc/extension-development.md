@@ -3,13 +3,13 @@ title: "Extension Development"
 section: "Development"
 order: 7
 description:
-    "Build and test extensions for land.playform.cloud using the VS Code
+    "Build and test extensions for editor.land using the VS Code
     extension toolchain."
 ---
 
 # Extension Development
 
-`land.playform.cloud` runs `VS Code` extensions through `Cocoon`, the `Node.js`
+`editor.land` runs `VS Code` extensions through `Cocoon`, the `Node.js`
 extension host. If you have built a `VS Code` extension before, the scaffolding,
 structure, `TypeScript` compilation, and packaging steps are identical. This
 guide covers the workflow from scaffolding to distribution, with clear notes on
@@ -152,13 +152,13 @@ features silently no-op at runtime:
 - `vscode.notebook.*` - notebook documents and editors
 - `vscode.tests.*` - test explorer and runner
 
-See [`API` Reference](https://land.playform.cloud/Doc/api-reference) for the
+See [`API` Reference](https://editor.land/Doc/api-reference) for the
 full coverage table.
 
 ---
 
 ## See Also
 
-- [`API` Reference](https://land.playform.cloud/Doc/api-reference)
-- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
-- [Contributing](https://land.playform.cloud/Doc/contributing)
+- [`API` Reference](https://editor.land/Doc/api-reference)
+- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
+- [Contributing](https://editor.land/Doc/contributing)

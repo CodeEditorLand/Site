@@ -97,4 +97,4 @@ User interaction:
 
 ## See Also
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [Architecture Overview](https://editor.land/Doc/architecture)

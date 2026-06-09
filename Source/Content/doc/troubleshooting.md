@@ -3,14 +3,14 @@ title: "Troubleshooting"
 section: "Support"
 order: 10
 description:
-    "Common issues and their solutions when running land.playform.cloud on macOS
+    "Common issues and their solutions when running editor.land on macOS
     or Windows."
 ---
 
 # Troubleshooting
 
 This page covers the most common issues encountered when running
-`land.playform.cloud` on **macOS 13+** and **Windows 10/11**, along with
+`editor.land` on **macOS 13+** and **Windows 10/11**, along with
 diagnosis steps and fixes.
 
 ---
@@ -68,7 +68,7 @@ commands it contributes do not appear in the command palette.
 - Check the `engines.vscode` field in the extension's `package.json`. If it
   requires a `VS Code` version whose `API` surface is not yet implemented in
   `Cocoon`, the extension may silently fail. See
-  [`API` Reference](https://land.playform.cloud/Doc/api-reference) for the
+  [`API` Reference](https://editor.land/Doc/api-reference) for the
   current coverage table.
 - If the extension uses an `API` namespace listed as **Not Implemented** in the
   `API` Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`,
@@ -163,7 +163,7 @@ If none of the above resolves your issue:
 
 ## See Also
 
-- [Installation](https://land.playform.cloud/Doc/installation)
-- [Getting Started](https://land.playform.cloud/Doc/getting-started)
-- [Configuration](https://land.playform.cloud/Doc/configuration)
-- [`API` Reference](https://land.playform.cloud/Doc/api-reference)
+- [Installation](https://editor.land/Doc/installation)
+- [Getting Started](https://editor.land/Doc/getting-started)
+- [Configuration](https://editor.land/Doc/configuration)
+- [`API` Reference](https://editor.land/Doc/api-reference)

@@ -109,5 +109,5 @@ Phase 5: UI Update
 
 ## See Also
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [VS Code API Coverage](https://land.playform.cloud/Doc/vscode-api-coverage)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [VS Code API Coverage](https://editor.land/Doc/vscode-api-coverage)

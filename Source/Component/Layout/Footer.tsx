@@ -256,7 +256,7 @@ const Footer = ({ Content }: FooterProps) => {
 					</div>
 					<div className="flex flex-wrap items-center gap-4">
 						<a
-							href="https://PlayForm.Cloud"
+							href="https://editor.land"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
@@ -272,7 +272,7 @@ const Footer = ({ Content }: FooterProps) => {
 								className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 								aria-label="Made with Tauri (opens in new tab)">
 								<img
-									src="https://playform.cloud/Image/GitHub/Made/Tauri.svg"
+									src="https://editor.land/Image/GitHub/Made/Tauri.svg"
 									alt="Made with Tauri"
 									width="160"
 									height="32"

@@ -14,8 +14,8 @@
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
 		"name": "Source 🖋️ Open 👐🏻",
-		"email": "Source/Open@land.playform.cloud",
-		"url": "https://land.playform.cloud"
+		"email": "Source/Open@editor.land",
+		"url": "https://editor.land"
 	},
 	"contributors": [
 		{
@@ -24,7 +24,7 @@
 		},
 		{
 			"name": "PlayForm",
-			"url": "https://PlayForm.Cloud"
+			"url": "https://editor.land"
 		}
 	],
 	"scripts": {

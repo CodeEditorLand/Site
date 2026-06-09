@@ -67,6 +67,6 @@ Effect execution overhead when integrated: < 1 microsecond.
 
 ## Related Documentation 📖
 
-- [Echo overview](https://land.playform.cloud/Doc/echo)
-- [Mountain ApplicationRunTime](https://land.playform.cloud/Doc/deep-dive-mountain)
-- [Common ActionEffect system](https://land.playform.cloud/Doc/deep-dive-common)
+- [Echo overview](https://editor.land/Doc/echo)
+- [Mountain ApplicationRunTime](https://editor.land/Doc/deep-dive-mountain)
+- [Common ActionEffect system](https://editor.land/Doc/deep-dive-common)

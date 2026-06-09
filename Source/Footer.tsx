@@ -51,7 +51,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 					&#x2001;
 				</span>
 				<a
-					href="https://PlayForm.Cloud"
+					href="https://editor.land"
 					target="_blank"
 					rel="noopener noreferrer"
 					className="transition-colors hover:text-foreground">
@@ -71,7 +71,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						<picture>
 							<img
 								alt="Made With Tauri"
-								src="https://PlayForm.Cloud/Image/GitHub/Made/Tauri.svg"
+								src="https://editor.land/Image/GitHub/Made/Tauri.svg"
 								width="160"
 								height="32"
 							/>

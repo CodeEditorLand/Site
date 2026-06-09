@@ -3,13 +3,13 @@ title: "Architecture Overview"
 section: "Architecture"
 order: 4
 description:
-    "How land.playform.cloud's elements fit together: Mountain, Cocoon, Sky,
+    "How editor.land's elements fit together: Mountain, Cocoon, Sky,
     Air, and typed IPC."
 ---
 
 # Architecture Overview
 
-`land.playform.cloud` is split into named elements so the public architecture
+`editor.land` is split into named elements so the public architecture
 can be checked against source instead of guessed from a diagram. The primary
 desktop path is `Mountain`, the `Rust` + `Tauri` shell, running `Sky` in the
 operating system WebView and `Cocoon` as the `Node.js` extension host.
@@ -93,20 +93,20 @@ preparation.
 
 | Element                                                  | Role                                                                             | Source status                           |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------- |
-| [**Mountain**](https://land.playform.cloud/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge           | Primary desktop path                    |
-| [**Cocoon**](https://land.playform.cloud/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code                     | Primary extension path                  |
-| [**Sky**](https://land.playform.cloud/Doc/sky)           | Astro workbench routes and WebView bridge                                        | UI source present                       |
-| [**Wind**](https://land.playform.cloud/Doc/wind)         | Effect-TS workbench service layer                                                | UI service source present               |
-| [**Vine**](https://land.playform.cloud/Doc/vine)         | Protocol contracts and generated IPC stubs                                       | Active protocol layer                   |
-| [**Air**](https://land.playform.cloud/Doc/air)           | Background services for updates, downloads, authentication, indexing, and health | Source present, profile-dependent       |
-| [**Echo**](https://land.playform.cloud/Doc/echo)         | Rust scheduler primitives for bounded background work                            | Source present                          |
-| [**Mist**](https://land.playform.cloud/Doc/mist)         | DNS isolation, resolver, and secure service-boundary code                        | Source present, integration in progress |
-| [**Grove**](https://land.playform.cloud/Doc/grove)       | Wasmtime-backed WebAssembly host path                                            | Source present, integration in progress |
-| [**Rest**](https://land.playform.cloud/Doc/rest)         | OXC-based TypeScript transform work                                              | Source present                          |
-| [**Output**](https://land.playform.cloud/Doc/output)     | Plugin-routed output and VS Code platform transforms                             | Build pipeline source present           |
-| [**Common**](https://land.playform.cloud/Doc/common)     | Shared Rust and TypeScript contracts                                             | Shared source present                   |
-| [**SideCar**](https://land.playform.cloud/Doc/sidecar)   | Host-specific sidecar binary packaging                                           | Source present                          |
-| [**Maintain**](https://land.playform.cloud/Doc/maintain) | Build and maintenance scripts                                                    | Source present                          |
+| [**Mountain**](https://editor.land/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge           | Primary desktop path                    |
+| [**Cocoon**](https://editor.land/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code                     | Primary extension path                  |
+| [**Sky**](https://editor.land/Doc/sky)           | Astro workbench routes and WebView bridge                                        | UI source present                       |
+| [**Wind**](https://editor.land/Doc/wind)         | Effect-TS workbench service layer                                                | UI service source present               |
+| [**Vine**](https://editor.land/Doc/vine)         | Protocol contracts and generated IPC stubs                                       | Active protocol layer                   |
+| [**Air**](https://editor.land/Doc/air)           | Background services for updates, downloads, authentication, indexing, and health | Source present, profile-dependent       |
+| [**Echo**](https://editor.land/Doc/echo)         | Rust scheduler primitives for bounded background work                            | Source present                          |
+| [**Mist**](https://editor.land/Doc/mist)         | DNS isolation, resolver, and secure service-boundary code                        | Source present, integration in progress |
+| [**Grove**](https://editor.land/Doc/grove)       | Wasmtime-backed WebAssembly host path                                            | Source present, integration in progress |
+| [**Rest**](https://editor.land/Doc/rest)         | OXC-based TypeScript transform work                                              | Source present                          |
+| [**Output**](https://editor.land/Doc/output)     | Plugin-routed output and VS Code platform transforms                             | Build pipeline source present           |
+| [**Common**](https://editor.land/Doc/common)     | Shared Rust and TypeScript contracts                                             | Shared source present                   |
+| [**SideCar**](https://editor.land/Doc/sidecar)   | Host-specific sidecar binary packaging                                           | Source present                          |
+| [**Maintain**](https://editor.land/Doc/maintain) | Build and maintenance scripts                                                    | Source present                          |
 | **Worker**                                               | Browser-worker support for web shell concerns                                    | Source present, release scope varies    |
 
 ---

@@ -118,6 +118,6 @@ export Trace=all
 
 ## See Also
 
-- [Effect-TS + OpenTelemetry Integration](https://land.playform.cloud/Doc/telemetry/effect-otel)
-- [Sidecar Telemetry](https://land.playform.cloud/Doc/telemetry/sidecars)
-- [Tree-Shaking Telemetry](https://land.playform.cloud/Doc/telemetry/tree-shaking)
+- [Effect-TS + OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)
+- [Sidecar Telemetry](https://editor.land/Doc/telemetry/sidecars)
+- [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking)

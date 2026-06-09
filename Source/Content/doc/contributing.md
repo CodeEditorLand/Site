@@ -4,16 +4,16 @@ section: "Community"
 order: 9
 description:
     "How to contribute code, documentation, or translations to
-    land.playform.cloud."
+    editor.land."
 ---
 
-# Contributing to land.playform.cloud
+# Contributing to editor.land
 
 > **Updated 2026-05-29** - Build steps updated to Node 24 and
 > `Maintain/Debug/Build.sh`. Submodule paths corrected. Canonical source:
 > [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
 
-`land.playform.cloud` is open source and welcomes contributions. The full
+`editor.land` is open source and welcomes contributions. The full
 contributing guide is at
 [CONTRIBUTING.md](https://github.com/CodeEditorLand/Land/tree/Current/CONTRIBUTING.md)
 on GitHub.
@@ -112,15 +112,15 @@ before engaging.
 
 ## Funding
 
-`land.playform.cloud` is funded through the
+`editor.land` is funded through the
 [NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
-operated by [PlayForm](https://playform.cloud) (Sofia, Bulgaria) under the
+operated by [PlayForm](https://editor.land) (Sofia, Bulgaria) under the
 [NLnet Foundation](https://nlnet.nl).
 
 ---
 
 ## See Also
 
-- [Getting Started](https://land.playform.cloud/Doc/getting-started)
-- [Installation](https://land.playform.cloud/Doc/installation)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [Getting Started](https://editor.land/Doc/getting-started)
+- [Installation](https://editor.land/Doc/installation)
+- [Architecture Overview](https://editor.land/Doc/architecture)

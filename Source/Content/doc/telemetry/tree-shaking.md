@@ -134,5 +134,5 @@ symbol is found.
 
 ## See Also
 
-- [Telemetry Overview](https://land.playform.cloud/Doc/telemetry/overview)
-- [Effect-TS and OpenTelemetry Integration](https://land.playform.cloud/Doc/telemetry/effect-otel)
+- [Telemetry Overview](https://editor.land/Doc/telemetry/overview)
+- [Effect-TS and OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)

@@ -135,7 +135,7 @@ const GenerateOpenGraphSvg = (
 	<line x1="0" y1="${Height - 56}" x2="${Width}" y2="${Height - 56}" stroke="#e5e5e5" stroke-width="1" />
 
 	<!-- URL (bottom-left) -->
-	<text x="72" y="${Height - 20}" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" font-weight="500" fill="#888888">land.playform.cloud</text>
+	<text x="72" y="${Height - 20}" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" font-weight="500" fill="#888888">editor.land</text>
 
 	<!-- Brand name (bottom-right) -->
 	<text x="${Width - 72}" y="${Height - 20}" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#888888" text-anchor="end">Code Editor Land</text>

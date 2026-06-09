@@ -201,5 +201,5 @@ activation -> workspaceContains glob walk, build phase -> sub-build.
 
 ## See Also
 
-- [Telemetry Overview](https://land.playform.cloud/Doc/telemetry/overview)
-- [Sidecar Telemetry](https://land.playform.cloud/Doc/telemetry/sidecars)
+- [Telemetry Overview](https://editor.land/Doc/telemetry/overview)
+- [Sidecar Telemetry](https://editor.land/Doc/telemetry/sidecars)

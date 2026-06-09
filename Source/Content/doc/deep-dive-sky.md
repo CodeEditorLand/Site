@@ -87,6 +87,6 @@ recommended deployment sets `Mountain=true`.
 
 ## Related Documentation 📖
 
-- [Sky overview](https://land.playform.cloud/Doc/sky)
-- [Architecture overview](https://land.playform.cloud/Doc/architecture)
-- [Mountain Rust backend](https://land.playform.cloud/Doc/deep-dive-mountain)
+- [Sky overview](https://editor.land/Doc/sky)
+- [Architecture overview](https://editor.land/Doc/architecture)
+- [Mountain Rust backend](https://editor.land/Doc/deep-dive-mountain)

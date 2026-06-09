@@ -99,5 +99,5 @@ Wind/UI:
 
 ## See Also
 
-- [Opening a File from the UI](https://land.playform.cloud/Doc/workflow-open-file)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [Opening a File from the UI](https://editor.land/Doc/workflow-open-file)
+- [Architecture Overview](https://editor.land/Doc/architecture)

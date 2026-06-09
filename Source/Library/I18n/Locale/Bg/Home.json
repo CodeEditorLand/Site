@@ -188,7 +188,7 @@
 					"air": "Air 🪁\nФонов демон, безшумни актуализации, криптографски подписани",
 					"echo": "Echo 📣\nПланировчик без заключване, насища всяко CPU ядро",
 					"vine": "Vine 🌿\ngRPC гръбнак, contract-first .proto дефиниции",
-					"mist": "Mist 🌫️\nDNS пясъчник, целият трафик *.land.playform.cloud се разрешава локално",
+					"mist": "Mist 🌫️\nDNS пясъчник, целият трафик *.editor.land се разрешава локално",
 					"rest": "Rest ⛱️\nTypeScript компилатор в Rust + OXC, 2-3× по-бърз от esbuild",
 					"grove": "Grove 🌳\nWASMtime пясъчник, изолация на разширения с capabilities",
 					"common": "Common 👨🏻‍🏭\nАбстрактна Rust основа, типизирани ефекти, нула конкретни имплементации",

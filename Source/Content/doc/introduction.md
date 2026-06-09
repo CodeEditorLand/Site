@@ -3,13 +3,13 @@ title: "Introduction"
 section: "Start"
 order: 0
 description:
-    "What land.playform.cloud is, how it is built, and what is source-backed
+    "What editor.land is, how it is built, and what is source-backed
     today."
 ---
 
-# Introduction to land.playform.cloud
+# Introduction to editor.land
 
-`land.playform.cloud` is an open-source code editor stack built around `Rust`,
+`editor.land` is an open-source code editor stack built around `Rust`,
 `Tauri`, `Effect-TS`, and a `VS Code`-compatible extension host. `Mountain` is
 the `Rust` + `Tauri` desktop shell. `Sky` and `Wind` provide the `workbench` UI
 and service layer. `Cocoon` runs unmodified `VS Code` extension entry points
@@ -56,7 +56,7 @@ benchmark suite is published.
 
 ## Elements
 
-`land.playform.cloud` is composed of named elements. Each element is described
+`editor.land` is composed of named elements. Each element is described
 by its source status and integration status.
 
 | Element      | Role                                                                           |
@@ -91,7 +91,7 @@ by its source status and integration status.
 
 ## See Also
 
-- [Getting Started](https://land.playform.cloud/Doc/getting-started)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Mountain`](https://land.playform.cloud/Doc/mountain)
-- [`Cocoon`](https://land.playform.cloud/Doc/cocoon)
+- [Getting Started](https://editor.land/Doc/getting-started)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Mountain`](https://editor.land/Doc/mountain)
+- [`Cocoon`](https://editor.land/Doc/cocoon)

@@ -60,7 +60,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Request a structured copy of all personal data we hold about you under GDPR Article 15 and the Right to Data Portability (Article 20).",
 		Article: "GDPR Art. 15 + 20",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "reach",
 		Fields: [
 			{
@@ -116,7 +116,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Request rectification of inaccurate or incomplete personal data under GDPR Article 16.",
 		Article: "GDPR Art. 16",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "amend",
 		Fields: [
 			{
@@ -180,7 +180,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Request that we limit how we process your personal data while a dispute is being assessed, under GDPR Article 18.",
 		Article: "GDPR Art. 18",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "pause",
 		Fields: [
 			{
@@ -247,7 +247,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Formally object to our processing of your personal data for specific purposes under GDPR Article 21.",
 		Article: "GDPR Art. 21",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "query",
 		Fields: [
 			{
@@ -302,7 +302,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Withdraw consent for processing activities that rely on your consent as the lawful basis, under GDPR Article 7.",
 		Article: "GDPR Art. 7",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "leave",
 		Fields: [
 			{
@@ -356,7 +356,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Lodge a formal complaint about how we have handled your personal data under GDPR Article 77. You may also contact the Bulgarian CPDP supervisory authority directly.",
 		Article: "GDPR Art. 77",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "lodge",
 		Fields: [
 			{
@@ -414,7 +414,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Subtitle:
 			"Permanently delete your account and all associated personal data under GDPR Article 17 (Right to Erasure). This action is irreversible.",
 		Article: "GDPR Art. 17",
-		To: "privacy@land.playform.cloud",
+		To: "privacy@editor.land",
 		Slug: "erase",
 		Fields: [
 			{
@@ -471,7 +471,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Title: "Technical Support",
 		Subtitle:
 			"Report a build failure, editor crash, extension issue, performance problem, or anything not working as expected.",
-		To: "support@land.playform.cloud",
+		To: "support@editor.land",
 		Slug: "scout",
 		Fields: [
 			{
@@ -548,7 +548,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Title: "Security Report",
 		Subtitle:
 			"Report a vulnerability, suspected data breach, unauthorised access, or any security concern. You may report anonymously.",
-		To: "security@land.playform.cloud",
+		To: "security@editor.land",
 		Slug: "guard",
 		Fields: [
 			{
@@ -585,7 +585,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 				label: "Affected Component",
 				type: "select",
 				options: [
-					"Website (land.playform.cloud)",
+					"Website (editor.land)",
 					"Editor application (Mountain)",
 					"Extension host (Cocoon)",
 					"API / Workers",
@@ -632,7 +632,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Title: "Copyright & DMCA",
 		Subtitle:
 			"Submit a copyright infringement claim or DMCA takedown notice under 17 U.S.C. 512(c)(3).",
-		To: "copyright@land.playform.cloud",
+		To: "copyright@editor.land",
 		Slug: "claim",
 		Fields: [
 			{
@@ -686,7 +686,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Title: "Legal & Compliance",
 		Subtitle:
 			"Legal notices, regulatory enquiries, compliance questions, law enforcement requests, and matters requiring legal review.",
-		To: "legal@land.playform.cloud",
+		To: "legal@editor.land",
 		Slug: "legal",
 		Fields: [
 			{
@@ -748,7 +748,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Title: "General Inquiry",
 		Subtitle:
 			"General questions, feedback, partnership proposals, or anything that doesn't fit another category.",
-		To: "support@land.playform.cloud",
+		To: "support@editor.land",
 		Slug: "hails",
 		Fields: [
 			{
@@ -803,7 +803,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 		Title: "Enterprise Sales",
 		Subtitle:
 			"Enquiries about enterprise deployments, custom integrations, support contracts, and volume licensing.",
-		To: "enterprise@land.playform.cloud",
+		To: "enterprise@editor.land",
 		Slug: "deals",
 		Fields: [
 			{

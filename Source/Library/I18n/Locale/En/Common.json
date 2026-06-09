@@ -86,8 +86,8 @@
 				"description": "VS Code's build process produces artifacts that differ between machines and CI environments. Debugging production issues requires reproducing exact build conditions.\n\nOutput processes TypeScript from VS Code, Land, and Rest into fully bundled artifacts through a plugin-routed architecture. Every bundle is deterministic and checksum-verified. Same commit always produces the same output."
 			},
 			"mist": {
-				"subtitle": "DNS Sandbox Local *.land.playform.cloud Resolution",
-				"description": "Creates a fully sandboxed DNS zone that resolves every *.land.playform.cloud domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world."
+				"subtitle": "DNS Sandbox Local *.editor.land Resolution",
+				"description": "Creates a fully sandboxed DNS zone that resolves every *.editor.land domain to 127.0.0.1. All Land services communicate through this local layer.\n\nNothing leaks to the public internet. A clean network boundary between the editor and the outside world."
 			},
 			"grove": {
 				"subtitle": "Extension isolation enforced by hardware.",

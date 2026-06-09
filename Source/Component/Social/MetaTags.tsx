@@ -63,7 +63,7 @@ export default ({
 				{
 					"@type": "Organization",
 					"name": "PlayForm",
-					"url": "https://PlayForm.Cloud",
+					"url": "https://editor.land",
 				},
 			];
 

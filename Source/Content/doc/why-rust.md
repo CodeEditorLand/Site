@@ -92,7 +92,7 @@ that role. The language is a structural decision, not decoration.
 
 ## See Also
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [Why `Tauri`](https://land.playform.cloud/Doc/why-tauri)
-- [Why `gRPC`](https://land.playform.cloud/Doc/why-grpc)
-- [Why `WebAssembly`](https://land.playform.cloud/Doc/why-wasm)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [Why `Tauri`](https://editor.land/Doc/why-tauri)
+- [Why `gRPC`](https://editor.land/Doc/why-grpc)
+- [Why `WebAssembly`](https://editor.land/Doc/why-wasm)

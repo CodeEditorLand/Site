@@ -3,13 +3,13 @@ title: "Mountain"
 section: "Element"
 order: 11
 description:
-    "The Rust + Tauri native shell for land.playform.cloud, with native
+    "The Rust + Tauri native shell for editor.land, with native
     services, IPC, and the Cocoon extension-host bridge."
 ---
 
 # Mountain
 
-`Mountain` is the `Rust` + `Tauri` shell for `land.playform.cloud`. It owns the
+`Mountain` is the `Rust` + `Tauri` shell for `editor.land`. It owns the
 desktop window, native services, `Tauri` `IPC`, `Vine` `gRPC`, and the bridge to
 `Cocoon`. `Sky` renders in the operating system WebView, while extension-host
 work runs in `Cocoon`.
@@ -145,7 +145,7 @@ they apply to.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Cocoon`](https://land.playform.cloud/Doc/cocoon)
-- [`Vine`](https://land.playform.cloud/Doc/vine)
-- [`Air`](https://land.playform.cloud/Doc/air)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Cocoon`](https://editor.land/Doc/cocoon)
+- [`Vine`](https://editor.land/Doc/vine)
+- [`Air`](https://editor.land/Doc/air)

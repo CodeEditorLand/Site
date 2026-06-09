@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /Dashboard
 Disallow: /Account/
 Disallow: /OAuth/
-Sitemap: https://land.playform.cloud/sitemap-index.xml
+Sitemap: https://editor.land/sitemap-index.xml

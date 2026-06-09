@@ -3,7 +3,7 @@ title: "Getting Started"
 section: "Start"
 order: 1
 description:
-    "How to build and run land.playform.cloud from source on macOS or Windows."
+    "How to build and run editor.land from source on macOS or Windows."
 ---
 
 # Getting Started
@@ -12,7 +12,7 @@ description:
 > `Maintain/Debug/Build.sh` profile system. Canonical source:
 > [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
 
-`land.playform.cloud` is in active development and is currently source-only.
+`editor.land` is in active development and is currently source-only.
 There are no pre-built installers or package manager releases yet. The supported
 way to run the editor today is to build from source on **macOS or Windows**.
 
@@ -128,7 +128,7 @@ in the editor's `Output` panel for activation errors.
 
 ## See Also
 
-- [Installation](https://land.playform.cloud/Doc/installation)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
-- [`Mountain`: Native Kernel](https://land.playform.cloud/Doc/mountain)
+- [Installation](https://editor.land/Doc/installation)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
+- [`Mountain`: Native Kernel](https://editor.land/Doc/mountain)

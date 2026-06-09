@@ -105,6 +105,6 @@ always fully functional regardless of network state.
 
 ## See Also
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Air`](https://land.playform.cloud/Doc/air)
-- [Configuration](https://land.playform.cloud/Doc/configuration)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Air`](https://editor.land/Doc/air)
+- [Configuration](https://editor.land/Doc/configuration)

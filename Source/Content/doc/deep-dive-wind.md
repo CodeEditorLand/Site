@@ -111,7 +111,7 @@ results as Effect resolutions.
 
 ## Related Documentation 📖
 
-- [Wind overview](https://land.playform.cloud/Doc/wind)
-- [Architecture overview](https://land.playform.cloud/Doc/architecture)
-- [Sky UI layer](https://land.playform.cloud/Doc/deep-dive-sky)
-- [Mountain Rust backend](https://land.playform.cloud/Doc/deep-dive-mountain)
+- [Wind overview](https://editor.land/Doc/wind)
+- [Architecture overview](https://editor.land/Doc/architecture)
+- [Sky UI layer](https://editor.land/Doc/deep-dive-sky)
+- [Mountain Rust backend](https://editor.land/Doc/deep-dive-mountain)

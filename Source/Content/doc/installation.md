@@ -13,7 +13,7 @@ description:
 > Canonical source:
 > [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
 
-`land.playform.cloud` is currently source-only. There are no pre-built binaries,
+`editor.land` is currently source-only. There are no pre-built binaries,
 Homebrew tap, winget package, or apt repository yet. The instructions below
 cover building from source on **macOS and Windows**, both of which are supported
 today.
@@ -156,7 +156,7 @@ lifecycle and is the foundation for surfacing update notifications in the UI.
 
 ## See Also
 
-- [Getting Started](https://land.playform.cloud/Doc/getting-started)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Air`: Update Daemon](https://land.playform.cloud/Doc/air)
-- [Contributing](https://land.playform.cloud/Doc/contributing)
+- [Getting Started](https://editor.land/Doc/getting-started)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Air`: Update Daemon](https://editor.land/Doc/air)
+- [Contributing](https://editor.land/Doc/contributing)

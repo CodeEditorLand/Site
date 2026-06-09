@@ -285,6 +285,6 @@ State-heavy or coordination-heavy APIs where stock VS Code handles nuance:
 
 ## See Also
 
-- [Extension Development](https://land.playform.cloud/Doc/extension-development)
-- [Cocoon: Extension Host](https://land.playform.cloud/Doc/cocoon)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [Extension Development](https://editor.land/Doc/extension-development)
+- [Cocoon: Extension Host](https://editor.land/Doc/cocoon)
+- [Architecture Overview](https://editor.land/Doc/architecture)

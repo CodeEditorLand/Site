@@ -178,7 +178,7 @@ describe("DynamicAuthStatus", () => {
 		Auth0State.IsAuthenticated = true;
 		Auth0State.User = {
 			name: "Nikola Petrov",
-			email: "nikola@playform.cloud",
+			email: "nikola@editor.land",
 			picture: "https://example.com/avatar.png",
 		};
 
@@ -196,7 +196,7 @@ describe("DynamicAuthStatus", () => {
 		Auth0State.IsAuthenticated = true;
 		Auth0State.User = {
 			name: "Nikola Petrov",
-			email: "nikola@playform.cloud",
+			email: "nikola@editor.land",
 		};
 
 		render(<DynamicAuthStatus />);

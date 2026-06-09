@@ -4,12 +4,12 @@ section: "Usage"
 order: 6
 description:
     "Settings, keybindings, themes, and language configuration in
-    land.playform.cloud."
+    editor.land."
 ---
 
 # Configuration
 
-`land.playform.cloud` stores configuration locally in `JSON` files that support
+`editor.land` stores configuration locally in `JSON` files that support
 comments (`//` and `/* */`). The exact file paths depend on the platform and
 build profile. To locate the active settings file on your system, open the
 command palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows) and search
@@ -138,6 +138,6 @@ This syntax is the same as `VS Code`'s language-specific settings.
 
 ## See Also
 
-- [Getting Started](https://land.playform.cloud/Doc/getting-started)
-- [Installation](https://land.playform.cloud/Doc/installation)
-- [`Wind`: Service Layer](https://land.playform.cloud/Doc/wind)
+- [Getting Started](https://editor.land/Doc/getting-started)
+- [Installation](https://editor.land/Doc/installation)
+- [`Wind`: Service Layer](https://editor.land/Doc/wind)

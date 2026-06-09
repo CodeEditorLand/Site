@@ -3,13 +3,13 @@ title: "Common"
 section: "Element"
 order: 19
 description:
-    "Shared Rust and TypeScript contracts used across land.playform.cloud
+    "Shared Rust and TypeScript contracts used across editor.land
     elements."
 ---
 
 # Common
 
-`Common` is the shared contract layer for `land.playform.cloud`. It contains
+`Common` is the shared contract layer for `editor.land`. It contains
 `Rust` and `TypeScript` types, traits, configuration helpers, DTOs, testing
 helpers, and service-boundary definitions that multiple elements depend on.
 
@@ -48,6 +48,6 @@ not to the element as a whole.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Mountain`](https://land.playform.cloud/Doc/mountain)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Mountain`](https://editor.land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Common)

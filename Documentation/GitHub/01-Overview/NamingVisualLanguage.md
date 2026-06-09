@@ -101,7 +101,7 @@ Categories (organized by `Base.css` section):
 
 - Product display name: **Code Editor Land**.
 - Internal/code reference: **FIDDEE**.
-- Active domain: `land.playform.cloud`.
+- Active domain: `editor.land`.
 - Grace-hold domain: `editor.land`.
 - Message channel / AI gateway: `@nikolahristov_hermes_bot` (Telegram DM).
 - Codebase term: preference for **“Land”** over verbose branding in dev conversation.

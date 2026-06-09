@@ -69,7 +69,7 @@ binary in the build environment.
 
 ## Related Documentation 📖
 
-- [Output overview](https://land.playform.cloud/Doc/output)
-- [Rest compiler reference](https://land.playform.cloud/Doc/deep-dive-rest)
-- [Sky UI layer](https://land.playform.cloud/Doc/deep-dive-sky)
-- [Wind service layer](https://land.playform.cloud/Doc/deep-dive-wind)
+- [Output overview](https://editor.land/Doc/output)
+- [Rest compiler reference](https://editor.land/Doc/deep-dive-rest)
+- [Sky UI layer](https://editor.land/Doc/deep-dive-sky)
+- [Wind service layer](https://editor.land/Doc/deep-dive-wind)

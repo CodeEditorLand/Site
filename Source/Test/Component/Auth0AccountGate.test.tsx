@@ -128,7 +128,7 @@ describe("Auth0AccountGate", () => {
 		Auth0State.IsAuthenticated = true;
 		Auth0State.User = {
 			name: "Nikola Petrov",
-			email: "nikola@playform.cloud",
+			email: "nikola@editor.land",
 			picture: "https://example.com/avatar.png",
 			email_verified: true,
 		};
@@ -136,7 +136,7 @@ describe("Auth0AccountGate", () => {
 		render(<Auth0AccountGate Route="signin" />);
 
 		const DisplayName = screen.getByText("Nikola Petrov");
-		const Email = screen.getByText("nikola@playform.cloud");
+		const Email = screen.getByText("nikola@editor.land");
 		const DashboardLink = screen.getByText("Go to Dashboard");
 		const LogoutButton = screen.getByText("Logout");
 

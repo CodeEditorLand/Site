@@ -49,7 +49,7 @@ embedding `Tauri` `IPC` details directly into the component.
 
 ## Related Documentation 📖
 
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
-- [`Sky`](https://land.playform.cloud/Doc/sky)
-- [`Mountain`](https://land.playform.cloud/Doc/mountain)
+- [Architecture Overview](https://editor.land/Doc/architecture)
+- [`Sky`](https://editor.land/Doc/sky)
+- [`Mountain`](https://editor.land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Wind)

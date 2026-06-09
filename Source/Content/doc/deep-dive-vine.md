@@ -75,6 +75,6 @@ Proto files compiled at build time by prost-build in Mountain build script.
 
 ## Related Documentation 📖
 
-- [Vine overview](https://land.playform.cloud/Doc/vine)
-- [Cocoon gRPC client](https://land.playform.cloud/Doc/deep-dive-cocoon)
-- [Mountain gRPC server](https://land.playform.cloud/Doc/deep-dive-mountain)
+- [Vine overview](https://editor.land/Doc/vine)
+- [Cocoon gRPC client](https://editor.land/Doc/deep-dive-cocoon)
+- [Mountain gRPC server](https://editor.land/Doc/deep-dive-mountain)

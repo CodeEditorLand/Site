@@ -80,5 +80,5 @@ threads.
 
 ## Related Documentation 📖
 
-- [Rest overview](https://land.playform.cloud/Doc/rest)
-- [Output build orchestration](https://land.playform.cloud/Doc/deep-dive-output)
+- [Rest overview](https://editor.land/Doc/rest)
+- [Output build orchestration](https://editor.land/Doc/deep-dive-output)

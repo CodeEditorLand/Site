@@ -110,7 +110,7 @@ attestation.
 
 1. Checks out the repository.
 2. Writes the current date to `.github/Update.md`: `Update: $(date)`.
-3. Commits with git identity "Auto" (`Commit@PlayForm.Cloud`).
+3. Commits with git identity "Auto" (`Commit@editor.land`).
 4. Pushes to `Current` branch via `ad-m/github-push-action`.
 
 This keeps a visible timestamp of the last repository activity even when no

@@ -3,13 +3,13 @@ title: "API Reference"
 section: "Development"
 order: 8
 description:
-    "VS Code extension API coverage in land.playform.cloud: what works, what
+    "VS Code extension API coverage in editor.land: what works, what
     no-ops, and what is not yet implemented."
 ---
 
 # API Reference
 
-`land.playform.cloud` implements the `VS Code` extension `API` through `Cocoon`,
+`editor.land` implements the `VS Code` extension `API` through `Cocoon`,
 the `Node.js` extension host. Extensions written against `@types/vscode` compile
 against `Cocoon`'s stubs without modification. Whether they run correctly
 depends on which `API` surfaces they use.
@@ -80,7 +80,7 @@ const FontSize = Config.get<number>("FontSize", 14);
 Configuration keys are declared in `contributes.configuration` in your extension
 manifest. Land validates configuration values against the `JSON` Schema you
 provide. The specific user settings file path has not been independently
-confirmed - see [Configuration](https://land.playform.cloud/Doc/configuration)
+confirmed - see [Configuration](https://editor.land/Doc/configuration)
 for details.
 
 ---
@@ -154,29 +154,29 @@ initialization, capabilities negotiation, and shutdown. This routes through
 ## Rust API Documentation
 
 Generated `rustdoc` output is planned for the `Rust` crates listed below. The
-URLs follow the pattern `https://Rust.Documentation.*.land.playform.cloud` -
+URLs follow the pattern `https://Rust.Documentation.*.editor.land` -
 these may not yet resolve to hosted documentation. Check the
 [source repositories](https://github.com/CodeEditorLand) directly if the links
 are unavailable.
 
 | Crate           | Description                                                                                                                             | Element                                                      |
 | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](https://land.playform.cloud/Doc/mountain)         |
-| `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](https://land.playform.cloud/Doc/echo)                 |
-| `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](https://land.playform.cloud/Doc/architecture) |
-| `CommonLibrary` | Shared utility functions                                                                                                                | [Architecture](https://land.playform.cloud/Doc/architecture) |
-| `Air`           | Background update daemon                                                                                                                | [Air](https://land.playform.cloud/Doc/air)                   |
-| `AirLibrary`    | Air shared library                                                                                                                      | [Air](https://land.playform.cloud/Doc/air)                   |
-| `Download`      | Binary download logic                                                                                                                   | [Air](https://land.playform.cloud/Doc/air)                   |
-| `SideCar`       | Pre-built Node.js binaries                                                                                                              | [Architecture](https://land.playform.cloud/Doc/architecture) |
-| `Maintain`      | Build orchestrator                                                                                                                      | [Contributing](https://land.playform.cloud/Doc/contributing) |
-| `Grove`         | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](https://land.playform.cloud/Doc/grove)               |
+| `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](https://editor.land/Doc/mountain)         |
+| `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](https://editor.land/Doc/echo)                 |
+| `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](https://editor.land/Doc/architecture) |
+| `CommonLibrary` | Shared utility functions                                                                                                                | [Architecture](https://editor.land/Doc/architecture) |
+| `Air`           | Background update daemon                                                                                                                | [Air](https://editor.land/Doc/air)                   |
+| `AirLibrary`    | Air shared library                                                                                                                      | [Air](https://editor.land/Doc/air)                   |
+| `Download`      | Binary download logic                                                                                                                   | [Air](https://editor.land/Doc/air)                   |
+| `SideCar`       | Pre-built Node.js binaries                                                                                                              | [Architecture](https://editor.land/Doc/architecture) |
+| `Maintain`      | Build orchestrator                                                                                                                      | [Contributing](https://editor.land/Doc/contributing) |
+| `Grove`         | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](https://editor.land/Doc/grove)               |
 
 ---
 
 ## See Also
 
-- [`Cocoon`: Extension Host](https://land.playform.cloud/Doc/cocoon)
-- [Extension Development](https://land.playform.cloud/Doc/extension-development)
-- [Architecture Overview](https://land.playform.cloud/Doc/architecture)
+- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
+- [Extension Development](https://editor.land/Doc/extension-development)
+- [Architecture Overview](https://editor.land/Doc/architecture)
 - [`VS Code` `API` Documentation](https://code.visualstudio.com/api/references/vscode-api)
