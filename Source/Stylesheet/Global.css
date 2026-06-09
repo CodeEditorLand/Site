@@ -127,6 +127,16 @@ html {
 	scrollbar-color: rgba(26, 26, 26, 0.18) transparent;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.18);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.32);
+}
+.dark html {
+	scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
 /* ─── Masonry card responsive col-span ───────────────────────────
  * The --masonry-col CSS custom property is set via inline style.
  * Below lg the card resets to span-1 so the 1-col / 2-col grid

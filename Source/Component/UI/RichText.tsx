@@ -73,12 +73,17 @@ const TermDictionary = new Map<string, TermCategory>([
 ]);
 
 const CategoryStyle: Record<TermCategory, string> = {
-	Architecture: "border-blue-200 bg-blue-50 text-blue-700",
-	Telemetry: "border-yellow-200 bg-yellow-50 text-yellow-700",
-	Protocol: "border-purple-200 bg-purple-50 text-purple-700",
-	Feature: "border-orange-200 bg-orange-50 text-orange-700",
-	License: "border-green-200 bg-green-50 text-green-700",
-	Tool: "border-sky-200 bg-sky-50 text-sky-700",
+	Architecture:
+		"border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300",
+	Telemetry:
+		"border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300",
+	Protocol:
+		"border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300",
+	Feature:
+		"border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300",
+	License:
+		"border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300",
+	Tool: "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950 dark:text-sky-300",
 };
 
 const CategoryLabel: Record<TermCategory, string> = {

@@ -12,7 +12,7 @@ const ButtonVariants = cva(
 				default:
 					"bg-[var(--Foreground)] text-[var(--Background)] hover:bg-[var(--Foreground)]/85",
 				destructive:
-					"bg-[var(--Destruct)] text-white hover:bg-[var(--Destruct)]/85 focus-visible:ring-[var(--Destruct)]/20",
+					"bg-[var(--Destruct)] text-[var(--DestructForeground)] hover:bg-[var(--Destruct)]/85 focus-visible:ring-[var(--Destruct)]/20",
 				outline:
 					"bg-[var(--Background)] text-[var(--Foreground)] hover:bg-[var(--Mute)]",
 				secondary:
