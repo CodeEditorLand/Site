@@ -76,7 +76,7 @@ const FieldRow = ({
 					<span className="text-sm font-medium">{label}</span>
 					<SourceBadge label={source} icon={sourceIcon} />
 					{editable ? (
-						<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600">
+						<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 							Editable
 						</span>
 					) : (
@@ -383,7 +383,7 @@ const AccountProfileInner = ({
 						} catch {}
 						Login();
 					}}
-					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-white transition-all hover:opacity-90">
+					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90">
 					{T("signInButton", { defaultValue: "Sign In" })}
 				</button>
 			</div>
@@ -451,7 +451,7 @@ const AccountProfileInner = ({
 							<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
 						</span>
 						{User.email_verified === true && (
-							<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700">
+							<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 								<MailCheck
 									className="h-2.5 w-2.5"
 									aria-hidden="true"
@@ -460,7 +460,7 @@ const AccountProfileInner = ({
 							</span>
 						)}
 						{User.email_verified === false && (
-							<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 text-[10px] font-medium text-yellow-700">
+							<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 text-[10px] font-medium text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 								Not Verified
 							</span>
 						)}
@@ -510,7 +510,7 @@ const AccountProfileInner = ({
 
 			{/* ── Enterprise SSO banner ─────────────────────────────── */}
 			{IsEnterprise && (
-				<div className="border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+				<div className="border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 					<div className="flex items-center gap-2">
 						<ShieldCheck
 							className="h-4 w-4 shrink-0"
@@ -531,7 +531,7 @@ const AccountProfileInner = ({
 							)}
 						</span>
 					</div>
-					<p className="mt-1 pl-6 text-sm text-green-600">
+					<p className="mt-1 pl-6 text-sm text-green-600 dark:text-green-400">
 						Profile fields are managed by your organization's
 						identity provider. Contact your IT administrator to
 						update them.
@@ -541,7 +541,7 @@ const AccountProfileInner = ({
 
 			{/* ── Email not verified warning ────────────────────────── */}
 			{User.email_verified === false && (
-				<div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-700">
+				<div className="border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 					{T("emailNotVerified", {
 						defaultValue: "Email not verified. Check your inbox.",
 					})}
@@ -612,13 +612,13 @@ const AccountProfileInner = ({
 									{User.email || "--"}
 								</Pii>
 								{User.email_verified === true && (
-									<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 font-mono text-[10px] text-green-700">
+									<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 font-mono text-[10px] text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 										<MailCheck className="h-2.5 w-2.5" />
 										verified
 									</span>
 								)}
 								{User.email_verified === false && (
-									<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 font-mono text-[10px] text-yellow-700">
+									<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 font-mono text-[10px] text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 										unverified
 									</span>
 								)}
@@ -791,7 +791,7 @@ const AccountProfileInner = ({
 										/>
 										Password
 										<SourceBadge label="Auth0" />
-										<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600">
+										<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 											Editable
 										</span>
 									</div>
@@ -815,13 +815,13 @@ const AccountProfileInner = ({
 									</span>
 								)}
 								{PasswordResetState === "sent" && (
-									<span className="inline-flex shrink-0 items-center gap-1 border border-green-200 bg-green-50 px-2 py-1 text-sm text-green-700">
+									<span className="inline-flex shrink-0 items-center gap-1 border border-green-200 bg-green-50 px-2 py-1 text-sm text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 										<MailCheck className="h-3 w-3" />
 										Email sent
 									</span>
 								)}
 								{PasswordResetState === "error" && (
-									<span className="shrink-0 text-sm text-red-600">
+									<span className="shrink-0 text-sm text-red-600 dark:text-red-400">
 										Failed. Try again.
 									</span>
 								)}
@@ -910,7 +910,7 @@ const AccountProfileInner = ({
 					<button
 						type="button"
 						onClick={HandleSignOut}
-						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-card px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50">
+						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-card px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950">
 						{T("signOut", { defaultValue: "Sign Out" })}
 					</button>
 				</div>
