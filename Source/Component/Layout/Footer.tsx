@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
 import { Separator } from "../UI/Separator";
+import { ThemeImage } from "@Library/Theme";
 
 import "./Footer/Stylesheet.css";
 
@@ -115,22 +116,15 @@ const Footer = ({ Content }: FooterProps) => {
 							href="/"
 							className="mb-4 flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label={`${FooterData.Brand?.Name || "Land"} - Go to homepage`}>
-							<picture>
-								<source
-									srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
-									media="(prefers-color-scheme: dark)"
-									data-theme-dark=""
-								/>
-								<img
-									src="/Asset/Logo/Glyph/Land.svg"
-									alt="Code Editor Land"
-									title="Code Editor Land"
-									width="32"
-									height="32"
-									className="h-8 w-8"
-									aria-hidden="true"
-								/>
-							</picture>
+							<ThemeImage
+								src="/Asset/Logo/Glyph/Land.svg"
+								alt="Code Editor Land"
+								title="Code Editor Land"
+								width={32}
+								height={32}
+								className="h-8 w-8"
+								aria-hidden="true"
+							/>
 							<span className="font-semibold">
 								{FooterData.Brand?.Name || "Land"}
 							</span>
@@ -217,20 +211,13 @@ const Footer = ({ Content }: FooterProps) => {
 							className="StaccatoSocial focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
 							<IconTooltip Label="GitHub">
-								<picture>
-									<source
-										srcSet="/Dark/Image/GitHub.svg"
-										media="(prefers-color-scheme: dark)"
-										data-theme-dark=""
-									/>
-									<img
-										src="/Image/GitHub.svg"
-										alt="GitHub"
-										width="20"
-										height="20"
-										className="h-5 w-5"
-									/>
-								</picture>
+								<ThemeImage
+									src="/Image/GitHub.svg"
+									alt="GitHub"
+									width={20}
+									height={20}
+									className="h-5 w-5"
+								/>
 							</IconTooltip>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />
@@ -277,21 +264,14 @@ const Footer = ({ Content }: FooterProps) => {
 								rel="noopener noreferrer"
 								className="transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 								aria-label="Made with Tauri (opens in new tab)">
-								<picture>
-									<source
-										srcSet="/Dark/Image/GitHub/Made/Tauri.svg"
-										media="(prefers-color-scheme: dark)"
-										data-theme-dark=""
-									/>
-									<img
-										src="/Image/GitHub/Made/Tauri.svg"
-										alt="Made with Tauri"
-										width="160"
-										height="32"
-										className="h-8"
-										loading="lazy"
-									/>
-								</picture>
+								<ThemeImage
+									src="/Image/GitHub/Made/Tauri.svg"
+									alt="Made with Tauri"
+									width={160}
+									height={32}
+									className="h-8"
+									loading="lazy"
+								/>
 							</a>
 						)}
 					</div>

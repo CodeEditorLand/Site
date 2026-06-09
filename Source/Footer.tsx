@@ -1,5 +1,7 @@
 import React from "react";
 
+import { ThemeImage } from "@Library/Theme";
+
 const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 	return (
 		<footer className="Footer flex flex-col sm:flex-row sm:items-center sm:justify-between">
@@ -11,19 +13,12 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						rel="noopener noreferrer"
 						className="Icon flex items-center"
 						aria-label="GitHub">
-						<picture>
-							<source
-								srcSet="/Dark/Image/GitHub.svg"
-								media="(prefers-color-scheme: dark)"
-								data-theme-dark=""
-							/>
-							<img
-								alt="GitHub"
-								src="/Image/GitHub.svg"
-								width="24"
-								height="24"
-							/>
-						</picture>
+						<ThemeImage
+							src="/Image/GitHub.svg"
+							alt="GitHub"
+							width={24}
+							height={24}
+						/>
 					</a>
 				</li>
 				<li>
@@ -73,37 +68,22 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						target="_blank"
 						rel="noopener noreferrer"
 						className="flex">
-						<picture>
-							<source
-								srcSet="/Dark/Image/GitHub/Made/Tauri.svg"
-								media="(prefers-color-scheme: dark)"
-								data-theme-dark=""
-							/>
-							<img
-								alt="Made With Tauri"
-								src="/Image/GitHub/Made/Tauri.svg"
-								width="160"
-								height="32"
-								className=""
-							/>
-						</picture>
+						<ThemeImage
+							src="/Image/GitHub/Made/Tauri.svg"
+							alt="Made With Tauri"
+							width={160}
+							height={32}
+						/>
 					</a>
 				</li>
 				<li className="flex items-center gap-2">
 					<a href="/" className="flex items-center">
-						<picture>
-							<source
-								srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
-								media="(prefers-color-scheme: dark)"
-								data-theme-dark=""
-							/>
-							<img
-								alt="Land"
-								src="/Asset/Logo/Glyph/Land.svg"
-								width="24"
-								height="24"
-							/>
-						</picture>
+						<ThemeImage
+						src="/Asset/Logo/Glyph/Land.svg"
+						alt="Land"
+						width={24}
+						height={24}
+					/>
 					</a>
 				</li>
 			</ul>

@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../UI/Button";
 import { IconTooltip } from "../UI/IconTooltip.js";
 import { ThemeToggle } from "../UI/ThemeToggle";
+import { ThemeImage } from "@Library/Theme";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 import "../Layout/Header/Stylesheet.css";
@@ -232,21 +233,14 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						<div
 							className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
 							aria-hidden="true">
-							<picture className="absolute inset-0 h-full w-full">
-								<source
-									srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
-									media="(prefers-color-scheme: dark)"
-									data-theme-dark=""
-								/>
-								<img
-									src="/Asset/Logo/Glyph/Land.svg"
-									alt="Code Editor Land"
-									title="Code Editor Land"
-									width="32"
-									height="32"
-									className="h-full w-full"
-								/>
-							</picture>
+							<ThemeImage
+								src="/Asset/Logo/Glyph/Land.svg"
+								alt="Code Editor Land"
+								title="Code Editor Land"
+								width={32}
+								height={32}
+								className="h-full w-full"
+							/>
 						</div>
 						<span className="font-semibold">
 							{HeaderData.Logo?.Text || "Land"}

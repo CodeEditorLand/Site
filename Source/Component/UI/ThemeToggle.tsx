@@ -23,9 +23,13 @@ const SyncPictureSources = (IsDark: boolean) => {
 const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	const [IsDark, SetIsDark] = useState(false);
 
-	// Sync local state with whatever the pre-paint script already decided.
+	// Sync local state with whatever the pre-paint script already decided,
+	// and re-sync all picture sources in case React hydration reset any
+	// source[data-theme-dark].media attributes during reconciliation.
 	useEffect(() => {
-		SetIsDark(document.documentElement.classList.contains("dark"));
+		const CurrentlyDark = document.documentElement.classList.contains("dark");
+		SetIsDark(CurrentlyDark);
+		SyncPictureSources(CurrentlyDark);
 	}, []);
 
 	const Toggle = () => {

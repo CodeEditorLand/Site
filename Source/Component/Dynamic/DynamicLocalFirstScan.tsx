@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { ThemeImage } from "@Library/Theme";
+
 /**
  * Local-First Air Daemon scanner.
  *
@@ -167,19 +169,12 @@ const LocalFirstScanInner = () => {
 	return (
 		<div className="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 			<div className="flex items-center gap-4">
-				<picture>
-					<source
-						srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
-						media="(prefers-color-scheme: dark)"
-						data-theme-dark=""
-					/>
-					<img
-						alt="Land"
-						src="/Asset/Logo/Glyph/Land.svg"
-						width="48"
-						height="48"
-					/>
-				</picture>
+				<ThemeImage
+					src="/Asset/Logo/Glyph/Land.svg"
+					alt="Land"
+					width={48}
+					height={48}
+				/>
 				<div className="flex-1">
 					<div className="flex items-center gap-3">
 						<h3 className="font-medium">

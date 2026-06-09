@@ -31,7 +31,11 @@ export function ThemeImage({
 	className,
 	...props
 }: ThemeImageProps) {
-	const Dark = darkSrc ?? src.replace(/^\/Image\//, "/Dark/Image/");
+	const Dark =
+		darkSrc ??
+		src
+			.replace(/^\/Image\//, "/Dark/Image/")
+			.replace(/^\/Asset\/(?!Dark\/)/, "/Asset/Dark/");
 	const sourceRef = useRef<HTMLSourceElement>(null);
 
 	useEffect(() => {

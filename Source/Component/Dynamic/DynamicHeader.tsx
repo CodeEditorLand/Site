@@ -3,6 +3,7 @@ import React from "react";
 
 import { Button } from "../UI/Button";
 import { ThemeToggle } from "../UI/ThemeToggle";
+import { ThemeImage } from "@Library/Theme";
 import type Property from "./Interface/Property/Header.js";
 
 /**
@@ -28,21 +29,14 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 					<div
 						className="relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
-						<picture className="h-full w-full">
-							<source
-								srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
-								media="(prefers-color-scheme: dark)"
-								data-theme-dark=""
-							/>
-							<img
-								src="/Asset/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width="32"
-								height="32"
-								className="h-full w-full"
-							/>
-						</picture>
+						<ThemeImage
+							src="/Asset/Logo/Glyph/Land.svg"
+							alt="Code Editor Land"
+							title="Code Editor Land"
+							width={32}
+							height={32}
+							className="h-full w-full"
+						/>
 					</div>
 					<span className="font-semibold">{Logo.Text}</span>
 				</div>
