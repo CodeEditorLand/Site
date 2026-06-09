@@ -66,7 +66,7 @@ export class ErrorBoundary extends Component<
 						<button
 							type="button"
 							onClick={this.HandleRetry}
-							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-white">
+							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-[var(--DestructForeground)]">
 							Try again
 						</button>
 					</div>

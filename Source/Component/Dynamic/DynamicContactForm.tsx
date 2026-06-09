@@ -372,7 +372,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				<a
 					href={MailtoHref}
 					onClick={Validate}
-					className={`StaccatoButton flex w-full items-center gap-3 border px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)] ${Config.Destructive ? "border-red-200 hover:bg-red-50" : "border-[var(--Border)]"}`}>
+					className={`StaccatoButton flex w-full items-center gap-3 border px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)] ${Config.Destructive ? "border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950" : "border-[var(--Border)]"}`}>
 					<Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
 					<div className="flex-1 text-left">
 						<div className="font-medium">Open in email client</div>
