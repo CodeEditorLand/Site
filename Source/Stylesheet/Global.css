@@ -38,7 +38,7 @@ body {
 
 /* Prevent whitespace layout shift in <picture> elements with multiple <source>/<img> */
 picture {
- font-size: 0;
+	font-size: 0;
 }
 
 /* CLS prevention: reserve space for client:load components before hydration.

@@ -1,110 +1,126 @@
 ---
 title: "Local-First Protocol"
-section: "Architecture"
+section: "Development"
 order: 5
 description:
-    "Air Daemon protocol design: discovery, sync, and conflict resolution."
+    "Land's local-first design philosophy: how editor state, extension data, and
+    file operations stay on-device without requiring cloud services."
 ---
 
-# Local-First Protocol
+Land is designed so that every core editor function works without a network
+connection and without an account. All persistent state is stored on the local
+device using platform-native mechanisms. Optional cloud services - update
+delivery, authentication for specific extensions - are provided by the Air
+daemon and the WebSite, but the editor starts, edits files, runs extensions, and
+saves state entirely offline. This page describes how the local-first design is
+implemented and what it means for extension developers.
 
-> **Note: The peer-to-peer sync protocol described here is the design
-> specification for the `Air` Daemon. `Air` exists as an active `Rust`
-> background daemon, but the full sync protocol - including `mDNS` discovery,
-> mutual authentication, and content-addressed delta transfer - is under active
-> development. Specific constants, port numbers, and file paths in this document
-> reflect the intended design, not a confirmed working implementation. This page
-> will be updated as features ship.**
+## Editor State Storage
 
-The `Air` Daemon provides optional peer-to-peer synchronisation between Land
-instances. This document describes the design of the protocol used for
-discovery, data transfer, and conflict resolution. All synchronisation is
-local-network-first: no data passes through external servers.
+All editor state is persisted locally through Mountain's `storage:set` and
+`storage:get` IPC handlers. The underlying store uses SQLite for structured data
+and the platform keychain (via Tauri's secure storage API) for secrets. There is
+no cloud sync layer in the storage IPC path.
 
----
+The storage is namespaced by extension ID. An extension writing to
+`context.workspaceState` or `context.globalState` calls Mountain's `storage:set`
+handler, which writes to SQLite at:
 
-## Design Principles
+```
+~/.land/storage/<extension-id>.db    # macOS / Linux
+%APPDATA%\Land\storage\<extension-id>.db    # Windows
+```
 
-Land's sync layer is built on three commitments:
+No data leaves the device unless the extension itself initiates a network
+request.
 
-- **Local-first** - the editor is always fully functional without network
-  access. Sync is additive, never blocking.
-- **No central relay** - peers discover and communicate with each other directly
-  on the local network. There is no Land-operated server in the data path.
-- **Encrypted by default** - all peer communication is encrypted at the frame
-  level using established cryptographic primitives. No certificate authority or
-  TLS infrastructure is required.
+## Extension State via Memento
 
----
+The `vscode.Memento` interface (`context.workspaceState`, `context.globalState`)
+is backed by Mountain's `Storage.Get` and `Storage.Set` IPC calls. Extension
+developers can rely on Memento for persistent key-value storage with the same
+semantics as VS Code: writes are durable across restarts, workspace state is
+scoped to the current workspace root, and global state is shared across all
+workspaces.
 
-## Discovery
+The Memento implementation does not batch writes or require a flush call. Each
+`state.update(key, value)` call is an immediate round-trip to Mountain's storage
+handler, which writes through to SQLite synchronously within the Tauri async
+runtime.
 
-`Air` is designed to broadcast an `mDNS` service record on the local network.
-Each record will contain an instance ID (a UUID generated on first launch), a
-listen port, and a protocol version identifier. When a peer is discovered, the
-initiating daemon opens a connection and performs a mutual authentication
-handshake using pre-shared keys exchanged out-of-band (such as a QR code or
-manual key entry).
+## Extension Secrets
 
----
+`context.secrets` is backed by Mountain's `encryption:encrypt` and
+`encryption:decrypt` handlers, which use AES-256-GCM with a machine-stable key
+derived from a SHA-256 hash of the machine UUID. Encrypted values are stored in
+the same SQLite database as other state. Secrets do not leave the device.
 
-## Authentication
+> [!IMPORTANT] Because the encryption key is derived from the machine UUID,
+> secrets are not portable across machines. An extension that stores a token on
+> one machine cannot read it on another. This matches the VS Code behavior for
+> `context.secrets` on desktop.
 
-`Air` is designed to use `NaCl` (libsodium) for all cryptographic operations.
-The intended scheme is:
+## File System Operations
 
-1. Each instance generates a Curve25519 key pair on first launch.
-2. Pairing exchanges public keys out-of-band.
-3. Every frame is encrypted using `crypto_box` (X25519 + XSalsa20 + Poly1305).
+File read, write, watch, and directory operations go directly through Mountain's
+native filesystem handlers to the OS. There is no cloud sync layer, no conflict
+resolution layer, and no virtual filesystem in the IPC path for local files. The
+`TierFileSystem` variable selects between implementation layers (Layer2 through
+Layer4) but all layers are direct local filesystem access.
 
-This eliminates the need for a certificate authority, a PKI, or TLS negotiation.
-Trust is established directly between two instances via key exchange.
+Remote filesystem support (SSH, container filesystems) is handled by
+extension-provided `FileSystemProvider` implementations registered via
+`vscode.workspace.registerFileSystemProvider`. The core filesystem IPC path
+remains local-only.
 
----
+## Air: Optional Services
 
-## Sync Protocol
+The Air daemon provides optional services that the editor does not depend on for
+core function:
 
-Once authenticated, the design calls for peers to exchange file state using a
-content-addressed protocol:
+- **Update delivery**: Air checks for new Land releases and downloads update
+  packages. If Air is not running, the editor continues to work; no update
+  prompt appears.
+- **Authentication**: Air can broker OAuth tokens for extensions that integrate
+  with Editor.Land accounts. Extensions requiring GitHub OAuth or other
+  third-party OAuth (Copilot, GitHub Pull Requests) still require their own auth
+  flows, which are not currently implemented in the core editor.
 
-1. **Manifest exchange** - each peer sends a manifest listing file paths and
-   their content hashes (BLAKE3).
-2. **Delta request** - the receiver identifies files whose hashes differ and
-   requests only those.
-3. **Content transfer** - changed files are sent as compressed byte frames.
-4. **Acknowledgment** - the receiver confirms receipt and updates its manifest.
+The editor starts correctly with Air absent. No startup path has a hard
+dependency on Air being reachable.
 
-Only changed files are transferred. This design avoids re-sending content that
-both peers already have.
+## Telemetry: Opt-In Only
 
----
+Telemetry is disabled in production builds by default (`Capture=false`,
+`Report=false` in `.env.Land.Production`). The PostHog integration and OTLP
+exporter are present in the codebase but inactive unless explicitly enabled by
+setting `Capture=true` and `Report=true` in the local `.env.Land.PostHog` file.
 
-## Conflict Resolution
+Session recording (`Replay`) and surveys (`Ask`) are also off by default and
+must be individually enabled. No telemetry data is collected from users who have
+not opted in.
 
-When both peers have modified the same file since the last sync, the intended
-behaviour is:
+## CC0 License and Vendor Lock-In
 
-- **Default: last-write-wins** - the file with the more recent modification
-  timestamp is accepted. The overwritten version is preserved in a conflicts
-  directory within the workspace.
-- **Manual merge** - the user is notified and can open a three-way merge view to
-  resolve conflicts.
+Land is released under the Creative Commons CC0 Universal public domain
+dedication. This means there is no license restriction on forking, modifying, or
+redistributing the editor or any of its components. Combined with the
+local-first storage design, there is no mechanism by which a vendor could lock
+users into a proprietary data format or a mandatory cloud service.
 
-Conflict resolution strategy is intended to be configurable per workspace.
+## What Local-First Means for Extension Developers
 
----
-
-## Offline-First Guarantees
-
-`Air` is designed never to block the editor. If no peers are available, the
-editor operates normally. Sync is intended to resume automatically when
-connectivity is restored. There is no "offline mode" toggle - the editor is
-always fully functional regardless of network state.
-
----
-
-## See Also
-
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Air`](https://editor.land/Doc/air)
-- [Configuration](https://editor.land/Doc/configuration)
+- **Extension state is always local.** `context.workspaceState`,
+  `context.globalState`, and `context.secrets` write to the local device. There
+  is no cloud-sync API in the Cocoon shim.
+- **Sync is the extension's responsibility.** If an extension needs to
+  synchronize state across machines, it must implement that sync itself using
+  whatever backend it chooses (its own API, GitHub Gist, etc.). Land provides no
+  cross-device sync primitives.
+- **Extensions work offline.** An extension that relies only on the `vscode.*`
+  API and local file access will work without a network connection. Extensions
+  that make outbound HTTP requests are responsible for handling offline
+  conditions.
+- **No account required.** Extensions must not assume the user has an
+  Editor.Land account or has authenticated with any service. Account-gated
+  features should be optional enhancements, not required for basic function.

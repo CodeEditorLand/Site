@@ -1,134 +1,176 @@
 ---
-title: "Getting Started"
-section: "Start"
-order: 1
-description:
-    "How to build and run editor.land from source on macOS or Windows."
+title: Getting Started
+section: Start
+order: 2
+description: Prerequisites, clone strategy, first build, and first run for Land.
 ---
 
-# Getting Started
+Building Land from source requires a Rust toolchain, Node 24, pnpm, and Git with
+LFS. macOS is the primary supported platform today; Windows and Linux builds are
+in progress. This page walks through every prerequisite, the correct submodule
+clone strategy, and the full build sequence.
 
-> **Updated 2026-05-29** - Build process updated to Node 24 and the
-> `Maintain/Debug/Build.sh` profile system. Canonical source:
-> [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
+## Prerequisites
 
-`editor.land` is in active development and is currently source-only.
-There are no pre-built installers or package manager releases yet. The supported
-way to run the editor today is to build from source on **macOS or Windows**.
+| Tool    | Required Version | Notes                                                       |
+| ------- | ---------------- | ----------------------------------------------------------- |
+| Rust    | 1.95.0+ (MSRV)   | Install via [rustup.rs](https://rustup.rs/)                 |
+| Node.js | 24               | Required for Step 1 (VS Code source). Use `nvm install 24`. |
+| pnpm    | Latest           | `npm install -g pnpm`                                       |
+| Git     | Any recent       | Must have LFS support: `git lfs install`                    |
+| protoc  | Optional         | Only needed if modifying `.proto` files                     |
 
----
+> [!IMPORTANT] Node 24 is required specifically for the VS Code Editor submodule
+> compilation step. The exact pinned minor version is in
+> `Dependency/Microsoft/Dependency/Editor/.nvmrc`. Use `nvm use 24` (reads
+> `.nvmrc` automatically) before running any Step 1 commands.
 
-## What Works Today
+### Shell Environment Setup
 
-On Apple Silicon or Intel macOS (13.0 Ventura or later) and on Windows 10/11, a
-successful build produces a working editor that:
+Add these to your shell profile (`~/.zshrc`, `~/.bashrc`, or equivalent) before
+running `npm install` inside the Editor submodule. Without them, the install
+will stall indefinitely downloading large test-only binaries.
 
-- Opens a native window with the `workbench` UI (`WKWebView` on macOS,
-  `WebView2` on Windows).
-- Loads `VS Code` extensions from disk and activates them through `Cocoon`, the
-  `Node.js` extension host.
-- Provides file system, terminal, and debug adapter access through `Mountain`,
-  the `Rust` kernel.
-- Runs the full `gRPC`-based `IPC` stack between `Mountain` and `Cocoon` via
-  `Vine`.
+```sh
+# Electron (~200 MB) and Playwright (~300 MB) are only needed for e2e tests
+export ELECTRON_SKIP_BINARY_DOWNLOAD=1
+export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+```
 
-The following are **in progress**: a Homebrew tap, a winget package, an apt
-repository, and an automated update mechanism.
+Reload your shell after adding them:
 
----
+```sh
+source ~/.zshrc
+```
 
-## Build Requirements
+## Clone Strategy
 
-All of the following must be installed before building:
+> [!WARNING] Never use `git clone --recurse-submodules`. Each submodule element
+> lives on its own independent branch. Recursive cloning pulls wrong commits and
+> corrupts the gitlink state. Clone each submodule individually.
 
-- **`Rust`** nightly (install via [rustup](https://rustup.rs), then
-  `rustup default nightly`)
-- **`Node.js`** 24 - required to compile the VS Code Editor submodule (version
-  pinned in `Dependency/Microsoft/Dependency/Editor/.nvmrc`)
-- **`nvm`** - recommended for switching Node versions
-  ([nvm-sh/nvm](https://github.com/nvm-sh/nvm))
-- **`pnpm`** 9 or later (`npm install -g pnpm`)
-- **macOS:** Xcode Command Line Tools (`xcode-select --install`), macOS 13.0
-  (Ventura) or later
-- **Windows:** `WebView2` Runtime (included with Windows 11; available
-  separately for Windows 10), Visual Studio Build Tools with the C++ workload
+Clone the main Land repository:
 
----
+```sh
+git clone https://github.com/CodeEditorLand/Land.git
+cd Land
+git lfs pull
+```
 
-## Building from Source
+Then clone each required element submodule into its `Element/` path. The minimum
+set for a working build:
 
-The build is a **two-step linear flow.** Do not pull submodules recursively -
-each submodule is managed independently on its own branch.
+```sh
+# Core Rust elements
+git clone https://github.com/CodeEditorLand/Common.git Element/Common
+git clone https://github.com/CodeEditorLand/Mountain.git Element/Mountain
+git clone https://github.com/CodeEditorLand/Vine.git Element/Vine
 
-### Step 1 - Compile the VS Code Editor submodule _(mandatory)_
+# TypeScript elements
+git clone https://github.com/CodeEditorLand/Cocoon.git Element/Cocoon
+git clone https://github.com/CodeEditorLand/Wind.git Element/Wind
+git clone https://github.com/CodeEditorLand/Sky.git Element/Sky
+git clone https://github.com/CodeEditorLand/Output.git Element/Output
+git clone https://github.com/CodeEditorLand/Rest.git Element/Rest
 
-`Cocoon` (the extension host) and `Output` (the platform bundle) both depend on
-the compiled output of the VS Code Editor submodule. This step must complete
-before Step 2 will succeed.
+# VS Code source dependency
+git clone https://github.com/CodeEditorLand/Dependency.git Element/Dependency
+# The Editor submodule is nested inside Dependency:
+cd Element/Dependency
+git clone https://github.com/CodeEditorLand/Editor.git Microsoft/Dependency/Editor
+cd ../..
+```
 
-```bash
-cd Dependency/Microsoft/Dependency/Editor
+Each of these repos tracks a `Current` branch. Check out `Current` in each after
+cloning.
 
-# Node 24 is required here - reads .nvmrc automatically
+## First Build
+
+### Step 1: Compile VS Code Source
+
+```sh
+cd Element/Dependency/Microsoft/Dependency/Editor
+
 nvm use 24
+export NODE_ENV=development
 
 git fetch --all
 git reset --hard Parent/main
 git clean -dfx
 
-pnpm install
-pnpm run compile
-pnpm run compile-extensions-build
+npm install
+npm run compile
+npm run compile-extensions-build
+
+cd ../../../../..
 ```
 
-### Step 2 - Build the Land application
+This produces the compiled platform JavaScript that Cocoon and Output consume.
+It only needs to be re-run when the Editor submodule commit changes.
 
-```bash
-cd Land # back to repository root
+### Step 2: Build Land
+
+From the repository root:
+
+```sh
+export Trace=all Record=1 Disable=false
 ./Maintain/Debug/Build.sh --profile debug-electron-bundled
 ```
 
-The first build takes several minutes because it compiles `Mountain`'s `Rust`
-dependencies from scratch. Subsequent builds are significantly faster due to
-`Cargo`'s incremental compilation.
+The full build takes several minutes on first run. Subsequent incremental builds
+are faster.
 
-For a quick iteration build without the full bundling pass:
+## First Run
 
-```bash
-./Maintain/Debug/Build.sh --profile debug-mountain
+```sh
+./Maintain/Debug/Build.sh --profile debug-electron-bundled --run
 ```
 
-See
-[BuildPipeline.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md)
-for the full profile matrix.
+Or launch the binary directly:
 
----
+```sh
+./Element/Mountain/Target/debug-electron/Mountain
+```
 
-## Extension Loading
+## Troubleshooting
 
-`Cocoon` discovers extensions from the filesystem at startup. The exact
-extension discovery path in the current build has not been independently
-confirmed to match `VS Code`'s `~/.vscode/extensions` directory exactly. If an
-extension you expect to appear does not load, check the `Cocoon` output channel
-in the editor's `Output` panel for activation errors.
+> [!WARNING] If `npm install` in the Editor submodule never completes, the
+> `ELECTRON_SKIP_BINARY_DOWNLOAD` and `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` exports
+> are likely missing from your shell environment. Add them as described above
+> and re-run.
 
----
+**Stale Playwright lockfile**
 
-## Known Limitations
+If `npm install` fails with
+`An active lockfile is found at: ~/Library/Caches/ms-playwright/__dirlock`, a
+previous install was interrupted. Remove the stale lock:
 
-- **Linux not yet supported.** Linux (`WebKitGTK`) is planned and in progress.
-- **No marketplace integration.** Extensions must be installed manually as
-  `.vsix` files or sourced from disk. Marketplace `API` access is not yet
-  implemented.
-- **`API` gaps.** `vscode.lm.*`, `vscode.chat.*`, `vscode.notebook.*`, and
-  `vscode.tests.*` are not implemented. Extensions using these `APIs` activate
-  but the specific features silently no-op.
+```sh
+rm -rf ~/Library/Caches/ms-playwright/__dirlock
+```
 
----
+**`npm warn Unknown project config` messages**
 
-## See Also
+These warnings (`target`, `disturl`, `runtime`, `build_from_source`) come from
+upstream VS Code's `.npmrc` using keys that npm 11+ flags as non-standard. They
+are harmless - the keys are still consumed correctly by native module compilers.
 
-- [Installation](https://editor.land/Doc/installation)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
-- [`Mountain`: Native Kernel](https://editor.land/Doc/mountain)
+**Port conflicts**
+
+If Mountain or Cocoon fail to bind their gRPC ports, a previous process is still
+running on `50051` or `50052`. Kill the orphaned processes or change the ports
+in `.env.Land`.
+
+**Missing `.env.Land`**
+
+Copy the sample file to create a local environment file:
+
+```sh
+cp .env.Land.Sample .env.Land
+```
+
+## Next Steps
+
+- [Installation](/doc/installation) - system requirements table and bundle paths
+- [Configuration](/doc/configuration) - full environment variable reference
+- [Project Structure](/doc/project-structure) - what lives where in the monorepo

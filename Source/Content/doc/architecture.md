@@ -1,150 +1,226 @@
 ---
-title: "Architecture Overview"
-section: "Architecture"
-order: 4
+title: Architecture
+section: Start
+order: 6
 description:
-    "How editor.land's elements fit together: Mountain, Cocoon, Sky,
-    Air, and typed IPC."
+    Three-layer architecture - Mountain (Rust/Tauri), Cocoon
+    (Node.js/Effect-TS), Sky+Wind (Astro/Effect-TS) - and the IPC channels that
+    connect them.
 ---
 
-# Architecture Overview
+Land operates as a multi-process application. Mountain is the native Rust/Tauri
+backend. Cocoon is the Node.js extension host sidecar. Sky and Wind form the UI
+layer running inside the Tauri WebView. A fourth optional process, Air, runs as
+a background daemon for updates, indexing, and authentication. Components
+communicate over three distinct channels: Tauri commands/events, gRPC (Vine
+protocol), and SkyBridge custom events.
 
-`editor.land` is split into named elements so the public architecture
-can be checked against source instead of guessed from a diagram. The primary
-desktop path is `Mountain`, the `Rust` + `Tauri` shell, running `Sky` in the
-operating system WebView and `Cocoon` as the `Node.js` extension host.
+## Process Model
 
-`Air` contains background service code for downloads, updates, authentication,
-indexing, health, and `Vine` `IPC`. Whether `Air` is part of a given build
-depends on the selected profile and feature flags.
+```
++-----------------------------------------------------------+
+|  macOS process: Mountain (Rust / Tauri)                   |
+|                                                           |
+|  AppState  |  gRPC server (port 50052)  |  Tauri IPC     |
+|  File sys  |  Process manager           |  Event emitter |
++------------+---------------------------+----------------+-+
+             |                           |                |
+      gRPC (Vine.proto)           Tauri invoke()   Tauri event
+             |                           |                |
+             v                           v                v
++------------------------+  +-----------------------------------+
+|  Node.js process:      |  |  Tauri WebView (Chromium)         |
+|  Cocoon (extension     |  |                                   |
+|  host)                 |  |  Wind (Effect-TS ~40 services)    |
+|                        |  |  Sky  (Astro UI + SkyBridge)      |
+|  vscode API shim       |  |                                   |
+|  Extension runner      |  +-----------------------------------+
++------------------------+
 
-The `Mountain` desktop path does not bundle Chromium. `Tauri` uses `WKWebView`
-on macOS, `WebView2` on Windows, and `WebKitGTK` on Linux. The repository
-contains cross-platform configuration, while public installers and full platform
-verification are still release work.
++----------------------------+
+|  Air daemon (background)   |
+|  gRPC port 50053           |
++----------------------------+
+```
 
-Public performance numbers are intentionally not listed here until there is a
-published, repeatable benchmark suite. The source supports the architectural
-claim: native `Rust` services, typed `IPC`, no bundled Chromium in the `Tauri`
-path, and a separate extension host.
+## Layer Descriptions
 
----
+### Mountain - Native Backend
+
+Mountain is a Tauri binary written in Rust. It implements every service trait
+defined in the Common crate: file system, terminal PTY, clipboard, dialogs,
+window management, extension scanning, configuration, encryption, and process
+management. Mountain hosts the gRPC server that Cocoon connects to, spawns and
+supervises the Cocoon and Air processes, and serves as the single authority for
+all OS-level operations.
+
+Key source paths within the Mountain element:
+
+| Path                                    | Contents                                                   |
+| --------------------------------------- | ---------------------------------------------------------- |
+| `Source/IPC/WindServiceHandlers/mod.rs` | Main Tauri IPC dispatcher (~2500 lines)                    |
+| `Source/ProcessManagement/`             | Cocoon and Air spawn, initialization data                  |
+| `Source/Environment/`                   | Provider implementations (file, terminal, clipboard, etc.) |
+| `Source/RPC/CocoonService/`             | gRPC handler implementations (Cocoon → Mountain calls)     |
+| `Source/Vine/Server/`                   | gRPC notification router (Mountain → Cocoon push)          |
+
+### Cocoon - Extension Host
+
+Cocoon is a Node.js process spawned and supervised by Mountain. It provides a
+`vscode` API shim built with Effect-TS. When an extension calls a `vscode.*` API
+method, Cocoon either handles it in-process or sends a gRPC request to Mountain
+for native execution. Cocoon connects to Mountain's gRPC server on port 50052
+after Mountain starts listening.
+
+Bootstrap order (fixed after a 2026 regression fix): Cocoon starts its own gRPC
+server first (Stage 1), then connects to Mountain (Stage 3). Reversing this
+order caused a 20-second connection timeout.
+
+### Sky and Wind - UI Layer
+
+Wind is an Effect-TS reimplementation of approximately 40 VS Code workbench
+services. Each service has a `Define.ts` (Effect-TS tag), an `Implement.ts`
+(Tauri-backed layer), and a `Problem.ts` (typed error type). Services are
+composed into layer stacks: `TauriLiveLayer` for production, `ElectronLiveLayer`
+for the Electron workbench variant, and `TestLayer` for the extension test
+runner.
+
+Sky is the Astro UI component layer. It renders the editor, sidebar, activity
+bar, status bar, and panels. SkyBridge (~2900 lines in
+`Element/Sky/Source/Function/Sky/Bridge.ts`) translates Tauri events into VS
+Code workbench calls and vice versa.
 
 ## IPC Channels
 
-The architecture has two main communication paths.
+### Channel 1: Tauri Commands and Events (Wind/Sky ↔ Mountain)
 
-**`Sky` to `Mountain` - `Tauri` `IPC`**
+Wind calls Mountain using `@tauri-apps/api` `invoke()`. Each command maps to a
+registered Rust handler. Mountain pushes state changes back to Wind as Tauri
+events.
 
-`Sky`'s UI and `Wind` service layer call `Mountain` through `Tauri` `IPC`. The
-`Mountain` implementation lives in `Source/IPC/TauriIPCServer.rs`, including the
-`mountain_ipc_receive_message` and `mountain_ipc_get_status` entry points. This
-path handles native work such as files, terminals, clipboard, search,
-configuration, and `workbench` events.
-
-**`Mountain` to `Cocoon` - `Vine` `gRPC`**
-
-`Mountain` and `Cocoon` communicate over a bidirectional `gRPC` protocol
-described by `Vine` proto files. `Mountain` owns the `Rust`-side services and
-`Cocoon` owns the `TypeScript`-side extension-host services. The protocol covers
-extension-host startup, document notifications, language providers, tree views,
-command execution, cancellation, and streaming routes where implemented.
-
-These paths are independent. `Tauri` `IPC`, `Vine` `gRPC`, and local service
-code each have their own job; service calls do not flow through one universal
-bus.
-
----
-
-## Startup Shape
-
-`Mountain`'s startup path is organized around build, registration,
-initialization, and services:
-
-```text
-main.rs -> Binary::Main -> Build -> Register -> Initialize -> Services
+```
+Wind/Sky  --invoke("MountainIPCInvoke", { method, params })--> Mountain
+Mountain  --emit("tauri://event-name", payload)            --> Wind/Sky
 ```
 
-`Build` configures the `Tauri` application. `Register` wires commands and `IPC`.
-`Initialize` prepares runtime state. `Services` starts the `Vine` and `Cocoon`
-paths before the `Tauri` event loop owns the desktop session.
+Used for: file read/write, configuration get/set, dialog open, terminal
+operations, clipboard, extension activation, window management.
 
----
+### Channel 2: gRPC Vine Protocol (Mountain ↔ Cocoon, Mountain ↔ Air)
 
-## Extension Path
+Mountain and Cocoon communicate bidirectionally over gRPC. The service contract
+is defined in `Element/Vine/Source/Vine.proto`. Generated stubs are consumed by
+Mountain (Rust, via `tonic`) and Cocoon (TypeScript, via the generated client).
 
-`Cocoon` is the active `VS Code` extension-host compatibility path. It loads
-existing extension entry points, supplies a `vscode` `API` object, and routes
-implemented `API` calls through `Effect-TS` services and `Mountain`.
+| Direction         | Port  | Used for                                                                                                                                     |
+| ----------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mountain → Cocoon | 50052 | Extension host initialization, language feature requests, configuration change notifications, terminal open/close events, file change events |
+| Cocoon → Mountain | 50052 | File system operations, terminal write/resize, clipboard access, storage get/set, encryption, dialog requests, IPC channel dispatch          |
+| Mountain ↔ Air    | 50053 | Update downloads, indexing commands, health checks, authentication tokens                                                                    |
 
-`Mountain` scans installed extensions, reads manifests, handles VSIX install and
-uninstall routes, and notifies `Cocoon` with extension changes. `Output` keeps
-the `VS Code` extension scanner and offline gallery channels wired for
-sideloaded extensions.
+### Channel 3: SkyBridge Custom Events (Sky ↔ Cocoon indirectly)
 
-That supports this claim: installed `VS Code` extensions run unmodified through
-the `Cocoon` path when the `APIs` they use are implemented. Marketplace-wide
-compatibility depends on a public validation matrix that is still in
-preparation.
+SkyBridge registers handlers on `sky://` URI-scheme custom events. Cocoon sends
+requests to Mountain over gRPC; Mountain emits the corresponding Tauri event;
+SkyBridge intercepts it and calls the VS Code workbench service directly (e.g.,
+`IBulkEditService`, `IDebugService`, `IViewsService`).
 
----
+Example: `sky://workspace/applyEdit` - Cocoon sends a workspace edit via gRPC →
+Mountain emits `sky:workspace:applyEdit` Tauri event → SkyBridge applies the
+edit to the Monaco model.
 
-## Elements By Layer
+## TierIPC Routing
 
-| Element                                                  | Role                                                                             | Source status                           |
-| -------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------- |
-| [**Mountain**](https://editor.land/Doc/mountain) | Rust + Tauri desktop shell, native services, IPC broker, Cocoon bridge           | Primary desktop path                    |
-| [**Cocoon**](https://editor.land/Doc/cocoon)     | Node.js extension host for unmodified VS Code extension code                     | Primary extension path                  |
-| [**Sky**](https://editor.land/Doc/sky)           | Astro workbench routes and WebView bridge                                        | UI source present                       |
-| [**Wind**](https://editor.land/Doc/wind)         | Effect-TS workbench service layer                                                | UI service source present               |
-| [**Vine**](https://editor.land/Doc/vine)         | Protocol contracts and generated IPC stubs                                       | Active protocol layer                   |
-| [**Air**](https://editor.land/Doc/air)           | Background services for updates, downloads, authentication, indexing, and health | Source present, profile-dependent       |
-| [**Echo**](https://editor.land/Doc/echo)         | Rust scheduler primitives for bounded background work                            | Source present                          |
-| [**Mist**](https://editor.land/Doc/mist)         | DNS isolation, resolver, and secure service-boundary code                        | Source present, integration in progress |
-| [**Grove**](https://editor.land/Doc/grove)       | Wasmtime-backed WebAssembly host path                                            | Source present, integration in progress |
-| [**Rest**](https://editor.land/Doc/rest)         | OXC-based TypeScript transform work                                              | Source present                          |
-| [**Output**](https://editor.land/Doc/output)     | Plugin-routed output and VS Code platform transforms                             | Build pipeline source present           |
-| [**Common**](https://editor.land/Doc/common)     | Shared Rust and TypeScript contracts                                             | Shared source present                   |
-| [**SideCar**](https://editor.land/Doc/sidecar)   | Host-specific sidecar binary packaging                                           | Source present                          |
-| [**Maintain**](https://editor.land/Doc/maintain) | Build and maintenance scripts                                                    | Source present                          |
-| **Worker**                                               | Browser-worker support for web shell concerns                                    | Source present, release scope varies    |
+The `TierIPC` runtime variable controls how Wind and Output route IPC calls. It
+does not affect Cocoon's gRPC path.
 
----
+| Value          | Behavior                                                            |
+| -------------- | ------------------------------------------------------------------- |
+| `Mountain`     | All calls route to Mountain via Tauri IPC. Default.                 |
+| `Node`         | All calls route to Cocoon via the `cocoon:request` bridge.          |
+| `NodeDeferred` | Mountain first; falls back to Cocoon on miss or undefined response. |
 
-## Platform Targets
+## Component Dependency Direction
 
-`Mountain`'s `Tauri` configuration includes macOS, Windows, Linux, iOS, and
-Android target settings. Tauri configuration present in source is not the same
-as a published installer; see the table below for per-platform status.
+Dependencies flow strictly in one direction. No component imports from a
+component above it in this list.
 
-| Platform | Source status                                                          |
-| -------- | ---------------------------------------------------------------------- |
-| macOS    | Primary development target and Tauri bundle path                       |
-| Windows  | Tauri configuration exists, including WebView2 bootstrapper settings   |
-| Linux    | Tauri configuration exists, integration still needs release validation |
-| iOS      | Tauri mobile configuration exists                                      |
-| Android  | Tauri mobile configuration exists                                      |
+```
+Common  (Rust traits, DTOs - no dependencies)
+  |
+  v
+Mountain  (implements Common traits, owns Vine gRPC server)
+  |
+  +----gRPC---> Cocoon  (consumes Mountain via gRPC, no direct Rust dependency)
+  |
+  +----Tauri IPC---> Wind  (consumes Mountain via Tauri invoke/event)
+                       |
+                       v
+                     Sky  (consumes Wind services, renders UI)
+```
 
----
+Output is a build-time dependency of Cocoon and Sky - it provides the compiled
+VS Code platform package `@codeeditorland/output`.
 
-## Security Model
+## Data Flow: Key Operations
 
-`Mountain`'s configuration declares custom schemes such as `land:`,
-`vscode-file:`, and `vscode-webview:`. Extension webviews are isolated through
-the WebView and scheme model. A finished universal sandbox covering all
-extension behavior is not claimed.
+### File Open
 
-`Grove` adds a `WebAssembly` host path with Wasmtime and capability-oriented
-modules. That is real source, but it is not the primary `VS Code` extension path
-today. `Cocoon` remains the active compatibility host.
+```
+User clicks file in Explorer
+  --> Sky triggers IEditorService.createEditorTab(uri)
+  --> Wind calls Mountain: invoke("read_file", { path })
+  --> Mountain: tokio::fs::read(path) --> returns Uint8Array
+  --> Wind creates ITextModel with content
+  --> Sky renders editor tab
+```
 
----
+### Language Feature (Hover)
 
-## Extension API Notes
+```
+User hovers symbol in editor
+  --> Sky calls Wind: IEditorService.hover(position)
+  --> Wind: invoke("hover", { uri, line, col })
+  --> Mountain: gRPC ProvideHover({ uri, line, col }) --> Cocoon
+  --> Cocoon: registered HoverProvider returns markdown
+  --> Mountain: gRPC response --> Wind
+  --> Sky renders hover widget
+```
 
-Implemented and routed `APIs` include core `workbench` and extension-host
-surfaces such as commands, workspace, window, terminals, webviews, tree views,
-diagnostics, language providers, output channels, and document events.
+### Extension API Call (workspace.applyEdit)
 
-Long-tail areas such as chat, language-model `APIs`, notebooks, tests, and some
-custom-editor cases are in progress and not yet verified end-to-end.
+```
+Extension calls vscode.workspace.applyEdit(edit)
+  --> Cocoon vscode shim serializes WorkspaceEdit
+  --> Cocoon: gRPC ApplyEdit --> Mountain
+  --> Mountain: emits sky:workspace:applyEdit Tauri event
+  --> SkyBridge: calls IBulkEditService.apply(edit)
+  --> Monaco model updated
+  --> Wind ITextModelService fires onDidChangeTextDocument
+```
+
+### Configuration Change
+
+```
+User changes setting in Settings editor
+  --> Sky calls Wind: IConfigurationService.update(key, value)
+  --> Wind: invoke("updateConfiguration", { key, value })
+  --> Mountain: updates AppState, persists to settings.json
+  --> Mountain: emits configurationChanged Tauri event to Wind
+  --> Mountain: sends gRPC config-changed notification to Cocoon
+  --> Wind and Cocoon both update their local configuration caches
+```
+
+## Ports Reference
+
+| Port  | Process             | Protocol          | Purpose                          |
+| ----- | ------------------- | ----------------- | -------------------------------- |
+| 50052 | Mountain / Cocoon   | gRPC (Vine.proto) | Extension host IPC               |
+| 50053 | Mountain / Air      | gRPC              | Background daemon IPC            |
+| N/A   | Mountain / Wind+Sky | Tauri IPC         | UI ↔ backend commands and events |
+
+## Related Pages
+
+- [Project Structure](/doc/project-structure) - element map and source paths
+- [Configuration](/doc/configuration) - tier flags and environment variables
+- [Quickstart](/doc/quickstart) - build and run

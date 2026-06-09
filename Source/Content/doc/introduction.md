@@ -1,97 +1,87 @@
 ---
-title: "Introduction"
-section: "Start"
+title: Introduction
+section: Start
 order: 0
 description:
-    "What editor.land is, how it is built, and what is source-backed
-    today."
+    What Land is, what FIDDEE is, what is working today, and what is not yet
+    complete.
 ---
 
-# Introduction to editor.land
+Land is an open-source code editor built on Rust, Tauri, and TypeScript with
+Effect-TS. The project implements a VS Code-compatible extension host inside a
+native desktop shell, allowing existing VS Code extensions to run with high
+fidelity while the underlying architecture is replaced with safer, more
+composable primitives. FIDDEE is the product name for the compiled desktop
+application; Land is the repository and project name.
 
-`editor.land` is an open-source code editor stack built around `Rust`,
-`Tauri`, `Effect-TS`, and a `VS Code`-compatible extension host. `Mountain` is
-the `Rust` + `Tauri` desktop shell. `Sky` and `Wind` provide the `workbench` UI
-and service layer. `Cocoon` runs unmodified `VS Code` extension entry points
-through a `vscode` `API` shim where the `API` surface is implemented.
+## What Is Working Today
 
-The project is source-build first today. Public installers, release signing, and
-a full extension validation matrix are still in progress.
+The current build is source-first. All core components are functional and the
+weighted VS Code API coverage is approximately 88%.
 
----
+| API Surface             | Coverage |
+| ----------------------- | -------- |
+| TextEditor object       | 95%      |
+| Workspace API           | 96%      |
+| SCM (source control)    | 95%      |
+| Window API              | 95%      |
+| LSP / Language features | 95%      |
+| Overall weighted        | ~88%     |
 
-## Current Status
+The following capabilities are operational:
 
-The source supports these claims:
+- Extension host bootstrap (Cocoon connects to Mountain via gRPC on port 50052)
+- File system operations: read, write, watch, stat, mkdir, rename, delete, clone
+- Terminal PTY: create, resize, attach, detach, revive, freePortKill
+- Clipboard: read, write, readText, writeText, readImage, triggerPaste
+- Native dialogs: open, save, message box
+- Encryption: AES-256-GCM encrypt/decrypt with machine-stable key
+- Shell command install/uninstall
+- Extension manifest pre-bake: scan completes in under 50 ms (previously 1200
+  ms)
+- All polling loops replaced with `tokio::sync::Notify` - no sleep-based boot
+  races
+- 25+ IPC handlers wired: `nativeHost:*`, `file:*`, `localPty:*`, `encryption:*`
+- TierIPC routing: Mountain (Tauri IPC), Node (Cocoon only), NodeDeferred
+  (Mountain first, Cocoon fallback)
 
-- `Mountain` provides the `Tauri` desktop shell, native services, `IPC`, and
-  `Cocoon` bridge.
-- `Cocoon` runs existing `VS Code` extension entry points without rewriting
-  their source when the `APIs` they use are implemented.
-- `Mountain` scans installed extensions, reads manifests, handles local VSIX
-  install and uninstall routes, and notifies `Cocoon` when extension state
-  changes.
-- `Vine` provides `.proto` contracts and generated `IPC` stubs for routes such
-  as `Mountain` to `Cocoon` and `Air` to `Mountain`.
-- `Air` contains background service code for updates, downloads, integrity,
-  authentication, indexing, health, and `Vine` `IPC`.
-- `Grove` contains a Wasmtime-backed `WebAssembly` host path, but that path is
-  WIP for the primary editor flow.
+## What Is Not Yet Complete
 
-Performance numbers are intentionally left out until a repeatable public
-benchmark suite is published.
+> [!IMPORTANT] Public installers are not available. Building from source is the
+> only supported path today. See [Quickstart](/doc/quickstart) for instructions.
 
----
+> [!WARNING] Windows and Linux support is in progress. The primary development
+> and test platform is macOS (Apple Silicon and Intel). Building on other
+> platforms may require additional steps not yet documented.
 
-## In Progress
+The following items are still in progress:
 
-- Public macOS, Windows, and Linux installer validation.
-- Release signing and verification artifacts.
-- Marketplace browsing and install flows beyond local or sideloaded extension
-  sources.
-- Chat, language-model, notebook, tests, and other long-tail `VS Code` `APIs`.
-- `Grove` integration into the primary build.
+- Public signed installer packages (macOS `.dmg`, Windows installer, Linux
+  packages)
+- Full Windows and Linux build validation
+- Real OAuth authentication backend (no live OAuth flow; Copilot and GitHub PR
+  extensions cannot authenticate)
+- `registerWebviewPanelSerializer` - panel state is not restored across reloads
+- Debug server/pipe adapters for all debug configuration types beyond
+  `executable`
+- S6 Mist WebSocket transport (Tauri IPC is the current path; WebSocket planned
+  for performance)
+- Grove native WASM extension host (Wasmtime host is work in progress)
 
----
+## Project Identity
 
-## Elements
+| Item            | Value                                     |
+| --------------- | ----------------------------------------- |
+| Repository      | github.com/CodeEditorLand/Land            |
+| Product name    | FIDDEE                                    |
+| License         | CC0 Universal (public domain)             |
+| Organization    | CodeEditorLand, non-profit                |
+| Lead maintainer | Nikola Hristov / PlayForm, Sofia Bulgaria |
+| Funding         | NLnet NGI0 Commons Fund                   |
 
-`editor.land` is composed of named elements. Each element is described
-by its source status and integration status.
+## Next Steps
 
-| Element      | Role                                                                           |
-| ------------ | ------------------------------------------------------------------------------ |
-| **Mountain** | Rust + Tauri desktop shell and native service host                             |
-| **Cocoon**   | Node.js extension host for unmodified VS Code extension code                   |
-| **Sky**      | Astro workbench routes and WebView bridge                                      |
-| **Wind**     | Effect-TS workbench service layer                                              |
-| **Vine**     | Protocol contracts and generated IPC stubs                                     |
-| **Air**      | Background services for update, download, authentication, indexing, and health |
-| **Echo**     | Rust scheduler primitives                                                      |
-| **Mist**     | Local DNS and service-boundary work                                            |
-| **Grove**    | WIP Wasmtime extension-host path                                               |
-| **Rest**     | OXC-based TypeScript transform work                                            |
-| **Output**   | Plugin-routed output and VS Code platform transforms                           |
-| **Common**   | Shared Rust and TypeScript contracts                                           |
-| **SideCar**  | Host-specific sidecar binary packaging                                         |
-| **Maintain** | Build and maintenance scripts                                                  |
-| **Worker**   | Browser-worker support where the web shell needs it                            |
-
----
-
-## Build Profiles
-
-- **`debug`** - browser-oriented UI development without the full `Mountain`
-  desktop shell.
-- **`debug-mountain`** - primary `Tauri` desktop development profile with
-  `Mountain` and `Cocoon`.
-- **`debug-electron`** - legacy compatibility path for comparison work.
-
----
-
-## See Also
-
-- [Getting Started](https://editor.land/Doc/getting-started)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Mountain`](https://editor.land/Doc/mountain)
-- [`Cocoon`](https://editor.land/Doc/cocoon)
+- [Quickstart](/doc/quickstart) - build and run in two steps
+- [Architecture](/doc/architecture) - how Mountain, Cocoon, Sky, and Wind fit
+  together
+- [Project Structure](/doc/project-structure) - the Element monorepo layout

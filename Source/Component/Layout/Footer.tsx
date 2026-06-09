@@ -6,11 +6,11 @@
  */
 "use client";
 
+import { ThemeImage } from "@Library/Theme";
 import { useTranslation } from "react-i18next";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
 import { Separator } from "../UI/Separator";
-import { ThemeImage } from "@Library/Theme";
 
 import "./Footer/Stylesheet.css";
 

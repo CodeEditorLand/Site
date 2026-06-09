@@ -2,8 +2,7 @@
 // Regenerates Public/_redirects and Target/_redirects using the simplified
 // variant strategy from Source/Function/Route/Map.ts.
 // Run with:  node Maintain/Script/GenerateRedirects.mjs
-
-import { writeFileSync, mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -280,9 +279,7 @@ for (const [source, target] of BarePathDispatcher) {
 lines.push("");
 
 // Variant rewrites
-lines.push(
-	`# ── VARIANT REWRITES (200) - ${sorted.length} rules ──`,
-);
+lines.push(`# ── VARIANT REWRITES (200) - ${sorted.length} rules ──`);
 lines.push(
 	"# kebab-case, lowerCase, UPPERCASE, TitleCase, plural/singular, flat forms → canonical.",
 );
@@ -322,10 +319,7 @@ lines.push("");
 const content = lines.join("\n");
 
 // Write to both locations
-const targets = [
-	resolve("Public/_redirects"),
-	resolve("Target/_redirects"),
-];
+const targets = [resolve("Public/_redirects"), resolve("Target/_redirects")];
 
 for (const dest of targets) {
 	try {

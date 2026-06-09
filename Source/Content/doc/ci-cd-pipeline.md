@@ -1,175 +1,138 @@
 ---
 title: "CI/CD Pipeline"
-section: "Reference"
-order: 47
+section: "Development"
+order: 3
 description:
-    "Documentation of the five GitHub Actions workflow types used across Land
-    elements."
+    "Overview of the GitHub Actions workflow, turbo.json task graph, build
+    matrix, artifact upload, and when Maintain changes are sufficient without a
+    rebuild."
 ---
 
-# CI/CD Pipeline
+Land's CI/CD pipeline is built on GitHub Actions with Turborepo coordinating the
+task graph across all workspace packages. Every push to `Current` and every pull
+request targeting `Current` triggers the pipeline. This page describes what
+runs, what it produces, and how environment secrets and the
+`beforeBundleCommand` hook fit into the flow.
 
-Every Land element runs on GitHub Actions. The pipeline consists of five
-standard workflow types, each handling a specific concern.
+## GitHub Actions Workflow
 
----
+The primary workflow file is `Maintain/.GitHub/Workflows/Auto.yml`. It defines
+the full build-test-sign-upload sequence. Additional per-element workflows may
+exist under each Element's own `.github/workflows/` directory for element-scoped
+checks.
 
-## Workflow Types
+### Trigger Conditions
 
-### Rust.yml (Build Pipeline)
+| Event               | Branches            | Effect                               |
+| ------------------- | ------------------- | ------------------------------------ |
+| `push`              | `Current`           | Full build + artifact upload         |
+| `pull_request`      | targeting `Current` | Full build, no artifact upload       |
+| `workflow_dispatch` | any                 | Manual trigger with profile override |
 
-**Applies to:** Mountain, Air, Common, Echo, Grove, Mist, Rest, SideCar, Vine,
-Maintain
+### Build Matrix
 
-**Triggers:**
+The matrix covers platform × profile combinations:
 
-- Push to `Current` branch
-- Pull request targeting `Current`
-- Manual dispatch
+| Platform               | Profile                       | Output           |
+| ---------------------- | ----------------------------- | ---------------- |
+| `macos-latest` (arm64) | `production-electron-bundled` | Signed `.app`    |
+| `macos-13` (x86_64)    | `production-electron-bundled` | Signed `.app`    |
+| `ubuntu-latest`        | `production-electron-bundled` | `.AppImage`      |
+| `windows-latest`       | `production-electron-bundled` | `.exe` installer |
 
-**What it does:**
+Debug profiles (`debug-electron-bundled`, etc.) are used in local development
+and are not part of the CI matrix.
 
-1. Checks out the repository.
-2. Installs Rust toolchain (both `stable` and `nightly` via strategy matrix).
-3. Restores Cargo cache (registry index, cache, git db, and target directories).
-4. Runs `cargo build --release --all-features --manifest-path ./Cargo.toml`.
+## turbo.json Task Graph
 
-**Concurrency group:** `Rust-${{ github.workflow }}-${{ github.ref }}` with
-`cancel-in-progress: true` to avoid redundant builds on rapid pushes.
+Turborepo resolves the dependency graph between workspace tasks. The key
+pipeline is:
 
-### Node.yml (Pre-Publish Pipeline)
+```
+prepublishOnly → build → test
+```
 
-**Applies to:** Wind, Cocoon, Worker
+- `prepublishOnly`: TypeScript compilation for all elements. This must pass
+  before `build` runs.
+- `build`: Tauri bundling, Rust compilation, and static asset generation.
+- `test`: Unit and integration tests across Rust and TypeScript elements.
 
-**Triggers:**
+Turborepo's remote cache is used in CI to skip unchanged packages. A package is
+only rebuilt if its source files or its dependencies' outputs have changed since
+the last cached run.
 
-- Push to `Current` branch
-- Pull request targeting `Current`
-- Manual dispatch
+### Environment Variable Propagation
 
-**What it does:**
+All `Tier*` and `Product*` variables listed in `turbo.json` under `globalEnv`
+are included in the cache key. A change to `TierFileSystem` in `.env.Land`
+invalidates the Mountain cache entry and forces a Rust recompile.
 
-1. Checks out the repository.
-2. Sets up pnpm (v9.3.0) with recursive install.
-3. Sets up Node.js 24 with pnpm caching.
-4. Runs `pnpm install`.
-5. Runs `pnpm run prepublishOnly`.
-6. Uploads `./Target` as a build artefact.
+## Environment Secrets
 
-**Concurrency group:** `Node-${{ github.workflow }}-${{ github.ref }}`.
+The following secrets must be configured in the GitHub repository settings for
+the pipeline to produce signed artifacts:
 
-### NPM.yml (Publish Pipeline)
+| Secret                               | Purpose                                                       |
+| ------------------------------------ | ------------------------------------------------------------- |
+| `APPLE_CERTIFICATE`                  | Base64-encoded Apple Developer certificate for macOS codesign |
+| `APPLE_CERTIFICATE_PASSWORD`         | Password for the certificate                                  |
+| `APPLE_SIGNING_IDENTITY`             | Developer ID string for `codesign --sign`                     |
+| `APPLE_ID`                           | Apple ID for notarization                                     |
+| `APPLE_PASSWORD`                     | App-specific password for notarization                        |
+| `APPLE_TEAM_ID`                      | Apple Developer Team ID                                       |
+| `TAURI_SIGNING_PRIVATE_KEY`          | Tauri updater signing key                                     |
+| `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | Password for the updater key                                  |
 
-**Applies to:** Echo, Wind, Worker
+> [!IMPORTANT] The NLnet acknowledgement text required by the NGI0 Commons Fund
+> grant is embedded in the About dialog at build time via a
+> `ProductNLnetAcknowledgement` variable. This is set in `.env.Land.Production`
+> and does not require a GitHub secret.
 
-**Triggers:**
+## `beforeBundleCommand` Hook - PreBake.ts
 
-- GitHub release creation
-- Manual dispatch
-- Reusable workflow call
+Before Tauri bundles the application, the `beforeBundleCommand` in
+`tauri.conf.json` runs `Maintain/Build/Manifest/PreBake.ts`. This script walks
+all extension roots and writes `extensions.manifest.json` into the bundle
+resources directory.
 
-**What it does:**
+This pre-baked manifest is what allows Land to start in under 50 ms for
+extension scanning (versus ~1200 ms for a live filesystem scan on cold start).
+The hook fires in all build paths - direct `pnpm tauri build`, `Build.sh`, and
+CI - because it lives in `tauri.conf.json`, not in the shell script wrapper.
 
-1. Checks out the repository.
-2. Sets up Node.js 24.
-3. Installs latest npm globally.
-4. Runs `npm publish --legacy-peer-deps --ignore-scripts`.
+> [!WARNING] Do not move `PreBake.ts` execution into `Maintain/Debug/Build.sh`
+> only. Build.sh is a wrapper; steps placed there are skipped when
+> `pnpm tauri build` is invoked directly or from CI without the wrapper.
 
-Runs in the `Release` environment with `id-token: write` for provenance
-attestation.
+## Artifact Upload
 
-**Concurrency group:** `NPM-${{ github.workflow }}-${{ github.ref }}`.
+After a successful production build, CI uploads artifacts using the
+`actions/upload-artifact` action:
 
-### GitHub.yml (Issue/PR Management)
+- **macOS**: `Mountain.app` zipped, plus the `.dmg` installer if packaging is
+  enabled.
+- **Linux**: `.AppImage` file.
+- **Windows**: `.exe` NSIS installer.
 
-**Applies to:** All 15 elements
+Artifacts are retained for 30 days on pull request builds and 90 days on
+`Current` branch builds.
 
-**Triggers:**
+## When a Maintain Change Is Sufficient (No Rebuild Needed)
 
-- Issue opened
-- Pull request opened
+The Maintain crate is a build orchestrator. Its source code is compiled into the
+`maintain` binary used to drive builds, but **changes to
+`Element/Maintain/Source/`** do not affect the compiled Land application. You
+only need to rebuild Mountain (`cargo build -p Mountain`) when Mountain's own
+source changes.
 
-**What it does:**
+Specifically:
 
-1. Uses `pozil/auto-assign-issue@v3.0.0` to auto-assign new issues and PRs to
-   the repository maintainer (`NikolaRHristov`).
-
-**Concurrency group:** `GitHub-${{ github.workflow }}-${{ github.ref }}`.
-
-### Auto.yml (Automated Timestamp Update)
-
-**Applies to:** Echo, Worker
-
-**Triggers:**
-
-- Daily schedule (`0 0 * * *`)
-- Manual dispatch
-- Reusable workflow call
-
-**What it does:**
-
-1. Checks out the repository.
-2. Writes the current date to `.github/Update.md`: `Update: $(date)`.
-3. Commits with git identity "Auto" (`Commit@editor.land`).
-4. Pushes to `Current` branch via `ad-m/github-push-action`.
-
-This keeps a visible timestamp of the last repository activity even when no
-other commits land.
-
-**Concurrency group:** `Auto-${{ github.workflow }}-${{ github.ref }}`.
-
-### Cloudflare.yml (Workers Deployment)
-
-**Applies to:** Echo
-
-**Triggers:**
-
-- Push to `Current` branch
-- Pull request targeting `Current`
-- Manual dispatch
-
-**What it does:** Deploys Echo to Cloudflare Workers infrastructure.
-
----
-
-## Shared Patterns
-
-### Concurrency Control
-
-All workflows use branch-scoped concurrency groups. This means:
-
-- Only one build runs per branch at a time.
-- New commits cancel in-progress builds.
-- PR builds and push builds to the same branch do not race.
-
-### Telemetry Opt-Out
-
-Every workflow sets 30+ environment variables to disable third-party telemetry
-from tools running in the CI environment. This covers Adblock, Astro, Azure,
-Docker, Gatsby, Homebrew, InfluxDB, Next.js, Nuxt, PowerShell, Stripe,
-Terraform, VCPkg, and others.
-
-### Action Versions
-
-The pipeline uses pinned action versions:
-
-- `actions/checkout@v6.0.2`
-- `actions/setup-node@v6.4.0`
-- `actions/cache@v5.0.5`
-- `actions/upload-artifact@v7.0.1`
-- `actions-rs/toolchain@v1.0.7`
-- `actions-rs/cargo@v1.0.3`
-- `pnpm/action-setup@v6.0.8`
-- `pozil/auto-assign-issue@v3.0.0`
-- `ad-m/github-push-action@v1.1.0`
-
-### Permissions
-
-Workflow permission scopes vary by type:
-
-- **Rust.yml:** `security-events: write`
-- **Node.yml:** `security-events: write`, `contents: write`,
-  `pull-requests: write`
-- **NPM.yml:** `contents: read`, `id-token: write` (job-level)
-- **GitHub.yml:** `issues: write`, `pull-requests: write`
-- **Auto.yml:** `contents: write`
+| Change type                       | Rebuild needed?                                                        |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| `Element/Mountain/Source/**/*.rs` | Yes - `cargo build -p Mountain`                                        |
+| `Element/Cocoon/Source/**/*.ts`   | Yes - `pnpm prepublishOnly`                                            |
+| `Element/Sky/Source/**/*.ts`      | Yes - `pnpm prepublishOnly`                                            |
+| `Maintain/Debug/Build.sh`         | No - script change only                                                |
+| `Maintain/Script/SignBundle.sh`   | No - script change only                                                |
+| `Element/Maintain/Source/**/*.rs` | No - only affects the `maintain` CLI binary                            |
+| `.env.Land*` files                | Only if Tier\* values changed (triggers Rust recompile via `build.rs`) |

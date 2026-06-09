@@ -1,148 +1,148 @@
 ---
 title: "Dependency Management"
-section: "Reference"
-order: 48
+section: "Development"
+order: 2
 description:
-    "Dependabot configuration, ecosystem coverage, and dependency update
-    strategy across Land elements."
+    "How to manage JavaScript and Rust dependencies in the Land monorepo,
+    including pnpm workspace protocol, Cargo patch redirects, and submodule
+    updates."
 ---
 
-# Dependency Management
+Land is a monorepo with two parallel dependency graphs: a pnpm workspace for all
+TypeScript elements and a Cargo workspace for all Rust elements. Each Element is
+also a Git submodule with its own repository, so dependency changes require
+following the correct per-submodule workflow. This page covers the rules and
+procedures for both graphs.
 
-Each Land element configures its own Dependabot. This page documents the shared
-patterns and element-specific variations.
+## JavaScript Dependencies (pnpm)
 
----
+### Workspace Protocol
 
-## Dependabot Configuration
+All cross-element dependencies within the monorepo use the pnpm workspace
+protocol:
 
-All configurated elements use Dependabot v2 with beta ecosystems enabled:
-
-```yaml
-version: 2
-enable-beta-ecosystems: true
+```json
+{
+	"dependencies": {
+		"@codeeditorland/common": "workspace:*"
+	}
+}
 ```
 
-This single flag allows Dependabot to pick up newer or experimental
-package-ecosystem values beyond the stable set (npm, cargo, docker,
-github-actions).
+> [!IMPORTANT] Never use npm or yarn to install packages in any Land workspace
+> package. The repository uses a pnpm content-addressed store. Running
+> `npm install` in a workspace package will create a `node_modules` tree that
+> conflicts with pnpm's layout and may overwrite the workspace symlinks.
 
----
+### Adding a New JavaScript Dependency
 
-## Ecosystem Coverage
+1. `cd` into the Element's directory (e.g., `Element/Wind`).
+2. Run `pnpm add <package-name>` for a runtime dependency, or
+   `pnpm add -D <package-name>` for a dev dependency.
+3. Verify the entry in `package.json` is correct, then run `pnpm install` from
+   the repo root to update the lockfile.
+4. Stage `package.json` and `pnpm-lock.yaml` by name - never `git add .`.
 
-### github-actions (All 13 elements with dependabot.yml)
+### VS Code Editor Submodule
 
-Every element monitors GitHub Action versions in its `.github/workflows/`
-directory for updates. This keeps CI tooling current without manual tracking.
+The VS Code source in `Dependency/Microsoft/Dependency/Editor` uses npm, not
+pnpm. Its `package-lock.json` and `.npmrc` are npm-native. When updating
+dependencies in that submodule, use `npm install` inside that directory only.
+See [Building Land](/doc/getting-started) for the full Node 24 compile steps.
 
-```yaml
-updates:
-    - package-ecosystem: "github-actions"
-      directory: "/"
-      schedule:
-          interval: "daily"
+## Rust Dependencies (Cargo)
+
+### Adding a New Rust Dependency
+
+1. Edit the `Cargo.toml` of the specific Element (e.g.,
+   `Element/Mountain/Cargo.toml`), not the workspace root.
+2. Add the dependency under `[dependencies]` with an explicit version.
+3. If the crate requires a fork or a pinned unreleased commit, add a
+   `[patch.crates-io]` entry in the workspace root `Cargo.toml`.
+4. Run `cargo build -p <element-name>` to verify it compiles. Do not run a full
+   workspace build unless you need to - the Maintain crate does not need
+   rebuilding when only source changes.
+
+### The 51 Active `[patch.crates-io]` Redirects
+
+The workspace `Cargo.toml` contains 51 active `[patch.crates-io]` entries. These
+exist for one of three reasons:
+
+| Reason                                         | Example              |
+| ---------------------------------------------- | -------------------- |
+| Pinned fork for Tauri 2.x compatibility        | `wry`, `tao`         |
+| Unreleased upstream fix not yet on crates.io   | gRPC transport fixes |
+| Land-specific patch applied to upstream source | Asset scheme handler |
+
+> [!WARNING] Do not remove `[patch.crates-io]` entries without verifying the
+> upstream crate now contains the required change. Removing a patch that is
+> still needed will cause a compile error or silent runtime regression.
+
+When a new patch is needed, add it to the workspace root `Cargo.toml` under
+`[patch.crates-io]` with a `git` and `branch` or `rev` specifier:
+
+```toml
+[patch.crates-io]
+some-crate = { git = "https://github.com/CodeEditorLand/some-crate", branch = "Current" }
 ```
 
-### cargo (Rust elements)
+## Submodule Update Workflow
 
-Applies to: Mountain, Air, Common, Echo, Grove, Mist, Rest, SideCar, Vine,
-Maintain
+Each Element under `Land/Element/` is a separate Git submodule with its own
+repository and branch. Never use `git submodule update --recursive`.
 
-```yaml
-- package-ecosystem: "cargo"
-  directory: "/"
-  schedule:
-      interval: "daily"
-  versioning-strategy: lockfile-only
+### Updating a Single Element Submodule
+
+```sh
+cd Element/Mountain
+git fetch --all
+git reset --hard origin/Current
 ```
 
-The `lockfile-only` strategy means Dependabot updates `Cargo.lock` without
-touching `Cargo.toml` version pins. This ensures:
+Then return to the repo root and stage the updated gitlink by name:
 
-- Version constraints in `Cargo.toml` remain stable and explicit.
-- Lockfile picks up compatible new releases automatically.
-- No breaking semver bumps slip through the lockfile gate.
-
-### npm (TypeScript/JavaScript elements)
-
-Applies to: Wind, Cocoon, Output, Sky, Worker
-
-```yaml
-- package-ecosystem: "npm"
-  directory: "/"
-  schedule:
-      interval: "daily"
-  versioning-strategy: increase
-  ignore:
-      - dependency-name: "tailwindcss"
-        versions:
-            - "^4.0.0"
+```sh
+git add Element/Mountain
 ```
 
-The `increase` strategy means Dependabot bumps the version ranges in
-`package.json` itself, not just the lockfile. This gives each element the latest
-compatible ranges on every dependency roll.
+> [!WARNING] Never run `git add .` at the repo root. This converts submodule
+> gitlinks into directory trees, corrupting the index. Always stage submodule
+> updates using the explicit path.
 
-Tailwind 4.x is explicitly ignored across all JS elements due to the breaking
-changes in the v4 rewrite (CSS-first configuration, different plugin API).
+### Updating the VS Code Dependency Submodule
 
----
+The VS Code source submodule at `Dependency/Microsoft/Dependency/Editor`
+requires Node 24 for the compile step. Full update sequence:
 
-## Update Strategy Summary
+```sh
+cd Dependency/Microsoft/Dependency/Editor
+nvm use 24
+git fetch --all
+git reset --hard Parent/main
+git clean -dfx
+export NODE_ENV=development
+npm install
+npm run compile
+npm run compile-extensions-build
+```
 
-| Element  | Ecosystems            | Versioning Strategy |
-| -------- | --------------------- | ------------------- |
-| Mountain | github-actions, cargo | lockfile-only       |
-| Air      | github-actions, cargo | lockfile-only       |
-| Common   | github-actions, cargo | lockfile-only       |
-| Echo     | github-actions, cargo | lockfile-only       |
-| Grove    | github-actions, cargo | lockfile-only       |
-| Mist     | github-actions, cargo | lockfile-only       |
-| Rest     | github-actions, cargo | lockfile-only       |
-| SideCar  | github-actions, cargo | lockfile-only       |
-| Vine     | github-actions, cargo | lockfile-only       |
-| Maintain | github-actions, cargo | lockfile-only       |
-| Wind     | github-actions, npm   | increase            |
-| Cocoon   | github-actions, npm   | increase            |
-| Output   | github-actions, npm   | increase            |
-| Sky      | github-actions, npm   | increase            |
-| Worker   | github-actions, npm   | increase            |
+After the compile succeeds, return to the repo root and stage the gitlink:
 
----
+```sh
+git add Dependency/Microsoft/Dependency/Editor
+```
 
-## Dependency Philosophy
+The `compile-extensions-build` step produces the `out-<platform>` directories
+consumed by the Output element. Skip it and Cocoon will fail to locate platform
+code at runtime.
 
-### Rust: Lockfile-Only Stability
+## pnpm Content-Addressed Store
 
-Rust elements keep their `Cargo.toml` pins stable. Dependabot rolls the
-lockfile, bringing in bugfix and minor releases within the existing constraint.
-Major version bumps (e.g., Hickory-Server 0.24 to 0.26 in Mist, OXC 0.127 in
-Rest) require manual review because they may change public APIs or require code
-migrations.
+pnpm uses a content-addressed store shared across all projects on the machine
+(default: `~/.pnpm-store`). This means installing a package version that is
+already used by another project on the machine is near-instant and requires no
+additional disk space. The store is managed automatically; do not modify its
+contents directly.
 
-### JavaScript: Aggressive Range Updates
-
-JavaScript elements let Dependabot bump package.json ranges directly. This keeps
-the dependency surface fresh but requires CI to catch incompatibilities. The
-Node.yml matrix (Node 24) and pre-publish checks serve as the safety net.
-Tailwind 4.x is the single explicit exclude, as its rewrite broke the SCSS-based
-configuration surface the UI layer depends on.
-
-### GitHub Actions: Always Current
-
-CI action versions are the one dependency type that always bumps in package.json
-manifests across all elements. Using the latest stable action version ensures
-bugfixes and security patches land automatically.
-
----
-
-## Elements Without Dependabot
-
-Vine and Mist do not have a `.github/dependabot.yml` file in their repositories
-(despite being Rust elements). Their dependencies are managed through manual
-review and the umbrella-level Dependabot if applicable.
-
-Note: The search found dependabot.yml in 13 element directories. The two
-elements without one are likely Vine and Mist, which had minimal or placeholder
-repositories for extended periods.
+When the store becomes corrupted (rare), run `pnpm store prune` to remove
+orphaned packages, then `pnpm install` from the repo root to relink.

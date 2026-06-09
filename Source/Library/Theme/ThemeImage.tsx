@@ -41,7 +41,9 @@ export function ThemeImage({
 	useEffect(() => {
 		if (!sourceRef.current) return;
 		const isDark = document.documentElement.classList.contains("dark");
-		sourceRef.current.media = isDark ? "all" : "(prefers-color-scheme: dark)";
+		sourceRef.current.media = isDark
+			? "all"
+			: "(prefers-color-scheme: dark)";
 	}, []);
 
 	return (

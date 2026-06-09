@@ -193,12 +193,7 @@ const SegmentCompound = (Segment: string): string[] => {
 
 	const Lower = Words.map((W) => W.toLowerCase());
 
-	return [
-		Lower.join("-"),
-		Lower.join("_"),
-		Lower.join(""),
-		Lower.join("."),
-	];
+	return [Lower.join("-"), Lower.join("_"), Lower.join(""), Lower.join(".")];
 };
 
 // Generate all variants for a full canonical path (excluding the canonical itself).

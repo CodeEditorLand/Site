@@ -27,7 +27,8 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	// and re-sync all picture sources in case React hydration reset any
 	// source[data-theme-dark].media attributes during reconciliation.
 	useEffect(() => {
-		const CurrentlyDark = document.documentElement.classList.contains("dark");
+		const CurrentlyDark =
+			document.documentElement.classList.contains("dark");
 		SetIsDark(CurrentlyDark);
 		SyncPictureSources(CurrentlyDark);
 	}, []);

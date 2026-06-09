@@ -1,119 +1,154 @@
 ---
 title: "Output"
-section: "Element"
-order: 22
+section: "Elements"
+order: 8
 description:
-    "The VS Code build transformation pipeline that adapts VS Code's compiled
-    output for editor.land's native stack."
+    "The compiled VS Code platform artifact directory produced by the Rest build
+    process and consumed by Sky, Wind, and Cocoon at runtime."
 ---
 
-# Output
+Output is the compiled JavaScript artifact layer for the Land editor. It takes
+the upstream VS Code TypeScript source tree, compiles it through esbuild (with
+an optional OXC-based Rest compiler pass), applies a pipeline of 21 transform
+plugins that adapt the result for Land's native Tauri stack, and writes the
+transformed artifacts to `Target/`. Sky loads workbench bundles from this
+directory, Cocoon bootstraps its extension host from the platform code here, and
+Wind consumes output utilities through the `@codeeditorland/output` npm package.
 
-`Output` is the `VS Code` build transformation pipeline for
-`editor.land`. It takes the upstream `VS Code` compiled tree (populated
-into `Target/Microsoft/VSCode/` by the build step) and applies a set of
-`TypeScript` transform plugins that adapt it for Land's native stack - replacing
-`Electron` `IPC` with the `Mountain` `gRPC` channel, injecting WebView
-polyfills, rewriting worker URLs, and patching service registrations.
+## What Output Contains
 
-`Output` is a `TypeScript`/`Node.js` package. Its source is in the
-[`Output` repository](https://github.com/CodeEditorLand/Output).
+After a successful build, `Target/` holds:
 
----
+| Path                       | Contents                                                                                                     |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `Target/Microsoft/VSCode/` | Compiled and transformed VS Code platform code - workbench, Monaco editor, extension host, worker bootstraps |
+| `Target/CodeEditorLand/`   | Land-specific editor customizations compiled on top of the VS Code tree                                      |
+| `Target/Rest/`             | Intermediate output from the Rest/OXC compiler pass (present only when `Compiler=Rest`)                      |
 
-## Why a Transformation Pipeline
+The VS Code platform code in `Target/Microsoft/VSCode/` is not vanilla VS Code
+output. Every file has passed through Output's transform plugin pipeline, which
+replaces Electron IPC with Mountain's gRPC channel, injects WebView polyfills,
+rewrites worker URLs, and patches service registrations so the workbench
+operates inside WKWebView or WebView2 without Electron.
 
-`VS Code`'s compiled output is written for `Electron`: it expects `ipcRenderer`,
-shared process communication, `Electron`-specific node integration, and a
-browser environment supplied by Chromium. `editor.land` replaces all of
-that with `Mountain`'s `Rust` kernel, `WebView2` (Windows) or `WKWebView`
-(macOS), and the `Vine` `gRPC` protocol.
+## Why Output is Checked into the Repository
 
-Rather than maintaining a permanent fork of `VS Code`'s `TypeScript` source,
-`Output` applies targeted transforms to the compiled output. The upstream source
-remains untouched; the adaptation is fully described by the plugin list and can
-be updated as `VS Code` evolves.
+The compiled artifacts in `Target/` are committed to the repository as a binary
+artifact layer. This is intentional for two reasons:
 
----
+1. Rebuilding the VS Code platform source from scratch requires the full VS Code
+   source tree, the esbuild/Rest toolchain, and significant CPU time. Consumers
+   (Sky, Cocoon) can depend on a stable, pre-built artifact without reproducing
+   the entire build environment.
+2. Tauri's `beforeBundleCommand` and Sky's `astro:build:done` hook both need the
+   transformed artifact tree to exist before they run. Committing the artifacts
+   removes this ordering constraint from local development builds.
 
-## The Transform Plugins
+> [!IMPORTANT] Never edit files under `Target/` directly. The target directory
+> is generated output. Any change made there will be overwritten the next time
+> the Output build runs.
 
-`Output`'s `ApplyPipeline.ts` runs 21 active transform plugins against the
-`VS Code` compiled tree. Each plugin has a `Match` filter and rewrites only the
-specific files it targets:
+## When Output is Stale
 
-| Plugin                         | What it does                                                                                                                                                 |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ReplaceElectronIPCService`    | Replaces `vs/platform/ipc/electron-browser/mainProcessService.js` with `TauriMainProcessService.js`, routing all VS Code IPC through Mountain's gRPC channel |
-| `InjectWebViewPolyfills`       | Injects polyfills required by WKWebView / WebView2 that Chromium provides natively in Electron                                                               |
-| `InjectNameShim`               | Injects the `name` global shim expected by the VS Code workbench bootstrap                                                                                   |
-| `InjectWorkerBootstrapShim`    | Injects the worker bootstrap shim for the WebView worker environment                                                                                         |
-| `RewriteNestedWorkerBootstrap` | Rewrites nested worker bootstrap paths for the WebView runtime                                                                                               |
-| `RewritePerfBaselineWorker`    | Rewrites the performance baseline worker URL for the WebView context                                                                                         |
-| `RewriteNodeModulesPath`       | Rewrites `node_modules` path references to the correct resolved location                                                                                     |
-| `RewriteWorkerURLs`            | Rewrites worker `new URL(...)` constructor paths to WebView-compatible URLs                                                                                  |
-| `RewriteWorkbenchBaseURL`      | Rewrites the workbench static base URL to match Land's serving path                                                                                          |
-| `RewriteStaticBlockSelfRef`    | Rewrites static block self-references that do not survive the WebView load context                                                                           |
-| `HoistFunctionDeclarations`    | Hoists function declarations that VS Code relies on being in scope before module evaluation                                                                  |
-| `ReplaceSharedProcess`         | Replaces the Electron shared process channel with the Mountain equivalent                                                                                    |
-| `ExtensionScannerIPC`          | Patches extension scanner IPC to route through Mountain                                                                                                      |
-| `StripDanglingSourceMap`       | Removes dangling `//# sourceMappingURL` references that point to files not present in the output tree                                                        |
-| `CatchOutputFolderRejection`   | Catches unhandled promise rejections from output folder operations                                                                                           |
-| `StripWebviewIframeSandbox`    | Removes Electron-specific `sandbox` attributes from WebView iframes                                                                                          |
-| `ExposeWorkbenchAccessor`      | Exposes the workbench instance accessor for Mountain's integration surface                                                                                   |
-| `InstrumentVscodeGit`          | Instruments the VS Code Git extension to use Mountain's file system layer                                                                                    |
-| `DisableUnusedServices`        | Disables Electron-specific services that have no equivalent in the WebView stack                                                                             |
-| `ReplaceSearchService`         | Replaces VS Code's Electron search service with Mountain's ripgrep-based implementation                                                                      |
-| `PatchLocalTerminalBackend`    | Patches the local terminal backend to route through Mountain's pty layer                                                                                     |
+Output becomes stale when the VS Code dependency version is updated, when a
+transform plugin is added or modified, or when the Rest/esbuild compiler
+configuration changes. Signs of a stale Output:
 
----
+- Sky's Vite build fails with module resolution errors referencing files in
+  `Target/Microsoft/VSCode/`.
+- Cocoon fails to bootstrap with import errors for VS Code platform modules.
+- The workbench loads but missing features or broken IPC indicate a plugin
+  transform was not applied.
+
+To rebuild Output:
+
+```bash
+cd Land/Element/Output
+pnpm run prepublishOnly
+```
+
+To rebuild with the Rest/OXC compiler:
+
+```bash
+cd Land/Element/Output
+Compiler=Rest pnpm run prepublishOnly
+```
+
+After rebuilding, commit the updated `Target/` contents.
+
+## The Rest → Output Pipeline
+
+The default build path uses esbuild only:
+
+```
+Dependency/Microsoft/VSCode/ → esbuild → Apply transform plugins → Target/Microsoft/VSCode/
+```
+
+The Rest hybrid path adds an OXC compiler pass:
+
+```
+Dependency/Microsoft/VSCode/ → Rest (OXC) → Target/Rest/ → esbuild (merge) → Apply transform plugins → Target/Microsoft/VSCode/
+```
+
+The Rest plugin (`Source/ESBuild/Rest/Plugin.ts`) intercepts `.ts` file
+processing inside esbuild, invokes the Rest binary as a subprocess, and merges
+the OXC-compiled output back into the esbuild bundle stream. If the Rest binary
+is unavailable or produces an error, the plugin falls back to esbuild's own
+TypeScript handling so builds remain reproducible without the Rest binary
+installed.
+
+## Transform Plugin Overview
+
+`Source/Apply/Pipeline.ts` runs 21 active transform plugins against the compiled
+VS Code tree. Key plugins:
+
+| Plugin                      | Effect                                                                                                       |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `ReplaceElectronIPCService` | Replaces `mainProcessService.js` with `TauriMainProcessService.js`, routing all VS Code IPC through Mountain |
+| `InjectWebViewPolyfills`    | Injects polyfills for WKWebView/WebView2 gaps (APIs that Chromium provides natively in Electron)             |
+| `RewriteWorkerURLs`         | Rewrites `new URL(...)` worker constructor paths to WebView-compatible absolute URLs                         |
+| `RewriteWorkbenchBaseURL`   | Rewrites the workbench static base URL to Land's serving path                                                |
+| `ExposeWorkbenchAccessor`   | Exposes the workbench instance accessor as `window.__CEL_SERVICES__` for SkyBridge                           |
+| `ReplaceSearchService`      | Replaces VS Code's Electron search service with Mountain's ripgrep-based implementation                      |
+| `PatchLocalTerminalBackend` | Patches the local terminal backend to route through Mountain's PTY layer                                     |
+| `ExtensionScannerIPC`       | Patches extension scanner IPC to route through Mountain                                                      |
+| `StripDanglingSourceMap`    | Removes `//# sourceMappingURL` references pointing to files absent from the output tree                      |
+| `DisableUnusedServices`     | Disables Electron-specific services that have no WebView equivalent                                          |
+
+The full set of 21 plugins is defined in `Source/Plugin/Index.ts`.
 
 ## Dual-Consumer Architecture
 
-`Output`'s transformed `Target/Microsoft/VSCode/` tree is consumed by `Sky` in
-two different ways:
+Output's `Target/Microsoft/VSCode/` tree is consumed by Sky in two distinct
+ways, and the pipeline is designed to satisfy both simultaneously:
 
-- **`Sky`'s `/Static/Application/` copy** - static files served directly by
-  `Mountain`'s HTTP layer to the WebView at runtime. These files use dynamic
-  imports and runtime CSS loading.
-- **`Sky`'s `Vite` bundler walk** - `Vite` follows the module graph from
-  `Output`'s Target before `astro:build:done` fires. This path requires static
-  imports so `Rollup` can emit hashed chunks; CSS is extracted by `Vite`'s
-  native pipeline.
+**Sky static copy.** Files are copied to Sky's `/Static/Application/` directory
+and served by Mountain's HTTP layer to the webview at runtime. This path uses
+dynamic imports and Worker's CSS loading protocol.
 
-Because `Vite` walks `Output`'s Target before `Sky`'s build hooks run, `Output`
-must ship a pre-transformed tree. Transform plugins that convert static imports
-to dynamic forms (`StaticToDynamicImport`, `StripCSSImport`) are intentionally
-excluded from `Output`'s pipeline and run only in `Sky`'s `astro:build:done`
-hook for the static path. The two output trees diverge here by design.
+**Sky Vite bundler walk.** Vite follows the module graph from Output's Target
+before `astro:build:done` fires. This path requires static imports so Rollup can
+emit hashed chunks. CSS is extracted by Vite's native pipeline.
 
----
+Plugins that convert static imports to dynamic forms (`StaticToDynamicImport`,
+`StripCSSImport`) run only in Sky's `astro:build:done` hook for the static path,
+not in Output's pipeline. The two output trees diverge here by design.
 
-## Source Structure 🗺️
+## Build Configuration
 
-| Path                      | Role                                                              |
-| ------------------------- | ----------------------------------------------------------------- |
-| `Source/ApplyPipeline.ts` | Pipeline runner - composes and executes the transform plugin list |
-| `Source/ESBuild.ts`       | esbuild integration                                               |
-| `Source/ESBuild/`         | esbuild configuration sub-modules                                 |
-| `Source/Plugin/`          | Transform plugin definitions (one file per plugin)                |
-| `Source/Polyfill/`        | WebView polyfill sources                                          |
-| `Source/Service/`         | Service-layer utilities                                           |
-| `Source/tsconfig/`        | TypeScript configuration variants                                 |
+| Variable           | Default            | Description                                 |
+| ------------------ | ------------------ | ------------------------------------------- |
+| `Compiler`         | `esbuild`          | Set to `Rest` to enable OXC compiler pass   |
+| `REST_BINARY_PATH` | auto-detect        | Override Rest binary location               |
+| `REST_VERBOSE`     | `false`            | Enable verbose Rest compiler logging        |
+| `REST_OPTIONS`     | empty              | Additional flags passed to the Rest binary  |
+| `NODE_ENV`         | `production`       | `development` enables source map generation |
+| `Dependency`       | `Microsoft/VSCode` | Source dependency to process                |
 
----
+## Related Documentation
 
-## Key Technologies
-
-`TypeScript`, `Node.js`, `esbuild`, Plugin-Routed AST Transforms, WebView
-Polyfills, `Tauri`/`Mountain` `IPC` Replacement.
-
----
-
-## Related Documentation 📖
-
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Rest`](https://editor.land/Doc/rest)
-- [`Mountain`: Native Kernel](https://editor.land/Doc/mountain)
-- [`Sky`: WebView UI](https://editor.land/Doc/sky)
+- [Output Deep Dive](https://editor.land/Doc/deep-dive-output)
+- [Sky UI layer](https://editor.land/Doc/sky)
+- [Rest compiler](https://editor.land/Doc/rest)
+- [Mountain Rust backend](https://editor.land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Output)

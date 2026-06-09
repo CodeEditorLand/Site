@@ -1,92 +1,99 @@
 ---
-title: "Grove"
-section: "Element"
-order: 18
+title: Grove
+section: Elements
+order: 4
 description:
-    "The Wasmtime extension-host path - capability-based security for
-    editor.land extensions."
+    Grove is the planned native Rust and WebAssembly extension host for Land,
+    using Wasmtime to sandbox extensions with capability-based security instead
+    of relying on Node.js process isolation.
 ---
 
-# Grove
+Grove is Land's planned alternative extension host for Rust and WebAssembly
+extensions. Where Cocoon runs VS Code extensions inside a Node.js process with
+broad system access, Grove runs extensions inside a Wasmtime sandbox where every
+capability - file access, network, terminal - must be explicitly granted. Grove
+is currently work-in-progress and is not the active extension path for existing
+VS Code extensions; Cocoon remains the default host for unmodified extension
+compatibility.
 
-`Grove` is the `WebAssembly` extension-host path for `editor.land`.
-Where `Cocoon` runs `VS Code` extensions in a `Node.js` process, `Grove`
-contains a Wasmtime-backed path for extensions compiled to `WebAssembly` with
-capability-oriented boundaries.
+## The problem Grove solves
 
-`Grove` is WIP in the primary editor flow. The `gRPC` protocol definitions
-(`Proto/`), Wasmtime host (`Source/Host/`), `API` surface (`Source/API/`),
-transport layer (`Source/Transport/`), service registrations
-(`Source/Services/`), and `WASM` runtime integration (`Source/WASM/`) are
-present in source. Full integration with the primary `debug-mountain` build is
-still in progress.
+VS Code extensions share a single Node.js process. A malicious or buggy
+extension can access any file on disk, make arbitrary network requests, and read
+another extension's in-memory state. The extension sandbox in VS Code is a
+policy document enforced by trust, not a technical boundary enforced by the
+runtime.
 
----
+Grove makes the sandbox a hardware-enforced boundary. A WASM module running
+inside Wasmtime has no access to the host OS by default. It can only call
+functions that the host explicitly exports to it. An extension that requests
+file access gets exactly the file handles it was granted - nothing more.
 
-## The Problem Grove Solves
+## Architecture
 
-`VS Code` extensions run with broad `Node.js` capabilities in a shared process.
-`Grove` is the path for extensions that can trade raw Node compatibility for a
-runtime boundary with explicit capabilities.
+Grove is built as a four-layer stack:
 
----
+| Layer                     | Key files                                                                          | Role                                                                                             |
+| :------------------------ | :--------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------- |
+| Extension host controller | `Host/ExtensionHost.rs`, `ExtensionManager.rs`, `Activation.rs`, `Lifecycle.rs`    | Extension discovery, loading, activation event dispatch, lifecycle management                    |
+| VS Code API bridge        | `Host/APIBridge.rs`                                                                | Implements the `vscode.d.ts` facade that extensions call; dispatches to the transport layer      |
+| WASM runtime              | `WASM/Runtime/`, `ModuleLoader/`, `MemoryManager/`, `HostBridge/`                  | Wasmtime engine, module compilation and instantiation, memory limits, host function registration |
+| Transport                 | `Transport/Strategy.rs`, `gRPCTransport.rs`, `IPCTransport.rs`, `WASMTransport.rs` | Pluggable communication with Mountain (gRPC, Unix IPC, or direct WASM calls)                     |
 
-## How Grove Addresses It
+## How Grove differs from Cocoon
 
-`Grove` uses Wasmtime as its `WebAssembly` runtime. The host can grant specific
-resources to a module instead of giving ambient access to the whole system. That
-model is useful for a future extension marketplace where permissions can be
-shown to users before code runs.
+| Aspect                                | Cocoon                                                        | Grove                                                       |
+| :------------------------------------ | :------------------------------------------------------------ | :---------------------------------------------------------- |
+| Runtime                               | Node.js (V8)                                                  | Wasmtime (WASM)                                             |
+| Language extensions can be written in | TypeScript / JavaScript                                       | Rust (compiled to WASM), or any language with a WASM target |
+| Security model                        | Process isolation - OS boundary, but broad Node.js capability | Capability-based - no OS access without explicit grant      |
+| VS Code API coverage                  | Full `vscode.d.ts`                                            | Planned subset, to be expanded                              |
+| Extension compatibility               | Runs unmodified VS Code extensions                            | Requires compilation to `wasm32-wasi` target                |
+| Current status                        | Active, default host                                          | Work-in-progress                                            |
 
-This is real source, but it is not the current compatibility story for existing
-`VS Code` extensions. `Cocoon` remains the active unmodified-extension path.
+## Wasmtime and the WASM component model
 
----
+Grove uses Wasmtime v20 as its WebAssembly engine. Extensions must target the
+`wasm32-wasi` ABI. Wasmtime's per-store resource limits enforce configurable
+memory ceilings per extension - an extension that allocates unboundedly is
+terminated rather than degrading the entire editor.
 
-## Source Structure 🗺️
+Host functions (the VS Code API surface) are registered on the Wasmtime `Linker`
+before module instantiation. When an extension calls
+`vscode.workspace.readFile(uri)`, the call goes through the WASM host function
+table to `HostBridge.rs`, which dispatches it through the active transport to
+Mountain.
 
-Confirmed present in the `Grove` source tree:
+## Target use cases
 
-| Path                | Role                                                  |
-| ------------------- | ----------------------------------------------------- |
-| `Source/API/`       | Public API surface exposed to hosted extensions       |
-| `Source/Binary/`    | Binary entry point                                    |
-| `Source/Common/`    | Shared types and utilities                            |
-| `Source/Host/`      | Wasmtime host implementation                          |
-| `Source/Protocol/`  | Protocol definitions for host-guest communication     |
-| `Source/Services/`  | Service registrations inside the sandbox              |
-| `Source/Transport/` | Transport layer for IPC between Grove and Mountain    |
-| `Source/WASM/`      | WASM runtime integration                              |
-| `Proto/`            | gRPC `.proto` definitions for Grove-Mountain protocol |
-| `Tests/`            | Integration tests                                     |
-| `build.rs`          | Cargo build script                                    |
+Grove is intended for two categories of extensions:
 
----
+- **Performance-critical extensions** - parser integrations, language servers,
+  formatters that benefit from near-native execution speed without a JavaScript
+  runtime overhead
+- **Security-sensitive extensions** - extensions that handle credentials,
+  signing operations, or sensitive file access where users need verifiable
+  capability boundaries before installation
 
-## What Grove Enables
+Grove is not intended to replace Cocoon for the broad ecosystem of existing VS
+Code extensions, which are written in TypeScript and depend on full Node.js
+compatibility.
 
-When `Grove` is fully integrated, an extension marketplace with stronger
-security guarantees becomes possible. Users should be able to see what resources
-an extension can access, and `Grove` can enforce that through Wasmtime and
-explicit capability grants.
+## Current status
 
----
+> [!WARNING] Grove is work-in-progress. The source tree is present and the
+> architecture is defined, but Grove is not integrated into the default
+> `debug-electron` build profile. It is activated as an optional Cargo feature
+> (`--features grove`). Full integration with Mountain's extension activation
+> flow and a complete VS Code API subset remain as planned work.
 
-## Status 🚀
+## Source files
 
-`Grove` is in active development and is not a shipped replacement for `Cocoon`.
-It is source-backed work in progress.
-
----
-
-## Key Technologies
-
-`Rust`, Wasmtime, `WebAssembly`, `gRPC`, Capability-Based Security.
-
----
-
-## Related Documentation 📖
-
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
-- [Source Code](https://github.com/CodeEditorLand/Grove)
+| File                                 | Role                                                        |
+| :----------------------------------- | :---------------------------------------------------------- |
+| `Source/Host/`                       | Extension host controller: discovery, activation, lifecycle |
+| `Source/WASM/`                       | Wasmtime engine, module loader, memory manager, host bridge |
+| `Source/Transport/`                  | gRPC, IPC, and direct WASM transport strategies             |
+| `Source/Protocol/SpineConnection.rs` | Spine protocol client for Mountain gRPC connection          |
+| `Source/Binary/`                     | Binary entry point for standalone Grove process             |
+| `Proto/`                             | gRPC `.proto` definitions for Grove ↔ Mountain protocol     |

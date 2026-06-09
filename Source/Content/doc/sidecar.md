@@ -1,100 +1,122 @@
 ---
-title: "SideCar"
-section: "Element"
-order: 23
+title: SideCar
+section: Elements
+order: 10
 description:
-    "Cross-platform Node.js binary distribution compiled per target triple."
+    SideCar manages the vendored Node.js runtime binaries that Land ships per
+    platform, selecting the correct binary at compile time for each of six
+    target triples so Cocoon always starts with the right runtime.
 ---
 
-# SideCar
+SideCar packages the exact Node.js binary for each supported target triple at
+compile time and makes it available to Mountain's build system for bundling into
+the application installer. The runtime code that launches Cocoon contains no
+platform detection logic-the correct binary is already present, selected at
+build time by matching the Rust target triple. This eliminates an entire
+category of runtime failures that affect editors relying on dynamic Node.js
+detection chains.
 
-`SideCar` packages the correct `Node.js` binary for each target platform at
-compile time - no runtime detection, no fallback chains. The binary that ships
-is the binary that runs.
+## The problem with runtime detection
 
----
+VS Code ships a single Node.js binary and runs a detection chain at startup to
+find the right one for the current platform. When the chain works it is
+invisible. When it fails-on Alpine Linux (musl instead of glibc), on ARM
+hardware under Rosetta translation, on custom glibc builds-the error messages
+are cryptic: a segfault, a missing shared library, a silent hang. Debugging
+requires reverse-engineering which fallback was selected and why it failed.
 
-## The Problem
+SideCar resolves the question at compile time. If the build for a given target
+triple succeeded, the binary for that triple is present and verified.
 
-`VS Code` ships a single `Node.js` binary and detects the platform at runtime. A
-chain of fallback logic handles architecture mismatches, Rosetta translation on
-Apple Silicon, musl versus glibc on Linux, and missing shared libraries on
-minimal containers.
+## Supported platform triples
 
-When the detection works, it works silently. When it fails, the error messages
-are cryptic: a segfault on ARM, a missing `.so` on Alpine, a silent hang.
-Debugging requires reverse-engineering the detection chain to find which
-fallback was selected and why it broke.
+| Target triple               | Platform            |
+| :-------------------------- | :------------------ |
+| `aarch64-apple-darwin`      | macOS Apple Silicon |
+| `x86_64-apple-darwin`       | macOS Intel         |
+| `x86_64-pc-windows-msvc`    | Windows x64         |
+| `aarch64-pc-windows-msvc`   | Windows ARM64       |
+| `x86_64-unknown-linux-gnu`  | Linux x64 (glibc)   |
+| `aarch64-unknown-linux-gnu` | Linux ARM64 (glibc) |
 
----
+## Binary resolution order
 
-## How SideCar Eliminates It
+When SideCar's download tool runs, it resolves the Node.js version through the
+following priority order:
 
-`SideCar` resolves the platform question at compile time, not runtime. The build
-matrix defines supported target triples explicitly. For each triple, `SideCar`
-downloads the corresponding `Node.js` binary from the official release, verifies
-its checksum, and makes it available as the canonical binary for that target.
-The runtime code contains no platform detection logic.
+1. `NodeVersion` environment variable - explicit version override
+2. `SideCar/Cache.json` - latest cached version for the current platform
+3. Node.js LTS - fallback default
 
----
+Once a version is resolved, the download tool fetches the official binary from
+`nodejs.org/dist`, verifies the SHA-256 checksum against the published
+`SHASUMS256.txt`, extracts the binary, and records the result in `Cache.json`.
 
-## Supported Target Triples
+## Binary cache directory
 
-All four target triple directories are confirmed present in the
-[`SideCar` repository](https://github.com/CodeEditorLand/SideCar):
+SideCar organizes vendored binaries by target triple:
 
-| Triple                      | Platform             |
-| --------------------------- | -------------------- |
-| `aarch64-apple-darwin`      | Apple Silicon macOS  |
-| `x86_64-apple-darwin`       | Intel macOS          |
-| `aarch64-unknown-linux-gnu` | ARM64 Linux (glibc)  |
-| `x86_64-unknown-linux-gnu`  | x86-64 Linux (glibc) |
-| `x86_64-pc-windows-msvc`    | Windows 10/11 (MSVC) |
+```
+SideCar/
+    aarch64-apple-darwin/
+        NODE/
+            22/
+                bin/
+                    node
+    x86_64-apple-darwin/
+        NODE/
+            22/
+                bin/
+                    node
+    x86_64-pc-windows-msvc/
+        NODE/
+            22/
+                node.exe
+    ...
+    Cache.json
+```
 
----
+`Cache.json` tracks the resolved version, file path, SHA-256 checksum, download
+timestamp, and file size for each platform entry. A cache entry is invalidated
+when a new version is requested, when SHA-256 verification fails on the cached
+file, or when the cache is manually cleared.
 
-## Source Structure 🗺️
+> [!IMPORTANT] The populated SideCar directory contains large third-party
+> binaries and should not be committed to version control. Run the download tool
+> once during initial project setup or as part of the CI release pipeline.
 
-| Path                 | Role                                                          |
-| -------------------- | ------------------------------------------------------------- |
-| `Source/Download.rs` | Node.js binary download, checksum verification (~25 KB)       |
-| `Source/Spawn.rs`    | Binary spawn and process management                           |
-| `Source/Library.rs`  | Crate root re-exports                                         |
-| `Source/main.rs`     | Entry point                                                   |
-| `Source/Source/`     | Sub-modules                                                   |
-| `Cache.json`         | Cached binary metadata per target triple                      |
-| `build.rs`           | Cargo build script - target triple resolution at compile time |
-| `Resource/`          | Bundled resources                                             |
+## How Mountain uses SideCar
 
----
+Mountain's `build.rs` Cargo build script reads the SideCar directory at compile
+time, selects the binary subdirectory matching the current Tauri target triple,
+and copies the binary into Tauri's sidecar resource path for bundling into the
+final installer. At runtime, Mountain's `ProcessManagement` layer calls
+`Spawn.rs` to launch Cocoon using the bundled binary. No platform detection is
+performed at runtime.
 
-## What SideCar Enables
+The Mist DNS server is started before Cocoon is spawned, so when Mountain passes
+the `DnsPort` environment variable to the Node.js process the DNS server is
+already accepting queries.
 
-The editor starts with the correct `Node.js` binary already in place for the
-target platform - no detection step, no fallback chain. If the build succeeded
-for your target triple, the binary is already there. This removes an entire
-category of platform-specific runtime failures that exist in `Electron`-based
-editors.
+## Source files
 
----
+| File                 | Role                                                                                   |
+| :------------------- | :------------------------------------------------------------------------------------- |
+| `Source/Download.rs` | Binary download, SHA-256 verification, archive extraction, `Cache.json` update         |
+| `Source/Spawn.rs`    | Process spawning helper used by Mountain at runtime                                    |
+| `Source/Library.rs`  | Crate root, shared utilities, version resolution helpers                               |
+| `Source/main.rs`     | Entry point for the standalone download tool                                           |
+| `build.rs`           | Cargo build script: selects correct triple directory, stages binary for Tauri bundling |
+| `Cache.json`         | Download cache metadata keyed by `{version}-{platform}`                                |
 
-## In Progress
+## Running the download tool
 
-- `x86_64-unknown-linux-musl` (Alpine/musl Linux) triple is not yet in the build
-  matrix.
-- Full integration test coverage across all five current triples.
+```bash
+cd Element/SideCar
+cargo build --release
+./Target/release/Download
+```
 
----
-
-## Key Technologies
-
-`Rust`, Target Triple Resolution, Compile-Time Binary Selection, Checksum
-Verification, Cross-Platform Distribution.
-
----
-
-## Related Documentation 📖
-
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Cocoon`](https://editor.land/Doc/cocoon)
-- [Source Code](https://github.com/CodeEditorLand/SideCar)
+The tool downloads binaries for all configured target triples concurrently using
+Tokio. Progress is reported per platform. After completion, each triple
+directory contains a verified Node.js binary and `Cache.json` is updated.

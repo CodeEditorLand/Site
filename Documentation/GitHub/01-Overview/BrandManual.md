@@ -29,7 +29,7 @@ intentional and governed by the Staccato system; everything else is restrained.
 | ------------------------ | ---------------------------------------- |
 | Product name             | Code Editor Land                         |
 | Internal codename        | FIDDEE                                   |
-| Active production domain | `editor.land`                    |
+| Active production domain | `editor.land`                            |
 | Grace-hold domain        | `editor.land`                            |
 | Communication style      | Flat, local-first, transparency-oriented |
 | Primary font             | Albert Sans (`--font-sans`)              |

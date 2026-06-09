@@ -1,201 +1,124 @@
 ---
-title: "Project Structure"
-section: "Reference"
-order: 46
+title: Project Structure
+section: Start
+order: 5
 description:
-    "Overview of the Element directory organization, funding configuration,
-    dependabot setup, and CI/CD workflow patterns."
+    The Element monorepo layout - each element's role, submodule repositories,
+    and conventions for what never to edit.
 ---
 
-# Project Structure
+Land is organized as a monorepo of named elements under `Element/`. Each element
+is an independent Git submodule on its own `Current` branch. The repository root
+holds build orchestration scripts, environment files, and workspace
+configuration files for Cargo and pnpm.
 
-The Land monorepo uses Git submodules to compose 15 independent Elements under
-`Land/Element/`. Each Element is its own repository with its own versioning,
-changelog, and CI pipeline.
-
----
-
-## Element Directory Layout
+## Top-Level Layout
 
 ```
-Land/Element/
-    .gitmodules          # 15 submodule definitions
-    CHANGELOG.md         # Umbrella-level changelog (cross-cutting syncs)
-    .github/
-        Update.md        # Automated daily timestamp (Auto.yml)
-        FUNDING.yml      # Open Collective funding configuration
-        dependabot.yml   # Root-level Dependabot (not used; per-element configs apply)
-        workflows/       # Shared workflow templates (if any)
-    Air/                 # Background daemon sidecar
-    Cocoon/              # Extension-host Node.js sidecar
-    Common/              # Abstract core Rust crate
-    Echo/                # Work-stealing task scheduler
-    Grove/               # Rust/WASM extension-host sidecar
-    Maintain/            # Build/CI surface
-    Mist/                # DNS isolation server
-    Mountain/            # Native Rust Tauri backend
-    Output/              # Bundled JS artifact tree
-    Rest/                # JS bundler (OXC)
-    SideCar/             # Node.js sidecar runtime
-    Sky/                 # Astro UI component layer
-    Vine/                # gRPC protocol definitions
-    Wind/                # Effect-TS UI service layer
-    Worker/              # Service-worker layer
+Land/
+  Element/           # All submodule elements (never git add .)
+  Maintain/          # Build scripts, CI workflows, signing
+    Debug/
+      Build.sh       # Main build entry point
+      Run.sh         # Launch helper
+    Script/
+      TierEnvironment.sh  # Env file sourcing cascade
+      SignBundle.sh       # Post-build ad-hoc re-sign
+  .env.Land          # Core dev environment (local, gitignored)
+  .env.Land.Sample   # Checked-in defaults template
+  Cargo.toml         # Rust workspace root
+  pnpm-workspace.yaml
+  turbo.json         # Turborepo global env declaration
 ```
 
-### Per-Element Structure
+## Element Map
 
-Each Element repository contains:
+### Rust Elements (Native Backend)
 
-```
-ElementName/
-    .github/
-        Update.md        # Last-commit timestamp (daily automation)
-        FUNDING.yml      # Open Collective: code-editor-land
-        dependabot.yml   # Per-ecosystem dependency updates
-        workflows/       # CI workflow definitions
-    CHANGELOG.md         # Version history (Keep a Changelog format)
-    Cargo.toml           # (Rust elements) package manifest
-    package.json         # (Node/TS elements) package manifest
-    README.md            # Element documentation
-```
+| Element  | Path               | Role                                                                                                                                                           |
+| -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Common   | `Element/Common`   | Abstract core library. All service traits (`IFileService`, `IConfigurationService`, etc.), the `ActionEffect` system, and DTOs. No concrete implementations.   |
+| Echo     | `Element/Echo`     | Bounded work-stealing task scheduler. Priority-based (`High`/`Normal`/`Low`) with lock-free deques. Core async execution engine for Mountain.                  |
+| Vine     | `Element/Vine`     | gRPC protocol definitions. Contains `Vine.proto` - the service contract between Mountain and Cocoon (port 50052) and Mountain and Air (port 50053).            |
+| Mountain | `Element/Mountain` | Primary Tauri application. Implements every trait from Common. Hosts the gRPC server, manages AppState, dispatches Tauri commands, owns OS-level capabilities. |
+| Mist     | `Element/Mist`     | Local DNS server for `*.editor.land` resolution. Authoritative for the private zone; resolves all subdomains to `127.0.0.1`. Used for network isolation.       |
+| Air      | `Element/Air`      | Background daemon. Update downloads, file indexing, cryptographic signing, health monitoring. Communicates via gRPC on port 50053.                             |
+| Rest     | `Element/Rest`     | High-performance TypeScript compiler built on OXC (Oxidation Compiler). Optional replacement for esbuild's TypeScript step at 2-3x speed.                      |
+| Grove    | `Element/Grove`    | Native Rust/WASM extension host (work in progress). Sandboxed environment via Wasmtime for WASM-compiled VS Code extensions.                                   |
+| SideCar  | `Element/SideCar`  | Vendored Node.js runtime binary management. Downloads, caches, and resolves exact Node.js binaries per target triple for bundling into the app.                |
 
-### Elements Without Dedicated .github/ Directory
+### TypeScript Elements (UI and Extension Host)
 
-Some smaller or placeholder elements (Grove, Vine, Mist) did not have a
-`.github/` directory with `Update.md` at the time of documentation. Grove has
-workflows and dependabot under `.github/` but its changelog lives in
-`CHANGELOG.md` at the root.
+| Element  | Path               | Role                                                                                                                                                                  |
+| -------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cocoon   | `Element/Cocoon`   | Node.js extension host sidecar. Runs VS Code extensions. Provides a `vscode` API shim implemented with Effect-TS. Communicates with Mountain via gRPC.                |
+| Wind     | `Element/Wind`     | UI service layer. Effect-TS native re-implementation of ~40 VS Code workbench services. Runs inside the Tauri WebView. Communicates with Mountain via Tauri commands. |
+| Sky      | `Element/Sky`      | UI component layer (Astro). Renders the editor, sidebar, activity bar, status bar, and panels. Bridges Tauri events through SkyBridge (~2900 lines).                  |
+| Output   | `Element/Output`   | Build artifact management. Compiles VS Code platform source into the `@codeeditorland/output` npm package consumed by Cocoon, Sky, and Wind.                          |
+| Worker   | `Element/Worker`   | Service worker implementation. Asset caching, offline support, CSS module interception. Zero runtime dependencies.                                                    |
+| Maintain | `Element/Maintain` | Build orchestration. CI/CD pipeline, GritQL refactoring queries, build scripts, signing helpers.                                                                      |
 
----
+### Dependency Elements
 
-## Funding Configuration
+| Element | Path                                             | Role                                                                                                                       |
+| ------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Editor  | `Element/Dependency/Microsoft/Dependency/Editor` | VS Code source submodule. Compiled in Step 1 of the build. Consumed by Output and Sky. Never edit files under `src/vs/**`. |
 
-All elements with a `.github/FUNDING.yml` file point to the same Open
-Collective:
+## Submodule Repository Table
 
-```yaml
-open_collective: code-editor-land
-```
+| Element  | GitHub repository                          |
+| -------- | ------------------------------------------ |
+| Common   | https://github.com/CodeEditorLand/Common   |
+| Echo     | https://github.com/CodeEditorLand/Echo     |
+| Vine     | https://github.com/CodeEditorLand/Vine     |
+| Mountain | https://github.com/CodeEditorLand/Mountain |
+| Mist     | https://github.com/CodeEditorLand/Mist     |
+| Air      | https://github.com/CodeEditorLand/Air      |
+| Rest     | https://github.com/CodeEditorLand/Rest     |
+| Grove    | https://github.com/CodeEditorLand/Grove    |
+| SideCar  | https://github.com/CodeEditorLand/SideCar  |
+| Cocoon   | https://github.com/CodeEditorLand/Cocoon   |
+| Wind     | https://github.com/CodeEditorLand/Wind     |
+| Sky      | https://github.com/CodeEditorLand/Sky      |
+| Output   | https://github.com/CodeEditorLand/Output   |
+| Worker   | https://github.com/CodeEditorLand/Worker   |
+| Maintain | https://github.com/CodeEditorLand/Maintain |
+| Editor   | https://github.com/CodeEditorLand/Editor   |
 
-Elements with FUNDING.yml (8 of 15):
+## What Never to Edit
 
-- Element (umbrella)
-- Echo
-- Mountain
-- Rest
-- SideCar
-- Sky
-- Wind
-- Maintain
+> [!WARNING] Editing these paths will be overwritten by the next build or will
+> corrupt the submodule state.
 
-Elements without a dedicated FUNDING.yml (7):
+| Path                                                       | Reason                                                                                                      |
+| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `Element/*/Target/`                                        | Build output directories. Source is in `Public/` or `Source/` within each element.                          |
+| `Element/Dependency/Microsoft/Dependency/Editor/src/vs/**` | Upstream VS Code source. Changes here are not tracked and are wiped by `git clean -dfx`.                    |
+| Any file committed with `git add .`                        | Adding `.` includes submodule gitlinks as trees, corrupting the index. Always stage specific files by name. |
 
-- Air, Cocoon, Common, Grove, Mist, Output, Vine, Worker
+## Naming Conventions
 
-All funding converges on the
-[Open Collective for Code Editor Land](https://opencollective.com/code-editor-land).
+All TypeScript source files in Land elements follow these conventions:
 
----
+- **PascalCase filenames**: `TauriMainProcessService.ts`, `ExtensionHost.ts`
+- **Single `export default` per file**, anonymous
+- **`import type` for type-only imports**; `await import()` for value imports
+- **Tabs for indentation**, line width 80
+- **Em quad U+2001** (`　`) is the only separator character in display strings
+- **Arrow-async functions** over `async function` declarations
+- **`satisfies` pattern** for type narrowing
 
-## Dependabot Configuration
+All environment variable names are PascalCase (`BundleLevel`, `HotReload`,
+`TierFileSystem`). External tool variables that are conventionally uppercase
+(`TAURI_*`, `CARGO__*`, `NODE_*`) keep their upstream casing.
 
-All 13 elements with a `.github/dependabot.yml` share the same base pattern:
+All Rust source follows edition 2024 with MSRV 1.95.0. The `pub use` re-export
+pattern is not used anywhere in the workspace - use type aliases, delegating
+functions, or fresh constants instead.
 
-```yaml
-version: 2
-enable-beta-ecosystems: true
-updates:
-    - package-ecosystem: "github-actions"
-      directory: "/"
-      schedule:
-          interval: "daily"
-```
+## Related Pages
 
-Rust elements (Mountain, Air, Common, Echo, Grove, Mist, Maintain, Rest,
-SideCar, Vine) add:
-
-```yaml
-- package-ecosystem: "cargo"
-  directory: "/"
-  schedule:
-      interval: "daily"
-  versioning-strategy: lockfile-only
-```
-
-TypeScript/JS elements (Wind, Cocoon, Output, Sky, Worker) add:
-
-```yaml
-- package-ecosystem: "npm"
-  directory: "/"
-  schedule:
-      interval: "daily"
-  versioning-strategy: increase
-  ignore:
-      - dependency-name: "tailwindcss"
-        versions:
-            - "^4.0.0"
-```
-
-Key policy: all dependencies update daily. Cargo uses lockfile-only to preserve
-the source tree; npm uses `increase` to bump package.json. Tailwind 4.x is
-explicitly ignored across JS elements.
-
----
-
-## CI/CD Workflow Overview
-
-Five standard workflow types appear across elements:
-
-### Rust.yml
-
-Present in: Mountain, Air, Common, Echo, Grove, Mist, Rest, SideCar, Vine,
-Maintain
-
-Runs on push/PR to `Current` branch. Builds with both `stable` and `nightly`
-toolchains using `cargo build --release --all-features`. Caches Cargo registry
-and target directories.
-
-### Node.yml
-
-Present in: Wind, Cocoon, Worker
-
-Runs on push/PR to `Current`. Pre-publishes with pnpm across a Node version
-matrix (18, 19, 20). Uploads build artefacts.
-
-### NPM.yml
-
-Present in: Echo, Wind, Worker
-
-Publishes packages on release creation. Runs against Node 24 with
-`npm publish --legacy-peer-deps --ignore-scripts`.
-
-### GitHub.yml
-
-Present in all elements with CI configuration.
-
-Auto-assigns new issues and PRs to the repository maintainer using
-`pozil/auto-assign-issue`.
-
-### Auto.yml
-
-Present in: Echo, Worker
-
-Scheduled daily (`cron: 0 0 * * *`). Updates `.github/Update.md` with current
-timestamp and commits the change. This is how the single-line Update.md files
-are maintained.
-
-### Cloudflare.yml
-
-Present in: Echo
-
-Cloudflare Workers deployment pipeline.
-
----
-
-## Default Environment Variables
-
-All CI workflows set the same 30+ telemetry-opt-out environment variables to
-prevent third-party analytics from cloud build hosts (Adblock, Astro, Azure,
-Docker, Gatsby, Homebrew, InfluxDB, Next.js, Nuxt, PowerShell, Stripe,
-Terraform, VCPkg, and others).
+- [Architecture](/doc/architecture) - how the elements communicate at runtime
+- [Configuration](/doc/configuration) - environment variable system and tier
+  flags
+- [Installation](/doc/installation) - how to clone each submodule

@@ -1,137 +1,111 @@
 ---
-title: "Quickstart"
-section: "Start"
-order: 3
-description:
-    "What you can do after a successful source build on macOS or Windows."
+title: Quickstart
+section: Start
+order: 1
+description: The fastest path to building and running FIDDEE from source.
 ---
 
-# Quickstart
+The build is a two-step linear flow. Step 1 compiles the VS Code platform source
+that the extension host consumes. Step 2 compiles the Rust backend and bundles
+the TypeScript frontend into a runnable Tauri application. Both steps are
+mandatory; Step 2 will fail if Step 1 has not been completed.
 
-This guide describes what is available after a successful `cargo tauri dev`
-build. It covers macOS and Windows, both of which produce a working editor from
-source today.
+> [!IMPORTANT] Do not use `git clone --recurse-submodules`. Each element
+> submodule is managed independently on its own branch. Clone each one
+> individually as described in [Getting Started](/doc/getting-started).
 
----
+## Step 1: Compile VS Code Source
 
-## After the Editor Opens
+Node 24 is required for this step. The exact pinned version is in
+`Dependency/Microsoft/Dependency/Editor/.nvmrc`.
 
-A successful build opens a native window with the `workbench` UI - `WKWebView`
-on macOS, `WebView2` on Windows. You should see:
+Before running `npm install`, add these to your shell profile and reload your
+terminal. Without them, `npm install` will attempt to download Electron (~200
+MB) and Playwright Chromium (~300 MB), which are only needed for integration
+tests, not compilation.
 
-- The editor surface (Monaco) in the main area.
-- A status bar at the bottom of the window.
-- An activity bar on the left with sidebar icons.
-- A command palette accessible via `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P`
-  (Windows).
-
-If the window opens but is blank or shows an error, the most common cause is a
-missing or failed submodule. Run `git submodule update --init --recursive` from
-the Land root and rebuild.
-
----
-
-## Opening a Project
-
-**File > Open Folder** or `Cmd+O` / `Ctrl+O` opens a directory as a workspace.
-This routes through `Mountain`'s file system layer via `Tauri` `IPC`.
-
-If you have an existing `.vscode/` directory with workspace settings, Land reads
-it. See [Configuration](https://editor.land/Doc/configuration) for
-details on supported configuration keys.
-
----
-
-## Extensions
-
-`Cocoon` activates extensions at startup. The following is confirmed working:
-
-- Extensions present on disk activate through `Cocoon`'s fiber scheduler.
-- Extensions using standard `vscode.*` file system, terminal, language server,
-  and debug adapter `APIs` work for those `APIs` implemented in `Cocoon`.
-- A `.vsix` file can be installed manually. Open the command palette
-  (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **Extensions: Install from VSIX**.
-
-The following is **in progress**:
-
-- An Extensions panel with browsing and search UI.
-- Marketplace or Open VSX Registry integration.
-
-If an extension activates but its features do not respond, check the
-**`Output`** panel (command palette → **View: Toggle `Output`**) and select the
-extension's output channel. Activation errors appear there.
-
----
-
-## Settings
-
-Land has a fully implemented configuration system backed by `Mountain`'s
-`ConfigurationState` - a thread-safe, merged store covering both global and
-workspace scopes. It supports dotted-path key access (e.g. `Editor.FontSize`,
-`Workbench.ColorTheme`) with nested object writes handled by
-`MergedConfigurationStateDTO`. Memento storage for crash recovery is also active
-for both global and workspace contexts.
-
-Open the command palette and search for **Preferences: Open Settings** to locate
-and edit the active settings file. The settings format is `JSON`, compatible
-with `VS Code`'s `settings.json` structure.
-
----
-
-## Terminal
-
-The integrated terminal is backed by `Mountain`'s pty layer. Open it with
-`` Cmd+` `` (macOS) or `` Ctrl+` `` (Windows). This routes a spawn call through
-`Vine` `gRPC` to `Mountain`, which creates a native pty. The terminal is one of
-the most reliable features in the current build, mapping directly to verified
-`Vine` service definitions.
-
----
-
-## Tasks
-
-Land reads task definitions from `.vscode/tasks.json`. Use **Tasks: Run Task**
-from the command palette to run configured tasks. The standard
-`.vscode/tasks.json` format is supported:
-
-```json
-{
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Build",
-			"type": "shell",
-			"command": "cargo build",
-			"group": "build"
-		}
-	]
-}
+```sh
+export ELECTRON_SKIP_BINARY_DOWNLOAD=1
+export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ```
 
----
+Then compile:
 
-## Extension API Notes
+```sh
+cd Dependency/Microsoft/Dependency/Editor
 
-The vast majority of `vscode.*` `APIs` covering file system, terminal, language
-server protocol, diagnostics, status bar, tree views, custom editors, and
-webview panels are routed and active. The following `APIs` have stub
-implementations - they allow extensions that declare them to activate without
-crashing, but the underlying features are not yet wired to a backend:
+nvm use 24
+export NODE_ENV=development
 
-- `vscode.lm.*` - language model / Copilot
-- `vscode.chat.*` - chat panel
-- `vscode.notebook.*` - notebook UI
-- `vscode.tests.*` - test explorer
+git fetch --all
+git reset --hard Parent/main
+git clean -dfx
 
-See [`Cocoon`](https://editor.land/Doc/cocoon) for the full `API`
-coverage table.
+npm install
+npm run compile
+npm run compile-extensions-build
+```
 
----
+> [!IMPORTANT] This submodule uses `npm`, not `pnpm`. Do not substitute
+> `pnpm install` - the submodule has an npm-native `package-lock.json` and
+> `.npmrc`.
 
-## See Also
+## Step 2: Build the Land Application
 
-- [Getting Started](https://editor.land/Doc/getting-started)
-- [Installation](https://editor.land/Doc/installation)
-- [Configuration](https://editor.land/Doc/configuration)
-- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
-- [Architecture Overview](https://editor.land/Doc/architecture)
+Return to the repository root and run the build script:
+
+```sh
+cd Land
+
+export Trace=all Record=1 Disable=false
+./Maintain/Debug/Build.sh --profile debug-electron-bundled
+```
+
+The script compiles the Rust workspace, bundles Cocoon and Output via ESBuild,
+compiles Sky and Wind via Vite/Astro, and signs the resulting `.app` bundle.
+
+## Launch
+
+After a successful build, the application binary is at:
+
+```
+Element/Mountain/Target/debug-electron/Mountain
+```
+
+Or use the `--run` flag to launch immediately after the build completes:
+
+```sh
+./Maintain/Debug/Build.sh --profile debug-electron-bundled --run
+```
+
+## Key Environment Variables
+
+These variables are read from `.env.Land*` files in the repository root. Copy
+`.env.Land.Sample` to `.env.Land` to start with defaults.
+
+| Variable              | Default    | Purpose                                                                                                  |
+| --------------------- | ---------- | -------------------------------------------------------------------------------------------------------- |
+| `Trace`               | `all`      | Dev-log tag filter. `all` = verbose. Comma-separated subset for less noise.                              |
+| `Record`              | `0`        | Set to `1` to persist Mountain dev log to disk.                                                          |
+| `Disable`             | `false`    | Master kill switch. `true` disables all Land shims for bisecting.                                        |
+| `Inspect`             | (unset)    | Set to `1` to auto-open WKWebView DevTools at boot.                                                      |
+| `TierIPC`             | `Mountain` | IPC routing: `Mountain` (Tauri), `Node` (Cocoon only), `NodeDeferred` (Mountain first, Cocoon fallback). |
+| `NetworkMountainPort` | `50051`    | gRPC port for Mountain.                                                                                  |
+| `NetworkCocoonPort`   | `50052`    | gRPC port for Cocoon extension host.                                                                     |
+
+## Build Profiles
+
+| Profile                       | Workbench | Purpose                                                                        |
+| ----------------------------- | --------- | ------------------------------------------------------------------------------ |
+| `debug-electron-bundled`      | Electron  | Full bundled Vite/Astro compiled workbench - recommended for daily development |
+| `debug-electron-unbundled`    | Electron  | Dynamic-import path, faster iteration on Sky/Wind                              |
+| `debug-mountain`              | Mountain  | Mountain workbench, 80-90% API coverage                                        |
+| `debug`                       | Browser   | Browser workbench, 70-80% API coverage                                         |
+| `production-electron-bundled` | Electron  | Optimized release build                                                        |
+
+## Next Steps
+
+- [Getting Started](/doc/getting-started) - prerequisites, clone strategy,
+  troubleshooting
+- [Configuration](/doc/configuration) - full environment variable reference
+- [Architecture](/doc/architecture) - how the components communicate

@@ -1,108 +1,111 @@
 ---
 title: "Running Extension Tests"
-section: "Workflow"
-order: 16
+section: "Workflows"
+order: 9
 description:
-    "Extension Development Host model: second isolated instance launches to run
-    tests with test Cocoon remote-controlling main UI."
+    "How the Extension Development Host model spawns a second isolated
+    Mountain+Cocoon pair and lets the test runner remote-control the main editor
+    window."
 ---
 
-# Running Extension Tests
+Extension tests in Land use the same Extension Development Host model as VS
+Code: a second, fully isolated Mountain+Cocoon pair is spawned specifically to
+run the test suite. The test Cocoon instance does not start a normal extension
+host - instead it executes the test runner script directly. The key
+architectural detail is that `require('vscode')` inside the test files connects
+back to the **original Mountain instance**, so tests drive the real editor UI
+rather than a headless stub.
 
-Explains the "Extension Development Host" model: a second, isolated instance of
-the application launches to run tests, with the test Cocoon instance
-remote-controlling the main UI.
+## Phase 1 - Development mode launch
 
-Implementation details are in `Mountain/Source/Testing/` and
-`Cocoon/Source/Services/Extension.ts`.
+1. The developer launches Mountain with the extension under development:
 
-## Data Flow
+    ```bash
+    mountain --extensionDevelopmentPath /path/to/my-extension
+    ```
 
-```
-Developer launches Mountain with --extensionDevelopmentPath
-  -> Extension activated in development mode
-  -> Developer runs "Run Tests" command (Ctrl+Shift+P)
-  -> Test Runner Service constructs special arguments:
-       --extensionDevelopmentPath
-       --extensionTestsPath
-       VSCODE_IPC_HOOK_CLI env var
-  -> Spawn new Mountain instance (Extension Development Host)
+2. Cocoon activates the extension in development mode. The extension's
+   `activate()` function runs and registers its commands, providers, and test
+   runner entry point in the main window.
 
-Test Host:
-  -> Detects --extension... flags, knows it is a test instance
-  -> Launches Cocoon sidecar with special env vars
-  -> Test Cocoon detects VSCODE_IPC_HOOK_CLI
-  -> Enters CLI test runner mode (no normal gRPC server)
-  -> Requires and executes script from --extensionTestsPath (e.g. mocha)
-  -> Mocha loads extension test files
+## Phase 2 - Initiating the test run (Wind → Mountain)
 
-Test Execution:
-  -> Tests call vscode.commands.executeCommand('my-extension.doSomething')
-  -> Lightweight test vscode shim intercepts require('vscode')
-  -> Shim connects to MAIN Mountain instance (not test instance)
-  -> gRPC: executeCommand sent to main Mountain
-  -> Main Mountain executes command, updates UI, returns result
-  -> Test proceeds: vscode.workspace.textDocuments[0]
-  -> Another gRPC call to main Mountain for document state
-  -> assert checks if main application state matches expected
+3. The developer opens the Command Palette (`Ctrl+Shift+P`) and executes "Run
+   Tests". Mountain's Test Runner Service receives the command.
 
-Test Completion:
-  -> Mocha completes all tests, aggregates pass/fail counts
-  -> Prints results to stdout, exits with code (0/1)
-  -> Main Mountain's Test Runner Service monitored stdout
-  -> Parses results, displays notification: "10 passed, 0 failed"
-```
+4. The service constructs a specialised argument set for a second Mountain
+   process:
+    - `--extensionDevelopmentPath` - path to the extension under test.
+    - `--extensionTestsPath` - path to the test runner entry script (e.g.
+      `out/test/suite/index.js`).
+    - `VSCODE_IPC_HOOK_CLI` - environment variable that signals CLI test runner
+      mode to Cocoon.
 
-## Phase 1: Test Discovery and Command Registration
+5. The Test Runner Service spawns a new Mountain process with these arguments.
+   This second instance is the **Extension Development Host**.
 
-1. Extension under development includes a `test` script and contributes a
-   command for its test runner.
-2. Developer launches Mountain with
-   `--extensionDevelopmentPath /path/to/my-extension`. Extension activates in
-   development mode.
+## Phase 3 - Test host startup (Mountain test instance → Cocoon test instance)
 
-## Phase 2: Initiating the Test Run
+6. The new Mountain instance starts, detects the `--extension...` flags, and
+   knows it is a test host. It launches its own Cocoon sidecar, forwarding the
+   special environment variables including `VSCODE_IPC_HOOK_CLI`.
 
-3. Developer executes "Run Tests" from the Command Palette in the main Mountain
-   window.
-4. Test Runner Service prepares special arguments and environment variables for
-   a new instance: `--extensionDevelopmentPath`, `--extensionTestsPath`, and
-   `VSCODE_IPC_HOOK_CLI`.
-5. Spawns a new Mountain process -- the "Extension Development Host".
+7. Test Cocoon starts and its bootstrap logic detects `VSCODE_IPC_HOOK_CLI`. It
+   does **not** bind the normal gRPC RPCServer, does not wait for an
+   `initExtensionHost` handshake, and does not activate extensions in the
+   standard way.
 
-## Phase 3: Test Execution in the Development Host
+8. Instead, test Cocoon `require`s and executes the script specified by
+   `--extensionTestsPath`. This is typically a Mocha runner entry point that
+   discovers and loads the extension's test files.
 
-6. New Mountain instance starts, sees the `--extension...` flags, knows it is a
-   test instance.
-7. Launches its own Cocoon sidecar with special environment variables.
-8. Test Cocoon detects `VSCODE_IPC_HOOK_CLI` and enters CLI test runner mode (no
-   normal gRPC server, no `initExtensionHost` handshake).
-9. Executes the test runner script from `--extensionTestsPath` (typically
-   mocha).
-10. Test files execute. The `require('vscode')` call is intercepted by a
-    lightweight `RequireInterceptor` that connects back to the **main Mountain
-    instance**.
+## Phase 4 - Remote control of the main window (Cocoon test → Mountain main)
 
-## Phase 4: Remote Control and Result Reporting
+9. Each test file imports the `vscode` module:
 
-11. Test code calls `vscode.commands.executeCommand(...)`. Lightweight shim
-    sends gRPC request to the original Mountain instance.
-12. Main Mountain executes the command, UI updates, files open. Result returned
-    to test Cocoon.
-13. Test proceeds to assertions (e.g. checking document state via another gRPC
-    call to main Mountain).
-14. Mocha completes, aggregates results, prints to stdout, exits with code.
-15. Main Mountain's Test Runner Service parses the output and displays a
-    notification.
+    ```ts
+    import * as vscode from "vscode";
+    ```
 
-## Key Source Files
+    A lightweight `RequireInterceptor` intercepts this call. Instead of
+    returning the normal Cocoon shim, it returns a thin client that connects
+    back to the **original Mountain instance's gRPC server** - the one the
+    developer is looking at.
 
-- `Mountain/Source/Testing/` -- test runner service
-- `Cocoon/Source/Services/Extension.ts` -- extension activation
+10. When a test calls `vscode.commands.executeCommand(...)`, the thin client
+    sends a gRPC request to the main Mountain instance. Main Mountain executes
+    the command exactly as if it had come from its own Cocoon sidecar: files
+    open, the UI updates, and the result is returned to the test process.
 
----
+11. Subsequent assertions read state from the main instance the same way:
 
-## See Also
+    ```ts
+    const doc = vscode.workspace.textDocuments[0];
+    assert.strictEqual(doc.getText(), "Expected Result");
+    ```
 
-- [Extension Development](https://editor.land/Doc/extension-development)
-- [Application Startup and Handshake](https://editor.land/Doc/workflow-startup)
+    Each property access is a gRPC call to main Mountain. The assert checks the
+    live state of the editor window.
+
+## Phase 5 - Result reporting (Cocoon test → Mountain main → Wind)
+
+12. Mocha completes all tests, aggregates pass and failure counts, prints a
+    summary to stdout, and exits with code `0` (all pass) or `1` (any failure).
+
+13. Main Mountain's Test Runner Service was monitoring the test process's stdout
+    and exit code throughout. It parses the results and displays a notification
+    in the main window:
+
+    ```
+    Tests finished: 10 passed, 0 failed
+    ```
+
+14. The Extension Development Host process exits. All resources allocated in
+    `AppState` of the test Mountain instance are released automatically when the
+    process terminates.
+
+> [!IMPORTANT] Because tests drive the **main** Mountain instance, they execute
+> in the same process space as the live editor. A test that opens a file or
+> modifies editor state will visibly change the developer's window. Tests must
+> clean up after themselves - close documents, revert changes - or subsequent
+> test runs may start with unexpected editor state.

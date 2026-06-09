@@ -1,103 +1,86 @@
 ---
 title: "Saving a File with Save Participants"
-section: "Workflow"
-order: 15
+section: "Workflows"
+order: 3
 description:
-    "Intercepting a save event, allowing an extension to modify a file (e.g.
-    formatting) before Mountain writes it to disk."
+    "How Ctrl+S triggers save participants in Cocoon before Mountain writes the
+    final formatted content to disk."
 ---
 
-# Saving a File with Save Participants
+A save with participants involves two distinct network round-trips before the
+file is written: Wind asks Cocoon to run all `onWillSaveTextDocument` handlers
+and collect their edits, then the merged edits are applied in-memory before the
+normal write path to Mountain executes. The extension author sees only a single
+`onWillSaveTextDocument` event; the IPC machinery is invisible.
 
-Explains the process of intercepting a save event, allowing an extension in
-Cocoon to modify a file (e.g. for formatting) before Mountain writes it to disk.
+## Phase 1 - User action and save trigger (Wind/Sky)
 
-## Data Flow
+1. The user presses `Ctrl+S` in an editor with unsaved changes. The keybinding
+   system dispatches `workbench.action.files.save`.
 
-```
-User presses Ctrl+S (editor is dirty)
-  -> workbench.action.files.save command
-  -> IEditorService.save()
-  -> TextFileEditorModelManager.save()
-  -> WorkingCopyFileService.runSaveParticipants()
-  -> Gather ISaveParticipants
-  -> ExtHostSaveParticipant.participate()
-  -> Wind sends $participateInSave gRPC to Cocoon
-
-Cocoon:
-  -> ExtHostDocumentSaveParticipant fires onWillSaveTextDocument
-  -> Prettier extension calculates formatting edits
-  -> Extension returns Promise<TextEdit[]>
-  -> All extensions resolve, edits collected
-  -> Serialize TextEdits to DTOs
-  -> Return array of TextEdit DTOs to Wind
-
-Wind/UI:
-  -> BulkEditService applies TextEdits to document model in memory
-  -> TextFileEditorModelManager proceeds to save
-  -> IFileService.writeFile()
-  -> TauriDiskFileSystemProvider -> WriteFile Effect -> TauriInvoke
-
-Mountain:
-  -> FsWriter receives call
-  -> tokio::fs::write(path, content)
-  -> Success returned up the chain
-
-Wind/UI:
-  -> TextFileEditorModel no longer dirty
-  -> UI removes filled-circle indicator from editor tab
-  -> Save complete
-```
-
-## Phase 1: User Action and Initial Save Trigger (Wind/Sky)
-
-1. User presses `Ctrl+S` in a dirty editor. `workbench.action.files.save`
-   dispatched.
 2. `IEditorService.save()` identifies the active editor and calls `save` on its
    `EditorInput`.
-3. `TextFileEditorModelManager` does not immediately write to disk. It enters
-   the Save Participants phase.
-4. Emits a `willSave` event, orchestrated by `IWorkingCopyFileService`.
 
-## Phase 2: Orchestration via Save Participants (Wind -> Cocoon -> Wind)
+3. `TextFileEditorModelManager` intercepts the save before any disk write. It
+   emits a `willSave` event and passes control to `IWorkingCopyFileService` to
+   run all registered save participants.
 
-5. `WorkingCopyFileService.runSaveParticipants()` gathers all registered
-   `ISaveParticipants`. One is `ExtHostSaveParticipant`, responsible for
-   communicating with extensions in Cocoon.
-6. Calls `participate()` on `ExtHostSaveParticipant`, which makes a
-   `$participateInSave` gRPC request to Cocoon with the document URI and save
-   reason.
+## Phase 2 - Save participant orchestration (Wind → Cocoon → Wind)
 
-## Phase 3: Extension Execution (Cocoon)
+4. `WorkingCopyFileService.runSaveParticipants()` gathers every registered
+   `ISaveParticipant`. The relevant one here is `ExtHostSaveParticipant`, which
+   bridges to Cocoon.
 
-7. Cocoon's gRPC server dispatches to `ExtHostDocumentSaveParticipant`.
-8. Service fires `onWillSaveTextDocument` event to all subscribed extensions.
-9. Prettier extension calculates formatting edits, returns
+5. `ExtHostSaveParticipant.participate()` sends a **`$participateInSave` gRPC
+   request** to Cocoon, carrying the document URI and save reason (e.g.
+   `explicit`). Wind then `await`s the response.
+
+## Phase 3 - Extension execution (Cocoon)
+
+6. Cocoon's gRPC server receives `$participateInSave` and dispatches it to
+   `ExtHostDocumentSaveParticipant`.
+
+7. The service constructs a `WillSaveTextDocumentEvent` and fires the
+   `onWillSaveTextDocument` event emitter, delivering it to every subscribed
+   extension.
+
+8. Each participating extension (for example, a Prettier formatter) receives the
+   event, calculates its edits for the document, and returns a
    `Promise<TextEdit[]>`.
-10. Service collects all results, serializes `TextEdit` objects to DTOs via
-    `TypeConverter`, returns to Wind.
 
-## Phase 4: Applying Edits and Final Save (Wind -> Mountain -> Disk)
+9. `ExtHostDocumentSaveParticipant` awaits all returned promises, collects the
+   `TextEdit` arrays, serialises them into DTOs via `TypeConverter`, and returns
+   the full array to Wind as the `$participateInSave` gRPC response.
 
-11. gRPC call resolves with text edits from extensions.
-12. `BulkEditService` applies the `TextEdit`s to the document model in memory.
-    Editor content now reflects formatted code.
-13. `TextFileEditorModelManager` proceeds to call `IFileService.writeFile()`.
-14. Save follows the same path as Opening a File (Workflow #2): `IFileService`
-    -> `TauriDiskFileSystemProvider` -> `WriteFile` Effect -> `TauriInvoke` ->
-    Mountain.
-15. `tokio::fs::write(path, content)` writes the formatted document to disk.
-16. `TextFileEditorModel` is no longer dirty. UI removes the dirty indicator.
+## Phase 4 - Apply edits and write to disk (Wind → Mountain)
 
-## Key Source Files
+10. The `$participateInSave` gRPC call resolves in Wind.
+    `WorkingCopyFileService` passes the collected edits to `IBulkEditService`.
 
-- `Wind/Source/Application/BulkEdit/Live.ts` -- bulk edit service
-- `Wind/Source/Application/File/Live.ts` -- file service
-- `Mountain/Source/FileSystem/` -- filesystem providers
+11. `BulkEditService` applies every `TextEdit` to the document model in memory.
+    The in-editor content now reflects the formatted code without any disk I/O
+    yet.
 
----
+12. With all participants complete and edits applied,
+    `TextFileEditorModelManager` proceeds to the actual write. It calls
+    `IFileService.writeFile()`.
 
-## See Also
+13. The write follows the same provider chain as reading: `IFileService` →
+    `TauriDiskFileSystemProvider` → `WriteFile` Effect →
+    `TauriInvoke("plugin:fs|WriteFile")` → Mountain.
 
-- [Opening a File from the UI](https://editor.land/Doc/workflow-open-file)
-- [Architecture Overview](https://editor.land/Doc/architecture)
+14. Mountain receives the call and executes:
+
+    ```rust
+    tokio::fs::write(path, content)
+    ```
+
+    The formatted document is now on disk. Success propagates back up the chain.
+
+15. `TextFileEditorModel` transitions out of the dirty state. The filled-circle
+    indicator disappears from the editor tab. The save is complete.
+
+> [!IMPORTANT] Save participants can return edits that themselves trigger
+> further change notifications. `BulkEditService` applies edits atomically to
+> the in-memory model, so extensions that listen to `onDidChangeTextDocument`
+> will see a single composite change event rather than one event per `TextEdit`.

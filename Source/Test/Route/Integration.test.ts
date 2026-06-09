@@ -212,18 +212,10 @@ describe("Integration: Build output structure", () => {
 				"utf-8",
 			);
 
-			expect(Final).toContain(
-				"<loc>https://editor.land/Download</loc>",
-			);
-			expect(Final).toContain(
-				"<loc>https://editor.land/Doc</loc>",
-			);
-			expect(Final).toContain(
-				"<loc>https://editor.land/Blog</loc>",
-			);
-			expect(Final).toContain(
-				"<loc>https://editor.land/Portal</loc>",
-			);
+			expect(Final).toContain("<loc>https://editor.land/Download</loc>");
+			expect(Final).toContain("<loc>https://editor.land/Doc</loc>");
+			expect(Final).toContain("<loc>https://editor.land/Blog</loc>");
+			expect(Final).toContain("<loc>https://editor.land/Portal</loc>");
 			expect(Final).toContain(
 				"<loc>https://editor.land/Account/SignIn</loc>",
 			);
@@ -235,9 +227,7 @@ describe("Integration: Build output structure", () => {
 			expect(Final).not.toContain(
 				"<loc>https://editor.land/download</loc>",
 			);
-			expect(Final).not.toContain(
-				"<loc>https://editor.land/doc</loc>",
-			);
+			expect(Final).not.toContain("<loc>https://editor.land/doc</loc>");
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}

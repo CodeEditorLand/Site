@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeImage } from "@Library/Theme";
 import * as lucide from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { Button } from "../UI/Button";
 import { IconTooltip } from "../UI/IconTooltip.js";
 import { ThemeToggle } from "../UI/ThemeToggle";
-import { ThemeImage } from "@Library/Theme";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 import "../Layout/Header/Stylesheet.css";

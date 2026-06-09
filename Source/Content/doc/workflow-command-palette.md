@@ -1,100 +1,103 @@
 ---
 title: "Executing a Command from the Command Palette"
-section: "Workflow"
-order: 11
+section: "Workflows"
+order: 4
 description:
-    "Unified command system dispatch: Mountain routes execution to native Rust
-    handlers or proxied Cocoon commands."
+    "How Ctrl+Shift+P fetches the command list from Mountain and routes
+    execution to either a native Rust handler or a proxied Cocoon extension
+    command."
 ---
 
-# Executing a Command from the Command Palette
+The command palette is a thin UI over Mountain's `CommandRegistry`. Every
+command
 
-Illustrates how Mountain's command registry dispatches execution to either a
-native Rust handler or a proxied command in Cocoon.
+- whether implemented in Rust or contributed by an extension in Cocoon - is
+  registered in that single registry. Wind fetches the list via Tauri IPC, the
+  user selects an entry, and Mountain routes execution either to a native Rust
+  function pointer or to Cocoon via gRPC, depending on the handler type stored
+  at registration time.
 
-## Data Flow
+## Phase 1 - Opening the palette (Sky → Wind)
 
-```
-User presses Ctrl+Shift+P
-  -> workbench.action.showCommands dispatched
-  -> QuickInputService.quickAccess.show()
-  -> CommandsQuickAccessProvider fetches all commands
-  -> TauriInvoke('mountain://command/get-all')
-  -> Mountain: CommandProvider.GetAllCommands()
-  -> Returns list of command IDs (native + proxied)
-  -> Quick Pick UI populates with command list
-  -> User types and selects "Format Document"
-  -> ICommandService.executeCommand('editor.action.formatDocument')
+1. The user presses `Ctrl+Shift+P`. The keybinding system dispatches
+   `workbench.action.showCommands`.
 
-If NATIVE:
-  -> TauriInvoke('mountain://command/execute')
-  -> Mountain: CommandProvider.ExecuteCommand()
-  -> Lookup handler in CommandRegistry
-  -> Found CommandHandler::Native
-  -> Invoke native Rust function pointer
-  -> Execute command logic
-  -> Return result
+2. `QuickInputService` opens the Quick Pick UI configured for command access,
+   delegating population to `CommandsQuickAccessProvider`.
 
-If EXTENSION-PROVIDED:
-  -> TauriInvoke('mountain://command/execute')
-  -> Mountain: CommandProvider.ExecuteCommand()
-  -> Lookup handler in CommandRegistry
-  -> Found CommandHandler::Proxied
-  -> IpcProvider makes $executeContributedCommand gRPC to Cocoon
-  -> Cocoon looks up command in its registry
-  -> Execute extension's JavaScript function
-  -> Result returned to Mountain, forwarded to Wind
-```
+3. `CommandsQuickAccessProvider` needs the full command list from Mountain. It
+   executes:
 
-## Phase 1: Opening the Command Palette (Wind/Sky)
+    ```ts
+    TauriInvoke("mountain://command/get-all");
+    ```
 
-1. User presses `Ctrl+Shift+P`. `workbench.action.showCommands` is dispatched.
-2. `QuickInputService` opens the Quick Pick UI configured for commands.
-3. `CommandsQuickAccessProvider` needs the list of all commands. Since the
-   registry is in Mountain, it executes
-   `TauriInvoke('mountain://command/get-all')`.
+## Phase 2 - Fetching the command list (Mountain)
 
-## Phase 2: Fetching Command List (Mountain)
+4. Mountain's `track` module receives the request and creates the
+   `Common::command::GetAllCommands` Effect. The `AppRuntime` executes it via
+   `MountainEnvironment`'s `CommandExecutor::GetAllCommands` implementation.
 
-4. The Tauri command is dispatched to `track`, which creates the
-   `Common::command::GetAllCommands` Effect.
-5. `CommandProvider.GetAllCommands()` acquires a lock on
-   `AppState.CommandRegistry` and returns the keys of the HashMap containing all
-   registered native AND proxied command IDs.
+5. `CommandProvider.GetAllCommands()` acquires a read lock on
+   `AppState.CommandRegistry` and returns the `HashMap` keys - the IDs of all
+   registered native commands and all proxied Cocoon commands.
 
-## Phase 3: Displaying and Selecting (Wind/Sky)
+6. The list resolves back to `CommandsQuickAccessProvider`, which populates the
+   Quick Pick UI.
 
-6. The command list populates the Quick Pick UI.
-7. User selects a command, triggering
-   `ICommandService.executeCommand(commandId)`.
+## Phase 3 - User selection (Sky)
 
-## Phase 4A: Native Command (Wind -> Mountain)
+7. The user types a query (for example "Format Document") and presses Enter. The
+   Quick Pick widget calls:
 
-8. `CommandService` in Wind forwards the request:
-   `TauriInvoke('mountain://command/execute', { commandId, args })`.
-9. Mountain's `CommandExecutor::ExecuteCommand` looks up the handler in
-   `CommandRegistry`.
-10. Found as `CommandHandler::Native` -- invokes the corresponding Rust function
-    pointer.
+    ```ts
+    ICommandService.executeCommand("editor.action.formatDocument");
+    ```
 
-## Phase 4B: Extension Command (Wind -> Mountain -> Cocoon)
+## Phase 4A - Native command execution (Wind → Mountain)
 
-10. Mountain looks up the handler and finds
-    `CommandHandler::Proxied { SidecarIdentifier: "cocoon-main", ... }`.
-11. `IpcProvider` makes a `$executeContributedCommand` gRPC request to Cocoon.
-12. Cocoon's `CommandsProvider` looks up the command in its registry and
-    executes the extension's JavaScript function.
-13. Result is serialized and returned through Mountain back to Wind.
+8. Wind's `CommandService` forwards the call:
 
-## Key Source Files
+    ```ts
+    TauriInvoke("mountain://command/execute", {
+    	commandId: "editor.action.formatDocument",
+    	args: [],
+    });
+    ```
 
-- `Mountain/Source/Environment/CommandProvider.rs` -- command registry
-- `Mountain/Source/Track/TrackLogic.rs` -- track dispatcher
-- `Wind/Source/Application/QuickInput/Definition.ts` -- quick input service
+9. Mountain dispatches through `track` to `CommandProvider.ExecuteCommand()`. It
+   looks up `"editor.action.formatDocument"` in `AppState.CommandRegistry` and
+   finds a `CommandHandler::Native` entry.
 
----
+10. Mountain invokes the stored Rust function pointer, passing it the
+    `AppHandle`, `Window`, `AppRuntime`, and arguments. The native handler
+    runs - for a format command this may itself call back into Cocoon to fetch
+    formatting edits from a registered document formatting provider - and
+    returns its result up the call chain to Wind.
 
-## See Also
+## Phase 4B - Extension command execution (Wind → Mountain → Cocoon)
 
-- [Application Startup and Handshake](https://editor.land/Doc/workflow-startup)
-- [Architecture Overview](https://editor.land/Doc/architecture)
+Steps 8 and 9 are identical to Phase 4A. The difference is in what Mountain
+finds at step 9.
+
+10. `CommandProvider.ExecuteCommand()` finds a
+    `CommandHandler::Proxied { SidecarIdentifier: "cocoon-main", CommandIdentifier: "my-extension.doSomething" }`
+    entry. It must forward the call.
+
+11. Mountain's `IpcProvider` sends a **`$executeContributedCommand` gRPC
+    request** to Cocoon, carrying the command ID and arguments.
+
+12. Cocoon's gRPC server dispatches to `CommandsProvider`, which looks up
+    `"my-extension.doSomething"` in its own local registry and executes the
+    extension's JavaScript handler function.
+
+13. The result is serialised and returned to Mountain as the gRPC response.
+    Mountain forwards it back to Wind as the `TauriInvoke` resolution. The
+    command execution is complete.
+
+> [!IMPORTANT] Extension commands are registered in Mountain's `CommandRegistry`
+> as proxied entries during extension activation - Cocoon sends a
+> `$registerExtensionCommand` gRPC call for each
+> `vscode.commands.registerCommand` invocation. Mountain therefore never needs
+> to know the command's implementation language; the `CommandHandler` enum value
+> determines the dispatch path at execution time.

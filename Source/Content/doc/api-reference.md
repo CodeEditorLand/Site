@@ -1,182 +1,186 @@
 ---
 title: "API Reference"
-section: "Development"
-order: 8
+section: "Reference"
+order: 1
 description:
-    "VS Code extension API coverage in editor.land: what works, what
-    no-ops, and what is not yet implemented."
+    "Pointers to generated API documentation, key source files, and the gRPC
+    contract for every API surface in Land."
 ---
 
-# API Reference
+Land's API surface spans four layers: the Rust Mountain backend, the TypeScript
+Cocoon extension-host shims, the Sky Monaco bridge, and the Vine gRPC contract
+that ties them together. This page is a pointer document - it links to source
+files and explains where generated documentation lives and how to build it
+locally. No API content is duplicated here; consult the linked sources for
+authoritative details.
 
-`editor.land` implements the `VS Code` extension `API` through `Cocoon`,
-the `Node.js` extension host. Extensions written against `@types/vscode` compile
-against `Cocoon`'s stubs without modification. Whether they run correctly
-depends on which `API` surfaces they use.
+## Rust rustdoc (Mountain)
 
----
+Mountain's public API is documented inline using standard `///` doc comments.
+The rustdoc output is not currently published to a static site; build it locally
+with:
 
-## Coverage Status
-
-The `API` surface is divided into three categories:
-
-**Implemented** - The `API` is active in the `debug-mountain` profile.
-Extensions using it behave as expected.
-
-**Partial** - The `API` is present and callable but not all methods or
-behaviours are implemented. Some calls may silently no-op or return empty
-results.
-
-**Not implemented** - The namespace exists in `Cocoon`'s type stubs so
-extensions compile, but the runtime calls do nothing. Extensions that depend on
-these `APIs` activate but their features do not work.
-
-| Namespace                           | Status          | Notes                                                                                                 |
-| ----------------------------------- | --------------- | ----------------------------------------------------------------------------------------------------- |
-| `vscode.commands`                   | Implemented     | Register, execute, command palette                                                                    |
-| `vscode.workspace.fs`               | Implemented     | Routes through Mountain's FS layer via Vine                                                           |
-| `vscode.window.createTerminal`      | Implemented     | Routes through Mountain's pty layer via Vine                                                          |
-| `vscode.debug`                      | Implemented     | DAP bridge in Mountain, routes via Vine                                                               |
-| `vscode.languages`                  | Implemented     | LSP client via `vscode-languageclient`                                                                |
-| `vscode.workspace.getConfiguration` | Implemented     | Reads workspace and user settings                                                                     |
-| `vscode.window` (core)              | Partial         | showInformationMessage, createWebviewPanel, registerTreeDataProvider work; some view APIs unconfirmed |
-| `vscode.window.createTreeView`      | Partial         | Tree data provider registration works; inline actions and welcome content unconfirmed                 |
-| `vscode.tasks`                      | Partial         | Task definition reading works; full task runner execution unconfirmed                                 |
-| `vscode.extensions`                 | Partial         | getExtension and activate work; some metadata fields unconfirmed                                      |
-| `vscode.lm`                         | Not implemented | Language model / Copilot APIs - no-op                                                                 |
-| `vscode.chat`                       | Not implemented | Chat panel APIs - no-op                                                                               |
-| `vscode.notebook`                   | Not implemented | Notebook document and editor APIs - no-op                                                             |
-| `vscode.tests`                      | Not implemented | Test explorer and runner APIs - no-op                                                                 |
-
----
-
-## Commands
-
-Register a command with `vscode.commands.registerCommand`:
-
-```typescript
-const Disposable = vscode.commands.registerCommand(
-	"MyExtension.SayHello",
-	() => {
-		vscode.window.showInformationMessage("Hello from Land!");
-	},
-);
+```bash
+cd Land/Element/Mountain
+cargo doc --no-deps --open
 ```
 
-Commands declared in `package.json` under `contributes.commands` appear in the
-command palette. This is one of the more reliably implemented `API` surfaces.
+The `--no-deps` flag keeps build time short by skipping documentation for the 51
+patched crates. Output lands in `Land/Element/Mountain/Target/doc/`.
 
----
+Key crates to browse in the generated docs:
 
-## Configuration
+| Crate / module                                    | Purpose                                                                  |
+| ------------------------------------------------- | ------------------------------------------------------------------------ |
+| `Mountain::IPC::WindServiceHandlers`              | All IPC handlers callable from Sky and Cocoon                            |
+| `Mountain::Environment`                           | Provider trait implementations (filesystem, terminal, config, search, …) |
+| `Mountain::RPC::CocoonService`                    | gRPC server handlers for Cocoon-to-Mountain calls                        |
+| `Mountain::ApplicationState`                      | Shared runtime state and all DTOs                                        |
+| `Mountain::ProcessManagement::InitializationData` | `ISandboxConfiguration` and `IExtensionHostInitData` builders            |
+| `Common`                                          | Shared traits and error types used by all Rust elements                  |
 
-Extensions read settings through the `WorkspaceConfiguration` `API`:
+Source root:
+[https://github.com/CodeEditorLand/Mountain/tree/Current/Source](https://github.com/CodeEditorLand/Mountain/tree/Current/Source)
 
-```typescript
-const Config = vscode.workspace.getConfiguration("MyExtension");
-const FontSize = Config.get<number>("FontSize", 14);
+## TypeScript generated types (Wind Codegen)
+
+Wind contains a code-generation layer that emits typed service interfaces from
+the Vine proto schema and the IPC channel registry. Generated files live under:
+
+```
+Land/Element/Wind/Source/Effect/Generated/
 ```
 
-Configuration keys are declared in `contributes.configuration` in your extension
-manifest. Land validates configuration values against the `JSON` Schema you
-provide. The specific user settings file path has not been independently
-confirmed - see [Configuration](https://editor.land/Doc/configuration)
-for details.
+Each file in that directory is a `*Upstream.ts` module exporting a typed request
+function. These are **generated output** - do not edit them directly. To
+regenerate after a proto or channel change:
 
----
-
-## Keybindings
-
-Declare keybindings in `contributes.keybindings`:
-
-```json
-{
-	"command": "MyExtension.SayHello",
-	"key": "ctrl+shift+h",
-	"mac": "cmd+shift+h",
-	"when": "editorTextFocus"
-}
+```bash
+cd Land/
+pnpm run prepublishOnly
 ```
 
-The `when` clause uses the same context key syntax as `VS Code`. Custom context
-keys set via `vscode.commands.executeCommand('setContext', ...)` are supported.
+The generator source is at:
+[https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts)
 
----
+The IPC channel registry that drives generation:
+[https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts)
 
-## Tree Views
+The matching Rust enum (kept in lockstep):
+[https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Common/Source/IPC/Channel.rs](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Common/Source/IPC/Channel.rs)
 
-Register a tree view provider:
+> [!IMPORTANT] `Channel.ts` and `Channel.rs` must always be kept in lockstep.
+> Adding an entry to one without adding it to the other will cause IPC dispatch
+> failures at runtime with no compile-time error.
 
-```typescript
-vscode.window.registerTreeDataProvider(
-	"MyExtension.TreeView",
-	MyTreeDataProvider,
-);
+## Vine.proto - the gRPC API contract
+
+`Vine.proto` is the single authoritative definition of every RPC method and
+notification that crosses the Cocoon-Mountain boundary. It lives in the Vine
+submodule:
+
+[https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto](https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto)
+
+The proto is compiled at build time by `prost` (Rust side) and
+`@grpc/proto-loader` (TypeScript side). Neither compiled output is checked in -
+both are regenerated on every build.
+
+Key service sections in `Vine.proto`:
+
+| Service                   | Direction         | Purpose                                                      |
+| ------------------------- | ----------------- | ------------------------------------------------------------ |
+| `CocoonService`           | Cocoon → Mountain | Extension host requests filesystem, terminal, config, search |
+| `VineService`             | Mountain → Cocoon | Notifications: document changes, extension events, lifecycle |
+| `MountainVineGRPCService` | Mountain → Cocoon | Notification router for gRPC push                            |
+
+## Key source files by API surface
+
+### Mountain IPC handlers
+
+All Wind-callable IPC handlers live under one directory, one file per method:
+
+[https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers)
+
+The main dispatcher is `mod.rs` in that directory (~2 500 lines). Atomic handler
+files are grouped by domain:
+
+```
+WindServiceHandlers/
+├── mod.rs                  - dispatch table and inline fast-path handlers
+├── NativeHost/             - quit, reload, clipboard, dialogs, shell command
+├── FileSystem/Native/      - file open/close/watch/unwatch, mkdir, delete, rename, clone
+├── Terminal/               - PTY create/resize/attach/detach/revive
+├── Encryption/             - AES-256-GCM encrypt/decrypt, machine-stable key
+├── ExtensionHost/          - starter and debug-service handlers
+├── Cocoon/                 - request, notify, extensionHostMessage bridges
+├── NativeHost/Clipboard.rs - read/write text, read image, trigger paste
+└── Update/                 - update service stubs
 ```
 
-Declare the view container and view in `contributes.viewsContainers` and
-`contributes.views`. Tree data provider registration routes through `Cocoon`'s
-fiber scheduler. Inline actions and welcome content are not confirmed.
+### Cocoon vscode.\* shims
 
----
+Cocoon's hand-authored `vscode.*` namespace implementations:
 
-## Webview Panels
+[https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI)
 
-Create HTML-based UI panels:
+Each subdirectory corresponds to one `vscode.*` namespace:
 
-```typescript
-const Panel = vscode.window.createWebviewPanel(
-	"MyExtension.Preview",
-	"Preview",
-	vscode.ViewColumn.Beside,
-	{ enableScripts: true },
-);
+| Directory         | Namespace               |
+| ----------------- | ----------------------- |
+| `Commands/`       | `vscode.commands`       |
+| `Window/`         | `vscode.window`         |
+| `Workspace/`      | `vscode.workspace`      |
+| `Languages/`      | `vscode.languages`      |
+| `Debug/`          | `vscode.debug`          |
+| `Tasks/`          | `vscode.tasks`          |
+| `Scm/`            | `vscode.scm`            |
+| `Authentication/` | `vscode.authentication` |
+| `Extensions/`     | `vscode.extensions`     |
 
-Panel.webview.html = "<html><body><h1>Preview</h1></body></html>";
+The API factory that assembles the `vscode` namespace object given to each
+extension:
+[https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/APIFactory.ts](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/APIFactory.ts)
+
+### Wind service interfaces
+
+Wind's typed service interfaces for Mountain IPC calls:
+
+[https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts)
+
+The Output element keeps a lockstep copy:
+[https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts)
+
+### Sky bridge
+
+The Sky bridge translates Tauri custom events and `sky://` URLs into live
+workbench service calls against Monaco and VS Code's `__CEL_SERVICES__`
+accessors:
+
+[https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts)
+
+Bridge modules are split by domain under `Bridge/`:
+
+```
+Bridge/
+├── InstallEditorAndOutput.ts   - workspace.applyEdit, save, saveAll, saveAs
+├── InstallEditorOperations.ts  - apply-text-edits, model content sync
+├── InstallSimpleRelays.ts      - language configure, diagnostics, various relays
+├── InstallUiRequests.ts        - showMessage, showQuickPick, showInputBox
+├── InstallTreeView.ts          - tree view selection / collapse / expand events
+├── InstallScm.ts               - SCM provider registration and input sync
+├── InstallInlineCompletions.ts - inline completion provider registration
+└── InstallDebug.ts             - breakpoint gutter sync
 ```
 
-Webview panels run in a sandboxed context with a Content Security Policy. Use
-`Panel.webview.postMessage()` and `Panel.webview.onDidReceiveMessage` for
-bidirectional communication between the extension and the webview.
+## Building all documentation locally
 
----
+```bash
+# Rust rustdoc for Mountain
+cd Land/Element/Mountain && cargo doc --no-deps --open
 
-## Language Server Protocol
+# TypeScript types - regenerate Wind Codegen output
+cd Land/ && pnpm run prepublishOnly
 
-Land supports LSP servers through the `vscode-languageclient` package. Point
-your extension at a language server binary and the LSP client handles
-initialization, capabilities negotiation, and shutdown. This routes through
-`Cocoon`'s `vscode.languages` implementation, which is one of the more complete
-`API` surfaces.
-
----
-
-## Rust API Documentation
-
-Generated `rustdoc` output is planned for the `Rust` crates listed below. The
-URLs follow the pattern `https://Rust.Documentation.*.editor.land` -
-these may not yet resolve to hosted documentation. Check the
-[source repositories](https://github.com/CodeEditorLand) directly if the links
-are unavailable.
-
-| Crate           | Description                                                                                                                             | Element                                                      |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| `Mountain`      | Tauri native kernel                                                                                                                     | [Mountain](https://editor.land/Doc/mountain)         |
-| `Echo`          | Work-stealing task scheduler                                                                                                            | [Echo](https://editor.land/Doc/echo)                 |
-| `Common`        | Shared IPC event type definitions                                                                                                       | [Architecture](https://editor.land/Doc/architecture) |
-| `CommonLibrary` | Shared utility functions                                                                                                                | [Architecture](https://editor.land/Doc/architecture) |
-| `Air`           | Background update daemon                                                                                                                | [Air](https://editor.land/Doc/air)                   |
-| `AirLibrary`    | Air shared library                                                                                                                      | [Air](https://editor.land/Doc/air)                   |
-| `Download`      | Binary download logic                                                                                                                   | [Air](https://editor.land/Doc/air)                   |
-| `SideCar`       | Pre-built Node.js binaries                                                                                                              | [Architecture](https://editor.land/Doc/architecture) |
-| `Maintain`      | Build orchestrator                                                                                                                      | [Contributing](https://editor.land/Doc/contributing) |
-| `Grove`         | WASM extension host - WASMtime host, gRPC protocol, API surface, and transport layer implemented; primary build integration in progress | [Grove](https://editor.land/Doc/grove)               |
-
----
-
-## See Also
-
-- [`Cocoon`: Extension Host](https://editor.land/Doc/cocoon)
-- [Extension Development](https://editor.land/Doc/extension-development)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`VS Code` `API` Documentation](https://code.visualstudio.com/api/references/vscode-api)
+# Proto - compiled automatically during the above; inspect output at:
+# Land/Element/Mountain/Target/debug/build/mountain-*/out/vine_ipc.rs
+```

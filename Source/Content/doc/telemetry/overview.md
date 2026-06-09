@@ -1,123 +1,159 @@
 ---
 title: "Telemetry Overview"
 section: "Telemetry"
-order: 19
+order: 0
 description:
-    "Two parallel telemetry pipes (PostHog and OTLP) sharing one trace_id across
-    all Land layers."
+    "Land's opt-in dual-pipe telemetry system: what is collected, what is not,
+    and how to verify it is off."
 ---
 
-# Telemetry Overview
+Land emits usage analytics through PostHog and distributed traces through
+OpenTelemetry. Both pipes are opt-in, disabled by default in production builds,
+and can be eliminated entirely at build time. This document covers what is
+collected, what is explicitly excluded, and which elements participate.
 
-Land emits telemetry through two parallel pipes that share one `trace_id`:
+## What Is Collected
 
-| Pipe        | Sink                       | Strength                            | Cost                           |
-| ----------- | -------------------------- | ----------------------------------- | ------------------------------ |
-| **PostHog** | `https://eu.i.posthog.com` | Aggregations, dashboards, retention | One event per millisecond cap  |
-| **OTLP**    | `127.0.0.1:4318` (Jaeger)  | Per-request waterfall, parent/child | Local-only, requires collector |
+PostHog receives product analytics events using the `land:<element>:<action>`
+naming convention. These events cover application lifecycle, IPC handler
+completions, extension activation, and workbench boot timing. No event payload
+contains user-generated content.
 
-Joining the pipes: every PostHog event carries `$trace_id` and `$span_id`
-properties; every Jaeger span carries `posthog.event` / `posthog.distinct_id`
-attributes. A HogQL JOIN against Jaeger's trace export -- or a manual
-click-through from a PostHog event into the Jaeger UI -- reconstructs the full
-causal chain.
+OTLP (OpenTelemetry Protocol) receives distributed trace spans. Spans cover
+extension activation, gRPC call durations, IPC handler invocations, and build
+phase timings. Every span carries `trace_id` and `span_id` so the full causal
+chain across Mountain, Cocoon, and Sky can be reconstructed in a local Jaeger or
+Tempo collector.
 
-## Layout
+> [!IMPORTANT] File contents, editor keystrokes, extension source code,
+> workspace paths, and Git history are never included in any telemetry event or
+> span attribute.
 
-| Layer    | File / Module                                          | Pipe(s)        |
-| -------- | ------------------------------------------------------ | -------------- |
-| Build.sh | `Maintain/Script/PostHogCapture.sh`                    | PostHog + OTLP |
-| Mountain | `Element/Mountain/Source/Binary/Build/PostHogPlugin/*` | PostHog        |
-| Mountain | `Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`   | OTLP           |
-| Mountain | `Element/Mountain/Source/Telemetry/*`                  | OTLP (tracing) |
-| Cocoon   | `Element/Cocoon/Source/Telemetry/PostHogBridge.ts`     | PostHog        |
-| Cocoon   | `Element/Cocoon/Source/Telemetry/OTLPBridge.ts`        | OTLP           |
-| Wind     | `Element/Wind/Source/Telemetry/Bridge.ts`              | both           |
-| Sky      | `Element/Sky/Source/Function/Telemetry/Bridge.ts`      | both           |
-| Output   | `Element/Output/Source/Telemetry/*`                    | both           |
-| Sidecars | re-export Mountain's macros via the `tracing` crate    | OTLP           |
+## Elements That Participate
 
-## Event-Name Convention
+| Element                            | PostHog               | OTLP                  | Implementation path                                                       |
+| ---------------------------------- | --------------------- | --------------------- | ------------------------------------------------------------------------- |
+| Mountain (Rust)                    | Yes                   | Yes                   | `Source/Binary/Build/PostHogPlugin/`, `Source/IPC/DevLog/EmitOTLPSpan.rs` |
+| Cocoon (Node.js)                   | Yes                   | Yes                   | `Source/Telemetry/PostHogBridge.ts`, `Source/Telemetry/OTLPBridge.ts`     |
+| Wind (TypeScript)                  | Yes                   | Yes                   | `Source/Telemetry/Bridge.ts`                                              |
+| Sky (Astro/browser)                | Yes                   | Yes                   | `Source/Function/Telemetry/Bridge.ts`                                     |
+| Air (Rust sidecar)                 | Via Common            | Via Common            | `CommonLibrary::Telemetry::Initialize::Fn(Tier::Air)`                     |
+| Sidecars (Echo, Mist, Rest, Grove) | Inherit Mountain tier | Inherit Mountain tier | Linked via `Element/Common/Source/Telemetry/`                             |
+| Build scripts                      | PostHog only          | No                    | `Maintain/Script/PostHogCapture.sh`                                       |
 
-Every Land-emitted event uses the prefix `land:<element>:<action>`:
+Mountain's diagnostic log (`Trace=` tag filtering) is a separate, local-only
+mechanism. It does not transmit data off the machine.
 
-- `land:build:start`, `land:build:phase:complete`, `land:build:complete`,
-  `land:build:error`
+## Opt-In Model
+
+All telemetry is off by default in release and production builds. The
+`.env.Land.PostHog` file controls both pipes. Development defaults ship with
+`Capture=true`, `Report=true`, and `OTLPEnabled=true` so contributors have local
+observability. The production overlay (`.env.Land.Production.PostHog`) sets
+`Capture=false`, `Report=false`, and `OTLPEnabled=false`.
+
+Enabling telemetry in a development build:
+
+```bash
+# .env.Land.PostHog
+Authorize=phc_your_project_key
+Beam=https://eu.i.posthog.com
+Report=true
+OTLPEndpoint=http://127.0.0.1:4318
+OTLPEnabled=true
+Capture=true
+```
+
+> [!IMPORTANT] `Authorize` (PostHog project key) and `OTLPEndpoint` must both be
+> explicitly set. Neither has a meaningful default in production.
+
+## Kill Switch
+
+Setting `Capture=false` in `.env.Land.PostHog` (or its production overlay)
+short-circuits all telemetry in every element simultaneously. This is the master
+kill switch. Individual pipes can also be toggled independently:
+
+| Variable      | Default (dev) | Production default | Effect                                     |
+| ------------- | ------------- | ------------------ | ------------------------------------------ |
+| `Capture`     | `true`        | `false`            | Short-circuits PostHog and OTLP everywhere |
+| `Report`      | `true`        | `false`            | Disables PostHog pipe only                 |
+| `OTLPEnabled` | `true`        | `false`            | Disables OTLP pipe only                    |
+
+The `Disable` variable in `.env.Land.Diagnostics` goes further: it skips all
+Land shims, connections, and spawn calls, reducing the application to
+near-vanilla VS Code behavior. This is for bisecting regressions, not routine
+telemetry management.
+
+## Verifying Telemetry Is Off
+
+### Check the environment
+
+```bash
+# Confirm Capture is false before building
+grep Capture Land/.env.Land.Production.PostHog
+# Expected: Capture=false
+```
+
+### Check the diagnostic log
+
+Set `Trace=all Record=1` during a dev run and inspect the log:
+
+```bash
+export Trace=all Record=1
+./Element/Mountain/Target/debug/<binary>
+grep "telemetry\|PostHog\|OTLP" "$(ls -t ~/Library/Application\ Support/*/logs/*/Mountain.dev.log | head -1)"
+# If Capture=false: no capture lines appear
+```
+
+### Check build output (release)
+
+```bash
+cargo build -p Mountain --release
+strings Element/Mountain/Target/release/Mountain | grep -c "posthog\|i.posthog.com"
+# 0
+```
+
+See [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking) for
+the full build-time verification procedure.
+
+## Event Naming Convention
+
+Every Land-emitted PostHog event uses the format `land:<element>:<action>`:
+
 - `land:mountain:session:start`, `land:mountain:ipc:invoke`,
-  `land:mountain:handler:complete`, `land:mountain:error`
+  `land:mountain:handler:complete`
 - `land:cocoon:session:start`, `land:cocoon:entry:load`,
-  `land:cocoon:entry:loaded`, `land:cocoon:handler:complete`,
-  `land:cocoon:stub:active`, `land:cocoon:error`
+  `land:cocoon:handler:complete`, `land:cocoon:stub:active`
 - `land:wind:layer:ready`, `land:wind:command:invoke`
 - `land:sky:build:complete`, `land:sky:resource:error`,
   `land:sky:throttle-dropped`
-- `land:output:build:complete`
-- `land:session:start`, `land:session:end` -- Sky-emitted aggregates
-- `land:boot:timing` -- workbench boot percentile telemetry
-- `land:ipc:marks`, `land:vscode:marks`, `land:extension-host:marks`,
-  `land:all:marks` -- performance mark batches
+- `land:build:start`, `land:build:phase:complete`, `land:build:complete`
+- `land:boot:timing` - workbench boot percentile telemetry
+- `land:ipc:marks`, `land:vscode:marks`, `land:extension-host:marks` -
+  performance mark batches
 
-PostHog's `$exception` autocapture stays as-is.
+PostHog `$exception` autocapture uses the default naming set by the posthog-js
+SDK.
 
-## Configuration - `.env.Land.PostHog`
+## Correlation Between Pipes
 
-Single source of truth for both pipes. Read at boot by every layer.
+Every PostHog event carries `$trace_id` and `$span_id` properties. Every OTLP
+span carries `posthog.event` and `posthog.distinct_id` attributes. This allows a
+HogQL JOIN against a Jaeger trace export to reconstruct the full causal chain
+from a single PostHog event.
 
-| Var            | Default                    | Effect                                       |
-| -------------- | -------------------------- | -------------------------------------------- |
-| `Authorize`    | `phc_...`                  | PostHog project key                          |
-| `Beam`         | `https://eu.i.posthog.com` | PostHog endpoint                             |
-| `Report`       | `true`                     | Master toggle for the PostHog pipe           |
-| `OTLPEndpoint` | `http://127.0.0.1:4318`    | OTLP collector                               |
-| `OTLPEnabled`  | `true`                     | Master toggle for the OTLP pipe              |
-| `Capture`      | `true`                     | Master telemetry kill - short-circuits both  |
-| `Trace`        | `all`                      | RUST_LOG-like span filter                    |
-| `Record`       | `0`                        | Mirror every payload to a per-session NDJSON |
-| `Brand`        | _(empty)_                  | `distinct_id` seed                           |
-| `Throttle`     | `5`                        | posthog-js client-side rate-limit            |
-| `Buffer`       | `3000`                     | Cocoon batch window (ms)                     |
-| `Batch`        | `20`                       | Cocoon batch size                            |
-| `Cap`          | `7`                        | Sky `$exception`/10 s                        |
-| `Replay`       | `false`                    | posthog-js session recording                 |
+## NLnet and Privacy Alignment
 
-## Production = Zero Bytes
-
-Every layer compiles the telemetry stack out of release builds:
-
-- **Rust** (Mountain, Air, Echo, Rest, Grove, Mist) -- capture paths gate on
-  `cfg!(debug_assertions)`. LLVM dead-codes them in `--release`.
-- **TypeScript** -- bridges import lazily through
-  `if (process.env.NODE_ENV !== "production") { ... }` so esbuild's `define`
-  collapses the conditional and tree-shakes the SDK.
-- **Astro** -- bundle config checks `if (import.meta.env.DEV)` drops the
-  posthog-js + OTLP SDK paths from `astro build`.
-
-Plus runtime kill switches: `Capture=false` short-circuits all pipes regardless
-of build mode; `Report=false` / `OTLPEnabled=false` flip a single pipe.
-
-## Bring-up Sequence
-
-```
-# Once: bring up the local Jaeger collector.
-sh Land/Container/Up.sh
-
-# Every dev session: env vars feed every layer.
-export Trace=all Record=1 Capture=true
-sh Land/Maintain/Debug/Build.sh --profile debug-electron-bundled
-
-# Run the binary; Mountain initialises both pipes from .env.Land.PostHog.
-export Trace=all
-./Element/Mountain/Target/debug/<binary>
-
-# Inspect:
-#   PostHog dashboards: https://eu.posthog.com/project/151871
-#   Jaeger UI:          http://127.0.0.1:16686
-```
+FIDDEE is funded through the [NGI0 Commons Fund](https://nlnet.nl/commonsfund)
+administered by NLnet. The project is released under CC0. The opt-in default and
+build-time elimination of telemetry code are intentional design requirements,
+not implementation details. Self-hosted and air-gapped deployments carry zero
+telemetry SDK bytes in release builds.
 
 ---
 
 ## See Also
 
-- [Effect-TS + OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)
+- [Effect-TS and OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)
 - [Sidecar Telemetry](https://editor.land/Doc/telemetry/sidecars)
 - [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking)

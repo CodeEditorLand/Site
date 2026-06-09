@@ -1,113 +1,99 @@
 ---
-title: "Invoking a Language Feature (Hover Provider)"
-section: "Workflow"
-order: 14
+title: "Invoking a Language Feature Hover Provider"
+section: "Workflows"
+order: 2
 description:
-    "Bi-directional communication: extension registers a feature, Mountain
-    orchestrates the request, result displayed in Wind UI."
+    "How a user hover in Monaco triggers a round-trip through Wind, Mountain
+    IPC, a Cocoon gRPC call to the registered extension provider, and back."
 ---
 
-# Invoking a Language Feature (Hover Provider)
+A hover provider demonstrates the full five-element request cycle: registration
+flows from Cocoon to Mountain at activation time, then each live hover request
+flows Sky → Wind → Mountain → Cocoon → extension → back the same way. Mountain
+acts as the broker that maps language selectors to provider handles and routes
+requests to the correct sidecar.
 
-A key example of bi-directional communication: an extension in Cocoon registers
-a hover provider, Mountain orchestrates the request, and the result is displayed
-in the Wind UI.
+## Phase 1 - Extension registration (Cocoon → Mountain)
 
-## Data Flow
+1. The extension is activated by Cocoon. Its `activate()` function runs and
+   calls:
 
-```
-Phase 1: Registration
-  Extension calls vscode.languages.registerHoverProvider('mylang', provider)
-  -> Cocoon stores provider with unique handle (e.g. 123)
-  -> Cocoon sends $registerHoverProvider gRPC to Mountain
-  -> Mountain creates ProviderRegistrationDto
-  -> Mountain stores in AppState.LanguageProviders
+    ```ts
+    vscode.languages.registerHoverProvider("mylang", provider);
+    ```
 
-Phase 2: User Hover Request
-  User hovers over a word in a "mylang" file
-  -> Monaco hover controller triggers
-  -> LanguageFeaturesService.getHover()
-  -> TauriInvoke('mountain://language-feature/provide-hover')
+2. Cocoon's `LanguageFeaturesProvider` stores the `provider` object in a local
+   handle map - for example, under handle `123` - and sends a
+   **`$registerHoverProvider` gRPC request** to Mountain. The request carries
+   the handle, the language selector (`"mylang"`), and the owning extension ID.
 
-Phase 3: Host Orchestration
-  -> Mountain queries AppState.LanguageProviders for "mylang" hover providers
-  -> Finds registration (handle 123) belonging to cocoon-main
-  -> Mountain sends $provideHover gRPC to Cocoon (handle, URI, position)
+3. Mountain's Vine gRPC server receives the request and dispatches it through
+   the `track` module to `LanguageFeatureProvider.RegisterProvider()`.
 
-Phase 4: Extension Execution
-  -> Cocoon looks up provider by handle
-  -> Calls provider.provideHover(document, position, token)
-  -> Extension returns Hover object { contents: ['Hello World'] }
-  -> Cocoon serializes to HoverResultDto
-  -> Returns to Mountain
+4. `Registration.register_provider()` creates a `ProviderRegistrationDto`
+   (handle `123`, type `Hover`, language `"mylang"`, sidecar `"cocoon-main"`)
+   and stores it in `AppState.LanguageProviders`. Mountain now knows which
+   sidecar owns which provider for which language.
 
-Phase 5: UI Update
-  -> Mountain returns hover data to Wind
-  -> Wind passes data to Monaco controller
-  -> Monaco renders tooltip widget
-  -> User sees "Hello World" tooltip
-```
+## Phase 2 - User hover request (Sky → Wind → Mountain)
 
-## Phase 1: Extension Registration (Cocoon)
+5. The user moves the mouse over a symbol in an editor showing a `"mylang"`
+   file. Monaco's internal hover controller fires and calls
+   `ILanguageFeaturesService.getHover()` in Wind.
 
-1. Extension is activated by Cocoon. Its `activate()` function runs.
-2. Extension calls `vscode.languages.registerHoverProvider('mylang', provider)`.
-3. `LanguageFeaturesProvider` in Cocoon stores the provider in a local map with
-   a unique handle.
-4. Sends `$registerHoverProvider` gRPC request to Mountain with the handle and
-   metadata.
+6. The service constructs an Effect that calls:
 
-## Phase 2: Host-Side Provider Registration (Mountain)
+    ```ts
+    TauriInvoke("mountain://language-feature/provide-hover", {
+    	uri,
+    	position,
+    });
+    ```
 
-5. gRPC server receives `$registerHoverProvider` and dispatches to `track`.
-6. `LanguageFeatureProvider.RegisterProvider()` executes via `AppRuntime`.
-7. `Registration.register_provider()` creates a `ProviderRegistrationDto` and
-   stores it in `AppState.LanguageProviders`. Mountain now knows that for
-   language "mylang", `cocoon-main` has a hover provider with handle `123`.
+    This crosses the webview boundary and reaches Mountain's IPC dispatcher.
 
-## Phase 3: User Interaction and UI Request (Wind/Sky)
+## Phase 3 - Mountain orchestrates the request (Mountain → Cocoon)
 
-8. User hovers over a word in a "mylang" file. Monaco's hover controller
-   triggers.
-9. `ILanguageFeaturesService.getHover()` creates an Effect that calls
-   `TauriInvoke('mountain://language-feature/provide-hover')`.
+7. Mountain's `LanguageFeatureProvider.ProvideHover()` queries
+   `AppState.LanguageProviders` for all registered hover providers matching the
+   document's language (`"mylang"`). It finds handle `123` belonging to
+   `"cocoon-main"`.
 
-## Phase 4: Host-Side Orchestration (Mountain -> Cocoon)
+8. Mountain sends a **`$provideHover` gRPC request** to Cocoon with the document
+   URI, cursor position, and provider handle `123`.
 
-10. `LanguageFeatureProvider.ProvideHover()` queries
-    `AppState.LanguageProviders` and finds handle `123` belonging to
-    `cocoon-main`.
-11. Makes `$provideHover` gRPC request to Cocoon with document URI, position,
-    and provider handle.
+## Phase 4 - Extension execution (Cocoon)
 
-## Phase 5: Extension Execution and Response (Cocoon)
+9. Cocoon's gRPC server dispatches the request to the language provider handler,
+   which looks up handle `123` in its local map and retrieves the original
+   `provider` object.
 
-12. Cocoon's gRPC server dispatches to the handler, which looks up the provider
-    by handle.
-13. Calls `provider.provideHover(document, position, token)`. Extension code
-    executes.
-14. Extension returns `Hover` object. Handler serializes to `HoverResultDto` and
-    returns to Mountain.
+10. The handler calls:
 
-## Phase 6: Final UI Update (Mountain -> Wind/Sky)
+    ```ts
+    provider.provideHover(document, position, token);
+    ```
 
-15. gRPC call resolves with `HoverResultDto`. Result sent back as response to
-    the original Tauri invoke.
-16. Wind receives hover data, passes to Monaco's hover controller.
-17. Monaco renders the tooltip widget on screen.
+    The extension's code executes and returns a `Hover` object, for example
+    `{ contents: ["Hello World"] }`.
 
-## Key Source Files
+11. The handler serialises the result into a `HoverResultDto` and returns it to
+    Mountain as the gRPC response.
 
-- `Cocoon/src/Service/LanguageFeatures.ts` -- language feature provider
-- `Mountain/Source/Environment/LanguageFeatureProvider/Registration.rs` --
-  provider registration
-- `Mountain/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs` --
-  feature execution
-- `Mountain/Source/track/TrackLogic.rs` -- track dispatcher
+## Phase 5 - Result reaches the UI (Mountain → Wind → Sky)
 
----
+12. Mountain receives the `HoverResultDto`, serialises it, and sends it back as
+    the response to the original `TauriInvoke` call from step 6.
 
-## See Also
+13. Wind's `getHover` Effect resolves. The service passes the `Hover` data to
+    Monaco's hover controller.
 
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [VS Code API Coverage](https://editor.land/Doc/vscode-api-coverage)
+14. Monaco renders the tooltip widget on screen. The user sees the "Hello World"
+    hover card.
+
+> [!IMPORTANT] The same registration and dispatch pattern applies to every
+> language feature (`$registerCompletionItemProvider`,
+> `$registerDefinitionProvider`, etc.). The only difference is the gRPC method
+> name and the DTO shape. Mountain always stores handle → sidecar mappings in
+> `AppState.LanguageProviders` and routes each `$provide*` call to the correct
+> sidecar at request time.

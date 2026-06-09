@@ -1,290 +1,284 @@
 ---
 title: "VS Code API Coverage"
 section: "Reference"
-order: 8
+order: 0
 description:
-    "Map of vscode.* API surfaces across Sky, Cocoon, and Mountain with
-    implementation status."
+    "Authoritative map of every top-level vscode.* API namespace and its
+    implementation status across Sky, Cocoon, and Mountain."
 ---
 
-# VS Code API Coverage
-
-Authoritative map of every top-level `vscode.*` API surface and its
-implementation split across **Sky** (workbench renderer), **Cocoon**
-(extension-host Node sidecar), and **Mountain** (Rust backend).
-
----
-
-## Dual-Track Strategy
-
-- **Track A - Stock-Node**: Cocoon loads stock VS Code `extHost*.ts` sources
-  unchanged. The workbench's `mainThread*.ts` runs inside Sky. The
-  ExtHostContext/MainContext RPC glue is provided by Cocoon's shim alongside
-  stock extHost code. Maximum compatibility from day one for any API the stock
-  implementation handles in-process.
-
-- **Track B - Rust-native**: Mountain owns the backend. Cocoon's `vscode` shim
-  sends gRPC to Mountain which does the work natively (filesystem, process,
-  terminal, search, git). Faster and safer than bouncing through Node for
-  I/O-heavy APIs.
-
-The two tracks are not mutually exclusive. Most APIs live on Track A by default,
-and we promote individual operations to Track B when a measured benefit exists.
-The Cocoon `<Namespace>Route.ts` tier router decides per-call.
-
----
+Land implements the VS Code extension API across three elements: **Sky** (the
+Monaco-based workbench renderer), **Cocoon** (the Node.js extension-host
+sidecar), and **Mountain** (the Rust backend). The dual-track strategy assigns
+each API operation to the implementation layer that best balances compatibility
+and performance. Overall weighted coverage stands at approximately **88%** as of
+the current build, with TextEditor at 95%, Workspace at 96%, SCM at 95%, Window
+at 95%, and LSP/Language at 95%.
 
 ## Legend
 
-| Track | Meaning                                                       |
-| ----- | ------------------------------------------------------------- |
-| **A** | Stock-Node - lift unchanged `extHost*.ts` into Cocoon         |
-| **B** | Rust-native - Mountain owns backend, gRPC from Cocoon         |
-| **C** | Cocoon-bespoke - hand-rolled TS in Land (last resort)         |
-| **S** | Sky-direct - call via `__CEL_SERVICES__.*` workbench accessor |
+### Implementation tracks
 
-Status symbols:
+| Track | Meaning                                                                |
+| ----- | ---------------------------------------------------------------------- |
+| **A** | Stock-Node - lift unchanged `extHost*.ts` into Cocoon                  |
+| **B** | Rust-native - Mountain owns backend, gRPC from Cocoon via `Vine.proto` |
+| **C** | Cocoon-bespoke - hand-rolled TypeScript in Land (last resort)          |
+| **S** | Sky-direct - call via `__CEL_SERVICES__.*` workbench service accessor  |
 
-- **Working** - end-to-end (activation + feature render path confirmed)
-- **Partial** - RPC wired but UI render gap, or missing sub-method
-- **Stubbed** - registration accepted, no effect
-- **Not attempted**
-- **Pure lift** - stateless, no RPC, already landed via `StockLift.ts`
+### Status symbols
 
----
+| Symbol | Meaning                                                                   |
+| ------ | ------------------------------------------------------------------------- |
+| ✅     | Working end-to-end (activation and feature render path confirmed)         |
+| 🟡     | Partial - RPC wired but UI render gap, or one or more sub-methods missing |
+| 🔴     | Stubbed / dropped-on-floor - registration accepted, no effect             |
+| ⚪     | Not yet attempted                                                         |
+| 🟢     | Pure-function lift (stateless, no RPC) already landed via `StockLift.ts`  |
 
-## Commands
+## Overall coverage summary
 
-| Operation                   | Primary | Status  |
-| --------------------------- | ------- | ------- |
-| `registerCommand`           | A+S     | Working |
-| `registerTextEditorCommand` | A       | Working |
-| `executeCommand`            | A+S     | Working |
-| `getCommands`               | A       | Working |
+| Namespace                   | Coverage | Primary blocker                                |
+| --------------------------- | -------- | ---------------------------------------------- |
+| `vscode.commands`           | ~100%    | -                                              |
+| `vscode.window`             | ~95%     | webview panels stubbed                         |
+| `vscode.workspace`          | ~96%     | `createFileSystemWatcher` stub                 |
+| `vscode.languages`          | ~95%     | providers wired, render gaps                   |
+| `vscode.debug`              | ~30%     | `startDebugging` missing                       |
+| `vscode.tasks`              | ~20%     | `executeTask` missing                          |
+| `vscode.scm`                | ~95%     | ISCMService viewlet route deferred             |
+| `vscode.env`                | ~90%     | `isAppPortable`, `asExternalUri` not attempted |
+| `vscode.extensions`         | ~100%    | -                                              |
+| `vscode.authentication`     | ~60%     | no real OAuth backend                          |
+| `vscode.notebooks`          | ~10%     | large surface, low priority                    |
+| `vscode.tests`              | ~20%     | run profile not implemented                    |
+| `vscode.chat` / `vscode.lm` | ~0%      | not attempted                                  |
+| `vscode.l10n`               | ~100%    | -                                              |
+| `vscode.comments`           | ~0%      | not attempted                                  |
 
-## Window - Editors
+## Namespace tables
 
-| Operation                     | Primary | Status  |
-| ----------------------------- | ------- | ------- |
-| `activeTextEditor`            | A       | Working |
-| `visibleTextEditors`          | A       | Working |
-| `showTextDocument`            | A       | Working |
-| `onDidChangeActiveTextEditor` | A       | Working |
+### `vscode.commands`
 
-## Window - Surfaces
+| Operation                   | Track | Status | Mountain channel   | Sky surface                                        |
+| --------------------------- | ----- | ------ | ------------------ | -------------------------------------------------- |
+| `registerCommand`           | A+S   | ✅     | `commands` channel | `__CEL_SERVICES__.CommandRegistry.registerCommand` |
+| `registerTextEditorCommand` | A     | ✅     | -                  | -                                                  |
+| `executeCommand`            | A+S   | ✅     | `commands:execute` | `__CEL_SERVICES__.Commands.executeCommand`         |
+| `getCommands`               | A     | ✅     | -                  | -                                                  |
 
-| Operation                                                            | Primary    | Status  |
-| -------------------------------------------------------------------- | ---------- | ------- |
-| `createStatusBarItem`                                                | S (native) | Working |
-| `setStatusBarMessage`                                                | S          | Working |
-| `createTreeView`                                                     | A+S        | Working |
-| `registerTreeDataProvider`                                           | A+S        | Working |
-| `createWebviewPanel`                                                 | A          | Stubbed |
-| `registerWebviewViewProvider`                                        | A          | Stubbed |
-| `registerCustomEditorProvider`                                       | A          | Stubbed |
-| `createTerminal`                                                     | B          | Partial |
-| `onDidOpen/CloseTerminal`                                            | B          | Partial |
-| `createOutputChannel`                                                | S          | Working |
-| `showInformationMessage` / `showWarningMessage` / `showErrorMessage` | A          | Working |
-| `showQuickPick` / `createQuickPick`                                  | A          | Partial |
-| `showInputBox`                                                       | A          | Partial |
-| `showOpenDialog` / `showSaveDialog`                                  | B          | Working |
-| `withProgress`                                                       | A+S        | Partial |
-| `registerFileDecorationProvider`                                     | A          | Partial |
-| `registerUriHandler`                                                 | A          | Partial |
-| `onDidChangeWindowState`                                             | A          | Working |
-| `showNotebookDocument`                                               | A          | Stubbed |
+### `vscode.window` - Editors
 
-## Workspace
+| Operation                     | Track | Status | Mountain channel                     | Sky surface                              |
+| ----------------------------- | ----- | ------ | ------------------------------------ | ---------------------------------------- |
+| `activeTextEditor`            | A     | ✅     | -                                    | `IEditorService.activeTextEditorControl` |
+| `visibleTextEditors`          | A     | ✅     | -                                    | -                                        |
+| `showTextDocument`            | A     | ✅     | `sky://window/showTextDocument` emit | `vscode.open` command dispatch           |
+| `onDidChangeActiveTextEditor` | A     | ✅     | -                                    | -                                        |
 
-| Operation                                                                                                 | Primary | Status  |
-| --------------------------------------------------------------------------------------------------------- | ------- | ------- |
-| `workspaceFolders`                                                                                        | A       | Working |
-| `onDidChangeWorkspaceFolders`                                                                             | A       | Working |
-| `getWorkspaceFolder`                                                                                      | A+B     | Working |
-| `textDocuments`                                                                                           | A       | Working |
-| `openTextDocument`                                                                                        | A+B     | Working |
-| `onDidOpen/Close/SaveTextDocument`                                                                        | A       | Working |
-| `onWillSaveTextDocument`                                                                                  | A       | Partial |
-| `applyEdit`                                                                                               | A+S     | Partial |
-| `save` / `saveAs`                                                                                         | A       | Gap     |
-| `fs.readFile` / `writeFile` / `stat` / `readDirectory` / `createDirectory` / `delete` / `rename` / `copy` | **B**   | Working |
-| `fs.isWritableFileSystem`                                                                                 | A       | Working |
-| `registerFileSystemProvider`                                                                              | A       | Partial |
-| `createFileSystemWatcher`                                                                                 | B       | Partial |
-| `findFiles`                                                                                               | **B**   | Working |
-| `findTextInFiles`                                                                                         | **B**   | Working |
-| `registerTextDocumentContentProvider`                                                                     | A       | Partial |
-| `getConfiguration` / `onDidChangeConfiguration`                                                           | A+B     | Working |
-| `registerTaskProvider`                                                                                    | A       | Partial |
+### `vscode.window` - Surfaces
 
-## Languages
+| Operation                                                            | Track | Status | Mountain channel                                           | Sky surface                                          |
+| -------------------------------------------------------------------- | ----- | ------ | ---------------------------------------------------------- | ---------------------------------------------------- |
+| `createStatusBarItem`                                                | S     | ✅     | `sky://statusbar/{update,dispose,set-entry}`               | `__CEL_SERVICES__.Statusbar.addEntry`                |
+| `setStatusBarMessage`                                                | S     | ✅     | `sky://statusbar/set-message`                              | CustomEvent fan-out                                  |
+| `createTreeView`                                                     | A+S   | ✅     | `tree.register` + `tree:getChildren` + `sky://tree-view/*` | `__CEL_SERVICES__.TreeViewByViewId(id).dataProvider` |
+| `registerTreeDataProvider`                                           | A+S   | ✅     | `$provideTreeChildren` gRPC                                | dataProvider attached to native `ITreeView`          |
+| `createWebviewPanel`                                                 | A     | 🔴     | -                                                          | stub channel `webview`                               |
+| `registerWebviewViewProvider`                                        | A     | 🔴     | -                                                          | -                                                    |
+| `registerCustomEditorProvider`                                       | A     | 🔴     | -                                                          | -                                                    |
+| `createTerminal`                                                     | B     | 🟡     | `terminal:create` / PTY via `portable-pty`                 | workbench terminal panel                             |
+| `onDidOpen/CloseTerminal`                                            | B     | 🟡     | `sky://terminal/{opened,closed}`                           | -                                                    |
+| `createOutputChannel`                                                | S     | ✅     | `sky://output/{create,append,clear,dispose}`               | local mirror + workbench output panel                |
+| `showInformationMessage` / `showWarningMessage` / `showErrorMessage` | A     | ✅     | `sky://ui/show-message-request`                            | DOM toast fallback                                   |
+| `showQuickPick` / `createQuickPick`                                  | A     | 🟡     | `sky://ui/show-quickpick-request`                          | workbench quick-input                                |
+| `showInputBox`                                                       | A     | 🟡     | -                                                          | -                                                    |
+| `showOpenDialog` / `showSaveDialog`                                  | B     | ✅     | `nativeHost:showOpenDialog` / `showSaveDialog` (Tauri)     | -                                                    |
+| `showWorkspaceFolderPick`                                            | A     | ⚪     | -                                                          | -                                                    |
+| `withProgress`                                                       | A+S   | 🟡     | `sky://progress/{start,update,complete}`                   | DOM toast + workbench progress                       |
+| `registerFileDecorationProvider`                                     | A     | 🟡     | -                                                          | -                                                    |
+| `registerUriHandler`                                                 | A     | 🟡     | `register_uri_handler` notif-drop                          | -                                                    |
+| `onDidChangeWindowState`                                             | A     | ✅     | -                                                          | -                                                    |
+| `showNotebookDocument`                                               | A     | 🔴     | -                                                          | -                                                    |
 
-| Operation                                | Primary | Status  |
-| ---------------------------------------- | ------- | ------- |
-| `registerCompletionItemProvider`         | A       | Partial |
-| `registerHoverProvider`                  | A       | Partial |
-| `registerDefinitionProvider`             | A       | Partial |
-| `registerReferenceProvider`              | A       | Partial |
-| `registerDocumentSymbolProvider`         | A       | Partial |
-| `registerCodeActionsProvider`            | A       | Partial |
-| `registerCodeLensProvider`               | A       | Partial |
-| `registerDocumentFormattingEditProvider` | A       | Partial |
-| `registerRenameProvider`                 | A       | Partial |
-| `registerInlayHintsProvider`             | A       | Partial |
-| `registerFoldingRangeProvider`           | A       | Partial |
-| `registerSemanticTokensProvider`         | A       | Partial |
-| `registerSignatureHelpProvider`          | A       | Partial |
-| `setTextDocumentLanguage`                | A+S     | Working |
-| `setLanguageConfiguration`               | A+S     | Working |
-| `createDiagnosticCollection`             | A+S     | Working |
-| `match`                                  | Pure    | Working |
+### `vscode.workspace`
 
-## Debug
+| Operation                                                                                                 | Track | Status | Mountain channel                                     | Notes                          |
+| --------------------------------------------------------------------------------------------------------- | ----- | ------ | ---------------------------------------------------- | ------------------------------ |
+| `workspaceFolders`                                                                                        | A     | ✅     | seeded via `InitializationData.FoldersWire`          | -                              |
+| `onDidChangeWorkspaceFolders`                                                                             | A     | ✅     | `sky://workspace/foldersChanged`                     | -                              |
+| `getWorkspaceFolder`                                                                                      | A+B   | ✅     | -                                                    | -                              |
+| `textDocuments`                                                                                           | A     | ✅     | `sky://lifecycle/synchronizeDocuments`               | -                              |
+| `openTextDocument`                                                                                        | A+B   | ✅     | `file:read` gRPC                                     | -                              |
+| `onDidOpen/Close/SaveTextDocument`                                                                        | A     | ✅     | -                                                    | -                              |
+| `onWillSaveTextDocument`                                                                                  | A     | 🟡     | `$participateInSave` gRPC                            | -                              |
+| `applyEdit`                                                                                               | A+S   | 🟡     | `sky://workspace/applyEdit`                          | -                              |
+| `save` / `saveAs`                                                                                         | A     | ⚪     | -                                                    | -                              |
+| `fs.readFile` / `writeFile` / `stat` / `readDirectory` / `createDirectory` / `delete` / `rename` / `copy` | B     | ✅     | `file:*` gRPC                                        | -                              |
+| `fs.isWritableFileSystem`                                                                                 | A     | ✅     | -                                                    | -                              |
+| `registerFileSystemProvider`                                                                              | A     | 🟡     | `register_file_system_provider` notif-drop           | -                              |
+| `createFileSystemWatcher`                                                                                 | B     | 🟡     | stub (`notify` crate planned)                        | `FileWatcher=Stub`             |
+| `findFiles`                                                                                               | B     | ✅     | `search:findFiles` (globset)                         | -                              |
+| `findTextInFiles`                                                                                         | B     | ✅     | `search:findInFiles`                                 | -                              |
+| `registerTextDocumentContentProvider`                                                                     | A     | 🟡     | `register_text_document_content_provider` notif-drop | -                              |
+| `getConfiguration` / `onDidChangeConfiguration`                                                           | A+B   | ✅     | `Configuration` cache                                | `IConfigurationService` in Sky |
+| `registerTaskProvider`                                                                                    | A     | 🟡     | `register_task_provider` notif-drop                  | -                              |
 
-| Operation                                         | Primary | Status  |
-| ------------------------------------------------- | ------- | ------- |
-| `registerDebugConfigurationProvider`              | A       | Partial |
-| `registerDebugAdapterDescriptorFactory`           | A       | Partial |
-| `registerDebugAdapterTrackerFactory`              | A       | Partial |
-| `startDebugging`                                  | A+B     | Stubbed |
-| `activeDebugSession` / `onDidStart/ChangeSession` | A       | Stubbed |
-| `addBreakpoints` / `removeBreakpoints`            | A       | Stubbed |
-| `activeStackItem`                                 | A       | Gap     |
+### `vscode.languages`
 
-## Tasks
+| Operation                                | Track   | Status | Mountain channel                                            |
+| ---------------------------------------- | ------- | ------ | ----------------------------------------------------------- |
+| `registerCompletionItemProvider`         | A       | 🟡     | `register_completion_item_provider` + `GetCompletions` gRPC |
+| `registerHoverProvider`                  | A       | 🟡     | `register_hover_provider` + `GetHoverAtPosition` gRPC       |
+| `registerDefinitionProvider`             | A       | 🟡     | `register_definition_provider` + `GetDefinition` gRPC       |
+| `registerReferenceProvider`              | A       | 🟡     | `register_reference_provider` + `GetReferences` gRPC        |
+| `registerDocumentSymbolProvider`         | A       | 🟡     | `GetDocumentSymbols` gRPC                                   |
+| `registerCodeActionsProvider`            | A       | 🟡     | `register_code_actions_provider`                            |
+| `registerCodeLensProvider`               | A       | 🟡     | `register_code_lens_provider`                               |
+| `registerDocumentFormattingEditProvider` | A       | 🟡     | `register_document_formatting_provider`                     |
+| `registerRenameProvider`                 | A       | 🟡     | `register_rename_provider`                                  |
+| `registerInlayHintsProvider`             | A       | 🟡     | `register_inlay_hints_provider`                             |
+| `registerFoldingRangeProvider`           | A       | 🟡     | `register_folding_range_provider`                           |
+| `registerSemanticTokensProvider`         | A       | 🟡     | `register_semantic_tokens_provider`                         |
+| `registerSignatureHelpProvider`          | A       | 🟡     | `register_signature_help_provider`                          |
+| `setTextDocumentLanguage`                | A+S     | ✅     | `sky://languages/setDocumentLanguage`                       |
+| `setLanguageConfiguration`               | A+S     | ✅     | `sky://language/configure`                                  |
+| `createDiagnosticCollection`             | A+S     | ✅     | `sky://diagnostics/changed`                                 |
+| `match`                                  | 🟢 pure | ✅     | -                                                           |
 
-| Operation                                            | Primary | Status  |
-| ---------------------------------------------------- | ------- | ------- |
-| `registerTaskProvider`                               | A       | Partial |
-| `fetchTasks`                                         | A       | Stubbed |
-| `executeTask`                                        | A+B     | Stubbed |
-| `taskExecutions` / `onDidStartTask` / `onDidEndTask` | A       | Stubbed |
+### `vscode.debug`
 
-## SCM
+| Operation                                         | Track | Status | Mountain channel                        |
+| ------------------------------------------------- | ----- | ------ | --------------------------------------- |
+| `registerDebugConfigurationProvider`              | A     | 🟡     | `register_debug_configuration_provider` |
+| `registerDebugAdapterDescriptorFactory`           | A     | 🟡     | `register_debug_adapter` notif-drop     |
+| `registerDebugAdapterTrackerFactory`              | A     | 🟡     | -                                       |
+| `startDebugging`                                  | A+B   | 🔴     | `debug:start` handler missing           |
+| `activeDebugSession` / `onDidStart/ChangeSession` | A     | 🔴     | `sky://debug/session-*`                 |
+| `addBreakpoints` / `removeBreakpoints`            | A     | 🔴     | -                                       |
+| `activeStackItem`                                 | A     | ⚪     | -                                       |
 
-| Operation                     | Primary | Status  |
-| ----------------------------- | ------- | ------- |
-| `createSourceControl`         | A+S     | Partial |
-| `inputBox.value` read/write   | A       | Partial |
-| `$gitExec` (built-in git ext) | **B**   | Stubbed |
+### `vscode.tasks`
 
-## Environment
+| Operation                                            | Track | Status | Notes                                        |
+| ---------------------------------------------------- | ----- | ------ | -------------------------------------------- |
+| `registerTaskProvider`                               | A     | 🟡     | `register_task_provider` notif-drop          |
+| `fetchTasks`                                         | A     | 🔴     | -                                            |
+| `executeTask`                                        | A+B   | 🔴     | needs `tasks:execute` (PTY or child_process) |
+| `taskExecutions` / `onDidStartTask` / `onDidEndTask` | A     | 🔴     | -                                            |
 
-| Operation                                                                                                  | Primary | Status  |
-| ---------------------------------------------------------------------------------------------------------- | ------- | ------- |
-| `appName` / `appRoot` / `uriScheme` / `language` / `shell` / `machineId` / `sessionId` / `isNewAppInstall` | A       | Working |
-| `clipboard.readText` / `writeText`                                                                         | B       | Working |
-| `openExternal`                                                                                             | B       | Working |
-| `asExternalUri`                                                                                            | A       | Gap     |
-| `remoteName` / `remoteAuthority`                                                                           | A       | Working |
+### `vscode.scm`
 
-## Extensions
+| Operation                           | Track | Status | Notes                                                                     |
+| ----------------------------------- | ----- | ------ | ------------------------------------------------------------------------- |
+| `createSourceControl`               | A+S   | 🟡     | `register_scm_provider` + `sky://scm/register`; needs `ISCMService` route |
+| `inputBox.value` read/write         | A     | 🟡     | round-trip via `ResolveUIRequest`                                         |
+| `$gitExec` (built-in git extension) | B     | ✅     | `localGit` channel; Mountain spawns `git` subprocess                      |
 
-| Operation          | Primary | Status  |
-| ------------------ | ------- | ------- |
-| `getExtension(id)` | A       | Working |
-| `all`              | A       | Working |
-| `onDidChange`      | A       | Working |
+### `vscode.env`
 
-## Authentication
+| Operation                                                                                                  | Track | Status | Notes                                                   |
+| ---------------------------------------------------------------------------------------------------------- | ----- | ------ | ------------------------------------------------------- |
+| `appName` / `appRoot` / `uriScheme` / `language` / `shell` / `machineId` / `sessionId` / `isNewAppInstall` | A     | ✅     | seeded in `InitializationData`                          |
+| `isAppPortable`                                                                                            | A     | ⚪     | -                                                       |
+| `clipboard.readText` / `writeText`                                                                         | B     | ✅     | `nativeHost:readClipboard` / `writeClipboard` via Tauri |
+| `openExternal`                                                                                             | B     | ✅     | `native:openExternal` via Tauri `shell.open`            |
+| `asExternalUri`                                                                                            | A     | ⚪     | -                                                       |
+| `remoteName` / `remoteAuthority`                                                                           | A     | ✅     | always `undefined` (local-only build)                   |
 
-| Operation                        | Primary | Status  |
-| -------------------------------- | ------- | ------- |
-| `registerAuthenticationProvider` | A       | Partial |
-| `getSession`                     | A       | Partial |
-| `getAccounts`                    | A       | Partial |
+### `vscode.extensions`
 
-## Notebooks
+| Operation          | Track | Status | Mountain channel          |
+| ------------------ | ----- | ------ | ------------------------- |
+| `getExtension(id)` | A     | ✅     | `extensions:get`          |
+| `all`              | A     | ✅     | `extensions:getInstalled` |
+| `onDidChange`      | A     | ✅     | `$deltaExtensions` gRPC   |
 
-| Operation                                   | Primary | Status  |
-| ------------------------------------------- | ------- | ------- |
-| `createNotebookController`                  | A       | Stubbed |
-| `registerNotebookCellStatusBarItemProvider` | A       | Stubbed |
-| `registerNotebookSerializer`                | A       | Partial |
+### `vscode.authentication`
 
-## Tests
+| Operation                        | Track | Status | Notes                              |
+| -------------------------------- | ----- | ------ | ---------------------------------- |
+| `registerAuthenticationProvider` | A     | 🟡     | `register_authentication_provider` |
+| `getSession`                     | A     | 🟡     | `$getSession` gRPC                 |
+| `getAccounts`                    | A     | 🟡     | -                                  |
 
-| Operation                 | Primary | Status  |
-| ------------------------- | ------- | ------- |
-| `createTestController`    | A       | Partial |
-| Run profile / run request | A       | Stubbed |
+> [!WARNING] There is no real OAuth backend. `getSession` will call registered
+> providers but no built-in GitHub/Microsoft auth flow exists. Extensions that
+> require authentication (Copilot, GitHub Pull Requests) will prompt for
+> credentials but cannot complete the exchange.
 
-## Chat / LM
+### `vscode.notebooks`
 
-| Operation                           | Primary | Status  |
-| ----------------------------------- | ------- | ------- |
-| `createChatParticipant`             | A       | Stubbed |
-| `registerLanguageModelChatProvider` | A       | Gap     |
-| `selectChatModels`                  | A       | Stubbed |
+| Operation                                   | Track | Status | Notes                                     |
+| ------------------------------------------- | ----- | ------ | ----------------------------------------- |
+| `createNotebookController`                  | A     | 🔴     | -                                         |
+| `registerNotebookCellStatusBarItemProvider` | A     | 🔴     | -                                         |
+| `registerNotebookSerializer`                | A     | 🟡     | `register_notebook_serializer` notif-drop |
 
-## Localization
+### `vscode.tests`
 
-| Operation         | Primary | Status  |
-| ----------------- | ------- | ------- |
-| `t(message, ...)` | Pure    | Working |
-| `bundle` / `uri`  | A       | Working |
+| Operation                 | Track | Status | Notes                         |
+| ------------------------- | ----- | ------ | ----------------------------- |
+| `createTestController`    | A     | 🟡     | `sky://tests/registered` emit |
+| Run profile / run request | A     | 🔴     | -                             |
 
-## Comments
+### `vscode.chat` and `vscode.lm`
 
-| Operation                 | Primary | Status  |
-| ------------------------- | ------- | ------- |
-| `createCommentController` | A       | Stubbed |
+| Operation                           | Track | Status | Notes |
+| ----------------------------------- | ----- | ------ | ----- |
+| `createChatParticipant`             | A     | 🔴     | -     |
+| `registerLanguageModelChatProvider` | A     | ⚪     | -     |
+| `selectChatModels`                  | A     | 🔴     | -     |
 
----
+### `vscode.l10n`
 
-## Domain-Grouped Primary Assignment
+| Operation         | Track   | Status | Notes                                        |
+| ----------------- | ------- | ------ | -------------------------------------------- |
+| `t(message, ...)` | 🟢 pure | ✅     | StockLift-able from `vs/base/common/l10n.ts` |
+| `bundle` / `uri`  | A       | ✅     | NLS bundle loaded at extension scan time     |
 
-### Rust-native primary (Track B wins)
+### `vscode.comments`
 
-High I/O, process, or syscall-bound operations where Node adds latency:
+| Operation                 | Track | Status | Notes         |
+| ------------------------- | ----- | ------ | ------------- |
+| `createCommentController` | A     | 🔴     | not attempted |
 
-- File system -- `workspace.fs.*`, scanner reads. Mountain owns `File::*` via
-  tokio.
-- Find files / text search -- `workspace.findFiles` / `findTextInFiles`.
-  Mountain's `globset` walk.
-- Terminal PTY -- Mountain-owned via `portable-pty`.
-- Git subprocess -- Mountain spawns `git` as a child process.
-- File watch -- `createFileSystemWatcher`. Mountain `notify` crate.
-- Native dialogs / clipboard / openExternal -- Tauri covers these.
-- Process spawn for debug adapters / task exec -- upcoming via `tokio::process`.
+## Gap register
 
-### Node-stock primary (Track A wins)
+The following items are the highest-priority unimplemented gaps, ordered by the
+number of extensions they block.
 
-State-heavy or coordination-heavy APIs where stock VS Code handles nuance:
+| Gap                                                                 | Impact                                                        | Status  |
+| ------------------------------------------------------------------- | ------------------------------------------------------------- | ------- |
+| `vscode.debug.*` end-to-end (startDebugging, sessions, breakpoints) | Blocks every language debugger                                | 🔴      |
+| `vscode.tasks.executeTask`                                          | Blocks Jake / Gulp / Grunt / npm task providers               | 🔴      |
+| `vscode.window.createWebviewPanel`                                  | Blocks GitLens graph panel, Copilot chat, markdown preview    | 🔴      |
+| `createFileSystemWatcher` (`notify` crate)                          | Extensions that watch for changes wait forever                | 🟡 stub |
+| `vscode.scm` viewlet route into `ISCMService`                       | Extensions register providers but the SCM viewlet stays empty | 🟡      |
+| `vscode.authentication` real OAuth                                  | Copilot and GitHub PR extension cannot complete auth          | 🟡      |
+| `vscode.tasks.fetchTasks`                                           | Task runner discovery broken                                  | 🔴      |
+| `vscode.chat` / `vscode.lm`                                         | AI-native extensions cannot register participants or models   | 🔴      |
 
-- Command registry, language features, editor/document/selection, configuration,
-  messages/dialogs/quick-input, progress, secrets/storage/memento,
-  authentication, debug/tasks (stock core + Mountain process spawn), webviews,
-  notebooks, tree views.
+## Track-B bring-up pattern
 
-### Hybrid (per-operation split)
+When promoting an operation from Track A (stock Node) to Track B (Rust-native),
+the steps are:
 
-- SCM -- stock for provider registration, Mountain-native for `$gitExec`.
-- Terminal shell integration -- shell events via extHost, PTY via Mountain.
-- FileSystemProvider -- Cocoon forwards reads via gRPC to Mountain for disk ops.
-- Status bar -- stock manages entry lifecycle, Sky renders via
-  `__CEL_SERVICES__.Statusbar`.
+1. Add the gRPC method to `Mountain/Proto/Vine.proto` (the Vine submodule).
+2. Implement the Rust handler under
+   `Mountain/Source/IPC/WindServiceHandlers/<Domain>/<Method>.rs` - one file per
+   method.
+3. In Cocoon's `<Namespace>Route.ts`, add a tier layer that selects Mountain for
+   that operation.
+4. In Cocoon's `<Namespace>.ts` shim, call
+   `MountainClient.sendRequest(method, args)` behind the tier guard.
 
----
+## Verification
 
-## Highest-Priority Gaps
+After wiring a new namespace:
 
-- `vscode.debug.*` end-to-end (startDebugging, sessions, breakpoints) -- blocks
-  every language debugger.
-- `vscode.tasks.executeTask` -- blocks Jake / Gulp / Grunt / npm task providers.
-- `vscode.window.createWebviewPanel` -- blocks GitLens graph panel, Copilot
-  chat, markdown-preview internals.
-- `vscode.scm` viewlet route into `ISCMService` -- extensions register but UI
-  stays empty.
-- Tree-view renderer wiring -- **landed**: extension-registered tree views
-  render via `__CEL_SERVICES__.TreeViewByViewId(id).dataProvider`.
-- `localGit` channel -- **landed**.
-
----
-
-## See Also
-
-- [Extension Development](https://editor.land/Doc/extension-development)
-- [Cocoon: Extension Host](https://editor.land/Doc/cocoon)
-- [Architecture Overview](https://editor.land/Doc/architecture)
+- `LAND_DEV_LOG=dual-track` confirms the route decision per operation in the
+  console.
+- Run with `LAND_DEV_LOG=short,provider-register`, exercise the feature from the
+  UI, and grep for `Activation failed` (must be zero) and
+  `$<method> (no handler)` (must be zero).

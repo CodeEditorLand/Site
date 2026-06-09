@@ -1,9 +1,8 @@
 "use client";
 
+import { ThemeImage } from "@Library/Theme";
 import * as lucide from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-
-import { ThemeImage } from "@Library/Theme";
 
 // ─── Term dictionary ──────────────────────────────────────────────────────────
 

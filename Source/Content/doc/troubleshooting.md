@@ -1,169 +1,208 @@
 ---
 title: "Troubleshooting"
-section: "Support"
-order: 10
+section: "Development"
+order: 6
 description:
-    "Common issues and their solutions when running editor.land on macOS
-    or Windows."
+    "Common build, startup, and runtime issues with Land and how to resolve
+    them."
 ---
 
-# Troubleshooting
+This page covers the most frequently encountered problems when building,
+running, or developing against Land. Each entry describes the symptom, the root
+cause, and the specific fix. For issues not listed here, check the FIDDEE.log in
+`<app-data>/logs/` and open a GitHub issue with the log contents attached.
 
-This page covers the most common issues encountered when running
-`editor.land` on **macOS 13+** and **Windows 10/11**, along with
-diagnosis steps and fixes.
+## Build Issues
 
----
+### npm install stalls during VS Code source step
 
-## Blank Screen on Launch
+**Symptom**: Running `npm install` inside
+`Dependency/Microsoft/Dependency/Editor` hangs indefinitely, typically after
+resolving most packages.
 
-**Symptoms:** The window opens but shows a white or black screen with no UI.
+**Cause**: The VS Code source tree includes `electron` (~200 MB) and
+`@playwright/browser-chromium` (~300 MB) as devDependencies. Without skip flags,
+`npm install` downloads these binaries on every fresh install.
 
-**Diagnosis on macOS:**
+**Fix**: Add the following to your shell profile (`~/.zshrc` or `~/.bashrc`) and
+reload before running `npm install`:
 
-Launch Land from the terminal via `cargo tauri dev` and watch the console output
-for errors. WebKit or renderer errors will appear there. If you are running a
-pre-built binary, open **Console.app**, filter by the Land process name, and
-look for errors at or around the launch timestamp.
+```sh
+export ELECTRON_SKIP_BINARY_DOWNLOAD=1
+export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+```
 
-**Diagnosis on Windows:**
+Neither binary is needed to compile Land. They are only required for running VS
+Code's own integration tests.
 
-Launch via `cargo tauri dev` in a terminal window. `WebView2` errors are written
-to standard output. If you are running a pre-built binary, open **Event
-Viewer**, navigate to **Windows Logs → Application**, and filter for the Land
-process name.
+### Playwright lockfile error
 
-**Fixes:**
+**Symptom**: `npm install` fails with:
 
-- **macOS:** Confirm you are running **macOS 13.0 or later**. Older WebKit
-  versions do not support all CSS features Land's UI requires.
-- **Windows:** Confirm the **`WebView2` Runtime** is installed. Download it from
-  [microsoft.com/edge/webview2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)
-  if missing. The Evergreen Bootstrapper is the simplest install option.
-- If the console shows GPU-related errors, try quitting other GPU-intensive
-  applications and relaunching.
-- If you built from source, ensure the build completed without errors:
-    ```bash
-    cargo tauri build
+```
+Error: An active lockfile is found at: ~/Library/Caches/ms-playwright/__dirlock
+```
+
+**Cause**: A previous `npm install` run was interrupted, leaving a stale
+lockfile that blocks subsequent installs.
+
+**Fix**: Remove the stale lockfile and retry:
+
+```sh
+rm -rf ~/Library/Caches/ms-playwright/__dirlock
+npm install
+```
+
+### `debug-electron-bundled` path error (path argument undefined)
+
+**Symptom**: The bundled workbench crashes at startup with:
+
+```
+The "path" argument must be of type string. Received type undefined
+```
+
+The stack trace points into `open (workbench.desktop.main.*.js)`.
+
+**Cause**: `ISandboxConfiguration.profiles` or one of its required URI fields
+was missing or `undefined` in Mountain's `ConstructSandboxConfiguration`. VS
+Code's `NativeWorkbenchEnvironmentService` accesses URI fields like
+`languageModelsResource` without null-guards.
+
+**Fix**: Rebuild Mountain after any change to `InitializationData.rs`:
+
+```sh
+cargo build -p Mountain
+```
+
+If the error persists after rebuilding, wipe the Vite cache and do a full
+rebuild:
+
+```sh
+rm -rf Element/Sky/Target/
+./Maintain/Debug/Build.sh --profile debug-electron-bundled
+```
+
+If still failing, open DevTools (`Inspect=1`) and set a breakpoint at
+`get extensionsPath` in the bundled workbench to inspect what
+`this.productService.dataFolderName` resolves to at runtime.
+
+## Startup Issues
+
+### Blank workbench - Cocoon not connecting
+
+**Symptom**: The editor window opens but the workbench is blank or shows a
+loading spinner indefinitely. The extension host never activates.
+
+**Cause**: Cocoon failed to start or failed to connect to Mountain. The most
+common sub-causes are: port 50052 already in use from a previous run, or
+Cocoon's gRPC server failed to bind.
+
+**Fix**:
+
+1. Check whether port 50052 is in use:
+
+    ```sh
+    lsof -i :50052
     ```
-    A partially-failed build can produce a binary that launches but renders
-    nothing.
 
----
+    Kill any orphaned process found, or change `NetworkCocoonPort` in
+    `.env.Land`.
 
-## Extension Not Loading
+2. Check the FIDDEE.log for the line `RPCServer bound on port 50052`. If it is
+   absent, Cocoon failed to start. Look for earlier error lines in the log.
 
-**Symptoms:** An extension appears to be installed but does not activate, or
-commands it contributes do not appear in the command palette.
+3. Set `Trace=cocoon,grpc` and `Record=1` in `.env.Land.Diagnostics`, relaunch,
+   and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the Cocoon
+   subprocess output.
 
-**Diagnosis:**
+### `dataFolderName` crash - path argument undefined at boot
 
-1. Check the `Output` panel. Select **Extension Host** from the channel dropdown
-   to see activation errors and log output from `Cocoon`.
-2. Look for activation event mismatches - if the extension declares
-   `activationEvents` that Land does not fire, it will never activate.
+See
+[debug-electron-bundled path error](#debug-electron-bundled-path-error-path-argument-undefined)
+above. The same `InitializationData.rs` fix applies to both the bundled and
+non-bundled profiles.
 
-**Fixes:**
+## Extension Issues
 
-- Check the `engines.vscode` field in the extension's `package.json`. If it
-  requires a `VS Code` version whose `API` surface is not yet implemented in
-  `Cocoon`, the extension may silently fail. See
-  [`API` Reference](https://editor.land/Doc/api-reference) for the
-  current coverage table.
-- If the extension uses an `API` namespace listed as **Not Implemented** in the
-  `API` Reference (`vscode.lm`, `vscode.chat`, `vscode.notebook`,
-  `vscode.tests`), those calls will no-op at runtime.
-- Try reinstalling the extension: remove it, restart Land, then install again.
+### Extension not loading
 
----
+**Symptom**: An extension does not appear in the Extensions sidebar, or appears
+but never activates.
 
-## High CPU Usage
+**Fix**:
 
-**Symptoms:** Land consumes excessive CPU even when idle.
+1. Verify the extension directory path is correct. On macOS the user extension
+   root is `~/.land/extensions/`. The directory must contain a `package.json`
+   with a valid `"main"` field.
+2. Check that `package.json` has an `"engines"` field with a `"vscode"` version
+   range that the current Land version satisfies (`ProductVersion` in
+   `.env.Land`, default `1.118.0`).
+3. Set `Trace=extensions` and `Record=1`, relaunch, and check the dev log for
+   activation errors. Common causes are a missing compiled entry point, a
+   Node.js require error in the extension's code, or an `activationEvent` that
+   is never fired.
+4. Check the Cocoon log in DevTools Console for uncaught exceptions during
+   `activate()`.
 
-**Diagnosis:**
+### Terminal not opening
 
-Open **Activity Monitor** on macOS or **Task Manager** on Windows, filter by
-process name, and identify which process is consuming CPU - the main Land
-process, a language server child process, or `Node.js` (the `Cocoon` extension
-host).
+**Symptom**: Opening a terminal pane shows a blank panel or an error about a
+missing binary.
 
-**Fixes:**
+**Cause**: The `portable-pty` native binary is either missing for the current
+platform or the `localPty:createProcess` IPC handler could not locate the
+Node.js binary to spawn the shell.
 
-- **Language server runaway:** Some language servers index the entire file
-  system on first open. Add large directories to `Files.Exclude` in your
-  settings:
-    ```json
-    {
-    	"Files.Exclude": {
-    		"**/node_modules": true,
-    		"**/target": true,
-    		"**/.git": true
-    	}
-    }
-    ```
-- **Extension host:** Disable extensions one by one via the command palette to
-  identify the offending extension. Then file an issue with the extension
-  author.
-- **File watcher overload:** Reduce the number of watched files by adding paths
-  to `Files.WatcherExclude` in your settings.
+**Fix**:
 
----
+1. Verify the `SideCar` binary for your platform is present in the app bundle's
+   resources directory.
+2. Check `NetworkCocoonPort` is reachable - terminal creation goes through the
+   Cocoon gRPC service.
+3. Set `Trace=terminal` and relaunch. The dev log will show the exact command
+   Mountain attempted to pass to `localPty:createProcess` and any error
+   returned.
 
-## Permission Errors
+## Code Signing Issues
 
-**Symptoms:** Land cannot access files, or shows "operation not permitted" /
-"access denied" errors when opening a project.
+### codesign failures on macOS
 
-### macOS
+**Symptom**: The application bundle fails to launch with a "damaged or
+incomplete" error, or Gatekeeper blocks it. Alternatively, `codesign --verify`
+reports `not signed` or `invalid signature`.
 
-macOS requires explicit user consent for file access outside standard
-directories, enforced by the TCC (Transparency, Consent, and Control) system
-regardless of file ownership.
+**Cause**: Tauri's build process does not automatically re-sign the bundle after
+it copies the Cocoon Node.js binary and other resources into the `.app`. The
+ad-hoc signature applied at Tauri bundle time becomes invalid once additional
+files are written.
 
-1. Open **System Settings → Privacy & Security → Files and Folders**.
-2. Find Land in the list and grant access to the directories it needs.
-3. If Land does not appear, try opening a folder from within Land using **File →
-   Open Folder** so macOS can prompt for consent.
-4. If permissions appear stuck, you can reset the TCC entry. The bundle
-   identifier follows the pattern `com.codeeditorland.*` - check the exact
-   identifier in the built `.app` bundle's `Info.plist` before running any
-   `tccutil reset` command.
+**Fix**: Re-run `SignBundle.sh` after the build:
 
-### Windows
+```sh
+BundleLevel=debug sh Maintain/Script/SignBundle.sh
+```
 
-- Ensure the directory you are opening is not under a path blocked by **Windows
-  Defender Controlled Folder Access**. If it is, add Land as an allowed
-  application in **Windows Security → Virus & threat protection → Ransomware
-  protection**.
-- Verify NTFS permissions on the target directory. Right-click the folder,
-  select **Properties → Security**, and confirm your user account has Read and
-  Write permissions.
-- If running a dev build, ensure you launched the terminal as your normal user
-  (not as Administrator), as some paths behave differently under elevated
-  contexts.
+The script runs `xattr -cr` to strip quarantine attributes, then applies a fresh
+`codesign` with the entitlements from `Element/Mountain/Entitlements.plist`.
 
----
+> [!WARNING] XML comments inside the `<dict>` block of `Entitlements.plist` will
+> cause `codesign` to reject the file with a parse error. Comments must appear
+> outside the `<dict>` element. If you edit `Entitlements.plist`, verify the XML
+> is well-formed before signing.
 
-## Getting Further Help
+### codesign succeeds but app still blocked
 
-If none of the above resolves your issue:
+**Symptom**: `codesign --verify` passes but macOS still shows "cannot be opened"
+at launch.
 
-1. Collect diagnostic information: your OS version (macOS version or Windows
-   version and build number), Land build date or commit SHA, and the exact steps
-   to reproduce.
-2. If you built from source, run `cargo tauri dev` and copy any error output
-   from the terminal.
-3. Open an issue at
-   [CodeEditorLand/Land](https://github.com/CodeEditorLand/Land/issues) with the
-   collected information. Clear reproduction steps are the single most useful
-   thing you can include.
+**Cause**: Quarantine extended attribute was not cleared before signing.
 
----
+**Fix**: Clear the quarantine attribute explicitly before signing:
 
-## See Also
+```sh
+xattr -cr Element/Mountain/Target/debug/Mountain.app
+BundleLevel=debug sh Maintain/Script/SignBundle.sh
+```
 
-- [Installation](https://editor.land/Doc/installation)
-- [Getting Started](https://editor.land/Doc/getting-started)
-- [Configuration](https://editor.land/Doc/configuration)
-- [`API` Reference](https://editor.land/Doc/api-reference)
+`SignBundle.sh` already calls `xattr -cr` internally, so re-running the full
+script is sufficient.

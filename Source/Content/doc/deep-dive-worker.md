@@ -1,91 +1,172 @@
 ---
 title: "Worker - Deep Dive"
 section: "Deep Dive"
-order: 42
+order: 14
 description:
-    "Service Worker for caching, dynamic CSS loading, and offline web
-    application support"
+    "Worker registration pattern, fetch interception message protocol, ESBuild
+    bundle configuration, and service worker lifecycle stages."
 ---
 
-# Worker - Deep Dive
+Worker is the Service Worker element for Land. This page covers the worker
+registration pattern, the fetch interception protocol between the Service Worker
+and client page, the ESBuild bundle configuration, and the full service worker
+lifecycle. For an overview, see the
+[Worker element page](https://editor.land/Doc/worker).
 
-Worker provides Service Worker functionality including intelligent caching,
-dynamic CSS loading, and offline capabilities for web applications in the Land
-project.
+## Worker Registration Pattern
 
-## Architecture 🏗️
+`Source/Worker/Register.ts` handles Service Worker registration, update
+detection, and controlled activation. The registration flow:
 
-Three-phase design: Service Worker bootstrap, multi-tier caching, and dynamic
-CSS loading system.
+1. `Register.ts` checks `navigator.serviceWorker` availability and reads the
+   worker script path from `window._WORKER` (set by an inline script in Sky's
+   layout before `Register.js` loads).
+2. `navigator.serviceWorker.register(window._WORKER, { scope: '/Application' })`
+   registers the worker confined to the `/Application` scope so it only
+   intercepts requests relevant to the editor shell.
+3. On `updatefound`, `Register.ts` attaches a `statechange` listener to the
+   installing worker. When the new worker reaches `installed` state, it posts a
+   `SKIP_WAITING` message to make the new worker activate immediately rather
+   than waiting for all tabs to close.
+4. `navigator.serviceWorker.addEventListener('controllerchange', ...)` detects
+   when the new worker takes control and triggers a single `location.reload()`
+   to ensure the page runs under the updated worker.
 
-### Core Files
+The reload is guarded by a flag so it fires at most once per registration cycle,
+preventing reload loops when multiple tabs are open.
 
-| File               | Purpose                                                                 |
-| ------------------ | ----------------------------------------------------------------------- |
-| Source/Worker.js   | Main Service Worker implementation with fetch event handling            |
-| Source/Load.js     | Client-side CSS loading coordination                                    |
-| Source/Register.js | Service Worker registration, update detection, and lifecycle management |
+## Message Protocol Between Main Thread and Worker
 
-## Caching Strategy 💾
+Worker uses two message channels:
 
-Two-tier caching with distinct strategies:
+### Client → Worker: SKIP_WAITING
 
-### CACHE_CORE (Network-First)
+Sent by `Register.ts` when a new worker reaches `installed` state:
 
-- **Target**: Application shell files (Application/, Register.js, Load.js)
-- **Strategy**: Network fetch first, fallback to cache on failure
-- **Rationale**: Application changes require latest versions
+```javascript
+// Register.ts
+installingWorker.postMessage({ type: "SKIP_WAITING" });
+```
 
-### CACHE_ASSET (Cache-First)
+The Service Worker (`Policy.ts`) listens for this in its `message` event handler
+and calls `self.skipWaiting()` to activate immediately.
 
-- **Target**: Static resources (Static/Application/\)
-- **Strategy**: Serve cached immediately, validate freshness in background
-- **Optimization**: LRU eviction for cache size management
+### Worker → Client: SW_ACTIVATED
 
-Pre-caching at install phase, runtime caching at fetch events.
+After the worker activates and calls `self.clients.claim()`, it broadcasts to
+all controlled clients:
 
-## Dynamic CSS Loading 🎨
+```javascript
+// Policy.ts (inside 'activate' event)
+self.clients.matchAll({ type: "window" }).then((clients) => {
+	clients.forEach((client) => client.postMessage({ type: "SW_ACTIVATED" }));
+});
+```
 
-Two-phase system prevents infinite interception loops:
+`Register.ts` receives this message and confirms the worker is in control,
+completing the update handshake.
 
-**Phase 1**: Service Worker intercepts CSS import requests, responds with a
-generated JavaScript module that calls `window._LOAD_CSS_WORKER()`.
+## Fetch Interception State Machine
 
-**Phase 2**: Client creates a `<link>` with `?Skip=Intercept` parameter. Service
-Worker detects the parameter, bypasses JS generation, serves actual CSS.
+`Source/Worker/Policy.ts` implements the fetch event handler. Every intercepted
+request passes through a decision tree:
 
-The `?Skip=Intercept` parameter creates a state transition that guarantees the
-interception terminates.
+```
+fetch(request)
+  │
+  ├─ URL path starts with /Application/ or is Register.js or Load.js?
+  │    └─ Yes → CACHE_CORE network-first handler
+  │         ├─ fetch from network, cache on success → return network response
+  │         └─ network fails → return cached response (offline fallback)
+  │
+  ├─ URL path starts with /Static/Application/ AND ends with .css
+  │    AND does NOT contain ?Skip=Intercept?
+  │    └─ Yes → CSS interception handler
+  │         ├─ Generate JS module: "window._LOAD_CSS_WORKER(url); export default {};"
+  │         ├─ Cache JS module in CACHE_ASSET under original CSS URL
+  │         └─ Return JS module with Content-Type: application/javascript
+  │
+  ├─ URL path starts with /Static/Application/ AND contains ?Skip=Intercept?
+  │    └─ Yes → CSS passthrough handler
+  │         ├─ Strip ?Skip=Intercept from URL for cache key
+  │         ├─ Check CACHE_ASSET for real CSS content
+  │         ├─ Cache hit → return cached CSS with Content-Type: text/css
+  │         └─ Cache miss → fetch real CSS, cache it, return it
+  │
+  └─ URL path starts with /Static/Application/ (JS, images, fonts)?
+       └─ Yes → CACHE_ASSET cache-first handler
+            ├─ Check CACHE_ASSET → cache hit: return immediately
+            └─ Cache miss → fetch from network, cache on success, return
+```
 
-### Performance
+Requests outside these patterns are passed through to the network without
+caching.
 
-| Metric           | Worker         | Without Worker | Improvement         |
-| ---------------- | -------------- | -------------- | ------------------- |
-| CSS Loading Time | ~15-65ms       | ~50-200ms      | ~70% faster         |
-| Cache Hit Ratio  | >95%           | N/A            | Significant         |
-| Bandwidth Usage  | ~60% reduction | Baseline       | Significant savings |
+## ESBuild Worker Bundle Configuration
 
-## Version Management 📌
+`Source/Configuration/ESBuild/` contains two separate ESBuild configurations:
 
-- Content hashing detects meaningful changes beyond file size
-- New Service Workers enter waiting state until clients are ready
-- Register.js orchestrates controlled reload cycles
-- Previous version caches retained as rollback fallback
+**Worker bundle** (`Worker.ts` → `Worker.js`):
 
-## Progressive Enhancement 📈
+- `platform: 'browser'`
+- `format: 'iife'` - Service Workers do not support ES modules in all target
+  browsers
+- `target: ['chrome90', 'safari14']` - matches Tauri's WKWebView / WebView2
+  minimum versions
+- `bundle: true`, `minify: true` for production
+- No external dependencies - the worker is fully self-contained
 
-1. Basic functionality without Service Worker
-2. Enhanced performance with caching
-3. Advanced features with dynamic asset transformation
-4. Offline capabilities with update management
+**Client bundle** (`Register.ts` + `CSS/Load.ts` → `Register.js` + `Load.js`):
 
-## Security 🔒
+- `platform: 'browser'`
+- `format: 'esm'` - loaded as `type="module"` scripts in Sky's layout
+- `splitting: false` - each client script is a single file with no dynamic
+  imports to ensure load order is deterministic
 
-- Generated JavaScript modules validated for CSP compliance
-- Cryptographic signature verification for critical assets
-- Strict CORS enforcement for intercepted requests
-- No external telemetry, fully local operation
+The Telemetry bridge (`Source/Telemetry/Bridge.ts`) is bundled into `Worker.js`
+and uses `fetch()` to report errors to PostHog from within the worker context,
+since Service Workers have no access to `window` or the page's PostHog instance.
 
-## Related Documentation 📖
+## Service Worker Lifecycle Stages
+
+The full lifecycle from first install to active caching:
+
+| Stage      | Trigger                                                  | What happens                                                                                       |
+| ---------- | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `install`  | First registration or new version detected               | Pre-cache shell files into `CACHE_CORE`; call `self.skipWaiting()` on `SKIP_WAITING` message       |
+| `waiting`  | New worker installed, old worker still controlling pages | Worker waits; `Register.ts` sends `SKIP_WAITING` to advance immediately                            |
+| `activate` | `skipWaiting()` called or all old clients closed         | Delete stale cache versions; call `self.clients.claim()` to take control of open pages immediately |
+| `fetch`    | Any network request within `/Application` scope          | Apply caching strategy per URL pattern (see decision tree above)                                   |
+| `message`  | Client posts `SKIP_WAITING`                              | Call `self.skipWaiting()`                                                                          |
+
+Cache versioning uses a build-time constant embedded in `Worker.js`. When a new
+worker activates, its `activate` handler deletes any cache entries whose version
+key does not match the current build constant. This ensures stale assets from a
+previous deploy are evicted on the first activation of a new worker version.
+
+## CSS Loader Client Function
+
+`Source/Worker/CSS/Load.ts` exports and installs `window._LOAD_CSS_WORKER`. The
+function must be available synchronously before any workbench module executes:
+
+```typescript
+// Source/Worker/CSS/Load.ts
+window._LOAD_CSS_WORKER = (cssUrl: string): void => {
+	const link = document.createElement("link");
+	link.rel = "stylesheet";
+	link.href = cssUrl + "?Skip=Intercept";
+	document.head.appendChild(link);
+};
+```
+
+Sky's layout loads `Load.js` as the first `<script type="module">` tag.
+Workbench CSS imports that fire during module evaluation find `_LOAD_CSS_WORKER`
+already defined and call it immediately. The `?Skip=Intercept` suffix is
+appended by the client function, not by the caller, so workbench source never
+needs to know about the interception protocol.
+
+## Related Documentation
 
 - [Worker overview](https://editor.land/Doc/worker)
+- [Sky UI layer](https://editor.land/Doc/sky)
+- [Output build pipeline](https://editor.land/Doc/deep-dive-output)

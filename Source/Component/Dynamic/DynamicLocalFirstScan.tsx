@@ -1,9 +1,8 @@
 "use client";
 
+import { ThemeImage } from "@Library/Theme";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import { ThemeImage } from "@Library/Theme";
 
 /**
  * Local-First Air Daemon scanner.

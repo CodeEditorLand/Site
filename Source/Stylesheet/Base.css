@@ -698,8 +698,16 @@
 		--ExtensionTauriSurface: color-mix(in srgb, #fbbf24 8%, #0a0a0c);
 		--ExtensionTauriFore: #fcd34d;
 
-		--ExtensionEffectTypeScriptMute: color-mix(in srgb, #22d3d8 18%, #0a0a0c);
-		--ExtensionEffectTypeScriptSurface: color-mix(in srgb, #22d3d8 8%, #0a0a0c);
+		--ExtensionEffectTypeScriptMute: color-mix(
+			in srgb,
+			#22d3d8 18%,
+			#0a0a0c
+		);
+		--ExtensionEffectTypeScriptSurface: color-mix(
+			in srgb,
+			#22d3d8 8%,
+			#0a0a0c
+		);
 		--ExtensionEffectTypeScriptFore: #67e8f9;
 
 		--ExtensionReactMute: color-mix(in srgb, #60a5fa 18%, #0a0a0c);

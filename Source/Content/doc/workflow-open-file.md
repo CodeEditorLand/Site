@@ -1,85 +1,84 @@
 ---
 title: "Opening a File from the UI"
-section: "Workflow"
-order: 10
+section: "Workflows"
+order: 1
 description:
-    "Flow from user clicking a file in explorer to content loaded from disk by
-    Mountain and rendered in editor by Wind."
+    "How a file-tree click travels from Sky through Wind's editor and filesystem
+    services to a Mountain disk read, then back to Monaco."
 ---
 
-# Opening a File from the UI
+Opening a file involves four element boundaries: Sky dispatches the intent,
+Wind's editor and filesystem services resolve and load the model, a Tauri IPC
+call reaches Mountain, and the native result unwinds through the same chain
+until Monaco renders the content.
 
-Details the flow from a user clicking a file in the File Explorer to the file's
-content being loaded into an editor.
+## Phase 1 - User interaction (Sky)
 
-## Data Flow
+1. The user clicks a file entry in the File Explorer component. The `onClick`
+   handler holds the file's `URI` and calls into the `IEditorService`.
 
-```
-User clicks file in File Explorer
-  -> IEditorService.openEditor({ resource: fileUri })
-  -> TextEditorService resolves EditorInput
-  -> EditorGroupsService finds target editor group
-  -> TextFileEditorModel.load()
-  -> IFileService.readFile(fileUri)
-  -> TauriDiskFileSystemProvider.lookup(file: scheme)
-  -> ReadFile Effect executes
-  -> TauriInvoke('plugin:fs|ReadFile', { path: fileUri.fsPath })
-  -> Mountain: tokio::fs::read(path)
-  -> File content returned as Vec<u8>
-  -> Uint8Array returned up the chain
-  -> TextFileEditorModel hydrated
-  -> TextEditorPane created in editor group
-  -> Monaco editor receives text model
-  -> User sees file open in editor
-```
+2. `IEditorService.openEditor({ resource: fileUri })` executes the
+   `openEditorEffect` defined in `Wind/Source/Application/Editor/Definition.ts`.
+   The effect first passes the untyped input to `TextEditorService` to resolve
+   it into a concrete `EditorInput`, then calls `findGroup` to identify the
+   target editor group.
 
-## Phase 1: UI Interaction (Wind/Sky)
+## Phase 2 - Editor and filesystem logic (Wind → Mountain)
 
-1. User clicks a file `<div>` in the File Explorer. The `onClick` handler knows
-   the file's URI.
-2. `IEditorService.openEditor()` is called with `{ resource: fileUri }`. The
-   effect resolves the input into a concrete `EditorInput` via
-   `TextEditorService`, then finds the target editor group.
+3. `EditorGroupsService` checks whether an editor for `fileUri` is already open.
+   If it is, Wind focuses that tab and stops. Otherwise it calls
+   `EditorInput.resolve()` to obtain the underlying model.
 
-## Phase 2: Editor and Filesystem Logic (Wind -> Mountain)
-
-3. `EditorGroupsService` checks if the file is already open. If not, it calls
-   `EditorInput.resolve()` to load the underlying model.
 4. `TextFileEditorModel.load()` needs file content. It calls
-   `IFileService.readFile(fileUri)`.
-5. `IFileService` looks up the provider for the `file:` scheme and finds
-   `TauriDiskFileSystemProvider`.
+   `IFileService.readFile(fileUri)` from `Wind/Source/Application/File/Live.ts`.
+
+5. `IFileService` looks up the registered provider for the `file:` URI scheme
+   and finds `TauriDiskFileSystemProvider`
+   (`Wind/Source/Application/FileSystem/Definition.ts`).
+
 6. `TauriDiskFileSystemProvider.readFile()` executes the `ReadFile` Effect from
-   the Tauri Integration layer: `Effect.runPromise(ReadFile(fileUri))`.
-7. The `ReadFile` Effect calls
-   `TauriInvoke('plugin:fs|ReadFile', { path: fileUri.fsPath })`, sending the
-   request from the webview to Mountain.
+   the Tauri integration layer:
 
-## Phase 3: Native File I/O (Mountain)
+    ```ts
+    Effect.runPromise(ReadFile(fileUri));
+    ```
 
-8. Tauri routes the command to `tauri-plugin-fs`. The plugin performs
-   `tokio::fs::read(path)`.
-9. File content (`Vec<u8>`) is read from disk, serialized, and returned as the
-   promise resolution.
+7. The `ReadFile` effect calls:
 
-## Phase 4: UI Rendering (Wind)
+    ```ts
+    TauriInvoke("plugin:fs|ReadFile", { path: fileUri.fsPath });
+    ```
 
-10. The `TauriInvoke` promise resolves with file content as a `Uint8Array`.
-11. `TextFileEditorModel.load()` succeeds. The model is hydrated.
-12. `EditorGroupsService` creates a `TextEditorPane` and sets the
-    `TextFileEditorModel` on the Monaco editor instance.
-13. Monaco renders the text content to screen.
+    This crosses the webview boundary into the Mountain process.
 
-## Key Source Files
+## Phase 3 - Native file I/O (Mountain)
 
-- `Wind/Source/Application/Editor/Definition.ts` -- editor service
-- `Wind/Source/Application/FileSystem/Definition.ts` -- filesystem provider
-- `Wind/Integration/Tauri/Wrap/ReadFile.ts` -- Tauri invoke effect
-- `Mountain/src/main.rs` -- Tauri fs plugin
+8. Tauri routes the `plugin:fs|ReadFile` command to the `tauri-plugin-fs`
+   internal Rust handler. The plugin executes:
 
----
+    ```rust
+    tokio::fs::read(path)
+    ```
 
-## See Also
+9. The file content is returned as `Vec<u8>`, serialised, and sent back to Wind
+   as the resolution of the `TauriInvoke` promise.
 
-- [Application Startup and Handshake](https://editor.land/Doc/workflow-startup)
-- [Architecture Overview](https://editor.land/Doc/architecture)
+## Phase 4 - Data unwinds and UI renders (Wind)
+
+10. The `ReadFile` Effect succeeds, yielding a `Uint8Array`.
+
+11. `TextFileEditorModel.load()` completes. The model is now hydrated with the
+    file content.
+
+12. `EditorGroupsService` creates a `TextEditorPane` within the target group and
+    sets the `TextFileEditorModel` on the Monaco editor instance inside that
+    pane.
+
+13. Monaco receives the text model and renders the file content to screen. The
+    user sees the file open in the editor.
+
+> [!IMPORTANT] The `IFileService` provider lookup is keyed on URI scheme. Only
+> `file:` URIs reach `TauriDiskFileSystemProvider`. Custom-scheme URIs (e.g.
+> `git:`, `output:`) are served by their own registered
+> `TextDocumentContentProvider` in Cocoon, which follows a different path
+> through the gRPC layer.

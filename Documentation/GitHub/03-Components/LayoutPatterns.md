@@ -1,4 +1,5 @@
 # Layout Patterns
+
 **Scope:** Page shells, hero features, dashboard, forms, legal pages  
 **Audience:** Astro/React contributors
 
@@ -11,33 +12,38 @@
 ```astro
 <Background />
 <main id="main-content" class="grow" tabindex="-1">
-  <ErrorBoundary client:load>
-    <slot />
-  </ErrorBoundary>
+	<ErrorBoundary client:load>
+		<slot />
+	</ErrorBoundary>
 </main>
 <Footer client:idle />
 ```
 
-Skip link: `sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-[var(--Primary)] px-4 py-2 font-medium text-white transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]`.
+Skip link:
+`sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-[var(--Primary)] px-4 py-2 font-medium text-white transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]`.
 
 ---
 
 ## 2. Hero Section
 
-Path: `Source/Component/Dynamic/DynamicHeroSection.tsx` and `Source/pages/index.astro`.
+Path: `Source/Component/Dynamic/DynamicHeroSection.tsx` and
+`Source/pages/index.astro`.
 
 Layout:
+
 - Background parallax layers: `StaccatoParallaxNear/Mid/Far`.
 - Floating decorations: `StaccatoFloat`, `StaccatoBreath`.
 - Center CTA: `StaccatoHeroButton`.
 - Logo: `StaccatoLogo` (stable seed, no hover transform).
 
 Heading class pattern:
+
 ```tsx
 <h1 className="StaccatoColorShift mx-auto max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl lg:text-8xl">
 ```
 
 Subhead:
+
 ```tsx
 <div className="StaccatoBreath mx-auto mt-3 max-w-2xl text-[var(--MuteForeground)]">
 ```
@@ -49,24 +55,26 @@ Subhead:
 ### 3.1 Feature cards
 
 Pattern:
+
 ```tsx
 <div className={clsx("StaccatoMorphGap grid", ColumnClass)}>
-  <div className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8" />
+	<div className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8" />
 </div>
 ```
 
-- `StaccatoMorphGap grid` is present but gap-morph is disabled to prevent CLS; safe as layout hook.
+- `StaccatoMorphGap grid` is present but gap-morph is disabled to prevent CLS;
+  safe as layout hook.
 - Column classes assigned by layout helper.
 
 ### 3.2 Pricing cards
 
 ```tsx
 <div className={clsx("StaccatoMorphGap grid", ColumnClass)}>
-  <div className="PricingCard StaccatoCard flex flex-col rounded-none bg-white ..." >
-    <span className="StaccatoBadge shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground" />
-    <span className="StaccatoBadge StaccatoRhythmBeat font-semibold uppercase tracking-wider text-primary" />
-    <span className="StaccatoBreath text-muted-foreground" />
-  </div>
+	<div className="PricingCard StaccatoCard flex flex-col rounded-none bg-white ...">
+		<span className="StaccatoBadge text-muted-foreground shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium" />
+		<span className="StaccatoBadge StaccatoRhythmBeat text-primary font-semibold tracking-wider uppercase" />
+		<span className="StaccatoBreath text-muted-foreground" />
+	</div>
 </div>
 ```
 
@@ -90,11 +98,13 @@ Pattern:
 - Editable top cards: `StaccatoCard StaccatoBorderShimmer bg-white p-6`.
 - Local-first scan: `DynamicLocalFirstScan` card with orange action button.
 - Transparency: `TransparencyCard StaccatoCard ...`.
-- Privacy requests: `DynamicPrivacyRequests` rights grid + support grid + delete account card.
+- Privacy requests: `DynamicPrivacyRequests` rights grid + support grid + delete
+  account card.
 
 ### 5.2 Auth-Gated Section
 
-- User panel: `DynamicDashboardUser` - sign-in prompt, tier/badge summary, request history, needs-region form.
+- User panel: `DynamicDashboardUser` - sign-in prompt, tier/badge summary,
+  request history, needs-region form.
 
 ---
 
@@ -104,16 +114,14 @@ Canonical pattern:
 
 ```tsx
 <div className="mx-auto max-w-2xl space-y-8 px-4 py-12">
-  <div className="StaccatoCard space-y-5 bg-white p-6">
-    {/* fields */}
-  </div>
-  <div className="space-y-4">
-    <p className="text-sm font-medium">How would you like to send this?</p>
-    <button className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] ..." />
-  </div>
-  <div className="border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-sm text-muted-foreground">
-    {/* Pair reference explanation */}
-  </div>
+	<div className="StaccatoCard space-y-5 bg-white p-6">{/* fields */}</div>
+	<div className="space-y-4">
+		<p className="text-sm font-medium">How would you like to send this?</p>
+		<button className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] ..." />
+	</div>
+	<div className="text-muted-foreground border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-sm">
+		{/* Pair reference explanation */}
+	</div>
 </div>
 ```
 
@@ -122,6 +130,7 @@ Canonical pattern:
 ## 7. Auth Cards (Sign In / Up / Reset)
 
 Shared pattern:
+
 ```tsx
 <Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
   <Separator className="StaccatoSeparator my-8" />
@@ -132,8 +141,10 @@ Shared pattern:
 
 ## 8. Legal Pages
 
-- White card with explicit padding: `LegalCard background-color: var(--Background); color: var(--Foreground); padding: 2rem`.
-- Lists: `.LegalCard ol.LegalList { list-style-type: lower-alpha; padding-left: 1.75rem; }`.
+- White card with explicit padding:
+  `LegalCard background-color: var(--Background); color: var(--Foreground); padding: 2rem`.
+- Lists:
+  `.LegalCard ol.LegalList { list-style-type: lower-alpha; padding-left: 1.75rem; }`.
 - Print mode hides header/nav/footer and forces black text.
 
 Used by: `Legal/Privacy.astro`, `Legal/Term.astro`.
@@ -161,9 +172,12 @@ Used by: `Legal/Privacy.astro`, `Legal/Term.astro`.
 
 - Reserve heights for `main > astro-island` and `#Footer`.
 - `contain-intrinsic-block-size` mirrors `min-height`.
-- When hydration detects content (`:has(> :first-child)`), release reserved space.
-- Content sections below the fold use `content-visibility: auto` with `contain-intrinsic-block-size: 800px`.
-- Never animate `padding` or `gap` via Staccato; these properties cause layout shift.
+- When hydration detects content (`:has(> :first-child)`), release reserved
+  space.
+- Content sections below the fold use `content-visibility: auto` with
+  `contain-intrinsic-block-size: 800px`.
+- Never animate `padding` or `gap` via Staccato; these properties cause layout
+  shift.
 
 ---
 

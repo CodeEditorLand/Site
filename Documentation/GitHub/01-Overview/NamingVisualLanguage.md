@@ -1,13 +1,18 @@
 # Naming & Visual Language
-**Philosophy anchor:** flat-white, local-first, transparency-oriented, Staccato personality layer
+
+**Philosophy anchor:** flat-white, local-first, transparency-oriented, Staccato
+personality layer
 
 ---
 
 ## 1. Tone
 
-- **Flat and honest.** The site should read as black/white/gray first, with color as signal.
-- **Staccato = life.** When the page feels static, Staccato motion is the prescribed fix. It is not decoration; it is part of the product.
-- **Local-first first.** Auth and account UI must not assume sign-in is mandatory.
+- **Flat and honest.** The site should read as black/white/gray first, with
+  color as signal.
+- **Staccato = life.** When the page feels static, Staccato motion is the
+  prescribed fix. It is not decoration; it is part of the product.
+- **Local-first first.** Auth and account UI must not assume sign-in is
+  mandatory.
 
 ---
 
@@ -15,11 +20,11 @@
 
 ### 2.1 Prefix Rules
 
-| Prefix | Applies to | Example |
-|--------|-----------|---------|
-| `Staccato*` | Motion-decorated elements | `StaccatoButton`, `StaccatoCard`, `StaccatoBadge` |
-| `Dynamic*` | Client-side rendered React islands | `DynamicHeroSection`, `DynamicPricing` |
-| `Feature*` / `PricingCard*` / `MasonryCard*` | Semantic card variants | `FeatureCard`, `PricingCard`, `TestimonialCard` |
+| Prefix                                       | Applies to                         | Example                                           |
+| -------------------------------------------- | ---------------------------------- | ------------------------------------------------- |
+| `Staccato*`                                  | Motion-decorated elements          | `StaccatoButton`, `StaccatoCard`, `StaccatoBadge` |
+| `Dynamic*`                                   | Client-side rendered React islands | `DynamicHeroSection`, `DynamicPricing`            |
+| `Feature*` / `PricingCard*` / `MasonryCard*` | Semantic card variants             | `FeatureCard`, `PricingCard`, `TestimonialCard`   |
 
 ### 2.2 Rule: Behavior Before Tech Stack
 
@@ -45,17 +50,19 @@ className={clsx(
 )}
 ```
 
-Rationale: motion declared first ensures seed/vars override helper classes if specificity ever collides.
+Rationale: motion declared first ensures seed/vars override helper classes if
+specificity ever collides.
 
 ---
 
 ## 4. Semantic Color Usage Policy
 
-- Saturated protocol colors → chips, badges, icon pairs, small status indicators. They must **not** appear as:
-  - page background
-  - `<body>` fill
-  - large surface area
-  - text on white at large scale (headline sans opacity guard)
+- Saturated protocol colors → chips, badges, icon pairs, small status
+  indicators. They must **not** appear as:
+    - page background
+    - `<body>` fill
+    - large surface area
+    - text on white at large scale (headline sans opacity guard)
 
 - Neutral palette (`#1a1a1a`, `#fafafa`, `#f4f4f5`) carries the page weight.
 
@@ -73,7 +80,9 @@ CSS custom property names:
 ```
 
 Categories (organized by `Base.css` section):
-- Neutral: `Background`, `Foreground`, `Card`, `Popover`, `Primary`, `Secondary`, `Mute`, `Accent`, `Destruct`, `Border`, `Input`, `Ring`
+
+- Neutral: `Background`, `Foreground`, `Card`, `Popover`, `Primary`,
+  `Secondary`, `Mute`, `Accent`, `Destruct`, `Border`, `Input`, `Ring`
 - Spine: `SpinegRPC`, `SpineIPC`, `SpineTCP`, `SpineWASM`
 - Auth Tier: `TierCloud`, `TierProvider`, `TierLocalFirst`
 - Framework / Extension: `Extension*`
@@ -91,9 +100,11 @@ Categories (organized by `Base.css` section):
 
 ## 6. File Naming
 
-- PascalCase for React island components: `DynamicHeroSection.tsx`, `DynamicPricing.tsx`.
+- PascalCase for React island components: `DynamicHeroSection.tsx`,
+  `DynamicPricing.tsx`.
 - PascalCase for exported Astro pages: `Dashboard.astro`, `OpenGraph.svg.ts`.
-- Kebab-case or camelCase for internal utilities: `tailwind.config.js`, `Noise.ts`, `Staccato.ts`.
+- Kebab-case or camelCase for internal utilities: `tailwind.config.js`,
+  `Noise.ts`, `Staccato.ts`.
 
 ---
 
@@ -104,7 +115,8 @@ Categories (organized by `Base.css` section):
 - Active domain: `editor.land`.
 - Grace-hold domain: `editor.land`.
 - Message channel / AI gateway: `@nikolahristov_hermes_bot` (Telegram DM).
-- Codebase term: preference for **“Land”** over verbose branding in dev conversation.
+- Codebase term: preference for **“Land”** over verbose branding in dev
+  conversation.
 
 ---
 
@@ -130,7 +142,8 @@ WebSite/Documentation/GitHub/
 └── NamingVisualLanguage.md
 ```
 
-Core principle: one topic per file, PascalCase filename, linked cross-references at the bottom.
+Core principle: one topic per file, PascalCase filename, linked cross-references
+at the bottom.
 
 ---
 

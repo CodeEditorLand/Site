@@ -1,162 +1,130 @@
 ---
-title: "Installation"
-section: "Start"
-order: 2
+title: Installation
+section: Start
+order: 3
 description:
-    "Build requirements and source installation steps for macOS and Windows."
+    System requirements, submodule clone instructions, build profiles, and
+    artifact paths for Land.
 ---
 
-# Installation
+Land is source-build only today. There are no public installer packages. This
+page covers system requirements, the correct way to obtain each submodule, the
+available build profiles, and where the build artifacts land on disk.
 
-> **Updated 2026-05-29** - Requirements updated to Rust nightly and Node 24.
-> Build commands updated to the `Maintain/Debug/Build.sh` profile system.
-> Canonical source:
-> [Documentation/GitHub/Building.md](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md)
+## System Requirements
 
-`editor.land` is currently source-only. There are no pre-built binaries,
-Homebrew tap, winget package, or apt repository yet. The instructions below
-cover building from source on **macOS and Windows**, both of which are supported
-today.
+| Requirement      | Minimum       | Notes                                                                                      |
+| ---------------- | ------------- | ------------------------------------------------------------------------------------------ |
+| Operating system | macOS 12+     | Primary platform. Windows/Linux in progress.                                               |
+| Rust             | 1.95.0 (MSRV) | Install via [rustup.rs](https://rustup.rs/). Edition 2024.                                 |
+| Node.js          | 24            | Required for VS Code source step only. Use nvm.                                            |
+| pnpm             | Latest stable | `npm install -g pnpm`. Used for workspace installs.                                        |
+| Git              | Any recent    | Git LFS required: `git lfs install`.                                                       |
+| Disk space       | ~10 GB        | VS Code source (~2 GB), Rust build cache (~4 GB), Node modules (~2 GB), artifacts (~1 GB). |
+| RAM              | 8 GB minimum  | 16 GB recommended for parallel Rust compilation.                                           |
 
----
+## Submodule Clone Instructions
 
-## Supported Platforms
+> [!WARNING] Never run `git clone --recurse-submodules`. Submodules are on
+> independent branches. Recursive cloning pulls the wrong commits.
 
-| Platform                | Status      | Notes                                      |
-| ----------------------- | ----------- | ------------------------------------------ |
-| **macOS 13+ (aarch64)** | Supported   | Apple Silicon - primary development target |
-| **macOS 13+ (x86_64)**  | Supported   | Intel Mac - tested                         |
-| **Windows 10 / 11**     | Supported   | WebView2 rendering active                  |
-| **Linux**               | In progress | WebKitGTK integration in development       |
+Each element is a separate Git repository cloned into `Element/<Name>/` inside
+the Land repo root. Clone the main repo first, then each element individually on
+the `Current` branch.
 
----
+| Element  | Repository                         | Path in Land repo                                |
+| -------- | ---------------------------------- | ------------------------------------------------ |
+| Common   | github.com/CodeEditorLand/Common   | `Element/Common`                                 |
+| Echo     | github.com/CodeEditorLand/Echo     | `Element/Echo`                                   |
+| Vine     | github.com/CodeEditorLand/Vine     | `Element/Vine`                                   |
+| Mountain | github.com/CodeEditorLand/Mountain | `Element/Mountain`                               |
+| Cocoon   | github.com/CodeEditorLand/Cocoon   | `Element/Cocoon`                                 |
+| Wind     | github.com/CodeEditorLand/Wind     | `Element/Wind`                                   |
+| Sky      | github.com/CodeEditorLand/Sky      | `Element/Sky`                                    |
+| Output   | github.com/CodeEditorLand/Output   | `Element/Output`                                 |
+| Rest     | github.com/CodeEditorLand/Rest     | `Element/Rest`                                   |
+| Worker   | github.com/CodeEditorLand/Worker   | `Element/Worker`                                 |
+| Mist     | github.com/CodeEditorLand/Mist     | `Element/Mist`                                   |
+| Maintain | github.com/CodeEditorLand/Maintain | `Element/Maintain`                               |
+| Grove    | github.com/CodeEditorLand/Grove    | `Element/Grove`                                  |
+| Editor   | github.com/CodeEditorLand/Editor   | `Element/Dependency/Microsoft/Dependency/Editor` |
 
-## Build Requirements
+After cloning each element, check out its `Current` branch:
 
-### macOS
-
-| Dependency | Minimum Version | Install                                                   |
-| ---------- | --------------- | --------------------------------------------------------- |
-| Rust       | nightly         | [rustup.rs](https://rustup.rs) → `rustup default nightly` |
-| Node.js    | 24              | [nodejs.org](https://nodejs.org) or `nvm install 24`      |
-| nvm        | latest          | [nvm-sh/nvm](https://github.com/nvm-sh/nvm)               |
-| pnpm       | 9               | `npm install -g pnpm`                                     |
-| Xcode CLI  | latest          | `xcode-select --install`                                  |
-| macOS      | 13.0 (Ventura)  | -                                                         |
-
-### Windows
-
-| Dependency                | Minimum Version | Install                                                                                                             |
-| ------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------- |
-| Rust                      | nightly         | [rustup.rs](https://rustup.rs) → `rustup default nightly`                                                           |
-| Node.js                   | 24              | [nodejs.org](https://nodejs.org)                                                                                    |
-| pnpm                      | 9               | `npm install -g pnpm`                                                                                               |
-| Visual Studio Build Tools | 2019+           | C++ workload required                                                                                               |
-| WebView2 Runtime          | latest          | Included with Windows 11; [download for Windows 10](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) |
-
----
-
-## Steps
-
-The build is a **two-step linear flow.** Do not pull submodules recursively -
-each submodule is managed independently on its own branch.
-
-**1. Clone the repository**
-
-```bash
-git clone --recurse-submodules https://github.com/CodeEditorLand/Land.git
-cd Land
+```sh
+git -C Element/Mountain checkout Current
 ```
 
-The `--recurse-submodules` flag is required. The Land repository uses Git
-submodules to reference each element (`Mountain`, `Cocoon`, `Sky`, `Wind`,
-`Vine`, and others) as a pinned commit. Cloning without this flag produces an
-incomplete source tree.
+Repeat for each element.
 
-**2. Compile the VS Code Editor submodule** _(mandatory)_
+## Build Profiles
 
-`Cocoon` and `Output` both depend on this compiled output. Node 24 is required
-here - the exact version is pinned in
-`Dependency/Microsoft/Dependency/Editor/.nvmrc`.
+The build script at `Maintain/Debug/Build.sh` accepts a `--profile` flag. The
+profile controls which workbench variant is compiled, which tier flags are
+active, and whether assets are pre-bundled.
 
-```bash
-cd Dependency/Microsoft/Dependency/Editor
+| Profile                         | Workbench      | Feature coverage                 | Output type                         |
+| ------------------------------- | -------------- | -------------------------------- | ----------------------------------- |
+| `debug`                         | Browser        | 70-80%                           | Dev binary                          |
+| `debug-mountain`                | Mountain       | 80-90%                           | Dev binary                          |
+| `debug-electron`                | Electron       | 95%+                             | Dev binary                          |
+| `debug-electron-bundled`        | Electron       | 95%+                             | Dev binary, Vite/Astro pre-compiled |
+| `debug-electron-unbundled`      | Electron       | 95%+                             | Dev binary, dynamic-import path     |
+| `debug-mountain-only`           | Mountain       | No Cocoon subprocess             | Dev binary                          |
+| `debug-cocoon-headless`         | None           | Mountain + Cocoon, Wind disabled | Dev binary                          |
+| `debug-kernel`                  | None           | Pure Mountain, no built-ins      | Dev binary                          |
+| `debug-electron-rest`           | Electron + OXC | 95%+ with faster TS compiler     | Dev binary                          |
+| `production-electron-bundled`   | Electron       | Optimized release                | Prod binary                         |
+| `production-electron-unbundled` | Electron       | Release without bundled assets   | Prod binary                         |
 
-# Switch to Node 24 (reads .nvmrc automatically)
-nvm use 24
+## Artifact Paths
 
-git fetch --all
-git reset --hard Parent/main
-git clean -dfx
+After a successful build, all artifacts are written inside the `Element/`
+directory tree. Nothing is installed system-wide.
 
-pnpm install
-pnpm run compile
-pnpm run compile-extensions-build
+```
+Land/
+  Element/
+    Mountain/Target/
+      debug-electron/
+        Mountain          # Native Tauri binary
+        Mountain.app/     # macOS .app bundle (signed)
+    Air/Target/
+      debug/
+        Air               # Background daemon binary
+    Cocoon/Compiled/
+      cocoon-bootstrap.js # Extension host entry point
+      bundles/            # Extension host support bundles
+    Output/Target/
+      @codeeditorland/output/  # Bundled VS Code platform package
+    Sky/Target/
+      Static/
+        Bundled/          # Pre-compiled workbench HTML+JS
+        Application/      # Extension assets
+    Wind/Target/
+      Function/Install/   # Compiled Wind service layer
 ```
 
-**3. Install `Node.js` dependencies**
+> [!IMPORTANT] Never edit files under any `Target/` directory. These are build
+> outputs. Source lives in `Public/` or `Source/` within each element. Edits to
+> `Target/` are overwritten on the next build.
 
-```bash
-cd Land # back to repository root
-pnpm install
+## macOS Code Signing
+
+The debug build is automatically re-signed after the Tauri build step. The
+signing script is at `Maintain/Script/SignBundle.sh` and is invoked
+automatically by `Maintain/Debug/Build.sh`. Ad-hoc signing is used for debug
+builds (no Developer ID required).
+
+To manually re-sign after modifying the bundle:
+
+```sh
+BundleLevel=debug sh Maintain/Script/SignBundle.sh
 ```
 
-This installs the `TypeScript` dependencies for `Cocoon`, `Sky`, `Wind`, and the
-build toolchain. It does not build the `Rust` components.
+## Next Steps
 
-**4. Run the development build**
-
-```bash
-./Maintain/Debug/Build.sh --profile debug-electron-bundled
-```
-
-This compiles `Mountain` and its dependencies, then opens the editor window. The
-first run compiles all `Rust` dependencies from scratch - a few minutes on a
-fresh checkout. Subsequent runs rely on `Cargo`'s incremental compilation cache.
-
-For a lighter iteration build that skips the full Vite/Astro bundling pass:
-
-```bash
-./Maintain/Debug/Build.sh --profile debug-mountain
-```
-
----
-
-## Release Build
-
-```bash
-./Maintain/Release/Build.sh --profile production-electron-bundled
-```
-
----
-
-## Updating
-
-To update to the latest commits and rebuild:
-
-```bash
-git pull --recurse-submodules
-cd Dependency/Microsoft/Dependency/Editor
-nvm use 24
-git fetch --all
-git reset --hard Parent/main
-git clean -dfx
-pnpm install
-pnpm run compile
-pnpm run compile-extensions-build
-cd Land
-pnpm install
-./Maintain/Debug/Build.sh --profile debug-electron-bundled
-```
-
-The `Air` module - active in the compiled binary today - manages daemon-level
-lifecycle and is the foundation for surfacing update notifications in the UI.
-
----
-
-## See Also
-
-- [Getting Started](https://editor.land/Doc/getting-started)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [`Air`: Update Daemon](https://editor.land/Doc/air)
-- [Contributing](https://editor.land/Doc/contributing)
+- [Getting Started](/doc/getting-started) - prerequisites and clone walkthrough
+- [Configuration](/doc/configuration) - environment variable system
+- [Project Structure](/doc/project-structure) - element layout and naming
+  conventions

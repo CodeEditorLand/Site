@@ -1,100 +1,107 @@
 ---
 title: "Creating and Interacting with a Webview Panel"
-section: "Workflow"
-order: 13
+section: "Workflows"
+order: 5
 description:
-    "Extension-contributed webview lifecycle: Cocoon requests panel, Mountain
-    manages native webview, messages proxy back and forth."
+    "How an extension creates a native webview panel via Cocoon and Mountain,
+    sets HTML content, and exchanges messages with the host."
 ---
 
-# Creating and Interacting with a Webview Panel
+Webview panels let extensions embed arbitrary HTML inside the editor. The panel
+itself is a native Tauri webview managed by Mountain; Cocoon holds a lightweight
+shim that proxies property assignments and message events across gRPC. Every
+`panel.webview.html` assignment and every `postMessage` call crosses the full
+Cocoon → Mountain → Sky path.
 
-Details the full lifecycle of extension-contributed UI, from Cocoon requesting a
-panel to Mountain managing the native webview and proxying messages.
+## Phase 1 - Extension creates the panel (Cocoon → Mountain)
 
-## Lifecycle
+1. The extension's `activate()` function runs and calls:
 
-```
-Extension calls createWebviewPanel(viewType, title, viewColumn, options)
-  -> Cocoon WebviewPanelProvider.CreateWebviewPanel Effect
-  -> IpcProvider sends $createWebviewPanel gRPC to Mountain
-  -> Mountain generates unique handle (UUID)
-  -> Mountain creates WebviewStateDto, stores in AppState.ActiveWebviews
-  -> Mountain emits Tauri event: sky://webview/create
-  -> Mountain sends handle back to Cocoon as gRPC response
+    ```ts
+    vscode.window.createWebviewPanel(viewType, title, viewColumn, options);
+    ```
 
-Cocoon:
-  -> Creates WebviewPanelShim and WebviewShim, stores handle
-  -> Returns WebviewPanelShim to extension
+2. Cocoon's `WebviewPanelProvider` constructs a creation DTO containing all
+   panel options, the extension ID, and the extension's on-disk location (used
+   to resolve `localResourceRoots`).
 
-Wind/UI:
-  -> WebviewManagementService receives sky://webview/create
-  -> Dynamically creates TauriWebviewWindow or iframe, associates with handle
+3. Cocoon sends a **`$createWebviewPanel` gRPC request** to Mountain and awaits
+   a unique handle in the response.
 
-Extension sets content:
-  -> panel.webview.html = "<h1>Hello</h1>"
-  -> WebviewShim sends $setWebviewHtml gRPC to Mountain
-  -> Mountain emits sky://webview/set-html event
-  -> Wind sets inner HTML of webview element
-  -> User sees content
+## Phase 2 - Mountain allocates the native webview (Mountain → Sky)
 
-User interaction:
-  -> User clicks button in webview
-  -> vscode.postMessage({ command: 'doSomething' })
-  -> Wind sends TauriInvoke('mountain://webview/on-message')
-  -> Mountain looks up webview's owner sidecar
-  -> Mountain sends $onDidReceiveMessage gRPC to Cocoon
-  -> Cocoon WebviewPanelProvider fires onDidReceiveMessage event
-  -> Extension receives message payload
-```
+4. Mountain's Vine gRPC server receives the request and dispatches it to
+   `WebviewProvider.CreateWebviewPanel()` on the `MountainEnvironment`.
 
-## Phase 1: Extension Creates the Webview (Cocoon)
+5. The method generates a UUID handle, creates a `WebviewStateDto` with the
+   received options, and stores it in `AppState.ActiveWebviews` keyed on the
+   handle.
 
-1. Extension's `activate()` runs. Calls
-   `window.createWebviewPanel(viewType, title, viewColumn, options)`.
-2. `WebviewPanelProvider` in Cocoon constructs a DTO with all panel options,
-   extension ID, and `localResourceRoots` location.
-3. Sends `$createWebviewPanel` gRPC request to Mountain, awaits a unique handle.
+6. Mountain emits a Tauri event to the Sky frontend:
 
-## Phase 2: Host Creates the Native Webview (Mountain)
+    ```
+    sky://webview/create  { handle, title, viewColumn, … }
+    ```
 
-4. `$createWebviewPanel` request dispatched to `WebviewProvider` trait.
-5. `WebviewProvider.CreateWebviewPanel()` generates a UUID handle, creates
-   `WebviewStateDto`, stores in `AppState.ActiveWebviews`.
-6. Emits `sky://webview/create` Tauri event to Sky frontend.
-7. Sends the handle back to Cocoon as the gRPC response.
+7. Mountain returns the handle to Cocoon as the successful gRPC response.
 
-## Phase 3: UI Renders the Webview (Wind/Sky)
+## Phase 3 - Sky renders the empty panel (Sky)
 
-8. `WebviewManagementService` receives the `sky://webview/create` event.
-9. Creates a new `TauriWebviewWindow` or iframe within the main window's DOM,
-   associated with the handle.
+8. A listener in Wind's `WebviewManagementService` receives the
+   `sky://webview/create` event. It creates a new `TauriWebviewWindow` or an
+   `<iframe>` element inside the main window's DOM and associates it with the
+   handle. The webview is initially empty.
 
-## Phase 4: Content and Interaction (Cocoon <-> Mountain <-> Wind)
+## Phase 4 - Extension sets content (Cocoon → Mountain → Sky)
 
-10. Cocoon creates `WebviewPanelShim` and `WebviewShim` with the handle, returns
-    it to the extension.
-11. Extension sets `panel.webview.html`. The Shim sends `$setWebviewHtml` gRPC
-    to Mountain.
-12. Mountain emits `sky://webview/set-html` event. Wind sets the inner HTML of
-    the webview.
-13. User clicks a button in the webview, calling `vscode.postMessage()`.
-14. Wind sends
-    `TauriInvoke('mountain://webview/on-message', { Handle, Message })`.
-15. Mountain looks up the webview's owner sidecar and sends
-    `$onDidReceiveMessage` gRPC to Cocoon.
-16. Cocoon fires `onDidReceiveMessage` event. Extension receives the message
-    payload.
+9. Cocoon receives the handle from the gRPC response and constructs a
+   `WebviewPanelShim` and `WebviewShim` that store the handle internally. It
+   returns the `WebviewPanelShim` to the extension.
 
-## Key Source Files
+10. The extension sets the panel's HTML:
 
-- `Mountain/Source/Environment/WebviewProvider.rs` -- webview creation and HTML
-  management
-- `Cocoon/src/Service/WebviewPanel.ts` -- webview panel provider
-- `Cocoon/src/Service/Ipc.ts` -- IPC provider
+    ```ts
+    panel.webview.html = "<h1>Hello World</h1>";
+    ```
 
----
+    The `set html` accessor on `WebviewShim` sends a **`$setWebviewHtml` gRPC
+    request** to Mountain carrying the handle and the HTML string.
 
-## See Also
+11. Mountain's `WebviewProvider` receives `$setWebviewHtml`, looks up the handle
+    in `AppState.ActiveWebviews`, then emits:
 
-- [Architecture Overview](https://editor.land/Doc/architecture)
+    ```
+    sky://webview/set-html  { handle, html }
+    ```
+
+12. Wind's webview manager receives the event, finds the element associated with
+    the handle, and sets its HTML. "Hello World" is now visible in the panel.
+
+## Phase 5 - Bidirectional message passing (Sky → Mountain → Cocoon)
+
+13. The user clicks a button inside the webview. The webview's content script
+    calls `vscode.postMessage({ command: "doSomething" })` using the `vscode`
+    object injected by the preload script.
+
+14. Wind intercepts the message and calls:
+
+    ```ts
+    TauriInvoke("mountain://webview/on-message", { handle, message });
+    ```
+
+15. Mountain receives the command, looks up the owning sidecar (`"cocoon-main"`)
+    for the handle in `AppState.ActiveWebviews`, and sends a
+    **`$onDidReceiveMessage` gRPC notification** to Cocoon with the handle and
+    message payload.
+
+16. Cocoon's `WebviewPanelProvider` finds the `WebviewShim` for the handle and
+    fires its `onDidReceiveMessage` event emitter. The extension's listener
+    receives `{ command: "doSomething" }` and reacts accordingly. The
+    communication loop is complete.
+
+> [!WARNING] The webview messaging bridge (`webview-message` gRPC) requires the
+> `Environment/WebviewProvider/Messaging.rs` handler to be present in the
+> Mountain build. If `setup_webview_message_listener_impl` is absent, messages
+> posted from the webview content are silently dropped and the extension never
+> receives them. This affects all panel-based extensions including Roo, Claude,
+> and Continue.

@@ -1,6 +1,5 @@
-import React from "react";
-
 import { ThemeImage } from "@Library/Theme";
+import React from "react";
 
 const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 	return (
@@ -79,11 +78,11 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				<li className="flex items-center gap-2">
 					<a href="/" className="flex items-center">
 						<ThemeImage
-						src="/Asset/Logo/Glyph/Land.svg"
-						alt="Land"
-						width={24}
-						height={24}
-					/>
+							src="/Asset/Logo/Glyph/Land.svg"
+							alt="Land"
+							width={24}
+							height={24}
+						/>
 					</a>
 				</li>
 			</ul>

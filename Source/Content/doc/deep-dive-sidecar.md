@@ -1,83 +1,202 @@
 ---
-title: "SideCar - Deep Dive"
-section: "Deep Dive"
-order: 43
+title: SideCar - Deep Dive
+section: Deep Dive
+order: 10
 description:
-    "Binary distribution layer for vendored runtimes and target-triple
-    management"
+    Platform triple detection, binary resolution cascade, download and integrity
+    verification, cache directory structure, Mountain ProcessManagement
+    integration, and version mismatch handling.
 ---
 
-# SideCar - Deep Dive
+SideCar consists of two Rust binaries-a download tool that populates a
+per-triple directory tree of verified Node.js binaries, and a spawn helper used
+by Mountain's ProcessManagement layer to launch Cocoon from the vendored store.
+This page covers the internals of both.
 
-SideCar manages pre-compiled, platform-specific runtime binaries (primarily
-Node.js) so the Land editor can bundle vendored runtimes without requiring users
-to install them separately.
+## Platform triple detection
 
-## Architecture 🏗️
+Target triple detection happens at two points in time.
 
-Two binaries: a download tool that fetches official distributions and organizes
-them by target triple, and a spawn helper used by Mountain to launch sidecars
-from the vendored store.
+**At download time**, the download tool reads the `NodePlatform` environment
+variable or derives the platform string from the current machine's architecture.
+The mapping from Rust target triple to Node.js platform string is:
 
-### Modules
+| Rust target triple          | Node.js platform string | Archive format |
+| :-------------------------- | :---------------------- | :------------- |
+| `aarch64-apple-darwin`      | `darwin-arm64`          | `.tar.gz`      |
+| `x86_64-apple-darwin`       | `darwin-x64`            | `.tar.gz`      |
+| `aarch64-unknown-linux-gnu` | `linux-arm64`           | `.tar.gz`      |
+| `x86_64-unknown-linux-gnu`  | `linux-x64`             | `.tar.gz`      |
+| `aarch64-pc-windows-msvc`   | `win-arm64`             | `.zip`         |
+| `x86_64-pc-windows-msvc`    | `win-x64`               | `.zip`         |
 
-| Path                                                                                                         |
-| ------------------------------------------------------------------------------------------------------------ |
-| `Source/Download.rs` - Download binary: fetches distributions, resolves versions, organizes by target triple |
-| `Source/Spawn.rs` - Spawn helper: launches a sidecar binary from the vendored store                          |
-| `Source/Library.rs` - Shared utilities: version resolution, path helpers, cache types                        |
-| `Cache.json` - Tracks downloaded versions per target triple                                                  |
-| `.gitattributes` - Auto-updated by download tool for Git LFS tracking                                        |
+**At build time**, Mountain's `build.rs` calls `GetTauriTargetTriple.rs` (from
+Maintain) to read the `CARGO_BUILD_TARGET` environment variable, which Cargo
+sets to the current compilation target. The result is used to select the correct
+subdirectory under `SideCar/`.
 
-## Directory Structure 📂
+## Binary resolution cascade
+
+The full resolution sequence when the download tool runs:
 
 ```
-[target-triple]/
-  [SIDECAR_NAME]/
-    [version]/
-      bin/
-        node
+1. Read NodeVersion env var
+       FOUND: use as requested version
+       NOT FOUND: continue
+
+2. Read Cache.json for current platform
+       ENTRY EXISTS and version matches: return cached path, stop
+       NOT FOUND or version mismatch: continue
+
+3. Fetch https://nodejs.org/dist/v{version}/SHASUMS256.txt
+       Parse to find checksum for target platform archive
+
+4. HTTP GET https://nodejs.org/dist/v{version}/node-v{version}-{platform}.{ext}
+       Stream to temporary file, compute SHA-256 during download
+
+5. Verify SHA-256 against SHASUMS256.txt value
+       MISMATCH: abort with error, delete temp file
+
+6. Extract binary from archive
+       .tar.gz: decompress with flate2, extract with tar, locate node binary
+       .zip: extract with zip crate, locate node.exe
+
+7. Move binary to SideCar/{triple}/NODE/{major}/bin/node[.exe]
+
+8. Update Cache.json entry for this platform
 ```
 
-Example: `aarch64-apple-darwin/NODE/22/bin/node`
+Downloads for all platforms run concurrently using Tokio's async I/O, so the
+full matrix of six binaries downloads in parallel rather than sequentially.
 
-## Download Flow ⬇️
+## Download integrity verification
 
-1. Developer runs `./Target/release/Download`
-2. Tool reads `Cache.json` for existing versions
-3. Fetches version manifest from nodejs.org
-4. Downloads binary archive for latest patch version
-5. Extracts to target-triple directory
-6. Updates `Cache.json` and `.gitattributes` for Git LFS
+Integrity is verified against the SHA-256 checksums published by the Node.js
+project at `https://nodejs.org/dist/v{version}/SHASUMS256.txt`. The checksum is
+computed incrementally during the streaming download-the download tool does not
+write the full archive to disk before verifying. If the computed hash does not
+match the published value, the temporary file is deleted and the tool exits with
+an error. No partial binary is ever recorded in the cache.
 
-## Build-Time Selection 🎯
+```json
+// Cache.json entry format
+{
+	"version": "1",
+	"entries": {
+		"22.0.0-darwin-arm64": {
+			"path": "aarch64-apple-darwin/NODE/22/bin/node",
+			"sha256": "e3b0c44298fc1c149afbf4c8996fb924...",
+			"downloaded_at": "2026-01-15T10:30:00Z",
+			"size": 68700000
+		}
+	}
+}
+```
 
-Mountain's `build.rs` reads the SideCar directory, selects the binary matching
-the current Tauri target triple, and copies it into the Tauri sidecar resource
-path for bundling.
+Cache entries are keyed by `{version}-{platform}`. An entry is invalidated and
+re-downloaded when:
 
-## Configuration ⚙️
+- A different version is explicitly requested via `NodeVersion`
+- SHA-256 verification of the cached file fails (file corrupted or truncated)
+- The cache file is deleted manually
 
-| Parameter        | Convention                                                 |
-| ---------------- | ---------------------------------------------------------- |
-| Directory layout | `[target-triple]/[NAME]/[version]/bin/`                    |
-| Target triples   | All Tauri-supported platform identifiers                   |
-| Node.js version  | `24` (default, controlled by `--node-version`)             |
-| Cache file       | `Cache.json` mapping triple/name/major to resolved version |
-| Git LFS          | Auto-updated `.gitattributes` for all binary files         |
+## Cache directory structure
 
-The SideCar directory is not committed in its populated form. Run Download
-during initial setup or CI release pipeline.
+```
+SideCar/
+    aarch64-apple-darwin/
+        NODE/
+            22/
+                bin/
+                    node
+    x86_64-apple-darwin/
+        NODE/
+            22/
+                bin/
+                    node
+    x86_64-pc-windows-msvc/
+        NODE/
+            22/
+                node.exe
+    aarch64-unknown-linux-gnu/
+        NODE/
+            22/
+                bin/
+                    node
+    x86_64-unknown-linux-gnu/
+        NODE/
+            22/
+                bin/
+                    node
+    Cache.json
+    .gitattributes     ← auto-updated by download tool for Git LFS
+```
 
-## Integration 🔗
+The download tool automatically updates `.gitattributes` to add Git LFS tracking
+patterns for every binary it writes. This ensures that if the SideCar directory
+is committed to a repository, the large binaries are stored in LFS rather than
+the Git object database.
 
-| Element  | Direction          | Mechanism                                     |
-| -------- | ------------------ | --------------------------------------------- |
-| Mountain | Consumer           | `build.rs` file copy by target triple         |
-| Tauri    | Consumer           | Sidecar resource bundling in installer        |
-| Cocoon   | Runtime dependency | Mountain spawns Cocoon using vendored Node.js |
-| Air      | Potential consumer | Same target-triple convention                 |
+## Mountain ProcessManagement integration
 
-## Related Documentation 📖
+**At build time**, Mountain's `build.rs` performs the following steps:
 
-- [SideCar overview](https://editor.land/Doc/sidecar)
+1. Reads `CARGO_BUILD_TARGET` to determine the current target triple.
+2. Constructs the expected path `SideCar/{triple}/NODE/{major}/bin/node[.exe]`.
+3. If the path exists, copies the binary into Tauri's sidecar resource directory
+   under the name `node-{triple}[.exe]`.
+4. If the path does not exist, the build fails with an actionable error message
+   indicating which platform is missing.
+
+**At runtime**, Mountain's `ProcessManagement/CocoonManagement.rs` calls
+`SideCar::Spawn` to get the path to the bundled Node.js binary. The Tauri
+`sidecar()` API resolves the platform-specific binary name from the bundle.
+Mountain then spawns Cocoon using that binary, passing:
+
+- The `DnsPort` environment variable pointing to the Mist DNS server
+- `VSCODE_PARENT_PID` for heartbeat monitoring
+- `TierIPC` routing configuration
+- The path to Cocoon's `bootstrap-fork.js` entry point
+
+Because the binary was selected and verified at build time, no runtime
+detection, version negotiation, or fallback logic is needed.
+
+## Handling version mismatches
+
+A version mismatch occurs when the `NodeVersion` environment variable requests a
+version that differs from what is in `Cache.json`. The resolution is
+straightforward: the download tool fetches and verifies the new version, places
+it alongside the existing cached version (different `{major}` subdirectory), and
+updates `Cache.json`. Old versions are not automatically deleted; they remain
+until the cache is manually cleared or a full re-download is triggered.
+
+> [!WARNING] Mountain's `build.rs` selects a binary by major version number. If
+> `Cache.json` contains entries for multiple major versions of the same
+> platform, `build.rs` takes the highest available major version. To pin a
+> specific version, set `NodeVersion` explicitly and run the download tool
+> before building.
+
+## Git LFS management
+
+The download tool reads the existing `.gitattributes` at the root of the SideCar
+directory and appends LFS tracking rules for any new binary paths it creates.
+The pattern used is:
+
+```
+SideCar/aarch64-apple-darwin/**/* filter=lfs diff=lfs merge=lfs -text
+```
+
+One rule is added per target triple directory. Existing rules are not
+duplicated. This means running the download tool multiple times is idempotent
+with respect to `.gitattributes`.
+
+## Module reference
+
+| File                 | Purpose                                                                                                                                |
+| :------------------- | :------------------------------------------------------------------------------------------------------------------------------------- |
+| `Source/Download.rs` | Version resolution, parallel HTTP download, SHA-256 verification, archive extraction, `Cache.json` update, `.gitattributes` management |
+| `Source/Spawn.rs`    | Runtime spawn helper: resolves binary path from cache, returns to Mountain's `ProcessManagement`                                       |
+| `Source/Library.rs`  | Shared types: `CacheEntry`, version resolution helpers, path construction                                                              |
+| `Source/main.rs`     | Entry point for the standalone `Download` binary                                                                                       |
+| `build.rs`           | Cargo build script: reads current target triple, copies binary to Tauri sidecar resource path                                          |
+| `Cache.json`         | JSON manifest tracking downloaded versions per platform                                                                                |
