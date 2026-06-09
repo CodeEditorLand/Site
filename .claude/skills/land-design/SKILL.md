@@ -3,13 +3,13 @@ name: land-design
 description: The Code Editor Land website design language and design-system map. Load when changing typography, color tokens, themes (light/dark), component styling, or building/editing any Astro page or React UI component in this repo. Covers the cyberpunk-HUD + light dual-theme direction, the Geist / Geist Mono / Instrument Serif type stack, the DesignToken→Base→Tailwind→shadcn token pipeline, and component composition/extraction conventions.
 ---
 
-# Code Editor Land — Design Language & System
+# Code Editor Land - Design Language & System
 
 Authoritative reference for the visual language of this site and the architecture that
 implements it. Read this before touching fonts, colors, themes, or component styling so
 changes stay coherent with the system instead of fighting it.
 
-The product: **"VS Code, without Electron"** — a Rust-core, Tauri-shell, Effect-TS editor
+The product: **"VS Code, without Electron"** - a Rust-core, Tauri-shell, Effect-TS editor
 with gRPC/IPC/WASM protocol spines. Audience is systems-software developers. The design
 language must read as **technical, precise, and confident**, never decorative.
 
@@ -17,18 +17,18 @@ language must read as **technical, precise, and confident**, never decorative.
 
 These were chosen deliberately. Do not drift from them without an explicit decision to.
 
-1. **Dual theme — light + dark, both first-class.** Light mode is required and stays the
+1. **Dual theme - light + dark, both first-class.** Light mode is required and stays the
    austere flat-white system that exists today. Dark mode is a **cyberpunk terminal-HUD**:
    near-black canvas, hairline grid rules, restrained neon accents. A toggle switches them.
    `darkMode: "class"` is already configured in `tailwind.config.js`.
 2. **"Polished and minimal" cyberpunk, not neon-slop.** The HUD reads cyberpunk through
    *structure* (mono chrome, grid lines, sharp corners, technical labels) and *restraint*
    (accents glow only on interaction), not through saturated color everywhere.
-3. **Typography — three faces, each with a job:**
-   - **Instrument Serif** — large display headlines (hero, section titles). The "fancy"
+3. **Typography - three faces, each with a job:**
+   - **Instrument Serif** - large display headlines (hero, section titles). The "fancy"
      high-contrast voice. Used sparingly and big.
-   - **Geist Mono** — HUD chrome: eyebrows, labels, tags, metadata, code. The technical voice.
-   - **Geist (sans)** — body copy and UI text. Replaces Albert Sans.
+   - **Geist Mono** - HUD chrome: eyebrows, labels, tags, metadata, code. The technical voice.
+   - **Geist (sans)** - body copy and UI text. Replaces Albert Sans.
    See [Reference/Typography.md](Reference/Typography.md).
 4. **Sharp corners stay.** `--BorderRadius: 0` for cards/surfaces; only buttons/inputs keep
    the logo-aligned 6px. No shadows or gradients in light mode; dark mode may use a single
@@ -37,7 +37,7 @@ These were chosen deliberately. Do not drift from them without an explicit decis
    TCP orange `#f97316`, WASM purple `#a855f7`. These are already tokenized; in dark mode they
    become the neon accents. Each has Primary / Mute / Surface / Fore variants. See
    [Reference/Theme.md](Reference/Theme.md).
-6. **Voice — marketing-led top-of-funnel, technical in docs.** The current default English copy
+6. **Voice - marketing-led top-of-funnel, technical in docs.** The current default English copy
    is needlessly technical/hedged; standardize on a confident benefit-led voice for hero/
    features/pricing and keep deep-technical prose for docs. See [Reference/Copy.md](Reference/Copy.md).
 
@@ -52,7 +52,7 @@ These were chosen deliberately. Do not drift from them without an explicit decis
   devDependencies (the `.npmrc` has `legacy-peer-deps=true`, which skips peer install, so
   peers of test libraries must be declared explicitly or Astro's dep optimizer fails).
 
-## Implementation learnings (hard-won — read before editing)
+## Implementation learnings (hard-won - read before editing)
 
 - **The real header is `Source/Component/Layout/Header.tsx`**, NOT `DynamicHeader.tsx`. Pages
   import `Header` from `Source/Component/Layout/Header` and render it `client:load`. Its
@@ -65,7 +65,7 @@ These were chosen deliberately. Do not drift from them without an explicit decis
   `var(--Card)`), so cards/surfaces follow the theme. `bg-black/50` modal scrims are
   legitimate and were left. Hex literals: only `#EB5424` (Auth0 brand) remains, intentionally.
   CSS hex (`#ffffff`) in Header/Footer/Portal stylesheets was tokenized too.
-- **PITFALL — never set `background-color` on `.StaccatoCard` in plain (unlayered) CSS.**
+- **PITFALL - never set `background-color` on `.StaccatoCard` in plain (unlayered) CSS.**
   Unlayered rules beat Tailwind's `@layer utilities`, so a `.StaccatoCard { background }` rule
   overrode `bg-primary` on `IconTooltip` (which reuses `.StaccatoCard`) → dark-on-dark
   tooltips. Card definition (hairline border + hover glow) is scoped to the *named* card
@@ -76,12 +76,12 @@ These were chosen deliberately. Do not drift from them without an explicit decis
   neutralised: an always-on block in `Source/Function/Noise/Stylesheet.css` zeroes the
   parallax/translate/rotate transforms; the named card classes force `transform: none`; and
   the hero scene animation is disabled (orbital cards sit static). Keep new sections static
-  and grid-aligned — do not reintroduce noise-driven motion.
+  and grid-aligned - do not reintroduce noise-driven motion.
 - **Hero tech stack: orbital diagram → HUD grid.** The old hub-and-spokes orbital
   (`DynamicHeroSection.tsx`) was replaced with a `grid grid-cols-2 sm:grid-cols-3
   lg:grid-cols-4` of bordered tiles: spine-accent edge bar + tinted lucide icon + mono
   uppercase label. Static, grid-aligned. Pattern to reuse for other "diagram" sections.
-- **Hero title is only `TitleHighlight`** ("Land") — `HomePage.tsx` sets no main `Title`. The
+- **Hero title is only `TitleHighlight`** ("Land") - `HomePage.tsx` sets no main `Title`. The
   big serif word is the headline by design; not a bug.
 - **Section spacing:** content sections used `min-h-[100dvh] … justify-center` which ballooned
   sparse sections into huge empty bands. Removed → `w-full py-24 sm:py-32` (content-sized).
@@ -89,22 +89,22 @@ These were chosen deliberately. Do not drift from them without an explicit decis
 - **Nav consolidated** from 7 links to 4 (Features, Docs, Download, GitHub). Blog/Contributing
   live in the footer; Dashboard is post-sign-in / via Portal.
 - **Icons:** `lucide-react` (`"icon": "lucide"` in components.json) is the standard. Use it for
-  all glyphs — no emoji in UI. Stray emoji (codename tooltips, element-card `Emoji` field,
+  all glyphs - no emoji in UI. Stray emoji (codename tooltips, element-card `Emoji` field,
   Footer/Dashboard inline) are being swapped to lucide.
-- **Theme-blind colors:** `index.astro` badge strip is now fixed — all chips use spine tokens
+- **Theme-blind colors:** `index.astro` badge strip is now fixed - all chips use spine tokens
   (`var(--SpinegRPC*)`, `var(--SpineIPC*)`, `var(--Border)`, etc.) via inline `style=`. Remaining
   theme-blind utilities are concentrated in `Dashboard.astro`, `DynamicAccountProfile`,
-  `DynamicLocalFirstScan`, `RichText`, `DynamicContactForm` — need `dark:` variants or
+  `DynamicLocalFirstScan`, `RichText`, `DynamicContactForm` - need `dark:` variants or
   semantic status tokens.
 - **`DynamicBadge` dot colors** were theme-blind (`bg-green-500` etc.). Now use `DotColorTokenMap`
   with spine CSS variables via `style={{ backgroundColor: … }}`.
-- **Footer architecture — two separate components:**
-  - `Source/Component/Layout/Footer.tsx` — the **real** site footer, rendered in `Base.astro`
+- **Footer architecture - two separate components:**
+  - `Source/Component/Layout/Footer.tsx` - the **real** site footer, rendered in `Base.astro`
     via `<Footer client:idle />`. Has brand, columns, NLnet funding notice, bottom bar.
-  - `Source/Component/Dynamic/DynamicFooter.tsx` — used on non-homepage pages only.
+  - `Source/Component/Dynamic/DynamicFooter.tsx` - used on non-homepage pages only.
   - Both share the same `.Footer { background-color: var(--Background) }` CSS (no gray bg).
   - `Layout/Footer.tsx` column headers use `font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground`.
-  - NLnet funding notice uses `border-l-2` with `borderLeftColor: var(--SpinegRPC)` — not a gray box.
+  - NLnet funding notice uses `border-l-2` with `borderLeftColor: var(--SpinegRPC)` - not a gray box.
   - Brand description uses `whitespace-pre-line` to render `\n\n` as paragraph breaks.
 
 ## Architecture map (where things live)
@@ -113,7 +113,7 @@ The token pipeline is already a clean shadcn-style extraction. Respect these lay
 
 | Layer | File | Role |
 |---|---|---|
-| Raw scales | `Source/Function/TailWind/DesignToken.css` | Color ramps (50–950), spacing scale, tech-color aliases. No semantics. |
+| Raw scales | `Source/Function/TailWind/DesignToken.css` | Color ramps (50-950), spacing scale, tech-color aliases. No semantics. |
 | Semantic tokens | `Source/Stylesheet/Base.css` | `--Background`, `--Foreground`, `--Primary`, spine `*Mute/*Surface/*Fore`, component classes (`.Button*`, `.Badge*`, `.Card`). **Dark mode overrides go here.** |
 | Tailwind bridge | `tailwind.config.js` | Maps tokens → utilities (`bg-background`, `text-spine-grpc`). `fontFamily`, `darkMode: "class"`, safelist. |
 | shadcn config | `components.json` | PascalCase aliases: components → `./Source/Component`, utils → `CN.ts`. |
@@ -124,12 +124,12 @@ The token pipeline is already a clean shadcn-style extraction. Respect these lay
 | Copy / i18n | `Source/Library/I18n/Locale/<Lang>/*.json` | Localized strings (En, Bg, De, Es, Fr). |
 
 Reference files:
-- [Reference/Typography.md](Reference/Typography.md) — fonts, loading, heading rollout.
-- [Reference/Theme.md](Reference/Theme.md) — light + dark cyberpunk tokens, accents, glow, toggle.
-- [Reference/Architecture.md](Reference/Architecture.md) — token pipeline + composition/extraction.
-- [Reference/Copy.md](Reference/Copy.md) — voice system (marketing vs technical) + rewrites + glossary.
+- [Reference/Typography.md](Reference/Typography.md) - fonts, loading, heading rollout.
+- [Reference/Theme.md](Reference/Theme.md) - light + dark cyberpunk tokens, accents, glow, toggle.
+- [Reference/Architecture.md](Reference/Architecture.md) - token pipeline + composition/extraction.
+- [Reference/Copy.md](Reference/Copy.md) - voice system (marketing vs technical) + rewrites + glossary.
 
-## Quickstart — run & screenshot
+## Quickstart - run & screenshot
 
 ```bash
 npm install          # peers now declared; needs legacy-peer-deps (already in .npmrc)
@@ -137,30 +137,30 @@ npm run Run          # astro dev --host  →  http://localhost:9999/
 ```
 
 To review visually, drive Chrome DevTools MCP against `http://localhost:9999/` and screenshot.
-The dev server is the source of truth — the production domain `land.playform.cloud` is currently a
-parked page (expired), so **always use the local build**.
+The dev server is the source of truth - verify visual changes against `http://localhost:9999/` before
+assuming the production domain `editor.land` reflects your edits.
 
 ## Implementation roadmap (deferred until approved)
 
-1. **Fonts** — add Geist, Geist Mono, Instrument Serif to the Google Fonts request in
+1. **Fonts** - add Geist, Geist Mono, Instrument Serif to the Google Fonts request in
    `Base.astro`; define `--FontSans/--FontMono/--FontSerif` in `Base.css`; map `fontFamily`
    in `tailwind.config.js`. Drop Albert Sans. ([Reference/Typography.md](Reference/Typography.md))
-2. **Heading rollout** — serif applies to *display* headings (hero + section H1/H2) via a
+2. **Heading rollout** - serif applies to *display* headings (hero + section H1/H2) via a
    `.Display`/`font-serif` convention; small UI/card/dashboard headings stay Geist sans.
    Don't blanket-serif all 55 heading tags.
-3. **Dark theme** — add a `.dark` override block in `Base.css` mapping the semantic surface
+3. **Dark theme** - add a `.dark` override block in `Base.css` mapping the semantic surface
    tokens to the cyberpunk HUD palette; promote spine colors to neon. ([Reference/Theme.md](Reference/Theme.md))
-4. **Theme toggle** — wire a class toggle on `<html>` with persisted preference + system
+4. **Theme toggle** - wire a class toggle on `<html>` with persisted preference + system
    default; respect `prefers-color-scheme`.
-5. **HUD details** — hairline grid backdrop, mono eyebrows/labels, interaction-only glow.
-6. **Copy pass** — rewrite hero/features/pricing strings to the marketing-led voice across all
+5. **HUD details** - hairline grid backdrop, mono eyebrows/labels, interaction-only glow.
+6. **Copy pass** - rewrite hero/features/pricing strings to the marketing-led voice across all
    five locales; move technical detail + caveats to docs. ([Reference/Copy.md](Reference/Copy.md))
-7. **Validate** — screenshot light + dark across hero, features, pricing, docs, dashboard.
+7. **Validate** - screenshot light + dark across hero, features, pricing, docs, dashboard.
 
 ## Logo
 
-`Public/Asset/Logo/Glyph/Land.svg` — 32×32 black square (`#151515`) with a white L mark
-(vertical bar + horizontal base). Self-contained across light and dark — no CSS filter or
+`Public/Asset/Logo/Glyph/Land.svg` - 32×32 black square (`#151515`) with a white L mark
+(vertical bar + horizontal base). Self-contained across light and dark - no CSS filter or
 inversion needed. The black background recedes in dark mode leaving the white L floating.
 Do not add `filter: invert()` rules; the mark is intentionally always-black-bg.
 
@@ -175,16 +175,16 @@ Every content section title block uses a mono `//` eyebrow **above** the `<h2>`.
 ```
 
 Established in hero (`// Tech Stack`) and rolled out to Features, Roadmap, Architecture,
-Download. Apply to any new section heading. The green `//` is the gRPC spine accent — it
+Download. Apply to any new section heading. The green `//` is the gRPC spine accent - it
 anchors every section to the technical HUD language.
 
 ## Feature card accent system
 
 Feature/content cards use two signals from the `FeatureColorMap` (feature ID → spine token):
 
-1. **Left border**: `style={{ borderLeftColor: FeatureColor, borderLeftWidth: "2px" }}` —
+1. **Left border**: `style={{ borderLeftColor: FeatureColor, borderLeftWidth: "2px" }}` -
    overrides the uniform `1px var(--Border)` on the left side only.
-2. **Icon container bg**: `style={{ backgroundColor: FeatureColorMuteMap[Feature.Id] }}` —
+2. **Icon container bg**: `style={{ backgroundColor: FeatureColorMuteMap[Feature.Id] }}` -
    uses the `*Mute` tinted background (12% spine color on white / 18% on dark).
 
 The `FeatureColorMuteMap` maps feature IDs to tokens like `var(--ExtensionRustMute)`,
@@ -201,8 +201,8 @@ The visual hierarchy comes from the card borders and accent colors, not section 
 ## Conventions (non-negotiable in this repo)
 
 - **PascalCase** for component files, CSS custom properties, and most identifiers.
-- Style through **tokens**, never hard-coded hex in components — add a token if one is missing.
+- Style through **tokens**, never hard-coded hex in components - add a token if one is missing.
 - Keep light mode flat: **no shadows, no gradients, no rounded corners** (except button/input 6px).
 - Prefer extending the existing primitive/token over inventing a parallel one.
-- **No alternating section backgrounds** — no `bg-[var(--Mute)]` on section wrappers.
+- **No alternating section backgrounds** - no `bg-[var(--Mute)]` on section wrappers.
 - **Every section heading gets a `//` eyebrow** in Geist Mono uppercase.
