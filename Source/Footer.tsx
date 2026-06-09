@@ -74,6 +74,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 								src="https://editor.land/Image/GitHub/Made/Tauri.svg"
 								width="160"
 								height="32"
+								className="dark:rounded dark:bg-white/90 dark:px-2"
 							/>
 						</picture>
 					</a>
