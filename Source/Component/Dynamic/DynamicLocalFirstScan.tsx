@@ -190,7 +190,7 @@ const LocalFirstScanInner = () => {
 							})}
 						</h3>
 						{Status === "Scanning" && (
-							<span className="inline-flex items-center border border-orange-200 bg-orange-50 px-2.5 py-0.5 font-medium text-orange-700">
+							<span className="inline-flex items-center border border-orange-200 bg-orange-50 px-2.5 py-0.5 font-medium text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300">
 								{T("dashboard.localFirst.scanning", {
 									defaultValue: "Scanning",
 								})}
@@ -202,7 +202,7 @@ const LocalFirstScanInner = () => {
 							</span>
 						)}
 						{Status === "Connected" && (
-							<span className="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700">
+							<span className="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 								{T("dashboard.localFirst.connected", {
 									defaultValue: "Connected",
 								})}
@@ -231,7 +231,7 @@ const LocalFirstScanInner = () => {
 					{Status === "Scanning" && (
 						<div className="mt-3">
 							<ScanAnimation />
-							<div className="mt-2 h-1 w-full overflow-hidden bg-gray-100">
+							<div className="mt-2 h-1 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
 								<div
 									className="h-full bg-orange-400 transition-all duration-500"
 									style={{ width: `${ScanProgress}%` }}
@@ -249,7 +249,7 @@ const LocalFirstScanInner = () => {
 					{/* Connected State */}
 					{Status === "Connected" && DaemonDetail && (
 						<div className="mt-3 space-y-2">
-							<p className="text-green-700">
+							<p className="text-green-700 dark:text-green-400">
 								{T("dashboard.localFirst.connectedMessage", {
 									defaultValue: "Connected to Air Daemon",
 								})}
@@ -287,21 +287,21 @@ const LocalFirstScanInner = () => {
 								</span>
 							</div>
 							<div className="flex flex-wrap gap-2 pt-1">
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 									Peer-to-peer design{"\u2001"}
 									<span
 										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 									Local-first{"\u2001"}
 									<span
 										className="h-1 w-1 rounded-none bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700">
+								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 									No cloud required{"\u2001"}
 									<span
 										className="h-1 w-1 rounded-none bg-blue-500"
@@ -324,7 +324,7 @@ const LocalFirstScanInner = () => {
 							<div className="flex flex-wrap gap-3">
 								<a
 									href="/Download"
-									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100">
+									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100 dark:border-orange-700 dark:bg-orange-950 dark:text-orange-300 dark:hover:bg-orange-900">
 									{T("dashboard.localFirst.downloadButton", {
 										defaultValue: "Download Land",
 									})}

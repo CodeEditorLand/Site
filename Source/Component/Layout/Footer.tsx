@@ -223,7 +223,14 @@ const Footer = ({ Content }: FooterProps) => {
 									alt="GitHub"
 									width="20"
 									height="20"
-									className="h-5 w-5"
+									className="h-5 w-5 dark:hidden"
+								/>
+								<img
+									src="/Dark/Image/GitHub.svg"
+									alt="GitHub"
+									width="20"
+									height="20"
+									className="hidden h-5 w-5 dark:block"
 								/>
 							</IconTooltip>
 						</a>
@@ -276,7 +283,7 @@ const Footer = ({ Content }: FooterProps) => {
 									alt="Made with Tauri"
 									width="160"
 									height="32"
-									className="h-8"
+									className="h-8 dark:rounded dark:bg-white/90 dark:px-2"
 									loading="lazy"
 								/>
 							</a>

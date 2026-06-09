@@ -171,7 +171,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={() => Login()}
-					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-4 py-1.5 font-medium text-white transition-all hover:opacity-90">
+					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-4 py-1.5 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90">
 					{T("dashboard.account.signInButton", {
 						defaultValue: "Sign In",
 					})}
@@ -274,7 +274,7 @@ const DashboardUserInner = () => {
 					</span>
 					{User.email_verified === true && (
 						<span
-							className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700"
+							className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
 							title={T("dashboard.account.emailVerifiedTitle", {
 								defaultValue: "Email verified",
 							})}>
@@ -357,7 +357,7 @@ const DashboardUserInner = () => {
 
 			{/* Enterprise SSO Banner */}
 			{IsEnterprise && (
-				<div className="mt-2 border border-green-200 bg-green-50 px-3 py-2 text-green-700">
+				<div className="mt-2 border border-green-200 bg-green-50 px-3 py-2 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 					{T("dashboard.account.enterpriseSSO", {
 						defaultValue: "Enterprise SSO active",
 					})}{" "}
@@ -370,7 +370,7 @@ const DashboardUserInner = () => {
 
 			{/* Email Not Verified Warning */}
 			{User.email_verified === false && (
-				<div className="mt-2 border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
+				<div className="mt-2 border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 					{T("dashboard.account.emailNotVerified", {
 						defaultValue: "Email not verified. Check your inbox.",
 					})}{" "}
@@ -393,7 +393,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={HandleSignOut}
-					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950">
 					{T("dashboard.account.signOutButton", {
 						defaultValue: "Sign Out",
 					})}

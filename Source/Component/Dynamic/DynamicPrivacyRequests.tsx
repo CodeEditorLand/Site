@@ -32,7 +32,7 @@ export default () => {
 
 	const BadgeColor = (Article?: string): string =>
 		Article
-			? "border border-blue-200 bg-blue-50 text-blue-700"
+			? "border border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
 			: "bg-[var(--Mute)] text-muted-foreground";
 
 	return (

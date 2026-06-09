@@ -132,9 +132,9 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	const MailtoHref = BuildMailtoHref(Config, Values, Year, PairId);
 
 	const BadgeColor = Config.Destructive
-		? "border-red-200 bg-red-50 text-red-700"
+		? "border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300"
 		: Config.Article
-			? "border-blue-200 bg-blue-50 text-blue-700"
+			? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
 			: "border-[var(--Border)] bg-[var(--Mute)] text-muted-foreground";
 
 	return (

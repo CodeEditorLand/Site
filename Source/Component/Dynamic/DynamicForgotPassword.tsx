@@ -101,10 +101,10 @@ const DynamicForgotPassword = ({
 									aria-live="polite">
 									<div className="space-y-2">
 										<div
-											className="mx-auto flex h-12 w-12 items-center justify-center rounded-none bg-green-100"
+											className="mx-auto flex h-12 w-12 items-center justify-center rounded-none bg-green-100 dark:bg-green-950"
 											aria-hidden="true">
 											<svg
-												className="h-6 w-6 text-green-600"
+												className="h-6 w-6 text-green-600 dark:text-green-400"
 												fill="none"
 												viewBox="0 0 24 24"
 												stroke="currentColor"

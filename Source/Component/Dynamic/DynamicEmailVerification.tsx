@@ -161,7 +161,7 @@ const DynamicEmailVerification = ({
 					/>
 
 					{ResendSuccess && (
-						<p className="text-center text-green-600" role="status">
+						<p className="text-center text-green-600 dark:text-green-400" role="status">
 							{Content.Pending.ResendSuccessMessage ||
 								T("resendSuccess", {
 									defaultValue: "Verification email resent!",
@@ -220,7 +220,7 @@ const DynamicEmailVerification = ({
 					</CardTitle>
 					{"\u2001"}
 					<lucide.CheckCircle
-						className="h-5 w-5 shrink-0 text-green-600"
+						className="h-5 w-5 shrink-0 text-green-600 dark:text-green-400"
 						aria-hidden="true"
 					/>
 				</div>
@@ -247,7 +247,7 @@ const DynamicEmailVerification = ({
 					</CardTitle>
 					{"\u2001"}
 					<lucide.XCircle
-						className="h-5 w-5 shrink-0 text-red-600"
+						className="h-5 w-5 shrink-0 text-red-600 dark:text-red-400"
 						aria-hidden="true"
 					/>
 				</div>

@@ -261,7 +261,7 @@ export default ({
 					<p className="text-muted-foreground">{User.email}</p>
 
 					{User.email_verified === false && (
-						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700">
+						<p className="border border-yellow-200 bg-yellow-50 px-3 py-2 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 							{T("emailNotVerified", {
 								defaultValue:
 									"Email not verified. Check your inbox.",

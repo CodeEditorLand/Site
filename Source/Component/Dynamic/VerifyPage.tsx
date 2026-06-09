@@ -86,10 +86,10 @@ const VerifyPage = ({
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
-								<div className="rounded-none border border-green-500 p-8">
-									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100">
+								<div className="rounded-none border border-green-500 dark:border-green-700 p-8">
+									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100 dark:bg-green-950">
 										<svg
-											className="h-10 w-10 text-green-600"
+											className="h-10 w-10 text-green-600 dark:text-green-400"
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
@@ -128,9 +128,9 @@ const VerifyPage = ({
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
 								<div className="rounded-none border border-destructive p-8">
-									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100">
+									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100 dark:bg-red-950">
 										<svg
-											className="h-10 w-10 text-red-600"
+											className="h-10 w-10 text-red-600 dark:text-red-400"
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"

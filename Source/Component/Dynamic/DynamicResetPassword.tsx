@@ -194,7 +194,7 @@ const DynamicResetPassword = ({
 										</h3>
 										{"\u2001"}
 										<lucide.CheckCircle
-											className="h-5 w-5 shrink-0 text-green-600"
+											className="h-5 w-5 shrink-0 text-green-600 dark:text-green-400"
 											aria-hidden="true"
 										/>
 									</div>
