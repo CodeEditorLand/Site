@@ -168,18 +168,16 @@ const LocalFirstScanInner = () => {
 		<div className="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 			<div className="flex items-center gap-4">
 				<picture>
+					<source
+						srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
+						media="(prefers-color-scheme: dark)"
+						data-theme-dark=""
+					/>
 					<img
 						alt="Land"
 						src="/Asset/Logo/Glyph/Land.svg"
 						width="48"
 						height="48"
-						className="dark:hidden"
-					/><img
-						alt="Land"
-						src="/Asset/Dark/Logo/Glyph/Land.svg"
-						width="48"
-						height="48"
-						className="hidden dark:block"
 					/>
 				</picture>
 				<div className="flex-1">

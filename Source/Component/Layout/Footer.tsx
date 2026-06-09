@@ -115,23 +115,22 @@ const Footer = ({ Content }: FooterProps) => {
 							href="/"
 							className="mb-4 flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label={`${FooterData.Brand?.Name || "Land"} - Go to homepage`}>
-							<img
-								src="/Asset/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width="32"
-								height="32"
-								className="h-8 w-8 dark:hidden"
-								aria-hidden="true"
-							/><img
-								src="/Asset/Dark/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width="32"
-								height="32"
-								className="h-8 w-8 hidden dark:block"
-								aria-hidden="true"
-							/>
+							<picture>
+								<source
+									srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
+									media="(prefers-color-scheme: dark)"
+									data-theme-dark=""
+								/>
+								<img
+									src="/Asset/Logo/Glyph/Land.svg"
+									alt="Code Editor Land"
+									title="Code Editor Land"
+									width="32"
+									height="32"
+									className="h-8 w-8"
+									aria-hidden="true"
+								/>
+							</picture>
 							<span className="font-semibold">
 								{FooterData.Brand?.Name || "Land"}
 							</span>
@@ -218,20 +217,20 @@ const Footer = ({ Content }: FooterProps) => {
 							className="StaccatoSocial focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 							aria-label="Code Editor Land on GitHub (opens in new tab)">
 							<IconTooltip Label="GitHub">
-								<img
-									src="/Image/GitHub.svg"
-									alt="GitHub"
-									width="20"
-									height="20"
-									className="h-5 w-5 dark:hidden"
-								/>
-								<img
-									src="/Dark/Image/GitHub.svg"
-									alt="GitHub"
-									width="20"
-									height="20"
-									className="hidden h-5 w-5 dark:block"
-								/>
+								<picture>
+									<source
+										srcSet="/Dark/Image/GitHub.svg"
+										media="(prefers-color-scheme: dark)"
+										data-theme-dark=""
+									/>
+									<img
+										src="/Image/GitHub.svg"
+										alt="GitHub"
+										width="20"
+										height="20"
+										className="h-5 w-5"
+									/>
+								</picture>
 							</IconTooltip>
 						</a>
 						<span className="InlineSeparator" aria-hidden="true" />

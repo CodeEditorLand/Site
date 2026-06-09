@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "./Button";
 
 /**
- * ThemeToggle — switches between the flat-white light theme and the
+ * ThemeToggle - switches between the flat-white light theme and the
  * cyberpunk terminal-HUD dark theme by toggling the `.dark` class on
  * <html>. The pre-paint script in Source/Layout/Base.astro sets the
  * initial class (stored preference → OS color scheme) to avoid a flash;
@@ -12,6 +12,14 @@ import { Button } from "./Button";
  *
  * See .claude/skills/land-design/Reference/Theme.md
  */
+const SyncPictureSources = (IsDark: boolean) => {
+	document
+		.querySelectorAll<HTMLSourceElement>("source[data-theme-dark]")
+		.forEach((Source) => {
+			Source.media = IsDark ? "all" : "(prefers-color-scheme: dark)";
+		});
+};
+
 const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	const [IsDark, SetIsDark] = useState(false);
 
@@ -29,6 +37,7 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 		document
 			.querySelector('meta[name="theme-color"]')
 			?.setAttribute("content", Next ? "#0a0a0c" : "#ffffff");
+		SyncPictureSources(Next);
 		SetIsDark(Next);
 	};
 

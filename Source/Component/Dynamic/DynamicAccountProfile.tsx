@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { ThemeIcon } from "@Library/Theme";
+import { ThemeImage } from "@Library/Theme";
 import { Eye, EyeOff, Lock, MailCheck, ShieldCheck } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,7 +38,7 @@ const SourceBadge = ({
 }) => (
 	<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
 		{icon && (
-			<ThemeIcon
+			<ThemeImage
 				src={icon}
 				alt={label}
 				width={10}
@@ -477,7 +477,7 @@ const AccountProfileInner = ({
 						</span>
 						{ProviderIcon ? (
 							<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-2 py-0.5 text-sm font-medium text-muted-foreground">
-								<ThemeIcon
+								<ThemeImage
 									src={ProviderIcon}
 									alt={ProviderLabel}
 									width={12}
@@ -694,7 +694,7 @@ const AccountProfileInner = ({
 						value={
 							<span className="flex items-center gap-1.5">
 								{ProviderIcon && (
-									<ThemeIcon
+									<ThemeImage
 										src={ProviderIcon}
 										alt={ProviderLabel}
 										width={14}

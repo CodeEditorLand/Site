@@ -1,4 +1,4 @@
-import { ThemeIcon } from "@Library/Theme";
+import { ThemeImage } from "@Library/Theme";
 import * as lucide from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -40,7 +40,7 @@ const FeatureColorMap: Record<string, string> = {
 	opensource: "var(--SpinegRPC)",
 };
 
-/** 12% tinted backgrounds for icon containers — matches the *Mute token convention. */
+/** 12% tinted backgrounds for icon containers - matches the *Mute token convention. */
 const FeatureColorMuteMap: Record<string, string> = {
 	performance: "var(--ExtensionRustMute)",
 	compatibility: "var(--SpineWASMMute)",
@@ -311,7 +311,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 																		Label={
 																			StackLabel
 																		}>
-																		<ThemeIcon
+																		<ThemeImage
 																			src={
 																				IconName
 																			}

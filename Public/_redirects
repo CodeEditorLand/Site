@@ -1956,6 +1956,7 @@
 # ── ASSET PASS-THROUGHS (200) ──
 /_astro/*                 /_astro/:splat            200
 /Asset/*                  /Asset/:splat             200
+/Dark/*                   /Dark/:splat              200
 /Favicon/*                /Favicon/:splat           200
 /Image/*                  /Image/:splat             200
 /OpenGraph/*              /OpenGraph/:splat         200

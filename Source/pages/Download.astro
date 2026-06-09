@@ -332,18 +332,16 @@ const MetaDescription = T("meta.downloads.description", {
 	<div
 		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-muted-foreground">
 		<picture>
+			<source
+				srcset="/Asset/Dark/Logo/Glyph/Land.svg"
+				media="(prefers-color-scheme: dark)"
+				data-theme-dark
+			/>
 			<img
 				alt="Land"
 				src="/Asset/Logo/Glyph/Land.svg"
 				width="24"
 				height="24"
-				class="dark:hidden"
-			/><img
-				alt="Land"
-				src="/Asset/Dark/Logo/Glyph/Land.svg"
-				width="24"
-				height="24"
-				class="hidden dark:block"
 			/>
 		</picture>
 		<span
@@ -362,57 +360,24 @@ const MetaDescription = T("meta.downloads.description", {
 		</span>
 		<span
 			class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 align-middle font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
-			Native Rust&#x2001;<img
-				src="/Image/Rust.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="inline-block align-middle opacity-70 dark:hidden"
-				aria-hidden="true"
-			/><img
-				src="/Dark/Image/Rust.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="hidden inline-block align-middle opacity-70 dark:inline-block"
-				aria-hidden="true"
-			/>
+			Native Rust&#x2001;<picture class="inline-flex align-middle">
+				<source srcset="/Dark/Image/Rust.svg" media="(prefers-color-scheme: dark)" data-theme-dark />
+				<img src="/Image/Rust.svg" alt="" width="14" height="14" class="opacity-70" aria-hidden="true" />
+			</picture>
 		</span>
 		<span
 			class="inline-flex items-center border border-sky-200 bg-sky-50 px-2.5 py-0.5 align-middle font-medium text-sky-700 dark:border-sky-800 dark:bg-sky-950 dark:text-sky-300">
-			Tauri&#x2001;<img
-				src="/Image/Tauri.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="inline-block align-middle opacity-70 dark:hidden"
-				aria-hidden="true"
-			/><img
-				src="/Dark/Image/Tauri.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="hidden inline-block align-middle opacity-70 dark:inline-block"
-				aria-hidden="true"
-			/>
+			Tauri&#x2001;<picture class="inline-flex align-middle">
+				<source srcset="/Dark/Image/Tauri.svg" media="(prefers-color-scheme: dark)" data-theme-dark />
+				<img src="/Image/Tauri.svg" alt="" width="14" height="14" class="opacity-70" aria-hidden="true" />
+			</picture>
 		</span>
 		<span
 			class="inline-flex items-center border border-purple-200 bg-purple-50 px-2.5 py-0.5 align-middle font-medium text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300">
-			Effect-TS&#x2001;<img
-				src="/Image/EffectTS.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="inline-block align-middle opacity-70 dark:hidden"
-				aria-hidden="true"
-			/><img
-				src="/Dark/Image/EffectTS.svg"
-				alt=""
-				width="14"
-				height="14"
-				class="hidden inline-block align-middle opacity-70 dark:inline-block"
-				aria-hidden="true"
-			/>
+			Effect-TS&#x2001;<picture class="inline-flex align-middle">
+				<source srcset="/Dark/Image/EffectTS.svg" media="(prefers-color-scheme: dark)" data-theme-dark />
+				<img src="/Image/EffectTS.svg" alt="" width="14" height="14" class="opacity-70" aria-hidden="true" />
+			</picture>
 		</span>
 		<span
 			class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium">

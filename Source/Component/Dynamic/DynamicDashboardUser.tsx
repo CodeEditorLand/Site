@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
-import { ThemeIcon } from "@Library/Theme";
+import { ThemeImage } from "@Library/Theme";
 import {
 	Building2,
 	CircleCheck,
@@ -315,7 +315,7 @@ const DashboardUserInner = () => {
 				</span>
 				<span className="flex items-center gap-1.5 text-muted-foreground">
 					{ProviderIcon && (
-						<ThemeIcon
+						<ThemeImage
 							src={ProviderIcon}
 							alt={ProviderLabel}
 							width={14}

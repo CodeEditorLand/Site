@@ -97,6 +97,26 @@ const T = GetI18n();
 							"content",
 							Dark ? "#0a0a0c" : "#ffffff",
 						);
+					// Sync <picture> sources to the resolved theme so that
+					// explicit dark-mode override overrides prefers-color-scheme.
+					// Runs after DOMContentLoaded so all <source> elements exist.
+					const Sync = () =>
+						document
+							.querySelectorAll("source[data-theme-dark]")
+							.forEach((S) => {
+								S.media = Dark
+									? "all"
+									: "(prefers-color-scheme: dark)";
+							});
+					if (
+						document.readyState === "loading"
+					)
+						document.addEventListener(
+							"DOMContentLoaded",
+							Sync,
+							{ once: true },
+						);
+					else Sync();
 				} catch (_) {}
 			})();
 		</script>

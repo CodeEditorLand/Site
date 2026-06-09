@@ -421,18 +421,16 @@ const MetaDescription = T("meta.portal.description", {
 		<div
 			class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 pt-6 text-muted-foreground">
 			<picture>
+				<source
+					srcset="/Asset/Dark/Logo/Glyph/Land.svg"
+					media="(prefers-color-scheme: dark)"
+					data-theme-dark
+				/>
 				<img
 					alt="Land"
 					src="/Asset/Logo/Glyph/Land.svg"
 					width="28"
 					height="28"
-					class="dark:hidden"
-				/><img
-					alt="Land"
-					src="/Asset/Dark/Logo/Glyph/Land.svg"
-					width="28"
-					height="28"
-					class="hidden dark:block"
 				/>
 			</picture>
 			<span

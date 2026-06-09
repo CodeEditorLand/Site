@@ -28,21 +28,21 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 					<div
 						className="relative flex h-8 w-8 items-center justify-center overflow-hidden"
 						aria-hidden="true">
-						<img
-							src="/Asset/Logo/Glyph/Land.svg"
-							alt="Code Editor Land"
-							title="Code Editor Land"
-							width="32"
-							height="32"
-							className="h-full w-full dark:hidden"
-						/><img
-							src="/Asset/Dark/Logo/Glyph/Land.svg"
-							alt="Code Editor Land"
-							title="Code Editor Land"
-							width="32"
-							height="32"
-							className="h-full w-full hidden dark:block"
-						/>
+						<picture className="h-full w-full">
+							<source
+								srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
+								media="(prefers-color-scheme: dark)"
+								data-theme-dark=""
+							/>
+							<img
+								src="/Asset/Logo/Glyph/Land.svg"
+								alt="Code Editor Land"
+								title="Code Editor Land"
+								width="32"
+								height="32"
+								className="h-full w-full"
+							/>
+						</picture>
 					</div>
 					<span className="font-semibold">{Logo.Text}</span>
 				</div>

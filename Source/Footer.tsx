@@ -82,18 +82,16 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				<li className="flex items-center gap-2">
 					<a href="/" className="flex items-center">
 						<picture>
+							<source
+								srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
+								media="(prefers-color-scheme: dark)"
+								data-theme-dark=""
+							/>
 							<img
 								alt="Land"
 								src="/Asset/Logo/Glyph/Land.svg"
 								width="24"
 								height="24"
-								className="dark:hidden"
-							/><img
-								alt="Land"
-								src="/Asset/Dark/Logo/Glyph/Land.svg"
-								width="24"
-								height="24"
-								className="hidden dark:block"
 							/>
 						</picture>
 					</a>

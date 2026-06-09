@@ -1,4 +1,4 @@
-import { ThemeIcon } from "@Library/Theme";
+import { ThemeImage } from "@Library/Theme";
 import * as lucide from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -401,7 +401,7 @@ const EnterpriseSSOForm = ({
 				})}
 				{"\u2001"}
 				<IconTooltip Label="Okta">
-					<ThemeIcon
+					<ThemeImage
 						src="/Image/Okta.svg"
 						alt="Okta"
 						width={20}
@@ -440,7 +440,7 @@ const EnterpriseSSOForm = ({
 				})}
 				{"\u2001"}
 				<IconTooltip Label="Microsoft Azure AD">
-					<ThemeIcon
+					<ThemeImage
 						src="/Image/Microsoft.svg"
 						alt="Microsoft"
 						width={20}
@@ -682,7 +682,7 @@ const PortalTierRow = ({
 									})}
 									{"\u2001"}
 									<IconTooltip Label="GitHub">
-										<ThemeIcon
+										<ThemeImage
 											src="/Image/GitHub.svg"
 											alt="GitHub"
 											width={20}
@@ -705,7 +705,7 @@ const PortalTierRow = ({
 									})}
 									{"\u2001"}
 									<IconTooltip Label="Google">
-										<ThemeIcon
+										<ThemeImage
 											src="/Image/Google.svg"
 											alt="Google"
 											width={20}
@@ -728,7 +728,7 @@ const PortalTierRow = ({
 									})}
 									{"\u2001"}
 									<IconTooltip Label="GitLab">
-										<ThemeIcon
+										<ThemeImage
 											src="/Image/GitLab.svg"
 											alt="GitLab"
 											width={20}

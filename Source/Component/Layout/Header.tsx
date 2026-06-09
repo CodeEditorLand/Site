@@ -232,21 +232,21 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						<div
 							className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
 							aria-hidden="true">
-							<img
-								src="/Asset/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width="32"
-								height="32"
-								className="absolute inset-0 h-full w-full dark:hidden"
-							/><img
-								src="/Asset/Dark/Logo/Glyph/Land.svg"
-								alt="Code Editor Land"
-								title="Code Editor Land"
-								width="32"
-								height="32"
-								className="absolute inset-0 h-full w-full hidden dark:block"
-							/>
+							<picture className="absolute inset-0 h-full w-full">
+								<source
+									srcSet="/Asset/Dark/Logo/Glyph/Land.svg"
+									media="(prefers-color-scheme: dark)"
+									data-theme-dark=""
+								/>
+								<img
+									src="/Asset/Logo/Glyph/Land.svg"
+									alt="Code Editor Land"
+									title="Code Editor Land"
+									width="32"
+									height="32"
+									className="h-full w-full"
+								/>
+							</picture>
 						</div>
 						<span className="font-semibold">
 							{HeaderData.Logo?.Text || "Land"}
