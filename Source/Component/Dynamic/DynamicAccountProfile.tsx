@@ -203,27 +203,27 @@ const TierColorMap: Record<
 	{ Border: string; Background: string; Text: string; Dot: string }
 > = {
 	Cloud: {
-		Border: "border-blue-200",
-		Background: "bg-blue-50",
-		Text: "text-blue-700",
+		Border: "border-blue-200 dark:border-blue-800",
+		Background: "bg-blue-50 dark:bg-blue-950",
+		Text: "text-blue-700 dark:text-blue-300",
 		Dot: "bg-blue-500",
 	},
 	Provider: {
-		Border: "border-purple-200",
-		Background: "bg-purple-50",
-		Text: "text-purple-700",
+		Border: "border-purple-200 dark:border-purple-800",
+		Background: "bg-purple-50 dark:bg-purple-950",
+		Text: "text-purple-700 dark:text-purple-300",
 		Dot: "bg-purple-500",
 	},
 	LocalFirst: {
-		Border: "border-orange-200",
-		Background: "bg-orange-50",
-		Text: "text-orange-700",
+		Border: "border-orange-200 dark:border-orange-800",
+		Background: "bg-orange-50 dark:bg-orange-950",
+		Text: "text-orange-700 dark:text-orange-300",
 		Dot: "bg-orange-500",
 	},
 	Enterprise: {
-		Border: "border-green-200",
-		Background: "bg-green-50",
-		Text: "text-green-700",
+		Border: "border-green-200 dark:border-green-800",
+		Background: "bg-green-50 dark:bg-green-950",
+		Text: "text-green-700 dark:text-green-300",
 		Dot: "bg-green-500",
 	},
 };
