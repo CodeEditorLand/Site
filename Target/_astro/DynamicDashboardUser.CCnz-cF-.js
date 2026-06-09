@@ -1,1 +1,0 @@
-import"./Vendor/React.DFG-iijt.js";export{D as default}from"./DynamicDashboardUser.BLEgFero.js";import"./Footer.NScB2mzw.js";import"./Skeleton.BKyxTNRs.js";
