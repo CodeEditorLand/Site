@@ -13,8 +13,12 @@
 Base class for every content container.
 
 ```tsx
-className = "StaccatoCard StaccatoBorderShimmer bg-white p-6";
+className = "StaccatoCard StaccatoBorderShimmer bg-card p-6";
 ```
+
+> Use `bg-card` (maps to `var(--Card)`), not `bg-white`. `bg-white` breaks dark
+> mode. The sweep from `bg-white` to `bg-card` is complete on named card
+> classes; keep it consistent in new components.
 
 Behavior:
 
@@ -84,9 +88,9 @@ className="StaccatoButton inline-flex items-center justify-center
 
 Behavior:
 
-- Seed micro-scatter.
-- Hover: `translateY(-1px)`.
-- Active: `translateY(0)`.
+- Seed micro-scatter (position transform zeroed - opacity/border only active).
+- Hover: border-color or opacity shift. No `translateY` - position transforms
+  are neutralized site-wide (see `StaccatoSystem.md §0`).
 - Focus ring: `outline: 2px solid var(--Primary); outline-offset: 3px`.
 
 Variants seen in codebase:

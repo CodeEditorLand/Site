@@ -7,10 +7,12 @@ personality layer
 
 ## 1. Tone
 
-- **Flat and honest.** The site should read as black/white/gray first, with
-  color as signal.
-- **Staccato = life.** When the page feels static, Staccato motion is the
-  prescribed fix. It is not decoration; it is part of the product.
+- **Flat and honest.** The site reads black/white/gray first, with color as
+  signal. Dual theme (light flat-white, dark cyberpunk-HUD) - both first-class.
+- **Static, grid-aligned.** The prescribed fix for sparse sections is tighter
+  typography, stronger grid structure, and clearer eyebrow labels - not adding
+  noise-driven motion. Staccato position transforms are permanently neutralized
+  (see `StaccatoSystem.md §0`).
 - **Local-first first.** Auth and account UI must not assume sign-in is
   mandatory.
 

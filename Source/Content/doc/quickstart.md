@@ -68,7 +68,7 @@ compiles Sky and Wind via Vite/Astro, and signs the resulting `.app` bundle.
 
 After a successful build, the application binary is at:
 
-```
+```text
 Element/Mountain/Target/debug-electron/Mountain
 ```
 

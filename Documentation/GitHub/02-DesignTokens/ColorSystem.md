@@ -281,7 +281,46 @@ tokens.
 
 ---
 
-## 18. Token Extension Workflow
+## 18. Dark Mode Overrides (`.dark` class)
+
+`darkMode: "class"` is configured in `tailwind.config.js`. When `<html
+class="dark">` is set, the `.dark {}` block in `Base.css` remaps semantic
+surface tokens to the cyberpunk-HUD palette.
+
+### 18.1 Surface remapping
+
+| Token          | Light value   | Dark override        |
+| -------------- | ------------- | -------------------- |
+| `--Background` | `#ffffff`     | `#0a0a0a` (near-black canvas) |
+| `--Foreground` | `#1a1a1a`     | `#e4e4e7`            |
+| `--Card`       | `#ffffff`     | `#111113`            |
+| `--CardForeground` | `#1a1a1a` | `#e4e4e7`            |
+| `--Border`     | `rgba(0,0,0,0.08)` | `rgba(255,255,255,0.08)` |
+| `--Mute`       | `#fafafa`     | `#18181b`            |
+| `--MuteForeground` | `#71717a`  | `#71717a`            |
+| `--Secondary`  | `#f4f4f5`     | `#1c1c1f`            |
+
+### 18.2 Spine / protocol colors in dark mode
+
+Spine colors **do not change their hex values** between modes. Instead they
+become neon accents by virtue of the dark canvas. In dark mode:
+
+- Protocol spine colors (`--SpinegRPC`, `--SpineIPC`, `--SpineTCP`,
+  `--SpineWASM`) glow only on interaction - not at rest.
+- Mute/Surface variants auto-darken via `color-mix` relative to the dark
+  background, so the tinted card backgrounds remain readable.
+- Left-border accents on cards keep their Primary hex unchanged.
+
+### 18.3 Theme toggle
+
+The toggle writes `"dark"` / `"light"` to `localStorage` and toggles the
+`dark` class on `<html>`. The persisted preference is read on first paint (in
+`Base.astro` inline script) to avoid flash. System default `prefers-color-scheme`
+is the fallback when no preference is stored.
+
+---
+
+## 19. Token Extension Workflow
 
 1. Add token in `:root` in `Source/Stylesheet/Base.css`.
 2. Repeat with `/Mute`, `/Surface`, `/Fore` suffix variants (or document why

@@ -9,17 +9,25 @@
 
 ## 1. Design Philosophy
 
-Code Editor Land is a flat-white, local-first product. Visual noise is
-intentional and governed by the Staccato system; everything else is restrained.
+Code Editor Land is a technical, precise product. The visual language reads
+systems-software: flat surfaces, grid structure, sharp corners, and a
+dual-theme that promotes the protocol spine colors to neon accents in dark mode.
 
-- **No dark mode** product-wide. The default palette is light.
-- **No drop shadows.** Shadows are intentionally absent; elevation is
-  communicated through surface layering and the Staccato motion system.
+- **Dual theme - light and dark, both first-class.** `darkMode: "class"` is
+  configured. Light mode: flat white, austere. Dark mode: near-black canvas,
+  hairline grid rules, restrained neon accents (cyberpunk-HUD). Override tokens
+  live in the `.dark {}` block in `Source/Stylesheet/Base.css`.
+- **No drop shadows.** Elevation is communicated through surface layering and
+  hairline borders, not shadows. Dark mode may use a single subtle glow on
+  focus/hover only.
 - **No rounded corners by default.** Cards are flat (`rounded-none`). Buttons
-  and inputs share the same flat policy. `rounded-full` appears only on a
-  spinner and the OAuth success confirmation avatar.
-- **Saturated protocol colors** are never used as page backgrounds. They are
-  reserved for chips, badges, icons, and pathway indicators.
+  and inputs keep the logo-aligned 6px. No gradients in light mode.
+- **Saturated protocol colors** are never used as page backgrounds. In light
+  mode they appear as chips, badges, and left-border accents. In dark mode they
+  become neon accents - glow only on interaction, not at rest.
+- **Static, grid-aligned layout.** The Staccato noise engine's parallax,
+  tilt (per-card seed rotate), and scroll-parallax transforms are permanently
+  zeroed. No noise-driven motion in new sections.
 
 ---
 
@@ -32,7 +40,9 @@ intentional and governed by the Staccato system; everything else is restrained.
 | Active production domain | `editor.land`                            |
 | Grace-hold domain        | `editor.land`                            |
 | Communication style      | Flat, local-first, transparency-oriented |
-| Primary font             | Albert Sans (`--font-sans`)              |
+| Primary font (sans)      | Geist (`--FontSans`)                     |
+| Primary font (mono)      | Geist Mono (`--FontMono`)                |
+| Display font (serif)     | Instrument Serif (`--FontSerif`)         |
 
 ---
 
@@ -107,13 +117,14 @@ Tokens are grouped by category (`Spine*`, `Extension*`, `Language*`, `Runtime*`,
 
 ## 6. Motion & Personality Policy
 
-- The Staccato layer is always enabled (unless `prefers-reduced-motion`).
-- Motion is non-blocking and optimized via `requestAnimationFrame` + commit
-  throttling.
-- Seed-based transforms are static after page load; only opacity/border filter
-  channels animate continuously.
-- Hover on any parent `a`, `button`, or `[role="button"]` drains noise signals
-  from child `StaccatoIcon` and `StaccatoBadge`.
+- **Calm/static motion.** The Staccato noise engine's scatter, tilt, and
+  scroll-parallax are permanently neutralized via an always-on block in
+  `Source/Function/Noise/Stylesheet.css` that zeroes those transforms. Named
+  card classes (`.FeatureCard`, `.PricingCard`, etc.) force `transform: none`.
+- Do not reintroduce parallax, per-card seed rotate, or noise-driven animation.
+- New sections must be static and grid-aligned.
+- `prefers-reduced-motion`: all transforms disabled, opacity set to 1.
+- Hover states use border-color or opacity shifts only - no translate/scale.
 
 ---
 

@@ -7,36 +7,48 @@
 
 ## 1. Font Stack
 
-### 1.1 Primary (Sans)
+Three typefaces, each with a distinct job. Do not mix roles.
+
+| Variable      | Face               | Job                                                       |
+| ------------- | ------------------ | --------------------------------------------------------- |
+| `--FontSans`  | **Geist**          | Body copy, UI text, all prose                             |
+| `--FontMono`  | **Geist Mono**     | HUD chrome: eyebrows, labels, tags, metadata, code        |
+| `--FontSerif` | **Instrument Serif** | Large display headlines only (hero H1, section H2 titles) |
+
+### 1.1 Sans - Geist
 
 ```css
---font-sans:
-	"Albert Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-	"Helvetica Neue", Arial, sans-serif;
+--FontSans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 ```
 
-Applied globally via `@tailwind base`.
+Applied globally via `@tailwind base` through `fontFamily.sans`. Replaces
+Albert Sans. Weights: `400` (body), `500` (labels/buttons), `600` (badges),
+`700` (UI headings). Loaded via Google Fonts preconnect + `display=swap` in
+`Base.astro`.
 
-Weights used: `400` (body), `500` (labels), `600` (badges/medium), `700`
-(headings).
-
-Preloading strategy in `Base.astro`:
-
-- `preconnect` to `fonts.googleapis.com` and `fonts.gstatic.com`.
-- Preload stylesheet with `display=optional` (reduces CLS).
-- `font-size-adjust: 0.48` on `html` matches Albert Sans x-height ratio and
-  stabilizes line height during fallback swap.
-
-### 1.2 Monospace
+### 1.2 Mono - Geist Mono
 
 ```css
---font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+--FontMono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 ```
 
-Used for: codes (Pair IDs, income codes), emails, slugs, file paths, CLI
-references.
+Used for: section eyebrows (`// Section Name`), metadata chips, code blocks,
+version strings, file paths, CLI references, all HUD-chrome labels.
 
-### 1.3 Emoji / Star Rating
+The `//` eyebrow pattern: `font-mono text-xs uppercase tracking-[0.25em]` with
+the `//` chars colored `var(--SpinegRPCFore)`. Apply to every section heading.
+
+### 1.3 Serif - Instrument Serif
+
+```css
+--FontSerif: "Instrument Serif", Georgia, serif;
+```
+
+Used **only** for display-scale headings: hero H1/`TitleHighlight`, top-level
+section H2. Applied via `.Display` / `font-serif` convention. Do not blanket-
+apply to all headings - large display only.
+
+### 1.4 Emoji / Star Rating
 
 ```css
 .StarRatingSymbol {

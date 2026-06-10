@@ -8,6 +8,14 @@ const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 const { resolve: Resolve } = await import("node:path");
 
 export default (await import("astro/config")).defineConfig({
+	markdown: {
+		syntaxHighlight: "shiki",
+
+		shikiConfig: {
+			theme: "github-light",
+		},
+	},
+
 	srcDir: "./Source",
 
 	publicDir: "./Public",
