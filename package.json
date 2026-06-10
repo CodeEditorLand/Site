@@ -39,7 +39,7 @@
 		"@astrojs/react": "5.0.7",
 		"@astrojs/sitemap": "3.7.3",
 		"@astrojs/ts-plugin": "1.10.9",
-		"@auth0/auth0-react": "~2.17.0",
+		"@auth0/auth0-react": "~2.18.0",
 		"@playform/build": "0.3.2",
 		"@playform/compress": "0.2.3",
 		"@playform/inline": "0.1.4",
