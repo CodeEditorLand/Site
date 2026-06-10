@@ -136,7 +136,7 @@ Code's workbench bundle accesses at module evaluation time.
 ### Timing Guarantee
 
 The Astro `Layout.astro` for each workbench variant loads Preload as an inline
-`<script>` tag with `is:inline` before the workbench bundle `<script>` tag. This
+`&lt;script&gt;` tag with `is:inline` before the workbench bundle `&lt;script&gt;` tag. This
 guarantees synchronous execution order because browsers execute inline scripts
 before deferred module scripts. The Preload script dispatches
 `land-preload-ready` as a `CustomEvent` on `window` so any async code that needs

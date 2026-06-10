@@ -13,7 +13,7 @@
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Source 🖋️ Open 👐🏻",
+		"name": "Source\u2001\ud83d\udd8b\ufe0f\u2001Open\u2001\ud83d\udc50\ud83c\udffb",
 		"email": "Source/Open@editor.land",
 		"url": "https://editor.land"
 	},
@@ -35,7 +35,7 @@
 	},
 	"dependencies": {
 		"@astrojs/check": "0.9.9",
-		"@astrojs/mdx": "6.0.3",
+		"@astrojs/mdx": "6.0.2",
 		"@astrojs/react": "5.0.7",
 		"@astrojs/sitemap": "3.7.3",
 		"@astrojs/ts-plugin": "1.10.9",
@@ -83,7 +83,7 @@
 		"@types/react-dom": "19.2.3",
 		"@types/trusted-types": "2.0.7",
 		"@vitejs/plugin-react": "6.0.2",
-		"astro": "6.4.5",
+		"astro": "6.4.4",
 		"astro-capo": "0.0.1",
 		"astrojs-service-worker": "2.0.0",
 		"autoprefixer": "10.5.0",
@@ -94,7 +94,7 @@
 		"cssnano-preset-advanced": "8.0.1",
 		"dotenv": "17.4.2",
 		"embla-carousel-react": "8.6.0",
-		"esbuild": "0.28.0",
+		"esbuild": "0.27.3",
 		"firebase": "12.14.0",
 		"happy-dom": "20.10.2",
 		"i18next": "26.3.1",
