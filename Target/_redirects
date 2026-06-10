@@ -9,7 +9,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 586 rules ──
+# ── VARIANT REWRITES (200) - 584 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /account                              /Account/                             200
 /ACCOUNT                              /Account/                             200
@@ -289,8 +289,6 @@
 /doc/deep-dive-mist/                  /Doc/deep-dive-mist/                  200
 /doc/deep-dive-mountain               /Doc/deep-dive-mountain/              200
 /doc/deep-dive-mountain/              /Doc/deep-dive-mountain/              200
-/doc/deep-dive-output                 /Doc/deep-dive-output/                200
-/doc/deep-dive-output/                /Doc/deep-dive-output/                200
 /doc/deep-dive-rest                   /Doc/deep-dive-rest/                  200
 /doc/deep-dive-rest/                  /Doc/deep-dive-rest/                  200
 /doc/deep-dive-sidecar                /Doc/deep-dive-sidecar/               200
@@ -650,7 +648,6 @@
 /Doc/deep-dive-maintain   /Doc/deep-dive-maintain/  200
 /Doc/deep-dive-mist       /Doc/deep-dive-mist/      200
 /Doc/deep-dive-mountain   /Doc/deep-dive-mountain/  200
-/Doc/deep-dive-output     /Doc/deep-dive-output/    200
 /Doc/deep-dive-rest       /Doc/deep-dive-rest/      200
 /Doc/deep-dive-sidecar    /Doc/deep-dive-sidecar/   200
 /Doc/deep-dive-sky        /Doc/deep-dive-sky/       200
