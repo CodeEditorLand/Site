@@ -1,1 +1,0 @@
-import"./Vendor/React.B4jts4U9.js";export{A as default}from"./Footer.KOR8_fIL.js";

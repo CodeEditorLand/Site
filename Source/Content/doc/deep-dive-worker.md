@@ -159,7 +159,7 @@ window._LOAD_CSS_WORKER = (cssUrl: string): void => {
 };
 ```
 
-Sky's layout loads `Load.js` as the first `&lt;script type="module"&gt;` tag.
+Sky's layout loads `Load.js` as the first `<script type="module">` tag.
 Workbench CSS imports that fire during module evaluation find `_LOAD_CSS_WORKER`
 already defined and call it immediately. The `?Skip=Intercept` suffix is
 appended by the client function, not by the caller, so workbench source never

@@ -80,18 +80,18 @@ workbench bundle:
 
 ```html
 <!-- 1. Defines window._LOAD_CSS_WORKER before any CSS imports run -->
-&lt;script src="/Worker/CSS/Load.js" type="module">&lt;/script&gt;
+<script src="/Worker/CSS/Load.js" type="module"></script>
 
 <!-- 2. Sets window._WORKER path for Register.js -->
-&lt;script>
-	window._WORKER = "/Worker.js";
-&lt;/script&gt;
+<script>
+  window._WORKER = "/Worker.js";
+</script>
 
 <!-- 3. Registers the Service Worker at scope /Application -->
-&lt;script src="/Worker/Register.js" type="module">&lt;/script&gt;
+<script src="/Worker/Register.js" type="module"></script>
 
 <!-- 4. Main workbench bundle - CSS imports are now interceptable -->
-&lt;script src="/Static/Application/workbench.js" type="module">&lt;/script&gt;
+<script src="/Static/Application/workbench.js" type="module"></script>
 ```
 
 `Register.ts` detects when a newly activated Service Worker version takes
