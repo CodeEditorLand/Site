@@ -606,7 +606,7 @@
 		--RadiusInput: 6px;
 
 		/* ─────────────────────────────────────────────────────────────
-		 TYPOGRAPHY — three faces, each with one job.
+		 TYPOGRAPHY - three faces, each with one job.
 		 Geist (body/UI) · Geist Mono (HUD chrome/code) · Instrument Serif
 		 (display headlines). Loaded in Source/Layout/Base.astro.
 		 ───────────────────────────────────────────────────────────── */
@@ -621,7 +621,7 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
- DARK THEME — Cyberpunk terminal-HUD
+ DARK THEME - Cyberpunk terminal-HUD
  Activated by the .dark class on <html> (darkMode: "class").
  Overrides only the semantic surface + spine-Fore tokens; the raw
  ramps in DesignToken.css stay shared, so token-driven components
@@ -1033,6 +1033,148 @@
 		margin-bottom: 0.5rem;
 		line-height: 1.6;
 	}
+}
+
+/* ─────────────────────────────────────────────────────────────
+ MARKDOWN ALERTS (remark-github-alerts)
+ Matches GitHub's exact alert rendering.
+ Plugin emits: <div class="markdown-alert markdown-alert-{type}">
+               <p class="markdown-alert-title"><svg>…</svg> Label</p>
+ Colors from github.com/primer/primitives (light + dark scales).
+ ───────────────────────────────────────────────────────────── */
+
+.markdown-alert {
+	border-left: 4px solid #d0d7de;
+	border-radius: 0 4px 4px 0;
+	color: #1f2328;
+	margin: 1.25rem 0;
+	padding: 0.5rem 1rem;
+}
+
+.markdown-alert > :first-child {
+	margin-top: 0;
+}
+
+.markdown-alert > :last-child {
+	margin-bottom: 0;
+}
+
+.markdown-alert-title {
+	align-items: center;
+	display: flex;
+	font-size: 0.875rem;
+	font-weight: 600;
+	gap: 0.5rem;
+	line-height: 1;
+	margin-bottom: 0.5rem;
+}
+
+.markdown-alert-title svg {
+	fill: currentcolor;
+	flex-shrink: 0;
+	height: 1em;
+	width: 1em;
+}
+
+/* NOTE - blue */
+.markdown-alert-note {
+	background-color: #ddf4ff;
+	border-left-color: #0969da;
+}
+
+.markdown-alert-note .markdown-alert-title {
+	color: #0969da;
+}
+
+/* TIP - green */
+.markdown-alert-tip {
+	background-color: #dafbe1;
+	border-left-color: #1a7f37;
+}
+
+.markdown-alert-tip .markdown-alert-title {
+	color: #1a7f37;
+}
+
+/* IMPORTANT - purple */
+.markdown-alert-important {
+	background-color: #fbefff;
+	border-left-color: #8250df;
+}
+
+.markdown-alert-important .markdown-alert-title {
+	color: #8250df;
+}
+
+/* WARNING - amber */
+.markdown-alert-warning {
+	background-color: #fff8c5;
+	border-left-color: #9a6700;
+}
+
+.markdown-alert-warning .markdown-alert-title {
+	color: #9a6700;
+}
+
+/* CAUTION - red */
+.markdown-alert-caution {
+	background-color: #fff0ee;
+	border-left-color: #d1242f;
+}
+
+.markdown-alert-caution .markdown-alert-title {
+	color: #d1242f;
+}
+
+/* Dark mode - GitHub dark palette */
+.dark .markdown-alert {
+	border-left-color: #30363d;
+	color: #e6edf3;
+}
+
+.dark .markdown-alert-note {
+	background-color: #031d30;
+	border-left-color: #1f6feb;
+}
+
+.dark .markdown-alert-note .markdown-alert-title {
+	color: #388bfd;
+}
+
+.dark .markdown-alert-tip {
+	background-color: #0d2217;
+	border-left-color: #238636;
+}
+
+.dark .markdown-alert-tip .markdown-alert-title {
+	color: #3fb950;
+}
+
+.dark .markdown-alert-important {
+	background-color: #240d45;
+	border-left-color: #8957e5;
+}
+
+.dark .markdown-alert-important .markdown-alert-title {
+	color: #d2a8ff;
+}
+
+.dark .markdown-alert-warning {
+	background-color: #2d1f03;
+	border-left-color: #9e6a03;
+}
+
+.dark .markdown-alert-warning .markdown-alert-title {
+	color: #d29922;
+}
+
+.dark .markdown-alert-caution {
+	background-color: #300d0d;
+	border-left-color: #da3633;
+}
+
+.dark .markdown-alert-caution .markdown-alert-title {
+	color: #f85149;
 }
 
 @media print {

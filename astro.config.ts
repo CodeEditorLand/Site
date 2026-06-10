@@ -7,6 +7,10 @@ const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 
 const { resolve: Resolve } = await import("node:path");
 
+const { default: remarkGitHubAlerts } = await import(
+	"remark-github-alerts"
+);
+
 export default (await import("astro/config")).defineConfig({
 	markdown: {
 		syntaxHighlight: "shiki",
@@ -14,6 +18,8 @@ export default (await import("astro/config")).defineConfig({
 		shikiConfig: {
 			theme: "github-light",
 		},
+
+		remarkPlugins: [remarkGitHubAlerts],
 	},
 
 	srcDir: "./Source",
