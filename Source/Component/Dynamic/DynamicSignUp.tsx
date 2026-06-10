@@ -213,17 +213,17 @@ const DynamicSignUp = ({
 															/[^a-zA-Z0-9]/.test(
 																Password,
 															)
-																? "var(--ColorSuccess, #16a34a)"
+																? "#16a34a"
 																: Password.length >=
 																			8 &&
 																	  Segment <
 																			2
-																	? "var(--ColorWarning, #ca8a04)"
+																	? "#ca8a04"
 																	: Password.length >=
 																				6 &&
 																		  Segment <
 																				1
-																		? "var(--ColorDestruct, #dc2626)"
+																		? "var(--Destruct)"
 																		: "var(--Border, #e5e7eb)",
 													}}
 												/>

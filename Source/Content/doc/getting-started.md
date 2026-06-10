@@ -171,6 +171,6 @@ cp .env.Land.Sample .env.Land
 
 ## Next Steps
 
-- [Installation](/doc/installation) - system requirements table and bundle paths
-- [Configuration](/doc/configuration) - full environment variable reference
-- [Project Structure](/doc/project-structure) - what lives where in the monorepo
+- [Installation](/Doc/installation) - system requirements table and bundle paths
+- [Configuration](/Doc/configuration) - full environment variable reference
+- [Project Structure](/Doc/project-structure) - what lives where in the monorepo

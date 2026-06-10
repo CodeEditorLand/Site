@@ -51,11 +51,13 @@ variable; radius is set per-component directly in JSX.
 
 ## 3. Shadow & Elevation Policy
 
-- **No drop shadows** on cards, buttons, or popovers in the flat-white theme.
-- `StaccatoShadowLift` exists as a CSS hook but is intentionally a no-op
-  (`/* no box-shadow on flat white */`).
-- Elevation is communicated via surface layer (neutral zinc) and Staccato
-  motion.
+- **No drop shadows** on cards, buttons, or popovers in either theme.
+- `StaccatoShadowLift` is a CSS hook intentionally left as a no-op in both
+  light and dark modes.
+- **Light mode:** elevation via neutral zinc surface layers (`--Surface1-4`).
+- **Dark mode:** elevation via hairline border contrast against the `#0a0a0a`
+  canvas. A single restrained glow (e.g. `box-shadow: 0 0 0 1px
+  var(--SpinegRPC)`) is permitted on **focus/hover only** - never at rest.
 
 ---
 

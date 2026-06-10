@@ -29,6 +29,21 @@ export default {
 						a: {
 							"font-weight": "400",
 						},
+						// Tables: block + overflow-x-auto so they scroll on mobile
+						// instead of blowing out the layout.
+						table: {
+							display: "block",
+							"overflow-x": "auto",
+							"-webkit-overflow-scrolling": "touch",
+						},
+						// Pre / code blocks: prevent overflow blowout
+						pre: {
+							"overflow-x": "auto",
+						},
+						// Headings: no ligatures, tighter tracking
+						"h1, h2, h3, h4": {
+							"letter-spacing": "-0.02em",
+						},
 					},
 				},
 			},

@@ -221,6 +221,6 @@ User changes setting in Settings editor
 
 ## Related Pages
 
-- [Project Structure](/doc/project-structure) - element map and source paths
-- [Configuration](/doc/configuration) - tier flags and environment variables
-- [Quickstart](/doc/quickstart) - build and run
+- [Project Structure](/Doc/project-structure) - element map and source paths
+- [Configuration](/Doc/configuration) - tier flags and environment variables
+- [Quickstart](/Doc/quickstart) - build and run

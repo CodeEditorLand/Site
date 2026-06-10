@@ -6,6 +6,16 @@ triplet
 
 ---
 
+## 0. Dark mode note
+
+The palettes below are **light-mode values**. The raw `red-*` / `green-*` /
+`yellow-*` / `orange-*` Tailwind utilities render acceptably on both canvases
+at standard Tailwind saturation levels, but verify contrast against the dark
+`--Background` (`#0a0a0a`) before shipping. Where contrast fails, add
+`dark:` variants or map to a `.dark {}` semantic override in `Base.css`.
+
+---
+
 ## 1. When to Use Direct State Colors
 
 Semantic tokens (`--Destruct`, etc.) cover system states. For richer context -

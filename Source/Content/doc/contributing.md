@@ -44,7 +44,7 @@ runs from private correction through temporary and permanent ban.
 4. Ensure the PR description explains what the change does and why. Reference
    any related issues.
 5. All CI checks must pass before merge. See
-   [CI/CD Pipeline](/doc/ci-cd-pipeline) for what runs.
+   [CI/CD Pipeline](/Doc/ci-cd-pipeline) for what runs.
 
 > [!IMPORTANT] Land uses a `Current` branch as the integration target, not
 > `main`. Pull requests opened against `main` will be redirected.

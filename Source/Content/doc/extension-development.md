@@ -31,7 +31,7 @@ current release, the following areas are fully or substantially covered:
 | `vscode.authentication` | ~30%     | API surface present; no real OAuth backend                             |
 
 For a detailed method-level breakdown, see the
-[VS Code API Coverage](/doc/cocoon-vscode-validation) reference page.
+[VS Code API Coverage](/Doc/cocoon-vscode-validation) reference page.
 
 ## What Does Not Work
 

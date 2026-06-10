@@ -197,7 +197,7 @@ localStorage.removeItem("Disable");
 
 ## Related Pages
 
-- [Quickstart](/doc/quickstart) - build commands and launch
-- [Architecture](/doc/architecture) - how tier flags propagate to each element
-- [Project Structure](/doc/project-structure) - where `.env.Land*` files live in
+- [Quickstart](/Doc/quickstart) - build commands and launch
+- [Architecture](/Doc/architecture) - how tier flags propagate to each element
+- [Project Structure](/Doc/project-structure) - where `.env.Land*` files live in
   the repo

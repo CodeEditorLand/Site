@@ -7,15 +7,27 @@ import {
 } from "../UI/Collapsible.js";
 import type { DocSection } from "./Interface/Content/Page/Doc.js";
 
+interface DynamicDocSidebarProps {
+	Sections: DocSection[];
+	ActiveId?: string;
+	/** Rendered inline as a mobile panel (no sticky wrapper, full width) */
+	Mobile?: boolean;
+}
+
 const DynamicDocSidebar = ({
 	Sections,
 	ActiveId,
-}: {
-	Sections: DocSection[];
-	ActiveId?: string;
-}) => {
+	Mobile = false,
+}: DynamicDocSidebarProps) => {
+	// Auto-expand the section that contains the active page; collapse all others.
+	const ActiveSectionId = Sections.find((S) =>
+		S.Children?.some((C) => C.Id === ActiveId),
+	)?.Id;
+
 	const [CollapsedSections, SetCollapsedSections] = useState<Set<string>>(
-		new Set(),
+		new Set(
+			Sections.filter((S) => S.Id !== ActiveSectionId).map((S) => S.Id),
+		),
 	);
 
 	const ToggleSection = (Id: string) => {
@@ -30,9 +42,11 @@ const DynamicDocSidebar = ({
 		});
 	};
 
-	return (
-		<nav aria-label="Documentation sections">
-			<ul role="list" className="space-y-1">
+	const Nav = (
+		<nav
+			aria-label="Documentation sections"
+			className={Mobile ? "pt-2" : undefined}>
+			<ul role="list" className="space-y-0.5">
 				{Sections.map((Section) => {
 					const HasChildren =
 						Section.Children && Section.Children.length > 0;
@@ -46,33 +60,35 @@ const DynamicDocSidebar = ({
 									onOpenChange={() =>
 										ToggleSection(Section.Id)
 									}>
-									<CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2 font-medium transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
-										<span>{Section.Label}</span>
+									<CollapsibleTrigger className="flex w-full items-center justify-between rounded-none px-2 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+										<span className="font-mono">
+											{Section.Label}
+										</span>
 										<span
 											aria-hidden="true"
-											className={`transition-transform ${IsOpen ? "rotate-90" : ""}`}>
+											className={`transition-transform duration-150 ${IsOpen ? "rotate-90" : ""}`}>
 											›
 										</span>
 									</CollapsibleTrigger>
 									<CollapsibleContent>
 										<ul
 											role="list"
-											className="ml-3 mt-1 space-y-1 border-l border-[var(--ColorBorder)] pl-3">
+											className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3">
 											{Section.Children!.map((Child) => {
-												const IsChildActive =
+												const IsActive =
 													ActiveId === Child.Id;
 												return (
 													<li key={Child.Id}>
 														<a
 															href={`/Doc/${Child.Id}`}
 															aria-current={
-																IsChildActive
+																IsActive
 																	? "page"
 																	: undefined
 															}
-															className={`block px-2 py-1 transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)] ${
-																IsChildActive
-																	? "bg-[var(--ColorSecondary)] font-medium"
+															className={`block rounded-none px-2 py-1 text-sm transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
+																IsActive
+																	? "bg-secondary font-medium text-foreground"
 																	: "text-muted-foreground"
 															}`}>
 															{Child.Label}
@@ -91,7 +107,7 @@ const DynamicDocSidebar = ({
 						<li key={Section.Id}>
 							<a
 								href={`/Doc/${Section.Id}`}
-								className="block px-3 py-2 text-muted-foreground transition-colors hover:bg-[var(--ColorSecondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
+								className="block rounded-none px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 								{Section.Label}
 							</a>
 						</li>
@@ -99,6 +115,45 @@ const DynamicDocSidebar = ({
 				})}
 			</ul>
 		</nav>
+	);
+
+	if (!Mobile) return Nav;
+
+	// Mobile: wrap in a collapsible panel
+	const ActiveLabel =
+		Sections.flatMap((S) => S.Children ?? []).find(
+			(C) => C.Id === ActiveId,
+		)?.Label ??
+		ActiveSectionId ??
+		"Navigation";
+
+	const [MobileOpen, SetMobileOpen] = useState(false);
+
+	return (
+		<div className="border-b border-border pb-3 lg:hidden">
+			<button
+				type="button"
+				onClick={() => SetMobileOpen((O) => !O)}
+				className="flex w-full items-center justify-between px-1 py-2 text-sm font-medium text-foreground hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+				aria-expanded={MobileOpen}>
+				<span className="flex items-center gap-2">
+					<span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+						Docs
+					</span>
+					<span className="text-muted-foreground">/</span>
+					<span className="truncate">{ActiveLabel}</span>
+				</span>
+				<span
+					aria-hidden="true"
+					className={`ml-2 shrink-0 transition-transform duration-150 ${MobileOpen ? "rotate-90" : ""}`}>
+					›
+				</span>
+			</button>
+
+			{MobileOpen && (
+				<div className="mt-2 border-t border-border pt-2">{Nav}</div>
+			)}
+		</div>
 	);
 };
 

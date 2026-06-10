@@ -12,7 +12,7 @@ mandatory; Step 2 will fail if Step 1 has not been completed.
 
 > [!IMPORTANT] Do not use `git clone --recurse-submodules`. Each element
 > submodule is managed independently on its own branch. Clone each one
-> individually as described in [Getting Started](/doc/getting-started).
+> individually as described in [Getting Started](/Doc/getting-started).
 
 ## Step 1: Compile VS Code Source
 
@@ -105,7 +105,7 @@ These variables are read from `.env.Land*` files in the repository root. Copy
 
 ## Next Steps
 
-- [Getting Started](/doc/getting-started) - prerequisites, clone strategy,
+- [Getting Started](/Doc/getting-started) - prerequisites, clone strategy,
   troubleshooting
-- [Configuration](/doc/configuration) - full environment variable reference
-- [Architecture](/doc/architecture) - how the components communicate
+- [Configuration](/Doc/configuration) - full environment variable reference
+- [Architecture](/Doc/architecture) - how the components communicate

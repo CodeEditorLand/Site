@@ -118,7 +118,7 @@ functions, or fresh constants instead.
 
 ## Related Pages
 
-- [Architecture](/doc/architecture) - how the elements communicate at runtime
-- [Configuration](/doc/configuration) - environment variable system and tier
+- [Architecture](/Doc/architecture) - how the elements communicate at runtime
+- [Configuration](/Doc/configuration) - environment variable system and tier
   flags
-- [Installation](/doc/installation) - how to clone each submodule
+- [Installation](/Doc/installation) - how to clone each submodule

@@ -13,14 +13,13 @@ const DocEntries = (await getCollection("doc")).sort(
 // Group entries by section for hierarchical sidebar
 const SectionOrder = [
 	"Start",
-	"Architecture",
-	"Usage",
+	"Elements",
+	"Deep Dive",
+	"Workflows",
+	"Why Land",
+	"Reference",
 	"Development",
-	"Community",
-	"Support",
-	"Element",
-	"Technology",
-	"License",
+	"Telemetry",
 ];
 
 const GroupedBySection = new Map<string, { Id: string; Label: string }[]>();
@@ -84,11 +83,16 @@ const Element = [
 
 	<div class="container mx-auto max-w-6xl px-4 py-16">
 		<div class="flex gap-8">
-			<!-- Sidebar - sticky on desktop, hidden on mobile -->
-			<aside class="hidden w-56 shrink-0 lg:block">
-				<div class="sticky top-8">
+			<!-- Desktop sidebar: sticky + independently scrollable -->
+			<aside
+				class="hidden w-52 shrink-0 lg:block xl:w-60"
+				aria-label="Documentation navigation">
+				<div
+					class="sticky top-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto overscroll-contain pb-8 pr-1
+					       [scrollbar-color:var(--Border)_transparent] [scrollbar-width:thin]
+					       [-webkit-overflow-scrolling:touch]">
 					<p
-						class="mb-3 font-semibold uppercase tracking-wider text-muted-foreground">
+						class="mb-2 px-2 font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground">
 						{
 							T("sidebar.title", {
 								ns: "doc",
@@ -97,11 +101,11 @@ const Element = [
 						}
 					</p>
 					<DynamicDocSidebar Sections={SidebarSections} client:load />
-					<div class="mt-4 border-t border-[var(--Border)] pt-4">
+					<div class="mt-4 border-t border-border pt-4">
 						<a
 							href="/Doc/Rust"
-							class="block px-3 py-2 text-muted-foreground transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
-							Rust API
+							class="block rounded-none px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							Rust API ↗
 						</a>
 					</div>
 				</div>

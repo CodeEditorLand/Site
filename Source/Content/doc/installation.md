@@ -124,7 +124,7 @@ BundleLevel=debug sh Maintain/Script/SignBundle.sh
 
 ## Next Steps
 
-- [Getting Started](/doc/getting-started) - prerequisites and clone walkthrough
-- [Configuration](/doc/configuration) - environment variable system
-- [Project Structure](/doc/project-structure) - element layout and naming
+- [Getting Started](/Doc/getting-started) - prerequisites and clone walkthrough
+- [Configuration](/Doc/configuration) - environment variable system
+- [Project Structure](/Doc/project-structure) - element layout and naming
   conventions

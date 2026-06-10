@@ -48,7 +48,7 @@ The following capabilities are operational:
 ## What Is Not Yet Complete
 
 > [!IMPORTANT] Public installers are not available. Building from source is the
-> only supported path today. See [Quickstart](/doc/quickstart) for instructions.
+> only supported path today. See [Quickstart](/Doc/quickstart) for instructions.
 
 > [!WARNING] Windows and Linux support is in progress. The primary development
 > and test platform is macOS (Apple Silicon and Intel). Building on other
@@ -81,7 +81,7 @@ The following items are still in progress:
 
 ## Next Steps
 
-- [Quickstart](/doc/quickstart) - build and run in two steps
-- [Architecture](/doc/architecture) - how Mountain, Cocoon, Sky, and Wind fit
+- [Quickstart](/Doc/quickstart) - build and run in two steps
+- [Architecture](/Doc/architecture) - how Mountain, Cocoon, Sky, and Wind fit
   together
-- [Project Structure](/doc/project-structure) - the Element monorepo layout
+- [Project Structure](/Doc/project-structure) - the Element monorepo layout

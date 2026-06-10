@@ -39,14 +39,19 @@ explicitly commented out in `Stylesheet.css`.
 
 ## 3. Throttle & Timing Defaults
 
-| Component          | Lerp                     | Frequency                 |
-| ------------------ | ------------------------ | ------------------------- |
-| Card entry / hover | `1.2s`                   | Every 500 ms noise commit |
-| Button             | `0.5s ease`              | Every 500 ms              |
-| Nav                | `0.5s ease`              | Every 500 ms              |
-| Hero               | `1.4s cubic-bezier(...)` | Every 500 ms              |
-| Opacity / breath   | `0.6s`-`1.6s ease`       | Every 500 ms              |
-| Parallax           | Scroll-linked            | Scroll frame rate         |
+| Component            | Lerp                     | Frequency                 | Active |
+| -------------------- | ------------------------ | ------------------------- | ------ |
+| Card entry / hover   | `1.2s`                   | Every 500 ms noise commit | ✅     |
+| Button               | `0.5s ease`              | Every 500 ms              | ✅     |
+| Nav                  | `0.5s ease`              | Every 500 ms              | ✅     |
+| Hero                 | `1.4s cubic-bezier(...)` | Every 500 ms              | ✅     |
+| Opacity / breath     | `0.6s`-`1.6s ease`       | Every 500 ms              | ✅     |
+| Card position/rotate | seed-based               | Page load only            | ❌ zeroed |
+| Parallax             | Scroll-linked            | Scroll frame rate         | ❌ zeroed |
+
+Position transforms (translate, rotate, scale on `StaccatoCard` and
+`StaccatoRotate`) and all scroll-linked parallax are permanently zeroed in
+`Source/Function/Noise/Stylesheet.css`. See `StaccatoSystem.md §0`.
 
 ---
 

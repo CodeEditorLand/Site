@@ -29,13 +29,15 @@ const MetaDescription = Entry.data.summary;
 	lang="en">
 	<Header client:load />
 
-	<div class="container mx-auto max-w-3xl px-4 py-16">
+	<div class="mx-auto max-w-3xl px-4 py-8 sm:py-12 lg:py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+				class="flex flex-wrap items-center gap-1 text-sm text-muted-foreground">
 				<li>
-					<a href="/" class="transition-colors hover:text-foreground"
+					<a
+						href="/"
+						class="transition-colors hover:text-foreground"
 						>{
 							T("common.breadcrumb.home", {
 								defaultValue: "Home",
@@ -43,7 +45,7 @@ const MetaDescription = Entry.data.summary;
 						}</a
 					>
 				</li>
-				<li class="mx-2">/</li>
+				<li aria-hidden="true">/</li>
 				<li>
 					<a
 						href="/Blog"
@@ -56,11 +58,11 @@ const MetaDescription = Entry.data.summary;
 						}</a
 					>
 				</li>
-				<li class="mx-2">/</li>
-				<li>
-					<span class="font-medium text-foreground"
-						>{Entry.data.title}</span
-					>
+				<li aria-hidden="true">/</li>
+				<li
+					class="font-medium text-foreground"
+					aria-current="page">
+					{Entry.data.title}
 				</li>
 			</ol>
 		</nav>
@@ -71,28 +73,27 @@ const MetaDescription = Entry.data.summary;
 				Entry.data.tags.length > 0 && (
 					<div class="mb-4 flex flex-wrap gap-2">
 						{Entry.data.tags.map((Tag: string) => (
-							<span class="px-2 py-0.5 font-medium text-muted-foreground">
+							<span class="bg-muted px-2 py-0.5 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
 								{Tag}
 							</span>
 						))}
 					</div>
 				)
 			}
-			<h1
-				id="main-content"
-				class="text-2xl font-semibold tracking-tight sm:text-3xl">
+			<h1 class="mb-3 text-2xl font-semibold tracking-tight sm:text-3xl">
 				{Entry.data.title}
 			</h1>
-			<p class="mb-4 text-[var(--MuteForeground)]">
+			<p class="mb-4 text-base text-muted-foreground">
 				{Entry.data.summary}
 			</p>
-			<div class="flex items-center gap-4 text-muted-foreground">
+			<div
+				class="flex flex-wrap items-center gap-3 font-mono text-xs text-muted-foreground">
 				<span>{Entry.data.author}</span>
-				<span>&#x2001;</span>
+				<span aria-hidden="true">&#x2001;·&#x2001;</span>
 				<time datetime={Entry.data.publishedAt}
 					>{Entry.data.publishedAt}</time
 				>
-				<span>&#x2001;</span>
+				<span aria-hidden="true">&#x2001;·&#x2001;</span>
 				<span>{Entry.data.readTime} min read</span>
 			</div>
 		</header>
@@ -100,13 +101,20 @@ const MetaDescription = Entry.data.summary;
 		<!-- Post Content -->
 		<main
 			id="main-content"
-			class="prose prose-neutral max-w-none border-t border-[var(--ColorBorder)] pt-8 dark:prose-invert">
+			class="prose prose-neutral max-w-none border-t border-border pt-8 dark:prose-invert
+			       prose-table:block prose-table:overflow-x-auto
+			       prose-pre:overflow-x-auto prose-pre:text-sm
+			       prose-code:text-sm
+			       prose-headings:tracking-tight
+			       prose-a:font-normal">
 			<Content />
 		</main>
 
 		<!-- Back to Blog -->
 		<div class="mt-12 border-t pt-8">
-			<a href="/Blog" class="StaccatoButton text-primary hover:underline"
+			<a
+				href="/Blog"
+				class="StaccatoButton text-primary hover:underline"
 				>{T("page.title", { ns: "blog", defaultValue: "Blog" })}<span
 					class="InlineSeparator">←</span
 				></a

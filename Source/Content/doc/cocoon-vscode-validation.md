@@ -237,7 +237,7 @@ message GetNewFeatureResponse {
 
 Create a new file under `WindServiceHandlers/<Domain>/NewMethod.rs` (one file,
 one struct, PascalCase - see
-[Mountain naming conventions](/doc/mountain-naming-conventions)):
+[Mountain naming conventions](/Doc/mountain-naming-conventions)):
 
 ```rust
 #![allow(non_snake_case, non_camel_case_types)]

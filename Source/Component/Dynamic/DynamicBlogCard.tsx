@@ -1,13 +1,13 @@
 import type { BlogPost } from "./Interface/Content/Page/Blog.js";
 
 const DynamicBlogCard = ({ Post }: { Post: BlogPost }) => (
-	<article className="StaccatoCard bg-[var(--ColorCard)] p-6">
+	<article className="StaccatoCard bg-card p-6 transition-colors hover:border-foreground">
 		{Post.Tags.length > 0 && (
 			<div className="mb-3 flex flex-wrap gap-2">
 				{Post.Tags.map((Tag) => (
 					<span
 						key={Tag}
-						className="bg-[var(--ColorMute)] px-2 py-0.5 font-medium text-muted-foreground">
+						className="bg-muted px-2 py-0.5 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
 						{Tag}
 					</span>
 				))}

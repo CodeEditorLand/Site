@@ -74,8 +74,18 @@ Implementation: `Source/Function/OpenGraph.js` +
 
 ## 6. Theme Color
 
-`<meta name="theme-color" content="#ffffff" />` is set on every page via
-`Base.astro`.
+`<meta name="theme-color" content="#ffffff" />` is currently set for light mode
+only in `Base.astro`. For dual-theme support, use `media` variants:
+
+```html
+<meta name="theme-color" content="#ffffff"
+      media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0a0a0a"
+      media="(prefers-color-scheme: dark)" />
+```
+
+`#0a0a0a` matches the dark mode `--Background` canvas token so the browser
+chrome (mobile address bar, PWA title bar) follows the active theme.
 
 ---
 

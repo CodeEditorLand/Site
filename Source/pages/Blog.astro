@@ -90,7 +90,7 @@ const Posts = BlogEntries.map((Entry) => ({
 		<section aria-labelledby="BlogPostsHeading">
 			{
 				Posts.length === 0 ? (
-					<div class="StaccatoCard bg-[var(--ColorCard)] p-12 text-center">
+					<div class="StaccatoCard bg-card p-12 text-center">
 						<h2 class="mb-3 text-xl font-semibold">{EmptyTitle}</h2>
 						<p class="whitespace-pre-line text-muted-foreground">
 							{EmptySubtitle}
@@ -101,8 +101,8 @@ const Posts = BlogEntries.map((Entry) => ({
 						{Posts.map((Post) => (
 							<a
 								href={`/Blog/${Post.Slug}`}
-								class="block transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--ColorPrimary)]">
-								<article class="StaccatoCard h-full bg-[var(--ColorCard)] p-6">
+								class="block transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+								<article class="StaccatoCard h-full bg-card p-6">
 									{Post.Tags.length > 0 && (
 										<div class="mb-3 flex flex-wrap gap-2">
 											{Post.Tags.map((Tag) => (

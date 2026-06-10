@@ -31,9 +31,12 @@ Path: `Source/Component/Dynamic/DynamicHeroSection.tsx` and
 
 Layout:
 
-- Background parallax layers: `StaccatoParallaxNear/Mid/Far`.
-- Floating decorations: `StaccatoFloat`, `StaccatoBreath`.
-- Center CTA: `StaccatoHeroButton`.
+- Background parallax layers: `StaccatoParallaxNear/Mid/Far` - **position
+  transforms are zeroed** (see `StaccatoSystem.md §0`). Classes are present as
+  layout hooks; no actual parallax movement.
+- Floating decorations: `StaccatoFloat`, `StaccatoBreath` - Float is neutralized;
+  Breath (opacity) is still active.
+- Center CTA: `StaccatoHeroButton` - position transform zeroed, opacity active.
 - Logo: `StaccatoLogo` (stable seed, no hover transform).
 
 Heading class pattern:
@@ -58,7 +61,7 @@ Pattern:
 
 ```tsx
 <div className={clsx("StaccatoMorphGap grid", ColumnClass)}>
-	<div className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-white p-8" />
+	<div className="FeatureCard StaccatoCard flex flex-col space-y-6 rounded-none bg-card p-8" />
 </div>
 ```
 
@@ -70,7 +73,7 @@ Pattern:
 
 ```tsx
 <div className={clsx("StaccatoMorphGap grid", ColumnClass)}>
-	<div className="PricingCard StaccatoCard flex flex-col rounded-none bg-white ...">
+	<div className="PricingCard StaccatoCard flex flex-col rounded-none bg-card ...">
 		<span className="StaccatoBadge text-muted-foreground shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium" />
 		<span className="StaccatoBadge StaccatoRhythmBeat text-primary font-semibold tracking-wider uppercase" />
 		<span className="StaccatoBreath text-muted-foreground" />
@@ -83,7 +86,7 @@ Pattern:
 ## 4. Testimonials (Masonry)
 
 ```tsx
-<div className="MasonryCard TestimonialCard StaccatoCard flex flex-col rounded-none bg-white p-8">
+<div className="MasonryCard TestimonialCard StaccatoCard flex flex-col rounded-none bg-card p-8">
 ```
 
 - Masonry col span set inline via `style="--masonry-col: N"`.
@@ -95,7 +98,7 @@ Pattern:
 
 ### 5.1 Public Section
 
-- Editable top cards: `StaccatoCard StaccatoBorderShimmer bg-white p-6`.
+- Editable top cards: `StaccatoCard StaccatoBorderShimmer bg-card p-6`.
 - Local-first scan: `DynamicLocalFirstScan` card with orange action button.
 - Transparency: `TransparencyCard StaccatoCard ...`.
 - Privacy requests: `DynamicPrivacyRequests` rights grid + support grid + delete

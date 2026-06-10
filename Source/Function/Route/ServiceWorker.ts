@@ -107,7 +107,8 @@ const AuthRoute: Set<string> = new Set([
 
 const DynamicRoute: Array<{ Pattern: RegExp; Base: string }> = [
 	{ Pattern: /^\/Blog\/([^/]+)\/?$/, Base: "/Blog" },
-	{ Pattern: /^\/Doc\/([^/]+)\/?$/, Base: "/Doc" },
+	// Doc slugs may be single-level (/Doc/mountain) or nested (/Doc/telemetry/overview)
+	{ Pattern: /^\/Doc\/.+/, Base: "/Doc" },
 ];
 
 // Workers API URL prefixes - requests to these paths are pre-processed
