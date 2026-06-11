@@ -48,7 +48,7 @@ handling runs on Tokio so no thread is ever blocked waiting for I/O.
 
 ## Zone configuration
 
-The authoritative zone covers `land.playform.cloud` and all subdomains. The SOA
+The authoritative zone covers `editor.land` and all subdomains. The SOA
 record is generated in memory at startup; no zone file on disk is required.
 
 ```
