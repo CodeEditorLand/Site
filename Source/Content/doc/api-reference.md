@@ -67,7 +67,7 @@ The IPC channel registry that drives generation:
 [https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts)
 
 The matching Rust enum (kept in lockstep):
-[https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Common/Source/IPC/Channel.rs](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Common/Source/IPC/Channel.rs)
+[https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs](https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs)
 
 > [!IMPORTANT] `Channel.ts` and `Channel.rs` must always be kept in lockstep.
 > Adding an entry to one without adding it to the other will cause IPC dispatch

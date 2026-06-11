@@ -18,7 +18,7 @@ until Monaco renders the content.
    handler holds the file's `URI` and calls into the `IEditorService`.
 
 2. `IEditorService.openEditor({ resource: fileUri })` executes the
-   `openEditorEffect` defined in `Wind/Source/Application/Editor/Definition.ts`.
+   `openEditorEffect` defined in `Wind/Source/Effect/Editor`.
    The effect first passes the untyped input to `TextEditorService` to resolve
    it into a concrete `EditorInput`, then calls `findGroup` to identify the
    target editor group.
@@ -30,11 +30,11 @@ until Monaco renders the content.
    `EditorInput.resolve()` to obtain the underlying model.
 
 4. `TextFileEditorModel.load()` needs file content. It calls
-   `IFileService.readFile(fileUri)` from `Wind/Source/Application/File/Live.ts`.
+   `IFileService.readFile(fileUri)` from `Wind/Source/FileSystem`.
 
 5. `IFileService` looks up the registered provider for the `file:` URI scheme
    and finds `TauriDiskFileSystemProvider`
-   (`Wind/Source/Application/FileSystem/Definition.ts`).
+   (`Wind/Source/FileSystem`).
 
 6. `TauriDiskFileSystemProvider.readFile()` executes the `ReadFile` Effect from
    the Tauri integration layer:
