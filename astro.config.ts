@@ -7,8 +7,8 @@ const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 
 const { resolve: Resolve } = await import("node:path");
 
-const { default: remarkGitHubAlerts } = await import(
-	"remark-github-alerts"
+const { default: remarkCallout } = await import(
+	"./Source/Function/Markdown/Callout.js"
 );
 
 export default (await import("astro/config")).defineConfig({
@@ -19,7 +19,7 @@ export default (await import("astro/config")).defineConfig({
 			theme: "github-light",
 		},
 
-		remarkPlugins: [remarkGitHubAlerts],
+		remarkPlugins: [remarkCallout],
 	},
 
 	srcDir: "./Source",
