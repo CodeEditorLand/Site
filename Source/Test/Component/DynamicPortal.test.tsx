@@ -1,16 +1,22 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import React from "react";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicPortal } from "../../Component/Dynamic/DynamicPortal";
+
 import type PortalContent from "../../Component/Dynamic/Interface/Content/Page/Portal.js";
+
 import type TierContent from "../../Component/Dynamic/Interface/Content/Portal/Tier.js";
 
 // ─── lucide-react mock (icons used by DynamicPortal → null) ───
 
 vi.mock("lucide-react", () => {
 	const Null = () => null;
+
 	return {
 		Activity: Null,
 		AlertTriangle: Null,
@@ -93,9 +99,12 @@ vi.mock("../../Component/Dynamic/DynamicInput", () => ({
 	}: {
 		Content: {
 			Label?: string;
+
 			Placeholder?: string;
+
 			OnChange?: (Value: string) => void;
 		};
+
 		Id: string;
 	}) => (
 		<input
@@ -117,13 +126,17 @@ vi.mock("../../Component/UI/Button", () => ({
 		...Rest
 	}: {
 		children: React.ReactNode;
+
 		onClick?: () => void;
+
 		type?: string;
+
 		[Key: string]: unknown;
 	}) => (
 		<button
 			type={(type as "button" | "submit") ?? "button"}
-			onClick={onClick}>
+			onClick={onClick}
+		>
 			{children}
 		</button>
 	),
@@ -141,6 +154,7 @@ vi.mock("../../Component/UI/Card", () => ({
 		className,
 	}: {
 		children: React.ReactNode;
+
 		className?: string;
 	}) => <div className={className}>{children}</div>,
 	CardTitle: ({
@@ -148,6 +162,7 @@ vi.mock("../../Component/UI/Card", () => ({
 		className,
 	}: {
 		children: React.ReactNode;
+
 		className?: string;
 	}) => <h3 className={className}>{children}</h3>,
 }));
@@ -158,6 +173,7 @@ vi.mock("../../Component/UI/IconTooltip.js", () => ({
 		children,
 	}: {
 		Label?: string;
+
 		children?: React.ReactNode;
 	}) => <span aria-label={Label}>{children}</span>,
 }));
@@ -197,6 +213,7 @@ beforeEach(() => {
 
 afterEach(() => {
 	cleanup();
+
 	vi.clearAllMocks();
 });
 
@@ -204,7 +221,9 @@ afterEach(() => {
 
 const MockTierBase = (
 	Identifier: TierContent["Identifier"],
+
 	Title: string,
+
 	Color: string,
 ): TierContent => ({
 	Identifier,
@@ -219,10 +238,15 @@ const MockTierBase = (
 
 const MockContent: PortalContent = {
 	Title: "Portal",
+
 	Subtitle: "Choose your plan",
+
 	Cloud: MockTierBase("Cloud", "Cloud", "#3b82f6"),
+
 	Provider: MockTierBase("Provider", "Provider", "#8b5cf6"),
+
 	LocalFirst: MockTierBase("LocalFirst", "Local-First", "#f97316"),
+
 	Enterprise: MockTierBase("Enterprise", "Enterprise", "#374151"),
 };
 
@@ -259,6 +283,7 @@ describe("DynamicPortal - Enterprise SSO tier", () => {
 		const OktaImage = screen.getByAltText("Okta");
 
 		expect(OktaImage).toBeInTheDocument();
+
 		expect(OktaImage).toHaveAttribute("src", "/Image/Okta.svg");
 	});
 
@@ -288,6 +313,7 @@ describe("DynamicPortal - Enterprise SSO tier", () => {
 		await User.click(OktaButton);
 
 		expect(window.location.href).toContain("/Account/SignIn");
+
 		expect(window.location.href).toContain("connection=okta");
 	});
 
@@ -305,6 +331,7 @@ describe("DynamicPortal - Enterprise SSO tier", () => {
 		await User.click(OktaButton);
 
 		expect(window.location.href).toContain("connection=okta");
+
 		expect(window.location.href).toContain("organization=org_abc123");
 	});
 

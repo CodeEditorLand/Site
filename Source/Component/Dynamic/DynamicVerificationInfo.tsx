@@ -1,9 +1,13 @@
 import { Download, Fingerprint, Shield } from "lucide-react";
+
 import { useTranslation } from "react-i18next";
 
 import { RichText } from "../UI/RichText.js";
+
 import { DynamicButton } from "./DynamicButton";
+
 import type VerificationInfo from "./Interface/Information/Verification.js";
+
 import type Property from "./Interface/Property/Information/Verification.js";
 
 /**
@@ -16,6 +20,7 @@ const DynamicVerificationInfo = ({
 	ClassName,
 }: Property) => {
 	const { t: T } = useTranslation("download");
+
 	const { Title, Description, DownloadVerification, IntegrityVerification } =
 		Content;
 
@@ -42,6 +47,7 @@ const DynamicVerificationInfo = ({
 
 	const RenderVerificationBlock = (
 		Information: VerificationInfo,
+
 		Type: "download" | "integrity",
 	) => (
 		<div className="space-y-4">
@@ -54,6 +60,7 @@ const DynamicVerificationInfo = ({
 							})}
 						</span>
 						{"\u2001"}
+
 						<Fingerprint
 							className="h-4 w-4 shrink-0 text-primary"
 							aria-hidden="true"
@@ -70,11 +77,13 @@ const DynamicVerificationInfo = ({
 							onClick={() =>
 								CopyToClipboard(
 									Information.SHA256!,
+
 									T("labels.sha256Checksum", {
 										defaultValue: "SHA-256 checksum",
 									}),
 								)
-							}>
+							}
+						>
 							{T("labels.copy", { defaultValue: "Copy" })}
 						</button>
 					</div>
@@ -90,6 +99,7 @@ const DynamicVerificationInfo = ({
 							})}
 						</span>
 						{"\u2001"}
+
 						<Shield
 							className="h-4 w-4 shrink-0 text-primary"
 							aria-hidden="true"
@@ -106,11 +116,13 @@ const DynamicVerificationInfo = ({
 							onClick={() =>
 								CopyToClipboard(
 									Information.PGPSignature || "",
+
 									T("labels.pgpSignature", {
 										defaultValue: "release signature",
 									}),
 								)
-							}>
+							}
+						>
 							{T("labels.copy", { defaultValue: "Copy" })}
 						</button>
 					</div>
@@ -162,7 +174,8 @@ const DynamicVerificationInfo = ({
 	return (
 		<section
 			className={`py-20 ${ClassName || ""}`}
-			aria-label="Download verification">
+			aria-label="Download verification"
+		>
 			<div className="container mx-auto px-4">
 				<div className="mx-auto max-w-4xl">
 					{(Title || Description) && (
@@ -172,6 +185,7 @@ const DynamicVerificationInfo = ({
 									{Title}
 								</h2>
 							)}
+
 							{Description && (
 								<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
 									<RichText Text={Description} />

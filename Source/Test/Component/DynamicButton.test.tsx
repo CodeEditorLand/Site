@@ -1,8 +1,11 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicButton } from "../../Component/Dynamic/DynamicButton";
+
 import type { ButtonContent } from "../../Component/Dynamic/Type.js";
 
 afterEach(() => {
@@ -18,12 +21,15 @@ describe("DynamicButton", () => {
 		const ButtonElement = screen.getByRole("button", { name: "Click Me" });
 
 		expect(ButtonElement).toBeInTheDocument();
+
 		expect(ButtonElement).toHaveTextContent("Click Me");
 	});
 
 	it("calls onAction when clicked", async () => {
 		const ActionHandler = vi.fn();
+
 		const Content: ButtonContent = { Text: "Submit" };
+
 		const User = UserEvent.setup();
 
 		render(<DynamicButton Content={Content} OnAction={ActionHandler} />);
@@ -37,10 +43,12 @@ describe("DynamicButton", () => {
 
 	it("calls content onClick when clicked", async () => {
 		const ClickHandler = vi.fn();
+
 		const Content: ButtonContent = {
 			Text: "Action",
 			OnClick: ClickHandler,
 		};
+
 		const User = UserEvent.setup();
 
 		render(<DynamicButton Content={Content} />);
@@ -69,10 +77,12 @@ describe("DynamicButton", () => {
 
 	it("does not call onAction when disabled", async () => {
 		const ActionHandler = vi.fn();
+
 		const Content: ButtonContent = {
 			Text: "Disabled",
 			Disabled: true,
 		};
+
 		const User = UserEvent.setup();
 
 		render(<DynamicButton Content={Content} OnAction={ActionHandler} />);
@@ -94,12 +104,15 @@ describe("DynamicButton", () => {
 		const LoadingButton = screen.getByRole("button", { name: "Loading" });
 
 		expect(LoadingButton).toBeDisabled();
+
 		expect(LoadingButton).toHaveAttribute("aria-busy", "true");
 	});
 
 	it("does not call onAction when loading", async () => {
 		const ActionHandler = vi.fn();
+
 		const Content: ButtonContent = { Text: "Loading" };
+
 		const User = UserEvent.setup();
 
 		render(

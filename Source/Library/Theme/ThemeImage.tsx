@@ -2,11 +2,17 @@ import { useEffect, useRef } from "react";
 
 export interface ThemeImageProps {
 	src: string;
+
 	darkSrc?: string;
+
 	alt?: string;
+
 	width?: number | string;
+
 	height?: number | string;
+
 	className?: string;
+
 	[key: string]: unknown;
 }
 
@@ -40,7 +46,9 @@ export function ThemeImage({
 
 	useEffect(() => {
 		if (!sourceRef.current) return;
+
 		const isDark = document.documentElement.classList.contains("dark");
+
 		sourceRef.current.media = isDark
 			? "all"
 			: "(prefers-color-scheme: dark)";

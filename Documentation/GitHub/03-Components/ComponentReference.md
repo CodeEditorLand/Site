@@ -127,7 +127,7 @@ Behavior:
 Composition:
 
 ```tsx
-<span className="StaccatoBadge text-muted-foreground bg-[var(--Mute)] px-2 py-0.5 font-semibold tracking-wider uppercase" />
+<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-semibold uppercase tracking-wider text-muted-foreground" />
 ```
 
 Or tier/tinted:

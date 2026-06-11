@@ -1,7 +1,11 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import i18n from "i18next";
+
 import { I18nextProvider } from "react-i18next";
+
 import {
 	afterEach,
 	beforeAll,
@@ -54,6 +58,7 @@ beforeEach(() => {
 
 afterEach(() => {
 	cleanup();
+
 	vi.restoreAllMocks();
 });
 
@@ -86,6 +91,7 @@ describe("DynamicPricing", () => {
 		);
 
 		expect(screen.getByText("Community")).toBeInTheDocument();
+
 		expect(screen.getByText("Pro")).toBeInTheDocument();
 	});
 
@@ -109,6 +115,7 @@ describe("DynamicPricing", () => {
 		);
 
 		expect(screen.getByText("Elements")).toBeInTheDocument();
+
 		expect(screen.getByText("Native Process Manager")).toBeInTheDocument();
 	});
 
@@ -131,6 +138,7 @@ describe("DynamicPricing", () => {
 		);
 
 		expect(screen.getByText("Background Daemon")).toBeInTheDocument();
+
 		expect(screen.getByText("Silent updates")).toBeInTheDocument();
 	});
 

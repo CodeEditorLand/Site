@@ -5,7 +5,9 @@
  * and display name. Submits to Auth0 via Auth0AccountGate.
  */
 import * as lucide from "lucide-react";
+
 import React, { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import {
@@ -16,9 +18,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicCheckbox } from "./DynamicCheckbox";
+
 import { DynamicInput } from "./DynamicInput";
+
 import type Property from "./Interface/Property/SignUp.js";
 
 /**
@@ -36,27 +42,45 @@ const DynamicSignUp = ({
 }: Property) => {
 	const {
 		Title,
+
 		Description,
+
 		EmailField,
+
 		PasswordField,
+
 		ConfirmPasswordField,
+
 		TermsCheckbox,
+
 		SubmitButton,
+
 		OauthButtons = [],
+
 		ShowDivider = true,
+
 		FooterLinks,
 	} = Content;
 
 	const [Email, SetEmail] = useState("");
+
 	const [Password, SetPassword] = useState("");
+
 	const [ConfirmPassword, SetConfirmPassword] = useState("");
+
 	const [ShowPassword, SetShowPassword] = useState(false);
+
 	const [TermsAccepted, SetTermsAccepted] = useState(false);
+
 	const { t: T } = useTranslation("account");
+
 	const [Errors, SetErrors] = useState<{
 		email?: string;
+
 		password?: string;
+
 		confirmPassword?: string;
+
 		terms?: string;
 	}>({});
 
@@ -86,11 +110,13 @@ const DynamicSignUp = ({
 		}
 
 		SetErrors(NewErrors);
+
 		return Object.keys(NewErrors).length === 0;
 	};
 
 	const HandleSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
+
 		if (Validate()) {
 			OnSubmit?.(Email, Password, ConfirmPassword, TermsAccepted);
 		}
@@ -109,12 +135,14 @@ const DynamicSignUp = ({
 							<form
 								className="space-y-4"
 								onSubmit={HandleSubmit}
-								aria-label="Sign up form">
+								aria-label="Sign up form"
+							>
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
 											className="bg-destructive/10 rounded-none p-3 text-destructive"
-											role="alert">
+											role="alert"
+										>
 											{ErrorMessage}
 										</div>
 									)}
@@ -158,7 +186,8 @@ const DynamicSignUp = ({
 											}
 											onClick={() =>
 												SetShowPassword(!ShowPassword)
-											}>
+											}
+										>
 											{ShowPassword ? (
 												<lucide.EyeOff
 													className="h-4 w-4"
@@ -180,6 +209,7 @@ const DynamicSignUp = ({
 												/[^a-zA-Z0-9]/.test(Password)
 													? T(
 															"signUp.passwordStrength.strong",
+
 															{
 																defaultValue:
 																	"Strong password",
@@ -188,6 +218,7 @@ const DynamicSignUp = ({
 													: Password.length >= 8
 														? T(
 																"signUp.passwordStrength.weak",
+
 																{
 																	defaultValue:
 																		"Weak password",
@@ -195,13 +226,15 @@ const DynamicSignUp = ({
 															)
 														: T(
 																"signUp.passwordStrength.weak",
+
 																{
 																	defaultValue:
 																		"Weak password",
 																},
 															)
 											}
-											role="status">
+											role="status"
+										>
 											{[0, 1, 2].map((Segment) => (
 												<div
 													key={Segment}
@@ -304,7 +337,8 @@ const DynamicSignUp = ({
 											OnNavigate?.(
 												FooterLinks.SignIn.Href,
 											)
-										}>
+										}
+									>
 										{FooterLinks.SignIn.Label}
 									</button>
 									<p className="mt-1 text-muted-foreground">

@@ -5,11 +5,14 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "../UI/Collapsible.js";
+
 import type { DocSection } from "./Interface/Content/Page/Doc.js";
 
 interface DynamicDocSidebarProps {
 	Sections: DocSection[];
+
 	ActiveId?: string;
+
 	/** Rendered inline as a mobile panel (no sticky wrapper, full width) */
 	Mobile?: boolean;
 }
@@ -33,11 +36,13 @@ const DynamicDocSidebar = ({
 	const ToggleSection = (Id: string) => {
 		SetCollapsedSections((Previous) => {
 			const Next = new Set(Previous);
+
 			if (Next.has(Id)) {
 				Next.delete(Id);
 			} else {
 				Next.add(Id);
 			}
+
 			return Next;
 		});
 	};
@@ -45,11 +50,13 @@ const DynamicDocSidebar = ({
 	const Nav = (
 		<nav
 			aria-label="Documentation sections"
-			className={Mobile ? "pt-2" : undefined}>
+			className={Mobile ? "pt-2" : undefined}
+		>
 			<ul role="list" className="space-y-0.5">
 				{Sections.map((Section) => {
 					const HasChildren =
 						Section.Children && Section.Children.length > 0;
+
 					const IsOpen = !CollapsedSections.has(Section.Id);
 
 					if (HasChildren) {
@@ -59,24 +66,28 @@ const DynamicDocSidebar = ({
 									open={IsOpen}
 									onOpenChange={() =>
 										ToggleSection(Section.Id)
-									}>
+									}
+								>
 									<CollapsibleTrigger className="flex w-full items-center justify-between rounded-none px-2 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 										<span className="font-mono">
 											{Section.Label}
 										</span>
 										<span
 											aria-hidden="true"
-											className={`transition-transform duration-150 ${IsOpen ? "rotate-90" : ""}`}>
+											className={`transition-transform duration-150 ${IsOpen ? "rotate-90" : ""}`}
+										>
 											›
 										</span>
 									</CollapsibleTrigger>
 									<CollapsibleContent>
 										<ul
 											role="list"
-											className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3">
+											className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3"
+										>
 											{Section.Children!.map((Child) => {
 												const IsActive =
 													ActiveId === Child.Id;
+
 												return (
 													<li key={Child.Id}>
 														<a
@@ -90,7 +101,8 @@ const DynamicDocSidebar = ({
 																IsActive
 																	? "bg-secondary font-medium text-foreground"
 																	: "text-muted-foreground"
-															}`}>
+															}`}
+														>
 															{Child.Label}
 														</a>
 													</li>
@@ -107,7 +119,8 @@ const DynamicDocSidebar = ({
 						<li key={Section.Id}>
 							<a
 								href={`/Doc/${Section.Id}`}
-								className="block rounded-none px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+								className="block rounded-none px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							>
 								{Section.Label}
 							</a>
 						</li>
@@ -121,9 +134,8 @@ const DynamicDocSidebar = ({
 
 	// Mobile: wrap in a collapsible panel
 	const ActiveLabel =
-		Sections.flatMap((S) => S.Children ?? []).find(
-			(C) => C.Id === ActiveId,
-		)?.Label ??
+		Sections.flatMap((S) => S.Children ?? []).find((C) => C.Id === ActiveId)
+			?.Label ??
 		ActiveSectionId ??
 		"Navigation";
 
@@ -135,7 +147,8 @@ const DynamicDocSidebar = ({
 				type="button"
 				onClick={() => SetMobileOpen((O) => !O)}
 				className="flex w-full items-center justify-between px-1 py-2 text-sm font-medium text-foreground hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-				aria-expanded={MobileOpen}>
+				aria-expanded={MobileOpen}
+			>
 				<span className="flex items-center gap-2">
 					<span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
 						Docs
@@ -145,7 +158,8 @@ const DynamicDocSidebar = ({
 				</span>
 				<span
 					aria-hidden="true"
-					className={`ml-2 shrink-0 transition-transform duration-150 ${MobileOpen ? "rotate-90" : ""}`}>
+					className={`ml-2 shrink-0 transition-transform duration-150 ${MobileOpen ? "rotate-90" : ""}`}
+				>
 					›
 				</span>
 			</button>
@@ -158,4 +172,5 @@ const DynamicDocSidebar = ({
 };
 
 export { DynamicDocSidebar };
+
 export default DynamicDocSidebar;

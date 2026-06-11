@@ -14,6 +14,10 @@ effects are values rather than calls, how the trait-based dependency injection
 works at compile time, what the DTO library contains, and how the CommonError
 enum is used in practice.
 
+Common uses **Rust edition 2024** with a minimum supported Rust version
+(MSRV) of **1.95.0**. It is a pure library crate with no binary targets and
+no concrete I/O - all platform-specific logic lives in Mountain.
+
 ## Why Declarative Effects Over Imperative Code
 
 The traditional approach to async operations in Rust is direct: a function

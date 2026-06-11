@@ -1,6 +1,9 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import React from "react";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ErrorBoundary } from "../../Component/ErrorBoundary";
@@ -10,6 +13,7 @@ function ThrowingComponent({ ShouldThrow }: { ShouldThrow: boolean }) {
 	if (ShouldThrow) {
 		throw new Error("Test error message");
 	}
+
 	return <div>Normal content</div>;
 }
 
@@ -51,11 +55,15 @@ describe("ErrorBoundary", () => {
 		);
 
 		const ErrorHeading = screen.getByText("Something went wrong");
+
 		const ErrorDescription = screen.getByText("Test error message");
+
 		const RetryButton = screen.getByRole("button", { name: "Try again" });
 
 		expect(ErrorHeading).toBeInTheDocument();
+
 		expect(ErrorDescription).toBeInTheDocument();
+
 		expect(RetryButton).toBeInTheDocument();
 	});
 
@@ -71,6 +79,7 @@ describe("ErrorBoundary", () => {
 		const CustomErrorDisplay = screen.getByText("Custom error display");
 
 		expect(CustomErrorDisplay).toBeInTheDocument();
+
 		expect(
 			screen.queryByText("Something went wrong"),
 		).not.toBeInTheDocument();
@@ -102,14 +111,17 @@ describe("ErrorBoundary", () => {
 
 		// Fix the error source first
 		const FixButton = screen.getByRole("button", { name: "Fix Error" });
+
 		await User.click(FixButton);
 
 		// Click retry
 		const RetryButton = screen.getByRole("button", { name: "Try again" });
+
 		await User.click(RetryButton);
 
 		// After retry with the error fixed, normal content should show
 		expect(screen.getByText("Normal content")).toBeInTheDocument();
+
 		expect(
 			screen.queryByText("Something went wrong"),
 		).not.toBeInTheDocument();

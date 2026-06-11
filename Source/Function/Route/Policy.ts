@@ -58,6 +58,7 @@ const WarnLog = __DEV__
 		try {
 			window._POLICY_ROUTE.RouteWorker = window.trustedTypes.createPolicy(
 				"RouteWorker",
+
 				{
 					createScriptURL: (Input) => {
 						if (
@@ -112,15 +113,25 @@ const WarnLog = __DEV__
  */
 export const PublicRoutes: string[] = [
 	"/",
+
 	"/Download",
+
 	"/Doc",
+
 	"/Blog",
+
 	"/Contributing",
+
 	"/License",
+
 	"/Legal/Term",
+
 	"/Legal/Privacy",
+
 	"/Contact/Sale",
+
 	"/Portal",
+
 	"/Verify",
 ];
 

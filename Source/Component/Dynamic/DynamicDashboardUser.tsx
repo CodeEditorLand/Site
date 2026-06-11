@@ -1,7 +1,9 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { ThemeImage } from "@Library/Theme";
+
 import {
 	Building2,
 	CircleCheck,
@@ -9,11 +11,15 @@ import {
 	EyeOff,
 	TriangleAlert,
 } from "lucide-react";
+
 import { useState, type ReactNode } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
+
 import { Button } from "../UI/Button";
+
 import { Skeleton } from "../UI/Skeleton";
 
 const Pii = ({
@@ -21,10 +27,12 @@ const Pii = ({
 	visible,
 }: {
 	children: ReactNode;
+
 	visible: boolean;
 }) => (
 	<span
-		className={`transition-all duration-200 ${visible ? "" : "select-none blur-sm"}`}>
+		className={`transition-all duration-200 ${visible ? "" : "select-none blur-sm"}`}
+	>
 		{children}
 	</span>
 );
@@ -51,6 +59,7 @@ export default ({
 	ClientIdentifier,
 }: {
 	Domain?: string;
+
 	ClientIdentifier?: string;
 }) => (
 	<Auth0Provider
@@ -77,7 +86,9 @@ const ClearAuthFromServiceWorker = (): void => {
 const ClearLegacyTokens = (): void => {
 	try {
 		localStorage.removeItem("session_token");
+
 		localStorage.removeItem("current_user");
+
 		document.cookie =
 			"session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 	} catch {
@@ -88,14 +99,20 @@ const ClearLegacyTokens = (): void => {
 const DashboardUserInner = () => {
 	const {
 		isLoading: IsLoading,
+
 		isAuthenticated: IsAuthenticated,
+
 		user: User,
+
 		error: AuthError,
+
 		loginWithRedirect: Login,
+
 		logout: Auth0Logout,
 	} = useAuth0();
 
 	const { t: T } = useTranslation("common");
+
 	const [PIIVisible, SetPIIVisible] = useState(false);
 
 	// Bridge Auth0 user into localStorage for legacy code
@@ -103,15 +120,24 @@ const DashboardUserInner = () => {
 		try {
 			const LegacyUser = {
 				id: User.sub || "",
+
 				email: User.email || "",
+
 				username: User.nickname || User.email?.split("@")[0] || "",
+
 				displayName: User.name || "",
+
 				avatarUrl: User.picture || "",
+
 				provider: DetectProvider(User.sub),
+
 				emailVerified: User.email_verified || false,
+
 				createdAt: User.updated_at || new Date().toISOString(),
+
 				updatedAt: User.updated_at || new Date().toISOString(),
 			};
+
 			localStorage.setItem("current_user", JSON.stringify(LegacyUser));
 		} catch {
 			// localStorage not available
@@ -120,7 +146,9 @@ const DashboardUserInner = () => {
 
 	const HandleSignOut = () => {
 		ClearAuthFromServiceWorker();
+
 		ClearLegacyTokens();
+
 		Auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 	};
 
@@ -130,7 +158,8 @@ const DashboardUserInner = () => {
 				className="space-y-3"
 				aria-label={T("dashboard.loading", {
 					defaultValue: "Loading account...",
-				})}>
+				})}
+			>
 				<Skeleton className="mx-auto h-12 w-12" />
 				<Skeleton className="h-4 w-full" />
 				<Skeleton className="h-4 w-4/5" />
@@ -153,7 +182,8 @@ const DashboardUserInner = () => {
 				<Button
 					variant="outline"
 					size="sm"
-					onClick={() => window.location.reload()}>
+					onClick={() => window.location.reload()}
+				>
 					{T("tryAgain", { defaultValue: "Try again" })}
 				</Button>
 			</div>
@@ -171,7 +201,8 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={() => Login()}
-					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-4 py-1.5 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90">
+					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-4 py-1.5 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90"
+				>
 					{T("dashboard.account.signInButton", {
 						defaultValue: "Sign In",
 					})}
@@ -193,11 +224,15 @@ const DashboardUserInner = () => {
 		: "--";
 
 	const ProviderLabel = DetectProviderLabel(User.sub);
+
 	const ProviderIcon = DetectProviderIcon(User.sub);
+
 	const IsEnterprise = IsEnterpriseUser(User.sub);
+
 	const OrganizationName = (User as Record<string, unknown>)["org_name"] as
 		| string
 		| undefined;
+
 	const OrganizationIdentifier = (User as Record<string, unknown>)[
 		"org_id"
 	] as string | undefined;
@@ -212,7 +247,8 @@ const DashboardUserInner = () => {
 					aria-label={
 						PIIVisible ? "Hide personal data" : "Show personal data"
 					}
-					className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					className="text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+				>
 					{PIIVisible ? (
 						<EyeOff className="h-4 w-4" aria-hidden="true" />
 					) : (
@@ -223,7 +259,8 @@ const DashboardUserInner = () => {
 
 			{/* Avatar */}
 			<div
-				className={`flex justify-center pb-2 transition-all duration-200 ${PIIVisible ? "" : "blur-sm"}`}>
+				className={`flex justify-center pb-2 transition-all duration-200 ${PIIVisible ? "" : "blur-sm"}`}
+			>
 				{User.picture ? (
 					<img
 						src={User.picture}
@@ -236,15 +273,18 @@ const DashboardUserInner = () => {
 						onError={(Event) => {
 							(Event.target as HTMLImageElement).style.display =
 								"none";
+
 							const Fallback = (Event.target as HTMLImageElement)
 								.nextElementSibling as HTMLElement | null;
+
 							if (Fallback) Fallback.style.display = "flex";
 						}}
 					/>
 				) : null}
 				<div
 					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
-					aria-hidden="true">
+					aria-hidden="true"
+				>
 					<Pii visible={PIIVisible}>
 						{DisplayName.slice(0, 1).toUpperCase()}
 					</Pii>
@@ -277,7 +317,8 @@ const DashboardUserInner = () => {
 							className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
 							title={T("dashboard.account.emailVerifiedTitle", {
 								defaultValue: "Email verified",
-							})}>
+							})}
+						>
 							{T("dashboard.account.emailVerifiedBadge", {
 								defaultValue: "Verified",
 							})}{" "}
@@ -385,7 +426,8 @@ const DashboardUserInner = () => {
 			<div className="mt-3 flex gap-2">
 				<a
 					href="/Account"
-					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium transition-all hover:bg-[var(--Secondary)]">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium transition-all hover:bg-[var(--Secondary)]"
+				>
 					{T("dashboard.account.manageButton", {
 						defaultValue: "Manage",
 					})}
@@ -393,7 +435,8 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={HandleSignOut}
-					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950">
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium text-red-600 transition-all hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950"
+				>
 					{T("dashboard.account.signOutButton", {
 						defaultValue: "Sign Out",
 					})}
@@ -407,31 +450,49 @@ const DetectProvider = (
 	Sub?: string,
 ): "email" | "github" | "google" | "gitlab" | "okta" => {
 	if (!Sub) return "email";
+
 	if (Sub.startsWith("github|")) return "github";
+
 	if (Sub.startsWith("google-oauth2|")) return "google";
+
 	if (Sub.startsWith("gitlab|")) return "gitlab";
+
 	if (Sub.startsWith("okta|")) return "okta";
+
 	return "email";
 };
 
 const DetectProviderLabel = (Sub?: string): string => {
 	if (!Sub) return "Email";
+
 	if (Sub.startsWith("github|")) return "GitHub";
+
 	if (Sub.startsWith("google-oauth2|")) return "Google";
+
 	if (Sub.startsWith("gitlab|")) return "GitLab";
+
 	if (Sub.startsWith("okta|")) return "Okta SSO";
+
 	if (Sub.startsWith("samlp|")) return "SAML SSO";
+
 	if (Sub.startsWith("waad|")) return "Azure AD";
+
 	return "Auth0";
 };
 
 const DetectProviderIcon = (Sub?: string): string | null => {
 	if (!Sub) return null;
+
 	if (Sub.startsWith("github|")) return "/Image/GitHub.svg";
+
 	if (Sub.startsWith("google-oauth2|")) return "/Image/Google.svg";
+
 	if (Sub.startsWith("gitlab|")) return "/Image/GitLab.svg";
+
 	if (Sub.startsWith("okta|")) return "/Image/Okta.svg";
+
 	if (Sub.startsWith("waad|")) return "/Image/Microsoft.svg";
+
 	return null;
 };
 
@@ -446,17 +507,25 @@ const DetectPortalTier = (
 	Sub?: string,
 ): "Cloud" | "Provider" | "LocalFirst" | "Enterprise" => {
 	if (!Sub) return "LocalFirst";
+
 	if (Sub.startsWith("github|")) return "Provider";
+
 	if (Sub.startsWith("google-oauth2|")) return "Provider";
+
 	if (Sub.startsWith("gitlab|")) return "Provider";
+
 	if (Sub.startsWith("okta|")) return "Enterprise";
+
 	if (Sub.startsWith("samlp|")) return "Enterprise";
+
 	if (Sub.startsWith("waad|")) return "Enterprise";
+
 	return "Cloud";
 };
 
 const IsEnterpriseUser = (Sub?: string): boolean => {
 	if (!Sub) return false;
+
 	return (
 		Sub.startsWith("okta|") ||
 		Sub.startsWith("samlp|") ||

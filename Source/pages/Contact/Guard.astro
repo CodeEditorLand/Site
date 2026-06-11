@@ -14,13 +14,15 @@ const Config = Requests["GUARD"];
 	Title={`${Config.Title} | Code Editor Land`}
 	Description={Config.Subtitle}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<Header client:load />
 
 	<div class="container mx-auto max-w-5xl px-4">
 		<nav aria-label="Breadcrumb" class="pt-6">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+			>
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>Home</a

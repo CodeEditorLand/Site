@@ -1,9 +1,13 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import React from "react";
+
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicCard, SimpleCard } from "../../Component/Dynamic/DynamicCard";
+
 import type { CardSection } from "../../Component/Dynamic/Type.js";
 
 afterEach(() => {
@@ -22,9 +26,11 @@ describe("DynamicCard", () => {
 		render(<DynamicCard Sections={Sections} />);
 
 		const TitleElement = screen.getByText("Card Title");
+
 		const DescriptionElement = screen.getByText("Card description text");
 
 		expect(TitleElement).toBeInTheDocument();
+
 		expect(DescriptionElement).toBeInTheDocument();
 	});
 
@@ -40,11 +46,15 @@ describe("DynamicCard", () => {
 		render(<DynamicCard Sections={Sections} />);
 
 		const BodyTitle = screen.getByText("Body Title");
+
 		const BodyDescription = screen.getByText("Body description");
+
 		const BodyContent = screen.getByText("Body content here");
 
 		expect(BodyTitle).toBeInTheDocument();
+
 		expect(BodyDescription).toBeInTheDocument();
+
 		expect(BodyContent).toBeInTheDocument();
 	});
 
@@ -79,16 +89,21 @@ describe("DynamicCard", () => {
 		render(<DynamicCard Sections={Sections} />);
 
 		expect(screen.getByText("Full Card")).toBeInTheDocument();
+
 		expect(screen.getByText("Full card description")).toBeInTheDocument();
+
 		expect(screen.getByText("Main content area")).toBeInTheDocument();
+
 		expect(screen.getByText("Footer Action")).toBeInTheDocument();
 	});
 
 	it("handles click events", async () => {
 		const ClickHandler = vi.fn();
+
 		const Sections: CardSection = {
 			Header: { title: "Clickable Card" },
 		};
+
 		const User = UserEvent.setup();
 
 		render(<DynamicCard Sections={Sections} OnClick={ClickHandler} />);
@@ -142,11 +157,15 @@ describe("SimpleCard", () => {
 		);
 
 		const TitleElement = screen.getByText("Simple Title");
+
 		const DescriptionElement = screen.getByText("Simple description");
+
 		const ChildContent = screen.getByText("Child content");
 
 		expect(TitleElement).toBeInTheDocument();
+
 		expect(DescriptionElement).toBeInTheDocument();
+
 		expect(ChildContent).toBeInTheDocument();
 	});
 
@@ -160,6 +179,7 @@ describe("SimpleCard", () => {
 
 	it("handles click events", async () => {
 		const ClickHandler = vi.fn();
+
 		const User = UserEvent.setup();
 
 		render(

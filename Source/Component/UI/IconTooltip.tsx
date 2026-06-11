@@ -1,7 +1,9 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
+
 import * as lucide from "lucide-react";
+
 import * as React from "react";
 
 import {
@@ -14,19 +16,25 @@ import {
 interface IconTooltipProperty {
 	/** Human-readable label - drives aria-label, title, and tooltip text. Pass an array for multi-line tooltips. */
 	Label: string | string[];
+
 	/** Lucide icon component to render inside the trigger. */
 	Icon?: LucideIcon;
+
 	/** CSS color string for the icon stroke (Lucide only). */
 	Color?: string;
+
 	/** Icon size class - defaults to "h-4 w-4". */
 	SizeClass?: string;
+
 	/** Extra className forwarded to the icon element. */
 	ClassName?: string;
+
 	/**
 	 * Reserved: future doc-link href.
 	 * When provided the tooltip will render a clickable link.
 	 */
 	DocHref?: string;
+
 	/**
 	 * Override children - useful for wrapping an <img> brand mark.
 	 * When provided, Icon / Color / SizeClass are ignored.
@@ -90,7 +98,8 @@ const IconTooltip = ({
 						className="inline-flex items-center"
 						aria-label={LabelFlat}
 						title={LabelFlat}
-						role="img">
+						role="img"
+					>
 						{Content}
 					</span>
 				</TooltipTrigger>
@@ -98,7 +107,9 @@ const IconTooltip = ({
 					<TooltipContent className="flex flex-col items-center gap-0 bg-transparent p-0 [&>svg]:hidden">
 						{Label.map((Line, Index) => {
 							const Seed = (Math.random() * 2 - 1).toFixed(3);
+
 							const Phase = (Math.random() * 2 - 1).toFixed(3);
+
 							return (
 								<p
 									key={Index}
@@ -109,7 +120,8 @@ const IconTooltip = ({
 											"--StaccatoSeedPhase": Phase,
 											transform: `translate(calc(var(--StaccatoSeed) * 7px), calc(var(--StaccatoSeedPhase) * 5px)) rotate(calc(var(--StaccatoSeed) * 1.5deg)) scale(1)`,
 										} as React.CSSProperties
-									}>
+									}
+								>
 									{Line}
 								</p>
 							);
@@ -151,5 +163,7 @@ const IconTooltip = ({
  */
 
 export { IconTooltip };
+
 export type { IconTooltipProperty };
+
 export default IconTooltip;

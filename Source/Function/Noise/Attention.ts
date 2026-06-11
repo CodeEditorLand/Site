@@ -13,10 +13,13 @@ export default (async () => {
 	 */
 	const Scatter = (
 		Index: number,
+
 		SpreadX: number,
+
 		SpreadY: number = 0,
 	): { X: number; Y: number } => {
 		const NoiseX = LayoutNoise(Index * 0.5, 0);
+
 		const NoiseY = LayoutNoise(0, Index * 0.5);
 
 		return {
@@ -47,6 +50,7 @@ export default (async () => {
 	 */
 	const ScatterDelay = (Index: number, MaxDelay: number = 200): number => {
 		const Raw = LayoutNoise(Index * 0.83, Index * 0.29);
+
 		return Math.abs(Raw) * MaxDelay;
 	};
 
@@ -55,11 +59,15 @@ export default (async () => {
 	 */
 	const ScatterOpacity = (
 		Index: number,
+
 		Min: number = 0.85,
+
 		Max: number = 1.0,
 	): number => {
 		const Raw = LayoutNoise(Index * 0.47, Index * 0.67);
+
 		const Normalized = (Raw + 1) / 2; // 0..1
+
 		return Min + Normalized * (Max - Min);
 	};
 
@@ -68,21 +76,33 @@ export default (async () => {
 	 */
 	const ApplyToElement = (
 		Element: HTMLElement,
+
 		Index: number,
+
 		SpreadX: number,
+
 		SpreadY: number = 0,
 	): void => {
 		const Offset = Scatter(Index, SpreadX, SpreadY);
+
 		const Rotation = ScatterRotation(Index);
+
 		const Scale = ScatterScale(Index);
+
 		const Delay = ScatterDelay(Index);
+
 		const Opacity = ScatterOpacity(Index);
 
 		Element.style.setProperty("--AttentionOffsetX", `${Offset.X}px`);
+
 		Element.style.setProperty("--AttentionOffsetY", `${Offset.Y}px`);
+
 		Element.style.setProperty("--AttentionRotation", `${Rotation}deg`);
+
 		Element.style.setProperty("--AttentionScale", String(Scale));
+
 		Element.style.setProperty("--AttentionDelay", `${Delay}ms`);
+
 		Element.style.setProperty("--AttentionOpacity", String(Opacity));
 	};
 
@@ -91,10 +111,13 @@ export default (async () => {
 	 */
 	const ApplyToSelector = (
 		Selector: string,
+
 		SpreadX: number,
+
 		SpreadY: number = 0,
 	): void => {
 		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
+
 		ElementList.forEach((Element, Index) => {
 			ApplyToElement(Element, Index, SpreadX, SpreadY);
 		});
@@ -107,8 +130,11 @@ export default (async () => {
 	 */
 	const ObserveAndApply = (
 		Selector: string,
+
 		SpreadX: number,
+
 		SpreadY: number = 0,
+
 		Threshold: number = 0.1,
 	): IntersectionObserver => {
 		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
@@ -118,6 +144,7 @@ export default (async () => {
 				for (const Entry of EntryList) {
 					if (Entry.isIntersecting) {
 						const Element = Entry.target as HTMLElement;
+
 						const Index = Array.from(ElementList).indexOf(Element);
 
 						if (Index >= 0) {
@@ -125,10 +152,12 @@ export default (async () => {
 						}
 
 						Element.classList.add("StaccatoVisible");
+
 						Observer.unobserve(Element);
 					}
 				}
 			},
+
 			{ threshold: Threshold },
 		);
 
@@ -150,15 +179,25 @@ export default (async () => {
 	 */
 	interface HoverState {
 		Element: HTMLElement;
+
 		OriginalTransform: string;
+
 		TargetOpacity: number;
+
 		TargetScale: number;
+
 		TargetRotation: number;
+
 		CurrentOpacity: number;
+
 		CurrentScale: number;
+
 		CurrentRotation: number;
+
 		IsHovered: boolean;
+
 		IsFocused: boolean;
+
 		FrameId: number;
 	}
 
@@ -167,11 +206,17 @@ export default (async () => {
 	 */
 	interface HoverConfig {
 		LerpFactor: number;
+
 		ResetOpacity: number;
+
 		ResetScale: number;
+
 		ResetRotation: number;
+
 		HoverOpacity: number;
+
 		HoverScale: number;
+
 		HoverRotation: number;
 	}
 
@@ -186,6 +231,7 @@ export default (async () => {
 	};
 
 	const HoverStateMap = new Map<HTMLElement, HoverState>();
+
 	let AnimationFrameId = 0;
 
 	/**
@@ -193,12 +239,14 @@ export default (async () => {
 	 */
 	const InitHoverState = (
 		Element: HTMLElement,
+
 		Config: Partial<HoverConfig> = {},
 	): HoverState => {
 		const FinalConfig = { ...DefaultConfig, ...Config };
 
 		// Get current computed style for original transform
 		const ComputedStyle = window.getComputedStyle(Element);
+
 		const OriginalTransform = ComputedStyle.transform || "none";
 
 		const State: HoverState = {
@@ -216,6 +264,7 @@ export default (async () => {
 		};
 
 		HoverStateMap.set(Element, State);
+
 		return State;
 	};
 
@@ -232,23 +281,33 @@ export default (async () => {
 				// Lerp towards hover/target values
 				State.CurrentOpacity = Lerp(
 					State.CurrentOpacity,
+
 					State.TargetOpacity,
+
 					DefaultConfig.LerpFactor,
 				);
+
 				State.CurrentScale = Lerp(
 					State.CurrentScale,
+
 					State.TargetScale,
+
 					DefaultConfig.LerpFactor,
 				);
+
 				State.CurrentRotation = Lerp(
 					State.CurrentRotation,
+
 					State.TargetRotation,
+
 					DefaultConfig.LerpFactor,
 				);
 
 				// Apply transforms with lerped values
 				const Transform = `scale(${State.CurrentScale.toFixed(4)}) rotate(${State.CurrentRotation.toFixed(2)}deg)`;
+
 				State.Element.style.transform = Transform;
+
 				State.Element.style.opacity = String(State.CurrentOpacity);
 			}
 		});
@@ -263,16 +322,21 @@ export default (async () => {
 	 */
 	const OnMouseEnter = (Event: Event): void => {
 		const Element = Event.target as HTMLElement;
+
 		if (!Element) return;
 
 		let State = HoverStateMap.get(Element);
+
 		if (!State) {
 			State = InitHoverState(Element);
 		}
 
 		State.IsHovered = true;
+
 		State.TargetOpacity = DefaultConfig.HoverOpacity;
+
 		State.TargetScale = DefaultConfig.HoverScale;
+
 		State.TargetRotation = DefaultConfig.HoverRotation;
 
 		// Add visual indicator class
@@ -289,14 +353,19 @@ export default (async () => {
 	 */
 	const OnMouseLeave = (Event: Event): void => {
 		const Element = Event.target as HTMLElement;
+
 		if (!Element) return;
 
 		const State = HoverStateMap.get(Element);
+
 		if (!State) return;
 
 		State.IsHovered = false;
+
 		State.TargetOpacity = DefaultConfig.ResetOpacity;
+
 		State.TargetScale = DefaultConfig.ResetScale;
+
 		State.TargetRotation = DefaultConfig.ResetRotation;
 
 		// Remove hover class
@@ -308,16 +377,21 @@ export default (async () => {
 	 */
 	const OnFocus = (Event: Event): void => {
 		const Element = Event.target as HTMLElement;
+
 		if (!Element) return;
 
 		let State = HoverStateMap.get(Element);
+
 		if (!State) {
 			State = InitHoverState(Element);
 		}
 
 		State.IsFocused = true;
+
 		State.TargetOpacity = DefaultConfig.HoverOpacity;
+
 		State.TargetScale = DefaultConfig.HoverScale;
+
 		State.TargetRotation = DefaultConfig.HoverRotation;
 
 		Element.classList.add("StaccatoFocus");
@@ -332,14 +406,19 @@ export default (async () => {
 	 */
 	const OnBlur = (Event: Event): void => {
 		const Element = Event.target as HTMLElement;
+
 		if (!Element) return;
 
 		const State = HoverStateMap.get(Element);
+
 		if (!State) return;
 
 		State.IsFocused = false;
+
 		State.TargetOpacity = DefaultConfig.ResetOpacity;
+
 		State.TargetScale = DefaultConfig.ResetScale;
+
 		State.TargetRotation = DefaultConfig.ResetRotation;
 
 		Element.classList.remove("StaccatoFocus");
@@ -350,6 +429,7 @@ export default (async () => {
 	 */
 	const ApplyHoverEffects = (
 		Selector: string,
+
 		Config: Partial<HoverConfig> = {},
 	): void => {
 		const ElementList = document.querySelectorAll<HTMLElement>(Selector);
@@ -367,8 +447,11 @@ export default (async () => {
 
 			// Add event listeners
 			Element.addEventListener("mouseenter", OnMouseEnter);
+
 			Element.addEventListener("mouseleave", OnMouseLeave);
+
 			Element.addEventListener("focus", OnFocus, true);
+
 			Element.addEventListener("blur", OnBlur, true);
 
 			// Make focusable if not already
@@ -386,11 +469,15 @@ export default (async () => {
 
 		ElementList.forEach((Element) => {
 			Element.removeEventListener("mouseenter", OnMouseEnter);
+
 			Element.removeEventListener("mouseleave", OnMouseLeave);
+
 			Element.removeEventListener("focus", OnFocus, true);
+
 			Element.removeEventListener("blur", OnBlur, true);
 
 			HoverStateMap.delete(Element);
+
 			Element.classList.remove("StaccatoHover", "StaccatoFocus");
 		});
 	};
@@ -406,12 +493,14 @@ export default (async () => {
 
 			Element.addEventListener("mouseenter", () => {
 				Element.style.zIndex = String(ZIndexBase + ElementList.length);
+
 				Element.style.setProperty("--StaccatoIsOrdered", "1");
 			});
 
 			Element.addEventListener("mouseleave", () => {
 				setTimeout(() => {
 					Element.style.zIndex = String(ZIndexBase);
+
 					Element.style.setProperty("--StaccatoIsOrdered", "0");
 				}, 300); // Delay to allow other elements to animate
 			});

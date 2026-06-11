@@ -5,6 +5,7 @@ const Background: React.FC = () => {
 
 	useEffect(() => {
 		const Layout = LayoutReference.current;
+
 		if (!Layout) return;
 
 		const ImageList = Array.from(
@@ -22,8 +23,10 @@ const Background: React.FC = () => {
 				if (Image.complete) {
 					return Promise.resolve();
 				}
+
 				return new Promise((Resolve, Reject) => {
 					Image.addEventListener("load", Resolve);
+
 					Image.addEventListener("error", Reject);
 				});
 			}),
@@ -32,6 +35,7 @@ const Background: React.FC = () => {
 				if (performance.now() - LoadStart > 50) {
 					Layout.classList.add("Transition");
 				}
+
 				Layout.classList.add("Load");
 			})
 			.catch(() => {

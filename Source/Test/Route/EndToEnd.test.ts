@@ -24,7 +24,9 @@ const NormalizePath = (Path: string): string =>
 
 const ResolveRoute = (
 	RequestPath: string,
+
 	CanonicalSet: Set<string>,
+
 	VariantMap: Record<string, string>,
 ): string | null => {
 	const Cleaned = StripTrailingSlash(RequestPath);
@@ -65,8 +67,10 @@ const ResolveRoute = (
 
 const RunRedirect = (
 	CurrentPath: string,
+
 	RouteMapData: {
 		Canonical: string[];
+
 		Variant: Record<string, string>;
 	},
 ): string | null => {
@@ -111,7 +115,9 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 	it("full pipeline produces working route resolution", async () => {
 		const { mkdtemp, mkdir, writeFile, readFile, rm } =
 			await import("node:fs/promises");
+
 		const { join } = await import("node:path");
+
 		const { tmpdir } = await import("node:os");
 
 		const TempDirectory = await mkdtemp(join(tmpdir(), "e2e-build-"));
@@ -140,8 +146,10 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 			for (const Name of Page) {
 				await mkdir(join(TempDirectory, Name), { recursive: true });
+
 				await writeFile(
 					join(TempDirectory, Name, "index.html"),
+
 					`<!DOCTYPE html><html><head><title>${Name}</title></head><body><h1>${Name}</h1></body></html>`,
 				);
 			}
@@ -149,13 +157,16 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			// Root index
 			await writeFile(
 				join(TempDirectory, "index.html"),
+
 				"<!DOCTYPE html><html><body><h1>Home</h1></body></html>",
 			);
 
 			// 404 page
 			await mkdir(join(TempDirectory, "404"), { recursive: true });
+
 			await writeFile(
 				join(TempDirectory, "404", "index.html"),
+
 				"<!DOCTYPE html><html><body><h1>Not Found</h1></body></html>",
 			);
 
@@ -165,17 +176,20 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			// Write it (like Integration.ts does)
 			await writeFile(
 				join(TempDirectory, "RouteMap.json"),
+
 				JSON.stringify(RouteMap, null, "\t"),
 			);
 
 			// ── Step 3: Verify route map structure ──
 			expect(RouteMap.Version).toBe(1);
+
 			expect(RouteMap.Canonical).toContain("/");
 
 			// All CanonicalPath entries should be in the map
 			for (const CanonicalURL of CanonicalPath) {
 				expect(
 					RouteMap.Canonical,
+
 					`${CanonicalURL} should be canonical`,
 				).toContain(CanonicalURL);
 			}
@@ -195,6 +209,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			for (const CanonicalURL of RouteMap.Canonical) {
 				expect(
 					ResolveRoute(CanonicalURL, CanonicalSet, RouteMap.Variant),
+
 					`${CanonicalURL} should not redirect`,
 				).toBeNull();
 			}
@@ -203,18 +218,23 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			expect(
 				ResolveRoute("/download", CanonicalSet, RouteMap.Variant),
 			).toBe("/Download");
+
 			expect(ResolveRoute("/doc", CanonicalSet, RouteMap.Variant)).toBe(
 				"/Doc",
 			);
+
 			expect(ResolveRoute("/blog", CanonicalSet, RouteMap.Variant)).toBe(
 				"/Blog",
 			);
+
 			expect(
 				ResolveRoute("/portal", CanonicalSet, RouteMap.Variant),
 			).toBe("/Portal");
+
 			expect(
 				ResolveRoute("/account/signin", CanonicalSet, RouteMap.Variant),
 			).toBe("/Account/SignIn");
+
 			expect(
 				ResolveRoute("/legal/term", CanonicalSet, RouteMap.Variant),
 			).toBe("/Legal/Term");
@@ -223,6 +243,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			expect(
 				ResolveRoute("/DOWNLOAD", CanonicalSet, RouteMap.Variant),
 			).toBe("/Download");
+
 			expect(ResolveRoute("/DOC", CanonicalSet, RouteMap.Variant)).toBe(
 				"/Doc",
 			);
@@ -231,19 +252,25 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			expect(ResolveRoute("/login", CanonicalSet, RouteMap.Variant)).toBe(
 				"/Account/SignIn",
 			);
+
 			expect(
 				ResolveRoute("/install", CanonicalSet, RouteMap.Variant),
 			).toBe("/Download");
+
 			expect(
 				ResolveRoute("/register", CanonicalSet, RouteMap.Variant),
 			).toBe("/Account/SignUp");
+
 			expect(
 				ResolveRoute(
 					"/forgot-password",
+
 					CanonicalSet,
+
 					RouteMap.Variant,
 				),
 			).toBe("/Account/ForgotPassword");
+
 			expect(ResolveRoute("/tos", CanonicalSet, RouteMap.Variant)).toBe(
 				"/Legal/Term",
 			);
@@ -252,6 +279,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			expect(
 				ResolveRoute("/download/", CanonicalSet, RouteMap.Variant),
 			).toBe("/Download");
+
 			expect(
 				ResolveRoute("/portal/", CanonicalSet, RouteMap.Variant),
 			).toBe("/Portal");
@@ -267,9 +295,13 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			);
 
 			expect(RunRedirect("/download", RouteMapJSON)).toBe("/Download");
+
 			expect(RunRedirect("/login", RouteMapJSON)).toBe("/Account/SignIn");
+
 			expect(RunRedirect("/Download", RouteMapJSON)).toBeNull();
+
 			expect(RunRedirect("/", RouteMapJSON)).toBeNull();
+
 			expect(RunRedirect("/nonexistent", RouteMapJSON)).toBeNull();
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
@@ -279,7 +311,9 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 	it("SW template injection produces valid JavaScript", async () => {
 		const { mkdtemp, mkdir, writeFile, readFile, rm } =
 			await import("node:fs/promises");
+
 		const { join, resolve } = await import("node:path");
+
 		const { tmpdir } = await import("node:os");
 
 		const TempDirectory = await mkdtemp(join(tmpdir(), "e2e-sw-"));
@@ -287,10 +321,13 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 		try {
 			// Create minimal build output
 			await mkdir(join(TempDirectory, "Download"), { recursive: true });
+
 			await writeFile(
 				join(TempDirectory, "Download", "index.html"),
+
 				"<html></html>",
 			);
+
 			await writeFile(join(TempDirectory, "index.html"), "<html></html>");
 
 			const RouteMap = await GenerateRouteMap(TempDirectory);
@@ -298,6 +335,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			// Read SW template
 			const TemplatePath = resolve(
 				import.meta.dirname,
+
 				"../../Function/Route/ServiceWorker.ts",
 			);
 
@@ -321,10 +359,12 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 			ServiceWorkerCode = ServiceWorkerCode.replace(
 				"__ROUTE_MAP_CANONICAL__",
+
 				JSON.stringify(RouteMap.Canonical),
 			)
 				.replace(
 					"__ROUTE_MAP_VARIANT__",
+
 					JSON.stringify(RouteMap.Variant),
 				)
 				.replace(/__INCREMENT__/g, JSON.stringify("Route-E2E-Test"))
@@ -340,23 +380,32 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 			// No unresolved placeholders
 			expect(Output).not.toContain("__ROUTE_MAP_CANONICAL__");
+
 			expect(Output).not.toContain("__ROUTE_MAP_VARIANT__");
+
 			expect(Output).not.toContain("__INCREMENT__");
+
 			expect(Output).not.toContain("__DEV__");
 
 			// Contains injected data
 			expect(Output).toContain('"Route-E2E-Test"');
+
 			expect(Output).toContain('"/Download"');
+
 			expect(Output).toContain('"/download"');
 
 			// Contains SW lifecycle handlers
 			expect(Output).toContain('"install"');
+
 			expect(Output).toContain('"activate"');
+
 			expect(Output).toContain('"fetch"');
 
 			// No TypeScript artifacts
 			expect(Output).not.toContain("declare var");
+
 			expect(Output).not.toContain("declare const");
+
 			expect(Output).not.toContain("import type");
 		} finally {
 			await rm(TempDirectory, { recursive: true, force: true });
@@ -366,10 +415,12 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 	it("SW registration constants match SW expectations", () => {
 		// Verify the contract between Register.ts and ServiceWorker.ts
 		const RegistrationPath = "/Worker.js";
+
 		const RegistrationScope = "/";
 
 		// SW validates its own script path
 		expect(RegistrationPath).toMatch(/^\/[^\\:]+\.(js|mjs)(\?.*)?$/);
+
 		expect(RegistrationScope).toBe("/");
 
 		// Message protocol
@@ -379,17 +430,22 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 		// Cache naming convention
 		const Increment = "Route-Test-123";
+
 		const CacheRoute = `Route-${Increment}`;
+
 		const CacheAsset = `Asset-${Increment}`;
 
 		expect(CacheRoute).toContain("Route-");
+
 		expect(CacheAsset).toContain("Asset-");
 	});
 
 	it("all semantic aliases resolve through SW route resolution", async () => {
 		const { mkdtemp, mkdir, writeFile, rm } =
 			await import("node:fs/promises");
+
 		const { join } = await import("node:path");
+
 		const { tmpdir } = await import("node:os");
 
 		const TempDirectory = await mkdtemp(join(tmpdir(), "e2e-alias-"));
@@ -400,19 +456,23 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 				const Directory = join(TempDirectory, PascalPath.slice(1));
 
 				await mkdir(Directory, { recursive: true });
+
 				await writeFile(join(Directory, "index.html"), "<html></html>");
 			}
 
 			await writeFile(join(TempDirectory, "index.html"), "<html></html>");
 
 			const RouteMap = await GenerateRouteMap(TempDirectory);
+
 			const CanonicalSet = new Set(RouteMap.Canonical);
 
 			// Every semantic alias should resolve to its target
 			for (const [Alias, Target] of Object.entries(SemanticAlias)) {
 				const Resolved = ResolveRoute(
 					Alias,
+
 					CanonicalSet,
+
 					RouteMap.Variant,
 				);
 
@@ -421,6 +481,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 					// depending on whether "/" is in the variant map
 					expect(
 						Resolved === null || Resolved === "/",
+
 						`Alias ${Alias} → ${Target}: got ${Resolved}`,
 					).toBe(true);
 				} else {
@@ -439,6 +500,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			PascalCaseCanonical,
 		)) {
 			expect(Lowercase).toBe(PascalPath.toLowerCase());
+
 			expect(CanonicalPath.has(PascalPath)).toBe(true);
 		}
 	});
@@ -446,7 +508,9 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 	it("RouteMap covers all 3 redirect layers consistently", async () => {
 		const { mkdtemp, mkdir, writeFile, rm } =
 			await import("node:fs/promises");
+
 		const { join } = await import("node:path");
+
 		const { tmpdir } = await import("node:os");
 
 		const TempDirectory = await mkdtemp(join(tmpdir(), "e2e-layers-"));
@@ -456,12 +520,14 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 				const Directory = join(TempDirectory, PascalPath.slice(1));
 
 				await mkdir(Directory, { recursive: true });
+
 				await writeFile(join(Directory, "index.html"), "<html></html>");
 			}
 
 			await writeFile(join(TempDirectory, "index.html"), "<html></html>");
 
 			const RouteMap = await GenerateRouteMap(TempDirectory);
+
 			const CanonicalSet = new Set(RouteMap.Canonical);
 
 			// For each canonical, verify lowercase variant works in both
@@ -474,7 +540,9 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 				// Layer 1: SW resolves lowercase → PascalCase
 				const SWResult = ResolveRoute(
 					Lowercase,
+
 					CanonicalSet,
+
 					RouteMap.Variant,
 				);
 
@@ -487,6 +555,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 				expect(
 					FallbackResult,
+
 					`404: ${Lowercase} → ${PascalPath}`,
 				).toBe(PascalPath);
 			}

@@ -1,10 +1,15 @@
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+
 import { RichText } from "../UI/RichText.js";
+
 import type RequirementItem from "./Interface/Item/Requirement.js";
+
 import type Property from "./Interface/Property/Requirement/System.js";
 
 /**
@@ -13,24 +18,30 @@ import type Property from "./Interface/Property/Requirement/System.js";
  */
 const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("download");
+
 	const { Title, Description, Requirements } = Content;
 
 	const GridReference = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const Grid = GridReference.current;
+
 		if (!Grid) return;
 
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
+
 			const Attention = await AttentionModule.default;
+
 			const Cards = Grid.querySelectorAll<HTMLElement>(".StaccatoCard");
+
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 4, 3);
 			});
@@ -44,6 +55,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 		variant: Variant = "minimum",
 	}: {
 		items: RequirementItem[];
+
 		variant?: "minimum" | "recommended";
 	}) => (
 		<div className="space-y-3">
@@ -58,6 +70,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 						</span>
 					</div>
 					{"\u2001"}
+
 					<div className="mt-1 shrink-0">
 						{Variant === "minimum" ? (
 							<IconTooltip
@@ -83,7 +96,8 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 	return (
 		<section
 			className={`py-20 ${ClassName || ""}`}
-			aria-label="System requirements">
+			aria-label="System requirements"
+		>
 			<div className="container mx-auto px-4">
 				<div className="mb-16 text-center">
 					<h2 className="mb-4 text-3xl tracking-tight md:text-4xl lg:text-5xl">
@@ -98,7 +112,8 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
+					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2"
+				>
 					{/* Minimum Requirements */}
 					<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-card p-6">
 						<h3 className="mb-6 font-mono text-sm font-semibold">
@@ -141,7 +156,8 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							{Content.Os.map((OperatingSystem, Index) => (
 								<span
 									key={Index}
-									className="bg-secondary px-4 py-2 font-medium">
+									className="bg-secondary px-4 py-2 font-medium"
+								>
 									{OperatingSystem}
 								</span>
 							))}

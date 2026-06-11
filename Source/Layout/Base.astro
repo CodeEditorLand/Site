@@ -198,17 +198,17 @@ const T = GetI18n();
 			set:html={JSON.stringify({
 				"@context": "https://schema.org",
 				"@type": "SoftwareApplication",
-				"name": "Code Editor Land",
-				"operatingSystem": "Windows, macOS, Linux",
-				"applicationCategory": "DeveloperApplication",
-				"offers": {
+				name: "Code Editor Land",
+				operatingSystem: "Windows, macOS, Linux",
+				applicationCategory: "DeveloperApplication",
+				offers: {
 					"@type": "Offer",
-					"price": "0",
-					"priceCurrency": "USD",
+					price: "0",
+					priceCurrency: "USD",
 				},
-				"url": Astro.site?.href ?? "",
-				"downloadUrl": `${Astro.site?.href ?? ""}Download`,
-				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
+				url: Astro.site?.href ?? "",
+				downloadUrl: `${Astro.site?.href ?? ""}Download`,
+				license: "https://creativecommons.org/publicdomain/zero/1.0/",
 			})}
 		/>
 
@@ -234,7 +234,8 @@ const T = GetI18n();
 	<body>
 		<a
 			href="#main-content"
-			class="sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-[var(--Primary)] px-4 py-2 font-medium text-[var(--PrimaryForeground)] transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+			class="sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-[var(--Primary)] px-4 py-2 font-medium text-[var(--PrimaryForeground)] transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+		>
 			Skip to main content
 		</a>
 

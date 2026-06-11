@@ -5,13 +5,19 @@
  * Each card shows version, file size, checksum, and direct download link.
  */
 import { useEffect, useRef, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { RichText } from "../UI/RichText.js";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicCard } from "./DynamicCard";
+
 import type PlatformInformation from "./Interface/Information/Platform.js";
+
 import type Property from "./Interface/Property/Grid/Platform.js";
+
 import type CardSection from "./Interface/Section/Card.js";
 
 /**
@@ -20,8 +26,11 @@ import type CardSection from "./Interface/Section/Card.js";
  */
 const PlatformColorMap: Record<string, string> = {
 	Apple: "var(--OSMacOS)",
+
 	macOS: "var(--OSMacOS)",
+
 	Windows: "var(--OSWindows)",
+
 	Linux: "var(--OSLinux)",
 };
 
@@ -32,29 +41,42 @@ const PlatformColorMap: Record<string, string> = {
  */
 const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("download");
+
 	const {
 		Title,
+
 		Subtitle,
+
 		Platforms: ProvidedPlatforms,
+
 		ShowVerification = true,
+
 		OnDownload,
+
 		ApiPlatform,
+
 		Labels = {},
 	} = Content;
+
 	const {
 		Version: VersionLabel = T("labels.version", {
 			defaultValue: "Version:",
 		}),
+
 		Size: SizeLabel = T("labels.size", { defaultValue: "Size:" }),
+
 		Requirements: RequirementsLabel = T("labels.requirements", {
 			defaultValue: "Requirements:",
 		}),
+
 		Loading: LoadingLabel = T("labels.loading", {
 			defaultValue: "Loading available downloads...",
 		}),
+
 		ErrorTitle: ErrorTitleLabel = T("labels.errorTitle", {
 			defaultValue: "Could not load downloads",
 		}),
+
 		DownloadFailed: DownloadFailedLabel = T("labels.downloadFailed", {
 			defaultValue: "Download failed. Please try again.",
 		}),
@@ -63,35 +85,45 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 	const [Platforms, SetPlatforms] = useState<PlatformInformation[]>(
 		ProvidedPlatforms || [],
 	);
+
 	const [Loading, SetLoading] = useState(!ProvidedPlatforms);
+
 	const [ErrorMessage, SetErrorMessage] = useState<string | null>(null);
 
 	useEffect(() => {
 		if (ProvidedPlatforms) {
 			SetPlatforms(ProvidedPlatforms);
+
 			return;
 		}
 
 		const FetchPlatforms = async () => {
 			try {
 				SetLoading(true);
+
 				SetErrorMessage(null);
 
 				// Import workers client directly for platform data
 				const { GetWorkersClient } =
 					await import("../../Library/WorkerClient");
+
 				const Workers = GetWorkersClient();
+
 				const Response = await Workers.Download.GetLatest(ApiPlatform);
+
 				if (!Response.success || !Response.data) {
 					throw new Error(
 						Response.error || "Failed to fetch latest download",
 					);
 				}
+
 				const Latest = Response.data;
+
 				const CurrentPlatform: PlatformInformation[] = [];
 
 				const FormatBytes = (Bytes: number): string => {
 					const MB = Bytes / (1024 * 1024);
+
 					return `${MB.toFixed(1)} MB`;
 				};
 
@@ -164,6 +196,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 						? FetchError.message
 						: "Failed to load downloads",
 				);
+
 				console.error("Failed to fetch platform data:", FetchError);
 			} finally {
 				SetLoading(false);
@@ -178,17 +211,21 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 	// Apply attention scatter to platform download cards
 	useEffect(() => {
 		const Grid = GridReference.current;
+
 		if (!Grid || Loading) return;
 
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
+
 			const Attention = await AttentionModule.default;
+
 			Attention.ApplyToSelector(".PlatformCard", 5, 3);
 		};
 
@@ -208,18 +245,25 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 			// Use workers client directly
 			const { GetWorkersClient } =
 				await import("../../Library/WorkerClient");
+
 			const Workers = GetWorkersClient();
+
 			const InfoResponse = await Workers.Download.GetInfo(Platform.Id);
+
 			if (!InfoResponse.success || !InfoResponse.data) {
 				throw new Error(
 					InfoResponse.error || "Failed to get download info",
 				);
 			}
+
 			window.open(InfoResponse.data.downloadUrl, "_blank");
+
 			await Workers.Download.TrackDownload(Platform.Id);
+
 			OnDownload?.(Platform);
 		} catch (DownloadError) {
 			console.error("Download failed:", DownloadError);
+
 			console.warn(DownloadFailedLabel);
 		}
 	};
@@ -229,12 +273,14 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 			<section
 				className={`py-20 ${ClassName || ""}`}
 				aria-label="Downloads"
-				aria-busy="true">
+				aria-busy="true"
+			>
 				<div className="container mx-auto px-4">
 					<div
 						className="mb-16 text-center"
 						role="status"
-						aria-live="polite">
+						aria-live="polite"
+					>
 						<h2 className="mb-4 font-serif text-4xl font-normal md:text-5xl lg:text-6xl">
 							{LoadingLabel}
 						</h2>
@@ -257,7 +303,8 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 		return (
 			<section
 				className={`py-20 ${ClassName || ""}`}
-				aria-label="Downloads">
+				aria-label="Downloads"
+			>
 				<div className="container mx-auto px-4">
 					<div className="mb-16 text-center" role="alert">
 						<h2 className="mb-4 font-serif text-4xl font-normal text-red-500 md:text-5xl lg:text-6xl">
@@ -274,7 +321,8 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 		<section
 			id="download"
 			aria-label="Downloads"
-			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}
+		>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
@@ -289,6 +337,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 								{Title}
 							</h2>
 						)}
+
 						{Subtitle && (
 							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
@@ -299,7 +348,8 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+					className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3"
+				>
 					{Platforms.map((Platform) => {
 						const HasVerification =
 							ShowVerification &&
@@ -360,13 +410,15 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 														{Platform.Requirements.map(
 															(
 																Requirement,
+
 																RequirementIndex,
 															) => (
 																<li
 																	key={
 																		RequirementIndex
 																	}
-																	className="">
+																	className=""
+																>
 																	{
 																		Requirement
 																	}
@@ -417,7 +469,8 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 									borderTopColor: PlatformAccentColor,
 									borderTopWidth: "2px",
 									borderTopStyle: "solid",
-								}}>
+								}}
+							>
 								<DynamicCard
 									Sections={PlatformCardSection}
 									ClassName="PlatformCard flex flex-col"

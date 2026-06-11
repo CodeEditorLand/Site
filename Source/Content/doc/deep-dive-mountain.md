@@ -2,8 +2,7 @@
 title: "Mountain - Deep Dive"
 section: "Deep Dive"
 order: 7
-description:
-    "Internals of the Mountain Rust backend: ActionEffect system, Track
+description: "Internals of the Mountain Rust backend: ActionEffect system, Track
     dispatcher, Environment provider registration, Vine gRPC, Cocoon process
     management, and ISandboxConfiguration construction."
 ---
@@ -112,7 +111,9 @@ Notable implementation details:
   a single disk flush.
 - **`EncryptionProvider`**: key is derived from a SHA-256 hash of the machine
   UUID via `Encryption/Key.rs`; AES-256-GCM is used for all encrypt/decrypt
-  operations.
+  operations. Exposed as `encryption:encrypt` and `encryption:decrypt` IPC
+  commands - used by Cocoon to back `context.secrets` for extension credential
+  storage.
 - **`FileWatcherProvider`**: maintains an fd table (`HashMap<u64, Watcher>`)
   shared between `file:open`, `file:close`, `file:watch`, and `file:unwatch`
   handlers.
@@ -128,7 +129,7 @@ init task:
 ```rust
 Server::builder()
     .add_service(MountainVineGRPCServiceServer::new(service))
-    .serve("127.0.0.1:50052".parse()?)
+    .serve("127.0.0.1:50051".parse()?)
     .await?;
 ```
 
@@ -244,7 +245,11 @@ extracted to its own atomic file:
 
 ```text
 IPC/WindServiceHandlers/
-├── mod.rs                  Main dispatch table
+├── mod.rs                  Main dispatch table (~2500 lines)
+├── Cocoon/
+│   ├── Request.rs          cocoon:request bridge
+│   ├── Notify.rs           cocoon:notify
+│   └── ExtensionHostMessage.rs
 ├── NativeHost/
 │   ├── Quit.rs
 │   ├── Exit.rs
@@ -277,6 +282,7 @@ IPC/WindServiceHandlers/
 │   ├── Decrypt.rs
 │   └── Key.rs
 ├── Sky/ReplayEvents.rs
+├── TreeView/GetChildren.rs
 ├── Update/UpdateService.rs
 └── ExtensionHost/
     ├── Starter.rs

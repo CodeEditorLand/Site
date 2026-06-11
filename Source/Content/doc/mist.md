@@ -4,17 +4,17 @@ section: Elements
 order: 6
 description:
     Mist is a local DNS isolation server that intercepts all DNS queries for the
-    land.playform.cloud zone, resolving private subdomains to loopback and
-    blocking external access by allowlist.
+    editor.land zone, resolving private subdomains to loopback and blocking
+    external access by allowlist.
 ---
 
-Mist runs an authoritative Hickory DNS server for the `land.playform.cloud`
-zone, binding exclusively on `127.0.0.1` so that every `*.land.playform.cloud`
-subdomain resolves to `127.0.0.1` instead of reaching the public internet. It
-acts as a network policy enforcement point: sidecar processes such as Cocoon and
-Air can only resolve domains that appear on an explicit allowlist, and every
-other external query receives `NXDOMAIN`. The zone is signed with ECDSA P-256
-keys so that DNSSEC-aware clients can verify the authenticity of every response.
+Mist runs an authoritative Hickory DNS server for the `editor.land` zone,
+binding exclusively on `127.0.0.1` so that every `*.editor.land` subdomain
+resolves to `127.0.0.1` instead of reaching the public internet. It acts as a
+network policy enforcement point: sidecar processes such as Cocoon and Air can
+only resolve domains that appear on an explicit allowlist, and every other
+external query receives `NXDOMAIN`. The zone is signed with ECDSA P-256 keys so
+that DNSSEC-aware clients can verify the authenticity of every response.
 
 ## Why DNS isolation
 
@@ -25,9 +25,9 @@ allowed to use. Those processes are spawned with a DNS override pointing to
 `127.0.0.1:5380`, so extension code cannot bypass the server regardless of which
 port it attempts to use for its own UDP traffic.
 
-DNS isolation also means that `*.land.playform.cloud` names never leave the
-machine. gRPC addresses like `cocoon.land.playform.cloud` are private
-implementation details that resolve only within the running editor process.
+DNS isolation also means that `*.editor.land` names never leave the machine.
+gRPC addresses like `cocoon.editor.land` are private implementation details
+that resolve only within the running editor process.
 
 ## Hickory DNS
 
@@ -63,11 +63,11 @@ editor.land.  IN SOA  localhost. root.editor.land. (
 *.editor.land.  IN A  127.0.0.1
 ```
 
-| Query pattern           | Response      | Behavior                                 |
-| :---------------------- | :------------ | :--------------------------------------- |
-| `*.land.playform.cloud` | `A 127.0.0.1` | Authoritative answer, RRSIG attached     |
-| Allowlisted domain      | Forwarded     | Pass-through to system upstream resolver |
-| All other domains       | `NXDOMAIN`    | Refused by default                       |
+| Query pattern      | Response      | Behavior                                 |
+| :----------------- | :------------ | :--------------------------------------- |
+| `*.editor.land`    | `A 127.0.0.1` | Authoritative answer, RRSIG attached     |
+| Allowlisted domain | Forwarded     | Pass-through to system upstream resolver |
+| All other domains  | `NXDOMAIN`    | Refused by default                       |
 
 ## Forward allowlist
 
@@ -101,6 +101,15 @@ accepting queries.
 | Key generation | Automatic on first run, persisted to app data directory |
 | RRSIG records  | Generated in memory on zone load                        |
 
+## WebSocket Transport (S6)
+
+Mist includes a `WebSocket.rs` layer that will serve `*.editor.land` WebSocket
+endpoints once the S6 Mist transport is active. Under S6, Sky communicates with
+Cocoon over a local WebSocket connection routed through Mist's DNS zone rather
+than through Tauri IPC, reducing per-call overhead from ~5 ms to under 1 ms for
+the high-frequency calls that dominate a session. This transport is planned and
+the source module is present; it is not yet the active path.
+
 ## Integration with Mountain and Air
 
 Mountain calls `Mist::start(5380)` during application initialization and
@@ -117,14 +126,14 @@ receives the bound port as its return value. That port is stored in Tauri's
 
 ## Source files
 
-| File                        | Role                                                                     |
-| :-------------------------- | :----------------------------------------------------------------------- |
-| `Source/Server.rs`          | UDP and TCP DNS listeners, query dispatch via Hickory catalog            |
-| `Source/Zone.rs`            | `land.playform.cloud` zone configuration and in-memory record generation |
-| `Source/Resolver.rs`        | DNS forwarding for allowlisted domains, `LandDnsResolver` struct         |
-| `Source/ForwardSecurity.rs` | DNSSEC signing with ECDSA P-256, allowlist enforcement                   |
-| `Source/WebSocket.rs`       | WebSocket transport layer for Sky ↔ Cocoon data streaming                |
-| `Source/lib.rs`             | Public API: `start(port)`, `dns_port()`, `DnsPort` state management      |
+| File                        | Role                                                                |
+| :-------------------------- | :------------------------------------------------------------------ |
+| `Source/Server.rs`          | UDP and TCP DNS listeners, query dispatch via Hickory catalog       |
+| `Source/Zone.rs`            | `editor.land` zone configuration and in-memory record generation    |
+| `Source/Resolver.rs`        | DNS forwarding for allowlisted domains, `LandDnsResolver` struct    |
+| `Source/ForwardSecurity.rs` | DNSSEC signing with ECDSA P-256, allowlist enforcement              |
+| `Source/WebSocket.rs`       | WebSocket transport layer for Sky ↔ Cocoon data streaming           |
+| `Source/lib.rs`             | Public API: `start(port)`, `dns_port()`, `DnsPort` state management |
 
 ## Usage
 

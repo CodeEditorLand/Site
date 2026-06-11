@@ -15,6 +15,17 @@ definitions in both directions, the streaming patterns used for real-time
 events, how proto compilation works in the build pipeline, and the step-by-step
 process for adding a new RPC.
 
+## Port Allocation
+
+All gRPC listeners bind to `[::1]` (loopback only). No remote connections are
+accepted.
+
+| Service       | Element    | Port    | Transport | Direction                          |
+| ------------- | ---------- | ------- | --------- | ---------------------------------- |
+| Mountain Vine | `Mountain` | `50051` | TCP       | Cocoon → Mountain (gRPC server)    |
+| Cocoon Vine   | `Cocoon`   | `50052` | TCP       | Mountain → Cocoon (gRPC server)    |
+| Air Vine      | `Air`      | `50053` | TCP       | Mountain → Air (background daemon) |
+
 ## Proto File Structure
 
 Three proto files make up the Vine protocol family. All use `syntax = "proto3"`
@@ -140,6 +151,13 @@ async provideHover(
 The `Register*` RPCs store provider registrations in a per-language registry.
 When Mountain later calls the corresponding `Provide*` RPC, the registry
 dispatches to the registered extension provider.
+
+`ProvideInlineCompletionItems` was added to `CocoonService` as part of the
+inline completions pipeline (session 2026-05-22). It follows the same
+`Register*/Provide*` pattern and is dispatched through the
+`LanguageFeatureProviderRegistry` in Cocoon. Sky's Monaco editor calls
+`language:provideInlineCompletions` on Mountain, which routes the request to
+Cocoon via this RPC.
 
 ## Bidirectional Streaming Patterns
 

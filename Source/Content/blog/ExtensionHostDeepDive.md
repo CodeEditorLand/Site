@@ -2,8 +2,7 @@
 title:
     "Extension Host Architecture: Cocoon's Design for Module Interception, API
     Shims, and Fiber Supervision"
-summary:
-    "How Cocoon runs VS Code extensions in supervised Effect-TS fibers with
+summary: "How Cocoon runs VS Code extensions in supervised Effect-TS fibers with
     module interception and gRPC-backed API shims."
 publishedAt: "2026-05-23"
 tags: ["Extensions", "Cocoon", "Effect-TS", "Architecture", "Modules"]
@@ -61,7 +60,7 @@ order:
 
 The ordering of steps 3 and 4 matters. Previously these were reversed: Cocoon
 attempted the outbound Mountain connection before its own gRPC port was bound.
-Mountain's connection budget expired after 20 seconds waiting for a port that
+Mountain's 30-second gRPC connection budget expired waiting for a port that
 was not yet listening. The fix ensures `RPCServer` is up before
 `MountainConnection` fires.
 
@@ -237,8 +236,15 @@ Source-backed compatibility today:
 - Expanded PTY handlers: `localPty:attachToProcess`,
   `localPty:detachFromProcess`, `localPty:reviveTerminalProcesses`,
   `localPty:freePortKillProcess`
+- Terminal shell integration: OSC 633 sequence handling end-to-end
 - Fifteen-plus `nativeHost:*` handlers covering clipboard, dialog, environment
   paths, process management, shell command installation, and window control
+
+Partial (implemented but not fully exercised in all code paths):
+
+- `activeDebugSession` and `breakpoints` live getters
+- `executeTask` with task lifecycle events
+- Inline completion provider registration (Copilot inline completions path)
 
 Not yet implemented:
 

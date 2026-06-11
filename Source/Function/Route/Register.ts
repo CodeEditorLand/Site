@@ -93,6 +93,7 @@ if ("serviceWorker" in navigator && !__DEV__) {
 		try {
 			const Registration = await navigator.serviceWorker.register(
 				ResolveSWURL() as unknown as URL,
+
 				{
 					scope: Scope,
 					type: "classic",
@@ -167,6 +168,7 @@ if ("serviceWorker" in navigator && !__DEV__) {
 	navigator.serviceWorker.addEventListener("message", (Event) => {
 		if (Event.data?.Type === "Version:Current") {
 			const NewVersion = Event.data.Version as string;
+
 			const OldVersion = sessionStorage.getItem(VersionKey);
 
 			__DEV__ &&

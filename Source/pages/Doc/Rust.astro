@@ -90,14 +90,16 @@ const RustDocSite = [
 	Title={MetaTitle}
 	Description={MetaDescription}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<Header client:load />
 
 	<div class="container mx-auto max-w-6xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+			>
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground">
 						{T("common.breadcrumb.home", { defaultValue: "Home" })}
@@ -107,7 +109,8 @@ const RustDocSite = [
 				<li>
 					<a
 						href="/Doc"
-						class="transition-colors hover:text-foreground">
+						class="transition-colors hover:text-foreground"
+					>
 						{
 							T("common.docs.pageTitle", {
 								defaultValue: "Documentation",
@@ -137,14 +140,16 @@ const RustDocSite = [
 		<div
 			class="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5"
 			role="group"
-			aria-label="Rust crate documentation sets">
+			aria-label="Rust crate documentation sets"
+		>
 			{
 				RustDocSite.map((Site) => (
 					<a
 						href={Site.Url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
 						<p class="font-medium text-[var(--Primary)]">
 							{Site.Label}
 							<span class="InlineSeparator">↗</span>
@@ -163,7 +168,8 @@ const RustDocSite = [
 			<div
 				class="flex flex-wrap items-center gap-1 border-b border-[var(--Border)] px-4 py-2"
 				role="tablist"
-				aria-label="Rust crate group">
+				aria-label="Rust crate group"
+			>
 				{
 					RustDocSite.map((Site, Index) => (
 						<button
@@ -177,7 +183,8 @@ const RustDocSite = [
 								Index === 0
 									? "border-[var(--Primary)] bg-[var(--Primary)] text-[var(--PrimaryForeground)]"
 									: "border-[var(--Border)] bg-card text-muted-foreground hover:bg-[var(--Secondary)]"
-							}`}>
+							}`}
+						>
 							{Site.Label}
 						</button>
 					))

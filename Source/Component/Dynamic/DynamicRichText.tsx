@@ -13,4 +13,5 @@ import { RichText, type RichTextProps } from "../UI/RichText.js";
 const DynamicRichText = (Props: RichTextProps) => <RichText {...Props} />;
 
 export { DynamicRichText };
+
 export default DynamicRichText;

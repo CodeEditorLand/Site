@@ -13,7 +13,9 @@ export function UseIsMobile() {
 		const MediaQueryList = window.matchMedia(
 			`(max-width: ${MOBILE_BREAKPOINT - 1}px)`,
 		);
+
 		MediaQueryList.addEventListener("change", CheckMobile);
+
 		CheckMobile();
 
 		return () => {

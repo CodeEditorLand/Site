@@ -47,7 +47,10 @@ const GenerateSegmentVariant = (Path: string): string[] => {
 
 export default {
 	NormalizePath,
+
 	GenerateVariantKey,
+
 	GenerateSegmentVariant,
+
 	StripTrailingSlash,
 };

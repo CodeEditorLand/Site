@@ -106,11 +106,23 @@ Sky via Tauri events.
 14. `DiffEditorInput` now holds both sides. The editor opens the diff panel and
     the user sees the side-by-side comparison of their changes against HEAD.
 
-> [!IMPORTANT] The `inputBox.value` setter, `commitTemplate`, and
-> `acceptInputCommand` on the `SourceControl` object are wired back to Mountain
-> via `$scm:updateSourceControl` gRPC calls so the SCM input box state is always
-> in sync with the Sky view. Changes to these properties in Cocoon must go
-> through the `ScmProvider` service
->
-> - direct DOM manipulation of the input box will not propagate to the
->   extension.
+## SCM input state synchronisation
+
+The `inputBox.value` setter, `commitTemplate`, and `acceptInputCommand` on the
+`SourceControl` object are wired back to Mountain via a `$scm:updateSourceControl`
+gRPC call (carrying a `SourceControlUpdateDTO`) every time the extension sets any
+of these properties. Mountain updates `AppState.ActiveScmProviders` and emits a
+`sky://scm/provider/changed` Tauri event so the Sky workbench input model stays in
+sync with the extension's values.
+
+- Changes to `inputBox.value` in Cocoon must go through the `ScmProvider`
+  service - direct DOM manipulation of the input box will not propagate to the
+  extension.
+- `sky://scm/register` retries up to 10 times (200 ms between attempts) before
+  it concludes that `__CEL_SERVICES__.SCM` is unavailable, which prevents a
+  startup race between the Sky renderer completing its service initialisation and
+  the first `$registerScmProvider` gRPC call from Cocoon.
+
+> [!IMPORTANT] gRPC traffic between Mountain and Cocoon for SCM flows over port
+> 50051 (Mountain Vine server, Mountain → Cocoon direction). The reverse Cocoon →
+> Mountain notification push uses port 50052.

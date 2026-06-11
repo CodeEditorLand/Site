@@ -44,8 +44,8 @@ at 95%, and LSP/Language at 95%.
 | `vscode.window`             | ~95%     | webview panels stubbed                         |
 | `vscode.workspace`          | ~96%     | `createFileSystemWatcher` stub                 |
 | `vscode.languages`          | ~95%     | providers wired, render gaps                   |
-| `vscode.debug`              | ~30%     | `startDebugging` missing                       |
-| `vscode.tasks`              | ~20%     | `executeTask` missing                          |
+| `vscode.debug`              | ~40%     | DAP transport / debug adapter process missing  |
+| `vscode.tasks`              | ~35%     | Mountain process spawn for shell tasks pending |
 | `vscode.scm`                | ~95%     | ISCMService viewlet route deferred             |
 | `vscode.env`                | ~90%     | `isAppPortable`, `asExternalUri` not attempted |
 | `vscode.extensions`         | ~100%    | -                                              |
@@ -78,28 +78,31 @@ at 95%, and LSP/Language at 95%.
 
 ### `vscode.window` - Surfaces
 
-| Operation                                                            | Track | Status | Mountain channel                                           | Sky surface                                          |
-| -------------------------------------------------------------------- | ----- | ------ | ---------------------------------------------------------- | ---------------------------------------------------- |
-| `createStatusBarItem`                                                | S     | ✅     | `sky://statusbar/{update,dispose,set-entry}`               | `__CEL_SERVICES__.Statusbar.addEntry`                |
-| `setStatusBarMessage`                                                | S     | ✅     | `sky://statusbar/set-message`                              | CustomEvent fan-out                                  |
-| `createTreeView`                                                     | A+S   | ✅     | `tree.register` + `tree:getChildren` + `sky://tree-view/*` | `__CEL_SERVICES__.TreeViewByViewId(id).dataProvider` |
-| `registerTreeDataProvider`                                           | A+S   | ✅     | `$provideTreeChildren` gRPC                                | dataProvider attached to native `ITreeView`          |
-| `createWebviewPanel`                                                 | A     | 🔴     | -                                                          | stub channel `webview`                               |
-| `registerWebviewViewProvider`                                        | A     | 🔴     | -                                                          | -                                                    |
-| `registerCustomEditorProvider`                                       | A     | 🔴     | -                                                          | -                                                    |
-| `createTerminal`                                                     | B     | 🟡     | `terminal:create` / PTY via `portable-pty`                 | workbench terminal panel                             |
-| `onDidOpen/CloseTerminal`                                            | B     | 🟡     | `sky://terminal/{opened,closed}`                           | -                                                    |
-| `createOutputChannel`                                                | S     | ✅     | `sky://output/{create,append,clear,dispose}`               | local mirror + workbench output panel                |
-| `showInformationMessage` / `showWarningMessage` / `showErrorMessage` | A     | ✅     | `sky://ui/show-message-request`                            | DOM toast fallback                                   |
-| `showQuickPick` / `createQuickPick`                                  | A     | 🟡     | `sky://ui/show-quickpick-request`                          | workbench quick-input                                |
-| `showInputBox`                                                       | A     | 🟡     | -                                                          | -                                                    |
-| `showOpenDialog` / `showSaveDialog`                                  | B     | ✅     | `nativeHost:showOpenDialog` / `showSaveDialog` (Tauri)     | -                                                    |
-| `showWorkspaceFolderPick`                                            | A     | ⚪     | -                                                          | -                                                    |
-| `withProgress`                                                       | A+S   | 🟡     | `sky://progress/{start,update,complete}`                   | DOM toast + workbench progress                       |
-| `registerFileDecorationProvider`                                     | A     | 🟡     | -                                                          | -                                                    |
-| `registerUriHandler`                                                 | A     | 🟡     | `register_uri_handler` notif-drop                          | -                                                    |
-| `onDidChangeWindowState`                                             | A     | ✅     | -                                                          | -                                                    |
-| `showNotebookDocument`                                               | A     | 🔴     | -                                                          | -                                                    |
+| Operation                                                            | Track | Status | Mountain channel                                                                       | Sky surface                                          |
+| -------------------------------------------------------------------- | ----- | ------ | -------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| `createStatusBarItem`                                                | S     | ✅     | `sky://statusbar/{update,dispose,set-entry}`                                           | `__CEL_SERVICES__.Statusbar.addEntry`                |
+| `setStatusBarMessage`                                                | S     | ✅     | `sky://statusbar/set-message`                                                          | CustomEvent fan-out                                  |
+| `createTreeView`                                                     | A+S   | ✅     | `tree.register` + `tree:getChildren` + `sky://tree-view/*`                             | `__CEL_SERVICES__.TreeViewByViewId(id).dataProvider` |
+| `registerTreeDataProvider`                                           | A+S   | ✅     | `$provideTreeChildren` gRPC                                                            | dataProvider attached to native `ITreeView`          |
+| `createWebviewPanel`                                                 | A     | 🔴     | -                                                                                      | stub channel `webview`                               |
+| `registerWebviewViewProvider`                                        | A     | 🔴     | -                                                                                      | -                                                    |
+| `registerCustomEditorProvider`                                       | A     | 🔴     | -                                                                                      | -                                                    |
+| `createTerminal`                                                     | B     | ✅     | `terminal:create` / PTY via `portable-pty`; `$acceptTerminalOpened` gRPC               | workbench terminal panel                             |
+| `onDidOpen/CloseTerminal`                                            | B     | ✅     | `$acceptTerminalOpened` / `$acceptTerminalClosed` gRPC                                 | -                                                    |
+| `onDidStartTerminalShellExecution`                                   | B     | ✅     | `localPty:shellExecutionStart` (OSC 633 C) → `$acceptTerminalShellExecutionStart` gRPC | workbench terminal                                   |
+| `onDidEndTerminalShellExecution`                                     | B     | ✅     | `localPty:shellExecutionEnd` (OSC 633 D) → `$acceptTerminalShellExecutionEnd` gRPC     | -                                                    |
+| `onDidExecuteTerminalCommand`                                        | B     | ✅     | `localPty:shellExecutionEnd` also fans to `$acceptExecutedTerminalCommand` gRPC        | -                                                    |
+| `createOutputChannel`                                                | S     | ✅     | `sky://output/{create,append,clear,dispose}`                                           | local mirror + workbench output panel                |
+| `showInformationMessage` / `showWarningMessage` / `showErrorMessage` | A     | ✅     | `sky://ui/show-message-request`                                                        | DOM toast fallback                                   |
+| `showQuickPick` / `createQuickPick`                                  | A     | 🟡     | `sky://ui/show-quickpick-request`                                                      | workbench quick-input                                |
+| `showInputBox`                                                       | A     | 🟡     | -                                                                                      | -                                                    |
+| `showOpenDialog` / `showSaveDialog`                                  | B     | ✅     | `nativeHost:showOpenDialog` / `showSaveDialog` (Tauri)                                 | -                                                    |
+| `showWorkspaceFolderPick`                                            | A     | ⚪     | -                                                                                      | -                                                    |
+| `withProgress`                                                       | A+S   | 🟡     | `sky://progress/{start,update,complete}`                                               | DOM toast + workbench progress                       |
+| `registerFileDecorationProvider`                                     | A     | 🟡     | -                                                                                      | -                                                    |
+| `registerUriHandler`                                                 | A     | 🟡     | `register_uri_handler` notif-drop                                                      | -                                                    |
+| `onDidChangeWindowState`                                             | A     | ✅     | -                                                                                      | -                                                    |
+| `showNotebookDocument`                                               | A     | 🔴     | -                                                                                      | -                                                    |
 
 ### `vscode.workspace`
 
@@ -126,46 +129,47 @@ at 95%, and LSP/Language at 95%.
 
 ### `vscode.languages`
 
-| Operation                                | Track   | Status | Mountain channel                                            |
-| ---------------------------------------- | ------- | ------ | ----------------------------------------------------------- |
-| `registerCompletionItemProvider`         | A       | 🟡     | `register_completion_item_provider` + `GetCompletions` gRPC |
-| `registerHoverProvider`                  | A       | 🟡     | `register_hover_provider` + `GetHoverAtPosition` gRPC       |
-| `registerDefinitionProvider`             | A       | 🟡     | `register_definition_provider` + `GetDefinition` gRPC       |
-| `registerReferenceProvider`              | A       | 🟡     | `register_reference_provider` + `GetReferences` gRPC        |
-| `registerDocumentSymbolProvider`         | A       | 🟡     | `GetDocumentSymbols` gRPC                                   |
-| `registerCodeActionsProvider`            | A       | 🟡     | `register_code_actions_provider`                            |
-| `registerCodeLensProvider`               | A       | 🟡     | `register_code_lens_provider`                               |
-| `registerDocumentFormattingEditProvider` | A       | 🟡     | `register_document_formatting_provider`                     |
-| `registerRenameProvider`                 | A       | 🟡     | `register_rename_provider`                                  |
-| `registerInlayHintsProvider`             | A       | 🟡     | `register_inlay_hints_provider`                             |
-| `registerFoldingRangeProvider`           | A       | 🟡     | `register_folding_range_provider`                           |
-| `registerSemanticTokensProvider`         | A       | 🟡     | `register_semantic_tokens_provider`                         |
-| `registerSignatureHelpProvider`          | A       | 🟡     | `register_signature_help_provider`                          |
-| `setTextDocumentLanguage`                | A+S     | ✅     | `sky://languages/setDocumentLanguage`                       |
-| `setLanguageConfiguration`               | A+S     | ✅     | `sky://language/configure`                                  |
-| `createDiagnosticCollection`             | A+S     | ✅     | `sky://diagnostics/changed`                                 |
-| `match`                                  | 🟢 pure | ✅     | -                                                           |
+| Operation                                | Track   | Status | Mountain channel                                                                                                           |
+| ---------------------------------------- | ------- | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `registerCompletionItemProvider`         | A       | 🟡     | `register_completion_item_provider` + `GetCompletions` gRPC                                                                |
+| `registerHoverProvider`                  | A       | 🟡     | `register_hover_provider` + `GetHoverAtPosition` gRPC                                                                      |
+| `registerDefinitionProvider`             | A       | 🟡     | `register_definition_provider` + `GetDefinition` gRPC                                                                      |
+| `registerReferenceProvider`              | A       | 🟡     | `register_reference_provider` + `GetReferences` gRPC                                                                       |
+| `registerDocumentSymbolProvider`         | A       | 🟡     | `GetDocumentSymbols` gRPC                                                                                                  |
+| `registerCodeActionsProvider`            | A       | 🟡     | `register_code_actions_provider`                                                                                           |
+| `registerCodeLensProvider`               | A       | 🟡     | `register_code_lens_provider`                                                                                              |
+| `registerDocumentFormattingEditProvider` | A       | 🟡     | `register_document_formatting_provider`                                                                                    |
+| `registerRenameProvider`                 | A       | 🟡     | `register_rename_provider`                                                                                                 |
+| `registerInlayHintsProvider`             | A       | 🟡     | `register_inlay_hints_provider`                                                                                            |
+| `registerFoldingRangeProvider`           | A       | 🟡     | `register_folding_range_provider`                                                                                          |
+| `registerSemanticTokensProvider`         | A       | 🟡     | `register_semantic_tokens_provider`                                                                                        |
+| `registerSignatureHelpProvider`          | A       | 🟡     | `register_signature_help_provider`                                                                                         |
+| `registerInlineCompletionItemProvider`   | A+B     | 🟡     | `register_inline_completion_item_provider` + `language:provideInlineCompletions` IPC → `ProvideInlineCompletionItems` gRPC |
+| `setTextDocumentLanguage`                | A+S     | ✅     | `sky://languages/setDocumentLanguage`                                                                                      |
+| `setLanguageConfiguration`               | A+S     | ✅     | `sky://language/configure`                                                                                                 |
+| `createDiagnosticCollection`             | A+S     | ✅     | `sky://diagnostics/changed`                                                                                                |
+| `match`                                  | 🟢 pure | ✅     | -                                                                                                                          |
 
 ### `vscode.debug`
 
-| Operation                                         | Track | Status | Mountain channel                        |
-| ------------------------------------------------- | ----- | ------ | --------------------------------------- |
-| `registerDebugConfigurationProvider`              | A     | 🟡     | `register_debug_configuration_provider` |
-| `registerDebugAdapterDescriptorFactory`           | A     | 🟡     | `register_debug_adapter` notif-drop     |
-| `registerDebugAdapterTrackerFactory`              | A     | 🟡     | -                                       |
-| `startDebugging`                                  | A+B   | 🔴     | `debug:start` handler missing           |
-| `activeDebugSession` / `onDidStart/ChangeSession` | A     | 🔴     | `sky://debug/session-*`                 |
-| `addBreakpoints` / `removeBreakpoints`            | A     | 🔴     | -                                       |
-| `activeStackItem`                                 | A     | ⚪     | -                                       |
+| Operation                                         | Track | Status | Mountain channel                                                                                            |
+| ------------------------------------------------- | ----- | ------ | ----------------------------------------------------------------------------------------------------------- |
+| `registerDebugConfigurationProvider`              | A     | 🟡     | `register_debug_configuration_provider`                                                                     |
+| `registerDebugAdapterDescriptorFactory`           | A     | 🟡     | `register_debug_adapter` notif-drop                                                                         |
+| `registerDebugAdapterTrackerFactory`              | A     | 🟡     | -                                                                                                           |
+| `startDebugging`                                  | A+B   | 🟡     | `Debug.Start` → Mountain `DebugService::StartDebugging`; DAP transport/adapter process pending              |
+| `activeDebugSession` / `onDidStart/ChangeSession` | A     | 🟡     | live getter `__activeDebugSession`; `debug.didStartSession` / `debug.didChangeActiveSession` Emitter events |
+| `addBreakpoints` / `removeBreakpoints`            | A+S   | 🟡     | `debug.addBreakpoints` gRPC; `sky://debug/addBreakpoints` → `IDebugService.addBreakpoints()`                |
+| `activeStackItem`                                 | A     | ⚪     | -                                                                                                           |
 
 ### `vscode.tasks`
 
-| Operation                                            | Track | Status | Notes                                        |
-| ---------------------------------------------------- | ----- | ------ | -------------------------------------------- |
-| `registerTaskProvider`                               | A     | 🟡     | `register_task_provider` notif-drop          |
-| `fetchTasks`                                         | A     | 🔴     | -                                            |
-| `executeTask`                                        | A+B   | 🔴     | needs `tasks:execute` (PTY or child_process) |
-| `taskExecutions` / `onDidStartTask` / `onDidEndTask` | A     | 🔴     | -                                            |
+| Operation                                            | Track | Status | Notes                                                                                                                 |
+| ---------------------------------------------------- | ----- | ------ | --------------------------------------------------------------------------------------------------------------------- |
+| `registerTaskProvider`                               | A     | 🟡     | `register_task_provider` notif-drop                                                                                   |
+| `fetchTasks`                                         | A     | 🟡     | `Task.Fetch` → Mountain round-trip                                                                                    |
+| `executeTask`                                        | A+B   | 🟡     | `Task.Execute` → Mountain; live `TaskExecution` + `task.didStart`/`task.didEnd`; Mountain process spawn pending       |
+| `taskExecutions` / `onDidStartTask` / `onDidEndTask` | A     | 🟡     | live `Executions` Map; `task.didStart` / `task.didEnd` / `task.didStartProcess` / `task.didEndProcess` Emitter events |
 
 ### `vscode.scm`
 
@@ -248,16 +252,16 @@ at 95%, and LSP/Language at 95%.
 The following items are the highest-priority unimplemented gaps, ordered by the
 number of extensions they block.
 
-| Gap                                                                 | Impact                                                        | Status  |
-| ------------------------------------------------------------------- | ------------------------------------------------------------- | ------- |
-| `vscode.debug.*` end-to-end (startDebugging, sessions, breakpoints) | Blocks every language debugger                                | 🔴      |
-| `vscode.tasks.executeTask`                                          | Blocks Jake / Gulp / Grunt / npm task providers               | 🔴      |
-| `vscode.window.createWebviewPanel`                                  | Blocks GitLens graph panel, Copilot chat, markdown preview    | 🔴      |
-| `createFileSystemWatcher` (`notify` crate)                          | Extensions that watch for changes wait forever                | 🟡 stub |
-| `vscode.scm` viewlet route into `ISCMService`                       | Extensions register providers but the SCM viewlet stays empty | 🟡      |
-| `vscode.authentication` real OAuth                                  | Copilot and GitHub PR extension cannot complete auth          | 🟡      |
-| `vscode.tasks.fetchTasks`                                           | Task runner discovery broken                                  | 🔴      |
-| `vscode.chat` / `vscode.lm`                                         | AI-native extensions cannot register participants or models   | 🔴      |
+| Gap                                                               | Impact                                                        | Status  |
+| ----------------------------------------------------------------- | ------------------------------------------------------------- | ------- |
+| `vscode.debug.*` DAP transport (startDebugging / adapter process) | Blocks every language debugger                                | 🟡      |
+| `vscode.tasks` Mountain process spawn for shell tasks             | Blocks Jake / Gulp / Grunt / npm task providers               | 🟡      |
+| `vscode.window.createWebviewPanel`                                | Blocks GitLens graph panel, Copilot chat, markdown preview    | 🔴      |
+| `createFileSystemWatcher` (`notify` crate)                        | Extensions that watch for changes wait forever                | 🟡 stub |
+| `vscode.scm` viewlet route into `ISCMService`                     | Extensions register providers but the SCM viewlet stays empty | 🟡      |
+| `vscode.authentication` real OAuth                                | Copilot and GitHub PR extension cannot complete auth          | 🟡      |
+| `vscode.chat` / `vscode.lm`                                       | AI-native extensions cannot register participants or models   | 🔴      |
+| Terminal shell integration (OSC 633) end-to-end                   | Extensions can observe command start/end/execute events       | ✅      |
 
 ## Track-B bring-up pattern
 

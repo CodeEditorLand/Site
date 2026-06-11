@@ -3,14 +3,19 @@ import { useEffect, useState } from "react";
 export interface ThemeIconProps {
 	/** Light theme icon path (e.g., "/Image/Rust.svg") */
 	src: string;
+
 	/** Alt text for accessibility */
 	alt?: string;
+
 	/** Width in pixels */
 	width?: number | string;
+
 	/** Height in pixels */
 	height?: number | string;
+
 	/** Additional CSS classes */
 	className?: string;
+
 	/** Additional props passed to img */
 	[key: string]: unknown;
 }
@@ -36,7 +41,9 @@ export function ThemeIcon({
 
 	useEffect(() => {
 		const root = document.documentElement;
+
 		const initial = root.classList.contains("dark");
+
 		setIsDark(initial);
 
 		const observer = new MutationObserver(() => {

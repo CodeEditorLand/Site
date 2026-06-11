@@ -99,14 +99,15 @@ Cocoon's gRPC server failed to bind.
 
 **Fix**:
 
-1. Check whether port 50052 is in use:
+1. Check whether ports 50051 or 50052 are in use by orphaned processes from a
+   previous run:
 
     ```sh
-    lsof -i :50052
+    lsof -i :50051 -i :50052
     ```
 
-    Kill any orphaned process found, or change `NetworkCocoonPort` in
-    `.env.Land`.
+    Kill any orphaned process found, or change `NetworkMountainPort` /
+    `NetworkCocoonPort` in `.env.Land`.
 
 2. Check the FIDDEE.log for the line `RPCServer bound on port 50052`. If it is
    absent, Cocoon failed to start. Look for earlier error lines in the log.

@@ -1,9 +1,13 @@
 import { ThemeImage } from "@Library/Theme";
+
 import * as lucide from "lucide-react";
+
 import React from "react";
 
 import { Button } from "../UI/Button";
+
 import { ThemeToggle } from "../UI/ThemeToggle";
+
 import type Property from "./Interface/Property/Header.js";
 
 /**
@@ -13,22 +17,29 @@ import type Property from "./Interface/Property/Header.js";
 const DynamicHeader = ({ Content, ClassName }: Property) => {
 	const {
 		Logo,
+
 		Navigation,
+
 		Actions,
+
 		Sticky = true,
+
 		ShowMobileMenu = true,
 	} = Content;
+
 	const [MobileMenuOpen, SetMobileMenuOpen] = React.useState(false);
 
 	return (
 		<header
-			className={` ${Sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-background ${ClassName || ""} `}>
+			className={` ${Sticky ? "sticky top-0 z-50" : ""} w-full border-b bg-background ${ClassName || ""} `}
+		>
 			<div className="container mx-auto flex h-16 items-center justify-between px-4">
 				{/* Logo */}
 				<div className="flex items-center space-x-3">
 					<div
 						className="relative flex h-8 w-8 items-center justify-center overflow-hidden"
-						aria-hidden="true">
+						aria-hidden="true"
+					>
 						<ThemeImage
 							src="/Asset/Logo/Glyph/Land.svg"
 							alt="Code Editor Land"
@@ -44,7 +55,8 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 				{/* Desktop Navigation */}
 				<nav
 					className="hidden items-center space-x-6 md:flex"
-					aria-label="Main navigation">
+					aria-label="Main navigation"
+				>
 					{Navigation.map((Link, Index) => (
 						<a
 							key={Index}
@@ -56,7 +68,8 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 							}`}
 							{...(Link.IsActive
 								? { "aria-current": "page" as const }
-								: {})}>
+								: {})}
+						>
 							{Link.Label}
 						</a>
 					))}
@@ -81,7 +94,8 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 										SetMobileMenuOpen(!MobileMenuOpen)
 									}
 									aria-label="Toggle menu"
-									aria-expanded={MobileMenuOpen}>
+									aria-expanded={MobileMenuOpen}
+								>
 									<lucide.Menu className="h-4 w-4" />
 								</Button>
 							);
@@ -100,7 +114,8 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 													className="rounded-none px-4 py-2 hover:bg-accent"
 													onClick={() =>
 														SetMobileMenuOpen(false)
-													}>
+													}
+												>
 													{Link.Label}
 												</a>
 											),

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+
 import { toast } from "sonner";
 
 import { AuthAPI as AuthAPIClass } from "../../Library/API/Authentication";
+
 import { DynamicEmailVerification } from "./DynamicEmailVerification";
+
 import type Property from "./Interface/Property/Page/Verify.js";
 
 const Authentication = new AuthAPIClass();
@@ -22,15 +25,19 @@ const VerifyPage = ({
 	OnNavigate,
 }: Property) => {
 	const { Verification } = Content;
+
 	const Navigate = OnNavigate || NavigateToPath;
+
 	const [UserEmail, SetUserEmail] = useState<string>("");
 
 	// Extract email from localStorage if available
 	useEffect(() => {
 		try {
 			const UserData = localStorage.getItem("current_user");
+
 			if (UserData) {
 				const ParsedUser = JSON.parse(UserData);
+
 				SetUserEmail(ParsedUser.email || "");
 			}
 		} catch {
@@ -41,14 +48,18 @@ const VerifyPage = ({
 	const HandleVerify = async (VerifyToken: string): Promise<boolean> => {
 		try {
 			await Authentication.VerifyEmail(VerifyToken);
+
 			toast.success("Email verified successfully!");
+
 			return true;
 		} catch (ErrorInstance) {
 			const ErrorMessage =
 				ErrorInstance instanceof Error
 					? ErrorInstance.message
 					: "Verification failed";
+
 			toast.error(ErrorMessage);
+
 			return false;
 		}
 	};
@@ -56,14 +67,18 @@ const VerifyPage = ({
 	const HandleResend = async (_Email: string): Promise<boolean> => {
 		try {
 			await Authentication.ResendVerification();
+
 			toast.success("Verification email sent!");
+
 			return true;
 		} catch (ErrorInstance) {
 			const ErrorMessage =
 				ErrorInstance instanceof Error
 					? ErrorInstance.message
 					: "Failed to resend email";
+
 			toast.error(ErrorMessage);
+
 			return false;
 		}
 	};
@@ -93,7 +108,8 @@ const VerifyPage = ({
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
-											aria-hidden="true">
+											aria-hidden="true"
+										>
 											<title>Email verified</title>
 											<path
 												strokeLinecap="round"
@@ -114,7 +130,8 @@ const VerifyPage = ({
 									<button
 										type="button"
 										className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
-										onClick={() => Navigate("/")}>
+										onClick={() => Navigate("/")}
+									>
 										{"Continue to Homepage"}
 									</button>
 								</div>
@@ -134,7 +151,8 @@ const VerifyPage = ({
 											fill="none"
 											viewBox="0 0 24 24"
 											stroke="currentColor"
-											aria-hidden="true">
+											aria-hidden="true"
+										>
 											<title>Verification failed</title>
 											<path
 												strokeLinecap="round"
@@ -161,7 +179,8 @@ const VerifyPage = ({
 										<button
 											type="button"
 											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary"
-											onClick={() => Navigate("/Verify")}>
+											onClick={() => Navigate("/Verify")}
+										>
 											{"Send New Verification Email"}
 										</button>
 										<button
@@ -169,7 +188,8 @@ const VerifyPage = ({
 											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-background px-4 py-2 font-medium transition-all hover:bg-accent"
 											onClick={() =>
 												Navigate("/Account/SignIn")
-											}>
+											}
+										>
 											{"Sign In"}
 										</button>
 									</div>

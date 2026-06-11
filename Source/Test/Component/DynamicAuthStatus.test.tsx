@@ -1,6 +1,9 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import React from "react";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import DynamicAuthStatus from "../../Component/Dynamic/DynamicAuthStatus";
@@ -11,7 +14,9 @@ const LogoutMock = vi.fn();
 
 const Auth0State = {
 	IsLoading: false,
+
 	IsAuthenticated: false,
+
 	User: null as Record<string, unknown> | null,
 };
 
@@ -41,6 +46,7 @@ vi.mock("../../Component/UI/Avatar", () => ({
 		className,
 	}: {
 		children: React.ReactNode;
+
 		className?: string;
 	}) => (
 		<div data-testid="avatar" className={className}>
@@ -55,6 +61,7 @@ vi.mock("../../Component/UI/Avatar", () => ({
 		className,
 	}: {
 		children: React.ReactNode;
+
 		className?: string;
 	}) => (
 		<span data-testid="avatar-fallback" className={className}>
@@ -72,6 +79,7 @@ vi.mock("../../Component/UI/DropdownMenu", () => ({
 		asChild,
 	}: {
 		children: React.ReactNode;
+
 		asChild?: boolean;
 	}) => <div data-testid="dropdown-trigger">{children}</div>,
 	DropdownMenuContent: ({
@@ -80,7 +88,9 @@ vi.mock("../../Component/UI/DropdownMenu", () => ({
 		className,
 	}: {
 		children: React.ReactNode;
+
 		align?: string;
+
 		className?: string;
 	}) => (
 		<div data-testid="dropdown-content" className={className}>
@@ -95,16 +105,21 @@ vi.mock("../../Component/UI/DropdownMenu", () => ({
 		...Rest
 	}: {
 		children: React.ReactNode;
+
 		onClick?: () => void;
+
 		asChild?: boolean;
+
 		variant?: string;
+
 		[Key: string]: unknown;
 	}) => (
 		<div
 			data-testid="dropdown-item"
 			onClick={onClick}
 			data-variant={variant}
-			{...Rest}>
+			{...Rest}
+		>
 			{children}
 		</div>
 	),
@@ -117,19 +132,24 @@ vi.mock("../../Component/UI/Skeleton", () => ({
 		...Rest
 	}: {
 		className?: string;
+
 		[Key: string]: unknown;
 	}) => <div data-testid="skeleton" className={className} {...Rest} />,
 }));
 
 beforeEach(() => {
 	Auth0State.IsLoading = false;
+
 	Auth0State.IsAuthenticated = false;
+
 	Auth0State.User = null;
+
 	LogoutMock.mockClear();
 });
 
 afterEach(() => {
 	cleanup();
+
 	vi.restoreAllMocks();
 });
 
@@ -142,11 +162,13 @@ describe("DynamicAuthStatus", () => {
 		const SkeletonElement = screen.getByTestId("skeleton");
 
 		expect(SkeletonElement).toBeInTheDocument();
+
 		expect(SkeletonElement).toHaveAttribute("aria-label", "Loading\u2026");
 	});
 
 	it("shows Sign In link when not authenticated", () => {
 		Auth0State.IsAuthenticated = false;
+
 		Auth0State.User = null;
 
 		render(<DynamicAuthStatus />);
@@ -154,14 +176,17 @@ describe("DynamicAuthStatus", () => {
 		const SignInLink = screen.getByText("Sign In");
 
 		expect(SignInLink).toBeInTheDocument();
+
 		expect(SignInLink.closest("a")).toHaveAttribute(
 			"href",
+
 			"/Account/SignIn",
 		);
 	});
 
 	it("uses custom SignInHref when provided", () => {
 		Auth0State.IsAuthenticated = false;
+
 		Auth0State.User = null;
 
 		render(<DynamicAuthStatus SignInHref="/Custom/SignIn" />);
@@ -170,12 +195,14 @@ describe("DynamicAuthStatus", () => {
 
 		expect(SignInLink.closest("a")).toHaveAttribute(
 			"href",
+
 			"/Custom/SignIn",
 		);
 	});
 
 	it("shows user avatar when authenticated", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Nikola Petrov",
 			email: "nikola@editor.land",
@@ -188,12 +215,14 @@ describe("DynamicAuthStatus", () => {
 
 		expect(AvatarImage).toHaveAttribute(
 			"src",
+
 			"https://example.com/avatar.png",
 		);
 	});
 
 	it("shows initials fallback when authenticated", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Nikola Petrov",
 			email: "nikola@editor.land",
@@ -208,6 +237,7 @@ describe("DynamicAuthStatus", () => {
 
 	it("renders Dashboard link in dropdown when authenticated", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Test User",
 			email: "test@example.com",
@@ -218,14 +248,17 @@ describe("DynamicAuthStatus", () => {
 		const DashboardLink = screen.getByText("Dashboard");
 
 		expect(DashboardLink).toBeInTheDocument();
+
 		expect(DashboardLink.closest("a")).toHaveAttribute(
 			"href",
+
 			"/Dashboard",
 		);
 	});
 
 	it("renders Account link in dropdown when authenticated", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Test User",
 			email: "test@example.com",
@@ -236,11 +269,13 @@ describe("DynamicAuthStatus", () => {
 		const AccountLink = screen.getByText("Account");
 
 		expect(AccountLink).toBeInTheDocument();
+
 		expect(AccountLink.closest("a")).toHaveAttribute("href", "/Account");
 	});
 
 	it("renders Sign Out item in dropdown when authenticated", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Test User",
 			email: "test@example.com",
@@ -255,10 +290,12 @@ describe("DynamicAuthStatus", () => {
 
 	it("calls logout when Sign Out is clicked", async () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Test User",
 			email: "test@example.com",
 		};
+
 		const User = UserEvent.setup();
 
 		render(<DynamicAuthStatus />);
@@ -272,6 +309,7 @@ describe("DynamicAuthStatus", () => {
 
 	it("uses nickname fallback when name equals email", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "test@example.com",
 			email: "test@example.com",
@@ -288,6 +326,7 @@ describe("DynamicAuthStatus", () => {
 
 	it("uses email prefix when no name or nickname", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			email: "developer@example.com",
 		};
@@ -302,6 +341,7 @@ describe("DynamicAuthStatus", () => {
 
 	it("uses custom DashboardHref and AccountHref when provided", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Custom User",
 			email: "custom@example.com",
@@ -315,20 +355,25 @@ describe("DynamicAuthStatus", () => {
 		);
 
 		const DashboardLink = screen.getByText("Dashboard");
+
 		const AccountLink = screen.getByText("Account");
 
 		expect(DashboardLink.closest("a")).toHaveAttribute(
 			"href",
+
 			"/Custom/Dashboard",
 		);
+
 		expect(AccountLink.closest("a")).toHaveAttribute(
 			"href",
+
 			"/Custom/Account",
 		);
 	});
 
 	it("renders user menu button with aria-label", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Accessible User",
 			email: "a11y@example.com",

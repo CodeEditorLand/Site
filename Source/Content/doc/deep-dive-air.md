@@ -2,8 +2,7 @@
 title: "Air - Deep Dive"
 section: "Deep Dive"
 order: 0
-description:
-    "Technical architecture of the Air background daemon: gRPC service
+description: "Technical architecture of the Air background daemon: gRPC service
     definitions, update pipeline, authentication, indexing, and connection
     lifecycle with Mountain."
 ---

@@ -2,8 +2,7 @@
 title: "Executing a Command from the Command Palette"
 section: "Workflows"
 order: 4
-description:
-    "How Ctrl+Shift+P fetches the command list from Mountain and routes
+description: "How Ctrl+Shift+P fetches the command list from Mountain and routes
     execution to either a native Rust handler or a proxied Cocoon extension
     command."
 ---
@@ -94,6 +93,34 @@ finds at step 9.
 13. The result is serialised and returned to Mountain as the gRPC response.
     Mountain forwards it back to Wind as the `TauriInvoke` resolution. The
     command execution is complete.
+
+## registerTextEditorCommand
+
+`vscode.commands.registerTextEditorCommand(id, callback)` wraps the callback so
+it always receives `(textEditor, editBuilder, ...args)` with live objects:
+
+- `textEditor` is the active `TextEditor` proxy, including `.edit()`,
+  `.setDecorations()`, and `.revealRange()`.
+- `editBuilder` is a `TextEditorEdit` buffer tied to the active Monaco model.
+  Edits collected via `builder.replace()`, `builder.insert()`, or
+  `builder.delete()` are applied atomically when the callback returns. If the
+  callback is async (returns a `Promise`), the builder waits for resolution
+  before flushing.
+
+When no editor is active, a no-op builder is passed so the extension's pre-edit
+setup still runs without throwing.
+
+## onDidExecuteCommand
+
+Mountain emits `sky://commands/executed` to the Sky renderer after every command
+dispatch, and simultaneously sends `$acceptCommandExecuted` over the Vine gRPC
+channel to Cocoon. `Notification/Handler.ts` in Cocoon catches the Vine
+notification and re-emits it on the shared `Emitter` channel `commands.executed`.
+The `onDidExecuteCommand` subscription in `Commands/Namespace.ts` listens on that
+channel, so extensions receive the event for both native and extension-contributed
+commands. Local Cocoon-to-Cocoon `executeCommand` calls also emit on
+`commands.executed` directly, so extension-to-extension calls are visible to
+listeners without a Mountain round-trip.
 
 > [!IMPORTANT] Extension commands are registered in Mountain's `CommandRegistry`
 > as proxied entries during extension activation - Cocoon sends a

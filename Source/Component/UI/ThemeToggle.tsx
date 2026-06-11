@@ -1,4 +1,5 @@
 import * as lucide from "lucide-react";
+
 import { useEffect, useState } from "react";
 
 import { Button } from "./Button";
@@ -29,21 +30,30 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	useEffect(() => {
 		const CurrentlyDark =
 			document.documentElement.classList.contains("dark");
+
 		SetIsDark(CurrentlyDark);
+
 		SyncPictureSources(CurrentlyDark);
 	}, []);
 
 	const Toggle = () => {
 		const Next = !document.documentElement.classList.contains("dark");
+
 		document.documentElement.classList.toggle("dark", Next);
+
 		document.documentElement.style.colorScheme = Next ? "dark" : "light";
+
 		try {
 			localStorage.setItem("Theme", Next ? "dark" : "light");
 		} catch (_) {}
+
 		document
 			.querySelector('meta[name="theme-color"]')
+
 			?.setAttribute("content", Next ? "#0a0a0c" : "#ffffff");
+
 		SyncPictureSources(Next);
+
 		SetIsDark(Next);
 	};
 
@@ -56,7 +66,8 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 				IsDark ? "Switch to light theme" : "Switch to dark theme"
 			}
 			title={IsDark ? "Light" : "Dark"}
-			className={ClassName}>
+			className={ClassName}
+		>
 			{/* Both icons render; CSS shows the relevant one per theme so the
 			 control is correct even before hydration reads the class. */}
 			<lucide.Sun className="hidden h-4 w-4 dark:block" />

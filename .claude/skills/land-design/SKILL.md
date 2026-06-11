@@ -217,7 +217,7 @@ Every content section title block uses a mono `//` eyebrow **above** the `<h2>`.
 Pattern:
 
 ```tsx
-<p className="mb-4 font-mono text-xs tracking-[0.25em] text-[var(--MuteForeground)] uppercase">
+<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
 	<span className="text-[var(--SpinegRPCFore)]">//</span> Section Name
 </p>
 ```

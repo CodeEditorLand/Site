@@ -136,6 +136,20 @@ The `compile-extensions-build` step produces the `out-<platform>` directories
 consumed by the Output element. Skip it and Cocoon will fail to locate platform
 code at runtime.
 
+## Git LFS
+
+SideCar stores vendored Node.js binaries in Git LFS. Before cloning or running
+the SideCar download tool for the first time, ensure Git LFS is initialized on
+the machine:
+
+```sh
+git lfs install
+```
+
+Without Git LFS, the binary files in `Element/SideCar/` will be checked out as
+LFS pointer stubs rather than real binaries, and Mountain's `build.rs` will fail
+to stage the correct Node.js binary for bundling.
+
 ## pnpm Content-Addressed Store
 
 pnpm uses a content-addressed store shared across all projects on the machine

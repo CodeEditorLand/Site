@@ -78,10 +78,16 @@ Implementation: `Source/Function/OpenGraph.js` +
 only in `Base.astro`. For dual-theme support, use `media` variants:
 
 ```html
-<meta name="theme-color" content="#ffffff"
-      media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0a0a0a"
-      media="(prefers-color-scheme: dark)" />
+<meta
+	name="theme-color"
+	content="#ffffff"
+	media="(prefers-color-scheme: light)"
+/>
+<meta
+	name="theme-color"
+	content="#0a0a0a"
+	media="(prefers-color-scheme: dark)"
+/>
 ```
 
 `#0a0a0a` matches the dark mode `--Background` canvas token so the browser

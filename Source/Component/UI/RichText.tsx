@@ -1,7 +1,9 @@
 "use client";
 
 import { ThemeImage } from "@Library/Theme";
+
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
 
 // ─── Term dictionary ──────────────────────────────────────────────────────────
@@ -17,111 +19,195 @@ type TermCategory =
 const TermDictionary = new Map<string, TermCategory>([
 	// Architecture elements
 	["Mountain", "Architecture"],
+
 	["Cocoon", "Architecture"],
+
 	["Wind", "Architecture"],
+
 	["Sky", "Architecture"],
+
 	["Air", "Architecture"],
+
 	["Echo", "Architecture"],
+
 	["Vine", "Architecture"],
+
 	["Common", "Architecture"],
+
 	["Rest", "Architecture"],
+
 	["Mist", "Architecture"],
+
 	["Grove", "Architecture"],
+
 	["Worker", "Architecture"],
+
 	["Sidecar", "Architecture"],
+
 	// Feature flags / compile features
 	["ExtensionHostCocoon", "Feature"],
+
 	["MistNative", "Feature"],
+
 	["AirIntegration", "Feature"],
+
 	// Telemetry
 	["Telemetry", "Telemetry"],
+
 	["MetricsCollection", "Telemetry"],
+
 	["DistributedTracing", "Telemetry"],
+
 	["CrashReport", "Telemetry"],
+
 	["TelemetryService", "Telemetry"],
+
 	["TelemetryMock", "Telemetry"],
+
 	// Protocols
 	["gRPC", "Protocol"],
+
 	["OTEL", "Protocol"],
+
 	["OpenTelemetry", "Protocol"],
+
 	["WebSocket", "Protocol"],
+
 	["WASM", "Protocol"],
+
 	["Rhai", "Protocol"],
+
 	// Tools / Frameworks
 	["Rust", "Tool"],
+
 	["Tauri", "Tool"],
+
 	["Effect-TS", "Tool"],
+
 	["Cargo", "Tool"],
+
 	["OXC", "Tool"],
+
 	["SWC", "Tool"],
+
 	["Electron", "Tool"],
+
 	["TypeScript", "Tool"],
+
 	["Astro", "Tool"],
+
 	["Vite", "Tool"],
+
 	["React", "Tool"],
+
 	["Tailwind", "Tool"],
+
 	["Node.js", "Tool"],
+
 	["Biome", "Tool"],
+
 	["Cloudflare", "Tool"],
+
 	["Auth0", "Tool"],
+
 	["pnpm", "Tool"],
+
 	["esbuild", "Tool"],
+
 	// License / Funding
 	["CC0", "License"],
+
 	["PGP", "License"],
+
 	["NLnet", "License"],
+
 	["NGI0", "License"],
 ]);
 
 const CategoryStyle: Record<TermCategory, string> = {
 	Architecture:
 		"border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300",
+
 	Telemetry:
 		"border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300",
+
 	Protocol:
 		"border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300",
+
 	Feature:
 		"border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300",
+
 	License:
 		"border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300",
+
 	Tool: "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950 dark:text-sky-300",
 };
 
 const CategoryLabel: Record<TermCategory, string> = {
 	Architecture: "Architecture element",
+
 	Telemetry: "Telemetry feature",
+
 	Protocol: "Protocol",
+
 	Feature: "Compile feature flag",
+
 	License: "License / Security",
+
 	Tool: "Build tool / Framework",
 };
 
 const TermLogo: Record<string, string> = {
 	Rust: "/Image/Rust.svg",
+
 	Tauri: "/Image/Tauri.svg",
+
 	"Effect-TS": "/Image/EffectTS.svg",
+
 	Cargo: "/Image/Cargo.svg",
+
 	TypeScript: "/Image/TypeScript.svg",
+
 	Astro: "/Image/Astro.svg",
+
 	Vite: "/Image/Vite.svg",
+
 	React: "/Image/React.svg",
+
 	Tailwind: "/Image/Tailwind.svg",
+
 	"Node.js": "/Image/NodeJS.svg",
+
 	WASM: "/Image/WASM.svg",
+
 	gRPC: "/Image/gRPC.svg",
+
 	Biome: "/Image/Biome.svg",
+
 	CC0: "/Image/CC0.svg",
+
 	NLnet: "/Image/NLnet.svg",
+
 	Cloudflare: "/Image/Cloudflare.svg",
+
 	Auth0: "/Image/Auth0.svg",
+
 	OXC: "/Image/OXC.svg",
+
 	SWC: "/Image/SWC.svg",
+
 	Electron: "/Image/Electron.svg",
+
 	Rhai: "/Image/Rhai.svg",
+
 	Telemetry: "/Image/OpenTelemetry.svg",
+
 	OpenTelemetry: "/Image/OpenTelemetry.svg",
+
 	OTEL: "/Image/OpenTelemetry.svg",
+
 	pnpm: "/Image/pnpm.svg",
+
 	esbuild: "/Image/esbuild.svg",
 };
 
@@ -140,6 +226,7 @@ const BuildTermPattern = () =>
 
 const ParseInline = (Text: string, ShowTerms: boolean): Segment[] => {
 	const Segments: Segment[] = [];
+
 	const Parts = Text.split(/(`[^`]+`|\*[^*]+\*)/g);
 
 	for (const Part of Parts) {
@@ -200,7 +287,8 @@ const CopyInlineButton = ({ Code }: { Code: string }) => {
 			onClick={HandleCopy}
 			aria-label={Copied ? "Copied" : "Copy to clipboard"}
 			title={Copied ? "Copied" : "Copy to clipboard"}
-			className="ml-1 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--Ring)]">
+			className="ml-1 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--Ring)]"
+		>
 			{Copied ? (
 				<lucide.Check
 					className="h-[0.65em] w-[0.65em] text-green-600"
@@ -241,7 +329,8 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 				<span
 					className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[Segment.Category]}`}
 					title={`${CategoryLabel[Segment.Category]}: ${Segment.Value}`}
-					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}>
+					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}
+				>
 					{Segment.Value}
 					{Logo && (
 						<>
@@ -358,7 +447,8 @@ const LineNode = ({
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
 								className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
-								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}>
+								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}
+							>
 								{Item}
 							</span>
 						) : (
@@ -397,7 +487,8 @@ const LineNode = ({
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
 								className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
-								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}>
+								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}
+							>
 								{Item}
 							</span>
 						) : (
@@ -590,7 +681,8 @@ const RichText = ({ Text, Terms = false, ClassName }: RichTextProps) => {
 	return (
 		<span
 			ref={ContainerRef}
-			className={`block space-y-3 ${ClassName ?? ""}`}>
+			className={`block space-y-3 ${ClassName ?? ""}`}
+		>
 			{Paragraphs.map((Paragraph, Index) =>
 				RenderParagraph(
 					Paragraph,

@@ -1,13 +1,21 @@
 import { ThemeImage } from "@Library/Theme";
+
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
+
 import { Card, CardContent, CardHeader, CardTitle } from "../UI/Card";
+
 import { IconTooltip } from "../UI/IconTooltip.js";
+
 import { DynamicInput } from "./DynamicInput";
+
 import type PortalContent from "./Interface/Content/Page/Portal.js";
+
 import type TierContent from "./Interface/Content/Portal/Tier.js";
 
 /**
@@ -30,127 +38,245 @@ import type TierContent from "./Interface/Content/Portal/Tier.js";
  */
 const TierIconRegistry: Record<string, lucide.LucideIcon> = {
 	Activity: lucide.Activity,
+
 	AlertTriangle: lucide.AlertTriangle,
+
 	Blocks: lucide.Blocks,
+
 	Box: lucide.Box,
+
 	BrainCircuit: lucide.BrainCircuit,
+
 	Building2: lucide.Building2,
+
 	Check: lucide.Check,
+
 	CheckCircle: lucide.CheckCircle,
+
 	ChevronRight: lucide.ChevronRight,
+
 	CirclePlay: lucide.CirclePlay,
+
 	Cloud: lucide.Cloud,
+
 	Code: lucide.Code,
+
 	Cpu: lucide.Cpu,
+
 	Database: lucide.Database,
+
 	Download: lucide.Download,
+
 	ExternalLink: lucide.ExternalLink,
+
 	FileText: lucide.FileText,
+
 	Fingerprint: lucide.Fingerprint,
+
 	FlaskConical: lucide.FlaskConical,
+
 	FolderGit: lucide.FolderGit,
+
 	GitBranch: lucide.GitBranch,
+
 	GitCommit: lucide.GitCommit,
+
 	GitFork: lucide.GitFork,
+
 	GitPullRequest: lucide.GitPullRequest,
+
 	Globe: lucide.Globe,
+
 	Hammer: lucide.Hammer,
+
 	HardDrive: lucide.HardDrive,
+
 	Hash: lucide.Hash,
+
 	Info: lucide.Info,
+
 	Key: lucide.Key,
+
 	KeyRound: lucide.KeyRound,
+
 	Laptop: lucide.Laptop,
+
 	Layers: lucide.Layers,
+
 	LifeBuoy: lucide.LifeBuoy,
+
 	Link2: lucide.Link2,
+
 	Lock: lucide.Lock,
+
 	Monitor: lucide.Monitor,
+
 	Network: lucide.Network,
+
 	Package: lucide.Package,
+
 	PackageOpen: lucide.PackageOpen,
+
 	Puzzle: lucide.Puzzle,
+
 	Radio: lucide.Radio,
+
 	RefreshCcw: lucide.RefreshCcw,
+
 	RefreshCw: lucide.RefreshCw,
+
 	Rocket: lucide.Rocket,
+
 	RotateCcw: lucide.RotateCcw,
+
 	Search: lucide.Search,
+
 	Server: lucide.Server,
+
 	Settings: lucide.Settings,
+
 	Shield: lucide.Shield,
+
 	Sliders: lucide.Sliders,
+
 	Terminal: lucide.Terminal,
+
 	Timer: lucide.Timer,
+
 	Unplug: lucide.Unplug,
+
 	UserPlus: lucide.UserPlus,
+
 	Users: lucide.Users,
+
 	Wifi: lucide.Wifi,
+
 	WifiOff: lucide.WifiOff,
+
 	Wrench: lucide.Wrench,
+
 	Zap: lucide.Zap,
 };
 
 const IconLabelMap: Record<string, string> = {
 	Activity: "Monitor health in real time",
+
 	AlertTriangle: "Catch issues before they reach users",
+
 	Blocks: "Composable access control",
+
 	Box: "Extension installation path",
+
 	BrainCircuit: "AI capability path",
+
 	Building2: "Organization-wide access control",
+
 	Check: "Requirement met",
+
 	CheckCircle: "Your identity is confirmed",
+
 	ChevronRight: "Continue",
+
 	CirclePlay: "Automate your release pipeline",
+
 	Cloud: "Planned workspace sync",
+
 	Code: "Code and build tooling",
+
 	Cpu: "Runs at native CPU speed",
+
 	Database: "Your data stored safely",
+
 	Download: "Download path",
+
 	ExternalLink: "Opens external resource",
+
 	FileText: "Audit record path",
+
 	Fingerprint: "Proves it's really you",
+
 	FlaskConical: "Tested before it ships to you",
+
 	FolderGit: "Your code, version-controlled",
+
 	GitBranch: "Work across branches freely",
+
 	GitCommit: "Changes tracked forever",
+
 	GitFork: "Your code history, always intact",
+
 	GitPullRequest: "Review before it merges",
+
 	Globe: "Network or platform route",
+
 	Hammer: "Build tooling",
+
 	HardDrive: "Lives on your machine, not the cloud",
+
 	Hash: "Cryptographically verified",
+
 	Info: "More detail available",
+
 	Key: "Identity key",
+
 	KeyRound: "Identity provider route",
+
 	Laptop: "Desktop path",
+
 	Layers: "Type errors caught at compile time",
+
 	LifeBuoy: "Help when you need it",
+
 	Link2: "Connections stay live",
+
 	Lock: "Encrypted or permissioned route",
+
 	Monitor: "Workbench surface",
+
 	Network: "Connects over your local network",
+
 	Package: "Shipped as one native bundle",
+
 	PackageOpen: "Inspect every line of code",
+
 	Puzzle: "Unmodified extension path",
+
 	Radio: "Always listening for reconnects",
+
 	RefreshCcw: "Restarts cleanly every time",
+
 	RefreshCw: "Your preferences follow you",
+
 	Rocket: "Release path",
+
 	RotateCcw: "Roll back in seconds",
+
 	Search: "Find anything in your codebase",
+
 	Server: "Service route",
+
 	Settings: "Everything configurable by you",
+
 	Shield: "Verification boundary",
+
 	Sliders: "Fine-tune every detail",
+
 	Terminal: "Full shell access, right here",
+
 	Timer: "Deploys in under 60 s",
+
 	Unplug: "Full functionality when internet is gone",
+
 	UserPlus: "New developers onboard in minutes",
+
 	Users: "Shared across your whole team",
+
 	Wifi: "Stays connected to your local daemon",
+
 	WifiOff: "Full power, no internet required",
+
 	Wrench: "Modern developer toolchain",
+
 	Zap: "Instant response, zero lag",
 };
 
@@ -180,77 +306,122 @@ const IconLabelMap: Record<string, string> = {
 const IconColorMap: Record<string, string> = {
 	// Identity / crypto - TierEnterprise (charcoal → SpineWASM for identity)
 	Lock: "var(--SpineWASMFore)",
+
 	Key: "var(--SpineWASMFore)",
+
 	Fingerprint: "var(--SpineWASMFore)",
+
 	Shield: "var(--SpineWASMFore)",
 
 	// Network / connect - TierLocalFirst (TCP orange)
 	Wifi: "var(--SpineTCPFore)",
+
 	WifiOff: "var(--SpineTCPFore)",
+
 	Globe: "var(--SpineIPCFore)",
+
 	Network: "var(--SpineIPCFore)",
+
 	Radio: "var(--SpineTCPFore)",
+
 	Link2: "var(--SpineIPCFore)",
 
 	// Storage / hardware - PlatformDesktop slate
 	HardDrive: "var(--PlatformDesktopFore)",
+
 	Server: "var(--PlatformDesktopFore)",
+
 	Database: "var(--DatabasePostgresFore)",
+
 	Cpu: "var(--PlatformDesktopFore)",
+
 	Terminal: "var(--PlatformCLIFore)",
 
 	// Build / code - ExtensionRust / LanguageRust emerald
 	Code: "var(--SpinegRPCFore)",
+
 	Wrench: "var(--SpinegRPCFore)",
+
 	Hammer: "var(--SpinegRPCFore)",
+
 	FlaskConical: "var(--SpinegRPCFore)",
+
 	Package: "var(--SpinegRPCFore)",
+
 	PackageOpen: "var(--SpinegRPCFore)",
+
 	Box: "var(--SpinegRPCFore)",
+
 	Puzzle: "var(--PlatformExtensionFore)",
 
 	// Git / VCS - LanguageJavaScript amber
 	GitBranch: "var(--LanguageJavaScriptFore)",
+
 	GitFork: "var(--LanguageJavaScriptFore)",
+
 	GitCommit: "var(--LanguageJavaScriptFore)",
+
 	GitPullRequest: "var(--LanguageJavaScriptFore)",
+
 	FolderGit: "var(--LanguageJavaScriptFore)",
 
 	// Cloud / sync / deploy - TierCloud (SpineIPC blue)
 	Cloud: "var(--TierCloudFore)",
+
 	RefreshCw: "var(--TierCloudFore)",
+
 	RefreshCcw: "var(--TierCloudFore)",
+
 	RotateCcw: "var(--TierCloudFore)",
+
 	Download: "var(--TierCloudFore)",
+
 	Rocket: "var(--TierCloudFore)",
+
 	Timer: "var(--TierCloudFore)",
+
 	Zap: "var(--TierCloudFore)",
 
 	// Auth / provisioning - TierProvider (SpineWASM violet)
 	KeyRound: "var(--TierProviderFore)",
+
 	UserPlus: "var(--TierProviderFore)",
+
 	Users: "var(--TierProviderFore)",
+
 	Building2: "var(--TierProviderFore)",
+
 	Blocks: "var(--TierProviderFore)",
 
 	// Audit / docs - DatabaseTurso teal
 	FileText: "var(--DatabaseTursoFore)",
+
 	Activity: "var(--DatabaseTursoFore)",
+
 	AlertTriangle: "var(--DatabaseTursoFore)",
+
 	Info: "var(--DatabaseTursoFore)",
+
 	Search: "var(--DatabaseTursoFore)",
 
 	// Settings / config - PlatformDesktop slate
 	Settings: "var(--PlatformDesktop)",
+
 	Sliders: "var(--PlatformDesktop)",
+
 	CheckCircle: "var(--PlatformDesktop)",
+
 	Check: "var(--PlatformDesktop)",
+
 	ChevronRight: "var(--PlatformDesktop)",
 
 	// Connectivity misc - TierLocalFirst (SpineTCP orange)
 	Unplug: "var(--TierLocalFirstFore)",
+
 	ExternalLink: "var(--TierLocalFirstFore)",
+
 	Layers: "var(--TierLocalFirstFore)",
+
 	Hash: "var(--TierLocalFirstFore)",
 
 	// AI - SpineWASM purple
@@ -258,8 +429,11 @@ const IconColorMap: Record<string, string> = {
 
 	// Support / lifecycle - PlatformMobile pink
 	LifeBuoy: "var(--PlatformMobileFore)",
+
 	CirclePlay: "var(--PlatformMobileFore)",
+
 	Monitor: "var(--PlatformMobileFore)",
+
 	Laptop: "var(--PlatformMobileFore)",
 };
 
@@ -272,28 +446,40 @@ const EnterpriseSSOForm = ({
 	Disabled,
 }: {
 	Content: TierContent;
+
 	Disabled?: boolean;
 }) => {
 	const [OrganizationDomain, SetOrganizationDomain] = useState("");
+
 	const [OktaDomain, SetOktaDomain] = useState("");
+
 	const [AzureTenant, SetAzureTenant] = useState("");
+
 	const [SamlMetadata, SetSamlMetadata] = useState("");
+
 	const [OrganizationId, SetOrganizationId] = useState("");
+
 	const { t: T } = useTranslation("account");
 
 	const HandleEnterpriseLogin = (
 		Connection: string,
+
 		Extra?: Record<string, string>,
 	) => {
 		if (Disabled) return;
+
 		const Params = new URLSearchParams();
+
 		Params.set("connection", Connection);
+
 		if (OrganizationDomain.trim()) {
 			Params.set("login_hint", OrganizationDomain.trim());
 		}
+
 		if (OrganizationId.trim()) {
 			Params.set("organization", OrganizationId.trim());
 		}
+
 		if (Extra) {
 			for (const [Key, Value] of Object.entries(Extra)) {
 				if (Value.trim()) {
@@ -301,18 +487,25 @@ const EnterpriseSSOForm = ({
 				}
 			}
 		}
+
 		window.location.href = `/Account/SignIn?${Params.toString()}`;
 	};
 
 	const HandleDomainSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
+
 		if (Disabled) return;
+
 		if (!OrganizationDomain.trim()) return;
+
 		const DomainParams = new URLSearchParams();
+
 		DomainParams.set("login_hint", OrganizationDomain.trim());
+
 		if (OrganizationId.trim()) {
 			DomainParams.set("organization", OrganizationId.trim());
 		}
+
 		window.location.href = `/Account/SignIn?${DomainParams.toString()}`;
 	};
 
@@ -321,7 +514,8 @@ const EnterpriseSSOForm = ({
 			className="space-y-4"
 			aria-label={T("portal.enterprise.ariaLabel", {
 				defaultValue: "Enterprise SSO",
-			})}>
+			})}
+		>
 			<form onSubmit={HandleDomainSubmit} className="space-y-3">
 				<DynamicInput
 					Content={{
@@ -346,7 +540,8 @@ const EnterpriseSSOForm = ({
 						backgroundColor: Content.Color,
 						borderColor: Content.BorderColor,
 						color: "#ffffff",
-					}}>
+					}}
+				>
 					{T("portal.enterprise.continueSSO", {
 						defaultValue: "Continue with SSO",
 					})}
@@ -395,7 +590,8 @@ const EnterpriseSSOForm = ({
 					HandleEnterpriseLogin("okta", {
 						okta_domain: OktaDomain,
 					})
-				}>
+				}
+			>
 				{T("portal.enterprise.continueOkta", {
 					defaultValue: "Continue with Okta",
 				})}
@@ -434,7 +630,8 @@ const EnterpriseSSOForm = ({
 					HandleEnterpriseLogin("waad", {
 						tenant: AzureTenant,
 					})
-				}>
+				}
+			>
 				{T("portal.enterprise.continueAzure", {
 					defaultValue: "Continue with Azure AD",
 				})}
@@ -457,6 +654,7 @@ const EnterpriseSSOForm = ({
 					}),
 					Placeholder: T(
 						"portal.enterprise.samlMetadataPlaceholder",
+
 						{
 							defaultValue: "https://your-idp.com/metadata.xml",
 						},
@@ -476,7 +674,8 @@ const EnterpriseSSOForm = ({
 					HandleEnterpriseLogin("samlp", {
 						saml_metadata_url: SamlMetadata,
 					})
-				}>
+				}
+			>
 				{T("portal.enterprise.continueSAML", {
 					defaultValue: "Continue with SAML",
 				})}
@@ -505,12 +704,17 @@ const PortalTierRow = ({
 	Labels,
 }: {
 	Content: TierContent;
+
 	Index: number;
+
 	Labels?: PortalContent["Labels"];
 }) => {
 	const RowReference = useRef<HTMLDivElement>(null);
+
 	const [, SetEmail] = useState("");
+
 	const [, SetPassword] = useState("");
+
 	const { t: T } = useTranslation("account");
 
 	const IconComponent = Content.Icon
@@ -521,17 +725,21 @@ const PortalTierRow = ({
 
 	useEffect(() => {
 		const Row = RowReference.current;
+
 		if (!Row) return;
 
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
+
 			const Attention = await AttentionModule.default;
+
 			Attention.ApplyToElement(Row, Index, 3, 2);
 		};
 
@@ -539,15 +747,20 @@ const PortalTierRow = ({
 	}, [Index]);
 
 	const IsCloud = Content.Identifier === "Cloud";
+
 	const IsProvider = Content.Identifier === "Provider";
+
 	const IsLocalFirst = Content.Identifier === "LocalFirst";
+
 	const IsEnterprise = Content.Identifier === "Enterprise";
+
 	const StatusLabel =
 		Content.Status === "ComingSoon"
 			? "Coming Soon"
 			: Content.Status === "WIP"
 				? "WIP"
 				: undefined;
+
 	const IsUnavailable =
 		Content.Status === "ComingSoon" || Content.Status === "WIP";
 
@@ -567,7 +780,8 @@ const PortalTierRow = ({
 			}`}
 			role="region"
 			aria-disabled={IsUnavailable}
-			aria-label={`${Content.Title} authentication tier`}>
+			aria-label={`${Content.Title} authentication tier`}
+		>
 			{/* Left: Login Box */}
 			<div className="PortalTierLogin">
 				<Card className="PortalTierCard">
@@ -599,12 +813,15 @@ const PortalTierRow = ({
 								className="space-y-4"
 								onSubmit={(Event) => {
 									Event.preventDefault();
+
 									if (IsUnavailable) return;
+
 									// Navigate to Auth0 Universal Login (database connection).
 									// Auth0AccountGate on /Account/SignIn handles the redirect.
 									window.location.href = "/Account/SignIn";
 								}}
-								aria-label="Cloud sign in form">
+								aria-label="Cloud sign in form"
+							>
 								<DynamicInput
 									Content={{
 										Label: T("portal.cloud.emailLabel", {
@@ -612,6 +829,7 @@ const PortalTierRow = ({
 										}),
 										Placeholder: T(
 											"portal.cloud.emailPlaceholder",
+
 											{
 												defaultValue:
 													"name@example.com",
@@ -631,6 +849,7 @@ const PortalTierRow = ({
 										}),
 										Placeholder: T(
 											"portal.cloud.passwordPlaceholder",
+
 											{
 												defaultValue:
 													"Enter your password",
@@ -651,11 +870,14 @@ const PortalTierRow = ({
 										backgroundColor: Content.Color,
 										borderColor: Content.BorderColor,
 										color: "#ffffff",
-									}}>
+									}}
+								>
 									{T("portal.cloud.signIn", {
 										defaultValue: "Secure Sign In",
 									})}
+
 									{"\u2001"}
+
 									<lucide.Lock
 										className="h-4 w-4"
 										aria-hidden="true"
@@ -667,7 +889,8 @@ const PortalTierRow = ({
 						{IsProvider && (
 							<div
 								className="space-y-4"
-								aria-label="Provider authentication options">
+								aria-label="Provider authentication options"
+							>
 								<Button
 									className="StaccatoButton w-full"
 									variant="outline"
@@ -676,11 +899,14 @@ const PortalTierRow = ({
 									onClick={() => {
 										window.location.href =
 											"/Account/SignIn?connection=github";
-									}}>
+									}}
+								>
 									{T("portal.provider.continueGitHub", {
 										defaultValue: "Continue with GitHub",
 									})}
+
 									{"\u2001"}
+
 									<IconTooltip Label="GitHub">
 										<ThemeImage
 											src="/Image/GitHub.svg"
@@ -699,11 +925,14 @@ const PortalTierRow = ({
 									onClick={() => {
 										window.location.href =
 											"/Account/SignIn?connection=google-oauth2";
-									}}>
+									}}
+								>
 									{T("portal.provider.continueGoogle", {
 										defaultValue: "Continue with Google",
 									})}
+
 									{"\u2001"}
+
 									<IconTooltip Label="Google">
 										<ThemeImage
 											src="/Image/Google.svg"
@@ -722,11 +951,14 @@ const PortalTierRow = ({
 									onClick={() => {
 										window.location.href =
 											"/Account/SignIn?connection=gitlab";
-									}}>
+									}}
+								>
 									{T("portal.provider.continueGitLab", {
 										defaultValue: "Continue with GitLab",
 									})}
+
 									{"\u2001"}
+
 									<IconTooltip Label="GitLab">
 										<ThemeImage
 											src="/Image/GitLab.svg"
@@ -750,7 +982,8 @@ const PortalTierRow = ({
 						{IsLocalFirst && (
 							<div
 								className="space-y-4"
-								aria-label="Local-first connection">
+								aria-label="Local-first connection"
+							>
 								<div className="PortalTierDaemonStatus StaccatoBreath">
 									<span className="font-medium">
 										{T("portal.localfirst.daemonLabel", {
@@ -763,6 +996,7 @@ const PortalTierRow = ({
 										})}
 									</span>
 									{"\u2001"}
+
 									<div className="PortalTierDaemonDot StaccatoRhythmDot" />
 								</div>
 								<Button
@@ -789,8 +1023,10 @@ const PortalTierRow = ({
 														const Timeout =
 															setTimeout(
 																Resolve,
+
 																2000,
 															);
+
 														const OnMessage = (
 															Event: MessageEvent,
 														) => {
@@ -802,17 +1038,23 @@ const PortalTierRow = ({
 																clearTimeout(
 																	Timeout,
 																);
+
 																navigator.serviceWorker.removeEventListener(
 																	"message",
+
 																	OnMessage,
 																);
+
 																Resolve();
 															}
 														};
+
 														navigator.serviceWorker.addEventListener(
 															"message",
+
 															OnMessage,
 														);
+
 														navigator.serviceWorker.controller!.postMessage(
 															{
 																Type: "Auth:Write",
@@ -829,13 +1071,17 @@ const PortalTierRow = ({
 										} catch {
 											// proceed without SW write
 										}
+
 										window.location.href =
 											"/Dashboard?mode=local";
-									}}>
+									}}
+								>
 									{T("portal.localfirst.connect", {
 										defaultValue: "Connect to Air Daemon",
 									})}
+
 									{"\u2001"}
+
 									<lucide.Wifi
 										className="h-4 w-4"
 										aria-hidden="true"
@@ -869,14 +1115,16 @@ const PortalTierRow = ({
 						style={{
 							color: Content.Color,
 							borderColor: Content.BorderColor,
-						}}>
+						}}
+					>
 						{Content.Badge}
 					</span>
 				)}
 
 				<h3
 					className="PortalTierDescriptionTitle"
-					style={{ color: Content.Color }}>
+					style={{ color: Content.Color }}
+				>
 					{Content.Title}
 				</h3>
 
@@ -902,7 +1150,8 @@ const PortalTierRow = ({
 										"Ready"
 										? "opacity-60"
 										: ""
-								}`}>
+								}`}
+							>
 								<span className="flex flex-wrap items-center gap-2 font-medium">
 									{Feature.Heading}
 									{(Feature.Status ?? Content.Status) &&
@@ -925,7 +1174,8 @@ const PortalTierRow = ({
 												role="img"
 												aria-label={`${
 													Feature.Heading
-												} technology stack`}>
+												} technology stack`}
+											>
 												{Feature.Icon.map(
 													(IconName, IconIndex) => {
 														// Derive label: SVG path → filename without extension;
@@ -940,6 +1190,7 @@ const PortalTierRow = ({
 																		.pop()
 																		?.replace(
 																			".svg",
+
 																			"",
 																		) ?? "")
 																: (IconLabelMap[
@@ -956,7 +1207,8 @@ const PortalTierRow = ({
 														return (
 															<span
 																key={IconIndex}
-																className="inline-flex items-center">
+																className="inline-flex items-center"
+															>
 																{IconIndex ===
 																0 ? (
 																	"\u2001"
@@ -977,7 +1229,8 @@ const PortalTierRow = ({
 																	<IconTooltip
 																		Label={
 																			IconLabel
-																		}>
+																		}
+																	>
 																		<img
 																			src={
 																				IconName
@@ -999,6 +1252,7 @@ const PortalTierRow = ({
 																			TierIconRegistry[
 																				IconName
 																			];
+
 																		return FeatureIcon ? (
 																			<IconTooltip
 																				Label={
@@ -1043,13 +1297,15 @@ const PortalTierRow = ({
 										key={CapabilityIndex}
 										className={`PortalTierCapabilityItem StaccatoBreath ${
 											IsUnavailable ? "opacity-60" : ""
-										}`}>
+										}`}
+									>
 										<span className="">
 											{CapabilityText}
 										</span>
 										{StatusLabel && (
 											<>
 												{"\u2001"}
+
 												<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
 													{StatusLabel}
 												</span>
@@ -1079,7 +1335,8 @@ const PortalTierRow = ({
 						</span>
 						<code
 							className="PortalTierProtocolCode"
-							style={{ color: Content.Color }}>
+							style={{ color: Content.Color }}
+						>
 							{Content.Protocol}
 						</code>
 					</div>
@@ -1141,6 +1398,7 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		let StopFunction: (() => void) | undefined;
@@ -1148,9 +1406,13 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 		const StartNoise = async () => {
 			const StaccatoModule =
 				await import("../../Function/Noise/Staccato.js");
+
 			const Staccato = await StaccatoModule.default;
+
 			Staccato.Start();
+
 			StopFunction = Staccato.Stop;
+
 			Staccato.SeedSelector(".PortalTierRow");
 		};
 
@@ -1166,7 +1428,8 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 			ref={SectionReference}
 			id="portal"
 			className="PortalSection"
-			aria-labelledby="PortalHeading">
+			aria-labelledby="PortalHeading"
+		>
 			<div className="container mx-auto px-4">
 				<div className="PortalHeader StaccatoBreath">
 					<h1 id="PortalHeading" className="PortalTitle">
@@ -1178,7 +1441,8 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 				<div
 					className="PortalTierGrid"
 					role="group"
-					aria-label="Authentication tiers">
+					aria-label="Authentication tiers"
+				>
 					<PortalTierRow
 						Content={Content.Cloud}
 						Index={0}
@@ -1211,4 +1475,5 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 };
 
 export { DynamicPortal };
+
 export default DynamicPortal;

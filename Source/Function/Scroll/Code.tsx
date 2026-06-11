@@ -3,24 +3,30 @@ import type {
 	Mouse,
 	PixelComponent,
 } from "@Function/Scroll/Type.js";
+
 import React, { useEffect, useRef, useState } from "react";
 
 let Pixel: PixelComponent | null = null;
+
 let Matrix: MatrixType | null = null;
 
 const LoadDependency = async (): Promise<void> => {
 	if (!Pixel) {
 		const Module = await import("@Function/Scroll/Code/Pixel.js");
+
 		Pixel = Module.default;
 	}
+
 	if (!Matrix) {
 		const Module = await import("@Variable/Scroll/Matrix.js");
+
 		Matrix = Module.default;
 	}
 };
 
 interface ScrollCodeProperty {
 	Text?: string;
+
 	Font?: number;
 }
 
@@ -36,8 +42,11 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 	});
 
 	const ElementReference = useRef<HTMLDivElement>(null);
+
 	const [Count, SetCount] = useState(Text.length);
+
 	const [CurrentTime, SetCurrentTime] = useState(performance.now());
+
 	const [TextContent] = useState(Text);
 
 	useEffect(() => {
@@ -45,7 +54,9 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 
 		const Scroll = (Time: number): void => {
 			if (!Mounted) return;
+
 			SetCurrentTime(Time);
+
 			requestAnimationFrame(Scroll);
 		};
 
@@ -53,6 +64,7 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 
 		return () => {
 			Mounted = false;
+
 			cancelAnimationFrame(AnimationIdentifier);
 		};
 	}, []);
@@ -90,25 +102,31 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 						<div key={`char-${Character}`} className="mr-2">
 							{(() => {
 								if (!Matrix) return null;
+
 								const MatrixRowArray =
 									Matrix[Visible.toUpperCase()] ??
 									Matrix[" "];
+
 								if (!MatrixRowArray) return null;
 
 								return MatrixRowArray.map(
 									(Row, RowIndex): React.ReactNode => (
 										<div
 											key={`row-${RowIndex}`}
-											className="Row flex">
+											className="Row flex"
+										>
 											{Row.map(
 												(
 													Show: number,
+
 													Index: number,
 												): React.ReactNode => {
 													const Container =
 														ElementReference.current?.getBoundingClientRect();
+
 													if (!Pixel || !Container)
 														return null;
+
 													return (
 														<Pixel
 															Font={Font}

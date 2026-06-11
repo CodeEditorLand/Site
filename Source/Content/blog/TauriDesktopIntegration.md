@@ -1,7 +1,6 @@
 ---
 title: "Tauri Desktop Integration in Land"
-summary:
-    "How Mountain uses Tauri for a native editor shell without bundling
+summary: "How Mountain uses Tauri for a native editor shell without bundling
     Chromium."
 publishedAt: "2026-04-02"
 tags: ["Tauri", "Rust", "Desktop", "Architecture"]
@@ -87,10 +86,11 @@ and workbench events.
 **Mountain to Cocoon - Vine gRPC**
 
 `Mountain` and `Cocoon` communicate over a bidirectional gRPC channel described
-by `Vine` proto files. `Mountain` owns the Rust-side services and `Cocoon` owns
-the TypeScript-side extension-host services. The protocol covers extension-host
-startup, document notifications, language providers, tree views, command
-execution, cancellation, and streaming routes.
+by `Vine` proto files. `Mountain`'s gRPC server listens on port 50051; `Cocoon`'s
+gRPC server listens on port 50052. `Mountain` owns the Rust-side services and
+`Cocoon` owns the TypeScript-side extension-host services. The protocol covers
+extension-host startup, document notifications, language providers, tree views,
+command execution, cancellation, and streaming routes.
 
 `Mist` handles DNS isolation and secure service-boundary code. It is not a
 universal transport for all editor traffic.

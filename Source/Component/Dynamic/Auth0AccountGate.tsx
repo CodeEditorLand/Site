@@ -1,10 +1,13 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { useEffect } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { Header } from "../Layout/Header";
+
 import { Button } from "../UI/Button";
 
 /**
@@ -24,39 +27,58 @@ export default ({
 	Organization,
 }: {
 	Route: "signin" | "signup";
+
 	Header?: {
 		logo?: { text: string };
+
 		navigation?: Array<{ label: string; href: string; icon?: string }>;
+
 		actions?: Array<{
 			type?: string;
+
 			text: string;
+
 			variant?: string;
+
 			size?: string;
+
 			href?: string;
+
 			icon?: string;
 		}>;
 	};
+
 	/** Auth0 enterprise connection name (e.g. "okta-acme" for Okta SSO) */
 	Connection?: string;
+
 	/** Auth0 organization ID (e.g. "org_abc123" for multi-tenant Okta) */
 	Organization?: string;
 }) => {
 	const {
 		isLoading: IsLoading,
+
 		isAuthenticated: IsAuthenticated,
+
 		error: Error,
+
 		loginWithRedirect: Login,
+
 		logout: Auth0Logout,
+
 		user: User,
+
 		getAccessTokenSilently: GetToken,
 	} = useAuth0();
 
 	const { t: T } = useTranslation("account");
+
 	const RegistrationEnabled = false;
 
 	// Build enterprise SSO params (Okta, SAML, Azure AD, etc.)
 	const EnterpriseParams: Record<string, string> = {};
+
 	if (Connection) EnterpriseParams["connection"] = Connection;
+
 	if (Organization) EnterpriseParams["organization"] = Organization;
 
 	// Check URL for enterprise hints: ?connection=okta-acme&organization=org_abc123
@@ -64,11 +86,14 @@ export default ({
 		typeof window !== "undefined"
 			? new URLSearchParams(window.location.search).get("connection")
 			: null;
+
 	const URLOrganization =
 		typeof window !== "undefined"
 			? new URLSearchParams(window.location.search).get("organization")
 			: null;
+
 	if (URLConnection) EnterpriseParams["connection"] = URLConnection;
+
 	if (URLOrganization) EnterpriseParams["organization"] = URLOrganization;
 
 	const LoginWithParams = (Extra?: Record<string, string>) =>
@@ -93,26 +118,34 @@ export default ({
 		(async () => {
 			try {
 				const Token = await GetToken();
+
 				if (
 					typeof navigator !== "undefined" &&
 					navigator.serviceWorker?.controller
 				) {
 					await new Promise<void>((Resolve) => {
 						const Timeout = setTimeout(Resolve, 5000);
+
 						const OnMessage = (Event: MessageEvent) => {
 							if (Event.data?.Type === "Auth:Written") {
 								clearTimeout(Timeout);
+
 								navigator.serviceWorker.removeEventListener(
 									"message",
+
 									OnMessage,
 								);
+
 								Resolve();
 							}
 						};
+
 						navigator.serviceWorker.addEventListener(
 							"message",
+
 							OnMessage,
 						);
+
 						navigator.serviceWorker.controller!.postMessage({
 							Type: "Auth:Write",
 							Token,
@@ -129,6 +162,7 @@ export default ({
 				typeof window !== "undefined"
 					? new URLSearchParams(window.location.search).get("next")
 					: null;
+
 			window.location.replace(Next || "/Dashboard");
 		})();
 	}, [IsLoading, IsAuthenticated]);
@@ -136,6 +170,7 @@ export default ({
 	// Auto-redirect to Auth0 Universal Login if not authenticated
 	useEffect(() => {
 		if (IsLoading || IsAuthenticated) return;
+
 		if (Route === "signup" && !RegistrationEnabled) return;
 
 		if (Route === "signup") {
@@ -239,7 +274,8 @@ export default ({
 					<Button
 						variant="outline"
 						className="w-full"
-						onClick={Logout}>
+						onClick={Logout}
+					>
 						{T("logout", {
 							defaultValue: "Sign Out",
 						})}

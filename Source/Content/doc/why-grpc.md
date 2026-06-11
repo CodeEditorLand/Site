@@ -93,9 +93,32 @@ no whitespace. At the volume Land generates (hundreds of IPC calls per second
 during active editing), the encoding difference is measurable.
 
 > [!IMPORTANT] All gRPC connections bind to `[::1]` (IPv6 loopback) or
-> `127.0.0.1`, never `0.0.0.0`. No remote connections are accepted. Port
-> allocation: Mountain Vine server on 50051, Cocoon Vine server on 50052, Air
-> on 50053.
+> `127.0.0.1`, never `0.0.0.0`. No remote connections are accepted.
+
+## Port allocation
+
+| Channel                                                               | Port  |
+| --------------------------------------------------------------------- | ----- |
+| Mountain ↔ Cocoon (Mountain Vine server, Mountain → Cocoon direction) | 50051 |
+| Mountain ↔ Cocoon (Cocoon Vine server, Cocoon → Mountain direction)   | 50052 |
+| Mountain ↔ Air                                                        | 50053 |
+
+## TierIPC routing
+
+The `TierIPC` environment variable controls how Wind and Output route their
+`TauriMainProcessService` calls at runtime:
+
+| Value          | Behaviour                                                                                                       |
+| -------------- | --------------------------------------------------------------------------------------------------------------- |
+| `Mountain`     | Default. All IPC calls go to Mountain via Tauri commands.                                                       |
+| `NodeDeferred` | Mountain first; if Mountain returns `undefined`, the call falls back to Cocoon via the `cocoon:request` bridge. |
+| `Node`         | All calls go directly to Cocoon via `cocoon:request`. Mountain is bypassed.                                     |
+
+The fallback in `NodeDeferred` mode uses the same gRPC request-routing handler
+that processes `languages:*`, `scm:*`, `debug:*`, `tasks:*`, and `auth:*`
+namespaces. New service namespaces should be added to both Mountain's dispatch
+table and Cocoon's `RoutePatterns` object to work correctly under all three
+routing modes.
 
 ## Why not Tauri commands for Mountain↔Cocoon
 

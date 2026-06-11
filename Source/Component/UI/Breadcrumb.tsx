@@ -1,5 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
+
 import * as lucide from "lucide-react";
+
 import * as React from "react";
 
 import { cn } from "./Utility";
@@ -73,7 +75,8 @@ function BreadcrumbSeparator({
 			role="presentation"
 			aria-hidden="true"
 			className={cn("[&>svg]:size-3.5", className)}
-			{...props}>
+			{...props}
+		>
 			{children ?? <lucide.ChevronRight />}
 		</li>
 	);
@@ -89,7 +92,8 @@ function BreadcrumbEllipsis({
 			role="presentation"
 			aria-hidden="true"
 			className={cn("flex size-9 items-center justify-center", className)}
-			{...props}>
+			{...props}
+		>
 			<lucide.MoreHorizontal className="size-4" />
 			<span className="sr-only">More</span>
 		</span>

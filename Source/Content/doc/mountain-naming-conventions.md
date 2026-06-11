@@ -218,3 +218,87 @@ pub use CommandProvider::GetConfigurationValue;
 }
 // Correct: move to NativeHost/MoveItemToTrash.rs and call it from mod.rs
 ```
+
+## TypeScript conventions (Wind, Cocoon, Output)
+
+The TypeScript elements of Land (Wind, Cocoon, Output) share a companion set of
+conventions that mirror the Rust rules where possible.
+
+### File naming and exports
+
+- **PascalCase filenames** - every `.ts` / `.tsx` file uses PascalCase
+  (`CommandProvider.ts`, `ExtensionHost.ts`). No `kebab-case` or `camelCase`
+  filenames.
+- **Single `export default` per file, anonymous** - the exported value is not
+  named at the declaration site:
+
+    ```typescript
+    // Correct
+    export default {
+    	activate,
+    	deactivate,
+    } satisfies ExtensionModule;
+
+    // Wrong - named default export
+    export default class CommandProvider { … }
+    ```
+
+### Import discipline
+
+- **`import type` for types only** - type-only imports must use `import type`:
+
+    ```typescript
+    import type { ExtensionContext } from "vscode";
+    import { Effect } from "effect"; // value import - no `type`
+    ```
+
+- **`await import()` for value imports that must be deferred** - dynamic imports
+  use `await import()`, never `require()`:
+
+    ```typescript
+    const { activate } = await import("./Extension/Host/Service.js");
+    ```
+
+### Function style
+
+- **Arrow-async functions** - all async functions at module scope and as object
+  methods are written as arrow functions:
+
+    ```typescript
+    // Correct
+    const activate = async (context: ExtensionContext): Promise<void> => {
+    	…
+    };
+
+    // Wrong - async function declaration
+    async function activate(context: ExtensionContext): Promise<void> { … }
+    ```
+
+### Type narrowing
+
+- **`satisfies` pattern** - use `satisfies` to narrow the type of an object
+  literal without widening it to the declared type. This catches excess property
+  errors at the definition site rather than at the call site:
+
+    ```typescript
+    const config = {
+    	MaxRetries: 3,
+    	TimeoutMs: 5000,
+    } satisfies ConnectionConfig;
+    ```
+
+### Formatting
+
+- **Tabs** - indentation uses tab characters, not spaces. The Biome formatter
+  enforces this; do not override it with `.editorconfig` space settings.
+- **Line width 80** - Biome wraps at 80 characters.
+- **Biome** is the single formatter and linter for all TypeScript source. Do not
+  add ESLint, Prettier, or other formatters alongside it.
+
+### Separator character
+
+- **Em quad U+2001 as the only separator** - when a display string requires a
+  visual separator between two items, use the em quad character (` `, U+2001).
+  Standard ASCII space, en dash, or pipe are not used as separators in UI
+  strings. Icons and emoji are placed on the **right** side of the text content,
+  after the em quad.

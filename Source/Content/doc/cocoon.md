@@ -43,7 +43,8 @@ services.
 
 ## Bootstrap Stages
 
-Cocoon initializes in five ordered stages. The ordering is critical: the gRPC
+Cocoon initializes in five ordered stages using plain `async`/`await` - there
+is no Effect-TS runtime on the startup path. The ordering is critical: the gRPC
 server (Stage 1) must be listening before Mountain attempts to connect (Stage
 3). Reversing this order causes Mountain to exhaust its 30-second connection
 budget.
@@ -195,6 +196,15 @@ Each `require("vscode")` call returns a new API object constructed by
    extension.deactivate() is called if present.
    All subscriptions in context.subscriptions are disposed.
 ```
+
+## TierIPC Fallback
+
+When `TierIPC=NodeDeferred` is set, Wind routes IPC calls to Mountain first. If
+Mountain returns `undefined` or has no handler registered, the call falls
+through to Cocoon via the `cocoon:request` gRPC bridge. Cocoon's
+`RequestRoutingHandler` receives these forwarded calls and dispatches to the
+appropriate in-process handler (`languages:*`, `scm:*`, `debug:*`, `tasks:*`,
+`auth:*`). This allows gradual migration of handlers without a rebuild.
 
 ## gRPC Communication
 

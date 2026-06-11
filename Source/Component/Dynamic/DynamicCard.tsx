@@ -6,8 +6,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+
 import { RichText } from "../UI/RichText.js";
+
 import type Property from "./Interface/Property/Card.js";
+
 import type SimpleProperty from "./Interface/Property/Card/Simple.js";
 
 /**
@@ -18,7 +21,9 @@ import type SimpleProperty from "./Interface/Property/Card/Simple.js";
 const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 	const {
 		Header: HeaderSection,
+
 		Body: BodySection,
+
 		Footer: FooterSection,
 	} = Sections;
 
@@ -26,15 +31,18 @@ const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 		<Card
 			className={`StaccatoCard StaccatoBorderShimmer ${ClassName || ""}`}
 			onClick={OnClick}
-			style={{ cursor: OnClick ? "pointer" : undefined }}>
+			style={{ cursor: OnClick ? "pointer" : undefined }}
+		>
 			{HeaderSection && (
 				<CardHeader>
 					{HeaderSection.title && (
 						<CardTitle>{HeaderSection.title}</CardTitle>
 					)}
+
 					{HeaderSection.content && (
 						<div className="mt-2">{HeaderSection.content}</div>
 					)}
+
 					{HeaderSection.description && (
 						<CardDescription>
 							{HeaderSection.description}
@@ -49,11 +57,13 @@ const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 							{BodySection.title}
 						</h3>
 					)}
+
 					{BodySection.description && (
 						<div className="StaccatoBreath mb-4 text-muted-foreground">
 							<RichText Text={BodySection.description} />
 						</div>
 					)}
+
 					{BodySection.content}
 				</CardContent>
 			)}
@@ -77,10 +87,12 @@ export const SimpleCard = ({
 		<Card
 			className={`StaccatoCard StaccatoBorderShimmer ${ClassName || ""}`}
 			onClick={OnClick}
-			style={{ cursor: OnClick ? "pointer" : undefined }}>
+			style={{ cursor: OnClick ? "pointer" : undefined }}
+		>
 			{(Title || Description) && (
 				<CardHeader>
 					{Title && <CardTitle>{Title}</CardTitle>}
+
 					{Description && (
 						<CardDescription>{Description}</CardDescription>
 					)}

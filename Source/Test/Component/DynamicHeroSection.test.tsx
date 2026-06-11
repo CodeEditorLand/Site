@@ -1,18 +1,24 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicHeroSection } from "../../Component/Dynamic/DynamicHeroSection";
 
 afterEach(() => {
 	cleanup();
+
 	vi.restoreAllMocks();
 });
 
 const MinimalContent = {
 	Title: "Build the future",
+
 	TitleHighlight: "together",
+
 	Subtitle: "A native code editor built with Rust and TypeScript.",
+
 	PrimaryCta: { Text: "Download", Href: "/Download" },
+
 	FloatingCards: [],
 };
 
@@ -34,7 +40,9 @@ describe("DynamicHeroSection", () => {
 		render(<DynamicHeroSection Content={MinimalContent} />);
 
 		const Highlight = screen.getByText("together");
+
 		expect(Highlight.tagName).toBe("SPAN");
+
 		expect(Highlight.className).toContain("text-primary");
 	});
 
@@ -83,6 +91,7 @@ describe("DynamicHeroSection", () => {
 			addEventListener: vi.fn(),
 			removeEventListener: vi.fn(),
 		});
+
 		Object.defineProperty(window, "matchMedia", {
 			value: MatchMediaMock,
 			writable: true,

@@ -1,7 +1,9 @@
 "use client";
 
 import { ThemeImage } from "@Library/Theme";
+
 import { useEffect, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 /**
@@ -23,53 +25,66 @@ type ScanStatus = "Scanning" | "Connected" | "NotFound";
 
 interface DaemonInfo {
 	Port: number;
+
 	Version: string;
 }
 
 const SCAN_TIMEOUT = 3000;
+
 const DAEMON_ENDPOINT = [
 	{ Port: 7979, URL: "ws://localhost:7979" },
+
 	{ Port: 7878, URL: "ws://localhost:7878" },
 ];
 
 const ProbeDaemon = (
 	URL: string,
+
 	Port: number,
+
 	TimeoutMillisecond: number,
 ): Promise<DaemonInfo | null> =>
 	new Promise((Resolve) => {
 		try {
 			const Socket = new WebSocket(URL);
+
 			const Timer = setTimeout(() => {
 				Socket.close();
+
 				Resolve(null);
 			}, TimeoutMillisecond);
 
 			Socket.onopen = () => {
 				clearTimeout(Timer);
+
 				// Attempt to get version via a simple message
 				Socket.send(JSON.stringify({ Type: "Version" }));
 
 				// Wait briefly for a response, then resolve with default version
 				const VersionTimer = setTimeout(() => {
 					Socket.close();
+
 					Resolve({ Port, Version: "unknown" });
 				}, 500);
 
 				Socket.onmessage = (Event) => {
 					clearTimeout(VersionTimer);
+
 					try {
 						const Data = JSON.parse(Event.data as string) as Record<
 							string,
 							unknown
 						>;
+
 						Socket.close();
+
 						Resolve({
 							Port,
 							Version: (Data.Version as string) || "unknown",
 						});
 					} catch {
 						Socket.close();
+
 						Resolve({ Port, Version: "unknown" });
 					}
 				};
@@ -77,7 +92,9 @@ const ProbeDaemon = (
 
 			Socket.onerror = () => {
 				clearTimeout(Timer);
+
 				Socket.close();
+
 				Resolve(null);
 			};
 		} catch {
@@ -112,6 +129,7 @@ export default ({
 	ClientIdentifier,
 }: {
 	Domain?: string;
+
 	ClientIdentifier?: string;
 }) => <LocalFirstScanInner />;
 
@@ -119,7 +137,9 @@ const LocalFirstScanInner = () => {
 	const { t: T } = useTranslation("common");
 
 	const [Status, SetStatus] = useState<ScanStatus>("Scanning");
+
 	const [DaemonDetail, SetDaemonDetail] = useState<DaemonInfo | null>(null);
+
 	const [ScanProgress, SetScanProgress] = useState(0);
 
 	useEffect(() => {
@@ -127,12 +147,14 @@ const LocalFirstScanInner = () => {
 
 		const RunScan = async () => {
 			SetStatus("Scanning");
+
 			SetScanProgress(0);
 
 			for (let Index = 0; Index < DAEMON_ENDPOINT.length; Index++) {
 				if (Cancelled) return;
 
 				const Endpoint = DAEMON_ENDPOINT[Index];
+
 				if (!Endpoint) continue;
 
 				SetScanProgress(
@@ -141,19 +163,24 @@ const LocalFirstScanInner = () => {
 
 				const Result = await ProbeDaemon(
 					Endpoint.URL,
+
 					Endpoint.Port,
+
 					SCAN_TIMEOUT,
 				);
 
 				if (Result && !Cancelled) {
 					SetDaemonDetail(Result);
+
 					SetStatus("Connected");
+
 					return;
 				}
 			}
 
 			if (!Cancelled) {
 				SetScanProgress(100);
+
 				SetStatus("NotFound");
 			}
 		};
@@ -186,7 +213,9 @@ const LocalFirstScanInner = () => {
 								{T("dashboard.localFirst.scanning", {
 									defaultValue: "Scanning",
 								})}
+
 								{"\u2001"}
+
 								<span
 									className="h-1.5 w-1.5 animate-pulse rounded-none bg-orange-500"
 									aria-hidden="true"
@@ -198,7 +227,9 @@ const LocalFirstScanInner = () => {
 								{T("dashboard.localFirst.connected", {
 									defaultValue: "Connected",
 								})}
+
 								{"\u2001"}
+
 								<span
 									className="h-1.5 w-1.5 rounded-none bg-green-500"
 									aria-hidden="true"
@@ -210,7 +241,9 @@ const LocalFirstScanInner = () => {
 								{T("dashboard.localFirst.notFound", {
 									defaultValue: "Not Detected",
 								})}
+
 								{"\u2001"}
+
 								<span
 									className="h-1.5 w-1.5 rounded-none bg-gray-400"
 									aria-hidden="true"
@@ -316,10 +349,12 @@ const LocalFirstScanInner = () => {
 							<div className="flex flex-wrap gap-3">
 								<a
 									href="/Download"
-									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100 dark:border-orange-700 dark:bg-orange-950 dark:text-orange-300 dark:hover:bg-orange-900">
+									className="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100 dark:border-orange-700 dark:bg-orange-950 dark:text-orange-300 dark:hover:bg-orange-900"
+								>
 									{T("dashboard.localFirst.downloadButton", {
 										defaultValue: "Download Land",
 									})}
+
 									<span className="InlineSeparator">
 										&#8595;
 									</span>
@@ -327,7 +362,8 @@ const LocalFirstScanInner = () => {
 								<button
 									type="button"
 									onClick={() => window.location.reload()}
-									className="StaccatoButton inline-flex items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
+									className="StaccatoButton inline-flex items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]"
+								>
 									{T("dashboard.localFirst.retryButton", {
 										defaultValue: "Retry Scan",
 									})}

@@ -1,28 +1,37 @@
 import { useEffect, useRef } from "react";
 
 import { RichText } from "../UI/RichText.js";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicTable } from "./DynamicTable";
+
 import type Property from "./Interface/Property/Release/Previous.js";
+
 import type ReleaseVersion from "./Interface/Version/Release.js";
 
 const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 	const { Title, Description, Releases, ShowChangelog = true } = Content;
+
 	const SectionReference = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		const Section = SectionReference.current;
+
 		if (!Section) return;
 
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		const ApplyScatter = async () => {
 			const StaccatoModule =
 				await import("../../Function/Noise/Staccato.js");
+
 			const Staccato = await StaccatoModule.default;
+
 			Staccato.SeedElement(Section, 0);
 		};
 
@@ -32,16 +41,21 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 	const ColumnDefinitions = [
 		{
 			Key: "Version" as const,
+
 			Header: "Version",
+
 			Render: (Value: unknown, _Row: ReleaseVersion) => (
 				<span className="font-semibold text-primary">
 					{String(Value)}
 				</span>
 			),
 		},
+
 		{
 			Key: "PublishedAt" as const,
+
 			Header: "Published",
+
 			Render: (Value: unknown) => (
 				<time dateTime={String(Value)}>
 					{new Date(String(Value)).toLocaleDateString("en-US", {
@@ -52,25 +66,34 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 				</time>
 			),
 		},
+
 		{
 			Key: "Size" as const,
+
 			Header: "Size",
+
 			Render: (Value: unknown) => (
 				<span className="text-muted-foreground">{String(Value)}</span>
 			),
 		},
+
 		{
 			Key: "Downloads" as const,
+
 			Header: "Downloads",
+
 			Render: (Value: unknown) => (
 				<span className="text-muted-foreground">
 					{(Value as number).toLocaleString()}
 				</span>
 			),
 		},
+
 		{
 			Key: "actions" as const,
+
 			Header: "",
+
 			Render: (_Value: unknown, Row: ReleaseVersion) => (
 				<div className="flex gap-2">
 					{Row.Assets.map((Asset) => (
@@ -90,6 +113,7 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 							OnAction={() =>
 								Content.OnDownload?.(
 									Row.Version,
+
 									Asset.Platform,
 								)
 							}
@@ -116,7 +140,8 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 		<section
 			ref={SectionReference}
 			className={`py-20 ${ClassName || ""}`}
-			aria-label="Previous releases">
+			aria-label="Previous releases"
+		>
 			<div className="container mx-auto px-4">
 				{(Title || Description) && (
 					<div className="mb-16 text-center">
@@ -125,6 +150,7 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 								{Title}
 							</h2>
 						)}
+
 						{Description && (
 							<div className="mx-auto max-w-2xl text-lg text-muted-foreground">
 								<RichText Text={Description} />

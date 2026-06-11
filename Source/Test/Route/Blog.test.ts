@@ -4,6 +4,7 @@ import {
 	CanonicalPath,
 	PascalCaseCanonical,
 } from "../../Function/Route/Map.js";
+
 import EnBlog from "../../Library/I18n/Locale/En/Blog.json";
 
 describe("Blog route", () => {
@@ -17,13 +18,17 @@ describe("Blog route", () => {
 
 	it("canonical is /Blog not /blog (case guard)", () => {
 		const Canonical = PascalCaseCanonical["/blog"];
+
 		expect(Canonical).toMatch(/^\/[A-Z]/);
+
 		expect(Canonical).toBe("/Blog");
 	});
 
 	it("En/Blog.json has meta.title key", () => {
 		expect(EnBlog["meta.title"]).toBeDefined();
+
 		expect(typeof EnBlog["meta.title"]).toBe("string");
+
 		expect(EnBlog["meta.title"].length).toBeGreaterThan(0);
 	});
 

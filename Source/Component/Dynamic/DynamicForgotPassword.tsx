@@ -7,8 +7,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicInput } from "./DynamicInput";
+
 import type Property from "./Interface/Property/Password/Forgot.js";
 
 /**
@@ -26,29 +29,43 @@ const DynamicForgotPassword = ({
 }: Property) => {
 	const {
 		Title,
+
 		Description,
+
 		EmailField,
+
 		SubmitButton,
+
 		ResendButton,
+
 		SuccessMessage,
 	} = Content;
+
 	const [Email, SetEmail] = useState("");
+
 	const [IsSubmitted, SetIsSubmitted] = useState(false);
+
 	const [InternalError, SetInternalError] = useState("");
 
 	const HandleSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
+
 		if (!Email) {
 			SetInternalError("Email is required");
+
 			return;
 		}
+
 		if (!/\S+@\S+\.\S+/.test(Email)) {
 			SetInternalError("Please enter a valid email");
+
 			return;
 		}
 
 		OnSubmit?.(Email);
+
 		SetIsSubmitted(true);
+
 		SetInternalError("");
 	};
 
@@ -66,12 +83,14 @@ const DynamicForgotPassword = ({
 								<form
 									className="space-y-4"
 									onSubmit={HandleSubmit}
-									aria-label="Password reset request form">
+									aria-label="Password reset request form"
+								>
 									<div aria-live="polite" aria-atomic="true">
 										{(ErrorMessage || InternalError) && (
 											<div
 												className="bg-destructive/10 rounded-none p-3 text-destructive"
-												role="alert">
+												role="alert"
+											>
 												{ErrorMessage || InternalError}
 											</div>
 										)}
@@ -98,17 +117,20 @@ const DynamicForgotPassword = ({
 								<div
 									className="space-y-6 text-center"
 									role="status"
-									aria-live="polite">
+									aria-live="polite"
+								>
 									<div className="space-y-2">
 										<div
 											className="mx-auto flex h-12 w-12 items-center justify-center rounded-none bg-green-100 dark:bg-green-950"
-											aria-hidden="true">
+											aria-hidden="true"
+										>
 											<svg
 												className="h-6 w-6 text-green-600 dark:text-green-400"
 												fill="none"
 												viewBox="0 0 24 24"
 												stroke="currentColor"
-												aria-hidden="true">
+												aria-hidden="true"
+											>
 												<path
 													strokeLinecap="round"
 													strokeLinejoin="round"
@@ -148,7 +170,8 @@ const DynamicForgotPassword = ({
 											className="font-medium text-primary hover:underline"
 											onClick={() =>
 												OnNavigate?.("/Account/SignIn")
-											}>
+											}
+										>
 											Back to Sign In
 										</button>
 									</div>

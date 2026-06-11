@@ -11,8 +11,11 @@ export default class {
 
 	constructor(
 		TimeCurrent: number,
+
 		Seed: number,
+
 		StateMouse: Mouse,
+
 		InfluenceMouse: number,
 	) {
 		this.TimeCurrent = TimeCurrent;
@@ -27,10 +30,15 @@ export default class {
 	Calculate(DX: number, DY: number): MovementDimensional {
 		const {
 			DIMENSION,
+
 			AMPLITUDE_BASE,
+
 			AMPLITUDE_VARIATION,
+
 			MULTIPLIER_TIME_BASE,
+
 			MULTIPLIER_TIME_VARIATION,
+
 			COLOR_STEPS,
 		} = Constant;
 
@@ -51,29 +59,44 @@ export default class {
 
 				this.Apply(
 					Accumulate as MovementDimensional,
+
 					Index,
+
 					Value,
+
 					Amplitude,
+
 					DX,
+
 					DY,
+
 					FactorMouse,
+
 					COLOR_STEPS,
 				);
 
 				return Accumulate;
 			},
+
 			{ X: 0, Y: 0, Rotation: 0, Scale: 1 } as MovementDimensional,
 		) as MovementDimensional;
 	}
 
 	private Apply(
 		Accumulate: MovementDimensional,
+
 		Dimension: number,
+
 		Value: number,
+
 		Amplitude: number,
+
 		DX: number,
+
 		DY: number,
+
 		FactorMouse: number,
+
 		ColorStep: number,
 	): void {
 		switch (Dimension) {

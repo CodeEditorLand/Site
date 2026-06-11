@@ -83,8 +83,8 @@ an error. No partial binary is ever recorded in the cache.
 {
 	"version": "1",
 	"entries": {
-		"22.0.0-darwin-arm64": {
-			"path": "aarch64-apple-darwin/NODE/22/bin/node",
+		"24.0.0-darwin-arm64": {
+			"path": "aarch64-apple-darwin/NODE/24/bin/node",
 			"sha256": "e3b0c44298fc1c149afbf4c8996fb924...",
 			"downloaded_at": "2026-01-15T10:30:00Z",
 			"size": 68700000
@@ -106,26 +106,26 @@ re-downloaded when:
 SideCar/
     aarch64-apple-darwin/
         NODE/
-            22/
+            24/
                 bin/
                     node
     x86_64-apple-darwin/
         NODE/
-            22/
+            24/
                 bin/
                     node
     x86_64-pc-windows-msvc/
         NODE/
-            22/
+            24/
                 node.exe
     aarch64-unknown-linux-gnu/
         NODE/
-            22/
+            24/
                 bin/
                     node
     x86_64-unknown-linux-gnu/
         NODE/
-            22/
+            24/
                 bin/
                     node
     Cache.json

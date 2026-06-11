@@ -12,9 +12,11 @@ describe("SW Registration logic", () => {
 	it("registration uses correct path and scope", () => {
 		// Verify the constants from Register.ts
 		const Path = "/Worker.js";
+
 		const Scope = "/";
 
 		expect(Path).toBe("/Worker.js");
+
 		expect(Scope).toBe("/");
 	});
 
@@ -23,19 +25,26 @@ describe("SW Registration logic", () => {
 		const ValidPattern = /^\/[^\\:]+\.(js|mjs)(\?.*)?$/;
 
 		expect(ValidPattern.test("/Worker.js")).toBe(true);
+
 		expect(ValidPattern.test("/sw.js")).toBe(true);
+
 		expect(ValidPattern.test("/path/to/worker.mjs")).toBe(true);
+
 		expect(ValidPattern.test("/worker.js?v=123")).toBe(true);
 
 		// Invalid URLs
 		expect(ValidPattern.test("https://evil.com/sw.js")).toBe(false);
+
 		expect(ValidPattern.test("data:text/javascript,alert(1)")).toBe(false);
+
 		expect(ValidPattern.test("/worker.ts")).toBe(false);
+
 		expect(ValidPattern.test("")).toBe(false);
 	});
 
 	it("reload flag uses correct sessionStorage key", () => {
 		const ReloadKey = "RouteWorkerReload";
+
 		const RegisteredKey = "RouteWorkerRegistered";
 
 		sessionStorage.setItem(ReloadKey, "true");
@@ -67,8 +76,11 @@ describe("Normalize module", () => {
 			.default;
 
 		expect(Normalize).toHaveProperty("NormalizePath");
+
 		expect(Normalize).toHaveProperty("GenerateVariantKey");
+
 		expect(Normalize).toHaveProperty("GenerateSegmentVariant");
+
 		expect(Normalize).toHaveProperty("StripTrailingSlash");
 	});
 
@@ -78,7 +90,9 @@ describe("Normalize module", () => {
 		).default;
 
 		expect(NormalizePath("/Download")).toBe("/download");
+
 		expect(NormalizePath("/Account/SignIn/")).toBe("/account/signin");
+
 		expect(NormalizePath("/")).toBe("/");
 	});
 
@@ -88,7 +102,9 @@ describe("Normalize module", () => {
 		).default;
 
 		expect(GenerateVariantKey("forgot-password")).toBe("forgotpassword");
+
 		expect(GenerateVariantKey("sign_in")).toBe("signin");
+
 		expect(GenerateVariantKey("Download")).toBe("download");
 	});
 
@@ -100,11 +116,13 @@ describe("Normalize module", () => {
 		const Variant = GenerateSegmentVariant("/downloads");
 
 		expect(Variant).toContain("/downloads");
+
 		expect(Variant).toContain("/download");
 
 		const SingularVariant = GenerateSegmentVariant("/blog");
 
 		expect(SingularVariant).toContain("/blog");
+
 		expect(SingularVariant).toContain("/blogs");
 	});
 });

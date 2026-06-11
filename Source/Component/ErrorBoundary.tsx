@@ -2,12 +2,15 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface ErrorBoundaryProps {
 	children: ReactNode;
+
 	fallback?: ReactNode;
+
 	FallbackComponent?: (Error: Error, Reset: () => void) => ReactNode;
 }
 
 interface ErrorBoundaryState {
 	hasError: boolean;
+
 	error: Error | null;
 }
 
@@ -22,6 +25,7 @@ export class ErrorBoundary extends Component<
 > {
 	constructor(props: ErrorBoundaryProps) {
 		super(props);
+
 		this.state = { hasError: false, error: null };
 	}
 
@@ -44,6 +48,7 @@ export class ErrorBoundary extends Component<
 			if (this.props.FallbackComponent) {
 				return this.props.FallbackComponent(
 					CaughtError,
+
 					this.HandleRetry,
 				);
 			}
@@ -66,7 +71,8 @@ export class ErrorBoundary extends Component<
 						<button
 							type="button"
 							onClick={this.HandleRetry}
-							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-[var(--DestructForeground)]">
+							className="inline-flex h-9 items-center justify-center border border-[var(--Destruct)] bg-card px-4 py-2 font-medium text-[var(--Destruct)] transition-all hover:bg-[var(--Destruct)] hover:text-[var(--DestructForeground)]"
+						>
 							Try again
 						</button>
 					</div>

@@ -49,7 +49,10 @@ status bar can reflect bytes received in real time.
 
 **AuthService** manages authentication tokens for cloud services. Credentials
 are stored with AES-256-GCM encryption using a machine-stable key. The service
-handles token refresh, key rotation, and login flow orchestration.
+handles token refresh, key rotation, and secure credential storage. OAuth login
+flows and user account management are handled by the WebSite element, not by
+Air; Air's scope is background token lifecycle and cryptographic operations
+within the running editor.
 
 **IndexService** builds a searchable content index of the workspace. A file
 system walker discovers all files respecting `.gitignore` patterns, extracts

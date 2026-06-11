@@ -50,6 +50,7 @@ const RedirectFromRouteMap = async (): Promise<void> => {
 			const Target = new URL(CanonicalPath, window.location.origin);
 
 			Target.search = window.location.search;
+
 			Target.hash = window.location.hash;
 
 			window.location.replace(Target.href);

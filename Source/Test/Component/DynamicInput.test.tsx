@@ -1,8 +1,11 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicInput } from "../../Component/Dynamic/DynamicInput";
+
 import type { InputContent } from "../../Component/Dynamic/Type.js";
 
 afterEach(() => {
@@ -19,9 +22,11 @@ describe("DynamicInput", () => {
 		render(<DynamicInput Content={Content} Id="email-field" />);
 
 		const LabelElement = screen.getByText("Email Address");
+
 		const InputElement = screen.getByPlaceholderText("Enter your email");
 
 		expect(LabelElement).toBeInTheDocument();
+
 		expect(InputElement).toBeInTheDocument();
 	});
 
@@ -39,11 +44,13 @@ describe("DynamicInput", () => {
 
 	it("calls onChange when value changes", async () => {
 		const ChangeHandler = vi.fn();
+
 		const Content: InputContent = {
 			Label: "Name",
 			Placeholder: "Enter name",
 			OnChange: ChangeHandler,
 		};
+
 		const User = UserEvent.setup();
 
 		render(<DynamicInput Content={Content} Id="name-field" />);
@@ -53,6 +60,7 @@ describe("DynamicInput", () => {
 		await User.type(InputElement, "John");
 
 		expect(ChangeHandler).toHaveBeenCalled();
+
 		expect(ChangeHandler).toHaveBeenLastCalledWith("John");
 	});
 
@@ -68,6 +76,7 @@ describe("DynamicInput", () => {
 		const ErrorMessage = screen.getByRole("alert");
 
 		expect(ErrorMessage).toBeInTheDocument();
+
 		expect(ErrorMessage).toHaveTextContent("Invalid email address");
 	});
 
@@ -110,9 +119,11 @@ describe("DynamicInput", () => {
 		render(<DynamicInput Content={Content} Id="error-helper-field" />);
 
 		const ErrorMessage = screen.getByText("Password too short");
+
 		const HelperText = screen.queryByText("Must be at least 8 characters");
 
 		expect(ErrorMessage).toBeInTheDocument();
+
 		expect(HelperText).not.toBeInTheDocument();
 	});
 

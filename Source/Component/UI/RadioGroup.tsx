@@ -1,7 +1,9 @@
 "use client";
 
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
+
 import * as lucide from "lucide-react";
+
 import * as React from "react";
 
 import { cn } from "./Utility";
@@ -30,10 +32,12 @@ function RadioGroupItem({
 				"focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 aria-invalid:border-destructive aspect-square size-4 shrink-0 rounded-none border border-input text-primary outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<RadioGroupPrimitive.Indicator
 				data-slot="radio-group-indicator"
-				className="relative flex items-center justify-center">
+				className="relative flex items-center justify-center"
+			>
 				<lucide.Circle className="absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-primary" />
 			</RadioGroupPrimitive.Indicator>
 		</RadioGroupPrimitive.Item>

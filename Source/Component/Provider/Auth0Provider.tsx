@@ -1,6 +1,7 @@
 "use client";
 
 import { Auth0Provider } from "@auth0/auth0-react";
+
 import type { ReactNode } from "react";
 
 /**
@@ -22,8 +23,11 @@ export default ({
 	Organization,
 }: {
 	Children: ReactNode;
+
 	Domain?: string;
+
 	ClientIdentifier?: string;
+
 	/** Auth0 organization ID for enterprise multi-tenant SSO */
 	Organization?: string;
 }) => (
@@ -38,7 +42,8 @@ export default ({
 					? `${window.location.origin}/OAuth/Success`
 					: "https://editor.land/OAuth/Success",
 			...(Organization ? { organization: Organization } : {}),
-		}}>
+		}}
+	>
 		{Children}
 	</Auth0Provider>
 );

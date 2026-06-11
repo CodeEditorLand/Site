@@ -1,17 +1,24 @@
 let FilterElement: SVGFETurbulenceElement | null = null;
+
 let Injected = false;
 
 const FILTER_IDENTIFIER = "StaccatoTurbulence";
 
 const InjectFilter = (): void => {
 	if (Injected) return;
+
 	Injected = true;
 
 	const Svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
 	Svg.setAttribute("width", "0");
+
 	Svg.setAttribute("height", "0");
+
 	Svg.setAttribute("aria-hidden", "true");
+
 	Svg.style.position = "absolute";
+
 	Svg.style.pointerEvents = "none";
 
 	Svg.innerHTML = `<defs>
@@ -42,6 +49,7 @@ const AnimateFilter = (RawValue: number): void => {
 	if (!FilterElement) return;
 
 	const Seed = Math.abs(Math.floor(RawValue * 1000)) % 9999;
+
 	FilterElement.setAttribute("seed", String(Seed));
 };
 

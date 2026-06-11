@@ -1,13 +1,19 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { ThemeImage } from "@Library/Theme";
+
 import { Eye, EyeOff, Lock, MailCheck, ShieldCheck } from "lucide-react";
+
 import { useState, type ReactNode } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import Auth0Provider from "../Provider/Auth0Provider";
+
 import { Button } from "../UI/Button";
+
 import { Skeleton } from "../UI/Skeleton";
 
 // ── PII blur wrapper ────────────────────────────────────────────────────────
@@ -17,12 +23,14 @@ const Pii = ({
 	visible,
 }: {
 	children: ReactNode;
+
 	visible: boolean;
 }) => (
 	<span
 		className={`transition-all duration-200 ${
 			visible ? "" : "select-none blur-sm"
-		}`}>
+		}`}
+	>
 		{children}
 	</span>
 );
@@ -34,6 +42,7 @@ const SourceBadge = ({
 	icon,
 }: {
 	label: string;
+
 	icon?: string | null;
 }) => (
 	<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
@@ -62,11 +71,17 @@ const FieldRow = ({
 	editHref,
 }: {
 	label: string;
+
 	value: ReactNode;
+
 	source: string;
+
 	sourceIcon?: string | null;
+
 	editable: boolean;
+
 	editHint?: string;
+
 	editHref?: string;
 }) => (
 	<div className="px-6 py-4">
@@ -93,6 +108,7 @@ const FieldRow = ({
 		{editHint && (
 			<p className="mt-1.5 text-sm text-muted-foreground">
 				{editHint}
+
 				{editHref && (
 					<>
 						{" "}
@@ -100,7 +116,8 @@ const FieldRow = ({
 							href={editHref}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--Primary)] hover:underline">
+							className="text-[var(--Primary)] hover:underline"
+						>
 							Update here →
 						</a>
 					</>
@@ -117,13 +134,15 @@ const Auth0Badge = () => (
 		href="https://auth0.com/privacy"
 		target="_blank"
 		rel="noopener noreferrer"
-		className="inline-flex items-center gap-1.5 border border-[#EB5424]/30 bg-[#EB5424]/5 px-2 py-1 text-sm transition-colors hover:bg-[#EB5424]/10">
+		className="inline-flex items-center gap-1.5 border border-[#EB5424]/30 bg-[#EB5424]/5 px-2 py-1 text-sm transition-colors hover:bg-[#EB5424]/10"
+	>
 		<svg
 			width="14"
 			height="14"
 			viewBox="0 0 24 24"
 			fill="none"
-			aria-hidden="true">
+			aria-hidden="true"
+		>
 			<path
 				d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V7L12 2z"
 				fill="#EB5424"
@@ -148,31 +167,48 @@ const Auth0Badge = () => (
 
 const DetectProviderLabel = (Sub?: string): string => {
 	if (!Sub) return "Email";
+
 	if (Sub.startsWith("github|")) return "GitHub";
+
 	if (Sub.startsWith("google-oauth2|")) return "Google";
+
 	if (Sub.startsWith("gitlab|")) return "GitLab";
+
 	if (Sub.startsWith("okta|")) return "Okta SSO";
+
 	if (Sub.startsWith("samlp|")) return "SAML SSO";
+
 	if (Sub.startsWith("waad|")) return "Azure AD";
+
 	return "Auth0";
 };
 
 const DetectProviderIcon = (Sub?: string): string | null => {
 	if (!Sub) return null;
+
 	if (Sub.startsWith("github|")) return "/Image/GitHub.svg";
+
 	if (Sub.startsWith("google-oauth2|")) return "/Image/Google.svg";
+
 	if (Sub.startsWith("gitlab|")) return "/Image/GitLab.svg";
+
 	if (Sub.startsWith("okta|")) return "/Image/Okta.svg";
+
 	if (Sub.startsWith("waad|")) return "/Image/Microsoft.svg";
+
 	return null;
 };
 
 const DetectProviderProfileUrl = (Sub?: string): string | null => {
 	if (!Sub) return null;
+
 	if (Sub.startsWith("github|")) return "https://github.com/settings/profile";
+
 	if (Sub.startsWith("google-oauth2|"))
 		return "https://myaccount.google.com/personal-info";
+
 	if (Sub.startsWith("gitlab|")) return "https://gitlab.com/-/profile";
+
 	return null;
 };
 
@@ -180,17 +216,25 @@ const DetectPortalTier = (
 	Sub?: string,
 ): "Cloud" | "Provider" | "LocalFirst" | "Enterprise" => {
 	if (!Sub) return "LocalFirst";
+
 	if (Sub.startsWith("github|")) return "Provider";
+
 	if (Sub.startsWith("google-oauth2|")) return "Provider";
+
 	if (Sub.startsWith("gitlab|")) return "Provider";
+
 	if (Sub.startsWith("okta|")) return "Enterprise";
+
 	if (Sub.startsWith("samlp|")) return "Enterprise";
+
 	if (Sub.startsWith("waad|")) return "Enterprise";
+
 	return "Cloud";
 };
 
 const IsEnterpriseUser = (Sub?: string): boolean => {
 	if (!Sub) return false;
+
 	return (
 		Sub.startsWith("okta|") ||
 		Sub.startsWith("samlp|") ||
@@ -204,26 +248,41 @@ const TierColorMap: Record<
 > = {
 	Cloud: {
 		Border: "border-blue-200 dark:border-blue-800",
+
 		Background: "bg-blue-50 dark:bg-blue-950",
+
 		Text: "text-blue-700 dark:text-blue-300",
+
 		Dot: "bg-blue-500",
 	},
+
 	Provider: {
 		Border: "border-purple-200 dark:border-purple-800",
+
 		Background: "bg-purple-50 dark:bg-purple-950",
+
 		Text: "text-purple-700 dark:text-purple-300",
+
 		Dot: "bg-purple-500",
 	},
+
 	LocalFirst: {
 		Border: "border-orange-200 dark:border-orange-800",
+
 		Background: "bg-orange-50 dark:bg-orange-950",
+
 		Text: "text-orange-700 dark:text-orange-300",
+
 		Dot: "bg-orange-500",
 	},
+
 	Enterprise: {
 		Border: "border-green-200 dark:border-green-800",
+
 		Background: "bg-green-50 dark:bg-green-950",
+
 		Text: "text-green-700 dark:text-green-300",
+
 		Dot: "bg-green-500",
 	},
 };
@@ -235,6 +294,7 @@ export default ({
 	ClientIdentifier,
 }: {
 	Domain?: string;
+
 	ClientIdentifier?: string;
 }) => (
 	<Auth0Provider
@@ -258,6 +318,7 @@ const ClearAuthFromServiceWorker = (): void => {
 			!navigator.serviceWorker?.controller
 		)
 			return;
+
 		navigator.serviceWorker.controller.postMessage({ Type: "Auth:Clear" });
 	} catch {
 		// ServiceWorker not available
@@ -267,7 +328,9 @@ const ClearAuthFromServiceWorker = (): void => {
 const ClearLegacyTokens = (): void => {
 	try {
 		localStorage.removeItem("session_token");
+
 		localStorage.removeItem("current_user");
+
 		document.cookie =
 			"session=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
 	} catch {
@@ -282,35 +345,48 @@ const AccountProfileInner = ({
 	ClientIdentifier = "",
 }: {
 	Domain?: string;
+
 	ClientIdentifier?: string;
 }) => {
 	const {
 		isLoading: IsLoading,
+
 		isAuthenticated: IsAuthenticated,
+
 		user: User,
+
 		error: AuthError,
+
 		loginWithRedirect: Login,
+
 		logout: Auth0Logout,
 	} = useAuth0();
 
 	const { t: T } = useTranslation("account");
+
 	const [PIIVisible, SetPIIVisible] = useState(false);
+
 	const [PasswordResetState, SetPasswordResetState] = useState<
 		"idle" | "sending" | "sent" | "error"
 	>("idle");
 
 	const HandleSignOut = () => {
 		ClearAuthFromServiceWorker();
+
 		ClearLegacyTokens();
+
 		Auth0Logout({ logoutParams: { returnTo: window.location.origin } });
 	};
 
 	const HandlePasswordReset = async () => {
 		if (!User?.email || !Domain || !ClientIdentifier) return;
+
 		SetPasswordResetState("sending");
+
 		try {
 			const Response = await fetch(
 				`https://${Domain}/dbconnections/change_password`,
+
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -321,6 +397,7 @@ const AccountProfileInner = ({
 					}),
 				},
 			);
+
 			SetPasswordResetState(Response.ok ? "sent" : "error");
 		} catch {
 			SetPasswordResetState("error");
@@ -350,14 +427,16 @@ const AccountProfileInner = ({
 			<div
 				className="mx-auto max-w-2xl space-y-4 px-4 py-16"
 				role="alert"
-				aria-live="polite">
+				aria-live="polite"
+			>
 				<p className="text-destructive">
 					{T("error", { defaultValue: "Authentication error" })}:{" "}
 					{AuthError.message}
 				</p>
 				<Button
 					variant="outline"
-					onClick={() => window.location.reload()}>
+					onClick={() => window.location.reload()}
+				>
 					{T("tryAgain", { defaultValue: "Try again" })}
 				</Button>
 			</div>
@@ -378,12 +457,15 @@ const AccountProfileInner = ({
 						try {
 							sessionStorage.setItem(
 								"auth0_return_to",
+
 								window.location.pathname,
 							);
 						} catch {}
+
 						Login();
 					}}
-					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90">
+					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90"
+				>
 					{T("signInButton", { defaultValue: "Sign In" })}
 				</button>
 			</div>
@@ -404,17 +486,26 @@ const AccountProfileInner = ({
 		: "--";
 
 	const ProviderLabel = DetectProviderLabel(User.sub);
+
 	const ProviderIcon = DetectProviderIcon(User.sub);
+
 	const ProviderProfileUrl = DetectProviderProfileUrl(User.sub);
+
 	const Tier = DetectPortalTier(User.sub);
+
 	const TierColor = TierColorMap[Tier] || TierColorMap["Cloud"]!;
+
 	const IsEnterprise = IsEnterpriseUser(User.sub);
+
 	const IsSocialUser =
 		User.sub !== undefined && !User.sub.startsWith("auth0|");
+
 	const IsEmailPasswordUser = User.sub?.startsWith("auth0|") === true;
+
 	const OrganizationName = (User as Record<string, unknown>)["org_name"] as
 		| string
 		| undefined;
+
 	const OrganizationIdentifier = (User as Record<string, unknown>)[
 		"org_id"
 	] as string | undefined;
@@ -426,7 +517,8 @@ const AccountProfileInner = ({
 				<div
 					className={`shrink-0 transition-all duration-200 ${
 						PIIVisible ? "" : "blur-sm"
-					}`}>
+					}`}
+				>
 					{User.picture ? (
 						<img
 							src={User.picture}
@@ -467,7 +559,8 @@ const AccountProfileInner = ({
 					</div>
 					<div className="mt-2 flex flex-wrap gap-2">
 						<span
-							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-sm font-medium ${TierColor.Text}`}>
+							className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-sm font-medium ${TierColor.Text}`}
+						>
 							{Tier}
 							{"\u2001"}
 							<span
@@ -499,7 +592,8 @@ const AccountProfileInner = ({
 					aria-label={
 						PIIVisible ? "Hide personal data" : "Show personal data"
 					}
-					className="mt-1 shrink-0 text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+					className="mt-1 shrink-0 text-muted-foreground transition-colors hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+				>
 					{PIIVisible ? (
 						<EyeOff className="h-5 w-5" aria-hidden="true" />
 					) : (
@@ -521,6 +615,7 @@ const AccountProfileInner = ({
 							{(OrganizationName || OrganizationIdentifier) && (
 								<>
 									{" - "}
+
 									<Pii visible={PIIVisible}>
 										<span className="font-medium">
 											{OrganizationName ||
@@ -648,7 +743,8 @@ const AccountProfileInner = ({
 							User.picture ? (
 								<span className="flex items-center gap-2">
 									<span
-										className={`transition-all duration-200 ${PIIVisible ? "" : "blur-sm"}`}>
+										className={`transition-all duration-200 ${PIIVisible ? "" : "blur-sm"}`}
+									>
 										<img
 											src={User.picture}
 											alt="Profile picture"
@@ -715,7 +811,8 @@ const AccountProfileInner = ({
 						label="Portal Tier"
 						value={
 							<span
-								className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-sm font-medium ${TierColor.Text}`}>
+								className={`inline-flex items-center border ${TierColor.Border} ${TierColor.Background} px-2 py-0.5 text-sm font-medium ${TierColor.Text}`}
+							>
 								{Tier}
 								{"\u2001"}
 								<span
@@ -805,7 +902,8 @@ const AccountProfileInner = ({
 									<button
 										type="button"
 										onClick={HandlePasswordReset}
-										className="StaccatoButton shrink-0 bg-card px-3 py-1.5 text-sm font-medium transition-all hover:bg-[var(--Secondary)]">
+										className="StaccatoButton shrink-0 bg-card px-3 py-1.5 text-sm font-medium transition-all hover:bg-[var(--Secondary)]"
+									>
 										Send Reset Email
 									</button>
 								)}
@@ -858,7 +956,8 @@ const AccountProfileInner = ({
 											href={ProviderProfileUrl}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="text-[var(--Primary)] hover:underline">
+											className="text-[var(--Primary)] hover:underline"
+										>
 											Manage at {ProviderLabel} →
 										</a>
 									</>
@@ -890,6 +989,7 @@ const AccountProfileInner = ({
 			</div>
 
 			{/* ── Account actions ───────────────────────────────────── */}
+
 			<div className="StaccatoCard StaccatoBorderShimmer bg-card">
 				<div className="border-b border-[var(--Border)] px-6 py-4">
 					<h3 className="font-semibold">
@@ -901,16 +1001,19 @@ const AccountProfileInner = ({
 				<div className="space-y-3 px-6 py-4">
 					<a
 						href="/Dashboard"
-						className="StaccatoButton inline-flex w-full items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
+						className="StaccatoButton inline-flex w-full items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]"
+					>
 						{T("goToDashboard", {
 							defaultValue: "Go to Dashboard",
 						})}
+
 						<span className="InlineSeparator">&rarr;</span>
 					</a>
 					<button
 						type="button"
 						onClick={HandleSignOut}
-						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-card px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950">
+						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-card px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950"
+					>
 						{T("signOut", { defaultValue: "Sign Out" })}
 					</button>
 				</div>

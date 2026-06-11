@@ -100,3 +100,31 @@ observe terminal data. User keystrokes take the reverse path: Sky → Mountain I
 15. The Reader Task reads the output and the loop from step 10 repeats - the
     listing appears in xterm.js and is also forwarded to Cocoon via
     `$acceptTerminalProcessData`.
+
+## Shell integration events (OSC 633)
+
+Modern shells emit OSC 633 escape sequences to mark the boundaries of each
+command. Land parses these sequences in Sky's terminal renderer and surfaces them
+as three VS Code API events that extension authors can rely on:
+
+| Event                              | When it fires                                          |
+| ---------------------------------- | ------------------------------------------------------ |
+| `onDidStartTerminalShellExecution` | Shell begins executing a command (OSC 633 C sequence)  |
+| `onDidEndTerminalShellExecution`   | Command finishes; exit code is available (OSC 633 D)   |
+| `onDidExecuteTerminalCommand`      | Alias fired alongside `onDidEndTerminalShellExecution` |
+
+The end-to-end path for these events is:
+
+```
+Sky OSC 633 parser
+  → localPty:shellExecutionStart / shellExecutionEnd  (Tauri IPC)
+  → Mountain fan-out
+  → $acceptTerminalShellExecutionStart / End + $acceptExecutedTerminalCommand  (gRPC to Cocoon)
+  → Window namespace Emitter events (vscode API layer)
+```
+
+For extension authors, this means you can reliably detect when a user runs a
+command in any integrated terminal that supports shell integration (bash with
+`~/.bashrc` source, zsh with the built-in prompt hook, PowerShell with the
+profile snippet). You receive the command text, the exit code, and a reference to
+the terminal instance - without parsing raw PTY output yourself.

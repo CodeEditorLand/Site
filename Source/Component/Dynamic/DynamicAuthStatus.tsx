@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { useTranslation } from "react-i18next";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../UI/Avatar";
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -11,6 +13,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "../UI/DropdownMenu";
+
 import { Skeleton } from "../UI/Skeleton";
 
 /**
@@ -28,13 +31,18 @@ export default ({
 	AccountHref = "/Account",
 }: {
 	SignInHref?: string;
+
 	DashboardHref?: string;
+
 	AccountHref?: string;
 }) => {
 	const {
 		isLoading: IsLoading,
+
 		isAuthenticated: IsAuthenticated,
+
 		user: User,
+
 		logout: Auth0Logout,
 	} = useAuth0();
 
@@ -54,7 +62,8 @@ export default ({
 			<a
 				href={SignInHref}
 				className="inline-flex items-center font-medium text-foreground hover:underline"
-				aria-label={T("actions.signIn", { defaultValue: "Sign In" })}>
+				aria-label={T("actions.signIn", { defaultValue: "Sign In" })}
+			>
 				{T("actions.signIn", { defaultValue: "Sign In" })}
 				{"\u2001"}
 				<svg
@@ -66,7 +75,8 @@ export default ({
 					strokeWidth="2"
 					strokeLinecap="round"
 					strokeLinejoin="round"
-					aria-hidden="true">
+					aria-hidden="true"
+				>
 					<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
 					<polyline points="10 17 15 12 10 7" />
 					<line x1="15" y1="12" x2="3" y2="12" />
@@ -93,7 +103,8 @@ export default ({
 					className="flex items-center gap-2 rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 					aria-label={T("user.avatarAlt", {
 						defaultValue: "User menu",
-					})}>
+					})}
+				>
 					<Avatar className="h-7 w-7">
 						<AvatarImage
 							src={User.picture}
@@ -112,7 +123,8 @@ export default ({
 						href={DashboardHref}
 						aria-label={T("user.menu.dashboard", {
 							defaultValue: "Dashboard",
-						})}>
+						})}
+					>
 						{T("user.menu.dashboard", {
 							defaultValue: "Dashboard",
 						})}
@@ -123,7 +135,8 @@ export default ({
 						href={AccountHref}
 						aria-label={T("user.menu.account", {
 							defaultValue: "Account",
-						})}>
+						})}
+					>
 						{T("user.menu.account", { defaultValue: "Account" })}
 					</a>
 				</DropdownMenuItem>
@@ -133,7 +146,8 @@ export default ({
 					onClick={Logout}
 					aria-label={T("user.menu.signOut", {
 						defaultValue: "Sign Out",
-					})}>
+					})}
+				>
 					{T("user.menu.signOut", { defaultValue: "Sign Out" })}
 				</DropdownMenuItem>
 			</DropdownMenuContent>

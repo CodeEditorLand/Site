@@ -1,10 +1,15 @@
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef } from "react";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+
 import { RichText } from "../UI/RichText.js";
+
 import { DynamicBadge } from "./DynamicBadge";
+
 import { DynamicButton } from "./DynamicButton";
+
 import type Property from "./Interface/Property/Hero.js";
 
 /**
@@ -15,19 +20,27 @@ import type Property from "./Interface/Property/Hero.js";
  */
 const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 	const SceneReference = useRef<HTMLDivElement>(null);
+
 	const SectionReference = useRef<HTMLElement>(null);
+
 	const {
 		Title,
+
 		TitleHighlight,
+
 		Subtitle,
+
 		PrimaryCta: PrimaryCTA,
+
 		SecondaryCta: SecondaryCTA,
+
 		FloatingCards: FloatingCard = [],
 		...HeroConfiguration
 	} = Content;
 
 	useEffect(() => {
 		const Scene = SceneReference.current;
+
 		// Calm/refined direction: the orbital cards stay static at their
 		// anchors instead of drifting on noise (the drift read as dated
 		// parallax). The scene keeps its layout; only the animation is off.
@@ -42,38 +55,49 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 		const CardElement =
 			Scene.querySelectorAll<HTMLElement>(".FloatingCard");
+
 		let FrameIdentifier: number;
+
 		let NoiseFunction: ((X: number, Y: number) => number) | null = null;
 
 		// Per-card lerp state - tracks current rendered position and hover
 		interface CardState {
 			CurrentX: number;
+
 			CurrentY: number;
+
 			IsHovered: boolean;
 		}
+
 		const CardStates = new Map<HTMLElement, CardState>();
 
 		const LoadNoise = async () => {
 			const { createNoise2D } = await import("simplex-noise");
+
 			// Each page load gets a new noise function → unique orbital drift
 			NoiseFunction = createNoise2D();
 
 			const StaccatoModule =
 				await import("../../Function/Noise/Staccato.js");
+
 			const Engine = await StaccatoModule.default;
 
 			CardElement.forEach((Card, Index) => {
 				Engine.SeedElement(Card, Index);
+
 				const State: CardState = {
 					CurrentX: 0,
 					CurrentY: 0,
 					IsHovered: false,
 				};
+
 				CardStates.set(Card, State);
+
 				// Hover: target lerps to (0,0) - card settles at orbital anchor
 				Card.addEventListener("mouseenter", () => {
 					State.IsHovered = true;
 				});
+
 				Card.addEventListener("mouseleave", () => {
 					State.IsHovered = false;
 				});
@@ -81,13 +105,16 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
+
 			const Attention = await AttentionModule.default;
+
 			Attention.ApplyToSelector(".FloatingCard", 6, 4);
 		};
 
 		const AnimateCards = (Time: number) => {
 			if (!NoiseFunction) {
 				FrameIdentifier = requestAnimationFrame(AnimateCards);
+
 				return;
 			}
 
@@ -97,6 +124,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 			CardElement.forEach((Card, Index) => {
 				const State = CardStates.get(Card);
+
 				if (!State) return;
 
 				// Each card uses a different noise coordinate offset (Seed)
@@ -107,12 +135,14 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				const TargetX = State.IsHovered
 					? 0
 					: NoiseFunction!(TimeFactor + Seed, Seed * 0.4) * 5;
+
 				const TargetY = State.IsHovered
 					? 0
 					: NoiseFunction!(Seed * 0.4, TimeFactor + Seed) * 3.5;
 
 				// Lerp factor 0.04 → silky smooth, no visible stepping
 				State.CurrentX += (TargetX - State.CurrentX) * 0.04;
+
 				State.CurrentY += (TargetY - State.CurrentY) * 0.04;
 
 				Card.style.transform = `translate(-50%, -50%) translate3d(${State.CurrentX.toFixed(2)}px, ${State.CurrentY.toFixed(2)}px, 0)`;
@@ -122,9 +152,12 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 		};
 
 		LoadNoise();
+
 		FrameIdentifier = requestAnimationFrame(AnimateCards);
+
 		return () => {
 			cancelAnimationFrame(FrameIdentifier);
+
 			// Remove event listeners on cleanup
 			CardElement.forEach((Card) => {
 				const Fresh: CardState = {
@@ -132,6 +165,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					CurrentY: 0,
 					IsHovered: false,
 				};
+
 				CardStates.set(Card, Fresh);
 			});
 		};
@@ -153,11 +187,13 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {
 					Event.preventDefault();
+
 					HandleHeroClick();
 				}
 			}}
 			role="button"
-			tabIndex={0}>
+			tabIndex={0}
+		>
 			{/* Cyberpunk HUD: hairline blueprint grid, dark theme only.
 			 Faint --Border-colored lines, masked to fade at the edges. */}
 			<div
@@ -214,100 +250,121 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				{/* Tech stack — modern HUD grid (static, grid-aligned, all breakpoints) */}
 				<div
 					className="mx-auto max-w-5xl px-6 py-10 lg:px-10"
-					aria-hidden="true">
+					aria-hidden="true"
+				>
 					<div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
 						{FloatingCard.map((Card, Index) => {
 							// Map card titles to appropriate icons
 							const GetIcon = () => {
 								const Title = Card.Title.toLowerCase();
+
 								if (
 									Title.includes("rust") ||
 									Title.includes("core")
 								)
 									return lucide.Cpu;
+
 								if (
 									Title.includes("tauri") ||
 									Title.includes("ui")
 								)
 									return lucide.Box;
+
 								if (
 									Title.includes("effect") ||
 									Title.includes("service")
 								)
 									return lucide.Layers;
+
 								if (
 									Title.includes("grpc") ||
 									Title.includes("ipc")
 								)
 									return lucide.Network;
+
 								if (Title.includes("extension"))
 									return lucide.Puzzle;
+
 								if (
 									Title.includes("cross") ||
 									Title.includes("platform")
 								)
 									return lucide.Globe;
+
 								if (
 									Title.includes("vs code") ||
 									Title.includes("api")
 								)
 									return lucide.Server;
+
 								if (
 									Title.includes("open") ||
 									Title.includes("source")
 								)
 									return lucide.Zap;
+
 								return lucide.Cpu; // default fallback
 							};
 
 							const IconComponent = GetIcon();
+
 							// Map card titles to Spine protocol colors
 							const GetIconColor = (): string => {
 								const Title = Card.Title.toLowerCase();
+
 								if (
 									Title.includes("rust") ||
 									Title.includes("core")
 								)
 									return "var(--SpineTCP)";
+
 								if (
 									Title.includes("tauri") ||
 									Title.includes("ui")
 								)
 									return "var(--SpineIPC)";
+
 								if (
 									Title.includes("effect") ||
 									Title.includes("service")
 								)
 									return "var(--SpineWASM)";
+
 								if (
 									Title.includes("grpc") ||
 									Title.includes("ipc")
 								)
 									return "var(--SpinegRPC)";
+
 								if (Title.includes("extension"))
 									return "var(--SpineWASM)";
+
 								if (
 									Title.includes("cross") ||
 									Title.includes("platform")
 								)
 									return "var(--SpineIPC)";
+
 								if (
 									Title.includes("vs code") ||
 									Title.includes("api")
 								)
 									return "var(--SpinegRPC)";
+
 								if (
 									Title.includes("open") ||
 									Title.includes("source")
 								)
 									return "var(--SpineTCP)";
+
 								return "var(--SpineIPC)";
 							};
 
 							return (
 								<div
 									key={Card.Id}
-									className="group relative flex items-center gap-3 border border-[var(--Border)] bg-[var(--Card)] p-4 transition-colors hover:border-[color-mix(in_srgb,var(--Foreground)_28%,transparent)] dark:hover:border-[color-mix(in_srgb,var(--Ring)_50%,transparent)]">
+									className="group relative flex items-center gap-3 border border-[var(--Border)] bg-[var(--Card)] p-4 transition-colors hover:border-[color-mix(in_srgb,var(--Foreground)_28%,transparent)] dark:hover:border-[color-mix(in_srgb,var(--Ring)_50%,transparent)]"
+								>
 									{/* Spine-accent edge bar */}
 									<span
 										aria-hidden="true"

@@ -25,7 +25,9 @@ export default class {
 
 	private StateParticle: Array<{
 		Start: number;
+
 		Duration: number;
+
 		ID?: number;
 	}> = [];
 
@@ -34,33 +36,54 @@ export default class {
 
 		Parameter: {
 			TimeNoise: number;
+
 			Seed: number;
+
 			Column: number;
+
 			Position: number;
+
 			Influence: number;
+
 			Offset: MovementDimensional;
+
 			Mouse: Mouse; // Direct value, not Accessor
+
 			Spectrum: string[];
 		},
 	) {
 		this.Element = Element;
+
 		this.TimeNoise = Parameter.TimeNoise;
+
 		this.Seed = Parameter.Seed;
+
 		this.Column = Parameter.Column;
+
 		this.Position = Parameter.Position;
+
 		this.Influence = Parameter.Influence;
+
 		this.Offset = Parameter.Offset;
+
 		this.Mouse = Parameter.Mouse;
+
 		this.Spectrum = Parameter.Spectrum;
 	}
 
 	Roll(): void {
 		this.Transform();
+
 		this.ZIndex();
+
 		this.Color();
+
 		this.Particle();
+
 		this.Shadow();
+
 		this.Opacity();
+
 		this.Transition();
 	}
 
@@ -99,13 +122,16 @@ export default class {
 				Math.floor(
 					((Layer(
 						this.TimeNoise + this.Seed,
+
 						this.Column + this.Position,
 					) +
 						1) /
 						2) *
 						10,
 				),
+
 				100,
+
 				this.Influence,
 			),
 		).toString();
@@ -129,6 +155,7 @@ export default class {
 					Math.floor(
 						(Layer(
 							this.TimeNoise + this.Seed,
+
 							this.Column + this.Position,
 						) +
 							1) *
@@ -145,6 +172,7 @@ export default class {
 					Math.floor(
 						(Layer(
 							this.TimeNoise + this.Seed,
+
 							this.Column + this.Position,
 						) +
 							1) *
@@ -169,7 +197,9 @@ export default class {
 			((Layer(this.TimeNoise + this.Seed, this.Column + 150) + 1) / 2) *
 				0.3 +
 				0.7,
+
 			1,
+
 			this.Influence,
 		).toString();
 	}
@@ -184,43 +214,61 @@ export default class {
 
 	private ParticleUpdate(
 		Particle: HTMLDivElement,
+
 		Index: number,
+
 		Color: string,
 	): void {
 		const State = this.StateParticle[Index];
+
 		const Seed = this.ParticleSeed[Index] ?? 0;
 
 		const Jiggle = (CurrentTime: number) => {
 			const Elapsed = CurrentTime - State!.Start;
+
 			const Progress = Math.min(Elapsed / State!.Duration, 1);
+
 			const TimeNoise = this.TimeNoise + Progress * Seed;
 
 			// Calculate base properties using noise
 			const Scale = Lerp(
 				0.8,
+
 				0.2,
+
 				(Layer(TimeNoise, this.Column + 300) + 1) / 2,
 			);
+
 			const Opacity = Lerp(
 				0.8,
+
 				0,
+
 				(Layer(TimeNoise, this.Column + 400) + 1) / 2,
 			);
 
 			// 3D rotations using noise
 			const XRotate = Lerp(
 				0,
+
 				360,
+
 				(Layer(TimeNoise, this.Column + 500) + 1) / 2,
 			);
+
 			const YRotate = Lerp(
 				0,
+
 				360,
+
 				(Layer(TimeNoise, this.Column + 600) + 1) / 2,
 			);
+
 			const ZRotate = Lerp(
 				0,
+
 				360,
+
 				(Layer(TimeNoise, this.Column + 700) + 1) / 2,
 			);
 
@@ -229,18 +277,24 @@ export default class {
 			if (this.Mouse.Active && this.Influence > 0) {
 				const ProgressSpiral =
 					(Progress + Index / Constant.DUST_PARTICLE_COUNT) % 1;
+
 				const HeightSpiral =
 					Constant.SPIRAL_HEIGHT *
 					this.Influence *
 					(1 - ProgressSpiral);
+
 				const RadiusSpiral = Constant.SPIRAL_RADIUS * this.Influence;
+
 				const Angle =
 					ProgressSpiral * Math.PI * 2 * Constant.SPIRAL_ROTATIONS;
+
 				const XSpiral = Math.cos(Angle) * RadiusSpiral * ProgressSpiral;
+
 				const ZSpiral = Math.sin(Angle) * RadiusSpiral * ProgressSpiral;
 
 				const XOffsetVelocity =
 					this.Mouse.Velocity * 20 * this.Influence;
+
 				const YOffsetVelocity =
 					-this.Mouse.Velocity * 15 * this.Influence;
 
@@ -277,6 +331,7 @@ export default class {
 
 			if (Progress >= 1) {
 				State!.Start = CurrentTime;
+
 				this.ParticleSeed[Index] = Math.random() * 1000;
 			}
 
@@ -286,6 +341,7 @@ export default class {
 		if (State!.ID) {
 			cancelAnimationFrame(State!.ID);
 		}
+
 		State!.ID = requestAnimationFrame(Jiggle);
 	}
 
@@ -294,20 +350,25 @@ export default class {
 			if (this.StateParticle[Index]?.ID) {
 				cancelAnimationFrame(this.StateParticle[Index].ID!);
 			}
+
 			Particle.remove();
 		});
 
 		this.Dust.length = 0;
+
 		this.StateParticle.length = 0;
 
 		this.ParticleSeed = Array.from(
 			{ length: Constant.DUST_PARTICLE_COUNT },
+
 			() => Math.random() * 1000,
 		);
 
 		for (let Index = 0; Index < Constant.DUST_PARTICLE_COUNT; Index++) {
 			const Particle = document.createElement("div");
+
 			Particle.className = "Dust";
+
 			Object.assign(Particle.style, {
 				position: "absolute",
 				pointerEvents: "none",
@@ -320,7 +381,9 @@ export default class {
 			});
 
 			this.Element.appendChild(Particle);
+
 			this.Dust.push(Particle);
+
 			this.StateParticle.push({
 				Start: performance.now(),
 				Duration: 5000000 + Math.random() * 1000,
@@ -332,5 +395,6 @@ export default class {
 // Import these lazily as they're external dependencies
 export const { default: Constant } =
 	await import("@Function/Scroll/Code/Pixel/Animation/Constant.js");
+
 export const { Layer, Lerp } =
 	await import("@Function/Scroll/Code/Pixel/Animation.js");

@@ -1,7 +1,6 @@
 ---
 title: "Why We Chose CC0 1.0 Universal for a Code Editor"
-summary:
-    "Public domain licensing, no CLA, no copyright assignment - maximum freedom."
+summary: "Public domain licensing, no CLA, no copyright assignment - maximum freedom."
 publishedAt: "2026-04-03"
 tags: ["Open Source", "Licensing", "CC0", "Community"]
 author: "CodeEditorLand"

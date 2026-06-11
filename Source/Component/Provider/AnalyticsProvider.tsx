@@ -13,11 +13,15 @@ import { GetWorkersClient } from "../../Library/WorkerClient";
 interface AnalyticsContextType {
 	track: (
 		event: string,
+
 		properties?: Record<string, unknown>,
 	) => Promise<void>;
+
 	trackPageView: (path: string, title?: string) => Promise<void>;
+
 	identify: (
 		userId: string,
+
 		traits?: Record<string, unknown>,
 	) => Promise<void>;
 }
@@ -43,6 +47,7 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 
 	const Track = async (
 		Event: string,
+
 		Properties: Record<string, unknown> = {},
 	) => {
 		if (!Client) return;
@@ -66,6 +71,7 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 
 	const Identify = async (
 		UserIdentifier: string,
+
 		Traits: Record<string, unknown> = {},
 	) => {
 		await Track("user_identified", { userId: UserIdentifier, ...Traits });
@@ -73,7 +79,9 @@ const AnalyticsProvider = ({ children }: { children: ReactNode }) => {
 
 	const Value: AnalyticsContextType = {
 		track: Track,
+
 		trackPageView: TrackPageView,
+
 		identify: Identify,
 	};
 

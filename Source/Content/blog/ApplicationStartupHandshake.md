@@ -1,6 +1,5 @@
 ---
-title:
-    "Application Startup Handshake: How Mountain, Cocoon, Sky, and Wind
+title: "Application Startup Handshake: How Mountain, Cocoon, Sky, and Wind
     Bootstrap"
 summary:
     "The complete end-to-end process from launching the native binary to a fully
@@ -38,7 +37,9 @@ The background task then runs three operations in sequence:
 - `handlers::config::InitializeConfiguration` loads all `settings.json` files
   from disk into `AppState`.
 - `ExtensionManagement` scans extension directories, reads manifests, and
-  populates the extension list in `AppState`.
+  populates the extension list in `AppState`. If a pre-baked
+  `extensions.manifest.json` is present in the bundle, this completes in under
+  50 ms; the live scan fallback takes approximately 1200 ms.
 - `vine::server::Initialize` starts the Vine gRPC server that will listen for
   connections from Cocoon.
 
@@ -78,7 +79,7 @@ back into Cocoon is 30 seconds.
 **Why this order matters.** The original bootstrap ran MountainConnection
 (connecting outward to Mountain) before starting RPCServer (Cocoon's own inbound
 server). Mountain receives the initial connection, immediately tries to call
-back into Cocoon to deliver initialization data, and times out after 20 seconds
+back into Cocoon to deliver initialization data, and times out after 30 seconds
 waiting for a server that Cocoon had not yet started. The fix reverses the stage
 order so Cocoon's inbound gRPC port is ready before it announces itself to
 Mountain.

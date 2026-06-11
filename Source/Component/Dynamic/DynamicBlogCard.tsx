@@ -7,7 +7,8 @@ const DynamicBlogCard = ({ Post }: { Post: BlogPost }) => (
 				{Post.Tags.map((Tag) => (
 					<span
 						key={Tag}
-						className="bg-muted px-2 py-0.5 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
+						className="bg-muted px-2 py-0.5 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground"
+					>
 						{Tag}
 					</span>
 				))}
@@ -27,4 +28,5 @@ const DynamicBlogCard = ({ Post }: { Post: BlogPost }) => (
 );
 
 export { DynamicBlogCard };
+
 export default DynamicBlogCard;

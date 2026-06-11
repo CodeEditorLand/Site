@@ -6,6 +6,7 @@ export default ((Value) => {
 	const Normalized = Value.trim().toLowerCase();
 
 	if (Normalized === "true" || Normalized === "1") return true;
+
 	if (Normalized === "false" || Normalized === "0") return false;
 
 	return undefined;

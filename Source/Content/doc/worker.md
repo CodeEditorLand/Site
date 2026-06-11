@@ -84,7 +84,7 @@ workbench bundle:
 
 <!-- 2. Sets window._WORKER path for Register.js -->
 <script>
-  window._WORKER = "/Worker.js";
+	window._WORKER = "/Worker.js";
 </script>
 
 <!-- 3. Registers the Service Worker at scope /Application -->
@@ -102,10 +102,10 @@ worker version without manual intervention.
 
 Worker is built with ESBuild into two output files: `Worker.js` (the Service
 Worker itself) and a small client-side `Load.js` / `Register.js` pair. The
-ESBuild configuration lives in `Source/Configuration/ESBuild/`. Worker has no
-runtime dependencies on Wind, Mountain, or the VS Code workbench - it operates
-purely at the fetch layer and is intentionally decoupled from the editor's
-service stack.
+ESBuild configuration lives in `Source/Configuration/ESBuild/`. Build output is
+written to `Element/Worker/Target/`. Worker has no runtime dependencies on Wind,
+Mountain, or the VS Code workbench - it operates purely at the fetch layer and
+is intentionally decoupled from the editor's service stack.
 
 ## Source Layout
 

@@ -2,68 +2,27 @@
 title: "Cocoon - Deep Dive"
 section: "Deep Dive"
 order: 1
-description:
-    "Internals of the Cocoon extension host: Effect-TS layer composition,
-    bootstrap stage ordering, RequireInterceptor rules, gRPC server
-    implementation, extension activation lifecycle, and the
-    showInformationMessage call path end-to-end."
+description: "Internals of the Cocoon extension host: bootstrap stage ordering,
+    RequireInterceptor rules, gRPC server implementation, extension activation
+    lifecycle, TierIPC routing, and the showInformationMessage call path
+    end-to-end."
 ---
 
 Cocoon is the Node.js extension host sidecar for Land. This page covers its
-internal mechanics in depth: how Effect-TS layers are composed, why bootstrap
-stage ordering matters, how the module interceptor works, how the Vine gRPC
-server is implemented, and how a full extension API call flows from the
-extension's code to a native OS dialog and back.
-
-## Effect-TS Layer Composition
-
-Cocoon's entire runtime is built from Effect-TS `Layer` values. A
-`Layer<R, E, A>` declares what it provides (`A`), what it requires (`R`), and
-what errors it can fail with (`E`). Composing layers gives a static dependency
-graph that the Effect runtime resolves before any code executes.
-
-`Service/Mapping.ts` defines `AppLayer` as the composition of every service
-layer in the process:
-
-```typescript
-export const AppLayer = Layer.mergeAll(
-	ApiFactoryLayer,
-	ExtensionHostLayer,
-	CommandsLayer,
-	WindowLayer,
-	WorkspaceLayer,
-	LanguagesLayer,
-	FileSystemLayer,
-	ConfigurationLayer,
-	TerminalLayer,
-	SCMLayer,
-	DebugLayer,
-	TasksLayer,
-	AuthLayer,
-	IpcLayer,
-	PlatformLayer,
-	TelemetryLayer,
-);
-```
-
-A layer that depends on `IpcLayer` but `IpcLayer` is absent is a compile-time
-type error, not a runtime crash. This property means misconfiguration of the
-service graph cannot reach production.
-
-`Bootstrap/Implementation/Cocoon/Main.ts` runs the application by providing
-`AppLayer` to the main bootstrap Effect:
-
-```typescript
-Effect.runFork(BootstrapEffect.pipe(Effect.provide(AppLayer)));
-```
+internal mechanics in depth: why bootstrap stage ordering matters, how the
+module interceptor works, how the Vine gRPC server is implemented, how
+extensions are activated in topological order, and how a full extension API
+call flows from the extension's code to a native OS dialog and back.
 
 ## Bootstrap Stage Ordering
 
-`Effect/Bootstrap.ts` runs five ordered stages. The ordering is not arbitrary:
-Mountain starts attempting to connect to Cocoon's gRPC server immediately after
-spawning the process, within a 30-second budget (3 probe attempts, then 5
-connection retries). If Cocoon starts its gRPC server after Mountain's budget
-expires, the connection fails and Mountain logs a fatal error.
+Cocoon's bootstrap is plain `async`/`await` - there is no Effect-TS runtime
+overhead in the startup path. `Effect/Bootstrap.ts` runs five ordered stages.
+The ordering is not arbitrary: Mountain starts attempting to connect to
+Cocoon's gRPC server immediately after spawning the process, within a
+30-second budget (3 probe attempts, then 5 connection retries). If Cocoon
+starts its gRPC server after Mountain's budget expires, the connection fails
+and Mountain logs a fatal error.
 
 The correct order:
 
@@ -77,7 +36,7 @@ Stage 2: Module interceptor
   Safe to do before any VS Code code is loaded.
 
 Stage 3: MountainConnection
-  Connect Cocoon's gRPC client to Mountain's Vine server (port 50052).
+  Connect Cocoon's gRPC client to Mountain's Vine server (port 50051).
   Send $initialHandshake notification.
   Await initExtensionHost with InitData payload.
 

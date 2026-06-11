@@ -6,8 +6,10 @@ import { describe, expect, it } from "vitest";
 
 const RunRedirect = async (
 	CurrentPath: string,
+
 	RouteMapData: {
 		Canonical: string[];
+
 		Variant: Record<string, string>;
 	} | null,
 ): Promise<string | null> => {
@@ -53,24 +55,41 @@ const RunRedirect = async (
 const TestRouteMap = {
 	Canonical: [
 		"/",
+
 		"/Download",
+
 		"/Doc",
+
 		"/Blog",
+
 		"/Account/SignIn",
+
 		"/Portal",
+
 		"/Legal/Term",
 	],
+
 	Variant: {
 		"/downloads": "/Download",
+
 		"/download": "/Download",
+
 		"/docs": "/Doc",
+
 		"/blog": "/Blog",
+
 		"/account/signin": "/Account/SignIn",
+
 		"/login": "/Account/SignIn",
+
 		"/portal": "/Portal",
+
 		"/install": "/Download",
+
 		"/legal/terms": "/Legal/Term",
+
 		"/DOWNLOADS": "/Download",
+
 		"/accountsignin": "/Account/SignIn",
 	} as Record<string, string>,
 };
@@ -82,14 +101,19 @@ describe("RedirectFromRouteMap logic", () => {
 
 	it("does not redirect canonical PascalCase paths", async () => {
 		expect(await RunRedirect("/Download", TestRouteMap)).toBeNull();
+
 		expect(await RunRedirect("/Doc", TestRouteMap)).toBeNull();
+
 		expect(await RunRedirect("/Blog", TestRouteMap)).toBeNull();
+
 		expect(await RunRedirect("/Account/SignIn", TestRouteMap)).toBeNull();
 	});
 
 	it("redirects lowercase built paths to PascalCase", async () => {
 		expect(await RunRedirect("/downloads", TestRouteMap)).toBe("/Download");
+
 		expect(await RunRedirect("/docs", TestRouteMap)).toBe("/Doc");
+
 		expect(await RunRedirect("/blog", TestRouteMap)).toBe("/Blog");
 	});
 
@@ -97,6 +121,7 @@ describe("RedirectFromRouteMap logic", () => {
 		expect(await RunRedirect("/login", TestRouteMap)).toBe(
 			"/Account/SignIn",
 		);
+
 		expect(await RunRedirect("/install", TestRouteMap)).toBe("/Download");
 	});
 
@@ -116,6 +141,7 @@ describe("RedirectFromRouteMap logic", () => {
 
 	it("returns null for unknown paths", async () => {
 		expect(await RunRedirect("/nonexistent", TestRouteMap)).toBeNull();
+
 		expect(await RunRedirect("/some/random/path", TestRouteMap)).toBeNull();
 	});
 

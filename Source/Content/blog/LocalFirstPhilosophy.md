@@ -50,6 +50,10 @@ Here is what works right now without any network dependency:
 
 - `Mountain` provides native-speed file I/O, process management (PTY for
   integrated terminal), clipboard access, search, and configuration persistence.
+  Extension workspace state and global state are stored via `Mountain`'s
+  `storage:get` / `storage:set` IPC handlers. Extension secrets are encrypted
+  with AES-256-GCM using a machine-stable key derived from the hardware UUID;
+  nothing is ever written to disk in plaintext.
 - `Cocoon` activates extensions from disk. The `vscode` API object is built with
   Effect-TS, with privileged calls proxied to `Mountain` via gRPC.
 - `Wind` runs the workbench services in the Tauri WebView, routing UI requests

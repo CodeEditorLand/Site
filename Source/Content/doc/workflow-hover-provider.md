@@ -91,6 +91,33 @@ requests to the correct sidecar.
 14. Monaco renders the tooltip widget on screen. The user sees the "Hello World"
     hover card.
 
+## Resolve methods
+
+Two-phase providers return a partial result from `$provide*` and then expect a
+`$resolve*` call to fill in expensive-to-compute fields. The following resolve
+methods are fully routed through `FeatureMethods.rs` via the same
+`InvokeLanguageProvider` dispatch path as `$provideHover` and return results to
+the caller rather than being dropped:
+
+- `$resolveCodeAction`
+- `$resolveCompletionItem`
+- `$resolveHover`
+- `$resolveInlayHint`
+- `$resolveDocumentLink`
+- `$resolveWorkspaceSymbol`
+
+## Inline completions
+
+The same gRPC dispatch path handles inline completion providers (used by Copilot
+and similar tools). When an extension calls
+`vscode.languages.registerInlineCompletionItemProvider()`, the handle is stored
+in `AppState.LanguageProviders` under the `InlineCompletion` type. Sky registers
+the provider with `ILanguageFeaturesService.inlineCompletionsProvider` via the
+`sky://language/register-inline-completions` bridge channel. When the editor
+requests completions, Mountain routes `language:provideInlineCompletions` through
+the same `LanguageFeatureProviderRegistry` trait and gRPC path as hover,
+returning `InlineCompletionItem[]` to the editor.
+
 > [!IMPORTANT] The same registration and dispatch pattern applies to every
 > language feature (`$registerCompletionItemProvider`,
 > `$registerDefinitionProvider`, etc.). The only difference is the gRPC method

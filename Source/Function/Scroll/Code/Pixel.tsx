@@ -1,4 +1,5 @@
 import type { PixelProps } from "@Function/Scroll/Type.js";
+
 import { useEffect, useRef } from "react";
 
 // Import dependencies
@@ -13,6 +14,7 @@ let Dimensional: any,
 const InitDimensional = async () => {
 	// @ts-ignore
 	const Module = await import("@Function/Scroll/Code/Pixel/Dimensional.js");
+
 	return Module.default;
 };
 
@@ -20,6 +22,7 @@ const InitDimensional = async () => {
 const InitStyle = async () => {
 	// @ts-ignore
 	const Module = await import("@Function/Scroll/Code/Pixel/Style.js");
+
 	return Module.default;
 };
 
@@ -27,6 +30,7 @@ const InitStyle = async () => {
 const InitAnimation = async () => {
 	// @ts-ignore
 	const Module = await import("@Function/Scroll/Code/Pixel/Animation.js");
+
 	return Module;
 };
 
@@ -35,6 +39,7 @@ const InitConstant = async () => {
 	// @ts-ignore
 	const Module =
 		await import("@Function/Scroll/Code/Pixel/Animation/Constant.js");
+
 	return Module.default;
 };
 
@@ -51,7 +56,9 @@ const Pixel = ({
 	Column,
 }: PixelProps) => {
 	const ElementReference = useRef<HTMLDivElement>(null);
+
 	const Position = Character % Text;
+
 	const Seed = Position * 0.1 + Row * 0.05 + Column * 0.02;
 
 	useEffect(() => {
@@ -59,20 +66,28 @@ const Pixel = ({
 		const InitializeAndApply = async () => {
 			if (!Dimensional) {
 				Dimensional = await InitDimensional();
+
 				Style = await InitStyle();
+
 				const Animation = await InitAnimation();
+
 				Noise = Animation.Noise;
+
 				Spectrum = Animation.Spectrum;
+
 				Constant = await InitConstant();
+
 				ALL_COLORS = Spectrum(Constant.COLOR_STEPS);
 			}
 
 			const Element = ElementReference.current;
+
 			if (!(Show && Element && Container)) {
 				return;
 			}
 
 			const MouseValue = Mouse;
+
 			new Style(Element, {
 				TimeNoise:
 					Position * 0.1 +
@@ -86,8 +101,11 @@ const Pixel = ({
 				Influence: 0,
 				Offset: new Dimensional(
 					CurrentTime,
+
 					Seed,
+
 					MouseValue,
+
 					1,
 				).Calculate(1, 1),
 				Mouse: MouseValue, // Pass the direct value, not the accessor
@@ -98,13 +116,21 @@ const Pixel = ({
 		InitializeAndApply();
 	}, [
 		Show,
+
 		Container,
+
 		CurrentTime,
+
 		Mouse,
+
 		Position,
+
 		Seed,
+
 		Character,
+
 		Text,
+
 		Font,
 	]);
 

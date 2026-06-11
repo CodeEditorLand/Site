@@ -99,3 +99,8 @@ Grove-specific proto definitions. It is compiled as an optional feature flag
 (`--features grove`) and is not enabled in the default build. Budget controls
 (memory ceilings, CPU time limits) are implemented in the source but have not
 been validated in the active build profile.
+
+Cocoon (Node.js) remains the default extension host for all VS Code-compatible
+extensions. Grove's Wasmtime sandbox is available for extensions explicitly
+targeting the WASM/WASI ABI via the Grove API. The two hosts run concurrently
+when Grove is enabled; enabling Grove does not affect the Cocoon path.

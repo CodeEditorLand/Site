@@ -216,6 +216,31 @@ This split allows the browser to load the critical rendering path (workbench
 shell + Monaco core) before language grammars and extension host are parsed,
 which improves first-paint timing.
 
+In development builds, `astro.config.ts` sets `sourcemap: "inline"` so the
+profiler and DevTools can resolve Sky source locations within the bundled
+workbench output.
+
+## Terminal Shell Integration (OSC 633)
+
+Sky's terminal component parses OSC 633 escape sequences emitted by
+shell-integration scripts. These sequences mark command boundaries and
+execution state so the terminal can decorate prompts and provide
+command-aware navigation.
+
+| Sequence    | Meaning                              | Action                                    |
+| ----------- | ------------------------------------ | ----------------------------------------- |
+| `OSC 633;A` | Prompt start                         | Marks the start of a shell prompt line    |
+| `OSC 633;B` | Prompt end / command start           | Marks where the user's input begins       |
+| `OSC 633;C` | Command executed                     | Shell has accepted and started a command  |
+| `OSC 633;D` | Command finished (optional exitcode) | Command completed; emits `shell:executed` |
+| `OSC 633;E` | Explicit command line value          | Provides the verbatim command text        |
+
+When `OSC 633;D` is received, Sky emits a `sky://terminal/shell-executed`
+event through Mountain to Cocoon. This fires
+`vscode.window.onDidEndTerminalShellExecution` for extensions that watch
+terminal activity, and populates the terminal's command history for
+shell-aware scrollback navigation.
+
 ## sky:// Event Catalog
 
 The full `sky://` event URI registry, kept in lockstep between

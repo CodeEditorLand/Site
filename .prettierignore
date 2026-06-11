@@ -1,0 +1,33 @@
+# .astro files require prettier-plugin-astro.
+# Remove this line after: pnpm add -D prettier-plugin-astro
+**/*.astro
+
+# Build output
+Target/
+.astro/
+dist/
+docs/
+
+# Dependencies
+node_modules/
+
+# Caches
+.cache/
+.turbo/
+.swc/
+.parcel-cache/
+.eslintcache/
+
+# Generated assets - binary / pre-compressed
+Public/Asset/
+*.min.js
+*.min.css
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Editor metadata
+.vscode/
+.idea/

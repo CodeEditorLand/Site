@@ -2,8 +2,7 @@
 title: "Running Extension Tests"
 section: "Workflows"
 order: 9
-description:
-    "How the Extension Development Host model spawns a second isolated
+description: "How the Extension Development Host model spawns a second isolated
     Mountain+Cocoon pair and lets the test runner remote-control the main editor
     window."
 ---

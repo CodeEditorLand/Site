@@ -127,6 +127,11 @@ The Telemetry bridge (`Source/Telemetry/Bridge.ts`) is bundled into `Worker.js`
 and uses `fetch()` to report errors to PostHog from within the worker context,
 since Service Workers have no access to `window` or the page's PostHog instance.
 
+Worker is compiled via ESBuild and registered by Sky at workbench boot. Build
+output lands in `Element/Worker/Target/`. The Sky layout references the compiled
+`Worker.js` path via `window._WORKER` before `Register.js` loads, ensuring the
+Service Worker is registered as early as possible in the page lifecycle.
+
 ## Service Worker Lifecycle Stages
 
 The full lifecycle from first install to active caching:

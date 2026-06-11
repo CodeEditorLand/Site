@@ -18,7 +18,9 @@ export const GET: APIRoute = async () => {
 
 	const Svg = GenerateOpenGraphSvg(
 		Meta.Title,
+
 		Meta.Description,
+
 		Meta.Section,
 	);
 

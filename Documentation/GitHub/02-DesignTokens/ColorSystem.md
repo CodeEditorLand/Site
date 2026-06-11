@@ -289,16 +289,16 @@ surface tokens to the cyberpunk-HUD palette.
 
 ### 18.1 Surface remapping
 
-| Token          | Light value   | Dark override        |
-| -------------- | ------------- | -------------------- |
-| `--Background` | `#ffffff`     | `#0a0a0a` (near-black canvas) |
-| `--Foreground` | `#1a1a1a`     | `#e4e4e7`            |
-| `--Card`       | `#ffffff`     | `#111113`            |
-| `--CardForeground` | `#1a1a1a` | `#e4e4e7`            |
-| `--Border`     | `rgba(0,0,0,0.08)` | `rgba(255,255,255,0.08)` |
-| `--Mute`       | `#fafafa`     | `#18181b`            |
-| `--MuteForeground` | `#71717a`  | `#71717a`            |
-| `--Secondary`  | `#f4f4f5`     | `#1c1c1f`            |
+| Token              | Light value        | Dark override                 |
+| ------------------ | ------------------ | ----------------------------- |
+| `--Background`     | `#ffffff`          | `#0a0a0a` (near-black canvas) |
+| `--Foreground`     | `#1a1a1a`          | `#e4e4e7`                     |
+| `--Card`           | `#ffffff`          | `#111113`                     |
+| `--CardForeground` | `#1a1a1a`          | `#e4e4e7`                     |
+| `--Border`         | `rgba(0,0,0,0.08)` | `rgba(255,255,255,0.08)`      |
+| `--Mute`           | `#fafafa`          | `#18181b`                     |
+| `--MuteForeground` | `#71717a`          | `#71717a`                     |
+| `--Secondary`      | `#f4f4f5`          | `#1c1c1f`                     |
 
 ### 18.2 Spine / protocol colors in dark mode
 

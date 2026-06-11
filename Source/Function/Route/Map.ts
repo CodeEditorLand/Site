@@ -13,21 +13,37 @@ const { join: Join, relative: Relative } = await import("node:path");
 
 export const CanonicalPath: Set<string> = new Set([
 	"/Download",
+
 	"/Doc",
+
 	"/Blog",
+
 	"/Portal",
+
 	"/Dashboard",
+
 	"/Contributing",
+
 	"/License",
+
 	"/Verify",
+
 	"/Contact/Sale",
+
 	"/Account",
+
 	"/Account/SignIn",
+
 	"/Account/SignUp",
+
 	"/Account/ForgotPassword",
+
 	"/Account/ResetPassword",
+
 	"/Legal/Term",
+
 	"/Legal/Privacy",
+
 	"/OAuth/Success",
 ]);
 
@@ -38,6 +54,7 @@ export const CanonicalPath: Set<string> = new Set([
 export const PascalCaseCanonical: Record<string, string> = Object.fromEntries(
 	[...CanonicalPath].map((PascalPath) => [
 		PascalPath.toLowerCase(),
+
 		PascalPath,
 	]),
 );
@@ -48,96 +65,171 @@ export const PascalCaseCanonical: Record<string, string> = Object.fromEntries(
 export const SemanticAlias: Record<string, string> = {
 	// Download
 	"/downloads": "/Download",
+
 	"/down": "/Download",
+
 	"/get": "/Download",
+
 	"/fetch": "/Download",
+
 	"/install": "/Download",
+
 	"/setup": "/Download",
+
 	// Doc
 	"/documentation": "/Doc",
+
 	"/reference": "/Doc",
+
 	"/help": "/Doc",
+
 	"/guide": "/Doc",
+
 	"/manual": "/Doc",
+
 	"/api": "/Doc",
+
 	// Auth - SignIn
 	"/login": "/Account/SignIn",
+
 	"/log-in": "/Account/SignIn",
+
 	"/sign-in": "/Account/SignIn",
+
 	"/authenticate": "/Account/SignIn",
+
 	"/auth": "/Account/SignIn",
+
 	// Auth - SignUp
 	"/register": "/Account/SignUp",
+
 	"/sign-up": "/Account/SignUp",
+
 	"/join": "/Account/SignUp",
+
 	"/create-account": "/Account/SignUp",
+
 	// Auth - ForgotPassword
 	"/forgot-password": "/Account/ForgotPassword",
+
 	"/forgot": "/Account/ForgotPassword",
+
 	"/password-reset": "/Account/ForgotPassword",
+
 	"/recover": "/Account/ForgotPassword",
+
 	"/recover-password": "/Account/ForgotPassword",
+
 	// Auth - ResetPassword
 	"/reset-password": "/Account/ResetPassword",
+
 	"/reset": "/Account/ResetPassword",
+
 	"/new-password": "/Account/ResetPassword",
+
 	"/change-password": "/Account/ResetPassword",
+
 	// Legal - Term
 	"/tos": "/Legal/Term",
+
 	"/terms-of-service": "/Legal/Term",
+
 	"/eula": "/Legal/Term",
+
 	"/conditions": "/Legal/Term",
+
 	// Legal - Privacy
 	"/privacy-policy": "/Legal/Privacy",
+
 	"/gdpr": "/Legal/Privacy",
+
 	"/data-policy": "/Legal/Privacy",
+
 	// Contact
 	"/sale": "/Contact/Sale",
+
 	"/sales-contact": "/Contact/Sale",
+
 	"/contact-sales": "/Contact/Sale",
+
 	"/pricing": "/Contact/Sale",
+
 	"/enterprise": "/Contact/Sale",
+
 	"/buy": "/Contact/Sale",
+
 	// Contributing
 	"/contribute": "/Contributing",
+
 	"/contributors": "/Contributing",
+
 	"/dev": "/Contributing",
+
 	"/develop": "/Contributing",
+
 	"/opensource": "/Contributing",
+
 	"/open-source": "/Contributing",
+
 	// Home - also catches /Visit when SW is active (skips the dispatch page)
 	"/home": "/",
+
 	"/main": "/",
+
 	"/index": "/",
+
 	"/start": "/",
+
 	"/welcome": "/",
+
 	"/visit": "/",
+
 	// Verify
 	"/verify-email": "/Verify",
+
 	"/email-verification": "/Verify",
+
 	"/confirm": "/Verify",
+
 	"/confirm-email": "/Verify",
+
 	"/activate": "/Verify",
+
 	// Portal
 	"/app": "/Portal",
+
 	"/launch": "/Portal",
+
 	"/open": "/Portal",
+
 	// Dashboard
 	"/panel": "/Dashboard",
+
 	"/admin": "/Dashboard",
+
 	"/overview": "/Dashboard",
+
 	// License
 	"/mit": "/License",
+
 	"/licensing": "/License",
+
 	// Blog
 	"/news": "/Blog",
+
 	"/articles": "/Blog",
+
 	"/posts": "/Blog",
+
 	"/updates": "/Blog",
+
 	"/changelog": "/Blog",
+
 	// OAuth
 	"/callback": "/OAuth/Success",
+
 	"/oauth-callback": "/OAuth/Success",
+
 	"/auth-callback": "/OAuth/Success",
 };
 
@@ -157,7 +249,9 @@ export const SemanticAlias: Record<string, string> = {
 // Case variants for one segment: lower, UPPER, PascalCase, TitleCase
 const SegmentCases = (Segment: string): string[] => {
 	const Lower = Segment.toLowerCase();
+
 	const Upper = Segment.toUpperCase();
+
 	const Title =
 		Segment.charAt(0).toUpperCase() + Segment.slice(1).toLowerCase();
 
@@ -201,10 +295,12 @@ export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 	if (CanonicalPath === "/") return [];
 
 	const Segments = CanonicalPath.slice(1).split("/");
+
 	const Result = new Set<string>();
 
 	if (Segments.length === 1) {
 		const Seg = Segments[0]!;
+
 		const Lower = Seg.toLowerCase();
 
 		// lowercase, UPPERCASE, TitleCase
@@ -213,6 +309,7 @@ export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 		// singular/plural of the lowercase form
 		for (const N of SegmentNumber(Lower)) {
 			Result.add("/" + N);
+
 			Result.add("/" + N.toUpperCase());
 		}
 
@@ -223,6 +320,7 @@ export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 
 		// Full lowercase - most important
 		Result.add("/" + LowerSegs.join("/"));
+
 		// Full UPPERCASE
 		Result.add("/" + Segments.map((S) => S.toUpperCase()).join("/"));
 
@@ -233,21 +331,27 @@ export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 			// case variants of this segment
 			for (const C of SegmentCases(Seg)) {
 				const Parts = [...LowerSegs];
+
 				Parts[I] = C;
+
 				Result.add("/" + Parts.join("/"));
 			}
 
 			// compound variants (kebab etc.) for this segment
 			for (const V of SegmentCompound(Seg)) {
 				const Parts = [...LowerSegs];
+
 				Parts[I] = V;
+
 				Result.add("/" + Parts.join("/"));
 			}
 		}
 
 		// Flat forms: /accountsignin, /account-signin, /account_signin
 		Result.add("/" + LowerSegs.join(""));
+
 		Result.add("/" + LowerSegs.join("-"));
+
 		Result.add("/" + LowerSegs.join("_"));
 	}
 
@@ -311,6 +415,7 @@ const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
 
 	for (const Built of BuiltPath) {
 		if (Built === "/") continue;
+
 		if (Built === "/404") continue;
 
 		if (CanonicalPath.has(Built)) {
@@ -331,14 +436,18 @@ const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
 	for (const [Alias, Target] of Object.entries(SemanticAlias)) {
 		if (Canonical.includes(Target) || Target === "/") {
 			Variant[Alias] = Target;
+
 			Variant[Alias + "/"] = Target;
 		}
 	}
 
 	return {
 		Version: 1,
+
 		Generated: new Date().toISOString(),
+
 		Canonical,
+
 		Variant,
 	};
 };

@@ -13,6 +13,11 @@ description:
 > active. Grove is not enabled in the default build profile. Cocoon remains the
 > active extension host for all existing VS Code extensions.
 
+> [!NOTE] Grove is implemented and available but Cocoon (Node.js) remains the
+> default extension host. WASM extensions targeting Grove can use the WASMtime
+> sandbox today via `cargo build -p Mountain --features grove`. Full VS Code API
+> surface coverage and the Component Model migration are planned future work.
+
 Grove provides a Wasmtime-backed WebAssembly sandbox as an alternative extension
 host alongside Cocoon. This page covers the Wasmtime integration approach, the
 ABI bridge between Rust host code and WASM guest modules, the planned API

@@ -1,10 +1,13 @@
 "use client";
 
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
+
 import { type VariantProps } from "class-variance-authority";
+
 import * as React from "react";
 
 import { ToggleVariants } from "./Toggle";
+
 import { cn } from "./Utility";
 
 const ToggleGroupContext = React.createContext<
@@ -31,7 +34,8 @@ function ToggleGroup({
 				"group/toggle-group flex w-fit items-center rounded-none",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<ToggleGroupContext.Provider value={{ variant, size }}>
 				{children}
 			</ToggleGroupContext.Provider>
@@ -62,7 +66,8 @@ function ToggleGroupItem({
 				"min-w-0 flex-1 shrink-0 rounded-none shadow-none first:rounded-none last:rounded-none focus:z-10 focus-visible:z-10 data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			{children}
 		</ToggleGroupPrimitive.Item>
 	);

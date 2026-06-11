@@ -1,10 +1,15 @@
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+
 import { RichText } from "../UI/RichText.js";
+
 import { DynamicButton } from "./DynamicButton.js";
+
 // RichText is used with Terms={true} throughout so element names, tool names,
 // protocols, and licenses are auto-badged with logos from the term dictionary.
 import type Property from "./Interface/Property/Pricing.js";
@@ -15,24 +20,39 @@ import type Property from "./Interface/Property/Pricing.js";
  */
 const ElementColorMap: Record<string, string> = {
 	Mountain: "var(--ExtensionRust)",
+
 	Cocoon: "var(--ExtensionEffectTypeScript)",
+
 	Wind: "var(--LanguageTypeScript)",
+
 	Sky: "var(--ExtensionAstro)",
+
 	Air: "var(--ExtensionTauri)",
+
 	Echo: "var(--SpineTCP)",
+
 	Common: "var(--LanguageRust)",
+
 	Vine: "var(--SpinegRPC)",
+
 	Grove: "var(--SpineWASM)",
+
 	Mist: "var(--SpineIPC)",
+
 	Rest: "var(--ToolOxc)",
+
 	Output: "var(--ToolEsBuild)",
+
 	SideCar: "var(--RuntimeNode)",
+
 	Worker: "var(--LanguageJavaScript)",
+
 	Maintain: "var(--ToolBiome)",
 };
 
 const GetElementColor = (Line: string): string => {
 	const Name = Line.split(/[\s\u2001]/)[0];
+
 	return ElementColorMap[Name] ?? "var(--Primary)";
 };
 
@@ -45,13 +65,20 @@ const GetElementColor = (Line: string): string => {
  */
 const DynamicPricing = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation("home");
+
 	const GridReference = useRef<HTMLDivElement>(null);
+
 	const {
 		Title,
+
 		Subtitle,
+
 		Tiers,
+
 		ShowMonthlyYearlyToggle = false,
+
 		DefaultYearly = false,
+
 		Labels = {},
 	} = Content;
 
@@ -63,20 +90,28 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 
 	useEffect(() => {
 		const Grid = GridReference.current;
+
 		if (!Grid) return;
+
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
+
 		const ApplyScatter = async () => {
 			const AttentionModule =
 				await import("../../Function/Noise/Attention.js");
+
 			const Attention = await AttentionModule.default;
+
 			const Cards = Grid.querySelectorAll<HTMLElement>(".PricingCard");
+
 			Cards.forEach((Card, Index) => {
 				Attention.ApplyToElement(Card, Index, 4, 3);
 			});
 		};
+
 		ApplyScatter();
 	}, [Tiers]);
 
@@ -89,7 +124,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 		<section
 			id="pricing"
 			aria-labelledby="PricingHeading"
-			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}
+		>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
@@ -102,10 +138,12 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 						{Title && (
 							<h2
 								id="PricingHeading"
-								className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
+								className="font-serif text-4xl font-normal tracking-tight sm:text-5xl"
+							>
 								{Title}
 							</h2>
 						)}
+
 						{Subtitle && (
 							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
@@ -116,7 +154,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-4xl grid-cols-1 gap-12 md:grid-cols-2">
+					className="mx-auto grid max-w-4xl grid-cols-1 gap-12 md:grid-cols-2"
+				>
 					{DisplayTier.map((Tier) => (
 						<div
 							key={Tier.Id}
@@ -131,7 +170,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								Tier.Status && Tier.Status !== "Ready"
 									? true
 									: undefined
-							}>
+							}
+						>
 							{/* ── Card header ───────────────────────────── */}
 							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
@@ -143,7 +183,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 												color: "var(--SpinegRPCFore)",
 												backgroundColor:
 													"var(--SpinegRPCMute)",
-											}}>
+											}}
+										>
 											<span
 												className="StaccatoRhythmDot mr-1.5 h-1.5 w-1.5 rounded-none"
 												style={{
@@ -196,14 +237,19 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 												(Element, Index) => {
 													const Parts =
 														Element.split("\n");
+
 													const NameLine =
 														Parts[0] ?? "";
+
 													const Sub1 = Parts[1];
+
 													const Sub2 = Parts[2];
+
 													const AccentColor =
 														GetElementColor(
 															NameLine,
 														);
+
 													return (
 														<li
 															key={Index}
@@ -213,12 +259,14 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																	"Ready"
 																	? "opacity-70"
 																	: ""
-															}`}>
+															}`}
+														>
 															<span
 																className="font-mono text-sm font-semibold"
 																style={{
 																	color: AccentColor,
-																}}>
+																}}
+															>
 																<RichText
 																	Text={
 																		NameLine
@@ -270,6 +318,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 													Roadmap
 												</p>
 											)}
+
 										<ul className="space-y-3">
 											{Tier.Features.map(
 												(Feature, FeatureIndex) => (
@@ -281,7 +330,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																"Ready"
 																? "opacity-70"
 																: ""
-														}`}>
+														}`}
+													>
 														<span className="min-w-0 flex-1">
 															<RichText
 																Text={Feature}

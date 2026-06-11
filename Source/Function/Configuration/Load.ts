@@ -3,6 +3,7 @@ import type Interface from "./Interface/Load.js";
 export default (async () => {
 	const FilePath = (await import("node:path")).resolve(
 		import.meta.dirname ?? process.cwd(),
+
 		"../../../Configuration.json",
 	);
 
@@ -27,6 +28,7 @@ export default (async () => {
 	if (!Result.success) {
 		console.warn(
 			"[Configuration] Configuration.json validation failed:",
+
 			Result.error.format(),
 		);
 

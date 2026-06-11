@@ -6,7 +6,9 @@ import {
 	SwitchLocale,
 	type SupportedLocale,
 } from "@/Library/I18n/Client.js";
+
 import { ChevronDown } from "lucide-react";
+
 import { useTranslation } from "react-i18next";
 
 import {
@@ -45,7 +47,9 @@ const LocaleSwitcher = () => {
 
 		// Pin the main content height to prevent CLS from text-length changes
 		const MainContent = document.getElementById("main-content");
+
 		const PreviousMinHeight = MainContent?.style.minHeight ?? "";
+
 		if (MainContent) {
 			MainContent.style.minHeight = `${MainContent.offsetHeight}px`;
 		}
@@ -55,10 +59,14 @@ const LocaleSwitcher = () => {
 				window.scrollTo({ top: ScrollY, behavior: "instant" });
 			}
 		};
+
 		window.addEventListener("scroll", Guard, { passive: true });
+
 		const ReleasePinnedLayout = () => {
 			window.removeEventListener("scroll", Guard);
+
 			window.scrollTo({ top: ScrollY, behavior: "instant" });
+
 			if (MainContent) {
 				MainContent.style.minHeight = PreviousMinHeight;
 			}
@@ -79,7 +87,8 @@ const LocaleSwitcher = () => {
 		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger
 				className="flex h-9 items-center gap-1.5 rounded-md bg-card px-3 font-medium text-[var(--Foreground)] outline-none ring-offset-white hover:bg-[var(--Mute)] focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-[var(--Mute)]"
-				aria-label="Select language">
+				aria-label="Select language"
+			>
 				<span>{LocaleLabel[CurrentLocale]}</span>
 				<ChevronDown
 					size={14}
@@ -95,7 +104,8 @@ const LocaleSwitcher = () => {
 							Locale === CurrentLocale
 								? "font-semibold text-[var(--Foreground)]"
 								: "text-[var(--MuteForeground)]"
-						}>
+						}
+					>
 						{LocaleLabel[Locale]}
 					</DropdownMenuItem>
 				))}
@@ -105,4 +115,5 @@ const LocaleSwitcher = () => {
 };
 
 export { LocaleSwitcher };
+
 export default LocaleSwitcher;

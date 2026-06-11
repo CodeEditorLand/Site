@@ -1,6 +1,7 @@
 "use client";
 
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+
 import * as React from "react";
 
 import { cn } from "./Utility";
@@ -14,10 +15,12 @@ function ScrollArea({
 		<ScrollAreaPrimitive.Root
 			data-slot="scroll-area"
 			className={cn("relative", className)}
-			{...props}>
+			{...props}
+		>
 			<ScrollAreaPrimitive.Viewport
 				data-slot="scroll-area-viewport"
-				className="focus-visible:ring-ring/50 size-full rounded-[inherit] outline-none transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px]">
+				className="focus-visible:ring-ring/50 size-full rounded-[inherit] outline-none transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px]"
+			>
 				{children}
 			</ScrollAreaPrimitive.Viewport>
 			<ScrollBar />
@@ -43,7 +46,8 @@ function ScrollBar({
 					"h-2.5 flex-col border-t border-t-transparent",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<ScrollAreaPrimitive.ScrollAreaThumb
 				data-slot="scroll-area-thumb"
 				className="relative flex-1 rounded-none bg-border"

@@ -6,55 +6,82 @@
  * details. Content is driven by the Transparency interface.
  */
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef } from "react";
 
 import { Badge } from "../UI/Badge";
+
 import { RichText } from "../UI/RichText";
+
 import type Property from "./Interface/Property/Transparency.js";
 
 const TransparencyIconRegistry: Record<string, lucide.LucideIcon> = {
 	Shield: lucide.Shield,
+
 	Eye: lucide.Eye,
+
 	EyeOff: lucide.EyeOff,
+
 	Lock: lucide.Lock,
+
 	Server: lucide.Server,
+
 	Cpu: lucide.Cpu,
+
 	Code: lucide.Code,
+
 	Layers: lucide.Layers,
+
 	Zap: lucide.Zap,
 };
 
 const StatusColor: Record<string, string> = {
 	Active: "bg-green-500",
+
 	Disabled: "bg-green-500",
+
 	Optional: "bg-yellow-500",
+
 	Recommended: "bg-blue-500",
 };
 
 const StatusBadgeVariant: Record<string, "default" | "secondary" | "outline"> =
 	{
 		Active: "default",
+
 		Disabled: "secondary",
+
 		Optional: "outline",
+
 		Recommended: "default",
 	};
 
 const VariantStatusColor: Record<string, string> = {
 	Recommended: "bg-blue-500",
+
 	Available: "bg-green-500",
+
 	Legacy: "bg-yellow-500",
+
 	Experimental: "bg-purple-500",
+
 	Development: "bg-orange-500",
 };
 
 const DynamicTransparency = ({ Content, ClassName }: Property) => {
 	const {
 		Title,
+
 		Subtitle,
+
 		Policy,
+
 		Variant,
+
 		Strategy,
+
 		MatrixPermutation,
+
 		SourceURL,
 	} = Content;
 
@@ -62,17 +89,21 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 	useEffect(() => {
 		const Section = SectionReference.current;
+
 		if (!Section) return;
 
 		const ReducedMotion = window.matchMedia(
 			"(prefers-reduced-motion: reduce)",
 		).matches;
+
 		if (ReducedMotion) return;
 
 		const ApplyNoise = async () => {
 			const StaccatoModule =
 				await import("../../Function/Noise/Staccato.js");
+
 			const Engine = await StaccatoModule.default;
+
 			Engine.SeedSelector(".TransparencyCard");
 		};
 
@@ -87,7 +118,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 		<section
 			id="Transparency"
 			aria-label="Build Transparency"
-			className={`w-full py-20 ${ClassName || ""}`}>
+			className={`w-full py-20 ${ClassName || ""}`}
+		>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="StaccatoBreath mb-16 text-center">
@@ -96,6 +128,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 								{Title}
 							</h2>
 						)}
+
 						{Subtitle && (
 							<div className="mx-auto max-w-3xl text-lg text-muted-foreground">
 								<RichText Text={Subtitle} />
@@ -116,10 +149,12 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{Policy.map((Item) => {
 							const Icon = GetIcon(Item.Icon);
+
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6">
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6"
+								>
 									<div className="flex items-start justify-between">
 										<h4 className="font-mono text-sm font-semibold">
 											{Item.Title}
@@ -131,7 +166,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 														Item.Status
 													]
 												}
-												className="StaccatoBadge">
+												className="StaccatoBadge"
+											>
 												{Item.Status}
 												{"\u2001"}
 												<span
@@ -142,7 +178,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											{Icon && (
 												<div
 													className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-secondary"
-													aria-hidden="true">
+													aria-hidden="true"
+												>
 													<Icon
 														className="StaccatoIcon h-5 w-5 text-primary"
 														aria-hidden="true"
@@ -203,14 +240,16 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 								{Variant.map((Item) => (
 									<tr
 										key={Item.Identifier}
-										className="border-b border-[var(--Border)] last:border-b-0">
+										className="border-b border-[var(--Border)] last:border-b-0"
+									>
 										<td className="px-4 py-3 font-mono">
 											{Item.Name}
 										</td>
 										<td className="px-4 py-3">
 											<Badge
 												variant="outline"
-												className="StaccatoBadge">
+												className="StaccatoBadge"
+											>
 												{Item.Tier}
 											</Badge>
 										</td>
@@ -223,7 +262,9 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										<td className="px-4 py-3">
 											<Badge className="StaccatoBadge">
 												{Item.Status}
+
 												{"\u2001"}
+
 												<span
 													className={`StaccatoDot h-2 w-2 rounded-none ${VariantStatusColor[Item.Status]}`}
 													aria-hidden="true"
@@ -248,10 +289,12 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 					<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
 						{Strategy.map((Item) => {
 							const Icon = GetIcon(Item.Icon);
+
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6">
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6"
+								>
 									<div className="flex items-start justify-between">
 										<h4 className="font-mono text-sm font-semibold">
 											{Item.Name}
@@ -259,7 +302,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										{Icon && (
 											<div
 												className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-secondary"
-												aria-hidden="true">
+												aria-hidden="true"
+											>
 												<Icon
 													className="StaccatoIcon h-5 w-5 text-primary"
 													aria-hidden="true"
@@ -287,7 +331,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											}}
 											aria-label="Copy command"
 											title="Copy command"
-											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100">
+											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100"
+										>
 											<lucide.Copy
 												className="h-[0.65em] w-[0.65em]"
 												aria-hidden="true"
@@ -300,7 +345,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 												<Badge
 													key={Index}
 													variant="outline"
-													className="StaccatoBadge">
+													className="StaccatoBadge"
+												>
 													{FeatureName}
 												</Badge>
 											),
@@ -319,7 +365,8 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							href={SourceURL}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="inline-flex items-center text-muted-foreground underline underline-offset-4 hover:text-foreground">
+							className="inline-flex items-center text-muted-foreground underline underline-offset-4 hover:text-foreground"
+						>
 							Verify in source code
 							<span className="InlineSeparator">
 								<lucide.Code

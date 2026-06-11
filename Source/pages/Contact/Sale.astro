@@ -19,14 +19,16 @@ const MetaDescription = T("meta.contact.sales.description", {
 	Title={MetaTitle}
 	Description={MetaDescription}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<Header client:load />
 
 	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+			>
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{

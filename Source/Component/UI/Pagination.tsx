@@ -1,7 +1,9 @@
 import * as lucide from "lucide-react";
+
 import * as React from "react";
 
 import { Button, ButtonVariants } from "./Button";
+
 import { cn } from "./Utility";
 
 function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
@@ -73,7 +75,8 @@ function PaginationPrevious({
 				"gap-1 px-[var(--Spacing2Point5)] sm:pl-[var(--Spacing2Point5)]",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<lucide.ChevronLeft />
 			<span className="hidden sm:block">Previous</span>
 		</PaginationLink>
@@ -92,7 +95,8 @@ function PaginationNext({
 				"gap-1 px-[var(--Spacing2Point5)] sm:pr-[var(--Spacing2Point5)]",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<span className="hidden sm:block">Next</span>
 			<lucide.ChevronRight />
 		</PaginationLink>
@@ -108,7 +112,8 @@ function PaginationEllipsis({
 			aria-hidden
 			data-slot="pagination-ellipsis"
 			className={cn("flex size-9 items-center justify-center", className)}
-			{...props}>
+			{...props}
+		>
 			<lucide.MoreHorizontal className="size-4" />
 			<span className="sr-only">More pages</span>
 		</span>

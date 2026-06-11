@@ -1,9 +1,13 @@
 import { ThemeImage } from "@Library/Theme";
+
 import * as lucide from "lucide-react";
+
 import { useEffect, useRef } from "react";
 
 import { IconTooltip } from "../UI/IconTooltip.js";
+
 import { RichText } from "../UI/RichText.js";
+
 import type Property from "./Interface/Property/Feature.js";
 
 /**
@@ -12,18 +16,31 @@ import type Property from "./Interface/Property/Feature.js";
  */
 const FeatureIconRegistry: Record<string, lucide.LucideIcon> = {
 	Zap: lucide.Zap,
+
 	Box: lucide.Box,
+
 	Cpu: lucide.Cpu,
+
 	Globe: lucide.Globe,
+
 	Wrench: lucide.Wrench,
+
 	Heart: lucide.Heart,
+
 	Sparkles: lucide.Sparkles,
+
 	Code: lucide.Code,
+
 	Layers: lucide.Layers,
+
 	Package: lucide.Package,
+
 	Puzzle: lucide.Puzzle,
+
 	Server: lucide.Server,
+
 	Shield: lucide.Shield,
+
 	Database: lucide.Database,
 };
 
@@ -33,20 +50,30 @@ const FeatureIconRegistry: Record<string, lucide.LucideIcon> = {
  */
 const FeatureColorMap: Record<string, string> = {
 	performance: "var(--ExtensionRust)",
+
 	compatibility: "var(--SpineWASM)",
+
 	architecture: "var(--ExtensionEffectTypeScript)",
+
 	"cross-platform": "var(--ExtensionTauri)",
+
 	tooling: "var(--ToolBiome)",
+
 	opensource: "var(--SpinegRPC)",
 };
 
 /** 12% tinted backgrounds for icon containers - matches the *Mute token convention. */
 const FeatureColorMuteMap: Record<string, string> = {
 	performance: "var(--ExtensionRustMute)",
+
 	compatibility: "var(--SpineWASMMute)",
+
 	architecture: "var(--ExtensionEffectTypeScriptMute)",
+
 	"cross-platform": "var(--ExtensionTauriMute)",
+
 	tooling: "var(--ToolBiomeMute)",
+
 	opensource: "var(--SpinegRPCMute)",
 };
 
@@ -56,17 +83,29 @@ const FeatureColorMuteMap: Record<string, string> = {
  */
 const FeatureIconLabelMap: Record<string, string> = {
 	Zap: "Mountain runs native services through Tauri outside the WebView, dispatched via the ActionEffect system",
+
 	Box: "Cocoon hosts VS Code extensions with Effect-TS across a dual-track architecture",
+
 	Cpu: "Rust services run at native speed without Electron overhead",
+
 	Globe: "One Tauri source tree compiles to macOS, Windows, and Linux",
+
 	Wrench: "Rust, Tauri, Effect-TS, Biome, and OXC form the toolchain",
+
 	Heart: "CC0 public domain - free to use, fork, and ship",
+
 	Layers: "Effect-TS provides typed errors and dependency injection across Wind and Cocoon service layers",
+
 	Puzzle: "Extensions run unmodified through Cocoon where their APIs are implemented",
+
 	Server: "gRPC connects Mountain, Cocoon, Air, and Grove via typed protocol contracts",
+
 	Shield: "Verified request path where implemented",
+
 	Sparkles: "Active development across all element repos",
+
 	Code: "Rust and TypeScript across native and service layers",
+
 	Package: "Tauri bundles to native platform packages with no Chromium",
 };
 
@@ -77,18 +116,31 @@ const FeatureIconLabelMap: Record<string, string> = {
  */
 const IconSemanticColorMap: Record<string, string> = {
 	Zap: "var(--ExtensionRust)",
+
 	Cpu: "var(--LanguageRust)",
+
 	Server: "var(--SpinegRPC)",
+
 	Box: "var(--SpineWASM)",
+
 	Puzzle: "var(--ExtensionEffectTypeScript)",
+
 	Code: "var(--LanguageTypeScript)",
+
 	Layers: "var(--SpineTCP)",
+
 	Shield: "var(--ExtensionTauri)",
+
 	Globe: "var(--ExtensionTauri)",
+
 	Package: "var(--ToolEsBuild)",
+
 	Database: "var(--SpineTCP)",
+
 	Wrench: "var(--ToolBiome)",
+
 	Heart: "var(--ExtensionRust)",
+
 	Sparkles: "var(--ToolOxc)",
 };
 
@@ -105,17 +157,25 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 
 	const GapClass = {
 		sm: "gap-4",
+
 		md: "gap-6",
+
 		lg: "gap-8",
+
 		xl: "gap-12",
 	};
 
 	const ColumnClass: Record<number, string> = {
 		1: "grid-cols-1",
+
 		2: "grid-cols-1 md:grid-cols-2",
+
 		3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+
 		4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+
 		5: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
+
 		6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
 	};
 
@@ -160,7 +220,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 		<section
 			id="features"
 			aria-labelledby="FeaturesHeading"
-			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}>
+			className={`w-full py-16 sm:py-20 ${ClassName || ""}`}
+		>
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
@@ -173,10 +234,12 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 						{Title && (
 							<h2
 								id="FeaturesHeading"
-								className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
+								className="font-serif text-4xl font-normal tracking-tight sm:text-5xl"
+							>
 								{Title}
 							</h2>
 						)}
+
 						{Subtitle && (
 							<div className="mt-3 text-[var(--MuteForeground)]">
 								<RichText Text={Subtitle} />
@@ -189,7 +252,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 					ref={GridReference}
 					className={`StaccatoMorphGap grid min-h-0 items-start ${
 						ColumnClass[Columns]
-					} ${GapClass[Gap]} mx-auto max-w-6xl`}>
+					} ${GapClass[Gap]} mx-auto max-w-6xl`}
+				>
 					{Features.map((Feature) => {
 						const Icon = GetIcon(Feature.Icon);
 
@@ -226,7 +290,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 								style={{
 									borderLeftColor: FeatureColor,
 									borderLeftWidth: "2px",
-								}}>
+								}}
+							>
 								<div className="flex items-start justify-between">
 									<h3 className="font-mono text-sm font-semibold leading-snug">
 										{Feature.Title}
@@ -235,7 +300,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 										className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-none"
 										style={{
 											backgroundColor: FeatureColorMute,
-										}}>
+										}}
+									>
 										<IconTooltip
 											Label={IconLabel}
 											Icon={Icon ?? lucide.Sparkles}
@@ -253,7 +319,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											<span
 												className="inline-flex items-center align-middle"
 												role="img"
-												aria-label={`${Feature.Title} technology stack`}>
+												aria-label={`${Feature.Title} technology stack`}
+											>
 												{Feature.Icons.map(
 													(IconName, IconIndex) => {
 														const IsBrandSvg =
@@ -274,6 +341,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															] ??
 															IconName.replace(
 																/^\/Image\/|\.svg$/g,
+
 																"",
 															);
 
@@ -292,7 +360,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 														return (
 															<span
 																key={IconIndex}
-																className="inline-flex items-center">
+																className="inline-flex items-center"
+															>
 																{IconIndex ===
 																0 ? (
 																	"\u2001"
@@ -310,7 +379,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 																	<IconTooltip
 																		Label={
 																			StackLabel
-																		}>
+																		}
+																	>
 																		<ThemeImage
 																			src={
 																				IconName

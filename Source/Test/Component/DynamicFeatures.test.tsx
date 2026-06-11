@@ -1,4 +1,5 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { DynamicFeatures } from "../../Component/Dynamic/DynamicFeatures";
@@ -16,33 +17,47 @@ beforeEach(() => {
 
 afterEach(() => {
 	cleanup();
+
 	vi.restoreAllMocks();
 });
 
 const SampleFeatures = [
 	{
 		Id: "performance",
+
 		Icon: "Zap",
+
 		Title: "Performance",
+
 		Description: "Native speed via Rust.",
 	},
+
 	{
 		Id: "compatibility",
+
 		Icon: "Box",
+
 		Title: "Compatibility",
+
 		Description: "Run existing VS Code extensions.",
 	},
+
 	{
 		Id: "architecture",
+
 		Icon: "Cpu",
+
 		Title: "Architecture",
+
 		Description: "Effect-TS powered services.",
 	},
 ];
 
 const SampleContent = {
 	Title: "Features",
+
 	Subtitle: "What makes Land different.",
+
 	Features: SampleFeatures,
 };
 
@@ -67,6 +82,7 @@ describe("DynamicFeatures", () => {
 		render(<DynamicFeatures Content={SampleContent} />);
 
 		expect(screen.getByText("Features")).toBeInTheDocument();
+
 		expect(
 			screen.getByText("What makes Land different."),
 		).toBeInTheDocument();
@@ -76,6 +92,7 @@ describe("DynamicFeatures", () => {
 		render(<DynamicFeatures Content={SampleContent} />);
 
 		const Section = screen.getByRole("region", { name: /features/i });
+
 		expect(Section).toBeInTheDocument();
 	});
 

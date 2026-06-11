@@ -9,9 +9,9 @@ description:
 ---
 
 Mist implements a full authoritative DNS server in Rust using the Hickory DNS
-library, serving the `land.playform.cloud` zone over UDP and TCP on loopback.
-Every component that needs a private service name-Cocoon's gRPC address, Air's
-HTTP client, SideCar's download URLs-goes through this server. The design
+library, serving the `editor.land` zone over UDP and TCP on loopback. Every
+component that needs a private service name - Cocoon's gRPC address, Air's
+HTTP client, SideCar's download URLs - goes through this server. The design
 ensures that neither extension code nor sidecar processes can resolve arbitrary
 external hostnames without an explicit policy grant.
 
@@ -32,8 +32,7 @@ println!("DNS server on 127.0.0.1:{port}");
 Startup sequence:
 
 1. `portpicker` finds an available port if `5380` is taken.
-2. `build_catalog(port)` constructs the zone authority for
-   `land.playform.cloud`.
+2. `build_catalog(port)` constructs the zone authority for `editor.land`.
 3. DNSSEC signing keys are loaded from the app data directory (generated on
    first run if absent).
 4. Zone records are signed in memory; RRSIG records are attached before any
@@ -44,8 +43,8 @@ Startup sequence:
 
 ## Zone configuration
 
-The `land.playform.cloud` zone is defined in `Source/Zone.rs`. All records are
-constructed in memory-no zone file is read from disk. The zone contains a SOA
+The `editor.land` zone is defined in `Source/Zone.rs`. All records are
+constructed in memory - no zone file is read from disk. The zone contains a SOA
 record and a wildcard A record:
 
 ```
@@ -60,11 +59,11 @@ editor.land.  IN SOA  localhost. root.editor.land. (
 *.editor.land.  IN A  127.0.0.1
 ```
 
-The wildcard ensures that any subdomain of `land.playform.cloud`-whether
-`cocoon.land.playform.cloud`, `api.land.playform.cloud`, or any other
-name-resolves to `127.0.0.1` without requiring individual records. This is
-intentional: new service endpoints added inside the editor do not require a DNS
-configuration change.
+The wildcard ensures that any subdomain of `editor.land` - whether
+`cocoon.editor.land`, `api.editor.land`, or any other name - resolves to
+`127.0.0.1` without requiring individual records. This is intentional: new
+service endpoints added inside the editor do not require a DNS configuration
+change.
 
 ## DNSSEC signing
 
@@ -116,7 +115,7 @@ supported without a server restart.
 ```
 Incoming query
     |
-    +---> Matches *.land.playform.cloud?
+    +---> Matches *.editor.land?
     |       YES: Return A 127.0.0.1 with RRSIG (authoritative)
     |
     +---> Name in forward allowlist?
@@ -128,7 +127,7 @@ Incoming query
 Queries for names in the authoritative zone are answered directly from the
 in-memory catalog without any network hop. This means all gRPC service discovery
 for internal services (Cocoon connecting to Mountain, Air connecting to
-Mountain) incurs no network latency-the answer is computed in memory.
+Mountain) incurs no network latency - the answer is computed in memory.
 
 ## How Mountain launches Mist
 
@@ -154,10 +153,11 @@ running Tokio runtime to host a WebSocket server that relays messages between
 the browser-based Sky UI layer and the Cocoon extension host when gRPC is
 unavailable or inappropriate for the communication pattern.
 
-> [!IMPORTANT] The WebSocket transport in Mist is for data streaming between Sky
-> and Cocoon. The planned S6 Mist WebSocket transport-a full replacement for
-> Tauri IPC using WebSocket framing-is a separate future work item and is not
-> currently implemented.
+> [!IMPORTANT] The WebSocket transport in Mist is for data streaming between
+> Sky and Cocoon. The planned **S6** upgrade will replace per-call Tauri IPC
+> with a WebSocket transport routed through the `*.editor.land` DNS endpoints
+> that Mist already serves. Expected improvement: ~5-15 ms per call across
+> ~800 calls per session. This is not yet implemented.
 
 ## Module reference
 
@@ -165,7 +165,7 @@ unavailable or inappropriate for the communication pattern.
 | :-------------------------- | :------------------------------------------------------------------------ |
 | `Source/lib.rs`             | Public API: `start()`, `dns_port()`, `build_catalog()`, `land_resolver()` |
 | `Source/Server.rs`          | Hickory catalog construction, UDP + TCP listener binding                  |
-| `Source/Zone.rs`            | SOA and wildcard A record generation for `land.playform.cloud`            |
+| `Source/Zone.rs`            | SOA and wildcard A record generation for `editor.land`                    |
 | `Source/Resolver.rs`        | `LandDnsResolver` struct, `land_resolver()` constructor                   |
 | `Source/ForwardSecurity.rs` | DNSSEC signing, forward allowlist check and enforcement                   |
 | `Source/WebSocket.rs`       | WebSocket server for Sky ↔ Cocoon streaming                               |

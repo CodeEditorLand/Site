@@ -33,10 +33,13 @@ declare const __ROUTE_MAP_VARIANT__: Record<string, string>;
 const INCREMENT = __INCREMENT__ ?? "Initial";
 
 const CACHE_ROUTE = `Route-${INCREMENT}`;
+
 const CACHE_ASSET = `Asset-${INCREMENT}`;
+
 const CACHE_AUTH = "Auth"; // Not versioned - persists across deploys
 
 const CACHE = [CACHE_ROUTE, CACHE_ASSET];
+
 // Note: CACHE_AUTH is NOT in the eviction list - it outlives route cache.
 
 let CurrentClientVersion: string | null = null;
@@ -51,6 +54,7 @@ const Log = __DEV__
 	? (..._Message: any[]) => {
 			console.log(
 				`[SW ${INCREMENT}]`,
+
 				`(Remote: ${BASE_REMOTE})`,
 				..._Message,
 			);
@@ -61,6 +65,7 @@ const ErrorLog = __DEV__
 	? (..._Message: any[]) => {
 			console.error(
 				`[SW ${INCREMENT}]`,
+
 				`(Remote: ${BASE_REMOTE})`,
 				..._Message,
 			);
@@ -71,6 +76,7 @@ const WarnLog = __DEV__
 	? (..._Message: any[]) => {
 			console.warn(
 				`[SW ${INCREMENT}]`,
+
 				`(Remote: ${BASE_REMOTE})`,
 				..._Message,
 			);
@@ -97,8 +103,11 @@ const ProtectedRoute: Set<string> = new Set([]);
 
 const AuthRoute: Set<string> = new Set([
 	"/Account/SignIn",
+
 	"/Account/SignUp",
+
 	"/Account/ForgotPassword",
+
 	"/Account/ResetPassword",
 ]);
 
@@ -107,6 +116,7 @@ const AuthRoute: Set<string> = new Set([
 
 const DynamicRoute: Array<{ Pattern: RegExp; Base: string }> = [
 	{ Pattern: /^\/Blog\/([^/]+)\/?$/, Base: "/Blog" },
+
 	// Doc slugs may be single-level (/Doc/mountain) or nested (/Doc/telemetry/overview)
 	{ Pattern: /^\/Doc\/.+/, Base: "/Doc" },
 ];
@@ -119,14 +129,23 @@ const DynamicRoute: Array<{ Pattern: RegExp; Base: string }> = [
 
 const ApiPrefix: string[] = [
 	"/api/",
+
 	"/auth/",
+
 	"/downloads/",
+
 	"/track",
+
 	"/pageview",
+
 	"/events",
+
 	"/summary",
+
 	"/timeline",
+
 	"/stats/",
+
 	"/status",
 ];
 
@@ -138,7 +157,9 @@ const ApiPrefix: string[] = [
 
 interface AuthState {
 	Token: string;
+
 	ExpiresAt: number; // Unix ms
+
 	UserId: string;
 }
 
@@ -161,26 +182,38 @@ const Base64ToByteList = (Base64: string): Uint8Array =>
 
 interface EncryptedPayload {
 	Salt: string; // base64 random salt (16 bytes)
+
 	IV: string; // base64 AES-GCM IV (12 bytes)
+
 	Data: string; // base64 AES-GCM ciphertext
 }
 
 const DeriveKey = async (
 	UserId: string,
+
 	Salt: Uint8Array,
 ): Promise<CryptoKey> => {
 	const Material = await crypto.subtle.importKey(
 		"raw",
+
 		new TextEncoder().encode(self.location.origin + UserId),
+
 		"PBKDF2",
+
 		false,
+
 		["deriveKey"],
 	);
+
 	return crypto.subtle.deriveKey(
 		{ name: "PBKDF2", salt: Salt, iterations: 100_000, hash: "SHA-256" },
+
 		Material,
+
 		{ name: "AES-GCM", length: 256 },
+
 		false,
+
 		["encrypt", "decrypt"],
 	);
 };
@@ -189,22 +222,32 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 	// Fast path: serve from in-memory cache to avoid PBKDF2 on every navigation.
 	if (_CachedAuth !== undefined) {
 		if (_CachedAuth === null) return null;
+
 		if (_CachedAuth.ExpiresAt - 30_000 < Date.now()) {
 			_CachedAuth = null;
+
 			const Cache = await caches.open(CACHE_AUTH);
+
 			await Cache.delete(AUTH_STATE_KEY);
+
 			await Cache.delete("/auth-user-id");
+
 			__DEV__ && Log("Auth token expired (memory cache), cleared.");
+
 			return null;
 		}
+
 		return _CachedAuth;
 	}
 
 	try {
 		const Cache = await caches.open(CACHE_AUTH);
+
 		const Cached = await Cache.match(AUTH_STATE_KEY);
+
 		if (!Cached) {
 			_CachedAuth = null;
+
 			return null;
 		}
 
@@ -216,95 +259,135 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 			"IV" in (Raw as Record<string, unknown>)
 		) {
 			const Payload = Raw as EncryptedPayload;
+
 			const Salt = Base64ToByteList(Payload.Salt);
+
 			const IV = Base64ToByteList(Payload.IV);
+
 			const Ciphertext = Base64ToByteList(Payload.Data);
 
 			// UserId is stored separately (unencrypted) for key derivation
 			const UserIdCached = await Cache.match("/auth-user-id");
+
 			if (!UserIdCached) {
 				await Cache.delete(AUTH_STATE_KEY);
+
 				_CachedAuth = null;
+
 				return null;
 			}
+
 			const UserId = await UserIdCached.text();
 
 			const Key = await DeriveKey(UserId, Salt);
+
 			const Decrypted = await crypto.subtle.decrypt(
 				{ name: "AES-GCM", iv: IV },
+
 				Key,
+
 				Ciphertext,
 			);
 
 			const State = JSON.parse(
 				new TextDecoder().decode(Decrypted),
 			) as AuthState;
+
 			if (State.ExpiresAt - 30_000 < Date.now()) {
 				await Cache.delete(AUTH_STATE_KEY);
+
 				await Cache.delete("/auth-user-id");
+
 				__DEV__ && Log("Auth token expired, cleared from cache.");
+
 				_CachedAuth = null;
+
 				return null;
 			}
+
 			_CachedAuth = State;
+
 			return State;
 		}
 
 		// Legacy plain format - read and re-encrypt on next write
 		const State = Raw as AuthState;
+
 		if (State.ExpiresAt - 30_000 < Date.now()) {
 			await Cache.delete(AUTH_STATE_KEY);
+
 			_CachedAuth = null;
+
 			return null;
 		}
+
 		_CachedAuth = State;
+
 		return State;
 	} catch {
 		_CachedAuth = null;
+
 		return null;
 	}
 };
 
 const WriteAuthState = async (State: AuthState): Promise<void> => {
 	const Salt = crypto.getRandomValues(new Uint8Array(16));
+
 	const IV = crypto.getRandomValues(new Uint8Array(12));
+
 	const Key = await DeriveKey(State.UserId, Salt);
 
 	const Plaintext = new TextEncoder().encode(JSON.stringify(State));
+
 	const Ciphertext = await crypto.subtle.encrypt(
 		{ name: "AES-GCM", iv: IV },
+
 		Key,
+
 		Plaintext,
 	);
 
 	const Payload: EncryptedPayload = {
 		Salt: ByteListToBase64(Salt),
+
 		IV: ByteListToBase64(IV),
+
 		Data: ByteListToBase64(new Uint8Array(Ciphertext)),
 	};
 
 	const Cache = await caches.open(CACHE_AUTH);
+
 	await Cache.put(
 		AUTH_STATE_KEY,
+
 		new Response(JSON.stringify(Payload), {
 			headers: { "Content-Type": "application/json" },
 		}),
 	);
+
 	await Cache.put(
 		"/auth-user-id",
+
 		new Response(State.UserId, {
 			headers: { "Content-Type": "text/plain" },
 		}),
 	);
+
 	_CachedAuth = State;
+
 	__DEV__ && Log("Auth state encrypted and written to cache.");
 };
 
 const ClearAuthState = async (): Promise<void> => {
 	_CachedAuth = null;
+
 	const Cache = await caches.open(CACHE_AUTH);
+
 	await Cache.delete(AUTH_STATE_KEY);
+
 	await Cache.delete("/auth-user-id");
+
 	__DEV__ && Log("Auth state cleared.");
 };
 
@@ -346,6 +429,7 @@ const ResolveRoute = (RequestPath: string): string | null => {
 
 	// Check variant map (auto-generated case/plural/compound permutations)
 	if (VariantMap[Normalized]) return VariantMap[Normalized];
+
 	if (VariantMap[Cleaned]) return VariantMap[Cleaned];
 
 	// Hyphen/underscore stripped form
@@ -369,6 +453,7 @@ const IsApiRequest = (URL: URL): boolean => {
 	if (URL.origin === self.location.origin) {
 		return ApiPrefix.some((Prefix) => URL.pathname.startsWith(Prefix));
 	}
+
 	// Cross-origin Workers URLs (e.g. https://auth.workers.dev/…)
 	// Pre-process if the host looks like a workers.dev deployment
 	return URL.hostname.endsWith(".workers.dev");
@@ -380,13 +465,18 @@ const IsApiRequest = (URL: URL): boolean => {
 
 const SignRequest = async (
 	OriginalRequest: Request,
+
 	Token: string,
 ): Promise<Request> => {
 	const Key = await crypto.subtle.importKey(
 		"raw",
+
 		new TextEncoder().encode(Token),
+
 		{ name: "HMAC", hash: "SHA-256" },
+
 		false,
+
 		["sign"],
 	);
 
@@ -394,21 +484,29 @@ const SignRequest = async (
 		OriginalRequest.method !== "GET" && OriginalRequest.method !== "HEAD"
 			? await OriginalRequest.clone().text()
 			: "";
+
 	const Timestamp = Date.now().toString();
+
 	const PathName = new URL(OriginalRequest.url).pathname;
+
 	const Message = `${OriginalRequest.method}\n${PathName}\n${Timestamp}\n${Body}`;
 
 	const SignatureBuffer = await crypto.subtle.sign(
 		"HMAC",
+
 		Key,
+
 		new TextEncoder().encode(Message),
 	);
 
 	const SignedHeaders = new Headers(OriginalRequest.headers);
+
 	SignedHeaders.set(
 		"X-Signature",
+
 		ByteListToBase64(new Uint8Array(SignatureBuffer)),
 	);
+
 	SignedHeaders.set("X-Timestamp", Timestamp);
 
 	return new Request(OriginalRequest.url, {
@@ -434,9 +532,11 @@ const SignRequest = async (
 
 const InjectAuthHeader = async (OriginalRequest: Request): Promise<Request> => {
 	const State = await ReadAuthState();
+
 	if (!State) return OriginalRequest;
 
 	const AuthHeaders = new Headers(OriginalRequest.headers);
+
 	AuthHeaders.set("Authorization", `Bearer ${State.Token}`);
 
 	const AuthedRequest = new Request(OriginalRequest.url, {
@@ -464,9 +564,11 @@ const InjectAuthHeader = async (OriginalRequest: Request): Promise<Request> => {
 
 const MaybeRefreshToken = async (): Promise<void> => {
 	const State = await ReadAuthState();
+
 	if (!State) return;
 
 	const MinutesLeft = (State.ExpiresAt - Date.now()) / 60_000;
+
 	if (MinutesLeft > 5) return;
 
 	__DEV__ &&
@@ -489,6 +591,7 @@ const MaybeRefreshToken = async (): Promise<void> => {
 			// Neither should log the user out.
 			if (RefreshResponse.status === 401) {
 				__DEV__ && WarnLog("Token refresh 401, clearing auth state.");
+
 				await ClearAuthState();
 			} else {
 				__DEV__ &&
@@ -496,11 +599,13 @@ const MaybeRefreshToken = async (): Promise<void> => {
 						`Token refresh ${RefreshResponse.status}, keeping auth state.`,
 					);
 			}
+
 			return;
 		}
 
 		const Data = (await RefreshResponse.json()) as {
 			success: boolean;
+
 			data?: { token: string; expiresIn: number };
 		};
 
@@ -510,14 +615,17 @@ const MaybeRefreshToken = async (): Promise<void> => {
 				ExpiresAt: Date.now() + Data.data.expiresIn * 1000,
 				UserId: State.UserId,
 			});
+
 			__DEV__ && Log("Token refreshed successfully.");
 		} else {
 			__DEV__ &&
 				WarnLog("Token refresh response invalid, clearing auth state.");
+
 			await ClearAuthState();
 		}
 	} catch (RefreshError) {
 		__DEV__ && ErrorLog("Token refresh network error:", RefreshError);
+
 		// Don't clear - might be offline temporarily
 	}
 };
@@ -532,6 +640,7 @@ self.addEventListener("install", (Event: ExtendableEvent) => {
 			.open(CACHE_ROUTE)
 			.then((Cache) => {
 				__DEV__ && Log("Route cache opened.");
+
 				return Cache;
 			})
 			.catch((_Error: unknown) => {
@@ -539,6 +648,7 @@ self.addEventListener("install", (Event: ExtendableEvent) => {
 			})
 			.then(() => {
 				__DEV__ && Log("Install complete. Activating immediately.");
+
 				return self.skipWaiting();
 			}),
 	);
@@ -559,14 +669,17 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 							// Evict old versioned caches; preserve CACHE_AUTH
 							if (!CACHE.includes(Key) && Key !== CACHE_AUTH) {
 								__DEV__ && Log(`Deleting old cache: ${Key}`);
+
 								return caches.delete(Key);
 							}
+
 							return Promise.resolve();
 						}),
 					),
 				)
 				.catch((_Error: unknown) => {
 					__DEV__ && ErrorLog("Cache cleanup failed:", _Error);
+
 					return Promise.resolve();
 				}),
 
@@ -577,6 +690,7 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 				})
 				.catch((_Error: unknown) => {
 					__DEV__ && ErrorLog("clients.claim() failed:", _Error);
+
 					return Promise.resolve();
 				}),
 		])
@@ -593,6 +707,7 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 
 				if (IsNewVersion) {
 					CurrentClientVersion = INCREMENT;
+
 					return (
 						await self.clients.matchAll({ type: "window" })
 					).forEach((Client: WindowClient) => {
@@ -618,7 +733,9 @@ self.addEventListener("activate", (Event: ExtendableEvent) => {
 
 self.addEventListener("fetch", (Event: FetchEvent) => {
 	const Request = Event.request;
+
 	const _URL = new URL(Request.url);
+
 	const Path = _URL.pathname;
 
 	__DEV__ &&
@@ -641,12 +758,14 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 		if (IsApiRequest(_URL)) {
 			__DEV__ &&
 				Log(`API mutation (auth inject): ${Request.method} ${Path}`);
+
 			Event.respondWith(
 				InjectAuthHeader(Request).then((AuthedRequest) =>
 					fetch(AuthedRequest),
 				),
 			);
 		}
+
 		// All other non-GET requests pass through unmodified
 		return;
 	}
@@ -657,9 +776,13 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 
 		if (ResolvedPath !== null) {
 			__DEV__ && Log(`Route redirect: ${Path} → ${ResolvedPath}`);
+
 			const RedirectURL = new URL(ResolvedPath, _URL.origin);
+
 			RedirectURL.search = _URL.search;
+
 			Event.respondWith(Response.redirect(RedirectURL.href, 301));
+
 			return;
 		}
 
@@ -667,6 +790,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 		Event.respondWith(
 			(async () => {
 				const AuthState = await ReadAuthState();
+
 				const IsAuthed = AuthState !== null;
 
 				// Protected route + no session → sign in
@@ -675,8 +799,11 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 						Log(
 							`Auth gate: ${Path} requires auth, redirecting to SignIn`,
 						);
+
 					const SignInURL = new URL("/Account/SignIn", _URL.origin);
+
 					SignInURL.searchParams.set("next", Path);
+
 					return Response.redirect(SignInURL.href, 302);
 				}
 
@@ -693,16 +820,20 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					)
 				) {
 					const Next = _URL.searchParams.get("next");
+
 					const Target =
 						Next && Next.startsWith("/") && !Next.startsWith("//")
 							? Next
 							: "/Dashboard";
+
 					__DEV__ &&
 						Log(
 							`Auth bypass: ${Path} already authed, redirecting to ${Target}`,
 						);
+
 					return Response.redirect(
 						new URL(Target, _URL.origin).href,
+
 						302,
 					);
 				}
@@ -712,14 +843,19 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 
 				try {
 					const NetworkResponse = await fetch(Request);
+
 					if (NetworkResponse && NetworkResponse.ok) {
 						__DEV__ && Log(`Navigation fetched: ${Path}`);
+
 						(await caches.open(CACHE_ROUTE)).put(
 							Request,
+
 							NetworkResponse.clone(),
 						);
+
 						return NetworkResponse;
 					}
+
 					__DEV__ &&
 						WarnLog(
 							`Navigation failed (${NetworkResponse.status}): ${Path}. Trying cache...`,
@@ -728,6 +864,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					__DEV__ &&
 						WarnLog(
 							`Navigation fetch failed: ${Path}. Trying cache...`,
+
 							_Error,
 						);
 				}
@@ -738,6 +875,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 
 				if (CachedResponse) {
 					__DEV__ && Log(`Serving from cache: ${Path}`);
+
 					return CachedResponse;
 				}
 
@@ -745,6 +883,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 
 				return new Response(
 					"Network error: You appear to be offline and the page is not cached.",
+
 					{
 						status: 503,
 						statusText: "Service Unavailable",
@@ -760,15 +899,18 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 	// ── Layer 3 (GET): Inject auth on API requests ──
 	if (IsApiRequest(_URL)) {
 		__DEV__ && Log(`API fetch (auth inject): ${Path}`);
+
 		Event.respondWith(
 			InjectAuthHeader(Request).then((AuthedRequest) =>
 				fetch(AuthedRequest).catch((_Error: unknown) => {
 					__DEV__ && ErrorLog(`API fetch failed: ${Path}`, _Error);
+
 					return new Response(
 						JSON.stringify({
 							success: false,
 							error: "Network error",
 						}),
+
 						{
 							status: 503,
 							headers: { "Content-Type": "application/json" },
@@ -777,6 +919,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 				}),
 			),
 		);
+
 		return;
 	}
 
@@ -788,21 +931,28 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 		Path.startsWith("/Image/")
 	) {
 		__DEV__ && Log(`Asset (cache-first): ${Path}`);
+
 		Event.respondWith(
 			caches
 				.open(CACHE_ASSET)
 				.then(async (Cache) => {
 					const Cached = await Cache.match(Request);
+
 					if (Cached) {
 						__DEV__ && Log(`Asset cache hit: ${Path}`);
+
 						return Cached;
 					}
+
 					__DEV__ && Log(`Asset cache miss, fetching: ${Path}`);
+
 					try {
 						const NetworkResponse = await fetch(Request);
+
 						if (NetworkResponse && NetworkResponse.ok) {
 							await Cache.put(Request, NetworkResponse.clone());
 						}
+
 						return (
 							NetworkResponse ||
 							new Response(`Failed to fetch ${Path}`, {
@@ -812,6 +962,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					} catch (_Error: unknown) {
 						__DEV__ &&
 							ErrorLog(`Asset fetch failed: ${Path}`, _Error);
+
 						return new Response(`Offline: ${Path}`, {
 							status: 503,
 						});
@@ -819,9 +970,11 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 				})
 				.catch((_Error: unknown) => {
 					__DEV__ && ErrorLog(`Asset cache error: ${Path}`, _Error);
+
 					return fetch(Request);
 				}),
 		);
+
 		return;
 	}
 
@@ -845,8 +998,10 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 		__DEV__ &&
 			WarnLog(
 				`Message from untrusted origin: ${Event.origin}`,
+
 				Event.data,
 			);
+
 		return;
 	}
 
@@ -854,8 +1009,11 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 
 	const Data = Event.data as {
 		Type: string;
+
 		Token?: string;
+
 		ExpiresAt?: number;
+
 		UserId?: string;
 	} | null;
 
@@ -871,12 +1029,15 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 			Data.UserId === null
 		) {
 			__DEV__ && ErrorLog("Auth:Write missing required fields.");
+
 			Event.source?.postMessage({
 				Type: "Auth:Error",
 				Reason: "missing-fields",
 			});
+
 			return;
 		}
+
 		Event.waitUntil(
 			WriteAuthState({
 				Token: Data.Token,
@@ -886,6 +1047,7 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 				Event.source?.postMessage({ Type: "Auth:Written" });
 			}),
 		);
+
 		return;
 	}
 
@@ -895,6 +1057,7 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 				Event.source?.postMessage({ Type: "Auth:Cleared" });
 			}),
 		);
+
 		return;
 	}
 
@@ -904,6 +1067,7 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 				Event.source?.postMessage({ Type: "Auth:State", State });
 			}),
 		);
+
 		return;
 	}
 
@@ -918,6 +1082,7 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 				});
 			}),
 		);
+
 		return;
 	}
 
@@ -926,13 +1091,16 @@ self.addEventListener("message", (Event: ExtendableMessageEvent) => {
 			Type: "Version:Current",
 			Version: INCREMENT,
 		});
+
 		return;
 	}
 
 	// Client requests immediate activation (for waiting SW)
 	if (Data.Type === "skipWaiting") {
 		__DEV__ && Log("skipWaiting requested by client.");
+
 		self.skipWaiting();
+
 		return;
 	}
 

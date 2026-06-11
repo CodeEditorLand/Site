@@ -38,11 +38,16 @@ can silently drift from the schema.
 
 Vine is the umbrella name for a family of proto files:
 
-| Schema        | Port  | Purpose                                                                                                |
-| ------------- | ----- | ------------------------------------------------------------------------------------------------------ |
-| `Vine.proto`  | 50052 | Core Mountain↔Cocoon communication: file system, terminal, language features, extension host lifecycle |
-| `Spine.proto` | 50052 | Extension host coordination - action/response pattern for command execution                            |
-| `Air.proto`   | 50053 | Mountain↔Air background daemon services                                                                |
+| Schema        | Server port | Direction                             | Purpose                                                                                                |
+| ------------- | ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `Vine.proto`  | 50051       | Cocoon → Mountain (`MountainService`) | Core Mountain↔Cocoon communication: file system, terminal, language features, extension host lifecycle |
+| `Vine.proto`  | 50052       | Mountain → Cocoon (`CocoonService`)   | Core Mountain↔Cocoon communication: language provider dispatch, notifications, inline completions      |
+| `Spine.proto` | 50052       | Mountain → Cocoon                     | Extension host coordination - action/response pattern for command execution                            |
+| `Air.proto`   | 50053       | Mountain → Air                        | Mountain↔Air background daemon services                                                                |
+
+> [!NOTE] `NetworkMountainPort` (default 50051) is Mountain's gRPC listen
+> port. `NetworkCocoonPort` (default 50052) is Cocoon's gRPC listen port. Both
+> are overridable to support parallel development sessions on the same machine.
 
 ## MountainService: Cocoon → Mountain
 
@@ -61,22 +66,23 @@ RPCs when extensions need native capabilities.
 `CocoonService` is implemented by Cocoon's gRPC server. Mountain calls these
 RPCs to drive the extension host.
 
-| RPC                         | Purpose                                                                        |
-| --------------------------- | ------------------------------------------------------------------------------ |
-| `InitExtensionHost`         | Send workspace configuration, extension manifests, and product info at startup |
-| `ProcessMountainRequest`    | Generic request-response for named IPC methods                                 |
-| `SendMountainNotification`  | Fire-and-forget notification from Mountain to Cocoon                           |
-| `CancelOperation`           | Cancel an in-flight request                                                    |
-| `OpenChannelFromMountain`   | Bidirectional streaming channel                                                |
-| `ExecuteContributedCommand` | Execute a command registered by an extension                                   |
-| `ProvideHover`              | Request hover information from a registered provider                           |
-| `ProvideCompletionItems`    | Request completion items from a registered provider                            |
-| `ProvideDefinition`         | Request definition location                                                    |
-| `ProvideReferences`         | Request reference locations                                                    |
-| `ProvideCodeActions`        | Request code actions                                                           |
-| `ProvideDocumentHighlights` | Request document highlights                                                    |
-| `ProvideDocumentSymbols`    | Request document symbols                                                       |
-| `ProvideWorkspaceSymbols`   | Request workspace-wide symbols                                                 |
+| RPC                            | Purpose                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------ |
+| `InitExtensionHost`            | Send workspace configuration, extension manifests, and product info at startup |
+| `ProcessMountainRequest`       | Generic request-response for named IPC methods                                 |
+| `SendMountainNotification`     | Fire-and-forget notification from Mountain to Cocoon                           |
+| `CancelOperation`              | Cancel an in-flight request                                                    |
+| `OpenChannelFromMountain`      | Bidirectional streaming channel                                                |
+| `ExecuteContributedCommand`    | Execute a command registered by an extension                                   |
+| `ProvideHover`                 | Request hover information from a registered provider                           |
+| `ProvideCompletionItems`       | Request completion items from a registered provider                            |
+| `ProvideDefinition`            | Request definition location                                                    |
+| `ProvideReferences`            | Request reference locations                                                    |
+| `ProvideCodeActions`           | Request code actions                                                           |
+| `ProvideDocumentHighlights`    | Request document highlights                                                    |
+| `ProvideDocumentSymbols`       | Request document symbols                                                       |
+| `ProvideWorkspaceSymbols`      | Request workspace-wide symbols                                                 |
+| `ProvideInlineCompletionItems` | Request inline completion items from a registered provider                     |
 
 ## Transport
 
@@ -85,8 +91,9 @@ protocol is fully bidirectional. Mountain hosts `MountainService` for Cocoon to
 call; Cocoon hosts `CocoonService` for Mountain to call.
 
 Both sockets are strictly local. The connection uses TCP loopback with no
-external network traffic. The `NetworkCocoonPort` environment variable overrides
-the default port 50052; `NetworkAirPort` overrides the Air port 50053.
+external network traffic. `NetworkMountainPort` overrides Mountain's listen port
+(default 50051); `NetworkCocoonPort` overrides Cocoon's listen port (default
+50052); `NetworkAirPort` overrides the Air port (default 50053).
 
 ## Code Generation
 

@@ -1,5 +1,7 @@
 import { Checkbox } from "../UI/Checkbox";
+
 import { Label } from "../UI/Label";
+
 import type Property from "./Interface/Property/Checkbox.js";
 
 /**
@@ -9,12 +11,19 @@ import type Property from "./Interface/Property/Checkbox.js";
 const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 	const {
 		Label: LabelText,
+
 		Description,
+
 		Checked,
+
 		DefaultChecked,
+
 		Disabled = false,
+
 		Indeterminate = false,
+
 		OnChange,
+
 		ClassName,
 		...props
 	} = Content;
@@ -23,6 +32,7 @@ const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 		if (OnCheckedChange) {
 			OnCheckedChange(NewChecked);
 		}
+
 		if (OnChange) {
 			OnChange(NewChecked);
 		}
@@ -31,7 +41,9 @@ const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 	// Build checkbox props, only including defined values to satisfy exactOptionalPropertyTypes
 	const CheckboxProperties: Record<string, unknown> = {
 		disabled: Disabled,
+
 		onCheckedChange: HandleCheckedChange,
+
 		className: ClassName,
 		...props,
 	};
@@ -39,8 +51,10 @@ const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 	if (Checked !== undefined) {
 		CheckboxProperties["checked"] = Checked;
 	}
+
 	if (DefaultChecked !== undefined) {
 		CheckboxProperties["defaultChecked"] = DefaultChecked;
+
 		if (Checked === undefined) {
 			CheckboxProperties["checked"] = DefaultChecked;
 		}
@@ -50,7 +64,8 @@ const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 		<div className="flex items-start space-x-3">
 			<Checkbox
 				name={Name}
-				{...(CheckboxProperties as Parameters<typeof Checkbox>[0])}>
+				{...(CheckboxProperties as Parameters<typeof Checkbox>[0])}
+			>
 				{Indeterminate && <span className="animate-pulse">?</span>}
 			</Checkbox>
 			{(LabelText || Description) && (
@@ -60,15 +75,19 @@ const DynamicCheckbox = ({ Content, Name, OnCheckedChange }: Property) => {
 							className="cursor-pointer font-normal"
 							onClick={(Event) => {
 								Event.preventDefault();
+
 								const CurrentChecked =
 									(Checked !== undefined
 										? Checked
 										: DefaultChecked) || false;
+
 								HandleCheckedChange(!CurrentChecked);
-							}}>
+							}}
+						>
 							{LabelText}
 						</Label>
 					)}
+
 					{Description && (
 						<p className="text-muted-foreground">{Description}</p>
 					)}

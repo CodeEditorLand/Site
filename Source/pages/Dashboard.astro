@@ -28,7 +28,8 @@ const MetaDescription = T("meta.dashboard.description", {
 	Title={MetaTitle}
 	Description={MetaDescription}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<DynamicAuthHeader
 		client:load
 		Domain={Auth0Domain}
@@ -40,7 +41,8 @@ const MetaDescription = T("meta.dashboard.description", {
 			<!-- Breadcrumbs -->
 			<nav aria-label="Breadcrumb" class="mb-8">
 				<ol
-					class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+					class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+				>
 					<li>
 						<a
 							href="/"
@@ -101,23 +103,28 @@ const MetaDescription = T("meta.dashboard.description", {
 					</div>
 				</div>
 				<div
-					class="flex flex-wrap items-center gap-3 text-muted-foreground">
+					class="flex flex-wrap items-center gap-3 text-muted-foreground"
+				>
 					<span
-						class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+						class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+					>
 						Telemetry Feature Gated{"\u2001"}<span
 							class="h-1.5 w-1.5 rounded-none bg-green-500"
 							aria-hidden="true"></span>
 					</span>
 					<span
-						class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+						class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium"
+					>
 						CC0 Licensed
 					</span>
 					<span
-						class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium">
+						class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium"
+					>
 						Signing Planned
 					</span>
 					<span
-						class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+						class="inline-flex items-center border border-blue-200 bg-blue-50 px-2.5 py-0.5 font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
+					>
 						Mountain Workbench{"\u2001"}<span
 							class="h-1.5 w-1.5 rounded-none bg-blue-500"
 							aria-hidden="true"></span>
@@ -154,7 +161,8 @@ const MetaDescription = T("meta.dashboard.description", {
 					</h2>
 					<a
 						href="/Download"
-						class="StaccatoButton h- mb-3 inline-flex items-center justify-center bg-[var(--Primary)] px-4 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoButton h- mb-3 inline-flex items-center justify-center bg-[var(--Primary)] px-4 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
 						{
 							T("common.dashboard.downloads.goButton", {
 								defaultValue: "Go to Downloads",
@@ -184,7 +192,8 @@ const MetaDescription = T("meta.dashboard.description", {
 						<li>
 							<a
 								href="/Doc"
-								class="text-[var(--Primary)] hover:underline">
+								class="text-[var(--Primary)] hover:underline"
+							>
 								{
 									T("common.dashboard.quickLinks.docs", {
 										defaultValue: "Documentation",
@@ -197,7 +206,8 @@ const MetaDescription = T("meta.dashboard.description", {
 								href="https://github.com/CodeEditorLand/Land/issues"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="text-[var(--Primary)] hover:underline">
+								class="text-[var(--Primary)] hover:underline"
+							>
 								{
 									T(
 										"common.dashboard.quickLinks.reportIssue",
@@ -211,7 +221,8 @@ const MetaDescription = T("meta.dashboard.description", {
 						<li>
 							<a
 								href="/Contributing"
-								class="text-[var(--Primary)] hover:underline">
+								class="text-[var(--Primary)] hover:underline"
+							>
 								{
 									T(
 										"common.dashboard.quickLinks.contribute",
@@ -237,17 +248,20 @@ const MetaDescription = T("meta.dashboard.description", {
 				</h2>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card">
 					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] px-5 pb-5 pt-8">
+						class="flex items-center justify-between border-b border-[var(--Border)] px-5 pb-5 pt-8"
+					>
 						<div class="flex-1">
 							<div class="flex items-center gap-3">
 								<span
-									class="inline-flex items-center border border-green-200 bg-green-50 px-3 py-1 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+									class="inline-flex items-center border border-green-200 bg-green-50 px-3 py-1 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+								>
 									Disabled{"\u2001"}<span
 										class="h-2 w-2 rounded-none bg-green-500"
 										aria-hidden="true"></span>
 								</span>
 								<span
-									class="inline-flex items-center bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground">
+									class="inline-flex items-center bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground"
+								>
 									Feature Gated
 								</span>
 							</div>
@@ -277,11 +291,13 @@ const MetaDescription = T("meta.dashboard.description", {
 						</div>
 					</div>
 					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] px-5 pb-5 pt-8">
+						class="flex items-center justify-between border-b border-[var(--Border)] px-5 pb-5 pt-8"
+					>
 						<div class="flex-1">
 							<div class="flex items-center gap-3">
 								<span
-									class="inline-flex items-center border border-yellow-200 bg-yellow-50 px-3 py-1 font-medium text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
+									class="inline-flex items-center border border-yellow-200 bg-yellow-50 px-3 py-1 font-medium text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300"
+								>
 									Optional{"\u2001"}<span
 										class="h-2 w-2 rounded-none bg-yellow-500"
 										aria-hidden="true"></span>
@@ -312,7 +328,8 @@ const MetaDescription = T("meta.dashboard.description", {
 					<div class="px-5 pb-5 pt-8">
 						<div class="flex items-center gap-3">
 							<span
-								class="inline-flex items-center border border-blue-200 bg-blue-50 px-3 py-1 font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+								class="inline-flex items-center border border-blue-200 bg-blue-50 px-3 py-1 font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
+							>
 								Active{"\u2001"}<span
 									class="h-2 w-2 rounded-none bg-blue-500"
 									aria-hidden="true"></span>
@@ -360,7 +377,8 @@ const MetaDescription = T("meta.dashboard.description", {
 					}
 				</p>
 				<div
-					class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+					class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+				>
 					<!-- Active Profile -->
 					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 						<div class="flex items-center justify-between">
@@ -375,7 +393,8 @@ const MetaDescription = T("meta.dashboard.description", {
 								}
 							</h3>
 							<span
-								class="inline-flex items-center border border-blue-200 bg-blue-50 px-3 py-1 font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+								class="inline-flex items-center border border-blue-200 bg-blue-50 px-3 py-1 font-medium text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
+							>
 								Recommended{"\u2001"}<span
 									class="h-2 w-2 rounded-none bg-blue-500"
 									aria-hidden="true"></span>
@@ -423,7 +442,8 @@ const MetaDescription = T("meta.dashboard.description", {
 								}
 							</h3>
 							<span
-								class="inline-flex items-center border border-green-200 bg-green-50 px-3 py-1 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+								class="inline-flex items-center border border-green-200 bg-green-50 px-3 py-1 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+							>
 								Active{"\u2001"}<span
 									class="h-2 w-2 rounded-none bg-green-500"
 									aria-hidden="true"></span>
@@ -470,7 +490,8 @@ const MetaDescription = T("meta.dashboard.description", {
 								}
 							</h3>
 							<span
-								class="inline-flex items-center bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground">
+								class="inline-flex items-center bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground"
+							>
 								16 Permutations
 							</span>
 						</div>
@@ -522,12 +543,15 @@ const MetaDescription = T("meta.dashboard.description", {
 					}
 				</p>
 				<div
-					class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+					class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
+				>
 					<a
 						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-blue-300">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-blue-300"
+					>
 						<div
-							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950">
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950"
+						>
 							<span
 								class="text-lg text-blue-600 dark:text-blue-400"
 								aria-hidden="true">&#9729;</span
@@ -540,7 +564,8 @@ const MetaDescription = T("meta.dashboard.description", {
 							</p>
 						</div>
 						<span
-							class="ml-auto inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+							class="ml-auto inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
+						>
 							Online{"\u2001"}<span
 								class="h-1.5 w-1.5 rounded-none bg-blue-500"
 								aria-hidden="true"></span>
@@ -548,9 +573,11 @@ const MetaDescription = T("meta.dashboard.description", {
 					</a>
 					<a
 						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-purple-300">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-purple-300"
+					>
 						<div
-							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950">
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950"
+						>
 							<span
 								class="text-lg text-purple-600 dark:text-purple-400"
 								aria-hidden="true">&#9831;</span
@@ -563,7 +590,8 @@ const MetaDescription = T("meta.dashboard.description", {
 							</p>
 						</div>
 						<span
-							class="ml-auto inline-flex items-center border border-purple-200 bg-purple-50 px-2 py-0.5 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300">
+							class="ml-auto inline-flex items-center border border-purple-200 bg-purple-50 px-2 py-0.5 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300"
+						>
 							OAuth{"\u2001"}<span
 								class="h-1.5 w-1.5 rounded-none bg-purple-500"
 								aria-hidden="true"></span>
@@ -571,9 +599,11 @@ const MetaDescription = T("meta.dashboard.description", {
 					</a>
 					<a
 						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-orange-300">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-orange-300"
+					>
 						<div
-							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-950">
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-orange-200 bg-orange-50 dark:border-orange-800 dark:bg-orange-950"
+						>
 							<span
 								class="text-lg text-orange-600 dark:text-orange-400"
 								aria-hidden="true">&#9881;</span
@@ -586,7 +616,8 @@ const MetaDescription = T("meta.dashboard.description", {
 							</p>
 						</div>
 						<span
-							class="ml-auto inline-flex items-center border border-orange-200 bg-orange-50 px-2 py-0.5 text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300">
+							class="ml-auto inline-flex items-center border border-orange-200 bg-orange-50 px-2 py-0.5 text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300"
+						>
 							Local{"\u2001"}<span
 								class="h-1.5 w-1.5 rounded-none bg-orange-500"
 								aria-hidden="true"></span>
@@ -594,9 +625,11 @@ const MetaDescription = T("meta.dashboard.description", {
 					</a>
 					<a
 						href="/Portal"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-green-300">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-4 bg-card p-5 transition-all hover:border-green-300"
+					>
 						<div
-							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950">
+							class="flex h-10 w-10 shrink-0 items-center justify-center rounded-none border border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950"
+						>
 							<span
 								class="text-lg text-green-600 dark:text-green-400"
 								aria-hidden="true">&#9739;</span
@@ -609,7 +642,8 @@ const MetaDescription = T("meta.dashboard.description", {
 							</p>
 						</div>
 						<span
-							class="ml-auto inline-flex items-center border border-green-200 bg-green-50 px-2 py-0.5 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+							class="ml-auto inline-flex items-center border border-green-200 bg-green-50 px-2 py-0.5 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+						>
 							SSO{"\u2001"}<span
 								class="h-1.5 w-1.5 rounded-none bg-green-500"
 								aria-hidden="true"></span>
@@ -694,7 +728,8 @@ const MetaDescription = T("meta.dashboard.description", {
 							<div class="mt-6 flex flex-wrap items-center gap-3">
 								<a
 									href="/Dashboard?mode=local"
-									class="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100 focus:outline-2 focus:outline-offset-2 focus:outline-orange-400 dark:border-orange-700 dark:bg-orange-950 dark:text-orange-300 dark:hover:bg-orange-900">
+									class="StaccatoButton inline-flex items-center justify-center border border-orange-300 bg-orange-50 px-4 py-2 font-medium text-orange-700 transition-all hover:bg-orange-100 focus:outline-2 focus:outline-offset-2 focus:outline-orange-400 dark:border-orange-700 dark:bg-orange-950 dark:text-orange-300 dark:hover:bg-orange-900"
+								>
 									{T("common.dashboard.editor.scanButton", {
 										defaultValue: "Scan for Daemon",
 									})}
@@ -702,7 +737,8 @@ const MetaDescription = T("meta.dashboard.description", {
 								</a>
 								<a
 									href="/Portal"
-									class="StaccatoButton inline-flex items-center justify-center border border-transparent bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]">
+									class="StaccatoButton inline-flex items-center justify-center border border-transparent bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]"
+								>
 									{T("common.dashboard.editor.connect", {
 										defaultValue: "Connect via Portal",
 									})}
@@ -728,12 +764,14 @@ const MetaDescription = T("meta.dashboard.description", {
 					}
 				</h2>
 				<div
-					class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+					class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4"
+				>
 					<a
 						href="https://github.com/CodeEditorLand"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]"
+					>
 						<picture>
 							<source
 								srcset="/Asset/Dark/Logo/Glyph/Land.svg"
@@ -759,7 +797,8 @@ const MetaDescription = T("meta.dashboard.description", {
 						href="https://PlayForm.Cloud"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]"
+					>
 						<picture>
 							<source
 								srcset="/Dark/Image/PlayForm.svg"
@@ -785,9 +824,11 @@ const MetaDescription = T("meta.dashboard.description", {
 						href="https://nlnet.nl/project/Land/"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer flex items-center gap-3 bg-card p-4 transition-all hover:border-[var(--Primary)]"
+					>
 						<div
-							class="flex h-8 w-8 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] font-bold">
+							class="flex h-8 w-8 shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] font-bold"
+						>
 							NL
 						</div>
 						<div>
@@ -835,10 +876,12 @@ const MetaDescription = T("meta.dashboard.description", {
 				</h2>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card">
 					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] p-5">
+						class="flex items-center justify-between border-b border-[var(--Border)] p-5"
+					>
 						<div>
 							<span
-								class="bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground">
+								class="bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground"
+							>
 								{
 									T("common.comingSoon", {
 										defaultValue: "Coming Soon",
@@ -866,10 +909,12 @@ const MetaDescription = T("meta.dashboard.description", {
 						</div>
 					</div>
 					<div
-						class="flex items-center justify-between border-b border-[var(--Border)] p-5">
+						class="flex items-center justify-between border-b border-[var(--Border)] p-5"
+					>
 						<div>
 							<span
-								class="bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground">
+								class="bg-[var(--Mute)] px-3 py-1 font-medium text-muted-foreground"
+							>
 								{
 									T("common.comingSoon", {
 										defaultValue: "Coming Soon",
@@ -900,7 +945,8 @@ const MetaDescription = T("meta.dashboard.description", {
 					<div class="p-5">
 						<a
 							href="/Account"
-							class="StaccatoButton h- inline-flex items-center justify-center bg-card px-4 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							class="StaccatoButton h- inline-flex items-center justify-center bg-card px-4 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						>
 							{
 								T(
 									"common.dashboard.settings.account.manageButton",

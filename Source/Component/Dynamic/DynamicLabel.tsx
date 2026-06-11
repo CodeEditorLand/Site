@@ -1,4 +1,5 @@
 import { Label } from "../UI/Label";
+
 import type Property from "./Interface/Property/Label.js";
 
 /**
@@ -8,8 +9,11 @@ import type Property from "./Interface/Property/Label.js";
 const DynamicLabel = ({ Content, HTMLFor }: Property) => {
 	const {
 		Text,
+
 		Required = false,
+
 		Disabled = false,
+
 		ClassName,
 		...props
 	} = Content;
@@ -20,7 +24,8 @@ const DynamicLabel = ({ Content, HTMLFor }: Property) => {
 			aria-required={Required}
 			aria-disabled={Disabled}
 			className={ClassName}
-			{...props}>
+			{...props}
+		>
 			{Text}
 		</Label>
 	);

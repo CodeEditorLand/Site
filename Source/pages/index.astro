@@ -22,56 +22,56 @@ const MetaDescription = T("meta.home.description", {
 			set:html={JSON.stringify({
 				"@context": "https://schema.org",
 				"@type": "SoftwareApplication",
-				"name": "Code Editor Land",
-				"alternateName": "Land",
-				"description":
+				name: "Code Editor Land",
+				alternateName: "Land",
+				description:
 					"An open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
-				"url": Astro.site?.href ?? "",
-				"applicationCategory": "DeveloperApplication",
-				"operatingSystem": "macOS, Windows, Linux",
-				"offers": {
+				url: Astro.site?.href ?? "",
+				applicationCategory: "DeveloperApplication",
+				operatingSystem: "macOS, Windows, Linux",
+				offers: {
 					"@type": "Offer",
-					"price": "0",
-					"priceCurrency": "USD",
+					price: "0",
+					priceCurrency: "USD",
 				},
-				"license": "https://creativecommons.org/publicdomain/zero/1.0/",
-				"softwareVersion": "Pre-release",
-				"downloadUrl": `${Astro.site?.href ?? ""}Download`,
-				"screenshot": `${Astro.site?.href ?? ""}Favicon/og-image.png`,
-				"author": [
+				license: "https://creativecommons.org/publicdomain/zero/1.0/",
+				softwareVersion: "Pre-release",
+				downloadUrl: `${Astro.site?.href ?? ""}Download`,
+				screenshot: `${Astro.site?.href ?? ""}Favicon/og-image.png`,
+				author: [
 					{
 						"@type": "Person",
-						"name": "Nikola R. Hristov",
-						"url": "https://github.com/NikolaRHristov",
+						name: "Nikola R. Hristov",
+						url: "https://github.com/NikolaRHristov",
 					},
 					{
 						"@type": "Organization",
-						"name": "Code Editor Land",
-						"url": Astro.site?.href ?? "",
+						name: "Code Editor Land",
+						url: Astro.site?.href ?? "",
 					},
 					{
 						"@type": "Organization",
-						"name": "PlayForm",
-						"url": "https://PlayForm.Cloud",
+						name: "PlayForm",
+						url: "https://PlayForm.Cloud",
 					},
 				],
-				"publisher": {
+				publisher: {
 					"@type": "Organization",
-					"name": "Code Editor Land",
-					"url": Astro.site?.href ?? "",
-					"logo": {
+					name: "Code Editor Land",
+					url: Astro.site?.href ?? "",
+					logo: {
 						"@type": "ImageObject",
-						"url": `${Astro.site?.href ?? ""}Favicon/favicon.svg`,
+						url: `${Astro.site?.href ?? ""}Favicon/favicon.svg`,
 					},
 				},
-				"featureList": [
+				featureList: [
 					"Native Rust backend with gRPC IPC",
 					"VS Code API compatibility through Cocoon",
 					"Effect-TS type-safe UI services",
 					"Source build targets for macOS, Windows, and Linux",
 					"Open source under CC0 license",
 				],
-				"isAccessibleForFree": true,
+				isAccessibleForFree: true,
 			})}
 		/>
 	</Fragment>
@@ -82,7 +82,8 @@ const MetaDescription = T("meta.home.description", {
 		MetaDescription={MetaDescription}
 	/>
 	<div
-		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 py-10 text-muted-foreground">
+		class="container mx-auto flex flex-wrap items-center justify-center gap-3 px-4 py-10 text-muted-foreground"
+	>
 		<picture>
 			<source
 				srcset="/Asset/Dark/Logo/Glyph/Land.svg"
@@ -99,7 +100,8 @@ const MetaDescription = T("meta.home.description", {
 		</picture>
 		<span
 			class="inline-flex items-center border px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide"
-			style="border-color:var(--SpinegRPC);color:var(--SpinegRPCFore);background-color:var(--SpinegRPCMute)">
+			style="border-color:var(--SpinegRPC);color:var(--SpinegRPCFore);background-color:var(--SpinegRPCMute)"
+		>
 			Telemetry Feature Gated&#x2001;<span
 				class="h-1.5 w-1.5 rounded-none"
 				style="background-color:var(--SpinegRPC)"
@@ -107,7 +109,8 @@ const MetaDescription = T("meta.home.description", {
 		</span>
 		<span
 			class="inline-flex items-center border px-2.5 py-0.5 align-middle font-mono text-[11px] font-medium uppercase tracking-wide"
-			style="border-color:var(--SpinegRPC);color:var(--SpinegRPCFore);background-color:var(--SpinegRPCMute)">
+			style="border-color:var(--SpinegRPC);color:var(--SpinegRPCFore);background-color:var(--SpinegRPCMute)"
+		>
 			CC0 Licensed&#x2001;<picture class="inline-flex align-middle">
 				<source
 					srcset="/Dark/Image/CC0.svg"
@@ -126,7 +129,8 @@ const MetaDescription = T("meta.home.description", {
 		</span>
 		<span
 			class="inline-flex items-center border px-2.5 py-0.5 align-middle font-mono text-[11px] font-medium uppercase tracking-wide"
-			style="border-color:var(--SpineIPC);color:var(--SpineIPCFore);background-color:var(--SpineIPCMute)">
+			style="border-color:var(--SpineIPC);color:var(--SpineIPCFore);background-color:var(--SpineIPCMute)"
+		>
 			Rust&#x2001;<picture class="inline-flex align-middle">
 				<source
 					srcset="/Dark/Image/Rust.svg"
@@ -142,7 +146,8 @@ const MetaDescription = T("meta.home.description", {
 					aria-hidden="true"
 				/>
 			</picture>&#x2001;+&#x2001;Tauri&#x2001;<picture
-				class="inline-flex align-middle">
+				class="inline-flex align-middle"
+			>
 				<source
 					srcset="/Dark/Image/Tauri.svg"
 					media="(prefers-color-scheme: dark)"
@@ -160,7 +165,8 @@ const MetaDescription = T("meta.home.description", {
 		</span>
 		<span
 			class="inline-flex items-center border px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide"
-			style="border-color:var(--Border);color:var(--MuteForeground)">
+			style="border-color:var(--Border);color:var(--MuteForeground)"
+		>
 			VS Code API In Progress
 		</span>
 		<a
@@ -168,13 +174,15 @@ const MetaDescription = T("meta.home.description", {
 			target="_blank"
 			rel="noopener noreferrer"
 			class="inline-flex items-center border px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide transition-colors hover:text-foreground"
-			style="border-color:var(--Border);color:var(--MuteForeground)">
+			style="border-color:var(--Border);color:var(--MuteForeground)"
+		>
 			PlayForm
 		</a>
 		<a
 			href="/"
 			class="inline-flex items-center border px-2.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide transition-colors hover:text-foreground"
-			style="border-color:var(--Border);color:var(--MuteForeground)">
+			style="border-color:var(--Border);color:var(--MuteForeground)"
+		>
 			CodeEditorLand
 		</a>
 	</div>

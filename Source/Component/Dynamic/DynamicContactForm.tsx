@@ -1,7 +1,9 @@
 "use client";
 
 import { useAuth0 } from "@auth0/auth0-react";
+
 import { Copy, Mail, MessageSquare } from "lucide-react";
+
 import { useState } from "react";
 
 import {
@@ -10,6 +12,7 @@ import {
 	GeneratePairId,
 	type RequestConfig,
 } from "../../Library/Contact/Request.js";
+
 import Auth0Provider from "../Provider/Auth0Provider.js";
 
 // ── Exported wrapper (Auth0 context) ──────────────────────────────────────
@@ -20,7 +23,9 @@ export default ({
 	ClientIdentifier,
 }: {
 	Config: RequestConfig;
+
 	Domain?: string;
+
 	ClientIdentifier?: string;
 }) => (
 	<Auth0Provider
@@ -34,12 +39,19 @@ export default ({
 
 const ProviderLabel = (Sub?: string): string => {
 	if (!Sub) return "Email / Password";
+
 	if (Sub.startsWith("google-oauth2|")) return "Google";
+
 	if (Sub.startsWith("github|")) return "GitHub";
+
 	if (Sub.startsWith("gitlab|")) return "GitLab";
+
 	if (Sub.startsWith("okta|")) return "Okta SSO";
+
 	if (Sub.startsWith("samlp|")) return "SAML SSO";
+
 	if (Sub.startsWith("waad|")) return "Azure AD";
+
 	return "Auth0";
 };
 
@@ -47,11 +59,13 @@ const ProviderLabel = (Sub?: string): string => {
 
 const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 	const { user: User } = useAuth0();
+
 	const Year = new Date().getFullYear();
 
 	// Build initial values - prefill from Auth0 where possible
 	const InitialValues = (): Record<string, string | string[]> => {
 		const V: Record<string, string | string[]> = {};
+
 		for (const Field of Config.Fields) {
 			if (Field.prefill === "name")
 				V[Field.id] = User?.name || User?.nickname || "";
@@ -62,6 +76,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			else if (Field.type === "checkboxes") V[Field.id] = [];
 			else V[Field.id] = "";
 		}
+
 		return V;
 	};
 
@@ -72,27 +87,35 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 	const [Values, SetValues] =
 		useState<Record<string, string | string[]>>(InitialValues);
+
 	const [CopyState, SetCopyState] = useState<"idle" | "copied">("idle");
+
 	const [Errors, SetErrors] = useState<Record<string, string>>({});
 
 	const HandleChange = (Id: string, Value: string | string[]) => {
 		SetValues((Prev) => ({ ...Prev, [Id]: Value }));
+
 		SetErrors((Prev) => ({ ...Prev, [Id]: "" }));
 	};
 
 	const HandleCheckboxGroup = (Id: string, Option: string) => {
 		const Current = (Values[Id] as string[]) || [];
+
 		const Next = Current.includes(Option)
 			? Current.filter((V) => V !== Option)
 			: [...Current, Option];
+
 		HandleChange(Id, Next);
 	};
 
 	const Validate = (): boolean => {
 		const NewErrors: Record<string, string> = {};
+
 		for (const Field of Config.Fields) {
 			if (!Field.required) continue;
+
 			const Value = Values[Field.id];
+
 			if (Field.type === "checkbox" && Value !== "true") {
 				NewErrors[Field.id] = "This confirmation is required.";
 			} else if (
@@ -108,18 +131,26 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				NewErrors[Field.id] = "This field is required.";
 			}
 		}
+
 		SetErrors(NewErrors);
+
 		return Object.keys(NewErrors).length === 0;
 	};
 
 	const HandleCopy = async () => {
 		if (!Validate()) return;
+
 		const Body = BuildEmailBody(Config, Values, Year, PairId);
+
 		const Subject = `[${Config.Code}-${PairId}] ${Config.Title} Request`;
+
 		const Full = `To: ${Config.To}\nSubject: ${Subject}\n\n${Body}`;
+
 		try {
 			await navigator.clipboard.writeText(Full);
+
 			SetCopyState("copied");
+
 			setTimeout(() => SetCopyState("idle"), 3000);
 		} catch {
 			// Clipboard not available
@@ -144,7 +175,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				<div className="flex flex-wrap items-center gap-3">
 					<span
 						className={`inline-flex items-center gap-2 border px-3 py-1 text-foreground`}
-						title="Pair reference - income code + instance ID. Quote this in all replies.">
+						title="Pair reference - income code + instance ID. Quote this in all replies."
+					>
 						{Config.Code}-{PairId}
 					</span>
 					{Config.Article && (
@@ -170,6 +202,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 			<div className="StaccatoCard space-y-5 bg-card p-6">
 				{Config.Fields.map((Field) => {
 					const Value = Values[Field.id];
+
 					const Error = Errors[Field.id];
 
 					if (Field.type === "checkbox") {
@@ -183,6 +216,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 										onChange={(E) =>
 											HandleChange(
 												Field.id,
+
 												E.target.checked
 													? "true"
 													: "false",
@@ -204,6 +238,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 
 					if (Field.type === "checkboxes") {
 						const Selected = (Value as string[]) || [];
+
 						return (
 							<div key={Field.id}>
 								<label className="mb-2 block text-sm font-medium">
@@ -211,7 +246,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									{Field.required && (
 										<span
 											className="ml-1 text-red-500"
-											aria-hidden="true">
+											aria-hidden="true"
+										>
 											*
 										</span>
 									)}
@@ -220,7 +256,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									{(Field.options || []).map((Opt) => (
 										<label
 											key={Opt}
-											className="flex cursor-pointer items-center gap-2.5 text-sm">
+											className="flex cursor-pointer items-center gap-2.5 text-sm"
+										>
 											<input
 												type="checkbox"
 												className="accent-[var(--Primary)]"
@@ -228,6 +265,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 												onChange={() =>
 													HandleCheckboxGroup(
 														Field.id,
+
 														Opt,
 													)
 												}
@@ -250,12 +288,14 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 							<div key={Field.id}>
 								<label
 									htmlFor={Field.id}
-									className="mb-1 block text-sm font-medium">
+									className="mb-1 block text-sm font-medium"
+								>
 									{Field.label}
 									{Field.required && (
 										<span
 											className="ml-1 text-red-500"
-											aria-hidden="true">
+											aria-hidden="true"
+										>
 											*
 										</span>
 									)}
@@ -266,7 +306,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									value={(Value as string) || ""}
 									onChange={(E) =>
 										HandleChange(Field.id, E.target.value)
-									}>
+									}
+								>
 									<option value="">Select...</option>
 									{(Field.options || []).map((Opt) => (
 										<option key={Opt} value={Opt}>
@@ -288,12 +329,14 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 							<div key={Field.id}>
 								<label
 									htmlFor={Field.id}
-									className="mb-1 block text-sm font-medium">
+									className="mb-1 block text-sm font-medium"
+								>
 									{Field.label}
 									{Field.required && (
 										<span
 											className="ml-1 text-red-500"
-											aria-hidden="true">
+											aria-hidden="true"
+										>
 											*
 										</span>
 									)}
@@ -327,12 +370,14 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						<div key={Field.id}>
 							<label
 								htmlFor={Field.id}
-								className="mb-1 block text-sm font-medium">
+								className="mb-1 block text-sm font-medium"
+							>
 								{Field.label}
 								{Field.required && (
 									<span
 										className="ml-1 text-red-500"
-										aria-hidden="true">
+										aria-hidden="true"
+									>
 										*
 									</span>
 								)}
@@ -372,7 +417,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				<a
 					href={MailtoHref}
 					onClick={Validate}
-					className={`StaccatoButton flex w-full items-center gap-3 border px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)] ${Config.Destructive ? "border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950" : "border-[var(--Border)]"}`}>
+					className={`StaccatoButton flex w-full items-center gap-3 border px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)] ${Config.Destructive ? "border-red-200 hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-950" : "border-[var(--Border)]"}`}
+				>
 					<Mail className="h-4 w-4 shrink-0" aria-hidden="true" />
 					<div className="flex-1 text-left">
 						<div className="font-medium">Open in email client</div>
@@ -387,7 +433,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				<button
 					type="button"
 					onClick={HandleCopy}
-					className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)]">
+					className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)]"
+				>
 					<Copy className="h-4 w-4 shrink-0" aria-hidden="true" />
 					<div className="flex-1 text-left">
 						<div className="font-medium">
@@ -412,7 +459,8 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 						href={Config.ConversationHref}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)]">
+						className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-[var(--Primary)]"
+					>
 						<MessageSquare
 							className="h-4 w-4 shrink-0"
 							aria-hidden="true"

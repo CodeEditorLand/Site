@@ -13,7 +13,7 @@
 	},
 	"license": "SEE LICENSE IN LICENSE",
 	"author": {
-		"name": "Source\u2001\ud83d\udd8b\ufe0f\u2001Open\u2001\ud83d\udc50\ud83c\udffb",
+		"name": "Source 🖋️ Open 👐🏻",
 		"email": "Source/Open@editor.land",
 		"url": "https://editor.land"
 	},
@@ -29,6 +29,7 @@
 	],
 	"scripts": {
 		"Run": "astro dev --host",
+		"Format": "sh Maintain/Format.sh",
 		"prepublishOnly": "astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"

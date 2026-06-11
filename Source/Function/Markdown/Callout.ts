@@ -20,18 +20,23 @@ function Walk(Node: { type: string; children?: object[] }) {
 
 interface Blockquote {
 	type: string;
+
 	children: Paragraph[];
+
 	data?: object;
 }
 
 interface Paragraph {
 	type: string;
+
 	children?: Text[];
+
 	data?: object;
 }
 
 interface Text {
 	type: string;
+
 	value: string;
 }
 
@@ -49,6 +54,7 @@ function Transform(Node: Blockquote) {
 	if (!Match) return;
 
 	const Type = Match[1].toLowerCase();
+
 	const Label = Type.charAt(0).toUpperCase() + Type.slice(1);
 
 	FirstText.value = FirstText.value.slice(Match[0].length).trimStart();
@@ -60,16 +66,20 @@ function Transform(Node: Blockquote) {
 
 	Node.data = {
 		hName: "div",
+
 		hProperties: { class: `markdown-alert markdown-alert-${Type}` },
 	};
 
 	Node.children = [
 		{
 			type: "paragraph",
+
 			data: {
 				hName: "p",
+
 				hProperties: { class: "markdown-alert-title" },
 			},
+
 			children: [{ type: "text", value: Label }],
 		} as Paragraph,
 		...Body,

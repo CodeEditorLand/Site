@@ -92,9 +92,9 @@ reports:
 - Update channel availability checks (version comparison results)
 
 These are emitted as PostHog events under `land:air:*` and as OTLP spans.
-Mountain reads Air's health reports over the local gRPC connection and can
-expose aggregate health state to the workbench UI through the
-`nativeHost:getHealthStatus` IPC handler.
+Mountain reads Air's health reports over the local gRPC connection on port
+50053 (`NetworkAirPort`, default 50053) and can expose aggregate health state to
+the workbench UI through the `nativeHost:getHealthStatus` IPC handler.
 
 ## Mist DNS Metrics
 

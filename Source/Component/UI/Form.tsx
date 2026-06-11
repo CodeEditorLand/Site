@@ -1,8 +1,11 @@
 "use client";
 
 import * as LabelPrimitive from "@radix-ui/react-label";
+
 import { Slot } from "@radix-ui/react-slot";
+
 import * as React from "react";
+
 import {
 	Controller,
 	FormProvider,
@@ -14,6 +17,7 @@ import {
 } from "react-hook-form";
 
 import { Label } from "./Label";
+
 import { cn } from "./Utility";
 
 const Form = FormProvider;
@@ -44,9 +48,13 @@ const FormField = <
 
 const UseFormField = () => {
 	const fieldContext = React.useContext(FormFieldContext);
+
 	const itemContext = React.useContext(FormItemContext);
+
 	const { getFieldState } = useFormContext();
+
 	const formState = useFormState({ name: fieldContext.name });
+
 	const fieldState = getFieldState(fieldContext.name, formState);
 
 	if (!fieldContext) {
@@ -57,9 +65,13 @@ const UseFormField = () => {
 
 	return {
 		id,
+
 		name: fieldContext.name,
+
 		formItemId: `${id}-form-item`,
+
 		formDescriptionId: `${id}-form-item-description`,
+
 		formMessageId: `${id}-form-item-message`,
 		...fieldState,
 	};
@@ -138,6 +150,7 @@ function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
 
 function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 	const { error, formMessageId } = UseFormField();
+
 	const body = error ? String(error?.message ?? "") : props.children;
 
 	if (!body) {
@@ -149,7 +162,8 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 			data-slot="form-message"
 			id={formMessageId}
 			className={cn("text-destructive", className)}
-			{...props}>
+			{...props}
+		>
 			{body}
 		</p>
 	);

@@ -64,12 +64,23 @@ export Trace=all Record=1 Disable=false
 The script compiles the Rust workspace, bundles Cocoon and Output via ESBuild,
 compiles Sky and Wind via Vite/Astro, and signs the resulting `.app` bundle.
 
+> [!NOTE] If the application crashes immediately on macOS with a permission or
+> code-signing error, re-run the signing script manually:
+>
+> ```sh
+> BundleLevel=debug sh Maintain/Script/SignBundle.sh
+> ```
+>
+> This strips quarantine bits and re-signs the bundle with the entitlements from
+> `Element/Mountain/Entitlements.plist`. `Build.sh` calls this automatically,
+> but a manual re-sign is needed if you copy or move the `.app` after building.
+
 ## Launch
 
 After a successful build, the application binary is at:
 
 ```text
-Element/Mountain/Target/debug-electron/Mountain
+Element/Mountain/Target/debug/Mountain
 ```
 
 Or use the `--run` flag to launch immediately after the build completes:
@@ -98,7 +109,7 @@ These variables are read from `.env.Land*` files in the repository root. Copy
 | Profile                       | Workbench | Purpose                                                                        |
 | ----------------------------- | --------- | ------------------------------------------------------------------------------ |
 | `debug-electron-bundled`      | Electron  | Full bundled Vite/Astro compiled workbench - recommended for daily development |
-| `debug-electron-unbundled`    | Electron  | Dynamic-import path, faster iteration on Sky/Wind                              |
+| `debug-electron`              | Electron  | Full feature set, 95%+ coverage                                                |
 | `debug-mountain`              | Mountain  | Mountain workbench, 80-90% API coverage                                        |
 | `debug`                       | Browser   | Browser workbench, 70-80% API coverage                                         |
 | `production-electron-bundled` | Electron  | Optimized release build                                                        |

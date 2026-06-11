@@ -1,6 +1,7 @@
 "use client";
 
 import * as SwitchPrimitive from "@radix-ui/react-switch";
+
 import * as React from "react";
 
 import { cn } from "./Utility";
@@ -16,7 +17,8 @@ function Switch({
 				"data-[state=unchecked]:bg-switch-background focus-visible:ring-ring/50 peer inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-none border border-transparent outline-none transition-all focus-visible:border-ring focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<SwitchPrimitive.Thumb
 				data-slot="switch-thumb"
 				className={cn(

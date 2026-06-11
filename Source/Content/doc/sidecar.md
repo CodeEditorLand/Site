@@ -60,17 +60,17 @@ SideCar organizes vendored binaries by target triple:
 SideCar/
     aarch64-apple-darwin/
         NODE/
-            22/
+            24/
                 bin/
                     node
     x86_64-apple-darwin/
         NODE/
-            22/
+            24/
                 bin/
                     node
     x86_64-pc-windows-msvc/
         NODE/
-            22/
+            24/
                 node.exe
     ...
     Cache.json
@@ -82,8 +82,11 @@ when a new version is requested, when SHA-256 verification fails on the cached
 file, or when the cache is manually cleared.
 
 > [!IMPORTANT] The populated SideCar directory contains large third-party
-> binaries and should not be committed to version control. Run the download tool
-> once during initial project setup or as part of the CI release pipeline.
+> binaries and should not be committed to version control directly. When binary
+> tracking is required, binaries are managed via Git LFS; the `.gitattributes`
+> in the SideCar element marks the known binary extensions for LFS tracking. Run
+> the download tool once during initial project setup or as part of the CI
+> release pipeline.
 
 ## How Mountain uses SideCar
 

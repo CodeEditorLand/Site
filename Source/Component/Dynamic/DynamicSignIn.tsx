@@ -5,7 +5,9 @@
  * and "forgot password" link. Submits to Auth0 via Auth0AccountGate.
  */
 import * as lucide from "lucide-react";
+
 import React, { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import {
@@ -16,8 +18,11 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicInput } from "./DynamicInput";
+
 import type Property from "./Interface/Property/SignIn.js";
 
 /**
@@ -35,18 +40,30 @@ const DynamicSignIn = ({
 }: Property) => {
 	const {
 		Title,
+
 		Description,
+
 		EmailField,
+
 		PasswordField,
+
 		SubmitButton,
+
 		OauthButton,
+
 		ShowDivider = true,
+
 		FooterLinks,
 	} = Content;
+
 	const [Email, SetEmail] = useState("");
+
 	const [Password, SetPassword] = useState("");
+
 	const [ShowPassword, SetShowPassword] = useState(false);
+
 	const [, SetErrors] = useState<{ email?: string; password?: string }>({});
+
 	const { t: T } = useTranslation("account");
 
 	const Validate = () => {
@@ -63,11 +80,13 @@ const DynamicSignIn = ({
 		}
 
 		SetErrors(NewErrors);
+
 		return Object.keys(NewErrors).length === 0;
 	};
 
 	const HandleSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
+
 		if (!IsLoading && Validate()) {
 			OnSubmit?.(Email, Password);
 		}
@@ -86,12 +105,14 @@ const DynamicSignIn = ({
 							<form
 								className="space-y-4"
 								onSubmit={HandleSubmit}
-								aria-label="Sign in form">
+								aria-label="Sign in form"
+							>
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
 											className="bg-destructive/10 rounded-none p-3 text-destructive"
-											role="alert">
+											role="alert"
+										>
 											{ErrorMessage}
 										</div>
 									)}
@@ -132,7 +153,8 @@ const DynamicSignIn = ({
 										}
 										onClick={() =>
 											SetShowPassword(!ShowPassword)
-										}>
+										}
+									>
 										{ShowPassword ? (
 											<lucide.EyeOff
 												className="h-4 w-4"
@@ -191,7 +213,8 @@ const DynamicSignIn = ({
 											OnNavigate?.(
 												FooterLinks.SignUp.Href,
 											)
-										}>
+										}
+									>
 										{FooterLinks.SignUp.Label}
 									</button>
 									<p className="mt-1 text-muted-foreground">
@@ -209,7 +232,8 @@ const DynamicSignIn = ({
 											OnNavigate?.(
 												FooterLinks.ForgotPassword.Href,
 											)
-										}>
+										}
+									>
 										{FooterLinks.ForgotPassword.Label}
 									</button>
 									<p className="mt-1 text-muted-foreground">

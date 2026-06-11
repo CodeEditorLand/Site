@@ -1,13 +1,19 @@
 "use client";
 
 import { ThemeImage } from "@Library/Theme";
+
 import * as lucide from "lucide-react";
+
 import { useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import { Button } from "../UI/Button";
+
 import { IconTooltip } from "../UI/IconTooltip.js";
+
 import { ThemeToggle } from "../UI/ThemeToggle";
+
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 import "../Layout/Header/Stylesheet.css";
@@ -18,87 +24,132 @@ import "../Layout/Header/Stylesheet.css";
  */
 const IconRegistry: Record<string, lucide.LucideIcon> = {
 	Sparkles: lucide.Sparkles,
+
 	Download: lucide.Download,
+
 	BookOpen: lucide.BookOpen,
+
 	GitFork: lucide.GitFork,
+
 	ExternalLink: lucide.ExternalLink,
+
 	Newspaper: lucide.Newspaper,
+
 	Users: lucide.Users,
+
 	LayoutDashboard: lucide.LayoutDashboard,
+
 	HelpCircle: lucide.HelpCircle,
+
 	LogIn: lucide.LogIn,
+
 	Monitor: lucide.Monitor,
 };
 
 interface NavigationLink {
 	Label: string;
+
 	Href: string;
+
 	Icon?: string;
+
 	Tooltip?: string | string[];
 }
 
 export interface HeaderContent {
 	Logo?: { Text: string };
+
 	Navigation?: NavigationLink[];
+
 	Actions?: Array<{
 		Type?: string;
+
 		Text: string;
+
 		Variant?: string;
+
 		Size?: string;
+
 		Href?: string;
+
 		Icon?: string;
+
 		Tooltip?: string | string[];
 	}>;
 }
 
 interface HeaderProps {
 	Content?: HeaderContent;
+
 	AuthSlot?: React.ReactNode;
 }
 
 const Header = ({ Content, AuthSlot }: HeaderProps) => {
 	const { t: T } = useTranslation("header");
+
 	const [NavMenuOpen, SetNavMenuOpen] = useState(false);
+
 	const [MobileMenuOpen, SetMobileMenuOpen] = useState(false);
 
 	const HeaderData: HeaderContent = Content || {
 		Logo: { Text: T("logo", "Land") },
+
 		Navigation: [
 			{
 				Label: T("nav.features", "Features"),
+
 				Href: "/#features",
 			},
+
 			{
 				Label: T("nav.download", "Download"),
+
 				Href: "/Download",
 			},
+
 			{
 				Label: T("nav.docs", "Documentation"),
+
 				Href: "/Doc",
 			},
+
 			{
 				Label: T("nav.github", "GitHub"),
+
 				Href: "https://github.com/CodeEditorLand/Land",
 			},
 		],
+
 		Actions: [
 			{
 				Text: T("actions.signIn", "Sign In"),
+
 				Variant: "ghost",
+
 				Size: "default",
+
 				Href: "/Account/SignIn",
 			},
+
 			{
 				Text: T("actions.editorPortal", "Portal"),
+
 				Variant: "ghost",
+
 				Size: "default",
+
 				Href: "/Portal",
 			},
+
 			{
 				Text: T("actions.getStarted", "Get Land"),
+
 				Variant: "default",
+
 				Size: "default",
+
 				Href: "/Download",
+
 				Icon: "Download",
 			},
 		],
@@ -106,12 +157,17 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 
 	const RenderActionIcon = (
 		IconName?: string,
+
 		Label?: string,
+
 		Tooltip?: string | string[],
 	) => {
 		if (!IconName) return null;
+
 		const Icon = IconRegistry[IconName];
+
 		if (!Icon) return null;
+
 		return (
 			<>
 				{"\u2001"}
@@ -134,7 +190,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 					onClick={OnClick}
 					{...(Link.Href.startsWith("http")
 						? { target: "_blank", rel: "noopener noreferrer" }
-						: {})}>
+						: {})}
+				>
 					<span className="HeaderLinkLabel font-mono text-xs font-medium uppercase tracking-widest">
 						{Link.Label}
 					</span>
@@ -148,12 +205,14 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 		FullWidth,
 	}: {
 		OnClick?: () => void;
+
 		FullWidth?: boolean;
 	}) => (
 		<>
 			{AuthSlot ? (
 				<>
 					{AuthSlot}
+
 					{HeaderData.Actions?.filter(
 						(Action) => Action.Href !== "/Account/SignIn",
 					).map((Action, Index) => (
@@ -174,7 +233,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 									? "StaccatoButton w-full justify-start"
 									: "StaccatoButton"
 							}
-							asChild>
+							asChild
+						>
 							<a href={Action.Href} onClick={OnClick}>
 								{Action.Text}
 								{RenderActionIcon(
@@ -205,7 +265,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 								? "StaccatoButton w-full justify-start"
 								: "StaccatoButton"
 						}
-						asChild>
+						asChild
+					>
 						<a href={Action.Href} onClick={OnClick}>
 							{Action.Text}
 							{RenderActionIcon(
@@ -229,10 +290,12 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 					<a
 						href="/"
 						className="StaccatoLogo HeaderLogo flex items-center space-x-3 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-						aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}>
+						aria-label={`${HeaderData.Logo?.Text || "Land"} - Go to homepage`}
+					>
 						<div
 							className="LogoBox relative flex h-8 w-8 items-center justify-center overflow-hidden"
-							aria-hidden="true">
+							aria-hidden="true"
+						>
 							<ThemeImage
 								src="/Asset/Logo/Glyph/Land.svg"
 								alt="Code Editor Land"
@@ -250,7 +313,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 					{/* Inline nav - desktop only (lg+) */}
 					<nav
 						className="ml-2 hidden items-center lg:flex"
-						aria-label="Main navigation">
+						aria-label="Main navigation"
+					>
 						{HeaderData.Navigation?.map((Link, Index) => (
 							<a
 								key={Index}
@@ -261,7 +325,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 											target: "_blank",
 											rel: "noopener noreferrer",
 										}
-									: {})}>
+									: {})}
+							>
 								<span className="HeaderLinkLabel font-mono text-xs font-medium uppercase tracking-widest">
 									{Link.Label}
 								</span>
@@ -276,7 +341,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						className="hidden md:flex lg:hidden"
 						onClick={() => SetNavMenuOpen(!NavMenuOpen)}
 						aria-label="Toggle navigation"
-						aria-expanded={NavMenuOpen}>
+						aria-expanded={NavMenuOpen}
+					>
 						{NavMenuOpen ? (
 							<lucide.X className="h-5 w-5" />
 						) : (
@@ -300,7 +366,8 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						className="md:hidden"
 						onClick={() => SetMobileMenuOpen(!MobileMenuOpen)}
 						aria-label="Toggle menu"
-						aria-expanded={MobileMenuOpen}>
+						aria-expanded={MobileMenuOpen}
+					>
 						{MobileMenuOpen ? (
 							<lucide.X className="h-5 w-5" />
 						) : (
@@ -315,10 +382,12 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				<div
 					className="NavDropdown hidden bg-card md:block lg:hidden"
 					role="dialog"
-					aria-label="Navigation menu">
+					aria-label="Navigation menu"
+				>
 					<nav
 						className="container mx-auto flex flex-col gap-1 px-4 py-4"
-						aria-label="Site navigation">
+						aria-label="Site navigation"
+					>
 						<NavLinks OnClick={() => SetNavMenuOpen(false)} />
 					</nav>
 				</div>
@@ -329,10 +398,12 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 				<div
 					className="bg-card md:hidden"
 					role="dialog"
-					aria-label="Mobile navigation menu">
+					aria-label="Mobile navigation menu"
+				>
 					<nav
 						className="container mx-auto flex flex-col gap-1 px-4 py-4"
-						aria-label="Mobile navigation">
+						aria-label="Mobile navigation"
+					>
 						<NavLinks OnClick={() => SetMobileMenuOpen(false)} />
 						<div className="my-1.5 border-t border-border" />
 						<div className="px-4 py-3">

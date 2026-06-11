@@ -24,7 +24,9 @@ export const GET: APIRoute = async ({ params }) => {
 	if (StaticMeta) {
 		const Svg = GenerateOpenGraphSvg(
 			StaticMeta.Title,
+
 			StaticMeta.Description,
+
 			StaticMeta.Section,
 		);
 
@@ -51,7 +53,9 @@ export const GET: APIRoute = async ({ params }) => {
 			if (BlogEntry) {
 				const Svg = GenerateOpenGraphSvg(
 					BlogEntry.data.title,
+
 					BlogEntry.data.summary ?? BlogEntry.data.title,
+
 					"Blog",
 				);
 
@@ -82,7 +86,9 @@ export const GET: APIRoute = async ({ params }) => {
 			if (DocEntry) {
 				const Svg = GenerateOpenGraphSvg(
 					DocEntry.data.title,
+
 					DocEntry.data.description ?? DocEntry.data.title,
+
 					"Doc",
 				);
 
@@ -104,6 +110,7 @@ export const GET: APIRoute = async ({ params }) => {
 
 	const Svg = GenerateOpenGraphSvg(
 		FallbackTitle,
+
 		"The next-generation code editor built with Rust and Tauri.",
 	);
 

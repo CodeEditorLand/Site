@@ -50,14 +50,16 @@ const Posts = BlogEntries.map((Entry) => ({
 	Title={MetaTitle}
 	Description={MetaDescription}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<Header client:load />
 
 	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
 			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+			>
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground"
 						>{
@@ -78,7 +80,8 @@ const Posts = BlogEntries.map((Entry) => ({
 		<header class="mx-auto mb-24 max-w-2xl text-center">
 			<h1
 				id="BlogPostsHeading"
-				class="text-2xl font-semibold tracking-tight sm:text-3xl">
+				class="text-2xl font-semibold tracking-tight sm:text-3xl"
+			>
 				{PageTitle}
 			</h1>
 			<p class="mt-3 whitespace-pre-line text-[var(--MuteForeground)]">
@@ -101,7 +104,8 @@ const Posts = BlogEntries.map((Entry) => ({
 						{Posts.map((Post) => (
 							<a
 								href={`/Blog/${Post.Slug}`}
-								class="block transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+								class="block transition-opacity hover:opacity-80 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							>
 								<article class="StaccatoCard h-full bg-card p-6">
 									{Post.Tags.length > 0 && (
 										<div class="mb-3 flex flex-wrap gap-2">

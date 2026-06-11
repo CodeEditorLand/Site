@@ -17,6 +17,7 @@ const Card = React.forwardRef<
 		/>
 	);
 });
+
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
@@ -31,6 +32,7 @@ const CardHeader = React.forwardRef<
 		/>
 	);
 });
+
 CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef<
@@ -48,6 +50,7 @@ const CardTitle = React.forwardRef<
 		/>
 	);
 });
+
 CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef<
@@ -62,6 +65,7 @@ const CardDescription = React.forwardRef<
 		/>
 	);
 });
+
 CardDescription.displayName = "CardDescription";
 
 const CardContent = React.forwardRef<
@@ -70,6 +74,7 @@ const CardContent = React.forwardRef<
 >(({ className, ...props }, ref) => {
 	return <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />;
 });
+
 CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<
@@ -84,6 +89,7 @@ const CardFooter = React.forwardRef<
 		/>
 	);
 });
+
 CardFooter.displayName = "CardFooter";
 
 export {

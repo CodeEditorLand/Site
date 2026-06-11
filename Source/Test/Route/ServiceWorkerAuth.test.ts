@@ -12,38 +12,55 @@ const ProtectedRoute: Set<string> = new Set([]);
 
 const AuthRoute: Set<string> = new Set([
 	"/Account/SignIn",
+
 	"/Account/SignUp",
+
 	"/Account/ForgotPassword",
+
 	"/Account/ResetPassword",
 ]);
 
 const ApiPrefix: string[] = [
 	"/api/",
+
 	"/auth/",
+
 	"/downloads/",
+
 	"/track",
+
 	"/pageview",
+
 	"/events",
+
 	"/summary",
+
 	"/timeline",
+
 	"/stats/",
+
 	"/status",
 ];
 
 interface AuthState {
 	Token: string;
+
 	ExpiresAt: number;
+
 	UserId: string;
 }
 
 const IsApiRequest = (
 	Pathname: string,
+
 	Origin: string,
+
 	SelfOrigin: string,
 ): boolean => {
 	if (Origin === SelfOrigin) {
 		return ApiPrefix.some((Prefix) => Pathname.startsWith(Prefix));
 	}
+
 	return Origin.endsWith(".workers.dev");
 };
 
@@ -51,8 +68,11 @@ const IsApiRequest = (
 
 interface AuthWriteMessage {
 	Type: "Auth:Write";
+
 	Token: string;
+
 	ExpiresAt: number;
+
 	UserId: string;
 }
 
@@ -79,7 +99,9 @@ const EvaluateAuthGate = (Path: string, IsAuthed: boolean): AuthGateResult => {
 	if (ProtectedRoute.has(Path) && !IsAuthed) {
 		return {
 			Action: "Redirect",
+
 			Target: `/Account/SignIn?next=${Path}`,
+
 			Code: 302,
 		};
 	}
@@ -87,7 +109,9 @@ const EvaluateAuthGate = (Path: string, IsAuthed: boolean): AuthGateResult => {
 	if (AuthRoute.has(Path) && IsAuthed) {
 		return {
 			Action: "Redirect",
+
 			Target: "/Dashboard",
+
 			Code: 302,
 		};
 	}
@@ -107,8 +131,11 @@ describe("ServiceWorker Auth:Write message", () => {
 		};
 
 		expect(ValidMessage.Type).toBe("Auth:Write");
+
 		expect(ValidMessage.Token).toBeTruthy();
+
 		expect(ValidMessage.ExpiresAt).toBeGreaterThan(Date.now());
+
 		expect(ValidMessage.UserId).toBeTruthy();
 	});
 
@@ -162,7 +189,9 @@ describe("ServiceWorker Auth:Read message", () => {
 		};
 
 		expect(MockReply.Type).toBe("Auth:State");
+
 		expect(MockReply.State).toBeTruthy();
+
 		expect(MockReply.State.Token).toBe("jwt-token");
 	});
 
@@ -173,6 +202,7 @@ describe("ServiceWorker Auth:Read message", () => {
 		};
 
 		expect(MockReply.Type).toBe("Auth:State");
+
 		expect(MockReply.State).toBeNull();
 	});
 });
@@ -209,6 +239,7 @@ describe("ServiceWorker Auth:Refresh message", () => {
 		};
 
 		expect(MockReply.Type).toBe("Auth:State");
+
 		expect(MockReply.State.Token).toBe("refreshed-jwt-token");
 	});
 });
@@ -241,6 +272,7 @@ describe("Auth route bypass", () => {
 
 		if (Result.Action === "Redirect") {
 			expect(Result.Target).toBe("/Dashboard");
+
 			expect(Result.Code).toBe(302);
 		}
 	});
@@ -337,8 +369,11 @@ describe("API request detection with Bearer token injection", () => {
 
 	it("does not detect non-API same-origin paths", () => {
 		expect(IsApiRequest("/Blog", SelfOrigin, SelfOrigin)).toBe(false);
+
 		expect(IsApiRequest("/Download", SelfOrigin, SelfOrigin)).toBe(false);
+
 		expect(IsApiRequest("/Dashboard", SelfOrigin, SelfOrigin)).toBe(false);
+
 		expect(IsApiRequest("/", SelfOrigin, SelfOrigin)).toBe(false);
 	});
 
@@ -359,23 +394,35 @@ describe("API request HMAC signing contract", () => {
 	it("X-Signature header format covers METHOD, PATH, TIMESTAMP, BODY", () => {
 		// The SW signs: `${Method}\n${PathName}\n${Timestamp}\n${Body}`
 		const Method = "POST";
+
 		const PathName = "/auth/login";
+
 		const Timestamp = Date.now().toString();
+
 		const Body = JSON.stringify({ email: "test@example.com" });
+
 		const Message = `${Method}\n${PathName}\n${Timestamp}\n${Body}`;
 
 		expect(Message).toContain("POST");
+
 		expect(Message).toContain("/auth/login");
+
 		expect(Message).toContain(Timestamp);
+
 		expect(Message).toContain(Body);
+
 		expect(Message.split("\n")).toHaveLength(4);
 	});
 
 	it("GET requests have empty body in signature", () => {
 		const Method = "GET";
+
 		const PathName = "/auth/session";
+
 		const Timestamp = Date.now().toString();
+
 		const Body = "";
+
 		const Message = `${Method}\n${PathName}\n${Timestamp}\n${Body}`;
 
 		expect(Message.endsWith("\n")).toBe(true);
@@ -385,6 +432,7 @@ describe("API request HMAC signing contract", () => {
 describe("Auth state expiry logic", () => {
 	it("considers token expired when ExpiresAt minus 30s buffer is past", () => {
 		const NowMs = Date.now();
+
 		const State: AuthState = {
 			Token: "expired-token",
 			ExpiresAt: NowMs + 20_000, // 20 seconds from now
@@ -399,6 +447,7 @@ describe("Auth state expiry logic", () => {
 
 	it("considers token valid when more than 30s remaining", () => {
 		const NowMs = Date.now();
+
 		const State: AuthState = {
 			Token: "valid-token",
 			ExpiresAt: NowMs + 60_000, // 60 seconds from now
@@ -412,6 +461,7 @@ describe("Auth state expiry logic", () => {
 
 	it("token refresh triggers when less than 5 minutes remain", () => {
 		const NowMs = Date.now();
+
 		const State: AuthState = {
 			Token: "almost-expired",
 			ExpiresAt: NowMs + 4 * 60_000, // 4 minutes from now
@@ -420,6 +470,7 @@ describe("Auth state expiry logic", () => {
 
 		// SW checks: (State.ExpiresAt - Date.now()) / 60_000 > 5
 		const MinutesLeft = (State.ExpiresAt - NowMs) / 60_000;
+
 		const ShouldRefresh = MinutesLeft <= 5;
 
 		expect(ShouldRefresh).toBe(true);
@@ -427,6 +478,7 @@ describe("Auth state expiry logic", () => {
 
 	it("token refresh does not trigger when more than 5 minutes remain", () => {
 		const NowMs = Date.now();
+
 		const State: AuthState = {
 			Token: "fresh-token",
 			ExpiresAt: NowMs + 10 * 60_000, // 10 minutes from now
@@ -434,6 +486,7 @@ describe("Auth state expiry logic", () => {
 		};
 
 		const MinutesLeft = (State.ExpiresAt - NowMs) / 60_000;
+
 		const ShouldRefresh = MinutesLeft <= 5;
 
 		expect(ShouldRefresh).toBe(false);
@@ -451,9 +504,13 @@ describe("Protected and auth route sets", () => {
 
 	it("all four auth routes are registered", () => {
 		expect(AuthRoute.size).toBe(4);
+
 		expect(AuthRoute.has("/Account/SignIn")).toBe(true);
+
 		expect(AuthRoute.has("/Account/SignUp")).toBe(true);
+
 		expect(AuthRoute.has("/Account/ForgotPassword")).toBe(true);
+
 		expect(AuthRoute.has("/Account/ResetPassword")).toBe(true);
 	});
 

@@ -1,6 +1,9 @@
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
+
 import { cva } from "class-variance-authority";
+
 import { ChevronDownIcon } from "lucide-react";
+
 import * as React from "react";
 
 import { cn } from "./Utility";
@@ -21,7 +24,8 @@ function NavigationMenu({
 				"group/navigation-menu relative flex max-w-max flex-1 items-center justify-center",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			{children}
 			{viewport && <NavigationMenuViewport />}
 		</NavigationMenuPrimitive.Root>
@@ -70,7 +74,8 @@ function NavigationMenuTrigger({
 		<NavigationMenuPrimitive.Trigger
 			data-slot="navigation-menu-trigger"
 			className={cn(NavigationMenuTriggerStyle(), "group", className)}
-			{...props}>
+			{...props}
+		>
 			{children}{" "}
 			<ChevronDownIcon
 				className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
@@ -105,7 +110,8 @@ function NavigationMenuViewport({
 		<div
 			className={cn(
 				"absolute left-0 top-full isolate z-50 flex justify-center",
-			)}>
+			)}
+		>
 			<NavigationMenuPrimitive.Viewport
 				data-slot="navigation-menu-viewport"
 				className={cn(
@@ -145,7 +151,8 @@ function NavigationMenuIndicator({
 				"data-[state=visible]:animate-in data-[state=hidden]:animate-out data-[state=hidden]:fade-out data-[state=visible]:fade-in top-full z-[1] flex h-1.5 items-end justify-center overflow-hidden",
 				className,
 			)}
-			{...props}>
+			{...props}
+		>
 			<div className="relative top-[60%] h-2 w-2 rotate-45 rounded-none bg-border" />
 		</NavigationMenuPrimitive.Indicator>
 	);

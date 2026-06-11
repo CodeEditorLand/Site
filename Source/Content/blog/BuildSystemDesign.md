@@ -1,9 +1,7 @@
 ---
-title:
-    "Build System Design: Two-Stage Pipeline, Tier Gating, and Deterministic
+title: "Build System Design: Two-Stage Pipeline, Tier Gating, and Deterministic
     Builds"
-summary:
-    "How Land's build system coordinates VS Code compilation, Rust backend
+summary: "How Land's build system coordinates VS Code compilation, Rust backend
     assembly, and TypeScript bundling through a tier-gated, profile-driven
     pipeline."
 publishedAt: "2026-05-15"
@@ -86,26 +84,26 @@ source changes.
 
 The shell entry points are:
 
-| Script                       | Purpose                                      |
-| ---------------------------- | -------------------------------------------- |
-| `Maintain/Debug/Build.sh`    | Debug build; auto-signs `.app` after tauri   |
-| `Maintain/Release/Build.sh`  | Release build with the same signing step     |
+| Script                          | Purpose                                    |
+| ------------------------------- | ------------------------------------------ |
+| `Maintain/Debug/Build.sh`       | Debug build; auto-signs `.app` after tauri |
+| `Maintain/Release/Build.sh`     | Release build with the same signing step   |
 | `Maintain/Script/SignBundle.sh` | Ad-hoc re-sign with xattr clear + codesign |
-| `Maintain/Debug/Run.sh`      | Launch the built binary without rebuilding   |
+| `Maintain/Debug/Run.sh`         | Launch the built binary without rebuilding |
 
 ## Build Profiles
 
 The `Build.sh` script accepts a `--profile` flag that selects the feature
 coverage and workbench variant:
 
-| Profile                         | Workbench      | Coverage   | Output              |
-| ------------------------------- | -------------- | ---------- | ------------------- |
-| `debug-electron-bundled`        | Electron       | 95%+       | Dev binary (primary) |
-| `debug-electron-unbundled`      | Electron       | 95%+       | Dev binary           |
-| `debug-mountain`                | Mountain       | 80-90%     | Dev binary           |
-| `debug`                         | Browser        | 70-80%     | Dev binary           |
-| `production-electron-bundled`   | Electron       | Optimized  | Prod binary          |
-| `production-electron-unbundled` | Electron       | Release    | Prod binary          |
+| Profile                         | Workbench | Coverage  | Output               |
+| ------------------------------- | --------- | --------- | -------------------- |
+| `debug-electron-bundled`        | Electron  | 95%+      | Dev binary (primary) |
+| `debug-electron-unbundled`      | Electron  | 95%+      | Dev binary           |
+| `debug-mountain`                | Mountain  | 80-90%    | Dev binary           |
+| `debug`                         | Browser   | 70-80%    | Dev binary           |
+| `production-electron-bundled`   | Electron  | Optimized | Prod binary          |
+| `production-electron-unbundled` | Electron  | Release   | Prod binary          |
 
 The `--run` flag launches the application immediately after a successful build.
 
@@ -140,16 +138,16 @@ All environment variable names are PascalCase (`BundleLevel`, `HotReload`,
 
 Common variables:
 
-| Variable                  | Default   | Description                               |
-| ------------------------- | --------- | ----------------------------------------- |
-| `ProductVersion`          | `1.118.0` | Land version and feature tier gate        |
-| `TierFileSystem`          | `Layer2`  | Filesystem implementation tier            |
-| `TierFileWatcher`         | `Layer4`  | File watching implementation tier         |
-| `TierRemoteProcedureCall` | `gRPC`    | IPC transport mechanism                   |
-| `NetworkMountainPort`     | `50051`   | gRPC port for Mountain backend            |
-| `NetworkCocoonPort`       | `50052`   | gRPC port for Cocoon extension host       |
-| `BundleLevel`             | `debug`   | Passed to `SignBundle.sh`                 |
-| `HotReload`               | `false`   | File watch in dev mode                    |
+| Variable                  | Default    | Description                                 |
+| ------------------------- | ---------- | ------------------------------------------- |
+| `ProductVersion`          | `1.118.0`  | Land version and feature tier gate          |
+| `TierFileSystem`          | `Layer2`   | Filesystem implementation tier              |
+| `TierFileWatcher`         | `Layer4`   | File watching implementation tier           |
+| `TierRemoteProcedureCall` | `gRPC`     | IPC transport mechanism                     |
+| `NetworkMountainPort`     | `50051`    | gRPC port for Mountain backend              |
+| `NetworkCocoonPort`       | `50052`    | gRPC port for Cocoon extension host         |
+| `BundleLevel`             | `debug`    | Passed to `SignBundle.sh`                   |
+| `HotReload`               | `false`    | File watch in dev mode                      |
 | `TierIPC`                 | `Mountain` | IPC routing: Mountain / NodeDeferred / Node |
 
 ## Tier Gating
@@ -203,11 +201,11 @@ banner.
 
 All three runtime banners must report identical tier values:
 
-| Element  | Banner mechanism          |
-| -------- | ------------------------- |
-| Mountain | Rust `env!()` banner      |
-| Cocoon   | `LandFixLog.Info` banner  |
-| Wind     | `console.info` banner     |
+| Element  | Banner mechanism         |
+| -------- | ------------------------ |
+| Mountain | Rust `env!()` banner     |
+| Cocoon   | `LandFixLog.Info` banner |
+| Wind     | `console.info` banner    |
 
 A mismatch means one build tool read a different env file.
 
@@ -308,18 +306,18 @@ Land/
 
 ## Key Dependencies
 
-| Crate / Tool      | Role                                              |
-| ----------------- | ------------------------------------------------- |
-| `tauri` 2.x       | Native window, IPC, and app bundle management     |
+| Crate / Tool      | Role                                                       |
+| ----------------- | ---------------------------------------------------------- |
+| `tauri` 2.x       | Native window, IPC, and app bundle management              |
 | `cargo` workspace | Rust element compilation; 51 `[patch.crates-io]` redirects |
-| `pnpm` workspace  | JS element dependency management and workspace protocol |
-| `turborepo`       | TypeScript build graph and cache invalidation     |
-| ESBuild           | Cocoon, Output, Worker compilation                |
-| Vite + Astro      | Sky and Wind UI compilation                       |
-| `rhai`            | Embedded scripting in Maintain                    |
-| `toml_edit`       | Non-lossy TOML modification for `Cargo.toml`      |
-| `json5`           | JSON5 configuration support                       |
-| `clap`            | CLI argument parsing in Maintain                  |
+| `pnpm` workspace  | JS element dependency management and workspace protocol    |
+| `turborepo`       | TypeScript build graph and cache invalidation              |
+| ESBuild           | Cocoon, Output, Worker compilation                         |
+| Vite + Astro      | Sky and Wind UI compilation                                |
+| `rhai`            | Embedded scripting in Maintain                             |
+| `toml_edit`       | Non-lossy TOML modification for `Cargo.toml`               |
+| `json5`           | JSON5 configuration support                                |
+| `clap`            | CLI argument parsing in Maintain                           |
 
 ## Why This Structure
 

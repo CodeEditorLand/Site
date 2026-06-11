@@ -13,9 +13,11 @@ let CachedScrollProgress = 0;
 const UpdateScrollCache = (): void => {
 	const ScrollTop =
 		document.documentElement.scrollTop || document.body.scrollTop;
+
 	const ScrollHeight =
 		document.documentElement.scrollHeight -
 		document.documentElement.clientHeight;
+
 	CachedScrollProgress =
 		ScrollHeight <= 0
 			? 0
@@ -24,6 +26,7 @@ const UpdateScrollCache = (): void => {
 
 if (typeof window !== "undefined") {
 	window.addEventListener("scroll", UpdateScrollCache, { passive: true });
+
 	UpdateScrollCache();
 }
 

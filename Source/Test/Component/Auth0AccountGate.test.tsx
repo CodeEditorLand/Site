@@ -1,6 +1,9 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import React from "react";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import Auth0AccountGate from "../../Component/Dynamic/Auth0AccountGate";
@@ -8,12 +11,16 @@ import Auth0AccountGate from "../../Component/Dynamic/Auth0AccountGate";
 // ─── Auth0 mock ───
 
 const LoginWithRedirectMock = vi.fn();
+
 const LogoutMock = vi.fn();
 
 const Auth0State = {
 	IsLoading: false,
+
 	IsAuthenticated: false,
+
 	Error: null as Error | null,
+
 	User: null as Record<string, unknown> | null,
 };
 
@@ -55,10 +62,15 @@ vi.mock("../../Component/UI/Button", () => ({
 		...Rest
 	}: {
 		children: React.ReactNode;
+
 		onClick?: () => void;
+
 		variant?: string;
+
 		className?: string;
+
 		asChild?: boolean;
+
 		[Key: string]: unknown;
 	}) => (
 		<button onClick={onClick} data-variant={variant} {...Rest}>
@@ -69,15 +81,21 @@ vi.mock("../../Component/UI/Button", () => ({
 
 beforeEach(() => {
 	Auth0State.IsLoading = false;
+
 	Auth0State.IsAuthenticated = false;
+
 	Auth0State.Error = null;
+
 	Auth0State.User = null;
+
 	LoginWithRedirectMock.mockClear();
+
 	LogoutMock.mockClear();
 });
 
 afterEach(() => {
 	cleanup();
+
 	vi.restoreAllMocks();
 });
 
@@ -90,6 +108,7 @@ describe("Auth0AccountGate", () => {
 		const LoadingText = screen.getByText("Loading...");
 
 		expect(LoadingText).toBeInTheDocument();
+
 		expect(screen.getByTestId("header")).toBeInTheDocument();
 	});
 
@@ -99,16 +118,21 @@ describe("Auth0AccountGate", () => {
 		render(<Auth0AccountGate Route="signin" />);
 
 		const ErrorText = screen.getByText(/Authentication error/);
+
 		const ErrorMessage = screen.getByText(/Connection failed/);
+
 		const RetryButton = screen.getByText("Try again");
 
 		expect(ErrorText).toBeInTheDocument();
+
 		expect(ErrorMessage).toBeInTheDocument();
+
 		expect(RetryButton).toBeInTheDocument();
 	});
 
 	it("calls loginWithRedirect when retry button is clicked on error", async () => {
 		Auth0State.Error = new Error("Connection failed");
+
 		const User = UserEvent.setup();
 
 		render(<Auth0AccountGate Route="signin" />);
@@ -126,6 +150,7 @@ describe("Auth0AccountGate", () => {
 
 	it("renders authenticated user profile when isAuthenticated is true", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Nikola Petrov",
 			email: "nikola@editor.land",
@@ -136,18 +161,25 @@ describe("Auth0AccountGate", () => {
 		render(<Auth0AccountGate Route="signin" />);
 
 		const DisplayName = screen.getByText("Nikola Petrov");
+
 		const Email = screen.getByText("nikola@editor.land");
+
 		const DashboardLink = screen.getByText("Go to Dashboard");
+
 		const LogoutButton = screen.getByText("Logout");
 
 		expect(DisplayName).toBeInTheDocument();
+
 		expect(Email).toBeInTheDocument();
+
 		expect(DashboardLink).toBeInTheDocument();
+
 		expect(LogoutButton).toBeInTheDocument();
 	});
 
 	it("shows email not verified warning when email_verified is false", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Test User",
 			email: "test@example.com",
@@ -165,6 +197,7 @@ describe("Auth0AccountGate", () => {
 
 	it("uses nickname fallback when name equals email", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "test@example.com",
 			email: "test@example.com",
@@ -180,6 +213,7 @@ describe("Auth0AccountGate", () => {
 
 	it("shows redirecting message when not authenticated and not loading", () => {
 		Auth0State.IsLoading = false;
+
 		Auth0State.IsAuthenticated = false;
 
 		render(<Auth0AccountGate Route="signin" />);
@@ -191,11 +225,13 @@ describe("Auth0AccountGate", () => {
 
 	it("calls loginWithRedirect on mount for signin route", () => {
 		Auth0State.IsLoading = false;
+
 		Auth0State.IsAuthenticated = false;
 
 		render(<Auth0AccountGate Route="signin" />);
 
 		expect(LoginWithRedirectMock).toHaveBeenCalledTimes(1);
+
 		expect(LoginWithRedirectMock).toHaveBeenCalledWith(
 			expect.objectContaining({
 				authorizationParams: expect.any(Object),
@@ -205,11 +241,13 @@ describe("Auth0AccountGate", () => {
 
 	it("calls loginWithRedirect with screen_hint signup for signup route", () => {
 		Auth0State.IsLoading = false;
+
 		Auth0State.IsAuthenticated = false;
 
 		render(<Auth0AccountGate Route="signup" />);
 
 		expect(LoginWithRedirectMock).toHaveBeenCalledTimes(1);
+
 		expect(LoginWithRedirectMock).toHaveBeenCalledWith(
 			expect.objectContaining({
 				authorizationParams: expect.objectContaining({
@@ -229,6 +267,7 @@ describe("Auth0AccountGate", () => {
 
 	it("does not redirect when already authenticated", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Existing User",
 			email: "user@example.com",
@@ -241,6 +280,7 @@ describe("Auth0AccountGate", () => {
 
 	it("renders user avatar when picture is provided", () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Avatar User",
 			email: "avatar@example.com",
@@ -253,17 +293,21 @@ describe("Auth0AccountGate", () => {
 
 		expect(AvatarImage).toHaveAttribute(
 			"src",
+
 			"https://example.com/photo.jpg",
 		);
+
 		expect(AvatarImage).toHaveAttribute("alt", "Avatar User");
 	});
 
 	it("calls logout when logout button is clicked", async () => {
 		Auth0State.IsAuthenticated = true;
+
 		Auth0State.User = {
 			name: "Logout User",
 			email: "logout@example.com",
 		};
+
 		const User = UserEvent.setup();
 
 		render(<Auth0AccountGate Route="signin" />);

@@ -57,6 +57,13 @@ normal write path to Mountain executes. The extension author sees only a single
 10. The `$participateInSave` gRPC call resolves in Wind.
     `WorkingCopyFileService` passes the collected edits to `IBulkEditService`.
 
+    `workspace.applyEdit()` is fully awaitable: the call is a `sendRequest`
+    round-trip to Mountain rather than a fire-and-forget notification. The
+    caller receives confirmation that the edit was applied to the in-memory
+    model before proceeding. This matters for save participants that
+    conditionally apply further edits based on whether a previous edit
+    succeeded.
+
 11. `BulkEditService` applies every `TextEdit` to the document model in memory.
     The in-editor content now reflects the formatted code without any disk I/O
     yet.
@@ -84,3 +91,12 @@ normal write path to Mountain executes. The extension author sees only a single
 > further change notifications. `BulkEditService` applies edits atomically to
 > the in-memory model, so extensions that listen to `onDidChangeTextDocument`
 > will see a single composite change event rather than one event per `TextEdit`.
+
+## workspace.saveAll
+
+`workspace.saveAll()` calls `Workspace.SaveAll` on Mountain, which iterates
+every open dirty document and flushes each through the standard
+`IFileService.writeFile()` path. An earlier stub incorrectly called
+`Document.Save` with no arguments (which always errored); the current
+implementation routes through `Workspace.SaveAll` and resolves with a boolean
+indicating whether any document was saved.

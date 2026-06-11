@@ -123,3 +123,47 @@ updated.
 integrates with the `Trace` filter system, allowing operators to enable or
 disable specific log categories without a rebuild. Using `console.*` in
 production Cocoon code is now a linting error.
+
+## Effect-TS Runtime Decoupled from Bootstrap
+
+**Problem**: Cocoon's bootstrap and several Wind service layers were tightly
+coupled to the Effect-TS runtime. `Bootstrap.ts` called `NodeRuntime.runMain`,
+which required a fully constructed Effect layer graph before any service could
+start. Wind service files used `Layer.effect` to wire dependencies, which
+deferred initialization until the runtime was ready. The coupling caused
+unnecessary startup overhead and made incremental migration of individual
+services difficult.
+
+**Solution**: Cocoon's bootstrap was rewritten to use plain `async`/`await`
+instead of `NodeRuntime.runMain`. Each bootstrap stage is now a standalone
+`async` function called in sequence. Wind service files were migrated from
+`Layer.effect` to `Layer.succeed` where appropriate, and the filesystem service
+provider was updated to call `TauriInvoke` directly rather than going through a
+managed runtime. An eager `ManagedRuntime` is used for the remaining Effect
+services.
+
+**Why this solution**: Decoupling the bootstrap from the Effect-TS runtime
+reduces the startup critical path and makes the sequence of initialization steps
+explicit and auditable in plain TypeScript. It also eliminates the constraint
+that every service must be expressed as an Effect layer before the system can
+start, which is important for incremental migration of services that are
+straightforward `async` functions with no algebraic effect requirements.
+
+## VS Code API Coverage
+
+**Summary**: Weighted VS Code API coverage reached approximately 88% by
+mid-2026. Per-surface coverage at that milestone:
+
+| API Surface             | Coverage |
+| ----------------------- | -------- |
+| TextEditor object       | 95%      |
+| Workspace API           | 96%      |
+| SCM (source control)    | 95%      |
+| Window API              | 95%      |
+| LSP / Language features | 95%      |
+| Overall weighted        | ~88%     |
+
+The largest remaining gaps at this point were the OAuth authentication backend
+(no live OAuth flow), `registerWebviewPanelSerializer` (panel state not restored
+across reloads), and debug server/pipe adapters for configuration types beyond
+`executable`.

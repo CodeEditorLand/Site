@@ -17,7 +17,7 @@ operations flow through Mountain's Environment providers.
 
 Mountain is the single native process that holds all OS-level capabilities. Wind
 and Sky communicate with it through Tauri commands and events. Cocoon
-communicates with it over the Vine gRPC protocol on port 50052. Mountain does
+communicates with it over the Vine gRPC protocol on port 50051. Mountain does
 not contain extension logic; it supplies the infrastructure that Cocoon
 consumes.
 
@@ -29,7 +29,7 @@ consumes.
 | Scheduler     | Echo (work-stealing)                |
 | Sidecar       | Cocoon (Node.js), Air (Rust daemon) |
 | IPC to Wind   | Tauri commands and events           |
-| IPC to Cocoon | Vine gRPC, port 50052               |
+| IPC to Cocoon | Vine gRPC, port 50051               |
 
 ## Key Dependencies
 
@@ -110,11 +110,20 @@ dedicated provider registered at startup via `OnceLock`.
 | `SourceControlProvider`      | `SCM`                 | SCM provider registry                  |
 | `DebugProvider`              | `Debug`               | Debug configuration provider registry  |
 
+`EncryptionProvider` implements VS Code's `EncryptionMainService` contract. It
+derives a machine-stable 256-bit key from `SHA-256("Land-Encryption-v1" +
+hardware UUID)` using `ring`, cached in a process-wide `OnceLock`. This key
+backs the `context.secrets` API that extensions use to store credentials and
+auth tokens encrypted at rest.
+
 ## IPC Dispatcher (WindServiceHandlers)
 
 All Tauri IPC messages from Wind arrive at `IPC/WindServiceHandlers/mod.rs`.
 This file (~2500 lines) dispatches by method name and delegates to per-domain
-atomic handler files organized under `IPC/WindServiceHandlers/`.
+atomic handler files organized under `IPC/WindServiceHandlers/`. The dispatcher
+covers ~150+ named commands across 10 domain subdirectories. All handlers are
+fully implemented - there are zero `todo!()` or `unimplemented!()` stubs
+remaining.
 
 ### Implemented handler domains
 
@@ -146,7 +155,7 @@ The `TierIPC` environment variable controls how Wind-sourced IPC is routed:
 
 ## Vine gRPC Server
 
-Mountain hosts a tonic-based gRPC server (`Vine` protocol) on port 50052. Cocoon
+Mountain hosts a tonic-based gRPC server (`Vine` protocol) on port 50051. Cocoon
 connects to this server after startup and keeps a persistent bidirectional
 stream open. The server is defined in `Vine/` and the per-RPC handler logic
 lives in `RPC/CocoonService/`.
@@ -210,7 +219,7 @@ main()
 Background init task:
   InitializeConfiguration()   - reads settings.json files
   ExtensionManagement::scan() - populates extension registry
-  Vine::server::Initialize()  - starts gRPC on port 50052
+  Vine::server::Initialize()  - starts gRPC on port 50051
   CocoonManagement::launch()  - spawns Node.js, waits for handshake
   Sends InitData payload to Cocoon
   System ready

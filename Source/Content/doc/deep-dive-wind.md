@@ -4,8 +4,9 @@ section: "Deep Dive"
 order: 13
 description:
     "TauriLiveLayer construction, TauriMainProcessService routing tiers,
-    Preload.ts global shimming, Generated Upstream import depth, and the Wind
-    Codegen pipeline."
+    Layer.succeed service composition, ManagedRuntime singleton, Preload.ts
+    global shimming, Generated Upstream import depth, and the Wind Codegen
+    pipeline."
 ---
 
 Wind is the Effect-TS frontend service layer for Land. This page covers the
@@ -59,6 +60,32 @@ automatically threads the required Tags through the dependency graph. If a Tag
 is missing from the merged set, the build fails at compile time with a typed
 error naming the unsatisfied requirement - there are no runtime "service not
 found" failures.
+
+Individual services use `Layer.succeed` to wrap a concrete implementation
+object. `Layer.effect` is not used in Wind - services are constructed eagerly
+so there is no lazy Effect execution on the critical startup path:
+
+```typescript
+export const LiveEditorServiceLayer = Layer.succeed(
+	EditorTag,
+	makeEditorService(),
+);
+```
+
+### ManagedRuntime Singleton
+
+`Wind/Source/Effect/LandWorkbench/LandWorkbenchRuntime.ts` provides a
+module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
+
+- Initialized eagerly via an IIFE at module load time. The initialization cost
+  is paid once during Sky bundle evaluation, not deferred to the first service
+  call.
+- Stored on `globalThis.__CEL_WIND_RUNTIME__` so multiple Sky chunks that
+  import this module share a single runtime instance.
+- `LandWorkbenchRuntime.Get()` returns the pre-warmed runtime. Service lookups
+  are sub-5ms after initialization.
+- `LandWorkbenchRuntime.Dispose()` tears down the runtime and clears the
+  global slot, called on window unload.
 
 ## TauriMainProcessService Routing
 

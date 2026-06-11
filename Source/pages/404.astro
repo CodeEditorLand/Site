@@ -19,11 +19,13 @@ const MetaDescription = T("common.error.pageNotFound", {
 	<section
 		id="NotFoundContent"
 		class="flex min-h-[80dvh] w-full flex-col items-center justify-center py-20"
-		aria-label="Page not found">
+		aria-label="Page not found"
+	>
 		<div class="container mx-auto px-4 text-center">
 			<p
 				id="RouteRedirectNotice"
-				class="mb-4 hidden text-muted-foreground">
+				class="mb-4 hidden text-muted-foreground"
+			>
 				Redirecting...
 			</p>
 			<h1 class="StaccatoJitter mb-4 text-6xl font-bold">404</h1>
@@ -37,7 +39,8 @@ const MetaDescription = T("common.error.pageNotFound", {
 			</p>
 			<a
 				href="/"
-				class="StaccatoButton inline-flex h-10 items-center justify-center bg-[var(--Primary)] px-4 py-2 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+				class="StaccatoButton inline-flex h-10 items-center justify-center bg-[var(--Primary)] px-4 py-2 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+			>
 				{
 					T("common.button.backToHome", {
 						defaultValue: "Return to Homepage",

@@ -29,6 +29,14 @@ checks.
 | `pull_request`      | targeting `Current` | Full build, no artifact upload       |
 | `workflow_dispatch` | any                 | Manual trigger with profile override |
 
+### Node Version Requirement
+
+The VS Code Editor submodule at `Dependency/Microsoft/Dependency/Editor`
+requires **Node 24** for its compile step. The required version is tracked in
+that submodule's `.nvmrc` file. CI jobs that include the VS Code platform
+compile step must provision Node 24 before running `npm install` and
+`npm run compile` inside that directory.
+
 ### Build Matrix
 
 The matrix covers platform × profile combinations:
@@ -82,6 +90,20 @@ the pipeline to produce signed artifacts:
 | `APPLE_TEAM_ID`                      | Apple Developer Team ID                                       |
 | `TAURI_SIGNING_PRIVATE_KEY`          | Tauri updater signing key                                     |
 | `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | Password for the updater key                                  |
+
+### CI Environment Variables
+
+The following environment variables are set in CI to suppress large binary
+downloads that are not needed during the build or are replaced by the SideCar
+element's own binary management:
+
+| Variable                           | Value | Effect                                                       |
+| ---------------------------------- | ----- | ------------------------------------------------------------ |
+| `ELECTRON_SKIP_BINARY_DOWNLOAD`    | `1`   | Prevents npm from downloading the Electron binary at install |
+| `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` | `1`   | Prevents Playwright from downloading browser binaries        |
+
+These are set unconditionally in CI. Local developer machines do not need them
+unless running `npm install` inside the VS Code Editor submodule.
 
 > [!IMPORTANT] The NLnet acknowledgement text required by the NGI0 Commons Fund
 > grant is embedded in the About dialog at build time via a

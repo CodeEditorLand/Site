@@ -78,7 +78,8 @@ const Element = [
 	Title={MetaTitle}
 	Description={MetaDescription}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<Header client:load />
 
 	<div class="container mx-auto max-w-6xl px-4 py-16">
@@ -86,13 +87,14 @@ const Element = [
 			<!-- Desktop sidebar: sticky + independently scrollable -->
 			<aside
 				class="hidden w-52 shrink-0 lg:block xl:w-60"
-				aria-label="Documentation navigation">
+				aria-label="Documentation navigation"
+			>
 				<div
-					class="sticky top-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto overscroll-contain pb-8 pr-1
-					       [scrollbar-color:var(--Border)_transparent] [scrollbar-width:thin]
-					       [-webkit-overflow-scrolling:touch]">
+					class="sticky top-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto overscroll-contain pb-8 pr-1 [-webkit-overflow-scrolling:touch] [scrollbar-color:var(--Border)_transparent] [scrollbar-width:thin]"
+				>
 					<p
-						class="mb-2 px-2 font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+						class="mb-2 px-2 font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+					>
 						{
 							T("sidebar.title", {
 								ns: "doc",
@@ -104,7 +106,8 @@ const Element = [
 					<div class="mt-4 border-t border-border pt-4">
 						<a
 							href="/Doc/Rust"
-							class="block rounded-none px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							class="block rounded-none px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						>
 							Rust API ↗
 						</a>
 					</div>
@@ -116,7 +119,8 @@ const Element = [
 				<!-- Breadcrumbs -->
 				<nav aria-label="Breadcrumb" class="mb-8">
 					<ol
-						class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+						class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+					>
 						<li>
 							<a
 								href="/"
@@ -144,7 +148,8 @@ const Element = [
 				<!-- Page Header -->
 				<header class="mb-12">
 					<h1
-						class="text-2xl font-semibold tracking-tight sm:text-3xl">
+						class="text-2xl font-semibold tracking-tight sm:text-3xl"
+					>
 						{
 							T("common.docs.pageTitle", {
 								defaultValue: "Documentation",
@@ -167,7 +172,8 @@ const Element = [
 						href="https://github.com/CodeEditorLand/Land#readme"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.gettingStarted.title", {
@@ -189,7 +195,8 @@ const Element = [
 						href="https://github.com/CodeEditorLand/Land/issues"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.issueTracker.title", {
@@ -210,7 +217,8 @@ const Element = [
 
 					<a
 						href="/Doc/Rust"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					>
 						<h2 class="mb-2 text-xl font-semibold">
 							{
 								T("common.docs.rustApi.title", {
@@ -241,7 +249,8 @@ const Element = [
 						return (
 							<section
 								class="mt-12"
-								id={Section.toLowerCase().replace(/\s+/g, "-")}>
+								id={Section.toLowerCase().replace(/\s+/g, "-")}
+							>
 								<h2 class="mb-6 text-2xl font-semibold">
 									{Section}
 								</h2>
@@ -249,7 +258,8 @@ const Element = [
 									{Entries.map((Entry) => (
 										<a
 											href={`/Doc/${Entry.id}`}
-											class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+											class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+										>
 											<h3 class="font-medium">
 												{Entry.data.title}
 											</h3>
@@ -290,7 +300,8 @@ const Element = [
 								Element.map((E) => (
 									<a
 										href={`/Doc/${E.Name.toLowerCase()}`}
-										class="inline-flex items-center gap-1 bg-card px-3 py-1.5 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+										class="inline-flex items-center gap-1 bg-card px-3 py-1.5 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									>
 										{E.Name}
 									</a>
 								))
@@ -301,7 +312,8 @@ const Element = [
 								href="https://github.com/CodeEditorLand"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="font-medium text-[var(--Primary)] hover:underline">
+								class="font-medium text-[var(--Primary)] hover:underline"
+							>
 								{
 									T("common.docs.repositories.viewAll", {
 										defaultValue: "View all repositories",
@@ -437,7 +449,8 @@ const Element = [
 								href="/"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.website", {
@@ -462,7 +475,8 @@ const Element = [
 								href="https://Status.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.status", {
@@ -487,7 +501,8 @@ const Element = [
 								href="https://Rust.Documentation.Mountain.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T(
@@ -516,7 +531,8 @@ const Element = [
 								href="https://Rust.Documentation.Rest.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustRest", {
@@ -541,7 +557,8 @@ const Element = [
 								href="https://Rust.Documentation.Maintain.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T(
@@ -570,7 +587,8 @@ const Element = [
 								href="https://Rust.Documentation.Common.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T(
@@ -599,7 +617,8 @@ const Element = [
 								href="https://Rust.Documentation.Echo.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustEcho", {
@@ -624,7 +643,8 @@ const Element = [
 								href="https://Rust.Documentation.Air.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustAir", {
@@ -649,7 +669,8 @@ const Element = [
 								href="https://Rust.Documentation.SideCar.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T(
@@ -678,7 +699,8 @@ const Element = [
 								href="https://Rust.Documentation.Land.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.rustLand", {
@@ -704,7 +726,8 @@ const Element = [
 								href="https://Knowledge.editor.land"
 								target="_blank"
 								rel="noopener noreferrer"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T("common.docs.deployments.knowledge", {
@@ -727,7 +750,8 @@ const Element = [
 							</a>
 							<a
 								href="/Doc/Rust"
-								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]">
+								class="block bg-card px-4 py-3 transition-colors hover:bg-[var(--Secondary)]"
+							>
 								<span class="font-semibold"
 									>{
 										T(

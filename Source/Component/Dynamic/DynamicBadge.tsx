@@ -1,4 +1,5 @@
 import { Badge } from "../UI/Badge";
+
 import type Property from "./Interface/Property/Badge.js";
 
 /**
@@ -9,17 +10,24 @@ import type Property from "./Interface/Property/Badge.js";
 const DynamicBadge = ({ Content, ClassName }: Property) => {
 	const {
 		Text,
+
 		Variant = "default",
+
 		ShowDot = false,
+
 		DotColor = "green",
+
 		ClassName: ContentClassName,
 		...props
 	} = Content;
 
 	const DotColorTokenMap: Record<string, string> = {
 		green: "var(--SpinegRPC)",
+
 		yellow: "var(--SpineTCP)",
+
 		red: "var(--Destruct)",
+
 		blue: "var(--SpineIPC)",
 	};
 
@@ -27,11 +35,13 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 		<Badge
 			variant={Variant}
 			className={`StaccatoBadge ${ContentClassName || ""} ${ClassName || ""}`}
-			{...props}>
+			{...props}
+		>
 			{Text}
 			{ShowDot && (
 				<>
 					{"\u2001"}
+
 					<span
 						className="StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none"
 						style={{

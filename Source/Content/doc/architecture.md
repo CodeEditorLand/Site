@@ -2,8 +2,7 @@
 title: Architecture
 section: Start
 order: 6
-description:
-    Three-layer architecture - Mountain (Rust/Tauri), Cocoon
+description: Three-layer architecture - Mountain (Rust/Tauri), Cocoon
     (Node.js/Effect-TS), Sky+Wind (Astro/Effect-TS) - and the IPC channels that
     connect them.
 ---
@@ -21,7 +20,7 @@ protocol), and SkyBridge custom events.
 +-----------------------------------------------------------+
 |  macOS process: Mountain (Rust / Tauri)                   |
 |                                                           |
-|  AppState  |  gRPC server (port 50052)  |  Tauri IPC     |
+|  AppState  |  gRPC server (port 50051)  |  Tauri IPC     |
 |  File sys  |  Process manager           |  Event emitter |
 +------------+---------------------------+----------------+-+
              |                           |                |
@@ -67,14 +66,15 @@ Key source paths within the Mountain element:
 ### Cocoon - Extension Host
 
 Cocoon is a Node.js process spawned and supervised by Mountain. It provides a
-`vscode` API shim built with Effect-TS. When an extension calls a `vscode.*` API
-method, Cocoon either handles it in-process or sends a gRPC request to Mountain
-for native execution. Cocoon connects to Mountain's gRPC server on port 50052
-after Mountain starts listening.
+`vscode` API shim written in plain async TypeScript (no Effect-TS runtime). When
+an extension calls a `vscode.*` API method, Cocoon either handles it in-process
+or sends a gRPC request to Mountain for native execution. Cocoon connects to
+Mountain's gRPC server on port 50051 after Mountain starts listening.
 
-Bootstrap order (fixed after a 2026 regression fix): Cocoon starts its own gRPC
-server first (Stage 1), then connects to Mountain (Stage 3). Reversing this
-order caused a 20-second connection timeout.
+Bootstrap order: Cocoon binds its own gRPC server (port 50052) first, then
+connects to Mountain. Reversing this order causes Mountain to exhaust its
+30-second gRPC connection budget before Cocoon has a listening socket, silently
+preventing extension activation.
 
 ### Sky and Wind - UI Layer
 
@@ -115,7 +115,7 @@ Mountain (Rust, via `tonic`) and Cocoon (TypeScript, via the generated client).
 | Direction         | Port  | Used for                                                                                                                                     |
 | ----------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | Mountain → Cocoon | 50052 | Extension host initialization, language feature requests, configuration change notifications, terminal open/close events, file change events |
-| Cocoon → Mountain | 50052 | File system operations, terminal write/resize, clipboard access, storage get/set, encryption, dialog requests, IPC channel dispatch          |
+| Cocoon → Mountain | 50051 | File system operations, terminal write/resize, clipboard access, storage get/set, encryption, dialog requests, IPC channel dispatch          |
 | Mountain ↔ Air    | 50053 | Update downloads, indexing commands, health checks, authentication tokens                                                                    |
 
 ### Channel 3: SkyBridge Custom Events (Sky ↔ Cocoon indirectly)
@@ -213,11 +213,12 @@ User changes setting in Settings editor
 
 ## Ports Reference
 
-| Port  | Process             | Protocol          | Purpose                          |
-| ----- | ------------------- | ----------------- | -------------------------------- |
-| 50052 | Mountain / Cocoon   | gRPC (Vine.proto) | Extension host IPC               |
-| 50053 | Mountain / Air      | gRPC              | Background daemon IPC            |
-| N/A   | Mountain / Wind+Sky | Tauri IPC         | UI ↔ backend commands and events |
+| Port  | Process             | Protocol          | Purpose                              |
+| ----- | ------------------- | ----------------- | ------------------------------------ |
+| 50051 | Mountain (server)   | gRPC (Vine.proto) | Cocoon → Mountain calls              |
+| 50052 | Cocoon (server)     | gRPC (Vine.proto) | Mountain → Cocoon push notifications |
+| 50053 | Mountain / Air      | gRPC              | Background daemon IPC                |
+| N/A   | Mountain / Wind+Sky | Tauri IPC         | UI ↔ backend commands and events     |
 
 ## Related Pages
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Auth0Provider from "../Provider/Auth0Provider";
+
 import Auth0AccountGate from "./Auth0AccountGate";
 
 /**
@@ -22,22 +23,34 @@ export default ({
 	Organization,
 }: {
 	Route: "signin" | "signup";
+
 	Header?: {
 		logo?: { text: string };
+
 		navigation?: Array<{ label: string; href: string; icon?: string }>;
+
 		actions?: Array<{
 			type?: string;
+
 			text: string;
+
 			variant?: string;
+
 			size?: string;
+
 			href?: string;
+
 			icon?: string;
 		}>;
 	};
+
 	Domain?: string;
+
 	ClientIdentifier?: string;
+
 	/** Auth0 enterprise connection name (e.g. "okta-acme") */
 	Connection?: string;
+
 	/** Auth0 organization ID for multi-tenant enterprise SSO */
 	Organization?: string;
 }) => (

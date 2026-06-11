@@ -52,17 +52,30 @@ through `Tauri` commands into `Mountain`'s Rust handlers. For testing,
 `TestLayer` provides mock implementations. The consuming code never knows the
 difference.
 
+Each service layer is constructed with `Layer.succeed` (not `Layer.effect`),
+and the layer stack is composed with `Layer.mergeAll`. The `TauriLiveLayer` is
+backed by an eagerly-initialized `ManagedRuntime` stored as a module singleton
+on `globalThis.__CEL_WIND_RUNTIME__`, which keeps service lookup latency under
+5 ms.
+
 ## How It Powers the Extension Host (Cocoon)
 
-The `Cocoon` element runs `VS Code` extensions inside an Effect-managed runtime.
+The `Cocoon` element runs `VS Code` extensions inside a supervised runtime.
 Each extension lifecycle hook (`activate`, `deactivate`) is modeled as an Effect
 program with explicit error types and resource cleanup via `Scope`.
 
 The core architecture:
 
-1. **Bootstrap** (`Bootstrap/Implementation/Cocoon/Main.ts`) composes all
-   Effect-TS layers, establishes the gRPC connection to `Mountain`, and starts
-   the extension host services.
+1. **Bootstrap** (`Bootstrap/Implementation/Cocoon/Main.ts`) runs a lean
+   `async`/`await` startup sequence - no Effect-TS runtime overhead on the boot
+   path. It establishes the gRPC connection to `Mountain` and starts the
+   extension host services. Moving the bootstrap off the Effect runtime shaved
+   approximately 45 ms from cold-start time.
+
+    **Update:** Cocoon's bootstrap stages run in plain `async`/`await` rather
+    than Effect-TS layers. `RPCServer` binds first (port 50052), then
+    `MountainConnection` connects outward, ensuring `Mountain`'s 30-second gRPC
+    budget does not expire before Cocoon is ready.
 
 2. **Module Interception** (`Effect/Module/Interceptor.ts`) patches both CJS
    `require()` and ESM `import` statements so that calls to the `vscode` module

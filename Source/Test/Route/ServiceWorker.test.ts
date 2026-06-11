@@ -22,7 +22,9 @@ const NormalizePath = (Path: string): string =>
 
 const ResolveRoute = (
 	RequestPath: string,
+
 	CanonicalSet: Set<string>,
+
 	VariantMap: Record<string, string>,
 ): string | null => {
 	const Cleaned = StripTrailingSlash(RequestPath);
@@ -63,32 +65,55 @@ const ResolveRoute = (
 
 const TestCanonical = new Set([
 	"/",
+
 	"/Download",
+
 	"/Doc",
+
 	"/Blog",
+
 	"/Account/SignIn",
+
 	"/Account/SignUp",
+
 	"/Legal/Term",
+
 	"/Legal/Privacy",
+
 	"/Portal",
 ]);
 
 const TestVariant: Record<string, string> = {
 	"/downloads": "/Download",
+
 	"/download": "/Download",
+
 	"/docs": "/Doc",
+
 	"/doc": "/Doc",
+
 	"/blog": "/Blog",
+
 	"/account/signin": "/Account/SignIn",
+
 	"/account/signup": "/Account/SignUp",
+
 	"/account/sign-in": "/Account/SignIn",
+
 	"/account/sign-up": "/Account/SignUp",
+
 	"/login": "/Account/SignIn",
+
 	"/register": "/Account/SignUp",
+
 	"/legal/terms": "/Legal/Term",
+
 	"/legal/privacy": "/Legal/Privacy",
+
 	"/portal": "/Portal",
+
 	"/install": "/Download",
+
 	"/get": "/Download",
 };
 
@@ -137,8 +162,11 @@ describe("ResolveRoute", () => {
 		expect(
 			ResolveRoute("/Download", TestCanonical, TestVariant),
 		).toBeNull();
+
 		expect(ResolveRoute("/Doc", TestCanonical, TestVariant)).toBeNull();
+
 		expect(ResolveRoute("/", TestCanonical, TestVariant)).toBeNull();
+
 		expect(
 			ResolveRoute("/Account/SignIn", TestCanonical, TestVariant),
 		).toBeNull();
@@ -148,7 +176,9 @@ describe("ResolveRoute", () => {
 		expect(ResolveRoute("/downloads", TestCanonical, TestVariant)).toBe(
 			"/Download",
 		);
+
 		expect(ResolveRoute("/docs", TestCanonical, TestVariant)).toBe("/Doc");
+
 		expect(ResolveRoute("/blog", TestCanonical, TestVariant)).toBe("/Blog");
 	});
 
@@ -156,9 +186,11 @@ describe("ResolveRoute", () => {
 		expect(ResolveRoute("/install", TestCanonical, TestVariant)).toBe(
 			"/Download",
 		);
+
 		expect(ResolveRoute("/login", TestCanonical, TestVariant)).toBe(
 			"/Account/SignIn",
 		);
+
 		expect(ResolveRoute("/register", TestCanonical, TestVariant)).toBe(
 			"/Account/SignUp",
 		);
@@ -168,6 +200,7 @@ describe("ResolveRoute", () => {
 		expect(ResolveRoute("/downloads/", TestCanonical, TestVariant)).toBe(
 			"/Download",
 		);
+
 		expect(ResolveRoute("/portal/", TestCanonical, TestVariant)).toBe(
 			"/Portal",
 		);
@@ -190,6 +223,7 @@ describe("ResolveRoute", () => {
 		expect(
 			ResolveRoute("/nonexistent", TestCanonical, TestVariant),
 		).toBeNull();
+
 		expect(
 			ResolveRoute("/some/random/path", TestCanonical, TestVariant),
 		).toBeNull();
@@ -199,9 +233,11 @@ describe("ResolveRoute", () => {
 		expect(
 			ResolveRoute("/account/signin", TestCanonical, TestVariant),
 		).toBe("/Account/SignIn");
+
 		expect(ResolveRoute("/legal/terms", TestCanonical, TestVariant)).toBe(
 			"/Legal/Term",
 		);
+
 		expect(ResolveRoute("/legal/privacy", TestCanonical, TestVariant)).toBe(
 			"/Legal/Privacy",
 		);

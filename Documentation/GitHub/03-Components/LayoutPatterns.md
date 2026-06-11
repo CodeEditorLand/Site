@@ -74,8 +74,8 @@ Pattern:
 ```tsx
 <div className={clsx("StaccatoMorphGap grid", ColumnClass)}>
 	<div className="PricingCard StaccatoCard flex flex-col rounded-none bg-card ...">
-		<span className="StaccatoBadge text-muted-foreground shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium" />
-		<span className="StaccatoBadge StaccatoRhythmBeat text-primary font-semibold tracking-wider uppercase" />
+		<span className="StaccatoBadge shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground" />
+		<span className="StaccatoBadge StaccatoRhythmBeat font-semibold uppercase tracking-wider text-primary" />
 		<span className="StaccatoBreath text-muted-foreground" />
 	</div>
 </div>
@@ -122,7 +122,7 @@ Canonical pattern:
 		<p className="text-sm font-medium">How would you like to send this?</p>
 		<button className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-[var(--Secondary)] ..." />
 	</div>
-	<div className="text-muted-foreground border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-sm">
+	<div className="border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4 text-sm text-muted-foreground">
 		{/* Pair reference explanation */}
 	</div>
 </div>

@@ -16,17 +16,25 @@ import { Requests } from "../../Library/Contact/Request.js";
 export default () => {
 	const GdprRights = [
 		Requests.REACH,
+
 		Requests.AMEND,
+
 		Requests.PAUSE,
+
 		Requests.QUERY,
+
 		Requests.LEAVE,
+
 		Requests.LODGE,
 	] as const;
 
 	const SupportChannels = [
 		Requests.SCOUT,
+
 		Requests.GUARD,
+
 		Requests.CLAIM,
+
 		Requests.LEGAL,
 	] as const;
 
@@ -53,14 +61,16 @@ export default () => {
 						<a
 							key={Right.Code}
 							href={`/Contact/${Right.Slug.charAt(0).toUpperCase()}${Right.Slug.slice(1)}`}
-							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						>
 							<div className="mb-3 flex items-start justify-between gap-2">
 								<h4 className="font-medium leading-snug">
 									{Right.Title}
 								</h4>
 								<div className="flex shrink-0 flex-col items-end gap-1">
 									<span
-										className={`px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest ${BadgeColor(Right.Article)}`}>
+										className={`px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest ${BadgeColor(Right.Article)}`}
+									>
 										{Right.Code}
 									</span>
 									{Right.Article && (
@@ -99,7 +109,8 @@ export default () => {
 						<a
 							key={Channel.Code}
 							href={`/Contact/${Channel.Slug.charAt(0).toUpperCase()}${Channel.Slug.slice(1)}`}
-							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+						>
 							<div className="mb-2 flex items-center justify-between gap-2">
 								<h4 className="font-medium">{Channel.Title}</h4>
 								<span className="shrink-0 font-mono text-[10px] font-bold tracking-widest text-muted-foreground">
@@ -128,7 +139,8 @@ export default () => {
 				</p>
 				<a
 					href="/Contact/Erase"
-					className="StaccatoCard block border border-red-200 bg-card p-6 transition-all hover:bg-red-50 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 dark:border-red-800 dark:hover:bg-red-950">
+					className="StaccatoCard block border border-red-200 bg-card p-6 transition-all hover:bg-red-50 focus:outline-2 focus:outline-offset-2 focus:outline-red-400 dark:border-red-800 dark:hover:bg-red-950"
+				>
 					<div className="mb-4 flex items-start gap-4">
 						<div className="flex h-10 w-10 shrink-0 items-center justify-center border border-red-200 bg-red-50 text-red-600 dark:border-red-800 dark:bg-red-950 dark:text-red-400">
 							<svg
@@ -141,7 +153,8 @@ export default () => {
 								strokeWidth="2"
 								strokeLinecap="round"
 								strokeLinejoin="round"
-								aria-hidden="true">
+								aria-hidden="true"
+							>
 								<path d="M3 6h18" />
 								<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
 								<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />

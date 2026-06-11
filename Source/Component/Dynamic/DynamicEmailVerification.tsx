@@ -1,5 +1,7 @@
 import * as lucide from "lucide-react";
+
 import { useCallback, useEffect, useRef, useState } from "react";
+
 import { useTranslation } from "react-i18next";
 
 import {
@@ -9,9 +11,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicInput } from "./DynamicInput";
+
 import type Property from "./Interface/Property/Verification/Email.js";
+
 import type { default as VerificationState } from "./Type/State/Verification.js";
 
 /**
@@ -28,12 +34,19 @@ const DynamicEmailVerification = ({
 	ClassName,
 }: Property) => {
 	const { t: T } = useTranslation("verify");
+
 	const [State, SetState] = useState<VerificationState>("pending");
+
 	const [, SetToken] = useState<string>(PropToken || "");
+
 	const [Email, SetEmail] = useState<string>(UserEmail || "");
+
 	const [ErrorMessage, SetErrorMessage] = useState("");
+
 	const [ResendSuccess, SetResendSuccess] = useState(false);
+
 	const [ResendCooldown, SetResendCooldown] = useState(0);
+
 	const CooldownInterval = useRef<ReturnType<typeof setInterval> | null>(
 		null,
 	);
@@ -42,14 +55,17 @@ const DynamicEmailVerification = ({
 		async (VerifyToken: string) => {
 			try {
 				const Success = OnVerify ? await OnVerify(VerifyToken) : true; // Mock success for demo
+
 				if (Success) {
 					SetState("success");
 				} else {
 					SetState("error");
+
 					SetErrorMessage(Content.Error.Description);
 				}
 			} catch {
 				SetState("error");
+
 				SetErrorMessage(
 					T("errorGeneric", {
 						defaultValue:
@@ -58,6 +74,7 @@ const DynamicEmailVerification = ({
 				);
 			}
 		},
+
 		[OnVerify, Content.Error.Description],
 	);
 
@@ -66,24 +83,31 @@ const DynamicEmailVerification = ({
 		const UrlToken =
 			PropToken ||
 			new URLSearchParams(window.location.search).get("token");
+
 		if (UrlToken) {
 			SetToken(UrlToken);
+
 			SetState("verifying");
+
 			HandleVerify(UrlToken);
 		}
 	}, [PropToken, HandleVerify]);
 
 	const StartCooldown = () => {
 		SetResendCooldown(60);
+
 		CooldownInterval.current = setInterval(() => {
 			SetResendCooldown((Previous) => {
 				if (Previous <= 1) {
 					if (CooldownInterval.current) {
 						clearInterval(CooldownInterval.current);
+
 						CooldownInterval.current = null;
 					}
+
 					return 0;
 				}
+
 				return Previous - 1;
 			});
 		}, 1000);
@@ -99,10 +123,14 @@ const DynamicEmailVerification = ({
 
 	const HandleResend = async () => {
 		if (!Email || ResendCooldown > 0) return;
+
 		try {
 			(await OnResend?.(Email)) || Promise.resolve(true);
+
 			SetResendSuccess(true);
+
 			StartCooldown();
+
 			setTimeout(() => SetResendSuccess(false), 5000);
 		} catch {
 			SetErrorMessage(
@@ -163,7 +191,8 @@ const DynamicEmailVerification = ({
 					{ResendSuccess && (
 						<p
 							className="text-center text-green-600 dark:text-green-400"
-							role="status">
+							role="status"
+						>
 							{Content.Pending.ResendSuccessMessage ||
 								T("resendSuccess", {
 									defaultValue: "Verification email resent!",
@@ -186,7 +215,8 @@ const DynamicEmailVerification = ({
 			<CardHeader className="text-center">
 				<div
 					className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none"
-					aria-hidden="true">
+					aria-hidden="true"
+				>
 					<div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
 				</div>
 				<CardTitle>
@@ -265,7 +295,8 @@ const DynamicEmailVerification = ({
 			<div className="container mx-auto px-4">
 				<div
 					className={`mx-auto max-w-md ${ClassName}`}
-					aria-live="polite">
+					aria-live="polite"
+				>
 					{State === "pending" && RenderPending()}
 					{State === "verifying" && RenderVerifying()}
 					{State === "success" && RenderSuccess()}

@@ -13,7 +13,9 @@
 
 const WrapText = (Text: string, MaxCharacter: number): string[] => {
 	const Word = Text.split(" ");
+
 	const Line: string[] = [];
+
 	let Current = "";
 
 	for (const W of Word) {
@@ -22,6 +24,7 @@ const WrapText = (Text: string, MaxCharacter: number): string[] => {
 			Current.length > 0
 		) {
 			Line.push(Current);
+
 			Current = W;
 		} else {
 			Current = Current.length > 0 ? `${Current} ${W}` : W;

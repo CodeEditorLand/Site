@@ -3,18 +3,18 @@ title: Grove
 section: Elements
 order: 4
 description:
-    Grove is the planned native Rust and WebAssembly extension host for Land,
-    using Wasmtime to sandbox extensions with capability-based security instead
-    of relying on Node.js process isolation.
+    Grove is the native Rust and WebAssembly extension host for Land, using
+    Wasmtime to sandbox extensions with capability-based security instead of
+    relying on Node.js process isolation.
 ---
 
-Grove is Land's planned alternative extension host for Rust and WebAssembly
-extensions. Where Cocoon runs VS Code extensions inside a Node.js process with
-broad system access, Grove runs extensions inside a Wasmtime sandbox where every
-capability - file access, network, terminal - must be explicitly granted. Grove
-is currently work-in-progress and is not the active extension path for existing
-VS Code extensions; Cocoon remains the default host for unmodified extension
-compatibility.
+Grove is Land's alternative extension host for Rust and WebAssembly extensions.
+Where Cocoon runs VS Code extensions inside a Node.js process with broad system
+access, Grove runs extensions inside a Wasmtime sandbox where every capability -
+file access, network, terminal - must be explicitly granted. Grove is
+implemented and available as an optional build feature; it is not the active
+extension path for existing VS Code extensions. Cocoon remains the default host
+for unmodified extension compatibility.
 
 ## The problem Grove solves
 
@@ -49,7 +49,7 @@ Grove is built as a four-layer stack:
 | Security model                        | Process isolation - OS boundary, but broad Node.js capability | Capability-based - no OS access without explicit grant      |
 | VS Code API coverage                  | Full `vscode.d.ts`                                            | Planned subset, to be expanded                              |
 | Extension compatibility               | Runs unmodified VS Code extensions                            | Requires compilation to `wasm32-wasi` target                |
-| Current status                        | Active, default host                                          | Work-in-progress                                            |
+| Current status                        | Active, default host                                          | Implemented; optional `--features grove` build flag         |
 
 ## Wasmtime and the WASM component model
 
@@ -81,11 +81,12 @@ compatibility.
 
 ## Current status
 
-> [!WARNING] Grove is work-in-progress. The source tree is present and the
-> architecture is defined, but Grove is not integrated into the default
-> `debug-electron` build profile. It is activated as an optional Cargo feature
-> (`--features grove`). Full integration with Mountain's extension activation
-> flow and a complete VS Code API subset remain as planned work.
+> [!NOTE] Grove is implemented and available as an optional Cargo feature
+> (`--features grove`). It is not enabled in the default `debug-electron` build
+> profile. Cocoon (Node.js) remains the default extension host for unmodified VS
+> Code extensions. WASM-targeting extensions can use Grove's Wasmtime sandbox
+> today. Full integration with Mountain's extension activation flow and a
+> complete VS Code API subset are ongoing work.
 
 ## Source files
 

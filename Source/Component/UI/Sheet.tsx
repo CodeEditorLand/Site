@@ -1,7 +1,9 @@
 "use client";
 
 import * as SheetPrimitive from "@radix-ui/react-dialog";
+
 import * as lucide from "lucide-react";
+
 import * as React from "react";
 
 import { cn } from "./Utility";
@@ -69,7 +71,8 @@ function SheetContent({
 						"data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom inset-x-0 bottom-0 h-auto border-t",
 					className,
 				)}
-				{...props}>
+				{...props}
+			>
 				{children}
 				<SheetPrimitive.Close className="rounded-xs focus:outline-hidden absolute right-4 top-4 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
 					<lucide.X className="size-4" />

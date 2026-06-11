@@ -1,7 +1,9 @@
 "use client";
 
 import { Header, type HeaderContent } from "../Layout/Header";
+
 import Auth0Provider from "../Provider/Auth0Provider";
+
 import DynamicAuthStatus from "./DynamicAuthStatus";
 
 /**
@@ -20,7 +22,9 @@ export default ({
 	Content,
 }: {
 	Domain?: string;
+
 	ClientIdentifier?: string;
+
 	Content?: HeaderContent;
 }) => (
 	<Auth0Provider

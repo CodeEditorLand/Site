@@ -6,6 +6,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "../UI/Table";
+
 import type Property from "./Interface/Property/Table.js";
 
 /**
@@ -17,12 +18,19 @@ const DynamicTable = <T extends Record<string, unknown>>({
 }: Property<T>) => {
 	const {
 		Columns: ColumnList,
+
 		Data: DataList,
+
 		Striped = false,
+
 		Hoverable = false,
+
 		Bordered: _Bordered = true,
+
 		Compact: _Compact = false,
+
 		OnRowClick,
+
 		ClassName,
 	} = Content;
 
@@ -43,11 +51,13 @@ const DynamicTable = <T extends Record<string, unknown>>({
 						<TableRow
 							key={RowIndex}
 							className={` ${Striped && RowIndex % 2 === 1 ? "bg-muted/50" : ""} ${Hoverable ? "hover:bg-muted/50" : ""} ${OnRowClick ? "cursor-pointer" : ""} `}
-							onClick={() => OnRowClick?.(Row)}>
+							onClick={() => OnRowClick?.(Row)}
+						>
 							{ColumnList.map((Column, ColumnIndex) => (
 								<TableCell
 									key={ColumnIndex}
-									className={Column.ClassName}>
+									className={Column.ClassName}
+								>
 									{Column.Render
 										? Column.Render(Row[Column.Key], Row)
 										: String(Row[Column.Key] ?? "")}

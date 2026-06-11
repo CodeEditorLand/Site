@@ -1,13 +1,22 @@
 interface MetaTagsProperty {
 	title: string;
+
 	description: string;
+
 	image?: string;
+
 	url?: string;
+
 	type?: "website" | "article";
+
 	lang?: string;
+
 	siteName?: string;
+
 	publishedTime?: string;
+
 	author?: string;
+
 	noIndex?: boolean;
 }
 
@@ -24,12 +33,14 @@ export default ({
 	noIndex = false,
 }: MetaTagsProperty) => {
 	const SafeTitle = title || siteName;
+
 	const SafeDescription =
 		description ||
 		"Rust and Tauri editor stack with VS Code API compatibility in progress.";
 
 	// url is always Astro.url.href (absolute) when passed from Base.astro.
 	const SiteURL = url;
+
 	// Origin (scheme + host) for absolutising relative asset paths.
 	const SiteOrigin = SiteURL.startsWith("http")
 		? new URL(SiteURL).origin
@@ -37,10 +48,14 @@ export default ({
 
 	const JSONLD: any = {
 		"@context": "https://schema.org",
+
 		"@type": "WebSite",
-		"name": siteName,
-		"url": SiteURL,
-		"description": SafeDescription,
+
+		name: siteName,
+
+		url: SiteURL,
+
+		description: SafeDescription,
 	};
 
 	if (type === "article" && publishedTime) {
@@ -48,22 +63,30 @@ export default ({
 	}
 
 	JSONLD.author = author
-		? { "@type": "Organization", "name": author }
+		? { "@type": "Organization", name: author }
 		: [
 				{
 					"@type": "Person",
-					"name": "Nikola R. Hristov",
-					"url": "https://github.com/NikolaRHristov",
+
+					name: "Nikola R. Hristov",
+
+					url: "https://github.com/NikolaRHristov",
 				},
+
 				{
 					"@type": "Organization",
-					"name": "Code Editor Land",
-					"url": SiteOrigin,
+
+					name: "Code Editor Land",
+
+					url: SiteOrigin,
 				},
+
 				{
 					"@type": "Organization",
-					"name": "PlayForm",
-					"url": "https://PlayForm.Cloud",
+
+					name: "PlayForm",
+
+					url: "https://PlayForm.Cloud",
 				},
 			];
 

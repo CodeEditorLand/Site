@@ -5,15 +5,21 @@ import type { AstroIntegration } from "astro";
 // imports of local modules would fail with "module runner has been closed".
 const {
 	default: GenerateRouteMap,
+
 	CanonicalPath,
+
 	PascalCaseCanonical,
+
 	SemanticAlias,
+
 	GeneratePathVariant,
 } = await import("./Map.js");
 
 const {
 	mkdir: MakeDirectory,
+
 	readFile: ReadFile,
+
 	writeFile: WriteFile,
 } = await import("node:fs/promises");
 
@@ -77,7 +83,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			server.middlewares.use(
 				(
 					Request: import("http").IncomingMessage,
+
 					Response: import("http").ServerResponse,
+
 					Next: () => void,
 				) => {
 					const RawPath = Request.url ?? "/";
@@ -136,7 +144,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			await WriteFile(
 				RouteMapPath,
+
 				JSON.stringify(RouteMap, null, "\t"),
+
 				"utf-8",
 			);
 
@@ -166,7 +176,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				// Check if the built path has an actual HTML file
 				const BuiltHTMLPath = Join(
 					OutputDirectory,
+
 					BuiltPath.slice(1),
+
 					"index.html",
 				);
 
@@ -181,6 +193,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				// Create PascalCase directory and copy HTML
 				const PascalDirectory = Join(
 					OutputDirectory,
+
 					PascalPath.slice(1),
 				);
 
@@ -189,7 +202,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 					await WriteFile(
 						Join(PascalDirectory, "index.html"),
+
 						BuiltHTML,
+
 						"utf-8",
 					);
 
@@ -211,7 +226,9 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			const ServiceWorkerSourcePath = Resolve(
 				FileURLToPath(import.meta.url),
+
 				"..",
+
 				"ServiceWorker.ts",
 			);
 
@@ -220,6 +237,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			try {
 				ServiceWorkerSource = await ReadFile(
 					ServiceWorkerSourcePath,
+
 					"utf-8",
 				);
 			} catch (_Error) {
@@ -297,13 +315,17 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			RedirectLine.push(
 				"# Cloudflare Pages - full route map (auto-generated)",
 			);
+
 			RedirectLine.push("#");
+
 			RedirectLine.push(
 				"# All rules use 200 (rewrite) to serve content directly.",
 			);
+
 			RedirectLine.push(
 				"# This prevents the service worker from breaking on redirect chains.",
 			);
+
 			RedirectLine.push("");
 
 			// ── Bare-path dispatchers (200) ──
@@ -313,6 +335,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				RedirectLine.push(
 					`${Pad(Source, 26)}${Pad(Target + "/", 26)}200`,
 				);
+
 				RedirectLine.push(
 					`${Pad(Source + "/", 26)}${Pad(Target + "/", 26)}200`,
 				);
@@ -327,9 +350,11 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			// service worker (first visit, SW not yet installed).
 
 			const CanonicalSet = new Set(RouteMap.Canonical);
+
 			const BarePathSource = new Set(
 				BarePathDispatcher.flatMap(([Source]) => [
 					Source,
+
 					Source + "/",
 				]),
 			);
@@ -360,6 +385,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				if (Path === "/") continue;
 
 				const Lower = Path.toLowerCase();
+
 				const Destination = Path + "/";
 
 				// Without trailing slash
@@ -386,6 +412,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			RedirectLine.push(
 				`# ── VARIANT REWRITES (200) - ${SortedVariant.length} rules ──`,
 			);
+
 			RedirectLine.push(
 				"# Case permutations, plurals, aliases → canonical content.",
 			);
@@ -400,6 +427,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			// ── Trailing-slash rewrites (200) ──
 			RedirectLine.push("# ── TRAILING-SLASH REWRITES (200) ──");
+
 			RedirectLine.push(
 				"# Auto-generated from build output. One rule per page.",
 			);
@@ -437,6 +465,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 			// ── Catch-all → Visit dispatch center ──
 			RedirectLine.push("# ── CATCH-ALL → Visit ──");
+
 			RedirectLine.push(`${Pad("/*", 26)}${Pad("/Visit/", 26)}200`);
 
 			const RedirectContent = RedirectLine.join("\n") + "\n";
@@ -444,23 +473,32 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 			// Write to Target/_redirects (deployed immediately)
 			await WriteFile(
 				Join(OutputDirectory, "_redirects"),
+
 				RedirectContent,
+
 				"utf-8",
 			);
 
 			// Write to Public/_redirects (source, version control)
 			const PublicDirectory = Resolve(
 				FileURLToPath(import.meta.url),
+
 				"..",
+
 				"..",
+
 				"..",
+
 				"..",
+
 				"Public",
 			);
 
 			await WriteFile(
 				Join(PublicDirectory, "_redirects"),
+
 				RedirectContent,
+
 				"utf-8",
 			);
 
@@ -491,6 +529,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 						// Also handle trailing slashes and bare paths
 						const Pattern = new RegExp(
 							`(<loc>[^<]*?)${BuiltPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(/?)(<\\/loc>)`,
+
 							"g",
 						);
 
@@ -498,6 +537,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 						SitemapContent = SitemapContent.replace(
 							Pattern,
+
 							`$1${PascalPath}$3`,
 						);
 

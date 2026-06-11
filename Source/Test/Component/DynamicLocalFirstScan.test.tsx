@@ -1,5 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
+
 import UserEvent from "@testing-library/user-event";
+
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 // ─── react-i18next mock ───
@@ -25,20 +27,31 @@ type DaemonStatus = "Scanning" | "Connected" | "Disconnected";
 
 interface LocalFirstContent {
 	Title: string;
+
 	Description: string;
+
 	ConnectButton: { Text: string; OnClick?: () => void };
+
 	DownloadHref?: string;
+
 	Feature: string[];
+
 	Setting: string[];
+
 	Protocol: string[];
+
 	Certificate: string[];
 }
 
 interface LocalFirstScanProperty {
 	Content: LocalFirstContent;
+
 	OnConnect?: () => void;
+
 	IsLoading?: boolean;
+
 	DaemonStatus?: DaemonStatus;
+
 	ClassName?: string;
 }
 
@@ -61,7 +74,8 @@ const DynamicLocalFirstScan = ({
 		<div
 			role="region"
 			aria-label="Local-first daemon scan"
-			data-status={Status}>
+			data-status={Status}
+		>
 			<h3>{Content.Title}</h3>
 			<p>{Content.Description}</p>
 
@@ -85,7 +99,8 @@ const DynamicLocalFirstScan = ({
 					{Content.DownloadHref && (
 						<a
 							href={Content.DownloadHref}
-							aria-label="Download Air Daemon">
+							aria-label="Download Air Daemon"
+						>
 							Download Air Daemon
 						</a>
 					)}
@@ -99,7 +114,8 @@ const DynamicLocalFirstScan = ({
 					}
 				}}
 				disabled={IsLoading || Status === "Scanning"}
-				aria-busy={IsLoading}>
+				aria-busy={IsLoading}
+			>
 				{Content.ConnectButton.Text}
 			</button>
 
@@ -134,21 +150,31 @@ const DynamicLocalFirstScan = ({
 
 const SampleContent: LocalFirstContent = {
 	Title: "Air Daemon",
+
 	Description: "Zero cloud dependency. Your code stays on your machine.",
+
 	ConnectButton: { Text: "Connect to Air Daemon" },
+
 	DownloadHref: "/Download",
+
 	Feature: [
 		"Local-first editing",
+
 		"Offline capable",
+
 		"End-to-end encrypted sync",
 	],
+
 	Setting: ["Theme", "Keybindings"],
+
 	Protocol: ["mTLS", "WebSocket"],
+
 	Certificate: ["JWT", "x509"],
 };
 
 afterEach(() => {
 	cleanup();
+
 	vi.restoreAllMocks();
 });
 
@@ -164,6 +190,7 @@ describe("DynamicLocalFirstScan", () => {
 		const ScanningIndicator = screen.getByTestId("scanning-indicator");
 
 		expect(ScanningIndicator).toBeInTheDocument();
+
 		expect(
 			screen.getByText("Scanning for Air Daemon..."),
 		).toBeInTheDocument();
@@ -180,6 +207,7 @@ describe("DynamicLocalFirstScan", () => {
 		const ConnectedIndicator = screen.getByTestId("connected-indicator");
 
 		expect(ConnectedIndicator).toBeInTheDocument();
+
 		expect(screen.getByText("Connected to Air Daemon")).toBeInTheDocument();
 	});
 
@@ -196,6 +224,7 @@ describe("DynamicLocalFirstScan", () => {
 		);
 
 		expect(DisconnectedIndicator).toBeInTheDocument();
+
 		expect(screen.getByText("Air Daemon not found")).toBeInTheDocument();
 	});
 
@@ -210,6 +239,7 @@ describe("DynamicLocalFirstScan", () => {
 		const DownloadLink = screen.getByText("Download Air Daemon");
 
 		expect(DownloadLink).toBeInTheDocument();
+
 		expect(DownloadLink.closest("a")).toHaveAttribute("href", "/Download");
 	});
 
@@ -260,11 +290,13 @@ describe("DynamicLocalFirstScan", () => {
 		});
 
 		expect(ConnectButton).toBeDisabled();
+
 		expect(ConnectButton).toHaveAttribute("aria-busy", "true");
 	});
 
 	it("calls OnConnect when connect button is clicked", async () => {
 		const ConnectHandler = vi.fn();
+
 		const User = UserEvent.setup();
 
 		render(
@@ -286,6 +318,7 @@ describe("DynamicLocalFirstScan", () => {
 
 	it("does not call OnConnect when loading", async () => {
 		const ConnectHandler = vi.fn();
+
 		const User = UserEvent.setup();
 
 		render(
@@ -315,6 +348,7 @@ describe("DynamicLocalFirstScan", () => {
 		);
 
 		expect(screen.getByText("Air Daemon")).toBeInTheDocument();
+
 		expect(
 			screen.getByText(
 				"Zero cloud dependency. Your code stays on your machine.",
@@ -331,7 +365,9 @@ describe("DynamicLocalFirstScan", () => {
 		);
 
 		expect(screen.getByText("Local-first editing")).toBeInTheDocument();
+
 		expect(screen.getByText("Offline capable")).toBeInTheDocument();
+
 		expect(
 			screen.getByText("End-to-end encrypted sync"),
 		).toBeInTheDocument();
@@ -346,6 +382,7 @@ describe("DynamicLocalFirstScan", () => {
 		);
 
 		expect(screen.getByText("mTLS")).toBeInTheDocument();
+
 		expect(screen.getByText("WebSocket")).toBeInTheDocument();
 	});
 
@@ -358,6 +395,7 @@ describe("DynamicLocalFirstScan", () => {
 		);
 
 		expect(screen.getByText("JWT")).toBeInTheDocument();
+
 		expect(screen.getByText("x509")).toBeInTheDocument();
 	});
 

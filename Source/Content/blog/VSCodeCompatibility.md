@@ -108,6 +108,7 @@ Source-backed surfaces include:
 - Expanded PTY handlers: `localPty:attachToProcess`,
   `localPty:detachFromProcess`, `localPty:reviveTerminalProcesses`,
   `localPty:freePortKillProcess`.
+- Terminal shell integration: OSC 633 sequences handled end-to-end.
 - Fifteen-plus `nativeHost:*` handlers covering clipboard, dialog, environment
   paths, process management, shell command installation, and window control.
 
@@ -120,6 +121,9 @@ Source-backed surfaces include:
   features silently no-op.
 - A public extension validation matrix that names extensions, versions,
   platforms, and the APIs they exercised.
+- Debug and task APIs are partially implemented: `activeDebugSession`,
+  `breakpoints`, and `executeTask` have live getters and event plumbing, but
+  debug adapter server/pipe transport and full task execution are not complete.
 - Inline completion provider registration
   (`register_inline_completion_item_provider`) requires a Mountain gRPC entry;
   Copilot inline completions do not yet work end-to-end.

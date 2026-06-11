@@ -2,50 +2,91 @@ import i18n from "i18next";
 
 // Bulgarian
 import BgAccount from "./Locale/Bg/Account.json";
+
 import BgCommon from "./Locale/Bg/Common.json";
+
 import BgDownload from "./Locale/Bg/Download.json";
+
 import BgFooter from "./Locale/Bg/Footer.json";
+
 import BgHeader from "./Locale/Bg/Header.json";
+
 import BgHome from "./Locale/Bg/Home.json";
+
 import BgMeta from "./Locale/Bg/Meta.json";
+
 import BgVerify from "./Locale/Bg/Verify.json";
+
 // German
 import DeAccount from "./Locale/De/Account.json";
+
 import DeCommon from "./Locale/De/Common.json";
+
 import DeDownload from "./Locale/De/Download.json";
+
 import DeFooter from "./Locale/De/Footer.json";
+
 import DeHeader from "./Locale/De/Header.json";
+
 import DeHome from "./Locale/De/Home.json";
+
 import DeMeta from "./Locale/De/Meta.json";
+
 import DeVerify from "./Locale/De/Verify.json";
+
 // English
 import EnAccount from "./Locale/En/Account.json";
+
 import EnBlog from "./Locale/En/Blog.json";
+
 import EnCommon from "./Locale/En/Common.json";
+
 import EnDoc from "./Locale/En/Doc.json";
+
 import EnDownload from "./Locale/En/Download.json";
+
 import EnFooter from "./Locale/En/Footer.json";
+
 import EnHeader from "./Locale/En/Header.json";
+
 import EnHome from "./Locale/En/Home.json";
+
 import EnMeta from "./Locale/En/Meta.json";
+
 import EnVerify from "./Locale/En/Verify.json";
+
 // Spanish
 import EsAccount from "./Locale/Es/Account.json";
+
 import EsCommon from "./Locale/Es/Common.json";
+
 import EsDownload from "./Locale/Es/Download.json";
+
 import EsFooter from "./Locale/Es/Footer.json";
+
 import EsHeader from "./Locale/Es/Header.json";
+
 import EsHome from "./Locale/Es/Home.json";
+
 import EsMeta from "./Locale/Es/Meta.json";
+
 import EsVerify from "./Locale/Es/Verify.json";
+
 // French
 import FrAccount from "./Locale/Fr/Account.json";
+
 import FrCommon from "./Locale/Fr/Common.json";
+
 import FrDownload from "./Locale/Fr/Download.json";
+
 import FrFooter from "./Locale/Fr/Footer.json";
+
 import FrHeader from "./Locale/Fr/Header.json";
+
 import FrHome from "./Locale/Fr/Home.json";
+
 import FrMeta from "./Locale/Fr/Meta.json";
+
 import FrVerify from "./Locale/Fr/Verify.json";
 
 /**

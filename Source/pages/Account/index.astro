@@ -22,7 +22,8 @@ const MetaDescription = T("meta.account.description", {
 	Title={MetaTitle}
 	Description={MetaDescription}
 	Url={Astro.url.href}
-	lang="en">
+	lang="en"
+>
 	<DynamicAuthHeader
 		client:load
 		Domain={Auth0Domain}
@@ -34,7 +35,8 @@ const MetaDescription = T("meta.account.description", {
 			<!-- Breadcrumbs -->
 			<nav aria-label="Breadcrumb" class="pt-6">
 				<ol
-					class="flex flex-wrap items-center space-x-2 text-muted-foreground">
+					class="flex flex-wrap items-center space-x-2 text-muted-foreground"
+				>
 					<li>
 						<a
 							href="/"

@@ -1,21 +1,27 @@
 <table>
 	<tr>
 		<td align="left" valign="middle">
-			<h3 align="left">WebSite</h3>
+			<h3 align="left">
+				WebSite
+			</h3>
 		</td>
 		<td align="left" valign="middle">
-			<h3 align="left">🗾</h3>
+			<h3 align="left">
+				🗾
+			</h3>
 		</td>
 		<td align="left" valign="middle">
-			<h3 align="left"> + </h3>
+			<h3 align="left">
+				+
+			</h3>
 		</td>
 		<td align="left" valign="middle">
 			<h3 align="left">
 				<a href="https://editor.land" target="_blank">
 					<picture>
-						<source media="(prefers-color-scheme: dark)" srcset="https://editor.land/Dark/Image/GitHub/Land.svg">
-						<source media="(prefers-color-scheme: light)" srcset="https://editor.land/Image/GitHub/Land.svg">
-						<img width="28" alt="Land Logo" src="https://editor.land/Image/GitHub/Land.svg">
+						<source media="(prefers-color-scheme: dark)" srcset="https://editor.land/Dark/Image/GitHub/Land.svg" />
+						<source media="(prefers-color-scheme: light)" srcset="https://editor.land/Image/GitHub/Land.svg" />
+						<img width="28" alt="Land Logo" src="https://editor.land/Image/GitHub/Land.svg" />
 					</picture>
 				</a>
 			</h3>
@@ -28,18 +34,22 @@
 			</h3>
 		</td>
 		<td align="left" valign="middle">
-			<h3 align="left">🏞️</h3>
+			<h3 align="left">
+				🏞️
+			</h3>
 		</td>
 		<td align="left" valign="middle">
-			<h3 align="left"> + </h3>
+			<h3 align="left">
+				+
+			</h3>
 		</td>
 		<td align="left" valign="middle" width="190">
 			<h3 align="left">
 				<a href="https://Astro.Build" target="_blank">
 					<picture>
-						<source media="(prefers-color-scheme: dark)" srcset="https://Astro.Build/assets/press/astro-logo-light.svg">
-						<source media="(prefers-color-scheme: light)" srcset="https://Astro.Build/assets/press/astro-logo-dark.svg">
-						<img width="100" alt="Built With Astro" src="https://Astro.Build/assets/press/astro-logo-dark.svg">
+						<source media="(prefers-color-scheme: dark)" srcset="https://Astro.Build/assets/press/astro-logo-light.svg" />
+						<source media="(prefers-color-scheme: light)" srcset="https://Astro.Build/assets/press/astro-logo-dark.svg" />
+						<img width="100" alt="Built With Astro" src="https://Astro.Build/assets/press/astro-logo-dark.svg" />
 					</picture>
 				</a>
 			</h3>
@@ -123,32 +133,48 @@ Funded through [NGI0 Commons Fund](https://NLnet.NL/commonsfund) via
 <table>
 	<thead>
 		<tr>
-			<th align="left"><strong>Land</strong></th>
-			<th align="left"><strong>PlayForm</strong></th>
-			<th align="left"><strong>NLnet</strong></th>
-			<th align="left"><strong>NGI0 Commons Fund</strong></th>
+			<th align="left">
+				<strong>
+					Land
+				</strong>
+			</th>
+			<th align="left">
+				<strong>
+					PlayForm
+				</strong>
+			</th>
+			<th align="left">
+				<strong>
+					NLnet
+				</strong>
+			</th>
+			<th align="left">
+				<strong>
+					NGI0 Commons Fund
+				</strong>
+			</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<td align="left" valign="middle">
 				<a href="https://editor.land">
-					<img width="60" src="https://raw.githubusercontent.com/CodeEditorLand/Asset/refs/heads/Current/Logo/Land.svg" alt="Land">
+					<img width="60" src="https://raw.githubusercontent.com/CodeEditorLand/Asset/refs/heads/Current/Logo/Land.svg" alt="Land" />
 				</a>
 			</td>
 			<td align="left" valign="middle">
 				<a href="https://PlayForm.Cloud">
-					<img width="76" src="https://raw.githubusercontent.com/PlayForm/Asset/refs/heads/Current/Logo/PlayForm.svg" alt="PlayForm">
+					<img width="76" src="https://raw.githubusercontent.com/PlayForm/Asset/refs/heads/Current/Logo/PlayForm.svg" alt="PlayForm" />
 				</a>
 			</td>
 			<td align="left" valign="middle">
 				<a href="https://NLnet.NL">
-					<img width="240" src="https://NLnet.NL/logo/banner.svg" alt="NLnet">
+					<img width="240" src="https://NLnet.NL/logo/banner.svg" alt="NLnet" />
 				</a>
 			</td>
 			<td align="left" valign="middle">
 				<a href="https://NLnet.NL/commonsfund">
-					<img width="240" src="https://NLnet.NL/image/logos/NGI0CommonsFund_tag_black_mono.svg" alt="NGI0 Commons Fund">
+					<img width="240" src="https://NLnet.NL/image/logos/NGI0CommonsFund_tag_black_mono.svg" alt="NGI0 Commons Fund" />
 				</a>
 			</td>
 		</tr>

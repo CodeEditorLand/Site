@@ -57,7 +57,7 @@ variable; radius is set per-component directly in JSX.
 - **Light mode:** elevation via neutral zinc surface layers (`--Surface1-4`).
 - **Dark mode:** elevation via hairline border contrast against the `#0a0a0a`
   canvas. A single restrained glow (e.g. `box-shadow: 0 0 0 1px
-  var(--SpinegRPC)`) is permitted on **focus/hover only** - never at rest.
+var(--SpinegRPC)`) is permitted on **focus/hover only** - never at rest.
 
 ---
 

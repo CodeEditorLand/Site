@@ -1,7 +1,9 @@
 import { useId } from "react";
 
 import { Input } from "../UI/Input";
+
 import { Label } from "../UI/Label";
+
 import type Property from "./Interface/Property/Input.js";
 
 /**
@@ -11,16 +13,27 @@ import type Property from "./Interface/Property/Input.js";
 const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 	const {
 		Label: LabelText,
+
 		Placeholder,
+
 		Type = "text",
+
 		Value,
+
 		DefaultValue,
+
 		Error,
+
 		Disabled = false,
+
 		Required = false,
+
 		HelperText,
+
 		ClassName,
+
 		OnChange,
+
 		AutoComplete,
 		...props
 	} = Content;
@@ -28,9 +41,13 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 	// useId() generates a stable ID that is identical on server and client,
 	// preventing the React #418 hydration mismatch that Math.random() caused.
 	const AutoId = useId();
+
 	const Identifier = PropertyIdentifier || AutoId;
+
 	const ErrorIdentifier = `${Identifier}-error`;
+
 	const HelperIdentifier = `${Identifier}-helper`;
+
 	const DescribedBy = Error
 		? ErrorIdentifier
 		: HelperText
@@ -55,6 +72,7 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 					if (OnChange) {
 						OnChange(Event.target.value);
 					}
+
 					if (Content.OnChange) {
 						Content.OnChange(Event.target.value);
 					}
@@ -64,7 +82,8 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 			{LabelText && (
 				<Label
 					htmlFor={Identifier}
-					className="block text-muted-foreground">
+					className="block text-muted-foreground"
+				>
 					{LabelText}
 				</Label>
 			)}
@@ -72,7 +91,8 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 				<p
 					id={ErrorIdentifier}
 					className="text-destructive"
-					role="alert">
+					role="alert"
+				>
 					{Error}
 				</p>
 			)}

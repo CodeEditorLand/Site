@@ -9,10 +9,10 @@
 
 Three typefaces, each with a distinct job. Do not mix roles.
 
-| Variable      | Face               | Job                                                       |
-| ------------- | ------------------ | --------------------------------------------------------- |
-| `--FontSans`  | **Geist**          | Body copy, UI text, all prose                             |
-| `--FontMono`  | **Geist Mono**     | HUD chrome: eyebrows, labels, tags, metadata, code        |
+| Variable      | Face                 | Job                                                       |
+| ------------- | -------------------- | --------------------------------------------------------- |
+| `--FontSans`  | **Geist**            | Body copy, UI text, all prose                             |
+| `--FontMono`  | **Geist Mono**       | HUD chrome: eyebrows, labels, tags, metadata, code        |
 | `--FontSerif` | **Instrument Serif** | Large display headlines only (hero H1, section H2 titles) |
 
 ### 1.1 Sans - Geist
@@ -29,7 +29,8 @@ Albert Sans. Weights: `400` (body), `500` (labels/buttons), `600` (badges),
 ### 1.2 Mono - Geist Mono
 
 ```css
---FontMono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+--FontMono:
+	"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 ```
 
 Used for: section eyebrows (`// Section Name`), metadata chips, code blocks,

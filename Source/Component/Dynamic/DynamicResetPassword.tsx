@@ -1,4 +1,5 @@
 import * as lucide from "lucide-react";
+
 import React, { useEffect, useState } from "react";
 
 import {
@@ -8,9 +9,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../UI/Card";
+
 import { DynamicButton } from "./DynamicButton";
+
 import { DynamicInput } from "./DynamicInput";
+
 import type Property from "./Interface/Property/Password/Reset.js";
+
 import type { default as ResetState } from "./Type/State/Reset.js";
 
 /**
@@ -28,23 +33,37 @@ const DynamicResetPassword = ({
 }: Property) => {
 	const {
 		Title,
+
 		Description,
+
 		PasswordField,
+
 		ConfirmPasswordField,
+
 		SubmitButton,
+
 		SuccessMessage,
+
 		InvalidTokenMessage,
+
 		CheckingMessage,
 	} = Content;
 
 	const [State, SetState] = useState<ResetState>("checking");
+
 	const [Token, SetToken] = useState<string>(PropToken || "");
+
 	const [Password, SetPassword] = useState("");
+
 	const [ConfirmPassword, SetConfirmPassword] = useState("");
+
 	const [ShowPassword, SetShowPassword] = useState(false);
+
 	const [ShowConfirmPassword, SetShowConfirmPassword] = useState(false);
+
 	const [Errors, SetErrors] = useState<{
 		password?: string;
+
 		confirmPassword?: string;
 	}>({});
 
@@ -56,14 +75,17 @@ const DynamicResetPassword = ({
 
 		if (!TokenFromUrl) {
 			SetState("invalid");
+
 			return;
 		}
 
 		// Simulate API call to validate token
 		const ValidateToken = async () => {
 			await new Promise((Resolve) => setTimeout(Resolve, 1000)); // Simulate delay
+
 			// In real implementation, call `/api/auth/verify-reset-token?token=${token}`
 			SetToken(TokenFromUrl);
+
 			SetState("valid"); // Assume valid for now
 		};
 
@@ -86,13 +108,16 @@ const DynamicResetPassword = ({
 		}
 
 		SetErrors(NewErrors);
+
 		return Object.keys(NewErrors).length === 0;
 	};
 
 	const HandleSubmit = (Event: React.FormEvent) => {
 		Event.preventDefault();
+
 		if (Validate() && Token) {
 			OnReset?.(Token, Password, ConfirmPassword);
+
 			SetState("success");
 		}
 	};
@@ -102,16 +127,19 @@ const DynamicResetPassword = ({
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
-						className={`mx-auto max-w-md text-center ${ClassName}`}>
+						className={`mx-auto max-w-md text-center ${ClassName}`}
+					>
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" aria-live="polite">
 									<div
 										className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"
-										aria-hidden="true"></div>
+										aria-hidden="true"
+									></div>
 									<p
 										className="text-muted-foreground"
-										role="status">
+										role="status"
+									>
 										{CheckingMessage ||
 											"Validating reset token..."}
 									</p>
@@ -129,7 +157,8 @@ const DynamicResetPassword = ({
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
-						className={`mx-auto max-w-md text-center ${ClassName}`}>
+						className={`mx-auto max-w-md text-center ${ClassName}`}
+					>
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div className="space-y-4" role="alert">
@@ -171,13 +200,15 @@ const DynamicResetPassword = ({
 			<section className="py-20" aria-label="Reset password">
 				<div className="container mx-auto px-4">
 					<div
-						className={`mx-auto max-w-md text-center ${ClassName}`}>
+						className={`mx-auto max-w-md text-center ${ClassName}`}
+					>
 						<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 							<CardContent className="pt-6">
 								<div
 									className="space-y-4"
 									role="status"
-									aria-live="polite">
+									aria-live="polite"
+								>
 									<DynamicButton
 										Content={{
 											Text: "Go to Sign In",
@@ -225,12 +256,14 @@ const DynamicResetPassword = ({
 							<form
 								className="space-y-4"
 								onSubmit={HandleSubmit}
-								aria-label="Reset password form">
+								aria-label="Reset password form"
+							>
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
 											className="bg-destructive/10 rounded-none p-3 text-destructive"
-											role="alert">
+											role="alert"
+										>
 											{ErrorMessage}
 										</div>
 									)}
@@ -260,7 +293,8 @@ const DynamicResetPassword = ({
 											}
 											onClick={() =>
 												SetShowPassword(!ShowPassword)
-											}>
+											}
+										>
 											{ShowPassword ? (
 												<lucide.EyeOff
 													className="h-4 w-4"
@@ -283,7 +317,8 @@ const DynamicResetPassword = ({
 												/[^a-zA-Z0-9]/.test(Password)
 													? "Strong password"
 													: "Weak password"
-											}>
+											}
+										>
 											{[0, 1, 2].map((Segment) => (
 												<div
 													key={Segment}
@@ -339,7 +374,8 @@ const DynamicResetPassword = ({
 											SetShowConfirmPassword(
 												!ShowConfirmPassword,
 											)
-										}>
+										}
+									>
 										{ShowConfirmPassword ? (
 											<lucide.EyeOff
 												className="h-4 w-4"

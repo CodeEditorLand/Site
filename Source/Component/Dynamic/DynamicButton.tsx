@@ -1,6 +1,7 @@
 import * as lucide from "lucide-react";
 
 import { Button } from "../UI/Button";
+
 import type Property from "./Interface/Property/Button.js";
 
 export type DynamicButtonProps = Property;
@@ -11,16 +12,27 @@ export type DynamicButtonProps = Property;
  */
 const ButtonIconRegistry: Record<string, lucide.LucideIcon> = {
 	ArrowRight: lucide.ArrowRight,
+
 	ChevronRight: lucide.ChevronRight,
+
 	Download: lucide.Download,
+
 	ExternalLink: lucide.ExternalLink,
+
 	GitFork: lucide.GitFork,
+
 	Globe: lucide.Globe,
+
 	Heart: lucide.Heart,
+
 	LogIn: lucide.LogIn,
+
 	Mail: lucide.Mail,
+
 	Search: lucide.Search,
+
 	Send: lucide.Send,
+
 	Sparkles: lucide.Sparkles,
 };
 
@@ -32,14 +44,23 @@ const ButtonIconRegistry: Record<string, lucide.LucideIcon> = {
 const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 	const {
 		Text,
+
 		Icon,
+
 		Variant = "ghost",
+
 		Size = "default",
+
 		Type = "button",
+
 		Disabled = false,
+
 		FullWidth = false,
+
 		ClassName,
+
 		Href,
+
 		OnClick,
 		...props
 	} = Content;
@@ -56,15 +77,20 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 			aria-busy={IsLoading || undefined}
 			onClick={() => {
 				if (IsLoading) return;
+
 				if (OnAction) OnAction();
+
 				if (OnClick) OnClick();
+
 				if (Href) window.location.href = Href;
 			}}
-			{...props}>
+			{...props}
+		>
 			{Text}
 			{IsLoading ? (
 				<>
 					{"\u2001"}
+
 					<lucide.Loader2
 						className="StaccatoSpinner h-4 w-4 animate-spin"
 						aria-hidden="true"
@@ -73,6 +99,7 @@ const DynamicButton = ({ Content, OnAction, IsLoading = false }: Property) => {
 			) : IconComponent ? (
 				<>
 					{"\u2001"}
+
 					<IconComponent
 						className="StaccatoIcon h-4 w-4"
 						aria-hidden="true"

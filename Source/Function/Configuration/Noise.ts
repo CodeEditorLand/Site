@@ -14,13 +14,19 @@ export default {
 
 	ChannelSpeed: {
 		Phase: 0.18, // was 0.5
+
 		Color: 0.07, // was 0.2
+
 		Rhythm: 0.6, // was 2 - rhythm dots stay readable
+
 		Morph: 0.25, // was 0.7
+
 		Border: 0.1, // was 0.3
+
 		Glow: 0.28, // was 0.8
 	},
 } as const;
 
 declare const __NOISE_SPEED__: number | undefined;
+
 declare const __NOISE_STEP__: number | undefined;

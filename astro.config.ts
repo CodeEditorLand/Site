@@ -7,9 +7,8 @@ const Sourcemap = (await import("./Source/Function/Configuration/Sourcemap.js"))
 
 const { resolve: Resolve } = await import("node:path");
 
-const { default: remarkCallout } = await import(
-	"./Source/Function/Markdown/Callout.js"
-);
+const { default: remarkCallout } =
+	await import("./Source/Function/Markdown/Callout.js");
 
 export default (await import("astro/config")).defineConfig({
 	markdown: {

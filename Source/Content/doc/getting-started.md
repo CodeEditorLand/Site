@@ -120,6 +120,16 @@ export Trace=all Record=1 Disable=false
 The full build takes several minutes on first run. Subsequent incremental builds
 are faster.
 
+### Build Profiles
+
+| Profile                       | Workbench | Coverage | Notes                                |
+| ----------------------------- | --------- | -------- | ------------------------------------ |
+| `debug-electron-bundled`      | Electron  | 95%+     | Recommended for daily development    |
+| `debug-electron`              | Electron  | 95%+     | Full feature set                     |
+| `debug-mountain`              | Mountain  | 80-90%   | Recommended for Mountain development |
+| `debug`                       | Browser   | 70-80%   | Default debug                        |
+| `production-electron-bundled` | Electron  | -        | Optimized release build              |
+
 ## First Run
 
 ```sh
@@ -129,7 +139,7 @@ are faster.
 Or launch the binary directly:
 
 ```sh
-./Element/Mountain/Target/debug-electron/Mountain
+./Element/Mountain/Target/debug/Mountain
 ```
 
 ## Troubleshooting

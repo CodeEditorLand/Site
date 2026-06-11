@@ -103,9 +103,40 @@ and verifies it before the program runs. Adding a new service dependency is a
 type error at the call site until the Layer is wired in.
 
 Wind uses the same pattern. Its `TauriLiveLayer` composes all production service
-implementations. A `TestLayer` substitutes mock implementations for the same
-Tags, which means tests run against the same composition logic as production
-without any special injection framework.
+implementations. Where a service has no asynchronous setup cost, `Layer.succeed`
+is used in place of `Layer.effect` to skip the Effect runtime overhead and
+provide the value directly:
+
+```typescript
+// Layer.succeed for zero-setup services (current Wind pattern)
+const ConfigService = Layer.succeed(ConfigServiceTag, makeConfigService());
+```
+
+A `TestLayer` substitutes mock implementations for the same Tags, which means
+tests run against the same composition logic as production without any special
+injection framework.
+
+## Cocoon bootstrap: async/await at the boundary
+
+Cocoon's top-level bootstrap (`Effect/Bootstrap.ts`) starts the gRPC RPCServer
+(Stage 1) before initiating the Mountain connection (Stage 2). Both stages are
+orchestrated with `async`/`await` rather than the Effect-TS runtime, which saves
+approximately 45 ms of `NodeRuntime.runMain` startup overhead. Effect fibers are
+used inside individual services once they are running; the bootstrap boundary
+itself uses plain async functions for faster process startup.
+
+The stage ordering matters: Mountain probes the Cocoon gRPC port during its 30 s
+connection budget. If RPCServer binds after Mountain has already started probing,
+the initial probes are lost and the connection is delayed by one retry interval.
+
+## LandWorkbenchRuntime: eager ManagedRuntime singleton
+
+The `LandWorkbenchRuntime` export in `Output` is a `ManagedRuntime` instance
+built once at module load time from `AppLayer`. Services resolved from it share
+fiber supervisors and resource scopes across their full lifetime. Each `run*`
+call on `LandWorkbenchRuntime` resolves in under 5 ms because the Layer
+dependency graph has already been materialised - there is no per-call Layer
+build step.
 
 ## Why this matters for an extension host specifically
 
