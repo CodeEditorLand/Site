@@ -227,6 +227,6 @@ are still present in the debug bundle.
 
 ## See Also
 
-- [Telemetry Overview](https://editor.land/Doc/telemetry/overview)
-- [Effect-TS and OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)
-- [Sidecar Telemetry](https://editor.land/Doc/telemetry/sidecars)
+- [Telemetry Overview](https://Editor.Land/Doc/telemetry/overview)
+- [Effect-TS and OpenTelemetry Integration](https://Editor.Land/Doc/telemetry/effect-otel)
+- [Sidecar Telemetry](https://Editor.Land/Doc/telemetry/sidecars)

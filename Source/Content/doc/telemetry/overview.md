@@ -113,7 +113,7 @@ strings Element/Mountain/Target/release/Mountain | grep -c "posthog\|i.posthog.c
 # 0
 ```
 
-See [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking) for
+See [Tree-Shaking Telemetry](https://Editor.Land/Doc/telemetry/tree-shaking) for
 the full build-time verification procedure.
 
 ## Event Naming Convention
@@ -154,6 +154,6 @@ telemetry SDK bytes in release builds.
 
 ## See Also
 
-- [Effect-TS and OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)
-- [Sidecar Telemetry](https://editor.land/Doc/telemetry/sidecars)
-- [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking)
+- [Effect-TS and OpenTelemetry Integration](https://Editor.Land/Doc/telemetry/effect-otel)
+- [Sidecar Telemetry](https://Editor.Land/Doc/telemetry/sidecars)
+- [Tree-Shaking Telemetry](https://Editor.Land/Doc/telemetry/tree-shaking)

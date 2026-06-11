@@ -231,8 +231,8 @@ Background init task:
 
 ## Related Documentation
 
-- [Deep Dive: Mountain](https://editor.land/Doc/deep-dive-mountain)
-- [Architecture Overview](https://editor.land/Doc/architecture)
-- [Cocoon](https://editor.land/Doc/cocoon)
-- [Vine](https://editor.land/Doc/vine)
-- [Air](https://editor.land/Doc/air)
+- [Deep Dive: Mountain](https://Editor.Land/Doc/deep-dive-mountain)
+- [Architecture Overview](https://Editor.Land/Doc/architecture)
+- [Cocoon](https://Editor.Land/Doc/cocoon)
+- [Vine](https://Editor.Land/Doc/vine)
+- [Air](https://Editor.Land/Doc/air)

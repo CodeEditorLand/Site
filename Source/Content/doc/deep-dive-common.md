@@ -292,7 +292,7 @@ flag is present. Neither pipe is enabled in debug builds by default.
 
 ## Related Documentation
 
-- [Common overview](https://editor.land/Doc/common)
-- [Mountain deep dive](https://editor.land/Doc/deep-dive-mountain)
-- [Echo deep dive](https://editor.land/Doc/deep-dive-echo)
+- [Common overview](https://Editor.Land/Doc/common)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Echo deep dive](https://Editor.Land/Doc/deep-dive-echo)
 - [Source Code](https://github.com/CodeEditorLand/Common)

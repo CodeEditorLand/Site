@@ -197,8 +197,8 @@ Wind/Source/
 
 ## Related Documentation
 
-- [Wind Deep Dive](https://editor.land/Doc/deep-dive-wind)
-- [Sky UI layer](https://editor.land/Doc/sky)
-- [Mountain Rust backend](https://editor.land/Doc/mountain)
-- [Cocoon extension host](https://editor.land/Doc/cocoon)
+- [Wind Deep Dive](https://Editor.Land/Doc/deep-dive-wind)
+- [Sky UI layer](https://Editor.Land/Doc/sky)
+- [Mountain Rust backend](https://Editor.Land/Doc/mountain)
+- [Cocoon extension host](https://Editor.Land/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Wind)

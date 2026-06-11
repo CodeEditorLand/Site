@@ -125,7 +125,7 @@ Worker/Source/
 
 ## Related Documentation
 
-- [Worker Deep Dive](https://editor.land/Doc/deep-dive-worker)
-- [Sky UI layer](https://editor.land/Doc/sky)
-- [Output build pipeline](https://editor.land/Doc/output)
+- [Worker Deep Dive](https://Editor.Land/Doc/deep-dive-worker)
+- [Sky UI layer](https://Editor.Land/Doc/sky)
+- [Output build pipeline](https://Editor.Land/Doc/output)
 - [Source Code](https://github.com/CodeEditorLand/Worker)

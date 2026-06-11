@@ -138,7 +138,7 @@ Air/Source/
 
 ## Related Documentation
 
-- [Air Deep Dive](https://editor.land/Doc/deep-dive-air)
-- [Mountain](https://editor.land/Doc/mountain)
-- [Vine](https://editor.land/Doc/vine)
+- [Air Deep Dive](https://Editor.Land/Doc/deep-dive-air)
+- [Mountain](https://Editor.Land/Doc/mountain)
+- [Vine](https://Editor.Land/Doc/vine)
 - [Source Code](https://github.com/CodeEditorLand/Air)

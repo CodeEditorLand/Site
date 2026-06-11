@@ -158,7 +158,7 @@ service methods are being completed.
 
 ## Related Documentation
 
-- [Vine Deep Dive](https://editor.land/Doc/deep-dive-vine)
-- [Mountain](https://editor.land/Doc/mountain)
-- [Cocoon](https://editor.land/Doc/cocoon)
+- [Vine Deep Dive](https://Editor.Land/Doc/deep-dive-vine)
+- [Mountain](https://Editor.Land/Doc/mountain)
+- [Cocoon](https://Editor.Land/Doc/cocoon)
 - [Source Code](https://github.com/CodeEditorLand/Vine)

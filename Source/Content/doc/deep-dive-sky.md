@@ -10,7 +10,7 @@ description:
 Sky is the Astro-based UI layer that runs inside the Tauri webview. This page
 covers the internal mechanics of SkyBridge, the workbench variant selection
 logic, the Vite/Rollup build configuration, and the full `sky://` event catalog.
-For an overview, see the [Sky element page](https://editor.land/Doc/sky).
+For an overview, see the [Sky element page](https://Editor.Land/Doc/sky).
 
 ## SkyBridge Module Breakdown
 
@@ -245,7 +245,7 @@ The full `sky://` event URI registry, kept in lockstep between
 
 ## Related Documentation
 
-- [Sky overview](https://editor.land/Doc/sky)
-- [Wind Deep Dive](https://editor.land/Doc/deep-dive-wind)
-- [Mountain Deep Dive](https://editor.land/Doc/deep-dive-mountain)
-- [Output pipeline](https://editor.land/Doc/output)
+- [Sky overview](https://Editor.Land/Doc/sky)
+- [Wind Deep Dive](https://Editor.Land/Doc/deep-dive-wind)
+- [Mountain Deep Dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Output pipeline](https://Editor.Land/Doc/output)

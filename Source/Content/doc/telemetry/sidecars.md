@@ -189,6 +189,6 @@ production tree-shaking come for free from the Common library.
 
 ## See Also
 
-- [Telemetry Overview](https://editor.land/Doc/telemetry/overview)
-- [Effect-TS and OpenTelemetry Integration](https://editor.land/Doc/telemetry/effect-otel)
-- [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking)
+- [Telemetry Overview](https://Editor.Land/Doc/telemetry/overview)
+- [Effect-TS and OpenTelemetry Integration](https://Editor.Land/Doc/telemetry/effect-otel)
+- [Tree-Shaking Telemetry](https://Editor.Land/Doc/telemetry/tree-shaking)

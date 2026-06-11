@@ -58,7 +58,7 @@
 [![Tailwind](https://img.shields.io/badge/Tailwind-3.x-38BDF8.svg)](https://tailwindcss.com)
 
 Marketing, download, and account portal for **Land**, hosted at
-[editor.land](https://editor.land). Built with Astro 5, React 19, Tailwind CSS,
+[editor.land](https://Editor.Land). Built with Astro 5, React 19, Tailwind CSS,
 and shadcn/ui. Fully internationalized across 5 locales.
 
 ---

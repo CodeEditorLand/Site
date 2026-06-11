@@ -318,7 +318,7 @@ built-in macros retain their original casing.
 
 ## Related Documentation
 
-- [Mountain element overview](https://editor.land/Doc/mountain)
-- [Cocoon deep dive](https://editor.land/Doc/deep-dive-cocoon)
-- [Architecture overview](https://editor.land/Doc/architecture)
-- [Vine protocol](https://editor.land/Doc/vine)
+- [Mountain element overview](https://Editor.Land/Doc/mountain)
+- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
+- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [Vine protocol](https://Editor.Land/Doc/vine)

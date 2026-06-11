@@ -138,8 +138,8 @@ Sky/Source/
 
 ## Related Documentation
 
-- [Sky Deep Dive](https://editor.land/Doc/deep-dive-sky)
-- [Wind service layer](https://editor.land/Doc/wind)
-- [Mountain Rust backend](https://editor.land/Doc/mountain)
-- [Output build pipeline](https://editor.land/Doc/output)
+- [Sky Deep Dive](https://Editor.Land/Doc/deep-dive-sky)
+- [Wind service layer](https://Editor.Land/Doc/wind)
+- [Mountain Rust backend](https://Editor.Land/Doc/mountain)
+- [Output build pipeline](https://Editor.Land/Doc/output)
 - [Source Code](https://github.com/CodeEditorLand/Sky)

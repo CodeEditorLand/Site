@@ -149,7 +149,7 @@ connected.
 
 ## Related Documentation
 
-- [Echo Deep Dive](https://editor.land/Doc/deep-dive-echo)
-- [Mountain](https://editor.land/Doc/mountain)
-- [Common](https://editor.land/Doc/common)
+- [Echo Deep Dive](https://Editor.Land/Doc/deep-dive-echo)
+- [Mountain](https://Editor.Land/Doc/mountain)
+- [Common](https://Editor.Land/Doc/common)
 - [Source Code](https://github.com/CodeEditorLand/Echo)

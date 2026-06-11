@@ -13,7 +13,7 @@ internal mechanics of `TauriLiveLayer` construction, `TauriMainProcessService`
 tier routing, `Preload.ts` shimming strategy, the `Generated/*Upstream.ts`
 codegen pipeline, and how Wind maintains lockstep state with Output's service
 copy. For an overview, see the
-[Wind element page](https://editor.land/Doc/wind).
+[Wind element page](https://Editor.Land/Doc/wind).
 
 ## TauriLiveLayer Construction and Service Dependency Graph
 
@@ -238,7 +238,7 @@ consuming code.
 
 ## Related Documentation
 
-- [Wind overview](https://editor.land/Doc/wind)
-- [Sky Deep Dive](https://editor.land/Doc/deep-dive-sky)
-- [Mountain Deep Dive](https://editor.land/Doc/deep-dive-mountain)
-- [Output pipeline](https://editor.land/Doc/deep-dive-output)
+- [Wind overview](https://Editor.Land/Doc/wind)
+- [Sky Deep Dive](https://Editor.Land/Doc/deep-dive-sky)
+- [Mountain Deep Dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Output pipeline](https://Editor.Land/Doc/deep-dive-output)

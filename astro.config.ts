@@ -373,6 +373,11 @@ export default (await import("astro/config")).defineConfig({
 				name: "CrossOrigin",
 
 				transform(Code, Identifier, _) {
+					// Skip virtual modules (no real file path) - they contain
+					// serialized data where injecting unescaped quotes breaks
+					// string literals (e.g. astro:data-layer-content).
+					if (!Identifier.startsWith("/")) return;
+
 					const CrossOrigin =
 						Identifier.includes(".mjs") ||
 						Identifier.includes(".js") ||

@@ -267,6 +267,6 @@ element.
 
 ## See Also
 
-- [Telemetry Overview](https://editor.land/Doc/telemetry/overview)
-- [Sidecar Telemetry](https://editor.land/Doc/telemetry/sidecars)
-- [Tree-Shaking Telemetry](https://editor.land/Doc/telemetry/tree-shaking)
+- [Telemetry Overview](https://Editor.Land/Doc/telemetry/overview)
+- [Sidecar Telemetry](https://Editor.Land/Doc/telemetry/sidecars)
+- [Tree-Shaking Telemetry](https://Editor.Land/Doc/telemetry/tree-shaking)

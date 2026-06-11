@@ -181,7 +181,7 @@ Common/Source/
 
 ## Related Documentation
 
-- [Common Deep Dive](https://editor.land/Doc/deep-dive-common)
-- [Mountain](https://editor.land/Doc/mountain)
-- [Echo](https://editor.land/Doc/echo)
+- [Common Deep Dive](https://Editor.Land/Doc/deep-dive-common)
+- [Mountain](https://Editor.Land/Doc/mountain)
+- [Echo](https://Editor.Land/Doc/echo)
 - [Source Code](https://github.com/CodeEditorLand/Common)

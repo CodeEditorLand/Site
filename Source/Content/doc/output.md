@@ -147,8 +147,8 @@ not in Output's pipeline. The two output trees diverge here by design.
 
 ## Related Documentation
 
-- [Output Deep Dive](https://editor.land/Doc/deep-dive-output)
-- [Sky UI layer](https://editor.land/Doc/sky)
-- [Rest compiler](https://editor.land/Doc/rest)
-- [Mountain Rust backend](https://editor.land/Doc/mountain)
+- [Output Deep Dive](https://Editor.Land/Doc/deep-dive-output)
+- [Sky UI layer](https://Editor.Land/Doc/sky)
+- [Rest compiler](https://Editor.Land/Doc/rest)
+- [Mountain Rust backend](https://Editor.Land/Doc/mountain)
 - [Source Code](https://github.com/CodeEditorLand/Output)

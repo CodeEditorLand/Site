@@ -242,7 +242,7 @@ during development.
 
 ## Related Documentation
 
-- [Echo overview](https://editor.land/Doc/echo)
-- [Common ActionEffect system](https://editor.land/Doc/deep-dive-common)
-- [Mountain ApplicationRunTime](https://editor.land/Doc/deep-dive-mountain)
+- [Echo overview](https://Editor.Land/Doc/echo)
+- [Common ActionEffect system](https://Editor.Land/Doc/deep-dive-common)
+- [Mountain ApplicationRunTime](https://Editor.Land/Doc/deep-dive-mountain)
 - [Source Code](https://github.com/CodeEditorLand/Echo)

@@ -213,7 +213,7 @@ scheduled check.
 
 ## Related Documentation
 
-- [Air overview](https://editor.land/Doc/air)
-- [Vine protocol](https://editor.land/Doc/vine)
-- [Mountain deep dive](https://editor.land/Doc/deep-dive-mountain)
+- [Air overview](https://Editor.Land/Doc/air)
+- [Vine protocol](https://Editor.Land/Doc/vine)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
 - [Source Code](https://github.com/CodeEditorLand/Air)

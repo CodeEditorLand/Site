@@ -311,8 +311,8 @@ Air.
 
 ## Related Documentation
 
-- [Vine overview](https://editor.land/Doc/vine)
-- [Mountain deep dive](https://editor.land/Doc/deep-dive-mountain)
-- [Cocoon deep dive](https://editor.land/Doc/deep-dive-cocoon)
-- [Air deep dive](https://editor.land/Doc/deep-dive-air)
+- [Vine overview](https://Editor.Land/Doc/vine)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
+- [Air deep dive](https://Editor.Land/Doc/deep-dive-air)
 - [Source Code](https://github.com/CodeEditorLand/Vine)
