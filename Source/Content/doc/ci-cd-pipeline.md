@@ -3,9 +3,9 @@ title: "CI/CD Pipeline"
 section: "Development"
 order: 3
 description:
-    "Overview of the GitHub Actions workflow, turbo.json task graph, build
-    matrix, artifact upload, and when Maintain changes are sufficient without a
-    rebuild."
+    "The six-stage Land build pipeline: VS Code compile, TypeScript, PreBake,
+    Rust, Tauri bundle, and SignBundle.sh. GitHub Actions workflow, turbo.json
+    task graph, build matrix, and artifact upload."
 ---
 
 Land's CI/CD pipeline is built on GitHub Actions with Turborepo coordinating the
@@ -13,6 +13,26 @@ task graph across all workspace packages. Every push to `Current` and every pull
 request targeting `Current` triggers the pipeline. This page describes what
 runs, what it produces, and how environment secrets and the
 `beforeBundleCommand` hook fit into the flow.
+
+## Six-Stage Build Pipeline
+
+Every Land build - whether local or in CI - follows the same six stages in
+sequence:
+
+| Stage | Name                     | What runs                                                               |
+| ----- | ------------------------ | ----------------------------------------------------------------------- |
+| 1     | VS Code platform compile | `npm install` + `npm run compile` + `npm run compile-extensions-build`  |
+| 2     | TypeScript build         | `pnpm prepublishOnly` across Wind, Cocoon, Output, Sky, Worker          |
+| 3     | PreBake                  | `Maintain/Build/Manifest/PreBake.ts` via `beforeBundleCommand`          |
+| 4     | Rust build               | `cargo build -p Mountain`                                               |
+| 5     | Tauri bundle             | `pnpm tauri build`                                                      |
+| 6     | Re-sign                  | `BundleLevel=debug sh Maintain/Script/SignBundle.sh`                    |
+
+Stage 1 is a prerequisite for every build. Cocoon and Output both consume the
+compiled platform JavaScript it produces. Stage 3 (PreBake) fires inside
+`tauri.conf.json` as a `beforeBundleCommand` and therefore runs in all build
+paths - direct `pnpm tauri build`, `Build.sh`, and CI - not only through the
+wrapper script.
 
 ## GitHub Actions Workflow
 
@@ -32,10 +52,20 @@ checks.
 ### Node Version Requirement
 
 The VS Code Editor submodule at `Dependency/Microsoft/Dependency/Editor`
-requires **Node 24** for its compile step. The required version is tracked in
-that submodule's `.nvmrc` file. CI jobs that include the VS Code platform
-compile step must provision Node 24 before running `npm install` and
-`npm run compile` inside that directory.
+requires **Node 24** for its Stage 1 compile step. The exact pinned minor
+version is tracked in that submodule's `.nvmrc` file
+(`Dependency/Microsoft/Dependency/Editor/.nvmrc`). CI jobs must provision
+Node 24 and set the binary download skip flags before running `npm install` and
+`npm run compile` inside that directory:
+
+```sh
+export ELECTRON_SKIP_BINARY_DOWNLOAD=1
+export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+```
+
+Without these flags, `npm install` will attempt to download Electron (~200 MB)
+and Playwright Chromium (~300 MB), stalling the job indefinitely. Neither binary
+is used during compilation.
 
 ### Build Matrix
 
@@ -93,17 +123,18 @@ the pipeline to produce signed artifacts:
 
 ### CI Environment Variables
 
-The following environment variables are set in CI to suppress large binary
-downloads that are not needed during the build or are replaced by the SideCar
-element's own binary management:
+The following environment variables must be set in CI before the Stage 1
+(`npm install`) step:
 
 | Variable                           | Value | Effect                                                       |
 | ---------------------------------- | ----- | ------------------------------------------------------------ |
 | `ELECTRON_SKIP_BINARY_DOWNLOAD`    | `1`   | Prevents npm from downloading the Electron binary at install |
 | `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` | `1`   | Prevents Playwright from downloading browser binaries        |
 
-These are set unconditionally in CI. Local developer machines do not need them
-unless running `npm install` inside the VS Code Editor submodule.
+These are set unconditionally in CI. Local developer machines also require them
+when running `npm install` inside the VS Code Editor submodule - add them to
+your shell profile (`~/.zshrc` or `~/.bashrc`) and reload before the first
+Stage 1 run.
 
 > [!IMPORTANT] The NLnet acknowledgement text required by the NGI0 Commons Fund
 > grant is embedded in the About dialog at build time via a

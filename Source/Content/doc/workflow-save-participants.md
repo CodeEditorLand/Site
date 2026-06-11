@@ -100,3 +100,9 @@ every open dirty document and flushes each through the standard
 `Document.Save` with no arguments (which always errored); the current
 implementation routes through `Workspace.SaveAll` and resolves with a boolean
 indicating whether any document was saved.
+
+`workspace.save(uri)` routes to `sky://workspace/save` and saves the specific
+document via `ITextFileService.save` or the workbench save command as a
+fallback. `workspace.saveAs(uri)` routes to `sky://workspace/saveAs` and opens
+the native save-as dialog. Both are round-trip request channels that resolve
+the extension's awaited promise.

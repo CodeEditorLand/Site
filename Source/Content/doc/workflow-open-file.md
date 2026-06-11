@@ -82,3 +82,23 @@ until Monaco renders the content.
 > `git:`, `output:`) are served by their own registered
 > `TextDocumentContentProvider` in Cocoon, which follows a different path
 > through the gRPC layer.
+
+## openTextDocument variants
+
+`vscode.workspace.openTextDocument` supports three calling forms beyond a plain
+file URI:
+
+- **`{ language, content }`** - creates an in-memory untitled document
+  pre-populated with `content` and tagged with `languageId`. The document is
+  added to `workspace.textDocuments` and `onDidOpenTextDocument` fires
+  immediately. No Mountain round-trip occurs.
+- **`"untitled:…"` scheme** - returns an empty document without any backend
+  call. Content is read from `DocumentContentCache` if a prior write has
+  populated it.
+- **Custom scheme (e.g. `git:`, `output:`)** - Cocoon checks whether a
+  `TextDocumentContentProvider` has been registered for that scheme via
+  `registerTextDocumentContentProvider`. If one is found, Cocoon calls
+  `provider.provideTextDocumentContent()` directly with no Mountain round-trip
+  and no 10-second timeout. For schemes where no provider is registered and
+  Mountain is the authoritative owner (e.g. output channels), the standard
+  `FileSystem.ReadFile` gRPC route is used instead.

@@ -99,9 +99,9 @@ during active editing), the encoding difference is measurable.
 
 | Channel                                                               | Port  |
 | --------------------------------------------------------------------- | ----- |
-| Mountain ↔ Cocoon (Mountain Vine server, Mountain → Cocoon direction) | 50051 |
-| Mountain ↔ Cocoon (Cocoon Vine server, Cocoon → Mountain direction)   | 50052 |
-| Mountain ↔ Air                                                        | 50053 |
+| Mountain ↔ Cocoon (Mountain gRPC server, Cocoon → Mountain direction) | 50051 |
+| Mountain ↔ Cocoon (Cocoon gRPC server, Mountain → Cocoon direction)   | 50052 |
+| Mountain ↔ Air (Air gRPC server)                                      | 50053 |
 
 ## TierIPC routing
 

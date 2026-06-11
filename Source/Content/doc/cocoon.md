@@ -3,15 +3,19 @@ title: "Cocoon"
 section: "Elements"
 order: 1
 description:
-    "The Node.js + Effect-TS extension host that runs VS Code extensions
-    unmodified inside Land via gRPC-backed vscode.* API shims."
+    "The Node.js extension host that runs VS Code extensions unmodified inside
+    Land. Uses a lean async bootstrap (no Effect-TS runtime overhead), a
+    7-stage ordered startup, topological extension activation with cycle guard,
+    and gRPC-backed vscode.* API shims with ~88% weighted coverage."
 ---
 
 Cocoon is the Node.js sidecar process that provides VS Code extension
 compatibility for Land. It loads extension entry points unmodified, constructs a
 per-extension `vscode` API object from Effect-TS service layers, and
-communicates with Mountain over the Vine gRPC protocol on port 50052. Mountain
-launches and supervises Cocoon; Cocoon never connects directly to the UI layer.
+communicates with Mountain over the Vine gRPC protocol. Cocoon binds its own
+gRPC server on port **50052**; Mountain's Vine gRPC server listens on port
+**50051**. Mountain launches and supervises Cocoon; Cocoon never connects
+directly to the UI layer.
 
 ## Role in the Land Ecosystem
 
@@ -21,13 +25,15 @@ Electron process, Land provides a lightweight Node.js sidecar that intercepts
 that `require` call and returns an API surface backed by Mountain's native
 services.
 
-| Attribute            | Value                                                                       |
-| -------------------- | --------------------------------------------------------------------------- |
-| Language             | TypeScript (Effect-TS v3.21)                                                |
-| Runtime              | Node.js v18+ (managed by Mountain's ProcessManagement)                      |
-| IPC                  | Vine gRPC protocol, port 50052                                              |
-| Managed by           | `Mountain/ProcessManagement/CocoonManagement.rs`                            |
-| VS Code API coverage | ~88% weighted (TextEditor 95%, Workspace 96%, Window 95%, SCM 95%, LSP 95%) |
+| Attribute            | Value                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| Language             | TypeScript (Effect-TS v3.21 for service composition)                                  |
+| Runtime              | Node.js v18+ (managed by Mountain's ProcessManagement)                                |
+| Own gRPC server      | Vine protocol, port **50052** (Mountain connects to this)                             |
+| Mountain gRPC client | Vine protocol, port **50051** (Cocoon connects to Mountain's server)                  |
+| Bootstrap            | Plain `async`/`await`; no Effect-TS runtime on startup path                          |
+| Managed by           | `Mountain/ProcessManagement/CocoonManagement.rs`                                      |
+| VS Code API coverage | ~88% weighted (TextEditor 95%, Workspace 96%, Window 95%, SCM 95%, LSP 95%)           |
 
 ## Key Dependencies
 
@@ -43,34 +49,42 @@ services.
 
 ## Bootstrap Stages
 
-Cocoon initializes in five ordered stages using plain `async`/`await` - there
-is no Effect-TS runtime on the startup path. The ordering is critical: the gRPC
-server (Stage 1) must be listening before Mountain attempts to connect (Stage
-3). Reversing this order causes Mountain to exhaust its 30-second connection
-budget.
+Cocoon initializes in seven ordered stages using plain `async`/`await` - there
+is no Effect-TS runtime on the startup path, saving the ~45ms
+`NodeRuntime.runMain` startup cost. The ordering is critical: RPCServer
+(Stage 3) must bind before MountainConnection (Stage 5). Mountain's gRPC
+connection budget is 30 seconds (`GRPC_CONNECT_BUDGET_MS = 30_000`). If the
+stages were reversed, Mountain would time out waiting for Cocoon's port before
+Cocoon ever started its server.
 
 ```text
-Stage 1 - RPCServer
-  Binds the Vine gRPC server on port 50052.
-  Mountain can now connect.
+Stage 1 - Environment
+  Reads process.version, platform, arch; logs Node details.
 
-Stage 2 - Module interceptor
+Stage 2 - Configuration
+  Parses env vars (MOUNTAIN_GRPC_PORT, COCOON_GRPC_PORT, Trace, …)
+  into globalThis.__cocoonBootstrapConfig.
+
+Stage 3 - RPCServer
+  Binds Cocoon's own Vine gRPC server on port 50052.
+  Mountain's probe loop will now succeed.
+
+Stage 4 - ModuleInterceptor
   Patches Node.js require() and import.
   All subsequent require("vscode") calls return Land's API shim.
 
-Stage 3 - MountainConnection
-  Connects to Mountain's Vine gRPC server.
+Stage 5 - MountainConnection
+  TCP-probes Mountain's Vine gRPC server on port 50051, then connects.
   Sends $initialHandshake notification.
   Waits for initExtensionHost request with InitData payload.
-  MountainProbeMaxAttempts=3, MaxAttempts=5.
+  MountainProbeMaxAttempts=3, MountainConnectMaxAttempts=5.
 
-Stage 4 - Extension registry
-  Reads extension manifests from InitData.
-  Prepares activation metadata and dependency graph.
+Stage 6 - Extensions
+  Activates all enabled extensions (concurrency 8, topological order).
 
-Stage 5 - Health checks
-  Starts heartbeat loop (5-second interval).
-  Reports health to Mountain.
+Stage 7 - HealthCheck
+  Optional; skipped when skipHealthCheck: true.
+  Starts heartbeat loop and reports ready state to Mountain.
 ```
 
 ## Source Layout
@@ -176,8 +190,13 @@ Each `require("vscode")` call returns a new API object constructed by
 3. Activation
    RequireInterceptor loads the extension main module.
    ApiFactory constructs the vscode object for this extension.
-   ExtensionContext is built (workspaceState, globalState, secrets all
-   backed by Mountain storage and AES-256-GCM encryption).
+   ExtensionContext is built:
+     - workspaceState → Mountain storage:get/set (prefix <extId>:workspace:)
+     - globalState    → Mountain storage:get/set (prefix <extId>:global:)
+     - secrets        → Mountain encryption:encrypt/decrypt (AES-256-GCM,
+                        machine-stable key from SHA-256 of hardware UUID)
+   Storage is primed before activate() is called so the first synchronous
+   workspaceState.get() sees the real persisted value.
    extension.activate(context) is called.
    context.extension.exports is updated after activate() resolves.
 
@@ -197,14 +216,23 @@ Each `require("vscode")` call returns a new API object constructed by
    All subscriptions in context.subscriptions are disposed.
 ```
 
-## TierIPC Fallback
+## TierIPC Routing
 
-When `TierIPC=NodeDeferred` is set, Wind routes IPC calls to Mountain first. If
-Mountain returns `undefined` or has no handler registered, the call falls
-through to Cocoon via the `cocoon:request` gRPC bridge. Cocoon's
-`RequestRoutingHandler` receives these forwarded calls and dispatches to the
-appropriate in-process handler (`languages:*`, `scm:*`, `debug:*`, `tasks:*`,
-`auth:*`). This allows gradual migration of handlers without a rebuild.
+The `TierIPC` environment variable controls how Wind routes IPC calls at
+runtime - no rebuild required:
+
+| Value          | Behavior                                                                    |
+| :------------- | :-------------------------------------------------------------------------- |
+| `Mountain`     | Default. All calls handled by Mountain's Tauri IPC.                         |
+| `Node`         | All calls forwarded to Cocoon via `cocoon:request` bridge.                  |
+| `NodeDeferred` | Mountain first; if Mountain returns `undefined` or has no handler, the call |
+|                | falls through to Cocoon via the `cocoon:request` gRPC bridge.               |
+
+When `TierIPC=NodeDeferred`, Cocoon's `RequestRoutingHandler` receives
+forwarded calls and dispatches by method name prefix to the appropriate
+in-process handler (`languages:*`, `scm:*`, `debug:*`, `tasks:*`, `auth:*`).
+This allows gradual migration of handlers from Mountain to Cocoon without a
+code rebuild.
 
 ## gRPC Communication
 

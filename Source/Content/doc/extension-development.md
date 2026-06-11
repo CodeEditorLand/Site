@@ -25,8 +25,8 @@ current release, the following areas are fully or substantially covered:
 | `vscode.scm`            | ~95%     | InputBox, commitTemplate, acceptInputCommand                                                                                                           |
 | `vscode.commands`       | ~95%     | `onDidExecuteCommand` event, `registerTextEditorCommand`                                                                                               |
 | `vscode.extensions`     | ~90%     | Activation, exports, Memento-backed state                                                                                                              |
-| `vscode.debug`          | ~75%     | Configuration providers; DAP pipe/socket adapters incomplete                                                                                           |
-| `vscode.tasks`          | ~75%     | `registerTaskProvider`, `executeTask`; some task types not delegated                                                                                   |
+| `vscode.debug`          | ~25%     | Configuration providers registered; DAP pipe/socket adapters and `startDebugging` transport incomplete                                                |
+| `vscode.tasks`          | ~25%     | `registerTaskProvider` and `executeTask` wired; Mountain-side process spawn for shell tasks not yet implemented                                        |
 | `vscode.authentication` | ~30%     | API surface present; no real OAuth backend                                                                                                             |
 
 For a detailed method-level breakdown, see the
@@ -73,7 +73,7 @@ The following `ExtensionContext` members are fully implemented in Land:
 | `context.globalState`       | Mountain `storage:get` / `storage:set` IPC                      |
 | `context.secrets.get`       | Mountain `encryption:decrypt` (AES-256-GCM, machine-stable key) |
 | `context.secrets.store`     | Mountain `encryption:encrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.delete`    | Mountain `storage:set` with `null` value                        |
+| `context.secrets.delete`    | Mountain `storage:set` with empty string value                  |
 | `context.extension.exports` | Set after the activation function resolves                      |
 
 Secret storage uses AES-256-GCM encryption keyed from the machine UUID (SHA-256

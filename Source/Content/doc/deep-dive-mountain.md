@@ -4,13 +4,15 @@ section: "Deep Dive"
 order: 7
 description: "Internals of the Mountain Rust backend: ActionEffect system, Track
     dispatcher, Environment provider registration, Vine gRPC, Cocoon process
-    management, and ISandboxConfiguration construction."
+    management, ISandboxConfiguration construction, encryption provider, and boot
+    performance optimizations."
 ---
 
 Mountain is the Rust binary at the foundation of Land. This page covers its
 internal execution model in depth: how the ActionEffect system works, how the
-Track dispatcher routes requests, how providers are registered and accessed, and
-how Cocoon is launched and kept alive.
+Track dispatcher routes requests, how providers are registered and accessed, how
+Cocoon is launched and kept alive, and the performance optimizations that bring
+first-paint time well under a second.
 
 ## ActionEffect and ApplicationRunTime
 
@@ -113,7 +115,7 @@ Notable implementation details:
   UUID via `Encryption/Key.rs`; AES-256-GCM is used for all encrypt/decrypt
   operations. Exposed as `encryption:encrypt` and `encryption:decrypt` IPC
   commands - used by Cocoon to back `context.secrets` for extension credential
-  storage.
+  storage. See [Encryption Provider](#encryption-provider) below.
 - **`FileWatcherProvider`**: maintains an fd table (`HashMap<u64, Watcher>`)
   shared between `file:open`, `file:close`, `file:watch`, and `file:unwatch`
   handlers.
@@ -229,13 +231,44 @@ deeply nested JSON.
 `ScanAndPopulateExtensions.rs` tries the cache first. On a cache miss it falls
 back to walking extension directories with `join_all` (parallel) rather than
 sequential iteration. The pre-baked manifest is written by
-`Maintain/Build/ Manifest/PreBake.ts`, which runs in Tauri's
+`Maintain/Build/Manifest/PreBake.ts`, which runs in Tauri's
 `beforeBundleCommand` so it fires in every build path (CI, direct
 `pnpm tauri build`, `Build.sh`).
 
+**Cache freshness:** Dev-binary caches expire after 24 hours. Bundled (`.app`)
+caches skip the staleness check entirely - they were written at build time and
+are always consistent with the bundled extensions.
+
+**User extension supplement:** On a cache hit, `ScanAndPopulateExtensions`
+additionally live-scans user-writable paths (`~/.fiddee/extensions`,
+`~/.land/extensions`) so VSIX-installed extensions are not hidden by the
+pre-bake. Found entries overwrite same-ID cache entries, matching VS Code
+semantics where an installed VSIX shadows a built-in of the same identifier.
+
 `ExtensionsGetInstalled.rs` maintains a per-`ExtensionTypeFilter` `OnceLock`
 cache so repeated calls from Cocoon for the same filter category do not re-scan
-the registry.
+the registry after the first resolution.
+
+## Encryption Provider
+
+Three files in `IPC/WindServiceHandlers/Encryption/` back the
+`encryption:encrypt` and `encryption:decrypt` IPC commands that Cocoon uses for
+`context.secrets`:
+
+| File         | IPC method           | Purpose                                                                                                    |
+| ------------ | -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `Key.rs`     | (shared)             | Derives a machine-stable 256-bit key: `SHA-256("Land-Encryption-v1" ++ machine_UUID)` via `ring`. Cached in a process-wide `OnceLock`. |
+| `Encrypt.rs` | `encryption:encrypt` | AES-256-GCM encryption. Generates a 12-byte random nonce per call; returns `base64(<nonce><ciphertext+tag>)`. |
+| `Decrypt.rs` | `encryption:decrypt` | Reverses encrypt: base64-decode, split nonce, AES-256-GCM open. Returns empty string on corrupt input.     |
+
+The machine UUID is read from the OS-native source: `ioreg` on macOS,
+`/etc/machine-id` on Linux, or the Registry `MachineGuid` on Windows. If the
+machine UUID cannot be obtained, the function returns `Err` so callers surface a
+meaningful error rather than falling back to a predictable constant.
+
+This key is derived once and cached for the process lifetime. All extension
+credentials and auth tokens stored via `context.secrets` are encrypted at rest
+on the host filesystem using this key.
 
 ## WindServiceHandlers Atomization
 
@@ -293,6 +326,33 @@ Handlers that are a single expression remain inline in `mod.rs`. The rule is: if
 the handler body would make the dispatch table hard to scan, it gets its own
 file.
 
+Domain subdirectories in `WindServiceHandlers/`:
+
+| Directory        | Responsibility                                                   |
+| :--------------- | :--------------------------------------------------------------- |
+| `Cocoon/`        | `cocoon:request`, `cocoon:notify`, `cocoon:extensionHostMessage` |
+| `Commands/`      | `commands:*` execution and registration                          |
+| `Configuration/` | `config:*` read/write/watch                                      |
+| `Encryption/`    | `encryption:encrypt` / `encryption:decrypt`                      |
+| `Extension/`     | Per-extension info queries                                       |
+| `ExtensionHost/` | `extensionHostStarter:*`, `extensionhostdebugservice:*`          |
+| `Extensions/`    | `extensions:*` scan, install, get-installed                      |
+| `FileSystem/`    | `file:*` read, write, watch, stat, fd table                      |
+| `Git/`           | `git:*` operations                                               |
+| `Model/`         | `sky:model:*` content sync                                       |
+| `NativeDialog/`  | `nativeDialog:*` file/folder pickers                             |
+| `NativeHost/`    | `nativeHost:*` OS-level helpers (clipboard, paths, dialogs)      |
+| `Navigation/`    | `editor:*` navigation requests                                   |
+| `Output/`        | Output channel forwarding                                        |
+| `Search/`        | `search:*` file-content search                                   |
+| `Sky/`           | `sky:replay-events` and related Sky bridge handlers              |
+| `Storage/`       | `storage:get` / `storage:set` key-value persistence              |
+| `Terminal/`      | `localPty:*` - PTY create, resize, attach, revive                |
+| `TreeView/`      | `tree:getChildren`, `tree:selectionChanged`, reveal              |
+| `UI/`            | `window:*`, decorations, progress                                |
+| `Update/`        | `update:*` lifecycle (no-op stubs; no update server)             |
+| `Utilities/`     | Shared helpers used across handler files                         |
+
 ## High-Frequency Command Short-Circuit
 
 Before the main dispatch arm, `mod.rs` checks a hard-coded
@@ -321,6 +381,27 @@ The rationale is zero-friction mapping across the stack:
 Modules enable this with `#![allow(non_snake_case, non_camel_case_types)]` at
 the top. External crate types, standard library items, lifetime parameters, and
 built-in macros retain their original casing.
+
+## Boot Performance
+
+Key optimizations applied to Mountain's startup path:
+
+| Optimization                         | Before          | After                                  |
+| ------------------------------------ | --------------- | -------------------------------------- |
+| Extension scan (bundled build)       | ~1200 ms        | <50 ms (pre-baked manifest)            |
+| Extension scan (live fallback)       | sequential scan | parallel `join_all`                    |
+| Boot-path polling loops (8 files)    | `sleep` loops   | `tokio::sync::Notify` / channel-drain  |
+| Storage writes (debounced 100 ms)    | 50+ per session | 1 disk write                           |
+| Nonce generation (`SystemTime`)      | syscall per call| atomic counter                         |
+
+All eight boot-path `sleep` loops were replaced with `tokio::sync::Notify` or
+channel-drain patterns: `ExtensionsGetInstalled`, `WaitForClientConnection`,
+`LifecycleWhenPhase`, `DecorationTypeLifecycle`, `ProgressReport`,
+`RegisterCommand`, `EnqueueTreeViewEmit`, and the menubar debounce in
+`WindServiceHandlers`.
+
+The overall boot target is first sidebar paint at or under 800 ms, down from
+~3000 ms before these optimizations.
 
 ## Related Documentation
 

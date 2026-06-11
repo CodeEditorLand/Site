@@ -4,8 +4,8 @@ section: "Elements"
 order: 0
 description:
     "Air is the persistent background daemon that offloads update management,
-    authentication, file indexing, and health monitoring from the main editor
-    process."
+    file indexing, cryptographic operations, and health monitoring from the main
+    editor process."
 ---
 
 Air is the persistent background sidecar daemon for FIDDEE. It runs as a

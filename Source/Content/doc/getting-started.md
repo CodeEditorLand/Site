@@ -122,13 +122,24 @@ are faster.
 
 ### Build Profiles
 
-| Profile                       | Workbench | Coverage | Notes                                |
-| ----------------------------- | --------- | -------- | ------------------------------------ |
-| `debug-electron-bundled`      | Electron  | 95%+     | Recommended for daily development    |
-| `debug-electron`              | Electron  | 95%+     | Full feature set                     |
-| `debug-mountain`              | Mountain  | 80-90%   | Recommended for Mountain development |
-| `debug`                       | Browser   | 70-80%   | Default debug                        |
-| `production-electron-bundled` | Electron  | -        | Optimized release build              |
+| Profile                         | Workbench         | Coverage                          | Notes                                   |
+| ------------------------------- | ----------------- | --------------------------------- | --------------------------------------- |
+| `debug`                         | Browser           | 70-80%                            | Default debug                           |
+| `debug-mountain`                | Mountain          | 80-90%                            | Recommended for daily development       |
+| `debug-electron`                | Electron          | 95%+                              | Full feature set                        |
+| `debug-electron-rest`           | Electron + OXC    | 95%+                              | Fastest TypeScript compile              |
+| `debug-electron-minimal`        | Electron          | No built-in extensions            | Atom J1                                 |
+| `debug-mountain-only`           | Mountain          | No Cocoon subprocess              | Atom N3                                 |
+| `debug-cocoon-headless`         | Mountain + Cocoon | Wind preload disabled             | Atom N3b                                |
+| `debug-kernel`                  | None              | Pure Mountain, no built-ins       | Atom N3c                                |
+| `debug-electron-compiled`       | Electron          | Single-binary embedded resources  | Debug symbols + `Compile=true`          |
+| `debug-mountain-compiled`       | Mountain          | Single-binary embedded resources  | Debug symbols + `Compile=true`          |
+| `debug-electron-bundled`        | Electron          | Vite/Astro compiled workbench     | Full bundled Electron debug build       |
+| `debug-browser-bundled`         | Browser           | Vite/Astro compiled workbench     |                                         |
+| `debug-sessions-bundled`        | Sessions          | Vite/Astro compiled workbench     |                                         |
+| `debug-workbench-bundled`       | Base workbench    | Vite/Astro compiled workbench     |                                         |
+| `debug-bundled-all`             | All four          | Single Rollup pass                |                                         |
+| `production-electron-bundled`   | Electron          | Optimized release                 |                                         |
 
 ## First Run
 

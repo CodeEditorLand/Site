@@ -113,7 +113,25 @@ as three VS Code API events that extension authors can rely on:
 | `onDidEndTerminalShellExecution`   | Command finishes; exit code is available (OSC 633 D)   |
 | `onDidExecuteTerminalCommand`      | Alias fired alongside `onDidEndTerminalShellExecution` |
 
-The end-to-end path for these events is:
+The full sequence table, including decoration-only sequences:
+
+```
+OSC 633 ; A          shell prompt start  (decoration marker only)
+OSC 633 ; B          shell prompt end    (decoration marker only)
+OSC 633 ; C          command start
+                         → localPty:shellExecutionStart IPC
+                         → Mountain stores in InflightExecution Map
+                         → $acceptTerminalShellExecutionStart gRPC → Cocoon
+OSC 633 ; D[;<exit>] command end
+                         → localPty:shellExecutionEnd IPC
+                         → $acceptTerminalShellExecutionEnd gRPC → Cocoon
+                         → $acceptExecutedTerminalCommand gRPC → Cocoon
+OSC 633 ; E;<line>   command line capture
+                         → stored per-terminal in InflightExecution Map
+                           (associated with the next OSC 633 ; D flush)
+```
+
+The end-to-end path for the three vscode API events is:
 
 ```
 Sky OSC 633 parser

@@ -93,9 +93,10 @@ If still failing, open DevTools (`Inspect=1`) and set a breakpoint at
 **Symptom**: The editor window opens but the workbench is blank or shows a
 loading spinner indefinitely. The extension host never activates.
 
-**Cause**: Cocoon failed to start or failed to connect to Mountain. The most
-common sub-causes are: port 50052 already in use from a previous run, or
-Cocoon's gRPC server failed to bind.
+**Cause**: Cocoon failed to start or failed to connect to Mountain within the
+30-second gRPC budget. The most common sub-causes are: port 50051 or 50052
+already in use from a previous run, or Cocoon's gRPC server on port 50052
+failed to bind before Mountain attempted to connect.
 
 **Fix**:
 
@@ -109,8 +110,10 @@ Cocoon's gRPC server failed to bind.
     Kill any orphaned process found, or change `NetworkMountainPort` /
     `NetworkCocoonPort` in `.env.Land`.
 
-2. Check the FIDDEE.log for the line `RPCServer bound on port 50052`. If it is
-   absent, Cocoon failed to start. Look for earlier error lines in the log.
+2. Check the dev log for the line `RPCServer bound on port 50052`. If it is
+   absent, Cocoon's gRPC server never started. Look for earlier error lines in
+   the log. Cocoon must bind port 50052 before Mountain attempts the connection
+   - bootstrap stage ordering matters.
 
 3. Set `Trace=cocoon,grpc` and `Record=1` in `.env.Land.Diagnostics`, relaunch,
    and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the Cocoon

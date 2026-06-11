@@ -28,10 +28,17 @@ the local disk or a remote merge.
    all Memento writes - workspace state, global state, and the VS Code
    `ConfigurationService` settings cache all go through `storage:set`.
 
-3. Extension `secrets` (`context.secrets.store`) follow an identical path but
-   route to `encryption:encrypt` first. Mountain encrypts the value with
-   AES-256-GCM using a SHA-256 hash of the machine UUID as the key, then stores
-   the ciphertext. `secrets.get` decrypts on retrieval via `encryption:decrypt`.
+3. Extension `secrets` follow the same path with an encryption layer:
+
+    - `context.secrets.store(key, value)` calls Mountain `encryption:encrypt`
+      with the plaintext value, then `storage:set` with the ciphertext.
+    - `context.secrets.get(key)` calls `storage:get` for the ciphertext and
+      then `encryption:decrypt` to recover the plaintext.
+    - `context.secrets.delete(key)` calls `storage:set` with an empty string.
+
+    Mountain encrypts with AES-256-GCM using a SHA-256 hash of the machine UUID
+    as the key. The `onDidChange` event fires after every `store` or `delete`
+    call. Secrets are never written to disk in plaintext.
 
 ## Phase 2 - User authentication (Wind → Cocoon → Mountain)
 

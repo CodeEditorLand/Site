@@ -127,6 +127,8 @@ service CocoonService {
     rpc ProvideDocumentSymbols(ProvideDocumentSymbolsRequest) returns (ProvideDocumentSymbolsResponse);
     rpc RegisterWorkspaceSymbolProvider(RegisterProviderRequest) returns (Empty);
     rpc ProvideWorkspaceSymbols(ProvideWorkspaceSymbolsRequest) returns (ProvideWorkspaceSymbolsResponse);
+    rpc RegisterInlineCompletionItemProvider(RegisterProviderRequest) returns (Empty);
+    rpc ProvideInlineCompletionItems(ProvideInlineCompletionItemsRequest) returns (ProvideInlineCompletionItemsResponse);
 }
 ```
 
@@ -153,11 +155,10 @@ When Mountain later calls the corresponding `Provide*` RPC, the registry
 dispatches to the registered extension provider.
 
 `ProvideInlineCompletionItems` was added to `CocoonService` as part of the
-inline completions pipeline (session 2026-05-22). It follows the same
-`Register*/Provide*` pattern and is dispatched through the
-`LanguageFeatureProviderRegistry` in Cocoon. Sky's Monaco editor calls
-`language:provideInlineCompletions` on Mountain, which routes the request to
-Cocoon via this RPC.
+inline completions pipeline. It follows the same `Register*/Provide*` pattern
+and is dispatched through the `LanguageFeatureProviderRegistry` in Cocoon.
+Sky's Monaco editor calls `language:provideInlineCompletions` on Mountain,
+which routes the request to Cocoon via this RPC.
 
 ## Bidirectional Streaming Patterns
 

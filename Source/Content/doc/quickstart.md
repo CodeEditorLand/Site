@@ -106,13 +106,24 @@ These variables are read from `.env.Land*` files in the repository root. Copy
 
 ## Build Profiles
 
-| Profile                       | Workbench | Purpose                                                                        |
-| ----------------------------- | --------- | ------------------------------------------------------------------------------ |
-| `debug-electron-bundled`      | Electron  | Full bundled Vite/Astro compiled workbench - recommended for daily development |
-| `debug-electron`              | Electron  | Full feature set, 95%+ coverage                                                |
-| `debug-mountain`              | Mountain  | Mountain workbench, 80-90% API coverage                                        |
-| `debug`                       | Browser   | Browser workbench, 70-80% API coverage                                         |
-| `production-electron-bundled` | Electron  | Optimized release build                                                        |
+| Profile                         | Workbench         | Coverage                          | Notes                                   |
+| ------------------------------- | ----------------- | --------------------------------- | --------------------------------------- |
+| `debug`                         | Browser           | 70-80%                            | Default debug                           |
+| `debug-mountain`                | Mountain          | 80-90%                            | Recommended for daily development       |
+| `debug-electron`                | Electron          | 95%+                              | Full feature set                        |
+| `debug-electron-rest`           | Electron + OXC    | 95%+                              | Fastest TypeScript compile              |
+| `debug-electron-minimal`        | Electron          | No built-in extensions            | Atom J1                                 |
+| `debug-mountain-only`           | Mountain          | No Cocoon subprocess              | Atom N3                                 |
+| `debug-cocoon-headless`         | Mountain + Cocoon | Wind preload disabled             | Atom N3b                                |
+| `debug-kernel`                  | None              | Pure Mountain, no built-ins       | Atom N3c                                |
+| `debug-electron-compiled`       | Electron          | Single-binary embedded resources  | Debug symbols + `Compile=true`          |
+| `debug-mountain-compiled`       | Mountain          | Single-binary embedded resources  | Debug symbols + `Compile=true`          |
+| `debug-electron-bundled`        | Electron          | Vite/Astro compiled workbench     | Full bundled Electron debug build       |
+| `debug-browser-bundled`         | Browser           | Vite/Astro compiled workbench     |                                         |
+| `debug-sessions-bundled`        | Sessions          | Vite/Astro compiled workbench     |                                         |
+| `debug-workbench-bundled`       | Base workbench    | Vite/Astro compiled workbench     |                                         |
+| `debug-bundled-all`             | All four          | Single Rollup pass                |                                         |
+| `production-electron-bundled`   | Electron          | Optimized release                 |                                         |
 
 ## Next Steps
 

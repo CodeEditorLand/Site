@@ -3,8 +3,10 @@ title: "Wind"
 section: "Elements"
 order: 13
 description:
-    "The Effect-TS native re-implementation of VS Code workbench services that
-    bridges Sky's UI layer to Mountain's Rust backend through typed Tauri IPC."
+    "The Effect-TS native re-implementation of 36 VS Code workbench services
+    that bridges Sky's UI layer to Mountain's Rust backend through typed Tauri
+    IPC, with a full TierIPC routing table, Layer.succeed composition, and an
+    eager ManagedRuntime singleton."
 ---
 
 Wind is the frontend service layer for the Land editor. It replaces VS Code's
@@ -17,24 +19,31 @@ platform APIs directly.
 ## TauriLiveLayer
 
 `TauriLiveLayer` (defined in `Source/Effect/Layers/Tauri.ts`) is the primary
-Layer stack used in production. It composes all 40+ service implementations into
-a single runnable Effect-TS Layer that Sky loads at startup:
-
-```typescript
-import { TauriLiveLayer } from "@codeeditorland/wind/Effect/Layers/Tauri";
-import { Layer } from "effect";
-
-const AppRuntime = Layer.toRuntime(TauriLiveLayer).pipe(
-	Effect.scoped,
-	Effect.runSync,
-);
-```
+Layer stack used in production. It composes approximately 36 service
+implementations into a single runnable Effect-TS Layer that Sky loads at
+startup. Individual services use `Layer.succeed` (not `Layer.effect`) because
+services are constructed eagerly: there is no lazy Effect execution on the
+critical startup path.
 
 Two additional layer stacks exist for other contexts:
 
 - `ElectronLiveLayer` - Electron-compatible service implementations for the A3
   Electron workbench variant.
 - `TestLayer` - mock implementations used by the extension test runner and CI.
+
+### ManagedRuntime Singleton
+
+`Source/Effect/LandWorkbench/LandWorkbenchRuntime.ts` provides a
+module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
+
+- Initialized eagerly via an IIFE at module load time. The initialization cost
+  is paid once during Sky bundle evaluation, not on the first service call.
+- Stored on `globalThis.__CEL_WIND_RUNTIME__` so multiple Sky chunks that
+  import this module share a single runtime instance.
+- `LandWorkbenchRuntime.Get()` returns the pre-warmed runtime. Service lookups
+  are sub-5 ms after initialization.
+- `LandWorkbenchRuntime.Dispose()` tears down the runtime and clears the global
+  slot on window unload.
 
 ## Service Modules
 
@@ -114,23 +123,50 @@ implementation; typed errors are exported as tagged Effect `Cause` subtypes.
 `Source/Service/TauriMainProcessService.ts` is the IPC channel router that
 implements the VS Code `IMainProcessService` interface. All workbench IPC calls
 flow through this service. The `TierIPC` environment variable controls which
-backend handles each call:
+backend handles each call.
 
-| TierIPC value        | Behavior                                                            |
-| -------------------- | ------------------------------------------------------------------- |
-| `Mountain` (default) | All calls routed to Mountain Tauri IPC                              |
-| `NodeDeferred`       | Mountain first; Cocoon Node.js fallback on miss or undefined result |
-| `Node`               | All calls routed to Cocoon via `cocoon:request` bridge              |
+### Global Routing Tiers
 
-Output's `TauriMainProcessService.ts` is a lockstep copy of Wind's version. Both
-must be updated together when routing logic changes.
+| TierIPC value        | Behavior                                                                                            |
+| -------------------- | --------------------------------------------------------------------------------------------------- |
+| `Mountain` (default) | All calls routed to Mountain via Tauri `MountainIPCInvoke`                                          |
+| `NodeDeferred`       | Mountain first; Cocoon Node.js fallback when Mountain returns `undefined` or has no handler         |
+| `Node`               | All calls bypass Mountain and route to Cocoon via `cocoon:request` bridge                           |
+
+### Per-Subsystem Tier Overrides
+
+Individual subsystems can override `TierIPC` independently. All default to
+`Mountain` unless noted:
+
+| Variable               | Default    | Channels governed                                    |
+| ---------------------- | ---------- | ---------------------------------------------------- |
+| `TierTerminal`         | `Mountain` | `terminal`, `localPty`                               |
+| `TierSCM`              | `Mountain` | `git` (localGit)                                     |
+| `TierDebug`            | `Mountain` | `extensionHostStarter`, `extensionhostdebugservice`  |
+| `TierLanguageFeatures` | `Mountain` | `language`, `languages`                              |
+| `TierSearch`           | `Mountain` | `search`                                             |
+| `TierOutputChannel`    | `Mountain` | `output`                                             |
+| `TierNativeHost`       | `Mountain` | `nativeHost`                                         |
+| `TierTreeView`         | `Mountain` | `tree`                                               |
+| `TierStorage`          | `Mountain` | `storage`                                            |
+| `TierModel`            | `Mountain` | `model`, `textFile`, `file`                          |
+| `TierTasks`            | `Node`     | `tasks`                                              |
+| `TierAuth`             | `Node`     | `auth`                                               |
+| `TierEncryption`       | `Mountain` | `encryption`                                         |
+| `TierWebSocket`        | `Disabled` | Mist WebSocket transport (not yet active)            |
+
+All tier variables are defined in `.env.Land`, listed in `turbo.json`
+`globalEnv`, and mirrored into `import.meta.env.Tier*` at build time by
+`astro.config.ts`. `Wind/Source/Utility/Tier.ts` resolves these values without a
+runtime lookup.
 
 ## Wind/Output Lockstep Service Copies
 
-Wind and Output maintain parallel copies of `TauriMainProcessService.ts` because
-Output is loaded in a different module context (Cocoon's bootstrap) that cannot
-import directly from Wind. The files are kept identical in routing logic; any
-change to Wind's routing must be applied to Output's copy in the same commit.
+`Output/Source/Service/Tauri/Main/Process/Service.ts` is an exact copy of
+Wind's `TauriMainProcessService.ts`. Output is loaded by Cocoon's bootstrap in a
+module context that cannot import directly from Wind's npm package, so the file
+is duplicated. Any routing change applied to Wind must be applied to Output's
+copy in the same commit.
 
 ## Preload.ts Compatibility Shim
 
@@ -143,10 +179,12 @@ bundle expects:
 - Populates `window.process` with `ISandboxNodeProcess`-compatible fields
   (`platform`, `arch`, `env`, `cwd()`).
 - Configures `window.MonacoEnvironment` for worker URL resolution.
-- Populates `window.__CEL_LAND__.polyfills` with WKWebView gap fills.
+- Populates `window.__CEL_LAND__.polyfills` with WKWebView gap fills
+  (`requestIdleCallback`, `queryLocalFonts`, `__name`).
 - Reads `ISandboxConfiguration` from meta tags injected by Mountain into the
   webview HTML.
-- Dispatches `land-preload-ready` so workbench bootstrap can await readiness.
+- Dispatches `land-preload-ready` so workbench bootstrap can await readiness
+  without polling.
 
 ## Generated \*Upstream.ts Files
 
@@ -158,18 +196,17 @@ VS Code workbench service, extracted by the `Source/Codegen/` pipeline.
 > change a generated bridge shape, update the corresponding template in
 > `Source/Codegen/Emit/EmitServiceSchema.ts` and re-run the codegen step.
 
-A past issue where all 492 files had an import depth bug (`../../Codegen/`
-instead of `../../../Codegen/`) was fixed in the generator template. Any
-regression in import depth will cause the entire Wind build to fail with module
-resolution errors.
+The correct import depth from a generated file to `Codegen/Base.ts` is three
+levels up (`../../../Codegen/Base`). Any regression to two levels will cause the
+entire Wind build to fail with module resolution errors.
 
 ## Wind Codegen Pipeline
 
 `Source/Codegen/` walks the VS Code service catalog, matches `createDecorator`
 calls and interface member signatures, and emits `*Upstream.ts` bridge shape
 specifications. The pipeline runs as part of `pnpm prepublishOnly` and produces
-the `Generated/` directory. It should be re-run whenever the VS Code dependency
-in `Output` is updated to a new version.
+the `Generated/` directory. Re-run it whenever the VS Code dependency in Output
+is updated to a new version.
 
 ## Source Layout
 
@@ -181,9 +218,10 @@ Wind/Source/
 │   ├── Sandbox/            # Preload globals service
 │   ├── Configuration/      # Settings with live sync
 │   ├── Mountain/           # gRPC connection service
-│   ├── Generated/          # 492 auto-generated *Upstream.ts files
+│   ├── LandWorkbench/      # ManagedRuntime singleton
+│   ├── Generated/          # ~492 auto-generated *Upstream.ts files
 │   └── Layers/
-│       ├── Tauri.ts        # TauriLiveLayer (production)
+│       ├── Tauri.ts        # TauriLiveLayer (~36 services, production)
 │       ├── Electron.ts     # ElectronLiveLayer
 │       └── Test.ts         # TestLayer (mocks)
 ├── Service/
@@ -201,4 +239,4 @@ Wind/Source/
 - [Sky UI layer](https://Editor.Land/Doc/sky)
 - [Mountain Rust backend](https://Editor.Land/Doc/mountain)
 - [Cocoon extension host](https://Editor.Land/Doc/cocoon)
-- [Source Code](https://github.com/CodeEditorLand/Wind)
+- [Source Code](https://github.com/CodeEditorLand/Wind/tree/Current)

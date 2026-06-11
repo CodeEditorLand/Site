@@ -3,21 +3,51 @@ title: "Sky - Deep Dive"
 section: "Deep Dive"
 order: 11
 description:
-    "SkyBridge module breakdown, sky:// event catalog, workbench variant
-    selection, and Astro manualChunks configuration for the Sky UI layer."
+    "Full Bridge module inventory (17 modules), sky:// event catalog, OSC 633
+    terminal integration, workbench variant selection, and manualChunks
+    code-split configuration for the Sky UI layer."
 ---
 
 Sky is the Astro-based UI layer that runs inside the Tauri webview. This page
 covers the internal mechanics of SkyBridge, the workbench variant selection
-logic, the Vite/Rollup build configuration, and the full `sky://` event catalog.
-For an overview, see the [Sky element page](https://Editor.Land/Doc/sky).
+logic, the Vite/Rollup build configuration, the full `sky://` event catalog, and
+OSC 633 terminal shell integration. For an overview, see the
+[Sky element page](https://Editor.Land/Doc/sky).
 
 ## SkyBridge Module Breakdown
 
 SkyBridge is installed once per webview lifetime from
 `Source/Function/Sky/Bridge.ts`. The top-level `installBridge()` function calls
-each domain submodule in sequence. Reentrancy is guarded by a module-level flag
-so duplicate calls during HMR or Tauri window reloads are silently ignored.
+each of the 17 domain submodules in sequence. Reentrancy is guarded by a
+module-level flag so duplicate calls during HMR or Tauri window reloads are
+silently ignored.
+
+Mountain is used as a relay for Cocoon-to-Sky communication: Sky emits a
+`sky://` Tauri event, Mountain re-emits it as a gRPC notification to Cocoon.
+This keeps the webview renderer and the extension host decoupled without a
+separate transport layer.
+
+### Bridge Module Inventory
+
+| Module                          | Registered channels and responsibility                                                                                                                                                                      |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `InstallCommands.ts`            | `sky://command/execute`, `sky://command/register`, `sky://command/unregister`                                                                                                                               |
+| `InstallDebug.ts`               | `sky://debug/sessionStart`, `sky://debug/sessionEnd`, `sky://debug/consoleAppend`, `sky://debug/dap-message`, `sky://debug/addBreakpoints` to `IDebugService.addBreakpoints()`, `sky://debug/removeBreakpoints`, `sky://customEditor/saved` |
+| `InstallDeadChannelListeners.ts`| No-op stubs for deprecated or not-yet-implemented channels                                                                                                                                                  |
+| `InstallDiagnostics.ts`         | Diagnostic and smoke-test channels                                                                                                                                                                          |
+| `InstallEditorAndOutput.ts`     | `sky://workspace/applyEdit`, `sky://workspace/save`, `sky://workspace/saveAll`, `sky://workspace/saveAs`; output channel create/append/replace/clear/show/reveal/dispose                                     |
+| `InstallEditorOperations.ts`    | Monaco `onDidChangeModelContent` debounced 300 ms to `sky:model:contentChanged` to Mountain to Cocoon `onDidChangeTextDocument`; `sky://editor/apply-text-edits` handles both VS Code 0-based and Monaco 1-based ranges |
+| `InstallFanOut.ts`              | Multi-subscriber fan-out dispatcher for high-frequency events                                                                                                                                               |
+| `InstallInlineCompletions.ts`   | Registers `ILanguageFeaturesService.inlineCompletionsProvider` with a wildcard selector; on trigger, calls `language:provideInlineCompletions` IPC to Mountain's `ProvideInlineCompletionItems` gRPC handler to Cocoon registered providers |
+| `InstallProgressTerminalWorkspace.ts` | `sky://progress/*`, `sky://terminal/*`, `sky://workspace/*` channels                                                                                                                               |
+| `InstallScm.ts`                 | `sky://scm/register` with 10 x 200 ms retry for `__CEL_SERVICES__.SCM` population race; `sky://scm/provider/changed` updates workbench input model value                                                    |
+| `InstallSearch.ts`              | `sky://search/*` workspace search result channels                                                                                                                                                           |
+| `InstallSimpleRelays.ts`        | Pure DOM-event re-dispatchers for `cel:*` consumer subscriptions; `sky://language/configure` calls `monaco.languages.setLanguageConfiguration()` directly                                                   |
+| `InstallStatusbar.ts`           | `sky://statusbar/update`, `sky://statusbar/dispose`, `sky://statusbar/set-message`                                                                                                                          |
+| `InstallTasksAndDecorations.ts` | Task and file-decoration event relay channels                                                                                                                                                               |
+| `InstallTreeView.ts`            | Tree-view `onDidChangeSelection`, `onDidCollapse`, `onDidExpand` CustomEvent forwarding; `sky://tree-view/reveal` calls `IViewsService.openView()`                                                          |
+| `InstallUiRequests.ts`          | `sky://ui/show-message-request`, QuickPick and InputBox round-trips via `IQuickInputService`                                                                                                                |
+| `InstallWebview.ts`             | `sky://webview/message`, `sky://webview/dispose`                                                                                                                                                            |
 
 ### installEditorAndOutput
 
@@ -39,13 +69,13 @@ Key handlers:
   `sky://output/clear`, `sky://output/show`, `sky://output/reveal`,
   `sky://output/dispose` - manage named output channels via `IOutputService`.
 
-### installOperations
+### installEditorOperations
 
 Handles Monaco model content synchronization and text-edit application.
 
 Key handlers:
 
-- `sky:model:contentChanged` - receives debounced (300ms) model content change
+- `sky:model:contentChanged` - receives debounced (300 ms) model content change
   events from Sky's Monaco `onDidChangeModelContent` listener. Dispatches
   `$acceptModelChanged` to Cocoon's notification handler so
   `vscode.workspace.onDidChangeTextDocument` fires in extensions.
@@ -60,13 +90,13 @@ Manages source control provider registration and UI state.
 Key handlers:
 
 - `sky://scm/register` - registers a new SCM provider with `ISCMService`.
-  Retries up to 10 times at 200ms intervals to handle the `__CEL_SERVICES__.SCM`
+  Retries up to 10 times at 200 ms intervals to handle the `__CEL_SERVICES__.SCM`
   population race that occurs when the workbench initializes SCM after the first
   extension activation.
 - `sky://scm/provider/added`, `sky://scm/provider/changed`,
   `sky://scm/provider/removed` - update workbench SCM provider list.
 - `sky://scm/provider/changed` - updates the workbench's input model value when
-  Cocoon calls `inputBox.value` setter.
+  Cocoon calls the `inputBox.value` setter.
 
 ### installTreeView
 
@@ -92,8 +122,7 @@ Handles debug session lifecycle and breakpoint state.
 Key handlers:
 
 - `sky://debug/register` - registers a debug configuration provider.
-- `sky://debug/start` - starts a debug session via
-  `IDebugService.startDebugging()`.
+- `sky://debug/start` - starts a debug session via `IDebugService.startDebugging()`.
 - `sky://debug/stop` - stops the active debug session.
 - `sky://debug/addBreakpoints` - calls `IDebugService.addBreakpoints()` to sync
   breakpoints set in the gutter.
@@ -136,8 +165,9 @@ Handles inline completion (ghost text) provider registration and results.
 Key handlers:
 
 - `sky://inline-completions/register` - calls
-  `ILanguageFeaturesService.inlineCompletionsProvider.register()` to wire a
-  Cocoon-backed inline completion provider into Monaco.
+  `ILanguageFeaturesService.inlineCompletionsProvider.register()` with a
+  wildcard selector to wire a Cocoon-backed inline completion provider into
+  Monaco.
 - `sky://inline-completions/provide` - delivers inline completion items from
   Cocoon back to the registered provider's pending request.
 
@@ -145,11 +175,11 @@ Key handlers:
 
 Monaco model content changes need to reach Cocoon's `onDidChangeTextDocument`
 without going through Tauri IPC for every keystroke. The pipeline debounces at
-300ms to batch rapid edits:
+300 ms to batch rapid edits:
 
 ```
 Monaco onDidChangeModelContent (Sky)
-  → 300ms debounce
+  → 300 ms debounce
   → tauri::emit("sky:model:contentChanged", { uri, version, changes })
   → Mountain mod.rs "sky:model:contentChanged" arm
   → ModelUpdateContent.rs applies to Mountain's text model cache
@@ -166,11 +196,10 @@ and keeps Mountain's text model cache consistent with the Monaco editor state.
 VS Code's `WorkspaceEdit` arrives from Cocoon serialized as a JSON object. The
 format uses private VS Code fields (`_edits`, `_type`, `_range._start._line`,
 `_scheme`, `_path`) that are not part of the public API.
-`installEditorAndOutput` handles the deserialization:
+`InstallEditorAndOutput.ts` handles the deserialization:
 
 - `_type: 2` entries are text edits. Range fields use `_start._line` (0-based)
-  and are converted to Monaco's 1-based format before calling
-  `model.applyEdits()`.
+  and are converted to Monaco's 1-based format before calling `model.applyEdits()`.
 - `_type: 1` entries are file operations (create, rename, delete). These are
   forwarded to `IBulkEditService.apply()`.
 - URI fields arrive as `{ _scheme, _authority, _path, _query, _fragment }`
@@ -187,11 +216,11 @@ emits a single conditional dynamic import. Vite sees a static import for exactly
 one variant and tree-shakes the rest:
 
 ```
-Mountain=true   → import("../Workbench/Electron/Layout.astro")  [A2 path]
-Electron=true   → import("../Workbench/Electron/Layout.astro")  [A3 path]
+Mountain=true     → import("../Workbench/Electron/Layout.astro")    [A2 path]
+Electron=true     → import("../Workbench/Electron/Layout.astro")    [A3 path]
 BrowserProxy=true → import("../Workbench/BrowserProxy/Layout.astro")
 Bundle=true + Pack matches → import("../Workbench/Bundled/<Variant>/Entry.ts")
-(default)       → import("../Workbench/Browser.astro")
+(default)         → import("../Workbench/Browser.astro")
 ```
 
 Each variant's `Layout.astro` sequences its script tags to guarantee that Wind's
@@ -199,74 +228,79 @@ Each variant's `Layout.astro` sequences its script tags to guarantee that Wind's
 The A3 Electron variant additionally loads `Polyfills.ts` between Preload and
 the workbench to fill WKWebView gaps.
 
-## Astro manualChunks Configuration
+## Astro manualChunks Configuration (S1 Code-Split)
 
 The `astro.config.ts` Vite configuration uses
-`build.rollupOptions.output.manualChunks` (the S1 code-split) to prevent the
-entire VS Code platform bundle from landing in a single chunk:
+`build.rollupOptions.output.manualChunks` to split Sky's own module graph into
+four named chunks. For non-bundled profiles (`debug-electron` and similar) the
+VS Code `vs/**` tree is entirely external, so without this split the remaining
+Sky modules would concatenate into one large chunk.
 
-- The VS Code workbench entry (`workbench.desktop.main`) is assigned to a
-  `bundled-workbench` chunk.
-- Monaco editor core modules are grouped into a `monaco-core` chunk.
-- Language grammar files are grouped into per-language chunks so they can be
-  loaded on demand.
-- Extension host worker bootstrap is assigned to an `extension-host` chunk.
+| Chunk name        | Contents                                                     |
+| ----------------- | ------------------------------------------------------------ |
+| `effect-rt`       | Effect-TS runtime (~800 KB, changes rarely)                  |
+| `wind-effect-gen` | Wind's codegen Effect layer (large, stable, cache-friendly)  |
+| `sky-telemetry`   | PostHog and OTLP bridge (never on the synchronous paint path)|
+| `sky-debug`       | SmokeTest and diagnostic harness (debug builds only)         |
 
-This split allows the browser to load the critical rendering path (workbench
-shell + Monaco core) before language grammars and extension host are parsed,
-which improves first-paint timing.
+The browser preloader can fetch these chunks in parallel and V8 can parse them
+on separate threads, which reduces first-paint timing.
 
-In development builds, `astro.config.ts` sets `sourcemap: "inline"` so the
-profiler and DevTools can resolve Sky source locations within the bundled
-workbench output.
+The bundled profiles (`Pack=electron` and similar) must not use `manualChunks`
+because the workbench loader's auto-split boundary (`workbench.js` to
+`workbench.desktop.main.js`) is required for correct initialization order.
+
+In development builds (`NODE_ENV=development`), `astro.config.ts` sets
+`sourcemap: "inline"` so the browser profiler and DevTools can resolve Sky
+source locations within the bundled output. Production builds disable sourcemaps
+to avoid shipping artifacts that are three times the bundle size.
 
 ## Terminal Shell Integration (OSC 633)
 
 Sky's terminal component parses OSC 633 escape sequences emitted by
-shell-integration scripts. These sequences mark command boundaries and
-execution state so the terminal can decorate prompts and provide
-command-aware navigation.
+shell-integration scripts. These sequences mark command boundaries and execution
+state so the terminal can decorate prompts and provide command-aware navigation.
 
-| Sequence    | Meaning                              | Action                                    |
-| ----------- | ------------------------------------ | ----------------------------------------- |
-| `OSC 633;A` | Prompt start                         | Marks the start of a shell prompt line    |
-| `OSC 633;B` | Prompt end / command start           | Marks where the user's input begins       |
-| `OSC 633;C` | Command executed                     | Shell has accepted and started a command  |
-| `OSC 633;D` | Command finished (optional exitcode) | Command completed; emits `shell:executed` |
-| `OSC 633;E` | Explicit command line value          | Provides the verbatim command text        |
+| Sequence    | Meaning                              | Action                                                  |
+| ----------- | ------------------------------------ | ------------------------------------------------------- |
+| `OSC 633;A` | Prompt start                         | Marks the start of a shell prompt line                  |
+| `OSC 633;B` | Prompt end / command start           | Marks where the user's input begins                     |
+| `OSC 633;C` | Command executed                     | Shell has accepted and started a command                |
+| `OSC 633;D` | Command finished (optional exitcode) | Command completed; emits `sky://terminal/shell-executed` |
+| `OSC 633;E` | Explicit command line value          | Provides the verbatim command text                      |
 
-When `OSC 633;D` is received, Sky emits a `sky://terminal/shell-executed`
-event through Mountain to Cocoon. This fires
+When `OSC 633;D` is received, Sky emits a `sky://terminal/shell-executed` event
+through Mountain to Cocoon. This fires
 `vscode.window.onDidEndTerminalShellExecution` for extensions that watch
 terminal activity, and populates the terminal's command history for
 shell-aware scrollback navigation.
 
 ## sky:// Event Catalog
 
-The full `sky://` event URI registry, kept in lockstep between
+The full `sky://` event URI registry is kept in lockstep between
 `Wind/Source/IPC/Channel.ts` and `Mountain/Source/IPC/Channel.rs`:
 
-| Domain             | Events                                                                                                                                                     |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Editor             | `openDocument`, `applyEdits`, `saveAll`, `activeChanged`, `apply-text-edits`                                                                               |
-| Workspace          | `applyEdit`, `save`, `saveAll`, `saveAs`                                                                                                                   |
-| Output             | `create`, `append`, `replace`, `clear`, `show`, `reveal`, `dispose`                                                                                        |
-| Terminal           | `create`, `data`, `resize`, `processId`, `show`, `hide`, `closed`, `opened`, `exit`                                                                        |
-| Tree view          | `create`, `refresh`, `node-expanded`, `node-collapsed`, `selection-changed`, `reveal`, `restore-state`, `set-badge`, `set-message`, `set-title`, `dispose` |
-| Status bar         | `create`, `set-entry`, `set-message`, `update`, `dispose`, `dispose-entry`, `dispose-message`                                                              |
-| Webview            | `create`, `created`, `set-html`, `post-message`, `message`, `options-changed`, `dispose`, `disposed`, `revealed`                                           |
-| Notification       | `show`, `progress-begin`, `progress-update`, `progress-end`                                                                                                |
-| SCM                | `register`, `provider/added`, `provider/changed`, `provider/removed`, `group/changed`, `updateGroup`                                                       |
-| Debug              | `register`, `start`, `stop`, `addBreakpoints`                                                                                                              |
-| Inline completions | `register`, `provide`                                                                                                                                      |
-| Documents          | `opened`, `closed`, `changed`, `saved`                                                                                                                     |
-| Diagnostics        | `update`, `clear`                                                                                                                                          |
-| Configuration      | `changed`                                                                                                                                                  |
-| Language           | `configure`                                                                                                                                                |
-| Lifecycle          | `phase-changed`                                                                                                                                            |
-| Theme              | `changed`                                                                                                                                                  |
-| Commands           | `executed`                                                                                                                                                 |
-| Model              | `contentChanged`                                                                                                                                           |
+| Domain             | Events                                                                                                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Editor             | `openDocument`, `applyEdits`, `saveAll`, `activeChanged`, `apply-text-edits`                                                                                |
+| Workspace          | `applyEdit`, `save`, `saveAll`, `saveAs`                                                                                                                    |
+| Output             | `create`, `append`, `replace`, `clear`, `show`, `reveal`, `dispose`                                                                                         |
+| Terminal           | `create`, `data`, `resize`, `processId`, `show`, `hide`, `closed`, `opened`, `exit`, `shell-executed`                                                       |
+| Tree view          | `create`, `refresh`, `node-expanded`, `node-collapsed`, `selection-changed`, `reveal`, `restore-state`, `set-badge`, `set-message`, `set-title`, `dispose`  |
+| Status bar         | `create`, `set-entry`, `set-message`, `update`, `dispose`, `dispose-entry`, `dispose-message`                                                               |
+| Webview            | `create`, `created`, `set-html`, `post-message`, `message`, `options-changed`, `dispose`, `disposed`, `revealed`                                            |
+| Notification       | `show`, `progress-begin`, `progress-update`, `progress-end`                                                                                                 |
+| SCM                | `register`, `provider/added`, `provider/changed`, `provider/removed`, `group/changed`, `updateGroup`                                                        |
+| Debug              | `register`, `start`, `stop`, `addBreakpoints`, `sessionStart`, `sessionEnd`, `consoleAppend`, `dap-message`, `removeBreakpoints`                            |
+| Inline completions | `register`, `provide`                                                                                                                                       |
+| Documents          | `opened`, `closed`, `changed`, `saved`                                                                                                                      |
+| Diagnostics        | `update`, `clear`                                                                                                                                           |
+| Configuration      | `changed`                                                                                                                                                   |
+| Language           | `configure`                                                                                                                                                 |
+| Lifecycle          | `phase-changed`                                                                                                                                             |
+| Theme              | `changed`                                                                                                                                                   |
+| Commands           | `executed`                                                                                                                                                  |
+| Model              | `contentChanged`                                                                                                                                            |
 
 ## Related Documentation
 

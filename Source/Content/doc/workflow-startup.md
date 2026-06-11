@@ -46,38 +46,46 @@ activation.
 
 ## Phase 2 - Cocoon bootstrap and handshake
 
-> [!IMPORTANT] Cocoon's `Bootstrap.ts` binds the **RPCServer first** (Stage 3,
-> port 50052) and only then initiates the Mountain connection (Stage 5).
-> Reversing this order causes Mountain to exhaust its 30-second connection
-> budget before Cocoon has a listening socket, silently preventing extension
-> activation.
+> [!IMPORTANT] Cocoon's `Bootstrap.ts` runs its seven stages in strict order.
+> Stage 3 (**RPCServer**, port 50052) must complete before Stage 5
+> (**MountainConnection**). Reversing this order causes Mountain to exhaust its
+> 30-second connection budget before Cocoon has a listening socket, silently
+> preventing extension activation.
 
-1. `bootstrap-fork.js` runs `RunProcessPatches` - sets up `console.*` piping and
-   other process patches - then starts the Effect runtime.
+Cocoon's `Bootstrap.ts` runs seven stages in order:
 
-2. The `RPCServer` effect binds port 50052 and registers all gRPC handlers,
-   including the `initExtensionHost` handler.
+1. **Environment** - records Node.js version, platform, and architecture.
+2. **Configuration** - resolves `MOUNTAIN_GRPC_PORT` (50051) and
+   `COCOON_GRPC_PORT` (50052); populates `globalThis.__cocoonBootstrapConfig`
+   and `globalThis.__LandTiers`.
+3. **RPCServer** - binds port 50052 and registers all gRPC handlers, including
+   the `initExtensionHost` handler. **This must complete before Mountain's
+   30-second gRPC connection budget expires.**
+4. **ModuleInterceptor** - installs the `require()` interceptor, remapping
+   `electron` to Tauri stubs and patching VS Code bundle loading.
+5. **MountainConnection** - TCP-probes Mountain on port 50051, opens the gRPC
+   channel, and sends the **`$initialHandshake` notification** to signal
+   readiness.
+6. **Extensions** - activates enabled extensions concurrently (up to 8 in
+   parallel). Extension activation uses topological ordering: if extension A
+   declares `extensionDependencies: ["B"]`, extension B is activated first. An
+   `InProgress` Set prevents circular dependency deadlocks.
+7. **HealthCheck** - optional final service health sweep.
 
-3. `MountainConnection` starts. Cocoon's gRPC client connects to Mountain and
-   sends the **`$initialHandshake` notification**, signalling that the sidecar
-   socket is ready for its init payload.
+Between stages 5 and 6, Mountain responds:
 
-4. Mountain receives `$initialHandshake` and calls
-   `ProcessManagement/InitializationData.rs`, which assembles the full
-   `ISandboxConfiguration` + `IExtensionHostInitData` payload. This includes
-   workspace roots, extension list, configuration state, profiles, the required
-   `dataFolderName` field (primary crash source when missing), `perfMarks`,
-   `loggers`, `colorScheme`, `mainPid`, and OS metadata. Mountain then sends the
-   **`initExtensionHost` gRPC request** back to Cocoon.
-
-5. Cocoon's `initExtensionHost` handler fires:
-    1. Deserialises the payload into an `InitDataLayer`.
-    2. Runs `FullAppInitialization`.
-    3. Installs the `RequireInterceptor` - patches `require()` so every
-       `require('vscode')` call in extension code returns the Cocoon shim.
-    4. Resolves `ExtensionHostProvider` and activates startup extensions via the
-       `*` activation event. Hover providers, language configurations, and
-       webview registrations all happen during this step.
+- Mountain receives `$initialHandshake` and calls
+  `ProcessManagement/InitializationData.rs`, which assembles the full
+  `ISandboxConfiguration` + `IExtensionHostInitData` payload. This includes
+  workspace roots, extension list, configuration state, profiles, the required
+  `dataFolderName` field (primary crash source when missing), `perfMarks`,
+  `loggers`, `colorScheme`, `mainPid`, and OS metadata. Mountain then sends the
+  **`initExtensionHost` gRPC request** back to Cocoon.
+- Cocoon's `initExtensionHost` handler fires: deserialises the payload into an
+  `InitDataLayer`, runs `FullAppInitialization`, and installs the
+  `RequireInterceptor` - patches `require()` so every `require('vscode')` call
+  in extension code returns the Cocoon shim. Stage 6 (Extensions) then
+  proceeds.
 
 ## Phase 3 - Wind workbench launch
 

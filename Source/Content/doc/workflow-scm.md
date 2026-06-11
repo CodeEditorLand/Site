@@ -108,13 +108,22 @@ Sky via Tauri events.
 
 ## SCM input state synchronisation
 
-The `inputBox.value` setter, `commitTemplate`, and `acceptInputCommand` on the
-`SourceControl` object are wired back to Mountain via a `$scm:updateSourceControl`
-gRPC call (carrying a `SourceControlUpdateDTO`) every time the extension sets any
-of these properties. Mountain updates `AppState.ActiveScmProviders` and emits a
-`sky://scm/provider/changed` Tauri event so the Sky workbench input model stays in
-sync with the extension's values.
+The `inputBox.value`, `inputBox.placeholder`, `commitTemplate`, and
+`acceptInputCommand` setters on the `SourceControl` object are wired back to
+Mountain via a `$scm:updateSourceControl` gRPC call (carrying a
+`SourceControlUpdateDTO`) every time the extension sets any of these properties.
+Mountain updates `AppState.ActiveScmProviders` and emits a
+`sky://scm/provider/changed` Tauri event so the Sky workbench input model stays
+in sync with the extension's values.
 
+- `inputBox.value` sends `{ inputBoxValue: V }` to Mountain, which updates the
+  workbench commit input box.
+- `inputBox.placeholder` sends `{ inputBoxPlaceholder: V }` and maps to
+  `SourceControlUpdateDTO.InputBoxPlaceholder`.
+- `commitTemplate` sends `{ commitTemplate: V }` and maps to
+  `SourceControlUpdateDTO.InputBoxPlaceholder` on the Mountain side.
+- `acceptInputCommand` sends `{ acceptInputCommand: V }` and maps to
+  `SourceControlUpdateDTO.AcceptInputCommand`.
 - Changes to `inputBox.value` in Cocoon must go through the `ScmProvider`
   service - direct DOM manipulation of the input box will not propagate to the
   extension.

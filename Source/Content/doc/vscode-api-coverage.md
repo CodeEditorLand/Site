@@ -44,8 +44,8 @@ at 95%, and LSP/Language at 95%.
 | `vscode.window`             | ~95%     | webview panels stubbed                         |
 | `vscode.workspace`          | ~96%     | `createFileSystemWatcher` stub                 |
 | `vscode.languages`          | ~95%     | providers wired, render gaps                   |
-| `vscode.debug`              | ~40%     | DAP transport / debug adapter process missing  |
-| `vscode.tasks`              | ~35%     | Mountain process spawn for shell tasks pending |
+| `vscode.debug`              | ~25%     | DAP transport / debug adapter process missing  |
+| `vscode.tasks`              | ~25%     | Mountain process spawn for shell tasks pending |
 | `vscode.scm`                | ~95%     | ISCMService viewlet route deferred             |
 | `vscode.env`                | ~90%     | `isAppPortable`, `asExternalUri` not attempted |
 | `vscode.extensions`         | ~100%    | -                                              |
@@ -177,7 +177,7 @@ at 95%, and LSP/Language at 95%.
 | ----------------------------------- | ----- | ------ | ------------------------------------------------------------------------- |
 | `createSourceControl`               | A+S   | 🟡     | `register_scm_provider` + `sky://scm/register`; needs `ISCMService` route |
 | `inputBox.value` read/write         | A     | 🟡     | round-trip via `ResolveUIRequest`                                         |
-| `$gitExec` (built-in git extension) | B     | ✅     | `localGit` channel; Mountain spawns `git` subprocess                      |
+| `$gitExec` (built-in git extension) | B     | 🔴     | `localGit` channel routing wired; `git:*` handlers not yet implemented    |
 
 ### `vscode.env`
 

@@ -12,15 +12,15 @@ Extensions are the most sensitive third-party code a code editor runs. They can
 touch files, spawn processes, open network connections, and observe workspace
 state. Cocoon, Land's current extension host, runs Node.js extensions with the
 same OS access as the editor process - which is the correct tradeoff for
-compatibility with the VS Code extension ecosystem. Grove, the planned second
-host, takes the opposite position: extensions compiled to WASM run inside a
-Wasmtime sandbox where every OS capability must be granted explicitly. Nothing
-is accessible by default.
+compatibility with the VS Code extension ecosystem. Grove, the second host, takes
+the opposite position: extensions compiled to WASM run inside a Wasmtime sandbox
+where every OS capability must be granted explicitly. Nothing is accessible by
+default.
 
-> [!IMPORTANT] Grove is a work-in-progress extension host. The source includes a
-> Wasmtime runtime, gRPC protocol definitions, API surface, and transport layer.
-> Integration with the primary build is in progress. The primary VS Code
-> extension compatibility path remains Cocoon.
+> [!NOTE] Grove is implemented and available as an optional build feature
+> (`--features grove`). WASM extensions targeting the WASI ABI can use the
+> Wasmtime sandbox today. Cocoon remains the default extension host for all
+> existing VS Code extensions; enabling Grove does not affect the Cocoon path.
 
 ## The sandbox boundary
 
@@ -93,14 +93,14 @@ ABI.
 
 ## Current status
 
-Grove's source includes the Wasmtime runtime integration, the gRPC client for
+Grove is implemented: the Wasmtime runtime integration, the gRPC client for
 calling back into Mountain, the WASI host function implementations, and the
-Grove-specific proto definitions. It is compiled as an optional feature flag
-(`--features grove`) and is not enabled in the default build. Budget controls
-(memory ceilings, CPU time limits) are implemented in the source but have not
-been validated in the active build profile.
+Grove-specific proto definitions are all in place. It is compiled as an optional
+feature flag (`--features grove`) and is not enabled in the default build.
+Budget controls (memory ceilings, CPU time limits via Wasmtime fuel metering)
+are implemented and active.
 
 Cocoon (Node.js) remains the default extension host for all VS Code-compatible
-extensions. Grove's Wasmtime sandbox is available for extensions explicitly
-targeting the WASM/WASI ABI via the Grove API. The two hosts run concurrently
-when Grove is enabled; enabling Grove does not affect the Cocoon path.
+extensions. WASM extensions targeting the Grove API via the WASI ABI can use
+Grove today. The two hosts run concurrently when Grove is enabled; enabling
+Grove does not affect the Cocoon path.

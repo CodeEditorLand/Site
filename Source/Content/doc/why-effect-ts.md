@@ -10,11 +10,12 @@ description:
 
 VS Code's extension host is a single Node.js event loop. One hung Promise blocks
 every other extension. There is no way to cancel an in-flight operation, no
-back-pressure, and no preemption. Effect-TS is the answer to each of those
-problems: it replaces untyped thrown exceptions with typed error channels,
-replaces unstructured async/await with interruptible fibers, and replaces manual
-service wiring with a compile-time Layer system. Both Cocoon (the extension
-host) and Wind (the workbench service layer) are built entirely on it.
+back-pressure, and no preemption. Effect-TS addresses each of those problems: it
+replaces untyped thrown exceptions with typed error channels, replaces
+unstructured async/await with interruptible fibers, and replaces manual service
+wiring with a compile-time Layer system. Cocoon and Wind both use Effect-TS's
+Layer and service composition, with their bootstrap boundaries optimised to avoid
+Effect runtime startup overhead.
 
 ## The problem with raw Promises
 

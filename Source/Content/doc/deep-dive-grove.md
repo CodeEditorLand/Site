@@ -3,20 +3,16 @@ title: Grove - Deep Dive
 section: Deep Dive
 order: 4
 description:
-    Wasmtime integration, WASM component model, ABI bridge design, planned VS
-    Code API surface, capability-based security model, and current
-    implementation status - marked as WIP.
+    Wasmtime integration, WASM component model, ABI bridge design, VS Code API
+    surface coverage, capability-based security model, and current
+    implementation status.
 ---
 
-> [!WARNING] Grove is work-in-progress. The architecture described here reflects
-> the design as implemented in source; portions marked "planned" are not yet
-> active. Grove is not enabled in the default build profile. Cocoon remains the
-> active extension host for all existing VS Code extensions.
-
-> [!NOTE] Grove is implemented and available but Cocoon (Node.js) remains the
-> default extension host. WASM extensions targeting Grove can use the WASMtime
-> sandbox today via `cargo build -p Mountain --features grove`. Full VS Code API
-> surface coverage and the Component Model migration are planned future work.
+> [!NOTE] Grove is implemented and available. WASM extensions targeting Grove
+> can use the Wasmtime sandbox today via `cargo build -p Mountain --features grove`.
+> Grove is not enabled in the default build profile. Cocoon remains the active
+> extension host for all existing VS Code extensions. Full VS Code API surface
+> coverage and the Component Model migration are planned future work.
 
 Grove provides a Wasmtime-backed WebAssembly sandbox as an alternative extension
 host alongside Cocoon. This page covers the Wasmtime integration approach, the
@@ -150,7 +146,7 @@ time via Cargo features:
 
 | Cargo feature    | Transport                                     | Notes                                         |
 | :--------------- | :-------------------------------------------- | :-------------------------------------------- |
-| `grpc` (default) | gRPC via Mountain's Vine server on port 50052 | Standard path; same protocol as Cocoon        |
+| `grpc` (default) | gRPC via Mountain's Vine server on port 50051 | Standard path; same protocol as Cocoon        |
 | `wasm` (default) | Direct WASM host function calls               | Used when Grove runs in-process with Mountain |
 | `ipc`            | Unix domain socket                            | Enabled only on Unix targets                  |
 | `all`            | All transports compiled in                    | For testing                                   |

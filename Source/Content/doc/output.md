@@ -3,17 +3,19 @@ title: "Output"
 section: "Elements"
 order: 8
 description:
-    "The compiled VS Code platform artifact directory produced by the Rest build
-    process and consumed by Sky, Wind, and Cocoon at runtime."
+    "The compiled VS Code platform artifact package produced by the dual-compiler
+    (esbuild primary, Rest OXC optional) build pipeline and consumed by Sky,
+    Wind, and Cocoon at runtime, with a PreBake manifest step that runs from
+    Tauri's beforeBundleCommand."
 ---
 
 Output is the compiled JavaScript artifact layer for the Land editor. It takes
 the upstream VS Code TypeScript source tree, compiles it through esbuild (with
-an optional OXC-based Rest compiler pass), applies a pipeline of 21 transform
-plugins that adapt the result for Land's native Tauri stack, and writes the
-transformed artifacts to `Target/`. Sky loads workbench bundles from this
-directory, Cocoon bootstraps its extension host from the platform code here, and
-Wind consumes output utilities through the `@codeeditorland/output` npm package.
+an optional OXC-based Rest compiler pass), applies a pipeline of transform
+plugins that adapt the result for Land's native Tauri stack, and publishes the
+result as the `@codeeditorland/output` npm package. Sky loads workbench bundles
+from this package, Cocoon bootstraps its extension host from the platform code
+here, and Wind consumes output utilities through the same package.
 
 ## What Output Contains
 
@@ -44,15 +46,30 @@ artifact layer. This is intentional for two reasons:
    transformed artifact tree to exist before they run. Committing the artifacts
    removes this ordering constraint from local development builds.
 
-> [!IMPORTANT] Never edit files under `Target/` directly. The target directory
-> is generated output. Any change made there will be overwritten the next time
-> the Output build runs.
+Never edit files under `Target/` directly. The target directory is generated
+output and will be overwritten the next time the Output build runs.
+
+## PreBake Manifest Step
+
+`Maintain/Build/Manifest/PreBake.ts` runs from Tauri's `beforeBundleCommand`
+in `tauri.conf.json`. It walks the extension roots before the Tauri bundle
+assembles and writes an `extensions.manifest.json` file that Mountain reads at
+startup.
+
+Without this step, Mountain performs a live filesystem scan on every boot to
+locate installed extensions, which takes approximately 1200 ms. With the
+pre-baked manifest, `LoadFromCache.rs` reads the file in under 50 ms and falls
+back to the live scan only if the cache file is absent or stale.
+
+The step runs from `beforeBundleCommand` rather than from `Maintain/Debug/Build.sh`
+so it fires in all build paths: direct `pnpm tauri build`, CI, and wrapper
+scripts alike.
 
 ## When Output is Stale
 
 Output becomes stale when the VS Code dependency version is updated, when a
-transform plugin is added or modified, or when the Rest/esbuild compiler
-configuration changes. Signs of a stale Output:
+transform plugin is added or modified, or when the compiler configuration
+changes. Signs of a stale Output:
 
 - Sky's Vite build fails with module resolution errors referencing files in
   `Target/Microsoft/VSCode/`.
@@ -76,15 +93,17 @@ Compiler=Rest pnpm run prepublishOnly
 
 After rebuilding, commit the updated `Target/` contents.
 
-## The Rest → Output Pipeline
+## Dual-Compiler Pipeline
 
-The default build path uses esbuild only:
+### Default: esbuild only
 
 ```
 Dependency/Microsoft/VSCode/ → esbuild → Apply transform plugins → Target/Microsoft/VSCode/
 ```
 
-The Rest hybrid path adds an OXC compiler pass:
+### Optional: Rest (OXC) hybrid
+
+Activated via `Compiler=Rest`:
 
 ```
 Dependency/Microsoft/VSCode/ → Rest (OXC) → Target/Rest/ → esbuild (merge) → Apply transform plugins → Target/Microsoft/VSCode/
@@ -92,15 +111,16 @@ Dependency/Microsoft/VSCode/ → Rest (OXC) → Target/Rest/ → esbuild (merge)
 
 The Rest plugin (`Source/ESBuild/Rest/Plugin.ts`) intercepts `.ts` file
 processing inside esbuild, invokes the Rest binary as a subprocess, and merges
-the OXC-compiled output back into the esbuild bundle stream. If the Rest binary
-is unavailable or produces an error, the plugin falls back to esbuild's own
-TypeScript handling so builds remain reproducible without the Rest binary
-installed.
+the OXC-compiled output back into the esbuild bundle stream. The OXC pass is
+2-3 times faster than esbuild's TypeScript handling and provides better
+decorator and class field support. If the Rest binary is unavailable or produces
+an error, the plugin falls back to esbuild's own TypeScript handling so builds
+remain reproducible without the Rest binary installed.
 
 ## Transform Plugin Overview
 
-`Source/Apply/Pipeline.ts` runs 21 active transform plugins against the compiled
-VS Code tree. Key plugins:
+`Source/Apply/Pipeline.ts` runs the active transform plugins against the
+compiled VS Code tree. Key plugins:
 
 | Plugin                      | Effect                                                                                                       |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -115,7 +135,15 @@ VS Code tree. Key plugins:
 | `StripDanglingSourceMap`    | Removes `//# sourceMappingURL` references pointing to files absent from the output tree                      |
 | `DisableUnusedServices`     | Disables Electron-specific services that have no WebView equivalent                                          |
 
-The full set of 21 plugins is defined in `Source/Plugin/Index.ts`.
+The full plugin list is defined in `Source/Plugin/Index.ts`.
+
+## TauriMainProcessService Lockstep Copy
+
+`Source/Service/Tauri/Main/Process/Service.ts` is a lockstep copy of Wind's
+`TauriMainProcessService.ts`. Output is loaded by Cocoon's bootstrap in a module
+context that cannot import from Wind's npm package, so the file is duplicated.
+Any routing change (TierIPC logic, per-subsystem tier defaults) applied to Wind's
+copy must be applied to Output's copy in the same commit.
 
 ## Dual-Consumer Architecture
 
@@ -124,7 +152,7 @@ ways, and the pipeline is designed to satisfy both simultaneously:
 
 **Sky static copy.** Files are copied to Sky's `/Static/Application/` directory
 and served by Mountain's HTTP layer to the webview at runtime. This path uses
-dynamic imports and Worker's CSS loading protocol.
+dynamic imports and the Worker element's CSS loading protocol.
 
 **Sky Vite bundler walk.** Vite follows the module graph from Output's Target
 before `astro:build:done` fires. This path requires static imports so Rollup can
@@ -136,19 +164,43 @@ not in Output's pipeline. The two output trees diverge here by design.
 
 ## Build Configuration
 
-| Variable           | Default            | Description                                 |
-| ------------------ | ------------------ | ------------------------------------------- |
-| `Compiler`         | `esbuild`          | Set to `Rest` to enable OXC compiler pass   |
-| `REST_BINARY_PATH` | auto-detect        | Override Rest binary location               |
-| `REST_VERBOSE`     | `false`            | Enable verbose Rest compiler logging        |
-| `REST_OPTIONS`     | empty              | Additional flags passed to the Rest binary  |
-| `NODE_ENV`         | `production`       | `development` enables source map generation |
-| `Dependency`       | `Microsoft/VSCode` | Source dependency to process                |
+| Variable           | Default            | Description                                    |
+| ------------------ | ------------------ | ---------------------------------------------- |
+| `Compiler`         | `esbuild`          | Set to `Rest` to enable OXC compiler pass      |
+| `REST_BINARY_PATH` | auto-detect        | Override Rest binary location                  |
+| `REST_VERBOSE`     | `false`            | Enable verbose Rest compiler logging           |
+| `REST_OPTIONS`     | empty              | Additional flags passed to the Rest binary     |
+| `NODE_ENV`         | `production`       | `development` enables source map generation    |
+| `Dependency`       | `Microsoft/VSCode` | Source dependency to process                   |
+
+## Module Map
+
+| Path                             | Purpose                                             |
+| -------------------------------- | --------------------------------------------------- |
+| `Source/ESBuild/Output.ts`       | Primary esbuild compilation pipeline                |
+| `Source/ESBuild/Rest/`           | Rest OXC compiler plugin integration                |
+| `Source/ESBuild/Microsoft/`      | VS Code source-specific compilation configuration   |
+| `Source/ESBuild/CodeEditorLand/` | Land-specific compilation configuration             |
+| `Source/Plugin/Apply.ts`         | esbuild plugin for applying transforms              |
+| `Source/Plugin/Copy/`            | Asset copying plugin                                |
+| `Source/Plugin/Transform/`       | Code transform plugins                              |
+| `Source/Plugin/Polyfill/`        | Polyfill injection plugins                          |
+| `Source/Plugin/Index.ts`         | Plugin registry                                     |
+| `Source/Polyfill/Child/`         | Child process polyfills                             |
+| `Source/Polyfill/File/`          | File system polyfills                               |
+| `Source/Polyfill/IPC/`           | IPC polyfills                                       |
+| `Source/Polyfill/Native/`        | Native module polyfills                             |
+| `Source/Polyfill/Process/`       | Process polyfills                                   |
+| `Source/Polyfill/Shared/`        | Shared polyfill utilities                           |
+| `Source/Service/CEL/`            | Code Editor Land specific services                  |
+| `Source/Service/Dev/`            | Development-time services                           |
+| `Source/Service/Tauri/`          | Tauri-specific services (TauriMainProcessService)   |
+| `Source/Apply/Pipeline.ts`       | Apply pipeline orchestration                        |
 
 ## Related Documentation
 
-- [Output Deep Dive](https://Editor.Land/Doc/deep-dive-output)
 - [Sky UI layer](https://Editor.Land/Doc/sky)
+- [Wind service layer](https://Editor.Land/Doc/wind)
 - [Rest compiler](https://Editor.Land/Doc/rest)
 - [Mountain Rust backend](https://Editor.Land/Doc/mountain)
-- [Source Code](https://github.com/CodeEditorLand/Output)
+- [Source Code](https://github.com/CodeEditorLand/Output/tree/Current)

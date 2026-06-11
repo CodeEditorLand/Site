@@ -143,6 +143,16 @@ remaining.
 High-frequency commands (menubar, workspace, storage stubs) are short-circuited
 before the main dispatch arm to avoid unnecessary work on every keystroke.
 
+### Atomized handler pattern
+
+Each command lives in its own `.rs` file named after the command in PascalCase
+(e.g. `NativeHost/InstallShellCommand.rs`, `Encryption/Encrypt.rs`,
+`Terminal/LocalPTYCreateProcess.rs`). `mod.rs` acts as a pure dispatcher: it
+imports each handler type and routes commands to it, but contains no
+implementation logic itself. This pattern keeps individual handlers testable in
+isolation and prevents `mod.rs` from growing unboundedly as new commands are
+added.
+
 ### TierIPC routing
 
 The `TierIPC` environment variable controls how Wind-sourced IPC is routed:
@@ -155,10 +165,17 @@ The `TierIPC` environment variable controls how Wind-sourced IPC is routed:
 
 ## Vine gRPC Server
 
-Mountain hosts a tonic-based gRPC server (`Vine` protocol) on port 50051. Cocoon
-connects to this server after startup and keeps a persistent bidirectional
-stream open. The server is defined in `Vine/` and the per-RPC handler logic
+Mountain hosts a tonic-based gRPC server (`Vine` protocol) on port **50051**.
+Cocoon connects to this server after startup and keeps a persistent bidirectional
+stream open. Mountain also connects as a gRPC client to Cocoon's own gRPC server
+on port **50052** for reverse calls (language provider requests, push
+notifications). The server is defined in `Vine/` and the per-RPC handler logic
 lives in `RPC/CocoonService/`.
+
+| Direction          | Port  | Purpose                                          |
+| :----------------- | :---- | :----------------------------------------------- |
+| Cocoon → Mountain  | 50051 | Extension API calls, storage, UI operations      |
+| Mountain → Cocoon  | 50052 | Language providers, extension lifecycle, pushes  |
 
 Key gRPC handler categories:
 
@@ -192,7 +209,15 @@ lifecycle:
 
 `ProcessManagement/InitializationData.rs` constructs the `ISandboxConfiguration`
 and `IExtensionHostInitData` payloads, including all required URI fields
-consumed by VS Code's `NativeWorkbenchEnvironmentService`.
+consumed by VS Code's `NativeWorkbenchEnvironmentService`. The payload
+includes a complete `profiles` section with the default profile containing
+all 13 required URI fields (`userHome`, `appRoot`, `appSettingsHome`,
+`userDataPath`, `extensionsPath`, `logsPath`, `globalStorageHome`,
+`workspaceStorageHome`, `languageModelsResource`, and 4 more). VS Code's
+`reviveProfile()` accesses every URI field without null-guarding; a missing
+field causes a boot-time `TypeError`. Additional required scalar fields
+include `logsPath`, `dataFolderName`, `sharedDataFolderName`, `version`,
+`perfMarks: []`, `colorScheme`, `loggers: []`, and `mainPid`.
 
 ## Extension Management
 
