@@ -120,7 +120,7 @@ corners. Only exception: `rounded-full` on spinners, badges, and avatars.
 ## License ⚖️
 
 Released into the public domain under **Creative Commons CC0 Universal**. See
-[`LICENSE`](https://github.com/CodeEditorLand/WebSite/tree/Current/).
+[`LICENSE`](https://github.com/CodeEditorLand/WebSite/tree/Current/LICENSE).
 
 ---
 

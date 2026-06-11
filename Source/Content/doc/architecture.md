@@ -109,7 +109,7 @@ operations, clipboard, extension activation, window management.
 ### Channel 2: gRPC Vine Protocol (Mountain ↔ Cocoon, Mountain ↔ Air)
 
 Mountain and Cocoon communicate bidirectionally over gRPC. The service contract
-is defined in `Element/Vine/Source/Vine.proto`. Generated stubs are consumed by
+is defined in `Element/Vine/Proto/Vine.proto`. Generated stubs are consumed by
 Mountain (Rust, via `tonic`) and Cocoon (TypeScript, via the generated client).
 
 | Direction         | Port  | Used for                                                                                                                                     |
