@@ -8,7 +8,7 @@ description:
     integration points, and CLI configuration.
 ---
 
-Maintain is the build orchestrator for Land. This page covers the internals of
+Maintain is the build orchestrator for Land. It covers the internals of
 the Maintain Rust binary: its architecture, module layout, data flow,
 integration with other Land elements, and configuration options.
 

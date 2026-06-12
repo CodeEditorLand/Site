@@ -7,8 +7,8 @@ description:
     Environment providers, and Cocoon process orchestration."
 ---
 
-This document describes `Mountain`, the primary `Tauri` application and native
-`Rust` backend for the `Land` code editor. `Mountain`:
+`Mountain` is the primary `Tauri` application and native `Rust` backend for the
+`Land` code editor. `Mountain`:
 
 - Implements every abstract trait from `Common`
 - Hosts the `gRPC` server

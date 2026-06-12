@@ -1,6 +1,6 @@
 # Sky: UI Component Layer ☁️
 
-This document describes `Sky`, the UI component layer of `Land`.
+`Sky` is the UI component layer of `Land`.
 
 - `Sky` is built with the `Astro` framework.
 - It renders the editor interface - editor, side bar, activity bar, status bar,

@@ -10,7 +10,7 @@ description:
 
 # Common: Abstract Core Library 🧩
 
-This document describes `Common`, the architectural foundation of `Land`'s native `Rust` backend. `Common` is a pure abstract library that defines:
+`Common` is the architectural foundation of `Land`'s native `Rust` backend. `Common` is a pure abstract library that defines:
 
 - Every application capability as async traits
 - The `ActionEffect` declarative system
