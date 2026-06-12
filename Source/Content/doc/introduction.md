@@ -25,7 +25,7 @@ identical while replacing the substrate underneath.
 
 ---
 
-## 🗺️　What Land Is
+## What Land Is 🗺️
 
 | Aspect          | Detail                                    |
 | --------------- | ----------------------------------------- |
@@ -44,7 +44,7 @@ themselves.
 
 ---
 
-## 🏛️　Architectural Philosophy
+## Architectural Philosophy 🏛️
 
 Three principles guide every design decision in Land.
 
@@ -72,7 +72,7 @@ specific runtime.
 
 ---
 
-## ✅　What Is Working Today
+## What Is Working Today ✅
 
 The current build is source-first. Core components are functional and the
 weighted VS Code API coverage is approximately 88%.
@@ -104,7 +104,7 @@ The following capabilities are operational in the current build:
 
 ---
 
-## ❌　What Is Not Yet Complete
+## What Is Not Yet Complete ❌
 
 > [!IMPORTANT] Public installers are not available. Building from source is the
 > only supported path. See [Quickstart](https://Editor.Land/Doc/quickstart).
@@ -129,7 +129,7 @@ The following items remain in progress:
 
 ---
 
-## 📐　Process Model Overview
+## Process Model Overview 📐
 
 Land runs as a multi-process application with three concurrent processes plus an
 optional daemon:
@@ -148,7 +148,7 @@ serialization defined in `Element/Vine/Vine.proto`.
 
 ---
 
-## 🔗　Related Documentation
+## Related Documentation 🔗
 
 - [Architecture](https://Editor.Land/Doc/architecture) - full process model,
   component responsibilities, data flow

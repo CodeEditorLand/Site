@@ -48,7 +48,7 @@ partial reports are useful.
 
 ---
 
-## 🔀　Pull Request Process
+## Pull Request Process 🔀
 
 1. Fork the repository and create a branch from `Current`. The `Current` branch
    is the main integration target - never branch from `main`.
@@ -75,7 +75,7 @@ partial reports are useful.
 
 ---
 
-## 💬　Commit Message Style
+## Commit Message Style 💬
 
 - Write imperative-mood subject lines: "Add handler for `nativeHost:quit`", not
   "Added handler" or "Adds handler"
@@ -90,7 +90,7 @@ partial reports are useful.
 
 ---
 
-## 🚫　What Not to Do
+## What Not to Do 🚫
 
 > [!WARNING] The following actions will break the repository or build and must
 > never be done.
@@ -114,7 +114,7 @@ partial reports are useful.
 
 ---
 
-## 📐　Code Style
+## Code Style 📐
 
 ### TypeScript Style Guide
 
@@ -147,7 +147,7 @@ the WebSite, and the application UI.
 
 ---
 
-## 🧪　Testing
+## Testing 🧪
 
 Land uses a tiered testing strategy:
 
@@ -165,7 +165,7 @@ IPC operations, and validate responses. These require a full build.
 
 ---
 
-## 🔒　Security Issues
+## Security Issues 🔒
 
 Do not file GitHub issues for security vulnerabilities. Send a private report
 through
@@ -176,7 +176,7 @@ vulnerability reporting workflow for coordinated disclosure.
 
 ---
 
-## 🔗　Related Documentation
+## Related Documentation 🔗
 
 - [Getting Started](https://Editor.Land/Doc/getting-started) - build the
   project from source

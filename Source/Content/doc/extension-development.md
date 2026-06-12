@@ -12,7 +12,7 @@ of the VS Code extension API, making the majority of published extensions
 compatible without modification. What works, what does not,
 and how to test and report gaps are covered below.
 
-## 📊 API Coverage
+## API Coverage 📊
 
 The Cocoon extension host implements the `vscode.*` namespace shim. As of the
 current release, the following areas are fully or substantially covered:
@@ -33,7 +33,7 @@ For a detailed method-level breakdown, see the
 [VS Code API Coverage](https://codeeditor.land/Doc/cocoon-vscode-validation)
 reference page.
 
-## ❌ What Does Not Work
+## What Does Not Work ❌
 
 The following areas have known gaps and will not function correctly in the
 current release:
@@ -64,7 +64,7 @@ recover their state.
 URLs via the native open handler; custom scheme URIs may not route correctly on
 all platforms.
 
-## 🧩 Extension Context Capabilities
+## Extension Context Capabilities 🧩
 
 The following `ExtensionContext` members are fully implemented in Land:
 
@@ -82,7 +82,7 @@ hash). Secrets stored by one extension cannot be read by another and do not
 survive a machine change. This matches VS Code's `SecretStorage` semantics for
 local-only secrets.
 
-## 🧪 Testing Your Extension in Land
+## Testing Your Extension in Land 🧪
 
 ### Drop-in Installation
 
@@ -128,7 +128,7 @@ This routes all IPC calls through `cocoon:request` instead of Tauri's native IPC
 bridge. It is useful for isolating whether a failure is in Mountain's handler or
 in the Cocoon shim layer.
 
-## 📝 Accessing Extension Host Logs
+## Accessing Extension Host Logs 📝
 
 Cocoon writes structured log output to standard output, which Mountain captures
 and forwards to the dev log. To see Cocoon's output:
@@ -141,7 +141,7 @@ and forwards to the dev log. To see Cocoon's output:
 For gRPC-level tracing between Mountain and Cocoon, add `grpc` to the `Trace`
 tag list.
 
-## 🐛 Reporting API Compatibility Gaps
+## Reporting API Compatibility Gaps 🐛
 
 If your extension fails in Land due to a missing or broken API, open a GitHub
 issue at

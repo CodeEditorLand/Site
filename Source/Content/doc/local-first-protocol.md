@@ -15,7 +15,7 @@ daemon and the WebSite, but the editor starts, edits files, runs extensions, and
 saves state entirely offline. The local-first design is
 implemented as follows and has specific implications for extension developers.
 
-## 💾 Editor State Storage
+## Editor State Storage 💾
 
 All editor state is persisted locally through Mountain's `storage:set` and
 `storage:get` IPC handlers. The underlying store uses **SQLite** for structured
@@ -34,7 +34,7 @@ handler, which writes to SQLite at:
 No data leaves the device unless the extension itself initiates a network
 request.
 
-## 🧩 Extension State via Memento
+## Extension State via Memento 🧩
 
 The `vscode.Memento` interface (`context.workspaceState`, `context.globalState`)
 is backed by Mountain's `Storage.Get` and `Storage.Set` IPC calls. Extension
@@ -48,7 +48,7 @@ The Memento implementation does not batch writes or require a flush call. Each
 handler, which writes through to SQLite synchronously within the Tauri async
 runtime.
 
-## 🔒 Extension Secrets
+## Extension Secrets 🔒
 
 `context.secrets` is backed by Mountain's `encryption:encrypt` and
 `encryption:decrypt` handlers, which use **AES-256-GCM** with a machine-stable

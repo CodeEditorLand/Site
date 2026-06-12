@@ -15,7 +15,7 @@ Land application with the chosen profile.
 
 ---
 
-## 💻　System Requirements
+## System Requirements 💻
 
 | Requirement      | Minimum       | Notes                                                                                            |
 | ---------------- | ------------- | ------------------------------------------------------------------------------------------------ |
@@ -33,7 +33,7 @@ not be upgraded without auditing 51 `[patch.crates-io]` redirects in
 
 ---
 
-## 📦　Prerequisites Installation
+## Prerequisites Installation 📦
 
 ```sh
 # Install the Rust toolchain
@@ -56,7 +56,7 @@ source ~/.zshrc
 
 ---
 
-## 📥　Repository Clone
+## Repository Clone 📥
 
 > [!WARNING] Never run `git clone --recurse-submodules`. Submodules are on
 > independent branches. Recursive cloning pulls the wrong commits.
@@ -102,7 +102,7 @@ the `Current` branch at a compatible commit.
 
 ---
 
-## 🔨　Step 1 - Compile VS Code Source
+## Step 1 - Compile VS Code Source 🔨
 
 ```sh
 cd Land
@@ -125,7 +125,7 @@ is consumed by the `@codeeditorland/output` package.
 
 ---
 
-## 🔧　Step 2 - Build Land Application
+## Step 2 - Build Land Application 🔧
 
 ```sh
 cd Land
@@ -155,7 +155,7 @@ full feature set.
 
 ---
 
-## ▶️　Running After Build
+## Running After Build ▶️
 
 ```sh
 # Launch the binary directly
@@ -167,7 +167,7 @@ full feature set.
 
 ---
 
-## 📁　Artifact Paths
+## Artifact Paths 📁
 
 After a successful build, all artifacts are written inside the `Element/`
 directory tree. Nothing is installed system-wide.
@@ -201,7 +201,7 @@ Land/
 
 ---
 
-## 🖊️　macOS Code Signing
+## macOS Code Signing 🖊️
 
 The debug build is automatically re-signed after the Tauri build step. The
 signing script at `Maintain/Script/SignBundle.sh` is invoked automatically by
@@ -221,7 +221,7 @@ separate Xcode project.
 
 ---
 
-## ⚠️　Quick Troubleshooting
+## Quick Troubleshooting ⚠️
 
 | Symptom                      | Fix                                                                            |
 | ---------------------------- | ------------------------------------------------------------------------------ |
@@ -234,7 +234,7 @@ separate Xcode project.
 
 ---
 
-## 🔗　Related Documentation
+## Related Documentation 🔗
 
 - [Quickstart](https://Editor.Land/Doc/quickstart) - concise build reference
 - [Getting Started](https://Editor.Land/Doc/getting-started) - full

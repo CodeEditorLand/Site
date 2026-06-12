@@ -14,7 +14,7 @@ integration with other Land elements, and configuration options.
 
 ---
 
-## 🏗 Architecture
+## Architecture 🏗
 
 Maintain is a Rust binary and library. The CLI layer accepts subcommands and
 delegates to the Rhai scripting engine or direct build functions. Configuration
@@ -72,7 +72,7 @@ graph TB
 
 ---
 
-## 🔌 Key Modules
+## Key Modules 🔌
 
 | Path                                       | Description                                                                  |
 | :----------------------------------------- | :--------------------------------------------------------------------------- |
@@ -94,7 +94,7 @@ graph TB
 
 ---
 
-## 🔄 Data Flow
+## Data Flow 🔄
 
 ```mermaid
 sequenceDiagram
@@ -121,7 +121,7 @@ sequenceDiagram
 
 ---
 
-## 🔗 Integration Points
+## Integration Points 🔗
 
 | Connecting Element | Direction     | Mechanism                            | Description                                                         |
 | :----------------- | :------------ | :----------------------------------- | :------------------------------------------------------------------ |
@@ -135,7 +135,7 @@ sequenceDiagram
 
 ---
 
-## 🛠 Configuration
+## Configuration 🛠
 
 | Option         | CLI Flag                       | Description                                              |
 | :------------- | :----------------------------- | :------------------------------------------------------- |
@@ -158,7 +158,7 @@ sequenceDiagram
 
 ---
 
-## 📖 Related Documentation
+## Related Documentation 📖
 
 - [Maintain element overview](https://Editor.Land/Doc/maintain)
 - [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
