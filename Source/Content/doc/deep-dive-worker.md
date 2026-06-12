@@ -7,7 +7,7 @@ description:
     bundle configuration, and service worker lifecycle stages."
 ---
 
-Worker is the Service Worker element for Land. This page covers the worker
+Worker is the Service Worker element for Land. the worker
 registration pattern, the fetch interception protocol between the Service Worker
 and client page, the ESBuild bundle configuration, and the full service worker
 lifecycle. For an overview, see the

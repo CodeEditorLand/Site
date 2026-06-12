@@ -5,7 +5,7 @@ order: 1
 description: "Internals of the Cocoon extension host: core architecture principles, 7-stage bootstrap ordering, Effect-TS usage patterns, RequireInterceptor rules, gRPC server implementation, extension activation lifecycle with topological ordering and cycle guard, dual-track TierIPC routing, and the showInformationMessage call path end-to-end."
 ---
 
-Cocoon is the Node.js extension host sidecar for Land. This page covers its
+Cocoon is the Node.js extension host sidecar for Land. its
 internal mechanics in depth — why bootstrap stage ordering matters, how the
 module interceptor works, how Effect-TS layers compose the application, how the
 Vine gRPC server is implemented, how extensions are activated in topological

@@ -10,7 +10,7 @@ description:
 
 # Air: Background Daemon 🪁
 
-This document describes the `Air` background daemon:
+The `Air` background daemon:
 
 - A persistent `Rust` sidecar process that runs alongside `Mountain`
 - Handles resource-intensive operations to keep the main editor process responsive

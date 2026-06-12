@@ -1,6 +1,6 @@
 # Wind: Frontend Service Layer 🍃
 
-This document describes `Wind`, the `Effect-TS` service layer for the VS Code
+`Wind` is the `Effect-TS` service layer for the VS Code
 workbench.
 
 - `Wind` enables the workbench to function inside a `Tauri` WebView.

@@ -10,7 +10,7 @@ description:
     patterns, and security architecture."
 ---
 
-Wind is the Effect-TS frontend service layer for Land. This page covers the
+Wind is the Effect-TS frontend service layer for Land. the
 internal mechanics of `TauriLiveLayer` construction, `TauriMainProcessService`
 tier routing, `Preload.ts` shimming strategy, the `Generated/*Upstream.ts`
 codegen pipeline, and how Wind maintains lockstep state with Output's service

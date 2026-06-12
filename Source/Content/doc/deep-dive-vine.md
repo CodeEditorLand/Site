@@ -8,7 +8,7 @@ description:
     data flow, integration points, and configuration."
 ---
 
-This document provides the technical foundation for the Vine gRPC protocol layer
+Vine provides the technical foundation gRPC protocol layer
 within the Land project. **Vine** defines the strongly-typed inter-process
 communication contracts used between Mountain and Cocoon, with Air as an
 additional gRPC consumer.

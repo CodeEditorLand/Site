@@ -9,7 +9,7 @@ description:
 ---
 
 Sky renders the complete editor interface inside the Tauri webview using Astro,
-consuming state and services from the Wind service layer. This page covers the
+consuming state and services from the Wind service layer. the
 internal architecture, module inventory, Sky Bridge event routing, build
 optimization strategy, data flow, integration points, and configuration.
 

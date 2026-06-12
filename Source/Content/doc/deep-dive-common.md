@@ -10,8 +10,8 @@ description:
 
 Common defines the abstract architectural patterns, service contracts, and data
 structures that enable type-safe, testable service implementations across Rust
-and TypeScript boundaries. This document provides the technical foundation for
-lifting VSCode services into the Land project.
+and TypeScript boundaries — providing the technical foundation for
+lifting VSCode services into the Land platform.
 
 Common uses **Rust edition 2024** with a minimum supported Rust version (MSRV)
 of **1.95.0**. It is a pure library crate with no binary targets and no concrete
