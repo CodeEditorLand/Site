@@ -1,6 +1,6 @@
 ---
 title: SideCar
-section: Elements
+section: "Elements"
 order: 10
 description:
     SideCar manages the vendored Node.js runtime binaries that Land ships per

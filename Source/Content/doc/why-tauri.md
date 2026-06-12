@@ -1,6 +1,6 @@
 ---
 title: Why Tauri
-section: Why Land
+section: "Why Land"
 order: 1
 description:
     Tauri gives Land a native desktop shell without bundling Chromium - the

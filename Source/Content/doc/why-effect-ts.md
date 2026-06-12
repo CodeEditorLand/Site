@@ -1,6 +1,6 @@
 ---
 title: Why Effect-TS
-section: Why Land
+section: "Why Land"
 order: 2
 description:
     Effect-TS gives Cocoon and Wind typed error channels, fiber-based structured

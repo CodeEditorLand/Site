@@ -1,6 +1,6 @@
 ---
 title: Filesystem Footprint — Cleanup Recipes
-section: Reference
+section: "Reference"
 order: 5
 description:
     Per-OS commands to wipe every piece of Land / FIDDEE state from a system,

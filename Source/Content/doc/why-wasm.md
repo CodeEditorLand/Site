@@ -1,6 +1,6 @@
 ---
 title: Why WebAssembly
-section: Why Land
+section: "Why Land"
 order: 4
 description:
     Grove uses Wasmtime to run extensions inside a capability-bounded WASM

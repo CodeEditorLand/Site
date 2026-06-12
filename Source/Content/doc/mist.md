@@ -1,6 +1,6 @@
 ---
 title: Mist
-section: Elements
+section: "Elements"
 order: 6
 description:
     Mist is a local DNS isolation server that intercepts all DNS queries for the

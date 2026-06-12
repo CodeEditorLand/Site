@@ -1,6 +1,6 @@
 ---
 title: Why Rust
-section: Why Land
+section: "Why Land"
 order: 0
 description:
     Mountain, Land's native backend, is written in Rust because the operations

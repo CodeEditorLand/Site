@@ -1,6 +1,6 @@
 ---
 title: Why gRPC
-section: Why Land
+section: "Why Land"
 order: 3
 description:
     Vine.proto is the single source of truth for Mountain-Cocoon communication -

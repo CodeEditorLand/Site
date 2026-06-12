@@ -1,6 +1,6 @@
 ---
 title: Rest
-section: Elements
+section: "Elements"
 order: 9
 description:
     Rest is a high-performance TypeScript compiler built on the OXC (Oxidation

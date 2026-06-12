@@ -1,6 +1,6 @@
 ---
 title: Grove
-section: Elements
+section: "Elements"
 order: 4
 description:
     Grove is the native Rust and WebAssembly extension host for Land, using

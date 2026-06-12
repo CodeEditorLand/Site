@@ -1,6 +1,6 @@
 ---
 title: Why CC0
-section: Why Land
+section: "Why Land"
 order: 5
 description:
     Land uses CC0 1.0 Universal - a public domain dedication with no attribution
