@@ -16,7 +16,7 @@ the public domain.
 
 ---
 
-## 📜　Code of Conduct
+## Code of Conduct 📜
 
 All contributors must follow the
 [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html),
@@ -26,7 +26,7 @@ runs from private correction through temporary and permanent ban.
 
 ---
 
-## ✅　What Contributions Are Accepted
+## What Contributions Are Accepted ✅
 
 **Bug reports.** Open a GitHub issue with reproduction steps, the Land version,
 and the platform (macOS/Linux/Windows). Include the FIDDEE log content if the

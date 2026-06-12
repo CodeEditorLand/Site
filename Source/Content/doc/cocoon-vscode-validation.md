@@ -138,24 +138,24 @@ source to ensure compatibility and correctness.
 - `vscode.commands.registerCommand()` - Command service implemented
 - `vscode.commands.executeCommand()` - Command execution implemented
 
-#### ✅ Debug API
+#### Debug API ✅
 
 - `vscode.debug.startDebugging()` - Debug service implemented
 - `vscode.debug.registerDebugConfigurationProvider()` - Provider registration
 
 ### Advanced APIs
 
-#### 🔄 Language Features API
+#### Language Features API 🔄
 
 - Hover, completion, definition providers - Partially implemented
 - Language feature registry - Implemented
 
-#### 🔄 SCM API
+#### SCM API 🔄
 
 - Source control management - Basic implementation
 - Input box registration - Implemented
 
-#### 🔄 Tree View API
+#### Tree View API 🔄
 
 - Tree data providers - Implemented
 - Tree item management - Implemented
@@ -184,13 +184,13 @@ source to ensure compatibility and correctness.
 
 ## Compatibility Gaps
 
-### ⚠️ Known Differences
+### Known Differences ⚠️
 
 1. **ESM Support**: Cocoon has ESM interception, VS Code is CJS-only
 2. **Effect-TS Architecture**: Different programming paradigm
 3. **gRPC Protocol**: Different communication protocol
 
-### ✅ Compatibility Achievements
+### Compatibility Achievements ✅
 
 1. **API Compatibility**: Same method signatures and behavior
 2. **Extension Compatibility**: Can run same extensions
@@ -232,7 +232,7 @@ source to ensure compatibility and correctness.
 
 ## Conclusion
 
-### ✅ Overall Assessment
+### Overall Assessment ✅
 
 Cocoon's implementation shows **high compatibility** with VS Code's extension
 host architecture. The core functionality is well-implemented with several
@@ -242,13 +242,13 @@ architectural improvements:
 2. **Better Error Handling**: Effect-TS provides superior error management
 3. **Enhanced Architecture**: Clean separation of concerns
 
-### 🔄 Areas for Further Validation
+### Areas for Further Validation 🔄
 
 1. **Advanced Language Features**: Complete implementation needed
 2. **Performance Benchmarking**: Real-world testing required
 3. **Extension Ecosystem Testing**: Test with popular extensions
 
-### 🎯 Next Validation Steps
+### Next Validation Steps 🎯
 
 1. **Performance Testing**: Benchmark against VS Code
 2. **Extension Testing**: Test with real extensions
