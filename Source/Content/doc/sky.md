@@ -1,165 +1,303 @@
+# Sky: UI Component Layer ☁️
+
+This document describes `Sky`, the UI component layer of `Land`.
+
+- `Sky` is built with the `Astro` framework.
+- It renders the editor interface - editor, side bar, activity bar, status bar,
+  and panels - inside the `Tauri` WebView.
+- It loads the VS Code workbench from `@codeeditorland/output`.
+- It communicates via `SkyBridge` for event routing.
+
 ---
-title: "Sky"
-section: "Elements"
-order: 11
-description:
-    "The Astro-based UI layer that hosts Monaco, the VS Code workbench, and all
-    editor surfaces inside the Tauri webview, with SkyBridge routing sky://
-    events through 17 focused modules and a ManagedRuntime singleton from Wind."
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Page Structure](#page-structure)
+4. [Workbench Variants](#workbench-variants)
+5. [SkyBridge](#skybridge)
+6. [Build-time Variant Selection](#build-time-variant-selection)
+7. [Static Asset Layout](#static-asset-layout)
+8. [Related Documentation](#related-documentation)
+
 ---
 
-Sky is the rendering layer for the Land editor. Built with Astro 6 and Vite 8,
-it runs entirely inside the Tauri webview and loads the VS Code workbench from
-the `@codeeditorland/output` package. All native OS calls cross the Tauri IPC
-boundary through the Wind service layer. Sky itself never touches the file
-system, spawns processes, or calls platform APIs directly.
+```mermaid
+graph TB
+    subgraph Sky["Sky UI Component Layer"]
+        PAGES["pages/<br/>index.astro<br/>Mountain.astro<br/>Browser.astro<br/>Electron.astro"]
+        WB["Workbench Variants<br/>Mountain / Browser<br/>Electron / Default"]
+        BRIDGE["SkyBridge<br/>event routing<br/>Tauri <-> Workbench"]
+        BUILD["Build-time Selection<br/>TierWorkbench env var"]
 
-## Workbench Variants
+        PAGES --> BUILD
+        BUILD --> WB
+        WB --> BRIDGE
+    end
 
-Sky supports multiple workbench approaches selected at build time through
-environment variables. Unused variants are excluded from the Vite module graph
-entirely, so they incur zero bundle cost.
-
-| Variant         | Env Flag            | Description                                            | Feature Coverage |
-| --------------- | ------------------- | ------------------------------------------------------ | ---------------- |
-| A1 Browser      | `Browser=true`      | Pure browser workbench, no native integration          | ~70%             |
-| A1 BrowserProxy | `BrowserProxy=true` | Browser workbench with Mountain service proxy          | ~70-80%          |
-| A2 Mountain     | `Mountain=true`     | Browser workbench with full Mountain IPC (recommended) | ~80-90%          |
-| A3 Electron     | `Electron=true`     | Electron workbench with WKWebView polyfills            | ~95%             |
-
-The A2 Mountain variant is the recommended deployment target. The A3 Electron
-variant maximizes VS Code compatibility by loading
-`vs/code/electron-browser/workbench/workbench.js` with WKWebView polyfills for
-`requestIdleCallback`, `queryLocalFonts`, `__name`, and a Blob URL rewriter for
-`vscode-file://` scheme handling.
-
-When no variant flag is set, `index.astro` falls back to
-`Workbench/Default.astro`. Always set `Mountain=true` for production and
-`debug-mountain` builds.
-
-## SkyBridge Event System
-
-SkyBridge (`Source/Function/Sky/Bridge.ts`) is the runtime bridge that
-translates Tauri events emitted by Mountain into VS Code workbench
-notifications. It installs via 17 focused submodules, each responsible for a
-specific event domain.
-
-Mountain is used as a relay for Cocoon-to-Sky communication: Sky emits a
-`sky://` Tauri event, Mountain re-emits it as a gRPC notification to Cocoon.
-This keeps the webview renderer and the extension host decoupled without a
-separate transport layer.
-
-| Submodule                       | Domain                                                                        |
-| ------------------------------- | ----------------------------------------------------------------------------- |
-| `InstallCommands`               | Command execute, register, unregister                                         |
-| `InstallDebug`                  | Debug session lifecycle, DAP messages, breakpoint sync                        |
-| `InstallDeadChannelListeners`   | No-op stubs for deprecated channels                                           |
-| `InstallDiagnostics`            | Language diagnostics relay to Monaco                                          |
-| `InstallEditorAndOutput`        | Editor operations, output channels, workspace edits (applyEdit, save, saveAs) |
-| `InstallEditorOperations`       | Monaco content debounce (300 ms) to Cocoon `onDidChangeTextDocument`          |
-| `InstallFanOut`                 | Multi-subscriber fan-out for high-frequency events                            |
-| `InstallInlineCompletions`      | Inline completion provider registration and results                           |
-| `InstallProgressTerminalWorkspace` | Progress notifications and terminal lifecycle events                       |
-| `InstallScm`                    | SCM provider registration with 10 x 200 ms retry for service population race  |
-| `InstallSearch`                 | Workspace search result forwarding                                            |
-| `InstallSimpleRelays`           | Language config, theme changes, single-target DOM relays                      |
-| `InstallStatusbar`              | Status bar entry create, update, dispose                                      |
-| `InstallTasksAndDecorations`    | Task and file-decoration event relay                                          |
-| `InstallTreeView`               | Tree view selection, expand/collapse, reveal                                  |
-| `InstallUiRequests`             | Message boxes, quick pick, input box, progress indicators                     |
-| `InstallWebview`                | Webview message forwarding and disposal                                       |
-
-Reentrancy is guarded: if Sky's webview reloads during HMR or a Tauri window
-reload, the bridge skips reinstalling listeners that are already active.
-
-All event URIs follow the canonical `sky://domain/action` kebab-case pattern.
-The full catalog covers editor, terminal, SCM, tree view, status bar, output,
-webview, notifications, debug, documents, diagnostics, configuration, language,
-lifecycle, theme, and workspace domains.
-
-## Astro and Vite Build Pipeline
-
-The `astro.config.ts` orchestrates a multi-step build pipeline:
-
-1. The `@codeeditorland/output` plugin copies and patches VS Code output assets,
-   applying error surfacing, config backfill (`colorScheme`, `profiles`,
-   `backupPath`, `detectedProfiles`), and diagnostic performance markings.
-2. Vite resolves all `@codeeditorland/*` packages through explicit aliases so
-   workspace packages are consumed directly from source during development.
-3. `manualChunks` (the S1 code-split) splits Sky's Effect-TS runtime, Wind's
-   codegen layer, the telemetry bridge, and the debug harness into four separate
-   Rollup chunks the browser can fetch and parse in parallel.
-4. `@playform/compress` compresses HTML, CSS, and JS artifacts after build.
-5. `@playform/inline` inlines critical assets to eliminate render-blocking
-   requests.
-
-For development builds (`NODE_ENV=development`), Sky generates inline source
-maps. This lets the browser profiler and debugger resolve stack frames into the
-original TypeScript source, which is essential for diagnosing boot timing and
-SkyBridge event routing.
-
-## Wind Service Integration
-
-Sky does not hold state directly. All persistent state and native operations go
-through Wind's Effect-TS service layer. The load order for each workbench
-variant is strictly sequenced:
-
-```
-Wind Preload.ts (shims window.vscode, ipcRenderer, process)
-  → Polyfills (WKWebView gaps, A3 variant only)
-  → Wind Bootstrap (TauriLiveLayer composition via ManagedRuntime)
-  → VS Code workbench.js (from @codeeditorland/output)
-  → SkyBridge (installs sky:// event listeners across 17 modules)
+    OUTPUT["@codeeditorland/output"] --> WB
+    MOUNTAIN["Mountain<br/>Tauri events"] -->|"IPC events"| BRIDGE
+    BRIDGE -->|"channel dispatch"| WORKBENCH["VS Code Workbench"]
 ```
 
-Wind's `ManagedRuntime` singleton (`LandWorkbenchRuntime.ts`) is initialized
-eagerly at module load time and stored on `globalThis.__CEL_WIND_RUNTIME__`.
-Multiple Sky chunks share the same runtime instance. Service lookups are sub-5
-ms after initialization because the runtime is pre-warmed during bundle
-evaluation.
+## Overview 📋
 
-After `workbench.js` runs its `createDecorator` registrations, the
-`__CEL_SERVICES__` accessor exposes the live VS Code service instances.
-SkyBridge and Sky components resolve `IStatusbarService`, `ICommandService`,
-`ISearchService`, and `IViewsService` through this accessor rather than
-re-implementing them.
+`Sky` is the rendering layer that presents the `Land` editor to the user.
 
-## Bundled Workbench Mode
+- It uses `Astro` for page composition.
+- It loads the VS Code workbench from `@codeeditorland/output`.
+- It bridges `Tauri` events to the workbench through `SkyBridge`.
 
-When `Bundle=true` and the `Pack` environment variable lists one or more
-variants (`electron`, `browser`, `sessions`, `workbench`), Sky produces
-pre-compiled Vite/Rollup chunks under `Target/Static/Bundled/<Variant>/`. Each
-variant's `Entry.ts` imports the corresponding VS Code workbench module, and the
-page-level conditional import ensures only selected variants enter the module
-graph. This avoids pulling `gulp`-only `out/` files with property-mangled symbol
-mismatches into the Rollup bundle.
+| Attribute    | Value                                                                                                                                        |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `TypeScript` (`Astro` v6, `Vite` v8)                                                                                                         |
+| Framework    | `Astro` + `Vite`                                                                                                                             |
+| IPC          | `Tauri` events (via `SkyBridge`)                                                                                                             |
+| Dependencies | `@codeeditorland/wind`, `@codeeditorland/output`, `@codeeditorland/cocoon`, `@codeeditorland/worker`, `@xterm/xterm`, `astro`, `vite`, `zod` |
+| Consumes     | `Wind` (services), `Output` (bundles), `Worker` (service worker)                                                                             |
 
-## Source Layout
+---
+
+## Architecture 🏗️
 
 ```
-Sky/Source/
-├── pages/
-│   ├── index.astro             # env-driven variant selector
-│   ├── Mountain.astro          # A2 page
-│   ├── Electron.astro          # A3 page
-│   ├── BrowserProxy.astro      # A1 proxy page
-│   └── Bundled/                # pre-compiled variant pages
-├── Workbench/
-│   ├── Mountain.astro          # A2 component
-│   ├── Electron/               # A3: Layout, Polyfills, Bootstrap
-│   ├── BrowserProxy/           # A1: Layout, Bootstrap, Services/Proxy
-│   └── Bundled/                # Browser/Electron/Sessions/Workbench entries
-└── Function/
-    ├── Sky/Bridge.ts           # SkyBridge top-level installer
-    ├── Sky/Bridge/             # 17 Install* modules
-    ├── Build/VS/Code.ts        # build pipeline utilities
-    └── Markup/Base.astro       # shared page layout with CSP
++------------------------------------------------------------------+
+|                          Sky                                      |
+|                                                                   |
+|  +------------------+  +------------------+  +------------------+ |
+|  | pages/           |  | Workbench/       |  | Function/        | |
+|  | - index.astro    |  | - Mountain.astro |  | - SkyBridge.ts   | |
+|  | - entry points   |  | - Browser.astro  |  | - Debug.ts       | |
+|  |                  |  | - Electron.astro |  | - Shared.ts      | |
+|  +------------------+  +------------------+  +------------------+ |
+|                                                                   |
+|  +------------------+  +------------------+                       |
+|  | Bundled/         |  | astro.config.ts  |                       |
+|  | Pre-compiled     |  | Vite/Rollup      |                       |
+|  | workbench chunks |  | compilation cfg  |                       |
+|  +------------------+  +------------------+                       |
++------------------------------------------------------------------+
 ```
 
-## Related Documentation
+### Module Map 🗺️
 
-- [Sky Deep Dive](https://Editor.Land/Doc/deep-dive-sky)
-- [Wind service layer](https://Editor.Land/Doc/wind)
-- [Mountain Rust backend](https://Editor.Land/Doc/mountain)
-- [Output build pipeline](https://Editor.Land/Doc/output)
-- [Source Code](https://github.com/CodeEditorLand/Sky/tree/Current)
+| Path                              | Purpose                        |
+| --------------------------------- | ------------------------------ |
+| `Source/pages/index.astro`        | Main entry page                |
+| `Source/pages/Mountain.astro`     | Mountain workbench variant     |
+| `Source/pages/Browser.astro`      | Browser workbench variant      |
+| `Source/pages/Electron.astro`     | Electron workbench variant     |
+| `Source/pages/Isolation.astro`    | Isolation mode variant         |
+| `Source/Workbench/Mountain.astro` | Mountain workbench component   |
+| `Source/Workbench/Browser.astro`  | Browser workbench component    |
+| `Source/Workbench/Electron/`      | Electron workbench component   |
+| `Source/Workbench/Bundled/`       | Pre-compiled workbench chunks  |
+| `Source/Function/SkyBridge.ts`    | Tauri event routing bridge     |
+| `Source/Function/Debug.ts`        | Debug utilities                |
+| `Source/Function/Shared.ts`       | Shared UI utilities            |
+| `Source/Function/Build/`          | Build-time compilation helpers |
+
+---
+
+## Page Structure 📄
+
+`Sky` provides multiple page entry points, each selecting a different workbench
+variant.
+
+### index.astro
+
+The default entry point. It selects the active workbench at build time based on
+environment variables:
+
+```astro
+---
+// Pseudo-code from Sky's build-time conditional import
+const WorkbenchComponent =
+	TierWorkbench === "Mountain"
+		? MountainWorkbench
+		: TierWorkbench === "Electron"
+			? ElectronWorkbench
+			: TierWorkbench === "Browser"
+				? BrowserWorkbench
+				: DefaultWorkbench;
+---
+
+<WorkbenchComponent />
+```
+
+### Pages Overview
+
+| Page                 | Workbench | Purpose                                              |
+| -------------------- | --------- | ---------------------------------------------------- |
+| `index.astro`        | Dynamic   | Default entry point, delegates to workbench selector |
+| `Mountain.astro`     | Mountain  | Production workbench for Tauri runtime               |
+| `Browser.astro`      | Browser   | Development workbench with limited native features   |
+| `Electron.astro`     | Electron  | Maximum VS Code compatibility variant                |
+| `BrowserProxy.astro` | Browser   | Proxy-mode workbench                                 |
+| `Isolation.astro`    | Isolation | Minimal workbench for testing                        |
+
+---
+
+## Workbench Variants 🖥️
+
+`Sky` supports multiple workbench variants compiled through `Vite`/`Rollup`:
+
+| Variant          | Astro Page           | Feature Coverage        | Build Profile             |
+| ---------------- | -------------------- | ----------------------- | ------------------------- |
+| **Mountain**     | `Mountain.astro`     | 80-90%                  | `debug-mountain`          |
+| **Browser**      | `Browser.astro`      | 70-80%                  | `debug`                   |
+| **Electron**     | `Electron.astro`     | 95%+                    | `debug-electron`          |
+| **Default**      | `Default.astro`      | Base workbench          | `debug-workbench-bundled` |
+| **BrowserProxy** | `BrowserProxy.astro` | 70-80%                  | `debug-browser`           |
+| **NLS**          | `NLS.astro`          | Natural language search | (experimental)            |
+
+### Variant Selection
+
+The active variant is selected at build time and compiled by `Vite`. Unused
+variants are tree-shaken and do not enter the production module graph:
+
+```typescript
+// astro.config.ts maps TierWorkbench to import path
+const workbenchPath =
+	{
+		mountain: "./Workbench/Mountain.astro",
+		browser: "./Workbench/Browser.astro",
+		electron: "./Workbench/Electron.astro",
+	}[TierWorkbench] || "./Workbench/Default.astro";
+```
+
+---
+
+## SkyBridge 🌉
+
+`SkyBridge` (`Source/Function/SkyBridge.ts`, ~2900 lines) is the runtime event
+routing bridge between `Tauri`'s IPC system and the VS Code workbench's internal
+message channel system.
+
+### Event Translation Table
+
+| Tauri Event                     | VS Code Workbench Channel  | Direction             |
+| ------------------------------- | -------------------------- | --------------------- |
+| `mountain:configurationChanged` | `onDidChangeConfiguration` | Mountain -> Workbench |
+| `mountain:extensionsChanged`    | `onDidChangeExtensions`    | Mountain -> Workbench |
+| `mountain:themeChanged`         | `onDidChangeColorTheme`    | Mountain -> Workbench |
+| `mountain:fileChanged`          | FileSystem watcher events  | Mountain -> Workbench |
+| `cocoon:commandExecuted`        | Extension command result   | Cocoon -> Workbench   |
+
+### Bridge Architecture
+
+```
+Mountain emits Tauri event
+    |
+    v
+Tauri WebView event listener
+    |
+    v
+SkyBridge intercepts event
+    |
+    +---> Translates to VS Code internal channel format
+    +---> Dispatches to registered workbench handlers
+    +---> Handles async responses if required
+    |
+    v
+VS Code workbench service receives notification
+```
+
+### Webview Panel Management
+
+`SkyBridge` manages webview content injection through `first-set-html` logging:
+
+```
+Extension calls vscode.window.createWebviewPanel()
+    |
+    v
+Cocoon sends gRPC createWebviewPanel request
+    |
+    v
+Mountain creates Wry webview
+    |
+    v
+SkyBridge sets HTML content:
+    applied=method  -> Content reached real WebviewInput
+    applied=setter  -> Content stored, view not yet parked
+    applied=skipped -> No parked view available (silent drop)
+```
+
+---
+
+## Build-time Variant Selection 🔧
+
+`Sky` uses `Vite`'s conditional dynamic imports to select the active workbench
+at build time:
+
+```typescript
+// vite.config.ts / astro.config.ts
+// The TierWorkbench env var determines which variant is compiled
+const activeWorkbench = process.env.TierWorkbench || "Mountain";
+```
+
+### Bundle Output
+
+Each variant produces its own bundle:
+
+```
+Sky/Target/Static/
++-- Bundled/
+    +-- Mountain/          # When TierWorkbench=Mountain
+    |   +-- workbench.js
+    |   +-- workbench.css
+    +-- Electron/          # When TierWorkbench=Electron
+    |   +-- workbench.js
+    |   +-- workbench.css
+    +-- Browser/           # When TierWorkbench=Browser
+        +-- workbench.js
+        +-- workbench.css
++-- Application/          # Static assets (non-bundled mode)
+```
+
+---
+
+## Static Asset Layout 📁
+
+After a successful build, `Sky`'s output is organized as:
+
+```
+Sky/Target/
++-- Static/
+    +-- Bundled/
+    |   +-- {Variant}/
+    |       +-- workbench.js          # Compiled workbench bundle
+    |       +-- workbench.css         # Compiled workbench styles
+    |       +-- chunks/               # Lazy-loaded code chunks
+    +-- Application/                  # Dev mode static assets
+        +-- index.html                # Compiled entry page
+        +-- assets/                   # CSS, JS, fonts
+        +-- worker.js                 # Service worker script
+```
+
+---
+
+## Related Documentation 📚
+
+- [Wind](https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md) -
+  Service layer (`Sky` consumes)
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md) -
+  Extension host (`SkyBridge` target)
+- [Worker](https://github.com/CodeEditorLand/Worker/tree/Current/Documentation/GitHub/Architecture.md) -
+  Service worker (`Sky` integrates)
+- [Output](https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md) -
+  Compiled workbench source
+- [Mountain](https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md) -
+  Backend (IPC source)
+- [Polyfills](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md) -
+  `SkyBridge` and preload shim details
+- [BuildPipeline](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md) -
+  Build pipeline for workbench variants
+
+---
+
+**Project Maintainers:** Source Open
+([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+[GitHub Repository](https://github.com/CodeEditorLand/Sky) |
+[Report an Issue](https://github.com/CodeEditorLand/Sky/issues)

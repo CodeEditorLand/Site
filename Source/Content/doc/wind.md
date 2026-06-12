@@ -1,242 +1,392 @@
+# Wind: Frontend Service Layer 🍃
+
+This document describes `Wind`, the `Effect-TS` service layer for the VS Code
+workbench.
+
+- `Wind` enables the workbench to function inside a `Tauri` WebView.
+- It recreates the essential VS Code renderer environment.
+- It implements core services through `Effect-TS` typed error and dependency
+  injection patterns.
+- It connects the frontend to `Mountain`'s Rust backend through `Tauri`'s
+  `invoke()` and event system.
+
 ---
-title: "Wind"
-section: "Elements"
-order: 13
-description:
-    "The Effect-TS native re-implementation of 36 VS Code workbench services
-    that bridges Sky's UI layer to Mountain's Rust backend through typed Tauri
-    IPC, with a full TierIPC routing table, Layer.succeed composition, and an
-    eager ManagedRuntime singleton."
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Service Architecture](#service-architecture)
+4. [Layer Composition](#layer-composition)
+5. [Preload Shim Integration](#preload-shim-integration)
+6. [Service Catalog](#service-catalog)
+7. [Mountain IPC Service](#mountain-ipc-service)
+8. [Workbench Integration](#workbench-integration)
+9. [Related Documentation](#related-documentation)
+
 ---
 
-Wind is the frontend service layer for the Land editor. It replaces VS Code's
-Electron IPC pipeline with typed Tauri commands routed to Rust handlers in
-Mountain, eliminating untyped JSON serialization while preserving full VS Code
-workbench compatibility. Sky components consume Wind services through
-Effect-TS's dependency injection system rather than holding raw state or calling
-platform APIs directly.
+```mermaid
+graph TB
+    subgraph Wind["Wind Frontend Service Layer"]
+        PRELOAD["Preload.ts<br/>window.vscode shim"]
 
-## TauriLiveLayer
+        subgraph SERVICES["Effect Services (~40)"]
+            CORE["Core<br/>IPC / Config /<br/>Environment / Log"]
+            EDITOR["Editor<br/>Editor / Model /<br/>Decorations / History"]
+            FS["File System<br/>Files / WorkingCopy<br/>Workspaces"]
+            UI["Window / UI<br/>ActivityBar / Sidebar<br/>StatusBar / Panel<br/>Notification / Dialog"]
+            MISC["Misc<br/>Clipboard / Terminal<br/>Extensions / Themes<br/>Keybinding / Search"]
+        end
 
-`TauriLiveLayer` (defined in `Source/Effect/Layers/Tauri.ts`) is the primary
-Layer stack used in production. It composes approximately 36 service
-implementations into a single runnable Effect-TS Layer that Sky loads at
-startup. Individual services use `Layer.succeed` (not `Layer.effect`) because
-services are constructed eagerly: there is no lazy Effect execution on the
-critical startup path.
+        LAYERS["Layer Composition<br/>Function/Install.ts"]
+        TLT["TauriLiveLayer<br/>(production)"]
+        ELT["ElectronLiveLayer<br/>(compat)"]
+        TEST["TestLayer<br/>(mock)"]
 
-Two additional layer stacks exist for other contexts:
+        PRELOAD --> SERVICES
+        CORE & EDITOR & FS & UI & MISC --> LAYERS
+        LAYERS --> TLT
+        LAYERS --> ELT
+        LAYERS --> TEST
+    end
 
-- `ElectronLiveLayer` - Electron-compatible service implementations for the A3
-  Electron workbench variant.
-- `TestLayer` - mock implementations used by the extension test runner and CI.
+    MOUNTAIN["Mountain<br/>Rust backend"] <-->|"Tauri invoke + events"| CORE
+    SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
+```
 
-### ManagedRuntime Singleton
+## Overview 📋
 
-`Source/Effect/LandWorkbench/LandWorkbenchRuntime.ts` provides a
-module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
+`Wind` provides the `Effect-TS` native service layer that `Sky` consumes.
 
-- Initialized eagerly via an IIFE at module load time. The initialization cost
-  is paid once during Sky bundle evaluation, not on the first service call.
-- Stored on `globalThis.__CEL_WIND_RUNTIME__` so multiple Sky chunks that
-  import this module share a single runtime instance.
-- `LandWorkbenchRuntime.Get()` returns the pre-warmed runtime. Service lookups
-  are sub-5 ms after initialization.
-- `LandWorkbenchRuntime.Dispose()` tears down the runtime and clears the global
-  slot on window unload.
+- It replaces VS Code's `Electron` IPC pipeline with typed `Tauri` commands.
+- These commands are routed to Rust handlers in `Mountain`.
+- This eliminates the untyped serialization layer.
+- It preserves full VS Code workbench compatibility.
 
-## Service Modules
+| Attribute    | Value                                                                     |
+| ------------ | ------------------------------------------------------------------------- |
+| Language     | `TypeScript` (`Effect-TS` v3.21)                                          |
+| Framework    | `Vite`                                                                    |
+| IPC          | `Tauri` `invoke()` + events                                               |
+| Dependencies | `@codeeditorland/output`, `@tauri-apps/api`, `effect`, `@effect/platform` |
+| Consumed by  | `Sky`                                                                     |
 
-Each Wind service follows a consistent atomic directory structure with `Tag`,
-`Interface`, `Implementation`, `Layer`, and `Type` subdirectories. The Tag is
-the Effect-TS service identifier; the Layer provides the Tauri-backed
-implementation; typed errors are exported as tagged Effect `Cause` subtypes.
+---
+
+## Architecture 🏗️
+
+```
++------------------------------------------------------------------+
+|                         Wind                                      |
+|                                                                   |
+|  +------------------+  +------------------+  +------------------+ |
+|  | Preload.ts       |  | Effect/          |  | Function/        | |
+|  | window.vscode    |  | ~40 service      |  | Install.ts       | |
+|  | shim             |  | modules          |  | Layer composition| |
+|  +------------------+  +------------------+  +------------------+ |
+|                                                                   |
+|  +------------------+  +------------------+  +------------------+ |
+|  | Workbench/       |  | Telemetry/       |  | IPC/             | |
+|  | VS Code workbench|  | PostHog bridge   |  | Tauri event      | |
+|  | integration      |  | OTLP bridge      |  | channels         | |
+|  +------------------+  +------------------+  +------------------+ |
+|                                                                   |
+|  +------------------+  +------------------+                       |
+|  | Utility/         |  | Types/           |                       |
+|  | Tier.ts          |  | Error types,     |                       |
+|  | Configuration    |  | interfaces       |                       |
+|  +------------------+  +------------------+                       |
++------------------------------------------------------------------+
+```
+
+### Module Map 🗺️
+
+| Path                                | Purpose                                                           |
+| ----------------------------------- | ----------------------------------------------------------------- |
+| `Source/Preload.ts`                 | `Electron`/`Node.js` API shim (see Polyfills)                     |
+| `Source/Effect/`                    | Service implementations (each domain as Define/Implement/Problem) |
+| `Source/Function/Install.ts`        | Layer composition and installation entry point                    |
+| `Source/Function/Install/`          | Layer composition details                                         |
+| `Source/Workbench/`                 | VS Code workbench integration                                     |
+| `Source/Telemetry/PostHogBridge.ts` | In-webview PostHog client                                         |
+| `Source/IPC/Channel.ts`             | `Tauri` event channel definitions                                 |
+| `Source/Utility/Tier.ts`            | Tier configuration reader                                         |
+| `Source/Types/`                     | `TypeScript` type definitions                                     |
+| `Source/Bootstrap/`                 | Bootstrap type definitions                                        |
+
+---
+
+## Service Architecture 🏗️
+
+Each `Wind` service follows a consistent module structure using the
+Define/Implement/Problem pattern:
+
+```
+Effect/<Service>/
+    +-- Define.ts       - The service Tag (Effect-TS service identifier)
+    +-- Implement.ts    - The service implementation (for TauriLiveLayer)
+    +-- Problem.ts      - Typed error effects
+```
+
+This pattern provides:
+
+- **Define.ts**: Exports the `Effect-TS` `Tag` that identifies the service.
+  Functions that depend on the service use `Tag` for compile-time dependency
+  tracking.
+- **Implement.ts**: Exports the concrete `Layer` with the `Tauri`-backed
+  implementation. Uses `@tauri-apps/api/invoke` for `Mountain` communication.
+- **Problem.ts**: Exports typed error types as `Effect-TS` `Cause` subtypes,
+  enabling structured error handling.
+
+### Example Service Structure
+
+```typescript
+// Effect/Clipboard/Define.ts
+export class Clipboard extends Context.Tag("Clipboard")<
+	Clipboard,
+	{ readonly readText: Effect<string, ClipboardProblem> }
+>() {}
+
+// Effect/Clipboard/Implement.ts
+export const ClipboardLive = Layer.succeed(
+	Clipboard,
+	Clipboard.of({
+		readText: Effect.tryPromise({
+			try: () => invoke("get_clipboard", { format: "text" }),
+			catch: (e) => new ClipboardProblem({ message: String(e) }),
+		}),
+	}),
+);
+
+// Effect/Clipboard/Problem.ts
+export class ClipboardProblem extends Data.TaggedError("ClipboardProblem")<{
+	message: string;
+}> {}
+```
+
+---
+
+## Layer Composition 🧩
+
+`Wind` services compose into three `Layer` stacks:
+
+```typescript
+// TauriLiveLayer: All production services for Tauri WebView
+export const TauriLiveLayer: Layer<Clipboard | Configuration | Editor | ... > =
+    Layer.mergeAll(
+        ClipboardLayer,
+        ConfigurationLayer,
+        EditorLayer,
+        TerminalLayer,
+        DialogLayer,
+        FileServiceLayer,
+        WindowLayer,
+        // ... all ~40 services
+    );
+
+// ElectronLiveLayer: Electron-compatible implementations
+export const ElectronLiveLayer: Layer<...> = Layer.mergeAll(
+    ElectronClipboardLayer,
+    ElectronConfigurationLayer,
+    // ... Electron-specific implementations
+);
+
+// TestLayer: Mock implementations for extension test runner
+export const TestLayer: Layer<...> = Layer.mergeAll(
+    MockClipboardLayer,
+    MockConfigurationLayer,
+    // ... mock implementations
+);
+```
+
+### Layer Resolution
+
+```
+Sky entry point (index.astro)
+    |
+    v
+Install.installLayer()
+    |
+    +---> Reads Tier configuration from import.meta.env
+    +---> Selects active Layer stack:
+    |       - TierWorkbench === "Electron" -> ElectronLiveLayer
+    |       - TierWorkbench === "Mountain" -> TauriLiveLayer (default)
+    |       - Test mode -> TestLayer
+    |
+    +---> Layer.toRuntime() converts to Effect-TS Runtime
+    +---> Provides Runtime to Sky UI components
+    |
+    v
+Wind services available to Sky via Effect.flatMap
+```
+
+---
+
+## Preload Shim Integration 🔌
+
+`Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
+workbench bundle loads:
+
+```
+1. Preload.ts executes (inline, synchronous)
+    |
+    +---> window.vscode = { ipcRenderer, process }
+    +---> window.MonacoEnvironment configured
+    +---> window.__CEL_LAND__.polyfills populated
+    +---> dispatchEvent("land-preload-ready")
+    |
+    v
+2. Workbench bundle loads from @codeeditorland/output
+    |
+    v
+3. Wind AppLayer created
+    +---> composeLayer() creates TauriLiveLayer
+    +---> Layer.toRuntime() converts to active Runtime
+    |
+    v
+4. Workbench class instantiated: new Workbench(...)
+    - Uses window.vscode for IPC
+    - Uses Wind services for state and data
+```
+
+---
+
+## Service Catalog 📋
 
 ### Core Infrastructure
 
-| Service       | Purpose                                                        |
-| ------------- | -------------------------------------------------------------- |
-| IPC           | Tauri `invoke()` and `listen()` with typed channel definitions |
-| Sandbox       | Preload globals service - wraps `window.__CEL_LAND__`          |
-| Configuration | Read/write workbench settings via Mountain with live sync      |
-| Telemetry     | Structured logging, spans, and PostHog/OTLP metrics            |
-| Mountain      | gRPC-level connection state to Mountain backend                |
-| MountainSync  | Background configuration snapshot synchronization              |
-| Environment   | OS environment variables, paths, and platform detection        |
-| Health        | Service health checks and connectivity monitoring              |
-| Bootstrap     | Multi-stage startup orchestration                              |
-| Lifecycle     | Application lifecycle phase transitions                        |
+| Service       | Module                    | Purpose                                           |
+| ------------- | ------------------------- | ------------------------------------------------- |
+| IPC           | `Effect/IPC.ts`           | `Tauri` command invocation and event subscription |
+| Configuration | `Effect/Configuration.ts` | Read/write settings via `Mountain`                |
+| Environment   | `Effect/Environment.ts`   | OS environment variables and paths                |
+| Mountain      | `Effect/Mountain.ts`      | `gRPC`-level communication with `Mountain`        |
+| MountainSync  | `Effect/MountainSync.ts`  | Synchronous state snapshot from `Mountain`        |
+| Log           | `Effect/Logging`          | Structured logging                                |
 
 ### Editor Services
 
-| Service           | Purpose                                                      |
-| ----------------- | ------------------------------------------------------------ |
-| Editor            | Text editor creation, focus, and layout management           |
-| Model             | Document model creation and URI-to-model resolution          |
-| TextModelResolver | URI-to-model resolution for virtual and disk-backed files    |
-| Decorations       | Editor decoration management (highlights, gutters, overlays) |
-| History           | Undo/redo stack integration                                  |
+| Service           | Module                        | Purpose                                |
+| ----------------- | ----------------------------- | -------------------------------------- |
+| Editor            | `Effect/Editor.ts`            | Text editor creation, focus, layout    |
+| Model             | `Effect/Model.ts`             | Document model creation and management |
+| TextModelResolver | `Effect/TextModelResolver.ts` | URI-to-model resolution                |
+| CodeEditor        | `Effect/WorkbenchEditor/`     | Monaco editor widget                   |
+| Decorations       | `Effect/Decorations.ts`       | Editor decoration management           |
+| History           | `Effect/History.ts`           | Undo/redo stack management             |
 
 ### File System Services
 
-| Service     | Purpose                                                      |
-| ----------- | ------------------------------------------------------------ |
-| Files       | File read/write/stat/watch via Mountain's native file system |
-| WorkingCopy | Dirty state tracking and save conflict management            |
-| Workspaces  | Workspace root resolution and multi-root support             |
-| TextFile    | Text file encoding/decoding service                          |
+| Service     | Module                  | Purpose                             |
+| ----------- | ----------------------- | ----------------------------------- |
+| Files       | `Effect/Files.ts`       | File read/write via `Mountain`      |
+| WorkingCopy | `Effect/WorkingCopy.ts` | Dirty state and conflict management |
+| Workspaces  | `Effect/Workspaces.ts`  | Workspace root resolution           |
 
 ### Window and UI Services
 
-| Service       | Purpose                                              |
-| ------------- | ---------------------------------------------------- |
-| ActivityBar   | Activity bar state and view container management     |
-| Sidebar       | Side bar visibility and active view switching        |
-| StatusBar     | Status bar item creation and update                  |
-| Panel         | Bottom panel (terminal, output, problems) management |
-| Notification  | Toast notification display                           |
-| Progress      | Long-running operation progress indicators           |
-| QuickInput    | Quick pick and input box UI                          |
-| Output        | Output panel channel management                      |
-| UserSettings  | User settings bridge to Mountain storage             |
-| LandWorkbench | Land-specific workbench integration surface          |
+| Service      | Module                    | Purpose                                |
+| ------------ | ------------------------- | -------------------------------------- |
+| ActivityBar  | `Effect/ActivityBar.ts`   | Activity bar state                     |
+| Sidebar      | `Effect/Sidebar.ts`       | Side bar visibility and view switching |
+| StatusBar    | `Effect/StatusBar.ts`     | Status bar items                       |
+| Panel        | `Effect/Panel.ts`         | Bottom panel (terminal, output)        |
+| Notification | `Effect/Notification.ts`  | Toast notifications                    |
+| Progress     | `Effect/Progress.ts`      | Long-running operation progress        |
+| Dialog       | `Effect/WorkbenchDialog/` | Message boxes and input boxes          |
+| QuickInput   | `Effect/QuickInput.ts`    | Quick pick and input box               |
 
-### Extension and Language Services
+### Clipboard, Terminal, and Extensions
 
-| Service             | Purpose                                             |
-| ------------------- | --------------------------------------------------- |
-| Extensions          | Extension install, uninstall, list, and activation  |
-| Commands            | VS Code command registry and execution              |
-| Language            | Language mode detection and association             |
-| Keybinding          | Keyboard shortcut resolution                        |
-| Label               | URI label formatting service                        |
-| Themes              | Color theme management and switching                |
-| Storage             | Key-value persistent storage via Mountain           |
-| Search              | File and text search via Mountain's ripgrep backend |
-| Terminal            | Integrated terminal process management              |
-| Clipboard           | System clipboard read/write via Mountain            |
-| Vine                | Notification stream from Mountain gRPC events       |
-| NetworkRestrictions | Network access restriction policy                   |
+| Service    | Module                 | Purpose                             |
+| ---------- | ---------------------- | ----------------------------------- |
+| Clipboard  | `Effect/Clipboard.ts`  | System clipboard via `Mountain`     |
+| Terminal   | `Effect/Terminal.ts`   | Integrated terminal management      |
+| Extensions | `Effect/Extensions.ts` | Extension install/uninstall/list    |
+| Language   | `Effect/Language.ts`   | Language mode detection             |
+| Themes     | `Effect/Themes.ts`     | Color theme management              |
+| Keybinding | `Effect/Keybinding.ts` | Keyboard shortcut resolution        |
+| Search     | `Effect/Search.ts`     | File and text search via `Mountain` |
+| Telemetry  | `Effect/Telemetry.ts`  | Event telemetry                     |
+| Storage    | `Effect/Storage.ts`    | Key-value storage                   |
+| Lifecycle  | `Effect/Lifecycle.ts`  | Application lifecycle events        |
+| Health     | `Effect/Health.ts`     | Service health monitoring           |
 
-## TauriMainProcessService IPC Routing
+---
 
-`Source/Service/TauriMainProcessService.ts` is the IPC channel router that
-implements the VS Code `IMainProcessService` interface. All workbench IPC calls
-flow through this service. The `TierIPC` environment variable controls which
-backend handles each call.
+## Mountain IPC Service 🔌
 
-### Global Routing Tiers
+The `Mountain` service (`Effect/Mountain.ts`) maintains a runtime connection to
+the Rust backend:
 
-| TierIPC value        | Behavior                                                                                            |
-| -------------------- | --------------------------------------------------------------------------------------------------- |
-| `Mountain` (default) | All calls routed to Mountain via Tauri `MountainIPCInvoke`                                          |
-| `NodeDeferred`       | Mountain first; Cocoon Node.js fallback when Mountain returns `undefined` or has no handler         |
-| `Node`               | All calls bypass Mountain and route to Cocoon via `cocoon:request` bridge                           |
+```typescript
+// Wind sends commands to Mountain via Tauri invoke
+const fileContent: Uint8Array = await invoke("read_file", {
+	path: workspaceFile.fsPath,
+});
 
-### Per-Subsystem Tier Overrides
-
-Individual subsystems can override `TierIPC` independently. All default to
-`Mountain` unless noted:
-
-| Variable               | Default    | Channels governed                                    |
-| ---------------------- | ---------- | ---------------------------------------------------- |
-| `TierTerminal`         | `Mountain` | `terminal`, `localPty`                               |
-| `TierSCM`              | `Mountain` | `git` (localGit)                                     |
-| `TierDebug`            | `Mountain` | `extensionHostStarter`, `extensionhostdebugservice`  |
-| `TierLanguageFeatures` | `Mountain` | `language`, `languages`                              |
-| `TierSearch`           | `Mountain` | `search`                                             |
-| `TierOutputChannel`    | `Mountain` | `output`                                             |
-| `TierNativeHost`       | `Mountain` | `nativeHost`                                         |
-| `TierTreeView`         | `Mountain` | `tree`                                               |
-| `TierStorage`          | `Mountain` | `storage`                                            |
-| `TierModel`            | `Mountain` | `model`, `textFile`, `file`                          |
-| `TierTasks`            | `Node`     | `tasks`                                              |
-| `TierAuth`             | `Node`     | `auth`                                               |
-| `TierEncryption`       | `Mountain` | `encryption`                                         |
-| `TierWebSocket`        | `Disabled` | Mist WebSocket transport (not yet active)            |
-
-All tier variables are defined in `.env.Land`, listed in `turbo.json`
-`globalEnv`, and mirrored into `import.meta.env.Tier*` at build time by
-`astro.config.ts`. `Wind/Source/Utility/Tier.ts` resolves these values without a
-runtime lookup.
-
-## Wind/Output Lockstep Service Copies
-
-`Output/Source/Service/Tauri/Main/Process/Service.ts` is an exact copy of
-Wind's `TauriMainProcessService.ts`. Output is loaded by Cocoon's bootstrap in a
-module context that cannot import directly from Wind's npm package, so the file
-is duplicated. Any routing change applied to Wind must be applied to Output's
-copy in the same commit.
-
-## Preload.ts Compatibility Shim
-
-`Source/Preload.ts` runs synchronously in the webview before any VS Code code
-executes. It establishes the compatibility surface that VS Code's workbench
-bundle expects:
-
-- Sets `window.vscode` with an `ipcRenderer` shim backed by Tauri's `invoke` and
-  `listen` system.
-- Populates `window.process` with `ISandboxNodeProcess`-compatible fields
-  (`platform`, `arch`, `env`, `cwd()`).
-- Configures `window.MonacoEnvironment` for worker URL resolution.
-- Populates `window.__CEL_LAND__.polyfills` with WKWebView gap fills
-  (`requestIdleCallback`, `queryLocalFonts`, `__name`).
-- Reads `ISandboxConfiguration` from meta tags injected by Mountain into the
-  webview HTML.
-- Dispatches `land-preload-ready` so workbench bootstrap can await readiness
-  without polling.
-
-## Generated \*Upstream.ts Files
-
-The `Source/Effect/Generated/` directory contains approximately 492
-auto-generated `*Upstream.ts` files. Each file provides the bridge shape for one
-VS Code workbench service, extracted by the `Source/Codegen/` pipeline.
-
-> [!WARNING] These files are generated output. Never edit them directly. To
-> change a generated bridge shape, update the corresponding template in
-> `Source/Codegen/Emit/EmitServiceSchema.ts` and re-run the codegen step.
-
-The correct import depth from a generated file to `Codegen/Base.ts` is three
-levels up (`../../../Codegen/Base`). Any regression to two levels will cause the
-entire Wind build to fail with module resolution errors.
-
-## Wind Codegen Pipeline
-
-`Source/Codegen/` walks the VS Code service catalog, matches `createDecorator`
-calls and interface member signatures, and emits `*Upstream.ts` bridge shape
-specifications. The pipeline runs as part of `pnpm prepublishOnly` and produces
-the `Generated/` directory. Re-run it whenever the VS Code dependency in Output
-is updated to a new version.
-
-## Source Layout
-
-```
-Wind/Source/
-├── Preload.ts              # VS Code environment shim
-├── Effect/
-│   ├── IPC/                # Tauri invoke + channel types
-│   ├── Sandbox/            # Preload globals service
-│   ├── Configuration/      # Settings with live sync
-│   ├── Mountain/           # gRPC connection service
-│   ├── LandWorkbench/      # ManagedRuntime singleton
-│   ├── Generated/          # ~492 auto-generated *Upstream.ts files
-│   └── Layers/
-│       ├── Tauri.ts        # TauriLiveLayer (~36 services, production)
-│       ├── Electron.ts     # ElectronLiveLayer
-│       └── Test.ts         # TestLayer (mocks)
-├── Service/
-│   └── TauriMainProcessService.ts  # IPC channel router
-├── IPC/
-│   └── Channel.ts          # sky:// event URI registry (lockstep with Mountain)
-├── Utility/
-│   └── Tier.ts             # TierIPC resolver
-└── Codegen/                # VS Code service catalog extractor
+// Wind listens for Mountain events
+await listen("configuration-changed", (event) => {
+	syncConfiguration(event.payload);
+});
 ```
 
-## Related Documentation
+### Command Mapping
 
-- [Wind Deep Dive](https://Editor.Land/Doc/deep-dive-wind)
-- [Sky UI layer](https://Editor.Land/Doc/sky)
-- [Mountain Rust backend](https://Editor.Land/Doc/mountain)
-- [Cocoon extension host](https://Editor.Land/Doc/cocoon)
-- [Source Code](https://github.com/CodeEditorLand/Wind/tree/Current)
+| Wind Service      | Tauri Command       | Mountain Handler      |
+| ----------------- | ------------------- | --------------------- |
+| Files.read        | `read_file`         | FileSystemProvider    |
+| Files.write       | `write_file`        | FileSystemProvider    |
+| Configuration.get | `get_configuration` | ConfigurationProvider |
+| Configuration.set | `set_configuration` | ConfigurationProvider |
+| Terminal.create   | `create_terminal`   | TerminalProvider      |
+| Terminal.write    | `write_terminal`    | TerminalProvider      |
+| Dialog.open       | `open_dialog`       | UserInterfaceProvider |
+| Clipboard.read    | `get_clipboard`     | Clipboard             |
+| Clipboard.write   | `set_clipboard`     | Clipboard             |
+
+---
+
+## Workbench Integration 🔌
+
+`Wind` integrates with the VS Code workbench by providing service
+implementations that satisfy the workbench's dependency injection container:
+
+```typescript
+// VS Code workbench expects IFileService
+// Wind provides FileService that implements the same interface
+const workbench = new Workbench({
+	fileService: Wind.FileService,
+	configurationService: Wind.Configuration,
+	editorService: Wind.Editor,
+	notificationService: Wind.Notification,
+	// ... all services the workbench expects
+});
+
+await workbench.startup();
+```
+
+---
+
+## Related Documentation 📚
+
+- [Sky](https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md) -
+  UI component layer (`Wind` consumer)
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md) -
+  Extension host (parallel API surface)
+- [Mountain](https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md) -
+  Backend (IPC target)
+- [Output](https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md) -
+  Compiled workbench consumer
+- [Polyfills](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md) -
+  `Preload.ts` shim details
+- [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) -
+  Editor workbench adaptation
+
+---
+
+**Project Maintainers:** Source Open
+([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+[GitHub Repository](https://github.com/CodeEditorLand/Wind) |
+[Report an Issue](https://github.com/CodeEditorLand/Wind/issues)

@@ -1,191 +1,133 @@
 ---
-title: Mist - Deep Dive
-section: Deep Dive
-order: 6
+title: "Mist — Deep Dive"
+section: "Deep Dive"
+order: 14
 description:
-    Hickory DNS server setup, zone configuration, DNSSEC signing, forward
-    resolver allowlist, Mountain launch integration, and DNS query routing for
-    extension network policy enforcement.
+    "Mist DNS isolation layer — local authoritative DNS server for the editor.land
+    zone, Hickory DNS architecture, forward allowlist enforcement, DNSSEC zone
+    signing, and resolver construction for consumer integration."
 ---
 
-Mist implements a full authoritative DNS server in Rust using the Hickory DNS
-library, serving the `editor.land` zone over UDP and TCP on loopback. Every
-component that needs a private service name - Cocoon's gRPC address, Air's
-HTTP client, SideCar's download URLs - goes through this server. The design
-ensures that neither extension code nor sidecar processes can resolve arbitrary
-external hostnames without an explicit policy grant.
+# Mist — Deep Dive
 
-## 🚀 Hickory DNS server setup
+This document provides the technical foundation for the Mist DNS isolation layer
+within the Land project. **Mist** operates a local authoritative DNS server
+for the `editor.land` zone, ensuring all private network communication stays on
+loopback and preventing sidecars from reaching unauthorized external hosts.
 
-The server is initialized in `Source/Server.rs`. Hickory's catalog model is
-used: a `Catalog` object owns one or more zone authorities, and the server
-dispatches incoming queries to the correct authority by zone name. Mist
-constructs the catalog by calling `build_catalog(port)`, which returns a fully
-configured Hickory server ready to bind.
+---
 
-```rust
-// Library entry point
-let port = Mist::start(5380)?;
-println!("DNS server on 127.0.0.1:{port}");
+## Architecture
+
+Mist is a Rust library built on Hickory DNS. It exposes a public API for
+starting the server, querying the bound port, and constructing resolvers. The
+DNS catalog contains two zones: an authoritative zone for `editor.land` and a
+restricted forward allowlist for external queries.
+
+```mermaid
+graph TB
+    subgraph "Mist — DNS Isolation Server"
+        LibRS["lib.rs<br/>Public API: start / dns_port"]
+        ServerRS["server.rs<br/>Hickory UDP + TCP listeners"]
+        ZoneRS["zone.rs<br/>editor.land zone authority"]
+        ResolverRS["resolver.rs<br/>DNS resolver for consumers"]
+        ForwardSecurity["forward_security.rs<br/>External allowlist enforcement"]
+    end
+
+    subgraph "DNS Catalog"
+        AuthZone["editor.land zone<br/>*.editor.land → 127.0.0.1"]
+        ForwardZone["Forward allowlist<br/>update.editor.land only"]
+        DNSSEC["DNSSEC<br/>ECDSA P-256 zone signing"]
+    end
+
+    subgraph "Consumers"
+        Mountain["Mountain<br/>DnsPort managed state"]
+        SideCar["SideCar<br/>Node.js DNS environment variable"]
+        Cocoon["Cocoon<br/>editor.land resolution"]
+    end
+
+    LibRS --> ServerRS
+    ServerRS --> ZoneRS
+    ServerRS --> ForwardSecurity
+    ZoneRS --> AuthZone
+    ZoneRS --> DNSSEC
+    ForwardSecurity --> ForwardZone
+    LibRS --> ResolverRS
+    Mountain --> LibRS
+    SideCar --> ResolverRS
+    Cocoon --> ResolverRS
 ```
 
-Startup sequence:
+---
 
-1. `portpicker` finds an available port if `5380` is taken.
-2. `build_catalog(port)` constructs the zone authority for `editor.land`.
-3. DNSSEC signing keys are loaded from the app data directory (generated on
-   first run if absent).
-4. Zone records are signed in memory; RRSIG records are attached before any
-   query is answered.
-5. UDP and TCP listeners are bound on `127.0.0.1:{port}`.
-6. The bound port is returned to the caller (Mountain) and stored in `DnsPort`
-   managed Tauri state.
+## Key Modules
 
-## ⚙️ Zone configuration
+| Path                         | Description                                                                   |
+| :--------------------------- | :---------------------------------------------------------------------------- |
+| `Source/lib.rs`              | Public library API: `start(port)`, `dns_port()`, module re-exports            |
+| `Source/server.rs`           | Hickory DNS server: UDP/TCP socket binding, catalog wiring, async accept loop |
+| `Source/zone.rs`             | `editor.land` zone configuration: SOA, A records, wildcard resolution         |
+| `Source/resolver.rs`         | `LandDnsResolver` — DNS client pointed at the local server for consumer use   |
+| `Source/forward_security.rs` | Forward allowlist: rejects external queries not on the approved list          |
+| `tests/integration.rs`       | Integration tests: zone resolution, DNSSEC verification, forward blocking     |
 
-The `editor.land` zone is defined in `Source/Zone.rs`. All records are
-constructed in memory - no zone file is read from disk. The zone contains a SOA
-record and a wildcard A record:
+---
 
-```
-editor.land.  IN SOA  localhost. root.editor.land. (
-    2026010100 ; serial
-    3600       ; refresh
-    900        ; retry
-    86400      ; expire
-    60         ; minimum TTL
-)
+## Data Flow
 
-*.editor.land.  IN A  127.0.0.1
-```
+```mermaid
+sequenceDiagram
+    participant App as Application (Wind / Cocoon)
+    participant Resolver as Land DNS Resolver
+    participant MistServer as Mist DNS Server
+    participant Catalog as DNS Catalog
 
-The wildcard ensures that any subdomain of `editor.land` - whether
-`cocoon.editor.land`, `api.editor.land`, or any other name - resolves to
-`127.0.0.1` without requiring individual records. This is intentional: new
-service endpoints added inside the editor do not require a DNS configuration
-change.
+    App->>Resolver: resolve("api.editor.land")
+    Resolver->>MistServer: DNS query (UDP 127.0.0.1:PORT)
+    MistServer->>Catalog: Lookup "api.editor.land"
+    Catalog->>MistServer: A record → 127.0.0.1 (authoritative)
+    MistServer->>Resolver: DNS response with RRSIG
+    Resolver->>App: 127.0.0.1
 
-## 🛡️ DNSSEC signing
-
-Signing is handled in `Source/ForwardSecurity.rs` using `ring` for cryptographic
-operations.
-
-| Aspect           | Detail                                                                 |
-| :--------------- | :--------------------------------------------------------------------- |
-| Algorithm        | ECDSA P-256, algorithm number 13 in the DNS registry                   |
-| Key generation   | `ring::signature::EcdsaKeyPair` generated on first run                 |
-| Key persistence  | Written to the application data directory alongside the running `.app` |
-| RRSIG generation | Applied to every RRset in the zone before the first query              |
-| DNSKEY record    | Included in zone so clients can verify the signing key                 |
-
-DNSSEC signing is applied to the authoritative zone only. Responses forwarded
-from the upstream resolver for allowlisted domains pass through unsigned, as
-Mist is not a validating resolver.
-
-## 🛡️ Forward resolver and allowlist
-
-`Source/Resolver.rs` implements `LandDnsResolver`, a wrapper around a Hickory
-async resolver that points at the Mist server itself. Components that need to
-make DNS queries (Air's HTTP client, SideCar's download tool) construct a
-`LandDnsResolver` and use it instead of the system resolver.
-
-`Source/ForwardSecurity.rs` enforces the forward allowlist. When a query does
-not match the authoritative zone, `ForwardSecurity` checks the queried name
-against the allowlist set. If the name matches, the query is forwarded to the
-system upstream resolver and the result is returned. If it does not match,
-`NXDOMAIN` is returned immediately.
-
-Default allowlist entries:
-
-| Domain                         | Purpose                   |
-| :----------------------------- | :------------------------ |
-| `marketplace.visualstudio.com` | Extension marketplace     |
-| `update.editor.land`           | Application update server |
-| `api.posthog.com`              | Telemetry (opt-in)        |
-
-The allowlist is configurable and is loaded at startup. Runtime reloading is
-supported without a server restart.
-
-> [!WARNING] The allowlist applies to all extension code running in Cocoon. An
-> entry added for one legitimate purpose grants that hostname to every installed
-> extension simultaneously.
-
-## 🌐 DNS query routing
-
-```
-Incoming query
-    |
-    +---> Matches *.editor.land?
-    |       YES: Return A 127.0.0.1 with RRSIG (authoritative)
-    |
-    +---> Name in forward allowlist?
-    |       YES: Forward to system upstream resolver, return result
-    |
-    +---> Default: NXDOMAIN
+    App->>Resolver: resolve("external.example.com")
+    Resolver->>MistServer: DNS query
+    MistServer->>Catalog: Lookup "external.example.com"
+    Catalog->>MistServer: Not in allowlist → REFUSED
+    MistServer->>Resolver: REFUSED response
+    Resolver->>App: Resolution error
 ```
 
-Queries for names in the authoritative zone are answered directly from the
-in-memory catalog without any network hop. This means all gRPC service discovery
-for internal services (Cocoon connecting to Mountain, Air connecting to
-Mountain) incurs no network latency - the answer is computed in memory.
+**Startup sequence:**
 
-## 🔌 How Mountain launches Mist
+1. Mountain calls `Mist::start(5380)` during initialization.
+2. Mist attempts to bind to port 5380; if unavailable, `portpicker` selects an
+   alternative.
+3. The bound port is stored in Mountain's `DnsPort` managed Tauri state.
+4. Mountain passes the port to Air and SideCar so they configure their DNS
+   clients accordingly.
 
-Mountain's process management layer calls `Mist::start(5380)` from
-`Source/ProcessManagement/`. The returned port is stored in Tauri's managed
-state under `DnsPort`. Downstream consumers read this state:
+---
 
-- **Cocoon** receives the port as an environment variable before its Node.js
-  process is spawned. The `NODE_OPTIONS` or a custom env var overrides the DNS
-  resolver to `127.0.0.1:{DnsPort}`.
-- **Air** reads `DnsPort` via IPC and passes it to `reqwest`'s custom resolver
-  configuration.
-- **SideCar** reads `DnsPort` at build time for download operations.
+## Integration Points
 
-Because Mist binds before Mountain spawns any sidecar, the DNS server is
-guaranteed to be available the first time a sidecar process attempts a lookup.
+| Connecting Element | Direction         | Mechanism                | Description                                                                                       |
+| :----------------- | :---------------- | :----------------------- | :------------------------------------------------------------------------------------------------ |
+| **Mountain**       | Consumer          | `Mist::start()` Rust API | Mountain starts Mist and stores the port in `DnsPort` managed state                               |
+| **SideCar**        | Consumer          | Environment variable     | SideCar passes the DNS port to spawned Node.js processes via `NODE_EXTRA_CA_CERTS` / DNS override |
+| **Cocoon**         | Indirect consumer | Node.js DNS override     | Cocoon resolves `cocoon.editor.land` and Mountain gRPC addresses through Mist                     |
 
-## 🌐 WebSocket transport
+---
 
-`Source/WebSocket.rs` provides a secondary transport layer for Sky ↔ Cocoon
-communication. This is distinct from the DNS functionality: it reuses Mist's
-running Tokio runtime to host a WebSocket server that relays messages between
-the browser-based Sky UI layer and the Cocoon extension host when gRPC is
-unavailable or inappropriate for the communication pattern.
+## Configuration
 
-> [!IMPORTANT] The WebSocket transport in Mist is for data streaming between
-> Sky and Cocoon. The planned **S6** upgrade will replace per-call Tauri IPC
-> with a WebSocket transport routed through the `*.editor.land` DNS endpoints
-> that Mist already serves. Expected improvement: ~5-15 ms per call across
-> ~800 calls per session. This is not yet implemented.
+| Parameter          | Value                | Description                                                  |
+| :----------------- | :------------------- | :----------------------------------------------------------- |
+| Preferred port     | `5380`               | Primary bind port; falls back to any available port if taken |
+| Bind address       | `127.0.0.1`          | Loopback only — no external interface exposure               |
+| Authoritative zone | `editor.land`        | All subdomains resolve to `127.0.0.1`                        |
+| Forward allowlist  | `update.editor.land` | Only this domain may be resolved externally                  |
+| DNSSEC algorithm   | ECDSA P-256          | Zone signing key algorithm                                   |
+| Transport          | UDP + TCP            | Hickory serves both; clients may use either                  |
 
-## 🗺️ Module reference
-
-| File                        | Purpose                                                                   |
-| :-------------------------- | :------------------------------------------------------------------------ |
-| `Source/lib.rs`             | Public API: `start()`, `dns_port()`, `build_catalog()`, `land_resolver()` |
-| `Source/Server.rs`          | Hickory catalog construction, UDP + TCP listener binding                  |
-| `Source/Zone.rs`            | SOA and wildcard A record generation for `editor.land`                    |
-| `Source/Resolver.rs`        | `LandDnsResolver` struct, `land_resolver()` constructor                   |
-| `Source/ForwardSecurity.rs` | DNSSEC signing, forward allowlist check and enforcement                   |
-| `Source/WebSocket.rs`       | WebSocket server for Sky ↔ Cocoon streaming                               |
-
-## 🗺️ Key dependencies
-
-| Crate            | Version | Role                                         |
-| :--------------- | :------ | :------------------------------------------- |
-| `hickory-server` | 0.24    | Authoritative DNS server, catalog model      |
-| `hickory-proto`  | 0.24    | Wire-protocol types and encoding             |
-| `hickory-client` | 0.24    | Async DNS client used by the resolver        |
-| `ring`           | 0.17    | ECDSA P-256 operations for DNSSEC            |
-| `tokio`          | 1.49    | Async runtime for all I/O                    |
-| `once_cell`      | 1.21    | Thread-safe initialization of the port state |
-| `portpicker`     | 0.1.1   | Random available port fallback               |
-| `reqwest`        | 0.13    | HTTP client integration with custom DNS      |
-
-## 📖  Related Documentation
-
-- [Mist element overview](https://Editor.Land/Doc/mist)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
-- [Architecture overview](https://Editor.Land/Doc/architecture)
+DNSSEC signing is performed at zone load time. The DNSKEY and RRSIG records are
+included in responses to clients that request DNSSEC data (`DO` bit set).

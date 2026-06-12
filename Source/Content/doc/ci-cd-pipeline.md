@@ -1,191 +1,463 @@
 ---
 title: "CI/CD Pipeline"
-section: "Development"
-order: 3
+section: "Guide"
+order: 4
 description:
-    "The six-stage Land build pipeline: VS Code compile, TypeScript, PreBake,
-    Rust, Tauri bundle, and SignBundle.sh. GitHub Actions workflow, turbo.json
-    task graph, build matrix, and artifact upload."
+    "Complete build pipeline for the Land code editor — stages from environment
+    variable resolution through binary artifact production, profile system,
+    artifact layout, and automation details."
 ---
 
-Land's CI/CD pipeline is built on GitHub Actions with Turborepo coordinating the
-task graph across all workspace packages. Every push to `Current` and every pull
-request targeting `Current` triggers the pipeline. This page describes what
-runs, what it produces, and how environment secrets and the
-`beforeBundleCommand` hook fit into the flow.
+This document describes the complete build pipeline for the **Land** code
+editor, from environment variable resolution through binary artifact production.
+The pipeline coordinates Rust, TypeScript, and static asset compilation across
+15+ component workspaces.
 
-## 🔨　Six-Stage Build Pipeline
+---
 
-Every Land build - whether local or in CI - follows the same six stages in
-sequence:
+## Pipeline Overview
 
-| Stage | Name                     | What runs                                                               |
-| ----- | ------------------------ | ----------------------------------------------------------------------- |
-| 1     | VS Code platform compile | `npm install` + `npm run compile` + `npm run compile-extensions-build`  |
-| 2     | TypeScript build         | `pnpm prepublishOnly` across Wind, Cocoon, Output, Sky, Worker          |
-| 3     | PreBake                  | `Maintain/Build/Manifest/PreBake.ts` via `beforeBundleCommand`          |
-| 4     | Rust build               | `cargo build -p Mountain`                                               |
-| 5     | Tauri bundle             | `pnpm tauri build`                                                      |
-| 6     | Re-sign                  | `BundleLevel=debug sh Maintain/Script/SignBundle.sh`                    |
+The Land build has six stages:
 
-Stage 1 is a prerequisite for every build. Cocoon and Output both consume the
-compiled platform JavaScript it produces. Stage 3 (PreBake) fires inside
-`tauri.conf.json` as a `beforeBundleCommand` and therefore runs in all build
-paths - direct `pnpm tauri build`, `Build.sh`, and CI - not only through the
-wrapper script.
+1. **VS Code platform compile** — produces the compiled JavaScript platform code
+2. **TypeScript build** — `pnpm prepublishOnly` for Wind, Cocoon, Output, Sky,
+   Worker
+3. **PreBake** — walks extension roots, writes `extensions.manifest.json`
+4. **Rust build** — `cargo build -p Mountain`
+5. **Tauri bundle** — `pnpm tauri build`
+6. **Re-sign** — strips quarantine bits and re-applies entitlements
 
-## 🤖　GitHub Actions Workflow
+```mermaid
+sequenceDiagram
+    participant Env as .env.Land files
+    participant BS as Maintain/Debug/Build.sh
+    participant S1 as Stage 1: VS Code
+    participant S2T as Stage 2: TypeScript
+    participant S3 as Stage 3: PreBake
+    participant S4R as Stage 4: Rust
+    participant S5 as Stage 5: Tauri bundle
+    participant S6 as Stage 6: Re-sign
+    participant App as Land Application
 
-The primary workflow file is `Maintain/.GitHub/Workflows/Auto.yml`. It defines
-the full build-test-sign-upload sequence. Additional per-element workflows may
-exist under each Element's own `.github/workflows/` directory for element-scoped
-checks.
+    Env->>BS: Export 18 env files across 6 domains
+    BS->>S1: Invoke npm install + npm run compile
+    BS->>S2T: Invoke pnpm prepublishOnly (ESBuild / Vite / Astro)
+    BS->>S4R: Invoke cargo build -p Mountain
+    S4R->>S5: pnpm tauri build
+    S5->>S3: beforeBundleCommand triggers PreBake
+    S3-->>S5: extensions.manifest.json written
+    S5->>S6: BundleLevel=debug sh Maintain/Script/SignBundle.sh
+    S1-->>S4R: Compiled platform code
+    S1-->>S2T: Compiled platform code
+    S4R->>App: Native backend (Mountain, Echo, Mist, etc.)
+    S2T->>App: Frontend bundles (Sky, Wind, Cocoon)
+    S6->>App: Correctly-entitled .app bundle
+```
 
-### Trigger Conditions
+### Stage 1: VS Code Platform Compilation
 
-| Event               | Branches            | Effect                               |
-| ------------------- | ------------------- | ------------------------------------ |
-| `push`              | `Current`           | Full build + artifact upload         |
-| `pull_request`      | targeting `Current` | Full build, no artifact upload       |
-| `workflow_dispatch` | any                 | Manual trigger with profile override |
+The VS Code source is vendored as a Git submodule at
+`Dependency/Microsoft/Dependency/Editor`. This stage produces the compiled
+JavaScript platform code that `Cocoon` and `Sky` consume.
 
-### Node Version Requirement
-
-The VS Code Editor submodule at `Dependency/Microsoft/Dependency/Editor`
-requires **Node 24** for its Stage 1 compile step. The exact pinned minor
-version is tracked in that submodule's `.nvmrc` file
-(`Dependency/Microsoft/Dependency/Editor/.nvmrc`). CI jobs must provision
-Node 24 and set the binary download skip flags before running `npm install` and
-`npm run compile` inside that directory:
+> [!IMPORTANT]
+> This step is a **mandatory prerequisite** for every Land build. You must be on
+> **Node 24** (tracked in `.nvmrc`).
 
 ```sh
-export ELECTRON_SKIP_BINARY_DOWNLOAD=1
-export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+cd Dependency/Microsoft/Dependency/Editor
+nvm use 24
+git fetch --all
+git reset --hard Parent/main
+git clean -dfx
+pnpm install
+pnpm run compile
+pnpm run compile-extensions-build
 ```
 
-Without these flags, `npm install` will attempt to download Electron (~200 MB)
-and Playwright Chromium (~300 MB), stalling the job indefinitely. Neither binary
-is used during compilation.
+The `compile-extensions-build` step produces `out-<platform>` directories
+containing compiled extension JavaScript and metadata. These are consumed by
+`Output` for bundling into `@codeeditorland/output`.
 
-### Build Matrix
+### Stage 2: Land Application Assembly
 
-The matrix covers platform × profile combinations:
+Stage 2 compiles the native Rust backend and bundles the TypeScript frontend
+into a runnable Tauri application:
 
-| Platform               | Profile                       | Output           |
-| ---------------------- | ----------------------------- | ---------------- |
-| `macos-latest` (arm64) | `production-electron-bundled` | Signed `.app`    |
-| `macos-13` (x86_64)    | `production-electron-bundled` | Signed `.app`    |
-| `ubuntu-latest`        | `production-electron-bundled` | `.AppImage`      |
-| `windows-latest`       | `production-electron-bundled` | `.exe` installer |
-
-Debug profiles (`debug-electron-bundled`, etc.) are used in local development
-and are not part of the CI matrix.
-
-## ⚡　`turbo.json` Task Graph
-
-Turborepo resolves the dependency graph between workspace tasks. The key
-pipeline is:
-
-```
-prepublishOnly → build → test
+```sh
+cd Land
+export Trace=all Record=1 Disable=false
+./Maintain/Debug/Build.sh --profile debug-electron-bundled
 ```
 
-- `prepublishOnly`: TypeScript compilation for all elements. This must pass
-  before `build` runs.
-- `build`: Tauri bundling, Rust compilation, and static asset generation.
-- `test`: Unit and integration tests across Rust and TypeScript elements.
+The build script invokes, in sequence:
 
-Turborepo's remote cache is used in CI to skip unchanged packages. A package is
-only rebuilt if its source files or its dependencies' outputs have changed since
-the last cached run.
+1. **TypeScript build** (`pnpm prepublishOnly`) — Output, Cocoon, Worker, Wind,
+   Sky
+   - Output artifact bundling via ESBuild for VS Code platform code
+   - Cocoon compilation via ESBuild for the extension host
+   - Worker compilation via ESBuild for the service worker
+   - Wind + Sky compilation via Vite/Astro for the UI layer
+2. **PreBake** — runs via `beforeBundleCommand` inside `tauri.conf.json`; walks
+   extension roots and writes `extensions.manifest.json`. Fires in **all** build
+   paths (direct `pnpm tauri build`, `Build.sh`, CI). Consumed by
+   `LoadFromCache.rs` at boot (<50ms vs ~1200ms live scan).
+3. **Rust workspace compilation** via `cargo build -p Mountain`
+4. **Tauri bundling** for the final `.app` bundle
+5. **Re-sign** — strips macOS quarantine bits with `xattr -cr`, then re-signs
+   with `codesign --force --deep --sign -` plus `Entitlements.plist`:
 
-### Environment Variable Propagation
+   ```sh
+   BundleLevel=debug sh Maintain/Script/SignBundle.sh
+   ```
 
-All `Tier*` and `Product*` variables listed in `turbo.json` under `globalEnv`
-are included in the cache key. A change to `TierFileSystem` in `.env.Land`
-invalidates the Mountain cache entry and forces a Rust recompile.
+---
 
-## 🔐　Environment Secrets
+## Environment Variable System
 
-The following secrets must be configured in the GitHub repository settings for
-the pipeline to produce signed artifacts:
+Land uses a multi-file `.env` system with 18 files across 6 domains.
 
-| Secret                               | Purpose                                                       |
-| ------------------------------------ | ------------------------------------------------------------- |
-| `APPLE_CERTIFICATE`                  | Base64-encoded Apple Developer certificate for macOS codesign |
-| `APPLE_CERTIFICATE_PASSWORD`         | Password for the certificate                                  |
-| `APPLE_SIGNING_IDENTITY`             | Developer ID string for `codesign --sign`                     |
-| `APPLE_ID`                           | Apple ID for notarization                                     |
-| `APPLE_PASSWORD`                     | App-specific password for notarization                        |
-| `APPLE_TEAM_ID`                      | Apple Developer Team ID                                       |
-| `TAURI_SIGNING_PRIVATE_KEY`          | Tauri updater signing key                                     |
-| `TAURI_SIGNING_PRIVATE_KEY_PASSWORD` | Password for the updater key                                  |
+### File Discovery
 
-### CI Environment Variables
+The build script resolves env files in this priority order:
 
-The following environment variables must be set in CI before the Stage 1
-(`npm install`) step:
+1. `$Land_Env_File` (if explicitly exported)
+2. `.env.Land` (local gitignored overrides)
+3. `../.env.Land` (one level up)
+4. `.env.Land.Sample` (checked-in defaults)
+5. `../.env.Land.Sample`
 
-| Variable                           | Value | Effect                                                       |
-| ---------------------------------- | ----- | ------------------------------------------------------------ |
-| `ELECTRON_SKIP_BINARY_DOWNLOAD`    | `1`   | Prevents npm from downloading the Electron binary at install |
-| `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` | `1`   | Prevents Playwright from downloading browser binaries        |
+The resolved file is sourced via `set -a; . "$EnvFile"; set +a`, exporting every
+key-value pair into the shell environment so every child tool inherits the same
+variable set.
 
-These are set unconditionally in CI. Local developer machines also require them
-when running `npm install` inside the VS Code Editor submodule - add them to
-your shell profile (`~/.zshrc` or `~/.bashrc`) and reload before the first
-Stage 1 run.
+### File Hierarchy by Domain
 
-> [!IMPORTANT] The NLnet acknowledgement text required by the NGI0 Commons Fund
-> grant is embedded in the About dialog at build time via a
-> `ProductNLnetAcknowledgement` variable. This is set in `.env.Land.Production`
-> and does not require a GitHub secret.
+| Domain | Suffix | Dev File | Sample File | Production File |
+| :--- | :--- | :--- | :--- | :--- |
+| Core | (none) | `.env.Land` | `.env.Land.Sample` | `.env.Land.Production` |
+| Node | `.Node` | `.env.Land.Node` | `.env.Land.Node.Sample` | `.env.Land.Production.Node` |
+| Extensions | `.Extensions` | `.env.Land.Extensions` | `.env.Land.Extensions.Sample` | `.env.Land.Production.Extensions` |
+| PostHog | `.PostHog` | `.env.Land.PostHog` | `.env.Land.PostHog.Sample` | `.env.Land.Production.PostHog` |
+| Diagnostics | `.Diagnostics` | `.env.Land.Diagnostics` | `.env.Land.Diagnostics.Sample` | `.env.Land.Production.Diagnostics` |
+| Bundled | `.Bundled` | `.env.Land.Bundled` | `.env.Land.Bundled.Sample` | `.env.Land.Production.Bundled` |
 
-## 🔗　`beforeBundleCommand` Hook — `PreBake.ts`
+### Profile-to-File Mapping
 
-Before Tauri bundles the application, the `beforeBundleCommand` in
-`tauri.conf.json` runs `Maintain/Build/Manifest/PreBake.ts`. This script walks
-all extension roots and writes `extensions.manifest.json` into the bundle
-resources directory.
+Each build profile loads a specific combination of env files:
 
-This pre-baked manifest is what allows Land to start in under 50 ms for
-extension scanning (versus ~1200 ms for a live filesystem scan on cold start).
-The hook fires in all build paths - direct `pnpm tauri build`, `Build.sh`, and
-CI - because it lives in `tauri.conf.json`, not in the shell script wrapper.
+| Profile | Files Loaded | Purpose |
+| :--- | :--- | :--- |
+| Development | `.env.Land` | Default local development |
+| Development + Bundled | `.env.Land` + `.env.Land.Bundled` | Dev with pre-compiled workbench |
+| Development + Extensions | `.env.Land` + `.env.Land.Extensions` | Dev with extension installation |
+| Development + Node | `.env.Land` + `.env.Land.Node` | Dev with specific Node version |
+| Development + PostHog | `.env.Land` + `.env.Land.PostHog` | Dev with telemetry |
+| Development + Diagnostics | `.env.Land` + `.env.Land.Diagnostics` | Dev with debug tracing |
+| Production | `.env.Land.Production` | Release build |
+| Production + Bundled | `.env.Land.Production` + `.env.Land.Production.Bundled` | Release with bundled workbench |
+| Production + Extensions | `.env.Land.Production` + `.env.Land.Production.Extensions` | Production with extension skip |
+| Production + Node | `.env.Land.Production` + `.env.Land.Production.Node` | Production with specific Node |
+| Production + PostHog | `.env.Land.Production` + `.env.Land.Production.PostHog` | Production with telemetry |
+| Production + Diagnostics | `.env.Land.Production` + `.env.Land.Production.Diagnostics` | Production with trace/record |
 
-> [!WARNING] Do not move `PreBake.ts` execution into `Maintain/Debug/Build.sh`
-> only. Build.sh is a wrapper; steps placed there are skipped when
-> `pnpm tauri build` is invoked directly or from CI without the wrapper.
+---
 
-## 📤　Artifact Upload
+## Profile System
 
-After a successful production build, CI uploads artifacts using the
-`actions/upload-artifact` action:
+### Available Build Profiles
 
-- **macOS**: `Mountain.app` zipped, plus the `.dmg` installer if packaging is
-  enabled.
-- **Linux**: `.AppImage` file.
-- **Windows**: `.exe` NSIS installer.
+| Profile String | Workbench | Feature Coverage | Output Type |
+| :--- | :--- | :--- | :--- |
+| `debug` | Browser | 70–80% | Dev binary |
+| `debug-mountain` | Mountain | 80–90% | Dev binary (recommended) |
+| `debug-electron` | Electron | 95%+ | Dev binary |
+| `debug-electron-rest` | Electron + OXC | 95%+ + fastest TS | Dev binary |
+| `debug-electron-minimal` | Electron | No built-in extensions | Dev binary |
+| `debug-mountain-only` | Mountain | No `Cocoon` subprocess | Dev binary |
+| `debug-cocoon-headless` | None | Mountain + Cocoon, Wind disabled | Dev binary |
+| `debug-kernel` | None | Pure Mountain, no built-ins | Dev binary |
+| `debug-electron-compiled` | Electron | Single-binary embedded resources | Dev binary |
+| `debug-mountain-compiled` | Mountain | Single-binary embedded resources | Dev binary |
+| `debug-electron-bundled` | Electron | Vite/Astro compiled workbench | Dev binary |
+| `debug-browser-bundled` | Browser | Vite/Astro compiled workbench | Dev binary |
+| `debug-sessions-bundled` | Sessions | Vite/Astro compiled workbench | Dev binary |
+| `debug-workbench-bundled` | Workbench | Vite/Astro compiled workbench | Dev binary |
+| `debug-bundled-all` | All four | Single Rollup pass | Dev binary |
+| `production-electron-bundled` | Electron | Optimized release | Prod binary |
+| `production-electron-unbundled` | Electron | Release without bundled assets | Prod binary |
 
-Artifacts are retained for 30 days on pull request builds and 90 days on
-`Current` branch builds.
+### Program Launch Options
 
-## ✅　When a Maintain Change Is Sufficient (No Rebuild Needed)
+| Flag | Effect |
+| :--- | :--- |
+| `--run` | Launch application immediately after build |
+| `--profile <name>` | Select build profile (default: `debug`) |
+| `--help` | Show profile documentation |
 
-The Maintain crate is a build orchestrator. Its source code is compiled into the
-`maintain` binary used to drive builds, but **changes to
-`Element/Maintain/Source/`** do not affect the compiled Land application. You
-only need to rebuild Mountain (`cargo build -p Mountain`) when Mountain's own
-source changes.
+---
 
-Specifically:
+## Env Propagation to Each Element
 
-| Change type                       | Rebuild needed?                                                        |
-| --------------------------------- | ---------------------------------------------------------------------- |
-| `Element/Mountain/Source/**/*.rs` | Yes - `cargo build -p Mountain`                                        |
-| `Element/Cocoon/Source/**/*.ts`   | Yes - `pnpm prepublishOnly`                                            |
-| `Element/Sky/Source/**/*.ts`      | Yes - `pnpm prepublishOnly`                                            |
-| `Maintain/Debug/Build.sh`         | No - script change only                                                |
-| `Maintain/Script/SignBundle.sh`   | No - script change only                                                |
-| `Element/Maintain/Source/**/*.rs` | No - only affects the `maintain` CLI binary                            |
-| `.env.Land*` files                | Only if Tier\* values changed (triggers Rust recompile via `build.rs`) |
+Each Element reads the resolved environment variables through its own build
+system path:
+
+```mermaid
+graph LR
+    A[.env.Land files] --> B[Maintain/Debug/Build.sh]
+    B --> C[Rust build.rs]
+    B --> D[ESBuild define]
+    B --> E[Vite define map]
+    C --> F[Mountain env! / cfg features]
+    D --> G[Cocoon __LandTier_ globals]
+    E --> H[Wind import.meta.env]
+    F --> I{Tier Banner Agreement}
+    G --> I
+    H --> I
+    I --> J[Runtime tier validation]
+```
+
+### Rust Elements (Mountain, Common, Echo, Mist, Rest, SideCar, Air, Grove, Vine)
+
+```
+Maintain/Debug/Build.sh
+    |
+    | exports every Tier* and Product* env var
+    v
+Cargo / build.rs
+    |
+    +---> PropagateTierGating() emits:
+    |       cargo:rustc-env=Tier<Capability>=<Value>
+    |       cargo:rustc-cfg=feature="Tier<Capability><Value>"
+    |       cargo:rerun-if-changed=<envfile>
+    |
+    v
+Mountain/src/main.rs
+    |
+    +---> env!("TierFileSystem")       // compile-time constant
+    +---> #[cfg(feature = "TierFileSystemLayer4")]  // conditional compilation
+```
+
+### TypeScript Elements (Cocoon)
+
+```
+Maintain/Debug/Build.sh
+    |
+    | serialises every Tier* var into CocoonEsbuildDefine JSON blob
+    v
+Cocoon/Source/Configuration/ESBuild/Config/TargetConfig.ts
+    |
+    | merges blob into esbuild define map
+    v
+ESBuild bundle
+    |
+    | __LandTier_FileSystem__ is substituted at bundle time
+    v
+Cocoon/Source/Bootstrap/Implementation/CocoonMain.ts
+    |
+    | populates globalThis.__LandTiers from substituted identifiers
+    | falls through to process.env.Tier<Capability>
+    | falls through to hard-coded defaults
+    v
+Cocoon/Source/Utility/Tier.ts
+    |
+    | exposes const Tier = { ... } as const
+```
+
+### TypeScript Elements (Sky/Wind)
+
+```
+Maintain/Debug/Build.sh
+    |
+    | exports Tier* and Product* env vars
+    v
+Sky/astro.config.ts
+    |
+    | forwards every Tier* env var to Vite define map
+    v
+Vite bundle
+    |
+    | import.meta.env.TierFileSystem is substituted at build time
+    v
+Wind/Source/Utility/Tier.ts
+    |
+    | reads import.meta.env.Tier<Capability>
+    | falls through to globalThis.__LandTiers
+    | falls through to hard-coded defaults
+    | emits console.info() boot banner
+```
+
+### Cross-Element Agreement
+
+All three runtime banners must report identical tier values:
+
+| Element | Banner Mechanism |
+| :--- | :--- |
+| `Mountain` | Rust `env!()` banner |
+| `Cocoon` | `LandFixLog.Info` banner |
+| `Wind` | `console.info` banner |
+
+A mismatch indicates one build tool read a different env file.
+
+---
+
+## Rust Build Process
+
+### Workspace Structure
+
+The Rust elements form a workspace at `Land/Cargo.toml`:
+
+```toml
+[workspace]
+members = [
+    "Element/Common",
+    "Element/Echo",
+    "Element/Mist",
+    "Element/Mountain",
+    "Element/Rest",
+    "Element/SideCar",
+    "Element/Air",
+    "Element/Grove",
+    "Element/Vine",
+]
+```
+
+### build.rs Tier Propagation
+
+Every Rust element with tier-gated features has a `build.rs` that:
+
+1. Calls `PropagateTierGating()` which scans the resolved env file
+2. Emits `cargo:rustc-env=` for every row (defaults + overrides)
+3. For non-default values, emits `cargo:rustc-cfg=feature="Tier<Capability><Value>"`
+4. Calls `IsDeclaredTierFeature()` to validate against `Cargo.toml [features]`
+5. Calls `IsDefaultTierValue()` to identify no-op default values
+6. Emits `cargo:warning=` for any unrecognized `(Key, Value)` pair
+
+---
+
+## TypeScript Build Process
+
+### ESBuild Compilation (Cocoon, Output, Worker)
+
+Cocoon, Output, and Worker compile through ESBuild with:
+
+1. **Env-injected defines** via `CocoonEsbuildDefine` JSON blob
+2. **Target configuration** via `TargetConfig.ts` (resolves platform, arch, profile)
+3. **Output to** `Element/<Name>/Target/` or `Element/<Name>/Compiled/`
+
+### Vite/Astro Compilation (Sky, Wind)
+
+Sky and Wind compile through Vite with Astro:
+
+1. **Vite define map** receives every `Tier*` env var as `import.meta.env.Tier*`
+2. **Astro pages** are rendered to static HTML + JS bundles
+3. **SkyBridge** (~2900 lines) is compiled as the runtime event bridge
+4. **Output to** `Element/Sky/Target/`
+
+---
+
+## Artifact Layout
+
+After a successful build, artifacts are placed in per-Element target
+directories:
+
+```
+Land/Element/
+├── Mountain/Target/
+│   ├── debug/Mountain
+│   ├── debug/bundle/macos/Mountain.app
+│   └── debug/extensions.manifest.json
+├── Air/Target/
+├── Cocoon/Compiled/
+│   ├── cocoon-bootstrap.js
+│   └── bundles/
+├── Output/Target/
+│   └── @codeeditorland/output/
+├── Sky/Target/Static/
+│   ├── Application/      # VS Code workbench assets
+│   └── Bundled/Electron/ # Vite-bundled workbench
+└── Wind/Target/
+    └── Function/Install/
+```
+
+Notable artifacts:
+
+| Path | Description |
+| :--- | :--- |
+| `Element/Mountain/Target/<level>/Mountain` | Native binary |
+| `Element/Mountain/Target/<level>/bundle/macos/*.app` | Signed `.app` bundle |
+| `Element/Mountain/Target/<level>/extensions.manifest.json` | Pre-baked extension list |
+| `Element/Sky/Target/Static/Application/` | VS Code workbench assets |
+| `Element/Sky/Target/Static/Bundled/Electron/` | Vite-bundled workbench |
+| `Element/Cocoon/Compiled/cocoon-bootstrap.js` | Extension host bundle |
+
+---
+
+## Output Transform Pipeline
+
+The `Output` element manages compilation of VS Code platform source code through
+two parallel compiler paths:
+
+### Primary Path (ESBuild)
+
+1. **Input:** `Dependency/Editor/out/` (Stage 1 compiled VS Code)
+2. **Processing:** ESBuild applies transforms for Tauri compatibility:
+   - Module resolution remapping (`electron` → `@tauri-apps/api`)
+   - `require()` interceptor patches
+   - Source map generation
+   - Polyfill injection
+3. **Output:** `Output/Target/@codeeditorland/output/`
+
+### Optional Path (Rest/OXC)
+
+1. **Input:** Same VS Code source
+2. **Processing:** `Rest` (Rust OXC) re-compiles TypeScript 2–3x faster:
+   - OXC parser handles decorators, class fields, JSX
+   - OXC transformer produces VS Code-compatible output
+   - `Rest --compiler` CLI flag activates this path
+3. **Output:** Same layout, substituted for ESBuild output when `--compiler rest`
+   is set
+
+---
+
+## Worker Build Process
+
+The `Worker` element compiles independently through ESBuild with no runtime
+dependencies:
+
+1. **Input:** `Element/Worker/Source/`
+2. **ESBuild** produces:
+   - Service worker script (caching strategy, offline handler)
+   - CSS module interceptor
+3. **Output:** `Element/Worker/Target/`
+4. **Consumed by:** Sky at build time (bundled into UI)
+
+---
+
+## SideCar Binary Management
+
+The `SideCar` element manages vendored Node.js runtime binaries:
+
+1. **Binary resolution:** `Build.sh` reads `NodeVersion` and `NodePlatform` from env
+2. **Download:** SideCar's tool fetches the exact binary from official sources
+3. **Caching:** Binaries cached by version + platform key in `SideCar/Cache.json`
+4. **Git LFS:** Large binaries stored via Git LFS
+5. **Consumption:** Mountain's build process copies the resolved binary into the app bundle
+
+Target triples supported:
+
+- `aarch64-apple-darwin` (Apple Silicon macOS)
+- `x86_64-apple-darwin` (Intel macOS)
+- `aarch64-unknown-linux-gnu` (ARM64 Linux)
+- `x86_64-unknown-linux-gnu` (x86_64 Linux)
+- `aarch64-pc-windows-msvc` (ARM64 Windows)
+- `x86_64-pc-windows-msvc` (x86_64 Windows)
+
+---
+
+## Related Documentation
+
+- [Getting Started](./getting-started.md) — Build instructions and prerequisites
+- [Quickstart](./quickstart.md) — Concise build reference
+- [Configuration](./configuration.md) — Complete env var reference
+- [Deep Dives](./deep-dive-sky.md) — Component architecture details

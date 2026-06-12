@@ -6,13 +6,13 @@ description: "How to develop, test, and report compatibility issues for VS Code
     extensions running in Land."
 ---
 
-Land hosts VS Code extensions through Cocoon, a Node.js extension host that
-implements the `vscode.*` API surface. Current coverage is approximately 88% of
-the VS Code extension API, making the majority of published extensions
-compatible without modification. This page describes what works, what does not,
+Land hosts VS Code extensions through **Cocoon**, a Node.js extension host that
+implements the `vscode.*` API surface. Current coverage is approximately **88%**
+of the VS Code extension API, making the majority of published extensions
+compatible without modification. Below we describe what works, what does not,
 and how to test and report gaps.
 
-## 📊　API Coverage
+## 📊 API Coverage
 
 The Cocoon extension host implements the `vscode.*` namespace shim. As of the
 current release, the following areas are fully or substantially covered:
@@ -25,63 +25,64 @@ current release, the following areas are fully or substantially covered:
 | `vscode.scm`            | ~95%     | InputBox, commitTemplate, acceptInputCommand                                                                                                           |
 | `vscode.commands`       | ~95%     | `onDidExecuteCommand` event, `registerTextEditorCommand`                                                                                               |
 | `vscode.extensions`     | ~90%     | Activation, exports, Memento-backed state                                                                                                              |
-| `vscode.debug`          | ~25%     | Configuration providers registered; DAP pipe/socket adapters and `startDebugging` transport incomplete                                                |
+| `vscode.debug`          | ~25%     | Configuration providers registered; DAP pipe/socket adapters and `startDebugging` transport incomplete                                                 |
 | `vscode.tasks`          | ~25%     | `registerTaskProvider` and `executeTask` wired; Mountain-side process spawn for shell tasks not yet implemented                                        |
 | `vscode.authentication` | ~30%     | API surface present; no real OAuth backend                                                                                                             |
 
 For a detailed method-level breakdown, see the
-[VS Code API Coverage](/Doc/cocoon-vscode-validation) reference page.
+[VS Code API Coverage](https://codeeditor.land/Doc/cocoon-vscode-validation)
+reference page.
 
-## ❌　What Does Not Work
+## ❌ What Does Not Work
 
 The following areas have known gaps and will not function correctly in the
 current release:
 
-**`vscode.authentication` full OAuth flows**: The `getSession()` call returns
+**`vscode.authentication` full OAuth flows** — The `getSession()` call returns
 stubs. Extensions that require GitHub OAuth, Microsoft account sign-in, or any
 OAuth 2.0 provider (Copilot, GitHub Pull Requests, Live Share) will fail to
 authenticate. The API structure is present but there is no real OAuth backend
 wired.
 
-**`registerInlineCompletionItemProvider`** 🟡 (partial): The Vine proto
+**`registerInlineCompletionItemProvider` (🟡 partial)** — The Vine proto
 definition, Mountain dispatcher, and Sky `ILanguageFeaturesService`
 registration all exist. Single-item and list providers work for basic inline
 suggestions. Providers that return `InlineCompletionList` with
 `suppressSuggestions` or custom range objects may not render correctly in all
 configurations.
 
-**Debug adapter types**: `DebugProvider` handles `executable`-type debug
+**Debug adapter types** — `DebugProvider` handles `executable`-type debug
 configurations (launching a child process). Server-mode and pipe-mode debug
 adapters (`attach` type with `debugServer` or `pipeTransport`) are not delegated
 correctly.
 
-**`registerWebviewPanelSerializer`**: Panel state is not persisted across
+**`registerWebviewPanelSerializer`** — Panel state is not persisted across
 reloads. Extensions that restore webview panels after a window reload will not
 recover their state.
 
-**`vscode.env.openExternal` with non-file schemes**: Works for `http`/`https`
+**`vscode.env.openExternal` with non-file schemes** — Works for `http`/`https`
 URLs via the native open handler; custom scheme URIs may not route correctly on
 all platforms.
 
-## 🧩　Extension Context Capabilities
+## 🧩 Extension Context Capabilities
 
 The following `ExtensionContext` members are fully implemented in Land:
 
-| Member                      | Backing implementation                                          |
-| --------------------------- | --------------------------------------------------------------- |
-| `context.workspaceState`    | Mountain `storage:get` / `storage:set` IPC                      |
-| `context.globalState`       | Mountain `storage:get` / `storage:set` IPC                      |
-| `context.secrets.get`       | Mountain `encryption:decrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.store`     | Mountain `encryption:encrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.delete`    | Mountain `storage:set` with empty string value                  |
-| `context.extension.exports` | Set after the activation function resolves                      |
+| Member                        | Backing implementation                                          |
+| ----------------------------- | --------------------------------------------------------------- |
+| `context.workspaceState`      | Mountain `storage:get` / `storage:set` IPC                      |
+| `context.globalState`         | Mountain `storage:get` / `storage:set` IPC                      |
+| `context.secrets.get`         | Mountain `encryption:decrypt` (AES-256-GCM, machine-stable key) |
+| `context.secrets.store`       | Mountain `encryption:encrypt` (AES-256-GCM, machine-stable key) |
+| `context.secrets.delete`      | Mountain `storage:set` with empty string value                   |
+| `context.extension.exports`   | Set after the activation function resolves                      |
 
 Secret storage uses AES-256-GCM encryption keyed from the machine UUID (SHA-256
 hash). Secrets stored by one extension cannot be read by another and do not
 survive a machine change. This matches VS Code's `SecretStorage` semantics for
 local-only secrets.
 
-## 🧪　Testing Your Extension in Land
+## 🧪 Testing Your Extension in Land
 
 ### Drop-in Installation
 
@@ -127,7 +128,7 @@ This routes all IPC calls through `cocoon:request` instead of Tauri's native IPC
 bridge. It is useful for isolating whether a failure is in Mountain's handler or
 in the Cocoon shim layer.
 
-## 📝　Accessing Extension Host Logs
+## 📝 Accessing Extension Host Logs
 
 Cocoon writes structured log output to standard output, which Mountain captures
 and forwards to the dev log. To see Cocoon's output:
@@ -140,7 +141,7 @@ and forwards to the dev log. To see Cocoon's output:
 For gRPC-level tracing between Mountain and Cocoon, add `grpc` to the `Trace`
 tag list.
 
-## 🐛　Reporting API Compatibility Gaps
+## 🐛 Reporting API Compatibility Gaps
 
 If your extension fails in Land due to a missing or broken API, open a GitHub
 issue at

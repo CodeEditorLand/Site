@@ -76,6 +76,10 @@ export const SemanticAlias: Record<string, string> = {
 
 	"/setup": "/Download",
 
+	// Doc aliases - alternate names for doc pages
+	"/doc/webassembly": "/Doc/why-wasm",
+	"/doc/why-webassembly": "/Doc/why-wasm",
+
 	// Doc
 	"/documentation": "/Doc",
 

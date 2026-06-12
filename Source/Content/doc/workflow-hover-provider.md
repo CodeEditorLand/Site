@@ -9,11 +9,11 @@ description:
 
 A hover provider demonstrates the full five-element request cycle: registration
 flows from Cocoon to Mountain at activation time, then each live hover request
-flows Sky -> Wind -> Mountain -> Cocoon -> extension -> back the same way. Mountain
+flows Sky → Wind → Mountain → Cocoon → extension → back the same way. Mountain
 acts as the broker that maps language selectors to provider handles and routes
 requests to the correct sidecar.
 
-## Phase 1 - Extension registration (Cocoon -> Mountain)
+## Phase 1 - Extension registration (Cocoon → Mountain)
 
 1. The extension is activated by Cocoon. Its `activate()` function runs and
    calls:
@@ -23,7 +23,7 @@ requests to the correct sidecar.
     ```
 
 2. Cocoon's `LanguageFeaturesProvider` stores the `provider` object in a local
-   handle map - for example, under handle `123` - and sends a
+   handle map under a unique handle (e.g. `123`) and sends a
    **`$registerHoverProvider` gRPC request** to Mountain. The request carries
    the handle, the language selector (`"mylang"`), and the owning extension ID.
 
@@ -35,7 +35,7 @@ requests to the correct sidecar.
    and stores it in `AppState.LanguageProviders`. Mountain now knows which
    sidecar owns which provider for which language.
 
-## Phase 2 - User hover request (Sky -> Wind -> Mountain)
+## Phase 2 - User hover request (Sky → Wind → Mountain)
 
 5. The user moves the mouse over a symbol in an editor showing a `"mylang"`
    file. Monaco's internal hover controller fires and calls
@@ -52,15 +52,15 @@ requests to the correct sidecar.
 
     This crosses the webview boundary and reaches Mountain's IPC dispatcher.
 
-## Phase 3 - Mountain orchestrates the request (Mountain -> Cocoon)
+## Phase 3 - Mountain orchestrates the request (Mountain → Cocoon)
 
 7. Mountain's `LanguageFeatureProvider.ProvideHover()` queries
    `AppState.LanguageProviders` for all registered hover providers matching the
    document's language (`"mylang"`). It finds handle `123` belonging to
    `"cocoon-main"`.
 
-8. Mountain sends a **`$provideHover` gRPC request** to Cocoon with the document
-   URI, cursor position, and provider handle `123`.
+8. Mountain sends a **`$provideHover` gRPC request** to Cocoon with the
+   document URI, cursor position, and provider handle `123`.
 
 ## Phase 4 - Extension execution (Cocoon)
 
@@ -74,13 +74,13 @@ requests to the correct sidecar.
     provider.provideHover(document, position, token);
     ```
 
-    The extension's code executes and returns a `Hover` object, for example
+    The extension's code executes and returns a `Hover` object, e.g.
     `{ contents: ["Hello World"] }`.
 
-11. The handler serialises the result into a `HoverResultDto` and returns it to
-    Mountain as the gRPC response.
+11. The handler serialises the result into a `HoverResultDto` via `TypeConverter`
+    and returns it to Mountain as the gRPC response.
 
-## Phase 5 - Result reaches the UI (Mountain -> Wind -> Sky)
+## Phase 5 - Result reaches the UI (Mountain → Wind → Sky)
 
 12. Mountain receives the `HoverResultDto`, serialises it, and sends it back as
     the response to the original `TauriInvoke` call from step 6.
@@ -88,16 +88,15 @@ requests to the correct sidecar.
 13. Wind's `getHover` Effect resolves. The service passes the `Hover` data to
     Monaco's hover controller.
 
-14. Monaco renders the tooltip widget on screen. The user sees the "Hello World"
-    hover card.
+14. Monaco renders the tooltip widget on screen. The user sees the hover card.
 
 ## Resolve methods
 
 Two-phase providers return a partial result from `$provide*` and then expect a
 `$resolve*` call to fill in expensive-to-compute fields. The following resolve
 methods are fully routed through `FeatureMethods.rs` via the same
-`InvokeLanguageProvider` dispatch path as `$provideHover` and return results to
-the caller rather than being dropped:
+`InvokeLanguageProvider` dispatch path and return results to the caller rather
+than being dropped:
 
 - `$resolveCodeAction`
 - `$resolveCompletionItem`
@@ -109,7 +108,7 @@ the caller rather than being dropped:
 ## Inline completions
 
 The same gRPC dispatch path handles inline completion providers (used by Copilot
-and similar tools). When an extension calls
+and similar AI tools). When an extension calls
 `vscode.languages.registerInlineCompletionItemProvider()`, the handle is stored
 in `AppState.LanguageProviders` under the `InlineCompletion` type. Sky registers
 the provider with `ILanguageFeaturesService.inlineCompletionsProvider` via the
@@ -121,6 +120,6 @@ returning `InlineCompletionItem[]` to the editor.
 > [!IMPORTANT] The same registration and dispatch pattern applies to every
 > language feature (`$registerCompletionItemProvider`,
 > `$registerDefinitionProvider`, etc.). The only difference is the gRPC method
-> name and the DTO shape. Mountain always stores handle -> sidecar mappings in
+> name and the DTO shape. Mountain always stores handle→sidecar mappings in
 > `AppState.LanguageProviders` and routes each `$provide*` call to the correct
 > sidecar at request time.

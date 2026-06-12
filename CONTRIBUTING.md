@@ -43,7 +43,7 @@ The full Code of Conduct is adapted from the
 
 ## How to Contribute
 
-We welcome contributions from the community. This section describes our
+We welcome contributions from the community. See our
 development workflow, coding standards, and pull request process.
 
 ### Getting Started

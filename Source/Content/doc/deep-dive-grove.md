@@ -1,217 +1,142 @@
+# Grove — Deep Dive
+
+This document provides the technical foundation for the Grove Rust/WASM
+extension host within the Land project. **Grove** provides a native, sandboxed
+environment for running VS Code extensions compiled to WebAssembly or native
+Rust, complementing the Node.js-based Cocoon host.
+
 ---
-title: Grove - Deep Dive
-section: Deep Dive
-order: 4
-description:
-    Wasmtime integration, WASM component model, ABI bridge design, VS Code API
-    surface coverage, capability-based security model, and current
-    implementation status.
----
 
-> [!NOTE] Grove is implemented and available. WASM extensions targeting Grove
-> can use the Wasmtime sandbox today via `cargo build -p Mountain --features grove`.
-> Grove is not enabled in the default build profile. Cocoon remains the active
-> extension host for all existing VS Code extensions. Full VS Code API surface
-> coverage and the Component Model migration are planned future work.
+## Architecture
 
-Grove provides a Wasmtime-backed WebAssembly sandbox as an alternative extension
-host alongside Cocoon. This page covers the Wasmtime integration approach, the
-ABI bridge between Rust host code and WASM guest modules, the planned API
-surface, and what remains to be implemented.
+Grove is organized into five layers: the extension host controller that manages
+the lifecycle, the WASM runtime that provides sandboxed execution, the VS Code
+API bridge that presents the standard extension API, the transport layer that
+communicates with Mountain, and shared utility modules.
 
-## 🏗️ Wasmtime integration approach
+```mermaid
+graph TB
+    subgraph "Grove — Rust/WASM Extension Host"
+        Main["main.rs / lib.rs<br/>Binary + Library entry"]
+        Binary["Binary/<br/>CLI and startup"]
+        Host["Host/<br/>Extension Host Controller"]
+        ExtHost["Host/ExtensionHost.rs<br/>Main controller"]
+        ExtMgr["Host/ExtensionManager.rs<br/>Discovery and loading"]
+        Activation["Host/Activation.rs<br/>Activation events"]
+        Lifecycle["Host/Lifecycle.rs<br/>Extension lifecycle"]
+        APIBridge["Host/APIBridge.rs<br/>VS Code API facade"]
+        WASM["WASM/<br/>WebAssembly Runtime"]
+        Runtime["WASM/Runtime.rs<br/>WASMtime engine + store"]
+        ModuleLoader["WASM/ModuleLoader.rs<br/>Module compilation"]
+        MemoryMgr["WASM/MemoryManager.rs<br/>Memory allocation"]
+        HostBridge["WASM/HostBridge.rs<br/>Host-WASM function bridge"]
+        Transport["Transport/<br/>Communication Strategies"]
+        GRPCTransport["Transport/gRPCTransport.rs<br/>gRPC via Mountain"]
+        IPCTransport["Transport/IPCTransport.rs<br/>Local IPC"]
+        WASMTransport["Transport/WASMTransport.rs<br/>Direct WASM calls"]
+        Protocol["Protocol/<br/>Spine connection"]
+    end
 
-Grove uses Wasmtime v20 as its WASM engine. The integration is structured around
-Wasmtime's `Engine`, `Store`, and `Linker` types:
+    subgraph "Mountain — Rust Backend"
+        VineGRPC["Vine gRPC Server"]
+    end
 
-- **`Engine`** - shared across all extensions in a single Grove process; holds
-  the JIT compilation state and module cache.
-- **`Store<T>`** - one per extension instance; owns all WASM state (memory,
-  tables, globals) and the host-side data (`T`) accessible from host functions.
-  Per-extension resource limits (memory ceiling, fuel for CPU throttling) are
-  set on the store.
-- **`Linker`** - pre-populated with all host functions that extensions are
-  allowed to call. A module that references an import not present in the linker
-  fails instantiation rather than running with an undefined capability.
-
-```rust
-// Grove WASM runtime initialization (simplified)
-let engine = Engine::default();
-let mut linker: Linker<GroveHostState> = Linker::new(&engine);
-
-// Register host functions - only these are available to WASM modules
-linker.func_wrap("vscode", "workspace_readFile", host_read_file)?;
-linker.func_wrap("vscode", "window_showMessage", host_show_message)?;
-// ... additional explicit grants
-
-let mut store = Store::new(&engine, GroveHostState::new(transport));
-store.set_fuel(10_000_000)?; // CPU fuel limit per activation
-
-let module = Module::from_file(&engine, extension_wasm_path)?;
-let instance = linker.instantiate(&mut store, &module)?;
+    Main --> Binary
+    Binary --> Host
+    Host --> ExtHost
+    ExtHost --> ExtMgr
+    ExtHost --> Activation
+    ExtHost --> Lifecycle
+    ExtHost --> APIBridge
+    APIBridge --> WASM
+    WASM --> Runtime
+    WASM --> ModuleLoader
+    WASM --> MemoryMgr
+    WASM --> HostBridge
+    ExtHost --> Transport
+    Transport --> GRPCTransport
+    Transport --> IPCTransport
+    Transport --> WASMTransport
+    ExtHost --> Protocol
+    GRPCTransport --> VineGRPC
 ```
 
-Module compilation is performed once per `.wasm` file and the compiled artifact
-is cached by Wasmtime's internal module cache. Subsequent instantiations of the
-same module (e.g. across editor restarts) skip compilation and use the cached
-native code.
+---
 
-## 🏗️ WASM component model
+## Key Modules
 
-Extensions target the `wasm32-wasi` ABI. Grove does not yet use the WASM
-Component Model (WIT/`wasm-bindgen`-style interfaces) - the current design uses
-manually registered Wasmtime host functions. Migrating to the WASM Component
-Model is a planned future step that would allow auto-generating the host/guest
-binding layer from an interface definition file.
+| Path                                 | Description                                                                       |
+| :----------------------------------- | :-------------------------------------------------------------------------------- |
+| `Source/lib.rs`                      | Library root; exports public API for integration and testing                      |
+| `Source/main.rs`                     | Binary entry point; parses CLI and starts the extension host                      |
+| `Source/Binary/`                     | CLI argument handling and standalone vs connected mode selection                  |
+| `Source/Host/ExtensionHost.rs`       | Main controller: coordinates extension loading, activation, and service provision |
+| `Source/Host/ExtensionManager.rs`    | Extension discovery, manifest parsing, and loading                                |
+| `Source/Host/Activation.rs`          | Activation event processing (`onLanguage`, `onCommand`, etc.)                     |
+| `Source/Host/Lifecycle.rs`           | Extension activate/deactivate lifecycle management                                |
+| `Source/Host/APIBridge.rs`           | VS Code API facade implementation for Rust/WASM extensions                        |
+| `Source/WASM/Runtime.rs`             | WASMtime engine and store management with memory limits                           |
+| `Source/WASM/ModuleLoader.rs`        | WASM module compilation, caching, and instantiation                               |
+| `Source/WASM/MemoryManager.rs`       | WASM linear memory allocation and bounds enforcement                              |
+| `Source/WASM/HostBridge.rs`          | Host function exports to WASM modules                                             |
+| `Source/WASM/FunctionExport.rs`      | Registered host functions available to extension WASM code                        |
+| `Source/Transport/Strategy.rs`       | Transport strategy trait for pluggable communication                              |
+| `Source/Transport/gRPCTransport.rs`  | gRPC communication with Mountain via `tonic`                                      |
+| `Source/Transport/IPCTransport.rs`   | Unix/Windows IPC transport for same-host communication                            |
+| `Source/Transport/WASMTransport.rs`  | Direct in-process WASM function call transport                                    |
+| `Source/Protocol/SpineConnection.rs` | Spine protocol client for extension host coordination                             |
 
-Current extension ABI:
+---
 
-- Extensions export a `activate()` function that Grove calls after
-  instantiation.
-- Extensions import host functions from the `vscode` namespace (e.g.
-  `vscode::workspace_readFile`).
-- All values crossing the WASM boundary are serialized to linear memory using a
-  simple length-prefixed encoding; complex types use `serde_json` serialized to
-  UTF-8 bytes.
+## Data Flow
 
-## 🏗️ ABI bridge design - Rust to WASM
+```mermaid
+sequenceDiagram
+    participant Mountain as Mountain Core
+    participant Grove as Grove Extension Host
+    participant WASM as WASM Runtime
+    participant Extension as WASM Extension
 
-The ABI bridge lives in `Source/WASM/HostBridge/`. It handles the impedance
-mismatch between Rust's rich type system and WASM's flat value types (`i32`,
-`i64`, `f32`, `f64`, byte pointers).
-
-For each host function exported to WASM:
-
-1. The WASM module calls the function with a pointer and length into its linear
-   memory.
-2. `HostBridge` reads the byte slice from the WASM store's memory.
-3. The bytes are deserialized into a typed Rust struct.
-4. The struct is dispatched through `Transport` to Mountain.
-5. Mountain's response is serialized back to bytes.
-6. `HostBridge` writes the response into WASM linear memory at a location the
-   extension provided.
-7. Control returns to the WASM module.
-
-This pattern is repeated for every VS Code API call. The serialization overhead
-is intentional: it creates a clean boundary where all data is inspectable and
-auditable before leaving or entering the sandbox.
-
-## 📋 Planned VS Code API surface
-
-The planned initial API subset covers the capabilities most commonly used by
-language servers and formatters:
-
-| Namespace           | Planned methods                                                                         |
-| :------------------ | :-------------------------------------------------------------------------------------- |
-| `vscode.workspace`  | `readFile`, `writeFile`, `readDirectory`, `getConfiguration`, `onDidChangeTextDocument` |
-| `vscode.window`     | `showInformationMessage`, `showErrorMessage`, `showInputBox`, `createOutputChannel`     |
-| `vscode.languages`  | `registerHoverProvider`, `registerCompletionItemProvider`, `registerDiagnostics`        |
-| `vscode.commands`   | `registerCommand`, `executeCommand`                                                     |
-| `vscode.extensions` | `getExtension` (read-only)                                                              |
-
-Network access (`vscode.env.openExternal`, `fetch`) is not in the initial
-surface. An extension that requires network access must declare it explicitly;
-Grove will prompt the user before granting the capability.
-
-The API surface is intentionally narrower than Cocoon's full `vscode.d.ts`
-coverage. Extensions that need the full API continue to use Cocoon; Grove
-targets extensions that can operate within the restricted set in exchange for
-stronger security guarantees.
-
-## 🛡️ Security model - capability-based sandboxing
-
-Grove's security model differs fundamentally from Cocoon's process isolation:
-
-| Property              | Cocoon (process isolation)         | Grove (capability-based)                   |
-| :-------------------- | :--------------------------------- | :----------------------------------------- |
-| File system access    | Full access within Node.js process | Only file handles explicitly granted       |
-| Network access        | Restricted by Mist DNS allowlist   | Not available by default; must be declared |
-| Other extension state | Shared process memory              | Isolated per-store linear memory           |
-| CPU throttling        | None                               | Wasmtime fuel metering per activation      |
-| Memory limit          | Node.js heap limit                 | Configurable per-store ceiling             |
-| Sandbox enforcement   | OS process boundary                | Hardware-enforced WASM linear memory       |
-
-The capability grant model means that an extension's permissions are visible
-before it runs. When Mountain activates an extension in Grove, it reads the
-extension manifest's `capabilities` field, constructs a `Linker` that exposes
-only those capabilities, and passes the configured linker to `ModuleLoader`. An
-extension that attempts to call an ungrant function gets a trap at
-instantiation, not a runtime error after sensitive operations have already
-executed.
-
-## 🌐 Transport options
-
-Grove communicates with Mountain through a pluggable transport selected at build
-time via Cargo features:
-
-| Cargo feature    | Transport                                     | Notes                                         |
-| :--------------- | :-------------------------------------------- | :-------------------------------------------- |
-| `grpc` (default) | gRPC via Mountain's Vine server on port 50051 | Standard path; same protocol as Cocoon        |
-| `wasm` (default) | Direct WASM host function calls               | Used when Grove runs in-process with Mountain |
-| `ipc`            | Unix domain socket                            | Enabled only on Unix targets                  |
-| `all`            | All transports compiled in                    | For testing                                   |
-
-The `Strategy` trait in `Source/Transport/Strategy.rs` abstracts over all
-transports so the `HostBridge` layer has no transport-specific code.
-
-## 🔌 Mountain integration
-
-Mountain activates Grove extensions via the `GroveService` gRPC protocol defined
-in `Proto/`. The activation flow:
-
-1. Mountain's extension scanner identifies a `.wasm` extension manifest.
-2. Mountain sends `ActivateExtension(extension_id, capabilities)` to Grove.
-3. Grove's `ExtensionManager` constructs the capability-gated `Linker`.
-4. `ModuleLoader` compiles or loads the cached WASM module.
-5. A new `Store` is created with the extension's resource limits.
-6. The module is instantiated and `activate()` is called.
-7. Grove reports success or failure back to Mountain.
-
-Grove shares the same activation event semantics as Cocoon (`activationEvents`
-in `package.json`) so extension manifests do not need modification to run in
-either host.
-
-## 🗺️ Current implementation status
-
-| Component                                | Status                                             |
-| :--------------------------------------- | :------------------------------------------------- |
-| `Source/Host/ExtensionHost.rs`           | Implemented - extension discovery and lifecycle    |
-| `Source/Host/ExtensionManager.rs`        | Implemented - loading and activation dispatch      |
-| `Source/WASM/Runtime/`                   | Implemented - Wasmtime engine and store management |
-| `Source/WASM/ModuleLoader/`              | Implemented - compilation and caching              |
-| `Source/WASM/HostBridge/`                | Implemented - ABI bridge, serialization            |
-| `Source/Transport/gRPCTransport.rs`      | Implemented                                        |
-| `Source/Transport/IPCTransport.rs`       | Implemented                                        |
-| `Source/Host/APIBridge.rs`               | Partial - core workspace and window namespaces     |
-| Mountain `GroveService` handler          | Not yet wired into the default build               |
-| WASM Component Model migration           | Planned                                            |
-| Full `vscode.d.ts` subset                | Planned                                            |
-| Extension marketplace capability prompts | Planned                                            |
-
-Grove is activated as an optional feature: `cargo build --features grove`. It is
-not compiled into the default `debug-electron` or `release` profiles.
-
-## 📦 Building Grove
-
-```bash
-# Build Grove as a standalone binary
-cd Element/Grove
-cargo build --release
-
-# Build for WASM target (extensions themselves)
-rustup target add wasm32-wasi
-cargo build --target wasm32-wasi --release
-
-# Build with all transport features
-cargo build --release --features all
-
-# Enable Grove in Mountain build
-cargo build -p Mountain --features grove
+    Mountain->>Grove: GroveService.ActivateExtension (gRPC via Vine)
+    Grove->>Grove: ExtensionManager.load(manifest)
+    Grove->>WASM: ModuleLoader.compile(wasm_bytes)
+    WASM->>Grove: Compiled module
+    Grove->>WASM: Runtime.instantiate(module, host_functions)
+    WASM->>Extension: WASM module initialized
+    Extension->>WASM: Call host function (e.g. vscode.workspace.readFile)
+    WASM->>Grove: HostBridge dispatch
+    Grove->>Mountain: Forward service call via Transport
+    Mountain->>Grove: Service result
+    Grove->>WASM: Return value to extension
+    WASM->>Extension: Result available
 ```
 
-## 📖  Related Documentation
+---
 
-- [Grove element overview](https://Editor.Land/Doc/grove)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
-- [Architecture overview](https://Editor.Land/Doc/architecture)
+## Integration Points
+
+| Connecting Element | Direction     | Mechanism          | Description                                                                       |
+| :----------------- | :------------ | :----------------- | :-------------------------------------------------------------------------------- |
+| **Mountain**       | Bidirectional | gRPC via Vine      | Mountain activates extensions; Grove forwards API calls back to Mountain          |
+| **Cocoon**         | Sibling       | Shared API surface | Grove implements the same VS Code API surface as Cocoon for extension portability |
+
+---
+
+## Configuration
+
+| Option            | CLI Flag / Feature | Default          | Description                                                  |
+| :---------------- | :----------------- | :--------------- | :----------------------------------------------------------- |
+| Standalone mode   | `--standalone`     | off              | Run without Mountain connection for testing                  |
+| Extension path    | `--extension`      | unset            | Load a specific extension directly                           |
+| Transport         | feature flag       | gRPC             | Select `grpc`, `ipc`, or `wasm` transport via Cargo features |
+| Memory limit      | runtime config     | platform default | Per-extension WASM memory ceiling enforced by WASMtime       |
+| WASM build target | `wasm32-wasi`      | native           | Extensions must target `wasm32-wasi` for WASM mode           |
+
+### Cargo features
+
+| Feature | Description                                    |
+| :------ | :--------------------------------------------- |
+| `grpc`  | gRPC transport support (included in `default`) |
+| `wasm`  | WASMtime WASM runtime (included in `default`)  |
+| `ipc`   | Unix/Windows IPC transport (Unix only)         |
+| `all`   | All features enabled                           |

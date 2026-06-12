@@ -7,23 +7,23 @@ description:
     services to a Mountain disk read, then back to Monaco."
 ---
 
-Opening a file involves four element boundaries: Sky dispatches the intent,
+Opening a file involves four layer boundaries: Sky dispatches the intent,
 Wind's editor and filesystem services resolve and load the model, a Tauri IPC
-call reaches Mountain, and the native result unwinds through the same chain
-until Monaco renders the content.
+call reaches Mountain for the native disk read, and the result unwinds back
+through the same chain until Monaco renders the content.
 
 ## Phase 1 - User interaction (Sky)
 
 1. The user clicks a file entry in the File Explorer component. The `onClick`
-   handler holds the file's `URI` and calls into the `IEditorService`.
+   handler holds the file's `URI` and calls into `IEditorService`.
 
 2. `IEditorService.openEditor({ resource: fileUri })` executes the
-   `openEditorEffect` defined in `Wind/Source/Effect/Editor`.
-   The effect first passes the untyped input to `TextEditorService` to resolve
-   it into a concrete `EditorInput`, then calls `findGroup` to identify the
-   target editor group.
+   `openEditorEffect` defined in `Wind/Source/Effect/Editor`. The effect first
+   passes the untyped input to `TextEditorService` to resolve it into a
+   concrete `EditorInput`, then calls `findGroup` to identify the target editor
+   group.
 
-## Phase 2 - Editor and filesystem logic (Wind -> Mountain)
+## Phase 2 - Editor and filesystem logic (Wind → Mountain)
 
 3. `EditorGroupsService` checks whether an editor for `fileUri` is already open.
    If it is, Wind focuses that tab and stops. Otherwise it calls
@@ -33,8 +33,7 @@ until Monaco renders the content.
    `IFileService.readFile(fileUri)` from `Wind/Source/FileSystem`.
 
 5. `IFileService` looks up the registered provider for the `file:` URI scheme
-   and finds `TauriDiskFileSystemProvider`
-   (`Wind/Source/FileSystem`).
+   and finds `TauriDiskFileSystemProvider` (`Wind/Source/FileSystem`).
 
 6. `TauriDiskFileSystemProvider.readFile()` executes the `ReadFile` Effect from
    the Tauri integration layer:
@@ -54,14 +53,14 @@ until Monaco renders the content.
 ## Phase 3 - Native file I/O (Mountain)
 
 8. Tauri routes the `plugin:fs|ReadFile` command to the `tauri-plugin-fs`
-   internal Rust handler. The plugin executes:
+   internal Rust handler:
 
     ```rust
     tokio::fs::read(path)
     ```
 
-9. The file content is returned as `Vec<u8>`, serialised, and sent back to Wind
-   as the resolution of the `TauriInvoke` promise.
+9. The file content (`Vec<u8>`) is serialised and returned to Wind as the
+   resolution of the `TauriInvoke` promise.
 
 ## Phase 4 - Data unwinds and UI renders (Wind)
 
@@ -74,8 +73,8 @@ until Monaco renders the content.
     sets the `TextFileEditorModel` on the Monaco editor instance inside that
     pane.
 
-13. Monaco receives the text model and renders the file content to screen. The
-    user sees the file open in the editor.
+13. Monaco receives the text model and renders the content. The user sees the
+    file open in the editor.
 
 > [!IMPORTANT] The `IFileService` provider lookup is keyed on URI scheme. Only
 > `file:` URIs reach `TauriDiskFileSystemProvider`. Custom-scheme URIs (e.g.
@@ -96,9 +95,8 @@ file URI:
   call. Content is read from `DocumentContentCache` if a prior write has
   populated it.
 - **Custom scheme (e.g. `git:`, `output:`)** - Cocoon checks whether a
-  `TextDocumentContentProvider` has been registered for that scheme via
-  `registerTextDocumentContentProvider`. If one is found, Cocoon calls
-  `provider.provideTextDocumentContent()` directly with no Mountain round-trip
-  and no 10-second timeout. For schemes where no provider is registered and
-  Mountain is the authoritative owner (e.g. output channels), the standard
-  `FileSystem.ReadFile` gRPC route is used instead.
+  `TextDocumentContentProvider` has been registered for that scheme. If one is
+  found, Cocoon calls `provider.provideTextDocumentContent()` directly with no
+  Mountain round-trip and no 10-second timeout. For schemes where no provider
+  is registered and Mountain is the authoritative owner (e.g. output channels),
+  the standard `FileSystem.ReadFile` gRPC route is used instead.

@@ -1,190 +1,137 @@
 ---
-title: Rest - Deep Dive
-section: Deep Dive
+title: "Rest - Deep Dive"
+section: "Deep Dive"
 order: 9
 description:
-    OXC integration internals, VS Code platform code selection, module rewrite
-    rules, console stripping, platform marker injection, binary distribution,
-    and performance benchmarks.
+    "Rest TypeScript compiler architecture, OXC toolchain pipeline, key modules,
+    data flow, integration points with Output/Cocoon/Sky, and configuration
+    reference."
 ---
 
-Rest is a Rust binary that drives four OXC crates-`oxc_parser`, `oxc_semantic`,
-`oxc_transformer`, and `oxc_codegen`-through a sequential compilation pipeline
-to produce VS Code-compatible JavaScript from TypeScript source. This page
-covers the internals of each stage and the integration points with the Output
-element's build pipeline.
+This document provides the technical foundation for the Rest TypeScript compiler
+within the Land project. **Rest** is a Rust binary that uses the OXC toolchain
+to compile TypeScript 2-3x faster than esbuild while producing output compatible
+with VS Code's build process.
 
-## OXC crate integration
+---
 
-Each OXC crate is used independently, giving Rest precise control over
-intermediate representations between stages.
+## Architecture
 
-| Crate             | Version | Role in Rest                                                            |
-| :---------------- | :------ | :---------------------------------------------------------------------- |
-| `oxc_allocator`   | 0.48    | Arena allocator shared across all OXC passes for a single file          |
-| `oxc_parser`      | 0.48    | Parses TypeScript source into an owned AST                              |
-| `oxc_semantic`    | 0.48    | Resolves symbols, scopes, and references against the AST                |
-| `oxc_transformer` | 0.48    | Applies TypeScript-to-JavaScript transformations                        |
-| `oxc_codegen`     | 0.48    | Emits JavaScript text and optional source maps from the transformed AST |
-| `oxc_span`        | 0.48    | Source span types shared between all crates                             |
-| `rayon`           | latest  | Parallel file dispatch across logical CPU cores                         |
+Rest is structured as a Rust library with a binary entry point. The compilation
+pipeline passes source files through OXC's parser, transformer, and code
+generator in sequence. An optional parallel mode processes multiple files
+concurrently across CPU cores.
 
-The arena allocator is constructed once per source file and shared across
-parser, semantic, and transformer. This eliminates per-node heap allocations and
-is the primary reason OXC is faster than Node.js-hosted compilers for large
-TypeScript codebases.
+```mermaid
+graph TB
+    subgraph "Rest - TypeScript Compiler"
+        Binary["Library.rs - Binary Entry Point"]
+        CLI["CLI Argument Parsing\n--Input · --Output · --Parallel"]
+        Compiler["Fn/OXC/Compiler.rs\nOrchestration"]
+        Parser["Fn/OXC/Parser.rs\nOXC Parser"]
+        Transformer["Fn/OXC/Transformer.rs\nAST Transformation"]
+        Codegen["Fn/OXC/Codegen.rs\nCode Generation"]
+        Config["Struct/CompilerConfig.rs\nConfiguration"]
+    end
 
-## VS Code platform code selection
+    subgraph "OXC Toolchain"
+        OXCParser["oxc_parser\nTypeScript / JSX"]
+        OXCTransform["oxc_transformer\nDecorators · Class Fields"]
+        OXCCodegen["oxc_codegen\nJS Output"]
+        OXCSemantic["oxc_semantic\nSymbol Table"]
+    end
 
-Rest is invoked against the VS Code Dependency submodule, specifically the
-TypeScript source under `Element/Microsoft/Dependency/Editor/src/vs/`. Not all
-files in that tree are compiled on every invocation. The Output element's
-`RestPlugin` intercepts individual `.ts` file loads from esbuild's module graph,
-so only files actually reachable from the workbench entry point are compiled by
-Rest. This avoids compiling dead-code files in the VS Code tree that are never
-imported.
+    subgraph "Output Integration"
+        RestPlugin["Output/RestPlugin.ts\nesbuild plugin"]
+        TargetRest["Target/Rest/\nCompiled artifacts"]
+        TargetFinal["Target/Microsoft/VSCode/\nMerged final output"]
+    end
 
-The subset includes:
-
-- Core platform services (`vs/platform/`)
-- Workbench services (`vs/workbench/`)
-- Base utilities (`vs/base/`)
-- Editor model and controller (`vs/editor/`)
-
-## Module rewrite rules
-
-The OXC transformer stage handles path alias resolution and platform shims. VS
-Code's TypeScript source uses path aliases defined in its `tsconfig.json` (e.g.
-`vs/base/common/uri` instead of a relative path). Rest's
-`Struct/CompilerConfig.rs` carries a path alias map that the transformer uses to
-rewrite import specifiers to relative paths before code generation.
-
-Platform shims are injected at this stage for APIs that differ between Node.js,
-browser, and the Land hybrid environment. The shim layer rewrites imports to
-`vs/base/parts/sandbox/electron-sandbox/globals` and similar browser-compatible
-paths where the Node.js path would fail inside Sky's WebView context.
-
-## Decorator metadata and class field behavior
-
-Two settings control VS Code compatibility in `Struct/CompilerConfig.rs`:
-
-**`emitDecoratorMetadata = true`**
-
-VS Code's service locator pattern uses `@injectable()` and constructor injection
-with `reflect-metadata`. When a class is decorated, TypeScript emits
-`Reflect.metadata("design:paramtypes", [...])` calls listing the constructor
-parameter types. OXC's transformer emits these calls correctly. Without them,
-dependency injection silently fails-services are constructed with `undefined`
-arguments.
-
-**`useDefineForClassFields = false`**
-
-VS Code was written before native class fields were standardized and relies on
-the TypeScript-legacy behavior where `class Foo { x = 1 }` compiles to a
-constructor assignment (`this.x = 1`) rather than `Object.defineProperty`. OXC
-exposes this as a transformer option. With `useDefineForClassFields = true` (the
-modern default), prototype-chain assignment patterns in VS Code break at
-runtime.
-
-## Console stripping
-
-The transformer stage removes all `console.log`, `console.warn`, and
-`console.error` calls from production builds. This matches the behavior of VS
-Code's own gulp build pipeline, which uses a custom transform to strip console
-calls from shipped bundles. In Land's build, the `drop: ["console"]` option is
-passed to OXC's codegen for release builds; debug builds retain console calls
-and add inline source maps.
-
-## Platform marker injection
-
-After code generation, Rest injects a small header into each output file that
-identifies the compilation context:
-
-```js
-// [Land/Rest] compiled by OXC 0.48 - do not edit
+    Binary --> CLI
+    CLI --> Compiler
+    Compiler --> Parser
+    Parser --> OXCParser
+    Compiler --> Transformer
+    Transformer --> OXCTransform
+    Transformer --> OXCSemantic
+    Compiler --> Codegen
+    Codegen --> OXCCodegen
+    Compiler --> Config
+    Codegen --> TargetRest
+    RestPlugin --> Compiler
+    TargetRest --> TargetFinal
 ```
 
-This marker is used by the Output element's post-processing step to verify that
-files in the build cache were produced by Rest and not left over from a previous
-esbuild-only build. If a file in the output directory lacks the marker, the
-Output pipeline treats it as stale and recompiles from source.
+---
 
-## Binary distribution
+## Key Modules
 
-Rest is distributed as a standalone native binary compiled for each target
-triple. The binary is not a Node.js package-it requires no npm install and no
-Node.js runtime to execute. The Output element invokes it via `process.spawn`
-from `RestPlugin`:
+| Path                              | Description                                                                 |
+| :-------------------------------- | :-------------------------------------------------------------------------- |
+| `Source/Library.rs`               | Binary entry point; parses CLI arguments and dispatches to compiler         |
+| `Source/Fn/OXC/Compiler.rs`       | Main compilation orchestrator; coordinates parser, transformer, and codegen |
+| `Source/Fn/OXC/Parser.rs`         | Wraps `oxc_parser` with error normalization and source tracking             |
+| `Source/Fn/OXC/Transformer.rs`    | Applies TypeScript-to-JavaScript AST transformations including decorators   |
+| `Source/Fn/OXC/Codegen.rs`        | Generates final JavaScript text from the transformed AST                    |
+| `Source/Fn/Build.rs`              | Directory-based compilation: walks source trees preserving structure        |
+| `Source/Fn/Bundle/`               | Bundling utilities for multi-file outputs                                   |
+| `Source/Fn/NLS/`                  | Natural Language Support string extraction                                  |
+| `Source/Fn/SWC/`                  | SWC integration shims (alternative transformer path)                        |
+| `Source/Fn/Worker/`               | Worker thread support for parallel compilation                              |
+| `Source/Struct/CompilerConfig.rs` | Configuration struct: decorator mode, class fields, source maps             |
+| `Source/Struct/SWC.rs`            | SWC-specific configuration types                                            |
 
-```typescript
-// Output/ESBuild/Rest/Plugin.ts (simplified)
-build.onLoad({ filter: /\.ts$/ }, async (args) => {
-	const result = await rest.compile(args.path, config);
-	return { contents: result.code, loader: "js" };
-});
+---
+
+## Data Flow
+
+```mermaid
+sequenceDiagram
+    participant CLI as CLI / RestPlugin
+    participant Compiler as Compiler Orchestrator
+    participant Parser as OXC Parser
+    participant Transformer as OXC Transformer
+    participant Codegen as OXC Codegen
+    participant Disk as Output Directory
+
+    CLI->>Compiler: Compile(input_path, config)
+    Compiler->>Parser: Parse(source_text)
+    Parser->>Compiler: AST + diagnostics
+    Compiler->>Transformer: Transform(AST, options)
+    Note over Transformer: emitDecoratorMetadata\nuseDefineForClassFields=false\nTypeScript stripping
+    Transformer->>Compiler: Transformed AST
+    Compiler->>Codegen: Generate(AST)
+    Codegen->>Compiler: JavaScript text
+    Compiler->>Disk: Write .js file
+    Compiler->>CLI: CompilationResult (count, elapsed, errors)
 ```
 
-For CI and release builds, the Rest binary is compiled alongside Mountain using
-`cargo build -p Rest --release` and copied into the build artifacts. The
-`Compiler=Rest` environment variable activates `RestPlugin` inside the Output
-element; without it, esbuild's built-in TypeScript loader is used instead.
+When `--Parallel` is specified, the compiler fans out file compilation across
+Tokio worker threads and collects aggregated metrics.
 
-## Parallel compilation
+---
 
-When `--Parallel` is passed, Rest uses `rayon`'s parallel iterator over the
-input file list:
+## Integration Points
 
-```rust
-input_files.par_iter().map(|file| {
-    compile_file(file, &config)
-}).collect::<Result<Vec<Output>>>()
-```
+| Connecting Element | Direction         | Mechanism                           | Description                                                                  |
+| :----------------- | :---------------- | :---------------------------------- | :--------------------------------------------------------------------------- |
+| **Output**         | Consumer          | Process invocation / esbuild plugin | Output's `RestPlugin.ts` invokes the Rest binary or calls it via plugin API  |
+| **Cocoon**         | Indirect consumer | Compiled artifacts                  | Cocoon loads the JavaScript produced by Rest from `Target/Microsoft/VSCode/` |
+| **Sky**            | Indirect consumer | `@codeeditorland/output` package    | Sky loads VS Code UI components compiled through the Rest pipeline           |
 
-Each file gets its own OXC arena allocator, so there is no shared mutable state
-between worker threads. Rayon distributes work across logical CPU cores using a
-work-stealing deque. The default thread count is the number of logical cores;
-`--workers N` overrides it.
+---
 
-## Performance benchmarks
+## Configuration
 
-Measured on Apple M1 Max with 8 worker threads against esbuild 0.20:
+| Option             | CLI Flag / Variable | Default                   | Description                                                  |
+| :----------------- | :------------------ | :------------------------ | :----------------------------------------------------------- |
+| Input path         | `--Input`           | required                  | Directory or file to compile                                 |
+| Output path        | `--Output`          | required                  | Destination directory for compiled JavaScript                |
+| Parallel mode      | `--Parallel`        | off                       | Enable multi-core parallel compilation                       |
+| Decorator metadata | `CompilerConfig`    | `true`                    | Emit `emitDecoratorMetadata` for VS Code compatibility       |
+| Class fields mode  | `CompilerConfig`    | `false` (VS Code default) | `useDefineForClassFields` - off matches VS Code's gulp build |
+| Source maps        | `CompilerConfig`    | development only          | Inline source maps for debug builds                          |
 
-| Operation                     | esbuild | Rest (OXC) | Improvement |
-| :---------------------------- | :------ | :--------- | :---------- |
-| Parse + transform 1 000 files | 2.4 s   | 0.9 s      | 2.7×        |
-| Full bundle (100 K LOC)       | 1.8 s   | 0.7 s      | 2.6×        |
-| Minified bundle               | 3.1 s   | 1.3 s      | 2.4×        |
-| Source map generation         | 0.8 s   | 0.4 s      | 2.0×        |
-
-The improvement comes primarily from two sources: the arena allocator
-eliminating per-node heap allocations, and Rust's lack of garbage collection
-pauses during the transformation pass.
-
-## CLI configuration reference
-
-| Flag             | Env variable        | Default   | Description                      |
-| :--------------- | :------------------ | :-------- | :------------------------------- |
-| `--entry`        | `REST_ENTRY`        | required  | Entry file or directory          |
-| `--out-dir`      | `REST_OUT_DIR`      | `dist/`   | Output directory                 |
-| `--target`       | `REST_TARGET`       | `es2022`  | Target ECMAScript version        |
-| `--sourcemap`    | `REST_SOURCEMAP`    | `false`   | Emit inline source maps          |
-| `--minify`       | `REST_MINIFY`       | `false`   | Minify output via `oxc_minifier` |
-| `--workers`      | `REST_WORKERS`      | CPU count | Parallel worker thread count     |
-| `--decorators`   | `REST_DECORATORS`   | `legacy`  | Decorator metadata mode          |
-| `--class-fields` | `REST_CLASS_FIELDS` | `define`  | Class field emit mode            |
-| `--Parallel`     | -                   | off       | Enable multi-core compilation    |
-
-## Module map
-
-| File                              | Role                                                                         |
-| :-------------------------------- | :--------------------------------------------------------------------------- |
-| `Source/Library.rs`               | Binary entry point, CLI argument parsing via `clap`                          |
-| `Source/Fn/OXC/Compiler.rs`       | Pipeline orchestration: allocator, parser, semantic, transformer, codegen    |
-| `Source/Fn/OXC/Parser.rs`         | `oxc_parser` wrapper, error normalization to compiler diagnostics            |
-| `Source/Fn/OXC/Transformer.rs`    | TypeScript-to-JavaScript transform, decorator and class field options        |
-| `Source/Fn/OXC/Codegen.rs`        | JavaScript text emission, source map generation                              |
-| `Source/Fn/Build.rs`              | Directory traversal, output structure preservation                           |
-| `Source/Fn/Bundle/`               | Module bundling utilities                                                    |
-| `Source/Fn/Worker/`               | `rayon` parallel worker pool                                                 |
-| `Source/Fn/NLS/`                  | Natural Language Support string extraction for VS Code NLS pipeline          |
-| `Source/Struct/CompilerConfig.rs` | Configuration struct: path aliases, decorator mode, class field mode, target |
+The `CompilerConfig` struct is populated from either CLI flags or from the
+esbuild plugin context when Rest is invoked as a plugin within the Output build
+pipeline.

@@ -3,256 +3,162 @@ title: Maintain - Deep Dive
 section: Deep Dive
 order: 5
 description:
-    Debug/Build.sh step-by-step, SignBundle.sh codesign flow, turbo.json
-    pipeline, beforeBundleCommand hook for PreBake.ts, GritQL patterns, and
-    CI/CD matrix across platforms and profiles.
+    Architecture overview of the Maintain build orchestrator: Rust binary
+    and library, Rhai scripting engine, TOML/JSON5 config editing, data flow,
+    integration points, and CLI configuration.
 ---
 
 Maintain is the build orchestrator for Land. This page covers the internals of
-each build script, the turbo.json pipeline, the Cargo build configuration, and
-the automated refactoring tools.
+the Maintain Rust binary: its architecture, module layout, data flow,
+integration with other Land elements, and configuration options.
 
-## 🚀 Debug/Build.sh step-by-step
+---
 
-`Element/Maintain/Debug/Build.sh` is the primary command for a local debug
-build. Its execution sequence:
+## 🏗 Architecture
 
-1. **Environment setup** - exports all required PascalCase env vars with
-   debug-appropriate values:
+Maintain is a Rust binary and library. The CLI layer accepts subcommands and
+delegates to the Rhai scripting engine or direct build functions. Configuration
+editing is performed through `toml_edit` and `json5` for structured, non-lossy
+modifications to project configuration files.
 
-    ```bash
-    export BundleLevel=debug
-    export HotReload=false
-    export Watch=false
-    export TierIPC=Mountain
-    ```
+```mermaid
+graph TB
+    subgraph "Maintain Build System"
+        LibraryRS["Source/Library.rs<br/>Entry point"]
+        CLI["Source/Build/CLI.rs<br/>Command-line interface (clap)"]
+        Constant["Source/Build/Constant.rs<br/>Build constants"]
+        Definition["Source/Build/Definition.rs<br/>Build group definitions"]
+        FnRS["Source/Build/Fn.rs<br/>Build function dispatch"]
+        Error["Source/Build/Error.rs<br/>Error types"]
+        Logger["Source/Build/Logger.rs<br/>Colored terminal output"]
+        Process["Source/Build/Process.rs<br/>Child process management"]
+        TomlEdit["Source/Build/TomlEdit.rs<br/>Cargo.toml editor"]
+        JsonEdit["Source/Build/JsonEdit.rs<br/>JSON5 editor"]
+        Pascalize["Source/Build/Pascalize.rs<br/>PascalCase naming utilities"]
+        GetTauri["Source/Build/GetTauriTargetTriple.rs<br/>Platform detection"]
+        EnvResolve["Source/Build/EnvironmentResolver.rs<br/>Environment variable resolution"]
+    end
 
-2. **TypeScript build** - invokes `pnpm run prepublishOnly` inside the workspace
-   root, which runs the Turborepo task graph and compiles all TypeScript
-   packages (Wind, Sky, Cocoon, Output) in dependency order.
+    subgraph "Rhai Scripting"
+        ConfigLoader["Source/Build/Rhai/ConfigLoader.rs<br/>Configuration file loading"]
+        ScriptRunner["Source/Build/Rhai/ScriptRunner.rs<br/>Script execution engine"]
+        RhaiEnvResolve["Source/Build/Rhai/EnvironmentResolver.rs<br/>Environment in scripts"]
+    end
 
-3. **Tauri build** - runs `pnpm tauri build --profile debug-electron` (or
-   `debug-electron-bundled` for the bundled variant). This invokes the Tauri
-   CLI, which:
-    - Runs `beforeBundleCommand` hooks (see PreBake.ts below)
-    - Compiles Mountain with `cargo build --profile debug-electron`
-    - Bundles frontend assets into the `.app`
+    subgraph "Shell Scripts"
+        DebugSh["Debug.sh<br/>Debug build entry"]
+        DevMountain["Dev-Mountain.sh<br/>Mountain development mode"]
+        ReleaseSh["Release.sh<br/>Release build entry"]
+        ProfileSh["Profile.sh<br/>Performance profiling"]
+        DebugAll["Debug/All.sh"]
+        DebugBuild["Debug/Build.sh"]
+        DebugRun["Debug/Run.sh"]
+        DebugWind["Debug/Wind.sh"]
+    end
 
-4. **Re-sign** - calls `BundleLevel=debug sh Maintain/Script/SignBundle.sh` to
-   apply an ad-hoc codesign over the freshly built bundle.
-
-5. **Optional copy** - if `CopyToDesktop` is set, copies the signed `.app` to
-   `~/Desktop`.
-
-```bash
-# Minimal invocation
-sh Maintain/Debug/Build.sh --profile debug-electron
+    LibraryRS --> CLI
+    CLI --> FnRS
+    CLI --> ConfigLoader
+    CLI --> ScriptRunner
+    FnRS --> Process
+    FnRS --> TomlEdit
+    FnRS --> JsonEdit
+    ScriptRunner --> RhaiEnvResolve
+    ConfigLoader --> ScriptRunner
+    DebugSh --> CLI
+    DevMountain --> CLI
+    ReleaseSh --> CLI
 ```
 
-## 🔐 SignBundle.sh - xattr and codesign
+---
 
-`Maintain/Script/SignBundle.sh` performs the two-step re-sign that Tauri
-requires on macOS:
+## 🔌 Key Modules
 
-```bash
-# 1. Strip quarantine and extended attributes that break codesign
-xattr -cr "$APP_PATH"
+| Path                                       | Description                                                                  |
+| :----------------------------------------- | :--------------------------------------------------------------------------- |
+| `Source/Library.rs`                        | Binary entry point; wires together CLI, logging, and error handling          |
+| `Source/Build/CLI.rs`                      | `clap`-based CLI with subcommands: debug, release, profile, dev              |
+| `Source/Build/Definition.rs`               | Build group definitions: which elements to build, in what order              |
+| `Source/Build/Fn.rs`                       | Core build function dispatch: clean, compile, link, post-process             |
+| `Source/Build/Process.rs`                  | Child process spawning with stdout/stderr capture and exit code handling     |
+| `Source/Build/TomlEdit.rs`                 | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes |
+| `Source/Build/JsonEdit.rs`                 | JSON5-aware configuration editing for `package.json` and `.json5` files      |
+| `Source/Build/Pascalize.rs`                | PascalCase ↔ words conversion utilities for naming convention enforcement    |
+| `Source/Build/GetTauriTargetTriple.rs`     | Detects current Rust target triple for SideCar binary selection              |
+| `Source/Build/EnvironmentResolver.rs`      | Resolves environment variables with fallbacks for build-time configuration   |
+| `Source/Build/Logger.rs`                   | Colored terminal output using the `colored` crate                            |
+| `Source/Build/Error.rs`                    | Unified error type for build failures                                        |
+| `Source/Build/Rhai/ConfigLoader.rs`        | Loads and parses Rhai build configuration scripts                            |
+| `Source/Build/Rhai/ScriptRunner.rs`        | Executes Rhai scripts within the build context with Land API bindings        |
+| `Source/Build/Rhai/EnvironmentResolver.rs` | Exposes environment variable resolution to Rhai scripts                      |
 
-# 2. Ad-hoc sign with entitlements
-codesign --force --deep --sign - \
-	--entitlements Element/Mountain/Entitlements.plist \
-	"$APP_PATH"
+---
+
+## 🔄 Data Flow
+
+```mermaid
+sequenceDiagram
+    participant Developer as Developer / CI
+    participant ShellScript as Shell Script
+    participant CLI as Maintain CLI
+    participant Rhai as Rhai Engine
+    participant Process as Process Manager
+    participant Config as Config Editor
+
+    Developer->>ShellScript: ./Maintain/Release.sh
+    ShellScript->>CLI: Maintain release --target aarch64-apple-darwin
+    CLI->>Rhai: Load build configuration script
+    Rhai->>CLI: Build group definition
+    CLI->>Config: Read Cargo.toml / package.json
+    Config->>CLI: Current version and dependencies
+    loop For each element in build group
+        CLI->>Process: spawn("cargo build --release -p Mountain")
+        Process->>CLI: Exit code + output
+    end
+    CLI->>Config: Write updated Cargo.toml (if version bump)
+    CLI->>Developer: Build summary with timing
 ```
 
-The `BundleLevel` environment variable controls which set of entitlements and
-signing identity is used:
+---
 
-| `BundleLevel` | Signing identity         | Notes                                                 |
-| :------------ | :----------------------- | :---------------------------------------------------- |
-| `debug`       | `-` (ad-hoc)             | No Developer ID required; works without Apple account |
-| `release`     | Developer ID Application | Requires valid Apple certificate in keychain          |
+## 🔗 Integration Points
 
-The `xattr -cr` step is required because Tauri's build process sometimes leaves
-extended attributes (particularly `com.apple.quarantine`) on embedded
-frameworks. These attributes cause `codesign --verify` to fail even when the
-signature itself is valid.
+| Connecting Element | Direction     | Mechanism                            | Description                                                         |
+| :----------------- | :------------ | :----------------------------------- | :------------------------------------------------------------------ |
+| **Mountain**       | Build target  | `cargo build` subprocess             | Maintain compiles Mountain as part of the debug/release build group |
+| **Air**            | Build target  | `cargo build` subprocess             | Air daemon compiled alongside Mountain                              |
+| **Echo**           | Build target  | `cargo build` subprocess             | Echo scheduler compiled as a dependency of Mountain                 |
+| **Rest**           | Build target  | `cargo build` subprocess             | Rest compiler binary built for use by Output                        |
+| **SideCar**        | Build target  | `cargo build` subprocess             | SideCar Download tool compiled and run as part of setup             |
+| **Output**         | Build trigger | `pnpm run prepublishOnly` subprocess | Maintain triggers TypeScript builds via pnpm                        |
+| **Wind / Sky**     | Build trigger | `pnpm run prepublishOnly` subprocess | Frontend packages built through Turborepo via Maintain              |
 
-`SignBundle.sh` is intentionally placed in `Maintain/Script/` rather than
-`Maintain/Debug/` or `Maintain/Release/` because it is called from both build
-paths. The `BundleLevel` variable is the only difference between the two
-invocations.
+---
 
-## 🚀 Release/Build.sh
+## 🛠 Configuration
 
-`Release/Build.sh` follows the same sequence as `Debug/Build.sh` with two
-differences:
+| Option         | CLI Flag                       | Description                                              |
+| :------------- | :----------------------------- | :------------------------------------------------------- |
+| Build mode     | `debug` / `release` subcommand | Controls `--release` flag and optimization level         |
+| Target triple  | `--target`                     | Rust target triple for cross-compilation                 |
+| Element filter | `--element`                    | Build only a specific element rather than the full group |
+| Script path    | `--script`                     | Override the default Rhai build configuration script     |
+| Verbosity      | `--verbose`                    | Enable detailed subprocess output logging                |
 
-- `BundleLevel=release` - activates full LTO (`lto = "fat"`,
-  `codegen-units = 1`, `strip = true`) and the Developer ID signing identity
-- `--profile release` - passed to `pnpm tauri build`, which selects the
-  optimized Cargo profile
+### Shell script entry points
 
-Release builds take significantly longer due to fat LTO across all crates in the
-Mountain binary. They are not used in normal development loops.
+| Script            | Purpose                                      |
+| :---------------- | :------------------------------------------- |
+| `Debug.sh`        | Full debug build of all elements             |
+| `Dev-Mountain.sh` | Hot-reload development mode for Mountain     |
+| `Release.sh`      | Optimized release build with all elements    |
+| `Profile.sh`      | Release build with profiling instrumentation |
+| `Debug/All.sh`    | Debug all components including frontend      |
+| `Debug/Wind.sh`   | Debug Wind TypeScript service layer only     |
 
-## 🗺️ turbo.json pipeline
+---
 
-The `turbo.json` at the workspace root defines the Turborepo task graph for all
-TypeScript packages:
-
-```json
-{
-	"globalEnv": [
-		"BundleLevel",
-		"HotReload",
-		"Watch",
-		"LiveReloadPort",
-		"TierIPC",
-		"MountainDir",
-		"Compiler",
-		"NodeVersion"
-	],
-	"tasks": {
-		"prepublishOnly": {
-			"dependsOn": ["^prepublishOnly"],
-			"outputs": ["Target/**"]
-		},
-		"Run": {
-			"dependsOn": ["^prepublishOnly"],
-			"cache": false,
-			"persistent": true
-		}
-	}
-}
-```
-
-Key design decisions:
-
-- **`globalEnv`** lists every PascalCase env var that affects build output.
-  Turborepo includes these in the cache key, so changing `BundleLevel` from
-  `debug` to `release` invalidates the cache for all downstream packages.
-- **`^prepublishOnly`** means a package's build depends on all of its
-  `package.json` `dependencies` having completed their own `prepublishOnly`
-  first. This enforces correct ordering: Output builds before Cocoon, Wind
-  builds before Sky.
-- **`cache: false`** on `Run` prevents Turborepo from caching the dev server
-  output.
-
-## 🚀 beforeBundleCommand hook - PreBake.ts
-
-`tauri.conf.json` registers a `beforeBundleCommand` hook:
-
-```json
-{
-	"build": {
-		"beforeBundleCommand": "node Maintain/Build/Manifest/PreBake.ts"
-	}
-}
-```
-
-`PreBake.ts` runs in every build path - direct `pnpm tauri build`, `Build.sh`,
-and CI - because it is wired into `tauri.conf.json` rather than into the shell
-scripts. Its job:
-
-1. Walks all extension root directories in the workspace.
-2. Reads each extension's `package.json` manifest.
-3. Writes a consolidated `extensions.manifest.json` into the Mountain build
-   directory.
-4. Mountain's `ScanAndPopulateExtensions.rs` loads this file at startup instead
-   of performing a live filesystem scan, reducing extension discovery time from
-   ~1 200 ms to under 50 ms.
-
-> [!IMPORTANT] PreBake.ts must run before Mountain is compiled because
-> `LoadFromCache.rs` reads the manifest path as a compile-time string literal.
-> Placing this step in `beforeBundleCommand` guarantees ordering without
-> requiring developers to run a separate setup command.
-
-## 📋 GritQL query patterns
-
-Maintain ships GritQL pattern files under `Element/Maintain/Query/`. GritQL
-operates on ASTs rather than text, making it safe for large-scale structural
-transformations. Patterns used in the Land codebase:
-
-**Import depth correction** - fixes generated files where `../../Codegen/`
-should be `../../../Codegen/`:
-
-```grit
-`import $x from "../../Codegen/$path"` => `import $x from "../../../Codegen/$path"`
-```
-
-**PascalCase filename enforcement** - identifies files whose default export name
-does not match their filename:
-
-```grit
-`export default $name` where { $name matches /^[a-z]/ }
-```
-
-**Console.\* removal** - strips console calls from production Cocoon source
-(complementing OXC's `drop: ["console"]` for Sky):
-
-```grit
-`console.$method($args)` => ``
-```
-
-GritQL queries run with `grit apply <pattern> <path>` and are idempotent -
-applying the same pattern twice produces the same result.
-
-## 🚀 CI/CD matrix
-
-The CI pipeline builds across platforms and profiles:
-
-| Platform         | Profile          | Signing           | Artifact            |
-| :--------------- | :--------------- | :---------------- | :------------------ |
-| macOS (aarch64)  | `debug-electron` | Ad-hoc            | `.app` for testing  |
-| macOS (aarch64)  | `release`        | Developer ID      | Notarized `.dmg`    |
-| macOS (x86_64)   | `release`        | Developer ID      | Notarized `.dmg`    |
-| Windows (x86_64) | `release`        | Code signing cert | `.msi`              |
-| Linux (x86_64)   | `release`        | None              | `.deb`, `.AppImage` |
-
-Each CI job:
-
-1. Checks out the repository with submodules.
-2. Runs the SideCar download tool to populate the binary cache for the target
-   triple.
-3. Runs `pnpm install` to restore the pnpm content-addressed store.
-4. Runs `pnpm run prepublishOnly` to build all TypeScript packages.
-5. Runs the appropriate `Build.sh` script for the platform.
-6. Uploads the signed artifact.
-
-## 🔌 Rhai scripting engine
-
-The Maintain Rust binary embeds the Rhai scripting engine for build logic that
-is too complex for shell scripts but does not warrant a compiled Rust function.
-Rhai scripts have access to:
-
-- `env(name)` - read environment variable with optional default
-- `run(cmd, args)` - spawn a subprocess and return exit code
-- `read_toml(path)` / `write_toml(path, value)` - non-lossy TOML manipulation
-- `read_json5(path)` / `write_json5(path, value)` - JSON5 manipulation
-
-Scripts are sandboxed: they cannot access the file system directly except
-through the provided API functions. This prevents build scripts from
-accidentally modifying source files outside their declared scope.
-
-## 🗺️ Module reference
-
-| File                                       | Purpose                                                        |
-| :----------------------------------------- | :------------------------------------------------------------- |
-| `Source/Library.rs`                        | Entry point, logging initialization, error propagation         |
-| `Source/Build/CLI.rs`                      | `clap` CLI: `debug`, `release`, `profile`, `dev` subcommands   |
-| `Source/Build/Definition.rs`               | Build group definitions: element ordering for each build mode  |
-| `Source/Build/Fn.rs`                       | Build function dispatch: invokes Process, TomlEdit, JsonEdit   |
-| `Source/Build/Process.rs`                  | Subprocess spawning, stdout/stderr capture, exit code handling |
-| `Source/Build/TomlEdit.rs`                 | Non-lossy `Cargo.toml` editing via `toml_edit`                 |
-| `Source/Build/JsonEdit.rs`                 | JSON5-aware `package.json` editing                             |
-| `Source/Build/Pascalize.rs`                | PascalCase ↔ words conversion for naming convention checks     |
-| `Source/Build/GetTauriTargetTriple.rs`     | Reads `CARGO_BUILD_TARGET` for SideCar binary selection        |
-| `Source/Build/EnvironmentResolver.rs`      | Resolves PascalCase env vars with typed fallbacks              |
-| `Source/Build/Rhai/ConfigLoader.rs`        | Loads `.rhai` build configuration files                        |
-| `Source/Build/Rhai/ScriptRunner.rs`        | Executes Rhai scripts with Land API bindings                   |
-| `Source/Build/Rhai/EnvironmentResolver.rs` | Exposes `env()` to Rhai scripts                                |
-
-## 📖  Related Documentation
+## 📖 Related Documentation
 
 - [Maintain element overview](https://Editor.Land/Doc/maintain)
 - [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)

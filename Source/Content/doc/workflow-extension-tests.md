@@ -10,12 +10,12 @@ description: "How the Extension Development Host model spawns a second isolated
 Extension tests in Land use the same Extension Development Host model as VS
 Code: a second, fully isolated Mountain+Cocoon pair is spawned specifically to
 run the test suite. The test Cocoon instance does not start a normal extension
-host - instead it executes the test runner script directly. The key
+host — instead it executes the test runner script directly. The key
 architectural detail is that `require('vscode')` inside the test files connects
 back to the **original Mountain instance**, so tests drive the real editor UI
 rather than a headless stub.
 
-## Phase 1 - Development mode launch
+## Phase 1 — Development mode launch
 
 1. The developer launches Mountain with the extension under development:
 
@@ -27,23 +27,23 @@ rather than a headless stub.
    `activate()` function runs and registers its commands, providers, and test
    runner entry point in the main window.
 
-## Phase 2 - Initiating the test run (Wind -> Mountain)
+## Phase 2 — Initiating the test run (Wind → Mountain)
 
 3. The developer opens the Command Palette (`Ctrl+Shift+P`) and executes "Run
    Tests". Mountain's Test Runner Service receives the command.
 
 4. The service constructs a specialised argument set for a second Mountain
    process:
-    - `--extensionDevelopmentPath` - path to the extension under test.
-    - `--extensionTestsPath` - path to the test runner entry script (e.g.
+    - `--extensionDevelopmentPath` — path to the extension under test.
+    - `--extensionTestsPath` — path to the test runner entry script (e.g.
       `out/test/suite/index.js`).
-    - `VSCODE_IPC_HOOK_CLI` - environment variable that signals CLI test runner
+    - `VSCODE_IPC_HOOK_CLI` — environment variable that signals CLI test runner
       mode to Cocoon.
 
 5. The Test Runner Service spawns a new Mountain process with these arguments.
    This second instance is the **Extension Development Host**.
 
-## Phase 3 - Test host startup (Mountain test instance -> Cocoon test instance)
+## Phase 3 — Test host startup (Mountain test → Cocoon test)
 
 6. The new Mountain instance starts, detects the `--extension...` flags, and
    knows it is a test host. It launches its own Cocoon sidecar, forwarding the
@@ -58,7 +58,7 @@ rather than a headless stub.
    `--extensionTestsPath`. This is typically a Mocha runner entry point that
    discovers and loads the extension's test files.
 
-## Phase 4 - Remote control of the main window (Cocoon test -> Mountain main)
+## Phase 4 — Remote control of the main window (Cocoon test → Mountain main)
 
 9. Each test file imports the `vscode` module:
 
@@ -68,7 +68,7 @@ rather than a headless stub.
 
     A lightweight `RequireInterceptor` intercepts this call. Instead of
     returning the normal Cocoon shim, it returns a thin client that connects
-    back to the **original Mountain instance's gRPC server** - the one the
+    back to the **original Mountain instance's gRPC server** — the one the
     developer is looking at.
 
 10. When a test calls `vscode.commands.executeCommand(...)`, the thin client
@@ -86,7 +86,7 @@ rather than a headless stub.
     Each property access is a gRPC call to main Mountain. The assert checks the
     live state of the editor window.
 
-## Phase 5 - Result reporting (Cocoon test -> Mountain main -> Wind)
+## Phase 5 — Result reporting (Cocoon test → Mountain main → Wind)
 
 12. Mocha completes all tests, aggregates pass and failure counts, prints a
     summary to stdout, and exits with code `0` (all pass) or `1` (any failure).
@@ -106,5 +106,5 @@ rather than a headless stub.
 > [!IMPORTANT] Because tests drive the **main** Mountain instance, they execute
 > in the same process space as the live editor. A test that opens a file or
 > modifies editor state will visibly change the developer's window. Tests must
-> clean up after themselves - close documents, revert changes - or subsequent
+> clean up after themselves — close documents, revert changes — or subsequent
 > test runs may start with unexpected editor state.

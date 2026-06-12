@@ -1,21 +1,12 @@
----
-title: "Effect-TS and OpenTelemetry Integration"
-section: "Telemetry"
-order: 1
-description:
-    "How Cocoon and Wind use @effect/opentelemetry to export spans to OTLP and
-    correlate them with PostHog events."
----
+# Effect-TS + OpenTelemetry - Integration Pattern
 
-Cocoon and Wind are written in Effect-TS. Effect ships first-class OpenTelemetry
-support through `@effect/opentelemetry`, which lets the Land codebase own span
-creation and attribute propagation declaratively, then fan spans out to two
-sinks: a `BatchSpanProcessor` that writes to an OTLP collector, and a custom
-`SpanProcessor` that re-emits each span as a PostHog event. This document covers
-the wiring, span conventions, cross-tier propagation, and how to run a local
-collector.
+Wind and Cocoon are written in Effect-TS. Effect ships first-class OpenTelemetry
+support through `@effect/opentelemetry`, and the natural Land integration is to
+let Effect own span creation and attribute propagation, then **export** to two
+sinks: a `BatchSpanProcessor` → OTLP collector, and a custom `SpanProcessor`
+that re-emits each span as a PostHog event.
 
-## Package Surface
+## Package surface
 
 ```
 pnpm add @effect/opentelemetry \
@@ -28,40 +19,35 @@ pnpm add @effect/opentelemetry \
          @opentelemetry/semantic-conventions
 ```
 
-`sdk-trace-node` is used by Cocoon (Node.js process). `sdk-trace-web` is used by
-Sky (browser WebView). `sdk-trace-base` is used by Wind, which composes either
-depending on the build target.
+`sdk-trace-node` for Cocoon (Node), `sdk-trace-web` for Sky (browser),
+`sdk-trace-base` for Wind (which composes either).
 
-## OTLP Exporter Configuration
+## Wiring
 
-The `OtlpEndpoint` env var controls where spans are sent. It defaults to
-`http://127.0.0.1:4318`, which is the standard OTLP HTTP receiver port for
-Jaeger all-in-one and Grafana Tempo.
-
-| Variable       | Default                       | Effect                                             |
-| -------------- | ----------------------------- | -------------------------------------------------- |
-| `OTLPEndpoint` | `http://127.0.0.1:4318`       | OTLP collector base URL (HTTP/protobuf)            |
-| `OTLPEnabled`  | `true` (dev) / `false` (prod) | Enables or disables the OTLP exporter              |
-| `Capture`      | `true` (dev) / `false` (prod) | Master kill switch; disables both PostHog and OTLP |
-
-## Cocoon Wiring (Node.js, Effect-TS)
+### Cocoon (Node, Effect-TS)
 
 ```ts
 // Element/Cocoon/Source/Telemetry/OTel.ts
 import { NodeSdk } from "@effect/opentelemetry";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+import { Resource } from "@opentelemetry/resources";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-base";
+import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { Layer } from "effect";
 
 export default Layer.unwrapEffect(
 	NodeSdk.layer(() => ({
 		resource: {
 			serviceName: "land-editor-cocoon",
-			attributes: { "land.tier": "cocoon" },
+			attributes: {
+				[SemanticResourceAttributes.SERVICE_VERSION]: "0.0.1",
+				"land.tier": "cocoon",
+			},
 		},
 		spanProcessor: new BatchSpanProcessor(
 			new OTLPTraceExporter({
 				url: `${process.env["OTLPEndpoint"] ?? "http://127.0.0.1:4318"}/v1/traces`,
+				headers: {},
 			}),
 			{ maxExportBatchSize: 64, scheduledDelayMillis: 1500 },
 		),
@@ -69,9 +55,7 @@ export default Layer.unwrapEffect(
 );
 ```
 
-The layer is composed into the application layer alongside the PostHog layer.
-When `Capture=false` is substituted at build time, both layers collapse to
-`Layer.empty` and esbuild removes the import chain entirely.
+Compose into the application layer:
 
 ```ts
 // Element/Cocoon/Source/Effect/AppLayer.ts
@@ -85,15 +69,19 @@ const Telemetry =
 		? Layer.empty
 		: Layer.mergeAll(OTelLayer, PostHogLayer);
 
-export const AppLayer = Layer.mergeAll(Telemetry);
+export const AppLayer = Layer.mergeAll(
+	Telemetry,
+	/* …other services… */
+);
 ```
 
-## Span Creation in Effect Pipelines
+`Capture=false` collapses Telemetry to `Layer.empty` - Effect drops the service
+references at build time when paired with bundler `define` substitution; nothing
+in the OTel SDK is loaded.
 
-Effect fibers map directly to OTel spans via `Effect.withSpan`. Each fiber that
-enters a span boundary creates a child span with the fiber's execution duration
-as the span duration. Concurrent fibers produce sibling spans under the same
-parent.
+### Spans
+
+Use Effect's `Effect.withSpan`:
 
 ```ts
 import { Effect } from "effect";
@@ -109,31 +97,11 @@ const HandleRequest = (Method: string, Parameters: unknown) =>
 	);
 ```
 
-Span names follow the `land:<element>:<action>` convention. Span attributes use
-`land.*` keys for Land-specific data and standard OTel semantic conventions
-(`rpc.method`, `rpc.service`) for gRPC calls.
+The span's `trace_id` / `span_id` flow into PostHog through the custom processor
+below. The span name follows the `land:<element>:<action>` convention so Jaeger
+search works the same way as PostHog event names.
 
-## What Is Traced
-
-| Span name pattern          | Trigger                                             |
-| -------------------------- | --------------------------------------------------- |
-| `land:cocoon:handler`      | Each IPC handler dispatch in Cocoon's gRPC server   |
-| `land:cocoon:entry:load`   | Extension activation start to completion            |
-| `land:mountain:ipc:invoke` | Each IPC invoke received by Mountain's wind service |
-| `land:wind:layer:ready`    | Wind service layer composition and startup          |
-| `land:sky:build:complete`  | Sky bundle build in dev mode                        |
-| `land:build:phase:*`       | Each phase of `Maintain/Debug/Build.sh`             |
-
-Extension activation spans are particularly useful: the parent span covers the
-full `activate()` call, with child spans for each `workspaceContains` glob walk
-and each gRPC request the extension issues during activation.
-
-## Dual-Emit: PostHog Span Processor
-
-A custom `SpanProcessor` runs alongside the `BatchSpanProcessor` and re-emits
-every completed span as a PostHog event. This means every span that reaches the
-OTLP collector also produces a PostHog event carrying the same `trace_id` and
-`span_id`, enabling correlation between the two sinks.
+### Custom processor - PostHog dual-emit
 
 ```ts
 // Element/Cocoon/Source/Telemetry/PostHogProcessor.ts
@@ -170,12 +138,10 @@ export default class PostHogSpanProcessor implements SpanProcessor {
 }
 ```
 
-## Sky (Browser WebView)
+Register it alongside the OTLP `BatchSpanProcessor` so every span fans out into
+both sinks.
 
-Sky runs inside Tauri's WKWebView, which is a browser context. It uses
-`sdk-trace-web` and the standard OTLP HTTP exporter. The entire initialization
-is wrapped in `import.meta.env.DEV` so Vite/Astro drops it from production
-bundles.
+### Sky (browser)
 
 ```ts
 // Element/Sky/Source/Function/Telemetry/Bridge.ts
@@ -203,70 +169,73 @@ if (import.meta.env.DEV && import.meta.env["Capture"] !== "false") {
 }
 ```
 
-## Mountain (Rust) Bridge
+Tree-shakeable: `import.meta.env.DEV` is replaced at compile time by Vite/Astro
+with the literal `false` for production builds, dropping the entire branch.
 
-Mountain emits spans through the `tracing` crate paired with
-`tracing-opentelemetry`. Every `tracing::span!` call in Mountain source becomes
-an OTLP span. The PostHog bridge at `Binary/Build/PostHogPlugin/CaptureHandler`
-receives the same `(name, duration, attributes)` triplet from the span lifecycle
-hooks.
+## Mountain (Rust) bridge
 
-## Cross-Tier Trace Propagation
+Mountain emits spans through the `tracing` crate. The bridge layer is
+`tracing-opentelemetry`, which converts every `tracing::span!` into an OTLP
+span:
 
-Tauri events from Mountain to Sky carry the W3C `traceparent` header on every
-IPC envelope. Wind extracts it from `event.payload._traceparent`, opens a child
-span with `Effect.linkSpans`, and forwards downstream. Cocoon extracts the
-header in `Effect/RPCServer.ts` when a gRPC call arrives from Mountain.
+```rust
+// Element/Mountain/Source/Telemetry/Tracing/InitializeTracing.rs
+use opentelemetry_otlp::WithExportConfig;
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
-The result is a single Jaeger trace that begins in Sky (browser), hops to
-Mountain (Rust), fans into Cocoon (Node.js), and rejoins on the response.
-Mountain attaches the header in `IPC/Sky/EmitToWebview.rs`.
+pub fn Fn() -> Result<(), Box<dyn std::error::Error>> {
+    if std::env::var("Capture").as_deref() == Ok("false") { return Ok(()); }
+    if std::env::var("OTLPEnabled").as_deref() == Ok("false") { return Ok(()); }
 
-## Correlation with PostHog Events
+    let Endpoint = std::env::var("OTLPEndpoint")
+        .unwrap_or_else(|_| "http://127.0.0.1:4318".to_string());
 
-Because every span is also emitted as a PostHog event, you can correlate the two
-sinks by joining on `$trace_id`:
+    let Tracer = opentelemetry_otlp::new_pipeline()
+        .tracing()
+        .with_exporter(
+            opentelemetry_otlp::new_exporter()
+                .http()
+                .with_endpoint(format!("{Endpoint}/v1/traces")),
+        )
+        .install_batch(opentelemetry_sdk::runtime::Tokio)?;
 
-```sql
--- HogQL: find all PostHog events that belong to a Jaeger trace
-SELECT event, properties.$span_id, properties.duration_ms
-FROM events
-WHERE properties.$trace_id = 'your-trace-id-here'
-ORDER BY timestamp ASC
+    let OTelLayer = tracing_opentelemetry::layer().with_tracer(Tracer);
+
+    let Filter = std::env::var("Trace").unwrap_or_else(|_| "all".to_string());
+    let EnvFilter = if Filter == "all" {
+        tracing_subscriber::EnvFilter::new("trace")
+    } else {
+        tracing_subscriber::EnvFilter::new(Filter)
+    };
+
+    tracing_subscriber::registry()
+        .with(EnvFilter)
+        .with(tracing_subscriber::fmt::layer())
+        .with(OTelLayer)
+        .init();
+    Ok(())
+}
 ```
 
-Click through from a PostHog event's `$trace_id` property into the Jaeger UI at
-`http://127.0.0.1:16686/trace/<trace_id>` to see the full waterfall.
+Spans created through the `otel_span!` macro flow into Jaeger; the PostHog
+bridge in `Binary/Build/PostHogPlugin/CaptureHandler::Fn` receives the same
+`(name, duration, attributes)` triplet and posts it to the `/capture/` endpoint.
 
-## Running a Local Collector
+## Cross-tier trace propagation
 
-Jaeger all-in-one provides an OTLP HTTP receiver on port 4318 and a UI on
-port 16686.
+Tauri events between Mountain and Sky carry the `traceparent` header (W3C
+format) on every IPC envelope. Wind extracts it from
+`event.payload._traceparent`, opens a child span with `Effect.linkSpans`, and
+forwards downstream. This lets Jaeger render a single trace that begins in Sky,
+hops Mountain (Rust), fans into Cocoon (Node), and rejoins on the response.
 
-```bash
-docker run -d --name jaeger \
-	-p 16686:16686 \
-	-p 4318:4318 \
-	jaegertracing/all-in-one:latest
-```
+Mountain attaches the header in `IPC/Sky/EmitToWebview.rs`; Cocoon extracts it
+in `Effect/RPCServer.ts`.
 
-Grafana Tempo with the OTLP receiver is an alternative if you prefer a
-Prometheus-compatible stack. Set `OTLPEndpoint=http://127.0.0.1:4318` in
-`.env.Land.PostHog` in either case.
+## When **not** to use Effect spans
 
-## When Not to Use Effect Spans
-
-For point-in-time numeric events with no causal children -
-`land:cocoon:stub:active`, `land:wind:command:invoke`, performance mark
-batches - the PostHog bridge alone is sufficient. Reserve spans for operations
-that have meaningful child work: extension activation, handler dispatch chains,
-build phases, and any gRPC call that may trigger downstream work in another
-element.
-
----
-
-## See Also
-
-- [Telemetry Overview](https://Editor.Land/Doc/telemetry/overview)
-- [Sidecar Telemetry](https://Editor.Land/Doc/telemetry/sidecars)
-- [Tree-Shaking Telemetry](https://Editor.Land/Doc/telemetry/tree-shaking)
+For single-callsite numeric events (`land:cocoon:stub:active`,
+`land:wind:command:invoke`) the PostHog bridge alone is enough - no need to
+allocate a `Tracer.startSpan` round-trip. Reserve spans for operations with
+**causal children**: handler → downstream gRPC, extension activation →
+workspaceContains glob walk, build phase → sub-build.

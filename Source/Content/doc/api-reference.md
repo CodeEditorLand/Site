@@ -1,186 +1,570 @@
+# Inter-Component Protocol
+
+This document specifies the communication protocols used between **Land**
+components. It covers the `gRPC` service definitions (`Vine` protocol), the
+`Tauri` IPC mechanism, the `Spine` extension coordination protocol, and the
+connection lifecycle management.
+
 ---
-title: "API Reference"
-section: "Reference"
-order: 1
-description:
-    "Pointers to generated API documentation, key source files, and the gRPC
-    contract for every API surface in Land."
+
+## Table of Contents
+
+1. [Protocol Overview](#protocol-overview)
+2. [Tauri IPC](#tauri-ipc)
+3. [Vine gRPC Protocol](#vine-grpc-protocol)
+4. [Spine Extension Protocol](#spine-extension-protocol)
+5. [Connection Lifecycle](#connection-lifecycle)
+6. [Health Monitoring](#health-monitoring)
+7. [Protocol Buffer Definitions](#protocol-buffer-definitions)
+8. [Security](#security)
+9. [Related Documentation](#related-documentation)
+
 ---
 
-Land's API surface spans four layers: the Rust Mountain backend, the TypeScript
-Cocoon extension-host shims, the Sky Monaco bridge, and the Vine gRPC contract
-that ties them together. This page is a pointer document - it links to source
-files and explains where generated documentation lives and how to build it
-locally. No API content is duplicated here; consult the linked sources for
-authoritative details.
+## Protocol Overview 🔌
 
-## 🦀　Rust rustdoc (Mountain)
+**Land** uses three communication protocols operating at different abstraction
+levels:
 
-Mountain's public API is documented inline using standard `///` doc comments.
-The rustdoc output is not currently published to a static site; build it locally
-with:
+| Protocol | Transport | Layer | Components | Purpose |
+| -------- | --------- | ----- | ---------- | ------- |
+| `Tauri` IPC | In-process IPC | Application | `Wind`/`Sky` <-> `Mountain` | UI-backend communication |
+| `gRPC` (`Vine`) | TCP localhost | Service | `Cocoon` <-> `Mountain`, `Air` <-> `Mountain` | Inter-service RPC |
+| `Spine` | `gRPC` + `ActionEffect` | Extension | `Cocoon` -> `Mountain` | Extension host coordination |
 
-```bash
-cd Land/Element/Mountain
-cargo doc --no-deps --open
+### Protocol Stack
+
+```mermaid
+graph BT
+    subgraph Transport[Transport Layer]
+        TCP[TCP localhost]
+        IPC[IPC pipes]
+    end
+
+    subgraph TauriIPC[Tauri IPC]
+        Commands[In-process command/event transport]
+    end
+
+    subgraph VinegRPC[Vine gRPC Protocol]
+        Proto[Service contracts defined in .proto files]
+    end
+
+    subgraph SpineProto[Spine Protocol]
+        ActionResp[Extension action/response pattern]
+    end
+
+    TCP --> Commands
+    IPC --> Commands
+    TCP --> Proto
+    IPC --> Proto
+    Commands --> ActionResp
+    Proto --> ActionResp
+
+    style Transport fill:#f0f0f0,stroke:#333
+    style SpineProto fill:#e8f8e8,stroke:#363
 ```
 
-The `--no-deps` flag keeps build time short by skipping documentation for the 51
-patched crates. Output lands in `Land/Element/Mountain/Target/doc/`.
+---
 
-Key crates to browse in the generated docs:
+## Tauri IPC 🎮
 
-| Crate / module                                    | Purpose                                                                  |
-| ------------------------------------------------- | ------------------------------------------------------------------------ |
-| `Mountain::IPC::WindServiceHandlers`              | All IPC handlers callable from Sky and Cocoon                            |
-| `Mountain::Environment`                           | Provider trait implementations (filesystem, terminal, config, search, …) |
-| `Mountain::RPC::CocoonService`                    | gRPC server handlers for Cocoon-to-Mountain calls                        |
-| `Mountain::ApplicationState`                      | Shared runtime state and all DTOs                                        |
-| `Mountain::ProcessManagement::InitializationData` | `ISandboxConfiguration` and `IExtensionHostInitData` builders            |
-| `Common`                                          | Shared traits and error types used by all Rust elements                  |
+### TierIPC Runtime Routing
 
-Source root:
-[https://github.com/CodeEditorLand/Mountain/tree/Current/Source](https://github.com/CodeEditorLand/Mountain/tree/Current/Source)
+The `TierIPC` environment variable controls how `Wind` and `Output` route Tauri
+IPC calls at runtime. No rebuild is required to switch tiers.
 
-## 📘　TypeScript generated types (Wind Codegen)
+| Value | Behaviour |
+| ----- | --------- |
+| `Mountain` | All calls route to Mountain (default) |
+| `NodeDeferred` | Mountain first; on miss or `undefined` result, falls back to Cocoon via `cocoon:request` bridge |
+| `Node` | All calls bypass Mountain and route directly to Cocoon via `cocoon:request` |
 
-Wind contains a code-generation layer that emits typed service interfaces from
-the Vine proto schema and the IPC channel registry. Generated files live under:
+Individual subsystems have their own tier constants (e.g. `TierTerminal`,
+`TierStorage`, `TierSearch`) baked at compile time from `.env.Land`. A runtime
+shell export (e.g. `export TierStorage=Node`) overrides the baked value without
+a rebuild. The active tier for each subsystem is logged at boot by
+`Mountain/Source/LandFixTier.rs`.
 
-```
-Land/Element/Wind/Source/Effect/Generated/
-```
+### Commands (Request-Response)
 
-Each file in that directory is a `*Upstream.ts` module exporting a typed request
-function. These are **generated output** - do not edit them directly. To
-regenerate after a proto or channel change:
+`Wind` invokes `Mountain` handlers through `@tauri-apps/api` `invoke()`. Each
+command maps to a registered `Rust` handler in `Mountain`.
 
-```bash
-cd Land/
-pnpm run prepublishOnly
-```
+**Wind-side invocation:**
 
-The generator source is at:
-[https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts)
+```typescript
+import { invoke } from "@tauri-apps/api/core";
 
-The IPC channel registry that drives generation:
-[https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts)
-
-The matching Rust enum (kept in lockstep):
-[https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs](https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs)
-
-> [!IMPORTANT] `Channel.ts` and `Channel.rs` must always be kept in lockstep.
-> Adding an entry to one without adding it to the other will cause IPC dispatch
-> failures at runtime with no compile-time error.
-
-## 📜　`Vine.proto` — the gRPC API contract
-
-`Vine.proto` is the single authoritative definition of every RPC method and
-notification that crosses the Cocoon-Mountain boundary. It lives in the Vine
-submodule:
-
-[https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto](https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto)
-
-The proto is compiled at build time by `prost` (Rust side) and
-`@grpc/proto-loader` (TypeScript side). Neither compiled output is checked in -
-both are regenerated on every build.
-
-Key service sections in `Vine.proto`:
-
-| Service                   | Direction         | Purpose                                                      |
-| ------------------------- | ----------------- | ------------------------------------------------------------ |
-| `CocoonService`           | Cocoon → Mountain | Extension host requests filesystem, terminal, config, search |
-| `VineService`             | Mountain → Cocoon | Notifications: document changes, extension events, lifecycle |
-| `MountainVineGRPCService` | Mountain → Cocoon | Notification router for gRPC push                            |
-
-## 🔑　Key source files by API surface
-
-### Mountain IPC handlers
-
-All Wind-callable IPC handlers live under one directory, one file per method:
-
-[https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers)
-
-The main dispatcher is `mod.rs` in that directory (~2 500 lines). Atomic handler
-files are grouped by domain:
-
-```
-WindServiceHandlers/
-├── mod.rs                  - dispatch table and inline fast-path handlers
-├── NativeHost/             - quit, reload, clipboard, dialogs, shell command
-├── FileSystem/Native/      - file open/close/watch/unwatch, mkdir, delete, rename, clone
-├── Terminal/               - PTY create/resize/attach/detach/revive
-├── Encryption/             - AES-256-GCM encrypt/decrypt, machine-stable key
-├── ExtensionHost/          - starter and debug-service handlers
-├── Cocoon/                 - request, notify, extensionHostMessage bridges
-├── NativeHost/Clipboard.rs - read/write text, read image, trigger paste
-└── Update/                 - update service stubs
+const content: Uint8Array = await invoke("read_file", {
+	path: "/Users/user/Documents/example.ts",
+});
 ```
 
-### Cocoon `vscode.*` shims
+**Mountain-side handler:**
 
-Cocoon's hand-authored `vscode.*` namespace implementations:
+```rust
+use tauri;
 
-[https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI)
+#[tauri::command]
+async fn read_file(
+    path: String,
+    state: State<'_, AppState>
+) -> Result<Vec<u8>, String> {
+    let fs = state.file_system();
+    fs.read_file(std::path::Path::new(&path))
+        .await
+        .map_err(|e| e.to_string())
+}
 
-Each subdirectory corresponds to one `vscode.*` namespace:
-
-| Directory         | Namespace               |
-| ----------------- | ----------------------- |
-| `Commands/`       | `vscode.commands`       |
-| `Window/`         | `vscode.window`         |
-| `Workspace/`      | `vscode.workspace`      |
-| `Languages/`      | `vscode.languages`      |
-| `Debug/`          | `vscode.debug`          |
-| `Tasks/`          | `vscode.tasks`          |
-| `Scm/`            | `vscode.scm`            |
-| `Authentication/` | `vscode.authentication` |
-| `Extensions/`     | `vscode.extensions`     |
-
-The API factory that assembles the `vscode` namespace object given to each
-extension:
-[https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/APIFactory.ts](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/APIFactory.ts)
-
-### Wind service interfaces
-
-Wind's typed service interfaces for Mountain IPC calls:
-
-[https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts)
-
-The Output element keeps a lockstep copy:
-[https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts)
-
-### Sky bridge
-
-The Sky bridge translates Tauri custom events and `sky://` URLs into live
-workbench service calls against Monaco and VS Code's `__CEL_SERVICES__`
-accessors:
-
-[https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts)
-
-Bridge modules are split by domain under `Bridge/`:
-
-```
-Bridge/
-├── InstallEditorAndOutput.ts   - workspace.applyEdit, save, saveAll, saveAs
-├── InstallEditorOperations.ts  - apply-text-edits, model content sync
-├── InstallSimpleRelays.ts      - language configure, diagnostics, various relays
-├── InstallUiRequests.ts        - showMessage, showQuickPick, showInputBox
-├── InstallTreeView.ts          - tree view selection / collapse / expand events
-├── InstallScm.ts               - SCM provider registration and input sync
-├── InstallInlineCompletions.ts - inline completion provider registration
-└── InstallDebug.ts             - breakpoint gutter sync
+fn main() {
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![read_file])
+        .run(tauri::generate_context!());
+}
 ```
 
-## 🔨　Building all documentation locally
+### Command Catalog
 
-```bash
-# Rust rustdoc for Mountain
-cd Land/Element/Mountain && cargo doc --no-deps --open
+All commands are dispatched through the single Tauri command `MountainIPCInvoke`
+with `{ method: string, params: any[] }`. The method string corresponds to the
+channel wire name defined in `Common/Source/IPC/Channel.rs`.
 
-# TypeScript types - regenerate Wind Codegen output
-cd Land/ && pnpm run prepublishOnly
+#### Encryption
 
-# Proto - compiled automatically during the above; inspect output at:
-# Land/Element/Mountain/Target/debug/build/mountain-*/out/vine_ipc.rs
+| Command | Parameters | Returns | Purpose |
+| ------- | ---------- | ------- | ------- |
+| `encryption:encrypt` | `[plaintext: string]` | `string` | AES-256-GCM encryption; key is SHA-256 of machine UUID, cached per-process |
+| `encryption:decrypt` | `[ciphertext: string]` | `string` | Symmetric decryption; used by extension context `secrets` API |
+
+The encryption key is derived once per process in `Encryption/Key.rs` using
+`SHA-256("Land-Encryption-v1" + machine_id)`. Returns an empty string on failure
+rather than throwing, so callers treat a corrupt blob as "no stored secret".
+
+#### File System
+
+| Command | Parameters | Returns | Purpose |
+| ------- | ---------- | ------- | ------- |
+| `file:watch` | `[path: string, options?]` | `void` | Register a file watcher via `FileWatcherProvider` |
+| `file:unwatch` | `[path: string]` | `void` | Deregister a file watcher |
+| `file:open` | `[path: string, opts?]` | `number` | Open a file descriptor; fd is tracked in Mountain's fd table |
+| `file:close` | `[fd: number]` | `void` | Close a tracked file descriptor |
+| `file:stat` | `[path: string]` | `FileStat` | Stat a path |
+| `file:readFile` | `[path: string]` | `Uint8Array` | Read file (VS Code native path) |
+| `file:readdir` | `[path: string]` | `DirEntry[]` | List directory entries |
+| `file:writeFile` | `[path: string, content: Uint8Array]` | `void` | Write file |
+| `file:delete` | `[path: string, opts?]` | `void` | Delete file or directory; fires `$acceptDidDeleteFiles` |
+| `file:rename` | `[from: string, to: string]` | `void` | Rename/move file; fires `$acceptDidRenameFiles` |
+| `file:mkdir` | `[path: string]` | `void` | Create directory; fires `$acceptDidCreateFiles` |
+| `file:copy` | `[from: string, to: string]` | `void` | Copy file |
+| `file:cloneFile` | `[from: string, to: string]` | `void` | Clone file (reflink where supported); fires `$acceptDidCreateFiles` |
+| `file:realpath` | `[path: string]` | `string` | Resolve symlinks |
+
+---
+
+## Vine gRPC Protocol 🏔️
+
+`Vine` defines the `gRPC` service contracts for `Mountain`-`Cocoon` and
+`Mountain`-`Air` communication. The canonical definition lives at
+`Element/Vine/Proto/Vine.proto`. `Mountain` keeps a local sync'd copy at
+`Element/Mountain/Proto/Vine.proto` which its `build.rs` compiles directly.
+
+### Service Definitions
+
+```protobuf
+syntax = "proto3";
+
+package Vine;
+
+// Service running on the Mountain host, listening for requests from Cocoon.
+service MountainService {
+  // Generic request-response: Cocoon -> Mountain.
+  rpc ProcessCocoonRequest(GenericRequest) returns (GenericResponse);
+  // Fire-and-forget notification: Cocoon -> Mountain.
+  rpc SendCocoonNotification(GenericNotification) returns (Empty);
+  // Cancel a long-running operation.
+  rpc CancelOperation(CancelOperationRequest) returns (Empty);
+  // LAND-PATCH B7-S6 P2: bidirectional streaming channel.
+  rpc OpenChannelFromCocoon(stream Envelope) returns (stream Envelope);
+}
+
+// Service running on the Cocoon sidecar, listening for requests from Mountain.
+service CocoonService {
+  // A generic request-response method for Mountain to call a function on Cocoon.
+  rpc ProcessMountainRequest(GenericRequest) returns (GenericResponse);
+
+  // A generic fire-and-forget method for Mountain to send a notification to Cocoon.
+  rpc SendMountainNotification(GenericNotification) returns (Empty);
+
+  // A method for Mountain to request that Cocoon cancel a long-running operation.
+  rpc CancelOperation(CancelOperationRequest) returns (Empty);
+
+  // LAND-PATCH B7-S6 P2: bidirectional streaming channel (mirror of
+  // MountainService::OpenChannelFromCocoon). Mountain opens this
+  // stream once per Cocoon connection; all subsequent traffic
+  // multiplexes over it.
+  rpc OpenChannelFromMountain(stream Envelope) returns (stream Envelope);
+
+  // ==================== Initialization ====================
+
+  // Handshake - Called by Cocoon to signal readiness
+  rpc InitialHandshake(Empty) returns (Empty);
+
+  // Initialize Extension Host - Mountain sends initialization data to Cocoon
+  rpc InitExtensionHost(InitExtensionHostRequest) returns (Empty);
+
+  // ==================== Commands ====================
+
+  // Register Command - Cocoon registers an extension command
+  rpc RegisterCommand(RegisterCommandRequest) returns (Empty);
+
+  // Execute Contributed Command - Mountain executes an extension command
+  rpc ExecuteContributedCommand(ExecuteCommandRequest) returns (ExecuteCommandResponse);
+
+  // Unregister Command - Unregister a previously registered command
+  rpc UnregisterCommand(UnregisterCommandRequest) returns (Empty);
+
+  // ==================== Language Features ====================
+
+  // Register Hover Provider - Register a hover provider
+  rpc RegisterHoverProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Hover - Request hover information
+  rpc ProvideHover(ProvideHoverRequest) returns (ProvideHoverResponse);
+
+  // Register Completion Item Provider - Register a completion provider
+  rpc RegisterCompletionItemProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Completion Items - Request completion items
+  rpc ProvideCompletionItems(ProvideCompletionItemsRequest) returns (ProvideCompletionItemsResponse);
+
+  // Register Definition Provider - Register a definition provider
+  rpc RegisterDefinitionProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Definition - Request definition location
+  rpc ProvideDefinition(ProvideDefinitionRequest) returns (ProvideDefinitionResponse);
+
+  // Register Reference Provider - Register a reference provider
+  rpc RegisterReferenceProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide References - Request references
+  rpc ProvideReferences(ProvideReferencesRequest) returns (ProvideReferencesResponse);
+
+  // Register Code Actions Provider - Register code actions provider
+  rpc RegisterCodeActionsProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Code Actions - Request code actions
+  rpc ProvideCodeActions(ProvideCodeActionsRequest) returns (ProvideCodeActionsResponse);
+
+  // ==================== Language Features (Extended) ====================
+
+  // Register Document Highlight Provider
+  rpc RegisterDocumentHighlightProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Document Highlights
+  rpc ProvideDocumentHighlights(ProvideDocumentHighlightsRequest) returns (ProvideDocumentHighlightsResponse);
 ```
+
+Common types used across messages:
+
+```protobuf
+message Position {
+  uint32 Line = 1;
+  uint32 Character = 2;
+}
+
+message Range {
+  Position Start = 1;
+  Position End = 2;
+}
+
+message Uri {
+  string Value = 1;
+}
+
+message WorkspaceFolder {
+  Uri Uri = 1;
+  string Name = 2;
+}
+
+message CompletionItem { /* ... */ }
+message Location { /* ... */ }
+```
+
+### Port Allocation
+
+| Service | Element | Port | Transport |
+| ------- | ------- | ---- | --------- |
+| Mountain Vine | `Mountain` | `50051` | TCP |
+| Cocoon Vine | `Cocoon` | `50052` | TCP |
+| Air Vine | `Air` | `50053` | TCP |
+
+All listeners bind to `[::1]` (not `0.0.0.0`). Environment overrides are
+described in
+[`Vine/Source/Library.rs`](../../../Element/Vine/Source/Library.rs).
+
+---
+
+## Spine Extension Protocol 🔄
+
+The `Spine` protocol is the extension host coordination layer built on top of
+`Vine` `gRPC`. It implements an action/response pattern for extension-to-backend
+communication.
+
+### Action/Response Pattern
+
+```mermaid
+sequenceDiagram
+    participant Extension as Extension code in Cocoon
+    participant Shim as Cocoon vscode shim
+    participant Spine as Spine protocol
+    participant Mountain as Mountain ActionHandler
+    participant Trait as Common trait impl
+
+    Extension->>Shim: Call vscode API (e.g., openTextDocument)
+    Shim->>Shim: Create ActionEffect
+    Shim->>Spine: gRPC PerformAction(ActionRequest)
+    Spine->>Mountain: Route to ActionHandler
+    Mountain->>Trait: Execute action via Common trait implementation
+    Trait-->>Mountain: Action result
+    Mountain-->>Spine: ActionResponse { result, error }
+    Spine-->>Shim: gRPC response
+    Shim-->>Extension: Return result to extension
+```
+
+### ActionEffect Types
+
+The `Spine` protocol encodes all possible extension actions as a discriminated
+union:
+
+```
+ActionEffect
+    +-- ReadFile { path }
+    +-- WriteFile { path, content }
+    +-- DeleteFile { path }
+    +-- ReadDirectory { path }
+    +-- CreateDirectory { path }
+    +-- Stat { path }
+    +-- Rename { from, to }
+    +-- Copy { from, to }
+    +-- WatchFile { path }
+    +-- OpenDialog { options }
+    +-- SaveDialog { options }
+    +-- ShowMessage { message, options }
+    +-- ShowInputBox { options }
+    +-- OpenExternal { url }
+    +-- ExecuteProcess { command, args }
+    +-- ExecuteCommand { command_id, args }
+    +-- RegisterCommand { command_id, handler }
+    +-- CreateTerminal { options }
+    +-- WriteTerminal { id, data }
+    +-- ReadClipboard { format }
+    +-- WriteClipboard { text }
+    +-- GetConfiguration { key }
+    +-- SetConfiguration { key, value, target }
+    +-- GetSecret { key }
+    +-- SetSecret { key, value }
+    +-- DeleteSecret { key }
+    +-- CreateWebviewPanel { options }
+    +-- SendWebviewMessage { id, message }
+    // ... 80+ effect variants
+```
+
+### Routing
+
+The `Cocoon` tier router (`Cocoon/Source/Services/Handler/VscodeAPI/ROUTING.md`)
+decides per-call whether to:
+
+1. **Track A (Stock Node):** Handle entirely in-process via unmodified
+   `extHost*.ts` code
+2. **Track B (Rust Native):** Package as `ActionEffect`, send via `Spine` `gRPC`
+   to `Mountain`, await native execution
+3. **Track C (Cocoon Bespoke):** Hand-rolled `TypeScript` implementation in
+   `Cocoon` (last resort)
+
+---
+
+## Connection Lifecycle 🔄
+
+### Mountain-Cocoon Connection
+
+**Bootstrap order (critical):** Cocoon's gRPC server (port 50052) must bind
+before Cocoon attempts to connect to Mountain's gRPC server (port 50051). The
+bootstrap stage order is: `RPCServer` (Stage 5) bind → `MountainConnection`
+(Stage 3) connect. Mountain allows a 30-second connection budget; reversing this
+order causes Mountain to time out before Cocoon is ready to accept the
+handshake.
+
+```mermaid
+sequenceDiagram
+    participant Mountain as Mountain
+    participant Server as gRPC Server
+    participant Cocoon as Cocoon sidecar
+    participant Init as Initialization
+
+    Mountain->>Server: Start gRPC server on port 50051
+    Mountain->>Cocoon: Spawn node bootstrap-fork.js
+    Cocoon->>Server: Connect gRPC client to 127.0.0.1:50051
+    Cocoon->>Server: Send $initialHandshake notification
+    Server-->>Mountain: Handshake received
+    Mountain->>Mountain: Gather InitData (workspace, extensions, config)
+    Mountain->>Cocoon: Send Initialize(InitData)
+    Cocoon->>Init: Create InitDataLayer
+    Init->>Init: Run FullAppInitialization
+    Init->>Init: Install RequireInterceptor
+    Init->>Init: Activate startup extensions
+    Cocoon->>Server: Send activity ping every 5 seconds
+    Server-->>Mountain: Connection established, normal operation
+```
+
+### Disconnection and Reconnection
+
+```
+Network failure or Cocoon crash
+    |
+    v
+Mountain detects stale connection (no activity within 30-second check window)
+    |
+    +---> Option 1: Restart Cocoon (default, up to 3 attempts)
+    |       - Kill existing Cocoon process
+    |       - Re-spawn from bootstrap-fork.js
+    |       - Re-run initialization sequence
+    |       - Restored state: configuration, open files
+    |       - Lost state: extension-managed data, webview panels
+    |
+    +---> Option 2: Graceful degradation
+            - Show reconnection notification in UI
+            - Queue extension API calls
+            - Reconnect when Cocoon restarts (user manually)
+```
+
+### Mountain-Air Connection
+
+```
+Mountain starts
+    |
+    v
+Mountain spawns Air binary
+    |
+    v
+Air connects gRPC to 127.0.0.1:50053
+    |
+    +---> Sends Connect { services: [updater, indexer, crypto] }
+    |
+    v
+Mountain registers Air services in AppState
+    |
+    v
+Normal operation:
+    - Mountain dispatches background work via PerformAction
+    - Air responds with action results
+    - Both sides maintain activity tracking
+    - Staleness check every 30 seconds
+```
+
+---
+
+## Health Monitoring 💓
+
+### Heartbeat Protocol
+
+Both `gRPC` connections (`Mountain`-`Cocoon`, `Mountain`-`Air`) implement a
+health monitoring protocol. Health is tracked via a per-connection
+`ConnectionMetadata` struct in `Vine/Source/Client/Shared.rs`:
+
+| Parameter | Value |
+| --------- | ----- |
+| Staleness check interval | 30 seconds (`HEALTH_CHECK_INTERVAL_MS`) |
+| Max retry attempts | 10 (`MAX_RETRY_ATTEMPTS`) |
+| Retry base delay | 200 ms (`RETRY_BASE_DELAY_MS`) |
+| Connection timeout | 30 seconds (`CONNECTION_TIMEOUT`) |
+
+Health is determined by three conditions in
+`Vine/Source/Client/CheckSideCarHealth.rs`: the connection must be marked
+`IsHealthy`, the `LastActivity` timestamp must not be older than
+`HEALTH_CHECK_INTERVAL_MS` (30 seconds), and the `FailureCount` must not exceed
+`MAX_RETRY_ATTEMPTS` (10). Failed connections are recorded via
+`RecordSideCarFailure` which increments the counter and sets `IsHealthy` to
+`false`; successful activity resets both via `UpdateSideCarActivity`.
+
+### Diagnostic Logging
+
+All connection state changes are logged via the `dev_log!` system at
+`Mountain/Source/IPC/DevLog/`:
+
+```
+[DEV:Vine] gRPC server listening on [::1]:50051
+[DEV:Vine] Cocoon connected, handshake received
+[DEV:Vine] Heartbeat OK (seq=142, latency=3ms)
+[DEV:Vine] Heartbeat TIMEOUT (last: seq=147, 18s ago)
+[DEV:Vine] Cocoon disconnected, restarting (attempt 1/3)
+```
+
+---
+
+## Protocol Buffer Definitions 📁
+
+### Current Location
+
+Protocol definitions currently reside in consuming components:
+
+| File | Location | Purpose |
+| ---- | -------- | ------- |
+| `Vine.proto` | `Element/Vine/Proto/Vine.proto` | Core `Mountain`<->`Cocoon` `gRPC` services |
+| `Grove.proto` | `Element/Grove/Proto/Grove.proto` | Grove-specific WASM hosting extensions |
+| Server impl | `Element/Mountain/Source/Vine/` | Rust `gRPC` server (`tonic`, consumes Vine stubs) |
+| Client impl | `Element/Cocoon/Source/Services/Mountain/gRPC/Client.ts` | TypeScript `gRPC` client |
+| RouteManifest | `Element/Cocoon/Source/Generated/RouteManifest.ts` | Auto-generated routing tier enumeration |
+
+### Code Generation
+
+Rust types are generated from `.proto` files using `prost` and `tonic-build` at
+compile time:
+
+```rust
+// Mountain/build.rs  (references Vine element's proto)
+fn main() {
+    tonic_build::configure()
+        .compile(&["../Vine/Proto/Vine.proto"], &["../Vine/Proto"])
+        .expect("Failed to compile protos");
+}
+```
+
+TypeScript types are generated using `protoc-gen-ts` and checked into the
+`Cocoon` source tree as generated artifacts.
+
+---
+
+## Security 🛡️
+
+All `gRPC` connections are restricted to localhost only (`[::1]` / `127.0.0.1`).
+No remote connections are accepted.
+
+| Aspect | Implementation |
+| ------ | -------------- |
+| Transport | TCP loopback only |
+| Auth | None required (localhost-only) |
+| Encryption | None (localhost-only, no network exposure) |
+| Port binding | `[::1]` only, not `0.0.0.0` |
+| DNS isolation | All non-localhost traffic blocked by `Mist` |
+| Timeout | 30-second staleness check |
+| Backpressure | `gRPC` flow control + bounded channels |
+
+---
+
+## Related Documentation 📋
+
+- [Architecture](Architecture.md) - System architecture
+- [BuildPipeline](BuildPipeline.md) - Build pipeline
+- [EditorCore](EditorCore.md) - Editor workbench
+- [Polyfills](Polyfills.md) - Compatibility shims
+- [RustInfrastructure](RustInfrastructure.md) - `Rust` backend components
+- [Building](Building.md) - Build instructions
+- [Workflow/ApplicationStartupAndHandshake](Workflow/ApplicationStartupAndHandshake.md)
+- [Workflow/CreatingAndInteractingWithAWebviewPanel](Workflow/CreatingAndInteractingWithAWebviewPanel.md)
+
+---
+
+**Project Maintainers:** Source Open
+([Source/Open@editor.land](mailto:Source/Open@editor.land)) |
+[GitHub Repository](https://github.com/CodeEditorLand/Land) |
+[Report an Issue](https://github.com/CodeEditorLand/Land/issues)

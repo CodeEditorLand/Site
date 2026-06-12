@@ -9,15 +9,15 @@ description:
 ---
 
 SCM in Land is entirely extension-driven. The built-in Git extension in Cocoon
-owns all Git logic; Mountain provides two services it needs - a native
+owns all Git logic; Mountain provides two services it needs — a native
 filesystem stat for repository detection and a `GitProvider` that safely spawns
 `git` child processes. Mountain then brokers the resulting resource states to
 Sky via Tauri events.
 
-## Phase 1 - Registration and repository detection (Cocoon -> Mountain)
+## Phase 1 — Registration and repository detection (Cocoon → Mountain)
 
 1. On startup Cocoon activates the built-in Git extension. Its `activate()`
-   function runs and calls:
+   function calls:
 
     ```ts
     vscode.scm.createSourceControl("git", "Git");
@@ -27,21 +27,20 @@ Sky via Tauri events.
    request** to Mountain, recording that a provider identified as `"git"` is
    managed by `"cocoon-main"`.
 
-3. The Git extension checks for a `.git` directory by calling:
+3. The Git extension checks for a `.git` directory:
 
     ```ts
     vscode.workspace.fs.stat(Uri.joinPath(workspaceRoot, ".git"));
     ```
 
-    This traverses Cocoon's `FileSystemProvider` -> gRPC -> Mountain ->
+    This traverses Cocoon's `FileSystemProvider` → gRPC → Mountain →
     `tokio::fs::metadata`. A successful result confirms the workspace is a Git
     repository.
 
-## Phase 2 - Populating the SCM view (Cocoon -> Mountain -> Cocoon)
+## Phase 2 — Populating the SCM view (Cocoon → Mountain → Cocoon)
 
-4. The Git extension needs changed-file status. It cannot spawn processes
-   directly, so it calls Mountain's `vscode.git` API which maps to a
-   **`$gitExec` gRPC request**:
+4. The Git extension needs changed-file status. It calls Mountain's `vscode.git`
+   API which maps to a **`$gitExec` gRPC request**:
 
     ```
     $gitExec  { repoPath, args: ["status", "--porcelain", "-z"] }
@@ -73,13 +72,13 @@ Sky via Tauri events.
     sky://scm/update-group  { providerId: "git", groupId: "Changes", resources: [...] }
     ```
 
-## Phase 3 - SCM view rendering (Sky)
+## Phase 3 — SCM view rendering (Sky)
 
 9. The SCM View component in Wind is listening for `sky://scm/update-group`. It
-   receives the resource DTOs, updates its state, and re-renders - the user sees
+   receives the resource DTOs, updates its state, and re-renders — the user sees
    the list of modified files (e.g. `M src/main.ts`).
 
-## Phase 4 - Diff view (Sky -> Wind -> Cocoon -> Mountain)
+## Phase 4 — Diff view (Sky → Wind → Cocoon → Mountain)
 
 10. The user clicks a changed file in the SCM view. The click handler opens the
     file with a `git:` scheme URI encoding the HEAD revision, e.g.
@@ -87,10 +86,10 @@ Sky via Tauri events.
 
 11. `EditorService` recognises the `git:` scheme and creates a `DiffEditorInput`
     with two sides:
-    - **Modified** - loaded from the workspace `file://` URI via
+    - **Modified** — loaded from the workspace `file://` URI via
       `IFileService.readFile()` (the standard read path described in
-      [Opening a File](/Doc/workflow-open-file).
-    - **Original** - requested from the `TextDocumentContentProvider` registered
+      [Opening a File](/Doc/workflow-open-file)).
+    - **Original** — requested from the `TextDocumentContentProvider` registered
       for `git:` by the Git extension in Cocoon.
 
 12. Cocoon's Git extension receives the content request for the `git:` URI and
@@ -110,7 +109,7 @@ Sky via Tauri events.
 
 The `inputBox.value`, `inputBox.placeholder`, `commitTemplate`, and
 `acceptInputCommand` setters on the `SourceControl` object are wired back to
-Mountain via a `$scm:updateSourceControl` gRPC call (carrying a
+Mountain via a **`$scm:updateSourceControl`** gRPC call (carrying a
 `SourceControlUpdateDTO`) every time the extension sets any of these properties.
 Mountain updates `AppState.ActiveScmProviders` and emits a
 `sky://scm/provider/changed` Tauri event so the Sky workbench input model stays
@@ -125,13 +124,21 @@ in sync with the extension's values.
 - `acceptInputCommand` sends `{ acceptInputCommand: V }` and maps to
   `SourceControlUpdateDTO.AcceptInputCommand`.
 - Changes to `inputBox.value` in Cocoon must go through the `ScmProvider`
-  service - direct DOM manipulation of the input box will not propagate to the
+  service — direct DOM manipulation of the input box will not propagate to the
   extension.
-- `sky://scm/register` retries up to 10 times (200 ms between attempts) before
-  it concludes that `__CEL_SERVICES__.SCM` is unavailable, which prevents a
-  startup race between the Sky renderer completing its service initialisation and
-  the first `$registerScmProvider` gRPC call from Cocoon.
+
+When Mountain receives `$scm:updateSourceControl` it emits
+`sky://scm/provider/changed` to the Sky renderer. The `InstallScm.ts` bridge
+handler finds the matching shim by numeric handle and applies
+`InputModel.setValue(newValue)` (or `applyEdits` as a fallback) so the workbench
+commit input reflects the extension-set text, then fires `provider.onDidChange`
+so the SCM panel re-renders.
+
+The `sky://scm/register` bridge registration retries up to 10 times with 200 ms
+between attempts before falling back to a DOM `CustomEvent` path, ensuring the
+SCM viewlet populates even when the `__CEL_SERVICES__.SCM` workbench service
+resolves late during startup.
 
 > [!IMPORTANT] gRPC traffic between Mountain and Cocoon for SCM flows over port
-> 50051 (Mountain Vine server, Mountain -> Cocoon direction). The reverse Cocoon ->
+> 50051 (Mountain Vine server, Mountain → Cocoon direction). The reverse Cocoon →
 > Mountain notification push uses port 50052.

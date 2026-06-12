@@ -10,97 +10,77 @@ description:
 
 Extensions are the most sensitive third-party code a code editor runs. They can
 touch files, spawn processes, open network connections, and observe workspace
-state. Cocoon, Land's current extension host, runs Node.js extensions with the
-same OS access as the editor process - which is the correct tradeoff for
-compatibility with the VS Code extension ecosystem. Grove, the second host, takes
-the opposite position: extensions compiled to WASM run inside a Wasmtime sandbox
-where every OS capability must be granted explicitly. Nothing is accessible by
-default.
+state. Cocoon runs Node.js extensions with full OS access — the correct
+tradeoff for VS Code compatibility. Grove takes the opposite position:
+extensions compiled to WASM run inside a Wasmtime sandbox where every OS
+capability must be granted explicitly. Nothing is accessible by default.
 
-> [!NOTE] Grove is implemented and available as an optional build feature
-> (`--features grove`). WASM extensions targeting the WASI ABI can use the
-> Wasmtime sandbox today. Cocoon remains the default extension host for all
-> existing VS Code extensions; enabling Grove does not affect the Cocoon path.
+> **NOTE**: Grove is optional (`--features grove`) and does not affect Cocoon.
+> WASM extensions targeting the WASI ABI can use the sandbox today.
 
 ## The sandbox boundary
 
-WebAssembly modules execute in linear memory allocated by the host runtime. A
-module cannot read the host process heap, cannot call arbitrary OS syscalls, and
-cannot reach another module's memory through normal execution. Wasmtime enforces
-this boundary at the instruction level - it is not a policy check that can be
-bypassed by a clever extension, it is a hardware-enforced memory isolation
-boundary.
+WASM modules execute in linear memory allocated by the host runtime. A module
+cannot read the host heap, call arbitrary syscalls, or reach another module's
+memory. Wasmtime enforces this at the instruction level — hardware-enforced
+memory isolation, not a policy check a clever extension can bypass.
 
-This is structurally different from Node.js, where an extension that calls
-`require('fs')` gets full filesystem access to everything the process user can
-read. In Grove, a WASM extension that wants filesystem access must receive a
-WASI `preopened_dir` handle from the host. If Grove does not grant it, the
-extension cannot open files - there is no `require('fs')` to fall back to.
+In Node.js, `require('fs')` grants full filesystem access. In Grove, a WASM
+extension must receive a WASI `preopened_dir` handle from the host. If Grove
+does not grant it, the extension cannot open files — there is no `require('fs')`
+to fall back to.
 
 ## Capability-based access control
 
-Wasmtime implements WASI (WebAssembly System Interface), which is a
-capability-based API. Capabilities are granted as concrete handles, not as
-ambient permissions:
-
-| Resource              | Node.js (Cocoon)                     | WASM/WASI (Grove)                             |
-| --------------------- | ------------------------------------ | --------------------------------------------- |
-| Filesystem            | Full access via `fs` module          | Only directories explicitly preopened by host |
-| Environment variables | `process.env.*` - all vars visible   | Only vars explicitly passed by host           |
-| Network               | Full access via `net`/`http`         | Only sockets explicitly granted by host       |
-| Subprocess spawn      | `child_process.spawn` - unrestricted | Not available without explicit host function  |
-| Stdout/stderr         | Direct                               | Redirected through WASI fd handles            |
+| Resource | Cocoon (Node.js) | Grove (WASM/WASI) |
+|---|---|---|
+| Filesystem | Full `fs` module access | Only explicitly preopened dirs |
+| Environment vars | `process.env.*` — all visible | Only vars explicitly passed |
+| Network | Full `net`/`http` access | Only sockets explicitly granted |
+| Subprocess spawn | `child_process.spawn` — unrestricted | Not available without host function |
+| Stdout/stderr | Direct | Redirected through WASI fd handles |
 
 The security model is additive: start with nothing, grant what is needed.
-Cocoon's model is subtractive: start with full Node.js access, restrict what is
-possible. Grove's model is more correct for untrusted third-party extensions.
+Cocoon is subtractive: start with full Node.js access, restrict what is
+possible. Grove's model is more correct for untrusted extensions.
 
-## Near-native performance via AOT compilation
+## Near-native performance
 
-Wasmtime compiles WASM modules to native machine code ahead of time. There is no
-interpreter and no JIT warmup on the critical path. A WASM extension activating
-for the first time runs compiled native code, not bytecode. The performance gap
-between WASM-compiled Rust and native Rust is small - typically under 10% for
-compute-bound work - because the same LLVM backend produces both.
-
-For I/O-bound work (which most editor extensions are), the gap is even smaller:
-waiting for Mountain to respond to a gRPC request dominates, and the WASM
-execution overhead is negligible.
+Wasmtime compiles WASM to native machine code ahead of time. No interpreter, no
+JIT warmup on the critical path. The gap between WASM-compiled Rust and native
+Rust is typically under 10% for compute-bound work — the same LLVM backend
+produces both. For I/O-bound work (most editor extensions), the gap is
+negligible — waiting for Mountain's gRPC response dominates.
 
 ## Cross-platform ABI
 
 A `.wasm` binary compiled on macOS runs identically on Linux and Windows inside
-Wasmtime. There is no per-platform native addon compilation, no `node-gyp`
-rebuild, and no platform-specific binary in the extension package. One `.wasm`
-file covers all targets. This solves a real distribution problem: VS Code native
-addon extensions (`keytar`, `spdlog`, tree-sitter parsers) must ship precompiled
-binaries per platform and Node.js version. WASM extensions ship one file.
+Wasmtime. No per-platform native addon compilation, no `node-gyp` rebuild, no
+platform-specific binary. VS Code native addon extensions must ship per-platform
+binaries per Node.js version. WASM extensions ship one file.
 
 ## Grove is not a replacement for Cocoon
 
-These are two different extension hosts for two different extension populations:
+| Host | Extensions | Node.js? | Isolation |
+|---|---|---|---|
+| Cocoon | Existing VS Code (Node.js) | Yes | Process isolation only |
+| Grove | New WASM-native extensions | No | Wasmtime sandbox per module |
 
-| Host   | Extensions                            | Node.js required | Isolation model             |
-| ------ | ------------------------------------- | ---------------- | --------------------------- |
-| Cocoon | Existing VS Code extensions (Node.js) | Yes              | Process isolation only      |
-| Grove  | New WASM-native extensions            | No               | Wasmtime sandbox per module |
-
-An extension written for VS Code today runs in Cocoon. A new extension written
-specifically for Land targeting the Grove API runs in Grove. The two hosts are
-complementary and can run concurrently. Grove is not a migration path for Cocoon
-extensions - WASM extensions must be compiled from source to target the WASI
-ABI.
+VS Code extensions run in Cocoon. New Land-specific extensions targeting the
+Grove API run in Grove. The two hosts are complementary and run concurrently.
+Grove is not a migration path — WASM extensions must be compiled from source
+to target the WASI ABI.
 
 ## Current status
 
-Grove is implemented: the Wasmtime runtime integration, the gRPC client for
-calling back into Mountain, the WASI host function implementations, and the
-Grove-specific proto definitions are all in place. It is compiled as an optional
-feature flag (`--features grove`) and is not enabled in the default build.
-Budget controls (memory ceilings, CPU time limits via Wasmtime fuel metering)
-are implemented and active.
+Grove is implemented: Wasmtime runtime, gRPC client to Mountain, WASI host
+functions, and proto definitions are in place. Compiled as an optional feature
+flag. Budget controls (memory ceilings, CPU metering via Wasmtime fuel) are
+implemented. Cocoon remains the default extension host for all VS Code
+extensions.
 
-Cocoon (Node.js) remains the default extension host for all VS Code-compatible
-extensions. WASM extensions targeting the Grove API via the WASI ABI can use
-Grove today. The two hosts run concurrently when Grove is enabled; enabling
-Grove does not affect the Cocoon path.
+## Related Documentation
+
+- [Why Tauri](https://Editor.Land/Doc/why-tauri)
+- [Deep Dive: Grove](https://Editor.Land/Doc/deep-dive-grove)
+- [Why Rust](https://Editor.Land/Doc/why-rust)

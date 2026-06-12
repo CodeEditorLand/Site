@@ -10,10 +10,10 @@ description:
 The integrated terminal is a native PTY process managed entirely inside
 Mountain. Sky renders the terminal via xterm.js, receiving output as Tauri
 events. Cocoon receives the same output as gRPC notifications so extensions can
-observe terminal data. User keystrokes take the reverse path: Sky -> Mountain IPC
--> PTY master -> shell stdin.
+observe terminal data. User keystrokes take the reverse path: Sky → Mountain IPC
+→ PTY master → shell stdin.
 
-## Phase 1 - Creation request (Cocoon or Wind -> Mountain)
+## Phase 1 — Creation request (Cocoon or Wind → Mountain)
 
 1. The request originates from one of two places:
     - **Extension**: `vscode.window.createTerminal(...)` in Cocoon sends a
@@ -24,7 +24,7 @@ observe terminal data. User keystrokes take the reverse path: Sky -> Mountain IP
     Both paths resolve to the same `Common::terminal::CreateTerminal` Effect
     executed by Mountain's `TerminalProvider`.
 
-## Phase 2 - Native PTY spawning (Mountain)
+## Phase 2 — Native PTY spawning (Mountain)
 
 2. `TerminalProvider.CreateTerminal()` allocates a new `TerminalId` from
    `AppState` and determines the shell to launch (from request options or the
@@ -45,14 +45,14 @@ observe terminal data. User keystrokes take the reverse path: Sky -> Mountain IP
    `AppState.ActiveTerminals`.
 
 6. Three Tokio tasks are spawned for the terminal's lifetime:
-    - **Writer Task** - holds the receiver end of a `tokio::mpsc` channel; when
+    - **Writer Task** — holds the receiver end of a `tokio::mpsc` channel; when
       a string arrives it writes the bytes to the PTY master writer, delivering
       input to the shell.
-    - **Reader Task** - loops reading from the PTY master reader; for each chunk
+    - **Reader Task** — loops reading from the PTY master reader; for each chunk
       of output it both sends a **`$acceptTerminalProcessData` gRPC
       notification** to Cocoon and emits a Tauri event to Sky:
       `sky://terminal/data { id, data }`.
-    - **Waiter Task** - awaits shell process exit; on termination it sends a
+    - **Waiter Task** — awaits shell process exit; on termination it sends a
       **`$acceptTerminalClosed` gRPC notification** to Cocoon and removes the
       entry from `AppState.ActiveTerminals`.
 
@@ -60,7 +60,7 @@ observe terminal data. User keystrokes take the reverse path: Sky -> Mountain IP
    gRPC notifications to Cocoon, then returns the creation result (ID, name,
    PID) to the caller.
 
-## Phase 3 - UI rendering and state sync (Mountain -> Cocoon + Sky)
+## Phase 3 — UI rendering and state sync (Mountain → Cocoon + Sky)
 
 8. Cocoon's terminal service receives the `$acceptTerminalOpened` and
    `$acceptTerminalProcessId` notifications and creates a local `Terminal` proxy
@@ -75,7 +75,7 @@ observe terminal data. User keystrokes take the reverse path: Sky -> Mountain IP
     `xterm.write(data)` on the matching instance. The shell prompt appears in
     the panel.
 
-## Phase 4 - User input loop (Sky -> Mountain -> shell)
+## Phase 4 — User input loop (Sky → Mountain → shell)
 
 11. The user types `ls -la` in the terminal panel. xterm.js captures the
     keystrokes via its `onData` handler and calls:
@@ -97,52 +97,52 @@ observe terminal data. User keystrokes take the reverse path: Sky -> Mountain IP
 14. The shell executes `ls -la`, writes the directory listing to stdout. The PTY
     slave captures it and makes it available on the PTY master.
 
-15. The Reader Task reads the output and the loop from step 10 repeats - the
+15. The Reader Task reads the output and the loop from step 10 repeats — the
     listing appears in xterm.js and is also forwarded to Cocoon via
     `$acceptTerminalProcessData`.
+
+## Terminal lifecycle events
+
+When a terminal closes (shell exits or the user explicitly closes it):
+
+- The **Waiter Task** fires **`$acceptTerminalClosed`** to Cocoon, which removes
+  the terminal from its cache and fires `onDidCloseTerminal`.
+- Mountain emits the closure to Sky via Tauri event so the workbench removes the
+  terminal tab.
+
+The full lifecycle event set available to extensions:
+
+| Event                       | Trigger                                    |
+| --------------------------- | ------------------------------------------ |
+| `onDidOpenTerminal`         | `$acceptTerminalOpened` gRPC from Mountain |
+| `onDidCloseTerminal`        | `$acceptTerminalClosed` gRPC from Mountain |
+| `onDidChangeActiveTerminal` | Focus change notification from Wind/Sky    |
 
 ## Shell integration events (OSC 633)
 
 Modern shells emit OSC 633 escape sequences to mark the boundaries of each
-command. Land parses these sequences in Sky's terminal renderer and surfaces them
-as three VS Code API events that extension authors can rely on:
-
-| Event                              | When it fires                                          |
-| ---------------------------------- | ------------------------------------------------------ |
-| `onDidStartTerminalShellExecution` | Shell begins executing a command (OSC 633 C sequence)  |
-| `onDidEndTerminalShellExecution`   | Command finishes; exit code is available (OSC 633 D)   |
-| `onDidExecuteTerminalCommand`      | Alias fired alongside `onDidEndTerminalShellExecution` |
-
-The full sequence table, including decoration-only sequences:
+command. Land processes these sequences through the PTY Reader Task and routes
+them as IPC calls:
 
 ```
 OSC 633 ; A          shell prompt start  (decoration marker only)
 OSC 633 ; B          shell prompt end    (decoration marker only)
 OSC 633 ; C          command start
-                         -> localPty:shellExecutionStart IPC
-                         -> Mountain stores in InflightExecution Map
-                         -> $acceptTerminalShellExecutionStart gRPC -> Cocoon
+                         → localPty:shellExecutionStart IPC
+                         → Mountain stores in InflightExecution Map
+                         → $acceptTerminalShellExecutionStart gRPC → Cocoon
 OSC 633 ; D[;<exit>] command end
-                         -> localPty:shellExecutionEnd IPC
-                         -> $acceptTerminalShellExecutionEnd gRPC -> Cocoon
-                         -> $acceptExecutedTerminalCommand gRPC -> Cocoon
+                         → localPty:shellExecutionEnd IPC
+                         → $acceptTerminalShellExecutionEnd gRPC → Cocoon
+                         → $acceptExecutedTerminalCommand gRPC → Cocoon
 OSC 633 ; E;<line>   command line capture
-                         -> stored per-terminal in InflightExecution Map
+                         → stored per-terminal in InflightExecution Map
                            (associated with the next OSC 633 ; D flush)
 ```
 
-The end-to-end path for the three vscode API events is:
+Extension subscribers receive these events via:
 
-```
-Sky OSC 633 parser
-  -> localPty:shellExecutionStart / shellExecutionEnd  (Tauri IPC)
-  -> Mountain fan-out
-  -> $acceptTerminalShellExecutionStart / End + $acceptExecutedTerminalCommand  (gRPC to Cocoon)
-  -> Window namespace Emitter events (vscode API layer)
-```
-
-For extension authors, this means you can reliably detect when a user runs a
-command in any integrated terminal that supports shell integration (bash with
-`~/.bashrc` source, zsh with the built-in prompt hook, PowerShell with the
-profile snippet). You receive the command text, the exit code, and a reference to
-the terminal instance - without parsing raw PTY output yourself.
+- `window.onDidStartTerminalShellExecution` — fires on OSC 633 ; C
+- `window.onDidEndTerminalShellExecution` — fires on OSC 633 ; D
+- `window.onDidExecuteTerminalCommand` — fires after OSC 633 ; D with the
+  captured command line and exit code

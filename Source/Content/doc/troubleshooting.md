@@ -7,24 +7,24 @@ description:
     them."
 ---
 
-This page covers the most frequently encountered problems when building,
-running, or developing against Land. Each entry describes the symptom, the root
-cause, and the specific fix. For issues not listed here, check the FIDDEE.log in
+Below we cover the most frequently encountered problems when building, running,
+or developing against Land. Each entry describes the symptom, the root cause,
+and the specific fix. For issues not listed here, check the FIDDEE.log in
 `<app-data>/logs/` and open a GitHub issue with the log contents attached.
 
-## 🔨　Build Issues
+## 🔨 Build Issues
 
 ### npm install stalls during VS Code source step
 
-**Symptom**: Running `npm install` inside
+**Symptom:** Running `npm install` inside
 `Dependency/Microsoft/Dependency/Editor` hangs indefinitely, typically after
 resolving most packages.
 
-**Cause**: The VS Code source tree includes `electron` (~200 MB) and
+**Cause:** The VS Code source tree includes `electron` (~200 MB) and
 `@playwright/browser-chromium` (~300 MB) as devDependencies. Without skip flags,
 `npm install` downloads these binaries on every fresh install.
 
-**Fix**: Add the following to your shell profile (`~/.zshrc` or `~/.bashrc`) and
+**Fix:** Add the following to your shell profile (`~/.zshrc` or `~/.bashrc`) and
 reload before running `npm install`:
 
 ```sh
@@ -37,25 +37,25 @@ Code's own integration tests.
 
 ### Playwright lockfile error
 
-**Symptom**: `npm install` fails with:
+**Symptom:** `npm install` fails with:
 
 ```
 Error: An active lockfile is found at: ~/Library/Caches/ms-playwright/__dirlock
 ```
 
-**Cause**: A previous `npm install` run was interrupted, leaving a stale
+**Cause:** A previous `npm install` run was interrupted, leaving a stale
 lockfile that blocks subsequent installs.
 
-**Fix**: Remove the stale lockfile and retry:
+**Fix:** Remove the stale lockfile and retry:
 
 ```sh
 rm -rf ~/Library/Caches/ms-playwright/__dirlock
 npm install
 ```
 
-### `debug-electron-bundled` path error (path argument undefined)
+### `debug-electron-bundled` path error
 
-**Symptom**: The bundled workbench crashes at startup with:
+**Symptom:** The bundled workbench crashes at startup with:
 
 ```
 The "path" argument must be of type string. Received type undefined
@@ -63,12 +63,12 @@ The "path" argument must be of type string. Received type undefined
 
 The stack trace points into `open (workbench.desktop.main.*.js)`.
 
-**Cause**: `ISandboxConfiguration.profiles` or one of its required URI fields
+**Cause:** `ISandboxConfiguration.profiles` or one of its required URI fields
 was missing or `undefined` in Mountain's `ConstructSandboxConfiguration`. VS
 Code's `NativeWorkbenchEnvironmentService` accesses URI fields like
 `languageModelsResource` without null-guards.
 
-**Fix**: Rebuild Mountain after any change to `InitializationData.rs`:
+**Fix:** Rebuild Mountain after any change to `InitializationData.rs`:
 
 ```sh
 cargo build -p Mountain
@@ -86,19 +86,19 @@ If still failing, open DevTools (`Inspect=1`) and set a breakpoint at
 `get extensionsPath` in the bundled workbench to inspect what
 `this.productService.dataFolderName` resolves to at runtime.
 
-## 🚀　Startup Issues
+## 🚀 Startup Issues
 
-### Blank workbench - Cocoon not connecting
+### Blank workbench — Cocoon not connecting
 
-**Symptom**: The editor window opens but the workbench is blank or shows a
+**Symptom:** The editor window opens but the workbench is blank or shows a
 loading spinner indefinitely. The extension host never activates.
 
-**Cause**: Cocoon failed to start or failed to connect to Mountain within the
+**Cause:** Cocoon failed to start or failed to connect to Mountain within the
 30-second gRPC budget. The most common sub-causes are: port 50051 or 50052
 already in use from a previous run, or Cocoon's gRPC server on port 50052
 failed to bind before Mountain attempted to connect.
 
-**Fix**:
+**Fix:**
 
 1. Check whether ports 50051 or 50052 are in use by orphaned processes from a
    previous run:
@@ -113,27 +113,27 @@ failed to bind before Mountain attempted to connect.
 2. Check the dev log for the line `RPCServer bound on port 50052`. If it is
    absent, Cocoon's gRPC server never started. Look for earlier error lines in
    the log. Cocoon must bind port 50052 before Mountain attempts the connection
-   - bootstrap stage ordering matters.
+   — bootstrap stage ordering matters.
 
 3. Set `Trace=cocoon,grpc` and `Record=1` in `.env.Land.Diagnostics`, relaunch,
    and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the Cocoon
    subprocess output.
 
-### `dataFolderName` crash - path argument undefined at boot
+### `dataFolderName` crash
 
-See
-[debug-electron-bundled path error](#debug-electron-bundled-path-error-path-argument-undefined)
-above. The same `InitializationData.rs` fix applies to both the bundled and
-non-bundled profiles.
+See the
+[debug-electron-bundled path error](#debug-electron-bundled-path-error)
+section above. The same `InitializationData.rs` fix applies to both the bundled
+and non-bundled profiles.
 
-## 🧩　Extension Issues
+## 🧩 Extension Issues
 
 ### Extension not loading
 
-**Symptom**: An extension does not appear in the Extensions sidebar, or appears
+**Symptom:** An extension does not appear in the Extensions sidebar, or appears
 but never activates.
 
-**Fix**:
+**Fix:**
 
 1. Verify the extension directory path is correct. On macOS the user extension
    root is `~/.land/extensions/`. The directory must contain a `package.json`
@@ -150,37 +150,37 @@ but never activates.
 
 ### Terminal not opening
 
-**Symptom**: Opening a terminal pane shows a blank panel or an error about a
+**Symptom:** Opening a terminal pane shows a blank panel or an error about a
 missing binary.
 
-**Cause**: The `portable-pty` native binary is either missing for the current
+**Cause:** The `portable-pty` native binary is either missing for the current
 platform or the `localPty:createProcess` IPC handler could not locate the
 Node.js binary to spawn the shell.
 
-**Fix**:
+**Fix:**
 
 1. Verify the `SideCar` binary for your platform is present in the app bundle's
    resources directory.
-2. Check `NetworkCocoonPort` is reachable - terminal creation goes through the
+2. Check `NetworkCocoonPort` is reachable — terminal creation goes through the
    Cocoon gRPC service.
-3. Set `Trace=terminal` and relaunch. The dev log will show the exact command
+3. Set `Trace=terminal` and relaunch. The dev log shows the exact command
    Mountain attempted to pass to `localPty:createProcess` and any error
    returned.
 
-## 🖊️　Code Signing Issues
+## 🖊️ Code Signing Issues
 
 ### codesign failures on macOS
 
-**Symptom**: The application bundle fails to launch with a "damaged or
+**Symptom:** The application bundle fails to launch with a "damaged or
 incomplete" error, or Gatekeeper blocks it. Alternatively, `codesign --verify`
 reports `not signed` or `invalid signature`.
 
-**Cause**: Tauri's build process does not automatically re-sign the bundle after
+**Cause:** Tauri's build process does not automatically re-sign the bundle after
 it copies the Cocoon Node.js binary and other resources into the `.app`. The
 ad-hoc signature applied at Tauri bundle time becomes invalid once additional
 files are written.
 
-**Fix**: Re-run `SignBundle.sh` after the build:
+**Fix:** Re-run `SignBundle.sh` after the build:
 
 ```sh
 BundleLevel=debug sh Maintain/Script/SignBundle.sh
@@ -189,19 +189,20 @@ BundleLevel=debug sh Maintain/Script/SignBundle.sh
 The script runs `xattr -cr` to strip quarantine attributes, then applies a fresh
 `codesign` with the entitlements from `Element/Mountain/Entitlements.plist`.
 
-> [!WARNING] XML comments inside the `<dict>` block of `Entitlements.plist` will
+> [!WARNING]
+> XML comments inside the `<dict>` block of `Entitlements.plist`
 > cause `codesign` to reject the file with a parse error. Comments must appear
-> outside the `<dict>` element. If you edit `Entitlements.plist`, verify the XML
-> is well-formed before signing.
+> **outside** the `<dict>` element. If you edit `Entitlements.plist`, verify the
+> XML is well-formed before signing.
 
 ### codesign succeeds but app still blocked
 
-**Symptom**: `codesign --verify` passes but macOS still shows "cannot be opened"
+**Symptom:** `codesign --verify` passes but macOS still shows "cannot be opened"
 at launch.
 
-**Cause**: Quarantine extended attribute was not cleared before signing.
+**Cause:** The quarantine extended attribute was not cleared before signing.
 
-**Fix**: Clear the quarantine attribute explicitly before signing:
+**Fix:** Clear the quarantine attribute explicitly before signing:
 
 ```sh
 xattr -cr Element/Mountain/Target/debug/Mountain.app

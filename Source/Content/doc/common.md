@@ -8,68 +8,146 @@ description:
     universal CommonError type."
 ---
 
-Common is the pure abstract foundation of Land's native Rust backend. It
-contains no concrete implementations - no file I/O, no network calls, no Tauri
-dependencies. Instead it defines what the system can do: every application
-capability as an `async trait`, every operation as a declarative `ActionEffect`
-value, and every data structure as a `serde`-compatible DTO. Mountain, Air,
-Echo, and every other Rust element depend on Common; Common depends on nothing
-from the Land workspace.
+# Common: Abstract Core Library 🧩
 
-## What Common Provides
+This document describes `Common`, the architectural foundation of `Land`'s native `Rust` backend. `Common` is a pure abstract library that defines:
 
-**The ActionEffect system.** Rather than calling a function that immediately
-performs a side effect, Common's pattern is to construct a value that
-_describes_ the desired effect. That value is later passed to an
-`ApplicationRunTime` for execution. This separation makes logic composable,
-testable, and executable in a controlled environment.
+- Every application capability as async traits
+- The `ActionEffect` declarative system
+- Data Transfer Objects (`DTO`s)
+- A universal error type
 
-**Async service traits.** Every application capability - file system access,
-terminal management, configuration reads, search, SCM, language features, and
-more - is defined as an `async trait` with `Send + Sync` bounds. Mountain
-provides the concrete implementations; tests provide mocks.
+It contains no concrete implementations.
 
-**Data Transfer Objects.** All structs shared between Mountain and Cocoon for
-IPC communication and internal state management are defined here. Every DTO is
-`serde`-compatible and derives `Debug`, `Clone`, `PartialEq`.
+---
 
-**CommonError.** A single error enum covering all failure modes across every
-service domain, so error handling is consistent regardless of which service
-produced the failure.
+## Table of Contents
 
-**Transport and Telemetry abstractions.** A `TransportStrategy` trait provides a
-transport-agnostic communication interface. A dual-pipe telemetry surface
-(PostHog + OTLP) is shared across all Rust sidecars.
+1. [Overview](#overview)
+2. [Architecture Principles](#architecture-principles)
+3. [Trait Architecture](#trait-architecture)
+4. [ActionEffect System](#actioneffect-system)
+5. [Environment and Dependency Injection](#environment-and-dependency-injection)
+6. [Data Transfer Objects](#data-transfer-objects)
+7. [CommonError](#commonerror)
+8. [Transport Layer](#transport-layer)
+9. [Telemetry Module](#telemetry-module)
+10. [Service Domain Map](#service-domain-map)
+11. [Related Documentation](#related-documentation)
 
-## Service Traits
+---
 
-Common defines async traits for every service domain used in the editor:
+```mermaid
+graph TB
+    subgraph Common["Common Abstract Core"]
+        TRAITS["Async Traits<br/>FileSystem / Terminal /<br/>Configuration / Workspace<br/>+ 20 more"]
+        AE["ActionEffect<br/>System<br/>description / execution<br/>separation"]
+        ENV["Environment / Requires<br/>compile-time DI"]
+        DTO["Data Transfer Objects<br/>FileStat / InitData /<br/>TerminalOptions"]
+        ERR["CommonError<br/>unified error enum"]
+        TRANS["Transport Layer<br/>TransportStrategy + Config"]
+        TEL["Telemetry<br/>PostHog + OTLP"]
 
-| Module                     | Trait                                   | Domain                                    |
-| -------------------------- | --------------------------------------- | ----------------------------------------- |
-| `FileSystem/`              | `FileSystemReader` + `FileSystemWriter` | File and directory operations             |
-| `Configuration/`           | `ConfigurationProvider`                 | Settings management                       |
-| `Terminal/`                | `TerminalProvider`                      | PTY terminal creation and I/O             |
-| `Document/`                | `DocumentProvider`                      | Text document open, save, apply changes   |
-| `UserInterface/`           | `UserInterfaceProvider`                 | Dialogs, messages, quick pick             |
-| `Search/`                  | `SearchProvider`                        | File and text search                      |
-| `Secret/`                  | `SecretProvider`                        | OS keychain-backed secret storage         |
-| `Storage/`                 | `StorageProvider`                       | Key-value persistent storage              |
-| `Workspace/`               | `WorkspaceProvider`                     | Workspace folder and file management      |
-| `LanguageFeature/`         | `LanguageFeatureProviderRegistry`       | Hover, completion, definition, references |
-| `Command/`                 | `CommandExecutor`                       | Command registration and execution        |
-| `Debug/`                   | `DebugService`                          | Debug session management                  |
-| `SourceControlManagement/` | `SourceControlManagementProvider`       | Git and SCM integration                   |
-| `TreeView/`                | `TreeViewProvider`                      | Tree data provider                        |
-| `Webview/`                 | `WebviewProvider`                       | Webview panel management                  |
-| `StatusBar/`               | `StatusBarProvider`                     | Status bar item management                |
-| `Diagnostic/`              | `DiagnosticManager`                     | Problem markers                           |
-| `ExtensionManagement/`     | `ExtensionManagementService`            | Extension lifecycle                       |
+        TRAITS --> AE
+        AE --> ENV
+        ENV -->|"capability resolution"| TRAITS
+        DTO --> TRAITS
+        DTO --> AE
+        ERR --> TRAITS
+        ERR --> AE
+        TRANS --> ENV
+        TEL -.->|"emit events"| TRAITS
+    end
 
-## The ActionEffect System
+    AE -->|"execute via"| RUNTIME["ApplicationRunTime<br/>(Echo-backed)"]
+```
 
-The `ActionEffect` type is a boxed async closure parameterized by capability,
-error, and output types:
+## Overview 📋
+
+`Common` defines the architectural language of the entire native platform:
+
+- Every service interface, data contract, and communication pattern originates here
+- `Mountain`, `Air`, `Echo`, `Mist`, `Rest`, `SideCar`, and `Grove` all depend on `Common`'s definitions
+
+| Attribute    | Value                                                                           |
+| ------------ | ------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                           |
+| Crate type   | Library (no binary)                                                             |
+| Dependencies | `tauri`, `async-trait`, `serde`, `thiserror`, `url`, `prometheus`, `posthog-rs` |
+| Consumers    | `Mountain`, `Air`, `Echo`, `Mist`, `Rest`, `SideCar`, `Grove`                   |
+
+---
+
+## Architecture Principles 📐
+
+| Principle                    | Description                                                                               | Key Components                             |
+| ---------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------ |
+| **Pure Abstraction**         | Every application capability is an abstract `async trait` with no concrete implementation | All `*Provider.rs` and `*Manager.rs` files |
+| **Declarative Effects**      | Operations are `ActionEffect` values separating description from execution                | `Effect/` module                           |
+| **Trait-Based DI**           | Compile-time dependency injection via `Environment` and `Requires` traits                 | `Environment/` module                      |
+| **Universal Error Handling** | Single `CommonError` enum covering all failure scenarios                                  | `Error/CommonError.rs`                     |
+| **Contract-First Design**    | DTOs and errors defined before implementations                                            | `DTO/`, `Error/` modules                   |
+| **Minimal Dependencies**     | Independent from `Tauri`, `gRPC`, or any specific application logic                       | `Cargo.toml`                               |
+
+---
+
+## Trait Architecture 📋
+
+Every application capability is defined as an async trait:
+
+```rust
+#[async_trait]
+pub trait FileSystem: Send + Sync {
+    async fn read_file(&self, path: &Path) -> Result<Vec<u8>, CommonError>;
+    async fn write_file(&self, path: &Path, content: &[u8]) -> Result<(), CommonError>;
+    async fn stat(&self, path: &Path) -> Result<FileStat, CommonError>;
+    async fn read_dir(&self, path: &Path) -> Result<Vec<DirEntry>, CommonError>;
+    async fn create_dir(&self, path: &Path) -> Result<(), CommonError>;
+    async fn remove_file(&self, path: &Path) -> Result<(), CommonError>;
+    async fn rename(&self, from: &Path, to: &Path) -> Result<(), CommonError>;
+    async fn copy(&self, from: &Path, to: &Path) -> Result<(), CommonError>;
+    async fn watch(&self, path: &Path) -> Result<FileWatcher, CommonError>;
+}
+```
+
+### Defined Service Traits 📋
+
+| Module                     | Trait                                   | Domain          | Methods                                                           |
+| -------------------------- | --------------------------------------- | --------------- | ----------------------------------------------------------------- |
+| `FileSystem/`              | `FileSystemReader` + `FileSystemWriter` | File operations | read, write, stat, readdir, mkdir, remove, rename, copy, watch    |
+| `Configuration/`           | `ConfigurationProvider`                 | Settings        | get, set, has, inspect, onDidChange, keys                         |
+| `Terminal/`                | `TerminalProvider`                      | PTY             | create, write, resize, onData, onExit, list                       |
+| `UserInterface/`           | `UserInterfaceProvider`                 | Dialogs         | open, save, message, input, quickPick                             |
+| `Document/`                | `DocumentProvider`                      | Text documents  | open, save, saveAs, applyChanges                                  |
+| `ExtensionManagement/`     | `ExtensionManagementService`            | Extensions      | scan, install, uninstall, list, getManifest                       |
+| `Search/`                  | `SearchProvider`                        | Search          | search, findInFile, replace                                       |
+| `Secret/`                  | `SecretProvider`                        | Keychain        | get, set, delete, onDidChange                                     |
+| `Storage/`                 | `StorageProvider`                       | KV storage      | get, set, delete, list, clear                                     |
+| `Workspace/`               | `WorkspaceProvider`                     | Workspace       | getWorkspaceFolder, findFiles, applyEdit                          |
+| `LanguageFeature/`         | `LanguageFeatureProviderRegistry`       | Language        | hover, completion, definition, references, codeAction, formatting |
+| `Command/`                 | `CommandExecutor`                       | Commands        | execute, register, unregister, getAll                             |
+| `Debug/`                   | `DebugService`                          | Debugging       | start, stop, step, breakpoints                                    |
+| `Testing/`                 | `TestController`                        | Testing         | run, discover, results                                            |
+| `SourceControlManagement/` | `SourceControlManagementProvider`       | SCM             | status, commit, push, pull, diff                                  |
+| `Synchronization/`         | `SynchronizationProvider`               | Sync            | push, pull, merge, resolve                                        |
+| `IPC/`                     | `IPCProvider`                           | Communication   | send, receive, proxy                                              |
+| `Webview/`                 | `WebviewProvider`                       | Webviews        | create, sendMessage, dispose                                      |
+| `TreeView/`                | `TreeViewProvider`                      | Tree views      | getChildren, getParent, resolveItem                               |
+| `StatusBar/`               | `StatusBarProvider`                     | Status bar      | setItem, updateItem, removeItem                                   |
+| `Diagnostic/`              | `DiagnosticManager`                     | Diagnostics     | set, clear, getAll                                                |
+| `Keybinding/`              | `KeybindingProvider`                    | Keybindings     | resolve, onDidChange                                              |
+
+---
+
+## ActionEffect System ⚡
+
+The `ActionEffect` system treats operations as data structures rather than direct function calls. This declarative approach enables:
+
+- **Composition** -- Combine effects sequentially or in parallel
+- **Testing** -- Effects are data, easy to mock and assert
+- **Controlled execution** -- Effects are executed by a runtime
+
+### Type Signature 📝
 
 ```rust
 pub struct ActionEffect<TCapability, TError, TOutput> {
@@ -82,45 +160,101 @@ pub struct ActionEffect<TCapability, TError, TOutput> {
 }
 ```
 
-The capability parameter (`TCapability`) is the trait the effect needs to run.
-The effect does not hold a reference to any concrete implementation - it only
-records what it needs. The `ApplicationRunTime` resolves the capability from its
-environment and calls the function.
+- **TCapability**: The environment/capability type required for execution
+- **TError**: The error type that may result
+- **TOutput**: The successful result type
 
-Effects compose without nesting callback chains:
+### Effect Composition 🔄
 
 ```rust
-// Sequential: run effect2 with the result of effect1
-let pipeline = effect1.and_then(|result| effect2(result));
+// Sequential composition
+let sequential = effect1.and_then(|result1| effect2(result1));
 
-// Parallel: run both effects and collect results
-let both = effect1.zip(effect2);
+// Parallel composition
+let parallel = effect1.zip(effect2);
 
-// Error recovery: fall back to a secondary effect on failure
-let resilient = primary_effect.fallback(backup_effect);
+// Error recovery
+let resilient = effect.fallback(backup_effect);
+
+// Mapping
+let mapped = effect.map(|result| transform(result));
 ```
 
-## Dependency Direction
+### Execution ▶️
 
-The dependency graph flows one way: every consumer depends on Common, Common
-depends on nothing from the Land workspace.
-
-```
-Mountain  --depends on-->  Common
-Air       --depends on-->  Common
-Echo      --depends on-->  Common
-Mist      --depends on-->  Common
-Tests     --depends on-->  Common (via mock implementations)
+```rust
+// Effects are executed by ApplicationRunTime
+let runtime = ApplicationRunTime::new(environment);
+let result: Result<Vec<u8>, CommonError> = runtime
+    .execute_effect(ActionEffect::ReadFile { path: "/tmp/test.txt" })
+    .await;
 ```
 
-This direction is what enables mock-based testing. A test that exercises
-Mountain's file-open logic only needs a mock `FileSystemReader` implementation -
-it does not need a running Tauri process, a real file system, or a connected
-Cocoon.
+---
 
-## CommonError
+## Environment and Dependency Injection 🧩
 
-A single error enum used across every service domain:
+`Common` implements compile-time dependency injection through the `Environment` and `Requires` traits:
+
+```rust
+// A component declares what capabilities it requires
+pub trait Requires<C> {
+    type Error;
+    async fn run(self, env: &C) -> Result<Self::Output, Self::Error>;
+}
+
+// An environment provides concrete implementations
+pub trait Environment {
+    type FileSystem: FileSystem;
+    type Configuration: ConfigurationProvider;
+    type Terminal: TerminalProvider;
+    // ... one associated type per capability
+}
+```
+
+### Capability Resolution Flow 🗺️
+
+```
+ActionEffect<C, E, T>
+    |
+    v
+ApplicationRunTime
+    |
+    v
+Environment Provider
+    |  - Resolves concrete capability C
+    |  - Environment::FileSystem -> MountainFileSystem
+    |  - Environment::Terminal -> MountainTerminal
+    |
+    v
+Concrete Capability (e.g., Mountain's FileSystem impl)
+    |
+    v
+Effect executed with concrete implementation
+```
+
+---
+
+## Data Transfer Objects 📦
+
+`Common` defines all `DTO`s shared across components:
+
+| DTO                   | Module                | Fields                                   | Used By                  |
+| --------------------- | --------------------- | ---------------------------------------- | ------------------------ |
+| `FileStat`            | `FileSystem/DTO`      | path, type, size, mtime, permissions     | All file ops             |
+| `InitData`            | `Workspace`           | workspace info, extensions, config       | Mountain->Cocoon startup |
+| `TerminalOptions`     | `Terminal`            | name, shellPath, cwd, env, cols, rows    | Terminal creation        |
+| `ExtensionManifest`   | `ExtensionManagement` | id, version, publisher, activationEvents | Extension mgmt           |
+| `ConfigurationTarget` | `Configuration`       | Global, Workspace, WorkspaceFolder       | Config ops               |
+| `SearchOptions`       | `Search`              | pattern, include, exclude, maxResults    | Search ops               |
+| `WorkspaceEditDTO`    | `DTO/`                | edits, fileCreates, fileDeletes          | Workspace edits          |
+| `TransportConfig`     | `Transport`           | timeout, retry config                    | Transport configuration  |
+
+---
+
+## CommonError ⚠️
+
+A single error type covering all failure modes across every service domain:
 
 ```rust
 pub enum CommonError {
@@ -136,52 +270,89 @@ pub enum CommonError {
 }
 ```
 
-Every `async trait` method in Common returns `Result<T, CommonError>`. Mountain
-maps its internal errors into `CommonError` variants at the implementation
-boundary. This ensures callers never need to match against a service-specific
-error hierarchy.
+---
 
-## Source Structure
+## Transport Layer 🔗
 
-```
-Common/Source/
-    Library.rs              # Crate root; declares all modules
-    Effect/                 # ActionEffect type and ApplicationRunTime trait
-    Environment/            # Environment, Requires, HasEnvironment traits
-    Error/                  # CommonError enum
-    DTO/                    # Shared DTOs (re-exports from service modules)
-    Transport/              # TransportStrategy trait and TransportConfig
-    Telemetry/              # Dual-pipe PostHog + OTLP emit surface
-    Utility/                # Serialization helpers
-    Command/                # CommandExecutor trait
-    Configuration/          # ConfigurationProvider trait and DTOs
-    CustomEditor/           # Custom editor provider trait
-    Debug/                  # DebugService trait
-    Diagnostic/             # DiagnosticManager trait
-    Document/               # DocumentProvider trait
-    ExtensionManagement/    # ExtensionManagementService trait
-    FileSystem/             # FileSystemReader + FileSystemWriter traits and DTOs
-    IPC/                    # IPCProvider trait and DTOs
-    Keybinding/             # KeybindingProvider trait
-    LanguageFeature/        # LanguageFeatureProviderRegistry trait and DTOs
-    Output/                 # OutputChannelManager trait
-    Search/                 # SearchProvider trait
-    Secret/                 # SecretProvider trait
-    SourceControlManagement/ # SCM provider trait and DTOs
-    StatusBar/              # StatusBarProvider trait and DTOs
-    Storage/                # StorageProvider trait
-    Synchronization/        # SynchronizationProvider trait
-    Terminal/               # TerminalProvider trait
-    Testing/                # TestController trait
-    TreeView/               # TreeViewProvider trait and DTOs
-    UserInterface/          # UserInterfaceProvider trait and DTOs
-    Webview/                # WebviewProvider trait and DTOs
-    Workspace/              # WorkspaceProvider trait
+`Common` provides a transport-agnostic communication interface:
+
+```rust
+pub trait TransportStrategy: Send + Sync {
+    type Error: std::error::Error + Send + Sync + 'static;
+    async fn connect(&self) -> Result<(), Self::Error>;
+    async fn send(&self, request: &[u8]) -> Result<Vec<u8>, Self::Error>;
+    async fn close(&self) -> Result<(), Self::Error>;
+    fn is_connected(&self) -> bool;
+    fn transport_type(&self) -> TransportType;
+}
 ```
 
-## Related Documentation
+`Common` defines the trait surface and `TransportConfig`; concrete transports (`gRPCTransport`, `IPCTransport`, `WASMTransport`, `MistTransport`) live in `Grove`.
 
-- [Common Deep Dive](https://Editor.Land/Doc/deep-dive-common)
-- [Mountain](https://Editor.Land/Doc/mountain)
-- [Echo](https://Editor.Land/Doc/echo)
-- [Source Code](https://github.com/CodeEditorLand/Common)
+---
+
+## Telemetry Module 📡
+
+`Common`'s telemetry module provides a dual-pipe emit surface:
+
+| Pipe    | Crate           | Configuration                                  |
+| ------- | --------------- | ---------------------------------------------- |
+| PostHog | `posthog-rs`    | `TELEMETRY_POSTHOG_KEY`, `TELEMETRY_DISABLE`   |
+| OTLP    | `opentelemetry` | `TELEMETRY_OTLP_ENDPOINT`, `TELEMETRY_DISABLE` |
+
+- Honors the `Disable=true` build-time flag to completely remove telemetry from the binary
+
+---
+
+## Service Domain Map 🗺️
+
+```
+Common/
++-- Command/            - Command execution and registration
++-- Configuration/      - Settings and configuration management
++-- CustomEditor/       - Custom (webview-based) editor support
++-- Debug/              - Debugging session management
++-- Diagnostic/         - Diagnostics and problem markers
++-- Document/           - Text document management
++-- DTO/                - Shared data transfer objects
++-- Effect/             - ActionEffect system
++-- Environment/        - DI traits (Environment, Requires)
++-- Error/              - CommonError enum
++-- ExtensionManagement/ - Extension lifecycle
++-- FileSystem/         - File and directory operations
++-- IPC/                - Inter-process communication
++-- Keybinding/         - Keyboard shortcut resolution
++-- LanguageFeature/    - Language intelligence (hover, completion, etc.)
++-- Output/             - Output channel management
++-- Search/             - File and text search
++-- Secret/             - OS keychain-backed secrets
++-- SourceControlManagement/ - Git and SCM integration
++-- StatusBar/          - Status bar item management
++-- Storage/            - Key-value storage
++-- Synchronization/    - User data synchronization
++-- Telemetry/          - PostHog + OTLP telemetry
++-- Terminal/           - PTY terminal management
++-- Testing/            - Test controller
++-- Transport/          - Agnostic communication layer
++-- TreeView/           - Tree data provider
++-- UserInterface/      - Dialogs, messages, quick pick
++-- Webview/            - Webview panel management
++-- Workspace/          - Workspace and folder management
+```
+
+---
+
+## Related Documentation 📖
+
+- [Mountain](https://Editor.Land/Doc/mountain) -- Trait implementations
+- [Echo](https://Editor.Land/Doc/echo) -- Task scheduler integration
+- [Air](https://Editor.Land/Doc/air) -- Background daemon (`Common` consumer)
+- [RustInfrastructure](https://Editor.Land/Doc/rust-infrastructure) -- `Rust` backend components
+
+## Funding 💎
+
+Common is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
+
+---
+
+**Project Maintainers:** Source Open ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) | [GitHub Repository](https://github.com/CodeEditorLand/Common) | [Report an Issue](https://github.com/CodeEditorLand/Common/issues)

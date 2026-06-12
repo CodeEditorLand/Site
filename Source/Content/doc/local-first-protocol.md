@@ -9,32 +9,32 @@ description:
 
 Land is designed so that every core editor function works without a network
 connection and without an account. All persistent state is stored on the local
-device using platform-native mechanisms. Optional cloud services - update
-delivery, authentication for specific extensions - are provided by the Air
+device using platform-native mechanisms. Optional cloud services — update
+delivery, authentication for specific extensions — are provided by the **Air**
 daemon and the WebSite, but the editor starts, edits files, runs extensions, and
-saves state entirely offline. This page describes how the local-first design is
+saves state entirely offline. Below we describe how the local-first design is
 implemented and what it means for extension developers.
 
-## 💾　Editor State Storage
+## 💾 Editor State Storage
 
 All editor state is persisted locally through Mountain's `storage:set` and
-`storage:get` IPC handlers. The underlying store uses SQLite for structured data
-and the platform keychain (via Tauri's secure storage API) for secrets. There is
-no cloud sync layer in the storage IPC path.
+`storage:get` IPC handlers. The underlying store uses **SQLite** for structured
+data and the platform keychain (via Tauri's secure storage API) for secrets.
+There is no cloud sync layer in the storage IPC path.
 
 The storage is namespaced by extension ID. An extension writing to
 `context.workspaceState` or `context.globalState` calls Mountain's `storage:set`
 handler, which writes to SQLite at:
 
 ```
-~/.land/storage/<extension-id>.db    # macOS / Linux
-%APPDATA%\Land\storage\<extension-id>.db    # Windows
+~/.land/storage/<extension-id>.db         # macOS / Linux
+%APPDATA%\Land\storage\<extension-id>.db  # Windows
 ```
 
 No data leaves the device unless the extension itself initiates a network
 request.
 
-## 🧩　Extension State via Memento
+## 🧩 Extension State via Memento
 
 The `vscode.Memento` interface (`context.workspaceState`, `context.globalState`)
 is backed by Mountain's `Storage.Get` and `Storage.Set` IPC calls. Extension
@@ -48,19 +48,20 @@ The Memento implementation does not batch writes or require a flush call. Each
 handler, which writes through to SQLite synchronously within the Tauri async
 runtime.
 
-## 🔒　Extension Secrets
+## 🔒 Extension Secrets
 
 `context.secrets` is backed by Mountain's `encryption:encrypt` and
-`encryption:decrypt` handlers, which use AES-256-GCM with a machine-stable key
-derived from a SHA-256 hash of the machine UUID. Encrypted values are stored in
-the same SQLite database as other state. Secrets do not leave the device.
+`encryption:decrypt` handlers, which use **AES-256-GCM** with a machine-stable
+key derived from a SHA-256 hash of the machine UUID. Encrypted values are stored
+in the same SQLite database as other state. Secrets never leave the device.
 
-> [!IMPORTANT] Because the encryption key is derived from the machine UUID,
-> secrets are not portable across machines. An extension that stores a token on
-> one machine cannot read it on another. This matches the VS Code behavior for
+> [!IMPORTANT]
+> Because the encryption key is derived from the machine UUID,
+> secrets are **not portable** across machines. An extension that stores a token
+> on one machine cannot read it on another. This matches VS Code's behavior for
 > `context.secrets` on desktop.
 
-## 📁　File System Operations
+## 📁 File System Operations
 
 File read, write, watch, and directory operations go directly through Mountain's
 native filesystem handlers to the OS. There is no cloud sync layer, no conflict
@@ -73,15 +74,15 @@ extension-provided `FileSystemProvider` implementations registered via
 `vscode.workspace.registerFileSystemProvider`. The core filesystem IPC path
 remains local-only.
 
-## ☁️　Air: Optional Services
+## ☁️ Air: Optional Services
 
-The Air daemon provides optional services that the editor does not depend on for
-core function:
+The **Air** daemon provides optional services that the editor does not depend on
+for core function:
 
-- **Update delivery**: Air checks for new Land releases and downloads update
+- **Update delivery** — Air checks for new Land releases and downloads update
   packages. If Air is not running, the editor continues to work; no update
   prompt appears.
-- **Authentication**: Air can broker OAuth tokens for extensions that integrate
+- **Authentication** — Air can broker OAuth tokens for extensions that integrate
   with Editor.Land accounts. Extensions requiring GitHub OAuth or other
   third-party OAuth (Copilot, GitHub Pull Requests) still require their own auth
   flows, which are not currently implemented in the core editor.
@@ -89,7 +90,7 @@ core function:
 The editor starts correctly with Air absent. No startup path has a hard
 dependency on Air being reachable.
 
-## 📊　Telemetry: Opt-In Only
+## 📊 Telemetry: Opt-In Only
 
 Telemetry is disabled in production builds by default (`Capture=false`,
 `Report=false` in `.env.Land.Production`). The PostHog integration and OTLP
@@ -100,15 +101,15 @@ Session recording (`Replay`) and surveys (`Ask`) are also off by default and
 must be individually enabled. No telemetry data is collected from users who have
 not opted in.
 
-## 📜　CC0 License and Vendor Lock-In
+## 📜 CC0 License and Vendor Lock-In
 
-Land is released under the Creative Commons CC0 Universal public domain
+Land is released under the **Creative Commons CC0 Universal** public domain
 dedication. This means there is no license restriction on forking, modifying, or
 redistributing the editor or any of its components. Combined with the
 local-first storage design, there is no mechanism by which a vendor could lock
 users into a proprietary data format or a mandatory cloud service.
 
-## 📝　What Local-First Means for Extension Developers
+## 📝 What Local-First Means for Extension Developers
 
 - **Extension state is always local.** `context.workspaceState`,
   `context.globalState`, and `context.secrets` write to the local device. There

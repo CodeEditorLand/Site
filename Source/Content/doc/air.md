@@ -8,140 +8,301 @@ description:
     editor process."
 ---
 
-Air is the persistent background sidecar daemon for FIDDEE. It runs as a
-standalone Rust binary alongside Mountain, surviving window closures and editor
-restarts, so resource-intensive operations never compete with user interaction.
-Mountain spawns Air at startup and communicates with it exclusively via the Vine
-gRPC protocol on port 50053.
+# Air: Background Daemon 🪁
 
-## Role in the System
+This document describes the `Air` background daemon:
 
-Air exists because certain operations are too disruptive to run in the main
-process. Downloading a multi-megabyte update payload blocks network bandwidth.
-Scanning a large workspace for symbols saturates I/O. Verifying cryptographic
-signatures consumes CPU time. Air absorbs all of this, freeing Mountain to stay
-responsive to keystrokes and renders.
+- A persistent `Rust` sidecar process that runs alongside `Mountain`
+- Handles resource-intensive operations to keep the main editor process responsive
+- Operations include: update management, file indexing, cryptographic operations, and background downloads
 
-| Component        | Role                                                                                |
-| ---------------- | ----------------------------------------------------------------------------------- |
-| Daemon process   | Persistent executable independent of the main window lifecycle                      |
-| gRPC server      | Hosts a local server on `[::1]:50053` accepting commands from Mountain              |
-| Update delegate  | Sole authority for modifying installation files of the parent application           |
-| Download manager | Handles large network transfers for extensions, language servers, and dependencies  |
-| File indexer     | Builds and maintains a persistent file index with symbol extraction for fast search |
-| Auth service     | Manages token lifecycle, credential storage, and cryptographic signing              |
-| Health monitor   | Periodically checks its own service health and reports status back to Mountain      |
+---
 
-## Services
+## Table of Contents
 
-Air exposes five services through its `BackgroundServices` gRPC interface.
+1. [Overview](#overview)
+2. [Architecture](#architecture)
+3. [Module Map](#module-map)
+4. [Services](#services)
+5. [Data Flow](#data-flow)
+6. [Startup Sequence](#startup-sequence)
+7. [Configuration](#configuration)
+8. [Related Documentation](#related-documentation)
 
-**UpdateService** owns the full update lifecycle: querying the update server for
-release manifests, downloading artifacts over HTTPS with SHA-256 verification,
-staging the new binary, and applying the update on the next restart. Rollback
-restores the previous version on failure.
+---
 
-**DownloadService** provides resilient background downloads for any large
-asset - extension packages, language server binaries, grammar files. Downloads
-use HTTP Range headers for resume capability, exponential backoff on retry, and
-configurable rate limiting. Progress streams back to Mountain via gRPC so the
-status bar can reflect bytes received in real time.
+```mermaid
+graph TB
+    subgraph Air["Air Daemon"]
+        GRPC["gRPC Server<br/>(tonic, port 50053)"]
+        UM["Update Manager<br/>check / verify / apply"]
+        DL["Downloader<br/>resilient pause/resume"]
+        AS["Auth Service<br/>crypto / signing"]
+        IX["Indexer<br/>file content / search"]
+        HC["Health Check<br/>watchdog / metrics"]
+        HTTP["HTTP Client<br/>reqwest"]
+        MIST["Mist DNS<br/>local resolver"]
+        CFG["Configuration<br/>hot-reload"]
 
-**AuthService** manages authentication tokens for cloud services. Credentials
-are stored with AES-256-GCM encryption using a machine-stable key. The service
-handles token refresh, key rotation, and secure credential storage. OAuth login
-flows and user account management are handled by the WebSite element, not by
-Air; Air's scope is background token lifecycle and cryptographic operations
-within the running editor.
+        GRPC --> UM
+        GRPC --> DL
+        GRPC --> AS
+        GRPC --> IX
+        GRPC --> HC
+        DL --> HTTP
+        AS --> HTTP
+        UM --> HTTP
+        HTTP --> MIST
+        GRPC -.-> CFG
+    end
 
-**IndexService** builds a searchable content index of the workspace. A file
-system walker discovers all files respecting `.gitignore` patterns, extracts
-content and symbol tokens, and constructs an inverted index. File system change
-events trigger incremental updates so the index stays current without a full
-rescan.
-
-**HealthService** provides multi-level health checks - alive, responsive,
-functional - for each internal service, with automatic recovery actions and
-Prometheus-compatible metric emission.
-
-## Lifecycle
-
-Mountain spawns Air during its startup sequence if no existing Air process is
-detected (enforced via PID lock). Once running, both sides exchange heartbeats
-every five seconds. Mountain detects a dead Air process after three missed
-heartbeats and respawns it.
-
-```
-Mountain starts
-  -> AirManagement checks for existing Air process
-  -> Spawns Air binary if not running
-  -> gRPC connection established on [::1]:50053
-  -> Air registers available services
-  -> Heartbeat monitoring begins (5s interval)
-
-Mountain shuts down
-  -> SIGTERM sent to Air
-  -> Graceful drain (5s timeout)
-  -> Force kill if not exited
+    MOUNTAIN["Mountain<br/>ProcessManagement"] -->|"gRPC: PerformAction"| GRPC
 ```
 
-Air persists across editor window close/reopen cycles. A staged update download
-initiated before a window close continues to completion while Air keeps running,
-so the update is ready when the user reopens the editor.
+## Overview 📋
 
-## Port Allocation
+| Attribute    | Value                                                          |
+| ------------ | -------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                          |
+| Crate type   | Binary                                                         |
+| IPC          | `gRPC` (`tonic`) on port 50053                                 |
+| Dependencies | `tokio`, `tonic`, `prost`, `reqwest`, `ring`, `Common`, `Mist` |
+| Managed by   | `Mountain` `ProcessManagement`                                 |
 
-| Process | Port  | Protocol                | Purpose                    |
-| ------- | ----- | ----------------------- | -------------------------- |
-| Air     | 50053 | Vine / Air.proto (gRPC) | Background daemon services |
-| Cocoon  | 50052 | Vine.proto (gRPC)       | Extension host services    |
+---
 
-## Source Structure
+## Architecture 🏗️
+
+`Air` is structured around a central `gRPC` server that receives task delegation from `Mountain`. Internal modules handle distinct responsibilities.
 
 ```
-Air/Source/
-    Binary.rs                # Entry point; bootstraps Tokio runtime
-    Binary/                  # Daemon lifecycle (startup, shutdown, monitoring)
-    Daemon/                  # Singleton enforcement, PID locking
-    Initialize/              # Config loading, port binding, gRPC server construction
-    CLI/                     # Command-line argument parsing
-    Vine/                    # gRPC server implementation (tonic + prost bindings)
-    ApplicationState/        # Central coordination: connections, service states
-    Configuration/           # TOML config with schema validation and hot reload
-    Updates/                 # Version check, download, verify, staged install, rollback
-    Downloader/              # Parallel downloads, chunk transfers, rate limiting
-    Authentication/          # Token management, AEAD encryption, key rotation
-    Indexing/                # File index, symbol extraction, FS watch
-    HealthCheck/             # Multi-level health monitoring
-    Resilience/              # Retry with backoff, circuit breaker, bulkhead
-    Security/                # Checksum verification, AES-GCM credential storage
-    HTTP/                    # Secure HTTP client with Mist DNS integration
-    Logging/                 # Structured JSON logging
-    Metrics/                 # Prometheus-compatible metrics
-    Tracing/                 # Distributed tracing
+                    +------------------------------------------+
+                    |               Mountain                    |
+                    |  ProcessManagement/AirManagement.rs       |
+                    |  Sends work via PerformAction gRPC call   |
+                    +-------------------+----------------------+
+                                        |
+                                        | gRPC (port 50053)
+                                        v
++----------------------------------------------------------------+
+|                        Air Daemon                               |
+|                                                                 |
+|  +------------------+  +------------------+  +----------------+ |
+|  | gRPC Server      |  | Update Manager   |  | Downloader     | |
+|  | (tonic)          |  | (check, verify,  |  | (resilient     | |
+|  | routes tasks     |  |  apply patches)  |  |  pause/resume) | |
+|  +------------------+  +------------------+  +----------------+ |
+|                                                                 |
+|  +------------------+  +------------------+  +----------------+ |
+|  | Auth Service     |  | Indexer          |  | Health Check   | |
+|  | (crypto, signing)|  | (file content    |  | (watchdog,     | |
+|  |                  |  |  search index)   |  |  metrics)      | |
+|  +------------------+  +------------------+  +----------------+ |
+|                                                                 |
+|  +------------------+  +------------------+  +----------------+ |
+|  | HTTP Client      |  | Mist DNS         |  | Configuration | |
+|  | (reqwest)        |  | (local resolver) |  | (hot-reload)   | |
+|  +------------------+  +------------------+  +----------------+ |
++----------------------------------------------------------------+
 ```
 
-## Key Dependencies
+---
 
-| Crate                | Purpose                                                |
-| -------------------- | ------------------------------------------------------ |
-| `tonic` / `prost`    | gRPC server and Protocol Buffer code generation        |
-| `tokio`              | Async runtime for concurrent I/O                       |
-| `reqwest` / `rustls` | HTTPS downloads with TLS verification                  |
-| `ring` / `zeroize`   | Cryptographic operations and secure credential storage |
-| `notify` / `ignore`  | File system event watching for index updates           |
-| `walkdir`            | Recursive directory traversal for file indexing        |
-| `config` / `toml`    | Configuration loading with hot-reload support          |
-| `sysinfo`            | System resource monitoring for health checks           |
+## Module Map 🗺️
 
-> [!IMPORTANT] Air is not a public update server. The update delivery
-> infrastructure, release signing, and installer distribution path are being
-> prepared separately. The source modules are active; the public release channel
-> is not yet operational.
+| Path                      | Purpose                                                                        |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| `Source/Binary/Binary.rs` | Binary entry point; bootstraps `Tokio` runtime, starts daemon                  |
+| `Source/Initialize/`      | Startup sequence: config loading, `gRPC` binding, state initialization         |
+| `Source/Vine/`            | `gRPC` server implementation using `tonic`; routes incoming calls              |
+| `Source/Updates/`         | Update lifecycle: check for updates, download, verify signature, apply patches |
+| `Source/Downloader/`      | Resilient download manager with pause, resume, retry, and progress reporting   |
+| `Source/Authentication/`  | Cryptographic signing of binaries, secure token storage                        |
+| `Source/HTTP/Client.rs`   | HTTP client configured to use `Mist` local DNS resolver                        |
+| `Source/HealthCheck/`     | Self-monitoring and watchdog for process health                                |
+| `Source/Metrics/`         | Telemetry collection and reporting to `Mountain`                               |
+| `Source/Logging/`         | Structured tracing output via the `tracing` crate                              |
+| `Source/Indexing/`        | File content indexing for workspace search                                     |
+| `Source/CLI/`             | Command-line argument parsing for daemon startup options                       |
+| `Source/Resilience/`      | Retry logic and circuit breakers for network operations                        |
+| `Source/Security/`        | Signature verification and secure storage utilities                            |
+| `Source/Configuration/`   | Runtime configuration loading with hot-reload support                          |
+| `Source/Library.rs`       | Library root exposing the public API for integration tests                     |
+| `Source/Daemon/`          | Daemon lifecycle management (start, stop, restart)                             |
 
-## Related Documentation
+### gRPC Service Definition (Vine/Air.proto) 📜
 
-- [Air Deep Dive](https://Editor.Land/Doc/deep-dive-air)
-- [Mountain](https://Editor.Land/Doc/mountain)
-- [Vine](https://Editor.Land/Doc/vine)
-- [Source Code](https://github.com/CodeEditorLand/Air)
+```protobuf
+service BackgroundServices {
+    // Registration and lifecycle
+    rpc Connect(ConnectRequest) returns (ConnectResponse);
+    rpc Disconnect(DisconnectRequest) returns (DisconnectResponse);
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+
+    // Task execution
+    rpc PerformAction(ActionRequest) returns (ActionResponse);
+    rpc CancelAction(CancelRequest) returns (CancelResponse);
+
+    // Health
+    rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+    rpc GetStatus(StatusRequest) returns (StatusResponse);
+}
+```
+
+---
+
+## Services 🔌
+
+### Update Manager 🔄
+
+The update manager owns the full lifecycle of application updates:
+
+| Phase    | Operation        | Description                                    |
+| -------- | ---------------- | ---------------------------------------------- |
+| Check    | `CheckForUpdate` | HTTP GET to update server for release manifest |
+| Verify   | `VerifyChecksum` | SHA-256 verification of downloaded artifact    |
+| Stage    | `StageUpdate`    | Cache update binary in staging directory       |
+| Apply    | `ApplyUpdate`    | Replace running binary on next restart         |
+| Rollback | `RollbackUpdate` | Restore previous version on failure            |
+
+### Download Manager 📥
+
+The resilient download manager handles extension downloads, language server binaries, and dependency fetching:
+
+| Feature    | Implementation                                        |
+| ---------- | ----------------------------------------------------- |
+| Resume     | HTTP Range headers for partial download resume        |
+| Retry      | Exponential backoff with configurable max attempts    |
+| Progress   | Streaming progress reporting to `Mountain` via `gRPC` |
+| Bandwidth  | Configurable rate limiting per download               |
+| Concurrent | Parallel download queue with configurable concurrency |
+
+### Indexing Service 🔍
+
+File indexing builds and maintains a searchable content index of the workspace:
+
+1. File system walker discovers files (respecting `.gitignore` and exclude patterns)
+2. Language-aware content extraction (plain text, code tokens, symbols)
+3. Inverted index construction for fast text search
+4. Incremental indexing on file system change events
+5. Index persistence across daemon restarts
+
+### Authentication Service 🔐
+
+Manages sensitive cryptographic operations:
+
+- Binary signing for update authenticity verification
+- Secure token storage for remote service authentication
+- Login flow orchestration for cloud services
+- Key generation and rotation for local encryption
+
+---
+
+## Data Flow 📊
+
+### Update Check Flow 🔄
+
+```
+Mountain triggers update check
+    |
+    v
+Air gRPC server receives CheckForUpdate
+    |
+    v
+Update Manager sends HTTP GET to update server
+    |
+    +---> Server responds with release manifest
+    |       (version, URL, checksum, signature)
+    |
+    v
+Update Manager verifies response signature
+    |
+    v
+Air returns update metadata to Mountain
+    |
+    v
+Mountain displays update notification to user
+```
+
+### Download with Progress Flow 📥
+
+```
+Mountain calls PerformAction(StartDownload { url, target })
+    |
+    v
+Download Manager begins HTTP download with Range support
+    |
+    +---> Streaming progress events: bytesReceived, totalBytes, speed
+    |        Mountain relays progress to Wind (UI progress bar)
+    |
+    +---> On complete: SHA-256 verification
+    +---> On failure: retry with backoff (up to 3 attempts)
+    +---> On all retries exhausted: return error to Mountain
+    |
+    v
+Download Manager returns ActionResponse { success, filePath }
+```
+
+---
+
+## Startup Sequence 🚀
+
+```
+1. Mountain spawns Air binary via ProcessManagement
+   - Sets environment: VINE_PORT, MIST_PORT, DATA_DIR, LOG_LEVEL
+   - Watches process health via heartbeat
+
+2. Air Binary::main() executes
+   - Parses CLI arguments
+   - Initializes tracing/logging
+   - Loads Configuration (with hot-reload)
+
+3. Air starts gRPC server on port 50053
+   - Registers BackgroundServices service handlers
+   - Begins listening for incoming connections
+
+4. Air sends Connect request to Mountain
+   - Registers available services: [updater, indexer, auth, downloader]
+   - Exchanges version and capability information
+
+5. Heartbeat monitoring begins
+   - Both sides send Heartbeat every 5 seconds
+   - Air includes resource usage metrics in heartbeat
+   - Mountain detects timeout after 3 missed heartbeats
+
+6. Air signals ready for task processing
+   - Mountain begins dispatching background work
+```
+
+---
+
+## Configuration ⚙️
+
+`Air` reads configuration from environment variables and supports hot-reload via file watching:
+
+| Variable                   | Default            | Description                           |
+| -------------------------- | ------------------ | ------------------------------------- |
+| `VINE_PORT`                | `50053`            | `gRPC` server port                    |
+| `MIST_PORT`                | `5380`             | `Mist` DNS server port                |
+| `DATA_DIR`                 | `~/.land/data/air` | Data directory for caches and indexes |
+| `LOG_LEVEL`                | `info`             | Tracing log level                     |
+| `MAX_CONCURRENT_DOWNLOADS` | `3`                | Parallel download limit               |
+| `UPDATE_CHECK_INTERVAL`    | `3600`             | Update check interval in seconds      |
+
+---
+
+## Related Documentation 📖
+
+- [Common](https://Editor.Land/Doc/common) -- Abstract core traits
+- [Mountain](https://Editor.Land/Doc/mountain) -- Main backend application
+- [Mist](https://Editor.Land/Doc/mist) -- DNS isolation server
+- [Vine](https://Editor.Land/Doc/vine) -- `gRPC` protocol specification
+- [BuildPipeline](https://Editor.Land/Doc/build-pipeline) -- Build pipeline
+
+## Funding 💎
+
+Air is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
+
+---
+
+**Project Maintainers:** Source Open ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) | [GitHub Repository](https://github.com/CodeEditorLand/Air) | [Report an Issue](https://github.com/CodeEditorLand/Air/issues)

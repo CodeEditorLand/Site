@@ -7,266 +7,419 @@ description:
     Environment providers, and Cocoon process orchestration."
 ---
 
-Mountain is the Rust binary at the center of the Land editor. It owns the
-desktop window via Tauri v2, implements every native service trait defined in
-the `Common` crate, and orchestrates the Cocoon extension host sidecar over
-gRPC. Sky renders in the OS WebView hosted by Mountain, while all native OS
-operations flow through Mountain's Environment providers.
+This document describes `Mountain`, the primary `Tauri` application and native
+`Rust` backend for the `Land` code editor. `Mountain`:
 
-## Role in the Land Ecosystem
+- Implements every abstract trait from `Common`
+- Hosts the `gRPC` server
+- Manages application state
+- Dispatches `Tauri` commands
+- Orchestrates sidecar processes
 
-Mountain is the single native process that holds all OS-level capabilities. Wind
-and Sky communicate with it through Tauri commands and events. Cocoon
-communicates with it over the Vine gRPC protocol on port 50051. Mountain does
-not contain extension logic; it supplies the infrastructure that Cocoon
-consumes.
+---
 
-| Attribute     | Value                               |
-| ------------- | ----------------------------------- |
-| Language      | Rust (edition 2024, MSRV 1.95.0)    |
-| Framework     | Tauri v2                            |
-| gRPC          | tonic + prost                       |
-| Scheduler     | Echo (work-stealing)                |
-| Sidecar       | Cocoon (Node.js), Air (Rust daemon) |
-| IPC to Wind   | Tauri commands and events           |
-| IPC to Cocoon | Vine gRPC, port 50051               |
+## Table of Contents
 
-## Key Dependencies
+1. [Overview](#overview)
+2. [Application Lifecycle](#application-lifecycle)
+3. [Module Architecture](#module-architecture)
+4. [ApplicationState](#applicationstate)
+5. [Environment and Providers](#environment-and-providers)
+6. [Tauri Command System](#tauri-command-system)
+7. [gRPC Service (Vine)](#grpc-service-vine)
+8. [Process Management](#process-management)
+9. [IPC and Event System](#ipc-and-event-system)
+10. [Cache System](#cache-system)
+11. [Extension Management](#extension-management)
+12. [Related Documentation](#related-documentation)
 
-| Crate / Package        | Purpose                                               |
-| ---------------------- | ----------------------------------------------------- |
-| `Common`               | Abstract service traits and DTOs (local path dep)     |
-| `Echo`                 | Work-stealing async scheduler (local path dep)        |
-| `tauri`                | v2 - windowing, WebView host, command dispatch        |
-| `tokio`                | Async runtime                                         |
-| `tonic`                | gRPC server implementation                            |
-| `prost`                | Protocol Buffer code generation                       |
-| `portable-pty`         | Cross-platform native PTY for the integrated terminal |
-| `keyring`              | Secure OS keychain access                             |
-| `serde` / `serde_json` | Serialization and deserialization                     |
-| `log` / `env_logger`   | Structured logging                                    |
-| `tauri-plugin-dialog`  | Native open/save dialog surfaces                      |
-| `tauri-plugin-fs`      | File system plugin integration                        |
+---
 
-## Module Structure
+```mermaid
+sequenceDiagram
+    participant M as Mountain main()
+    participant TB as Tauri Builder
+    participant AS as AppState
+    participant ME as MountainEnvironment
+    participant ART as AppRuntime (Echo)
+    participant BK as Background Task
+    participant GRPC as gRPC Server (Vine)
+    participant COCOON as Cocoon (Node.js)
+    participant AIR as Air Daemon
 
-```text
-Source/
-├── ApplicationState/       Thread-safe state: documents, extensions, workspaces
-├── Binary/                 Tauri app lifecycle, command registration, startup, shutdown
-├── Command/                Domain-grouped Tauri command handlers
-├── Environment/            Concrete Common trait implementations (24+ providers)
-├── ExtensionManagement/    Extension discovery, manifest parsing, VSIX install
-├── FileSystem/             File-explorer tree-view provider for workspace sidebar
-├── IPC/                    Tauri IPC server, WindServiceHandlers, DevLog, Sky events
-├── ProcessManagement/      Cocoon sidecar lifecycle, Node.js binary resolution
-├── RPC/                    gRPC service handlers for Cocoon (CocoonService)
-├── RunTime/                ApplicationRunTime, Effect execution, graceful shutdown
-├── Track/                  Central request dispatcher routing requests into ActionEffects
-├── Vine/                   gRPC server and VineHost embedder trait
-├── Workspace/              .code-workspace parsing and multi-root folder resolution
-├── LandFixTier.rs          Runtime TierIPC banner logged at startup
-└── Library.rs              Library entry point, Tauri setup
+    M->>TB: Tauri::Builder::default()
+    TB->>AS: Create AppState (RwLock state)
+    TB->>ME: Create MountainEnvironment (24+ providers)
+    TB->>ART: Create AppRuntime (Echo scheduler)
+    TB->>BK: Spawn background init task
+
+    Note over BK: Post-setup initialization
+    BK->>BK: InitializeConfiguration()
+    BK->>BK: ExtensionManagement::scan()
+    BK->>GRPC: Start gRPC server on port 50051
+    BK->>COCOON: Spawn bootstrap-fork.js
+    COCOON-->>BK: $initialHandshake gRPC notification
+    BK->>COCOON: Send InitData payload
+    BK->>AIR: Spawn Air daemon (optional)
+    AIR-->>BK: Connect gRPC notification
+    Note over M,AIR: System ready for user interaction
 ```
 
-## ApplicationState
+## Overview 📋
 
-`ApplicationState` is a Tauri-managed struct holding every domain of mutable
-runtime state behind `Arc<RwLock<_>>` guards. It is the single source of truth
-for all concurrent state access in the process.
+`Mountain` is a `Rust` binary built with `Tauri` v2 and `tonic` `gRPC`:
 
-| State Domain   | Access Pattern                      | Persistence              |
-| -------------- | ----------------------------------- | ------------------------ |
-| Configuration  | `RwLock<ConfigurationMap>`          | `settings.json` on disk  |
-| Extensions     | `RwLock<ExtensionRegistry>`         | Scanned on startup       |
-| Workspaces     | `RwLock<Vec<Workspace>>`            | Window state on shutdown |
-| Open documents | `RwLock<HashMap<URI, EditorState>>` | Transient                |
-| Terminal state | `RwLock<HashMap<u64, Terminal>>`    | Transient                |
-| Feature state  | `RwLock<FeatureFlags>`              | Compiled + runtime gates |
+- It is the single native process that owns all OS-level capabilities (file
+  system, terminal PTY, clipboard, dialogs)
+- It coordinates the `Cocoon` extension host and `Air` background daemon
 
-State is accessed through Tauri's `State<ApplicationState>` in every command
-handler. Writes notify downstream listeners via Tauri events.
+| Attribute    | Value                                                                                                                             |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                                                                             |
+| Framework    | `Tauri` v2                                                                                                                        |
+| gRPC         | `tonic` + `prost`                                                                                                                 |
+| Dependencies | `Common`, `Echo`, `Mist`, `tauri`, `tauri-plugin-dialog`, `tauri-plugin-fs`, `tonic`, `prost`, `keyring`, `portable-pty`, `tokio` |
+| Sidecars     | `Cocoon` (`Node.js`), `Air` (`Rust` daemon)                                                                                       |
 
-## Environment Providers
+---
 
-`MountainEnvironment` implements every trait from `Common`. Each domain has a
-dedicated provider registered at startup via `OnceLock`.
+## Application Lifecycle 🔄
 
-| Provider                     | Common Trait          | Implementation                         |
-| ---------------------------- | --------------------- | -------------------------------------- |
-| `FileSystemProvider`         | `FileSystem`          | tokio::fs, parent dir creation         |
-| `DocumentProvider`           | `Document`            | Text model management                  |
-| `ConfigurationProvider`      | `Configuration`       | JSON file read/write with merge        |
-| `TerminalProvider`           | `Terminal`            | portable-pty PTY management            |
-| `StorageProvider`            | `Storage`             | JSON key-value, writes debounced 100ms |
-| `SecretProvider`             | `Secret`              | OS keyring (keyring crate)             |
-| `UserInterfaceProvider`      | `UserInterface`       | tauri-plugin-dialog                    |
-| `CommandProvider`            | `CommandExecutor`     | Command registry and dispatch          |
-| `SearchProvider`             | `Search`              | ripgrep-based file and text search     |
-| `WorkspaceProvider`          | `Workspace`           | Folder management                      |
-| `ExtensionManagementService` | `ExtensionManagement` | VSIX install and manifest scan         |
-| `EncryptionProvider`         | `Encryption`          | AES-256-GCM, machine UUID key          |
-| `FileWatcherProvider`        | `FileWatcher`         | fs notify watcher with fd table        |
-| `SourceControlProvider`      | `SCM`                 | SCM provider registry                  |
-| `DebugProvider`              | `Debug`               | Debug configuration provider registry  |
+### Startup Sequence 🚀
 
-`EncryptionProvider` implements VS Code's `EncryptionMainService` contract. It
-derives a machine-stable 256-bit key from `SHA-256("Land-Encryption-v1" +
-hardware UUID)` using `ring`, cached in a process-wide `OnceLock`. This key
-backs the `context.secrets` API that extensions use to store credentials and
-auth tokens encrypted at rest.
-
-## IPC Dispatcher (WindServiceHandlers)
-
-All Tauri IPC messages from Wind arrive at `IPC/WindServiceHandlers/mod.rs`.
-This file (~2500 lines) dispatches by method name and delegates to per-domain
-atomic handler files organized under `IPC/WindServiceHandlers/`. The dispatcher
-covers ~150+ named commands across 10 domain subdirectories. All handlers are
-fully implemented - there are zero `todo!()` or `unimplemented!()` stubs
-remaining.
-
-### Implemented handler domains
-
-| Domain         | Method prefix            | Handler location           |
-| -------------- | ------------------------ | -------------------------- |
-| Native host    | `nativeHost:*`           | `NativeHost/*.rs`          |
-| File system    | `file:*`                 | `FileSystem/Native/*.rs`   |
-| Terminal (PTY) | `localPty:*`             | `Terminal/*.rs`            |
-| Encryption     | `encryption:*`           | `Encryption/*.rs`          |
-| Cocoon bridge  | `cocoon:*`               | `Cocoon/*.rs`              |
-| Extension host | `extensionHostStarter:*` | `ExtensionHost/*.rs`       |
-| Tree view      | `tree:*`                 | `TreeView/GetChildren.rs`  |
-| Sky replay     | `sky:replay-events`      | `Sky/ReplayEvents.rs`      |
-| Update         | `update:*`               | `Update/UpdateService.rs`  |
-| Logger         | `logger:*`               | Inline fast-path in mod.rs |
-
-High-frequency commands (menubar, workspace, storage stubs) are short-circuited
-before the main dispatch arm to avoid unnecessary work on every keystroke.
-
-### Atomized handler pattern
-
-Each command lives in its own `.rs` file named after the command in PascalCase
-(e.g. `NativeHost/InstallShellCommand.rs`, `Encryption/Encrypt.rs`,
-`Terminal/LocalPTYCreateProcess.rs`). `mod.rs` acts as a pure dispatcher: it
-imports each handler type and routes commands to it, but contains no
-implementation logic itself. This pattern keeps individual handlers testable in
-isolation and prevents `mod.rs` from growing unboundedly as new commands are
-added.
-
-### TierIPC routing
-
-The `TierIPC` environment variable controls how Wind-sourced IPC is routed:
-
-| Value          | Behavior                                              |
-| -------------- | ----------------------------------------------------- |
-| `Mountain`     | Default. All calls handled by Mountain Tauri IPC.     |
-| `Node`         | All calls forwarded to Cocoon via `cocoon:request`.   |
-| `NodeDeferred` | Mountain first; Cocoon fallback on miss or undefined. |
-
-## Vine gRPC Server
-
-Mountain hosts a tonic-based gRPC server (`Vine` protocol) on port **50051**.
-Cocoon connects to this server after startup and keeps a persistent bidirectional
-stream open. Mountain also connects as a gRPC client to Cocoon's own gRPC server
-on port **50052** for reverse calls (language provider requests, push
-notifications). The server is defined in `Vine/` and the per-RPC handler logic
-lives in `RPC/CocoonService/`.
-
-| Direction          | Port  | Purpose                                          |
-| :----------------- | :---- | :----------------------------------------------- |
-| Cocoon → Mountain  | 50051 | Extension API calls, storage, UI operations      |
-| Mountain → Cocoon  | 50052 | Language providers, extension lifecycle, pushes  |
-
-Key gRPC handler categories:
-
-| Category           | Example RPCs                                                   |
-| ------------------ | -------------------------------------------------------------- |
-| Extension host     | `InitExtensionHost`, `ActivateExtension`                       |
-| Language providers | `ProvideHover`, `ProvideCompletion`, `ProvideInlineCompletion` |
-| File system        | `WatchFile`, `UnwatchFile`                                     |
-| Terminal           | `CreateTerminal`, `ResizeTerminal`, `WriteTerminal`            |
-| Notifications      | `ShowMessage`, `CreateStatusBarItem`                           |
-| Decorations        | `GetFileDecoration`, `SetDecorations`                          |
-| Tree view          | `GetChildren`, `RevealElement`                                 |
-
-## Process Management
-
-`ProcessManagement/CocoonManagement.rs` handles the full Cocoon sidecar
-lifecycle:
-
-1. Resolves the Node.js binary (checks nvm, fnm, asdf, volta, Homebrew, shipped
-   fallback).
-2. Spawns `node bootstrap-fork.js` with `VINE_PORT`, `VSCODE_PARENT_PID`, and
-   all TierIPC env vars set.
-3. Forwards Cocoon stdout/stderr to Mountain's log sink via
-   `tauri::async_runtime::spawn`.
-4. Waits up to 30 seconds for Cocoon to connect via gRPC (3 probe retries, then
-   5 connection retries).
-5. Sends the `ISandboxConfiguration` initialization payload once connected.
-6. Monitors health; restarts with exponential backoff on failure (max 3
-   restarts).
-7. Sends `SIGTERM` with a 5-second timeout, then `SIGKILL` on shutdown.
-
-`ProcessManagement/InitializationData.rs` constructs the `ISandboxConfiguration`
-and `IExtensionHostInitData` payloads, including all required URI fields
-consumed by VS Code's `NativeWorkbenchEnvironmentService`. The payload
-includes a complete `profiles` section with the default profile containing
-all 13 required URI fields (`userHome`, `appRoot`, `appSettingsHome`,
-`userDataPath`, `extensionsPath`, `logsPath`, `globalStorageHome`,
-`workspaceStorageHome`, `languageModelsResource`, and 4 more). VS Code's
-`reviveProfile()` accesses every URI field without null-guarding; a missing
-field causes a boot-time `TypeError`. Additional required scalar fields
-include `logsPath`, `dataFolderName`, `sharedDataFolderName`, `version`,
-`perfMarks: []`, `colorScheme`, `loggers: []`, and `mainPid`.
-
-## Extension Management
-
-Mountain scans extension directories at startup using
-`ApplicationState/Internal/ExtensionScanner/`. The scanner first looks for a
-pre-baked manifest at `extensions.manifest.json` (written by `PreBake.ts` during
-the build's `beforeBundleCommand`). If the manifest is absent, it falls back to
-a live directory walk. Pre-baked scans complete in under 50ms versus ~1200ms for
-a live scan.
-
-## Startup Sequence
-
-```text
-main()
-  Binary::Main::Entry
-  └── Tauri::Builder::default()
-        .setup(|app| {
-            Create ApplicationState
-            Create MountainEnvironment (24+ providers)
-            Create ApplicationRunTime (Echo scheduler)
-            Spawn tokio background init task
-        })
-
-Background init task:
-  InitializeConfiguration()   - reads settings.json files
-  ExtensionManagement::scan() - populates extension registry
-  Vine::server::Initialize()  - starts gRPC on port 50051
-  CocoonManagement::launch()  - spawns Node.js, waits for handshake
-  Sends InitData payload to Cocoon
-  System ready
+```
+fn main()
+    |
+    v
+1. Tauri::Builder::default() created
+    |
+    v
+2. .setup(|app| {
+    a. Create AppState (thread-safe state container)
+    b. Create MountainEnvironment (implements all Common traits)
+    c. Create AppRuntime (Echo-backed execution engine)
+    d. Spawn tokio background task for post-setup init
+    e. Return Ok(())
+   })
+    |
+    v
+3. Post-setup background task:
+    |
+    +---> InitializeConfiguration()
+    |       - Read settings.json files from disk
+    |       - Populate AppState with configuration values
+    |
+    +---> ExtensionManagement::scan()
+    |       - Walk extension directories
+    |       - Load and validate extension manifests
+    |       - Populate AppState extension registry
+    |
+    +---> Vine::server::Initialize()
+    |       - Start gRPC server on NetworkMountainPort (default: 50051)
+    |
+    +---> InitializeCocoon()
+    |       - Spawn Node.js bootstrap-fork.js
+    |       - Wait for $initialHandshake gRPC notification
+    |       - Send initExtensionHost with InitData payload
+    |
+    v
+4. System ready for user interaction
 ```
 
-## Shutdown Sequence
+### Shutdown Sequence 🛑
 
-```text
-1. Tauri window close
-2. SIGTERM to Cocoon (5s grace, then SIGKILL)
-3. SIGTERM to Air sidecar if running
-4. ApplicationState persisted (settings, window state)
-5. gRPC server drained (in-flight requests complete)
-6. Echo scheduler drained
-7. Tokio runtime shuts down
+```
+1. Tauri window close requested
+2. SIGTERM sent to Cocoon sidecar (graceful, 5s timeout)
+3. SIGTERM sent to Air sidecar (if running)
+4. AppState persisted (settings, window state)
+5. gRPC server gracefully drained (in-flight requests complete)
+6. Echo scheduler shutdown (in-flight tasks complete)
+7. Tokio runtime shutdown
 8. Process exits
 ```
 
-## Related Documentation
+---
 
-- [Deep Dive: Mountain](https://Editor.Land/Doc/deep-dive-mountain)
-- [Architecture Overview](https://Editor.Land/Doc/architecture)
-- [Cocoon](https://Editor.Land/Doc/cocoon)
-- [Vine](https://Editor.Land/Doc/vine)
-- [Air](https://Editor.Land/Doc/air)
+## Module Architecture 🗺️
+
+```
+Element/Mountain/Source/
++-- Binary/
+|   +-- Main/
+|   |   +-- Entry.rs          - fn main(), Tauri builder
+|   |   +-- Setup.rs          - .setup() hook
+|   |   +-- Shutdown.rs       - Graceful shutdown
+|   |   +-- Tray.rs           - System tray icon
+|   |   +-- IPC/              - IPC handler registration
+|   |   +-- Register/         - Command registration
+|   |   +-- Initialize/       - Startup initialization
+|   |   +-- Debug/            - Debug build utilities
+|   |   +-- Service/          - Service layer initialization
+
++-- ApplicationState/
+|   +-- State.rs              - Central state struct
+|   +-- Internal/             - Internal state management
+|   +-- DTO/                  - State transfer objects
+
++-- Environment/
+|   +-- MountainEnvironment.rs - Common trait implementations
+|   +-- CommandProvider.rs     - Command execution provider
+|   +-- ConfigurationProvider/ - Configuration provider
+|   +-- FileSystemProvider/    - File system provider
+|   +-- TerminalProvider.rs    - Terminal PTY provider
+|   +-- ... (24+ providers)
+
++-- Vine/ (gRPC)
+|   +-- Server/               - gRPC server (tonic)
+
++-- ProcessManagement/
+|   +-- CocoonManagement.rs    - Cocoon sidecar lifecycle
+|   +-- InitializationData.rs  - Startup payload construction
+|   +-- NodeResolver/          - Node.js binary resolution
+
++-- IPC/ (Tauri)
+|   +-- TauriIPCServer.rs      - Tauri IPC server
+|   +-- WindServiceHandlers/   - Wind-specific handlers
+|   +-- WindAdvancedSync/      - Sync handlers
+|   +-- DevLog/                - Developer logging
+
++-- RPC/ (Internal dispatch)
+|   +-- CocoonService/         - Cocoon gRPC service implementation
+
++-- RunTime/
+|   +-- ApplicationRunTime/    - Effect execution engine
+|   +-- Execute/               - Effect execution
+|   +-- Shutdown/              - Runtime shutdown
+
++-- Command/                   - Command implementation
++-- Track/                     - Request tracking
++-- ExtensionManagement/       - Extension lifecycle
++-- FileSystem/                - File system operations
++-- Workspace/                 - Workspace management
++-- LandFixTier.rs             - Runtime tier banner
++-- Library.rs                 - Library root
+```
+
+---
+
+## ApplicationState 📦
+
+The central state container managed by `Tauri`:
+
+```rust
+pub struct AppState {
+    configuration: RwLock<ConfigurationMap>,
+    extensions: RwLock<ExtensionRegistry>,
+    workspaces: RwLock<WorkspaceManager>,
+    // ... additional state domains
+}
+```
+
+| State Domain   | Access Pattern                      | Persistence              |
+| -------------- | ----------------------------------- | ------------------------ |
+| Configuration  | `RwLock<HashMap>`                   | `settings.json` on disk  |
+| Extensions     | `RwLock<Vec<Manifest>>`             | Scan on startup          |
+| Workspaces     | `RwLock<Vec<Workspace>>`            | Window state on shutdown |
+| Active editors | `RwLock<HashMap<URI, EditorState>>` | Transient                |
+
+- State is accessed through `Tauri`'s `State<AppState>` managed type
+- Available in every command handler
+
+---
+
+## Environment and Providers 🧩
+
+`MountainEnvironment` implements every trait from `Common`. Each capability has
+a dedicated Provider:
+
+| Provider                     | Common Trait                 | Implementation                  |
+| ---------------------------- | ---------------------------- | ------------------------------- |
+| `FileSystemProvider`         | `FileSystem`                 | tokio::fs native operations     |
+| `ConfigurationProvider`      | `Configuration`              | JSON file read/write with merge |
+| `TerminalProvider`           | `Terminal`                   | portable-pty PTY management     |
+| `UserInterfaceProvider`      | `UserInterface`              | tauri-plugin-dialog             |
+| `CommandProvider`            | `CommandExecutor`            | Command registry + dispatch     |
+| `DocumentProvider`           | `Document`                   | Text model management           |
+| `ExtensionManagementService` | `ExtensionManagementService` | VSIX install + manifest scan    |
+| `SearchProvider`             | `Search`                     | ripgrep-based search            |
+| `SecretProvider`             | `Secret`                     | OS keyring (keyring crate)      |
+| `StorageProvider`            | `Storage`                    | JSON file key-value             |
+| `WorkspaceProvider`          | `Workspace`                  | Folder management               |
+| `IPCProvider`                | `IPC`                        | gRPC proxy to Cocoon            |
+
+### Provider Registration 📝
+
+```rust
+impl MountainEnvironment {
+    pub fn new(app_state: AppState) -> Self {
+        Self {
+            file_system: Arc::new(FileSystemProvider::new(app_state.clone())),
+            configuration: Arc::new(ConfigurationProvider::new(app_state.clone())),
+            terminal: Arc::new(TerminalProvider::new()),
+            // ... all 24+ providers
+        }
+    }
+}
+```
+
+---
+
+## Tauri Command System ⌨️
+
+`Mountain` registers `Tauri` commands as typed `Rust` handlers:
+
+```rust
+#[tauri::command]
+async fn read_file(
+    path: String,
+    state: State<'_, AppState>,
+) -> Result<Vec<u8>, String> {
+    let fs = state.file_system();
+    fs.read_file(Path::new(&path))
+        .await
+        .map_err(|e| e.to_string())
+}
+```
+
+### Registered Command Categories
+
+| Category      | Example Commands                                 | Handler                    |
+| ------------- | ------------------------------------------------ | -------------------------- |
+| File System   | read_file, write_file, stat, readdir             | FileSystemProvider         |
+| Configuration | get_configuration, set_configuration             | ConfigurationProvider      |
+| Terminal      | create_terminal, write_terminal, resize_terminal | TerminalProvider           |
+| Dialog        | open_dialog, save_dialog, show_message           | UserInterfaceProvider      |
+| Clipboard     | get_clipboard, set_clipboard                     | Clipboard                  |
+| Extension     | install_extension, list_extensions               | ExtensionManagementService |
+| Search        | search_files, search_text                        | SearchProvider             |
+| Window        | set_window_size, focus_window                    | Window management          |
+| Lifecycle     | quit, restart                                    | Process management         |
+
+---
+
+## gRPC Service (Vine) 🌐
+
+`Mountain` hosts the `Vine` `gRPC` server for `Cocoon` and `Air` communication.
+
+### Server Configuration ⚙️
+
+```rust
+// Server listens on NetworkMountainPort (default: 50051)
+let addr = format!("127.0.0.1:{}", config.network_mountain_port)
+    .parse()
+    .expect("Invalid gRPC address");
+
+Server::builder()
+    .add_service(ExtensionHostServer::new(service_impl))
+    .add_service(BackgroundServicesServer::new(background_impl))
+    .serve(addr)
+    .await?;
+```
+
+### Service Handlers 📋
+
+| Service       | RPC                | Handler Module                            |
+| ------------- | ------------------ | ----------------------------------------- |
+| ExtensionHost | Initialize         | `ProcessManagement/InitializationData.rs` |
+| ExtensionHost | ExecuteCommand     | `RPC/CocoonService/Command/`              |
+| ExtensionHost | ProvideHover       | `RPC/CocoonService/Provider/`             |
+| ExtensionHost | CreateWebviewPanel | `RPC/CocoonService/Window/`               |
+| ExtensionHost | HealthCheck        | `Vine/Server/`                            |
+
+---
+
+## Process Management ⚙️
+
+### Cocoon Management 🔄
+
+The `CocoonManagement` module handles the `Cocoon` sidecar lifecycle:
+
+1. **Environment construction**: Sets `PATH`, `VSCODE_PARENT_PID`, tier env vars
+2. **Process spawn**: `std::process::Command` spawns `node bootstrap-fork.js`
+3. **Health monitoring**: `gRPC` heartbeat (5s interval, 3 miss timeout)
+4. **Crash recovery**: Up to 3 automatic restarts with exponential backoff
+5. **Graceful shutdown**: `SIGTERM`, 5s timeout, `SIGKILL` on timeout
+
+### Air Management 🔄
+
+The `AirManagement` module handles `Air` sidecar lifecycle:
+
+1. **Process spawn**: Spawns `Air` binary with configured data directory
+2. **gRPC connection**: Connects to `Air` on port 50053
+3. **Service registration**: `Air` reports available services (updater, indexer,
+   etc.)
+4. **Health monitoring**: Bidirectional heartbeat
+5. **Coordination**: `Mountain` dispatches background work via `PerformAction`
+
+---
+
+## IPC and Event System 📡
+
+`Mountain` pushes events to `Wind`/`Sky` via `Tauri`'s event system:
+
+```rust
+// Emit configuration change event
+app_handle.emit("configuration-changed", serde_json::json!({
+    "keys": ["editor.fontSize", "workbench.colorTheme"]
+})).ok();
+```
+
+### Event Catalog
+
+| Event                   | Payload                          | Trigger              |
+| ----------------------- | -------------------------------- | -------------------- |
+| `configuration-changed` | `{ keys: string[] }`             | Configuration save   |
+| `extension-activated`   | `{ id: string }`                 | Extension activation |
+| `terminal-data`         | `{ id: number, data: string }`   | PTY output           |
+| `file-changed`          | `{ path: string, type: string }` | File watcher         |
+| `theme-changed`         | `{ theme: string }`              | Theme switch         |
+| `window-state-changed`  | `{ state: string }`              | Window resize/move   |
+
+---
+
+## Cache System 💾
+
+`Mountain` implements two caching subsystems:
+
+| Cache            | Purpose                     | Implementation                        |
+| ---------------- | --------------------------- | ------------------------------------- |
+| `AssetMemoryMap` | Asset file mmap caching     | Memory-mapped files with LRU eviction |
+| `PathCanon`      | Path canonicalization cache | LRU cache of `realpath()` results     |
+
+---
+
+## Extension Management 🧩
+
+| Operation | Implementation                                             |
+| --------- | ---------------------------------------------------------- |
+| Scan      | Walk extension directories, parse `package.json` manifests |
+| Install   | VSIX extraction to extension directory                     |
+| Uninstall | Remove extension directory                                 |
+| List      | Read extension registry from `AppState`                    |
+
+---
+
+## Related Documentation 📚
+
+- [Common](https://github.com/CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md) -
+  Abstract trait definitions
+- [Echo](https://github.com/CodeEditorLand/Echo/tree/Current/Documentation/GitHub/Architecture.md) -
+  Task scheduler integration
+- [Mist](https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md) -
+  DNS isolation
+- [Air](https://github.com/CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md) -
+  Background daemon
+- [Vine](https://github.com/CodeEditorLand/Vine/tree/Current/Documentation/GitHub/Architecture.md) -
+  `gRPC` protocol definitions
+- [BuildPipeline](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md) -
+  Build pipeline
+- [InterComponentProtocol](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md) -
+  Protocol specification
+
+---
+
+**Project Maintainers:** Source Open
+([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
+[GitHub Repository](https://github.com/CodeEditorLand/Mountain) |
+[Report an Issue](https://github.com/CodeEditorLand/Mountain/issues)
