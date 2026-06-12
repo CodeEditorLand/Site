@@ -61,7 +61,7 @@ in the same SQLite database as other state. Secrets never leave the device.
 > on one machine cannot read it on another. This matches VS Code's behavior for
 > `context.secrets` on desktop.
 
-## 📁 File System Operations
+## File System Operations 📁
 
 File read, write, watch, and directory operations go directly through Mountain's
 native filesystem handlers to the OS. There is no cloud sync layer, no conflict
@@ -74,7 +74,7 @@ extension-provided `FileSystemProvider` implementations registered via
 `vscode.workspace.registerFileSystemProvider`. The core filesystem IPC path
 remains local-only.
 
-## ☁️ Air: Optional Services
+## Air: Optional Services ☁️
 
 The **Air** daemon provides optional services that the editor does not depend on
 for core function:
@@ -90,7 +90,7 @@ for core function:
 The editor starts correctly with Air absent. No startup path has a hard
 dependency on Air being reachable.
 
-## 📊 Telemetry: Opt-In Only
+## Telemetry: Opt-In Only 📊
 
 Telemetry is disabled in production builds by default (`Capture=false`,
 `Report=false` in `.env.Land.Production`). The PostHog integration and OTLP
@@ -101,7 +101,7 @@ Session recording (`Replay`) and surveys (`Ask`) are also off by default and
 must be individually enabled. No telemetry data is collected from users who have
 not opted in.
 
-## 📜 CC0 License and Vendor Lock-In
+## CC0 License and Vendor Lock-In 📜
 
 Land is released under the **Creative Commons CC0 Universal** public domain
 dedication. This means there is no license restriction on forking, modifying, or
@@ -109,7 +109,7 @@ redistributing the editor or any of its components. Combined with the
 local-first storage design, there is no mechanism by which a vendor could lock
 users into a proprietary data format or a mandatory cloud service.
 
-## 📝 What Local-First Means for Extension Developers
+## What Local-First Means for Extension Developers 📝
 
 - **Extension state is always local.** `context.workspaceState`,
   `context.globalState`, and `context.secrets` write to the local device. There
