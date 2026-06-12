@@ -27,7 +27,7 @@ rather than a headless stub.
    `activate()` function runs and registers its commands, providers, and test
    runner entry point in the main window.
 
-## Phase 2 - Initiating the test run (Wind → Mountain)
+## Phase 2 - Initiating the test run (Wind -> Mountain)
 
 3. The developer opens the Command Palette (`Ctrl+Shift+P`) and executes "Run
    Tests". Mountain's Test Runner Service receives the command.
@@ -43,7 +43,7 @@ rather than a headless stub.
 5. The Test Runner Service spawns a new Mountain process with these arguments.
    This second instance is the **Extension Development Host**.
 
-## Phase 3 - Test host startup (Mountain test instance → Cocoon test instance)
+## Phase 3 - Test host startup (Mountain test instance -> Cocoon test instance)
 
 6. The new Mountain instance starts, detects the `--extension...` flags, and
    knows it is a test host. It launches its own Cocoon sidecar, forwarding the
@@ -58,7 +58,7 @@ rather than a headless stub.
    `--extensionTestsPath`. This is typically a Mocha runner entry point that
    discovers and loads the extension's test files.
 
-## Phase 4 - Remote control of the main window (Cocoon test → Mountain main)
+## Phase 4 - Remote control of the main window (Cocoon test -> Mountain main)
 
 9. Each test file imports the `vscode` module:
 
@@ -86,7 +86,7 @@ rather than a headless stub.
     Each property access is a gRPC call to main Mountain. The assert checks the
     live state of the editor window.
 
-## Phase 5 - Result reporting (Cocoon test → Mountain main → Wind)
+## Phase 5 - Result reporting (Cocoon test -> Mountain main -> Wind)
 
 12. Mocha completes all tests, aggregates pass and failure counts, prints a
     summary to stdout, and exits with code `0` (all pass) or `1` (any failure).

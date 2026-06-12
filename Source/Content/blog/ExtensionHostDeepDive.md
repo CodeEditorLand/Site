@@ -1,7 +1,5 @@
 ---
-title:
-    "Extension Host Architecture: Cocoon's Design for Module Interception, API
-    Shims, and Fiber Supervision"
+title: "Extension Host Architecture: Cocoon's Design for Module Interception, API Shims, and Fiber Supervision"
 summary: "How Cocoon runs VS Code extensions in supervised Effect-TS fibers with
     module interception and gRPC-backed API shims."
 publishedAt: "2026-05-23"

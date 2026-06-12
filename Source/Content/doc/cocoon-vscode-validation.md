@@ -17,9 +17,9 @@ handler, and the Sky workbench render path. This checklist documents the
 patterns for that trace, the common failure modes, and the steps to add a new
 API method.
 
-## How to verify a method is correctly implemented
+## ✅　How to verify a method is correctly implemented
 
-### Step 1 - enable dual-track logging
+### Step 1 — enable dual-track logging
 
 Launch with `LAND_DEV_LOG=dual-track,provider-register`. Every IPC dispatch in
 Mountain logs the channel name and the route decision (Mountain / Node /
@@ -35,7 +35,7 @@ Expected output after an extension activates:
 
 If an expected line is absent the registration never reached Mountain.
 
-### Step 2 - gRPC round-trip trace
+### Step 2 — gRPC round-trip trace
 
 For Track B (Rust-native) methods, verify that the gRPC call completes by
 checking Mountain's dev log for the matching handler:
@@ -49,7 +49,7 @@ Absence of the second line means Mountain received the request but the Cocoon
 provider returned nothing (check the provider registration step above) or the
 gRPC response was dropped.
 
-### Step 3 - test extension pattern
+### Step 3 — test extension pattern
 
 The fastest way to exercise a single API method in isolation is a minimal test
 extension placed in
@@ -79,7 +79,7 @@ Launch Land, open DevTools (Cmd+Shift+I), and check the console for the message.
 For APIs that require a UI response (dialogs, quick-pick), interact and verify
 the return value is surfaced to the extension.
 
-### Step 4 - zero-error assertion
+### Step 4 — zero-error assertion
 
 After exercising the feature, grep the Mountain log for failure markers:
 
@@ -94,7 +94,7 @@ grep "(no handler)" /tmp/land-mountain.log
 Both greps must return empty output for the method under test to be considered
 passing.
 
-## Common failure modes
+## 🚨　Common failure modes
 
 ### Missing namespace shim
 
@@ -183,7 +183,7 @@ activation with an `InProgress` Set for cycle detection. Verify the dependent
 extension's `package.json` lists the dependency in `extensionDependencies` -
 Cocoon reads this field to order activation.
 
-## Validation matrix for key APIs
+## 📋　Validation matrix for key APIs
 
 | API method                                 | Track | Cocoon shim file                       | Mountain handler                                            | Verified |
 | ------------------------------------------ | ----- | -------------------------------------- | ----------------------------------------------------------- | -------- |
@@ -210,7 +210,7 @@ Cocoon reads this field to order activation.
 | `scm.createSourceControl`                  | A+S   | `Scm/Namespace.ts`                     | `register_scm_provider` + `sky://scm/register`              | 🟡       |
 | `authentication.getSession`                | A     | `Authentication/Namespace.ts`          | `$getSession` gRPC                                          | 🟡       |
 
-## How to add a new API method
+## ➕　How to add a new API method
 
 Adding a new `vscode.*` method requires up to four changes depending on the
 track. The full three-piece pattern (Sky → Mountain → Cocoon) applies to any

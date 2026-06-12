@@ -14,7 +14,7 @@ Track dispatcher routes requests, how providers are registered and accessed, how
 Cocoon is launched and kept alive, and the performance optimizations that bring
 first-paint time well under a second.
 
-## ActionEffect and ApplicationRunTime
+## 🗺️ ActionEffect and ApplicationRunTime
 
 Mountain expresses business logic as declarative `ActionEffect`s - typed
 closures over a capability trait - rather than imperative call chains. The
@@ -56,7 +56,7 @@ Wind UI → Tauri command → Track dispatcher
   → Track → Tauri event → Wind UI
 ```
 
-## Track Dispatcher
+## 🌐 Track Dispatcher
 
 `Track/` is the central routing layer for all incoming requests from Wind and
 from Cocoon's gRPC calls. It converts raw Tauri command payloads or gRPC
@@ -72,7 +72,7 @@ Key files:
 Track does not hold state. It reads from `ApplicationState` when construction of
 an effect requires current state, then immediately delegates to the runtime.
 
-## Environment Provider Registration
+## 🗺️ Environment Provider Registration
 
 All 24+ providers are constructed once at startup and stored on
 `MountainEnvironment`. Access is through `OnceLock<Arc<T>>` to guarantee single
@@ -123,7 +123,7 @@ Notable implementation details:
   `$acceptTerminalOpened` and `$acceptTerminalClosed` notifications to Cocoon
   after Sky emission.
 
-## Vine gRPC Server Setup
+## 🌐 Vine gRPC Server Setup
 
 The Vine gRPC server (`Vine/`) is built with tonic and starts in the background
 init task:
@@ -155,7 +155,7 @@ gRPC calls that require reading or writing Mountain state are handled in
 Notification RPCs (Cocoon → Mountain push) are handled in
 `Vine/Server/MountainVinegRPCService.rs` and forwarded to Sky via Tauri events.
 
-## Cocoon Process Management
+## 🚀 Cocoon Process Management
 
 `ProcessManagement/CocoonManagement.rs` owns the full Cocoon lifecycle.
 
@@ -187,7 +187,7 @@ Mountain sends `SIGTERM` to the Cocoon process and waits up to 5 seconds for a
 clean exit. If Cocoon has not exited, `SIGKILL` is sent. This order ensures
 extensions have a chance to run their `deactivate()` functions.
 
-## ISandboxConfiguration Construction
+## ⚙️ ISandboxConfiguration Construction
 
 `ProcessManagement/InitializationData.rs` builds the full
 `ISandboxConfiguration` that VS Code's `NativeWorkbenchEnvironmentService`
@@ -219,7 +219,7 @@ The `profiles` payload is pre-built into a `ProfilesSection` Rust struct before
 the final `json!()` macro call, to avoid hitting the macro's recursion limit on
 deeply nested JSON.
 
-## Extension Manifest Scanning
+## 🚀 Extension Manifest Scanning
 
 `ApplicationState/Internal/ExtensionScanner/` provides two paths:
 
@@ -249,7 +249,7 @@ semantics where an installed VSIX shadows a built-in of the same identifier.
 cache so repeated calls from Cocoon for the same filter category do not re-scan
 the registry after the first resolution.
 
-## Encryption Provider
+## 🔐 Encryption Provider
 
 Three files in `IPC/WindServiceHandlers/Encryption/` back the
 `encryption:encrypt` and `encryption:decrypt` IPC commands that Cocoon uses for
@@ -270,7 +270,7 @@ This key is derived once and cached for the process lifetime. All extension
 credentials and auth tokens stored via `context.secrets` are encrypted at rest
 on the host filesystem using this key.
 
-## WindServiceHandlers Atomization
+## 🗺️ WindServiceHandlers Atomization
 
 `IPC/WindServiceHandlers/mod.rs` is the main IPC dispatch file (~2500 lines). To
 keep it navigable, each handler that requires more than a few lines of logic is
@@ -353,7 +353,7 @@ Domain subdirectories in `WindServiceHandlers/`:
 | `Update/`        | `update:*` lifecycle (no-op stubs; no update server)             |
 | `Utilities/`     | Shared helpers used across handler files                         |
 
-## High-Frequency Command Short-Circuit
+## ⚡ High-Frequency Command Short-Circuit
 
 Before the main dispatch arm, `mod.rs` checks a hard-coded
 `IsHighFrequency Command` list. Commands on this list skip JSON parsing overhead
@@ -366,7 +366,7 @@ and are handled by a fast-path branch:
 This short-circuit exists because Wind emits these commands on every keystroke
 and mouse move during normal editing.
 
-## Naming Convention
+## 📋 Naming Convention
 
 Mountain uses PascalCase for all Rust identifiers: structs, enums, traits,
 functions, methods, modules, fields, local variables, and file names. This is an
@@ -382,7 +382,7 @@ Modules enable this with `#![allow(non_snake_case, non_camel_case_types)]` at
 the top. External crate types, standard library items, lifetime parameters, and
 built-in macros retain their original casing.
 
-## Boot Performance
+## ⚡ Boot Performance
 
 Key optimizations applied to Mountain's startup path:
 
@@ -403,7 +403,7 @@ channel-drain patterns: `ExtensionsGetInstalled`, `WaitForClientConnection`,
 The overall boot target is first sidebar paint at or under 800 ms, down from
 ~3000 ms before these optimizations.
 
-## Related Documentation
+## 📖  Related Documentation
 
 - [Mountain element overview](https://Editor.Land/Doc/mountain)
 - [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)

@@ -12,7 +12,7 @@ is an independent Git submodule on its own `Current` branch. The repository root
 holds build orchestration scripts, environment files, and workspace
 configuration files for Cargo and pnpm.
 
-## Top-Level Layout
+## 📂　Top-Level Layout
 
 ```
 Land/
@@ -31,9 +31,9 @@ Land/
   turbo.json         # Turborepo global env declaration
 ```
 
-## Element Map
+## 🗺️　Element Map
 
-### Rust Elements (Native Backend)
+### 🦀　Rust Elements (Native Backend)
 
 | Element  | Path               | Role                                                                                                                                                           |
 | -------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -47,7 +47,7 @@ Land/
 | Grove    | `Element/Grove`    | Native Rust/WASM extension host (work in progress). Sandboxed environment via Wasmtime for WASM-compiled VS Code extensions.                                   |
 | SideCar  | `Element/SideCar`  | Vendored Node.js runtime binary management. Downloads, caches, and resolves exact Node.js binaries per target triple for bundling into the app.                |
 
-### TypeScript Elements (UI and Extension Host)
+### 📘　TypeScript Elements (UI and Extension Host)
 
 | Element  | Path               | Role                                                                                                                                                                  |
 | -------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -58,13 +58,13 @@ Land/
 | Worker   | `Element/Worker`   | Service worker implementation. Asset caching, offline support, CSS module interception. Zero runtime dependencies.                                                    |
 | Maintain | `Element/Maintain` | Build orchestration. CI/CD pipeline, GritQL refactoring queries, build scripts, signing helpers.                                                                      |
 
-### Dependency Elements
+### 📦　Dependency Elements
 
 | Element | Path                                             | Role                                                                                                                       |
 | ------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 | Editor  | `Element/Dependency/Microsoft/Dependency/Editor` | VS Code source submodule. Compiled in Step 1 of the build. Consumed by Output and Sky. Never edit files under `src/vs/**`. |
 
-## Submodule Repository Table
+## 🔗　Submodule Repository Table
 
 | Element  | GitHub repository                          |
 | -------- | ------------------------------------------ |
@@ -85,7 +85,7 @@ Land/
 | Maintain | https://github.com/CodeEditorLand/Maintain |
 | Editor   | https://github.com/CodeEditorLand/Editor   |
 
-## What Never to Edit
+## 🚫　What Never to Edit
 
 > [!WARNING] Editing these paths will be overwritten by the next build or will
 > corrupt the submodule state.
@@ -96,7 +96,7 @@ Land/
 | `Element/Dependency/Microsoft/Dependency/Editor/src/vs/**` | Upstream VS Code source. Changes here are not tracked and are wiped by `git clean -dfx`.                    |
 | Any file committed with `git add .`                        | Adding `.` includes submodule gitlinks as trees, corrupting the index. Always stage specific files by name. |
 
-## Naming Conventions
+## 📝　Naming Conventions
 
 All TypeScript source files in Land elements follow these conventions:
 
@@ -116,9 +116,8 @@ All Rust source follows edition 2024 with MSRV 1.95.0. The `pub use` re-export
 pattern is not used anywhere in the workspace - use type aliases, delegating
 functions, or fresh constants instead.
 
-## Related Pages
+## 🔗　Related Pages
 
-- [Architecture](/Doc/architecture) - how the elements communicate at runtime
-- [Configuration](/Doc/configuration) - environment variable system and tier
-  flags
-- [Installation](/Doc/installation) - how to clone each submodule
+- [Architecture](https://Editor.Land/Doc/architecture) — how the elements communicate at runtime
+- [Configuration](https://Editor.Land/Doc/configuration) — environment variable system and tier flags
+- [Installation](https://Editor.Land/Doc/installation) — how to clone each submodule

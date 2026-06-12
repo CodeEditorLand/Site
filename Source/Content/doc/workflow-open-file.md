@@ -23,7 +23,7 @@ until Monaco renders the content.
    it into a concrete `EditorInput`, then calls `findGroup` to identify the
    target editor group.
 
-## Phase 2 - Editor and filesystem logic (Wind → Mountain)
+## Phase 2 - Editor and filesystem logic (Wind -> Mountain)
 
 3. `EditorGroupsService` checks whether an editor for `fileUri` is already open.
    If it is, Wind focuses that tab and stops. Otherwise it calls
@@ -92,7 +92,7 @@ file URI:
   pre-populated with `content` and tagged with `languageId`. The document is
   added to `workspace.textDocuments` and `onDidOpenTextDocument` fires
   immediately. No Mountain round-trip occurs.
-- **`"untitled:…"` scheme** - returns an empty document without any backend
+- **`"untitled:..."` scheme** - returns an empty document without any backend
   call. Content is read from `DocumentContentCache` if a prior write has
   populated it.
 - **Custom scheme (e.g. `git:`, `output:`)** - Cocoon checks whether a

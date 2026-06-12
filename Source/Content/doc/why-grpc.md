@@ -15,7 +15,7 @@ those contracts: code is generated for both Rust and TypeScript from the same
 `.proto` file, so adding a new RPC or changing a field is a compile error on
 both sides until both are updated.
 
-## The proto file as contract
+## 📜　The proto file as contract
 
 `Element/Vine/Proto/Vine.proto` is the canonical definition of every RPC between
 Mountain and Cocoon. It is not documentation that can drift - it is the source
@@ -40,7 +40,7 @@ both the Rust handler and the TypeScript dispatcher before either can compile.
 There is no gap where one side has the new method and the other is silently
 ignoring it.
 
-## Generated stubs on both sides
+## 🔨　Generated stubs on both sides
 
 Rust consumes the proto via `tonic-build` in `Mountain/build.rs`:
 
@@ -59,7 +59,7 @@ client. The generated types cover every request and response shape -
 so on. Neither side writes a hand-rolled JSON schema or a `z.object({...})`
 validator for IPC payloads.
 
-## Bidirectional streaming for real-time events
+## 🔄　Bidirectional streaming for real-time events
 
 Many editor operations are not request-response - they are ongoing streams.
 Terminal output arrives continuously. `onDidChangeTextDocument` fires on every
@@ -78,7 +78,7 @@ multiplexes all real-time event traffic - configuration changes, file watcher
 notifications, extension activation signals - over a single persistent gRPC
 connection rather than opening a new connection per event type.
 
-## Performance vs JSON-RPC
+## ⚡　Performance vs JSON-RPC
 
 VS Code uses JSON-RPC for its extension host protocol. Every message is
 serialized to JSON text, transmitted over a pipe, and deserialized on the other
@@ -95,7 +95,7 @@ during active editing), the encoding difference is measurable.
 > [!IMPORTANT] All gRPC connections bind to `[::1]` (IPv6 loopback) or
 > `127.0.0.1`, never `0.0.0.0`. No remote connections are accepted.
 
-## Port allocation
+## 🔌　Port allocation
 
 | Channel                                                               | Port  |
 | --------------------------------------------------------------------- | ----- |
@@ -103,7 +103,7 @@ during active editing), the encoding difference is measurable.
 | Mountain ↔ Cocoon (Cocoon gRPC server, Mountain → Cocoon direction)   | 50052 |
 | Mountain ↔ Air (Air gRPC server)                                      | 50053 |
 
-## TierIPC routing
+## 🔀　TierIPC routing
 
 The `TierIPC` environment variable controls how Wind and Output route their
 `TauriMainProcessService` calls at runtime:
@@ -120,7 +120,7 @@ namespaces. New service namespaces should be added to both Mountain's dispatch
 table and Cocoon's `RoutePatterns` object to work correctly under all three
 routing modes.
 
-## Why not Tauri commands for Mountain↔Cocoon
+## 🚫　Why not Tauri commands for Mountain↔Cocoon
 
 Tauri commands work well for Wind→Mountain calls (UI requesting a native
 operation). They are not suited for Mountain→Cocoon calls because Tauri's
@@ -129,7 +129,7 @@ process communication. Cocoon is a separate OS process, not a WebView. gRPC is
 the right transport for two native processes that need a typed, bidirectional,
 streaming protocol.
 
-## Discoverability
+## 🔍　Discoverability
 
 `Vine.proto` documents every RPC in the system. Reading it gives a complete
 inventory of what Mountain can ask Cocoon to do (`CocoonService`) and what

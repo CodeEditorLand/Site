@@ -12,7 +12,7 @@ Maintain is the build orchestrator for Land. This page covers the internals of
 each build script, the turbo.json pipeline, the Cargo build configuration, and
 the automated refactoring tools.
 
-## Debug/Build.sh step-by-step
+## 🚀 Debug/Build.sh step-by-step
 
 `Element/Maintain/Debug/Build.sh` is the primary command for a local debug
 build. Its execution sequence:
@@ -49,7 +49,7 @@ build. Its execution sequence:
 sh Maintain/Debug/Build.sh --profile debug-electron
 ```
 
-## SignBundle.sh - xattr and codesign
+## 🔐 SignBundle.sh - xattr and codesign
 
 `Maintain/Script/SignBundle.sh` performs the two-step re-sign that Tauri
 requires on macOS:
@@ -82,7 +82,7 @@ signature itself is valid.
 paths. The `BundleLevel` variable is the only difference between the two
 invocations.
 
-## Release/Build.sh
+## 🚀 Release/Build.sh
 
 `Release/Build.sh` follows the same sequence as `Debug/Build.sh` with two
 differences:
@@ -95,7 +95,7 @@ differences:
 Release builds take significantly longer due to fat LTO across all crates in the
 Mountain binary. They are not used in normal development loops.
 
-## turbo.json pipeline
+## 🗺️ turbo.json pipeline
 
 The `turbo.json` at the workspace root defines the Turborepo task graph for all
 TypeScript packages:
@@ -138,7 +138,7 @@ Key design decisions:
 - **`cache: false`** on `Run` prevents Turborepo from caching the dev server
   output.
 
-## beforeBundleCommand hook - PreBake.ts
+## 🚀 beforeBundleCommand hook - PreBake.ts
 
 `tauri.conf.json` registers a `beforeBundleCommand` hook:
 
@@ -167,7 +167,7 @@ scripts. Its job:
 > Placing this step in `beforeBundleCommand` guarantees ordering without
 > requiring developers to run a separate setup command.
 
-## GritQL query patterns
+## 📋 GritQL query patterns
 
 Maintain ships GritQL pattern files under `Element/Maintain/Query/`. GritQL
 operates on ASTs rather than text, making it safe for large-scale structural
@@ -197,7 +197,7 @@ does not match their filename:
 GritQL queries run with `grit apply <pattern> <path>` and are idempotent -
 applying the same pattern twice produces the same result.
 
-## CI/CD matrix
+## 🚀 CI/CD matrix
 
 The CI pipeline builds across platforms and profiles:
 
@@ -219,7 +219,7 @@ Each CI job:
 5. Runs the appropriate `Build.sh` script for the platform.
 6. Uploads the signed artifact.
 
-## Rhai scripting engine
+## 🔌 Rhai scripting engine
 
 The Maintain Rust binary embeds the Rhai scripting engine for build logic that
 is too complex for shell scripts but does not warrant a compiled Rust function.
@@ -234,7 +234,7 @@ Scripts are sandboxed: they cannot access the file system directly except
 through the provided API functions. This prevents build scripts from
 accidentally modifying source files outside their declared scope.
 
-## Module reference
+## 🗺️ Module reference
 
 | File                                       | Purpose                                                        |
 | :----------------------------------------- | :------------------------------------------------------------- |
@@ -251,3 +251,9 @@ accidentally modifying source files outside their declared scope.
 | `Source/Build/Rhai/ConfigLoader.rs`        | Loads `.rhai` build configuration files                        |
 | `Source/Build/Rhai/ScriptRunner.rs`        | Executes Rhai scripts with Land API bindings                   |
 | `Source/Build/Rhai/EnvironmentResolver.rs` | Exposes `env()` to Rhai scripts                                |
+
+## 📖  Related Documentation
+
+- [Maintain element overview](https://Editor.Land/Doc/maintain)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Architecture overview](https://Editor.Land/Doc/architecture)

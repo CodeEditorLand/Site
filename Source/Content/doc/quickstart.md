@@ -16,7 +16,7 @@ mandatory; Step 2 will fail if Step 1 has not been completed.
 
 ## Step 1: Compile VS Code Source
 
-Node 24 is required for this step. The exact pinned version is in
+`Node 24` is required for this step. The exact pinned version is in
 `Dependency/Microsoft/Dependency/Editor/.nvmrc`.
 
 Before running `npm install`, add these to your shell profile and reload your
@@ -75,7 +75,7 @@ compiles Sky and Wind via Vite/Astro, and signs the resulting `.app` bundle.
 > `Element/Mountain/Entitlements.plist`. `Build.sh` calls this automatically,
 > but a manual re-sign is needed if you copy or move the `.app` after building.
 
-## Launch
+## 🚀　Launch
 
 After a successful build, the application binary is at:
 
@@ -89,7 +89,7 @@ Or use the `--run` flag to launch immediately after the build completes:
 ./Maintain/Debug/Build.sh --profile debug-electron-bundled --run
 ```
 
-## Key Environment Variables
+## 🔑　Key Environment Variables
 
 These variables are read from `.env.Land*` files in the repository root. Copy
 `.env.Land.Sample` to `.env.Land` to start with defaults.
@@ -104,7 +104,7 @@ These variables are read from `.env.Land*` files in the repository root. Copy
 | `NetworkMountainPort` | `50051`    | gRPC port for Mountain.                                                                                  |
 | `NetworkCocoonPort`   | `50052`    | gRPC port for Cocoon extension host.                                                                     |
 
-## Build Profiles
+## 📐　Build Profiles
 
 | Profile                         | Workbench         | Coverage                          | Notes                                   |
 | ------------------------------- | ----------------- | --------------------------------- | --------------------------------------- |
@@ -125,9 +125,8 @@ These variables are read from `.env.Land*` files in the repository root. Copy
 | `debug-bundled-all`             | All four          | Single Rollup pass                |                                         |
 | `production-electron-bundled`   | Electron          | Optimized release                 |                                         |
 
-## Next Steps
+## ➡️　Next Steps
 
-- [Getting Started](/Doc/getting-started) - prerequisites, clone strategy,
-  troubleshooting
-- [Configuration](/Doc/configuration) - full environment variable reference
-- [Architecture](/Doc/architecture) - how the components communicate
+- [Getting Started](https://Editor.Land/Doc/getting-started) — prerequisites, clone strategy, troubleshooting
+- [Configuration](https://Editor.Land/Doc/configuration) — full environment variable reference
+- [Architecture](https://Editor.Land/Doc/architecture) — how the components communicate

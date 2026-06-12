@@ -16,7 +16,7 @@ WebView the operating system already ships - WKWebView on macOS, WebView2 on
 Windows, WebKitGTK on Linux - and replaces the Node.js main process with a Rust
 backend.
 
-## No bundled Chromium
+## 🚫　No bundled Chromium
 
 The system WebView is already present on every supported platform. Tauri routes
 the UI through it rather than shipping a private copy. For Land this means:
@@ -31,7 +31,7 @@ the UI through it rather than shipping a private copy. For Land this means:
 The binary size advantage is structural, not a result of stripping features.
 There is nothing to strip - Chromium is simply not included.
 
-## Rust backend instead of Node.js main process
+## 🦀　Rust backend instead of Node.js main process
 
 In Electron, the main process is Node.js JavaScript. Every native OS operation -
 opening a dialog, spawning a terminal, reading the keychain - calls through a
@@ -44,7 +44,7 @@ approximately 200 ms in Electron. File reads go through `tokio::fs::read` rather
 than a JSON IPC round-trip. Terminal resize sends SIGWINCH directly to the PTY
 rather than through a bridge serialization layer.
 
-## Tauri invoke: typed IPC
+## 🔗　Tauri invoke: typed IPC
 
 Wind and Sky call Mountain handlers through `@tauri-apps/api`'s `invoke()`. Each
 call maps to a `#[tauri::command]` Rust function. Tauri deserializes the JSON
@@ -75,7 +75,7 @@ async fn read_file(
 There is no duck-typing at the IPC boundary. The TypeScript side sees a typed
 return value; the Rust side sees typed parameters.
 
-## Security model: command allowlist
+## 🔒　Security model: command allowlist
 
 Tauri's security model requires that every Rust function callable from the
 WebView be explicitly registered. There is no `nodeIntegration` mode that grants
@@ -87,7 +87,7 @@ The `Entitlements.plist` and `tauri.conf.json` together define what the FIDDEE
 binary is permitted to do on macOS: hardened runtime, keychain access, and
 network client capability. These are macOS-enforced, not just Land policy.
 
-## What Tauri cannot do yet
+## 🚫　What Tauri cannot do yet
 
 Tauri 2.x does not expose the full macOS NSWindowTabGroup API. The
 `nativeHost:newWindowTab`, `showPreviousWindowTab`, `showNextWindowTab`,
@@ -104,7 +104,7 @@ Tauri's API surface grows, these gaps shrink.
 > primary development path; other platforms are configured in the repository but
 > may have rendering differences.
 
-## Cocoon is still Node.js
+## 🟡　Cocoon is still Node.js
 
 Tauri removes Node.js from the main process (Mountain). It does not remove
 Node.js from the extension host. Cocoon - the VS Code extension host sidecar -

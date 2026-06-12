@@ -11,7 +11,7 @@ Land is source-build only today. There are no public installer packages. This
 page covers system requirements, the correct way to obtain each submodule, the
 available build profiles, and where the build artifacts land on disk.
 
-## System Requirements
+## 💻　System Requirements
 
 | Requirement      | Minimum       | Notes                                                                                      |
 | ---------------- | ------------- | ------------------------------------------------------------------------------------------ |
@@ -23,7 +23,7 @@ available build profiles, and where the build artifacts land on disk.
 | Disk space       | ~10 GB        | VS Code source (~2 GB), Rust build cache (~4 GB), Node modules (~2 GB), artifacts (~1 GB). |
 | RAM              | 8 GB minimum  | 16 GB recommended for parallel Rust compilation.                                           |
 
-## Submodule Clone Instructions
+## 📦　Submodule Clone Instructions
 
 > [!WARNING] Never run `git clone --recurse-submodules`. Submodules are on
 > independent branches. Recursive cloning pulls the wrong commits.
@@ -57,7 +57,7 @@ git -C Element/Mountain checkout Current
 
 Repeat for each element.
 
-## Build Profiles
+## 📐　Build Profiles
 
 The build script at `Maintain/Debug/Build.sh` accepts a `--profile` flag. The
 profile controls which workbench variant is compiled, which tier flags are
@@ -77,7 +77,7 @@ active, and whether assets are pre-bundled.
 | `production-electron-bundled`   | Electron       | Optimized release                | Prod binary                         |
 | `production-electron-unbundled` | Electron       | Release without bundled assets   | Prod binary                         |
 
-## Artifact Paths
+## 📁　Artifact Paths
 
 After a successful build, all artifacts are written inside the `Element/`
 directory tree. Nothing is installed system-wide.
@@ -109,7 +109,7 @@ Land/
 > outputs. Source lives in `Public/` or `Source/` within each element. Edits to
 > `Target/` are overwritten on the next build.
 
-## macOS Code Signing
+## 🖊️　macOS Code Signing
 
 The debug build is automatically re-signed after the Tauri build step. The
 signing script is at `Maintain/Script/SignBundle.sh` and is invoked
@@ -122,9 +122,8 @@ To manually re-sign after modifying the bundle:
 BundleLevel=debug sh Maintain/Script/SignBundle.sh
 ```
 
-## Next Steps
+## ➡️　Next Steps
 
-- [Getting Started](/Doc/getting-started) - prerequisites and clone walkthrough
-- [Configuration](/Doc/configuration) - environment variable system
-- [Project Structure](/Doc/project-structure) - element layout and naming
-  conventions
+- [Getting Started](https://Editor.Land/Doc/getting-started) — prerequisites and clone walkthrough
+- [Configuration](https://Editor.Land/Doc/configuration) — environment variable system
+- [Project Structure](https://Editor.Land/Doc/project-structure) — element layout and naming conventions

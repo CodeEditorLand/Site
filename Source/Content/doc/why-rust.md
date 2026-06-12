@@ -15,7 +15,7 @@ Every OS call - opening a dialog, reading a file, resizing a terminal - crosses
 a serialized JSON IPC pipe. Mountain, Land's native backend, eliminates each of
 those costs by doing the work in Rust directly.
 
-## Memory without a garbage collector
+## 💾　Memory without a garbage collector
 
 Rust's ownership model eliminates the garbage collector entirely. This matters
 most when the operations that cause GC pressure are also the ones that need to
@@ -29,7 +29,7 @@ The tradeoff is that more invariants must be stated explicitly, but the type
 system enforces them before the binary is built rather than discovering them as
 heap corruption or undefined behavior at runtime.
 
-## Zero-cost abstractions for async I/O
+## ⚡　Zero-cost abstractions for async I/O
 
 Mountain uses Tokio as its async runtime. File reads, terminal PTY writes, and
 directory watches are all `async fn` calls that yield to the Tokio executor
@@ -53,7 +53,7 @@ Zero-cost here means the abstraction compiles to the same machine instructions
 as handwritten async state machines. There is no interpreter, no JIT warmup, and
 no virtual machine indirection for using it.
 
-## Concrete operation comparisons
+## 📊　Concrete operation comparisons
 
 The performance gap is not abstract. These are operations Land performs on every
 user interaction:
@@ -70,7 +70,7 @@ The dialog comparison - approximately 2 ms for Mountain vs approximately 200 ms
 for Electron - reflects the difference between a direct Tauri API call and a
 round-trip through a Node.js main process that then calls the native bridge.
 
-## Native OS integration without adapters
+## 🔌　Native OS integration without adapters
 
 Several editor operations require capabilities that JavaScript runtimes expose
 only through native addons or IPC bridges. Mountain implements them natively:
@@ -94,7 +94,7 @@ not polling-based.
 binary is permitted to do on macOS - hardened runtime, keychain access, and
 network client capability - without a separate Xcode project.
 
-## Tauri command dispatch
+## 🎯　Tauri command dispatch
 
 Mountain registers Rust functions that the WebView can call via `invoke()`. The
 Tauri `#[tauri::command]` macro wires the JSON deserialization automatically,
@@ -117,7 +117,7 @@ If the TypeScript caller sends the wrong shape, JSON deserialization fails
 before Mountain's handler runs. There is no runtime duck-typing at the IPC
 boundary.
 
-## Edition 2024 and MSRV 1.95
+## 🔢　Edition 2024 and MSRV 1.95
 
 Mountain and all Land Rust crates except Grove use Rust edition 2024. Edition
 2024 tightens lifetime elision rules and promotes several patterns from warnings
@@ -130,7 +130,7 @@ WASM and stays on edition 2021 for WASM toolchain compatibility.
 > version-sensitive. Do not upgrade the toolchain without auditing those
 > patches.
 
-## What Rust does not solve
+## ❌　What Rust does not solve
 
 Rust does not make the extension host faster in isolation. Cocoon - the Node.js
 sidecar that runs VS Code extensions - is still a single Node.js event loop. One

@@ -14,7 +14,7 @@ endpoint. Both layers feed the same `ConfigurationService` reload path, so
 extensions and the UI react identically regardless of whether a change came from
 the local disk or a remote merge.
 
-## Phase 1 - Local persistence (Cocoon → Mountain)
+## Phase 1 - Local persistence (Cocoon -> Mountain)
 
 1. Extension context `workspaceState` and `globalState` are Memento objects
    backed by Mountain storage. Every `state.update(key, value)` call in an
@@ -40,7 +40,7 @@ the local disk or a remote merge.
     as the key. The `onDidChange` event fires after every `store` or `delete`
     call. Secrets are never written to disk in plaintext.
 
-## Phase 2 - User authentication (Wind → Cocoon → Mountain)
+## Phase 2 - User authentication (Wind -> Cocoon -> Mountain)
 
 4. The user clicks "Sign In" in the Account menu. Wind dispatches
    `workbench.action.authentication.signIn`.
@@ -89,7 +89,7 @@ the local disk or a remote merge.
 
 12. `FsWriter` writes the merged content back to `settings.json` on disk.
 
-## Phase 5 - Configuration reload and notification (Mountain → Cocoon + Sky)
+## Phase 5 - Configuration reload and notification (Mountain -> Cocoon + Sky)
 
 13. `ConfigurationService.reloadConfiguration()` re-reads all settings files,
     reconstructs the effective configuration, and updates
@@ -101,7 +101,7 @@ the local disk or a remote merge.
 15. Mountain emits a Tauri event to Sky:
 
     ```
-    sky://configuration/changed  { changedKeys: […] }
+    sky://configuration/changed  { changedKeys: [...] }
     ```
 
 16. Cocoon's `ConfigurationProvider` updates its internal cache and fires the

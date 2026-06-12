@@ -13,7 +13,7 @@ code, documentation, bug reports, and extension compatibility reports - are
 welcome. This page describes the process for contributing and the conventions
 contributors must follow.
 
-## Code of Conduct
+## 📜　Code of Conduct
 
 All contributors must follow the
 [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct.html),
@@ -21,7 +21,7 @@ which the project has adopted without modification. Violations may be reported
 to [Community@Editor.Land](mailto:Community@Editor.Land). The enforcement ladder
 runs from private correction through temporary and permanent ban.
 
-## What Contributions Are Accepted
+## ✅　What Contributions Are Accepted
 
 - **Bug reports**: Open a GitHub issue with reproduction steps, the Land
   version, and the platform (macOS/Linux/Windows). Include the FIDDEE.log
@@ -34,7 +34,7 @@ runs from private correction through temporary and permanent ban.
   open an issue with the extension name, the failing API call, and the error
   message. This helps prioritize Cocoon API coverage work.
 
-## Pull Request Process
+## 🔀　Pull Request Process
 
 1. Fork the repository and create a branch from `Current` (the main integration
    branch - never branch from `main`).
@@ -49,7 +49,7 @@ runs from private correction through temporary and permanent ban.
 > [!IMPORTANT] Land uses a `Current` branch as the integration target, not
 > `main`. Pull requests opened against `main` will be redirected.
 
-## Commit Message Style
+## 💬　Commit Message Style
 
 - Write imperative-mood subject lines: "Add handler for nativeHost:quit", not
   "Added handler" or "Adds handler".
@@ -60,7 +60,7 @@ runs from private correction through temporary and permanent ban.
 - Do not reference agent names, session identifiers, or tool names in commit
   messages or code comments.
 
-## What Not to Do
+## 🚫　What Not to Do
 
 > [!WARNING] The following actions will break the repository or build and must
 > never be done.
@@ -77,7 +77,7 @@ runs from private correction through temporary and permanent ban.
 - **Do not recurse submodules** (`git submodule update --recursive`). Each
   Element is managed on its own branch independently.
 
-## Code Style
+## 📐　Code Style
 
 ### TypeScript
 
@@ -100,12 +100,12 @@ runs from private correction through temporary and permanent ban.
   delegating functions, or fresh constants instead.
 - Filenames follow the same PascalCase convention as TypeScript.
 
-### Icons and Images
+### 🖼️　Icons and Images
 
 Icons must come from `editor.land/Image/` only. Never reference external CDN
 URLs in source or documentation.
 
-## Security Issues
+## 🔒　Security Issues
 
 Do not file GitHub issues for security vulnerabilities. Send a private report
 through

@@ -14,7 +14,7 @@ nothing. It is not a license - it is a waiver. The authors irrevocably surrender
 all copyright and related rights to the fullest extent permitted by applicable
 law. The code belongs to everyone, unconditionally.
 
-## What CC0 means in practice
+## 📋　What CC0 means in practice
 
 CC0 1.0 Universal is a public domain dedication. In jurisdictions where full
 waiver is not legally possible, it includes a fallback permissive license that
@@ -33,7 +33,7 @@ and every permissive license. MIT and Apache 2.0 both require attribution. At
 scale - a product with hundreds of dependencies - that creates a cascade of
 `NOTICES` files and legal compliance work. CC0 eliminates it entirely.
 
-## CC0 vs MIT
+## ⚖️　CC0 vs MIT
 
 MIT is permissive but has one condition: every binary that includes MIT-licensed
 code must carry the original copyright notice and license text. For a project
@@ -42,7 +42,7 @@ editors, its Effect-TS patterns embedded in other tools - the attribution
 requirement creates friction for every downstream user. CC0 removes the
 condition entirely. There is nothing to comply with.
 
-## CC0 vs Apache 2.0
+## ⚖️　CC0 vs Apache 2.0
 
 Apache 2.0 adds an explicit patent grant on top of MIT's attribution
 requirement. The patent grant sounds protective but creates its own complexity:
@@ -51,7 +51,7 @@ termination clause can trigger in ways that surprise downstream users who hold
 patents in related areas. CC0 has no patent clauses to analyze, no contributor
 agreements to negotiate, and no termination conditions to track.
 
-## CC0 vs GPL
+## ⚖️　CC0 vs GPL
 
 GPL requires that derivative works be released under GPL. This is incompatible
 with the goal of infrastructure that can be embedded anywhere. A developer
@@ -59,7 +59,7 @@ building a proprietary code editor on Land's Rust crates should be able to do so
 without GPL's copyleft requirement changing the terms of their own product. CC0
 imposes no such constraint.
 
-## What CC0 does not cover
+## 🚫　What CC0 does not cover
 
 CC0 waives copyright. It does not affect trademarks. The names FIDDEE and Land,
 the logos, and the editor.land domain are not granted by CC0 - trademark rights
@@ -72,7 +72,7 @@ applicable jurisdictions. In practice, for a code editor and its supporting
 libraries, this is not a significant concern - but it is the accurate legal
 description.
 
-## Alignment with NLnet NGI0 Commons Fund
+## 🔗　Alignment with NLnet NGI0 Commons Fund
 
 Land is funded by the NLnet NGI0 Commons Fund, part of the European Commission's
 Next Generation Internet initiative. NLnet funds software as public

@@ -14,17 +14,17 @@ fidelity while the underlying architecture is replaced with safer, more
 composable primitives. FIDDEE is the product name for the compiled desktop
 application; Land is the repository and project name.
 
-## What Is Working Today
+## ✅　What Is Working Today
 
 The current build is source-first. All core components are functional and the
 weighted VS Code API coverage is approximately 88%.
 
 | API Surface             | Coverage |
 | ----------------------- | -------- |
-| TextEditor object       | 95%      |
-| Workspace API           | 96%      |
+| `TextEditor` object     | 95%      |
+| `Workspace` API         | 96%      |
 | SCM (source control)    | 95%      |
-| Window API              | 95%      |
+| `Window` API            | 95%      |
 | LSP / Language features | 95%      |
 | Overall weighted        | ~88%     |
 
@@ -45,10 +45,10 @@ The following capabilities are operational:
 - TierIPC routing: Mountain (Tauri IPC), Node (Cocoon only), NodeDeferred
   (Mountain first, Cocoon fallback)
 
-## What Is Not Yet Complete
+## ❌　What Is Not Yet Complete
 
 > [!IMPORTANT] Public installers are not available. Building from source is the
-> only supported path today. See [Quickstart](/Doc/quickstart) for instructions.
+> only supported path today. See [Quickstart](https://Editor.Land/Doc/quickstart) for instructions.
 
 > [!WARNING] Windows and Linux support is in progress. The primary development
 > and test platform is macOS (Apple Silicon and Intel). Building on other
@@ -68,7 +68,7 @@ The following items are still in progress:
   for performance)
 - Grove native WASM extension host (Wasmtime host is work in progress)
 
-## Project Identity
+## 📋　Project Identity
 
 | Item            | Value                                     |
 | --------------- | ----------------------------------------- |
@@ -79,9 +79,8 @@ The following items are still in progress:
 | Lead maintainer | Nikola Hristov / PlayForm, Sofia Bulgaria |
 | Funding         | NLnet NGI0 Commons Fund                   |
 
-## Next Steps
+## ➡️　Next Steps
 
-- [Quickstart](/Doc/quickstart) - build and run in two steps
-- [Architecture](/Doc/architecture) - how Mountain, Cocoon, Sky, and Wind fit
-  together
-- [Project Structure](/Doc/project-structure) - the Element monorepo layout
+- [Quickstart](https://Editor.Land/Doc/quickstart) — build and run in two steps
+- [Architecture](https://Editor.Land/Doc/architecture) — how Mountain, Cocoon, Sky, and Wind fit together
+- [Project Structure](https://Editor.Land/Doc/project-structure) — the Element monorepo layout

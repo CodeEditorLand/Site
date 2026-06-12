@@ -15,7 +15,7 @@ a persistent background daemon for updates, indexing, and authentication.
 Components communicate over three distinct channels: Tauri commands and events,
 gRPC (Vine protocol), and SkyBridge custom events.
 
-## Process Model
+## 🧩　Process Model
 
 | Process        | Element        | Language                 | Purpose                                                                    |
 | -------------- | -------------- | ------------------------ | -------------------------------------------------------------------------- |
@@ -57,9 +57,9 @@ graph TB
     Wind --> Sky
 ```
 
-## Component Map
+## 🗺️　Component Map
 
-### Rust Components (Native)
+### 🦀　Rust Components (Native)
 
 | Component  | Crate Type       | Role                                                                                                                                                       |
 | ---------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -73,7 +73,7 @@ graph TB
 | SideCar    | Library          | Vendored Node.js binary management. Packages exact binaries per target triple for all supported platforms.                                                  |
 | Vine       | Protocol Library | gRPC protocol definitions (Vine.proto). Generated stubs consumed by Mountain, Cocoon, and Air.                                                             |
 
-### TypeScript Components (Web / Node.js)
+### 📘　TypeScript Components (Web / Node.js)
 
 | Component | Framework             | Role                                                                                                                                                                                                       |
 | --------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -83,7 +83,7 @@ graph TB
 | Output    | ESBuild               | Build artifact management. Handles compilation of VS Code platform source. Produces the `@codeeditorland/output` package consumed by Cocoon, Sky, and Wind.                                                |
 | Worker    | ESBuild               | Service worker. Provides asset caching, offline support, and dynamic CSS loading.                                                                                                                          |
 
-## IPC Architecture
+## 🔌　IPC Architecture
 
 ### Inter-Process Communication Matrix
 
@@ -142,7 +142,7 @@ Land's IPC uses three distinct protocol layers:
    feature requests (hover, completion, definition), webview panel
    communication.
 
-## TierIPC Routing
+## 🔀　TierIPC Routing
 
 The `TierIPC` environment variable controls how Wind and Output route IPC calls
 at runtime. No rebuild is required to switch tiers.
@@ -160,7 +160,7 @@ for individual channel prefixes. For example, `TierTasks=Node` and
 handlers live in Cocoon's extension host. The active tier for each subsystem is
 logged at boot by `Mountain/Source/LandFixTier.rs`.
 
-## Service Layer Design
+## 🏗️　Service Layer Design
 
 ### Common Trait Architecture (Rust)
 
@@ -245,7 +245,7 @@ The critical constraint: RPCServer (stage 3) must bind before MountainConnection
 order causes Mountain to time out before Cocoon has a listening socket, silently
 preventing extension activation.
 
-## Data Flow Patterns
+## 🔄　Data Flow Patterns
 
 ### File Open
 
@@ -290,7 +290,7 @@ sequenceDiagram
     Sky-->>User: Hover tooltip displayed
 ```
 
-### Extension API Call (workspace.applyEdit)
+### Extension API Call (`workspace.applyEdit`)
 
 ```
 Extension calls vscode.workspace.applyEdit(edit)
@@ -324,7 +324,7 @@ sequenceDiagram
     Sky-->>User: Setting applied
 ```
 
-## Component Dependency Direction
+## ⬆️　Component Dependency Direction
 
 Dependencies flow strictly in one direction:
 
@@ -345,7 +345,7 @@ Mountain  (implements Common traits, owns Vine gRPC server)
 Output is a build-time dependency of Cocoon and Sky. It provides the compiled
 VS Code platform package `@codeeditorland/output`.
 
-## Ports Reference
+## 🔌　Ports Reference
 
 | Port  | Process             | Protocol          | Purpose                              |
 | ----- | ------------------- | ----------------- | ------------------------------------ |
@@ -357,10 +357,10 @@ VS Code platform package `@codeeditorland/output`.
 All gRPC listeners bind to `[::1]` (localhost only) - no remote connections are
 accepted.
 
-## Related Pages
+## 🔗　Related Pages
 
-- [Project Structure](/Doc/project-structure) - element map and source paths
-- [Configuration](/Doc/configuration) - tier flags and environment variables
-- [Mountain](/Doc/mountain) - native backend deep reference
-- [Cocoon](/Doc/cocoon) - extension host deep reference
-- [Quickstart](/Doc/quickstart) - build and run
+- [Project Structure](https://Editor.Land/Doc/project-structure) — element map and source paths
+- [Configuration](https://Editor.Land/Doc/configuration) — tier flags and environment variables
+- [Mountain](https://Editor.Land/Doc/mountain) — native backend deep reference
+- [Cocoon](https://Editor.Land/Doc/cocoon) — extension host deep reference
+- [Quickstart](https://Editor.Land/Doc/quickstart) — build and run

@@ -19,7 +19,7 @@ host alongside Cocoon. This page covers the Wasmtime integration approach, the
 ABI bridge between Rust host code and WASM guest modules, the planned API
 surface, and what remains to be implemented.
 
-## Wasmtime integration approach
+## 🏗️ Wasmtime integration approach
 
 Grove uses Wasmtime v20 as its WASM engine. The integration is structured around
 Wasmtime's `Engine`, `Store`, and `Linker` types:
@@ -56,7 +56,7 @@ is cached by Wasmtime's internal module cache. Subsequent instantiations of the
 same module (e.g. across editor restarts) skip compilation and use the cached
 native code.
 
-## WASM component model
+## 🏗️ WASM component model
 
 Extensions target the `wasm32-wasi` ABI. Grove does not yet use the WASM
 Component Model (WIT/`wasm-bindgen`-style interfaces) - the current design uses
@@ -74,7 +74,7 @@ Current extension ABI:
   simple length-prefixed encoding; complex types use `serde_json` serialized to
   UTF-8 bytes.
 
-## ABI bridge design - Rust to WASM
+## 🏗️ ABI bridge design - Rust to WASM
 
 The ABI bridge lives in `Source/WASM/HostBridge/`. It handles the impedance
 mismatch between Rust's rich type system and WASM's flat value types (`i32`,
@@ -96,7 +96,7 @@ This pattern is repeated for every VS Code API call. The serialization overhead
 is intentional: it creates a clean boundary where all data is inspectable and
 auditable before leaving or entering the sandbox.
 
-## Planned VS Code API surface
+## 📋 Planned VS Code API surface
 
 The planned initial API subset covers the capabilities most commonly used by
 language servers and formatters:
@@ -118,7 +118,7 @@ coverage. Extensions that need the full API continue to use Cocoon; Grove
 targets extensions that can operate within the restricted set in exchange for
 stronger security guarantees.
 
-## Security model - capability-based sandboxing
+## 🛡️ Security model - capability-based sandboxing
 
 Grove's security model differs fundamentally from Cocoon's process isolation:
 
@@ -139,7 +139,7 @@ extension that attempts to call an ungrant function gets a trap at
 instantiation, not a runtime error after sensitive operations have already
 executed.
 
-## Transport options
+## 🌐 Transport options
 
 Grove communicates with Mountain through a pluggable transport selected at build
 time via Cargo features:
@@ -154,7 +154,7 @@ time via Cargo features:
 The `Strategy` trait in `Source/Transport/Strategy.rs` abstracts over all
 transports so the `HostBridge` layer has no transport-specific code.
 
-## Mountain integration
+## 🔌 Mountain integration
 
 Mountain activates Grove extensions via the `GroveService` gRPC protocol defined
 in `Proto/`. The activation flow:
@@ -171,7 +171,7 @@ Grove shares the same activation event semantics as Cocoon (`activationEvents`
 in `package.json`) so extension manifests do not need modification to run in
 either host.
 
-## Current implementation status
+## 🗺️ Current implementation status
 
 | Component                                | Status                                             |
 | :--------------------------------------- | :------------------------------------------------- |
@@ -191,7 +191,7 @@ either host.
 Grove is activated as an optional feature: `cargo build --features grove`. It is
 not compiled into the default `debug-electron` or `release` profiles.
 
-## Building Grove
+## 📦 Building Grove
 
 ```bash
 # Build Grove as a standalone binary
@@ -208,3 +208,10 @@ cargo build --release --features all
 # Enable Grove in Mountain build
 cargo build -p Mountain --features grove
 ```
+
+## 📖  Related Documentation
+
+- [Grove element overview](https://Editor.Land/Doc/grove)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
+- [Architecture overview](https://Editor.Land/Doc/architecture)

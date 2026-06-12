@@ -17,7 +17,7 @@ wiring with a compile-time Layer system. Cocoon and Wind both use Effect-TS's
 Layer and service composition, with their bootstrap boundaries optimised to avoid
 Effect runtime startup overhead.
 
-## The problem with raw Promises
+## 🐛　The problem with raw Promises
 
 A standard TypeScript `Promise<string>` encodes the success type but says
 nothing about what can go wrong. The error is `unknown`. Every caller must cast,
@@ -43,7 +43,7 @@ extension host activates dozens of extensions at startup. Unhandled activation
 failures that silently swallow errors are a real class of bug. Effect makes them
 impossible to ignore at the type level.
 
-## Fiber-based structured concurrency
+## 🧵　Fiber-based structured concurrency
 
 JavaScript's async/await runs on a single event loop with no built-in mechanism
 for cancellation, timeouts, or supervision. Effect-TS introduces fibers:
@@ -64,7 +64,7 @@ In a plain event loop, none of these terminations propagate automatically. Each
 requires manual `AbortController` wiring at every level of the call stack - and
 one missed level means the fiber runs indefinitely.
 
-## Resource management with Scope and finalizers
+## 🔒　Resource management with Scope and finalizers
 
 Effect's `Scope` and `acquireRelease` primitives guarantee cleanup even on
 crash. When a fiber acquires a resource (a file handle, a network connection, a
@@ -77,7 +77,7 @@ its `Scope` is closed and every resource it opened - file watchers, language
 server connections, terminal sessions - is cleaned up without explicit dispose
 calls in the extension's `deactivate()` function.
 
-## Composable Layers for 40+ services
+## 🧩　Composable Layers for 40+ services
 
 Cocoon's `AppLayer` composes over 40 service implementations without manual
 wiring:
@@ -117,7 +117,7 @@ A `TestLayer` substitutes mock implementations for the same Tags, which means
 tests run against the same composition logic as production without any special
 injection framework.
 
-## Cocoon bootstrap: async/await at the boundary
+## 🚀　Cocoon bootstrap: async/await at the boundary
 
 Cocoon's top-level bootstrap (`Effect/Bootstrap.ts`) starts the gRPC RPCServer
 (Stage 1) before initiating the Mountain connection (Stage 2). Both stages are
@@ -130,7 +130,7 @@ The stage ordering matters: Mountain probes the Cocoon gRPC port during its 30 s
 connection budget. If RPCServer binds after Mountain has already started probing,
 the initial probes are lost and the connection is delayed by one retry interval.
 
-## LandWorkbenchRuntime: eager ManagedRuntime singleton
+## ⚡　LandWorkbenchRuntime: eager ManagedRuntime singleton
 
 The `LandWorkbenchRuntime` export in `Output` is a `ManagedRuntime` instance
 built once at module load time from `AppLayer`. Services resolved from it share
@@ -139,7 +139,7 @@ call on `LandWorkbenchRuntime` resolves in under 5 ms because the Layer
 dependency graph has already been materialised - there is no per-call Layer
 build step.
 
-## Why this matters for an extension host specifically
+## 🎯　Why this matters for an extension host specifically
 
 The VS Code extension host pattern has a specific failure mode: one extension
 calling a slow or non-responding API blocks the entire event loop. Effect fibers

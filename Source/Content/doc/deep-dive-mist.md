@@ -15,7 +15,7 @@ HTTP client, SideCar's download URLs - goes through this server. The design
 ensures that neither extension code nor sidecar processes can resolve arbitrary
 external hostnames without an explicit policy grant.
 
-## Hickory DNS server setup
+## 🚀 Hickory DNS server setup
 
 The server is initialized in `Source/Server.rs`. Hickory's catalog model is
 used: a `Catalog` object owns one or more zone authorities, and the server
@@ -41,7 +41,7 @@ Startup sequence:
 6. The bound port is returned to the caller (Mountain) and stored in `DnsPort`
    managed Tauri state.
 
-## Zone configuration
+## ⚙️ Zone configuration
 
 The `editor.land` zone is defined in `Source/Zone.rs`. All records are
 constructed in memory - no zone file is read from disk. The zone contains a SOA
@@ -65,7 +65,7 @@ The wildcard ensures that any subdomain of `editor.land` - whether
 service endpoints added inside the editor do not require a DNS configuration
 change.
 
-## DNSSEC signing
+## 🛡️ DNSSEC signing
 
 Signing is handled in `Source/ForwardSecurity.rs` using `ring` for cryptographic
 operations.
@@ -82,7 +82,7 @@ DNSSEC signing is applied to the authoritative zone only. Responses forwarded
 from the upstream resolver for allowlisted domains pass through unsigned, as
 Mist is not a validating resolver.
 
-## Forward resolver and allowlist
+## 🛡️ Forward resolver and allowlist
 
 `Source/Resolver.rs` implements `LandDnsResolver`, a wrapper around a Hickory
 async resolver that points at the Mist server itself. Components that need to
@@ -110,7 +110,7 @@ supported without a server restart.
 > entry added for one legitimate purpose grants that hostname to every installed
 > extension simultaneously.
 
-## DNS query routing
+## 🌐 DNS query routing
 
 ```
 Incoming query
@@ -129,7 +129,7 @@ in-memory catalog without any network hop. This means all gRPC service discovery
 for internal services (Cocoon connecting to Mountain, Air connecting to
 Mountain) incurs no network latency - the answer is computed in memory.
 
-## How Mountain launches Mist
+## 🔌 How Mountain launches Mist
 
 Mountain's process management layer calls `Mist::start(5380)` from
 `Source/ProcessManagement/`. The returned port is stored in Tauri's managed
@@ -145,7 +145,7 @@ state under `DnsPort`. Downstream consumers read this state:
 Because Mist binds before Mountain spawns any sidecar, the DNS server is
 guaranteed to be available the first time a sidecar process attempts a lookup.
 
-## WebSocket transport
+## 🌐 WebSocket transport
 
 `Source/WebSocket.rs` provides a secondary transport layer for Sky ↔ Cocoon
 communication. This is distinct from the DNS functionality: it reuses Mist's
@@ -159,7 +159,7 @@ unavailable or inappropriate for the communication pattern.
 > that Mist already serves. Expected improvement: ~5-15 ms per call across
 > ~800 calls per session. This is not yet implemented.
 
-## Module reference
+## 🗺️ Module reference
 
 | File                        | Purpose                                                                   |
 | :-------------------------- | :------------------------------------------------------------------------ |
@@ -170,7 +170,7 @@ unavailable or inappropriate for the communication pattern.
 | `Source/ForwardSecurity.rs` | DNSSEC signing, forward allowlist check and enforcement                   |
 | `Source/WebSocket.rs`       | WebSocket server for Sky ↔ Cocoon streaming                               |
 
-## Key dependencies
+## 🗺️ Key dependencies
 
 | Crate            | Version | Role                                         |
 | :--------------- | :------ | :------------------------------------------- |
@@ -182,3 +182,10 @@ unavailable or inappropriate for the communication pattern.
 | `once_cell`      | 1.21    | Thread-safe initialization of the port state |
 | `portpicker`     | 0.1.1   | Random available port fallback               |
 | `reqwest`        | 0.13    | HTTP client integration with custom DNS      |
+
+## 📖  Related Documentation
+
+- [Mist element overview](https://Editor.Land/Doc/mist)
+- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
+- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
+- [Architecture overview](https://Editor.Land/Doc/architecture)

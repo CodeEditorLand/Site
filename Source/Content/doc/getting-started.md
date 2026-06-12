@@ -10,7 +10,7 @@ LFS. macOS is the primary supported platform today; Windows and Linux builds are
 in progress. This page walks through every prerequisite, the correct submodule
 clone strategy, and the full build sequence.
 
-## Prerequisites
+## 📋　Prerequisites
 
 | Tool    | Required Version | Notes                                                       |
 | ------- | ---------------- | ----------------------------------------------------------- |
@@ -25,7 +25,7 @@ clone strategy, and the full build sequence.
 > `Dependency/Microsoft/Dependency/Editor/.nvmrc`. Use `nvm use 24` (reads
 > `.nvmrc` automatically) before running any Step 1 commands.
 
-### Shell Environment Setup
+### 🐚　Shell Environment Setup
 
 Add these to your shell profile (`~/.zshrc`, `~/.bashrc`, or equivalent) before
 running `npm install` inside the Editor submodule. Without them, the install
@@ -43,7 +43,7 @@ Reload your shell after adding them:
 source ~/.zshrc
 ```
 
-## Clone Strategy
+## 📦　Clone Strategy
 
 > [!WARNING] Never use `git clone --recurse-submodules`. Each submodule element
 > lives on its own independent branch. Recursive cloning pulls wrong commits and
@@ -84,7 +84,7 @@ cd ../..
 Each of these repos tracks a `Current` branch. Check out `Current` in each after
 cloning.
 
-## First Build
+## 🔨　First Build
 
 ### Step 1: Compile VS Code Source
 
@@ -120,7 +120,7 @@ export Trace=all Record=1 Disable=false
 The full build takes several minutes on first run. Subsequent incremental builds
 are faster.
 
-### Build Profiles
+### 📐　Build Profiles
 
 | Profile                         | Workbench         | Coverage                          | Notes                                   |
 | ------------------------------- | ----------------- | --------------------------------- | --------------------------------------- |
@@ -141,7 +141,7 @@ are faster.
 | `debug-bundled-all`             | All four          | Single Rollup pass                |                                         |
 | `production-electron-bundled`   | Electron          | Optimized release                 |                                         |
 
-## First Run
+## 🚀　First Run
 
 ```sh
 ./Maintain/Debug/Build.sh --profile debug-electron-bundled --run
@@ -153,7 +153,7 @@ Or launch the binary directly:
 ./Element/Mountain/Target/debug/Mountain
 ```
 
-## Troubleshooting
+## 🔧　Troubleshooting
 
 > [!WARNING] If `npm install` in the Editor submodule never completes, the
 > `ELECTRON_SKIP_BINARY_DOWNLOAD` and `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD` exports
@@ -190,8 +190,8 @@ Copy the sample file to create a local environment file:
 cp .env.Land.Sample .env.Land
 ```
 
-## Next Steps
+## ➡️　Next Steps
 
-- [Installation](/Doc/installation) - system requirements table and bundle paths
-- [Configuration](/Doc/configuration) - full environment variable reference
-- [Project Structure](/Doc/project-structure) - what lives where in the monorepo
+- [Installation](https://Editor.Land/Doc/installation) — system requirements table and bundle paths
+- [Configuration](https://Editor.Land/Doc/configuration) — full environment variable reference
+- [Project Structure](https://Editor.Land/Doc/project-structure) — what lives where in the monorepo

@@ -11,9 +11,9 @@ Webview panels let extensions embed arbitrary HTML inside the editor. The panel
 itself is a native Tauri webview managed by Mountain; Cocoon holds a lightweight
 shim that proxies property assignments and message events across gRPC. Every
 `panel.webview.html` assignment and every `postMessage` call crosses the full
-Cocoon → Mountain → Sky path.
+Cocoon -> Mountain -> Sky path.
 
-## Phase 1 - Extension creates the panel (Cocoon → Mountain)
+## Phase 1 - Extension creates the panel (Cocoon -> Mountain)
 
 1. The extension's `activate()` function runs and calls:
 
@@ -28,7 +28,7 @@ Cocoon → Mountain → Sky path.
 3. Cocoon sends a **`$createWebviewPanel` gRPC request** to Mountain and awaits
    a unique handle in the response.
 
-## Phase 2 - Mountain allocates the native webview (Mountain → Sky)
+## Phase 2 - Mountain allocates the native webview (Mountain -> Sky)
 
 4. Mountain's Vine gRPC server receives the request and dispatches it to
    `WebviewProvider.CreateWebviewPanel()` on the `MountainEnvironment`.
@@ -40,7 +40,7 @@ Cocoon → Mountain → Sky path.
 6. Mountain emits a Tauri event to the Sky frontend:
 
     ```
-    sky://webview/create  { handle, title, viewColumn, … }
+    sky://webview/create  { handle, title, viewColumn, ... }
     ```
 
 7. Mountain returns the handle to Cocoon as the successful gRPC response.
@@ -52,7 +52,7 @@ Cocoon → Mountain → Sky path.
    `<iframe>` element inside the main window's DOM and associates it with the
    handle. The webview is initially empty.
 
-## Phase 4 - Extension sets content (Cocoon → Mountain → Sky)
+## Phase 4 - Extension sets content (Cocoon -> Mountain -> Sky)
 
 9. Cocoon receives the handle from the gRPC response and constructs a
    `WebviewPanelShim` and `WebviewShim` that store the handle internally. It
@@ -77,7 +77,7 @@ Cocoon → Mountain → Sky path.
 12. Wind's webview manager receives the event, finds the element associated with
     the handle, and sets its HTML. "Hello World" is now visible in the panel.
 
-## Phase 5 - Bidirectional message passing (Sky → Mountain → Cocoon)
+## Phase 5 - Bidirectional message passing (Sky -> Mountain -> Cocoon)
 
 13. The user clicks a button inside the webview. The webview's content script
     calls `vscode.postMessage({ command: "doSomething" })` using the `vscode`

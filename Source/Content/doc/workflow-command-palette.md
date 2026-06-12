@@ -16,7 +16,7 @@ command
   function pointer or to Cocoon via gRPC, depending on the handler type stored
   at registration time.
 
-## Phase 1 - Opening the palette (Sky → Wind)
+## Phase 1 - Opening the palette (Sky -> Wind)
 
 1. The user presses `Ctrl+Shift+P`. The keybinding system dispatches
    `workbench.action.showCommands`.
@@ -53,7 +53,7 @@ command
     ICommandService.executeCommand("editor.action.formatDocument");
     ```
 
-## Phase 4A - Native command execution (Wind → Mountain)
+## Phase 4A - Native command execution (Wind -> Mountain)
 
 8. Wind's `CommandService` forwards the call:
 
@@ -74,7 +74,7 @@ command
     formatting edits from a registered document formatting provider - and
     returns its result up the call chain to Wind.
 
-## Phase 4B - Extension command execution (Wind → Mountain → Cocoon)
+## Phase 4B - Extension command execution (Wind -> Mountain -> Cocoon)
 
 Steps 8 and 9 are identical to Phase 4A. The difference is in what Mountain
 finds at step 9.

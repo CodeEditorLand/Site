@@ -12,7 +12,7 @@ Each entry follows the same structure: the problem that prompted the decision,
 the solution chosen, and why that solution was selected over alternatives. These
 decisions are stable - they reflect deliberate trade-offs, not accidents.
 
-## Bootstrap Stage Order: RPCServer Before MountainConnection
+## ⏳　Bootstrap Stage Order: `RPCServer` Before `MountainConnection`
 
 **Problem**: Cocoon's bootstrap previously ran `MountainConnection` (Stage 3,
 could take up to 45 seconds) before `RPCServer` (Stage 5, which binds port
@@ -34,7 +34,7 @@ sequence. The only correct fix is to ensure the server is listening before the
 client attempts to connect. Extending timeouts alone would have masked the
 symptom without fixing the sequencing bug.
 
-## Polling Replaced with Notify Primitives
+## 🔔　Polling Replaced with Notify Primitives
 
 **Problem**: Several boot-path components used `sleep`-based polling loops to
 wait for state transitions. Examples included a 50 ms × 100-iteration loop
@@ -57,7 +57,7 @@ during idle wait periods. The first sidebar paint improved from approximately
 3000 ms toward the 800 ms target as a direct result of removing these delays
 from the critical boot path.
 
-## Extension Manifest Pre-Baking
+## 📋　Extension Manifest Pre-Baking
 
 **Problem**: At startup, Land scans all extension directories to build the
 manifest of installed extensions. On a machine with a typical set of built-in
@@ -78,7 +78,7 @@ build path - direct `pnpm tauri build`, the `Build.sh` wrapper, and CI.
 they are silently skipped when the build is invoked directly. `tauri.conf.json`
 is the authoritative build entry point for all paths.
 
-## TierIPC Introduced for Isolation Debugging
+## 🔀　TierIPC Introduced for Isolation Debugging
 
 **Problem**: When an IPC call fails, there are two possible failure sites:
 Mountain's Rust handler and the Cocoon Node.js shim. Without a way to route
@@ -100,7 +100,7 @@ straightforward to determine which layer owns a failure. `NodeDeferred` supports
 the incremental migration path where Mountain handles some commands and Cocoon
 handles the rest.
 
-## `console.*` Replaced in Cocoon Production Code
+## 🖥️　`console.*` Replaced in Cocoon Production Code
 
 **Problem**: Cocoon's production bundle is compiled by esbuild with
 `drop: ["console"]` set in the build configuration. This option removes all
@@ -124,7 +124,7 @@ integrates with the `Trace` filter system, allowing operators to enable or
 disable specific log categories without a rebuild. Using `console.*` in
 production Cocoon code is now a linting error.
 
-## Effect-TS Runtime Decoupled from Bootstrap
+## ⚡　Effect-TS Runtime Decoupled from Bootstrap
 
 **Problem**: Cocoon's bootstrap and several Wind service layers were tightly
 coupled to the Effect-TS runtime. `Bootstrap.ts` called `NodeRuntime.runMain`,
@@ -149,7 +149,7 @@ that every service must be expressed as an Effect layer before the system can
 start, which is important for incremental migration of services that are
 straightforward `async` functions with no algebraic effect requirements.
 
-## VS Code API Coverage
+## 📊　VS Code API Coverage
 
 **Summary**: Weighted VS Code API coverage reached approximately 88% by
 mid-2026. Per-surface coverage at that milestone:

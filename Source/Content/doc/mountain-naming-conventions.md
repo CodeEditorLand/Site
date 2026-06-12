@@ -15,7 +15,7 @@ Buffer message fields in `Vine.proto`, without any `#[serde(rename)]` attributes
 or custom codegen filters. The convention is declared at the top of every module
 with `#![allow(non_snake_case, non_camel_case_types)]`.
 
-## Complete naming table
+## 📋　Complete naming table
 
 | Element                 | Convention                 | Example                   |
 | ----------------------- | -------------------------- | ------------------------- |
@@ -35,7 +35,7 @@ with `#![allow(non_snake_case, non_camel_case_types)]`.
 | Function parameters     | PascalCase                 | `ApplicationHandle`       |
 | Lifetimes               | lowercase `'a` prefix      | `'a`, `'result`           |
 
-## File naming - one struct per file, PascalCase filename
+## 📁　File naming — one struct per file, PascalCase filename
 
 Every source file in Mountain contains exactly one primary struct (or enum) and
 its `impl` block. The filename matches the type name exactly.
@@ -63,7 +63,7 @@ Source/
 The `impl` block for a trait always lives in the same file as the struct, not in
 a separate file.
 
-## Module declaration pattern
+## 📐　Module declaration pattern
 
 Parent modules declare child modules with `mod Word1Word2;` matching the
 filename exactly. There is no re-export (`pub use`) at the module level -
@@ -83,7 +83,7 @@ mod TerminalProvider;
 > canonical path in rustdoc and make it harder to trace a symbol to its
 > definition file.
 
-## pub vs pub(crate)
+## 👁️　`pub` vs `pub(crate)`
 
 | Visibility            | When to use                                                                             |
 | --------------------- | --------------------------------------------------------------------------------------- |
@@ -91,7 +91,7 @@ mod TerminalProvider;
 | `pub(crate)`          | Handler structs and helpers used only within Mountain                                   |
 | private (no modifier) | Local helper functions inside a single file                                             |
 
-## lib + bin Convention B
+## 📐　lib + bin Convention B
 
 Mountain's `Cargo.toml` declares both a `[lib]` target and a `[[bin]]` target,
 and both point at the same entry file `Source/Library.rs`. This is intentional
@@ -113,7 +113,7 @@ Mountain types at compile time. The binary target is what Tauri packages and
 launches. Both compile the same code; the `cfg(test)` / `cfg(not(test))` gates
 inside `Library.rs` control what each target exposes.
 
-## Handler file atomization
+## 📂　Handler file atomization
 
 The `WindServiceHandlers/` directory follows strict atomization: each IPC method
 that requires more than ~30 lines gets its own file. The `mod.rs` dispatch table
@@ -134,7 +134,7 @@ mod NativeHost {
 Never inline a handler that has its own file. Never create a file for a handler
 that is a one-liner - keep those inline in `mod.rs`.
 
-## DTO alignment example
+## 🔗　DTO alignment example
 
 The PascalCase convention eliminates all field rename annotations when
 serializing over gRPC or JSON:
@@ -171,7 +171,7 @@ All three representations use identical field names. Adding
 `#[serde(rename = "uri")]` or a proto field alias is a violation of this
 convention.
 
-## Module header
+## 📋　Module header
 
 Every `.rs` file begins with the allow attribute and a module doc comment:
 
@@ -184,7 +184,7 @@ Every `.rs` file begins with the allow attribute and a module doc comment:
 The allow attribute must be the first line (before any `use` statements).
 Omitting it causes Rust's `non_snake_case` lint to fire on every identifier.
 
-## Allowed exceptions
+## ✅　Allowed exceptions
 
 The following do **not** follow PascalCase and should not be changed:
 
@@ -199,7 +199,7 @@ The following do **not** follow PascalCase and should not be changed:
   external tool vars stay in their canonical form; Land-internal vars are
   PascalCase in `.env.Land` and `turbo.json`.
 
-## What not to do
+## 🚫　What not to do
 
 ```rust
 // Wrong - snake_case struct
@@ -219,7 +219,7 @@ pub use CommandProvider::GetConfigurationValue;
 // Correct: move to NativeHost/MoveItemToTrash.rs and call it from mod.rs
 ```
 
-## TypeScript conventions (Wind, Cocoon, Output)
+## 📘　TypeScript conventions (Wind, Cocoon, Output)
 
 The TypeScript elements of Land (Wind, Cocoon, Output) share a companion set of
 conventions that mirror the Rust rules where possible.

@@ -13,7 +13,7 @@ build time and which runtime behaviors are active in Cocoon, Wind, Sky, and
 Output. All variable names are PascalCase - no `SCREAMING_SNAKE_CASE` and no
 `LAND_` prefix.
 
-## File Hierarchy
+## 📁　File Hierarchy
 
 There are 18 environment files across 6 domains. Each domain has up to three
 files: a development default, a sample template, and a production overlay.
@@ -33,7 +33,7 @@ To get started, copy the sample to create your local dev file:
 cp .env.Land.Sample .env.Land
 ```
 
-## Sourcing Cascade
+## 🔄　Sourcing Cascade
 
 Files are sourced by `Maintain/Script/TierEnvironment.sh` in a fixed order.
 Later files override earlier ones for the same key (last-write-wins).
@@ -58,7 +58,7 @@ Missing files are silently skipped. Production overlays are only loaded when
 `NODE_ENV=production` or the `Profile` variable contains the substring
 `release`.
 
-## TierIPC Routing
+## 🔀　TierIPC Routing
 
 The `TierIPC` variable controls how Wind and Output route IPC calls at runtime.
 It is not a build-time Cargo feature - it is read at runtime by the TypeScript
@@ -76,9 +76,9 @@ Set it in `.env.Land` or export it directly:
 export TierIPC=NodeDeferred
 ```
 
-## Key Variables Reference
+## 🔑　Key Variables Reference
 
-### Product Identity
+### 🏷️　Product Identity
 
 | Variable                    | Default        | Description                                                                        |
 | --------------------------- | -------------- | ---------------------------------------------------------------------------------- |
@@ -92,14 +92,14 @@ export TierIPC=NodeDeferred
 | `ProductUrlProtocol`        | `land`         | Custom URL scheme (`land://...`).                                                  |
 | `ProductEmbedderIdentifier` | `land-desktop` | Tauri embedder identifier.                                                         |
 
-### Network
+### 🌐　Network
 
 | Variable              | Default | Description                              |
 | --------------------- | ------- | ---------------------------------------- |
 | `NetworkMountainPort` | `50051` | gRPC port for the Mountain RPC service.  |
 | `NetworkCocoonPort`   | `50052` | gRPC port for the Cocoon extension host. |
 
-### Tier Flags (Core)
+### ⚙️　Tier Flags (Core)
 
 Tier variables are translated to Cargo feature flags by `TierEnvironment.sh`.
 Default values do not activate any feature; only non-default values emit
@@ -125,7 +125,7 @@ Default values do not activate any feature; only non-default values emit
 | `TierTelemetry`           | `Synchronous` | `Synchronous`, `Batched`, `Off`                      | Telemetry transport mode.                                                            |
 | `TierOpenExternal`        | `Layer3`      | `Layer3`, `Layer4`                                   | Open-external-link implementation.                                                   |
 
-### Extensions
+### 🧩　Extensions
 
 | Variable | Default | Description                                                                                                  |
 | -------- | ------- | ------------------------------------------------------------------------------------------------------------ |
@@ -137,7 +137,7 @@ Default values do not activate any feature; only non-default values emit
 | `Mute`   | `false` | Disable all extensions including user and dev extensions.                                                    |
 | `Wire`   | `true`  | Auto-install built-in extensions' runtime dependencies. Set to `false` in production (pre-bundled).          |
 
-### Diagnostics
+### 🔍　Diagnostics
 
 | Variable  | Default | Description                                                                                                                                                                    |
 | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -147,7 +147,7 @@ Default values do not activate any feature; only non-default values emit
 | `Disable` | `false` | Master kill switch. Skips all Land shims, Cocoon/Air spawn, SkyBridge. Falls back to vanilla VS Code behavior.                                                                 |
 | `Smoke`   | (unset) | Set to `1` to run boot-time smoke harness against Wind's CommandCatalog.                                                                                                       |
 
-### Telemetry (PostHog)
+### 📊　Telemetry (PostHog)
 
 | Variable       | Default                    | Production | Description                                                                 |
 | -------------- | -------------------------- | ---------- | --------------------------------------------------------------------------- |
@@ -159,14 +159,14 @@ Default values do not activate any feature; only non-default values emit
 | `OTLPEndpoint` | `http://127.0.0.1:4318`    | (same)     | OTLP collector endpoint.                                                    |
 | `OTLPEnabled`  | `true`                     | `false`    | OTLP exporter toggle.                                                       |
 
-### Bundled Workbench
+### 📦　Bundled Workbench
 
 | Variable | Default | Production                            | Description                                                         |
 | -------- | ------- | ------------------------------------- | ------------------------------------------------------------------- |
 | `Pack`   | (empty) | `electron browser sessions workbench` | Space-separated workbench variants to pre-compile.                  |
 | `Boot`   | `false` | `true`                                | When `true`, `index.astro` renders the pre-compiled bundled layout. |
 
-## Runtime Overrides via localStorage
+## 🖥️　Runtime Overrides via `localStorage`
 
 Two variables can be toggled at runtime in the WKWebView DevTools console
 without restarting:
@@ -182,7 +182,7 @@ localStorage.setItem("Smoke", "1");
 localStorage.removeItem("Disable");
 ```
 
-## Debug vs Release Differences
+## 🔄　Debug vs Release Differences
 
 | Variable         | Development   | Production                            |
 | ---------------- | ------------- | ------------------------------------- |
@@ -195,9 +195,8 @@ localStorage.removeItem("Disable");
 | `Boot`           | `false`       | `true`                                |
 | `Pack`           | (empty)       | `electron browser sessions workbench` |
 
-## Related Pages
+## 🔗　Related Pages
 
-- [Quickstart](/Doc/quickstart) - build commands and launch
-- [Architecture](/Doc/architecture) - how tier flags propagate to each element
-- [Project Structure](/Doc/project-structure) - where `.env.Land*` files live in
-  the repo
+- [Quickstart](https://Editor.Land/Doc/quickstart) — build commands and launch
+- [Architecture](https://Editor.Land/Doc/architecture) — how tier flags propagate to each element
+- [Project Structure](https://Editor.Land/Doc/project-structure) — where `.env.Land*` files live in the repo

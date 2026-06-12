@@ -14,7 +14,7 @@ files and explains where generated documentation lives and how to build it
 locally. No API content is duplicated here; consult the linked sources for
 authoritative details.
 
-## Rust rustdoc (Mountain)
+## 🦀　Rust rustdoc (Mountain)
 
 Mountain's public API is documented inline using standard `///` doc comments.
 The rustdoc output is not currently published to a static site; build it locally
@@ -42,7 +42,7 @@ Key crates to browse in the generated docs:
 Source root:
 [https://github.com/CodeEditorLand/Mountain/tree/Current/Source](https://github.com/CodeEditorLand/Mountain/tree/Current/Source)
 
-## TypeScript generated types (Wind Codegen)
+## 📘　TypeScript generated types (Wind Codegen)
 
 Wind contains a code-generation layer that emits typed service interfaces from
 the Vine proto schema and the IPC channel registry. Generated files live under:
@@ -73,7 +73,7 @@ The matching Rust enum (kept in lockstep):
 > Adding an entry to one without adding it to the other will cause IPC dispatch
 > failures at runtime with no compile-time error.
 
-## Vine.proto - the gRPC API contract
+## 📜　`Vine.proto` — the gRPC API contract
 
 `Vine.proto` is the single authoritative definition of every RPC method and
 notification that crosses the Cocoon-Mountain boundary. It lives in the Vine
@@ -93,7 +93,7 @@ Key service sections in `Vine.proto`:
 | `VineService`             | Mountain → Cocoon | Notifications: document changes, extension events, lifecycle |
 | `MountainVineGRPCService` | Mountain → Cocoon | Notification router for gRPC push                            |
 
-## Key source files by API surface
+## 🔑　Key source files by API surface
 
 ### Mountain IPC handlers
 
@@ -117,7 +117,7 @@ WindServiceHandlers/
 └── Update/                 - update service stubs
 ```
 
-### Cocoon vscode.\* shims
+### Cocoon `vscode.*` shims
 
 Cocoon's hand-authored `vscode.*` namespace implementations:
 
@@ -172,7 +172,7 @@ Bridge/
 └── InstallDebug.ts             - breakpoint gutter sync
 ```
 
-## Building all documentation locally
+## 🔨　Building all documentation locally
 
 ```bash
 # Rust rustdoc for Mountain

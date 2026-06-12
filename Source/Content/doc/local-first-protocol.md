@@ -15,7 +15,7 @@ daemon and the WebSite, but the editor starts, edits files, runs extensions, and
 saves state entirely offline. This page describes how the local-first design is
 implemented and what it means for extension developers.
 
-## Editor State Storage
+## 💾　Editor State Storage
 
 All editor state is persisted locally through Mountain's `storage:set` and
 `storage:get` IPC handlers. The underlying store uses SQLite for structured data
@@ -34,7 +34,7 @@ handler, which writes to SQLite at:
 No data leaves the device unless the extension itself initiates a network
 request.
 
-## Extension State via Memento
+## 🧩　Extension State via Memento
 
 The `vscode.Memento` interface (`context.workspaceState`, `context.globalState`)
 is backed by Mountain's `Storage.Get` and `Storage.Set` IPC calls. Extension
@@ -48,7 +48,7 @@ The Memento implementation does not batch writes or require a flush call. Each
 handler, which writes through to SQLite synchronously within the Tauri async
 runtime.
 
-## Extension Secrets
+## 🔒　Extension Secrets
 
 `context.secrets` is backed by Mountain's `encryption:encrypt` and
 `encryption:decrypt` handlers, which use AES-256-GCM with a machine-stable key
@@ -60,7 +60,7 @@ the same SQLite database as other state. Secrets do not leave the device.
 > one machine cannot read it on another. This matches the VS Code behavior for
 > `context.secrets` on desktop.
 
-## File System Operations
+## 📁　File System Operations
 
 File read, write, watch, and directory operations go directly through Mountain's
 native filesystem handlers to the OS. There is no cloud sync layer, no conflict
@@ -73,7 +73,7 @@ extension-provided `FileSystemProvider` implementations registered via
 `vscode.workspace.registerFileSystemProvider`. The core filesystem IPC path
 remains local-only.
 
-## Air: Optional Services
+## ☁️　Air: Optional Services
 
 The Air daemon provides optional services that the editor does not depend on for
 core function:
@@ -89,7 +89,7 @@ core function:
 The editor starts correctly with Air absent. No startup path has a hard
 dependency on Air being reachable.
 
-## Telemetry: Opt-In Only
+## 📊　Telemetry: Opt-In Only
 
 Telemetry is disabled in production builds by default (`Capture=false`,
 `Report=false` in `.env.Land.Production`). The PostHog integration and OTLP
@@ -100,7 +100,7 @@ Session recording (`Replay`) and surveys (`Ask`) are also off by default and
 must be individually enabled. No telemetry data is collected from users who have
 not opted in.
 
-## CC0 License and Vendor Lock-In
+## 📜　CC0 License and Vendor Lock-In
 
 Land is released under the Creative Commons CC0 Universal public domain
 dedication. This means there is no license restriction on forking, modifying, or
@@ -108,7 +108,7 @@ redistributing the editor or any of its components. Combined with the
 local-first storage design, there is no mechanism by which a vendor could lock
 users into a proprietary data format or a mandatory cloud service.
 
-## What Local-First Means for Extension Developers
+## 📝　What Local-First Means for Extension Developers
 
 - **Extension state is always local.** `context.workspaceState`,
   `context.globalState`, and `context.secrets` write to the local device. There

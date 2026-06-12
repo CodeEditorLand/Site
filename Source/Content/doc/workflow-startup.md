@@ -11,7 +11,7 @@ Land starts in three distinct phases: the native Mountain binary initialises its
 services and gRPC listener, the Cocoon Node.js sidecar bootstraps and completes
 the `initExtensionHost` handshake, and the Wind workbench renders in the Tauri
 webview. All three phases overlap from the user's perspective; the
-Mountain↔Cocoon handshake is the hard ordering constraint that gates extension
+Mountain<->Cocoon handshake is the hard ordering constraint that gates extension
 activation.
 
 ## Phase 1 - Mountain native startup

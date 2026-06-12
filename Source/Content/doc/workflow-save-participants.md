@@ -25,7 +25,7 @@ normal write path to Mountain executes. The extension author sees only a single
    emits a `willSave` event and passes control to `IWorkingCopyFileService` to
    run all registered save participants.
 
-## Phase 2 - Save participant orchestration (Wind → Cocoon → Wind)
+## Phase 2 - Save participant orchestration (Wind -> Cocoon -> Wind)
 
 4. `WorkingCopyFileService.runSaveParticipants()` gathers every registered
    `ISaveParticipant`. The relevant one here is `ExtHostSaveParticipant`, which
@@ -52,7 +52,7 @@ normal write path to Mountain executes. The extension author sees only a single
    `TextEdit` arrays, serialises them into DTOs via `TypeConverter`, and returns
    the full array to Wind as the `$participateInSave` gRPC response.
 
-## Phase 4 - Apply edits and write to disk (Wind → Mountain)
+## Phase 4 - Apply edits and write to disk (Wind -> Mountain)
 
 10. The `$participateInSave` gRPC call resolves in Wind.
     `WorkingCopyFileService` passes the collected edits to `IBulkEditService`.
@@ -72,9 +72,9 @@ normal write path to Mountain executes. The extension author sees only a single
     `TextFileEditorModelManager` proceeds to the actual write. It calls
     `IFileService.writeFile()`.
 
-13. The write follows the same provider chain as reading: `IFileService` →
-    `TauriDiskFileSystemProvider` → `WriteFile` Effect →
-    `TauriInvoke("plugin:fs|WriteFile")` → Mountain.
+13. The write follows the same provider chain as reading: `IFileService` ->
+    `TauriDiskFileSystemProvider` -> `WriteFile` Effect ->
+    `TauriInvoke("plugin:fs|WriteFile")` -> Mountain.
 
 14. Mountain receives the call and executes:
 

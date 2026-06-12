@@ -14,7 +14,7 @@ filesystem stat for repository detection and a `GitProvider` that safely spawns
 `git` child processes. Mountain then brokers the resulting resource states to
 Sky via Tauri events.
 
-## Phase 1 - Registration and repository detection (Cocoon → Mountain)
+## Phase 1 - Registration and repository detection (Cocoon -> Mountain)
 
 1. On startup Cocoon activates the built-in Git extension. Its `activate()`
    function runs and calls:
@@ -33,11 +33,11 @@ Sky via Tauri events.
     vscode.workspace.fs.stat(Uri.joinPath(workspaceRoot, ".git"));
     ```
 
-    This traverses Cocoon's `FileSystemProvider` → gRPC → Mountain →
+    This traverses Cocoon's `FileSystemProvider` -> gRPC -> Mountain ->
     `tokio::fs::metadata`. A successful result confirms the workspace is a Git
     repository.
 
-## Phase 2 - Populating the SCM view (Cocoon → Mountain → Cocoon)
+## Phase 2 - Populating the SCM view (Cocoon -> Mountain -> Cocoon)
 
 4. The Git extension needs changed-file status. It cannot spawn processes
    directly, so it calls Mountain's `vscode.git` API which maps to a
@@ -70,7 +70,7 @@ Sky via Tauri events.
    Sky:
 
     ```
-    sky://scm/update-group  { providerId: "git", groupId: "Changes", resources: […] }
+    sky://scm/update-group  { providerId: "git", groupId: "Changes", resources: [...] }
     ```
 
 ## Phase 3 - SCM view rendering (Sky)
@@ -79,7 +79,7 @@ Sky via Tauri events.
    receives the resource DTOs, updates its state, and re-renders - the user sees
    the list of modified files (e.g. `M src/main.ts`).
 
-## Phase 4 - Diff view (Sky → Wind → Cocoon → Mountain)
+## Phase 4 - Diff view (Sky -> Wind -> Cocoon -> Mountain)
 
 10. The user clicks a changed file in the SCM view. The click handler opens the
     file with a `git:` scheme URI encoding the HEAD revision, e.g.
@@ -89,7 +89,7 @@ Sky via Tauri events.
     with two sides:
     - **Modified** - loaded from the workspace `file://` URI via
       `IFileService.readFile()` (the standard read path described in
-      [Opening a File](./workflow-open-file)).
+      [Opening a File](/Doc/workflow-open-file).
     - **Original** - requested from the `TextDocumentContentProvider` registered
       for `git:` by the Git extension in Cocoon.
 
@@ -133,5 +133,5 @@ in sync with the extension's values.
   the first `$registerScmProvider` gRPC call from Cocoon.
 
 > [!IMPORTANT] gRPC traffic between Mountain and Cocoon for SCM flows over port
-> 50051 (Mountain Vine server, Mountain → Cocoon direction). The reverse Cocoon →
+> 50051 (Mountain Vine server, Mountain -> Cocoon direction). The reverse Cocoon ->
 > Mountain notification push uses port 50052.

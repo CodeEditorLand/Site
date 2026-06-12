@@ -14,7 +14,7 @@ also a Git submodule with its own repository, so dependency changes require
 following the correct per-submodule workflow. This page covers the rules and
 procedures for both graphs.
 
-## JavaScript Dependencies (pnpm)
+## 📦　JavaScript Dependencies (pnpm)
 
 ### Workspace Protocol
 
@@ -50,7 +50,7 @@ pnpm. Its `package-lock.json` and `.npmrc` are npm-native. When updating
 dependencies in that submodule, use `npm install` inside that directory only.
 See [Building Land](/Doc/getting-started) for the full Node 24 compile steps.
 
-## Rust Dependencies (Cargo)
+## 🦀　Rust Dependencies (Cargo)
 
 ### Adding a New Rust Dependency
 
@@ -86,7 +86,7 @@ When a new patch is needed, add it to the workspace root `Cargo.toml` under
 some-crate = { git = "https://github.com/CodeEditorLand/some-crate", branch = "Current" }
 ```
 
-## Submodule Update Workflow
+## 🔄　Submodule Update Workflow
 
 Each Element under `Land/Element/` is a separate Git submodule with its own
 repository and branch. Never use `git submodule update --recursive`.
@@ -136,7 +136,7 @@ The `compile-extensions-build` step produces the `out-<platform>` directories
 consumed by the Output element. Skip it and Cocoon will fail to locate platform
 code at runtime.
 
-## Git LFS
+## 📦　Git LFS
 
 SideCar stores vendored Node.js binaries in Git LFS. Before cloning or running
 the SideCar download tool for the first time, ensure Git LFS is initialized on
@@ -150,7 +150,7 @@ Without Git LFS, the binary files in `Element/SideCar/` will be checked out as
 LFS pointer stubs rather than real binaries, and Mountain's `build.rs` will fail
 to stage the correct Node.js binary for bundling.
 
-## pnpm Content-Addressed Store
+## 💾　pnpm Content-Addressed Store
 
 pnpm uses a content-addressed store shared across all projects on the machine
 (default: `~/.pnpm-store`). This means installing a package version that is

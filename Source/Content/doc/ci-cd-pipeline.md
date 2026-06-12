@@ -14,7 +14,7 @@ request targeting `Current` triggers the pipeline. This page describes what
 runs, what it produces, and how environment secrets and the
 `beforeBundleCommand` hook fit into the flow.
 
-## Six-Stage Build Pipeline
+## 🔨　Six-Stage Build Pipeline
 
 Every Land build - whether local or in CI - follows the same six stages in
 sequence:
@@ -34,7 +34,7 @@ compiled platform JavaScript it produces. Stage 3 (PreBake) fires inside
 paths - direct `pnpm tauri build`, `Build.sh`, and CI - not only through the
 wrapper script.
 
-## GitHub Actions Workflow
+## 🤖　GitHub Actions Workflow
 
 The primary workflow file is `Maintain/.GitHub/Workflows/Auto.yml`. It defines
 the full build-test-sign-upload sequence. Additional per-element workflows may
@@ -81,7 +81,7 @@ The matrix covers platform × profile combinations:
 Debug profiles (`debug-electron-bundled`, etc.) are used in local development
 and are not part of the CI matrix.
 
-## turbo.json Task Graph
+## ⚡　`turbo.json` Task Graph
 
 Turborepo resolves the dependency graph between workspace tasks. The key
 pipeline is:
@@ -105,7 +105,7 @@ All `Tier*` and `Product*` variables listed in `turbo.json` under `globalEnv`
 are included in the cache key. A change to `TierFileSystem` in `.env.Land`
 invalidates the Mountain cache entry and forces a Rust recompile.
 
-## Environment Secrets
+## 🔐　Environment Secrets
 
 The following secrets must be configured in the GitHub repository settings for
 the pipeline to produce signed artifacts:
@@ -141,7 +141,7 @@ Stage 1 run.
 > `ProductNLnetAcknowledgement` variable. This is set in `.env.Land.Production`
 > and does not require a GitHub secret.
 
-## `beforeBundleCommand` Hook - PreBake.ts
+## 🔗　`beforeBundleCommand` Hook — `PreBake.ts`
 
 Before Tauri bundles the application, the `beforeBundleCommand` in
 `tauri.conf.json` runs `Maintain/Build/Manifest/PreBake.ts`. This script walks
@@ -157,7 +157,7 @@ CI - because it lives in `tauri.conf.json`, not in the shell script wrapper.
 > only. Build.sh is a wrapper; steps placed there are skipped when
 > `pnpm tauri build` is invoked directly or from CI without the wrapper.
 
-## Artifact Upload
+## 📤　Artifact Upload
 
 After a successful production build, CI uploads artifacts using the
 `actions/upload-artifact` action:
@@ -170,7 +170,7 @@ After a successful production build, CI uploads artifacts using the
 Artifacts are retained for 30 days on pull request builds and 90 days on
 `Current` branch builds.
 
-## When a Maintain Change Is Sufficient (No Rebuild Needed)
+## ✅　When a Maintain Change Is Sufficient (No Rebuild Needed)
 
 The Maintain crate is a build orchestrator. Its source code is compiled into the
 `maintain` binary used to drive builds, but **changes to

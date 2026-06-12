@@ -36,7 +36,7 @@ at 95%, and LSP/Language at 95%.
 | ⚪     | Not yet attempted                                                         |
 | 🟢     | Pure-function lift (stateless, no RPC) already landed via `StockLift.ts`  |
 
-## Overall coverage summary
+## 📊　Overall coverage summary
 
 | Namespace                   | Coverage | Primary blocker                                |
 | --------------------------- | -------- | ---------------------------------------------- |
@@ -56,7 +56,7 @@ at 95%, and LSP/Language at 95%.
 | `vscode.l10n`               | ~100%    | -                                              |
 | `vscode.comments`           | ~0%      | not attempted                                  |
 
-## Namespace tables
+## 📋　Namespace tables
 
 ### `vscode.commands`
 
@@ -67,7 +67,7 @@ at 95%, and LSP/Language at 95%.
 | `executeCommand`            | A+S   | ✅     | `commands:execute` | `__CEL_SERVICES__.Commands.executeCommand`         |
 | `getCommands`               | A     | ✅     | -                  | -                                                  |
 
-### `vscode.window` - Editors
+### `vscode.window` — Editors
 
 | Operation                     | Track | Status | Mountain channel                     | Sky surface                              |
 | ----------------------------- | ----- | ------ | ------------------------------------ | ---------------------------------------- |
@@ -76,7 +76,7 @@ at 95%, and LSP/Language at 95%.
 | `showTextDocument`            | A     | ✅     | `sky://window/showTextDocument` emit | `vscode.open` command dispatch           |
 | `onDidChangeActiveTextEditor` | A     | ✅     | -                                    | -                                        |
 
-### `vscode.window` - Surfaces
+### `vscode.window` — Surfaces
 
 | Operation                                                            | Track | Status | Mountain channel                                                                       | Sky surface                                          |
 | -------------------------------------------------------------------- | ----- | ------ | -------------------------------------------------------------------------------------- | ---------------------------------------------------- |
@@ -247,7 +247,7 @@ at 95%, and LSP/Language at 95%.
 | ------------------------- | ----- | ------ | ------------- |
 | `createCommentController` | A     | 🔴     | not attempted |
 
-## Gap register
+## 🔲　Gap register
 
 The following items are the highest-priority unimplemented gaps, ordered by the
 number of extensions they block.
@@ -263,7 +263,7 @@ number of extensions they block.
 | `vscode.chat` / `vscode.lm`                                       | AI-native extensions cannot register participants or models   | 🔴      |
 | Terminal shell integration (OSC 633) end-to-end                   | Extensions can observe command start/end/execute events       | ✅      |
 
-## Track-B bring-up pattern
+## 🔄　Track-B bring-up pattern
 
 When promoting an operation from Track A (stock Node) to Track B (Rust-native),
 the steps are:
@@ -277,7 +277,7 @@ the steps are:
 4. In Cocoon's `<Namespace>.ts` shim, call
    `MountainClient.sendRequest(method, args)` behind the tier guard.
 
-## Verification
+## ✅　Verification
 
 After wiring a new namespace:
 
