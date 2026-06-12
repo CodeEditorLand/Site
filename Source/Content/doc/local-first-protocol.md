@@ -12,8 +12,8 @@ connection and without an account. All persistent state is stored on the local
 device using platform-native mechanisms. Optional cloud services — update
 delivery, authentication for specific extensions — are provided by the **Air**
 daemon and the WebSite, but the editor starts, edits files, runs extensions, and
-saves state entirely offline. Below we describe how the local-first design is
-implemented and what it means for extension developers.
+saves state entirely offline. The local-first design is
+implemented as follows and has specific implications for extension developers.
 
 ## 💾 Editor State Storage
 

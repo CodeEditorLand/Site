@@ -7,7 +7,7 @@ description:
     each one."
 ---
 
-Below we document architectural decisions that shaped Land's current design.
+Architectural decisions that shaped Land's current design.
 Each entry follows the same structure: the problem that prompted the decision,
 the solution chosen, and why that solution was selected over alternatives. These
 decisions are stable — they reflect deliberate trade-offs, not accidents.

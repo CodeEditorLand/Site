@@ -7,8 +7,8 @@ description:
     them."
 ---
 
-Below we cover the most frequently encountered problems when building, running,
-or developing against Land. Each entry describes the symptom, the root cause,
+The most frequently encountered problems when building, running,
+or developing against Land are covered below. Each entry describes the symptom, the root cause,
 and the specific fix. For issues not listed here, check the FIDDEE.log in
 `<app-data>/logs/` and open a GitHub issue with the log contents attached.
 

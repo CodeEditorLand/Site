@@ -11,8 +11,8 @@ description:
 Land is a monorepo with two parallel dependency graphs: a **pnpm workspace** for
 all TypeScript elements and a **Cargo workspace** for all Rust elements. Each
 element is also a Git submodule with its own repository, so dependency changes
-require following the correct per-submodule workflow. Below we cover the rules
-and procedures for both graphs.
+require following the correct per-submodule workflow. The rules
+and procedures for both dependency graphs are as follows.
 
 ## 📦 JavaScript Dependencies (pnpm)
 

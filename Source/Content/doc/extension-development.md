@@ -9,8 +9,8 @@ description: "How to develop, test, and report compatibility issues for VS Code
 Land hosts VS Code extensions through **Cocoon**, a Node.js extension host that
 implements the `vscode.*` API surface. Current coverage is approximately **88%**
 of the VS Code extension API, making the majority of published extensions
-compatible without modification. Below we describe what works, what does not,
-and how to test and report gaps.
+compatible without modification. What works, what does not,
+and how to test and report gaps are covered below.
 
 ## 📊 API Coverage
 
