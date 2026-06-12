@@ -1,3 +1,14 @@
+---
+title: "Architecture"
+section: "Deep Dive"
+order: 3
+description:
+    "The complete system architecture of the Land code editor - process model,
+    inter-component communication patterns, component responsibilities, and the
+    layered design that enables multi-process operation on macOS, Windows, and
+    Linux."
+---
+
 # Land System Architecture
 
 The complete system architecture of the **Land** code
