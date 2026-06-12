@@ -673,7 +673,7 @@ This prevents orphaned Cocoon processes if Mountain crashes without sending
 
 ## Related Documentation
 
-- [Cocoon element overview](https://Editor.Land/Doc/cocoon)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Architecture overview](https://Editor.Land/Doc/architecture)
-- [Vine protocol](https://Editor.Land/Doc/vine)
+- [Cocoon element overview](/Doc/cocoon)
+- [Mountain deep dive](/Doc/deep-dive-mountain)
+- [Architecture overview](/Doc/architecture)
+- [Vine protocol](/Doc/vine)

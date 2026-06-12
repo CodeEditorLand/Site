@@ -80,6 +80,6 @@ management - the operations where a GC runtime pays the highest per-call cost.
 
 ## Related Documentation
 
-- [Why Tauri](https://Editor.Land/Doc/why-tauri)
-- [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts)
-- [Why gRPC](https://Editor.Land/Doc/why-grpc)
+- [Why Tauri](/Doc/why-tauri)
+- [Why Effect-TS](/Doc/why-effect-ts)
+- [Why gRPC](/Doc/why-grpc)

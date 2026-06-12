@@ -344,10 +344,10 @@ Common/
 
 ## Related Documentation 📖
 
-- [Mountain](https://Editor.Land/Doc/mountain) -- Trait implementations
-- [Echo](https://Editor.Land/Doc/echo) -- Task scheduler integration
-- [Air](https://Editor.Land/Doc/air) -- Background daemon (`Common` consumer)
-- [RustInfrastructure](https://Editor.Land/Doc/rust-infrastructure) -- `Rust` backend components
+- [Mountain](/Doc/mountain) -- Trait implementations
+- [Echo](/Doc/echo) -- Task scheduler integration
+- [Air](/Doc/air) -- Background daemon (`Common` consumer)
+- [RustInfrastructure](/Doc/architecture) -- `Rust` backend components
 
 ## Funding 💎
 

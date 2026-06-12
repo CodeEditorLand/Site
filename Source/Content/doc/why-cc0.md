@@ -69,6 +69,6 @@ change the terms.
 
 ## Related Documentation
 
-- [Why Rust](https://Editor.Land/Doc/why-rust)
-- [Why Tauri](https://Editor.Land/Doc/why-tauri)
-- [Architecture](https://Editor.Land/Doc/architecture)
+- [Why Rust](/Doc/why-rust)
+- [Why Tauri](/Doc/why-tauri)
+- [Architecture](/Doc/architecture)

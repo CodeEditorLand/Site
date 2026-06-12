@@ -7,6 +7,8 @@ description:
     IPC, a Cocoon gRPC call to the registered extension provider, and back."
 ---
 
+# Hover Provider Invocation
+
 A hover provider demonstrates the full five-element request cycle: registration
 flows from Cocoon to Mountain at activation time, then each live hover request
 flows Sky → Wind → Mountain → Cocoon → extension → back the same way. Mountain

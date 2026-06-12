@@ -107,7 +107,7 @@ The following capabilities are operational in the current build:
 ## What Is Not Yet Complete ❌
 
 > [!IMPORTANT] Public installers are not available. Building from source is the
-> only supported path. See [Quickstart](https://Editor.Land/Doc/quickstart).
+> only supported path. See [Quickstart](/Doc/quickstart).
 
 > [!WARNING] Windows and Linux support is in progress. The primary development
 > and test platform is macOS (Apple Silicon and Intel). Building on other
@@ -150,15 +150,15 @@ serialization defined in `Element/Vine/Vine.proto`.
 
 ## Related Documentation 🔗
 
-- [Architecture](https://Editor.Land/Doc/architecture) - full process model,
+- [Architecture](/Doc/architecture) - full process model,
   component responsibilities, data flow
-- [Why Rust](https://Editor.Land/Doc/why-rust) - justification for the native
+- [Why Rust](/Doc/why-rust) - justification for the native
   backend language
-- [Why Tauri](https://Editor.Land/Doc/why-tauri) - why Electron was replaced
+- [Why Tauri](/Doc/why-tauri) - why Electron was replaced
   as the desktop shell
-- [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts) - why Cocoon and Wind
+- [Why Effect-TS](/Doc/why-effect-ts) - why Cocoon and Wind
   use Effect-TS for the TypeScript layer
-- [Quickstart](https://Editor.Land/Doc/quickstart) - build and run in two steps
+- [Quickstart](/Doc/quickstart) - build and run in two steps
 
 ## Funding 💎
 

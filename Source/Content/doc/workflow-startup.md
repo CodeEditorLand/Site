@@ -128,10 +128,12 @@ Between stages 5 and 6, Mountain responds to the handshake:
 
 - Mountain receives `$initialHandshake` and calls
   `ProcessManagement/InitializationData.rs`, which assembles the full
-  `ISandboxConfiguration` + `IExtensionHostInitData` payload: workspace roots,
-  extension list, configuration state, profiles, `dataFolderName` (a primary
-  crash source when missing), `perfMarks`, `loggers`, `colorScheme`, `mainPid`,
-  and OS metadata.
+  `ISandboxConfiguration` + `IExtensionHostInitData` payload. This payload
+  includes: workspace roots, extension list and metadata, configuration state
+  (`argv.json`, `settings.json`, `keybindings.json`), registered profiles,
+  `dataFolderName` (a primary crash source when missing), `perfMarks`,
+  `loggers`, `colorScheme`, `mainPid`, and OS metadata (platform, arch, release,
+  hostname).
 
 - Mountain sends the **`initExtensionHost` gRPC request** back to Cocoon,
   containing this initialization payload.
@@ -140,7 +142,9 @@ Between stages 5 and 6, Mountain responds to the handshake:
   `InitDataLayer`, runs `FullAppInitialization`, resolves the
   `ExtensionHostProvider`, installs the `RequireInterceptor` so every
   `require('vscode')` returns the Cocoon shim, and activates startup extensions
-  (`*` activation event). At this point, workflows like Language Features and
+  (`*` activation event). The topological ordering from the Extensions stage
+  (step 6) ensures that extension dependency chains resolve correctly before
+  providers register. At this point, workflows like Language Features and
   Webviews can begin, as extensions register their providers.
 
 ## Phase 3 — Wind workbench launch
@@ -148,28 +152,47 @@ Between stages 5 and 6, Mountain responds to the handshake:
 These steps run in parallel with Phase 2, starting from the moment Tauri opens
 the main window.
 
-1. Tauri loads `index.html` in the webview (built by
-   `Sky/Source/pages/Mountain.astro`). `Wind/Source/Preload.ts` executes first,
-   shimming `window.vscode` with Tauri-backed implementations for `ipcRenderer`
-   and `process`. This shim is what allows the VS Code workbench code to run in
-   a non-Electron context.
+1. Tauri loads `index.html` in the webview, built by
+   `Sky/Source/pages/Mountain.astro`. The Astro page produces the static HTML
+   shell that bootstraps the Wind application script. `Wind/Source/Preload.ts`
+   executes first, shimming `window.vscode` with Tauri-backed implementations
+   for `ipcRenderer` and `process`. This shim is the critical bridge that allows
+   the VS Code workbench code to run in a non-Electron, Tauri-based webview
+   context.
 
 2. The main Wind entry script waits for DOM ready, then composes the
    `AppLayer` — an Effect-TS `Layer` providing every Wind service:
    `LiveClipboardService`, `LiveDialogService`, `LiveEditorService`, and all
-   the rest.
+   the rest. Each service is backed by Tauri IPC calls or native Rust commands,
+   replacing the Electron APIs that VS Code's workbench would normally consume.
 
 3. The layer is converted to a Runtime and the VS Code `Workbench` is
-   instantiated via `new Workbench(...)`. `Workbench.startup()` kicks off the
-   entire UI rendering lifecycle, creating every UI part — Activity Bar, Status
-   Bar, Side Bar, Editor Part — and begins requesting data from Wind services,
-   which in turn invoke Mountain IPC for filesystem reads, command lists, and
-   configuration values.
+   instantiated via `new Workbench(...)`. The `Workbench` constructor receives
+   the resolved service runtime as its dependency container. `Workbench.startup()`
+   is then called, which kicks off the entire UI rendering lifecycle — creating
+   every UI part: Activity Bar, Status Bar, Side Bar, Editor Part, and
+   instantiating the editor pane itself. Each part begins requesting data from
+   Wind services, which in turn invoke Mountain IPC for filesystem reads,
+   command lists, configuration values, and extension contributions.
 
 4. As these parts are created, they trigger downstream workflows. For example,
    the File Explorer uses `IFileService` to list directory contents (triggering
    the Opening a File workflow), and the Command Palette uses
-   `ICommandService` (triggering the Executing a Command workflow).
+   `ICommandService` (triggering the Executing a Command workflow). Extension
+   contributions to the UI (views, menus, keybindings) are registered via the
+   `IExtensionService`, which is populated during Cocoon's startup extension
+   activation in Phase 2.
+
+5. **Extension activation timing after handshake:** Once Cocoon's
+   `initExtensionHost` handler completes (Phase 2), activated extensions begin
+   contributing to the workbench in real-time. The `IExtensionService` on the
+   Wind side subscribes to a gRPC stream from Cocoon that relays
+   `activatedExtension` events as each extension finishes its `activate()` call.
+   This means the Command Palette and language features become available
+   progressively — the first extension's contributions appear before the last
+   one has finished activating. The workbench does not block paint on extension
+   activation; it renders its chrome immediately and populates contributed UI
+   elements as the extension stream arrives.
 
 > [!IMPORTANT] The workbench's first meaningful paint depends on Mountain
 > returning the `InitializationData` payload promptly. Delays in the extension

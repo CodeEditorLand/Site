@@ -9,7 +9,7 @@ description: "The ~/.fiddee/ tree — Land's primary product-owned filesystem do
 
 The `~/.fiddee/` tree — Land's primary product-owned filesystem domain.
 
-[← Back to Filesystem Footprint index](./filesystem-footprint.md)
+See also: [Filesystem Footprint](./filesystem-footprint.md)
 
 ---
 

@@ -129,7 +129,7 @@ Air process is already running before spawning a new instance.
 
 ## Related Documentation
 
-- [Air overview](https://Editor.Land/Doc/air)
-- [Vine protocol](https://Editor.Land/Doc/vine)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-Related: [Architecture](/Doc/architecture/)
+- [Air overview](/Doc/air)
+- [Vine protocol](/Doc/vine)
+- [Mountain deep dive](/Doc/deep-dive-mountain)
+  Related: [Architecture](/Doc/architecture/)

@@ -910,6 +910,6 @@ The overall boot target is first sidebar paint at or under 800 ms, down from
 
 ## Related Documentation
 
-- [Mountain element overview](https://Editor.Land/Doc/mountain)
-- [Cocoon deep dive](https://Editor.Land/Doc/deep-dive-cocoon)
-- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [Mountain element overview](/Doc/mountain)
+- [Cocoon deep dive](/Doc/deep-dive-cocoon)
+- [Architecture overview](/Doc/architecture)

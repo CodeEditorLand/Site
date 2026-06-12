@@ -317,10 +317,10 @@ This is an in-tree developer artefact; it is never written inside the installed
 
 ## See Also 📚
 
-- [User Dotfile](https://Editor.Land/Doc/user-dotfile) — what's inside
+- [User Dotfile](/Doc/filesystem-footprint-user-dotfile) — what's inside
   `~/.fiddee/`.
-- [Platform Paths](https://Editor.Land/Doc/platform-paths) — what's inside each
+- [Platform Paths](/Doc/filesystem-footprint-platform-paths) — what's inside each
   per-OS path.
-- [Per Element](https://Editor.Land/Doc/per-element) — who wrote it.
-- [Encapsulation](https://Editor.Land/Doc/encapsulation) — the self-uninstall
+- [Per Element](/Doc/filesystem-footprint-per-element) — who wrote it.
+- [Encapsulation](/Doc/filesystem-footprint-encapsulation) — the self-uninstall
   direction (§F).

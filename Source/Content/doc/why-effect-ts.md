@@ -88,6 +88,6 @@ Effect's fiber model.
 
 ## Related Documentation
 
-- [Why gRPC](https://Editor.Land/Doc/why-grpc)
-- [Why Rust](https://Editor.Land/Doc/why-rust)
-- [Telemetry: Effect-TS and OpenTelemetry](https://Editor.Land/Doc/telemetry/effect-otel)
+- [Why gRPC](/Doc/why-grpc)
+- [Why Rust](/Doc/why-rust)
+- [Telemetry: Effect-TS and OpenTelemetry](/Doc/telemetry/effect-otel)

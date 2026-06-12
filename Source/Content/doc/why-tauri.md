@@ -76,6 +76,6 @@ calls.
 
 ## Related Documentation
 
-- [Why Rust](https://Editor.Land/Doc/why-rust)
-- [Why WebAssembly](https://Editor.Land/Doc/why-wasm)
-- [Deep Dive: Mountain](https://Editor.Land/Doc/deep-dive-mountain)
+- [Why Rust](/Doc/why-rust)
+- [Why WebAssembly](/Doc/why-wasm)
+- [Deep Dive: Mountain](/Doc/deep-dive-mountain)

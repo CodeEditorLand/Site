@@ -14,6 +14,8 @@ The GitHub-facing brand manual and design system documentation for the Land edit
 
 The full technical documentation for the Land code editor lives under `Source/Content/doc/` and is rendered at **[Editor.Land/Doc/](https://editor.land/Doc/)**.
 
+> **Styles reference:** For the canonical formatting conventions used across all doc pages (frontmatter, emoji placement, em-quad spacing, heading hierarchy, cross-linking), see [`.hermes/skills/documentation/website-doc-style-polish/SKILL.md`](/.hermes/skills/documentation/website-doc-style-polish/SKILL.md). This skill is the permanent reference for creating new docs that will ingress correctly.
+
 ### Reference
 
 | Document                                                                                                            | Topics                                                                   |
@@ -30,29 +32,153 @@ The full technical documentation for the Land code editor lives under `Source/Co
 | [`polyfills`](../Source/Content/doc/polyfills.md)                                                                   | Every polyfill and compatibility shim in Land                            |
 | [`workflow-overview`](../Source/Content/doc/workflow-overview.md)                                                   | Architecture overview and master index of all workflow examples          |
 
-### Why Documents
+### Start & Guide
 
-| Document                                                  | Question Answered                         |
-| --------------------------------------------------------- | ----------------------------------------- |
-| [`why-rust`](../Source/Content/doc/why-rust.md)           | Why Rust for the native backend?          |
-| [`why-tauri`](../Source/Content/doc/why-tauri.md)         | Why Tauri instead of Electron?            |
-| [`why-wasm`](../Source/Content/doc/why-wasm.md)           | Why WebAssembly for extensions?           |
-| [`why-effect-ts`](../Source/Content/doc/why-effect-ts.md) | Why Effect-TS for TypeScript layers?      |
-| [`why-grpc`](../Source/Content/doc/why-grpc.md)           | Why gRPC for inter-process communication? |
-| [`why-cc0`](../Source/Content/doc/why-cc0.md)             | Why CC0-1.0 licensing?                    |
+| order   | id                  | title                    |
+| ------- | ------------------- | ------------------------ |
+| Start/0 | `introduction`      | Introduction             |
+| Start/3 | `installation`      | Installation             |
+| Start/5 | `project-structure` | Project Structure        |
+| Guide/1 | `getting-started`   | Getting Started          |
+| Guide/2 | `quickstart`        | Quickstart               |
+| Guide/3 | `configuration`     | Configuration            |
+| Guide/4 | `ci-cd-pipeline`    | CI/CD Pipeline           |
+| Guide/5 | `api-reference`     | Inter-Component Protocol |
+
+### Elements
+
+| order | id                         | title                           |
+| ----- | -------------------------- | ------------------------------- |
+| 0     | `air`                      | Air: Background Daemon🪁        |
+| 1     | `cocoon`                   | Cocoon🦋                        |
+| 2     | `cocoon-vscode-validation` | Cocoon VS Code Validation       |
+| 2     | `common`                   | Common: Abstract Core Library👨🏻‍🏭 |
+| 3     | `echo`                     | Echo📣                          |
+| 4     | `grove`                    | Grove🌳                         |
+| 5     | `maintain`                 | Maintain💪🏻                      |
+| 6     | `mist`                     | Mist🌐                          |
+| 7     | `mountain`                 | Mountain⛰️                      |
+| 8     | `output`                   | Output⚫                        |
+| 9     | `rest`                     | Rest⛱️                          |
+| 9     | `sky`                      | Sky🌌                           |
+| 10    | `sidecar`                  | SideCar🛟                       |
+| 12    | `vine`                     | Vine🌿                          |
+| 13    | `wind`                     | Wind🍃                          |
+| 14    | `worker`                   | Worker                          |
+
+### Deep Dive
+
+| order | id                   | title                |
+| ----- | -------------------- | -------------------- |
+| 0     | `deep-dive-air`      | Air — Deep Dive      |
+| 1     | `deep-dive-cocoon`   | Cocoon — Deep Dive   |
+| 2     | `deep-dive-common`   | Common — Deep Dive   |
+| 3     | `deep-dive-echo`     | Echo — Deep Dive     |
+| 4     | `deep-dive-grove`    | Grove — Deep Dive    |
+| 5     | `deep-dive-maintain` | Maintain — Deep Dive |
+| 7     | `deep-dive-mountain` | Mountain — Deep Dive |
+| 9     | `deep-dive-rest`     | Rest — Deep Dive     |
+| 10    | `deep-dive-sidecar`  | SideCar — Deep Dive  |
+| 11    | `deep-dive-sky`      | Sky — Deep Dive      |
+| 12    | `deep-dive-vine`     | Vine — Deep Dive     |
+| 13    | `deep-dive-wind`     | Wind — Deep Dive     |
+| 14    | `deep-dive-worker`   | Worker — Deep Dive   |
+| 14    | `deep-dive-mist`     | Mist — Deep Dive     |
 
 ### Workflows
 
-| Document                                                                                                                | Topics                                            |
-| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------- |
-| [`workflow-tier-gated-implementation-selection`](../Source/Content/doc/workflow-tier-gated-implementation-selection.md) | Feature flags and implementation tier selection   |
-| [`workflow-startup`](../Source/Content/doc/workflow-startup.md)                                                         | Application startup and Mountain↔Cocoon handshake |
-| [`workflow-open-file`](../Source/Content/doc/workflow-open-file.md)                                                     | File explorer click to editor rendering           |
-| [`workflow-hover-provider`](../Source/Content/doc/workflow-hover-provider.md)                                           | Extension hover provider dispatch via gRPC        |
-| [`workflow-save-participants`](../Source/Content/doc/workflow-save-participants.md)                                     | Save interception with extension participants     |
-| [`workflow-command-palette`](../Source/Content/doc/workflow-command-palette.md)                                         | Unified command dispatch (Rust + extension)       |
-| [`workflow-webview`](../Source/Content/doc/workflow-webview.md)                                                         | Extension webview panel lifecycle                 |
-| [`workflow-terminal`](../Source/Content/doc/workflow-terminal.md)                                                       | PTY process management and I/O streaming          |
-| [`workflow-scm`](../Source/Content/doc/workflow-scm.md)                                                                 | Git extension integration via Mountain            |
-| [`workflow-user-data-sync`](../Source/Content/doc/workflow-user-data-sync.md)                                           | Settings sync with three-way merge                |
-| [`workflow-extension-tests`](../Source/Content/doc/workflow-extension-tests.md)                                         | Extension Development Host test runner            |
+| order | id                                             | title                                    |
+| ----- | ---------------------------------------------- | ---------------------------------------- |
+| 0     | `workflow-startup`                             | Application Startup and Handshake        |
+| 1     | `workflow-open-file`                           | Opening a File from the UI               |
+| 2     | `workflow-hover-provider`                      | Invoking a Language Feature Hover        |
+| 3     | `workflow-save-participants`                   | Saving a File with Save Participants     |
+| 4     | `workflow-command-palette`                     | Executing a Command from Command Palette |
+| 5     | `workflow-webview`                             | Creating and Interacting with a Webview  |
+| 6     | `workflow-terminal`                            | Creating and Interacting with Terminal   |
+| 7     | `workflow-scm`                                 | Source Control Management                |
+| 8     | `workflow-user-data-sync`                      | User Data Synchronization                |
+| 9     | `workflow-extension-tests`                     | Running Extension Tests                  |
+| 11    | `workflow-tier-gated-implementation-selection` | Tier-Gated Implementation Selection      |
+
+### Why Land
+
+| order | id              | title           |
+| ----- | --------------- | --------------- |
+| 0     | `why-rust`      | Why Rust        |
+| 1     | `why-tauri`     | Why Tauri       |
+| 2     | `why-effect-ts` | Why Effect-TS   |
+| 3     | `why-grpc`      | Why gRPC        |
+| 4     | `why-wasm`      | Why WebAssembly |
+| 5     | `why-cc0`       | Why CC0         |
+
+### Development
+
+| order | id                            | title                       |
+| ----- | ----------------------------- | --------------------------- |
+| 0     | `contributing`                | Contributing                |
+| 1     | `extension-development`       | Extension Development       |
+| 2     | `dependency-management`       | Dependency Management       |
+| 3     | `mountain-naming-conventions` | Mountain Naming Conventions |
+| 4     | `development-history`         | Development History         |
+| 5     | `local-first-protocol`        | Local-First Protocol        |
+| 6     | `troubleshooting`             | Troubleshooting             |
+| 7     | `vscode-api-coverage`         | VS Code API Coverage Matrix |
+| 8     | `telemetry/overview`          | Telemetry Overview          |
+| 8     | `telemetry/effect-otel`       | Effect-OTel Integration     |
+| 8     | `telemetry/sidecars`          | Telemetry Sidecars          |
+| 8     | `telemetry/tree-shaking`      | Telemetry Tree-Shaking      |
+
+---
+
+## Sidebar SectionOrder
+
+The sidebar ordering is defined in two files (both must match when adding new sections):
+
+- `Source/pages/Doc.astro`
+- `Source/pages/Doc/[...Slug].astro`
+
+```javascript
+const SectionOrder = [
+	"Start",
+	"Guide",
+	"Elements",
+	"Deep Dive",
+	"Workflows",
+	"Why Land",
+	"Reference",
+	"Development",
+	"Telemetry",
+];
+```
+
+## Canonical Element Emoji Mapping
+
+From the website's own I18n locale (`Source/Library/I18n/Locale/En/Home.json`):
+
+| Element  | Emoji | Element  | Emoji |
+| -------- | ----- | -------- | ----- |
+| Mountain | ⛰️    | Common   | 👨🏻‍🏭    |
+| Cocoon   | 🦋    | Echo     | 📣    |
+| Wind     | 🍃    | Grove    | 🌳    |
+| Sky      | 🌌    | Rest     | ⛱️    |
+| Air      | 🪁    | Vine     | 🌿    |
+| Mist     | 🌐    | SideCar  | 🛟    |
+| Output   | ⚫    | Maintain | 💪🏻    |
+
+## Doc Formatting Conventions (Summary)
+
+For the **complete** reference including frontmatter rules, em-quad spacing, heading hierarchy, cross-linking patterns, verification scripts, and page inventory tables, see the skill file at:
+
+**`.hermes/skills/documentation/website-doc-style-polish/SKILL.md`**
+
+Key rules at a glance:
+
+1. **Frontmatter**: Every file needs `title`, `section`, `order`, `description`. Section values must be quoted.
+2. **Emoji right**: Always `## Text 🗺️` not `## 🗺️ Text` — emoji after text, separated by `\u2001` (em-quad).
+3. **Headings without emoji**: Structural headings like `## Table of Contents` need no emoji.
+4. **No HTML table headers**: Strip Land logo `<table>` blocks when adapting from GitHub docs.
+5. **No back-navigation**: Replace `[← Back to ...]` with `See also: [Title](link)`.
+6. **No absolute GitHub links**: Convert to `/Doc/page/` paths.
+7. **Cross-ref style**: First mention of an Element → `**`Element`** 🗺️`.
+8. **Sidebar SectionOrder**: Both `Doc.astro` and `[...Slug].astro` must be kept in sync.

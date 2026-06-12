@@ -7,6 +7,8 @@ description:
     sets HTML content, and exchanges messages with the host."
 ---
 
+# Webview Panel Lifecycle
+
 Webview panels let extensions embed arbitrary HTML inside the editor. The panel
 itself is a native Tauri webview managed by Mountain; Cocoon holds a lightweight
 shim that proxies property assignments and message events across gRPC. Every

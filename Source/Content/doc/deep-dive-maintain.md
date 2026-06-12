@@ -160,6 +160,6 @@ sequenceDiagram
 
 ## Related Documentation 📖
 
-- [Maintain element overview](https://Editor.Land/Doc/maintain)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [Maintain element overview](/Doc/maintain)
+- [Mountain deep dive](/Doc/deep-dive-mountain)
+- [Architecture overview](/Doc/architecture)

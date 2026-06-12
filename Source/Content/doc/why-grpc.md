@@ -95,6 +95,6 @@ is the API documentation, enforced at compile time.
 
 ## Related Documentation
 
-- [Why Rust](https://Editor.Land/Doc/why-rust)
-- [Why Effect-TS](https://Editor.Land/Doc/why-effect-ts)
-- [Mountain Naming Conventions](https://Editor.Land/Doc/mountain-naming-conventions)
+- [Why Rust](/Doc/why-rust)
+- [Why Effect-TS](/Doc/why-effect-ts)
+- [Mountain Naming Conventions](/Doc/mountain-naming-conventions)

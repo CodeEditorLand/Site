@@ -293,11 +293,11 @@ Download Manager returns ActionResponse { success, filePath }
 
 ## Related Documentation 📖
 
-- [Common](https://Editor.Land/Doc/common) -- Abstract core traits
-- [Mountain](https://Editor.Land/Doc/mountain) -- Main backend application
-- [Mist](https://Editor.Land/Doc/mist) -- DNS isolation server
-- [Vine](https://Editor.Land/Doc/vine) -- `gRPC` protocol specification
-- [BuildPipeline](https://Editor.Land/Doc/build-pipeline) -- Build pipeline
+- [Common](/Doc/common) -- Abstract core traits
+- [Mountain](/Doc/mountain) -- Main backend application
+- [Mist](/Doc/mist) -- DNS isolation server
+- [Vine](/Doc/vine) -- `gRPC` protocol specification
+- [BuildPipeline](/Doc/build-pipeline) -- Build pipeline
 
 ## Funding 💎
 

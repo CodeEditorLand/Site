@@ -7,8 +7,8 @@ description: "How the Extension Development Host model spawns a second isolated
     window."
 ---
 
-> **⚠️ Workflow Status:** This document describes the conceptual test runner
-> architecture. For the actual implementation, refer to the
+> **⚠️ Workflow Status:** The conceptual test runner architecture described here
+> may differ from the current implementation. For the actual implementation, refer to the
 > `Element/Mountain/Source/Environment/TestProvider/` module and
 > `Element/Cocoon/Source/Services/Extension.ts` for extension activation.
 

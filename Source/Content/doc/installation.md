@@ -236,12 +236,12 @@ separate Xcode project.
 
 ## Related Documentation 🔗
 
-- [Quickstart](https://Editor.Land/Doc/quickstart) - concise build reference
-- [Getting Started](https://Editor.Land/Doc/getting-started) - full
+- [Quickstart](/Doc/quickstart) - concise build reference
+- [Getting Started](/Doc/getting-started) - full
   step-by-step guide with detailed troubleshooting
-- [Configuration](https://Editor.Land/Doc/configuration) - environment variable
+- [Configuration](/Doc/configuration) - environment variable
   system, tier flags, and per-subsystem overrides
-- [Project Structure](https://Editor.Land/Doc/project-structure) - element
+- [Project Structure](/Doc/project-structure) - element
   layout and naming conventions
 
 ## Funding 💎

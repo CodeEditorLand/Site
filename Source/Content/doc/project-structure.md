@@ -161,13 +161,13 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ## Related Documentation 🔗
 
-- [Architecture](https://Editor.Land/Doc/architecture) - how elements
+- [Architecture](/Doc/architecture) - how elements
   communicate at runtime: IPC, gRPC, and event flow
-- [Configuration](https://Editor.Land/Doc/configuration) - environment
+- [Configuration](/Doc/configuration) - environment
   variable system and tier flags
-- [Installation](https://Editor.Land/Doc/installation) - how to clone each
+- [Installation](/Doc/installation) - how to clone each
   submodule and build the project
-- [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline) - pipeline stages
+- [CI/CD Pipeline](/Doc/ci-cd-pipeline) - pipeline stages
   and automation
 
 ## Funding 💎

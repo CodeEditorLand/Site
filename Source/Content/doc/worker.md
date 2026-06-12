@@ -237,10 +237,10 @@ export async function registerWorker(): Promise<ServiceWorkerRegistration> {
 
 ## Related Documentation 📖
 
-- [Sky](https://Editor.Land/Doc/sky) - UI layer (`Worker` consumer)
-- [Wind](https://Editor.Land/Doc/wind) - Service layer (`Worker` integration)
-- [BuildPipeline](https://Editor.Land/Doc/build-pipeline) - Build pipeline
-- [Polyfills](https://Editor.Land/Doc/polyfills) - Polyfill layers
+- [Sky](/Doc/sky) - UI layer (`Worker` consumer)
+- [Wind](/Doc/wind) - Service layer (`Worker` integration)
+- [BuildPipeline](/Doc/build-pipeline) - Build pipeline
+- [Polyfills](/Doc/polyfills) - Polyfill layers
 
 ## Funding 💎
 

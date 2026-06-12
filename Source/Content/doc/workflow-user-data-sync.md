@@ -43,11 +43,19 @@ The full flow involves six phases:
       with the plaintext value, then `storage:set` with the ciphertext.
     - `context.secrets.get(key)` calls `storage:get` for the ciphertext and then
       `encryption:decrypt` to recover the plaintext.
-    - `context.secrets.delete(key)` calls `storage:set` with an empty string.
+    - `context.secrets.delete(key)` calls `storage:set` with an empty string
+      rather than removing the key entirely. This means a `secrets.get(key)`
+      after `secrets.delete(key)` returns `undefined` (the empty string is
+      interpreted as a tombstone), but the storage record itself is not removed
+      — the key still exists in the backing store with an empty ciphertext
+      value.
 
     Mountain encrypts with AES-256-GCM using a SHA-256 hash of the machine UUID
-    as the key. The `onDidChange` event fires after every `store` or `delete`
-    call. Secrets are never written to disk in plaintext.
+    as the key, derived in `Encryption/Key.rs`. This makes the key machine-stable
+    across sessions. The `onDidChange` event fires synchronously after every
+    `store` or `delete` call, but only if the underlying value actually changed
+    — calls setting the same value as the current state are silently coalesced.
+    Secrets are never written to disk in plaintext.
 
 ### Extension storage via Mountain
 
@@ -67,12 +75,16 @@ plaintext storage:
   plaintext value, then `storage:set` with the ciphertext.
 - `secrets.get(key)` calls `storage:get` for the ciphertext and then
   `encryption:decrypt` to recover the plaintext.
-- `secrets.delete(key)` calls `storage:set` with an empty string.
+- `secrets.delete(key)` calls `storage:set` with an empty string — a tombstone
+  marker rather than a key removal. After a delete, `secrets.get(key)` returns
+  `undefined`, but the backing store still holds the record.
 
 The encryption key is derived from a SHA-256 hash of the machine UUID
 (`Encryption/Key.rs`), making it machine-stable across sessions. Secrets are
-never written to disk in plaintext. The `onDidChange` event fires after every
-`store` or `delete` call.
+never written to disk in plaintext. The `onDidChange` event fires synchronously
+after every `store` or `delete` call, but only if the underlying value actually
+changed — calls setting the same value as the current state are silently
+coalesced to avoid spurious notifications.
 
 ---
 
@@ -120,27 +132,46 @@ never written to disk in plaintext. The `onDidChange` event fires after every
 11. `SettingsSynchronizer` reads the local `settings.json` via the `FsReader`
     Effect, then performs a **three-way merge** comparing:
     - **Local** — current on-disk content.
-    - **Remote** — content just fetched.
+    - **Remote** — content just fetched from the cloud.
     - **Base** — the state from the last successful sync, stored locally as a
       reference point.
 
     The merge logic (modelled on
     `vs/platform/userDataSync/common/settingsMerge.ts`) intelligently combines
-    changes. Settings added on different machines are both preserved. A direct
-    conflict on the same key is flagged for the user to resolve.
+    changes. It processes each setting key individually:
+    - **Key present only in Local:** the local value is carried forward — this
+      is a setting added on the current machine since the last sync.
+    - **Key present only in Remote:** the remote value is adopted — this is a
+      setting added on another machine that needs to arrive on this one.
+    - **Key present in both Local and Remote, same value:** accepted as-is.
+    - **Key present in both Local and Remote, changed from Base in only one:**
+      the changed value wins (fast-forward merge).
+    - **Key present in both Local and Remote, changed from Base in both to
+      different values:** a direct conflict. The merge produces a marker entry
+      with both values, and the conflict is flagged for the user to resolve
+      through the Settings UI. The synchroniser stores the conflicting state
+      rather than silently overwriting.
 
-12. `FsWriter` writes the merged content back to `settings.json` on disk.
+    The same three-way merge strategy is applied independently for settings,
+    keybindings, snippets, and the extension list — each with its own
+    synchroniser and its own base checkpoint.
+
+12. `FsWriter` writes the merged content back to `settings.json` on disk,
+    overwriting the previous local file atomically.
 
 ---
 
 ## Phase 5 — Configuration reload and notification (Mountain → Cocoon + Sky)
 
-13. `ConfigurationService.reloadConfiguration()` re-reads all settings files,
-    reconstructs the effective configuration, and updates
-    `AppState.Configuration`.
+13. `ConfigurationService.reloadConfiguration()` re-reads all settings files
+    from disk, reconstructs the effective configuration by merging layer by
+    layer (defaults, user settings, workspace settings, machine overrides), and
+    updates `AppState.Configuration`.
 
 14. Mountain sends a **`$acceptConfigurationChanged` gRPC notification** to
-    Cocoon listing the changed keys.
+    Cocoon listing the changed keys. This allows Cocoon's internal
+    `ConfigurationProvider` to update its cache without waiting for extensions
+    to request it lazily.
 
 15. Mountain emits a Tauri event to Sky:
 
@@ -148,16 +179,35 @@ never written to disk in plaintext. The `onDidChange` event fires after every
     sky://configuration/changed  { changedKeys: [...] }
     ```
 
-16. Cocoon's `ConfigurationProvider` updates its internal cache and fires the
-    `onDidChangeConfiguration` event, which extensions receive as
-    `vscode.workspace.onDidChangeConfiguration`. Extensions call
-    `vscode.workspace.getConfiguration()` to read their new values and adjust
-    behaviour.
+16. Cocoon's `ConfigurationProvider` receives the gRPC notification, updates
+    its internal configuration cache, and fires the
+    `onDidChangeConfiguration` event. This event is exposed to every extension
+    as `vscode.workspace.onDidChangeConfiguration`. The event payload includes
+    an `affectsConfiguration(section)` function so extensions can efficiently
+    check whether their own setting namespace was touched without parsing the
+    full changed-keys list.
 
 17. Wind components listening for `sky://configuration/changed` re-render — the
     Settings UI shows new values and the editor applies properties such as
     `editor.fontSize` immediately. The same pattern repeats for keybindings,
     snippets, and extension list synchronisers.
+
+18. Extensions that registered a listener for `onDidChangeConfiguration`
+    receive the event. A typical extension response is:
+
+    ```ts
+    context.subscriptions.push(
+    	vscode.workspace.onDidChangeConfiguration((e) => {
+    		if (e.affectsConfiguration("myExtension")) {
+    			const config = vscode.workspace.getConfiguration("myExtension");
+    			// Apply new config values
+    		}
+    	}),
+    );
+    ```
+
+    This ensures extensions adapt to synced settings in real time without
+    requiring a reload or restart.
 
 ---
 

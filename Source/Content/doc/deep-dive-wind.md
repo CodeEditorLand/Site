@@ -15,7 +15,7 @@ internal mechanics of `TauriLiveLayer` construction, `TauriMainProcessService`
 tier routing, `Preload.ts` shimming strategy, the `Generated/*Upstream.ts`
 codegen pipeline, and how Wind maintains lockstep state with Output's service
 copy. For an overview, see the
-[Wind element page](https://Editor.Land/Doc/wind).
+[Wind element page](/Doc/wind).
 
 ## Core Architecture Principles
 
@@ -783,7 +783,7 @@ TypeScript and Effect-TS patterns.
 
 ## Related Documentation
 
-- [Wind overview](https://Editor.Land/Doc/wind)
-- [Sky Deep Dive](https://Editor.Land/Doc/deep-dive-sky)
-- [Mountain Deep Dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Output pipeline](https://Editor.Land/Doc/output)
+- [Wind overview](/Doc/wind)
+- [Sky Deep Dive](/Doc/deep-dive-sky)
+- [Mountain Deep Dive](/Doc/deep-dive-mountain)
+- [Output pipeline](/Doc/output)

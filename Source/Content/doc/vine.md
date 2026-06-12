@@ -382,7 +382,7 @@ service methods are being completed.
   WASM host (gRPC consumer)
 - [InterComponentProtocol](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md) -
   Full protocol specification
-- [Vine Deep Dive](https://Editor.Land/Doc/deep-dive-vine)
+- [Vine Deep Dive](/Doc/deep-dive-vine)
 - [Source Code](https://github.com/CodeEditorLand/Vine)
 
 ---

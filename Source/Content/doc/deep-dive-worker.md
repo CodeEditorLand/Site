@@ -11,7 +11,7 @@ Worker is the Service Worker element for Land. the worker
 registration pattern, the fetch interception protocol between the Service Worker
 and client page, the ESBuild bundle configuration, and the full service worker
 lifecycle. For an overview, see the
-[Worker element page](https://Editor.Land/Doc/worker).
+[Worker element page](/Doc/worker).
 
 ## Worker Registration Pattern
 
@@ -172,6 +172,6 @@ needs to know about the interception protocol.
 
 ## Related Documentation
 
-- [Worker overview](https://Editor.Land/Doc/worker)
-- [Sky UI layer](https://Editor.Land/Doc/sky)
-- [Output build pipeline](https://Editor.Land/Doc/deep-dive-output)
+- [Worker overview](/Doc/worker)
+- [Sky UI layer](/Doc/sky)
+- [Output build pipeline](/Doc/output)

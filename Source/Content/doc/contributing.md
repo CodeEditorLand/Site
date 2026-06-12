@@ -64,7 +64,7 @@ partial reports are useful.
     - `cargo check` across the Rust workspace
     - `pnpm biome check` across TypeScript sources
     - Integration smoke tests for Mountain and Cocoon
-    - See [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline)
+    - See [CI/CD Pipeline](/Doc/ci-cd-pipeline)
 
 5. A maintainer reviews the PR. Review feedback should be addressed with
    additional commits (not rebased force-pushes) to make incremental review
@@ -178,11 +178,11 @@ vulnerability reporting workflow for coordinated disclosure.
 
 ## Related Documentation 🔗
 
-- [Getting Started](https://Editor.Land/Doc/getting-started) - build the
+- [Getting Started](/Doc/getting-started) - build the
   project from source
-- [Project Structure](https://Editor.Land/Doc/project-structure) - element
+- [Project Structure](/Doc/project-structure) - element
   layout and naming conventions
-- [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline) - what runs on
+- [CI/CD Pipeline](/Doc/ci-cd-pipeline) - what runs on
   every pull request
 - [Code of Conduct](https://github.com/CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md)
 - [Security Policy](https://github.com/CodeEditorLand/Land/blob/main/SECURITY.md)

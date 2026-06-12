@@ -81,6 +81,6 @@ extensions.
 
 ## Related Documentation
 
-- [Why Tauri](https://Editor.Land/Doc/why-tauri)
-- [Deep Dive: Grove](https://Editor.Land/Doc/deep-dive-grove)
-- [Why Rust](https://Editor.Land/Doc/why-rust)
+- [Why Tauri](/Doc/why-tauri)
+- [Deep Dive: Grove](/Doc/deep-dive-grove)
+- [Why Rust](/Doc/why-rust)

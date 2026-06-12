@@ -220,7 +220,7 @@ root, and directs build output to `Target/`.
 
 ## Related Documentation
 
-- [Sky overview](https://Editor.Land/Doc/sky)
-- [Wind Deep Dive](https://Editor.Land/Doc/deep-dive-wind)
-- [Mountain Deep Dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Output pipeline](https://Editor.Land/Doc/output)
+- [Sky overview](/Doc/sky)
+- [Wind Deep Dive](/Doc/deep-dive-wind)
+- [Mountain Deep Dive](/Doc/deep-dive-mountain)
+- [Output pipeline](/Doc/output)

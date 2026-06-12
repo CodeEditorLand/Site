@@ -322,7 +322,7 @@ Running the download tool multiple times is idempotent with respect to
 
 ## Related Documentation
 
-- [SideCar element overview](https://Editor.Land/Doc/sidecar)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Process management internals](https://Editor.Land/Doc/deep-dive-process)
-- [Architecture overview](https://Editor.Land/Doc/architecture)
+- [SideCar element overview](/Doc/sidecar)
+- [Mountain deep dive](/Doc/deep-dive-mountain)
+- [Process management internals](/Doc/mountain)
+- [Architecture overview](/Doc/architecture)

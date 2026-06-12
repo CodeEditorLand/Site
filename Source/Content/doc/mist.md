@@ -221,8 +221,8 @@ let resolver = Mist::resolver::land_resolver(Mist::dns_port());
 
 ## Related Documentation
 
-- [Mist Deep Dive](https://Editor.Land/Doc/deep-dive-mist)
-- [Mountain](https://Editor.Land/Doc/mountain)
-- [Air](https://Editor.Land/Doc/air)
-- [SideCar](https://Editor.Land/Doc/sidecar)
+- [Mist Deep Dive](/Doc/deep-dive-mist)
+- [Mountain](/Doc/mountain)
+- [Air](/Doc/air)
+- [SideCar](/Doc/sidecar)
 - [Source Code](https://github.com/CodeEditorLand/Mist)

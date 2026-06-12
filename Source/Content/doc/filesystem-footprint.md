@@ -86,12 +86,12 @@ tour, or jump to whichever matches the task at hand.
 
 | Document                                                                    | Topic                                                                                | Lines |
 | :-------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :---- |
-| [`User Dotfile`](/Doc/filesystem-footprint/user-dotfile/)                   | `~/.fiddee/` tree, `~/.land/` legacy, cross-OS resolution, Cocoon-side mirror        | 160+  |
-| [`Platform Paths`](/Doc/filesystem-footprint/platform-paths/)               | Per-OS Library / XDG / AppData paths, OS-managed state, temp-dir conventions         | 280+  |
-| [`Per-Element`](/Doc/filesystem-footprint/per-element/)                     | Write-site index by Element (Mountain, Cocoon, Sky, Wind, Output, Air, SideCar, ...) | 240+  |
-| [`Environment Variables`](/Doc/filesystem-footprint/environment-variables/) | Path-shaping env vars catalogued by Element + role                                   | 180+  |
-| [`Cleanup`](/Doc/filesystem-footprint/cleanup/)                             | Per-OS cleanup recipes, archive pattern, what each `rm -rf` removes                  | 200+  |
-| [`Encapsulation`](/Doc/filesystem-footprint/encapsulation/)                 | Potential directions for compaction, versioning, self-uninstall, foreign-tool gating | 220+  |
+| [`User Dotfile`](/Doc/filesystem-footprint-user-dotfile/)                   | `~/.fiddee/` tree, `~/.land/` legacy, cross-OS resolution, Cocoon-side mirror        | 160+  |
+| [`Platform Paths`](/Doc/filesystem-footprint-platform-paths/)               | Per-OS Library / XDG / AppData paths, OS-managed state, temp-dir conventions         | 280+  |
+| [`Per-Element`](/Doc/filesystem-footprint-per-element/)                     | Write-site index by Element (Mountain, Cocoon, Sky, Wind, Output, Air, SideCar, ...) | 240+  |
+| [`Environment Variables`](/Doc/filesystem-footprint-environment-variables/) | Path-shaping env vars catalogued by Element + role                                   | 180+  |
+| [`Cleanup`](/Doc/filesystem-footprint-cleanup/)                             | Per-OS cleanup recipes, archive pattern, what each `rm -rf` removes                  | 200+  |
+| [`Encapsulation`](/Doc/filesystem-footprint-encapsulation/)                 | Potential directions for compaction, versioning, self-uninstall, foreign-tool gating | 220+  |
 
 ---
 
@@ -137,11 +137,11 @@ tour, or jump to whichever matches the task at hand.
 - [Environment Variables](/Doc/configuration/) - the canonical
   environment-variable registry. Cross-referenced from
   the Environment Variables sub-document.
-- [Building](/Doc/building/) - Maintain build profiles and how they produce
+- [Building](/Doc/getting-started/) - Maintain build profiles and how they produce
   the bundle identifiers enumerated above.
 - [Build Matrix](/Doc/build-matrix/) - the matrix of (profile, target, level)
   combinations that map to bundle identifier suffixes.
-- [Application Startup and Handshake](/Doc/workflow/application-startup-and-handshake/)
+- [Application Startup and Handshake](/Doc/workflow-startup/)
     - the boot sequence inside which `AppLifecycle::Dirs` runs.
 
 ### Key source files 🦴

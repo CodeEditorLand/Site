@@ -720,7 +720,7 @@ let metrics = {
 
 ## Related Documentation
 
-- [Common overview](https://Editor.Land/Doc/common)
-- [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
-- [Echo deep dive](https://Editor.Land/Doc/deep-dive-echo)
-Related: [Architecture](/Doc/architecture/)
+- [Common overview](/Doc/common)
+- [Mountain deep dive](/Doc/deep-dive-mountain)
+- [Echo deep dive](/Doc/deep-dive-echo)
+  Related: [Architecture](/Doc/architecture/)

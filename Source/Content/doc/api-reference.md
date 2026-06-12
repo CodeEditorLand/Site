@@ -168,6 +168,141 @@ rather than throwing, so callers treat a corrupt blob as "no stored secret".
 | `file:copy`      | `[from: string, to: string]`          | `void`       | Copy file                                                           |
 | `file:cloneFile` | `[from: string, to: string]`          | `void`       | Clone file (reflink where supported); fires `$acceptDidCreateFiles` |
 | `file:realpath`  | `[path: string]`                      | `string`     | Resolve symlinks                                                    |
+| `file:exists`    | `[path: string]`                      | `boolean`    | Check existence                                                     |
+
+`file:open` / `file:close` are classified as high-frequency and short-circuit
+the Echo scheduler.
+
+#### Terminal
+
+| Command                            | Parameters                             | Returns       | Purpose                                                                                                                                   |
+| ---------------------------------- | -------------------------------------- | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `localPty:createProcess`           | `[shellLaunchConfig, cols, rows, ...]` | `{ id, pid }` | Spawn a PTY process; returns its internal id and OS PID                                                                                   |
+| `localPty:resize`                  | `[id, cols, rows]`                     | `void`        | Resize PTY via SIGWINCH                                                                                                                   |
+| `localPty:attachToProcess`         | `[id: number]`                         | `{ id, pid }` | Reconnect workbench to an existing live PTY after window reload                                                                           |
+| `localPty:detachFromProcess`       | `[id: number]`                         | `void`        | Detach the workbench from a PTY without killing the process                                                                               |
+| `localPty:reviveTerminalProcesses` | `[states: TerminalState[]]`            | `void`        | Re-spawn terminals from serialised state after reload; populates id-remap table                                                           |
+| `localPty:shellExecutionStart`     | `[{ id, commandLine, cwd }]`           | `void`        | Fired by Sky on OSC 633 ;C (command output begins); forwards `$acceptTerminalShellExecutionStart` to Cocoon                               |
+| `localPty:shellExecutionEnd`       | `[{ id, commandLine, cwd, exitCode }]` | `void`        | Fired by Sky on OSC 633 ;D (command finished); fans out `$acceptTerminalShellExecutionEnd` and `$acceptExecutedTerminalCommand` to Cocoon |
+| `localPty:freePortKillProcess`     | `[port: number]`                       | `void`        | Find process owning a port (lsof) and SIGKILL it                                                                                          |
+| `localPty:getDefaultShell`         | `[]`                                   | `string`      | Return the user's default login shell path                                                                                                |
+| `localPty:getEnvironment`          | `[]`                                   | `object`      | Return the login-shell environment variables                                                                                              |
+| `localPty:getProfiles`             | `[includeDetected?]`                   | `Profile[]`   | List available shell profiles                                                                                                             |
+| `terminal:create`                  | `[options]`                            | `{ id }`      | Create a terminal tab (calls `TerminalProvider`)                                                                                          |
+| `terminal:sendText`                | `[id, text]`                           | `void`        | Write text to terminal PTY                                                                                                                |
+| `terminal:show`                    | `[id]`                                 | `void`        | Reveal terminal tab in UI                                                                                                                 |
+| `terminal:hide`                    | `[id]`                                 | `void`        | Hide terminal tab                                                                                                                         |
+| `terminal:dispose`                 | `[id]`                                 | `void`        | Destroy terminal and PTY                                                                                                                  |
+
+#### NativeHost
+
+| Command                                     | Purpose                                                               |
+| ------------------------------------------- | --------------------------------------------------------------------- |
+| `nativeHost:quit`                           | Request graceful application quit                                     |
+| `nativeHost:exit`                           | Exit with process code                                                |
+| `nativeHost:relaunch`                       | Restart the application                                               |
+| `nativeHost:reload`                         | Reload the webview                                                    |
+| `nativeHost:openDevTools`                   | Open Tauri/WebView developer tools                                    |
+| `nativeHost:toggleDevTools`                 | Toggle developer tools visibility                                     |
+| `nativeHost:killProcess`                    | Kill a process by PID                                                 |
+| `nativeHost:installShellCommand`            | Install `fiddee` CLI symlink in `/usr/local/bin`                      |
+| `nativeHost:uninstallShellCommand`          | Remove `fiddee` CLI symlink                                           |
+| `nativeHost:findFreePort`                   | Find an available TCP port                                            |
+| `nativeHost:isPortFree`                     | Check whether a specific port is free (real TCP bind check)           |
+| `nativeHost:resolveProxy`                   | Read `HTTPS_PROXY` / `HTTP_PROXY` environment variables               |
+| `nativeHost:getEnvironmentPaths`            | Return `home`, `appRoot`, `userData`, `temp` and related paths        |
+| `nativeHost:isRunningUnderARM64Translation` | Detect Rosetta 2 translation on macOS                                 |
+| `nativeHost:moveItemToTrash`                | Move a file to the OS trash                                           |
+| `nativeHost:showMessageBox`                 | Show a native OS alert/confirm dialog                                 |
+| `nativeHost:showSaveDialog`                 | Show a native save-file dialog                                        |
+| `nativeHost:showOpenDialog`                 | Show a native open-file/folder dialog                                 |
+| `nativeHost:readClipboardText`              | Read text from clipboard                                              |
+| `nativeHost:writeClipboardText`             | Write text to clipboard                                               |
+| `nativeHost:readClipboardFindText`          | Read macOS find-pasteboard text                                       |
+| `nativeHost:writeClipboardFindText`         | Write macOS find-pasteboard text                                      |
+| `nativeHost:readClipboardBuffer`            | Read clipboard in a specific format (e.g. `text/html`)                |
+| `nativeHost:writeClipboardBuffer`           | Write clipboard in a specific format                                  |
+| `nativeHost:hasClipboard`                   | Test whether clipboard contains data in a given format                |
+| `nativeHost:readImage`                      | Read an image from clipboard as PNG bytes                             |
+| `nativeHost:triggerPaste`                   | Programmatically trigger a paste action in the focused element        |
+| `nativeHost:setMinimumSize`                 | Set the window minimum size constraints                               |
+| `nativeHost:positionWindow`                 | Reposition or resize the window                                       |
+| `nativeHost:setRepresentedFilename`         | Set the macOS proxy-icon path in the window title bar                 |
+| `nativeHost:getWindows`                     | Return the list of open windows with product name and active document |
+| `nativeHost:getOSColorScheme`               | Return the current OS light/dark/high-contrast scheme                 |
+| `nativeHost:getOSProperties`                | Return OS name, version, architecture                                 |
+| `nativeHost:getOSStatistics`                | Return memory and CPU usage snapshot                                  |
+
+#### Language
+
+| Command                             | Parameters                 | Returns              | Purpose                                                                                                                 |
+| ----------------------------------- | -------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `language:provideInlineCompletions` | `[uri, position, context]` | `InlineCompletion[]` | Request inline completion items via `LanguageFeatureProviderRegistry`; used by Sky's Monaco `InlineCompletionsProvider` |
+| `language:getLanguages`             | `[]`                       | `string[]`           | Return all registered Monaco language IDs                                                                               |
+
+#### Other Core Commands
+
+| Command                                                                      | Purpose                                                  |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `commands:execute`                                                           | Execute a registered VS Code command by ID               |
+| `configuration:get`                                                          | Read a configuration value                               |
+| `configuration:update`                                                       | Write a configuration value                              |
+| `storage:get` / `storage:set` / `storage:delete`                             | Key-value storage backed by Mountain's `StorageProvider` |
+| `textFile:read` / `textFile:write` / `textFile:save`                         | Editor working-copy surface                              |
+| `output:create` / `output:append` / `output:appendLine`                      | Output channel management                                |
+| `notification:show` / `notification:showProgress`                            | User-facing notifications                                |
+| `quickInput:showQuickPick` / `quickInput:showInputBox`                       | Quick-pick and input-box UI round-trips                  |
+| `themes:getActive` / `themes:list` / `themes:set`                            | Theme management                                         |
+| `workspaces:getFolders` / `workspaces:addFolder` / `workspaces:removeFolder` | Workspace folder management                              |
+| `decorations:get` / `decorations:set` / `decorations:clear`                  | File decoration provider                                 |
+| `keybinding:add` / `keybinding:remove` / `keybinding:lookup`                 | Keybinding registry                                      |
+| `lifecycle:getPhase` / `lifecycle:whenPhase`                                 | Workbench lifecycle phase queries                        |
+| `model:open` / `model:get` / `model:updateContent` / `model:close`           | Text model management                                    |
+| `search:findFiles` / `search:findInFiles`                                    | File search (routes to Cocoon when `TierSearch=Node`)    |
+| `update:checkForUpdates` / `update:downloadUpdate` / `update:applyUpdate`    | Update service (all stubs; no update server)             |
+| `auth:getSessions` / `auth:createSession` / `auth:removeSession`             | Authentication (routes to Cocoon)                        |
+| `tasks:executeTask` / `tasks:getTasks`                                       | Task execution (routes to Cocoon)                        |
+| `scm:createSourceControl` / `scm:getSourceControls`                          | Source control management                                |
+| `debug:startDebugging` / `debug:getSessions` / `debug:addBreakpoints`        | Debug session management                                 |
+
+> The full channel enum is defined in `Common/Source/IPC/Channel.rs` (Rust) and
+> mirrored in `Wind/Source/IPC/Channel.ts` (TypeScript). Both must be kept in
+> lockstep -- adding a channel to one requires adding it to the other.
+
+### Events (Push from Mountain)
+
+`Mountain` emits events that `Wind`/`Sky` listen to via `@tauri-apps/api/event`:
+
+```typescript
+import { listen } from "@tauri-apps/api/event";
+
+const unlisten = await listen("configuration-changed", (event) => {
+	// event.payload contains the changed configuration keys
+	updateLocalConfiguration(event.payload);
+});
+```
+
+### Event Catalog
+
+| Event                   | Payload                          | Direction            | Purpose                             |
+| ----------------------- | -------------------------------- | -------------------- | ----------------------------------- |
+| `configuration-changed` | `{ keys: string[] }`             | `Mountain` -> `Wind` | Configuration updates               |
+| `extension-activated`   | `{ id: string }`                 | `Mountain` -> `Wind` | Extension activation notification   |
+| `terminal-data`         | `{ id: number, data: string }`   | `Mountain` -> `Wind` | Terminal output streaming           |
+| `file-changed`          | `{ path: string, type: string }` | `Mountain` -> `Wind` | File system watcher notification    |
+| `theme-changed`         | `{ theme: string }`              | `Mountain` -> `Wind` | Color theme change                  |
+| `window-state-changed`  | `{ state: string }`              | `Mountain` -> `Wind` | Window maximize/minimize/fullscreen |
+
+### Serialization
+
+`Tauri` IPC uses JSON serialization with the following conventions:
+
+- **Strings** are UTF-8 encoded
+- **Numbers** are JSON numbers (f64), deserialized to appropriate `Rust` types
+- **Binary data** is `Vec<u8>` / `Uint8Array`, serialized as JSON number arrays
+  for small payloads, or via custom serializer for large files
+- **Complex types** are serialized through serde `Serialize`/`Deserialize`
+  traits
 
 ---
 
@@ -272,6 +407,208 @@ service CocoonService {
 
   // Provide Document Highlights
   rpc ProvideDocumentHighlights(ProvideDocumentHighlightsRequest) returns (ProvideDocumentHighlightsResponse);
+
+  // Register Document Symbol Provider
+  rpc RegisterDocumentSymbolProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Document Symbols
+  rpc ProvideDocumentSymbols(ProvideDocumentSymbolsRequest) returns (ProvideDocumentSymbolsResponse);
+
+  // Register Workspace Symbol Provider
+  rpc RegisterWorkspaceSymbolProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Workspace Symbols
+  rpc ProvideWorkspaceSymbols(ProvideWorkspaceSymbolsRequest) returns (ProvideWorkspaceSymbolsResponse);
+
+  // Register Rename Provider
+  rpc RegisterRenameProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Rename Edits
+  rpc ProvideRenameEdits(ProvideRenameEditsRequest) returns (ProvideRenameEditsResponse);
+
+  // Register Document Formatting Provider
+  rpc RegisterDocumentFormattingProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Document Formatting
+  rpc ProvideDocumentFormatting(ProvideDocumentFormattingRequest) returns (ProvideDocumentFormattingResponse);
+
+  // Register Document Range Formatting Provider
+  rpc RegisterDocumentRangeFormattingProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Document Range Formatting
+  rpc ProvideDocumentRangeFormatting(ProvideDocumentRangeFormattingRequest) returns (ProvideDocumentRangeFormattingResponse);
+
+  // Register On Type Formatting Provider
+  rpc RegisterOnTypeFormattingProvider(RegisterOnTypeFormattingProviderRequest) returns (Empty);
+
+  // Provide On Type Formatting
+  rpc ProvideOnTypeFormatting(ProvideOnTypeFormattingRequest) returns (ProvideOnTypeFormattingResponse);
+
+  // Register Signature Help Provider
+  rpc RegisterSignatureHelpProvider(RegisterSignatureHelpProviderRequest) returns (Empty);
+
+  // Provide Signature Help
+  rpc ProvideSignatureHelp(ProvideSignatureHelpRequest) returns (ProvideSignatureHelpResponse);
+
+  // Register Code Lens Provider
+  rpc RegisterCodeLensProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Code Lenses
+  rpc ProvideCodeLenses(ProvideCodeLensesRequest) returns (ProvideCodeLensesResponse);
+
+  // Register Folding Range Provider
+  rpc RegisterFoldingRangeProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Folding Ranges
+  rpc ProvideFoldingRanges(ProvideFoldingRangesRequest) returns (ProvideFoldingRangesResponse);
+
+  // Register Selection Range Provider
+  rpc RegisterSelectionRangeProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Selection Ranges
+  rpc ProvideSelectionRanges(ProvideSelectionRangesRequest) returns (ProvideSelectionRangesResponse);
+
+  // Register Semantic Tokens Provider
+  rpc RegisterSemanticTokensProvider(RegisterSemanticTokensProviderRequest) returns (Empty);
+
+  // Provide Semantic Tokens Full
+  rpc ProvideSemanticTokensFull(ProvideSemanticTokensRequest) returns (ProvideSemanticTokensResponse);
+
+  // Register Inlay Hints Provider
+  rpc RegisterInlayHintsProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Inlay Hints
+  rpc ProvideInlayHints(ProvideInlayHintsRequest) returns (ProvideInlayHintsResponse);
+
+  // Register Type Hierarchy Provider
+  rpc RegisterTypeHierarchyProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Type Hierarchy Supertypes
+  rpc ProvideTypeHierarchySupertypes(ProvideTypeHierarchyRequest) returns (ProvideTypeHierarchyResponse);
+
+  // Provide Type Hierarchy Subtypes
+  rpc ProvideTypeHierarchySubtypes(ProvideTypeHierarchyRequest) returns (ProvideTypeHierarchyResponse);
+
+  // Register Call Hierarchy Provider
+  rpc RegisterCallHierarchyProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Call Hierarchy Incoming Calls
+  rpc ProvideCallHierarchyIncomingCalls(ProvideCallHierarchyRequest) returns (ProvideCallHierarchyResponse);
+
+  // Provide Call Hierarchy Outgoing Calls
+  rpc ProvideCallHierarchyOutgoingCalls(ProvideCallHierarchyRequest) returns (ProvideCallHierarchyResponse);
+
+  // Register Linked Editing Range Provider
+  rpc RegisterLinkedEditingRangeProvider(RegisterProviderRequest) returns (Empty);
+
+  // Provide Linked Editing Ranges
+  rpc ProvideLinkedEditingRanges(ProvideLinkedEditingRangesRequest) returns (ProvideLinkedEditingRangesResponse);
+}
+```
+
+### Service: MountainService
+
+Used for `Cocoon` -> `Mountain` communication:
+
+| RPC                      | Direction              | Trigger         | Purpose                                              |
+| ------------------------ | ---------------------- | --------------- | ---------------------------------------------------- |
+| `ProcessCocoonRequest`   | `Cocoon` -> `Mountain` | Per API call    | Generic request-response for commands / queries      |
+| `SendCocoonNotification` | `Cocoon` -> `Mountain` | State change    | Fire-and-forget event from extension host            |
+| `CancelOperation`        | `Cocoon` -> `Mountain` | User cancels    | Cancel an in-flight operation                        |
+| `OpenChannelFromCocoon`  | `Cocoon` -> `Mountain` | After handshake | LAND-PATCH B7-S6 P2 bidirectional multiplexed stream |
+
+### Service: CocoonService
+
+Used for `Mountain` -> `Cocoon` communication:
+
+| RPC                                       | Direction              | Trigger          | Purpose                                              |
+| ----------------------------------------- | ---------------------- | ---------------- | ---------------------------------------------------- |
+| `ProcessMountainRequest`                  | `Mountain` -> `Cocoon` | Per API call     | Generic request-response from backend                |
+| `SendMountainNotification`                | `Mountain` -> `Cocoon` | Backend event    | Fire-and-forget notification to sidecar              |
+| `CancelOperation`                         | `Mountain` -> `Cocoon` | Backend cancel   | Cancel an in-flight extension operation              |
+| `OpenChannelFromMountain`                 | `Mountain` -> `Cocoon` | After handshake  | LAND-PATCH B7-S6 P2 bidirectional multiplexed stream |
+| `InitialHandshake`                        | `Mountain` -> `Cocoon` | After bootstrap  | Handshake readiness signal                           |
+| `InitExtensionHost`                       | `Mountain` -> `Cocoon` | After handshake  | Send workspace root, extensions, configuration       |
+| `RegisterCommand`                         | `Cocoon` -> `Mountain` | Extension boot   | Register an extension-contributed command            |
+| `ExecuteContributedCommand`               | `Mountain` -> `Cocoon` | User triggers    | Execute an extension-contributed command             |
+| `UnregisterCommand`                       | `Cocoon` -> `Mountain` | Extension unload | Unregister an extension command                      |
+| `RegisterHoverProvider`                   | `Cocoon` -> `Mountain` | Extension boot   | Register a hover provider                            |
+| `ProvideHover`                            | `Mountain` -> `Cocoon` | User hovers      | Request hover from extension provider                |
+| `RegisterCompletionItemProvider`          | `Cocoon` -> `Mountain` | Extension boot   | Register a completion provider                       |
+| `ProvideCompletionItems`                  | `Mountain` -> `Cocoon` | User types       | Request completion items                             |
+| `RegisterDefinitionProvider`              | `Cocoon` -> `Mountain` | Extension boot   | Register a definition provider                       |
+| `ProvideDefinition`                       | `Mountain` -> `Cocoon` | User clicks      | Request definition location                          |
+| `RegisterReferenceProvider`               | `Cocoon` -> `Mountain` | Extension boot   | Register a reference provider                        |
+| `ProvideReferences`                       | `Mountain` -> `Cocoon` | User triggers    | Request reference locations                          |
+| `RegisterCodeActionsProvider`             | `Cocoon` -> `Mountain` | Extension boot   | Register a code actions provider                     |
+| `ProvideCodeActions`                      | `Mountain` -> `Cocoon` | User triggers    | Request code actions                                 |
+| `RegisterDocumentHighlightProvider`       | `Cocoon` -> `Mountain` | Extension boot   | Register a document highlight provider               |
+| `ProvideDocumentHighlights`               | `Mountain` -> `Cocoon` | User hovers      | Request document highlights                          |
+| `RegisterDocumentSymbolProvider`          | `Cocoon` -> `Mountain` | Extension boot   | Register a document symbol provider                  |
+| `ProvideDocumentSymbols`                  | `Mountain` -> `Cocoon` | Sidebar open     | Request document symbols                             |
+| `RegisterWorkspaceSymbolProvider`         | `Cocoon` -> `Mountain` | Extension boot   | Register a workspace symbol provider                 |
+| `ProvideWorkspaceSymbols`                 | `Mountain` -> `Cocoon` | Search types     | Request workspace symbols                            |
+| `RegisterRenameProvider`                  | `Cocoon` -> `Mountain` | Extension boot   | Register a rename provider                           |
+| `ProvideRenameEdits`                      | `Mountain` -> `Cocoon` | User triggers    | Request rename edits                                 |
+| `RegisterDocumentFormattingProvider`      | `Cocoon` -> `Mountain` | Extension boot   | Register a document formatting provider              |
+| `ProvideDocumentFormatting`               | `Mountain` -> `Cocoon` | User triggers    | Request document formatting                          |
+| `RegisterDocumentRangeFormattingProvider` | `Cocoon` -> `Mountain` | Extension boot   | Register a range formatting provider                 |
+| `ProvideDocumentRangeFormatting`          | `Mountain` -> `Cocoon` | User triggers    | Request document range formatting                    |
+| `RegisterOnTypeFormattingProvider`        | `Cocoon` -> `Mountain` | Extension boot   | Register an on-type formatting provider              |
+| `ProvideOnTypeFormatting`                 | `Mountain` -> `Cocoon` | User types       | Request on-type formatting                           |
+| `RegisterSignatureHelpProvider`           | `Cocoon` -> `Mountain` | Extension boot   | Register a signature help provider                   |
+| `ProvideSignatureHelp`                    | `Mountain` -> `Cocoon` | User types       | Request signature help                               |
+| `RegisterCodeLensProvider`                | `Cocoon` -> `Mountain` | Extension boot   | Register a code lens provider                        |
+| `ProvideCodeLenses`                       | `Mountain` -> `Cocoon` | Code lens shown  | Request code lenses                                  |
+| `RegisterFoldingRangeProvider`            | `Cocoon` -> `Mountain` | Extension boot   | Register a folding range provider                    |
+| `ProvideFoldingRanges`                    | `Mountain` -> `Cocoon` | File opened      | Request folding ranges                               |
+| `RegisterSelectionRangeProvider`          | `Cocoon` -> `Mountain` | Extension boot   | Register a selection range provider                  |
+| `ProvideSelectionRanges`                  | `Mountain` -> `Cocoon` | User selects     | Request selection ranges                             |
+| `RegisterSemanticTokensProvider`          | `Cocoon` -> `Mountain` | Extension boot   | Register a semantic tokens provider                  |
+| `ProvideSemanticTokensFull`               | `Mountain` -> `Cocoon` | File opened      | Request semantic tokens                              |
+| `RegisterInlayHintsProvider`              | `Cocoon` -> `Mountain` | Extension boot   | Register an inlay hints provider                     |
+| `ProvideInlayHints`                       | `Mountain` -> `Cocoon` | User hovers      | Request inlay hints                                  |
+| `RegisterTypeHierarchyProvider`           | `Cocoon` -> `Mountain` | Extension boot   | Register a type hierarchy provider                   |
+| `ProvideTypeHierarchySupertypes`          | `Mountain` -> `Cocoon` | User triggers    | Request type hierarchy supertypes                    |
+| `ProvideTypeHierarchySubtypes`            | `Mountain` -> `Cocoon` | User triggers    | Request type hierarchy subtypes                      |
+| `RegisterCallHierarchyProvider`           | `Cocoon` -> `Mountain` | Extension boot   | Register a call hierarchy provider                   |
+| `ProvideCallHierarchyIncomingCalls`       | `Mountain` -> `Cocoon` | User triggers    | Request call hierarchy incoming calls                |
+| `ProvideCallHierarchyOutgoingCalls`       | `Mountain` -> `Cocoon` | User triggers    | Request call hierarchy outgoing calls                |
+| `RegisterLinkedEditingRangeProvider`      | `Cocoon` -> `Mountain` | Extension boot   | Register a linked editing range provider             |
+| `ProvideLinkedEditingRanges`              | `Mountain` -> `Cocoon` | User edits       | Request linked editing ranges                        |
+
+### Message Formats
+
+```protobuf
+// A generic request / response envelope shared across all RPCs.
+message GenericRequest {
+  uint64 RequestIdentifier = 1;
+  string Method = 2;              // JSON-serialized parameters
+  bytes Parameter = 3;
+}
+
+message GenericResponse {
+  uint64 RequestIdentifier = 1;
+  bytes Result = 2;               // JSON-serialized success payload
+  optional RPCError error = 3;   // JSON-RPC-style error object
+}
+
+message GenericNotification {
+  string Method = 1;
+  bytes Parameter = 2;           // JSON-serialized
+}
+
+message RPCError {
+  int32 Code = 1;
+  string Message = 2;
+  bytes Data = 3;
+}
+
+message CancelOperationRequest {
+  uint64 RequestIdentifierToCancel = 1;
+}
+
+message Empty {}
 ```
 
 Common types used across messages:
@@ -309,8 +646,7 @@ message Location { /* ... */ }
 | Air Vine      | `Air`      | `50053` | TCP       |
 
 All listeners bind to `[::1]` (not `0.0.0.0`). Environment overrides are
-described in
-[`Vine/Source/Library.rs`](../../../Element/Vine/Source/Library.rs).
+described in `Vine/Source/Library.rs`.
 
 ---
 
@@ -399,7 +735,7 @@ decides per-call whether to:
 
 **Bootstrap order (critical):** Cocoon's gRPC server (port 50052) must bind
 before Cocoon attempts to connect to Mountain's gRPC server (port 50051). The
-bootstrap stage order is: `RPCServer` (Stage 5) bind → `MountainConnection`
+bootstrap stage order is: `RPCServer` (Stage 5) bind -> `MountainConnection`
 (Stage 3) connect. Mountain allows a 30-second connection budget; reversing this
 order causes Mountain to time out before Cocoon is ready to accept the
 handshake.
