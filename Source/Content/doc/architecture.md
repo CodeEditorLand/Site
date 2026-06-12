@@ -30,7 +30,7 @@ operation on `macOS`, `Windows`, and `Linux`.
 
 ---
 
-## Process Model 🏗️
+## Process Model 🏗️
 
 **Land** operates as a multi-process application with three concurrent
 processes:
@@ -86,7 +86,7 @@ graph TB
 
 ---
 
-## Component Map 🗺️
+## Component Map 🗺️
 
 ### Rust Components (Native)
 
@@ -114,7 +114,7 @@ graph TB
 
 ---
 
-## IPC Architecture 🔌
+## IPC Architecture 🔌
 
 ### Inter-Process Communication Matrix
 
@@ -199,7 +199,7 @@ This is a runtime switch - no rebuild required. Set in `.env.Land` as
 
 ---
 
-## Service Layer Design 🧩
+## Service Layer Design 🧩
 
 ### Common Trait Architecture (Rust side)
 
@@ -305,7 +305,7 @@ the track at runtime.
 
 ---
 
-## Tier-Gated Implementation ⚙️
+## Tier-Gated Implementation ⚙️
 
 **Land** uses a configuration-driven selection mechanism for capabilities that
 have multiple implementation strategies. Each capability is assigned a tier
@@ -327,7 +327,7 @@ for the full propagation workflow.
 
 ---
 
-## Data Flow Patterns 📊
+## Data Flow Patterns 📊
 
 ### Read Request (File Open)
 
@@ -396,7 +396,7 @@ sequenceDiagram
 
 ---
 
-## Related Documentation 📋
+## Related Documentation 📋
 
 - [BuildPipeline](BuildPipeline.md) - Full build pipeline from env files to binary artifacts
 - [EditorCore](EditorCore.md) - Editor workbench adaptation and `Wind` service layer

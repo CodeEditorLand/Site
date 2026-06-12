@@ -5,13 +5,13 @@ order: 2
 description: "OS-specific resolution for every per-bundle, OS-managed, and temp-directory path Land touches on macOS, Linux, and Windows."
 ---
 
-# Platform Paths 🖥️
+# Platform Paths 🖥️
 
 OS-specific resolution for every per-bundle, OS-managed, and temp-directory path Land touches.
 
 ---
 
-## Resolution Rule 📐
+## Resolution Rule 📐
 
 All per-bundle paths flow through Tauri's `PathResolver`, which delegates to the `dirs` crate. Three helpers do almost all the work:
 
@@ -29,7 +29,7 @@ macOS folds `app_data_dir` and `app_config_dir` into the same location; Linux an
 
 ---
 
-## 🍎 macOS Layout
+## 🍎 macOS Layout
 
 Status: 🟢 fully supported (primary development target).
 
@@ -76,7 +76,7 @@ Status: 🟢 fully supported (primary development target).
 
 ---
 
-## 🐧 Linux Layout
+## 🐧 Linux Layout
 
 Status: 🟡 partial (Tauri's path resolver works; webview-storage paths differ from WKWebView equivalents).
 
@@ -113,7 +113,7 @@ Status: 🟡 partial (Tauri's path resolver works; webview-storage paths differ 
 
 ---
 
-## 🪟 Windows Layout
+## 🪟 Windows Layout
 
 Status: 🔴 pending — `dirs` crate paths and Tauri PathResolver are documented here for completeness, but the editor has not been smoke-tested on Windows. Treat the table as a forward-looking reference; expect minor drift when the platform target lands.
 
@@ -148,7 +148,7 @@ Status: 🔴 pending — `dirs` crate paths and Tauri PathResolver are documente
 
 ---
 
-## User-Dotfile Resolution (cross-OS) 🏞️
+## User-Dotfile Resolution (cross-OS) 🏞️
 
 The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 
@@ -162,7 +162,7 @@ The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 
 ---
 
-## Foreign-Tool Directories Land Creates 🌐
+## Foreign-Tool Directories Land Creates 🌐
 
 `Binary/Main/AppLifecycle.rs:393` pre-creates two directories that belong to other tools, so VS Code's startup `stat` probes don't log errors. Cross-OS:
 
@@ -175,7 +175,7 @@ Land does not write to either path — only `mkdir -p`. If the user does not hav
 
 ---
 
-## In-Tree Build Artefacts 🛠️
+## In-Tree Build Artefacts 🛠️
 
 Cross-OS, not part of user-install footprint:
 
@@ -191,7 +191,7 @@ Cross-OS, not part of user-install footprint:
 
 ---
 
-## See Also 📚
+## See Also 📚
 
 - [UserDotfile](filesystem-footprint-user-dotfile.md) — the `~/.fiddee/` tree (cross-OS).
 - [PerElement](filesystem-footprint-per-element.md) — which Element writes which path.

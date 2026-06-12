@@ -5,7 +5,7 @@ order: 1
 description: "The ~/.fiddee/ tree — Land's primary product-owned filesystem domain, cross-OS resolution, sub-directory map, and Cocoon-side mirror."
 ---
 
-# User Dotfile 🏞️
+# User Dotfile 🏞️
 
 The `~/.fiddee/` tree — Land's primary product-owned filesystem domain.
 
@@ -13,7 +13,7 @@ The `~/.fiddee/` tree — Land's primary product-owned filesystem domain.
 
 ---
 
-## At a Glance 🗺️
+## At a Glance 🗺️
 
 `~/.fiddee/` is centralised by **one atom**: `FiddeeRoot::Fn` (Rust) +
 `FiddeeRoot()` (TypeScript). Every Land call site resolves sub-paths through
@@ -27,7 +27,7 @@ this atom so future renames touch a single file per Element.
 
 ---
 
-## Cross-OS Resolution 🌐
+## Cross-OS Resolution 🌐
 
 The dotfile root resolves to the user's home directory with `.fiddee` appended:
 
@@ -43,7 +43,7 @@ fallback to a relative `.fiddee` keeps callers receiving a valid `PathBuf`.
 
 ---
 
-## Sub-Directory Map 🗂️
+## Sub-Directory Map 🗂️
 
 | Path                                           | Producer                                                                               | Purpose                                                                                                                    |
 | :--------------------------------------------- | :------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
@@ -60,7 +60,7 @@ GB** depending on which language servers are installed.
 
 ---
 
-## Storage-Path Override 🎛️
+## Storage-Path Override 🎛️
 
 Cocoon respects one env var that re-roots part of the tree:
 
@@ -74,7 +74,7 @@ Cocoon respects one env var that re-roots part of the tree:
 
 ---
 
-## Cocoon-Side Mirror 🪞
+## Cocoon-Side Mirror 🪞
 
 `Element/Cocoon/Source/Platform/FiddeeRoot.ts` exists so Node-side code does not
 call back into Rust to resolve the path. The TypeScript implementation mirrors
@@ -95,7 +95,7 @@ Keep them lockstep; the docstring on each file references the other.
 
 ---
 
-## Legacy Fan-Out 🦴
+## Legacy Fan-Out 🦴
 
 | Path                  | Status                                             | Producer                                                                   |
 | :-------------------- | :------------------------------------------------- | :------------------------------------------------------------------------- |
@@ -118,7 +118,7 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
 
 ---
 
-## Lifecycle 📅
+## Lifecycle 📅
 
 - **First boot:** `FiddeeRoot::Fn()` is resolved lazily. Sub-paths are created
   on first use (e.g. first extension activation creates the per-extension
@@ -137,7 +137,7 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
 
 ---
 
-## Open Questions ❓
+## Open Questions ❓
 
 - The `.fiddee/extensions/<id>/.storage/` location ties per-extension storage to
   the extension's own directory. Reinstalls or version bumps destroy that
@@ -152,7 +152,7 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
 
 ---
 
-## See Also 📚
+## See Also 📚
 
 - [`PlatformPaths.md`](./filesystem-footprint-platform-paths.md) — per-OS Library / XDG / AppData paths
   that coexist with `~/.fiddee/`.

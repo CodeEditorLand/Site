@@ -8,7 +8,7 @@ description:
     the Tauri WebView, loading the VS Code workbench from Output."
 ---
 
-# Sky: UI Component Layer ☁️
+# Sky: UI Component Layer 🌌
 
 `Sky` is the UI component layer of `Land`.
 

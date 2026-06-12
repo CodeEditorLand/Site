@@ -187,7 +187,7 @@ vulnerability reporting workflow for coordinated disclosure.
 - [Code of Conduct](https://github.com/CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md)
 - [Security Policy](https://github.com/CodeEditorLand/Land/blob/main/SECURITY.md)
 
-## Funding 💎
+## Funding 💎
 
 Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by

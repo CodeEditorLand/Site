@@ -8,7 +8,7 @@ description:
     universal CommonError type."
 ---
 
-# Common: Abstract Core Library 🧩
+# Common: Abstract Core Library 👨🏻‍🏭
 
 `Common` is the architectural foundation of `Land`'s native `Rust` backend. `Common` is a pure abstract library that defines:
 
@@ -62,7 +62,7 @@ graph TB
     AE -->|"execute via"| RUNTIME["ApplicationRunTime<br/>(Echo-backed)"]
 ```
 
-## Overview 📋
+## Overview 📋
 
 `Common` defines the architectural language of the entire native platform:
 
@@ -78,7 +78,7 @@ graph TB
 
 ---
 
-## Architecture Principles 📐
+## Architecture Principles 📐
 
 | Principle                    | Description                                                                               | Key Components                             |
 | ---------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------ |
@@ -91,7 +91,7 @@ graph TB
 
 ---
 
-## Trait Architecture 📋
+## Trait Architecture 📋
 
 Every application capability is defined as an async trait:
 
@@ -110,7 +110,7 @@ pub trait FileSystem: Send + Sync {
 }
 ```
 
-### Defined Service Traits 📋
+### Defined Service Traits 📋
 
 | Module                     | Trait                                   | Domain          | Methods                                                           |
 | -------------------------- | --------------------------------------- | --------------- | ----------------------------------------------------------------- |
@@ -139,7 +139,7 @@ pub trait FileSystem: Send + Sync {
 
 ---
 
-## ActionEffect System ⚡
+## ActionEffect System ⚡
 
 The `ActionEffect` system treats operations as data structures rather than direct function calls. This declarative approach enables:
 
@@ -147,7 +147,7 @@ The `ActionEffect` system treats operations as data structures rather than direc
 - **Testing** -- Effects are data, easy to mock and assert
 - **Controlled execution** -- Effects are executed by a runtime
 
-### Type Signature 📝
+### Type Signature 📝
 
 ```rust
 pub struct ActionEffect<TCapability, TError, TOutput> {
@@ -164,7 +164,7 @@ pub struct ActionEffect<TCapability, TError, TOutput> {
 - **TError**: The error type that may result
 - **TOutput**: The successful result type
 
-### Effect Composition 🔄
+### Effect Composition 🔄
 
 ```rust
 // Sequential composition
@@ -180,7 +180,7 @@ let resilient = effect.fallback(backup_effect);
 let mapped = effect.map(|result| transform(result));
 ```
 
-### Execution ▶️
+### Execution ▶️
 
 ```rust
 // Effects are executed by ApplicationRunTime
@@ -192,7 +192,7 @@ let result: Result<Vec<u8>, CommonError> = runtime
 
 ---
 
-## Environment and Dependency Injection 🧩
+## Environment and Dependency Injection 🧩
 
 `Common` implements compile-time dependency injection through the `Environment` and `Requires` traits:
 
@@ -212,7 +212,7 @@ pub trait Environment {
 }
 ```
 
-### Capability Resolution Flow 🗺️
+### Capability Resolution Flow 🗺️
 
 ```
 ActionEffect<C, E, T>
@@ -235,7 +235,7 @@ Effect executed with concrete implementation
 
 ---
 
-## Data Transfer Objects 📦
+## Data Transfer Objects 📦
 
 `Common` defines all `DTO`s shared across components:
 
@@ -252,7 +252,7 @@ Effect executed with concrete implementation
 
 ---
 
-## CommonError ⚠️
+## CommonError ⚠️
 
 A single error type covering all failure modes across every service domain:
 
@@ -272,7 +272,7 @@ pub enum CommonError {
 
 ---
 
-## Transport Layer 🔗
+## Transport Layer 🔗
 
 `Common` provides a transport-agnostic communication interface:
 
@@ -291,7 +291,7 @@ pub trait TransportStrategy: Send + Sync {
 
 ---
 
-## Telemetry Module 📡
+## Telemetry Module 📡
 
 `Common`'s telemetry module provides a dual-pipe emit surface:
 
@@ -304,7 +304,7 @@ pub trait TransportStrategy: Send + Sync {
 
 ---
 
-## Service Domain Map 🗺️
+## Service Domain Map 🗺️
 
 ```
 Common/
@@ -342,14 +342,14 @@ Common/
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Mountain](https://Editor.Land/Doc/mountain) -- Trait implementations
 - [Echo](https://Editor.Land/Doc/echo) -- Task scheduler integration
 - [Air](https://Editor.Land/Doc/air) -- Background daemon (`Common` consumer)
 - [RustInfrastructure](https://Editor.Land/Doc/rust-infrastructure) -- `Rust` backend components
 
-## Funding 💎
+## Funding 💎
 
 Common is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
 

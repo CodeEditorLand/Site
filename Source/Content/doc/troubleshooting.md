@@ -12,7 +12,7 @@ or developing against Land are covered below. Each entry describes the symptom, 
 and the specific fix. For issues not listed here, check the FIDDEE.log in
 `<app-data>/logs/` and open a GitHub issue with the log contents attached.
 
-## 🔨 Build Issues
+## Build Issues 🔨
 
 ### npm install stalls during VS Code source step
 
@@ -86,7 +86,7 @@ If still failing, open DevTools (`Inspect=1`) and set a breakpoint at
 `get extensionsPath` in the bundled workbench to inspect what
 `this.productService.dataFolderName` resolves to at runtime.
 
-## 🚀 Startup Issues
+## Startup Issues 🚀
 
 ### Blank workbench - Cocoon not connecting
 
@@ -126,7 +126,7 @@ See the
 section above. The same `InitializationData.rs` fix applies to both the bundled
 and non-bundled profiles.
 
-## 🧩 Extension Issues
+## Extension Issues 🧩
 
 ### Extension not loading
 
@@ -167,7 +167,7 @@ Node.js binary to spawn the shell.
    Mountain attempted to pass to `localPty:createProcess` and any error
    returned.
 
-## 🖊️ Code Signing Issues
+## Code Signing Issues 🖊️
 
 ### codesign failures on macOS
 

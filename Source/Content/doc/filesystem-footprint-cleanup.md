@@ -7,14 +7,14 @@ description:
     plus the archive pattern used in production cleanups.
 ---
 
-# Cleanup Recipes 🧼
+# Cleanup Recipes 🧼
 
 Per-OS commands to wipe every piece of Land / FIDDEE state from a system, plus
 the archive pattern used in production cleanups.
 
 ---
 
-## Safety Preamble ⚠️
+## Safety Preamble ⚠️
 
 Read before running anything below:
 
@@ -33,7 +33,7 @@ Read before running anything below:
 
 ---
 
-## 🍎 macOS - Complete Wipe
+## 🍎 macOS - Complete Wipe
 
 Tested against the 2026-05-26 cleanup; archive-then-delete pattern.
 
@@ -104,7 +104,7 @@ What survives this recipe (intentional):
 
 ---
 
-## 🐧 Linux - Complete Wipe
+## 🐧 Linux - Complete Wipe
 
 XDG-aware. Adapts `$XDG_*` overrides correctly.
 
@@ -158,7 +158,7 @@ What survives this recipe (intentional):
 
 ---
 
-## 🪟 Windows - Complete Wipe (PowerShell)
+## 🪟 Windows - Complete Wipe (PowerShell)
 
 Status: 🔴 untested at the time of writing. Layout per `dirs` crate resolution;
 expect minor drift in path leaf names until the Windows target ships.
@@ -212,7 +212,7 @@ What survives this recipe (intentional):
 
 ---
 
-## What This Removes vs Preserves 📊
+## What This Removes vs Preserves 📊
 
 Cross-OS summary of what a complete cleanup touches.
 
@@ -232,7 +232,7 @@ Cross-OS summary of what a complete cleanup touches.
 
 ---
 
-## OS Keychain / Credential Store 🔐
+## OS Keychain / Credential Store 🔐
 
 `Mountain/Source/Environment/SecretsProvider.rs` writes through the `keyring`
 crate, which delegates to:
@@ -255,7 +255,7 @@ and clear these.
 
 ---
 
-## Archive Pattern (Production-Validated) 📦
+## Archive Pattern (Production-Validated) 📦
 
 The 2026-05-26 cleanup ran the macOS recipe above against an active developer
 workstation. Archive total: 4.5 GB across `Library/*` (~780 MB), `~/.fiddee/`
@@ -299,7 +299,7 @@ ditto "$ARCH/Home/.land" "$HOME/.land"
 
 ---
 
-## Developer: Clear Pre-Baked Extension Manifest 🗂️
+## Developer: Clear Pre-Baked Extension Manifest 🗂️
 
 `PreBake.ts` writes `Element/Mountain/Target/<profile>/extensions.manifest.json`
 at bundle time to accelerate boot-time extension scanning (<50 ms vs ~1200 ms
@@ -315,7 +315,7 @@ This is an in-tree developer artefact; it is never written inside the installed
 
 ---
 
-## See Also 📚
+## See Also 📚
 
 - [User Dotfile](https://Editor.Land/Doc/user-dotfile) — what's inside
   `~/.fiddee/`.

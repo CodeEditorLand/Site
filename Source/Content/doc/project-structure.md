@@ -14,7 +14,7 @@ templates, and workspace configuration files for Cargo and pnpm.
 
 ---
 
-## 📂　Top-Level Layout
+## Top-Level Layout 📂
 
 ```
 Land/
@@ -42,7 +42,7 @@ Land/
 
 ---
 
-## 🗺️　Element Map
+## Element Map 🗺️
 
 ### Rust Elements - Native Backend
 
@@ -77,7 +77,7 @@ Land/
 
 ---
 
-## 🔗　Submodule Repository Table
+## Submodule Repository Table 🔗
 
 | Element  | GitHub repository                          |
 | -------- | ------------------------------------------ |
@@ -100,7 +100,7 @@ Land/
 
 ---
 
-## 🔨　Build System Architecture
+## Build System Architecture 🔨
 
 The build has two phases:
 
@@ -119,7 +119,7 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ---
 
-## 📝　Naming Conventions
+## Naming Conventions 📝
 
 ### TypeScript
 
@@ -146,7 +146,7 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ---
 
-## 🚫　What Never to Edit
+## What Never to Edit 🚫
 
 > [!WARNING] Editing these paths will be overwritten by the next build or will
 > corrupt the submodule state.
@@ -159,7 +159,7 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ---
 
-## 🔗　Related Documentation
+## Related Documentation 🔗
 
 - [Architecture](https://Editor.Land/Doc/architecture) - how elements
   communicate at runtime: IPC, gRPC, and event flow
@@ -170,7 +170,7 @@ scripts never write outside `Element/<Name>/Target/`.
 - [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline) - pipeline stages
   and automation
 
-## Funding 💎
+## Funding 💎
 
 Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by

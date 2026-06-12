@@ -5,13 +5,13 @@ order: 4
 description: "Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier — grouped by role."
 ---
 
-# Environment Variables 🎛️
+# Environment Variables 🎛️
 
 Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier — grouped by role. Cross-references the canonical `EnvironmentVariables.md` registry; this page describes them in filesystem-footprint terms.
 
 ---
 
-## Naming Convention 📐
+## Naming Convention 📐
 
 Per the canonical `EnvironmentVariables.md`:
 
@@ -22,7 +22,7 @@ Per the canonical `EnvironmentVariables.md`:
 
 ---
 
-## Path-Shaping Overrides 🏞️
+## Path-Shaping Overrides 🏞️
 
 These redirect where Land reads or writes on disk.
 
@@ -43,7 +43,7 @@ These redirect where Land reads or writes on disk.
 
 ---
 
-## Log Control 🪵
+## Log Control 🪵
 
 | Variable       | Effect                                                                                                       | Reader                                                    | Default       |
 | :------------- | :----------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------- | :------------ |
@@ -83,7 +83,7 @@ Cleanup recipes that target `*land.editor*` cover every profile naturally — no
 
 ---
 
-## Webview localStorage Growth (PostHog Telemetry) 📈
+## Webview localStorage Growth (PostHog Telemetry) 📈
 
 Build-time env baked into the bundle via Vite's `define`. Affects how much data Sky writes into the OS-managed webview storage tree (`Library/WebKit/<bundle>/` on macOS, `~/.local/share/<bundle>/` on Linux, `%LOCALAPPDATA%\<bundle>\EBWebView\` on Windows).
 
@@ -103,7 +103,7 @@ Build-time env baked into the bundle via Vite's `define`. Affects how much data 
 
 ---
 
-## Sky Workbench Gates (localStorage / build-time) 🌌
+## Sky Workbench Gates (localStorage / build-time) 🌌
 
 Build-time env via `import.meta.env`; baked into the bundle by Vite's `define`. A few of these are also persisted as localStorage keys with the same name — the env value is the **default**; the localStorage value overrides it.
 
@@ -115,7 +115,7 @@ Build-time env via `import.meta.env`; baked into the bundle by Vite's `define`. 
 
 ---
 
-## Tier-Gating Build Env 🎚️
+## Tier-Gating Build Env 🎚️
 
 Subset of the broader tier system that touches paths. See the canonical `EnvironmentVariables.md` §Tier for the full catalog.
 
@@ -126,7 +126,7 @@ Subset of the broader tier system that touches paths. See the canonical `Environ
 
 ---
 
-## Environment Snapshot at Boot 📸
+## Environment Snapshot at Boot 📸
 
 `Element/Mountain/Source/LandFixTier.rs` logs the active tier values at boot. For filesystem debugging, run with the recommended profile:
 
@@ -141,7 +141,7 @@ export DisableUIFixes=true \
 
 ---
 
-## See Also 📚
+## See Also 📚
 
 - `EnvironmentVariables.md` — canonical registry with full descriptions, tier-gating rules, and multi-file `.env` system docs.
 - `UserDotfile.md` — what `Lodge`, `Extend`, `VSCODE_COCOON_GLOBAL_STORAGE` shape.

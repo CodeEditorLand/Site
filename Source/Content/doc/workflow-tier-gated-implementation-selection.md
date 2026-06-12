@@ -5,7 +5,7 @@ order: 11
 description: "How .env.Land propagates through build tools into Mountain, Cocoon, Wind, and Sky, selecting which implementation tier each capability runs on."
 ---
 
-# Tier-Gated Implementation Selection 🎚️
+# Tier-Gated Implementation Selection 🎚️
 
 **Goal:** Every capability that has more than one viable implementation
 ("file-system access via gRPC vs native tokio", "glob compilation in JavaScript

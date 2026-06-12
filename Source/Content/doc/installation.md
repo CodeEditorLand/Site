@@ -244,7 +244,7 @@ separate Xcode project.
 - [Project Structure](https://Editor.Land/Doc/project-structure) - element
   layout and naming conventions
 
-## Funding 💎
+## Funding 💎
 
 Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by

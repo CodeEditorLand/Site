@@ -5,13 +5,13 @@ order: 6
 description: "Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning."
 ---
 
-# Encapsulation Directions 🚧
+# Encapsulation Directions 🚧
 
 Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning. Each option is feasible because both Land and the bundled VS Code dependency are ours to modify. None are decided plans; all should be costed against the current [PerElement.md](filesystem-footprint-per-element.md) and [PlatformPaths.md](filesystem-footprint-platform-paths.md) before implementation.
 
 ---
 
-## At-a-Glance Roadmap 🗺️
+## At-a-Glance Roadmap 🗺️
 
 | ID  | Direction                                    | Effort | Impact                                             | Risk                           |
 | :-- | :------------------------------------------- | :----- | :------------------------------------------------- | :----------------------------- |
@@ -31,7 +31,7 @@ S ≤ 1 day, M = 1 - 5 days, L = 1 - 2 weeks.
 
 ---
 
-## A. Single Product Root (`~/.fiddee/<profile>/`) 🏞️
+## A. Single Product Root (`~/.fiddee/<profile>/`) 🏞️
 
 **Move every per-bundle path under `~/.fiddee/<profile>/`.** Replace Tauri's `app_data_dir()` / `app_cache_dir()` / `app_log_dir()` calls with an internal resolver that returns `~/.fiddee/<profile>/data/`, `~/.fiddee/<profile>/cache/`, `~/.fiddee/<profile>/logs/`. Cocoon storage paths fold in naturally as `~/.fiddee/<profile>/extensionStorage/` etc.
 
@@ -66,7 +66,7 @@ Stop encoding the build matrix into the Tauri `identifier`. Use a single identif
 
 ---
 
-## C. Log Rotation and Retention 🪵
+## C. Log Rotation and Retention 🪵
 
 A single `~/.fiddee/<profile>/logs/<ts>/` tree (option A) opens the door to:
 
@@ -84,7 +84,7 @@ Today `Record=1` + `Trace=all` debug sessions leave behind ~200 MB per run forev
 
 ---
 
-## D. Versioned Userdata Schema 🔢
+## D. Versioned Userdata Schema 🔢
 
 Stamp `~/.fiddee/<profile>/data/.schema-version` (or `<app_data_dir>/<bundle>/User/.schema-version` in the pre-A layout). Boot-time migrations move data forward; backward-incompatible changes write to `User-vN+1/` and leave the older snapshot for rollback.
 
@@ -100,7 +100,7 @@ Today the userdata directory has no version marker, so future format changes (e.
 
 ---
 
-## E. Tier Parity for Every Location 🎚️
+## E. Tier Parity for Every Location 🎚️
 
 `Lodge` and `Extend` let operators redirect the extension paths. Today `<app_data_dir>`, `<app_log_dir>`, `<app_cache_dir>` cannot be redirected without Tauri-level config changes.
 
@@ -118,7 +118,7 @@ Pair each with a registry entry in [EnvironmentVariables.md](../Reference/Enviro
 
 ---
 
-## F. Self-Uninstall Command 🧼
+## F. Self-Uninstall Command 🧼
 
 `fiddee --uninstall` (or a menu item) that walks the [PerElement.md](filesystem-footprint-per-element.md) tables and removes every path it owns, optionally archiving to `~/.fiddee-archive-<ts>/` first. Matches the procedure in [Cleanup.md](filesystem-footprint-cleanup.md) done by hand.
 
@@ -132,7 +132,7 @@ Pair each with a registry entry in [EnvironmentVariables.md](../Reference/Enviro
 
 ---
 
-## G. Foreign-Tool Probe Tier-Gate 🌐
+## G. Foreign-Tool Probe Tier-Gate 🌐
 
 `TierForeignToolProbe=Off` would stop `AppLifecycle::Dirs` from pre-creating `~/.claude/agents` and `~/.copilot/agents`. Workbench-side, make the missing-dir probe failure-tolerant so the create-on-startup is no longer needed.
 
@@ -147,7 +147,7 @@ Default tier value: `On` for backwards-compatible boot behaviour.
 
 ---
 
-## H. Cocoon `.storage` Move Out-of-Bundle 📦
+## H. Cocoon `.storage` Move Out-of-Bundle 📦
 
 The current `~/.fiddee/extensions/<id>/.storage/` location ties per-extension storage to the extension's own directory — reinstalls or version bumps destroy it.
 
@@ -173,7 +173,7 @@ Read `<app_data_dir>/<bundle>/machine-id.txt` and use it as the PostHog distinct
 
 ---
 
-## J. FIDDEE Root Reconciliation (Air vs Mountain) 🤝
+## J. FIDDEE Root Reconciliation (Air vs Mountain) 🤝
 
 Mountain owns `~/.fiddee/` (dotfile, lowercase). The `Air` background daemon writes to `<config_dir>/FIDDEE/` (uppercase, under the OS config root — i.e. `~/Library/Application Support/FIDDEE/` on macOS).
 
@@ -190,7 +190,7 @@ Two products, two roots. Cleanup recipes that target `~/.fiddee/` miss Air's sta
 
 ---
 
-## K. OS Keychain Enumeration 🔐
+## K. OS Keychain Enumeration 🔐
 
 `Mountain/Source/Environment/SecretsProvider.rs` writes through the `keyring` crate, but Land doesn't enumerate the entries it creates. A complete uninstall requires either user-side `security delete-generic-password` / `secret-tool clear` / `cmdkey /delete` commands, or per-OS API enumeration.
 
@@ -206,7 +206,7 @@ Two products, two roots. Cleanup recipes that target `~/.fiddee/` miss Air's sta
 
 ---
 
-## Sequencing Suggestion 📐
+## Sequencing Suggestion 📐
 
 If we tackle these, the natural order is:
 
@@ -224,7 +224,7 @@ If we tackle these, the natural order is:
 
 ---
 
-## Versioning Sketch 🔢
+## Versioning Sketch 🔢
 
 Once option A lands, the versioning story becomes straightforward:
 
@@ -237,7 +237,7 @@ The combination of A (single product root) + D (schema versions) makes the versi
 
 ---
 
-## See Also 📚
+## See Also 📚
 
 - [UserDotfile.md](filesystem-footprint-user-dotfile.md) — the `~/.fiddee/` tree (option A's target shape).
 - [PerElement.md](filesystem-footprint-per-element.md) — per-Element write-site inventory.

@@ -8,7 +8,7 @@ description:
     editor process."
 ---
 
-# Air: Background Daemon 🪁
+# Air: Background Daemon 🪁
 
 The `Air` background daemon:
 
@@ -59,7 +59,7 @@ graph TB
     MOUNTAIN["Mountain<br/>ProcessManagement"] -->|"gRPC: PerformAction"| GRPC
 ```
 
-## Overview 📋
+## Overview 📋
 
 | Attribute    | Value                                                          |
 | ------------ | -------------------------------------------------------------- |
@@ -71,7 +71,7 @@ graph TB
 
 ---
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 `Air` is structured around a central `gRPC` server that receives task delegation from `Mountain`. Internal modules handle distinct responsibilities.
 
@@ -108,7 +108,7 @@ graph TB
 
 ---
 
-## Module Map 🗺️
+## Module Map 🗺️
 
 | Path                      | Purpose                                                                        |
 | ------------------------- | ------------------------------------------------------------------------------ |
@@ -130,7 +130,7 @@ graph TB
 | `Source/Library.rs`       | Library root exposing the public API for integration tests                     |
 | `Source/Daemon/`          | Daemon lifecycle management (start, stop, restart)                             |
 
-### gRPC Service Definition (Vine/Air.proto) 📜
+### gRPC Service Definition (Vine/Air.proto) 📜
 
 ```protobuf
 service BackgroundServices {
@@ -151,9 +151,9 @@ service BackgroundServices {
 
 ---
 
-## Services 🔌
+## Services 🔌
 
-### Update Manager 🔄
+### Update Manager 🔄
 
 The update manager owns the full lifecycle of application updates:
 
@@ -165,7 +165,7 @@ The update manager owns the full lifecycle of application updates:
 | Apply    | `ApplyUpdate`    | Replace running binary on next restart         |
 | Rollback | `RollbackUpdate` | Restore previous version on failure            |
 
-### Download Manager 📥
+### Download Manager 📥
 
 The resilient download manager handles extension downloads, language server binaries, and dependency fetching:
 
@@ -177,7 +177,7 @@ The resilient download manager handles extension downloads, language server bina
 | Bandwidth  | Configurable rate limiting per download               |
 | Concurrent | Parallel download queue with configurable concurrency |
 
-### Indexing Service 🔍
+### Indexing Service 🔍
 
 File indexing builds and maintains a searchable content index of the workspace:
 
@@ -187,7 +187,7 @@ File indexing builds and maintains a searchable content index of the workspace:
 4. Incremental indexing on file system change events
 5. Index persistence across daemon restarts
 
-### Authentication Service 🔐
+### Authentication Service 🔐
 
 Manages sensitive cryptographic operations:
 
@@ -198,9 +198,9 @@ Manages sensitive cryptographic operations:
 
 ---
 
-## Data Flow 📊
+## Data Flow 📊
 
-### Update Check Flow 🔄
+### Update Check Flow 🔄
 
 ```
 Mountain triggers update check
@@ -224,7 +224,7 @@ Air returns update metadata to Mountain
 Mountain displays update notification to user
 ```
 
-### Download with Progress Flow 📥
+### Download with Progress Flow 📥
 
 ```
 Mountain calls PerformAction(StartDownload { url, target })
@@ -245,7 +245,7 @@ Download Manager returns ActionResponse { success, filePath }
 
 ---
 
-## Startup Sequence 🚀
+## Startup Sequence 🚀
 
 ```
 1. Mountain spawns Air binary via ProcessManagement
@@ -276,7 +276,7 @@ Download Manager returns ActionResponse { success, filePath }
 
 ---
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 `Air` reads configuration from environment variables and supports hot-reload via file watching:
 
@@ -291,7 +291,7 @@ Download Manager returns ActionResponse { success, filePath }
 
 ---
 
-## Related Documentation 📖
+## Related Documentation 📖
 
 - [Common](https://Editor.Land/Doc/common) -- Abstract core traits
 - [Mountain](https://Editor.Land/Doc/mountain) -- Main backend application
@@ -299,7 +299,7 @@ Download Manager returns ActionResponse { success, filePath }
 - [Vine](https://Editor.Land/Doc/vine) -- `gRPC` protocol specification
 - [BuildPipeline](https://Editor.Land/Doc/build-pipeline) -- Build pipeline
 
-## Funding 💎
+## Funding 💎
 
 Air is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
 

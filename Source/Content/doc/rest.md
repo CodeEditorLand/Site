@@ -8,7 +8,7 @@ description:
     OXC pipeline, producing VS Code-compatible output at 2-3x speed improvement.
 ---
 
-# Rest: OXC TypeScript Compiler ☕
+# Rest: OXC TypeScript Compiler ⛱️
 
 `Rest` is a high-performance `TypeScript` compiler built on the OXC (Oxidation
 Compiler) toolchain:
@@ -32,7 +32,7 @@ Compiler) toolchain:
 
 ---
 
-## Overview 📋
+## Overview 📋
 
 `Rest` is a `Rust` binary and library that provides a
 `TypeScript`-to-`JavaScript` compiler using the OXC toolchain:
@@ -52,7 +52,7 @@ Compiler) toolchain:
 
 ---
 
-## Architecture 🏗️
+## Architecture 🏗️
 
 ```
 +---------------------------------------------------------+
@@ -76,7 +76,7 @@ Compiler) toolchain:
 +---------------------------------------------------------+
 ```
 
-### Module Map 🗺️
+### Module Map 🗺️
 
 | Path                              | Purpose                              |
 | --------------------------------- | ------------------------------------ |
@@ -93,7 +93,7 @@ Compiler) toolchain:
 
 ---
 
-## Compilation Pipeline 🔧
+## Compilation Pipeline 🔧
 
 The OXC compilation pipeline processes `TypeScript` input through multiple
 stages:
@@ -131,7 +131,7 @@ TypeScript input (.ts, .tsx, .mts, .cts)
 JavaScript output (.js, .cjs, .mjs)
 ```
 
-### Parallel Processing ⚡
+### Parallel Processing ⚡
 
 `Rest` uses `rayon` for parallel file compilation:
 
@@ -147,7 +147,7 @@ the `--workers N` flag.
 
 ---
 
-## Configuration ⚙️
+## Configuration ⚙️
 
 `Rest` reads configuration from CLI flags and environment variables:
 
@@ -162,7 +162,7 @@ the `--workers N` flag.
 | `--decorators`   | `REST_DECORATORS`   | `legacy`   | Decorator metadata mode       |
 | `--class-fields` | `REST_CLASS_FIELDS` | `define`   | Class field emit mode         |
 
-### Output Configuration 📝
+### Output Configuration 📝
 
 ```sh
 rest --entry src/index.ts \
@@ -174,7 +174,7 @@ rest --entry src/index.ts \
 
 ---
 
-## CLI Usage 💻
+## CLI Usage 💻
 
 ```sh
 # Single file compilation
@@ -195,7 +195,7 @@ rest --entry src/index.ts --out-dir dist/ --decorators stage3
 
 ---
 
-## Integration with Output 🔗
+## Integration with Output 🔗
 
 `Rest` integrates with the `Output` element's build pipeline through the
 `RestPlugin`:
@@ -227,7 +227,7 @@ Activated via environment variable: `Compiler=Rest`
 
 ---
 
-## Performance Benchmarks 📊
+## Performance Benchmarks 📊
 
 | Operation                    | esbuild | Rest (OXC) | Improvement |
 | ---------------------------- | ------- | ---------- | ----------- |
@@ -240,7 +240,7 @@ Benchmarks performed on Apple M1 Max with 8 worker threads.
 
 ---
 
-## Related Documentation 📚
+## Related Documentation 📚
 
 - [Output](https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md) -
   Build artifact management (`RestPlugin` consumer)

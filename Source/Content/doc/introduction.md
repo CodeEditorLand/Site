@@ -160,7 +160,7 @@ serialization defined in `Element/Vine/Vine.proto`.
   use Effect-TS for the TypeScript layer
 - [Quickstart](https://Editor.Land/Doc/quickstart) - build and run in two steps
 
-## Funding 💎
+## Funding 💎
 
 Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by

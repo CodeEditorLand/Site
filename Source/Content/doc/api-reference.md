@@ -31,7 +31,7 @@ connection lifecycle management.
 
 ---
 
-## Protocol Overview 🔌
+## Protocol Overview 🔌
 
 **Land** uses three communication protocols operating at different abstraction
 levels:
@@ -76,7 +76,7 @@ graph BT
 
 ---
 
-## Tauri IPC 🎮
+## Tauri IPC 🎮
 
 ### TierIPC Runtime Routing
 
@@ -171,7 +171,7 @@ rather than throwing, so callers treat a corrupt blob as "no stored secret".
 
 ---
 
-## Vine gRPC Protocol 🏔️
+## Vine gRPC Protocol 🏔️
 
 `Vine` defines the `gRPC` service contracts for `Mountain`-`Cocoon` and
 `Mountain`-`Air` communication. The canonical definition lives at
@@ -314,7 +314,7 @@ described in
 
 ---
 
-## Spine Extension Protocol 🔄
+## Spine Extension Protocol 🔄
 
 The `Spine` protocol is the extension host coordination layer built on top of
 `Vine` `gRPC`. It implements an action/response pattern for extension-to-backend
@@ -393,7 +393,7 @@ decides per-call whether to:
 
 ---
 
-## Connection Lifecycle 🔄
+## Connection Lifecycle 🔄
 
 ### Mountain-Cocoon Connection
 
@@ -473,7 +473,7 @@ Normal operation:
 
 ---
 
-## Health Monitoring 💓
+## Health Monitoring 💓
 
 ### Heartbeat Protocol
 
@@ -511,7 +511,7 @@ All connection state changes are logged via the `dev_log!` system at
 
 ---
 
-## Protocol Buffer Definitions 📁
+## Protocol Buffer Definitions 📁
 
 ### Current Location
 
@@ -544,7 +544,7 @@ TypeScript types are generated using `protoc-gen-ts` and checked into the
 
 ---
 
-## Security 🛡️
+## Security 🛡️
 
 All `gRPC` connections are restricted to localhost only (`[::1]` / `127.0.0.1`).
 No remote connections are accepted.
@@ -561,7 +561,7 @@ No remote connections are accepted.
 
 ---
 
-## Related Documentation 📋
+## Related Documentation 📋
 
 - [Architecture](Architecture.md) - System architecture
 - [BuildPipeline](BuildPipeline.md) - Build pipeline
