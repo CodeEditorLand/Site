@@ -250,16 +250,11 @@ compatibility.
 
 ## Related Documentation
 
-- [Common](https://github.com/CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md) -
-  Shared traits and ActionEffect system
-- [Mountain](https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md) -
-  Main backend (Grove integration)
-- [Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md) -
-  Primary extension host (Node.js)
-- [InterComponentProtocol](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md) -
-  gRPC protocol specification
-- [RustInfrastructure](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md) -
-  Rust backend components
+- [Common](/Doc/common/) — Shared traits and ActionEffect system
+- [Mountain](/Doc/mountain/) — Main backend (Grove integration)
+- [Cocoon](/Doc/cocoon/) — Primary extension host (Node.js)
+- [InterComponentProtocol](/Doc/api-reference/) — gRPC protocol specification
+- [RustInfrastructure](/Doc/architecture/) — Rust backend components
 
 ---
 

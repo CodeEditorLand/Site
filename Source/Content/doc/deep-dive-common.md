@@ -723,4 +723,4 @@ let metrics = {
 - [Common overview](https://Editor.Land/Doc/common)
 - [Mountain deep dive](https://Editor.Land/Doc/deep-dive-mountain)
 - [Echo deep dive](https://Editor.Land/Doc/deep-dive-echo)
-- [Source Code](https://github.com/CodeEditorLand/Common)
+Related: [Architecture](/Doc/architecture/)

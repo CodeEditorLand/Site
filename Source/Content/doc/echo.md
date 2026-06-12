@@ -225,4 +225,4 @@ handles all async work dispatched through `ApplicationRunTime`.
 - [Echo Deep Dive](https://Editor.Land/Doc/deep-dive-echo)
 - [Mountain](https://Editor.Land/Doc/mountain)
 - [Common](https://Editor.Land/Doc/common)
-- [Source Code](https://github.com/CodeEditorLand/Echo)
+Related: [Architecture](/Doc/architecture/)
