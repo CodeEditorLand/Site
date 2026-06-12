@@ -1,3 +1,13 @@
+---
+title: "Echo — Deep Dive & Architecture"
+section: "Deep Dive"
+order: 3
+description:
+    "Deep dive into Echo, the work-stealing scheduler that provides efficient
+    task execution for Mountain's ApplicationRunTime and other components
+    requiring asynchronous task management."
+---
+
 <table>
 	<tr>
 		<td colspan="1">

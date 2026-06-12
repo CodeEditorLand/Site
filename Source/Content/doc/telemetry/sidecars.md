@@ -1,3 +1,13 @@
+---
+title: "Sidecar Telemetry"
+section: "Development"
+order: 8
+description:
+    "Documents how every Rust sidecar (Air, Echo, Rest, Grove, Mist, SideCar,
+    Worker) and the Worker service worker emit telemetry through the same
+    land:<tier>:* namespace and stamp $tier for dashboard pivoting."
+---
+
 # Sidecar Telemetry - Air / Echo / Rest / Grove / Mist / SideCar / Worker
 
 Every Rust sidecar and the Worker service worker emit through the same

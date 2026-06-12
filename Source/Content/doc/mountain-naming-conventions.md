@@ -1,3 +1,13 @@
+---
+title: "Mountain Naming Conventions"
+section: "Development"
+order: 3
+description:
+    "Documents Mountain's PascalCase naming convention for Rust elements,
+    explaining the cross-language DTO alignment with TypeScript and gRPC
+    Protocol Buffers."
+---
+
 # Mountain Naming Conventions
 
 ## Overview

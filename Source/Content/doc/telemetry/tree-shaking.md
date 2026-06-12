@@ -1,3 +1,13 @@
+---
+title: "Production Zero — Tree-Shaking Telemetry"
+section: "Development"
+order: 8
+description:
+    "Contract specifying that a cargo build --release of any Rust element and
+    an astro build of Sky must contain zero bytes of telemetry SDK code, no
+    PostHog endpoint string, and no feature flag SDK code."
+---
+
 # Production Zero - Tree-Shaking Telemetry
 
 The contract: a `cargo build --release` of any Rust element, and an

@@ -1,3 +1,13 @@
+---
+title: "Effect-TS + OpenTelemetry — Integration Pattern"
+section: "Development"
+order: 8
+description:
+    "Describes how Wind and Cocoon use Effect's first-class OpenTelemetry
+    support through @effect/opentelemetry, exporting to both an OTLP collector
+    and PostHog events via custom SpanProcessors."
+---
+
 # Effect-TS + OpenTelemetry - Integration Pattern
 
 Wind and Cocoon are written in Effect-TS. Effect ships first-class OpenTelemetry

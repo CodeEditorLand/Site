@@ -9,7 +9,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 584 rules ──
+# ── VARIANT REWRITES (200) - 588 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /account                              /Account/                             200
 /ACCOUNT                              /Account/                             200
@@ -355,6 +355,8 @@
 /doc/vine/                            /Doc/vine/                            200
 /doc/vscode-api-coverage              /Doc/vscode-api-coverage/             200
 /doc/vscode-api-coverage/             /Doc/vscode-api-coverage/             200
+/doc/webassembly                      /Doc/why-wasm/                        200
+/doc/webassembly/                     /Doc/why-wasm/                        200
 /doc/why-cc0                          /Doc/why-cc0/                         200
 /doc/why-cc0/                         /Doc/why-cc0/                         200
 /doc/why-effect-ts                    /Doc/why-effect-ts/                   200
@@ -367,6 +369,8 @@
 /doc/why-tauri/                       /Doc/why-tauri/                       200
 /doc/why-wasm                         /Doc/why-wasm/                        200
 /doc/why-wasm/                        /Doc/why-wasm/                        200
+/doc/why-webassembly                  /Doc/why-wasm/                        200
+/doc/why-webassembly/                 /Doc/why-wasm/                        200
 /doc/wind                             /Doc/wind/                            200
 /doc/wind/                            /Doc/wind/                            200
 /doc/worker                           /Doc/worker/                          200

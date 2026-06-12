@@ -1,11 +1,11 @@
 ---
-title: Maintain - Deep Dive
-section: Deep Dive
+title: "Maintain - Deep Dive"
+section: "Deep Dive"
 order: 5
 description:
-    Architecture overview of the Maintain build orchestrator: Rust binary
+    "Architecture overview of the Maintain build orchestrator: Rust binary
     and library, Rhai scripting engine, TOML/JSON5 config editing, data flow,
-    integration points, and CLI configuration.
+    integration points, and CLI configuration."
 ---
 
 Maintain is the build orchestrator for Land. It covers the internals of

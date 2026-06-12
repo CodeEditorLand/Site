@@ -1,3 +1,13 @@
+---
+title: "Sky: UI Component Layer"
+section: "Elements"
+order: 9
+description:
+    "Sky is the UI component layer of Land — the Astro-based interface that
+    renders the editor, side bar, activity bar, status bar, and panels inside
+    the Tauri WebView, loading the VS Code workbench from Output."
+---
+
 # Sky: UI Component Layer ☁️
 
 `Sky` is the UI component layer of `Land`.

@@ -1,3 +1,13 @@
+---
+title: "VS Code API Coverage Matrix"
+section: "Development"
+order: 7
+description:
+    "Authoritative map of every top-level vscode.* API surface and its
+    implementation split across Sky (workbench renderer), Cocoon (extension-host
+    Node sidecar), and Mountain (Rust backend). Drives the dual-track strategy."
+---
+
 # VS Code API Coverage Matrix
 
 Authoritative map of every top-level `vscode.*` API surface and its

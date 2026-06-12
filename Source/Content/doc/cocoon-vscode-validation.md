@@ -1,3 +1,13 @@
+---
+title: "VS Code Source Validation Checklist for Cocoon"
+section: "Elements"
+order: 2
+description:
+    "Validates Cocoon's implementation against the original VS Code source to ensure
+    compatibility and correctness. Covers extension host architecture, API compatibility,
+    and communication patterns."
+---
+
 # VS Code Source Validation Checklist for Cocoon
 
 This document validates Cocoon's implementation against the original VS Code

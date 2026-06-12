@@ -1,3 +1,13 @@
+---
+title: "Inter-Component Protocol"
+section: "Guide"
+order: 5
+description:
+    "Specifies the communication protocols used between Land components: gRPC
+    service definitions (Vine protocol), Tauri IPC mechanism, Spine extension
+    coordination protocol, and connection lifecycle management."
+---
+
 # Inter-Component Protocol
 
 This document specifies the communication protocols used between **Land**

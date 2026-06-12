@@ -1,3 +1,12 @@
+---
+title: "Land Telemetry — Overview"
+section: "Development"
+order: 8
+description:
+    "Overview of Land's telemetry architecture using two parallel pipes — logs
+    and traces — that share a single trace_id for correlation."
+---
+
 # Land Telemetry - Overview
 
 Land emits telemetry through **two parallel pipes** that share one `trace_id`:

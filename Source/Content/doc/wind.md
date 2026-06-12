@@ -1,3 +1,13 @@
+---
+title: "Wind: Frontend Service Layer"
+section: "Elements"
+order: 13
+description:
+    "Wind is the Effect-TS service layer for the VS Code workbench, enabling
+    it to function inside a Tauri WebView by recreating the essential VS Code
+    renderer environment through typed error and dependency injection patterns."
+---
+
 # Wind: Frontend Service Layer 🍃
 
 `Wind` is the `Effect-TS` service layer for the VS Code
