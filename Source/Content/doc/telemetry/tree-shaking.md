@@ -1,5 +1,5 @@
 ---
-title: "Production Zero — Tree-Shaking Telemetry"
+title: "Production Zero - Tree-Shaking Telemetry"
 section: "Development"
 order: 8
 description:

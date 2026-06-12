@@ -1,5 +1,5 @@
 ---
-title: "Effect-TS + OpenTelemetry — Integration Pattern"
+title: "Effect-TS + OpenTelemetry - Integration Pattern"
 section: "Development"
 order: 8
 description:

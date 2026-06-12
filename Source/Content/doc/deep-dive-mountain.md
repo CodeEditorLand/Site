@@ -1,5 +1,5 @@
 ---
-title: "Mountain — Deep Dive & Architecture"
+title: "Mountain - Deep Dive & Architecture"
 section: "Deep Dive"
 order: 7
 description:
@@ -79,9 +79,9 @@ impl ApplicationRunTime for MountainRunTime {
 The `ApplicationState` system provides concrete state management with advanced
 concurrency guarantees. A central state store holds three sub-stores:
 
-- **Document State** — open documents and editors
-- **Extension State** — loaded extensions
-- **UI State** — window layout and preferences
+- **Document State** - open documents and editors
+- **Extension State** - loaded extensions
+- **UI State** - window layout and preferences
 
 Concurrency is implemented via `RwLock` protection, atomic operations, Tauri
 events for notification, and state caching.
@@ -123,8 +123,8 @@ contracts, and a serialization layer for DTO conversion.
 
 Communication patterns include:
 
-- **Unary RPC** — request-response
-- **Streaming RPC** — real-time data
+- **Unary RPC** - request-response
+- **Streaming RPC** - real-time data
 - **Bidirectional Streams**
 
 #### Concrete gRPC Implementation
@@ -716,9 +716,9 @@ Terminal/LocalPTYCreateProcess.rs → pub struct LocalPTYCreateProcess; …
 `ProcessManagement/InitializationData.rs` contains two builders that fire at
 application startup:
 
-- **`ConstructSandboxConfiguration`** — produces the `ISandboxConfiguration`
+- **`ConstructSandboxConfiguration`** - produces the `ISandboxConfiguration`
   JSON payload delivered to the Sky (VS Code workbench) frontend.
-- **`ConstructExtensionHostInitializationData`** — produces the
+- **`ConstructExtensionHostInitializationData`** - produces the
   `IExtensionHostInitData` JSON payload delivered to Cocoon.
 
 ### Critical ISandboxConfiguration fields
@@ -730,7 +730,7 @@ crash in the bundled workbench:
 | Field                  | Consumer                                                              | Notes                                                  |
 | :--------------------- | :-------------------------------------------------------------------- | :----------------------------------------------------- |
 | `logsPath`             | `NativeWorkbenchEnvironmentService.logsHome`                          | URI string                                             |
-| `dataFolderName`       | Extension path construction — **primary crash source when undefined** | `URI.joinPath(userHome, dataFolderName, "extensions")` |
+| `dataFolderName`       | Extension path construction - **primary crash source when undefined** | `URI.joinPath(userHome, dataFolderName, "extensions")` |
 | `sharedDataFolderName` | `appSharedDataHome`                                                   |                                                        |
 | `version`              | Extension compatibility checks                                        |                                                        |
 | `perfMarks`            | Required non-optional array                                           | Must be `[]`                                           |
@@ -743,8 +743,8 @@ crash in the bundled workbench:
 ### profiles section
 
 `profiles` must contain `home`, `all` (array), and a default `profile` object.
-The default profile itself must carry **all 13 URI fields** — including
-`languageModelsResource` — as `{ scheme, authority, path, query, fragment }`
+The default profile itself must carry **all 13 URI fields** - including
+`languageModelsResource` - as `{ scheme, authority, path, query, fragment }`
 objects, because VS Code calls `.with(...)` on every one without a null check.
 
 To avoid hitting `json!` macro recursion limits, all sub-objects
@@ -775,7 +775,7 @@ The machine ID is read from the OS-native source:
 
 If the machine ID cannot be obtained the function returns `Err` so callers
 surface a meaningful error rather than falling back to a predictable constant.
-The derived key is stored in a `OnceLock<Option<[u8;32]>>` — computed once,
+The derived key is stored in a `OnceLock<Option<[u8;32]>>` - computed once,
 reused for the lifetime of the process.
 
 ### `Encrypt.rs` / `Decrypt.rs`
@@ -828,7 +828,7 @@ sidecar:
 | :--------------------------- | :--------------------------------------------------------------- |
 | Cocoon gRPC port             | 50052 (Mountain's Vine gRPC server is on **50051**)              |
 | Mountain gRPC connect budget | `GRPC_CONNECT_BUDGET_MS = 30_000` (30 seconds)                   |
-| IO forwarder runtime         | `tauri::async_runtime::spawn` — **not** `tokio::spawn`           |
+| IO forwarder runtime         | `tauri::async_runtime::spawn` - **not** `tokio::spawn`           |
 | Bootstrap script             | `scripts/cocoon/bootstrap-fork.js` (bundled sidecar)             |
 | WebSocket config             | Port picked at spawn time via `portpicker`, stored in `OnceLock` |
 
@@ -840,14 +840,14 @@ before Mountain attempts a gRPC handshake).
 
 ```
 Mountain Architecture Blocks:
-  ApplicationState  —  Central State
-  ApplicationRunTime  —  Effect Execution
-  Environment  —  Service Implementations
-  ProcessManager  —  Sidecar Orchestration
-  VineServer  —  gRPC Communication
+  ApplicationState  -  Central State
+  ApplicationRunTime  -  Effect Execution
+  Environment  -  Service Implementations
+  ProcessManager  -  Sidecar Orchestration
+  VineServer  -  gRPC Communication
 
 External Dependencies:
-  Common  —  Common Traits
+  Common  -  Common Traits
   Tauri Framework
   Tokio Runtime
   Echo Scheduler

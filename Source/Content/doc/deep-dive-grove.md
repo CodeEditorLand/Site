@@ -1,5 +1,5 @@
 ---
-title: "Grove — Deep Dive"
+title: "Grove - Deep Dive"
 section: "Deep Dive"
 order: 4
 description:
@@ -8,7 +8,7 @@ description:
     or native Rust, complementing the Node.js-based Cocoon host."
 ---
 
-# Grove — Deep Dive
+# Grove - Deep Dive
 
 Grove provides the technical foundation Rust/WASM
 extension host within the Land project. **Grove** provides a native, sandboxed
@@ -26,7 +26,7 @@ communicates with Mountain, and shared utility modules.
 
 ```mermaid
 graph TB
-    subgraph "Grove — Rust/WASM Extension Host"
+    subgraph "Grove - Rust/WASM Extension Host"
         Main["main.rs / lib.rs<br/>Binary + Library entry"]
         Binary["Binary/<br/>CLI and startup"]
         Host["Host/<br/>Extension Host Controller"]
@@ -47,7 +47,7 @@ graph TB
         Protocol["Protocol/<br/>Spine connection"]
     end
 
-    subgraph "Mountain — Rust Backend"
+    subgraph "Mountain - Rust Backend"
         VineGRPC["Vine gRPC Server"]
     end
 

@@ -12,9 +12,9 @@ Vine is the gRPC protocol definition and communication specification for the
 Land project. It defines the strongly-typed IPC layer used for communication
 between:
 
-- **Mountain** (Rust backend) — gRPC server
-- **Cocoon** (Node.js extension host) — gRPC client
-- **Air** (background daemon) — gRPC client
+- **Mountain** (Rust backend) - gRPC server
+- **Cocoon** (Node.js extension host) - gRPC client
+- **Air** (background daemon) - gRPC client
 
 ```mermaid
 graph TB
@@ -95,7 +95,7 @@ Vine is the umbrella name for a family of proto files:
 | ------------- | ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `Vine.proto`  | 50051       | Cocoon → Mountain (`MountainService`) | Core Mountain↔Cocoon communication: file system, terminal, language features, extension host lifecycle |
 | `Vine.proto`  | 50052       | Mountain → Cocoon (`CocoonService`)   | Core Mountain↔Cocoon communication: language provider dispatch, notifications, inline completions      |
-| `Spine.proto` | 50052       | Mountain → Cocoon                     | Extension host coordination — action/response pattern for command execution                            |
+| `Spine.proto` | 50052       | Mountain → Cocoon                     | Extension host coordination - action/response pattern for command execution                            |
 | `Air.proto`   | 50053       | Mountain → Air                        | Mountain↔Air background daemon services                                                                |
 
 > [!NOTE] `NetworkMountainPort` (default 50051) is Mountain's gRPC listen
@@ -237,7 +237,7 @@ Shared types used across multiple RPCs:
 
 ## Transport
 
-Both Mountain and Cocoon run gRPC servers and both act as gRPC clients — the
+Both Mountain and Cocoon run gRPC servers and both act as gRPC clients - the
 protocol is fully bidirectional. Mountain hosts `MountainService` for Cocoon to
 call; Cocoon hosts `CocoonService` for Mountain to call.
 
@@ -334,7 +334,7 @@ fn main() {
 ```
 
 The generated types live in Mountain's `Source/Vine/Generated/` directory and
-are not checked in — they are produced on every build.
+are not checked in - they are produced on every build.
 
 ### TypeScript (pre-generated via protoc-gen-ts)
 
@@ -356,11 +356,11 @@ Cocoon's gRPC client loads these generated types via `@grpc/grpc-js` at startup.
 
 | Feature                                               | Status      |
 | ----------------------------------------------------- | ----------- |
-| `Vine.proto` — Mountain↔Cocoon gRPC (in Mountain)     | Active      |
-| `Spine.proto` — extension host coordination           | Specified   |
-| `Air.proto` — background daemon services              | Active      |
+| `Vine.proto` - Mountain↔Cocoon gRPC (in Mountain)     | Active      |
+| `Spine.proto` - extension host coordination           | Specified   |
+| `Air.proto` - background daemon services              | Active      |
 | Standalone Vine package (published `.proto` files)    | In progress |
-| Transport agnosticism — WASM host functions for Grove | Planned     |
+| Transport agnosticism - WASM host functions for Grove | Planned     |
 
 ## What Is Not Yet Covered
 
@@ -372,15 +372,15 @@ service methods are being completed.
 
 ## Related Documentation
 
-- [Mountain](https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md) —
+- [Mountain](https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md) -
   gRPC server implementation
-- [Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md) —
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md) -
   gRPC client implementation
-- [Air](https://github.com/CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md) —
+- [Air](https://github.com/CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md) -
   Background daemon (gRPC consumer)
-- [Grove](https://github.com/CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md) —
+- [Grove](https://github.com/CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md) -
   WASM host (gRPC consumer)
-- [InterComponentProtocol](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md) —
+- [InterComponentProtocol](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md) -
   Full protocol specification
 - [Vine Deep Dive](https://Editor.Land/Doc/deep-dive-vine)
 - [Source Code](https://github.com/CodeEditorLand/Vine)

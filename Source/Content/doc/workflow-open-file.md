@@ -12,6 +12,70 @@ Wind's editor and filesystem services resolve and load the model, a Tauri IPC
 call reaches Mountain for the native disk read, and the result unwinds back
 through the same chain until Monaco renders the content.
 
+```mermaid
+flowchart TB
+    subgraph UI["Wind/Sky Frontend"]
+        U["User clicks file<br/>in File Explorer"]
+        ES["IEditorService.openEditor()"]
+        TES["TextEditorService<br/>resolves EditorInput"]
+    end
+
+    subgraph Editor["Wind Editor Groups"]
+        EGS["EditorGroupsService"]
+        TEI["TextFileEditorModel.load()"]
+        FS["IFileService.readFile()"]
+    end
+
+    subgraph FileSystem["Wind FileSystem Provider"]
+        TDFSP["TauriDiskFileSystemProvider"]
+        RF["ReadFile Effect"]
+    end
+
+    subgraph Integration["Wind Integration Layer"]
+        TI["TauriInvoke"]
+    end
+
+    subgraph Backend["Mountain Backend"]
+        TFS["Tauri fs Plugin"]
+        NATIVE["tokio::fs::read()"]
+        CONTENT["File Content<br/>Vec<u8>"]
+    end
+
+    subgraph Render["Wind Rendering"]
+        TPE["TextEditorPane"]
+        ME["Monaco Editor"]
+        DIS["Display to User"]
+    end
+
+    U -->|onClick| ES
+    ES -->|openEditorEffect| TES
+    TES -->|findGroup| EGS
+    EGS -->|check if already open| TEI
+    TEI -->|needs content| FS
+    FS -->|lookup provider| TDFSP
+    TDFSP -->|execute effect| RF
+    RF -->|TauriInvoke| TI
+    TI -->|gRPC call| TFS
+    TFS -->|native I/O| NATIVE
+    NATIVE -->|read from disk| CONTENT
+    CONTENT -->|serialize response| TI
+    TI -->|promise resolves| RF
+    RF -->|Uint8Array| TDFSP
+    TDFSP -->|return content| FS
+    FS -->|file content| TEI
+    TEI -->|model hydrated| EGS
+    EGS -->|create editor| TPE
+    TPE -->|set model| ME
+    ME -->|render text| DIS
+
+    style UI fill:#e1f5ff
+    style Editor fill:#fff4e1
+    style FileSystem fill:#ffe1f5
+    style Integration fill:#e1ffe1
+    style Backend fill:#f5e1ff
+    style Render fill:#fff0e1
+```
+
 ## Phase 1 - User interaction (Sky)
 
 1. The user clicks a file entry in the File Explorer component. The `onClick`

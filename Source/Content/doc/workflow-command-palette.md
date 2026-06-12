@@ -14,7 +14,61 @@ IPC, the user selects an entry, and Mountain routes execution either to a native
 Rust function pointer or to Cocoon via gRPC, depending on the handler type
 stored at registration time.
 
-## Phase 1 - Opening the palette (Sky → Wind)
+```mermaid
+flowchart LR
+    subgraph OpenPalette["Phase 1: Opening Command Palette"]
+        UserKeybind(["User presses<br/>Ctrl+Shift+P"]) --> Dispatch["Dispatch<br/>workbench.action.showCommands"]
+        Dispatch --> InvokeQuickInput["QuickInputService.quickAccess.show()"]
+        InvokeQuickInput --> CommandsProvider["CommandsQuickAccessProvider"]
+    end
+
+    subgraph FetchCommands["Phase 2: Fetching Command List"]
+        CommandsProvider --> GetAllCommands["TauriInvoke<br/>mountain://command/get-all"]
+        GetAllCommands --> Track1["Track Dispatcher"]
+        Track1 --> Effect1["Common::command::GetAllCommands<br/>Effect"]
+        Effect1 --> CommandProviderGetAll
+    end
+
+    subgraph GetAll["GetAllCommands Execution"]
+        CommandProviderGetAll["Mountain<br/>CommandProvider.GetAllCommands()"] --> LockRegistry["Acquire lock on<br/>CommandRegistry"]
+        LockRegistry --> GetKeys["Get command ID keys<br/>from HashMap"]
+        GetKeys --> ReturnIds["Return command ID list"]
+    end
+
+    ReturnIds --> DisplayList
+
+    subgraph DisplaySelect["Phase 3: Displaying & Selecting"]
+        DisplayList["Populate Quick Pick UI<br/>with command list"] --> UserSelect(["User types & selects<br/>command"])
+        UserSelect --> ExecuteService["ICommandService.executeCommand()"]
+    end
+
+    ExecuteService --> NativeCheck{Native or<br/>Extension?}
+
+    subgraph NativeFlow["Phase 4A: Native Command Execution"]
+        NativeCheck -->|Native| NativeInvoke["TauriInvoke<br/>mountain://command/execute"]
+        NativeInvoke --> Track2["Track Dispatcher"]
+        Track2 --> Effect2["Common::command::ExecuteCommand<br/>Effect"]
+        Effect2 --> LookupNative["Lookup command in<br/>CommandRegistry"]
+        LookupNative --> NativeHandler["Invoke native Rust<br/>function pointer"]
+        NativeHandler --> NativeResult["Execute command logic"]
+        NativeResult --> ReturnNative["Return result"]
+    end
+
+    subgraph ExtensionFlow["Phase 4B: Extension Command Execution"]
+        NativeCheck -->|Extension| ExtensionCmd["TauriInvoke<br/>mountain://command/execute"]
+        ExtensionCmd --> Track3["Track Dispatcher"]
+        Track3 --> Effect3["Common::command::ExecuteCommand<br/>Effect"]
+        Effect3 --> LookupExt["Lookup Proxied handler<br/>in CommandRegistry"]
+        LookupExt --> ProxyRequest["IpcProvider makes<br/>$executeContributedCommand<br/>gRPC request"]
+        ProxyRequest --> CocoonRPC["Cocoon gRPC Server"]
+        CocoonRPC --> LookupProvider["Lookup command in<br/>Cocoon registry"]
+        LookupProvider --> ExecuteExt["Execute extension's<br/>JavaScript function"]
+        ExecuteExt --> ReturnExt["Return result to Mountain"]
+        ReturnExt --> ForwardToWind["Forward result to Wind"]
+    end
+```
+
+## Phase 1 — Opening the palette (Sky → Wind)
 
 1. The user presses `Ctrl+Shift+P`. The keybinding system dispatches
    `workbench.action.showCommands`.
@@ -28,7 +82,7 @@ stored at registration time.
     TauriInvoke("mountain://command/get-all");
     ```
 
-## Phase 2 - Fetching the command list (Mountain)
+## Phase 2 — Fetching the command list (Mountain)
 
 4. Mountain's `track` module creates the `Common::command::GetAllCommands`
    Effect. The `AppRuntime` executes it via `MountainEnvironment`'s
@@ -41,7 +95,7 @@ stored at registration time.
 6. The list resolves back to `CommandsQuickAccessProvider`, which populates the
    Quick Pick UI.
 
-## Phase 3 - User selection (Sky)
+## Phase 3 — User selection (Sky)
 
 7. The user types a query (e.g. "Format Document") and presses Enter. The Quick
    Pick widget calls:
@@ -50,7 +104,7 @@ stored at registration time.
     ICommandService.executeCommand("editor.action.formatDocument");
     ```
 
-## Phase 4A - Native command execution (Wind → Mountain)
+## Phase 4A — Native command execution (Wind → Mountain)
 
 8. Wind's `CommandService` forwards the call:
 
@@ -70,7 +124,7 @@ stored at registration time.
     — for a format command this may itself call back into Cocoon for formatting
     edits — and returns its result up the call chain.
 
-## Phase 4B - Extension command execution (Wind → Mountain → Cocoon)
+## Phase 4B — Extension command execution (Wind → Mountain → Cocoon)
 
 Steps 8 and 9 are identical to Phase 4A. The difference is in what Mountain
 finds at step 9.

@@ -9,12 +9,12 @@ description:
 ---
 
 This guide walks through building the **Land** code editor from source. The
-build is a **two-step linear flow** — do **not** pull submodules recursively;
+build is a **two-step linear flow** - do **not** pull submodules recursively;
 each submodule is managed independently on its own branch.
 
-1. **Compile VS Code Source** — build the VS Code platform code that the
+1. **Compile VS Code Source** - build the VS Code platform code that the
    extension host consumes
-2. **Build Land Application** — compile the native Rust backend and bundle the
+2. **Build Land Application** - compile the native Rust backend and bundle the
    TypeScript frontend into a runnable Tauri application
 
 ---
@@ -23,10 +23,10 @@ each submodule is managed independently on its own branch.
 
 Before building, ensure you have the following installed:
 
-- **Rust** (1.95.0+, workspace MSRV) — [rustup.rs](https://rustup.rs/)
-- **Node.js** (v24 required) — [nodejs.org](https://nodejs.org/)
-- **pnpm** — `npm install -g pnpm`
-- **Git** (with LFS support) — `git lfs install`
+- **Rust** (1.95.0+, workspace MSRV) - [rustup.rs](https://rustup.rs/)
+- **Node.js** (v24 required) - [nodejs.org](https://nodejs.org/)
+- **pnpm** - `npm install -g pnpm`
+- **Git** (with LFS support) - `git lfs install`
 - **Protocol Buffer compiler** (optional, only if modifying `.proto` files)
 
 Use `nvm` to install and select the required Node version:
@@ -45,7 +45,7 @@ nvm use 24
 
 The Editor submodule's npm install fetches large platform-specific binaries for
 its test infrastructure. These binaries (Electron ~200 MB, Playwright Chromium
-~300 MB) are only needed for running integration tests — **not** for
+~300 MB) are only needed for running integration tests - **not** for
 compilation. Without the flags below, `npm install` will stall indefinitely on
 the download.
 
@@ -61,7 +61,7 @@ export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ## Step 1: Compile VS Code Source
 
 The VS Code source is vendored as a Git submodule at
-`Dependency/Microsoft/Dependency/Editor`. **This step is mandatory** — Land
+`Dependency/Microsoft/Dependency/Editor`. **This step is mandatory** - Land
 cannot build without it. `Cocoon` (the extension host) and `Output` (the
 platform bundle) both consume the compiled output produced here.
 
@@ -91,7 +91,7 @@ npm run compile-extensions-build
 
 > [!NOTE]
 > The Editor submodule uses **npm**, not pnpm. Do not substitute `pnpm install`
-> here — the submodule's `package-lock.json` and `.npmrc` are npm-native.
+> here - the submodule's `package-lock.json` and `.npmrc` are npm-native.
 
 > [!IMPORTANT]
 > The `compile-extensions-build` step produces the `out-<platform>`
@@ -186,7 +186,7 @@ building:
 
 > [!NOTE]
 > All debug profiles write to `Target/debug/`. The profile name affects which
-> env vars are set and which Sky assets are produced — not the target directory
+> env vars are set and which Sky assets are produced - not the target directory
 > name.
 
 ---
@@ -293,7 +293,7 @@ cd Land
 
 ## Further Reading
 
-- [Quickstart](./quickstart.md) — Concise build reference with minimal setup
-- [Configuration](./configuration.md) — Complete environment variable reference
-- [CI/CD Pipeline](./ci-cd-pipeline.md) — Pipeline stages and automation
-- [Deep Dives](./deep-dive-sky.md) — Component architecture details
+- [Quickstart](./quickstart.md) - Concise build reference with minimal setup
+- [Configuration](./configuration.md) - Complete environment variable reference
+- [CI/CD Pipeline](./ci-cd-pipeline.md) - Pipeline stages and automation
+- [Deep Dives](./deep-dive-sky.md) - Component architecture details

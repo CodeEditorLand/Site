@@ -18,7 +18,7 @@ updated.
 ## The proto file as contract
 
 `Element/Vine/Proto/Vine.proto` is the canonical definition of every RPC
-between Mountain and Cocoon. It is not documentation that can drift — it is the
+between Mountain and Cocoon. It is not documentation that can drift - it is the
 source from which both Rust `tonic` stubs and TypeScript `@grpc/proto-loader`
 bindings are generated at build time.
 
@@ -39,15 +39,15 @@ where one side has the new method and the other silently ignores it.
 Many editor operations are ongoing streams, not request-response: terminal
 output, `onDidChangeTextDocument` on every keystroke, streaming diagnostics.
 
-| Pattern | gRPC form | Example |
-|---|---|---|
-| Single call, single response | Unary RPC | `ProvideHover`, `ProvideDefinition` |
-| Fire-and-forget | Unary with `Empty` return | `SendMountainNotification` |
-| Server-initiated stream | Server streaming | Terminal output |
-| Full duplex channel | Bidirectional streaming | `OpenChannelFromMountain` |
+| Pattern                      | gRPC form                 | Example                             |
+| ---------------------------- | ------------------------- | ----------------------------------- |
+| Single call, single response | Unary RPC                 | `ProvideHover`, `ProvideDefinition` |
+| Fire-and-forget              | Unary with `Empty` return | `SendMountainNotification`          |
+| Server-initiated stream      | Server streaming          | Terminal output                     |
+| Full duplex channel          | Bidirectional streaming   | `OpenChannelFromMountain`           |
 
-The bidirectional channel multiplexes all real-time event traffic —
-configuration changes, file watcher notifications, extension activation — over
+The bidirectional channel multiplexes all real-time event traffic -
+configuration changes, file watcher notifications, extension activation - over
 a single persistent gRPC connection rather than opening one per event type.
 
 ## Performance vs JSON-RPC
@@ -57,7 +57,7 @@ text, transmitted over a pipe, and deserialized. For high-frequency events this
 means UTF-8 encoding and JSON parsing on every message.
 
 gRPC uses protobuf binary encoding. A `Position` message (line + character) is
-4-6 bytes; the JSON equivalent is `{"line":42,"character":7}` — 22 bytes. At
+4-6 bytes; the JSON equivalent is `{"line":42,"character":7}` - 22 bytes. At
 hundreds of IPC calls per second during active editing, the difference is
 measurable.
 
@@ -66,16 +66,16 @@ measurable.
 
 ## Port allocation
 
-| Channel | Port |
-|---|---|
+| Channel                                    | Port  |
+| ------------------------------------------ | ----- |
 | Mountain Cocoon (Mountain server → Cocoon) | 50051 |
 | Mountain Cocoon (Cocoon server → Mountain) | 50052 |
-| Mountain Air (Air server) | 50053 |
+| Mountain Air (Air server)                  | 50053 |
 
 ## TierIPC routing
 
 `TierIPC` controls how Wind routes `TauriMainProcessService` calls: `Mountain`
-(default — all IPC via Tauri commands), `NodeDeferred` (Mountain first, fall
+(default - all IPC via Tauri commands), `NodeDeferred` (Mountain first, fall
 back to Cocoon via `cocoon:request` bridge), or `Node` (directly to Cocoon,
 bypassing Mountain). The fallback in `NodeDeferred` mode reuses the same gRPC
 request-routing handler that processes `languages:*`, `scm:*`, and `debug:*`

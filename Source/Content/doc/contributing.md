@@ -9,8 +9,8 @@ description:
 ---
 
 Land is a CC0-licensed open-source project maintained by PlayForm in Sofia,
-Bulgaria, with funding from the NLnet NGI0 Commons Fund. All contributions —
-code, documentation, bug reports, and extension compatibility reports — are
+Bulgaria, with funding from the NLnet NGI0 Commons Fund. All contributions -
+code, documentation, bug reports, and extension compatibility reports - are
 welcome. No CLA or copyright assignment is required. All code is dedicated to
 the public domain.
 
@@ -51,7 +51,7 @@ partial reports are useful.
 ## 🔀　Pull Request Process
 
 1. Fork the repository and create a branch from `Current`. The `Current` branch
-   is the main integration target — never branch from `main`.
+   is the main integration target - never branch from `main`.
 
 2. Make changes in the branch. Keep each PR focused on a single concern.
    Separate refactoring from feature work into different PRs.
@@ -61,10 +61,10 @@ partial reports are useful.
    is needed, and how it was tested. Reference any related issues.
 
 4. All CI checks must pass before merge. The pipeline runs:
-   - `cargo check` across the Rust workspace
-   - `pnpm biome check` across TypeScript sources
-   - Integration smoke tests for Mountain and Cocoon
-   - See [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline)
+    - `cargo check` across the Rust workspace
+    - `pnpm biome check` across TypeScript sources
+    - Integration smoke tests for Mountain and Cocoon
+    - See [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline)
 
 5. A maintainer reviews the PR. Review feedback should be addressed with
    additional commits (not rebased force-pushes) to make incremental review
@@ -102,7 +102,7 @@ partial reports are useful.
 - **Never edit `Target/` directories** inside any Element. These are build
   outputs generated from `Public/` or `Source/`. Edit the source; rebuild.
 
-- **Never edit `Element/Dependency/Microsoft/Dependency/Editor/src/vs/**`**.
+- **Never edit `Element/Dependency/Microsoft/Dependency/Editor/src/vs/**`\*\*.
   This is the vendored VS Code source; changes here are overwritten on every
   upstream sync.
 
@@ -178,11 +178,11 @@ vulnerability reporting workflow for coordinated disclosure.
 
 ## 🔗　Related Documentation
 
-- [Getting Started](https://Editor.Land/Doc/getting-started) — build the
+- [Getting Started](https://Editor.Land/Doc/getting-started) - build the
   project from source
-- [Project Structure](https://Editor.Land/Doc/project-structure) — element
+- [Project Structure](https://Editor.Land/Doc/project-structure) - element
   layout and naming conventions
-- [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline) — what runs on
+- [CI/CD Pipeline](https://Editor.Land/Doc/ci-cd-pipeline) - what runs on
   every pull request
 - [Code of Conduct](https://github.com/CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md)
 - [Security Policy](https://github.com/CodeEditorLand/Land/blob/main/SECURITY.md)
@@ -192,5 +192,5 @@ vulnerability reporting workflow for coordinated disclosure.
 Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by
 **PlayForm** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
-the public domain under CC0 — no CLA required, no copyright assignment, no
+the public domain under CC0 - no CLA required, no copyright assignment, no
 restrictions on use.

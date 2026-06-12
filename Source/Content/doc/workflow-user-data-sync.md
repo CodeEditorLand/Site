@@ -7,12 +7,22 @@ description:
     storage and optionally synchronised across sessions."
 ---
 
-User data in Land has two layers: local persistence backed by Mountain's
-`storage:set` / `storage:get` IPC (SQLite or keychain depending on sensitivity),
-and optional remote synchronisation via authenticated HTTP calls to a cloud
-endpoint. Both layers feed the same `ConfigurationService` reload path, so
-extensions and the UI react identically regardless of whether a change came from
-the local disk or a remote merge.
+## Overview
+
+A user logs into their account on a new machine. The application automatically
+downloads their settings (`settings.json`), keybindings, and list of installed
+extensions from a remote server and applies them to the new installation.
+
+The full flow involves six phases:
+
+1. Local persistence (Cocoon → Mountain)
+2. User authentication (Wind → Cocoon → Mountain)
+3. Sync trigger and orchestration (Mountain)
+4. Settings synchronisation and three-way merge (Mountain)
+5. Configuration reload and notification (Mountain → Cocoon + Sky)
+6. UI and extension host reaction
+
+---
 
 ## Phase 1 — Local persistence (Cocoon → Mountain)
 
@@ -39,6 +49,33 @@ the local disk or a remote merge.
     as the key. The `onDidChange` event fires after every `store` or `delete`
     call. Secrets are never written to disk in plaintext.
 
+### Extension storage via Mountain
+
+Extension `workspaceState` and `globalState` (`Memento`) are backed by Mountain
+`storage:get` / `storage:set` IPC rather than a local file. The `Memento`
+implementation reads initial values via `storage:get` during activation and
+writes through `storage:set` on every `update()` call. This means extension
+state persists across Cocoon restarts without the extension needing to manage
+its own storage file.
+
+### Extension secrets via Mountain encryption
+
+`context.secrets` uses Mountain's AES-256-GCM encryption layer rather than
+plaintext storage:
+
+- `secrets.store(key, value)` calls Mountain `encryption:encrypt` with the
+  plaintext value, then `storage:set` with the ciphertext.
+- `secrets.get(key)` calls `storage:get` for the ciphertext and then
+  `encryption:decrypt` to recover the plaintext.
+- `secrets.delete(key)` calls `storage:set` with an empty string.
+
+The encryption key is derived from a SHA-256 hash of the machine UUID
+(`Encryption/Key.rs`), making it machine-stable across sessions. Secrets are
+never written to disk in plaintext. The `onDidChange` event fires after every
+`store` or `delete` call.
+
+---
+
 ## Phase 2 — User authentication (Wind → Cocoon → Mountain)
 
 4. The user clicks "Sign In" in the Account menu. Wind dispatches
@@ -54,6 +91,8 @@ the local disk or a remote merge.
    Mountain now holds the user identity and a valid token for authenticated API
    calls.
 
+---
+
 ## Phase 3 — Sync trigger and orchestration (Mountain)
 
 7. `UserDataAutoSyncService` is triggered after a successful sign-in. It can
@@ -62,6 +101,8 @@ the local disk or a remote merge.
 8. The service calls `UserDataSyncService.sync()`, which iterates through all
    registered synchronisers in order: `SettingsSynchronizer`,
    `KeybindingsSynchronizer`, `ExtensionsSynchronizer`, and others.
+
+---
 
 ## Phase 4 — Settings synchronisation and three-way merge (Mountain)
 
@@ -83,10 +124,14 @@ the local disk or a remote merge.
     - **Base** — the state from the last successful sync, stored locally as a
       reference point.
 
-    Settings added on different machines are both preserved. A direct conflict
-    on the same key is flagged for the user to resolve.
+    The merge logic (modelled on
+    `vs/platform/userDataSync/common/settingsMerge.ts`) intelligently combines
+    changes. Settings added on different machines are both preserved. A direct
+    conflict on the same key is flagged for the user to resolve.
 
 12. `FsWriter` writes the merged content back to `settings.json` on disk.
+
+---
 
 ## Phase 5 — Configuration reload and notification (Mountain → Cocoon + Sky)
 
@@ -114,9 +159,11 @@ the local disk or a remote merge.
     `editor.fontSize` immediately. The same pattern repeats for keybindings,
     snippets, and extension list synchronisers.
 
-> [!IMPORTANT] The `TierAuth` tier variable defaults to `Node`, routing
-> authentication requests to Cocoon. `TierEncryption` defaults to `Mountain`, so
-> `secrets` storage always uses the native AES-256-GCM path regardless of the
-> auth tier. Changing `TierAuth` to `Mountain` requires a corresponding
-> Mountain-side OAuth handler to be present; the Cocoon path remains the
-> reference implementation.
+---
+
+> [!IMPORTANT]
+> The `TierAuth` tier variable defaults to `Node`, routing authentication
+> requests to Cocoon. `TierEncryption` defaults to `Mountain`, so `secrets`
+> storage always uses the native AES-256-GCM path regardless of the auth tier.
+> Changing `TierAuth` to `Mountain` requires a corresponding Mountain-side OAuth
+> handler to be present; the Cocoon path remains the reference implementation.

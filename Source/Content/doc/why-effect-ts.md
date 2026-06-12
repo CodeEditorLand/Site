@@ -17,14 +17,14 @@ service wiring with a compile-time `Layer` system.
 ## Typed errors instead of `unknown`
 
 A standard `Promise<string>` encodes the success type but says nothing about
-errors — they are `unknown`. Callers must cast, guess, or ignore them.
+errors - they are `unknown`. Callers must cast, guess, or ignore them.
 
 ```typescript
 // Effect: error type is explicit, compiler tracks handling
 function activateExtension(
-    id: string,
+	id: string,
 ): Effect.Effect<void, ActivationError | TimeoutError, ExtensionRegistry> {
-    // caller must handle or propagate both error types
+	// caller must handle or propagate both error types
 }
 ```
 
@@ -60,7 +60,7 @@ server connections, and terminal sessions without explicit `dispose()` calls.
 
 Cocoon's `AppLayer` composes over 40 service implementations. Each service
 declares its dependencies in its type. Layers compose; the compiler verifies
-every dependency is satisfied. There are no registration order bugs — the
+every dependency is satisfied. There are no registration order bugs - the
 compiler builds the dependency graph and verifies it before the program runs.
 
 Wind uses the same pattern with `TauriLiveLayer`. A `TestLayer` substitutes
@@ -72,14 +72,14 @@ without a special injection framework.
 Cocoon's top-level bootstrap uses `async`/`await` rather than the Effect
 runtime, saving ~45 ms of startup overhead. Effect fibers are used inside
 individual services once running. The `LandWorkbenchRuntime` export is a
-`ManagedRuntime` built once at module load time — each `run*` call resolves in
+`ManagedRuntime` built once at module load time - each `run*` call resolves in
 under 5 ms with no per-call Layer build step.
 
 ## Why this matters for an extension host
 
 One extension calling a slow API blocks the entire event loop. Effect fibers
 can be interrupted on timeout. A language server that stops responding does not
-freeze the editor — the fiber waiting for it is interrupted, the typed
+freeze the editor - the fiber waiting for it is interrupted, the typed
 `TimeoutError` is returned, and other fibers continue.
 
 This is the architectural claim: "Every extension runs in its own supervised

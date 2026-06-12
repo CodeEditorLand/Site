@@ -175,12 +175,12 @@ Cocoon (Node.js extension host)
 Mountain calls `Mist::start(5380)` during application initialisation and
 receives the bound port as its return value. That port is forwarded to:
 
-- **Cocoon** — spawned with an environment variable that overrides its DNS
+- **Cocoon** - spawned with an environment variable that overrides its DNS
   resolver to `127.0.0.1:{DnsPort}`, preventing the Node.js extension host from
   reaching arbitrary external hosts.
-- **Air** — configures its `LandDnsResolver` so that all outbound HTTP requests
+- **Air** - configures its `LandDnsResolver` so that all outbound HTTP requests
   from the background daemon pass through the same policy enforcement point.
-- **SideCar** — uses the resolver when fetching runtime binaries during build
+- **SideCar** - uses the resolver when fetching runtime binaries during build
   setup.
 
 ## Startup Sequence

@@ -6,7 +6,7 @@ description: "Internals of the Cocoon extension host: core architecture principl
 ---
 
 Cocoon is the Node.js extension host sidecar for Land. its
-internal mechanics in depth — why bootstrap stage ordering matters, how the
+internal mechanics in depth - why bootstrap stage ordering matters, how the
 module interceptor works, how Effect-TS layers compose the application, how the
 Vine gRPC server is implemented, how extensions are activated in topological
 order with a circular-dependency guard, how dual-track TierIPC routing decides
@@ -238,7 +238,7 @@ Mountain Backend:
 
 ## Bootstrap Stage Ordering
 
-Cocoon's bootstrap is plain `async`/`await` — there is no Effect-TS runtime
+Cocoon's bootstrap is plain `async`/`await` - there is no Effect-TS runtime
 overhead in the startup path, saving the ~45ms `NodeRuntime.runMain` startup
 cost. `Effect/Bootstrap.ts` runs seven ordered stages. The ordering is not
 arbitrary: Mountain starts attempting to connect to Cocoon's gRPC server
@@ -298,15 +298,15 @@ Stage 7: HealthCheck
 Cocoon has been migrated away from `NodeRuntime.runMain` and full Layer
 composition at the process entry point. The current pattern:
 
-- **`Layer.succeed`** — used when a service implementation needs to be wrapped
+- **`Layer.succeed`** - used when a service implementation needs to be wrapped
   in a Layer but carries no async initialization side-effects. This is the
   common case for most service shims.
-- **`Layer.effect`** — used only where the Layer build itself is async (e.g.
+- **`Layer.effect`** - used only where the Layer build itself is async (e.g.
   services that open a connection during construction).
-- **`ManagedRuntime`** — initialized eagerly at module load time so the first
+- **`ManagedRuntime`** - initialized eagerly at module load time so the first
   Effect dispatch does not pay a startup penalty. The runtime is stored in a
   module-level singleton to avoid repeated construction.
-- **Bootstrap entry point** — `async/await` directly; no `Effect.runPromise`
+- **Bootstrap entry point** - `async/await` directly; no `Effect.runPromise`
   wrapper at the top level. This avoids the unhandled-rejection behavior of
   `NodeRuntime.runMain` in production Node.js environments where `console.*` is
   stripped by esbuild's `drop:["console"]` pass.
@@ -427,7 +427,7 @@ activate first; dependents activate after all their dependencies have resolved.
 
 An `InProgress: Set<string>` tracks every extension ID whose activation has
 started but not yet completed. If a dependency's ID is already in `InProgress`,
-the recursive activation is skipped — preventing infinite loops from circular
+the recursive activation is skipped - preventing infinite loops from circular
 dependency declarations.
 
 ```text
@@ -493,14 +493,14 @@ GitHub Copilot and authentication providers.
 
 During activation, several lifecycle events are emitted to Mountain:
 
-- `$acceptActivateExtension` — sent to Mountain before `activate()` runs.
-- `$acceptDidActivateExtension` — sent after `activate()` resolves.
+- `$acceptActivateExtension` - sent to Mountain before `activate()` runs.
+- `$acceptDidActivateExtension` - sent after `activate()` resolves.
 - Language provider registrations are forwarded to Mountain immediately so Sky
   can start routing Monaco requests without waiting for the full registry.
 
 ---
 
-## vscode.window.showInformationMessage — End-to-End Call Path
+## vscode.window.showInformationMessage - End-to-End Call Path
 
 This is the canonical example of how a synchronous-looking extension API call
 travels through the full stack.
@@ -526,11 +526,11 @@ travels through the full stack.
    ShowMessageRequest DTO (flat object, no class instances).
    @grpc/grpc-js sends the request to Mountain on port 50051.
 
-5. Mountain — Vine gRPC server
+5. Mountain - Vine gRPC server
    MountainVineGRPCService receives ShowMessageRequest.
    Track dispatcher routes it to UserInterfaceProvider.ShowMessage().
 
-6. Mountain — UserInterfaceProvider
+6. Mountain - UserInterfaceProvider
    tauri-plugin-dialog displays a native OS modal dialog.
    Execution blocks until the user clicks a button.
 
@@ -592,14 +592,14 @@ build time).
 `Generated/RouteManifest.ts` is produced by `Codegen/` on every build. The
 generator walks two sources:
 
-1. `Vine.proto` — extracts all RPC method names defined on the Mountain gRPC
+1. `Vine.proto` - extracts all RPC method names defined on the Mountain gRPC
    server. These become the "Mountain-side RPC methods" section.
-2. `@codeeditorland/output` — extracts all exported `IExtHost*` interface
+2. `@codeeditorland/output` - extracts all exported `IExtHost*` interface
    members from the VS Code stock extension host code. These become the "stock
    lift exports" section.
 
 Any method present in the VS Code stock interfaces but absent from the Vine
-proto is recorded as a "bespoke Node.js fallback" — meaning it runs through
+proto is recorded as a "bespoke Node.js fallback" - meaning it runs through
 Track A until a Mountain implementation is added.
 
 The Wind element has a parallel generated set:

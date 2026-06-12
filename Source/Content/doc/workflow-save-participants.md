@@ -13,6 +13,53 @@ and collect their edits, then the merged edits are applied in-memory before the
 normal write path to Mountain executes. The extension author sees only a single
 `onWillSaveTextDocument` event; the IPC machinery is invisible.
 
+```mermaid
+sequenceDiagram
+    participant User as User
+    participant UI as Wind/Sky UI
+    participant ES as EditorService
+    participant TFEM as TextFileEditorModelManager
+    participant WCF as WorkingCopyFileService
+    participant EHS as ExtHostSaveParticipant
+    participant CIP as Cocoon IPC Server
+    participant EDSP as ExtHostDocumentSaveParticipant
+    participant PE as Prettier Extension
+    participant BES as BulkEditService
+    participant FS as FileService
+    participant TDFSP as TauriDiskFileSystemProvider
+    participant Mnt as Mountain Backend
+
+    User->>UI: Press Ctrl+S
+    UI->>ES: workbench.action.files.save
+    ES->>TFEM: save() on EditorInput
+    TFEM->>TFEM: Check dirty state
+    TFEM->>WCF: runSaveParticipants()
+    WCF->>WCF: Gather ISaveParticipants
+    WCF->>EHS: participate()
+    EHS->>CIP: $participateInSave<br/>gRPC request
+    CIP->>EDSP: Dispatch to service
+    EDSP->>EDSP: Fire onWillSaveTextDocument
+    EDSP->>PE: Event to extension
+    PE->>PE: Calculate formatting edits
+    PE-->>EDSP: Promise&lt;TextEdit[]&gt;
+    EDSP->>EDSP: Collect all extension edits
+    EDSP->>CIP: $participateInSave response<br/>TextEdit DTOs
+    CIP-->>EHS: gRPC response
+    EHS-->>WCF: TextEdit array
+    WCF->>BES: Apply edits to document
+    BES->>BES: Apply TextEdits<br/>Update model in memory
+    BES-->>TFEM: Edits applied
+    TFEM->>FS: IFileService.writeFile()
+    FS->>TDFSP: Lookup provider for URI
+    TDFSP->>Mnt: WriteFile Effect<br/>TauriInvoke
+    Mnt->>Mnt: tokio::fs::write()
+    Mnt-->>TDFSP: Success response
+    TDFSP-->>FS: Write complete
+    FS-->>TFEM: Save successful
+    TFEM->>UI: Update dirty indicator<br/>Remove filled circle
+    UI-->>User: Save complete
+```
+
 ## Phase 1 - User action and save trigger (Wind/Sky)
 
 1. The user presses `Ctrl+S` in an editor with unsaved changes. The keybinding
@@ -56,15 +103,15 @@ normal write path to Mountain executes. The extension author sees only a single
 10. The `$participateInSave` gRPC call resolves in Wind.
     `WorkingCopyFileService` passes the collected edits to `IBulkEditService`.
 
-    > `workspace.applyEdit()` is fully awaitable: the call is a `sendRequest`
-    > round-trip to Mountain rather than a fire-and-forget notification. The
-    > caller receives confirmation that the edit was applied before proceeding.
-    > Mountain treats a `null` response from Sky as `true` (matching VS Code's
-    > own `MainThreadBulkEdits` behaviour). The `WorkspaceEdit` payload is
-    > normalised in the Sky bridge to handle multiple wire shapes: `_edits`
-    > with `_type: 2` entries (text edits, `_range` using 0-based lines
-    > converted to Monaco 1-based), `_type: 1` entries (file operations), and
-    > serialised `vscode.Uri` objects.
+    > `workspace.applyEdit()` is a full awaitable round-trip: the call is a
+    > `sendRequest` round-trip to Mountain rather than a fire-and-forget
+    > notification. The caller receives confirmation that the edit was applied
+    > before proceeding. Mountain treats a `null` response from Sky as `true`
+    > (matching VS Code's own `MainThreadBulkEdits` behaviour). The
+    > `WorkspaceEdit` payload is normalised in the Sky bridge to handle multiple
+    > wire shapes: `_edits` with `_type: 2` entries (text edits, `_range` using
+    > 0-based lines converted to Monaco 1-based), `_type: 1` entries (file
+    > operations), and serialised `vscode.Uri` objects.
 
 11. `BulkEditService` applies every `TextEdit` to the document model in memory.
     Edits are applied atomically; extensions listening to
@@ -98,12 +145,33 @@ normal write path to Mountain executes. The extension author sees only a single
 
 `workspace.saveAll()` previously called `Document.Save` with no arguments
 (always an error). It now calls `Workspace.SaveAll`, which routes to
-`sky://workspace/saveAll` and dispatches `workbench.action.files.saveAll` in
-the renderer, flushing every open dirty document through
-`IFileService.writeFile()`.
+`sky://workspace/saveAll` and dispatches `workbench.action.files.saveAll` in the
+renderer, flushing every open dirty document through `IFileService.writeFile()`.
 
 `workspace.save(uri)` routes to `sky://workspace/save` and saves the specific
 document via `ITextFileService.save` (falling back to the workbench save
 command). `workspace.saveAs(uri)` routes to `sky://workspace/saveAs` and opens
 the native save-as dialog. Both are round-trip request channels that resolve the
 extension's awaited promise.
+
+### applyEdit round-trip
+
+`workspace.applyEdit(edit)` is a full awaitable round-trip via
+`Call(Context, "applyEdit", [edit])` (Mountain `sendRequest`, not a
+fire-and-forget notification). The extension's `await workspace.applyEdit(...)`
+resolves only after Sky's `sky://workspace/applyEdit` handler finishes applying
+the edit to the Monaco model and returns a success boolean. Mountain treats a
+`null` response from Sky as `true` (matching VS Code's own `MainThreadBulkEdits`
+behaviour).
+
+The `WorkspaceEdit` payload is normalised inside the Sky bridge to handle
+multiple wire shapes:
+
+- `_edits` array with `_type: 2` entries (extHostTypes text edit) — `_range`
+  uses `_start._line` / `_end._line` (0-based, converted to Monaco 1-based)
+- `_edits` array with `_type: 1` entries (file operations: create, rename,
+  delete)
+- Serialised `vscode.Uri` objects (`_scheme` / `_path` fields)
+
+`IBulkEditService` is tried first; if unavailable, the bridge falls back to
+direct Monaco model operations.

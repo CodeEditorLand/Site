@@ -88,7 +88,7 @@ If still failing, open DevTools (`Inspect=1`) and set a breakpoint at
 
 ## 🚀 Startup Issues
 
-### Blank workbench — Cocoon not connecting
+### Blank workbench - Cocoon not connecting
 
 **Symptom:** The editor window opens but the workbench is blank or shows a
 loading spinner indefinitely. The extension host never activates.
@@ -113,7 +113,7 @@ failed to bind before Mountain attempted to connect.
 2. Check the dev log for the line `RPCServer bound on port 50052`. If it is
    absent, Cocoon's gRPC server never started. Look for earlier error lines in
    the log. Cocoon must bind port 50052 before Mountain attempts the connection
-   — bootstrap stage ordering matters.
+    - bootstrap stage ordering matters.
 
 3. Set `Trace=cocoon,grpc` and `Record=1` in `.env.Land.Diagnostics`, relaunch,
    and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the Cocoon
@@ -161,7 +161,7 @@ Node.js binary to spawn the shell.
 
 1. Verify the `SideCar` binary for your platform is present in the app bundle's
    resources directory.
-2. Check `NetworkCocoonPort` is reachable — terminal creation goes through the
+2. Check `NetworkCocoonPort` is reachable - terminal creation goes through the
    Cocoon gRPC service.
 3. Set `Trace=terminal` and relaunch. The dev log shows the exact command
    Mountain attempted to pass to `localPty:createProcess` and any error

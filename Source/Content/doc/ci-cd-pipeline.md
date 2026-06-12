@@ -3,7 +3,7 @@ title: "CI/CD Pipeline"
 section: "Guide"
 order: 4
 description:
-    "Complete build pipeline for the Land code editor — stages from environment
+    "Complete build pipeline for the Land code editor - stages from environment
     variable resolution through binary artifact production, profile system,
     artifact layout, and automation details."
 ---
@@ -19,13 +19,13 @@ The pipeline coordinates Rust, TypeScript, and static asset compilation across
 
 The Land build has six stages:
 
-1. **VS Code platform compile** — produces the compiled JavaScript platform code
-2. **TypeScript build** — `pnpm prepublishOnly` for Wind, Cocoon, Output, Sky,
+1. **VS Code platform compile** - produces the compiled JavaScript platform code
+2. **TypeScript build** - `pnpm prepublishOnly` for Wind, Cocoon, Output, Sky,
    Worker
-3. **PreBake** — walks extension roots, writes `extensions.manifest.json`
-4. **Rust build** — `cargo build -p Mountain`
-5. **Tauri bundle** — `pnpm tauri build`
-6. **Re-sign** — strips quarantine bits and re-applies entitlements
+3. **PreBake** - walks extension roots, writes `extensions.manifest.json`
+4. **Rust build** - `cargo build -p Mountain`
+5. **Tauri bundle** - `pnpm tauri build`
+6. **Re-sign** - strips quarantine bits and re-applies entitlements
 
 ```mermaid
 sequenceDiagram
@@ -92,24 +92,24 @@ export Trace=all Record=1 Disable=false
 
 The build script invokes, in sequence:
 
-1. **TypeScript build** (`pnpm prepublishOnly`) — Output, Cocoon, Worker, Wind,
+1. **TypeScript build** (`pnpm prepublishOnly`) - Output, Cocoon, Worker, Wind,
    Sky
-   - Output artifact bundling via ESBuild for VS Code platform code
-   - Cocoon compilation via ESBuild for the extension host
-   - Worker compilation via ESBuild for the service worker
-   - Wind + Sky compilation via Vite/Astro for the UI layer
-2. **PreBake** — runs via `beforeBundleCommand` inside `tauri.conf.json`; walks
+    - Output artifact bundling via ESBuild for VS Code platform code
+    - Cocoon compilation via ESBuild for the extension host
+    - Worker compilation via ESBuild for the service worker
+    - Wind + Sky compilation via Vite/Astro for the UI layer
+2. **PreBake** - runs via `beforeBundleCommand` inside `tauri.conf.json`; walks
    extension roots and writes `extensions.manifest.json`. Fires in **all** build
    paths (direct `pnpm tauri build`, `Build.sh`, CI). Consumed by
    `LoadFromCache.rs` at boot (<50ms vs ~1200ms live scan).
 3. **Rust workspace compilation** via `cargo build -p Mountain`
 4. **Tauri bundling** for the final `.app` bundle
-5. **Re-sign** — strips macOS quarantine bits with `xattr -cr`, then re-signs
+5. **Re-sign** - strips macOS quarantine bits with `xattr -cr`, then re-signs
    with `codesign --force --deep --sign -` plus `Entitlements.plist`:
 
-   ```sh
-   BundleLevel=debug sh Maintain/Script/SignBundle.sh
-   ```
+    ```sh
+    BundleLevel=debug sh Maintain/Script/SignBundle.sh
+    ```
 
 ---
 
@@ -133,33 +133,33 @@ variable set.
 
 ### File Hierarchy by Domain
 
-| Domain | Suffix | Dev File | Sample File | Production File |
-| :--- | :--- | :--- | :--- | :--- |
-| Core | (none) | `.env.Land` | `.env.Land.Sample` | `.env.Land.Production` |
-| Node | `.Node` | `.env.Land.Node` | `.env.Land.Node.Sample` | `.env.Land.Production.Node` |
-| Extensions | `.Extensions` | `.env.Land.Extensions` | `.env.Land.Extensions.Sample` | `.env.Land.Production.Extensions` |
-| PostHog | `.PostHog` | `.env.Land.PostHog` | `.env.Land.PostHog.Sample` | `.env.Land.Production.PostHog` |
+| Domain      | Suffix         | Dev File                | Sample File                    | Production File                    |
+| :---------- | :------------- | :---------------------- | :----------------------------- | :--------------------------------- |
+| Core        | (none)         | `.env.Land`             | `.env.Land.Sample`             | `.env.Land.Production`             |
+| Node        | `.Node`        | `.env.Land.Node`        | `.env.Land.Node.Sample`        | `.env.Land.Production.Node`        |
+| Extensions  | `.Extensions`  | `.env.Land.Extensions`  | `.env.Land.Extensions.Sample`  | `.env.Land.Production.Extensions`  |
+| PostHog     | `.PostHog`     | `.env.Land.PostHog`     | `.env.Land.PostHog.Sample`     | `.env.Land.Production.PostHog`     |
 | Diagnostics | `.Diagnostics` | `.env.Land.Diagnostics` | `.env.Land.Diagnostics.Sample` | `.env.Land.Production.Diagnostics` |
-| Bundled | `.Bundled` | `.env.Land.Bundled` | `.env.Land.Bundled.Sample` | `.env.Land.Production.Bundled` |
+| Bundled     | `.Bundled`     | `.env.Land.Bundled`     | `.env.Land.Bundled.Sample`     | `.env.Land.Production.Bundled`     |
 
 ### Profile-to-File Mapping
 
 Each build profile loads a specific combination of env files:
 
-| Profile | Files Loaded | Purpose |
-| :--- | :--- | :--- |
-| Development | `.env.Land` | Default local development |
-| Development + Bundled | `.env.Land` + `.env.Land.Bundled` | Dev with pre-compiled workbench |
-| Development + Extensions | `.env.Land` + `.env.Land.Extensions` | Dev with extension installation |
-| Development + Node | `.env.Land` + `.env.Land.Node` | Dev with specific Node version |
-| Development + PostHog | `.env.Land` + `.env.Land.PostHog` | Dev with telemetry |
-| Development + Diagnostics | `.env.Land` + `.env.Land.Diagnostics` | Dev with debug tracing |
-| Production | `.env.Land.Production` | Release build |
-| Production + Bundled | `.env.Land.Production` + `.env.Land.Production.Bundled` | Release with bundled workbench |
-| Production + Extensions | `.env.Land.Production` + `.env.Land.Production.Extensions` | Production with extension skip |
-| Production + Node | `.env.Land.Production` + `.env.Land.Production.Node` | Production with specific Node |
-| Production + PostHog | `.env.Land.Production` + `.env.Land.Production.PostHog` | Production with telemetry |
-| Production + Diagnostics | `.env.Land.Production` + `.env.Land.Production.Diagnostics` | Production with trace/record |
+| Profile                   | Files Loaded                                                | Purpose                         |
+| :------------------------ | :---------------------------------------------------------- | :------------------------------ |
+| Development               | `.env.Land`                                                 | Default local development       |
+| Development + Bundled     | `.env.Land` + `.env.Land.Bundled`                           | Dev with pre-compiled workbench |
+| Development + Extensions  | `.env.Land` + `.env.Land.Extensions`                        | Dev with extension installation |
+| Development + Node        | `.env.Land` + `.env.Land.Node`                              | Dev with specific Node version  |
+| Development + PostHog     | `.env.Land` + `.env.Land.PostHog`                           | Dev with telemetry              |
+| Development + Diagnostics | `.env.Land` + `.env.Land.Diagnostics`                       | Dev with debug tracing          |
+| Production                | `.env.Land.Production`                                      | Release build                   |
+| Production + Bundled      | `.env.Land.Production` + `.env.Land.Production.Bundled`     | Release with bundled workbench  |
+| Production + Extensions   | `.env.Land.Production` + `.env.Land.Production.Extensions`  | Production with extension skip  |
+| Production + Node         | `.env.Land.Production` + `.env.Land.Production.Node`        | Production with specific Node   |
+| Production + PostHog      | `.env.Land.Production` + `.env.Land.Production.PostHog`     | Production with telemetry       |
+| Production + Diagnostics  | `.env.Land.Production` + `.env.Land.Production.Diagnostics` | Production with trace/record    |
 
 ---
 
@@ -167,33 +167,33 @@ Each build profile loads a specific combination of env files:
 
 ### Available Build Profiles
 
-| Profile String | Workbench | Feature Coverage | Output Type |
-| :--- | :--- | :--- | :--- |
-| `debug` | Browser | 70–80% | Dev binary |
-| `debug-mountain` | Mountain | 80–90% | Dev binary (recommended) |
-| `debug-electron` | Electron | 95%+ | Dev binary |
-| `debug-electron-rest` | Electron + OXC | 95%+ + fastest TS | Dev binary |
-| `debug-electron-minimal` | Electron | No built-in extensions | Dev binary |
-| `debug-mountain-only` | Mountain | No `Cocoon` subprocess | Dev binary |
-| `debug-cocoon-headless` | None | Mountain + Cocoon, Wind disabled | Dev binary |
-| `debug-kernel` | None | Pure Mountain, no built-ins | Dev binary |
-| `debug-electron-compiled` | Electron | Single-binary embedded resources | Dev binary |
-| `debug-mountain-compiled` | Mountain | Single-binary embedded resources | Dev binary |
-| `debug-electron-bundled` | Electron | Vite/Astro compiled workbench | Dev binary |
-| `debug-browser-bundled` | Browser | Vite/Astro compiled workbench | Dev binary |
-| `debug-sessions-bundled` | Sessions | Vite/Astro compiled workbench | Dev binary |
-| `debug-workbench-bundled` | Workbench | Vite/Astro compiled workbench | Dev binary |
-| `debug-bundled-all` | All four | Single Rollup pass | Dev binary |
-| `production-electron-bundled` | Electron | Optimized release | Prod binary |
-| `production-electron-unbundled` | Electron | Release without bundled assets | Prod binary |
+| Profile String                  | Workbench      | Feature Coverage                 | Output Type              |
+| :------------------------------ | :------------- | :------------------------------- | :----------------------- |
+| `debug`                         | Browser        | 70–80%                           | Dev binary               |
+| `debug-mountain`                | Mountain       | 80–90%                           | Dev binary (recommended) |
+| `debug-electron`                | Electron       | 95%+                             | Dev binary               |
+| `debug-electron-rest`           | Electron + OXC | 95%+ + fastest TS                | Dev binary               |
+| `debug-electron-minimal`        | Electron       | No built-in extensions           | Dev binary               |
+| `debug-mountain-only`           | Mountain       | No `Cocoon` subprocess           | Dev binary               |
+| `debug-cocoon-headless`         | None           | Mountain + Cocoon, Wind disabled | Dev binary               |
+| `debug-kernel`                  | None           | Pure Mountain, no built-ins      | Dev binary               |
+| `debug-electron-compiled`       | Electron       | Single-binary embedded resources | Dev binary               |
+| `debug-mountain-compiled`       | Mountain       | Single-binary embedded resources | Dev binary               |
+| `debug-electron-bundled`        | Electron       | Vite/Astro compiled workbench    | Dev binary               |
+| `debug-browser-bundled`         | Browser        | Vite/Astro compiled workbench    | Dev binary               |
+| `debug-sessions-bundled`        | Sessions       | Vite/Astro compiled workbench    | Dev binary               |
+| `debug-workbench-bundled`       | Workbench      | Vite/Astro compiled workbench    | Dev binary               |
+| `debug-bundled-all`             | All four       | Single Rollup pass               | Dev binary               |
+| `production-electron-bundled`   | Electron       | Optimized release                | Prod binary              |
+| `production-electron-unbundled` | Electron       | Release without bundled assets   | Prod binary              |
 
 ### Program Launch Options
 
-| Flag | Effect |
-| :--- | :--- |
-| `--run` | Launch application immediately after build |
-| `--profile <name>` | Select build profile (default: `debug`) |
-| `--help` | Show profile documentation |
+| Flag               | Effect                                     |
+| :----------------- | :----------------------------------------- |
+| `--run`            | Launch application immediately after build |
+| `--profile <name>` | Select build profile (default: `debug`)    |
+| `--help`           | Show profile documentation                 |
 
 ---
 
@@ -291,11 +291,11 @@ Wind/Source/Utility/Tier.ts
 
 All three runtime banners must report identical tier values:
 
-| Element | Banner Mechanism |
-| :--- | :--- |
-| `Mountain` | Rust `env!()` banner |
-| `Cocoon` | `LandFixLog.Info` banner |
-| `Wind` | `console.info` banner |
+| Element    | Banner Mechanism         |
+| :--------- | :----------------------- |
+| `Mountain` | Rust `env!()` banner     |
+| `Cocoon`   | `LandFixLog.Info` banner |
+| `Wind`     | `console.info` banner    |
 
 A mismatch indicates one build tool read a different env file.
 
@@ -382,14 +382,14 @@ Land/Element/
 
 Notable artifacts:
 
-| Path | Description |
-| :--- | :--- |
-| `Element/Mountain/Target/<level>/Mountain` | Native binary |
-| `Element/Mountain/Target/<level>/bundle/macos/*.app` | Signed `.app` bundle |
+| Path                                                       | Description              |
+| :--------------------------------------------------------- | :----------------------- |
+| `Element/Mountain/Target/<level>/Mountain`                 | Native binary            |
+| `Element/Mountain/Target/<level>/bundle/macos/*.app`       | Signed `.app` bundle     |
 | `Element/Mountain/Target/<level>/extensions.manifest.json` | Pre-baked extension list |
-| `Element/Sky/Target/Static/Application/` | VS Code workbench assets |
-| `Element/Sky/Target/Static/Bundled/Electron/` | Vite-bundled workbench |
-| `Element/Cocoon/Compiled/cocoon-bootstrap.js` | Extension host bundle |
+| `Element/Sky/Target/Static/Application/`                   | VS Code workbench assets |
+| `Element/Sky/Target/Static/Bundled/Electron/`              | Vite-bundled workbench   |
+| `Element/Cocoon/Compiled/cocoon-bootstrap.js`              | Extension host bundle    |
 
 ---
 
@@ -402,19 +402,19 @@ two parallel compiler paths:
 
 1. **Input:** `Dependency/Editor/out/` (Stage 1 compiled VS Code)
 2. **Processing:** ESBuild applies transforms for Tauri compatibility:
-   - Module resolution remapping (`electron` → `@tauri-apps/api`)
-   - `require()` interceptor patches
-   - Source map generation
-   - Polyfill injection
+    - Module resolution remapping (`electron` → `@tauri-apps/api`)
+    - `require()` interceptor patches
+    - Source map generation
+    - Polyfill injection
 3. **Output:** `Output/Target/@codeeditorland/output/`
 
 ### Optional Path (Rest/OXC)
 
 1. **Input:** Same VS Code source
 2. **Processing:** `Rest` (Rust OXC) re-compiles TypeScript 2–3x faster:
-   - OXC parser handles decorators, class fields, JSX
-   - OXC transformer produces VS Code-compatible output
-   - `Rest --compiler` CLI flag activates this path
+    - OXC parser handles decorators, class fields, JSX
+    - OXC transformer produces VS Code-compatible output
+    - `Rest --compiler` CLI flag activates this path
 3. **Output:** Same layout, substituted for ESBuild output when `--compiler rest`
    is set
 
@@ -427,8 +427,8 @@ dependencies:
 
 1. **Input:** `Element/Worker/Source/`
 2. **ESBuild** produces:
-   - Service worker script (caching strategy, offline handler)
-   - CSS module interceptor
+    - Service worker script (caching strategy, offline handler)
+    - CSS module interceptor
 3. **Output:** `Element/Worker/Target/`
 4. **Consumed by:** Sky at build time (bundled into UI)
 
@@ -457,7 +457,7 @@ Target triples supported:
 
 ## Related Documentation
 
-- [Getting Started](./getting-started.md) — Build instructions and prerequisites
-- [Quickstart](./quickstart.md) — Concise build reference
-- [Configuration](./configuration.md) — Complete env var reference
-- [Deep Dives](./deep-dive-sky.md) — Component architecture details
+- [Getting Started](./getting-started.md) - Build instructions and prerequisites
+- [Quickstart](./quickstart.md) - Concise build reference
+- [Configuration](./configuration.md) - Complete env var reference
+- [Deep Dives](./deep-dive-sky.md) - Component architecture details

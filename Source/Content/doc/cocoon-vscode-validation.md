@@ -31,33 +31,33 @@ source to ensure compatibility and correctness.
 **VS Code Source Reference**:
 `src/vs/workbench/api/common/extHostExtensionService.ts`
 
-| Feature | Cocoon Implementation | VS Code Equivalent | Status | Notes |
-| ------- | --------------------- | ------------------ | ------ | ----- |
-| Extension activation | `ExtensionHost.ts` - `ActivateById()` | `activateById()` | ✅ | Similar activation flow |
-| Extension lifecycle | `ExtensionHost.ts` - `DeactivateAll()` | `deactivateAll()` | ✅ | Proper cleanup |
-| Extension registry | `ExtensionHost.ts` - ExtensionDescriptionRegistry | `ExtensionDescriptionRegistry` | ✅ | Compatible structure |
-| Error handling | Comprehensive error handling | Standard error handling | ✅ | Robust implementation |
+| Feature              | Cocoon Implementation                             | VS Code Equivalent             | Status | Notes                   |
+| -------------------- | ------------------------------------------------- | ------------------------------ | ------ | ----------------------- |
+| Extension activation | `ExtensionHost.ts` - `ActivateById()`             | `activateById()`               | ✅     | Similar activation flow |
+| Extension lifecycle  | `ExtensionHost.ts` - `DeactivateAll()`            | `deactivateAll()`              | ✅     | Proper cleanup          |
+| Extension registry   | `ExtensionHost.ts` - ExtensionDescriptionRegistry | `ExtensionDescriptionRegistry` | ✅     | Compatible structure    |
+| Error handling       | Comprehensive error handling                      | Standard error handling        | ✅     | Robust implementation   |
 
 ### ✅ API Factory
 
 **VS Code Source Reference**: `src/vs/workbench/api/common/extHost.api.impl.ts`
 
-| Feature | Cocoon Implementation | VS Code Equivalent | Status | Notes |
-| ------- | --------------------- | ------------------ | ------ | ----- |
-| vscode namespace | `APIFactory.ts` | `ExtHostApiImpl` | ✅ | Similar API structure |
-| Service shimming | Individual service files | Service implementations | ✅ | Modular approach |
-| Context injection | `ExtensionContext` creation | `ExtensionContext` | ✅ | Compatible context |
+| Feature           | Cocoon Implementation       | VS Code Equivalent      | Status | Notes                 |
+| ----------------- | --------------------------- | ----------------------- | ------ | --------------------- |
+| vscode namespace  | `APIFactory.ts`             | `ExtHostApiImpl`        | ✅     | Similar API structure |
+| Service shimming  | Individual service files    | Service implementations | ✅     | Modular approach      |
+| Context injection | `ExtensionContext` creation | `ExtensionContext`      | ✅     | Compatible context    |
 
 ### ✅ Module Interception
 
 **VS Code Source Reference**:
 `src/vs/workbench/api/common/extHostRequireInterceptor.ts`
 
-| Feature | Cocoon Implementation | VS Code Equivalent | Status | Notes |
-| ------- | --------------------- | ------------------ | ------ | ----- |
-| require() interception | `RequireInterceptor.ts` | `ExtHostRequireInterceptor` | ✅ | Similar pattern |
-| ESM interception | `ESMInterceptor.ts` | N/A (ESM not in VS Code) | 🔄 | Advanced feature |
-| Module resolution | Path-based resolution | VS Code resolution | ✅ | Compatible |
+| Feature                | Cocoon Implementation   | VS Code Equivalent          | Status | Notes            |
+| ---------------------- | ----------------------- | --------------------------- | ------ | ---------------- |
+| require() interception | `RequireInterceptor.ts` | `ExtHostRequireInterceptor` | ✅     | Similar pattern  |
+| ESM interception       | `ESMInterceptor.ts`     | N/A (ESM not in VS Code)    | 🔄     | Advanced feature |
+| Module resolution      | Path-based resolution   | VS Code resolution          | ✅     | Compatible       |
 
 ---
 
@@ -68,26 +68,26 @@ source to ensure compatibility and correctness.
 **VS Code Source Reference**:
 `src/vs/workbench/services/extensions/common/extensionHostProtocol.ts`
 
-| Feature | Cocoon Implementation | VS Code Equivalent | Status | Notes |
-| ------- | --------------------- | ------------------ | ------ | ----- |
-| Protocol definition | `vine_ipc.proto` | `IExtensionHostInitData` | ✅ | gRPC vs custom protocol |
-| Message passing | `IPC.ts` - SendRequest/SendNotification | `RPCProtocol` | ✅ | Different but compatible |
-| Error handling | `IPCProblem.ts` | Standard error handling | ✅ | Comprehensive |
-| Connection management | gRPC client management | IPC channel management | ✅ | Robust implementation |
+| Feature               | Cocoon Implementation                   | VS Code Equivalent       | Status | Notes                    |
+| --------------------- | --------------------------------------- | ------------------------ | ------ | ------------------------ |
+| Protocol definition   | `vine_ipc.proto`                        | `IExtensionHostInitData` | ✅     | gRPC vs custom protocol  |
+| Message passing       | `IPC.ts` - SendRequest/SendNotification | `RPCProtocol`            | ✅     | Different but compatible |
+| Error handling        | `IPCProblem.ts`                         | Standard error handling  | ✅     | Comprehensive            |
+| Connection management | gRPC client management                  | IPC channel management   | ✅     | Robust implementation    |
 
 ### ✅ Service Layer Communication
 
 **VS Code Source Reference**: Various `IExtHost*` services
 
-| Service | Cocoon Implementation | VS Code Equivalent | Status | Notes |
-| ------- | --------------------- | ------------------ | ------ | ----- |
-| Commands | `Command.ts` | `IExtHostCommands` | ✅ | Similar API |
-| Documents | `Document.ts` | `IExtHostDocuments` | ✅ | Compatible |
-| Window | `Window.ts` | `IExtHostWindow` | ✅ | Similar methods |
-| Workspace | `WorkSpace.ts` | `IExtHostWorkspace` | ✅ | Compatible |
-| Debug | `Debug.ts` | `IExtHostDebug` | ✅ | Similar structure |
-| Terminal | `Task.ts` | `IExtHostTerminal` | ✅ | Compatible |
-| Webview | `WebViewPanel.ts` | `IExtHostWebview` | ✅ | Similar API |
+| Service   | Cocoon Implementation | VS Code Equivalent  | Status | Notes             |
+| --------- | --------------------- | ------------------- | ------ | ----------------- |
+| Commands  | `Command.ts`          | `IExtHostCommands`  | ✅     | Similar API       |
+| Documents | `Document.ts`         | `IExtHostDocuments` | ✅     | Compatible        |
+| Window    | `Window.ts`           | `IExtHostWindow`    | ✅     | Similar methods   |
+| Workspace | `WorkSpace.ts`        | `IExtHostWorkspace` | ✅     | Compatible        |
+| Debug     | `Debug.ts`            | `IExtHostDebug`     | ✅     | Similar structure |
+| Terminal  | `Task.ts`             | `IExtHostTerminal`  | ✅     | Compatible        |
+| Webview   | `WebViewPanel.ts`     | `IExtHostWebview`   | ✅     | Similar API       |
 
 ---
 
@@ -97,22 +97,22 @@ source to ensure compatibility and correctness.
 
 **Innovation**: Cocoon uses Effect-TS while VS Code uses traditional OOP
 
-| Aspect | Cocoon Approach | VS Code Approach | Compatibility |
-| ------ | --------------- | ---------------- | ------------- |
-| Dependency injection | Effect-TS Layers | Service collection | ✅ (Bridged) |
-| Error handling | Effect error types | Exception handling | ✅ (Mapped) |
-| Async operations | Effect pipelines | Promises/async-await | ✅ (Compatible) |
-| Service composition | Layer composition | Service instantiation | ✅ (Similar) |
+| Aspect               | Cocoon Approach    | VS Code Approach      | Compatibility   |
+| -------------------- | ------------------ | --------------------- | --------------- |
+| Dependency injection | Effect-TS Layers   | Service collection    | ✅ (Bridged)    |
+| Error handling       | Effect error types | Exception handling    | ✅ (Mapped)     |
+| Async operations     | Effect pipelines   | Promises/async-await  | ✅ (Compatible) |
+| Service composition  | Layer composition  | Service instantiation | ✅ (Similar)    |
 
 ### ✅ Process Management
 
 **VS Code Source Reference**: `src/vs/workbench/api/node/extHostProcess.ts`
 
-| Feature | Cocoon Implementation | VS Code Equivalent | Status | Notes |
-| ------- | --------------------- | ------------------ | ------ | ----- |
-| Process hardening | `PatchProcess.ts` | Process management | ✅ | Enhanced approach |
-| Lifecycle management | Proper shutdown handling | Graceful shutdown | ✅ | Robust |
-| Error recovery | Comprehensive error handling | Standard recovery | ✅ | Improved |
+| Feature              | Cocoon Implementation        | VS Code Equivalent | Status | Notes             |
+| -------------------- | ---------------------------- | ------------------ | ------ | ----------------- |
+| Process hardening    | `PatchProcess.ts`            | Process management | ✅     | Enhanced approach |
+| Lifecycle management | Proper shutdown handling     | Graceful shutdown  | ✅     | Robust            |
+| Error recovery       | Comprehensive error handling | Standard recovery  | ✅     | Improved          |
 
 ---
 
@@ -166,12 +166,12 @@ source to ensure compatibility and correctness.
 
 ### Expected Performance Characteristics
 
-| Metric | VS Code | Cocoon (Expected) | Status |
-| ------ | ------- | ----------------- | ------ |
-| Extension load time | ~1-2s | ~1-2s | ✅ |
-| API call latency | <100ms | <100ms | ✅ |
-| Memory usage | Moderate | Comparable | ✅ |
-| Startup time | Fast | Comparable | ✅ |
+| Metric              | VS Code  | Cocoon (Expected) | Status |
+| ------------------- | -------- | ----------------- | ------ |
+| Extension load time | ~1-2s    | ~1-2s             | ✅     |
+| API call latency    | <100ms   | <100ms            | ✅     |
+| Memory usage        | Moderate | Comparable        | ✅     |
+| Startup time        | Fast     | Comparable        | ✅     |
 
 ### Optimization Opportunities
 

@@ -3,7 +3,7 @@ title: "Quickstart"
 section: "Guide"
 order: 2
 description:
-    "Concise build reference for Land from source — prerequisites, two-step
+    "Concise build reference for Land from source - prerequisites, two-step
     build flow, common profiles, and development environment setup."
 ---
 
@@ -92,7 +92,7 @@ cd Land
 
 ## Further Reading
 
-- [Getting Started](./getting-started.md) — Full step-by-step guide with
+- [Getting Started](./getting-started.md) - Full step-by-step guide with
   troubleshooting
-- [Configuration](./configuration.md) — Complete environment variable reference
-- [CI/CD Pipeline](./ci-cd-pipeline.md) — Pipeline stages and automation
+- [Configuration](./configuration.md) - Complete environment variable reference
+- [CI/CD Pipeline](./ci-cd-pipeline.md) - Pipeline stages and automation

@@ -1,14 +1,14 @@
 ---
-title: "Mist — Deep Dive"
+title: "Mist - Deep Dive"
 section: "Deep Dive"
 order: 14
 description:
-    "Mist DNS isolation layer — local authoritative DNS server for the editor.land
+    "Mist DNS isolation layer - local authoritative DNS server for the editor.land
     zone, Hickory DNS architecture, forward allowlist enforcement, DNSSEC zone
     signing, and resolver construction for consumer integration."
 ---
 
-# Mist — Deep Dive
+# Mist - Deep Dive
 
 Mist provides the technical foundation DNS isolation layer
 within the Land project. **Mist** operates a local authoritative DNS server
@@ -26,7 +26,7 @@ restricted forward allowlist for external queries.
 
 ```mermaid
 graph TB
-    subgraph "Mist — DNS Isolation Server"
+    subgraph "Mist - DNS Isolation Server"
         LibRS["lib.rs<br/>Public API: start / dns_port"]
         ServerRS["server.rs<br/>Hickory UDP + TCP listeners"]
         ZoneRS["zone.rs<br/>editor.land zone authority"]
@@ -67,7 +67,7 @@ graph TB
 | `Source/lib.rs`              | Public library API: `start(port)`, `dns_port()`, module re-exports            |
 | `Source/server.rs`           | Hickory DNS server: UDP/TCP socket binding, catalog wiring, async accept loop |
 | `Source/zone.rs`             | `editor.land` zone configuration: SOA, A records, wildcard resolution         |
-| `Source/resolver.rs`         | `LandDnsResolver` — DNS client pointed at the local server for consumer use   |
+| `Source/resolver.rs`         | `LandDnsResolver` - DNS client pointed at the local server for consumer use   |
 | `Source/forward_security.rs` | Forward allowlist: rejects external queries not on the approved list          |
 | `tests/integration.rs`       | Integration tests: zone resolution, DNSSEC verification, forward blocking     |
 
@@ -123,7 +123,7 @@ sequenceDiagram
 | Parameter          | Value                | Description                                                  |
 | :----------------- | :------------------- | :----------------------------------------------------------- |
 | Preferred port     | `5380`               | Primary bind port; falls back to any available port if taken |
-| Bind address       | `127.0.0.1`          | Loopback only — no external interface exposure               |
+| Bind address       | `127.0.0.1`          | Loopback only - no external interface exposure               |
 | Authoritative zone | `editor.land`        | All subdomains resolve to `127.0.0.1`                        |
 | Forward allowlist  | `update.editor.land` | Only this domain may be resolved externally                  |
 | DNSSEC algorithm   | ECDSA P-256          | Zone signing key algorithm                                   |

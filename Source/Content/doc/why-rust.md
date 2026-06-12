@@ -18,7 +18,7 @@ costs by doing the work in Rust directly.
 
 Rust's ownership model eliminates the GC entirely. A GC pause at the moment a
 user opens a large file or triggers a search produces a visible stall. Rust has
-no GC — heap allocation follows explicit lifetime rules enforced at compile
+no GC - heap allocation follows explicit lifetime rules enforced at compile
 time, not discovered at runtime. More invariants must be stated upfront, but
 the type system enforces them before the binary is built.
 
@@ -35,25 +35,25 @@ as handwritten state machines. No interpreter, JIT warmup, or VM indirection.
 
 ## Concrete operation comparisons
 
-| Operation | Electron/Node.js | Mountain (Rust) |
-|---|---|---|
+| Operation        | Electron/Node.js                                  | Mountain (Rust)                |
+| ---------------- | ------------------------------------------------- | ------------------------------ |
 | Open file dialog | JSON IPC → main process → native bridge (~200 ms) | `tauri::dialog` direct (~2 ms) |
-| Read 1 MB file | JSON IPC round-trip, re-encode in JS heap | `tokio::fs::read`, zero-copy |
-| Terminal resize | Bridge serialization → PTY shim → SIGWINCH | `portable-pty` direct SIGWINCH |
-| Keychain read | `keytar` native addon in Node.js | `keyring` crate, OS API direct |
-| File watcher | `chokidar` polling + inotify wrapper | `notify` crate, OS-level push |
+| Read 1 MB file   | JSON IPC round-trip, re-encode in JS heap         | `tokio::fs::read`, zero-copy   |
+| Terminal resize  | Bridge serialization → PTY shim → SIGWINCH        | `portable-pty` direct SIGWINCH |
+| Keychain read    | `keytar` native addon in Node.js                  | `keyring` crate, OS API direct |
+| File watcher     | `chokidar` polling + inotify wrapper              | `notify` crate, OS-level push  |
 
 ## Native OS integration without adapters
 
 Mountain implements operations that JavaScript exposes only through native
 addons or IPC bridges:
 
-- **PTY management** via `portable-pty` — resize sends SIGWINCH directly
-- **Keychain access** via `keyring` — Security framework (macOS), libsecret
+- **PTY management** via `portable-pty` - resize sends SIGWINCH directly
+- **Keychain access** via `keyring` - Security framework (macOS), libsecret
   (Linux), Credential Manager (Windows). AES-256-GCM with machine-stable key.
-- **File watchers** via `notify` — FSEvents, inotify, ReadDirectoryChangesW.
+- **File watchers** via `notify` - FSEvents, inotify, ReadDirectoryChangesW.
   Push-based, not polling.
-- **Codesign** via Tauri's `tauri.conf.json` + `Entitlements.plist` — hardened
+- **Codesign** via Tauri's `tauri.conf.json` + `Entitlements.plist` - hardened
   runtime, keychain, network client entitlements without an Xcode project.
 
 ## Tauri command dispatch
@@ -68,15 +68,15 @@ the IPC boundary.
 Mountain uses Rust edition 2024, which tightens lifetime elision rules. MSRV is
 1.95.0, which includes stabilized `AsyncFn` traits. Pinned in
 `rust-toolchain.toml`. The workspace carries 51 `[patch.crates-io]` redirects
-that are version-sensitive — do not upgrade the toolchain without auditing
+that are version-sensitive - do not upgrade the toolchain without auditing
 those patches.
 
 ## What Rust does not solve
 
 Rust does not make the extension host faster. Cocoon (Node.js) is still a
 single event loop. That problem is addressed by Effect-TS structured
-concurrency. Mountain's role is the native layer — OS calls, IPC dispatch, PTY
-management — the operations where a GC runtime pays the highest per-call cost.
+concurrency. Mountain's role is the native layer - OS calls, IPC dispatch, PTY
+management - the operations where a GC runtime pays the highest per-call cost.
 
 ## Related Documentation
 

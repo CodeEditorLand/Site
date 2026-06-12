@@ -44,13 +44,13 @@ deviation from Rust conventions is deliberate and approved.
 The Land project consists of multiple language-specific components that must
 interoperate seamlessly:
 
-| Component | Language | Naming Convention |
-| --------- | -------- | ----------------- |
-| **Mountain** | Rust | **PascalCase** (this convention) |
-| **Cocoon** | Node.js/TypeScript | **PascalCase** |
-| **Wind** | TypeScript/React | **PascalCase** |
-| **Common** | Rust (shared) | **PascalCase** |
-| **Vine gRPC** | Protocol Buffers | **PascalCase** |
+| Component     | Language           | Naming Convention                |
+| ------------- | ------------------ | -------------------------------- |
+| **Mountain**  | Rust               | **PascalCase** (this convention) |
+| **Cocoon**    | Node.js/TypeScript | **PascalCase**                   |
+| **Wind**      | TypeScript/React   | **PascalCase**                   |
+| **Common**    | Rust (shared)      | **PascalCase**                   |
+| **Vine gRPC** | Protocol Buffers   | **PascalCase**                   |
 
 Using PascalCase across all components eliminates cognitive overhead during
 cross-language development and ensures type safety in gRPC interfaces.
@@ -111,23 +111,23 @@ name mappings and serialization aliases.
 
 ## Complete Naming Patterns
 
-| Element Type | Convention | Example | Notes |
-| ------------ | ---------- | ------- | ----- |
-| **Structs** | PascalCase | `WorkSpaceFolderStateDTO` | All structs, including DTOs |
-| **Enums** | PascalCase | `CommandHandler` | All enum variants |
-| **Traits** | PascalCase | `ConfigurationProvider` | All trait names |
-| **Functions** | PascalCase | `GetConfigurationValue` | All public and private functions |
-| **Methods** | PascalCase | `CreateWorkSpace` | All instance methods |
-| **Modules** | PascalCase | `ApplicationState` | File and module names PascalCase |
-| **Constants** | PascalCase | `MAX_CONNECTIONS` | Global constants |
-| **Static Items** | PascalCase | `SIDECAR_CLIENTS` | Static variables |
-| **Type Aliases** | PascalCase | `CocoonClient` | Type aliases and generic types |
-| **Generics** | PascalCase | `TCapabilityProvider` | Type parameters with 'T' prefix |
-| **Lifetimes** | lowercase with 'a prefix | `'a`, `'result` | Standard Rust lifetime conventions |
-| **Local Variables** | PascalCase | `WorkSpaceIdentifier` | All local variables |
-| **Function Parameters** | PascalCase | `ApplicationHandle:AppHandle` | All parameters |
-| **Fields** | PascalCase | `ActiveDocuments` | All struct fields |
-| **File Names** | PascalCase | `ApplicationState.rs` | Rust source files |
+| Element Type            | Convention               | Example                       | Notes                              |
+| ----------------------- | ------------------------ | ----------------------------- | ---------------------------------- |
+| **Structs**             | PascalCase               | `WorkSpaceFolderStateDTO`     | All structs, including DTOs        |
+| **Enums**               | PascalCase               | `CommandHandler`              | All enum variants                  |
+| **Traits**              | PascalCase               | `ConfigurationProvider`       | All trait names                    |
+| **Functions**           | PascalCase               | `GetConfigurationValue`       | All public and private functions   |
+| **Methods**             | PascalCase               | `CreateWorkSpace`             | All instance methods               |
+| **Modules**             | PascalCase               | `ApplicationState`            | File and module names PascalCase   |
+| **Constants**           | PascalCase               | `MAX_CONNECTIONS`             | Global constants                   |
+| **Static Items**        | PascalCase               | `SIDECAR_CLIENTS`             | Static variables                   |
+| **Type Aliases**        | PascalCase               | `CocoonClient`                | Type aliases and generic types     |
+| **Generics**            | PascalCase               | `TCapabilityProvider`         | Type parameters with 'T' prefix    |
+| **Lifetimes**           | lowercase with 'a prefix | `'a`, `'result`               | Standard Rust lifetime conventions |
+| **Local Variables**     | PascalCase               | `WorkSpaceIdentifier`         | All local variables                |
+| **Function Parameters** | PascalCase               | `ApplicationHandle:AppHandle` | All parameters                     |
+| **Fields**              | PascalCase               | `ActiveDocuments`             | All struct fields                  |
+| **File Names**          | PascalCase               | `ApplicationState.rs`         | Rust source files                  |
 
 ---
 
@@ -463,14 +463,14 @@ impl MyNewService {
 
 1. **High-Priority Files**: Start with files that are frequently modified or
    shared with other components
-   - DTO files (all `*DTO.rs` files)
-   - IPC and gRPC interfaces
-   - Provider implementations
+    - DTO files (all `*DTO.rs` files)
+    - IPC and gRPC interfaces
+    - Provider implementations
 
 2. **Medium-Priority Files**: Service implementations and state management
-   - Environment providers
-   - Application state components
-   - Runtime components
+    - Environment providers
+    - Application state components
+    - Runtime components
 
 3. **Low-Priority Files**: Utilities, helpers, and isolated modules
 
@@ -522,17 +522,17 @@ impl MyStruct {
 Before renaming, assess the impact:
 
 1. **Public API**: Does this rename break the public API?
-   - If yes, consider adding a deprecated alias first
-   - Document the breaking change in CHANGELOG.md
+    - If yes, consider adding a deprecated alias first
+    - Document the breaking change in CHANGELOG.md
 
 2. **gRPC Interfaces**: Does this affect Protocol Buffer definitions?
-   - Must update `.proto` files and regenerate code
-   - Verify compatibility with Cocoon and Wind
+    - Must update `.proto` files and regenerate code
+    - Verify compatibility with Cocoon and Wind
 
 3. **Tests**: Update all test references to use new names
-   - Unit tests
-   - Integration tests
-   - E2E tests
+    - Unit tests
+    - Integration tests
+    - E2E tests
 
 4. **Documentation**: Update inline documentation and comments
 
@@ -542,15 +542,15 @@ Before renaming, assess the impact:
 
 ### Core Modules ✅
 
-| Module | Status | Notes |
-| ------ | ------ | ----- |
-| `ApplicationState` | ✅ Complete | All structs, DTOs, and methods follow PascalCase |
-| `Environment` | ✅ Complete | All providers and helpers follow PascalCase |
-| `RunTime` | ✅ Complete | ApplicationRunTime and all helpers follow PascalCase |
-| `Track` | ✅ Complete | DispatchLogic and EffectCreation follow PascalCase |
-| `Vine` | ✅ Complete | Server and gRPC integration follow PascalCase |
-| `IPC` | ✅ Complete | All IPC handlers and adapters follow PascalCase |
-| `WorkSpace` | ✅ Complete | WorkspaceProvider follows PascalCase |
+| Module             | Status      | Notes                                                |
+| ------------------ | ----------- | ---------------------------------------------------- |
+| `ApplicationState` | ✅ Complete | All structs, DTOs, and methods follow PascalCase     |
+| `Environment`      | ✅ Complete | All providers and helpers follow PascalCase          |
+| `RunTime`          | ✅ Complete | ApplicationRunTime and all helpers follow PascalCase |
+| `Track`            | ✅ Complete | DispatchLogic and EffectCreation follow PascalCase   |
+| `Vine`             | ✅ Complete | Server and gRPC integration follow PascalCase        |
+| `IPC`              | ✅ Complete | All IPC handlers and adapters follow PascalCase      |
+| `WorkSpace`        | ✅ Complete | WorkspaceProvider follows PascalCase                 |
 
 ### DTOs ✅
 
@@ -635,9 +635,9 @@ Rust in Mountain/Cocoon/Wind
 
 ## Changelog
 
-| Date | Version | Changes |
-| ---- | ------- | ------- |
-| 2026-01-28 | 1.0.0 | Initial naming conventions documentation |
+| Date       | Version | Changes                                  |
+| ---------- | ------- | ---------------------------------------- |
+| 2026-01-28 | 1.0.0   | Initial naming conventions documentation |
 
 ---
 

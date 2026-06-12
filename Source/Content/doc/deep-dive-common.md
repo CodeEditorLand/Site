@@ -1,5 +1,5 @@
 ---
-title: "Common — Deep Dive & Architecture"
+title: "Common - Deep Dive & Architecture"
 section: "Deep Dive"
 order: 2
 description:
@@ -10,12 +10,12 @@ description:
 
 Common defines the abstract architectural patterns, service contracts, and data
 structures that enable type-safe, testable service implementations across Rust
-and TypeScript boundaries — providing the technical foundation for
+and TypeScript boundaries - providing the technical foundation for
 lifting VSCode services into the Land platform.
 
 Common uses **Rust edition 2024** with a minimum supported Rust version (MSRV)
 of **1.95.0**. It is a pure library crate with no binary targets and no concrete
-I/O — all platform-specific logic lives in Mountain.
+I/O - all platform-specific logic lives in Mountain.
 
 ---
 
@@ -26,7 +26,7 @@ I/O — all platform-specific logic lives in Mountain.
 | **Pure Abstraction**         | Define every application capability as abstract `async trait`s without any concrete implementation logic, enforcing strict architectural boundaries. | All `*Provider.rs` and `*Manager.rs` files |
 | **Declarative Effects**      | Represent every operation as an `ActionEffect` value, separating operation description from execution for maximum composability and testability.     | `Effect/*`, all effect constructor files   |
 | **Trait-Based DI**           | Implement a clean, compile-time dependency injection system using the `Environment` and `Requires` traits for explicit capability declaration.       | `Environment/*`                            |
-| **Universal Error Handling** | Provide a single, exhaustive `CommonError` enum that covers all possible failure scenarios across the entire native project.                       | `Error/`                                   |
+| **Universal Error Handling** | Provide a single, exhaustive `CommonError` enum that covers all possible failure scenarios across the entire native project.                         | `Error/`                                   |
 | **Contract-First Design**    | Define all data structures (`DTO/*`) and error types (`Error/*`) first, establishing a stable contract for all other components.                     | `DTO/`, `Error/`                           |
 | **Minimal Dependencies**     | Maintain minimal dependencies and complete independence from Tauri, gRPC, or any specific application logic, ensuring clean separation.              | `Cargo.toml`                               |
 
@@ -65,8 +65,8 @@ receives a concrete dependency and awaits it immediately. This is simple but
 creates two problems for a large codebase.
 
 First, testing requires a real dependency or a hand-written mock that replicates
-its entire interface. Second, composing operations — run A then B if A succeeds,
-or run A and B in parallel — requires explicit async coordination at each call
+its entire interface. Second, composing operations - run A then B if A succeeds,
+or run A and B in parallel - requires explicit async coordination at each call
 site.
 
 Common's `ActionEffect` system treats operations as data. An effect constructor
@@ -141,7 +141,7 @@ For any `ActionEffect<C, E, T>`, the runtime provides `C` through these steps:
 
 Every service capability is defined as an `async trait` (via the `async_trait`
 crate for object-safety). Each trait declares the minimal surface needed for
-that domain — no helper methods, no default implementations with hidden
+that domain - no helper methods, no default implementations with hidden
 behavior, no cross-domain coupling.
 
 ```rust
@@ -207,7 +207,7 @@ pub trait Requires<C> {
 
 `ApplicationRunTime` connects the two: given an environment, it resolves the
 concrete capability for a given `TCapability` type parameter and calls the
-effect's function. No runtime type lookup, no `Any` downcasting — the resolution
+effect's function. No runtime type lookup, no `Any` downcasting - the resolution
 is a zero-cost type-level dispatch.
 
 ### Capability Resolution Flow
@@ -345,7 +345,7 @@ tokio::fs::read(path).await
 ```
 
 This means callers in effects and tests never need to match against
-`std::io::Error` kinds — they match against `CommonError` variants.
+`std::io::Error` kinds - they match against `CommonError` variants.
 
 ### Error Recovery Patterns
 

@@ -36,11 +36,11 @@ connection lifecycle management.
 **Land** uses three communication protocols operating at different abstraction
 levels:
 
-| Protocol | Transport | Layer | Components | Purpose |
-| -------- | --------- | ----- | ---------- | ------- |
-| `Tauri` IPC | In-process IPC | Application | `Wind`/`Sky` <-> `Mountain` | UI-backend communication |
-| `gRPC` (`Vine`) | TCP localhost | Service | `Cocoon` <-> `Mountain`, `Air` <-> `Mountain` | Inter-service RPC |
-| `Spine` | `gRPC` + `ActionEffect` | Extension | `Cocoon` -> `Mountain` | Extension host coordination |
+| Protocol        | Transport               | Layer       | Components                                    | Purpose                     |
+| --------------- | ----------------------- | ----------- | --------------------------------------------- | --------------------------- |
+| `Tauri` IPC     | In-process IPC          | Application | `Wind`/`Sky` <-> `Mountain`                   | UI-backend communication    |
+| `gRPC` (`Vine`) | TCP localhost           | Service     | `Cocoon` <-> `Mountain`, `Air` <-> `Mountain` | Inter-service RPC           |
+| `Spine`         | `gRPC` + `ActionEffect` | Extension   | `Cocoon` -> `Mountain`                        | Extension host coordination |
 
 ### Protocol Stack
 
@@ -83,11 +83,11 @@ graph BT
 The `TierIPC` environment variable controls how `Wind` and `Output` route Tauri
 IPC calls at runtime. No rebuild is required to switch tiers.
 
-| Value | Behaviour |
-| ----- | --------- |
-| `Mountain` | All calls route to Mountain (default) |
+| Value          | Behaviour                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------- |
+| `Mountain`     | All calls route to Mountain (default)                                                           |
 | `NodeDeferred` | Mountain first; on miss or `undefined` result, falls back to Cocoon via `cocoon:request` bridge |
-| `Node` | All calls bypass Mountain and route directly to Cocoon via `cocoon:request` |
+| `Node`         | All calls bypass Mountain and route directly to Cocoon via `cocoon:request`                     |
 
 Individual subsystems have their own tier constants (e.g. `TierTerminal`,
 `TierStorage`, `TierSearch`) baked at compile time from `.env.Land`. A runtime
@@ -141,10 +141,10 @@ channel wire name defined in `Common/Source/IPC/Channel.rs`.
 
 #### Encryption
 
-| Command | Parameters | Returns | Purpose |
-| ------- | ---------- | ------- | ------- |
-| `encryption:encrypt` | `[plaintext: string]` | `string` | AES-256-GCM encryption; key is SHA-256 of machine UUID, cached per-process |
-| `encryption:decrypt` | `[ciphertext: string]` | `string` | Symmetric decryption; used by extension context `secrets` API |
+| Command              | Parameters             | Returns  | Purpose                                                                    |
+| -------------------- | ---------------------- | -------- | -------------------------------------------------------------------------- |
+| `encryption:encrypt` | `[plaintext: string]`  | `string` | AES-256-GCM encryption; key is SHA-256 of machine UUID, cached per-process |
+| `encryption:decrypt` | `[ciphertext: string]` | `string` | Symmetric decryption; used by extension context `secrets` API              |
 
 The encryption key is derived once per process in `Encryption/Key.rs` using
 `SHA-256("Land-Encryption-v1" + machine_id)`. Returns an empty string on failure
@@ -152,22 +152,22 @@ rather than throwing, so callers treat a corrupt blob as "no stored secret".
 
 #### File System
 
-| Command | Parameters | Returns | Purpose |
-| ------- | ---------- | ------- | ------- |
-| `file:watch` | `[path: string, options?]` | `void` | Register a file watcher via `FileWatcherProvider` |
-| `file:unwatch` | `[path: string]` | `void` | Deregister a file watcher |
-| `file:open` | `[path: string, opts?]` | `number` | Open a file descriptor; fd is tracked in Mountain's fd table |
-| `file:close` | `[fd: number]` | `void` | Close a tracked file descriptor |
-| `file:stat` | `[path: string]` | `FileStat` | Stat a path |
-| `file:readFile` | `[path: string]` | `Uint8Array` | Read file (VS Code native path) |
-| `file:readdir` | `[path: string]` | `DirEntry[]` | List directory entries |
-| `file:writeFile` | `[path: string, content: Uint8Array]` | `void` | Write file |
-| `file:delete` | `[path: string, opts?]` | `void` | Delete file or directory; fires `$acceptDidDeleteFiles` |
-| `file:rename` | `[from: string, to: string]` | `void` | Rename/move file; fires `$acceptDidRenameFiles` |
-| `file:mkdir` | `[path: string]` | `void` | Create directory; fires `$acceptDidCreateFiles` |
-| `file:copy` | `[from: string, to: string]` | `void` | Copy file |
-| `file:cloneFile` | `[from: string, to: string]` | `void` | Clone file (reflink where supported); fires `$acceptDidCreateFiles` |
-| `file:realpath` | `[path: string]` | `string` | Resolve symlinks |
+| Command          | Parameters                            | Returns      | Purpose                                                             |
+| ---------------- | ------------------------------------- | ------------ | ------------------------------------------------------------------- |
+| `file:watch`     | `[path: string, options?]`            | `void`       | Register a file watcher via `FileWatcherProvider`                   |
+| `file:unwatch`   | `[path: string]`                      | `void`       | Deregister a file watcher                                           |
+| `file:open`      | `[path: string, opts?]`               | `number`     | Open a file descriptor; fd is tracked in Mountain's fd table        |
+| `file:close`     | `[fd: number]`                        | `void`       | Close a tracked file descriptor                                     |
+| `file:stat`      | `[path: string]`                      | `FileStat`   | Stat a path                                                         |
+| `file:readFile`  | `[path: string]`                      | `Uint8Array` | Read file (VS Code native path)                                     |
+| `file:readdir`   | `[path: string]`                      | `DirEntry[]` | List directory entries                                              |
+| `file:writeFile` | `[path: string, content: Uint8Array]` | `void`       | Write file                                                          |
+| `file:delete`    | `[path: string, opts?]`               | `void`       | Delete file or directory; fires `$acceptDidDeleteFiles`             |
+| `file:rename`    | `[from: string, to: string]`          | `void`       | Rename/move file; fires `$acceptDidRenameFiles`                     |
+| `file:mkdir`     | `[path: string]`                      | `void`       | Create directory; fires `$acceptDidCreateFiles`                     |
+| `file:copy`      | `[from: string, to: string]`          | `void`       | Copy file                                                           |
+| `file:cloneFile` | `[from: string, to: string]`          | `void`       | Clone file (reflink where supported); fires `$acceptDidCreateFiles` |
+| `file:realpath`  | `[path: string]`                      | `string`     | Resolve symlinks                                                    |
 
 ---
 
@@ -302,11 +302,11 @@ message Location { /* ... */ }
 
 ### Port Allocation
 
-| Service | Element | Port | Transport |
-| ------- | ------- | ---- | --------- |
-| Mountain Vine | `Mountain` | `50051` | TCP |
-| Cocoon Vine | `Cocoon` | `50052` | TCP |
-| Air Vine | `Air` | `50053` | TCP |
+| Service       | Element    | Port    | Transport |
+| ------------- | ---------- | ------- | --------- |
+| Mountain Vine | `Mountain` | `50051` | TCP       |
+| Cocoon Vine   | `Cocoon`   | `50052` | TCP       |
+| Air Vine      | `Air`      | `50053` | TCP       |
 
 All listeners bind to `[::1]` (not `0.0.0.0`). Environment overrides are
 described in
@@ -481,12 +481,12 @@ Both `gRPC` connections (`Mountain`-`Cocoon`, `Mountain`-`Air`) implement a
 health monitoring protocol. Health is tracked via a per-connection
 `ConnectionMetadata` struct in `Vine/Source/Client/Shared.rs`:
 
-| Parameter | Value |
-| --------- | ----- |
+| Parameter                | Value                                   |
+| ------------------------ | --------------------------------------- |
 | Staleness check interval | 30 seconds (`HEALTH_CHECK_INTERVAL_MS`) |
-| Max retry attempts | 10 (`MAX_RETRY_ATTEMPTS`) |
-| Retry base delay | 200 ms (`RETRY_BASE_DELAY_MS`) |
-| Connection timeout | 30 seconds (`CONNECTION_TIMEOUT`) |
+| Max retry attempts       | 10 (`MAX_RETRY_ATTEMPTS`)               |
+| Retry base delay         | 200 ms (`RETRY_BASE_DELAY_MS`)          |
+| Connection timeout       | 30 seconds (`CONNECTION_TIMEOUT`)       |
 
 Health is determined by three conditions in
 `Vine/Source/Client/CheckSideCarHealth.rs`: the connection must be marked
@@ -517,13 +517,13 @@ All connection state changes are logged via the `dev_log!` system at
 
 Protocol definitions currently reside in consuming components:
 
-| File | Location | Purpose |
-| ---- | -------- | ------- |
-| `Vine.proto` | `Element/Vine/Proto/Vine.proto` | Core `Mountain`<->`Cocoon` `gRPC` services |
-| `Grove.proto` | `Element/Grove/Proto/Grove.proto` | Grove-specific WASM hosting extensions |
-| Server impl | `Element/Mountain/Source/Vine/` | Rust `gRPC` server (`tonic`, consumes Vine stubs) |
-| Client impl | `Element/Cocoon/Source/Services/Mountain/gRPC/Client.ts` | TypeScript `gRPC` client |
-| RouteManifest | `Element/Cocoon/Source/Generated/RouteManifest.ts` | Auto-generated routing tier enumeration |
+| File          | Location                                                 | Purpose                                           |
+| ------------- | -------------------------------------------------------- | ------------------------------------------------- |
+| `Vine.proto`  | `Element/Vine/Proto/Vine.proto`                          | Core `Mountain`<->`Cocoon` `gRPC` services        |
+| `Grove.proto` | `Element/Grove/Proto/Grove.proto`                        | Grove-specific WASM hosting extensions            |
+| Server impl   | `Element/Mountain/Source/Vine/`                          | Rust `gRPC` server (`tonic`, consumes Vine stubs) |
+| Client impl   | `Element/Cocoon/Source/Services/Mountain/gRPC/Client.ts` | TypeScript `gRPC` client                          |
+| RouteManifest | `Element/Cocoon/Source/Generated/RouteManifest.ts`       | Auto-generated routing tier enumeration           |
 
 ### Code Generation
 
@@ -549,15 +549,15 @@ TypeScript types are generated using `protoc-gen-ts` and checked into the
 All `gRPC` connections are restricted to localhost only (`[::1]` / `127.0.0.1`).
 No remote connections are accepted.
 
-| Aspect | Implementation |
-| ------ | -------------- |
-| Transport | TCP loopback only |
-| Auth | None required (localhost-only) |
-| Encryption | None (localhost-only, no network exposure) |
-| Port binding | `[::1]` only, not `0.0.0.0` |
+| Aspect        | Implementation                              |
+| ------------- | ------------------------------------------- |
+| Transport     | TCP loopback only                           |
+| Auth          | None required (localhost-only)              |
+| Encryption    | None (localhost-only, no network exposure)  |
+| Port binding  | `[::1]` only, not `0.0.0.0`                 |
 | DNS isolation | All non-localhost traffic blocked by `Mist` |
-| Timeout | 30-second staleness check |
-| Backpressure | `gRPC` flow control + bounded channels |
+| Timeout       | 30-second staleness check                   |
+| Backpressure  | `gRPC` flow control + bounded channels      |
 
 ---
 

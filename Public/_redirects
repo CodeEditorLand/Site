@@ -9,7 +9,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 588 rules ──
+# ── VARIANT REWRITES (200) - 612 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /account                              /Account/                             200
 /ACCOUNT                              /Account/                             200
@@ -261,6 +261,10 @@
 /doc/api-reference/                   /Doc/api-reference/                   200
 /doc/architecture                     /Doc/architecture/                    200
 /doc/architecture/                    /Doc/architecture/                    200
+/doc/build-matrix                     /Doc/build-matrix/                    200
+/doc/build-matrix/                    /Doc/build-matrix/                    200
+/doc/build-pipeline                   /Doc/build-pipeline/                  200
+/doc/build-pipeline/                  /Doc/build-pipeline/                  200
 /doc/ci-cd-pipeline                   /Doc/ci-cd-pipeline/                  200
 /doc/ci-cd-pipeline/                  /Doc/ci-cd-pipeline/                  200
 /doc/cocoon                           /Doc/cocoon/                          200
@@ -309,6 +313,20 @@
 /doc/echo/                            /Doc/echo/                            200
 /doc/extension-development            /Doc/extension-development/           200
 /doc/extension-development/           /Doc/extension-development/           200
+/doc/filesystem-footprint             /Doc/filesystem-footprint/            200
+/doc/filesystem-footprint-cleanup     /Doc/filesystem-footprint-cleanup/    200
+/doc/filesystem-footprint-cleanup/    /Doc/filesystem-footprint-cleanup/    200
+/doc/filesystem-footprint-encapsulation /Doc/filesystem-footprint-encapsulation/ 200
+/doc/filesystem-footprint-encapsulation/ /Doc/filesystem-footprint-encapsulation/ 200
+/doc/filesystem-footprint-environment-variables /Doc/filesystem-footprint-environment-variables/ 200
+/doc/filesystem-footprint-environment-variables/ /Doc/filesystem-footprint-environment-variables/ 200
+/doc/filesystem-footprint-per-element /Doc/filesystem-footprint-per-element/ 200
+/doc/filesystem-footprint-per-element/ /Doc/filesystem-footprint-per-element/ 200
+/doc/filesystem-footprint-platform-paths /Doc/filesystem-footprint-platform-paths/ 200
+/doc/filesystem-footprint-platform-paths/ /Doc/filesystem-footprint-platform-paths/ 200
+/doc/filesystem-footprint-user-dotfile /Doc/filesystem-footprint-user-dotfile/ 200
+/doc/filesystem-footprint-user-dotfile/ /Doc/filesystem-footprint-user-dotfile/ 200
+/doc/filesystem-footprint/            /Doc/filesystem-footprint/            200
 /doc/getting-started                  /Doc/getting-started/                 200
 /doc/getting-started/                 /Doc/getting-started/                 200
 /doc/grove                            /Doc/grove/                           200
@@ -329,6 +347,8 @@
 /doc/mountain/                        /Doc/mountain/                        200
 /doc/output                           /Doc/output/                          200
 /doc/output/                          /Doc/output/                          200
+/doc/polyfills                        /Doc/polyfills/                       200
+/doc/polyfills/                       /Doc/polyfills/                       200
 /doc/project-structure                /Doc/project-structure/               200
 /doc/project-structure/               /Doc/project-structure/               200
 /doc/quickstart                       /Doc/quickstart/                      200
@@ -383,6 +403,8 @@
 /doc/workflow-hover-provider/         /Doc/workflow-hover-provider/         200
 /doc/workflow-open-file               /Doc/workflow-open-file/              200
 /doc/workflow-open-file/              /Doc/workflow-open-file/              200
+/doc/workflow-overview                /Doc/workflow-overview/               200
+/doc/workflow-overview/               /Doc/workflow-overview/               200
 /doc/workflow-save-participants       /Doc/workflow-save-participants/      200
 /doc/workflow-save-participants/      /Doc/workflow-save-participants/      200
 /doc/workflow-scm                     /Doc/workflow-scm/                    200
@@ -391,6 +413,8 @@
 /doc/workflow-startup/                /Doc/workflow-startup/                200
 /doc/workflow-terminal                /Doc/workflow-terminal/               200
 /doc/workflow-terminal/               /Doc/workflow-terminal/               200
+/doc/workflow-tier-gated-implementation-selection /Doc/workflow-tier-gated-implementation-selection/ 200
+/doc/workflow-tier-gated-implementation-selection/ /Doc/workflow-tier-gated-implementation-selection/ 200
 /doc/workflow-user-data-sync          /Doc/workflow-user-data-sync/         200
 /doc/workflow-user-data-sync/         /Doc/workflow-user-data-sync/         200
 /doc/workflow-webview                 /Doc/workflow-webview/                200
@@ -638,6 +662,8 @@
 /Doc/air                  /Doc/air/                 200
 /Doc/api-reference        /Doc/api-reference/       200
 /Doc/architecture         /Doc/architecture/        200
+/Doc/build-matrix         /Doc/build-matrix/        200
+/Doc/build-pipeline       /Doc/build-pipeline/      200
 /Doc/ci-cd-pipeline       /Doc/ci-cd-pipeline/      200
 /Doc/cocoon               /Doc/cocoon/              200
 /Doc/cocoon-vscode-validation /Doc/cocoon-vscode-validation/ 200
@@ -662,6 +688,13 @@
 /Doc/development-history  /Doc/development-history/ 200
 /Doc/echo                 /Doc/echo/                200
 /Doc/extension-development /Doc/extension-development/ 200
+/Doc/filesystem-footprint /Doc/filesystem-footprint/ 200
+/Doc/filesystem-footprint-cleanup /Doc/filesystem-footprint-cleanup/ 200
+/Doc/filesystem-footprint-encapsulation /Doc/filesystem-footprint-encapsulation/ 200
+/Doc/filesystem-footprint-environment-variables /Doc/filesystem-footprint-environment-variables/ 200
+/Doc/filesystem-footprint-per-element /Doc/filesystem-footprint-per-element/ 200
+/Doc/filesystem-footprint-platform-paths /Doc/filesystem-footprint-platform-paths/ 200
+/Doc/filesystem-footprint-user-dotfile /Doc/filesystem-footprint-user-dotfile/ 200
 /Doc/getting-started      /Doc/getting-started/     200
 /Doc/grove                /Doc/grove/               200
 /Doc/installation         /Doc/installation/        200
@@ -672,6 +705,7 @@
 /Doc/mountain             /Doc/mountain/            200
 /Doc/mountain-naming-conventions /Doc/mountain-naming-conventions/ 200
 /Doc/output               /Doc/output/              200
+/Doc/polyfills            /Doc/polyfills/           200
 /Doc/project-structure    /Doc/project-structure/   200
 /Doc/quickstart           /Doc/quickstart/          200
 /Doc/rest                 /Doc/rest/                200
@@ -696,10 +730,12 @@
 /Doc/workflow-extension-tests /Doc/workflow-extension-tests/ 200
 /Doc/workflow-hover-provider /Doc/workflow-hover-provider/ 200
 /Doc/workflow-open-file   /Doc/workflow-open-file/  200
+/Doc/workflow-overview    /Doc/workflow-overview/   200
 /Doc/workflow-save-participants /Doc/workflow-save-participants/ 200
 /Doc/workflow-scm         /Doc/workflow-scm/        200
 /Doc/workflow-startup     /Doc/workflow-startup/    200
 /Doc/workflow-terminal    /Doc/workflow-terminal/   200
+/Doc/workflow-tier-gated-implementation-selection /Doc/workflow-tier-gated-implementation-selection/ 200
 /Doc/workflow-user-data-sync /Doc/workflow-user-data-sync/ 200
 /Doc/workflow-webview     /Doc/workflow-webview/    200
 /Download                 /Download/                200

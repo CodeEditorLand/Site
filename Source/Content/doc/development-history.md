@@ -10,7 +10,7 @@ description:
 Architectural decisions that shaped Land's current design.
 Each entry follows the same structure: the problem that prompted the decision,
 the solution chosen, and why that solution was selected over alternatives. These
-decisions are stable — they reflect deliberate trade-offs, not accidents.
+decisions are stable - they reflect deliberate trade-offs, not accidents.
 
 ## ⏳ Bootstrap Stage Order: `RPCServer` Before `MountainConnection`
 
@@ -21,7 +21,7 @@ gives up after a 20-second budget. Because Cocoon's gRPC server was not yet
 listening when Mountain tried to connect, every boot ended with a connection
 timeout, leaving the extension host in a broken state.
 
-**Solution:** The bootstrap stage order was reversed — `RPCServer` now starts
+**Solution:** The bootstrap stage order was reversed - `RPCServer` now starts
 and binds port 50052 before `MountainConnection` attempts to reach Mountain. The
 Mountain-side connection budget was also extended from 20 seconds to 30 seconds,
 and the probe retry counts were reduced (10 → 3 max attempts, 15 → 5 max
@@ -40,7 +40,7 @@ symptom without fixing the sequencing bug.
 wait for state transitions. Examples included a 50 ms × 100-iteration loop
 waiting for extensions to finish scanning, a 50 ms loop waiting for a client
 connection, and a 100 ms loop waiting for a lifecycle phase. These loops added
-measurable startup latency — polling at 50 ms intervals over a 5-second window
+measurable startup latency - polling at 50 ms intervals over a 5-second window
 burns approximately 100 wake-ups per component, and there were more than ten
 such components.
 
@@ -61,7 +61,7 @@ from the critical boot path.
 
 **Problem:** At startup, Land scans all extension directories to build the
 manifest of installed extensions. On a machine with a typical set of built-in
-extensions, this live filesystem scan took approximately 1200 ms — a significant
+extensions, this live filesystem scan took approximately 1200 ms - a significant
 fraction of the total boot time and one that scaled with the number of installed
 extensions.
 
@@ -73,7 +73,7 @@ directory. At runtime, `LoadFromCache.rs` reads this pre-baked manifest in under
 the live scan only if the manifest is absent or invalid.
 
 **Why `beforeBundleCommand` and not `Build.sh`:** The hook must fire in every
-build path — direct `pnpm tauri build`, the `Build.sh` wrapper, and CI.
+build path - direct `pnpm tauri build`, the `Build.sh` wrapper, and CI.
 `Build.sh` is a convenience wrapper; placing pipeline-critical steps there means
 they are silently skipped when the build is invoked directly. `tauri.conf.json`
 is the authoritative build entry point for all paths.
@@ -87,7 +87,7 @@ TypeScript layer required reading both codebases simultaneously, which was slow
 and error-prone.
 
 **Solution:** The `TierIPC` environment variable was introduced with three
-values: `Mountain` (default — all calls go to Mountain's Tauri IPC), `Node` (all
+values: `Mountain` (default - all calls go to Mountain's Tauri IPC), `Node` (all
 calls route directly to Cocoon via `cocoon:request`), and `NodeDeferred`
 (Mountain first, Cocoon fallback on miss or undefined). The variable is read at
 runtime by both `Wind/Source/Service/TauriMainProcessService.ts` and
@@ -104,7 +104,7 @@ handles the rest.
 
 **Problem:** Cocoon's production bundle is compiled by esbuild with
 `drop: ["console"]` set in the build configuration. This option removes all
-`console.*` calls from the output bundle — which is correct behavior for
+`console.*` calls from the output bundle - which is correct behavior for
 production, since console output in a bundled Node.js process has no subscriber.
 However, when developer-facing diagnostic calls used `console.log`, they were
 silently dropped in production builds, making runtime failures invisible.

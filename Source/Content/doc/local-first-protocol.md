@@ -9,8 +9,8 @@ description:
 
 Land is designed so that every core editor function works without a network
 connection and without an account. All persistent state is stored on the local
-device using platform-native mechanisms. Optional cloud services — update
-delivery, authentication for specific extensions — are provided by the **Air**
+device using platform-native mechanisms. Optional cloud services - update
+delivery, authentication for specific extensions - are provided by the **Air**
 daemon and the WebSite, but the editor starts, edits files, runs extensions, and
 saves state entirely offline. The local-first design is
 implemented as follows and has specific implications for extension developers.
@@ -79,10 +79,10 @@ remains local-only.
 The **Air** daemon provides optional services that the editor does not depend on
 for core function:
 
-- **Update delivery** — Air checks for new Land releases and downloads update
+- **Update delivery** - Air checks for new Land releases and downloads update
   packages. If Air is not running, the editor continues to work; no update
   prompt appears.
-- **Authentication** — Air can broker OAuth tokens for extensions that integrate
+- **Authentication** - Air can broker OAuth tokens for extensions that integrate
   with Editor.Land accounts. Extensions requiring GitHub OAuth or other
   third-party OAuth (Copilot, GitHub Pull Requests) still require their own auth
   flows, which are not currently implemented in the core editor.

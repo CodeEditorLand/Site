@@ -38,29 +38,29 @@ reference page.
 The following areas have known gaps and will not function correctly in the
 current release:
 
-**`vscode.authentication` full OAuth flows** — The `getSession()` call returns
+**`vscode.authentication` full OAuth flows** - The `getSession()` call returns
 stubs. Extensions that require GitHub OAuth, Microsoft account sign-in, or any
 OAuth 2.0 provider (Copilot, GitHub Pull Requests, Live Share) will fail to
 authenticate. The API structure is present but there is no real OAuth backend
 wired.
 
-**`registerInlineCompletionItemProvider` (🟡 partial)** — The Vine proto
+**`registerInlineCompletionItemProvider` (🟡 partial)** - The Vine proto
 definition, Mountain dispatcher, and Sky `ILanguageFeaturesService`
 registration all exist. Single-item and list providers work for basic inline
 suggestions. Providers that return `InlineCompletionList` with
 `suppressSuggestions` or custom range objects may not render correctly in all
 configurations.
 
-**Debug adapter types** — `DebugProvider` handles `executable`-type debug
+**Debug adapter types** - `DebugProvider` handles `executable`-type debug
 configurations (launching a child process). Server-mode and pipe-mode debug
 adapters (`attach` type with `debugServer` or `pipeTransport`) are not delegated
 correctly.
 
-**`registerWebviewPanelSerializer`** — Panel state is not persisted across
+**`registerWebviewPanelSerializer`** - Panel state is not persisted across
 reloads. Extensions that restore webview panels after a window reload will not
 recover their state.
 
-**`vscode.env.openExternal` with non-file schemes** — Works for `http`/`https`
+**`vscode.env.openExternal` with non-file schemes** - Works for `http`/`https`
 URLs via the native open handler; custom scheme URIs may not route correctly on
 all platforms.
 
@@ -68,14 +68,14 @@ all platforms.
 
 The following `ExtensionContext` members are fully implemented in Land:
 
-| Member                        | Backing implementation                                          |
-| ----------------------------- | --------------------------------------------------------------- |
-| `context.workspaceState`      | Mountain `storage:get` / `storage:set` IPC                      |
-| `context.globalState`         | Mountain `storage:get` / `storage:set` IPC                      |
-| `context.secrets.get`         | Mountain `encryption:decrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.store`       | Mountain `encryption:encrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.delete`      | Mountain `storage:set` with empty string value                   |
-| `context.extension.exports`   | Set after the activation function resolves                      |
+| Member                      | Backing implementation                                          |
+| --------------------------- | --------------------------------------------------------------- |
+| `context.workspaceState`    | Mountain `storage:get` / `storage:set` IPC                      |
+| `context.globalState`       | Mountain `storage:get` / `storage:set` IPC                      |
+| `context.secrets.get`       | Mountain `encryption:decrypt` (AES-256-GCM, machine-stable key) |
+| `context.secrets.store`     | Mountain `encryption:encrypt` (AES-256-GCM, machine-stable key) |
+| `context.secrets.delete`    | Mountain `storage:set` with empty string value                  |
+| `context.extension.exports` | Set after the activation function resolves                      |
 
 Secret storage uses AES-256-GCM encryption keyed from the machine UUID (SHA-256
 hash). Secrets stored by one extension cannot be read by another and do not

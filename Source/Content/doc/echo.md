@@ -9,7 +9,7 @@ description:
 ---
 
 Echo is a bounded work-stealing task scheduler written in Rust. It is not a
-separate process — it is a library embedded directly inside Mountain's binary.
+separate process - it is a library embedded directly inside Mountain's binary.
 When Mountain needs to dispatch parallel work, it submits tasks to Echo's worker
 pool rather than spawning child processes or relying on tokio's default
 scheduler alone.
@@ -62,9 +62,9 @@ When a thread finishes its own queue, it steals tasks from the back of a busy
 thread's queue rather than waiting idle. This keeps all available CPU cores busy
 without a central dispatcher becoming a bottleneck under uneven load.
 
-The practical effect is that a batch of independent tasks — reading 200 files
+The practical effect is that a batch of independent tasks - reading 200 files
 for a search, computing symbol indexes across a workspace, processing extension
-manifests — completes faster than sequential dispatch and saturates available
+manifests - completes faster than sequential dispatch and saturates available
 cores without the caller managing thread lifetimes manually.
 
 Each worker thread maintains:
@@ -108,14 +108,14 @@ compete with extension event handlers on that same loop.
 
 Because Echo runs inside Mountain's Rust binary, background work dispatched
 through Echo runs on native threads completely outside the Node.js event loop.
-Cocoon's extension fibres and Echo's worker pool are independent schedulers — a
+Cocoon's extension fibres and Echo's worker pool are independent schedulers - a
 saturated Echo pool does not delay Cocoon's extension activations, and a slow
 extension does not delay Echo's background tasks.
 
 ## Priority System
 
 Tasks are classified into three priority tiers. Each worker thread maintains a
-triple of deques — one per priority — and always drains the highest non-empty
+triple of deques - one per priority - and always drains the highest non-empty
 deque first.
 
 | Priority   | Use Case                                              | Deployment                               |

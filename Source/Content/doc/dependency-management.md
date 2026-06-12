@@ -23,9 +23,9 @@ protocol:
 
 ```json
 {
-    "dependencies": {
-        "@codeeditorland/common": "workspace:*"
-    }
+	"dependencies": {
+		"@codeeditorland/common": "workspace:*"
+	}
 }
 ```
 
@@ -42,7 +42,7 @@ protocol:
    `pnpm add -D <package-name>` for a dev dependency.
 3. Verify the entry in `package.json` is correct, then run `pnpm install` from
    the repo root to update the lockfile.
-4. Stage `package.json` and `pnpm-lock.yaml` by name — never `git add .`.
+4. Stage `package.json` and `pnpm-lock.yaml` by name - never `git add .`.
 
 ### VS Code Editor Submodule
 
@@ -62,7 +62,7 @@ Node 24 compile steps.
 3. If the crate requires a fork or a pinned unreleased commit, add a
    `[patch.crates-io]` entry in the workspace root `Cargo.toml`.
 4. Run `cargo build -p <element-name>` to verify it compiles. Do not run a full
-   workspace build unless needed — the Maintain crate does not require
+   workspace build unless needed - the Maintain crate does not require
    rebuilding when only source files change.
 
 ### The 51 Active `[patch.crates-io]` Redirects
@@ -70,11 +70,11 @@ Node 24 compile steps.
 The workspace `Cargo.toml` contains 51 active `[patch.crates-io]` entries.
 These exist for one of three reasons:
 
-| Reason                                           | Example              |
-| ------------------------------------------------ | -------------------- |
-| Pinned fork for Tauri 2.x compatibility          | `wry`, `tao`         |
-| Unreleased upstream fix not yet on crates.io      | gRPC transport fixes |
-| Land-specific patch applied to upstream source    | Asset scheme handler |
+| Reason                                         | Example              |
+| ---------------------------------------------- | -------------------- |
+| Pinned fork for Tauri 2.x compatibility        | `wry`, `tao`         |
+| Unreleased upstream fix not yet on crates.io   | gRPC transport fixes |
+| Land-specific patch applied to upstream source | Asset scheme handler |
 
 > [!WARNING]
 > Do not remove `[patch.crates-io]` entries without verifying that the

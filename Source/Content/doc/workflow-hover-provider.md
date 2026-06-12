@@ -13,6 +13,60 @@ flows Sky → Wind → Mountain → Cocoon → extension → back the same way. 
 acts as the broker that maps language selectors to provider handles and routes
 requests to the correct sidecar.
 
+```mermaid
+sequenceDiagram
+    participant Ext as Extension<br/>(in Cocoon)
+    participant Cocoon as Cocoon<br/>(Extension Host)
+    participant Mountain as Mountain<br/>(Native Backend)
+    participant Wind as Wind<br/>(VSCode UI)
+    participant UI as Monaco Editor<br/>(User Interface)
+
+    Note over Ext,UI: Phase 1: Registration
+    Ext->>Cocoon: vscode.languages.registerHoverProvider()
+    activate Cocoon
+    Cocoon->>Cocoon: Store provider with unique handle
+    Cocoon->>Mountain: $registerHoverProvider gRPC request
+    activate Mountain
+    Mountain->>Mountain: Create ProviderRegistrationDto
+    Mountain->>Mountain: Store in AppState.LanguageProviders
+    deactivate Mountain
+    deactivate Cocoon
+
+    Note over Ext,UI: Phase 2: User Hover Request
+    UI->>Wind: User hovers over word
+    activate Wind
+    Wind->>Wind: Monaco hover controller triggers
+    Wind->>Wind: LanguageFeaturesService.getHover()
+    Wind->>Mountain: TauriInvoke mountain://language-feature/provide-hover
+    deactivate Wind
+
+    Note over Ext,UI: Phase 3: Host Orchestration
+    activate Mountain
+    Mountain->>Mountain: Query AppState for "mylang" providers
+    Mountain->>Cocoon: $provideHover gRPC request<br/>(handle, URI, position)
+    activate Cocoon
+
+    Note over Ext,UI: Phase 4: Extension Execution
+    Cocoon->>Cocoon: Lookup provider by handle
+    Cocoon->>Ext: Call provider.provideHover()
+    activate Ext
+    Ext-->>Cocoon: Return Hover object {contents: ['Hello World']}
+    deactivate Ext
+    Cocoon->>Cocoon: Serialize to HoverResultDto
+    Cocoon-->>Mountain: Return HoverResultDto
+    deactivate Cocoon
+
+    Note over Ext,UI: Phase 5: UI Update
+    Mountain-->>Wind: Return hover data
+    deactivate Mountain
+    activate Wind
+    Wind->>UI: Pass hover data to Monaco controller
+    UI->>UI: Render tooltip widget
+    deactivate Wind
+```
+
+---
+
 ## Phase 1 - Extension registration (Cocoon → Mountain)
 
 1. The extension is activated by Cocoon. Its `activate()` function runs and
@@ -35,6 +89,13 @@ requests to the correct sidecar.
    and stores it in `AppState.LanguageProviders`. Mountain now knows which
    sidecar owns which provider for which language.
 
+| Step | Component | File                                                                  |
+| ---- | --------- | --------------------------------------------------------------------- |
+| 1    | Cocoon    | `Cocoon/src/Core/ExtensionHost.ts`                                    |
+| 2    | Cocoon    | `Cocoon/src/Service/LanguageFeatures.ts`                              |
+| 3    | Mountain  | `Mountain/Source/Vine/server/MountainVineGrpcService.rs`              |
+| 4    | Mountain  | `Mountain/Source/Environment/LanguageFeatureProvider/Registration.rs` |
+
 ## Phase 2 - User hover request (Sky → Wind → Mountain)
 
 5. The user moves the mouse over a symbol in an editor showing a `"mylang"`
@@ -52,23 +113,39 @@ requests to the correct sidecar.
 
     This crosses the webview boundary and reaches Mountain's IPC dispatcher.
 
+| Step | Component | File                                                            |
+| ---- | --------- | --------------------------------------------------------------- |
+| 5    | Wind      | `Wind/src/vs/editor/common/services/languageFeaturesService.ts` |
+| 6    | Wind      | `Wind/src/vs/platform/editor/common/editorService.ts`           |
+
 ## Phase 3 - Mountain orchestrates the request (Mountain → Cocoon)
 
-7. Mountain's `LanguageFeatureProvider.ProvideHover()` queries
+7. Mountain's `ProtocolLogic.HandleCustomUriSchemeRequest()` receives the
+   `mountain://language-feature/provide-hover` request and dispatches it to
+   the `track` module, which creates the `LanguageFeature::ProvideHover`
+   effect.
+
+8. `LanguageFeatureProvider.ProvideHover()` queries
    `AppState.LanguageProviders` for all registered hover providers matching the
    document's language (`"mylang"`). It finds handle `123` belonging to
    `"cocoon-main"`.
 
-8. Mountain sends a **`$provideHover` gRPC request** to Cocoon with the
+9. Mountain sends a **`$provideHover` gRPC request** to Cocoon with the
    document URI, cursor position, and provider handle `123`.
+
+| Step | Component | File                                                                    |
+| ---- | --------- | ----------------------------------------------------------------------- |
+| 7    | Mountain  | `Mountain/Source/handlers/protocol/ProtocolLogic.rs`                    |
+| 8-9  | Mountain  | `Mountain/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs` |
 
 ## Phase 4 - Extension execution (Cocoon)
 
-9. Cocoon's gRPC server dispatches the request to the language provider handler,
-   which looks up handle `123` in its local map and retrieves the original
-   `provider` object.
+10. Cocoon's gRPC server (`Cocoon/src/Service/Ipc/Server.ts`) receives the
+    `$provideHover` request and dispatches it to the language provider handler,
+    which looks up handle `123` in its local map and retrieves the original
+    `provider` object.
 
-10. The handler calls:
+11. The handler calls:
 
     ```ts
     provider.provideHover(document, position, token);
@@ -77,18 +154,29 @@ requests to the correct sidecar.
     The extension's code executes and returns a `Hover` object, e.g.
     `{ contents: ["Hello World"] }`.
 
-11. The handler serialises the result into a `HoverResultDto` via `TypeConverter`
+12. The handler serialises the result into a `HoverResultDto` via `TypeConverter`
     and returns it to Mountain as the gRPC response.
+
+| Step  | Component | File                                                   |
+| ----- | --------- | ------------------------------------------------------ |
+| 10    | Cocoon    | `Cocoon/src/Service/Ipc/Server.ts`                     |
+| 11-12 | Cocoon    | `Cocoon/src/Service/LanguageFeatures/TypeConverter.ts` |
 
 ## Phase 5 - Result reaches the UI (Mountain → Wind → Sky)
 
-12. Mountain receives the `HoverResultDto`, serialises it, and sends it back as
+13. Mountain receives the `HoverResultDto`, serialises it, and sends it back as
     the response to the original `TauriInvoke` call from step 6.
 
-13. Wind's `getHover` Effect resolves. The service passes the `Hover` data to
+14. Wind's `getHover` Effect resolves. The service passes the `Hover` data to
     Monaco's hover controller.
 
-14. Monaco renders the tooltip widget on screen. The user sees the hover card.
+15. Monaco renders the tooltip widget on screen. The user sees the hover card.
+
+| Step | Component | File                                                                    |
+| ---- | --------- | ----------------------------------------------------------------------- |
+| 13   | Mountain  | `Mountain/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs` |
+| 14   | Wind      | `Wind/src/vs/editor/common/services/languageFeaturesService.ts`         |
+| 15   | Monaco    | Monaco Editor (embedded in Sky webview)                                 |
 
 ## Resolve methods
 

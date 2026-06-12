@@ -13,99 +13,167 @@ completes the `initExtensionHost` handshake, and the Wind workbench renders in
 the Tauri webview. The Mountain↔Cocoon handshake is the hard ordering constraint
 that gates extension activation; everything else proceeds in parallel.
 
-## Phase 1 - Mountain native startup
+This is the foundational workflow that enables all others. Once the handshake
+completes and the workbench paints its first frame, the system is ready for user
+interaction and all dependent workflows — opening files, executing commands,
+language features — can proceed.
 
-1. The OS launches the Mountain binary. `Binary/Main/Entry.rs` creates Tauri's
-   `Builder` and configures the `.setup()` hook.
+```mermaid
+sequenceDiagram
+    participant User as User
+    participant Mountain as Mountain (Native Backend)
+    participant Cocoon as Cocoon (Extension Host)
+    participant VSCode as VSCode (Workbench UI)
 
-2. Inside `.setup()`, Mountain constructs `AppState` and the
-   `MountainEnvironment` (which implements every `Common` trait), wraps both in
-   an `AppRuntime`, and spawns a Tokio background task for post-setup work.
+    User->>Mountain: Launch Application
+    activate Mountain
+    Mountain->>Mountain: Create AppState & AppRuntime
+    Mountain->>Mountain: Load Configuration
+    Mountain->>Mountain: Scan Extensions
+    Mountain->>Mountain: Start gRPC Server
+    Mountain->>Cocoon: Spawn Node.js Process (bootstrap-fork.js)
+    deactivate Mountain
 
-3. The background task runs four steps in strict order:
-    1. **`InitializeConfiguration`** - reads all `settings.json` files from disk
+    activate Cocoon
+    Cocoon->>Mountain: $initialHandshake gRPC notification
+    deactivate Cocoon
+
+    activate Mountain
+    Mountain->>Mountain: Gather InitData from AppState
+    Mountain->>Cocoon: initExtensionHost gRPC request
+    deactivate Mountain
+
+    activate Cocoon
+    Cocoon->>Cocoon: Create InitDataLayer
+    Cocoon->>Cocoon: Run FullAppInitialization
+    Cocoon->>Cocoon: Install RequireInterceptor
+    Cocoon->>Cocoon: Activate Startup Extensions
+    deactivate Cocoon
+
+    User->>VSCode: Open Window (index.html)
+    activate VSCode
+    VSCode->>VSCode: Preload.ts shims window.vscode
+    VSCode->>VSCode: Create AppLayer Services
+    VSCode->>VSCode: Instantiate Workbench
+    VSCode->>VSCode: Render UI Parts (Activity Bar, Sidebar, etc.)
+    deactivate VSCode
+
+    Note over Mountain,Cocoon: System Ready for User Interaction
+```
+
+## Phase 1 — Mountain native startup
+
+1. The OS launches the Mountain binary. The `main` function in
+   `Binary/Main/Entry.rs` creates Tauri's `Builder` and configures the
+   `.setup()` hook. Inside the hook, the central `AppState` is created and
+   managed by Tauri, the `MountainEnvironment` (which implements every `Common`
+   trait) is created, the `AppRuntime` (the engine for running effects) is
+   created wrapping the environment, and a Tokio background task is spawned for
+   post-setup work.
+
+2. Inside the background task, four steps run in strict order:
+    1. **`InitializeConfiguration`** — reads all `settings.json` files from disk
        into `AppState.Configuration`.
 
-    2. **`ExtensionManagement`** - walks extension roots and loads manifests into
-       `AppState.Extensions`. If a pre-baked `extensions.manifest.json` exists
-       (written by `Maintain/Build/Manifest/PreBake.ts` during the build's
+    2. **`ExtensionManagement`** — walks extension roots and loads manifests into
+       `AppState.Extensions`. If a pre-baked `extensions.manifest.json` exists on
+       disk (written by `Maintain/Build/Manifest/PreBake.ts` during the build's
        `beforeBundleCommand`), this step completes in under 50 ms. On first boot
-       or when the cache is absent, a parallel `join_all` live scan runs
-       (~1200 ms) and caches the result for subsequent launches.
+       or when the cache is absent, a parallel `join_all` live scan runs (~1200
+       ms) and caches the result for subsequent launches.
 
-    3. **`vine::server::Initialize`** - starts the Vine gRPC server (default
-       port 50051) and begins listening for connections.
+    3. **`vine::server::Initialize`** — starts the Vine gRPC server (default
+       port 50051) and begins listening for connections from Cocoon.
 
-    4. **`InitializeCocoon`** (`ProcessManagement/CocoonManagement.rs`) - spawns
-       the Node.js sidecar process:
+    4. **`InitializeCocoon`** (`ProcessManagement/CocoonManagement.rs`) — spawns
+       the Node.js sidecar process. It constructs a detailed environment that
+       includes `VSCODE_PARENT_PID`, so the child terminates automatically when
+       Mountain exits. The exact command is:
 
         ```bash
         node ./Element/Cocoon/Scripts/cocoon/bootstrap-fork.js
         ```
 
-        The child inherits `VSCODE_PARENT_PID` so it terminates automatically
-        when Mountain exits. Mountain then waits up to 30 seconds for Cocoon's
-        `$initialHandshake` gRPC notification.
+        Mountain then waits up to 30 seconds for Cocoon's `$initialHandshake`
+        gRPC notification.
 
-## Phase 2 - Cocoon bootstrap and handshake
+## Phase 2 — Cocoon bootstrap and handshake
 
 Cocoon's `Bootstrap.ts` runs seven stages in strict order:
 
-1. **Environment** - records Node.js version, platform, and architecture.
-2. **Configuration** - resolves `MOUNTAIN_GRPC_PORT` (50051) and
+1. **Environment** — records Node.js version, platform, and architecture.
+
+2. **Configuration** — resolves `MOUNTAIN_GRPC_PORT` (50051) and
    `COCOON_GRPC_PORT` (50052); populates `globalThis.__cocoonBootstrapConfig`
    and `globalThis.__LandTiers`.
-3. **RPCServer** - binds Cocoon's own gRPC server on port 50052. **This must
+
+3. **RPCServer** — binds Cocoon's own gRPC server on port 50052. **This must
    complete before Mountain's 30-second connection budget expires.**
-4. **ModuleInterceptor** - installs the `require()` interceptor, remapping
+
+4. **ModuleInterceptor** — installs the `require()` interceptor, remapping
    `electron` to Tauri stubs and patching VS Code bundle loading.
-5. **MountainConnection** - TCP-probes Mountain on port 50051, opens the gRPC
+
+5. **MountainConnection** — TCP-probes Mountain on port 50051, opens the gRPC
    channel, and sends the **`$initialHandshake` notification** to signal
    readiness.
-6. **Extensions** - activates enabled extensions concurrently (up to 8 in
+
+6. **Extensions** — activates enabled extensions concurrently (up to 8 in
    parallel). Extension activation uses topological ordering: if extension A
    declares `extensionDependencies: ["B"]`, extension B activates first. An
    `InProgress` set prevents circular dependency deadlocks.
-7. **HealthCheck** - optional final service health sweep.
+
+7. **HealthCheck** — optional final service health sweep.
 
 Between stages 5 and 6, Mountain responds to the handshake:
 
 - Mountain receives `$initialHandshake` and calls
   `ProcessManagement/InitializationData.rs`, which assembles the full
   `ISandboxConfiguration` + `IExtensionHostInitData` payload: workspace roots,
-  extension list, configuration state, profiles, `dataFolderName` (primary crash
-  source when missing), `perfMarks`, `loggers`, `colorScheme`, `mainPid`, and
-  OS metadata.
-- Mountain sends the **`initExtensionHost` gRPC request** back to Cocoon.
-- Cocoon's handler fires: deserialises the payload into an `InitDataLayer`,
-  runs `FullAppInitialization`, resolves the `ExtensionHostProvider`, and
-  installs the `RequireInterceptor` so every `require('vscode')` returns the
-  Cocoon shim. Then stage 6 (Extensions) proceeds.
+  extension list, configuration state, profiles, `dataFolderName` (a primary
+  crash source when missing), `perfMarks`, `loggers`, `colorScheme`, `mainPid`,
+  and OS metadata.
 
-## Phase 3 - Wind workbench launch
+- Mountain sends the **`initExtensionHost` gRPC request** back to Cocoon,
+  containing this initialization payload.
+
+- Cocoon's handler fires: it uses the payload to create and provide the
+  `InitDataLayer`, runs `FullAppInitialization`, resolves the
+  `ExtensionHostProvider`, installs the `RequireInterceptor` so every
+  `require('vscode')` returns the Cocoon shim, and activates startup extensions
+  (`*` activation event). At this point, workflows like Language Features and
+  Webviews can begin, as extensions register their providers.
+
+## Phase 3 — Wind workbench launch
 
 These steps run in parallel with Phase 2, starting from the moment Tauri opens
 the main window.
 
-1. Tauri loads `index.html` in the webview. `Wind/Source/Preload.ts` executes
-   first, shimming `window.vscode` with Tauri-backed implementations for
-   `ipcRenderer` and `process`. This shim is what allows the VS Code workbench
-   code to run in a non-Electron context.
+1. Tauri loads `index.html` in the webview (built by
+   `Sky/Source/pages/Mountain.astro`). `Wind/Source/Preload.ts` executes first,
+   shimming `window.vscode` with Tauri-backed implementations for `ipcRenderer`
+   and `process`. This shim is what allows the VS Code workbench code to run in
+   a non-Electron context.
 
 2. The main Wind entry script waits for DOM ready, then composes the
-   `AppLayer` - an Effect-TS `Layer` providing every Wind service:
+   `AppLayer` — an Effect-TS `Layer` providing every Wind service:
    `LiveClipboardService`, `LiveDialogService`, `LiveEditorService`, and all
    the rest.
 
 3. The layer is converted to a Runtime and the VS Code `Workbench` is
-   instantiated via `new Workbench(...)`. `Workbench.startup()` creates every
-   UI part - Activity Bar, Status Bar, Side Bar, Editor Part - and begins
-   requesting data from Wind services, which in turn invoke Mountain IPC for
-   filesystem reads, command lists, and configuration values.
+   instantiated via `new Workbench(...)`. `Workbench.startup()` kicks off the
+   entire UI rendering lifecycle, creating every UI part — Activity Bar, Status
+   Bar, Side Bar, Editor Part — and begins requesting data from Wind services,
+   which in turn invoke Mountain IPC for filesystem reads, command lists, and
+   configuration values.
+
+4. As these parts are created, they trigger downstream workflows. For example,
+   the File Explorer uses `IFileService` to list directory contents (triggering
+   the Opening a File workflow), and the Command Palette uses
+   `ICommandService` (triggering the Executing a Command workflow).
 
 > [!IMPORTANT] The workbench's first meaningful paint depends on Mountain
 > returning the `InitializationData` payload promptly. Delays in the extension
-> scan (Phase 1 step 2) or the handshake round-trip (Phase 2 step 4) directly
-> delay first sidebar render. The pre-baked manifest and the RPCServer-before-
-> MountainConnection bootstrap ordering are the two changes that keep first
-> paint under 800 ms.
+> scan (Phase 1, step 2) or the handshake round-trip (Phase 2, stage 5)
+> directly delay first sidebar render. The pre-baked manifest and the
+> RPCServer-before-MountainConnection bootstrap ordering are the two changes
+> that keep first paint under 800 ms.

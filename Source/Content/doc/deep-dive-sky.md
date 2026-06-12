@@ -52,13 +52,13 @@ graph TB
 
 ### Layer Responsibilities
 
-- **Pages** — Astro route files that act as Tauri webview entry points. Each
+- **Pages** - Astro route files that act as Tauri webview entry points. Each
   page reads environment variables to select and load the appropriate workbench
   variant.
-- **Workbenches** — Composable layout components that assemble the VS Code-style
+- **Workbenches** - Composable layout components that assemble the VS Code-style
   editor shell. Variants exist for browser-only, Mountain-backed, Electron, and
   isolated modes.
-- **Functions** — Build-time debug utilities, shared runtime helpers, HTML meta
+- **Functions** - Build-time debug utilities, shared runtime helpers, HTML meta
   tag components, and base HTML layout skeleton components.
 
 ---
@@ -68,13 +68,13 @@ graph TB
 | Path                                             | Description                                                                  |
 | :----------------------------------------------- | :--------------------------------------------------------------------------- |
 | `Source/pages/index.astro`                       | Default entry point; reads environment variables to select workbench variant |
-| `Source/pages/Mountain.astro`                    | A2 workbench page — recommended production entry point                       |
+| `Source/pages/Mountain.astro`                    | A2 workbench page - recommended production entry point                       |
 | `Source/pages/Browser.astro`                     | A1 browser-only workbench page                                               |
 | `Source/pages/BrowserProxy.astro`                | A1 browser workbench with services proxy                                     |
 | `Source/pages/Electron.astro`                    | A3 workbench page with Electron polyfills                                    |
 | `Source/pages/Isolation.astro`                   | Isolated mode page for extension sandboxing                                  |
-| `Source/Workbench/Mountain.astro`                | A2 workbench component — loads VSCode UI with Mountain providers             |
-| `Source/Workbench/Browser.astro`                 | A1 workbench component — pure browser workbench                              |
+| `Source/Workbench/Mountain.astro`                | A2 workbench component - loads VSCode UI with Mountain providers             |
+| `Source/Workbench/Browser.astro`                 | A1 workbench component - pure browser workbench                              |
 | `Source/Workbench/BrowserProxy/Layout.astro`     | A1 layout with service proxy bootstrapping                                   |
 | `Source/Workbench/BrowserProxy/Bootstrap.ts`     | Initializes Effect-TS runtime and services for BrowserProxy                  |
 | `Source/Workbench/BrowserProxy/ServicesProxy.ts` | Service proxy implementation                                                 |

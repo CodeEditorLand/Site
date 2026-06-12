@@ -1,0 +1,163 @@
+---
+title: "Filesystem Footprint"
+section: "Reference"
+order: 0
+description: "Every host-filesystem location the editor reads or writes, mapped to its producing code, with cross-platform resolution and cleanup recipes."
+---
+
+# **Filesystem Footprint** 📂
+
+Every host-filesystem location the editor reads or writes, mapped to its
+producing code, with cross-platform resolution and cleanup recipes.
+
+**macOS** **Linux** **Windows**
+
+---
+
+## Why This Document Exists 🎯
+
+Both Land (Tauri shell + workbench wiring) and the bundled VS Code dependency
+are ours to modify. That means today's filesystem layout is incidental rather
+than required - the doc enumerates what we touch so future work on **cleanup**,
+**versioning**, **packaging**, and **encapsulation** has a single source of
+truth to start from. The minimum-effect-over-the-system goal demands knowing
+exactly where the side effects are.
+
+---
+
+## The Four Ownership Domains 🗺️
+
+| Status | Domain                 | Owner             | Path family                              | Survives uninstall? |
+| :----- | :--------------------- | :---------------- | :--------------------------------------- | :------------------ |
+| 🟢     | Product dotfile        | Land code         | `~/.fiddee/`                             | yes (intentional)   |
+| 🟡     | Workbench userdata     | Bundled VS Code   | `<app_data_dir>/<bundle>/`               | yes (intentional)   |
+| 🔴     | Webview / OS state     | OS / WKWebView    | `<webview-storage>/`, plist, Saved State | yes (OS rules)      |
+| ⚪     | Build / temp / scratch | Toolchain / shell | `<tmp>/land-*`, `Element/*/Target/`      | no, but not pruned  |
+
+Three observations follow from this split and inform every sub-document:
+
+- The bundled VS Code expects a per-instance `app_data_dir`-style root
+  (settings, keybindings, profiles). Tauri's `PathResolver` resolves it per-OS -
+  so one tree per build profile, OS-specific leaf.
+- Land's own product state lives under `~/.fiddee/` (cross-OS), shared across
+  every build profile of the editor a user runs.
+- The webview half writes through the OS-native webview, so its persisted state
+  lands in OS-controlled directories. Land cannot rename those locations but can
+  configure what the webview writes into them.
+
+---
+
+## The Bundle-Identifier Story 🆔
+
+The Tauri `identifier` is the leaf segment of every per-bundle path. Today's
+identifiers encode each Maintain build profile's full configuration matrix into
+a single string:
+
+| Profile                  | Identifier                                                                                                                                           |
+| :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `debug-electron-bundled` | `land.editor.binary.development.node.environment.microsoft.vscode.dependency.node.22.bundle.clean.debug.electron.profile.esbuild.compiler.mountain`  |
+| `release`                | `land.editor.binary.production.node.environment.microsoft.vscode.dependency.node.22.bundle.clean.compile.electron.profile.esbuild.compiler.mountain` |
+| Browser variants         | `...browser.debug.mountain`, `...browser.mountain`, ...                                                                                              |
+
+Source of truth: `Element/Mountain/tauri.conf.json` (per-profile via Maintain
+templating).
+
+Two consequences:
+
+- A user who runs both debug and release accumulates two parallel per-bundle
+  trees - one tree of caches and logs per profile.
+- Mountain's `IPC/DevLog/AppDataPrefix.rs::DetectAppDataPrefix` does a runtime
+  `read_dir` of the OS `<app_data_dir>` looking for the directory whose name
+  starts with `land.editor.` and contains `mountain`. The match returns its own
+  bundle identifier - so when DevLog needs to write a session log, it discovers
+  the path rather than hard-coding it. This is what makes the editor robust
+  against identifier changes from Maintain regenerating `tauri.conf.json`.
+
+A shorter, stable bundle identifier (e.g. `cloud.fiddee.editor` or
+`editor.fiddee.binary`) would fold all profile-specific differences into a
+per-profile subdirectory and make uninstall a one-line `rm -rf`. Not done today.
+
+---
+
+## Document Index 📑
+
+The footprint splits across six focused documents. Read in order for a full
+tour, or jump to whichever matches the task at hand.
+
+| Document                                                                    | Topic                                                                                | Lines |
+| :-------------------------------------------------------------------------- | :----------------------------------------------------------------------------------- | :---- |
+| [`User Dotfile`](/Doc/filesystem-footprint/user-dotfile/)                   | `~/.fiddee/` tree, `~/.land/` legacy, cross-OS resolution, Cocoon-side mirror        | 160+  |
+| [`Platform Paths`](/Doc/filesystem-footprint/platform-paths/)               | Per-OS Library / XDG / AppData paths, OS-managed state, temp-dir conventions         | 280+  |
+| [`Per-Element`](/Doc/filesystem-footprint/per-element/)                     | Write-site index by Element (Mountain, Cocoon, Sky, Wind, Output, Air, SideCar, ...) | 240+  |
+| [`Environment Variables`](/Doc/filesystem-footprint/environment-variables/) | Path-shaping env vars catalogued by Element + role                                   | 180+  |
+| [`Cleanup`](/Doc/filesystem-footprint/cleanup/)                             | Per-OS cleanup recipes, archive pattern, what each `rm -rf` removes                  | 200+  |
+| [`Encapsulation`](/Doc/filesystem-footprint/encapsulation/)                 | Potential directions for compaction, versioning, self-uninstall, foreign-tool gating | 220+  |
+
+---
+
+## Cross-Cutting Observations 🔍
+
+- **Three log destinations.** Mountain session logs land in
+  `<app_data_dir>/<bundle>/logs/<ts>/Mountain.dev.log`; workbench logs live in
+  `<app_data_dir>/<bundle>/logs/window1/output_*`; per-extension logs in
+  `~/.fiddee/logs/<extId>/`. No central rotation, no max-size enforcement.
+  `Trace=all` debug sessions of ~200 MB compound quickly.
+- **Two userdata bases per profile.** `<app_data_dir>/<bundle>/` (Tauri,
+  per-profile, holds machine-id + workbench userdata) coexists with `~/.fiddee/`
+  (product, shared across profiles, holds extensions + per-extension storage).
+  "Wipe the app's state" requires touching both plus four OS-managed locations.
+- **Two extension roots.** `~/.fiddee/extensions/` (primary) and
+  `~/.land/extensions/` (legacy). Both scanned; only the former is written.
+- **Two FIDDEE roots.** Mountain owns `~/.fiddee/` (dotfile, lowercase). The
+  `Air` background daemon writes to `<config_dir>/FIDDEE/` (uppercase, under the
+  OS config root). Different conventions; same product. Reconciliation is a
+  Branch H encapsulation candidate.
+- **Two install identifiers.** `<app_data_dir>/<bundle>/machine-id.txt`
+  (Mountain UUID) is separate from the PostHog `distinctId` (Sky-side, lives in
+  webview localStorage). Analytics see two identities per install.
+- **Backup files accumulate.** Memento corruption recovery writes
+  `<state>.json.backup` and `<state>.json.corrupted.<YYYYMMDD_HHMMSS>` siblings
+  but never prunes them.
+- **Temp-dir leakage.** `<tmp>/land-zsh-integration-<pid>/` accumulates (one per
+  integrated-terminal launch); `<tmp>/vine_fallback.proto` is overwritten but
+  never removed.
+- **Cocoon writes inside the extension bundle dir**
+  (`~/.fiddee/extensions/<id>/.storage/`). Removing or version-bumping an
+  extension destroys that state - subtle, since Land's three other storage paths
+  (`extensionStorage`, `globalStorage`, `logs`) live outside the bundle and
+  would survive a reinstall.
+- **Bundle identifier explosion.** Each Maintain profile produces its own
+  per-bundle tree. A developer running debug, release, and a browser variant
+  accumulates three full sets.
+
+---
+
+## Related Documentation 📚
+
+- [Environment Variables](/Doc/configuration/) - the canonical
+  environment-variable registry. Cross-referenced from
+  the Environment Variables sub-document.
+- [Building](/Doc/building/) - Maintain build profiles and how they produce
+  the bundle identifiers enumerated above.
+- [Build Matrix](/Doc/build-matrix/) - the matrix of (profile, target, level)
+  combinations that map to bundle identifier suffixes.
+- [Application Startup and Handshake](/Doc/workflow/application-startup-and-handshake/)
+    - the boot sequence inside which `AppLifecycle::Dirs` runs.
+
+### Key source files 🦴
+
+| Concern                              | File                                                                              |
+| :----------------------------------- | :-------------------------------------------------------------------------------- |
+| Dotfile atom (Rust)                  | `Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs`         |
+| Dotfile atom (Cocoon TS mirror)      | `Element/Cocoon/Source/Platform/FiddeeRoot.ts`                                    |
+| Userdata seeder                      | `Element/Mountain/Source/Binary/Main/AppLifecycle.rs`                             |
+| Userdata base resolver               | `Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs` |
+| Bundle-identifier runtime discoverer | `Element/Mountain/Source/IPC/DevLog/AppDataPrefix.rs`                             |
+| Extension scan-path classifier       | `Element/Mountain/Source/ExtensionManagement/Scanner.rs::IsUserExtensionScanPath` |
+| Per-extension storage seeder         | `Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts`      |
+| Per-extension in-bundle storage      | `Element/Cocoon/Source/Services/Extension/Context.ts`                             |
+| Session log destination              | `Element/Mountain/Source/IPC/DevLog/WriteToFile.rs::ResolveLogDirectory`          |
+| Air daemon root                      | `Element/Air/Source/Updates/mod.rs` (uses `<config_dir>/FIDDEE/`)                 |
+
+Update this index and the relevant sub-document when adding any new path,
+renaming a leaf, or retiring a location.

@@ -5,20 +5,20 @@ order: 5
 description:
     Maintain is the build orchestrator for Land, providing shell scripts for
     debug and release builds, GritQL queries for automated refactoring, and a
-    turbo.json task graph — it does not need to be recompiled when changed.
+    turbo.json task graph - it does not need to be recompiled when changed.
 ---
 
 Maintain is the build orchestrator for the Land project. It coordinates shell
 scripts, a Rust CLI with embedded Rhai scripting, and a Turborepo task graph to
 produce deterministic builds across all Land elements. Unlike Mountain, Cocoon,
-or Rest, Maintain does not need to be recompiled when its source changes — it is
+or Rest, Maintain does not need to be recompiled when its source changes - it is
 a build wrapper, not a compiled artifact that runs inside the editor.
 
 ## What Maintain provides
 
 | Capability                | Description                                                                                                   |
 | :------------------------ | :------------------------------------------------------------------------------------------------------------ |
-| Shell script entry points | `Debug/Build.sh`, `Release/Build.sh`, `SignBundle.sh` — the commands developers and CI run                    |
+| Shell script entry points | `Debug/Build.sh`, `Release/Build.sh`, `SignBundle.sh` - the commands developers and CI run                    |
 | Rhai scripting engine     | Embedded `rhai` interpreter for flexible build logic and custom automation without shell portability concerns |
 | TOML / JSON5 editing      | Type-safe, non-lossy editing of `Cargo.toml` and `package.json` files via `toml_edit` and `json5`             |
 | turbo.json task graph     | Defines `globalEnv`, task dependencies, and parallel execution across all Land packages                       |
@@ -166,7 +166,7 @@ The primary entry points are shell scripts in `Element/Maintain/`:
 
 ## Why Maintain does not need rebuild
 
-Maintain's shell scripts are plain `sh` — they run directly on any POSIX system
+Maintain's shell scripts are plain `sh` - they run directly on any POSIX system
 without compilation. The Rust Maintain binary is a build helper CLI that is
 compiled once and cached; it does not run inside the editor at runtime. Changes
 to the shell scripts take effect immediately on the next invocation. Changes to
@@ -195,13 +195,13 @@ any element in the workspace.
 
 The `turbo.json` at the workspace root defines:
 
-- **`globalEnv`** — all PascalCase env vars (`BundleLevel`, `HotReload`,
+- **`globalEnv`** - all PascalCase env vars (`BundleLevel`, `HotReload`,
   `Watch`, `TierIPC`, etc.) that Turborepo passes through to child tasks
-- **Task dependencies** — which packages must build before others (e.g. Output
+- **Task dependencies** - which packages must build before others (e.g. Output
   must build before Sky)
-- **Parallel execution** — tasks with no declared dependencies run concurrently
+- **Parallel execution** - tasks with no declared dependencies run concurrently
   across CPU cores
-- **Cache keys** — inputs that, when changed, invalidate the Turborepo cache for
+- **Cache keys** - inputs that, when changed, invalidate the Turborepo cache for
   a task
 
 ## pnpm workspace management
@@ -209,7 +209,7 @@ The `turbo.json` at the workspace root defines:
 Maintain works within the pnpm workspace defined at `Land/package.json`. All
 TypeScript packages use the `workspace:` protocol for cross-package
 dependencies. Maintain's `Source/Build/JsonEdit.rs` handles non-lossy edits to
-`package.json` files when version bumps are required — it uses the `json5` crate
+`package.json` files when version bumps are required - it uses the `json5` crate
 to preserve comments and formatting that `JSON.parse` / `JSON.stringify` would
 destroy.
 
