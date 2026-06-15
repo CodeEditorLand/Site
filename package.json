@@ -125,7 +125,7 @@
 		"ulid": "3.0.2",
 		"vaul": "1.1.2",
 		"vite": "8.0.16",
-		"vitest": "4.1.8",
+		"vitest": "4.1.9",
 		"zod": "4.4.3"
 	},
 	"devDependencies": {
