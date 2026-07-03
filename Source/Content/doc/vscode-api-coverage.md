@@ -462,3 +462,11 @@ After each namespace migrates:
   wired end-to-end: Sky OSC 633 parser → `localPty:shellExecution{Start,End}` →
   Mountain fan-out → Cocoon `$acceptTerminalShellExecution{Start,End}` +
   `$acceptExecutedTerminalCommand` gRPC → Emitter events in Window namespace.
+
+
+---
+
+## See Also
+
+- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing

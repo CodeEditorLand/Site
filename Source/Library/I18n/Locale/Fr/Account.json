@@ -121,6 +121,10 @@
 			"title": "Cloud",
 			"subtitle": "Connectez-vous une fois et chaque appareil est synchronisé.\n\nL'état du workspace chiffré de bout en bout, jamais lisible en transit.",
 			"signIn": "Connexion sécurisée",
+			"emailLabel": "Email",
+			"emailPlaceholder": "name@example.com",
+			"passwordLabel": "Password",
+			"passwordPlaceholder": "Enter your password",
 			"feature": {
 				"sync": "Le workspace reste synchronisé sur chaque appareil",
 				"backup": "Sauvegarde cloud chiffrée de toutes les configurations",
@@ -197,6 +201,12 @@
 			"continueOkta": "Continuer avec Okta",
 			"continueAzure": "Continuer avec Azure AD",
 			"continueSAML": "Continuer avec SAML",
+			"oktaDomainLabel": "Okta Domain",
+			"oktaDomainPlaceholder": "your-org.okta.com",
+			"azureTenantLabel": "Azure AD Tenant ID",
+			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+			"samlMetadataLabel": "SAML Metadata URL",
+			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
 			"note": "OpenID Connect Discovery Assertions SAML 2.0 Provisionnement SCIM 2.0",
 			"feature": {
 				"okta": "Okta SSO une connexion déverrouille tout",

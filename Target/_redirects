@@ -9,7 +9,7 @@
 /Contact                  /Contact/Sale/            200
 /Contact/                 /Contact/Sale/            200
 
-# ── VARIANT REWRITES (200) - 612 rules ──
+# ── VARIANT REWRITES (200) - 616 rules ──
 # Case permutations, plurals, aliases → canonical content.
 /account                              /Account/                             200
 /ACCOUNT                              /Account/                             200
@@ -277,6 +277,8 @@
 /doc/configuration/                   /Doc/configuration/                   200
 /doc/contributing                     /Doc/contributing/                    200
 /doc/contributing/                    /Doc/contributing/                    200
+/doc/coverage                         /Doc/coverage/                        200
+/doc/coverage/                        /Doc/coverage/                        200
 /doc/deep-dive-air                    /Doc/deep-dive-air/                   200
 /doc/deep-dive-air/                   /Doc/deep-dive-air/                   200
 /doc/deep-dive-cocoon                 /Doc/deep-dive-cocoon/                200
@@ -337,6 +339,8 @@
 /doc/introduction/                    /Doc/introduction/                    200
 /doc/local-first-protocol             /Doc/local-first-protocol/            200
 /doc/local-first-protocol/            /Doc/local-first-protocol/            200
+/doc/low-level-shim                   /Doc/low-level-shim/                  200
+/doc/low-level-shim/                  /Doc/low-level-shim/                  200
 /doc/maintain                         /Doc/maintain/                        200
 /doc/maintain/                        /Doc/maintain/                        200
 /doc/mist                             /Doc/mist/                            200
@@ -670,6 +674,7 @@
 /Doc/common               /Doc/common/              200
 /Doc/configuration        /Doc/configuration/       200
 /Doc/contributing         /Doc/contributing/        200
+/Doc/coverage             /Doc/coverage/            200
 /Doc/deep-dive-air        /Doc/deep-dive-air/       200
 /Doc/deep-dive-cocoon     /Doc/deep-dive-cocoon/    200
 /Doc/deep-dive-common     /Doc/deep-dive-common/    200
@@ -700,6 +705,7 @@
 /Doc/installation         /Doc/installation/        200
 /Doc/introduction         /Doc/introduction/        200
 /Doc/local-first-protocol /Doc/local-first-protocol/ 200
+/Doc/low-level-shim       /Doc/low-level-shim/      200
 /Doc/maintain             /Doc/maintain/            200
 /Doc/mist                 /Doc/mist/                200
 /Doc/mountain             /Doc/mountain/            200

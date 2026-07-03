@@ -41,9 +41,9 @@ sequenceDiagram
     EDSP->>EDSP: Fire onWillSaveTextDocument
     EDSP->>PE: Event to extension
     PE->>PE: Calculate formatting edits
-    PE-->>EDSP: Promise&lt;TextEdit[]&gt;
+    PE-->>EDSP: Promise(TextEdit[])
     EDSP->>EDSP: Collect all extension edits
-    EDSP->>CIP: $participateInSave response<br/>TextEdit DTOs
+    EDSP->>CIP: $participateInSave response / TextEdit DTOs
     CIP-->>EHS: gRPC response
     EHS-->>WCF: TextEdit array
     WCF->>BES: Apply edits to document

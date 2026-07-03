@@ -617,7 +617,21 @@
 			"Geist Mono", ui-monospace, "SFMono-Regular", "SF Mono", Menlo,
 			Consolas, monospace;
 		--FontSerif: "Instrument Serif", Georgia, "Times New Roman", serif;
-	}
+
+		/* Shim Color System */
+		--land-shim-low: #FF6B35;
+		--land-shim-low-hover: #E85D26;
+		--land-shim-low-border: #D4491C;
+		--land-shim-low-bg: rgba(255, 107, 53, 0.08);
+		--land-shim-low-badge-bg: #FF6B35;
+		--land-shim-low-badge-text: #FFFFFF;
+		--land-shim-coverage: #2563EB;
+		--land-shim-coverage-hover: #1D4ED8;
+		--land-shim-coverage-border: #1E40AF;
+		--land-shim-coverage-bg: rgba(37, 99, 235, 0.08);
+		--land-shim-coverage-badge-bg: #2563EB;
+		--land-shim-coverage-badge-text: #FFFFFF;
+		}
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1244,4 +1258,26 @@
 		page-break-inside: avoid;
 		break-inside: avoid;
 	}
+}
+
+/* ── Mermaid diagrams ─────────────────────────────────── */
+.mermaid-diagram {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 1.5rem auto;
+	background: white;
+	border-radius: 6px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	padding: 1rem;
+}
+
+.dark .mermaid-diagram {
+	background: #1e1e1e;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.mermaid-diagram svg {
+	max-width: 100%;
+	height: auto;
 }

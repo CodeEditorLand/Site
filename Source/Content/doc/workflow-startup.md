@@ -200,3 +200,11 @@ the main window.
 > directly delay first sidebar render. The pre-baked manifest and the
 > RPCServer-before-MountainConnection bootstrap ordering are the two changes
 > that keep first paint under 800 ms.
+
+
+---
+
+## See Also
+
+- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing

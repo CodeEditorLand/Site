@@ -498,3 +498,11 @@ Only essential globals remain on `window.vscode` and `globalThis.__LandTiers`.
 ([Source/Open@Editor.Land](mailto:Source/Open@Editor.Land)) |
 [GitHub Repository](https://github.com/CodeEditorLand/Land) |
 [Report an Issue](https://github.com/CodeEditorLand/Land/issues)
+
+
+---
+
+## See Also
+
+- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing

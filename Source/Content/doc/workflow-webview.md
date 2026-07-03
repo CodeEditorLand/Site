@@ -17,16 +17,16 @@ Cocoon → Mountain → Sky path.
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Creating: Extension calls<br/>createWebviewPanel()
+    [*] --> Creating: Extension calls / createWebviewPanel()
 
     state Creating {
         [*] --> SendRequest
         SendRequest --> CreateDTO
         CreateDTO --> GRPCRequest
-        note right of GRPCRequest: $createWebviewPanel<br/>to Mountain
+        note right of GRPCRequest: $createWebviewPanel / to Mountain
     }
 
-    Creating --> Initialized: Mountain generates<br/>handle & emits event
+    Creating --> Initialized: Mountain generates / handle & emits event
 
     state Initialized {
         [*] --> ReceiveHandle
@@ -35,13 +35,13 @@ stateDiagram-v2
         note right of ReturnToExtension: Shim stores handle
     }
 
-    Initialized --> ContentSet: Extension sets<br/>webview.html
-    Initialized --> Active: Webview component<br/>created & visible
+    Initialized --> ContentSet: Extension sets / webview.html
+    Initialized --> Active: Webview component / created & visible
 
     state ContentSet {
         [*] --> SetHTML
         SetHTML --> GRPCSetHtml
-        note right of GRPCSetHtml: $setWebviewHtml<br/>to Mountain
+        note right of GRPCSetHtml: $setWebviewHtml / to Mountain
     }
 
     ContentSet --> Active: Webview renders HTML
@@ -59,17 +59,17 @@ stateDiagram-v2
         [*] --> UserClicks
         UserClicks --> PostMessage
         PostMessage --> TauriCommand
-        note right of TauriCommand: mountain://webview/on-message
+        note right of TauriCommand: mountain webview on-message
         TauriCommand --> GRPCNotify
-        note right of GRPCNotify: $onDidReceiveMessage<br/>to Cocoon
+        note right of GRPCNotify: $onDidReceiveMessage / to Cocoon
         GRPCNotify --> FireEvent
         FireEvent --> ExtensionHandler
-        note right of ExtensionHandler: Extension receives<br/>onDidReceiveMessage
+        note right of ExtensionHandler: Extension receives / onDidReceiveMessage
     }
 
     ReceivingMessages --> Active
 
-    Active --> Disposed: Extension disposes<br/>or user closes
+    Active --> Disposed: Extension disposes / or user closes
 
     state Disposed {
         [*] --> Cleanup
