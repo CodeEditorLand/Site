@@ -122,7 +122,7 @@
 			"subtitle": "Einmal anmelden und jedes Gerät ist synchron.\n\nWorkspace-Status Ende-zu-Ende verschlüsselt, nie im Transit lesbar.",
 			"signIn": "Sicher anmelden",
 			"emailLabel": "E-Mail",
-			"emailPlaceholder": "name@beispiel.de",
+			"emailPlaceholder": "name@example.com",
 			"passwordLabel": "Passwort",
 			"passwordPlaceholder": "Geben Sie Ihr Passwort ein",
 			"feature": {
@@ -202,11 +202,11 @@
 			"continueAzure": "Weiter mit Azure AD",
 			"continueSAML": "Weiter mit SAML",
 			"oktaDomainLabel": "Okta-Domain",
-			"oktaDomainPlaceholder": "ihre-org.okta.com",
-			"azureTenantLabel": "Azure AD Mandanten-ID",
+			"oktaDomainPlaceholder": "your-org.okta.com",
+			"azureTenantLabel": "Azure AD Tenant-ID",
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML-Metadaten-URL",
-			"samlMetadataPlaceholder": "https://ihr-idp.com/metadata.xml",
+			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
 			"note": "OpenID Connect Discovery SAML 2.0 Assertion SCIM 2.0 Benutzerbereitstellung",
 			"feature": {
 				"okta": "Okta SSO eine Anmeldung schaltet alles frei",
