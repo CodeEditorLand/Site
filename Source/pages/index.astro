@@ -13,6 +13,8 @@ const MetaDescription = T("meta.home.description", {
 	defaultValue:
 		"Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
 });
+
+const SiteUrl = Astro.site?.href ?? "";
 ---
 
 <Base Title={MetaTitle} Description={MetaDescription} lang="en">
@@ -26,7 +28,7 @@ const MetaDescription = T("meta.home.description", {
 				alternateName: "Land",
 				description:
 					"An open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
-				url: Astro.site?.href ?? "",
+				url: SiteUrl,
 				applicationCategory: "DeveloperApplication",
 				operatingSystem: "macOS, Windows, Linux",
 				offers: {
@@ -36,8 +38,8 @@ const MetaDescription = T("meta.home.description", {
 				},
 				license: "https://creativecommons.org/publicdomain/zero/1.0/",
 				softwareVersion: "Pre-release",
-				downloadUrl: `${Astro.site?.href ?? ""}Download`,
-				screenshot: `${Astro.site?.href ?? ""}Favicon/og-image.png`,
+				downloadUrl: `${SiteUrl}Download`,
+				screenshot: `${SiteUrl}Favicon/og-image.png`,
 				author: [
 					{
 						"@type": "Person",
@@ -47,7 +49,7 @@ const MetaDescription = T("meta.home.description", {
 					{
 						"@type": "Organization",
 						name: "Code Editor Land",
-						url: Astro.site?.href ?? "",
+						url: SiteUrl,
 					},
 					{
 						"@type": "Organization",
@@ -58,10 +60,10 @@ const MetaDescription = T("meta.home.description", {
 				publisher: {
 					"@type": "Organization",
 					name: "Code Editor Land",
-					url: Astro.site?.href ?? "",
+					url: SiteUrl,
 					logo: {
 						"@type": "ImageObject",
-						url: `${Astro.site?.href ?? ""}Favicon/favicon.svg`,
+						url: `${SiteUrl}Favicon/favicon.svg`,
 					},
 				},
 				featureList: [

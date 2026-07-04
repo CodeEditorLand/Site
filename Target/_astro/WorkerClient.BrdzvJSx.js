@@ -1,0 +1,1 @@
+var r=null;function e(){if(r)return r;{const e={success:!1,error:"Worker URLs not configured"},o=()=>Promise.resolve(e);return r=new Proxy({},{get:()=>new Proxy({},{get:()=>o})})}}export{e as t};

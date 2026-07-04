@@ -1,0 +1,1 @@
+var e={"sidebar.title":"Документация","sidebar.elements":"Елементи","sidebar.gettingStarted":"Начало"};export{e as default};

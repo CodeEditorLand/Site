@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["_astro/Staccato.BMd1mWKz.js","_astro/preload-helper.BKrGB7Js.js"])))=>i.map(i=>d[i]);
+import{t as e}from"./preload-helper.BKrGB7Js.js";if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){const t=await(await e(()=>import("./Staccato.BMd1mWKz.js"),__vite__mapDeps([0,1]))).default;t.Start();const a=()=>t.SeedSelector('[class*="Staccato"]'),o=()=>{"undefined"!=typeof requestIdleCallback?requestIdleCallback(a):setTimeout(a,0)};"complete"===document.readyState?o():window.addEventListener("load",o,{once:!0})}

@@ -18,4 +18,6 @@ if (!Result.success) {
 	);
 }
 
-export default Result.data satisfies Configuration as Configuration;
+const Resolved = Result.data satisfies Configuration;
+
+export default Resolved as Configuration;
