@@ -1,5 +1,5 @@
 ---
-title: Filesystem Footprint — Cleanup Recipes
+title: Filesystem Footprint - Cleanup Recipes
 section: "Reference"
 order: 5
 description:
@@ -97,9 +97,9 @@ What survives this recipe (intentional):
   different root than Mountain's). Add
   `rm -rf "$HOME/Library/Application Support/FIDDEE"` if you want to clear it
   too.
-- `~/Library/Logs/DiagnosticReports/<bundle>*.crash` — system-managed crash
+- `~/Library/Logs/DiagnosticReports/<bundle>*.crash` - system-managed crash
   reports. macOS prunes after 30 days.
-- `~/Library/Application Support/com.apple.AssistiveControl.editor.plist` — an
+- `~/Library/Application Support/com.apple.AssistiveControl.editor.plist` - an
   Apple system file matched by `*editor*` globs; not Land state.
 
 ---
@@ -153,7 +153,7 @@ What survives this recipe (intentional):
   `$XDG_DATA_HOME/FIDDEE/`. Add explicit removal if needed.
 - systemd-coredump entries under `/var/lib/systemd/coredump/`.
 - WebKitGTK storage on some distros may live under `$XDG_DATA_HOME/<bundle>/`
-  (already covered) but rare distros split it — verify with
+  (already covered) but rare distros split it - verify with
   `find $XDG_DATA_HOME -maxdepth 2 -iname "*land*"` if you suspect drift.
 
 ---
@@ -218,16 +218,16 @@ Cross-OS summary of what a complete cleanup touches.
 
 | Domain                       | What `rm -rf` clears                                        | What survives intentionally                                                                       |
 | :--------------------------- | :---------------------------------------------------------- | :------------------------------------------------------------------------------------------------ |
-| Product dotfile              | `~/.fiddee/` (extensions, storage, recents)                 | —                                                                                                 |
-| Workbench userdata           | `<app_data_dir>/<bundle>/` (machine-id, settings, profiles) | —                                                                                                 |
-| Workbench caches             | `<app_cache_dir>/<bundle>/`                                 | —                                                                                                 |
+| Product dotfile              | `~/.fiddee/` (extensions, storage, recents)                 | -                                                                                                 |
+| Workbench userdata           | `<app_data_dir>/<bundle>/` (machine-id, settings, profiles) | -                                                                                                 |
+| Workbench caches             | `<app_cache_dir>/<bundle>/`                                 | -                                                                                                 |
 | Webview storage              | `<webview-storage>/<bundle>/`                               | OS may retain encrypted credential store entries (keychain / Credential Manager / secret-service) |
-| OS-managed defaults          | `~/Library/Preferences/<bundle>.plist` and equivalents      | —                                                                                                 |
-| Saved app state              | `Saved Application State/<bundle>.savedState/`              | —                                                                                                 |
+| OS-managed defaults          | `~/Library/Preferences/<bundle>.plist` and equivalents      | -                                                                                                 |
+| Saved app state              | `Saved Application State/<bundle>.savedState/`              | -                                                                                                 |
 | Crash reports                | Land does not write these directly                          | OS-managed retention applies (macOS: 30 days; Linux: distro-dependent; Windows: per WER policy)   |
-| Air daemon                   | NOT touched by the recipes above                            | `<config_dir>/FIDDEE/`, `<data_local_dir>/FIDDEE/` — add explicit removal if needed               |
-| Foreign-tool dirs            | NOT touched by default                                      | `~/.claude/agents/`, `~/.copilot/agents/` — delete only if Land was sole creator                  |
-| Legacy `~/.land/extensions/` | yes (recipe targets this)                                   | —                                                                                                 |
+| Air daemon                   | NOT touched by the recipes above                            | `<config_dir>/FIDDEE/`, `<data_local_dir>/FIDDEE/` - add explicit removal if needed               |
+| Foreign-tool dirs            | NOT touched by default                                      | `~/.claude/agents/`, `~/.copilot/agents/` - delete only if Land was sole creator                  |
+| Legacy `~/.land/extensions/` | yes (recipe targets this)                                   | -                                                                                                 |
 | In-tree build artefacts      | `Element/*/Target/` (developer machines only)               | Source tree itself                                                                                |
 
 ---
@@ -243,7 +243,7 @@ crate, which delegates to:
 | 🐧 Linux   | Secret Service (`gnome-keyring` / `kwallet`) | yes                |
 | 🪟 Windows | Credential Manager                           | yes                |
 
-Land does not enumerate the keychain entries it creates — removal requires
+Land does not enumerate the keychain entries it creates - removal requires
 either:
 
 - `security delete-generic-password -s "<service>"` per entry (macOS).
@@ -317,10 +317,10 @@ This is an in-tree developer artefact; it is never written inside the installed
 
 ## See Also 📚
 
-- [User Dotfile](/Doc/filesystem-footprint-user-dotfile) — what's inside
+- [User Dotfile](/Doc/filesystem-footprint-user-dotfile) - what's inside
   `~/.fiddee/`.
-- [Platform Paths](/Doc/filesystem-footprint-platform-paths) — what's inside each
+- [Platform Paths](/Doc/filesystem-footprint-platform-paths) - what's inside each
   per-OS path.
-- [Per Element](/Doc/filesystem-footprint-per-element) — who wrote it.
-- [Encapsulation](/Doc/filesystem-footprint-encapsulation) — the self-uninstall
+- [Per Element](/Doc/filesystem-footprint-per-element) - who wrote it.
+- [Encapsulation](/Doc/filesystem-footprint-encapsulation) - the self-uninstall
   direction (§F).

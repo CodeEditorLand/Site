@@ -5,14 +5,14 @@ section: "Low-Level Shim"
 order: 500
 ---
 
-# 🟠 Low-Level Shim — Engine-Level Interception
+# 🟠 Low-Level Shim - Engine-Level Interception
 
-> **🟠 LOW-LEVEL SHIM** — JavaScript engine prototype monkey-patches
+> **🟠 LOW-LEVEL SHIM** - JavaScript engine prototype monkey-patches
 > **Tier gate**: `TierShim=Own` | `TierShim=Preempt`
 > **Color**: `#FF6B35` (Orange)
 > **Overhead**: <2% in production (sampled)
 
-The Low-Level Shim intercepts VS Code at the **JavaScript engine level** — before any
+The Low-Level Shim intercepts VS Code at the **JavaScript engine level** - before any
 service, any contribution, any extension has a chance to execute. It operates via
 prototype-level monkey-patches on VS Code's internal infrastructure classes.
 When active, it becomes the **first code to run** after `workbench.startup()` returns,
@@ -32,7 +32,7 @@ graph TD
         IS --> |"LandShimInit(instantiationService)"| INIT["Init.js"]
     end
 
-    subgraph "🟠 Low-Level Shim — 6 Hook Layers"
+    subgraph "🟠 Low-Level Shim - 6 Hook Layers"
         INIT --> |"TierShim=Own|Preempt"| L1
         INIT --> |"TierShim=Proxy|Replace"| AUDIT["ServiceCollection Audit 🔵"]
         INIT --> |"TierShim=Preempt"| PREEMPT["BrowserMain.open()"]
@@ -96,15 +96,15 @@ graph TD
 
 The architecture has three distinct planes:
 
-1. **Interception Plane** (🟠 orange) — The 6 prototype hooks that wrap VS Code internals
-2. **Diagnostics Plane** (🔵 blue) — `LandDiagnostics`, the unified ring-buffer tracer
-3. **Flush Plane** (🟣 purple) — Mountain dev log, OTLP traces, PostHog sampling
+1. **Interception Plane** (🟠 orange) - The 6 prototype hooks that wrap VS Code internals
+2. **Diagnostics Plane** (🔵 blue) - `LandDiagnostics`, the unified ring-buffer tracer
+3. **Flush Plane** (🟣 purple) - Mountain dev log, OTLP traces, PostHog sampling
 
 ---
 
 ## 🟠 Layer-by-Layer Deep Dive
 
-### L1: Error Handler — `ErrorHandlerProxy`
+### L1: Error Handler - `ErrorHandlerProxy`
 
 Intercepts `errorHandler.onUnexpectedError()`, the **single choke-point** for every
 unhandled error in VS Code. Any exception that bubbles up to the workbench's global
@@ -118,7 +118,7 @@ error boundary flows through this hook.
 import { recordErrorTrace } from "../Diagnostics/LandDiagnostics.js";
 
 const ErrorHandlerProxy = async (): Promise<void> => {
-    // Tier gate — only Own/Preempt
+    // Tier gate - only Own/Preempt
     if (__LandTier_Shim__ !== "Own" && __LandTier_Shim__ !== "Preempt") return;
 
     // Idempotency: globalThis marker prevents double-patching
@@ -146,25 +146,25 @@ const ErrorHandlerProxy = async (): Promise<void> => {
 
             // Pass through to original handler (never swallow errors)
             try { return originalOnUnexpectedError(error); }
-            catch { /* Absorb — original may panic but we already captured trace */ }
+            catch { /* Absorb - original may panic but we already captured trace */ }
         };
 
         errorHandler[marker] = true;
-    } catch { /* Non-fatal — shim must never crash the workbench */ }
+    } catch { /* Non-fatal - shim must never crash the workbench */ }
 };
 ```
 
 **Coverage**: 100% of unhandled errors. **Overhead**: 0% (error path is already an exception).
 
-### L2: Event Emitter — `EmitterFireProxy`
+### L2: Event Emitter - `EmitterFireProxy`
 
 Intercepts `Emitter.prototype.fire()`, the **single event dispatch mechanism** for all
 474 decorated services in VS Code. Every status bar update, SCM change, editor state
-transition, extension notification — all flow through this one prototype method.
+transition, extension notification - all flow through this one prototype method.
 
 ```typescript
 // From: Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts
-// The most performance-critical hook — sampled to <1% in production
+// The most performance-critical hook - sampled to <1% in production
 
 const SAMPLE_RATE = __LandTier_Shim__ === "Own" || __LandTier_Shim__ === "Preempt"
     ? (typeof __LandDevMode__ === "boolean" && __LandDevMode__) ? 1.0 : 0.01
@@ -183,7 +183,7 @@ function patchEmitterFire(Emitter: any, marker: string): void {
             const eventName = event && typeof event === "object" && "name" in event
                 ? String(event.name) : typeof event === "string" ? event : "";
 
-            // Check LandSwallowMap — if event should be silenced, drop it
+            // Check LandSwallowMap - if event should be silenced, drop it
             if (eventName && checkLandSwallowMap(eventName)) {
                 return; // VS Code listeners never fire
             }
@@ -198,7 +198,7 @@ function patchEmitterFire(Emitter: any, marker: string): void {
             }
         } catch { /* Tracing must not block dispatch */ }
 
-        // 🔥 HOT PATH — always call original
+        // 🔥 HOT PATH - always call original
         return originalFire.apply(this, arguments);
     };
 
@@ -210,10 +210,10 @@ function patchEmitterFire(Emitter: any, marker: string): void {
 path for approximate sampling threshold calculation. The `checkLandSwallowMap()` call is a fast prefix
 check (no regex) for high-frequency events like status bar updates and telemetry.
 
-### L3: Cancellation Chain — `CancellationProxy`
+### L3: Cancellation Chain - `CancellationProxy`
 
 Intercepts `CancellationTokenSource.prototype.cancel()` to record every cancellation with a
-stack trace. Cancellations are a primary source of async bugs — this hook provides forensic data
+stack trace. Cancellations are a primary source of async bugs - this hook provides forensic data
 for race conditions and dangling promise chains.
 
 ```typescript
@@ -243,7 +243,7 @@ function patchCancellation(CancellationTokenSource: any, marker: string): void {
 was created. Capturing the stack reveals the *trigger* for cancellation, not just the fact that it
 happened.
 
-### L4: Resource Lifecycle — `DisposableProxy`
+### L4: Resource Lifecycle - `DisposableProxy`
 
 Intercepts `DisposableStore.prototype.add()` and `dispose()` to track every disposable resource
 in the workbench. Each disposable is tagged with a unique ID and store identifier for leak detection.
@@ -289,7 +289,7 @@ function patchDisposableStore(DisposableStore: any, marker: string): void {
 **Leak detection**: When `dispose()` is not called but the `DisposableStore` goes out of scope,
 the `__landDisposableId` tags remain in the diagnostics buffer, revealing leaked resources.
 
-### L5: Async Scheduling — `AsyncProxy`
+### L5: Async Scheduling - `AsyncProxy`
 
 Intercepts `platform.setTimeout0()` (VS Code's zero-delay timer) and replaces it with a
 **batching scheduler** that coalesces rapid microtasks to reduce layout thrash.
@@ -338,7 +338,7 @@ function flushBatch(originalSetTimeout0: Function): void {
     batchQueue = [];
     batchFlushPending = false;
 
-    // Execute all callbacks inline — preserves microtask ordering
+    // Execute all callbacks inline - preserves microtask ordering
     for (let i = 0; i < batch.length; i++) {
         try { batch[i](); }
         catch { /* Individual callback failures must not break the batch */ }
@@ -351,7 +351,7 @@ function flushBatch(originalSetTimeout0: Function): void {
 - **Max batch=64**: Prevents unbounded growth under rapid-fire scheduling
 - **Trace every 128th**: Bitwise `& 0x7f` avoids modulo division on the hot path
 
-### L8: Performance Timing — `TimingProxy`
+### L8: Performance Timing - `TimingProxy`
 
 Intercepts the `StopWatch` class to record **microsecond-level** timing data. This hook
 wraps the constructor (via proxy), `stop()`, and `elapsed()` with high-resolution timestamps
@@ -439,10 +439,10 @@ This adds 5-8% total overhead but provides full visibility for debugging.
 
 | TierShim | Level Name | L1 Error | L2 Emitter | L3 Cancel | L4 Dispose | L5 Async | L8 Timing | Service Audit | Service Replace | BrowserMain |
 |----------|-----------|----------|------------|-----------|------------|----------|----------|---------------|-----------------|-------------|
-| `None` | 🟢 Off | — | — | — | — | — | — | — | — | — |
-| `Proxy` | 🔵 Audit | — | — | — | — | — | — | ✅ | — | — |
-| `Replace` | 🔵 Replace | — | — | — | — | — | — | ✅ | ✅ (telemetry) | — |
-| `Own` | 🟠 Own | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — |
+| `None` | 🟢 Off | - | - | - | - | - | - | - | - | - |
+| `Proxy` | 🔵 Audit | - | - | - | - | - | - | ✅ | - | - |
+| `Replace` | 🔵 Replace | - | - | - | - | - | - | ✅ | ✅ (telemetry) | - |
+| `Own` | 🟠 Own | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | - |
 | `Preempt` | 🟠 Preempt | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 **Key insight**: `TierShim=Proxy` activates only the 🔵 coverage tier (ServiceCollection audit).
@@ -462,9 +462,9 @@ at `Own` and above. `Preempt` additionally gives Land control of `BrowserMain.op
 | 5 | `Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts` | L4 | `vs/base/common/lifecycle.js` → `DisposableStore.prototype.add/dispose` | Resource lifecycle tracking |
 | 6 | `Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts` | L5 | `vs/base/common/platform.js` → `platform.setTimeout0()` | Async scheduling interception |
 | 7 | `Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts` | L8 | `vs/base/common/stopwatch.js` → `StopWatch.constructor/stop/elapsed` | Performance timing interception |
-| 8 | `Output/Source/Service/CEL/Land/Shim/Intercept/Index.ts` | — | — | Barrel export for all 6 proxies |
-| 9 | `Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts` | Diagnostics | — | Unified ring-buffer tracer with flush to Mountain |
-| 10 | `Output/Source/Service/CEL/Land/Shim/Index.ts` | — | — | Top-level barrel: Init + Diagnostics + Intercepts |
+| 8 | `Output/Source/Service/CEL/Land/Shim/Intercept/Index.ts` | - | - | Barrel export for all 6 proxies |
+| 9 | `Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts` | Diagnostics | - | Unified ring-buffer tracer with flush to Mountain |
+| 10 | `Output/Source/Service/CEL/Land/Shim/Index.ts` | - | - | Top-level barrel: Init + Diagnostics + Intercepts |
 | 11 | `Output/Source/Service/CEL/Null/Telemetry/Service.ts` | 🔵 Replace | `vs/platform/telemetry/common/telemetry.ts` | No-op telemetry service (all publicLog are void) |
 | 12 | `Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts` | 🔵 Replace | `vs/platform/extensionManagement/common/` | Offline extension gallery (empty results, reject downloads) |
 | 13 | `Output/Source/Service/CEL/Null/Update/Service.ts` | 🔵 Replace | `vs/platform/update/common/update.ts` | No-op update service (air-based updates only) |
@@ -498,13 +498,13 @@ sequenceDiagram
     Build->>Build: esbuild define: __LandTier_Shim__ = "Proxy"
     Build->>Build: tree-shake all code behind TierShim=None check
 
-    Note over WBS,Init: RUNTIME — workbench boot
+    Note over WBS,Init: RUNTIME - workbench boot
     WBS->>WBS: InstantiationService created
     WBS-->>Inj: returns instantiationService
     Inj->>Init: LandShimInit(instantiationService)
 
     alt TierShim = None
-        Init->>Init: No-op — all code dead
+        Init->>Init: No-op - all code dead
     else TierShim = Proxy
         Init->>Diag: wrapServiceCollectionForAudit(sc)
         Init->>Init: setInterval(flushAuditLog, 30s)
@@ -540,12 +540,12 @@ Each `import()` returns a Promise; `.catch(() => {})` ensures a failed import ne
 Every single hook follows a strict error absorption contract:
 
 ```typescript
-// THE CONTRACT — applied uniformly across all 6 hooks
+// THE CONTRACT - applied uniformly across all 6 hooks
 try {
     // 1. Try to patch the prototype
     patchThePrototype();
 } catch {
-    // 2. Never crash — shim failures are non-fatal
+    // 2. Never crash - shim failures are non-fatal
 }
 
 // Inside the patched function:
@@ -557,7 +557,7 @@ function patchedFunction(...args) {
         // 4. Tracing itself must not throw
     }
 
-    // 5. ALWAYS call the original (or return — never skip the original silently)
+    // 5. ALWAYS call the original (or return - never skip the original silently)
     return originalFunction.apply(this, arguments);
 }
 ```
@@ -603,7 +603,7 @@ sequenceDiagram
 
     Note over LD: On shutdown / forceFlush()
     LD->>Timer: clearInterval()
-    LD->>LD: flushAll() — final drain
+    LD->>LD: flushAll() - final drain
 ```
 
 **Ring buffer structure** (per category, max 512 entries):
@@ -661,7 +661,7 @@ sequenceDiagram
     participant Diag as LandDiagnostics
     participant Mtn as Mountain IPC
 
-    Note over User,Mtn: TierShim=Own — all 6 hooks active
+    Note over User,Mtn: TierShim=Own - all 6 hooks active
 
     User->>DOM: Click status bar "UTF-8"
     DOM->>StatusBar: onClick handler
@@ -681,7 +681,7 @@ sequenceDiagram
     DS->>Diag: recordDisposableTrace(action:"add", id:1247)
 
     StatusBar->>ST0: setTimeout0(() => updateLabel()) (L5 intercept)
-    ST0->>ST0: batchQueue.push(callback) — coalesced
+    ST0->>ST0: batchQueue.push(callback) - coalesced
     ST0->>SW: new StopWatch() for label render (L8 intercept)
 
     Note over Err: If anything threw...
@@ -716,7 +716,7 @@ Every hook follows a strict idempotency protocol using `globalThis` markers:
 const marker = "__LAND_SHIM_LOW_<HOOK_NAME>_PROXY__";
 
 // During import:
-if ((globalThis as any)[marker]) return;  // Already patched — skip
+if ((globalThis as any)[marker]) return;  // Already patched - skip
 
 // After successful patch:
 proto[marker] = true;  // Mark as patched
@@ -750,12 +750,12 @@ removed from production builds. **Zero bytes, zero runtime cost.**
 
 ## 🟠 Related Documentation
 
-- [Coverage / Telemetry](/doc/coverage) — The high-level application shim (🔵 blue)
-- [Architecture](/doc/architecture) — System architecture overview
-- [Deep Dive: Mountain](/doc/deep-dive-mountain) — Rust-side intercept infrastructure
-- [Environment Variables](/doc/configuration) — TierShim and TierSwallow* vars
-- [Build Pipeline](/doc/build-pipeline) — Output Transform injection
+- [Coverage / Telemetry](/doc/coverage) - The high-level application shim (🔵 blue)
+- [Architecture](/doc/architecture) - System architecture overview
+- [Deep Dive: Mountain](/doc/deep-dive-mountain) - Rust-side intercept infrastructure
+- [Environment Variables](/doc/configuration) - TierShim and TierSwallow* vars
+- [Build Pipeline](/doc/build-pipeline) - Output Transform injection
 
-⚠️ **EXPERIMENTAL** — This component operates at the JavaScript engine level.
+⚠️ **EXPERIMENTAL** - This component operates at the JavaScript engine level.
 Changes to VS Code's internal classes may require updates to these hooks.
 Production overhead: <2% with sampling. Zero overhead when `TierShim=None`.

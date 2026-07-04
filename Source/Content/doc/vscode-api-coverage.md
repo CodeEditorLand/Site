@@ -468,5 +468,5 @@ After each namespace migrates:
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing
+- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing

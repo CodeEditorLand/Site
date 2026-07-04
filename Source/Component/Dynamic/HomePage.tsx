@@ -60,7 +60,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 			Subtitle: T("home:hero.subtitle", {
 				defaultValue:
-					"A native code editor with the soul of VS Code — and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use.",
+					"A native code editor with the soul of VS Code - and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use.",
 			}),
 
 			PrimaryCta: {
@@ -285,7 +285,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Heavy editor work runs natively — not trapped in a web view. Window management, file I/O, and terminal IPC go straight through a Rust + Tauri services layer.",
+								"Heavy editor work runs natively - not trapped in a web view. Window management, file I/O, and terminal IPC go straight through a Rust + Tauri services layer.",
 						},
 					),
 				},
@@ -306,7 +306,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Your VS Code extensions run unmodified — no forks, no rewrites. A compatibility host speaks the VS Code extension API directly.",
+								"Your VS Code extensions run unmodified - no forks, no rewrites. A compatibility host speaks the VS Code extension API directly.",
 						},
 					),
 				},
@@ -333,7 +333,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Failures are typed, traceable, and cancellable — so the editor fails loudly in development instead of silently in production.",
+								"Failures are typed, traceable, and cancellable - so the editor fails loudly in development instead of silently in production.",
 						},
 					),
 				},
@@ -354,7 +354,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Tauri uses the OS WebView on each platform — no bundled Chromium. One codebase compiles to native macOS, Windows, and Linux packages.",
+								"Tauri uses the OS WebView on each platform - no bundled Chromium. One codebase compiles to native macOS, Windows, and Linux packages.",
 						},
 					),
 				},
@@ -381,7 +381,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Updates, indexing, signing, and health checks run in a persistent daemon — survives when the main window closes.",
+								"Updates, indexing, signing, and health checks run in a persistent daemon - survives when the main window closes.",
 						},
 					),
 				},
@@ -402,7 +402,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Fork it, ship it, build commercial products on top of it. The entire codebase is CC0 public domain — no attribution required, no compliance headaches.",
+								"Fork it, ship it, build commercial products on top of it. The entire codebase is CC0 public domain - no attribution required, no compliance headaches.",
 						},
 					),
 				},
@@ -634,7 +634,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 					Quote: T("home:architecture.air.description", {
 						defaultValue:
-							"Background daemon that runs independently — updates, indexing, signing, and health checks, all outside the main window.\n• Update downloads with staged atomic rollback\n• File indexing and symbol extraction\n• Cryptographic signing and authentication\n• Health monitoring with multi-level checks\n\nPrometheus-compatible metrics and distributed tracing with sampling.",
+							"Background daemon that runs independently - updates, indexing, signing, and health checks, all outside the main window.\n• Update downloads with staged atomic rollback\n• File indexing and symbol extraction\n• Cryptographic signing and authentication\n• Health monitoring with multi-level checks\n\nPrometheus-compatible metrics and distributed tracing with sampling.",
 					}),
 				},
 

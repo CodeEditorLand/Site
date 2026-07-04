@@ -9,7 +9,7 @@ description:
 ---
 
 SCM in Land is entirely extension-driven. The built-in Git extension in Cocoon
-owns all Git logic; Mountain provides two services it needs — a native
+owns all Git logic; Mountain provides two services it needs - a native
 filesystem stat for repository detection and a `GitProvider` that safely spawns
 `git` child processes. Mountain then brokers the resulting resource states to
 Sky via Tauri events.
@@ -95,7 +95,7 @@ flowchart TB
     style C4 fill:#e1ffe1
 ```
 
-## Phase 1 — Registration and repository detection (Cocoon → Mountain)
+## Phase 1 - Registration and repository detection (Cocoon → Mountain)
 
 1. On startup Cocoon activates the built-in Git extension. Its `activate()`
    function calls:
@@ -122,7 +122,7 @@ flowchart TB
     `tokio::fs::metadata`. A successful result confirms the workspace is a Git
     repository.
 
-## Phase 2 — Populating the SCM view (Cocoon → Mountain → Cocoon)
+## Phase 2 - Populating the SCM view (Cocoon → Mountain → Cocoon)
 
 4. The Git extension needs changed-file status. It cannot spawn `git` directly,
    so it calls Mountain's `vscode.git` API which maps to a **`$gitExec` gRPC
@@ -161,13 +161,13 @@ flowchart TB
     sky://scm/update-group  { providerId: "git", groupId: "Changes", resources: [...] }
     ```
 
-## Phase 3 — SCM view rendering (Sky)
+## Phase 3 - SCM view rendering (Sky)
 
 9. The SCM View component in Wind is listening for `sky://scm/update-group`. It
-   receives the resource DTOs, updates its state, and re-renders — the user sees
+   receives the resource DTOs, updates its state, and re-renders - the user sees
    the list of modified files (e.g. `M src/main.ts`).
 
-## Phase 4 — Diff view (Sky → Wind → Cocoon → Mountain)
+## Phase 4 - Diff view (Sky → Wind → Cocoon → Mountain)
 
 10. The user clicks a changed file in the SCM view. The click handler executes a
     command like `vscode.open` with a `git:` scheme URI encoding the HEAD
@@ -175,10 +175,10 @@ flowchart TB
 
 11. `EditorService` recognises the `git:` scheme and creates a `DiffEditorInput`
     with two sides:
-    - **Modified** — loaded from the workspace `file://` URI via
+    - **Modified** - loaded from the workspace `file://` URI via
       `IFileService.readFile()` (the standard read path described in
       [Opening a File](/Doc/workflow-open-file)).
-    - **Original** — requested from the `TextDocumentContentProvider` registered
+    - **Original** - requested from the `TextDocumentContentProvider` registered
       for `git:` by the Git extension in Cocoon.
 
 12. Cocoon's Git extension receives the content request for the `git:` URI and
@@ -209,7 +209,7 @@ properties:
 | `acceptInputCommand`   | `AcceptInputCommand`  | `{ acceptInputCommand: V }`  |
 
 Changes to `inputBox.value` in Cocoon must go through the `ScmProvider` service
-via the `$scm:updateSourceControl` call — direct DOM manipulation of the input
+via the `$scm:updateSourceControl` call - direct DOM manipulation of the input
 box will not propagate to the extension.
 
 When Mountain receives `$scm:updateSourceControl` it emits

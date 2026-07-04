@@ -15,7 +15,7 @@ description: "How the Extension Development Host model spawns a second isolated
 Extension tests in Land use the same Extension Development Host model as VS
 Code: a second, fully isolated Mountain+Cocoon pair is spawned specifically to
 run the test suite. The test Cocoon instance does not start a normal extension
-host — instead it executes the test runner script directly. The key
+host - instead it executes the test runner script directly. The key
 architectural detail is that `require('vscode')` inside the test files connects
 back to the **original Mountain instance**, so tests drive the real editor UI
 rather than a headless stub.
@@ -51,12 +51,12 @@ sequenceDiagram
     Main-->>Dev: Test results displayed
 ```
 
-## Phase 1 — Development mode launch
+## Phase 1 - Development mode launch
 
 1. **Extension manifest.** The extension being developed includes a `"test"`
    script in its `package.json`, for example:
    `"test": "node ./test/runTest.js"`. The extension also contributes a command
-   — e.g. `"command": "my-extension.runTests"` — that acts as the test runner
+   - e.g. `"command": "my-extension.runTests"` - that acts as the test runner
    entry point.
 
 2. **Launch with dev path.** The developer launches Mountain with a special
@@ -71,7 +71,7 @@ sequenceDiagram
    registers its commands, providers, and test runner entry point in the main
    window.
 
-## Phase 2 — Initiating the test run (Wind → Mountain)
+## Phase 2 - Initiating the test run (Wind → Mountain)
 
 4. **User action.** The developer opens the Command Palette (`Ctrl+Shift+P`)
    and executes a command such as "Run Tests". Mountain's Test Runner Service
@@ -80,17 +80,17 @@ sequenceDiagram
 
 5. **Construct arguments.** The Test Runner Service constructs a specialised
    set of arguments and environment variables for the new instance:
-    - `--extensionDevelopmentPath` — path to the extension under test.
-    - `--extensionTestsPath` — path to the test runner entry script (e.g.
+    - `--extensionDevelopmentPath` - path to the extension under test.
+    - `--extensionTestsPath` - path to the test runner entry script (e.g.
       `out/test/suite/index.js`).
-    - `VSCODE_IPC_HOOK_CLI` — environment variable that signals CLI test runner
+    - `VSCODE_IPC_HOOK_CLI` - environment variable that signals CLI test runner
       mode to Cocoon.
 
 6. **Spawn the test host.** The Test Runner Service spawns a new Mountain
    process with these arguments. This second instance is the **Extension
    Development Host**.
 
-## Phase 3 — Test host startup (Mountain test → Cocoon test)
+## Phase 3 - Test host startup (Mountain test → Cocoon test)
 
 7. **Detection.** The new Mountain instance starts up, detects the
    `--extension...` flags, and knows it is a test host. It launches its own
@@ -111,7 +111,7 @@ sequenceDiagram
 10. **Mocha execution.** The Mocha runner starts, loads the extension's test
     files (e.g. `my-extension.test.js`), and begins executing tests.
 
-## Phase 4 — Remote control of the main window (Cocoon test → Mountain main)
+## Phase 4 - Remote control of the main window (Cocoon test → Mountain main)
 
 11. **Lightweight vscode shim.** Each test file imports the `vscode` module:
 
@@ -129,7 +129,7 @@ sequenceDiagram
     A lightweight `RequireInterceptor` intercepts the `require('vscode')`
     / `import * as vscode` call. Instead of returning the normal Cocoon shim,
     it returns a thin client that connects back to the **original Mountain
-    instance's gRPC server** — the one the developer is looking at.
+    instance's gRPC server** - the one the developer is looking at.
 
 12. **gRPC command execution.** When a test calls
     `vscode.commands.executeCommand(...)`, the thin client sends a gRPC request
@@ -149,7 +149,7 @@ sequenceDiagram
     Each property access (`vscode.workspace.textDocuments`) is a gRPC call to
     main Mountain. The assert checks the live state of the editor window.
 
-## Phase 5 — Result reporting (Cocoon test → Mountain main → Wind)
+## Phase 5 - Result reporting (Cocoon test → Mountain main → Wind)
 
 14. **Completion.** The Mocha runner completes all tests. It aggregates the
     number of passes and failures, prints a summary to stdout, and exits with a
@@ -170,5 +170,5 @@ sequenceDiagram
 > [!IMPORTANT] Because tests drive the **main** Mountain instance, they execute
 > in the same process space as the live editor. A test that opens a file or
 > modifies editor state will visibly change the developer's window. Tests must
-> clean up after themselves — close documents, revert changes — or subsequent
+> clean up after themselves - close documents, revert changes - or subsequent
 > test runs may start with unexpected editor state.

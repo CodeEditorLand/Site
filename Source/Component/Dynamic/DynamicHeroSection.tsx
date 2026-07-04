@@ -219,7 +219,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				)}
 
 				{/* Title: Instrument Serif display. 400 weight, near-zero
-				 tracking and tight leading — the "fancy" high-contrast voice. */}
+				 tracking and tight leading - the "fancy" high-contrast voice. */}
 				<h1 className="StaccatoColorShift mx-auto max-w-4xl font-serif text-6xl font-normal leading-[0.95] tracking-[-0.01em] md:text-8xl lg:text-9xl">
 					{Title}
 					{Title && TitleHighlight ? " " : ""}
@@ -247,7 +247,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					Stack
 				</p>
 
-				{/* Tech stack — modern HUD grid (static, grid-aligned, all breakpoints) */}
+				{/* Tech stack - modern HUD grid (static, grid-aligned, all breakpoints) */}
 				<div
 					className="mx-auto max-w-5xl px-6 py-10 lg:px-10"
 					aria-hidden="true"

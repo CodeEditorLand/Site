@@ -1,5 +1,5 @@
 ---
-title: "Filesystem Footprint — Platform Paths"
+title: "Filesystem Footprint - Platform Paths"
 section: "Reference"
 order: 2
 description: "OS-specific resolution for every per-bundle, OS-managed, and temp-directory path Land touches on macOS, Linux, and Windows."
@@ -115,7 +115,7 @@ Status: 🟡 partial (Tauri's path resolver works; webview-storage paths differ 
 
 ## 🪟 Windows Layout
 
-Status: 🔴 pending — `dirs` crate paths and Tauri PathResolver are documented here for completeness, but the editor has not been smoke-tested on Windows. Treat the table as a forward-looking reference; expect minor drift when the platform target lands.
+Status: 🔴 pending - `dirs` crate paths and Tauri PathResolver are documented here for completeness, but the editor has not been smoke-tested on Windows. Treat the table as a forward-looking reference; expect minor drift when the platform target lands.
 
 ### Per-bundle paths (Tauri-resolved)
 
@@ -142,7 +142,7 @@ Status: 🔴 pending — `dirs` crate paths and Tauri PathResolver are documente
 
 | Path                                       | Producer                                     | Note                                                                                                   |
 | :----------------------------------------- | :------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
-| `%TEMP%\land-zsh-integration-<pid>\.zshrc` | `Environment/Terminal/ShellIntegration.rs`   | No-op on Windows in practice — the zsh-integration path only triggers when the user opens a zsh shell. |
+| `%TEMP%\land-zsh-integration-<pid>\.zshrc` | `Environment/Terminal/ShellIntegration.rs`   | No-op on Windows in practice - the zsh-integration path only triggers when the user opens a zsh shell. |
 | `%TEMP%\vine_fallback.proto`               | `Cocoon/Services/Mountain/Client/Service.ts` | Same fallback semantics as macOS.                                                                      |
 | `%TEMP%\land-editor-logs\<ts>\`            | `IPC/DevLog/WriteToFile.rs`                  | Same fallback semantics as macOS.                                                                      |
 
@@ -171,7 +171,7 @@ The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 | `~/.claude/agents/`  | `/Users/<user>/.claude/agents/`  | `/home/<user>/.claude/agents/`  | `C:\Users\<user>\.claude\agents\`  |
 | `~/.copilot/agents/` | `/Users/<user>/.copilot/agents/` | `/home/<user>/.copilot/agents/` | `C:\Users\<user>\.copilot\agents\` |
 
-Land does not write to either path — only `mkdir -p`. If the user does not have those tools installed, these dirs nonetheless persist after Land's first boot.
+Land does not write to either path - only `mkdir -p`. If the user does not have those tools installed, these dirs nonetheless persist after Land's first boot.
 
 ---
 
@@ -193,7 +193,7 @@ Cross-OS, not part of user-install footprint:
 
 ## See Also 📚
 
-- [UserDotfile](filesystem-footprint-user-dotfile.md) — the `~/.fiddee/` tree (cross-OS).
-- [PerElement](filesystem-footprint-per-element.md) — which Element writes which path.
-- [Cleanup](filesystem-footprint-cleanup.md) — per-OS cleanup recipes.
-- [EnvironmentVariables](filesystem-footprint-environment-variables.md) — path-shaping env vars.
+- [UserDotfile](filesystem-footprint-user-dotfile.md) - the `~/.fiddee/` tree (cross-OS).
+- [PerElement](filesystem-footprint-per-element.md) - which Element writes which path.
+- [Cleanup](filesystem-footprint-cleanup.md) - per-OS cleanup recipes.
+- [EnvironmentVariables](filesystem-footprint-environment-variables.md) - path-shaping env vars.

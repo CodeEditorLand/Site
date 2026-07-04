@@ -369,7 +369,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										</div>
 									)}
 
-									{/* Lead — first line of the quote only */}
+									{/* Lead - first line of the quote only */}
 									<p className="text-sm leading-relaxed text-muted-foreground">
 										{Testimonial.Quote.split("\n")[0]}
 									</p>

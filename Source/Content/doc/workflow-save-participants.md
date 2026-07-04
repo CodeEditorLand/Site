@@ -167,7 +167,7 @@ behaviour).
 The `WorkspaceEdit` payload is normalised inside the Sky bridge to handle
 multiple wire shapes:
 
-- `_edits` array with `_type: 2` entries (extHostTypes text edit) — `_range`
+- `_edits` array with `_type: 2` entries (extHostTypes text edit) - `_range`
   uses `_start._line` / `_end._line` (0-based, converted to Monaco 1-based)
 - `_edits` array with `_type: 1` entries (file operations: create, rename,
   delete)

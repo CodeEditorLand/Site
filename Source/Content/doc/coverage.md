@@ -5,14 +5,14 @@ section: "Coverage"
 order: 510
 ---
 
-# 🔵 Coverage / Telemetry — Application-Level Shim
+# 🔵 Coverage / Telemetry - Application-Level Shim
 
-> **🔵 COVERAGE SHIM** — Application-level service routing and telemetry
+> **🔵 COVERAGE SHIM** - Application-level service routing and telemetry
 > **Tier gate**: `TierShim=Proxy` | `TierShim=Replace`
 > **Color**: `#2563EB` (Blue)
 > **Overhead**: <1% (passthrough mode)
 
-The Coverage Shim intercepts VS Code at the **application service level** — routing
+The Coverage Shim intercepts VS Code at the **application service level** - routing
 IPC commands through Land's SwallowMap, proxying the ServiceCollection DI container,
 and tracking coverage across all 474 decorated services. Unlike the 🟠 Low-Level Shim
 (which operates at the JS engine level), the 🔵 Coverage Shim works at the architectural
@@ -29,14 +29,14 @@ graph TD
         VS --> IPC["Tauri IPC invoke()"]
 
         subgraph SHIM["🔵 Coverage Shim"]
-            GATE["Gate.ts — IsEnabled/IsProxy/IsReplace"]
-            SM["SwallowMap.ts — Pattern Matcher"]
-            RB["RedirectBus.ts — Handler Router"]
-            AL["AuditLog.ts — Ring Buffer"]
-            II["IPCInterceptor.ts — invoke() Wrapper"]
-            EI["EventInterceptor.ts — DOM addEventListener"]
-            NP["NetworkProxy.ts — fetch/XHR"]
-            AP["AsyncProxy.ts — Timers/Rendering"]
+            GATE["Gate.ts - IsEnabled/IsProxy/IsReplace"]
+            SM["SwallowMap.ts - Pattern Matcher"]
+            RB["RedirectBus.ts - Handler Router"]
+            AL["AuditLog.ts - Ring Buffer"]
+            II["IPCInterceptor.ts - invoke() Wrapper"]
+            EI["EventInterceptor.ts - DOM addEventListener"]
+            NP["NetworkProxy.ts - fetch/XHR"]
+            AP["AsyncProxy.ts - Timers/Rendering"]
         end
 
         IPC --> II
@@ -57,7 +57,7 @@ graph TD
 
     subgraph MOUNTAIN["Mountain (Rust Backend)"]
         DM["DispatchMatch"]
-        NB["NativeBus — tokio::fs, PTY, rg"]
+        NB["NativeBus - tokio::fs, PTY, rg"]
         MSM["Shim/SwallowMap.rs"]
         MG["Shim/Gate.rs"]
         DEVLOG["dev_log! macro"]
@@ -65,12 +65,12 @@ graph TD
 
     subgraph OUTPUT["Output (Build Pipeline)"]
         INJ["InjectShimHook Transform"]
-        COMPILE["esbuild — define __LandTier_Shim__"]
+        COMPILE["esbuild - define __LandTier_Shim__"]
         NULLSVC["CEL Null Services"]
     end
 
     subgraph DIAG["Diagnostics"]
-        LD["LandDiagnostics.ts — Unified Tracer"]
+        LD["LandDiagnostics.ts - Unified Tracer"]
         OTLP["OTLP Traces"]
         POSTHOG["PostHog"]
     end
@@ -101,9 +101,9 @@ graph TD
 
 **Three interlocking planes**:
 
-1. **Decision Plane** (SwallowMap + Gate) — Pattern-matching engine that decides: swallow, passthrough, mixed, or discard
-2. **Routing Plane** (RedirectBus + IPCInterceptor) — Dispatches swallowed events to Land's service tree
-3. **Audit Plane** (AuditLog + LandDiagnostics) — Records every service resolution for coverage analysis
+1. **Decision Plane** (SwallowMap + Gate) - Pattern-matching engine that decides: swallow, passthrough, mixed, or discard
+2. **Routing Plane** (RedirectBus + IPCInterceptor) - Dispatches swallowed events to Land's service tree
+3. **Audit Plane** (AuditLog + LandDiagnostics) - Records every service resolution for coverage analysis
 
 ---
 
@@ -171,13 +171,13 @@ sequenceDiagram
 | 13 | **Telemetry** | 🔵 DISCARD | `TierSwallowTelemetry=Discard` | Replace | None | Silently dropped (MS endpoints) |
 | 14 | **Extension Gallery** | 🔵 SWALLOW | `TierSwallowGallery=Swallow` | Replace | Wind | Offline gallery (CEL null service) |
 | 15 | **Product Identity** | 🔵 SWALLOW | `TierSwallowProduct=Swallow` | Replace | Mountain | Land replaces VS Code product.json |
-| 16 | **Debug** | ⚪ PASSTHROUGH | — | — | None | Debug adapter protocol passes through |
-| 17 | **Tasks** | ⚪ PASSTHROUGH | — | — | None | Task execution passes through |
-| 18 | **Extensions (runtime)** | ⚪ PASSTHROUGH | — | — | None | Extension host runs unmodified |
-| 19 | **Editor (core)** | ⚪ PASSTHROUGH | — | — | None | Monaco editor untouched |
-| 20 | **Language Features** | ⚪ PASSTHROUGH | — | — | None | LSP providers pass through |
-| 21 | **Remote** | ⚪ PASSTHROUGH | — | — | None | Remote development passthrough |
-| 22 | **Testing** | ⚪ PASSTHROUGH | — | — | None | Test runner passthrough |
+| 16 | **Debug** | ⚪ PASSTHROUGH | - | - | None | Debug adapter protocol passes through |
+| 17 | **Tasks** | ⚪ PASSTHROUGH | - | - | None | Task execution passes through |
+| 18 | **Extensions (runtime)** | ⚪ PASSTHROUGH | - | - | None | Extension host runs unmodified |
+| 19 | **Editor (core)** | ⚪ PASSTHROUGH | - | - | None | Monaco editor untouched |
+| 20 | **Language Features** | ⚪ PASSTHROUGH | - | - | None | LSP providers pass through |
+| 21 | **Remote** | ⚪ PASSTHROUGH | - | - | None | Remote development passthrough |
+| 22 | **Testing** | ⚪ PASSTHROUGH | - | - | None | Test runner passthrough |
 
 **Coverage**: 15 of 22 core domains are actively swallowed. 7 remain passthrough because they involve
 extension-host interactions (Debug, Language Features), the Monaco editor core, or infrastructure that
@@ -207,7 +207,7 @@ Land does not replace (Tasks, Remote, Testing).
 | **Current** | 67 | 14% | SwallowMap rules + CEL null services |
 | **Phase 2** | ~120 | 25% | Wind handler registration for UI domains |
 | **Phase 3** | ~200 | 42% | Cocoon bridge for extension-host services |
-| **Full replacement** | 474 | 100% | TierShim=Preempt — Land IS the engine |
+| **Full replacement** | 474 | 100% | TierShim=Preempt - Land IS the engine |
 
 Current coverage focuses on **user-facing UI surfaces** (status bar, SCM, search, terminal, notifications,
 dialogs, quick input) and **data-safety domains** (telemetry discarded, file system native, extension
@@ -238,7 +238,7 @@ interface SwallowRule {
     /** Where to redirect swallowed events */
     redirectTo: RedirectTarget;
 
-    /** Optional runtime condition — if present, must return true to swallow */
+    /** Optional runtime condition - if present, must return true to swallow */
     condition?: (method: string, params: unknown[]) => boolean;
 }
 
@@ -264,12 +264,12 @@ static decide(method: string): SwallowDecision {
                 matches = method.startsWith(rule.pattern);         // Prefix match
             }
         } catch {
-            continue;  // Invalid regex — skip rule
+            continue;  // Invalid regex - skip rule
         }
 
         if (matches) {
             if (rule.condition && !rule.condition(method, [])) {
-                continue;  // Runtime condition failed — try next rule
+                continue;  // Runtime condition failed - try next rule
             }
             return { action: rule.action, redirectTo: rule.redirectTo };
         }
@@ -314,7 +314,7 @@ pub fn decide(method: &str) -> (SwallowAction, RedirectTarget) {
 }
 ```
 
-The TypeScript and Rust SwallowMaps are kept in **lockstep** — any rule added to one side
+The TypeScript and Rust SwallowMaps are kept in **lockstep** - any rule added to one side
 requires a matching rule on the other. The Rust side handles direct-native IPC calls that
 bypass Wind entirely; the TypeScript side handles calls originating from the renderer.
 
@@ -385,7 +385,7 @@ interface AuditEntry {
 }
 
 class AuditLog {
-    /** Ring buffer — maximum 2000 entries, oldest dropped */
+    /** Ring buffer - maximum 2000 entries, oldest dropped */
     private static entries: AuditEntry[] = [];
     private static readonly maxEntries = 2000;
 
@@ -522,7 +522,7 @@ graph TD
 
     subgraph PROCESS_OUTPUT["Output Pipeline (Build Time)"]
         direction TB
-        O_INIT["Init.ts — LandShimInit()"]
+        O_INIT["Init.ts - LandShimInit()"]
         O_LD["LandDiagnostics.ts"]
         O_L1["ErrorHandlerProxy (L1)"]
         O_L2["EmitterFireProxy (L2)"]
@@ -894,13 +894,13 @@ the module directly rather than going through ServiceCollection.
 
 ## 🔵 Related Documentation
 
-- [Low-Level Shim](/doc/low-level-shim) — The engine-level prototype hooks (🟠 orange)
-- [VSCode API Coverage Matrix](/doc/vscode-api-coverage) — API surface coverage
-- [Environment Variables](/doc/configuration) — TierShim and TierSwallow* vars
-- [Build Pipeline](/doc/build-pipeline) — Output Transform injection
-- [Deep Dive: Mountain](/doc/deep-dive-mountain) — Rust-side intercept infrastructure
-- [Architecture](/doc/architecture) — System architecture overview
+- [Low-Level Shim](/doc/low-level-shim) - The engine-level prototype hooks (🟠 orange)
+- [VSCode API Coverage Matrix](/doc/vscode-api-coverage) - API surface coverage
+- [Environment Variables](/doc/configuration) - TierShim and TierSwallow* vars
+- [Build Pipeline](/doc/build-pipeline) - Output Transform injection
+- [Deep Dive: Mountain](/doc/deep-dive-mountain) - Rust-side intercept infrastructure
+- [Architecture](/doc/architecture) - System architecture overview
 
-🔵 **COVERAGE TELEMETRY — ACTIVE** — This component tracks service resolution,
+🔵 **COVERAGE TELEMETRY - ACTIVE** - This component tracks service resolution,
 event routing, and domain coverage. All data flows through Land's diagnostic
 pipeline (OTLP/PostHog/dev log). No data leaves the local machine.

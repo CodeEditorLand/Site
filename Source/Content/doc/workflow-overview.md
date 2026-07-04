@@ -2,7 +2,7 @@
 title: "Workflow Overview"
 section: "Reference"
 order: 20
-description: "High-level overview of Land's architecture and the core workflows that drive the application — from startup and file I/O to extension execution and SCM integration."
+description: "High-level overview of Land's architecture and the core workflows that drive the application - from startup and file I/O to extension execution and SCM integration."
 ---
 
 # Land Project Architecture

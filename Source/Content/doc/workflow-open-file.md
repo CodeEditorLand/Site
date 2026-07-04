@@ -85,11 +85,11 @@ flowchart TB
 
 ## Phase 1 - User Interaction (Sky)
 
-1.  **File Explorer UI** — The user clicks on a file entry (`<div>`
+1.  **File Explorer UI** - The user clicks on a file entry (`<div>`
     representing `my-file.ts`) in the File Explorer component. The `onClick`
     handler holds the file's `URI` and calls into `IEditorService`.
 
-2.  **`IEditorService.openEditor()`** (Wind/Source/Effect/Editor) — The UI calls
+2.  **`IEditorService.openEditor()`** (Wind/Source/Effect/Editor) - The UI calls
     `editorService.openEditor({ resource: fileUri })`. The `openEditorEffect`
     inside the editor `Definition.ts` is executed. The input is an
     `IUntypedEditorInput`. The effect first passes it to `TextEditorService` to
@@ -99,24 +99,24 @@ flowchart TB
 
 ## Phase 2 - Editor and Filesystem Logic (Wind → Mountain)
 
-3.  **`EditorGroupsService`** — The `openEditor` method is called on the target
+3.  **`EditorGroupsService`** - The `openEditor` method is called on the target
     `EditorGroupModel`. The group model checks whether an editor for `fileUri`
     is already open:
     - **Already open:** Wind focuses that tab and stops.
     - **Not open:** It begins opening a new editor. It uses the `EditorInput`'s
       `resolve()` method to obtain the editor model.
 
-4.  **`TextFileEditorModel.load()`** — To display the content, the editor input
+4.  **`TextFileEditorModel.load()`** - To display the content, the editor input
     loads its underlying model. `TextFileEditorModel` is responsible for this.
     Its `load()` method needs the file content. It calls
     `IFileService.readFile(fileUri)` from Wind/Source/FileSystem.
 
-5.  **`IFileService.readFile()`** (Wind/Source/FileSystem) — The file service's
+5.  **`IFileService.readFile()`** (Wind/Source/FileSystem) - The file service's
     `readFile(fileUri)` method looks up the registered provider for the URI's
     scheme (in this case `file:`). It finds
     `TauriDiskFileSystemProvider` from FileSystem/Definition.ts.
 
-6.  **`TauriDiskFileSystemProvider.readFile()`** (Wind/Source/FileSystem) — The
+6.  **`TauriDiskFileSystemProvider.readFile()`** (Wind/Source/FileSystem) - The
     provider's `readFile` method immediately executes the `ReadFile` Effect from
     the Tauri integration layer:
 
@@ -124,7 +124,7 @@ flowchart TB
     Effect.runPromise(ReadFile(fileUri));
     ```
 
-7.  **`TauriMainProcessService.ts`** (Wind/Source/Service) — The `ReadFile`
+7.  **`TauriMainProcessService.ts`** (Wind/Source/Service) - The `ReadFile`
     effect executes. It calls:
 
     ```ts
@@ -136,7 +136,7 @@ flowchart TB
 
 ## Phase 3 - Native File I/O (Mountain)
 
-8.  **Mountain/Source/Binary/Main/Entry.rs → Tauri `fs` Plugin** — Tauri
+8.  **Mountain/Source/Binary/Main/Entry.rs → Tauri `fs` Plugin** - Tauri
     receives the `plugin:fs|ReadFile` command and routes it to the
     `tauri-plugin-fs` internal Rust handler. The plugin performs the native
     filesystem operation:
@@ -151,20 +151,20 @@ flowchart TB
 
 ## Phase 4 - Data Unwinds and UI Renders (Wind)
 
-9.  **`TauriMainProcessService.ts` (continued)** — The `TauriInvoke` promise
+9.  **`TauriMainProcessService.ts` (continued)** - The `TauriInvoke` promise
     resolves with the file content. The `ReadFile` Effect succeeds, yielding the
     `Uint8Array` containing the raw bytes of the file.
 
-10. **`TextFileEditorModel` (continued)** — The `load()` method completes. The
+10. **`TextFileEditorModel` (continued)** - The `load()` method completes. The
     model is now hydrated with the file content. The `EditorInput` is fully
     resolved.
 
-11. **`EditorGroupsService` (continued)** — The `openEditor` method now has a
+11. **`EditorGroupsService` (continued)** - The `openEditor` method now has a
     resolved input and model. It creates a new `TextEditorPane` within the
     target editor group and sets the `TextFileEditorModel` on the underlying
     Monaco editor instance inside that pane.
 
-12. **Monaco Editor** — Monaco receives the new text model and renders the text
+12. **Monaco Editor** - Monaco receives the new text model and renders the text
     content to the screen. **The user now sees their file open in the editor.**
 
 This workflow shows how a simple UI action is translated through layers of
@@ -196,14 +196,14 @@ The raw byte payload passes through distinct representations at each layer:
 `vscode.workspace.openTextDocument` supports three calling forms beyond a plain
 file URI:
 
-- **`{ language, content }`** — Creates an in-memory untitled document
+- **`{ language, content }`** - Creates an in-memory untitled document
   pre-populated with `content` and tagged with `languageId`. The document is
   added to `workspace.textDocuments` and `onDidOpenTextDocument` fires
   immediately. No Mountain round-trip occurs.
-- **`"untitled:..."` scheme** — Returns an empty document without any backend
+- **`"untitled:..."` scheme** - Returns an empty document without any backend
   call. Content is read from `DocumentContentCache` if a prior write has
   populated it.
-- **Custom scheme (e.g. `git:`, `output:`)** — Cocoon checks whether a
+- **Custom scheme (e.g. `git:`, `output:`)** - Cocoon checks whether a
   `TextDocumentContentProvider` has been registered for that scheme via
   `registerTextDocumentContentProvider`. If one is found, Cocoon calls
   `provider.provideTextDocumentContent()` directly with no Mountain round-trip

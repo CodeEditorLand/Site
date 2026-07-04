@@ -85,18 +85,18 @@ stateDiagram-v2
 
 ## Phase 1 - Extension creates the panel (Cocoon → Mountain)
 
-1. **Extension Activation (`Cocoon`)** — An extension is activated. Its
+1. **Extension Activation (`Cocoon`)** - An extension is activated. Its
    `activate()` function runs.
 
 2. **`vscode.window.createWebviewPanel()`** (Cocoon's
-   `src/Service/WebviewPanel.ts`) — The extension calls
+   `src/Service/WebviewPanel.ts`) - The extension calls
    `window.createWebviewPanel(...)`, providing `viewType`, `title`,
    `viewColumn`, and `options` (which include enabling scripts).
 
 3. The call is received by the `WebviewPanelProvider` service in Cocoon. Its
    `CreateWebviewPanel` effect is executed.
 
-4. **`IpcProvider`** (Cocoon's `src/Service/Ipc.ts`) — The `CreateWebviewPanel`
+4. **`IpcProvider`** (Cocoon's `src/Service/Ipc.ts`) - The `CreateWebviewPanel`
    effect constructs a detailed DTO containing all panel options, the
    extension's ID, and its location on disk (for resolving
    `localResourceRoots`).

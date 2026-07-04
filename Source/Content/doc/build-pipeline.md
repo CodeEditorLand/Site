@@ -2,7 +2,7 @@
 title: "Build Pipeline"
 section: "Reference"
 order: 10
-description: "The complete build pipeline for the Land code editor, from environment variable resolution through binary artifact production — six stages across Rust, TypeScript, and static asset compilation."
+description: "The complete build pipeline for the Land code editor, from environment variable resolution through binary artifact production - six stages across Rust, TypeScript, and static asset compilation."
 ---
 
 # **Build Pipeline** 📋
@@ -546,5 +546,5 @@ Target triples supported:
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing
+- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing

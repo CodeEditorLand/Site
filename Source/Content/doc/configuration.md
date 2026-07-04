@@ -3,7 +3,7 @@ title: "Configuration"
 section: "Guide"
 order: 3
 description:
-    "Complete reference for Land's multi-file environment variable system —
+    "Complete reference for Land's multi-file environment variable system -
     file hierarchy, sourcing cascade, variable domains, tier-gating feature
     mapping, consumer mapping, and usage examples."
 ---
@@ -18,7 +18,7 @@ into Mountain and activated at runtime by Cocoon, Wind, Sky, and Output.
 
 - **Single-word PascalCase verbs** (e.g., `ProductVersion`, `TierFileSystem`,
   `Capture`)
-- **No `LAND_` prefix** — variables are named for what they _do_, not where they
+- **No `LAND_` prefix** - variables are named for what they _do_, not where they
   come from
 - **One variable per line**, `KEY=value` format, shell-sourced by
   `TierEnvironment.sh`
@@ -112,27 +112,27 @@ Step  +------------------------------+
 
 ### Key Rules
 
-1. **Overlay conditional** — Production overlays are only sourced when
+1. **Overlay conditional** - Production overlays are only sourced when
    `NODE_ENV=production` or the `Profile` variable contains the substring
    `release`. For all development profiles, only the dev files (steps 1, 3, 5,
    7, 9, 11) are loaded.
 
-2. **Fallback chain** — If a dev file (e.g., `.env.Land`) is absent or empty, the
+2. **Fallback chain** - If a dev file (e.g., `.env.Land`) is absent or empty, the
    corresponding `.Sample` file is sourced as a fallback.
 
-3. **Last-write-wins** — Since all files are shell-sourced into the same
+3. **Last-write-wins** - Since all files are shell-sourced into the same
    environment, identical keys in later files silently override earlier values.
    For example, `Trace=all` in `.env.Land.PostHog` is overridden by `Trace=`
    (empty) in `.env.Land.Production.PostHog`.
 
-4. **Absent files skipped** — Files that do not exist on disk are silently
+4. **Absent files skipped** - Files that do not exist on disk are silently
    skipped. No error is raised.
 
-5. **Build-time vs runtime** — Variables set during the sourcing cascade are
+5. **Build-time vs runtime** - Variables set during the sourcing cascade are
    available at:
-    - **Build time** — Read by `Mountain/build.rs` for `cargo:rustc-env`,
+    - **Build time** - Read by `Mountain/build.rs` for `cargo:rustc-env`,
       `cargo:rustc-cfg`, and esbuild/Vite `define` substitutions.
-    - **Runtime** — Read by Mountain (Rust `std::env::var`), Cocoon (esbuild
+    - **Runtime** - Read by Mountain (Rust `std::env::var`), Cocoon (esbuild
       constants), Wind (`import.meta.env`), and Sky
       (`__LandTiers`/`__LandProduct`).
 
@@ -175,7 +175,7 @@ Step  +------------------------------+
 | `TierExtensionScan`            | `Sequential`     | (same)                     | Core   | Extension scan: `Sequential` or `Parallel`                                                                                                                                                        | Mountain build.rs (feature gate), Cocoon               |
 | `TierModuleCache`              | `Simple`         | (same)                     | Core   | Module caching: `Simple`, `Off`, or `Shared`                                                                                                                                                      | Mountain build.rs, Cocoon                              |
 | `TierTelemetry`                | `Synchronous`    | (same)                     | Core   | Telemetry transport: `Synchronous`, `Batched`, or `Off`                                                                                                                                           | Mountain build.rs, Cocoon                              |
-| `TierIPC`                      | `Mountain`       | (same)                     | Core   | IPC routing tier: `Mountain` (all calls to native backend), `NodeDeferred` (Mountain first, Cocoon fallback on miss), `Node` (all calls to Cocoon Node.js). Runtime switch — no rebuild required. | Wind `TauriMainProcessService.ts`, Output `Service.ts` |
+| `TierIPC`                      | `Mountain`       | (same)                     | Core   | IPC routing tier: `Mountain` (all calls to native backend), `NodeDeferred` (Mountain first, Cocoon fallback on miss), `Node` (all calls to Cocoon Node.js). Runtime switch - no rebuild required. | Wind `TauriMainProcessService.ts`, Output `Service.ts` |
 
 ### Node
 
@@ -481,7 +481,7 @@ docker run -d --name jaeger \
 
 ### Using localStorage to Flip Gates at Runtime
 
-No restart required for these gates — toggle them in the DevTools console:
+No restart required for these gates - toggle them in the DevTools console:
 
 ```javascript
 // Enable boot-time smoke test harness
@@ -657,5 +657,5 @@ Combine tags: `Trace=lifecycle,ipc,extensions,grpc`
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing
+- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing

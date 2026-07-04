@@ -128,7 +128,7 @@
 
 /* HUD card surface: hairline border + sharp corners for definition on the
  dark cyberpunk canvas and a crisp edge in light. Background is supplied by
- each card's own utility (bg-card) — do NOT set background-color here, or it
+ each card's own utility (bg-card) - do NOT set background-color here, or it
  overrides utilities like bg-primary on elements that reuse .StaccatoCard
  (e.g. IconTooltip). Border brightens on hover; glow only in dark. */
 .FeatureCard,

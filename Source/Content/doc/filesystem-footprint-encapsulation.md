@@ -1,5 +1,5 @@
 ---
-title: "Filesystem Footprint — Encapsulation Directions"
+title: "Filesystem Footprint - Encapsulation Directions"
 section: "Reference"
 order: 6
 description: "Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning."
@@ -35,7 +35,7 @@ S ≤ 1 day, M = 1 - 5 days, L = 1 - 2 weeks.
 
 **Move every per-bundle path under `~/.fiddee/<profile>/`.** Replace Tauri's `app_data_dir()` / `app_cache_dir()` / `app_log_dir()` calls with an internal resolver that returns `~/.fiddee/<profile>/data/`, `~/.fiddee/<profile>/cache/`, `~/.fiddee/<profile>/logs/`. Cocoon storage paths fold in naturally as `~/.fiddee/<profile>/extensionStorage/` etc.
 
-Webview-managed paths (`Library/WebKit/<bundle>/` and equivalents) stay where the OS puts them — Land cannot rename those. Everything else is ours.
+Webview-managed paths (`Library/WebKit/<bundle>/` and equivalents) stay where the OS puts them - Land cannot rename those. Everything else is ours.
 
 **Win:** Uninstall becomes `rm -rf ~/.fiddee` plus a documented short list of OS-managed cleanups.
 
@@ -109,10 +109,10 @@ Add equivalent overrides for every location:
 | Existing | Proposed                               |
 | :------- | :------------------------------------- |
 | `Lodge`  | (already done) extensions root         |
-| -        | `Lair` — workbench userdata root       |
-| -        | `Hive` — logs root                     |
-| -        | `Cache` — cache root                   |
-| -        | `Storage` — per-extension storage root |
+| -        | `Lair` - workbench userdata root       |
+| -        | `Hive` - logs root                     |
+| -        | `Cache` - cache root                   |
+| -        | `Storage` - per-extension storage root |
 
 Pair each with a registry entry in [EnvironmentVariables.md](../Reference/EnvironmentVariables.md). Useful for **portable installs** (USB-stick FIDDEE) and for CI runners that should not accumulate state.
 
@@ -149,7 +149,7 @@ Default tier value: `On` for backwards-compatible boot behaviour.
 
 ## H. Cocoon `.storage` Move Out-of-Bundle 📦
 
-The current `~/.fiddee/extensions/<id>/.storage/` location ties per-extension storage to the extension's own directory — reinstalls or version bumps destroy it.
+The current `~/.fiddee/extensions/<id>/.storage/` location ties per-extension storage to the extension's own directory - reinstalls or version bumps destroy it.
 
 **Proposed:** move to `~/.fiddee/extensionData/<id>/.storage/` (parallel to the existing `extensionStorage` sibling) so storage survives extension lifecycle events.
 
@@ -175,18 +175,18 @@ Read `<app_data_dir>/<bundle>/machine-id.txt` and use it as the PostHog distinct
 
 ## J. FIDDEE Root Reconciliation (Air vs Mountain) 🤝
 
-Mountain owns `~/.fiddee/` (dotfile, lowercase). The `Air` background daemon writes to `<config_dir>/FIDDEE/` (uppercase, under the OS config root — i.e. `~/Library/Application Support/FIDDEE/` on macOS).
+Mountain owns `~/.fiddee/` (dotfile, lowercase). The `Air` background daemon writes to `<config_dir>/FIDDEE/` (uppercase, under the OS config root - i.e. `~/Library/Application Support/FIDDEE/` on macOS).
 
 Two products, two roots. Cleanup recipes that target `~/.fiddee/` miss Air's state and vice versa.
 
-**Proposed:** Air migrates to `~/.fiddee/air/` (or `~/.fiddee/daemon/`) so both processes share one root. Alternatively — if there's a reason Air needs the OS config dir specifically (e.g. system-service installation) — have Mountain also write a pointer file under `<config_dir>/FIDDEE/` so cleanup tools find both roots from either entry point.
+**Proposed:** Air migrates to `~/.fiddee/air/` (or `~/.fiddee/daemon/`) so both processes share one root. Alternatively - if there's a reason Air needs the OS config dir specifically (e.g. system-service installation) - have Mountain also write a pointer file under `<config_dir>/FIDDEE/` so cleanup tools find both roots from either entry point.
 
 **Touches:**
 
 - `Element/Air/Source/Updates/mod.rs` (configured paths).
 - `Element/Air/Source/Authentication/mod.rs` (credentials store path).
 - `Element/Air/Source/Downloader/mod.rs` (cache directory).
-- Air's configuration file format — new schema version (option D's territory).
+- Air's configuration file format - new schema version (option D's territory).
 
 ---
 
@@ -210,17 +210,17 @@ Two products, two roots. Cleanup recipes that target `~/.fiddee/` miss Air's sta
 
 If we tackle these, the natural order is:
 
-1. **C** (log rotation) — cheap, independent.
-2. **G** (foreign-tool probe tier-gate) — cheap, independent.
-3. **I** (distinctId unification) — cheap, independent.
-4. **A** (single product root) — unlocks B, C, D, E.
-5. **B** (stable bundle identifier) — depends on A's migration tooling.
-6. **D** (versioned userdata schema) — depends on A for the canonical path.
-7. **E** (tier parity for every location) — depends on A.
-8. **F** (self-uninstall) — depends on A and (ideally) K.
-9. **J** (Air / Mountain root reconciliation) — depends on A for the target shape.
-10. **K** (keychain enumeration) — can ship with F.
-11. **H** (Cocoon `.storage` move) — any time; trivially additive.
+1. **C** (log rotation) - cheap, independent.
+2. **G** (foreign-tool probe tier-gate) - cheap, independent.
+3. **I** (distinctId unification) - cheap, independent.
+4. **A** (single product root) - unlocks B, C, D, E.
+5. **B** (stable bundle identifier) - depends on A's migration tooling.
+6. **D** (versioned userdata schema) - depends on A for the canonical path.
+7. **E** (tier parity for every location) - depends on A.
+8. **F** (self-uninstall) - depends on A and (ideally) K.
+9. **J** (Air / Mountain root reconciliation) - depends on A for the target shape.
+10. **K** (keychain enumeration) - can ship with F.
+11. **H** (Cocoon `.storage` move) - any time; trivially additive.
 
 ---
 
@@ -239,7 +239,7 @@ The combination of A (single product root) + D (schema versions) makes the versi
 
 ## See Also 📚
 
-- [UserDotfile.md](filesystem-footprint-user-dotfile.md) — the `~/.fiddee/` tree (option A's target shape).
-- [PerElement.md](filesystem-footprint-per-element.md) — per-Element write-site inventory.
-- [Cleanup.md](filesystem-footprint-cleanup.md) — the manual recipe option F would automate.
-- [EnvironmentVariables.md](../Reference/EnvironmentVariables.md) — where new env var registries land.
+- [UserDotfile.md](filesystem-footprint-user-dotfile.md) - the `~/.fiddee/` tree (option A's target shape).
+- [PerElement.md](filesystem-footprint-per-element.md) - per-Element write-site inventory.
+- [Cleanup.md](filesystem-footprint-cleanup.md) - the manual recipe option F would automate.
+- [EnvironmentVariables.md](../Reference/EnvironmentVariables.md) - where new env var registries land.

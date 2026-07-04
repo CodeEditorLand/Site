@@ -1,14 +1,14 @@
 ---
-title: "Filesystem Footprint — Per-Element Write Sites"
+title: "Filesystem Footprint - Per-Element Write Sites"
 section: "Reference"
 order: 3
-description: "Every Land Element grouped by which filesystem location it touches — the reverse map of UserDotfile and PlatformPaths."
+description: "Every Land Element grouped by which filesystem location it touches - the reverse map of UserDotfile and PlatformPaths."
 ---
 
 # **Per-Element Write Sites** ✍️
 
 Every Element grouped by which filesystem location it touches. Reverse map of
-UserDotfile and PlatformPaths: those answer "which Element writes here?" — this
+UserDotfile and PlatformPaths: those answer "which Element writes here?" - this
 one answers "where does this Element write?".
 
 ---
@@ -78,7 +78,7 @@ and a temp proto when the bundled proto resource is missing.
 | `Services/gRPC/Server/Service.ts:1664`                       | Same `<temp_dir>/vine_fallback.proto` (parallel fallback)                                            | gRPC server init when bundled proto resource is missing         |
 | `Platform/FiddeeRoot.ts`                                     | (resolver only, no write)                                                                            | TypeScript mirror of Rust `FiddeeRoot.rs`                       |
 
-Cocoon never writes to `<app_data_dir>/<bundle>/` directly — all per-bundle
+Cocoon never writes to `<app_data_dir>/<bundle>/` directly - all per-bundle
 writes are proxied through Mountain via IPC (`storage:set`, `secrets:set`,
 file-system gRPC).
 
@@ -120,7 +120,7 @@ ESBuild config and PostHog telemetry constants. No runtime filesystem writes.
 
 ## Output ⚫
 
-Build-time only. Same shape as Wind — reads env, no runtime writes.
+Build-time only. Same shape as Wind - reads env, no runtime writes.
 
 | Producer                        | Reads (build-time)                                                                           | Purpose                                              |
 | :------------------------------ | :------------------------------------------------------------------------------------------- | :--------------------------------------------------- |
@@ -132,9 +132,9 @@ Build-time only. Same shape as Wind — reads env, no runtime writes.
 
 ## Air 💨
 
-Background daemon. **Uses a different filesystem root than Mountain** —
+Background daemon. **Uses a different filesystem root than Mountain** -
 `<config_dir>/FIDDEE/` (uppercase) and `<data_local_dir>/FIDDEE/`, not
-`~/.fiddee/` (lowercase). Reconciliation candidate — see Encapsulation §H
+`~/.fiddee/` (lowercase). Reconciliation candidate - see Encapsulation §H
 for details.
 
 | Producer                                          | Writes                                                                                        | Notes                                                      |
@@ -152,7 +152,7 @@ for details.
 `dirs::data_local_dir()` (see PlatformPaths for the resolution table).
 
 Air is the only Element today that uses SCREAMING*SNAKE_CASE env vars
-(`AIR_LOG*`) — the project convention permits it for the daemon because Air
+(`AIR_LOG*`) - the project convention permits it for the daemon because Air
 ships as an external tool with its own naming convention.
 
 ---
@@ -185,7 +185,7 @@ FiddeeRoot.
 
 Build-time only. Reads env (`get_env`, `env`, `vars`) and runs Rhai scripts. No
 runtime writes; build-time writes are to `Target/` and to temporarily rewritten
-manifest files (`Cargo.toml.Backup` residue is the known leakage — see
+manifest files (`Cargo.toml.Backup` residue is the known leakage - see
 PlatformPaths §In-tree build artefacts).
 
 ---
@@ -207,8 +207,8 @@ For completeness:
 
 ## See Also 📚
 
-- **UserDotfile** — target table for `~/.fiddee/` writes.
-- **PlatformPaths** — target tables for per-OS paths.
-- **EnvironmentVariables** — per-Element env-var registry.
-- **Cleanup** — per-OS cleanup recipes that pick up every destination in this
+- **UserDotfile** - target table for `~/.fiddee/` writes.
+- **PlatformPaths** - target tables for per-OS paths.
+- **EnvironmentVariables** - per-Element env-var registry.
+- **Cleanup** - per-OS cleanup recipes that pick up every destination in this
   document.

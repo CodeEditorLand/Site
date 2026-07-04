@@ -21,7 +21,7 @@ export interface ThemeIconProps {
 }
 
 /**
- * ThemeIcon — renders an icon that automatically switches between light and dark versions
+ * ThemeIcon - renders an icon that automatically switches between light and dark versions
  * based on the current theme. The dark version is expected to be at the same path
  * but under /Dark/Image/ instead of /Image/.
  *

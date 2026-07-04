@@ -15,8 +15,8 @@ that gates extension activation; everything else proceeds in parallel.
 
 This is the foundational workflow that enables all others. Once the handshake
 completes and the workbench paints its first frame, the system is ready for user
-interaction and all dependent workflows — opening files, executing commands,
-language features — can proceed.
+interaction and all dependent workflows - opening files, executing commands,
+language features - can proceed.
 
 ```mermaid
 sequenceDiagram
@@ -61,7 +61,7 @@ sequenceDiagram
     Note over Mountain,Cocoon: System Ready for User Interaction
 ```
 
-## Phase 1 — Mountain native startup
+## Phase 1 - Mountain native startup
 
 1. The OS launches the Mountain binary. The `main` function in
    `Binary/Main/Entry.rs` creates Tauri's `Builder` and configures the
@@ -72,20 +72,20 @@ sequenceDiagram
    post-setup work.
 
 2. Inside the background task, four steps run in strict order:
-    1. **`InitializeConfiguration`** — reads all `settings.json` files from disk
+    1. **`InitializeConfiguration`** - reads all `settings.json` files from disk
        into `AppState.Configuration`.
 
-    2. **`ExtensionManagement`** — walks extension roots and loads manifests into
+    2. **`ExtensionManagement`** - walks extension roots and loads manifests into
        `AppState.Extensions`. If a pre-baked `extensions.manifest.json` exists on
        disk (written by `Maintain/Build/Manifest/PreBake.ts` during the build's
        `beforeBundleCommand`), this step completes in under 50 ms. On first boot
        or when the cache is absent, a parallel `join_all` live scan runs (~1200
        ms) and caches the result for subsequent launches.
 
-    3. **`vine::server::Initialize`** — starts the Vine gRPC server (default
+    3. **`vine::server::Initialize`** - starts the Vine gRPC server (default
        port 50051) and begins listening for connections from Cocoon.
 
-    4. **`InitializeCocoon`** (`ProcessManagement/CocoonManagement.rs`) — spawns
+    4. **`InitializeCocoon`** (`ProcessManagement/CocoonManagement.rs`) - spawns
        the Node.js sidecar process. It constructs a detailed environment that
        includes `VSCODE_PARENT_PID`, so the child terminates automatically when
        Mountain exits. The exact command is:
@@ -97,32 +97,32 @@ sequenceDiagram
         Mountain then waits up to 30 seconds for Cocoon's `$initialHandshake`
         gRPC notification.
 
-## Phase 2 — Cocoon bootstrap and handshake
+## Phase 2 - Cocoon bootstrap and handshake
 
 Cocoon's `Bootstrap.ts` runs seven stages in strict order:
 
-1. **Environment** — records Node.js version, platform, and architecture.
+1. **Environment** - records Node.js version, platform, and architecture.
 
-2. **Configuration** — resolves `MOUNTAIN_GRPC_PORT` (50051) and
+2. **Configuration** - resolves `MOUNTAIN_GRPC_PORT` (50051) and
    `COCOON_GRPC_PORT` (50052); populates `globalThis.__cocoonBootstrapConfig`
    and `globalThis.__LandTiers`.
 
-3. **RPCServer** — binds Cocoon's own gRPC server on port 50052. **This must
+3. **RPCServer** - binds Cocoon's own gRPC server on port 50052. **This must
    complete before Mountain's 30-second connection budget expires.**
 
-4. **ModuleInterceptor** — installs the `require()` interceptor, remapping
+4. **ModuleInterceptor** - installs the `require()` interceptor, remapping
    `electron` to Tauri stubs and patching VS Code bundle loading.
 
-5. **MountainConnection** — TCP-probes Mountain on port 50051, opens the gRPC
+5. **MountainConnection** - TCP-probes Mountain on port 50051, opens the gRPC
    channel, and sends the **`$initialHandshake` notification** to signal
    readiness.
 
-6. **Extensions** — activates enabled extensions concurrently (up to 8 in
+6. **Extensions** - activates enabled extensions concurrently (up to 8 in
    parallel). Extension activation uses topological ordering: if extension A
    declares `extensionDependencies: ["B"]`, extension B activates first. An
    `InProgress` set prevents circular dependency deadlocks.
 
-7. **HealthCheck** — optional final service health sweep.
+7. **HealthCheck** - optional final service health sweep.
 
 Between stages 5 and 6, Mountain responds to the handshake:
 
@@ -147,7 +147,7 @@ Between stages 5 and 6, Mountain responds to the handshake:
   providers register. At this point, workflows like Language Features and
   Webviews can begin, as extensions register their providers.
 
-## Phase 3 — Wind workbench launch
+## Phase 3 - Wind workbench launch
 
 These steps run in parallel with Phase 2, starting from the moment Tauri opens
 the main window.
@@ -161,7 +161,7 @@ the main window.
    context.
 
 2. The main Wind entry script waits for DOM ready, then composes the
-   `AppLayer` — an Effect-TS `Layer` providing every Wind service:
+   `AppLayer` - an Effect-TS `Layer` providing every Wind service:
    `LiveClipboardService`, `LiveDialogService`, `LiveEditorService`, and all
    the rest. Each service is backed by Tauri IPC calls or native Rust commands,
    replacing the Electron APIs that VS Code's workbench would normally consume.
@@ -169,7 +169,7 @@ the main window.
 3. The layer is converted to a Runtime and the VS Code `Workbench` is
    instantiated via `new Workbench(...)`. The `Workbench` constructor receives
    the resolved service runtime as its dependency container. `Workbench.startup()`
-   is then called, which kicks off the entire UI rendering lifecycle — creating
+   is then called, which kicks off the entire UI rendering lifecycle - creating
    every UI part: Activity Bar, Status Bar, Side Bar, Editor Part, and
    instantiating the editor pane itself. Each part begins requesting data from
    Wind services, which in turn invoke Mountain IPC for filesystem reads,
@@ -189,7 +189,7 @@ the main window.
    Wind side subscribes to a gRPC stream from Cocoon that relays
    `activatedExtension` events as each extension finishes its `activate()` call.
    This means the Command Palette and language features become available
-   progressively — the first extension's contributions appear before the last
+   progressively - the first extension's contributions appear before the last
    one has finished activating. The workbench does not block paint on extension
    activation; it renders its chrome immediately and populates contributed UI
    elements as the extension stream arrives.
@@ -206,5 +206,5 @@ the main window.
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) — Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) — Application-level service routing
+- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing

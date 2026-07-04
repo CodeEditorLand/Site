@@ -9,12 +9,12 @@ description:
 ---
 
 This guide walks through building the **Land** code editor from source. The
-build is a **two-step linear flow** — do **not** pull submodules recursively;
+build is a **two-step linear flow** - do **not** pull submodules recursively;
 each submodule is managed independently on its own branch.
 
-1. **Compile VS Code Source** — build the VS Code platform code that the
+1. **Compile VS Code Source** - build the VS Code platform code that the
    extension host consumes
-2. **Build Land Application** — compile the native Rust backend and bundle the
+2. **Build Land Application** - compile the native Rust backend and bundle the
    TypeScript frontend into a runnable Tauri application
 
 ---
@@ -23,12 +23,12 @@ each submodule is managed independently on its own branch.
 
 Before building, ensure you have the following installed:
 
-- **Rust** (1.95.0+, workspace MSRV for all Rust elements) —
+- **Rust** (1.95.0+, workspace MSRV for all Rust elements) -
   [rustup.rs](https://rustup.rs/)
-- **Node.js** (v24 required for building the Editor submodule) —
+- **Node.js** (v24 required for building the Editor submodule) -
   [nodejs.org](https://nodejs.org/)
-- **pnpm** — `npm install -g pnpm`
-- **Git** (with LFS support) — `git lfs install`
+- **pnpm** - `npm install -g pnpm`
+- **Git** (with LFS support) - `git lfs install`
 - **Protocol Buffer compiler** (optional, only if modifying `.proto` files)
 
 Use `nvm` to install and select the required Node version:
@@ -75,14 +75,14 @@ rustup target add aarch64-unknown-linux-gnu
 
 The Editor submodule's npm install fetches large platform-specific binaries for
 its test infrastructure. These binaries (Electron ~200 MB, Playwright Chromium
-~300 MB) are only needed for running integration tests — **not** for
+~300 MB) are only needed for running integration tests - **not** for
 compilation. Without the flags below, `npm install` will stall indefinitely on
 the download.
 
 Add to your shell profile (`~/.zshrc`, `~/.bashrc`, or equivalent) and reload:
 
 ```sh
-# Skip large binary downloads — only needed for e2e tests, not compilation
+# Skip large binary downloads - only needed for e2e tests, not compilation
 export ELECTRON_SKIP_BINARY_DOWNLOAD=1
 export PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ```
@@ -96,11 +96,11 @@ source ~/.zshrc  # or restart your terminal
 ## Build Overview
 
 The Land build is a **two-step linear flow**. Do NOT pull submodules
-recursively — each submodule is managed independently on its own branch.
+recursively - each submodule is managed independently on its own branch.
 
-1. **Compile VS Code Source** — Build the VS Code platform code that `Cocoon`
+1. **Compile VS Code Source** - Build the VS Code platform code that `Cocoon`
    consumes. This runs in `Dependency/Microsoft/Dependency/Editor`.
-2. **Build Land Application** — Compile the native Rust backend (`Mountain`)
+2. **Build Land Application** - Compile the native Rust backend (`Mountain`)
    and bundle the TypeScript frontend (`Wind` + `Sky`) into a runnable Tauri
    application.
 
@@ -120,7 +120,7 @@ on artifacts produced by the previous one:
 ## Step 1: Compile VS Code Source
 
 The VS Code source is vendored as a Git submodule at
-`Dependency/Microsoft/Dependency/Editor`. **This step is mandatory** — Land
+`Dependency/Microsoft/Dependency/Editor`. **This step is mandatory** - Land
 cannot build without it. `Cocoon` (the extension host) and `Output` (the
 platform bundle) both consume the compiled output produced here.
 
@@ -150,7 +150,7 @@ npm run compile-extensions-build
 
 > [!NOTE]
 > The Editor submodule uses **npm**, not pnpm. Do not substitute `pnpm install`
-> here — the submodule's `package-lock.json` and `.npmrc` are npm-native.
+> here - the submodule's `package-lock.json` and `.npmrc` are npm-native.
 
 > [!IMPORTANT]
 > The `compile-extensions-build` step produces the `out-<platform>`
@@ -261,7 +261,7 @@ Trace=all Record=1 Disable=false ./Element/Mountain/Target/debug/Mountain
 
 > [!NOTE]
 > All debug profiles write to `Target/debug/`. The profile name affects which
-> env vars are set and which Sky assets are produced — not the target directory
+> env vars are set and which Sky assets are produced - not the target directory
 > name.
 
 ---
@@ -290,14 +290,14 @@ element-specific workflows:
 
 | Element   | Build Instructions                                                   |
 | :-------- | :------------------------------------------------------------------- |
-| `Air`     | `Element/Air/README.md` — Background daemon build & daemon lifecycle |
-| `Grove`   | `Element/Grove/README.md` — Native Rust/WASM extension host build    |
-| `Mist`    | `Element/Mist/README.md` — DNS server build & testing                |
-| `Rest`    | `Element/Rest/README.md` — CLI compiler usage                        |
-| `SideCar` | `Element/SideCar/README.md` — Download tool for runtime binaries     |
-| `Sky`     | `Element/Sky/README.md` — Astro UI development                       |
-| `Wind`    | `Element/Wind/README.md` — Effect-TS service layer                   |
-| `Cocoon`  | `Element/Cocoon/README.md` — Extension host details                  |
+| `Air`     | `Element/Air/README.md` - Background daemon build & daemon lifecycle |
+| `Grove`   | `Element/Grove/README.md` - Native Rust/WASM extension host build    |
+| `Mist`    | `Element/Mist/README.md` - DNS server build & testing                |
+| `Rest`    | `Element/Rest/README.md` - CLI compiler usage                        |
+| `SideCar` | `Element/SideCar/README.md` - Download tool for runtime binaries     |
+| `Sky`     | `Element/Sky/README.md` - Astro UI development                       |
+| `Wind`    | `Element/Wind/README.md` - Effect-TS service layer                   |
+| `Cocoon`  | `Element/Cocoon/README.md` - Extension host details                  |
 
 ---
 
@@ -308,9 +308,9 @@ element-specific workflows:
 The Editor submodule includes packages that download large platform-specific
 binaries during installation:
 
-- **`electron`** (~200 MB) — a devDependency of the Copilot extension, only
+- **`electron`** (~200 MB) - a devDependency of the Copilot extension, only
   needed for running Electron integration tests
-- **`@playwright/browser-chromium`** (~300 MB) — only needed for running
+- **`@playwright/browser-chromium`** (~300 MB) - only needed for running
   browser-based e2e tests
 
 Neither binary is needed for compilation. Without the skip flags, `npm install`
@@ -464,11 +464,11 @@ variables via `.env.Land.CI` and use `--profile production-electron-bundled`.
 
 ## Further Reading
 
-- [Quickstart](./quickstart.md) — Concise build reference with minimal setup
-- [Configuration](./configuration.md) — Complete environment variable reference
-- [CI/CD Pipeline](./ci-cd-pipeline.md) — Pipeline stages and automation
-- [Deep Dives](./deep-dive-sky.md) — Component architecture details
-- [`Documentation/GitHub/BuildMatrix.md`](Documentation/GitHub/BuildMatrix.md) —
+- [Quickstart](./quickstart.md) - Concise build reference with minimal setup
+- [Configuration](./configuration.md) - Complete environment variable reference
+- [CI/CD Pipeline](./ci-cd-pipeline.md) - Pipeline stages and automation
+- [Deep Dives](./deep-dive-sky.md) - Component architecture details
+- [`Documentation/GitHub/BuildMatrix.md`](Documentation/GitHub/BuildMatrix.md) -
   Full build variant matrix
-- [`Documentation/GitHub/Workflow/`](Documentation/GitHub/Workflow/) — Detailed
+- [`Documentation/GitHub/Workflow/`](Documentation/GitHub/Workflow/) - Detailed
   component interaction workflows

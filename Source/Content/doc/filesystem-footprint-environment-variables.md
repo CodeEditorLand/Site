@@ -1,13 +1,13 @@
 ---
-title: "Filesystem Footprint — Environment Variables"
+title: "Filesystem Footprint - Environment Variables"
 section: "Reference"
 order: 4
-description: "Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier — grouped by role."
+description: "Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier - grouped by role."
 ---
 
 # Environment Variables 🎛️
 
-Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier — grouped by role. Cross-references the canonical `EnvironmentVariables.md` registry; this page describes them in filesystem-footprint terms.
+Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier - grouped by role. Cross-references the canonical `EnvironmentVariables.md` registry; this page describes them in filesystem-footprint terms.
 
 ---
 
@@ -17,7 +17,7 @@ Per the canonical `EnvironmentVariables.md`:
 
 - **Single-word PascalCase verbs** (e.g. `Lodge`, `Extend`, `Record`, `Trace`, `Browser`, `Electron`).
 - **No `LAND_` prefix.** Names describe what the variable does, not where it comes from.
-- **External-daemon vars** (Air) keep their conventional `AIR_LOG_*` SCREAMING_SNAKE_CASE prefix — permitted by the convention because Air is an external tool.
+- **External-daemon vars** (Air) keep their conventional `AIR_LOG_*` SCREAMING_SNAKE_CASE prefix - permitted by the convention because Air is an external tool.
 - **Third-party / Tauri vars** (`NODE_ENV`, `TAURI_ENV_DEBUG`, `USER`, `USERNAME`, `HOME`, `USERPROFILE`, `ZDOTDIR`, `XDG_*`) keep their standard names.
 
 ---
@@ -79,7 +79,7 @@ These change the Maintain bundle identifier (the long `land.editor.binary....mou
 | `NODE_ENV`        | no (build-only flag)             | `Wind/Source/ESBuild.ts:8`, `Output/Source/ESBuild.ts:16`       |
 | `TAURI_ENV_DEBUG` | no (build-only flag)             | `Wind/Source/ESBuild.ts:9`, `Output/Source/ESBuild.ts:17`       |
 
-Cleanup recipes that target `*land.editor*` cover every profile naturally — no need to enumerate per-variable.
+Cleanup recipes that target `*land.editor*` cover every profile naturally - no need to enumerate per-variable.
 
 ---
 
@@ -105,7 +105,7 @@ Build-time env baked into the bundle via Vite's `define`. Affects how much data 
 
 ## Sky Workbench Gates (localStorage / build-time) 🌌
 
-Build-time env via `import.meta.env`; baked into the bundle by Vite's `define`. A few of these are also persisted as localStorage keys with the same name — the env value is the **default**; the localStorage value overrides it.
+Build-time env via `import.meta.env`; baked into the bundle by Vite's `define`. A few of these are also persisted as localStorage keys with the same name - the env value is the **default**; the localStorage value overrides it.
 
 | Variable  | Effect                                                                                                 | Reader                                                                                                                                             |
 | :-------- | :----------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -121,8 +121,8 @@ Subset of the broader tier system that touches paths. See the canonical `Environ
 
 | Variable                    | Path effect                                                                                                                                                                | Default    |
 | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
-| `TierIPC`                   | `Mountain` / `NodeDeferred` / `Node` — routes per-extension storage writes via different bridges.                                                                          | `Mountain` |
-| `TierCommandEventBroadcast` | `On` / `Off` — whether extension-host-originated `executeCommand` calls dual-emit `$acceptCommandExecuted`. Off-default: less log noise + smaller WKWebView storage churn. | `Off`      |
+| `TierIPC`                   | `Mountain` / `NodeDeferred` / `Node` - routes per-extension storage writes via different bridges.                                                                          | `Mountain` |
+| `TierCommandEventBroadcast` | `On` / `Off` - whether extension-host-originated `executeCommand` calls dual-emit `$acceptCommandExecuted`. Off-default: less log noise + smaller WKWebView storage churn. | `Off`      |
 
 ---
 
@@ -143,7 +143,7 @@ export DisableUIFixes=true \
 
 ## See Also 📚
 
-- `EnvironmentVariables.md` — canonical registry with full descriptions, tier-gating rules, and multi-file `.env` system docs.
-- `UserDotfile.md` — what `Lodge`, `Extend`, `VSCODE_COCOON_GLOBAL_STORAGE` shape.
-- `PlatformPaths.md` — what `XDG_*`, `APPDATA`, `LOCALAPPDATA`, `TMPDIR` shape per-OS.
-- `PerElement.md` — which Element reads each env var.
+- `EnvironmentVariables.md` - canonical registry with full descriptions, tier-gating rules, and multi-file `.env` system docs.
+- `UserDotfile.md` - what `Lodge`, `Extend`, `VSCODE_COCOON_GLOBAL_STORAGE` shape.
+- `PlatformPaths.md` - what `XDG_*`, `APPDATA`, `LOCALAPPDATA`, `TMPDIR` shape per-OS.
+- `PerElement.md` - which Element reads each env var.

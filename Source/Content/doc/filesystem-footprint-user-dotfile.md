@@ -1,13 +1,13 @@
 ---
-title: "Filesystem Footprint — User Dotfile"
+title: "Filesystem Footprint - User Dotfile"
 section: "Reference"
 order: 1
-description: "The ~/.fiddee/ tree — Land's primary product-owned filesystem domain, cross-OS resolution, sub-directory map, and Cocoon-side mirror."
+description: "The ~/.fiddee/ tree - Land's primary product-owned filesystem domain, cross-OS resolution, sub-directory map, and Cocoon-side mirror."
 ---
 
 # User Dotfile 🏞️
 
-The `~/.fiddee/` tree — Land's primary product-owned filesystem domain.
+The `~/.fiddee/` tree - Land's primary product-owned filesystem domain.
 
 See also: [Filesystem Footprint](./filesystem-footprint.md)
 
@@ -69,7 +69,7 @@ Cocoon respects one env var that re-roots part of the tree:
 | `VSCODE_COCOON_GLOBAL_STORAGE` | Replaces the globalStorage root resolution in `Extension/Context.ts` | `${FiddeeRoot()}/globalStorage` |
 
 `Lodge` (the user-extensions override) and `Extend` (additional scan paths) do
-**not** apply to the storage sub-trees — only to the extensions root. See
+**not** apply to the storage sub-trees - only to the extensions root. See
 [`EnvironmentVariables.md`](./filesystem-footprint-environment-variables.md) for the full registry.
 
 ---
@@ -102,7 +102,7 @@ Keep them lockstep; the docstring on each file references the other.
 | `~/.land/extensions/` | 🟡 read-only scan, never written (additive legacy) | Scanned by `Binary/Extension/ScanPathConfigure.rs:227` (T3 2026-05-26 fix) |
 
 Added to the scan-path registry on 2026-05-26 and recognised by
-`Scanner::IsUserExtensionScanPath`. **Read-only** — new VSIX installs land under
+`Scanner::IsUserExtensionScanPath`. **Read-only** - new VSIX installs land under
 `~/.fiddee/extensions/`, never here. Existing installs in `~/.land/extensions/`
 are still scanned and activated until the user (or a future migration step)
 moves them.
@@ -141,22 +141,22 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
 
 - The `.fiddee/extensions/<id>/.storage/` location ties per-extension storage to
   the extension's own directory. Reinstalls or version bumps destroy that
-  state — subtle, since the three sibling roots (`extensionStorage`,
+  state - subtle, since the three sibling roots (`extensionStorage`,
   `globalStorage`, `logs`) live outside the bundle and survive lifecycle events.
   Encapsulation candidate: move to `.fiddee/extensionData/<id>/.storage/`
   parallel to the existing siblings. See [`Encapsulation.md`](./filesystem-footprint-encapsulation.md)
   §H.
 - `.fiddee/data/` is reserved but not yet wired. The background-daemon flow may
-  bypass it entirely (Air uses `<config_dir>/FIDDEE/` instead — see
+  bypass it entirely (Air uses `<config_dir>/FIDDEE/` instead - see
   [`PerElement.md`](./filesystem-footprint-per-element.md) §Air for the divergence).
 
 ---
 
 ## See Also 📚
 
-- [`PlatformPaths.md`](./filesystem-footprint-platform-paths.md) — per-OS Library / XDG / AppData paths
+- [`PlatformPaths.md`](./filesystem-footprint-platform-paths.md) - per-OS Library / XDG / AppData paths
   that coexist with `~/.fiddee/`.
-- [`PerElement.md`](./filesystem-footprint-per-element.md) — which Element writes which sub-path.
-- [`EnvironmentVariables.md`](./filesystem-footprint-environment-variables.md) — `Lodge`, `Extend`,
+- [`PerElement.md`](./filesystem-footprint-per-element.md) - which Element writes which sub-path.
+- [`EnvironmentVariables.md`](./filesystem-footprint-environment-variables.md) - `Lodge`, `Extend`,
   `VSCODE_COCOON_GLOBAL_STORAGE` references.
-- [`Cleanup.md`](./filesystem-footprint-cleanup.md) — per-OS recipes that include `~/.fiddee/`.
+- [`Cleanup.md`](./filesystem-footprint-cleanup.md) - per-OS recipes that include `~/.fiddee/`.

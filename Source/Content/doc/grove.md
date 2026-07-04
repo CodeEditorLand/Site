@@ -250,11 +250,11 @@ compatibility.
 
 ## Related Documentation
 
-- [Common](/Doc/common/) — Shared traits and ActionEffect system
-- [Mountain](/Doc/mountain/) — Main backend (Grove integration)
-- [Cocoon](/Doc/cocoon/) — Primary extension host (Node.js)
-- [InterComponentProtocol](/Doc/api-reference/) — gRPC protocol specification
-- [RustInfrastructure](/Doc/architecture/) — Rust backend components
+- [Common](/Doc/common/) - Shared traits and ActionEffect system
+- [Mountain](/Doc/mountain/) - Main backend (Grove integration)
+- [Cocoon](/Doc/cocoon/) - Primary extension host (Node.js)
+- [InterComponentProtocol](/Doc/api-reference/) - gRPC protocol specification
+- [RustInfrastructure](/Doc/architecture/) - Rust backend components
 
 ---
 
