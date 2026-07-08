@@ -30,7 +30,15 @@ module.exports = {
 
 		require("autoprefixer"),
 
-		require("cssnano")({ preset: "advanced" }),
+		require("cssnano")({
+			// discardUnused's fontFace check only sees literal font-family
+			// strings; it can't resolve `font-family: var(--FontSans)`
+			// indirection (Global.css → Base.css), so it drops every
+			// @font-face rule as "unused". Keep font-face pruning off;
+			// leave the rest of discardUnused (keyframes, counter-style,
+			// namespace) at its default.
+			preset: ["advanced", { discardUnused: { fontFace: false } }],
+		}),
 
 		require("postcss-reporter"),
 	],
