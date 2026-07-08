@@ -154,32 +154,26 @@ const T = GetI18n();
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="twitter:dnt" content="on" />
 
-		<!-- Fonts: preconnect to Google Fonts origins, then preload the CSS
-		 stylesheet as a high-priority fetch. The font CSS file itself is small
-		 (~1 KB) and declares the @font-face rules that trigger woff2 downloads.
-		 Preloading the stylesheet eliminates the render-blocking parser delay
-		 while using font-display: swap for reliable loading. CLS from font swap
-		 is prevented by font-size-adjust: 0.52 in Global.css (matches Geist's
-		 x-height ratio). -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<!-- Fonts: self-hosted Geist, Geist Mono, and Instrument Serif woff2
+		 files under Public/Font/, declared via @font-face in Font.css
+		 (imported by Global.css below) - no requests to fonts.googleapis.com
+		 or fonts.gstatic.com. Preload the primary latin subsets so the
+		 highest-priority glyphs fetch immediately instead of waiting on CSS
+		 parsing. font-display: swap avoids render-blocking; CLS from font
+		 swap is prevented by font-size-adjust: 0.52 in Global.css (matches
+		 Geist's x-height ratio). -->
 		<link
 			rel="preload"
-			as="style"
-			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+			as="font"
+			type="font/woff2"
+			href="/Font/Geist/Geist-Latin.woff2"
 		/>
 		<link
-			rel="stylesheet"
-			href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
-			media="print"
-			onload="this.media='all'"
+			rel="preload"
+			as="font"
+			type="font/woff2"
+			href="/Font/GeistMono/GeistMono-Latin.woff2"
 		/>
-		<noscript>
-			<link
-				rel="stylesheet"
-				href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
-			/>
-		</noscript>
 
 		<!-- LCP optimization: preload hero logo used in DynamicHeroSection -->
 		<link rel="preload" as="image" href="/Asset/Logo/Glyph/Land.svg" />

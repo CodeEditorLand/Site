@@ -10,7 +10,7 @@ description: "Every host-filesystem location the editor reads or writes, mapped 
 Every host-filesystem location the editor reads or writes, mapped to its
 producing code, with cross-platform resolution and cleanup recipes.
 
-**macOS** **Linux** **Windows**
+**macOS** **Linux** **Windows**
 
 ---
 
