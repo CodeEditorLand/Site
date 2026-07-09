@@ -8,7 +8,7 @@ description:
     universal CommonError type."
 ---
 
-# Common: Abstract Core Library 👨🏻‍🏭
+# Common: Abstract Core Library 🧑🏻‍🏭
 
 `Common` is the architectural foundation of `Land`'s native `Rust` backend. `Common` is a pure abstract library that defines:
 

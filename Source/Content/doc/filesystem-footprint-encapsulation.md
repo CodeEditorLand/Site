@@ -173,7 +173,7 @@ Read `<app_data_dir>/<bundle>/machine-id.txt` and use it as the PostHog distinct
 
 ---
 
-## J. FIDDEE Root Reconciliation (Air vs Mountain) 🤝
+## J. FIDDEE Root Reconciliation (Air vs Mountain) 🫱🏻‍🫲🏿
 
 Mountain owns `~/.fiddee/` (dotfile, lowercase). The `Air` background daemon writes to `<config_dir>/FIDDEE/` (uppercase, under the OS config root - i.e. `~/Library/Application Support/FIDDEE/` on macOS).
 

@@ -10,7 +10,7 @@ description: "High-level overview of Land's architecture and the core workflows 
 A high-level overview of the architecture and the core workflows that drive the
 application. Our system is composed of three primary components:
 
-- **`Common` 👨🏻‍🏭 (Rust Crate):** The abstract core library. It defines the
+- **`Common` 🧑🏻‍🏭 (Rust Crate):** The abstract core library. It defines the
   architectural "language" of the application through traits, data structures
   (DTOs), and a declarative Effect system. It has no knowledge of the final
   implementation.

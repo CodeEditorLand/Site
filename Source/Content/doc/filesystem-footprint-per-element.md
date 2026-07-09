@@ -5,7 +5,7 @@ order: 3
 description: "Every Land Element grouped by which filesystem location it touches - the reverse map of UserDotfile and PlatformPaths."
 ---
 
-# **Per-Element Write Sites** ✍️
+# **Per-Element Write Sites** ✍🏻
 
 Every Element grouped by which filesystem location it touches. Reverse map of
 UserDotfile and PlatformPaths: those answer "which Element writes here?" - this
@@ -130,7 +130,7 @@ Build-time only. Same shape as Wind - reads env, no runtime writes.
 
 ---
 
-## Air 💨
+## Air 🪁
 
 Background daemon. **Uses a different filesystem root than Mountain** -
 `<config_dir>/FIDDEE/` (uppercase) and `<data_local_dir>/FIDDEE/`, not
@@ -157,7 +157,7 @@ ships as an external tool with its own naming convention.
 
 ---
 
-## SideCar 🛟
+## SideCar 🚃
 
 | Producer                               | Writes                                                 | Trigger                  |
 | :------------------------------------- | :----------------------------------------------------- | :----------------------- |
