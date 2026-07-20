@@ -41,7 +41,7 @@
 		"@astrojs/sitemap": "3.7.3",
 		"@astrojs/ts-plugin": "1.10.10",
 		"@auth0/auth0-react": "~2.22.0",
-		"@playform/build": "0.3.2",
+		"@playform/build": "0.3.3",
 		"@playform/compress": "0.2.3",
 		"@playform/inline": "0.1.4",
 		"@radix-ui/react-accordion": "1.2.16",
