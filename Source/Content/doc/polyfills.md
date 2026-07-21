@@ -17,11 +17,11 @@ modifying upstream VS Code source code.
 
 ## Table of Contents
 
-1. [Wind Preload Shim](#wind-preload-shim)
+1. [Wind Preload Shim](#wind-preload-shim️)
 2. [SkyBridge](#skybridge)
 3. [Cocoon Initialization Prelude](#cocoon-initialization-prelude)
 4. [Output Transform Pipeline](#output-transform-pipeline)
-5. [Worker Service Worker](#worker-service-worker)
+5. [Worker Service Worker](#worker-service-worker️)
 6. [LandFix Diagnostics](#landfix-diagnostics)
 7. [Telemetry Bridge](#telemetry-bridge)
 8. [Polyfill Lifecycle](#polyfill-lifecycle)

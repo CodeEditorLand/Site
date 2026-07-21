@@ -23,9 +23,9 @@ description:
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Architecture](#architecture)
+2. [Architecture](#architecture️)
 3. [Page Structure](#page-structure)
-4. [Workbench Variants](#workbench-variants)
+4. [Workbench Variants](#workbench-variants️)
 5. [SkyBridge](#skybridge)
 6. [Build-time Variant Selection](#build-time-variant-selection)
 7. [Static Asset Layout](#static-asset-layout)

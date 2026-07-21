@@ -17,15 +17,15 @@ static asset compilation across 15+ component workspaces.
 ## Table of Contents
 
 1. [Pipeline Overview](#pipeline-overview)
-2. [Environment Variable System](#environment-variable-system)
-3. [Build Entry Point](#build-entry-point)
+2. [Environment Variable System](#environment-variable-system️)
+3. [Program Launch Options](#program-launch-options)
 4. [Profile System](#profile-system)
 5. [Env Propagation to Each Element](#env-propagation-to-each-element)
 6. [Rust Build Process](#rust-build-process)
 7. [TypeScript Build Process](#typescript-build-process)
 8. [Artifact Layout](#artifact-layout)
 9. [Output Transform Pipeline](#output-transform-pipeline)
-10. [Worker Build Process](#worker-build-process)
+10. [Worker Build Process](#worker-build-process️)
 11. [SideCar Binary Management](#sidecar-binary-management)
 12. [Related Documentation](#related-documentation)
 

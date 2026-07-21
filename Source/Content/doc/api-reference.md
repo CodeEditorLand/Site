@@ -21,12 +21,12 @@ connection lifecycle management.
 
 1. [Protocol Overview](#protocol-overview)
 2. [Tauri IPC](#tauri-ipc)
-3. [Vine gRPC Protocol](#vine-grpc-protocol)
+3. [Vine gRPC Protocol](#vine-grpc-protocol️)
 4. [Spine Extension Protocol](#spine-extension-protocol)
 5. [Connection Lifecycle](#connection-lifecycle)
 6. [Health Monitoring](#health-monitoring)
 7. [Protocol Buffer Definitions](#protocol-buffer-definitions)
-8. [Security](#security)
+8. [Security](#security️)
 9. [Related Documentation](#related-documentation)
 
 ---

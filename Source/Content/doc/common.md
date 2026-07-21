@@ -29,10 +29,10 @@ It contains no concrete implementations.
 4. [ActionEffect System](#actioneffect-system)
 5. [Environment and Dependency Injection](#environment-and-dependency-injection)
 6. [Data Transfer Objects](#data-transfer-objects)
-7. [CommonError](#commonerror)
+7. [CommonError](#commonerror️)
 8. [Transport Layer](#transport-layer)
 9. [Telemetry Module](#telemetry-module)
-10. [Service Domain Map](#service-domain-map)
+10. [Service Domain Map](#service-domain-map️)
 11. [Related Documentation](#related-documentation)
 
 ---

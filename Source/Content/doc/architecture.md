@@ -20,11 +20,11 @@ operation on `macOS`, `Windows`, and `Linux`.
 
 ## Table of Contents
 
-1. [Process Model](#process-model)
-2. [Component Map](#component-map)
+1. [Process Model](#process-model️)
+2. [Component Map](#component-map️)
 3. [IPC Architecture](#ipc-architecture)
 4. [Service Layer Design](#service-layer-design)
-5. [Tier-Gated Implementation](#tier-gated-implementation)
+5. [Tier-Gated Implementation](#tier-gated-implementation️)
 6. [Data Flow Patterns](#data-flow-patterns)
 7. [Related Documentation](#related-documentation)
 

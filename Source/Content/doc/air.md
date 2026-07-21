@@ -21,12 +21,12 @@ The `Air` background daemon:
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Architecture](#architecture)
-3. [Module Map](#module-map)
+2. [Architecture](#architecture️)
+3. [Module Map](#module-map️)
 4. [Services](#services)
 5. [Data Flow](#data-flow)
 6. [Startup Sequence](#startup-sequence)
-7. [Configuration](#configuration)
+7. [Configuration](#configuration️)
 8. [Related Documentation](#related-documentation)
 
 ---

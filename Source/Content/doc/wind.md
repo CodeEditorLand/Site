@@ -25,8 +25,8 @@ workbench.
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Architecture](#architecture)
-3. [Service Architecture](#service-architecture)
+2. [Architecture](#architecture️)
+3. [Service Architecture](#service-architecture️)
 4. [Layer Composition](#layer-composition)
 5. [Preload Shim Integration](#preload-shim-integration)
 6. [Service Catalog](#service-catalog)

@@ -22,9 +22,9 @@ Compiler) toolchain:
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [Architecture](#architecture)
+2. [Architecture](#architecture️)
 3. [Compilation Pipeline](#compilation-pipeline)
-4. [Configuration](#configuration)
+4. [Configuration](#configuration️)
 5. [CLI Usage](#cli-usage)
 6. [Integration with Output](#integration-with-output)
 7. [Performance Benchmarks](#performance-benchmarks)
