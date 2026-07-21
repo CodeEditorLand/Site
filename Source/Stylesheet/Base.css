@@ -1788,3 +1788,76 @@
 
 	height: auto;
 }
+
+/* ── Jelly UI fallback (https://jelly-ui.com) ─────────────────────────
+ <jelly-button>/<jelly-icon-button> are custom elements upgraded by an
+ external <script> in Source/Layout/Base.astro - until that script loads
+ (or if it fails to load at all: network hiccup, ad-blocker, offline dev),
+ an unregistered custom element renders as bare inline text with none of
+ its shadow-DOM styling. :not(:defined) targets exactly that unregistered
+ state and stops applying the instant the browser upgrades the element, so
+ buttons never flash unstyled/invisible regardless of network conditions.
+ Values mirror Source/Component/UI/Button.tsx's own inline overrides. ── */
+jelly-button:not(:defined),
+jelly-icon-button:not(:defined) {
+	display: inline-flex;
+
+	align-items: center;
+
+	justify-content: center;
+
+	height: 36px;
+
+	border-radius: var(--RadiusButton);
+
+	font-family: var(--FontSans);
+
+	font-weight: 500;
+
+	white-space: nowrap;
+
+	background: var(--Foreground);
+
+	color: var(--Background);
+}
+
+jelly-button:not(:defined) {
+	padding-inline: 2.1rem;
+}
+
+jelly-icon-button:not(:defined) {
+	width: 36px;
+}
+
+jelly-button[variant="rose"]:not(:defined) {
+	background: var(--Destruct);
+
+	color: var(--DestructForeground);
+}
+
+jelly-button[variant="platinum"]:not(:defined),
+jelly-icon-button[variant="platinum"]:not(:defined) {
+	background: var(--Background);
+
+	color: var(--Foreground);
+}
+
+jelly-button[variant="graphite"]:not(:defined),
+jelly-icon-button[variant="graphite"]:not(:defined) {
+	background: var(--Secondary);
+
+	color: var(--SecondaryForeground);
+}
+
+jelly-button:not(:defined)[block] {
+	display: flex;
+
+	width: 100%;
+}
+
+jelly-button:not(:defined)[disabled],
+jelly-icon-button:not(:defined)[disabled] {
+	opacity: 0.5;
+
+	pointer-events: none;
+}

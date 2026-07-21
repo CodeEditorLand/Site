@@ -21,6 +21,15 @@ const SyncPictureSources = (IsDark: boolean) => {
 		});
 };
 
+// <jelly-theme mode="auto"> only tracks the OS scheme by default - pin it to
+// the manually-toggled theme so Jelly UI buttons stay in lockstep with the
+// rest of the site instead of the user's OS preference.
+const SyncJellyTheme = (IsDark: boolean) => {
+	document.querySelectorAll("jelly-theme").forEach((Theme) => {
+		Theme.setAttribute("mode", IsDark ? "dark" : "light");
+	});
+};
+
 const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	const [IsDark, SetIsDark] = useState(false);
 
@@ -34,6 +43,8 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 		SetIsDark(CurrentlyDark);
 
 		SyncPictureSources(CurrentlyDark);
+
+		SyncJellyTheme(CurrentlyDark);
 	}, []);
 
 	const Toggle = () => {
@@ -53,6 +64,8 @@ const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 			?.setAttribute("content", Next ? "#0a0a0c" : "#ffffff");
 
 		SyncPictureSources(Next);
+
+		SyncJellyTheme(Next);
 
 		SetIsDark(Next);
 	};

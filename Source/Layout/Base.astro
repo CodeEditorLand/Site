@@ -130,6 +130,19 @@ const T = GetI18n();
 							Root.querySelectorAll(
 								"source[data-theme-dark]",
 							).forEach(SyncSource);
+							// <jelly-theme> defaults to mode="auto" (OS
+							// preference only) - force it to match the
+							// stored/resolved Dark boolean so Jelly UI buttons
+							// track the same manual toggle as the rest of the
+							// site instead of drifting from prefers-color-scheme.
+							Root.querySelectorAll("jelly-theme").forEach(
+								(T) => {
+									T.setAttribute(
+										"mode",
+										Dark ? "dark" : "light",
+									);
+								},
+							);
 							Observer.disconnect();
 						},
 						{ once: true },
@@ -224,6 +237,14 @@ const T = GetI18n();
 		/>
 		<meta name="apple-mobile-web-app-title" content="Code Editor Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
+
+		<!-- Jelly UI (https://github.com/jelly-org/ui) - self-hosted from the
+		 Vendor/JellyUI submodule (built by
+		 Maintain/Script/BuildJellyUIVendor.sh into Public/Vendor/JellyUI/,
+		 served here from our own origin) rather than the jelly-ui.com CDN,
+		 so it's not a build- or runtime-time dependency on a third party.
+		 Upgrades the <jelly-*> elements rendered below once it loads. -->
+		<script type="module" src="/Vendor/JellyUI/jelly.js"></script>
 	</head>
 	<body>
 		<a
@@ -233,21 +254,23 @@ const T = GetI18n();
 			Skip to main content
 		</a>
 
-		<Background />
+		<jelly-theme id="JellyTheme" mode="auto">
+			<Background />
 
-		<AnalyticsProvider>
-			{/* Client-side only component for pageview tracking */}
-			<PageviewTracker />
-			<main id="main-content" class="grow" tabindex="-1">
-				<ErrorBoundary client:load>
-					<slot />
-				</ErrorBoundary>
-			</main>
-		</AnalyticsProvider>
+			<AnalyticsProvider>
+				{/* Client-side only component for pageview tracking */}
+				<PageviewTracker />
+				<main id="main-content" class="grow" tabindex="-1">
+					<ErrorBoundary client:load>
+						<slot />
+					</ErrorBoundary>
+				</main>
+			</AnalyticsProvider>
 
-		<div id="Footer" class="shrink">
-			<Footer client:idle />
-		</div>
+			<div id="Footer" class="shrink">
+				<Footer client:idle />
+			</div>
+		</jelly-theme>
 
 		<script>
 			import "@Script/Firebase";
