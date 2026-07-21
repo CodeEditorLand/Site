@@ -1,0 +1,1 @@
+import{t}from"./Vendor/React.BYPjM4L-.js";export{t as default};

@@ -1,0 +1,1 @@
+import{dn as r}from"./Vendor/React.BYPjM4L-.js";import{t as s}from"./RichText.C5adRByI.js";var t=r(),a=r=>(0,t.jsx)(s,{...r});export{a as DynamicRichText,a as default};
