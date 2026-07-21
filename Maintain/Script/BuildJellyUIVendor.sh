@@ -18,16 +18,20 @@ Public="$Root/Public/Vendor/JellyUI"
 # the submodule directory is empty, fetch the exact commit the superproject
 # has pinned (recorded as a gitlink in its tree - no network needed to read
 # it) directly from GitHub instead of depending on the host's checkout step.
+#
+# Even when the submodule WAS cloned (CF does clone it), the version
+# checked out may be stale if the pinned commit was updated in a newer
+# deploy but git's submodule ignore = all prevents the checkout from
+# tracking it. Always sync to the exact pinned commit.
+Commit=$(cd "$Root" && git rev-parse "HEAD:Vendor/JellyUI" 2>/dev/null || true)
+
+if [ -z "$Commit" ]; then
+	echo "BuildJellyUIVendor: Vendor/JellyUI has no pinned commit in tree" >&2
+	echo "Run: git submodule update --init --recursive" >&2
+	exit 1
+fi
+
 if [ ! -f "$Vendor/package.json" ]; then
-	Commit=$(cd "$Root" && git rev-parse "HEAD:Vendor/JellyUI" 2>/dev/null || true)
-
-	if [ -z "$Commit" ]; then
-		echo "BuildJellyUIVendor: Vendor/JellyUI is empty and no pinned commit" >&2
-		echo "was found in the superproject tree. Run:" >&2
-		echo "  git submodule update --init --recursive" >&2
-		exit 1
-	fi
-
 	echo "BuildJellyUIVendor: Vendor/JellyUI is empty - fetching pinned commit $Commit directly"
 	rm -rf "$Vendor"
 	mkdir -p "$Vendor"
@@ -38,6 +42,14 @@ if [ ! -f "$Vendor/package.json" ]; then
 		git fetch --quiet --depth 1 origin "$Commit"
 		git checkout --quiet FETCH_HEAD
 	)
+else
+	# Submodule exists — ensure it's at the exact pinned commit even if
+	# the host's checkout is stale (e.g. ignore=all in .gitmodules).
+	Actual=$(cd "$Vendor" && git rev-parse HEAD 2>/dev/null || true)
+	if [ "$Actual" != "$Commit" ]; then
+		echo "BuildJellyUIVendor: syncing submodule from $Actual to pinned $Commit"
+		(cd "$Vendor" && git fetch --quiet --depth 1 origin "$Commit" && git checkout --quiet FETCH_HEAD)
+	fi
 fi
 
 Stamp="$Vendor/dist/.BuiltFrom"
