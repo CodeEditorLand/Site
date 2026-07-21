@@ -312,10 +312,9 @@ Sky/Target/
 [GitHub Repository](https://github.com/CodeEditorLand/Sky) |
 [Report an Issue](https://github.com/CodeEditorLand/Sky/issues)
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

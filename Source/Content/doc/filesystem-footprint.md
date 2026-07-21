@@ -1,5 +1,7 @@
 ---
 title: "Filesystem Footprint"
+navTitle: "Overview"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 0
 description: "Every host-filesystem location the editor reads or writes, mapped to its producing code, with cross-platform resolution and cleanup recipes."

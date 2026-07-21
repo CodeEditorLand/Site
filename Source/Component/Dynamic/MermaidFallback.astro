@@ -4,11 +4,28 @@
 // plugin couldn't handle (missing SVGs, MDX pages, etc.) and renders
 // them in-browser using the mermaid library.
 ---
+
 <style>
-	.mermaid-fb { background: #f6f8fa; border-radius: 6px; padding: 1rem; margin: 1.5rem 0; overflow-x: auto; }
-	:global(.dark) .mermaid-fb { background: #1e1e1e; }
-	.mermaid-fb svg { max-width: 100%; height: auto; }
-	.mermaid-fb-error { color: #d1242f; font-family: monospace; font-size: 0.85em; padding: 0.5rem; }
+	.mermaid-fb {
+		background: #f6f8fa;
+		border-radius: 6px;
+		padding: 1rem;
+		margin: 1.5rem 0;
+		overflow-x: auto;
+	}
+	:global(.dark) .mermaid-fb {
+		background: #1e1e1e;
+	}
+	.mermaid-fb svg {
+		max-width: 100%;
+		height: auto;
+	}
+	.mermaid-fb-error {
+		color: #d1242f;
+		font-family: monospace;
+		font-size: 0.85em;
+		padding: 0.5rem;
+	}
 </style>
 
 <script>
@@ -16,7 +33,7 @@
 
 	// Find any pre/code blocks with language-mermaid that haven't been inlined yet
 	const blocks = document.querySelectorAll(
-		'pre > code.language-mermaid, pre > code[class*="language-mermaid"]'
+		'pre > code.language-mermaid, pre > code[class*="language-mermaid"]',
 	);
 
 	if (blocks.length === 0) {
@@ -55,7 +72,7 @@
 			try {
 				const { svg } = await mermaid.render(
 					`mermaid-fb-${Math.random().toString(36).slice(2, 8)}`,
-					source
+					source,
 				);
 				wrapper.innerHTML = svg;
 			} catch (err) {

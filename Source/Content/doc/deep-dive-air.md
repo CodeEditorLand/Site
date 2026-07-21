@@ -1,5 +1,6 @@
 ---
 title: "Air - Deep Dive"
+navTitle: "Air"
 section: "Deep Dive"
 order: 0
 description: "Technical architecture of the Air background daemon: gRPC service

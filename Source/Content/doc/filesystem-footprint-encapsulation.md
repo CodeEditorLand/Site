@@ -1,5 +1,7 @@
 ---
 title: "Filesystem Footprint - Encapsulation Directions"
+navTitle: "Encapsulation Directions"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 6
 description: "Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning."
@@ -7,7 +9,7 @@ description: "Potential refactors that would shrink Land's filesystem footprint,
 
 # Encapsulation Directions 🚧
 
-Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning. Each option is feasible because both Land and the bundled VS Code dependency are ours to modify. None are decided plans; all should be costed against the current [PerElement.md](filesystem-footprint-per-element.md) and [PlatformPaths.md](filesystem-footprint-platform-paths.md) before implementation.
+Potential refactors that would shrink Land's filesystem footprint, simplify cleanup, or unblock versioning. Each option is feasible because both Land and the bundled VS Code dependency are ours to modify. None are decided plans; all should be costed against the current [PerElement.md](/Doc/filesystem-footprint-per-element) and [PlatformPaths.md](/Doc/filesystem-footprint-platform-paths) before implementation.
 
 ---
 
@@ -80,7 +82,7 @@ Today `Record=1` + `Trace=all` debug sessions leave behind ~200 MB per run forev
 
 - `Element/Mountain/Source/IPC/DevLog/*`.
 - One new boot hook to prune-on-start.
-- New env vars: `LogRetention`, `LogMaxSize`, `LogPruneOnBoot` (registry entries in [EnvironmentVariables.md](../Reference/EnvironmentVariables.md)).
+- New env vars: `LogRetention`, `LogMaxSize`, `LogPruneOnBoot` (registry entries in [EnvironmentVariables.md](/Doc/build-matrix)).
 
 ---
 
@@ -114,13 +116,13 @@ Add equivalent overrides for every location:
 | -        | `Cache` - cache root                   |
 | -        | `Storage` - per-extension storage root |
 
-Pair each with a registry entry in [EnvironmentVariables.md](../Reference/EnvironmentVariables.md). Useful for **portable installs** (USB-stick FIDDEE) and for CI runners that should not accumulate state.
+Pair each with a registry entry in [EnvironmentVariables.md](/Doc/build-matrix). Useful for **portable installs** (USB-stick FIDDEE) and for CI runners that should not accumulate state.
 
 ---
 
 ## F. Self-Uninstall Command 🧼
 
-`fiddee --uninstall` (or a menu item) that walks the [PerElement.md](filesystem-footprint-per-element.md) tables and removes every path it owns, optionally archiving to `~/.fiddee-archive-<ts>/` first. Matches the procedure in [Cleanup.md](filesystem-footprint-cleanup.md) done by hand.
+`fiddee --uninstall` (or a menu item) that walks the [PerElement.md](/Doc/filesystem-footprint-per-element) tables and removes every path it owns, optionally archiving to `~/.fiddee-archive-<ts>/` first. Matches the procedure in [Cleanup.md](/Doc/filesystem-footprint-cleanup) done by hand.
 
 **Bonus:** integrate with option K (keychain enumeration) so the uninstall also clears OS-keychain entries.
 
@@ -239,7 +241,7 @@ The combination of A (single product root) + D (schema versions) makes the versi
 
 ## See Also 📚
 
-- [UserDotfile.md](filesystem-footprint-user-dotfile.md) - the `~/.fiddee/` tree (option A's target shape).
-- [PerElement.md](filesystem-footprint-per-element.md) - per-Element write-site inventory.
-- [Cleanup.md](filesystem-footprint-cleanup.md) - the manual recipe option F would automate.
-- [EnvironmentVariables.md](../Reference/EnvironmentVariables.md) - where new env var registries land.
+- [UserDotfile.md](/Doc/filesystem-footprint-user-dotfile) - the `~/.fiddee/` tree (option A's target shape).
+- [PerElement.md](/Doc/filesystem-footprint-per-element) - per-Element write-site inventory.
+- [Cleanup.md](/Doc/filesystem-footprint-cleanup) - the manual recipe option F would automate.
+- [EnvironmentVariables.md](/Doc/build-matrix) - where new env var registries land.

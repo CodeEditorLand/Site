@@ -457,7 +457,7 @@ Target triples supported:
 
 ## Related Documentation
 
-- [Getting Started](./getting-started.md) - Build instructions and prerequisites
-- [Quickstart](./quickstart.md) - Concise build reference
-- [Configuration](./configuration.md) - Complete env var reference
-- [Deep Dives](./deep-dive-sky.md) - Component architecture details
+- [Getting Started](/Doc/getting-started) - Build instructions and prerequisites
+- [Quickstart](/Doc/quickstart) - Concise build reference
+- [Configuration](/Doc/configuration) - Complete env var reference
+- [Deep Dives](/Doc/deep-dive-sky) - Component architecture details

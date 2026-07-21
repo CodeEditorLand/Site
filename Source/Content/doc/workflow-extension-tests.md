@@ -56,8 +56,8 @@ sequenceDiagram
 1. **Extension manifest.** The extension being developed includes a `"test"`
    script in its `package.json`, for example:
    `"test": "node ./test/runTest.js"`. The extension also contributes a command
-   - e.g. `"command": "my-extension.runTests"` - that acts as the test runner
-   entry point.
+    - e.g. `"command": "my-extension.runTests"` - that acts as the test runner
+      entry point.
 
 2. **Launch with dev path.** The developer launches Mountain with a special
    flag pointing to the extension under development:

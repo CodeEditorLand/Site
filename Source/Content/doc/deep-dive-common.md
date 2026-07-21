@@ -1,5 +1,6 @@
 ---
 title: "Common - Deep Dive & Architecture"
+navTitle: "Common"
 section: "Deep Dive"
 order: 2
 description:

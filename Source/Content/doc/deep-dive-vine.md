@@ -1,5 +1,6 @@
 ---
 title: "Vine - Deep Dive"
+navTitle: "Vine"
 section: "Deep Dive"
 order: 12
 description:

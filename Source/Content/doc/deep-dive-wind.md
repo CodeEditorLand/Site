@@ -1,5 +1,6 @@
 ---
 title: "Wind - Deep Dive"
+navTitle: "Wind"
 section: "Deep Dive"
 order: 13
 description:

@@ -6,7 +6,13 @@ import {
 	CollapsibleTrigger,
 } from "../UI/Collapsible.js";
 
-import type { DocSection } from "./Interface/Content/Page/Doc.js";
+import type {
+	DocGroup,
+	DocItem,
+	DocSection,
+} from "./Interface/Content/Page/Doc.js";
+
+const IsDocGroup = (Item: DocItem): Item is DocGroup => "Children" in Item;
 
 interface DynamicDocSidebarProps {
 	Sections: DocSection[];
@@ -24,7 +30,11 @@ const DynamicDocSidebar = ({
 }: DynamicDocSidebarProps) => {
 	// Auto-expand the section that contains the active page; collapse all others.
 	const ActiveSectionId = Sections.find((S) =>
-		S.Children?.some((C) => C.Id === ActiveId),
+		S.Children?.some((Item) =>
+			IsDocGroup(Item)
+				? Item.Children.some((C) => C.Id === ActiveId)
+				: Item.Id === ActiveId,
+		),
 	)?.Id;
 
 	const [CollapsedSections, SetCollapsedSections] = useState<Set<string>>(
@@ -35,6 +45,35 @@ const DynamicDocSidebar = ({
 
 	const ToggleSection = (Id: string) => {
 		SetCollapsedSections((Previous) => {
+			const Next = new Set(Previous);
+
+			if (Next.has(Id)) {
+				Next.delete(Id);
+			} else {
+				Next.add(Id);
+			}
+
+			return Next;
+		});
+	};
+
+	// Same auto-expand behavior one level deeper, for groups nested inside a section.
+	const AllGroups = Sections.flatMap((S) => S.Children ?? []).filter(
+		IsDocGroup,
+	);
+
+	const ActiveGroupId = AllGroups.find((G) =>
+		G.Children.some((C) => C.Id === ActiveId),
+	)?.Id;
+
+	const [CollapsedGroups, SetCollapsedGroups] = useState<Set<string>>(
+		new Set(
+			AllGroups.filter((G) => G.Id !== ActiveGroupId).map((G) => G.Id),
+		),
+	);
+
+	const ToggleGroup = (Id: string) => {
+		SetCollapsedGroups((Previous) => {
 			const Next = new Set(Previous);
 
 			if (Next.has(Id)) {
@@ -84,14 +123,92 @@ const DynamicDocSidebar = ({
 											role="list"
 											className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3"
 										>
-											{Section.Children!.map((Child) => {
+											{Section.Children!.map((Item) => {
+												if (IsDocGroup(Item)) {
+													const IsGroupOpen =
+														!CollapsedGroups.has(
+															Item.Id,
+														);
+
+													return (
+														<li key={Item.Id}>
+															<Collapsible
+																open={
+																	IsGroupOpen
+																}
+																onOpenChange={() =>
+																	ToggleGroup(
+																		Item.Id,
+																	)
+																}
+															>
+																<CollapsibleTrigger className="flex w-full items-center justify-between rounded-none px-2 py-1 text-sm font-medium text-foreground transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+																	<span>
+																		{
+																			Item.Label
+																		}
+																	</span>
+																	<span
+																		aria-hidden="true"
+																		className={`transition-transform duration-150 ${IsGroupOpen ? "rotate-90" : ""}`}
+																	>
+																		›
+																	</span>
+																</CollapsibleTrigger>
+																<CollapsibleContent>
+																	<ul
+																		role="list"
+																		className="ml-2 mt-0.5 space-y-0.5 border-l border-border pl-3"
+																	>
+																		{Item.Children.map(
+																			(
+																				Child,
+																			) => {
+																				const IsActive =
+																					ActiveId ===
+																					Child.Id;
+
+																				return (
+																					<li
+																						key={
+																							Child.Id
+																						}
+																					>
+																						<a
+																							href={`/Doc/${Child.Id}`}
+																							aria-current={
+																								IsActive
+																									? "page"
+																									: undefined
+																							}
+																							className={`block rounded-none px-2 py-1 text-sm transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
+																								IsActive
+																									? "bg-secondary font-medium text-foreground"
+																									: "text-muted-foreground"
+																							}`}
+																						>
+																							{
+																								Child.Label
+																							}
+																						</a>
+																					</li>
+																				);
+																			},
+																		)}
+																	</ul>
+																</CollapsibleContent>
+															</Collapsible>
+														</li>
+													);
+												}
+
 												const IsActive =
-													ActiveId === Child.Id;
+													ActiveId === Item.Id;
 
 												return (
-													<li key={Child.Id}>
+													<li key={Item.Id}>
 														<a
-															href={`/Doc/${Child.Id}`}
+															href={`/Doc/${Item.Id}`}
 															aria-current={
 																IsActive
 																	? "page"
@@ -103,7 +220,7 @@ const DynamicDocSidebar = ({
 																	: "text-muted-foreground"
 															}`}
 														>
-															{Child.Label}
+															{Item.Label}
 														</a>
 													</li>
 												);
@@ -133,9 +250,12 @@ const DynamicDocSidebar = ({
 	if (!Mobile) return Nav;
 
 	// Mobile: wrap in a collapsible panel
+	const AllLeaves = Sections.flatMap((S) => S.Children ?? []).flatMap(
+		(Item) => (IsDocGroup(Item) ? Item.Children : [Item]),
+	);
+
 	const ActiveLabel =
-		Sections.flatMap((S) => S.Children ?? []).find((C) => C.Id === ActiveId)
-			?.Label ??
+		AllLeaves.find((C) => C.Id === ActiveId)?.Label ??
 		ActiveSectionId ??
 		"Navigation";
 

@@ -1,5 +1,6 @@
 ---
 title: "SideCar - Deep Dive"
+navTitle: "SideCar"
 section: "Deep Dive"
 order: 10
 description:

@@ -1,5 +1,6 @@
 ---
 title: "Sky - Deep Dive"
+navTitle: "Sky"
 section: "Deep Dive"
 order: 11
 description:

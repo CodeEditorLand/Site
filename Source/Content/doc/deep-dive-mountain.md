@@ -1,5 +1,6 @@
 ---
 title: "Mountain - Deep Dive & Architecture"
+navTitle: "Mountain"
 section: "Deep Dive"
 order: 7
 description:

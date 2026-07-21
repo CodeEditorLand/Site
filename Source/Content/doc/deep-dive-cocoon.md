@@ -1,5 +1,6 @@
 ---
 title: "Cocoon - Deep Dive"
+navTitle: "Cocoon"
 section: "Deep Dive"
 order: 1
 description: "Internals of the Cocoon extension host: core architecture principles, 7-stage bootstrap ordering, Effect-TS usage patterns, RequireInterceptor rules, gRPC server implementation, extension activation lifecycle with topological ordering and cycle guard, dual-track TierIPC routing, and the showInformationMessage call path end-to-end."

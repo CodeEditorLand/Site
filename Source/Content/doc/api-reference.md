@@ -899,14 +899,14 @@ No remote connections are accepted.
 
 ## Related Documentation 📋
 
-- [Architecture](Architecture.md) - System architecture
-- [BuildPipeline](BuildPipeline.md) - Build pipeline
-- [EditorCore](EditorCore.md) - Editor workbench
-- [Polyfills](Polyfills.md) - Compatibility shims
-- [RustInfrastructure](RustInfrastructure.md) - `Rust` backend components
-- [Building](Building.md) - Build instructions
-- [Workflow/ApplicationStartupAndHandshake](Workflow/ApplicationStartupAndHandshake.md)
-- [Workflow/CreatingAndInteractingWithAWebviewPanel](Workflow/CreatingAndInteractingWithAWebviewPanel.md)
+- [Architecture](/Doc/architecture) - System architecture
+- [BuildPipeline](/Doc/build-pipeline) - Build pipeline
+- [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) - Editor workbench
+- [Polyfills](/Doc/polyfills) - Compatibility shims
+- [RustInfrastructure](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md) - `Rust` backend components
+- [Building](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md) - Build instructions
+- [Workflow/ApplicationStartupAndHandshake](/Doc/workflow-startup)
+- [Workflow/CreatingAndInteractingWithAWebviewPanel](/Doc/workflow-webview)
 
 ---
 

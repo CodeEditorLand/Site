@@ -47,15 +47,15 @@ The full flow involves six phases:
       rather than removing the key entirely. This means a `secrets.get(key)`
       after `secrets.delete(key)` returns `undefined` (the empty string is
       interpreted as a tombstone), but the storage record itself is not removed
-      - the key still exists in the backing store with an empty ciphertext
-      value.
+        - the key still exists in the backing store with an empty ciphertext
+          value.
 
     Mountain encrypts with AES-256-GCM using a SHA-256 hash of the machine UUID
     as the key, derived in `Encryption/Key.rs`. This makes the key machine-stable
     across sessions. The `onDidChange` event fires synchronously after every
     `store` or `delete` call, but only if the underlying value actually changed
     - calls setting the same value as the current state are silently coalesced.
-    Secrets are never written to disk in plaintext.
+      Secrets are never written to disk in plaintext.
 
 ### Extension storage via Mountain
 

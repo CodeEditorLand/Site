@@ -652,10 +652,9 @@ Combine tags: `Trace=lifecycle,ipc,extensions,grpc`
 | Bundled production     | `.env.Land.Production.Bundled`       |
 | Sourcing script        | `Maintain/Script/TierEnvironment.sh` |
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

@@ -1,5 +1,6 @@
 ---
 title: "Echo - Deep Dive & Architecture"
+navTitle: "Echo"
 section: "Deep Dive"
 order: 3
 description:

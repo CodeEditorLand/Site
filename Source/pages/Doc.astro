@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 
 import { DynamicDocSidebar } from "../Component/Dynamic/DynamicDocSidebar";
 import { Header } from "../Component/Layout/Header";
+import BuildDocSidebar, { SectionOrder } from "../Function/Doc/BuildDocSidebar";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
 
@@ -10,41 +11,10 @@ const DocEntries = (await getCollection("doc")).sort(
 	(A, B) => A.data.order - B.data.order,
 );
 
-// Group entries by section for hierarchical sidebar
-const SectionOrder = [
-	"Start",
-	"Guide",
-	"Elements",
-	"Deep Dive",
-	"Workflows",
-	"Why Land",
-	"Reference",
-	"Development",
-	"Telemetry",
-	"Low-Level Shim",
-	"Coverage",
-];
+// Group entries by section (and optionally by mid-level group) for the sidebar
+const SidebarSections = BuildDocSidebar(DocEntries);
 
-const GroupedBySection = new Map<string, { Id: string; Label: string }[]>();
-
-for (const Entry of DocEntries) {
-	const Section = Entry.data.section ?? "Other";
-	if (!GroupedBySection.has(Section)) {
-		GroupedBySection.set(Section, []);
-	}
-	GroupedBySection.get(Section)!.push({
-		Id: Entry.id,
-		Label: Entry.data.title,
-	});
-}
-
-const SidebarSections = SectionOrder.filter((Section) =>
-	GroupedBySection.has(Section),
-).map((Section) => ({
-	Id: Section.toLowerCase().replace(/\s+/g, "-"),
-	Label: Section,
-	Children: GroupedBySection.get(Section)!,
-}));
+const GroupedBySection = new Set(SidebarSections.map((S) => S.Label));
 
 const T = GetI18n();
 

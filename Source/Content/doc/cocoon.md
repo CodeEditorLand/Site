@@ -514,7 +514,7 @@ module loading.
 - [Vine](/Doc/vine) - `gRPC` protocol definitions
 - [Polyfills](/Doc/polyfills) - Initialization prelude
 - [EditorCore](/Doc/cocoon) - VS Code API coverage strategy
-- [VSCode-API-Coverage-Matrix](/Doc/vscode-api-coverage-matrix) - Comprehensive
+- [VSCode-API-Coverage-Matrix](/Doc/vscode-api-coverage) - Comprehensive
   API status
 
 ## Funding 💎
@@ -524,10 +524,9 @@ module loading.
 [GitHub Repository](https://github.com/CodeEditorLand/Cocoon) |
 [Report an Issue](https://github.com/CodeEditorLand/Cocoon/issues)
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

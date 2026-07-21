@@ -180,7 +180,7 @@ export Trace= Record= Disable=
 
 The `Build.sh` script accepts several profiles that control feature flags and
 optimization levels. See
-[`BuildMatrix.md`](Documentation/GitHub/BuildMatrix.md) for the full matrix
+[`BuildMatrix.md`](/Doc/build-matrix) for the full matrix
 of environment variables and tier configurations.
 
 | Profile                       | Workbench         | Coverage                                              | Notes                             |
@@ -211,7 +211,7 @@ runtime behavior. All variables are read from `.env.Land*` files in the
 repository root. Copy `.env.Land.example` to `.env.Land` to customize your
 local environment.
 
-For a complete reference, see [Configuration](./configuration.md).
+For a complete reference, see [Configuration](/Doc/configuration).
 
 Common variables:
 
@@ -382,7 +382,7 @@ export REST_BINARY_PATH=/path/to/rest
 
 The build reads `.env.Land` from the repository root. If variables appear
 missing, verify the file exists and is formatted correctly. See
-[Configuration](./configuration.md) for syntax.
+[Configuration](/Doc/configuration) for syntax.
 
 ```sh
 # Verify the file exists
@@ -464,11 +464,11 @@ variables via `.env.Land.CI` and use `--profile production-electron-bundled`.
 
 ## Further Reading
 
-- [Quickstart](./quickstart.md) - Concise build reference with minimal setup
-- [Configuration](./configuration.md) - Complete environment variable reference
-- [CI/CD Pipeline](./ci-cd-pipeline.md) - Pipeline stages and automation
-- [Deep Dives](./deep-dive-sky.md) - Component architecture details
-- [`Documentation/GitHub/BuildMatrix.md`](Documentation/GitHub/BuildMatrix.md) -
+- [Quickstart](/Doc/quickstart) - Concise build reference with minimal setup
+- [Configuration](/Doc/configuration) - Complete environment variable reference
+- [CI/CD Pipeline](/Doc/ci-cd-pipeline) - Pipeline stages and automation
+- [Deep Dives](/Doc/deep-dive-sky) - Component architecture details
+- [`Documentation/GitHub/BuildMatrix.md`](/Doc/build-matrix) -
   Full build variant matrix
-- [`Documentation/GitHub/Workflow/`](Documentation/GitHub/Workflow/) - Detailed
+- [`Documentation/GitHub/Workflow/`](/Doc/workflow-overview) - Detailed
   component interaction workflows

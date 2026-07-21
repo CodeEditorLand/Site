@@ -1,5 +1,6 @@
 ---
 title: "Grove - Deep Dive"
+navTitle: "Grove"
 section: "Deep Dive"
 order: 4
 description:

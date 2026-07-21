@@ -201,10 +201,9 @@ the main window.
 > RPCServer-before-MountainConnection bootstrap ordering are the two changes
 > that keep first paint under 800 ms.
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

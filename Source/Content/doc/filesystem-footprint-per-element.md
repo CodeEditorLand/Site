@@ -1,5 +1,7 @@
 ---
 title: "Filesystem Footprint - Per-Element Write Sites"
+navTitle: "Per-Element Write Sites"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 3
 description: "Every Land Element grouped by which filesystem location it touches - the reverse map of UserDotfile and PlatformPaths."

@@ -37,58 +37,58 @@ and Commands**.
 
 ### Core Workflows 🔄
 
-1.  [**Application Startup & Handshake**](/doc/workflow-startup/)
+1.  [**Application Startup & Handshake**](/Doc/workflow-startup)
     - _Describes the complete end-to-end process of launching `Mountain`,
       spawning `Cocoon`, and establishing a stable, initialized state for both
       the UI and the extension host._
 
-2.  [**Opening a File from the UI**](/doc/workflow-open-file/)
+2.  [**Opening a File from the UI**](/Doc/workflow-open-file)
     - _Details the flow from a user clicking a file in the explorer to the
       content being read from disk by `Mountain` and rendered in an editor by
       `Wind`._
 
-3.  [**Invoking a Language Feature (Hover Provider)**](/doc/workflow-hover-provider/)
+3.  [**Invoking a Language Feature (Hover Provider)**](/Doc/workflow-hover-provider)
     - _A key example of bi-directional communication, showing how an extension
       in `Cocoon` registers a feature, `Mountain` orchestrates the request, and
       the result is displayed in the `Wind` UI._
 
-4.  [**Saving a File with Save Participants**](/doc/workflow-save-participants/)
+4.  [**Saving a File with Save Participants**](/Doc/workflow-save-participants)
     - _Explains the advanced process of intercepting a save event, allowing an
       extension in `Cocoon` to modify a file (e.g., for formatting) before
       `Mountain` writes it to disk._
 
-5.  [**Executing a Command from the Command Palette**](/doc/workflow-command-palette/)
+5.  [**Executing a Command from the Command Palette**](/Doc/workflow-command-palette)
     - _Illustrates the unified command system, showing how `Mountain`'s command
       registry can seamlessly dispatch execution to either a native Rust handler
       or a proxied command in `Cocoon`._
 
-6.  [**Creating and Interacting with a Webview Panel**](/doc/workflow-webview/)
+6.  [**Creating and Interacting with a Webview Panel**](/Doc/workflow-webview)
     - _Details the full lifecycle of extension-contributed UI, from `Cocoon`
       requesting a panel to `Mountain` managing the native webview window and
       proxying messages back and forth._
 
-7.  [**Creating and Interacting with an Integrated Terminal**](/doc/workflow-terminal/)
+7.  [**Creating and Interacting with an Integrated Terminal**](/Doc/workflow-terminal)
     - _A deep dive into native process management, showing how `Mountain` spawns
       a PTY process and streams its I/O to both the `Wind` frontend and the
       `Cocoon` extension host._
 
-8.  [**Source Control Management (SCM)**](/doc/workflow-scm/)
+8.  [**Source Control Management (SCM)**](/Doc/workflow-scm)
     - _Outlines how the built-in Git extension in `Cocoon` uses `Mountain` as a
       service to run native `git` commands and then populates the SCM view in
       the UI with the results._
 
-9.  [**User Data Synchronization**](/doc/workflow-user-data-sync/)
+9.  [**User Data Synchronization**](/Doc/workflow-user-data-sync)
     - _Describes the end-to-end process of syncing user settings. It covers user
       authentication, fetching data from a remote store, performing a three-way
       merge, applying changes locally, and notifying all parts of the
       application._
 
-10. [**Running Extension Tests**](/doc/workflow-extension-tests/)
+10. [**Running Extension Tests**](/Doc/workflow-extension-tests)
     - _Explains the "Extension Development Host" model, where a second, isolated
       instance of the application is launched to run tests, with the test
       `Cocoon` instance remote-controlling the main UI._
 
-11. [**Tier-Gated Implementation Selection**](/doc/workflow-tier-gated-implementation/)
+11. [**Tier-Gated Implementation Selection**](/Doc/workflow-tier-gated-implementation-selection)
     - _Describes how the `.env.Land` file propagates through Maintain's build
       script into `Mountain`'s `build.rs`, Cocoon's esbuild define map, and
       Sky's Vite define map - allowing each capability with more than one viable
@@ -123,16 +123,16 @@ documentation.
 
 The following documents provide in-depth system-level documentation
 complementing these workflows. A comprehensive master index is available at
-[`README.md`](README.md).
+[`README.md`](https://github.com/CodeEditorLand/Land#readme).
 
 | Document                                            | Topics Covered                                                                              |
 | --------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [Architecture](Architecture.md)                     | System architecture, process model, IPC architecture, service layer design                  |
-| [BuildPipeline](BuildPipeline.md)                   | Build stages, env propagation, profile system, artifact layout                              |
-| [EditorCore](EditorCore.md)                         | Workbench adaptation, Wind service layer, command dispatch, workbench variants              |
-| [Polyfills](Polyfills.md)                           | Preload shim, SkyBridge, Cocoon prelude, Output transforms, Worker SW                       |
-| [RustInfrastructure](RustInfrastructure.md)         | Common traits, Echo scheduler, Mountain, Mist DNS, Air daemon, Rest OXC, Vine gRPC protocol |
-| [InterComponentProtocol](InterComponentProtocol.md) | Tauri IPC, Vine gRPC, Spine protocol, connection lifecycle, health monitoring               |
+| [Architecture](/Doc/architecture)                     | System architecture, process model, IPC architecture, service layer design                  |
+| [BuildPipeline](/Doc/build-pipeline)                   | Build stages, env propagation, profile system, artifact layout                              |
+| [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md)                         | Workbench adaptation, Wind service layer, command dispatch, workbench variants              |
+| [Polyfills](/Doc/polyfills)                           | Preload shim, SkyBridge, Cocoon prelude, Output transforms, Worker SW                       |
+| [RustInfrastructure](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md)         | Common traits, Echo scheduler, Mountain, Mist DNS, Air daemon, Rest OXC, Vine gRPC protocol |
+| [InterComponentProtocol](/Doc/api-reference) | Tauri IPC, Vine gRPC, Spine protocol, connection lifecycle, health monitoring               |
 
 ### Per-Element Architecture
 

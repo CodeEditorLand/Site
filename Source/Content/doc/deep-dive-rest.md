@@ -1,5 +1,6 @@
 ---
 title: "Rest - Deep Dive"
+navTitle: "Rest"
 section: "Deep Dive"
 order: 9
 description:

@@ -14,16 +14,13 @@ export default function remarkMermaid() {
 	// During Astro build, CWD is the WebSite directory.
 	// Project root is one level up.
 	const ProjectRoot = resolve(process.cwd(), "..");
-	const ManifestPath = resolve(
-		ProjectRoot,
-		".hermes/mermaid/manifest.json"
-	);
+	const ManifestPath = resolve(ProjectRoot, ".hermes/mermaid/manifest.json");
 
 	process.stderr.write(
-		`[remarkMermaid] Plugin loading. CWD=${process.cwd()} ProjectRoot=${ProjectRoot}\n`
+		`[remarkMermaid] Plugin loading. CWD=${process.cwd()} ProjectRoot=${ProjectRoot}\n`,
 	);
 	process.stderr.write(
-		`[remarkMermaid] Manifest at ${ManifestPath} exists=${existsSync(ManifestPath)}\n`
+		`[remarkMermaid] Manifest at ${ManifestPath} exists=${existsSync(ManifestPath)}\n`,
 	);
 
 	// Build hash → SVG path lookup
@@ -34,7 +31,7 @@ export default function remarkMermaid() {
 
 		if (!existsSync(ManifestPath)) {
 			process.stderr.write(
-				`[remarkMermaid] Manifest not found at ${ManifestPath}\n`
+				`[remarkMermaid] Manifest not found at ${ManifestPath}\n`,
 			);
 			HashToSvg = {};
 			return;
@@ -61,11 +58,11 @@ export default function remarkMermaid() {
 			process.stderr.write(
 				`[remarkMermaid] Loaded ${
 					Object.keys(HashToSvg).length
-				} pre-rendered diagrams\n`
+				} pre-rendered diagrams\n`,
 			);
 		} catch (Err) {
 			process.stderr.write(
-				`[remarkMermaid] Failed to load manifest: ${Err}\n`
+				`[remarkMermaid] Failed to load manifest: ${Err}\n`,
 			);
 			HashToSvg = {};
 		}
@@ -81,7 +78,7 @@ export default function remarkMermaid() {
 function Walk(
 	Node: { type: string; children?: any[]; [key: string]: any },
 	HashToSvg: Record<string, string>,
-	ProjectRoot: string
+	ProjectRoot: string,
 ) {
 	if (!Node.children) return;
 
@@ -102,7 +99,7 @@ function Walk(
 function RenderMermaidBlock(
 	Node: { value?: string; [key: string]: any },
 	HashToSvg: Record<string, string>,
-	_ProjectRoot: string
+	_ProjectRoot: string,
 ): any | null {
 	const Code = (Node.value || "").trim();
 	if (!Code) return null;
@@ -112,7 +109,7 @@ function RenderMermaidBlock(
 
 	if (!SvgPath) {
 		process.stderr.write(
-			`[remarkMermaid] No rendered SVG found for hash ${Hash}\n`
+			`[remarkMermaid] No rendered SVG found for hash ${Hash}\n`,
 		);
 		return {
 			type: "paragraph",
@@ -130,7 +127,7 @@ function RenderMermaidBlock(
 		const SvgMatch = SvgContent.match(/<svg[\s\S]*?<\/svg>/i);
 		if (!SvgMatch) {
 			process.stderr.write(
-				`[remarkMermaid] No SVG element in ${SvgPath}\n`
+				`[remarkMermaid] No SVG element in ${SvgPath}\n`,
 			);
 			return null;
 		}
@@ -146,7 +143,7 @@ function RenderMermaidBlock(
 		};
 	} catch (Err) {
 		process.stderr.write(
-			`[remarkMermaid] Failed to read SVG ${SvgPath}: ${Err}\n`
+			`[remarkMermaid] Failed to read SVG ${SvgPath}: ${Err}\n`,
 		);
 		return null;
 	}

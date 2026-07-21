@@ -1,5 +1,7 @@
 ---
 title: "Filesystem Footprint - Environment Variables"
+navTitle: "Environment Variables"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 4
 description: "Every env var that shapes a filesystem path, controls log volume, or affects the bundle identifier - grouped by role."
@@ -137,7 +139,7 @@ export DisableUIFixes=true \
 ./Maintain/Debug/Build.sh --profile debug-electron-bundled
 ```
 
-`Record=1` + `Trace=...` produces ~5–50 MB session logs at `<app_data_dir>/<bundle>/logs/<ts>/Mountain.dev.log`. `Trace=all` produces ~200 MB.
+`Record=1` + `Trace=...` produces ~5-50 MB session logs at `<app_data_dir>/<bundle>/logs/<ts>/Mountain.dev.log`. `Trace=all` produces ~200 MB.
 
 ---
 

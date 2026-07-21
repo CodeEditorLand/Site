@@ -1,5 +1,7 @@
 ---
 title: "Filesystem Footprint - Platform Paths"
+navTitle: "Platform Paths"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 2
 description: "OS-specific resolution for every per-bundle, OS-managed, and temp-directory path Land touches on macOS, Linux, and Windows."
@@ -193,7 +195,7 @@ Cross-OS, not part of user-install footprint:
 
 ## See Also 📚
 
-- [UserDotfile](filesystem-footprint-user-dotfile.md) - the `~/.fiddee/` tree (cross-OS).
-- [PerElement](filesystem-footprint-per-element.md) - which Element writes which path.
-- [Cleanup](filesystem-footprint-cleanup.md) - per-OS cleanup recipes.
-- [EnvironmentVariables](filesystem-footprint-environment-variables.md) - path-shaping env vars.
+- [UserDotfile](/Doc/filesystem-footprint-user-dotfile) - the `~/.fiddee/` tree (cross-OS).
+- [PerElement](/Doc/filesystem-footprint-per-element) - which Element writes which path.
+- [Cleanup](/Doc/filesystem-footprint-cleanup) - per-OS cleanup recipes.
+- [EnvironmentVariables](/Doc/filesystem-footprint-environment-variables) - path-shaping env vars.

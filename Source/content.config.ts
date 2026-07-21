@@ -28,6 +28,12 @@ const Doc = defineCollection({
 		section: z.string(),
 		order: z.number(),
 		description: z.string(),
+		// Short label shown in the sidebar instead of the full title
+		// (e.g. "User Dotfile" instead of "Filesystem Footprint - User Dotfile").
+		navTitle: z.string().optional(),
+		// Mid-level sidebar heading nesting entries within the same section
+		// (e.g. every "Filesystem Footprint - *" page shares group "Filesystem Footprint").
+		group: z.string().optional(),
 	}),
 });
 

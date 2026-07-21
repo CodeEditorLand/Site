@@ -1,5 +1,7 @@
 ---
 title: "Filesystem Footprint - User Dotfile"
+navTitle: "User Dotfile"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 1
 description: "The ~/.fiddee/ tree - Land's primary product-owned filesystem domain, cross-OS resolution, sub-directory map, and Cocoon-side mirror."
@@ -9,7 +11,7 @@ description: "The ~/.fiddee/ tree - Land's primary product-owned filesystem doma
 
 The `~/.fiddee/` tree - Land's primary product-owned filesystem domain.
 
-See also: [Filesystem Footprint](./filesystem-footprint.md)
+See also: [Filesystem Footprint](/Doc/filesystem-footprint)
 
 ---
 
@@ -70,7 +72,7 @@ Cocoon respects one env var that re-roots part of the tree:
 
 `Lodge` (the user-extensions override) and `Extend` (additional scan paths) do
 **not** apply to the storage sub-trees - only to the extensions root. See
-[`EnvironmentVariables.md`](./filesystem-footprint-environment-variables.md) for the full registry.
+[`EnvironmentVariables.md`](/Doc/filesystem-footprint-environment-variables) for the full registry.
 
 ---
 
@@ -144,19 +146,19 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
   state - subtle, since the three sibling roots (`extensionStorage`,
   `globalStorage`, `logs`) live outside the bundle and survive lifecycle events.
   Encapsulation candidate: move to `.fiddee/extensionData/<id>/.storage/`
-  parallel to the existing siblings. See [`Encapsulation.md`](./filesystem-footprint-encapsulation.md)
+  parallel to the existing siblings. See [`Encapsulation.md`](/Doc/filesystem-footprint-encapsulation)
   §H.
 - `.fiddee/data/` is reserved but not yet wired. The background-daemon flow may
   bypass it entirely (Air uses `<config_dir>/FIDDEE/` instead - see
-  [`PerElement.md`](./filesystem-footprint-per-element.md) §Air for the divergence).
+  [`PerElement.md`](/Doc/filesystem-footprint-per-element) §Air for the divergence).
 
 ---
 
 ## See Also 📚
 
-- [`PlatformPaths.md`](./filesystem-footprint-platform-paths.md) - per-OS Library / XDG / AppData paths
+- [`PlatformPaths.md`](/Doc/filesystem-footprint-platform-paths) - per-OS Library / XDG / AppData paths
   that coexist with `~/.fiddee/`.
-- [`PerElement.md`](./filesystem-footprint-per-element.md) - which Element writes which sub-path.
-- [`EnvironmentVariables.md`](./filesystem-footprint-environment-variables.md) - `Lodge`, `Extend`,
+- [`PerElement.md`](/Doc/filesystem-footprint-per-element) - which Element writes which sub-path.
+- [`EnvironmentVariables.md`](/Doc/filesystem-footprint-environment-variables) - `Lodge`, `Extend`,
   `VSCODE_COCOON_GLOBAL_STORAGE` references.
-- [`Cleanup.md`](./filesystem-footprint-cleanup.md) - per-OS recipes that include `~/.fiddee/`.
+- [`Cleanup.md`](/Doc/filesystem-footprint-cleanup) - per-OS recipes that include `~/.fiddee/`.

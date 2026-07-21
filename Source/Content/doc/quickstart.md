@@ -92,7 +92,7 @@ cd Land
 
 ## Further Reading
 
-- [Getting Started](./getting-started.md) - Full step-by-step guide with
+- [Getting Started](/Doc/getting-started) - Full step-by-step guide with
   troubleshooting
-- [Configuration](./configuration.md) - Complete environment variable reference
-- [CI/CD Pipeline](./ci-cd-pipeline.md) - Pipeline stages and automation
+- [Configuration](/Doc/configuration) - Complete environment variable reference
+- [CI/CD Pipeline](/Doc/ci-cd-pipeline) - Pipeline stages and automation

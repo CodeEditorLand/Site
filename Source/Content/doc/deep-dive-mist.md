@@ -1,5 +1,6 @@
 ---
 title: "Mist - Deep Dive"
+navTitle: "Mist"
 section: "Deep Dive"
 order: 14
 description:

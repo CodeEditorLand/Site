@@ -1,5 +1,6 @@
 ---
 title: "Worker - Deep Dive"
+navTitle: "Worker"
 section: "Deep Dive"
 order: 14
 description:

@@ -49,7 +49,7 @@ sidecar for updates and indexing.
 > on miss (`NodeDeferred`), or bypass `Mountain` entirely (`Node`).
 > Per-subsystem overrides (`TierTerminal`, `TierSCM`, `TierAuth`, etc.) allow
 > independent routing per channel. See
-> [EnvironmentVariables.md](EnvironmentVariables.md).
+> [EnvironmentVariables.md](/Doc/build-matrix).
 
 ```mermaid
 graph TB
@@ -322,7 +322,7 @@ value in `.env.Land`:
 
 The tier selection propagates through every Element's build system
 simultaneously. See
-[Tier-Gated Implementation Selection](Workflow/TierGatedImplementationSelection.md)
+[Tier-Gated Implementation Selection](/Doc/workflow-tier-gated-implementation-selection)
 for the full propagation workflow.
 
 ---
@@ -398,16 +398,16 @@ sequenceDiagram
 
 ## Related Documentation 📋
 
-- [BuildPipeline](BuildPipeline.md) - Full build pipeline from env files to binary artifacts
-- [EditorCore](EditorCore.md) - Editor workbench adaptation and `Wind` service layer
-- [Polyfills](Polyfills.md) - Compatibility shims and initialization layers
-- [RustInfrastructure](RustInfrastructure.md) - `Rust` backend component internals
-- [InterComponentProtocol](InterComponentProtocol.md) - `gRPC` protocol specification
-- [Building](Building.md) - Build instructions and prerequisites
-- [BuildMatrix](BuildMatrix.md) - Build variant profile reference
-- [EnvironmentVariables](EnvironmentVariables.md) - Complete env var reference
-- [Workflow/](Workflow/) - Detailed component interaction workflows
-- [VSCode-API-Coverage-Matrix](VSCode-API-Coverage-Matrix.md) - `vscode.*` API implementation status per namespace
+- [BuildPipeline](/Doc/build-pipeline) - Full build pipeline from env files to binary artifacts
+- [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) - Editor workbench adaptation and `Wind` service layer
+- [Polyfills](/Doc/polyfills) - Compatibility shims and initialization layers
+- [RustInfrastructure](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md) - `Rust` backend component internals
+- [InterComponentProtocol](/Doc/api-reference) - `gRPC` protocol specification
+- [Building](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md) - Build instructions and prerequisites
+- [BuildMatrix](/Doc/build-matrix) - Build variant profile reference
+- [EnvironmentVariables](/Doc/build-matrix) - Complete env var reference
+- [Workflow/](/Doc/workflow-overview) - Detailed component interaction workflows
+- [VSCode-API-Coverage-Matrix](/Doc/vscode-api-coverage) - `vscode.*` API implementation status per namespace
 
 ---
 
@@ -416,10 +416,9 @@ sequenceDiagram
 [GitHub Repository](https://github.com/CodeEditorLand/Land) |
 [Report an Issue](https://github.com/CodeEditorLand/Land/issues)
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

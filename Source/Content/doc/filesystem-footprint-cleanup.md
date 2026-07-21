@@ -1,5 +1,7 @@
 ---
 title: Filesystem Footprint - Cleanup Recipes
+navTitle: "Cleanup Recipes"
+group: "Filesystem Footprint"
 section: "Reference"
 order: 5
 description:

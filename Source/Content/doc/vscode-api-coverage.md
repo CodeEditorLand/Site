@@ -463,10 +463,9 @@ After each namespace migrates:
   Mountain fan-out → Cocoon `$acceptTerminalShellExecution{Start,End}` +
   `$acceptExecutedTerminalCommand` gRPC → Emitter events in Window namespace.
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

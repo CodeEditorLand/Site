@@ -461,7 +461,7 @@ through two parallel compiler paths:
     - Module resolution remapping (`electron` -> `@tauri-apps/api`)
     - `require()` interceptor patches
     - Source map generation
-    - Polyfill injection (see [Polyfills](Polyfills.md))
+    - Polyfill injection (see [Polyfills](/Doc/polyfills))
 3. **Output:** `Output/Target/@codeeditorland/output/`
 
 ### Optional Path (Rest/OXC)
@@ -523,16 +523,16 @@ Target triples supported:
 
 ## Related Documentation 📋
 
-- [Architecture](Architecture.md) - System architecture overview
-- [EditorCore](EditorCore.md) - Editor workbench adaptation
-- [Polyfills](Polyfills.md) - Compatibility shims
-- [RustInfrastructure](RustInfrastructure.md) - `Rust` backend components
-- [InterComponentProtocol](InterComponentProtocol.md) - `gRPC` protocol
+- [Architecture](/Doc/architecture) - System architecture overview
+- [EditorCore](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md) - Editor workbench adaptation
+- [Polyfills](/Doc/polyfills) - Compatibility shims
+- [RustInfrastructure](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md) - `Rust` backend components
+- [InterComponentProtocol](/Doc/api-reference) - `gRPC` protocol
   specification
-- [Building](Building.md) - Build instructions and prerequisites
-- [BuildMatrix](BuildMatrix.md) - Full build variant matrix
-- [EnvironmentVariables](EnvironmentVariables.md) - Complete env var reference
-- [Workflow/TierGatedImplementationSelection](Workflow/TierGatedImplementationSelection.md)
+- [Building](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md) - Build instructions and prerequisites
+- [BuildMatrix](/Doc/build-matrix) - Full build variant matrix
+- [EnvironmentVariables](/Doc/build-matrix) - Complete env var reference
+- [Workflow/TierGatedImplementationSelection](/Doc/workflow-tier-gated-implementation-selection)
 
 ---
 
@@ -541,10 +541,9 @@ Target triples supported:
 [GitHub Repository](https://github.com/CodeEditorLand/Land) |
 [Report an Issue](https://github.com/CodeEditorLand/Land/issues)
 
-
 ---
 
 ## See Also
 
-- [🟠 Low-Level Shim](/doc/low-level-shim) - Engine-level prototype hooks
-- [🔵 Coverage / Telemetry](/doc/coverage) - Application-level service routing
+- [🟠 Low-Level Shim](/Doc/low-level-shim) - Engine-level prototype hooks
+- [🔵 Coverage / Telemetry](/Doc/coverage) - Application-level service routing

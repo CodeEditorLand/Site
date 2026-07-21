@@ -115,9 +115,9 @@ flowchart LR
 
 5. **`CommandProvider.GetAllCommands()`** (
    [`CommandProvider.rs:L322`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs#L322))
-   - Acquires a read lock on `AppState.CommandRegistry`, retrieves the `keys()`
-   of the `HashMap` (containing IDs of all registered native commands AND all
-   proxied commands from Cocoon), and returns the list of command ID strings.
+    - Acquires a read lock on `AppState.CommandRegistry`, retrieves the `keys()`
+      of the `HashMap` (containing IDs of all registered native commands AND all
+      proxied commands from Cocoon), and returns the list of command ID strings.
 
 6. **List Resolution** - The list resolves back to
    `CommandsQuickAccessProvider` in Wind, which populates the Quick Pick UI,
@@ -162,9 +162,9 @@ flowchart LR
 10. **`CommandProvider.ExecuteCommand()`** (
     [`CommandProvider.rs:L231`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs#L231))
     - Acquires a lock on `AppState.CommandRegistry` and looks up
-    `"editor.action.formatDocument"`. It finds that the handler is of type
-    `CommandHandler::Native`, then invokes the corresponding native Rust function
-    pointer, passing it the `AppHandle`, `Window`, `AppRuntime`, and arguments.
+      `"editor.action.formatDocument"`. It finds that the handler is of type
+      `CommandHandler::Native`, then invokes the corresponding native Rust function
+      pointer, passing it the `AppHandle`, `Window`, `AppRuntime`, and arguments.
 
 11. **Native Formatting Handler** - The native Rust code for formatting a
     document runs. This typically involves:
