@@ -28,9 +28,10 @@
 		}
 	],
 	"scripts": {
-		"Run": "astro dev --host",
+		"Run": "sh Maintain/Script/BuildJellyUIVendor.sh && astro dev --host",
 		"Format": "sh Maintain/Format.sh",
-		"prepublishOnly": "astro build",
+		"build": "sh Maintain/Script/BuildJellyUIVendor.sh && astro build",
+		"prepublishOnly": "sh Maintain/Script/BuildJellyUIVendor.sh && astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
@@ -131,6 +132,7 @@
 	},
 	"devDependencies": {
 		"@testing-library/dom": "10.4.1",
+		"puppeteer": "25.3.0",
 		"react-is": "19.2.7"
 	},
 	"publishConfig": {
