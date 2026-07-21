@@ -55,7 +55,12 @@ else
 	# right here instead of leaking our config into the vendored build.
 	printf 'module.exports = { plugins: {} };\n' >"$Vendor/postcss.config.cjs"
 
-	(cd "$Vendor" && npm install --no-audit --no-fund --silent)
+	# Cloudflare Pages (and some other CI environments) set
+	# NODE_ENV=production, which makes npm skip devDependencies.
+	# JellyUI keeps vite, vite-plugin-dts, typescript, and the rest
+	# of its build tooling in devDependencies, so we must explicitly
+	# tell npm to include them even when NODE_ENV=production.
+	(cd "$Vendor" && npm install --include=dev --no-audit --no-fund --silent)
 
 	# `npm run build` also rolls up a .d.ts via api-extractor, which can fail
 	# on TS/DOM-lib version mismatches pulled in through this monorepo's
