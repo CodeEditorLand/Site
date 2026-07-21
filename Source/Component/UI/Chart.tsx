@@ -233,8 +233,7 @@ function ChartTooltipContent({
 					);
 
 					const ItemPayload = item["payload"] as
-						| Record<string, unknown>
-						| undefined;
+						Record<string, unknown> | undefined;
 
 					const IndicatorColor =
 						color || ItemPayload?.["fill"] || item["color"];

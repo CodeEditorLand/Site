@@ -9,12 +9,7 @@ import { useEffect, useRef, useState } from "react";
 // ─── Term dictionary ──────────────────────────────────────────────────────────
 
 type TermCategory =
-	| "Architecture"
-	| "Telemetry"
-	| "Protocol"
-	| "Feature"
-	| "License"
-	| "Tool";
+	"Architecture" | "Telemetry" | "Protocol" | "Feature" | "License" | "Tool";
 
 const TermDictionary = new Map<string, TermCategory>([
 	// Architecture elements

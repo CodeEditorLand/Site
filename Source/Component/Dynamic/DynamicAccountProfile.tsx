@@ -503,8 +503,7 @@ const AccountProfileInner = ({
 	const IsEmailPasswordUser = User.sub?.startsWith("auth0|") === true;
 
 	const OrganizationName = (User as Record<string, unknown>)["org_name"] as
-		| string
-		| undefined;
+		string | undefined;
 
 	const OrganizationIdentifier = (User as Record<string, unknown>)[
 		"org_id"

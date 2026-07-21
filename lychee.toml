@@ -45,7 +45,7 @@ verbose = "info"
 # Link behavior
 require_https = false
 scheme = ["http", "https"]
-include_fragments = true
+include_fragments = "anchor-only"
 
 # Headers (must be last - TOML table)
 [header]

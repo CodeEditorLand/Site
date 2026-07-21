@@ -10,9 +10,5 @@ export default interface Item {
 	readonly Feature: string;
 
 	readonly Status:
-		| "Recommended"
-		| "Available"
-		| "Legacy"
-		| "Experimental"
-		| "Development";
+		"Recommended" | "Available" | "Legacy" | "Experimental" | "Development";
 }

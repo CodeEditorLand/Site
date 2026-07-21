@@ -6,12 +6,7 @@ export default interface Interface extends ContentSchema {
 	Icon?: string;
 
 	Variant?:
-		| "default"
-		| "destructive"
-		| "outline"
-		| "secondary"
-		| "ghost"
-		| "link";
+		"default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
 
 	Size?: "default" | "sm" | "lg" | "icon";
 

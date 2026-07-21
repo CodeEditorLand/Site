@@ -230,8 +230,7 @@ const DashboardUserInner = () => {
 	const IsEnterprise = IsEnterpriseUser(User.sub);
 
 	const OrganizationName = (User as Record<string, unknown>)["org_name"] as
-		| string
-		| undefined;
+		string | undefined;
 
 	const OrganizationIdentifier = (User as Record<string, unknown>)[
 		"org_id"
