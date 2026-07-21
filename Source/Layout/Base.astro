@@ -1,6 +1,8 @@
 ---
 import "@Stylesheet/Base.css";
 
+import { JellyUIVersion } from "@Variable/JellyUIVersion";
+
 import Background from "../Background.astro";
 import { ErrorBoundary } from "../Component/ErrorBoundary";
 import { Footer } from "../Component/Layout/Footer";
@@ -244,7 +246,7 @@ const T = GetI18n();
 		 served here from our own origin) rather than the jelly-ui.com CDN,
 		 so it's not a build- or runtime-time dependency on a third party.
 		 Upgrades the <jelly-*> elements rendered below once it loads. -->
-		<script type="module" src="/Vendor/JellyUI/jelly.js"></script>
+		<script type="module" src={`/Vendor/JellyUI/jelly.js?v=${JellyUIVersion}`}></script>
 	</head>
 	<body>
 		<a
