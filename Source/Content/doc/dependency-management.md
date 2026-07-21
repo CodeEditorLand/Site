@@ -49,7 +49,7 @@ protocol:
 The VS Code source in `Dependency/Microsoft/Dependency/Editor` uses **npm**, not
 pnpm. Its `package-lock.json` and `.npmrc` are npm-native. When updating
 dependencies in that submodule, use `npm install` inside that directory only.
-See [Building Land](https://codeeditor.land/Doc/getting-started) for the full
+See [Building Land](/Doc/getting-started) for the full
 Node 24 compile steps.
 
 ## Rust Dependencies (Cargo) 🦀

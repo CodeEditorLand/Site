@@ -59,7 +59,7 @@ sequenceDiagram
 #### **Phase 1: Authoring the Tier Set (`.env.Land`)**
 
 1. **Canonical source of truth
-   ([`Land/.env.Land.Sample`](../../../../../Land/.env.Land.Sample))**
+   ([`Land/.env.Land.Sample`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Sample))**
     - Every capability participating in tier gating has exactly one row in
       `.env.Land.Sample` in the form `Tier<Capability>=<Value>`.
     - The sample file is committed and represents the compiled-in defaults. A
@@ -186,8 +186,8 @@ sequenceDiagram
 #### **Phase 2: Build-Time Propagation (`Maintain/Debug/Build.sh` → `TierEnvironment.sh`)**
 
 1. **Env file discovery and overlay**
-   ([`Land/Maintain/Debug/Build.sh`](../../../../../Land/Maintain/Debug/Build.sh),
-   [`Land/Maintain/Script/TierEnvironment.sh`](../../../../../Land/Maintain/Script/TierEnvironment.sh))
+   ([`Land/Maintain/Debug/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh),
+   [`Land/Maintain/Script/TierEnvironment.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh))
     - The build script handles `--flavor <name>` first, sourcing
       `.env.Land.<name>` into the current shell (`set -a; . FILE; set +a`).
     - Then it sources `TierEnvironment.sh`, which resolves the base `.env.Land`
@@ -218,7 +218,7 @@ sequenceDiagram
 
 4. **Vite / Astro define**
     - Sky's
-      [`astro.config.ts`](../../../../../Sky/astro.config.ts)
+      [`astro.config.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/astro.config.ts)
       forwards every `Tier*` env var to the Vite `define` map so the webview
       bundle also carries the baked-in values as `import.meta.env.Tier*`
       substitutions. Same wildcard pattern as the Cocoon sweep; new tiers pass
@@ -229,7 +229,7 @@ sequenceDiagram
 #### **Phase 3: `Mountain` - Rust Compile-Time + Runtime Propagation**
 
 1. **`build.rs` tier propagation**
-   ([`Land/Element/Mountain/build.rs`](../../../../../Land/Element/Mountain/build.rs))
+   ([`Land/Element/Mountain/build.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs))
     - Mountain's build script calls `PropagateTierGating()` once per compile.
     - `EmitTierDefaults()` emits `cargo:rustc-env=Tier<Capability>=<Default>`
       for every infrastructure AND per-subsystem tier, so `env!()` always
@@ -245,14 +245,14 @@ sequenceDiagram
 
 2. **Feature whitelist**
     - `IsDeclaredTierFeature` mirrors Mountain's
-      [`Cargo.toml` `[features]` block](../../../../../Land/Element/Mountain/Cargo.toml).
+      [`Cargo.toml` `[features]` block](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml).
     - `IsDefaultTierValue` lists every valid `(Key, Value)` pair (defaults AND
       non-default routing values). Any pair absent from both tables produces a
       `cargo:warning`, so typos in `.env.Land` fail loud at `cargo build` rather
       than silently no-op at runtime.
 
 3. **Runtime dispatch in `mod.rs`**
-   ([`Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs`](../../../../../Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs))
+   ([`Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs))
     - `mountain_ipc_invoke` declares
       `const TIER_<Name>: &str = env!("Tier<Name>", "<default>");` at the top so
       each per-subsystem dispatch arm reads its tier from a compile-time string
@@ -272,9 +272,9 @@ sequenceDiagram
       native Mountain handler.
 
 4. **Boot banner**
-   ([`Land/Element/Mountain/Source/LandFixTier.rs`](../../../../../Land/Element/Mountain/Source/LandFixTier.rs))
+   ([`Land/Element/Mountain/Source/LandFixTier.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/LandFixTier.rs))
     - `LogResolvedTiers()` is called from
-      [`Binary::Main::Entry::Fn`](../../../../../Land/Element/Mountain/Source/Binary/Main/Entry.rs)
+      [`Binary::Main::Entry::Fn`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Binary/Main/Entry.rs)
       before the Tokio runtime spins up.
     - **Two lines** are emitted: the first lists every compile-baked
       infrastructure tier (using `env!()` literals - zero runtime cost), the
@@ -287,7 +287,7 @@ sequenceDiagram
 #### **Phase 4: `Cocoon` - TypeScript Runtime Dispatch**
 
 1. **`CocoonMain.ts` prelude**
-   ([`Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts`](../../../../../Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts))
+   ([`Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts))
     - The very first statements of the bundled Cocoon main file populate
       `globalThis.__LandTiers` from the esbuild-substituted
       `__LandTier_<Capability>__` identifiers, falling through to
@@ -298,7 +298,7 @@ sequenceDiagram
     - The prelude runs before the `Tier` utility is first imported.
 
 2. **`Utility/Tier.ts` default export**
-   ([`Land/Element/Cocoon/Source/Utility/Tier.ts`](../../../../../Land/Element/Cocoon/Source/Utility/Tier.ts))
+   ([`Land/Element/Cocoon/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Utility/Tier.ts))
     - The module exposes a single `const Tier = { … } as const` object whose
       keys match the capability names. Reads are synchronous and
       side-effect-free.
@@ -323,7 +323,7 @@ sequenceDiagram
 #### **Phase 5: `Wind` / `Sky` - Webview Dispatch**
 
 1. **`Wind/Source/Utility/Tier.ts`**
-   ([`Land/Element/Wind/Source/Utility/Tier.ts`](../../../../../Land/Element/Wind/Source/Utility/Tier.ts))
+   ([`Land/Element/Wind/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Utility/Tier.ts))
     - Mirrors Cocoon's module in shape but reads from
       `import.meta.env.Tier<Capability>` (Vite-substituted at build time),
       falling through to `globalThis.__LandTiers` and finally hard-coded
@@ -409,19 +409,19 @@ sequenceDiagram
 
 | Element   | Path                                                                                                                                                      | Role                                         |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| Repo root | [`Land/.env.Land`](../../../../../Land/.env.Land)                                                                                                         | Active tier set (overrides Sample)           |
-| Repo root | [`Land/.env.Land.Sample`](../../../../../Land/.env.Land.Sample)                                                                                           | Canonical default tier set                   |
-| Repo root | [`Land/.env.Land.RustOnly`](../../../../../Land/.env.Land.RustOnly)                                                                                       | Flavor overlay: native Rust everywhere       |
-| Repo root | [`Land/.env.Land.NodeFirst`](../../../../../Land/.env.Land.NodeFirst)                                                                                     | Flavor overlay: Cocoon Node.js everywhere    |
-| Repo root | [`Land/.env.Land.Full`](../../../../../Land/.env.Land.Full)                                                                                               | Flavor overlay: native + Mist WebSocket      |
-| Repo root | [`Land/turbo.json`](../../../../../Land/turbo.json)                                                                                                       | Tier names registered in `globalEnv`         |
-| Maintain  | [`Land/Maintain/Debug/Build.sh`](../../../../../Land/Maintain/Debug/Build.sh)                                                                             | `--flavor` arg + env fan-out                 |
-| Maintain  | [`Land/Maintain/Release/Build.sh`](../../../../../Land/Maintain/Release/Build.sh)                                                                         | Same flavor support for release builds       |
-| Maintain  | [`Land/Maintain/Script/TierEnvironment.sh`](../../../../../Land/Maintain/Script/TierEnvironment.sh)                                                       | Cargo feature derivation + esbuild define    |
-| Mountain  | [`Land/Element/Mountain/build.rs`](../../../../../Land/Element/Mountain/build.rs)                                                                         | Cargo feature + `rustc-env` propagation      |
-| Mountain  | [`Land/Element/Mountain/Source/LandFixTier.rs`](../../../../../Land/Element/Mountain/Source/LandFixTier.rs)                                               | Runtime banner (both layers)                 |
-| Mountain  | [`Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs`](../../../../../Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs)               | Per-subsystem `tier_routes_to_node` dispatch |
-| Cocoon    | [`Land/Element/Cocoon/Source/Utility/Tier.ts`](../../../../../Land/Element/Cocoon/Source/Utility/Tier.ts)                                                 | Node-side dispatcher                         |
-| Cocoon    | [`Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts`](../../../../../Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts) | `globalThis.__LandTiers` prelude             |
-| Wind      | [`Land/Element/Wind/Source/Utility/Tier.ts`](../../../../../Land/Element/Wind/Source/Utility/Tier.ts)                                                     | Webview-side dispatcher                      |
-| Sky       | [`Land/Element/Sky/astro.config.ts`](../../../../../Land/Element/Sky/astro.config.ts)                                                                     | Vite `define` forwarding (wildcard sweep)    |
+| Repo root | [`Land/.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land)                                                                                                         | Active tier set (overrides Sample)           |
+| Repo root | [`Land/.env.Land.Sample`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Sample)                                                                                           | Canonical default tier set                   |
+| Repo root | [`Land/.env.Land.RustOnly`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.RustOnly)                                                                                       | Flavor overlay: native Rust everywhere       |
+| Repo root | [`Land/.env.Land.NodeFirst`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.NodeFirst)                                                                                     | Flavor overlay: Cocoon Node.js everywhere    |
+| Repo root | [`Land/.env.Land.Full`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Full)                                                                                               | Flavor overlay: native + Mist WebSocket      |
+| Repo root | [`Land/turbo.json`](https://github.com/CodeEditorLand/Land/tree/Current/turbo.json)                                                                                                       | Tier names registered in `globalEnv`         |
+| Maintain  | [`Land/Maintain/Debug/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh)                                                                             | `--flavor` arg + env fan-out                 |
+| Maintain  | [`Land/Maintain/Release/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh)                                                                         | Same flavor support for release builds       |
+| Maintain  | [`Land/Maintain/Script/TierEnvironment.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh)                                                       | Cargo feature derivation + esbuild define    |
+| Mountain  | [`Land/Element/Mountain/build.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs)                                                                         | Cargo feature + `rustc-env` propagation      |
+| Mountain  | [`Land/Element/Mountain/Source/LandFixTier.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/LandFixTier.rs)                                               | Runtime banner (both layers)                 |
+| Mountain  | [`Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs)               | Per-subsystem `tier_routes_to_node` dispatch |
+| Cocoon    | [`Land/Element/Cocoon/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Utility/Tier.ts)                                                 | Node-side dispatcher                         |
+| Cocoon    | [`Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts) | `globalThis.__LandTiers` prelude             |
+| Wind      | [`Land/Element/Wind/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Utility/Tier.ts)                                                     | Webview-side dispatcher                      |
+| Sky       | [`Land/Element/Sky/astro.config.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/astro.config.ts)                                                                     | Vite `define` forwarding (wildcard sweep)    |

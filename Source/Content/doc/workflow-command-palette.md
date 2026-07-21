@@ -81,7 +81,7 @@ flowchart LR
 
 **Source files:**
 
-- [`Wind/Source/Application/QuickInput/Definition.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Application/QuickInput/Definition.ts)
+- `Wind/Source/Application/QuickInput/Definition.ts`
 - `vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts`
 
 1. **User Input** - The user presses `Ctrl+Shift+P`. The keybinding system
