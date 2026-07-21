@@ -41,7 +41,7 @@ if [ ! -f "$Vendor/package.json" ]; then
 fi
 
 Stamp="$Vendor/dist/.BuiltFrom"
-Pinned=$(cd "$Root" && git rev-parse "HEAD:Vendor/JellyUI" 2>/dev/null || cd "$Vendor" && git rev-parse HEAD)
+Pinned=$(cd "$Root" && git rev-parse "HEAD:Vendor/JellyUI" 2>/dev/null || (cd "$Vendor" && git rev-parse HEAD))
 
 if [ -f "$Vendor/dist/jelly.js" ] && [ -f "$Stamp" ] && [ "$(cat "$Stamp")" = "$Pinned" ]; then
 	echo "BuildJellyUIVendor: dist/jelly.js already built for $Pinned - skipping build"
