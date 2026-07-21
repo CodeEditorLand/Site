@@ -32,6 +32,11 @@ exclude = [
 	"mailto:",
 	"tel:",
 	"#StaccatoTurbulence",
+	# GitHub's README/line-number anchors (#readme, #L123) are hydrated by
+	# client-side JS and never present in the static HTML lychee fetches -
+	# these always false-positive as "Cannot find fragment" regardless of
+	# whether the link is actually valid. Verify these by hand instead.
+	"github\\.com/[^\"'\\s]+#(readme|L\\d+)$",
 ]
 
 # Exclude file paths (local file scanning only)

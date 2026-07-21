@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 
 import { DynamicDocSidebar } from "../../Component/Dynamic/DynamicDocSidebar";
 import { Header } from "../../Component/Layout/Header";
+import MermaidFallback from "../../Component/Dynamic/MermaidFallback.astro";
 import BuildDocSidebar from "../../Function/Doc/BuildDocSidebar";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
@@ -165,6 +166,8 @@ const AbsoluteDocUrl = (Id: string) =>
 				>
 					<Content />
 				</div>
+
+				<MermaidFallback />
 
 				<!-- Prev / Next navigation -->
 				{
