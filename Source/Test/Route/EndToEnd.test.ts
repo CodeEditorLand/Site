@@ -135,6 +135,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 				"License",
 				"Verify",
 				"Contact/Sale",
+				"Account",
 				"Account/SignIn",
 				"Account/SignUp",
 				"Account/ForgotPassword",
@@ -454,6 +455,19 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			// Create all canonical pages
 			for (const PascalPath of CanonicalPath) {
 				const Directory = join(TempDirectory, PascalPath.slice(1));
+
+				await mkdir(Directory, { recursive: true });
+
+				await writeFile(join(Directory, "index.html"), "<html></html>");
+			}
+
+			// Doc Content Collection pages aren't in CanonicalPath (they're
+			// not Astro page files), but some SemanticAlias targets point at
+			// one (e.g. "/Doc/why-wasm") - simulate that build output too.
+			for (const [, Target] of Object.entries(SemanticAlias)) {
+				if (Target === "/" || CanonicalPath.has(Target)) continue;
+
+				const Directory = join(TempDirectory, Target.slice(1));
 
 				await mkdir(Directory, { recursive: true });
 

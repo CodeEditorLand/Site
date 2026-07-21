@@ -81,7 +81,12 @@ describe("DynamicFeatures", () => {
 	it("renders section title and subtitle", () => {
 		render(<DynamicFeatures Content={SampleContent} />);
 
-		expect(screen.getByText("Features")).toBeInTheDocument();
+		// The section also has its own hardcoded "// Features" eyebrow label,
+		// which collides with Content.Title's sample value here - target the
+		// heading specifically so this asserts Content.Title, not the label.
+		expect(
+			screen.getByRole("heading", { name: "Features" }),
+		).toBeInTheDocument();
 
 		expect(
 			screen.getByText("What makes Land different."),

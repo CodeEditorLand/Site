@@ -16,6 +16,8 @@ export default defineConfig({
 		alias: {
 			"@": resolve(__dirname, "./Source"),
 			"@Function": resolve(__dirname, "./Source/Function"),
+			"@Variable": resolve(__dirname, "./Source/Variable"),
+			"@Library": resolve(__dirname, "./Source/Library"),
 		},
 	},
 });

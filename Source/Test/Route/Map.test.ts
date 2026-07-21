@@ -63,9 +63,20 @@ describe("SemanticAlias", () => {
 			...Object.values(PascalCaseCanonical),
 		]);
 
+		// A target can also be a sub-page of a canonical section (e.g.
+		// "/Doc/why-wasm" under canonical "/Doc") - those aren't enumerated
+		// in CanonicalPath since doc slugs are Content Collection entries,
+		// not Astro page files.
+		const IsValidTarget = (Target: string) =>
+			ValidTarget.has(Target) ||
+			[...ValidTarget].some(
+				(Canonical) =>
+					Canonical !== "/" && Target.startsWith(`${Canonical}/`),
+			);
+
 		for (const [Alias, Target] of Object.entries(SemanticAlias)) {
 			expect(Alias).toMatch(/^\//);
-			expect(ValidTarget.has(Target)).toBe(true);
+			expect(IsValidTarget(Target)).toBe(true);
 		}
 	});
 

@@ -166,7 +166,7 @@ describe("Auth0AccountGate", () => {
 
 		const DashboardLink = screen.getByText("Go to Dashboard");
 
-		const LogoutButton = screen.getByText("Logout");
+		const LogoutButton = screen.getByText("Sign Out");
 
 		expect(DisplayName).toBeInTheDocument();
 
@@ -239,22 +239,21 @@ describe("Auth0AccountGate", () => {
 		);
 	});
 
-	it("calls loginWithRedirect with screen_hint signup for signup route", () => {
+	it("shows the coming-soon gate instead of redirecting for signup route while registration is disabled", () => {
+		// Auth0AccountGate.tsx hardcodes RegistrationEnabled = false - signup
+		// is feature-flagged off site-wide, so the component short-circuits
+		// to the "Coming Soon" panel instead of calling loginWithRedirect.
 		Auth0State.IsLoading = false;
 
 		Auth0State.IsAuthenticated = false;
 
 		render(<Auth0AccountGate Route="signup" />);
 
-		expect(LoginWithRedirectMock).toHaveBeenCalledTimes(1);
+		expect(LoginWithRedirectMock).not.toHaveBeenCalled();
 
-		expect(LoginWithRedirectMock).toHaveBeenCalledWith(
-			expect.objectContaining({
-				authorizationParams: expect.objectContaining({
-					screen_hint: "signup",
-				}),
-			}),
-		);
+		expect(
+			screen.getByText("Registration is not open yet"),
+		).toBeInTheDocument();
 	});
 
 	it("does not redirect when isLoading is true", () => {
@@ -312,7 +311,7 @@ describe("Auth0AccountGate", () => {
 
 		render(<Auth0AccountGate Route="signin" />);
 
-		const LogoutButton = screen.getByText("Logout");
+		const LogoutButton = screen.getByText("Sign Out");
 
 		await User.click(LogoutButton);
 

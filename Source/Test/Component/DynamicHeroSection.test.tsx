@@ -43,7 +43,7 @@ describe("DynamicHeroSection", () => {
 
 		expect(Highlight.tagName).toBe("SPAN");
 
-		expect(Highlight.className).toContain("text-primary");
+		expect(Highlight.className).toContain("italic");
 	});
 
 	it("renders primary CTA button", () => {
@@ -69,7 +69,7 @@ describe("DynamicHeroSection", () => {
 	});
 
 	it("renders FloatingCards container", () => {
-		const { container } = render(
+		render(
 			<DynamicHeroSection
 				Content={{
 					...MinimalContent,
@@ -80,9 +80,7 @@ describe("DynamicHeroSection", () => {
 			/>,
 		);
 
-		expect(
-			container.querySelector(".FloatingCard, .flex.flex-wrap"),
-		).toBeTruthy();
+		expect(screen.getByText("Rust Core")).toBeInTheDocument();
 	});
 
 	it("skips animation when RespectReducedMotion is true", () => {
