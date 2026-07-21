@@ -215,68 +215,73 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 
 					{HeaderData.Actions?.filter(
 						(Action) => Action.Href !== "/Account/SignIn",
-					).map((Action, Index) => (
-						<Button
-							key={Index}
-							variant={
-								(Action.Variant as
-									| "ghost"
-									| "default"
-									| "outline") || "default"
-							}
-							size={
-								(Action.Size as "default" | "sm" | "lg") ||
-								"default"
-							}
-							className={
-								FullWidth
-									? "StaccatoButton w-full justify-start"
-									: "StaccatoButton"
-							}
-							asChild
-						>
-							<a href={Action.Href} onClick={OnClick}>
+					).map((Action, Index) => {
+						const variant = (Action.Variant as
+							| "ghost"
+							| "default"
+							| "outline") || "default";
+						const size = (Action.Size as "default" | "sm" | "lg") ||
+							"default";
+						const cls = FullWidth
+							? "StaccatoButton w-full justify-start"
+							: "StaccatoButton";
+						// Ghost/link variants have no filled-blob equivalent in
+						// Jelly UI and must stay as plain CSS elements.  Default
+						// and outline render as real jelly-buttons with onClick
+						// navigation so the header CTAs get the same soft-body
+						// physics as the hero buttons.
+						if (variant === "ghost" || variant === "link") {
+							return (
+								<Button key={Index} variant={variant} size={size}
+									className={cls} asChild>
+									<a href={Action.Href} onClick={OnClick}>
+										{Action.Text}
+										{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
+									</a>
+								</Button>
+							);
+						}
+						return (
+							<Button key={Index} variant={variant} size={size}
+								className={cls}
+								onClick={() => { window.location.href = Action.Href; }}>
 								{Action.Text}
-								{RenderActionIcon(
-									Action.Icon,
-									Action.Text,
-									Action.Tooltip,
-								)}
-							</a>
-						</Button>
-					))}
+								{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
+							</Button>
+						);
+					})}
 				</>
 			) : (
-				HeaderData.Actions?.map((Action, Index) => (
-					<Button
-						key={Index}
-						variant={
-							(Action.Variant as
-								| "ghost"
-								| "default"
-								| "outline") || "default"
-						}
-						size={
-							(Action.Size as "default" | "sm" | "lg") ||
-							"default"
-						}
-						className={
-							FullWidth
-								? "StaccatoButton w-full justify-start"
-								: "StaccatoButton"
-						}
-						asChild
-					>
-						<a href={Action.Href} onClick={OnClick}>
+				HeaderData.Actions?.map((Action, Index) => {
+					const variant = (Action.Variant as
+						| "ghost"
+						| "default"
+						| "outline") || "default";
+					const size = (Action.Size as "default" | "sm" | "lg") ||
+						"default";
+					const cls = FullWidth
+						? "StaccatoButton w-full justify-start"
+						: "StaccatoButton";
+					if (variant === "ghost" || variant === "link") {
+						return (
+							<Button key={Index} variant={variant} size={size}
+								className={cls} asChild>
+								<a href={Action.Href} onClick={OnClick}>
+									{Action.Text}
+									{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
+								</a>
+							</Button>
+						);
+					}
+					return (
+						<Button key={Index} variant={variant} size={size}
+							className={cls}
+							onClick={() => { window.location.href = Action.Href; }}>
 							{Action.Text}
-							{RenderActionIcon(
-								Action.Icon,
-								Action.Text,
-								Action.Tooltip,
-							)}
-						</a>
-					</Button>
-				))
+							{RenderActionIcon(Action.Icon, Action.Text, Action.Tooltip)}
+						</Button>
+					);
+				})
 			)}
 		</>
 	);
