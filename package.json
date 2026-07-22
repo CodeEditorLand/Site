@@ -98,7 +98,7 @@
 		"embla-carousel-react": "8.6.0",
 		"esbuild": "0.28.1",
 		"firebase": "12.16.0",
-		"happy-dom": "20.11.0",
+		"happy-dom": "20.11.1",
 		"i18next": "26.3.6",
 		"input-otp": "1.4.2",
 		"jsdom": "29.1.1",
