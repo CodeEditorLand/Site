@@ -143,8 +143,8 @@ const Element = [
 				<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
 					<jelly-card
 						squish
-						class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
-						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						class="transition-colors hover:bg-[var(--Secondary)]"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 						onclick="window.open('https://github.com/CodeEditorLand/Land#readme','_blank','noopener noreferrer')"
 					>
 						<div class="p-6">
@@ -168,8 +168,8 @@ const Element = [
 
 					<jelly-card
 						squish
-						class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
-						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						class="transition-colors hover:bg-[var(--Secondary)]"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 						onclick="window.open('https://github.com/CodeEditorLand/Land/issues','_blank','noopener noreferrer')"
 					>
 						<div class="p-6">
@@ -194,8 +194,8 @@ const Element = [
 
 					<jelly-card
 						squish
-						class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
-						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						class="transition-colors hover:bg-[var(--Secondary)]"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 						onclick="location.href='/Doc/Rust'"
 					>
 						<div class="p-6">
@@ -239,8 +239,8 @@ const Element = [
 									{Entries.map((Entry) => (
 										<jelly-card
 											squish
-											class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
-											style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+											class="transition-colors hover:bg-[var(--Secondary)]"
+											style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
 											onclick={`location.href='/Doc/${Entry.id}'`}
 										>
 											<div class="p-4">
@@ -271,7 +271,7 @@ const Element = [
 							})
 						}
 					</h2>
-					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
+					<div class="StaccatoBorderShimmer bg-card p-6">
 						<p class="mb-4 text-muted-foreground">
 							{
 								T("common.docs.architecture.intro", {
@@ -322,7 +322,7 @@ const Element = [
 							})
 						}
 					</h2>
-					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
+					<div class="StaccatoBorderShimmer bg-card p-6">
 						<p class="mb-4 text-muted-foreground">
 							{
 								T("common.docs.workers.intro", {
@@ -423,7 +423,7 @@ const Element = [
 							})
 						}
 					</h2>
-					<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
+					<div class="StaccatoBorderShimmer bg-card p-6">
 						<p class="mb-4 text-muted-foreground">
 							{
 								T("common.docs.deployments.intro", {

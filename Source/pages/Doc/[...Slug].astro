@@ -186,33 +186,37 @@ const AbsoluteDocUrl = (Id: string) =>
 						>
 							<div class="flex flex-col gap-3 sm:flex-row sm:justify-between">
 								{PrevEntry ? (
-									<a
-										href={AbsoluteDocUrl(PrevEntry.id)}
-										class="group flex min-w-0 flex-col gap-0.5 rounded-none border border-border p-3 transition-colors hover:border-foreground hover:bg-secondary sm:max-w-[45%]"
-									>
-										<span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-											← Previous
-										</span>
-										<span class="truncate text-sm font-medium text-foreground">
-											{PrevEntry.data.title}
-										</span>
-									</a>
-								) : (
-									<span />
-								)}
-								{NextEntry && (
-									<a
-										href={AbsoluteDocUrl(NextEntry.id)}
-										class="group flex min-w-0 flex-col gap-0.5 rounded-none border border-border p-3 text-right transition-colors hover:border-foreground hover:bg-secondary sm:ml-auto sm:max-w-[45%]"
-									>
-										<span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-											Next →
-										</span>
-										<span class="truncate text-sm font-medium text-foreground">
-											{NextEntry.data.title}
-										</span>
-									</a>
-								)}
+														<jelly-card
+															squish
+															class="group flex min-w-0 flex-col gap-0.5 rounded-none p-3 sm:max-w-[45%]"
+															style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+															onclick={`location.href='${AbsoluteDocUrl(PrevEntry.id)}'`}
+														>
+															<span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+																← Previous
+															</span>
+															<span class="truncate text-sm font-medium text-foreground">
+																{PrevEntry.data.title}
+															</span>
+														</jelly-card>
+													) : (
+														<span />
+													)}
+													{NextEntry && (
+														<jelly-card
+															squish
+															class="group flex min-w-0 flex-col gap-0.5 rounded-none p-3 text-right sm:ml-auto sm:max-w-[45%]"
+															style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+															onclick={`location.href='${AbsoluteDocUrl(NextEntry.id)}'`}
+														>
+															<span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+																Next →
+															</span>
+															<span class="truncate text-sm font-medium text-foreground">
+																{NextEntry.data.title}
+															</span>
+														</jelly-card>
+													)}
 							</div>
 						</nav>
 					)

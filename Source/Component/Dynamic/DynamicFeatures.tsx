@@ -267,7 +267,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 							FeatureColorMuteMap[Feature.Id] ?? "var(--Mute)";
 
 						return (
-							<article
+							<jelly-card
 								key={Feature.Id}
 								title={
 									Feature.Id === "performance"
@@ -286,11 +286,15 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
-								className="FeatureCard StaccatoCard flex min-h-0 flex-col gap-6 rounded-none bg-card p-8"
+								className="FeatureCard flex min-h-0 flex-col gap-6 rounded-none p-8"
 								style={{
-									borderLeftColor: FeatureColor,
-									borderLeftWidth: "2px",
-								}}
+									"--jelly-fill": "var(--Card)",
+									"--jelly-radius": "0",
+									"--jelly-card-padding-block": "0",
+									"--jelly-card-padding-inline": "0",
+									"--jelly-color-border-default": FeatureColor,
+									"--jelly-card-font-size": "inherit",
+								} as React.CSSProperties}
 							>
 								<div className="flex items-start justify-between">
 									<h3 className="font-mono text-sm font-semibold leading-snug">
@@ -419,7 +423,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											</span>
 										)}
 								</p>
-							</article>
+							</jelly-card>
 						);
 					})}
 				</div>

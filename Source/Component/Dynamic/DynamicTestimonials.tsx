@@ -308,13 +308,17 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 								"var(--Primary)";
 
 							return (
-								<article
+								<jelly-card
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard StaccatoCard flex flex-col gap-3 rounded-none bg-card p-5"
+									className="MasonryCard TestimonialCard flex flex-col gap-3 rounded-none p-5"
 									style={
 										{
-											borderLeftColor: AccentColor,
-											borderLeftWidth: "2px",
+											"--jelly-fill": "var(--Card)",
+											"--jelly-radius": "0",
+											"--jelly-card-font-size": "inherit",
+											"--jelly-card-padding-block": "0",
+											"--jelly-card-padding-inline": "0",
+											"--jelly-color-border-default": AccentColor,
 											"--masonry-col": ColSpan,
 										} as React.CSSProperties
 									}
@@ -373,7 +377,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									<p className="text-sm leading-relaxed text-muted-foreground">
 										{Testimonial.Quote.split("\n")[0]}
 									</p>
-								</article>
+								</jelly-card>
 							);
 						})}
 					</div>
@@ -421,13 +425,16 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							"var(--Primary)";
 
 						return (
-							<article
+							<jelly-card
 								key={Testimonial.Id}
-								className="TestimonialCard StaccatoCard flex flex-col gap-3 rounded-none bg-card p-5"
+								className="TestimonialCard flex flex-col gap-3 rounded-none p-5"
 								style={{
-									borderLeftColor: AccentColor,
-									borderLeftWidth: "2px",
-								}}
+									"--jelly-fill": "var(--Card)",
+									"--jelly-radius": "0",
+									"--jelly-card-padding-block": "0",
+									"--jelly-card-padding-inline": "0",
+									"--jelly-color-border-default": AccentColor,
+								} as React.CSSProperties}
 							>
 								<div className="flex items-center justify-between gap-2">
 									<div className="flex items-center gap-1.5">
@@ -478,7 +485,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 								<p className="text-sm leading-relaxed text-muted-foreground">
 									{Testimonial.Quote.split("\n")[0]}
 								</p>
-							</article>
+							</jelly-card>
 						);
 					})}
 				</div>

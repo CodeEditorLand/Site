@@ -361,18 +361,19 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							};
 
 							return (
-								<div
+								<jelly-card
 									key={Card.Id}
-									className="group relative flex items-center gap-3 border border-[var(--Border)] bg-[var(--Card)] p-4 transition-colors hover:border-[color-mix(in_srgb,var(--Foreground)_28%,transparent)] dark:hover:border-[color-mix(in_srgb,var(--Ring)_50%,transparent)]"
+									squish
+									className="group relative flex items-center gap-3 p-4"
+									style={{
+										"--jelly-fill": "var(--Card)",
+										"--jelly-radius": "0",
+										"--jelly-card-font-size": "inherit",
+										"--jelly-card-padding-block": "0",
+										"--jelly-card-padding-inline": "0",
+										"--jelly-color-border-default": GetIconColor(),
+									} as React.CSSProperties}
 								>
-									{/* Spine-accent edge bar */}
-									<span
-										aria-hidden="true"
-										className="absolute left-0 top-0 h-full w-0.5"
-										style={{
-											backgroundColor: GetIconColor(),
-										}}
-									/>
 									<IconComponent
 										className="h-5 w-5 shrink-0"
 										strokeWidth={1.5}
@@ -381,7 +382,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 									<span className="truncate font-mono text-xs uppercase tracking-wider text-foreground">
 										{Card.Title}
 									</span>
-								</div>
+								</jelly-card>
 							);
 						})}
 					</div>

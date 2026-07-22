@@ -130,12 +130,10 @@
  dark cyberpunk canvas and a crisp edge in light. Background is supplied by
  each card's own utility (bg-card) - do NOT set background-color here, or it
  overrides utilities like bg-primary on elements that reuse .StaccatoCard
- (e.g. IconTooltip). Border brightens on hover; glow only in dark. */
-.FeatureCard,
-.PricingCard,
-.TestimonialCard,
+ (e.g. IconTooltip). Border brightens on hover; glow only in dark.
+ FeatureCard / PricingCard / TestimonialCard / MasonryCard are now jelly-card
+ custom elements — Jelly's canvas handles their surface border. */
 .TransparencyCard,
-.MasonryCard,
 .PlatformCard {
 	border: 1px solid var(--Border);
 	border-radius: var(--BorderRadius);
@@ -149,17 +147,11 @@
 	transform: none !important;
 }
 
-.FeatureCard:hover,
-.PricingCard:hover,
-.TestimonialCard:hover,
 .TransparencyCard:hover,
 .PlatformCard:hover {
 	border-color: color-mix(in srgb, var(--Foreground) 28%, transparent);
 }
 
-.dark .FeatureCard:hover,
-.dark .PricingCard:hover,
-.dark .TestimonialCard:hover,
 .dark .TransparencyCard:hover,
 .dark .PlatformCard:hover {
 	border-color: color-mix(in srgb, var(--Ring) 50%, transparent);

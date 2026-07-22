@@ -29,7 +29,7 @@ const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 
 	return (
 		<Card
-			className={`StaccatoCard StaccatoBorderShimmer ${ClassName || ""}`}
+			className={`${ClassName || ""}`}
 			onClick={OnClick}
 			style={{ cursor: OnClick ? "pointer" : undefined }}
 		>
@@ -85,7 +85,7 @@ export const SimpleCard = ({
 }: SimpleProperty) => {
 	return (
 		<Card
-			className={`StaccatoCard StaccatoBorderShimmer ${ClassName || ""}`}
+			className={`${ClassName || ""}`}
 			onClick={OnClick}
 			style={{ cursor: OnClick ? "pointer" : undefined }}
 		>

@@ -157,15 +157,21 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					className="mx-auto grid max-w-4xl grid-cols-1 gap-12 md:grid-cols-2"
 				>
 					{DisplayTier.map((Tier) => (
-						<div
+						<jelly-card
 							key={Tier.Id}
-							className={`PricingCard StaccatoCard flex flex-col rounded-none bg-card ${
+							className={`PricingCard flex flex-col rounded-none ${
 								Tier.Highlighted || Tier.Popular ? "" : ""
 							} ${
 								Tier.Status && Tier.Status !== "Ready"
 									? "opacity-75"
 									: ""
 							}`}
+							style={{
+								"--jelly-fill": "var(--Card)",
+								"--jelly-radius": "0",
+								"--jelly-card-padding-block": "0",
+								"--jelly-card-padding-inline": "0",
+							} as React.CSSProperties}
 							aria-disabled={
 								Tier.Status && Tier.Status !== "Ready"
 									? true
@@ -364,7 +370,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									</>
 								)}
 							</div>
-						</div>
+						</jelly-card>
 					))}
 				</div>
 			</div>

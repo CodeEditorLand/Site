@@ -70,7 +70,7 @@ function D(n, t, e = 0) {
   const s = Number(i);
   return Number.isFinite(s) ? s : e;
 }
-function B(n) {
+function H(n) {
   return String(n).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 }
 function C(n) {
@@ -166,8 +166,8 @@ function _(n, t) {
   let a, d;
   c > h ? (a = 1, d = 0) : (a = 0, d = 1);
   const p = c - a + K, u = h - d + K, m = c - 1 + 2 * K, w = h - 1 + 2 * K, f = i & 255, x = s & 255, y = Z[f + q[x]], k = Z[f + a + q[x + d]], L = Z[f + 1 + q[x + 1]];
-  let S = 0, E = 0, Q = 0, H = 0.5 - c * c - h * h;
-  H > 0 && (H *= H, S = H * H * at(lt[y], c, h));
+  let S = 0, E = 0, Q = 0, B = 0.5 - c * c - h * h;
+  B > 0 && (B *= B, S = B * B * at(lt[y], c, h));
   let N = 0.5 - p * p - u * u;
   N > 0 && (N *= N, E = N * N * at(lt[k], p, u));
   let Y = 0.5 - m * m - w * w;
@@ -233,10 +233,10 @@ function At(n, t, e, i) {
     let y = 0;
     for (; y < l.length - 1 && u[y + 1] < x; )
       y += 1;
-    const k = l[y], L = l[(y + 1) % l.length], S = u[y], E = u[y + 1], Q = Math.max(E - S, 1e-4), H = (x - S) / Q;
+    const k = l[y], L = l[(y + 1) % l.length], S = u[y], E = u[y + 1], Q = Math.max(E - S, 1e-4), B = (x - S) / Q;
     w.push({
-      x: k.x + (L.x - k.x) * H,
-      y: k.y + (L.y - k.y) * H,
+      x: k.x + (L.x - k.x) * B,
+      y: k.y + (L.y - k.y) * B,
       nx: 0,
       ny: 0,
       d: 0,
@@ -644,15 +644,15 @@ function ft(n, t, e = "bottom", i = 8, s = null) {
     window.removeEventListener("scroll", r, !0), window.removeEventListener("resize", r);
   };
 }
-let pt = 0, Bt = "";
+let pt = 0, Ht = "";
 function Pt() {
   if (pt++ > 0)
     return;
   const n = window.innerWidth - document.documentElement.clientWidth;
-  Bt = document.body.style.paddingInlineEnd, document.body.style.overflow = "hidden", n > 0 && (document.body.style.paddingInlineEnd = `${n}px`);
+  Ht = document.body.style.paddingInlineEnd, document.body.style.overflow = "hidden", n > 0 && (document.body.style.paddingInlineEnd = `${n}px`);
 }
-function Ht() {
-  pt !== 0 && (--pt > 0 || (document.body.style.overflow = "", document.body.style.paddingInlineEnd = Bt));
+function Bt() {
+  pt !== 0 && (--pt > 0 || (document.body.style.overflow = "", document.body.style.paddingInlineEnd = Ht));
 }
 function Rt(n) {
   const t = [];
@@ -1552,7 +1552,7 @@ class Ie extends M {
   }
 }
 customElements.define("jelly-button", Ie);
-const Be = ':host{--jelly-icon-button-size: 48px;--jelly-icon-button-radius: 16px;--jelly-icon-button-font-size: 18px;--jelly-icon-button-icon-size: 20px;--jelly-ring: var(--jelly-fill, var(--jelly-color-border-focus))}:host([disabled]){opacity:.55;pointer-events:none}:host([size="small"]),:host([size="sm"]){--jelly-icon-button-size: 40px;--jelly-icon-button-radius: 13px;--jelly-icon-button-font-size: 16px;--jelly-icon-button-icon-size: 18px}:host([size="medium"]),:host([size="md"]){--jelly-icon-button-size: 48px;--jelly-icon-button-radius: 16px;--jelly-icon-button-font-size: 18px;--jelly-icon-button-icon-size: 20px}:host([size="large"]),:host([size="lg"]){--jelly-icon-button-size: 56px;--jelly-icon-button-radius: 18px;--jelly-icon-button-font-size: 20px;--jelly-icon-button-icon-size: 23px}button{appearance:none;-webkit-appearance:none;border:0;margin:0;padding:0;background:transparent;color:var(--jelly-label);width:var(--jelly-icon-button-size);height:var(--jelly-icon-button-size);display:inline-flex;align-items:center;justify-content:center;font:600 var(--jelly-icon-button-font-size)/1 var(--jelly-font-display);position:relative;cursor:pointer;border-radius:var(--jelly-icon-button-radius);touch-action:manipulation;transition:width .42s cubic-bezier(.4,0,.2,1),height .42s cubic-bezier(.4,0,.2,1)}@media(prefers-reduced-motion:reduce){:host-context(html:not([data-jelly-motion="no-preference"])) button{transition:none}}:host-context([data-jelly-motion="reduce"]) button{transition:none}button:focus-visible{outline:none}button:after{content:"";position:absolute;inset:-2px;border:var(--jelly-ring-width) solid transparent;border-radius:calc(var(--jelly-icon-button-radius) + 2px);pointer-events:none}::slotted(svg){width:var(--jelly-icon-button-icon-size);height:var(--jelly-icon-button-icon-size)}@media(forced-colors:active){button{color:ButtonText}button:focus-visible:after{border-color:Highlight}}';
+const He = ':host{--jelly-icon-button-size: 48px;--jelly-icon-button-radius: 16px;--jelly-icon-button-font-size: 18px;--jelly-icon-button-icon-size: 20px;--jelly-ring: var(--jelly-fill, var(--jelly-color-border-focus))}:host([disabled]){opacity:.55;pointer-events:none}:host([size="small"]),:host([size="sm"]){--jelly-icon-button-size: 40px;--jelly-icon-button-radius: 13px;--jelly-icon-button-font-size: 16px;--jelly-icon-button-icon-size: 18px}:host([size="medium"]),:host([size="md"]){--jelly-icon-button-size: 48px;--jelly-icon-button-radius: 16px;--jelly-icon-button-font-size: 18px;--jelly-icon-button-icon-size: 20px}:host([size="large"]),:host([size="lg"]){--jelly-icon-button-size: 56px;--jelly-icon-button-radius: 18px;--jelly-icon-button-font-size: 20px;--jelly-icon-button-icon-size: 23px}button{appearance:none;-webkit-appearance:none;border:0;margin:0;padding:0;background:transparent;color:var(--jelly-label);width:var(--jelly-icon-button-size);height:var(--jelly-icon-button-size);display:inline-flex;align-items:center;justify-content:center;font:600 var(--jelly-icon-button-font-size)/1 var(--jelly-font-display);position:relative;cursor:pointer;border-radius:var(--jelly-icon-button-radius);touch-action:manipulation;transition:width .42s cubic-bezier(.4,0,.2,1),height .42s cubic-bezier(.4,0,.2,1)}@media(prefers-reduced-motion:reduce){:host-context(html:not([data-jelly-motion="no-preference"])) button{transition:none}}:host-context([data-jelly-motion="reduce"]) button{transition:none}button:focus-visible{outline:none}button:after{content:"";position:absolute;inset:-2px;border:var(--jelly-ring-width) solid transparent;border-radius:calc(var(--jelly-icon-button-radius) + 2px);pointer-events:none}::slotted(svg){width:var(--jelly-icon-button-icon-size);height:var(--jelly-icon-button-icon-size)}@media(forced-colors:active){button{color:ButtonText}button:focus-visible:after{border-color:Highlight}}';
 class Pe extends M {
   constructor() {
     super(...arguments), this.activationPointerId = null, this.cancelPointerClick = !1;
@@ -1563,7 +1563,7 @@ class Pe extends M {
   }
   // Component styles layered over the shared jelly base styles
   styles() {
-    return nt + Be;
+    return nt + He;
   }
   // The interactive markup that sits above the canvas
   content() {
@@ -1633,7 +1633,7 @@ class Pe extends M {
   }
 }
 customElements.define("jelly-icon-button", Pe);
-const He = ':host{--jelly-input-padding-inline: 20px;--jelly-input-font-size: 16px;--jelly-input-radius: 16px;--jelly-fill: var(--jelly-color-background-muted);--jelly-label: var(--jelly-color-foreground-default);--jelly-accent: var(--jelly-color-background-accent);--jelly-ring: var(--jelly-accent, var(--jelly-color-border-focus));display:inline-block;width:280px;height:56px;font:500 var(--jelly-input-font-size)/1.2 var(--jelly-font-text)}:host([size="small"]),:host([size="sm"]){--jelly-input-padding-inline: 16px;--jelly-input-font-size: 14.5px;--jelly-input-radius: 14px;width:220px;height:46px}:host([size="medium"]),:host([size="md"]){--jelly-input-padding-inline: 20px;--jelly-input-font-size: 16px;--jelly-input-radius: 16px;width:280px;height:56px}:host([size="large"]),:host([size="lg"]){--jelly-input-padding-inline: 24px;--jelly-input-font-size: 17px;--jelly-input-radius: 18px;width:340px;height:64px}:host([disabled]){--jelly-fill: var(--jelly-color-background-neutral);opacity:.55;pointer-events:none}input{position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;border:0;outline:none;background:transparent;padding-block:0;padding-inline:var(--jelly-input-padding-inline);font:inherit;color:var(--jelly-label);text-align:start;touch-action:manipulation}input::placeholder{color:var(--jelly-color-foreground-muted)}.ring{position:absolute;inset:4px;border:var(--jelly-ring-width) solid transparent;border-radius:var(--jelly-input-radius);pointer-events:none}@media(forced-colors:active){.ring{border-color:FieldText}:host(:focus-within) .ring{border-color:Highlight}}';
+const Be = ':host{--jelly-input-padding-inline: 20px;--jelly-input-font-size: 16px;--jelly-input-radius: 16px;--jelly-fill: var(--jelly-color-background-muted);--jelly-label: var(--jelly-color-foreground-default);--jelly-accent: var(--jelly-color-background-accent);--jelly-ring: var(--jelly-accent, var(--jelly-color-border-focus));display:inline-block;width:280px;height:56px;font:500 var(--jelly-input-font-size)/1.2 var(--jelly-font-text)}:host([size="small"]),:host([size="sm"]){--jelly-input-padding-inline: 16px;--jelly-input-font-size: 14.5px;--jelly-input-radius: 14px;width:220px;height:46px}:host([size="medium"]),:host([size="md"]){--jelly-input-padding-inline: 20px;--jelly-input-font-size: 16px;--jelly-input-radius: 16px;width:280px;height:56px}:host([size="large"]),:host([size="lg"]){--jelly-input-padding-inline: 24px;--jelly-input-font-size: 17px;--jelly-input-radius: 18px;width:340px;height:64px}:host([disabled]){--jelly-fill: var(--jelly-color-background-neutral);opacity:.55;pointer-events:none}input{position:absolute;inset:0;width:100%;height:100%;box-sizing:border-box;border:0;outline:none;background:transparent;padding-block:0;padding-inline:var(--jelly-input-padding-inline);font:inherit;color:var(--jelly-label);text-align:start;touch-action:manipulation}input::placeholder{color:var(--jelly-color-foreground-muted)}.ring{position:absolute;inset:4px;border:var(--jelly-ring-width) solid transparent;border-radius:var(--jelly-input-radius);pointer-events:none}@media(forced-colors:active){.ring{border-color:FieldText}:host(:focus-within) .ring{border-color:Highlight}}';
 class Re extends M {
   constructor() {
     super(), this.focused = !1, this.measure = null, this.internals = this.attachInternals();
@@ -1647,7 +1647,7 @@ class Re extends M {
   }
   // Component styles layered over the shared jelly base styles
   styles() {
-    return He;
+    return Be;
   }
   // The interactive markup that sits above the canvas
   content() {
@@ -3131,7 +3131,7 @@ class ai extends M {
       return `
           <li class="row" id="${this.instanceId}-opt${r}" role="option" data-index="${r}"
               aria-selected="${o}" ${s.disabled ? 'aria-disabled="true"' : ""}>
-            <span class="row-label">${B(s.label)}</span>
+            <span class="row-label">${H(s.label)}</span>
             <svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M5 13l4 4 10-11" />
@@ -3506,7 +3506,7 @@ class di extends M {
     this.index = e >= 0 ? e : this.segments.findIndex((o) => o.hasAttribute("selected")), this.index < 0 && (this.index = 0);
     const i = this.isTablist, s = this.stateAttribute, r = this.hasAttribute("disabled");
     this.wrap.setAttribute("role", i ? "tablist" : "radiogroup"), this.wrap.innerHTML = this.segments.map((o, l) => {
-      const c = B(o.label);
+      const c = H(o.label);
       return `
         <button class="segment" type="button" role="${i ? "tab" : "radio"}" data-index="${l}"
                 ${s}="${l === this.index}"
@@ -4074,7 +4074,7 @@ class ji extends M {
   }
 }
 customElements.define("jelly-skeleton", ji);
-const wi = ':host{display:inline-flex;height:24px;--jelly-badge-radius: 999px;font:640 12.5px/1 var(--jelly-font-display)}:host([size="small"]){height:20px;font-size:11px}:host([size="large"]){height:30px;font-size:14px}:host([shape="square"]){--jelly-badge-radius: 8px}:host([shape="square"][size="small"]){--jelly-badge-radius: 6px}:host([shape="square"][size="large"]){--jelly-badge-radius: 10px}.badge{display:inline-flex;align-items:center;justify-content:center;height:100%;min-width:12px;padding-inline:9px;color:var(--jelly-label);position:relative;border-radius:var(--jelly-badge-radius);white-space:nowrap}:host([size="small"]) .badge{min-width:10px;padding-inline:7px}:host([size="large"]) .badge{min-width:16px;padding-inline:12px}:host([outline]) .badge{color:var(--jelly-color-foreground-default)}@media(forced-colors:active){.badge{border:1px solid CanvasText}}';
+const wi = ':host{display:inline-flex;height:24px;--jelly-badge-radius: 999px;font-family:var(--jelly-font-display);font-weight:640;font-size:var(--jelly-badge-font-size, 12.5px);line-height:1}:host([size="small"]){height:20px;font-size:11px}:host([size="large"]){height:30px;font-size:14px}:host([shape="square"]){--jelly-badge-radius: 8px}:host([shape="square"][size="small"]){--jelly-badge-radius: 6px}:host([shape="square"][size="large"]){--jelly-badge-radius: 10px}.badge{display:inline-flex;align-items:center;justify-content:center;height:100%;min-width:12px;padding-inline:9px;color:var(--jelly-label);position:relative;border-radius:var(--jelly-badge-radius);white-space:nowrap}:host([size="small"]) .badge{min-width:10px;padding-inline:7px}:host([size="large"]) .badge{min-width:16px;padding-inline:12px}:host([outline]) .badge{color:var(--jelly-color-foreground-default)}@media(forced-colors:active){.badge{border:1px solid CanvasText}}';
 class ki extends M {
   constructor() {
     super(...arguments), this.mutationObserver = null;
@@ -4128,7 +4128,16 @@ class ki extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.sync(), this.mutationObserver = new MutationObserver(() => this.centerPop(0.7)), this.mutationObserver.observe(this, { childList: !0, characterData: !0, subtree: !0 });
+    if (this.sync(), this.mutationObserver = new MutationObserver(() => this.centerPop(0.7)), this.mutationObserver.observe(this, { childList: !0, characterData: !0, subtree: !0 }), !this.reducedMotion) {
+      const t = [...document.querySelectorAll("jelly-badge")].indexOf(this);
+      this.addEventListener("pointerenter", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
+      }), this.addEventListener("pointermove", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY);
+      }), this.addEventListener("pointerleave", () => {
+        this.stopHoverLoop();
+      });
+    }
   }
   // Lifecycle method: Called automatically when the element is appended to the
   // DOM. Re-arm the content observer - disconnectedCallback dropped it and a
@@ -4257,16 +4266,29 @@ class Li extends M {
     const i = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-radius")) || 22;
     return { width: t, height: e, radius: Math.min(i, Math.min(t, e) / 2) };
   }
-  // A hairline on the jelly surface, resolved through the theme
+  // A hairline on the jelly surface, resolved through the theme.
+  // Set --jelly-card-border: none on the host to suppress the canvas
+  // border entirely (useful when the card has its own CSS border via
+  // Tailwind or an accent colour on a single side).
   surfaceBorder() {
-    return {
+    const t = getComputedStyle(this).getPropertyValue("--jelly-card-border").trim();
+    return t === "none" || t === "0" ? null : {
       color: this.resolveColor(`var(--jelly-color-border-default, ${b["border-default"]})`),
       width: 1
     };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.card = this.shadowRoot.querySelector(".card"), this.reducedMotion || requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish();
+    if (this.card = this.shadowRoot.querySelector(".card"), this.reducedMotion || requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion) {
+      const t = [...document.querySelectorAll("jelly-card")].indexOf(this);
+      this.addEventListener("pointerenter", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
+      }), this.addEventListener("pointermove", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY);
+      }), this.addEventListener("pointerleave", () => {
+        this.stopHoverLoop();
+      });
+    }
   }
   /*
    * Wire (or unwire) button behavior for squish mode. The card is a div
@@ -4591,12 +4613,12 @@ class Ii extends HTMLElement {
     t ? this.setAttribute("aria-orientation", "vertical") : this.removeAttribute("aria-orientation"), this.shadowRoot.innerHTML = `
       <style>${Fi}</style>
 
-      ${e ? `<div class="labelled${t ? " vertical" : ""}"><span class="label">${B(e)}</span></div>` : '<div class="line"></div>'}
+      ${e ? `<div class="labelled${t ? " vertical" : ""}"><span class="label">${H(e)}</span></div>` : '<div class="line"></div>'}
     `;
   }
 }
 customElements.define("jelly-divider", Ii);
-const Bi = ':host{display:block;--jelly-collapsible-padding-block: 13px;--jelly-collapsible-padding-inline: 14px;--jelly-collapsible-gap: 10px;--jelly-collapsible-header-font: 15px;--jelly-collapsible-body-font: 14.5px;--jelly-collapsible-chevron: 16px;--jelly-collapsible-radius: 12px}:host([size="small"]){--jelly-collapsible-padding-block: 10px;--jelly-collapsible-padding-inline: 12px;--jelly-collapsible-gap: 8px;--jelly-collapsible-header-font: 13.5px;--jelly-collapsible-body-font: 13px;--jelly-collapsible-chevron: 14px;--jelly-collapsible-radius: 10px}:host([size="large"]){--jelly-collapsible-padding-block: 16px;--jelly-collapsible-padding-inline: 18px;--jelly-collapsible-gap: 12px;--jelly-collapsible-header-font: 16.5px;--jelly-collapsible-body-font: 15.5px;--jelly-collapsible-chevron: 18px;--jelly-collapsible-radius: 14px}.head{appearance:none;width:100%;box-sizing:border-box;border:0;margin:0;background:transparent;cursor:pointer;touch-action:manipulation;text-align:start;display:flex;align-items:center;gap:var(--jelly-collapsible-gap);padding-block:var(--jelly-collapsible-padding-block);padding-inline:var(--jelly-collapsible-padding-inline);font:650 var(--jelly-collapsible-header-font)/1.3 var(--jelly-font-display);color:var(--jelly-color-foreground-default);border-radius:var(--jelly-collapsible-radius)}.head:hover{background:color-mix(in srgb,var(--jelly-color-background-accent) 7%,transparent)}.head:focus-visible{outline:var(--jelly-ring-width) solid var(--jelly-ring-color);outline-offset:var(--jelly-ring-gap)}.label{flex:1}.chevron{width:var(--jelly-collapsible-chevron);height:var(--jelly-collapsible-chevron);flex:0 0 auto;transition:transform .32s cubic-bezier(.34,1.5,.5,1)}:host(:dir(rtl)) .chevron{transform:scaleX(-1)}:host([open]) .chevron{transform:rotate(90deg)}.wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .36s cubic-bezier(.28,1.35,.5,1)}:host([open]) .wrap{grid-template-rows:1fr}.content{overflow:hidden;visibility:hidden;transition:visibility 0s linear .36s}:host([open]) .content{visibility:visible;transition:visibility 0s}.inner{padding-block-start:2px;padding-block-end:var(--jelly-collapsible-padding-inline);padding-inline:var(--jelly-collapsible-padding-inline);color:var(--jelly-color-foreground-default);font:400 var(--jelly-collapsible-body-font)/1.6 var(--jelly-font-text);transform-origin:top}:host([open]) .inner{animation:pop .42s cubic-bezier(.34,1.56,.64,1)}@keyframes pop{0%{transform:translateY(-6px) scale(.99)}to{transform:none}}@media(prefers-reduced-motion:reduce){:host-context(html:not([data-jelly-motion="no-preference"])) :is(.wrap,.chevron,.content){transition:none}:host([open]):host-context(html:not([data-jelly-motion="no-preference"])) .inner{animation:none}:host(:dir(rtl)):host-context(html:not([data-jelly-motion="no-preference"])) .chevron{transform:scaleX(-1)}}:host-context([data-jelly-motion="reduce"]) :is(.wrap,.chevron,.content){transition:none}:host([open]):host-context([data-jelly-motion="reduce"]) .inner{animation:none}:host(:dir(rtl)):host-context([data-jelly-motion="reduce"]) .chevron{transform:scaleX(-1)}@media(forced-colors:active){.head:focus-visible{outline:2px solid Highlight}}';
+const Hi = ':host{display:block;--jelly-collapsible-padding-block: 13px;--jelly-collapsible-padding-inline: 14px;--jelly-collapsible-gap: 10px;--jelly-collapsible-header-font: 15px;--jelly-collapsible-body-font: 14.5px;--jelly-collapsible-chevron: 16px;--jelly-collapsible-radius: 12px}:host([size="small"]){--jelly-collapsible-padding-block: 10px;--jelly-collapsible-padding-inline: 12px;--jelly-collapsible-gap: 8px;--jelly-collapsible-header-font: 13.5px;--jelly-collapsible-body-font: 13px;--jelly-collapsible-chevron: 14px;--jelly-collapsible-radius: 10px}:host([size="large"]){--jelly-collapsible-padding-block: 16px;--jelly-collapsible-padding-inline: 18px;--jelly-collapsible-gap: 12px;--jelly-collapsible-header-font: 16.5px;--jelly-collapsible-body-font: 15.5px;--jelly-collapsible-chevron: 18px;--jelly-collapsible-radius: 14px}.head{appearance:none;width:100%;box-sizing:border-box;border:0;margin:0;background:transparent;cursor:pointer;touch-action:manipulation;text-align:start;display:flex;align-items:center;gap:var(--jelly-collapsible-gap);padding-block:var(--jelly-collapsible-padding-block);padding-inline:var(--jelly-collapsible-padding-inline);font:650 var(--jelly-collapsible-header-font)/1.3 var(--jelly-font-display);color:var(--jelly-color-foreground-default);border-radius:var(--jelly-collapsible-radius)}.head:hover{background:color-mix(in srgb,var(--jelly-color-background-accent) 7%,transparent)}.head:focus-visible{outline:var(--jelly-ring-width) solid var(--jelly-ring-color);outline-offset:var(--jelly-ring-gap)}.label{flex:1}.chevron{width:var(--jelly-collapsible-chevron);height:var(--jelly-collapsible-chevron);flex:0 0 auto;transition:transform .32s cubic-bezier(.34,1.5,.5,1)}:host(:dir(rtl)) .chevron{transform:scaleX(-1)}:host([open]) .chevron{transform:rotate(90deg)}.wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .36s cubic-bezier(.28,1.35,.5,1)}:host([open]) .wrap{grid-template-rows:1fr}.content{overflow:hidden;visibility:hidden;transition:visibility 0s linear .36s}:host([open]) .content{visibility:visible;transition:visibility 0s}.inner{padding-block-start:2px;padding-block-end:var(--jelly-collapsible-padding-inline);padding-inline:var(--jelly-collapsible-padding-inline);color:var(--jelly-color-foreground-default);font:400 var(--jelly-collapsible-body-font)/1.6 var(--jelly-font-text);transform-origin:top}:host([open]) .inner{animation:pop .42s cubic-bezier(.34,1.56,.64,1)}@keyframes pop{0%{transform:translateY(-6px) scale(.99)}to{transform:none}}@media(prefers-reduced-motion:reduce){:host-context(html:not([data-jelly-motion="no-preference"])) :is(.wrap,.chevron,.content){transition:none}:host([open]):host-context(html:not([data-jelly-motion="no-preference"])) .inner{animation:none}:host(:dir(rtl)):host-context(html:not([data-jelly-motion="no-preference"])) .chevron{transform:scaleX(-1)}}:host-context([data-jelly-motion="reduce"]) :is(.wrap,.chevron,.content){transition:none}:host([open]):host-context([data-jelly-motion="reduce"]) .inner{animation:none}:host(:dir(rtl)):host-context([data-jelly-motion="reduce"]) .chevron{transform:scaleX(-1)}@media(forced-colors:active){.head:focus-visible{outline:2px solid Highlight}}';
 class Pi extends HTMLElement {
   constructor() {
     super(...arguments), this.built = !1;
@@ -4612,7 +4634,7 @@ class Pi extends HTMLElement {
     this.built = !0;
     const t = W("jelly-collapsible");
     this.attachShadow({ mode: "open", delegatesFocus: !0 }), this.shadowRoot.innerHTML = `
-      <style>${Bi}</style>
+      <style>${Hi}</style>
 
       <button class="head" part="header" id="${t}-header" aria-expanded="${this.hasAttribute("open")}" aria-controls="${t}-panel">
         <span class="label"><slot name="header">Details</slot></span>
@@ -4652,7 +4674,7 @@ class Pi extends HTMLElement {
   }
 }
 customElements.define("jelly-collapsible", Pi);
-const Hi = ":host{display:block}::slotted(jelly-collapsible){display:block;border-radius:var(--jelly-accordion-radius, 12px)}::slotted(jelly-collapsible + jelly-collapsible){border-top:1px solid var(--jelly-color-border-default);border-radius:0}";
+const Bi = ":host{display:block}::slotted(jelly-collapsible){display:block;border-radius:var(--jelly-accordion-radius, 12px)}::slotted(jelly-collapsible + jelly-collapsible){border-top:1px solid var(--jelly-color-border-default);border-radius:0}";
 class Ri extends HTMLElement {
   constructor() {
     super(...arguments), this.built = !1;
@@ -4664,7 +4686,7 @@ class Ri extends HTMLElement {
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
     z(), j(this), !this.built && (this.built = !0, this.attachShadow({ mode: "open", delegatesFocus: !0 }), this.shadowRoot.innerHTML = `
-      <style>${Hi}</style>
+      <style>${Bi}</style>
 
       <slot></slot>
     `, this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => {
@@ -4723,9 +4745,9 @@ class qi extends HTMLElement {
       <style>${Vi}</style>
 
       <div class="bar">
-        <jelly-segmented part="tabs" roles="tablist" value="${B(s)}">
+        <jelly-segmented part="tabs" roles="tablist" value="${H(s)}">
           ${t.map(
-      (r, o) => `<jelly-segment value="${B(this.panelValue(r, o))}">${B(this.panelLabel(r, o))}</jelly-segment>`
+      (r, o) => `<jelly-segment value="${H(this.panelValue(r, o))}">${H(this.panelLabel(r, o))}</jelly-segment>`
     ).join("")}
         </jelly-segmented>
       </div>
@@ -4826,7 +4848,7 @@ class Xi extends HTMLElement {
 
       <nav aria-label="Breadcrumb"><ol>${e.map((i, s) => {
       const r = s === e.length - 1;
-      return (r ? `<li class="current" aria-current="page">${B(i.text)}</li>` : `<li><a href="${B(i.href || "#")}">${B(i.text)}</a></li>`) + (r ? "" : '<li class="separator" aria-hidden="true">›</li>');
+      return (r ? `<li class="current" aria-current="page">${H(i.text)}</li>` : `<li><a href="${H(i.href || "#")}">${H(i.text)}</a></li>`) + (r ? "" : '<li class="separator" aria-hidden="true">›</li>');
     }).join("")}</ol></nav>
     `;
     for (const i of t)
@@ -5487,7 +5509,7 @@ class es extends HTMLElement {
   }
   // Release every page-level effect the open dialog holds (idempotent)
   teardownModal() {
-    this.modalActive && (this.modalActive = !1, document.removeEventListener("keydown", this.onDocumentKey), this.restoreInert?.(), this.restoreInert = null, Ht(), this.restorePortal?.(), this.restorePortal = null);
+    this.modalActive && (this.modalActive = !1, document.removeEventListener("keydown", this.onDocumentKey), this.restoreInert?.(), this.restoreInert = null, Bt(), this.restorePortal?.(), this.restorePortal = null);
   }
   // Open the dialog (mirrors the native dialog API)
   showModal() {
@@ -5571,7 +5593,7 @@ class ss extends HTMLElement {
   }
   // Release every page-level effect the open drawer holds (idempotent)
   teardownModal() {
-    this.modalActive && (this.modalActive = !1, document.removeEventListener("keydown", this.onDocumentKey), this.restoreInert?.(), this.restoreInert = null, Ht(), this.restorePortal?.(), this.restorePortal = null);
+    this.modalActive && (this.modalActive = !1, document.removeEventListener("keydown", this.onDocumentKey), this.restoreInert?.(), this.restoreInert = null, Bt(), this.restorePortal?.(), this.restorePortal = null);
   }
   // The side attribute with start / end resolved against reading direction
   get resolvedSide() {
@@ -5658,7 +5680,7 @@ export {
   g as emit,
   zt as engine,
   z as ensureThemeTokens,
-  B as escapeHTML,
+  H as escapeHTML,
   ls as getThemeMode,
   G as horizontalStep,
   Rt as inertOutside,
@@ -5691,7 +5713,7 @@ export {
   ft as trackAnchor,
   F as triggerHaptic,
   W as uniqueId,
-  Ht as unlockScroll,
+  Bt as unlockScroll,
   P as variantColors
 };
 //# sourceMappingURL=jelly.js.map

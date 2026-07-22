@@ -10,7 +10,7 @@ const Card = React.forwardRef<
 		<jelly-card
 			ref={ref as unknown as React.Ref<HTMLElement>}
 			className={cn(
-				"bg-[var(--Card)] text-[var(--CardForeground)]",
+				"text-[var(--CardForeground)]",
 				className,
 			)}
 			style={
@@ -19,6 +19,7 @@ const Card = React.forwardRef<
 					"--jelly-radius": "0px",
 					"--jelly-card-padding-block": "0px",
 					"--jelly-card-padding-inline": "0px",
+					"--jelly-card-font-size": "inherit",
 				} as React.CSSProperties
 			}
 			{...props}
