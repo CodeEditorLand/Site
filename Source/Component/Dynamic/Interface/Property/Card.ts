@@ -6,4 +6,6 @@ export default interface Interface {
 	ClassName?: string;
 
 	OnClick?: () => void;
+
+	Style?: React.CSSProperties;
 }

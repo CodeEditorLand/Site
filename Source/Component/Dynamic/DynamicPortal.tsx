@@ -791,9 +791,9 @@ const PortalTierRow = ({
 								{Content.Title}
 							</CardTitle>
 							{StatusLabel && (
-								<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
+								<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
 									{StatusLabel}
-								</span>
+								</jelly-badge>
 							)}
 							{/* Tier header icon - tooltip shows tier identity label on hover */}
 							<div className="PortalTierIconWrapper">
@@ -1110,15 +1110,20 @@ const PortalTierRow = ({
 			{/* Right: Feature Description */}
 			<div className="PortalTierDescription">
 				{Content.Badge && (
-					<span
-						className="StaccatoBadge StaccatoRhythmBeat PortalTierBadge"
+					<jelly-badge
+						variant="mint"
+						shape="square"
+						className="StaccatoRhythmBeat PortalTierBadge"
 						style={{
-							color: Content.Color,
-							borderColor: Content.BorderColor,
-						}}
+							"--jelly-fill": "var(--Card)",
+							"--jelly-label": Content.Color || "var(--Foreground)",
+							"--jelly-badge-radius": "0px",
+							"--jelly-badge-font-size": "inherit",
+							"--jelly-color-border-default": Content.BorderColor || "var(--Border)",
+						} as React.CSSProperties}
 					>
 						{Content.Badge}
-					</span>
+					</jelly-badge>
 				)}
 
 				<h3

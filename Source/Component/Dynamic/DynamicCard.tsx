@@ -18,7 +18,7 @@ import type SimpleProperty from "./Interface/Property/Card/Simple.js";
  * Applies StaccatoCard + StaccatoBorderShimmer + StaccatoShadowLift
  * for organic hover lift and border breathing.
  */
-const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
+const DynamicCard = ({ Sections, ClassName, OnClick, Style }: Property) => {
 	const {
 		Header: HeaderSection,
 
@@ -31,7 +31,7 @@ const DynamicCard = ({ Sections, ClassName, OnClick }: Property) => {
 		<Card
 			className={`${ClassName || ""}`}
 			onClick={OnClick}
-			style={{ cursor: OnClick ? "pointer" : undefined }}
+			style={{ cursor: OnClick ? "pointer" : undefined, ...(Style || {}) } as React.CSSProperties}
 		>
 			{HeaderSection && (
 				<CardHeader>
