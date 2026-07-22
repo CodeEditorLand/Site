@@ -29,10 +29,10 @@ const ButtonVariants = cva(
 				link: "text-[var(--Foreground)] underline-offset-4 hover:underline",
 			},
 			size: {
-				default: "h-9 px-[2.1rem] py-2 has-[>svg]:px-[1.8rem]",
-				sm: "h-8 gap-0 px-3 has-[>svg]:px-2.5",
-				lg: "h-10 px-[2.6rem] has-[>svg]:px-[2.2rem]",
-				icon: "size-9",
+				default: "h-10 px-[2.1rem] py-2 has-[>svg]:px-[1.8rem]",
+				sm: "h-9 gap-0 px-3 has-[>svg]:px-2.5",
+				lg: "h-11 px-[2.6rem] has-[>svg]:px-[2.2rem]",
+				icon: "size-10",
 			},
 		},
 		defaultVariants: {
@@ -76,22 +76,22 @@ const JellySizeOverride: Partial<
 	Record<NonNullable<ButtonProps["size"]>, Record<string, string>>
 > = {
 	default: {
-		"--jelly-button-height": "36px",
+		"--jelly-button-height": "40px",
 		"--jelly-button-padding-inline": "2.1rem",
 		"--jelly-button-min-width": "0px",
 	},
 	sm: {
-		"--jelly-button-height": "32px",
+		"--jelly-button-height": "36px",
 		"--jelly-button-padding-inline": "0.75rem",
 		"--jelly-button-min-width": "0px",
 	},
 	lg: {
-		"--jelly-button-height": "40px",
+		"--jelly-button-height": "44px",
 		"--jelly-button-padding-inline": "2.6rem",
 		"--jelly-button-min-width": "0px",
 	},
 	icon: {
-		"--jelly-icon-button-size": "36px",
+		"--jelly-icon-button-size": "40px",
 	},
 };
 

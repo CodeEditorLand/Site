@@ -131,29 +131,22 @@
  each card's own utility (bg-card) - do NOT set background-color here, or it
  overrides utilities like bg-primary on elements that reuse .StaccatoCard
  (e.g. IconTooltip). Border brightens on hover; glow only in dark.
- FeatureCard / PricingCard / TestimonialCard / MasonryCard are now jelly-card
- custom elements — Jelly's canvas handles their surface border. */
-.TransparencyCard,
-.PlatformCard {
+ FeatureCard / PricingCard / TestimonialCard / MasonryCard / PlatformCard
+ are now jelly-card custom elements — Jelly's canvas handles their border. */
+.TransparencyCard {
 	border: 1px solid var(--Border);
 	border-radius: var(--BorderRadius);
 	transition:
 		border-color 0.2s ease,
 		box-shadow 0.2s ease;
-	/* Flat, grid-aligned. The Staccato engine seeds a per-card translate +
-	 rotation (the dated "scattered/tilted" look); override it to none so
-	 cards read as a precise HUD grid. Hover border/glow stays (separate
-	 properties), and the JS-set inline transforms are neutralised here. */
 	transform: none !important;
 }
 
-.TransparencyCard:hover,
-.PlatformCard:hover {
+.TransparencyCard:hover {
 	border-color: color-mix(in srgb, var(--Foreground) 28%, transparent);
 }
 
-.dark .TransparencyCard:hover,
-.dark .PlatformCard:hover {
+.dark .TransparencyCard:hover {
 	border-color: color-mix(in srgb, var(--Ring) 50%, transparent);
 	box-shadow: 0 0 24px -8px color-mix(in srgb, var(--Ring) 60%, transparent);
 }
