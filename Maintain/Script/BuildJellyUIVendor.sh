@@ -93,6 +93,13 @@ mkdir -p "$Public"
 cp "$Vendor/dist/jelly.js" "$Public/jelly.js"
 [ -f "$Vendor/dist/jelly.d.ts" ] && cp "$Vendor/dist/jelly.d.ts" "$Public/jelly.d.ts"
 
+# Also copy to /Asset/JellyUI/ so it's served behind the proven
+# /Asset/* → /Asset/:splat Cloudflare pass-through rule (the /Vendor/
+# path was occasionally caught by the /* → /Visit/ catch-all on CF Pages).
+AssetPublic="$Root/Public/Asset/JellyUI"
+mkdir -p "$AssetPublic"
+cp "$Vendor/dist/jelly.js" "$AssetPublic/jelly.js"
+
 # Cache-bust: write the pinned commit into a TypeScript module so
 # Source/Layout/Base.astro can stamp the <script> URL with ?v=<commit>.
 # This forces browsers and CDNs to re-fetch jelly.js after every deploy
