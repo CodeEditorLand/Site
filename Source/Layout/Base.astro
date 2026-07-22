@@ -208,11 +208,14 @@ const T = GetI18n();
 				filter: invert(1) hue-rotate(180deg);
 			}
 
-			/* Activate Shiki dual-theme CSS variables in dark mode */
+			/* Activate Shiki dual-theme CSS variables in dark mode.
+			   Shiki inlines background-color on <pre> and colors on
+			   <span> elements. !important is required to beat inline
+			   styles — CSS variables alone aren't enough. */
 			.dark .astro-code-themes,
 			.dark .astro-code-themes span {
-				color: var(--shiki-dark, inherit);
-				background-color: var(--shiki-dark-bg, inherit);
+				color: var(--shiki-dark, inherit) !important;
+				background-color: var(--shiki-dark-bg, inherit) !important;
 			}
 		</style>
 
