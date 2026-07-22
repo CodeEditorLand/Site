@@ -286,7 +286,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
-								className="FeatureCard flex min-h-0 flex-col gap-6 rounded-none p-8"
+								className="FeatureCard min-h-0 rounded-none p-8"
 								style={{
 									"--jelly-fill": "var(--Card)",
 									"--jelly-radius": "0",
@@ -296,7 +296,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 									"--jelly-card-font-size": "inherit",
 								} as React.CSSProperties}
 							>
-								<div className="flex items-start justify-between">
+								<div className="flex flex-col gap-6">
+									<div className="flex items-start justify-between">
 									<h3 className="font-mono text-sm font-semibold leading-snug">
 										{Feature.Title}
 									</h3>
@@ -423,6 +424,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 											</span>
 										)}
 								</p>
+								</div>
 							</jelly-card>
 						);
 					})}

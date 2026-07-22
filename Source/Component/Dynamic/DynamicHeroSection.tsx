@@ -364,7 +364,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 								<jelly-card
 									key={Card.Id}
 									squish
-									className="group relative flex items-center gap-3 p-4"
+									className="group relative p-4"
 									style={{
 										"--jelly-fill": "var(--Card)",
 										"--jelly-radius": "0",
@@ -374,7 +374,8 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 										"--jelly-color-border-default": GetIconColor(),
 									} as React.CSSProperties}
 								>
-									<IconComponent
+									<div className="flex items-center gap-3">
+										<IconComponent
 										className="h-5 w-5 shrink-0"
 										strokeWidth={1.5}
 										style={{ color: GetIconColor() }}
@@ -382,6 +383,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 									<span className="truncate font-mono text-xs uppercase tracking-wider text-foreground">
 										{Card.Title}
 									</span>
+									</div>
 								</jelly-card>
 							);
 						})}

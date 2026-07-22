@@ -159,7 +159,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					{DisplayTier.map((Tier) => (
 						<jelly-card
 							key={Tier.Id}
-							className={`PricingCard flex flex-col rounded-none ${
+							className={`PricingCard rounded-none ${
 								Tier.Highlighted || Tier.Popular ? "" : ""
 							} ${
 								Tier.Status && Tier.Status !== "Ready"
@@ -178,6 +178,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									: undefined
 							}
 						>
+							<div className="flex flex-col">
 							{/* ── Card header ───────────────────────────── */}
 							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
@@ -388,6 +389,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 										</ul>
 									</>
 								)}
+							</div>
 							</div>
 						</jelly-card>
 					))}

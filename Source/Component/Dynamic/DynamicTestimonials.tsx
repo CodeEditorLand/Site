@@ -310,7 +310,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							return (
 								<jelly-card
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard flex flex-col gap-3 rounded-none p-5"
+									className="MasonryCard TestimonialCard rounded-none p-5"
 									style={
 										{
 											"--jelly-fill": "var(--Card)",
@@ -323,6 +323,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										} as React.CSSProperties
 									}
 								>
+									<div className="flex flex-col gap-3">
 									{/* Name + glyph + GitHub link */}
 									<div className="flex items-center justify-between gap-2">
 										<div className="flex items-center gap-1.5">
@@ -377,6 +378,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									<p className="text-sm leading-relaxed text-muted-foreground">
 										{Testimonial.Quote.split("\n")[0]}
 									</p>
+									</div>
 								</jelly-card>
 							);
 						})}
@@ -427,7 +429,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						return (
 							<jelly-card
 								key={Testimonial.Id}
-								className="TestimonialCard flex flex-col gap-3 rounded-none p-5"
+								className="TestimonialCard rounded-none p-5"
 								style={{
 									"--jelly-fill": "var(--Card)",
 									"--jelly-radius": "0",
@@ -436,6 +438,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									"--jelly-color-border-default": AccentColor,
 								} as React.CSSProperties}
 							>
+								<div className="flex flex-col gap-3">
 								<div className="flex items-center justify-between gap-2">
 									<div className="flex items-center gap-1.5">
 										<span
@@ -485,6 +488,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 								<p className="text-sm leading-relaxed text-muted-foreground">
 									{Testimonial.Quote.split("\n")[0]}
 								</p>
+								</div>
 							</jelly-card>
 						);
 					})}
