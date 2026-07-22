@@ -70,7 +70,10 @@ export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
 				variant={jelly.variant}
 				shape="square"
 				outline={variant === "outline" ? true : undefined}
-				className={className}
+				className={cn(
+					BadgeVariants({ variant }),
+					className,
+				)}
 				style={
 					{
 						"--jelly-fill": jelly.fill,
