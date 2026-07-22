@@ -20,7 +20,10 @@ export default (await import("astro/config")).defineConfig({
 		syntaxHighlight: "shiki",
 
 		shikiConfig: {
-			theme: "github-light",
+			themes: {
+				light: "github-light",
+				dark: "github-dark",
+			},
 		},
 
 		processor: unified({
@@ -77,7 +80,10 @@ export default (await import("astro/config")).defineConfig({
 			syntaxHighlight: "shiki",
 
 			shikiConfig: {
-				theme: "github-light",
+				themes: {
+					light: "github-light",
+					dark: "github-dark",
+				},
 			},
 
 			processor: unified({

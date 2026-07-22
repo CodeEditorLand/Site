@@ -197,6 +197,25 @@ const T = GetI18n();
 			@import "@Stylesheet/Global.css";
 		</style>
 
+		<!-- Dark-mode rules that reference selectors added dynamically by JS
+		     (.dark class, Shiki --shiki-dark-* vars). PostCSS's discardUnused
+		     strips them from build output because the analyzer never sees the
+		     .dark class on <html>. is:inline bypasses Vite/PostCSS entirely
+		     and guarantees they survive minification. -->
+		<style is:inline>
+			/* Invert pre-rendered Mermaid SVGs in dark mode */
+			.dark .mermaid-diagram svg {
+				filter: invert(1) hue-rotate(180deg);
+			}
+
+			/* Activate Shiki dual-theme CSS variables in dark mode */
+			.dark .astro-code-themes,
+			.dark .astro-code-themes span {
+				color: var(--shiki-dark, inherit);
+				background-color: var(--shiki-dark-bg, inherit);
+			}
+		</style>
+
 		<!-- i18n client - must initialize before any React component hydrates -->
 		<script>
 			import "@/Library/I18n/Client.js";
