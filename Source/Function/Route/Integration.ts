@@ -296,6 +296,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				["/Font/*", "/Font/:splat"],
 				["/Image/*", "/Image/:splat"],
 				["/OpenGraph/*", "/OpenGraph/:splat"],
+				["/Vendor/*", "/Vendor/:splat"],
 			];
 
 			const AssetFile = [
