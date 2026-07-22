@@ -30,14 +30,58 @@ export interface BadgeProps
 		React.HTMLAttributes<HTMLSpanElement>,
 		VariantProps<typeof BadgeVariants> {}
 
+// Jelly variant mapping: our semantic names → Jelly's palette names.
+// Jelly's built-in palette is NOT used — we override --jelly-fill and
+// --jelly-label with our design tokens via inline style so the soft-body
+// canvas paints in our exact colours instead of Jelly's default palette.
+const JellyBadgeVariant: Record<
+	NonNullable<BadgeProps["variant"]>,
+	{ variant: string; fill: string; label: string }
+> = {
+	default: {
+		variant: "graphite",
+		fill: "var(--Primary)",
+		label: "var(--PrimaryForeground)",
+	},
+	secondary: {
+		variant: "platinum",
+		fill: "var(--Secondary)",
+		label: "var(--SecondaryForeground)",
+	},
+	destructive: {
+		variant: "rose",
+		fill: "var(--Destruct)",
+		label: "var(--DestructForeground)",
+	},
+	outline: {
+		variant: "platinum",
+		fill: "transparent",
+		label: "var(--Foreground)",
+	},
+};
+
 export const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-	({ className, variant, ...props }, ref) => {
+	({ className, variant = "default", children, ...props }, ref) => {
+		const jelly = JellyBadgeVariant[variant];
+
 		return (
-			<span
-				ref={ref}
-				className={cn(BadgeVariants({ variant }), className)}
+			<jelly-badge
+				ref={ref as unknown as React.Ref<HTMLElement>}
+				variant={jelly.variant}
+				shape="square"
+				outline={variant === "outline" ? true : undefined}
+				className={className}
+				style={
+					{
+						"--jelly-fill": jelly.fill,
+						"--jelly-label": jelly.label,
+						"--jelly-badge-radius": "0px",
+					} as React.CSSProperties
+				}
 				{...props}
-			/>
+			>
+				{children}
+			</jelly-badge>
 		);
 	},
 );

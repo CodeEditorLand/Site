@@ -5,16 +5,26 @@ import { cn } from "./Utility";
 const Card = React.forwardRef<
 	HTMLDivElement,
 	React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+>(({ className, children, ...props }, ref) => {
 	return (
-		<div
-			ref={ref}
+		<jelly-card
+			ref={ref as unknown as React.Ref<HTMLElement>}
 			className={cn(
 				"bg-[var(--Card)] text-[var(--CardForeground)]",
 				className,
 			)}
+			style={
+				{
+					"--jelly-fill": "var(--Card)",
+					"--jelly-radius": "0px",
+					"--jelly-card-padding-block": "0px",
+					"--jelly-card-padding-inline": "0px",
+				} as React.CSSProperties
+			}
 			{...props}
-		/>
+		>
+			{children}
+		</jelly-card>
 	);
 });
 

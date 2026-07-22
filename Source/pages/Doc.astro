@@ -141,73 +141,81 @@ const Element = [
 
 				<!-- Quick Links: GitHub, Issues, Rust API -->
 				<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
-					<a
-						href="https://github.com/CodeEditorLand/Land#readme"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					<jelly-card
+						squish
+						class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						onclick="window.open('https://github.com/CodeEditorLand/Land#readme','_blank','noopener noreferrer')"
 					>
-						<h2 class="mb-2 text-xl font-semibold">
-							{
-								T("common.docs.gettingStarted.title", {
-									defaultValue: "Get Started in Minutes",
-								})
-							}
-						</h2>
-						<p class="text-muted-foreground">
-							{
-								T("common.docs.gettingStarted.description", {
-									defaultValue:
-										"The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required.",
-								})
-							}
-						</p>
-					</a>
+						<div class="p-6">
+							<h2 class="mb-2 text-xl font-semibold">
+								{
+									T("common.docs.gettingStarted.title", {
+										defaultValue: "Get Started in Minutes",
+									})
+								}
+							</h2>
+							<p class="text-muted-foreground">
+								{
+									T("common.docs.gettingStarted.description", {
+										defaultValue:
+											"The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required.",
+									})
+								}
+							</p>
+						</div>
+					</jelly-card>
 
-					<a
-						href="https://github.com/CodeEditorLand/Land/issues"
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					<jelly-card
+						squish
+						class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						onclick="window.open('https://github.com/CodeEditorLand/Land/issues','_blank','noopener noreferrer')"
 					>
-						<h2 class="mb-2 text-xl font-semibold">
-							{
-								T("common.docs.issueTracker.title", {
-									defaultValue:
-										"Report a Bug or Request a Feature",
-								})
-							}
-						</h2>
-						<p class="text-muted-foreground">
-							{
-								T("common.docs.issueTracker.description", {
-									defaultValue:
-										"Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors.",
-								})
-							}
-						</p>
-					</a>
+						<div class="p-6">
+							<h2 class="mb-2 text-xl font-semibold">
+								{
+									T("common.docs.issueTracker.title", {
+										defaultValue:
+											"Report a Bug or Request a Feature",
+									})
+								}
+							</h2>
+							<p class="text-muted-foreground">
+								{
+									T("common.docs.issueTracker.description", {
+										defaultValue:
+											"Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors.",
+									})
+								}
+							</p>
+						</div>
+					</jelly-card>
 
-					<a
-						href="/Doc/Rust"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+					<jelly-card
+						squish
+						class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
+						style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+						onclick="location.href='/Doc/Rust'"
 					>
-						<h2 class="mb-2 text-xl font-semibold">
-							{
-								T("common.docs.rustApi.title", {
-									defaultValue: "Rust API Reference",
-								})
-							}
-						</h2>
-						<p class="text-muted-foreground">
-							{
-								T("common.docs.rustApi.description", {
-									defaultValue:
-										"Browse generated rustdoc output for Mountain, Echo, Air, and 11 more Rust crates.",
-								})
-							}
-						</p>
-					</a>
+						<div class="p-6">
+							<h2 class="mb-2 text-xl font-semibold">
+								{
+									T("common.docs.rustApi.title", {
+										defaultValue: "Rust API Reference",
+									})
+								}
+							</h2>
+							<p class="text-muted-foreground">
+								{
+									T("common.docs.rustApi.description", {
+										defaultValue:
+											"Browse generated rustdoc output for Mountain, Echo, Air, and 11 more Rust crates.",
+									})
+								}
+							</p>
+						</div>
+					</jelly-card>
 				</div>
 
 				<!-- Guides: grouped by section -->
@@ -229,19 +237,23 @@ const Element = [
 								</h2>
 								<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 									{Entries.map((Entry) => (
-										<a
-											href={`/Doc/${Entry.id}`}
-											class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+										<jelly-card
+											squish
+											class="StaccatoCard StaccatoBorderShimmer bg-card transition-colors hover:bg-[var(--Secondary)]"
+											style="--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-padding-block:0;--jelly-card-padding-inline:0"
+											onclick={`location.href='/Doc/${Entry.id}'`}
 										>
-											<h3 class="font-medium">
-												{Entry.data.title}
-											</h3>
-											{Entry.data.description && (
-												<p class="mt-1 text-muted-foreground">
-													{Entry.data.description}
-												</p>
-											)}
-										</a>
+											<div class="p-4">
+												<h3 class="font-medium">
+													{Entry.data.title}
+												</h3>
+												{Entry.data.description && (
+													<p class="mt-1 text-muted-foreground">
+														{Entry.data.description}
+													</p>
+												)}
+											</div>
+										</jelly-card>
 									))}
 								</div>
 							</section>
@@ -271,12 +283,15 @@ const Element = [
 						<div class="flex flex-wrap gap-3">
 							{
 								Element.map((E) => (
-									<a
-										href={`/Doc/${E.Name.toLowerCase()}`}
-										class="inline-flex items-center gap-1 bg-card px-3 py-1.5 transition-colors hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+									<jelly-badge
+										variant="platinum"
+										shape="square"
+										class="cursor-pointer transition-colors hover:bg-[var(--Secondary)]"
+										style={`--jelly-fill:var(--Card);--jelly-label:var(--Foreground);--jelly-badge-radius:0`}
+										onclick={`location.href='/Doc/${E.Name.toLowerCase()}'`}
 									>
 										{E.Name}
-									</a>
+									</jelly-badge>
 								))
 							}
 						</div>
