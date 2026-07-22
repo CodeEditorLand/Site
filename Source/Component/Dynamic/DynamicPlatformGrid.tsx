@@ -290,7 +290,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							<DynamicCard
 								key={Index}
 								Sections={{}}
-								ClassName="flex animate-pulse flex-col"
+								ClassName="animate-pulse"
 							/>
 						))}
 					</div>

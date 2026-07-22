@@ -17,6 +17,7 @@ const Card = React.forwardRef<
 				{
 					"--jelly-fill": "var(--Card)",
 					"--jelly-radius": "0px",
+					"--jelly-card-color": "inherit",
 					"--jelly-card-padding-block": "0px",
 					"--jelly-card-padding-inline": "0px",
 					"--jelly-card-font-size": "inherit",
