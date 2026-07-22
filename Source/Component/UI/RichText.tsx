@@ -320,11 +320,20 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 			);
 		case "Term": {
 			const Logo = TermLogo[Segment.Value];
+			const Style = CategoryStyle[Segment.Category];
 			return (
-				<span
-					className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[Segment.Category]}`}
+				<jelly-badge
+					variant="platinum"
+					shape="square"
+					className={Style}
 					title={`${CategoryLabel[Segment.Category]}: ${Segment.Value}`}
 					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}
+					style={{
+						"--jelly-fill": "transparent",
+						"--jelly-label": "currentColor",
+						"--jelly-badge-radius": "0px",
+						"--jelly-badge-font-size": "0.78em",
+					} as React.CSSProperties}
 				>
 					{Segment.Value}
 					{Logo && (
@@ -340,7 +349,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 							/>
 						</>
 					)}
-				</span>
+				</jelly-badge>
 			);
 		}
 		default:

@@ -187,9 +187,9 @@ export default ({
 					{...(HeaderContent ? { content: HeaderContent } : {})}
 				/>
 				<div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-5 px-4 text-center">
-					<span className="StaccatoBadge bg-[var(--Mute)] px-3 py-1 font-semibold uppercase tracking-wider text-muted-foreground">
+					<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
 						Coming Soon
-					</span>
+					</jelly-badge>
 					<h1 className="text-2xl font-semibold">
 						{T("registrationComingSoon.title", {
 							defaultValue: "Registration is not open yet",

@@ -1162,12 +1162,12 @@ const PortalTierRow = ({
 									{(Feature.Status ?? Content.Status) &&
 										(Feature.Status ?? Content.Status) !==
 											"Ready" && (
-											<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
+											<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
 												{(Feature.Status ??
 													Content.Status) === "WIP"
 													? "WIP"
 													: "Coming Soon"}
-											</span>
+											</jelly-badge>
 										)}
 								</span>
 								<span className="text-muted-foreground">
@@ -1311,9 +1311,9 @@ const PortalTierRow = ({
 											<>
 												{"\u2001"}
 
-												<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
+												<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
 													{StatusLabel}
-												</span>
+												</jelly-badge>
 											</>
 										)}
 										{"\u2001"}
