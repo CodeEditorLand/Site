@@ -34,7 +34,7 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 	return (
 		<Badge
 			variant={Variant}
-			className={`StaccatoBadge ${ContentClassName || ""} ${ClassName || ""}`}
+			className={`${ContentClassName || ""} ${ClassName || ""}`}
 			{...props}
 		>
 			{Text}

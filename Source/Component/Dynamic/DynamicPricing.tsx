@@ -182,34 +182,43 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 							<div className="border-b border-[var(--Border)] p-8">
 								{Tier.Popular && (
 									<div className="mb-3">
-										<span
-											className="StaccatoBadge inline-flex items-center border px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-widest"
+										<jelly-badge
+											variant="mint"
+											shape="square"
 											style={{
-												borderColor: "var(--SpinegRPC)",
-												color: "var(--SpinegRPCFore)",
-												backgroundColor:
-													"var(--SpinegRPCMute)",
-											}}
+												"--jelly-fill": "var(--SpinegRPCMute)",
+												"--jelly-label": "var(--SpinegRPCFore)",
+												"--jelly-badge-radius": "0px",
+												"--jelly-badge-font-size": "10px",
+											} as React.CSSProperties}
 										>
 											<span
 												className="StaccatoRhythmDot mr-1.5 h-1.5 w-1.5 rounded-none"
 												style={{
-													backgroundColor:
-														"var(--SpinegRPC)",
+													backgroundColor: "var(--SpinegRPC)",
 												}}
 												aria-hidden="true"
 											/>
 											{PopularLabel}
-										</span>
+										</jelly-badge>
 									</div>
 								)}
 								{Tier.Status && Tier.Status !== "Ready" && (
 									<div className="mb-2">
-										<span className="StaccatoBadge bg-[var(--Mute)] px-2 py-0.5 font-semibold uppercase tracking-wider text-muted-foreground">
+										<jelly-badge
+											variant="platinum"
+											shape="square"
+											style={{
+												"--jelly-fill": "var(--Mute)",
+												"--jelly-label": "var(--MuteForeground)",
+												"--jelly-badge-radius": "0px",
+												"--jelly-badge-font-size": "inherit",
+											} as React.CSSProperties}
+										>
 											{Tier.Status === "WIP"
 												? "WIP"
 												: "Coming Soon"}
-										</span>
+										</jelly-badge>
 									</div>
 								)}
 								<div className="mb-4">
@@ -347,12 +356,22 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 														{Tier.Status &&
 														Tier.Status !==
 															"Ready" ? (
-															<span className="StaccatoBadge shrink-0 bg-[var(--Mute)] px-2 py-0.5 font-medium text-muted-foreground">
-																{Tier.Status ===
-																"WIP"
-																	? "WIP"
-																	: "Coming Soon"}
-															</span>
+															<jelly-badge
+																									variant="platinum"
+																									shape="square"
+																									className="shrink-0"
+																									style={{
+																										"--jelly-fill": "var(--Mute)",
+																										"--jelly-label": "var(--MuteForeground)",
+																										"--jelly-badge-radius": "0px",
+																										"--jelly-badge-font-size": "inherit",
+																									} as React.CSSProperties}
+																								>
+																									{Tier.Status ===
+																									"WIP"
+																										? "WIP"
+																										: "Coming Soon"}
+																								</jelly-badge>
 														) : (
 															<IconTooltip
 																Label="Included"
