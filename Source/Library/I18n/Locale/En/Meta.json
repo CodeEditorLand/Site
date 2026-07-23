@@ -11,8 +11,8 @@
 		"title": "Download Code Editor Land | No Electron. No Chromium. Every Extension Runs Unchanged."
 	},
 	"home": {
-		"description": "Code Editor Land is a high-performance, resource-efficient code editor built with Rust and Tauri.\nExperience VS Code",
-		"title": "Code Editor Land | No Electron. No Chromium. VS Code Extensions Compatible."
+		"description": "Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
+		"title": "Code Editor Land | Rust and Tauri Editor Stack"
 	},
 	"legal": {
 		"privacy": {
@@ -56,7 +56,7 @@
 	},
 	"portal": {
 		"title": "Editor Portal | Code Editor Land",
-		"description": "Cloud, Provider, or Local-First.\nChoose your authentication method for Code Editor Land."
+		"description": "CodeEditorLand account sign-in and planned portal modes for cloud, provider, local-first, and enterprise workflows."
 	},
 	"oauth": {
 		"success": "Authentication Successful - Code Editor Land",
