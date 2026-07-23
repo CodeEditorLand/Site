@@ -20,37 +20,7 @@ Sky is organized into three tiers: page routes that define Tauri webview entry
 points, workbench components that compose the VSCode-compatible editor layout,
 and utility functions that support the build and runtime process.
 
-```mermaid
-graph TB
-    subgraph "Sky - UI Component Layer"
-        Pages["Pages\nindex / Browser / Electron / Mountain / Isolation"]
-        Workbenches["Workbench Components\nBrowser / Mountain / Default / NLS"]
-        WorkbenchImpl["Workbench Implementations\nBrowserProxy/ · Electron/"]
-        Functions["Function/\nDebug · Shared · Meta · Markup/Base"]
-    end
-
-    subgraph "Wind - Service Layer"
-        Preload["Preload.js - Environment Shim"]
-        WindServices["Effect-TS Services"]
-        TauriIntegrations["Tauri IPC Integrations"]
-    end
-
-    subgraph "Mountain - Rust Backend"
-        TauriEvents["Tauri Event System"]
-        MountainCore["Mountain Core"]
-    end
-
-    Pages --> Workbenches
-    Pages --> WorkbenchImpl
-    Workbenches --> Preload
-    WorkbenchImpl --> Preload
-    Workbenches --> WindServices
-    WorkbenchImpl --> WindServices
-    WindServices --> TauriIntegrations
-    TauriIntegrations --> TauriEvents
-    TauriEvents --> MountainCore
-```
-
+<img src="/Mermaid/9e999e3dd8c312e6.svg" alt="Mermaid diagram" />
 ### Layer Responsibilities
 
 - **Pages** - Astro route files that act as Tauri webview entry points. Each
@@ -159,24 +129,7 @@ sourcemaps to avoid shipping artifacts that are three times the bundle size.
 The following sequence shows how a user action travels from the Sky UI through
 Wind services to the Mountain backend and back.
 
-```mermaid
-sequenceDiagram
-    participant User as User Interaction
-    participant Sky as Sky Component
-    participant Wind as Wind Service
-    participant Tauri as Tauri IPC
-    participant Mountain as Mountain Backend
-
-    User->>Sky: Click or Keystroke
-    Sky->>Wind: Call service method (e.g. DialogService)
-    Wind->>Tauri: tauri invoke command
-    Tauri->>Mountain: Rust command handler
-    Mountain->>Tauri: Return result
-    Tauri->>Wind: Resolve Effect
-    Wind->>Sky: Updated state
-    Sky->>User: Re-render component
-```
-
+<img src="/Mermaid/f2360069a9a6dc03.svg" alt="Mermaid diagram" />
 ### Startup Sequence
 
 1. Tauri loads the webview pointing at Sky's built output.

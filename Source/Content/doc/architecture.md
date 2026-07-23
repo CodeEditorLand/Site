@@ -51,39 +51,7 @@ sidecar for updates and indexing.
 > independent routing per channel. See
 > [EnvironmentVariables.md](/Doc/build-matrix).
 
-```mermaid
-graph TB
-    subgraph Mountain["Mountain (Native Backend - Rust/Tauri)"]
-        AppState["AppState<br/>(Configuration, Extensions, Workspace)"]
-        GRPC["gRPC Server<br/>(Vine protocol, port 50051)"]
-        ProcMgr["Process Manager<br/>(Cocoon, Air sidecar launch)"]
-        TauriCmd["Tauri Commands<br/>(IPC handler registration)"]
-        TauriEvt["Tauri Events<br/>(push to WebView)"]
-        FileSys["File System<br/>(native tokio implementation)"]
-    end
-
-    subgraph Cocoon["Cocoon (Extension Host - Node.js sidecar)"]
-        ExtHost["Extension Host<br/>vscode API shim"]
-    end
-
-    subgraph WindSky["Wind + Sky (UI WebView - Astro + Effect)"]
-        Wind[Wind Service Layer<br/>Effect-TS ~40 services]
-        Sky[Sky UI Layer<br/>Astro pages + SkyBridge]
-    end
-
-    subgraph Air["Air (Background Daemon - Rust)"]
-        AirSvc["Update, Index,<br/>Crypto, Health"]
-    end
-
-    Mountain -- "gRPC (Vine.proto) port 50052" --> Cocoon
-    Cocoon -- "gRPC (Vine.proto) port 50051" --> Mountain
-    Mountain -- "Tauri invoke/event" --> WindSky
-    WindSky -- "Tauri invoke" --> Mountain
-    Mountain -- "gRPC port 50053" --> Air
-    Air -- "gRPC port 50053" --> Mountain
-    Wind --> Sky
-```
-
+<img src="/Mermaid/34a85ab8cb121c5d.svg" alt="Mermaid diagram" />
 ---
 
 ## Component Map 🗺️
@@ -132,29 +100,7 @@ graph TB
 All requests from the user interface follow a consistent flow through the
 system:
 
-```mermaid
-sequenceDiagram
-    participant Sky as Sky UI (Astro)
-    participant Wind as Wind (Effect-TS Services)
-    participant Mountain as Mountain (Rust Backend)
-    participant Cocoon as Cocoon (Extension Host)
-
-    User->>Sky: User action (click, keypress)
-    Sky->>Wind: Invoke Wind service
-    Wind->>Wind: Effect-TS service logic
-    Wind->>Mountain: Tauri invoke() command
-
-    alt Requires extension
-        Mountain->>Cocoon: gRPC request (Vine protocol)
-        Cocoon->>Cocoon: Extension processes via vscode API shim
-        Cocoon-->>Mountain: gRPC response
-    end
-
-    Mountain-->>Wind: Tauri command response / event
-    Wind-->>Sky: State update
-    Sky-->>User: UI renders change
-```
-
+<img src="/Mermaid/8cee2b513c583966.svg" alt="Mermaid diagram" />
 ### Protocol Layers
 
 **Land**'s IPC uses three distinct protocol layers:
@@ -227,40 +173,7 @@ implementations through IPC.
 `Wind` recreates the VS Code workbench service architecture using `Effect-TS`.
 Each service follows a consistent module structure:
 
-```mermaid
-graph LR
-    subgraph Service["Service Module Structure"]
-        Define[Define.ts<br/>Effect-TS Tag]
-        Implement[Implement.ts<br/>Tauri-backed Layer]
-        Problem[Problem.ts<br/>Typed Error]
-        Define --> Implement
-        Define --> Problem
-    end
-
-    subgraph Layers["Layer Stacks"]
-        TauriLive["TauriLiveLayer<br/>(production)"]
-        ElectronLive["ElectronLiveLayer<br/>(Electron variant)"]
-        TestLayer["TestLayer<br/>(mock services)"]
-    end
-
-    subgraph Services["~40 Services"]
-        IPC["IPC"]
-        Config["Configuration"]
-        Editor["Editor"]
-        Files["Files"]
-        Terminal["Terminal"]
-        Clip["Clipboard"]
-        Dialog["Dialog"]
-        Srch["Search"]
-    end
-
-    Services --> Define
-    Implement --> TauriLive
-    Implement --> ElectronLive
-    Implement --> TestLayer
-    TauriLive --> Sky[Consumed by Sky UI]
-```
-
+<img src="/Mermaid/9f77c651715fb4f2.svg" alt="Mermaid diagram" />
 Services compose into Layer stacks:
 
 | Layer                 | Components                   | Purpose                                                |
@@ -331,69 +244,13 @@ for the full propagation workflow.
 
 ### Read Request (File Open)
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant Sky as Sky UI
-    participant Wind as Wind IFileService
-    participant Mountain as Mountain (Rust)
-    participant Disk as OS File System
-
-    User->>Sky: Click file in Explorer
-    Sky->>Wind: IEditorService.createEditorTab(uri)
-    Wind->>Wind: ITextModelService.resolveModel(uri)
-    Wind->>Mountain: Tauri invoke('read_file', { path })
-    Mountain->>Disk: tokio::fs::read(path)
-    Disk-->>Mountain: Uint8Array content
-    Mountain-->>Wind: Return content buffer
-    Wind->>Wind: Create ITextModel with content
-    Wind-->>Sky: Editor tab with model
-    Sky-->>User: File rendered in editor
-```
-
+<img src="/Mermaid/fcd9b18a6e360b3d.svg" alt="Mermaid diagram" />
 ### Extension Feature Request (Hover)
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant Sky as Sky UI
-    participant Wind as Wind Editor
-    participant Mountain as Mountain
-    participant Cocoon as Cocoon Extension Host
-
-    User->>Sky: Hover over symbol in editor
-    Sky->>Wind: IEditorService.hover(position)
-    Wind->>Mountain: Tauri invoke('hover', { uri, line, col })
-    Mountain->>Cocoon: gRPC ProvideHover({ uri, line, col })
-    Cocoon->>Cocoon: extHostLanguages provides HoverProvider
-    Cocoon-->>Mountain: gRPC response (markdown content)
-    Mountain-->>Wind: Hover result
-    Wind-->>Sky: Render hover widget
-    Sky-->>User: Hover tooltip displayed
-```
-
+<img src="/Mermaid/6b5ac0ec8a41c400.svg" alt="Mermaid diagram" />
 ### Configuration Change
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant Sky as Sky Settings UI
-    participant Wind as Wind Configuration
-    participant Mountain as Mountain
-    participant Cocoon as Cocoon Extension Host
-
-    User->>Sky: Change setting in settings editor
-    Sky->>Wind: IConfigurationService.update(key, value)
-    Wind->>Mountain: Tauri invoke('updateConfiguration', { key, value })
-    Mountain->>Mountain: Update AppState, persist to settings.json
-    Mountain-->>Wind: Tauri event 'configurationChanged'
-    Mountain-->>Cocoon: gRPC notification (config changed)
-    Wind->>Wind: Update local configuration cache
-    Cocoon->>Cocoon: Update extension host configuration
-    Wind-->>Sky: UI reflects new settings
-    Sky-->>User: Setting applied
-```
-
+<img src="/Mermaid/3ac3d18466d160b6.svg" alt="Mermaid diagram" />
 ---
 
 ## Related Documentation 📋

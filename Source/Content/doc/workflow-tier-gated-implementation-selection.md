@@ -19,41 +19,7 @@ and how each Element reads the resolved tier at run time.
 The system is the foundation we use to test upgrades, keep fallback paths warm,
 and bisect regressions to a specific implementation tier.
 
-```mermaid
-sequenceDiagram
-    participant DevFile as .env.Land<br/>(or .env.Land.Sample)
-    participant Flavor as .env.Land.<Flavor><br/>(RustOnly / NodeFirst / Full)
-    participant BuildSh as Maintain/Debug/Build.sh
-    participant TierSh as Maintain/Script/TierEnvironment.sh
-    participant Cargo as Cargo / Mountain/build.rs
-    participant ESBuild as Cocoon ESBuild<br/>(CocoonEsbuildDefine)
-    participant Vite as Sky Vite<br/>(astro.config.ts)
-    participant Mountain as Mountain<br/>(Rust binary)
-    participant Cocoon as Cocoon<br/>(Node sidecar)
-    participant Wind as Wind / Sky<br/>(webview)
-
-    DevFile->>BuildSh: Base tier set
-    Flavor->>BuildSh: Optional overlay via --flavor <name>
-    BuildSh->>TierSh: Source helpers
-    TierSh->>TierSh: set -a && . .env.Land && set +a (sweeps all Tier*/Product*/Network*)
-    TierSh->>Cargo: Tier* env exported
-    TierSh->>ESBuild: CocoonEsbuildDefine = JSON of every Tier* in env
-    TierSh->>Vite: Tier* env exported
-    TierSh->>BuildSh: CargoFeatures = comma-joined feature list
-
-    Cargo->>Cargo: build.rs::PropagateTierGating()<br/>emit cargo:rustc-env + cargo:rustc-cfg
-    ESBuild->>ESBuild: Inject __LandTier_<Name>__ defines
-    Vite->>Vite: Substitute import.meta.env.Tier*
-
-    Note over Mountain,Wind: Build complete - every Element<br/>has the resolved tier burned in.
-
-    Mountain->>Mountain: LandFixTier::LogResolvedTiers()<br/>prints two-line runtime banner
-    Cocoon->>Cocoon: Utility/Tier.ts default export<br/>prints runtime banner
-    Wind->>Wind: Utility/Tier.ts default export<br/>prints runtime banner
-
-    Note over Mountain,Wind: All three banners must agree -<br/>mismatch indicates config drift.
-```
-
+<img src="/Mermaid/c8de42384aea961e.svg" alt="Mermaid diagram" />
 ---
 
 #### **Phase 1: Authoring the Tier Set (`.env.Land`)**

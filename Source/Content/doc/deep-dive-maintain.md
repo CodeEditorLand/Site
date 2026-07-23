@@ -22,55 +22,7 @@ delegates to the Rhai scripting engine or direct build functions. Configuration
 editing is performed through `toml_edit` and `json5` for structured, non-lossy
 modifications to project configuration files.
 
-```mermaid
-graph TB
-    subgraph "Maintain Build System"
-        LibraryRS["Source/Library.rs<br/>Entry point"]
-        CLI["Source/Build/CLI.rs<br/>Command-line interface (clap)"]
-        Constant["Source/Build/Constant.rs<br/>Build constants"]
-        Definition["Source/Build/Definition.rs<br/>Build group definitions"]
-        FnRS["Source/Build/Fn.rs<br/>Build function dispatch"]
-        Error["Source/Build/Error.rs<br/>Error types"]
-        Logger["Source/Build/Logger.rs<br/>Colored terminal output"]
-        Process["Source/Build/Process.rs<br/>Child process management"]
-        TomlEdit["Source/Build/TomlEdit.rs<br/>Cargo.toml editor"]
-        JsonEdit["Source/Build/JsonEdit.rs<br/>JSON5 editor"]
-        Pascalize["Source/Build/Pascalize.rs<br/>PascalCase naming utilities"]
-        GetTauri["Source/Build/GetTauriTargetTriple.rs<br/>Platform detection"]
-        EnvResolve["Source/Build/EnvironmentResolver.rs<br/>Environment variable resolution"]
-    end
-
-    subgraph "Rhai Scripting"
-        ConfigLoader["Source/Build/Rhai/ConfigLoader.rs<br/>Configuration file loading"]
-        ScriptRunner["Source/Build/Rhai/ScriptRunner.rs<br/>Script execution engine"]
-        RhaiEnvResolve["Source/Build/Rhai/EnvironmentResolver.rs<br/>Environment in scripts"]
-    end
-
-    subgraph "Shell Scripts"
-        DebugSh["Debug.sh<br/>Debug build entry"]
-        DevMountain["Dev-Mountain.sh<br/>Mountain development mode"]
-        ReleaseSh["Release.sh<br/>Release build entry"]
-        ProfileSh["Profile.sh<br/>Performance profiling"]
-        DebugAll["Debug/All.sh"]
-        DebugBuild["Debug/Build.sh"]
-        DebugRun["Debug/Run.sh"]
-        DebugWind["Debug/Wind.sh"]
-    end
-
-    LibraryRS --> CLI
-    CLI --> FnRS
-    CLI --> ConfigLoader
-    CLI --> ScriptRunner
-    FnRS --> Process
-    FnRS --> TomlEdit
-    FnRS --> JsonEdit
-    ScriptRunner --> RhaiEnvResolve
-    ConfigLoader --> ScriptRunner
-    DebugSh --> CLI
-    DevMountain --> CLI
-    ReleaseSh --> CLI
-```
-
+<img src="/Mermaid/0be4b3c23f1e8a2c.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules 🔌
@@ -97,29 +49,7 @@ graph TB
 
 ## Data Flow 🔄
 
-```mermaid
-sequenceDiagram
-    participant Developer as Developer / CI
-    participant ShellScript as Shell Script
-    participant CLI as Maintain CLI
-    participant Rhai as Rhai Engine
-    participant Process as Process Manager
-    participant Config as Config Editor
-
-    Developer->>ShellScript: ./Maintain/Release.sh
-    ShellScript->>CLI: Maintain release --target aarch64-apple-darwin
-    CLI->>Rhai: Load build configuration script
-    Rhai->>CLI: Build group definition
-    CLI->>Config: Read Cargo.toml / package.json
-    Config->>CLI: Current version and dependencies
-    loop For each element in build group
-        CLI->>Process: spawn("cargo build --release -p Mountain")
-        Process->>CLI: Exit code + output
-    end
-    CLI->>Config: Write updated Cargo.toml (if version bump)
-    CLI->>Developer: Build summary with timing
-```
-
+<img src="/Mermaid/5becfbd1ececd232.svg" alt="Mermaid diagram" />
 ---
 
 ## Integration Points 🔗

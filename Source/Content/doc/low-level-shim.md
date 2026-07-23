@@ -22,78 +22,7 @@ injecting itself between the runtime and every subsystem of VS Code.
 
 ## 🟠 Full Architecture Diagram
 
-```mermaid
-graph TD
-    subgraph "VS Code Workbench"
-        WBS["workbench.startup()"] --> IS["IInstantiationService"]
-    end
-
-    subgraph "InjectShimHook (Output Transform)"
-        IS --> |"LandShimInit(instantiationService)"| INIT["Init.js"]
-    end
-
-    subgraph "🟠 Low-Level Shim - 6 Hook Layers"
-        INIT --> |"TierShim=Own|Preempt"| L1
-        INIT --> |"TierShim=Proxy|Replace"| AUDIT["ServiceCollection Audit 🔵"]
-        INIT --> |"TierShim=Preempt"| PREEMPT["BrowserMain.open()"]
-
-        subgraph LAYER1["L1: Error Boundary"]
-            L1["ErrorHandlerProxy"]
-        end
-        subgraph LAYER2["L2: Event System"]
-            L2["EmitterFireProxy"]
-        end
-        subgraph LAYER3["L3: Cancellation"]
-            L3["CancellationProxy"]
-        end
-        subgraph LAYER4["L4: Resource Lifecycle"]
-            L4["DisposableProxy"]
-        end
-        subgraph LAYER5["L5: Async Scheduling"]
-            L5["AsyncProxy"]
-        end
-        subgraph LAYER8["L8: Performance Timing"]
-            L8["TimingProxy"]
-        end
-    end
-
-    subgraph "Diagnostics Pipeline"
-        L1 --> |"recordErrorTrace"| LD["LandDiagnostics 🔵"]
-        L2 --> |"recordEmitterTrace + checkLandSwallowMap"| LD
-        L3 --> |"recordCancellationTrace"| LD
-        L4 --> |"recordDisposableTrace"| LD
-        L5 --> |"recordAsyncTrace"| LD
-        L8 --> |"recordTimingTrace"| LD
-        AUDIT --> |"recordAuditEntry"| LD
-    end
-
-    subgraph "Flush Targets"
-        LD --> |"30s interval / forceFlush"| FLUSH
-        FLUSH["ring buffers → JSON"] --> TAURI["Tauri IPC invoke()"]
-        TAURI --> MOUNTAIN["Mountain dev log"]
-        TAURI --> OTLP["OTLP traces"]
-        TAURI --> POSTHOG["PostHog sampling"]
-    end
-
-    subgraph "VS Code Internals (Patched Prototypes)"
-        L1 -.-> |"wraps"| EH["errorHandler.onUnexpectedError()"]
-        L2 -.-> |"wraps"| EM["Emitter.prototype.fire()"]
-        L3 -.-> |"wraps"| CTS["CancellationTokenSource.prototype.cancel()"]
-        L4 -.-> |"wraps"| DS["DisposableStore.prototype.add/dispose"]
-        L5 -.-> |"wraps"| ST0["platform.setTimeout0()"]
-        L8 -.-> |"wraps"| SW["StopWatch.constructor/stop/elapsed"]
-    end
-
-    style L1 fill:#FF6B35,stroke:#d45a2b,color:#fff
-    style L2 fill:#FF6B35,stroke:#d45a2b,color:#fff
-    style L3 fill:#FF6B35,stroke:#d45a2b,color:#fff
-    style L4 fill:#FF6B35,stroke:#d45a2b,color:#fff
-    style L5 fill:#FF6B35,stroke:#d45a2b,color:#fff
-    style L8 fill:#FF6B35,stroke:#d45a2b,color:#fff
-    style LD fill:#2563EB,stroke:#1d4ed8,color:#fff
-    style MOUNTAIN fill:#7C3AED,stroke:#6d28d9,color:#fff
-```
-
+<img src="/Mermaid/1f43045a1183657f.svg" alt="Mermaid diagram" />
 The architecture has three distinct planes:
 
 1. **Interception Plane** (🟠 orange) - The 6 prototype hooks that wrap VS Code internals
@@ -551,57 +480,7 @@ Import paths resolve at this final on-disk location.
 
 ## 🟠 Bootstrap Flow
 
-```mermaid
-sequenceDiagram
-    participant Build as Build Pipeline
-    participant Env as .env.Land
-    participant WBS as workbench.startup()
-    participant Inj as InjectShimHook
-    participant Init as Init.js
-    participant L1 as ErrorHandlerProxy
-    participant L2 as EmitterFireProxy
-    participant L3 as CancellationProxy
-    participant L4 as DisposableProxy
-    participant L5 as AsyncProxy
-    participant L8 as TimingProxy
-    participant Diag as LandDiagnostics
-
-    Note over Build,Env: BUILD TIME
-    Env->>Build: TierShim=None|Proxy|Replace|Own|Preempt
-    Build->>Build: esbuild define: __LandTier_Shim__ = "Proxy"
-    Build->>Build: tree-shake all code behind TierShim=None check
-
-    Note over WBS,Init: RUNTIME - workbench boot
-    WBS->>WBS: InstantiationService created
-    WBS-->>Inj: returns instantiationService
-    Inj->>Init: LandShimInit(instantiationService)
-
-    alt TierShim = None
-        Init->>Init: No-op - all code dead
-    else TierShim = Proxy
-        Init->>Diag: wrapServiceCollectionForAudit(sc)
-        Init->>Init: setInterval(flushAuditLog, 30s)
-    else TierShim = Replace
-        Init->>Init: replaceTelemetryService(sc)
-    else TierShim = Own | Preempt
-        Init->>Init: activateLowLevelHooks()
-        par Activate all 6 hooks via dynamic import
-            Init->>L1: import("./Intercept/ErrorHandlerProxy.js")
-            Init->>L2: import("./Intercept/EmitterFireProxy.js")
-            Init->>L3: import("./Intercept/CancellationProxy.js")
-            Init->>L4: import("./Intercept/DisposableProxy.js")
-            Init->>L5: import("./Intercept/AsyncProxy.js")
-            Init->>L8: import("./Intercept/TimingProxy.js")
-        end
-        L1->>L1: patch errorHandler.onUnexpectedError()
-        L2->>L2: patch Emitter.prototype.fire()
-        L3->>L3: patch CancellationTokenSource.prototype.cancel()
-        L4->>L4: patch DisposableStore.prototype.add/dispose
-        L5->>L5: patch platform.setTimeout0()
-        L8->>L8: patch StopWatch constructor/stop/elapsed
-    end
-```
-
+<img src="/Mermaid/3dff1b7ccc919ab4.svg" alt="Mermaid diagram" />
 **Critical detail**: The low-level hooks activate via **dynamic `import()`**, not static import. This is because
 they must resolve at the final on-disk location inside the VS Code tree (`vs/workbench/browser/CEL/Land/Shim/Intercept/`).
 Each `import()` returns a Promise; `.catch(() => {})` ensures a failed import never crashes the workbench.
@@ -651,34 +530,7 @@ VS Code runs un-instrumented but working. If tracing fails mid-flight, the origi
 
 ## 🟠 Flush Mechanism: How Trace Data Reaches Mountain
 
-```mermaid
-sequenceDiagram
-    participant Hook as Any Hook (L1-L8)
-    participant LD as LandDiagnostics
-    participant Buffer as Ring Buffer (512 entries/category)
-    participant Timer as 30s Timer
-    participant Tauri as Tauri IPC invoke()
-    participant Mtn as Mountain dev log
-
-    Hook->>LD: recordErrorTrace({ts, message, stack})
-    LD->>Buffer: errorBuffer.push(trace)
-    Buffer-->>Buffer: shift() if > 512 entries
-    LD->>Timer: ensureFlushTimer() (lazy init)
-
-    Note over Timer: Every 30 seconds
-
-    Timer->>LD: flushAll()
-    LD->>LD: Drain all 7 ring buffers
-    LD->>LD: Construct payload: {type:"shim-trace", tier, buffers: {...}}
-    LD->>Tauri: invoke("MountainIPCInvoke", {method:"diagnostic:log", params:["shim-trace", JSON]})
-    Tauri->>Mtn: diagnostic:log handler
-    Mtn->>Mtn: dev_log!("shim-trace", payload)
-
-    Note over LD: On shutdown / forceFlush()
-    LD->>Timer: clearInterval()
-    LD->>LD: flushAll() - final drain
-```
-
+<img src="/Mermaid/1671dfde0f64186b.svg" alt="Mermaid diagram" />
 **Ring buffer structure** (per category, max 512 entries):
 
 | Buffer             | Category                   | Recorded by               |
@@ -719,52 +571,7 @@ Only the first 20 entries per category are sent as a `sample` to keep payload si
 Here's how a user clicking the status bar to change the encoding propagates through
 all 6 hook layers:
 
-```mermaid
-sequenceDiagram
-    participant User as 👤 User Click
-    participant DOM as DOM Event
-    participant StatusBar as StatusbarService
-    participant EM as Emitter.prototype.fire() [L2]
-    participant SM as checkLandSwallowMap
-    participant CTS as CancellationTokenSource [L3]
-    participant DS as DisposableStore [L4]
-    participant ST0 as setTimeout0 [L5]
-    participant SW as StopWatch [L8]
-    participant Err as errorHandler [L1]
-    participant Diag as LandDiagnostics
-    participant Mtn as Mountain IPC
-
-    Note over User,Mtn: TierShim=Own - all 6 hooks active
-
-    User->>DOM: Click status bar "UTF-8"
-    DOM->>StatusBar: onClick handler
-    StatusBar->>SW: new StopWatch() (L8 intercept)
-    SW->>Diag: recordTimingTrace(action:"create", micros:1732.415)
-
-    StatusBar->>CTS: Cancel pending encoding query (L3 intercept)
-    CTS->>Diag: recordCancellationTrace(stack:"at StatusBarService.updateEncoding...")
-
-    StatusBar->>EM: fire(StatusBarEncodingChangeEvent) (L2 intercept)
-    EM->>SM: checkLandSwallowMap("onDidChangeEncoding")
-    SM-->>EM: false (not suppressed)
-    EM->>EM: originalFire.apply(this, [event])
-    EM->>Diag: recordEmitterTrace (sampled: tick % 100 === 0)
-
-    StatusBar->>DS: store.add(encodingListener) (L4 intercept)
-    DS->>Diag: recordDisposableTrace(action:"add", id:1247)
-
-    StatusBar->>ST0: setTimeout0(() => updateLabel()) (L5 intercept)
-    ST0->>ST0: batchQueue.push(callback) - coalesced
-    ST0->>SW: new StopWatch() for label render (L8 intercept)
-
-    Note over Err: If anything threw...
-    Err->>Diag: recordErrorTrace({message:"...", stack:"..."})
-
-    Diag->>Diag: Ring buffers accumulate
-    Note over Diag: 30s later...
-    Diag->>Mtn: flushAll() → invoke("MountainIPCInvoke", ...)
-```
-
+<img src="/Mermaid/b28373dc0b57c551.svg" alt="Mermaid diagram" />
 **Trace data captured from this single user action**:
 
 | Layer | Events Captured                           | Data                                                  |

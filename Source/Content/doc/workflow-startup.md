@@ -18,49 +18,7 @@ completes and the workbench paints its first frame, the system is ready for user
 interaction and all dependent workflows - opening files, executing commands,
 language features - can proceed.
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant Mountain as Mountain (Native Backend)
-    participant Cocoon as Cocoon (Extension Host)
-    participant VSCode as VSCode (Workbench UI)
-
-    User->>Mountain: Launch Application
-    activate Mountain
-    Mountain->>Mountain: Create AppState & AppRuntime
-    Mountain->>Mountain: Load Configuration
-    Mountain->>Mountain: Scan Extensions
-    Mountain->>Mountain: Start gRPC Server
-    Mountain->>Cocoon: Spawn Node.js Process (bootstrap-fork.js)
-    deactivate Mountain
-
-    activate Cocoon
-    Cocoon->>Mountain: $initialHandshake gRPC notification
-    deactivate Cocoon
-
-    activate Mountain
-    Mountain->>Mountain: Gather InitData from AppState
-    Mountain->>Cocoon: initExtensionHost gRPC request
-    deactivate Mountain
-
-    activate Cocoon
-    Cocoon->>Cocoon: Create InitDataLayer
-    Cocoon->>Cocoon: Run FullAppInitialization
-    Cocoon->>Cocoon: Install RequireInterceptor
-    Cocoon->>Cocoon: Activate Startup Extensions
-    deactivate Cocoon
-
-    User->>VSCode: Open Window (index.html)
-    activate VSCode
-    VSCode->>VSCode: Preload.ts shims window.vscode
-    VSCode->>VSCode: Create AppLayer Services
-    VSCode->>VSCode: Instantiate Workbench
-    VSCode->>VSCode: Render UI Parts (Activity Bar, Sidebar, etc.)
-    deactivate VSCode
-
-    Note over Mountain,Cocoon: System Ready for User Interaction
-```
-
+<img src="/Mermaid/dc004668c806a100.svg" alt="Mermaid diagram" />
 ## Phase 1 - Mountain native startup
 
 1. The OS launches the Mountain binary. The `main` function in

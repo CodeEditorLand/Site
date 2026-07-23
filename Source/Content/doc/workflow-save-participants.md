@@ -13,53 +13,7 @@ and collect their edits, then the merged edits are applied in-memory before the
 normal write path to Mountain executes. The extension author sees only a single
 `onWillSaveTextDocument` event; the IPC machinery is invisible.
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant UI as Wind/Sky UI
-    participant ES as EditorService
-    participant TFEM as TextFileEditorModelManager
-    participant WCF as WorkingCopyFileService
-    participant EHS as ExtHostSaveParticipant
-    participant CIP as Cocoon IPC Server
-    participant EDSP as ExtHostDocumentSaveParticipant
-    participant PE as Prettier Extension
-    participant BES as BulkEditService
-    participant FS as FileService
-    participant TDFSP as TauriDiskFileSystemProvider
-    participant Mnt as Mountain Backend
-
-    User->>UI: Press Ctrl+S
-    UI->>ES: workbench.action.files.save
-    ES->>TFEM: save() on EditorInput
-    TFEM->>TFEM: Check dirty state
-    TFEM->>WCF: runSaveParticipants()
-    WCF->>WCF: Gather ISaveParticipants
-    WCF->>EHS: participate()
-    EHS->>CIP: $participateInSave<br/>gRPC request
-    CIP->>EDSP: Dispatch to service
-    EDSP->>EDSP: Fire onWillSaveTextDocument
-    EDSP->>PE: Event to extension
-    PE->>PE: Calculate formatting edits
-    PE-->>EDSP: Promise(TextEdit[])
-    EDSP->>EDSP: Collect all extension edits
-    EDSP->>CIP: $participateInSave response / TextEdit DTOs
-    CIP-->>EHS: gRPC response
-    EHS-->>WCF: TextEdit array
-    WCF->>BES: Apply edits to document
-    BES->>BES: Apply TextEdits<br/>Update model in memory
-    BES-->>TFEM: Edits applied
-    TFEM->>FS: IFileService.writeFile()
-    FS->>TDFSP: Lookup provider for URI
-    TDFSP->>Mnt: WriteFile Effect<br/>TauriInvoke
-    Mnt->>Mnt: tokio::fs::write()
-    Mnt-->>TDFSP: Success response
-    TDFSP-->>FS: Write complete
-    FS-->>TFEM: Save successful
-    TFEM->>UI: Update dirty indicator<br/>Remove filled circle
-    UI-->>User: Save complete
-```
-
+<img src="/Mermaid/5e843b98af5d6c71.svg" alt="Mermaid diagram" />
 ## Phase 1 - User action and save trigger (Wind/Sky)
 
 1. The user presses `Ctrl+S` in an editor with unsaved changes. The keybinding

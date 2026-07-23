@@ -23,45 +23,7 @@ download tool fetches official runtime distributions and organizes them under a
 target-triple directory convention. The spawn helper is used by Mountain to
 launch sidecars from the vendored binary store.
 
-```mermaid
-graph TB
-    subgraph "SideCar - Binary Distribution"
-        DownloadBin["Source/Download.rs\nDownload binary entry"]
-
-        LibraryRS["Source/Library.rs\nShared library"]
-        CacheJSON["Cache.json\nVersion tracking"]
-        GitAttributes[".gitattributes\nGit LFS configuration"]
-    end
-
-    subgraph "External Sources"
-        NodeJSOrg["nodejs.org\nOfficial Node.js distributions"]
-        OtherRuntimes["Other Runtime Sources"]
-    end
-
-    subgraph "Directory Structure"
-        TargetTriple["[target-triple]/\ne.g. aarch64-apple-darwin"]
-        RuntimeName["[SIDECAR_NAME]/\ne.g. NODE"]
-        Version["[version]/\ne.g. 22"]
-        Bin["bin/node"]
-    end
-
-    subgraph "Consumers"
-        Mountain["Mountain\nbuild.rs selects binary"]
-        Tauri["Tauri\nbundles binary in installer"]
-    end
-
-    DownloadBin --> CacheJSON
-    DownloadBin --> GitAttributes
-    NodeJSOrg --> DownloadBin
-    OtherRuntimes --> DownloadBin
-    DownloadBin --> TargetTriple
-    TargetTriple --> RuntimeName
-    RuntimeName --> Version
-    Version --> Bin
-    TargetTriple --> Mountain
-    Mountain --> Tauri
-```
-
+<img src="/Mermaid/2d1ca0004138ea30.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
@@ -79,25 +41,7 @@ graph TB
 
 ## Data Flow
 
-```mermaid
-sequenceDiagram
-    participant Developer as Developer / CI
-    participant DownloadTool as Download Binary
-    participant NodeJSOrg as nodejs.org
-    participant Cache as Cache.json
-    participant Store as SideCar Directory
-
-    Developer->>DownloadTool: ./Target/release/Download
-    DownloadTool->>Cache: Read existing versions
-    DownloadTool->>NodeJSOrg: GET /dist/index.json (version manifest)
-    NodeJSOrg->>DownloadTool: Latest patch for major version 22
-    DownloadTool->>NodeJSOrg: GET /dist/v22.x.y/node-v22.x.y-darwin-arm64.tar.gz
-    NodeJSOrg->>DownloadTool: Binary archive
-    DownloadTool->>Store: Extract to aarch64-apple-darwin/NODE/22/bin/node
-    DownloadTool->>Cache: Write Cache.json (version locked)
-    DownloadTool->>Store: Update .gitattributes for Git LFS tracking
-```
-
+<img src="/Mermaid/437ef5e8ea10ac60.svg" alt="Mermaid diagram" />
 **Build-time selection:**
 
 Mountain's `build.rs` reads the SideCar directory, selects the binary matching

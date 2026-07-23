@@ -23,46 +23,7 @@ pipeline passes source files through OXC's parser, transformer, and code
 generator in sequence. An optional parallel mode processes multiple files
 concurrently across CPU cores.
 
-```mermaid
-graph TB
-    subgraph "Rest - TypeScript Compiler"
-        Binary["Library.rs - Binary Entry Point"]
-        CLI["CLI Argument Parsing\n--Input · --Output · --Parallel"]
-        Compiler["Fn/OXC/Compiler.rs\nOrchestration"]
-        Parser["Fn/OXC/Parser.rs\nOXC Parser"]
-        Transformer["Fn/OXC/Transformer.rs\nAST Transformation"]
-        Codegen["Fn/OXC/Codegen.rs\nCode Generation"]
-        Config["Struct/CompilerConfig.rs\nConfiguration"]
-    end
-
-    subgraph "OXC Toolchain"
-        OXCParser["oxc_parser\nTypeScript / JSX"]
-        OXCTransform["oxc_transformer\nDecorators · Class Fields"]
-        OXCCodegen["oxc_codegen\nJS Output"]
-        OXCSemantic["oxc_semantic\nSymbol Table"]
-    end
-
-    subgraph "Output Integration"
-        RestPlugin["Output/RestPlugin.ts\nesbuild plugin"]
-        TargetRest["Target/Rest/\nCompiled artifacts"]
-        TargetFinal["Target/Microsoft/VSCode/\nMerged final output"]
-    end
-
-    Binary --> CLI
-    CLI --> Compiler
-    Compiler --> Parser
-    Parser --> OXCParser
-    Compiler --> Transformer
-    Transformer --> OXCTransform
-    Transformer --> OXCSemantic
-    Compiler --> Codegen
-    Codegen --> OXCCodegen
-    Compiler --> Config
-    Codegen --> TargetRest
-    RestPlugin --> Compiler
-    TargetRest --> TargetFinal
-```
-
+<img src="/Mermaid/8d8367d4a86a59e0.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
@@ -86,27 +47,7 @@ graph TB
 
 ## Data Flow
 
-```mermaid
-sequenceDiagram
-    participant CLI as CLI / RestPlugin
-    participant Compiler as Compiler Orchestrator
-    participant Parser as OXC Parser
-    participant Transformer as OXC Transformer
-    participant Codegen as OXC Codegen
-    participant Disk as Output Directory
-
-    CLI->>Compiler: Compile(input_path, config)
-    Compiler->>Parser: Parse(source_text)
-    Parser->>Compiler: AST + diagnostics
-    Compiler->>Transformer: Transform(AST, options)
-    Note over Transformer: emitDecoratorMetadata\nuseDefineForClassFields=false\nTypeScript stripping
-    Transformer->>Compiler: Transformed AST
-    Compiler->>Codegen: Generate(AST)
-    Codegen->>Compiler: JavaScript text
-    Compiler->>Disk: Write .js file
-    Compiler->>CLI: CompilationResult (count, elapsed, errors)
-```
-
+<img src="/Mermaid/32628aab22a45d3f.svg" alt="Mermaid diagram" />
 When `--Parallel` is specified, the compiler fans out file compilation across
 Tokio worker threads and collects aggregated metrics.
 

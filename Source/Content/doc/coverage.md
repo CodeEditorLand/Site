@@ -22,83 +22,7 @@ boundary between Wind (renderer), Cocoon (bridge), and Mountain (native backend)
 
 ## 🔵 Full Architecture Diagram
 
-```mermaid
-graph TD
-    subgraph WIND["Wind (Renderer Process)"]
-        VS["VS Code Workbench"] --> IS["IInstantiationService"]
-        VS --> IPC["Tauri IPC invoke()"]
-
-        subgraph SHIM["🔵 Coverage Shim"]
-            GATE["Gate.ts - IsEnabled/IsProxy/IsReplace"]
-            SM["SwallowMap.ts - Pattern Matcher"]
-            RB["RedirectBus.ts - Handler Router"]
-            AL["AuditLog.ts - Ring Buffer"]
-            II["IPCInterceptor.ts - invoke() Wrapper"]
-            EI["EventInterceptor.ts - DOM addEventListener"]
-            NP["NetworkProxy.ts - fetch/XHR"]
-            AP["AsyncProxy.ts - Timers/Rendering"]
-        end
-
-        IPC --> II
-        II --> SM
-        SM --> |"SWALLOW"| RB
-        SM --> |"PASSTHROUGH"| IPC
-        SM --> |"DISCARD"| DROP["null"]
-        SM --> |"MIXED"| BOTH["Land + VS Code"]
-        RB --> MOUNTAIN["Mountain"]
-        RB --> COCOON["Cocoon"]
-        RB --> OUTPUT["Output"]
-        AL --> |"30s flush"| IPC
-    end
-
-    subgraph COCOON["Cocoon (Bridge Process)"]
-        GRPC["gRPC Server"]
-    end
-
-    subgraph MOUNTAIN["Mountain (Rust Backend)"]
-        DM["DispatchMatch"]
-        NB["NativeBus - tokio::fs, PTY, rg"]
-        MSM["Shim/SwallowMap.rs"]
-        MG["Shim/Gate.rs"]
-        DEVLOG["dev_log! macro"]
-    end
-
-    subgraph OUTPUT["Output (Build Pipeline)"]
-        INJ["InjectShimHook Transform"]
-        COMPILE["esbuild - define __LandTier_Shim__"]
-        NULLSVC["CEL Null Services"]
-    end
-
-    subgraph DIAG["Diagnostics"]
-        LD["LandDiagnostics.ts - Unified Tracer"]
-        OTLP["OTLP Traces"]
-        POSTHOG["PostHog"]
-    end
-
-    II --> |"routes"| RB
-    RB --> |"Wind handlers"| WIND_SVC["Wind Service Handlers"]
-    RB --> |"Cocoon handlers"| GRPC
-    RB --> |"Mountain handlers"| DM
-    RB --> |"Output handlers"| OUTPUT
-    EI --> |"DOM events"| RB
-    NP --> |"fetch/XHR"| SM
-    AP --> |"timers/RAF"| SM
-
-    SM --> LD
-    AL --> LD
-    LD --> OTLP
-    LD --> POSTHOG
-
-    COMPILE --> |"bakes TierShim"| GATE
-    INJ --> |"injects Init.js"| IS
-
-    style SHIM fill:#2563EB20,stroke:#2563EB,stroke-width:2px
-    style SM fill:#2563EB,stroke:#1d4ed8,color:#fff
-    style RB fill:#2563EB,stroke:#1d4ed8,color:#fff
-    style GATE fill:#2563EB,stroke:#1d4ed8,color:#fff
-    style NB fill:#7C3AED,stroke:#6d28d9,color:#fff
-```
-
+<img src="/Mermaid/bfa821f01d73085b.svg" alt="Mermaid diagram" />
 **Three interlocking planes**:
 
 1. **Decision Plane** (SwallowMap + Gate) - Pattern-matching engine that decides: swallow, passthrough, mixed, or discard
@@ -109,47 +33,7 @@ graph TD
 
 ## 🔵 IPC Interception Flow
 
-```mermaid
-sequenceDiagram
-    participant VS as VS Code Service
-    participant IPC as IPCInterceptor
-    participant SM as SwallowMap.decide()
-    participant RB as RedirectBus.route()
-    participant Tauri as Tauri invoke()
-    participant Mtn as Mountain DispatchMatch
-
-    VS->>IPC: invoke("MountainIPCInvoke", {method:"statusbar:set", params:[...]})
-    IPC->>IPC: Gate.IsEnabled? (fast path if disabled)
-    IPC->>SM: SwallowMap.decide("statusbar:set")
-
-    alt Decision = SWALLOW
-        SM-->>IPC: {action:"SWALLOW", redirectTo:"Wind"}
-        IPC->>RB: RedirectBus.route("statusbar:set", [...])
-        RB->>RB: Find handler matching "statusbar:"
-        RB-->>IPC: result
-        IPC-->>VS: Land handler result
-        Note over VS,Mtn: VS Code NEVER sees this event
-    else Decision = PASSTHROUGH
-        SM-->>IPC: {action:"PASSTHROUGH", redirectTo:"None"}
-        IPC->>Tauri: originalInvoke("MountainIPCInvoke", {...})
-        Tauri->>Mtn: DispatchMatch.handle()
-        Mtn-->>VS: VS Code native result
-    else Decision = MIXED
-        SM-->>IPC: {action:"MIXED", redirectTo:"Wind"}
-        par Land handles
-            IPC->>RB: RedirectBus.route(...)
-            RB-->>IPC: landResult
-        and VS Code handles
-            IPC->>Tauri: originalInvoke(...) [fire-and-forget]
-        end
-        IPC-->>VS: Land result (wins)
-    else Decision = DISCARD
-        SM-->>IPC: {action:"DISCARD", redirectTo:"None"}
-        IPC-->>VS: null
-        Note over VS,Mtn: Telemetry silently dropped
-    end
-```
-
+<img src="/Mermaid/ed9f510a7159d54f.svg" alt="Mermaid diagram" />
 ---
 
 ## 🔵 Full Domain Coverage Table
@@ -506,90 +390,7 @@ Original module bodies are reduced to one-line re-exports pointing to the CEL nu
 
 ## 🔵 Integration Diagram: Wind / Output / Cocoon / Mountain
 
-```mermaid
-graph TD
-    subgraph PROCESS_WIND["Wind Process (Renderer)"]
-        direction TB
-        W_GATE["Gate.ts"]
-        W_SM["SwallowMap.ts (TS)"]
-        W_RB["RedirectBus.ts"]
-        W_AL["AuditLog.ts"]
-        W_II["IPCInterceptor.ts"]
-        W_EI["EventInterceptor.ts"]
-        W_NP["NetworkProxy.ts"]
-        W_AP["AsyncProxy.ts (Wind)"]
-
-        W_GATE --> W_SM
-        W_SM --> W_II
-        W_SM --> W_EI
-        W_SM --> W_NP
-        W_SM --> W_AP
-        W_II --> W_RB
-        W_EI --> W_RB
-        W_RB --> W_AL
-    end
-
-    subgraph PROCESS_OUTPUT["Output Pipeline (Build Time)"]
-        direction TB
-        O_INIT["Init.ts - LandShimInit()"]
-        O_LD["LandDiagnostics.ts"]
-        O_L1["ErrorHandlerProxy (L1)"]
-        O_L2["EmitterFireProxy (L2)"]
-        O_L3["CancellationProxy (L3)"]
-        O_L4["DisposableProxy (L4)"]
-        O_L5["AsyncProxy (L5)"]
-        O_L8["TimingProxy (L8)"]
-        O_NULL["CEL Null Services"]
-
-        O_INIT --> O_L1
-        O_INIT --> O_L2
-        O_INIT --> O_L3
-        O_INIT --> O_L4
-        O_INIT --> O_L5
-        O_INIT --> O_L8
-        O_L1 --> O_LD
-        O_L2 --> O_LD
-        O_L3 --> O_LD
-        O_L4 --> O_LD
-        O_L5 --> O_LD
-        O_L8 --> O_LD
-    end
-
-    subgraph PROCESS_COCOON["Cocoon Process (Bridge)"]
-        direction TB
-        C_GRPC["gRPC Server"]
-        C_ESBUILD["CocoonEsbuildDefine"]
-    end
-
-    subgraph PROCESS_MOUNTAIN["Mountain Process (Rust Native)"]
-        direction TB
-        M_GATE["Gate.rs"]
-        M_SM["SwallowMap.rs (Rust)"]
-        M_NB["NativeBus.rs"]
-        M_DM["DispatchMatch"]
-        M_DL["dev_log!"]
-
-        M_GATE --> M_SM
-        M_SM --> M_NB
-        M_SM --> M_DM
-        M_NB --> M_DL
-    end
-
-    W_II --> |"Tauri IPC"| M_DM
-    W_II --> |"Tauri IPC"| M_NB
-    O_LD --> |"Tauri IPC → diagnostic:log"| M_DL
-    W_AL --> |"Tauri IPC → diagnostic:log"| M_DL
-    W_RB --> |"Cocoon handlers"| C_GRPC
-
-    C_ESBUILD --> |"define __LandTier_Shim__"| W_GATE
-    C_ESBUILD --> |"define __LandTier_Shim__"| O_INIT
-
-    style PROCESS_WIND fill:#2563EB10,stroke:#2563EB
-    style PROCESS_OUTPUT fill:#FF6B3510,stroke:#FF6B35
-    style PROCESS_COCOON fill:#10B98110,stroke:#10B981
-    style PROCESS_MOUNTAIN fill:#7C3AED10,stroke:#7C3AED
-```
-
+<img src="/Mermaid/dda8891a3a241b02.svg" alt="Mermaid diagram" />
 **Data flow summary**:
 
 | Path                   | Direction      | Data                                    | Frequency            |
@@ -604,46 +405,7 @@ graph TD
 
 ## 🔵 TierShim Propagation Chain: .env.Land → esbuild → Runtime
 
-```mermaid
-graph LR
-    subgraph DEV["Developer Config"]
-        ENV[".env.Land\nTierShim=None"]
-    end
-
-    subgraph BUILD["Build Pipeline"]
-        TES["TierEnvironment.sh\nsources .env.Land\nreads TierShim=Proxy"]
-        CED["CocoonEsbuildDefine\nJSON: __LandTier_Shim__ = Proxy"]
-        WES["Wind ESBuild.ts\nesbuild define:\nJSON.parse(CocoonEsbuildDefine)"]
-        OES["Output ESBuild.ts\nesbuild define:\nJSON.parse(CocoonEsbuildDefine)"]
-        CES["Cocoon ESBuild.ts\nesbuild define:\nJSON.parse(CocoonEsbuildDefine)"]
-    end
-
-    subgraph RUST["Rust Compilation"]
-        MBR["Mountain build.rs\ncargo:rustc-env=TierShim=Proxy"]
-        MGATE["Gate.rs\\nconst TIER_SHIM: &str = env!(TierShim);"]
-    end
-
-    subgraph RUNTIME["Runtime (TS)"]
-        WGATE["Wind Gate.ts\ndeclare const __LandTier_Shim__: string;\nconst Level = __LandTier_Shim__ || None;"]
-        OGATE["Output Init.ts\nconst TierShim = __LandTier_Shim__ || None;"]
-    end
-
-    ENV --> TES
-    TES --> CED
-    CED --> WES
-    CED --> OES
-    CED --> CES
-    TES --> MBR
-    MBR --> MGATE
-    WES --> WGATE
-    OES --> OGATE
-
-    style ENV fill:#f0f0f0,stroke:#999
-    style CED fill:#7C3AED,stroke:#6d28d9,color:#fff
-    style MGATE fill:#7C3AED,stroke:#6d28d9,color:#fff
-    style WGATE fill:#2563EB,stroke:#1d4ed8,color:#fff
-```
-
+<img src="/Mermaid/9373fefd713a8973.svg" alt="Mermaid diagram" />
 ### Step-by-Step Propagation
 
 #### 1. Source: `.env.Land`

@@ -14,44 +14,7 @@ alongside Mountain, offloading resource-intensive operations so the editor
 remains responsive. Internal modules handle distinct responsibilities: updates,
 downloads, authentication, and health monitoring.
 
-```mermaid
-graph TB
-    subgraph "Air - Background Daemon"
-        Binary["Binary.rs - Entry Point"]
-        VineServer["Vine gRPC Server\nPort 50053"]
-        UpdateMgr["Updates/\nUpdate Lifecycle"]
-        Downloader["Downloader/\nResilient Downloads"]
-        AuthService["Authentication/\nCrypto Signing"]
-        HealthCheck["HealthCheck/\nProcess Monitoring"]
-        Metrics["Metrics/\nTelemetry Collection"]
-        HTTP["HTTP/\nHTTP Client with DNS"]
-        Initialize["Initialize/\nStartup Sequence"]
-        Logging["Logging/\nStructured Tracing"]
-    end
-
-    subgraph "Mountain - Main Application"
-        MountainCore["Mountain Core"]
-        VineClient["Vine gRPC Client"]
-    end
-
-    subgraph "External"
-        Cloud["Update Servers / Registry"]
-    end
-
-    MountainCore --> VineClient
-    VineClient --> VineServer
-    VineServer --> UpdateMgr
-    VineServer --> Downloader
-    VineServer --> AuthService
-    VineServer --> HealthCheck
-    UpdateMgr --> Cloud
-    Downloader --> Cloud
-    Binary --> Initialize
-    Initialize --> VineServer
-    Initialize --> Logging
-    Initialize --> Metrics
-```
-
+<img src="/Mermaid/a7c6a35d763a4ed6.svg" alt="Mermaid diagram" />
 ## Key Modules
 
 | Path                     | Description                                                    |
@@ -77,31 +40,7 @@ graph TB
 The following sequence shows how Mountain delegates an update task to Air and
 receives progress notifications.
 
-```mermaid
-sequenceDiagram
-    participant Mountain as Mountain Core
-    participant AirGRPC as Air gRPC Server
-    participant Updates as Update Manager
-    participant Downloader as Downloader
-    participant Cloud as Update Server
-
-    Mountain->>AirGRPC: CheckForUpdate (Vine/Air.proto)
-    AirGRPC->>Updates: Dispatch check request
-    Updates->>Cloud: HTTP GET /releases/latest
-    Cloud->>Updates: Release manifest
-    Updates->>AirGRPC: UpdateAvailable response
-    AirGRPC->>Mountain: Return update metadata
-
-    Mountain->>AirGRPC: StartDownload (artifact URL)
-    AirGRPC->>Downloader: Begin resilient download
-    loop Progress events
-        Downloader->>AirGRPC: ProgressEvent (bytes/total)
-        AirGRPC->>Mountain: Stream progress notification
-    end
-    Downloader->>AirGRPC: DownloadComplete
-    AirGRPC->>Mountain: Ready to apply
-```
-
+<img src="/Mermaid/378b32a5be76d9a8.svg" alt="Mermaid diagram" />
 **Port allocation:**
 
 - Air listens on `[::1]:50053` (reserved for the Air daemon).

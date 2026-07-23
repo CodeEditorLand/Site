@@ -33,24 +33,7 @@ description:
 
 ---
 
-```mermaid
-graph TB
-    subgraph Sky["Sky UI Component Layer"]
-        PAGES["pages/<br/>index.astro<br/>Mountain.astro<br/>Browser.astro<br/>Electron.astro"]
-        WB["Workbench Variants<br/>Mountain / Browser<br/>Electron / Default"]
-        BRIDGE["SkyBridge<br/>event routing<br/>Tauri <-> Workbench"]
-        BUILD["Build-time Selection<br/>TierWorkbench env var"]
-
-        PAGES --> BUILD
-        BUILD --> WB
-        WB --> BRIDGE
-    end
-
-    OUTPUT["@codeeditorland/output"] --> WB
-    MOUNTAIN["Mountain<br/>Tauri events"] -->|"IPC events"| BRIDGE
-    BRIDGE -->|"channel dispatch"| WORKBENCH["VS Code Workbench"]
-```
-
+<img src="/Mermaid/f0a6731b0c205de9.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
 `Sky` is the rendering layer that presents the `Land` editor to the user.
@@ -71,21 +54,7 @@ graph TB
 
 ## Architecture 🏗️
 
-```mermaid
-graph TB
-    subgraph Sky["Sky"]
-        subgraph Row1[" "]
-            Pages["pages/<br/>- index.astro<br/>- entry points"]
-            Workbench["Workbench/<br/>- Mountain.astro<br/>- Browser.astro<br/>- Electron.astro"]
-            Functions["Function/<br/>- SkyBridge.ts<br/>- Debug.ts<br/>- Shared.ts"]
-        end
-        subgraph Row2[" "]
-            Bundled["Bundled/<br/>Pre-compiled<br/>workbench chunks"]
-            Config["astro.config.ts<br/>Vite/Rollup<br/>compilation cfg"]
-        end
-    end
-```
-
+<img src="/Mermaid/5e2be849a7a31a72.svg" alt="Mermaid diagram" />
 ### Module Map 🗺️
 
 | Path                              | Purpose                        |

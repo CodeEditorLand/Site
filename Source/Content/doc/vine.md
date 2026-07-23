@@ -16,26 +16,7 @@ between:
 - **Cocoon** (Node.js extension host) - gRPC client
 - **Air** (background daemon) - gRPC client
 
-```mermaid
-graph TB
-    subgraph Vine["Vine gRPC Protocol Layer"]
-        VINEPROTO["Vine.proto<br/>ExtensionHost service<br/>lifecycle / commands<br/>language / webview"]
-        SPINEPROTO["Spine.proto<br/>action/response pattern<br/>PerformAction / Stream"]
-        AIRPROTO["Air.proto<br/>background services"]
-    end
-
-    VINEPROTO -->|"prost-build"| RUST["Generated Rust types<br/>(tonic + prost)"]
-    VINEPROTO -->|"protoc-gen-ts"| TS["Generated TS types<br/>(@grpc/grpc-js)"]
-    SPINEPROTO --> RUST
-    GROVEPROTO --> RUST
-    AIRPROTO --> RUST
-
-    MOUNTAIN_SRV["Mountain<br/>gRPC Server<br/>port 50051"] -->|"serves"| VINEPROTO
-    MOUNTAIN_SRV -->|"serves"| SPINEPROTO
-    COCOON_CLI["Cocoon<br/>gRPC Client"] -->|"consumes"| TS
-    AIR_SRV["Air<br/>gRPC Client"] -->|"consumes"| RUST
-```
-
+<img src="/Mermaid/a886e98576e6fe7f.svg" alt="Mermaid diagram" />
 ## Why a Typed Protocol
 
 Tauri's IPC is untyped. A call to `invoke('open-file', { path })` has no
@@ -54,26 +35,7 @@ can silently drift from the schema.
 
 Vine is the protocol layer that enables all inter-component communication:
 
-```mermaid
-graph TB
-    VineCenter["Vine Protocol<br/>(gRPC service contracts in .proto)"]
-    VineCenter --> Mountain
-    VineCenter --> Cocoon
-    VineCenter --> Air
-
-    subgraph MountainBox[" "]
-        Mountain["Mountain (Rust)<br/>gRPC Server<br/>(tonic)"]
-    end
-    subgraph CocoonBox[" "]
-        Cocoon["Cocoon (Node.js)<br/>gRPC Client<br/>(@grpc/grpc-js)"]
-    end
-    subgraph AirBox[" "]
-        Air["Air"]
-    end
-
-    Mountain <-->|"gRPC"| Cocoon
-```
-
+<img src="/Mermaid/dd501536bfa01bee.svg" alt="Mermaid diagram" />
 ## Protocol Files
 
 | File          | Location                             | Defines                              |

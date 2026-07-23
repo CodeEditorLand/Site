@@ -18,24 +18,7 @@ npm package consumed by Cocoon (extension host), Sky (UI layer), and Wind
 
 ## Architecture
 
-```mermaid
-graph TB
-    subgraph Output["Output"]
-        subgraph Row1[" "]
-            ESBuild["ESBuild/Output.ts<br/>Default esbuild pipeline"]
-            Rest["ESBuild/Rest.ts<br/>Rest plugin (OXC compiler)"]
-        end
-        subgraph Row2[" "]
-            Plugin["Plugin/<br/>- Apply.ts<br/>- Copy.ts<br/>- Transform.ts<br/>- Index.ts<br/>- Type.ts"]
-            Polyfill["Polyfill/<br/>- Child/<br/>- File/<br/>- IPC/<br/>- Native/<br/>- Process/<br/>- Shared/"]
-        end
-        subgraph Row3[" "]
-            Service["Service/<br/>- CEL/<br/>- Dev/<br/>- Tauri/"]
-            Asset["Asset/<br/>- Style/"]
-        end
-    end
-```
-
+<img src="/Mermaid/7e71cba488932f79.svg" alt="Mermaid diagram" />
 ### Module Map
 
 | Path                             | Purpose                                    |
@@ -68,28 +51,12 @@ Output supports two compiler backends.
 
 ### Default: ESBuild
 
-```mermaid
-graph TB
-    TS[/"TypeScript input (.ts, .tsx)"/]
-    TS --> Parser["ESBuild parser"]
-    Parser --> Transforms["ESBuild transforms:<br/>- Module resolution remapping<br/>- Define substitution<br/>- Dead code elimination"]
-    Transforms --> Codegen["ESBuild codegen"]
-    Codegen --> JS[/"JavaScript output"/]
-```
-
+<img src="/Mermaid/5878b3a8ceb83f24.svg" alt="Mermaid diagram" />
 ### Optional: Rest OXC
 
 Activated via `Compiler=Rest` environment variable:
 
-```mermaid
-graph TB
-    TS[/"TypeScript input (.ts, .tsx)"/]
-    TS --> Rest["Rest (Rust OXC) parser"]
-    Rest --> Transforms["OXC transformer<br/>- 2-3x faster than esbuild<br/>- Better decorator/class field support"]
-    Transforms --> Codegen["OXC codegen"]
-    Codegen --> JS[/"JavaScript output"/]
-```
-
+<img src="/Mermaid/5b93deb7f70a9527.svg" alt="Mermaid diagram" />
 ### Integration
 
 ```typescript

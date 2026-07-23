@@ -25,40 +25,7 @@ starting the server, querying the bound port, and constructing resolvers. The
 DNS catalog contains two zones: an authoritative zone for `editor.land` and a
 restricted forward allowlist for external queries.
 
-```mermaid
-graph TB
-    subgraph "Mist - DNS Isolation Server"
-        LibRS["lib.rs<br/>Public API: start / dns_port"]
-        ServerRS["server.rs<br/>Hickory UDP + TCP listeners"]
-        ZoneRS["zone.rs<br/>editor.land zone authority"]
-        ResolverRS["resolver.rs<br/>DNS resolver for consumers"]
-        ForwardSecurity["forward_security.rs<br/>External allowlist enforcement"]
-    end
-
-    subgraph "DNS Catalog"
-        AuthZone["editor.land zone<br/>*.editor.land → 127.0.0.1"]
-        ForwardZone["Forward allowlist<br/>update.editor.land only"]
-        DNSSEC["DNSSEC<br/>ECDSA P-256 zone signing"]
-    end
-
-    subgraph "Consumers"
-        Mountain["Mountain<br/>DnsPort managed state"]
-        SideCar["SideCar<br/>Node.js DNS environment variable"]
-        Cocoon["Cocoon<br/>editor.land resolution"]
-    end
-
-    LibRS --> ServerRS
-    ServerRS --> ZoneRS
-    ServerRS --> ForwardSecurity
-    ZoneRS --> AuthZone
-    ZoneRS --> DNSSEC
-    ForwardSecurity --> ForwardZone
-    LibRS --> ResolverRS
-    Mountain --> LibRS
-    SideCar --> ResolverRS
-    Cocoon --> ResolverRS
-```
-
+<img src="/Mermaid/954dd992597143be.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
@@ -76,28 +43,7 @@ graph TB
 
 ## Data Flow
 
-```mermaid
-sequenceDiagram
-    participant App as Application (Wind / Cocoon)
-    participant Resolver as Land DNS Resolver
-    participant MistServer as Mist DNS Server
-    participant Catalog as DNS Catalog
-
-    App->>Resolver: resolve("api.editor.land")
-    Resolver->>MistServer: DNS query (UDP 127.0.0.1:PORT)
-    MistServer->>Catalog: Lookup "api.editor.land"
-    Catalog->>MistServer: A record → 127.0.0.1 (authoritative)
-    MistServer->>Resolver: DNS response with RRSIG
-    Resolver->>App: 127.0.0.1
-
-    App->>Resolver: resolve("external.example.com")
-    Resolver->>MistServer: DNS query
-    MistServer->>Catalog: Lookup "external.example.com"
-    Catalog->>MistServer: Not in allowlist → REFUSED
-    MistServer->>Resolver: REFUSED response
-    Resolver->>App: Resolution error
-```
-
+<img src="/Mermaid/64fac31bdb95d126.svg" alt="Mermaid diagram" />
 **Startup sequence:**
 
 1. Mountain calls `Mist::start(5380)` during initialization.

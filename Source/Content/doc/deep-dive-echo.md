@@ -100,31 +100,7 @@ management.
 Echo's scheduler implements concrete concurrency patterns for optimal
 performance:
 
-```mermaid
-graph TB
-    subgraph "Scheduler Architecture"
-        Scheduler["Scheduler<br/>Master Coordinator"]
-        Workers["Worker Threads<br/>Task Executors"]
-        Queues["Work-Stealing Queues<br/>Lock-Free Data Structures"]
-        TaskSource["Task Source<br/>External Submissions"]
-
-        Scheduler --> Workers
-        Workers --> Queues
-        TaskSource --> Queues
-    end
-
-    subgraph "Task Execution Flow"
-        Task["Task Submission"]
-        Queue["Local Queue Push"]
-        Worker["Worker Thread Execution"]
-        Completion["Task Completion"]
-
-        Task --> Queue
-        Queue --> Worker
-        Worker --> Completion
-    end
-```
-
+<img src="/Mermaid/f66d6d1b22e4006b.svg" alt="Mermaid diagram" />
 **Concrete Work-Stealing Efficiency**
 
 Echo's work-stealing algorithm ensures optimal CPU utilization through:
@@ -141,61 +117,12 @@ Echo's work-stealing algorithm ensures optimal CPU utilization through:
 Echo implements sophisticated priority handling to ensure timely execution of
 critical tasks:
 
-```mermaid
-sequenceDiagram
-    participant App as Application Code
-    participant Sched as Echo Scheduler
-    participant HighQ as High Priority Queue
-    participant NormalQ as Normal Priority Queue
-    participant LowQ as Low Priority Queue
-    participant Worker as Worker Thread
-
-    App->>Sched: Submit High Priority Task
-    Sched->>HighQ: Push Task
-    App->>Sched: Submit Normal Priority Task
-    Sched->>NormalQ: Push Task
-    App->>Sched: Submit Low Priority Task
-    Sched->>LowQ: Push Task
-
-    Worker->>HighQ: Check for High Priority Tasks
-    HighQ->>Worker: Provide Task (if available)
-    Worker->>NormalQ: Check for Normal Priority Tasks
-    NormalQ->>Worker: Provide Task (if available)
-    Worker->>LowQ: Check for Low Priority Tasks
-    LowQ->>Worker: Provide Task (if available)
-
-    Worker->>Worker: Execute Task
-```
-
+<img src="/Mermaid/790d374d558cfc15.svg" alt="Mermaid diagram" />
 #### 3. Memory Management Architecture
 
 Echo employs sophisticated memory management strategies for optimal performance:
 
-```mermaid
-graph LR
-    subgraph "Memory Management"
-        TaskAlloc["Task Allocation<br/>Efficient Memory Usage"]
-        QueueMgmt["Queue Management<br/>Lock-Free Structures"]
-        CacheOpt["Cache Optimization<br/>CPU Cache Friendly"]
-        Cleanup["Resource Cleanup<br/>RAII Patterns"]
-
-        TaskAlloc --> QueueMgmt
-        QueueMgmt --> CacheOpt
-        CacheOpt --> Cleanup
-    end
-
-    subgraph "Performance Features"
-        LockFree["Lock-Free Operations"]
-        Atomic["Atomic Instructions"]
-        Prefetch["Cache Prefetching"]
-        Pooling["Object Pooling"]
-
-        LockFree --> Atomic
-        Atomic --> Prefetch
-        Prefetch --> Pooling
-    end
-```
-
+<img src="/Mermaid/c26d16134db1b19e.svg" alt="Mermaid diagram" />
 ### Advanced Technical Proofs
 
 #### Performance Analysis: Task Execution Latency
@@ -226,36 +153,7 @@ graph LR
 
 ### Ecosystem Integration Mapping
 
-```mermaid
-graph TD
-    subgraph "Echo Scheduler"
-        Scheduler["Scheduler Core"]
-        Workers["Worker Pool"]
-        Queues["Work-Stealing Queues"]
-        TaskAPI["Task Submission API"]
-    end
-
-    subgraph "Mountain Integration"
-        AppRuntime["ApplicationRunTime"]
-        Track["Track Dispatcher"]
-        Effects["ActionEffects"]
-
-        AppRuntime --> Scheduler
-        Track --> TaskAPI
-        Effects --> Workers
-    end
-
-    subgraph "System Resources"
-        CPU["CPU Cores"]
-        Memory["Memory Management"]
-        OS["Operating System"]
-
-        Workers --> CPU
-        Scheduler --> Memory
-        Scheduler --> OS
-    end
-```
-
+<img src="/Mermaid/7bd604f5f52994da.svg" alt="Mermaid diagram" />
 ### Performance Optimization Strategies
 
 #### 1. Advanced Work-Stealing Algorithms
@@ -285,46 +183,10 @@ graph TD
 
 #### Integration with Mountain's ApplicationRunTime
 
-```mermaid
-sequenceDiagram
-    participant Effect as ActionEffect
-    participant Runtime as ApplicationRunTime
-    participant Echo as Echo Scheduler
-    participant Worker as Worker Thread
-    participant Env as Environment Provider
-
-    Effect->>Runtime: Execute Effect
-    Runtime->>Echo: Submit as Task
-    Echo->>Worker: Distribute to Worker
-    Worker->>Env: Require Capability
-    Env->>Worker: Provide Implementation
-    Worker->>Effect: Execute Effect Logic
-    Effect->>Runtime: Return Result
-```
-
+<img src="/Mermaid/9fe4573a31bb5d94.svg" alt="Mermaid diagram" />
 #### Multi-Priority Task Execution
 
-```mermaid
-graph TB
-    subgraph "Priority Execution Hierarchy"
-        HighPriority["High Priority Tasks<br/>UI Operations"]
-        NormalPriority["Normal Priority Tasks<br/>Background Work"]
-        LowPriority["Low Priority Tasks<br/>Maintenance"]
-
-        HighPriority --> NormalPriority
-        NormalPriority --> LowPriority
-    end
-
-    subgraph "Execution Guarantees"
-        Preemption["High Priority Preemption"]
-        Fairness["Fair Scheduling"]
-        Progress["Progress Guarantees"]
-
-        Preemption --> Fairness
-        Fairness --> Progress
-    end
-```
-
+<img src="/Mermaid/98932cae4e0dc4af.svg" alt="Mermaid diagram" />
 ---
 
 ## Advanced Usage Patterns
@@ -419,31 +281,7 @@ When integrated with Mountain's ApplicationRunTime:
 
 ### Integration with Mountain's ApplicationRunTime
 
-```mermaid
-graph TD
-    subgraph "Echo Scheduler Integration"
-        ApplicationRunTime["ApplicationRunTime<br/>Effect Execution"]
-        EchoScheduler["Echo Scheduler<br/>Work-Stealing Engine"]
-        WorkerPool["Worker Pool<br/>Task Executors"]
-        TaskQueues["Task Queues<br/>Priority Management"]
-
-        ApplicationRunTime --> EchoScheduler
-        EchoScheduler --> WorkerPool
-        WorkerPool --> TaskQueues
-    end
-
-    subgraph "Task Execution Flow"
-        ActionEffect["ActionEffect<C, E, T>"]
-        TaskSubmission["Task Submission"]
-        WorkerExecution["Worker Execution"]
-        ResultReturn["Result Return"]
-
-        ActionEffect --> TaskSubmission
-        TaskSubmission --> WorkerExecution
-        WorkerExecution --> ResultReturn
-    end
-```
-
+<img src="/Mermaid/d2954fdd8424a8e5.svg" alt="Mermaid diagram" />
 #### Scheduler Integration Table
 
 | Component            | Echo Integration        | Communication Pattern | Performance Characteristics      |
@@ -461,32 +299,7 @@ ApplicationRunTime and other asynchronous operations.
 
 ## Concrete Task Scheduling Architecture
 
-```mermaid
-graph TD
-    subgraph "Echo Scheduler System"
-        Scheduler["Scheduler<br/>Master Coordinator"]
-        WorkerPool["Worker Pool<br/>Task Executors"]
-        PriorityQueues["Priority Queues<br/>High/Normal/Low"]
-        StealingQueues["Stealing Queues<br/>Lock-Free Operations"]
-
-        Scheduler --> WorkerPool
-        WorkerPool --> PriorityQueues
-        PriorityQueues --> StealingQueues
-    end
-
-    subgraph "Integration Points"
-        Mountain["Mountain ApplicationRunTime"]
-        Common["Common ActionEffects"]
-        Tauri["Tauri Events"]
-        gRPC["gRPC Operations"]
-
-        Mountain --> Scheduler
-        Common --> Scheduler
-        Tauri --> Scheduler
-        gRPC --> Scheduler
-    end
-```
-
+<img src="/Mermaid/2d67f67ca7b5dbe8.svg" alt="Mermaid diagram" />
 #### Performance Characteristics Table
 
 | Metric                  | Echo Performance      | Mountain Integration | Notes                     |
@@ -499,45 +312,7 @@ graph TD
 
 ### Component Block Map
 
-```mermaid
-graph TB
-    subgraph "Echo Architecture Blocks"
-        Scheduler["Scheduler<br/>Master Coordinator"]
-        Workers["Worker Threads<br/>Task Executors"]
-        Queues["Work-Stealing Queues<br/>Lock-Free Operations"]
-        TaskAPI["Task API<br/>Submission Interface"]
-    end
-
-    subgraph "External Dependencies"
-        Crossbeam["crossbeam-deque"]
-        Tokio["Tokio Runtime"]
-        Mountain["Mountain Backend"]
-        Common["Common Effects"]
-    end
-
-    Crossbeam --> Queues
-    Tokio --> Workers
-    Mountain --> Scheduler
-    Common --> TaskAPI
-
-    Scheduler --> Workers
-    Workers --> Queues
-    Queues --> TaskAPI
-```
-
+<img src="/Mermaid/6177871da7f0ba32.svg" alt="Mermaid diagram" />
 ### Task Execution Patterns
 
-```mermaid
-sequenceDiagram
-    participant Mountain as Mountain Runtime
-    participant Echo as Echo Scheduler
-    participant Worker as Worker Thread
-    participant ActionEffect as ActionEffect
-
-    Mountain->>Echo: Submit ActionEffect as Task
-    Echo->>Worker: Distribute to available worker
-    Worker->>ActionEffect: Execute effect logic
-    ActionEffect->>Worker: Return result
-    Worker->>Echo: Task completion
-    Echo->>Mountain: Provide execution result
-```
+<img src="/Mermaid/7bcbde5ff32ca8e5.svg" alt="Mermaid diagram" />

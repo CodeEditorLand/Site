@@ -33,23 +33,7 @@ that resolve only within the running editor process.
 
 Mist is organised into five core modules:
 
-```mermaid
-graph TB
-    subgraph Mist["Mist"]
-        subgraph Row1[" "]
-            Server["Server.rs<br/>UDP + TCP DNS<br/>listener"]
-            Zone["Zone.rs<br/>editor.land zone<br/>resolution logic"]
-        end
-        subgraph Row2[" "]
-            Resolver["Resolver.rs<br/>External DNS<br/>forwarding"]
-            DNSSEC["ForwardSecurity.rs<br/>DNSSEC signing"]
-        end
-        subgraph Row3[" "]
-            WS["WebSocket.rs<br/>WebSocket transport<br/>for Sky↔Cocoon"]
-        end
-    end
-```
-
+<img src="/Mermaid/a08c62373866bebb.svg" alt="Mermaid diagram" />
 ### Module Map
 
 | Path                        | Purpose                                                      |
@@ -150,12 +134,7 @@ DNS zone rather than through Tauri IPC, reducing per-call overhead from ~5 ms to
 under 1 ms for the high-frequency calls that dominate a session. This transport
 is used when gRPC is unavailable or inappropriate for the communication pattern.
 
-```mermaid
-graph TB
-    Sky["Sky UI (WebView)"] -->|"WebSocket"| MistWS["Mist WebSocket.rs"]
-    MistWS -->|"Message routing"| Cocoon["Cocoon (Node.js extension host)"]
-```
-
+<img src="/Mermaid/8f7ee38f7b61f2ef.svg" alt="Mermaid diagram" />
 ## Integration with Mountain and Air
 
 Mountain calls `Mist::start(5380)` during application initialisation and

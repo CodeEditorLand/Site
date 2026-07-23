@@ -114,21 +114,7 @@ Effects can be composed using standard operations:
 The `Environment` trait system implements capability-based architecture for
 clean dependency management:
 
-```mermaid
-graph TB
-    subgraph "Capability Resolution"
-        Effect["ActionEffect<C, E, T>"]
-        Runtime["ApplicationRunTime"]
-        Environment["Environment Provider"]
-        Capability["Concrete Capability C"]
-
-        Effect --> Runtime
-        Runtime --> Environment
-        Environment --> Capability
-        Capability --> Effect
-    end
-```
-
+<img src="/Mermaid/1fb260cfada735e7.svg" alt="Mermaid diagram" />
 ### Concrete Capability Resolution
 
 For any `ActionEffect<C, E, T>`, the runtime provides `C` through these steps:
@@ -263,29 +249,7 @@ domain's `DTO/` subdirectory. All DTOs are:
 - Field-compatible with the corresponding protobuf message fields in
   `Vine.proto`
 
-```mermaid
-graph LR
-    subgraph "DTO Architecture"
-        DomainModel["Domain Model"]
-        DTODefinition["DTO Definition"]
-        Serialization["Serialization Logic"]
-        Protocol["Protocol Buffer"]
-
-        DomainModel --> DTODefinition
-        DTODefinition --> Serialization
-        Serialization --> Protocol
-    end
-
-    subgraph "Cross-Language Support"
-        Rust["Rust Backend"]
-        TypeScript["TypeScript Frontend"]
-        ProtocolBuf["Protocol Buffers"]
-
-        Rust --> ProtocolBuf
-        TypeScript --> ProtocolBuf
-    end
-```
-
+<img src="/Mermaid/f28ca06196ba6b72.svg" alt="Mermaid diagram" />
 ### Key DTOs
 
 | DTO                   | Module                | Primary Fields                                      |
@@ -305,20 +269,7 @@ graph LR
 
 The `CommonError` enum provides comprehensive error handling:
 
-```mermaid
-graph TB
-    subgraph "Error Handling Hierarchy"
-        CommonError["CommonError Enum"]
-        DomainErrors["Domain-Specific Errors"]
-        InfrastructureErrors["Infrastructure Errors"]
-        ValidationErrors["Validation Errors"]
-
-        CommonError --> DomainErrors
-        CommonError --> InfrastructureErrors
-        CommonError --> ValidationErrors
-    end
-```
-
+<img src="/Mermaid/ba6ccbcd65d41fc6.svg" alt="Mermaid diagram" />
 ```rust
 pub enum CommonError {
     NotFound(String),          // resource does not exist at the given path or ID
@@ -401,41 +352,7 @@ Common traits they depend on.
 
 ## Ecosystem Integration Mapping
 
-```mermaid
-graph TD
-    subgraph "Common Foundation"
-        Traits["Abstract Traits"]
-        Effects["Action Effects"]
-        DTOs["Data Transfer Objects"]
-        Errors["Common Errors"]
-    end
-
-    subgraph "Consumer Implementations"
-        Mountain["Mountain Implementation"]
-        Tests["Test Implementations"]
-        Future["Future Components"]
-
-        Mountain --> Traits
-        Tests --> Effects
-        Future --> DTOs
-    end
-
-    subgraph "Protocol Integration"
-        gRPC["gRPC Protocol"]
-        Serialization["Serialization Formats"]
-        IPC["Inter-Process Communication"]
-
-        DTOs --> gRPC
-        DTOs --> Serialization
-        Errors --> IPC
-    end
-
-    classDef mountain fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef common fill:#cfc,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
-    class Mountain mountain;
-    class Traits,Effects,DTOs,Errors common;
-```
-
+<img src="/Mermaid/e2988db55cd6791e.svg" alt="Mermaid diagram" />
 ---
 
 ## VSCode Service Lifting Patterns
@@ -522,38 +439,7 @@ pub fn GetConfiguration_effect(section: Option<String>)
 
 ### Service Lifting Architecture
 
-```mermaid
-graph TD
-    subgraph "VSCode Service Mapping"
-        VSCodeServices["VSCode Services<br/>vs/platform/"]
-        CommonTraits["Common Traits"]
-        MountainImpl["Mountain Implementation"]
-        EffectTS["Effect-TS Layer"]
-
-        VSCodeServices --> CommonTraits
-        CommonTraits --> MountainImpl
-        CommonTraits --> EffectTS
-        MountainImpl --> EffectTS
-    end
-
-    subgraph "Communication Protocols"
-        gRPC["gRPC Protocol"]
-        Tauri["Tauri Events"]
-
-        MountainImpl --> gRPC
-        MountainImpl --> Tauri
-        EffectTS --> gRPC
-        EffectTS --> Tauri
-    end
-
-    classDef mountain fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef wind fill:#9cf,stroke:#333,stroke-width:2px;
-    classDef common fill:#cfc,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
-    class MountainImpl mountain;
-    class EffectTS wind;
-    class CommonTraits common;
-```
-
+<img src="/Mermaid/7f324b1c75c5f503.svg" alt="Mermaid diagram" />
 ### Service Migration Table
 
 | VSCode Service          | Common Trait           | Mountain Implementation | Effect-TS Layer        |
@@ -566,44 +452,7 @@ graph TD
 
 ### Component Block Map
 
-```mermaid
-graph TB
-    subgraph "Common Architecture Blocks"
-        Traits["Traits<br/>Service Contracts"]
-        Effects["Effects<br/>Operation Descriptions"]
-        DTOs["DTOs<br/>Data Structures"]
-        Errors["Errors<br/>Failure Handling"]
-    end
-
-    subgraph "Consumer Implementations"
-        Mountain["Mountain<br/>Rust Implementation"]
-        Wind["Wind<br/>Effect-TS Services"]
-        Cocoon["Cocoon<br/>Extension Host"]
-    end
-
-    Traits --> Mountain
-    Traits --> Wind
-    Traits --> Cocoon
-    Effects --> Mountain
-    Effects --> Wind
-    Effects --> Cocoon
-    DTOs --> Mountain
-    DTOs --> Wind
-    DTOs --> Cocoon
-    Errors --> Mountain
-    Errors --> Wind
-    Errors --> Cocoon
-
-    classDef mountain fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef cocoon fill:#ccf,stroke:#333,stroke-width:2px;
-    classDef wind fill:#9cf,stroke:#333,stroke-width:2px;
-    classDef common fill:#cfc,stroke:#333,stroke-width:1px,stroke-dasharray: 5 5;
-    class Mountain mountain;
-    class Cocoon cocoon;
-    class Wind wind;
-    class Traits,Effects,DTOs,Errors common;
-```
-
+<img src="/Mermaid/936b7cc256ec2eec.svg" alt="Mermaid diagram" />
 ---
 
 ## Transport Layer

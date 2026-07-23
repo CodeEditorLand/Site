@@ -82,26 +82,7 @@ Each service in Cocoon is composed through `Effect-TS` Layers. The broader
 `Wind` layer stack defines three workbench variants that determine which
 services are wired to Cocoon versus resolved locally:
 
-```mermaid
-graph TB
-    Sky[Sky entry point<br/>index.astro] --> Preload[Wind Preload Install.ts]
-    Preload --> Layers[Effect/Layers/index.ts]
-    Layers --> Tauri[Tauri/Tauri.ts<br/>TauriLiveLayer]
-    Layers --> Electron[Electron/Electron.ts<br/>ElectronLiveLayer]
-    Layers --> Test[Test/Test.ts<br/>TestLayer]
-    Tauri --> Config[ConfigurationLive]
-    Tauri --> Sandbox[SandboxLive]
-    Tauri --> IPC[IPCLive]
-    Tauri --> Mountain[MountainLive + MountainSyncLive]
-    Tauri --> Editor[EditorLive]
-    Tauri --> File[FilesLive]
-    Tauri --> Terminal[TerminalLive]
-    Tauri --> Clipboard[ClipboardLive]
-    Tauri --> Dialog[DialogLive]
-    Tauri --> Window[ActivityBarLive, PanelLive, SidebarLive, StatusBarLive]
-    Tauri --> Services[... 37 service layers via Layer.mergeAll]
-```
-
+<img src="/Mermaid/b3e92044704c9dea.svg" alt="Mermaid diagram" />
 ### Layer Composition
 
 Individual services use `Layer.succeed` to wrap a concrete implementation,
@@ -205,35 +186,7 @@ Command Registration:
 
 Commands flow through all three layers depending on origin:
 
-```mermaid
-sequenceDiagram
-    participant User as User
-    participant Wind as Wind CommandService
-    participant Tauri as Tauri invoke
-    participant Mountain as Mountain CommandHandler
-    participant Cocoon as Cocoon CommandRouter
-
-    User->>Wind: Trigger command (palette, keybinding, programmatic)
-    Wind->>Wind: Is it a UI command?
-    alt UI command
-        Wind->>Wind: Execute directly in Effect-TS
-    else Native or extension command
-        Wind->>Tauri: invoke('commands:execute')
-        Tauri->>Mountain: Route to CommandHandler
-        Mountain->>Mountain: Is it a native command?
-        alt Native command
-            Mountain->>Mountain: Execute Rust handler
-        else Extension command
-            Mountain->>Cocoon: gRPC command request
-            Cocoon->>Cocoon: Execute extension command
-            Cocoon-->>Mountain: gRPC response
-        end
-        Mountain-->>Tauri: Result
-        Tauri-->>Wind: Result
-    end
-    Wind-->>User: Command result
-```
-
+<img src="/Mermaid/1095802e93661f09.svg" alt="Mermaid diagram" />
 ### Command Categories
 
 | Category        | Registered In | Examples                                                                     |

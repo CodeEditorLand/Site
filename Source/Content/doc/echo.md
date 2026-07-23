@@ -23,26 +23,7 @@ with lock-free work-stealing deques built on
 
 Echo is organised into three core subsystems:
 
-```mermaid
-graph TB
-    subgraph Echo["Echo Scheduler"]
-        subgraph TaskLayer["Task Layer"]
-            TaskLayer_Priority["Priority enum"]
-            TaskLayer_Wrapper["Task<F> wrapper"]
-            TaskLayer_Future["Future integration"]
-        end
-        subgraph SchedLayer["Scheduler Layer"]
-            SchedLayer_Builder["SchedulerBuilder"]
-            SchedLayer_Pool["Worker pool"]
-            SchedLayer_Shutdown["Graceful shutdown"]
-        end
-        subgraph QueueLayer["Queue Layer"]
-            QueueLayer_Deque["StealingQueue<T>"]
-            QueueLayer_Injector["Injector / Stealer"]
-            QueueLayer_Xbeam["crossbeam-deque"]
-        end
-    end
-
+<img src="/Mermaid/4263fe64a01e3bae.svg" alt="Mermaid diagram" />
 ### Module Map
 
 | Path                                   | Purpose                                              |
@@ -69,19 +50,7 @@ cores without the caller managing thread lifetimes manually.
 
 Each worker thread maintains:
 
-```mermaid
-graph TB
-    Worker["Worker"]
-    Worker --> Injector["Injector<br/>(push from any thread: submit_task)"]
-    Worker --> Stealer["Stealer<br/>(pull from other workers: steal_tasks)"]
-    Worker --> Deques["Local deque triple"]
-    Deques --> High["High priority deque"]
-    Deques --> Normal["Normal priority deque"]
-    Deques --> Low["Low priority deque"]
-    Worker --> Wid["Worker ID"]
-    Worker --> Handle["Thread handle (JoinHandle)"]
-```
-
+<img src="/Mermaid/36cf4d884e97b9ca.svg" alt="Mermaid diagram" />
 ### Task Submission
 
 1. **External submission** (from any thread): Task enters the global injector.

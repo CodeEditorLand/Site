@@ -44,36 +44,7 @@ levels:
 
 ### Protocol Stack
 
-```mermaid
-graph BT
-    subgraph Transport[Transport Layer]
-        TCP[TCP localhost]
-        IPC[IPC pipes]
-    end
-
-    subgraph TauriIPC[Tauri IPC]
-        Commands[In-process command/event transport]
-    end
-
-    subgraph VinegRPC[Vine gRPC Protocol]
-        Proto[Service contracts defined in .proto files]
-    end
-
-    subgraph SpineProto[Spine Protocol]
-        ActionResp[Extension action/response pattern]
-    end
-
-    TCP --> Commands
-    IPC --> Commands
-    TCP --> Proto
-    IPC --> Proto
-    Commands --> ActionResp
-    Proto --> ActionResp
-
-    style Transport fill:#f0f0f0,stroke:#333
-    style SpineProto fill:#e8f8e8,stroke:#363
-```
-
+<img src="/Mermaid/62d10f27634a3077.svg" alt="Mermaid diagram" />
 ---
 
 ## Tauri IPC 🎮
@@ -658,25 +629,7 @@ communication.
 
 ### Action/Response Pattern
 
-```mermaid
-sequenceDiagram
-    participant Extension as Extension code in Cocoon
-    participant Shim as Cocoon vscode shim
-    participant Spine as Spine protocol
-    participant Mountain as Mountain ActionHandler
-    participant Trait as Common trait impl
-
-    Extension->>Shim: Call vscode API (e.g., openTextDocument)
-    Shim->>Shim: Create ActionEffect
-    Shim->>Spine: gRPC PerformAction(ActionRequest)
-    Spine->>Mountain: Route to ActionHandler
-    Mountain->>Trait: Execute action via Common trait implementation
-    Trait-->>Mountain: Action result
-    Mountain-->>Spine: ActionResponse { result, error }
-    Spine-->>Shim: gRPC response
-    Shim-->>Extension: Return result to extension
-```
-
+<img src="/Mermaid/5bd7d1e48e6c5c5d.svg" alt="Mermaid diagram" />
 ### ActionEffect Types
 
 The `Spine` protocol encodes all possible extension actions as a discriminated
@@ -740,28 +693,7 @@ bootstrap stage order is: `RPCServer` (Stage 5) bind -> `MountainConnection`
 order causes Mountain to time out before Cocoon is ready to accept the
 handshake.
 
-```mermaid
-sequenceDiagram
-    participant Mountain as Mountain
-    participant Server as gRPC Server
-    participant Cocoon as Cocoon sidecar
-    participant Init as Initialization
-
-    Mountain->>Server: Start gRPC server on port 50051
-    Mountain->>Cocoon: Spawn node bootstrap-fork.js
-    Cocoon->>Server: Connect gRPC client to 127.0.0.1:50051
-    Cocoon->>Server: Send $initialHandshake notification
-    Server-->>Mountain: Handshake received
-    Mountain->>Mountain: Gather InitData (workspace, extensions, config)
-    Mountain->>Cocoon: Send Initialize(InitData)
-    Cocoon->>Init: Create InitDataLayer
-    Init->>Init: Run FullAppInitialization
-    Init->>Init: Install RequireInterceptor
-    Init->>Init: Activate startup extensions
-    Cocoon->>Server: Send activity ping every 5 seconds
-    Server-->>Mountain: Connection established, normal operation
-```
-
+<img src="/Mermaid/f8eed166325051ea.svg" alt="Mermaid diagram" />
 ### Disconnection and Reconnection
 
 ```

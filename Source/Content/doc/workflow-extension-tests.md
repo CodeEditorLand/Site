@@ -20,37 +20,7 @@ architectural detail is that `require('vscode')` inside the test files connects
 back to the **original Mountain instance**, so tests drive the real editor UI
 rather than a headless stub.
 
-```mermaid
-sequenceDiagram
-    participant Dev as Developer
-    participant Main as Main Mountain<br/>(VSCode Instance)
-    participant TestHost as Test Host<br/>(Extension Dev Host)
-    participant TestCocoon as Test Cocoon<br/>(CLI Test Runner)
-    participant TRS as Test Runner Service
-
-    Dev->>Main: Launch with<br/>--extensionDevelopmentPath
-    Main->>Main: Activate extension<br/>in development mode
-    Dev->>Main: Run Tests command<br/>(Ctrl+Shift+P)
-    Main->>TRS: Trigger test run
-    TRS->>TRS: Construct special arguments:<br/>--extensionDevelopmentPath<br/>--extensionTestsPath<br/>VSCODE_IPC_HOOK_CLI
-    TRS->>TestHost: Spawn new Mountain instance<br/>(Extension Development Host)
-    TestHost->>TestHost: Detect --extension... flags<br/>Knows it's test instance
-    TestHost->>TestCocoon: Launch Cocoon sidecar<br/>with special env vars
-    TestCocoon->>TestCocoon: Detect VSCODE_IPC_HOOK_CLI<br/>Enter CLI test runner mode
-    TestCocoon->>TestCocoon: Execute test runner script<br/>(mocha)
-    TestCocoon->>TestCocoon: Load extension test files
-    TestCocoon->>Main: gRPC: executeCommand<br/>(lightweight vscode shim)
-    Main->>Main: Execute command<br/>Update UI
-    Main-->>TestCocoon: gRPC response
-    TestCocoon->>TestCocoon: Run assertions<br/>Check document state
-    TestCocoon->>Main: gRPC: get textDocuments<br/>Verify state
-    Main-->>TestCocoon: Document state
-    TestCocoon->>TestCocoon: All tests complete
-    TestCocoon->>TRS: Exit with code (0/1)<br/>Stdout: test results
-    TRS->>Main: Parse results<br/>Display notification<br/>(e.g., "10 passed, 0 failed")
-    Main-->>Dev: Test results displayed
-```
-
+<img src="/Mermaid/e923c9c8a0417198.svg" alt="Mermaid diagram" />
 ## Phase 1 - Development mode launch
 
 1. **Extension manifest.** The extension being developed includes a `"test"`

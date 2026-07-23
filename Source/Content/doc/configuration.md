@@ -87,26 +87,7 @@ same key.
 
 ### Sourcing Order
 
-```mermaid
-graph TB
-    subgraph Cascade["Sourcing Order"]
-        direction TB
-        S1["Step 1: .env.Land<br/>(fallback: .env.Land.Sample)"]
-        S2["Step 2: .env.Land.Production<br/>(if NODE_ENV=production)"]
-        S3["Step 3: .env.Land.Node<br/>(fallback: .env.Land.Node.Sample)"]
-        S4["Step 4: .env.Land.Production.Node"]
-        S5["Step 5: .env.Land.Extensions<br/>(fallback: .env.Land.Extensions.Sample)"]
-        S6["Step 6: .env.Land.Production.Extensions"]
-        S7["Step 7: .env.Land.PostHog<br/>(fallback: .env.Land.PostHog.Sample)"]
-        S8["Step 8: .env.Land.Production.PostHog"]
-        S9["Step 9: .env.Land.Diagnostics<br/>(fallback: .env.Land.Diagnostics.Sample)"]
-        S10["Step 10: .env.Land.Production.Diagnostics"]
-        S11["Step 11: .env.Land.Bundled<br/>(fallback: .env.Land.Bundled.Sample)"]
-        S12["Step 12: .env.Land.Production.Bundled"]
-        S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 --> S10 --> S11 --> S12
-    end
-```
-
+<img src="/Mermaid/f36644aa05d19bfe.svg" alt="Mermaid diagram" />
 ### Key Rules
 
 1. **Overlay conditional** - Production overlays are only sourced when

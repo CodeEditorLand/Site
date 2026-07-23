@@ -25,53 +25,7 @@ the lifecycle, the WASM runtime that provides sandboxed execution, the VS Code
 API bridge that presents the standard extension API, the transport layer that
 communicates with Mountain, and shared utility modules.
 
-```mermaid
-graph TB
-    subgraph "Grove - Rust/WASM Extension Host"
-        Main["main.rs / lib.rs<br/>Binary + Library entry"]
-        Binary["Binary/<br/>CLI and startup"]
-        Host["Host/<br/>Extension Host Controller"]
-        ExtHost["Host/ExtensionHost.rs<br/>Main controller"]
-        ExtMgr["Host/ExtensionManager.rs<br/>Discovery and loading"]
-        Activation["Host/Activation.rs<br/>Activation events"]
-        Lifecycle["Host/Lifecycle.rs<br/>Extension lifecycle"]
-        APIBridge["Host/APIBridge.rs<br/>VS Code API facade"]
-        WASM["WASM/<br/>WebAssembly Runtime"]
-        Runtime["WASM/Runtime.rs<br/>WASMtime engine + store"]
-        ModuleLoader["WASM/ModuleLoader.rs<br/>Module compilation"]
-        MemoryMgr["WASM/MemoryManager.rs<br/>Memory allocation"]
-        HostBridge["WASM/HostBridge.rs<br/>Host-WASM function bridge"]
-        Transport["Transport/<br/>Communication Strategies"]
-        GRPCTransport["Transport/gRPCTransport.rs<br/>gRPC via Mountain"]
-        IPCTransport["Transport/IPCTransport.rs<br/>Local IPC"]
-        WASMTransport["Transport/WASMTransport.rs<br/>Direct WASM calls"]
-        Protocol["Protocol/<br/>Spine connection"]
-    end
-
-    subgraph "Mountain - Rust Backend"
-        VineGRPC["Vine gRPC Server"]
-    end
-
-    Main --> Binary
-    Binary --> Host
-    Host --> ExtHost
-    ExtHost --> ExtMgr
-    ExtHost --> Activation
-    ExtHost --> Lifecycle
-    ExtHost --> APIBridge
-    APIBridge --> WASM
-    WASM --> Runtime
-    WASM --> ModuleLoader
-    WASM --> MemoryMgr
-    WASM --> HostBridge
-    ExtHost --> Transport
-    Transport --> GRPCTransport
-    Transport --> IPCTransport
-    Transport --> WASMTransport
-    ExtHost --> Protocol
-    GRPCTransport --> VineGRPC
-```
-
+<img src="/Mermaid/2f21cd2157b432e2.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
@@ -101,27 +55,7 @@ graph TB
 
 ## Data Flow
 
-```mermaid
-sequenceDiagram
-    participant Mountain as Mountain Core
-    participant Grove as Grove Extension Host
-    participant WASM as WASM Runtime
-    participant Extension as WASM Extension
-
-    Mountain->>Grove: GroveService.ActivateExtension (gRPC via Vine)
-    Grove->>Grove: ExtensionManager.load(manifest)
-    Grove->>WASM: ModuleLoader.compile(wasm_bytes)
-    WASM->>Grove: Compiled module
-    Grove->>WASM: Runtime.instantiate(module, host_functions)
-    WASM->>Extension: WASM module initialized
-    Extension->>WASM: Call host function (e.g. vscode.workspace.readFile)
-    WASM->>Grove: HostBridge dispatch
-    Grove->>Mountain: Forward service call via Transport
-    Mountain->>Grove: Service result
-    Grove->>WASM: Return value to extension
-    WASM->>Extension: Result available
-```
-
+<img src="/Mermaid/ad063a0e6fcd9139.svg" alt="Mermaid diagram" />
 ---
 
 ## Integration Points

@@ -37,31 +37,7 @@ It contains no concrete implementations.
 
 ---
 
-```mermaid
-graph TB
-    subgraph Common["Common Abstract Core"]
-        TRAITS["Async Traits<br/>FileSystem / Terminal /<br/>Configuration / Workspace<br/>+ 20 more"]
-        AE["ActionEffect<br/>System<br/>description / execution<br/>separation"]
-        ENV["Environment / Requires<br/>compile-time DI"]
-        DTO["Data Transfer Objects<br/>FileStat / InitData /<br/>TerminalOptions"]
-        ERR["CommonError<br/>unified error enum"]
-        TRANS["Transport Layer<br/>TransportStrategy + Config"]
-        TEL["Telemetry<br/>PostHog + OTLP"]
-
-        TRAITS --> AE
-        AE --> ENV
-        ENV -->|"capability resolution"| TRAITS
-        DTO --> TRAITS
-        DTO --> AE
-        ERR --> TRAITS
-        ERR --> AE
-        TRANS --> ENV
-        TEL -.->|"emit events"| TRAITS
-    end
-
-    AE -->|"execute via"| RUNTIME["ApplicationRunTime<br/>(Echo-backed)"]
-```
-
+<img src="/Mermaid/525e1c793a35a144.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
 `Common` defines the architectural language of the entire native platform:

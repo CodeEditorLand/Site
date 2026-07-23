@@ -27,33 +27,7 @@ The Land build has six stages:
 5. **Tauri bundle** - `pnpm tauri build`
 6. **Re-sign** - strips quarantine bits and re-applies entitlements
 
-```mermaid
-sequenceDiagram
-    participant Env as .env.Land files
-    participant BS as Maintain/Debug/Build.sh
-    participant S1 as Stage 1: VS Code
-    participant S2T as Stage 2: TypeScript
-    participant S3 as Stage 3: PreBake
-    participant S4R as Stage 4: Rust
-    participant S5 as Stage 5: Tauri bundle
-    participant S6 as Stage 6: Re-sign
-    participant App as Land Application
-
-    Env->>BS: Export 18 env files across 6 domains
-    BS->>S1: Invoke npm install + npm run compile
-    BS->>S2T: Invoke pnpm prepublishOnly (ESBuild / Vite / Astro)
-    BS->>S4R: Invoke cargo build -p Mountain
-    S4R->>S5: pnpm tauri build
-    S5->>S3: beforeBundleCommand triggers PreBake
-    S3-->>S5: extensions.manifest.json written
-    S5->>S6: BundleLevel=debug sh Maintain/Script/SignBundle.sh
-    S1-->>S4R: Compiled platform code
-    S1-->>S2T: Compiled platform code
-    S4R->>App: Native backend (Mountain, Echo, Mist, etc.)
-    S2T->>App: Frontend bundles (Sky, Wind, Cocoon)
-    S6->>App: Correctly-entitled .app bundle
-```
-
+<img src="/Mermaid/8aac22fc7883b886.svg" alt="Mermaid diagram" />
 ### Stage 1: VS Code Platform Compilation
 
 The VS Code source is vendored as a Git submodule at
@@ -202,21 +176,7 @@ Each build profile loads a specific combination of env files:
 Each Element reads the resolved environment variables through its own build
 system path:
 
-```mermaid
-graph LR
-    A[.env.Land files] --> B[Maintain/Debug/Build.sh]
-    B --> C[Rust build.rs]
-    B --> D[ESBuild define]
-    B --> E[Vite define map]
-    C --> F[Mountain env! / cfg features]
-    D --> G[Cocoon __LandTier_ globals]
-    E --> H[Wind import.meta.env]
-    F --> I{Tier Banner Agreement}
-    G --> I
-    H --> I
-    I --> J[Runtime tier validation]
-```
-
+<img src="/Mermaid/4057d7f8b9f9ed57.svg" alt="Mermaid diagram" />
 ### Rust Elements (Mountain, Common, Echo, Mist, Rest, SideCar, Air, Grove, Vine)
 
 ```

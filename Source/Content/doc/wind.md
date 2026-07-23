@@ -36,35 +36,7 @@ workbench.
 
 ---
 
-```mermaid
-graph TB
-    subgraph Wind["Wind Frontend Service Layer"]
-        PRELOAD["Preload.ts<br/>window.vscode shim"]
-
-        subgraph SERVICES["Effect Services (~40)"]
-            CORE["Core<br/>IPC / Config /<br/>Environment / Log"]
-            EDITOR["Editor<br/>Editor / Model /<br/>Decorations / History"]
-            FS["File System<br/>Files / WorkingCopy<br/>Workspaces"]
-            UI["Window / UI<br/>ActivityBar / Sidebar<br/>StatusBar / Panel<br/>Notification / Dialog"]
-            MISC["Misc<br/>Clipboard / Terminal<br/>Extensions / Themes<br/>Keybinding / Search"]
-        end
-
-        LAYERS["Layer Composition<br/>Function/Install.ts"]
-        TLT["TauriLiveLayer<br/>(production)"]
-        ELT["ElectronLiveLayer<br/>(compat)"]
-        TEST["TestLayer<br/>(mock)"]
-
-        PRELOAD --> SERVICES
-        CORE & EDITOR & FS & UI & MISC --> LAYERS
-        LAYERS --> TLT
-        LAYERS --> ELT
-        LAYERS --> TEST
-    end
-
-    MOUNTAIN["Mountain<br/>Rust backend"] <-->|"Tauri invoke + events"| CORE
-    SKY["Sky<br/>UI Components"] -->|"consumes Runtime"| TLT
-```
-
+<img src="/Mermaid/f65329819d9f0d8d.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
 `Wind` provides the `Effect-TS` native service layer that `Sky` consumes.
@@ -86,26 +58,7 @@ graph TB
 
 ## Architecture 🏗️
 
-```mermaid
-graph TB
-    subgraph Wind["Wind"]
-        subgraph Row1[" "]
-            Preload["Preload.ts<br/>window.vscode shim"]
-            Effect["Effect/<br/>~40 service modules"]
-            Install["Function/Install.ts<br/>Layer composition"]
-        end
-        subgraph Row2[" "]
-            Workbench["Workbench/<br/>VS Code workbench integration"]
-            Telemetry["Telemetry/<br/>PostHog bridge, OTLP bridge"]
-            IPC["IPC/<br/>Tauri event channels"]
-        end
-        subgraph Row3[" "]
-            Utility["Utility/<br/>Tier.ts, Configuration"]
-            Types["Types/<br/>Error types, interfaces"]
-        end
-    end
-```
-
+<img src="/Mermaid/fe202d09f7232db0.svg" alt="Mermaid diagram" />
 ### Module Map 🗺️
 
 | Path                                | Purpose                                                           |
@@ -128,14 +81,7 @@ graph TB
 Each `Wind` service follows a consistent module structure using the
 Define/Implement/Problem pattern:
 
-```mermaid
-graph TB
-    Dir["Effect/<Service>/"]
-    Dir --> Define["Define.ts<br/>The service Tag<br/>(Effect-TS service identifier)"]
-    Dir --> Implement["Implement.ts<br/>The service implementation<br/>(for TauriLiveLayer)"]
-    Dir --> Problem["Problem.ts<br/>Typed error effects"]
-```
-
+<img src="/Mermaid/7c6bf207410331ba.svg" alt="Mermaid diagram" />
 This pattern provides:
 
 - **Define.ts**: Exports the `Effect-TS` `Tag` that identifies the service.
@@ -209,20 +155,7 @@ export const TestLayer: Layer<...> = Layer.mergeAll(
 
 ### Layer Resolution
 
-```mermaid
-graph TB
-    A["Sky entry point (index.astro)"] --> B["Install.installLayer()"]
-    B --> C{"Reads Tier configuration<br/>from import.meta.env"}
-    C -->|"TierWorkbench === Electron"| D["ElectronLiveLayer"]
-    C -->|"TierWorkbench === Mountain"| E["TauriLiveLayer (default)"]
-    C -->|"Test mode"| F["TestLayer"]
-    D --> G["Layer.toRuntime() converts<br/>to Effect-TS Runtime"]
-    E --> G
-    F --> G
-    G --> H["Provides Runtime to Sky UI components"]
-    H --> I["Wind services available to Sky<br/>via Effect.flatMap"]
-```
-
+<img src="/Mermaid/113c3d5fdc05ba01.svg" alt="Mermaid diagram" />
 ---
 
 ## Preload Shim Integration 🔌
@@ -230,14 +163,7 @@ graph TB
 `Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
 workbench bundle loads:
 
-```mermaid
-graph TB
-    A["1. Preload.ts executes (inline, synchronous)"] --> B["window.vscode = { ipcRenderer, process }<br/>window.MonacoEnvironment configured<br/>window.__CEL_LAND__.polyfills populated<br/>dispatchEvent('land-preload-ready')"]
-    B --> C["2. Workbench bundle loads<br/>from @codeeditorland/output"]
-    C --> D["3. Wind AppLayer created<br/>composeLayer() creates TauriLiveLayer<br/>Layer.toRuntime() converts to active Runtime"]
-    D --> E["4. Workbench class instantiated:<br/>new Workbench(...)<br/>Uses window.vscode for IPC<br/>Uses Wind services for state and data"]
-```
-
+<img src="/Mermaid/8b570de012b968ab.svg" alt="Mermaid diagram" />
 ---
 
 ## Service Catalog 📋

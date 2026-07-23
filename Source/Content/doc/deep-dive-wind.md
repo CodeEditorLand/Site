@@ -170,31 +170,7 @@ module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
 
 Wind's concrete environment emulation enables seamless VSCode compatibility:
 
-```mermaid
-graph TB
-    subgraph "Environment Emulation System"
-        Preload["Preload.ts<br/>Global API Reconstruction"]
-        VSCodeAPI["VSCode API Shim<br/>Service Implementations"]
-        TauriBridge["Tauri Bridge<br/>Native API Integration"]
-        SkyUI["Sky UI Components<br/>VSCode Compatibility"]
-
-        Preload --> VSCodeAPI
-        VSCodeAPI --> TauriBridge
-        TauriBridge --> SkyUI
-    end
-
-    subgraph "API Compatibility Layers"
-        ElectronShim["Electron API Shim"]
-        NodeJSShim["Node.js API Shim"]
-        VSCodeCore["VSCode Core Services"]
-        ExtensionAPI["Extension API Support"]
-
-        ElectronShim --> VSCodeCore
-        NodeJSShim --> VSCodeCore
-        VSCodeCore --> ExtensionAPI
-    end
-```
-
+<img src="/Mermaid/a70b3ee1f37d6369.svg" alt="Mermaid diagram" />
 Wind's environment emulation provides high-fidelity VSCode API compatibility
 through:
 
@@ -211,54 +187,13 @@ through:
 
 Wind implements concrete Effect-TS patterns for robust service composition:
 
-```mermaid
-sequenceDiagram
-    participant Sky as Sky UI Component
-    participant AppService as Application Service
-    participant Orchestrate as Orchestration Effect
-    participant Integration as Tauri Integration
-    participant Tauri as Tauri API
-
-    Sky->>AppService: Call Service Method
-    AppService->>Orchestrate: Execute Orchestration Effect
-    Orchestrate->>Integration: Call Integration Effect
-    Integration->>Tauri: Invoke Native API
-    Tauri->>Integration: Return Result
-    Integration->>Orchestrate: Transform Result
-    Orchestrate->>AppService: Return Orchestrated Result
-    AppService->>Sky: Resolve Service Call
-```
-
+<img src="/Mermaid/428e1d586b2589cd.svg" alt="Mermaid diagram" />
 ### Security Architecture
 
 Wind implements comprehensive security measures for the Tauri webview
 environment:
 
-```mermaid
-graph LR
-    subgraph "Security Layers"
-        CSP["Content Security Policy<br/>Script Restrictions"]
-        APIBoundary["API Boundary<br/>Secure Communication"]
-        TypeSafety["Type Safety<br/>Compile-Time Validation"]
-        ErrorContainment["Error Containment<br/>Graceful Failure"]
-
-        CSP --> APIBoundary
-        APIBoundary --> TypeSafety
-        TypeSafety --> ErrorContainment
-    end
-
-    subgraph "Security Features"
-        Sandbox["Webview Sandbox"]
-        Validation["Input Validation"]
-        Auth["Authentication Support"]
-        Audit["Security Auditing"]
-
-        Sandbox --> Validation
-        Validation --> Auth
-        Auth --> Audit
-    end
-```
-
+<img src="/Mermaid/8c9742d4b78ceefe.svg" alt="Mermaid diagram" />
 Wind's security architecture prevents common webview security vulnerabilities
 through:
 
@@ -574,36 +509,7 @@ async function robustDialogOperation() {
 
 ## Ecosystem Integration Mapping
 
-```mermaid
-graph TD
-    subgraph "Wind Service Layer"
-        Preload["Preload.ts<br/>Environment Setup"]
-        AppLayer["AppLayer<br/>Service Composition"]
-        Integration["Tauri Integration<br/>Native Bridge"]
-        VSCodeServices["VSCode Services<br/>UI Integration"]
-    end
-
-    subgraph "Tauri Framework"
-        TauriCore["Tauri Core<br/>Webview Management"]
-        RustBackend["Rust Backend<br/>Native Operations"]
-        PluginSystem["Plugin System<br/>Extended Capabilities"]
-
-        Preload --> TauriCore
-        Integration --> RustBackend
-        Integration --> PluginSystem
-    end
-
-    subgraph "Mountain Backend"
-        Track["Track Dispatcher<br/>Request Routing"]
-        Environment["Environment Providers<br/>Capability Implementation"]
-        AppState["ApplicationState<br/>Shared State"]
-
-        Integration --> Track
-        Track --> Environment
-        Environment --> AppState
-    end
-```
-
+<img src="/Mermaid/7eda43fc648d6b38.svg" alt="Mermaid diagram" />
 ### Service Implementation Table
 
 | VSCode Service      | Wind Service       | Effect-TS Layer  | Communication Protocol |
@@ -616,69 +522,15 @@ graph TD
 
 ### Component Block Map
 
-```mermaid
-graph TB
-    subgraph "Wind Architecture Blocks"
-        Preload["Preload.ts<br/>Environment Setup"]
-        AppLayer["AppLayer<br/>Service Composition"]
-        Integration["Tauri Integration<br/>Native Bridge"]
-        Services["VSCode Services<br/>Effect-TS Implementations"]
-    end
-
-    subgraph "External Dependencies"
-        EffectTS["Effect-TS Framework"]
-        Tauri["Tauri Framework"]
-        VSCode["VSCode API Definitions"]
-        Mountain["Mountain Backend"]
-    end
-
-    EffectTS --> AppLayer
-    Tauri --> Integration
-    VSCode --> Services
-    Mountain --> Integration
-
-    Preload --> AppLayer
-    AppLayer --> Services
-    Services --> Integration
-    Integration --> Tauri
-```
-
+<img src="/Mermaid/2cad35fa555b44b4.svg" alt="Mermaid diagram" />
 ### Service Communication Patterns
 
-```mermaid
-sequenceDiagram
-    participant Sky as Sky UI
-    participant Wind as Wind Service
-    participant Tauri as Tauri Bridge
-    participant Mountain as Mountain Backend
-
-    Sky->>Wind: vscode.window.showInformationMessage()
-    Wind->>Tauri: invoke('ShowInformationMessage')
-    Tauri->>Mountain: Execute native operation
-    Mountain->>Tauri: Return result
-    Tauri->>Wind: Resolve promise
-    Wind->>Sky: Show notification
-```
-
+<img src="/Mermaid/314a3e71f81b47eb.svg" alt="Mermaid diagram" />
 ## Advanced Integration Patterns
 
 ### Real-time UI Operation Flow
 
-```mermaid
-sequenceDiagram
-    participant Sky as Sky UI
-    participant Wind as Wind Service
-    participant Mountain as Mountain Backend
-    participant Native as Native OS
-
-    Sky->>Wind: vscode.window.showOpenDialog()
-    Wind->>Mountain: Tauri invoke('show_open_dialog')
-    Mountain->>Native: Display native file dialog
-    Native->>Mountain: User selects file
-    Mountain->>Wind: Return selected path
-    Wind->>Sky: Resolve with URI array
-```
-
+<img src="/Mermaid/733ff9745f1183a3.svg" alt="Mermaid diagram" />
 ## Performance Characteristics
 
 ### Bundle Optimization
@@ -711,20 +563,7 @@ sequenceDiagram
 
 Wind implements comprehensive webview security measures:
 
-```mermaid
-graph TB
-    subgraph "Webview Security"
-        CSP["Content Security Policy<br/>Script Restrictions"]
-        Isolation["Process Isolation<br/>Separate Renderer"]
-        Validation["Input Validation<br/>Comprehensive Checking"]
-        Audit["Security Auditing<br/>Continuous Monitoring"]
-
-        CSP --> Isolation
-        Isolation --> Validation
-        Validation --> Audit
-    end
-```
-
+<img src="/Mermaid/796f752a8f032ac9.svg" alt="Mermaid diagram" />
 ### API Security Patterns
 
 Sophisticated API security patterns:

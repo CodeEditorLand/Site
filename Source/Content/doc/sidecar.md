@@ -15,21 +15,7 @@ Mountain at both build time and runtime.
 
 ## Architecture
 
-```mermaid
-graph TB
-    subgraph SideCar["SideCar Vendored Runtime Manager"]
-        DL["Download.rs<br/>archive extraction<br/>platform targeting"]
-        CACHE["Cache.json<br/>version-to-path map<br/>checksums"]
-
-        DL --> CACHE
-    end
-
-    BUILD["Build.sh<br/>.env.Land"] -->|"NodeVersion / Platform"| DL
-    NODE["nodejs.org/dist"] -->|"download binary"| DL
-    DL -->|"cached path"| MOUNTAIN["Mountain<br/>ProcessManagement"]
-    MOUNTAIN -->|"sidecar runtime"| COCOON["Cocoon<br/>Extension Host"]
-```
-
+<img src="/Mermaid/8f062e52e5dd079b.svg" alt="Mermaid diagram" />
 | Attribute    | Value                                                                 |
 | ------------ | --------------------------------------------------------------------- |
 | Language     | `Rust` (edition 2024)                                                 |

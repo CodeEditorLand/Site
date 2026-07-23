@@ -54,24 +54,7 @@ Compiler) toolchain:
 
 ## Architecture 🏗️
 
-```mermaid
-graph TB
-    subgraph Rest["Rest"]
-        subgraph Row1[" "]
-            Parse["Fn/Parse.rs<br/>OXC parser entry"]
-            Transform["Fn/Transform.rs<br/>OXC transformer"]
-        end
-        subgraph Row2[" "]
-            Build["Fn/Build.rs<br/>Build pipeline"]
-            Bundle["Fn/Bundle.rs<br/>Module bundler"]
-        end
-        subgraph Row3[" "]
-            Config["Struct/CompilerConfig.rs<br/>Compiler config"]
-            Worker["Fn/Worker.rs<br/>Parallel worker pool"]
-        end
-    end
-```
-
+<img src="/Mermaid/5a4b0e61fea6b7b0.svg" alt="Mermaid diagram" />
 ### Module Map 🗺️
 
 | Path                              | Purpose                              |
@@ -94,28 +77,7 @@ graph TB
 The OXC compilation pipeline processes `TypeScript` input through multiple
 stages:
 
-```mermaid
-graph TB
-    TS[/"TypeScript input (.ts, .tsx, .mts, .cts)"/]
-    TS --> Parser
-    subgraph ParserBox[" "]
-        Parser["1. OXC Parser (oxc_parser)<br/>- Produces AST with source tracking<br/>- Handles TS syntax extensions<br/>- Supports decorators, JSX, ES"]
-    end
-    Parser --> Semantic
-    subgraph SemanticBox[" "]
-        Semantic["2. OXC Semantic Analysis (oxc_semantic)<br/>- Symbol resolution and scope analysis<br/>- Binding and reference tracking<br/>- Type checking (scope-level)"]
-    end
-    Semantic --> Transformer
-    subgraph TransformerBox[" "]
-        Transformer["3. OXC Transformer (oxc_transformer)<br/>- Decorator lowering<br/>- Class field transformations<br/>- Type annotation stripping<br/>- JSX transformation<br/>- Target ES version lowering"]
-    end
-    Transformer --> Codegen
-    subgraph CodegenBox[" "]
-        Codegen["4. OXC Code Generator (oxc_codegen)<br/>- JavaScript source output<br/>- Source map generation<br/>- (Optional) OXC Minifier"]
-    end
-    Codegen --> JS[/"JavaScript output (.js, .cjs, .mjs)"/]
-```
-
+<img src="/Mermaid/e45f0cbede66f2ee.svg" alt="Mermaid diagram" />
 ### Parallel Processing ⚡
 
 `Rest` uses `rayon` for parallel file compilation:

@@ -24,29 +24,7 @@ Vine is a contract-first protocol layer. The `.proto` file is the source of
 truth; generated Rust code via `prost-build`/`tonic` is shared by Mountain, Air,
 and Cocoon.
 
-```mermaid
-graph TB
-    subgraph "Vine - Protocol Layer"
-        VineProto["Vine.proto\nMountain ↔ Cocoon\n(Vine Pro colocated)"]
-        MessageTypes["Message/\nShared message definitions"]
-        ServiceDefs["Service/\ngRPC service interfaces"]
-        ClientStubs["Client/\nGenerated client code"]
-    end
-
-    subgraph "Mountain - gRPC Server Host"
-        VineServer["Vine gRPC Server\ntonic implementation:50051"]
-    end
-
-    subgraph "Clients"
-        CocoonClient["Cocoon gRPC Client\nNode.js service connector"]
-        AirClient["Air gRPC Client\nbackground daemon consumer"]
-    end
-
-    VineProto --> VineServer
-    VineProto --> CocoonClient
-    VineProto --> AirClient
-```
-
+<img src="/Mermaid/ce500333327e1492.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
@@ -269,21 +247,7 @@ listeners.
 The following diagram shows how a VS Code command travels from Sky/Wind through
 the Vine protocol to Cocoon and back.
 
-```mermaid
-sequenceDiagram
-    participant Wind as Wind Service Layer
-    participant Mountain as Mountain gRPC Server
-    participant Vine as Vine Protocol
-    participant Cocoon as Cocoon Extension Host
-
-    Wind->>Mountain: Tauri invoke (executeCommand)
-    Mountain->>Vine: Serialize to CommandRequest protobuf
-    Vine->>Cocoon: gRPC unary call
-    Cocoon->>Vine: CommandResponse protobuf
-    Vine->>Mountain: Deserialize response
-    Mountain->>Wind: Tauri event with result
-```
-
+<img src="/Mermaid/b69dda10ae2a79b7.svg" alt="Mermaid diagram" />
 **Communication patterns supported by Vine:**
 
 - **Unary RPC** - Request/response for commands and queries.

@@ -38,21 +38,7 @@ before the workbench bundle loads.
 
 ### Execution Order
 
-```mermaid
-sequenceDiagram
-    participant WebView as Tauri WebView
-    participant Preload as Preload.ts
-    participant Workbench as Workbench Bundle
-
-    WebView->>Preload: Load index.html (inline script, synchronous)
-    Preload->>Preload: Populate window.vscode
-    Preload->>Preload: Configure window.MonacoEnvironment
-    Preload->>Preload: Populate window.__CEL_LAND__.polyfills
-    Preload-->>WebView: DispatchEvent land-preload-ready
-    WebView->>Workbench: Load workbench bundle (async)
-    Workbench->>Workbench: Read window.vscode.* for IPC and process info
-```
-
+<img src="/Mermaid/67815590cb2a740a.svg" alt="Mermaid diagram" />
 ### Shimming Strategy
 
 The Preload shim defines the following global replacements:
@@ -135,21 +121,7 @@ It translates between two event models:
 
 ### Bridge Architecture
 
-```mermaid
-graph LR
-    Mountain[Mountain Rust] -->|Tauri event| Listener[Tauri WebView event listener]
-    Listener --> SkyBridge[SkyBridge]
-    SkyBridge -->|Translate to VS Code channel format| Handler[Workbench handlers]
-    Handler --> Service[VS Code Workbench service]
-    Service -->|onDidChange event fires| Callback[Callback registered by workbench]
-
-    Mountain -.->|mountain:configurationChanged| SkyBridge
-    Mountain -.->|mountain:extensionsChanged| SkyBridge
-    Mountain -.->|mountain:themeChanged| SkyBridge
-    Mountain -.->|mountain:fileChanged| SkyBridge
-    Cocoon -.->|cocoon:commandExecuted| SkyBridge
-```
-
+<img src="/Mermaid/d60d42f7b1cc87aa.svg" alt="Mermaid diagram" />
 ### HTML Injection and Webview Input
 
 `SkyBridge` manages the lifecycle of webview content injection through
@@ -436,37 +408,7 @@ binary -- no runtime toggle.
 
 The startup sequence coordinates all polyfill layers:
 
-```mermaid
-sequenceDiagram
-    participant WebView as Tauri WebView
-    participant Worker as Service Worker
-    participant Preload as Preload.ts
-    participant Bridge as SkyBridge
-    participant Bundle as Workbench Bundle
-    participant Wind as Wind Services
-    participant User as System Ready
-
-    WebView->>Worker: Register service worker
-    Worker->>Worker: Install and activate
-    Worker->>Worker: Begin intercepting fetch
-
-    WebView->>Preload: Execute Preload.ts
-    Preload->>Preload: Install window.vscode shim
-    Preload->>Preload: Install process shim
-    Preload-->>WebView: Dispatch land-preload-ready
-
-    WebView->>Bridge: Initialize SkyBridge
-    Bridge->>Bridge: Register Tauri event listeners
-    Bridge->>Bridge: Populate event translation tables
-
-    WebView->>Bundle: Load workbench bundle
-    Bundle->>Bundle: Resolve modules via RequireInterceptor
-    Bundle->>Wind: Call Workbench.startup()
-    Wind->>Wind: Compose Layer stack
-    Wind->>Wind: Connect to Mountain via Tauri invoke
-    Wind-->>User: Ready for user interaction
-```
-
+<img src="/Mermaid/184bba5eafb26c6d.svg" alt="Mermaid diagram" />
 ### Polyfill Disable Flag
 
 The `Disable` environment variable can be set to `true` to bypass all polyfill

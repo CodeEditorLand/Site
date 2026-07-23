@@ -15,58 +15,7 @@ flows Sky → Wind → Mountain → Cocoon → extension → back the same way. 
 acts as the broker that maps language selectors to provider handles and routes
 requests to the correct sidecar.
 
-```mermaid
-sequenceDiagram
-    participant Ext as Extension<br/>(in Cocoon)
-    participant Cocoon as Cocoon<br/>(Extension Host)
-    participant Mountain as Mountain<br/>(Native Backend)
-    participant Wind as Wind<br/>(VSCode UI)
-    participant UI as Monaco Editor<br/>(User Interface)
-
-    Note over Ext,UI: Phase 1: Registration
-    Ext->>Cocoon: vscode.languages.registerHoverProvider()
-    activate Cocoon
-    Cocoon->>Cocoon: Store provider with unique handle
-    Cocoon->>Mountain: $registerHoverProvider gRPC request
-    activate Mountain
-    Mountain->>Mountain: Create ProviderRegistrationDto
-    Mountain->>Mountain: Store in AppState.LanguageProviders
-    deactivate Mountain
-    deactivate Cocoon
-
-    Note over Ext,UI: Phase 2: User Hover Request
-    UI->>Wind: User hovers over word
-    activate Wind
-    Wind->>Wind: Monaco hover controller triggers
-    Wind->>Wind: LanguageFeaturesService.getHover()
-    Wind->>Mountain: TauriInvoke mountain://language-feature/provide-hover
-    deactivate Wind
-
-    Note over Ext,UI: Phase 3: Host Orchestration
-    activate Mountain
-    Mountain->>Mountain: Query AppState for "mylang" providers
-    Mountain->>Cocoon: $provideHover gRPC request<br/>(handle, URI, position)
-    activate Cocoon
-
-    Note over Ext,UI: Phase 4: Extension Execution
-    Cocoon->>Cocoon: Lookup provider by handle
-    Cocoon->>Ext: Call provider.provideHover()
-    activate Ext
-    Ext-->>Cocoon: Return Hover object {contents: ['Hello World']}
-    deactivate Ext
-    Cocoon->>Cocoon: Serialize to HoverResultDto
-    Cocoon-->>Mountain: Return HoverResultDto
-    deactivate Cocoon
-
-    Note over Ext,UI: Phase 5: UI Update
-    Mountain-->>Wind: Return hover data
-    deactivate Mountain
-    activate Wind
-    Wind->>UI: Pass hover data to Monaco controller
-    UI->>UI: Render tooltip widget
-    deactivate Wind
-```
-
+<img src="/Mermaid/db35696ce4bb1276.svg" alt="Mermaid diagram" />
 ---
 
 ## Phase 1 - Extension registration (Cocoon → Mountain)

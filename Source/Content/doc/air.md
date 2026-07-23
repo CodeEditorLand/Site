@@ -31,34 +31,7 @@ The `Air` background daemon:
 
 ---
 
-```mermaid
-graph TB
-    subgraph Air["Air Daemon"]
-        GRPC["gRPC Server<br/>(tonic, port 50053)"]
-        UM["Update Manager<br/>check / verify / apply"]
-        DL["Downloader<br/>resilient pause/resume"]
-        AS["Auth Service<br/>crypto / signing"]
-        IX["Indexer<br/>file content / search"]
-        HC["Health Check<br/>watchdog / metrics"]
-        HTTP["HTTP Client<br/>reqwest"]
-        MIST["Mist DNS<br/>local resolver"]
-        CFG["Configuration<br/>hot-reload"]
-
-        GRPC --> UM
-        GRPC --> DL
-        GRPC --> AS
-        GRPC --> IX
-        GRPC --> HC
-        DL --> HTTP
-        AS --> HTTP
-        UM --> HTTP
-        HTTP --> MIST
-        GRPC -.-> CFG
-    end
-
-    MOUNTAIN["Mountain<br/>ProcessManagement"] -->|"gRPC: PerformAction"| GRPC
-```
-
+<img src="/Mermaid/033d441edd08796f.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
 | Attribute    | Value                                                          |
@@ -75,30 +48,7 @@ graph TB
 
 `Air` is structured around a central `gRPC` server that receives task delegation from `Mountain`. Internal modules handle distinct responsibilities.
 
-```mermaid
-graph TB
-    Mountain["Mountain<br/>ProcessManagement / AirManagement.rs<br/>Sends work via PerformAction gRPC"]
-    Mountain -->|"gRPC (port 50053)"| Air
-
-    subgraph Air["Air Daemon"]
-        subgraph Row1[" "]
-            GRPC["gRPC Server<br/>(tonic)<br/>routes tasks"]
-            Update["Update Manager<br/>(check, verify, apply patches)"]
-            Download["Downloader<br/>(resilient pause/resume)"]
-        end
-        subgraph Row2[" "]
-            Auth["Auth Service<br/>(crypto, signing)"]
-            Indexer["Indexer<br/>(file content, search index)"]
-            Health["Health Check<br/>(watchdog, metrics)"]
-        end
-        subgraph Row3[" "]
-            HTTP["HTTP Client<br/>(reqwest)"]
-            Mist["Mist DNS<br/>(local resolver)"]
-            Config["Configuration<br/>(hot-reload)"]
-        end
-    end
-```
-
+<img src="/Mermaid/dff92e52586447cb.svg" alt="Mermaid diagram" />
 ---
 
 ## Module Map 🗺️
@@ -195,31 +145,10 @@ Manages sensitive cryptographic operations:
 
 ### Update Check Flow 🔄
 
-```mermaid
-graph TB
-    A["Mountain triggers update check"] --> B["Air gRPC server receives CheckForUpdate"]
-    B --> C["Update Manager sends HTTP GET to update server"]
-    C --> D["Server responds with release manifest<br/>(version, URL, checksum, signature)"]
-    C -.->|"fallback"| D
-    D --> E["Update Manager verifies response signature"]
-    E --> F["Air returns update metadata to Mountain"]
-    F --> G["Mountain displays update notification to user"]
-```
-
+<img src="/Mermaid/3ec9349196041cba.svg" alt="Mermaid diagram" />
 ### Download with Progress Flow 📥
 
-```mermaid
-graph TB
-    A["Mountain calls PerformAction(StartDownload)"] --> B["Download Manager begins HTTP download<br/>with Range support"]
-    B --> C["Streaming progress events:<br/>bytesReceived, totalBytes, speed<br/>(Mountain relays to Wind UI)"]
-    B --> D["On complete: SHA-256 verification"]
-    B --> E["On failure: retry with backoff<br/>(up to 3 attempts)"]
-    E --> F{"All retries exhausted?"}
-    F -->|"Yes"| G["Return error to Mountain"]
-    F -->|"No"| B
-    D --> H["Return ActionResponse { success, filePath }"]
-```
-
+<img src="/Mermaid/eaf339b70a8cb98a.svg" alt="Mermaid diagram" />
 ---
 
 ## Startup Sequence 🚀
