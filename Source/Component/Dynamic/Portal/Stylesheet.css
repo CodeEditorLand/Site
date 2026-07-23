@@ -55,7 +55,6 @@
 	gap: 0;
 	background: var(--Card);
 	border: var(--BorderWidth) solid var(--Border);
-	border-left-width: 4px;
 	transition: border-color 0.3s ease;
 }
 
@@ -65,38 +64,22 @@
 	}
 }
 
-/* ─── Tier Color Variants ─────────────────────────────────── */
+/* ─── Tier Color Variants (border on inner jelly-card, via canvas) ── */
 
-.PortalTierCloud {
-	border-left-color: var(--SpineIPC);
+.PortalTierCloud .PortalTierCard {
+	--jelly-color-border-default: var(--SpineIPC);
 }
 
-.PortalTierCloud:hover {
-	border-color: var(--SpineIPC);
+.PortalTierProvider .PortalTierCard {
+	--jelly-color-border-default: var(--SpineWASM);
 }
 
-.PortalTierProvider {
-	border-left-color: var(--SpineWASM);
+.PortalTierLocalFirst .PortalTierCard {
+	--jelly-color-border-default: var(--SpineTCP);
 }
 
-.PortalTierProvider:hover {
-	border-color: var(--SpineWASM);
-}
-
-.PortalTierLocalFirst {
-	border-left-color: var(--SpineTCP);
-}
-
-.PortalTierLocalFirst:hover {
-	border-color: var(--SpineTCP);
-}
-
-.PortalTierEnterprise {
-	border-left-color: var(--PlatformDesktop);
-}
-
-.PortalTierEnterprise:hover {
-	border-color: var(--PlatformDesktop);
+.PortalTierEnterprise .PortalTierCard {
+	--jelly-color-border-default: var(--PlatformDesktop);
 }
 
 /* ─── Login Box (Left Column) ─────────────────────────────── */
@@ -306,7 +289,6 @@
 
 .PortalTierRow {
 	border-width: calc(1px + var(--StaccatoBorder) * 0.3px);
-	border-left-width: calc(4px + var(--StaccatoBorder) * 0.5px);
 }
 
 .PortalTierRow:hover .PortalTierIconWrapper {
@@ -322,7 +304,6 @@
 @media (prefers-reduced-motion: reduce) {
 	.PortalTierRow {
 		border-width: 1px;
-		border-left-width: 4px;
 		transition: none;
 	}
 
