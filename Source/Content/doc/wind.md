@@ -86,28 +86,24 @@ graph TB
 
 ## Architecture 🏗️
 
-```
-+------------------------------------------------------------------+
-|                         Wind                                      |
-|                                                                   |
-|  +------------------+  +------------------+  +------------------+ |
-|  | Preload.ts       |  | Effect/          |  | Function/        | |
-|  | window.vscode    |  | ~40 service      |  | Install.ts       | |
-|  | shim             |  | modules          |  | Layer composition| |
-|  +------------------+  +------------------+  +------------------+ |
-|                                                                   |
-|  +------------------+  +------------------+  +------------------+ |
-|  | Workbench/       |  | Telemetry/       |  | IPC/             | |
-|  | VS Code workbench|  | PostHog bridge   |  | Tauri event      | |
-|  | integration      |  | OTLP bridge      |  | channels         | |
-|  +------------------+  +------------------+  +------------------+ |
-|                                                                   |
-|  +------------------+  +------------------+                       |
-|  | Utility/         |  | Types/           |                       |
-|  | Tier.ts          |  | Error types,     |                       |
-|  | Configuration    |  | interfaces       |                       |
-|  +------------------+  +------------------+                       |
-+------------------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph Wind["Wind"]
+        subgraph Row1[" "]
+            Preload["Preload.ts<br/>window.vscode shim"]
+            Effect["Effect/<br/>~40 service modules"]
+            Install["Function/Install.ts<br/>Layer composition"]
+        end
+        subgraph Row2[" "]
+            Workbench["Workbench/<br/>VS Code workbench integration"]
+            Telemetry["Telemetry/<br/>PostHog bridge, OTLP bridge"]
+            IPC["IPC/<br/>Tauri event channels"]
+        end
+        subgraph Row3[" "]
+            Utility["Utility/<br/>Tier.ts, Configuration"]
+            Types["Types/<br/>Error types, interfaces"]
+        end
+    end
 ```
 
 ### Module Map 🗺️
@@ -132,11 +128,12 @@ graph TB
 Each `Wind` service follows a consistent module structure using the
 Define/Implement/Problem pattern:
 
-```
-Effect/<Service>/
-    +-- Define.ts       - The service Tag (Effect-TS service identifier)
-    +-- Implement.ts    - The service implementation (for TauriLiveLayer)
-    +-- Problem.ts      - Typed error effects
+```mermaid
+graph TB
+    Dir["Effect/&lt;Service&gt;/"]
+    Dir --> Define["Define.ts<br/>The service Tag<br/>(Effect-TS service identifier)"]
+    Dir --> Implement["Implement.ts<br/>The service implementation<br/>(for TauriLiveLayer)"]
+    Dir --> Problem["Problem.ts<br/>Typed error effects"]
 ```
 
 This pattern provides:
@@ -212,23 +209,18 @@ export const TestLayer: Layer<...> = Layer.mergeAll(
 
 ### Layer Resolution
 
-```
-Sky entry point (index.astro)
-    |
-    v
-Install.installLayer()
-    |
-    +---> Reads Tier configuration from import.meta.env
-    +---> Selects active Layer stack:
-    |       - TierWorkbench === "Electron" -> ElectronLiveLayer
-    |       - TierWorkbench === "Mountain" -> TauriLiveLayer (default)
-    |       - Test mode -> TestLayer
-    |
-    +---> Layer.toRuntime() converts to Effect-TS Runtime
-    +---> Provides Runtime to Sky UI components
-    |
-    v
-Wind services available to Sky via Effect.flatMap
+```mermaid
+graph TB
+    A["Sky entry point (index.astro)"] --> B["Install.installLayer()"]
+    B --> C{"Reads Tier configuration<br/>from import.meta.env"}
+    C -->|"TierWorkbench === Electron"| D["ElectronLiveLayer"]
+    C -->|"TierWorkbench === Mountain"| E["TauriLiveLayer (default)"]
+    C -->|"Test mode"| F["TestLayer"]
+    D --> G["Layer.toRuntime() converts<br/>to Effect-TS Runtime"]
+    E --> G
+    F --> G
+    G --> H["Provides Runtime to Sky UI components"]
+    H --> I["Wind services available to Sky<br/>via Effect.flatMap"]
 ```
 
 ---
@@ -238,26 +230,12 @@ Wind services available to Sky via Effect.flatMap
 `Wind`'s `Preload.ts` (see `Polyfills.md` for full details) runs before the
 workbench bundle loads:
 
-```
-1. Preload.ts executes (inline, synchronous)
-    |
-    +---> window.vscode = { ipcRenderer, process }
-    +---> window.MonacoEnvironment configured
-    +---> window.__CEL_LAND__.polyfills populated
-    +---> dispatchEvent("land-preload-ready")
-    |
-    v
-2. Workbench bundle loads from @codeeditorland/output
-    |
-    v
-3. Wind AppLayer created
-    +---> composeLayer() creates TauriLiveLayer
-    +---> Layer.toRuntime() converts to active Runtime
-    |
-    v
-4. Workbench class instantiated: new Workbench(...)
-    - Uses window.vscode for IPC
-    - Uses Wind services for state and data
+```mermaid
+graph TB
+    A["1. Preload.ts executes (inline, synchronous)"] --> B["window.vscode = { ipcRenderer, process }<br/>window.MonacoEnvironment configured<br/>window.__CEL_LAND__.polyfills populated<br/>dispatchEvent('land-preload-ready')"]
+    B --> C["2. Workbench bundle loads<br/>from @codeeditorland/output"]
+    C --> D["3. Wind AppLayer created<br/>composeLayer() creates TauriLiveLayer<br/>Layer.toRuntime() converts to active Runtime"]
+    D --> E["4. Workbench class instantiated:<br/>new Workbench(...)<br/>Uses window.vscode for IPC<br/>Uses Wind services for state and data"]
 ```
 
 ---

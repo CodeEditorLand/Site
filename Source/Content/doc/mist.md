@@ -33,29 +33,21 @@ that resolve only within the running editor process.
 
 Mist is organised into five core modules:
 
-```
-+----------------------------------------------------------+
-|                        Mist                               |
-|                                                           |
-|  +------------------+  +------------------+               |
-|  | Server.rs        |  | Zone.rs          |               |
-|  | UDP + TCP DNS    |  | editor.land zone |               |
-|  | listener         |  | resolution logic |               |
-|  +------------------+  +------------------+               |
-|                                                           |
-|  +------------------+  +------------------+               |
-|  | Resolver.rs      |  | ForwardSecurity  |               |
-|  | External DNS     |  | .rs              |               |
-|  | forwarding       |  | DNSSEC signing   |               |
-|  +------------------+  +------------------+               |
-|                                                           |
-|  +------------------+                                     |
-|  | WebSocket.rs     |                                     |
-|  | WebSocket        |                                     |
-|  | transport for    |                                     |
-|  | Sky&lt;-&gt;Cocoon     |                                     |
-|  +------------------+                                     |
-+----------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph Mist["Mist"]
+        subgraph Row1[" "]
+            Server["Server.rs<br/>UDP + TCP DNS<br/>listener"]
+            Zone["Zone.rs<br/>editor.land zone<br/>resolution logic"]
+        end
+        subgraph Row2[" "]
+            Resolver["Resolver.rs<br/>External DNS<br/>forwarding"]
+            DNSSEC["ForwardSecurity.rs<br/>DNSSEC signing"]
+        end
+        subgraph Row3[" "]
+            WS["WebSocket.rs<br/>WebSocket transport<br/>for Sky↔Cocoon"]
+        end
+    end
 ```
 
 ### Module Map
@@ -66,7 +58,7 @@ Mist is organised into five core modules:
 | `Source/Zone.rs`            | `editor.land` zone configuration and record generation       |
 | `Source/Resolver.rs`        | External DNS forwarding for allowlisted domains              |
 | `Source/ForwardSecurity.rs` | DNSSEC signing with ECDSA P-256                              |
-| `Source/WebSocket.rs`       | WebSocket transport for `Sky`&lt;-&gt;`Cocoon` communication |
+| `Source/WebSocket.rs`       | WebSocket transport for `Sky`↔`Cocoon` communication |
 | `Source/lib.rs`             | Library root                                                 |
 
 ## Hickory DNS
@@ -158,16 +150,10 @@ DNS zone rather than through Tauri IPC, reducing per-call overhead from ~5 ms to
 under 1 ms for the high-frequency calls that dominate a session. This transport
 is used when gRPC is unavailable or inappropriate for the communication pattern.
 
-```
-Sky UI (WebView)
-    |
-    | WebSocket
-    v
-Mist WebSocket.rs
-    |
-    | Message routing
-    v
-Cocoon (Node.js extension host)
+```mermaid
+graph TB
+    Sky["Sky UI (WebView)"] -->|"WebSocket"| MistWS["Mist WebSocket.rs"]
+    MistWS -->|"Message routing"| Cocoon["Cocoon (Node.js extension host)"]
 ```
 
 ## Integration with Mountain and Air

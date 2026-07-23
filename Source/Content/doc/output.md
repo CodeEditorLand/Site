@@ -18,33 +18,22 @@ npm package consumed by Cocoon (extension host), Sky (UI layer), and Wind
 
 ## Architecture
 
-```
-+--------------------------------------------------------------+
-|                       Output                                  |
-|                                                               |
-|  +------------------+  +------------------+                    |
-|  | ESBuild/Output.ts |  | ESBuild/Rest.ts  |                   |
-|  | Default esbuild   |  | Rest plugin      |                   |
-|  | pipeline          |  | (OXC compiler)   |                   |
-|  +------------------+  +------------------+                    |
-|                                                               |
-|  +------------------+  +------------------+                    |
-|  | Plugin/          |  | Polyfill/        |                    |
-|  | - Apply.ts       |  | - Child/         |                    |
-|  | - Copy.ts        |  | - File/          |                    |
-|  | - Transform.ts   |  | - IPC/           |                    |
-|  | - Index.ts       |  | - Native/        |                    |
-|  | - Type.ts        |  | - Process/       |                    |
-|  |                  |  | - Shared/        |                    |
-|  +------------------+  +------------------+                    |
-|                                                               |
-|  +------------------+  +------------------+                    |
-|  | Service/         |  | Asset/           |                    |
-|  | - CEL/           |  | - Style/         |                    |
-|  | - Dev/           |  |                  |                    |
-|  | - Tauri/         |  |                  |                    |
-|  +------------------+  +------------------+                    |
-+--------------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph Output["Output"]
+        subgraph Row1[" "]
+            ESBuild["ESBuild/Output.ts<br/>Default esbuild pipeline"]
+            Rest["ESBuild/Rest.ts<br/>Rest plugin (OXC compiler)"]
+        end
+        subgraph Row2[" "]
+            Plugin["Plugin/<br/>- Apply.ts<br/>- Copy.ts<br/>- Transform.ts<br/>- Index.ts<br/>- Type.ts"]
+            Polyfill["Polyfill/<br/>- Child/<br/>- File/<br/>- IPC/<br/>- Native/<br/>- Process/<br/>- Shared/"]
+        end
+        subgraph Row3[" "]
+            Service["Service/<br/>- CEL/<br/>- Dev/<br/>- Tauri/"]
+            Asset["Asset/<br/>- Style/"]
+        end
+    end
 ```
 
 ### Module Map
@@ -79,45 +68,26 @@ Output supports two compiler backends.
 
 ### Default: ESBuild
 
-```
-TypeScript input (.ts, .tsx)
-    |
-    v
-ESBuild parser
-    |
-    v
-ESBuild transforms:
-    - Module resolution remapping (electron -> Tauri stubs)
-    - Define substitution (process.platform, __dirname)
-    - Dead code elimination
-    |
-    v
-ESBuild codegen
-    |
-    v
-JavaScript output
+```mermaid
+graph TB
+    TS[/"TypeScript input (.ts, .tsx)"/]
+    TS --> Parser["ESBuild parser"]
+    Parser --> Transforms["ESBuild transforms:<br/>- Module resolution remapping<br/>- Define substitution<br/>- Dead code elimination"]
+    Transforms --> Codegen["ESBuild codegen"]
+    Codegen --> JS[/"JavaScript output"/]
 ```
 
 ### Optional: Rest OXC
 
 Activated via `Compiler=Rest` environment variable:
 
-```
-TypeScript input (.ts, .tsx)
-    |
-    v
-Rest (Rust OXC) parser
-    |
-    v
-OXC transformer
-    - 2-3x faster than esbuild
-    - Better decorator/class field support
-    |
-    v
-OXC codegen
-    |
-    v
-JavaScript output
+```mermaid
+graph TB
+    TS[/"TypeScript input (.ts, .tsx)"/]
+    TS --> Rest["Rest (Rust OXC) parser"]
+    Rest --> Transforms["OXC transformer<br/>- 2-3x faster than esbuild<br/>- Better decorator/class field support"]
+    Transforms --> Codegen["OXC codegen"]
+    Codegen --> JS[/"JavaScript output"/]
 ```
 
 ### Integration

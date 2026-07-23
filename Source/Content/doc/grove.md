@@ -42,33 +42,21 @@ file access gets exactly the file handles it was granted -- nothing more.
 
 Grove is organized into five layers:
 
-```
-+----------------------------------------------------------------+
-|                      Grove                                      |
-|                                                                |
-|  +------------------------+  +------------------------------+  |
-|  |    Host Layer          |  |    WASM Layer                |  |
-|  |  - ExtensionHost.rs    |  |  - Runtime.rs (Wasmtime)    |  |
-|  |  - ExtensionManager.rs |  |  - ModuleLoader.rs           |  |
-|  |  - Activation.rs       |  |  - MemoryManager.rs          |  |
-|  |  - Lifecycle.rs        |  |  - HostBridge.rs             |  |
-|  |  - APIBridge.rs        |  +------------------------------+  |
-|  +------------------------+                                     |
-|                                                                |
-|  +------------------------+  +------------------------------+  |
-|  |    Transport Layer     |  |    API Layer                 |  |
-|  |  - gRPCTransport.rs    |  |  - VSCode.rs                 |  |
-|  |  - IPCTransport.rs     |  |  - Types.rs                  |  |
-|  |  - WASMTransport.rs    |  |  - FunctionExports.rs        |  |
-|  |  - Strategy.rs         |  +------------------------------+  |
-|  +------------------------+                                     |
-|                                                                |
-|  +------------------------+                                     |
-|  |    Protocol Layer      |                                     |
-|  |  - SpineConnection.rs  |                                     |
-|  |  - SpineActionClient   |                                     |
-|  +------------------------+                                     |
-+----------------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph Grove["Grove"]
+        subgraph Row1[" "]
+            Host["Host Layer<br/>- ExtensionHost.rs<br/>- ExtensionManager.rs<br/>- Activation.rs<br/>- Lifecycle.rs<br/>- APIBridge.rs"]
+            WASM["WASM Layer<br/>- Runtime.rs (Wasmtime)<br/>- ModuleLoader.rs<br/>- MemoryManager.rs<br/>- HostBridge.rs"]
+        end
+        subgraph Row2[" "]
+            Transport["Transport Layer<br/>- gRPCTransport.rs<br/>- IPCTransport.rs<br/>- WASMTransport.rs<br/>- Strategy.rs"]
+            API["API Layer<br/>- VSCode.rs<br/>- Types.rs<br/>- FunctionExports.rs"]
+        end
+        subgraph Row3[" "]
+            Protocol["Protocol Layer<br/>- SpineConnection.rs<br/>- SpineActionClient"]
+        end
+    end
 ```
 
 ### Module Map

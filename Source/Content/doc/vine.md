@@ -54,23 +54,24 @@ can silently drift from the schema.
 
 Vine is the protocol layer that enables all inter-component communication:
 
-```
-                    +------------------------------------+
-                    |            Vine Protocol            |
-                    |  (gRPC service contracts in .proto) |
-                    +-------+------------------------+----+
-                            |                        |
-              +-------------+             +----------+----------+
-              |                                     |             |
-              v                                     v             v
-     +------------------+                +------------------+  +-----+
-     | Mountain (Rust)  |                | Cocoon (Node.js) |  | Air |
-     | gRPC Server      |<---gRPC------>| gRPC Client      |  |     |
-     | (tonic)          |                | (@grpc/grpc-js)  |  |     |
-     +------------------+                +------------------+  +-----+
-              |
-              v
-     +------------------+
+```mermaid
+graph TB
+    VineCenter["Vine Protocol<br/>(gRPC service contracts in .proto)"]
+    VineCenter --> Mountain
+    VineCenter --> Cocoon
+    VineCenter --> Air
+
+    subgraph MountainBox[" "]
+        Mountain["Mountain (Rust)<br/>gRPC Server<br/>(tonic)"]
+    end
+    subgraph CocoonBox[" "]
+        Cocoon["Cocoon (Node.js)<br/>gRPC Client<br/>(@grpc/grpc-js)"]
+    end
+    subgraph AirBox[" "]
+        Air["Air"]
+    end
+
+    Mountain <-->|"gRPC"| Cocoon
 ```
 
 ## Protocol Files

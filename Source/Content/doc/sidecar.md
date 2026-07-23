@@ -15,26 +15,6 @@ Mountain at both build time and runtime.
 
 ## Architecture
 
-```
-+---------------------------------------------------------------+
-|                        SideCar                                 |
-|                                                                |
-|  +----------------------+                                      |
-|  | Download.rs          |                                      |
-|  | - Archive extraction |                                      |
-|  | - Platform targeting |                                      |
-|  | - Version resolution |                                      |
-|  +----------------------+                                      |
-|                                                                |
-|  +----------------------+                                      |
-|  | Cache.json           |                                      |
-|  | - Version-to-path    |                                      |
-|  |   mapping            |                                      |
-|  | - Checksums          |                                      |
-|  +----------------------+                                      |
-+---------------------------------------------------------------+
-```
-
 ```mermaid
 graph TB
     subgraph SideCar["SideCar Vendored Runtime Manager"]

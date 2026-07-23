@@ -54,26 +54,22 @@ Compiler) toolchain:
 
 ## Architecture 🏗️
 
-```
-+---------------------------------------------------------+
-|                       Rest                               |
-|                                                          |
-|  +------------------+  +------------------+              |
-|  | Fn/Parse.rs      |  | Fn/Transform.rs  |             |
-|  | OXC parser entry |  | OXC transformer  |             |
-|  +------------------+  +------------------+              |
-|                                                          |
-|  +------------------+  +------------------+              |
-|  | Fn/Build.rs      |  | Fn/Bundle.rs     |             |
-|  | Build pipeline   |  | Module bundler   |             |
-|  +------------------+  +------------------+              |
-|                                                          |
-|  +------------------+  +------------------+              |
-|  | Struct/Compiler  |  | Fn/Worker.rs     |             |
-|  | Config.rs        |  | Parallel worker  |             |
-|  | Compiler config  |  | pool             |             |
-|  +------------------+  +------------------+              |
-+---------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph Rest["Rest"]
+        subgraph Row1[" "]
+            Parse["Fn/Parse.rs<br/>OXC parser entry"]
+            Transform["Fn/Transform.rs<br/>OXC transformer"]
+        end
+        subgraph Row2[" "]
+            Build["Fn/Build.rs<br/>Build pipeline"]
+            Bundle["Fn/Bundle.rs<br/>Module bundler"]
+        end
+        subgraph Row3[" "]
+            Config["Struct/CompilerConfig.rs<br/>Compiler config"]
+            Worker["Fn/Worker.rs<br/>Parallel worker pool"]
+        end
+    end
 ```
 
 ### Module Map 🗺️
@@ -98,37 +94,26 @@ Compiler) toolchain:
 The OXC compilation pipeline processes `TypeScript` input through multiple
 stages:
 
-```
-TypeScript input (.ts, .tsx, .mts, .cts)
-    |
-    v
-1. OXC Parser (oxc_parser)
-    - Produces AST with full source location tracking
-    - Handles TypeScript syntax extensions
-    - Supports decorators, JSX, and modern ECMAScript
-    |
-    v
-2. OXC Semantic Analysis (oxc_semantic)
-    - Symbol resolution and scope analysis
-    - Binding and reference tracking
-    - Type checking (scope-level only, not full type inference)
-    |
-    v
-3. OXC Transformer (oxc_transformer)
-    - Decorator lowering to ES5/ES2015 patterns
-    - Class field transformations (public/private field lowering)
-    - TypeScript type annotation stripping
-    - JSX transformation to createElement calls
-    - Target ES version lowering
-    |
-    v
-4. OXC Code Generator (oxc_codegen)
-    - JavaScript source output
-    - Source map generation (VLQ-encoded mappings)
-    - (Optional) OXC Minifier for compressed output
-    |
-    v
-JavaScript output (.js, .cjs, .mjs)
+```mermaid
+graph TB
+    TS[/"TypeScript input (.ts, .tsx, .mts, .cts)"/]
+    TS --> Parser
+    subgraph ParserBox[" "]
+        Parser["1. OXC Parser (oxc_parser)<br/>- Produces AST with source tracking<br/>- Handles TS syntax extensions<br/>- Supports decorators, JSX, ES"]
+    end
+    Parser --> Semantic
+    subgraph SemanticBox[" "]
+        Semantic["2. OXC Semantic Analysis (oxc_semantic)<br/>- Symbol resolution and scope analysis<br/>- Binding and reference tracking<br/>- Type checking (scope-level)"]
+    end
+    Semantic --> Transformer
+    subgraph TransformerBox[" "]
+        Transformer["3. OXC Transformer (oxc_transformer)<br/>- Decorator lowering<br/>- Class field transformations<br/>- Type annotation stripping<br/>- JSX transformation<br/>- Target ES version lowering"]
+    end
+    Transformer --> Codegen
+    subgraph CodegenBox[" "]
+        Codegen["4. OXC Code Generator (oxc_codegen)<br/>- JavaScript source output<br/>- Source map generation<br/>- (Optional) OXC Minifier"]
+    end
+    Codegen --> JS[/"JavaScript output (.js, .cjs, .mjs)"/]
 ```
 
 ### Parallel Processing ⚡

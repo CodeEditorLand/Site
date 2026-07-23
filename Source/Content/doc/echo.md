@@ -23,25 +23,25 @@ with lock-free work-stealing deques built on
 
 Echo is organised into three core subsystems:
 
-```
-+----------------------------------------------------+
-|                    Echo Scheduler                   |
-|                                                     |
-|  +----------------------+  +----------------------+ |
-|  |     Task Layer       |  |    Scheduler Layer   | |
-|  |  - Priority enum     |  |  - SchedulerBuilder  | |
-|  |  - Task&lt;F&gt; wrapper   |  |  - Worker pool       | |
-|  |  - Future integration|  |  - Graceful shutdown | |
-|  +----------------------+  +----------------------+ |
-|                                                     |
-|  +----------------------+                          |
-|  |     Queue Layer      |                          |
-|  |  - StealingQueue&lt;T&gt;  |                          |
-|  |  - Injector/Stealer  |                          |
-|  |  - crossbeam-deque   |                          |
-|  +----------------------+                          |
-+----------------------------------------------------+
-```
+```mermaid
+graph TB
+    subgraph Echo["Echo Scheduler"]
+        subgraph TaskLayer["Task Layer"]
+            TaskLayer_Priority["Priority enum"]
+            TaskLayer_Wrapper["Task&lt;F&gt; wrapper"]
+            TaskLayer_Future["Future integration"]
+        end
+        subgraph SchedLayer["Scheduler Layer"]
+            SchedLayer_Builder["SchedulerBuilder"]
+            SchedLayer_Pool["Worker pool"]
+            SchedLayer_Shutdown["Graceful shutdown"]
+        end
+        subgraph QueueLayer["Queue Layer"]
+            QueueLayer_Deque["StealingQueue&lt;T&gt;"]
+            QueueLayer_Injector["Injector / Stealer"]
+            QueueLayer_Xbeam["crossbeam-deque"]
+        end
+    end
 
 ### Module Map
 
@@ -69,16 +69,17 @@ cores without the caller managing thread lifetimes manually.
 
 Each worker thread maintains:
 
-```
-Worker
-  +---> Injector (push from any thread: submit_task)
-  +---> Stealer (pull from other workers: steal_tasks)
-  +---> Local deque triple:
-  |       +---> High priority deque
-  |       +---> Normal priority deque
-  |       +---> Low priority deque
-  +---> Worker ID
-  +---> Thread handle (JoinHandle)
+```mermaid
+graph TB
+    Worker["Worker"]
+    Worker --> Injector["Injector<br/>(push from any thread: submit_task)"]
+    Worker --> Stealer["Stealer<br/>(pull from other workers: steal_tasks)"]
+    Worker --> Deques["Local deque triple"]
+    Deques --> High["High priority deque"]
+    Deques --> Normal["Normal priority deque"]
+    Deques --> Low["Low priority deque"]
+    Worker --> Wid["Worker ID"]
+    Worker --> Handle["Thread handle (JoinHandle)"]
 ```
 
 ### Task Submission

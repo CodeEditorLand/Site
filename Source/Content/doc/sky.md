@@ -71,23 +71,19 @@ graph TB
 
 ## Architecture 🏗️
 
-```
-+------------------------------------------------------------------+
-|                          Sky                                      |
-|                                                                   |
-|  +------------------+  +------------------+  +------------------+ |
-|  | pages/           |  | Workbench/       |  | Function/        | |
-|  | - index.astro    |  | - Mountain.astro |  | - SkyBridge.ts   | |
-|  | - entry points   |  | - Browser.astro  |  | - Debug.ts       | |
-|  |                  |  | - Electron.astro |  | - Shared.ts      | |
-|  +------------------+  +------------------+  +------------------+ |
-|                                                                   |
-|  +------------------+  +------------------+                       |
-|  | Bundled/         |  | astro.config.ts  |                       |
-|  | Pre-compiled     |  | Vite/Rollup      |                       |
-|  | workbench chunks |  | compilation cfg  |                       |
-|  +------------------+  +------------------+                       |
-+------------------------------------------------------------------+
+```mermaid
+graph TB
+    subgraph Sky["Sky"]
+        subgraph Row1[" "]
+            Pages["pages/<br/>- index.astro<br/>- entry points"]
+            Workbench["Workbench/<br/>- Mountain.astro<br/>- Browser.astro<br/>- Electron.astro"]
+            Functions["Function/<br/>- SkyBridge.ts<br/>- Debug.ts<br/>- Shared.ts"]
+        end
+        subgraph Row2[" "]
+            Bundled["Bundled/<br/>Pre-compiled<br/>workbench chunks"]
+            Config["astro.config.ts<br/>Vite/Rollup<br/>compilation cfg"]
+        end
+    end
 ```
 
 ### Module Map 🗺️

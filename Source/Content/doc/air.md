@@ -75,35 +75,28 @@ graph TB
 
 `Air` is structured around a central `gRPC` server that receives task delegation from `Mountain`. Internal modules handle distinct responsibilities.
 
-```
-                    +------------------------------------------+
-                    |               Mountain                    |
-                    |  ProcessManagement/AirManagement.rs       |
-                    |  Sends work via PerformAction gRPC call   |
-                    +-------------------+----------------------+
-                                        |
-                                        | gRPC (port 50053)
-                                        v
-+----------------------------------------------------------------+
-|                        Air Daemon                               |
-|                                                                 |
-|  +------------------+  +------------------+  +----------------+ |
-|  | gRPC Server      |  | Update Manager   |  | Downloader     | |
-|  | (tonic)          |  | (check, verify,  |  | (resilient     | |
-|  | routes tasks     |  |  apply patches)  |  |  pause/resume) | |
-|  +------------------+  +------------------+  +----------------+ |
-|                                                                 |
-|  +------------------+  +------------------+  +----------------+ |
-|  | Auth Service     |  | Indexer          |  | Health Check   | |
-|  | (crypto, signing)|  | (file content    |  | (watchdog,     | |
-|  |                  |  |  search index)   |  |  metrics)      | |
-|  +------------------+  +------------------+  +----------------+ |
-|                                                                 |
-|  +------------------+  +------------------+  +----------------+ |
-|  | HTTP Client      |  | Mist DNS         |  | Configuration | |
-|  | (reqwest)        |  | (local resolver) |  | (hot-reload)   | |
-|  +------------------+  +------------------+  +----------------+ |
-+----------------------------------------------------------------+
+```mermaid
+graph TB
+    Mountain["Mountain<br/>ProcessManagement / AirManagement.rs<br/>Sends work via PerformAction gRPC"]
+    Mountain -->|"gRPC (port 50053)"| Air
+
+    subgraph Air["Air Daemon"]
+        subgraph Row1[" "]
+            GRPC["gRPC Server<br/>(tonic)<br/>routes tasks"]
+            Update["Update Manager<br/>(check, verify, apply patches)"]
+            Download["Downloader<br/>(resilient pause/resume)"]
+        end
+        subgraph Row2[" "]
+            Auth["Auth Service<br/>(crypto, signing)"]
+            Indexer["Indexer<br/>(file content, search index)"]
+            Health["Health Check<br/>(watchdog, metrics)"]
+        end
+        subgraph Row3[" "]
+            HTTP["HTTP Client<br/>(reqwest)"]
+            Mist["Mist DNS<br/>(local resolver)"]
+            Config["Configuration<br/>(hot-reload)"]
+        end
+    end
 ```
 
 ---
@@ -202,45 +195,29 @@ Manages sensitive cryptographic operations:
 
 ### Update Check Flow 🔄
 
-```
-Mountain triggers update check
-    |
-    v
-Air gRPC server receives CheckForUpdate
-    |
-    v
-Update Manager sends HTTP GET to update server
-    |
-    +---> Server responds with release manifest
-    |       (version, URL, checksum, signature)
-    |
-    v
-Update Manager verifies response signature
-    |
-    v
-Air returns update metadata to Mountain
-    |
-    v
-Mountain displays update notification to user
+```mermaid
+graph TB
+    A["Mountain triggers update check"] --> B["Air gRPC server receives CheckForUpdate"]
+    B --> C["Update Manager sends HTTP GET to update server"]
+    C --> D["Server responds with release manifest<br/>(version, URL, checksum, signature)"]
+    C -.->|"fallback"| D
+    D --> E["Update Manager verifies response signature"]
+    E --> F["Air returns update metadata to Mountain"]
+    F --> G["Mountain displays update notification to user"]
 ```
 
 ### Download with Progress Flow 📥
 
-```
-Mountain calls PerformAction(StartDownload { url, target })
-    |
-    v
-Download Manager begins HTTP download with Range support
-    |
-    +---> Streaming progress events: bytesReceived, totalBytes, speed
-    |        Mountain relays progress to Wind (UI progress bar)
-    |
-    +---> On complete: SHA-256 verification
-    +---> On failure: retry with backoff (up to 3 attempts)
-    +---> On all retries exhausted: return error to Mountain
-    |
-    v
-Download Manager returns ActionResponse { success, filePath }
+```mermaid
+graph TB
+    A["Mountain calls PerformAction(StartDownload)"] --> B["Download Manager begins HTTP download<br/>with Range support"]
+    B --> C["Streaming progress events:<br/>bytesReceived, totalBytes, speed<br/>(Mountain relays to Wind UI)"]
+    B --> D["On complete: SHA-256 verification"]
+    B --> E["On failure: retry with backoff<br/>(up to 3 attempts)"]
+    E --> F{"All retries exhausted?"}
+    F -->|"Yes"| G["Return error to Mountain"]
+    F -->|"No"| B
+    D --> H["Return ActionResponse { success, filePath }"]
 ```
 
 ---

@@ -87,27 +87,24 @@ same key.
 
 ### Sourcing Order
 
-```
-Step  +------------------------------+
-  1   | .env.Land                    |  Core dev defaults
-      | +-- fallback: .env.Land.Sample|  (used if dev file absent)
-  2   | .env.Land.Production         |  Core prod overlay (if NODE_ENV=production or Profile contains "release")
-  3   | .env.Land.Node               |  Node runtime dev defaults
-      | +-- fallback: .env.Land.Node.Sample
-  4   | .env.Land.Production.Node    |  Node runtime prod overlay
-  5   | .env.Land.Extensions         |  Extension dirs dev defaults
-      | +-- fallback: .env.Land.Extensions.Sample
-  6   | .env.Land.Production.Extensions| Extension dirs prod overlay
-  7   | .env.Land.PostHog            |  PostHog/OTLP dev defaults
-      | +-- fallback: .env.Land.PostHog.Sample
-  8   | .env.Land.Production.PostHog |  PostHog/OTLP prod overlay
-  9   | .env.Land.Diagnostics        |  Debug knobs dev defaults
-      | +-- fallback: .env.Land.Diagnostics.Sample
- 10   | .env.Land.Production.Diagnostics| Debug knobs prod overlay
- 11   | .env.Land.Bundled            |  Bundle layout dev defaults
-      | +-- fallback: .env.Land.Bundled.Sample
- 12   | .env.Land.Production.Bundled |  Bundle layout prod overlay
-      +------------------------------+
+```mermaid
+graph TB
+    subgraph Cascade["Sourcing Order"]
+        direction TB
+        S1["Step 1: .env.Land<br/>(fallback: .env.Land.Sample)"]
+        S2["Step 2: .env.Land.Production<br/>(if NODE_ENV=production)"]
+        S3["Step 3: .env.Land.Node<br/>(fallback: .env.Land.Node.Sample)"]
+        S4["Step 4: .env.Land.Production.Node"]
+        S5["Step 5: .env.Land.Extensions<br/>(fallback: .env.Land.Extensions.Sample)"]
+        S6["Step 6: .env.Land.Production.Extensions"]
+        S7["Step 7: .env.Land.PostHog<br/>(fallback: .env.Land.PostHog.Sample)"]
+        S8["Step 8: .env.Land.Production.PostHog"]
+        S9["Step 9: .env.Land.Diagnostics<br/>(fallback: .env.Land.Diagnostics.Sample)"]
+        S10["Step 10: .env.Land.Production.Diagnostics"]
+        S11["Step 11: .env.Land.Bundled<br/>(fallback: .env.Land.Bundled.Sample)"]
+        S12["Step 12: .env.Land.Production.Bundled"]
+        S1 --> S2 --> S3 --> S4 --> S5 --> S6 --> S7 --> S8 --> S9 --> S10 --> S11 --> S12
+    end
 ```
 
 ### Key Rules
