@@ -56,6 +56,25 @@ const GetElementColor = (Line: string): string => {
 	return ElementColorMap[Name] ?? "var(--Primary)";
 };
 
+/** Doc page paths for each element - used for quick links in pricing tiers. */
+const ElementDocPath: Record<string, string> = {
+	Mountain: "/Doc/mountain",
+	Cocoon: "/Doc/cocoon",
+	Wind: "/Doc/wind",
+	Sky: "/Doc/sky",
+	Air: "/Doc/air",
+	Echo: "/Doc/echo",
+	Vine: "/Doc/vine",
+	Common: "/Doc/common",
+	Grove: "/Doc/grove",
+	Mist: "/Doc/mist",
+	Rest: "/Doc/rest",
+	Output: "/Doc/output",
+	SideCar: "/Doc/sidecar",
+	Maintain: "/Doc/maintain",
+	Worker: "/Doc/worker",
+};
+
 /**
  * Dynamic Pricing - two-column layout (Free + Future).
  * Each tier card shows:
@@ -277,19 +296,25 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																	: ""
 															}`}
 														>
-															<span
-																className="font-mono text-sm font-semibold"
-																style={{
-																	color: AccentColor,
-																}}
-															>
-																<RichText
-																	Text={
-																		NameLine
-																	}
-																	Terms={true}
-																/>
-															</span>
+																														<a
+																																href={
+																																	ElementDocPath[
+																																		NameLine
+																																	] ??
+																																		`/Doc/${NameLine.toLowerCase()}`
+																																}
+																															className="font-mono text-sm font-semibold transition-colors hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+																															style={{
+																																color: AccentColor,
+																															}}
+																														>
+																															<RichText
+																																Text={
+																																	NameLine
+																																}
+																																Terms={true}
+																															/>
+																														</a>
 															{Sub1 && (
 																<span className="font-mono text-xs text-foreground">
 																	<RichText

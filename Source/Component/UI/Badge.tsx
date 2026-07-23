@@ -31,7 +31,7 @@ export interface BadgeProps
 		VariantProps<typeof BadgeVariants> {}
 
 // Jelly variant mapping: our semantic names → Jelly's palette names.
-// Jelly's built-in palette is NOT used — we override --jelly-fill and
+// Jelly's built-in palette is NOT used - we override --jelly-fill and
 // --jelly-label with our design tokens via inline style so the soft-body
 // canvas paints in our exact colours instead of Jelly's default palette.
 const JellyBadgeVariant: Record<

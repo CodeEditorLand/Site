@@ -1,4 +1,4 @@
-# Jelly UI Conversion Paradigms — CodeEditorLand/WebSite
+# Jelly UI Conversion Paradigms - CodeEditorLand/WebSite
 
 ## Established Patterns (July 2026)
 
@@ -17,7 +17,7 @@
     "--jelly-card-color": "inherit",     // prevent Jelly text color
   } as React.CSSProperties}
 >
-  {/* Flex layouts MUST live in an inner wrapper — they don't reach slotted content */}
+  {/* Flex layouts MUST live in an inner wrapper - they don't reach slotted content */}
   <div className="flex flex-col gap-6">
     {/* original card content */}
   </div>
@@ -61,16 +61,16 @@ Use `--jelly-fill: transparent` to let Tailwind `bg-*` classes show through:
 ```tsx
 style={{
   "--jelly-color-border-default": accentColor,
-  // NO CSS borderTop/borderLeft — jelly canvas handles the border
+  // NO CSS borderTop/borderLeft - jelly canvas handles the border
 }}
 ```
 
 ### 5. Removals (always required)
-- ❌ `bg-card` / `bg-[var(--Card)]` — jelly paints this
-- ❌ `border`, `borderTop`, `borderLeft` — jelly paints this
-- ❌ `flex`, `flex-col`, `gap-*`, `items-center` on jelly host — move inside
+- ❌ `bg-card` / `bg-[var(--Card)]` - jelly paints this
+- ❌ `border`, `borderTop`, `borderLeft` - jelly paints this
+- ❌ `flex`, `flex-col`, `gap-*`, `items-center` on jelly host - move inside
 - ❌ `StaccatoCard`, `StaccatoBorderShimmer`, `StaccatoBadge`
-- ❌ `hover:bg-*` — jelly hover wobble replaces CSS hover
+- ❌ `hover:bg-*` - jelly hover wobble replaces CSS hover
 
 ### 6. JellyUI Fork Modifications
 Located at `Vendor/JellyUI/` (our fork: DependencyCodeEditorLand/Jelly)
@@ -103,11 +103,11 @@ Located at `Vendor/JellyUI/` (our fork: DependencyCodeEditorLand/Jelly)
 | `DynamicTransparency.tsx` | Transparency badges | `<Badge>` → `<jelly-badge>` |
 | `Doc.astro` | Quick links, entry cards, pills | `<jelly-card squish>` + `<jelly-badge>` |
 | `[...Slug].astro` | Prev/Next nav | `<jelly-card squish>` |
-| `Noise/Stylesheet.css` | Removed card border CSS | — |
-| `Base.astro` | Shiki+Mermaid dark CSS, jelly.js path | — |
-| `astro.config.ts` | Shiki dual-theme | — |
-| `Route/Integration.ts` | `_redirects` pass-through | — |
-| `BuildJellyUIVendor.sh` | Copy to `Asset/JellyUI/` | — |
+| `Noise/Stylesheet.css` | Removed card border CSS | - |
+| `Base.astro` | Shiki+Mermaid dark CSS, jelly.js path | - |
+| `astro.config.ts` | Shiki dual-theme | - |
+| `Route/Integration.ts` | `_redirects` pass-through | - |
+| `BuildJellyUIVendor.sh` | Copy to `Asset/JellyUI/` | - |
 
 ### 8. Debugging Tips
 - Client-rendered pages (Portal, Dashboard, Download) show 0 jelly in static HTML

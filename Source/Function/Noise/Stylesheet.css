@@ -132,7 +132,7 @@
  overrides utilities like bg-primary on elements that reuse .StaccatoCard
  (e.g. IconTooltip). Border brightens on hover; glow only in dark.
  FeatureCard / PricingCard / TestimonialCard / MasonryCard / PlatformCard
- are now jelly-card custom elements — Jelly's canvas handles their border. */
+ are now jelly-card custom elements - Jelly's canvas handles their border. */
 .TransparencyCard {
 	border: 1px solid var(--Border);
 	border-radius: var(--BorderRadius);

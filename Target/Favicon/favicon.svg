@@ -1,1 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1880 1880"><style>@media (prefers-color-scheme:dark){#light-icon{display:none}}</style><g id="light-icon"><path fill="#151515" d="M1880 1H1v1879h1879z"/><path fill="#fff" d="M764.344 412.031H470.75V1468.97h293.594z"/><path fill="#fff" d="M1468.97 1175.38H470.75v293.59h998.22z"/></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1880 1880">
+	<style>
+		#dark-icon {
+			display: none;
+		}
+
+		@media (prefers-color-scheme: dark) {
+			#light-icon {
+				display: none;
+			}
+
+			#dark-icon {
+				display: inline;
+			}
+		}
+	</style>
+	<g id="light-icon">
+		<path d="M1880 1H1V1880H1880V1Z" fill="#151515" />
+		<path d="M764.344 412.031H470.75V1468.97H764.344V412.031Z" fill="white" />
+		<path d="M1468.97 1175.38H470.75V1468.97H1468.97V1175.38Z" fill="white" />
+	</g>
+	<g id="dark-icon">
+		<path d="M1879 1H0V1880H1879V1Z" fill="white" />
+		<path d="M763.344 412.031H469.75V1468.97H763.344V412.031Z" fill="#151515" />
+		<path d="M1467.97 1175.38H469.75V1468.97H1467.97V1175.38Z" fill="#151515" />
+	</g>
+</svg>

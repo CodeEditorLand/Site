@@ -434,7 +434,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"The fifteen element directories are present in the Land workspace. The active desktop path is Mountain, Cocoon, Sky, Wind, Vine, Common, Echo, Air, Mist, Rest, Output, SideCar, and Maintain. Grove and Worker are present with integration scope that differs by build profile.",
+							"A native editor built on Rust and Tauri - no Chromium, no Electron. The active desktop path spans Mountain (backend), Cocoon (extensions), Sky (UI), and Wind (workbench), supported by Vine, Common, Echo, Air, Mist, Rest, Output, SideCar, and Maintain. Grove and Worker are present with integration scope that differs by build profile.",
 					}),
 
 					Price: { Monthly: 0, Yearly: 0 },
