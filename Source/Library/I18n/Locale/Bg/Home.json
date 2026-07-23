@@ -30,6 +30,11 @@
 		"subtitle": "Native speed. VS Code compatibility. No Chromium, no compromises.",
 		"title": "VS Code. Without Electron."
 	},
+	"pricing": {
+		"labels": {
+			"popular": "Most Popular"
+		}
+	},
 	"hero": {
 		"badge": "No Electron No Chromium CC0",
 		"subtitle": "A native code editor with the soul of VS Code - and none of the browser. Built on Rust and Tauri, compatible with the extensions you already use.",
