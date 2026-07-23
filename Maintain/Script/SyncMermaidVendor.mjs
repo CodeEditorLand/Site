@@ -47,13 +47,13 @@ function FindMarkdownFiles(Dir, Out = []) {
 
 function ExtractMermaidHashes(Files) {
 	const Hashes = new Set();
-	const Pattern = /```mermaid\n([\s\S]*?)```/g;
+	const Pattern = /```mermaid\r?\n([\s\S]*?)```/g;
 
 	for (const File of Files) {
 		const Text = readFileSync(File, "utf-8");
 		let Match;
 		while ((Match = Pattern.exec(Text))) {
-			const Code = Match[1].trim();
+								const Code = Match[1].trim().replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 			if (!Code) continue;
 			Hashes.add(
 				createHash("sha256").update(Code).digest("hex").slice(0, 16),
