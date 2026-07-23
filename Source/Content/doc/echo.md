@@ -28,7 +28,7 @@ graph TB
     subgraph Echo["Echo Scheduler"]
         subgraph TaskLayer["Task Layer"]
             TaskLayer_Priority["Priority enum"]
-            TaskLayer_Wrapper["Task&lt;F&gt; wrapper"]
+            TaskLayer_Wrapper["Task<F> wrapper"]
             TaskLayer_Future["Future integration"]
         end
         subgraph SchedLayer["Scheduler Layer"]
@@ -37,7 +37,7 @@ graph TB
             SchedLayer_Shutdown["Graceful shutdown"]
         end
         subgraph QueueLayer["Queue Layer"]
-            QueueLayer_Deque["StealingQueue&lt;T&gt;"]
+            QueueLayer_Deque["StealingQueue<T>"]
             QueueLayer_Injector["Injector / Stealer"]
             QueueLayer_Xbeam["crossbeam-deque"]
         end

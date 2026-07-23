@@ -130,7 +130,7 @@ Define/Implement/Problem pattern:
 
 ```mermaid
 graph TB
-    Dir["Effect/&lt;Service&gt;/"]
+    Dir["Effect/<Service>/"]
     Dir --> Define["Define.ts<br/>The service Tag<br/>(Effect-TS service identifier)"]
     Dir --> Implement["Implement.ts<br/>The service implementation<br/>(for TauriLiveLayer)"]
     Dir --> Problem["Problem.ts<br/>Typed error effects"]
