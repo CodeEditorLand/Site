@@ -7,57 +7,57 @@
 			},
 			"macos": {
 				"title": "macOS",
-				"universalBadge": "Binaire universel"
+				"universalBadge": "Universal Binary: Apple Silicon and Intel"
 			},
 			"windows": {
-				"description": "64 bits (x64)",
+				"description": "64-bit (x64)",
 				"title": "Windows"
 			}
 		}
 	},
 	"page": {
-		"subtitle": "Natif sur macOS, Windows et Linux.\n\nGratuit, sans suivi, prise en charge complète des extensions VS Code.",
-		"title": "Télécharger Land"
+		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		"title": "Download Land"
 	},
 	"previousReleases": {
-		"description": "Téléchargez une version antérieure si vous devez vous fixer à une version spécifique.",
-		"title": "Versions précédentes"
+		"description": "Download an older version if you need to pin to a specific release.",
+		"title": "Previous Releases"
 	},
-	"subtitle": "Natif sur macOS, Windows et Linux.\n\nConstruit avec Tauri. Propulsé par Rust. Vérifié avec PGP.",
+	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 	"systemRequirements": {
-		"minimum": "Configuration minimale",
-		"recommended": "Recommandé pour la meilleure expérience",
-		"subtitle": "Une vérification rapide avant de télécharger évite une réinstallation.",
-		"supportedOS": "Systèmes d'exploitation pris en charge",
-		"title": "Configuration requise"
+		"minimum": "Minimum Requirements",
+		"recommended": "Recommended for the Best Experience",
+		"subtitle": "A quick check before you download saves a reinstall later.",
+		"supportedOS": "Supported Operating Systems",
+		"title": "System Requirements"
 	},
-	"title": "Télécharger Land",
+	"title": "Download Land",
 	"verification": {
-		"description": "Chaque version de Land est signée PGP avant d'être distribuée.\n\nVérifiez votre téléchargement pour confirmer que vous avez obtenu exactement ce qui a été compilé.",
-		"downloadButton": "Télécharger la clé publique PGP",
-		"title": "Chaque version est signée. Vérifiez la vôtre.",
-		"verifyButton": "Vérifier le téléchargement"
+		"description": "Release downloads will publish checksum and signature material when public installers are available.",
+		"downloadButton": "View Verification Plan",
+		"title": "Verification Will Ship With Public Releases.",
+		"verifyButton": "Verify Download"
 	},
 	"labels": {
-		"version": "Version :",
-		"size": "Taille :",
-		"requirements": "Configuration requise :",
-		"loading": "Chargement des téléchargements disponibles...",
-		"errorTitle": "Impossible de charger les téléchargements",
-		"downloadFailed": "Échec du téléchargement. Veuillez réessayer.",
-		"downloadFor": "Télécharger pour {{platform}}",
-		"copiedToClipboard": "{{label}} copie dans le presse-papiers !",
-		"failedToCopy": "Echec de la copie de {{label}}",
-		"sha256Checksum": "Somme de contrôle SHA-256",
-		"pgpSignature": "Signature PGP",
-		"verificationInstructions": "Instructions de vérification",
-		"downloadVerification": "Vérification du téléchargement",
-		"integrityCheck": "Vérification de l'intégrité",
-		"copy": "Copier",
-		"signedWithKeyId": "Signé avec l'ID de clé : {{keyId}}"
+		"version": "Version:",
+		"size": "Size:",
+		"requirements": "Requirements:",
+		"loading": "Loading available downloads...",
+		"errorTitle": "Could not load downloads",
+		"downloadFailed": "Download failed. Please try again.",
+		"downloadFor": "Download for {{platform}}",
+		"copiedToClipboard": "{{label}} copied to clipboard.",
+		"failedToCopy": "Could not copy {{label}}",
+		"sha256Checksum": "SHA-256 Checksum",
+		"pgpSignature": "PGP Signature",
+		"verificationInstructions": "Verification Instructions",
+		"downloadVerification": "Download Verification",
+		"integrityCheck": "Integrity Check",
+		"copy": "Copy",
+		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"transparency": {
-		"title": "Rien de caché. Divulgation complète de la compilation.",
-		"subtitle": "Aucune télémétrie par défaut. Les variantes de compilation, les cibles de déploiement et les clés de signature sont publiques.\n\nVérifiez tout dans le code source."
+		"title": "Telemetry Is Compile-Gated in Land.",
+		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in."
 	}
 }

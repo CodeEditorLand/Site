@@ -7,57 +7,57 @@
 			},
 			"macos": {
 				"title": "macOS",
-				"universalBadge": "Universal Binary"
+				"universalBadge": "Universal Binary: Apple Silicon and Intel"
 			},
 			"windows": {
-				"description": "64-Bit (x64)",
+				"description": "64-bit (x64)",
 				"title": "Windows"
 			}
 		}
 	},
 	"page": {
-		"subtitle": "Nativ auf macOS, Windows und Linux.\n\nKostenlos, kein Tracking, volle VS Code-Erweiterungsunterstützung.",
-		"title": "Land herunterladen"
+		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		"title": "Download Land"
 	},
 	"previousReleases": {
-		"description": "Laden Sie eine ältere Version herunter, wenn Sie eine bestimmte Version festhalten müssen.",
-		"title": "Frühere Versionen"
+		"description": "Download an older version if you need to pin to a specific release.",
+		"title": "Previous Releases"
 	},
-	"subtitle": "Nativ auf macOS, Windows und Linux.\n\nMit Tauri gebaut. Von Rust angetrieben. Mit PGP verifiziert.",
+	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 	"systemRequirements": {
-		"minimum": "Mindestanforderungen",
-		"recommended": "Empfohlen für das beste Erlebnis",
-		"subtitle": "Eine kurze Überprüfung vor dem Herunterladen erspart eine Neuinstallation.",
-		"supportedOS": "Unterstützte Betriebssysteme",
-		"title": "Systemanforderungen"
+		"minimum": "Minimum Requirements",
+		"recommended": "Recommended for the Best Experience",
+		"subtitle": "A quick check before you download saves a reinstall later.",
+		"supportedOS": "Supported Operating Systems",
+		"title": "System Requirements"
 	},
-	"title": "Land herunterladen",
+	"title": "Download Land",
 	"verification": {
-		"description": "Jedes Land-Release wird vor der Auslieferung PGP-signiert.\n\nÜberprüfen Sie Ihren Download, um zu bestätigen, dass Sie genau das erhalten haben, was gebaut wurde.",
-		"downloadButton": "PGP-Public-Key herunterladen",
-		"title": "Jedes Release ist signiert. Überprüfen Sie Ihres.",
-		"verifyButton": "Download verifizieren"
+		"description": "Release downloads will publish checksum and signature material when public installers are available.",
+		"downloadButton": "View Verification Plan",
+		"title": "Verification Will Ship With Public Releases.",
+		"verifyButton": "Verify Download"
 	},
 	"labels": {
 		"version": "Version:",
-		"size": "Größe:",
-		"requirements": "Anforderungen:",
-		"loading": "Verfügbare Downloads werden geladen...",
-		"errorTitle": "Downloads konnten nicht geladen werden",
-		"downloadFailed": "Download fehlgeschlagen. Bitte erneut versuchen.",
-		"downloadFor": "Für {{platform}} herunterladen",
-		"copiedToClipboard": "{{label}} in die Zwischenablage kopiert!",
-		"failedToCopy": "{{label}} konnte nicht kopiert werden",
-		"sha256Checksum": "SHA-256-Prüfsumme",
-		"pgpSignature": "PGP-Signatur",
-		"verificationInstructions": "Verifikationsanleitung",
-		"downloadVerification": "Download-Verifikation",
-		"integrityCheck": "Integritätsprüfung",
-		"copy": "Kopieren",
-		"signedWithKeyId": "Signiert mit Schlüssel-ID: {{keyId}}"
+		"size": "Size:",
+		"requirements": "Requirements:",
+		"loading": "Loading available downloads...",
+		"errorTitle": "Could not load downloads",
+		"downloadFailed": "Download failed. Please try again.",
+		"downloadFor": "Download for {{platform}}",
+		"copiedToClipboard": "{{label}} copied to clipboard.",
+		"failedToCopy": "Could not copy {{label}}",
+		"sha256Checksum": "SHA-256 Checksum",
+		"pgpSignature": "PGP Signature",
+		"verificationInstructions": "Verification Instructions",
+		"downloadVerification": "Download Verification",
+		"integrityCheck": "Integrity Check",
+		"copy": "Copy",
+		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"transparency": {
-		"title": "Nichts verborgen. Vollständige Build-Offenlegung.",
-		"subtitle": "Standardmäßig kein Telemetrie. Build-Varianten, Deployment-Ziele und Signierungsschlüssel sind öffentlich.\n\nÜberprüfen Sie alles im Quellcode."
+		"title": "Telemetry Is Compile-Gated in Land.",
+		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in."
 	}
 }

@@ -16,7 +16,7 @@
 		}
 	},
 	"page": {
-		"subtitle": "Native on macOS, Windows, and Linux.\n\nZero cost, zero tracking, full VS Code extension support.",
+		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 		"title": "Download Land"
 	},
 	"previousReleases": {
@@ -33,9 +33,9 @@
 	},
 	"title": "Download Land",
 	"verification": {
-		"description": "Every Land release is PGP-signed before it ships.\n\nVerify your download to confirm you got exactly what was built.",
-		"downloadButton": "Download PGP Public Key",
-		"title": "Every Release is Signed. Verify Yours.",
+		"description": "Release downloads will publish checksum and signature material when public installers are available.",
+		"downloadButton": "View Verification Plan",
+		"title": "Verification Will Ship With Public Releases.",
 		"verifyButton": "Verify Download"
 	},
 	"labels": {
@@ -57,7 +57,7 @@
 		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"transparency": {
-		"title": "VS Code Phones Home. Land Does Not.",
-		"subtitle": "VS Code (not VSCodium) embeds Microsoft telemetry at the network call level. Disabling it via settings reduces what is sent - it does not remove the code paths.\n\nThe Telemetry feature is not in Land's default build. When it is not compiled in, the code does not exist. Nothing to disable."
+		"title": "Telemetry Is Compile-Gated in Land.",
+		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in."
 	}
 }

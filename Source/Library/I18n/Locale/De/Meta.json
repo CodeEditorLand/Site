@@ -1,65 +1,65 @@
 {
 	"account": {
-		"forgotPassword": "Passwort vergessen - Code Editor Land",
-		"resetPassword": "Passwort zurücksetzen - Code Editor Land",
-		"signIn": "Anmelden - Code Editor Land",
-		"signUp": "Registrieren - Code Editor Land"
+		"forgotPassword": "Forgot Password - Code Editor Land",
+		"resetPassword": "Reset Password - Code Editor Land",
+		"signIn": "Sign In - Code Editor Land",
+		"signUp": "Sign Up - Code Editor Land"
 	},
-	"description": "Der Code-Editor der nächsten Generation",
+	"description": "No Electron. No Chromium. VS Code extension compatible.",
 	"downloads": {
-		"description": "Laden Sie Code Editor Land für macOS, Windows und Linux herunter.\nAlle Versionen sind signiert und für Ihre Sicherheit verifiziert.",
-		"title": "Code Editor Land herunterladen | Der Code-Editor der nächsten Generation"
+		"description": "Download Code Editor Land for macOS, Windows, and Linux.\nAll releases are signed and verified for your security.",
+		"title": "Download Code Editor Land | No Electron. No Chromium. Every Extension Runs Unchanged."
 	},
 	"home": {
-		"description": "Code Editor Land ist ein leistungsstarker, ressourcenschonender Code-Editor, gebaut mit Rust und Tauri.\nErleben Sie VS Code",
-		"title": "Code Editor Land | Der Code-Editor der nächsten Generation"
+		"description": "Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
+		"title": "Code Editor Land | Rust and Tauri Editor Stack"
 	},
 	"legal": {
 		"privacy": {
-			"description": "Datenschutzrichtlinie für Code Editor Land - Erfahren Sie, wie wir Ihre personenbezogenen Daten in Übereinstimmung mit DSGVO und CCPA erheben, verwenden und schützen.",
-			"title": "Datenschutzrichtlinie | Code Editor Land"
+			"description": "Privacy Policy for Code Editor Land - Learn how we collect, use, and protect your personal data in compliance with GDPR and CCPA.",
+			"title": "Privacy Policy | Code Editor Land"
 		},
 		"terms": {
-			"description": "Nutzungsbedingungen für Code Editor Land - Regelung Ihrer Nutzung unseres Open-Source-Code-Editors und verwandter Dienste.",
-			"title": "Nutzungsbedingungen | Code Editor Land"
+			"description": "Terms of Service for Code Editor Land - Governing your use of our open-source code editor and related services.",
+			"title": "Terms of Service | Code Editor Land"
 		}
 	},
 	"license": {
-		"description": "Code Editor Land ist Open Source unter der Creative Commons CC0 1.0 Universal Lizenz.",
-		"title": "Lizenz | Code Editor Land"
+		"description": "Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license.",
+		"title": "License | Code Editor Land"
 	},
 	"title": "Code Editor Land",
 	"verify": {
-		"title": "E-Mail verifizieren - Code Editor Land"
+		"title": "Verify Email - Code Editor Land"
 	},
 	"docs": {
-		"title": "Dokumentation | Code Editor Land",
-		"description": "Durchsuchen Sie die Dokumentation von Code Editor Land, Architekturleitfäden und Entwicklerressourcen."
+		"title": "Documentation | Code Editor Land",
+		"description": "Browse the Code Editor Land documentation, architecture guides, and developer resources."
 	},
 	"blog": {
 		"title": "Blog | Code Editor Land",
-		"description": "Neuigkeiten, Updates und Artikel vom Code Editor Land Team."
+		"description": "News, updates, and articles from the Code Editor Land team."
 	},
 	"contributing": {
-		"title": "Mitwirken | Code Editor Land",
-		"description": "Ein Open-Source-Code-Editor, gebaut mit Rust und Tauri.\nErfahren Sie, wie Sie zu Code Editor Land beitragen können."
+		"title": "Contributing | Code Editor Land",
+		"description": "An open source code editor built with Rust and Tauri.\nLearn how to contribute to Code Editor Land."
 	},
 	"dashboard": {
 		"title": "Dashboard | Code Editor Land",
-		"description": "Verwalten Sie Ihr Konto, Downloads und Einstellungen.\nIhr Code Editor Land Dashboard."
+		"description": "Manage your account, download, and setting.\nYour Code Editor Land dashboard."
 	},
 	"contact": {
 		"sales": {
-			"title": "Unternehmensanfragen | Code Editor Land",
-			"description": "Kontaktieren Sie das Code Editor Land Team für Unternehmenslizenzierung, Support und Bereitstellungsoptionen."
+			"title": "Enterprise Inquiries | Code Editor Land",
+			"description": "Contact the Code Editor Land team for enterprise licensing, support, and deployment options."
 		}
 	},
 	"portal": {
-		"title": "Editor-Portal | Code Editor Land",
-		"description": "Cloud, Anbieter oder Local-First.\nWählen Sie Ihre Authentifizierungsmethode für Code Editor Land."
+		"title": "Editor Portal | Code Editor Land",
+		"description": "CodeEditorLand account sign-in and planned portal modes for cloud, provider, local-first, and enterprise workflows."
 	},
 	"oauth": {
-		"success": "Authentifizierung erfolgreich - Code Editor Land",
-		"successDescription": "Sie wurden erfolgreich authentifiziert."
+		"success": "Authentication Successful - Code Editor Land",
+		"successDescription": "You have been authenticated successfully."
 	}
 }

@@ -1,357 +1,290 @@
 {
 	"actions": {
-		"signIn": "Bei Ihrem Konto anmelden"
+		"signIn": "Sign In to Your Account"
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "Schneller als VS Code. Leichter als Electron. Für immer kostenlos."
+		"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever."
 	},
 	"breadcrumb": {
-		"home": "Startseite"
+		"home": "Home"
 	},
 	"button": {
-		"backToHome": "Zur Startseite",
-		"backToTop": "Nach oben",
-		"download": "Land kostenlos herunterladen",
-		"learnMore": "Was Land anders macht",
-		"signIn": "Bei Ihrem Account anmelden",
-		"signUp": "Kostenloses Konto erstellen"
+		"backToHome": "Return to Homepage",
+		"backToTop": "Back to top",
+		"download": "Download Land Free",
+		"learnMore": "See What Makes Land Different",
+		"signIn": "Sign In to Your Account",
+		"signUp": "Create Your Free Account"
 	},
-	"comingSoon": "Demnächst verfügbar",
+	"comingSoon": "Coming Soon",
 	"error": {
-		"404": "404 - Seite nicht gefunden",
-		"pageNotFound": "Die gesuchte Seite existiert nicht oder wurde verschoben.\n\nBitte überprüfen Sie die URL auf Tippfehler oder kehren Sie zur Startseite zurück.\n\nWenn Sie glauben, dass dies ein Fehler ist, kontaktieren Sie unser Support-Team und wir helfen Ihnen weiter."
+		"404": "404 - Page Not Found",
+		"pageNotFound": "The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need."
 	},
 	"label": {
-		"email": "E-Mail-Adresse",
-		"password": "Passwort"
+		"email": "Email Address",
+		"password": "Password"
 	},
 	"nav": {
-		"docs": "Dokumentation",
+		"docs": "Documentation",
 		"downloads": "Download",
 		"github": "GitHub Repository"
 	},
 	"docs": {
-		"pageTitle": "Dokumentation",
-		"pageSubtitle": "Alles, was Sie zum Installieren, Bauen und Beitragen zu Land benötigen.",
+		"pageTitle": "Documentation",
+		"pageSubtitle": "Everything you need to install, build, and contribute to Land.",
 		"gettingStarted": {
-			"title": "In Minuten loslegen",
-			"description": "Die README führt Sie durch Installation, ersten Build und die Fünfzehn-Element-Architektur. Keine Rust- oder Tauri-Vorkenntnisse erforderlich."
+			"title": "Get Started in Minutes",
+			"description": "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required."
 		},
 		"issueTracker": {
-			"title": "Einen Bug melden oder ein Feature anfragen",
-			"description": "Öffnen Sie ein Issue auf GitHub. Das Team überwacht täglich und kennzeichnet good-first-issue-Aufgaben für neue Mitwirkende."
+			"title": "Report a Bug or Request a Feature",
+			"description": "Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors."
 		},
 		"architecture": {
-			"heading": "Wie die Architektur funktioniert",
-			"intro": "Land ersetzt den Electron-Stack von VS Code Element für Element. Jedes der fünfzehn Elemente ist ein unabhängiges Open-Source-Repository:",
-			"mountain": {
-				"description": "Verwaltet Fenster, Dateisystem, Prozesse",
-				"subtitle": "Rust/Tauri-nativer Backend"
-			},
-			"cocoon": {
-				"description": "Führt VS Code-Erweiterungen über Effect-TS aus",
-				"subtitle": "TypeScript-Erweiterungs-Host"
-			},
-			"wind": {
-				"description": "Neuimplementierung des VS Code-Workbench",
-				"subtitle": "TypeScript-UI-Dienste"
-			},
-			"sky": {
-				"description": "Rendert die Editor-Oberfläche",
-				"subtitle": "Astro-UI-Komponenten"
-			},
-			"air": {
-				"description": "Updates, Downloads, Kryptosignierung",
-				"subtitle": "Rust-Hintergrunddaemon"
-			},
-			"echo": {
-				"description": "Hochleistungsfähiger Work-Stealing-Executor",
-				"subtitle": "Rust-Aufgabenplaner"
-			},
-			"common": {
-				"description": "Abstrakte Kernbibliothek - Trait-Definitionen und DTOs",
-				"subtitle": "Rust-Kernbibliothek"
-			},
-			"vine": {
-				"description": "gRPC-Protokolldefinition und -Implementierung",
-				"subtitle": "Protobuf/Rust IPC"
-			},
-			"rest": {
-				"description": "JS-Bundler für VS Code-Plattformcode",
-				"subtitle": "Rust/OXC-Bundler"
-			},
-			"output": {
-				"description": "Gebündelte JS-Artefakte von Rest",
-				"subtitle": "JavaScript-Laufzeit-Bundle"
-			},
-			"mist": {
-				"description": "WebSocket-Kommunikationsschicht",
-				"subtitle": "Rust WebSocket"
-			},
-			"grove": {
-				"description": "Nativer WASM- und Rhai-Erweiterungs-Host",
-				"subtitle": "Rust/WASM-Erweiterungs-Host"
-			},
-			"worker": {
-				"description": "Web Workers für das Frontend",
-				"subtitle": "TypeScript Web Workers"
-			},
-			"sidecar": {
-				"description": "Vorgefertigte Node.js-Binärdateien",
-				"subtitle": "Plattformübergreifendes Node.js"
-			},
-			"maintain": {
-				"description": "CI/CD und Wartungsskripte",
-				"subtitle": "Build-Werkzeuge"
-			}
+			"heading": "How Land Replaces VS Code's Electron Stack",
+			"intro": "VS Code runs on Electron: a Chromium browser, a Node.js runtime, and an extension-host model. Land replaces those pieces with independent elements while preserving the VS Code extension API as the compatibility target. Browse individual elements in the Element section above, or explore the workspace on GitHub."
 		},
 		"repositories": {
-			"heading": "Quell-Repositories",
-			"mainMonorepo": "Haupt-Monorepo",
-			"tauriBackend": "Tauri-Backend",
-			"extensionHost": "Erweiterungs-Host",
-			"viewAll": "Alle Repositories anzeigen",
-			"windServiceLayer": "UI-Dienstschicht",
-			"skyComponentLayer": "UI-Komponentenschicht",
-			"airDaemon": "Hintergrunddaemon"
+			"viewAll": "View all repositories"
 		}
 	},
 	"blog": {
 		"pageTitle": "Blog",
-		"pageSubtitle": "Neuigkeiten, Aktualisierungen und technische Artikel vom Team.",
-		"comingSoonHeading": "Demnächst verfügbar",
-		"comingSoonText": "Wir bereiten Artikel über die Architektur, den Entwicklungsprozess und die Roadmap für Code Editor Land vor.\nSchauen Sie bald wieder vorbei für Updates.",
-		"joinDiscussions": "Der Community beitreten",
-		"followGitHub": "Auf GitHub folgen",
-		"reportIssue": "Problem melden",
-		"followNote": "Verfolgen Sie den Fortschritt auf GitHub oder schauen Sie hier nach veröffentlichten Artikeln.",
+		"pageSubtitle": "Architecture deep-dives, development updates, and technical articles from the Land team.",
+		"comingSoonHeading": "Articles Coming Soon",
+		"comingSoonText": "We are preparing in-depth articles on the architecture, development process, and roadmap.\n\nCheck back soon or follow progress on GitHub.",
+		"joinDiscussions": "Join the Community",
+		"followGitHub": "Follow on GitHub",
+		"reportIssue": "Report an Issue",
+		"followNote": "Follow progress on GitHub or check back here for published articles.",
 		"topic": {
-			"architecture": "Tiefgehender Einblick in die Mountain/Cocoon/Wind/Sky/Air/Echo-Elementarchitektur und wie sie Electron ersetzen",
-			"effectTS": "Wie Effect-TS typsichere UI-Dienste mit strukturierter Nebenläufigkeit und Fehlerbehandlung ermöglicht",
-			"grpc": "gRPC-IPC-Protokolldesign: Rust und TypeScript mit nativer Geschwindigkeit verbinden",
-			"extensions": "VS Code-Erweiterungskompatibilität: vorhandene Erweiterungen ohne Änderungen über Cocoon ausführen",
-			"ngi": "Entwicklung mit dem NGI0 Commons Fund: Open-Source-Nachhaltigkeit und die europäische Initiative für offenes Internet"
+			"architecture": "How Mountain, Cocoon, Wind, Sky, Air, and Echo replace Electron one element at a time",
+			"effectTS": "Why Effect-TS powers the UI layer: typed services, structured concurrency, and traced errors",
+			"grpc": "gRPC IPC at native speed: how Rust and TypeScript communicate without overhead",
+			"extensions": "Running VS Code extensions without modification: how Cocoon achieves high-fidelity compatibility",
+			"ngi": "Building with the NGI0 Commons Fund: open-source sustainability and the European open internet initiative"
 		},
-		"upcomingTopicsHeading": "Kommende Themen"
+		"upcomingTopicsHeading": "Upcoming Topics"
 	},
 	"contributing": {
-		"pageTitle": "Beitragen",
-		"pageSubtitle": "Land ist Open Source und wird öffentlich entwickelt.\n\nJeder Beitrag (Code, Docs, Tests oder Design) geht an echte Nutzer.",
+		"pageTitle": "Contributing",
+		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution (code, docs, tests, or design) and ships to real users.",
 		"guide": {
-			"title": "Beitragsleitfaden",
-			"description": "Lesen Sie CONTRIBUTING.md auf GitHub für den vollständigen Einrichtungsweg: Umgebung, Branch-Konventionen und Einreichungsverfahren."
+			"title": "Contributing Guide",
+			"description": "Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes."
 		},
 		"goodFirstIssues": {
-			"title": "Gute erste Issues",
-			"description": "Durchsuchen Sie Issues mit dem Label \"good first issue\", um zugängliche Aufgaben für neue Mitwirkende zu finden."
+			"title": "Good First Issues",
+			"description": "Browse issues labeled good-first-issue to find tasks sized for new contributors. The team triages and labels these weekly."
+		},
+		"elements": {
+			"heading": "Fifteen Elements, One Editor",
+			"description": "Land is built from fifteen modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
+			"docs": "Every Element has its own README with architecture details. Find them in Land/Element/"
 		},
 		"howToContribute": {
-			"heading": "So tragen Sie bei"
+			"heading": "How to Contribute"
 		},
 		"step1": {
-			"title": "Forken und klonen",
-			"description": "Forken Sie das Land-Repository auf GitHub und klonen Sie es lokal mit Submodulen:"
+			"title": "Fork and Clone",
+			"description": "Fork the Land repository on GitHub and clone it locally with submodules:"
 		},
 		"step2": {
-			"title": "Umgebung einrichten",
-			"description": "Installieren Sie Rust 1.95.0+, Node.js und pnpm. Dann ausführen:"
+			"title": "Set Up the Environment",
+			"description": "Install Rust 1.95.0+, Node.js, and pnpm. Then run:"
 		},
 		"step3": {
-			"title": "Änderungen vornehmen",
-			"description": "Erstellen Sie einen Branch, nehmen Sie Ihre Änderungen vor und befolgen Sie die PascalCase-Namenskonvention."
+			"title": "Make Your Changes",
+			"description": "Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project."
 		},
 		"step4": {
-			"title": "Pull Request einreichen",
-			"description": "Pushen Sie Ihren Branch und öffnen Sie einen Pull Request gegen den Current-Branch.\n\nBeschreiben Sie, was und warum. Ein Satz genügt."
+			"title": "Submit a Pull Request",
+			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.."
 		},
 		"ways": {
-			"heading": "Möglichkeiten zur Mitwirkung",
+			"heading": "Ways to Contribute",
 			"code": {
 				"title": "Code",
-				"description": "Beheben Sie Bugs, implementieren Sie Features oder verbessern Sie die Performance in Rust oder TypeScript."
+				"description": "Fix bugs, implement features, or improve performance in Rust or TypeScript."
 			},
 			"documentation": {
-				"title": "Dokumentation",
-				"description": "Verbessern Sie Anleitungen, fügen Sie Beispiele hinzu oder übersetzen Sie Inhalte in andere Sprachen."
+				"title": "Documentation",
+				"description": "Improve guides, add examples, or translate existing content into other languages."
 			},
 			"testing": {
-				"title": "Testen",
-				"description": "Schreiben Sie Tests, reproduzieren Sie gemeldete Bugs oder helfen Sie bei der Triage offener Issues."
+				"title": "Testing",
+				"description": "Write tests, reproduce reported bugs, or help triage open issues."
 			},
 			"design": {
 				"title": "Design",
-				"description": "Tragen Sie UI/UX-Verbesserungen, Icons oder visuelle Designarbeit bei."
+				"description": "Contribute UI and UX improvements, icons, or visual design work for the editor or website."
 			}
 		},
-		"elements": {
-			"heading": "Fünfzehn Elemente, ein Editor",
-			"description": "Land besteht aus fünfzehn modularen Elementen, jeweils ein eigenständiges Rust-Crate oder TypeScript-Paket.",
-			"docs": "Jedes Element hat seine eigene README mit Architekturdetails. Zu finden in Land/Element/"
-		},
 		"funding": {
-			"heading": "Finanzierung",
-			"description": "Land wird durch den NLnet NGI0 Commons Fund finanziert.\n\nDieses Stipendium ermöglicht Vollzeit-Open-Source-Entwicklung.",
-			"nlnetIntro": "Code Editor Land wurde finanziert durch den",
+			"heading": "Funding",
+			"description": "Land is funded through the NLnet NGI0 Commons Fund.\n\nThis grant enables full-time open-source development on the project.",
+			"nlnetIntro": "Code Editor Land has been funded through the",
 			"nlnetFundName": "NGI0 Commons Fund",
-			"nlnetEstablishedBy": ", einen Fonds, gegründet von",
-			"nlnetSuffix": "mit finanzieller Unterstützung des Next-Generation-Internet-Programms der Europäischen Kommission, unter Fördervereinbarung Nr. 101135429.\n\nDiese Finanzierung ermöglicht eine nachhaltige Open-Source-Entwicklung des Projekts.",
-			"playformInfo": "Das Projekt wird von PlayForm betrieben, einem Unternehmen mit Sitz in Sofia, Bulgarien.\n\nPlayForm fungiert als Open-Source-Steward für Code Editor Land im Rahmen des NGI0 Commons Fund.",
-			"viewProject": "Besuchen Sie die",
-			"nlnetProjectPage": "NLnet-Projektseite",
-			"viewProjectSuffix": "für weitere Details zum Förderprogramm und den Zielen."
+			"nlnetEstablishedBy": ", a fund established by",
+			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429.\n\nThis funding enables sustained open-source development on the project.",
+			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+			"viewProject": "View the",
+			"nlnetProjectPage": "NLnet project page",
+			"viewProjectSuffix": "for more details about the grant and objectives."
 		},
 		"conduct": {
-			"heading": "Verhaltenskodex",
-			"description": "Alle Teilnehmer der Land-Community sollen respektvoll und konstruktiv sein.\n\nLesen Sie den vollständigen Code of Conduct auf GitHub."
+			"heading": "Code of Conduct",
+			"description": "All participants in the Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub."
 		}
 	},
 	"sales": {
-		"pageTitle": "Enterprise-Anfragen",
-		"pageSubtitle": "Setzen Sie Land in Ihrer Organisation ein? Melden Sie sich und wir klären die Details gemeinsam.",
+		"pageTitle": "Enterprise Inquiries",
+		"pageSubtitle": "Deploying Land across your organization? Get in touch and we'll work out the details together.",
 		"form": {
-			"firstName": "Vorname",
-			"lastName": "Nachname",
-			"email": "Geschäftliche E-Mail",
-			"company": "Unternehmen",
-			"teamSize": "Teamgröße",
-			"teamSizePlaceholder": "Teamgröße auswählen",
-			"message": "Wie können wir helfen?",
-			"messagePlaceholder": "Erzählen Sie uns von Ihren Anforderungen, Bereitstellungsbedürfnissen oder Fragen.",
-			"submitButton": "Anfrage senden"
+			"firstName": "First Name",
+			"lastName": "Last Name",
+			"email": "Work Email",
+			"company": "Company",
+			"teamSize": "Team Size",
+			"teamSizePlaceholder": "Select team size",
+			"message": "How can we help?",
+			"messagePlaceholder": "Tell us about your requirements, deployment needs, or any questions you have.",
+			"submitButton": "Send Inquiry"
 		},
 		"features": {
-			"heading": "Was Enterprise umfasst",
-			"prioritySupport": "Prioritätssupport und garantiertes SLA",
-			"customDeployment": "Individuelle Deployment-Optionen Cloud, On-Prem oder Air-Gapped",
-			"volumeLicensing": "Volumenlizenzierung für große Teams",
-			"accountManagement": "Dedizierter Account-Manager für Ihre Organisation",
-			"securityReview": "Sicherheitsüberprüfung und Compliance-Dokumentation",
-			"customIntegrations": "Individuelle Integrationen und Entwicklungsarbeit"
+			"heading": "What Enterprise Includes",
+			"prioritySupport": "Priority support and guaranteed SLA",
+			"customDeployment": "Custom deployment options: cloud, on-prem, or air-gapped",
+			"volumeLicensing": "Volume licensing for large teams",
+			"accountManagement": "Dedicated account manager for your organization",
+			"securityReview": "Security review and compliance documentation",
+			"customIntegrations": "Custom integrations and development work"
 		},
 		"contact": {
-			"heading": "So erreichen Sie uns",
-			"directHeading": "Direktkontakt",
-			"description": "Bevorzugen Sie E-Mail? Schreiben Sie uns direkt:",
-			"githubNote": "Enterprise-Anfragen bearbeiten wir über GitHub Issues.\n\nSo ist Ihre Anfrage nachverfolgbar, für das gesamte Team sichtbar und wird zeitnah beantwortet.",
-			"openIssueHeading": "GitHub Issue eröffnen",
-			"openIssueDescription": "Erstellen Sie ein Issue in unserem GitHub-Repository und beschreiben Sie die Bedürfnisse Ihrer Organisation.\n\nNennen Sie Firmennamen, Teamgröße, Anwendungsfall und Deployment-Anforderungen.\n\nWir beobachten Issues täglich.",
-			"openIssueButton": "GitHub Issue eröffnen",
-			"issueIncludeLabel": "Was in Ihrem Issue enthalten sein sollte:",
-			"issueIncludeText": "Firmenname, Teamgröße, geplanter Anwendungsfall, Bereitstellungsumgebung (Cloud/On-Premise), Zeitrahmen und spezifische Support- oder Compliance-Anforderungen.",
-			"operatedBy": "Betrieben von PlayForm, Sofia, Bulgarien"
+			"heading": "How to Reach Us",
+			"directHeading": "Direct Contact",
+			"description": "Prefer email? Reach us directly:",
+			"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to promptly.",
+			"openIssueHeading": "Open a GitHub Issue",
+			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe monitor issues daily.",
+			"openIssueButton": "Open GitHub Issue",
+			"issueIncludeLabel": "What to include in your issue:",
+			"issueIncludeText": "Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
+			"operatedBy": "Operated by PlayForm, Sofia, Bulgaria"
 		},
 		"openSource": {
-			"heading": "Weiterhin Open Source",
-			"description": "Enterprise-Pläne fügen Support, SLA und individuelle Entwicklung hinzu.\n\nDer Code selbst bleibt CC0. Forken, lesen, ausliefern."
+			"heading": "Still Open Source",
+			"description": "Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it."
 		}
 	},
 	"oauth": {
-		"completing": "Anmeldung wird abgeschlossen...",
-		"failed": "Anmeldung fehlgeschlagen",
-		"errorGeneric": "Bei der Anmeldung ist ein Fehler aufgetreten. Bitte erneut versuchen.",
-		"errorExpired": "Authentifizierungssitzung abgelaufen.\n\nBitte versuchen Sie es erneut.",
-		"errorProvider": "OAuth-Anbieter hat einen Fehler zurückgegeben.\n\nBitte versuchen Sie es erneut.",
-		"errorNoToken": "Kein Authentifizierungstoken erhalten.",
-		"backToSignIn": "Zurück zur Anmeldung",
-		"goToDashboard": "Zum Dashboard",
+		"completing": "Completing sign-in...",
+		"failed": "Sign-In Failed",
+		"errorGeneric": "Something went wrong during sign-in. Please try again.",
+		"errorExpired": "Your sign-in session expired.\n\nPlease try again.",
+		"errorProvider": "The OAuth provider returned an error.\n\nPlease try again.",
+		"errorNoToken": "No authentication token received. Please try again.",
+		"backToSignIn": "Back to Sign In",
+		"goToDashboard": "Go to Dashboard",
 		"success": {
-			"title": "Sie sind angemeldet",
-			"redirect": "Weiterleitung zu Ihrem Dashboard..."
+			"title": "You're signed in",
+			"redirect": "Redirecting to your dashboard..."
 		}
 	},
 	"dashboard": {
 		"pageTitle": "Dashboard",
-		"pageSubtitle": "Ihr Land-Konto, Downloads und Editor-Verbindung.",
+		"pageSubtitle": "Your Land account, downloads, and editor connection.",
 		"breadcrumbLabel": "Dashboard",
 		"account": {
-			"heading": "Konto",
+			"heading": "Account",
 			"nameLabel": "Name",
-			"emailLabel": "E-Mail",
+			"emailLabel": "Email",
 			"planLabel": "Plan",
-			"planFree": "Kostenlos",
+			"planFree": "Free",
 			"planEnterprise": "Enterprise",
-			"providerLabel": "Anbieter",
-			"organizationLabel": "Organisation",
-			"memberSinceLabel": "Mitglied seit",
-			"notSignedIn": "Melden Sie sich an, um Ihre Kontodaten zu sehen.",
-			"signInButton": "Anmelden",
-			"emailNotVerified": "E-Mail nicht verifiziert.\nPrüfen Sie Ihren Posteingang.",
-			"enterpriseSSO": "Enterprise SSO aktiv",
+			"providerLabel": "Provider",
+			"organizationLabel": "Organization",
+			"memberSinceLabel": "Member Since",
+			"notSignedIn": "Sign in to see your account details.",
+			"signInButton": "Sign In",
+			"emailNotVerified": "Email not verified. Check your inbox.",
+			"enterpriseSSO": "Enterprise SSO active",
 			"emailVerifiedTitle": "Email verified",
 			"emailVerifiedBadge": "Verified",
 			"signOutButton": "Sign Out"
 		},
 		"downloads": {
 			"heading": "Downloads",
-			"description": "Laden Sie den neuesten Land-Build für Ihre Plattform herunter. Nativ auf macOS, Windows und Linux.",
-			"goButton": "Zu den Downloads"
+			"description": "Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
+			"goButton": "Go to Downloads"
 		},
 		"quickLinks": {
-			"heading": "Schnellzugriff",
-			"docs": "Dokumentation",
+			"heading": "Quick Links",
+			"docs": "Documentation",
 			"community": "Community",
-			"reportIssue": "Problem melden",
-			"contribute": "Beitragen"
+			"reportIssue": "Report an Issue",
+			"contribute": "Contribute"
 		},
 		"settings": {
-			"heading": "Einstellungen",
+			"heading": "Settings",
 			"sync": {
-				"title": "Einstellungen synchronisieren",
-				"description": "Synchronisieren Sie Ihre Editor-Einstellungen geräteübergreifend."
+				"title": "Sync Settings",
+				"description": "Your editor preferences follow you across every device automatically."
 			},
 			"extensionSync": {
-				"title": "Erweiterungs-Synchronisierung",
-				"description": "Halten Sie Ihre installierten Erweiterungen geräteübergreifend synchron."
+				"title": "Extension Sync",
+				"description": "Your installed extensions stay in sync across all machines."
 			},
 			"account": {
-				"title": "Konto",
-				"description": "Aktualisieren Sie Ihr Profil und verwalten Sie Ihr Konto.",
-				"manageButton": "Verwalten"
+				"title": "Account",
+				"description": "Update your profile and manage your account.",
+				"manageButton": "Manage"
 			}
 		},
 		"telemetry": {
-			"heading": "Telemetrie-Status",
+			"heading": "Telemetry Architecture",
 			"production": {
-				"title": "Produktions-Build-Telemetrie",
-				"description": "Telemetrie ist standardmäßig deaktiviert.\n\nDas Telemetry-Cargo-Feature ist nicht in den Standardfeatures enthalten.\n\nAlle Traces kompilieren zu kostenlosen No-Ops."
+				"title": "Absent from the binary. Not just disabled.",
+				"description": "VS Code's telemetry can be reduced via settings, but the code paths remain in the binary.\n\nThe Telemetry Cargo feature is not in Land's default features. All tracing compiles to zero-cost no-ops. Nothing is sent anywhere because there is nothing to send."
 			},
 			"otel": {
-				"title": "OpenTelemetry (Opt-In)",
-				"description": "Aktivieren mit: `cargo build --features Telemetry`.\n\nNur lokales OTEL-Tracing, Metriken und verteilte Spans.\n\nKeine externe Übertragung."
+				"title": "Opt-in OpenTelemetry. Your infrastructure only.",
+				"description": "Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure."
 			},
 			"effect": {
-				"title": "Effect-TS lokale Telemetrie",
-				"description": "Der Cocoon-Erweiterungshost verwendet TelemetryService für interne RPC-Instrumentierung und Bootstrap-Zeitmessung.\n\nAlle Daten bleiben lokal."
+				"title": "Extension host timing. Stays in the process.",
+				"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing."
 			}
 		},
 		"buildLog": {
-			"heading": "Build-Konfiguration",
-			"subtitle": "Aktive Build-Variante und Bereitstellungsmodus.\n\nVerfügbar über die Local-First Air Daemon-Verbindung.",
+			"heading": "Build Configuration",
+			"subtitle": "Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
 			"profile": {
-				"heading": "Aktives Profil"
+				"heading": "Active Profile"
 			},
 			"deployment": {
-				"heading": "Bereitstellungsmodus"
+				"heading": "Deployment Mode"
 			},
 			"matrix": {
-				"heading": "Testmatrix"
+				"heading": "Test Matrix"
 			}
 		},
 		"portal": {
-			"heading": "Authentifizierungsstufen",
-			"subtitle": "Ihre aktuelle Authentifizierungsmethode und verfügbare Stufen."
+			"heading": "Authentication Tiers",
+			"subtitle": "Your current authentication method and available tiers."
 		},
 		"editor": {
-			"heading": "Editor-Verbindung",
-			"subtitle": "Verbinden Sie die Website mit Ihrer laufenden Land-Editor-Instanz.",
-			"status": "Nicht verbunden",
-			"description": "Der Air Daemon verbindet dieses Dashboard mit einem laufenden Land-Editor über WebSocket.\n\nStarten Sie Land, um Echtzeit-Build-Protokolle, Telemetrie und Konfigurationsverwaltung zu aktivieren.",
-			"connect": "Über Portal verbinden",
+			"heading": "Editor Connection",
+			"subtitle": "Connect the website to your running Land editor instance.",
+			"status": "Not Connected",
+			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+			"connect": "Connect via Portal",
 			"scanButton": "Scan for Daemon"
 		},
 		"partners": {
-			"heading": "Partner und Danksagungen"
+			"heading": "Partners & Attribution"
 		},
 		"localFirst": {
 			"title": "Air Daemon",

@@ -115,85 +115,85 @@
 		"and": "and"
 	},
 	"portal": {
-		"title": "Sign In to CodeEditorLand",
-		"subtitle": "Pick the tier that matches how you work. Cloud sync, OAuth identity, local-first daemon, or enterprise SSO.",
+		"title": "CodeEditorLand Portal Roadmap",
+		"subtitle": "Land supports four authentication tiers: Cloud account sync, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
 		"cloud": {
-			"title": "Cloud",
-			"subtitle": "Sign in once and every device is in sync.\n\nWorkspace state encrypted end to end, never readable in transit.",
+			"title": "Cloud Plan",
+			"subtitle": "Planned hosted sync for users who want account-backed state.\n\nThe local editor should remain useful without this service.",
 			"signIn": "Secure Sign In",
 			"emailLabel": "Email",
 			"emailPlaceholder": "name@example.com",
 			"passwordLabel": "Password",
 			"passwordPlaceholder": "Enter your password",
 			"feature": {
-				"sync": "Workspace stays in sync across every device",
-				"backup": "Encrypted cloud backup of all configurations",
-				"team": "Shared team workspaces included",
-				"extension": "Install extensions from the marketplace in one click",
-				"remote": "Remote development server integration"
+				"sync": "Planned workspace sync across devices",
+				"backup": "Planned encrypted backup for selected configuration",
+				"team": "Planned shared team workspace support",
+				"extension": "Marketplace installation is planned after local extension paths stabilize",
+				"remote": "Remote development integration is planned"
 			},
 			"capability": {
-				"jwt": "JWT RS256 tokens 15-min access, 30-day refresh",
-				"okta": "Okta SSO integration available",
-				"mfa": "Multi-factor authentication supported",
-				"rbac": "Role-based access control at the gateway layer",
-				"audit": "Full audit log every action recorded",
-				"cert": "Developer certificates provisioned automatically"
+				"jwt": "Planned account tokens for hosted services",
+				"okta": "Okta SSO belongs to the enterprise plan",
+				"mfa": "MFA support depends on the configured identity provider",
+				"rbac": "Gateway RBAC is planned",
+				"audit": "Audit logging is planned",
+				"cert": "Developer certificate automation is planned"
 			}
 		},
 		"provider": {
-			"title": "Provider",
-			"subtitle": "Use the developer identity you already have.\n\nWe request only your email - no repository access, no org data, ever.",
+			"title": "Provider Plan",
+			"subtitle": "Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE. Provider identity links your editor session to source repositories and hosted services you already use.",
 			"continueGitHub": "Continue with GitHub",
 			"continueGoogle": "Continue with Google",
 			"continueGitLab": "Continue with GitLab",
-			"oauthNote": "OAuth 2.0 Email scope only Linked to your preferences",
+			"oauthNote": "OAuth 2.0 \u2001 Profile + Email scope \u2001 Linked to your preferences",
 			"feature": {
-				"github": "No new password Your GitHub identity is enough",
-				"sso": "Single sign-on across all Land services",
-				"repo": "Theme and keybindings follow your provider identity",
-				"team": "Organization and team membership synced automatically",
-				"ci": "CI/CD pipeline integration with build triggers"
+				"github": "GitHub identity is planned as a low-friction sign-in option",
+				"sso": "Single sign-on across Land services is planned",
+				"repo": "Settings sync tied to provider identity is planned",
+				"team": "Organization and team membership sync is planned",
+				"ci": "CI/CD integration belongs to later portal work"
 			},
 			"capability": {
-				"oauth": "OAuth 2.0 with PKCE S256 on every flow",
-				"scope": "Email and profile scope only nothing else requested",
-				"token": "Refresh token rotation on every sign-in",
-				"webhook": "Webhook event subscriptions",
-				"org": "Organization-level access policies",
-				"cert": "Developer certificates provisioned automatically"
+				"oauth": "OAuth 2.0 / PKCE support where provider flows are enabled",
+				"scope": "Minimal OAuth scopes - only what each provider integration requires",
+				"token": "Refresh token handling depends on provider configuration",
+				"webhook": "Webhook subscriptions are planned",
+				"org": "Organization-level access policies are planned",
+				"cert": "Developer certificate automation is planned"
 			}
 		},
 		"localfirst": {
 			"title": "Local-First",
-			"subtitle": "No internet? No problem. The Air Daemon runs entirely on your machine.\n\nYour code and credentials never leave it.",
+			"subtitle": "The Air daemon runs as a persistent background process handling updates, file indexing, signing, and health monitoring.\n\nThe portal surface for browser-to-daemon control is in development - the daemon itself is active source today.",
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Scanning...",
 			"connect": "Connect to Air Daemon",
-			"note": "Zero cloud dependency JWT certificates mTLS",
+			"note": "Zero cloud dependency \u2001 JWT certificates \u2001 mTLS",
 			"feature": {
-				"daemon": "Browser connects to Air Daemon over encrypted loopback",
-				"build": "Launch builds directly from the website console",
-				"deploy": "Deploy changes directly to the running editor",
-				"configure": "Full editor configuration and settings management",
-				"parity": "Every VS Code extension runs unchanged nothing missing",
-				"offline": "Complete offline operation No cloud login required",
-				"bake": "Embed the portal directly into the editor as built-in SaaS"
+				"daemon": "Browser-to-daemon loopback control is planned",
+				"build": "Launching builds from the website console is planned",
+				"deploy": "Deploying changes into a running editor is planned",
+				"configure": "Editor configuration management is planned",
+				"parity": "Installed VS Code extensions run unmodified through the Cocoon path when their APIs are implemented",
+				"offline": "Local editor operation should not require a cloud login",
+				"bake": "Embedding portal surfaces into the editor is planned"
 			},
 			"capability": {
-				"jwt": "JWT ES384 certificates 5 min expiry, rotated on reconnect",
-				"mtls": "mTLS mutual authentication daemon and browser both verified",
-				"crdt": "CRDT state synchronization for conflict-free offline editing",
-				"team": "Team management runs fully local no cloud dependency",
-				"cert": "Local certificate authority no external CA calls",
-				"ws": "WebSocket live connection over loopback only",
-				"rbac": "Local RBAC policies enforced at the daemon layer",
-				"backup": "Encrypted local backup of all workspace state"
+				"jwt": "Short-lived local credentials are planned",
+				"mtls": "mTLS mutual authentication is planned for daemon control",
+				"crdt": "CRDT state synchronization - planned for conflict-free offline edits",
+				"team": "Fully local team management is planned",
+				"cert": "Local certificate authority code exists in Mountain; portal integration is planned",
+				"ws": "WebSocket loopback connection is planned",
+				"rbac": "Local RBAC policies are planned",
+				"backup": "Encrypted local backup is planned"
 			}
 		},
 		"enterprise": {
-			"title": "Enterprise",
-			"subtitle": "Your IT team controls every seat.\n\nOIDC, SAML 2.0, and SCIM mean zero manual provisioning and full directory governance.",
+			"title": "Enterprise Plan",
+			"subtitle": "Connect Land to your organisation's identity infrastructure via OIDC, SAML 2.0, or SCIM. Enterprise SSO and directory provisioning are in development.",
 			"ariaLabel": "Enterprise SSO",
 			"domainLabel": "Work Email or Domain",
 			"domainPlaceholder": "name@company.com",
@@ -207,22 +207,22 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML Metadata URL",
 			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
-			"note": "OpenID Connect Discovery SAML 2.0 Assertion SCIM 2.0 User Provisioning",
+			"note": "OpenID Connect Discovery \u2001+ SAML 2.0 Assertion \u2001+ SCIM 2.0 User Provisioning",
 			"feature": {
-				"okta": "Okta SSO one login unlocks everything",
-				"azure": "Azure AD / Entra ID your Microsoft identity works",
-				"saml": "SAML 2.0 for any legacy enterprise IdP",
-				"scim": "SCIM provisioning new devs ready in minutes",
-				"group": "IdP group to CEL role mapping least privilege automatic",
-				"audit": "SOC 2 logs exported to your SIEM in CEF or JSON"
+				"okta": "Okta SSO integration is planned",
+				"azure": "Azure AD / Entra ID integration is planned",
+				"saml": "SAML 2.0 support is planned",
+				"scim": "SCIM provisioning is planned",
+				"group": "IdP group to Land role mapping is planned",
+				"audit": "Audit export is planned"
 			},
 			"capability": {
-				"oidc": "OIDC Discovery auto-configured from your IdP metadata URL",
-				"jit": "Just-in-time provisioning on first sign-in",
-				"mfa": "MFA enforced via IdP authentication context class",
-				"session": "Session duration controlled by IdP policy",
-				"ca": "Organization CA certificates managed by IT",
-				"compliance": "SOC 2 Type II / GDPR compliance documentation"
+				"oidc": "OIDC discovery is planned",
+				"jit": "Just-in-time provisioning is planned",
+				"mfa": "MFA enforcement depends on the configured IdP",
+				"session": "Session duration policy is planned",
+				"ca": "Organization CA certificate management is planned",
+				"compliance": "Compliance documentation is planned"
 			},
 			"orgIdLabel": "Auth0 Organization ID (optional)",
 			"orgIdPlaceholder": "org_xxxxxxxxxxxxxxxx"

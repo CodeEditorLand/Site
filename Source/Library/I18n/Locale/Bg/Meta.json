@@ -1,65 +1,65 @@
 {
 	"account": {
-		"forgotPassword": "Забравена парола - Code Editor Land",
-		"resetPassword": "Нулиране на парола - Code Editor Land",
-		"signIn": "Вход - Code Editor Land",
-		"signUp": "Регистрация - Code Editor Land"
+		"forgotPassword": "Forgot Password - Code Editor Land",
+		"resetPassword": "Reset Password - Code Editor Land",
+		"signIn": "Sign In - Code Editor Land",
+		"signUp": "Sign Up - Code Editor Land"
 	},
-	"description": "Редакторът на код от ново поколение",
+	"description": "No Electron. No Chromium. VS Code extension compatible.",
 	"downloads": {
-		"description": "Изтеглете Code Editor Land за macOS, Windows и Linux.\nВсички версии са подписани и проверени за вашата сигурност.",
-		"title": "Изтеглете Code Editor Land | Редакторът на код от ново поколение"
+		"description": "Download Code Editor Land for macOS, Windows, and Linux.\nAll releases are signed and verified for your security.",
+		"title": "Download Code Editor Land | No Electron. No Chromium. Every Extension Runs Unchanged."
 	},
 	"home": {
-		"description": "Code Editor Land е високопроизводителен, ресурсно ефективен редактор на код, създаден с Rust и Tauri.\nИзживейте VS Code",
-		"title": "Code Editor Land | Редакторът на код от ново поколение"
+		"description": "Code Editor Land is an open-source editor stack built with Rust, Tauri, and a VS Code-compatible extension host. Source builds are active while public installers and full extension coverage are still in progress.",
+		"title": "Code Editor Land | Rust and Tauri Editor Stack"
 	},
 	"legal": {
 		"privacy": {
-			"description": "Политика за поверителност на Code Editor Land - Научете как събираме, използваме и защитаваме вашите лични данни в съответствие с GDPR и CCPA.",
-			"title": "Политика за поверителност | Code Editor Land"
+			"description": "Privacy Policy for Code Editor Land - Learn how we collect, use, and protect your personal data in compliance with GDPR and CCPA.",
+			"title": "Privacy Policy | Code Editor Land"
 		},
 		"terms": {
-			"description": "Условия за ползване на Code Editor Land - Уреждащи използването на нашия редактор на код с отворен код и свързаните услуги.",
-			"title": "Условия за ползване | Code Editor Land"
+			"description": "Terms of Service for Code Editor Land - Governing your use of our open-source code editor and related services.",
+			"title": "Terms of Service | Code Editor Land"
 		}
 	},
 	"license": {
-		"description": "Code Editor Land е с отворен код под лиценза Creative Commons CC0 1.0 Universal.",
-		"title": "Лиценз | Code Editor Land"
+		"description": "Code Editor Land is open source under the Creative Commons CC0 1.0 Universal license.",
+		"title": "License | Code Editor Land"
 	},
 	"title": "Code Editor Land",
 	"verify": {
-		"title": "Потвърждение на имейл - Code Editor Land"
+		"title": "Verify Email - Code Editor Land"
 	},
 	"docs": {
-		"title": "Документация | Code Editor Land",
-		"description": "Разгледайте документацията на Code Editor Land, ръководства за архитектурата и ресурси за разработчици."
+		"title": "Documentation | Code Editor Land",
+		"description": "Browse the Code Editor Land documentation, architecture guides, and developer resources."
 	},
 	"blog": {
-		"title": "Блог | Code Editor Land",
-		"description": "Новини, актуализации и статии от екипа на Code Editor Land."
+		"title": "Blog | Code Editor Land",
+		"description": "News, updates, and articles from the Code Editor Land team."
 	},
 	"contributing": {
-		"title": "Принос | Code Editor Land",
-		"description": "Редактор на код с отворен код, изграден с Rust и Tauri.\nНаучете как да допринесете за Code Editor Land."
+		"title": "Contributing | Code Editor Land",
+		"description": "An open source code editor built with Rust and Tauri.\nLearn how to contribute to Code Editor Land."
 	},
 	"dashboard": {
-		"title": "Табло | Code Editor Land",
-		"description": "Управлявайте профила, изтеглянията и настройките си.\nВашето табло в Code Editor Land."
+		"title": "Dashboard | Code Editor Land",
+		"description": "Manage your account, download, and setting.\nYour Code Editor Land dashboard."
 	},
 	"contact": {
 		"sales": {
-			"title": "Корпоративни запитвания | Code Editor Land",
-			"description": "Свържете се с екипа на Code Editor Land за корпоративно лицензиране, поддръжка и опции за внедряване."
+			"title": "Enterprise Inquiries | Code Editor Land",
+			"description": "Contact the Code Editor Land team for enterprise licensing, support, and deployment options."
 		}
 	},
 	"portal": {
-		"title": "Портал на редактора | Code Editor Land",
-		"description": "Облачен, доставчик или локален.\nИзберете метод за удостоверяване за Code Editor Land."
+		"title": "Editor Portal | Code Editor Land",
+		"description": "CodeEditorLand account sign-in and planned portal modes for cloud, provider, local-first, and enterprise workflows."
 	},
 	"oauth": {
-		"success": "Успешно удостоверяване - Code Editor Land",
-		"successDescription": "Удостоверяването е успешно."
+		"success": "Authentication Successful - Code Editor Land",
+		"successDescription": "You have been authenticated successfully."
 	}
 }

@@ -7,57 +7,57 @@
 			},
 			"macos": {
 				"title": "macOS",
-				"universalBadge": "Универсален бинарен файл: Apple Silicon и Intel"
+				"universalBadge": "Universal Binary: Apple Silicon and Intel"
 			},
 			"windows": {
-				"description": "64-битов (x64)",
+				"description": "64-bit (x64)",
 				"title": "Windows"
 			}
 		}
 	},
 	"page": {
-		"subtitle": "Нативен на macOS, Windows и Linux.\n\nБез разходи, без проследяване, пълна поддръжка на VS Code разширения.",
-		"title": "Изтеглете Land"
+		"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
+		"title": "Download Land"
 	},
 	"previousReleases": {
-		"description": "Изтеглете по-стара версия, ако трябва да се закачите за конкретно издание.",
-		"title": "Предишни версии"
+		"description": "Download an older version if you need to pin to a specific release.",
+		"title": "Previous Releases"
 	},
-	"subtitle": "Нативен на macOS, Windows и Linux.\n\nИзграден с Tauri. Задвижван от Rust. Верифициран с PGP.",
+	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 	"systemRequirements": {
-		"minimum": "Минимални изисквания",
-		"recommended": "Препоръчителни за най-добро изживяване",
-		"subtitle": "Бърза проверка преди изтеглянето спестява преинсталация по-късно.",
-		"supportedOS": "Поддържани операционни системи",
-		"title": "Системни изисквания"
+		"minimum": "Minimum Requirements",
+		"recommended": "Recommended for the Best Experience",
+		"subtitle": "A quick check before you download saves a reinstall later.",
+		"supportedOS": "Supported Operating Systems",
+		"title": "System Requirements"
 	},
-	"title": "Изтеглете Land",
+	"title": "Download Land",
 	"verification": {
-		"description": "Всяко издание на Land е PGP-подписано преди да бъде публикувано.\n\nПроверете изтеглянето си и се уверете, че сте получили точно това, което е компилирано.",
-		"downloadButton": "Изтеглете публичния PGP ключ",
-		"title": "Всяко издание е подписано. Проверете вашето.",
-		"verifyButton": "Проверете изтеглянето"
+		"description": "Release downloads will publish checksum and signature material when public installers are available.",
+		"downloadButton": "View Verification Plan",
+		"title": "Verification Will Ship With Public Releases.",
+		"verifyButton": "Verify Download"
 	},
 	"labels": {
-		"version": "Версия:",
-		"size": "Размер:",
-		"requirements": "Изисквания:",
-		"loading": "Зареждане на наличните изтегляния...",
-		"errorTitle": "Неуспешно зареждане на изтегляния",
-		"downloadFailed": "Изтеглянето неуспешно. Моля, опитайте отново.",
-		"downloadFor": "Изтеглете за {{platform}}",
-		"copiedToClipboard": "{{label}} е копирано в клипборда.",
-		"failedToCopy": "Неуспешно копиране на {{label}}",
-		"sha256Checksum": "SHA-256 контролна сума",
-		"pgpSignature": "PGP подпис",
-		"verificationInstructions": "Инструкции за проверка",
-		"downloadVerification": "Проверка на изтеглянето",
-		"integrityCheck": "Проверка на целостта",
-		"copy": "Копиране",
-		"signedWithKeyId": "Подписано с ключ ID: {{keyId}}"
+		"version": "Version:",
+		"size": "Size:",
+		"requirements": "Requirements:",
+		"loading": "Loading available downloads...",
+		"errorTitle": "Could not load downloads",
+		"downloadFailed": "Download failed. Please try again.",
+		"downloadFor": "Download for {{platform}}",
+		"copiedToClipboard": "{{label}} copied to clipboard.",
+		"failedToCopy": "Could not copy {{label}}",
+		"sha256Checksum": "SHA-256 Checksum",
+		"pgpSignature": "PGP Signature",
+		"verificationInstructions": "Verification Instructions",
+		"downloadVerification": "Download Verification",
+		"integrityCheck": "Integrity Check",
+		"copy": "Copy",
+		"signedWithKeyId": "Signed with key ID {{keyId}}"
 	},
 	"transparency": {
-		"title": "Нищо скрито. Пълно разкриване на билда.",
-		"subtitle": "Нулева телеметрия по подразбиране. Варианти на билда, цели за внедряване и ключове за подписване са публични.\n\nПроверете всичко в изходния код."
+		"title": "Telemetry Is Compile-Gated in Land.",
+		"subtitle": "Telemetry and tracing are behind named Rust feature gates in the native layer. Nothing is emitted by default. Each build profile explicitly lists which paths are compiled in."
 	}
 }

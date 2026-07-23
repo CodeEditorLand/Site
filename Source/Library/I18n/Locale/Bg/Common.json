@@ -1,357 +1,290 @@
 {
 	"actions": {
-		"signIn": "Влезте в профила си"
+		"signIn": "Sign In to Your Account"
 	},
 	"brand": {
 		"name": "Code Editor Land",
-		"tagline": "По-бърз от VS Code. По-лек от Electron. Безплатен завинаги."
+		"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever."
 	},
 	"breadcrumb": {
-		"home": "Начало"
+		"home": "Home"
 	},
 	"button": {
-		"backToHome": "Към началната страница",
-		"backToTop": "Обратно към началото",
-		"download": "Изтеглете Land безплатно",
-		"learnMore": "Вижте какво прави Land различен",
-		"signIn": "Влезте в профила си",
-		"signUp": "Създайте безплатен профил"
+		"backToHome": "Return to Homepage",
+		"backToTop": "Back to top",
+		"download": "Download Land Free",
+		"learnMore": "See What Makes Land Different",
+		"signIn": "Sign In to Your Account",
+		"signUp": "Create Your Free Account"
 	},
-	"comingSoon": "Очаквайте скоро",
+	"comingSoon": "Coming Soon",
 	"error": {
-		"404": "404 - Страницата не е намерена",
-		"pageNotFound": "Страницата, която търсите, не съществува или е преместена.\n\nПроверете URL адреса за грешки или се върнете на началната страница.\n\nАко смятате, че това е грешка, отворете issue в GitHub и ще ви помогнем."
+		"404": "404 - Page Not Found",
+		"pageNotFound": "The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need."
 	},
 	"label": {
-		"email": "Имейл адрес",
-		"password": "Парола"
+		"email": "Email Address",
+		"password": "Password"
 	},
 	"nav": {
-		"docs": "Документация",
-		"downloads": "Изтегляне",
-		"github": "GitHub хранилище"
+		"docs": "Documentation",
+		"downloads": "Download",
+		"github": "GitHub Repository"
 	},
 	"docs": {
-		"pageTitle": "Документация",
-		"pageSubtitle": "Всичко необходимо за инсталиране, билдване и принос към Land.",
+		"pageTitle": "Documentation",
+		"pageSubtitle": "Everything you need to install, build, and contribute to Land.",
 		"gettingStarted": {
-			"title": "Започнете за минути",
-			"description": "README ви превежда през инсталацията, първия билд и шест-елементната архитектура. Не са необходими предварителни познания по Rust или Tauri."
+			"title": "Get Started in Minutes",
+			"description": "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required."
 		},
 		"issueTracker": {
-			"title": "Докладвайте грешка или поискайте функция",
-			"description": "Отворете issue в GitHub. Екипът следи ежедневно и маркира задачи с good-first-issue за нови участници."
+			"title": "Report a Bug or Request a Feature",
+			"description": "Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors."
 		},
 		"architecture": {
-			"heading": "Как работи архитектурата",
-			"intro": "Land замества Electron стека на VS Code елемент по елемент. Всеки елемент е самостоятелно хранилище с отворен код:",
-			"mountain": {
-				"description": "Замества главния процес на Electron. Управлява прозорци, файлова система и жизнения цикъл на процеси с нативна скорост.",
-				"subtitle": "Нативен мениджър на процеси"
-			},
-			"cocoon": {
-				"description": "Изпълнява VS Code разширения чрез Effect-TS. Съществуващите ви разширения работят без никакви промени.",
-				"subtitle": "Хост за разширения без пренаписване"
-			},
-			"wind": {
-				"description": "Преимплементира VS Code Workbench. Панели, странични ленти и лентата за активност, изградени без Electron.",
-				"subtitle": "Пълна обвивка на работното пространство"
-			},
-			"sky": {
-				"description": "Рендира интерфейса на редактора с Astro. Теми, оформления и визуалният слой се зареждат бързо на всяка платформа.",
-				"subtitle": "Слой за теми и оформления"
-			},
-			"air": {
-				"description": "Поддържа Land актуален без да ви прекъсва. Всяко обновяване е криптографски подписано преди прилагане.",
-				"subtitle": "Безшумни обновявания, винаги подписани"
-			},
-			"echo": {
-				"description": "Насища всяко CPU ядро с изпълнител с кражба на работа. Тежкото индексиране остава на заден план. Редакторът остава бърз.",
-				"subtitle": "Използва всяко CPU ядро, което имате"
-			},
-			"common": {
-				"description": "Споделени дефиниции на trait-ове и DTO-та, използвани от всички елементи. Основата, върху която е изградено всичко останало.",
-				"subtitle": "Основна споделена библиотека"
-			},
-			"vine": {
-				"description": "gRPC протоколна дефиниция, свързваща Rust и TypeScript с под-милисекундна латентност.",
-				"subtitle": "Нативен IPC протокол"
-			},
-			"rest": {
-				"description": "Бъндлира JavaScript платформата на VS Code с OXC. Произвежда JS среда за изпълнение, която Land доставя.",
-				"subtitle": "Бъндлер за платформен JS"
-			},
-			"output": {
-				"description": "Компилираните JavaScript артефакти от Rest, готови за средата за изпълнение на редактора.",
-				"subtitle": "JavaScript бъндъл за изпълнение"
-			},
-			"mist": {
-				"description": "WebSocket комуникационен слой между демона и фронтенда на редактора.",
-				"subtitle": "Живи WebSocket мост"
-			},
-			"grove": {
-				"description": "Хоства нативни WASM и Rhai разширения заедно с TypeScript хоста за разширения.",
-				"subtitle": "WASM и Rhai хост за разширения"
-			},
-			"worker": {
-				"description": "Web Workers, прехвърлящи тежки изчисления от главния UI нишка.",
-				"subtitle": "Фонови уеб работници"
-			},
-			"sidecar": {
-				"description": "Предварително компилирани Node.js бинарни файлове, доставяни с Land за крос-платформена съвместимост.",
-				"subtitle": "Бъндлирано Node.js изпълнение"
-			},
-			"maintain": {
-				"description": "CI/CD конвейери и скриптове за поддръжка, поддържащи всеки елемент компилиращ се и тестван.",
-				"subtitle": "Автоматизация на билда"
-			}
+			"heading": "How Land Replaces VS Code's Electron Stack",
+			"intro": "VS Code runs on Electron: a Chromium browser, a Node.js runtime, and an extension-host model. Land replaces those pieces with independent elements while preserving the VS Code extension API as the compatibility target. Browse individual elements in the Element section above, or explore the workspace on GitHub."
 		},
 		"repositories": {
-			"heading": "Изходни хранилища",
-			"mainMonorepo": "Основно монорепо",
-			"tauriBackend": "Tauri бекенд",
-			"extensionHost": "Хост за разширения",
-			"windServiceLayer": "Слой на UI услугата",
-			"skyComponentLayer": "Слой на UI компонентите",
-			"airDaemon": "Фонов демон",
-			"viewAll": "Вижте всички хранилища"
+			"viewAll": "View all repositories"
 		}
 	},
 	"blog": {
-		"pageTitle": "Блог",
-		"pageSubtitle": "Задълбочени прегледи на архитектурата, актуализации на разработката и технически статии от екипа на Land.",
-		"comingSoonHeading": "Статии очаквайте скоро",
-		"comingSoonText": "Подготвяме задълбочени статии за архитектурата, процеса на разработка и пътната карта.\n\nПроверете отново скоро или следете напредъка в GitHub.",
-		"joinDiscussions": "Присъединете се към общността",
-		"followGitHub": "Следвайте в GitHub",
-		"reportIssue": "Докладвайте проблем",
-		"followNote": "Следете напредъка в GitHub или проверете тук за публикувани статии.",
+		"pageTitle": "Blog",
+		"pageSubtitle": "Architecture deep-dives, development updates, and technical articles from the Land team.",
+		"comingSoonHeading": "Articles Coming Soon",
+		"comingSoonText": "We are preparing in-depth articles on the architecture, development process, and roadmap.\n\nCheck back soon or follow progress on GitHub.",
+		"joinDiscussions": "Join the Community",
+		"followGitHub": "Follow on GitHub",
+		"reportIssue": "Report an Issue",
+		"followNote": "Follow progress on GitHub or check back here for published articles.",
 		"topic": {
-			"architecture": "Как Mountain, Cocoon, Wind, Sky, Air и Echo заместват Electron елемент по елемент",
-			"effectTS": "Защо Effect-TS захранва UI слоя: типизирани услуги, структурирана конкурентност и проследими грешки",
-			"grpc": "gRPC IPC с нативна скорост: как Rust и TypeScript комуникират без натоварване",
-			"extensions": "Изпълнение на VS Code разширения без промени: как Cocoon постига висококачествена съвместимост",
-			"ngi": "Разработка с фонда NGI0 Commons: устойчивост на отворения код и европейската инициатива за отворен интернет"
+			"architecture": "How Mountain, Cocoon, Wind, Sky, Air, and Echo replace Electron one element at a time",
+			"effectTS": "Why Effect-TS powers the UI layer: typed services, structured concurrency, and traced errors",
+			"grpc": "gRPC IPC at native speed: how Rust and TypeScript communicate without overhead",
+			"extensions": "Running VS Code extensions without modification: how Cocoon achieves high-fidelity compatibility",
+			"ngi": "Building with the NGI0 Commons Fund: open-source sustainability and the European open internet initiative"
 		},
-		"upcomingTopicsHeading": "Предстоящи теми"
+		"upcomingTopicsHeading": "Upcoming Topics"
 	},
 	"contributing": {
-		"pageTitle": "Принос",
-		"pageSubtitle": "Land е с отворен код и разработван публично.\n\nВсеки принос: код, документация, тестове или дизайн, достига до реални потребители.",
+		"pageTitle": "Contributing",
+		"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution (code, docs, tests, or design) and ships to real users.",
 		"guide": {
-			"title": "Ръководство за принос",
-			"description": "Прочетете CONTRIBUTING.md в GitHub за пълно ръководство: среда, конвенции за клонове и как да изпращате промени."
+			"title": "Contributing Guide",
+			"description": "Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes."
 		},
 		"goodFirstIssues": {
-			"title": "Добри първи задачи",
-			"description": "Разгледайте issues с етикет good-first-issue за задачи, подходящи за нови участници. Екипът ги маркира и сортира всяка седмица."
+			"title": "Good First Issues",
+			"description": "Browse issues labeled good-first-issue to find tasks sized for new contributors. The team triages and labels these weekly."
 		},
 		"elements": {
-			"heading": "Шест елемента, един редактор",
-			"description": "Land е изграден от шест модулни Елемента: всеки е самостоятелен Rust крейт или TypeScript пакет. Всеки елемент може да се разработва, тества и публикува независимо.",
-			"docs": "Всеки Елемент има своя README с архитектурни детайли. Намерете ги в Land/Element/"
+			"heading": "Fifteen Elements, One Editor",
+			"description": "Land is built from fifteen modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
+			"docs": "Every Element has its own README with architecture details. Find them in Land/Element/"
 		},
 		"howToContribute": {
-			"heading": "Как да допринесете"
+			"heading": "How to Contribute"
 		},
 		"step1": {
-			"title": "Форкнете и клонирайте",
-			"description": "Форкнете хранилището Land в GitHub и го клонирайте локално с подмодули:"
+			"title": "Fork and Clone",
+			"description": "Fork the Land repository on GitHub and clone it locally with submodules:"
 		},
 		"step2": {
-			"title": "Настройте средата",
-			"description": "Инсталирайте Rust 1.95.0+, Node.js и pnpm. След това изпълнете:"
+			"title": "Set Up the Environment",
+			"description": "Install Rust 1.95.0+, Node.js, and pnpm. Then run:"
 		},
 		"step3": {
-			"title": "Направете промените",
-			"description": "Създайте клон, направете промените и следвайте конвенцията PascalCase, използвана в целия проект."
+			"title": "Make Your Changes",
+			"description": "Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project."
 		},
 		"step4": {
-			"title": "Изпратете заявка за сливане",
-			"description": "Натиснете клона и отворете pull request срещу клона Current.\n\nОпишете какво е променено и защо. Едно изречение е достатъчно."
+			"title": "Submit a Pull Request",
+			"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.."
 		},
 		"ways": {
-			"heading": "Начини за принос",
+			"heading": "Ways to Contribute",
 			"code": {
-				"title": "Код",
-				"description": "Поправяйте грешки, имплементирайте функции или подобрявайте производителността в Rust или TypeScript."
+				"title": "Code",
+				"description": "Fix bugs, implement features, or improve performance in Rust or TypeScript."
 			},
 			"documentation": {
-				"title": "Документация",
-				"description": "Подобрявайте ръководства, добавяйте примери или превеждайте съдържание на други езици."
+				"title": "Documentation",
+				"description": "Improve guides, add examples, or translate existing content into other languages."
 			},
 			"testing": {
-				"title": "Тестване",
-				"description": "Пишете тестове, възпроизвеждайте докладвани грешки или помагайте за сортиране на отворени issues."
+				"title": "Testing",
+				"description": "Write tests, reproduce reported bugs, or help triage open issues."
 			},
 			"design": {
-				"title": "Дизайн",
-				"description": "Допринасяйте за подобрения на UI/UX, икони или визуален дизайн за редактора или уебсайта."
+				"title": "Design",
+				"description": "Contribute UI and UX improvements, icons, or visual design work for the editor or website."
 			}
 		},
 		"funding": {
-			"heading": "Финансиране",
-			"description": "Land се финансира чрез фонда NLnet NGI0 Commons.\n\nТози грант позволява разработка на пълно работно време по проекта.",
-			"nlnetIntro": "Code Editor Land е финансиран чрез",
-			"nlnetFundName": "Фонд NGI0 Commons",
-			"nlnetEstablishedBy": ", фонд, създаден от",
-			"nlnetSuffix": "с финансовата подкрепа на програмата Next Generation Internet на Европейската комисия, по споразумение за безвъзмездна помощ № 101135429.\n\nТова финансиране позволява устойчива разработка на проекта с отворен код.",
-			"playformInfo": "Проектът се управлява от PlayForm, компания със седалище в София, България.\n\nPlayForm действа като стюард на отворения код за Code Editor Land по програмата NGI0 Commons Fund.",
-			"viewProject": "Вижте",
-			"nlnetProjectPage": "страницата на проекта в NLnet",
-			"viewProjectSuffix": "за повече подробности относно гранта и целите."
+			"heading": "Funding",
+			"description": "Land is funded through the NLnet NGI0 Commons Fund.\n\nThis grant enables full-time open-source development on the project.",
+			"nlnetIntro": "Code Editor Land has been funded through the",
+			"nlnetFundName": "NGI0 Commons Fund",
+			"nlnetEstablishedBy": ", a fund established by",
+			"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429.\n\nThis funding enables sustained open-source development on the project.",
+			"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+			"viewProject": "View the",
+			"nlnetProjectPage": "NLnet project page",
+			"viewProjectSuffix": "for more details about the grant and objectives."
 		},
 		"conduct": {
-			"heading": "Кодекс за поведение",
-			"description": "Очаква се всички участници в общността на Land да бъдат уважителни и конструктивни.\n\nПрочетете пълния Кодекс за поведение в GitHub."
+			"heading": "Code of Conduct",
+			"description": "All participants in the Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub."
 		}
 	},
 	"sales": {
-		"pageTitle": "Корпоративни запитвания",
-		"pageSubtitle": "Внедрявате Land в организацията си? Свържете се и ще уредим детайлите заедно.",
+		"pageTitle": "Enterprise Inquiries",
+		"pageSubtitle": "Deploying Land across your organization? Get in touch and we'll work out the details together.",
 		"form": {
-			"firstName": "Собствено име",
-			"lastName": "Фамилно име",
-			"email": "Служебен имейл",
-			"company": "Компания",
-			"teamSize": "Размер на екипа",
-			"teamSizePlaceholder": "Изберете размер на екипа",
-			"message": "Как можем да помогнем?",
-			"messagePlaceholder": "Разкажете ни за изискванията, нуждите за внедряване или въпросите си.",
-			"submitButton": "Изпратете запитване"
+			"firstName": "First Name",
+			"lastName": "Last Name",
+			"email": "Work Email",
+			"company": "Company",
+			"teamSize": "Team Size",
+			"teamSizePlaceholder": "Select team size",
+			"message": "How can we help?",
+			"messagePlaceholder": "Tell us about your requirements, deployment needs, or any questions you have.",
+			"submitButton": "Send Inquiry"
 		},
 		"features": {
-			"heading": "Какво включва корпоративният план",
-			"prioritySupport": "Приоритетна поддръжка и гарантирано SLA",
-			"customDeployment": "Опции за персонализирано внедряване: облак, on-prem или air-gapped",
-			"volumeLicensing": "Групово лицензиране за големи екипи",
-			"accountManagement": "Специализиран мениджър за вашата организация",
-			"securityReview": "Преглед на сигурността и документация за съответствие",
-			"customIntegrations": "Персонализирани интеграции и разработка"
+			"heading": "What Enterprise Includes",
+			"prioritySupport": "Priority support and guaranteed SLA",
+			"customDeployment": "Custom deployment options: cloud, on-prem, or air-gapped",
+			"volumeLicensing": "Volume licensing for large teams",
+			"accountManagement": "Dedicated account manager for your organization",
+			"securityReview": "Security review and compliance documentation",
+			"customIntegrations": "Custom integrations and development work"
 		},
 		"contact": {
-			"heading": "Как да се свържете с нас",
-			"directHeading": "Директен контакт",
-			"description": "Предпочитате имейл? Свържете се директно с нас:",
-			"githubNote": "Обработваме корпоративни запитвания чрез GitHub Issues.\n\nТова гарантира, че заявката ви се проследява, видима е за целия екип и получава бърз отговор.",
-			"openIssueHeading": "Отворете GitHub Issue",
-			"openIssueDescription": "Създайте issue в GitHub хранилището, описващо нуждите на организацията ви.\n\nВключете название на компанията, размер на екипа, случай на употреба и изисквания за внедряване.\n\nСледим issues ежедневно.",
-			"openIssueButton": "Отворете GitHub Issue",
-			"issueIncludeLabel": "Какво да включите:",
-			"issueIncludeText": "Название на компанията, размер на екипа, предвиден случай на употреба, среда за внедряване, срокове и специфични изисквания за поддръжка или съответствие.",
-			"operatedBy": "Управлявано от PlayForm, София, България"
+			"heading": "How to Reach Us",
+			"directHeading": "Direct Contact",
+			"description": "Prefer email? Reach us directly:",
+			"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to promptly.",
+			"openIssueHeading": "Open a GitHub Issue",
+			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe monitor issues daily.",
+			"openIssueButton": "Open GitHub Issue",
+			"issueIncludeLabel": "What to include in your issue:",
+			"issueIncludeText": "Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
+			"operatedBy": "Operated by PlayForm, Sofia, Bulgaria"
 		},
 		"openSource": {
-			"heading": "Все още с отворен код",
-			"description": "Корпоративните планове добавят поддръжка, SLA и персонализирана разработка.\n\nСамият код остава CC0. Форкнете го, прочетете го, разпространявайте го."
+			"heading": "Still Open Source",
+			"description": "Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it."
 		}
 	},
 	"oauth": {
-		"completing": "Завършване на входа...",
-		"failed": "Входът неуспешен",
-		"errorGeneric": "Нещо се обърка по време на входа. Моля, опитайте отново.",
-		"errorExpired": "Сесията за вход е изтекла.\n\nМоля, опитайте отново.",
-		"errorProvider": "OAuth доставчикът върна грешка.\n\nМоля, опитайте отново.",
-		"errorNoToken": "Не е получен токен за удостоверяване. Моля, опитайте отново.",
-		"backToSignIn": "Обратно към вход",
-		"goToDashboard": "Към таблото",
+		"completing": "Completing sign-in...",
+		"failed": "Sign-In Failed",
+		"errorGeneric": "Something went wrong during sign-in. Please try again.",
+		"errorExpired": "Your sign-in session expired.\n\nPlease try again.",
+		"errorProvider": "The OAuth provider returned an error.\n\nPlease try again.",
+		"errorNoToken": "No authentication token received. Please try again.",
+		"backToSignIn": "Back to Sign In",
+		"goToDashboard": "Go to Dashboard",
 		"success": {
-			"title": "Влязохте успешно",
-			"redirect": "Пренасочване към таблото..."
+			"title": "You're signed in",
+			"redirect": "Redirecting to your dashboard..."
 		}
 	},
 	"dashboard": {
-		"pageTitle": "Табло",
-		"pageSubtitle": "Вашият Land профил, изтегляния и връзка с редактора.",
-		"breadcrumbLabel": "Табло",
+		"pageTitle": "Dashboard",
+		"pageSubtitle": "Your Land account, downloads, and editor connection.",
+		"breadcrumbLabel": "Dashboard",
 		"account": {
-			"heading": "Профил",
-			"nameLabel": "Ime",
-			"emailLabel": "Имейл",
-			"planLabel": "План",
-			"planFree": "Безплатен",
-			"planEnterprise": "Корпоративен",
-			"providerLabel": "Доставчик",
-			"organizationLabel": "Организация",
-			"memberSinceLabel": "Член от",
-			"notSignedIn": "Влезте, за да видите данните за профила.",
-			"signInButton": "Вход",
-			"emailNotVerified": "Имейлът не е потвърден. Проверете входящата си поща.",
-			"enterpriseSSO": "Корпоративен SSO активен",
+			"heading": "Account",
+			"nameLabel": "Name",
+			"emailLabel": "Email",
+			"planLabel": "Plan",
+			"planFree": "Free",
+			"planEnterprise": "Enterprise",
+			"providerLabel": "Provider",
+			"organizationLabel": "Organization",
+			"memberSinceLabel": "Member Since",
+			"notSignedIn": "Sign in to see your account details.",
+			"signInButton": "Sign In",
+			"emailNotVerified": "Email not verified. Check your inbox.",
+			"enterpriseSSO": "Enterprise SSO active",
 			"emailVerifiedTitle": "Email verified",
 			"emailVerifiedBadge": "Verified",
 			"signOutButton": "Sign Out"
 		},
 		"downloads": {
-			"heading": "Изтегляния",
-			"description": "Вземете последния билд на Land за вашата платформа. Нативен на macOS, Windows и Linux.",
-			"goButton": "Към изтеглянията"
+			"heading": "Downloads",
+			"description": "Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
+			"goButton": "Go to Downloads"
 		},
 		"quickLinks": {
-			"heading": "Бързи връзки",
-			"docs": "Документация",
-			"community": "Общност",
-			"reportIssue": "Докладвайте проблем",
-			"contribute": "Допринесете"
+			"heading": "Quick Links",
+			"docs": "Documentation",
+			"community": "Community",
+			"reportIssue": "Report an Issue",
+			"contribute": "Contribute"
 		},
 		"settings": {
-			"heading": "Настройки",
+			"heading": "Settings",
 			"sync": {
-				"title": "Синхронизация на настройките",
-				"description": "Предпочитанията на редактора ви следват автоматично на всяко устройство."
+				"title": "Sync Settings",
+				"description": "Your editor preferences follow you across every device automatically."
 			},
 			"extensionSync": {
-				"title": "Синхронизация на разширения",
-				"description": "Инсталираните разширения остават синхронизирани на всички машини."
+				"title": "Extension Sync",
+				"description": "Your installed extensions stay in sync across all machines."
 			},
 			"account": {
-				"title": "Профил",
-				"description": "Актуализирайте профила и управлявайте профила си.",
-				"manageButton": "Управление"
+				"title": "Account",
+				"description": "Update your profile and manage your account.",
+				"manageButton": "Manage"
 			}
 		},
 		"telemetry": {
-			"heading": "Статус на телеметрията",
+			"heading": "Telemetry Architecture",
 			"production": {
-				"title": "Нулева телеметрия по подразбиране",
-				"description": "Функцията Telemetry на Cargo не е в основните функции.\n\nЦялото проследяване се компилира до нулеви операции.\n\nНищо не се изпраща никъде, освен ако изрично не го активирате."
+				"title": "Absent from the binary. Not just disabled.",
+				"description": "VS Code's telemetry can be reduced via settings, but the code paths remain in the binary.\n\nThe Telemetry Cargo feature is not in Land's default features. All tracing compiles to zero-cost no-ops. Nothing is sent anywhere because there is nothing to send."
 			},
 			"otel": {
-				"title": "OpenTelemetry (само при избор)",
-				"description": "Активирайте с: `cargo build --features Telemetry`.\n\nСамо локално OTEL проследяване, метрики и разпределени обхвати.\n\nБез външно предаване."
+				"title": "Opt-in OpenTelemetry. Your infrastructure only.",
+				"description": "Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure."
 			},
 			"effect": {
-				"title": "Effect-TS локална инструментация",
-				"description": "Cocoon използва TelemetryService за вътрешен RPC и времена на зареждане.\n\nВсички данни остават локални."
+				"title": "Extension host timing. Stays in the process.",
+				"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing."
 			}
 		},
 		"buildLog": {
-			"heading": "Конфигурация на билда",
-			"subtitle": "Активен вариант на билда и режим на внедряване.\n\nДостъпно чрез връзка с локален Air Daemon.",
+			"heading": "Build Configuration",
+			"subtitle": "Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
 			"profile": {
-				"heading": "Активен профил"
+				"heading": "Active Profile"
 			},
 			"deployment": {
-				"heading": "Режим на внедряване"
+				"heading": "Deployment Mode"
 			},
 			"matrix": {
-				"heading": "Тестова матрица"
+				"heading": "Test Matrix"
 			}
 		},
 		"portal": {
-			"heading": "Нива на удостоверяване",
-			"subtitle": "Текущият ви метод за удостоверяване и налични нива."
+			"heading": "Authentication Tiers",
+			"subtitle": "Your current authentication method and available tiers."
 		},
 		"editor": {
-			"heading": "Връзка с редактора",
-			"subtitle": "Свържете уебсайта с работещия екземпляр на Land редактора.",
-			"status": "Не е свързан",
-			"description": "Air Daemon свързва таблото с работещ Land редактор чрез WebSocket.\n\nСтартирайте Land за дневници на билда в реално време, телеметрия и управление на конфигурацията.",
-			"connect": "Свържете чрез портала",
+			"heading": "Editor Connection",
+			"subtitle": "Connect the website to your running Land editor instance.",
+			"status": "Not Connected",
+			"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+			"connect": "Connect via Portal",
 			"scanButton": "Scan for Daemon"
 		},
 		"partners": {
-			"heading": "Партньори и признания"
+			"heading": "Partners & Attribution"
 		},
 		"localFirst": {
 			"title": "Air Daemon",
