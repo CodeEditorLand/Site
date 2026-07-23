@@ -791,7 +791,7 @@ const PortalTierRow = ({
 								{Content.Title}
 							</CardTitle>
 							{StatusLabel && (
-								<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
+								<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "0.625rem" } as React.CSSProperties}>
 									{StatusLabel}
 								</jelly-badge>
 							)}
@@ -1109,22 +1109,22 @@ const PortalTierRow = ({
 
 			{/* Right: Feature Description */}
 			<div className="PortalTierDescription">
-				{Content.Badge && (
-					<jelly-badge
-						variant="mint"
-						shape="square"
-						className="StaccatoRhythmBeat PortalTierBadge"
-						style={{
-							"--jelly-fill": "var(--Card)",
-							"--jelly-label": Content.Color || "var(--Foreground)",
-							"--jelly-badge-radius": "0px",
-							"--jelly-badge-font-size": "inherit",
-							"--jelly-color-border-default": Content.BorderColor || "var(--Border)",
-						} as React.CSSProperties}
-					>
-						{Content.Badge}
-					</jelly-badge>
-				)}
+							{Content.Badge && (
+								<jelly-badge
+									variant="mint"
+									shape="square"
+									className="StaccatoRhythmBeat PortalTierBadge"
+									style={{
+										"--jelly-fill": "var(--Card)",
+										"--jelly-label": Content.Color || "var(--Foreground)",
+										"--jelly-badge-radius": "0px",
+										"--jelly-badge-font-size": "0.625rem",
+										"--jelly-color-border-default": Content.BorderColor || "var(--Border)",
+									} as React.CSSProperties}
+								>
+									{Content.Badge}
+								</jelly-badge>
+							)}
 
 				<h3
 					className="PortalTierDescriptionTitle"
@@ -1162,7 +1162,7 @@ const PortalTierRow = ({
 									{(Feature.Status ?? Content.Status) &&
 										(Feature.Status ?? Content.Status) !==
 											"Ready" && (
-											<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
+											<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "0.625rem" } as React.CSSProperties}>
 												{(Feature.Status ??
 													Content.Status) === "WIP"
 													? "WIP"
@@ -1311,7 +1311,7 @@ const PortalTierRow = ({
 											<>
 												{"\u2001"}
 
-												<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "inherit" } as React.CSSProperties}>
+												<jelly-badge variant="platinum" shape="square" style={{ "--jelly-fill": "var(--Mute)", "--jelly-label": "var(--MuteForeground)", "--jelly-badge-radius": "0px", "--jelly-badge-font-size": "0.625rem" } as React.CSSProperties}>
 													{StatusLabel}
 												</jelly-badge>
 											</>

@@ -213,7 +213,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 												"--jelly-fill": "var(--Mute)",
 												"--jelly-label": "var(--MuteForeground)",
 												"--jelly-badge-radius": "0px",
-												"--jelly-badge-font-size": "inherit",
+												"--jelly-badge-font-size": "0.625rem",
 											} as React.CSSProperties}
 										>
 											{Tier.Status === "WIP"
@@ -365,7 +365,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																										"--jelly-fill": "var(--Mute)",
 																										"--jelly-label": "var(--MuteForeground)",
 																										"--jelly-badge-radius": "0px",
-																										"--jelly-badge-font-size": "inherit",
+																										"--jelly-badge-font-size": "0.625rem",
 																									} as React.CSSProperties}
 																								>
 																									{Tier.Status ===

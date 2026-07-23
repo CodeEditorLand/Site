@@ -435,38 +435,63 @@ const MetaDescription = T("meta.portal.description", {
 					height="28"
 				/>
 			</picture>
-			<span
-				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+			<jelly-badge
+				variant="mint"
+				shape="square"
+				style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:11px`}
 			>
 				Telemetry Feature Gated&#x2001;<span
-					class="h-1.5 w-1.5 rounded-none bg-green-500"
+					class="h-1.5 w-1.5 rounded-none"
+					style="background-color:var(--SpinegRPC)"
 					aria-hidden="true"></span>
-			</span>
-			<span
-				class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium"
+			</jelly-badge>
+			<jelly-badge
+				variant="mint"
+				shape="square"
+				style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:11px`}
 			>
-				CC0 Licensed
-			</span>
-			<span
-				class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium"
+				CC0 Licensed&#x2001;<picture class="inline-flex align-middle">
+				<source
+					srcset="/Dark/Image/CC0.svg"
+					media="(prefers-color-scheme: dark)"
+					data-theme-dark
+				/>
+				<img
+					src="/Image/CC0.svg"
+					alt=""
+					width="12"
+					height="12"
+					class="opacity-70"
+					aria-hidden="true"
+				/>
+			</picture>
+			</jelly-badge>
+			<jelly-badge
+				variant="azure"
+				shape="square"
+				style={`--jelly-fill:var(--SpineIPCMute);--jelly-label:var(--SpineIPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:11px`}
 			>
 				Auth0 + OAuth 2.0
-			</span>
-			<span
-				class="inline-flex items-center border border-green-200 bg-green-50 px-2.5 py-0.5 font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+			</jelly-badge>
+			<jelly-badge
+				variant="mint"
+				shape="square"
+				style={`--jelly-fill:var(--SpinegRPCMute);--jelly-label:var(--SpinegRPCFore);--jelly-badge-radius:0;--jelly-badge-font-size:11px`}
 			>
 				OIDC / SAML / Okta Planned&#x2001;<span
-					class="h-1.5 w-1.5 rounded-none bg-green-500"
+					class="h-1.5 w-1.5 rounded-none"
+					style="background-color:var(--SpinegRPC)"
 					aria-hidden="true"></span>
-			</span>
-			<a
-				href="https://PlayForm.Cloud"
-				target="_blank"
-				rel="noopener noreferrer"
-				class="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium transition-colors hover:text-foreground"
+			</jelly-badge>
+			<jelly-badge
+				variant="platinum"
+				shape="square"
+				outline
+				style={`--jelly-fill:transparent;--jelly-label:var(--MuteForeground);--jelly-badge-radius:0;--jelly-badge-font-size:11px;cursor:pointer`}
+				onclick="window.open('https://PlayForm.Cloud','_blank','noopener noreferrer')"
 			>
 				PlayForm
-			</a>
+			</jelly-badge>
 		</div>
 
 		<DynamicPortal Content={PortalContent} client:load />

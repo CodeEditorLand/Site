@@ -91,6 +91,14 @@
 	border-color: var(--SpineTCP);
 }
 
+.PortalTierEnterprise {
+	border-left-color: var(--PlatformDesktop);
+}
+
+.PortalTierEnterprise:hover {
+	border-color: var(--PlatformDesktop);
+}
+
 /* ─── Login Box (Left Column) ─────────────────────────────── */
 
 .PortalTierLogin {
@@ -142,12 +150,6 @@
 
 .PortalTierBadge {
 	align-self: flex-start;
-	font-size: 0.625rem;
-	font-weight: 700;
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
-	border: var(--BorderWidth) solid;
-	padding: 0.125rem 0.5rem;
 }
 
 .PortalTierDescriptionTitle {
