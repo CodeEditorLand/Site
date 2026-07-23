@@ -526,7 +526,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"Active milestones across the element repositories - integration work, release preparation, and long-tail API coverage.",
+							"Signed installers, verified downloads, and broad extension compatibility are the v1.0 target. Vine consolidates cross-element protocols. Grove adds WASM sandboxing for extensions. Rest and Echo tighten the build pipeline and scheduler. Long-tail VS Code API coverage rounds out the Cocoon compatibility pass.",
 					}),
 
 					Price: { Monthly: 0, Yearly: 0 },
