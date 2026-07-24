@@ -306,6 +306,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				"/sitemap-index.xml",
 				"/sitemap-0.xml",
 				"/robots.txt",
+				"/jelly.js",
 			];
 
 			const Pad = (Value: string, Width: number): string =>

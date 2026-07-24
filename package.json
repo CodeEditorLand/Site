@@ -30,8 +30,8 @@
 	"scripts": {
 		"Run": "astro dev --host",
 		"Format": "sh Maintain/Format.sh",
-		"build": "astro build",
-		"prepublishOnly": "astro build",
+		"build": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro build",
+		"prepublishOnly": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
