@@ -140,12 +140,12 @@ const CategoryStyle: Record<TermCategory, string> = {
 
 
 const CategoryFill: Record<TermCategory, string> = {
-	Architecture: "var(--Mute)",
-	Telemetry:   "var(--Mute)",
-	Protocol:    "var(--Mute)",
-	Feature:     "var(--Mute)",
-	License:     "var(--Mute)",
-	Tool:        "var(--Mute)",
+	Architecture: "var(--SpineIPCMute)",
+	Telemetry:   "var(--ExtensionTauriMute)",
+	Protocol:    "var(--SpineWASMMute)",
+	Feature:     "var(--SpineTCPMute)",
+	License:     "var(--SpinegRPCMute)",
+	Tool:        "var(--ExtensionReactMute)",
 };
 const CategoryLabel: Record<TermCategory, string> = {
 	Architecture: "Architecture element",
