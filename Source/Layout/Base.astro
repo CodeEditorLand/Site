@@ -307,52 +307,6 @@ const T = GetI18n();
 			await import("@Function/Route/Register.js");
 		</script>
 
-		<script>
-			const ReducedMotion = window.matchMedia(
-				"(prefers-reduced-motion: reduce)",
-			).matches;
-
-			if (!ReducedMotion) {
-				const Staccato = await import("@Function/Noise/Staccato.js");
-
-				const Engine = await Staccato.default;
-
-				Engine.Start();
-
-				// Seed every Staccato element once, strictly after window.load.
-				//
-				// WHY window.load is required - not just requestIdleCallback:
-				// React 18 concurrent mode breaks hydration into small chunks
-				// and yields to the browser between each one. requestIdleCallback
-				// fires precisely during those yield gaps, BEFORE hydration is
-				// complete. If SeedSelector runs then, it writes --StaccatoSeed /
-				// --StaccatoSeedPhase onto DOM elements that React's virtual DOM
-				// doesn't know about → hydration attribute mismatch warnings.
-				//
-				// window.load fires only after all resources are loaded AND after
-				// React's client:load hydration has flushed. Scheduling via
-				// requestIdleCallback (or setTimeout as fallback) AFTER load
-				// ensures we land in the first true idle slot post-hydration.
-				const Seed = () => Engine.SeedSelector('[class*="Staccato"]');
-
-				const SeedAfterLoad = () => {
-					if (typeof requestIdleCallback !== "undefined") {
-						requestIdleCallback(Seed);
-					} else {
-						setTimeout(Seed, 0);
-					}
-				};
-
-				if (document.readyState === "complete") {
-					SeedAfterLoad();
-				} else {
-					window.addEventListener("load", SeedAfterLoad, {
-						once: true,
-					});
-				}
-			}
-		</script>
-
 		<a
 			class="absolute left-0 top-0 hidden"
 			rel="me"
