@@ -2,8 +2,6 @@
 import "@Stylesheet/Base.css";
 import "@Stylesheet/UtilityClasses.css";
 
-import { JellyUIVersion } from "@Variable/JellyUIVersion";
-
 import Background from "../Background.astro";
 import { ErrorBoundary } from "../Component/ErrorBoundary";
 import { Footer } from "../Component/Layout/Footer";
@@ -263,13 +261,10 @@ const T = GetI18n();
 		<meta name="apple-mobile-web-app-title" content="Code Editor Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
 
-		<!-- Jelly UI (https://github.com/jelly-org/ui) - self-hosted from the
-		 Vendor/JellyUI submodule (built by
-		 Maintain/Script/BuildJellyUIVendor.sh into Public/Vendor/JellyUI/,
-		 served here from our own origin) rather than the jelly-ui.com CDN,
-		 so it's not a build- or runtime-time dependency on a third party.
-		 Upgrades the <jelly-*> elements rendered below once it loads. -->
-		<script type="module" src={`/Asset/JellyUI/jelly.js?v=${JellyUIVersion}`}></script>
+		<!-- Jelly UI — bundled by Vite from local Vendor/JellyUI package.
+		     Imported as a module so Vite tree-shakes and content-hashes it
+		     automatically. -->
+		<script>import 'jelly-ui'</script>
 	</head>
 	<body>
 		<a

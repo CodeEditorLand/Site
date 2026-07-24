@@ -28,11 +28,10 @@
 		}
 	],
 	"scripts": {
-		"Run": "sh Maintain/Script/BuildJellyUIVendor.sh && astro dev --host",
+		"Run": "astro dev --host",
 		"Format": "sh Maintain/Format.sh",
 		"build": "astro build",
-		"jelly": "sh Maintain/Script/BuildJellyUIVendor.sh",
-		"prepublishOnly": "sh Maintain/Script/BuildJellyUIVendor.sh && astro build",
+		"postinstall": "cd Vendor/JellyUI && npm run build || true",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
@@ -102,6 +101,7 @@
 		"happy-dom": "20.11.1",
 		"i18next": "26.3.6",
 		"input-otp": "1.4.2",
+		"jelly-ui": "file:./Vendor/JellyUI",
 		"jsdom": "29.1.1",
 		"lucide-react": "1.26.0",
 		"mermaid": "11.16.0",
