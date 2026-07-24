@@ -30,8 +30,8 @@
 	"scripts": {
 		"Run": "astro dev --host",
 		"Format": "sh Maintain/Format.sh",
-		"build": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro build && node Maintain/Script/InjectJellyRedirect.cjs",
-		"prepublishOnly": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro build && node Maintain/Script/InjectJellyRedirect.cjs",
+		"build": "astro build",
+		"prepublishOnly": "astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
@@ -104,6 +104,7 @@
 		"jsdom": "29.1.1",
 		"lucide-react": "1.26.0",
 		"mermaid": "11.16.0",
+		"neotraverse": "1.0.1",
 		"next-themes": "0.4.6",
 		"postcss": "8.5.22",
 		"postcss-combine-duplicated-selectors": "10.0.3",
