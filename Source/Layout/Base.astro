@@ -45,19 +45,12 @@ const {
 
 interface Props {
 	Title?: string;
-
 	Description?: string;
-
 	Language?: string;
-
 	Direction?: string;
-
 	Image?: string;
-
 	Url?: string;
-
 	Type?: "website" | "article";
-
 	NoIndex?: boolean;
 }
 
@@ -72,13 +65,11 @@ const T = GetI18n();
 
 		<script>
 			document.documentElement.classList.remove("no-js");
-
 			document.documentElement.classList.add("js");
 		</script>
 
 		<!-- Theme: set the .dark class before first paint to avoid a flash.
-		 Stored preference wins; otherwise fall back to the OS color scheme.
-		 See .claude/skills/land-design/Reference/Theme.md -->
+		 Stored preference wins; otherwise fall back to the OS color scheme. -->
 		<script is:inline>
 			(() => {
 				try {
@@ -90,9 +81,6 @@ const T = GetI18n();
 								.matches);
 					const Root = document.documentElement;
 					Root.classList.toggle("dark", Dark);
-					// Tell the browser which color scheme is active so that
-					// prefers-color-scheme media queries in <picture> evaluate
-					// against the user's stored choice, not just the OS setting.
 					Root.style.colorScheme = Dark ? "dark" : "light";
 					const Meta = document.querySelector(
 						'meta[name="theme-color"]',
@@ -102,12 +90,6 @@ const T = GetI18n();
 							"content",
 							Dark ? "#0a0a0c" : "#ffffff",
 						);
-					// Also set source[data-theme-dark].media directly so that
-					// browsers which don't propagate color-scheme to picture still
-					// show the right image on first paint.
-					// MutationObserver fires as each <source> is inserted during
-					// HTML parsing - before the browser evaluates which source to
-					// load - so no flash even when OS and stored preference differ.
 					const SyncSource = (S) => {
 						S.media = Dark ? "all" : "(prefers-color-scheme: dark)";
 					};
@@ -123,19 +105,12 @@ const T = GetI18n();
 						subtree: true,
 						childList: true,
 					});
-					// Disconnect after full parse; also catch any sources that
-					// arrived before the observer was ready.
 					document.addEventListener(
 						"DOMContentLoaded",
 						() => {
 							Root.querySelectorAll(
 								"source[data-theme-dark]",
 							).forEach(SyncSource);
-							// <jelly-theme> defaults to mode="auto" (OS
-							// preference only) - force it to match the
-							// stored/resolved Dark boolean so Jelly UI buttons
-							// track the same manual toggle as the rest of the
-							// site instead of drifting from prefers-color-scheme.
 							Root.querySelectorAll("jelly-theme").forEach(
 								(T) => {
 									T.setAttribute(
@@ -168,14 +143,7 @@ const T = GetI18n();
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="twitter:dnt" content="on" />
 
-		<!-- Fonts: self-hosted Geist, Geist Mono, and Instrument Serif woff2
-		 files under Public/Font/, declared via @font-face in Font.css
-		 (imported by Global.css below) - no requests to fonts.googleapis.com
-		 or fonts.gstatic.com. Preload the primary latin subsets so the
-		 highest-priority glyphs fetch immediately instead of waiting on CSS
-		 parsing. font-display: swap avoids render-blocking; CLS from font
-		 swap is prevented by font-size-adjust: 0.52 in Global.css (matches
-		 Geist's x-height ratio). -->
+		<!-- Fonts -->
 		<link
 			rel="preload"
 			as="font"
@@ -189,28 +157,18 @@ const T = GetI18n();
 			href="/Font/GeistMono/GeistMono-Latin.woff2"
 		/>
 
-		<!-- LCP optimization: preload hero logo used in DynamicHeroSection -->
+		<!-- LCP optimization -->
 		<link rel="preload" as="image" href="/Asset/Logo/Glyph/Land.svg" />
 
 		<style is:global>
 			@import "@Stylesheet/Global.css";
 		</style>
 
-		<!-- Dark-mode rules that reference selectors added dynamically by JS
-		     (.dark class, Shiki --shiki-dark-* vars). PostCSS's discardUnused
-		     strips them from build output because the analyzer never sees the
-		     .dark class on <html>. is:inline bypasses Vite/PostCSS entirely
-		     and guarantees they survive minification. -->
+		<!-- Dark-mode rules -->
 		<style is:inline>
-			/* Invert pre-rendered Mermaid SVGs in dark mode */
 			.dark .mermaid-diagram svg {
 				filter: invert(1) hue-rotate(180deg);
 			}
-
-			/* Activate Shiki dual-theme CSS variables in dark mode.
-			   Shiki inlines background-color on <pre> and colors on
-			   <span> elements. !important is required to beat inline
-			   styles - CSS variables alone aren't enough. */
 			.dark .astro-code-themes,
 			.dark .astro-code-themes span {
 				color: var(--shiki-dark, inherit) !important;
@@ -218,7 +176,7 @@ const T = GetI18n();
 			}
 		</style>
 
-		<!-- i18n client - must initialize before any React component hydrates -->
+		<!-- i18n client -->
 		<script>
 			import "@/Library/I18n/Client.js";
 		</script>
@@ -245,26 +203,15 @@ const T = GetI18n();
 		<slot name="Head" />
 
 		<!-- Favicon -->
-		<link
-			rel="icon"
-			type="image/png"
-			href="/Favicon/favicon-96x96.png"
-			sizes="96x96"
-		/>
+		<link rel="icon" type="image/png" href="/Favicon/favicon-96x96.png" sizes="96x96" />
 		<link rel="icon" type="image/svg+xml" href="/Favicon/favicon.svg" />
 		<link rel="shortcut icon" href="/Favicon/favicon.ico" />
-		<link
-			rel="apple-touch-icon"
-			sizes="180x180"
-			href="/Favicon/apple-touch-icon.png"
-		/>
+		<link rel="apple-touch-icon" sizes="180x180" href="/Favicon/apple-touch-icon.png" />
 		<meta name="apple-mobile-web-app-title" content="Code Editor Land" />
 		<link rel="manifest" href="/Favicon/site.webmanifest" />
 
-		<!-- Jelly UI — bundled by Vite from local Vendor/JellyUI package.
-		     Imported as a module so Vite tree-shakes and content-hashes it
-		     automatically. -->
-		<script>import '../../Vendor/JellyUI/dist/jelly.js'</script>
+		<!-- Jelly UI — self-hosted from Vendor/JellyUI/dist. -->
+		<script type="module" src="/jelly.js"></script>
 	</head>
 	<body>
 		<a
@@ -278,7 +225,6 @@ const T = GetI18n();
 			<Background />
 
 			<AnalyticsProvider>
-				{/* Client-side only component for pageview tracking */}
 				<PageviewTracker />
 				<main id="main-content" class="grow" tabindex="-1">
 					<ErrorBoundary client:load>
@@ -298,7 +244,6 @@ const T = GetI18n();
 
 		<script>
 			await import("@Function/Route/Policy.js");
-
 			await import("@Function/Route/Register.js");
 		</script>
 

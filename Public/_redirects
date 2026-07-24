@@ -768,7 +768,6 @@
 /sitemap-index.xml        /sitemap-index.xml        200
 /sitemap-0.xml            /sitemap-0.xml            200
 /robots.txt               /robots.txt               200
-/jelly.js                 /jelly.js                 200
 
 # ── CATCH-ALL → Visit ──
 /*                        /Visit/                   200
