@@ -31,7 +31,7 @@
 		"Run": "astro dev --host",
 		"Format": "sh Maintain/Format.sh",
 		"build": "astro build",
-		"postinstall": "cd Vendor/JellyUI && npm run build || true",
+		"prepublishOnly": "astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
