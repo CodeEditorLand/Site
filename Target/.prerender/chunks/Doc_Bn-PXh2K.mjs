@@ -1,0 +1,101 @@
+import { t as __exportAll } from "./rolldown-runtime_D7D4PA-g.mjs";
+import { M as createAstro, b as addAttribute, m as renderTemplate, o as renderComponent, v as maybeRenderHead } from "./server_CE33w8TD.mjs";
+import { t as createComponent } from "./astro-component_CRWsstEh.mjs";
+import { n as GetI18n, t as $$Base } from "./Base_Ch2j7K-P.mjs";
+import { t as getCollection } from "./_astro_content_Ckaya4Uj.mjs";
+import "./Map_Bsl_SrZK.mjs";
+import { t as Header } from "./Header_DjWYNAAS.mjs";
+import { n as SectionOrder, r as DynamicDocSidebar, t as BuildDocSidebar } from "./BuildDocSidebar_CQgidn_r.mjs";
+//#region Source/pages/Doc.astro
+var Doc_exports = /* @__PURE__ */ __exportAll({
+	default: () => $$Doc,
+	file: () => $$file,
+	url: () => $$url
+});
+createAstro("https://editor.land");
+var $$Doc = createComponent(async ($$result, $$props, $$slots) => {
+	const Astro = $$result.createAstro($$props, $$slots);
+	Astro.self = $$Doc;
+	const DocEntries = (await getCollection("doc")).sort((A, B) => A.data.order - B.data.order);
+	const SidebarSections = BuildDocSidebar(DocEntries);
+	const GroupedBySection = new Set(SidebarSections.map((S) => S.Label));
+	const T = GetI18n();
+	const MetaTitle = T("meta.docs.title", { defaultValue: "Documentation | Code Editor Land" });
+	const MetaDescription = T("meta.docs.description", { defaultValue: "Browse the Code Editor Land documentation, architecture guides, and developer resources." });
+	const Element = [
+		{ Name: "Mountain" },
+		{ Name: "Cocoon" },
+		{ Name: "Wind" },
+		{ Name: "Sky" },
+		{ Name: "Air" },
+		{ Name: "Echo" },
+		{ Name: "Common" },
+		{ Name: "Vine" },
+		{ Name: "Mist" },
+		{ Name: "Rest" },
+		{ Name: "Output" },
+		{ Name: "Grove" },
+		{ Name: "Worker" },
+		{ Name: "SideCar" },
+		{ Name: "Maintain" }
+	];
+	return renderTemplate`${renderComponent($$result, "Base", $$Base, {
+		"Title": MetaTitle,
+		"Description": MetaDescription,
+		"Url": Astro.url.href,
+		"lang": "en"
+	}, { "default": ($$result) => renderTemplate` ${renderComponent($$result, "Header", Header, {
+		"client:load": true,
+		"client:component-hydration": "load",
+		"client:component-path": "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/Component/Layout/Header.tsx",
+		"client:component-export": "Header"
+	})} ${maybeRenderHead($$result)}<div class="container mx-auto max-w-6xl px-4 py-16"> <div class="flex gap-8"> <!-- Desktop sidebar: sticky + independently scrollable --> <aside class="hidden w-52 shrink-0 lg:block xl:w-60" aria-label="Documentation navigation"> <div class="sticky top-6 max-h-[calc(100vh-3.5rem)] overflow-y-auto overscroll-contain pb-8 pr-1 [-webkit-overflow-scrolling:touch] [scrollbar-color:var(--Border)_transparent] [scrollbar-width:thin]"> <p class="mb-2 px-2 font-mono text-xs font-semibold uppercase tracking-widest text-muted-foreground"> ${T("sidebar.title", {
+		ns: "doc",
+		defaultValue: "Documentation"
+	})} </p> ${renderComponent($$result, "DynamicDocSidebar", DynamicDocSidebar, {
+		"Sections": SidebarSections,
+		"client:load": true,
+		"client:component-hydration": "load",
+		"client:component-path": "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/Component/Dynamic/DynamicDocSidebar.tsx",
+		"client:component-export": "DynamicDocSidebar"
+	})} <div class="mt-4 border-t border-border pt-4"> <a href="/Doc/Rust" class="block flat px-2 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+Rust API ↗
+</a> </div> </div> </aside> <!-- Main content --> <main id="main-content" class="min-w-0 flex-1"> <!-- Breadcrumbs --> <nav aria-label="Breadcrumb" class="mb-8"> <ol class="flex flex-wrap items-center space-x-2 text-muted-foreground"> <li> <a href="/" class="transition-colors hover:text-foreground">${T("common.breadcrumb.home", { defaultValue: "Home" })}</a> </li> <li class="mx-2">/</li> <li> <span class="font-medium text-foreground">${T("common.docs.pageTitle", { defaultValue: "Documentation" })}</span> </li> </ol> </nav> <!-- Page Header --> <header class="mb-12"> <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl"> ${T("common.docs.pageTitle", { defaultValue: "Documentation" })} </h1> <p class="text-muted"> ${T("common.docs.pageSubtitle", { defaultValue: "Everything you need to install, build, and contribute to Land." })} </p> </header> <!-- Quick Links: GitHub, Issues, Rust API --> <div class="grid grid-cols-1 gap-6 md:grid-cols-3"> ${renderComponent($$result, "jelly-card", "jelly-card", {
+		"squish": true,
+		"class": "transition-colors",
+		"style": "--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0",
+		"onclick": "window.open('https://github.com/CodeEditorLand/Land#readme','_blank','noopener noreferrer')"
+	}, { "default": ($$result) => renderTemplate` <div class="p-6"> <h2 class="mb-2 text-xl font-semibold"> ${T("common.docs.gettingStarted.title", { defaultValue: "Get Started in Minutes" })} </h2> <p class="text-muted-foreground"> ${T("common.docs.gettingStarted.description", { defaultValue: "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required." })} </p> </div> ` })} ${renderComponent($$result, "jelly-card", "jelly-card", {
+		"squish": true,
+		"class": "transition-colors",
+		"style": "--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0",
+		"onclick": "window.open('https://github.com/CodeEditorLand/Land/issues','_blank','noopener noreferrer')"
+	}, { "default": ($$result) => renderTemplate` <div class="p-6"> <h2 class="mb-2 text-xl font-semibold"> ${T("common.docs.issueTracker.title", { defaultValue: "Report a Bug or Request a Feature" })} </h2> <p class="text-muted-foreground"> ${T("common.docs.issueTracker.description", { defaultValue: "Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors." })} </p> </div> ` })} ${renderComponent($$result, "jelly-card", "jelly-card", {
+		"squish": true,
+		"class": "transition-colors",
+		"style": "--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0",
+		"onclick": "location.href='/Doc/Rust'"
+	}, { "default": ($$result) => renderTemplate` <div class="p-6"> <h2 class="mb-2 text-xl font-semibold"> ${T("common.docs.rustApi.title", { defaultValue: "Rust API Reference" })} </h2> <p class="text-muted-foreground"> ${T("common.docs.rustApi.description", { defaultValue: "Browse generated rustdoc output for Mountain, Echo, Air, and 11 more Rust crates." })} </p> </div> ` })} </div> <!-- Guides: grouped by section --> ${SectionOrder.filter((Section) => GroupedBySection.has(Section)).map((Section) => {
+		const Entries = DocEntries.filter((E) => E.data.section === Section);
+		if (Entries.length === 0) return null;
+		return renderTemplate`<section class="mt-12"${addAttribute(Section.toLowerCase().replace(/\s+/g, "-"), "id")}> <h2 class="mb-6 text-2xl font-semibold"> ${Section} </h2> <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"> ${Entries.map((Entry) => renderTemplate`${renderComponent($$result, "jelly-card", "jelly-card", {
+			"squish": true,
+			"class": "transition-colors",
+			"style": "--jelly-fill:var(--Card);--jelly-radius:0;--jelly-card-font-size:inherit;--jelly-card-padding-block:0;--jelly-card-padding-inline:0",
+			"onclick": `location.href='/Doc/${Entry.id}'`
+		}, { "default": ($$result) => renderTemplate` <div class="p-4"> <h3 class="font-medium"> ${Entry.data.title} </h3> ${Entry.data.description && renderTemplate`<p class="mt-1 text-muted-foreground"> ${Entry.data.description} </p>`} </div> ` })}`)} </div> </section>`;
+	})} <!-- Architecture Summary --> <section class="mt-12"> <h2 class="mb-6 text-2xl font-semibold text-foreground"> ${T("common.docs.architecture.heading", { defaultValue: "How Land Replaces VS Code's Electron Stack" })} </h2> <div class="StaccatoBorderShimmer bg-card p-6"> <p class="mb-4 text-muted-foreground"> ${T("common.docs.architecture.intro", { defaultValue: "VS Code runs on Electron: a Chromium browser, a Node.js runtime, and an extension-host model. Land replaces those pieces with independent elements while preserving the VS Code extension API as the compatibility target. Browse individual elements in the Element section above, or explore the workspace on GitHub." })} </p> <div class="flex flex-wrap gap-3"> ${Element.map((E) => renderTemplate`${renderComponent($$result, "jelly-badge", "jelly-badge", {
+		"variant": "platinum",
+		"shape": "square",
+		"class": "cursor-pointer transition-colors hover:bg-secondary",
+		"style": `--jelly-fill:var(--Card);--jelly-label:var(--Foreground);--jelly-badge-radius:0`,
+		"onclick": `location.href='/Doc/${E.Name.toLowerCase()}'`
+	}, { "default": ($$result) => renderTemplate` ${E.Name} ` })}`)} </div> <div class="mt-4 border-t border-[var(--Border)] pt-4"> <a href="https://github.com/CodeEditorLand" target="_blank" rel="noopener noreferrer" class="font-medium text-primary hover:underline"> ${T("common.docs.repositories.viewAll", { defaultValue: "View all repositories" })} <span class="InlineSeparator">↗</span> </a> </div> </div> </section> <!-- Backend Services (Cloudflare Workers) --> <section class="mt-12"> <h2 class="mb-6 text-2xl font-semibold text-foreground"> ${T("common.docs.workers.heading", { defaultValue: "Backend Services" })} </h2> <div class="StaccatoBorderShimmer bg-card p-6"> <p class="mb-4 text-muted-foreground"> ${T("common.docs.workers.intro", { defaultValue: "Four Cloudflare Workers power the Land backend infrastructure:" })} </p> <ul class="space-y-3"> <li> <a href="https://codeeditorland-auth.playform.workers.dev" target="_blank" rel="noopener noreferrer" class="font-semibold text-primary hover:underline">Auth<span class="InlineSeparator">↗</span></a> <span class="text-muted-foreground"> ${" - "} ${T("common.docs.workers.auth", { defaultValue: "OAuth 2.0, JWT session tokens, and Auth0 integration" })} </span> </li> <li> <a href="https://codeeditorland-download.playform.workers.dev" target="_blank" rel="noopener noreferrer" class="font-semibold text-primary hover:underline">Download<span class="InlineSeparator">↗</span></a> <span class="text-muted-foreground"> ${" - "} ${T("common.docs.workers.download", { defaultValue: "Binary distribution, release metadata, and update checks" })} </span> </li> <li> <a href="https://codeeditorland-status.playform.workers.dev" target="_blank" rel="noopener noreferrer" class="font-semibold text-primary hover:underline">Status<span class="InlineSeparator">↗</span></a> <span class="text-muted-foreground"> ${" - "} ${T("common.docs.workers.status", { defaultValue: "Health checks and uptime monitoring" })} </span> </li> <li> <a href="https://codeeditorland-analytics.playform.workers.dev" target="_blank" rel="noopener noreferrer" class="font-semibold text-primary hover:underline">Analytics<span class="InlineSeparator">↗</span></a> <span class="text-muted-foreground"> ${" - "} ${T("common.docs.workers.analytics", { defaultValue: "Privacy-first usage telemetry routed through Cloudflare Analytics Engine" })} </span> </li> </ul> </div> </section> <!-- Live Deployments --> <section class="mt-12"> <h2 class="mb-6 text-2xl font-semibold text-foreground"> ${T("common.docs.deployments.heading", { defaultValue: "Live Deployments" })} </h2> <div class="StaccatoBorderShimmer bg-card p-6"> <p class="mb-4 text-muted-foreground"> ${T("common.docs.deployments.intro", { defaultValue: "Public website and documentation surfaces are deployed separately from the local editor runtime:" })} </p> <div class="grid grid-cols-1 gap-3 md:grid-cols-2"> <a href="/" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.website", { defaultValue: "editor.land" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.website.description", { defaultValue: "Marketing website (Cloudflare Pages)" })} </p> </a> <a href="https://Status.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.status", { defaultValue: "Status" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.status.description", { defaultValue: "Uptime dashboard (Cloudflare Pages)" })} </p> </a> <a href="https://Rust.Documentation.Mountain.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustMountain", { defaultValue: "Rust API: Mountain" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustMountain.description", { defaultValue: "rustdoc for Mountain, Echo, Common, Air, SideCar" })} </p> </a> <a href="https://Rust.Documentation.Rest.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustRest", { defaultValue: "Rust API: Rest" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustRest.description", { defaultValue: "rustdoc for OXC-powered TypeScript compiler" })} </p> </a> <a href="https://Rust.Documentation.Maintain.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustMaintain", { defaultValue: "Rust API: Maintain" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustMaintain.description", { defaultValue: "rustdoc for build orchestrator" })} </p> </a> <a href="https://Rust.Documentation.Common.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustCommon", { defaultValue: "Rust API: Common" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustCommon.description", { defaultValue: "rustdoc for abstract traits and DTOs" })} </p> </a> <a href="https://Rust.Documentation.Echo.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustEcho", { defaultValue: "Rust API: Echo" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustEcho.description", { defaultValue: "rustdoc for work-stealing scheduler" })} </p> </a> <a href="https://Rust.Documentation.Air.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustAir", { defaultValue: "Rust API: Air" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustAir.description", { defaultValue: "rustdoc for background daemon" })} </p> </a> <a href="https://Rust.Documentation.SideCar.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustSideCar", { defaultValue: "Rust API: SideCar" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustSideCar.description", { defaultValue: "rustdoc for Node.js binary distribution" })} </p> </a> <a href="https://Rust.Documentation.Land.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustLand", { defaultValue: "Rust API: Land (Workspace)" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustLand.description", { defaultValue: "rustdoc for the top-level workspace" })} </p> </a> <a href="https://Knowledge.editor.land" target="_blank" rel="noopener noreferrer" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.knowledge", { defaultValue: "Knowledge Base" })}</span> <span class="InlineSeparator">↗</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.knowledge.description", { defaultValue: "Architecture knowledge graph (Cloudflare Pages)" })} </p> </a> <a href="/Doc/Rust" class="block bg-card px-4 py-3 transition-colors hover:bg-secondary"> <span class="font-semibold">${T("common.docs.deployments.rustInteractive", { defaultValue: "Rust API (Interactive)" })}</span> <span class="InlineSeparator">→</span> <p class="mt-1 text-muted-foreground"> ${T("common.docs.deployments.rustInteractive.description", { defaultValue: "Browse all rustdoc sites with embedded iframes" })} </p> </a> </div> </div> </section> <!-- Back to top --> <div class="mt-12 border-t pt-8"> <a href="#top" class="StaccatoButton text-primary hover:underline">${T("common.button.backToTop", { defaultValue: "Back to top" })}<span class="InlineSeparator">↑</span></a> </div> </main> </div> </div> ` })}`;
+}, "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Doc.astro", void 0);
+var $$file = "/Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand/WebSite/Source/pages/Doc.astro";
+var $$url = "/Doc";
+//#endregion
+//#region \0virtual:astro:page:Source/pages/Doc@_@astro
+var page = () => Doc_exports;
+//#endregion
+export { page };
