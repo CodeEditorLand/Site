@@ -30,7 +30,8 @@
 	"scripts": {
 		"Run": "sh Maintain/Script/BuildJellyUIVendor.sh && astro dev --host",
 		"Format": "sh Maintain/Format.sh",
-		"build": "sh Maintain/Script/BuildJellyUIVendor.sh && astro build",
+		"build": "astro build",
+		"jelly": "sh Maintain/Script/BuildJellyUIVendor.sh",
 		"prepublishOnly": "sh Maintain/Script/BuildJellyUIVendor.sh && astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
