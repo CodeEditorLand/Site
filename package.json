@@ -18,20 +18,14 @@
 		"url": "https://editor.land"
 	},
 	"contributors": [
-		{
-			"name": "Code Editor Land",
-			"url": "https://github.com/CodeEditorLand"
-		},
-		{
-			"name": "PlayForm",
-			"url": "https://editor.land"
-		}
+		{ "name": "Code Editor Land", "url": "https://github.com/CodeEditorLand" },
+		{ "name": "PlayForm", "url": "https://editor.land" }
 	],
 	"scripts": {
-		"Run": "astro dev --host",
+		"Run": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro dev --host",
 		"Format": "sh Maintain/Format.sh",
-		"build": "astro build",
-		"prepublishOnly": "astro build",
+		"build": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro build",
+		"prepublishOnly": "cp Vendor/JellyUI/dist/jelly.js Public/jelly.js && astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
