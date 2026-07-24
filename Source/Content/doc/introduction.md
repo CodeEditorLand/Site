@@ -38,7 +38,7 @@ identical while replacing the substrate underneath.
 
 Land is not a fork of VS Code. It does not maintain a modified copy of the
 `src/vs` codebase. The upstream VS Code repository is a Git submodule at
-`Element/Dependency/Microsoft/Dependency/Editor` and is consumed as a
+`Dependency/Microsoft/Dependency/Editor` and is consumed as a
 dependency: compiled, not edited. All custom code lives in the Land elements
 themselves.
 

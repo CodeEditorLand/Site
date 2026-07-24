@@ -72,24 +72,24 @@ cd Land
 
 ### Element Repository Table
 
-| Element  | Repository                         | Path in Land repo                                |
-| -------- | ---------------------------------- | ------------------------------------------------ |
-| Common   | github.com/CodeEditorLand/Common   | `Element/Common`                                 |
-| Echo     | github.com/CodeEditorLand/Echo     | `Element/Echo`                                   |
-| Vine     | github.com/CodeEditorLand/Vine     | `Element/Vine`                                   |
-| Mountain | github.com/CodeEditorLand/Mountain | `Element/Mountain`                               |
-| Cocoon   | github.com/CodeEditorLand/Cocoon   | `Element/Cocoon`                                 |
-| Wind     | github.com/CodeEditorLand/Wind     | `Element/Wind`                                   |
-| Sky      | github.com/CodeEditorLand/Sky      | `Element/Sky`                                    |
-| Output   | github.com/CodeEditorLand/Output   | `Element/Output`                                 |
-| Rest     | github.com/CodeEditorLand/Rest     | `Element/Rest`                                   |
-| Worker   | github.com/CodeEditorLand/Worker   | `Element/Worker`                                 |
-| Mist     | github.com/CodeEditorLand/Mist     | `Element/Mist`                                   |
-| Maintain | github.com/CodeEditorLand/Maintain | `Element/Maintain`                               |
-| Air      | github.com/CodeEditorLand/Air      | `Element/Air`                                    |
-| SideCar  | github.com/CodeEditorLand/SideCar  | `Element/SideCar`                                |
-| Grove    | github.com/CodeEditorLand/Grove    | `Element/Grove`                                  |
-| Editor   | github.com/CodeEditorLand/Editor   | `Element/Dependency/Microsoft/Dependency/Editor` |
+| Element  | Repository                         | Path in Land repo                        |
+| -------- | ---------------------------------- | ---------------------------------------- |
+| Common   | github.com/CodeEditorLand/Common   | `Element/Common`                         |
+| Echo     | github.com/CodeEditorLand/Echo     | `Element/Echo`                           |
+| Vine     | github.com/CodeEditorLand/Vine     | `Element/Vine`                           |
+| Mountain | github.com/CodeEditorLand/Mountain | `Element/Mountain`                       |
+| Cocoon   | github.com/CodeEditorLand/Cocoon   | `Element/Cocoon`                         |
+| Wind     | github.com/CodeEditorLand/Wind     | `Element/Wind`                           |
+| Sky      | github.com/CodeEditorLand/Sky      | `Element/Sky`                            |
+| Output   | github.com/CodeEditorLand/Output   | `Element/Output`                         |
+| Rest     | github.com/CodeEditorLand/Rest     | `Element/Rest`                           |
+| Worker   | github.com/CodeEditorLand/Worker   | `Element/Worker`                         |
+| Mist     | github.com/CodeEditorLand/Mist     | `Element/Mist`                           |
+| Maintain | github.com/CodeEditorLand/Maintain | `Element/Maintain`                       |
+| Air      | github.com/CodeEditorLand/Air      | `Element/Air`                            |
+| SideCar  | github.com/CodeEditorLand/SideCar  | `Element/SideCar`                        |
+| Grove    | github.com/CodeEditorLand/Grove    | `Element/Grove`                          |
+| Editor   | github.com/CodeEditorLand/Editor   | `Dependency/Microsoft/Dependency/Editor` |
 
 After cloning each element, check out its `Current` branch:
 
@@ -106,7 +106,7 @@ the `Current` branch at a compatible commit.
 
 ```sh
 cd Land
-cd Element/Dependency/Microsoft/Dependency/Editor
+cd Dependency/Microsoft/Dependency/Editor
 nvm use 24
 export NODE_ENV=development
 git fetch --all

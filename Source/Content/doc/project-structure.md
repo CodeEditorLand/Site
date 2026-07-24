@@ -71,9 +71,9 @@ Land/
 
 ### Dependency Elements
 
-| Element    | Path                                             | Role                                                                                                                       |
-| ---------- | ------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| **Editor** | `Element/Dependency/Microsoft/Dependency/Editor` | VS Code source submodule. Compiled in Step 1 of the build. Consumed by Output and Sky. Never edit files under `src/vs/**`. |
+| Element    | Path                                     | Role                                                                                                                       |
+| ---------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Editor** | `Dependency/Microsoft/Dependency/Editor` | VS Code source submodule. Compiled in Step 1 of the build. Consumed by Output and Sky. Never edit files under `src/vs/**`. |
 
 ---
 
@@ -104,7 +104,7 @@ Land/
 
 The build has two phases:
 
-**Phase 1 - VS Code compilation.** `Element/Dependency/Microsoft/Dependency/Editor`
+**Phase 1 - VS Code compilation.** `Dependency/Microsoft/Dependency/Editor`
 is compiled with npm and `NODE_ENV=development`. The output feeds `Output`, which
 produces the `@codeeditorland/output` package consumed by Cocoon, Sky, and Wind.
 
@@ -151,11 +151,11 @@ scripts never write outside `Element/<Name>/Target/`.
 > [!WARNING] Editing these paths will be overwritten by the next build or will
 > corrupt the submodule state.
 
-| Path                                                       | Reason                                                                                                      |
-| ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| `Element/*/Target/`                                        | Build output directories. Source is in `Public/` or `Source/` within each element.                          |
-| `Element/Dependency/Microsoft/Dependency/Editor/src/vs/**` | Upstream VS Code source. Changes here are not tracked and are wiped by `git clean -dfx`.                    |
-| Any file committed with `git add .`                        | Adding `.` includes submodule gitlinks as trees, corrupting the index. Always stage specific files by name. |
+| Path                                               | Reason                                                                                                      |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `Element/*/Target/`                                | Build output directories. Source is in `Public/` or `Source/` within each element.                          |
+| `Dependency/Microsoft/Dependency/Editor/src/vs/**` | Upstream VS Code source. Changes here are not tracked and are wiped by `git clean -dfx`.                    |
+| Any file committed with `git add .`                | Adding `.` includes submodule gitlinks as trees, corrupting the index. Always stage specific files by name. |
 
 ---
 

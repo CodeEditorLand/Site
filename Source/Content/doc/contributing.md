@@ -102,7 +102,7 @@ partial reports are useful.
 - **Never edit `Target/` directories** inside any Element. These are build
   outputs generated from `Public/` or `Source/`. Edit the source; rebuild.
 
-- **Never edit `Element/Dependency/Microsoft/Dependency/Editor/src/vs/**`\*\*.
+- **Never edit `Dependency/Microsoft/Dependency/Editor/src/vs/**`\*\*.
   This is the vendored VS Code source; changes here are overwritten on every
   upstream sync.
 
