@@ -52,7 +52,7 @@ const ElementGlyph = ({ Name }: { Name?: string }) => {
 		<Icon
 			aria-hidden="true"
 			strokeWidth={1.5}
-			className="ml-2 inline h-4 w-4 align-[-3px] text-[var(--MuteForeground)]"
+			className="ml-2 inline h-4 w-4 align-[-3px] text-muted"
 		/>
 	);
 };
@@ -262,8 +262,8 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				<div className="container mx-auto px-4">
 					{(Title || Subtitle) && (
 						<div className="mx-auto mb-10 max-w-2xl text-center">
-							<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-								<span className="text-[var(--SpinegRPCFore)]">
+							<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+								<span className="text-grpc">
 									//
 								</span>{" "}
 								Architecture
@@ -275,7 +275,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							)}
 
 							{Subtitle && (
-								<div className="mt-3 text-[var(--MuteForeground)]">
+								<div className="mt-3 text-muted">
 									<RichText Text={Subtitle} />
 								</div>
 							)}
@@ -310,7 +310,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							return (
 								<jelly-card
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard rounded-none p-5"
+									className="MasonryCard TestimonialCard flat p-5"
 									style={
 										{
 											"--jelly-fill": "var(--Card)",
@@ -365,7 +365,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 												(Tag, TagIndex) => (
 													<span
 														key={TagIndex}
-														className="bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground"
+														className="bg-mute px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground"
 													>
 														{Tag}
 													</span>
@@ -397,8 +397,8 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+							<span className="text-grpc">
 								//
 							</span>{" "}
 							Architecture
@@ -410,7 +410,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						)}
 
 						{Subtitle && (
-							<div className="mt-3 text-[var(--MuteForeground)]">
+							<div className="mt-3 text-muted">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -429,7 +429,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 						return (
 							<jelly-card
 								key={Testimonial.Id}
-								className="TestimonialCard rounded-none p-5"
+								className="TestimonialCard flat p-5"
 								style={{
 									"--jelly-fill": "var(--Card)",
 									"--jelly-radius": "0",
@@ -477,7 +477,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 											(Tag, TagIndex) => (
 												<span
 													key={TagIndex}
-													className="bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground"
+													className="bg-mute px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground"
 												>
 													{Tag}
 												</span>

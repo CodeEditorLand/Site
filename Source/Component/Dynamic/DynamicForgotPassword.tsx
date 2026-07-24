@@ -88,7 +88,7 @@ const DynamicForgotPassword = ({
 									<div aria-live="polite" aria-atomic="true">
 										{(ErrorMessage || InternalError) && (
 											<div
-												className="bg-destructive/10 rounded-none p-3 text-destructive"
+												className="bg-destructive/10 flat p-3 text-destructive"
 												role="alert"
 											>
 												{ErrorMessage || InternalError}
@@ -121,7 +121,7 @@ const DynamicForgotPassword = ({
 								>
 									<div className="space-y-2">
 										<div
-											className="mx-auto flex h-12 w-12 items-center justify-center rounded-none bg-green-100 dark:bg-green-950"
+											className="mx-auto flex h-12 w-12 items-center justify-center flat bg-green-100 dark:bg-green-950"
 											aria-hidden="true"
 										>
 											<svg

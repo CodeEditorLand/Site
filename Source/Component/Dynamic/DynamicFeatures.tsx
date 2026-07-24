@@ -225,8 +225,8 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+							<span className="text-grpc">
 								//
 							</span>{" "}
 							Features
@@ -241,7 +241,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 						)}
 
 						{Subtitle && (
-							<div className="mt-3 text-[var(--MuteForeground)]">
+							<div className="mt-3 text-muted">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -286,7 +286,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 															? "CC0 1.0 Universal\npublic domain dedication.\n\nFunded by NLnet NGI0 Commons Fund."
 															: undefined
 								}
-								className="FeatureCard min-h-0 rounded-none p-8"
+								className="FeatureCard min-h-0 flat p-8"
 								style={{
 									"--jelly-fill": "var(--Card)",
 									"--jelly-radius": "0",
@@ -302,7 +302,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 										{Feature.Title}
 									</h3>
 									<div
-										className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-none"
+										className="ml-4 flex h-9 w-9 shrink-0 items-center justify-center flat"
 										style={{
 											backgroundColor: FeatureColorMute,
 										}}

@@ -41,7 +41,7 @@ export default () => {
 	const BadgeColor = (Article?: string): string =>
 		Article
 			? "border border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300"
-			: "bg-[var(--Mute)] text-muted-foreground";
+			: "bg-mute text-muted-foreground";
 
 	return (
 		<div className="space-y-12">
@@ -61,7 +61,7 @@ export default () => {
 						<a
 							key={Right.Code}
 							href={`/Contact/${Right.Slug.charAt(0).toUpperCase()}${Right.Slug.slice(1)}`}
-							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							<div className="mb-3 flex items-start justify-between gap-2">
 								<h4 className="font-medium leading-snug">
@@ -83,7 +83,7 @@ export default () => {
 							<p className="mb-4 flex-1 text-sm leading-relaxed text-muted-foreground">
 								{Right.Subtitle}
 							</p>
-							<span className="mt-auto inline-flex items-center text-sm font-medium text-[var(--Primary)]">
+							<span className="mt-auto inline-flex items-center text-sm font-medium text-primary">
 								Open form{" "}
 								<span aria-hidden="true" className="ml-1">
 									{"→"}
@@ -109,7 +109,7 @@ export default () => {
 						<a
 							key={Channel.Code}
 							href={`/Contact/${Channel.Slug.charAt(0).toUpperCase()}${Channel.Slug.slice(1)}`}
-							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-[var(--Secondary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							<div className="mb-2 flex items-center justify-between gap-2">
 								<h4 className="font-medium">{Channel.Title}</h4>

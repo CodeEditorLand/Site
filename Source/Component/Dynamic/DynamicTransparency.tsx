@@ -153,7 +153,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6"
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 flat bg-card p-6"
 								>
 									<div className="flex items-start justify-between">
 										<h4 className="font-mono text-sm font-semibold">
@@ -171,13 +171,13 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 												{Item.Status}
 												{"\u2001"}
 												<span
-													className={`StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none ${StatusColor[Item.Status]}`}
+													className={`StaccatoDot StaccatoRhythmDot h-2 w-2 flat ${StatusColor[Item.Status]}`}
 													aria-hidden="true"
 												/>
 											</Badge>
 											{Icon && (
 												<div
-													className="flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-secondary"
+													className="flex h-10 w-10 shrink-0 items-center justify-center flat bg-secondary"
 													aria-hidden="true"
 												>
 													<Icon
@@ -266,7 +266,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 												{"\u2001"}
 
 												<span
-													className={`StaccatoDot h-2 w-2 rounded-none ${VariantStatusColor[Item.Status]}`}
+													className={`StaccatoDot h-2 w-2 flat ${VariantStatusColor[Item.Status]}`}
 													aria-hidden="true"
 												/>
 											</Badge>
@@ -293,7 +293,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 							return (
 								<div
 									key={Item.Identifier}
-									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 rounded-none bg-card p-6"
+									className="TransparencyCard StaccatoCard StaccatoBorderShimmer flex flex-col space-y-4 flat bg-card p-6"
 								>
 									<div className="flex items-start justify-between">
 										<h4 className="font-mono text-sm font-semibold">
@@ -301,7 +301,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										</h4>
 										{Icon && (
 											<div
-												className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center rounded-none bg-secondary"
+												className="ml-4 flex h-10 w-10 shrink-0 items-center justify-center flat bg-secondary"
 												aria-hidden="true"
 											>
 												<Icon
@@ -314,7 +314,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 									<div className="StaccatoBreath text-muted-foreground">
 										<RichText Text={Item.Description} />
 									</div>
-									<div className="flex items-baseline rounded-none bg-secondary px-3 py-2">
+									<div className="flex items-baseline flat bg-secondary px-3 py-2">
 										<code className="font-mono">
 											{Item.Command}
 										</code>
@@ -331,7 +331,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 											}}
 											aria-label="Copy command"
 											title="Copy command"
-											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100"
+											className="ml-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center flat bg-mute opacity-50 transition-opacity hover:opacity-100"
 										>
 											<lucide.Copy
 												className="h-[0.65em] w-[0.65em]"

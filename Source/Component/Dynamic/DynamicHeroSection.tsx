@@ -224,14 +224,14 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					{Title}
 					{Title && TitleHighlight ? " " : ""}
 					{TitleHighlight && (
-						<span className="italic text-[var(--SpineIPCFore)]">
+						<span className="italic text-ipc">
 							{TitleHighlight}
 						</span>
 					)}
 				</h1>
 
 				{/* Subtitle: small grayed help text directly under the title */}
-				<div className="StaccatoBreath mx-auto mt-3 max-w-2xl text-[var(--MuteForeground)]">
+				<div className="StaccatoBreath mx-auto mt-3 max-w-2xl text-muted">
 					<RichText Text={Subtitle} />
 				</div>
 
@@ -243,7 +243,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 				{/* Tech stack section label - mono HUD eyebrow */}
 				<p className="mb-8 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
-					<span className="text-[var(--SpinegRPCFore)]">//</span> Tech
+					<span className="text-grpc">//</span> Tech
 					Stack
 				</p>
 

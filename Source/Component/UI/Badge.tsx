@@ -11,12 +11,12 @@ const BadgeVariants = cva(
 		variants: {
 			variant: {
 				default:
-					"border-transparent bg-[var(--Primary)] text-[var(--PrimaryForeground)] hover:opacity-80",
+					"border-transparent bg-primary text-primary-fg hover:opacity-80",
 				secondary:
-					"border-transparent bg-[var(--Secondary)] text-[var(--SecondaryForeground)] hover:opacity-80",
+					"border-transparent bg-secondary text-secondary-fg hover:opacity-80",
 				destructive:
-					"border-transparent bg-[var(--Destruct)] text-[var(--DestructForeground)] hover:opacity-80",
-				outline: "text-[var(--Foreground)]",
+					"border-transparent bg-destruct text-destruct-fg hover:opacity-80",
+				outline: "text-fg",
 			},
 		},
 		defaultVariants: {

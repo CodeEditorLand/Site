@@ -101,8 +101,8 @@ const VerifyPage = ({
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
-								<div className="rounded-none border border-green-500 p-8 dark:border-green-700">
-									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-green-100 dark:bg-green-950">
+								<div className="flat border border-green-500 p-8 dark:border-green-700">
+									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center flat bg-green-100 dark:bg-green-950">
 										<svg
 											className="h-10 w-10 text-green-600 dark:text-green-400"
 											fill="none"
@@ -129,7 +129,7 @@ const VerifyPage = ({
 									</p>
 									<button
 										type="button"
-										className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
+										className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 flat bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"
 										onClick={() => Navigate("/")}
 									>
 										{"Continue to Homepage"}
@@ -144,8 +144,8 @@ const VerifyPage = ({
 					<section className="py-20">
 						<div className="container mx-auto px-4">
 							<div className="mx-auto max-w-md text-center">
-								<div className="rounded-none border border-destructive p-8">
-									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-none bg-red-100 dark:bg-red-950">
+								<div className="flat border border-destructive p-8">
+									<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center flat bg-red-100 dark:bg-red-950">
 										<svg
 											className="h-10 w-10 text-red-600 dark:text-red-400"
 											fill="none"
@@ -178,14 +178,14 @@ const VerifyPage = ({
 									<div className="flex justify-center gap-4">
 										<button
 											type="button"
-											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary"
+											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 flat bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary"
 											onClick={() => Navigate("/Verify")}
 										>
 											{"Send New Verification Email"}
 										</button>
 										<button
 											type="button"
-											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 rounded-none bg-background px-4 py-2 font-medium transition-all hover:bg-accent"
+											className="StaccatoButton inline-flex h-10 items-center justify-center gap-0 flat bg-background px-4 py-2 font-medium transition-all hover:bg-accent"
 											onClick={() =>
 												Navigate("/Account/SignIn")
 											}

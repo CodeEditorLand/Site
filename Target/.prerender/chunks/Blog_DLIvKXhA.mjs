@@ -1,0 +1,13 @@
+//#region Source/Library/I18n/Locale/Es/Blog.json
+var Blog_default = {
+	"meta.title": "Blog | Code Editor Land",
+	"meta.description": "Análisis de arquitectura, notas de versión y actualizaciones.",
+	"page.title": "Blog",
+	"page.subtitle": "Arquitectura, versiones y el camino por delante.",
+	"card.readMore": "Leer más",
+	"card.minRead": "min de lectura",
+	"empty.title": "Sin publicaciones aún",
+	"empty.subtitle": "Vuelva pronto para ver actualizaciones."
+};
+//#endregion
+export { Blog_default as default };

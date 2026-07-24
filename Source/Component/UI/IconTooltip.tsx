@@ -120,7 +120,7 @@ const IconTooltip = ({
 							return (
 								<p
 									key={Index}
-									className="StaccatoCard w-fit rounded-none bg-primary px-3 py-1 text-primary-foreground"
+									className="StaccatoCard w-fit flat bg-primary px-3 py-1 text-primary-foreground"
 									style={
 										{
 											"--StaccatoSeed": Seed,

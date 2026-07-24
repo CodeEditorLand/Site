@@ -2019,9 +2019,18 @@ class Xe extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.input = this.shadowRoot.querySelector("input"), this.sync("checked"), this.sync("indeterminate"), this.sync("disabled"), this.sync("label"), this.useHostFocusTarget(this.input), this.trackFocus(this.input), this.input.addEventListener("change", () => {
+    if (this.input = this.shadowRoot.querySelector("input"), this.sync("checked"), this.sync("indeterminate"), this.sync("disabled"), this.sync("label"), this.useHostFocusTarget(this.input), this.trackFocus(this.input), this.input.addEventListener("change", () => {
       this.indeterminate = !1, this.toggleAttribute("checked", this.input.checked), this.syncFormValue(), this.pop(this.input.checked ? 4 : -3), F(), g(this, "change");
-    });
+    }), !this.reducedMotion) {
+      const t = [...document.querySelectorAll("jelly-checkbox")].indexOf(this);
+      this.addEventListener("pointerenter", (e) => {
+        this.hasAttribute("disabled") || (this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t));
+      }), this.addEventListener("pointermove", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY);
+      }), this.addEventListener("pointerleave", () => {
+        this.stopHoverLoop();
+      });
+    }
   }
   // Kick the scale spring: +v expands (check), -v collapses (uncheck)
   pop(t) {
@@ -2131,7 +2140,16 @@ class We extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.control = this.shadowRoot.querySelector(".control"), this.wrap = this.shadowRoot.querySelector(".wrap"), this.reflect(), this.sync("label"), this.trackFocus(this.control), this.wrap.addEventListener("click", () => this.select(!0)), this.control.addEventListener("keydown", (t) => this.onKeydown(t)), queueMicrotask(() => this.ensureTabbable());
+    if (this.control = this.shadowRoot.querySelector(".control"), this.wrap = this.shadowRoot.querySelector(".wrap"), this.reflect(), this.sync("label"), this.trackFocus(this.control), this.wrap.addEventListener("click", () => this.select(!0)), this.control.addEventListener("keydown", (t) => this.onKeydown(t)), queueMicrotask(() => this.ensureTabbable()), !this.reducedMotion) {
+      const t = [...document.querySelectorAll("jelly-radio")].indexOf(this);
+      this.addEventListener("pointerenter", (e) => {
+        this.hasAttribute("disabled") || (this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t));
+      }), this.addEventListener("pointermove", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY);
+      }), this.addEventListener("pointerleave", () => {
+        this.stopHoverLoop();
+      });
+    }
   }
   // Kick the scale spring: +v expands (select), -v collapses (deselect)
   pop(t) {
@@ -4405,11 +4423,20 @@ class Mi extends M {
       this.hasAttribute("disabled") || this.pressAt(s.clientX, s.clientY, t ? 1 : 0.7);
     });
     const i = () => this.releaseBody();
-    e.addEventListener("pointerup", i), e.addEventListener("pointercancel", i), e.addEventListener("pointerleave", i), this.hasAttribute("selectable") && (this.trackFocus(this.main), this.main.addEventListener("click", () => this.toggleSelected()), this.main.addEventListener("keydown", (s) => {
+    if (e.addEventListener("pointerup", i), e.addEventListener("pointercancel", i), e.addEventListener("pointerleave", i), this.hasAttribute("selectable") && (this.trackFocus(this.main), this.main.addEventListener("click", () => this.toggleSelected()), this.main.addEventListener("keydown", (s) => {
       s.key !== "Enter" && s.key !== " " || (s.preventDefault(), !(s.repeat || this.hasAttribute("disabled")) && this.main.click());
     })), this.removeButton && this.removeButton.addEventListener("click", (s) => {
       s.stopPropagation(), this.removeChip();
-    });
+    }), !this.reducedMotion) {
+      const s = [...document.querySelectorAll("jelly-chip")].indexOf(this);
+      this.addEventListener("pointerenter", (r) => {
+        this.hasAttribute("disabled") || (this.updateHoverPointer(r.clientX, r.clientY), this.startHoverLoop(s));
+      }), this.addEventListener("pointermove", (r) => {
+        this.updateHoverPointer(r.clientX, r.clientY);
+      }), this.addEventListener("pointerleave", () => {
+        this.stopHoverLoop();
+      });
+    }
   }
   // Flip the selection, pop the jelly and notify listeners
   toggleSelected() {
@@ -4501,7 +4528,16 @@ class Ti extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.tabIndex = 0, this.setAttribute("role", "button"), this.trackFocus(this), this.addEventListener("pointerdown", this), this.addEventListener("pointerup", this), this.addEventListener("pointercancel", this), this.addEventListener("pointerleave", this), this.addEventListener("keydown", this), this.addEventListener("keyup", this), this.addEventListener("blur", this), this.armKeyMirror();
+    if (this.tabIndex = 0, this.setAttribute("role", "button"), this.trackFocus(this), this.addEventListener("pointerdown", this), this.addEventListener("pointerup", this), this.addEventListener("pointercancel", this), this.addEventListener("pointerleave", this), this.addEventListener("keydown", this), this.addEventListener("keyup", this), this.addEventListener("blur", this), this.armKeyMirror(), !this.reducedMotion) {
+      const t = [...document.querySelectorAll("jelly-kbd")].indexOf(this);
+      this.addEventListener("pointerenter", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
+      }), this.addEventListener("pointermove", (e) => {
+        this.updateHoverPointer(e.clientX, e.clientY);
+      }), this.addEventListener("pointerleave", () => {
+        this.stopHoverLoop();
+      });
+    }
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback() {

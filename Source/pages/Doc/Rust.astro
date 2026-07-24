@@ -130,7 +130,7 @@ const RustDocSite = [
 			<h1 class="mb-3 text-4xl font-bold tracking-tight">
 				Rust API Documentation
 			</h1>
-			<p class="text-[var(--MuteForeground)]">
+			<p class="text-muted">
 				Generated <code>rustdoc</code> output for Land's Rust crates. Select
 				a crate below, or open directly in a new tab.
 			</p>
@@ -150,7 +150,7 @@ const RustDocSite = [
 						rel="noopener noreferrer"
 						class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 					>
-						<p class="font-medium text-[var(--Primary)]">
+						<p class="font-medium text-primary">
 							{Site.Label}
 							<span class="InlineSeparator">↗</span>
 						</p>
@@ -181,8 +181,8 @@ const RustDocSite = [
 							data-rustdoc-url={Site.Url}
 							class={`RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
 								Index === 0
-									? "border-[var(--Primary)] bg-[var(--Primary)] text-[var(--PrimaryForeground)]"
-									: "border-[var(--Border)] bg-card text-muted-foreground hover:bg-[var(--Secondary)]"
+									? "border-[var(--Primary)] bg-primary text-primary-fg"
+									: "border-[var(--Border)] bg-card text-muted-foreground hover:bg-secondary"
 							}`}
 						>
 							{Site.Label}
@@ -218,9 +218,9 @@ const RustDocSite = [
 	const BaseClass =
 		"RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]";
 	const ActiveClass =
-		"border-[var(--Primary)] bg-[var(--Primary)] text-[var(--PrimaryForeground)]";
+		"border-[var(--Primary)] bg-primary text-primary-fg";
 	const InactiveClass =
-		"border-[var(--Border)] bg-card text-muted-foreground hover:bg-[var(--Secondary)]";
+		"border-[var(--Border)] bg-card text-muted-foreground hover:bg-secondary";
 
 	function SetActive(ActiveTab: HTMLButtonElement): void {
 		Tabs.forEach((Tab) => {

@@ -144,7 +144,7 @@ const DynamicEmailVerification = ({
 	const RenderPending = () => (
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
-				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none">
+				<div className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center flat">
 					<lucide.Mail
 						className="h-6 w-6 text-primary"
 						aria-hidden="true"
@@ -214,7 +214,7 @@ const DynamicEmailVerification = ({
 		<Card className="StaccatoCard StaccatoBorderShimmer StaccatoShadowLift">
 			<CardHeader className="text-center">
 				<div
-					className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-none"
+					className="bg-primary/10 mx-auto mb-4 flex h-12 w-12 items-center justify-center flat"
 					aria-hidden="true"
 				>
 					<div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>

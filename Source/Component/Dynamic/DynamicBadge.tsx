@@ -43,7 +43,7 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 					{"\u2001"}
 
 					<span
-						className="StaccatoDot StaccatoRhythmDot h-2 w-2 rounded-none"
+						className="StaccatoDot StaccatoRhythmDot h-2 w-2 flat"
 						style={{
 							backgroundColor:
 								DotColorTokenMap[DotColor] ??

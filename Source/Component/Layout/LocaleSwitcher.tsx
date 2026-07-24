@@ -86,13 +86,13 @@ const LocaleSwitcher = () => {
 	return (
 		<DropdownMenu modal={false}>
 			<DropdownMenuTrigger
-				className="flex h-9 items-center gap-1.5 rounded-md bg-card px-3 font-medium text-[var(--Foreground)] outline-none ring-offset-white hover:bg-[var(--Mute)] focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-[var(--Mute)]"
+				className="flex h-9 items-center gap-1.5 rounded-md bg-card px-3 font-medium text-fg outline-none ring-offset-white hover:bg-mute focus-visible:ring-2 focus-visible:ring-[var(--Ring)] focus-visible:ring-offset-2 data-[state=open]:bg-mute"
 				aria-label="Select language"
 			>
 				<span>{LocaleLabel[CurrentLocale]}</span>
 				<ChevronDown
 					size={14}
-					className="text-[var(--MuteForeground)] transition-transform duration-200 [[data-state=open]_&]:rotate-180"
+					className="text-muted transition-transform duration-200 [[data-state=open]_&]:rotate-180"
 				/>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" className="min-w-[8rem]">
@@ -102,8 +102,8 @@ const LocaleSwitcher = () => {
 						onClick={() => HandleChange(Locale)}
 						className={
 							Locale === CurrentLocale
-								? "font-semibold text-[var(--Foreground)]"
-								: "text-[var(--MuteForeground)]"
+								? "font-semibold text-fg"
+								: "text-muted"
 						}
 					>
 						{LocaleLabel[Locale]}

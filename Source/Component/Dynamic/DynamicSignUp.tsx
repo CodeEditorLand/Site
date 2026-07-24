@@ -140,7 +140,7 @@ const DynamicSignUp = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-destructive/10 rounded-none p-3 text-destructive"
+											className="bg-destructive/10 flat p-3 text-destructive"
 											role="alert"
 										>
 											{ErrorMessage}
@@ -238,7 +238,7 @@ const DynamicSignUp = ({
 											{[0, 1, 2].map((Segment) => (
 												<div
 													key={Segment}
-													className="h-1 flex-1 rounded-none transition-colors"
+													className="h-1 flex-1 flat transition-colors"
 													style={{
 														backgroundColor:
 															Password.length >=

@@ -45,7 +45,7 @@ const SourceBadge = ({
 
 	icon?: string | null;
 }) => (
-	<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+	<span className="inline-flex items-center gap-1 bg-mute px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
 		{icon && (
 			<ThemeImage
 				src={icon}
@@ -95,7 +95,7 @@ const FieldRow = ({
 							Editable
 						</span>
 					) : (
-						<span className="inline-flex items-center bg-[var(--Mute)] px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
+						<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
 							Read-only
 						</span>
 					)}
@@ -116,7 +116,7 @@ const FieldRow = ({
 							href={editHref}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--Primary)] hover:underline"
+							className="text-primary hover:underline"
 						>
 							Update here →
 						</a>
@@ -464,7 +464,7 @@ const AccountProfileInner = ({
 
 						Login();
 					}}
-					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-6 py-2 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90"
+					className="StaccatoButton inline-flex items-center justify-center bg-primary px-6 py-2 font-medium text-primary-fg transition-all hover:opacity-90"
 				>
 					{T("signInButton", { defaultValue: "Sign In" })}
 				</button>
@@ -525,10 +525,10 @@ const AccountProfileInner = ({
 							title={User.name || "User avatar"}
 							width="80"
 							height="80"
-							className="h-20 w-20 rounded-none object-cover"
+							className="h-20 w-20 flat object-cover"
 						/>
 					) : (
-						<div className="flex h-20 w-20 items-center justify-center bg-[var(--Mute)] text-2xl font-bold text-muted-foreground">
+						<div className="flex h-20 w-20 items-center justify-center bg-mute text-2xl font-bold text-muted-foreground">
 							{DisplayName.slice(0, 2).toUpperCase()}
 						</div>
 					)}
@@ -563,12 +563,12 @@ const AccountProfileInner = ({
 							{Tier}
 							{"\u2001"}
 							<span
-								className={`h-1.5 w-1.5 rounded-none ${TierColor.Dot}`}
+								className={`h-1.5 w-1.5 flat ${TierColor.Dot}`}
 								aria-hidden="true"
 							/>
 						</span>
 						{ProviderIcon ? (
-							<span className="inline-flex items-center gap-1 bg-[var(--Mute)] px-2 py-0.5 text-sm font-medium text-muted-foreground">
+							<span className="inline-flex items-center gap-1 bg-mute px-2 py-0.5 text-sm font-medium text-muted-foreground">
 								<ThemeImage
 									src={ProviderIcon}
 									alt={ProviderLabel}
@@ -579,7 +579,7 @@ const AccountProfileInner = ({
 								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 							</span>
 						) : (
-							<span className="inline-flex items-center bg-[var(--Mute)] px-2 py-0.5 text-sm font-medium text-muted-foreground">
+							<span className="inline-flex items-center bg-mute px-2 py-0.5 text-sm font-medium text-muted-foreground">
 								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
 							</span>
 						)}
@@ -643,7 +643,7 @@ const AccountProfileInner = ({
 			)}
 
 			{/* ── Data storage notice ───────────────────────────────── */}
-			<div className="flex items-start gap-4 border border-[var(--Border)] bg-[var(--Mute)] px-5 py-4">
+			<div className="flex items-start gap-4 border border-[var(--Border)] bg-mute px-5 py-4">
 				<Lock
 					className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
 					aria-hidden="true"
@@ -749,7 +749,7 @@ const AccountProfileInner = ({
 											alt="Profile picture"
 											width="32"
 											height="32"
-											className="h-8 w-8 rounded-none object-cover"
+											className="h-8 w-8 flat object-cover"
 										/>
 									</span>
 									<Pii visible={PIIVisible}>
@@ -815,7 +815,7 @@ const AccountProfileInner = ({
 								{Tier}
 								{"\u2001"}
 								<span
-									className={`h-1 w-1 rounded-none ${TierColor.Dot}`}
+									className={`h-1 w-1 flat ${TierColor.Dot}`}
 									aria-hidden="true"
 								/>
 							</span>
@@ -901,7 +901,7 @@ const AccountProfileInner = ({
 									<button
 										type="button"
 										onClick={HandlePasswordReset}
-										className="StaccatoButton shrink-0 bg-card px-3 py-1.5 text-sm font-medium transition-all hover:bg-[var(--Secondary)]"
+										className="StaccatoButton shrink-0 bg-card px-3 py-1.5 text-sm font-medium transition-all hover:bg-secondary"
 									>
 										Send Reset Email
 									</button>
@@ -939,7 +939,7 @@ const AccountProfileInner = ({
 									label={ProviderLabel}
 									icon={ProviderIcon}
 								/>
-								<span className="inline-flex items-center bg-[var(--Mute)] px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
+								<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
 									Not applicable
 								</span>
 							</div>
@@ -955,7 +955,7 @@ const AccountProfileInner = ({
 											href={ProviderProfileUrl}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="text-[var(--Primary)] hover:underline"
+											className="text-primary hover:underline"
 										>
 											Manage at {ProviderLabel} →
 										</a>
@@ -974,7 +974,7 @@ const AccountProfileInner = ({
 							/>
 							Active Session
 							<SourceBadge label="Auth0" />
-							<span className="inline-flex items-center bg-[var(--Mute)] px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
+							<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
 								Read-only
 							</span>
 						</div>
@@ -1000,7 +1000,7 @@ const AccountProfileInner = ({
 				<div className="space-y-3 px-6 py-4">
 					<a
 						href="/Dashboard"
-						className="StaccatoButton inline-flex w-full items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]"
+						className="StaccatoButton inline-flex w-full items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-secondary"
 					>
 						{T("goToDashboard", {
 							defaultValue: "Go to Dashboard",

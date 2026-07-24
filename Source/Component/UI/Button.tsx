@@ -18,15 +18,15 @@ const ButtonVariants = cva(
 		variants: {
 			variant: {
 				default:
-					"bg-[var(--Foreground)] text-[var(--Background)] hover:bg-[var(--Foreground)]/85",
+					"bg-foreground text-bg hover:bg-foreground/85",
 				destructive:
-					"bg-[var(--Destruct)] text-[var(--DestructForeground)] hover:bg-[var(--Destruct)]/85 focus-visible:ring-[var(--Destruct)]/20",
+					"bg-destruct text-destruct-fg hover:bg-destruct/85 focus-visible:ring-[var(--Destruct)]/20",
 				outline:
-					"bg-[var(--Background)] text-[var(--Foreground)] hover:bg-[var(--Mute)]",
+					"bg-background text-fg hover:bg-mute",
 				secondary:
-					"bg-[var(--Secondary)] text-[var(--SecondaryForeground)] hover:bg-[var(--Surface3)]",
-				ghost: "text-[var(--Foreground)] hover:bg-[var(--Mute)]",
-				link: "text-[var(--Foreground)] underline-offset-4 hover:underline",
+					"bg-secondary text-secondary-fg hover:bg-surface3",
+				ghost: "text-fg hover:bg-mute",
+				link: "text-fg underline-offset-4 hover:underline",
 			},
 			size: {
 				default: "h-10 px-[2.1rem] py-2 has-[>svg]:px-[1.8rem]",

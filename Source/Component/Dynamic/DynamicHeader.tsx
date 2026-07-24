@@ -111,7 +111,7 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 												<a
 													key={NavigationIndex}
 													href={Link.Href}
-													className="rounded-none px-4 py-2 hover:bg-accent"
+													className="flat px-4 py-2 hover:bg-accent"
 													onClick={() =>
 														SetMobileMenuOpen(false)
 													}

@@ -110,7 +110,7 @@ const DynamicSignIn = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-destructive/10 rounded-none p-3 text-destructive"
+											className="bg-destructive/10 flat p-3 text-destructive"
 											role="alert"
 										>
 											{ErrorMessage}

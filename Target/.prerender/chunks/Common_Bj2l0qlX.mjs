@@ -1,0 +1,311 @@
+//#region Source/Library/I18n/Locale/Es/Common.json
+var actions = { "signIn": "Sign In to Your Account" };
+var brand = {
+	"name": "Code Editor Land",
+	"tagline": "Rust and Tauri editor stack. VS Code API compatibility in progress. Free forever."
+};
+var breadcrumb = { "home": "Home" };
+var button = {
+	"backToHome": "Return to Homepage",
+	"backToTop": "Back to top",
+	"download": "Download Land Free",
+	"learnMore": "See What Makes Land Different",
+	"signIn": "Sign In to Your Account",
+	"signUp": "Create Your Free Account"
+};
+var comingSoon = "Coming Soon";
+var error = {
+	"404": "404 - Page Not Found",
+	"pageNotFound": "The page you're looking for doesn't exist or has been moved.\n\nCheck the URL for typos, or return to the home page and start fresh.\n\nIf you believe this is an error, open a GitHub issue and we'll help you find what you need."
+};
+var label = {
+	"email": "Email Address",
+	"password": "Password"
+};
+var nav = {
+	"docs": "Documentation",
+	"downloads": "Download",
+	"github": "GitHub Repository"
+};
+var docs = {
+	"pageTitle": "Documentation",
+	"pageSubtitle": "Everything you need to install, build, and contribute to Land.",
+	"gettingStarted": {
+		"title": "Get Started in Minutes",
+		"description": "The README walks you through installation, first build, and the fifteen-element architecture. No prior Rust or Tauri knowledge required."
+	},
+	"issueTracker": {
+		"title": "Report a Bug or Request a Feature",
+		"description": "Open an issue on GitHub. The team monitors daily and labels good-first-issue tasks for new contributors."
+	},
+	"architecture": {
+		"heading": "How Land Replaces VS Code's Electron Stack",
+		"intro": "VS Code runs on Electron: a Chromium browser, a Node.js runtime, and an extension-host model. Land replaces those pieces with independent elements while preserving the VS Code extension API as the compatibility target. Browse individual elements in the Element section above, or explore the workspace on GitHub."
+	},
+	"repositories": { "viewAll": "View all repositories" }
+};
+var blog = {
+	"pageTitle": "Blog",
+	"pageSubtitle": "Architecture deep-dives, development updates, and technical articles from the Land team.",
+	"comingSoonHeading": "Articles Coming Soon",
+	"comingSoonText": "We are preparing in-depth articles on the architecture, development process, and roadmap.\n\nCheck back soon or follow progress on GitHub.",
+	"joinDiscussions": "Join the Community",
+	"followGitHub": "Follow on GitHub",
+	"reportIssue": "Report an Issue",
+	"followNote": "Follow progress on GitHub or check back here for published articles.",
+	"topic": {
+		"architecture": "How Mountain, Cocoon, Wind, Sky, Air, and Echo replace Electron one element at a time",
+		"effectTS": "Why Effect-TS powers the UI layer: typed services, structured concurrency, and traced errors",
+		"grpc": "gRPC IPC at native speed: how Rust and TypeScript communicate without overhead",
+		"extensions": "Running VS Code extensions without modification: how Cocoon achieves high-fidelity compatibility",
+		"ngi": "Building with the NGI0 Commons Fund: open-source sustainability and the European open internet initiative"
+	},
+	"upcomingTopicsHeading": "Upcoming Topics"
+};
+var contributing = {
+	"pageTitle": "Contributing",
+	"pageSubtitle": "Land is open source and built in public.\n\nEvery contribution (code, docs, tests, or design) and ships to real users.",
+	"guide": {
+		"title": "Contributing Guide",
+		"description": "Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes."
+	},
+	"goodFirstIssues": {
+		"title": "Good First Issues",
+		"description": "Browse issues labeled good-first-issue to find tasks sized for new contributors. The team triages and labels these weekly."
+	},
+	"elements": {
+		"heading": "Fifteen Elements, One Editor",
+		"description": "Land is built from fifteen modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
+		"docs": "Every Element has its own README with architecture details. Find them in Land/Element/"
+	},
+	"howToContribute": { "heading": "How to Contribute" },
+	"step1": {
+		"title": "Fork and Clone",
+		"description": "Fork the Land repository on GitHub and clone it locally with submodules:"
+	},
+	"step2": {
+		"title": "Set Up the Environment",
+		"description": "Install Rust 1.95.0+, Node.js, and pnpm. Then run:"
+	},
+	"step3": {
+		"title": "Make Your Changes",
+		"description": "Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project."
+	},
+	"step4": {
+		"title": "Submit a Pull Request",
+		"description": "Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.."
+	},
+	"ways": {
+		"heading": "Ways to Contribute",
+		"code": {
+			"title": "Code",
+			"description": "Fix bugs, implement features, or improve performance in Rust or TypeScript."
+		},
+		"documentation": {
+			"title": "Documentation",
+			"description": "Improve guides, add examples, or translate existing content into other languages."
+		},
+		"testing": {
+			"title": "Testing",
+			"description": "Write tests, reproduce reported bugs, or help triage open issues."
+		},
+		"design": {
+			"title": "Design",
+			"description": "Contribute UI and UX improvements, icons, or visual design work for the editor or website."
+		}
+	},
+	"funding": {
+		"heading": "Funding",
+		"description": "Land is funded through the NLnet NGI0 Commons Fund.\n\nThis grant enables full-time open-source development on the project.",
+		"nlnetIntro": "Code Editor Land has been funded through the",
+		"nlnetFundName": "NGI0 Commons Fund",
+		"nlnetEstablishedBy": ", a fund established by",
+		"nlnetSuffix": "with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429.\n\nThis funding enables sustained open-source development on the project.",
+		"playformInfo": "The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
+		"viewProject": "View the",
+		"nlnetProjectPage": "NLnet project page",
+		"viewProjectSuffix": "for more details about the grant and objectives."
+	},
+	"conduct": {
+		"heading": "Code of Conduct",
+		"description": "All participants in the Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub."
+	}
+};
+var sales = {
+	"pageTitle": "Enterprise Inquiries",
+	"pageSubtitle": "Deploying Land across your organization? Get in touch and we'll work out the details together.",
+	"form": {
+		"firstName": "First Name",
+		"lastName": "Last Name",
+		"email": "Work Email",
+		"company": "Company",
+		"teamSize": "Team Size",
+		"teamSizePlaceholder": "Select team size",
+		"message": "How can we help?",
+		"messagePlaceholder": "Tell us about your requirements, deployment needs, or any questions you have.",
+		"submitButton": "Send Inquiry"
+	},
+	"features": {
+		"heading": "What Enterprise Includes",
+		"prioritySupport": "Priority support and guaranteed SLA",
+		"customDeployment": "Custom deployment options: cloud, on-prem, or air-gapped",
+		"volumeLicensing": "Volume licensing for large teams",
+		"accountManagement": "Dedicated account manager for your organization",
+		"securityReview": "Security review and compliance documentation",
+		"customIntegrations": "Custom integrations and development work"
+	},
+	"contact": {
+		"heading": "How to Reach Us",
+		"directHeading": "Direct Contact",
+		"description": "Prefer email? Reach us directly:",
+		"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to promptly.",
+		"openIssueHeading": "Open a GitHub Issue",
+		"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe monitor issues daily.",
+		"openIssueButton": "Open GitHub Issue",
+		"issueIncludeLabel": "What to include in your issue:",
+		"issueIncludeText": "Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",
+		"operatedBy": "Operated by PlayForm, Sofia, Bulgaria"
+	},
+	"openSource": {
+		"heading": "Still Open Source",
+		"description": "Enterprise plans add support, SLA, and custom development.\n\nThe code itself remains CC0. Fork it, read it, ship it."
+	}
+};
+var oauth = {
+	"completing": "Completing sign-in...",
+	"failed": "Sign-In Failed",
+	"errorGeneric": "Something went wrong during sign-in. Please try again.",
+	"errorExpired": "Your sign-in session expired.\n\nPlease try again.",
+	"errorProvider": "The OAuth provider returned an error.\n\nPlease try again.",
+	"errorNoToken": "No authentication token received. Please try again.",
+	"backToSignIn": "Back to Sign In",
+	"goToDashboard": "Go to Dashboard",
+	"success": {
+		"title": "You're signed in",
+		"redirect": "Redirecting to your dashboard..."
+	}
+};
+var dashboard = {
+	"pageTitle": "Dashboard",
+	"pageSubtitle": "Your Land account, downloads, and editor connection.",
+	"breadcrumbLabel": "Dashboard",
+	"account": {
+		"heading": "Account",
+		"nameLabel": "Name",
+		"emailLabel": "Email",
+		"planLabel": "Plan",
+		"planFree": "Free",
+		"planEnterprise": "Enterprise",
+		"providerLabel": "Provider",
+		"organizationLabel": "Organization",
+		"memberSinceLabel": "Member Since",
+		"notSignedIn": "Sign in to see your account details.",
+		"signInButton": "Sign In",
+		"emailNotVerified": "Email not verified. Check your inbox.",
+		"enterpriseSSO": "Enterprise SSO active",
+		"emailVerifiedTitle": "Email verified",
+		"emailVerifiedBadge": "Verified",
+		"signOutButton": "Sign Out"
+	},
+	"downloads": {
+		"heading": "Downloads",
+		"description": "Get the latest Land build for your platform. Native on macOS, Windows, and Linux.",
+		"goButton": "Go to Downloads"
+	},
+	"quickLinks": {
+		"heading": "Quick Links",
+		"docs": "Documentation",
+		"community": "Community",
+		"reportIssue": "Report an Issue",
+		"contribute": "Contribute"
+	},
+	"settings": {
+		"heading": "Settings",
+		"sync": {
+			"title": "Sync Settings",
+			"description": "Your editor preferences follow you across every device automatically."
+		},
+		"extensionSync": {
+			"title": "Extension Sync",
+			"description": "Your installed extensions stay in sync across all machines."
+		},
+		"account": {
+			"title": "Account",
+			"description": "Update your profile and manage your account.",
+			"manageButton": "Manage"
+		}
+	},
+	"telemetry": {
+		"heading": "Telemetry Architecture",
+		"production": {
+			"title": "Absent from the binary. Not just disabled.",
+			"description": "VS Code's telemetry can be reduced via settings, but the code paths remain in the binary.\n\nThe Telemetry Cargo feature is not in Land's default features. All tracing compiles to zero-cost no-ops. Nothing is sent anywhere because there is nothing to send."
+		},
+		"otel": {
+			"title": "Opt-in OpenTelemetry. Your infrastructure only.",
+			"description": "Need distributed traces for your deployment? Enable with: `cargo build --features Telemetry`.\n\nLocal-only OTEL tracing, metrics, and spans. No external transmission. All data stays on your infrastructure."
+		},
+		"effect": {
+			"title": "Extension host timing. Stays in the process.",
+			"description": "Cocoon uses TelemetryService for internal RPC and bootstrap timing. The data is used for performance diagnostics only.\n\nAll data stays local. TelemetryMock layer available for zero-overhead testing."
+		}
+	},
+	"buildLog": {
+		"heading": "Build Configuration",
+		"subtitle": "Active build variant and deployment mode.\n\nAvailable via Local-First Air Daemon connection.",
+		"profile": { "heading": "Active Profile" },
+		"deployment": { "heading": "Deployment Mode" },
+		"matrix": { "heading": "Test Matrix" }
+	},
+	"portal": {
+		"heading": "Authentication Tiers",
+		"subtitle": "Your current authentication method and available tiers."
+	},
+	"editor": {
+		"heading": "Editor Connection",
+		"subtitle": "Connect the website to your running Land editor instance.",
+		"status": "Not Connected",
+		"description": "The Air Daemon connects this dashboard to a running Land editor via WebSocket.\n\nLaunch Land to enable real-time build logs, telemetry, and configuration management.",
+		"connect": "Connect via Portal",
+		"scanButton": "Scan for Daemon"
+	},
+	"partners": { "heading": "Partners & Attribution" },
+	"localFirst": {
+		"title": "Air Daemon",
+		"scanning": "Scanning",
+		"connected": "Connected",
+		"notFound": "Not Detected",
+		"scanDescription": "Checking ws://localhost:7979 and ws://localhost:7878",
+		"connectedMessage": "Connected to Air Daemon",
+		"portLabel": "Port",
+		"versionLabel": "Version",
+		"protocolLabel": "Protocol",
+		"notFoundMessage": "Air Daemon not detected. Launch Code Editor Land to enable local-first features.",
+		"downloadButton": "Download Land",
+		"retryButton": "Retry Scan"
+	},
+	"privacy": {
+		"heading": "Privacy & Data Rights",
+		"subtitle": "Exercise your GDPR rights, request data exports, or delete your account. All requests are sent directly to our privacy team and handled within 30 days."
+	}
+};
+var tryAgain = "Try again";
+var Common_default = {
+	actions,
+	brand,
+	breadcrumb,
+	button,
+	comingSoon,
+	error,
+	label,
+	nav,
+	docs,
+	blog,
+	contributing,
+	sales,
+	oauth,
+	dashboard,
+	tryAgain
+};
+//#endregion
+export { breadcrumb as a, contributing as c, error as d, label as f, tryAgain as g, sales as h, brand as i, dashboard as l, oauth as m, actions as n, button as o, nav as p, blog as r, comingSoon as s, Common_default as t, docs as u };

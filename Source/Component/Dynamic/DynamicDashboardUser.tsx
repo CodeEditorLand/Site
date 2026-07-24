@@ -201,7 +201,7 @@ const DashboardUserInner = () => {
 				<button
 					type="button"
 					onClick={() => Login()}
-					className="StaccatoButton inline-flex items-center justify-center bg-[var(--Primary)] px-4 py-1.5 font-medium text-[var(--PrimaryForeground)] transition-all hover:opacity-90"
+					className="StaccatoButton inline-flex items-center justify-center bg-primary px-4 py-1.5 font-medium text-primary-fg transition-all hover:opacity-90"
 				>
 					{T("dashboard.account.signInButton", {
 						defaultValue: "Sign In",
@@ -268,7 +268,7 @@ const DashboardUserInner = () => {
 						width="48"
 						height="48"
 						loading="lazy"
-						className="h-12 w-12 rounded-none"
+						className="h-12 w-12 flat"
 						onError={(Event) => {
 							(Event.target as HTMLImageElement).style.display =
 								"none";
@@ -281,7 +281,7 @@ const DashboardUserInner = () => {
 					/>
 				) : null}
 				<div
-					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center rounded-none bg-[var(--Mute)] text-lg font-bold text-muted-foreground`}
+					className={`${User.picture ? "hidden" : "flex"} h-12 w-12 items-center justify-center flat bg-mute text-lg font-bold text-muted-foreground`}
 					aria-hidden="true"
 				>
 					<Pii visible={PIIVisible}>
@@ -323,7 +323,7 @@ const DashboardUserInner = () => {
 							})}{" "}
 							<CircleCheck
 								aria-hidden="true"
-								className="inline h-4 w-4 align-[-3px] text-[var(--SpinegRPCFore)]"
+								className="inline h-4 w-4 align-[-3px] text-grpc"
 							/>
 						</span>
 					)}
@@ -425,7 +425,7 @@ const DashboardUserInner = () => {
 			<div className="mt-3 flex gap-2">
 				<a
 					href="/Account"
-					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium transition-all hover:bg-[var(--Secondary)]"
+					className="StaccatoButton inline-flex flex-1 items-center justify-center bg-card px-3 py-1.5 font-medium transition-all hover:bg-secondary"
 				>
 					{T("dashboard.account.manageButton", {
 						defaultValue: "Manage",

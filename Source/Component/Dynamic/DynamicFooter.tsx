@@ -173,7 +173,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 
 								<Heart
 									aria-hidden="true"
-									className="inline h-3.5 w-3.5 fill-current align-[-2px] text-[var(--SpineTCPFore)]"
+									className="inline h-3.5 w-3.5 fill-current align-[-2px] text-tcp"
 								/>
 							</div>
 						)}

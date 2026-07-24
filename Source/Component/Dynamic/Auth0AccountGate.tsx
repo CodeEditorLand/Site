@@ -288,7 +288,7 @@ export default ({
 							title={User.name || "User avatar"}
 							width="64"
 							height="64"
-							className="h-16 w-16 rounded-none"
+							className="h-16 w-16 flat"
 						/>
 					)}
 

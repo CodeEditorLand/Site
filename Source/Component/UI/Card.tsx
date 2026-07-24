@@ -10,7 +10,7 @@ const Card = React.forwardRef<
 		<jelly-card
 			ref={ref as unknown as React.Ref<HTMLElement>}
 			className={cn(
-				"text-[var(--CardForeground)]",
+				"text-card-fg",
 				className,
 			)}
 			style={

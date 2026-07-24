@@ -1,1 +1,14 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="2048" fill="none" viewBox="0 0 2048 2048"><g clip-path="url(#a)"><rect width="2048" height="2048" fill="#eaeaea" fill-opacity=".21" rx="21" transform="matrix(-1 0 0 1 2048 0)"/><path fill="#151515" d="M3290.5-656.5H-655.4v3945.9h3945.9z"/><path fill="#fff" d="M947.622 206.666H331.075V2426.23h616.547z"/><path fill="#fff" d="M2427.33 1809.69H331.075v616.54H2427.33z"/></g><defs><clipPath id="a"><rect width="2048" height="2048" fill="#fff" rx="21" transform="matrix(-1 0 0 1 2048 0)"/></clipPath></defs></svg>
+<svg width="2048" height="2048" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<g clip-path="url(#clip0_106_27)">
+		<rect width="2048" height="2048" rx="21" transform="matrix(-1 0 0 1 2048 0)" fill="#EAEAEA"
+			fill-opacity="0.21" />
+		<path d="M3290.5 -656.5H-655.4V3289.4H3290.5V-656.5Z" fill="#151515" />
+		<path d="M947.622 206.666H331.075V2426.23H947.622V206.666Z" fill="white" />
+		<path d="M2427.33 1809.69H331.075V2426.23H2427.33V1809.69Z" fill="white" />
+	</g>
+	<defs>
+		<clipPath id="clip0_106_27">
+			<rect width="2048" height="2048" rx="21" transform="matrix(-1 0 0 1 2048 0)" fill="white" />
+		</clipPath>
+	</defs>
+</svg>

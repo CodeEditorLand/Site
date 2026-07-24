@@ -106,15 +106,15 @@ const ScanAnimation = () => (
 	<div className="flex items-center gap-3">
 		<div className="flex gap-1" aria-hidden="true">
 			<span
-				className="inline-block h-2 w-2 animate-pulse rounded-none bg-orange-400"
+				className="inline-block h-2 w-2 animate-pulse flat bg-orange-400"
 				style={{ animationDelay: "0ms" }}
 			/>
 			<span
-				className="inline-block h-2 w-2 animate-pulse rounded-none bg-orange-400"
+				className="inline-block h-2 w-2 animate-pulse flat bg-orange-400"
 				style={{ animationDelay: "150ms" }}
 			/>
 			<span
-				className="inline-block h-2 w-2 animate-pulse rounded-none bg-orange-400"
+				className="inline-block h-2 w-2 animate-pulse flat bg-orange-400"
 				style={{ animationDelay: "300ms" }}
 			/>
 		</div>
@@ -217,7 +217,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="h-1.5 w-1.5 animate-pulse rounded-none bg-orange-500"
+									className="h-1.5 w-1.5 animate-pulse flat bg-orange-500"
 									aria-hidden="true"
 								/>
 							</span>
@@ -231,13 +231,13 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="h-1.5 w-1.5 rounded-none bg-green-500"
+									className="h-1.5 w-1.5 flat bg-green-500"
 									aria-hidden="true"
 								/>
 							</span>
 						)}
 						{Status === "NotFound" && (
-							<span className="inline-flex items-center bg-[var(--Mute)] px-2.5 py-0.5 font-medium text-muted-foreground">
+							<span className="inline-flex items-center bg-mute px-2.5 py-0.5 font-medium text-muted-foreground">
 								{T("dashboard.localFirst.notFound", {
 									defaultValue: "Not Detected",
 								})}
@@ -245,7 +245,7 @@ const LocalFirstScanInner = () => {
 								{"\u2001"}
 
 								<span
-									className="h-1.5 w-1.5 rounded-none bg-gray-400"
+									className="h-1.5 w-1.5 flat bg-gray-400"
 									aria-hidden="true"
 								/>
 							</span>
@@ -315,21 +315,21 @@ const LocalFirstScanInner = () => {
 								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 									Peer-to-peer design{"\u2001"}
 									<span
-										className="h-1 w-1 rounded-none bg-blue-500"
+										className="h-1 w-1 flat bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
 								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 									Local-first{"\u2001"}
 									<span
-										className="h-1 w-1 rounded-none bg-blue-500"
+										className="h-1 w-1 flat bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
 								<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-2 py-0.5 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 									No cloud required{"\u2001"}
 									<span
-										className="h-1 w-1 rounded-none bg-blue-500"
+										className="h-1 w-1 flat bg-blue-500"
 										aria-hidden="true"
 									/>
 								</span>
@@ -362,7 +362,7 @@ const LocalFirstScanInner = () => {
 								<button
 									type="button"
 									onClick={() => window.location.reload()}
-									className="StaccatoButton inline-flex items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-[var(--Secondary)]"
+									className="StaccatoButton inline-flex items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-secondary"
 								>
 									{T("dashboard.localFirst.retryButton", {
 										defaultValue: "Retry Scan",

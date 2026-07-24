@@ -196,7 +196,7 @@ const DynamicVerificationInfo = ({
 
 					<div className="grid grid-cols-1 gap-8 md:grid-cols-2">
 						{/* Download Verification */}
-						<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-card p-6">
+						<div className="StaccatoCard StaccatoBorderShimmer flat bg-card p-6">
 							<h3 className="mb-4 flex items-center font-mono text-sm font-semibold">
 								{T("labels.downloadVerification", {
 									defaultValue: "Download Verification",
@@ -214,7 +214,7 @@ const DynamicVerificationInfo = ({
 						</div>
 
 						{/* Integrity Verification */}
-						<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-card p-6">
+						<div className="StaccatoCard StaccatoBorderShimmer flat border border-primary bg-card p-6">
 							<h3 className="mb-4 flex items-center font-mono text-sm font-semibold">
 								{T("labels.integrityCheck", {
 									defaultValue: "Integrity Check",

@@ -115,7 +115,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					className="mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2"
 				>
 					{/* Minimum Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer rounded-none bg-card p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer flat bg-card p-6">
 						<h3 className="mb-6 font-mono text-sm font-semibold">
 							{T(
 								"systemRequirements.minimum",
@@ -129,7 +129,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 					</div>
 
 					{/* Recommended Requirements */}
-					<div className="StaccatoCard StaccatoBorderShimmer rounded-none border border-primary bg-card p-6">
+					<div className="StaccatoCard StaccatoBorderShimmer flat border border-primary bg-card p-6">
 						<h3 className="mb-6 font-mono text-sm font-semibold">
 							{T(
 								"systemRequirements.recommended",

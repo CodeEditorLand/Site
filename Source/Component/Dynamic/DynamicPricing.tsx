@@ -148,8 +148,8 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]">
-							<span className="text-[var(--SpinegRPCFore)]">
+						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+							<span className="text-grpc">
 								//
 							</span>{" "}
 							Roadmap
@@ -164,7 +164,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 						)}
 
 						{Subtitle && (
-							<div className="mt-3 text-[var(--MuteForeground)]">
+							<div className="mt-3 text-muted">
 								<RichText Text={Subtitle} />
 							</div>
 						)}
@@ -178,7 +178,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					{DisplayTier.map((Tier) => (
 						<jelly-card
 							key={Tier.Id}
-							className={`PricingCard rounded-none ${
+							className={`PricingCard flat ${
 								Tier.Highlighted || Tier.Popular ? "" : ""
 							} ${
 								Tier.Status && Tier.Status !== "Ready"
@@ -213,7 +213,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 											} as React.CSSProperties}
 										>
 											<span
-												className="StaccatoRhythmDot mr-1.5 h-1.5 w-1.5 rounded-none"
+												className="StaccatoRhythmDot mr-1.5 h-1.5 w-1.5 flat"
 												style={{
 													backgroundColor: "var(--SpinegRPC)",
 												}}

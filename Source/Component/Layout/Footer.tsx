@@ -212,7 +212,7 @@ const Footer = ({ Content }: FooterProps) => {
 							href="https://nlnet.nl/commonsfund"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--Primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="text-primary hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							{T("funding.ngiFund", "NGI0 Commons Fund")}
 						</a>
@@ -221,7 +221,7 @@ const Footer = ({ Content }: FooterProps) => {
 							href="https://nlnet.nl"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--Primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="text-primary hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							{T("funding.nlnet", "NLnet")}
 						</a>
@@ -233,7 +233,7 @@ const Footer = ({ Content }: FooterProps) => {
 							href="https://nlnet.nl/project/Land/"
 							target="_blank"
 							rel="noopener noreferrer"
-							className="text-[var(--Primary)] hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+							className="text-primary hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							{T("funding.projectPage", "View project page")}
 						</a>

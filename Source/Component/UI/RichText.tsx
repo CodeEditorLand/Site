@@ -121,23 +121,32 @@ const TermDictionary = new Map<string, TermCategory>([
 
 const CategoryStyle: Record<TermCategory, string> = {
 	Architecture:
-		"border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300",
+		"border-blue-200 text-blue-700 dark:border-blue-800 dark:text-blue-300",
 
 	Telemetry:
-		"border-yellow-200 bg-yellow-50 text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300",
+		"border-yellow-200 text-yellow-700 dark:border-yellow-800 dark:text-yellow-300",
 
 	Protocol:
-		"border-purple-200 bg-purple-50 text-purple-700 dark:border-purple-800 dark:bg-purple-950 dark:text-purple-300",
+		"border-purple-200 text-purple-700 dark:border-purple-800 dark:text-purple-300",
 
 	Feature:
-		"border-orange-200 bg-orange-50 text-orange-700 dark:border-orange-800 dark:bg-orange-950 dark:text-orange-300",
+		"border-orange-200 text-orange-700 dark:border-orange-800 dark:text-orange-300",
 
 	License:
-		"border-green-200 bg-green-50 text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300",
+		"border-green-200 text-green-700 dark:border-green-800 dark:text-green-300",
 
-	Tool: "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-800 dark:bg-sky-950 dark:text-sky-300",
+	Tool: "border-sky-200 text-sky-700 dark:border-sky-800 dark:text-sky-300",
 };
 
+
+const CategoryFill: Record<TermCategory, string> = {
+	Architecture: "color-mix(in srgb, #3b82f6 15%, var(--Background))",
+	Telemetry:   "color-mix(in srgb, #eab308 15%, var(--Background))",
+	Protocol:    "color-mix(in srgb, #a855f7 15%, var(--Background))",
+	Feature:     "color-mix(in srgb, #f97316 15%, var(--Background))",
+	License:     "color-mix(in srgb, #22c55e 15%, var(--Background))",
+	Tool:        "color-mix(in srgb, #0ea5e9 15%, var(--Background))",
+};
 const CategoryLabel: Record<TermCategory, string> = {
 	Architecture: "Architecture element",
 
@@ -282,7 +291,7 @@ const CopyInlineButton = ({ Code }: { Code: string }) => {
 			onClick={HandleCopy}
 			aria-label={Copied ? "Copied" : "Copy to clipboard"}
 			title={Copied ? "Copied" : "Copy to clipboard"}
-			className="ml-1 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center rounded-none bg-[var(--Mute)] opacity-50 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--Ring)]"
+			className="ml-1 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center flat bg-mute opacity-50 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--Ring)]"
 		>
 			{Copied ? (
 				<lucide.Check
@@ -306,7 +315,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 		case "Code":
 			return (
 				<span className="inline-flex items-baseline">
-					<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+					<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
 						{Segment.Value}
 					</code>
 					<CopyInlineButton Code={Segment.Value} />
@@ -321,6 +330,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 		case "Term": {
 			const Logo = TermLogo[Segment.Value];
 			const Style = CategoryStyle[Segment.Category];
+			const Fill = CategoryFill[Segment.Category];
 			return (
 				<jelly-badge
 					variant="platinum"
@@ -329,7 +339,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 					title={`${CategoryLabel[Segment.Category]}: ${Segment.Value}`}
 					aria-label={`${CategoryLabel[Segment.Category]} ${Segment.Value}`}
 					style={{
-						"--jelly-fill": "transparent",
+						"--jelly-fill": Fill,
 						"--jelly-label": "currentColor",
 						"--jelly-badge-radius": "0px",
 						"--jelly-badge-font-size": "0.78em",
@@ -409,7 +419,7 @@ const LineNode = ({
 					{EnableMatch[1]}
 				</span>
 				<span className="inline-flex items-baseline">
-					<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+					<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
 						{Command}
 					</code>
 					<CopyInlineButton Code={Command} />
@@ -450,7 +460,7 @@ const LineNode = ({
 						)}
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
-								className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
+								className={`inline-flex items-center flat border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
 								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}
 							>
 								{Item}
@@ -490,13 +500,13 @@ const LineNode = ({
 						)}
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
-								className={`inline-flex items-center rounded-none border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
+								className={`inline-flex items-center flat border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
 								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}
 							>
 								{Item}
 							</span>
 						) : (
-							<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+							<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
 								{Item}
 							</code>
 						)}
@@ -518,7 +528,7 @@ const LineNode = ({
 	if (IsCommandString(Trimmed)) {
 		return (
 			<span className="inline-flex items-baseline">
-				<code className="rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em]">
+				<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
 					{Trimmed}
 				</code>
 				<CopyInlineButton Code={Trimmed} />
