@@ -369,7 +369,8 @@ export default (await import("astro/config")).defineConfig({
 				"@Script": Resolve("./Source/Script"),
 
 				"@Variable": Resolve("./Source/Variable"),
-			},
+
+		},
 
 			preserveSymlinks: (
 				await import("./Source/Function/Configuration/PreserveSymlinks.js")
