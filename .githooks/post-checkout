@@ -1,0 +1,4 @@
+#!/bin/sh
+# Keep vendored submodules tracking their remote branch tip after every
+# checkout, so nobody has to remember to run `git submodule update` by hand.
+git submodule update --init --remote --recursive --merge
