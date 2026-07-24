@@ -140,12 +140,12 @@ const CategoryStyle: Record<TermCategory, string> = {
 
 
 const CategoryFill: Record<TermCategory, string> = {
-	Architecture: "color-mix(in srgb, #3b82f6 15%, var(--Background))",
-	Telemetry:   "color-mix(in srgb, #eab308 15%, var(--Background))",
-	Protocol:    "color-mix(in srgb, #a855f7 15%, var(--Background))",
-	Feature:     "color-mix(in srgb, #f97316 15%, var(--Background))",
-	License:     "color-mix(in srgb, #22c55e 15%, var(--Background))",
-	Tool:        "color-mix(in srgb, #0ea5e9 15%, var(--Background))",
+	Architecture: "var(--Mute)",
+	Telemetry:   "var(--Mute)",
+	Protocol:    "var(--Mute)",
+	Feature:     "var(--Mute)",
+	License:     "var(--Mute)",
+	Tool:        "var(--Mute)",
 };
 const CategoryLabel: Record<TermCategory, string> = {
 	Architecture: "Architecture element",
