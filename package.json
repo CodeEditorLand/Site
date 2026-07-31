@@ -26,7 +26,7 @@
 		"Format": "sh Maintain/Format.sh",
 		"prebuild": "node Maintain/Script/SyncPublicMermaid.mjs",
 		"build": "astro build",
-		"prepublishOnly": "astro build",
+		"prepublishOnly": "node Maintain/Script/SyncPublicMermaid.mjs && astro build",
 		"test": "vitest run",
 		"test:watch": "vitest"
 	},
