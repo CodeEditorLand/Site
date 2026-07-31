@@ -295,6 +295,7 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 				["/Favicon/*", "/Favicon/:splat"],
 				["/Font/*", "/Font/:splat"],
 				["/Image/*", "/Image/:splat"],
+				["/Mermaid/*", "/Mermaid/:splat"],
 				["/OpenGraph/*", "/OpenGraph/:splat"],
 				["/Vendor/*", "/Vendor/:splat"],
 			];

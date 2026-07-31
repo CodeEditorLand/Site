@@ -202,6 +202,7 @@ const AssetPrefix = [
 	["/Favicon/*", "/Favicon/:splat"],
 	["/Font/*", "/Font/:splat"],
 	["/Image/*", "/Image/:splat"],
+	["/Mermaid/*", "/Mermaid/:splat"],
 	["/OpenGraph/*", "/OpenGraph/:splat"],
 ];
 
