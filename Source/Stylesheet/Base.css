@@ -1789,6 +1789,31 @@
 	height: auto;
 }
 
+/* Mermaid images rendered via <img> tag (static SVGs in /Public/Mermaid/) */
+img[src*="/Mermaid/"] {
+	max-width: 100%;
+
+	height: auto;
+
+	display: block;
+
+	margin: 1.5rem auto;
+
+	background: white;
+
+	border-radius: 6px;
+
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+
+	padding: 1rem;
+}
+
+.dark img[src*="/Mermaid/"] {
+	background: #1e1e1e;
+
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
 /* ── Jelly UI fallback (https://jelly-ui.com) ─────────────────────────
  <jelly-button>/<jelly-icon-button> are custom elements upgraded by an
  external <script> in Source/Layout/Base.astro - until that script loads

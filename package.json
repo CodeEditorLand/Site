@@ -22,8 +22,9 @@
 		{ "name": "PlayForm", "url": "https://editor.land" }
 	],
 	"scripts": {
-		"Run": "astro dev --host",
+		"Run": "node Maintain/Script/SyncPublicMermaid.mjs && astro dev --host",
 		"Format": "sh Maintain/Format.sh",
+		"prebuild": "node Maintain/Script/SyncPublicMermaid.mjs",
 		"build": "astro build",
 		"prepublishOnly": "astro build",
 		"test": "vitest run",

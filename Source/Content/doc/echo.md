@@ -23,27 +23,7 @@ with lock-free work-stealing deques built on
 
 Echo is organised into three core subsystems:
 
-```mermaid
-graph TB
-    subgraph Echo["Echo Scheduler"]
-        subgraph TaskLayer["Task Layer"]
-            TaskLayer_Priority["Priority enum"]
-            TaskLayer_Wrapper["Task<F> wrapper"]
-            TaskLayer_Future["Future integration"]
-        end
-        subgraph SchedLayer["Scheduler Layer"]
-            SchedLayer_Builder["SchedulerBuilder"]
-            SchedLayer_Pool["Worker pool"]
-            SchedLayer_Shutdown["Graceful shutdown"]
-        end
-        subgraph QueueLayer["Queue Layer"]
-            QueueLayer_Deque["StealingQueue<T>"]
-            QueueLayer_Injector["Injector / Stealer"]
-            QueueLayer_Xbeam["crossbeam-deque"]
-        end
-    end
-```
-
+<img src="/Mermaid/4263fe64a01e3bae.svg" alt="Mermaid diagram" />
 ### Module Map
 
 | Path                                   | Purpose                                              |
