@@ -928,7 +928,8 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 		Path.startsWith("/_astro/") ||
 		Path.startsWith("/Asset/") ||
 		Path.startsWith("/Favicon/") ||
-		Path.startsWith("/Image/")
+		Path.startsWith("/Image/") ||
+		Path.startsWith("/Mermaid/")
 	) {
 		__DEV__ && Log(`Asset (cache-first): ${Path}`);
 
@@ -949,8 +950,23 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					try {
 						const NetworkResponse = await fetch(Request);
 
-						if (NetworkResponse && NetworkResponse.ok) {
-							await Cache.put(Request, NetworkResponse.clone());
+						// Only cache genuine asset responses. During a
+						// broken deploy window the catch-all can return a
+						// 200 HTML page for an asset URL (e.g. /Mermaid/*.svg
+						// before the routing fix); caching that as the asset
+						// permanently breaks the diagram. Guard on content
+						// type so HTML fallbacks are never stored.
+						const Type =
+							NetworkResponse?.headers?.get("content-type") ?? "";
+						if (
+							NetworkResponse &&
+							NetworkResponse.ok &&
+							Type.startsWith("image/")
+						) {
+							await Cache.put(
+								Request,
+								NetworkResponse.clone(),
+							);
 						}
 
 						return (
@@ -967,11 +983,6 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 							status: 503,
 						});
 					}
-				})
-				.catch((_Error: unknown) => {
-					__DEV__ && ErrorLog(`Asset cache error: ${Path}`, _Error);
-
-					return fetch(Request);
 				}),
 		);
 
