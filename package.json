@@ -18,8 +18,14 @@
 		"url": "https://editor.land"
 	},
 	"contributors": [
-		{ "name": "Code Editor Land", "url": "https://github.com/CodeEditorLand" },
-		{ "name": "PlayForm", "url": "https://editor.land" }
+		{
+			"name": "Code Editor Land",
+			"url": "https://github.com/CodeEditorLand"
+		},
+		{
+			"name": "PlayForm",
+			"url": "https://editor.land"
+		}
 	],
 	"scripts": {
 		"Run": "node Maintain/Script/SyncPublicMermaid.mjs && astro dev --host",
@@ -57,7 +63,7 @@
 		"@radix-ui/react-progress": "1.1.16",
 		"@radix-ui/react-radio-group": "1.4.7",
 		"@radix-ui/react-scroll-area": "1.2.18",
-		"@radix-ui/react-select": "2.3.5",
+		"@radix-ui/react-select": "2.3.7",
 		"@radix-ui/react-separator": "1.1.15",
 		"@radix-ui/react-slider": "1.4.7",
 		"@radix-ui/react-slot": "1.3.3",
@@ -76,11 +82,11 @@
 		"@types/postcss-import": "14.0.3",
 		"@types/postcss-reporter": "7.0.5",
 		"@types/postcss-url": "10.0.4",
-		"@types/react": "19.2.17",
-		"@types/react-dom": "19.2.3",
+		"@types/react": "19.2.18",
+		"@types/react-dom": "19.2.4",
 		"@types/trusted-types": "2.0.7",
-		"@vitejs/plugin-react": "6.0.4",
-		"astro": "7.1.5",
+		"@vitejs/plugin-react": "6.0.5",
+		"astro": "7.1.6",
 		"astro-capo": "0.0.1",
 		"astrojs-service-worker": "2.0.2",
 		"autoprefixer": "10.5.4",
@@ -92,12 +98,12 @@
 		"dotenv": "17.4.2",
 		"embla-carousel-react": "8.6.0",
 		"esbuild": "0.28.1",
-		"firebase": "12.16.0",
+		"firebase": "12.17.0",
 		"happy-dom": "20.11.1",
 		"i18next": "26.3.6",
 		"input-otp": "1.4.2",
 		"jsdom": "30.0.1",
-		"lucide-react": "1.27.0",
+		"lucide-react": "1.28.0",
 		"mermaid": "11.16.0",
 		"neotraverse": "1.0.1",
 		"next-themes": "0.4.6",
@@ -110,7 +116,7 @@
 		"react": "19.2.8",
 		"react-day-picker": "10.0.1",
 		"react-dom": "19.2.8",
-		"react-hook-form": "7.83.0",
+		"react-hook-form": "7.84.0",
 		"react-i18next": "17.0.11",
 		"react-resizable-panels": "4.12.2",
 		"recharts": "3.10.1",
@@ -122,7 +128,7 @@
 		"typescript": "7.0.2",
 		"ulid": "3.0.2",
 		"vaul": "1.1.2",
-		"vite": "8.1.5",
+		"vite": "8.2.0",
 		"vitest": "4.1.10",
 		"zod": "4.4.3"
 	},
