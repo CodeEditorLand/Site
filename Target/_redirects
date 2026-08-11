@@ -760,6 +760,7 @@
 /Favicon/*                /Favicon/:splat           200
 /Font/*                   /Font/:splat              200
 /Image/*                  /Image/:splat             200
+/Mermaid/*                /Mermaid/:splat           200
 /OpenGraph/*              /OpenGraph/:splat         200
 /Vendor/*                 /Vendor/:splat            200
 /OpenGraph.svg            /OpenGraph.svg            200

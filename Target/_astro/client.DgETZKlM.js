@@ -1,0 +1,1 @@
+import{t}from"./Vendor/React.Bo2YDsiG.js";export{t as default};

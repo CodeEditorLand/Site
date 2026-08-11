@@ -271,10 +271,10 @@
 /* Social icons - seed scatter; hover = clean lift + full opacity */
 
 .StaccatoSocial {
-	transform: translate(
-		calc(var(--StaccatoSeed, 0) * 2px),
-		calc(var(--StaccatoSeedPhase, 0) * 1.5px)
-	);
+	/* Horizontal-only scatter: a Y offset here misaligns the icons inside
+	 * the footer's flex row, since each link gets a different --StaccatoSeedPhase.
+	 * Hover lift (translateY) is preserved below. */
+	transform: translateX(calc(var(--StaccatoSeed, 0) * 2px));
 	opacity: max(0.5, calc(0.72 + var(--StaccatoRaw) * 0.28));
 	transition:
 		transform 0.5s ease,
