@@ -78,7 +78,7 @@
 		"@tailwindcss/typography": "0.5.20",
 		"@testing-library/jest-dom": "7.0.1",
 		"@testing-library/react": "16.3.2",
-		"@testing-library/user-event": "14.6.3",
+		"@testing-library/user-event": "14.6.4",
 		"@types/postcss-import": "14.0.3",
 		"@types/postcss-reporter": "7.0.5",
 		"@types/postcss-url": "10.0.4",
