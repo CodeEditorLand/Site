@@ -371,7 +371,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 										"--jelly-card-font-size": "inherit",
 										"--jelly-card-padding-block": "0",
 										"--jelly-card-padding-inline": "0",
-										"--jelly-color-border-default": GetIconColor(),
+										"--jelly-color-border-default": "var(--ColorMuteBorder)",
 									} as React.CSSProperties}
 								>
 									<div className="flex items-center gap-3">

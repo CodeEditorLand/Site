@@ -997,6 +997,10 @@
 
 		--MuteForeground: #8a8a93;
 
+		/* Muted card border: soft dark-gray on the dark canvas so it
+		   doesn't read as a bright contrasting line (slate-700). */
+		--ColorMuteBorder: #3f3f46;
+
 		--Accent: #16161c;
 
 		--AccentForeground: #e7e7ea;

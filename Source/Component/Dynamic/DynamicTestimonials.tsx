@@ -318,7 +318,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 											"--jelly-card-font-size": "inherit",
 											"--jelly-card-padding-block": "0",
 											"--jelly-card-padding-inline": "0",
-											"--jelly-color-border-default": AccentColor,
+											"--jelly-color-border-default": "var(--ColorMuteBorder)",
 											"--masonry-col": ColSpan,
 										} as React.CSSProperties
 									}
@@ -435,7 +435,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									"--jelly-radius": "0",
 									"--jelly-card-padding-block": "0",
 									"--jelly-card-padding-inline": "0",
-									"--jelly-color-border-default": AccentColor,
+									"--jelly-color-border-default": "var(--ColorMuteBorder)",
 								} as React.CSSProperties}
 							>
 								<div className="flex flex-col gap-3">

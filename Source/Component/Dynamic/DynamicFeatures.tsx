@@ -292,7 +292,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 									"--jelly-radius": "0",
 									"--jelly-card-padding-block": "0",
 									"--jelly-card-padding-inline": "0",
-									"--jelly-color-border-default": FeatureColor,
+									"--jelly-color-border-default": "var(--ColorMuteBorder)",
 									"--jelly-card-font-size": "inherit",
 								} as React.CSSProperties}
 							>
