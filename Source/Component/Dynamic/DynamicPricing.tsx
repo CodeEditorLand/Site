@@ -173,7 +173,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 
 				<div
 					ref={GridReference}
-					className="mx-auto grid max-w-4xl grid-cols-1 gap-12 md:grid-cols-2"
+					className="mx-auto grid max-w-6xl grid-cols-1 gap-12 md:grid-cols-2"
 				>
 					{DisplayTier.map((Tier) => (
 						<jelly-card
