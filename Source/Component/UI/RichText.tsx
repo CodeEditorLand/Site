@@ -315,7 +315,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 		case "Code":
 			return (
 				<span className="inline-flex items-baseline">
-					<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
+					<code className="flat bg-mute px-1.5 py-0.5 font-mono">
 						{Segment.Value}
 					</code>
 					<CopyInlineButton Code={Segment.Value} />
@@ -419,7 +419,7 @@ const LineNode = ({
 					{EnableMatch[1]}
 				</span>
 				<span className="inline-flex items-baseline">
-					<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
+					<code className="flat bg-mute px-1.5 py-0.5 font-mono">
 						{Command}
 					</code>
 					<CopyInlineButton Code={Command} />
@@ -460,7 +460,7 @@ const LineNode = ({
 						)}
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
-								className={`inline-flex items-center flat border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
+								className={`inline-flex items-center flat border px-1.5 py-0.5 align-middle font-mono font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
 								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}
 							>
 								{Item}
@@ -500,13 +500,13 @@ const LineNode = ({
 						)}
 						{ShowTerms && TermDictionary.has(Item) ? (
 							<span
-								className={`inline-flex items-center flat border px-1.5 py-0.5 align-middle font-mono text-[0.78em] font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
+								className={`inline-flex items-center flat border px-1.5 py-0.5 align-middle font-mono font-medium leading-normal ${CategoryStyle[TermDictionary.get(Item)!]}`}
 								title={`${CategoryLabel[TermDictionary.get(Item)!]}: ${Item}`}
 							>
 								{Item}
 							</span>
 						) : (
-							<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
+							<code className="flat bg-mute px-1.5 py-0.5 font-mono">
 								{Item}
 							</code>
 						)}
@@ -528,7 +528,7 @@ const LineNode = ({
 	if (IsCommandString(Trimmed)) {
 		return (
 			<span className="inline-flex items-baseline">
-				<code className="flat bg-mute px-1.5 py-0.5 font-mono text-[0.82em]">
+				<code className="flat bg-mute px-1.5 py-0.5 font-mono">
 					{Trimmed}
 				</code>
 				<CopyInlineButton Code={Trimmed} />

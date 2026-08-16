@@ -225,7 +225,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+						<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
 							<span className="text-grpc">
 								//
 							</span>{" "}

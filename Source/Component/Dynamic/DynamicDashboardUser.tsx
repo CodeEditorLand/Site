@@ -313,7 +313,7 @@ const DashboardUserInner = () => {
 					</span>
 					{User.email_verified === true && (
 						<span
-							className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
+							className="inline-flex items-center border border-green-200 bg-green-50 px-1.5 py-0 text-sm font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300"
 							title={T("dashboard.account.emailVerifiedTitle", {
 								defaultValue: "Email verified",
 							})}

@@ -172,7 +172,7 @@ const Footer = ({ Content }: FooterProps) => {
 
 					{FooterData.Columns?.map((Column, ColumnIndex) => (
 						<nav key={ColumnIndex} aria-label={Column.Title}>
-							<h4 className="mb-4 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+							<h4 className="mb-4 font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
 								{Column.Title}
 							</h4>
 							<ul className="space-y-2 text-muted-foreground">

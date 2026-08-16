@@ -192,7 +192,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 						? { target: "_blank", rel: "noopener noreferrer" }
 						: {})}
 				>
-					<span className="HeaderLinkLabel font-mono text-xs font-medium uppercase tracking-widest">
+					<span className="HeaderLinkLabel font-mono text-sm font-medium uppercase tracking-widest">
 						{Link.Label}
 					</span>
 				</a>
@@ -332,7 +332,7 @@ const Header = ({ Content, AuthSlot }: HeaderProps) => {
 										}
 									: {})}
 							>
-								<span className="HeaderLinkLabel font-mono text-xs font-medium uppercase tracking-widest">
+								<span className="HeaderLinkLabel font-mono text-sm font-medium uppercase tracking-widest">
 									{Link.Label}
 								</span>
 							</a>

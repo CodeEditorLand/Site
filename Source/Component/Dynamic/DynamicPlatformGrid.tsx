@@ -326,7 +326,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+						<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
 							<span className="text-grpc">
 								//
 							</span>{" "}
@@ -384,7 +384,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							},
 							Body: {
 								content: (
-									<div className="space-y-2 font-mono text-xs text-muted-foreground">
+									<div className="space-y-2 font-mono text-sm text-muted-foreground">
 										<div className="flex justify-between">
 											<span>{VersionLabel}</span>
 											<span className="font-medium text-foreground">
@@ -435,7 +435,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 								? {
 										Footer: {
 											content: (
-												<div className="font-mono text-xs text-muted-foreground">
+												<div className="font-mono text-sm text-muted-foreground">
 													{Platform.Checksum && (
 														<p>
 															SHA-256:{" "}

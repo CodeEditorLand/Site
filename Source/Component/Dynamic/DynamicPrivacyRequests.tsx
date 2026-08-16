@@ -69,7 +69,7 @@ export default () => {
 								</h4>
 								<div className="flex shrink-0 flex-col items-end gap-1">
 									<span
-										className={`px-2 py-0.5 font-mono text-[10px] font-bold tracking-widest ${BadgeColor(Right.Article)}`}
+										className={`px-2 py-0.5 font-mono text-sm font-bold tracking-widest ${BadgeColor(Right.Article)}`}
 									>
 										{Right.Code}
 									</span>
@@ -113,7 +113,7 @@ export default () => {
 						>
 							<div className="mb-2 flex items-center justify-between gap-2">
 								<h4 className="font-medium">{Channel.Title}</h4>
-								<span className="shrink-0 font-mono text-[10px] font-bold tracking-widest text-muted-foreground">
+								<span className="shrink-0 font-mono text-sm font-bold tracking-widest text-muted-foreground">
 									{Channel.Code}
 								</span>
 							</div>
@@ -167,7 +167,7 @@ export default () => {
 								<h4 className="font-semibold text-red-700 dark:text-red-400">
 									Permanent Account Deletion
 								</h4>
-								<span className="font-mono text-[10px] font-bold tracking-widest text-red-400 dark:text-red-500">
+								<span className="font-mono text-sm font-bold tracking-widest text-red-400 dark:text-red-500">
 									ERASE
 								</span>
 							</div>

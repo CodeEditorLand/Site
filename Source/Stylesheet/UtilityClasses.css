@@ -93,12 +93,12 @@
 /* ─── TYPOGRAPHY PATTERNS ──────────────────────────────────────────────── */
 
 /* .eyebrow - section eyebrow label (6 occurrences)
- *   replaces: font-mono text-xs uppercase tracking-[0.25em] text-[var(--MuteForeground)]
+ *   replaces: font-mono text-sm uppercase tracking-[0.25em] text-[var(--MuteForeground)]
  *   used in: DynamicFeatures, DynamicPricing, DynamicTestimonials, DynamicPlatformGrid,
  *            DynamicHeroSection */
 .eyebrow {
   font-family: var(--FontMono);
-  font-size: 0.75rem;        /* text-xs */
+  font-size: 0.875rem;        /* text-sm */
   text-transform: uppercase;
   letter-spacing: 0.25em;
   color: var(--MuteForeground);
@@ -123,10 +123,10 @@
 }
 
 /* .section-label - small mono section label (pricing, features, etc.)
- *   replaces: font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground */
+ *   replaces: font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground */
 .section-label {
   font-family: var(--FontMono);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -134,10 +134,10 @@
 }
 
 /* .nav-label - navigation link label
- *   replaces: font-mono text-xs font-medium uppercase tracking-widest */
+ *   replaces: font-mono text-sm font-medium uppercase tracking-widest */
 .nav-label {
   font-family: var(--FontMono);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -154,7 +154,7 @@
 }
 
 /* .tag-mono - pill/chip label (role tags, feature names)
- *   replaces: bg-[var(--Mute)] px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground */
+ *   replaces: bg-[var(--Mute)] px-2 py-0.5 font-mono text-sm tracking-wide text-muted-foreground */
 .tag-mono {
   background-color: var(--Mute);
   padding: 0.125rem 0.5rem;
@@ -165,13 +165,13 @@
 }
 
 /* .code-inline - inline code snippet
- *   replaces: rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono text-[0.82em] */
+ *   replaces: rounded-none bg-[var(--Mute)] px-1.5 py-0.5 font-mono */
 .code-inline {
   border-radius: 0;
   background-color: var(--Mute);
   padding: 0.125rem 0.375rem;
   font-family: var(--FontMono);
-  font-size: 0.82em;
+  font-size: 0.875rem;
 }
 
 /* .content-subtitle - body subtitle below section headings

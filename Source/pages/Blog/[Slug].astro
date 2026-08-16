@@ -71,7 +71,7 @@ const MetaDescription = Entry.data.summary;
 				Entry.data.tags.length > 0 && (
 					<div class="mb-4 flex flex-wrap gap-2">
 						{Entry.data.tags.map((Tag: string) => (
-							<span class="bg-muted px-2 py-0.5 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground">
+							<span class="bg-muted px-2 py-0.5 font-mono text-sm font-medium uppercase tracking-widest text-muted-foreground">
 								{Tag}
 							</span>
 						))}
@@ -85,7 +85,7 @@ const MetaDescription = Entry.data.summary;
 				{Entry.data.summary}
 			</p>
 			<div
-				class="flex flex-wrap items-center gap-3 font-mono text-xs text-muted-foreground"
+				class="flex flex-wrap items-center gap-3 font-mono text-sm text-muted-foreground"
 			>
 				<span>{Entry.data.author}</span>
 				<span aria-hidden="true">&#x2001;·&#x2001;</span>

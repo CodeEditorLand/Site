@@ -148,7 +148,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+						<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
 							<span className="text-grpc">
 								//
 							</span>{" "}
@@ -264,7 +264,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								{/* Elements section */}
 								{Tier.Elements && Tier.Elements.length > 0 && (
 									<>
-										<p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+										<p className="mb-3 font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
 											Elements
 										</p>
 										<ul className="space-y-3">
@@ -316,7 +316,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																															/>
 																														</a>
 															{Sub1 && (
-																<span className="font-mono text-xs text-foreground">
+																<span className="font-mono text-sm text-foreground">
 																	<RichText
 																		Text={
 																			Sub1
@@ -328,7 +328,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 																</span>
 															)}
 															{Sub2 && (
-																<span className="font-mono text-xs text-muted-foreground">
+																<span className="font-mono text-sm text-muted-foreground">
 																	<RichText
 																		Text={
 																			Sub2
@@ -355,7 +355,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									<>
 										{Tier.Elements &&
 											Tier.Elements.length > 0 && (
-												<p className="mb-3 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+												<p className="mb-3 font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
 													Roadmap
 												</p>
 											)}

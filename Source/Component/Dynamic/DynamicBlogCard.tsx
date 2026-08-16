@@ -7,7 +7,7 @@ const DynamicBlogCard = ({ Post }: { Post: BlogPost }) => (
 				{Post.Tags.map((Tag) => (
 					<span
 						key={Tag}
-						className="bg-muted px-2 py-0.5 font-mono text-xs font-medium uppercase tracking-widest text-muted-foreground"
+						className="bg-muted px-2 py-0.5 font-mono text-sm font-medium uppercase tracking-widest text-muted-foreground"
 					>
 						{Tag}
 					</span>
@@ -20,7 +20,7 @@ const DynamicBlogCard = ({ Post }: { Post: BlogPost }) => (
 		<p className="mb-4 line-clamp-3 text-sm text-muted-foreground">
 			{Post.Summary}
 		</p>
-		<div className="flex items-center justify-between font-mono text-xs text-muted-foreground">
+		<div className="flex items-center justify-between font-mono text-sm text-muted-foreground">
 			<span>{Post.Author}</span>
 			<span>{Post.ReadTime} min read</span>
 		</div>

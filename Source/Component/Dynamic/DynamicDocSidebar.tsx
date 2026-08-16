@@ -107,7 +107,7 @@ const DynamicDocSidebar = ({
 										ToggleSection(Section.Id)
 									}
 								>
-									<CollapsibleTrigger className="flex w-full items-center justify-between flat px-2 py-1.5 text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
+									<CollapsibleTrigger className="flex w-full items-center justify-between flat px-2 py-1.5 text-sm font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]">
 										<span className="font-mono">
 											{Section.Label}
 										</span>
@@ -270,7 +270,7 @@ const DynamicDocSidebar = ({
 				aria-expanded={MobileOpen}
 			>
 				<span className="flex items-center gap-2">
-					<span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+					<span className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
 						Docs
 					</span>
 					<span className="text-muted-foreground">/</span>

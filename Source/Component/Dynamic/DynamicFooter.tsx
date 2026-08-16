@@ -135,7 +135,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 					{/* Dynamic Columns */}
 					{Columns.map((Column, ColumnIndex) => (
 						<div key={ColumnIndex}>
-							<h4 className="mb-4 font-mono text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+							<h4 className="mb-4 font-mono text-sm font-semibold uppercase tracking-wider text-muted-foreground">
 								{Column.Title}
 							</h4>
 							<ul className="space-y-2">

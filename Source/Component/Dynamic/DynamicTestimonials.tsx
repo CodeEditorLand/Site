@@ -262,7 +262,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				<div className="container mx-auto px-4">
 					{(Title || Subtitle) && (
 						<div className="mx-auto mb-10 max-w-2xl text-center">
-							<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+							<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
 								<span className="text-grpc">
 									//
 								</span>{" "}
@@ -365,7 +365,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 												(Tag, TagIndex) => (
 													<span
 														key={TagIndex}
-														className="bg-mute px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground"
+														className="bg-mute px-2 py-0.5 font-mono text-sm tracking-wide text-muted-foreground"
 													>
 														{Tag}
 													</span>
@@ -397,7 +397,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 			<div className="container mx-auto px-4">
 				{(Title || Subtitle) && (
 					<div className="mx-auto mb-10 max-w-2xl text-center">
-						<p className="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-muted">
+						<p className="mb-4 font-mono text-sm uppercase tracking-[0.25em] text-muted">
 							<span className="text-grpc">
 								//
 							</span>{" "}
@@ -477,7 +477,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 											(Tag, TagIndex) => (
 												<span
 													key={TagIndex}
-													className="bg-mute px-2 py-0.5 font-mono text-[10px] tracking-wide text-muted-foreground"
+													className="bg-mute px-2 py-0.5 font-mono text-sm tracking-wide text-muted-foreground"
 												>
 													{Tag}
 												</span>

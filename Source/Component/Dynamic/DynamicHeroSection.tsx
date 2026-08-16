@@ -224,7 +224,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					{Title}
 					{Title && TitleHighlight ? " " : ""}
 					{TitleHighlight && (
-						<span className="italic text-ipc">
+						<span className="text-ipc">
 							{TitleHighlight}
 						</span>
 					)}
@@ -242,7 +242,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 				</div>
 
 				{/* Tech stack section label - mono HUD eyebrow */}
-				<p className="mb-8 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+				<p className="mb-8 font-mono text-sm uppercase tracking-[0.25em] text-muted-foreground">
 					<span className="text-grpc">//</span> Tech
 					Stack
 				</p>
@@ -380,7 +380,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 										strokeWidth={1.5}
 										style={{ color: GetIconColor() }}
 									/>
-									<span className="truncate font-mono text-xs uppercase tracking-wider text-foreground">
+									<span className="truncate font-mono text-sm uppercase tracking-wider text-foreground">
 										{Card.Title}
 									</span>
 									</div>

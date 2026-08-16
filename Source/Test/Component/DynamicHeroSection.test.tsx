@@ -43,7 +43,8 @@ describe("DynamicHeroSection", () => {
 
 		expect(Highlight.tagName).toBe("SPAN");
 
-		expect(Highlight.className).toContain("italic");
+		expect(Highlight.className).toContain("text-ipc");
+		expect(Highlight.className).not.toContain("italic");
 	});
 
 	it("renders primary CTA button", () => {

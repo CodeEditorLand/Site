@@ -45,7 +45,7 @@ const SourceBadge = ({
 
 	icon?: string | null;
 }) => (
-	<span className="inline-flex items-center gap-1 bg-mute px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+	<span className="inline-flex items-center gap-1 bg-mute px-1.5 py-0.5 font-mono text-sm text-muted-foreground">
 		{icon && (
 			<ThemeImage
 				src={icon}
@@ -91,11 +91,11 @@ const FieldRow = ({
 					<span className="text-sm font-medium">{label}</span>
 					<SourceBadge label={source} icon={sourceIcon} />
 					{editable ? (
-						<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+						<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-sm text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 							Editable
 						</span>
 					) : (
-						<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
+						<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-sm text-muted-foreground">
 							Read-only
 						</span>
 					)}
@@ -542,7 +542,7 @@ const AccountProfileInner = ({
 							<Pii visible={PIIVisible}>{User.email || "--"}</Pii>
 						</span>
 						{User.email_verified === true && (
-							<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 text-[10px] font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+							<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 text-sm font-medium text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 								<MailCheck
 									className="h-2.5 w-2.5"
 									aria-hidden="true"
@@ -551,7 +551,7 @@ const AccountProfileInner = ({
 							</span>
 						)}
 						{User.email_verified === false && (
-							<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 text-[10px] font-medium text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
+							<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 text-sm font-medium text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 								Not Verified
 							</span>
 						)}
@@ -706,13 +706,13 @@ const AccountProfileInner = ({
 									{User.email || "--"}
 								</Pii>
 								{User.email_verified === true && (
-									<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 font-mono text-[10px] text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
+									<span className="inline-flex items-center gap-1 border border-green-200 bg-green-50 px-1.5 py-0 font-mono text-sm text-green-700 dark:border-green-800 dark:bg-green-950 dark:text-green-300">
 										<MailCheck className="h-2.5 w-2.5" />
 										verified
 									</span>
 								)}
 								{User.email_verified === false && (
-									<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 font-mono text-[10px] text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
+									<span className="inline-flex items-center border border-yellow-200 bg-yellow-50 px-1.5 py-0 font-mono text-sm text-yellow-700 dark:border-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
 										unverified
 									</span>
 								)}
@@ -887,7 +887,7 @@ const AccountProfileInner = ({
 										/>
 										Password
 										<SourceBadge label="Auth0" />
-										<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-[10px] text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
+										<span className="inline-flex items-center border border-blue-200 bg-blue-50 px-1.5 py-0 font-mono text-sm text-blue-600 dark:border-blue-800 dark:bg-blue-950 dark:text-blue-300">
 											Editable
 										</span>
 									</div>
@@ -939,7 +939,7 @@ const AccountProfileInner = ({
 									label={ProviderLabel}
 									icon={ProviderIcon}
 								/>
-								<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
+								<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-sm text-muted-foreground">
 									Not applicable
 								</span>
 							</div>
@@ -974,7 +974,7 @@ const AccountProfileInner = ({
 							/>
 							Active Session
 							<SourceBadge label="Auth0" />
-							<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-[10px] text-muted-foreground">
+							<span className="inline-flex items-center bg-mute px-1.5 py-0 font-mono text-sm text-muted-foreground">
 								Read-only
 							</span>
 						</div>

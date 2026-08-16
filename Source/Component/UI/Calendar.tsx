@@ -47,7 +47,7 @@ function Calendar({
 			head_row: "flex",
 
 			head_cell:
-				"text-muted-foreground flat w-8 font-normal text-[0.8rem]",
+				"text-muted-foreground flat w-8 font-normal text-sm",
 
 			row: "flex w-full mt-2",
 
