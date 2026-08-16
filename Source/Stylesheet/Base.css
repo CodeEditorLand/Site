@@ -922,19 +922,17 @@
 		--RadiusInput: 6px;
 
 		/* ─────────────────────────────────────────────────────────────
-		 TYPOGRAPHY - three faces, each with one job.
-		 Geist (body/UI) · Geist Mono (HUD chrome/code) · Instrument Serif
-		 (display headlines). Loaded in Source/Layout/Base.astro.
+		 TYPOGRAPHY - Albert Sans (body/UI + display headlines) and
+		 JetBrains Mono (code/HUD chrome). Albert Sans is loaded from
+		 Google Fonts in Source/Layout/Base.astro. No other faces.
 		 ───────────────────────────────────────────────────────────── */
 		--FontSans:
-			"Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			"Albert Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 			"Helvetica Neue", Arial, sans-serif;
 
 		--FontMono:
-			"Geist Mono", ui-monospace, "SFMono-Regular", "SF Mono", Menlo,
-			Consolas, monospace;
-
-		--FontSerif: "Instrument Serif", Georgia, "Times New Roman", serif;
+			"JetBrains Mono", "Fira Code", ui-monospace, "SFMono-Regular",
+			"SF Mono", Menlo, Consolas, monospace;
 
 		/* Shim Color System */
 		--land-shim-low: #ff6b35;

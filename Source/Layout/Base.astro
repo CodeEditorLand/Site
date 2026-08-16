@@ -32,8 +32,30 @@ const T = GetI18n();
 		<MetaTags title={Title||T("meta.title",{defaultValue:"Land"})} description={Description||T("meta.description",{defaultValue:"Code Editor"})} image={Image} url={Url} type={Type} lang={Language} noIndex={NoIndex} />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<meta name="theme-color" content="#ffffff" />
-		<link rel="preload" as="font" type="font/woff2" href="/Font/Geist/Geist-Latin.woff2" />
-		<link rel="preload" as="font" type="font/woff2" href="/Font/GeistMono/GeistMono-Latin.woff2" />
+		<!-- Fonts: preconnect to Google Fonts origins, then preload the CSS
+		 stylesheet as a high-priority fetch. The font CSS file itself is small
+		 (~1 KB) and declares the @font-face rules that trigger woff2 downloads.
+		 Preloading the stylesheet eliminates the render-blocking parser delay
+		 while keeping font-display: optional to prevent CLS from font swap. -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="preload"
+			as="style"
+			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=optional"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=optional"
+			media="print"
+			onload="this.media='all'"
+		/>
+		<noscript>
+			<link
+				rel="stylesheet"
+				href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&display=optional"
+			/>
+		</noscript>
 		<link rel="preload" as="image" href="/Asset/Logo/Glyph/Land.svg" />
 		<style is:global>@import "@Stylesheet/Global.css";</style>
 		<style is:inline>.dark .mermaid-diagram svg{filter:invert(1) hue-rotate(180deg)}.dark .astro-code-themes,.dark .astro-code-themes span{color:var(--shiki-dark,inherit)!important;background-color:var(--shiki-dark-bg,inherit)!important}</style>

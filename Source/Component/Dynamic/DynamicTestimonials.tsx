@@ -269,7 +269,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 								Architecture
 							</p>
 							{Title && (
-								<h2 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
+								<h2 className="text-4xl font-normal tracking-tight sm:text-5xl">
 									{Title}
 								</h2>
 							)}
@@ -404,7 +404,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							Architecture
 						</p>
 						{Title && (
-							<h2 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
+							<h2 className="text-4xl font-normal tracking-tight sm:text-5xl">
 								{Title}
 							</h2>
 						)}

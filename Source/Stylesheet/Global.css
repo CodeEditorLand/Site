@@ -1,4 +1,3 @@
-@import "./Font.css";
 @import "../Function/Noise/Stylesheet.css";
 @import "../Component/Dynamic/Portal/Stylesheet.css";
 
@@ -9,9 +8,9 @@ html {
 	/* clip (not hidden) so fixed/sticky children don't add horizontal scroll */
 	overflow-x: clip;
 	font-family: var(--FontSans);
-	/* font-size-adjust stabilizes line height across fallback → Geist swap,
-	 reducing CLS from text reflow. 0.52 matches Geist's x-height ratio. */
-	font-size-adjust: 0.52;
+	/* font-size-adjust stabilizes line height across fallback → Albert Sans swap,
+	 reducing CLS from text reflow. 0.48 matches Albert Sans's x-height ratio. */
+	font-size-adjust: 0.48;
 }
 
 /* Emoji and symbol fallback fonts for special characters like ★☆ */

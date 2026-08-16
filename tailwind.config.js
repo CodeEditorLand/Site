@@ -27,7 +27,7 @@ export default {
 
 				mono: ["var(--FontMono)", ...fontFamily.mono],
 
-				serif: ["var(--FontSerif)", ...fontFamily.serif],
+				serif: ["var(--FontSans)", ...fontFamily.serif],
 			},
 
 			typography: {

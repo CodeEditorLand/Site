@@ -281,7 +281,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 						role="status"
 						aria-live="polite"
 					>
-						<h2 className="mb-4 font-serif text-4xl font-normal md:text-5xl lg:text-6xl">
+						<h2 className="mb-4 text-4xl font-normal md:text-5xl lg:text-6xl">
 							{LoadingLabel}
 						</h2>
 					</div>
@@ -307,7 +307,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 			>
 				<div className="container mx-auto px-4">
 					<div className="mb-16 text-center" role="alert">
-						<h2 className="mb-4 font-serif text-4xl font-normal text-red-500 md:text-5xl lg:text-6xl">
+						<h2 className="mb-4 text-4xl font-normal text-red-500 md:text-5xl lg:text-6xl">
 							{ErrorTitleLabel}
 						</h2>
 						<p className="text-muted-foreground">{ErrorMessage}</p>
@@ -333,7 +333,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							Download
 						</p>
 						{Title && (
-							<h2 className="font-serif text-4xl font-normal tracking-tight sm:text-5xl">
+							<h2 className="text-4xl font-normal tracking-tight sm:text-5xl">
 								{Title}
 							</h2>
 						)}

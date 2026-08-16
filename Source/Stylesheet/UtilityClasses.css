@@ -106,9 +106,10 @@
 
 /* .headline - section heading (5 occurrences)
  *   replaces: font-serif text-4xl font-normal tracking-tight sm:text-5xl
+ *   (serif display dropped - headlines now use --FontSans / Albert Sans)
  *   used in: DynamicFeatures, DynamicPricing, DynamicTestimonials, DynamicPlatformGrid */
 .headline {
-  font-family: var(--FontSerif);
+  font-family: var(--FontSans);
   font-size: 2.25rem;        /* text-4xl */
   line-height: 2.5rem;
   font-weight: 400;

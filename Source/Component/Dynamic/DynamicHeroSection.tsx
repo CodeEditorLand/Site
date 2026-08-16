@@ -218,9 +218,9 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 					/>
 				)}
 
-				{/* Title: Instrument Serif display. 400 weight, near-zero
-				 tracking and tight leading - the "fancy" high-contrast voice. */}
-				<h1 className="StaccatoColorShift mx-auto max-w-4xl font-serif text-6xl font-normal leading-[0.95] tracking-[-0.01em] md:text-8xl lg:text-9xl">
+				{/* Title: Albert Sans display. 400 weight, near-zero
+				 tracking and tight leading - the high-emphasis voice. */}
+				<h1 className="StaccatoColorShift mx-auto max-w-4xl text-6xl font-normal leading-[0.95] tracking-[-0.01em] md:text-8xl lg:text-9xl">
 					{Title}
 					{Title && TitleHighlight ? " " : ""}
 					{TitleHighlight && (
