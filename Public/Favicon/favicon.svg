@@ -1,5 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1880 1880">
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000" viewBox="0 0 1000 1000">
 	<style>
+		#light-icon {
+			display: inline;
+		}
+
 		#dark-icon {
 			display: none;
 		}
@@ -15,17 +19,17 @@
 		}
 	</style>
 	<g id="light-icon">
-		<path d="M1880 1H1V1880H1880V1Z" fill="#151515" />
-		<g transform="translate(0,140)">
-			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 940 0.240234)" fill="#ffffff" />
-			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 1880 618.203)" fill="#ffffff" />
+		<rect width="1000" height="1000" rx="350" ry="350" fill="#ffffff" />
+		<g transform="translate(150, 202) scale(0.372)">
+			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 940 0.240234)" fill="#151515" />
+			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 1880 618.203)" fill="#151515" />
 		</g>
 	</g>
 	<g id="dark-icon">
-		<path d="M1879 1H0V1880H1879V1Z" fill="#ffffff" />
-		<g transform="translate(0,140)">
-			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 940 0.240234)" fill="#151515" />
-			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 1880 618.203)" fill="#151515" />
+		<rect width="1000" height="1000" rx="350" ry="350" fill="#1e1e1e" />
+		<g transform="translate(150, 202) scale(0.372)">
+			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 940 0.240234)" fill="#ffffff" />
+			<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 1880 618.203)" fill="#ffffff" />
 		</g>
 	</g>
 </svg>
