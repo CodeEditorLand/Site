@@ -1,6 +1,7 @@
 <svg width="2048" height="2048" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
 	<rect width="2048" height="2048" transform="matrix(-1 0 0 1 2048 0)" fill="#151515" fill-opacity="0.21" />
-	<path d="M1963.5 84.5H84.5V1963.5H1963.5V84.5Z" fill="white" />
-	<path d="M847.844 495.531H554.25V1552.47H847.844V495.531Z" fill="#151515" />
-	<path d="M1552.47 1258.88H554.25V1552.47H1552.47V1258.88Z" fill="#151515" />
+	<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 1024.5 223.5)"
+		fill="#EAEAEA" fill-opacity="0.21" />
+	<rect width="1005.28" height="620.771" rx="91.3889" transform="matrix(-0.93358 0.358368 0 1 1964.5 841.463)"
+		fill="#EAEAEA" fill-opacity="0.21" />
 </svg>
