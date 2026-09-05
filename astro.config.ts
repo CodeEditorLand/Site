@@ -13,8 +13,6 @@ const { default: remarkCallout } =
 const { default: remarkMermaid } =
 	await import("./Source/Function/Markdown/Mermaid.js");
 
-const { unified } = await import("@astrojs/markdown-remark");
-
 export default (await import("astro/config")).defineConfig({
 	markdown: {
 		syntaxHighlight: "shiki",
@@ -26,9 +24,7 @@ export default (await import("astro/config")).defineConfig({
 			},
 		},
 
-		processor: unified({
-			remarkPlugins: [remarkCallout, remarkMermaid],
-		}),
+		remarkPlugins: [remarkCallout, remarkMermaid],
 	},
 
 	srcDir: "./Source",
@@ -86,9 +82,7 @@ export default (await import("astro/config")).defineConfig({
 				},
 			},
 
-			processor: unified({
-				remarkPlugins: [remarkCallout, remarkMermaid],
-			}),
+			remarkPlugins: [remarkCallout, remarkMermaid],
 		}),
 
 		(await import("@astrojs/sitemap")).default({

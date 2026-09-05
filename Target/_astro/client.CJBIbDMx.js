@@ -1,0 +1,1 @@
+import{t}from"./Vendor/React.JqiXZsw-.js";export{t as default};

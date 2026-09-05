@@ -1,0 +1,1 @@
+import"./chunk-FOHPRMQF.Bm8CnPzF.js";import{n as o,t as r}from"./chunk-6EIED4P4.kXo_QgKh.js";export{o as createEventModelingServices};
