@@ -243,7 +243,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 				{/* Tech stack section label - mono HUD eyebrow */}
 				<p className="mb-8 font-mono text-sm uppercase tracking-[0.25em] text-muted-foreground">
-					<span className="text-grpc">//</span> Tech
+					Tech
 					Stack
 				</p>
 
