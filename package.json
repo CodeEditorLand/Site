@@ -99,7 +99,7 @@
 		"dotenv": "17.4.2",
 		"embla-carousel-react": "8.6.0",
 		"esbuild": "0.28.2",
-		"firebase": "12.18.0",
+		"firebase": "12.19.0",
 		"happy-dom": "20.14.3",
 		"i18next": "26.4.2",
 		"input-otp": "1.5.0",
