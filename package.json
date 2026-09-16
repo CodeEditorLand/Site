@@ -134,7 +134,7 @@
 		"zod": "4.6.5"
 	},
 	"devDependencies": {
-		"@testing-library/dom": "10.4.1",
+		"@testing-library/dom": "10.4.2",
 		"react-is": "19.3.0"
 	},
 	"publishConfig": {
