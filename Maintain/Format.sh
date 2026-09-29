@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 #===============================================================================
 # Format.sh - Format shell, Prettier, and Markdown source for the WebSite.
