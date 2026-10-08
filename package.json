@@ -108,7 +108,7 @@
 		"mermaid": "12.1.0",
 		"neotraverse": "1.0.1",
 		"next-themes": "0.4.6",
-		"postcss": "8.5.28",
+		"postcss": "8.5.29",
 		"postcss-combine-duplicated-selectors": "11.0.0",
 		"postcss-combine-media-query": "2.1.0",
 		"postcss-import": "17.0.0",
