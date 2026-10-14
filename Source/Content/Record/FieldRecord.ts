@@ -14,7 +14,6 @@ export type RecordStatus =
 export type StatusTone = "ink" | "specimen" | "quiet";
 
 export type FieldRecord = {
-
 	Id: string;
 
 	Category: RecordCategory;

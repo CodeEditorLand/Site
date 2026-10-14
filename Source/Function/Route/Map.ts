@@ -63,7 +63,6 @@ export const PascalCaseCanonical: Record<string, string> = Object.fromEntries(
 // These are alternate names, abbreviations, or synonyms that map to canonicals.
 
 export const SemanticAlias: Record<string, string> = {
-
 	// Download
 	"/downloads": "/Download",
 
@@ -254,7 +253,6 @@ export const SemanticAlias: Record<string, string> = {
 
 // Case variants for one segment: lower, UPPER, PascalCase, TitleCase
 const SegmentCases = (Segment: string): string[] => {
-
 	const Lower = Segment.toLowerCase();
 
 	const Upper = Segment.toUpperCase();
@@ -267,23 +265,17 @@ const SegmentCases = (Segment: string): string[] => {
 
 // Singular ↔ plural for one lowercase segment
 const SegmentNumber = (Lower: string): string[] => {
-
 	const Result = new Set([Lower]);
 
 	if (Lower.endsWith("ies") && Lower.length > 4)
-
 		Result.add(Lower.slice(0, -3) + "y");
-
 	else if (/(?:ses|xes|zes|ches|shes)$/.test(Lower))
-
 		Result.add(Lower.slice(0, -2));
-
 	else if (
 		Lower.endsWith("s") &&
 		!/(?:ss|us|is)$/.test(Lower) &&
 		Lower.length > 2
 	)
-
 		Result.add(Lower.slice(0, -1));
 
 	if (!Lower.endsWith("s")) Result.add(Lower + "s");
@@ -294,7 +286,6 @@ const SegmentNumber = (Lower: string): string[] => {
 // Compound variants for a PascalCase segment: kebab, snake, concat, dot
 // e.g. "ForgotPassword" → ["forgot-password", "forgot_password", "forgotpassword", "forgot.password"]
 const SegmentCompound = (Segment: string): string[] => {
-
 	const Words = Segment.match(/[A-Z][a-z]*/g);
 
 	if (!Words || Words.length < 2) return [];
@@ -306,7 +297,6 @@ const SegmentCompound = (Segment: string): string[] => {
 
 // Generate all variants for a full canonical path (excluding the canonical itself).
 export const GeneratePathVariant = (CanonicalPath: string): string[] => {
-
 	if (CanonicalPath === "/") return [];
 
 	const Segments = CanonicalPath.slice(1).split("/");
@@ -384,7 +374,6 @@ export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 // ─── Route map generator ───
 
 const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
-
 	const BuiltPath: string[] = [];
 
 	const ScanDirectory = async (Directory: string): Promise<void> => {

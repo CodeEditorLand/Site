@@ -1,7 +1,6 @@
 import React from "react";
 
 export interface Mouse {
-
 	X: number;
 
 	Y: number;
@@ -18,7 +17,6 @@ export interface Mouse {
 }
 
 export interface MovementDimensional {
-
 	X: number;
 
 	Y: number;
@@ -35,7 +33,6 @@ export type MatrixType = Record<string, number[][]>;
 export type PixelComponent = React.ComponentType<PixelProps>;
 
 export interface PixelProps {
-
 	Font: number;
 
 	Character: number;

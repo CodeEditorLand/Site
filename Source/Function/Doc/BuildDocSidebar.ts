@@ -33,7 +33,6 @@ export const SectionOrder = [
 const Slugify = (Value: string) => Value.toLowerCase().replace(/\s+/g, "-");
 
 const BuildDocSidebar = (Entries: CollectionEntry<"doc">[]): DocSection[] => {
-
 	const EntriesBySection = new Map<string, CollectionEntry<"doc">[]>();
 
 	for (const Entry of Entries) {

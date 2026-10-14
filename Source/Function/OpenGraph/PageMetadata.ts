@@ -9,7 +9,6 @@
  */
 
 interface PageMeta {
-
 	Title: string;
 
 	Description: string;
@@ -24,7 +23,6 @@ interface PageMeta {
 }
 
 const PageMetadata: Record<string, PageMeta> = {
-
 	"": {
 		Title: "Land | The Next-Generation Code Editor",
 

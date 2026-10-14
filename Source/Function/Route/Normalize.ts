@@ -18,7 +18,6 @@ const GenerateVariantKey = (Segment: string): string =>
 	Segment.toLowerCase().replace(/[-_]/g, "");
 
 const GenerateSegmentVariant = (Path: string): string[] => {
-
 	const Segment = StripLeadingSlash(StripTrailingSlash(Path))
 		.split("/")
 		.map(GenerateVariantKey);
@@ -47,7 +46,6 @@ const GenerateSegmentVariant = (Path: string): string[] => {
 };
 
 export default {
-
 	NormalizePath,
 
 	GenerateVariantKey,

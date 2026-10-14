@@ -5,7 +5,6 @@ let Injected = false;
 const FILTER_IDENTIFIER = "StaccatoTurbulence";
 
 const InjectFilter = (): void => {
-
 	if (Injected) return;
 
 	Injected = true;
@@ -47,7 +46,6 @@ const InjectFilter = (): void => {
 };
 
 const AnimateFilter = (RawValue: number): void => {
-
 	if (!FilterElement) return;
 
 	const Seed = Math.abs(Math.floor(RawValue * 1000)) % 9999;

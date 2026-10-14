@@ -4,20 +4,14 @@ import { useEffect, useRef } from "react";
 
 // Import dependencies
 let Dimensional: any,
-
 	Style: any,
-
 	Noise: any,
-
 	Spectrum: any,
-
 	Constant: any,
-
 	ALL_COLORS: any;
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitDimensional = async () => {
-
 	// @ts-ignore
 	const Module = await import("@Function/Scroll/Code/Pixel/Dimensional.js");
 
@@ -26,7 +20,6 @@ const InitDimensional = async () => {
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitStyle = async () => {
-
 	// @ts-ignore
 	const Module = await import("@Function/Scroll/Code/Pixel/Style.js");
 
@@ -35,7 +28,6 @@ const InitStyle = async () => {
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitAnimation = async () => {
-
 	// @ts-ignore
 	const Module = await import("@Function/Scroll/Code/Pixel/Animation.js");
 
@@ -44,7 +36,6 @@ const InitAnimation = async () => {
 
 // biome-ignore lint/nursery/useComponentExportOnlyModules:
 const InitConstant = async () => {
-
 	// @ts-ignore
 	const Module =
 		await import("@Function/Scroll/Code/Pixel/Animation/Constant.js");
@@ -64,7 +55,6 @@ const Pixel = ({
 	Row,
 	Column,
 }: PixelProps) => {
-
 	const ElementReference = useRef<HTMLDivElement>(null);
 
 	const Position = Character % Text;

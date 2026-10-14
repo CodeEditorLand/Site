@@ -1,5 +1,4 @@
 export default interface GitHubCommit {
-
 	sha: string;
 
 	commit: {

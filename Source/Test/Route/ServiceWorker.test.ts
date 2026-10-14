@@ -27,7 +27,6 @@ const ResolveRoute = (
 
 	VariantMap: Record<string, string>,
 ): string | null => {
-
 	const Cleaned = StripTrailingSlash(RequestPath);
 
 	if (CanonicalSet.has(Cleaned)) {
@@ -85,7 +84,6 @@ const TestCanonical = new Set([
 ]);
 
 const TestVariant: Record<string, string> = {
-
 	"/downloads": "/Download",
 
 	"/download": "/Download",

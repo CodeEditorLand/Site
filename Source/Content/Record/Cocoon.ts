@@ -1,7 +1,6 @@
 import type { FieldRecord } from "./FieldRecord";
 
 export const Cocoon: FieldRecord = {
-
 	Id: "cocoon",
 
 	Category: "Element",

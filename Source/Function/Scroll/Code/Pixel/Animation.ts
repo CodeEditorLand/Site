@@ -34,7 +34,6 @@ export const Influence = (
 
 	MouseState: Mouse,
 ): number => {
-
 	return (
 		Math.max(0, 1 - Math.sqrt(DX * DX + DY * DY) / Constant.RADIUS_EFFECT) *
 		Math.max(

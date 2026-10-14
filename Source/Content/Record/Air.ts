@@ -1,7 +1,6 @@
 import type { FieldRecord } from "./FieldRecord";
 
 export const Air: FieldRecord = {
-
 	Id: "air",
 
 	Category: "Element",

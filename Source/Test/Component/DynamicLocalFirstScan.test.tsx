@@ -26,7 +26,6 @@ vi.mock("react-i18next", () => ({
 type DaemonStatus = "Scanning" | "Connected" | "Disconnected";
 
 interface LocalFirstContent {
-
 	Title: string;
 
 	Description: string;
@@ -45,7 +44,6 @@ interface LocalFirstContent {
 }
 
 interface LocalFirstScanProperty {
-
 	Content: LocalFirstContent;
 
 	OnConnect?: () => void;
@@ -72,7 +70,6 @@ const DynamicLocalFirstScan = ({
 	IsLoading = false,
 	DaemonStatus: Status = "Scanning",
 }: LocalFirstScanProperty) => {
-
 	return (
 		<div
 			role="region"
@@ -108,7 +105,6 @@ const DynamicLocalFirstScan = ({
 							Download Air Daemon
 						</a>
 					)}
-
 				</div>
 			)}
 
@@ -129,7 +125,6 @@ const DynamicLocalFirstScan = ({
 					{Content.Feature.map((FeatureText, Index) => (
 						<li key={Index}>{FeatureText}</li>
 					))}
-
 				</ul>
 			)}
 
@@ -138,7 +133,6 @@ const DynamicLocalFirstScan = ({
 					{Content.Protocol.map((ProtocolText, Index) => (
 						<span key={Index}>{ProtocolText}</span>
 					))}
-
 				</div>
 			)}
 
@@ -147,7 +141,6 @@ const DynamicLocalFirstScan = ({
 					{Content.Certificate.map((CertificateText, Index) => (
 						<span key={Index}>{CertificateText}</span>
 					))}
-
 				</div>
 			)}
 		</div>
@@ -157,7 +150,6 @@ const DynamicLocalFirstScan = ({
 // ─── Test fixtures ───
 
 const SampleContent: LocalFirstContent = {
-
 	Title: "Air Daemon",
 
 	Description: "Zero cloud dependency. Your code stays on your machine.",

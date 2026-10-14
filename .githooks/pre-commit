@@ -1,0 +1,9 @@
+#!/bin/sh
+# Branch guard: refuse commits on a detached HEAD - the dangling-commit
+# source (a commit made while detached exists in no branch and gets
+# garbage-collected, silently losing the changes).
+if ! git symbolic-ref -q HEAD >/dev/null 2>&1; then
+	echo "refusing to commit on a detached HEAD - checkout a branch first" >&2
+	exit 1
+fi
+exit 0

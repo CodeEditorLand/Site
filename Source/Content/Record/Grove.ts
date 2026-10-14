@@ -1,7 +1,6 @@
 import type { FieldRecord } from "./FieldRecord";
 
 export const Grove: FieldRecord = {
-
 	Id: "grove",
 
 	Category: "Element",

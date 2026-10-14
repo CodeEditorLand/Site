@@ -3,7 +3,6 @@
 // Runs when SW isn't installed and Cloudflare _redirects didn't catch the path.
 
 const RedirectFromRouteMap = async (): Promise<void> => {
-
 	const CurrentPath = window.location.pathname.replace(/\/+$/, "") || "/";
 
 	// Already on root - nothing to redirect

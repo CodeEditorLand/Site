@@ -11,7 +11,6 @@
 let CachedScrollProgress = 0;
 
 const UpdateScrollCache = (): void => {
-
 	const ScrollTop =
 		document.documentElement.scrollTop || document.body.scrollTop;
 
@@ -26,14 +25,12 @@ const UpdateScrollCache = (): void => {
 };
 
 if (typeof window !== "undefined") {
-
 	window.addEventListener("scroll", UpdateScrollCache, { passive: true });
 
 	UpdateScrollCache();
 }
 
 const UpdateScrollProgress = (Root: CSSStyleDeclaration): void => {
-
 	Root.setProperty("--ScrollProgress", String(CachedScrollProgress));
 };
 

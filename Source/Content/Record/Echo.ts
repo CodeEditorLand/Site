@@ -1,7 +1,6 @@
 import type { FieldRecord } from "./FieldRecord";
 
 export const Echo: FieldRecord = {
-
 	Id: "echo",
 
 	Category: "Element",

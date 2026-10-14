@@ -10,7 +10,6 @@ import { ErrorBoundary } from "../../Component/ErrorBoundary";
 
 // Component that throws an error for testing
 function ThrowingComponent({ ShouldThrow }: { ShouldThrow: boolean }) {
-
 	if (ShouldThrow) {
 		throw new Error("Test error message");
 	}

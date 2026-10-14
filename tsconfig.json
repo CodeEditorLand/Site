@@ -4,35 +4,20 @@
 		"ignoreDeprecations": "6.0",
 		"baseUrl": "./",
 		"paths": {
-			"@/*": [
-				"Source/*"
-			],
-			"@Function/*": [
-				"Source/Function/*"
-			],
-			"@Variable/*": [
-				"Source/Variable/*"
-			],
-			"@Library/*": [
-				"Source/Library/*"
-			]
+			"@/*": ["Source/*"],
+			"@Function/*": ["Source/Function/*"],
+			"@Variable/*": ["Source/Variable/*"],
+			"@Library/*": ["Source/Library/*"]
 		},
 		"emitDeclarationOnly": false,
 		"jsx": "preserve",
 		"jsxImportSource": "react",
-		"lib": [
-			"ESNext",
-			"DOM",
-			"DOM.Iterable"
-		],
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
 		"moduleResolution": "Bundler",
 		"noEmit": true,
 		"outDir": "Target",
 		"rootDir": "./Source",
-		"types": [
-			"astro/client",
-			"astro/env"
-		],
+		"types": ["astro/client", "astro/env"],
 		"plugins": [
 			{
 				"name": "@astrojs/ts-plugin"
@@ -40,11 +25,6 @@
 		]
 	},
 	"extends": "@playform/build/tsconfig",
-	"include": [
-		"Source",
-		".astro/types.d.ts"
-	],
-	"exclude": [
-		"Target"
-	]
+	"include": ["Source", ".astro/types.d.ts"],
+	"exclude": ["Target"]
 }

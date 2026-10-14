@@ -64,11 +64,7 @@
 }
 
 .HeaderFunctional .HeaderActionButton:hover {
-	background-color: color-mix(
-		in srgb,
-		var(--CardForeground) 8%,
-		transparent
-	);
+	background-color: color-mix(in srgb, var(--CardForeground) 8%, transparent);
 }
 
 /* ─── ACTIVE-ROUTE STATE (both modes) ─── */

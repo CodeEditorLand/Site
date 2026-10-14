@@ -95,7 +95,6 @@ import FrVerify from "./Locale/Fr/Verify.json";
  * via react-i18next in hydrated React components.
  */
 export function GetI18n() {
-
 	if (!i18n.isInitialized) {
 		i18n.init({
 			resources: {

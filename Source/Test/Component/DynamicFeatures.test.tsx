@@ -22,15 +22,29 @@ afterEach(() => {
 });
 
 const SampleFeatures = [
-	{ Id: "performance", Icon: "Zap", Title: "Performance", Description: "Native speed via Rust." },
+	{
+		Id: "performance",
+		Icon: "Zap",
+		Title: "Performance",
+		Description: "Native speed via Rust.",
+	},
 
-	{ Id: "compatibility", Icon: "Box", Title: "Compatibility", Description: "Run existing VS Code extensions." },
+	{
+		Id: "compatibility",
+		Icon: "Box",
+		Title: "Compatibility",
+		Description: "Run existing VS Code extensions.",
+	},
 
-	{ Id: "architecture", Icon: "Cpu", Title: "Architecture", Description: "Effect-TS powered services." },
+	{
+		Id: "architecture",
+		Icon: "Cpu",
+		Title: "Architecture",
+		Description: "Effect-TS powered services.",
+	},
 ];
 
 const SampleContent = {
-
 	Title: "Features",
 
 	Subtitle: "What makes Land different.",
@@ -53,9 +67,7 @@ describe("DynamicFeatures", () => {
 		render(<DynamicFeatures Content={SampleContent} />);
 
 		// Every element record carries STATUS: ACTIVE.
-		expect(screen.getAllByText("STATUS: ACTIVE").length).toBeGreaterThan(
-			0,
-		);
+		expect(screen.getAllByText("STATUS: ACTIVE").length).toBeGreaterThan(0);
 	});
 
 	it("renders section title and subtitle", () => {

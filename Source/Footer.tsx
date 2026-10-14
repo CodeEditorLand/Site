@@ -3,7 +3,6 @@ import { ThemeImage } from "@Library/Theme";
 import React from "react";
 
 const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-
 	return (
 		<footer className="Footer flex flex-col sm:flex-row sm:items-center sm:justify-between">
 			<ul className="IconList flex shrink flex-col justify-start gap-2">

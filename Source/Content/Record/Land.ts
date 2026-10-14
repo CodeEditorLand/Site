@@ -1,7 +1,6 @@
 import type { FieldRecord } from "./FieldRecord";
 
 export const Land: FieldRecord = {
-
 	Id: "land",
 
 	Category: "Product",

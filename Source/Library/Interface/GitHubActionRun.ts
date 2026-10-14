@@ -1,5 +1,4 @@
 export default interface GitHubActionRun {
-
 	id: number;
 
 	name: string;

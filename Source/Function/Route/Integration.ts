@@ -4,7 +4,6 @@ import type { AstroIntegration } from "astro";
 // The astro:build:done hook fires AFTER Vite shuts down, so dynamic
 // imports of local modules would fail with "module runner has been closed".
 const {
-
 	default: GenerateRouteMap,
 
 	CanonicalPath,
@@ -17,7 +16,6 @@ const {
 } = await import("./Map.js");
 
 const {
-
 	mkdir: MakeDirectory,
 
 	readFile: ReadFile,
@@ -41,7 +39,6 @@ const { transform: ESBuildTransform } = await import("esbuild");
 // (lowercase, plural, case permutations, semantic aliases) to the
 // PascalCase canonical that Astro can actually serve.
 const BuildDevVariantMap = (): Record<string, string> => {
-
 	const DevMap: Record<string, string> = {};
 
 	// Generate all variants (plural, case, compound, abbreviation) for
@@ -74,7 +71,6 @@ const DevVariantMap = BuildDevVariantMap();
 const CanonicalToBuilt: Record<string, string> = {};
 
 for (const [BuiltPath, PascalPath] of Object.entries(PascalCaseCanonical)) {
-
 	CanonicalToBuilt[PascalPath] = BuiltPath;
 }
 
@@ -109,7 +105,6 @@ const RouteRedirectIntegration = (): AstroIntegration => ({
 
 					if (Target && Target !== Cleaned) {
 						const Query = RawPath.includes("?")
-
 							? "?" + RawPath.split("?")[1]
 							: "";
 

@@ -1,5 +1,4 @@
 export default {
-
 	AMPLITUDE_BASE: 0.001,
 
 	AMPLITUDE_VARIATION: 0.001,

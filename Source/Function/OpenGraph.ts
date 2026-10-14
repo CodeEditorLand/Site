@@ -17,7 +17,6 @@
  */
 
 interface OpenGraphMeta {
-
 	Slug?: string;
 
 	Index?: string;
@@ -36,7 +35,6 @@ interface OpenGraphMeta {
 }
 
 const WrapText = (Text: string, MaxCharacter: number): string[] => {
-
 	const Word = Text.split(" ");
 
 	const Line: string[] = [];
@@ -87,16 +85,15 @@ const GenerateOpenGraphSvg = (
 	const Height = 675;
 
 	const FrameWidth = 16;
-		const CardInset = 24;
-		const PaperColor = "#FFFFFF";
-		const FrameBg = "#F2EDE3";
-		const FrameColor = "#151515";
-		const MutedColor = "#6b6b6b";
-		const SealColor = "#1E742A";
-		const FontStack = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
+	const CardInset = 24;
+	const PaperColor = "#FFFFFF";
+	const FrameBg = "#F2EDE3";
+	const FrameColor = "#151515";
+	const MutedColor = "#6b6b6b";
+	const SealColor = "#1E742A";
+	const FontStack = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
-	const SectionName =
-		Section ?? Meta?.Slug?.split("/")[0] ?? "Land";
+	const SectionName = Section ?? Meta?.Slug?.split("/")[0] ?? "Land";
 
 	const SectionUpper = SectionName.toUpperCase();
 
@@ -139,8 +136,7 @@ const GenerateOpenGraphSvg = (
 
 	const TitleLineHeight = Math.round(TitleFontSize * 1.35);
 
-	const TitleStartY =
-		TitleLines.length > 1 ? CardY + 168 : CardY + 192;
+	const TitleStartY = TitleLines.length > 1 ? CardY + 168 : CardY + 192;
 
 	const TitleElement = TitleLines.map(
 		(Line, Index) =>

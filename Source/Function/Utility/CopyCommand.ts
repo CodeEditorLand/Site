@@ -42,12 +42,9 @@ const CopyIcon = `<svg
 ><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`;
 
 function AttachCopyHandler(Button: HTMLElement, Pre: HTMLElement): void {
-
 	Button.addEventListener("click", async () => {
 		try {
-			await navigator.clipboard.writeText(
-				Pre.textContent?.trim() ?? "",
-			);
+			await navigator.clipboard.writeText(Pre.textContent?.trim() ?? "");
 		} catch {
 			// clipboard unavailable
 			return;
@@ -80,7 +77,6 @@ function AttachCopyHandler(Button: HTMLElement, Pre: HTMLElement): void {
 export function WireCopyButtons(
 	Selector: string = "jelly-icon-button[data-copy]",
 ): void {
-
 	const Buttons = Array.from(
 		document.querySelectorAll<HTMLElement>(Selector),
 	);
@@ -95,7 +91,6 @@ export function WireCopyButtons(
 }
 
 export function WireCodeBlockCopyButtons(): void {
-
 	const Pres = Array.from(
 		document.querySelectorAll<HTMLPreElement>("pre.astro-code"),
 	);
@@ -104,9 +99,7 @@ export function WireCodeBlockCopyButtons(): void {
 		if (Pre.dataset.copyWired === "true") continue;
 
 		// Leave manually-authored flex-row buttons alone (Contributing/License).
-		if (
-			Pre.nextElementSibling?.matches("jelly-icon-button[data-copy]")
-		) {
+		if (Pre.nextElementSibling?.matches("jelly-icon-button[data-copy]")) {
 			continue;
 		}
 
@@ -158,7 +151,6 @@ export function WireCodeBlockCopyButtons(): void {
 
 // Self-initialize: ONE import anywhere (Base.astro) wires every Shiki block.
 if (typeof document !== "undefined") {
-
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", WireCodeBlockCopyButtons);
 	} else {

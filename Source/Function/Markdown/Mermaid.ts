@@ -15,7 +15,6 @@ import { resolve } from "node:path";
  * copy the referenced hashes into Source/Content/Mermaid/.
  */
 export default function remarkMermaid() {
-
 	const SvgDir = resolve(process.cwd(), "Source/Content/Mermaid");
 
 	let AvailableHashes: Set<string> | null = null;
@@ -60,7 +59,6 @@ function Walk(
 
 	SvgDir: string,
 ) {
-
 	if (!Node.children) return;
 
 	for (let I = 0; I < Node.children.length; I++) {
@@ -85,7 +83,6 @@ function RenderMermaidBlock(
 
 	SvgDir: string,
 ): any | null {
-
 	const Code = (Node.value || "").trim();
 
 	if (!Code) return null;
