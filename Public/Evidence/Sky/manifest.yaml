@@ -5,10 +5,10 @@ palette: [midnight-blue, indigo, pale-violet]
 crop: full-bleed / sky fills entire frame
 alt: Night sky with distant light
 usage:
-  - sky-element-page
-  - hero-background
+    - sky-element-page
+    - hero-background
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

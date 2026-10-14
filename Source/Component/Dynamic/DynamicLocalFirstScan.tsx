@@ -341,7 +341,7 @@ const LocalFirstScanInner = () => {
 					{Status === "NotFound" && (
 						<div className="mt-3 space-y-3">
 							<p className="text-card-foreground opacity-70">
-														{T("dashboard.localFirst.notFoundMessage", {
+								{T("dashboard.localFirst.notFoundMessage", {
 									defaultValue:
 										"Air Daemon not detected. Launch Code Editor Land to enable local-first features.",
 								})}
@@ -362,6 +362,7 @@ const LocalFirstScanInner = () => {
 								<button
 									type="button"
 									onClick={() => window.location.reload()}
+
 									className="StaccatoButton inline-flex items-center justify-center bg-card px-4 py-2 font-medium transition-all hover:bg-secondary"
 								>
 									{T("dashboard.localFirst.retryButton", {

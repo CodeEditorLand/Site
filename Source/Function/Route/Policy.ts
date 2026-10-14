@@ -4,10 +4,12 @@ import type {
 } from "trusted-types";
 
 export interface RouteWorkerPolicy extends Pick<TrustedTypePolicy, "name"> {
+
 	createScriptURL(Input: string, ...Argument: any[]): TrustedScriptURL;
 }
 
 declare global {
+
 	interface Window {
 		trustedTypes?: TrustedTypePolicyFactory;
 
@@ -26,20 +28,26 @@ const INCREMENT =
 
 const Log = __DEV__
 	? (..._Message: any[]) => {
+
 			console.log(`[Route Policy ${INCREMENT}]`, ..._Message);
 		}
+
 	: () => {};
 
 const ErrorLog = __DEV__
 	? (..._Message: any[]) => {
+
 			console.error(`[Route Policy ${INCREMENT}]`, ..._Message);
 		}
+
 	: () => {};
 
 const WarnLog = __DEV__
 	? (..._Message: any[]) => {
+
 			console.warn(`[Route Policy ${INCREMENT}]`, ..._Message);
 		}
+
 	: () => {};
 
 (() => {

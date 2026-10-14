@@ -40,7 +40,7 @@ const PlatformColorMap: Record<string, string> = {
  * Platform icon registry - maps the PlatformInformation.Icon names
  * (Apple / Monitor / Terminal) to lucide components so the icons
  * render in the initial HTML. Inline SVG inherits currentColor,
- * so it renders dark ink on the warm-white card (never /Dark/).
+ * so it renders dark ink on the white card (never /Dark/).
  */
 const PlatformIconRegistry: Record<string, lucide.LucideIcon> = {
 	Apple: lucide.Apple,
@@ -301,7 +301,9 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 						{[1, 2, 3].map((Index) => (
 							<DynamicCard
 								key={Index}
+
 								Sections={{}}
+
 								ClassName="animate-pulse"
 							/>
 						))}
@@ -365,33 +367,33 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 
 						const PlatformCardSection: CardSection = {
 							Header: {
-															content: (
-																<div className="flex flex-col gap-1">
-																	<span className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
-																		# RELEASE_01
-																	</span>
+								content: (
+									<div className="flex flex-col gap-1">
+										<span className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
+											# RELEASE_01
+										</span>
 
-																	<div className="flex items-center gap-3">
-																		{PlatformIcon && (
-																			<PlatformIcon
-																				className="h-5 w-5 shrink-0 text-card-foreground"
-																				aria-hidden="true"
-																			/>
-																		)}
+										<div className="flex items-center gap-3">
+											{PlatformIcon && (
+												<PlatformIcon
+													className="h-5 w-5 shrink-0 text-card-foreground"
+													aria-hidden="true"
+												/>
+											)}
 
-																		<div>
-																			<h3 className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground">
-																				{Platform.Name}
-																			</h3>
+											<div>
+												<h3 className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground">
+													{Platform.Name}
+												</h3>
 
-																			<p className="font-mono text-sm uppercase tracking-[0.2em] text-card-foreground opacity-70">
-																				〈{Platform.Description}〉
-																			</p>
-																		</div>
-																	</div>
-																</div>
-															),
-														},
+												<p className="font-mono text-sm uppercase tracking-[0.2em] text-card-foreground opacity-70">
+													〈{Platform.Description}〉
+												</p>
+											</div>
+										</div>
+									</div>
+								),
+							},
 							Body: {
 								content: (
 									<div className="space-y-2 font-mono text-sm">
@@ -423,9 +425,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 											</span>
 
 											<span className="font-medium text-card-foreground">
-												{FormatFileSize(
-													Platform.Size,
-												)}
+												{FormatFileSize(Platform.Size)}
 											</span>
 										</div>
 
@@ -463,6 +463,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 												Content={{
 													Text: T(
 														"labels.downloadFor",
+
 														{
 															defaultValue:
 																"Download for {{platform}}",

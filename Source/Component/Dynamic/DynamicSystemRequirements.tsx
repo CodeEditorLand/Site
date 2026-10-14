@@ -76,6 +76,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							<IconTooltip
 								Label="Your code runs at native CPU speed"
 								Icon={lucide.Cpu}
+
 								Color="var(--PlatformDesktopFore)"
 								SizeClass="h-4 w-4"
 							/>
@@ -83,6 +84,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							<IconTooltip
 								Label="Span your work across every monitor"
 								Icon={lucide.Monitor}
+
 								Color="var(--PlatformDesktopFore)"
 								SizeClass="h-4 w-4"
 							/>
@@ -156,6 +158,7 @@ const DynamicSystemRequirements = ({ Content, ClassName }: Property) => {
 							{Content.Os.map((OperatingSystem, Index) => (
 								<span
 									key={Index}
+
 									className="bg-secondary px-4 py-2 font-medium"
 								>
 									{OperatingSystem}

@@ -13,6 +13,7 @@ const IsAnalyticsEnabled = (): boolean =>
  * All methods are no-ops during SSR and in development mode.
  */
 export class AnalyticsAPI {
+
 	private Workers = GetWorkersClient();
 
 	async Track(
@@ -223,6 +224,7 @@ export class AnalyticsAPI {
 		byOS: Record<string, number>;
 	}> {
 		if (!IsAnalyticsEnabled())
+
 			return { byType: {}, byBrowser: {}, byOS: {} };
 
 		const Response = await this.Workers.Analytics.GetEventStats(Days);
@@ -242,6 +244,7 @@ export class AnalyticsAPI {
 		sessionsByEventCount: Record<string, number>;
 	}> {
 		if (!IsAnalyticsEnabled())
+
 			return {
 				totalSessions: 0,
 

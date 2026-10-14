@@ -53,19 +53,33 @@ const GetElementColor = (Line: string): string => {
 /** Doc page paths for each element - used for quick links in pricing tiers. */
 const ElementDocPath: Record<string, string> = {
 	Mountain: "/Doc/mountain",
+
 	Cocoon: "/Doc/cocoon",
+
 	Wind: "/Doc/wind",
+
 	Sky: "/Doc/sky",
+
 	Air: "/Doc/air",
+
 	Echo: "/Doc/echo",
+
 	Vine: "/Doc/vine",
+
 	Common: "/Doc/common",
+
 	Grove: "/Doc/grove",
+
 	Mist: "/Doc/mist",
+
 	Rest: "/Doc/rest",
+
 	Output: "/Doc/output",
+
 	SideCar: "/Doc/sidecar",
+
 	Maintain: "/Doc/maintain",
+
 	Worker: "/Doc/worker",
 };
 
@@ -221,13 +235,11 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 
 						{Subtitle && (
 							<div className="mt-3 flex flex-col gap-1 font-mono text-sm font-medium uppercase tracking-[0.2em] text-muted">
-								<span>
-									FUNDING: NLNET / NGI0 COMMONS FUND
-								</span>
+								<span>FUNDING: NLNET / NGI0 COMMONS FUND</span>
 
 								<span className="opacity-70">
-									PHASE: ACTIVE SOURCE / INTEGRATION /
-									RELEASE PREPARATION
+									PHASE: ACTIVE SOURCE / INTEGRATION / RELEASE
+									PREPARATION
 								</span>
 							</div>
 						)}
@@ -239,213 +251,225 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 					className="mx-auto grid max-w-6xl grid-cols-1 gap-12 md:grid-cols-2"
 				>
 					{DisplayTier.map((Tier, TierIndex) => {
-					const Manifest =
-						ReleaseManifest[Tier.Identifier] ??
-						ReleaseManifest.free;
+						const Manifest =
+							ReleaseManifest[Tier.Identifier] ??
+							ReleaseManifest.free;
 
-					return (
-						<jelly-card
-							key={Tier.Identifier}
-							className={`PricingCard flat ${
-								Tier.Highlighted || Tier.Popular ? "" : ""
-							} ${
-								Tier.Status && Tier.Status !== "Ready"
-									? "opacity-75"
-									: ""
-							}`}
-							style={
-								{
-									"--jelly-fill": "var(--Card)",
-									"--jelly-radius": "0",
-									"--jelly-card-padding-block": "0",
-									"--jelly-card-padding-inline": "0",
-								} as React.CSSProperties
-							}
-							aria-disabled={
-								Tier.Status && Tier.Status !== "Ready"
-									? true
-									: undefined
-							}
-						>
-							<div className="flex flex-col">
-								{/* ── Card header - release manifest ─────────── */}
-															<div className="border-b border-[color-mix(in_srgb,var(--CardForeground)_8%,transparent)] p-8">
-																<div className="mb-4 flex flex-col gap-1 font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
-																	<span>
-																		# RELEASE_
-																		{String(TierIndex + 1).padStart(2, "0")}
-																	</span>
+						return (
+							<jelly-card
+								key={Tier.Identifier}
+								className={`PricingCard flat ${
+									Tier.Highlighted || Tier.Popular ? "" : ""
+								} ${
+									Tier.Status && Tier.Status !== "Ready"
+										? "opacity-75"
+										: ""
+								}`}
+								style={
+									{
+										"--jelly-fill": "var(--Card)",
+										"--jelly-radius": "0",
+										"--jelly-card-padding-block": "0",
+										"--jelly-card-padding-inline": "0",
+									} as React.CSSProperties
+								}
+								aria-disabled={
+									Tier.Status && Tier.Status !== "Ready"
+										? true
+										: undefined
+								}
+							>
+								<div className="flex flex-col">
+									{/* ── Card header - release manifest ─────────── */}
+									<div className="border-b border-[color-mix(in_srgb,var(--CardForeground)_8%,transparent)] p-8">
+										<div className="mb-4 flex flex-col gap-1 font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
+											<span>
+												# RELEASE_
+												{String(TierIndex + 1).padStart(
+													2,
+													"0",
+												)}
+											</span>
 
-																	<span className="opacity-70">
-																		〈{Manifest.Phase}〉
-																	</span>
+											<span className="opacity-70">
+												〈{Manifest.Phase}〉
+											</span>
 
-																	<span className="opacity-70">
-																		/CHANNEL: PUBLIC
-																	</span>
+											<span className="opacity-70">
+												/CHANNEL: PUBLIC
+											</span>
 
-																	<span
-																		className={
-																			Manifest.Status === "ACTIVE"
-																				? "text-accent"
+											<span
+												className={
+													Manifest.Status === "ACTIVE"
+														? "text-accent"
+														: ""
+												}
+											>
+												STATUS: {Manifest.Status}
+											</span>
+
+											<span className="opacity-70">
+												TARGET: {Manifest.Target}
+											</span>
+
+											<span className="opacity-70">
+												SIGNAL: {Manifest.Signal}
+											</span>
+										</div>
+
+										<div className="mb-4">
+											<DynamicButton
+												Content={{
+													...Tier.CTA,
+													FullWidth: true,
+												}}
+											/>
+										</div>
+
+										<h3 className="mb-2 text-lg font-medium text-card-foreground">
+											{Tier.Name}
+										</h3>
+									</div>
+
+									{/* ── Card body ─────────────────────────────── */}
+									<div className="flex flex-1 flex-col p-8">
+										{/* Elements section */}
+										{Tier.Element &&
+											Tier.Element.length > 0 && (
+												<>
+													<p className="mb-3 font-mono text-sm font-medium uppercase tracking-wider text-card-foreground opacity-70">
+														Elements
+													</p>
+													<ul className="space-y-3">
+														{Tier.Element.map(
+															(
+																Element,
+																Index,
+															) => {
+																const Parts =
+																	Element.split(
+																		"\n",
+																	);
+
+																const NameLine =
+																	Parts[0] ??
+																	"";
+
+																const Sub1 =
+																	Parts[1];
+
+																const Sub2 =
+																	Parts[2];
+
+																const AccentColor =
+																	GetElementColor(
+																		NameLine,
+																	);
+
+																return (
+																	<li
+																		key={
+																			Index
+																		}
+																		className={`flex flex-col gap-0.5 ${
+																			Tier.Status &&
+																			Tier.Status !==
+																				"Ready"
+																				? "opacity-70"
 																				: ""
-																		}
+																		}`}
 																	>
-																		STATUS: {Manifest.Status}
-																	</span>
+																		<a
+																			href={
+																				ElementDocPath[
+																					NameLine
+																				] ??
+																				`/Doc/${NameLine.toLowerCase()}`
+																			}
+																			className="font-mono text-sm font-medium transition-colors hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+																			style={{
+																				color: AccentColor,
+																			}}
+																		>
+																			<RichText
+																				Text={
+																					NameLine
+																				}
+																				Terms={
+																					true
+																				}
+																			/>
+																		</a>
+																		{Sub1 && (
+																			<span className="font-mono text-sm text-card-foreground">
+																				<RichText
+																					Text={
+																						Sub1
+																					}
 
-																	<span className="opacity-70">
-																		TARGET: {Manifest.Target}
-																	</span>
+																					Terms={
+																						true
+																					}
+																				/>
+																			</span>
+																		)}
+																		{Sub2 && (
+																			<span className="font-mono text-sm text-card-foreground opacity-50">
+																				<RichText
+																					Text={
+																						Sub2
+																					}
 
-																	<span className="opacity-70">
-																		SIGNAL: {Manifest.Signal}
-																	</span>
-																</div>
+																					Terms={
+																						true
+																					}
+																				/>
+																			</span>
+																		)}
+																	</li>
+																);
+															},
+														)}
+													</ul>
+													{Tier.Feature.length >
+														0 && (
+														<hr className="my-5 border-[var(--Border)]" />
+													)}
+												</>
+											)}
 
-																<div className="mb-4">
-																	<DynamicButton
-																		Content={{
-																			...Tier.CTA,
-																			FullWidth: true,
-																		}}
-																	/>
-																</div>
-
-																<h3 className="mb-2 text-lg font-medium text-card-foreground">
-																	{Tier.Name}
-																</h3>
-															</div>
-
-								{/* ── Card body ─────────────────────────────── */}
-								<div className="flex flex-1 flex-col p-8">
-									{/* Elements section */}
-									{Tier.Element &&
-										Tier.Element.length > 0 && (
+										{/* Manifest rows (features → LABEL: VALUE) */}
+										{Manifest.Row.length > 0 && (
 											<>
-												<p className="mb-3 font-mono text-sm font-medium uppercase tracking-wider text-card-foreground opacity-70">
-													Elements
-												</p>
-												<ul className="space-y-3">
-													{Tier.Element.map(
-														(Element, Index) => {
-															const Parts =
-																Element.split(
-																	"\n",
-																);
+												{Tier.Element &&
+													Tier.Element.length > 0 && (
+														<p className="mb-3 font-mono text-sm font-medium uppercase tracking-wider text-card-foreground opacity-70">
+															Manifest
+														</p>
+													)}
 
-															const NameLine =
-																Parts[0] ?? "";
-
-															const Sub1 =
-																Parts[1];
-
-															const Sub2 =
-																Parts[2];
-
-															const AccentColor =
-																GetElementColor(
-																	NameLine,
-																);
-
-															return (
-																<li
-																	key={Index}
-																	className={`flex flex-col gap-0.5 ${
-																		Tier.Status &&
-																		Tier.Status !==
-																			"Ready"
-																			? "opacity-70"
-																			: ""
-																	}`}
-																>
-																	<a
-																		href={
-																			ElementDocPath[
-																				NameLine
-																			] ??
-																			`/Doc/${NameLine.toLowerCase()}`
-																		}
-																		className="font-mono text-sm font-medium transition-colors hover:underline focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-																		style={{
-																			color: AccentColor,
-																		}}
-																	>
-																		<RichText
-																			Text={
-																				NameLine
-																			}
-																			Terms={
-																				true
-																			}
-																		/>
-																	</a>
-																	{Sub1 && (
-																		<span className="font-mono text-sm text-card-foreground">
-																			<RichText
-																				Text={
-																					Sub1
-																				}
-																				Terms={
-																					true
-																				}
-																			/>
-																		</span>
-																	)}
-																	{Sub2 && (
-																		<span className="font-mono text-sm text-card-foreground opacity-50">
-																			<RichText
-																				Text={
-																					Sub2
-																				}
-																				Terms={
-																					true
-																				}
-																			/>
-																		</span>
-																	)}
-																</li>
-															);
-														},
+												<ul className="space-y-2">
+													{Manifest.Row.map(
+														(Row, RowIndex) => (
+															<li
+																key={RowIndex}
+																className="flex items-start justify-between gap-2 font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground"
+															>
+																<span className="min-w-0 flex-1">
+																	{Row}
+																</span>
+															</li>
+														),
 													)}
 												</ul>
-												{Tier.Feature.length > 0 && (
-													<hr className="my-5 border-[var(--Border)]" />
-												)}
 											</>
 										)}
-
-									{/* Manifest rows (features → LABEL: VALUE) */}
-																	{Manifest.Row.length > 0 && (
-																		<>
-																			{Tier.Element &&
-																				Tier.Element.length > 0 && (
-																					<p className="mb-3 font-mono text-sm font-medium uppercase tracking-wider text-card-foreground opacity-70">
-																						Manifest
-																					</p>
-																				)}
-
-																			<ul className="space-y-2">
-																				{Manifest.Row.map(
-																					(Row, RowIndex) => (
-																						<li
-																							key={RowIndex}
-																							className="flex items-start justify-between gap-2 font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground"
-																						>
-																							<span className="min-w-0 flex-1">
-																								{Row}
-																							</span>
-																						</li>
-																					),
-																				)}
-																			</ul>
-																		</>
-																	)}
-																</div>
-							</div>
-						</jelly-card>
-					);
-				})}
+									</div>
+								</div>
+							</jelly-card>
+						);
+					})}
 				</div>
 			</div>
 		</section>

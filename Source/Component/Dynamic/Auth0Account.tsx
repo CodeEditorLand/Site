@@ -58,8 +58,11 @@ export default ({
 		Children={
 			<Auth0AccountGate
 				Route={Route}
+
 				{...(Header ? { Header } : {})}
+
 				{...(Connection ? { Connection } : {})}
+
 				{...(Organization ? { Organization } : {})}
 			/>
 		}

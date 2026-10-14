@@ -1,0 +1,1 @@
+import{t}from"./Vendor/React.q6241QxK.js";export{t as default};

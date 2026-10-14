@@ -1,12 +1,14 @@
 const RE = /^\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/i;
 
 export default function remarkCallout() {
+
 	return (tree: { type: string; children?: object[] }) => {
 		Walk(tree);
 	};
 }
 
 function Walk(Node: { type: string; children?: object[] }) {
+
 	if (!Node.children) return;
 
 	for (const Child of Node.children) {
@@ -19,6 +21,7 @@ function Walk(Node: { type: string; children?: object[] }) {
 }
 
 interface Blockquote {
+
 	type: string;
 
 	children: Paragraph[];
@@ -27,6 +30,7 @@ interface Blockquote {
 }
 
 interface Paragraph {
+
 	type: string;
 
 	children?: Text[];
@@ -35,12 +39,14 @@ interface Paragraph {
 }
 
 interface Text {
+
 	type: string;
 
 	value: string;
 }
 
 function Transform(Node: Blockquote) {
+
 	const First = Node.children[0];
 
 	if (!First || First.type !== "paragraph") return;
@@ -62,6 +68,7 @@ function Transform(Node: Blockquote) {
 	const Body =
 		FirstText.value === "" && First.children?.length === 1
 			? Node.children.slice(1)
+
 			: Node.children;
 
 	Node.data = {

@@ -110,7 +110,7 @@ const DynamicSignIn = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] flat p-3 text-destructive"
+											className="flat bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] p-3 text-destructive"
 											role="alert"
 										>
 											{ErrorMessage}
@@ -198,6 +198,7 @@ const DynamicSignIn = ({
 										...OauthButton,
 										FullWidth: true,
 									}}
+
 									{...(OnOAuth ? { OnAction: OnOAuth } : {})}
 								/>
 							)}

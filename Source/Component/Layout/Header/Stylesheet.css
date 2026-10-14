@@ -1,14 +1,14 @@
-/* Header - Nocturnal Field Record. Flat, no glass, no shadow. Two modes. */
+/* Header - Daylight Field Record. Flat, no glass, no shadow. Two modes. */
 
 /* ─── MODE: MINIMAL (homepage/hero) ─── */
 .HeaderMinimal {
 	--HeaderBg: transparent;
-	--HeaderBorder: rgba(255, 255, 255, 0.08);
+	--HeaderBorder: rgba(7, 7, 7, 0.08);
 	--HeaderFg: var(--Foreground);
 	--HeaderMuted: var(--MuteForeground);
 	--HeaderHoverColor: var(--Accent);
-	--HeaderScrolledBg: #000000;
-	--HeaderScrolledBorder: rgba(255, 255, 255, 0.12);
+	--HeaderScrolledBg: #f2ede3;
+	--HeaderScrolledBorder: rgba(7, 7, 7, 0.12);
 	--HeaderLogoText: var(--Foreground);
 
 	background: var(--HeaderBg);

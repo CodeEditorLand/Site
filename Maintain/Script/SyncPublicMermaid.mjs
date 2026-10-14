@@ -31,29 +31,27 @@ if (!existsSync(SourceDir)) {
 	);
 	process.exitCode = 1;
 } else {
+	mkdirSync(PublicDir, { recursive: true });
 
-mkdirSync(PublicDir, { recursive: true });
+	let copied = 0;
+	let upToDate = 0;
 
-let copied = 0;
-let upToDate = 0;
-
-for (const File of readdirSync(SourceDir)) {
-	if (!File.endsWith(".svg")) continue;
-	const From = resolve(SourceDir, File);
-	const To = resolve(PublicDir, File);
-	const NeedsCopy =
-		!existsSync(To) ||
-		statSync(From).mtimeMs > statSync(To).mtimeMs;
-	if (NeedsCopy) {
-		copyFileSync(From, To);
-		copied++;
-	} else {
-		upToDate++;
+	for (const File of readdirSync(SourceDir)) {
+		if (!File.endsWith(".svg")) continue;
+		const From = resolve(SourceDir, File);
+		const To = resolve(PublicDir, File);
+		const NeedsCopy =
+			!existsSync(To) || statSync(From).mtimeMs > statSync(To).mtimeMs;
+		if (NeedsCopy) {
+			copyFileSync(From, To);
+			copied++;
+		} else {
+			upToDate++;
+		}
 	}
-}
 
-console.log(
-	`[SyncPublicMermaid] Synced Public/Mermaid/ from Source/Content/Mermaid/ ` +
-		`(copied: ${copied}, already current: ${upToDate}).`,
-);
+	console.log(
+		`[SyncPublicMermaid] Synced Public/Mermaid/ from Source/Content/Mermaid/ ` +
+			`(copied: ${copied}, already current: ${upToDate}).`,
+	);
 }

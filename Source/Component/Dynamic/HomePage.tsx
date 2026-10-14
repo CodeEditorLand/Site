@@ -25,8 +25,8 @@ import type Interface from "./Interface/Content/Page/Home.js";
 import type Property from "./Interface/Property/Page/Home.js";
 
 /**
- * Dynamic HomePage composition - Nocturnal Field Record.
- * Black canvas, warm-white cards, mono type, green accent.
+ * Dynamic HomePage composition - Daylight Field Record.
+ * Creme canvas, white cards, mono type, green accent.
  */
 const HomePage = ({ Content, ClassName }: Property) => {
 	const { t: T } = useTranslation(["home", "common", "download", "footer"]);

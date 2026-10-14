@@ -49,6 +49,7 @@ const DynamicBadge = ({ Content, ClassName }: Property) => {
 								DotColorTokenMap[DotColor] ??
 								"var(--SpinegRPC)",
 						}}
+
 						aria-hidden="true"
 					/>
 				</>

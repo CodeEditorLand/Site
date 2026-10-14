@@ -7,6 +7,7 @@ import type GitHubIssue from "../Interface/GitHubIssue.js";
 import { GetWorkersClient } from "../WorkerClient";
 
 export interface StatusCheck {
+
 	id: string;
 
 	name: string;
@@ -21,6 +22,7 @@ export interface StatusCheck {
 }
 
 export interface StatusResponse {
+
 	status: "operational" | "degraded" | "outage" | "maintenance";
 
 	lastUpdate: string;
@@ -34,6 +36,7 @@ export interface StatusResponse {
  * GetCachedStatus() caches in memory for 60 seconds - no localStorage.
  */
 export class StatusAPI {
+
 	private Workers = GetWorkersClient();
 
 	private CachedStatus: StatusResponse | null = null;

@@ -1,4 +1,5 @@
 export default {
+
 	// 5× slower than the original 0.0005 - noise evolves over ~8 seconds
 	// instead of ~1.5 seconds, making individual states inspectable.
 	Speed: (typeof __NOISE_SPEED__ !== "undefined"

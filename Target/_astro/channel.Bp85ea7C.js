@@ -1,0 +1,1 @@
+import{ot as a,st as r}from"./chunk-VPRB5NB3.C3ipT-6s.js";var s=(s,o)=>r.lang.round(a.parse(s)[o]);export{s as t};

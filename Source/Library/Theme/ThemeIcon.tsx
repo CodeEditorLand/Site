@@ -1,4 +1,5 @@
 export interface ThemeIconProps {
+
 	src: string;
 
 	alt?: string;
@@ -13,7 +14,7 @@ export interface ThemeIconProps {
 }
 
 /**
- * ThemeIcon - Nocturnal Field Record (single theme).
+ * ThemeIcon - Daylight Field Record (single theme).
  * Renders the standard /Image/ variant directly.
  */
 export function ThemeIcon({
@@ -24,6 +25,7 @@ export function ThemeIcon({
 	className,
 	...props
 }: ThemeIconProps) {
+
 	return (
 		<img
 			src={src}

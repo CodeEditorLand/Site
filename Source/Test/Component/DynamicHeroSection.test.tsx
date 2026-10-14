@@ -11,6 +11,7 @@ afterEach(() => {
 });
 
 const MinimalContent = {
+
 	Title: "Build the future",
 
 	TitleHighlight: "together",
@@ -44,6 +45,7 @@ describe("DynamicHeroSection", () => {
 		expect(Highlight.tagName).toBe("SPAN");
 
 		expect(Highlight.className).toContain("text-ipc");
+
 		expect(Highlight.className).not.toContain("italic");
 	});
 

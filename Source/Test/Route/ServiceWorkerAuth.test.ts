@@ -43,6 +43,7 @@ const ApiPrefix: string[] = [
 ];
 
 interface AuthState {
+
 	Token: string;
 
 	ExpiresAt: number;
@@ -57,6 +58,7 @@ const IsApiRequest = (
 
 	SelfOrigin: string,
 ): boolean => {
+
 	if (Origin === SelfOrigin) {
 		return ApiPrefix.some((Prefix) => Pathname.startsWith(Prefix));
 	}
@@ -67,6 +69,7 @@ const IsApiRequest = (
 // ─── Message bus contract types ───
 
 interface AuthWriteMessage {
+
 	Type: "Auth:Write";
 
 	Token: string;
@@ -77,14 +80,17 @@ interface AuthWriteMessage {
 }
 
 interface AuthClearMessage {
+
 	Type: "Auth:Clear";
 }
 
 interface AuthReadMessage {
+
 	Type: "Auth:Read";
 }
 
 interface AuthRefreshMessage {
+
 	Type: "Auth:Refresh";
 }
 
@@ -93,9 +99,11 @@ interface AuthRefreshMessage {
 
 type AuthGateResult =
 	| { Action: "Redirect"; Target: string; Code: number }
+
 	| { Action: "Continue" };
 
 const EvaluateAuthGate = (Path: string, IsAuthed: boolean): AuthGateResult => {
+
 	if (ProtectedRoute.has(Path) && !IsAuthed) {
 		return {
 			Action: "Redirect",

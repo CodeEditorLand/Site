@@ -49,9 +49,13 @@ const SourceBadge = ({
 		{icon && (
 			<ThemeImage
 				src={icon}
+
 				alt={label}
+
 				width={10}
+
 				height={10}
+
 				className="h-2.5 w-2.5"
 			/>
 		)}
@@ -114,6 +118,7 @@ const FieldRow = ({
 						{" "}
 						<a
 							href={editHref}
+
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-card-foreground hover:underline"
@@ -301,6 +306,7 @@ export default ({
 		Children={
 			<AccountProfileInner
 				Domain={Domain}
+
 				ClientIdentifier={ClientIdentifier}
 			/>
 		}
@@ -521,8 +527,11 @@ const AccountProfileInner = ({
 					{User.picture ? (
 						<img
 							src={User.picture}
+
 							alt={User.name || "User avatar"}
+
 							title={User.name || "User avatar"}
+
 							width="80"
 							height="80"
 							className="flat h-20 w-20 object-cover"
@@ -571,9 +580,13 @@ const AccountProfileInner = ({
 							<span className="bg-mute inline-flex items-center gap-1 px-2 py-0.5 text-sm font-medium text-muted-foreground">
 								<ThemeImage
 									src={ProviderIcon}
+
 									alt={ProviderLabel}
+
 									width={12}
+
 									height={12}
+
 									className="h-3 w-3"
 								/>
 								<Pii visible={PIIVisible}>{ProviderLabel}</Pii>
@@ -1013,6 +1026,7 @@ const AccountProfileInner = ({
 					<button
 						type="button"
 						onClick={HandleSignOut}
+
 						className="StaccatoButton inline-flex w-full items-center justify-center border border-red-200 bg-card px-4 py-2 font-medium text-red-600 transition-all hover:bg-red-50"
 					>
 						{T("signOut", { defaultValue: "Sign Out" })}

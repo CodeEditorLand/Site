@@ -3,6 +3,7 @@ import { ThemeImage } from "@Library/Theme";
 import React from "react";
 
 const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
+
 	return (
 		<footer className="Footer flex flex-col sm:flex-row sm:items-center sm:justify-between">
 			<ul className="IconList flex shrink flex-col justify-start gap-2">
@@ -15,7 +16,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						aria-label="GitHub"
 					>
 						<ThemeImage
-							src="/Dark/Image/GitHub.svg"
+							src="/Image/GitHub.svg"
 							alt="GitHub"
 							width={24}
 							height={24}
@@ -74,7 +75,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 						className="flex"
 					>
 						<ThemeImage
-							src="/Dark/Image/GitHub/Made/Tauri.svg"
+							src="/Image/GitHub/Made/Tauri.svg"
 							alt="Made With Tauri"
 							width={160}
 							height={32}
@@ -84,7 +85,7 @@ const Footer: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
 				<li className="flex items-center gap-2">
 					<a href="/" className="flex items-center">
 						<ThemeImage
-							src="/Asset/Dark/Logo/Glyph/Land.svg"
+							src="/Asset/Logo/Glyph/Land.svg"
 							alt="Land"
 							width={24}
 							height={24}

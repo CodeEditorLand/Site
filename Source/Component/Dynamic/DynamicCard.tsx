@@ -65,8 +65,8 @@ const DynamicCard = ({ Sections, ClassName, OnClick, Style }: Property) => {
 
 					{BodySection.description && (
 						<div className="StaccatoBreath mb-4 text-card-foreground opacity-70">
-												<RichText Text={BodySection.description} />
-											</div>
+							<RichText Text={BodySection.description} />
+						</div>
 					)}
 
 					{BodySection.content}

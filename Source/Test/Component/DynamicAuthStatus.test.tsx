@@ -13,6 +13,7 @@ import DynamicAuthStatus from "../../Component/Dynamic/DynamicAuthStatus";
 const LogoutMock = vi.fn();
 
 const Auth0State = {
+
 	IsLoading: false,
 
 	IsAuthenticated: false,

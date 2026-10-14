@@ -299,8 +299,11 @@ export default ({
 					{User.picture && (
 						<img
 							src={User.picture}
+
 							alt={User.name || "User avatar"}
+
 							title={User.name || "User avatar"}
+
 							width="64"
 							height="64"
 							className="flat h-16 w-16"
@@ -327,7 +330,10 @@ export default ({
 	// Not authenticated, not loading - redirect is in progress
 	return (
 		<div className="flex min-h-screen flex-col">
-			<Header {...(HeaderContent ? { Content: HeaderContent } : {})} Mode="functional" />
+			<Header
+				{...(HeaderContent ? { Content: HeaderContent } : {})}
+				Mode="functional"
+			/>
 			<div className="flex flex-1 items-center justify-center">
 				<p className="text-muted-foreground">
 					{T("redirecting", {

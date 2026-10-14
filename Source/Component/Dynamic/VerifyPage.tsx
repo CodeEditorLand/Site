@@ -89,10 +89,15 @@ const VerifyPage = ({
 				{(Route === "verify" || Route === "pending") && (
 					<DynamicEmailVerification
 						Content={Verification}
+
 						{...(Token ? { Token } : {})}
+
 						UserEmail={UserEmail}
+
 						OnVerify={OnVerify || HandleVerify}
+
 						OnResend={OnResend || HandleResend}
+
 						OnNavigate={Navigate}
 					/>
 				)}
@@ -115,6 +120,7 @@ const VerifyPage = ({
 												strokeLinecap="round"
 												strokeLinejoin="round"
 												strokeWidth={2}
+
 												d="M5 13l4 4L19 7"
 											/>
 										</svg>
@@ -158,6 +164,7 @@ const VerifyPage = ({
 												strokeLinecap="round"
 												strokeLinejoin="round"
 												strokeWidth={2}
+
 												d="M6 18L18 6M6 6l12 12"
 											/>
 										</svg>

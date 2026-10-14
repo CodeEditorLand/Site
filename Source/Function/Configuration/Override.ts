@@ -18,6 +18,7 @@ export default (async () => {
 	const CompressHTMLValue = ParseBoolean(Source["COMPRESS_HTML"]);
 
 	if (CompressHTMLValue !== undefined)
+
 		Result["CompressHTML"] = CompressHTMLValue;
 
 	const DevToolbarValue = ParseBoolean(Source["DEV_TOOLBAR"]);
@@ -30,17 +31,20 @@ export default (async () => {
 		).default.safeParse(Source["PREFETCH_STRATEGY"]);
 
 		if (StrategyResult.success)
+
 			Result["PrefetchStrategy"] = StrategyResult.data;
 	}
 
 	const PrefetchAllValue = ParseBoolean(Source["PREFETCH_ALL"]);
 
 	if (PrefetchAllValue !== undefined)
+
 		Result["PrefetchAll"] = PrefetchAllValue;
 
 	const ConcurrencyValue = ParseNumber(Source["BUILD_CONCURRENCY"]);
 
 	if (ConcurrencyValue !== undefined)
+
 		Result["BuildConcurrency"] = ConcurrencyValue;
 
 	const SourcemapValue = ParseBoolean(Source["SOURCEMAP"]);
@@ -72,6 +76,7 @@ export default (async () => {
 			).default.safeParse(Source["CSS_MINIFY"]);
 
 			if (CSSMinifyResult.success)
+
 				Result["CSSMinify"] = CSSMinifyResult.data;
 		}
 	}
@@ -79,6 +84,7 @@ export default (async () => {
 	const ClientPrerenderValue = ParseBoolean(Source["CLIENT_PRERENDER"]);
 
 	if (ClientPrerenderValue !== undefined)
+
 		Result["ClientPrerender"] = ClientPrerenderValue;
 
 	const ContentIntellisenseValue = ParseBoolean(
@@ -86,6 +92,7 @@ export default (async () => {
 	);
 
 	if (ContentIntellisenseValue !== undefined)
+
 		Result["ContentIntellisense"] = ContentIntellisenseValue;
 
 	if (Source["CSS_TRANSFORMER"]) {
@@ -94,17 +101,20 @@ export default (async () => {
 		).default.safeParse(Source["CSS_TRANSFORMER"]);
 
 		if (TransformerResult.success)
+
 			Result["CSSTransformer"] = TransformerResult.data;
 	}
 
 	const PreserveSymlinksValue = ParseBoolean(Source["PRESERVE_SYMLINKS"]);
 
 	if (PreserveSymlinksValue !== undefined)
+
 		Result["PreserveSymlinks"] = PreserveSymlinksValue;
 
 	const ServiceWorkerValue = ParseBoolean(Source["SERVICE_WORKER"]);
 
 	if (ServiceWorkerValue !== undefined)
+
 		Result["ServiceWorker"] = ServiceWorkerValue;
 
 	const InlineCSSValue = ParseBoolean(Source["INLINE_CSS"]);

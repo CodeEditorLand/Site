@@ -143,6 +143,7 @@ const DynamicFooter = ({ Content, ClassName }: Property) => {
 									<li key={LinkIndex}>
 										<a
 											href={Link.Href}
+
 											className="text-muted-foreground transition-colors hover:text-foreground"
 										>
 											{Link.Label}

@@ -16,13 +16,17 @@ export type FieldRecordStatusTone = "ink" | "specimen" | "quiet";
 
 export interface FieldRecordStatusProps {
 	status: FieldRecordStatusState;
+
 	tone?: FieldRecordStatusTone;
+
 	className?: string;
 }
 
 const toneColor: Record<FieldRecordStatusTone, string> = {
 	ink: "var(--CardForeground)",
+
 	specimen: "var(--Accent)",
+
 	quiet: "var(--MuteForeground)",
 };
 
@@ -47,4 +51,5 @@ const FieldRecordStatus: React.FC<FieldRecordStatusProps> = ({
 };
 
 export { FieldRecordStatus };
+
 export default FieldRecordStatus;

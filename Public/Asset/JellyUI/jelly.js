@@ -1,239 +1,420 @@
 const mt = {
+
   clickDepthSpring: 115,
+
   clickDepthDamping: 18,
+
   insidePressSpring: 92,
+
   insidePressDamping: 15,
+
   insideLocalBulgeImpulse: 390,
+
   insideLocalHoldBulgeForce: 48,
+
   pressSpring: 76,
+
   pressDamping: 13,
+
   holdPressAmount: 0,
+
   heldCurveSpring: 135,
+
   heldCurveDamping: 22,
+
   insideHeldBulgeAmount: 10.8,
+
   insideHeldHaloAmount: 2.65,
+
   insideHeldDepthAmount: 0,
+
   insidePointInfluenceWidth: 38,
+
   insidePointHaloWidth: 70,
+
   insidePointEdgeBoost: 0.44,
+
   outsideHeldDentAmount: 7.2,
+
   outsideHeldSideBulgeAmount: 1.7,
+
   outsideHeldDepthAmount: 9.4,
+
   normalBlendPasses: 3,
+
   curveTension: 0.68,
+
   axisDepth: 34,
+
   axisSpring: 48,
+
   axisDamping: 11,
+
   depthImpulse: 420,
+
   depthBulgeImpulse: 130,
+
   depthSpring: 76,
+
   depthDamping: 14,
+
   depthCoupling: 150,
+
   maxDepthIn: -26,
+
   maxDepthOut: 16,
+
   zRotateSpring: 42,
+
   zRotateDamping: 12,
+
   zRotateImpulse: 0.14,
+
   membraneSpring: 96,
+
   membraneDamping: 17,
+
   waveCoupling: 145,
+
   pressure: 620,
+
   volumeCorrection: 0.1,
+
   outsideDentImpulse: 255,
+
   outsideSideBulgeImpulse: 54,
+
   outsideOppositeBulgeImpulse: 74,
+
   rippleWidth: 8,
+
   outsideHoldForce: 20,
+
   outsideHoldDepthForce: 52,
+
   maxDent: 8,
+
   maxBulge: 24,
+
   perspective: 390,
+
   samples: 240
 };
+
 let Wt = 0;
+
 function W(n = "jelly") {
+
   return `${n}-${++Wt}`;
 }
+
 function g(n, t, e = null, i = {}) {
+
   const s = new CustomEvent(t, {
     bubbles: !0,
     composed: !0,
     detail: e,
     ...i
   });
+
   return n.dispatchEvent(s);
 }
+
 function D(n, t, e = 0) {
+
   const i = n.getAttribute(t);
+
   if (i === null || i.trim() === "")
+
     return e;
+
   const s = Number(i);
+
   return Number.isFinite(s) ? s : e;
 }
+
 function H(n) {
+
   return String(n).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 }
+
 function C(n) {
+
   return getComputedStyle(n).direction === "rtl";
 }
+
 const rt = {
+
   sm: "small",
+
   md: "medium",
+
   lg: "large"
 };
+
 function O(n, t) {
+
   const e = n.getAttribute("size");
+
   for (const i of n.querySelectorAll(t)) {
     const s = i.hasAttribute("data-jelly-inherited-size");
+
     e ? (!i.hasAttribute("size") || s) && (i.setAttribute("size", e), i.setAttribute("data-jelly-inherited-size", "")) : s && (i.removeAttribute("size"), i.removeAttribute("data-jelly-inherited-size"));
   }
 }
+
 function j(n) {
+
   const t = n.getAttribute("size");
+
   t && rt[t] && n.setAttribute("size", rt[t]);
 }
+
 function Nt(n, t = "medium") {
+
   const e = (n.getAttribute("size") || "").toLowerCase();
+
   return rt[e] ? rt[e] : e === "small" || e === "medium" || e === "large" ? e : t;
 }
+
 function v(n, t, e) {
+
   return Math.max(t, Math.min(e, n));
 }
+
 function T(n, t, e, i, s, r) {
+
   const o = (e - n) * i - t * s, l = t + o * r;
+
   return [n + l * r, l];
 }
+
 const wt = typeof matchMedia == "function" ? matchMedia("(prefers-reduced-motion: reduce)") : null;
+
 function I() {
+
   const n = typeof document < "u" ? document.documentElement.getAttribute("data-jelly-motion") : null;
+
   return n === "reduce" ? !0 : n === "no-preference" ? !1 : wt ? wt.matches : !1;
 }
+
 function F(n = 8) {
+
   if ("vibrate" in navigator)
+
     try {
       navigator.vibrate(n);
     } catch {
     }
 }
+
 function G(n, t = !1) {
+
   return n === "ArrowRight" ? t ? -1 : 1 : n === "ArrowLeft" ? t ? 1 : -1 : 0;
 }
+
 function It(n, t, e, { rtl: i = !1, wrap: s = !0, horizontal: r = !0, vertical: o = !0 } = {}) {
+
   let l = 0;
+
   if (r && (l = G(n, i)), o && l === 0 && (n === "ArrowDown" && (l = 1), n === "ArrowUp" && (l = -1)), n === "Home")
+
     return 0;
+
   if (n === "End")
+
     return e - 1;
+
   if (l === 0 || e === 0)
+
     return -1;
+
   const c = t + l;
+
   return s ? (c + e) % e : v(c, 0, e - 1);
 }
+
 const Yt = 0.5 * (Math.sqrt(3) - 1), K = (3 - Math.sqrt(3)) / 6, lt = [
   [1, 1],
+
   [-1, 1],
+
   [1, -1],
+
   [-1, -1],
+
   [1, 0],
+
   [-1, 0],
+
   [1, 0],
+
   [-1, 0],
+
   [0, 1],
+
   [0, -1],
+
   [0, 1],
+
   [0, -1]
 ];
+
 let q, Z;
+
 function Kt() {
+
   q = new Uint8Array(512), Z = new Uint8Array(512);
+
   const n = [];
+
   for (let e = 0; e < 256; e++) n[e] = e;
+
   let t = 42;
+
   for (let e = 255; e > 0; e--) {
     t = (t * 16807 + 0) % 2147483647;
+
     const i = t % (e + 1);
+
     [n[e], n[i]] = [n[i], n[e]];
   }
+
   for (let e = 0; e < 512; e++)
+
     q[e] = n[e & 255], Z[e] = q[e] % 12;
 }
+
 function at(n, t, e) {
+
   return n[0] * t + n[1] * e;
 }
+
 function _(n, t) {
+
   q || Kt();
+
   const e = (n + t) * Yt, i = Math.floor(n + e), s = Math.floor(t + e), r = (i + s) * K, o = i - r, l = s - r, c = n - o, h = t - l;
+
   let a, d;
+
   c > h ? (a = 1, d = 0) : (a = 0, d = 1);
+
   const p = c - a + K, u = h - d + K, m = c - 1 + 2 * K, w = h - 1 + 2 * K, f = i & 255, x = s & 255, y = Z[f + q[x]], k = Z[f + a + q[x + d]], L = Z[f + 1 + q[x + 1]];
+
   let S = 0, E = 0, Q = 0, B = 0.5 - c * c - h * h;
+
   B > 0 && (B *= B, S = B * B * at(lt[y], c, h));
+
   let N = 0.5 - p * p - u * u;
+
   N > 0 && (N *= N, E = N * N * at(lt[k], p, u));
+
   let Y = 0.5 - m * m - w * w;
+
   return Y > 0 && (Y *= Y, Q = Y * Y * at(lt[L], m, w)), 70 * (S + E + Q);
 }
+
 function J(n, t) {
+
   return Math.floor(n * t) / t;
 }
+
 const Zt = 1e-4;
+
 function rs(n, t) {
+
   const e = Zt, i = t, s = _(n * e, i * 101), r = _(n * e * 0.18, i * 203), o = _(n * e * 0.25, i * 307);
+
   return {
     force: J(s, 6),
+
     phase: J(r, 4),
+
     morph: J(o, 5)
   };
 }
+
 const _t = 1 / 58;
+
 function kt(n, t, e) {
+
   const i = v((e - n) / (t - n), 0, 1);
+
   return i * i * (3 - 2 * i);
 }
+
 function A(n, t) {
+
   return (n + t) % t;
 }
+
 function Ct(n, t, e) {
+
   const i = Math.abs(n - t);
+
   return Math.min(i, e - i);
 }
+
 function tt(n, t) {
+
   return Math.exp(-(n * n) / (2 * t * t));
 }
+
 function Jt(n, t, e, i, s) {
+
   const r = Math.min(s, e, i), o = Math.abs(n) - (e - r), l = Math.abs(t) - (i - r), c = Math.hypot(Math.max(o, 0), Math.max(l, 0)), h = Math.min(Math.max(o, l), 0);
+
   return c + h - r;
 }
+
 function At(n, t, e, i) {
+
   const s = n / 2, r = t / 2, o = Math.min(e, s, r), l = [], c = (f, x) => {
     l.push({ x: f, y: x });
   }, h = 48, a = 48;
+
   function d(f, x, y, k, L) {
     for (let S = L ? 0 : 1; S <= h; S++) {
       const E = S / h;
+
       c(f + (y - f) * E, x + (k - x) * E);
     }
   }
+
   function p(f, x, y, k) {
     for (let L = 1; L <= a; L++) {
       const S = y + (k - y) * (L / a);
+
       c(f + Math.cos(S) * o, x + Math.sin(S) * o);
     }
   }
+
   d(-s + o, -r, s - o, -r, !0), p(s - o, -r + o, -Math.PI / 2, 0), d(s, -r + o, s, r - o, !1), p(s - o, r - o, 0, Math.PI / 2), d(s - o, r, -s + o, r, !1), p(-s + o, r - o, Math.PI / 2, Math.PI), d(-s, r - o, -s, -r + o, !1), p(-s + o, -r + o, Math.PI, Math.PI * 1.5);
+
   const u = [0];
+
   let m = 0;
+
   for (let f = 0; f < l.length; f++) {
     const x = l[f], y = l[A(f + 1, l.length)];
+
     m += Math.hypot(y.x - x.x, y.y - x.y), u.push(m);
   }
+
   const w = [];
+
   for (let f = 0; f < i; f++) {
     const x = f / i * m;
+
     let y = 0;
+
     for (; y < l.length - 1 && u[y + 1] < x; )
+
       y += 1;
+
     const k = l[y], L = l[(y + 1) % l.length], S = u[y], E = u[y + 1], Q = Math.max(E - S, 1e-4), B = (x - S) / Q;
+
     w.push({
       x: k.x + (L.x - k.x) * B,
       y: k.y + (L.y - k.y) * B,
@@ -245,186 +426,281 @@ function At(n, t, e, i) {
       zv: 0
     });
   }
+
   return Ut(w), w;
 }
+
 function Gt(n, t) {
+
   const e = n.length, i = n[A(t - 1, e)], s = n[A(t + 1, e)], r = s.x - i.x, o = s.y - i.y, l = Math.hypot(o, -r) || 1;
+
   return { nx: o / l, ny: -r / l };
 }
+
 function Ut(n) {
+
   const t = n.length;
+
   let e = n.map((i, s) => Gt(n, s));
+
   for (let i = 0; i < mt.normalBlendPasses; i++)
+
     e = e.map((s, r) => {
       const o = e[A(r - 1, t)], l = e[A(r + 1, t)], c = o.nx * 0.22 + s.nx * 0.56 + l.nx * 0.22, h = o.ny * 0.22 + s.ny * 0.56 + l.ny * 0.22, a = Math.hypot(c, h) || 1;
+
       return { nx: c / a, ny: h / a };
     });
+
   for (let i = 0; i < t; i++)
+
     n[i].nx = e[i].nx, n[i].ny = e[i].ny;
 }
+
 function ht(n) {
+
   let t = 0;
+
   for (let e = 0; e < n.length; e++) {
     const i = n[e], s = n[A(e + 1, n.length)];
+
     t += i.x * s.y - s.x * i.y;
   }
+
   return Math.abs(t) * 0.5;
 }
+
 function ct(n, t, e = mt.curveTension) {
+
   const i = t.length;
+
   n.beginPath(), n.moveTo(t[0].x, t[0].y);
+
   for (let s = 0; s < i; s++) {
     const r = t[A(s - 1, i)], o = t[s], l = t[A(s + 1, i)], c = t[A(s + 2, i)], h = o.x + (l.x - r.x) * e / 6, a = o.y + (l.y - r.y) * e / 6, d = l.x - (c.x - o.x) * e / 6, p = l.y - (c.y - o.y) * e / 6;
+
     n.bezierCurveTo(h, a, d, p, l.x, l.y);
   }
+
   n.closePath();
 }
+
 class $ {
+
   constructor({ width: t, height: e, radius: i, config: s }) {
     this.width = t, this.height = e, this.radius = i ?? Math.min(t, e) / 2, this.config = { ...mt, ...s ?? {} }, this.lean = 0, this.leanAmount = 0, this.membrane = At(t, e, this.radius, this.config.samples), this.state = {
       clickDepth: 0,
+
       clickDepthV: 0,
+
       targetClickDepth: 0,
+
       insidePress: 0,
+
       insidePressV: 0,
+
       targetInsidePress: 0,
+
       press: 0,
+
       pressV: 0,
+
       targetPress: 0,
+
       insideCurveHold: 0,
+
       insideCurveHoldV: 0,
+
       targetInsideCurveHold: 0,
+
       rotateZ: 0,
+
       rotateZV: 0,
+
       tiltX: 0,
+
       tiltXV: 0,
+
       tiltY: 0,
+
       tiltYV: 0,
+
       targetTiltX: 0,
+
       targetTiltY: 0,
+
       pointerActive: !1,
+
       pointerInsideWeight: 0,
+
       pointerIndex: 0,
+
       pointerLocalX: 0,
+
       pointerLocalY: 0,
+
       hoverForce: 0
     }, this.baseArea = ht(this.getSurfacePoints());
   }
+
   // Rebuild the ring for a new size, preserving no motion (used on resize)
   resize(t, e, i) {
     this.width = t, this.height = e, this.radius = i ?? Math.min(t, e) / 2, this.membrane = At(t, e, this.radius, this.config.samples), this.baseArea = ht(this.getSurfacePoints());
   }
+
   // Signed distance from a local point to the resting surface
   sdf(t, e) {
     return Jt(t, e, this.width / 2, this.height / 2, this.radius);
   }
+
   // Index of the membrane point closest to a local coordinate
   nearestMembraneIndex(t, e) {
     let i = 0, s = 1 / 0;
+
     for (let r = 0; r < this.membrane.length; r++) {
       const o = this.membrane[r], l = t - o.x, c = e - o.y, h = l * l + c * c;
+
       h < s && (s = h, i = r);
     }
+
     return i;
   }
+
   // Kick the membrane outward around a ring index with a gaussian falloff
   addMembraneImpulse(t, e, i) {
     const s = this.membrane.length;
+
     for (let r = 0; r < s; r++) {
       const o = Ct(r, t, s);
+
       this.membrane[r].v += e * tt(o, i);
     }
   }
+
   // Kick the membrane's depth (z) around a ring index with a gaussian falloff
   addDepthImpulse(t, e, i) {
     const s = this.membrane.length;
+
     for (let r = 0; r < s; r++) {
       const o = Ct(r, t, s);
+
       this.membrane[r].zv += e * tt(o, i);
     }
   }
+
   // Bulge the membrane around the pointer with a softer counter-halo
   addInsidePointImpulse(t) {
     for (let e = 0; e < this.membrane.length; e++) {
       const i = this.insidePointInfluence(e);
+
       this.membrane[e].v += t * (i.local - i.halo * 0.18);
     }
   }
+
   // Five-tap smoothing of one membrane channel around an index
   smoothedMembraneValue(t, e) {
     const i = this.membrane.length, s = this.membrane[A(t - 2, i)][e], r = this.membrane[A(t - 1, i)][e], o = this.membrane[t][e], l = this.membrane[A(t + 1, i)][e], c = this.membrane[A(t + 2, i)][e];
+
     return s * 0.06 + r * 0.2 + o * 0.48 + l * 0.2 + c * 0.06;
   }
+
   // How strongly the pointer's held position affects one membrane point
   insidePointInfluence(t) {
     const e = this.membrane[t], i = e.x - this.state.pointerLocalX, s = e.y - this.state.pointerLocalY, r = Math.hypot(i, s), o = tt(r, this.config.insidePointInfluenceWidth), l = tt(r, this.config.insidePointHaloWidth), c = v(
       Math.hypot(
         this.state.pointerLocalX / (this.width / 2),
+
         this.state.pointerLocalY / (this.height / 2)
       ),
+
       0,
+
       1
     ), h = 1 + kt(0.12, 0.82, c) * this.config.insidePointEdgeBoost;
+
     return {
       local: o * h,
+
       halo: Math.max(l - o * 0.34, 0)
     };
   }
+
   // Sustained bulge / depth offsets while the pointer is held inside
   heldMembraneOffsets(t) {
     const e = this.insidePointInfluence(t);
+
     return {
       d: this.state.insideCurveHold * (this.config.insideHeldBulgeAmount * e.local - this.config.insideHeldHaloAmount * e.halo),
+
       z: -this.state.insideCurveHold * this.config.insideHeldDepthAmount * e.local
     };
   }
+
   // Five-tap smoothing over a plain array of ring values
   smoothArrayValue(t, e) {
     const i = t.length;
+
     return t[A(e - 2, i)] * 0.06 + t[A(e - 1, i)] * 0.2 + t[e] * 0.48 + t[A(e + 1, i)] * 0.2 + t[A(e + 2, i)] * 0.06;
   }
+
   /*
    * The current deformed surface. `offset` pushes every point outward along
    * its normal - used to trace a focus ring that follows the same jiggle.
    */
   getSurfacePoints(t = 0) {
     const e = [], i = this.membrane.length, s = new Array(i), r = new Array(i);
+
     for (let o = 0; o < i; o++) {
       const l = this.heldMembraneOffsets(o);
+
       s[o] = this.smoothedMembraneValue(o, "d") + l.d, r[o] = this.smoothedMembraneValue(o, "z") + l.z;
     }
+
     for (let o = 0; o < i; o++) {
       const l = this.membrane[o], c = this.smoothArrayValue(s, o), h = this.smoothArrayValue(r, o), a = this.smoothArrayValue(s, A(o - 1, i)), p = this.smoothArrayValue(s, A(o + 1, i)) - a, u = -l.ny, m = l.nx, w = p * 0.05, f = this.leanAmount === 0 ? 0 : this.lean * v(l.x / (this.width / 2), -1, 1) * this.leanAmount, x = l.x + l.nx * (c + t + f) + u * w, y = l.y + l.ny * (c + t + f) + m * w, k = v(x / (this.width / 2), -1, 1), L = v(y / (this.height / 2), -1, 1), S = -(k * this.state.tiltY + L * this.state.tiltX) * this.config.axisDepth;
+
       e.push({ x, y, z: S + h });
     }
+
     return e;
   }
+
   // Apply the perspective projection to one surface point
   projectPoint(t) {
     const e = this.config.perspective / (this.config.perspective - t.z);
+
     return { x: t.x * e, y: t.y * e, z: t.z };
   }
+
   // Aim the held-press springs at the pointer's current position
   updatePressTargets(t, e, i = 1) {
     this.state.pointerLocalX = t, this.state.pointerLocalY = e;
+
     const s = this.sdf(t, e), r = (1 - kt(-2, 5, s)) * i;
+
     return this.state.pointerInsideWeight = r, this.state.targetClickDepth = r, this.state.targetInsidePress = r, this.state.targetPress = r * this.config.holdPressAmount, this.state.targetInsideCurveHold = r, { insideWeight: r };
   }
+
   // Press at a point already in local (shape-centered) coordinates
   pressAtLocal(t, e, i = 1, s = 1) {
     const r = this.nearestMembraneIndex(t, e);
+
     this.state.pointerIndex = r, this.state.pointerActive = !0;
+
     const { insideWeight: o } = this.updatePressTargets(t, e, s), l = i * 1.15 * s;
+
     o > 0.01 && (this.addInsidePointImpulse(this.config.insideLocalBulgeImpulse * o * l), this.state.pressV += 1.9 * o * l);
   }
+
   // Follow the pointer while it is held down
   moveToLocal(t, e, i = 1) {
     this.state.pointerIndex = this.nearestMembraneIndex(t, e), this.updatePressTargets(t, e, i);
   }
+
   // A press whose energy comes from the shape center (keyboard activation)
   centerPulse(t = 1) {
     this.pressAtLocal(0, 0, t);
   }
+
   /*
    * A one-shot squish from the center that settles on its own - for feedback
    * that isn't a sustained press (focus, toggle, grab). Unlike centerPulse it
@@ -433,6 +709,7 @@ class $ {
   centerPop(t = 1) {
     this.state.pointerLocalX = 0, this.state.pointerLocalY = 0, this.addInsidePointImpulse(this.config.insideLocalBulgeImpulse * 0.5 * t), this.state.pressV += 0.9 * t;
   }
+
   /*
    * A one-shot directional jiggle along an axis: the leading edge (normals
    * aligned with the direction) bulges out and the trailing edge tucks in, so
@@ -441,108 +718,170 @@ class $ {
    */
   stretchAlong(t, e, i = 1) {
     const s = Math.hypot(t, e) || 1, r = t / s, o = e / s, l = this.config.insideLocalBulgeImpulse * 0.42 * i;
+
     for (const c of this.membrane) {
       const h = c.nx * r + c.ny * o;
+
       c.v += l * h;
     }
   }
+
   // A one-shot ripple with no hold (typing feedback, toggles, etc.)
   pulseAt(t, e, i = 1) {
     const s = this.nearestMembraneIndex(t, e);
+
     this.state.pointerLocalX = t, this.state.pointerLocalY = e, this.addMembraneImpulse(
       s,
+
       this.config.insideLocalBulgeImpulse * 0.5 * i,
+
       this.config.rippleWidth * 1.6
     );
   }
+
   // Let go: clear every held target and give a small parting kick
   release() {
     this.state.pointerActive = !1, this.state.targetClickDepth = 0, this.state.targetInsidePress = 0, this.state.targetPress = 0, this.state.targetInsideCurveHold = 0, this.state.targetTiltX = 0, this.state.targetTiltY = 0, this.state.pointerInsideWeight = 0, this.state.pressV -= 0.55;
   }
+
   // Advance the whole-body springs (press depth, tilt, rotation) one step
   updateGlobal(t) {
     const e = this.state, i = this.config;
+
     [e.clickDepth, e.clickDepthV] = T(
       e.clickDepth,
+
       e.clickDepthV,
+
       e.targetClickDepth,
+
       i.clickDepthSpring,
+
       i.clickDepthDamping,
+
       t
     ), [e.insidePress, e.insidePressV] = T(
       e.insidePress,
+
       e.insidePressV,
+
       e.targetInsidePress,
+
       i.insidePressSpring,
+
       i.insidePressDamping,
+
       t
     ), [e.press, e.pressV] = T(
       e.press,
+
       e.pressV,
+
       e.targetPress,
+
       i.pressSpring,
+
       i.pressDamping,
+
       t
     ), [e.insideCurveHold, e.insideCurveHoldV] = T(
       e.insideCurveHold,
+
       e.insideCurveHoldV,
+
       e.targetInsideCurveHold,
+
       i.heldCurveSpring,
+
       i.heldCurveDamping,
+
       t
     ), [e.rotateZ, e.rotateZV] = T(
       e.rotateZ,
+
       e.rotateZV,
+
       0,
+
       i.zRotateSpring,
+
       i.zRotateDamping,
+
       t
     ), [e.tiltX, e.tiltXV] = T(
       e.tiltX,
+
       e.tiltXV,
+
       e.targetTiltX,
+
       i.axisSpring,
+
       i.axisDamping,
+
       t
     ), [e.tiltY, e.tiltYV] = T(
       e.tiltY,
+
       e.tiltYV,
+
       e.targetTiltY,
+
       i.axisSpring,
+
       i.axisDamping,
+
       t
     ), e.clickDepth = v(e.clickDepth, 0, 1), e.insidePress = v(e.insidePress, 0, 1), e.press = v(e.press, -0.025, 0.085), e.insideCurveHold = v(e.insideCurveHold, 0, 1), e.rotateZ = v(e.rotateZ, -0.018, 0.018), e.tiltX = v(e.tiltX, -1, 1), e.tiltY = v(e.tiltY, -1, 1);
   }
+
   // Advance the membrane wave equation one step
   updateMembrane(t) {
     const e = this.membrane.length, i = this.config, s = this.getSurfacePoints(), r = ht(s), o = v((this.baseArea - r) / this.baseArea, -0.08, 0.08), l = new Array(e), c = new Array(e);
+
     for (let a = 0; a < e; a++) {
       const d = this.membrane[a], p = this.membrane[A(a - 1, e)], u = this.membrane[A(a + 1, e)], m = p.d + u.d - 2 * d.d, w = p.z + u.z - 2 * d.z;
+
       l[a] = -d.d * i.membraneSpring + m * i.waveCoupling - d.v * i.membraneDamping + o * i.pressure, c[a] = -d.z * i.depthSpring + w * i.depthCoupling - d.zv * i.depthDamping;
     }
+
     if (this.state.pointerActive && this.state.pointerInsideWeight > 0.02)
+
       for (let a = 0; a < e; a++) {
         const d = this.insidePointInfluence(a);
+
         l[a] += i.insideLocalHoldBulgeForce * d.local * this.state.pointerInsideWeight, l[a] -= i.insideLocalHoldBulgeForce * 0.18 * d.halo * this.state.pointerInsideWeight;
       }
+
     if (this.state.hoverForce > 5e-3) {
       const a = this.state.hoverForce, d = i.insideLocalHoldBulgeForce * a * 24;
+
       for (let p = 0; p < e; p++) {
         const u = this.insidePointInfluence(p);
+
         l[p] += d * u.local, l[p] -= d * 0.08 * u.halo;
       }
     }
+
     for (let a = 0; a < e; a++) {
       const d = this.membrane[a];
+
       d.v += l[a] * t, d.d += d.v * t, d.zv += c[a] * t, d.z += d.zv * t, d.d = v(d.d, -i.maxDent, i.maxBulge), d.v = v(d.v, -410, 410), d.z = v(d.z, i.maxDepthIn, i.maxDepthOut), d.zv = v(d.zv, -600, 600);
     }
+
     let h = 0;
+
     for (const a of this.membrane)
+
       h += a.d;
+
     h /= e;
+
     for (const a of this.membrane)
+
       a.d -= h * i.volumeCorrection;
   }
+
   /*
    * Advance the simulation by a frame delta. The delta is split into
    * substeps no longer than MAX_STEP so the integration stays stable on
@@ -550,10 +889,14 @@ class $ {
    */
   update(t) {
     const e = Math.max(1, Math.ceil(t / _t)), i = t / e;
+
     for (let s = 0; s < e; s++)
+
       this.updateGlobal(i), this.updateMembrane(i);
+
     this.recoverIfUnstable();
   }
+
   /*
    * Defensive backstop: if anything ever produced a non-finite number
    * (a zero-sized rebuild, an extreme external mutation), reset all motion
@@ -562,276 +905,429 @@ class $ {
    */
   recoverIfUnstable() {
     const t = this.state;
+
     let e = Number.isFinite(t.press) && Number.isFinite(t.clickDepth) && Number.isFinite(t.rotateZ);
+
     if (e) {
       for (const i of this.membrane)
+
         if (!Number.isFinite(i.d) || !Number.isFinite(i.v) || !Number.isFinite(i.z) || !Number.isFinite(i.zv)) {
           e = !1;
+
           break;
         }
     }
+
     if (!e) {
       for (const i of this.membrane)
+
         i.d = 0, i.v = 0, i.z = 0, i.zv = 0;
+
       t.clickDepth = 0, t.clickDepthV = 0, t.insidePress = 0, t.insidePressV = 0, t.press = 0, t.pressV = 0, t.insideCurveHold = 0, t.insideCurveHoldV = 0, t.rotateZ = 0, t.rotateZV = 0, t.tiltX = 0, t.tiltXV = 0, t.tiltY = 0, t.tiltYV = 0;
     }
   }
+
   // True when the body has essentially stopped moving and nothing is held
   isResting() {
     const t = this.state;
+
     if (t.pointerActive || Math.abs(t.clickDepth) > 1e-3 || Math.abs(t.insidePress) > 1e-3 || Math.abs(t.insideCurveHold) > 1e-3 || Math.abs(t.rotateZ) > 1e-4 || Math.abs(t.tiltX) > 1e-3 || Math.abs(t.tiltY) > 1e-3)
+
       return !1;
+
     for (const e of this.membrane)
+
       if (Math.abs(e.d) > 0.03 || Math.abs(e.v) > 0.05 || Math.abs(e.z) > 0.03 || Math.abs(e.zv) > 0.05)
+
         return !1;
+
     return !0;
   }
 }
+
 class Qt {
+
   constructor() {
     this.active = /* @__PURE__ */ new Set(), this.running = !1, this.lastTime = 0, this.loop = this.loop.bind(this);
   }
+
   // Add a component to the loop and start it if it was parked
   wake(t) {
     this.active.add(t), this.running || (this.running = !0, this.lastTime = performance.now(), requestAnimationFrame(this.loop));
   }
+
   // Remove a component from the loop (used on disconnect)
   drop(t) {
     this.active.delete(t);
   }
+
   // One shared animation frame: step every live component, park when idle.
   // The delta is capped so a background-tab pause never becomes one giant step.
   loop(t) {
     const e = v((t - this.lastTime) / 1e3, 0, 0.033);
+
     this.lastTime = t;
+
     for (const i of this.active) {
       let s = !1;
+
       i.frameDt = e, i.colorEasing = !1;
+
       try {
         s = i.frame(e);
       } catch (r) {
         console.error("Jelly UI frame error", r);
       }
+
       !s && !i.colorEasing && this.active.delete(i);
     }
+
     this.active.size > 0 ? requestAnimationFrame(this.loop) : this.running = !1;
   }
 }
+
 const zt = new Qt(), R = 8;
+
 function te(n, t) {
+
   if (n !== "start" && n !== "end")
+
     return n;
+
   const e = C(t);
+
   return n === "start" ? e ? "right" : "left" : e ? "left" : "right";
 }
+
 function U(n, t, e = "bottom", i = 8) {
+
   const s = te(e, n), r = n.getBoundingClientRect(), o = t.getBoundingClientRect(), l = window.innerWidth, c = window.innerHeight;
+
   let h = s;
+
   s === "top" && r.top - o.height - i < R && r.bottom + o.height + i < c ? h = "bottom" : s === "bottom" && r.bottom + o.height + i > c - R && r.top - o.height - i > 0 ? h = "top" : s === "left" && r.left - o.width - i < R && r.right + o.width + i < l ? h = "right" : s === "right" && r.right + o.width + i > l - R && r.left - o.width - i > 0 && (h = "left");
+
   let a, d;
+
   h === "top" ? a = r.top - o.height - i : h === "bottom" ? a = r.bottom + i : a = r.top + (r.height - o.height) / 2, h === "left" ? d = r.left - o.width - i : h === "right" ? d = r.right + i : d = r.left + (r.width - o.width) / 2, d = Math.max(R, Math.min(l - o.width - R, d)), a = Math.max(R, Math.min(c - o.height - R, a)), t.style.left = `${Math.round(d)}px`, t.style.top = `${Math.round(a)}px`;
+
   const p = t.getBoundingClientRect(), u = d - p.left, m = a - p.top;
+
   return (Math.abs(u) > 0.5 || Math.abs(m) > 0.5) && (t.style.left = `${Math.round(d + u)}px`, t.style.top = `${Math.round(a + m)}px`), h;
 }
+
 function ft(n, t, e = "bottom", i = 8, s = null) {
+
   const r = () => {
     if (U(n, t, e, i), s) {
       const o = n.getBoundingClientRect();
+
       (o.bottom <= 0 || o.top >= window.innerHeight || o.right <= 0 || o.left >= window.innerWidth) && s();
     }
   };
+
   return window.addEventListener("scroll", r, !0), window.addEventListener("resize", r), () => {
     window.removeEventListener("scroll", r, !0), window.removeEventListener("resize", r);
   };
 }
+
 let pt = 0, Ht = "";
+
 function Pt() {
+
   if (pt++ > 0)
+
     return;
+
   const n = window.innerWidth - document.documentElement.clientWidth;
+
   Ht = document.body.style.paddingInlineEnd, document.body.style.overflow = "hidden", n > 0 && (document.body.style.paddingInlineEnd = `${n}px`);
 }
+
 function Bt() {
+
   pt !== 0 && (--pt > 0 || (document.body.style.overflow = "", document.body.style.paddingInlineEnd = Ht));
 }
+
 function Rt(n) {
+
   const t = [];
+
   let e = n;
+
   for (; e && e.parentElement && e !== document.body; ) {
     for (const i of e.parentElement.children)
+
       i === e || i.inert || i.tagName === "SCRIPT" || i.tagName === "STYLE" || (i.inert = !0, t.push(i));
+
     e = e.parentElement;
   }
+
   return () => {
     for (const i of t)
+
       i.inert = !1;
   };
 }
+
 function Vt(n) {
+
   if (n.parentNode === document.body)
+
     return () => {
     };
+
   const t = n.parentNode;
+
   if (!t)
+
     return () => {
     };
+
   const e = document.createComment("jelly-portal");
+
   return t.insertBefore(e, n), document.body.appendChild(n), () => {
     e.parentNode && e.parentNode.insertBefore(n, e), e.remove();
   };
 }
+
 function vt(n, t = "center") {
+
   n.style.transformOrigin = t, !(I() || !n.animate) && n.animate(
     [
       { opacity: 0, transform: "scale(0.92, 0.96)" },
+
       { opacity: 1, transform: "scale(1.014, 0.997)", offset: 0.55 },
+
       { transform: "scale(0.998, 1.002)", offset: 0.8 },
+
       { transform: "scale(1)" }
     ],
+
     { duration: 420, easing: "cubic-bezier(.16,.82,.28,1)" }
   );
 }
+
 function xt(n, t) {
+
   if (I() || !n.animate) {
     t();
+
     return;
   }
+
   const e = n.animate(
     [
       { opacity: 1, transform: "scale(1)" },
+
       { opacity: 0, transform: "scale(0.92)" }
     ],
+
     { duration: 150, easing: "ease-in" }
   );
+
   e.onfinish = t, e.oncancel = t;
 }
+
 function ee(n) {
+
   const t = C(n), e = t ? "-35%" : "35%", i = t ? "1.5%" : "-1.5%";
+
   n.style.transformOrigin = t ? "left center" : "right center", !(I() || !n.animate) && n.animate(
     [
       { opacity: 0, transform: `translateX(${e}) scale(0.9)` },
+
       { opacity: 1, transform: `translateX(${i}) scale(1.015)`, offset: 0.62 },
+
       { transform: "translateX(0) scale(1)" }
     ],
+
     { duration: 480, easing: "cubic-bezier(.16,.82,.28,1)" }
   );
 }
+
 function ie(n, t) {
+
   const e = C(n), i = e ? "-30%" : "30%";
+
   if (n.style.transformOrigin = e ? "left center" : "right center", I() || !n.animate) {
     t();
+
     return;
   }
+
   const s = n.animate(
     [
       { opacity: 1, transform: "translateX(0) scale(1)" },
+
       { opacity: 0, transform: `translateX(${i}) scale(0.92)` }
     ],
+
     { duration: 320, easing: "cubic-bezier(.4,0,.5,1)" }
   );
+
   s.onfinish = t, s.oncancel = t;
 }
+
 const se = "ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', sans-serif", re = "system-ui, -apple-system, 'Segoe UI', sans-serif", oe = "ui-monospace, 'SF Mono', Menlo, monospace", X = "oklch(1 0 0)", it = "oklch(0.2609 0.0238 267.11)", Dt = "oklch(0.5771 0.2152 27.33)", qt = "oklch(0.5779 0.1495 51.54)", st = "oklch(0.5601 0.1577 249.8)", $t = "oklch(0.5489 0.1374 151.7)", Lt = "oklch(0.7112 0.1559 250.96)", Xt = {
+
   background: {
     default: X,
+
     // page background
     surface: X,
+
     // raised surface (cards, sheets)
     muted: "oklch(0.9906 0.0017 247.84)",
+
     // #FBFCFD  input / field rest fill
     neutral: "oklch(0.8884 0 0)",
+
     // #DADADA  neutral fill (platinum)
     neutralEmphasis: "oklch(0.4676 0 0)",
+
     // #5A5A5A  strong neutral fill (graphite)
     white: X,
+
     // explicit white fill
     rose: Dt,
+
     amber: qt,
+
     azure: st,
+
     mint: $t,
+
     accent: st
   },
+
   foreground: {
     default: it,
+
     // primary text
     muted: "oklch(0.503 0.0269 266.68)",
+
     // #5D6474  secondary text
     onEmphasis: X,
+
     // label on a saturated / graphite fill
     onNeutral: it,
+
     // label on a neutral fill
     onWhite: it,
+
     // label on the white fill
     onAccent: X
     // label on the accent fill
   },
+
   border: {
     default: "oklch(0.9439 0.004 286.32)",
+
     // #ECECEF  hairline
     focus: st
     // focus ring
   },
+
   shadow: "20, 26, 38"
   // rgb triple, consumed inside rgba()
 }, ne = {
+
   background: {
     default: "oklch(0.2198 0.006 236.84)",
+
     // #181B1D
     surface: "oklch(0.2514 0.0163 264.22)",
+
     // #1E222A
     muted: "oklch(0.288 0.018 262.21)",
+
     // #262B34
     neutral: "oklch(0.3674 0.0201 266.01)",
+
     // #3A3F4A  neutral fill + hairline
     neutralEmphasis: "oklch(0.4707 0.0189 266.12)",
+
     // #565B66
     white: "oklch(0.94 0.0071 268.55)",
+
     // #E9EBF0
     rose: Dt,
+
     amber: qt,
+
     azure: st,
+
     mint: $t,
+
     accent: Lt
   },
+
   foreground: {
     default: "oklch(0.9645 0.0054 274.97)",
+
     // #F2F3F7
     muted: "oklch(0.7595 0.0259 265.54)",
+
     // #A9B1C2
     onEmphasis: X,
+
     onNeutral: "oklch(0.9645 0.0054 274.97)",
+
     // #F2F3F7  light label on a dark neutral fill
     onWhite: it,
+
     // dark label on the near-white fill
     onAccent: "oklch(0.2514 0.0163 264.22)"
     // #1E222A  card surface, not pure black
   },
+
   border: {
     default: "oklch(0.3674 0.0201 266.01)",
+
     // #3A3F4A  shares the neutral step
     focus: Lt
   },
+
   shadow: "0, 0, 0"
 }, le = (n) => n.replace(/[A-Z]/g, (t) => "-" + t.toLowerCase());
+
 function Ot(n) {
+
   const t = {};
+
   for (const e of ["background", "foreground", "border"])
+
     for (const [i, s] of Object.entries(n[e]))
+
       t[`${e}-${le(i)}`] = s;
+
   return t.shadow = n.shadow, t;
 }
+
 const jt = Ot(Xt), bt = Ot(ne), b = jt, V = {
+
   color: Xt.border.focus,
+
   width: 4.5,
+
   gap: 0,
+
   alpha: 0.5
 }, gt = {
+
   white: { fill: "background-white", on: "foreground-on-white" },
+
   rose: { fill: "background-rose", on: "foreground-on-emphasis" },
+
   amber: { fill: "background-amber", on: "foreground-on-emphasis" },
+
   azure: { fill: "background-azure", on: "foreground-on-emphasis" },
+
   mint: { fill: "background-mint", on: "foreground-on-emphasis" },
+
   platinum: { fill: "background-neutral", on: "foreground-on-neutral" },
+
   graphite: { fill: "background-neutral-emphasis", on: "foreground-on-emphasis" }
 }, os = `
   :host {
@@ -843,22 +1339,29 @@ ${Object.entries(gt).map(
 ).join(`
 `)}
 `;
+
 function P({ color: n, on: t = null, ring: e = null } = {}) {
   const i = (s) => {
     const r = gt[s];
+
     return [
       n ? `${n}: var(--jelly-color-${r.fill}, ${b[r.fill]});` : "",
+
       e ? `${e}: var(--jelly-color-${r.fill}, ${b[r.fill]});` : "",
+
       t ? `${t}: var(--jelly-color-${r.on}, ${b[r.on]});` : ""
     ].filter(Boolean).join(" ");
   };
+
   return Object.keys(gt).map((s) => `  :host([variant="${s}"]) { ${i(s)} }`).join(`
 `);
 }
+
 function dt(n) {
   return Object.entries(n).map(([t, e]) => `  --jelly-color-${t}: ${e};`).join(`
 `);
 }
+
 function ae() {
   return `
 @layer jelly {
@@ -893,96 +1396,130 @@ ${dt(bt)}
 }
 `;
 }
+
 function z() {
   if (typeof document > "u" || document.querySelector("style[data-jelly-tokens]"))
+
     return;
+
   const n = document.createElement("style");
+
   n.setAttribute("data-jelly-tokens", ""), n.textContent = ae(), document.head.appendChild(n);
 }
+
 function ns(n = "auto") {
   z(), n === "light" || n === "dark" ? document.documentElement.setAttribute("data-jelly-mode", n) : document.documentElement.removeAttribute("data-jelly-mode"), ot();
 }
+
 function ls() {
   const n = document.documentElement.getAttribute("data-jelly-mode");
+
   return n === "light" || n === "dark" ? n : "auto";
 }
+
 function as() {
   const n = document.documentElement.getAttribute("data-jelly-mode");
+
   return n === "dark" ? !0 : n === "light" ? !1 : typeof matchMedia == "function" && matchMedia("(prefers-color-scheme: dark)").matches;
 }
+
 function ot() {
   window.dispatchEvent(new CustomEvent("jelly-theme-change"));
 }
+
 function hs(n) {
   return window.addEventListener("jelly-theme-change", n), () => window.removeEventListener("jelly-theme-change", n);
 }
+
 typeof matchMedia == "function" && matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => ot());
+
 z();
+
 const he = ":host{display:inline-block;position:relative;box-sizing:border-box;vertical-align:middle;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}:host([hidden]){display:none}.jelly-canvas{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0}.jelly-content{position:relative;z-index:1;width:100%;height:100%}";
+
 class M extends HTMLElement {
   constructor() {
     super(), this.body = null, this.built = !1, this.dpr = 1, this.cssW = 0, this.cssH = 0, this.config = void 0, this.resizeObserver = null, this.attributeObserver = null, this.focusVisible = !1, this.frameDt = 0, this.colorEasing = !1, this.eased = {}, this.pressPointerId = null, this.keyboardActive = !1, this.onThemeChange = () => {
       this.built && (this.applyShape(), this.onShape()), this.requestFrame();
     }, this.onMotionChange = () => this.requestFrame(), this.onWindowResize = () => this.applyShape(), this._hoverRafId = 0, this._hoverPointerX = 0, this._hoverPointerY = 0, this._hoverElIndex = 0, this._hoverFrame = () => {
       if (!this._hoverRafId || !this.body) return;
+
       this._hoverRafId = requestAnimationFrame(this._hoverFrame);
+
       const t = this.toLocal(this._hoverPointerX, this._hoverPointerY);
+
       this.body.state.pointerLocalX = t.x, this.body.state.pointerLocalY = t.y;
+
       const e = performance.now(), i = this._hoverElIndex, s = 5e-4, r = _(e * s, i * 101), l = 0.75 + (J(r, 6) + 1) / 2 * 0.25, c = _(e * s * 0.25, i * 307), a = 0.8 + (J(c, 5) + 1) / 2 * 0.4;
+
       this.body.state.hoverForce = l * a, this.requestFrame();
     }, this.attachShadow({ mode: "open", delegatesFocus: !0 });
   }
+
   static {
     this.PAD = 48;
   }
+
   /* ---- Subclass hooks ---------------------------------------------- */
   // Extra CSS (string) for the shadow root
   styles() {
     return "";
   }
+
   // Interactive markup that sits above the canvas
   content() {
     return "<slot></slot>";
   }
+
   // Given the measured host size, return the jelly shape to build
   shape(t, e) {
     return { width: t, height: e, radius: Math.min(t, e) / 2 };
   }
+
   // Resolve the current fill color (the canvas reads the computed token)
   fill() {
     return getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || b["background-accent"];
   }
+
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
   }
+
   // Called whenever the shape (re)builds
   onShape() {
   }
+
   // One animation step. Return true to keep animating.
   frame(t) {
     return this.defaultFrame(t);
   }
+
   /* ---- Lifecycle --------------------------------------------------- */
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
     z(), j(this), this.built || this.build(), this.observeResize(), this.attributeObserver || (this.attributeObserver = new MutationObserver(() => this.requestFrame()), this.attributeObserver.observe(this, { attributes: !0 })), window.addEventListener("jelly-theme-change", this.onThemeChange), window.addEventListener("jelly-motion-change", this.onMotionChange), window.addEventListener("resize", this.onWindowResize, { passive: !0 }), this.requestFrame();
   }
+
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
     zt.drop(this), window.removeEventListener("jelly-theme-change", this.onThemeChange), window.removeEventListener("jelly-motion-change", this.onMotionChange), window.removeEventListener("resize", this.onWindowResize), this.resizeObserver && (this.resizeObserver.disconnect(), this.resizeObserver = null), this.attributeObserver && (this.attributeObserver.disconnect(), this.attributeObserver = null);
   }
+
   // True when the user prefers reduced motion (checked live, not cached)
   get reducedMotion() {
     return I();
   }
+
   // Render the shadow DOM once and let the subclass wire itself up
   build() {
     this.shadowRoot.innerHTML = `<style>${he}${this.styles()}</style><canvas class="jelly-canvas" part="jelly" aria-hidden="true"></canvas><div class="jelly-content">${this.content()}</div>`, this.canvas = this.shadowRoot.querySelector(".jelly-canvas"), this.ctx = this.canvas.getContext("2d"), this.built = !0, this.onBuilt();
   }
+
   // Rebuild the shape whenever the host's layout size changes
   observeResize() {
     this.resizeObserver || (this.resizeObserver = new ResizeObserver(() => this.applyShape()), this.resizeObserver.observe(this), this.applyShape());
   }
+
   /*
    * The region the jelly shape occupies, in host-local pixels. Defaults to
    * the whole host; a component can mark an inner element with
@@ -991,24 +1528,37 @@ class M extends HTMLElement {
    */
   jellyBox() {
     const t = this.getBoundingClientRect(), e = this.offsetWidth > 0 ? t.width / this.offsetWidth : 1, i = this.offsetHeight > 0 ? t.height / this.offsetHeight : 1, s = e > 1e-3 ? 1 / e : 1, r = i > 1e-3 ? 1 / i : 1, o = this.shadowRoot.querySelector("[data-jelly-box]"), l = o ? o.getBoundingClientRect() : t;
+
     return {
       width: l.width * s,
+
       height: l.height * r,
+
       offsetX: (l.left + l.width / 2 - t.left) * s,
+
       offsetY: (l.top + l.height / 2 - t.top) * r,
+
       // Screen coords stay in screen space for pointer → local mapping
       screenX: l.left + l.width / 2,
+
       screenY: l.top + l.height / 2
     };
   }
+
   // Size the canvas for the current shape and (re)build the physics body
   applyShape() {
     if (!this.built)
+
       return;
+
     const t = this.jellyBox();
+
     if (t.width < 1 || t.height < 1)
+
       return;
+
     const e = this.shape(t.width, t.height), i = this.constructor.PAD, s = e.width + i * 2, r = e.height + i * 2, o = Math.min(window.devicePixelRatio || 1, 3), l = Math.round(s * o), c = Math.round(r * o);
+
     if (this.canvas.style.left = `${t.offsetX}px`, this.canvas.style.top = `${t.offsetY}px`, !(this.body && this.canvas.width === l && this.canvas.height === c)) {
       this.dpr = o, this.cssW = s, this.cssH = r, this.canvas.style.width = `${s}px`, this.canvas.style.height = `${r}px`, this.canvas.width = l, this.canvas.height = c, this.ctx.setTransform(o, 0, 0, o, 0, 0), this.body ? this.body.resize(e.width, e.height, e.radius) : this.body = new $({
         width: e.width,
@@ -1016,14 +1566,17 @@ class M extends HTMLElement {
         radius: e.radius,
         config: this.config
       }), this.onShape();
+
       try {
         this.frame(0);
       } catch (h) {
         console.error("Jelly UI paint error", h);
       }
+
       this.requestFrame();
     }
   }
+
   /*
    * Rebuild the membrane in place after a shape attribute change (e.g. a
    * radius swap) that doesn't resize the box - applyShape would early-return
@@ -1031,18 +1584,26 @@ class M extends HTMLElement {
    */
   reshapeMembrane() {
     if (!this.built || !this.body)
+
       return;
+
     const t = this.jellyBox();
+
     if (t.width < 1 || t.height < 1)
+
       return;
+
     const e = this.shape(t.width, t.height);
+
     this.body.resize(e.width, e.height, e.radius), this.requestFrame();
   }
+
   /* ---- Rendering --------------------------------------------------- */
   // Wipe the canvas for the next paint
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.cssW, this.cssH);
   }
+
   /*
    * Paint one body centered in the canvas (with optional pixel offset).
    * Flat solid fill - no gradients or shading.
@@ -1050,52 +1611,77 @@ class M extends HTMLElement {
   paintBody(t, e = {}) {
     const {
       fill: i = this.fill(),
+
       cx: s = 0,
+
       cy: r = 0,
+
       alpha: o = 1,
+
       ctx: l = this.ctx,
+
       cssW: c = this.cssW,
+
       cssH: h = this.cssH,
+
       ring: a = null,
+
       scaleX: d = 1,
+
       scaleY: p = 1,
+
       border: u = null,
+
       // Optional per-point post-projection deform (x, y, z) → (x, y, z).
       // Used for effects the physics shouldn't carry, e.g. tapering a
       // slider thumb's tail.
       warp: m = null,
+
       // Crossfade the fill toward its target instead of snapping (so variant /
       // state changes ease). Components that paint more than one body per frame
       // pass a distinct easeKey per body so their colours don't share a track.
       ease: w = !0,
+
       easeKey: f = "body"
     } = e, x = w ? this.easeColor(f, i, this.frameDt || 0) : i, y = c / 2 + s, k = h / 2 + r, L = m ? (E) => m(t.projectPoint(E)) : (E) => t.projectPoint(E);
+
     if (l.save(), l.globalAlpha = o, l.translate(y, k), l.rotate(t.state.rotateZ), (d !== 1 || p !== 1) && l.scale(d, p), a) {
       const E = t.getSurfacePoints(a.gap + a.width / 2).map(L);
+
       ct(l, E), l.lineWidth = a.width, l.strokeStyle = a.color, l.lineJoin = "round", l.stroke();
     }
+
     const S = t.getSurfacePoints().map(L);
+
     ct(l, S), l.fillStyle = x, l.fill(), u && (ct(l, S), l.lineWidth = u.width, l.strokeStyle = u.color, l.lineJoin = "round", l.stroke()), l.restore();
   }
+
   // The standard frame: advance physics, repaint, sleep when at rest
   defaultFrame(t) {
     const e = this.body;
+
     return e ? (e.update(t), this.clearCanvas(), this.paintBody(e, { ring: this.focusRing(), border: this.surfaceBorder() }), !e.isResting()) : !1;
   }
+
   // Border descriptor painted on the jelly surface, else null
   surfaceBorder() {
     return null;
   }
+
   /* ---- Focus ring -------------------------------------------------- */
   // Ring descriptor when keyboard-focused, else null. Override as needed.
   // Width and gap resolve from --jelly-ring-width / --jelly-ring-gap so the
   // ring geometry is themeable, not only its color.
   focusRing() {
     if (!this.focusVisible)
+
       return null;
+
     const t = getComputedStyle(this), e = parseFloat(t.getPropertyValue("--jelly-ring-width")) || V.width, i = parseFloat(t.getPropertyValue("--jelly-ring-gap"));
+
     return { color: this.ringColor(), width: e, gap: Number.isFinite(i) ? i : V.gap };
   }
+
   // The focus ring color, softly blended toward transparent - it tracks the
   // component's own --jelly-ring (usually its fill hue) so the ring reads as
   // part of the control rather than a generic blue outline.
@@ -1103,8 +1689,10 @@ class M extends HTMLElement {
     const [t, e, i, s] = this.rgbaTuple(
       `var(--jelly-ring, var(--jelly-color-border-focus, ${b["border-focus"]}))`
     );
+
     return this.colorString([t, e, i, s * V.alpha], { forceAlpha: !0 });
   }
+
   /*
    * Ease a fill color toward its target so a variant / state change crossfades
    * rather than snapping. Keyed so a component painting several bodies a frame
@@ -1114,43 +1702,62 @@ class M extends HTMLElement {
    */
   easeColor(t, e, i) {
     const s = this.rgbaTuple(e), r = this.eased[t];
+
     if (!r || this.reducedMotion)
+
       return this.eased[t] = s, this.colorString(s);
+
     if (Math.abs(s[0] - r[0]) <= 0.4 && Math.abs(s[1] - r[1]) <= 0.4 && Math.abs(s[2] - r[2]) <= 0.4 && Math.abs(s[3] - r[3]) <= 2e-3)
+
       return this.eased[t] = s, this.colorString(s);
+
     if (this.colorEasing = !0, i > 0) {
       const l = 1 - Math.exp(-i * 10);
+
       for (let c = 0; c < 4; c++)
+
         r[c] += (s[c] - r[c]) * l;
     }
+
     return this.colorString(r);
   }
+
   // Resolve a color expression to an [r, g, b, a] tuple. RGB channels use
   // 0–255; alpha uses 0–1. Keeping alpha here prevents short hex colors such
   // as #fff0 from becoming opaque as they pass through canvas animation.
   rgbaTuple(t) {
     const e = this.resolveColor(String(t)), i = e.match(/[\d.]+/g);
+
     if (!i)
+
       return [0, 0, 0, 1];
+
     const s = i.slice(0, 3).map(Number), r = Math.max(0, Math.min(1, Number(i[3] ?? 1))), o = e.startsWith("color(") ? s.map((l) => Math.round(l * 255)) : s;
+
     return [o[0], o[1], o[2], r];
   }
+
   // Backward-compatible RGB-only view for calculations that do not need alpha
   rgbTriple(t) {
     return this.rgbaTuple(t).slice(0, 3);
   }
+
   // Serialize a tuple to a canvas-safe legacy color. Keep opaque colors as
   // rgb() for compactness; rgba() is required whenever transparency matters.
   colorString([t, e, i, s = 1], { forceAlpha: r = !1 } = {}) {
     const o = Math.round(t), l = Math.round(e), c = Math.round(i), h = Math.max(0, Math.min(1, s));
+
     return !r && h >= 0.9995 ? `rgb(${o}, ${l}, ${c})` : `rgba(${o}, ${l}, ${c}, ${Number(h.toFixed(4))})`;
   }
+
   // Blend two live CSS color expressions. Shared by controls that animate
   // between semantic off/on colors, including their alpha channels.
   mixColor(t, e, i) {
     const s = this.rgbaTuple(t), r = this.rgbaTuple(e), o = Math.max(0, Math.min(1, i)), l = s.map((c, h) => c + (r[h] - c) * o);
+
     return this.colorString(l);
   }
+
   // Resolve a CSS color expression (var(), color-mix(), …) to a concrete sRGB
   // color. The token values are oklch(), and getComputedStyle preserves oklch()
   // in modern browsers - so we wrap the expression in color-mix(in srgb, …) to
@@ -1159,6 +1766,7 @@ class M extends HTMLElement {
   resolveColor(t) {
     return this.probe || (this.probe = document.createElement("span"), this.probe.setAttribute("aria-hidden", "true"), this.probe.style.cssText = "position:absolute;width:0;height:0;visibility:hidden;pointer-events:none", this.shadowRoot.appendChild(this.probe)), this.probe.style.color = `color-mix(in srgb, ${t} 100%, transparent)`, getComputedStyle(this.probe).color;
   }
+
   // Track keyboard-focus (:focus-visible) on an inner control for the ring
   trackFocus(t) {
     t.addEventListener("focus", () => {
@@ -1167,52 +1775,69 @@ class M extends HTMLElement {
       this.focusVisible = !1, this.requestFrame();
     });
   }
+
   // Route host.focus() into an inner shadow control
   useHostFocusTarget(t) {
     t && (this.hostFocusTarget = t, this.syncHostFocusTarget(), this.hostFocusHandler || (this.hostFocusHandler = (e) => {
       e.target !== this || !this.hostFocusTarget || this.shadowRoot?.activeElement || this.hostFocusTarget.focus({ preventScroll: !0 });
     }, this.addEventListener("focus", this.hostFocusHandler)));
   }
+
   // Keep the inner focus target's tab order in sync with disabled state
   syncHostFocusTarget() {
     this.hostFocusTarget && (this.hostFocusTarget.tabIndex = this.hasAttribute("disabled") ? -1 : 0, this.removeAttribute("tabindex"));
   }
+
   /* ---- Interaction helpers ----------------------------------------- */
   // Ask the shared engine for animation frames until the body rests
   requestFrame() {
     zt.wake(this);
   }
+
   // Convert client coords into the body's local (shape-centered) frame
   toLocal(t, e, i = this.body) {
     const s = this.jellyBox(), r = this.getBoundingClientRect(), o = this.offsetWidth > 0 ? r.width / this.offsetWidth : 1, l = this.offsetHeight > 0 ? r.height / this.offsetHeight : 1, c = (t - s.screenX) / (o > 1e-3 ? o : 1), h = (e - s.screenY) / (l > 1e-3 ? l : 1), a = -(i ? i.state.rotateZ : 0), d = Math.cos(a), p = Math.sin(a);
+
     return { x: c * d - h * p, y: c * p + h * d };
   }
+
   // Press the jelly at a screen coordinate
   pressAt(t, e, i = 1.12) {
     if (this.reducedMotion || !this.body)
+
       return;
+
     const s = this.toLocal(t, e);
+
     this.body.pressAtLocal(s.x, s.y, i), this.requestFrame();
   }
+
   // Drag the held press to a new screen coordinate
   moveAt(t, e) {
     if (this.reducedMotion || !this.body)
+
       return;
+
     const i = this.toLocal(t, e);
+
     this.body.moveToLocal(i.x, i.y), this.requestFrame();
   }
+
   // Release the held press and let the body settle
   releaseBody() {
     this.body && (this.body.release(), this.requestFrame());
   }
+
   // Sustained center squish (keyboard press-and-hold)
   centerPulse(t = 1) {
     this.reducedMotion || !this.body || (this.body.centerPulse(t), this.requestFrame());
   }
+
   // One-shot center squish that settles on its own (focus, toggle, grab)
   centerPop(t = 1) {
     this.reducedMotion || !this.body || (this.body.centerPop(t), this.requestFrame());
   }
+
   /*
    * Wire the standard press feel onto an inner control: pointer presses
    * dent the jelly under the finger and follow it, Enter / Space squish
@@ -1224,18 +1849,22 @@ class M extends HTMLElement {
     this.pressPointerId = null, t.addEventListener("pointerdown", (r) => {
       if (!(i() || this.pressPointerId !== null)) {
         this.pressPointerId = r.pointerId;
+
         try {
           t.setPointerCapture(r.pointerId);
         } catch {
         }
+
         this.pressAt(r.clientX, r.clientY), F();
       }
     }), t.addEventListener("pointermove", (r) => {
       r.pointerId === this.pressPointerId && this.moveAt(r.clientX, r.clientY);
     });
+
     const s = (r) => {
       r.pointerId === this.pressPointerId && (this.pressPointerId = null, this.releaseBody());
     };
+
     t.addEventListener("pointerup", s), t.addEventListener("pointercancel", s), t.addEventListener("lostpointercapture", s), e && (t.addEventListener("keydown", (r) => {
       r.key !== "Enter" && r.key !== " " || this.keyboardActive || r.repeat || i() || (this.keyboardActive = !0, this.centerPulse(1.12), F());
     }), t.addEventListener("keyup", (r) => {
@@ -1244,6 +1873,7 @@ class M extends HTMLElement {
       this.keyboardActive = !1, this.pressPointerId = null, this.releaseBody();
     }));
   }
+
   /**
    * Start the per-frame hover loop.  Called on pointerenter.
    * `elIndex` gives each element a unique noise seed so they don't
@@ -1252,19 +1882,24 @@ class M extends HTMLElement {
   startHoverLoop(t) {
     this._hoverRafId !== 0 || this.reducedMotion || !this.body || (this._hoverElIndex = t, this._hoverRafId = requestAnimationFrame(this._hoverFrame));
   }
+
   /** Stop the hover loop and let residual energy dissipate naturally. */
   stopHoverLoop() {
     this._hoverRafId !== 0 && (cancelAnimationFrame(this._hoverRafId), this._hoverRafId = 0, this.body && (this.body.state.hoverForce = 0, this.requestFrame()));
   }
+
   /** Update the pointer position for the hover membrane force. */
   updateHoverPointer(t, e) {
     this._hoverPointerX = t, this._hoverPointerY = e;
   }
 }
+
 if (typeof document < "u" && typeof MutationObserver == "function") {
   const n = new MutationObserver(() => ot());
+
   n.observe(document.documentElement, { attributes: !0, attributeFilter: ["dir"] }), document.body && n.observe(document.body, { attributes: !0, attributeFilter: ["dir"] });
 }
+
 const ce = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 8.5a.75.75 0 0 0-.75.75v5a.75.75 0 0 0 1.5 0v-5a.75.75 0 0 0-.75-.75ZM12 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>\r
 `, de = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm3.22 6.97-4.47 4.47-1.97-1.97a.75.75 0 0 0-1.06 1.06l2.5 2.5c.3.3.77.3 1.06 0l5-5a.75.75 0 1 0-1.06-1.06Z"/></svg>\r
 `, ue = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.14 3.7a3.25 3.25 0 0 1 5.72 0l6.74 12.5a3.25 3.25 0 0 1-2.86 4.8H5.25a3.25 3.25 0 0 1-2.86-4.8L9.14 3.7ZM12 15a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0-7.5a.75.75 0 0 0-.75.75v4.5a.75.75 0 0 0 1.5 0v-4.5A.75.75 0 0 0 12 7.5Z"/></svg>\r
@@ -1289,26 +1924,45 @@ const ce = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="cu
 </svg>\r
 `, ze = {
   info: ce,
+
   "checkmark-circle": de,
+
   warning: ue,
+
   "error-circle": pe,
+
   dismiss: be,
+
   search: ge,
+
   link: ye,
+
   settings: me,
+
   star: fe,
+
   heart: ve,
+
   "weather-moon": xe,
+
   "weather-sunny": je,
+
   "theme-auto": we,
+
   "animal-rabbit-filled": ke,
+
   "animal-rabbit-off-filled": Ce,
+
   "animal-rabbit-regular": Ae
 };
+
 function yt(n, { size: t = 20, label: e = null } = {}) {
   const i = ze[n];
+
   if (!i)
+
     return "";
+
   const s = e ? `role="img" aria-label="${e.replace(/"/g, "&quot;")}"` : 'aria-hidden="true"';
   return i.replace("<svg ", `<svg width="${t}" height="${t}" ${s} `);
 }
@@ -4650,6 +5304,7 @@ class Ii extends HTMLElement {
       <style>${Fi}</style>
 
       ${e ? `<div class="labelled${t ? " vertical" : ""}"><span class="label">${H(e)}</span></div>` : '<div class="line"></div>'}
+
     `;
   }
 }
@@ -4785,6 +5440,7 @@ class qi extends HTMLElement {
           ${t.map(
       (r, o) => `<jelly-segment value="${H(this.panelValue(r, o))}">${H(this.panelLabel(r, o))}</jelly-segment>`
     ).join("")}
+
         </jelly-segmented>
       </div>
 
@@ -4884,6 +5540,7 @@ class Xi extends HTMLElement {
 
       <nav aria-label="Breadcrumb"><ol>${e.map((i, s) => {
       const r = s === e.length - 1;
+
       return (r ? `<li class="current" aria-current="page">${H(i.text)}</li>` : `<li><a href="${H(i.href || "#")}">${H(i.text)}</a></li>`) + (r ? "" : '<li class="separator" aria-hidden="true">›</li>');
     }).join("")}</ol></nav>
     `;

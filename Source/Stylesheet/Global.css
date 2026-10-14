@@ -12,7 +12,7 @@ html {
 	font-size-adjust: 0.48;
 }
 
-/* Jelly UI: flat corners everywhere per Nocturnal Field Record */
+/* Jelly UI: flat corners everywhere per Daylight Field Record */
 jelly-card,
 jelly-button,
 jelly-icon-button,
@@ -24,7 +24,7 @@ jelly-badge {
 	--jelly-badge-radius: 0 !important;
 }
 
-/* Warm-white jelly-card: ink text on the paper card surface (single dark theme) */
+/* White jelly-card: ink text on the card surface (single daylight theme) */
 jelly-card {
 	--jelly-card-color: var(--CardForeground);
 }
@@ -39,19 +39,19 @@ jelly-button.PlatformDownloadButton {
 	--jelly-button-padding-inline: 1rem !important;
 }
 
-/* Warm-white Tailwind surfaces: ink text on the paper card (single dark theme).
+/* White Tailwind surfaces: ink text on the card (single daylight theme).
    Any text inside bg-card/bg-secondary/bg-popover without an explicit text-*
-   class would otherwise inherit the light --Foreground from the body. */
+   class would otherwise inherit the ambient color from the body. */
 .bg-card,
 .bg-secondary,
 .bg-popover {
 	color: var(--CardForeground);
 }
 
-/* RichText inline-code copy button - surface-aware (single dark theme).
-   Default (dark canvas): light button + dark icon (inverted).
-   Warm-white surfaces (.bg-card/.bg-secondary/.bg-popover/jelly-card):
-   black button + light icon, per user request. */
+/* RichText inline-code copy button - surface-aware (single daylight theme).
+   Default (creme canvas): white button + ink icon.
+   White surfaces (.bg-card/.bg-secondary/.bg-popover/jelly-card):
+   creme button + ink icon. */
 .RichTextCopyButton {
 	background: var(--Card);
 	color: var(--CardForeground);
@@ -65,8 +65,8 @@ jelly-card .RichTextCopyButton {
 }
 
 /* Fallback: render jelly-badge as a visible pill before hydration completes.
-   Without this, the custom element renders as bare inherited text (light
-   gray on the dark canvas) until the shadow-DOM styles upgrade it. */
+   Without this, the custom element renders as bare inherited text (gray
+   on the creme canvas) until the shadow-DOM styles upgrade it. */
 jelly-badge:not(:defined) {
 	display: inline-flex;
 	align-items: center;
@@ -241,12 +241,12 @@ img {
 }
 
 ::-webkit-scrollbar-thumb {
-	background: rgba(255, 255, 255, 0.18);
+	background: rgba(7, 7, 7, 0.18);
 	border-radius: 99px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba(255, 255, 255, 0.32);
+	background: rgba(7, 7, 7, 0.32);
 }
 
 ::-webkit-scrollbar-corner {
@@ -256,7 +256,7 @@ img {
 /* Firefox */
 html {
 	scrollbar-width: thin;
-	scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+	scrollbar-color: rgba(7, 7, 7, 0.18) transparent;
 }
 
 /* ─── Masonry card responsive col-span ─────────────────────────── */

@@ -256,12 +256,14 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 									{(Field.options || []).map((Opt) => (
 										<label
 											key={Opt}
+
 											className="flex cursor-pointer items-center gap-2.5 text-sm"
 										>
 											<input
 												type="checkbox"
 												className="accent-[var(--Primary)]"
 												checked={Selected.includes(Opt)}
+
 												onChange={() =>
 													HandleCheckboxGroup(
 														Field.id,
@@ -457,6 +459,7 @@ const ContactFormInner = ({ Config }: { Config: RequestConfig }) => {
 				{Config.ConversationHref && (
 					<a
 						href={Config.ConversationHref}
+
 						target="_blank"
 						rel="noopener noreferrer"
 						className="StaccatoButton flex w-full items-center gap-3 border border-[var(--Border)] px-5 py-3 font-medium transition-all hover:bg-secondary focus:outline-2 focus:outline-[var(--Primary)]"

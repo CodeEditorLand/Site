@@ -66,7 +66,7 @@ const DynamicVerificationInfo = ({
 							aria-hidden="true"
 						/>
 					</div>
-					<div className="bg-[color-mix(in_srgb,var(--Mute)_50%,transparent)] flex items-center gap-2 p-3">
+					<div className="flex items-center gap-2 bg-[color-mix(in_srgb,var(--Mute)_50%,transparent)] p-3">
 						<code className="flex-1 truncate font-mono text-card-foreground">
 							{Information.SHA256}
 						</code>
@@ -105,7 +105,7 @@ const DynamicVerificationInfo = ({
 							aria-hidden="true"
 						/>
 					</div>
-					<div className="bg-[color-mix(in_srgb,var(--Mute)_50%,transparent)] flex items-center gap-2 p-3">
+					<div className="flex items-center gap-2 bg-[color-mix(in_srgb,var(--Mute)_50%,transparent)] p-3">
 						<code className="flex-1 truncate font-mono text-card-foreground">
 							{Information.PGPSignature}
 						</code>
@@ -162,6 +162,7 @@ const DynamicVerificationInfo = ({
 				<div className="pt-4">
 					<DynamicButton
 						Content={{ ...Content.VerifyButton, FullWidth: true }}
+
 						OnAction={() =>
 							OnVerify?.(IntegrityVerification.SHA256 || "")
 						}

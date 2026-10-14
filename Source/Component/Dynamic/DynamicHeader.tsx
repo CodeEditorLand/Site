@@ -41,7 +41,7 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 						aria-hidden="true"
 					>
 						<ThemeImage
-							src="/Asset/Dark/Logo/Glyph/Land.svg"
+							src="/Asset/Logo/Glyph/Land.svg"
 							alt="Code Editor Land"
 							title="Code Editor Land"
 							width={32}
@@ -60,7 +60,9 @@ const DynamicHeader = ({ Content, ClassName }: Property) => {
 					{Navigation.map((Link, Index) => (
 						<a
 							key={Index}
+
 							href={Link.Href}
+
 							className={`transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
 								Link.IsActive
 									? "font-medium text-foreground"

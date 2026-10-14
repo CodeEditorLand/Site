@@ -3,20 +3,20 @@ import * as lucide from "lucide-react";
 import { Button } from "./Button";
 
 /**
- * ThemeToggle - Nocturnal Field Record.
- * Single theme: renders a static moon icon indicating nocturnal mode.
+ * ThemeToggle - Daylight Field Record.
+ * Single theme: renders a static sun icon indicating daylight mode.
  */
 const ThemeToggle = ({ ClassName }: { ClassName?: string }) => {
 	return (
 		<Button
 			variant="ghost"
 			size="icon"
-			aria-label="Nocturnal theme active"
-			title="Nocturnal"
+			aria-label="Daylight theme active"
+			title="Daylight"
 			className={ClassName}
 			disabled
 		>
-			<lucide.Moon className="h-4 w-4 opacity-50" />
+			<lucide.Sun className="h-4 w-4 opacity-50" />
 		</Button>
 	);
 };

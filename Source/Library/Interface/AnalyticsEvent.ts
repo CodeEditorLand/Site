@@ -1,4 +1,5 @@
 export default interface AnalyticsEvent {
+
 	id: string;
 
 	type: "pageview" | "download" | "click" | "error" | "custom";

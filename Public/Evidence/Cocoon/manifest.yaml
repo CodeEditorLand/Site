@@ -5,10 +5,10 @@ palette: [ivory, amber, shadow]
 crop: corner / mesh extends beyond frame
 alt: Woven fiber in macro detail
 usage:
-  - cocoon-element-page
-  - detail-macro
+    - cocoon-element-page
+    - detail-macro
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

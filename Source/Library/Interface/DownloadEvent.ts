@@ -1,4 +1,5 @@
 export default interface DownloadEvent {
+
 	id: string;
 
 	downloadId: string;

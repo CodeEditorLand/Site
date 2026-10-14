@@ -83,12 +83,13 @@ const DynamicForgotPassword = ({
 								<form
 									className="space-y-4"
 									onSubmit={HandleSubmit}
+
 									aria-label="Password reset request form"
 								>
 									<div aria-live="polite" aria-atomic="true">
 										{(ErrorMessage || InternalError) && (
 											<div
-												className="bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] flat p-3 text-destructive"
+												className="flat bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] p-3 text-destructive"
 												role="alert"
 											>
 												{ErrorMessage || InternalError}
@@ -101,6 +102,7 @@ const DynamicForgotPassword = ({
 											...EmailField,
 											OnChange: SetEmail,
 										}}
+
 										Id="email"
 									/>
 
@@ -110,6 +112,7 @@ const DynamicForgotPassword = ({
 											Type: "submit",
 											FullWidth: true,
 										}}
+
 										IsLoading={IsLoading}
 									/>
 								</form>
@@ -135,6 +138,7 @@ const DynamicForgotPassword = ({
 													strokeLinecap="round"
 													strokeLinejoin="round"
 													strokeWidth={2}
+
 													d="M5 13l4 4L19 7"
 												/>
 											</svg>
@@ -156,6 +160,7 @@ const DynamicForgotPassword = ({
 													Variant: "outline",
 													FullWidth: true,
 												}}
+
 												OnAction={() => OnResend?.()}
 											/>
 											<p className="mt-2 text-muted-foreground">

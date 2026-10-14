@@ -181,7 +181,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 													aria-hidden="true"
 												>
 													<Icon
-														className="StaccatoIcon h-5 w-5 text-secondary-fg"
+														className="StaccatoIcon text-secondary-fg h-5 w-5"
 														aria-hidden="true"
 													/>
 												</div>
@@ -195,6 +195,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										<div className="text-card-foreground opacity-50">
 											<RichText
 												Text={Item.Detail}
+
 												Terms
 											/>
 										</div>
@@ -240,6 +241,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 								{Variant.map((Item) => (
 									<tr
 										key={Item.Identifier}
+
 										className="border-b border-[var(--Border)] last:border-b-0"
 									>
 										<td className="px-4 py-3 font-mono text-foreground">
@@ -267,6 +269,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 
 												<span
 													className={`StaccatoDot flat h-2 w-2 ${VariantStatusColor[Item.Status]}`}
+
 													aria-hidden="true"
 												/>
 											</Badge>
@@ -305,7 +308,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 												aria-hidden="true"
 											>
 												<Icon
-													className="StaccatoIcon h-5 w-5 text-secondary-fg"
+													className="StaccatoIcon text-secondary-fg h-5 w-5"
 													aria-hidden="true"
 												/>
 											</div>
@@ -315,9 +318,9 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 										<RichText Text={Item.Description} />
 									</div>
 									<div className="flat flex items-baseline bg-secondary px-3 py-2">
-										<code className="font-mono text-secondary-fg">
-																{Item.Command}
-															</code>
+										<code className="text-secondary-fg font-mono">
+											{Item.Command}
+										</code>
 										<button
 											type="button"
 											onClick={async () => {
@@ -363,6 +366,7 @@ const DynamicTransparency = ({ Content, ClassName }: Property) => {
 					<div className="text-center">
 						<a
 							href={SourceURL}
+
 							target="_blank"
 							rel="noopener noreferrer"
 							className="inline-flex items-center text-foreground underline underline-offset-4 opacity-70 hover:opacity-100"

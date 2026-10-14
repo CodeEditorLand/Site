@@ -7,6 +7,7 @@ const Result = (await import("./Schema.js")).default.safeParse({
 });
 
 if (!Result.success) {
+
 	console.error(
 		"[Configuration] Final merged configuration is invalid:",
 

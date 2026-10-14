@@ -1,5 +1,7 @@
 import { readFileSync, existsSync, readdirSync } from "node:fs";
+
 import { createHash } from "node:crypto";
+
 import { resolve } from "node:path";
 
 /**
@@ -13,6 +15,7 @@ import { resolve } from "node:path";
  * copy the referenced hashes into Source/Content/Mermaid/.
  */
 export default function remarkMermaid() {
+
 	const SvgDir = resolve(process.cwd(), "Source/Content/Mermaid");
 
 	let AvailableHashes: Set<string> | null = null;
@@ -24,7 +27,9 @@ export default function remarkMermaid() {
 			process.stderr.write(
 				`[remarkMermaid] SVG directory not found at ${SvgDir}\n`,
 			);
+
 			AvailableHashes = new Set();
+
 			return;
 		}
 
@@ -41,16 +46,21 @@ export default function remarkMermaid() {
 
 	return (Tree: { type: string; children?: any[] }) => {
 		LoadAvailableHashes();
+
 		if (!AvailableHashes || AvailableHashes.size === 0) return;
+
 		Walk(Tree, AvailableHashes, SvgDir);
 	};
 }
 
 function Walk(
 	Node: { type: string; children?: any[]; [key: string]: any },
+
 	AvailableHashes: Set<string>,
+
 	SvgDir: string,
 ) {
+
 	if (!Node.children) return;
 
 	for (let I = 0; I < Node.children.length; I++) {
@@ -58,6 +68,7 @@ function Walk(
 
 		if (Child.type === "code" && Child.lang === "mermaid") {
 			const Svg = RenderMermaidBlock(Child, AvailableHashes, SvgDir);
+
 			if (Svg) {
 				Node.children[I] = Svg;
 			}
@@ -69,10 +80,14 @@ function Walk(
 
 function RenderMermaidBlock(
 	Node: { value?: string; [key: string]: any },
+
 	AvailableHashes: Set<string>,
+
 	SvgDir: string,
 ): any | null {
+
 	const Code = (Node.value || "").trim();
+
 	if (!Code) return null;
 
 	const Hash = createHash("sha256").update(Code).digest("hex").slice(0, 16);
@@ -81,6 +96,7 @@ function RenderMermaidBlock(
 		process.stderr.write(
 			`[remarkMermaid] No rendered SVG found for hash ${Hash}\n`,
 		);
+
 		return null;
 	}
 
@@ -88,11 +104,14 @@ function RenderMermaidBlock(
 
 	try {
 		const SvgContent = readFileSync(SvgPath, "utf-8").trim();
+
 		const SvgMatch = SvgContent.match(/<svg[\s\S]*?<\/svg>/i);
+
 		if (!SvgMatch) {
 			process.stderr.write(
 				`[remarkMermaid] No SVG element in ${SvgPath}\n`,
 			);
+
 			return null;
 		}
 
@@ -103,12 +122,14 @@ function RenderMermaidBlock(
 
 		return {
 			type: "html",
+
 			value: CleanSvg,
 		};
 	} catch (Err) {
 		process.stderr.write(
 			`[remarkMermaid] Failed to read SVG ${SvgPath}: ${Err}\n`,
 		);
+
 		return null;
 	}
 }

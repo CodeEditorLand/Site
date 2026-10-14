@@ -9,6 +9,7 @@ import { GetWorkersClient } from "../WorkerClient";
  * Provides clean, type-safe interface for download operations
  */
 export class DownloadsAPI {
+
 	private Workers = GetWorkersClient();
 
 	async GetBinaries(
@@ -77,6 +78,7 @@ export class DownloadsAPI {
 
 			signatureUrl: string | null;
 		}
+
 	> {
 		const Response = await this.Workers.Download.GetInfo(Identifier);
 

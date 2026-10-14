@@ -7,14 +7,11 @@
 
 <style>
 	.mermaid-fb {
-		background: #f6f8fa;
-		border-radius: 6px;
+		background: var(--Card);
+		border-radius: 0;
 		padding: 1rem;
 		margin: 1.5rem 0;
 		overflow-x: auto;
-	}
-	:global(.dark) .mermaid-fb {
-		background: #1e1e1e;
 	}
 	.mermaid-fb svg {
 		max-width: 100%;
@@ -39,22 +36,16 @@
 	if (blocks.length === 0) {
 		// No fallback needed - all inlined at build time
 	} else {
-		// Initialize mermaid once with theme detection
-		const isDark =
-			document.documentElement.classList.contains("dark") ||
-			window.matchMedia("(prefers-color-scheme: dark)").matches;
-
+		// Single daylight theme: always the default (light) mermaid theme
 		mermaid.initialize({
 			startOnLoad: false,
-			theme: isDark ? "dark" : "default",
+			theme: "default",
 			securityLevel: "loose",
-			themeVariables: isDark
-				? {
-						primaryColor: "#1e1e1e",
-						primaryTextColor: "#e6edf3",
-						lineColor: "#58a6ff",
-					}
-				: {},
+			themeVariables: {
+				primaryColor: "#ffffff",
+				primaryTextColor: "#1c1c1e",
+				lineColor: "#1c1c1e",
+			},
 		});
 
 		for (const code of blocks) {

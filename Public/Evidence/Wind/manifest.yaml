@@ -5,10 +5,10 @@ palette: [slate, silver, deep-blue]
 crop: diagonal / cable crosses corner to corner
 alt: Wet cable in long exposure
 usage:
-  - wind-element-page
-  - weather-feature
+    - wind-element-page
+    - weather-feature
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

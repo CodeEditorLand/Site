@@ -7,6 +7,7 @@
  */
 
 import type { APIRoute } from "astro";
+
 import type { FieldRecord } from "../Content/Record/FieldRecord";
 
 const EscapeXML = (Text: string): string =>
@@ -20,8 +21,8 @@ const EscapeXML = (Text: string): string =>
  * Generates a field-record artifact SVG at 1200×675 (16:9).
  *
  * Structure:
- * - Black frame (outer border)
- * - Warm paper card with index, stamp, route, title, status, metadata
+ * - Creme frame (outer border)
+ * - White card with index, stamp, route, title, status, metadata
  * - Evidence image area (right panel with cross-hatch placeholder)
  * - One green seal (bottom-right of evidence area)
  *
@@ -34,10 +35,11 @@ const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 
 	const FrameWidth = 16;
 	const CardInset = 24;
-	const PaperColor = "#F5F0E8";
+	const PaperColor = "#FFFFFF";
+	const FrameBg = "#F2EDE3";
 	const FrameColor = "#151515";
 	const MutedColor = "#6b6b6b";
-	const SealColor = "#2D6A4F";
+	const SealColor = "#1E742A";
 
 	const CardX = FrameWidth + CardInset;
 	const CardY = FrameWidth + CardInset;
@@ -90,10 +92,10 @@ const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 		: "";
 
 	return `<svg width="${Width}" height="${Height}" viewBox="0 0 ${Width} ${Height}" xmlns="http://www.w3.org/2000/svg">
-	<!-- Black frame -->
-	<rect width="${Width}" height="${Height}" fill="${FrameColor}" />
+	<!-- Creme frame -->
+	<rect width="${Width}" height="${Height}" fill="${FrameBg}" />
 
-	<!-- Warm paper card -->
+	<!-- White card -->
 	<rect x="${CardX}" y="${CardY}" width="${CardW}" height="${CardH}" fill="${PaperColor}" />
 
 	<!-- Subtle inner rule -->
@@ -116,6 +118,7 @@ const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 
 	<!-- Status / Metadata info lines -->
 ${InfoElements}
+
 ${ProgramElement}	<!-- Evidence panel -->
 	<rect x="${EvidenceX}" y="${CardY + 16}" width="${EvidenceW}" height="${CardH - 32}" fill="${FrameColor}" fill-opacity="0.03" />
 	<rect x="${EvidenceX}" y="${CardY + 16}" width="${EvidenceW}" height="${CardH - 32}" fill="none" stroke="${FrameColor}" stroke-opacity="0.08" stroke-width="1" />

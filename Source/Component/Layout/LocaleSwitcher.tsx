@@ -95,7 +95,9 @@ const LocaleSwitcher = () => {
 				{SupportedLocaleList.map((Locale) => (
 					<DropdownMenuItem
 						key={Locale}
+
 						onClick={() => HandleChange(Locale)}
+
 						className={
 							Locale === CurrentLocale
 								? "font-medium text-accent"

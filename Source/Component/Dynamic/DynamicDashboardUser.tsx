@@ -263,8 +263,11 @@ const DashboardUserInner = () => {
 				{User.picture ? (
 					<img
 						src={User.picture}
+
 						alt={`${DisplayName} avatar`}
+
 						title={DisplayName}
+
 						width="48"
 						height="48"
 						loading="lazy"
@@ -357,9 +360,13 @@ const DashboardUserInner = () => {
 					{ProviderIcon && (
 						<ThemeImage
 							src={ProviderIcon}
+
 							alt={ProviderLabel}
+
 							width={14}
+
 							height={14}
+
 							className="h-3.5 w-3.5"
 						/>
 					)}

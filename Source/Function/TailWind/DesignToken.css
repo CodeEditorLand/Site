@@ -1,6 +1,6 @@
 :root {
 	/* ─────────────────────────────────────────────────────────────
-	 BORDER / RADIUS TOKENS - Nocturnal Field Record
+	 BORDER / RADIUS TOKENS - Daylight Field Record
 	 ───────────────────────────────────────────────────────────── */
 	--BorderWidth: 1px;
 	--BorderRadius: 0;
@@ -38,33 +38,33 @@
 	--Spacing64: 16rem; /* 256px */
 
 	/* ─────────────────────────────────────────────────────────────
-	 SEMANTIC COLOR TOKENS - Nocturnal Field Record
-	 Black canvas, warm-white cards, mono type, green accent.
+	 SEMANTIC COLOR TOKENS - Daylight Field Record
+	 Creme beige canvas, white cards, mono type, green accent.
 	 ───────────────────────────────────────────────────────────── */
-	--ColorBackground: #000000;
-	--ColorForeground: #e7e7ea;
-	--ColorBorder: rgba(255, 255, 255, 0.08);
-	--ColorPrimary: #e7e7ea;
-	--ColorSecondary: #f8f7f2;
+	--ColorBackground: #f2ede3;
+	--ColorForeground: #1c1c1e;
+	--ColorBorder: rgba(7, 7, 7, 0.08);
+	--ColorPrimary: #1c1c1e;
+	--ColorSecondary: #ffffff;
 	--ColorAccent: #1e742a;
-	--ColorMute: #1a1a1e;
-	--ColorMuteForeground: #8a8a93;
-	--ColorMuteBorder: #3f3f46;
-	--ColorCard: #f8f7f2;
-	--ColorCardForeground: #070707;
-	--ColorPopover: #f8f7f2;
-	--ColorPopoverForeground: #070707;
+	--ColorMute: #e9e2d4;
+	--ColorMuteForeground: #70685b;
+	--ColorMuteBorder: rgba(7, 7, 7, 0.12);
+	--ColorCard: #ffffff;
+	--ColorCardForeground: #1c1c1e;
+	--ColorPopover: #ffffff;
+	--ColorPopoverForeground: #1c1c1e;
 	--ColorRing: #1e742a;
-	--ColorDestruct: #f87171;
-	--ColorSuccess: #34d399;
+	--ColorDestruct: #dc2626;
+	--ColorSuccess: #16a34a;
 	--ColorWarning: #fbbf24;
 
-	/* Surface depth layers (dark) */
-	--ColorSurface0: #000000;
-	--ColorSurface1: #0a0a0c;
-	--ColorSurface2: #111116;
-	--ColorSurface3: #1a1a1e;
-	--ColorSurface4: #26262f;
+	/* Surface depth layers (light - deepening creme) */
+	--ColorSurface0: #f2ede3;
+	--ColorSurface1: #ede7da;
+	--ColorSurface2: #e7dfcf;
+	--ColorSurface3: #e2d9c6;
+	--ColorSurface4: #dcd2bd;
 
 	/* ─────────────────────────────────────────────────────────────
 	 NEUTRAL GRAY SCALE - dark theme values
@@ -131,7 +131,8 @@
 
 	/* ─────────────────────────────────────────────────────────────
 	 CHROMATIC SCALES - kept for technology badges, syntax, etc.
-	 These are the same hues; they appear as accents on the dark canvas.
+	 Legacy dark-adapted hue families (dead tokens, kept for hue
+	 reference on the daylight canvas).
 	 ───────────────────────────────────────────────────────────── */
 
 	/* Red */

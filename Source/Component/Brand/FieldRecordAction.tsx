@@ -4,8 +4,11 @@ import { cn } from "../UI/Utility";
 
 export interface FieldRecordActionProps {
 	label: string;
+
 	href?: string;
+
 	variant?: "record" | "button";
+
 	className?: string;
 }
 
@@ -25,7 +28,7 @@ const FieldRecordAction: React.FC<FieldRecordActionProps> = ({
 					? { target: "_blank", rel: "noopener noreferrer" }
 					: {})}
 				className={cn(
-					"inline-block FieldRecordActionButton",
+					"FieldRecordActionButton inline-block",
 					className,
 				)}
 			>
@@ -68,4 +71,5 @@ const FieldRecordAction: React.FC<FieldRecordActionProps> = ({
 };
 
 export { FieldRecordAction };
+
 export default FieldRecordAction;

@@ -109,12 +109,16 @@ const IconTooltip = ({
 							// Deterministic hash so SSR and client hydration match
 							const Hash = (S: string): number => {
 								let H = 0;
+
 								for (let I = 0; I < S.length; I++) {
 									H = ((H << 5) - H + S.charCodeAt(I)) | 0;
 								}
+
 								return H / 2147483647;
 							};
+
 							const Seed = Hash(`ts-${Index}`).toFixed(3);
+
 							const Phase = Hash(`tp-${Index}`).toFixed(3);
 
 							return (

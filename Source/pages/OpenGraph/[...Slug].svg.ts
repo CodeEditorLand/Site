@@ -9,6 +9,7 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 
 export const GET: APIRoute = async ({ params }) => {
+
 	const Slug = params.Slug ?? "";
 
 	const GenerateOpenGraphSvg = (await import("../../Function/OpenGraph.js"))
@@ -24,10 +25,15 @@ export const GET: APIRoute = async ({ params }) => {
 	if (StaticMeta) {
 		const {
 			Title: StaticTitle,
+
 			Description: StaticDescription,
+
 			Section: StaticSection,
+
 			Status: StaticStatus,
+
 			License: StaticLicense,
+
 			Target: StaticTarget,
 		} = StaticMeta;
 

@@ -9,6 +9,7 @@ import { GetWorkersClient } from "../WorkerClient";
  * Provides clean, type-safe interface for auth operations
  */
 export class AuthAPI {
+
 	private Workers = GetWorkersClient();
 
 	async Login(

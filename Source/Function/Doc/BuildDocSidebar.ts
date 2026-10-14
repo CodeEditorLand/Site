@@ -8,21 +8,32 @@ import type {
 
 export const SectionOrder = [
 	"Start",
+
 	"Guide",
+
 	"Elements",
+
 	"Deep Dive",
+
 	"Workflows",
+
 	"Why Land",
+
 	"Reference",
+
 	"Development",
+
 	"Telemetry",
+
 	"Low-Level Shim",
+
 	"Coverage",
 ];
 
 const Slugify = (Value: string) => Value.toLowerCase().replace(/\s+/g, "-");
 
 const BuildDocSidebar = (Entries: CollectionEntry<"doc">[]): DocSection[] => {
+
 	const EntriesBySection = new Map<string, CollectionEntry<"doc">[]>();
 
 	for (const Entry of Entries) {
@@ -36,14 +47,17 @@ const BuildDocSidebar = (Entries: CollectionEntry<"doc">[]): DocSection[] => {
 	return SectionOrder.filter((Section) => EntriesBySection.has(Section)).map(
 		(Section) => {
 			const Items: DocItem[] = [];
+
 			const GroupsByLabel = new Map<string, DocGroup>();
 
 			for (const Entry of EntriesBySection.get(Section)!) {
 				const Label = Entry.data.navTitle ?? Entry.data.title;
+
 				const Group = Entry.data.group;
 
 				if (!Group) {
 					Items.push({ Id: Entry.id, Label });
+
 					continue;
 				}
 
@@ -55,7 +69,9 @@ const BuildDocSidebar = (Entries: CollectionEntry<"doc">[]): DocSection[] => {
 						Label: Group,
 						Children: [],
 					};
+
 					GroupsByLabel.set(Group, GroupItem);
+
 					Items.push(GroupItem);
 				}
 

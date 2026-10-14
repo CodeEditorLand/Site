@@ -58,6 +58,7 @@ function SkeletonPricingTier({ className }: React.ComponentProps<"div">) {
 				{[1, 2, 3, 4].map((Index) => (
 					<Skeleton
 						key={Index}
+
 						className="mb-3 h-4 w-full bg-secondary"
 					/>
 				))}

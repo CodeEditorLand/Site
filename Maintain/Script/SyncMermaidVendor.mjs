@@ -23,15 +23,9 @@ import {
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const WebSiteRoot = resolve(
-	dirname(fileURLToPath(import.meta.url)),
-	"../..",
-);
+const WebSiteRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const MonorepoRoot = resolve(WebSiteRoot, "..");
-const ManifestPath = resolve(
-	MonorepoRoot,
-	".hermes/mermaid/manifest.json",
-);
+const ManifestPath = resolve(MonorepoRoot, ".hermes/mermaid/manifest.json");
 const SvgDir = resolve(WebSiteRoot, "Source/Content/Mermaid");
 const ContentDir = resolve(WebSiteRoot, "Source/Content");
 
@@ -53,7 +47,10 @@ function ExtractMermaidHashes(Files) {
 		const Text = readFileSync(File, "utf-8");
 		let Match;
 		while ((Match = Pattern.exec(Text))) {
-								const Code = Match[1].trim().replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+			const Code = Match[1]
+				.trim()
+				.replace(/\r\n/g, "\n")
+				.replace(/\r/g, "\n");
 			if (!Code) continue;
 			Hashes.add(
 				createHash("sha256").update(Code).digest("hex").slice(0, 16),
@@ -115,7 +112,9 @@ function Main() {
 		}
 	}
 
-	console.log(`[SyncMermaidVendor] Referenced diagrams: ${ReferencedHashes.size}`);
+	console.log(
+		`[SyncMermaidVendor] Referenced diagrams: ${ReferencedHashes.size}`,
+	);
 	console.log(`[SyncMermaidVendor] Copied/refreshed:    ${Copied}`);
 	console.log(`[SyncMermaidVendor] Orphans removed:     ${Removed}`);
 	console.log(`[SyncMermaidVendor] Missing from manifest: ${Missing.length}`);

@@ -140,7 +140,7 @@ const DynamicSignUp = ({
 								<div aria-live="polite" aria-atomic="true">
 									{ErrorMessage && (
 										<div
-											className="bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] flat p-3 text-destructive"
+											className="flat bg-[color-mix(in_srgb,var(--Destruct)_10%,transparent)] p-3 text-destructive"
 											role="alert"
 										>
 											{ErrorMessage}
@@ -233,11 +233,13 @@ const DynamicSignUp = ({
 																},
 															)
 											}
+
 											role="status"
 										>
 											{[0, 1, 2].map((Segment) => (
 												<div
 													key={Segment}
+
 													className="flat h-1 flex-1 transition-colors"
 													style={{
 														backgroundColor:
@@ -312,10 +314,12 @@ const DynamicSignUp = ({
 									{OauthButtons.map((ButtonItem, Index) => (
 										<DynamicButton
 											key={Index}
+
 											Content={{
 												...ButtonItem,
 												FullWidth: true,
 											}}
+
 											OnAction={() =>
 												OnOAuth?.(
 													ButtonItem.Icon as string,

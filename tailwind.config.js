@@ -2,6 +2,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
+
 	content: [
 		"./Public/**/*.html",
 
@@ -47,9 +48,8 @@ export default {
 							"-webkit-overflow-scrolling": "touch",
 						},
 
-						// Tables: design-system hairline rows. --Border is the
-						// dark-canvas token; warm-white prose cards override with
-						// prose-thead:/prose-tr: ink hairlines in the page wrapper.
+						// Tables: design-system hairline rows. --Border is the sitewide
+						// hairline token (rgba(7,7,7,0.08) on the daylight canvas).
 						thead: {
 							"border-bottom-width": "1px",
 
@@ -89,8 +89,7 @@ export default {
 							"border-bottom-color": "var(--Border)",
 						},
 
-						// Body cells: light text for the dark canvas (blog).
-						// Warm-white prose cards override with prose-td:.
+						// Body cells: ink text (valid on the creme canvas and white cards).
 						td: {
 							color: "var(--Foreground)",
 
@@ -179,12 +178,19 @@ export default {
 				// Sidebar
 				sidebar: {
 					DEFAULT: "var(--Background)",
+
 					foreground: "var(--Foreground)",
+
 					primary: "var(--Primary)",
+
 					"primary-foreground": "var(--PrimaryForeground)",
+
 					accent: "var(--Accent)",
+
 					"accent-foreground": "var(--AccentForeground)",
+
 					border: "var(--Border)",
+
 					ring: "var(--Ring)",
 				},
 

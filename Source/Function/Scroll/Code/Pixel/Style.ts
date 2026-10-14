@@ -1,6 +1,7 @@
 import type { Mouse, MovementDimensional } from "@Function/Scroll/Type.js";
 
 export default class {
+
 	private readonly Element: HTMLDivElement;
 
 	private readonly TimeNoise: number;

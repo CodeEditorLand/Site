@@ -4,12 +4,15 @@ import { cn } from "../UI/Utility";
 
 export interface FieldRecordMetadataPair {
 	label: string;
+
 	value: string;
 }
 
 export interface FieldRecordMetadataProps {
 	pairs?: FieldRecordMetadataPair[];
+
 	rows?: FieldRecordMetadataPair[];
+
 	className?: string;
 }
 
@@ -43,4 +46,5 @@ const FieldRecordMetadata: React.FC<FieldRecordMetadataProps> = ({
 };
 
 export { FieldRecordMetadata };
+
 export default FieldRecordMetadata;

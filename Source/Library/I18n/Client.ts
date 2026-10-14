@@ -15,6 +15,7 @@ export const SupportedLocaleList = ["en", "bg", "de", "fr", "es"] as const;
 export type SupportedLocale = (typeof SupportedLocaleList)[number];
 
 export const LocaleLabel: Record<SupportedLocale, string> = {
+
 	en: "English",
 
 	bg: "Bulgarian",
@@ -69,11 +70,13 @@ const CoreNamespaceList: readonly Namespace[] = [
 // are defined in PageNamespaceLoader below and loaded on demand.
 
 function DetectLocale(): SupportedLocale {
+
 	if (typeof window === "undefined") return "en";
 
 	const Parameter = new URL(window.location.href).searchParams.get("lng");
 
 	if (Parameter && SupportedLocaleList.includes(Parameter as SupportedLocale))
+
 		return Parameter as SupportedLocale;
 
 	const Cookie = document.cookie.match(/LOCALE=([^;]+)/);
@@ -82,6 +85,7 @@ function DetectLocale(): SupportedLocale {
 		Cookie?.[1] &&
 		SupportedLocaleList.includes(Cookie[1] as SupportedLocale)
 	)
+
 		return Cookie[1] as SupportedLocale;
 
 	return "en";
@@ -94,6 +98,7 @@ function DetectLocale(): SupportedLocale {
 const LoadEnglishCore = async (): Promise<
 	Partial<Record<Namespace, unknown>>
 > => {
+
 	const [common, header, footer, meta] = await Promise.all([
 		import("./Locale/En/Common.json"),
 
@@ -122,8 +127,10 @@ const LoadEnglishCore = async (): Promise<
  */
 const PageNamespaceLoader: Record<
 	SupportedLocale,
+
 	Record<string, () => Promise<unknown>>
 > = {
+
 	en: {
 		blog: async () => (await import("./Locale/En/Blog.json")).default,
 
@@ -207,8 +214,10 @@ const PageNamespaceLoader: Record<
  */
 const FullLocaleLoader: Record<
 	SupportedLocale,
+
 	() => Promise<Record<Namespace, unknown>>
 > = {
+
 	en: async () => {
 		const [
 			blog,
@@ -545,6 +554,7 @@ function AddResources(
 
 	Bundles: Partial<Record<Namespace, unknown>>,
 ) {
+
 	for (const NS of NamespaceList) {
 		if (Bundles[NS]) {
 			i18n.addResourceBundle(Locale, NS, Bundles[NS], true, true);
@@ -587,6 +597,7 @@ i18n.use(initReactI18next).init({
 // to be undefined. Components fall back to their hardcoded defaultValues
 // until AddResources populates them (same visible result, no hydration crash).
 const InitI18n = async (): Promise<void> => {
+
 	const EnglishCoreBundle = await LoadEnglishCore();
 
 	AddResources("en", EnglishCoreBundle);
@@ -629,6 +640,7 @@ export const LoadNamespace = async (
 
 	Locale?: SupportedLocale,
 ) => {
+
 	const TargetLocale = Locale ?? (i18n.language as SupportedLocale) ?? "en";
 
 	if (i18n.hasResourceBundle(TargetLocale, NamespaceName)) return;
@@ -663,6 +675,7 @@ export const LoadNamespace = async (
  * so that every visible section updates its text immediately.
  */
 export const SwitchLocale = async (Locale: SupportedLocale) => {
+
 	const AllLoaded = NamespaceList.every((NS) =>
 		i18n.hasResourceBundle(Locale, NS),
 	);

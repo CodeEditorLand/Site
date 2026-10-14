@@ -196,11 +196,7 @@ const ElementRecords: Record<string, FieldRecord> = {
  * layered on top of the existing name + emoji + role-chip + quote work.
  * Warm-white flat mono uppercase tracked font-medium dark-ink, no XS.
  */
-const RenderTestimonialBody = ({
-	Testimonial,
-}: {
-	Testimonial: Item;
-}) => {
+const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 	const ElementRecord = ElementRecords[Testimonial.Author];
 
 	return (
@@ -214,7 +210,9 @@ const RenderTestimonialBody = ({
 				{ElementRecord ? (
 					<FieldRecordSeal
 						element={ElementRecord.Seal}
+
 						size={40}
+
 						className="shrink-0"
 					/>
 				) : (
@@ -234,6 +232,7 @@ const RenderTestimonialBody = ({
 						{Testimonial.Href ? (
 							<a
 								href={Testimonial.Href}
+
 								target="_blank"
 								rel="noopener noreferrer"
 								className="hover:underline"
@@ -251,10 +250,12 @@ const RenderTestimonialBody = ({
 				{Testimonial.Href && (
 					<a
 						href={Testimonial.Href}
+
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label={`Open ${Testimonial.Author} source`}
-						className="text-[color-mix(in_srgb,var(--CardForeground)_50%,transparent)] inline-flex items-center transition-colors hover:text-card-foreground"
+
+						className="inline-flex items-center text-[color-mix(in_srgb,var(--CardForeground)_50%,transparent)] transition-colors hover:text-card-foreground"
 					>
 						<lucide.ExternalLink
 							className="h-3 w-3 shrink-0"
@@ -288,11 +289,13 @@ const RenderTestimonialBody = ({
 							〈{ElementRecord.Stamp.join("\u2001")}〉
 						</p>
 					)}
+
 					{ElementRecord.Route?.length > 0 && (
 						<p className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground opacity-70">
 							{ElementRecord.Route.join("\u2001")}
 						</p>
 					)}
+
 					<p
 						className={`font-mono text-sm font-medium uppercase tracking-[0.2em] ${
 							ElementRecord.Status.Tone === "specimen"
@@ -321,7 +324,9 @@ const RenderTestimonialBody = ({
 				<div
 					role="img"
 					aria-label={ElementRecord.Evidence.Alt}
+
 					title={ElementRecord.Evidence.Alt}
+
 					className="h-14 w-full border border-[color-mix(in_srgb,var(--CardForeground)_15%,transparent)] bg-[color-mix(in_srgb,var(--CardForeground)_8%,transparent)]"
 				/>
 			)}
@@ -334,8 +339,11 @@ const RenderTestimonialBody = ({
 const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 	const {
 		Title,
+
 		Subtitle,
+
 		Testimonial: Testimonials,
+
 		Column: Columns = 3,
 	} = Content;
 
@@ -400,6 +408,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				{Array.from({ length: 5 }).map((_, Index) => (
 					<span
 						key={Index}
+
 						className="StaccatoStar StarRatingSymbol text-yellow-400"
 						aria-hidden="true"
 					>
@@ -466,8 +475,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 										{
 											"--jelly-fill": "var(--Card)",
 											"--jelly-radius": "0",
-											"--jelly-card-font-size":
-												"inherit",
+											"--jelly-card-font-size": "inherit",
 											"--jelly-card-padding-block": "0",
 											"--jelly-card-padding-inline": "0",
 											"--jelly-color-border-default":

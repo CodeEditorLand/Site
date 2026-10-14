@@ -5,10 +5,10 @@ palette: [aqua, soft-gold, shadow]
 crop: center / concentric ripples fill frame
 alt: Ripple in grainy water
 usage:
-  - echo-element-page
-  - texture-swatch
+    - echo-element-page
+    - texture-swatch
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

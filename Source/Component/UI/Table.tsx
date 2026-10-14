@@ -21,11 +21,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
 
 function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
 	return (
-		<thead
-			data-slot="table-header"
-			className={cn(className)}
-			{...props}
-		/>
+		<thead data-slot="table-header" className={cn(className)} {...props} />
 	);
 }
 
@@ -44,7 +40,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
 		<tfoot
 			data-slot="table-footer"
 			className={cn(
-				"bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)] border-t border-[var(--Border)] font-medium [&>tr]:last:border-b-0",
+				"border-t border-[var(--Border)] bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)] font-medium [&>tr]:last:border-b-0",
 				className,
 			)}
 			{...props}
@@ -57,7 +53,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
 		<tr
 			data-slot="table-row"
 			className={cn(
-				"hover:bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)] border-b border-[var(--Border)] transition-colors data-[state=selected]:bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)]",
+				"border-b border-[var(--Border)] transition-colors hover:bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)] data-[state=selected]:bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)]",
 				className,
 			)}
 			{...props}

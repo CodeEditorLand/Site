@@ -15,6 +15,7 @@ const LoginWithRedirectMock = vi.fn();
 const LogoutMock = vi.fn();
 
 const Auth0State = {
+
 	IsLoading: false,
 
 	IsAuthenticated: false,

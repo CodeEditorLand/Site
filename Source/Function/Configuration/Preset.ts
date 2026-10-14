@@ -1,6 +1,7 @@
 import type { default as Configuration } from "./Type/Configuration.js";
 
 export default {
+
 	Site: "https://editor.land",
 
 	Port: 9999,

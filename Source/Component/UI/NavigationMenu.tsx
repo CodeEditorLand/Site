@@ -132,7 +132,7 @@ function NavigationMenuLink({
 		<NavigationMenuPrimitive.Link
 			data-slot="navigation-menu-link"
 			className={cn(
-				"data-[active=true]:bg-[color-mix(in_srgb,var(--Accent)_50%,transparent)] focus-visible:ring-[color-mix(in_srgb,var(--Ring)_50%,transparent)] flex flex-col gap-1 rounded-none p-2 outline-none transition-all hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] data-[active=true]:text-accent-foreground data-[active=true]:hover:bg-accent data-[active=true]:focus:bg-accent [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground",
+				"flex flex-col gap-1 rounded-none p-2 outline-none transition-all hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-[color-mix(in_srgb,var(--Ring)_50%,transparent)] data-[active=true]:bg-[color-mix(in_srgb,var(--Accent)_50%,transparent)] data-[active=true]:text-accent-foreground data-[active=true]:hover:bg-accent data-[active=true]:focus:bg-accent [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-popover-foreground",
 				className,
 			)}
 			{...props}

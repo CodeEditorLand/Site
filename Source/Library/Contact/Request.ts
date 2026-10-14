@@ -27,6 +27,7 @@ export type IncomeCode =
 	| "DEALS";
 
 export interface FormField {
+
 	id: string;
 
 	label: string;
@@ -45,6 +46,7 @@ export interface FormField {
 }
 
 export interface RequestConfig {
+
 	Code: IncomeCode;
 
 	Title: string;
@@ -71,6 +73,7 @@ export interface RequestConfig {
 const Year = new Date().getFullYear();
 
 export const Requests: Record<IncomeCode, RequestConfig> = {
+
 	REACH: {
 		Code: "REACH",
 
@@ -1421,6 +1424,7 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
  * Call once per form session and store in React state so it stays stable.
  */
 export const GeneratePairId = (): string => {
+
 	const Chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no I/O/0/1 - ambiguous on phone
 
 	let Id = "";
@@ -1445,6 +1449,7 @@ export const BuildEmailBody = (
 
 	PairId: string,
 ): string => {
+
 	const Ref = `${Config.Code}-${PairId}`;
 
 	const Lines: string[] = [
@@ -1518,6 +1523,7 @@ export const BuildMailtoHref = (
 
 	PairId: string,
 ): string => {
+
 	const Subject = `[${Config.Code}-${PairId}] ${Config.Title} Request${Values["email"] ? ` - ${Values["email"]}` : ""}`;
 
 	const Body = BuildEmailBody(Config, Values, Year, PairId);

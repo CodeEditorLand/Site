@@ -1,4 +1,5 @@
 export default interface GitHubIssue {
+
 	id: number;
 
 	number: number;

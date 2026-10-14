@@ -4,6 +4,7 @@ import { cn } from "../UI/Utility";
 
 export interface FieldRecordIndexProps {
 	index: string;
+
 	className?: string;
 }
 
@@ -25,4 +26,5 @@ const FieldRecordIndex: React.FC<FieldRecordIndexProps> = ({
 };
 
 export { FieldRecordIndex };
+
 export default FieldRecordIndex;

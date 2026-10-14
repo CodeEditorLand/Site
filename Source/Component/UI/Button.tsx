@@ -6,7 +6,7 @@ import React from "react";
 
 import { cn } from "./Utility";
 
-// Nocturnal Field Record: flat corners, mono label, dark variant.
+// Daylight Field Record: flat corners, mono label, ink variant.
 // Original look (colors, sizing) is unchanged - only the physics/
 // motion layer is Jelly's.
 const ButtonVariants = cva(
@@ -15,7 +15,8 @@ const ButtonVariants = cva(
 	{
 		variants: {
 			variant: {
-				default: "bg-foreground text-bg hover:bg-[color-mix(in_srgb,var(--Foreground)_85%,transparent)]",
+				default:
+					"bg-foreground text-bg hover:bg-[color-mix(in_srgb,var(--Foreground)_85%,transparent)]",
 				destructive:
 					"bg-destruct text-destruct-fg hover:bg-[color-mix(in_srgb,var(--Destruct)_85%,transparent)] focus-visible:ring-[color-mix(in_srgb,var(--Destruct)_20%,transparent)]",
 				outline:
@@ -43,18 +44,25 @@ const JellyColorOverride: Partial<
 > = {
 	default: {
 		"--jelly-color-background-accent": "var(--Foreground)",
+
 		"--jelly-color-foreground-on-accent": "var(--Background)",
 	},
+
 	destructive: {
 		"--jelly-color-background-rose": "var(--Destruct)",
+
 		"--jelly-color-foreground-on-emphasis": "var(--DestructForeground)",
 	},
+
 	outline: {
 		"--jelly-color-background-neutral": "var(--Background)",
+
 		"--jelly-color-foreground-on-neutral": "var(--Foreground)",
 	},
+
 	secondary: {
 		"--jelly-color-background-neutral-emphasis": "var(--Secondary)",
+
 		"--jelly-color-foreground-on-emphasis": "var(--SecondaryForeground)",
 	},
 };
@@ -64,19 +72,28 @@ const JellySizeOverride: Partial<
 > = {
 	default: {
 		"--jelly-button-height": "40px",
+
 		"--jelly-button-padding-inline": "2.1rem",
+
 		"--jelly-button-min-width": "0px",
 	},
+
 	sm: {
 		"--jelly-button-height": "36px",
+
 		"--jelly-button-padding-inline": "0.75rem",
+
 		"--jelly-button-min-width": "0px",
 	},
+
 	lg: {
 		"--jelly-button-height": "44px",
+
 		"--jelly-button-padding-inline": "2.6rem",
+
 		"--jelly-button-min-width": "0px",
 	},
+
 	icon: {
 		"--jelly-icon-button-size": "40px",
 	},
@@ -96,7 +113,9 @@ const JellyVariantAttribute: Partial<
 	>
 > = {
 	destructive: "rose",
+
 	outline: "platinum",
+
 	secondary: "graphite",
 };
 
@@ -104,7 +123,9 @@ const JellySizeAttribute: Partial<
 	Record<NonNullable<ButtonProps["size"]>, "sm" | "md" | "lg">
 > = {
 	default: "md",
+
 	sm: "sm",
+
 	lg: "lg",
 };
 
@@ -118,6 +139,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			children,
 			...props
 		},
+
 		ref,
 	) => {
 		if (asChild) {

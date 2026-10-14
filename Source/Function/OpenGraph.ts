@@ -5,7 +5,7 @@
  * sharing cards on every non-home page. Mirrors the field-record artifact
  * card used by the home endpoint (Source/pages/OpenGraph.svg.ts):
  *
- *   black frame → warm paper card (#F5F0E8) with # index, 〈stamp〉,
+ *   creme frame \u2192 white card (#FFFFFF) with # index, \u3008stamp\u3009,
  *   /route, title, STATUS/LICENSE/TARGET info lines, evidence area with
  *   cross-hatch placeholder, one green seal. Flat corners, mono type only.
  *
@@ -17,17 +17,26 @@
  */
 
 interface OpenGraphMeta {
+
 	Slug?: string;
+
 	Index?: string;
+
 	Stamp?: string[];
+
 	Route?: string[];
+
 	Status?: string;
+
 	License?: string;
+
 	Target?: string;
+
 	Seal?: string;
 }
 
 const WrapText = (Text: string, MaxCharacter: number): string[] => {
+
 	const Word = Text.split(" ");
 
 	const Line: string[] = [];
@@ -63,8 +72,8 @@ const EscapeXML = (Text: string): string =>
  * Generates a field-record artifact SVG at 1200×675 (16:9).
  *
  * Structure:
- * - Black frame (outer border)
- * - Warm paper card with index, stamp, route, title, status, metadata
+ * - Creme frame (outer border)
+ * - White card with index, stamp, route, title, status, metadata
  * - Evidence image area (right panel with cross-hatch placeholder + caption)
  * - One green seal (bottom-right of evidence area)
  */
@@ -78,12 +87,13 @@ const GenerateOpenGraphSvg = (
 	const Height = 675;
 
 	const FrameWidth = 16;
-	const CardInset = 24;
-	const PaperColor = "#F5F0E8";
-	const FrameColor = "#151515";
-	const MutedColor = "#6b6b6b";
-	const SealColor = "#2D6A4F";
-	const FontStack = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
+		const CardInset = 24;
+		const PaperColor = "#FFFFFF";
+		const FrameBg = "#F2EDE3";
+		const FrameColor = "#151515";
+		const MutedColor = "#6b6b6b";
+		const SealColor = "#1E742A";
+		const FontStack = "'JetBrains Mono', 'SF Mono', 'Fira Code', monospace";
 
 	const SectionName =
 		Section ?? Meta?.Slug?.split("/")[0] ?? "Land";
@@ -173,55 +183,57 @@ const GenerateOpenGraphSvg = (
 	const SealText = (Meta?.Seal ?? "Land").slice(0, 5).toUpperCase();
 
 	return `<svg width="${Width}" height="${Height}" viewBox="0 0 ${Width} ${Height}" xmlns="http://www.w3.org/2000/svg">
-\t<!-- Black frame -->
-\t<rect width="${Width}" height="${Height}" fill="${FrameColor}" />
+	<!-- Creme frame -->
+	<rect width="${Width}" height="${Height}" fill="${FrameBg}" />
 
-\t<!-- Warm paper card -->
-\t<rect x="${CardX}" y="${CardY}" width="${CardW}" height="${CardH}" fill="${PaperColor}" />
+	<!-- White card -->
+	<rect x="${CardX}" y="${CardY}" width="${CardW}" height="${CardH}" fill="${PaperColor}" />
 
-\t<!-- Subtle inner rule -->
-\t<rect x="${CardX + 12}" y="${CardY + 12}" width="${CardW - 24}" height="${CardH - 24}" fill="none" stroke="${FrameColor}" stroke-opacity="0.06" stroke-width="1" />
+	<!-- Subtle inner rule -->
+	<rect x="${CardX + 12}" y="${CardY + 12}" width="${CardW - 24}" height="${CardH - 24}" fill="none" stroke="${FrameColor}" stroke-opacity="0.06" stroke-width="1" />
 
-\t<!-- Index / catalogue number -->
-\t<text x="${TextX}" y="${CardY + 60}" font-family="${FontStack}" font-size="20" font-weight="600" fill="${FrameColor}" letter-spacing="0.04em">${EscapeXML(IndexText)}</text>
+	<!-- Index / catalogue number -->
+	<text x="${TextX}" y="${CardY + 60}" font-family="${FontStack}" font-size="20" font-weight="600" fill="${FrameColor}" letter-spacing="0.04em">${EscapeXML(IndexText)}</text>
 
-\t<!-- Stamp -->
-\t<text x="${TextX}" y="${CardY + 96}" font-family="${FontStack}" font-size="14" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(StampText)}</text>
+	<!-- Stamp -->
+	<text x="${TextX}" y="${CardY + 96}" font-family="${FontStack}" font-size="14" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(StampText)}</text>
 
-\t<!-- Route -->
-\t<text x="${TextX}" y="${CardY + 124}" font-family="${FontStack}" font-size="13" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(RouteText)}</text>
+	<!-- Route -->
+	<text x="${TextX}" y="${CardY + 124}" font-family="${FontStack}" font-size="13" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(RouteText)}</text>
 
-\t<!-- Title -->
+	<!-- Title -->
 ${TitleElement}
 
-\t<!-- Thin separator -->
-\t<line x1="${TextX}" y1="${SeparatorY}" x2="${TextX + TextW}" y2="${SeparatorY}" stroke="${FrameColor}" stroke-opacity="0.1" stroke-width="1" />
+	<!-- Thin separator -->
+	<line x1="${TextX}" y1="${SeparatorY}" x2="${TextX + TextW}" y2="${SeparatorY}" stroke="${FrameColor}" stroke-opacity="0.1" stroke-width="1" />
 
-\t<!-- Status / License / Target info lines -->
+	<!-- Status / License / Target info lines -->
 ${InfoElements}
-\t<!-- Evidence panel -->
-\t<rect x="${EvidenceX}" y="${CardY + 16}" width="${EvidenceW}" height="${CardH - 32}" fill="${FrameColor}" fill-opacity="0.03" />
-\t<rect x="${EvidenceX}" y="${CardY + 16}" width="${EvidenceW}" height="${CardH - 32}" fill="none" stroke="${FrameColor}" stroke-opacity="0.08" stroke-width="1" />
 
-\t<!-- Evidence image placeholder -->
-\t<rect x="${EvdX}" y="${EvdY}" width="${EvdW}" height="${EvdH}" fill="${FrameColor}" fill-opacity="0.05" />
+	<!-- Evidence panel -->
+	<rect x="${EvidenceX}" y="${CardY + 16}" width="${EvidenceW}" height="${CardH - 32}" fill="${FrameColor}" fill-opacity="0.03" />
+	<rect x="${EvidenceX}" y="${CardY + 16}" width="${EvidenceW}" height="${CardH - 32}" fill="none" stroke="${FrameColor}" stroke-opacity="0.08" stroke-width="1" />
 
-\t<!-- Cross-hatch placeholder for evidence image -->
-\t<line x1="${EvdX}" y1="${EvdY}" x2="${EvdX + EvdW}" y2="${EvdY + EvdH}" stroke="${FrameColor}" stroke-opacity="0.06" stroke-width="1" />
-\t<line x1="${EvdX + EvdW}" y1="${EvdY}" x2="${EvdX}" y2="${EvdY + EvdH}" stroke="${FrameColor}" stroke-opacity="0.06" stroke-width="1" />
-\t<line x1="${EvdX + EvdW / 2}" y1="${EvdY}" x2="${EvdX + EvdW / 2}" y2="${EvdY + EvdH}" stroke="${FrameColor}" stroke-opacity="0.04" stroke-width="1" />
-\t<line x1="${EvdX}" y1="${EvdY + EvdH / 2}" x2="${EvdX + EvdW}" y2="${EvdY + EvdH / 2}" stroke="${FrameColor}" stroke-opacity="0.04" stroke-width="1" />
+	<!-- Evidence image placeholder -->
+	<rect x="${EvdX}" y="${EvdY}" width="${EvdW}" height="${EvdH}" fill="${FrameColor}" fill-opacity="0.05" />
 
-\t<!-- Evidence caption -->
+	<!-- Cross-hatch placeholder for evidence image -->
+	<line x1="${EvdX}" y1="${EvdY}" x2="${EvdX + EvdW}" y2="${EvdY + EvdH}" stroke="${FrameColor}" stroke-opacity="0.06" stroke-width="1" />
+	<line x1="${EvdX + EvdW}" y1="${EvdY}" x2="${EvdX}" y2="${EvdY + EvdH}" stroke="${FrameColor}" stroke-opacity="0.06" stroke-width="1" />
+	<line x1="${EvdX + EvdW / 2}" y1="${EvdY}" x2="${EvdX + EvdW / 2}" y2="${EvdY + EvdH}" stroke="${FrameColor}" stroke-opacity="0.04" stroke-width="1" />
+	<line x1="${EvdX}" y1="${EvdY + EvdH / 2}" x2="${EvdX + EvdW}" y2="${EvdY + EvdH / 2}" stroke="${FrameColor}" stroke-opacity="0.04" stroke-width="1" />
+
+	<!-- Evidence caption -->
 ${CaptionElement}
-\t<!-- Green seal -->
-\t<circle cx="${SealCx}" cy="${SealCy}" r="34" fill="${SealColor}" />
-\t<circle cx="${SealCx}" cy="${SealCy}" r="30" fill="none" stroke="${PaperColor}" stroke-width="1.5" />
-\t<text x="${SealCx}" y="${SealCy + 5}" font-family="${FontStack}" font-size="12" font-weight="600" fill="${PaperColor}" text-anchor="middle" letter-spacing="0.05em">${EscapeXML(SealText)}</text>
 
-\t<!-- Footer -->
-\t<text x="${TextX}" y="${CardY + CardH - 18}" font-family="${FontStack}" font-size="11" font-weight="400" fill="${MutedColor}" fill-opacity="0.45">editor.land</text>
-\t<text x="${CardX + CardW - 28}" y="${CardY + CardH - 18}" font-family="${FontStack}" font-size="10" font-weight="400" fill="${MutedColor}" fill-opacity="0.4" text-anchor="end">field record{"\u2001"}${EscapeXML(SectionName.toLowerCase())}</text>
+	<!-- Green seal -->
+	<circle cx="${SealCx}" cy="${SealCy}" r="34" fill="${SealColor}" />
+	<circle cx="${SealCx}" cy="${SealCy}" r="30" fill="none" stroke="${PaperColor}" stroke-width="1.5" />
+	<text x="${SealCx}" y="${SealCy + 5}" font-family="${FontStack}" font-size="12" font-weight="600" fill="${PaperColor}" text-anchor="middle" letter-spacing="0.05em">${EscapeXML(SealText)}</text>
+
+	<!-- Footer -->
+	<text x="${TextX}" y="${CardY + CardH - 18}" font-family="${FontStack}" font-size="11" font-weight="400" fill="${MutedColor}" fill-opacity="0.45">editor.land</text>
+	<text x="${CardX + CardW - 28}" y="${CardY + CardH - 18}" font-family="${FontStack}" font-size="10" font-weight="400" fill="${MutedColor}" fill-opacity="0.4" text-anchor="end">field record{"\u2001"}${EscapeXML(SectionName.toLowerCase())}</text>
 </svg>`;
 };
 

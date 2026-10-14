@@ -59,7 +59,7 @@ function ChartContainer({
 				data-slot="chart"
 				data-chart={ChartId}
 				className={cn(
-					"[&_.recharts-cartesian-grid_line]:stroke-[color-mix(in_srgb,var(--Border)_50%,transparent)] aspect-video [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden flex justify-center [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot]:stroke-transparent [&_.recharts-polar-grid_line]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_line]:stroke-border [&_.recharts-sector]:stroke-transparent",
+					"aspect-video [&_.recharts-layer]:outline-hidden [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden flex justify-center [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line]:stroke-[color-mix(in_srgb,var(--Border)_50%,transparent)] [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot]:stroke-transparent [&_.recharts-polar-grid_line]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_line]:stroke-border [&_.recharts-sector]:stroke-transparent",
 					className,
 				)}
 				{...props}
@@ -215,7 +215,7 @@ function ChartTooltipContent({
 	return (
 		<div
 			className={cn(
-				"border-[color-mix(in_srgb,var(--Border)_50%,transparent)] grid min-w-[8rem] items-start gap-1.5 rounded-none border bg-background px-2.5 py-1.5",
+				"grid min-w-[8rem] items-start gap-1.5 rounded-none border border-[color-mix(in_srgb,var(--Border)_50%,transparent)] bg-background px-2.5 py-1.5",
 				className,
 			)}
 		>

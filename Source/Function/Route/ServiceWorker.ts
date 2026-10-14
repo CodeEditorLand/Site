@@ -52,6 +52,7 @@ const BASE_REMOTE =
 
 const Log = __DEV__
 	? (..._Message: any[]) => {
+
 			console.log(
 				`[SW ${INCREMENT}]`,
 
@@ -59,10 +60,12 @@ const Log = __DEV__
 				..._Message,
 			);
 		}
+
 	: () => {};
 
 const ErrorLog = __DEV__
 	? (..._Message: any[]) => {
+
 			console.error(
 				`[SW ${INCREMENT}]`,
 
@@ -70,10 +73,12 @@ const ErrorLog = __DEV__
 				..._Message,
 			);
 		}
+
 	: () => {};
 
 const WarnLog = __DEV__
 	? (..._Message: any[]) => {
+
 			console.warn(
 				`[SW ${INCREMENT}]`,
 
@@ -81,6 +86,7 @@ const WarnLog = __DEV__
 				..._Message,
 			);
 		}
+
 	: () => {};
 
 // ─── Route registry ───
@@ -156,6 +162,7 @@ const ApiPrefix: string[] = [
 // Legacy plain JSON payloads are read transparently and re-encrypted on write.
 
 interface AuthState {
+
 	Token: string;
 
 	ExpiresAt: number; // Unix ms
@@ -181,6 +188,7 @@ const Base64ToByteList = (Base64: string): Uint8Array =>
 // ─── Encryption key derivation (AES-GCM via PBKDF2) ───
 
 interface EncryptedPayload {
+
 	Salt: string; // base64 random salt (16 bytes)
 
 	IV: string; // base64 AES-GCM IV (12 bytes)
@@ -193,6 +201,7 @@ const DeriveKey = async (
 
 	Salt: Uint8Array,
 ): Promise<CryptoKey> => {
+
 	const Material = await crypto.subtle.importKey(
 		"raw",
 
@@ -219,6 +228,7 @@ const DeriveKey = async (
 };
 
 const ReadAuthState = async (): Promise<AuthState | null> => {
+
 	// Fast path: serve from in-memory cache to avoid PBKDF2 on every navigation.
 	if (_CachedAuth !== undefined) {
 		if (_CachedAuth === null) return null;
@@ -332,6 +342,7 @@ const ReadAuthState = async (): Promise<AuthState | null> => {
 };
 
 const WriteAuthState = async (State: AuthState): Promise<void> => {
+
 	const Salt = crypto.getRandomValues(new Uint8Array(16));
 
 	const IV = crypto.getRandomValues(new Uint8Array(12));
@@ -380,6 +391,7 @@ const WriteAuthState = async (State: AuthState): Promise<void> => {
 };
 
 const ClearAuthState = async (): Promise<void> => {
+
 	_CachedAuth = null;
 
 	const Cache = await caches.open(CACHE_AUTH);
@@ -412,6 +424,7 @@ const NormalizePath = (Path: string): string =>
 // Handles static routes AND dynamic route slugs.
 
 const ResolveRoute = (RequestPath: string): string | null => {
+
 	const Cleaned = StripTrailingSlash(RequestPath);
 
 	// Already a canonical static route - no redirect needed
@@ -449,6 +462,7 @@ const ResolveRoute = (RequestPath: string): string | null => {
 // Returns true if a fetch request should have auth headers injected.
 
 const IsApiRequest = (URL: URL): boolean => {
+
 	// Same-origin /api/* relative paths
 	if (URL.origin === self.location.origin) {
 		return ApiPrefix.some((Prefix) => URL.pathname.startsWith(Prefix));
@@ -468,6 +482,7 @@ const SignRequest = async (
 
 	Token: string,
 ): Promise<Request> => {
+
 	const Key = await crypto.subtle.importKey(
 		"raw",
 
@@ -483,6 +498,7 @@ const SignRequest = async (
 	const Body =
 		OriginalRequest.method !== "GET" && OriginalRequest.method !== "HEAD"
 			? await OriginalRequest.clone().text()
+
 			: "";
 
 	const Timestamp = Date.now().toString();
@@ -531,6 +547,7 @@ const SignRequest = async (
 // Does not modify the request if no session is active.
 
 const InjectAuthHeader = async (OriginalRequest: Request): Promise<Request> => {
+
 	const State = await ReadAuthState();
 
 	if (!State) return OriginalRequest;
@@ -563,6 +580,7 @@ const InjectAuthHeader = async (OriginalRequest: Request): Promise<Request> => {
 // Worker. On failure, clear auth state to force re-authentication.
 
 const MaybeRefreshToken = async (): Promise<void> => {
+
 	const State = await ReadAuthState();
 
 	if (!State) return;
@@ -823,6 +841,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 
 					const Target =
 						Next && Next.startsWith("/") && !Next.startsWith("//")
+
 							? Next
 							: "/Dashboard";
 
@@ -961,6 +980,7 @@ self.addEventListener("fetch", (Event: FetchEvent) => {
 					// type so HTML fallbacks are never stored.
 					const Type =
 						NetworkResponse?.headers?.get("content-type") ?? "";
+
 					if (
 						NetworkResponse &&
 						NetworkResponse.ok &&

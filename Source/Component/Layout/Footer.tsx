@@ -144,7 +144,7 @@ const Footer = ({ Content }: FooterProps) => {
 							className="FooterTauriLink"
 						>
 							<img
-								src="/Dark/Image/GitHub/Made/Tauri.svg"
+								src="/Image/GitHub/Made/Tauri.svg"
 								alt="Made with Tauri"
 								width="160"
 								height="32"
@@ -160,4 +160,5 @@ const Footer = ({ Content }: FooterProps) => {
 };
 
 export { Footer };
+
 export default Footer;

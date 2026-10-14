@@ -35,4 +35,5 @@ const FieldRecordDataCard = React.forwardRef<
 FieldRecordDataCard.displayName = "FieldRecordDataCard";
 
 export { FieldRecordDataCard };
+
 export default FieldRecordDataCard;

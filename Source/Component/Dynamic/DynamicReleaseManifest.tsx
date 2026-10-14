@@ -26,20 +26,31 @@ import type Property from "./Interface/Property/Grid/Platform.js";
 
 interface ReleaseManifestPlatform {
 	Name: string;
+
 	Channel: string;
+
 	Arch: string;
+
 	Signing: "VERIFIED" | "IN PREPARATION";
+
 	Size?: string;
+
 	Checksum?: string;
+
 	Status: "active" | "preparing" | "verified" | "unavailable";
+
 	DownloadUrl?: string;
+
 	DownloadLabel?: string;
 }
 
 interface ReleaseManifestContent {
 	Title?: string;
+
 	Subtitle?: string;
+
 	ReleaseIndex?: string;
+
 	Platforms: ReleaseManifestPlatform[];
 }
 
@@ -48,11 +59,14 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 
 	const {
 		Title = T("manifest.title", { defaultValue: "Release Manifest" }),
+
 		Subtitle = T("manifest.subtitle", {
 			defaultValue:
 				"Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",
 		}),
+
 		ReleaseIndex = "RELEASE_01",
+
 		Platforms = [],
 	} = Content as ReleaseManifestContent;
 
@@ -75,6 +89,7 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 								{Title}
 							</h2>
 						)}
+
 						{Subtitle && (
 							<div className="mt-3 text-muted">
 								<p>{Subtitle}</p>
@@ -86,6 +101,7 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 				<div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
 					{Platforms.map((Platform) => {
 						const IsActive = Platform.Status === "active";
+
 						const SigningStatus =
 							Platform.Signing === "VERIFIED"
 								? "verified"
@@ -167,13 +183,15 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 													Platform.DownloadLabel ||
 													`DOWNLOAD ${Platform.Name.toUpperCase()}`
 												}
+
 												href={Platform.DownloadUrl}
+
 												variant="button"
 											/>
 										) : (
 											<p className="text-field-s font-mono uppercase tracking-wider text-card-foreground opacity-70">
-																						STATUS: RELEASE PREPARATION
-																					</p>
+												STATUS: RELEASE PREPARATION
+											</p>
 										)}
 									</div>
 								</div>
@@ -187,4 +205,5 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 };
 
 export { DynamicReleaseManifest };
+
 export default DynamicReleaseManifest;

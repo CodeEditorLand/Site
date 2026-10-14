@@ -463,7 +463,7 @@ function SidebarGroupLabel({
 			data-slot="sidebar-group-label"
 			data-sidebar="group-label"
 			className={cn(
-				"text-[color-mix(in_srgb,var(--Foreground)_70%,transparent)] outline-hidden flat flex h-8 shrink-0 items-center px-2 font-medium ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
+				"outline-hidden flat flex h-8 shrink-0 items-center px-2 font-medium text-[color-mix(in_srgb,var(--Foreground)_70%,transparent)] ring-sidebar-ring transition-[margin,opacity] duration-200 ease-linear focus-visible:ring-2 [&>svg]:size-4 [&>svg]:shrink-0",
 				"group-data-[collapsible=icon]:-mt-8 group-data-[collapsible=icon]:opacity-0",
 				className,
 			)}
@@ -676,6 +676,7 @@ function SidebarMenuSkeleton({
 	// Deterministic width based on element index to avoid hydration mismatch
 	const width = React.useMemo(() => {
 		const H = ((showIcon ? 7 : 3) * 31) % 41;
+
 		return `${50 + H}%`;
 	}, [showIcon]);
 

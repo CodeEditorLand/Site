@@ -40,22 +40,33 @@ const JellyBadgeVariant: Record<
 > = {
 	default: {
 		variant: "graphite",
+
 		fill: "var(--Primary)",
+
 		label: "var(--PrimaryForeground)",
 	},
+
 	secondary: {
 		variant: "platinum",
+
 		fill: "var(--Secondary)",
+
 		label: "var(--SecondaryForeground)",
 	},
+
 	destructive: {
 		variant: "rose",
+
 		fill: "var(--Destruct)",
+
 		label: "var(--DestructForeground)",
 	},
+
 	outline: {
 		variant: "platinum",
+
 		fill: "transparent",
+
 		label: "var(--Foreground)",
 	},
 };

@@ -59,9 +59,9 @@ const T = GetI18n();
 			noIndex={NoIndex}
 		/>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-		<meta name="theme-color" content="#000000" />
+		<meta name="theme-color" content="#F2EDE3" />
 		<!-- Fonts: preconnect to Google Fonts origins, then preload the CSS
-		 stylesheet as a high-priority fetch. IBM Plex Mono for the Nocturnal Field Record design system. -->
+		 stylesheet as a high-priority fetch. IBM Plex Mono for the Daylight Field Record design system. -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -88,14 +88,9 @@ const T = GetI18n();
 			@import "@Stylesheet/Global.css";
 		</style>
 		<style is:inline>
-			.mermaid-diagram svg {
-				filter: invert(1) hue-rotate(180deg);
-			}
-			.dark .astro-code-themes,
-			.dark .astro-code-themes span {
-				color: var(--shiki-dark, inherit) !important;
-				background-color: var(--shiki-dark-bg, inherit) !important;
-			}
+			/* Mermaid diagrams render ink-on-white via the Base.css token
+			   overrides (var(--CardForeground) / var(--Card)) - no invert
+			   filter on the daylight canvas. */
 		</style>
 		<script>
 			import "@/Library/I18n/Client.js";
@@ -146,7 +141,7 @@ const T = GetI18n();
 			class="text-primary-fg sr-only fixed left-2 top-2 z-[100] -translate-y-full bg-primary px-4 py-2 font-medium transition-transform focus:not-sr-only focus:translate-y-0 focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Ring)]"
 			>Skip to main content</a
 		>
-		<jelly-theme id="JellyTheme" mode="dark">
+		<jelly-theme id="JellyTheme" mode="light">
 			<Background />
 			<AnalyticsProvider>
 				<PageviewTracker />

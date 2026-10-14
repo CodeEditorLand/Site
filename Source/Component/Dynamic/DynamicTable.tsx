@@ -50,12 +50,15 @@ const DynamicTable = <T extends Record<string, unknown>>({
 					{DataList.map((Row, RowIndex) => (
 						<TableRow
 							key={RowIndex}
+
 							className={` ${Striped && RowIndex % 2 === 1 ? "bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)]" : ""} ${Hoverable ? "hover:bg-[color-mix(in_srgb,var(--CardForeground)_10%,transparent)]" : ""} ${OnRowClick ? "cursor-pointer" : ""} `}
+
 							onClick={() => OnRowClick?.(Row)}
 						>
 							{ColumnList.map((Column, ColumnIndex) => (
 								<TableCell
 									key={ColumnIndex}
+
 									className={Column.ClassName}
 								>
 									{Column.Render

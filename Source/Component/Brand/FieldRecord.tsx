@@ -5,11 +5,17 @@ import { cn } from "../UI/Utility";
 import type { FieldRecord as FieldRecordData } from "../../Content/Record/FieldRecord";
 
 import { FieldRecordDataCard } from "./FieldRecordDataCard";
+
 import { FieldRecordEvidence } from "./FieldRecordEvidence";
+
 import { FieldRecordIndex } from "./FieldRecordIndex";
+
 import { FieldRecordMetadata } from "./FieldRecordMetadata";
+
 import { FieldRecordSeal } from "./FieldRecordSeal";
+
 import { FieldRecordAction } from "./FieldRecordAction";
+
 import {
 	FieldRecordStatus,
 	type FieldRecordStatusState,
@@ -17,13 +23,14 @@ import {
 
 export interface FieldRecordProps {
 	record: FieldRecordData;
+
 	className?: string;
 }
 
 /**
  * FieldRecord - canonical record-card template.
  *
- * Renders the Nocturnal Field Record series template from a single
+ * Renders the Daylight Field Record series template from a single
  * `FieldRecord` content object (Source/Content/Record/<Element>.ts):
  *
  *   # <INDEX>              (FieldRecordIndex)
@@ -63,6 +70,7 @@ const FieldRecord: React.FC<FieldRecordProps> = ({ record, className }) => {
 						{record.Stamp.map((Line) => (
 							<p
 								key={Line}
+
 								className="text-field-l font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground"
 							>
 								〈{Line}〉
@@ -77,6 +85,7 @@ const FieldRecord: React.FC<FieldRecordProps> = ({ record, className }) => {
 						{record.Route.map((Line) => (
 							<p
 								key={Line}
+
 								className="text-field-s font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
 							>
 								{Line}
@@ -133,6 +142,7 @@ const FieldRecord: React.FC<FieldRecordProps> = ({ record, className }) => {
 					<div className="mt-6">
 						<FieldRecordAction
 							label={record.Action.Label}
+
 							href={record.Action.Href}
 						/>
 					</div>

@@ -82,6 +82,7 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 			{LabelText && (
 				<Label
 					htmlFor={Identifier}
+
 					className="block text-muted-foreground"
 				>
 					{LabelText}
@@ -90,6 +91,7 @@ const DynamicInput = ({ Content, Id: PropertyIdentifier }: Property) => {
 			{Error && (
 				<p
 					id={ErrorIdentifier}
+
 					className="text-destructive"
 					role="alert"
 				>

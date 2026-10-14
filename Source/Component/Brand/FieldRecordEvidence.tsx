@@ -4,8 +4,11 @@ import { cn } from "../UI/Utility";
 
 export interface FieldRecordEvidenceProps {
 	src: string;
+
 	alt: string;
+
 	position?: string;
+
 	className?: string;
 }
 
@@ -36,4 +39,5 @@ const FieldRecordEvidence: React.FC<FieldRecordEvidenceProps> = ({
 };
 
 export { FieldRecordEvidence };
+
 export default FieldRecordEvidence;

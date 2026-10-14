@@ -9,6 +9,7 @@ afterEach(() => {
 });
 
 const SamplePost = {
+
 	Slug: "effect-ts-architecture",
 
 	Title: "Effect-TS Architecture in the Land Editor",

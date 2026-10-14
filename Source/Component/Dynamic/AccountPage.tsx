@@ -302,8 +302,11 @@ const AccountPage = ({
 				{Route === "signin" && (
 					<DynamicSignIn
 						Content={SignIn}
+
 						OnSubmit={HandleSignIn}
+
 						OnOAuth={HandleOAuth}
+
 						OnNavigate={Navigate}
 					/>
 				)}
@@ -311,8 +314,11 @@ const AccountPage = ({
 				{Route === "signup" && (
 					<DynamicSignUp
 						Content={SignUp}
+
 						OnSubmit={HandleSignUp}
+
 						OnOAuth={HandleOAuth}
+
 						OnNavigate={Navigate}
 					/>
 				)}
@@ -320,8 +326,11 @@ const AccountPage = ({
 				{Route === "forgot-password" && (
 					<DynamicForgotPassword
 						Content={ForgotPassword}
+
 						OnSubmit={HandleForgotPassword}
+
 						OnResend={() => HandleForgotPassword("")}
+
 						OnNavigate={Navigate}
 					/>
 				)}
@@ -329,8 +338,11 @@ const AccountPage = ({
 				{Route === "reset-password" && (
 					<DynamicResetPassword
 						Content={ResetPassword}
+
 						Token={ResetToken || ""}
+
 						OnReset={HandleResetPassword}
+
 						OnNavigate={Navigate}
 					/>
 				)}

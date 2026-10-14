@@ -42,6 +42,7 @@ const CopyIcon = `<svg
 ><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg>`;
 
 function AttachCopyHandler(Button: HTMLElement, Pre: HTMLElement): void {
+
 	Button.addEventListener("click", async () => {
 		try {
 			await navigator.clipboard.writeText(
@@ -53,17 +54,24 @@ function AttachCopyHandler(Button: HTMLElement, Pre: HTMLElement): void {
 		}
 
 		const Label = Button.getAttribute("aria-label") ?? "Copy to clipboard";
+
 		const Icon = Button.innerHTML;
 
 		Button.innerHTML = CheckMark;
+
 		Button.setAttribute("label", "Copied");
+
 		Button.setAttribute("aria-label", "Copied");
+
 		Button.setAttribute("title", "Copied");
 
 		setTimeout(() => {
 			Button.innerHTML = Icon;
+
 			Button.setAttribute("label", Label);
+
 			Button.setAttribute("aria-label", Label);
+
 			Button.setAttribute("title", Label);
 		}, 1800);
 	});
@@ -72,12 +80,14 @@ function AttachCopyHandler(Button: HTMLElement, Pre: HTMLElement): void {
 export function WireCopyButtons(
 	Selector: string = "jelly-icon-button[data-copy]",
 ): void {
+
 	const Buttons = Array.from(
 		document.querySelectorAll<HTMLElement>(Selector),
 	);
 
 	for (const Button of Buttons) {
 		const Pre = Button.previousElementSibling as HTMLElement | null;
+
 		if (!Pre) continue;
 
 		AttachCopyHandler(Button, Pre);
@@ -85,6 +95,7 @@ export function WireCopyButtons(
 }
 
 export function WireCodeBlockCopyButtons(): void {
+
 	const Pres = Array.from(
 		document.querySelectorAll<HTMLPreElement>("pre.astro-code"),
 	);
@@ -102,27 +113,43 @@ export function WireCodeBlockCopyButtons(): void {
 		// Wrap so the button can float top-right without becoming part of the
 		// pre's horizontally scrollable content.
 		const Wrapper = document.createElement("div");
+
 		Wrapper.style.position = "relative";
+
 		Pre.parentNode?.insertBefore(Wrapper, Pre);
+
 		Wrapper.appendChild(Pre);
 
 		const Button = document.createElement("jelly-icon-button");
+
 		Button.setAttribute("data-copy", "");
+
 		Button.setAttribute("size", "small");
+
 		Button.setAttribute("shape", "square");
+
 		Button.setAttribute("label", "Copy to clipboard");
+
 		Button.setAttribute("aria-label", "Copy to clipboard");
+
 		Button.setAttribute("title", "Copy to clipboard");
+
 		Button.setAttribute(
 			"style",
+
 			"--jelly-fill: var(--Mute); --jelly-label: var(--Foreground); --jelly-icon-button-radius: 0px; --jelly-ring: var(--Accent);",
 		);
+
 		Button.style.position = "absolute";
+
 		Button.style.top = "0.5rem";
+
 		Button.style.right = "0.5rem";
+
 		Button.innerHTML = CopyIcon;
 
 		Wrapper.appendChild(Button);
+
 		Pre.dataset.copyWired = "true";
 
 		AttachCopyHandler(Button, Pre);
@@ -131,6 +158,7 @@ export function WireCodeBlockCopyButtons(): void {
 
 // Self-initialize: ONE import anywhere (Base.astro) wires every Shiki block.
 if (typeof document !== "undefined") {
+
 	if (document.readyState === "loading") {
 		document.addEventListener("DOMContentLoaded", WireCodeBlockCopyButtons);
 	} else {

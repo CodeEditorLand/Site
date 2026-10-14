@@ -1,4 +1,5 @@
 export interface ThemeImageProps {
+
 	src: string;
 
 	alt?: string;
@@ -13,14 +14,14 @@ export interface ThemeImageProps {
 }
 
 /**
- * ThemeImage - Nocturnal Field Record (single theme).
+ * ThemeImage - Daylight Field Record (single theme).
  *
- * For LIGHT backgrounds (warm-white cards): use the LIGHT image variant.
- * For DARK backgrounds (black canvas): use the DARK image variant.
+ * Every surface is light (creme canvas, white cards) - use the LIGHT
+ * image variant (dark glyph).
  *
  * Convention:
  *   Light: /Image/Foo.svg or /Asset/Foo.svg
- *   Dark:  /Dark/Image/Foo.svg or /Asset/Dark/Foo.svg
+ *   (/Dark/Image/ and /Asset/Dark/ are obsolete - 2026-10-14)
  */
 export function ThemeImage({
 	src,
@@ -30,6 +31,7 @@ export function ThemeImage({
 	className,
 	...props
 }: ThemeImageProps) {
+
 	return (
 		<img
 			src={src}

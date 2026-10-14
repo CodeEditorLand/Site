@@ -11,12 +11,14 @@ import "@testing-library/jest-dom/vitest";
 // the host element instead keeps these jsdom component tests able to assert
 // our own prop-wiring (variant/label/disabled) without booting a browser.
 class JellyButtonStub extends HTMLElement {
+
 	static get observedAttributes() {
 		return ["disabled", "type", "label"];
 	}
 
 	connectedCallback() {
 		this.setAttribute("role", "button");
+
 		this.SyncAttributes();
 	}
 
@@ -27,6 +29,7 @@ class JellyButtonStub extends HTMLElement {
 	private SyncAttributes() {
 		this.setAttribute(
 			"aria-disabled",
+
 			String(this.hasAttribute("disabled")),
 		);
 
@@ -43,6 +46,9 @@ class JellyButtonStub extends HTMLElement {
 class JellyIconButtonStub extends JellyButtonStub {}
 
 if (!customElements.get("jelly-button"))
+
 	customElements.define("jelly-button", JellyButtonStub);
+
 if (!customElements.get("jelly-icon-button"))
+
 	customElements.define("jelly-icon-button", JellyIconButtonStub);

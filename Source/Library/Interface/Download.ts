@@ -1,4 +1,5 @@
 export default interface Download {
+
 	id: string;
 
 	version: string;

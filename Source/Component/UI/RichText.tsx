@@ -131,31 +131,36 @@ const CategoryStyle: Record<TermCategory, string> = {
 	Tool: "border-[#60a5fa] text-[#2563eb]",
 };
 
-// Jelly-badge variant: labels sit on the dark 18%-hue color-mix fills, so
-// they need bright -300 shades instead of the dark 600/700 shades used on
-// the plain warm-white chips above.
+// Jelly-badge variant: labels sit on light 18%-hue color-mix fills, so
+// they use dark -700 shades (single daylight ink rule, master §7).
 const CategoryBadgeStyle: Record<TermCategory, string> = {
-	Architecture: "border-[var(--SpineIPC)] text-[#93c5fd]",
+	Architecture: "border-[var(--SpineIPC)] text-[#1d4ed8]",
 
-	Telemetry: "border-[#fbbf24] text-[#fcd34d]",
+	Telemetry: "border-[#fbbf24] text-[#b45309]",
 
-	Protocol: "border-[var(--SpineWASM)] text-[#c4b5fd]",
+	Protocol: "border-[var(--SpineWASM)] text-[#6d28d9]",
 
-	Feature: "border-[var(--SpineTCP)] text-[#fdba74]",
+	Feature: "border-[var(--SpineTCP)] text-[#c2410c]",
 
-	License: "border-[var(--SpinegRPC)] text-[#86efac]",
+	License: "border-[var(--SpinegRPC)] text-[#15803d]",
 
-	Tool: "border-[#60a5fa] text-[#93c5fd]",
+	Tool: "border-[#60a5fa] text-[#1d4ed8]",
 };
 
 const CategoryFill: Record<TermCategory, string> = {
 	Architecture: "var(--SpineIPCMute)",
-	Telemetry: "color-mix(in srgb, #fbbf24 18%, #000000)",
+
+	Telemetry: "color-mix(in srgb, #fbbf24 18%, #ffffff)",
+
 	Protocol: "var(--SpineWASMMute)",
+
 	Feature: "var(--SpineTCPMute)",
+
 	License: "var(--SpinegRPCMute)",
-	Tool: "color-mix(in srgb, #60a5fa 18%, #000000)",
+
+	Tool: "color-mix(in srgb, #60a5fa 18%, #ffffff)",
 };
+
 const CategoryLabel: Record<TermCategory, string> = {
 	Architecture: "Architecture element",
 
@@ -331,11 +336,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 				</span>
 			);
 		case "Em":
-			return (
-				<em className="font-medium not-italic">
-					{Segment.Value}
-				</em>
-			);
+			return <em className="font-medium not-italic">{Segment.Value}</em>;
 		case "Term": {
 			const Logo = TermLogo[Segment.Value];
 			const Style = CategoryBadgeStyle[Segment.Category];
@@ -360,7 +361,7 @@ const SegmentNode = ({ Segment }: { Segment: Segment }) => {
 						<>
 							{"\u2001"}
 							<img
-								src={Logo.replace("/Image/", "/Dark/Image/")}
+								src={Logo}
 								alt=""
 								width={12}
 								height={12}
@@ -476,9 +477,7 @@ const LineNode = ({
 								{Item}
 							</span>
 						) : (
-							<em className="font-medium not-italic">
-								{Item}
-							</em>
+							<em className="font-medium not-italic">{Item}</em>
 						)}
 					</span>
 				))}

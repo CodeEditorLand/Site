@@ -11,6 +11,7 @@ let Pixel: PixelComponent | null = null;
 let Matrix: MatrixType | null = null;
 
 const LoadDependency = async (): Promise<void> => {
+
 	if (!Pixel) {
 		const Module = await import("@Function/Scroll/Code/Pixel.js");
 
@@ -25,12 +26,14 @@ const LoadDependency = async (): Promise<void> => {
 };
 
 interface ScrollCodeProperty {
+
 	Text?: string;
 
 	Font?: number;
 }
 
 const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
+
 	const [MouseState] = useState<Mouse>({
 		X: 0,
 		Y: 0,
@@ -125,6 +128,7 @@ const ScrollCode: React.FC<ScrollCodeProperty> = ({ Text = "", Font = 1 }) => {
 														ElementReference.current?.getBoundingClientRect();
 
 													if (!Pixel || !Container)
+
 														return null;
 
 													return (

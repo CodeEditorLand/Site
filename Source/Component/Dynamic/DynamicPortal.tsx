@@ -833,6 +833,7 @@ const PortalTierRow = ({
 									// Auth0AccountGate on /Account/SignIn handles the redirect.
 									window.location.href = "/Account/SignIn";
 								}}
+
 								aria-label="Cloud sign in form"
 							>
 								<DynamicInput
@@ -853,6 +854,7 @@ const PortalTierRow = ({
 										AutoComplete: "email",
 										OnChange: SetEmail,
 									}}
+
 									Id="portal-cloud-email"
 								/>
 								<DynamicInput
@@ -873,12 +875,14 @@ const PortalTierRow = ({
 										AutoComplete: "current-password",
 										OnChange: SetPassword,
 									}}
+
 									Id="portal-cloud-password"
 								/>
 								<Button
 									type="submit"
 									className="StaccatoButton w-full"
 									disabled={IsUnavailable}
+
 									style={{
 										backgroundColor: Content.Color,
 										borderColor: Content.BorderColor,
@@ -908,7 +912,9 @@ const PortalTierRow = ({
 									className="StaccatoButton w-full"
 									variant="outline"
 									disabled={IsUnavailable}
+
 									style={{ borderColor: Content.BorderColor }}
+
 									onClick={() => {
 										window.location.href =
 											"/Account/SignIn?connection=github";
@@ -925,7 +931,9 @@ const PortalTierRow = ({
 											src="/Image/GitHub.svg"
 											alt="GitHub"
 											width={20}
+
 											height={20}
+
 											className="h-5 w-5"
 										/>
 									</IconTooltip>
@@ -934,7 +942,9 @@ const PortalTierRow = ({
 									className="StaccatoButton w-full"
 									variant="outline"
 									disabled={IsUnavailable}
+
 									style={{ borderColor: Content.BorderColor }}
+
 									onClick={() => {
 										window.location.href =
 											"/Account/SignIn?connection=google-oauth2";
@@ -951,7 +961,9 @@ const PortalTierRow = ({
 											src="/Image/Google.svg"
 											alt="Google"
 											width={20}
+
 											height={20}
+
 											className="h-5 w-5"
 										/>
 									</IconTooltip>
@@ -960,7 +972,9 @@ const PortalTierRow = ({
 									className="StaccatoButton w-full"
 									variant="outline"
 									disabled={IsUnavailable}
+
 									style={{ borderColor: Content.BorderColor }}
+
 									onClick={() => {
 										window.location.href =
 											"/Account/SignIn?connection=gitlab";
@@ -977,7 +991,9 @@ const PortalTierRow = ({
 											src="/Image/GitLab.svg"
 											alt="GitLab"
 											width={20}
+
 											height={20}
+
 											className="h-5 w-5"
 										/>
 									</IconTooltip>
@@ -1015,11 +1031,13 @@ const PortalTierRow = ({
 								<Button
 									className="StaccatoButton w-full"
 									disabled={IsUnavailable}
+
 									style={{
 										backgroundColor: Content.Color,
 										borderColor: Content.BorderColor,
 										color: "#ffffff",
 									}}
+
 									onClick={async () => {
 										// Local-first: write a synthetic SW session so
 										// the auth gate on /Dashboard lets this through.
@@ -1113,6 +1131,7 @@ const PortalTierRow = ({
 						{IsEnterprise && (
 							<EnterpriseSSOForm
 								Content={Content}
+
 								Disabled={IsUnavailable}
 							/>
 						)}
@@ -1166,6 +1185,7 @@ const PortalTierRow = ({
 						{Content.Feature.map((Feature, FeatureIndex) => (
 							<li
 								key={FeatureIndex}
+
 								className={`PortalTierFeatureItem ${
 									(Feature.Status ?? Content.Status) &&
 									(Feature.Status ?? Content.Status) !==
@@ -1272,12 +1292,15 @@ const PortalTierRow = ({
 																			src={
 																				IconName
 																			}
+
 																			alt={
 																				IconLabel
 																			}
+
 																			title={
 																				IconLabel
 																			}
+
 																			width="16"
 																			height="16"
 																			className="h-4 w-4"
@@ -1516,7 +1539,9 @@ const DynamicPortal = ({ Content }: { Content: PortalContent }) => {
 					{Content.Enterprise && (
 						<PortalTierRow
 							Content={Content.Enterprise}
+
 							Index={3}
+
 							Labels={Content.Labels}
 						/>
 					)}

@@ -25,12 +25,14 @@ export const SpecimenSeal: React.FC<{ ClassName?: string }> = ({
 			{[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
 				<ellipse
 					key={angle}
+
 					className="seal-detail"
 					cx="100"
 					cy="35"
 					rx="12"
 					ry="28"
 					transform={`rotate(${angle} 100 100)`}
+
 					fill="none"
 					strokeWidth="3"
 					strokeLinecap="round"
@@ -71,8 +73,11 @@ export const SpecimenSeal: React.FC<{ ClassName?: string }> = ({
 			{/* Small decorative dots around center */}
 			{[0, 60, 120, 180, 240, 300].map((angle) => {
 				const rad = (angle * Math.PI) / 180;
+
 				const x = 100 + 22 * Math.cos(rad);
+
 				const y = 100 + 22 * Math.sin(rad);
+
 				return (
 					<circle
 						key={`dot-${angle}`}
@@ -87,10 +92,15 @@ export const SpecimenSeal: React.FC<{ ClassName?: string }> = ({
 			{/* Tiny detail lines radiating outward */}
 			{[30, 90, 150, 210, 270, 330].map((angle) => {
 				const rad = (angle * Math.PI) / 180;
+
 				const x1 = 100 + 60 * Math.cos(rad);
+
 				const y1 = 100 + 60 * Math.sin(rad);
+
 				const x2 = 100 + 78 * Math.cos(rad);
+
 				const y2 = 100 + 78 * Math.sin(rad);
+
 				return (
 					<line
 						key={`line-${angle}`}

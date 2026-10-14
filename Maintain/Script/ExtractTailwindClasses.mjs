@@ -141,10 +141,7 @@ const REPLACEMENTS = [
 	// tr-fg: transition-colors hover:text-foreground
 	[/\btransition-colors\s+hover:text-foreground\b/g, "tr-fg"],
 	// btn-svg: [&_svg]:pointer-events-none [&_svg]:shrink-0
-	[
-		/\[&_svg\]:pointer-events-none\s+\[&_svg\]:shrink-0\b/g,
-		"btn-svg",
-	],
+	[/\[&_svg\]:pointer-events-none\s+\[&_svg\]:shrink-0\b/g, "btn-svg"],
 	// noselect + touch-manipulation: touch-manipulation select-none
 	[/\btouch-manipulation\s+select-none\b/g, "noselect"],
 	// stand-alone touch-manipulation → handled by noselect already

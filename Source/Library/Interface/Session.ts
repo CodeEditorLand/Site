@@ -1,4 +1,5 @@
 export default interface Session {
+
 	id: string;
 
 	userId: string;

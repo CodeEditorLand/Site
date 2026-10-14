@@ -27,10 +27,10 @@ import { FieldRecordStatus } from "../Brand/FieldRecordStatus.js";
 import type Property from "./Interface/Property/Hero.js";
 
 /**
- * Dynamic HeroSection - Nocturnal Field Record.
+ * Dynamic HeroSection - Daylight Field Record.
  *
  * Two-panel artifact:
- *   LEFT: warm-white data card with field-record grammar
+ *   LEFT: white data card with field-record grammar
  *   RIGHT: full-bleed evidence image
  *
  * Hierarchy (per design_system.md + further_design_system.md):
@@ -50,10 +50,15 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 	const {
 		Title,
+
 		TitleHighlight,
+
 		Subtitle,
+
 		PrimaryCTA: PrimaryCTA,
+
 		SecondaryCTA: SecondaryCTA,
+
 		FloatingCard: FloatingCard = [],
 		...HeroConfiguration
 	} = Content;
@@ -204,7 +209,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			role="button"
 			tabIndex={0}
 		>
-			{/* Nocturnal Field Record: faint grid on black canvas */}
+			{/* Daylight Field Record: faint grid on creme canvas */}
 			<div
 				aria-hidden="true"
 				className="pointer-events-none absolute inset-0"
@@ -230,7 +235,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 								<FieldRecordSeal element="Land" />
 							</div>
 
-							{/* Oversized bracketed timestamp — strongest top hierarchy (design_system.md §Text syntax / Template copy:154, 174-175) */}
+							{/* Oversized bracketed timestamp - strongest top hierarchy (design_system.md §Text syntax / Template copy:154, 174-175) */}
 							<div className="mt-10">
 								<p className="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground">
 									〈21.09.26〉
@@ -263,7 +268,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 								</p>
 							</div>
 
-							{/* Program verbs (design_system.md:157-158, 486) — em quad U+2001 separators (DesignSystem-Grammar §3) */}
+							{/* Program verbs (design_system.md:157-158, 486) - em quad U+2001 separators (DesignSystem-Grammar §3) */}
 							<p className="text-field-s mt-6 font-mono uppercase tracking-[0.25em] text-card-foreground opacity-60">
 								{"WALK\u2001LISTEN\u2001SIGNAL"}
 							</p>
@@ -311,11 +316,14 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 								/>
 							</div>
 
-							{/* Observational metadata footer (design_system.md:162-163, 186-189, 492-495) — specimen data verbatim from the spec example, no invented fields */}
+							{/* Observational metadata footer (design_system.md:162-163, 186-189, 492-495) - specimen data verbatim from the spec example, no invented fields */}
 							<div className="mt-3">
 								<FieldRecordMetadata
 									rows={[
-										{ label: "SPECIES", value: "NOCTUA PRONUBA" },
+										{
+											label: "SPECIES",
+											value: "NOCTUA PRONUBA",
+										},
 										{ label: "TEMP", value: "16.2 C" },
 										{ label: "WIND", value: "01.8 KM/H" },
 									]}

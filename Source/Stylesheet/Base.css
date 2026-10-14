@@ -6,110 +6,111 @@
 
 @tailwind variants;
 
-/* Unified Design Token System - Nocturnal Field Record */
+/* Unified Design Token System - Daylight Field Record */
 @layer theme {
 	:root {
 		/* ─────────────────────────────────────────────────────────────
-		 SEMANTIC SURFACE TOKENS - Single Nocturnal Theme
-		 Black canvas, warm-white information cards, mono type.
+		 SEMANTIC SURFACE TOKENS - Single Daylight Theme
+		 Creme beige canvas, white information boxes, mono type.
 		 No dark mode. No gradients. No shadows. No rounded corners.
 		 ───────────────────────────────────────────────────────────── */
-		--Background: #000000;
+		--Background: #f2ede3;
 
-		--Foreground: #e7e7ea;
+		--Foreground: #1c1c1e;
 
-		--Card: #f8f7f2;
+		--Card: #ffffff;
 
-		--CardForeground: #070707;
+		--CardForeground: #1c1c1e;
 
-		--Popover: #f8f7f2;
+		--Popover: #ffffff;
 
-		--PopoverForeground: #070707;
+		--PopoverForeground: #1c1c1e;
 
-		/* Primary inverts: light text-as-action on the black canvas */
-		--Primary: #e7e7ea;
+		/* Primary inverts: ink text-as-action on the creme canvas */
+		--Primary: #1c1c1e;
 
-		--PrimaryForeground: #000000;
+		--PrimaryForeground: #f2ede3;
 
-		/* Secondary → warm-white card surface */
-		--Secondary: #f8f7f2;
+		/* Secondary → white card surface */
+		--Secondary: #ffffff;
 
-		--SecondaryForeground: #070707;
+		--SecondaryForeground: #1c1c1e;
 
-		/* Mute → deep black-gray for input backgrounds */
-		--Mute: #1a1a1e;
+		/* Mute → deeper creme for input backgrounds */
+		--Mute: #e9e2d4;
 
-		--MuteForeground: #8a8a93;
+		--MuteForeground: #70685b;
 
 		/* Accent → dark botanical green */
 		--Accent: #1e742a;
 
-		--AccentForeground: #f8f7f2;
+		--AccentForeground: #ffffff;
 
-		--Destruct: #f87171;
+		--Destruct: #dc2626;
 
-		--DestructForeground: #000000;
+		--DestructForeground: #ffffff;
 
-		/* Border → hairline on dark canvas */
-		--Border: rgba(255, 255, 255, 0.08);
+		/* Border → hairline on light surfaces (sitewide) */
+		--Border: rgba(7, 7, 7, 0.08);
 
-		--Input: #1a1a1e;
+		--Input: #ffffff;
 
 		--Ring: #1e742a;
 
 		/* Component background tokens */
-		--BackgroundWhite: #000000;
+		--BackgroundWhite: #ffffff;
 
-		--InputBackground: #1a1a1e;
+		--InputBackground: #ffffff;
 
-		--PopoverBackground: #f8f7f2;
+		--PopoverBackground: #ffffff;
 
-		/* Surface depth layers (dark) */
-		--Surface0: #000000;
+		/* Surface depth layers (light - deepening creme) */
+		--Surface0: #f2ede3;
 
-		--Surface1: #0a0a0c;
+		--Surface1: #ede7da;
 
-		--Surface2: #111116;
+		--Surface2: #e7dfcf;
 
-		--Surface3: #1a1a1e;
+		--Surface3: #e2d9c6;
 
-		--Surface4: #26262f;
+		--Surface4: #dcd2bd;
 
 		/* ─────────────────────────────────────────────────────────────
 		 PROTOCOL SPINE COLORS
-		 Hues stay; *Mute/*Surface become low-alpha tints on black.
+		 Hues stay; *Mute/*Surface become low-alpha tints on white.
+		 *Fore becomes the -700 ink shade for labels on light fills.
 		 ───────────────────────────────────────────────────────────── */
 		--SpinegRPC: #22c55e;
 
-		--SpinegRPCMute: color-mix(in srgb, #22c55e 18%, #000000);
+		--SpinegRPCMute: color-mix(in srgb, #22c55e 18%, #ffffff);
 
-		--SpinegRPCSurface: color-mix(in srgb, #22c55e 8%, #000000);
+		--SpinegRPCSurface: color-mix(in srgb, #22c55e 8%, #ffffff);
 
-		--SpinegRPCFore: #4ade80;
+		--SpinegRPCFore: #15803d;
 
 		--SpineIPC: #3b82f6;
 
-		--SpineIPCMute: color-mix(in srgb, #3b82f6 18%, #000000);
+		--SpineIPCMute: color-mix(in srgb, #3b82f6 18%, #ffffff);
 
-		--SpineIPCSurface: color-mix(in srgb, #3b82f6 8%, #000000);
+		--SpineIPCSurface: color-mix(in srgb, #3b82f6 8%, #ffffff);
 
-		--SpineIPCFore: #60a5fa;
+		--SpineIPCFore: #1d4ed8;
 
 		--SpineTCP: #f97316;
 
-		--SpineTCPMute: color-mix(in srgb, #f97316 18%, #000000);
+		--SpineTCPMute: color-mix(in srgb, #f97316 18%, #ffffff);
 
-		--SpineTCPSurface: color-mix(in srgb, #f97316 8%, #000000);
+		--SpineTCPSurface: color-mix(in srgb, #f97316 8%, #ffffff);
 
-		--SpineTCPFore: #fb923c;
+		--SpineTCPFore: #c2410c;
 
 		--SpineWASM: #a855f7;
 
-		--SpineWASMMute: color-mix(in srgb, #a855f7 18%, #000000);
+		--SpineWASMMute: color-mix(in srgb, #a855f7 18%, #ffffff);
 
-		--SpineWASMSurface: color-mix(in srgb, #a855f7 8%, #000000);
+		--SpineWASMSurface: color-mix(in srgb, #a855f7 8%, #ffffff);
 
-		--SpineWASMFore: #c084fc;
+		--SpineWASMFore: #6d28d9;
 
 		/* ─────────────────────────────────────────────────────────────
 		 AUTHENTICATION TIER COLORS (aliased from Spine)
@@ -144,137 +145,137 @@
 		 ───────────────────────────────────────────────────────────── */
 		--ExtensionRust: #f87171;
 
-		--ExtensionRustMute: color-mix(in srgb, #f87171 18%, #000000);
+		--ExtensionRustMute: color-mix(in srgb, #f87171 18%, #ffffff);
 
-		--ExtensionRustSurface: color-mix(in srgb, #f87171 8%, #000000);
+		--ExtensionRustSurface: color-mix(in srgb, #f87171 8%, #ffffff);
 
 		--ExtensionRustFore: #fca5a5;
 
 		--ExtensionTauri: #fbbf24;
 
-		--ExtensionTauriMute: color-mix(in srgb, #fbbf24 18%, #000000);
+		--ExtensionTauriMute: color-mix(in srgb, #fbbf24 18%, #ffffff);
 
-		--ExtensionTauriSurface: color-mix(in srgb, #fbbf24 8%, #000000);
+		--ExtensionTauriSurface: color-mix(in srgb, #fbbf24 8%, #ffffff);
 
-		--ExtensionTauriFore: #fcd34d;
+		--ExtensionTauriFore: #b45309;
 
 		--ExtensionEffectTypeScript: #22d3d8;
 
 		--ExtensionEffectTypeScriptMute: color-mix(
 			in srgb,
 			#22d3d8 18%,
-			#000000
+			#ffffff
 		);
 
 		--ExtensionEffectTypeScriptSurface: color-mix(
 			in srgb,
 			#22d3d8 8%,
-			#000000
+			#ffffff
 		);
 
-		--ExtensionEffectTypeScriptFore: #67e8f9;
+		--ExtensionEffectTypeScriptFore: #0e7490;
 
 		--ExtensionReact: #60a5fa;
 
-		--ExtensionReactMute: color-mix(in srgb, #60a5fa 18%, #000000);
+		--ExtensionReactMute: color-mix(in srgb, #60a5fa 18%, #ffffff);
 
-		--ExtensionReactSurface: color-mix(in srgb, #60a5fa 8%, #000000);
+		--ExtensionReactSurface: color-mix(in srgb, #60a5fa 8%, #ffffff);
 
 		--ExtensionReactFore: #93c5fd;
 
 		--ExtensionVue: #4ade80;
 
-		--ExtensionVueMute: color-mix(in srgb, #4ade80 18%, #000000);
+		--ExtensionVueMute: color-mix(in srgb, #4ade80 18%, #ffffff);
 
-		--ExtensionVueSurface: color-mix(in srgb, #4ade80 8%, #000000);
+		--ExtensionVueSurface: color-mix(in srgb, #4ade80 8%, #ffffff);
 
 		--ExtensionVueFore: #86efac;
 
 		--ExtensionSvelte: #fb923c;
 
-		--ExtensionSvelteMute: color-mix(in srgb, #fb923c 18%, #000000);
+		--ExtensionSvelteMute: color-mix(in srgb, #fb923c 18%, #ffffff);
 
-		--ExtensionSvelteSurface: color-mix(in srgb, #fb923c 8%, #000000);
+		--ExtensionSvelteSurface: color-mix(in srgb, #fb923c 8%, #ffffff);
 
 		--ExtensionSvelteFore: #fdba74;
 
 		--ExtensionNext: #171717;
 
-		--ExtensionNextMute: color-mix(in srgb, #171717 18%, #000000);
+		--ExtensionNextMute: color-mix(in srgb, #171717 18%, #ffffff);
 
-		--ExtensionNextSurface: color-mix(in srgb, #171717 8%, #000000);
+		--ExtensionNextSurface: color-mix(in srgb, #171717 8%, #ffffff);
 
 		--ExtensionNextFore: #525252;
 
 		--ExtensionNuxt: #16a34a;
 
-		--ExtensionNuxtMute: color-mix(in srgb, #16a34a 18%, #000000);
+		--ExtensionNuxtMute: color-mix(in srgb, #16a34a 18%, #ffffff);
 
-		--ExtensionNuxtSurface: color-mix(in srgb, #16a34a 8%, #000000);
+		--ExtensionNuxtSurface: color-mix(in srgb, #16a34a 8%, #ffffff);
 
 		--ExtensionNuxtFore: #4ade80;
 
 		--ExtensionSolid: #446b9e;
 
-		--ExtensionSolidMute: color-mix(in srgb, #446b9e 18%, #000000);
+		--ExtensionSolidMute: color-mix(in srgb, #446b9e 18%, #ffffff);
 
-		--ExtensionSolidSurface: color-mix(in srgb, #446b9e 8%, #000000);
+		--ExtensionSolidSurface: color-mix(in srgb, #446b9e 8%, #ffffff);
 
 		--ExtensionSolidFore: #7aa2d4;
 
 		--ExtensionAstro: #9333ea;
 
-		--ExtensionAstroMute: color-mix(in srgb, #9333ea 18%, #000000);
+		--ExtensionAstroMute: color-mix(in srgb, #9333ea 18%, #ffffff);
 
-		--ExtensionAstroSurface: color-mix(in srgb, #9333ea 8%, #000000);
+		--ExtensionAstroSurface: color-mix(in srgb, #9333ea 8%, #ffffff);
 
 		--ExtensionAstroFore: #d8b4fe;
 
 		--ExtensionAngular: #dd0031;
 
-		--ExtensionAngularMute: color-mix(in srgb, #dd0031 18%, #000000);
+		--ExtensionAngularMute: color-mix(in srgb, #dd0031 18%, #ffffff);
 
-		--ExtensionAngularSurface: color-mix(in srgb, #dd0031 8%, #000000);
+		--ExtensionAngularSurface: color-mix(in srgb, #dd0031 8%, #ffffff);
 
 		--ExtensionAngularFore: #fca5a5;
 
 		--ExtensionEmber: #e04e39;
 
-		--ExtensionEmberMute: color-mix(in srgb, #e04e39 18%, #000000);
+		--ExtensionEmberMute: color-mix(in srgb, #e04e39 18%, #ffffff);
 
-		--ExtensionEmberSurface: color-mix(in srgb, #e04e39 8%, #000000);
+		--ExtensionEmberSurface: color-mix(in srgb, #e04e39 8%, #ffffff);
 
 		--ExtensionEmberFore: #fda498;
 
 		--ExtensionQwik: #18b6f6;
 
-		--ExtensionQwikMute: color-mix(in srgb, #18b6f6 18%, #000000);
+		--ExtensionQwikMute: color-mix(in srgb, #18b6f6 18%, #ffffff);
 
-		--ExtensionQwikSurface: color-mix(in srgb, #18b6f6 8%, #000000);
+		--ExtensionQwikSurface: color-mix(in srgb, #18b6f6 8%, #ffffff);
 
 		--ExtensionQwikFore: #7dd3fc;
 
 		--ExtensionRemix: #121212;
 
-		--ExtensionRemixMute: color-mix(in srgb, #121212 18%, #000000);
+		--ExtensionRemixMute: color-mix(in srgb, #121212 18%, #ffffff);
 
-		--ExtensionRemixSurface: color-mix(in srgb, #121212 8%, #000000);
+		--ExtensionRemixSurface: color-mix(in srgb, #121212 8%, #ffffff);
 
 		--ExtensionRemixFore: #525252;
 
 		--ExtensionTanStack: #ff4154;
 
-		--ExtensionTanStackMute: color-mix(in srgb, #ff4154 18%, #000000);
+		--ExtensionTanStackMute: color-mix(in srgb, #ff4154 18%, #ffffff);
 
-		--ExtensionTanStackSurface: color-mix(in srgb, #ff4154 8%, #000000);
+		--ExtensionTanStackSurface: color-mix(in srgb, #ff4154 8%, #ffffff);
 
 		--ExtensionTanStackFore: #fb7185;
 
 		--ExtensionElectron: #47848f;
 
-		--ExtensionElectronMute: color-mix(in srgb, #47848f 18%, #000000);
+		--ExtensionElectronMute: color-mix(in srgb, #47848f 18%, #ffffff);
 
-		--ExtensionElectronSurface: color-mix(in srgb, #47848f 8%, #000000);
+		--ExtensionElectronSurface: color-mix(in srgb, #47848f 8%, #ffffff);
 
 		--ExtensionElectronFore: #88e0ef;
 
@@ -283,41 +284,41 @@
 		 ───────────────────────────────────────────────────────────── */
 		--LanguageTypeScript: #3178c6;
 
-		--LanguageTypeScriptMute: color-mix(in srgb, #3178c6 18%, #000000);
+		--LanguageTypeScriptMute: color-mix(in srgb, #3178c6 18%, #ffffff);
 
-		--LanguageTypeScriptSurface: color-mix(in srgb, #3178c6 8%, #000000);
+		--LanguageTypeScriptSurface: color-mix(in srgb, #3178c6 8%, #ffffff);
 
 		--LanguageTypeScriptFore: #93c5fd;
 
 		--LanguageJavaScript: #f7df1e;
 
-		--LanguageJavaScriptMute: color-mix(in srgb, #f7df1e 18%, #000000);
+		--LanguageJavaScriptMute: color-mix(in srgb, #f7df1e 18%, #ffffff);
 
-		--LanguageJavaScriptSurface: color-mix(in srgb, #f7df1e 8%, #000000);
+		--LanguageJavaScriptSurface: color-mix(in srgb, #f7df1e 8%, #ffffff);
 
 		--LanguageJavaScriptFore: #fde047;
 
 		--LanguageRust: #ce422b;
 
-		--LanguageRustMute: color-mix(in srgb, #ce422b 18%, #000000);
+		--LanguageRustMute: color-mix(in srgb, #ce422b 18%, #ffffff);
 
-		--LanguageRustSurface: color-mix(in srgb, #ce422b 8%, #000000);
+		--LanguageRustSurface: color-mix(in srgb, #ce422b 8%, #ffffff);
 
 		--LanguageRustFore: #fca5a5;
 
 		--LanguageGo: #00add8;
 
-		--LanguageGoMute: color-mix(in srgb, #00add8 18%, #000000);
+		--LanguageGoMute: color-mix(in srgb, #00add8 18%, #ffffff);
 
-		--LanguageGoSurface: color-mix(in srgb, #00add8 8%, #000000);
+		--LanguageGoSurface: color-mix(in srgb, #00add8 8%, #ffffff);
 
 		--LanguageGoFore: #2dd4ff;
 
 		--LanguagePython: #3572a5;
 
-		--LanguagePythonMute: color-mix(in srgb, #3572a5 18%, #000000);
+		--LanguagePythonMute: color-mix(in srgb, #3572a5 18%, #ffffff);
 
-		--LanguagePythonSurface: color-mix(in srgb, #3572a5 8%, #000000);
+		--LanguagePythonSurface: color-mix(in srgb, #3572a5 8%, #ffffff);
 
 		--LanguagePythonFore: #93c5fd;
 
@@ -326,25 +327,25 @@
 		 ───────────────────────────────────────────────────────────── */
 		--RuntimeNode: #5fa04e;
 
-		--RuntimeNodeMute: color-mix(in srgb, #5fa04e 18%, #000000);
+		--RuntimeNodeMute: color-mix(in srgb, #5fa04e 18%, #ffffff);
 
-		--RuntimeNodeSurface: color-mix(in srgb, #5fa04e 8%, #000000);
+		--RuntimeNodeSurface: color-mix(in srgb, #5fa04e 8%, #ffffff);
 
 		--RuntimeNodeFore: #86efac;
 
 		--RuntimeDeno: #070707;
 
-		--RuntimeDenoMute: color-mix(in srgb, #070707 18%, #000000);
+		--RuntimeDenoMute: color-mix(in srgb, #070707 18%, #ffffff);
 
-		--RuntimeDenoSurface: color-mix(in srgb, #070707 8%, #000000);
+		--RuntimeDenoSurface: color-mix(in srgb, #070707 8%, #ffffff);
 
 		--RuntimeDenoFore: #525252;
 
 		--RuntimeBun: #fbf0df;
 
-		--RuntimeBunMute: color-mix(in srgb, #f5a623 18%, #000000);
+		--RuntimeBunMute: color-mix(in srgb, #f5a623 18%, #ffffff);
 
-		--RuntimeBunSurface: color-mix(in srgb, #f5a623 8%, #000000);
+		--RuntimeBunSurface: color-mix(in srgb, #f5a623 8%, #ffffff);
 
 		--RuntimeBunFore: #fde047;
 
@@ -361,73 +362,73 @@
 		 ───────────────────────────────────────────────────────────── */
 		--DatabasePostgres: #336791;
 
-		--DatabasePostgresMute: color-mix(in srgb, #336791 18%, #000000);
+		--DatabasePostgresMute: color-mix(in srgb, #336791 18%, #ffffff);
 
-		--DatabasePostgresSurface: color-mix(in srgb, #336791 8%, #000000);
+		--DatabasePostgresSurface: color-mix(in srgb, #336791 8%, #ffffff);
 
 		--DatabasePostgresFore: #7aa2d4;
 
 		--DatabaseMySQL: #4479a1;
 
-		--DatabaseMySQLMute: color-mix(in srgb, #4479a1 18%, #000000);
+		--DatabaseMySQLMute: color-mix(in srgb, #4479a1 18%, #ffffff);
 
-		--DatabaseMySQLSurface: color-mix(in srgb, #4479a1 8%, #000000);
+		--DatabaseMySQLSurface: color-mix(in srgb, #4479a1 8%, #ffffff);
 
 		--DatabaseMySQLFore: #7aa2d4;
 
 		--DatabaseSQLite: #003b57;
 
-		--DatabaseSQLiteMute: color-mix(in srgb, #003b57 18%, #000000);
+		--DatabaseSQLiteMute: color-mix(in srgb, #003b57 18%, #ffffff);
 
-		--DatabaseSQLiteSurface: color-mix(in srgb, #003b57 8%, #000000);
+		--DatabaseSQLiteSurface: color-mix(in srgb, #003b57 8%, #ffffff);
 
 		--DatabaseSQLiteFore: #7aa2d4;
 
 		--DatabaseMongoDB: #47a248;
 
-		--DatabaseMongoDBMute: color-mix(in srgb, #47a248 18%, #000000);
+		--DatabaseMongoDBMute: color-mix(in srgb, #47a248 18%, #ffffff);
 
-		--DatabaseMongoDBSurface: color-mix(in srgb, #47a248 8%, #000000);
+		--DatabaseMongoDBSurface: color-mix(in srgb, #47a248 8%, #ffffff);
 
 		--DatabaseMongoDBFore: #86efac;
 
 		--DatabaseRedis: #dc382d;
 
-		--DatabaseRedisMute: color-mix(in srgb, #dc382d 18%, #000000);
+		--DatabaseRedisMute: color-mix(in srgb, #dc382d 18%, #ffffff);
 
-		--DatabaseRedisSurface: color-mix(in srgb, #dc382d 8%, #000000);
+		--DatabaseRedisSurface: color-mix(in srgb, #dc382d 8%, #ffffff);
 
 		--DatabaseRedisFore: #fca5a5;
 
 		--DatabasePlanetScale: #000000;
 
-		--DatabasePlanetScaleMute: color-mix(in srgb, #000000 18%, #000000);
+		--DatabasePlanetScaleMute: color-mix(in srgb, #000000 18%, #ffffff);
 
-		--DatabasePlanetScaleSurface: color-mix(in srgb, #000000 8%, #000000);
+		--DatabasePlanetScaleSurface: color-mix(in srgb, #000000 8%, #ffffff);
 
 		--DatabasePlanetScaleFore: #525252;
 
 		--DatabaseTurso: #4ff8d2;
 
-		--DatabaseTursoMute: color-mix(in srgb, #4ff8d2 18%, #000000);
+		--DatabaseTursoMute: color-mix(in srgb, #4ff8d2 18%, #ffffff);
 
-		--DatabaseTursoSurface: color-mix(in srgb, #4ff8d2 8%, #000000);
+		--DatabaseTursoSurface: color-mix(in srgb, #4ff8d2 8%, #ffffff);
 
 		--DatabaseTursoFore: #67e8f9;
 
 		--DatabaseNeon: #00e699;
 
-		--DatabaseNeonMute: color-mix(in srgb, #00e699 18%, #000000);
+		--DatabaseNeonMute: color-mix(in srgb, #00e699 18%, #ffffff);
 
-		--DatabaseNeonSurface: color-mix(in srgb, #00e699 8%, #000000);
+		--DatabaseNeonSurface: color-mix(in srgb, #00e699 8%, #ffffff);
 
 		--DatabaseNeonFore: #4ade80;
 
 		--DatabaseSupabase: #3ecf8e;
 
-		--DatabaseSupabaseMute: color-mix(in srgb, #3ecf8e 18%, #000000);
+		--DatabaseSupabaseMute: color-mix(in srgb, #3ecf8e 18%, #ffffff);
 
-		--DatabaseSupabaseSurface: color-mix(in srgb, #3ecf8e 8%, #000000);
+		--DatabaseSupabaseSurface: color-mix(in srgb, #3ecf8e 8%, #ffffff);
 
 		--DatabaseSupabaseFore: #4ade80;
 
@@ -436,65 +437,65 @@
 		 ───────────────────────────────────────────────────────────── */
 		--CloudAWS: #ff9900;
 
-		--CloudAWSMute: color-mix(in srgb, #ff9900 18%, #000000);
+		--CloudAWSMute: color-mix(in srgb, #ff9900 18%, #ffffff);
 
-		--CloudAWSSurface: color-mix(in srgb, #ff9900 8%, #000000);
+		--CloudAWSSurface: color-mix(in srgb, #ff9900 8%, #ffffff);
 
 		--CloudAWSFore: #fdba74;
 
 		--CloudAzure: #0078d4;
 
-		--CloudAzureMute: color-mix(in srgb, #0078d4 18%, #000000);
+		--CloudAzureMute: color-mix(in srgb, #0078d4 18%, #ffffff);
 
-		--CloudAzureSurface: color-mix(in srgb, #0078d4 8%, #000000);
+		--CloudAzureSurface: color-mix(in srgb, #0078d4 8%, #ffffff);
 
 		--CloudAzureFore: #60a5fa;
 
 		--CloudGCP: #4285f4;
 
-		--CloudGCPMute: color-mix(in srgb, #4285f4 18%, #000000);
+		--CloudGCPMute: color-mix(in srgb, #4285f4 18%, #ffffff);
 
-		--CloudGCPSurface: color-mix(in srgb, #4285f4 8%, #000000);
+		--CloudGCPSurface: color-mix(in srgb, #4285f4 8%, #ffffff);
 
 		--CloudGCPFore: #60a5fa;
 
 		--CloudCloudflare: #f48120;
 
-		--CloudCloudflareMute: color-mix(in srgb, #f48120 18%, #000000);
+		--CloudCloudflareMute: color-mix(in srgb, #f48120 18%, #ffffff);
 
-		--CloudCloudflareSurface: color-mix(in srgb, #f48120 8%, #000000);
+		--CloudCloudflareSurface: color-mix(in srgb, #f48120 8%, #ffffff);
 
 		--CloudCloudflareFore: #fb923c;
 
 		--CloudVercel: #000000;
 
-		--CloudVercelMute: color-mix(in srgb, #000000 18%, #000000);
+		--CloudVercelMute: color-mix(in srgb, #000000 18%, #ffffff);
 
-		--CloudVercelSurface: color-mix(in srgb, #000000 8%, #000000);
+		--CloudVercelSurface: color-mix(in srgb, #000000 8%, #ffffff);
 
 		--CloudVercelFore: #525252;
 
 		--CloudNetlify: #00c7b7;
 
-		--CloudNetlifyMute: color-mix(in srgb, #00c7b7 18%, #000000);
+		--CloudNetlifyMute: color-mix(in srgb, #00c7b7 18%, #ffffff);
 
-		--CloudNetlifySurface: color-mix(in srgb, #00c7b7 8%, #000000);
+		--CloudNetlifySurface: color-mix(in srgb, #00c7b7 8%, #ffffff);
 
 		--CloudNetlifyFore: #67e8f9;
 
 		--CloudFly: #7b3fe4;
 
-		--CloudFlyMute: color-mix(in srgb, #7b3fe4 18%, #000000);
+		--CloudFlyMute: color-mix(in srgb, #7b3fe4 18%, #ffffff);
 
-		--CloudFlySurface: color-mix(in srgb, #7b3fe4 8%, #000000);
+		--CloudFlySurface: color-mix(in srgb, #7b3fe4 8%, #ffffff);
 
 		--CloudFlyFore: #c084fc;
 
 		--CloudRailway: #0b0d0e;
 
-		--CloudRailwayMute: color-mix(in srgb, #0b0d0e 18%, #000000);
+		--CloudRailwayMute: color-mix(in srgb, #0b0d0e 18%, #ffffff);
 
-		--CloudRailwaySurface: color-mix(in srgb, #0b0d0e 8%, #000000);
+		--CloudRailwaySurface: color-mix(in srgb, #0b0d0e 8%, #ffffff);
 
 		--CloudRailwayFore: #525252;
 
@@ -503,57 +504,57 @@
 		 ───────────────────────────────────────────────────────────── */
 		--ToolVite: #646cff;
 
-		--ToolViteMute: color-mix(in srgb, #646cff 18%, #000000);
+		--ToolViteMute: color-mix(in srgb, #646cff 18%, #ffffff);
 
-		--ToolViteSurface: color-mix(in srgb, #646cff 8%, #000000);
+		--ToolViteSurface: color-mix(in srgb, #646cff 8%, #ffffff);
 
 		--ToolViteFore: #93c5fd;
 
 		--ToolWebpack: #8dd6f9;
 
-		--ToolWebpackMute: color-mix(in srgb, #8dd6f9 18%, #000000);
+		--ToolWebpackMute: color-mix(in srgb, #8dd6f9 18%, #ffffff);
 
-		--ToolWebpackSurface: color-mix(in srgb, #8dd6f9 8%, #000000);
+		--ToolWebpackSurface: color-mix(in srgb, #8dd6f9 8%, #ffffff);
 
 		--ToolWebpackFore: #7dd3fc;
 
 		--ToolRollup: #ec4a3f;
 
-		--ToolRollupMute: color-mix(in srgb, #ec4a3f 18%, #000000);
+		--ToolRollupMute: color-mix(in srgb, #ec4a3f 18%, #ffffff);
 
-		--ToolRollupSurface: color-mix(in srgb, #ec4a3f 8%, #000000);
+		--ToolRollupSurface: color-mix(in srgb, #ec4a3f 8%, #ffffff);
 
 		--ToolRollupFore: #fca5a5;
 
 		--ToolTurbo: #ef4444;
 
-		--ToolTurboMute: color-mix(in srgb, #ef4444 18%, #000000);
+		--ToolTurboMute: color-mix(in srgb, #ef4444 18%, #ffffff);
 
-		--ToolTurboSurface: color-mix(in srgb, #ef4444 8%, #000000);
+		--ToolTurboSurface: color-mix(in srgb, #ef4444 8%, #ffffff);
 
 		--ToolTurboFore: #fca5a5;
 
 		--ToolEsBuild: #ffcf00;
 
-		--ToolEsBuildMute: color-mix(in srgb, #ffcf00 18%, #000000);
+		--ToolEsBuildMute: color-mix(in srgb, #ffcf00 18%, #ffffff);
 
-		--ToolEsBuildSurface: color-mix(in srgb, #ffcf00 8%, #000000);
+		--ToolEsBuildSurface: color-mix(in srgb, #ffcf00 8%, #ffffff);
 
 		--ToolEsBuildFore: #fde047;
 
 		--ToolBiome: #f7891c;
 
-		--ToolBiomeMute: color-mix(in srgb, #f7891c 18%, #000000);
+		--ToolBiomeMute: color-mix(in srgb, #f7891c 18%, #ffffff);
 
-		--ToolBiomeSurface: color-mix(in srgb, #f7891c 8%, #000000);
+		--ToolBiomeSurface: color-mix(in srgb, #f7891c 8%, #ffffff);
 
 		--ToolBiomeFore: #fdba74;
 
 		--ToolOxc: #f97316;
 
-		--ToolOxcMute: color-mix(in srgb, #f97316 18%, #000000);
+		--ToolOxcMute: color-mix(in srgb, #f97316 18%, #ffffff);
 
-		--ToolOxcSurface: color-mix(in srgb, #f97316 8%, #000000);
+		--ToolOxcSurface: color-mix(in srgb, #f97316 8%, #ffffff);
 
 		--ToolOxcFore: #fdba74;
 
@@ -562,41 +563,41 @@
 		 ───────────────────────────────────────────────────────────── */
 		--OSLinux: #fcc624;
 
-		--OSLinuxMute: color-mix(in srgb, #fcc624 18%, #000000);
+		--OSLinuxMute: color-mix(in srgb, #fcc624 18%, #ffffff);
 
-		--OSLinuxSurface: color-mix(in srgb, #fcc624 8%, #000000);
+		--OSLinuxSurface: color-mix(in srgb, #fcc624 8%, #ffffff);
 
 		--OSLinuxFore: #fde047;
 
 		--OSMacOS: #999999;
 
-		--OSMacOSMute: color-mix(in srgb, #999999 18%, #000000);
+		--OSMacOSMute: color-mix(in srgb, #999999 18%, #ffffff);
 
-		--OSMacOSSurface: color-mix(in srgb, #999999 8%, #000000);
+		--OSMacOSSurface: color-mix(in srgb, #999999 8%, #ffffff);
 
 		--OSMacOSFore: #d4d4d8;
 
 		--OSWindows: #00a4ef;
 
-		--OSWindowsMute: color-mix(in srgb, #00a4ef 18%, #000000);
+		--OSWindowsMute: color-mix(in srgb, #00a4ef 18%, #ffffff);
 
-		--OSWindowsSurface: color-mix(in srgb, #00a4ef 8%, #000000);
+		--OSWindowsSurface: color-mix(in srgb, #00a4ef 8%, #ffffff);
 
 		--OSWindowsFore: #60a5fa;
 
 		--OSAndroid: #3ddc84;
 
-		--OSAndroidMute: color-mix(in srgb, #3ddc84 18%, #000000);
+		--OSAndroidMute: color-mix(in srgb, #3ddc84 18%, #ffffff);
 
-		--OSAndroidSurface: color-mix(in srgb, #3ddc84 8%, #000000);
+		--OSAndroidSurface: color-mix(in srgb, #3ddc84 8%, #ffffff);
 
 		--OSAndroidFore: #86efac;
 
 		--OSIOS: #000000;
 
-		--OSIOSMute: color-mix(in srgb, #000000 18%, #000000);
+		--OSIOSMute: color-mix(in srgb, #000000 18%, #ffffff);
 
-		--OSIOSSurface: color-mix(in srgb, #000000 8%, #000000);
+		--OSIOSSurface: color-mix(in srgb, #000000 8%, #ffffff);
 
 		--OSIOSFore: #525252;
 
@@ -605,49 +606,49 @@
 		 ───────────────────────────────────────────────────────────── */
 		--PlatformWeb: #60a5fa;
 
-		--PlatformWebMute: color-mix(in srgb, #60a5fa 18%, #000000);
+		--PlatformWebMute: color-mix(in srgb, #60a5fa 18%, #ffffff);
 
-		--PlatformWebSurface: color-mix(in srgb, #60a5fa 8%, #000000);
+		--PlatformWebSurface: color-mix(in srgb, #60a5fa 8%, #ffffff);
 
 		--PlatformWebFore: #93c5fd;
 
 		--PlatformDesktop: #94a3b8;
 
-		--PlatformDesktopMute: color-mix(in srgb, #94a3b8 18%, #000000);
+		--PlatformDesktopMute: color-mix(in srgb, #94a3b8 18%, #ffffff);
 
-		--PlatformDesktopSurface: color-mix(in srgb, #94a3b8 8%, #000000);
+		--PlatformDesktopSurface: color-mix(in srgb, #94a3b8 8%, #ffffff);
 
-		--PlatformDesktopFore: #d4d4d8;
+		--PlatformDesktopFore: #52525b;
 
 		--PlatformMobile: #f472b6;
 
-		--PlatformMobileMute: color-mix(in srgb, #f472b6 18%, #000000);
+		--PlatformMobileMute: color-mix(in srgb, #f472b6 18%, #ffffff);
 
-		--PlatformMobileSurface: color-mix(in srgb, #f472b6 8%, #000000);
+		--PlatformMobileSurface: color-mix(in srgb, #f472b6 8%, #ffffff);
 
 		--PlatformMobileFore: #f9a8d4;
 
 		--PlatformCLI: #22c55e;
 
-		--PlatformCLIMute: color-mix(in srgb, #22c55e 18%, #000000);
+		--PlatformCLIMute: color-mix(in srgb, #22c55e 18%, #ffffff);
 
-		--PlatformCLISurface: color-mix(in srgb, #22c55e 8%, #000000);
+		--PlatformCLISurface: color-mix(in srgb, #22c55e 8%, #ffffff);
 
 		--PlatformCLIFore: #4ade80;
 
 		--PlatformExtension: #a855f7;
 
-		--PlatformExtensionMute: color-mix(in srgb, #a855f7 18%, #000000);
+		--PlatformExtensionMute: color-mix(in srgb, #a855f7 18%, #ffffff);
 
-		--PlatformExtensionSurface: color-mix(in srgb, #a855f7 8%, #000000);
+		--PlatformExtensionSurface: color-mix(in srgb, #a855f7 8%, #ffffff);
 
 		--PlatformExtensionFore: #c084fc;
 
 		--PlatformEmbedded: #f97316;
 
-		--PlatformEmbeddedMute: color-mix(in srgb, #f97316 18%, #000000);
+		--PlatformEmbeddedMute: color-mix(in srgb, #f97316 18%, #ffffff);
 
-		--PlatformEmbeddedSurface: color-mix(in srgb, #f97316 8%, #000000);
+		--PlatformEmbeddedSurface: color-mix(in srgb, #f97316 8%, #ffffff);
 
 		--PlatformEmbeddedFore: #fb923c;
 
@@ -656,73 +657,73 @@
 		 ───────────────────────────────────────────────────────────── */
 		--ProviderGitHub: #171515;
 
-		--ProviderGitHubMute: color-mix(in srgb, #171515 18%, #000000);
+		--ProviderGitHubMute: color-mix(in srgb, #171515 18%, #ffffff);
 
-		--ProviderGitHubSurface: color-mix(in srgb, #171515 8%, #000000);
+		--ProviderGitHubSurface: color-mix(in srgb, #171515 8%, #ffffff);
 
 		--ProviderGitHubFore: #d4d4d8;
 
 		--ProviderGoogle: #4285f4;
 
-		--ProviderGoogleMute: color-mix(in srgb, #4285f4 18%, #000000);
+		--ProviderGoogleMute: color-mix(in srgb, #4285f4 18%, #ffffff);
 
-		--ProviderGoogleSurface: color-mix(in srgb, #4285f4 8%, #000000);
+		--ProviderGoogleSurface: color-mix(in srgb, #4285f4 8%, #ffffff);
 
 		--ProviderGoogleFore: #60a5fa;
 
 		--ProviderGitLab: #fc6d26;
 
-		--ProviderGitLabMute: color-mix(in srgb, #fc6d26 18%, #000000);
+		--ProviderGitLabMute: color-mix(in srgb, #fc6d26 18%, #ffffff);
 
-		--ProviderGitLabSurface: color-mix(in srgb, #fc6d26 8%, #000000);
+		--ProviderGitLabSurface: color-mix(in srgb, #fc6d26 8%, #ffffff);
 
 		--ProviderGitLabFore: #fb923c;
 
 		--ProviderMicrosoft: #00a4ef;
 
-		--ProviderMicrosoftMute: color-mix(in srgb, #00a4ef 18%, #000000);
+		--ProviderMicrosoftMute: color-mix(in srgb, #00a4ef 18%, #ffffff);
 
-		--ProviderMicrosoftSurface: color-mix(in srgb, #00a4ef 8%, #000000);
+		--ProviderMicrosoftSurface: color-mix(in srgb, #00a4ef 8%, #ffffff);
 
 		--ProviderMicrosoftFore: #60a5fa;
 
 		--ProviderOkta: #007dc1;
 
-		--ProviderOktaMute: color-mix(in srgb, #007dc1 18%, #000000);
+		--ProviderOktaMute: color-mix(in srgb, #007dc1 18%, #ffffff);
 
-		--ProviderOktaSurface: color-mix(in srgb, #007dc1 8%, #000000);
+		--ProviderOktaSurface: color-mix(in srgb, #007dc1 8%, #ffffff);
 
 		--ProviderOktaFore: #60a5fa;
 
 		--ProviderAuth0: #eb5424;
 
-		--ProviderAuth0Mute: color-mix(in srgb, #eb5424 18%, #000000);
+		--ProviderAuth0Mute: color-mix(in srgb, #eb5424 18%, #ffffff);
 
-		--ProviderAuth0Surface: color-mix(in srgb, #eb5424 8%, #000000);
+		--ProviderAuth0Surface: color-mix(in srgb, #eb5424 8%, #ffffff);
 
 		--ProviderAuth0Fore: #fb923c;
 
 		--ProviderBitbucket: #0052cc;
 
-		--ProviderBitbucketMute: color-mix(in srgb, #0052cc 18%, #000000);
+		--ProviderBitbucketMute: color-mix(in srgb, #0052cc 18%, #ffffff);
 
-		--ProviderBitbucketSurface: color-mix(in srgb, #0052cc 8%, #000000);
+		--ProviderBitbucketSurface: color-mix(in srgb, #0052cc 8%, #ffffff);
 
 		--ProviderBitbucketFore: #60a5fa;
 
 		--ProviderLinkedIn: #0a66c2;
 
-		--ProviderLinkedInMute: color-mix(in srgb, #0a66c2 18%, #000000);
+		--ProviderLinkedInMute: color-mix(in srgb, #0a66c2 18%, #ffffff);
 
-		--ProviderLinkedInSurface: color-mix(in srgb, #0a66c2 8%, #000000);
+		--ProviderLinkedInSurface: color-mix(in srgb, #0a66c2 8%, #ffffff);
 
 		--ProviderLinkedInFore: #60a5fa;
 
 		--ProviderApple: #000000;
 
-		--ProviderAppleMute: color-mix(in srgb, #000000 18%, #000000);
+		--ProviderAppleMute: color-mix(in srgb, #000000 18%, #ffffff);
 
-		--ProviderAppleSurface: color-mix(in srgb, #000000 8%, #000000);
+		--ProviderAppleSurface: color-mix(in srgb, #000000 8%, #ffffff);
 
 		--ProviderAppleFore: #d4d4d8;
 
@@ -763,7 +764,7 @@
 
 		--ContainerSixExtraLarge: 72rem;
 
-		/* Design System Constraints - Nocturnal Field Record */
+		/* Design System Constraints - Daylight Field Record */
 		--BorderWidth: 1px;
 
 		--BorderStyle: solid;
@@ -788,7 +789,7 @@
 			"IBM Plex Mono", "JetBrains Mono", "Fira Code", ui-monospace,
 			"SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
 
-		/* Nocturnal Field Record: dramatic 4-scale type system */
+		/* Daylight Field Record: dramatic 4-scale type system */
 		--TypeScaleXS: 0.75rem;
 		--TypeScaleS: 0.875rem;
 		--TypeScaleL: clamp(2rem, 5vw, 3.25rem);
@@ -1039,8 +1040,8 @@
 
 /* ─────────────────────────────────────────────────────────────
  LEGAL / POLICY PAGES
- Warm-white card surface for legal/terms/privacy/license pages,
- matching the Nocturnal Field Record information card.
+ White card surface for legal/terms/privacy/license pages,
+ matching the Daylight Field Record information box.
  ───────────────────────────────────────────────────────────── */
 @layer components {
 	.LegalCard {
@@ -1091,7 +1092,7 @@
  remarkCallout plugin emits:
    <div class="markdown-alert markdown-alert-{type}">
      <p class="markdown-alert-title">label</p>
- Nocturnal theme: warm-white card with left border accent.
+ Daylight theme: white card with left border accent.
  ───────────────────────────────────────────────────────────── */
 
 .markdown-alert {
@@ -1265,7 +1266,7 @@
 	}
 }
 
-/* ── Shiki code blocks: flat corners, dark surface ─────── */
+/* ── Shiki code blocks: flat corners, light surface ─────── */
 .astro-code {
 	border-radius: 0 !important;
 }
@@ -1278,8 +1279,8 @@
 }
 
 /* Neutralize prose-code text colors leaking into Shiki's <code> (e.g.
-   prose-code:text-card-foreground dark ink on doc pages would otherwise
-   render dark-on-dark over the pre's #24292e). inherit lets the pre's
+   prose-code:text-card-foreground ink on doc pages would otherwise clash
+   with the pre's github-light background). inherit lets the pre's
    inline color flow to plain spans; token spans keep their inline colors. */
 .astro-code code {
 	color: inherit !important;
@@ -1325,7 +1326,7 @@ img[src*="/Mermaid/"] {
 	padding: 1rem;
 }
 
-/* Fix mermaid SVG text colors for Nocturnal Field Record */
+/* Fix mermaid SVG text colors for Daylight Field Record */
 .mermaid-diagram svg text,
 .mermaid-diagram svg .node text,
 .mermaid-diagram svg .edgeLabel text,
@@ -1455,7 +1456,7 @@ jelly-icon-button:not(:defined)[disabled] {
 	pointer-events: none;
 }
 
-/* Nocturnal Field Record type utilities */
+/* Daylight Field Record type utilities */
 .text-field-s {
 	font-size: var(--TypeScaleS);
 	line-height: 1.2;

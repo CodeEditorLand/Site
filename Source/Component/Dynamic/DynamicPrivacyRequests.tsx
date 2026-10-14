@@ -60,7 +60,9 @@ export default () => {
 					{GdprRights.map((Right) => (
 						<a
 							key={Right.Code}
+
 							href={`/Contact/${Right.Slug.charAt(0).toUpperCase()}${Right.Slug.slice(1)}`}
+
 							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							<div className="mb-3 flex items-start justify-between gap-2">
@@ -108,7 +110,9 @@ export default () => {
 					{SupportChannels.map((Channel) => (
 						<a
 							key={Channel.Code}
+
 							href={`/Contact/${Channel.Slug.charAt(0).toUpperCase()}${Channel.Slug.slice(1)}`}
+
 							className="StaccatoCard StaccatoBorderShimmer flex flex-col bg-card p-5 transition-all hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 						>
 							<div className="mb-2 flex items-center justify-between gap-2">
@@ -170,8 +174,8 @@ export default () => {
 									Permanent Account Deletion
 								</h4>
 								<span className="font-mono text-sm font-medium tracking-widest text-red-700">
-															ERASE
-														</span>
+									ERASE
+								</span>
 							</div>
 							<p className="text-sm text-card-foreground">
 								Opens a structured erasure request form. The

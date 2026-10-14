@@ -5,10 +5,15 @@ import { RichText } from "../UI/RichText.js";
 import { FieldRecord } from "../Brand/FieldRecord.js";
 
 import { Mountain } from "../../Content/Record/Mountain.js";
+
 import { Cocoon } from "../../Content/Record/Cocoon.js";
+
 import { Wind } from "../../Content/Record/Wind.js";
+
 import { Sky } from "../../Content/Record/Sky.js";
+
 import { Air } from "../../Content/Record/Air.js";
+
 import { Echo } from "../../Content/Record/Echo.js";
 
 import type Property from "./Interface/Property/Feature.js";
@@ -25,7 +30,7 @@ import type Property from "./Interface/Property/Feature.js";
 const ElementRecords = [Mountain, Cocoon, Wind, Sky, Air, Echo];
 
 /**
- * Dynamic Features - Nocturnal Field Record series.
+ * Dynamic Features - Daylight Field Record series.
  * Six feature cards render as per-element field-record cards driven by
  * Source/Content/Record/<Element>.ts (index, stamp, route, status,
  * metadata, seal). The section header and the simplex-noise scatter
@@ -34,9 +39,13 @@ const ElementRecords = [Mountain, Cocoon, Wind, Sky, Air, Echo];
 const DynamicFeatures = ({ Content, ClassName }: Property) => {
 	const {
 		Title,
+
 		Subtitle,
+
 		Feature: Features,
+
 		Columns = 3,
+
 		Gap = "xl",
 	} = Content;
 
@@ -54,10 +63,15 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 
 	const ColumnClass: Record<number, string> = {
 		1: "grid-cols-1",
+
 		2: "grid-cols-1 md:grid-cols-2",
+
 		3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+
 		4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-4",
+
 		5: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5",
+
 		6: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6",
 	};
 

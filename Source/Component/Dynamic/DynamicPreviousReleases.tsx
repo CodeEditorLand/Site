@@ -73,7 +73,9 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 			Header: "Size",
 
 			Render: (Value: unknown) => (
-				<span className="text-card-foreground opacity-70">{String(Value)}</span>
+				<span className="text-card-foreground opacity-70">
+					{String(Value)}
+				</span>
 			),
 		},
 
@@ -99,6 +101,7 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 					{Row.Assets.map((Asset) => (
 						<DynamicButton
 							key={Asset.Platform}
+
 							Content={{
 								Text: Asset.Platform,
 								Variant: "outline",
@@ -110,6 +113,7 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 											? "Monitor"
 											: "Terminal",
 							}}
+
 							OnAction={() =>
 								Content.OnDownload?.(
 									Row.Version,
@@ -126,6 +130,7 @@ const DynamicPreviousReleases = ({ Content, ClassName }: Property) => {
 								Variant: "ghost",
 								Size: "sm",
 							}}
+
 							OnAction={() =>
 								Content.OnViewChangelog?.(Row.Version)
 							}

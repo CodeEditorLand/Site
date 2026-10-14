@@ -7,7 +7,9 @@ export type FieldRecordElement =
 
 export interface FieldRecordSealProps {
 	element: FieldRecordElement;
+
 	className?: string;
+
 	size?: number;
 }
 
@@ -15,6 +17,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 	element,
 }) => {
 	const stroke = "var(--Accent)";
+
 	const detail = "#D6B947";
 
 	switch (element) {
@@ -52,6 +55,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					<circle cx="32" cy="32" r="4" fill={stroke} />
 				</svg>
 			);
+
 		case "Mountain":
 			return (
 				<svg
@@ -79,6 +83,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					/>
 				</svg>
 			);
+
 		case "Cocoon":
 			return (
 				<svg
@@ -106,6 +111,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					/>
 				</svg>
 			);
+
 		case "Wind":
 			return (
 				<svg
@@ -128,6 +134,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					<path d="M32 8 L36 28 L32 32 L28 28 Z" fill={stroke} />
 				</svg>
 			);
+
 		case "Sky":
 			return (
 				<svg
@@ -166,6 +173,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					<circle cx="36" cy="48" r="1" fill={detail} />
 				</svg>
 			);
+
 		case "Air":
 			return (
 				<svg
@@ -205,6 +213,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					<circle cx="12" cy="32" r="2" fill={stroke} />
 				</svg>
 			);
+
 		case "Echo":
 			return (
 				<svg
@@ -239,6 +248,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					/>
 				</svg>
 			);
+
 		case "Grove":
 			return (
 				<svg
@@ -258,6 +268,7 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 					<circle cx="44" cy="26" r="1.5" fill={stroke} />
 				</svg>
 			);
+
 		default:
 			return null;
 	}
@@ -284,4 +295,5 @@ const FieldRecordSeal: React.FC<FieldRecordSealProps> = ({
 };
 
 export { FieldRecordSeal };
+
 export default FieldRecordSeal;
