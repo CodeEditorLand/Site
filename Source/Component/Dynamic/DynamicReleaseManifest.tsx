@@ -124,9 +124,9 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 										/>
 									</div>
 
-									{/* Platform stamp */}
+									{/* Platform stamp - ledger scale (not the hero text-field-xl) */}
 									<div className="mt-6">
-										<p className="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground">
+										<p className="font-mono text-xl font-medium uppercase tracking-[0.1em] text-card-foreground">
 											〈{Platform.Name.toUpperCase()}〉
 										</p>
 										<p className="text-field-s mt-2 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
