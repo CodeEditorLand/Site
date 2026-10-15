@@ -232,8 +232,11 @@ function G(n, t = !1) {
 
 function It(
 	n,
+
 	t,
+
 	e,
+
 	{ rtl: i = !1, wrap: s = !0, horizontal: r = !0, vertical: o = !0 } = {},
 ) {
 	let l = 0;
@@ -1525,6 +1528,7 @@ const se =
 
 			// label on the white fill
 			onAccent: X,
+
 			// label on the accent fill
 		},
 
@@ -1533,10 +1537,12 @@ const se =
 
 			// #ECECEF  hairline
 			focus: st,
+
 			// focus ring
 		},
 
 		shadow: "20, 26, 38",
+
 		// rgb triple, consumed inside rgba()
 	},
 	ne = {
@@ -1586,6 +1592,7 @@ const se =
 
 			// dark label on the near-white fill
 			onAccent: "oklch(0.2514 0.0163 264.22)",
+
 			// #1E222A  card surface, not pure black
 		},
 
@@ -1636,6 +1643,7 @@ const jt = Ot(Xt),
 
 		graphite: {
 			fill: "background-neutral-emphasis",
+
 			on: "foreground-on-emphasis",
 		},
 	},
@@ -1765,6 +1773,7 @@ function hs(n) {
 typeof matchMedia == "function" &&
 	matchMedia("(prefers-color-scheme: dark)").addEventListener?.(
 		"change",
+
 		() => ot(),
 	);
 
@@ -1807,6 +1816,7 @@ class M extends HTMLElement {
 
 				const t = this.toLocal(
 					this._hoverPointerX,
+
 					this._hoverPointerY,
 				);
 
@@ -1890,10 +1900,12 @@ class M extends HTMLElement {
 		(zt.drop(this),
 			window.removeEventListener(
 				"jelly-theme-change",
+
 				this.onThemeChange,
 			),
 			window.removeEventListener(
 				"jelly-motion-change",
+
 				this.onMotionChange,
 			),
 			window.removeEventListener("resize", this.onWindowResize),
@@ -2141,7 +2153,9 @@ class M extends HTMLElement {
 
 		return {
 			color: this.ringColor(),
+
 			width: e,
+
 			gap: Number.isFinite(i) ? i : V.gap,
 		};
 	}
@@ -2354,6 +2368,7 @@ class M extends HTMLElement {
 	 */
 	wirePress(
 		t,
+
 		{
 			keyboard: e = !0,
 			disabled: i = () => this.hasAttribute("disabled"),

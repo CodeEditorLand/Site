@@ -24,22 +24,31 @@ afterEach(() => {
 const SampleFeatures = [
 	{
 		Id: "performance",
+
 		Icon: "Zap",
+
 		Title: "Performance",
+
 		Description: "Native speed via Rust.",
 	},
 
 	{
 		Id: "compatibility",
+
 		Icon: "Box",
+
 		Title: "Compatibility",
+
 		Description: "Run existing VS Code extensions.",
 	},
 
 	{
 		Id: "architecture",
+
 		Icon: "Cpu",
+
 		Title: "Architecture",
+
 		Description: "Effect-TS powered services.",
 	},
 ];

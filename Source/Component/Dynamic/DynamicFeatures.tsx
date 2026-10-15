@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 
 import { RichText } from "../UI/RichText.js";
 
-import { FieldRecord } from "../Brand/FieldRecord.js";
+import { SpecimenLabel } from "../Brand/SpecimenLabel.js";
 
 import { Mountain } from "../../Content/Record/Mountain.js";
 
@@ -31,9 +31,12 @@ const ElementRecords = [Mountain, Cocoon, Wind, Sky, Air, Echo];
 
 /**
  * Dynamic Features - Daylight Field Record series.
- * Six feature cards render as per-element field-record cards driven by
+ * Six feature cards render as per-element SPECIMEN-LABEL ledgers
+ * (Source/Component/Brand/SpecimenLabel.tsx) driven by
  * Source/Content/Record/<Element>.ts (index, stamp, route, status,
- * metadata, seal). The section header and the simplex-noise scatter
+ * metadata, seal). Ink-on-creme ledger cards with hairline rules -
+ * deliberately distinct from the white FieldRecord boxes used by the
+ * hero, 404 and Portal. The section header and the simplex-noise scatter
  * (Staccato + Attention) are preserved unchanged.
  */
 const DynamicFeatures = ({ Content, ClassName }: Property) => {
@@ -46,7 +49,7 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 
 		Columns = 3,
 
-		Gap = "xl",
+		Gap = "lg",
 	} = Content;
 
 	const GridReference = useRef<HTMLDivElement>(null);
@@ -149,11 +152,15 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 							ElementRecords[Index % ElementRecords.length];
 
 						return (
-							<FieldRecord
+							<div
 								key={Record.Id}
-								record={Record}
-								className="FeatureCard min-h-0"
-							/>
+								className="FeatureCard min-h-0 border border-border p-5"
+							>
+								<SpecimenLabel
+									record={Record}
+									className="h-full"
+								/>
+							</div>
 						);
 					})}
 				</div>

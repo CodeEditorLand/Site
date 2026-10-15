@@ -569,116 +569,106 @@ const TierIndexMap: Record<string, string> = {
 										: "ACTIVE";
 
 							return (
-								<FieldRecordDataCard key={Tier.Identifier} className="h-full">
-									<div class="flex h-full flex-col justify-between">
-										<!-- Top: Index + Seal -->
-										<div class="flex items-start justify-between">
-											<FieldRecordIndex
-												index={TierIndex}
-												client:load
-											/>
-											<FieldRecordSeal
-												element={SealElement}
-												size={48}
-												client:load
-											/>
-										</div>
-
-										<!-- Tier stamp -->
-										<div class="mt-6">
-											<h2 class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground">
-												〈{Tier.Title.toUpperCase()}〉
-											</h2>
-											<p class="text-field-s mt-2 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
-												/PROTOCOL: {Tier.Protocol}
-											</p>
-										</div>
-
-										<!-- Metadata block -->
-										<div class="mt-6">
-											<FieldRecordMetadata
-												pairs={[
-													{
-														label: "STATUS",
-														value: StatusLabel,
-													},
-													{
-														label: "BADGE",
-														value: Tier.Badge,
-													},
-												]}
-												client:load
-											/>
-										</div>
-
-										<!-- Status -->
-										<div class="mt-4">
-											<FieldRecordStatus
-												status={
-													Tier.Status === "ComingSoon"
-														? "preparing"
-														: "active"
-												}
-												tone="ink"
-												client:load
-											/>
-										</div>
-
-										<!-- Features list -->
-										<div class="mt-6">
-											<p class="text-field-s font-mono uppercase tracking-wider text-card-foreground opacity-60">
-												FEATURES:
-											</p>
-											<ul class="mt-2 space-y-0">
-												{Tier.Feature.map((Feature, Index) => (
-													<li
-														key={Index}
-														class="flex flex-col gap-0 border-b border-border py-2"
-													>
-														<span class="text-field-s font-mono uppercase tracking-wider text-card-foreground">
-															{Feature.Heading}
-														</span>
-														<span class="text-field-s font-mono text-card-foreground opacity-60">
-															{Feature.Description}
-														</span>
-													</li>
-												))}
-											</ul>
-										</div>
-
-										<!-- Capabilities list -->
-										{Tier.Capability.length > 0 && (
-											<div class="mt-6">
-												<p class="text-field-s font-mono uppercase tracking-wider text-card-foreground opacity-60">
-													CAPABILITIES:
-												</p>
-												<div class="mt-2 flex flex-wrap gap-x-4 gap-y-1">
-													{Tier.Capability.map(
-														(CapabilityText, CapIndex) => (
-															<span
-																key={CapIndex}
-																class="text-field-s font-mono text-card-foreground opacity-60"
+															<div
+																key={Tier.Identifier}
+																class="flex h-full flex-col border border-border p-5"
 															>
-																{CapabilityText}
-															</span>
-														),
-													)}
-												</div>
-											</div>
-										)}
+																{/* Top: specimen index (green accent) + seal */}
+																<div class="flex items-start justify-between gap-3">
+																	<span class="font-mono text-sm font-medium uppercase tracking-[0.2em] text-accent">
+																		# {TierIndex}
+																	</span>
+																	<FieldRecordSeal
+																		element={SealElement}
+																		size={32}
+																		client:load
+																	/>
+																</div>
 
-										<!-- CTA -->
-										<div class="mt-6">
-											<FieldRecordAction
-												label={`ENTER ${Tier.Identifier.toUpperCase()}`}
-												href={`/Account/SignIn?connection=${Tier.Identifier.toLowerCase()}`}
-												variant="button"
-												client:load
-											/>
-										</div>
-									</div>
-								</FieldRecordDataCard>
-							);
+																{/* Tier stamp - ledger scale (not the hero text-field-xl) */}
+																<div class="mt-3 border-t border-border pt-3">
+																	<h2 class="font-mono text-xl font-medium uppercase tracking-[0.1em] text-card-foreground">
+																		〈{Tier.Title.toUpperCase()}〉
+																	</h2>
+																	<p class="mt-1 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-70">
+																		/PROTOCOL: {Tier.Protocol}
+																	</p>
+																</div>
+
+																{/* Status + badge ledger rows */}
+																<div class="mt-3 border-t border-border pt-3">
+																	<div class="flex gap-3 py-0.5">
+																		<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-60">
+																			STATUS:
+																		</span>
+																		<span class="font-mono text-sm font-medium uppercase tracking-[0.15em] text-card-foreground">
+																			{StatusLabel}
+																		</span>
+																	</div>
+																	<div class="flex gap-3 py-0.5">
+																		<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-60">
+																			BADGE:
+																		</span>
+																		<span class="font-mono text-sm font-medium uppercase tracking-[0.15em] text-card-foreground">
+																			{Tier.Badge}
+																		</span>
+																	</div>
+																</div>
+
+																{/* Features ledger */}
+																<div class="mt-3 border-t border-border pt-3">
+																	<p class="font-mono text-xs uppercase tracking-[0.25em] text-card-foreground opacity-60">
+																		FEATURES:
+																	</p>
+																	<ul class="mt-2">
+																		{Tier.Feature.map((Feature, Index) => (
+																			<li
+																				key={Index}
+																				class="flex flex-col gap-0 border-b border-border py-2"
+																			>
+																				<span class="font-mono text-sm font-medium uppercase tracking-wider text-card-foreground">
+																					{Feature.Heading}
+																				</span>
+																				<span class="font-mono text-xs text-card-foreground opacity-60">
+																					{Feature.Description}
+																				</span>
+																			</li>
+																		))}
+																	</ul>
+																</div>
+
+																{/* Capabilities ledger */}
+																{Tier.Capability.length > 0 && (
+																	<div class="mt-3 border-t border-border pt-3">
+																		<p class="font-mono text-xs uppercase tracking-[0.25em] text-card-foreground opacity-60">
+																			CAPABILITIES:
+																		</p>
+																		<div class="mt-2 flex flex-wrap gap-x-4 gap-y-1">
+																			{Tier.Capability.map(
+																				(CapabilityText, CapIndex) => (
+																					<span
+																						key={CapIndex}
+																						class="font-mono text-sm text-card-foreground opacity-60"
+																					>
+																						{CapabilityText}
+																					</span>
+																				),
+																			)}
+																		</div>
+																	</div>
+																)}
+
+																{/* CTA - functional control, kept as-is */}
+																<div class="mt-3 border-t border-border pt-3">
+																	<FieldRecordAction
+																		label={`ENTER ${Tier.Identifier.toUpperCase()}`}
+																		href={`/Account/SignIn?connection=${Tier.Identifier.toLowerCase()}`}
+																		variant="button"
+																		client:load
+																	/>
+																</div>
+															</div>
+														);
 						})}
 				</div>
 			</div>

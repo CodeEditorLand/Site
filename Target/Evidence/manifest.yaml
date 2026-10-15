@@ -5,12 +5,12 @@ palette: [dark-green, black, pale-silver]
 crop: right-edge / subject exceeds top and right frame
 alt: Rain-speckled glass reflecting a green light at night
 usage:
-  - homepage-hero
-  - land-element-page
+    - homepage-hero
+    - land-element-page
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: stone strata with visible geological layers
@@ -20,12 +20,12 @@ palette: [granite-grey, ochre, charcoal]
 crop: center / full cross-section visible
 alt: Stone strata in low light
 usage:
-  - mountain-element-page
-  - gallery-grid
+    - mountain-element-page
+    - gallery-grid
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: woven fiber mesh under magnification
@@ -35,12 +35,12 @@ palette: [ivory, amber, shadow]
 crop: corner / mesh extends beyond frame
 alt: Woven fiber in macro detail
 usage:
-  - cocoon-element-page
-  - detail-macro
+    - cocoon-element-page
+    - detail-macro
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: wet cable in rain with water droplets
@@ -50,12 +50,12 @@ palette: [slate, silver, deep-blue]
 crop: diagonal / cable crosses corner to corner
 alt: Wet cable in long exposure
 usage:
-  - wind-element-page
-  - weather-feature
+    - wind-element-page
+    - weather-feature
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: night sky with atmospheric gradient
@@ -65,12 +65,12 @@ palette: [midnight-blue, indigo, pale-violet]
 crop: full-bleed / sky fills entire frame
 alt: Night sky with distant light
 usage:
-  - sky-element-page
-  - hero-background
+    - sky-element-page
+    - hero-background
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: vapor trails and translucent air currents
@@ -80,12 +80,12 @@ palette: [white, pale-grey, translucent-blue]
 crop: soft-focus / no hard edges
 alt: Vapor in low light macro
 usage:
-  - air-element-page
-  - section-divider
+    - air-element-page
+    - section-divider
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: water ripple grain under scan light
@@ -95,12 +95,12 @@ palette: [aqua, soft-gold, shadow]
 crop: center / concentric ripples fill frame
 alt: Ripple in grainy water
 usage:
-  - echo-element-page
-  - texture-swatch
+    - echo-element-page
+    - texture-swatch
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder
 ---
 subject: root network with fungal mycelium
@@ -110,10 +110,10 @@ palette: [forest-green, bone-white, earth-brown]
 crop: bottom-left / roots extend beyond frame
 alt: Root network in macro detail
 usage:
-  - grove-element-page
-  - ecosystem-panel
+    - grove-element-page
+    - ecosystem-panel
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

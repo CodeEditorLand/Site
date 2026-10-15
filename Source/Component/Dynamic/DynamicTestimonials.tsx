@@ -6,6 +6,8 @@ import { RichText } from "../UI/RichText.js";
 
 import { FieldRecordSeal } from "../Brand/FieldRecordSeal.js";
 
+import { SpecimenLabel } from "../Brand/SpecimenLabel.js";
+
 import type { FieldRecord } from "../../Content/Record/FieldRecord.js";
 
 import { Air } from "../../Content/Record/Air.js";
@@ -191,34 +193,38 @@ const ElementRecords: Record<string, FieldRecord> = {
 };
 
 /**
- * Compact record-card body: the field-record grammar (# INDEX, 〈claim〉,
- * /ROUTE, STATUS:/metadata rows, seal upper-right, evidence crop placeholder)
- * layered on top of the existing name + emoji + role-chip + quote work.
- * Warm-white flat mono uppercase tracked font-medium dark-ink, no XS.
+ * Specimen-label card body: the field-record grammar (# INDEX, 〈stamp〉,
+ * /ROUTE, STATUS:, metadata rows, small seal anchor) rendered as an
+ * ink-on-creme ledger with hairline rules - the same artifact family as
+ * the Features series (SpecimenLabel), NOT the white jelly-card. The
+ * element name + glyph + role chips sit above the ledger, and the FULL
+ * quote renders with preserved line breaks and bullet lines.
  */
 const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 	const ElementRecord = ElementRecords[Testimonial.Author];
 
+	const Index =
+		ElementRecord?.Index ?? `# ${Testimonial.Author.toUpperCase()}_01`;
+
 	return (
-		<div className="flex flex-col gap-3">
+		<div className="flex flex-col">
 			{/* Record index + upper-right seal (SVG where Public/Seal has one, else ◎) */}
-			<div className="flex items-start justify-between gap-2">
+			<div className="flex items-start justify-between gap-3">
 				<span className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
-					{ElementRecord?.Index ??
-						`# ${Testimonial.Author.toUpperCase()}_01`}
+					{Index}
 				</span>
 				{ElementRecord ? (
 					<FieldRecordSeal
 						element={ElementRecord.Seal}
 
-						size={40}
+						size={28}
 
 						className="shrink-0"
 					/>
 				) : (
 					<span
 						aria-hidden="true"
-						className="font-mono text-sm leading-none text-card-foreground opacity-60"
+						className="font-mono text-base leading-none text-card-foreground opacity-60"
 					>
 						◎
 					</span>
@@ -226,7 +232,7 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 			</div>
 
 			{/* Name + glyph + GitHub link */}
-			<div className="flex items-center justify-between gap-2">
+			<div className="mt-3 flex items-center justify-between gap-2 border-t border-border pt-3">
 				<div className="flex items-center gap-1.5">
 					<span className="font-mono text-lg font-medium text-card-foreground">
 						{Testimonial.Href ? (
@@ -267,7 +273,7 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 
 			{/* Role → keyword chips split by em-space (U+2001) or legacy " - " */}
 			{Testimonial.Role && (
-				<div className="flex flex-wrap text-card-foreground">
+				<div className="mt-3 flex flex-wrap text-card-foreground">
 					{Testimonial.Role.split(/\u2001| - /).map(
 						(Tag, TagIndex) => (
 							<Fragment key={TagIndex}>
@@ -281,55 +287,23 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 				</div>
 			)}
 
-			{/* Field-record rows from the element record */}
+			{/* Field-record ledger rows from the element record (8 core elements only) */}
 			{ElementRecord && (
-				<div className="flex flex-col gap-1">
-					{ElementRecord.Stamp?.length > 0 && (
-						<p className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
-							〈{ElementRecord.Stamp.join("\u2001")}〉
-						</p>
-					)}
+				<SpecimenLabel
+					record={ElementRecord}
 
-					{ElementRecord.Route?.length > 0 && (
-						<p className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground opacity-70">
-							{ElementRecord.Route.join("\u2001")}
-						</p>
-					)}
+					showHeader={false}
 
-					<p
-						className={`font-mono text-sm font-medium uppercase tracking-[0.2em] ${
-							ElementRecord.Status.Tone === "specimen"
-								? "text-accent"
-								: "text-card-foreground"
-						}`}
-					>
-						STATUS: {ElementRecord.Status.Value}
-					</p>
-					{ElementRecord.Metadata.length > 0 && (
-						<p className="font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground opacity-70">
-							{ElementRecord.Metadata[0].Label}:{" "}
-							{ElementRecord.Metadata[0].Value}
-						</p>
-					)}
-				</div>
-			)}
+					showTitle={false}
 
-			{/* Lead - first line of the quote only */}
-			<p className="text-sm leading-relaxed text-card-foreground">
-				{Testimonial.Quote.split("\n")[0]}
-			</p>
-
-			{/* Evidence crop placeholder - only where the element record defines one */}
-			{ElementRecord && (
-				<div
-					role="img"
-					aria-label={ElementRecord.Evidence.Alt}
-
-					title={ElementRecord.Evidence.Alt}
-
-					className="h-14 w-full border border-[color-mix(in_srgb,var(--CardForeground)_15%,transparent)] bg-[color-mix(in_srgb,var(--CardForeground)_8%,transparent)]"
+					className="mt-3"
 				/>
 			)}
+
+			{/* Full quote - preserved line breaks and bullet lines */}
+			<p className="mt-3 whitespace-pre-line border-t border-border pt-3 font-mono text-sm leading-relaxed text-card-foreground">
+				{Testimonial.Quote}
+			</p>
 		</div>
 	);
 };
@@ -448,7 +422,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 
 					<div
 						ref={GridReference}
-						className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-12"
+						className="mx-auto grid w-full max-w-7xl grid-cols-1 items-start gap-6 md:grid-cols-2 lg:grid-cols-12"
 					>
 						{Testimonials.map((Testimonial, Index) => {
 							const Row = Math.floor(Index / 2);
@@ -462,24 +436,17 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							const [ColA, ColB] = GetRowRatio(Row);
 
 							const ColSpan = IsLastOdd
-								? 12
+								? 8
 								: IsLeft
 									? ColA
 									: ColB;
 
 							return (
-								<jelly-card
+								<div
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard flat p-5"
+									className="MasonryCard TestimonialCard border border-border p-5"
 									style={
 										{
-											"--jelly-fill": "var(--Card)",
-											"--jelly-radius": "0",
-											"--jelly-card-font-size": "inherit",
-											"--jelly-card-padding-block": "0",
-											"--jelly-card-padding-inline": "0",
-											"--jelly-color-border-default":
-												"var(--ColorMuteBorder)",
 											"--masonry-col": ColSpan,
 										} as React.CSSProperties
 									}
@@ -487,7 +454,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									<RenderTestimonialBody
 										Testimonial={Testimonial}
 									/>
-								</jelly-card>
+								</div>
 							);
 						})}
 					</div>
@@ -528,24 +495,14 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				>
 					{Testimonials.map((Testimonial) => {
 						return (
-							<jelly-card
+							<div
 								key={Testimonial.Id}
-								className="TestimonialCard flat p-5"
-								style={
-									{
-										"--jelly-fill": "var(--Card)",
-										"--jelly-radius": "0",
-										"--jelly-card-padding-block": "0",
-										"--jelly-card-padding-inline": "0",
-										"--jelly-color-border-default":
-											"var(--ColorMuteBorder)",
-									} as React.CSSProperties
-								}
+								className="TestimonialCard border border-border p-5"
 							>
 								<RenderTestimonialBody
 									Testimonial={Testimonial}
 								/>
-							</jelly-card>
+							</div>
 						);
 					})}
 				</div>

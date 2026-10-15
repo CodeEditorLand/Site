@@ -1529,3 +1529,9 @@ jelly-icon-button:not(:defined)[disabled] {
 		transition: none !important;
 	}
 }
+
+/* ── Specimen-label ledger series (Features / Architecture / Portal tiers) ──
+   Ink-on-creme ledger cards with hairline rgba(7,7,7,0.08) rules between
+   rows and a small seal anchor - the element series' own artifact form,
+   distinct from the white FieldRecordDataCard box. Rendered by
+   Source/Component/Brand/SpecimenLabel.tsx and the Portal tier cards. */

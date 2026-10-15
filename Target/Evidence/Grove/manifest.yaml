@@ -5,10 +5,10 @@ palette: [forest-green, bone-white, earth-brown]
 crop: bottom-left / roots extend beyond frame
 alt: Root network in macro detail
 usage:
-  - grove-element-page
-  - ecosystem-panel
+    - grove-element-page
+    - ecosystem-panel
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

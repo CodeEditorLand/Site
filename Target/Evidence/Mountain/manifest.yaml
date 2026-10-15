@@ -5,10 +5,10 @@ palette: [granite-grey, ochre, charcoal]
 crop: center / full cross-section visible
 alt: Stone strata in low light
 usage:
-  - mountain-element-page
-  - gallery-grid
+    - mountain-element-page
+    - gallery-grid
 prohibited:
-  - text-overlay
-  - logo-overlay
-  - dark-mode-color-filter
+    - text-overlay
+    - logo-overlay
+    - dark-mode-color-filter
 status: placeholder

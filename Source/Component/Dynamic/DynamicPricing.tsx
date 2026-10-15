@@ -345,6 +345,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 														{Tier.Element.map(
 															(
 																Element,
+
 																Index,
 															) => {
 																const Parts =
