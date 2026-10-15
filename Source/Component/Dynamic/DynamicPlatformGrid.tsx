@@ -508,6 +508,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 
 						return (
 							<DynamicCard
+								key={Platform.Id ?? Platform.Name}
 								Sections={PlatformCardSection}
 								ClassName="PlatformCard flex flex-col"
 								Style={
