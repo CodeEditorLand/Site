@@ -1204,7 +1204,7 @@ class M extends HTMLElement {
     return this.colorString(r);
   }
   // Resolve a color expression to an [r, g, b, a] tuple. RGB channels use
-  // 0–255; alpha uses 0–1. Keeping alpha here prevents short hex colors such
+  // 0-255; alpha uses 0-1. Keeping alpha here prevents short hex colors such
   // as #fff0 from becoming opaque as they pass through canvas animation.
   rgbaTuple(t) {
     const e = this.resolveColor(String(t)), i = e.match(/[\d.]+/g);
@@ -1333,7 +1333,7 @@ class M extends HTMLElement {
    * pulse in lockstep.
    */
   startHoverLoop(t) {
-    this._hoverRafId !== 0 || this.reducedMotion || !this.body || (this._hoverElIndex = t, this._hoverRafId = requestAnimationFrame(this._hoverFrame));
+    this._hoverRafId !== 0 || this.reducedMotion || !this.body || this.body.radius > 0 && (this._hoverElIndex = t, this._hoverRafId = requestAnimationFrame(this._hoverFrame));
   }
   /** Stop the hover loop and let residual energy dissipate naturally. */
   stopHoverLoop() {
@@ -4780,14 +4780,18 @@ class Li extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    if (this.card = this.shadowRoot.querySelector(".card"), this.reducedMotion || requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion) {
-      const t = [
+    this.card = this.shadowRoot.querySelector(".card");
+    const t = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-radius")
+    ) || 0;
+    if (!this.reducedMotion && t > 0 && requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion) {
+      const e = [
         ...document.querySelectorAll("jelly-card")
       ].indexOf(this);
-      this.addEventListener("pointerenter", (e) => {
-        this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
-      }), this.addEventListener("pointermove", (e) => {
-        this.updateHoverPointer(e.clientX, e.clientY);
+      this.addEventListener("pointerenter", (i) => {
+        this.updateHoverPointer(i.clientX, i.clientY), this.startHoverLoop(e);
+      }), this.addEventListener("pointermove", (i) => {
+        this.updateHoverPointer(i.clientX, i.clientY);
       }), this.addEventListener("pointerleave", () => {
         this.stopHoverLoop();
       });
