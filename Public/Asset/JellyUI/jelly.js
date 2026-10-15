@@ -1333,7 +1333,7 @@ class M extends HTMLElement {
    * pulse in lockstep.
    */
   startHoverLoop(t) {
-    this._hoverRafId !== 0 || this.reducedMotion || !this.body || this.body.radius > 0 && (this._hoverElIndex = t, this._hoverRafId = requestAnimationFrame(this._hoverFrame));
+    this._hoverRafId !== 0 || this.reducedMotion || !this.body || (this._hoverElIndex = t, this._hoverRafId = requestAnimationFrame(this._hoverFrame));
   }
   /** Stop the hover loop and let residual energy dissipate naturally. */
   stopHoverLoop() {
@@ -4784,7 +4784,7 @@ class Li extends M {
     const t = parseFloat(
       getComputedStyle(this).getPropertyValue("--jelly-radius")
     ) || 0;
-    if (!this.reducedMotion && t > 0 && requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion) {
+    if (!this.reducedMotion && t > 0 && requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion && t > 0) {
       const e = [
         ...document.querySelectorAll("jelly-card")
       ].indexOf(this);
