@@ -1,420 +1,244 @@
 const mt = {
-
   clickDepthSpring: 115,
-
   clickDepthDamping: 18,
-
   insidePressSpring: 92,
-
   insidePressDamping: 15,
-
   insideLocalBulgeImpulse: 390,
-
   insideLocalHoldBulgeForce: 48,
-
   pressSpring: 76,
-
   pressDamping: 13,
-
   holdPressAmount: 0,
-
   heldCurveSpring: 135,
-
   heldCurveDamping: 22,
-
   insideHeldBulgeAmount: 10.8,
-
   insideHeldHaloAmount: 2.65,
-
   insideHeldDepthAmount: 0,
-
   insidePointInfluenceWidth: 38,
-
   insidePointHaloWidth: 70,
-
   insidePointEdgeBoost: 0.44,
-
   outsideHeldDentAmount: 7.2,
-
   outsideHeldSideBulgeAmount: 1.7,
-
   outsideHeldDepthAmount: 9.4,
-
   normalBlendPasses: 3,
-
   curveTension: 0.68,
-
   axisDepth: 34,
-
   axisSpring: 48,
-
   axisDamping: 11,
-
   depthImpulse: 420,
-
   depthBulgeImpulse: 130,
-
   depthSpring: 76,
-
   depthDamping: 14,
-
   depthCoupling: 150,
-
   maxDepthIn: -26,
-
   maxDepthOut: 16,
-
   zRotateSpring: 42,
-
   zRotateDamping: 12,
-
   zRotateImpulse: 0.14,
-
   membraneSpring: 96,
-
   membraneDamping: 17,
-
   waveCoupling: 145,
-
   pressure: 620,
-
   volumeCorrection: 0.1,
-
   outsideDentImpulse: 255,
-
   outsideSideBulgeImpulse: 54,
-
   outsideOppositeBulgeImpulse: 74,
-
   rippleWidth: 8,
-
   outsideHoldForce: 20,
-
   outsideHoldDepthForce: 52,
-
   maxDent: 8,
-
   maxBulge: 24,
-
   perspective: 390,
-
   samples: 240
 };
-
 let Wt = 0;
-
 function W(n = "jelly") {
-
   return `${n}-${++Wt}`;
 }
-
 function g(n, t, e = null, i = {}) {
-
   const s = new CustomEvent(t, {
     bubbles: !0,
     composed: !0,
     detail: e,
     ...i
   });
-
   return n.dispatchEvent(s);
 }
-
 function D(n, t, e = 0) {
-
   const i = n.getAttribute(t);
-
   if (i === null || i.trim() === "")
-
     return e;
-
   const s = Number(i);
-
   return Number.isFinite(s) ? s : e;
 }
-
 function H(n) {
-
   return String(n).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
 }
-
 function C(n) {
-
   return getComputedStyle(n).direction === "rtl";
 }
-
 const rt = {
-
   sm: "small",
-
   md: "medium",
-
   lg: "large"
 };
-
 function O(n, t) {
-
   const e = n.getAttribute("size");
-
   for (const i of n.querySelectorAll(t)) {
     const s = i.hasAttribute("data-jelly-inherited-size");
-
     e ? (!i.hasAttribute("size") || s) && (i.setAttribute("size", e), i.setAttribute("data-jelly-inherited-size", "")) : s && (i.removeAttribute("size"), i.removeAttribute("data-jelly-inherited-size"));
   }
 }
-
 function j(n) {
-
   const t = n.getAttribute("size");
-
   t && rt[t] && n.setAttribute("size", rt[t]);
 }
-
 function Nt(n, t = "medium") {
-
   const e = (n.getAttribute("size") || "").toLowerCase();
-
   return rt[e] ? rt[e] : e === "small" || e === "medium" || e === "large" ? e : t;
 }
-
 function v(n, t, e) {
-
   return Math.max(t, Math.min(e, n));
 }
-
 function T(n, t, e, i, s, r) {
-
   const o = (e - n) * i - t * s, l = t + o * r;
-
   return [n + l * r, l];
 }
-
 const wt = typeof matchMedia == "function" ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-
 function I() {
-
   const n = typeof document < "u" ? document.documentElement.getAttribute("data-jelly-motion") : null;
-
   return n === "reduce" ? !0 : n === "no-preference" ? !1 : wt ? wt.matches : !1;
 }
-
 function F(n = 8) {
-
   if ("vibrate" in navigator)
-
     try {
       navigator.vibrate(n);
     } catch {
     }
 }
-
 function G(n, t = !1) {
-
   return n === "ArrowRight" ? t ? -1 : 1 : n === "ArrowLeft" ? t ? 1 : -1 : 0;
 }
-
-function It(n, t, e, { rtl: i = !1, wrap: s = !0, horizontal: r = !0, vertical: o = !0 } = {}) {
-
+function It(n, t, e, {
+  rtl: i = !1,
+  wrap: s = !0,
+  horizontal: r = !0,
+  vertical: o = !0
+} = {}) {
   let l = 0;
-
   if (r && (l = G(n, i)), o && l === 0 && (n === "ArrowDown" && (l = 1), n === "ArrowUp" && (l = -1)), n === "Home")
-
     return 0;
-
   if (n === "End")
-
     return e - 1;
-
   if (l === 0 || e === 0)
-
     return -1;
-
   const c = t + l;
-
   return s ? (c + e) % e : v(c, 0, e - 1);
 }
-
 const Yt = 0.5 * (Math.sqrt(3) - 1), K = (3 - Math.sqrt(3)) / 6, lt = [
   [1, 1],
-
   [-1, 1],
-
   [1, -1],
-
   [-1, -1],
-
   [1, 0],
-
   [-1, 0],
-
   [1, 0],
-
   [-1, 0],
-
   [0, 1],
-
   [0, -1],
-
   [0, 1],
-
   [0, -1]
 ];
-
 let q, Z;
-
 function Kt() {
-
   q = new Uint8Array(512), Z = new Uint8Array(512);
-
   const n = [];
-
   for (let e = 0; e < 256; e++) n[e] = e;
-
   let t = 42;
-
   for (let e = 255; e > 0; e--) {
     t = (t * 16807 + 0) % 2147483647;
-
     const i = t % (e + 1);
-
     [n[e], n[i]] = [n[i], n[e]];
   }
-
   for (let e = 0; e < 512; e++)
-
     q[e] = n[e & 255], Z[e] = q[e] % 12;
 }
-
 function at(n, t, e) {
-
   return n[0] * t + n[1] * e;
 }
-
 function _(n, t) {
-
   q || Kt();
-
   const e = (n + t) * Yt, i = Math.floor(n + e), s = Math.floor(t + e), r = (i + s) * K, o = i - r, l = s - r, c = n - o, h = t - l;
-
   let a, d;
-
   c > h ? (a = 1, d = 0) : (a = 0, d = 1);
-
   const p = c - a + K, u = h - d + K, m = c - 1 + 2 * K, w = h - 1 + 2 * K, f = i & 255, x = s & 255, y = Z[f + q[x]], k = Z[f + a + q[x + d]], L = Z[f + 1 + q[x + 1]];
-
   let S = 0, E = 0, Q = 0, B = 0.5 - c * c - h * h;
-
   B > 0 && (B *= B, S = B * B * at(lt[y], c, h));
-
   let N = 0.5 - p * p - u * u;
-
   N > 0 && (N *= N, E = N * N * at(lt[k], p, u));
-
   let Y = 0.5 - m * m - w * w;
-
   return Y > 0 && (Y *= Y, Q = Y * Y * at(lt[L], m, w)), 70 * (S + E + Q);
 }
-
 function J(n, t) {
-
   return Math.floor(n * t) / t;
 }
-
 const Zt = 1e-4;
-
 function rs(n, t) {
-
   const e = Zt, i = t, s = _(n * e, i * 101), r = _(n * e * 0.18, i * 203), o = _(n * e * 0.25, i * 307);
-
   return {
     force: J(s, 6),
-
     phase: J(r, 4),
-
     morph: J(o, 5)
   };
 }
-
 const _t = 1 / 58;
-
 function kt(n, t, e) {
-
   const i = v((e - n) / (t - n), 0, 1);
-
   return i * i * (3 - 2 * i);
 }
-
 function A(n, t) {
-
   return (n + t) % t;
 }
-
 function Ct(n, t, e) {
-
   const i = Math.abs(n - t);
-
   return Math.min(i, e - i);
 }
-
 function tt(n, t) {
-
   return Math.exp(-(n * n) / (2 * t * t));
 }
-
 function Jt(n, t, e, i, s) {
-
   const r = Math.min(s, e, i), o = Math.abs(n) - (e - r), l = Math.abs(t) - (i - r), c = Math.hypot(Math.max(o, 0), Math.max(l, 0)), h = Math.min(Math.max(o, l), 0);
-
   return c + h - r;
 }
-
 function At(n, t, e, i) {
-
   const s = n / 2, r = t / 2, o = Math.min(e, s, r), l = [], c = (f, x) => {
     l.push({ x: f, y: x });
   }, h = 48, a = 48;
-
   function d(f, x, y, k, L) {
     for (let S = L ? 0 : 1; S <= h; S++) {
       const E = S / h;
-
       c(f + (y - f) * E, x + (k - x) * E);
     }
   }
-
   function p(f, x, y, k) {
     for (let L = 1; L <= a; L++) {
       const S = y + (k - y) * (L / a);
-
       c(f + Math.cos(S) * o, x + Math.sin(S) * o);
     }
   }
-
   d(-s + o, -r, s - o, -r, !0), p(s - o, -r + o, -Math.PI / 2, 0), d(s, -r + o, s, r - o, !1), p(s - o, r - o, 0, Math.PI / 2), d(s - o, r, -s + o, r, !1), p(-s + o, r - o, Math.PI / 2, Math.PI), d(-s, r - o, -s, -r + o, !1), p(-s + o, -r + o, Math.PI, Math.PI * 1.5);
-
   const u = [0];
-
   let m = 0;
-
   for (let f = 0; f < l.length; f++) {
     const x = l[f], y = l[A(f + 1, l.length)];
-
     m += Math.hypot(y.x - x.x, y.y - x.y), u.push(m);
   }
-
   const w = [];
-
   for (let f = 0; f < i; f++) {
     const x = f / i * m;
-
     let y = 0;
-
     for (; y < l.length - 1 && u[y + 1] < x; )
-
       y += 1;
-
     const k = l[y], L = l[(y + 1) % l.length], S = u[y], E = u[y + 1], Q = Math.max(E - S, 1e-4), B = (x - S) / Q;
-
     w.push({
       x: k.x + (L.x - k.x) * B,
       y: k.y + (L.y - k.y) * B,
@@ -426,290 +250,230 @@ function At(n, t, e, i) {
       zv: 0
     });
   }
-
   return Ut(w), w;
 }
-
 function Gt(n, t) {
-
   const e = n.length, i = n[A(t - 1, e)], s = n[A(t + 1, e)], r = s.x - i.x, o = s.y - i.y, l = Math.hypot(o, -r) || 1;
-
   return { nx: o / l, ny: -r / l };
 }
-
 function Ut(n) {
-
   const t = n.length;
-
-  let e = n.map((i, s) => Gt(n, s));
-
+  let e = n.map(
+    (i, s) => Gt(n, s)
+  );
   for (let i = 0; i < mt.normalBlendPasses; i++)
-
     e = e.map((s, r) => {
       const o = e[A(r - 1, t)], l = e[A(r + 1, t)], c = o.nx * 0.22 + s.nx * 0.56 + l.nx * 0.22, h = o.ny * 0.22 + s.ny * 0.56 + l.ny * 0.22, a = Math.hypot(c, h) || 1;
-
       return { nx: c / a, ny: h / a };
     });
-
   for (let i = 0; i < t; i++)
-
     n[i].nx = e[i].nx, n[i].ny = e[i].ny;
 }
-
 function ht(n) {
-
   let t = 0;
-
   for (let e = 0; e < n.length; e++) {
     const i = n[e], s = n[A(e + 1, n.length)];
-
     t += i.x * s.y - s.x * i.y;
   }
-
   return Math.abs(t) * 0.5;
 }
-
 function ct(n, t, e = mt.curveTension) {
-
   const i = t.length;
-
   n.beginPath(), n.moveTo(t[0].x, t[0].y);
-
   for (let s = 0; s < i; s++) {
     const r = t[A(s - 1, i)], o = t[s], l = t[A(s + 1, i)], c = t[A(s + 2, i)], h = o.x + (l.x - r.x) * e / 6, a = o.y + (l.y - r.y) * e / 6, d = l.x - (c.x - o.x) * e / 6, p = l.y - (c.y - o.y) * e / 6;
-
     n.bezierCurveTo(h, a, d, p, l.x, l.y);
   }
-
   n.closePath();
 }
-
 class $ {
-
   constructor({ width: t, height: e, radius: i, config: s }) {
-    this.width = t, this.height = e, this.radius = i ?? Math.min(t, e) / 2, this.config = { ...mt, ...s ?? {} }, this.lean = 0, this.leanAmount = 0, this.membrane = At(t, e, this.radius, this.config.samples), this.state = {
+    this.width = t, this.height = e, this.radius = i ?? Math.min(t, e) / 2, this.config = { ...mt, ...s ?? {} }, this.lean = 0, this.leanAmount = 0, this.membrane = At(
+      t,
+      e,
+      this.radius,
+      this.config.samples
+    ), this.state = {
       clickDepth: 0,
-
       clickDepthV: 0,
-
       targetClickDepth: 0,
-
       insidePress: 0,
-
       insidePressV: 0,
-
       targetInsidePress: 0,
-
       press: 0,
-
       pressV: 0,
-
       targetPress: 0,
-
       insideCurveHold: 0,
-
       insideCurveHoldV: 0,
-
       targetInsideCurveHold: 0,
-
       rotateZ: 0,
-
       rotateZV: 0,
-
       tiltX: 0,
-
       tiltXV: 0,
-
       tiltY: 0,
-
       tiltYV: 0,
-
       targetTiltX: 0,
-
       targetTiltY: 0,
-
       pointerActive: !1,
-
       pointerInsideWeight: 0,
-
       pointerIndex: 0,
-
       pointerLocalX: 0,
-
       pointerLocalY: 0,
-
       hoverForce: 0
     }, this.baseArea = ht(this.getSurfacePoints());
   }
-
   // Rebuild the ring for a new size, preserving no motion (used on resize)
   resize(t, e, i) {
-    this.width = t, this.height = e, this.radius = i ?? Math.min(t, e) / 2, this.membrane = At(t, e, this.radius, this.config.samples), this.baseArea = ht(this.getSurfacePoints());
+    this.width = t, this.height = e, this.radius = i ?? Math.min(t, e) / 2, this.membrane = At(
+      t,
+      e,
+      this.radius,
+      this.config.samples
+    ), this.baseArea = ht(this.getSurfacePoints());
   }
-
   // Signed distance from a local point to the resting surface
   sdf(t, e) {
-    return Jt(t, e, this.width / 2, this.height / 2, this.radius);
+    return Jt(
+      t,
+      e,
+      this.width / 2,
+      this.height / 2,
+      this.radius
+    );
   }
-
   // Index of the membrane point closest to a local coordinate
   nearestMembraneIndex(t, e) {
     let i = 0, s = 1 / 0;
-
     for (let r = 0; r < this.membrane.length; r++) {
       const o = this.membrane[r], l = t - o.x, c = e - o.y, h = l * l + c * c;
-
       h < s && (s = h, i = r);
     }
-
     return i;
   }
-
   // Kick the membrane outward around a ring index with a gaussian falloff
   addMembraneImpulse(t, e, i) {
     const s = this.membrane.length;
-
     for (let r = 0; r < s; r++) {
       const o = Ct(r, t, s);
-
       this.membrane[r].v += e * tt(o, i);
     }
   }
-
   // Kick the membrane's depth (z) around a ring index with a gaussian falloff
   addDepthImpulse(t, e, i) {
     const s = this.membrane.length;
-
     for (let r = 0; r < s; r++) {
       const o = Ct(r, t, s);
-
       this.membrane[r].zv += e * tt(o, i);
     }
   }
-
   // Bulge the membrane around the pointer with a softer counter-halo
   addInsidePointImpulse(t) {
     for (let e = 0; e < this.membrane.length; e++) {
       const i = this.insidePointInfluence(e);
-
       this.membrane[e].v += t * (i.local - i.halo * 0.18);
     }
   }
-
   // Five-tap smoothing of one membrane channel around an index
   smoothedMembraneValue(t, e) {
     const i = this.membrane.length, s = this.membrane[A(t - 2, i)][e], r = this.membrane[A(t - 1, i)][e], o = this.membrane[t][e], l = this.membrane[A(t + 1, i)][e], c = this.membrane[A(t + 2, i)][e];
-
     return s * 0.06 + r * 0.2 + o * 0.48 + l * 0.2 + c * 0.06;
   }
-
   // How strongly the pointer's held position affects one membrane point
   insidePointInfluence(t) {
-    const e = this.membrane[t], i = e.x - this.state.pointerLocalX, s = e.y - this.state.pointerLocalY, r = Math.hypot(i, s), o = tt(r, this.config.insidePointInfluenceWidth), l = tt(r, this.config.insidePointHaloWidth), c = v(
+    const e = this.membrane[t], i = e.x - this.state.pointerLocalX, s = e.y - this.state.pointerLocalY, r = Math.hypot(i, s), o = tt(
+      r,
+      this.config.insidePointInfluenceWidth
+    ), l = tt(
+      r,
+      this.config.insidePointHaloWidth
+    ), c = v(
       Math.hypot(
         this.state.pointerLocalX / (this.width / 2),
-
         this.state.pointerLocalY / (this.height / 2)
       ),
-
       0,
-
       1
     ), h = 1 + kt(0.12, 0.82, c) * this.config.insidePointEdgeBoost;
-
     return {
       local: o * h,
-
       halo: Math.max(l - o * 0.34, 0)
     };
   }
-
   // Sustained bulge / depth offsets while the pointer is held inside
   heldMembraneOffsets(t) {
     const e = this.insidePointInfluence(t);
-
     return {
       d: this.state.insideCurveHold * (this.config.insideHeldBulgeAmount * e.local - this.config.insideHeldHaloAmount * e.halo),
-
       z: -this.state.insideCurveHold * this.config.insideHeldDepthAmount * e.local
     };
   }
-
   // Five-tap smoothing over a plain array of ring values
   smoothArrayValue(t, e) {
     const i = t.length;
-
     return t[A(e - 2, i)] * 0.06 + t[A(e - 1, i)] * 0.2 + t[e] * 0.48 + t[A(e + 1, i)] * 0.2 + t[A(e + 2, i)] * 0.06;
   }
-
   /*
    * The current deformed surface. `offset` pushes every point outward along
    * its normal - used to trace a focus ring that follows the same jiggle.
    */
   getSurfacePoints(t = 0) {
     const e = [], i = this.membrane.length, s = new Array(i), r = new Array(i);
-
     for (let o = 0; o < i; o++) {
       const l = this.heldMembraneOffsets(o);
-
       s[o] = this.smoothedMembraneValue(o, "d") + l.d, r[o] = this.smoothedMembraneValue(o, "z") + l.z;
     }
-
     for (let o = 0; o < i; o++) {
       const l = this.membrane[o], c = this.smoothArrayValue(s, o), h = this.smoothArrayValue(r, o), a = this.smoothArrayValue(s, A(o - 1, i)), p = this.smoothArrayValue(s, A(o + 1, i)) - a, u = -l.ny, m = l.nx, w = p * 0.05, f = this.leanAmount === 0 ? 0 : this.lean * v(l.x / (this.width / 2), -1, 1) * this.leanAmount, x = l.x + l.nx * (c + t + f) + u * w, y = l.y + l.ny * (c + t + f) + m * w, k = v(x / (this.width / 2), -1, 1), L = v(y / (this.height / 2), -1, 1), S = -(k * this.state.tiltY + L * this.state.tiltX) * this.config.axisDepth;
-
       e.push({ x, y, z: S + h });
     }
-
     return e;
   }
-
   // Apply the perspective projection to one surface point
   projectPoint(t) {
     const e = this.config.perspective / (this.config.perspective - t.z);
-
-    return { x: t.x * e, y: t.y * e, z: t.z };
+    return {
+      x: t.x * e,
+      y: t.y * e,
+      z: t.z
+    };
   }
-
   // Aim the held-press springs at the pointer's current position
   updatePressTargets(t, e, i = 1) {
     this.state.pointerLocalX = t, this.state.pointerLocalY = e;
-
     const s = this.sdf(t, e), r = (1 - kt(-2, 5, s)) * i;
-
     return this.state.pointerInsideWeight = r, this.state.targetClickDepth = r, this.state.targetInsidePress = r, this.state.targetPress = r * this.config.holdPressAmount, this.state.targetInsideCurveHold = r, { insideWeight: r };
   }
-
   // Press at a point already in local (shape-centered) coordinates
   pressAtLocal(t, e, i = 1, s = 1) {
     const r = this.nearestMembraneIndex(t, e);
-
     this.state.pointerIndex = r, this.state.pointerActive = !0;
-
-    const { insideWeight: o } = this.updatePressTargets(t, e, s), l = i * 1.15 * s;
-
-    o > 0.01 && (this.addInsidePointImpulse(this.config.insideLocalBulgeImpulse * o * l), this.state.pressV += 1.9 * o * l);
+    const { insideWeight: o } = this.updatePressTargets(
+      t,
+      e,
+      s
+    ), l = i * 1.15 * s;
+    o > 0.01 && (this.addInsidePointImpulse(
+      this.config.insideLocalBulgeImpulse * o * l
+    ), this.state.pressV += 1.9 * o * l);
   }
-
   // Follow the pointer while it is held down
   moveToLocal(t, e, i = 1) {
     this.state.pointerIndex = this.nearestMembraneIndex(t, e), this.updatePressTargets(t, e, i);
   }
-
   // A press whose energy comes from the shape center (keyboard activation)
   centerPulse(t = 1) {
     this.pressAtLocal(0, 0, t);
   }
-
   /*
    * A one-shot squish from the center that settles on its own - for feedback
    * that isn't a sustained press (focus, toggle, grab). Unlike centerPulse it
    * sets no held target, so the body returns to rest and can sleep.
    */
   centerPop(t = 1) {
-    this.state.pointerLocalX = 0, this.state.pointerLocalY = 0, this.addInsidePointImpulse(this.config.insideLocalBulgeImpulse * 0.5 * t), this.state.pressV += 0.9 * t;
+    this.state.pointerLocalX = 0, this.state.pointerLocalY = 0, this.addInsidePointImpulse(
+      this.config.insideLocalBulgeImpulse * 0.5 * t
+    ), this.state.pressV += 0.9 * t;
   }
-
   /*
    * A one-shot directional jiggle along an axis: the leading edge (normals
    * aligned with the direction) bulges out and the trailing edge tucks in, so
@@ -718,170 +482,112 @@ class $ {
    */
   stretchAlong(t, e, i = 1) {
     const s = Math.hypot(t, e) || 1, r = t / s, o = e / s, l = this.config.insideLocalBulgeImpulse * 0.42 * i;
-
     for (const c of this.membrane) {
       const h = c.nx * r + c.ny * o;
-
       c.v += l * h;
     }
   }
-
   // A one-shot ripple with no hold (typing feedback, toggles, etc.)
   pulseAt(t, e, i = 1) {
     const s = this.nearestMembraneIndex(t, e);
-
     this.state.pointerLocalX = t, this.state.pointerLocalY = e, this.addMembraneImpulse(
       s,
-
       this.config.insideLocalBulgeImpulse * 0.5 * i,
-
       this.config.rippleWidth * 1.6
     );
   }
-
   // Let go: clear every held target and give a small parting kick
   release() {
     this.state.pointerActive = !1, this.state.targetClickDepth = 0, this.state.targetInsidePress = 0, this.state.targetPress = 0, this.state.targetInsideCurveHold = 0, this.state.targetTiltX = 0, this.state.targetTiltY = 0, this.state.pointerInsideWeight = 0, this.state.pressV -= 0.55;
   }
-
   // Advance the whole-body springs (press depth, tilt, rotation) one step
   updateGlobal(t) {
     const e = this.state, i = this.config;
-
     [e.clickDepth, e.clickDepthV] = T(
       e.clickDepth,
-
       e.clickDepthV,
-
       e.targetClickDepth,
-
       i.clickDepthSpring,
-
       i.clickDepthDamping,
-
       t
     ), [e.insidePress, e.insidePressV] = T(
       e.insidePress,
-
       e.insidePressV,
-
       e.targetInsidePress,
-
       i.insidePressSpring,
-
       i.insidePressDamping,
-
       t
     ), [e.press, e.pressV] = T(
       e.press,
-
       e.pressV,
-
       e.targetPress,
-
       i.pressSpring,
-
       i.pressDamping,
-
       t
     ), [e.insideCurveHold, e.insideCurveHoldV] = T(
       e.insideCurveHold,
-
       e.insideCurveHoldV,
-
       e.targetInsideCurveHold,
-
       i.heldCurveSpring,
-
       i.heldCurveDamping,
-
       t
     ), [e.rotateZ, e.rotateZV] = T(
       e.rotateZ,
-
       e.rotateZV,
-
       0,
-
       i.zRotateSpring,
-
       i.zRotateDamping,
-
       t
     ), [e.tiltX, e.tiltXV] = T(
       e.tiltX,
-
       e.tiltXV,
-
       e.targetTiltX,
-
       i.axisSpring,
-
       i.axisDamping,
-
       t
     ), [e.tiltY, e.tiltYV] = T(
       e.tiltY,
-
       e.tiltYV,
-
       e.targetTiltY,
-
       i.axisSpring,
-
       i.axisDamping,
-
       t
     ), e.clickDepth = v(e.clickDepth, 0, 1), e.insidePress = v(e.insidePress, 0, 1), e.press = v(e.press, -0.025, 0.085), e.insideCurveHold = v(e.insideCurveHold, 0, 1), e.rotateZ = v(e.rotateZ, -0.018, 0.018), e.tiltX = v(e.tiltX, -1, 1), e.tiltY = v(e.tiltY, -1, 1);
   }
-
   // Advance the membrane wave equation one step
   updateMembrane(t) {
-    const e = this.membrane.length, i = this.config, s = this.getSurfacePoints(), r = ht(s), o = v((this.baseArea - r) / this.baseArea, -0.08, 0.08), l = new Array(e), c = new Array(e);
-
+    const e = this.membrane.length, i = this.config, s = this.getSurfacePoints(), r = ht(s), o = v(
+      (this.baseArea - r) / this.baseArea,
+      -0.08,
+      0.08
+    ), l = new Array(e), c = new Array(e);
     for (let a = 0; a < e; a++) {
       const d = this.membrane[a], p = this.membrane[A(a - 1, e)], u = this.membrane[A(a + 1, e)], m = p.d + u.d - 2 * d.d, w = p.z + u.z - 2 * d.z;
-
       l[a] = -d.d * i.membraneSpring + m * i.waveCoupling - d.v * i.membraneDamping + o * i.pressure, c[a] = -d.z * i.depthSpring + w * i.depthCoupling - d.zv * i.depthDamping;
     }
-
     if (this.state.pointerActive && this.state.pointerInsideWeight > 0.02)
-
       for (let a = 0; a < e; a++) {
         const d = this.insidePointInfluence(a);
-
         l[a] += i.insideLocalHoldBulgeForce * d.local * this.state.pointerInsideWeight, l[a] -= i.insideLocalHoldBulgeForce * 0.18 * d.halo * this.state.pointerInsideWeight;
       }
-
     if (this.state.hoverForce > 5e-3) {
       const a = this.state.hoverForce, d = i.insideLocalHoldBulgeForce * a * 24;
-
       for (let p = 0; p < e; p++) {
         const u = this.insidePointInfluence(p);
-
         l[p] += d * u.local, l[p] -= d * 0.08 * u.halo;
       }
     }
-
     for (let a = 0; a < e; a++) {
       const d = this.membrane[a];
-
       d.v += l[a] * t, d.d += d.v * t, d.zv += c[a] * t, d.z += d.zv * t, d.d = v(d.d, -i.maxDent, i.maxBulge), d.v = v(d.v, -410, 410), d.z = v(d.z, i.maxDepthIn, i.maxDepthOut), d.zv = v(d.zv, -600, 600);
     }
-
     let h = 0;
-
     for (const a of this.membrane)
-
       h += a.d;
-
     h /= e;
-
     for (const a of this.membrane)
-
       a.d -= h * i.volumeCorrection;
   }
-
   /*
    * Advance the simulation by a frame delta. The delta is split into
    * substeps no longer than MAX_STEP so the integration stays stable on
@@ -889,14 +595,10 @@ class $ {
    */
   update(t) {
     const e = Math.max(1, Math.ceil(t / _t)), i = t / e;
-
     for (let s = 0; s < e; s++)
-
       this.updateGlobal(i), this.updateMembrane(i);
-
     this.recoverIfUnstable();
   }
-
   /*
    * Defensive backstop: if anything ever produced a non-finite number
    * (a zero-sized rebuild, an extreme external mutation), reset all motion
@@ -905,430 +607,290 @@ class $ {
    */
   recoverIfUnstable() {
     const t = this.state;
-
     let e = Number.isFinite(t.press) && Number.isFinite(t.clickDepth) && Number.isFinite(t.rotateZ);
-
     if (e) {
       for (const i of this.membrane)
-
         if (!Number.isFinite(i.d) || !Number.isFinite(i.v) || !Number.isFinite(i.z) || !Number.isFinite(i.zv)) {
           e = !1;
-
           break;
         }
     }
-
     if (!e) {
       for (const i of this.membrane)
-
         i.d = 0, i.v = 0, i.z = 0, i.zv = 0;
-
       t.clickDepth = 0, t.clickDepthV = 0, t.insidePress = 0, t.insidePressV = 0, t.press = 0, t.pressV = 0, t.insideCurveHold = 0, t.insideCurveHoldV = 0, t.rotateZ = 0, t.rotateZV = 0, t.tiltX = 0, t.tiltXV = 0, t.tiltY = 0, t.tiltYV = 0;
     }
   }
-
   // True when the body has essentially stopped moving and nothing is held
   isResting() {
     const t = this.state;
-
     if (t.pointerActive || Math.abs(t.clickDepth) > 1e-3 || Math.abs(t.insidePress) > 1e-3 || Math.abs(t.insideCurveHold) > 1e-3 || Math.abs(t.rotateZ) > 1e-4 || Math.abs(t.tiltX) > 1e-3 || Math.abs(t.tiltY) > 1e-3)
-
       return !1;
-
     for (const e of this.membrane)
-
       if (Math.abs(e.d) > 0.03 || Math.abs(e.v) > 0.05 || Math.abs(e.z) > 0.03 || Math.abs(e.zv) > 0.05)
-
         return !1;
-
     return !0;
   }
 }
-
 class Qt {
-
   constructor() {
     this.active = /* @__PURE__ */ new Set(), this.running = !1, this.lastTime = 0, this.loop = this.loop.bind(this);
   }
-
   // Add a component to the loop and start it if it was parked
   wake(t) {
     this.active.add(t), this.running || (this.running = !0, this.lastTime = performance.now(), requestAnimationFrame(this.loop));
   }
-
   // Remove a component from the loop (used on disconnect)
   drop(t) {
     this.active.delete(t);
   }
-
   // One shared animation frame: step every live component, park when idle.
   // The delta is capped so a background-tab pause never becomes one giant step.
   loop(t) {
     const e = v((t - this.lastTime) / 1e3, 0, 0.033);
-
     this.lastTime = t;
-
     for (const i of this.active) {
       let s = !1;
-
       i.frameDt = e, i.colorEasing = !1;
-
       try {
         s = i.frame(e);
       } catch (r) {
         console.error("Jelly UI frame error", r);
       }
-
       !s && !i.colorEasing && this.active.delete(i);
     }
-
     this.active.size > 0 ? requestAnimationFrame(this.loop) : this.running = !1;
   }
 }
-
 const zt = new Qt(), R = 8;
-
 function te(n, t) {
-
   if (n !== "start" && n !== "end")
-
     return n;
-
   const e = C(t);
-
   return n === "start" ? e ? "right" : "left" : e ? "left" : "right";
 }
-
 function U(n, t, e = "bottom", i = 8) {
-
   const s = te(e, n), r = n.getBoundingClientRect(), o = t.getBoundingClientRect(), l = window.innerWidth, c = window.innerHeight;
-
   let h = s;
-
   s === "top" && r.top - o.height - i < R && r.bottom + o.height + i < c ? h = "bottom" : s === "bottom" && r.bottom + o.height + i > c - R && r.top - o.height - i > 0 ? h = "top" : s === "left" && r.left - o.width - i < R && r.right + o.width + i < l ? h = "right" : s === "right" && r.right + o.width + i > l - R && r.left - o.width - i > 0 && (h = "left");
-
   let a, d;
-
-  h === "top" ? a = r.top - o.height - i : h === "bottom" ? a = r.bottom + i : a = r.top + (r.height - o.height) / 2, h === "left" ? d = r.left - o.width - i : h === "right" ? d = r.right + i : d = r.left + (r.width - o.width) / 2, d = Math.max(R, Math.min(l - o.width - R, d)), a = Math.max(R, Math.min(c - o.height - R, a)), t.style.left = `${Math.round(d)}px`, t.style.top = `${Math.round(a)}px`;
-
+  h === "top" ? a = r.top - o.height - i : h === "bottom" ? a = r.bottom + i : a = r.top + (r.height - o.height) / 2, h === "left" ? d = r.left - o.width - i : h === "right" ? d = r.right + i : d = r.left + (r.width - o.width) / 2, d = Math.max(
+    R,
+    Math.min(l - o.width - R, d)
+  ), a = Math.max(
+    R,
+    Math.min(c - o.height - R, a)
+  ), t.style.left = `${Math.round(d)}px`, t.style.top = `${Math.round(a)}px`;
   const p = t.getBoundingClientRect(), u = d - p.left, m = a - p.top;
-
   return (Math.abs(u) > 0.5 || Math.abs(m) > 0.5) && (t.style.left = `${Math.round(d + u)}px`, t.style.top = `${Math.round(a + m)}px`), h;
 }
-
 function ft(n, t, e = "bottom", i = 8, s = null) {
-
   const r = () => {
     if (U(n, t, e, i), s) {
       const o = n.getBoundingClientRect();
-
       (o.bottom <= 0 || o.top >= window.innerHeight || o.right <= 0 || o.left >= window.innerWidth) && s();
     }
   };
-
   return window.addEventListener("scroll", r, !0), window.addEventListener("resize", r), () => {
     window.removeEventListener("scroll", r, !0), window.removeEventListener("resize", r);
   };
 }
-
 let pt = 0, Ht = "";
-
 function Pt() {
-
   if (pt++ > 0)
-
     return;
-
   const n = window.innerWidth - document.documentElement.clientWidth;
-
   Ht = document.body.style.paddingInlineEnd, document.body.style.overflow = "hidden", n > 0 && (document.body.style.paddingInlineEnd = `${n}px`);
 }
-
 function Bt() {
-
   pt !== 0 && (--pt > 0 || (document.body.style.overflow = "", document.body.style.paddingInlineEnd = Ht));
 }
-
 function Rt(n) {
-
   const t = [];
-
   let e = n;
-
   for (; e && e.parentElement && e !== document.body; ) {
     for (const i of e.parentElement.children)
-
       i === e || i.inert || i.tagName === "SCRIPT" || i.tagName === "STYLE" || (i.inert = !0, t.push(i));
-
     e = e.parentElement;
   }
-
   return () => {
     for (const i of t)
-
       i.inert = !1;
   };
 }
-
 function Vt(n) {
-
   if (n.parentNode === document.body)
-
     return () => {
     };
-
   const t = n.parentNode;
-
   if (!t)
-
     return () => {
     };
-
   const e = document.createComment("jelly-portal");
-
   return t.insertBefore(e, n), document.body.appendChild(n), () => {
     e.parentNode && e.parentNode.insertBefore(n, e), e.remove();
   };
 }
-
 function vt(n, t = "center") {
-
   n.style.transformOrigin = t, !(I() || !n.animate) && n.animate(
     [
       { opacity: 0, transform: "scale(0.92, 0.96)" },
-
       { opacity: 1, transform: "scale(1.014, 0.997)", offset: 0.55 },
-
       { transform: "scale(0.998, 1.002)", offset: 0.8 },
-
       { transform: "scale(1)" }
     ],
-
     { duration: 420, easing: "cubic-bezier(.16,.82,.28,1)" }
   );
 }
-
 function xt(n, t) {
-
   if (I() || !n.animate) {
     t();
-
     return;
   }
-
   const e = n.animate(
     [
       { opacity: 1, transform: "scale(1)" },
-
       { opacity: 0, transform: "scale(0.92)" }
     ],
-
     { duration: 150, easing: "ease-in" }
   );
-
   e.onfinish = t, e.oncancel = t;
 }
-
 function ee(n) {
-
   const t = C(n), e = t ? "-35%" : "35%", i = t ? "1.5%" : "-1.5%";
-
   n.style.transformOrigin = t ? "left center" : "right center", !(I() || !n.animate) && n.animate(
     [
       { opacity: 0, transform: `translateX(${e}) scale(0.9)` },
-
-      { opacity: 1, transform: `translateX(${i}) scale(1.015)`, offset: 0.62 },
-
+      {
+        opacity: 1,
+        transform: `translateX(${i}) scale(1.015)`,
+        offset: 0.62
+      },
       { transform: "translateX(0) scale(1)" }
     ],
-
     { duration: 480, easing: "cubic-bezier(.16,.82,.28,1)" }
   );
 }
-
 function ie(n, t) {
-
   const e = C(n), i = e ? "-30%" : "30%";
-
   if (n.style.transformOrigin = e ? "left center" : "right center", I() || !n.animate) {
     t();
-
     return;
   }
-
   const s = n.animate(
     [
       { opacity: 1, transform: "translateX(0) scale(1)" },
-
       { opacity: 0, transform: `translateX(${i}) scale(0.92)` }
     ],
-
     { duration: 320, easing: "cubic-bezier(.4,0,.5,1)" }
   );
-
   s.onfinish = t, s.oncancel = t;
 }
-
 const se = "ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', sans-serif", re = "system-ui, -apple-system, 'Segoe UI', sans-serif", oe = "ui-monospace, 'SF Mono', Menlo, monospace", X = "oklch(1 0 0)", it = "oklch(0.2609 0.0238 267.11)", Dt = "oklch(0.5771 0.2152 27.33)", qt = "oklch(0.5779 0.1495 51.54)", st = "oklch(0.5601 0.1577 249.8)", $t = "oklch(0.5489 0.1374 151.7)", Lt = "oklch(0.7112 0.1559 250.96)", Xt = {
-
   background: {
     default: X,
-
     // page background
     surface: X,
-
     // raised surface (cards, sheets)
     muted: "oklch(0.9906 0.0017 247.84)",
-
     // #FBFCFD  input / field rest fill
     neutral: "oklch(0.8884 0 0)",
-
     // #DADADA  neutral fill (platinum)
     neutralEmphasis: "oklch(0.4676 0 0)",
-
     // #5A5A5A  strong neutral fill (graphite)
     white: X,
-
     // explicit white fill
     rose: Dt,
-
     amber: qt,
-
     azure: st,
-
     mint: $t,
-
     accent: st
   },
-
   foreground: {
     default: it,
-
     // primary text
     muted: "oklch(0.503 0.0269 266.68)",
-
     // #5D6474  secondary text
     onEmphasis: X,
-
     // label on a saturated / graphite fill
     onNeutral: it,
-
     // label on a neutral fill
     onWhite: it,
-
     // label on the white fill
     onAccent: X
     // label on the accent fill
   },
-
   border: {
     default: "oklch(0.9439 0.004 286.32)",
-
     // #ECECEF  hairline
     focus: st
     // focus ring
   },
-
   shadow: "20, 26, 38"
   // rgb triple, consumed inside rgba()
 }, ne = {
-
   background: {
     default: "oklch(0.2198 0.006 236.84)",
-
     // #181B1D
     surface: "oklch(0.2514 0.0163 264.22)",
-
     // #1E222A
     muted: "oklch(0.288 0.018 262.21)",
-
     // #262B34
     neutral: "oklch(0.3674 0.0201 266.01)",
-
     // #3A3F4A  neutral fill + hairline
     neutralEmphasis: "oklch(0.4707 0.0189 266.12)",
-
     // #565B66
     white: "oklch(0.94 0.0071 268.55)",
-
     // #E9EBF0
     rose: Dt,
-
     amber: qt,
-
     azure: st,
-
     mint: $t,
-
     accent: Lt
   },
-
   foreground: {
     default: "oklch(0.9645 0.0054 274.97)",
-
     // #F2F3F7
     muted: "oklch(0.7595 0.0259 265.54)",
-
     // #A9B1C2
     onEmphasis: X,
-
     onNeutral: "oklch(0.9645 0.0054 274.97)",
-
     // #F2F3F7  light label on a dark neutral fill
     onWhite: it,
-
     // dark label on the near-white fill
     onAccent: "oklch(0.2514 0.0163 264.22)"
     // #1E222A  card surface, not pure black
   },
-
   border: {
     default: "oklch(0.3674 0.0201 266.01)",
-
     // #3A3F4A  shares the neutral step
     focus: Lt
   },
-
   shadow: "0, 0, 0"
 }, le = (n) => n.replace(/[A-Z]/g, (t) => "-" + t.toLowerCase());
-
 function Ot(n) {
-
   const t = {};
-
   for (const e of ["background", "foreground", "border"])
-
     for (const [i, s] of Object.entries(n[e]))
-
       t[`${e}-${le(i)}`] = s;
-
   return t.shadow = n.shadow, t;
 }
-
 const jt = Ot(Xt), bt = Ot(ne), b = jt, V = {
-
   color: Xt.border.focus,
-
   width: 4.5,
-
   gap: 0,
-
   alpha: 0.5
 }, gt = {
-
   white: { fill: "background-white", on: "foreground-on-white" },
-
   rose: { fill: "background-rose", on: "foreground-on-emphasis" },
-
   amber: { fill: "background-amber", on: "foreground-on-emphasis" },
-
   azure: { fill: "background-azure", on: "foreground-on-emphasis" },
-
   mint: { fill: "background-mint", on: "foreground-on-emphasis" },
-
   platinum: { fill: "background-neutral", on: "foreground-on-neutral" },
-
-  graphite: { fill: "background-neutral-emphasis", on: "foreground-on-emphasis" }
+  graphite: {
+    fill: "background-neutral-emphasis",
+    on: "foreground-on-emphasis"
+  }
 }, os = `
   :host {
     --jelly-fill:  var(--jelly-color-background-accent,    ${b["background-accent"]});
@@ -1339,29 +901,26 @@ ${Object.entries(gt).map(
 ).join(`
 `)}
 `;
-
-function P({ color: n, on: t = null, ring: e = null } = {}) {
+function P({
+  color: n,
+  on: t = null,
+  ring: e = null
+} = {}) {
   const i = (s) => {
     const r = gt[s];
-
     return [
       n ? `${n}: var(--jelly-color-${r.fill}, ${b[r.fill]});` : "",
-
       e ? `${e}: var(--jelly-color-${r.fill}, ${b[r.fill]});` : "",
-
       t ? `${t}: var(--jelly-color-${r.on}, ${b[r.on]});` : ""
     ].filter(Boolean).join(" ");
   };
-
   return Object.keys(gt).map((s) => `  :host([variant="${s}"]) { ${i(s)} }`).join(`
 `);
 }
-
 function dt(n) {
   return Object.entries(n).map(([t, e]) => `  --jelly-color-${t}: ${e};`).join(`
 `);
 }
-
 function ae() {
   return `
 @layer jelly {
@@ -1396,130 +955,103 @@ ${dt(bt)}
 }
 `;
 }
-
 function z() {
   if (typeof document > "u" || document.querySelector("style[data-jelly-tokens]"))
-
     return;
-
   const n = document.createElement("style");
-
   n.setAttribute("data-jelly-tokens", ""), n.textContent = ae(), document.head.appendChild(n);
 }
-
 function ns(n = "auto") {
   z(), n === "light" || n === "dark" ? document.documentElement.setAttribute("data-jelly-mode", n) : document.documentElement.removeAttribute("data-jelly-mode"), ot();
 }
-
 function ls() {
   const n = document.documentElement.getAttribute("data-jelly-mode");
-
   return n === "light" || n === "dark" ? n : "auto";
 }
-
 function as() {
   const n = document.documentElement.getAttribute("data-jelly-mode");
-
   return n === "dark" ? !0 : n === "light" ? !1 : typeof matchMedia == "function" && matchMedia("(prefers-color-scheme: dark)").matches;
 }
-
 function ot() {
   window.dispatchEvent(new CustomEvent("jelly-theme-change"));
 }
-
 function hs(n) {
   return window.addEventListener("jelly-theme-change", n), () => window.removeEventListener("jelly-theme-change", n);
 }
-
-typeof matchMedia == "function" && matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => ot());
-
+typeof matchMedia == "function" && matchMedia("(prefers-color-scheme: dark)").addEventListener?.(
+  "change",
+  () => ot()
+);
 z();
-
 const he = ":host{display:inline-block;position:relative;box-sizing:border-box;vertical-align:middle;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}:host([hidden]){display:none}.jelly-canvas{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0}.jelly-content{position:relative;z-index:1;width:100%;height:100%}";
-
 class M extends HTMLElement {
   constructor() {
     super(), this.body = null, this.built = !1, this.dpr = 1, this.cssW = 0, this.cssH = 0, this.config = void 0, this.resizeObserver = null, this.attributeObserver = null, this.focusVisible = !1, this.frameDt = 0, this.colorEasing = !1, this.eased = {}, this.pressPointerId = null, this.keyboardActive = !1, this.onThemeChange = () => {
       this.built && (this.applyShape(), this.onShape()), this.requestFrame();
     }, this.onMotionChange = () => this.requestFrame(), this.onWindowResize = () => this.applyShape(), this._hoverRafId = 0, this._hoverPointerX = 0, this._hoverPointerY = 0, this._hoverElIndex = 0, this._hoverFrame = () => {
       if (!this._hoverRafId || !this.body) return;
-
       this._hoverRafId = requestAnimationFrame(this._hoverFrame);
-
       const t = this.toLocal(this._hoverPointerX, this._hoverPointerY);
-
       this.body.state.pointerLocalX = t.x, this.body.state.pointerLocalY = t.y;
-
       const e = performance.now(), i = this._hoverElIndex, s = 5e-4, r = _(e * s, i * 101), l = 0.75 + (J(r, 6) + 1) / 2 * 0.25, c = _(e * s * 0.25, i * 307), a = 0.8 + (J(c, 5) + 1) / 2 * 0.4;
-
       this.body.state.hoverForce = l * a, this.requestFrame();
     }, this.attachShadow({ mode: "open", delegatesFocus: !0 });
   }
-
   static {
     this.PAD = 48;
   }
-
   /* ---- Subclass hooks ---------------------------------------------- */
   // Extra CSS (string) for the shadow root
   styles() {
     return "";
   }
-
   // Interactive markup that sits above the canvas
   content() {
     return "<slot></slot>";
   }
-
   // Given the measured host size, return the jelly shape to build
   shape(t, e) {
     return { width: t, height: e, radius: Math.min(t, e) / 2 };
   }
-
   // Resolve the current fill color (the canvas reads the computed token)
   fill() {
     return getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || b["background-accent"];
   }
-
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
   }
-
   // Called whenever the shape (re)builds
   onShape() {
   }
-
   // One animation step. Return true to keep animating.
   frame(t) {
     return this.defaultFrame(t);
   }
-
   /* ---- Lifecycle --------------------------------------------------- */
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
-    z(), j(this), this.built || this.build(), this.observeResize(), this.attributeObserver || (this.attributeObserver = new MutationObserver(() => this.requestFrame()), this.attributeObserver.observe(this, { attributes: !0 })), window.addEventListener("jelly-theme-change", this.onThemeChange), window.addEventListener("jelly-motion-change", this.onMotionChange), window.addEventListener("resize", this.onWindowResize, { passive: !0 }), this.requestFrame();
+    z(), j(this), this.built || this.build(), this.observeResize(), this.attributeObserver || (this.attributeObserver = new MutationObserver(
+      () => this.requestFrame()
+    ), this.attributeObserver.observe(this, { attributes: !0 })), window.addEventListener("jelly-theme-change", this.onThemeChange), window.addEventListener("jelly-motion-change", this.onMotionChange), window.addEventListener("resize", this.onWindowResize, {
+      passive: !0
+    }), this.requestFrame();
   }
-
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
     zt.drop(this), window.removeEventListener("jelly-theme-change", this.onThemeChange), window.removeEventListener("jelly-motion-change", this.onMotionChange), window.removeEventListener("resize", this.onWindowResize), this.resizeObserver && (this.resizeObserver.disconnect(), this.resizeObserver = null), this.attributeObserver && (this.attributeObserver.disconnect(), this.attributeObserver = null);
   }
-
   // True when the user prefers reduced motion (checked live, not cached)
   get reducedMotion() {
     return I();
   }
-
   // Render the shadow DOM once and let the subclass wire itself up
   build() {
     this.shadowRoot.innerHTML = `<style>${he}${this.styles()}</style><canvas class="jelly-canvas" part="jelly" aria-hidden="true"></canvas><div class="jelly-content">${this.content()}</div>`, this.canvas = this.shadowRoot.querySelector(".jelly-canvas"), this.ctx = this.canvas.getContext("2d"), this.built = !0, this.onBuilt();
   }
-
   // Rebuild the shape whenever the host's layout size changes
   observeResize() {
     this.resizeObserver || (this.resizeObserver = new ResizeObserver(() => this.applyShape()), this.resizeObserver.observe(this), this.applyShape());
   }
-
   /*
    * The region the jelly shape occupies, in host-local pixels. Defaults to
    * the whole host; a component can mark an inner element with
@@ -1528,37 +1060,24 @@ class M extends HTMLElement {
    */
   jellyBox() {
     const t = this.getBoundingClientRect(), e = this.offsetWidth > 0 ? t.width / this.offsetWidth : 1, i = this.offsetHeight > 0 ? t.height / this.offsetHeight : 1, s = e > 1e-3 ? 1 / e : 1, r = i > 1e-3 ? 1 / i : 1, o = this.shadowRoot.querySelector("[data-jelly-box]"), l = o ? o.getBoundingClientRect() : t;
-
     return {
       width: l.width * s,
-
       height: l.height * r,
-
       offsetX: (l.left + l.width / 2 - t.left) * s,
-
       offsetY: (l.top + l.height / 2 - t.top) * r,
-
       // Screen coords stay in screen space for pointer → local mapping
       screenX: l.left + l.width / 2,
-
       screenY: l.top + l.height / 2
     };
   }
-
   // Size the canvas for the current shape and (re)build the physics body
   applyShape() {
     if (!this.built)
-
       return;
-
     const t = this.jellyBox();
-
     if (t.width < 1 || t.height < 1)
-
       return;
-
     const e = this.shape(t.width, t.height), i = this.constructor.PAD, s = e.width + i * 2, r = e.height + i * 2, o = Math.min(window.devicePixelRatio || 1, 3), l = Math.round(s * o), c = Math.round(r * o);
-
     if (this.canvas.style.left = `${t.offsetX}px`, this.canvas.style.top = `${t.offsetY}px`, !(this.body && this.canvas.width === l && this.canvas.height === c)) {
       this.dpr = o, this.cssW = s, this.cssH = r, this.canvas.style.width = `${s}px`, this.canvas.style.height = `${r}px`, this.canvas.width = l, this.canvas.height = c, this.ctx.setTransform(o, 0, 0, o, 0, 0), this.body ? this.body.resize(e.width, e.height, e.radius) : this.body = new $({
         width: e.width,
@@ -1566,17 +1085,14 @@ class M extends HTMLElement {
         radius: e.radius,
         config: this.config
       }), this.onShape();
-
       try {
         this.frame(0);
       } catch (h) {
         console.error("Jelly UI paint error", h);
       }
-
       this.requestFrame();
     }
   }
-
   /*
    * Rebuild the membrane in place after a shape attribute change (e.g. a
    * radius swap) that doesn't resize the box - applyShape would early-return
@@ -1584,26 +1100,18 @@ class M extends HTMLElement {
    */
   reshapeMembrane() {
     if (!this.built || !this.body)
-
       return;
-
     const t = this.jellyBox();
-
     if (t.width < 1 || t.height < 1)
-
       return;
-
     const e = this.shape(t.width, t.height);
-
     this.body.resize(e.width, e.height, e.radius), this.requestFrame();
   }
-
   /* ---- Rendering --------------------------------------------------- */
   // Wipe the canvas for the next paint
   clearCanvas() {
     this.ctx.clearRect(0, 0, this.cssW, this.cssH);
   }
-
   /*
    * Paint one body centered in the canvas (with optional pixel offset).
    * Flat solid fill - no gradients or shading.
@@ -1611,77 +1119,59 @@ class M extends HTMLElement {
   paintBody(t, e = {}) {
     const {
       fill: i = this.fill(),
-
       cx: s = 0,
-
       cy: r = 0,
-
       alpha: o = 1,
-
       ctx: l = this.ctx,
-
       cssW: c = this.cssW,
-
       cssH: h = this.cssH,
-
       ring: a = null,
-
       scaleX: d = 1,
-
       scaleY: p = 1,
-
       border: u = null,
-
       // Optional per-point post-projection deform (x, y, z) → (x, y, z).
       // Used for effects the physics shouldn't carry, e.g. tapering a
       // slider thumb's tail.
       warp: m = null,
-
       // Crossfade the fill toward its target instead of snapping (so variant /
       // state changes ease). Components that paint more than one body per frame
       // pass a distinct easeKey per body so their colours don't share a track.
       ease: w = !0,
-
       easeKey: f = "body"
     } = e, x = w ? this.easeColor(f, i, this.frameDt || 0) : i, y = c / 2 + s, k = h / 2 + r, L = m ? (E) => m(t.projectPoint(E)) : (E) => t.projectPoint(E);
-
     if (l.save(), l.globalAlpha = o, l.translate(y, k), l.rotate(t.state.rotateZ), (d !== 1 || p !== 1) && l.scale(d, p), a) {
       const E = t.getSurfacePoints(a.gap + a.width / 2).map(L);
-
       ct(l, E), l.lineWidth = a.width, l.strokeStyle = a.color, l.lineJoin = "round", l.stroke();
     }
-
     const S = t.getSurfacePoints().map(L);
-
     ct(l, S), l.fillStyle = x, l.fill(), u && (ct(l, S), l.lineWidth = u.width, l.strokeStyle = u.color, l.lineJoin = "round", l.stroke()), l.restore();
   }
-
   // The standard frame: advance physics, repaint, sleep when at rest
   defaultFrame(t) {
     const e = this.body;
-
-    return e ? (e.update(t), this.clearCanvas(), this.paintBody(e, { ring: this.focusRing(), border: this.surfaceBorder() }), !e.isResting()) : !1;
+    return e ? (e.update(t), this.clearCanvas(), this.paintBody(e, {
+      ring: this.focusRing(),
+      border: this.surfaceBorder()
+    }), !e.isResting()) : !1;
   }
-
   // Border descriptor painted on the jelly surface, else null
   surfaceBorder() {
     return null;
   }
-
   /* ---- Focus ring -------------------------------------------------- */
   // Ring descriptor when keyboard-focused, else null. Override as needed.
   // Width and gap resolve from --jelly-ring-width / --jelly-ring-gap so the
   // ring geometry is themeable, not only its color.
   focusRing() {
     if (!this.focusVisible)
-
       return null;
-
     const t = getComputedStyle(this), e = parseFloat(t.getPropertyValue("--jelly-ring-width")) || V.width, i = parseFloat(t.getPropertyValue("--jelly-ring-gap"));
-
-    return { color: this.ringColor(), width: e, gap: Number.isFinite(i) ? i : V.gap };
+    return {
+      color: this.ringColor(),
+      width: e,
+      gap: Number.isFinite(i) ? i : V.gap
+    };
   }
-
   // The focus ring color, softly blended toward transparent - it tracks the
   // component's own --jelly-ring (usually its fill hue) so the ring reads as
   // part of the control rather than a generic blue outline.
@@ -1689,10 +1179,10 @@ class M extends HTMLElement {
     const [t, e, i, s] = this.rgbaTuple(
       `var(--jelly-ring, var(--jelly-color-border-focus, ${b["border-focus"]}))`
     );
-
-    return this.colorString([t, e, i, s * V.alpha], { forceAlpha: !0 });
+    return this.colorString([t, e, i, s * V.alpha], {
+      forceAlpha: !0
+    });
   }
-
   /*
    * Ease a fill color toward its target so a variant / state change crossfades
    * rather than snapping. Keyed so a component painting several bodies a frame
@@ -1702,62 +1192,45 @@ class M extends HTMLElement {
    */
   easeColor(t, e, i) {
     const s = this.rgbaTuple(e), r = this.eased[t];
-
     if (!r || this.reducedMotion)
-
       return this.eased[t] = s, this.colorString(s);
-
     if (Math.abs(s[0] - r[0]) <= 0.4 && Math.abs(s[1] - r[1]) <= 0.4 && Math.abs(s[2] - r[2]) <= 0.4 && Math.abs(s[3] - r[3]) <= 2e-3)
-
       return this.eased[t] = s, this.colorString(s);
-
     if (this.colorEasing = !0, i > 0) {
       const l = 1 - Math.exp(-i * 10);
-
       for (let c = 0; c < 4; c++)
-
         r[c] += (s[c] - r[c]) * l;
     }
-
     return this.colorString(r);
   }
-
   // Resolve a color expression to an [r, g, b, a] tuple. RGB channels use
   // 0–255; alpha uses 0–1. Keeping alpha here prevents short hex colors such
   // as #fff0 from becoming opaque as they pass through canvas animation.
   rgbaTuple(t) {
     const e = this.resolveColor(String(t)), i = e.match(/[\d.]+/g);
-
     if (!i)
-
       return [0, 0, 0, 1];
-
     const s = i.slice(0, 3).map(Number), r = Math.max(0, Math.min(1, Number(i[3] ?? 1))), o = e.startsWith("color(") ? s.map((l) => Math.round(l * 255)) : s;
-
     return [o[0], o[1], o[2], r];
   }
-
   // Backward-compatible RGB-only view for calculations that do not need alpha
   rgbTriple(t) {
     return this.rgbaTuple(t).slice(0, 3);
   }
-
   // Serialize a tuple to a canvas-safe legacy color. Keep opaque colors as
   // rgb() for compactness; rgba() is required whenever transparency matters.
   colorString([t, e, i, s = 1], { forceAlpha: r = !1 } = {}) {
     const o = Math.round(t), l = Math.round(e), c = Math.round(i), h = Math.max(0, Math.min(1, s));
-
     return !r && h >= 0.9995 ? `rgb(${o}, ${l}, ${c})` : `rgba(${o}, ${l}, ${c}, ${Number(h.toFixed(4))})`;
   }
-
   // Blend two live CSS color expressions. Shared by controls that animate
   // between semantic off/on colors, including their alpha channels.
   mixColor(t, e, i) {
-    const s = this.rgbaTuple(t), r = this.rgbaTuple(e), o = Math.max(0, Math.min(1, i)), l = s.map((c, h) => c + (r[h] - c) * o);
-
+    const s = this.rgbaTuple(t), r = this.rgbaTuple(e), o = Math.max(0, Math.min(1, i)), l = s.map(
+      (c, h) => c + (r[h] - c) * o
+    );
     return this.colorString(l);
   }
-
   // Resolve a CSS color expression (var(), color-mix(), …) to a concrete sRGB
   // color. The token values are oklch(), and getComputedStyle preserves oklch()
   // in modern browsers - so we wrap the expression in color-mix(in srgb, …) to
@@ -1766,7 +1239,6 @@ class M extends HTMLElement {
   resolveColor(t) {
     return this.probe || (this.probe = document.createElement("span"), this.probe.setAttribute("aria-hidden", "true"), this.probe.style.cssText = "position:absolute;width:0;height:0;visibility:hidden;pointer-events:none", this.shadowRoot.appendChild(this.probe)), this.probe.style.color = `color-mix(in srgb, ${t} 100%, transparent)`, getComputedStyle(this.probe).color;
   }
-
   // Track keyboard-focus (:focus-visible) on an inner control for the ring
   trackFocus(t) {
     t.addEventListener("focus", () => {
@@ -1775,69 +1247,52 @@ class M extends HTMLElement {
       this.focusVisible = !1, this.requestFrame();
     });
   }
-
   // Route host.focus() into an inner shadow control
   useHostFocusTarget(t) {
     t && (this.hostFocusTarget = t, this.syncHostFocusTarget(), this.hostFocusHandler || (this.hostFocusHandler = (e) => {
       e.target !== this || !this.hostFocusTarget || this.shadowRoot?.activeElement || this.hostFocusTarget.focus({ preventScroll: !0 });
     }, this.addEventListener("focus", this.hostFocusHandler)));
   }
-
   // Keep the inner focus target's tab order in sync with disabled state
   syncHostFocusTarget() {
     this.hostFocusTarget && (this.hostFocusTarget.tabIndex = this.hasAttribute("disabled") ? -1 : 0, this.removeAttribute("tabindex"));
   }
-
   /* ---- Interaction helpers ----------------------------------------- */
   // Ask the shared engine for animation frames until the body rests
   requestFrame() {
     zt.wake(this);
   }
-
   // Convert client coords into the body's local (shape-centered) frame
   toLocal(t, e, i = this.body) {
     const s = this.jellyBox(), r = this.getBoundingClientRect(), o = this.offsetWidth > 0 ? r.width / this.offsetWidth : 1, l = this.offsetHeight > 0 ? r.height / this.offsetHeight : 1, c = (t - s.screenX) / (o > 1e-3 ? o : 1), h = (e - s.screenY) / (l > 1e-3 ? l : 1), a = -(i ? i.state.rotateZ : 0), d = Math.cos(a), p = Math.sin(a);
-
     return { x: c * d - h * p, y: c * p + h * d };
   }
-
   // Press the jelly at a screen coordinate
   pressAt(t, e, i = 1.12) {
     if (this.reducedMotion || !this.body)
-
       return;
-
     const s = this.toLocal(t, e);
-
     this.body.pressAtLocal(s.x, s.y, i), this.requestFrame();
   }
-
   // Drag the held press to a new screen coordinate
   moveAt(t, e) {
     if (this.reducedMotion || !this.body)
-
       return;
-
     const i = this.toLocal(t, e);
-
     this.body.moveToLocal(i.x, i.y), this.requestFrame();
   }
-
   // Release the held press and let the body settle
   releaseBody() {
     this.body && (this.body.release(), this.requestFrame());
   }
-
   // Sustained center squish (keyboard press-and-hold)
   centerPulse(t = 1) {
     this.reducedMotion || !this.body || (this.body.centerPulse(t), this.requestFrame());
   }
-
   // One-shot center squish that settles on its own (focus, toggle, grab)
   centerPop(t = 1) {
     this.reducedMotion || !this.body || (this.body.centerPop(t), this.requestFrame());
   }
-
   /*
    * Wire the standard press feel onto an inner control: pointer presses
    * dent the jelly under the finger and follow it, Enter / Space squish
@@ -1845,26 +1300,25 @@ class M extends HTMLElement {
    * capture loss and blur mid-press. Handles one pointer at a time; extra
    * touches are ignored rather than fighting over the membrane.
    */
-  wirePress(t, { keyboard: e = !0, disabled: i = () => this.hasAttribute("disabled") } = {}) {
+  wirePress(t, {
+    keyboard: e = !0,
+    disabled: i = () => this.hasAttribute("disabled")
+  } = {}) {
     this.pressPointerId = null, t.addEventListener("pointerdown", (r) => {
       if (!(i() || this.pressPointerId !== null)) {
         this.pressPointerId = r.pointerId;
-
         try {
           t.setPointerCapture(r.pointerId);
         } catch {
         }
-
         this.pressAt(r.clientX, r.clientY), F();
       }
     }), t.addEventListener("pointermove", (r) => {
       r.pointerId === this.pressPointerId && this.moveAt(r.clientX, r.clientY);
     });
-
     const s = (r) => {
       r.pointerId === this.pressPointerId && (this.pressPointerId = null, this.releaseBody());
     };
-
     t.addEventListener("pointerup", s), t.addEventListener("pointercancel", s), t.addEventListener("lostpointercapture", s), e && (t.addEventListener("keydown", (r) => {
       r.key !== "Enter" && r.key !== " " || this.keyboardActive || r.repeat || i() || (this.keyboardActive = !0, this.centerPulse(1.12), F());
     }), t.addEventListener("keyup", (r) => {
@@ -1873,7 +1327,6 @@ class M extends HTMLElement {
       this.keyboardActive = !1, this.pressPointerId = null, this.releaseBody();
     }));
   }
-
   /**
    * Start the per-frame hover loop.  Called on pointerenter.
    * `elIndex` gives each element a unique noise seed so they don't
@@ -1882,95 +1335,92 @@ class M extends HTMLElement {
   startHoverLoop(t) {
     this._hoverRafId !== 0 || this.reducedMotion || !this.body || (this._hoverElIndex = t, this._hoverRafId = requestAnimationFrame(this._hoverFrame));
   }
-
   /** Stop the hover loop and let residual energy dissipate naturally. */
   stopHoverLoop() {
     this._hoverRafId !== 0 && (cancelAnimationFrame(this._hoverRafId), this._hoverRafId = 0, this.body && (this.body.state.hoverForce = 0, this.requestFrame()));
   }
-
   /** Update the pointer position for the hover membrane force. */
   updateHoverPointer(t, e) {
     this._hoverPointerX = t, this._hoverPointerY = e;
   }
 }
-
 if (typeof document < "u" && typeof MutationObserver == "function") {
   const n = new MutationObserver(() => ot());
-
-  n.observe(document.documentElement, { attributes: !0, attributeFilter: ["dir"] }), document.body && n.observe(document.body, { attributes: !0, attributeFilter: ["dir"] });
+  n.observe(document.documentElement, {
+    attributes: !0,
+    attributeFilter: ["dir"]
+  }), document.body && n.observe(document.body, {
+    attributes: !0,
+    attributeFilter: ["dir"]
+  });
 }
-
-const ce = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 8.5a.75.75 0 0 0-.75.75v5a.75.75 0 0 0 1.5 0v-5a.75.75 0 0 0-.75-.75ZM12 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>\r
-`, de = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm3.22 6.97-4.47 4.47-1.97-1.97a.75.75 0 0 0-1.06 1.06l2.5 2.5c.3.3.77.3 1.06 0l5-5a.75.75 0 1 0-1.06-1.06Z"/></svg>\r
-`, ue = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.14 3.7a3.25 3.25 0 0 1 5.72 0l6.74 12.5a3.25 3.25 0 0 1-2.86 4.8H5.25a3.25 3.25 0 0 1-2.86-4.8L9.14 3.7ZM12 15a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0-7.5a.75.75 0 0 0-.75.75v4.5a.75.75 0 0 0 1.5 0v-4.5A.75.75 0 0 0 12 7.5Z"/></svg>\r
-`, pe = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 12.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM12 7a.75.75 0 0 0-.75.75v4.6a.75.75 0 0 0 1.5-.1v-4.5l-.01-.1a.75.75 0 0 0-.75-.65Z"/></svg>\r
-`, be = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.39705 4.55379L4.46967 4.46967C4.73594 4.2034 5.1526 4.1792 5.44621 4.39705L5.53033 4.46967L12 10.939L18.4697 4.46967C18.7626 4.17678 19.2374 4.17678 19.5303 4.46967C19.8232 4.76256 19.8232 5.23744 19.5303 5.53033L13.061 12L19.5303 18.4697C19.7966 18.7359 19.8208 19.1526 19.6029 19.4462L19.5303 19.5303C19.2641 19.7966 18.8474 19.8208 18.5538 19.6029L18.4697 19.5303L12 13.061L5.53033 19.5303C5.23744 19.8232 4.76256 19.8232 4.46967 19.5303C4.17678 19.2374 4.17678 18.7626 4.46967 18.4697L10.939 12L4.46967 5.53033C4.2034 5.26406 4.1792 4.8474 4.39705 4.55379Z"/></svg>\r
-`, ge = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1017 17.1624C14.717 18.3101 12.9391 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11C19 12.9391 18.3101 14.717 17.1624 16.1018L21.7803 20.7197C22.0732 21.0126 22.0732 21.4874 21.7803 21.7803C21.4874 22.0732 21.0125 22.0732 20.7196 21.7803L16.1017 17.1624ZM17.5 11C17.5 7.41015 14.5899 4.5 11 4.5C7.41015 4.5 4.5 7.41015 4.5 11C4.5 14.5899 7.41015 17.5 11 17.5C14.5899 17.5 17.5 14.5899 17.5 11Z"/></svg>\r
-`, ye = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.25 7C9.66421 7 10 7.33579 10 7.75C10 8.12656 9.72249 8.4383 9.36083 8.49187L9.25 8.5H7C5.067 8.5 3.5 10.067 3.5 12C3.5 13.864 4.95707 15.3876 6.79435 15.4941L7 15.5H9.25C9.66421 15.5 10 15.8358 10 16.25C10 16.6266 9.72249 16.9383 9.36083 16.9919L9.25 17H7C4.23858 17 2 14.7614 2 12C2 9.32226 4.10496 7.13615 6.75045 7.00612L7 7H9.25ZM17 7C19.7614 7 22 9.23858 22 12C22 14.6777 19.895 16.8638 17.2495 16.9939L17 17H14.75C14.3358 17 14 16.6642 14 16.25C14 15.8734 14.2775 15.5617 14.6392 15.5081L14.75 15.5H17C18.933 15.5 20.5 13.933 20.5 12C20.5 10.136 19.0429 8.6124 17.2057 8.50594L17 8.5H14.75C14.3358 8.5 14 8.16421 14 7.75C14 7.37344 14.2775 7.0617 14.6392 7.00813L14.75 7H17ZM7 11.25H17C17.4142 11.25 17.75 11.5858 17.75 12C17.75 12.3797 17.4678 12.6935 17.1018 12.7432L17 12.75H7C6.58579 12.75 6.25 12.4142 6.25 12C6.25 11.6203 6.53215 11.3065 6.89823 11.2568L7 11.25Z"/></svg>\r
-`, me = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0122 2.25C12.7462 2.25846 13.4773 2.34326 14.1937 2.50304C14.5064 2.57279 14.7403 2.83351 14.7758 3.15196L14.946 4.67881C15.0231 5.37986 15.615 5.91084 16.3206 5.91158C16.5103 5.91188 16.6979 5.87238 16.8732 5.79483L18.2738 5.17956C18.5651 5.05159 18.9055 5.12136 19.1229 5.35362C20.1351 6.43464 20.8889 7.73115 21.3277 9.14558C21.4223 9.45058 21.3134 9.78203 21.0564 9.9715L19.8149 10.8866C19.4607 11.1468 19.2516 11.56 19.2516 11.9995C19.2516 12.4389 19.4607 12.8521 19.8157 13.1129L21.0582 14.0283C21.3153 14.2177 21.4243 14.5492 21.3297 14.8543C20.8911 16.2685 20.1377 17.5649 19.1261 18.6461C18.9089 18.8783 18.5688 18.9483 18.2775 18.8206L16.8712 18.2045C16.4688 18.0284 16.0068 18.0542 15.6265 18.274C15.2463 18.4937 14.9933 18.8812 14.945 19.3177L14.7759 20.8444C14.741 21.1592 14.5122 21.4182 14.204 21.4915C12.7556 21.8361 11.2465 21.8361 9.79803 21.4915C9.48991 21.4182 9.26105 21.1592 9.22618 20.8444L9.05736 19.32C9.00777 18.8843 8.75434 18.498 8.37442 18.279C7.99451 18.06 7.5332 18.0343 7.1322 18.2094L5.72557 18.8256C5.43422 18.9533 5.09403 18.8833 4.87678 18.6509C3.86462 17.5685 3.11119 16.2705 2.6732 14.8548C2.57886 14.5499 2.68786 14.2186 2.94485 14.0293L4.18818 13.1133C4.54232 12.8531 4.75147 12.4399 4.75147 12.0005C4.75147 11.561 4.54232 11.1478 4.18771 10.8873L2.94516 9.97285C2.6878 9.78345 2.5787 9.45178 2.67337 9.14658C3.11212 7.73215 3.86594 6.43564 4.87813 5.35462C5.09559 5.12236 5.43594 5.05259 5.72724 5.18056L7.12762 5.79572C7.53056 5.97256 7.9938 5.94585 8.37577 5.72269C8.75609 5.50209 9.00929 5.11422 9.05817 4.67764L9.22824 3.15196C9.26376 2.83335 9.49786 2.57254 9.8108 2.50294C10.5281 2.34342 11.26 2.25865 12.0122 2.25ZM12.0124 3.7499C11.5583 3.75524 11.1056 3.79443 10.6578 3.86702L10.5489 4.84418C10.4471 5.75368 9.92003 6.56102 9.13042 7.01903C8.33597 7.48317 7.36736 7.53903 6.52458 7.16917L5.62629 6.77456C5.05436 7.46873 4.59914 8.25135 4.27852 9.09168L5.07632 9.67879C5.81513 10.2216 6.25147 11.0837 6.25147 12.0005C6.25147 12.9172 5.81513 13.7793 5.0771 14.3215L4.27805 14.9102C4.59839 15.752 5.05368 16.5361 5.626 17.2316L6.53113 16.8351C7.36923 16.4692 8.33124 16.5227 9.12353 16.9794C9.91581 17.4361 10.4443 18.2417 10.548 19.1526L10.657 20.1365C11.5466 20.2878 12.4555 20.2878 13.3451 20.1365L13.4541 19.1527C13.5549 18.2421 14.0828 17.4337 14.876 16.9753C15.6692 16.5168 16.6332 16.463 17.4728 16.8305L18.3772 17.2267C18.949 16.5323 19.4041 15.7495 19.7247 14.909L18.9267 14.3211C18.1879 13.7783 17.7516 12.9162 17.7516 11.9995C17.7516 11.0827 18.1879 10.2206 18.9258 9.67847L19.7227 9.09109C19.4021 8.25061 18.9468 7.46784 18.3748 6.77356L17.4783 7.16737C17.113 7.32901 16.7178 7.4122 16.3187 7.41158C14.849 7.41004 13.6155 6.30355 13.4551 4.84383L13.3462 3.8667C12.9007 3.7942 12.4526 3.75512 12.0124 3.7499ZM11.9997 8.24995C14.0708 8.24995 15.7497 9.92888 15.7497 12C15.7497 14.071 14.0708 15.75 11.9997 15.75C9.92863 15.75 8.2497 14.071 8.2497 12C8.2497 9.92888 9.92863 8.24995 11.9997 8.24995ZM11.9997 9.74995C10.7571 9.74995 9.7497 10.7573 9.7497 12C9.7497 13.2426 10.7571 14.25 11.9997 14.25C13.2423 14.25 14.2497 13.2426 14.2497 12C14.2497 10.7573 13.2423 9.74995 11.9997 9.74995Z"/></svg>\r
-`, fe = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215Z"/></svg>\r
-`, ve = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.8199 5.57912L11.9992 6.40163L11.1759 5.57838C9.07688 3.47931 5.67361 3.47931 3.57455 5.57838C1.47548 7.67744 1.47548 11.0807 3.57455 13.1798L11.4699 21.0751C11.7628 21.368 12.2377 21.368 12.5306 21.0751L20.432 13.1783C22.5264 11.0723 22.53 7.67857 20.4306 5.57912C18.3277 3.47623 14.9228 3.47623 12.8199 5.57912Z"/></svg>\r
-`, xe = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.0258 17.0014C17.2639 21.7851 11.1471 23.4241 6.3634 20.6622C5.06068 19.9101 3.964 18.8926 3.12872 17.6797C2.84945 17.2741 3.0301 16.7141 3.49369 16.5482C7.26112 15.1997 9.27892 13.6372 10.4498 11.4021C11.6825 9.04908 12.001 6.47162 11.1387 2.93862C11.0195 2.45008 11.4053 1.98492 11.9075 2.01186C13.4645 2.09539 14.9856 2.54263 16.3649 3.33903C21.1486 6.10088 22.7876 12.2177 20.0258 17.0014Z"/></svg>\r
-`, je = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12.4142 2 12.75 2.33579 12.75 2.75V4.25C12.75 4.66421 12.4142 5 12 5C11.5858 5 11.25 4.66421 11.25 4.25V2.75C11.25 2.33579 11.5858 2 12 2ZM17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12ZM21.25 12.75C21.6642 12.75 22 12.4142 22 12C22 11.5858 21.6642 11.25 21.25 11.25H19.75C19.3358 11.25 19 11.5858 19 12C19 12.4142 19.3358 12.75 19.75 12.75H21.25ZM12 19C12.4142 19 12.75 19.3358 12.75 19.75V21.25C12.75 21.6642 12.4142 22 12 22C11.5858 22 11.25 21.6642 11.25 21.25V19.75C11.25 19.3358 11.5858 19 12 19ZM4.25 12.75C4.66421 12.75 5 12.4142 5 12C5 11.5858 4.66421 11.25 4.25 11.25H2.75C2.33579 11.25 2 11.5858 2 12C2 12.4142 2.33579 12.75 2.75 12.75H4.25ZM4.21967 4.22004C4.51256 3.92715 4.98744 3.92715 5.28033 4.22004L6.78033 5.72004C7.07322 6.01294 7.07322 6.48781 6.78033 6.7807C6.48744 7.0736 6.01256 7.0736 5.71967 6.7807L4.21967 5.2807C3.92678 4.98781 3.92678 4.51294 4.21967 4.22004ZM5.28033 19.7807C4.98744 20.0736 4.51256 20.0736 4.21967 19.7807C3.92678 19.4878 3.92678 19.0129 4.21967 18.72L5.71967 17.22C6.01256 16.9271 6.48744 16.9271 6.78033 17.22C7.07322 17.5129 7.07322 17.9878 6.78033 18.2807L5.28033 19.7807ZM19.7803 4.22004C19.4874 3.92715 19.0126 3.92715 18.7197 4.22004L17.2197 5.72004C16.9268 6.01294 16.9268 6.48781 17.2197 6.7807C17.5126 7.0736 17.9874 7.0736 18.2803 6.7807L19.7803 5.2807C20.0732 4.98781 20.0732 4.51294 19.7803 4.22004ZM18.7197 19.7807C19.0126 20.0736 19.4874 20.0736 19.7803 19.7807C20.0732 19.4878 20.0732 19.0129 19.7803 18.72L18.2803 17.22C17.9874 16.9271 17.5126 16.9271 17.2197 17.22C16.9268 17.5129 16.9268 17.9878 17.2197 18.2807L18.7197 19.7807Z"/></svg>\r
-`, we = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.75 12.6 A5.25 5.25 0 0 1 17.25 12.6 Z"/><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="4.4"/><line x1="4.6" y1="4.6" x2="6.6" y2="6.6"/><line x1="19.4" y1="4.6" x2="17.4" y2="6.6"/><line x1="1.9" y1="13.7" x2="22.1" y2="13.7"/><line x1="6.1" y1="16.9" x2="18.2" y2="16.9"/><line x1="10" y1="20" x2="14.1" y2="20"/></g></svg>\r
-`, ke = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">\r
-  <path d="M16.3368 4.9174C17.5191 3.69448 19.4803 3.69717 20.6593 4.92332L27.8322 12.3831C29.155 13.4822 30 15.1428 30 17C30 20.2785 27.3704 22.9429 24.1053 22.9991V23.0004C24.1053 25.2096 22.3144 27.0004 20.1053 27.0004H18C18 27.0004 18 27.0004 18 27.0004V24.5004C18 22.0151 15.9853 20.0004 13.5 20.0004H12C11.4477 20.0004 11 20.4481 11 21.0004C11 21.5527 11.4477 22.0004 12 22.0004H13.5C14.8807 22.0004 16 23.1197 16 24.5004V27.0004C16 27.0004 16 27.0004 16 27.0004L11 27.0004C8.23858 27.0004 6 24.7618 6 22.0004V19.9004C3.71776 19.4371 2 17.4193 2 15.0004C2 12.2389 4.23858 10.0004 7 10.0004C8.63694 10.0004 10.0891 10.7874 11.0003 12.0004H17.5995C17.7351 11.7351 17.8914 11.4823 18.0664 11.2443L16.1624 8.89416C15.2071 7.71502 15.2819 6.00841 16.3368 4.9174Z" fill="currentColor"/>\r
-</svg>\r
-`, Ce = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">\r
-  <path d="M23.5758 24.99L28.2927 29.7068C28.6832 30.0973 29.3164 30.0973 29.7069 29.7068C30.0975 29.3163 30.0974 28.6831 29.7069 28.2926L3.70661 2.29288C3.31608 1.90237 2.68292 1.90237 2.2924 2.2929C1.90188 2.68343 1.90188 3.3166 2.29241 3.70712L9.00318 10.4177C8.39 10.1492 7.71241 10.0001 6.99982 10.0001C4.23839 10.0001 1.99982 12.2386 1.99982 15.0001C1.99982 17.419 3.71758 19.4368 5.99982 19.9001V22.0001C5.99982 24.7615 8.2384 27.0001 10.9998 27.0001H15.9998V24.4997C15.9998 23.119 14.8805 21.9997 13.4998 21.9997H11.9998C11.4475 21.9997 10.9998 21.552 10.9998 20.9997C10.9998 20.4474 11.4475 19.9997 11.9998 19.9997H13.4998C15.9851 19.9997 17.9998 22.0144 17.9998 24.4997V26.9997L20.1051 27.0001C21.5898 27.0001 22.8856 26.1912 23.5758 24.99ZM29.9998 16.9997C29.9998 19.5582 28.3984 21.7427 26.1433 22.6055L15.5377 12.0001H17.5993C17.7349 11.7348 17.8913 11.482 18.0663 11.244L16.1622 8.89386C15.2069 7.71472 15.2818 6.00811 16.3366 4.91709C17.5189 3.69417 19.4801 3.69686 20.6591 4.92302L27.8321 12.3828C29.1549 13.4819 29.9998 15.1425 29.9998 16.9997Z" fill="currentColor"/>\r
-</svg>\r
-`, Ae = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">\r
-  <path d="M11.0003 12.0004H11.8436C11.8956 11.9991 11.9477 11.9984 12 11.9984V12.0004H17.5995C17.7351 11.7351 17.8914 11.4823 18.0664 11.2443L16.1624 8.89416C15.2071 7.71502 15.2819 6.00841 16.3368 4.9174C17.5191 3.69448 19.4803 3.69717 20.6593 4.92332L27.8322 12.3831C29.155 13.4822 30 15.1428 30 17C30 20.2785 27.3704 22.9429 24.1053 22.9991V23.0004C24.1053 25.2096 22.3144 27.0004 20.1053 27.0004H11C8.23858 27.0004 6 24.7618 6 22.0004V19.9004C3.71776 19.4371 2 17.4193 2 15.0004C2 12.2389 4.23858 10.0004 7 10.0004C8.63694 10.0004 10.0891 10.7874 11.0003 12.0004ZM19.2177 6.30954C18.8241 5.9002 18.1693 5.89931 17.7746 6.30756C17.4225 6.67178 17.3975 7.24152 17.7164 7.63516L20.7241 11.3476L20.0662 11.9843C19.6801 12.358 19.3805 12.8187 19.1987 13.3335L18.9631 14.0004H11.8723C9.72227 14.0678 8 15.832 8 17.9984V22.0004C8 23.6573 9.34315 25.0004 11 25.0004H16C16 25.0004 16 25.0004 16 25.0004V24.5004C16 23.1197 14.8807 22.0004 13.5 22.0004H12C11.4477 22.0004 11 21.5527 11 21.0004C11 20.4481 11.4477 20.0004 12 20.0004H13.5C15.9853 20.0004 18 22.0151 18 24.5004V25.0004C18 25.0004 18 25.0004 18 25.0004L20.1053 25.0004C21.2098 25.0004 22.1053 24.105 22.1053 23.0004V20.7233L23.283 20.9361C23.5149 20.978 23.7545 21 24 21C26.2091 21 28 19.2091 28 17C28 15.7472 27.4252 14.6293 26.5211 13.8943L26.4736 13.8557L19.2177 6.30954ZM6.00231 17.8305C6.06168 15.6698 7.26332 13.7945 9.02502 12.7867C8.49077 12.2976 7.77981 12.0004 7 12.0004C5.34315 12.0004 4 13.3435 4 15.0004C4 16.3075 4.83591 17.4193 6.00231 17.8305Z" fill="currentColor"/>\r
-</svg>\r
+const ce = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 8.5a.75.75 0 0 0-.75.75v5a.75.75 0 0 0 1.5 0v-5a.75.75 0 0 0-.75-.75ZM12 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/></svg>
+`, de = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm3.22 6.97-4.47 4.47-1.97-1.97a.75.75 0 0 0-1.06 1.06l2.5 2.5c.3.3.77.3 1.06 0l5-5a.75.75 0 1 0-1.06-1.06Z"/></svg>
+`, ue = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.14 3.7a3.25 3.25 0 0 1 5.72 0l6.74 12.5a3.25 3.25 0 0 1-2.86 4.8H5.25a3.25 3.25 0 0 1-2.86-4.8L9.14 3.7ZM12 15a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0-7.5a.75.75 0 0 0-.75.75v4.5a.75.75 0 0 0 1.5 0v-4.5A.75.75 0 0 0 12 7.5Z"/></svg>
+`, pe = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20Zm0 12.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM12 7a.75.75 0 0 0-.75.75v4.6a.75.75 0 0 0 1.5-.1v-4.5l-.01-.1a.75.75 0 0 0-.75-.65Z"/></svg>
+`, be = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.39705 4.55379L4.46967 4.46967C4.73594 4.2034 5.1526 4.1792 5.44621 4.39705L5.53033 4.46967L12 10.939L18.4697 4.46967C18.7626 4.17678 19.2374 4.17678 19.5303 4.46967C19.8232 4.76256 19.8232 5.23744 19.5303 5.53033L13.061 12L19.5303 18.4697C19.7966 18.7359 19.8208 19.1526 19.6029 19.4462L19.5303 19.5303C19.2641 19.7966 18.8474 19.8208 18.5538 19.6029L18.4697 19.5303L12 13.061L5.53033 19.5303C5.23744 19.8232 4.76256 19.8232 4.46967 19.5303C4.17678 19.2374 4.17678 18.7626 4.46967 18.4697L10.939 12L4.46967 5.53033C4.2034 5.26406 4.1792 4.8474 4.39705 4.55379Z"/></svg>
+`, ge = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1017 17.1624C14.717 18.3101 12.9391 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11C19 12.9391 18.3101 14.717 17.1624 16.1018L21.7803 20.7197C22.0732 21.0126 22.0732 21.4874 21.7803 21.7803C21.4874 22.0732 21.0125 22.0732 20.7196 21.7803L16.1017 17.1624ZM17.5 11C17.5 7.41015 14.5899 4.5 11 4.5C7.41015 4.5 4.5 7.41015 4.5 11C4.5 14.5899 7.41015 17.5 11 17.5C14.5899 17.5 17.5 14.5899 17.5 11Z"/></svg>
+`, ye = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M9.25 7C9.66421 7 10 7.33579 10 7.75C10 8.12656 9.72249 8.4383 9.36083 8.49187L9.25 8.5H7C5.067 8.5 3.5 10.067 3.5 12C3.5 13.864 4.95707 15.3876 6.79435 15.4941L7 15.5H9.25C9.66421 15.5 10 15.8358 10 16.25C10 16.6266 9.72249 16.9383 9.36083 16.9919L9.25 17H7C4.23858 17 2 14.7614 2 12C2 9.32226 4.10496 7.13615 6.75045 7.00612L7 7H9.25ZM17 7C19.7614 7 22 9.23858 22 12C22 14.6777 19.895 16.8638 17.2495 16.9939L17 17H14.75C14.3358 17 14 16.6642 14 16.25C14 15.8734 14.2775 15.5617 14.6392 15.5081L14.75 15.5H17C18.933 15.5 20.5 13.933 20.5 12C20.5 10.136 19.0429 8.6124 17.2057 8.50594L17 8.5H14.75C14.3358 8.5 14 8.16421 14 7.75C14 7.37344 14.2775 7.0617 14.6392 7.00813L14.75 7H17ZM7 11.25H17C17.4142 11.25 17.75 11.5858 17.75 12C17.75 12.3797 17.4678 12.6935 17.1018 12.7432L17 12.75H7C6.58579 12.75 6.25 12.4142 6.25 12C6.25 11.6203 6.53215 11.3065 6.89823 11.2568L7 11.25Z"/></svg>
+`, me = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.0122 2.25C12.7462 2.25846 13.4773 2.34326 14.1937 2.50304C14.5064 2.57279 14.7403 2.83351 14.7758 3.15196L14.946 4.67881C15.0231 5.37986 15.615 5.91084 16.3206 5.91158C16.5103 5.91188 16.6979 5.87238 16.8732 5.79483L18.2738 5.17956C18.5651 5.05159 18.9055 5.12136 19.1229 5.35362C20.1351 6.43464 20.8889 7.73115 21.3277 9.14558C21.4223 9.45058 21.3134 9.78203 21.0564 9.9715L19.8149 10.8866C19.4607 11.1468 19.2516 11.56 19.2516 11.9995C19.2516 12.4389 19.4607 12.8521 19.8157 13.1129L21.0582 14.0283C21.3153 14.2177 21.4243 14.5492 21.3297 14.8543C20.8911 16.2685 20.1377 17.5649 19.1261 18.6461C18.9089 18.8783 18.5688 18.9483 18.2775 18.8206L16.8712 18.2045C16.4688 18.0284 16.0068 18.0542 15.6265 18.274C15.2463 18.4937 14.9933 18.8812 14.945 19.3177L14.7759 20.8444C14.741 21.1592 14.5122 21.4182 14.204 21.4915C12.7556 21.8361 11.2465 21.8361 9.79803 21.4915C9.48991 21.4182 9.26105 21.1592 9.22618 20.8444L9.05736 19.32C9.00777 18.8843 8.75434 18.498 8.37442 18.279C7.99451 18.06 7.5332 18.0343 7.1322 18.2094L5.72557 18.8256C5.43422 18.9533 5.09403 18.8833 4.87678 18.6509C3.86462 17.5685 3.11119 16.2705 2.6732 14.8548C2.57886 14.5499 2.68786 14.2186 2.94485 14.0293L4.18818 13.1133C4.54232 12.8531 4.75147 12.4399 4.75147 12.0005C4.75147 11.561 4.54232 11.1478 4.18771 10.8873L2.94516 9.97285C2.6878 9.78345 2.5787 9.45178 2.67337 9.14658C3.11212 7.73215 3.86594 6.43564 4.87813 5.35462C5.09559 5.12236 5.43594 5.05259 5.72724 5.18056L7.12762 5.79572C7.53056 5.97256 7.9938 5.94585 8.37577 5.72269C8.75609 5.50209 9.00929 5.11422 9.05817 4.67764L9.22824 3.15196C9.26376 2.83335 9.49786 2.57254 9.8108 2.50294C10.5281 2.34342 11.26 2.25865 12.0122 2.25ZM12.0124 3.7499C11.5583 3.75524 11.1056 3.79443 10.6578 3.86702L10.5489 4.84418C10.4471 5.75368 9.92003 6.56102 9.13042 7.01903C8.33597 7.48317 7.36736 7.53903 6.52458 7.16917L5.62629 6.77456C5.05436 7.46873 4.59914 8.25135 4.27852 9.09168L5.07632 9.67879C5.81513 10.2216 6.25147 11.0837 6.25147 12.0005C6.25147 12.9172 5.81513 13.7793 5.0771 14.3215L4.27805 14.9102C4.59839 15.752 5.05368 16.5361 5.626 17.2316L6.53113 16.8351C7.36923 16.4692 8.33124 16.5227 9.12353 16.9794C9.91581 17.4361 10.4443 18.2417 10.548 19.1526L10.657 20.1365C11.5466 20.2878 12.4555 20.2878 13.3451 20.1365L13.4541 19.1527C13.5549 18.2421 14.0828 17.4337 14.876 16.9753C15.6692 16.5168 16.6332 16.463 17.4728 16.8305L18.3772 17.2267C18.949 16.5323 19.4041 15.7495 19.7247 14.909L18.9267 14.3211C18.1879 13.7783 17.7516 12.9162 17.7516 11.9995C17.7516 11.0827 18.1879 10.2206 18.9258 9.67847L19.7227 9.09109C19.4021 8.25061 18.9468 7.46784 18.3748 6.77356L17.4783 7.16737C17.113 7.32901 16.7178 7.4122 16.3187 7.41158C14.849 7.41004 13.6155 6.30355 13.4551 4.84383L13.3462 3.8667C12.9007 3.7942 12.4526 3.75512 12.0124 3.7499ZM11.9997 8.24995C14.0708 8.24995 15.7497 9.92888 15.7497 12C15.7497 14.071 14.0708 15.75 11.9997 15.75C9.92863 15.75 8.2497 14.071 8.2497 12C8.2497 9.92888 9.92863 8.24995 11.9997 8.24995ZM11.9997 9.74995C10.7571 9.74995 9.7497 10.7573 9.7497 12C9.7497 13.2426 10.7571 14.25 11.9997 14.25C13.2423 14.25 14.2497 13.2426 14.2497 12C14.2497 10.7573 13.2423 9.74995 11.9997 9.74995Z"/></svg>
+`, fe = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215Z"/></svg>
+`, ve = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.8199 5.57912L11.9992 6.40163L11.1759 5.57838C9.07688 3.47931 5.67361 3.47931 3.57455 5.57838C1.47548 7.67744 1.47548 11.0807 3.57455 13.1798L11.4699 21.0751C11.7628 21.368 12.2377 21.368 12.5306 21.0751L20.432 13.1783C22.5264 11.0723 22.53 7.67857 20.4306 5.57912C18.3277 3.47623 14.9228 3.47623 12.8199 5.57912Z"/></svg>
+`, xe = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20.0258 17.0014C17.2639 21.7851 11.1471 23.4241 6.3634 20.6622C5.06068 19.9101 3.964 18.8926 3.12872 17.6797C2.84945 17.2741 3.0301 16.7141 3.49369 16.5482C7.26112 15.1997 9.27892 13.6372 10.4498 11.4021C11.6825 9.04908 12.001 6.47162 11.1387 2.93862C11.0195 2.45008 11.4053 1.98492 11.9075 2.01186C13.4645 2.09539 14.9856 2.54263 16.3649 3.33903C21.1486 6.10088 22.7876 12.2177 20.0258 17.0014Z"/></svg>
+`, je = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C12.4142 2 12.75 2.33579 12.75 2.75V4.25C12.75 4.66421 12.4142 5 12 5C11.5858 5 11.25 4.66421 11.25 4.25V2.75C11.25 2.33579 11.5858 2 12 2ZM17 12C17 14.7614 14.7614 17 12 17C9.23858 17 7 14.7614 7 12C7 9.23858 9.23858 7 12 7C14.7614 7 17 9.23858 17 12ZM21.25 12.75C21.6642 12.75 22 12.4142 22 12C22 11.5858 21.6642 11.25 21.25 11.25H19.75C19.3358 11.25 19 11.5858 19 12C19 12.4142 19.3358 12.75 19.75 12.75H21.25ZM12 19C12.4142 19 12.75 19.3358 12.75 19.75V21.25C12.75 21.6642 12.4142 22 12 22C11.5858 22 11.25 21.6642 11.25 21.25V19.75C11.25 19.3358 11.5858 19 12 19ZM4.25 12.75C4.66421 12.75 5 12.4142 5 12C5 11.5858 4.66421 11.25 4.25 11.25H2.75C2.33579 11.25 2 11.5858 2 12C2 12.4142 2.33579 12.75 2.75 12.75H4.25ZM4.21967 4.22004C4.51256 3.92715 4.98744 3.92715 5.28033 4.22004L6.78033 5.72004C7.07322 6.01294 7.07322 6.48781 6.78033 6.7807C6.48744 7.0736 6.01256 7.0736 5.71967 6.7807L4.21967 5.2807C3.92678 4.98781 3.92678 4.51294 4.21967 4.22004ZM5.28033 19.7807C4.98744 20.0736 4.51256 20.0736 4.21967 19.7807C3.92678 19.4878 3.92678 19.0129 4.21967 18.72L5.71967 17.22C6.01256 16.9271 6.48744 16.9271 6.78033 17.22C7.07322 17.5129 7.07322 17.9878 6.78033 18.2807L5.28033 19.7807ZM19.7803 4.22004C19.4874 3.92715 19.0126 3.92715 18.7197 4.22004L17.2197 5.72004C16.9268 6.01294 16.9268 6.48781 17.2197 6.7807C17.5126 7.0736 17.9874 7.0736 18.2803 6.7807L19.7803 5.2807C20.0732 4.98781 20.0732 4.51294 19.7803 4.22004ZM18.7197 19.7807C19.0126 20.0736 19.4874 20.0736 19.7803 19.7807C20.0732 19.4878 20.0732 19.0129 19.7803 18.72L18.2803 17.22C17.9874 16.9271 17.5126 16.9271 17.2197 17.22C16.9268 17.5129 16.9268 17.9878 17.2197 18.2807L18.7197 19.7807Z"/></svg>
+`, we = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.75 12.6 A5.25 5.25 0 0 1 17.25 12.6 Z"/><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="4.4"/><line x1="4.6" y1="4.6" x2="6.6" y2="6.6"/><line x1="19.4" y1="4.6" x2="17.4" y2="6.6"/><line x1="1.9" y1="13.7" x2="22.1" y2="13.7"/><line x1="6.1" y1="16.9" x2="18.2" y2="16.9"/><line x1="10" y1="20" x2="14.1" y2="20"/></g></svg>
+`, ke = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M16.3368 4.9174C17.5191 3.69448 19.4803 3.69717 20.6593 4.92332L27.8322 12.3831C29.155 13.4822 30 15.1428 30 17C30 20.2785 27.3704 22.9429 24.1053 22.9991V23.0004C24.1053 25.2096 22.3144 27.0004 20.1053 27.0004H18C18 27.0004 18 27.0004 18 27.0004V24.5004C18 22.0151 15.9853 20.0004 13.5 20.0004H12C11.4477 20.0004 11 20.4481 11 21.0004C11 21.5527 11.4477 22.0004 12 22.0004H13.5C14.8807 22.0004 16 23.1197 16 24.5004V27.0004C16 27.0004 16 27.0004 16 27.0004L11 27.0004C8.23858 27.0004 6 24.7618 6 22.0004V19.9004C3.71776 19.4371 2 17.4193 2 15.0004C2 12.2389 4.23858 10.0004 7 10.0004C8.63694 10.0004 10.0891 10.7874 11.0003 12.0004H17.5995C17.7351 11.7351 17.8914 11.4823 18.0664 11.2443L16.1624 8.89416C15.2071 7.71502 15.2819 6.00841 16.3368 4.9174Z" fill="currentColor"/>
+</svg>
+`, Ce = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M23.5758 24.99L28.2927 29.7068C28.6832 30.0973 29.3164 30.0973 29.7069 29.7068C30.0975 29.3163 30.0974 28.6831 29.7069 28.2926L3.70661 2.29288C3.31608 1.90237 2.68292 1.90237 2.2924 2.2929C1.90188 2.68343 1.90188 3.3166 2.29241 3.70712L9.00318 10.4177C8.39 10.1492 7.71241 10.0001 6.99982 10.0001C4.23839 10.0001 1.99982 12.2386 1.99982 15.0001C1.99982 17.419 3.71758 19.4368 5.99982 19.9001V22.0001C5.99982 24.7615 8.2384 27.0001 10.9998 27.0001H15.9998V24.4997C15.9998 23.119 14.8805 21.9997 13.4998 21.9997H11.9998C11.4475 21.9997 10.9998 21.552 10.9998 20.9997C10.9998 20.4474 11.4475 19.9997 11.9998 19.9997H13.4998C15.9851 19.9997 17.9998 22.0144 17.9998 24.4997V26.9997L20.1051 27.0001C21.5898 27.0001 22.8856 26.1912 23.5758 24.99ZM29.9998 16.9997C29.9998 19.5582 28.3984 21.7427 26.1433 22.6055L15.5377 12.0001H17.5993C17.7349 11.7348 17.8913 11.482 18.0663 11.244L16.1622 8.89386C15.2069 7.71472 15.2818 6.00811 16.3366 4.91709C17.5189 3.69417 19.4801 3.69686 20.6591 4.92302L27.8321 12.3828C29.1549 13.4819 29.9998 15.1425 29.9998 16.9997Z" fill="currentColor"/>
+</svg>
+`, Ae = `<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M11.0003 12.0004H11.8436C11.8956 11.9991 11.9477 11.9984 12 11.9984V12.0004H17.5995C17.7351 11.7351 17.8914 11.4823 18.0664 11.2443L16.1624 8.89416C15.2071 7.71502 15.2819 6.00841 16.3368 4.9174C17.5191 3.69448 19.4803 3.69717 20.6593 4.92332L27.8322 12.3831C29.155 13.4822 30 15.1428 30 17C30 20.2785 27.3704 22.9429 24.1053 22.9991V23.0004C24.1053 25.2096 22.3144 27.0004 20.1053 27.0004H11C8.23858 27.0004 6 24.7618 6 22.0004V19.9004C3.71776 19.4371 2 17.4193 2 15.0004C2 12.2389 4.23858 10.0004 7 10.0004C8.63694 10.0004 10.0891 10.7874 11.0003 12.0004ZM19.2177 6.30954C18.8241 5.9002 18.1693 5.89931 17.7746 6.30756C17.4225 6.67178 17.3975 7.24152 17.7164 7.63516L20.7241 11.3476L20.0662 11.9843C19.6801 12.358 19.3805 12.8187 19.1987 13.3335L18.9631 14.0004H11.8723C9.72227 14.0678 8 15.832 8 17.9984V22.0004C8 23.6573 9.34315 25.0004 11 25.0004H16C16 25.0004 16 25.0004 16 25.0004V24.5004C16 23.1197 14.8807 22.0004 13.5 22.0004H12C11.4477 22.0004 11 21.5527 11 21.0004C11 20.4481 11.4477 20.0004 12 20.0004H13.5C15.9853 20.0004 18 22.0151 18 24.5004V25.0004C18 25.0004 18 25.0004 18 25.0004L20.1053 25.0004C21.2098 25.0004 22.1053 24.105 22.1053 23.0004V20.7233L23.283 20.9361C23.5149 20.978 23.7545 21 24 21C26.2091 21 28 19.2091 28 17C28 15.7472 27.4252 14.6293 26.5211 13.8943L26.4736 13.8557L19.2177 6.30954ZM6.00231 17.8305C6.06168 15.6698 7.26332 13.7945 9.02502 12.7867C8.49077 12.2976 7.77981 12.0004 7 12.0004C5.34315 12.0004 4 13.3435 4 15.0004C4 16.3075 4.83591 17.4193 6.00231 17.8305Z" fill="currentColor"/>
+</svg>
 `, ze = {
   info: ce,
-
   "checkmark-circle": de,
-
   warning: ue,
-
   "error-circle": pe,
-
   dismiss: be,
-
   search: ge,
-
   link: ye,
-
   settings: me,
-
   star: fe,
-
   heart: ve,
-
   "weather-moon": xe,
-
   "weather-sunny": je,
-
   "theme-auto": we,
-
   "animal-rabbit-filled": ke,
-
   "animal-rabbit-off-filled": Ce,
-
   "animal-rabbit-regular": Ae
 };
-
 function yt(n, { size: t = 20, label: e = null } = {}) {
   const i = ze[n];
-
   if (!i)
-
     return "";
-
   const s = e ? `role="img" aria-label="${e.replace(/"/g, "&quot;")}"` : 'aria-hidden="true"';
-  return i.replace("<svg ", `<svg width="${t}" height="${t}" ${s} `);
+  return i.replace(
+    "<svg ",
+    `<svg width="${t}" height="${t}" ${s} `
+  );
 }
 const Le = ':host{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));inset-inline-end:calc(18px + env(safe-area-inset-right,0px));z-index:10002;pointer-events:none;--jelly-toast-radius: 999px;--jelly-toast-font-size: 14px}.rail{display:flex;flex-direction:column;gap:10px;align-items:flex-end}:host([position="bottom"]){top:auto;bottom:calc(18px + env(safe-area-inset-bottom,0px))}:host([position="bottom"]) .rail{flex-direction:column-reverse}:host(:dir(rtl)) .rail{align-items:flex-start}.toast{pointer-events:auto;display:flex;align-items:center;gap:11px;cursor:pointer;touch-action:manipulation;background:var(--jelly-color-background-surface);border:1px solid var(--jelly-color-border-default);border-radius:var(--jelly-toast-radius);box-shadow:var(--jelly-shadow-overlay);padding-block:11px;padding-inline-start:14px;padding-inline-end:14px;font:600 var(--jelly-toast-font-size)/1.3 var(--jelly-font-display);color:var(--jelly-color-foreground-default);max-width:min(320px,calc(100vw - 48px))}.dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}.toast-text{flex:1}.close{flex:0 0 auto;appearance:none;border:0;margin:0;padding:0;width:22px;height:22px;border-radius:50%;background:transparent;color:var(--jelly-color-foreground-muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}.close:hover{background:var(--jelly-color-border-default)}.close:focus-visible{outline:2px solid var(--jelly-ring-color);outline-offset:1px}.sr-tone{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}@media(forced-colors:active){.toast{border-color:CanvasText}.dot{border:3px solid CanvasText}}', St = {
-  info: { color: `var(--jelly-color-background-azure, ${b["background-azure"]})`, spoken: "Info" },
-  success: { color: `var(--jelly-color-background-mint,  ${b["background-mint"]})`, spoken: "Success" },
-  warning: { color: `var(--jelly-color-background-amber, ${b["background-amber"]})`, spoken: "Warning" },
-  danger: { color: `var(--jelly-color-background-rose,  ${b["background-rose"]})`, spoken: "Error" }
+  info: {
+    color: `var(--jelly-color-background-azure, ${b["background-azure"]})`,
+    spoken: "Info"
+  },
+  success: {
+    color: `var(--jelly-color-background-mint,  ${b["background-mint"]})`,
+    spoken: "Success"
+  },
+  warning: {
+    color: `var(--jelly-color-background-amber, ${b["background-amber"]})`,
+    spoken: "Warning"
+  },
+  danger: {
+    color: `var(--jelly-color-background-rose,  ${b["background-rose"]})`,
+    spoken: "Error"
+  }
 };
 class Se extends HTMLElement {
   constructor() {
@@ -2004,7 +1454,9 @@ class Se extends HTMLElement {
 }
 customElements.define("jelly-toaster", Se);
 function Me(n, t) {
-  let e = document.querySelector("jelly-toaster");
+  let e = document.querySelector(
+    "jelly-toaster"
+  );
   return e || (e = document.createElement("jelly-toaster"), document.body.appendChild(e)), e.push(n, t);
 }
 typeof window < "u" && (window.jellyToast = Me);
@@ -2034,7 +1486,9 @@ class Te extends HTMLElement {
         <style data-jelly-theme-tokens>:host { display: contents; }</style>
 
         <slot></slot>
-      `), this.tokenStyle = this.shadowRoot.querySelector("[data-jelly-theme-tokens]"), this.schemeQuery?.addEventListener?.("change", this.onSchemeChange), this.sync();
+      `), this.tokenStyle = this.shadowRoot.querySelector(
+      "[data-jelly-theme-tokens]"
+    ), this.schemeQuery?.addEventListener?.("change", this.onSchemeChange), this.sync();
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -2079,11 +1533,16 @@ class Te extends HTMLElement {
   sync() {
     if (!this.tokenStyle)
       return;
-    const t = this.resolvedMode === "dark" ? bt : jt, e = Object.entries(t).map(([s, r]) => `--jelly-color-${s}: ${r};`), i = this.getAttribute("accent")?.trim();
+    const t = this.resolvedMode === "dark" ? bt : jt, e = Object.entries(t).map(
+      ([s, r]) => `--jelly-color-${s}: ${r};`
+    ), i = this.getAttribute("accent")?.trim();
     if (i) {
       const s = t["background-" + i], r = s || i;
       if (!!s || CSS.supports("color", r)) {
-        const l = s ? t["foreground-on-emphasis"] : Ee(this.resolveColor(r), this.resolveColor(t["background-surface"]));
+        const l = s ? t["foreground-on-emphasis"] : Ee(
+          this.resolveColor(r),
+          this.resolveColor(t["background-surface"])
+        );
         e.push(`--jelly-color-background-accent: ${r};`), e.push(`--jelly-color-foreground-on-accent: ${l};`);
       }
     }
@@ -2123,7 +1582,9 @@ class Ie extends M {
   // The capsule (or, with shape="square", rounded-rectangle) the physics body
   // takes, inset so the wobble stays inside the host
   shape(t, e) {
-    const i = t - 8, s = e - 8, r = this.getAttribute("shape") === "square", o = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-button-radius")), l = Number.isFinite(o) ? Math.min(o, s / 2) : r ? s * 0.32 : s / 2;
+    const i = t - 8, s = e - 8, r = this.getAttribute("shape") === "square", o = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-button-radius")
+    ), l = Number.isFinite(o) ? Math.min(o, s / 2) : r ? s * 0.32 : s / 2;
     return { width: i, height: s, radius: l };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
@@ -2132,7 +1593,9 @@ class Ie extends M {
     for (const t of this.getAttributeNames())
       t.startsWith("aria-") && this.sync(t);
     if (this.useHostFocusTarget(this.button), this.trackFocus(this.button), this.preventReleaseOutsideActivation(), this.wirePress(this.button), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-button")].indexOf(this);
+      const t = [
+        ...document.querySelectorAll("jelly-button")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (e) => {
         this.hasAttribute("disabled") || (this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t));
       }), this.addEventListener("pointermove", (e) => {
@@ -2226,13 +1689,19 @@ class Pe extends M {
   // The rounded square (default / shape="square") or circle (shape="circle")
   // the physics body takes, inset so the wobble stays inside
   shape(t, e) {
-    const i = Math.min(t, e) - 6, s = this.getAttribute("shape") === "circle", r = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-icon-button-radius")), o = s ? i / 2 : Number.isFinite(r) ? Math.min(r, i / 2) : i * 0.32;
+    const i = Math.min(t, e) - 6, s = this.getAttribute("shape") === "circle", r = parseFloat(
+      getComputedStyle(this).getPropertyValue(
+        "--jelly-icon-button-radius"
+      )
+    ), o = s ? i / 2 : Number.isFinite(r) ? Math.min(r, i / 2) : i * 0.32;
     return { width: i, height: i, radius: o };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
     if (this.button = this.shadowRoot.querySelector("button"), this.sync("disabled"), this.sync("label"), this.useHostFocusTarget(this.button), this.trackFocus(this.button), this.preventReleaseOutsideActivation(), this.wirePress(this.button), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-icon-button")].indexOf(this);
+      const t = [
+        ...document.querySelectorAll("jelly-icon-button")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (e) => {
         this.hasAttribute("disabled") || (this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t));
       }), this.addEventListener("pointermove", (e) => {
@@ -2297,7 +1766,17 @@ class Re extends M {
   }
   // Tells the browser to trigger attributeChangedCallback when these attributes change
   static get observedAttributes() {
-    return ["value", "placeholder", "type", "label", "disabled", "readonly", "autocomplete", "no-autofill", "size"];
+    return [
+      "value",
+      "placeholder",
+      "type",
+      "label",
+      "disabled",
+      "readonly",
+      "autocomplete",
+      "no-autofill",
+      "size"
+    ];
   }
   // Component styles layered over the shared jelly base styles
   styles() {
@@ -2309,17 +1788,29 @@ class Re extends M {
   }
   // The rounded rectangle the physics body takes, inset so the wobble stays inside the host
   shape(t, e) {
-    const i = t - 8, s = e - 8, r = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-input-radius")), o = Number.isFinite(r) ? Math.min(r, s / 2) : Math.min(16, s / 2);
+    const i = t - 8, s = e - 8, r = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-input-radius")
+    ), o = Number.isFinite(r) ? Math.min(r, s / 2) : Math.min(16, s / 2);
     return { width: i, height: s, radius: o };
   }
   // Resolve the surface color the canvas paints: neutral when disabled,
   // the elevated surface while focused, the resting field fill otherwise
   fill() {
-    return this.hasAttribute("disabled") ? this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`) : this.focused ? this.resolveColor(`var(--jelly-color-background-surface, ${b["background-surface"]})`) : getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || this.resolveColor(`var(--jelly-color-background-muted, ${b["background-muted"]})`);
+    return this.hasAttribute("disabled") ? this.resolveColor(
+      `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+    ) : this.focused ? this.resolveColor(
+      `var(--jelly-color-background-surface, ${b["background-surface"]})`
+    ) : getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || this.resolveColor(
+      `var(--jelly-color-background-muted, ${b["background-muted"]})`
+    );
   }
   // Hairline border on the jelly surface: accent while focused, neutral at rest
   surfaceBorder() {
-    return { color: this.focused ? this.resolveColor(`var(--jelly-accent, var(--jelly-color-background-accent, ${b["background-accent"]}))`) : this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`), width: 1 };
+    return { color: this.focused ? this.resolveColor(
+      `var(--jelly-accent, var(--jelly-color-background-accent, ${b["background-accent"]}))`
+    ) : this.resolveColor(
+      `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+    ), width: 1 };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
@@ -2386,7 +1877,9 @@ class Re extends M {
     this.measure || (this.measure = document.createElement("canvas").getContext("2d"));
     const s = this.measure;
     s.font = i.font || `${i.fontWeight} ${i.fontSize} ${i.fontFamily}`;
-    const r = t.type === "password" ? "•".repeat(e) : t.value.slice(0, e), o = s.measureText(r).width, l = C(this), c = parseFloat(i.paddingInlineStart || (l ? i.paddingRight : i.paddingLeft)) || 0, h = l ? -t.scrollLeft : t.scrollLeft, a = c + o - h, d = l ? t.clientWidth / 2 - a : a - t.clientWidth / 2, p = this.body.width / 2;
+    const r = t.type === "password" ? "•".repeat(e) : t.value.slice(0, e), o = s.measureText(r).width, l = C(this), c = parseFloat(
+      i.paddingInlineStart || (l ? i.paddingRight : i.paddingLeft)
+    ) || 0, h = l ? -t.scrollLeft : t.scrollLeft, a = c + o - h, d = l ? t.clientWidth / 2 - a : a - t.clientWidth / 2, p = this.body.width / 2;
     return v(d, -p + 6, p - 6);
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
@@ -2468,7 +1961,17 @@ class qe extends M {
   }
   // Tells the browser to trigger attributeChangedCallback when these attributes change
   static get observedAttributes() {
-    return ["value", "placeholder", "rows", "label", "disabled", "readonly", "autocomplete", "no-autofill", "size"];
+    return [
+      "value",
+      "placeholder",
+      "rows",
+      "label",
+      "disabled",
+      "readonly",
+      "autocomplete",
+      "no-autofill",
+      "size"
+    ];
   }
   // Component styles layered over the shared jelly base styles
   styles() {
@@ -2480,25 +1983,41 @@ class qe extends M {
   }
   // The rounded rectangle the physics body takes, inset so the wobble stays inside the host
   shape(t, e) {
-    const i = t - 8, s = e - 8, r = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-textarea-radius")), o = Number.isFinite(r) ? Math.min(r, s / 2) : Math.min(20, s / 2);
+    const i = t - 8, s = e - 8, r = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-textarea-radius")
+    ), o = Number.isFinite(r) ? Math.min(r, s / 2) : Math.min(20, s / 2);
     return { width: i, height: s, radius: o };
   }
   // Resolve the surface color the canvas paints: neutral when disabled,
   // the elevated surface while focused, the resting field fill otherwise
   fill() {
-    return this.hasAttribute("disabled") ? this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`) : this.focused ? this.resolveColor(`var(--jelly-color-background-surface, ${b["background-surface"]})`) : getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || this.resolveColor(`var(--jelly-color-background-muted, ${b["background-muted"]})`);
+    return this.hasAttribute("disabled") ? this.resolveColor(
+      `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+    ) : this.focused ? this.resolveColor(
+      `var(--jelly-color-background-surface, ${b["background-surface"]})`
+    ) : getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || this.resolveColor(
+      `var(--jelly-color-background-muted, ${b["background-muted"]})`
+    );
   }
   // Hairline border on the jelly surface: accent while focused, neutral at rest
   surfaceBorder() {
-    return { color: this.focused ? this.resolveColor(`var(--jelly-accent, var(--jelly-color-background-accent, ${b["background-accent"]}))`) : this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`), width: 1 };
+    return { color: this.focused ? this.resolveColor(
+      `var(--jelly-accent, var(--jelly-color-background-accent, ${b["background-accent"]}))`
+    ) : this.resolveColor(
+      `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+    ), width: 1 };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.textarea = this.shadowRoot.querySelector("textarea"), this.sync("value"), this.sync("placeholder"), this.sync("rows"), this.sync("label"), this.sync("readonly"), this.sync("disabled"), this.syncAutofill(), this.useHostFocusTarget(this.textarea), this.autoSize(), this.textareaResizeObserver = new ResizeObserver(() => this.applyShape()), this.textareaResizeObserver.observe(this.textarea), this.textarea.addEventListener("focus", this), this.textarea.addEventListener("blur", this), this.textarea.addEventListener("input", this), this.textarea.addEventListener("change", this);
+    this.textarea = this.shadowRoot.querySelector("textarea"), this.sync("value"), this.sync("placeholder"), this.sync("rows"), this.sync("label"), this.sync("readonly"), this.sync("disabled"), this.syncAutofill(), this.useHostFocusTarget(this.textarea), this.autoSize(), this.textareaResizeObserver = new ResizeObserver(
+      () => this.applyShape()
+    ), this.textareaResizeObserver.observe(this.textarea), this.textarea.addEventListener("focus", this), this.textarea.addEventListener("blur", this), this.textarea.addEventListener("input", this), this.textarea.addEventListener("change", this);
   }
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
-    super.connectedCallback(), this.textarea && !this.textareaResizeObserver && (this.textareaResizeObserver = new ResizeObserver(() => this.applyShape()), this.textareaResizeObserver.observe(this.textarea));
+    super.connectedCallback(), this.textarea && !this.textareaResizeObserver && (this.textareaResizeObserver = new ResizeObserver(
+      () => this.applyShape()
+    ), this.textareaResizeObserver.observe(this.textarea));
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -2644,7 +2163,14 @@ class Xe extends M {
   }
   // Tells the browser to trigger attributeChangedCallback when these attributes change
   static get observedAttributes() {
-    return ["checked", "disabled", "indeterminate", "label", "size", "value"];
+    return [
+      "checked",
+      "disabled",
+      "indeterminate",
+      "label",
+      "size",
+      "value"
+    ];
   }
   // Component styles layered over the shared jelly base styles
   styles() {
@@ -2669,14 +2195,20 @@ class Xe extends M {
   }
   // Resolve the box fill for the current state through the live theme tokens
   fill() {
-    return this.checked || this.indeterminate ? this.resolveColor(`var(--jelly-on, ${b["background-accent"]})`) : this.resolveColor(`var(--jelly-fill, ${b["background-neutral"]})`);
+    return this.checked || this.indeterminate ? this.resolveColor(
+      `var(--jelly-on, ${b["background-accent"]})`
+    ) : this.resolveColor(
+      `var(--jelly-fill, ${b["background-neutral"]})`
+    );
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
     if (this.input = this.shadowRoot.querySelector("input"), this.sync("checked"), this.sync("indeterminate"), this.sync("disabled"), this.sync("label"), this.useHostFocusTarget(this.input), this.trackFocus(this.input), this.input.addEventListener("change", () => {
       this.indeterminate = !1, this.toggleAttribute("checked", this.input.checked), this.syncFormValue(), this.pop(this.input.checked ? 4 : -3), F(), g(this, "change");
     }), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-checkbox")].indexOf(this);
+      const t = [
+        ...document.querySelectorAll("jelly-checkbox")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (e) => {
         this.hasAttribute("disabled") || (this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t));
       }), this.addEventListener("pointermove", (e) => {
@@ -2693,7 +2225,19 @@ class Xe extends M {
   // One animation step: advance the scale spring and repaint. True keeps animating.
   frame(t) {
     const e = this.body;
-    return e ? ([this.scale, this.scaleVelocity] = T(this.scale, this.scaleVelocity, 1, 260, 17, t), this.clearCanvas(), this.paintBody(e, { fill: this.fill(), scaleX: this.scale, scaleY: this.scale, ring: this.focusRing() }), Math.abs(1 - this.scale) > 15e-4 || Math.abs(this.scaleVelocity) > 15e-4) : !1;
+    return e ? ([this.scale, this.scaleVelocity] = T(
+      this.scale,
+      this.scaleVelocity,
+      1,
+      260,
+      17,
+      t
+    ), this.clearCanvas(), this.paintBody(e, {
+      fill: this.fill(),
+      scaleX: this.scale,
+      scaleY: this.scale,
+      ring: this.focusRing()
+    }), Math.abs(1 - this.scale) > 15e-4 || Math.abs(this.scaleVelocity) > 15e-4) : !1;
   }
   // Report the submitted value: `value` when checked, nothing otherwise
   syncFormValue() {
@@ -2769,7 +2313,10 @@ class We extends M {
   }
   // Component styles layered over the shared jelly base styles
   styles() {
-    return Oe + P({ color: "--jelly-on", on: "--jelly-radio-dot-color" });
+    return Oe + P({
+      color: "--jelly-on",
+      on: "--jelly-radio-dot-color"
+    });
   }
   // The interactive markup that sits above the canvas
   content() {
@@ -2790,12 +2337,21 @@ class We extends M {
   }
   // Resolve the control fill for the current state through the live theme tokens
   fill() {
-    return this.checked ? this.resolveColor(`var(--jelly-on, ${b["background-accent"]})`) : this.resolveColor(`var(--jelly-fill, ${b["background-neutral"]})`);
+    return this.checked ? this.resolveColor(
+      `var(--jelly-on, ${b["background-accent"]})`
+    ) : this.resolveColor(
+      `var(--jelly-fill, ${b["background-neutral"]})`
+    );
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    if (this.control = this.shadowRoot.querySelector(".control"), this.wrap = this.shadowRoot.querySelector(".wrap"), this.reflect(), this.sync("label"), this.trackFocus(this.control), this.wrap.addEventListener("click", () => this.select(!0)), this.control.addEventListener("keydown", (t) => this.onKeydown(t)), queueMicrotask(() => this.ensureTabbable()), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-radio")].indexOf(this);
+    if (this.control = this.shadowRoot.querySelector(".control"), this.wrap = this.shadowRoot.querySelector(".wrap"), this.reflect(), this.sync("label"), this.trackFocus(this.control), this.wrap.addEventListener("click", () => this.select(!0)), this.control.addEventListener(
+      "keydown",
+      (t) => this.onKeydown(t)
+    ), queueMicrotask(() => this.ensureTabbable()), !this.reducedMotion) {
+      const t = [
+        ...document.querySelectorAll("jelly-radio")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (e) => {
         this.hasAttribute("disabled") || (this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t));
       }), this.addEventListener("pointermove", (e) => {
@@ -2812,17 +2368,35 @@ class We extends M {
   // One animation step: advance the scale spring and repaint. True keeps animating.
   frame(t) {
     const e = this.body;
-    return e ? ([this.scale, this.scaleVelocity] = T(this.scale, this.scaleVelocity, 1, 260, 17, t), this.clearCanvas(), this.paintBody(e, { fill: this.fill(), scaleX: this.scale, scaleY: this.scale, ring: this.focusRing() }), Math.abs(1 - this.scale) > 15e-4 || Math.abs(this.scaleVelocity) > 15e-4) : !1;
+    return e ? ([this.scale, this.scaleVelocity] = T(
+      this.scale,
+      this.scaleVelocity,
+      1,
+      260,
+      17,
+      t
+    ), this.clearCanvas(), this.paintBody(e, {
+      fill: this.fill(),
+      scaleX: this.scale,
+      scaleY: this.scale,
+      ring: this.focusRing()
+    }), Math.abs(1 - this.scale) > 15e-4 || Math.abs(this.scaleVelocity) > 15e-4) : !1;
   }
   // Every radio sharing this name under the same root (document or shadow root)
   group() {
     const t = this.getAttribute("name");
-    return t ? [...this.getRootNode().querySelectorAll(`jelly-radio[name="${CSS.escape(t)}"]`)] : [this];
+    return t ? [
+      ...this.getRootNode().querySelectorAll(
+        `jelly-radio[name="${CSS.escape(t)}"]`
+      )
+    ] : [this];
   }
   // With no selection yet, the first enabled radio becomes the group's tab stop
   ensureTabbable() {
     const t = this.group();
-    if (t.some((i) => i.checked && !i.hasAttribute("disabled")))
+    if (t.some(
+      (i) => i.checked && !i.hasAttribute("disabled")
+    ))
       return;
     const e = t.find((i) => !i.hasAttribute("disabled"));
     e && e.control && (e.control.tabIndex = 0);
@@ -2841,10 +2415,14 @@ class We extends M {
       t.preventDefault(), this.select(!0);
       return;
     }
-    const e = this.group().filter((o) => !o.hasAttribute("disabled")), i = e.indexOf(this);
+    const e = this.group().filter(
+      (o) => !o.hasAttribute("disabled")
+    ), i = e.indexOf(this);
     if (i === -1)
       return;
-    const s = It(t.key, i, e.length, { rtl: C(this) });
+    const s = It(t.key, i, e.length, {
+      rtl: C(this)
+    });
     if (s === -1)
       return;
     t.preventDefault();
@@ -2918,7 +2496,10 @@ class Ye extends HTMLElement {
     this.built = !0, this.legendId = W("jelly-radio-group-legend"), this.attachShadow({ mode: "open" }), this.shadowRoot.innerHTML = `
       <style>${Ne}</style>
       <div class="legend" part="legend" id="${this.legendId}"></div>
-      <div class="items" part="items" role="radiogroup"><slot></slot></div>`, this.legend = this.shadowRoot.querySelector(".legend"), this.items = this.shadowRoot.querySelector(".items"), this.slotEl = this.shadowRoot.querySelector("slot"), this.slotEl.addEventListener("slotchange", () => O(this, "jelly-radio"));
+      <div class="items" part="items" role="radiogroup"><slot></slot></div>`, this.legend = this.shadowRoot.querySelector(".legend"), this.items = this.shadowRoot.querySelector(".items"), this.slotEl = this.shadowRoot.querySelector("slot"), this.slotEl.addEventListener(
+      "slotchange",
+      () => O(this, "jelly-radio")
+    );
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback(t) {
@@ -2949,7 +2530,10 @@ class _e extends M {
   }
   // Component styles layered over the shared jelly base styles
   styles() {
-    return Ke + P({ color: "--jelly-on", on: "--jelly-switch-thumb-on" });
+    return Ke + P({
+      color: "--jelly-on",
+      on: "--jelly-switch-thumb-on"
+    });
   }
   // The interactive markup that sits above the canvas
   content() {
@@ -3020,16 +2604,35 @@ class _e extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.input = this.shadowRoot.querySelector("input"), this.track = this.shadowRoot.querySelector(".track"), this.sync("checked"), this.sync("disabled"), this.sync("label"), this.useHostFocusTarget(this.input), this.trackFocus(this.input), this.input.addEventListener("click", (t) => t.preventDefault()), this.shadowRoot.querySelector(".label").addEventListener("click", () => {
-      this.hasAttribute("disabled") || this.setChecked(!this.checked, !0);
-    }), this.input.addEventListener("keydown", (t) => {
+    this.input = this.shadowRoot.querySelector("input"), this.track = this.shadowRoot.querySelector(".track"), this.sync("checked"), this.sync("disabled"), this.sync("label"), this.useHostFocusTarget(this.input), this.trackFocus(this.input), this.input.addEventListener("click", (t) => t.preventDefault()), this.shadowRoot.querySelector(".label").addEventListener(
+      "click",
+      () => {
+        this.hasAttribute("disabled") || this.setChecked(!this.checked, !0);
+      }
+    ), this.input.addEventListener("keydown", (t) => {
       (t.key === " " || t.key === "Enter") && (t.preventDefault(), this.setChecked(!this.checked, !0));
-    }), this.track.addEventListener("pointerdown", (t) => this.onDown(t)), this.track.addEventListener("pointermove", (t) => this.onMove(t)), this.track.addEventListener("pointerup", (t) => this.onUp(t)), this.track.addEventListener("pointercancel", (t) => this.onUp(t)), this.track.addEventListener("lostpointercapture", (t) => this.onUp(t));
+    }), this.track.addEventListener(
+      "pointerdown",
+      (t) => this.onDown(t)
+    ), this.track.addEventListener(
+      "pointermove",
+      (t) => this.onMove(t)
+    ), this.track.addEventListener("pointerup", (t) => this.onUp(t)), this.track.addEventListener(
+      "pointercancel",
+      (t) => this.onUp(t)
+    ), this.track.addEventListener(
+      "lostpointercapture",
+      (t) => this.onUp(t)
+    );
   }
   // Called whenever the shape (re)builds: size the thumb and seat it in place
   onShape() {
     const { height: t } = this.trackSize, e = t - this.sizeConfig.inset * 2;
-    this.thumbBody ? this.thumbBody.resize(e, e, e / 2) : this.thumbBody = new $({ width: e, height: e, radius: e / 2 }), this.thumbTarget = this.targetFor(this.checked), this.thumbX = this.thumbTarget, this.thumbXVelocity = 0, this.requestFrame();
+    this.thumbBody ? this.thumbBody.resize(e, e, e / 2) : this.thumbBody = new $({
+      width: e,
+      height: e,
+      radius: e / 2
+    }), this.thumbTarget = this.targetFor(this.checked), this.thumbX = this.thumbTarget, this.thumbXVelocity = 0, this.requestFrame();
   }
   // Press: capture the pointer and dent the track where the finger lands
   onDown(t) {
@@ -3080,9 +2683,24 @@ class _e extends M {
     if (!e || !i)
       return !1;
     const s = this.thumbX;
-    this.reducedMotion ? (this.thumbX = this.thumbTarget, this.thumbXVelocity = 0) : [this.thumbX, this.thumbXVelocity] = T(this.thumbX, this.thumbXVelocity, this.thumbTarget, 300, 26, t);
+    this.reducedMotion ? (this.thumbX = this.thumbTarget, this.thumbXVelocity = 0) : [this.thumbX, this.thumbXVelocity] = T(
+      this.thumbX,
+      this.thumbXVelocity,
+      this.thumbTarget,
+      300,
+      26,
+      t
+    );
     const r = Math.abs(this.thumbXVelocity);
-    r > 6 && (i.lean = Math.sign(this.thumbXVelocity)), i.leanAmount = this.reducedMotion ? 0 : Math.min(i.height * 0.34, r * 0.014), !this.reducedMotion && Math.abs(this.thumbX - s) > 0.01 && e.pulseAt(this.thumbX, -this.trackSize.height / 2, 0.02 * Math.min(3, r / 120)), e.update(t), i.update(t), this.clearCanvas(), this.paintBody(e, { fill: this.trackFill(), ring: this.focusRing(), easeKey: "track" }), this.paintBody(i, {
+    r > 6 && (i.lean = Math.sign(this.thumbXVelocity)), i.leanAmount = this.reducedMotion ? 0 : Math.min(i.height * 0.34, r * 0.014), !this.reducedMotion && Math.abs(this.thumbX - s) > 0.01 && e.pulseAt(
+      this.thumbX,
+      -this.trackSize.height / 2,
+      0.02 * Math.min(3, r / 120)
+    ), e.update(t), i.update(t), this.clearCanvas(), this.paintBody(e, {
+      fill: this.trackFill(),
+      ring: this.focusRing(),
+      easeKey: "track"
+    }), this.paintBody(i, {
       fill: this.thumbFill(),
       cx: this.thumbX,
       easeKey: "thumb"
@@ -3216,7 +2834,12 @@ class Qe extends M {
   onShape() {
     this.trackW = this.body ? this.body.width : this.getBoundingClientRect().width, this.trackH = this.body ? this.body.height : this.sizeConfig.track;
     const t = this.sizeConfig.thumb;
-    this.thumbBody ? this.thumbBody.resize(t, t, t / 2) : this.thumbBody = new $({ width: t, height: t, radius: t / 2, config: Ue }), this.thumbTarget = this.valueToX(), this.thumbX = this.thumbTarget, this.thumbXVelocity = 0;
+    this.thumbBody ? this.thumbBody.resize(t, t, t / 2) : this.thumbBody = new $({
+      width: t,
+      height: t,
+      radius: t / 2,
+      config: Ue
+    }), this.thumbTarget = this.valueToX(), this.thumbX = this.thumbTarget, this.thumbXVelocity = 0;
   }
   // How far the thumb center can travel along the track, in pixels
   get travel() {
@@ -3300,7 +2923,14 @@ class Qe extends M {
     const e = this.thumbBody;
     if (!e)
       return !1;
-    this.reducedMotion ? (this.thumbX = this.thumbTarget, this.thumbXVelocity = 0) : [this.thumbX, this.thumbXVelocity] = T(this.thumbX, this.thumbXVelocity, this.thumbTarget, 310, 22, t);
+    this.reducedMotion ? (this.thumbX = this.thumbTarget, this.thumbXVelocity = 0) : [this.thumbX, this.thumbXVelocity] = T(
+      this.thumbX,
+      this.thumbXVelocity,
+      this.thumbTarget,
+      310,
+      22,
+      t
+    );
     const i = Math.abs(this.thumbXVelocity);
     i > 6 && (e.lean = Math.sign(this.thumbXVelocity));
     const s = this.reducedMotion ? 0 : Math.min(1, i / 550);
@@ -3309,8 +2939,22 @@ class Qe extends M {
     this.pressScaleVelocity += o * t, this.pressScale += this.pressScaleVelocity * t;
     const l = (1 + s * 0.32) * this.pressScale, c = 1 / Math.sqrt(1 + s * 0.32) * this.pressScale;
     e.update(t);
-    const h = this.ctx, a = this.cssW / 2, d = this.cssH / 2, p = this.trackW, u = this.trackH || this.sizeConfig.track, m = this.resolveColor(`var(--jelly-track, ${b["background-neutral"]})`), w = this.resolveColor(`var(--jelly-accent, ${b["background-accent"]})`);
-    return this.clearCanvas(), h.save(), h.beginPath(), h.roundRect(a - p / 2, d - u / 2, p, u, u / 2), h.fillStyle = m, h.fill(), h.clip(), h.fillStyle = w, C(this) ? h.fillRect(a + this.thumbX, d - u / 2, p / 2 - this.thumbX, u) : h.fillRect(a - p / 2, d - u / 2, this.thumbX + p / 2, u), h.restore(), this.paintBody(e, {
+    const h = this.ctx, a = this.cssW / 2, d = this.cssH / 2, p = this.trackW, u = this.trackH || this.sizeConfig.track, m = this.resolveColor(
+      `var(--jelly-track, ${b["background-neutral"]})`
+    ), w = this.resolveColor(
+      `var(--jelly-accent, ${b["background-accent"]})`
+    );
+    return this.clearCanvas(), h.save(), h.beginPath(), h.roundRect(a - p / 2, d - u / 2, p, u, u / 2), h.fillStyle = m, h.fill(), h.clip(), h.fillStyle = w, C(this) ? h.fillRect(
+      a + this.thumbX,
+      d - u / 2,
+      p / 2 - this.thumbX,
+      u
+    ) : h.fillRect(
+      a - p / 2,
+      d - u / 2,
+      this.thumbX + p / 2,
+      u
+    ), h.restore(), this.paintBody(e, {
       fill: w,
       cx: this.thumbX,
       scaleX: l,
@@ -3385,7 +3029,16 @@ class si extends M {
   }
   // Tells the browser to trigger attributeChangedCallback when these attributes change
   static get observedAttributes() {
-    return ["min", "max", "step", "low", "high", "label", "disabled", "size"];
+    return [
+      "min",
+      "max",
+      "step",
+      "low",
+      "high",
+      "label",
+      "disabled",
+      "size"
+    ];
   }
   // Component styles layered over the shared jelly base styles
   styles() {
@@ -3433,7 +3086,9 @@ class si extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.track = this.shadowRoot.querySelector(".track"), this.knobs = [...this.shadowRoot.querySelectorAll(".knob")], this.val = [
+    this.track = this.shadowRoot.querySelector(".track"), this.knobs = [
+      ...this.shadowRoot.querySelectorAll(".knob")
+    ], this.val = [
       D(this, "low", this.min),
       D(this, "high", this.max)
     ], this.normalizeValues(), this.track.addEventListener("pointerdown", this);
@@ -3478,7 +3133,14 @@ class si extends M {
   onShape() {
     this.trackW = this.body ? this.body.width : this.getBoundingClientRect().width, this.trackH = this.body ? this.body.height : this.sizeConfig.track;
     const t = this.sizeConfig.thumb;
-    this.thumbs ? this.thumbs.forEach((e) => e.resize(t, t, t / 2)) : this.thumbs = [0, 1].map(() => new $({ width: t, height: t, radius: t / 2, config: ii })), this.target = this.val.map((e) => this.valToX(e)), this.x = [...this.target], this.xVelocity = [0, 0], this.reflectKnobs(), this.syncA11y(), this.requestFrame();
+    this.thumbs ? this.thumbs.forEach((e) => e.resize(t, t, t / 2)) : this.thumbs = [0, 1].map(
+      () => new $({
+        width: t,
+        height: t,
+        radius: t / 2,
+        config: ii
+      })
+    ), this.target = this.val.map((e) => this.valToX(e)), this.x = [...this.target], this.xVelocity = [0, 0], this.reflectKnobs(), this.syncA11y(), this.requestFrame();
   }
   // A value as a 0..1 fraction of the min → max span
   fraction(t) {
@@ -3534,7 +3196,10 @@ class si extends M {
     const t = this.hasAttribute("disabled"), e = this.getAttribute("label");
     this.removeAttribute("tabindex"), this.knobs.forEach((i, s) => {
       const r = s === 0 ? "Minimum" : "Maximum";
-      i.tabIndex = t ? -1 : 0, i.setAttribute("aria-label", e ? `${e} ${r.toLowerCase()}` : r), i.setAttribute("aria-valuemin", String(this.min)), i.setAttribute("aria-valuemax", String(this.max)), i.setAttribute("aria-valuenow", String(this.val[s])), i.setAttribute("aria-valuetext", String(this.val[s])), i.setAttribute("aria-disabled", String(t));
+      i.tabIndex = t ? -1 : 0, i.setAttribute(
+        "aria-label",
+        e ? `${e} ${r.toLowerCase()}` : r
+      ), i.setAttribute("aria-valuemin", String(this.min)), i.setAttribute("aria-valuemax", String(this.max)), i.setAttribute("aria-valuenow", String(this.val[s])), i.setAttribute("aria-valuetext", String(this.val[s])), i.setAttribute("aria-disabled", String(t));
     });
   }
   // Mirror the "low,high" value into the host form
@@ -3605,16 +3270,32 @@ class si extends M {
     const e = this.thumbs;
     if (!e)
       return !1;
-    const i = this.ctx, s = this.cssW / 2, r = this.cssH / 2, o = this.trackW, l = this.trackH || this.sizeConfig.track, c = this.resolveColor(`var(--jelly-track, ${b["background-neutral"]})`), h = this.resolveColor(`var(--jelly-accent, ${b["background-accent"]})`);
+    const i = this.ctx, s = this.cssW / 2, r = this.cssH / 2, o = this.trackW, l = this.trackH || this.sizeConfig.track, c = this.resolveColor(
+      `var(--jelly-track, ${b["background-neutral"]})`
+    ), h = this.resolveColor(
+      `var(--jelly-accent, ${b["background-accent"]})`
+    );
     let a = !0;
     for (let u = 0; u < 2; u++) {
-      this.reducedMotion ? (this.x[u] = this.target[u], this.xVelocity[u] = 0) : [this.x[u], this.xVelocity[u]] = T(this.x[u], this.xVelocity[u], this.target[u], 310, 22, t);
+      this.reducedMotion ? (this.x[u] = this.target[u], this.xVelocity[u] = 0) : [this.x[u], this.xVelocity[u]] = T(
+        this.x[u],
+        this.xVelocity[u],
+        this.target[u],
+        310,
+        22,
+        t
+      );
       const m = Math.abs(this.xVelocity[u]);
       m > 6 && (e[u].lean = Math.sign(this.xVelocity[u])), e[u].leanAmount = this.reducedMotion ? 0 : Math.min(e[u].height * 0.12, m * 45e-4), e[u].update(t), (Math.abs(this.target[u] - this.x[u]) > 0.2 || Math.abs(this.xVelocity[u]) > 0.5 || !e[u].isResting()) && (a = !1);
     }
     this.clearCanvas(), i.save(), i.beginPath(), i.roundRect(s - o / 2, r - l / 2, o, l, l / 2), i.fillStyle = c, i.fill(), i.clip();
     const d = s + this.x[0], p = s + this.x[1];
-    i.fillStyle = h, i.fillRect(Math.min(d, p), r - l / 2, Math.abs(p - d), l), i.restore();
+    i.fillStyle = h, i.fillRect(
+      Math.min(d, p),
+      r - l / 2,
+      Math.abs(p - d),
+      l
+    ), i.restore();
     for (let u = 0; u < 2; u++) {
       const m = Math.abs(this.xVelocity[u]), w = this.reducedMotion ? 0 : Math.min(1, m / 550), x = ((this.drag === u && !this.reducedMotion ? 1.12 : 1) - this.pressScale[u]) * 420 - this.pressScaleVelocity[u] * 28;
       this.pressScaleVelocity[u] += x * t, this.pressScale[u] += this.pressScaleVelocity[u] * t;
@@ -3732,17 +3413,27 @@ class ai extends M {
   }
   // The rounded rectangle the trigger body takes, inset so the wobble stays inside the host
   shape(t, e) {
-    const i = t - 8, s = e - 8, r = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-select-radius")), o = Number.isFinite(r) ? Math.min(r, s / 2) : Math.min(16, s / 2);
+    const i = t - 8, s = e - 8, r = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-select-radius")
+    ), o = Number.isFinite(r) ? Math.min(r, s / 2) : Math.min(16, s / 2);
     return { width: i, height: s, radius: o };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.trigger = this.shadowRoot.querySelector(".trigger"), this.valueEl = this.shadowRoot.querySelector(".value"), this.panel = this.shadowRoot.querySelector(".panel"), this.panelMask = this.shadowRoot.querySelector(".panel-mask"), this.panelCanvas = this.shadowRoot.querySelector(".panel-canvas"), this.panelCtx = this.panelCanvas.getContext("2d"), this.list = this.shadowRoot.querySelector(".list"), this.trigger.disabled = this.hasAttribute("disabled"), this.syncLabel(), this.useHostFocusTarget(this.trigger), this.trigger.addEventListener("pointerdown", this), this.trigger.addEventListener("pointerup", this), this.trigger.addEventListener("pointercancel", this), this.trigger.addEventListener("pointerleave", this), this.trigger.addEventListener("click", this), this.trigger.addEventListener("keydown", this), this.trigger.addEventListener("focus", this), this.trigger.addEventListener("blur", this), this.list.addEventListener("pointermove", this), this.list.addEventListener("click", this), this.mutationObserver = new MutationObserver(() => this.syncOptions()), this.mutationObserver.observe(this, { childList: !0, subtree: !0, characterData: !0 }), this.syncOptions();
+    this.trigger = this.shadowRoot.querySelector(".trigger"), this.valueEl = this.shadowRoot.querySelector(".value"), this.panel = this.shadowRoot.querySelector(".panel"), this.panelMask = this.shadowRoot.querySelector(".panel-mask"), this.panelCanvas = this.shadowRoot.querySelector(".panel-canvas"), this.panelCtx = this.panelCanvas.getContext("2d"), this.list = this.shadowRoot.querySelector(".list"), this.trigger.disabled = this.hasAttribute("disabled"), this.syncLabel(), this.useHostFocusTarget(this.trigger), this.trigger.addEventListener("pointerdown", this), this.trigger.addEventListener("pointerup", this), this.trigger.addEventListener("pointercancel", this), this.trigger.addEventListener("pointerleave", this), this.trigger.addEventListener("click", this), this.trigger.addEventListener("keydown", this), this.trigger.addEventListener("focus", this), this.trigger.addEventListener("blur", this), this.list.addEventListener("pointermove", this), this.list.addEventListener("click", this), this.mutationObserver = new MutationObserver(() => this.syncOptions()), this.mutationObserver.observe(this, {
+      childList: !0,
+      subtree: !0,
+      characterData: !0
+    }), this.syncOptions();
   }
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
     const t = this.built;
-    super.connectedCallback(), t && this.mutationObserver && (this.mutationObserver.observe(this, { childList: !0, subtree: !0, characterData: !0 }), this.syncOptions());
+    super.connectedCallback(), t && this.mutationObserver && (this.mutationObserver.observe(this, {
+      childList: !0,
+      subtree: !0,
+      characterData: !0
+    }), this.syncOptions());
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -3821,11 +3512,19 @@ class ai extends M {
     const e = this.getBoundingClientRect().width || 240, i = Math.min(this.options.length, 6), s = this.rowHeight, r = i * s + ni * 2;
     this.panel.style.width = `${e}px`, this.panel.style.height = `${r}px`;
     const o = 16, l = e + o * 2, c = r + o * 2, h = Math.min(window.devicePixelRatio || 1, 3);
-    this.panelCssW = l, this.panelCssH = c, this.panelCanvas.style.width = `${l}px`, this.panelCanvas.style.height = `${c}px`, this.panelCanvas.style.left = `${e / 2}px`, this.panelCanvas.style.top = `${r / 2}px`, this.panelCanvas.width = Math.round(l * h), this.panelCanvas.height = Math.round(c * h), this.panelCtx.setTransform(h, 0, 0, h, 0, 0), this.panelBody ? this.panelBody.resize(e, r, et) : this.panelBody = new $({ width: e, height: r, radius: et });
+    this.panelCssW = l, this.panelCssH = c, this.panelCanvas.style.width = `${l}px`, this.panelCanvas.style.height = `${c}px`, this.panelCanvas.style.left = `${e / 2}px`, this.panelCanvas.style.top = `${r / 2}px`, this.panelCanvas.width = Math.round(l * h), this.panelCanvas.height = Math.round(c * h), this.panelCtx.setTransform(h, 0, 0, h, 0, 0), this.panelBody ? this.panelBody.resize(e, r, et) : this.panelBody = new $({
+      width: e,
+      height: r,
+      radius: et
+    });
   }
   // The current row height in px, read from the size-scaled token
   get rowHeight() {
-    return parseFloat(getComputedStyle(this).getPropertyValue("--jelly-select-row-height")) || 44;
+    return parseFloat(
+      getComputedStyle(this).getPropertyValue(
+        "--jelly-select-row-height"
+      )
+    ) || 44;
   }
   /*
    * Collision handling: measure the viewport room around the trigger and
@@ -3860,7 +3559,9 @@ class ai extends M {
   // Highlight the active row and point aria-activedescendant at it
   renderActive() {
     const t = [...this.list.children];
-    t.forEach((i, s) => i.classList.toggle("active", s === this.activeIndex));
+    t.forEach(
+      (i, s) => i.classList.toggle("active", s === this.activeIndex)
+    );
     const e = t[this.activeIndex];
     e && (this.trigger.setAttribute("aria-activedescendant", e.id), e.scrollIntoView({ block: "nearest" }));
   }
@@ -3877,7 +3578,9 @@ class ai extends M {
   // Commit a selection: reflect it, re-render, close and notify listeners
   selectIndex(t) {
     const e = this.options[t];
-    !e || e.disabled || (this.options.forEach((i) => i.removeAttribute("selected")), e.setAttribute("selected", ""), this.selectedIndex = t, this.reflectValue(e.value), [...this.list.children].forEach((i, s) => i.setAttribute("aria-selected", String(s === t))), this.renderValue(), this.close(), F(), g(this, "change"));
+    !e || e.disabled || (this.options.forEach((i) => i.removeAttribute("selected")), e.setAttribute("selected", ""), this.selectedIndex = t, this.reflectValue(e.value), [...this.list.children].forEach(
+      (i, s) => i.setAttribute("aria-selected", String(s === t))
+    ), this.renderValue(), this.close(), F(), g(this, "change"));
   }
   // Mirror the current value into the value attribute without re-entering sync
   reflectValue(t) {
@@ -3885,7 +3588,9 @@ class ai extends M {
   }
   // Deselect every option and fall back to the placeholder
   clearSelection() {
-    this.options.forEach((t) => t.removeAttribute("selected")), this.selectedIndex = -1, this.reflectValue(""), [...this.list.children].forEach((t) => t.setAttribute("aria-selected", "false")), this.renderValue(), this.requestFrame();
+    this.options.forEach((t) => t.removeAttribute("selected")), this.selectedIndex = -1, this.reflectValue(""), [...this.list.children].forEach(
+      (t) => t.setAttribute("aria-selected", "false")
+    ), this.renderValue(), this.requestFrame();
   }
   // Select the option whose value matches; unknown values are ignored
   setValue(t) {
@@ -3895,7 +3600,11 @@ class ai extends M {
       return;
     }
     const i = this.options.findIndex((s) => s.value === e);
-    i < 0 || (this.options.forEach((s, r) => s.toggleAttribute("selected", r === i)), this.selectedIndex = i, this.reflectValue(e), [...this.list.children].forEach((s, r) => s.setAttribute("aria-selected", String(r === i))), this.renderValue(), this.requestFrame());
+    i < 0 || (this.options.forEach(
+      (s, r) => s.toggleAttribute("selected", r === i)
+    ), this.selectedIndex = i, this.reflectValue(e), [...this.list.children].forEach(
+      (s, r) => s.setAttribute("aria-selected", String(r === i))
+    ), this.renderValue(), this.requestFrame());
   }
   // Keyboard on the trigger: closed it opens; open it navigates and selects
   onTriggerKey(t) {
@@ -3952,7 +3661,9 @@ class ai extends M {
   }
   // Pointer movement over the list makes the hovered row active
   onRowHover(t) {
-    const e = t.target.closest(".row");
+    const e = t.target.closest(
+      ".row"
+    );
     if (!e)
       return;
     const i = Number(e.dataset.index);
@@ -3960,13 +3671,21 @@ class ai extends M {
   }
   // A click on a row selects it
   onRowClick(t) {
-    const e = t.target.closest(".row");
+    const e = t.target.closest(
+      ".row"
+    );
     e && this.selectIndex(Number(e.dataset.index));
   }
   // Resolve the trigger surface color: platinum when disabled, the elevated
   // surface while focused or open, the resting field fill otherwise
   fill() {
-    return this.hasAttribute("disabled") ? this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`) : this.focused || this.isOpen ? this.resolveColor(`var(--jelly-color-background-surface, ${b["background-surface"]})`) : getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || this.resolveColor(`var(--jelly-color-background-muted, ${b["background-muted"]})`);
+    return this.hasAttribute("disabled") ? this.resolveColor(
+      `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+    ) : this.focused || this.isOpen ? this.resolveColor(
+      `var(--jelly-color-background-surface, ${b["background-surface"]})`
+    ) : getComputedStyle(this).getPropertyValue("--jelly-fill").trim() || this.resolveColor(
+      `var(--jelly-color-background-muted, ${b["background-muted"]})`
+    );
   }
   /*
    * Show the painted ring whenever the trigger is focused or the panel is
@@ -3974,11 +3693,19 @@ class ai extends M {
    * jelly-input rather than only lighting up on keyboard (:focus-visible) focus
    */
   focusRing() {
-    return !this.focused && !this.isOpen ? null : { color: this.ringColor(), width: V.width, gap: V.gap };
+    return !this.focused && !this.isOpen ? null : {
+      color: this.ringColor(),
+      width: V.width,
+      gap: V.gap
+    };
   }
   // Hairline border on the trigger surface: accent while focused or open
   surfaceBorder() {
-    return { color: this.focused || this.isOpen ? this.resolveColor(`var(--jelly-accent, var(--jelly-color-background-accent, ${b["background-accent"]}))`) : this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`), width: 1 };
+    return { color: this.focused || this.isOpen ? this.resolveColor(
+      `var(--jelly-accent, var(--jelly-color-background-accent, ${b["background-accent"]}))`
+    ) : this.resolveColor(
+      `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+    ), width: 1 };
   }
   // One animation step: trigger body, unfold spring, panel body, row reveal
   frame(t) {
@@ -4013,8 +3740,15 @@ class ai extends M {
       this.panelBody.update(t), this.panelCtx.clearRect(0, 0, this.panelCssW, this.panelCssH);
       const h = this.panelBody.height, a = Math.max(0.02, s), d = (1 - a) * h / 2;
       this.paintBody(this.panelBody, {
-        fill: this.resolveColor(`var(--jelly-color-background-surface, ${b["background-surface"]})`),
-        border: { color: this.resolveColor(`var(--jelly-color-background-neutral, ${b["background-neutral"]})`), width: 1 },
+        fill: this.resolveColor(
+          `var(--jelly-color-background-surface, ${b["background-surface"]})`
+        ),
+        border: {
+          color: this.resolveColor(
+            `var(--jelly-color-background-neutral, ${b["background-neutral"]})`
+          ),
+          width: 1
+        },
         ctx: this.panelCtx,
         cssW: this.panelCssW,
         cssH: this.panelCssH,
@@ -4102,7 +3836,7 @@ class hi extends HTMLElement {
   }
 }
 customElements.define("jelly-segment", hi);
-const ci = ':host{display:inline-flex;height:44px;--jelly-segmented-padding: 4px;--jelly-segmented-min-width: 60px;--jelly-segmented-gap: 7px;--jelly-segmented-padding-inline: 18px;--jelly-segmented-font-size: 14.5px;--jelly-track: color-mix(in srgb, var(--jelly-color-background-neutral) 88%, var(--jelly-color-background-surface));--jelly-pill: var(--jelly-color-background-accent);--jelly-label: var(--jelly-color-foreground-default);--jelly-label-on: var(--jelly-color-foreground-on-accent);font:600 var(--jelly-segmented-font-size)/1 var(--jelly-font-display)}:host([size="small"]),:host([size="sm"]){height:36px;--jelly-segmented-padding: 3px;--jelly-segmented-min-width: 50px;--jelly-segmented-gap: 5px;--jelly-segmented-padding-inline: 14px;--jelly-segmented-font-size: 13px}:host([size="medium"]),:host([size="md"]){height:44px;--jelly-segmented-padding: 4px;--jelly-segmented-min-width: 60px;--jelly-segmented-gap: 7px;--jelly-segmented-padding-inline: 18px;--jelly-segmented-font-size: 14.5px}:host([size="large"]),:host([size="lg"]){height:52px;--jelly-segmented-padding: 5px;--jelly-segmented-min-width: 74px;--jelly-segmented-gap: 8px;--jelly-segmented-padding-inline: 22px;--jelly-segmented-font-size: 16px}:host([disabled]){opacity:.55;pointer-events:none}.wrap{display:flex;width:100%;height:100%;box-sizing:border-box;padding:var(--jelly-segmented-padding);position:relative}.segment{flex:1 1 0;min-width:var(--jelly-segmented-min-width);display:inline-flex;align-items:center;justify-content:center;gap:var(--jelly-segmented-gap);padding-block:0;padding-inline:var(--jelly-segmented-padding-inline);margin:0;border:0;background:transparent;color:var(--jelly-label);font:inherit;white-space:nowrap;cursor:pointer;position:relative;border-radius:999px;transition:color .18s ease;outline:none;touch-action:manipulation}.segment[aria-checked=true],.segment[aria-selected=true]{color:var(--jelly-label-on)}.segment[aria-checked=true]{font-weight:750}.segment:disabled{cursor:default;opacity:.45}.segment-top{display:inline-grid;place-items:center}.segment-top>span{grid-area:1 / 1;white-space:nowrap}.segment-bottom{font-weight:750;visibility:hidden}:host([roles="tablist"]) .segment-bottom{display:none}.segment:after{content:"";position:absolute;inset:2px;border:var(--jelly-ring-width) solid transparent;border-radius:999px;pointer-events:none}@media(forced-colors:active){.wrap{border:1px solid ButtonBorder;border-radius:999px}.segment[aria-checked=true],.segment[aria-selected=true]{forced-color-adjust:none;background:SelectedItem;color:SelectedItemText}.segment:focus-visible:after{border-color:Highlight}}';
+const ci = ':host{display:inline-flex;height:44px;--jelly-segmented-padding: 4px;--jelly-segmented-min-width: 60px;--jelly-segmented-gap: 7px;--jelly-segmented-padding-inline: 18px;--jelly-segmented-font-size: 14.5px;--jelly-track: color-mix( in srgb, var(--jelly-color-background-neutral) 88%, var(--jelly-color-background-surface) );--jelly-pill: var(--jelly-color-background-accent);--jelly-label: var(--jelly-color-foreground-default);--jelly-label-on: var(--jelly-color-foreground-on-accent);font:600 var(--jelly-segmented-font-size)/1 var(--jelly-font-display)}:host([size="small"]),:host([size="sm"]){height:36px;--jelly-segmented-padding: 3px;--jelly-segmented-min-width: 50px;--jelly-segmented-gap: 5px;--jelly-segmented-padding-inline: 14px;--jelly-segmented-font-size: 13px}:host([size="medium"]),:host([size="md"]){height:44px;--jelly-segmented-padding: 4px;--jelly-segmented-min-width: 60px;--jelly-segmented-gap: 7px;--jelly-segmented-padding-inline: 18px;--jelly-segmented-font-size: 14.5px}:host([size="large"]),:host([size="lg"]){height:52px;--jelly-segmented-padding: 5px;--jelly-segmented-min-width: 74px;--jelly-segmented-gap: 8px;--jelly-segmented-padding-inline: 22px;--jelly-segmented-font-size: 16px}:host([disabled]){opacity:.55;pointer-events:none}.wrap{display:flex;width:100%;height:100%;box-sizing:border-box;padding:var(--jelly-segmented-padding);position:relative}.segment{flex:1 1 0;min-width:var(--jelly-segmented-min-width);display:inline-flex;align-items:center;justify-content:center;gap:var(--jelly-segmented-gap);padding-block:0;padding-inline:var(--jelly-segmented-padding-inline);margin:0;border:0;background:transparent;color:var(--jelly-label);font:inherit;white-space:nowrap;cursor:pointer;position:relative;border-radius:999px;transition:color .18s ease;outline:none;touch-action:manipulation}.segment[aria-checked=true],.segment[aria-selected=true]{color:var(--jelly-label-on)}.segment[aria-checked=true]{font-weight:750}.segment:disabled{cursor:default;opacity:.45}.segment-top{display:inline-grid;place-items:center}.segment-top>span{grid-area:1 / 1;white-space:nowrap}.segment-bottom{font-weight:750;visibility:hidden}:host([roles="tablist"]) .segment-bottom{display:none}.segment:after{content:"";position:absolute;inset:2px;border:var(--jelly-ring-width) solid transparent;border-radius:999px;pointer-events:none}@media(forced-colors:active){.wrap{border:1px solid ButtonBorder;border-radius:999px}.segment[aria-checked=true],.segment[aria-selected=true]{forced-color-adjust:none;background:SelectedItem;color:SelectedItemText}.segment:focus-visible:after{border-color:Highlight}}';
 class di extends M {
   constructor() {
     super(), this.pill = null, this.mutationObserver = null, this.segments = [], this.index = 0, this.pillX = 0, this.pillXVelocity = 0, this.pillTarget = 0, this.trackW = 0, this.trackH = 0, this.segW = 0, this.placed = !1, this.reflecting = !1, this.internals = this.attachInternals();
@@ -4129,12 +3863,20 @@ class di extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    this.wrap = this.shadowRoot.querySelector(".wrap"), this.wrap.addEventListener("click", this), this.wrap.addEventListener("keydown", this), this.wrap.addEventListener("focusin", this), this.wrap.addEventListener("focusout", this), this.mutationObserver = new MutationObserver(() => this.sync()), this.mutationObserver.observe(this, { childList: !0, subtree: !0, characterData: !0 }), this.sync();
+    this.wrap = this.shadowRoot.querySelector(".wrap"), this.wrap.addEventListener("click", this), this.wrap.addEventListener("keydown", this), this.wrap.addEventListener("focusin", this), this.wrap.addEventListener("focusout", this), this.mutationObserver = new MutationObserver(() => this.sync()), this.mutationObserver.observe(this, {
+      childList: !0,
+      subtree: !0,
+      characterData: !0
+    }), this.sync();
   }
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
     const t = this.built;
-    super.connectedCallback(), t && this.mutationObserver && (this.mutationObserver.observe(this, { childList: !0, subtree: !0, characterData: !0 }), this.sync());
+    super.connectedCallback(), t && this.mutationObserver && (this.mutationObserver.observe(this, {
+      childList: !0,
+      subtree: !0,
+      characterData: !0
+    }), this.sync());
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -4202,7 +3944,11 @@ class di extends M {
       return;
     this.trackW = this.body.width, this.trackH = this.body.height, this.segW = this.trackW / this.segments.length;
     const t = this.segW - 6, e = this.trackH - 6, i = e / 2;
-    this.pill ? (Math.abs(this.pill.width - t) > 1.5 || Math.abs(this.pill.height - e) > 1.5) && this.pill.resize(t, e, i) : this.pill = new $({ width: t, height: e, radius: i }), this.pillTarget = this.segX(this.index), this.placed || (this.pillX = this.pillTarget, this.pillXVelocity = 0, this.placed = !0), this.requestFrame();
+    this.pill ? (Math.abs(this.pill.width - t) > 1.5 || Math.abs(this.pill.height - e) > 1.5) && this.pill.resize(t, e, i) : this.pill = new $({
+      width: t,
+      height: e,
+      radius: i
+    }), this.pillTarget = this.segX(this.index), this.placed || (this.pillX = this.pillTarget, this.pillXVelocity = 0, this.placed = !0), this.requestFrame();
   }
   /*
    * The pill's resting center for a segment, in canvas-local coordinates.
@@ -4240,7 +3986,9 @@ class di extends M {
   }
   // Activate the segment under a click / tap
   onClick(t) {
-    const e = t.target.closest(".segment");
+    const e = t.target.closest(
+      ".segment"
+    );
     e && this.select(Number(e.dataset.index), !0);
   }
   /*
@@ -4252,7 +4000,9 @@ class di extends M {
     const e = this.segments.length;
     if (!e)
       return;
-    const i = It(t.key, this.index, e, { rtl: C(this) });
+    const i = It(t.key, this.index, e, {
+      rtl: C(this)
+    });
     if (i < 0)
       return;
     t.preventDefault();
@@ -4276,13 +4026,30 @@ class di extends M {
     const e = this.pill;
     if (!e)
       return !1;
-    this.reducedMotion ? (this.pillX = this.pillTarget, this.pillXVelocity = 0) : [this.pillX, this.pillXVelocity] = T(this.pillX, this.pillXVelocity, this.pillTarget, 260, 32, t);
+    this.reducedMotion ? (this.pillX = this.pillTarget, this.pillXVelocity = 0) : [this.pillX, this.pillXVelocity] = T(
+      this.pillX,
+      this.pillXVelocity,
+      this.pillTarget,
+      260,
+      32,
+      t
+    );
     const i = Math.max(0, this.trackW / 2 - e.width / 2);
     this.pillX > i ? (this.pillX = i, this.pillXVelocity > 0 && (this.pillXVelocity = 0)) : this.pillX < -i && (this.pillX = -i, this.pillXVelocity < 0 && (this.pillXVelocity = 0));
     const s = Math.abs(this.pillXVelocity);
     s > 6 && (e.lean = Math.sign(this.pillXVelocity)), e.leanAmount = this.reducedMotion ? 0 : Math.min(e.height * 0.16, s * 6e-3), e.update(t);
-    const r = this.resolveColor(`var(--jelly-track, ${b["background-neutral"]})`), o = this.resolveColor(`var(--jelly-pill, ${b["background-accent"]})`), l = this.ctx, c = this.cssW / 2, h = this.cssH / 2;
-    return this.clearCanvas(), l.beginPath(), l.roundRect(c - this.trackW / 2, h - this.trackH / 2, this.trackW, this.trackH, this.trackH / 2), l.fillStyle = r, l.fill(), this.paintBody(e, {
+    const r = this.resolveColor(
+      `var(--jelly-track, ${b["background-neutral"]})`
+    ), o = this.resolveColor(
+      `var(--jelly-pill, ${b["background-accent"]})`
+    ), l = this.ctx, c = this.cssW / 2, h = this.cssH / 2;
+    return this.clearCanvas(), l.beginPath(), l.roundRect(
+      c - this.trackW / 2,
+      h - this.trackH / 2,
+      this.trackW,
+      this.trackH,
+      this.trackH / 2
+    ), l.fillStyle = r, l.fill(), this.paintBody(e, {
       fill: o,
       cx: this.pillX,
       ring: this.focusRing()
@@ -4294,7 +4061,9 @@ class di extends M {
       switch (t) {
         case "value":
           if (this.segments?.length) {
-            const e = this.segments.findIndex((i) => i.value === this.getAttribute("value"));
+            const e = this.segments.findIndex(
+              (i) => i.value === this.getAttribute("value")
+            );
             e >= 0 && this.select(e, !1);
           }
           break;
@@ -4321,7 +4090,9 @@ class di extends M {
   }
   // Route programmatic host focus onto the active segment's button
   focus(t) {
-    this.wrap?.children[this.index]?.focus(t);
+    this.wrap?.children[this.index]?.focus(
+      t
+    );
   }
 }
 customElements.define("jelly-segmented", di);
@@ -4361,7 +4132,10 @@ class pi extends HTMLElement {
   }
   // Build one input box per digit (rebuilds when `length` changes)
   render() {
-    const t = Math.max(1, parseInt(this.getAttribute("length") ?? "", 10) || 6);
+    const t = Math.max(
+      1,
+      parseInt(this.getAttribute("length") ?? "", 10) || 6
+    );
     if (this.boxes && this.boxes.length === t)
       return;
     this.shadowRoot.innerHTML = `
@@ -4385,7 +4159,10 @@ class pi extends HTMLElement {
   }
   // Map the label attribute onto the group's accessible name
   syncLabel() {
-    this.shadowRoot.querySelector(".row")?.setAttribute("aria-label", this.getAttribute("label") || "One-time code");
+    this.shadowRoot.querySelector(".row")?.setAttribute(
+      "aria-label",
+      this.getAttribute("label") || "One-time code"
+    );
   }
   // A filled digit settles in softly (the box itself stays put)
   reveal(t, e = 0) {
@@ -4400,10 +4177,7 @@ class pi extends HTMLElement {
   // A quiet confirmation when every box is filled
   completeReveal() {
     I() || this.shadowRoot.querySelector(".row")?.animate?.(
-      [
-        { opacity: 0.82 },
-        { opacity: 1 }
-      ],
+      [{ opacity: 0.82 }, { opacity: 1 }],
       { duration: 420, easing: "ease-out" }
     );
   }
@@ -4468,7 +4242,10 @@ class gi extends HTMLElement {
         <span class="required" aria-hidden="true">*</span>
         <span class="sr-required">(required)</span>
       </label>
-    `, this.label = this.shadowRoot.querySelector("label"), this.label.addEventListener("click", () => this.focusTarget()), this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => this.sync()), this.sync());
+    `, this.label = this.shadowRoot.querySelector("label"), this.label.addEventListener("click", () => this.focusTarget()), this.shadowRoot.querySelector("slot").addEventListener(
+      "slotchange",
+      () => this.sync()
+    ), this.sync());
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback(t) {
@@ -4551,7 +4328,13 @@ class mi extends M {
   }
   // Clip the drawing context to a rounded track segment
   roundedClip(t, e, i, s, r, o) {
-    t.beginPath(), t.roundRect(e, i, Math.max(0, s), r, Math.min(o, Math.max(0, s) / 2, r / 2)), t.clip();
+    t.beginPath(), t.roundRect(
+      e,
+      i,
+      Math.max(0, s),
+      r,
+      Math.min(o, Math.max(0, s) / 2, r / 2)
+    ), t.clip();
   }
   // One animation step: paint the track, then the fill or the travelling blob
   frame(t) {
@@ -4565,7 +4348,11 @@ class mi extends M {
     let d = !1;
     if (this.indeterminate) {
       const p = Math.max(a * 1.8, r * 0.24);
-      this.blob ? (this.blobW !== p || this.blobH !== a) && this.blob.resize(p, a, a / 2) : this.blob = new $({ width: p, height: a, radius: a / 2 }), this.blobW = p, this.blobH = a;
+      this.blob ? (this.blobW !== p || this.blobH !== a) && this.blob.resize(p, a, a / 2) : this.blob = new $({
+        width: p,
+        height: a,
+        radius: a / 2
+      }), this.blobW = p, this.blobH = a;
       const u = this.blob;
       if (this.reducedMotion)
         return u.leanAmount = 0, u.update(t), this.paintBody(u, { fill: h, cx: 0 }), !1;
@@ -4585,7 +4372,14 @@ class mi extends M {
       const u = v(l ? r / 2 - this.shownFrac * r : -r / 2 + this.shownFrac * r, -r / 2, r / 2);
       this.rip += t, !this.reducedMotion && p > 3e-3 && this.rip > 0.13 && (this.rip = 0, e.pulseAt(u, -a / 2, 0.28), e.pulseAt(u, a / 2, 0.28));
       const m = this.shownFrac * r, w = l ? o + r - m : o;
-      i.save(), this.roundedClip(i, w, s - a / 2, m, a, a / 2), this.paintBody(e, { fill: h }), i.restore(), d = p > 4e-4 || !e.isResting();
+      i.save(), this.roundedClip(
+        i,
+        w,
+        s - a / 2,
+        m,
+        a,
+        a / 2
+      ), this.paintBody(e, { fill: h }), i.restore(), d = p > 4e-4 || !e.isResting();
     }
     return d;
   }
@@ -4624,7 +4418,10 @@ class vi extends M {
           this.applyShape();
           break;
         case "label":
-          this.setAttribute("aria-label", this.getAttribute("label") || "Loading");
+          this.setAttribute(
+            "aria-label",
+            this.getAttribute("label") || "Loading"
+          );
           break;
       }
       this.requestFrame();
@@ -4666,7 +4463,10 @@ class vi extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire ARIA here.
   onBuilt() {
-    this.setAttribute("role", "status"), this.hasAttribute("aria-label") || this.setAttribute("aria-label", this.getAttribute("label") || "Loading");
+    this.setAttribute("role", "status"), this.hasAttribute("aria-label") || this.setAttribute(
+      "aria-label",
+      this.getAttribute("label") || "Loading"
+    );
   }
   // One animation step: keep the blob alive, spinning and breathing
   frame(t) {
@@ -4765,7 +4565,9 @@ class ki extends M {
   }
   // The pill (or, with shape="square", rounded-rectangle) the physics body takes
   shape(t, e) {
-    const i = e - 2, s = this.getAttribute("shape") === "square", r = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-badge-radius")), o = Number.isFinite(r) && r < 900 ? Math.min(r, i / 2) : s ? i * 0.32 : i / 2;
+    const i = e - 2, s = this.getAttribute("shape") === "square", r = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-badge-radius")
+    ), o = Number.isFinite(r) && r < 900 ? Math.min(r, i / 2) : s ? i * 0.32 : i / 2;
     return { width: t - 2, height: i, radius: o };
   }
   /*
@@ -4800,8 +4602,14 @@ class ki extends M {
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
-    if (this.sync(), this.mutationObserver = new MutationObserver(() => this.centerPop(0.7)), this.mutationObserver.observe(this, { childList: !0, characterData: !0, subtree: !0 }), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-badge")].indexOf(this);
+    if (this.sync(), this.mutationObserver = new MutationObserver(() => this.centerPop(0.7)), this.mutationObserver.observe(this, {
+      childList: !0,
+      characterData: !0,
+      subtree: !0
+    }), !this.reducedMotion) {
+      const t = [
+        ...document.querySelectorAll("jelly-badge")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (e) => {
         this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
       }), this.addEventListener("pointermove", (e) => {
@@ -4815,7 +4623,11 @@ class ki extends M {
   // DOM. Re-arm the content observer - disconnectedCallback dropped it and a
   // badge that is detached and re-appended should keep popping on new counts.
   connectedCallback() {
-    super.connectedCallback(), this.mutationObserver?.observe(this, { childList: !0, characterData: !0, subtree: !0 });
+    super.connectedCallback(), this.mutationObserver?.observe(this, {
+      childList: !0,
+      characterData: !0,
+      subtree: !0
+    });
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback(t) {
@@ -4837,7 +4649,7 @@ class ki extends M {
   }
 }
 customElements.define("jelly-badge", ki);
-const Ci = ':host{display:block;position:relative;--jelly-alert-padding-block: 15px;--jelly-alert-padding-inline: 16px;--jelly-alert-gap: 12px;--jelly-alert-font-size: 14.5px;--jelly-alert-icon: 22px;--jelly-alert-close: 24px;--jelly-alert-radius: 16px;--tone: var(--jelly-color-background-azure);--jelly-fill: color-mix(in srgb, var(--tone) 15%, var(--jelly-color-background-surface));--jelly-alert-border: color-mix(in srgb, var(--tone) 34%, var(--jelly-color-background-surface));font:500 var(--jelly-alert-font-size)/1.5 var(--jelly-font-text);color:var(--jelly-color-foreground-default)}:host([size="small"]){--jelly-alert-padding-block: 12px;--jelly-alert-padding-inline: 13px;--jelly-alert-gap: 9px;--jelly-alert-font-size: 13px;--jelly-alert-icon: 19px;--jelly-alert-close: 22px;--jelly-alert-radius: 14px}:host([size="large"]){--jelly-alert-padding-block: 18px;--jelly-alert-padding-inline: 20px;--jelly-alert-gap: 14px;--jelly-alert-font-size: 16px;--jelly-alert-icon: 26px;--jelly-alert-close: 28px;--jelly-alert-radius: 18px}:host([tone="success"]){--tone: var(--jelly-color-background-mint)}:host([tone="warning"]){--tone: var(--jelly-color-background-amber)}:host([tone="danger"]){--tone: var(--jelly-color-background-rose)}.box{position:relative;box-sizing:border-box;display:flex;gap:var(--jelly-alert-gap);align-items:flex-start;padding-block:var(--jelly-alert-padding-block);padding-inline:var(--jelly-alert-padding-inline)}.icon{flex:0 0 auto;width:var(--jelly-alert-icon);height:var(--jelly-alert-icon);color:var(--tone);display:inline-flex;align-items:center;justify-content:center;margin-top:1px}.icon svg{width:100%;height:100%;fill:currentColor}.body{flex:1;min-width:0}.body ::slotted(strong){font-weight:750}.close{flex:0 0 auto;appearance:none;border:0;background:transparent;cursor:pointer;touch-action:manipulation;color:var(--jelly-color-foreground-muted);width:var(--jelly-alert-close);height:var(--jelly-alert-close);min-width:24px;min-height:24px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;transition:background-color .12s ease,color .12s ease}.close svg{fill:currentColor}.close:hover{background:var(--jelly-alert-border)}@media(prefers-reduced-motion:reduce){:host-context(html:not([data-jelly-motion="no-preference"])) .close{transition:none}}:host-context([data-jelly-motion="reduce"]) .close{transition:none}.close:focus-visible{outline:2px solid var(--jelly-ring-color);outline-offset:1px}:host(:not([dismissible])) .close{display:none}@media(forced-colors:active){.box{border:1px solid CanvasText;border-radius:var(--jelly-alert-radius)}.close:focus-visible{outline-color:Highlight}}', Ft = {
+const Ci = ':host{display:block;position:relative;--jelly-alert-padding-block: 15px;--jelly-alert-padding-inline: 16px;--jelly-alert-gap: 12px;--jelly-alert-font-size: 14.5px;--jelly-alert-icon: 22px;--jelly-alert-close: 24px;--jelly-alert-radius: 16px;--tone: var(--jelly-color-background-azure);--jelly-fill: color-mix( in srgb, var(--tone) 15%, var(--jelly-color-background-surface) );--jelly-alert-border: color-mix( in srgb, var(--tone) 34%, var(--jelly-color-background-surface) );font:500 var(--jelly-alert-font-size)/1.5 var(--jelly-font-text);color:var(--jelly-color-foreground-default)}:host([size="small"]){--jelly-alert-padding-block: 12px;--jelly-alert-padding-inline: 13px;--jelly-alert-gap: 9px;--jelly-alert-font-size: 13px;--jelly-alert-icon: 19px;--jelly-alert-close: 22px;--jelly-alert-radius: 14px}:host([size="large"]){--jelly-alert-padding-block: 18px;--jelly-alert-padding-inline: 20px;--jelly-alert-gap: 14px;--jelly-alert-font-size: 16px;--jelly-alert-icon: 26px;--jelly-alert-close: 28px;--jelly-alert-radius: 18px}:host([tone="success"]){--tone: var(--jelly-color-background-mint)}:host([tone="warning"]){--tone: var(--jelly-color-background-amber)}:host([tone="danger"]){--tone: var(--jelly-color-background-rose)}.box{position:relative;box-sizing:border-box;display:flex;gap:var(--jelly-alert-gap);align-items:flex-start;padding-block:var(--jelly-alert-padding-block);padding-inline:var(--jelly-alert-padding-inline)}.icon{flex:0 0 auto;width:var(--jelly-alert-icon);height:var(--jelly-alert-icon);color:var(--tone);display:inline-flex;align-items:center;justify-content:center;margin-top:1px}.icon svg{width:100%;height:100%;fill:currentColor}.body{flex:1;min-width:0}.body ::slotted(strong){font-weight:750}.close{flex:0 0 auto;appearance:none;border:0;background:transparent;cursor:pointer;touch-action:manipulation;color:var(--jelly-color-foreground-muted);width:var(--jelly-alert-close);height:var(--jelly-alert-close);min-width:24px;min-height:24px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;transition:background-color .12s ease,color .12s ease}.close svg{fill:currentColor}.close:hover{background:var(--jelly-alert-border)}@media(prefers-reduced-motion:reduce){:host-context(html:not([data-jelly-motion="no-preference"])) .close{transition:none}}:host-context([data-jelly-motion="reduce"]) .close{transition:none}.close:focus-visible{outline:2px solid var(--jelly-ring-color);outline-offset:1px}:host(:not([dismissible])) .close{display:none}@media(forced-colors:active){.box{border:1px solid CanvasText;border-radius:var(--jelly-alert-radius)}.close:focus-visible{outline-color:Highlight}}', Ft = {
   info: "info",
   success: "checkmark-circle",
   warning: "warning",
@@ -4882,12 +4694,16 @@ class Ai extends M {
   }
   // The banner the physics body takes (radius follows the size token)
   shape(t, e) {
-    const i = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-alert-radius")) || 16;
+    const i = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-alert-radius")
+    ) || 16;
     return { width: t, height: e, radius: Math.min(i, e / 2) };
   }
   // The surface fill resolves through the theme so dark mode recolors it
   fill() {
-    return this.resolveColor(`var(--jelly-fill, var(--jelly-color-background-surface, ${b["background-surface"]}))`);
+    return this.resolveColor(
+      `var(--jelly-fill, var(--jelly-color-background-surface, ${b["background-surface"]}))`
+    );
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
@@ -4911,7 +4727,12 @@ class Ai extends M {
     const e = this.body;
     return e ? (this.shaking > 0 && (this.shaking -= t, this.shakeT += t, this.shakeT >= 0.08 && (this.shakeT = 0, this.shakeDir = -this.shakeDir, e.stretchAlong(this.shakeDir, 0, 0.8))), e.update(t), this.clearCanvas(), this.paintBody(e, {
       fill: this.fill(),
-      border: { color: this.resolveColor(`var(--jelly-alert-border, var(--jelly-color-border-default, ${b["border-default"]}))`), width: 1 }
+      border: {
+        color: this.resolveColor(
+          `var(--jelly-alert-border, var(--jelly-color-border-default, ${b["border-default"]}))`
+        ),
+        width: 1
+      }
     }), this.shaking > 0 || !e.isResting()) : !1;
   }
 }
@@ -4935,8 +4756,14 @@ class Li extends M {
   }
   // The rounded surface the physics body takes (radius follows the token)
   shape(t, e) {
-    const i = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-radius")) || 0;
-    return { width: t, height: e, radius: Math.min(i, Math.min(t, e) / 2) };
+    const i = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-radius")
+    ) || 0;
+    return {
+      width: t,
+      height: e,
+      radius: Math.min(i, Math.min(t, e) / 2)
+    };
   }
   // A hairline on the jelly surface, resolved through the theme.
   // Set --jelly-card-border: none on the host to suppress the canvas
@@ -4945,14 +4772,18 @@ class Li extends M {
   surfaceBorder() {
     const t = getComputedStyle(this).getPropertyValue("--jelly-card-border").trim();
     return t === "none" || t === "0" ? null : {
-      color: this.resolveColor(`var(--jelly-color-border-default, ${b["border-default"]})`),
+      color: this.resolveColor(
+        `var(--jelly-color-border-default, ${b["border-default"]})`
+      ),
       width: 1
     };
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
     if (this.card = this.shadowRoot.querySelector(".card"), this.reducedMotion || requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-card")].indexOf(this);
+      const t = [
+        ...document.querySelectorAll("jelly-card")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (e) => {
         this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
       }), this.addEventListener("pointermove", (e) => {
@@ -5012,7 +4843,14 @@ class Mi extends M {
   }
   // Tells the browser to trigger attributeChangedCallback when these attributes change
   static get observedAttributes() {
-    return ["selected", "disabled", "selectable", "removable", "variant", "shape"];
+    return [
+      "selected",
+      "disabled",
+      "selectable",
+      "removable",
+      "variant",
+      "shape"
+    ];
   }
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
@@ -5038,7 +4876,9 @@ class Mi extends M {
   // The capsule (or, with shape="square", rounded rectangle) the physics body
   // takes, inset so the wobble stays inside
   shape(t, e) {
-    const i = t - 6, s = e - 6, r = this.getAttribute("shape") === "square", o = parseFloat(getComputedStyle(this).getPropertyValue("--jelly-chip-radius")), l = Number.isFinite(o) && o < 900 ? Math.min(o, s / 2) : r ? s * 0.32 : s / 2;
+    const i = t - 6, s = e - 6, r = this.getAttribute("shape") === "square", o = parseFloat(
+      getComputedStyle(this).getPropertyValue("--jelly-chip-radius")
+    ), l = Number.isFinite(o) && o < 900 ? Math.min(o, s / 2) : r ? s * 0.32 : s / 2;
     return { width: i, height: s, radius: l };
   }
   // The current fill along the off → on crossfade
@@ -5062,7 +4902,10 @@ class Mi extends M {
     if (!e)
       return !1;
     const i = this.hasAttribute("selected") ? 1 : 0;
-    return this.selectTarget == null && (this.selectTarget = i), this.selectTarget += (i - this.selectTarget) * Math.min(1, t * 11), Math.abs(i - this.selectTarget) < 4e-3 && (this.selectTarget = i), e.update(t), this.clearCanvas(), this.paintBody(e, { fill: this.mixFill(this.selectTarget), ring: this.focusRing() }), Math.abs(i - this.selectTarget) > 1e-3 || !e.isResting();
+    return this.selectTarget == null && (this.selectTarget = i), this.selectTarget += (i - this.selectTarget) * Math.min(1, t * 11), Math.abs(i - this.selectTarget) < 4e-3 && (this.selectTarget = i), e.update(t), this.clearCanvas(), this.paintBody(e, {
+      fill: this.mixFill(this.selectTarget),
+      ring: this.focusRing()
+    }), Math.abs(i - this.selectTarget) > 1e-3 || !e.isResting();
   }
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
@@ -5082,7 +4925,9 @@ class Mi extends M {
     })), this.removeButton && this.removeButton.addEventListener("click", (s) => {
       s.stopPropagation(), this.removeChip();
     }), !this.reducedMotion) {
-      const s = [...document.querySelectorAll("jelly-chip")].indexOf(this);
+      const s = [
+        ...document.querySelectorAll("jelly-chip")
+      ].indexOf(this);
       this.addEventListener("pointerenter", (r) => {
         this.hasAttribute("disabled") || (this.updateHoverPointer(r.clientX, r.clientY), this.startHoverLoop(s));
       }), this.addEventListener("pointermove", (r) => {
@@ -5105,7 +4950,9 @@ class Mi extends M {
       this.remove();
       return;
     }
-    const t = parseFloat(getComputedStyle(this.parentElement || this).columnGap) || 0, e = this.getBoundingClientRect().width;
+    const t = parseFloat(
+      getComputedStyle(this.parentElement || this).columnGap
+    ) || 0, e = this.getBoundingClientRect().width;
     this.style.width = `${e}px`, this.offsetWidth, this.classList.add("removing"), this.style.width = "0px", t && (this.style.marginInlineEnd = `-${t}px`);
     let i = !1;
     const s = () => {
@@ -5127,7 +4974,10 @@ class Mi extends M {
           this.requestFrame();
           break;
         case "selected":
-          this.main?.tagName === "BUTTON" && this.main.setAttribute("aria-pressed", String(this.hasAttribute("selected"))), this.requestFrame();
+          this.main?.tagName === "BUTTON" && this.main.setAttribute(
+            "aria-pressed",
+            String(this.hasAttribute("selected"))
+          ), this.requestFrame();
           break;
         case "disabled":
           this.main?.tagName === "BUTTON" && (this.main.disabled = this.hasAttribute("disabled")), this.removeButton && (this.removeButton.disabled = this.hasAttribute("disabled")), this.syncHostFocusTarget();
@@ -5183,7 +5033,9 @@ class Ti extends M {
   // Called once after the shadow DOM and canvas exist. Wire events here.
   onBuilt() {
     if (this.tabIndex = 0, this.setAttribute("role", "button"), this.trackFocus(this), this.addEventListener("pointerdown", this), this.addEventListener("pointerup", this), this.addEventListener("pointercancel", this), this.addEventListener("pointerleave", this), this.addEventListener("keydown", this), this.addEventListener("keyup", this), this.addEventListener("blur", this), this.armKeyMirror(), !this.reducedMotion) {
-      const t = [...document.querySelectorAll("jelly-kbd")].indexOf(this);
+      const t = [...document.querySelectorAll("jelly-kbd")].indexOf(
+        this
+      );
       this.addEventListener("pointerenter", (e) => {
         this.updateHoverPointer(e.clientX, e.clientY), this.startHoverLoop(t);
       }), this.addEventListener("pointermove", (e) => {
@@ -5304,7 +5156,6 @@ class Ii extends HTMLElement {
       <style>${Fi}</style>
 
       ${e ? `<div class="labelled${t ? " vertical" : ""}"><span class="label">${H(e)}</span></div>` : '<div class="line"></div>'}
-
     `;
   }
 }
@@ -5345,7 +5196,10 @@ class Pi extends HTMLElement {
       j(this);
       return;
     }
-    this.head?.setAttribute("aria-expanded", String(this.hasAttribute("open")));
+    this.head?.setAttribute(
+      "aria-expanded",
+      String(this.hasAttribute("open"))
+    );
   }
   // Flip (or force) the open state; fires exactly one toggle per real change
   toggle(t) {
@@ -5380,9 +5234,12 @@ class Ri extends HTMLElement {
       <style>${Bi}</style>
 
       <slot></slot>
-    `, this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => {
-      O(this, "jelly-collapsible");
-    }), O(this, "jelly-collapsible"), this.addEventListener("toggle", (t) => {
+    `, this.shadowRoot.querySelector("slot").addEventListener(
+      "slotchange",
+      () => {
+        O(this, "jelly-collapsible");
+      }
+    ), O(this, "jelly-collapsible"), this.addEventListener("toggle", (t) => {
       if (!this.hasAttribute("single"))
         return;
       const e = t.target;
@@ -5431,7 +5288,10 @@ class qi extends HTMLElement {
     if (z(), this.built)
       return;
     this.built = !0;
-    const t = [...this.querySelectorAll("jelly-tab-panel")], e = Math.max(0, t.findIndex((r) => r.hasAttribute("active"))), i = t[e], s = this.getAttribute("value") ?? (i ? this.panelValue(i, e) : "0");
+    const t = [...this.querySelectorAll("jelly-tab-panel")], e = Math.max(
+      0,
+      t.findIndex((r) => r.hasAttribute("active"))
+    ), i = t[e], s = this.getAttribute("value") ?? (i ? this.panelValue(i, e) : "0");
     this.attachShadow({ mode: "open", delegatesFocus: !0 }), this.shadowRoot.innerHTML = `
       <style>${Vi}</style>
 
@@ -5440,12 +5300,13 @@ class qi extends HTMLElement {
           ${t.map(
       (r, o) => `<jelly-segment value="${H(this.panelValue(r, o))}">${H(this.panelLabel(r, o))}</jelly-segment>`
     ).join("")}
-
         </jelly-segmented>
       </div>
 
       <div class="panels"><slot></slot></div>
-    `, this.segmented = this.shadowRoot.querySelector("jelly-segmented"), this.current = null, this.syncSize(), this.segmented.addEventListener("change", (r) => {
+    `, this.segmented = this.shadowRoot.querySelector(
+      "jelly-segmented"
+    ), this.current = null, this.syncSize(), this.segmented.addEventListener("change", (r) => {
       r.stopPropagation(), this.activate(this.segmented.value, !0);
     }), this.activate(s, !1);
   }
@@ -5485,7 +5346,10 @@ class qi extends HTMLElement {
       const l = this.panelValue(r, o) === String(t);
       r.hidden = !l, r.toggleAttribute("active", l), r.tabIndex = l ? 0 : -1, l && e && !I() && r.animate?.(
         [
-          { opacity: 0, transform: "translateY(4px) scale(0.995)" },
+          {
+            opacity: 0,
+            transform: "translateY(4px) scale(0.995)"
+          },
           { opacity: 1, transform: "translateY(0) scale(1)" }
         ],
         { duration: 220, easing: "cubic-bezier(.22,1,.36,1)" }
@@ -5519,7 +5383,13 @@ class Xi extends HTMLElement {
   }
   // Lifecycle method: Called automatically when the element is appended to the DOM
   connectedCallback() {
-    z(), j(this), !this.built && (this.built = !0, this.attachShadow({ mode: "open", delegatesFocus: !0 }), this.render(), this.mutationObserver = new MutationObserver(() => this.render()), this.mutationObserver.observe(this, { childList: !0, characterData: !0, subtree: !0, attributes: !0, attributeFilter: ["href"] }));
+    z(), j(this), !this.built && (this.built = !0, this.attachShadow({ mode: "open", delegatesFocus: !0 }), this.render(), this.mutationObserver = new MutationObserver(() => this.render()), this.mutationObserver.observe(this, {
+      childList: !0,
+      characterData: !0,
+      subtree: !0,
+      attributes: !0,
+      attributeFilter: ["href"]
+    }));
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -5540,7 +5410,6 @@ class Xi extends HTMLElement {
 
       <nav aria-label="Breadcrumb"><ol>${e.map((i, s) => {
       const r = s === e.length - 1;
-
       return (r ? `<li class="current" aria-current="page">${H(i.text)}</li>` : `<li><a href="${H(i.href || "#")}">${H(i.text)}</a></li>`) + (r ? "" : '<li class="separator" aria-hidden="true">›</li>');
     }).join("")}</ol></nav>
     `;
@@ -5572,7 +5441,10 @@ class Wi extends HTMLElement {
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
-    window.removeEventListener("jelly-theme-change", this.onDirectionChange);
+    window.removeEventListener(
+      "jelly-theme-change",
+      this.onDirectionChange
+    );
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback(t) {
@@ -5584,7 +5456,10 @@ class Wi extends HTMLElement {
   }
   // The current page, clamped into range
   get page() {
-    return Math.min(this.total, Math.max(1, parseInt(this.getAttribute("page") ?? "", 10) || 1));
+    return Math.min(
+      this.total,
+      Math.max(1, parseInt(this.getAttribute("page") ?? "", 10) || 1)
+    );
   }
   set page(t) {
     this.setAttribute("page", String(t));
@@ -5606,22 +5481,42 @@ class Wi extends HTMLElement {
   }
   // Rebuild the row of page buttons for the current state
   render() {
-    const t = this.page, e = C(this), i = (o, l, { current: c = !1, disabled: h = !1, name: a = null } = {}) => {
+    const t = this.page, e = C(this), i = (o, l, {
+      current: c = !1,
+      disabled: h = !1,
+      name: a = null
+    } = {}) => {
       const d = document.createElement("jelly-button");
       return d.setAttribute("size", this.buttonSize), d.textContent = o, c && d.setAttribute("aria-current", "page"), h && d.setAttribute("disabled", ""), a && d.setAttribute("label", a), d.addEventListener("click", () => this.go(l)), d;
     }, s = e ? "›" : "‹", r = e ? "‹" : "›";
-    this.row.textContent = "", this.row.appendChild(i(s, t - 1, { disabled: t === 1, name: "Previous page" }));
+    this.row.textContent = "", this.row.appendChild(
+      i(s, t - 1, {
+        disabled: t === 1,
+        name: "Previous page"
+      })
+    );
     for (const o of this.pagesToShow())
       if (o === "…") {
         const l = document.createElement("span");
         l.className = "gap", l.textContent = "…", l.setAttribute("aria-hidden", "true"), this.row.appendChild(l);
       } else
-        this.row.appendChild(i(String(o), o, { current: o === t }));
-    this.row.appendChild(i(r, t + 1, { disabled: t === this.total, name: "Next page" }));
+        this.row.appendChild(
+          i(String(o), o, { current: o === t })
+        );
+    this.row.appendChild(
+      i(r, t + 1, {
+        disabled: t === this.total,
+        name: "Next page"
+      })
+    );
   }
   // Route programmatic host focus onto the current (or first enabled) page
   focus(t) {
-    const e = this.shadowRoot.querySelector("[aria-current]"), i = [...this.shadowRoot.querySelectorAll("jelly-button")].find((s) => !s.hasAttribute("disabled"));
+    const e = this.shadowRoot.querySelector(
+      "[aria-current]"
+    ), i = [
+      ...this.shadowRoot.querySelectorAll("jelly-button")
+    ].find((s) => !s.hasAttribute("disabled"));
     (e || i)?.focus(t);
   }
 }
@@ -5663,7 +5558,10 @@ class Yi extends HTMLElement {
       const i = e.reduce((s, r) => s + r, 0) || 1;
       return e.map((s) => s / i);
     };
-    return this.isBothAxes ? { cols: t(this.colGrow), rows: t(this.rowGrow) } : t(this.grow);
+    return this.isBothAxes ? {
+      cols: t(this.colGrow),
+      rows: t(this.rowGrow)
+    } : t(this.grow);
   }
   // Rebuild panes and dividers for the current direction
   render() {
@@ -5688,9 +5586,17 @@ class Yi extends HTMLElement {
       <style>${Ni}</style>
 
       <div class="container" part="container">${e}</div>
-    `, this.container = this.shadowRoot.querySelector(".container"), this.shadowRoot.querySelectorAll(".divider").forEach((i) => {
-      i.addEventListener("pointerdown", (s) => this.onDividerDown(s, i)), i.addEventListener("keydown", (s) => this.onDividerKey(s, Number(i.dataset.i)));
-    }), this.syncDirection(), this.syncSeparatorValues();
+    `, this.container = this.shadowRoot.querySelector(".container"), this.shadowRoot.querySelectorAll(".divider").forEach(
+      (i) => {
+        i.addEventListener(
+          "pointerdown",
+          (s) => this.onDividerDown(s, i)
+        ), i.addEventListener(
+          "keydown",
+          (s) => this.onDividerKey(s, Number(i.dataset.i))
+        );
+      }
+    ), this.syncDirection(), this.syncSeparatorValues();
   }
   // Keep aria-orientation (and the 2×2 tracks) in sync with the direction
   syncDirection() {
@@ -5710,13 +5616,18 @@ class Yi extends HTMLElement {
    */
   syncSeparatorValues() {
     const t = (e, i) => String(Math.round(e / (e + i) * 100));
-    for (const e of this.shadowRoot?.querySelectorAll(".divider") || [])
+    for (const e of this.shadowRoot?.querySelectorAll(
+      ".divider"
+    ) || [])
       if (e.setAttribute("aria-valuemin", "0"), e.setAttribute("aria-valuemax", "100"), this.isBothAxes) {
         const i = e.dataset.axis === "x" ? this.colGrow : this.rowGrow;
         e.setAttribute("aria-valuenow", t(i[0], i[1]));
       } else {
         const i = Number(e.dataset.i);
-        e.setAttribute("aria-valuenow", t(this.grow[i], this.grow[i + 1]));
+        e.setAttribute(
+          "aria-valuenow",
+          t(this.grow[i], this.grow[i + 1])
+        );
       }
   }
   // Start a divider drag (single-axis layouts)
@@ -5795,7 +5706,19 @@ class Yi extends HTMLElement {
   }
   // Push the track weights onto the 2×2 grid
   applyBoth() {
-    this.container?.style.setProperty("--jelly-resizable-col-a", `${this.colGrow[0]}fr`), this.container?.style.setProperty("--jelly-resizable-col-b", `${this.colGrow[1]}fr`), this.container?.style.setProperty("--jelly-resizable-row-a", `${this.rowGrow[0]}fr`), this.container?.style.setProperty("--jelly-resizable-row-b", `${this.rowGrow[1]}fr`), this.syncSeparatorValues();
+    this.container?.style.setProperty(
+      "--jelly-resizable-col-a",
+      `${this.colGrow[0]}fr`
+    ), this.container?.style.setProperty(
+      "--jelly-resizable-col-b",
+      `${this.colGrow[1]}fr`
+    ), this.container?.style.setProperty(
+      "--jelly-resizable-row-a",
+      `${this.rowGrow[0]}fr`
+    ), this.container?.style.setProperty(
+      "--jelly-resizable-row-b",
+      `${this.rowGrow[1]}fr`
+    ), this.syncSeparatorValues();
   }
   // Route programmatic host focus onto the first divider
   focus(t) {
@@ -5826,7 +5749,12 @@ class Zi extends HTMLElement {
       <slot></slot>
 
       <div class="bubble" role="tooltip" id="${t}"><slot name="content"></slot></div>
-    `, this.bubble = this.shadowRoot.querySelector(".bubble"), this.contentSlot = this.shadowRoot.querySelector('slot[name="content"]'), this.syncText(), this.addEventListener("pointerenter", this), this.addEventListener("pointerleave", this), this.addEventListener("focusin", this), this.addEventListener("focusout", this), this.shadowRoot.querySelector("slot:not([name])").addEventListener("slotchange", () => this.syncDescription()), this.syncDescription();
+    `, this.bubble = this.shadowRoot.querySelector(".bubble"), this.contentSlot = this.shadowRoot.querySelector(
+      'slot[name="content"]'
+    ), this.syncText(), this.addEventListener("pointerenter", this), this.addEventListener("pointerleave", this), this.addEventListener("focusin", this), this.addEventListener("focusout", this), this.shadowRoot.querySelector("slot:not([name])").addEventListener(
+      "slotchange",
+      () => this.syncDescription()
+    ), this.syncDescription();
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -5918,12 +5846,18 @@ class Ji extends HTMLElement {
 
       <div class="panel" part="panel" role="dialog" aria-modal="false" tabindex="-1"><slot name="content"></slot></div>
     `, this.panel = this.shadowRoot.querySelector(".panel");
-    const t = this.shadowRoot.querySelector('slot[name="trigger"]');
+    const t = this.shadowRoot.querySelector(
+      'slot[name="trigger"]'
+    );
     t.addEventListener("click", () => this.toggle()), t.addEventListener("slotchange", () => this.reflectTrigger()), this.reflectTrigger(), this.syncLabel();
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
-    this.isOpen && (this.isOpen = !1, this.untrack?.(), this.untrack = null, document.removeEventListener("pointerdown", this.onDocumentPointer, !0), document.removeEventListener("keydown", this.onDocumentKey), this.panel?.removeAttribute("data-open"));
+    this.isOpen && (this.isOpen = !1, this.untrack?.(), this.untrack = null, document.removeEventListener(
+      "pointerdown",
+      this.onDocumentPointer,
+      !0
+    ), document.removeEventListener("keydown", this.onDocumentKey), this.panel?.removeAttribute("data-open"));
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback(t) {
@@ -5944,7 +5878,9 @@ class Ji extends HTMLElement {
   }
   // The current trigger, resolved live from the slot (never stale)
   get trigger() {
-    return this.shadowRoot?.querySelector('slot[name="trigger"]')?.assignedElements()[0] || this;
+    return this.shadowRoot?.querySelector(
+      'slot[name="trigger"]'
+    )?.assignedElements()[0] || this;
   }
   // Mark the trigger as opening a dialog and mirror the open state onto it
   reflectTrigger() {
@@ -5968,13 +5904,23 @@ class Ji extends HTMLElement {
     if (!this.panel)
       return;
     const t = this.getAttribute("placement") || "bottom", e = this.trigger;
-    U(e, this.panel, t, 8), this.untrack?.(), this.untrack = ft(e, this.panel, t, 8, () => this.close({ returnFocus: !1 }));
+    U(e, this.panel, t, 8), this.untrack?.(), this.untrack = ft(
+      e,
+      this.panel,
+      t,
+      8,
+      () => this.close({ returnFocus: !1 })
+    );
   }
   // Close the panel. Hands focus back to the trigger for a user-driven close
   // (Escape, click-outside, selection); scroll-out closes pass returnFocus:
   // false so the page doesn't jump back to the now-off-screen trigger.
   close({ returnFocus: t = !0 } = {}) {
-    this.isOpen && (this.isOpen = !1, this.untrack?.(), this.untrack = null, document.removeEventListener("pointerdown", this.onDocumentPointer, !0), document.removeEventListener("keydown", this.onDocumentKey), xt(this.panel, () => this.panel.removeAttribute("data-open")), t && this.trigger?.focus?.(), g(this, "close"));
+    this.isOpen && (this.isOpen = !1, this.untrack?.(), this.untrack = null, document.removeEventListener(
+      "pointerdown",
+      this.onDocumentPointer,
+      !0
+    ), document.removeEventListener("keydown", this.onDocumentKey), xt(this.panel, () => this.panel.removeAttribute("data-open")), t && this.trigger?.focus?.(), g(this, "close"));
   }
   // Route programmatic host focus onto the trigger
   focus(t) {
@@ -6016,12 +5962,27 @@ class Qi extends HTMLElement {
 
       <div class="menu" part="menu" role="menu"></div>
     `, this.menu = this.shadowRoot.querySelector(".menu");
-    const t = this.shadowRoot.querySelector('slot[name="trigger"]');
-    t.addEventListener("click", () => this.toggle()), t.addEventListener("slotchange", () => this.reflectTrigger()), this.reflectTrigger(), this.menu.addEventListener("click", (e) => this.pick(this.rowFrom(e))), this.menu.addEventListener("pointermove", (e) => this.highlight(this.rowFrom(e))), this.menu.addEventListener("keydown", (e) => this.onKey(e));
+    const t = this.shadowRoot.querySelector(
+      'slot[name="trigger"]'
+    );
+    t.addEventListener("click", () => this.toggle()), t.addEventListener("slotchange", () => this.reflectTrigger()), this.reflectTrigger(), this.menu.addEventListener(
+      "click",
+      (e) => this.pick(this.rowFrom(e))
+    ), this.menu.addEventListener(
+      "pointermove",
+      (e) => this.highlight(this.rowFrom(e))
+    ), this.menu.addEventListener(
+      "keydown",
+      (e) => this.onKey(e)
+    );
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
-    this.isOpen && (this.isOpen = !1, this.untrack?.(), this.untrack = null, document.removeEventListener("pointerdown", this.onDocumentPointer, !0), this.menu?.removeAttribute("data-open"));
+    this.isOpen && (this.isOpen = !1, this.untrack?.(), this.untrack = null, document.removeEventListener(
+      "pointerdown",
+      this.onDocumentPointer,
+      !0
+    ), this.menu?.removeAttribute("data-open"));
   }
   // Lifecycle method: Fires when observed HTML attributes change dynamically
   attributeChangedCallback(t) {
@@ -6033,7 +5994,9 @@ class Qi extends HTMLElement {
   }
   // The current trigger, resolved live from the slot
   get trigger() {
-    return this.shadowRoot?.querySelector('slot[name="trigger"]')?.assignedElements()[0] || this;
+    return this.shadowRoot?.querySelector(
+      'slot[name="trigger"]'
+    )?.assignedElements()[0] || this;
   }
   // Mark the trigger as a menu button and mirror the open state onto it, so
   // screen readers announce that it opens a menu and whether it is expanded
@@ -6057,9 +6020,13 @@ class Qi extends HTMLElement {
   open() {
     if (this.isOpen)
       return;
-    this.isOpen = !0, this.reflectTrigger(), this.items = [...this.querySelectorAll("jelly-menu-item")], this.menu.innerHTML = this.items.map((i, s) => `<div class="item" role="menuitem" tabindex="-1" data-i="${s}"
-        ${i.disabled ? 'aria-disabled="true"' : ""} ${i.hasAttribute("danger") ? "data-danger" : ""}>${i.innerHTML}</div>`).join(""), this.menu.setAttribute("data-open", ""), this.place(), vt(this.menu, "top center"), document.addEventListener("pointerdown", this.onDocumentPointer, !0);
-    const t = this.rows(), e = t.findIndex((i) => i.getAttribute("aria-disabled") !== "true");
+    this.isOpen = !0, this.reflectTrigger(), this.items = [...this.querySelectorAll("jelly-menu-item")], this.menu.innerHTML = this.items.map(
+      (i, s) => `<div class="item" role="menuitem" tabindex="-1" data-i="${s}"
+        ${i.disabled ? 'aria-disabled="true"' : ""} ${i.hasAttribute("danger") ? "data-danger" : ""}>${i.innerHTML}</div>`
+    ).join(""), this.menu.setAttribute("data-open", ""), this.place(), vt(this.menu, "top center"), document.addEventListener("pointerdown", this.onDocumentPointer, !0);
+    const t = this.rows(), e = t.findIndex(
+      (i) => i.getAttribute("aria-disabled") !== "true"
+    );
     this.active = Math.max(0, e), t[this.active]?.focus({ preventScroll: !0 }), g(this, "open");
   }
   // Anchor the menu to the trigger and keep it pinned on scroll
@@ -6067,13 +6034,23 @@ class Qi extends HTMLElement {
     if (!this.menu)
       return;
     const t = this.trigger, e = this.getAttribute("placement") || "bottom";
-    U(t, this.menu, e, 8), this.untrack?.(), this.untrack = ft(t, this.menu, e, 8, () => this.close({ returnFocus: !1 }));
+    U(t, this.menu, e, 8), this.untrack?.(), this.untrack = ft(
+      t,
+      this.menu,
+      e,
+      8,
+      () => this.close({ returnFocus: !1 })
+    );
   }
   // Close the menu. Hands focus back to the trigger for a user-driven close
   // (Escape, click-outside, selection); scroll-out closes pass returnFocus:
   // false so the page doesn't jump back to the now-off-screen trigger.
   close({ returnFocus: t = !0 } = {}) {
-    this.isOpen && (this.isOpen = !1, this.reflectTrigger(), this.untrack?.(), this.untrack = null, document.removeEventListener("pointerdown", this.onDocumentPointer, !0), xt(this.menu, () => this.menu.removeAttribute("data-open")), t && this.trigger?.focus?.(), g(this, "close"));
+    this.isOpen && (this.isOpen = !1, this.reflectTrigger(), this.untrack?.(), this.untrack = null, document.removeEventListener(
+      "pointerdown",
+      this.onDocumentPointer,
+      !0
+    ), xt(this.menu, () => this.menu.removeAttribute("data-open")), t && this.trigger?.focus?.(), g(this, "close"));
   }
   // Pointer hover mirrors the roving focus onto the hovered row
   highlight(t) {
@@ -6155,9 +6132,12 @@ class es extends HTMLElement {
       </div>
     `, this.dialog = this.shadowRoot.querySelector(".dialog"), this.wrap = this.shadowRoot.querySelector(".wrap"), this.wrap.addEventListener("click", (t) => {
       t.target === this.wrap && (this.open = !1);
-    }), this.shadowRoot.querySelector(".close").addEventListener("click", () => {
-      this.open = !1;
-    }));
+    }), this.shadowRoot.querySelector(".close").addEventListener(
+      "click",
+      () => {
+        this.open = !1;
+      }
+    ));
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -6182,7 +6162,10 @@ class es extends HTMLElement {
    */
   syncLabel() {
     const t = this.getAttribute("label"), e = this.querySelector("h1, h2, h3, [data-dialog-title]");
-    t ? this.dialog.setAttribute("aria-label", t) : e && this.dialog.setAttribute("aria-label", (e.textContent ?? "").trim());
+    t ? this.dialog.setAttribute("aria-label", t) : e && this.dialog.setAttribute(
+      "aria-label",
+      (e.textContent ?? "").trim()
+    );
   }
   // Everything that happens when the open attribute arrives
   afterOpen() {
@@ -6249,11 +6232,17 @@ class ss extends HTMLElement {
         <button class="close" part="close" aria-label="Close">✕</button>
         <slot></slot>
       </div>
-    `, this.sheet = this.shadowRoot.querySelector(".sheet"), this.shadowRoot.querySelector(".backdrop").addEventListener("click", () => {
-      this.open = !1;
-    }), this.shadowRoot.querySelector(".close").addEventListener("click", () => {
-      this.open = !1;
-    }));
+    `, this.sheet = this.shadowRoot.querySelector(".sheet"), this.shadowRoot.querySelector(".backdrop").addEventListener(
+      "click",
+      () => {
+        this.open = !1;
+      }
+    ), this.shadowRoot.querySelector(".close").addEventListener(
+      "click",
+      () => {
+        this.open = !1;
+      }
+    ));
   }
   // Lifecycle method: Called automatically when the element leaves the DOM
   disconnectedCallback() {
@@ -6274,7 +6263,10 @@ class ss extends HTMLElement {
   // The accessible name: explicit label attribute, else the first heading
   syncLabel() {
     const t = this.getAttribute("label"), e = this.querySelector("h1, h2, h3, [data-drawer-title]");
-    t ? this.sheet.setAttribute("aria-label", t) : e && this.sheet.setAttribute("aria-label", (e.textContent ?? "").trim());
+    t ? this.sheet.setAttribute("aria-label", t) : e && this.sheet.setAttribute(
+      "aria-label",
+      (e.textContent ?? "").trim()
+    );
   }
   // Everything that happens when the open attribute arrives
   afterOpen() {
@@ -6296,9 +6288,21 @@ class ss extends HTMLElement {
   // Off-screen / overshoot transforms for the resolved physical side
   frames() {
     const t = {
-      right: { off: "translateX(115%)", over: "translateX(-1%)", rest: "translateX(0)" },
-      left: { off: "translateX(-115%)", over: "translateX(1%)", rest: "translateX(0)" },
-      bottom: { off: "translateY(115%)", over: "translateY(-1%)", rest: "translateY(0)" }
+      right: {
+        off: "translateX(115%)",
+        over: "translateX(-1%)",
+        rest: "translateX(0)"
+      },
+      left: {
+        off: "translateX(-115%)",
+        over: "translateX(1%)",
+        rest: "translateX(0)"
+      },
+      bottom: {
+        off: "translateY(115%)",
+        over: "translateY(-1%)",
+        rest: "translateY(0)"
+      }
     };
     return t[this.resolvedSide] || t.right;
   }

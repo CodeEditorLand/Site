@@ -4,12 +4,19 @@
 git submodule update --init --remote --recursive --merge
 
 # Keep the vendored JellyUI submodule on its main branch (never detached).
-if ! git -C Vendor/JellyUI symbolic-ref -q HEAD >/dev/null 2>&1; then
-	if git -C Vendor/JellyUI merge-base --is-ancestor main HEAD >/dev/null 2>&1; then
-		git -C Vendor/JellyUI branch -f main HEAD
+# The hook fires both at the parent root (WebSite checkout/merge) and inside
+# the submodule itself (a checkout triggered by submodule update / the vendor
+# build script) - resolve the target repo from the hook's actual root.
+case "$(git rev-parse --show-toplevel 2>/dev/null)" in
+	*/Vendor/JellyUI) Jelly="." ;;
+	*) Jelly="Vendor/JellyUI" ;;
+esac
+if ! git -C "$Jelly" symbolic-ref -q HEAD >/dev/null 2>&1; then
+	if git -C "$Jelly" merge-base --is-ancestor main HEAD >/dev/null 2>&1; then
+		git -C "$Jelly" branch -f main HEAD
 	fi
-	if git -C Vendor/JellyUI merge-base --is-ancestor HEAD main >/dev/null 2>&1; then
-		git -C Vendor/JellyUI checkout main >/dev/null 2>&1
+	if git -C "$Jelly" merge-base --is-ancestor HEAD main >/dev/null 2>&1; then
+		git -C "$Jelly" checkout main >/dev/null 2>&1
 	else
 		echo "WARNING: JellyUI HEAD diverged from main - left detached" >&2
 	fi
