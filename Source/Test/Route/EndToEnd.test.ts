@@ -577,4 +577,90 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			await rm(TempDirectory, { recursive: true, force: true });
 		}
 	});
+
+	it("doc slug case variants resolve to the canonical (Doc/Sky)", async () => {
+		const { mkdtemp, mkdir, writeFile, rm } =
+			await import("node:fs/promises");
+
+		const { join } = await import("node:path");
+
+		const { tmpdir } = await import("node:os");
+
+		const TempDirectory = await mkdtemp(join(tmpdir(), "e2e-slugcase-"));
+
+		try {
+			// Simulate Doc content collection build output (lowercase slugs)
+			for (const Page of [
+				"Doc/sky",
+				"Doc/telemetry/overview",
+				"Doc/telemetry/effect-otel",
+			]) {
+				await mkdir(join(TempDirectory, Page), { recursive: true });
+
+				await writeFile(
+					join(TempDirectory, Page, "index.html"),
+
+					"<html></html>",
+				);
+			}
+
+			await writeFile(join(TempDirectory, "index.html"), "<html></html>");
+
+			const RouteMap = await GenerateRouteMap(TempDirectory);
+
+			const CanonicalSet = new Set(RouteMap.Canonical);
+
+			// Slugs are canonical
+			expect(RouteMap.Canonical).toContain("/Doc/sky");
+
+			expect(RouteMap.Canonical).toContain(
+				"/Doc/telemetry/overview",
+			);
+
+			// Case variants map to the slug canonical
+			expect(RouteMap.Variant["/Doc/Sky"]).toBe("/Doc/sky");
+
+			expect(RouteMap.Variant["/Doc/Sky/"]).toBe("/Doc/sky");
+
+			expect(RouteMap.Variant["/doc/Sky"]).toBe("/Doc/sky");
+
+			expect(RouteMap.Variant["/DOC/sky"]).toBe("/Doc/sky");
+
+			expect(RouteMap.Variant["/DOC/SKY"]).toBe("/Doc/sky");
+
+			expect(
+				RouteMap.Variant["/Doc/Telemetry/Overview"],
+			).toBe("/Doc/telemetry/overview");
+
+			expect(
+				RouteMap.Variant["/Doc/telemetry/Overview"],
+			).toBe("/Doc/telemetry/overview");
+
+			// SW resolution: mixed-case slug redirects to canonical
+			expect(
+				ResolveRoute("/Doc/Sky", CanonicalSet, RouteMap.Variant),
+			).toBe("/Doc/sky");
+
+			expect(
+				ResolveRoute("/Doc/Sky/", CanonicalSet, RouteMap.Variant),
+			).toBe("/Doc/sky");
+
+			expect(
+				ResolveRoute(
+					"/Doc/Telemetry/Overview",
+
+					CanonicalSet,
+
+					RouteMap.Variant,
+				),
+			).toBe("/Doc/telemetry/overview");
+
+			// The canonical slug itself does not redirect
+			expect(
+				ResolveRoute("/Doc/sky", CanonicalSet, RouteMap.Variant),
+			).toBeNull();
+		} finally {
+			await rm(TempDirectory, { recursive: true, force: true });
+		}
+	});
 });

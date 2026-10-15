@@ -79,29 +79,34 @@ jelly-badge:not(:defined) {
 	color: var(--SecondaryForeground);
 }
 
-/* Jelly UI radius custom properties (shared by all components) */
---jelly-radius: 0;
---jelly-accordion-radius: 0;
---jelly-alert-radius: 0;
---jelly-badge-radius: 0;
---jelly-breadcrumbs-radius: 0;
---jelly-button-radius: 0;
---jelly-checkbox-radius: 0;
---jelly-chip-radius: 0;
---jelly-collapsible-radius: 0;
---jelly-dialog-radius: 0;
---jelly-drawer-radius: 0;
---jelly-icon-button-radius: 0;
---jelly-input-radius: 0;
---jelly-menu-item-radius: 0;
---jelly-menu-radius: 0;
---jelly-otp-radius: 0;
---jelly-popover-radius: 0;
---jelly-select-radius: 0;
---jelly-select-row-radius: 0;
---jelly-textarea-radius: 0;
---jelly-toast-radius: 0;
---jelly-tooltip-radius: 0;
+/* Jelly UI radius custom properties (shared by all components).
+   Must live inside :root - bare top-level declarations are invalid CSS
+   (browsers ignore them and lightningcss rejects them with
+   "Invalid qualified rule" during the compress build step). */
+:root {
+	--jelly-radius: 0;
+	--jelly-accordion-radius: 0;
+	--jelly-alert-radius: 0;
+	--jelly-badge-radius: 0;
+	--jelly-breadcrumbs-radius: 0;
+	--jelly-button-radius: 0;
+	--jelly-checkbox-radius: 0;
+	--jelly-chip-radius: 0;
+	--jelly-collapsible-radius: 0;
+	--jelly-dialog-radius: 0;
+	--jelly-drawer-radius: 0;
+	--jelly-icon-button-radius: 0;
+	--jelly-input-radius: 0;
+	--jelly-menu-item-radius: 0;
+	--jelly-menu-radius: 0;
+	--jelly-otp-radius: 0;
+	--jelly-popover-radius: 0;
+	--jelly-select-radius: 0;
+	--jelly-select-row-radius: 0;
+	--jelly-textarea-radius: 0;
+	--jelly-toast-radius: 0;
+	--jelly-tooltip-radius: 0;
+}
 
 /* Emoji and symbol fallback fonts for special characters like ★☆ */
 body,

@@ -371,6 +371,81 @@ export const GeneratePathVariant = (CanonicalPath: string): string[] => {
 	return [...Result];
 };
 
+// ─── Case-only variants for slug-built paths (Doc/Blog/Contact content) ───
+// The full GeneratePathVariant set (plurals, compounds, flat forms) stays
+// reserved for the hand-listed canonical pages: applying it to every content
+// slug would push the Cloudflare _redirects rule count near its 2000-rule cap.
+// Slug pages get the case forms humans actually type:
+//   - full UPPERCASE                  (/DOC/SKY)
+//   - first segment UPPER, rest built (/DOC/sky)
+//   - non-first segment Title         (/doc/Sky with rest lowercase,
+//                                      /Doc/Sky with rest as-built)
+//   - all non-first segments Title    (/Doc/Telemetry/Overview)
+// The built path itself is the canonical and is excluded.
+export const GenerateSlugVariants = (Path: string): string[] => {
+	if (Path === "/") return [];
+
+	const Segments = Path.slice(1).split("/");
+
+	if (Segments.length === 0) return [];
+
+	const Result = new Set<string>();
+
+	const Join = (Parts: string[]): string => "/" + Parts.join("/");
+
+	const TitleCase = (Segment: string): string =>
+		Segment.charAt(0).toUpperCase() + Segment.slice(1).toLowerCase();
+
+	// Full UPPERCASE
+	Result.add(Join(Segments.map((S) => S.toUpperCase())));
+
+	// First segment UPPERCASE, rest as-built
+	const FirstUpper = [...Segments];
+
+	FirstUpper[0] = FirstUpper[0]!.toUpperCase();
+
+	Result.add(Join(FirstUpper));
+
+	const LowerSegs = Segments.map((S) => S.toLowerCase());
+
+	// Non-first segments: TitleCase with rest lowercase (/doc/Sky) and
+	// TitleCase with rest as-built (/Doc/Sky, /Doc/Telemetry/overview)
+	for (let I = 1; I < Segments.length; I++) {
+		const Title = TitleCase(Segments[I]!);
+
+		const RestLower = [...LowerSegs];
+
+		RestLower[I] = Title;
+
+		Result.add(Join(RestLower));
+
+		const RestBuilt = [...Segments];
+
+		RestBuilt[I] = Title;
+
+		Result.add(Join(RestBuilt));
+	}
+
+	// All non-first segments TitleCase, rest as-built (/Doc/Telemetry/Overview)
+	if (Segments.length > 1) {
+		Result.add(
+			Join(Segments.map((S, I) => (I === 0 ? S : TitleCase(S)))),
+		);
+	}
+
+	// Trailing-slash duplicates for every entry found so far
+	for (const Variant of [...Result]) {
+		if (!Variant.endsWith("/")) Result.add(Variant + "/");
+	}
+
+	// The canonical itself is not a variant
+	Result.delete(Path);
+
+	Result.delete(Path + "/");
+
+	return [...Result];
+};
+
 // ─── Route map generator ───
 
 const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
@@ -423,17 +498,19 @@ const GenerateRouteMap = async (OutputDirectory: string): Promise<RouteMap> => {
 
 		if (Built === "/404") continue;
 
-		if (CanonicalPath.has(Built)) {
-			Canonical.push(Built);
+		Canonical.push(Built);
 
-			// Generate simplified variants
-			for (const VariantPath of GeneratePathVariant(Built)) {
-				if (!Variant[VariantPath]) {
-					Variant[VariantPath] = Built;
-				}
+		// Full simplified variants for the hand-listed canonical pages;
+		// case-only variants for slug pages (Doc/Blog/Contact content) to
+		// keep the Cloudflare _redirects rule count bounded.
+		const VariantPaths = CanonicalPath.has(Built)
+			? GeneratePathVariant(Built)
+			: GenerateSlugVariants(Built);
+
+		for (const VariantPath of VariantPaths) {
+			if (!Variant[VariantPath]) {
+				Variant[VariantPath] = Built;
 			}
-		} else {
-			Canonical.push(Built);
 		}
 	}
 
