@@ -4,50 +4,25 @@ import { RichText } from "../UI/RichText.js";
 
 import { DynamicButton } from "./DynamicButton.js";
 
+import { RouteText, StampText, StatusText } from "../Brand/SemanticLedger.js";
+
+import { ElementInk } from "../../Function/Theme/SemanticColor.js";
+
 // RichText is used with Terms={true} throughout so element names, tool names,
 // protocols, and licenses are auto-badged with logos from the term dictionary.
 import type Property from "./Interface/Property/Pricing.js";
 
 /**
- * Semantic color map for the six core elements.
- * Extracts the element name from the first segment before the emoji.
+ * Semantic color map for the elements (C17): canonical per-element inks
+ * from Source/Function/Theme/SemanticColor.ts - Cocoon green, Echo yellow,
+ * Mountain rust red, Vine gRPC green, Grove WASM purple, the service
+ * family (Air/Mist/Worker/SideCar) blue, etc. Dark -600/-700 ink shades
+ * on the white card, per the daylight rule.
  */
-const ElementColorMap: Record<string, string> = {
-	Mountain: "var(--ExtensionRust)",
-
-	Cocoon: "var(--ExtensionEffectTypeScript)",
-
-	Wind: "var(--LanguageTypeScript)",
-
-	Sky: "var(--ExtensionAstro)",
-
-	Air: "var(--ExtensionTauri)",
-
-	Echo: "var(--SpineTCP)",
-
-	Common: "var(--LanguageRust)",
-
-	Vine: "var(--SpinegRPC)",
-
-	Grove: "var(--SpineWASM)",
-
-	Mist: "var(--SpineIPC)",
-
-	Rest: "var(--ToolOxc)",
-
-	Output: "var(--ToolEsBuild)",
-
-	SideCar: "var(--RuntimeNode)",
-
-	Worker: "var(--LanguageJavaScript)",
-
-	Maintain: "var(--ToolBiome)",
-};
-
 const GetElementColor = (Line: string): string => {
 	const Name = Line.split(/[\s\u2001]/)[0];
 
-	return ElementColorMap[Name] ?? "var(--Primary)";
+	return ElementInk(Name) ?? "var(--Primary)";
 };
 
 /** Doc page paths for each element - used for quick links in pricing tiers. */
@@ -292,22 +267,22 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 											</span>
 
 											<span className="opacity-70">
-												〈{Manifest.Phase}〉
-											</span>
+																						<StampText Line={Manifest.Phase} />
+																					</span>
 
-											<span className="opacity-70">
-												/CHANNEL: PUBLIC
-											</span>
+																					<span className="opacity-70">
+																						<RouteText Line="/CHANNEL: PUBLIC" />
+																					</span>
 
-											<span
-												className={
-													Manifest.Status === "ACTIVE"
-														? "text-accent"
-														: ""
-												}
-											>
-												STATUS: {Manifest.Status}
-											</span>
+																					<span>
+																						<StatusText
+																							value={Manifest.Status}
+																							active={
+																								Manifest.Status ===
+																								"ACTIVE"
+																							}
+																						/>
+																					</span>
 
 											<span className="opacity-70">
 												TARGET: {Manifest.Target}

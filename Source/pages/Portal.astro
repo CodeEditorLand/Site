@@ -10,6 +10,13 @@ import { FieldRecordEvidence } from "../Component/Brand/FieldRecordEvidence";
 import { FieldRecordMetadata } from "../Component/Brand/FieldRecordMetadata";
 import { FieldRecordSeal } from "../Component/Brand/FieldRecordSeal";
 
+import {
+	ACCENT_GREEN,
+	GLYPH_INK,
+	KeywordInk,
+	ROUTE_KEYWORD_INK,
+} from "../Function/Theme/SemanticColor";
+
 const T = GetI18n();
 
 const MetaTitle = T("meta.portal.title", {
@@ -446,32 +453,45 @@ const TierIndexMap: Record<string, string> = {
 							</div>
 
 							<!-- Middle: Oversized stamp -->
-							<div class="mt-10">
-								<h1
-									class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
-								>
-									〈AUTHENTICATION TIERS〉
-								</h1>
-								<p
-									class="text-field-l mt-2 font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground"
-								>
-									〈FOUR MODES〉
-								</p>
-							</div>
+													<div class="mt-10">
+														<h1
+															class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
+														>
+															<span style={`color:${GLYPH_INK}`}>〈</span
+															><span
+																style={`color:${KeywordInk("AUTHENTICATION TIERS") ?? "var(--CardForeground)"}`}
+																>AUTHENTICATION TIERS</span
+															><span style={`color:${GLYPH_INK}`}>〉</span>
+														</h1>
+														<p
+															class="text-field-l mt-2 font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground"
+														>
+															<span style={`color:${GLYPH_INK}`}>〈</span
+															><span
+																style={`color:${KeywordInk("FOUR MODES") ?? "var(--CardForeground)"}`}
+																>FOUR MODES</span
+															><span style={`color:${GLYPH_INK}`}>〉</span>
+														</p>
+													</div>
 
-							<!-- Route block -->
-							<div class="mt-10">
-								<p
-									class="text-field-l font-mono font-normal leading-[1.05] text-card-foreground"
-								>
-									/PROTOCOL:HTTPS
-								</p>
-								<p
-									class="text-field-s mt-1 font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
-								>
-									CLOUD{"\u2001"}PROVIDER{"\u2001"}LOCAL-FIRST{"\u2001"}ENTERPRISE
-								</p>
-							</div>
+													<!-- Route block -->
+													<div class="mt-10">
+														<p
+															class="text-field-l font-mono font-normal leading-[1.05] text-card-foreground"
+														>
+															<span style={`color:${GLYPH_INK}`}>/</span
+															><span style={`color:${ROUTE_KEYWORD_INK}`}
+																>PROTOCOL</span
+															><span style={`color:var(--CardForeground)`}
+																>:HTTPS</span
+															>
+														</p>
+														<p
+															class="text-field-s mt-1 font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
+														>
+															CLOUD{"\u2001"}PROVIDER{"\u2001"}LOCAL-FIRST{"\u2001"}ENTERPRISE
+														</p>
+													</div>
 
 							<!-- Program + Status -->
 							<p
@@ -590,25 +610,37 @@ const TierIndexMap: Record<string, string> = {
 																</div>
 
 																{/* Tier stamp - ledger scale (not the hero text-field-xl) */}
-																<div class="mt-3 border-t border-border pt-3">
-																	<h2 class="font-mono text-xl font-medium uppercase tracking-[0.1em] text-card-foreground">
-																		〈{Tier.Title.toUpperCase()}〉
-																	</h2>
-																	<p class="mt-1 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-70">
-																		/PROTOCOL: {Tier.Protocol}
-																	</p>
-																</div>
+																														<div class="mt-3 border-t border-border pt-3">
+																															<h2 class="font-mono text-xl font-medium uppercase tracking-[0.1em] text-card-foreground">
+																																<span style={`color:${GLYPH_INK}`}>〈</span
+																																><span
+																																	style={`color:${KeywordInk(Tier.Title.toUpperCase()) ?? "var(--CardForeground)"}`}
+																																	>{Tier.Title.toUpperCase()}</span
+																																><span style={`color:${GLYPH_INK}`}>〉</span>
+																															</h2>
+																															<p class="mt-1 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground">
+																																<span style={`color:${GLYPH_INK}`}>/</span
+																																><span style={`color:${ROUTE_KEYWORD_INK}`}
+																																	>PROTOCOL</span
+																																><span style={`color:var(--CardForeground)`}
+																																	>: {Tier.Protocol}</span
+																																>
+																															</p>
+																														</div>
 
 																{/* Status + badge ledger rows */}
 																<div class="mt-3 border-t border-border pt-3">
 																	<div class="flex gap-3 py-0.5">
-																		<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-60">
-																			STATUS:
-																		</span>
-																		<span class="font-mono text-sm font-medium uppercase tracking-[0.15em] text-card-foreground">
-																			{StatusLabel}
-																		</span>
-																	</div>
+																															<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground">
+																																STATUS:
+																															</span>
+																															<span
+																																class="font-mono text-sm font-medium uppercase tracking-[0.15em]"
+																																style={`color:${StatusLabel === "ACTIVE" ? ACCENT_GREEN : "var(--CardForeground)"}`}
+																															>
+																																{StatusLabel}
+																															</span>
+																														</div>
 																	<div class="flex gap-3 py-0.5">
 																		<span class="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-60">
 																			BADGE:

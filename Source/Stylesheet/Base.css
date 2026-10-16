@@ -819,6 +819,24 @@
 		--land-shim-coverage-badge-bg: #2563eb;
 
 		--land-shim-coverage-badge-text: #ffffff;
+
+		/* ─────────────────────────────────────────────────────────────
+		 SEMANTIC STAMP INKS (C17) - dark -600/-700 shades for labels
+		 on light surfaces, for hues whose *Fore token is a dark-theme
+		 light color. Used by Source/Function/Theme/SemanticColor.ts.
+		 All >= 4.5:1 on white.
+		 ───────────────────────────────────────────────────────────── */
+		--SemanticRed: #b91c1c; /* rust / rpm ink */
+
+		--SemanticTeal: #155e75; /* electron teal ink */
+
+		--SemanticSky: #0369a1; /* route-keyword sky blue ink */
+
+		--SemanticBlueDeep: #1e40af; /* 64-bit / x64 darker blue */
+
+		--SemanticYellow: #854d0e; /* linux / esbuild / echo ink */
+
+		--SemanticGrayDeep: #44403c; /* apple silicon / appimage gray */
 	}
 }
 

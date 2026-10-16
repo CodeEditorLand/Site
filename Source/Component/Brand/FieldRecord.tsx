@@ -21,6 +21,8 @@ import {
 	type FieldRecordStatusState,
 } from "./FieldRecordStatus";
 
+import { RouteText, StampText } from "./SemanticLedger";
+
 export interface FieldRecordProps {
 	record: FieldRecordData;
 
@@ -73,7 +75,7 @@ const FieldRecord: React.FC<FieldRecordProps> = ({ record, className }) => {
 
 								className="text-field-l font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground"
 							>
-								〈{Line}〉
+								<StampText Line={Line} />
 							</p>
 						))}
 					</div>
@@ -86,9 +88,9 @@ const FieldRecord: React.FC<FieldRecordProps> = ({ record, className }) => {
 							<p
 								key={Line}
 
-								className="text-field-s font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
+								className="text-field-s font-mono font-normal leading-[1.1]"
 							>
-								{Line}
+								<RouteText Line={Line} />
 							</p>
 						))}
 					</div>

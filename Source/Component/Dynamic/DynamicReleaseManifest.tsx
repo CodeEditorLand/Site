@@ -11,6 +11,16 @@ import {
 	FieldRecordSeal,
 } from "../Brand/FieldRecord.js";
 
+import {
+	RouteText,
+	StampText,
+} from "../Brand/SemanticLedger";
+
+import {
+	GLYPH_INK,
+	KeywordInk,
+} from "../../Function/Theme/SemanticColor";
+
 import type Property from "./Interface/Property/Grid/Platform.js";
 
 /**
@@ -125,15 +135,18 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 									</div>
 
 									{/* Platform stamp - ledger scale (not the hero text-field-xl) */}
-									<div className="mt-6">
-										<p className="font-mono text-xl font-medium uppercase tracking-[0.1em] text-card-foreground">
-											〈{Platform.Name.toUpperCase()}〉
-										</p>
-										<p className="text-field-s mt-2 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
-											/CHANNEL:{" "}
-											{Platform.Channel.toUpperCase()}
-										</p>
-									</div>
+																	<div className="mt-6">
+																		<p className="font-mono text-xl font-medium uppercase tracking-[0.1em]">
+																			<StampText
+																				Line={Platform.Name.toUpperCase()}
+																			/>
+																		</p>
+																		<p className="text-field-s mt-2 font-mono font-normal leading-[1.1]">
+																			<RouteText
+																				Line={`/CHANNEL:${Platform.Channel.toUpperCase()}`}
+																			/>
+																		</p>
+																	</div>
 
 									{/* Metadata block */}
 									<div className="mt-6">
@@ -189,9 +202,27 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 												variant="button"
 											/>
 										) : (
-											<p className="text-field-s font-mono uppercase tracking-wider text-card-foreground opacity-70">
-												STATUS: RELEASE PREPARATION
-											</p>
+											<p className="text-field-s font-mono uppercase tracking-wider">
+																						<span
+																							style={{
+																								color: "var(--CardForeground)",
+																							}}
+																						>
+																							STATUS:
+																						</span>
+																						<span
+																							style={{
+																								color:
+																									KeywordInk(
+																										"RELEASE PREPARATION",
+																									) ??
+																									"var(--CardForeground)",
+																							}}
+																						>
+																							{" "}
+																							RELEASE PREPARATION
+																						</span>
+																					</p>
 										)}
 									</div>
 								</div>

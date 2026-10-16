@@ -24,6 +24,8 @@ import { FieldRecordAction } from "../Brand/FieldRecordAction.js";
 
 import { FieldRecordStatus } from "../Brand/FieldRecordStatus.js";
 
+import { RouteText, StampText } from "../Brand/SemanticLedger.js";
+
 import type Property from "./Interface/Property/Hero.js";
 
 /**
@@ -238,22 +240,22 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 							{/* Middle: Oversized stamp */}
 							<div className="mt-10">
 								<p className="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground">
-									〈RUST + TAURI〉
+									<StampText Line="RUST + TAURI" />
 								</p>
 
 								<p className="text-field-l mt-2 font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground">
-									〈NO ELECTRON〉
+									<StampText Line="NO ELECTRON" />
 								</p>
 							</div>
 
 							{/* Route block */}
 							<div className="mt-10">
 								<p className="text-field-l font-mono font-normal leading-[1.05] text-card-foreground">
-									/COMPAT:VS CODE
+									<RouteText Line="/COMPAT:VS CODE" />
 								</p>
 
-								<p className="text-field-s mt-1 font-mono font-normal leading-[1.1] text-card-foreground opacity-70">
-									EXTENSIONS / UNMODIFIED
+								<p className="text-field-s mt-1 font-mono font-normal leading-[1.1] text-card-foreground">
+									<RouteText Line="EXTENSIONS / UNMODIFIED" />
 								</p>
 							</div>
 

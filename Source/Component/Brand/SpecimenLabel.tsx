@@ -8,6 +8,8 @@ import type { FieldRecord as FieldRecordData } from "../../Content/Record/FieldR
 
 import { FieldRecordSeal } from "./FieldRecordSeal";
 
+import { RouteText, StampText, StatusText } from "./SemanticLedger";
+
 export interface SpecimenLabelProps {
 	record: FieldRecordData;
 
@@ -80,7 +82,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 
 							className="font-mono text-sm font-medium uppercase leading-none tracking-[0.15em] text-card-foreground"
 						>
-							〈{Line}〉
+							<StampText Line={Line} />
 						</p>
 					))}
 				</div>
@@ -92,9 +94,9 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 						<p
 							key={Line}
 
-							className="font-mono text-sm uppercase leading-none tracking-[0.15em] text-card-foreground opacity-70"
+							className="font-mono text-sm uppercase leading-none tracking-[0.15em]"
 						>
-							{Line}
+							<RouteText Line={Line} />
 						</p>
 					))}
 				</div>
@@ -138,12 +140,16 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 			)}
 
 			<div className="mt-3 border-t border-border pt-3">
-				<p
-					className={`font-mono text-sm font-medium uppercase tracking-[0.2em] ${
-						IsSpecimen ? "text-accent" : "text-card-foreground"
-					}`}
-				>
-					STATUS: {record.Status.Value}
+				<p className="font-mono text-sm font-medium uppercase tracking-[0.2em]">
+					<StatusText
+						value={record.Status.Value}
+						active={
+							IsSpecimen ||
+							record.Status.Value.toUpperCase().includes(
+								"ACTIVE",
+							)
+						}
+					/>
 				</p>
 			</div>
 

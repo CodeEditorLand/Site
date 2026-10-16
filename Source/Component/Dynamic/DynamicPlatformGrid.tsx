@@ -16,6 +16,16 @@ import { DynamicButton } from "./DynamicButton";
 
 import { DynamicCard } from "./DynamicCard";
 
+import {
+	GLYPH_INK,
+	KeywordInk,
+} from "../../Function/Theme/SemanticColor";
+
+import {
+	PlatformDescriptionText,
+	RouteText,
+} from "../Brand/SemanticLedger";
+
 import type PlatformInformation from "./Interface/Information/Platform.js";
 
 import type Property from "./Interface/Property/Grid/Platform.js";
@@ -382,14 +392,43 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 											)}
 
 											<div>
-												<h3 className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground">
-													{Platform.Name}
-												</h3>
+																						<h3
+																							className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground"
+																							style={{
+																								color:
+																									KeywordInk(
+																										Platform.Name.toUpperCase(),
+																									) ??
+																									"var(--CardForeground)",
+																							}}
+																						>
+																							{Platform.Name}
+																						</h3>
 
-												<p className="font-mono text-sm uppercase tracking-[0.2em] text-card-foreground opacity-70">
-													〈{Platform.Description}〉
-												</p>
-											</div>
+																						<p className="font-mono text-sm uppercase tracking-[0.2em]">
+																							<span
+																								aria-hidden="true"
+																								style={{
+																									color: GLYPH_INK,
+																								}}
+																							>
+																								〈
+																							</span>
+																							<PlatformDescriptionText
+																								Text={
+																									Platform.Description
+																								}
+																							/>
+																							<span
+																								aria-hidden="true"
+																								style={{
+																									color: GLYPH_INK,
+																								}}
+																							>
+																								〉
+																							</span>
+																						</p>
+																					</div>
 										</div>
 									</div>
 								),
@@ -397,9 +436,9 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							Body: {
 								content: (
 									<div className="space-y-2 font-mono text-sm">
-										<div className="flex justify-between text-card-foreground opacity-70">
+										<div className="flex justify-between font-mono text-sm text-card-foreground">
 											<span className="uppercase">
-												/CHANNEL:
+												<RouteText Line="/CHANNEL:" />
 											</span>
 
 											<span className="font-medium text-card-foreground">
@@ -489,12 +528,26 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 							},
 							Footer: {
 								content: (
-									<div className="flex justify-between font-mono text-sm text-card-foreground opacity-70">
-										<span className="uppercase">
+									<div className="flex justify-between font-mono text-sm text-card-foreground">
+										<span
+											className="uppercase"
+											style={{
+												color: "var(--CardForeground)",
+											}}
+										>
 											STATUS:
 										</span>
 
-										<span className="font-medium text-card-foreground">
+										<span
+											className="font-medium"
+											style={{
+												color:
+													KeywordInk(
+														"RELEASE PREPARATION",
+													) ??
+													"var(--CardForeground)",
+											}}
+										>
 											RELEASE PREPARATION
 										</span>
 									</div>
