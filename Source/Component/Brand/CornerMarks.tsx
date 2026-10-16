@@ -27,11 +27,10 @@ import "./CornerMarks/Stylesheet.css";
  * HOVER (implemented, CSS-only - the C19 "old-school game UI" intent):
  * the host shell that keeps the marks adds the .CornerMarkShell class
  * (see CornerMarks/Stylesheet.css). On shell hover the cursor becomes a
- * pointer and each L moves TOWARD its corner - the horizontal arm
- * translates outward horizontally (toward the side edge) and the vertical
- * arm outward vertically (toward the top/bottom edge), so the marks become
- * less inset from the panel edge on both planes (translate a few px +
- * slight scale, 200ms ease), scoped to prefers-reduced-motion:
+ * pointer and each L arm slides PERPENDICULAR to itself (the horizontal
+ * mark moves up/down, the vertical mark moves left/right) so the arms
+ * separate at the corner and never cross - a rigid whole-line slide (no
+ * scaling), 200ms ease, scoped to prefers-reduced-motion:
  * no-preference. The ticks carry data-corner (tl/tr/bl/br) + data-axis
  * (h/v) attributes the stylesheet keys its direction rules on.
  */

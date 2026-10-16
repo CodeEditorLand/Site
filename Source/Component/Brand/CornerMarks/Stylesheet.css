@@ -39,33 +39,33 @@
 
 	/* Top-left: the L slides toward the corner - left / up. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="h"] {
-		transform: translate(-4px, 0);
+		transform: translate(0, -6px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="v"] {
-		transform: translate(0, -4px);
+		transform: translate(-6px, 0);
 	}
 
 	/* Top-right: horizontal arm toward the right edge, vertical toward the top. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="h"] {
-		transform: translate(4px, 0);
+		transform: translate(0, -6px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="v"] {
-		transform: translate(0, -4px);
+		transform: translate(6px, 0);
 	}
 
 	/* Bottom-left: horizontal arm toward the left edge, vertical toward the bottom. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
-		transform: translate(-4px, 0);
+		transform: translate(0, 4px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
-		transform: translate(0, 4px);
+		transform: translate(-6px, 0);
 	}
 
 	/* Bottom-right: the L slides toward the corner - right / down. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
-		transform: translate(4px, 0);
+		transform: translate(0, 4px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="v"] {
-		transform: translate(0, 4px);
+		transform: translate(6px, 0);
 	}
 }
