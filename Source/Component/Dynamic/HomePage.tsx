@@ -163,7 +163,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Tooltip: TArr("home:hero.scene.cards.4.tooltip", [
 						"Vine defines the gRPC protocol layer between Mountain, Cocoon, Air, and Grove.",
 
-						"Proto definitions currently live in Mountain and Cocoon while Vine consolidates.",
+						"Vine.proto is the canonical contract; Air, Grove, and Mountain carry their own proto files.",
 
 						"Every gRPC call is a typed contract - the wire format is the interface.",
 					]),
@@ -184,8 +184,6 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						"Track A loads unmodified extHost sources for maximum compatibility,",
 
 						"Track B routes I/O-heavy operations to Mountain through gRPC.",
-
-						"Effect-TS services implement the vscode API shim across both tracks.",
 					]),
 
 					Color: ["var(--TierProvider)"],
@@ -237,7 +235,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Tooltip: TArr("home:hero.scene.cards.8.tooltip", [
-						"All 15 element repos are under CC0 1.0 Universal public domain.",
+						"All 16 element repos are under CC0 1.0 Universal public domain.",
 
 						"No attribution required, no compliance restrictions.",
 
@@ -282,7 +280,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Heavy editor work runs natively - not trapped in a web view. Window management, file I/O, and terminal IPC go straight through a Rust + Tauri services layer.",
+								"Heavy editor work runs natively, not trapped in a web view. Window management, file I/O, and terminals are native Rust services - no serialized JSON IPC bridge.",
 						},
 					),
 				},
@@ -303,7 +301,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Your VS Code extensions run unmodified - no forks, no rewrites. A compatibility host speaks the VS Code extension API directly.",
+								"Your VS Code extensions run unmodified - no forks, no rewrites. A compatibility host implements the VS Code extension API surface.",
 						},
 					),
 				},
@@ -330,7 +328,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Failures are typed, traceable, and cancellable - so the editor fails loudly in development instead of silently in production.",
+								"Failures are typed, traceable, and cancellable - one supervised fiber never takes down the rest of the editor.",
 						},
 					),
 				},
@@ -378,7 +376,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						{
 							defaultValue:
-								"Updates, indexing, signing, and health checks run in a persistent daemon - survives when the main window closes.",
+								"Updates, indexing, signing, and health checks run in a persistent daemon that keeps working after the main window closes.",
 						},
 					),
 				},
@@ -431,7 +429,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 					Description: T("home:roadmap.tiers.current.description", {
 						defaultValue:
-							"A native editor built on Rust and Tauri - no Chromium, no Electron. The active desktop path spans Mountain (backend), Cocoon (extensions), Sky (UI), and Wind (workbench), supported by Vine, Common, Echo, Air, Mist, Rest, Output, SideCar, and Maintain. Grove and Worker are present with integration scope that differs by build profile.",
+							"A native editor built on Rust and Tauri - no Chromium, no Electron. The active desktop path spans Mountain (backend), Cocoon (extensions), Sky (UI), and Wind (workbench), supported by Vine, Common, Echo, Air, Mist, Rest, Output, SideCar, Maintain, and Cache. Grove hosts Rust and WASM extensions in a Wasmtime sandbox, and Worker serves the web shell.",
 					}),
 
 					Price: { Monthly: 0, Yearly: 0 },
@@ -464,7 +462,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						T("home:roadmap.tiers.current.elements.echo", {
 							defaultValue:
-								"Echo\nScheduler Primitives\nBounded background work for Rust services",
+								"Echo\nScheduler Primitives\nPriority-aware work stealing for Rust services",
 						}),
 					],
 
@@ -523,7 +521,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 					Description: T("home:roadmap.tiers.future.description", {
 						defaultValue:
-							"Signed installers, verified downloads, and broad extension compatibility are the v1.0 target. Vine consolidates cross-element protocols. Grove adds WASM sandboxing for extensions. Rest and Echo tighten the build pipeline and scheduler. Long-tail VS Code API coverage rounds out the Cocoon compatibility pass.",
+							"Signed installers, verified downloads, and broad extension compatibility are the v1.0 target. Vine and Grove are already active: the canonical proto contract is in place, and the WASM sandbox runs on Wasmtime. Cocoon rounds out the compatibility pass with long-tail VS Code API coverage, Echo tunes the work-stealing scheduler, Rest tightens the build pipeline, and Air carries the signing and distribution path.",
 					}),
 
 					Price: { Monthly: 0, Yearly: 0 },
@@ -531,7 +529,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Element: [
 						T("home:roadmap.tiers.future.elements.vine", {
 							defaultValue:
-								"Vine\nProtocol In Progress\nMountain, Cocoon, Air, and Grove contracts",
+								"Vine\nProtocol Backbone\nCanonical contract; streaming multiplexer expanding",
 						}),
 
 						T("home:roadmap.tiers.future.elements.cocoon", {
@@ -541,17 +539,17 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 						T("home:roadmap.tiers.future.elements.grove", {
 							defaultValue:
-								"Grove\nWASM Host Stabilizing\nCapability-based extension isolation path",
+								"Grove\nWASM Sandbox\nWasmtime capability-based isolation, active",
 						}),
 
 						T("home:roadmap.tiers.future.elements.rest", {
 							defaultValue:
-								"Rest\nSource Map Support\nOXC transformer integration in progress",
+								"Rest\nCompilation Pipeline\nOXC compile, bundling coverage expanding",
 						}),
 
 						T("home:roadmap.tiers.future.elements.echo", {
 							defaultValue:
-								"Echo\nScheduler Optimization\nFaster steal, lower latency",
+								"Echo\nScheduler Optimization\nPriority-aware work stealing, tuning in progress",
 						}),
 
 						T("home:roadmap.tiers.future.elements.air", {
@@ -567,7 +565,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						}),
 
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Grove Wasmtime host integration",
+							defaultValue: "Long-tail VS Code API coverage through Cocoon",
 						}),
 
 						T("home:roadmap.tiers.future.features.3", {
@@ -580,7 +578,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						}),
 
 						T("home:roadmap.tiers.future.features.5", {
-							defaultValue: "Source map generation via OXC",
+							defaultValue: "Echo work-stealing scheduler tuning",
 						}),
 
 						T("home:roadmap.tiers.future.features.6", {
@@ -630,8 +628,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.air.description", {
-						defaultValue:
-							"Background daemon that runs independently - updates, indexing, signing, and health checks, all outside the main window.\n• Update downloads with staged atomic rollback\n• File indexing and symbol extraction\n• Cryptographic signing and authentication\n• Health monitoring with multi-level checks\n\nPrometheus-compatible metrics and distributed tracing with sampling.",
+						defaultValue: "Persistent Rust daemon.\u2001Updates, downloads, signing, and health checks outside the main window.\nStaged updates with automatic rollback.\u2001Warm file index across sessions.\nReplaces restart-to-update and cold-start indexing.\u2001Active.",
 					}),
 				},
 
@@ -650,8 +647,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.cocoon.description", {
-						defaultValue:
-							"Node.js sidecar that hosts and executes VS Code extensions.\n\nDual-track architecture:\n• Track A loads unmodified extHost sources for maximum compatibility\n• Track B routes I/O-heavy operations to Mountain through gRPC\n\nEffect-TS provides typed errors, scoped resources, and supervised concurrency across all services.\n\nCodegen pipeline walks VS Code extHost source to emit type schemas.\n\nCore API surfaces:\n• Commands\n• Workspace\n• Window\n• Terminal\n• Webview\n• Language providers\n• Diagnostics",
+						defaultValue: "Node.js extension host.\u2001Runs existing VS Code extensions unmodified on the full VS Code API surface.\nEvery extension runs in its own supervised Effect fiber.\u2001Crashes are trapped at the supervision boundary.\nReplaces the single-threaded extension host.\u2001Platform-native sandboxing planned.",
 					}),
 				},
 
@@ -670,8 +666,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.common.description", {
-						defaultValue:
-							"Pure abstract library - defines the contracts that all Rust components implement, not the implementations themselves.\n\nAsync traits for every service domain:\n• FileSystem\n• Terminal\n• Clipboard\n• Window\n• Configuration\n• Storage\n• Search\n• and more\n\nThe ActionEffect system treats every operation as declarative data - commands, events, and queries share a single type hierarchy across all layers.\n\nTransport-agnostic: supports gRPC, IPC, and WASM strategies.\n\nDual-pipe telemetry (PostHog + OTLP).",
+						defaultValue: "Pure abstract Rust crate.\u2001No working code, only abstract definitions.\nAsync service traits for every capability.\u2001ActionEffect treats every operation as declarative data.\nTransport-agnostic.\u2001Same handler code over gRPC, IPC, WASM, or Mist.\u2001Active.",
 					}),
 				},
 
@@ -690,8 +685,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.echo.description", {
-						defaultValue:
-							"Work-stealing task scheduler with lock-free queues for bounded background execution.\n\nPriority tiers:\n• High\n• Normal\n• Low\n\nEnsures UI responsiveness stays predictable under I/O load.\n\nWorkers consume from local queues and steal from peers when idle.\n\nIntegrates with the ActionEffect system for cancelable, supervised tasks.\n\nGraceful shutdown paths keep resources from leaking when services terminate.",
+						defaultValue: "Priority-aware work-stealing scheduler on crossbeam-deque.\u2001Lock-free queues: no mutex, no contention.\nHigh, Normal, and Low priority tiers.\u2001Workers steal from peers, then fall back to the global queue.\nKeeps UI work responsive under I/O load.\u2001Active.",
 					}),
 				},
 
@@ -710,8 +704,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.grove.description", {
-						defaultValue:
-							"WebAssembly sandbox for running extensions in capability-isolated environments.\n\nWASMtime provides:\n• Memory limits\n• Resource controls\n• Fine-grained capability gates\n\nExtensions cannot access host APIs unless explicitly granted.\n\nMultiple transport strategies:\n• gRPC\n• IPC\n• Direct WASM host function calls\n\nShares the same VS Code API surface as Cocoon.\n\nComplements Cocoon's Node.js path with a sandboxed execution alternative.",
+						defaultValue: "Rust and WASM extension host.\u2001Wasmtime sandbox: an extension can only touch what is explicitly granted.\nSame VS Code API surface as Cocoon.\u2001gRPC, IPC, direct WASM calls, or Mist transports.\nComplements Cocoon's Node.js path.\u2001Active.",
 					}),
 				},
 
@@ -730,8 +723,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.maintain.description", {
-						defaultValue:
-							"Build system using an embedded Rhai scripting engine for flexible cross-element orchestration.\n\nManages build profiles across the Land ecosystem:\n• Development\n• Debug\n• Release\n\nType-safe editing of Cargo.toml and project configuration through scriptable resolvers.\n\nRelease pipeline preparation - signing, artifact publication, and distribution - is in progress.",
+						defaultValue: "Deterministic build orchestrator for the Land ecosystem.\u2001One config file resolved through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active.",
 					}),
 				},
 
@@ -750,8 +742,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.mist.description", {
-						defaultValue:
-							"Local DNS server authoritative for the editor.land zone - all subdomains resolve to loopback, keeping internal services off the network.\n\nForward allowlisting controls which external domains sidecar processes can reach; everything else is blocked at the DNS layer.\n\nSecurity model:\n• ECDSA DNSSEC signing verifies zone integrity\n• Loopback binding only - no external port exposure\n\nProvides network isolation for Cocoon and Air processes so they cannot leak data to arbitrary hosts.",
+						defaultValue: "Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback. Nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned.",
 					}),
 				},
 
@@ -770,8 +761,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.mountain.description", {
-						defaultValue:
-							"Primary native backend and Tauri application shell - replaces the Electron main process entirely.\n\nImplements all service traits from Common through the declarative ActionEffect system:\n• Windows\n• Files\n• Terminals\n• Clipboard\n• Dialogs\n• Process control\n• OS keychain\n\nHosts the gRPC server for cross-process communication with Cocoon, Air, and Grove.\n\nOrchestrates sidecar lifecycle and manages application state across all connected processes.",
+						defaultValue: "Native Rust and Tauri backend.\u2001Implements the Common service traits: files, terminals, dialogs, processes, keychain.\nHosts the gRPC server for the extension host and sidecars.\u2001Manages application state and sidecar lifecycle.\nReplaces the Electron main process.\u2001Active.",
 					}),
 				},
 
@@ -786,12 +776,11 @@ const HomePage = ({ Content, ClassName }: Property) => {
 
 					Role: T("home:architecture.output.subtitle", {
 						defaultValue:
-							"Compilation Pipeline Plugin-Routed Deterministic Checksum",
+							"Compilation Pipeline Plugin-Routed Deterministic Build",
 					}),
 
 					Quote: T("home:architecture.output.description", {
-						defaultValue:
-							"Build orchestration for VS Code platform source code.\n\nDual-compiler pipeline:\n• Primary ESBuild\n• Optional Rust-native compiler path for faster TypeScript compilation\n\nPlugin-routed transforms handle:\n• Module resolution remapping\n• Define substitution\n• CSS import interception\n• Dead code elimination\n\nEnvironment-variable-driven compiler selection.\n\nPlatform code markers separate platform-specific and cross-platform code at the source level.\n\nConsumed by Cocoon, Sky, and Wind as the shared compilation output.",
+						defaultValue: "Build orchestration for VS Code platform source.\u2001esbuild primary, Rust-native Rest selectable via environment.\nPlugin-routed pipeline.\u2001Node.js API polyfills for the Tauri WebView.\nDeterministic builds.\u2001Shared output for Cocoon, Sky, and Wind.\u2001Active.",
 					}),
 				},
 
@@ -810,8 +799,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.rest.description", {
-						defaultValue:
-							"Rust-native TypeScript compilation pipeline built on the OXC toolchain - parser, transformer, and codegen in one process.\n\nHandles:\n• Decorator metadata emission\n• Legacy class field semantics\n• JSX\n• Parallel compilation\n\nSelectable as an alternative compiler to reduce reliance on Node-hosted compilation paths.\n\nSource map output and measured pipeline benchmarks are in active development.",
+						defaultValue: "Rust-native TypeScript compilation on the OXC toolchain.\u2001Parser, transformer, and codegen in one process.\nNo Node.js in the hot path.\u2001Decorators, class fields, and JSX.\u2001Parallel compilation across cores.\nBundles the VS Code platform code for the extension host.\u2001Active.",
 					}),
 				},
 
@@ -830,8 +818,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.sidecar.description", {
-						defaultValue:
-							"Manages pre-compiled platform-specific Node.js binaries for each target platform.\n\nCompile-time binary selection ensures the right runtime is available without runtime detection or download delays.\n\nIntegrity verification and cache management keep sidecar deployments deterministic and reproducible across build environments.",
+						defaultValue: "Prebuilt Node.js binaries per target platform.\u2001Mountain selects the exact binary at compile time. No runtime detection.\nOfficial nodejs.org downloads with checksum verification.\u2001Incremental cache across builds.\nReplaces runtime detection and fallback chains.\u2001Active.",
 					}),
 				},
 
@@ -850,8 +837,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.sky.description", {
-						defaultValue:
-							"Renders the editor interface in the OS WebView using Astro component islands for efficient rendering.\n\nSkyBridge routes Tauri events to VS Code workbench APIs, translating runtime channels into workbench calls.\n\nSupports multiple workbench layouts that adapt the UI layer to different runtimes:\n• Browser proxy\n• Mountain-native\n• Electron\n\nSmart variant selection with conditional imports and tree-shaking keeps the bundle size target-specific.",
+						defaultValue: "Declarative UI layer built on Astro.\u2001Renders the editor interface in the OS WebView.\nSkyBridge routes Tauri events to VS Code workbench APIs.\u2001Conditional dynamic imports keep the bundle target-specific.\nWorkbench layouts for Browser, Mountain-native, and Electron.\u2001Active.",
 					}),
 				},
 
@@ -870,8 +856,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.vine.description", {
-						defaultValue:
-							"Protocol definitions for gRPC communication between Mountain, Cocoon, Air, and Grove.\n\nCurrent proto contracts live in Mountain/Proto/ and Cocoon:\n• Vine.proto - editor-host IPC\n• Spine.proto - extension coordination\n• Grove.proto - WASM extension protocols\n\nCentralized consolidation into the Vine element is planned as the protocol surface stabilizes.",
+						defaultValue: "The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nSpeaks between Mountain, Cocoon, Air, and Grove.\u2001Active.",
 					}),
 				},
 
@@ -890,8 +875,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.wind.description", {
-						defaultValue:
-							"UI service layer that recreates the VS Code workbench environment inside the Tauri WebView.\n\nEffect-TS services cover:\n• IPC\n• Configuration\n• Editor\n• Terminal\n• Clipboard\n• Dialog\n• FileSystem\n• Window\n• Search\n\nEach with explicit typed error handling and compile-time dependency tracking.\n\nComposed into Layer stacks that target specific runtimes:\n• Tauri (native)\n• Electron (compatibility)\n• Test (isolated)\n\nPreload shim establishes the bridge between VS Code workbench expectations and the Tauri runtime environment.",
+						defaultValue: "Effect-TS service layer.\u2001Recreates the VS Code workbench environment inside the Tauri WebView.\nTyped Tauri commands replace Electron's untyped JSON IPC bridge.\nLayer stacks for Tauri, Electron compatibility, and isolated tests.\u2001Active.",
 					}),
 				},
 
@@ -910,8 +894,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.worker.description", {
-						defaultValue:
-							"Service worker that provides offline caching and dynamic CSS import handling for the web shell.\n\nCaching strategy:\n• Network-first for navigation requests\n• Cache-first for static assets\n\nIntercepts JavaScript imports of CSS files and injects them as <link> tags - handles VS Code's pattern of importing stylesheets as JS modules.\n\nAutomatic update detection with client reload when a new version is available.",
+						defaultValue: "Service worker for the web shell.\u2001Offline caching: network-first for navigation, cache-first for static assets.\nIntercepts CSS imports and injects link tags for VS Code's stylesheet-as-module pattern.\nNew-version detection with client reload.\u2001Active.",
 					}),
 				},
 			],

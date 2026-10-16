@@ -34,8 +34,8 @@ import type Property from "./Interface/Property/Hero.js";
  *   RIGHT: full-bleed evidence image
  *
  * Hierarchy (per design_system.md + further_design_system.md):
- *   # LAND_01 → 〈21.09.26〉〈20:18〉 (oversized bracketed timestamp,
- *   strongest top hierarchy) → 〈RUST + TAURI〉 → 〈NO ELECTRON〉 →
+ *   # LAND_01 → 〈RUST + TAURI〉 (oversized runtime claim - product
+ *   assertion, not a date) → 〈NO ELECTRON〉 →
  *   /COMPAT:VS CODE → WALK · LISTEN · SIGNAL → NATIVE · OPEN ·
  *   CROSS-PLATFORM → STATUS: SOURCE ACTIVE → [MAJOR BLANK ZONE] →
  *   LAND: → ↳EDITOR WITHOUT CHROMIUM → TARGET / LICENSE / SIGNAL →
@@ -233,17 +233,6 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 								<FieldRecordIndex index="LAND_01" />
 
 								<FieldRecordSeal element="Land" />
-							</div>
-
-							{/* Oversized bracketed timestamp - strongest top hierarchy (design_system.md §Text syntax / Template copy:154, 174-175) */}
-							<div className="mt-10">
-								<p className="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground">
-									〈21.09.26〉
-								</p>
-
-								<p className="text-field-l mt-2 font-mono font-normal leading-[1.0] tracking-[-0.02em] text-card-foreground">
-									〈20:18〉
-								</p>
 							</div>
 
 							{/* Middle: Oversized stamp */}
