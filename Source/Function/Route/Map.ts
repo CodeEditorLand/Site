@@ -428,9 +428,7 @@ export const GenerateSlugVariants = (Path: string): string[] => {
 
 	// All non-first segments TitleCase, rest as-built (/Doc/Telemetry/Overview)
 	if (Segments.length > 1) {
-		Result.add(
-			Join(Segments.map((S, I) => (I === 0 ? S : TitleCase(S)))),
-		);
+		Result.add(Join(Segments.map((S, I) => (I === 0 ? S : TitleCase(S)))));
 	}
 
 	// Trailing-slash duplicates for every entry found so far

@@ -4,15 +4,16 @@ summary: "How we use Effect-TS for typed error handling across the editor core."
 publishedAt: "2026-04-01"
 tags: ["Architecture", "TypeScript", "Effect-TS"]
 author: "CodeEditorLand"
-readTime: 8
+readTime: 4
 ---
 
 # Effect-TS Architecture in the Land Editor
 
 Code Editor Land uses [`Effect-TS`](https://effect.website) as the foundational
 abstraction for typed error handling, structured concurrency, and dependency
-injection across the `TypeScript` layer of the editor. `Cocoon`, `Wind`, and the
-shared `Vine` IPC contracts are all built on Effect-TS from the ground up.
+injection across the `TypeScript` layer of the editor. `Cocoon` and `Wind` are
+built on Effect-TS from the ground up, and the shared `Vine` gRPC contracts are
+consumed through Effect-wrapped clients.
 
 ## Why Effect-TS?
 
@@ -34,17 +35,10 @@ consuming Effect fails to compile.
 
 ## The Effect Layer Pattern
 
-Each service in `Wind` follows an atomic directory structure:
-
-```text
-Effect/
-  ServiceName/
-    Tag.ts      -- Context.Tag for dependency injection
-    Interface.ts -- TypeScript interface the service implements
-    Implementation.ts -- Concrete implementation using Effect primitives
-    Layer.ts    -- Effect Layer that binds Interface to Implementation
-    Type.ts     -- Shared types, error definitions
-```
+Each service in `Wind` is modeled as an Effect-TS service: a `Context.Tag`
+for dependency injection, a `TypeScript` interface the service implements, a
+concrete implementation built from Effect primitives, and a `Layer` that binds
+the interface to the implementation.
 
 These compose into `TauriLiveLayer`, `ElectronLiveLayer`, and `TestLayer`
 stacks. In production, `Wind` uses `TauriLiveLayer`, which routes service calls
@@ -52,11 +46,10 @@ through `Tauri` commands into `Mountain`'s Rust handlers. For testing,
 `TestLayer` provides mock implementations. The consuming code never knows the
 difference.
 
-Each service layer is constructed with `Layer.succeed` (not `Layer.effect`),
-and the layer stack is composed with `Layer.mergeAll`. The `TauriLiveLayer` is
-backed by an eagerly-initialized `ManagedRuntime` stored as a module singleton
-on `globalThis.__CEL_WIND_RUNTIME__`, which keeps service lookup latency under
-5 ms.
+The layer stack is composed with `Layer.mergeAll`, then converted once into a
+`Runtime` via `Layer.toRuntime` and shared through the module-level
+`__CEL_SERVICES__` global, so every service call hits a pre-built runtime
+instead of constructing one per request.
 
 ## How It Powers the Extension Host (Cocoon)
 
@@ -69,18 +62,18 @@ The core architecture:
 1. **Bootstrap** (`Bootstrap/Implementation/Cocoon/Main.ts`) runs a lean
    `async`/`await` startup sequence - no Effect-TS runtime overhead on the boot
    path. It establishes the gRPC connection to `Mountain` and starts the
-   extension host services. Moving the bootstrap off the Effect runtime shaved
-   approximately 45 ms from cold-start time.
+   extension host services. Keeping the bootstrap off the Effect runtime trims
+   measurable time from cold start.
 
     **Update:** Cocoon's bootstrap stages run in plain `async`/`await` rather
     than Effect-TS layers. `RPCServer` binds first (port 50052), then
     `MountainConnection` connects outward, ensuring `Mountain`'s 30-second gRPC
     budget does not expire before Cocoon is ready.
 
-2. **Module Interception** (`Effect/Module/Interceptor.ts`) patches both CJS
-   `require()` and ESM `import` statements so that calls to the `vscode` module
-   are correctly sandboxed and routed to the appropriate, extension-specific API
-   instance.
+2. **Module Interception** (`Service/Effect/Module/Interceptor.ts`) patches both
+   CJS `require()` and ESM `import` statements so that calls to the `vscode`
+   module are correctly sandboxed and routed to the appropriate,
+   extension-specific API instance.
 
 3. **API Factory** (`Services/API/Factory/Service.ts`) constructs the `vscode`
    API object that extensions receive. Every method call is wired through the
@@ -98,8 +91,9 @@ tracked and cleaned up on extension deactivation or failure.
 ## gRPC Integration via Vine
 
 Communication between `Cocoon` and `Mountain` happens over the `Vine` gRPC
-protocol defined in `.proto` files. `Cocoon` wraps the gRPC client in Effect-TS
-services:
+protocol, defined in `Proto/Vine.proto` - the single canonical contract for
+Land's gRPC traffic, with generated Rust and `TypeScript` stubs. `Cocoon` wraps
+the gRPC client in Effect-TS services:
 
 ```typescript
 // Services/Mountain/gRPC/Client.ts -- Effect-wrapped gRPC operations
@@ -130,14 +124,16 @@ This is the `PatchProcess/` module, the first thing that runs on bootstrap.
 ## Structured Concurrency
 
 `Effect-TS` provides `Effect.fork`, `Effect.race`, and `Effect.timeout`
-primitives that integrate with the `Echo` work-stealing executor in the Rust
-layer, giving the editor predictable resource usage even under heavy extension
-load.
+primitives, giving the editor predictable resource usage even under heavy
+extension load. On the `TypeScript` side, `Effect.fork` creates supervised
+fibers that the Effect runtime can preempt - a hung `Promise` in one extension
+no longer blocks the others.
 
-The `Echo` element in `Land/Element/Echo` provides a work-stealing task
-scheduler for bounded background work. In the TypeScript layer, `Effect.fork`
-creates fibers that the scheduler can preempt. This replaces the traditional
-Node.js event-loop model where one hung Promise blocks every other extension.
+On the `Rust` side, the `Echo` element (`Land/Element/Echo`) provides a
+work-stealing task scheduler for bounded background work: lock-free queues on
+`crossbeam-deque`, with `High`, `Normal`, and `Low` priority tiers. Each layer
+runs its own scheduler; together they replace the single-threaded event-loop
+coupling of a plain `Node.js` host.
 
 ## Typed IPC: Two Layers
 

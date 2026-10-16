@@ -6,7 +6,7 @@ summary:
 publishedAt: "2026-05-23"
 tags: ["Extensions", "VS Code", "Compatibility"]
 author: "CodeEditorLand"
-readTime: 6
+readTime: 5
 ---
 
 # VS Code Extension Compatibility in Land
@@ -39,10 +39,10 @@ Host environment:
 - `PatchProcess` hardens the environment immediately: patches `process.exit`,
   handles uncaught exceptions, pipes logs to `Mountain`, and terminates if the
   parent process exits.
-- `Effect/Bootstrap.ts` coordinates initialization stages: `RPCServer` binds
-  first, then `MountainConnection` connects to Mountain's Vine server. This
-  ordering matters - Mountain waits for Cocoon's gRPC port to be ready before
-  proceeding.
+- `Service/Effect/Bootstrap.ts` coordinates initialization stages: `RPCServer`
+  binds first, then `MountainConnection` connects to Mountain's Vine server.
+  This ordering matters - Mountain waits for Cocoon's gRPC port to be ready
+  before proceeding.
 - The `AppLayer` (wired via `Service/Mapping.ts`) composes all Effect-TS service
   layers into a single runnable unit.
 
@@ -93,8 +93,8 @@ Source-backed surfaces include:
   rewrite their extension.
 - `Mountain` contains extension scanning, manifest parsing, local VSIX install
   and uninstall routes, and extension-state updates.
-- `Output` keeps the `VS Code` extension scanner and offline gallery channels
-  wired for sideloaded extensions.
+- `Output` ships the bundled `VS Code` platform code, including the
+  extension-gallery service helpers used by sideloaded extensions.
 - Core surfaces such as commands, workspace, window, terminals, webviews,
   language providers, diagnostics, output channels, and document events have
   active source paths.
@@ -116,9 +116,10 @@ Source-backed surfaces include:
 
 - Marketplace browsing and install flows beyond local or sideloaded extension
   sources.
-- `vscode.lm.*`, `vscode.chat.*`, `vscode.notebook.*`, and `vscode.tests.*` are
-  not implemented. Extensions using these APIs activate but the specific
-  features silently no-op.
+- `vscode.lm.*`, `vscode.chat.*`, and `vscode.notebook.*` are not implemented.
+  Extensions using these APIs activate but the specific features silently
+  no-op. The `vscode.tests.*` and `vscode.authentication` namespaces have
+  handler paths but are not complete.
 - A public extension validation matrix that names extensions, versions,
   platforms, and the APIs they exercised.
 - Debug and task APIs are partially implemented: `activeDebugSession`,

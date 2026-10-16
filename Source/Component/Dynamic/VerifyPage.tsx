@@ -129,10 +129,10 @@ const VerifyPage = ({
 										{"Email Verified Successfully!"}
 									</h1>
 									<p className="mb-6 text-muted-foreground">
-																		{
-																			"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
-																		}
-																	</p>
+										{
+											"Your email has been successfully verified. You can now sign in to your account and start using Code Editor Land."
+										}
+									</p>
 									<button
 										type="button"
 										className="StaccatoButton flat inline-flex h-10 items-center justify-center gap-0 bg-primary px-4 py-2 font-medium text-primary-foreground transition-all hover:bg-primary disabled:pointer-events-none disabled:opacity-50"

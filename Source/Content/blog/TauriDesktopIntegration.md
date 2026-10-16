@@ -5,7 +5,7 @@ summary: "How Mountain uses Tauri for a native editor shell without bundling
 publishedAt: "2026-04-02"
 tags: ["Tauri", "Rust", "Desktop", "Architecture"]
 author: "CodeEditorLand"
-readTime: 5
+readTime: 4
 ---
 
 # Tauri Desktop Integration in Land
@@ -22,10 +22,11 @@ configuration.
 
 ## The Electron Problem
 
-VS Code with a medium project uses 500 MB to 1.5 GB of RAM. Three open windows
-means three Chromium renderer processes, each carrying a full heap. Every OS
-interaction crosses a serialized JSON IPC pipe. Where Electron takes 200 ms to
-open a dialog, Mountain takes 2.
+VS Code with a medium project uses hundreds of megabytes of RAM, and each open
+window carries its own Chromium renderer process with a full heap. Every OS
+interaction crosses a serialized JSON IPC pipe. Exact memory and latency
+figures depend on the machine and project state; they are not published
+benchmark numbers.
 
 Tauri replaces the Electron shell with a native binary that delegates rendering
 to the OS WebView: WKWebView on macOS, WebView2 on Windows, WebKitGTK on Linux.
@@ -131,11 +132,12 @@ For a lighter iteration build:
 For production:
 
 ```bash
-./Maintain/Release/Build.sh --profile production-electron-bundled
+./Maintain/Release/Build.sh --profile release-electron-bundled
 ```
 
 ## NLnet Funding
 
 This work is funded through the
-[NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
-operated by PlayForm under the NLnet Foundation.
+[NGI0 Commons Fund](https://nlnet.nl/commonsfund/), established by
+[NLnet](https://nlnet.nl) with financial support from the European Commission's
+Next Generation Internet program, and is developed by PlayForm.

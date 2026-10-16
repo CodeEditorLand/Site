@@ -6,7 +6,7 @@
 		"success": {
 			"title": "Check your inbox",
 			"subtitle": "A password reset link has been sent to",
-			"instruction": "Click the link in the email to set a new password.\n\nThe link expires in 24 hours.",
+			"instruction": "Click the link in the email to set a new password.\n\nThe link expires in 1 hour.",
 			"resend": "Resend Email"
 		},
 		"title": "Reset Your Password",
@@ -82,7 +82,7 @@
 			"google": "Continue with Google",
 			"gitlab": "Continue with GitLab"
 		},
-		"subtitle": "Create your Land account.",
+		"subtitle": "Account creation is not open yet while the portal flow is being finished.",
 		"termsLabel": "I agree to the Terms of Service and Privacy Policy",
 		"title": "Create Account",
 		"validation": {
@@ -109,10 +109,17 @@
 			"weak": "Weak password",
 			"medium": "Medium strength",
 			"strong": "Strong password"
-		}
+		},
+		"hidePassword": "Hide password",
+		"showPassword": "Show password"
 	},
 	"common": {
 		"and": "and"
+	},
+	"registrationComingSoon": {
+		"title": "Registration is not open yet",
+		"description": "Account creation is disabled while the portal flow is being finished. Existing sign-in remains available for configured accounts.",
+		"signIn": "Sign In"
 	},
 	"portal": {
 		"title": "CodeEditorLand Portal Roadmap",
@@ -207,7 +214,7 @@
 			"azureTenantPlaceholder": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 			"samlMetadataLabel": "SAML Metadata URL",
 			"samlMetadataPlaceholder": "https://your-idp.com/metadata.xml",
-			"note": "OpenID Connect Discovery \u2001+ SAML 2.0 Assertion \u2001+ SCIM 2.0 User Provisioning",
+			"note": "OpenID Connect Discovery \u2001+ SAML 2.0 Assertion \u2001+ SCIM provisioning is planned",
 			"feature": {
 				"okta": "Okta SSO integration is planned",
 				"azure": "Azure AD / Entra ID integration is planned",

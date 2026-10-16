@@ -58,29 +58,32 @@ cd Land
 ```
 
 The build script drives, in sequence: Rust workspace compilation for `Common`,
-`Echo`, `Mist`, `Mountain`, `Rest`, `SideCar`, `Air`, `Vine`, and `Grove`;
-Output artifact bundling via ESBuild; Cocoon compilation via ESBuild; Worker
-compilation; Wind and Sky compilation via Vite and Astro; and finally Tauri
-bundling for the `.app` bundle.
+`Echo`, `Mist`, `Mountain`, `Rest`, `SideCar`, `Vine`, and `Grove` (the `Air`
+daemon is a separate crate with its own target directory); Output artifact
+bundling (esbuild primary, Rest OXC selectable); Cocoon compilation via
+ESBuild; Worker compilation; Wind and Sky compilation via Vite and Astro; and
+finally Tauri bundling for the `.app` bundle.
 
 ## Maintain: Build Orchestrator
 
 Maintain is a Rust binary at `Element/Maintain/` that provides build
-orchestration, non-lossy TOML and JSON5 configuration editing, and a CLI
-interface. Its internal architecture has three subsystems:
+orchestration, dead-code elimination, and a development runner. Its build
+side resolves named profiles from `.vscode/land-config.json` (JSON5, comments
+and trailing commas allowed) and drives the compile:
 
-- **CLI layer** (`Source/Build/CLI.rs`) -- a `clap`-based interface for debug,
-  release, profile, and dev subcommands.
-- **Rhai scripting engine** (`Source/Build/Rhai/`) -- an embedded interpreter
-  for build logic that cannot be expressed in TOML or shell.
+- **CLI layer** (`Source/Build/CLI/Cli.rs`) -- a `clap`-based interface with
+  `build`, `eliminate`, and `run` subcommands; each resolves a named profile
+  from `land-config.json`.
+- **Embedded Rhai engine** (`Source/Build/Rhai/`) -- an in-process interpreter
+  used by the config loader and environment resolver. There are no standalone
+  `.rhai` scripts to author or invoke.
 - **Configuration editing** (`Source/Build/TomlEdit.rs`,
-  `Source/Build/JsonEdit.rs`) -- non-lossy TOML and JSON5 editing that preserves
-  formatting, comments, and structure through version bumps and CI modifications.
-
-One important property: **Maintain does not need to be rebuilt when its source
-changes during development.** It is a build orchestrator, not a runtime
-component. Only Mountain (the native backend) requires `cargo build` when its
-source changes.
+  `Source/Build/JsonEdit.rs`, `Source/Build/PlistEdit.rs`) -- non-lossy
+  `Cargo.toml`, JSON5, and `Info.plist` editing that preserves formatting,
+  comments, and structure through version bumps and CI modifications.
+- **Dead-code elimination** (`Source/Eliminate/`) -- AST-level inlining of
+  single-use `let` bindings (non-mutated, no closure captures), with a dry-run
+  mode for preview.
 
 The shell entry points are:
 
@@ -93,19 +96,29 @@ The shell entry points are:
 
 ## Build Profiles
 
-The `Build.sh` script accepts a `--profile` flag that selects the feature
-coverage and workbench variant:
+The `Build.sh` script accepts a `--profile` flag that selects the workbench
+variant and feature coverage. Debug profiles:
 
-| Profile                         | Workbench | Coverage  | Output               |
-| ------------------------------- | --------- | --------- | -------------------- |
-| `debug-electron-bundled`        | Electron  | 95%+      | Dev binary (primary) |
-| `debug-electron-unbundled`      | Electron  | 95%+      | Dev binary           |
-| `debug-mountain`                | Mountain  | 80-90%    | Dev binary           |
-| `debug`                         | Browser   | 70-80%    | Dev binary           |
-| `production-electron-bundled`   | Electron  | Optimized | Prod binary          |
-| `production-electron-unbundled` | Electron  | Release   | Prod binary          |
+| Profile                   | Workbench | Notes                              |
+| ------------------------- | --------- | ---------------------------------- |
+| `debug`                   | Browser   | Default; 70-80% feature coverage   |
+| `debug-mountain`          | Mountain  | 80-90% coverage; recommended       |
+| `debug-electron`          | Electron  | 95%+ coverage; full workbench      |
+| `debug-electron-rest`     | Electron  | 95%+ class; Rest OXC compiler path |
+| `debug-electron-minimal`  | Electron  | No bundled built-in extensions     |
+| `debug-mountain-only`     | Mountain  | No Cocoon subprocess               |
+| `debug-electron-bundled`  | Electron  | Workbench bundled via Vite/Astro   |
+| `debug-electron-compiled` | Electron  | Single-binary embedded resources   |
+| `debug-kernel`            | Electron  | No built-ins, no Cocoon, no Wind   |
 
-The `--run` flag launches the application immediately after a successful build.
+Release profiles (`Maintain/Release/Build.sh`) are `production` (default,
+Mountain workbench), `release`, `release-electron` (Electron + Rest OXC),
+`release-electron-bundled`, and `web-browser` (no Tauri). The full profile list
+is defined in `.vscode/land-config.json` and printed by
+`Maintain/Debug/Build.sh --help`.
+
+To launch the built application without rebuilding, use `Maintain/Debug/Run.sh`
+(or `Maintain run --profile <name>`).
 
 ## Environment Variable System
 
@@ -221,25 +234,20 @@ Turborepo orchestrates the JavaScript build graph. `turbo.json` declares:
   Turborepo's cache key, so a change to `TierFileSystem=Layer4` correctly
   invalidates downstream element caches.
 
-## beforeBundleCommand Hooks
+## Extension Manifest Pre-Bake
 
-`tauri.conf.json` supports a `beforeBundleCommand` field that runs in the same
-scope as the Tauri bundler, in all build paths including direct `pnpm tauri
-build`, `Build.sh`, and CI.
+The extension list is pre-baked during the Sky build. The `BakeExtensionManifest`
+Astro integration (`Sky/Source/Function/Build/BakeExtensionManifest.ts`) runs on
+`astro:build:done`, scans the bundled and user extension roots, and writes
+`extensions.manifest.json` next to the dev binary and into the bundle path that
+`tauri.conf.json` ships inside the `.app`.
 
-The primary hook is `PreBake.ts` (`Maintain/Build/Manifest/PreBake.ts`). It
-walks all extension root directories and writes `extensions.manifest.json` into
-the bundle. At runtime, `LoadFromCache.rs` reads this pre-baked manifest in
-under 50 ms, compared to the 1200 ms required for a live directory scan of the
-same extensions. `ScanAndPopulateExtensions.rs` tries the cache first and falls
-back to the live scan if the manifest is absent or stale.
-
-A second hook, `Maintain/Build/Brotli/PreBake.ts`, walks the assembled bundle
-and writes `.br` siblings for all compressible assets.
-
-The `beforeBundleCommand` placement is intentional: putting pipeline-critical
-steps in `Build.sh` misses direct `pnpm tauri build` invocations from CI or
-during development.
+At runtime, `LoadFromCache.rs`
+(`Mountain/Source/ApplicationState/Internal/ExtensionScanner/`) reads this
+pre-baked manifest in under 50 ms, compared to the 1200 ms required for a live
+directory scan of the same extensions. `ScanAndPopulateExtensions.rs` tries the
+cache first and falls back to the live scan when the manifest is missing, stale
+(older than 24 hours for dev builds), or unreadable.
 
 ## Code Signing
 
@@ -269,8 +277,9 @@ Both `Maintain/Debug/Build.sh` and `Maintain/Release/Build.sh` invoke
 
 ## Route Manifest Generation
 
-`Maintain/Script/GenerateRouteManifest.sh` runs as part of `pnpm
-prepublishOnly` and scans three routing tiers:
+`Maintain/Script/GenerateRouteManifest.sh` runs on every build (wired into
+`Maintain/Debug/Build.sh` and each element's `prepublishOnly`) and scans three
+routing tiers:
 
 - **Tier 1**: Mountain Rust handlers, extracted from
   `Element/Mountain/Source/Track/Effect/CreateEffectForRequest/*.rs` by matching
@@ -280,9 +289,12 @@ prepublishOnly` and scans three routing tiers:
 - **Tier 3**: Cocoon bespoke Node fallbacks discovered in `*Fallback.ts` files.
 
 The generated `RouteManifest.ts` exposes three `ReadonlySet<string>` values
-consumed by `Services/DualTrack.ts` at runtime. The dual-track dispatcher uses
-these sets to skip Mountain's gRPC round-trip for methods Mountain does not
-handle, and to raise a typed error for methods no tier covers.
+consumed by `Services/DualTrack.ts` at runtime. DualTrack is the progressive
+Rust-migration backstop: it tries Mountain's gRPC handler first, and when
+Mountain does not know the method yet it falls back to a Node implementation
+in Cocoon, skipping the round-trip for methods no Rust handler exists for and
+raising a typed error for methods no tier covers. A human-readable coverage
+report is written alongside the manifest.
 
 ## Artifact Layout
 
@@ -306,18 +318,18 @@ Land/
 
 ## Key Dependencies
 
-| Crate / Tool      | Role                                                       |
-| ----------------- | ---------------------------------------------------------- |
-| `tauri` 2.x       | Native window, IPC, and app bundle management              |
-| `cargo` workspace | Rust element compilation; 51 `[patch.crates-io]` redirects |
-| `pnpm` workspace  | JS element dependency management and workspace protocol    |
-| `turborepo`       | TypeScript build graph and cache invalidation              |
-| ESBuild           | Cocoon, Output, Worker compilation                         |
-| Vite + Astro      | Sky and Wind UI compilation                                |
-| `rhai`            | Embedded scripting in Maintain                             |
-| `toml_edit`       | Non-lossy TOML modification for `Cargo.toml`               |
-| `json5`           | JSON5 configuration support                                |
-| `clap`            | CLI argument parsing in Maintain                           |
+| Crate / Tool      | Role                                                        |
+| ----------------- | ----------------------------------------------------------- |
+| `tauri` 2.x       | Native window, IPC, and app bundle management               |
+| `cargo` workspace | Rust element compilation with `[patch.crates-io]` redirects |
+| `pnpm` workspace  | JS element dependency management and workspace protocol     |
+| `turborepo`       | TypeScript build graph and cache invalidation               |
+| ESBuild           | Cocoon, Output, Worker compilation                          |
+| Vite + Astro      | Sky and Wind UI compilation                                 |
+| `rhai`            | Embedded scripting in Maintain                              |
+| `toml_edit`       | Non-lossy TOML modification for `Cargo.toml`                |
+| `json5`           | JSON5 configuration support                                 |
+| `clap`            | CLI argument parsing in Maintain                            |
 
 ## Why This Structure
 

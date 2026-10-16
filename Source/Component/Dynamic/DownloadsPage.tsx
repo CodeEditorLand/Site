@@ -101,8 +101,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 
 						Label: "Processor",
 
-						Value:
-							"Multi-core 64-bit processor (x86_64 or Apple Silicon)",
+						Value: "Multi-core 64-bit processor (x86_64 or Apple Silicon)",
 					},
 
 					{ Id: "ram-rec", Label: "Memory", Value: "8 GB RAM" },

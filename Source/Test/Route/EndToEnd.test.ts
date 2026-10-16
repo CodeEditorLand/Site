@@ -592,7 +592,9 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			// Simulate Doc content collection build output (lowercase slugs)
 			for (const Page of [
 				"Doc/sky",
+
 				"Doc/telemetry/overview",
+
 				"Doc/telemetry/effect-otel",
 			]) {
 				await mkdir(join(TempDirectory, Page), { recursive: true });
@@ -613,9 +615,7 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 			// Slugs are canonical
 			expect(RouteMap.Canonical).toContain("/Doc/sky");
 
-			expect(RouteMap.Canonical).toContain(
-				"/Doc/telemetry/overview",
-			);
+			expect(RouteMap.Canonical).toContain("/Doc/telemetry/overview");
 
 			// Case variants map to the slug canonical
 			expect(RouteMap.Variant["/Doc/Sky"]).toBe("/Doc/sky");
@@ -628,13 +628,13 @@ describe("End-to-end: Build → RouteMap → SW → Resolve", () => {
 
 			expect(RouteMap.Variant["/DOC/SKY"]).toBe("/Doc/sky");
 
-			expect(
-				RouteMap.Variant["/Doc/Telemetry/Overview"],
-			).toBe("/Doc/telemetry/overview");
+			expect(RouteMap.Variant["/Doc/Telemetry/Overview"]).toBe(
+				"/Doc/telemetry/overview",
+			);
 
-			expect(
-				RouteMap.Variant["/Doc/telemetry/Overview"],
-			).toBe("/Doc/telemetry/overview");
+			expect(RouteMap.Variant["/Doc/telemetry/Overview"]).toBe(
+				"/Doc/telemetry/overview",
+			);
 
 			// SW resolution: mixed-case slug redirects to canonical
 			expect(

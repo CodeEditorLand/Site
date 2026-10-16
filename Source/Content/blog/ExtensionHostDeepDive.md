@@ -5,7 +5,7 @@ summary: "How Cocoon runs VS Code extensions in supervised Effect-TS fibers with
 publishedAt: "2026-05-23"
 tags: ["Extensions", "Cocoon", "Effect-TS", "Architecture", "Modules"]
 author: "CodeEditorLand"
-readTime: 10
+readTime: 8
 ---
 
 # Extension Host Deep Dive: Cocoon Architecture
@@ -29,10 +29,10 @@ object. Cocoon builds that object from Effect-TS services.
 ## Bootstrap Sequence
 
 The entry point is `Bootstrap/Implementation/Cocoon/Main.ts`. It composes all
-Effect-TS layers into the master `AppLayer`:
+Effect-TS layers into the master `AppLayer` (wired by `Service/Mapping.ts`):
 
 ```
-PatchProcess -> Effect/Bootstrap -> IpcProvider -> AppLayer -> ExtensionHost
+PatchProcess -> Service/Effect/Bootstrap -> AppLayer -> ExtensionHost
 ```
 
 `PatchProcess` runs first and is non-negotiable. Before any other code executes,
@@ -45,8 +45,8 @@ it:
 - Monitors the parent Mountain process PID; if it exits, Cocoon terminates
   automatically
 
-After hardening, `Effect/Bootstrap.ts` coordinates the initialization stages in
-order:
+After hardening, `Service/Effect/Bootstrap.ts` coordinates the initialization
+stages in order:
 
 1. Environment detection (OS, Node version, platform data)
 2. Configuration loading
@@ -73,8 +73,9 @@ When an extension calls `require('vscode')`, Cocoon intercepts the module
 request before the extension code ever sees the module. This is the core
 compatibility mechanism.
 
-The `RequireInterceptor.ts` module patches both CommonJS `require()` and ESM
-`import` at Node.js module resolution level. The interception flow:
+The module interceptor (`Service/Effect/Module/Interceptor.ts`) patches both
+CommonJS `require()` and ESM `import` at Node.js module resolution level. The
+interception flow:
 
 1. Extension calls `require('vscode')` or `import 'vscode'`.
 2. The interceptor detects the vscode module pattern.
@@ -131,8 +132,8 @@ When an extension calls `vscode.window.showInformationMessage("Hello")`:
 7. The user's choice flows back: Mountain -> gRPC -> Cocoon -> WindowProvider ->
    extension promise resolution.
 
-Total latency for this flow breaks down as approximately 0.42ms of processing
-overhead plus network latency and Mountain processing time.
+Total latency is dominated by the gRPC round-trip and Mountain's native dialog
+handling; Cocoon-side serialization overhead is minimal.
 
 ## Extension Host Service and Fiber Supervision
 
@@ -249,11 +250,12 @@ Not yet implemented:
 - `vscode.lm.*` (language model API)
 - `vscode.chat.*` (chat API)
 - `vscode.notebook.*` (notebook API)
-- `vscode.tests.*` (testing API)
 
-Extensions using these APIs activate but the specific features silently no-op. A
-public extension validation matrix naming specific extensions, versions,
-platforms, and exercised APIs is pending.
+The `vscode.tests.*` and `vscode.authentication` namespaces have handler paths,
+but the full test-runner surface and real OAuth flows are not complete.
+Extensions using the unimplemented APIs activate but the specific features
+silently no-op. A public extension validation matrix naming specific
+extensions, versions, platforms, and exercised APIs is pending.
 
 ## The Architecture Decision: Effect-TS Over Traditional OOP
 

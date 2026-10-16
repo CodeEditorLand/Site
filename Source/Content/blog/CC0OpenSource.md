@@ -4,7 +4,7 @@ summary: "Public domain licensing, no CLA, no copyright assignment - maximum fre
 publishedAt: "2026-04-03"
 tags: ["Open Source", "Licensing", "CC0", "Community"]
 author: "CodeEditorLand"
-readTime: 6
+readTime: 3
 ---
 
 # Why We Chose CC0 1.0 Universal for a Code Editor
@@ -18,10 +18,9 @@ whatsoever.
 ## What CC0 Actually Means
 
 CC0 is not a license in the traditional sense. It is a waiver. The copyright
-holder (CodeEditorLand Foundation, operated by PlayForm, Sofia, Bulgaria)
-irrevocably surrenders all copyright and related rights to the work, to the
-fullest extent permitted by law. Where waiver is not legally possible (as in
-some jurisdictions), CC0 includes a permissive fallback license.
+holders irrevocably surrender all copyright and related rights to the work, to
+the fullest extent permitted by law. Where waiver is not legally possible (as
+in some jurisdictions), CC0 includes a permissive fallback license.
 
 In practical terms:
 
@@ -68,11 +67,11 @@ A CC0 dedication is a deliberate architectural choice, not just a legal one. It
 shapes how the codebase is organized. When every component carries no
 restrictions, there is no need for licensing headers on every file, no license
 compliance tooling in CI, and no per-component license auditing. The build
-pipeline stays lean. The `Maintain` element focuses on code quality and
-refactoring (GritQL queries, automated fixes) rather than license compliance.
+pipeline stays lean. The `Maintain` element focuses on build orchestration,
+dead-code elimination, and development tooling rather than license compliance.
 
-Every Land element -- `Mountain`, `Cocoon`, `Sky`, `Wind`, `Vine`, `Air`,
-`Echo`, and the rest -- shares the same public domain status. This means
+Every Land element -- `Mountain`, `Cocoon`, `Grove`, `Sky`, `Wind`, `Vine`,
+`Air`, `Echo`, and the rest -- shares the same public domain status. This means
 components can be extracted, combined, or embedded without license compatibility
 analysis.
 
@@ -80,15 +79,16 @@ analysis.
 
 Developing a full-featured code editor without a commercial license or a SaaS
 revenue model requires funding that does not depend on restricting the output.
-The [NGI0 Commons Fund](https://nlnet.nl/commonsfund/) (grant No. 101135429),
-administered by the NLnet Foundation, provides exactly this. The grant funds
+The [NGI0 Commons Fund](https://nlnet.nl/commonsfund/), established by
+[NLnet](https://nlnet.nl) with financial support from the European Commission's
+Next Generation Internet program, provides exactly this. The grant funds
 development of open internet infrastructure without requiring proprietary
 lock-in.
 
-PlayForm (Sofia, Bulgaria) operates the CodeEditorLand Foundation under this
-grant. The funding model ensures that CC0 licensing is sustainable -
-contributors and maintainers are compensated through public interest funding,
-not through monetizing user data or restricting distribution.
+PlayForm develops and maintains the project under this funding model. The
+funding model ensures that CC0 licensing is sustainable - contributors and
+maintainers are compensated through public interest funding, not through
+monetizing user data or restricting distribution.
 
 ## What This Means for You
 

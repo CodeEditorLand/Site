@@ -142,23 +142,12 @@
 	"sales": {
 		"pageTitle": "Enterprise Inquiries",
 		"pageSubtitle": "Deploying Land across your organization? Get in touch and we'll work out the details together.",
-		"form": {
-			"firstName": "First Name",
-			"lastName": "Last Name",
-			"email": "Work Email",
-			"company": "Company",
-			"teamSize": "Team Size",
-			"teamSizePlaceholder": "Select team size",
-			"message": "How can we help?",
-			"messagePlaceholder": "Tell us about your requirements, deployment needs, or any questions you have.",
-			"submitButton": "Send Inquiry"
-		},
 		"features": {
 			"heading": "What Enterprise Includes",
-			"prioritySupport": "Priority support and guaranteed SLA",
+			"prioritySupport": "Priority support and SLA",
 			"customDeployment": "Custom deployment options: cloud, on-prem, or air-gapped",
 			"volumeLicensing": "Volume licensing for large teams",
-			"accountManagement": "Dedicated account manager for your organization",
+			"accountManagement": "Direct contact with the maintainers",
 			"securityReview": "Security review and compliance documentation",
 			"customIntegrations": "Custom integrations and development work"
 		},
@@ -166,9 +155,9 @@
 			"heading": "How to Reach Us",
 			"directHeading": "Direct Contact",
 			"description": "Prefer email? Reach us directly:",
-			"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to promptly.",
+			"githubNote": "We handle enterprise inquiries through GitHub Issues.\n\nThis ensures your request is tracked, visible to the full team, and responded to.",
 			"openIssueHeading": "Open a GitHub Issue",
-			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe monitor issues daily.",
+			"openIssueDescription": "Create an issue on our GitHub repository describing your organization's needs.\n\nInclude your company name, team size, use case, and deployment requirements.\n\nWe review issues regularly.",
 			"openIssueButton": "Open GitHub Issue",
 			"issueIncludeLabel": "What to include in your issue:",
 			"issueIncludeText": "Company name, team size, intended use case, deployment environment, timeline, and any specific support or compliance requirements.",

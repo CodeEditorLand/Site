@@ -565,7 +565,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 						}),
 
 						T("home:roadmap.tiers.future.features.2", {
-							defaultValue: "Long-tail VS Code API coverage through Cocoon",
+							defaultValue:
+								"Long-tail VS Code API coverage through Cocoon",
 						}),
 
 						T("home:roadmap.tiers.future.features.3", {
@@ -628,7 +629,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.air.description", {
-						defaultValue: "Persistent Rust daemon.\u2001Updates, downloads, signing, and health checks outside the main window.\nStaged updates with automatic rollback.\u2001Warm file index across sessions.\nReplaces restart-to-update and cold-start indexing.\u2001Active.",
+						defaultValue:
+							"Persistent Rust daemon.\u2001Updates, downloads, signing, and health checks outside the main window.\nStaged updates with automatic rollback.\u2001Warm file index across sessions.\nReplaces restart-to-update and cold-start indexing.\u2001Active.",
 					}),
 				},
 
@@ -647,7 +649,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.cocoon.description", {
-						defaultValue: "Node.js extension host.\u2001Runs existing VS Code extensions unmodified on the full VS Code API surface.\nEvery extension runs in its own supervised Effect fiber.\u2001Crashes are trapped at the supervision boundary.\nReplaces the single-threaded extension host.\u2001Platform-native sandboxing planned.",
+						defaultValue:
+							"Node.js extension host.\u2001Runs existing VS Code extensions unmodified on the full VS Code API surface.\nEvery extension runs in its own supervised Effect fiber.\u2001Crashes are trapped at the supervision boundary.\nReplaces the single-threaded extension host.\u2001Platform-native sandboxing planned.",
 					}),
 				},
 
@@ -666,7 +669,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.common.description", {
-						defaultValue: "Pure abstract Rust crate.\u2001No working code, only abstract definitions.\nAsync service traits for every capability.\u2001ActionEffect treats every operation as declarative data.\nTransport-agnostic.\u2001Same handler code over gRPC, IPC, WASM, or Mist.\u2001Active.",
+						defaultValue:
+							"Pure abstract Rust crate.\u2001No working code, only abstract definitions.\nAsync service traits for every capability.\u2001ActionEffect treats every operation as declarative data.\nTransport-agnostic.\u2001Same handler code over gRPC, IPC, WASM, or Mist.\u2001Active.",
 					}),
 				},
 
@@ -685,7 +689,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.echo.description", {
-						defaultValue: "Priority-aware work-stealing scheduler on crossbeam-deque.\u2001Lock-free queues: no mutex, no contention.\nHigh, Normal, and Low priority tiers.\u2001Workers steal from peers, then fall back to the global queue.\nKeeps UI work responsive under I/O load.\u2001Active.",
+						defaultValue:
+							"Priority-aware work-stealing scheduler on crossbeam-deque.\u2001Lock-free queues: no mutex, no contention.\nHigh, Normal, and Low priority tiers.\u2001Workers steal from peers, then fall back to the global queue.\nKeeps UI work responsive under I/O load.\u2001Active.",
 					}),
 				},
 
@@ -704,7 +709,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.grove.description", {
-						defaultValue: "Rust and WASM extension host.\u2001Wasmtime sandbox: an extension can only touch what is explicitly granted.\nSame VS Code API surface as Cocoon.\u2001gRPC, IPC, direct WASM calls, or Mist transports.\nComplements Cocoon's Node.js path.\u2001Active.",
+						defaultValue:
+							"Rust and WASM extension host.\u2001Wasmtime sandbox: an extension can only touch what is explicitly granted.\nSame VS Code API surface as Cocoon.\u2001gRPC, IPC, direct WASM calls, or Mist transports.\nComplements Cocoon's Node.js path.\u2001Active.",
 					}),
 				},
 
@@ -723,7 +729,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.maintain.description", {
-						defaultValue: "Deterministic build orchestrator for the Land ecosystem.\u2001One config file loaded through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active.",
+						defaultValue:
+							"Deterministic build orchestrator for the Land ecosystem.\u2001One config file loaded through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active.",
 					}),
 				},
 
@@ -742,7 +749,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.mist.description", {
-						defaultValue: "Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback; nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned.",
+						defaultValue:
+							"Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback; nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned.",
 					}),
 				},
 
@@ -761,7 +769,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.mountain.description", {
-						defaultValue: "Native Rust and Tauri backend.\u2001Implements the Common service traits: files, terminals, dialogs, processes, keychain.\nHosts the gRPC server for the extension host and sidecars.\u2001Manages application state and sidecar lifecycle.\nReplaces the Electron main process.\u2001Active.",
+						defaultValue:
+							"Native Rust and Tauri backend.\u2001Implements the Common service traits: files, terminals, dialogs, processes, keychain.\nHosts the gRPC server for the extension host and sidecars.\u2001Manages application state and sidecar lifecycle.\nReplaces the Electron main process.\u2001Active.",
 					}),
 				},
 
@@ -780,7 +789,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.output.description", {
-						defaultValue: "Build orchestration for VS Code platform source.\u2001esbuild primary, Rust-native Rest selectable via environment.\nPlugin-routed pipeline.\u2001Node.js API polyfills for the Tauri WebView.\nDeterministic builds.\u2001Shared output for Cocoon, Sky, and Wind.\u2001Active.",
+						defaultValue:
+							"Build orchestration for VS Code platform source.\u2001esbuild primary, Rust-native Rest selectable via environment.\nPlugin-routed pipeline.\u2001Node.js API polyfills for the Tauri WebView.\nDeterministic builds.\u2001Shared output for Cocoon, Sky, and Wind.\u2001Active.",
 					}),
 				},
 
@@ -799,7 +809,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.rest.description", {
-						defaultValue: "Rust-native TypeScript compilation on the OXC toolchain.\u2001Parser, transformer, and codegen in one process.\nNo Node.js in the hot path.\u2001Decorators, class fields, and JSX.\u2001Parallel compilation across cores.\nBundles the VS Code platform code for the extension host.\u2001Active.",
+						defaultValue:
+							"Rust-native TypeScript compilation on the OXC toolchain.\u2001Parser, transformer, and codegen in one process.\nNo Node.js in the hot path.\u2001Decorators, class fields, and JSX.\u2001Parallel compilation across cores.\nBundles the VS Code platform code for the extension host.\u2001Active.",
 					}),
 				},
 
@@ -818,7 +829,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.sidecar.description", {
-						defaultValue: "Prebuilt Node.js binaries per target platform.\u2001Mountain selects the exact binary at compile time. No runtime detection.\nOfficial nodejs.org downloads with checksum verification.\u2001Incremental cache across builds.\nReplaces runtime detection and fallback chains.\u2001Active.",
+						defaultValue:
+							"Prebuilt Node.js binaries per target platform.\u2001Mountain selects the exact binary at compile time. No runtime detection.\nOfficial nodejs.org downloads with checksum verification.\u2001Incremental cache across builds.\nReplaces runtime detection and fallback chains.\u2001Active.",
 					}),
 				},
 
@@ -837,7 +849,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.sky.description", {
-						defaultValue: "Declarative UI layer built on Astro.\u2001Renders the editor interface in the OS WebView.\nSkyBridge routes Tauri events to VS Code workbench APIs.\u2001Conditional dynamic imports keep the bundle target-specific.\nWorkbench layouts for Browser, Mountain-native, and Electron.\u2001Active.",
+						defaultValue:
+							"Declarative UI layer built on Astro.\u2001Renders the editor interface in the OS WebView.\nSkyBridge routes Tauri events to VS Code workbench APIs.\u2001Conditional dynamic imports keep the bundle target-specific.\nWorkbench layouts for Browser, Mountain-native, and Electron.\u2001Active.",
 					}),
 				},
 
@@ -856,7 +869,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.vine.description", {
-						defaultValue: "The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nConnects Mountain, Cocoon, Air, and Grove.\u2001Active.",
+						defaultValue:
+							"The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nConnects Mountain, Cocoon, Air, and Grove.\u2001Active.",
 					}),
 				},
 
@@ -875,7 +889,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.wind.description", {
-						defaultValue: "Effect-TS service layer.\u2001Recreates the VS Code workbench environment inside the Tauri WebView.\nTyped Tauri commands replace Electron's untyped JSON IPC bridge.\nLayer stacks for Tauri, Electron compatibility, and isolated tests.\u2001Active.",
+						defaultValue:
+							"Effect-TS service layer.\u2001Recreates the VS Code workbench environment inside the Tauri WebView.\nTyped Tauri commands replace Electron's untyped JSON IPC bridge.\nLayer stacks for Tauri, Electron compatibility, and isolated tests.\u2001Active.",
 					}),
 				},
 
@@ -894,7 +909,8 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.worker.description", {
-						defaultValue: "Service worker for the web shell.\u2001Offline caching: network-first for navigation, cache-first for static assets.\nIntercepts CSS imports and injects link tags for VS Code's stylesheet-as-module pattern.\nNew-version detection with client reload.\u2001Active.",
+						defaultValue:
+							"Service worker for the web shell.\u2001Offline caching: network-first for navigation, cache-first for static assets.\nIntercepts CSS imports and injects link tags for VS Code's stylesheet-as-module pattern.\nNew-version detection with client reload.\u2001Active.",
 					}),
 				},
 			],

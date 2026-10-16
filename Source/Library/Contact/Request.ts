@@ -8,7 +8,7 @@
  * spoken aloud). The code appears in the email subject so the
  * receiving team can filter and prioritise at a glance.
  *
- * Format in email subject:  [REACH-2026] Data Access Request - user@example.com
+ * Format in email subject:  [REACH-3FPQ9] Data Access & Export Request - user@example.com
  */
 
 export type IncomeCode =
@@ -617,7 +617,10 @@ export const Requests: Record<IncomeCode, RequestConfig> = {
 
 				type: "select",
 
-				options: ["No, this is first contact", "Yes - reference: "],
+				options: [
+					"No, this is first contact",
+					"Yes - reference in the description",
+				],
 
 				required: true,
 			},

@@ -7,7 +7,7 @@ summary:
 publishedAt: "2026-05-22"
 tags: ["Architecture", "Bootstrap", "Mountain", "Cocoon", "IPC"]
 author: "CodeEditorLand"
-readTime: 8
+readTime: 5
 ---
 
 # Application Startup Handshake
@@ -104,8 +104,9 @@ This payload is sent back to Cocoon via `initExtensionHost` gRPC request. Cocoon
 receives it and creates the `InitDataLayer`, then runs `FullAppInitialization`.
 Two critical things happen inside that effect:
 
-1. **`RequireInterceptor` is installed.** This patches both CJS `require()` and
-   ESM `import` so calls to the `vscode` module are intercepted and routed to
+1. **The module interceptor (`Module/Interceptor`) is installed.** This patches
+   both CJS `require()` and ESM `import` so calls to the `vscode` module are
+   intercepted and routed to
    the correct, extension-specific API instance.
 2. **`ExtensionHostProvider`** is resolved. It activates extensions matching the
    `*` (workspace) activation event.

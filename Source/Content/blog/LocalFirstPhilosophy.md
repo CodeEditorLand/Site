@@ -6,7 +6,7 @@ summary:
 publishedAt: "2026-04-02"
 tags: ["Local-First", "Architecture", "Privacy"]
 author: "CodeEditorLand"
-readTime: 5
+readTime: 3
 ---
 
 # Local-First Philosophy
@@ -34,10 +34,12 @@ run a terminal, or activate extensions.
 
 ## The Network Boundary
 
-`Mist` handles DNS isolation, resolver, and secure service-boundary code. It can
-be implemented either as a native module within `Mountain` or as a separate
-sidecar. The point is intentional: network-dependent features are isolated at
-the service boundary. Core editing never depends on them.
+`Mist` runs a loopback DNS server for the `editor.land` private zone: every
+`*.editor.land` name resolves to `127.0.0.1`, and a forward allowlist admits
+only explicitly permitted hosts (such as `update.editor.land`); all other
+queries are refused. DNSSEC signing is planned, not yet active. The point is
+intentional: network-dependent features are isolated at the service boundary.
+Core editing never depends on them.
 
 `Air`'s background services (updates, downloads, auth, indexing, health) are
 profile-dependent. Whether Air is part of a given build depends on the selected
@@ -56,12 +58,15 @@ Here is what works right now without any network dependency:
   nothing is ever written to disk in plaintext.
 - `Cocoon` activates extensions from disk. The `vscode` API object is built with
   Effect-TS, with privileged calls proxied to `Mountain` via gRPC.
+- `Grove` hosts `Rust`/`WASM` extensions inside a `WASMtime` sandbox with
+  capability-based isolation, sharing the same `VS Code` API surface as
+  `Cocoon`.
 - `Wind` runs the workbench services in the Tauri WebView, routing UI requests
   through typed Tauri commands into Rust handlers.
 - `Sky` renders the UI components driven by `Wind`'s state.
-- `Rest` bundles the VS Code platform code from the `Dependency/Editor`
-  submodule for `Cocoon` to consume at runtime.
-- `Output` contains the bundled JavaScript artifacts that `Cocoon` loads.
+- `Rest` compiles the VS Code platform code from the `Dependency/Editor`
+  submodule with its Rust-native OXC pipeline (parser, transformer, codegen).
+- `Output` ships the bundled JavaScript artifacts that `Cocoon` loads.
 - `Echo` provides the work-stealing task scheduler for bounded background work.
 
 ## Coming Soon
