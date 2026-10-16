@@ -1,0 +1,1 @@
+var a={"sidebar.title":"Documentación"};export{a as default};

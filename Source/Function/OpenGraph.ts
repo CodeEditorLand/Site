@@ -84,7 +84,7 @@ const EscapeXML = (Text: string): string =>
  *   WORKBENCH / NOT FOUND / MACOS / ENTERPRISE    -> neutral gray (matches MutedColor)
  * Unknown keywords stay gray (they frame, they do not shout).
  */
-const OPENGRAPH_STAMP_HEX: Record<string, string> = {
+export const OPENGRAPH_STAMP_HEX: Record<string, string> = {
 	"EXTENSION HOST": "#1d4ed8",
 	"CAPABILITY HOST": "#1d4ed8",
 	"DUAL-TRACK": "#c2410c",

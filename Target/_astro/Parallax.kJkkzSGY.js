@@ -1,0 +1,1 @@
+var e=0,t=()=>{const t=document.documentElement.scrollTop||document.body.scrollTop,o=document.documentElement.scrollHeight-document.documentElement.clientHeight;e=o<=0?0:Math.min(1,Math.max(0,t/o))};"undefined"!=typeof window&&(window.addEventListener("scroll",t,{passive:!0}),t());var o={UpdateScrollProgress:t=>{t.setProperty("--ScrollProgress",String(e))}};export{o as default};
