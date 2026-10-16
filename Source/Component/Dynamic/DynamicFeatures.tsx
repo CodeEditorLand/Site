@@ -16,6 +16,8 @@ import { Air } from "../../Content/Record/Air.js";
 
 import { Echo } from "../../Content/Record/Echo.js";
 
+import { JellyCardStyle } from "./Interface/Card/Jelly.js";
+
 import type Property from "./Interface/Property/Feature.js";
 
 /**
@@ -152,16 +154,17 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 							ElementRecords[Index % ElementRecords.length];
 
 						return (
-							<div
-								key={Record.Id}
-								className="FeatureCard min-h-0 border border-border p-5"
-							>
-								<SpecimenLabel
-									record={Record}
-									className="h-full"
-								/>
-							</div>
-						);
+												<jelly-card
+													key={Record.Id}
+													className="FeatureCard min-h-0 p-5 flat"
+													style={JellyCardStyle(Record.Id)}
+												>
+													<SpecimenLabel
+														record={Record}
+														className="h-full"
+													/>
+												</jelly-card>
+											);
 					})}
 				</div>
 			</div>

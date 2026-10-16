@@ -1,1 +1,0 @@
-var e={"sidebar.title":"Dokumentation","sidebar.elements":"Elemente","sidebar.gettingStarted":"Erste Schritte"};export{e as default};

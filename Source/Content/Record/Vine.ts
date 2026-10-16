@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Vine: FieldRecord = {
 	Id: "vine",
 
 	Category: "Element",
 
 	Title: "VINE",
+
+	Href: ElementRepos.Vine.Base,
 
 	Index: "# VINE_01",
 

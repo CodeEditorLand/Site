@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Grove: FieldRecord = {
 	Id: "grove",
 
 	Category: "Element",
 
 	Title: "GROVE",
+
+	Href: ElementRepos.Grove.Base,
 
 	Index: "# GROVE_01",
 

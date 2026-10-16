@@ -40,6 +40,8 @@ import { Wind } from "../../Content/Record/Wind.js";
 
 import { Worker } from "../../Content/Record/Worker.js";
 
+import { JellyCardStyle, JellyBadgeStyle } from "./Interface/Card/Jelly.js";
+
 import type Item from "./Interface/Item/Testimonial.js";
 
 import type Property from "./Interface/Property/Testimonial.js";
@@ -304,14 +306,17 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 
 			{/* Role → keyword chips split by em-space (U+2001) or legacy " - " */}
 			{Testimonial.Role && (
-				<div className="mt-3 flex flex-wrap text-card-foreground">
+				<div className="mt-3 mb-2 flex flex-wrap gap-y-2 text-card-foreground">
 					{Testimonial.Role.split(/\u2001| - /).map(
 						(Tag, TagIndex) => (
 							<Fragment key={TagIndex}>
 								{TagIndex > 0 && "\u2001"}
-								<code className="flat bg-[color-mix(in_srgb,currentColor_10%,transparent)] px-1.5 py-0.5 font-mono text-sm">
+								<jelly-badge
+									className="flat font-mono text-sm"
+									style={JellyBadgeStyle(Tag)}
+								>
 									{Tag}
-								</code>
+								</jelly-badge>
 							</Fragment>
 						),
 					)}
@@ -473,11 +478,12 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									: ColB;
 
 							return (
-								<div
+								<jelly-card
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard border border-border p-5"
+									className="MasonryCard TestimonialCard p-5 flat"
 									style={
 										{
+											...JellyCardStyle(Testimonial.Id),
 											"--masonry-col": ColSpan,
 										} as React.CSSProperties
 									}
@@ -485,7 +491,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 									<RenderTestimonialBody
 										Testimonial={Testimonial}
 									/>
-								</div>
+								</jelly-card>
 							);
 						})}
 					</div>
@@ -526,15 +532,16 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				>
 					{Testimonials.map((Testimonial) => {
 						return (
-							<div
-								key={Testimonial.Id}
-								className="TestimonialCard border border-border p-5"
-							>
-								<RenderTestimonialBody
-									Testimonial={Testimonial}
-								/>
-							</div>
-						);
+												<jelly-card
+													key={Testimonial.Id}
+													className="TestimonialCard p-5 flat"
+													style={JellyCardStyle(Testimonial.Id)}
+												>
+													<RenderTestimonialBody
+														Testimonial={Testimonial}
+													/>
+												</jelly-card>
+											);
 					})}
 				</div>
 			</div>

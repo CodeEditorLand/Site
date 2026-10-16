@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Cocoon: FieldRecord = {
 	Id: "cocoon",
 
 	Category: "Element",
 
 	Title: "COCOON",
+
+	Href: ElementRepos.Cocoon.Base,
 
 	Index: "# COCOON_01",
 

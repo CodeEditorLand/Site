@@ -20,6 +20,8 @@ export type FieldRecord = {
 
 	Title: string;
 
+	Href?: string;
+
 	Relation?: string;
 
 	Index: string;

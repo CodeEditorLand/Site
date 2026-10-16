@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Mist: FieldRecord = {
 	Id: "mist",
 
 	Category: "Element",
 
 	Title: "MIST",
+
+	Href: ElementRepos.Mist.Base,
 
 	Index: "# MIST_01",
 

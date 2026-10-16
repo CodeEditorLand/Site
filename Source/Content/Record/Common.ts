@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Common: FieldRecord = {
 	Id: "common",
 
 	Category: "Element",
 
 	Title: "COMMON",
+
+	Href: ElementRepos.Common.Base,
 
 	Index: "# COMMON_01",
 

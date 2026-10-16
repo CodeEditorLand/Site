@@ -1,3 +1,5 @@
+import { ExternalLink } from "lucide-react";
+
 import React from "react";
 
 import { cn } from "../UI/Utility";
@@ -108,9 +110,25 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 
 			{showTitle && (
 				<div className="mt-3 border-t border-border pt-3">
-					<p className="font-mono text-lg font-medium uppercase leading-tight tracking-[0.1em] text-card-foreground">
-						{record.Title}:
-					</p>
+					{record.Href ? (
+						<a
+							href={record.Href}
+
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center gap-1.5 font-mono text-lg font-medium uppercase leading-tight tracking-[0.1em] text-card-foreground hover:underline"
+						>
+							{record.Title}:
+							<ExternalLink
+								className="h-3.5 w-3.5 shrink-0 text-current"
+								aria-hidden="true"
+							/>
+						</a>
+					) : (
+						<p className="font-mono text-lg font-medium uppercase leading-tight tracking-[0.1em] text-card-foreground">
+							{record.Title}:
+						</p>
+					)}
 					{record.Relation ? (
 						<p className="mt-1.5 font-mono text-sm leading-relaxed text-card-foreground opacity-70">
 							↳{record.Relation}

@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Echo: FieldRecord = {
 	Id: "echo",
 
 	Category: "Element",
 
 	Title: "ECHO",
+
+	Href: ElementRepos.Echo.Base,
 
 	Index: "# ECHO_01",
 

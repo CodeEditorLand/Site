@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Rest: FieldRecord = {
 	Id: "rest",
 
 	Category: "Element",
 
 	Title: "REST",
+
+	Href: ElementRepos.Rest.Base,
 
 	Index: "# REST_01",
 

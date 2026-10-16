@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const Wind: FieldRecord = {
 	Id: "wind",
 
 	Category: "Element",
 
 	Title: "WIND",
+
+	Href: ElementRepos.Wind.Base,
 
 	Index: "# WIND_01",
 

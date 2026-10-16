@@ -1,11 +1,15 @@
 import type { FieldRecord } from "./FieldRecord";
 
+import { ElementRepos } from "../../Library/Links";
+
 export const SideCar: FieldRecord = {
 	Id: "sidecar",
 
 	Category: "Element",
 
 	Title: "SIDECAR",
+
+	Href: ElementRepos.SideCar.Base,
 
 	Index: "# SIDECAR_01",
 
