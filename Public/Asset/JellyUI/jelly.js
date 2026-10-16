@@ -4784,7 +4784,7 @@ class Li extends M {
     const t = parseFloat(
       getComputedStyle(this).getPropertyValue("--jelly-radius")
     ) || 0;
-    if (!this.reducedMotion && t > 0 && requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion && t > 0) {
+    if (!this.reducedMotion && t > 0 && requestAnimationFrame(() => this.centerPop(0.7)), this.syncSquish(), !this.reducedMotion) {
       const e = [
         ...document.querySelectorAll("jelly-card")
       ].indexOf(this);
