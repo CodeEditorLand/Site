@@ -60,7 +60,15 @@ export type FieldRecord = {
 		| "Sky"
 		| "Air"
 		| "Echo"
-		| "Grove";
+		| "Grove"
+		| "Common"
+		| "Maintain"
+		| "Mist"
+		| "Output"
+		| "Rest"
+		| "SideCar"
+		| "Vine"
+		| "Worker";
 
 	Action?: {
 		Label: string;

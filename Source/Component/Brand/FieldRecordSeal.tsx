@@ -3,7 +3,22 @@ import React from "react";
 import { cn } from "../UI/Utility";
 
 export type FieldRecordElement =
-	"Land" | "Mountain" | "Cocoon" | "Wind" | "Sky" | "Air" | "Echo" | "Grove";
+	| "Land"
+	| "Mountain"
+	| "Cocoon"
+	| "Wind"
+	| "Sky"
+	| "Air"
+	| "Echo"
+	| "Grove"
+	| "Common"
+	| "Maintain"
+	| "Mist"
+	| "Output"
+	| "Rest"
+	| "SideCar"
+	| "Vine"
+	| "Worker";
 
 export interface FieldRecordSealProps {
 	element: FieldRecordElement;
@@ -270,7 +285,17 @@ const SealPattern: React.FC<{ element: FieldRecordElement }> = ({
 			);
 
 		default:
-			return null;
+			// Unknown elements render the spec's neutral ◎ (U+25CE) fallback -
+			// no dedicated seal SVG for the extended architecture elements.
+			return (
+				<span
+					className="flex h-full w-full items-center justify-center font-mono text-base leading-none"
+					style={{ color: stroke }}
+					aria-hidden="true"
+				>
+					◎
+				</span>
+			);
 	}
 };
 

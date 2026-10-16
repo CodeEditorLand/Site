@@ -87,7 +87,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 
 						Label: "Processor",
 
-						Value: "Intel Core i5 or AMD Ryzen 5 / Apple Silicon",
+						Value: "64-bit processor (x86_64 or Apple Silicon)",
 					},
 
 					{ Id: "ram-min", Label: "Memory", Value: "4 GB RAM" },
@@ -101,7 +101,8 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 
 						Label: "Processor",
 
-						Value: "Intel Core i7 or AMD Ryzen 7",
+						Value:
+							"Multi-core 64-bit processor (x86_64 or Apple Silicon)",
 					},
 
 					{ Id: "ram-rec", Label: "Memory", Value: "8 GB RAM" },
@@ -117,11 +118,11 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 			},
 
 			Os: [
-				"macOS 11+",
+				"macOS 10.15+",
 
 				"Windows 10+",
 
-				"Ubuntu 20.04+ / Fedora 35+ / Debian 11+",
+				"Ubuntu / Debian (deb) / Fedora (rpm)",
 			],
 		},
 
@@ -187,7 +188,7 @@ const DownloadsPage = ({ Content, ClassName }: Property) => {
 
 			Description: T("download:previousReleases.description", {
 				defaultValue:
-					"Download an older version if you need to pin to a specific release.",
+					"No public releases yet. Older versions will appear here once public releases ship.",
 			}),
 
 			Releases: [],

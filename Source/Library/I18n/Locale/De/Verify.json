@@ -8,7 +8,7 @@
 		"backToSignInButton": "Zurück zur Anmeldung"
 	},
 	"pending": {
-		"description": "Ein Verifizierungslink wurde an Ihre E-Mail-Adresse gesendet.\nBitte prüfen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Konto zu aktivieren.\nDer Link ist 7 Tage gültig.\nFalls die E-Mail nicht innerhalb weniger Minuten eintrifft, prüfen Sie den Spam- oder Werbeordner.\nAus Sicherheitsgründen teilen Sie diese E-Mail bitte mit niemandem.",
+		"description": "Ein Verifizierungslink wurde an Ihre E-Mail-Adresse gesendet.\nBitte prüfen Sie Ihren Posteingang und klicken Sie auf den Link, um Ihr Konto zu aktivieren.\nDer Link ist 24 Stunden gültig.\nFalls die E-Mail nicht innerhalb weniger Minuten eintrifft, prüfen Sie den Spam- oder Werbeordner.\nAus Sicherheitsgründen teilen Sie den Verifizierungslink bitte mit niemandem.",
 		"resendButton": "Verifizierungs-E-Mail erneut senden",
 		"title": "E-Mail-Adresse verifizieren"
 	},
@@ -36,7 +36,7 @@
 	"errorGeneric": "Bei der Verifizierung ist ein Fehler aufgetreten.\nBitte versuchen Sie es erneut.",
 	"resendFailed": "E-Mail konnte nicht erneut gesendet werden.\nBitte versuchen Sie es erneut.",
 	"emailLabel": "E-Mail",
-	"emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein, um die Verifizierung erneut zu senden",
+	"emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
 	"resendSuccess": "Verifizierungs-E-Mail erneut gesendet!",
 	"resendCooldown": "Erneut senden in {{seconds}}s",
 	"resend": {

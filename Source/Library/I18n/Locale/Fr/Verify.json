@@ -8,7 +8,7 @@
 		"backToSignInButton": "Retour a la connexion"
 	},
 	"pending": {
-		"description": "Un lien de verification a ete envoye a votre adresse e-mail.\nVeuillez verifier votre boite de reception et cliquer sur le lien pour activer votre compte.\nLe lien est valide pendant 7 jours.\nSi l'e-mail n'est pas recu dans les prochaines minutes, verifiez le dossier spam ou promotions.\nPour des raisons de securite, ne partagez pas cet e-mail avec quiconque.",
+		"description": "Un lien de verification a ete envoye a votre adresse e-mail.\nVeuillez verifier votre boite de reception et cliquer sur le lien pour activer votre compte.\nLe lien est valide pendant 24 heures.\nSi l'e-mail n'est pas recu dans les prochaines minutes, verifiez le dossier spam ou promotions.\nPour des raisons de securite, ne partagez pas le lien de verification avec quiconque.",
 		"resendButton": "Renvoyer l'e-mail de verification",
 		"title": "Verifiez votre adresse e-mail"
 	},
@@ -36,7 +36,7 @@
 	"errorGeneric": "Une erreur est survenue lors de la verification.\nVeuillez reessayer.",
 	"resendFailed": "Echec du renvoi de l'e-mail.\nVeuillez reessayer.",
 	"emailLabel": "E-mail",
-	"emailPlaceholder": "Entrez votre e-mail pour renvoyer la verification",
+	"emailPlaceholder": "Entrez votre adresse e-mail",
 	"resendSuccess": "E-mail de verification renvoye !",
 	"resendCooldown": "Renvoyer dans {{seconds}}s",
 	"resend": {

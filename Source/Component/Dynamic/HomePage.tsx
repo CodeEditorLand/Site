@@ -723,7 +723,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.maintain.description", {
-						defaultValue: "Deterministic build orchestrator for the Land ecosystem.\u2001One config file resolved through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active.",
+						defaultValue: "Deterministic build orchestrator for the Land ecosystem.\u2001One config file loaded through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active.",
 					}),
 				},
 
@@ -742,7 +742,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.mist.description", {
-						defaultValue: "Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback. Nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned.",
+						defaultValue: "Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback; nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned.",
 					}),
 				},
 
@@ -856,7 +856,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					}),
 
 					Quote: T("home:architecture.vine.description", {
-						defaultValue: "The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nSpeaks between Mountain, Cocoon, Air, and Grove.\u2001Active.",
+						defaultValue: "The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nConnects Mountain, Cocoon, Air, and Grove.\u2001Active.",
 					}),
 				},
 

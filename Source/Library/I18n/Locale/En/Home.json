@@ -184,11 +184,11 @@
 		},
 		"maintain": {
 			"subtitle": "Build Orchestrator\u2001Configuration\u2001Release Profiles",
-			"description": "Deterministic build orchestrator for the Land ecosystem.\u2001One config file resolved through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active."
+			"description": "Deterministic build orchestrator for the Land ecosystem.\u2001One config file loaded through an embedded Rhai engine.\nType-safe editing of Cargo.toml, JSON5, and Info.plist.\u2001Dead-code elimination.\u2001Debug and release profiles.\nSame commit, same output.\u2001Active."
 		},
 		"mist": {
 			"subtitle": "Local DNS Sandbox\u2001*.editor.land Resolution\u2001Network Boundary",
-			"description": "Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback. Nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned."
+			"description": "Local authoritative DNS server for the editor.land zone.\u2001Every subdomain resolves to loopback; nothing escapes the machine.\nAllowlist-based forwarding: only trusted external domains resolve.\u2001Binds to loopback only.\nNetwork isolation for Cocoon and Air.\u2001DNSSEC signing planned."
 		},
 		"mountain": {
 			"subtitle": "Native Rust Backend\u2001Tauri\u2001Replaces Electron Main Process",
@@ -212,7 +212,7 @@
 		},
 		"vine": {
 			"subtitle": "gRPC Backbone\u2001Contract-First\u2001.proto Definitions",
-			"description": "The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nSpeaks between Mountain, Cocoon, Air, and Grove.\u2001Active."
+			"description": "The gRPC backbone of Land.\u2001Proto/Vine.proto is the canonical contract between elements.\nGenerates type-safe Rust clients and servers, plus a TypeScript mirror for the extension host.\nConnects Mountain, Cocoon, Air, and Grove.\u2001Active."
 		},
 		"wind": {
 			"subtitle": "Workbench Services\u2001Effect-TS Layers\u2001Native Bridges",

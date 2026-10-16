@@ -133,9 +133,9 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 				<div className="mt-3 border-t border-border pt-3">
 					{record.Metadata.map((Row) => (
 						<div key={Row.Label} className="flex gap-3 py-0.5">
-							<span className="w-20 shrink-0 font-mono text-sm uppercase tracking-[0.15em] text-card-foreground opacity-60">
-								{Row.Label}:
-							</span>
+							<span className="w-28 shrink-0 whitespace-nowrap font-mono text-sm uppercase tracking-[0.1em] text-card-foreground opacity-60">
+														{Row.Label}:
+													</span>
 							<span className="font-mono text-sm font-medium uppercase tracking-[0.15em] text-card-foreground">
 								{Row.Value}
 							</span>

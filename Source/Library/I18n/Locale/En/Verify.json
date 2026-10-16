@@ -8,7 +8,7 @@
 		"backToSignInButton": "Back to Sign In"
 	},
 	"pending": {
-		"description": "A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 7 days.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share this email with anyone.",
+		"description": "A verification link has been sent to your email address.\nPlease check your inbox and click the link to activate your account.\nThe link is valid for 24 hours.\nIf the email is not received within a few minutes, check the spam or promotions folder.\nFor security, do not share the verification link with anyone.",
 		"resendButton": "Resend Verification Email",
 		"title": "Verify Your Email Address"
 	},
@@ -36,7 +36,7 @@
 	"errorGeneric": "An error occurred during verification.\nPlease try again.",
 	"resendFailed": "Failed to resend email.\nPlease try again.",
 	"emailLabel": "Email",
-	"emailPlaceholder": "Enter your email to resend verification",
+	"emailPlaceholder": "Enter your email address",
 	"resendSuccess": "Verification email resent!",
 	"resendCooldown": "Resend in {{seconds}}s",
 	"resend": {

@@ -20,7 +20,7 @@
 		"title": "Download Land"
 	},
 	"previousReleases": {
-		"description": "Download an older version if you need to pin to a specific release.",
+		"description": "No public releases yet. Older versions will appear here once public releases ship.",
 		"title": "Previous Releases"
 	},
 	"subtitle": "Source builds are active today. Public installers, signing, and verification artifacts are still being prepared.",

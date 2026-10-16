@@ -14,15 +14,31 @@ import { Air } from "../../Content/Record/Air.js";
 
 import { Cocoon } from "../../Content/Record/Cocoon.js";
 
+import { Common } from "../../Content/Record/Common.js";
+
 import { Echo } from "../../Content/Record/Echo.js";
 
 import { Grove } from "../../Content/Record/Grove.js";
 
+import { Maintain } from "../../Content/Record/Maintain.js";
+
+import { Mist } from "../../Content/Record/Mist.js";
+
 import { Mountain } from "../../Content/Record/Mountain.js";
+
+import { Output } from "../../Content/Record/Output.js";
+
+import { Rest } from "../../Content/Record/Rest.js";
+
+import { SideCar } from "../../Content/Record/SideCar.js";
 
 import { Sky } from "../../Content/Record/Sky.js";
 
+import { Vine } from "../../Content/Record/Vine.js";
+
 import { Wind } from "../../Content/Record/Wind.js";
+
+import { Worker } from "../../Content/Record/Worker.js";
 
 import type Item from "./Interface/Item/Testimonial.js";
 
@@ -168,28 +184,43 @@ const GetRowRatio = (RowIndex: number): [number, number] => {
 
 /**
  * Per-element field records (Source/Content/Record/*.ts) keyed by element name.
- * The 8 core records exist (Land, Mountain, Cocoon, Wind, Sky, Air, Echo,
- * Grove); only those present here are among the architecture cards. The
- * extended architecture elements (Common, Maintain, Mist, Output, Rest,
- * SideCar, Vine, Worker) have no record - their cards keep the record index
- * convention (# <ELEMENT>_01) and the spec's ◎ (U+25CE) fallback seal, and
- * omit the stamp / route / status / metadata / evidence rows (nothing to
- * derive - never invented).
+ * All 15 architecture cards carry a record: the 8 core records (Land,
+ * Mountain, Cocoon, Wind, Sky, Air, Echo, Grove) plus the extended
+ * architecture elements (Common, Maintain, Mist, Output, Rest, SideCar, Vine,
+ * Worker), each with its full ledger (stamp, route, status, metadata). The
+ * extended elements use the spec's ◎ (U+25CE) neutral fallback seal - no
+ * dedicated seal SVG for them.
  */
 const ElementRecords: Record<string, FieldRecord> = {
 	Air,
 
 	Cocoon,
 
+	Common,
+
 	Echo,
 
 	Grove,
 
+	Maintain,
+
+	Mist,
+
 	Mountain,
+
+	Output,
+
+	Rest,
+
+	SideCar,
 
 	Sky,
 
+	Vine,
+
 	Wind,
+
+	Worker,
 };
 
 /**
@@ -287,7 +318,7 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 				</div>
 			)}
 
-			{/* Field-record ledger rows from the element record (8 core elements only) */}
+			{/* Field-record ledger rows from the element record (all 15 elements) */}
 			{ElementRecord && (
 				<SpecimenLabel
 					record={ElementRecord}

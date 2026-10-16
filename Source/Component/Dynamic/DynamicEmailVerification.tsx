@@ -161,8 +161,7 @@ const DynamicEmailVerification = ({
 						Content={{
 							Label: T("emailLabel", { defaultValue: "Email" }),
 							Placeholder: T("emailPlaceholder", {
-								defaultValue:
-									"Enter your email to resend verification",
+								defaultValue: "Enter your email address",
 							}),
 							Type: "email",
 							Value: Email,
