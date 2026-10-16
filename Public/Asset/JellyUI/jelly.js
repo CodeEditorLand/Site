@@ -277,13 +277,16 @@ function ht(n) {
   }
   return Math.abs(t) * 0.5;
 }
-function ct(n, t, e = mt.curveTension) {
-  const i = t.length;
-  n.beginPath(), n.moveTo(t[0].x, t[0].y);
-  for (let s = 0; s < i; s++) {
-    const r = t[A(s - 1, i)], o = t[s], l = t[A(s + 1, i)], c = t[A(s + 2, i)], h = o.x + (l.x - r.x) * e / 6, a = o.y + (l.y - r.y) * e / 6, d = l.x - (c.x - o.x) * e / 6, p = l.y - (c.y - o.y) * e / 6;
-    n.bezierCurveTo(h, a, d, p, l.x, l.y);
-  }
+function ct(n, t, e = mt.curveTension, i = !1) {
+  const s = t.length;
+  if (n.beginPath(), n.moveTo(t[0].x, t[0].y), i)
+    for (let r = 1; r < s; r++)
+      n.lineTo(t[r].x, t[r].y);
+  else
+    for (let r = 0; r < s; r++) {
+      const o = t[A(r - 1, s)], l = t[r], c = t[A(r + 1, s)], h = t[A(r + 2, s)], a = l.x + (c.x - o.x) * e / 6, d = l.y + (c.y - o.y) * e / 6, p = c.x - (h.x - l.x) * e / 6, u = c.y - (h.y - l.y) * e / 6;
+      n.bezierCurveTo(a, d, p, u, c.x, c.y);
+    }
   n.closePath();
 }
 class $ {
@@ -1141,10 +1144,10 @@ class M extends HTMLElement {
     } = e, x = w ? this.easeColor(f, i, this.frameDt || 0) : i, y = c / 2 + s, k = h / 2 + r, L = m ? (E) => m(t.projectPoint(E)) : (E) => t.projectPoint(E);
     if (l.save(), l.globalAlpha = o, l.translate(y, k), l.rotate(t.state.rotateZ), (d !== 1 || p !== 1) && l.scale(d, p), a) {
       const E = t.getSurfacePoints(a.gap + a.width / 2).map(L);
-      ct(l, E), l.lineWidth = a.width, l.strokeStyle = a.color, l.lineJoin = "round", l.stroke();
+      ct(l, E, void 0, t.radius <= 0), l.lineWidth = a.width, l.strokeStyle = a.color, l.lineJoin = t.radius <= 0 ? "miter" : "round", l.stroke();
     }
     const S = t.getSurfacePoints().map(L);
-    ct(l, S), l.fillStyle = x, l.fill(), u && (ct(l, S), l.lineWidth = u.width, l.strokeStyle = u.color, l.lineJoin = "round", l.stroke()), l.restore();
+    ct(l, S, void 0, t.radius <= 0), l.fillStyle = x, l.fill(), u && (ct(l, S, void 0, t.radius <= 0), l.lineWidth = u.width, l.strokeStyle = u.color, l.lineJoin = "round", l.stroke()), l.restore();
   }
   // The standard frame: advance physics, repaint, sleep when at rest
   defaultFrame(t) {

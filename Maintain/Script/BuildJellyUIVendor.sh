@@ -26,7 +26,9 @@ if [ ! -f "$Vendor/package.json" ]; then
 		git init --quiet
 		git remote add origin "$Remote"
 		git fetch --quiet --depth 1 origin "$Branch"
-		git checkout --quiet FETCH_HEAD
+		# Check out the BRANCH (not FETCH_HEAD) so the submodule is never
+		# left on a detached HEAD after the vendor build.
+		git checkout --quiet -B "$Branch" FETCH_HEAD
 	)
 else
 	# Fetch the latest main. Always fast-forward to origin/main so the
@@ -36,7 +38,9 @@ else
 	(
 		cd "$Vendor"
 		git fetch --quiet --depth 1 origin "$Branch"
-		git checkout --quiet FETCH_HEAD
+		# Check out the BRANCH (not FETCH_HEAD) so the submodule is never
+		# left on a detached HEAD after the vendor build.
+		git checkout --quiet -B "$Branch" FETCH_HEAD
 	)
 fi
 
