@@ -1,49 +1,49 @@
 {
 	"error": {
-		"title": "Verificacion fallida",
-		"description": "Este enlace de verificacion es invalido o ha caducado.",
-		"instruction": "Por favor, solicite un nuevo correo electronico de verificacion o contacte al soporte si el problema persiste.",
-		"resendButton": "Enviar nuevo correo de verificacion",
+		"title": "Verificación fallida",
+		"description": "Este enlace de verificación es inválido o ha caducado.",
+		"instruction": "Por favor, solicite un nuevo correo electrónico de verificación o contacte al soporte si el problema persiste.",
+		"resendButton": "Enviar nuevo correo de verificación",
 		"contactSupport": "Contactar soporte",
-		"backToSignInButton": "Volver a iniciar sesion"
+		"backToSignInButton": "Volver a iniciar sesión"
 	},
 	"pending": {
-		"description": "Se ha enviado un enlace de verificacion a su direccion de correo electronico.\nPor favor, revise su bandeja de entrada y haga clic en el enlace para activar su cuenta.\nEl enlace es valido durante 24 horas.\nSi no recibe el correo en unos minutos, revise la carpeta de spam o promociones.\nPor seguridad, no comparta el enlace de verificacion con nadie.",
-		"resendButton": "Reenviar correo de verificacion",
-		"title": "Verifique su direccion de correo electronico"
+		"description": "Se ha enviado un enlace de verificación a su dirección de correo electrónico.\nPor favor, revise su bandeja de entrada y haga clic en el enlace para activar su cuenta.\nEl enlace es válido durante 24 horas.\nSi no recibe el correo en unos minutos, revise la carpeta de spam o promociones.\nPor seguridad, no comparta el enlace de verificación con nadie.",
+		"resendButton": "Reenviar correo de verificación",
+		"title": "Verifique su dirección de correo electrónico"
 	},
 	"success": {
 		"title": "Correo verificado!",
-		"description": "Su correo electronico ha sido verificado exitosamente.",
-		"instruction": "Ahora puede iniciar sesion en su cuenta y comenzar a usar Code Editor Land.",
-		"continue": "Continuar a iniciar sesion",
-		"continueButton": "Continuar a la pagina de inicio"
+		"description": "Su correo electrónico ha sido verificado exitosamente.",
+		"instruction": "Ahora puede iniciar sesión en su cuenta y comenzar a usar Code Editor Land.",
+		"continue": "Continuar a iniciar sesión",
+		"continueButton": "Continuar a la página de inicio"
 	},
-	"title": "Verifique su correo electronico",
-	"description": "Se envio un enlace de verificacion a",
-	"instruction": "Haga clic en el enlace del correo electronico para verificar su cuenta y comenzar a usar Code Editor Land.",
-	"didntReceive": "No recibio el correo electronico?",
+	"title": "Verifique su correo electrónico",
+	"description": "Se envió un enlace de verificación a",
+	"instruction": "Haga clic en el enlace del correo electrónico para verificar su cuenta y comenzar a usar Code Editor Land.",
+	"didntReceive": "No recibió el correo electrónico?",
 	"checkSpam": "Revise su carpeta de spam o",
-	"resendLink": "reenviar correo de verificacion",
-	"resendButton": "Reenviar correo de verificacion",
-	"backToSignIn": "Volver a iniciar sesion",
+	"resendLink": "reenviar correo de verificación",
+	"resendButton": "Reenviar correo de verificación",
+	"backToSignIn": "Volver a iniciar sesión",
 	"resending": "Enviando...",
-	"resent": "Correo de verificacion enviado!",
+	"resent": "Correo de verificación enviado!",
 	"verifying": {
-		"title": "Verificando su correo electronico",
-		"description": "Por favor espere mientras verificamos su direccion de correo electronico..."
+		"title": "Verificando su correo electrónico",
+		"description": "Por favor espere mientras verificamos su dirección de correo electrónico..."
 	},
-	"errorGeneric": "Ocurrio un error durante la verificacion.\nPor favor, intentelo de nuevo.",
-	"resendFailed": "No se pudo reenviar el correo electronico.\nPor favor, intentelo de nuevo.",
-	"emailLabel": "Correo electronico",
-	"emailPlaceholder": "Ingrese su correo electronico",
-	"resendSuccess": "Correo de verificacion reenviado!",
+	"errorGeneric": "Ocurrió un error durante la verificación.\nPor favor, inténtelo de nuevo.",
+	"resendFailed": "No se pudo reenviar el correo electrónico.\nPor favor, inténtelo de nuevo.",
+	"emailLabel": "Correo electrónico",
+	"emailPlaceholder": "Ingrese su correo electrónico",
+	"resendSuccess": "Correo de verificación reenviado!",
 	"resendCooldown": "Reenviar en {{seconds}}s",
 	"resend": {
-		"success": "Correo de verificacion enviado exitosamente."
+		"success": "Correo de verificación enviado exitosamente."
 	},
 	"token": {
-		"invalid": "Este enlace de verificacion es invalido.",
-		"expired": "Este enlace de verificacion ha caducado. Por favor solicite uno nuevo."
+		"invalid": "Este enlace de verificación es inválido.",
+		"expired": "Este enlace de verificación ha caducado. Por favor solicite uno nuevo."
 	}
 }
