@@ -9,27 +9,27 @@ description:
     the Vine gRPC protocol for native operations."
 ---
 
-Cocoon is the `Node.js` extension host sidecar for `Land`. We run VS Code
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) is the `Node.js` extension host sidecar for [`Land`](https://github.com/CodeEditorLand/Land). We run VS Code
 extensions in a supervised `Node.js` process and provide a `vscode` API shim
-via `Effect-TS`. That shim translates extension API calls into declarative
-`Effect`s. `Effect`s are either handled in-process or dispatched to `Mountain`
+via [`Effect-TS`](https://effect.website). That shim translates extension API calls into declarative
+`Effect`s. `Effect`s are either handled in-process or dispatched to [`Mountain`](https://github.com/CodeEditorLand/Mountain)
 via `gRPC` for native execution.
 
 ## Overview 📋
 
-`Cocoon` is a `TypeScript` application built with `Effect-TS`.
+[`Cocoon`](https://github.com/CodeEditorLand/Cocoon) is a `TypeScript` application built with [`Effect-TS`](https://effect.website).
 
 - We replicate the VS Code Extension Host API.
-- We communicate with `Mountain` via `gRPC` (`Vine` protocol) on port 50052.
-- We are spawned and supervised by `Mountain`'s `ProcessManagement` module.
+- We communicate with [`Mountain`](https://github.com/CodeEditorLand/Mountain) via `gRPC` ([`Vine`](https://github.com/CodeEditorLand/Vine) protocol) on port 50052.
+- We are spawned and supervised by [`Mountain`](https://github.com/CodeEditorLand/Mountain)'s `ProcessManagement` module.
 
-| Attribute    | Value                                                                                                               |
-| ------------ | ------------------------------------------------------------------------------------------------------------------- |
-| Language     | `TypeScript` (`Effect-TS` v3.21)                                                                                    |
-| Runtime      | `Node.js` (managed by `SideCar`)                                                                                    |
-| IPC          | `gRPC` (`Vine` protocol)                                                                                            |
-| Dependencies | `effect`, `@effect/platform`, `@effect/platform-node`, `@grpc/grpc-js`, `@codeeditorland/output`, `google-protobuf` |
-| Managed by   | `Mountain` `ProcessManagement/CocoonManagement.rs`                                                                  |
+| Attribute    | Value                                                                                                                                                           |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `TypeScript` ([`Effect-TS`](https://effect.website) v3.21)                                                                                                      |
+| Runtime      | `Node.js` (managed by [`SideCar`](https://github.com/CodeEditorLand/SideCar))                                                                                   |
+| IPC          | `gRPC` (`Vine` protocol)                                                                                                                                        |
+| Dependencies | `effect`, `@effect/platform`, `@effect/platform-node`, `@grpc/grpc-js`, [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output), `google-protobuf` |
+| Managed by   | [`Mountain`](https://github.com/CodeEditorLand/Mountain) `ProcessManagement/CocoonManagement.rs`                                                                |
 
 ## Architecture 🏗️
 
@@ -56,30 +56,30 @@ via `gRPC` for native execution.
 
 ### Workbench Architecture Role 🏗️
 
-In the broader `Land` workbench, Cocoon replaces the VS Code Electron main
+In the broader [`Land`](https://github.com/CodeEditorLand/Land) workbench, [Cocoon](https://github.com/CodeEditorLand/Cocoon) replaces the VS Code Electron main
 process's extension host responsibilities. The architecture comparison across
 the three layers:
 
-| Aspect            | VS Code (Electron)           | Land Equivalent                       |
-| ----------------- | ---------------------------- | ------------------------------------- |
-| Main process      | Electron Main                | `Mountain` (`Rust`)                   |
-| Renderer process  | Electron Renderer            | `Wind` (`Tauri` WebView)              |
-| IPC mechanism     | Electron ipcRenderer/ipcMain | `Tauri` invoke/event + `gRPC` (Vine)  |
-| Preload           | electron preload.js          | `Wind` `Preload.ts`                   |
-| Extension host    | Child Node process           | `Cocoon` (Node sidecar via `gRPC`)    |
-| File system       | Node.js fs module            | `Mountain` native `Rust` fs (Track B) |
-| Native dialogs    | Electron dialog API          | `Mountain` via `Tauri` dialog plugin  |
-| Window management | Electron BrowserWindow       | `Tauri` Window                        |
+| Aspect            | VS Code (Electron)           | Land Equivalent                                                                     |
+| ----------------- | ---------------------------- | ----------------------------------------------------------------------------------- |
+| Main process      | Electron Main                | [`Mountain`](https://github.com/CodeEditorLand/Mountain) (`Rust`)                   |
+| Renderer process  | Electron Renderer            | [`Wind`](https://github.com/CodeEditorLand/Wind) (`Tauri` WebView)                  |
+| IPC mechanism     | Electron ipcRenderer/ipcMain | `Tauri` invoke/event + `gRPC` (Vine)                                                |
+| Preload           | electron preload.js          | `Wind` `Preload.ts`                                                                 |
+| Extension host    | Child Node process           | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) (Node sidecar via `gRPC`)      |
+| File system       | Node.js fs module            | [`Mountain`](https://github.com/CodeEditorLand/Mountain) native `Rust` fs (Track B) |
+| Native dialogs    | Electron dialog API          | `Mountain` via `Tauri` dialog plugin                                                |
+| Window management | Electron BrowserWindow       | `Tauri` Window                                                                      |
 
 ## Service Composition Patterns 🧩
 
-Cocoon's internal services follow the same `Effect-TS` Layer composition
-patterns used throughout `Wind` and `Mountain`.
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s internal services follow the same [`Effect-TS`](https://effect.website) Layer composition
+patterns used throughout [`Wind`](https://github.com/CodeEditorLand/Wind) and [`Mountain`](https://github.com/CodeEditorLand/Mountain).
 
 ### Layer Stack Architecture
 
-Each service in Cocoon is composed through `Effect-TS` Layers. The broader
-`Wind` layer stack defines three workbench variants that determine which
+Each service in [Cocoon](https://github.com/CodeEditorLand/Cocoon) is composed through [`Effect-TS`](https://effect.website) Layers. The broader
+[`Wind`](https://github.com/CodeEditorLand/Wind) layer stack defines three workbench variants that determine which
 services are wired to Cocoon versus resolved locally:
 
 <img src="/Mermaid/b3e92044704c9dea.svg" alt="Mermaid diagram" />
@@ -106,13 +106,13 @@ export const TauriLiveLayer = Layer.mergeAll(
 );
 ```
 
-`Effect-TS`'s compile-time dependency tracking ensures that no service can be
+[`Effect-TS`](https://effect.website)'s compile-time dependency tracking ensures that no service can be
 used without its dependencies being satisfied by the Layer stack. A missing
 dependency produces a `TypeScript` type error.
 
-### ManagedRuntime
+### [ManagedRuntime](https://effect.website)
 
-Cocoon and `Wind` both rely on `Effect-TS`'s `ManagedRuntime` to bridge the
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) and [`Wind`](https://github.com/CodeEditorLand/Wind) both rely on [`Effect-TS`](https://effect.website)'s [`ManagedRuntime`](https://effect.website) to bridge the
 Effect system with imperative call sites (such as VS Code extension API entry
 points):
 
@@ -129,27 +129,27 @@ export const LandWorkbenchRuntime: ManagedRuntime<...> = ...;
 // the global slot (used on window unload).
 ```
 
-Cocoon mirrors this pattern to ensure that extension API calls (e.g.,
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) mirrors this pattern to ensure that extension API calls (e.g.,
 `vscode.commands.registerCommand`) resolve through the Effect system
 without runtime overhead.
 
 ## Workbench Variants 🚀
 
-Cocoon participates in several workbench variants that select the extension
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) participates in several workbench variants that select the extension
 host and IPC backend at build time:
 
-| Variant             | Cocoon Role                                    | Build Profile (shorthand) |
-| ------------------- | ---------------------------------------------- | ------------------------- |
-| **Browser**         | No Cocoon (70-80% API coverage via stock Node) | `debug`                   |
-| **Mountain**        | Full Cocoon via gRPC (80-90%)                  | `debug-mountain`          |
-| **Electron**        | Full Cocoon, Electron IPC backend (95%+)       | `debug-electron`          |
-| **Cocoon Headless** | Cocoon subprocess only, no Wind/Workbench UI   | `debug-cocoon-headless`   |
-| **Mountain Only**   | No Cocoon (core services, no extension host)   | `debug-mountain-only`     |
-| **Kernel**          | No Cocoon, no Wind, no built-ins               | `debug-kernel`            |
+| Variant             | Cocoon Role                                                                                                                        | Build Profile (shorthand) |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| **Browser**         | No Cocoon (70-80% API coverage via stock Node)                                                                                     | `debug`                   |
+| **Mountain**        | Full [Cocoon](https://github.com/CodeEditorLand/Cocoon) via gRPC (80-90%)                                                          | `debug-mountain`          |
+| **Electron**        | Full Cocoon, Electron IPC backend (95%+)                                                                                           | `debug-electron`          |
+| **Cocoon Headless** | [Cocoon](https://github.com/CodeEditorLand/Cocoon) subprocess only, no [Wind](https://github.com/CodeEditorLand/Wind)/Workbench UI | `debug-cocoon-headless`   |
+| **Mountain Only**   | No [Cocoon](https://github.com/CodeEditorLand/Cocoon) (core services, no extension host)                                           | `debug-mountain-only`     |
+| **Kernel**          | No [Cocoon](https://github.com/CodeEditorLand/Cocoon), no [Wind](https://github.com/CodeEditorLand/Wind), no built-ins             | `debug-kernel`            |
 
 ### Variant Selection
 
-`Sky`'s `index.astro` entry point selects the active variant at build time via
+[`Sky`](https://github.com/CodeEditorLand/Sky)'s `index.astro` entry point selects the active variant at build time via
 environment variables:
 
 ```typescript
@@ -166,13 +166,13 @@ const WorkbenchType =
 			: "Browser";
 ```
 
-When `Mountain` or `Electron` is selected, Cocoon is spawned as the extension
-host process. In `Browser` mode, Cocoon is omitted and the workbench runs with
+When [`Mountain`](https://github.com/CodeEditorLand/Mountain) or `Electron` is selected, [Cocoon](https://github.com/CodeEditorLand/Cocoon) is spawned as the extension
+host process. In `Browser` mode, [Cocoon](https://github.com/CodeEditorLand/Cocoon) is omitted and the workbench runs with
 a simulated extension host. Unused variants are tree-shaken by `Vite`.
 
 ## Command Dispatch Architecture 🎮
 
-Cocoon is the extension command execution layer in Land's three-layer command
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) is the extension command execution layer in [Land](https://github.com/CodeEditorLand/Land)'s three-layer command
 system:
 
 ```
@@ -189,27 +189,27 @@ Commands flow through all three layers depending on origin:
 <img src="/Mermaid/1095802e93661f09.svg" alt="Mermaid diagram" />
 ### Command Categories
 
-| Category        | Registered In | Examples                                                                     |
-| --------------- | ------------- | ---------------------------------------------------------------------------- |
-| Native editor   | `Wind`        | `cursorMove`, `type`, `replacePreviousChar`                                  |
-| Window/UI       | `Mountain`    | `workbench.action.toggleSidebar`, `workbench.action.terminal.toggleTerminal` |
-| File operations | `Mountain`    | `workbench.action.files.save`, `workbench.action.files.openFile`             |
-| Extension       | `Cocoon`      | `editor.action.formatDocument`, `git.commit`                                 |
+| Category        | Registered In                                            | Examples                                                                     |
+| --------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Native editor   | [`Wind`](https://github.com/CodeEditorLand/Wind)         | `cursorMove`, `type`, `replacePreviousChar`                                  |
+| Window/UI       | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `workbench.action.toggleSidebar`, `workbench.action.terminal.toggleTerminal` |
+| File operations | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `workbench.action.files.save`, `workbench.action.files.openFile`             |
+| Extension       | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)     | `editor.action.formatDocument`, `git.commit`                                 |
 
 ## TierIPC Routing 🌐
 
-Cocoon is reachable from the `Wind` layer through `TierIPC`, a routing system
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) is reachable from the [`Wind`](https://github.com/CodeEditorLand/Wind) layer through [`TierIPC`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts), a routing system
 that decides which IPC backend handles each channel. The `TierIPC` env var
 (loaded from `.env.Land` via `turbo.json` `globalEnv`) selects the routing
 mode at runtime, with per-subsystem overrides.
 
 ### Routing Modes
 
-| Value          | Behaviour                                                                                        |
-| -------------- | ------------------------------------------------------------------------------------------------ |
-| `Mountain`     | Default. All `channel.call()` invocations route to Mountain via Tauri `MountainIPCInvoke`.       |
-| `NodeDeferred` | Mountain first; if Mountain returns `undefined` or has no handler, falls through to Cocoon gRPC. |
-| `Node`         | All calls bypass Mountain and go directly to Cocoon via the `cocoon:request` gRPC bridge.        |
+| Value                                                    | Behaviour                                                                                                                                                                                                                                |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`Mountain`](https://github.com/CodeEditorLand/Mountain) | Default. All `channel.call()` invocations route to [Mountain](https://github.com/CodeEditorLand/Mountain) via Tauri `MountainIPCInvoke`.                                                                                                 |
+| `NodeDeferred`                                           | [Mountain](https://github.com/CodeEditorLand/Mountain) first; if [Mountain](https://github.com/CodeEditorLand/Mountain) returns `undefined` or has no handler, falls through to [Cocoon](https://github.com/CodeEditorLand/Cocoon) gRPC. |
+| `Node`                                                   | All calls bypass [Mountain](https://github.com/CodeEditorLand/Mountain) and go directly to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via the `cocoon:request` gRPC bridge.                                                      |
 
 ### Per-Subsystem Tier Variables
 
@@ -232,8 +232,8 @@ routed directly:
 
 ## Editor Service Architecture ✏️
 
-The editor service in `Wind` integrates the VS Code CodeEditor widget (based on
-Monaco) with `Mountain`'s native capabilities and Cocoon's extension providers.
+The editor service in [`Wind`](https://github.com/CodeEditorLand/Wind) integrates the VS Code CodeEditor widget (based on
+Monaco) with [`Mountain`](https://github.com/CodeEditorLand/Mountain)'s native capabilities and [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s extension providers.
 
 ### Text Model Flow
 
@@ -256,8 +256,8 @@ Editor renders in Sky UI
 
 ### Extension Provider Integration
 
-Language features (hover, completion, definition) requested through Cocoon's
-extension host flow back to the Wind editor service:
+Language features (hover, completion, definition) requested through [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s
+extension host flow back to the [Wind](https://github.com/CodeEditorLand/Wind) editor service:
 
 ```
 Extension registers HoverProvider (vscode.languages.registerHoverProvider)
@@ -286,13 +286,13 @@ Hover tooltip rendered in Sky UI
 
 ## VS Code API Coverage Strategy 🔬
 
-Cocoon is the primary vehicle for VS Code API coverage in Land. The strategy
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) is the primary vehicle for VS Code API coverage in [Land](https://github.com/CodeEditorLand/Land). The strategy
 uses a dual-track routing system.
 
 ### Track A: Stock Node (Maximum Compatibility)
 
-Cocoon loads unmodified VS Code `extHost*.ts` source files from
-`@codeeditorland/output`. The `ExtHostContext`/`MainContext` RPC glue that
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) loads unmodified VS Code `extHost*.ts` source files from
+[`@codeeditorland/output`](https://github.com/CodeEditorLand/Output). The `ExtHostContext`/`MainContext` RPC glue that
 normally runs in Electron's main process is shimmed by Cocoon to work over
 `gRPC`.
 
@@ -301,8 +301,8 @@ immediately compatible.
 
 ### Track B: Rust Native (Performance)
 
-For I/O-heavy APIs, the Cocoon `vscode` shim routes operations through `gRPC`
-to `Mountain` for native `Rust` execution. This provides:
+For I/O-heavy APIs, the [Cocoon](https://github.com/CodeEditorLand/Cocoon) `vscode` shim routes operations through `gRPC`
+to [`Mountain`](https://github.com/CodeEditorLand/Mountain) for native `Rust` execution. This provides:
 
 - Faster filesystem operations (native syscalls vs Node.js fs)
 - Direct OS integration (clipboard, dialogs, keychain)
@@ -311,10 +311,10 @@ to `Mountain` for native `Rust` execution. This provides:
 
 ### Dual-Track Routing
 
-| Track               | Implementation                   | Latency    | When Used                                  |
-| ------------------- | -------------------------------- | ---------- | ------------------------------------------ |
-| **A - Stock Node**  | Unmodified VS Code `extHost*.ts` | In-process | Default for all APIs                       |
-| **B - Rust Native** | gRPC `ActionEffect` to Mountain  | ~1ms       | I/O-heavy APIs (fs, terminal, search, git) |
+| Track               | Implementation                                                                | Latency    | When Used                                  |
+| ------------------- | ----------------------------------------------------------------------------- | ---------- | ------------------------------------------ |
+| **A - Stock Node**  | Unmodified VS Code `extHost*.ts`                                              | In-process | Default for all APIs                       |
+| **B - Rust Native** | gRPC `ActionEffect` to [Mountain](https://github.com/CodeEditorLand/Mountain) | ~1ms       | I/O-heavy APIs (fs, terminal, search, git) |
 
 ### Track Distribution by API
 
@@ -332,7 +332,7 @@ to `Mountain` for native `Rust` execution. This provides:
 ### Coverage Matrix
 
 The authoritative coverage matrix is at
-`Documentation/GitHub/VSCode-API-Coverage-Matrix.md`. Status symbols:
+[`Documentation/GitHub/VSCode-API-Coverage-Matrix.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md). Status symbols:
 
 | Status        | Meaning                                               |
 | ------------- | ----------------------------------------------------- |
@@ -384,7 +384,7 @@ We construct VS Code API objects for each extension via `ApiFactory.ts`.
 
 ## Service Providers 🔌
 
-Each service is an `Effect-TS` `Layer`:
+Each service is an [`Effect-TS`](https://effect.website) `Layer`:
 
 | Service               | Module                      | Key Methods                                                                             |
 | --------------------- | --------------------------- | --------------------------------------------------------------------------------------- |
@@ -398,7 +398,7 @@ Each service is an `Effect-TS` `Layer`:
 
 ## gRPC Communication 🌐
 
-We communicate with `Mountain` via the `Vine` `gRPC` protocol.
+We communicate with [`Mountain`](https://github.com/CodeEditorLand/Mountain) via the [`Vine`](https://github.com/CodeEditorLand/Vine) `gRPC` protocol.
 
 | Feature      | Implementation                                |
 | ------------ | --------------------------------------------- |
@@ -415,16 +415,16 @@ module loading.
 
 ### Interception Rules 📋
 
-| Module Pattern            | Replacement                        | Behavior                                |
-| ------------------------- | ---------------------------------- | --------------------------------------- |
-| `electron`                | (empty stub)                       | No-op module with expected method stubs |
-| `original-fs`             | `fs`                               | Redirect to Node.js standard library    |
-| `keytar`                  | Custom stub                        | OS keychain via Mountain gRPC           |
-| `spdlog`                  | Custom stub                        | No-op logging                           |
-| `vscode-windows-registry` | Custom stub                        | No-op (macOS-only)                      |
-| `./extHost*.js`           | Load from `@codeeditorland/output` | VS Code stock source                    |
-| `./mainThread*.js`        | Load from `@codeeditorland/output` | VS Code stock source                    |
-| `vscode`                  | `ApiFactory` construct             | Extension-specific API surface          |
+| Module Pattern            | Replacement                                                                    | Behavior                                |
+| ------------------------- | ------------------------------------------------------------------------------ | --------------------------------------- |
+| `electron`                | (empty stub)                                                                   | No-op module with expected method stubs |
+| `original-fs`             | `fs`                                                                           | Redirect to Node.js standard library    |
+| `keytar`                  | Custom stub                                                                    | OS keychain via Mountain gRPC           |
+| `spdlog`                  | Custom stub                                                                    | No-op logging                           |
+| `vscode-windows-registry` | Custom stub                                                                    | No-op (macOS-only)                      |
+| `./extHost*.js`           | Load from [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output) | VS Code stock source                    |
+| `./mainThread*.js`        | Load from `@codeeditorland/output`                                             | VS Code stock source                    |
+| `vscode`                  | `ApiFactory` construct                                                         | Extension-specific API surface          |
 
 ## Extension Lifecycle 🔄
 
@@ -440,10 +440,10 @@ module loading.
 
 ## Dual-Track Routing 🛤️
 
-| Track               | Implementation                   | Latency    | When Used                                  |
-| ------------------- | -------------------------------- | ---------- | ------------------------------------------ |
-| **A - Stock Node**  | Unmodified VS Code `extHost*.ts` | In-process | Default for all APIs                       |
-| **B - Rust Native** | gRPC `ActionEffect` to Mountain  | ~1ms       | I/O-heavy APIs (fs, terminal, search, git) |
+| Track               | Implementation                                                                | Latency    | When Used                                  |
+| ------------------- | ----------------------------------------------------------------------------- | ---------- | ------------------------------------------ |
+| **A - Stock Node**  | Unmodified VS Code `extHost*.ts`                                              | In-process | Default for all APIs                       |
+| **B - Rust Native** | gRPC `ActionEffect` to [Mountain](https://github.com/CodeEditorLand/Mountain) | ~1ms       | I/O-heavy APIs (fs, terminal, search, git) |
 
 ### Track Distribution by API 📊
 

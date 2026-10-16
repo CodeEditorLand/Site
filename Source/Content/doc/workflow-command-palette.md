@@ -14,17 +14,17 @@ a command (e.g., "Format Document"), and selects it. The corresponding action is
 executed. This workflow covers both a native command and an extension-provided
 command.
 
-The command palette is a thin UI over Mountain's `CommandRegistry`. Every
+The command palette is a thin UI over [Mountain](https://github.com/CodeEditorLand/Mountain)'s `CommandRegistry`. Every
 command - whether implemented in Rust or contributed by an extension in
-Cocoon - is registered in that single registry. Wind fetches the list via Tauri
-IPC, the user selects an entry, and Mountain routes execution either to a native
-Rust function pointer or to Cocoon via gRPC, depending on the handler type
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) - is registered in that single registry. [Wind](https://github.com/CodeEditorLand/Wind) fetches the list via Tauri
+IPC, the user selects an entry, and [Mountain](https://github.com/CodeEditorLand/Mountain) routes execution either to a native
+Rust function pointer or to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via gRPC, depending on the handler type
 stored at registration time.
 
 <img src="/Mermaid/01a12338e1cb7562.svg" alt="Mermaid diagram" />
 ---
 
-## Phase 1 - Opening the Command Palette (Sky → Wind)
+## Phase 1 - Opening the Command Palette ([Sky](https://github.com/CodeEditorLand/Sky) → [Wind](https://github.com/CodeEditorLand/Wind))
 
 **Source files:**
 
@@ -40,22 +40,22 @@ stored at registration time.
    `CommandsQuickAccessProvider`.
 
 3. **`CommandsQuickAccessProvider`** needs the full command list. Since this
-   provider lives in Wind but the registry lives in Mountain, it makes an
+   provider lives in [Wind](https://github.com/CodeEditorLand/Wind) but the registry lives in [Mountain](https://github.com/CodeEditorLand/Mountain), it makes an
    Integration-layer call. It executes an Effect that wraps:
 
     ```ts
     TauriInvoke("mountain://command/get-all");
     ```
 
-## Phase 2 - Fetching the Command List (Mountain)
+## Phase 2 - Fetching the Command List ([Mountain](https://github.com/CodeEditorLand/Mountain))
 
 **Source files:**
 
 - [`track.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs)
 - [`CommandProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs)
 
-4. **Track Dispatch** - The Tauri command is dispatched to Mountain's `track`
-   module, which creates the `Common::command::GetAllCommands` Effect. The
+4. **Track Dispatch** - The Tauri command is dispatched to [Mountain](https://github.com/CodeEditorLand/Mountain)'s `track`
+   module, which creates the [`Common`](https://github.com/CodeEditorLand/Common)`::command::GetAllCommands` Effect. The
    `AppRuntime` executes the Effect, calling
    `MountainEnvironment`'s `CommandExecutor::GetAllCommands` implementation,
    which delegates to the handler.
@@ -64,13 +64,13 @@ stored at registration time.
    [`CommandProvider.rs:L322`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs#L322))
     - Acquires a read lock on `AppState.CommandRegistry`, retrieves the `keys()`
       of the `HashMap` (containing IDs of all registered native commands AND all
-      proxied commands from Cocoon), and returns the list of command ID strings.
+      proxied commands from [Cocoon](https://github.com/CodeEditorLand/Cocoon)), and returns the list of command ID strings.
 
 6. **List Resolution** - The list resolves back to
-   `CommandsQuickAccessProvider` in Wind, which populates the Quick Pick UI,
+   `CommandsQuickAccessProvider` in [Wind](https://github.com/CodeEditorLand/Wind), which populates the Quick Pick UI,
    making the commands visible to the user.
 
-## Phase 3 - User Selection (Sky)
+## Phase 3 - User Selection ([Sky](https://github.com/CodeEditorLand/Sky))
 
 7. The user types a query (e.g. "Format Document") and presses Enter. The Quick
    Pick widget registers that the command `editor.action.formatDocument` has been
@@ -80,9 +80,9 @@ stored at registration time.
     ICommandService.executeCommand("editor.action.formatDocument");
     ```
 
-## Phase 4A - Native Command Execution (Wind → Mountain)
+## Phase 4A - Native Command Execution ([Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain))
 
-8. **`CommandService` (Wind)** - Since Wind's `CommandService` is a thin client,
+8. **`CommandService` ([Wind](https://github.com/CodeEditorLand/Wind))** - Since [Wind](https://github.com/CodeEditorLand/Wind)'s `CommandService` is a thin client,
    it immediately forwards the request to the backend by creating and running an
    Effect that wraps:
 
@@ -95,14 +95,14 @@ stored at registration time.
 
     Arguments are serialized as a JSON array matching the command's parameter
     signature. For commands accepting primitive types, objects, or even editor
-    references (resolved by Wind before dispatch), each argument is encoded as a
+    references (resolved by [Wind](https://github.com/CodeEditorLand/Wind) before dispatch), each argument is encoded as a
     JSON value. Complex types like `TextEditor` or `Uri` are serialized to their
     identifier form (`{ $mid: 1, path: "/..." }` for `Uri`, or the editor ID for
-    `TextEditor`) and reconstituted on the Mountain side before being passed to
+    `TextEditor`) and reconstituted on the [Mountain](https://github.com/CodeEditorLand/Mountain) side before being passed to
     the native handler.
 
-9. **Track Dispatch (Mountain)** - The request is dispatched to `track`,
-   creating the `Common::command::ExecuteCommand` Effect. The `AppRuntime`
+9. **Track Dispatch ([Mountain](https://github.com/CodeEditorLand/Mountain))** - The request is dispatched to `track`,
+   creating the [`Common`](https://github.com/CodeEditorLand/Common)`::command::ExecuteCommand` Effect. The `AppRuntime`
    executes it, calling
    `MountainEnvironment`'s `CommandExecutor::ExecuteCommand`.
 
@@ -117,17 +117,17 @@ stored at registration time.
     document runs. This typically involves:
     - Getting the active document's content from `AppState`.
     - Finding a registered formatting provider in `AppState` (which may itself
-      be proxied to Cocoon for extension-backed formatters).
+      be proxied to [Cocoon](https://github.com/CodeEditorLand/Cocoon) for extension-backed formatters).
     - Requesting edits from the provider.
     - Applying the edits via the `WorkspaceEditApplier`.
     - Returning the command result (if any) up the call chain.
 
-## Phase 4B - Extension Command Execution (Wind → Mountain → Cocoon)
+## Phase 4B - Extension Command Execution ([Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon))
 
-Steps 8 and 9 are identical to Phase 4A. The difference is in what Mountain
+Steps 8 and 9 are identical to Phase 4A. The difference is in what [Mountain](https://github.com/CodeEditorLand/Mountain)
 finds at step 10.
 
-10. **`handlers/commands/CommandsLogic.rs` (Mountain)** - `ExecuteCommandLogic`
+10. **`handlers/commands/CommandsLogic.rs` ([Mountain](https://github.com/CodeEditorLand/Mountain))** - `ExecuteCommandLogic`
     looks up `"my-extension.doSomething"`. It finds the handler is of type:
 
     ```rust
@@ -137,28 +137,28 @@ finds at step 10.
     }
     ```
 
-11. **`IpcProvider` (Mountain)** - The handler knows it must proxy the request.
+11. **`IpcProvider` ([Mountain](https://github.com/CodeEditorLand/Mountain))** - The handler knows it must proxy the request.
     It uses the `IpcProvider` capability from the `MountainEnvironment` and sends
-    a **`$executeContributedCommand` gRPC request to Cocoon**, carrying the
+    a **`$executeContributedCommand` gRPC request to [Cocoon](https://github.com/CodeEditorLand/Cocoon)**, carrying the
     command ID and its arguments. The arguments are serialized using the same
-    JSON encoding used in Phase 4A, then deserialized by Cocoon before invoking
+    JSON encoding used in Phase 4A, then deserialized by [Cocoon](https://github.com/CodeEditorLand/Cocoon) before invoking
     the JavaScript handler.
 
-12. **Cocoon Command Resolution** - Cocoon's gRPC server receives the request
+12. **[Cocoon](https://github.com/CodeEditorLand/Cocoon) Command Resolution** - [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server receives the request
     and dispatches it to the `CommandsProvider`. The `CommandsProvider` looks up
     `"my-extension.doSomething"` in its own local registry and executes the
     extension's JavaScript handler function with the deserialized arguments.
 
 13. **Result Propagation** - The extension's command finishes and returns a
     result (e.g. a string, number, or object). This result is serialized and
-    sent back to Mountain as the gRPC response. Mountain receives the response
-    and forwards it back to Wind as the resolution of the `TauriInvoke` promise.
+    sent back to [Mountain](https://github.com/CodeEditorLand/Mountain) as the gRPC response. [Mountain](https://github.com/CodeEditorLand/Mountain) receives the response
+    and forwards it back to [Wind](https://github.com/CodeEditorLand/Wind) as the resolution of the `TauriInvoke` promise.
     The command execution is complete.
 
-> [!IMPORTANT] Extension commands are registered in Mountain's `CommandRegistry`
-> as proxied entries during extension activation - Cocoon sends a
+> [!IMPORTANT] Extension commands are registered in [Mountain](https://github.com/CodeEditorLand/Mountain)'s `CommandRegistry`
+> as proxied entries during extension activation - [Cocoon](https://github.com/CodeEditorLand/Cocoon) sends a
 > `$registerExtensionCommand` gRPC call for each
-> `vscode.commands.registerCommand` invocation. Mountain never needs to know a
+> `vscode.commands.registerCommand` invocation. [Mountain](https://github.com/CodeEditorLand/Mountain) never needs to know a
 > command's implementation language; the `CommandHandler` enum value determines
 > the dispatch path at execution time.
 
@@ -182,15 +182,15 @@ setup still runs without throwing.
 
 ## onDidExecuteCommand
 
-Mountain emits `sky://commands/executed` to the Sky renderer after every command
-dispatch, and simultaneously sends `$acceptCommandExecuted` over the Vine gRPC
-channel to Cocoon. `Notification/Handler.ts` in Cocoon catches the Vine
+[Mountain](https://github.com/CodeEditorLand/Mountain) emits `sky://commands/executed` to the [Sky](https://github.com/CodeEditorLand/Sky) renderer after every command
+dispatch, and simultaneously sends `$acceptCommandExecuted` over the [Vine](https://github.com/CodeEditorLand/Vine) gRPC
+channel to [Cocoon](https://github.com/CodeEditorLand/Cocoon). `Notification/Handler.ts` in [Cocoon](https://github.com/CodeEditorLand/Cocoon) catches the [Vine](https://github.com/CodeEditorLand/Vine)
 notification and re-emits it on the shared `Emitter` channel `commands.executed`.
 The `onDidExecuteCommand` subscription in `Commands/Namespace.ts` listens on
 that channel, so extensions receive the event for both native and
-extension-contributed commands. Local (Cocoon-to-Cocoon) `executeCommand` calls
+extension-contributed commands. Local ([Cocoon](https://github.com/CodeEditorLand/Cocoon)-to-[Cocoon](https://github.com/CodeEditorLand/Cocoon)) `executeCommand` calls
 also emit on `commands.executed` directly, ensuring extension-to-extension calls
-are visible to listeners without a Mountain round-trip.
+are visible to listeners without a [Mountain](https://github.com/CodeEditorLand/Mountain) round-trip.
 
 The dispatched command's ID and its arguments are both forwarded as part of the
 notification payload, so listeners can filter by command or inspect what was

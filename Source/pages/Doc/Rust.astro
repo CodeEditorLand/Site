@@ -2,6 +2,7 @@
 import { Header } from "../../Component/Layout/Header";
 import Base from "../../Layout/Base.astro";
 import { GetI18n } from "../../Library/I18n/Server";
+import { LinkMentions } from "../../Library/CodeMentions";
 
 const T = GetI18n();
 
@@ -97,9 +98,7 @@ const RustDocSite = [
 	<div class="container mx-auto max-w-6xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
-			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
-			>
+			<ol class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
 					<a href="/" class="transition-colors hover:text-foreground">
 						{T("common.breadcrumb.home", { defaultValue: "Home" })}
@@ -111,11 +110,9 @@ const RustDocSite = [
 						href="/Doc"
 						class="transition-colors hover:text-foreground"
 					>
-						{
-							T("common.docs.pageTitle", {
-								defaultValue: "Documentation",
-							})
-						}
+						{T("common.docs.pageTitle", {
+							defaultValue: "Documentation",
+						})}
 					</a>
 				</li>
 				<li class="mx-2">/</li>
@@ -130,10 +127,12 @@ const RustDocSite = [
 			<h1 class="mb-3 text-4xl font-medium tracking-tight">
 				Rust API Documentation
 			</h1>
-			<p class="text-muted">
-				Generated <code>rustdoc</code> output for Land's Rust crates. Select
-				a crate below, or open directly in a new tab.
-			</p>
+			<p
+				class="text-muted"
+				set:html={LinkMentions(
+					"Generated <code>rustdoc</code> output for Land's Rust crates. Select a crate below, or open directly in a new tab.",
+				)}
+			/>
 		</header>
 
 		<!-- Crate selector cards -->
@@ -142,24 +141,20 @@ const RustDocSite = [
 			role="group"
 			aria-label="Rust crate documentation sets"
 		>
-			{
-				RustDocSite.map((Site) => (
-					<a
-						href={Site.Url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
-					>
-						<p class="font-medium text-card-foreground">
-							{Site.Label}
-							<span class="InlineSeparator">↗</span>
-						</p>
-						<p class="mt-1 text-card-foreground">
-							{Site.Description}
-						</p>
-					</a>
-				))
-			}
+			{RustDocSite.map((Site) => (
+				<a
+					href={Site.Url}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="StaccatoCard StaccatoBorderShimmer block bg-card p-4 transition-colors hover:border-[var(--Primary)] focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
+				>
+					<p class="font-medium text-card-foreground">
+						{Site.Label}
+						<span class="InlineSeparator">↗</span>
+					</p>
+					<p class="mt-1 text-card-foreground">{Site.Description}</p>
+				</a>
+			))}
 		</div>
 
 		<!-- Iframe embed with switcher -->
@@ -170,25 +165,23 @@ const RustDocSite = [
 				role="tablist"
 				aria-label="Rust crate group"
 			>
-				{
-					RustDocSite.map((Site, Index) => (
-						<button
-							type="button"
-							role="tab"
-							aria-selected={Index === 0 ? "true" : "false"}
-							aria-controls="RustDocFrame"
-							data-id={Site.Id}
-							data-rustdoc-url={Site.Url}
-							class={`RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
-								Index === 0
-									? "text-primary-fg border-[var(--Primary)] bg-primary"
-									: "border-[var(--Border)] bg-card text-card-foreground hover:bg-secondary"
-							}`}
-						>
-							{Site.Label}
-						</button>
-					))
-				}
+				{RustDocSite.map((Site, Index) => (
+					<button
+						type="button"
+						role="tab"
+						aria-selected={Index === 0 ? "true" : "false"}
+						aria-controls="RustDocFrame"
+						data-id={Site.Id}
+						data-rustdoc-url={Site.Url}
+						class={`RustDocTab border px-3 py-1 font-medium transition-colors focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)] ${
+							Index === 0
+								? "text-primary-fg border-[var(--Primary)] bg-primary"
+								: "border-[var(--Border)] bg-card text-card-foreground hover:bg-secondary"
+						}`}
+					>
+						{Site.Label}
+					</button>
+				))}
 			</div>
 
 			<iframe

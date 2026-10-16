@@ -17,23 +17,23 @@ one answers "where does this Element write?".
 
 ## At-a-Glance Matrix 🗺️
 
-| Element  | Owns paths?                | Writes to disk? | Primary destinations                                                                                        |
-| :------- | :------------------------- | :-------------- | :---------------------------------------------------------------------------------------------------------- |
-| Mountain | 🟢 yes (most)              | yes             | `~/.fiddee/*`, `<app_data_dir>/<bundle>/*`, `<temp_dir>/land-*`                                             |
-| Cocoon   | 🟢 yes (via FiddeeRoot)    | yes             | `~/.fiddee/extensionStorage`, `~/.fiddee/globalStorage`, `~/.fiddee/logs`, `<temp_dir>/vine_fallback.proto` |
-| Sky      | 🟡 no (writes via webview) | no (fs)         | WKWebView localStorage / IndexedDB (managed by OS at `<webview-storage>/<bundle>/`)                         |
-| Wind     | ⚪ build-time only         | no (runtime)    | `Target/` output; no runtime writes                                                                         |
-| Output   | ⚪ build-time only         | no (runtime)    | `Target/` output; no runtime writes                                                                         |
-| Air      | 🟢 yes (separate root!)    | yes             | `<config_dir>/FIDDEE/*`, `<data_local_dir>/FIDDEE/*`, cache/staging/backups, update history JSON            |
-| SideCar  | 🟢 yes (DNS override)      | yes             | `<data_dir>/SideCar/dns_override.txt` (Mist DNS data dir), download cache                                   |
-| Grove    | 🟡 minimal                 | yes (configs)   | `ConfigurationService` writes via `tokio::fs::write`; IPCTransport socket via `temp_dir`                    |
-| Maintain | ⚪ build-time only         | no (runtime)    | Bash-script edits during build; no runtime writes                                                           |
-| Vine     | ⚪ no                      | no              | Proto files shipped; no runtime writes                                                                      |
-| Mist     | ⚪ no                      | no              | DNS / WebSocket; no fs writes                                                                               |
-| Common   | ⚪ no                      | no              | Abstract crate; no fs writes                                                                                |
-| Echo     | ⚪ no                      | no              | Scheduler; no fs writes                                                                                     |
-| Worker   | ⚪ no                      | no              | Service Worker; no fs writes                                                                                |
-| Rest     | ⚪ no                      | no              | OXC bindings; no fs writes                                                                                  |
+| Element                                                | Owns paths?                | Writes to disk? | Primary destinations                                                                                        |
+| :----------------------------------------------------- | :------------------------- | :-------------- | :---------------------------------------------------------------------------------------------------------- |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) | 🟢 yes (most)              | yes             | `~/.fiddee/*`, `<app_data_dir>/<bundle>/*`, `<temp_dir>/land-*`                                             |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon)     | 🟢 yes (via FiddeeRoot)    | yes             | `~/.fiddee/extensionStorage`, `~/.fiddee/globalStorage`, `~/.fiddee/logs`, `<temp_dir>/vine_fallback.proto` |
+| [Sky](https://github.com/CodeEditorLand/Sky)           | 🟡 no (writes via webview) | no (fs)         | WKWebView localStorage / IndexedDB (managed by OS at `<webview-storage>/<bundle>/`)                         |
+| [Wind](https://github.com/CodeEditorLand/Wind)         | ⚪ build-time only         | no (runtime)    | `Target/` output; no runtime writes                                                                         |
+| [Output](https://github.com/CodeEditorLand/Output)     | ⚪ build-time only         | no (runtime)    | `Target/` output; no runtime writes                                                                         |
+| [Air](https://github.com/CodeEditorLand/Air)           | 🟢 yes (separate root!)    | yes             | `<config_dir>/FIDDEE/*`, `<data_local_dir>/FIDDEE/*`, cache/staging/backups, update history JSON            |
+| [SideCar](https://github.com/CodeEditorLand/SideCar)   | 🟢 yes (DNS override)      | yes             | `<data_dir>/SideCar/dns_override.txt` (Mist DNS data dir), download cache                                   |
+| [Grove](https://github.com/CodeEditorLand/Grove)       | 🟡 minimal                 | yes (configs)   | `ConfigurationService` writes via `tokio::fs::write`; IPCTransport socket via `temp_dir`                    |
+| [Maintain](https://github.com/CodeEditorLand/Maintain) | ⚪ build-time only         | no (runtime)    | Bash-script edits during build; no runtime writes                                                           |
+| [Vine](https://github.com/CodeEditorLand/Vine)         | ⚪ no                      | no              | Proto files shipped; no runtime writes                                                                      |
+| [Mist](https://github.com/CodeEditorLand/Mist)         | ⚪ no                      | no              | DNS / WebSocket; no fs writes                                                                               |
+| [Common](https://github.com/CodeEditorLand/Common)     | ⚪ no                      | no              | Abstract crate; no fs writes                                                                                |
+| [Echo](https://github.com/CodeEditorLand/Echo)         | ⚪ no                      | no              | Scheduler; no fs writes                                                                                     |
+| [Worker](https://github.com/CodeEditorLand/Worker)     | ⚪ no                      | no              | Service Worker; no fs writes                                                                                |
+| [Rest](https://github.com/CodeEditorLand/Rest)         | ⚪ no                      | no              | OXC bindings; no fs writes                                                                                  |
 
 ---
 
@@ -43,27 +43,27 @@ The largest write-site domain. Rust backend that owns the `~/.fiddee/` atom, the
 workbench userdata seeder, the session log, the memento persistence layer, and
 the VSIX extraction pipeline.
 
-| Producer                                                                         | Writes                                                                                                      | Trigger                                                                          |
-| :------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
-| `Binary/Main/AppLifecycle.rs::Dirs`                                              | All `<app_data_dir>/<bundle>/User/*` seed dirs, default JSON files, `~/.claude/agents`, `~/.copilot/agents` | First boot + every subsequent boot (idempotent)                                  |
-| `IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs`                        | Same seed set as a fallback (idempotent with `AppLifecycle::Dirs`)                                          | First access to `<app_data_dir>` post-boot                                       |
-| `ProcessManagement/InitializationData.rs::get_or_generate_machine_id`            | `<app_data_dir>/<bundle>/machine-id.txt` (UUID)                                                             | First boot only; persisted thereafter                                            |
-| `IPC/DevLog/WriteToFile.rs`                                                      | `<app_data_dir>/<bundle>/logs/<ts>/Mountain.dev.log` or `<temp_dir>/land-editor-logs/<ts>/` fallback        | Every dev-log emission when `Record=1`                                           |
-| `IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs::Mutate`                    | `~/.fiddee/workspaces/RecentlyOpened.json`                                                                  | Workspace folder add                                                             |
-| `ApplicationState/State/WorkspaceState/WorkspaceDelta.rs::PersistRecentlyOpened` | Same `RecentlyOpened.json`                                                                                  | Workspace delta event                                                            |
-| `ApplicationState/Internal/Persistence/MementoSaver.rs`                          | `<app_data_dir>/<bundle>/...memento.json` (global memento)                                                  | Memento update via `storage:set` IPC                                             |
-| `MementoLoader/AttemptMementoRecovery.rs`                                        | `<memento>.json.backup` corruption-recovery sibling                                                         | JSON deserialise failure                                                         |
-| `MementoLoader/CreateCorruptedBackup.rs`                                         | `<memento>.json.corrupted.<YYYYMMDD_HHMMSS>` timestamped corruption snapshot                                | JSON deserialise failure (parallel side-channel)                                 |
-| `RunTime/Shutdown/SaveApplicationState.rs`                                       | Final global memento JSON flush                                                                             | App shutdown                                                                     |
-| `Environment/StorageProvider.rs`                                                 | `<app_data_dir>/<bundle>/User/globalStorage/<extId>/state.json` per extension                               | Extension `Memento.update()`                                                     |
-| `Environment/ConfigurationProvider/UpdateValue.rs` + `Loading.rs`                | `<app_config_dir>/User/settings.json`                                                                       | User settings write                                                              |
-| `Environment/KeybindingProvider.rs`                                              | `<app_config_dir>/User/keybindings.json`                                                                    | Keybinding edit                                                                  |
-| `Environment/Terminal/ShellIntegration.rs`                                       | `<temp_dir>/land-zsh-integration-<pid>/.zshrc`                                                              | Integrated-terminal launch                                                       |
-| `Environment/WorkspaceProvider.rs`                                               | `<workspace>/<tempfile>` (atomic write-rename)                                                              | Workspace file save                                                              |
-| `Environment/FileSystemProvider/WriteOperations.rs`                              | Arbitrary user-workspace paths (Cocoon→Mountain write_file IPC target)                                      | Extension file write                                                             |
-| `ExtensionManagement/VsixInstaller.rs`                                           | `~/.fiddee/extensions/<id>/...` (VSIX extraction + `HealExecutableBits`)                                    | VSIX install                                                                     |
-| `RPC/CocoonService/FileSystem/*`                                                 | Arbitrary user-workspace paths (gRPC file-system service surface)                                           | Cocoon gRPC `write_file` / `create_directory` / `rename_file` / `copy_file`      |
-| `Maintain/Build/Manifest/PreBake.ts` (build-time, not runtime)                   | `Element/Mountain/Target/<profile>/extensions.manifest.json` (pre-baked extension list)                     | `beforeBundleCommand` in `tauri.conf.json`; accelerates boot-time scan to <50 ms |
+| Producer                                                                         | Writes                                                                                                      | Trigger                                                                                                                                                                  |
+| :------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Binary/Main/AppLifecycle.rs::Dirs`                                              | All `<app_data_dir>/<bundle>/User/*` seed dirs, default JSON files, `~/.claude/agents`, `~/.copilot/agents` | First boot + every subsequent boot (idempotent)                                                                                                                          |
+| `IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs`                        | Same seed set as a fallback (idempotent with `AppLifecycle::Dirs`)                                          | First access to `<app_data_dir>` post-boot                                                                                                                               |
+| `ProcessManagement/InitializationData.rs::get_or_generate_machine_id`            | `<app_data_dir>/<bundle>/machine-id.txt` (UUID)                                                             | First boot only; persisted thereafter                                                                                                                                    |
+| `IPC/DevLog/WriteToFile.rs`                                                      | `<app_data_dir>/<bundle>/logs/<ts>/Mountain.dev.log` or `<temp_dir>/land-editor-logs/<ts>/` fallback        | Every dev-log emission when `Record=1`                                                                                                                                   |
+| `IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs::Mutate`                    | `~/.fiddee/workspaces/RecentlyOpened.json`                                                                  | Workspace folder add                                                                                                                                                     |
+| `ApplicationState/State/WorkspaceState/WorkspaceDelta.rs::PersistRecentlyOpened` | Same `RecentlyOpened.json`                                                                                  | Workspace delta event                                                                                                                                                    |
+| `ApplicationState/Internal/Persistence/MementoSaver.rs`                          | `<app_data_dir>/<bundle>/...memento.json` (global memento)                                                  | Memento update via `storage:set` IPC                                                                                                                                     |
+| `MementoLoader/AttemptMementoRecovery.rs`                                        | `<memento>.json.backup` corruption-recovery sibling                                                         | JSON deserialise failure                                                                                                                                                 |
+| `MementoLoader/CreateCorruptedBackup.rs`                                         | `<memento>.json.corrupted.<YYYYMMDD_HHMMSS>` timestamped corruption snapshot                                | JSON deserialise failure (parallel side-channel)                                                                                                                         |
+| `RunTime/Shutdown/SaveApplicationState.rs`                                       | Final global memento JSON flush                                                                             | App shutdown                                                                                                                                                             |
+| `Environment/StorageProvider.rs`                                                 | `<app_data_dir>/<bundle>/User/globalStorage/<extId>/state.json` per extension                               | Extension `Memento.update()`                                                                                                                                             |
+| `Environment/ConfigurationProvider/UpdateValue.rs` + `Loading.rs`                | `<app_config_dir>/User/settings.json`                                                                       | User settings write                                                                                                                                                      |
+| `Environment/KeybindingProvider.rs`                                              | `<app_config_dir>/User/keybindings.json`                                                                    | Keybinding edit                                                                                                                                                          |
+| `Environment/Terminal/ShellIntegration.rs`                                       | `<temp_dir>/land-zsh-integration-<pid>/.zshrc`                                                              | Integrated-terminal launch                                                                                                                                               |
+| `Environment/WorkspaceProvider.rs`                                               | `<workspace>/<tempfile>` (atomic write-rename)                                                              | Workspace file save                                                                                                                                                      |
+| `Environment/FileSystemProvider/WriteOperations.rs`                              | Arbitrary user-workspace paths (Cocoon→Mountain write_file IPC target)                                      | Extension file write                                                                                                                                                     |
+| `ExtensionManagement/VsixInstaller.rs`                                           | `~/.fiddee/extensions/<id>/...` (VSIX extraction + `HealExecutableBits`)                                    | VSIX install                                                                                                                                                             |
+| `RPC/CocoonService/FileSystem/*`                                                 | Arbitrary user-workspace paths (gRPC file-system service surface)                                           | Cocoon gRPC `write_file` / `create_directory` / `rename_file` / `copy_file`                                                                                              |
+| `Maintain/Build/Manifest/PreBake.ts` (build-time, not runtime)                   | `Element/Mountain/Target/<profile>/extensions.manifest.json` (pre-baked extension list)                     | `beforeBundleCommand` in [`tauri.conf.json`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/tauri.conf.json); accelerates boot-time scan to <50 ms |
 
 ---
 
@@ -81,7 +81,7 @@ and a temp proto when the bundled proto resource is missing.
 | `Platform/FiddeeRoot.ts`                                     | (resolver only, no write)                                                                            | TypeScript mirror of Rust `FiddeeRoot.rs`                       |
 
 Cocoon never writes to `<app_data_dir>/<bundle>/` directly - all per-bundle
-writes are proxied through Mountain via IPC (`storage:set`, `secrets:set`,
+writes are proxied through [Mountain](https://github.com/CodeEditorLand/Mountain) via IPC (`storage:set`, `secrets:set`,
 file-system gRPC).
 
 ---
@@ -93,16 +93,16 @@ destination is the webview's per-bundle storage tree
 (`~/Library/WebKit/<bundle>/` on macOS, `~/.local/share/<bundle>/` on Linux,
 `%LOCALAPPDATA%\\<bundle>\\EBWebView\\` on Windows).
 
-| Producer                                                   | localStorage key   | Purpose                                                                                          |
-| :--------------------------------------------------------- | :----------------- | :----------------------------------------------------------------------------------------------- |
-| `Workbench/Bundled/Electron/Entry.ts`, `Sky/Bridge.ts`     | `Disable`          | UI-fix toggle. Survives reload.                                                                  |
-| `Sky/Function/SmokeTest/Auto/Diagnose/Input.ts`            | `Disable`          | Smoke-test side reads the same key.                                                              |
-| `Sky/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts` | `Smoke`            | Sticky smoke-test gate.                                                                          |
-| `Workbench/Electron/Post/Hog/Bridge.ts`                    | PostHog distinctId | Per-install PostHog telemetry identifier. Separate from Mountain's `machine-id.txt`.             |
-| Workbench-internal (VS Code `LocalStorageService`)         | (many)             | Editor state, layout, opened editors, ... Not enumerable from source without runtime inspection. |
+| Producer                                                                                                                                                                     | localStorage key   | Purpose                                                                                                                            |
+| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| `Workbench/Bundled/Electron/Entry.ts`, `Sky/Bridge.ts`                                                                                                                       | `Disable`          | UI-fix toggle. Survives reload.                                                                                                    |
+| [`Sky/Function/SmokeTest/Auto/Diagnose/Input.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Auto/Diagnose/Input.ts)                       | `Disable`          | Smoke-test side reads the same key.                                                                                                |
+| [`Sky/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts) | `Smoke`            | Sticky smoke-test gate.                                                                                                            |
+| `Workbench/Electron/Post/Hog/Bridge.ts`                                                                                                                                      | PostHog distinctId | Per-install PostHog telemetry identifier. Separate from [Mountain](https://github.com/CodeEditorLand/Mountain)'s `machine-id.txt`. |
+| Workbench-internal (VS Code `LocalStorageService`)                                                                                                                           | (many)             | Editor state, layout, opened editors, ... Not enumerable from source without runtime inspection.                                   |
 
 Sky does **not** make direct filesystem writes. Every "write" goes through the
-webview's storage layer or via `MountainIPCInvoke` IPC to Mountain (which then
+webview's storage layer or via `MountainIPCInvoke` IPC to [Mountain](https://github.com/CodeEditorLand/Mountain) (which then
 writes the file).
 
 ---
@@ -134,7 +134,7 @@ Build-time only. Same shape as Wind - reads env, no runtime writes.
 
 ## Air 🪁
 
-Background daemon. **Uses a different filesystem root than Mountain** -
+Background daemon. **Uses a different filesystem root than [Mountain](https://github.com/CodeEditorLand/Mountain)** -
 `<config_dir>/FIDDEE/` (uppercase) and `<data_local_dir>/FIDDEE/`, not
 `~/.fiddee/` (lowercase). Reconciliation candidate - see Encapsulation §H
 for details.
@@ -153,7 +153,7 @@ for details.
 `<config_dir>` and `<data_local_dir>` resolve per-OS via `dirs::config_dir()` /
 `dirs::data_local_dir()` (see PlatformPaths for the resolution table).
 
-Air is the only Element today that uses SCREAMING*SNAKE_CASE env vars
+[Air](https://github.com/CodeEditorLand/Air) is the only Element today that uses SCREAMING*SNAKE_CASE env vars
 (`AIR_LOG*`) - the project convention permits it for the daemon because Air
 ships as an external tool with its own naming convention.
 
@@ -167,7 +167,7 @@ ships as an external tool with its own naming convention.
 | `Source/Source/SideCar/Spawn.rs:48-53` | Same (mirrored handler)                                | Same trigger             |
 | `Source/Download.rs:165, 555, 628`     | `<CachePath>`, `<Parent>`, `<TempDownloadsDirectory>/` | SideCar package download |
 
-SideCar paths are resolved via the parent SideCar process's CLI args; not under
+[SideCar](https://github.com/CodeEditorLand/SideCar) paths are resolved via the parent [SideCar](https://github.com/CodeEditorLand/SideCar) process's CLI args; not under
 FiddeeRoot.
 
 ---
@@ -196,14 +196,14 @@ PlatformPaths §In-tree build artefacts).
 
 For completeness:
 
-| Element | Role                                          | Notes                               |
-| :------ | :-------------------------------------------- | :---------------------------------- |
-| Common  | Abstract crate (traits, DTOs, `ActionEffect`) | Foundational; no concrete I/O.      |
-| Echo    | Scheduler runtime                             | No filesystem; manages tokio tasks. |
-| Mist    | DNS + WebSocket transport                     | Network-only.                       |
-| Rest    | OXC / Rust language bindings                  | Build-time dependency surface.      |
-| Vine    | gRPC proto + transport (planned crate split)  | Proto resource lookup only.         |
-| Worker  | Service Worker bundle                         | Webview-only; no Node fs access.    |
+| Element                                            | Role                                          | Notes                               |
+| :------------------------------------------------- | :-------------------------------------------- | :---------------------------------- |
+| [Common](https://github.com/CodeEditorLand/Common) | Abstract crate (traits, DTOs, `ActionEffect`) | Foundational; no concrete I/O.      |
+| [Echo](https://github.com/CodeEditorLand/Echo)     | Scheduler runtime                             | No filesystem; manages tokio tasks. |
+| [Mist](https://github.com/CodeEditorLand/Mist)     | DNS + WebSocket transport                     | Network-only.                       |
+| [Rest](https://github.com/CodeEditorLand/Rest)     | OXC / Rust language bindings                  | Build-time dependency surface.      |
+| [Vine](https://github.com/CodeEditorLand/Vine)     | gRPC proto + transport (planned crate split)  | Proto resource lookup only.         |
+| [Worker](https://github.com/CodeEditorLand/Worker) | Service Worker bundle                         | Webview-only; no Node fs access.    |
 
 ---
 

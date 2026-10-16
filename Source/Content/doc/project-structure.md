@@ -7,7 +7,7 @@ description:
     system, and critical rules about what must never be edited."
 ---
 
-Land is organized as a monorepo of named **elements** under `Element/`. Each
+[Land](https://github.com/CodeEditorLand/Land) is organized as a monorepo of named **elements** under `Element/`. Each
 element is an independent Git repository (submodule) on its own `Current`
 branch. The repository root holds build orchestration scripts, environment file
 templates, and workspace configuration files for Cargo and pnpm.
@@ -46,57 +46,57 @@ Land/
 
 ### Rust Elements - Native Backend
 
-| Element      | Path               | Role                                                                                                                                                                             |
-| ------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Common**   | `Element/Common`   | Abstract core library. All service traits (`IFileService`, `IConfigurationService`), the `ActionEffect` system, DTOs. No concrete implementations.                               |
-| **Echo**     | `Element/Echo`     | Bounded work-stealing task scheduler. Priority-based (`High`/`Normal`/`Low`) with lock-free deques. Core async execution engine for Mountain.                                    |
-| **Vine**     | `Element/Vine`     | gRPC protocol definitions. Contains `Vine.proto` - the service contract between Mountain and Cocoon (port 50052), Mountain and Air (port 50053).                                 |
-| **Mountain** | `Element/Mountain` | Primary Tauri application. Implements every trait from Common. Hosts the gRPC server, manages `AppState`, dispatches Tauri commands, owns OS-level capabilities.                 |
-| **Mist**     | `Element/Mist`     | Local DNS server for `*.editor.land` resolution. Authoritative for the private zone. Resolves all subdomains to `127.0.0.1`. Used for network isolation.                         |
-| **Air**      | `Element/Air`      | Background daemon. Update downloads, file indexing, cryptographic signing, health monitoring. Communicates via gRPC on port 50053.                                               |
-| **Rest**     | `Element/Rest`     | High-performance TypeScript compiler built on OXC (Oxidation Compiler). Optional replacement for esbuild's TypeScript compilation at 2-3x speed.                                 |
-| **Grove**    | `Element/Grove`    | Native Rust/WASM extension host (work in progress). Sandboxed environment via Wasmtime for WASM-compiled VS Code extensions. Uses edition 2021 for WASM toolchain compatibility. |
-| **SideCar**  | `Element/SideCar`  | Vendored Node.js runtime binary management. Downloads, caches, and resolves exact Node.js binaries per target triple for bundling into the app.                                  |
+| Element                                                    | Path               | Role                                                                                                                                                                                                                                                                                                                              |
+| ---------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Common](https://github.com/CodeEditorLand/Common)**     | `Element/Common`   | Abstract core library. All service traits (`IFileService`, `IConfigurationService`), the `ActionEffect` system, DTOs. No concrete implementations.                                                                                                                                                                                |
+| **[Echo](https://github.com/CodeEditorLand/Echo)**         | `Element/Echo`     | Bounded work-stealing task scheduler. Priority-based (`High`/`Normal`/`Low`) with lock-free deques. Core async execution engine for [Mountain](https://github.com/CodeEditorLand/Mountain).                                                                                                                                       |
+| **[Vine](https://github.com/CodeEditorLand/Vine)**         | `Element/Vine`     | gRPC protocol definitions. Contains `Vine.proto` - the service contract between [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon) (port 50052), [Mountain](https://github.com/CodeEditorLand/Mountain) and [Air](https://github.com/CodeEditorLand/Air) (port 50053). |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)** | `Element/Mountain` | Primary Tauri application. Implements every trait from [Common](https://github.com/CodeEditorLand/Common). Hosts the gRPC server, manages `AppState`, dispatches Tauri commands, owns OS-level capabilities.                                                                                                                      |
+| **[Mist](https://github.com/CodeEditorLand/Mist)**         | `Element/Mist`     | Local DNS server for [`*.editor.land`](https://github.com/CodeEditorLand/Land) resolution. Authoritative for the private zone. Resolves all subdomains to `127.0.0.1`. Used for network isolation.                                                                                                                                |
+| **[Air](https://github.com/CodeEditorLand/Air)**           | `Element/Air`      | Background daemon. Update downloads, file indexing, cryptographic signing, health monitoring. Communicates via gRPC on port 50053.                                                                                                                                                                                                |
+| **[Rest](https://github.com/CodeEditorLand/Rest)**         | `Element/Rest`     | High-performance TypeScript compiler built on OXC (Oxidation Compiler). Optional replacement for esbuild's TypeScript compilation at 2-3x speed.                                                                                                                                                                                  |
+| **[Grove](https://github.com/CodeEditorLand/Grove)**       | `Element/Grove`    | Native Rust/WASM extension host (work in progress). Sandboxed environment via Wasmtime for WASM-compiled VS Code extensions. Uses edition 2021 for WASM toolchain compatibility.                                                                                                                                                  |
+| **[SideCar](https://github.com/CodeEditorLand/SideCar)**   | `Element/SideCar`  | Vendored Node.js runtime binary management. Downloads, caches, and resolves exact Node.js binaries per target triple for bundling into the app.                                                                                                                                                                                   |
 
 ### TypeScript Elements - UI and Extension Host
 
-| Element      | Path               | Role                                                                                                                                                                      |
-| ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Cocoon**   | `Element/Cocoon`   | Node.js extension host sidecar. Runs VS Code extensions. Provides a `vscode` API shim implemented with Effect-TS. Communicates with Mountain via gRPC.                    |
-| **Wind**     | `Element/Wind`     | UI service layer. Effect-TS native re-implementation of ~40 VS Code workbench services. Runs inside the Tauri WebView. Communicates with Mountain via Tauri IPC commands. |
-| **Sky**      | `Element/Sky`      | UI component layer (Astro). Renders the editor canvas, sidebar, activity bar, status bar, and panels. Bridges Tauri events through `SkyBridge` (~2900 lines).             |
-| **Output**   | `Element/Output`   | Build artifact management. Compiles VS Code platform source into the `@codeeditorland/output` npm package consumed by Cocoon, Sky, and Wind.                              |
-| **Worker**   | `Element/Worker`   | Service worker implementation. Asset caching, offline support, CSS module interception. Zero runtime dependencies.                                                        |
-| **Maintain** | `Element/Maintain` | Build orchestration. CI/CD pipeline, GritQL refactoring queries, build scripts, signing helpers.                                                                          |
+| Element                                                    | Path               | Role                                                                                                                                                                                                                                                                        |
+| ---------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**     | `Element/Cocoon`   | Node.js extension host sidecar. Runs VS Code extensions. Provides a `vscode` API shim implemented with [Effect-TS](https://effect.website). Communicates with [Mountain](https://github.com/CodeEditorLand/Mountain) via gRPC.                                              |
+| **[Wind](https://github.com/CodeEditorLand/Wind)**         | `Element/Wind`     | UI service layer. [Effect-TS](https://effect.website) native re-implementation of ~40 VS Code workbench services. Runs inside the Tauri WebView. Communicates with [Mountain](https://github.com/CodeEditorLand/Mountain) via Tauri IPC commands.                           |
+| **[Sky](https://github.com/CodeEditorLand/Sky)**           | `Element/Sky`      | UI component layer (Astro). Renders the editor canvas, sidebar, activity bar, status bar, and panels. Bridges Tauri events through `SkyBridge` (~2900 lines).                                                                                                               |
+| **[Output](https://github.com/CodeEditorLand/Output)**     | `Element/Output`   | Build artifact management. Compiles VS Code platform source into the `@codeeditorland/output` npm package consumed by [Cocoon](https://github.com/CodeEditorLand/Cocoon), [Sky](https://github.com/CodeEditorLand/Sky), and [Wind](https://github.com/CodeEditorLand/Wind). |
+| **[Worker](https://github.com/CodeEditorLand/Worker)**     | `Element/Worker`   | Service worker implementation. Asset caching, offline support, CSS module interception. Zero runtime dependencies.                                                                                                                                                          |
+| **[Maintain](https://github.com/CodeEditorLand/Maintain)** | `Element/Maintain` | Build orchestration. CI/CD pipeline, GritQL refactoring queries, build scripts, signing helpers.                                                                                                                                                                            |
 
 ### Dependency Elements
 
-| Element    | Path                                     | Role                                                                                                                       |
-| ---------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| **Editor** | `Dependency/Microsoft/Dependency/Editor` | VS Code source submodule. Compiled in Step 1 of the build. Consumed by Output and Sky. Never edit files under `src/vs/**`. |
+| Element    | Path                                     | Role                                                                                                                                                                                                            |
+| ---------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Editor** | `Dependency/Microsoft/Dependency/Editor` | VS Code source submodule. Compiled in Step 1 of the build. Consumed by [Output](https://github.com/CodeEditorLand/Output) and [Sky](https://github.com/CodeEditorLand/Sky). Never edit files under `src/vs/**`. |
 
 ---
 
 ## Submodule Repository Table 🔗
 
-| Element  | GitHub repository                          |
-| -------- | ------------------------------------------ |
-| Common   | https://github.com/CodeEditorLand/Common   |
-| Echo     | https://github.com/CodeEditorLand/Echo     |
-| Vine     | https://github.com/CodeEditorLand/Vine     |
-| Mountain | https://github.com/CodeEditorLand/Mountain |
-| Mist     | https://github.com/CodeEditorLand/Mist     |
-| Air      | https://github.com/CodeEditorLand/Air      |
-| Rest     | https://github.com/CodeEditorLand/Rest     |
-| Grove    | https://github.com/CodeEditorLand/Grove    |
-| SideCar  | https://github.com/CodeEditorLand/SideCar  |
-| Cocoon   | https://github.com/CodeEditorLand/Cocoon   |
-| Wind     | https://github.com/CodeEditorLand/Wind     |
-| Sky      | https://github.com/CodeEditorLand/Sky      |
-| Output   | https://github.com/CodeEditorLand/Output   |
-| Worker   | https://github.com/CodeEditorLand/Worker   |
-| Maintain | https://github.com/CodeEditorLand/Maintain |
-| Editor   | https://github.com/CodeEditorLand/Editor   |
+| Element                                                | GitHub repository                          |
+| ------------------------------------------------------ | ------------------------------------------ |
+| [Common](https://github.com/CodeEditorLand/Common)     | https://github.com/CodeEditorLand/Common   |
+| [Echo](https://github.com/CodeEditorLand/Echo)         | https://github.com/CodeEditorLand/Echo     |
+| [Vine](https://github.com/CodeEditorLand/Vine)         | https://github.com/CodeEditorLand/Vine     |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) | https://github.com/CodeEditorLand/Mountain |
+| [Mist](https://github.com/CodeEditorLand/Mist)         | https://github.com/CodeEditorLand/Mist     |
+| [Air](https://github.com/CodeEditorLand/Air)           | https://github.com/CodeEditorLand/Air      |
+| [Rest](https://github.com/CodeEditorLand/Rest)         | https://github.com/CodeEditorLand/Rest     |
+| [Grove](https://github.com/CodeEditorLand/Grove)       | https://github.com/CodeEditorLand/Grove    |
+| [SideCar](https://github.com/CodeEditorLand/SideCar)   | https://github.com/CodeEditorLand/SideCar  |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon)     | https://github.com/CodeEditorLand/Cocoon   |
+| [Wind](https://github.com/CodeEditorLand/Wind)         | https://github.com/CodeEditorLand/Wind     |
+| [Sky](https://github.com/CodeEditorLand/Sky)           | https://github.com/CodeEditorLand/Sky      |
+| [Output](https://github.com/CodeEditorLand/Output)     | https://github.com/CodeEditorLand/Output   |
+| [Worker](https://github.com/CodeEditorLand/Worker)     | https://github.com/CodeEditorLand/Worker   |
+| [Maintain](https://github.com/CodeEditorLand/Maintain) | https://github.com/CodeEditorLand/Maintain |
+| Editor                                                 | https://github.com/CodeEditorLand/Editor   |
 
 ---
 
@@ -106,11 +106,11 @@ The build has two phases:
 
 **Phase 1 - VS Code compilation.** `Dependency/Microsoft/Dependency/Editor`
 is compiled with npm and `NODE_ENV=development`. The output feeds `Output`, which
-produces the `@codeeditorland/output` package consumed by Cocoon, Sky, and Wind.
+produces the `@codeeditorland/output` package consumed by [Cocoon](https://github.com/CodeEditorLand/Cocoon), [Sky](https://github.com/CodeEditorLand/Sky), and [Wind](https://github.com/CodeEditorLand/Wind).
 
-**Phase 2 - Land assembly.** `Maintain/Debug/Build.sh` orchestrates all elements
+**Phase 2 - [Land](https://github.com/CodeEditorLand/Land) assembly.** [`Maintain/Debug/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh) orchestrates all elements
 based on the `--profile` flag. The profile selects one or more workbench variants
-(Mountain-only, full Electron, headless Cocoon, kernel-only), sets tier flags
+([Mountain](https://github.com/CodeEditorLand/Mountain)-only, full Electron, headless [Cocoon](https://github.com/CodeEditorLand/Cocoon), kernel-only), sets tier flags
 (`TierIPC`, `TierTerminal`, `TierSCM`), and decides whether assets are bundled
 or left as dynamic imports.
 
@@ -133,7 +133,7 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ### Rust
 
-- Edition 2024, MSRV 1.95.0 (Grove excluded: edition 2021 for WASM)
+- Edition 2024, MSRV 1.95.0 ([Grove](https://github.com/CodeEditorLand/Grove) excluded: edition 2021 for WASM)
 - `pub use` re-export pattern is not used anywhere in the workspace. Use type
   aliases, delegating functions, or fresh constants instead.
 - PascalCase filenames
@@ -141,7 +141,7 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ### Environment Variables
 
-- PascalCase for Land variables: `BundleLevel`, `HotReload`, `TierFileSystem`
+- PascalCase for [Land](https://github.com/CodeEditorLand/Land) variables: `BundleLevel`, `HotReload`, `TierFileSystem`
 - Upstream casing preserved for external tools: `TAURI_*`, `CARGO_*`, `NODE_*`
 
 ---
@@ -172,8 +172,8 @@ scripts never write outside `Element/<Name>/Target/`.
 
 ## Funding 💎
 
-Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
+[Land](https://github.com/CodeEditorLand/Land)'s development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by
-**PlayForm** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
+**[PlayForm](https://PlayForm.Cloud)** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
 the public domain under CC0 - no CLA required, no copyright assignment, no
 restrictions on use.

@@ -8,10 +8,10 @@ description:
     external access by allowlist.
 ---
 
-Mist runs an authoritative Hickory DNS server for the `editor.land` zone,
+[Mist](https://github.com/CodeEditorLand/Mist) runs an authoritative Hickory DNS server for the `editor.land` zone,
 binding exclusively on `127.0.0.1` so that every `*.editor.land` subdomain
 resolves to `127.0.0.1` instead of reaching the public internet. It acts as a
-network policy enforcement point: sidecar processes such as Cocoon and Air can
+network policy enforcement point: sidecar processes such as [Cocoon](https://github.com/CodeEditorLand/Cocoon) and [Air](https://github.com/CodeEditorLand/Air) can
 only resolve domains that appear on an explicit allowlist, and every other
 external query receives `NXDOMAIN`. The zone is signed with ECDSA P-256 keys so
 that DNSSEC-aware clients can verify the authenticity of every response.
@@ -20,7 +20,7 @@ that DNSSEC-aware clients can verify the authenticity of every response.
 
 VS Code extensions run arbitrary code. Without a network boundary a compromised
 or buggy extension can resolve any hostname and exfiltrate data through DNS.
-Mist closes that vector by becoming the sole resolver that Cocoon and Air are
+[Mist](https://github.com/CodeEditorLand/Mist) closes that vector by becoming the sole resolver that [Cocoon](https://github.com/CodeEditorLand/Cocoon) and [Air](https://github.com/CodeEditorLand/Air) are
 allowed to use. Those processes are spawned with a DNS override pointing to
 `127.0.0.1:5380`, so extension code cannot bypass the server regardless of which
 port it attempts to use for its own UDP traffic.
@@ -36,18 +36,18 @@ Mist is organised into five core modules:
 <img src="/Mermaid/a08c62373866bebb.svg" alt="Mermaid diagram" />
 ### Module Map
 
-| Path                        | Purpose                                                |
-| --------------------------- | ------------------------------------------------------ |
-| `Source/Server.rs`          | UDP and TCP DNS listener, query dispatch               |
-| `Source/Zone.rs`            | `editor.land` zone configuration and record generation |
-| `Source/Resolver.rs`        | External DNS forwarding for allowlisted domains        |
-| `Source/ForwardSecurity.rs` | DNSSEC signing with ECDSA P-256                        |
-| `Source/WebSocket.rs`       | WebSocket transport for `Sky`↔`Cocoon` communication   |
-| `Source/lib.rs`             | Library root                                           |
+| Path                                                                                                         | Purpose                                                                                                                                   |
+| ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| [`Source/Server.rs`](https://github.com/CodeEditorLand/Mist/tree/Current/Source/Server.rs)                   | UDP and TCP DNS listener, query dispatch                                                                                                  |
+| [`Source/Zone.rs`](https://github.com/CodeEditorLand/Mist/tree/Current/Source/Zone.rs)                       | `editor.land` zone configuration and record generation                                                                                    |
+| [`Source/Resolver.rs`](https://github.com/CodeEditorLand/Mist/tree/Current/Source/Resolver.rs)               | External DNS forwarding for allowlisted domains                                                                                           |
+| [`Source/ForwardSecurity.rs`](https://github.com/CodeEditorLand/Mist/tree/Current/Source/ForwardSecurity.rs) | DNSSEC signing with ECDSA P-256                                                                                                           |
+| [`Source/WebSocket.rs`](https://github.com/CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs)             | WebSocket transport for [`Sky`](https://github.com/CodeEditorLand/Sky)↔[`Cocoon`](https://github.com/CodeEditorLand/Cocoon) communication |
+| `Source/lib.rs`                                                                                              | Library root                                                                                                                              |
 
 ## Hickory DNS
 
-Mist is built on Hickory DNS (formerly Trust-DNS), a pure-Rust async DNS
+[Mist](https://github.com/CodeEditorLand/Mist) is built on Hickory DNS (formerly Trust-DNS), a pure-Rust async DNS
 library. The server exposes both UDP and TCP listeners on port 5380. All query
 handling runs on Tokio so no thread is ever blocked waiting for I/O.
 
@@ -113,7 +113,7 @@ runtime without restarting the server.
 
 ## DNSSEC
 
-The zone is signed with ECDSA P-256 (algorithm 13). On first run Mist generates
+The zone is signed with ECDSA P-256 (algorithm 13). On first run [Mist](https://github.com/CodeEditorLand/Mist) generates
 a key pair and writes it to the application data directory. Subsequent starts
 load the cached keys and sign all zone records before the server begins
 accepting queries.
@@ -127,9 +127,9 @@ accepting queries.
 
 ## WebSocket Transport
 
-Mist includes a `WebSocket.rs` layer that serves `*.editor.land` WebSocket
-endpoints for Sky to Cocoon communication. Under this transport, Sky
-communicates with Cocoon over a local WebSocket connection routed through Mist's
+[Mist](https://github.com/CodeEditorLand/Mist) includes a [`WebSocket.rs`](https://github.com/CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs) layer that serves `*.editor.land` WebSocket
+endpoints for [Sky](https://github.com/CodeEditorLand/Sky) to [Cocoon](https://github.com/CodeEditorLand/Cocoon) communication. Under this transport, [Sky](https://github.com/CodeEditorLand/Sky)
+communicates with [Cocoon](https://github.com/CodeEditorLand/Cocoon) over a local WebSocket connection routed through [Mist](https://github.com/CodeEditorLand/Mist)'s
 DNS zone rather than through Tauri IPC, reducing per-call overhead from ~5 ms to
 under 1 ms for the high-frequency calls that dominate a session. This transport
 is used when gRPC is unavailable or inappropriate for the communication pattern.
@@ -137,15 +137,15 @@ is used when gRPC is unavailable or inappropriate for the communication pattern.
 <img src="/Mermaid/8f7ee38f7b61f2ef.svg" alt="Mermaid diagram" />
 ## Integration with Mountain and Air
 
-Mountain calls `Mist::start(5380)` during application initialisation and
+[Mountain](https://github.com/CodeEditorLand/Mountain) calls `Mist::start(5380)` during application initialisation and
 receives the bound port as its return value. That port is forwarded to:
 
-- **Cocoon** - spawned with an environment variable that overrides its DNS
+- **[Cocoon](https://github.com/CodeEditorLand/Cocoon)** - spawned with an environment variable that overrides its DNS
   resolver to `127.0.0.1:{DnsPort}`, preventing the Node.js extension host from
   reaching arbitrary external hosts.
-- **Air** - configures its `LandDnsResolver` so that all outbound HTTP requests
+- **[Air](https://github.com/CodeEditorLand/Air)** - configures its `LandDnsResolver` so that all outbound HTTP requests
   from the background daemon pass through the same policy enforcement point.
-- **SideCar** - uses the resolver when fetching runtime binaries during build
+- **[SideCar](https://github.com/CodeEditorLand/SideCar)** - uses the resolver when fetching runtime binaries during build
   setup.
 
 ## Startup Sequence

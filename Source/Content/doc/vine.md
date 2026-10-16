@@ -8,13 +8,13 @@ description:
     Buffer definitions."
 ---
 
-Vine is the gRPC protocol definition and communication specification for the
-Land project. It defines the strongly-typed IPC layer used for communication
+[Vine](https://github.com/CodeEditorLand/Vine) is the gRPC protocol definition and communication specification for the
+[Land](https://github.com/CodeEditorLand/Land) project. It defines the strongly-typed IPC layer used for communication
 between:
 
-- **Mountain** (Rust backend) - gRPC server
-- **Cocoon** (Node.js extension host) - gRPC client
-- **Air** (background daemon) - gRPC client
+- **[Mountain](https://github.com/CodeEditorLand/Mountain)** (Rust backend) - gRPC server
+- **[Cocoon](https://github.com/CodeEditorLand/Cocoon)** (Node.js extension host) - gRPC client
+- **[Air](https://github.com/CodeEditorLand/Air)** (background daemon) - gRPC client
 
 <img src="/Mermaid/a886e98576e6fe7f.svg" alt="Mermaid diagram" />
 ## Why a Typed Protocol
@@ -24,52 +24,52 @@ enforced contract on either side. Renaming a field, changing an argument type,
 or removing a handler produces a silent runtime failure rather than a build
 error.
 
-Vine defines every inter-process call as a `.proto` service method with typed
+[Vine](https://github.com/CodeEditorLand/Vine) defines every inter-process call as a `.proto` service method with typed
 request and response messages. The generated Rust stubs (via `tonic`) and
-TypeScript stubs (via `@grpc/proto-loader`) are the only way Mountain and Cocoon
+TypeScript stubs (via `@grpc/proto-loader`) are the only way [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon)
 communicate. If a message field is renamed or removed, the Rust build and the
 TypeScript build each fail independently at their own compile step. Neither side
 can silently drift from the schema.
 
 ## Architecture
 
-Vine is the protocol layer that enables all inter-component communication:
+[Vine](https://github.com/CodeEditorLand/Vine) is the protocol layer that enables all inter-component communication:
 
 <img src="/Mermaid/dd501536bfa01bee.svg" alt="Mermaid diagram" />
 ## Protocol Files
 
-| File          | Location                             | Defines                              |
-| ------------- | ------------------------------------ | ------------------------------------ |
-| `Vine.proto`  | `Element/Mountain/Proto/Vine.proto`  | Core Mountain↔Cocoon gRPC services   |
-| `Spine.proto` | `Element/Mountain/Proto/Spine.proto` | Extension host coordination protocol |
-| `Air.proto`   | (in-source in Air Element)           | Mountain↔Air background services     |
+| File                                                                                     | Location                                                                                                        | Defines                                                                                                                      |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) | [`Element/Mountain/Proto/Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) | Core [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Cocoon](https://github.com/CodeEditorLand/Cocoon) gRPC services |
+| `Spine.proto`                                                                            | `Element/Mountain/Proto/Spine.proto`                                                                            | Extension host coordination protocol                                                                                         |
+| [`Air.proto`](https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto)        | (in-source in [Air](https://github.com/CodeEditorLand/Air) Element)                                             | [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Air](https://github.com/CodeEditorLand/Air) background services      |
 
 The working proto definitions and gRPC server code currently reside inside
-Mountain's own `Source/Vine/` directory. The standalone
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s own [`Source/Vine/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/) directory. The standalone
 [Vine repository](https://github.com/CodeEditorLand/Vine) is the future home for
 these schemas as a published, independently versioned package once the protocol
 stabilises.
 
 ## Protocol Schema Family
 
-Vine is the umbrella name for a family of proto files:
+[Vine](https://github.com/CodeEditorLand/Vine) is the umbrella name for a family of proto files:
 
-| Schema        | Server port | Direction                             | Purpose                                                                                                |
-| ------------- | ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `Vine.proto`  | 50051       | Cocoon → Mountain (`MountainService`) | Core Mountain↔Cocoon communication: file system, terminal, language features, extension host lifecycle |
-| `Vine.proto`  | 50052       | Mountain → Cocoon (`CocoonService`)   | Core Mountain↔Cocoon communication: language provider dispatch, notifications, inline completions      |
-| `Spine.proto` | 50052       | Mountain → Cocoon                     | Extension host coordination - action/response pattern for command execution                            |
-| `Air.proto`   | 50053       | Mountain → Air                        | Mountain↔Air background daemon services                                                                |
+| Schema                                                                                   | Server port | Direction                                                                                                                       | Purpose                                                                                                                                                                                          |
+| ---------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) | 50051       | [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain) (`MountainService`) | Core [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Cocoon](https://github.com/CodeEditorLand/Cocoon) communication: file system, terminal, language features, extension host lifecycle |
+| [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) | 50052       | [Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon) (`CocoonService`)   | Core [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Cocoon](https://github.com/CodeEditorLand/Cocoon) communication: language provider dispatch, notifications, inline completions      |
+| `Spine.proto`                                                                            | 50052       | [Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon)                     | Extension host coordination - action/response pattern for command execution                                                                                                                      |
+| [`Air.proto`](https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto)        | 50053       | [Mountain](https://github.com/CodeEditorLand/Mountain) → [Air](https://github.com/CodeEditorLand/Air)                           | [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Air](https://github.com/CodeEditorLand/Air) background daemon services                                                                   |
 
-> [!NOTE] `NetworkMountainPort` (default 50051) is Mountain's gRPC listen
-> port. `NetworkCocoonPort` (default 50052) is Cocoon's gRPC listen port. Both
+> [!NOTE] `NetworkMountainPort` (default 50051) is [Mountain](https://github.com/CodeEditorLand/Mountain)'s gRPC listen
+> port. `NetworkCocoonPort` (default 50052) is [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC listen port. Both
 > are overridable to support parallel development sessions on the same machine.
 
 ## Service Definitions
 
 ### MountainService: Cocoon → Mountain
 
-`MountainService` is implemented by Mountain's gRPC server. Cocoon calls these
+`MountainService` is implemented by [Mountain](https://github.com/CodeEditorLand/Mountain)'s gRPC server. Cocoon calls these
 RPCs when extensions need native capabilities.
 
 | RPC                      | Direction         | Purpose                                |
@@ -81,7 +81,7 @@ RPCs when extensions need native capabilities.
 
 ### CocoonService: Mountain → Cocoon
 
-`CocoonService` is implemented by Cocoon's gRPC server. Mountain calls these
+`CocoonService` is implemented by [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server. Mountain calls these
 RPCs to drive the extension host.
 
 | RPC                                    | Direction         | Purpose                                             |
@@ -114,7 +114,7 @@ RPCs to drive the extension host.
 | `RegisterInlineCompletionItemProvider` | Mountain → Cocoon | Register an inline completion provider              |
 | `ProvideInlineCompletionItems`         | Mountain → Cocoon | Request inline completion items                     |
 
-### Spine Service: Cocoon → Mountain
+### Spine Service: [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain)
 
 The `Spine.proto` defines the extension host coordination protocol:
 
@@ -205,17 +205,17 @@ protocol is fully bidirectional. Mountain hosts `MountainService` for Cocoon to
 call; Cocoon hosts `CocoonService` for Mountain to call.
 
 Both sockets are strictly local. The connection uses TCP loopback with no
-external network traffic. `NetworkMountainPort` overrides Mountain's listen port
-(default 50051); `NetworkCocoonPort` overrides Cocoon's listen port (default
-50052); `NetworkAirPort` overrides the Air port (default 50053).
+external network traffic. `NetworkMountainPort` overrides [Mountain](https://github.com/CodeEditorLand/Mountain)'s listen port
+(default 50051); `NetworkCocoonPort` overrides [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s listen port (default
+50052); `NetworkAirPort` overrides the [Air](https://github.com/CodeEditorLand/Air) port (default 50053).
 
 ## Port Allocation
 
-| Service       | Port  | Transport    | Components                         |
-| ------------- | ----- | ------------ | ---------------------------------- |
-| Mountain Vine | 50051 | TCP loopback | Mountain (server), Cocoon (client) |
-| Cocoon Vine   | 50052 | TCP loopback | Cocoon (server), Mountain (client) |
-| Air Vine      | 50053 | TCP loopback | Air (server)                       |
+| Service       | Port  | Transport    | Components                                                                                                                   |
+| ------------- | ----- | ------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| Mountain Vine | 50051 | TCP loopback | [Mountain](https://github.com/CodeEditorLand/Mountain) (server), [Cocoon](https://github.com/CodeEditorLand/Cocoon) (client) |
+| Cocoon Vine   | 50052 | TCP loopback | [Cocoon](https://github.com/CodeEditorLand/Cocoon) (server), [Mountain](https://github.com/CodeEditorLand/Mountain) (client) |
+| Air Vine      | 50053 | TCP loopback | [Air](https://github.com/CodeEditorLand/Air) (server)                                                                        |
 
 Ports can be overridden via environment variables:
 
@@ -225,7 +225,7 @@ Ports can be overridden via environment variables:
 
 ## Client Implementation
 
-Cocoon's gRPC client (`Cocoon/Source/Services/Mountain/gRPC/Client.ts`) uses
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC client ([`Cocoon/Source/Services/Mountain/gRPC/Client.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts)) uses
 `@grpc/grpc-js`:
 
 ```typescript
@@ -252,7 +252,7 @@ const response = await new Promise<CommandResponse>((resolve, reject) => {
 
 ## Server Implementation
 
-Mountain's gRPC server (`Mountain/Source/Vine/Server/`) uses `tonic`:
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s gRPC server ([`Mountain/Source/Vine/Server/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Server/)) uses `tonic`:
 
 ```rust
 use tonic::{Request, Response, Status};
@@ -285,7 +285,7 @@ impl ExtensionHost for VineServiceImpl {
 
 ### Rust (compile-time via build.rs)
 
-Mountain's `build.rs` compiles the proto files at build time using `tonic-build`:
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s [`build.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs) compiles the proto files at build time using `tonic-build`:
 
 ```rust
 // Mountain/build.rs
@@ -296,12 +296,12 @@ fn main() {
 }
 ```
 
-The generated types live in Mountain's `Source/Vine/Generated/` directory and
+The generated types live in [Mountain](https://github.com/CodeEditorLand/Mountain)'s [`Source/Vine/Generated/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/) directory and
 are not checked in - they are produced on every build.
 
 ### TypeScript (pre-generated via protoc-gen-ts)
 
-TypeScript stubs are generated via `protoc-gen-ts` and committed to the Cocoon
+TypeScript stubs are generated via `protoc-gen-ts` and committed to the [Cocoon](https://github.com/CodeEditorLand/Cocoon)
 source tree under `Source/Generated/`. This means Cocoon does not require
 `protoc` at runtime; the generated files are part of the checked-in source.
 
@@ -313,17 +313,17 @@ protoc \
     Element/Mountain/Proto/Vine.proto
 ```
 
-Cocoon's gRPC client loads these generated types via `@grpc/grpc-js` at startup.
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC client loads these generated types via `@grpc/grpc-js` at startup.
 
 ## Development Status
 
-| Feature                                               | Status      |
-| ----------------------------------------------------- | ----------- |
-| `Vine.proto` - Mountain↔Cocoon gRPC (in Mountain)     | Active      |
-| `Spine.proto` - extension host coordination           | Specified   |
-| `Air.proto` - background daemon services              | Active      |
-| Standalone Vine package (published `.proto` files)    | In progress |
-| Transport agnosticism - WASM host functions for Grove | Planned     |
+| Feature                                                                                                                                                                                                                                                               | Status      |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) - [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Cocoon](https://github.com/CodeEditorLand/Cocoon) gRPC (in [Mountain](https://github.com/CodeEditorLand/Mountain)) | Active      |
+| `Spine.proto` - extension host coordination                                                                                                                                                                                                                           | Specified   |
+| [`Air.proto`](https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto) - background daemon services                                                                                                                                                        | Active      |
+| Standalone [Vine](https://github.com/CodeEditorLand/Vine) package (published `.proto` files)                                                                                                                                                                          | In progress |
+| Transport agnosticism - WASM host functions for Grove                                                                                                                                                                                                                 | Planned     |
 
 ## What Is Not Yet Covered
 

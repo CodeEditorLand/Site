@@ -30,8 +30,8 @@ that creates a cascade of legal compliance work. CC0 removes it entirely.
 ## CC0 vs MIT vs Apache 2.0 vs GPL
 
 MIT has one condition: every binary carrying MIT code must include the copyright
-notice. Land is designed to be reused - its Rust crates extracted into other
-editors, its Effect-TS patterns embedded in other tools. The attribution
+notice. [Land](https://github.com/CodeEditorLand/Land) is designed to be reused - its Rust crates extracted into other
+editors, its [Effect-TS](https://effect.website) patterns embedded in other tools. The attribution
 requirement creates friction for every downstream user. CC0 removes it.
 
 Apache 2.0 adds an explicit patent grant on MIT's attribution requirement. The
@@ -39,27 +39,27 @@ patent grant interacts with CLA agreements, and the automatic termination clause
 can surprise downstream users. CC0 has no patent clauses, no CLAs, and no
 termination conditions.
 
-GPL requires derivative works to be GPL'd. Land's purpose is infrastructure
+GPL requires derivative works to be GPL'd. [Land](https://github.com/CodeEditorLand/Land)'s purpose is infrastructure
 that can be embedded anywhere, including proprietary products. CC0 imposes no
 copyleft constraint.
 
 ## What CC0 does not cover
 
-CC0 waives copyright, not trademarks. The names FIDDEE and Land, the logos, and
-the editor.land domain are not granted by CC0 - trademark rights are separate.
-Someone who forks Land can use the code freely but cannot ship it as "FIDDEE"
-or "Land" without permission.
+CC0 waives copyright, not trademarks. The names FIDDEE and [Land](https://github.com/CodeEditorLand/Land), the logos, and
+the [editor.land](https://github.com/CodeEditorLand/Land) domain are not granted by CC0 - trademark rights are separate.
+Someone who forks [Land](https://github.com/CodeEditorLand/Land) can use the code freely but cannot ship it as "FIDDEE"
+or "[Land](https://github.com/CodeEditorLand/Land)" without permission.
 
 CC0 also does not grant patent licenses beyond what the waiver covers in
 applicable jurisdictions. For a code editor, this is not a practical concern.
 
 ## NLnet NGI0 alignment
 
-Land is funded by the NLnet NGI0 Commons Fund, part of the European
+[Land](https://github.com/CodeEditorLand/Land) is funded by the NLnet NGI0 Commons Fund, part of the European
 Commission's Next Generation Internet initiative. NLnet funds software as
 public infrastructure. CC0 is the natural legal expression: if the goal is
 infrastructure that belongs to everyone, the license should say so literally.
-Releasing under CC0 ensures Land remains in the public domain regardless of
+Releasing under CC0 ensures [Land](https://github.com/CodeEditorLand/Land) remains in the public domain regardless of
 what happens to any contributor - there are no copyright holders who can later
 change the terms.
 

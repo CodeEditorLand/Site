@@ -8,10 +8,10 @@ description:
     backend with Rust, Tauri, and Effect-TS."
 ---
 
-Land is an open-source code editor that replaces the Electron/Node.js backend of
+[Land](https://github.com/CodeEditorLand/Land) is an open-source code editor that replaces the Electron/Node.js backend of
 VS Code with a native Rust implementation running on Tauri, while keeping the
-VS Code extension API intact through a TypeScript sidecar built with Effect-TS.
-The product name for the compiled desktop application is **FIDDEE**; Land is the
+VS Code extension API intact through a TypeScript sidecar built with [`Effect-TS`](https://effect.website).
+The product name for the compiled desktop application is **FIDDEE**; [Land](https://github.com/CodeEditorLand/Land) is the
 repository and project name.
 
 The core insight is that VS Code's platform independence was achieved by
@@ -19,13 +19,13 @@ implementing every OS operation - file I/O, terminal PTY management, native
 dialogs, keychain access, clipboard - in a Node.js main process bridged through
 JSON IPC. That architecture works, but it imposes a serialization round-trip on
 every interaction and ties the editor's performance to the V8 garbage collector.
-Land replaces the Node.js main process with Mountain (Rust/Tauri) and runs the
-extension host through Cocoon (Node.js sidecar), keeping the API surface
+[Land](https://github.com/CodeEditorLand/Land) replaces the Node.js main process with [Mountain](https://github.com/CodeEditorLand/Mountain) (Rust/Tauri) and runs the
+extension host through [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node.js sidecar), keeping the API surface
 identical while replacing the substrate underneath.
 
 ---
 
-## What Land Is 🗺️
+## What [Land](https://github.com/CodeEditorLand/Land) Is 🗺️
 
 | Aspect          | Detail                                    |
 | --------------- | ----------------------------------------- |
@@ -36,10 +36,10 @@ identical while replacing the substrate underneath.
 | Lead maintainer | Nikola Hristov / PlayForm, Sofia Bulgaria |
 | Funding         | NLnet NGI0 Commons Fund                   |
 
-Land is not a fork of VS Code. It does not maintain a modified copy of the
+[Land](https://github.com/CodeEditorLand/Land) is not a fork of VS Code. It does not maintain a modified copy of the
 `src/vs` codebase. The upstream VS Code repository is a Git submodule at
-`Dependency/Microsoft/Dependency/Editor` and is consumed as a
-dependency: compiled, not edited. All custom code lives in the Land elements
+[`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor) and is consumed as a
+dependency: compiled, not edited. All custom code lives in the [Land](https://github.com/CodeEditorLand/Land) elements
 themselves.
 
 ---
@@ -49,24 +49,24 @@ themselves.
 Three principles guide every design decision in Land.
 
 **Replace the substrate, keep the API.** VS Code extensions represent millions
-of lines of tested, working code. Throwing them away is not practical. Land
-reimplements the `vscode` API in Cocoon using Effect-TS and routes OS-level
-operations to Mountain through gRPC. Extensions that talk to the `vscode` API
+of lines of tested, working code. Throwing them away is not practical. [Land](https://github.com/CodeEditorLand/Land)
+reimplements the `vscode` API in [Cocoon](https://github.com/CodeEditorLand/Cocoon) using [`Effect-TS`](https://effect.website) and routes OS-level
+operations to [Mountain](https://github.com/CodeEditorLand/Mountain) through gRPC. Extensions that talk to the `vscode` API
 continue to work; the host that dispatches their calls is fundamentally
 different underneath.
 
 **Move OS operations to native code.** File reads, terminal PTY writes, native
 dialogs, clipboard access, and keychain operations all cross a process boundary
-in VS Code. In Land they call `#[tauri::command]` Rust functions directly.
+in VS Code. In [Land](https://github.com/CodeEditorLand/Land) they call `#[tauri::command]` Rust functions directly.
 The round-trip is a Tauri IPC call over a local socket - no JSON serialization
 through a Node.js event loop. The performance difference is measurable on every
 interaction: reading a 1 MB file takes ~2 ms in Mountain versus ~200 ms through
 the Electron/Node.js bridge.
 
-**Composable abstractions over monolithic services.** Cocoon reimplements the
-~40 VS Code workbench services as individual Effect-TS layers. Each service has
-a defined lifecycle, explicit dependencies, and a testable interface. Wind
-mirrors this for the UI service layer. The `ActionEffect` system in Common
+**Composable abstractions over monolithic services.** [Cocoon](https://github.com/CodeEditorLand/Cocoon) reimplements the
+~40 VS Code workbench services as individual [`Effect-TS`](https://effect.website) layers. Each service has
+a defined lifecycle, explicit dependencies, and a testable interface. [Wind](https://github.com/CodeEditorLand/Wind)
+mirrors this for the UI service layer. The `ActionEffect` system in [Common](https://github.com/CodeEditorLand/Common)
 allows effects to be composed, routed, and traced without coupling to any
 specific runtime.
 
@@ -88,7 +88,7 @@ weighted VS Code API coverage is approximately 88%.
 
 The following capabilities are operational in the current build:
 
-- Extension host bootstrap - Cocoon connects to Mountain via gRPC on port 50052
+- Extension host bootstrap - [Cocoon](https://github.com/CodeEditorLand/Cocoon) connects to [Mountain](https://github.com/CodeEditorLand/Mountain) via gRPC on port 50052
 - File system operations - read, write, watch, stat, mkdir, rename, delete, clone
 - Terminal PTY - create, resize, attach, detach, revive, freePortKill
 - Clipboard - read, write, readText, writeText, readImage, triggerPaste
@@ -98,8 +98,8 @@ The following capabilities are operational in the current build:
 - Extension manifest pre-bake - scan completes in under 50 ms (previously 1200 ms)
 - All polling loops replaced with `tokio::sync::Notify` - no sleep-based boot races
 - 25+ IPC handlers wired across `nativeHost:*`, `file:*`, `localPty:*`, `encryption:*`
-- `TierIPC` routing - Mountain (Tauri IPC), `Node` (Cocoon only),
-  `NodeDeferred` (Mountain first, Cocoon fallback), and per-subsystem overrides
+- `TierIPC` routing - [Mountain](https://github.com/CodeEditorLand/Mountain) (Tauri IPC), `Node` ([Cocoon](https://github.com/CodeEditorLand/Cocoon) only),
+  `NodeDeferred` ([Mountain](https://github.com/CodeEditorLand/Mountain) first, [Cocoon](https://github.com/CodeEditorLand/Cocoon) fallback), and per-subsystem overrides
   (`TierTerminal`, `TierSCM`, `TierAuth`)
 
 ---
@@ -122,9 +122,9 @@ The following items remain in progress:
 - `registerWebviewPanelSerializer` - panel state is not restored across reloads
 - Debug server/pipe adapters - only `executable` debug configuration type is
   supported beyond basic `type`
-- S6 Mist WebSocket transport - Tauri IPC is the current path; WebSocket is
+- S6 [Mist](https://github.com/CodeEditorLand/Mist) WebSocket transport - Tauri IPC is the current path; WebSocket is
   planned for reduced latency on bulk operations
-- Grove native WASM extension host - Wasmtime sandbox is work in progress for
+- [Grove](https://github.com/CodeEditorLand/Grove) native WASM extension host - Wasmtime sandbox is work in progress for
   running WASM-compiled extensions without the Node.js sidecar
 
 ---
@@ -134,16 +134,16 @@ The following items remain in progress:
 Land runs as a multi-process application with three concurrent processes plus an
 optional daemon:
 
-| Process           | Element        | Language             | Purpose                                                                  |
-| ----------------- | -------------- | -------------------- | ------------------------------------------------------------------------ |
-| Native Backend    | `Mountain`     | Rust (Tauri)         | Application lifecycle, OS operations, gRPC server, sidecar orchestration |
-| Extension Host    | `Cocoon`       | TypeScript (Node.js) | VS Code extension execution, `vscode` API shim with Effect-TS            |
-| UI Renderer       | `Wind` + `Sky` | TypeScript (WebView) | Editor UI rendering, ~40 workbench services, Astro page composition      |
-| Background Daemon | `Air`          | Rust                 | Persistent sidecar for update downloads, indexing, cryptographic signing |
+| Process           | Element                                                                                           | Language             | Purpose                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------ |
+| Native Backend    | [`Mountain`](https://github.com/CodeEditorLand/Mountain)                                          | Rust (Tauri)         | Application lifecycle, OS operations, gRPC server, sidecar orchestration |
+| Extension Host    | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)                                              | TypeScript (Node.js) | VS Code extension execution, `vscode` API shim with Effect-TS            |
+| UI Renderer       | [`Wind`](https://github.com/CodeEditorLand/Wind) + [`Sky`](https://github.com/CodeEditorLand/Sky) | TypeScript (WebView) | Editor UI rendering, ~40 workbench services, Astro page composition      |
+| Background Daemon | [`Air`](https://github.com/CodeEditorLand/Air)                                                    | Rust                 | Persistent sidecar for update downloads, indexing, cryptographic signing |
 
-Mountain starts first, reads environment files, launches Cocoon as a child
-process over gRPC, opens the WebView (Wind + Sky), and optionally spawns Air.
-All IPC between processes uses the Vine protocol - gRPC with protobuf
+[Mountain](https://github.com/CodeEditorLand/Mountain) starts first, reads environment files, launches [Cocoon](https://github.com/CodeEditorLand/Cocoon) as a child
+process over gRPC, opens the WebView ([Wind](https://github.com/CodeEditorLand/Wind) + [Sky](https://github.com/CodeEditorLand/Sky)), and optionally spawns [Air](https://github.com/CodeEditorLand/Air).
+All IPC between processes uses the [Vine](https://github.com/CodeEditorLand/Vine) protocol - gRPC with protobuf
 serialization defined in `Element/Vine/Vine.proto`.
 
 ---
@@ -162,7 +162,7 @@ serialization defined in `Element/Vine/Vine.proto`.
 
 ## Funding 💎
 
-Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
+[Land](https://github.com/CodeEditorLand/Land)'s development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by
 **PlayForm** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
 the public domain under CC0 - no CLA required, no copyright assignment, no

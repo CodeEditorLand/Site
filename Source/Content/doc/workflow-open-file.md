@@ -9,18 +9,18 @@ description:
 
 **Workflow Example: Opening a File from the UI**
 
-**Goal:** The user clicks on a file in the File Explorer (Wind/Sky UI), and the
+**Goal:** The user clicks on a file in the File Explorer ([Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky) UI), and the
 file's content is loaded into an editor.
 
 This workflow demonstrates the interplay between the UI, the editor services,
 the filesystem provider, and the backend. A single file-tree click traverses
-four layer boundaries: Sky dispatches the intent, Wind's editor and filesystem
-services resolve and load the model, a Tauri IPC call reaches Mountain for the
+four layer boundaries: [Sky](https://github.com/CodeEditorLand/Sky) dispatches the intent, [Wind](https://github.com/CodeEditorLand/Wind)'s editor and filesystem
+services resolve and load the model, a Tauri IPC call reaches [Mountain](https://github.com/CodeEditorLand/Mountain) for the
 native disk read, and the result unwinds back through the same chain until
 Monaco renders the content.
 
 <img src="/Mermaid/227acacee85aaeda.svg" alt="Mermaid diagram" />
-## Phase 1 - User Interaction (Sky)
+## Phase 1 - User Interaction ([Sky](https://github.com/CodeEditorLand/Sky))
 
 1.  **File Explorer UI** - The user clicks on a file entry (`<div>`
     representing `my-file.ts`) in the File Explorer component. The `onClick`
@@ -34,26 +34,26 @@ Monaco renders the content.
     determine which editor group should handle the opening (e.g. the currently
     active group).
 
-## Phase 2 - Editor and Filesystem Logic (Wind → Mountain)
+## Phase 2 - Editor and Filesystem Logic ([Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain))
 
 3.  **`EditorGroupsService`** - The `openEditor` method is called on the target
     `EditorGroupModel`. The group model checks whether an editor for `fileUri`
     is already open:
-    - **Already open:** Wind focuses that tab and stops.
+    - **Already open:** [Wind](https://github.com/CodeEditorLand/Wind) focuses that tab and stops.
     - **Not open:** It begins opening a new editor. It uses the `EditorInput`'s
       `resolve()` method to obtain the editor model.
 
 4.  **`TextFileEditorModel.load()`** - To display the content, the editor input
     loads its underlying model. `TextFileEditorModel` is responsible for this.
     Its `load()` method needs the file content. It calls
-    `IFileService.readFile(fileUri)` from Wind/Source/FileSystem.
+    `IFileService.readFile(fileUri)` from [Wind/Source/FileSystem](https://github.com/CodeEditorLand/Wind/tree/Current/Source/FileSystem).
 
-5.  **`IFileService.readFile()`** (Wind/Source/FileSystem) - The file service's
+5.  **`IFileService.readFile()`** ([Wind/Source/FileSystem](https://github.com/CodeEditorLand/Wind/tree/Current/Source/FileSystem)) - The file service's
     `readFile(fileUri)` method looks up the registered provider for the URI's
     scheme (in this case `file:`). It finds
     `TauriDiskFileSystemProvider` from FileSystem/Definition.ts.
 
-6.  **`TauriDiskFileSystemProvider.readFile()`** (Wind/Source/FileSystem) - The
+6.  **`TauriDiskFileSystemProvider.readFile()`** ([Wind/Source/FileSystem](https://github.com/CodeEditorLand/Wind/tree/Current/Source/FileSystem)) - The
     provider's `readFile` method immediately executes the `ReadFile` Effect from
     the Tauri integration layer:
 
@@ -61,7 +61,7 @@ Monaco renders the content.
     Effect.runPromise(ReadFile(fileUri));
     ```
 
-7.  **`TauriMainProcessService.ts`** (Wind/Source/Service) - The `ReadFile`
+7.  **[`TauriMainProcessService.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts)** ([Wind/Source/Service](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service)) - The `ReadFile`
     effect executes. It calls:
 
     ```ts
@@ -69,11 +69,11 @@ Monaco renders the content.
     ```
 
     This sends the request from the webview across the process boundary into the
-    Mountain backend.
+    [Mountain](https://github.com/CodeEditorLand/Mountain) backend.
 
-## Phase 3 - Native File I/O (Mountain)
+## Phase 3 - Native File I/O ([Mountain](https://github.com/CodeEditorLand/Mountain))
 
-8.  **Mountain/Source/Binary/Main/Entry.rs → Tauri `fs` Plugin** - Tauri
+8.  **[Mountain/Source/Binary/Main/Entry.rs](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/Entry.rs) → Tauri `fs` Plugin** - Tauri
     receives the `plugin:fs|ReadFile` command and routes it to the
     `tauri-plugin-fs` internal Rust handler. The plugin performs the native
     filesystem operation:
@@ -83,12 +83,12 @@ Monaco renders the content.
     ```
 
     The file content (`Vec<u8>`) is read from disk. The result is serialised and
-    sent back to the Wind webview as the resolution of the `TauriInvoke`
+    sent back to the [Wind](https://github.com/CodeEditorLand/Wind) webview as the resolution of the `TauriInvoke`
     promise.
 
-## Phase 4 - Data Unwinds and UI Renders (Wind)
+## Phase 4 - Data Unwinds and UI Renders ([Wind](https://github.com/CodeEditorLand/Wind))
 
-9.  **`TauriMainProcessService.ts` (continued)** - The `TauriInvoke` promise
+9.  **[`TauriMainProcessService.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts) (continued)** - The `TauriInvoke` promise
     resolves with the file content. The `ReadFile` Effect succeeds, yielding the
     `Uint8Array` containing the raw bytes of the file.
 
@@ -113,19 +113,19 @@ the same chain to update the UI.
 
 The raw byte payload passes through distinct representations at each layer:
 
-| Layer                | Representation         | Component           |
-| -------------------- | ---------------------- | ------------------- |
-| Mountain (disk)      | `Vec<u8>`              | tokio::fs::read     |
-| Mountain → Tauri IPC | Serialised byte vector | tauri-plugin-fs     |
-| Wind integration     | `Uint8Array`           | TauriInvoke promise |
-| Wind FileSystem      | `Uint8Array`           | ReadFile Effect     |
-| Wind Editor          | Decoded string model   | TextFileEditorModel |
-| Monaco               | Text buffer            | editor.setModel()   |
+| Layer                                                              | Representation         | Component           |
+| ------------------------------------------------------------------ | ---------------------- | ------------------- |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) (disk)      | `Vec<u8>`              | tokio::fs::read     |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) → Tauri IPC | Serialised byte vector | tauri-plugin-fs     |
+| [Wind](https://github.com/CodeEditorLand/Wind) integration         | `Uint8Array`           | TauriInvoke promise |
+| [Wind](https://github.com/CodeEditorLand/Wind) FileSystem          | `Uint8Array`           | ReadFile Effect     |
+| [Wind](https://github.com/CodeEditorLand/Wind) Editor              | Decoded string model   | TextFileEditorModel |
+| Monaco                                                             | Text buffer            | editor.setModel()   |
 
 > [!IMPORTANT] The `IFileService` provider lookup is keyed on URI scheme. Only
 > `file:` URIs reach `TauriDiskFileSystemProvider`. Custom-scheme URIs (e.g.
 > `git:`, `output:`) are served by their own registered
-> `TextDocumentContentProvider` in Cocoon, which follows a different path
+> `TextDocumentContentProvider` in [Cocoon](https://github.com/CodeEditorLand/Cocoon), which follows a different path
 > through the gRPC layer.
 
 ## openTextDocument variants
@@ -136,16 +136,16 @@ file URI:
 - **`{ language, content }`** - Creates an in-memory untitled document
   pre-populated with `content` and tagged with `languageId`. The document is
   added to `workspace.textDocuments` and `onDidOpenTextDocument` fires
-  immediately. No Mountain round-trip occurs.
+  immediately. No [Mountain](https://github.com/CodeEditorLand/Mountain) round-trip occurs.
 - **`"untitled:..."` scheme** - Returns an empty document without any backend
   call. Content is read from `DocumentContentCache` if a prior write has
   populated it.
-- **Custom scheme (e.g. `git:`, `output:`)** - Cocoon checks whether a
+- **Custom scheme (e.g. `git:`, `output:`)** - [Cocoon](https://github.com/CodeEditorLand/Cocoon) checks whether a
   `TextDocumentContentProvider` has been registered for that scheme via
-  `registerTextDocumentContentProvider`. If one is found, Cocoon calls
-  `provider.provideTextDocumentContent()` directly with no Mountain round-trip
+  `registerTextDocumentContentProvider`. If one is found, [Cocoon](https://github.com/CodeEditorLand/Cocoon) calls
+  `provider.provideTextDocumentContent()` directly with no [Mountain](https://github.com/CodeEditorLand/Mountain) round-trip
   and no 10-second timeout. For schemes where no provider is registered and
-  Mountain is the authoritative owner (e.g. output channels), the standard
+  [Mountain](https://github.com/CodeEditorLand/Mountain) is the authoritative owner (e.g. output channels), the standard
   `FileSystem.ReadFile` gRPC route is used instead.
 
 ### openTextDocument API parameters

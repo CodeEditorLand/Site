@@ -10,9 +10,9 @@ description:
     patterns, build.rs compilation, URI/Range message formats, and how new RPCs are added."
 ---
 
-Vine provides the technical foundation gRPC protocol layer
-within the Land project. **Vine** defines the strongly-typed inter-process
-communication contracts used between Mountain and Cocoon, with Air as an
+[Vine](https://github.com/CodeEditorLand/Vine) provides the technical foundation gRPC protocol layer
+within the [Land](https://github.com/CodeEditorLand/Land) project. **[Vine](https://github.com/CodeEditorLand/Vine)** defines the strongly-typed inter-process
+communication contracts used between [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon), with [Air](https://github.com/CodeEditorLand/Air) as an
 additional gRPC consumer. The `.proto` files are the canonical source of truth;
 all Rust and TypeScript implementations are generated from them.
 
@@ -20,29 +20,29 @@ all Rust and TypeScript implementations are generated from them.
 
 ## Architecture
 
-Vine is a contract-first protocol layer. The `.proto` file is the source of
-truth; generated Rust code via `prost-build`/`tonic` is shared by Mountain, Air,
-and Cocoon.
+[Vine](https://github.com/CodeEditorLand/Vine) is a contract-first protocol layer. The `.proto` file is the source of
+truth; generated Rust code via `prost-build`/`tonic` is shared by [Mountain](https://github.com/CodeEditorLand/Mountain), [Air](https://github.com/CodeEditorLand/Air),
+and [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 
 <img src="/Mermaid/ce500333327e1492.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
 
-| Path                    | Description                                                              |
-| :---------------------- | :----------------------------------------------------------------------- |
-| `Proto/Vine.proto`      | Canonical protocol schema (only schema shipped)                          |
-| `Source/Library.rs`     | Crate root: port constants, protocol version, constants                  |
-| `Source/Host.rs`        | `VineHost` + `IPCProvider` embedder seam                                 |
-| `Source/Generated/`     | prost-built types + tonic clients/servers from `Proto/Vine.proto`        |
-| `Source/Client/`        | Connection helpers, request/notification dispatch, sidecar health checks |
-| `Source/Server/`        | Bind helpers + notification handler tree                                 |
-| `Source/Multiplexer.rs` | Bidirectional streaming envelope multiplexer (`LAND_VINE_STREAMING=1`)   |
-| `Source/Error.rs`       | Canonical `VineError` variants                                           |
+| Path                                                                                                 | Description                                                              |
+| :--------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------- |
+| [`Proto/Vine.proto`](https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto)           | Canonical protocol schema (only schema shipped)                          |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Library.rs)         | Crate root: port constants, protocol version, constants                  |
+| [`Source/Host.rs`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Host.rs)               | `VineHost` + `IPCProvider` embedder seam                                 |
+| [`Source/Generated/`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Generated/)         | prost-built types + tonic clients/servers from `Proto/Vine.proto`        |
+| [`Source/Client/`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/)               | Connection helpers, request/notification dispatch, sidecar health checks |
+| [`Source/Server/`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Server/)               | Bind helpers + notification handler tree                                 |
+| [`Source/Multiplexer.rs`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Multiplexer.rs) | Bidirectional streaming envelope multiplexer (`LAND_VINE_STREAMING=1`)   |
+| [`Source/Error.rs`](https://github.com/CodeEditorLand/Vine/tree/Current/Source/Error.rs)             | Canonical `VineError` variants                                           |
 
-The protocol implementation spans Mountain's `Source/RPC/Vine/` (server), Air's
-Vine client modules, and Cocoon's `Source/Effect/RPCServer.ts` (client). The
-Vine Element owns the schema and shared Rust types.
+The protocol implementation spans [Mountain](https://github.com/CodeEditorLand/Mountain)'s [`Source/RPC/Vine/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/Vine/) (server), [Air](https://github.com/CodeEditorLand/Air)'s
+Vine client modules, and [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s `Source/Effect/RPCServer.ts` (client). The
+[Vine](https://github.com/CodeEditorLand/Vine) Element owns the schema and shared Rust types.
 
 ---
 
@@ -51,11 +51,11 @@ Vine Element owns the schema and shared Rust types.
 All gRPC listeners bind to `[::1]` (loopback only). No remote connections are
 accepted.
 
-| Service       | Element    | Port    | Transport | Direction                          |
-| ------------- | ---------- | ------- | --------- | ---------------------------------- |
-| Mountain Vine | `Mountain` | `50051` | TCP       | Cocoon → Mountain (gRPC server)    |
-| Cocoon Vine   | `Cocoon`   | `50052` | TCP       | Mountain → Cocoon (gRPC server)    |
-| Air Vine      | `Air`      | `50053` | TCP       | Mountain → Air (background daemon) |
+| Service       | Element                                                  | Port    | Transport | Direction                                                                                                                 |
+| ------------- | -------------------------------------------------------- | ------- | --------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Mountain Vine | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `50051` | TCP       | [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain) (gRPC server) |
+| Cocoon Vine   | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)     | `50052` | TCP       | [Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon) (gRPC server) |
+| Air Vine      | [`Air`](https://github.com/CodeEditorLand/Air)           | `50053` | TCP       | [Mountain](https://github.com/CodeEditorLand/Mountain) → [Air](https://github.com/CodeEditorLand/Air) (background daemon) |
 
 ---
 
@@ -64,21 +64,21 @@ accepted.
 Three proto files make up the Vine protocol family. All use `syntax = "proto3"`
 and the `Vine` package namespace.
 
-| File          | Location                             | Defines                                     |
-| ------------- | ------------------------------------ | ------------------------------------------- |
-| `Vine.proto`  | `Element/Mountain/Proto/Vine.proto`  | Core Mountain↔Cocoon services               |
-| `Spine.proto` | `Element/Mountain/Proto/Spine.proto` | Extension host action/response coordination |
-| `Air.proto`   | `Element/Air/Proto/Air.proto`        | Mountain↔Air background daemon services     |
+| File                                                                                     | Location                                                                                                        | Defines                                                                                                                        |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) | [`Element/Mountain/Proto/Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) | Core [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Cocoon](https://github.com/CodeEditorLand/Cocoon) services        |
+| `Spine.proto`                                                                            | `Element/Mountain/Proto/Spine.proto`                                                                            | Extension host action/response coordination                                                                                    |
+| [`Air.proto`](https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto)        | [`Element/Air/Proto/Air.proto`](https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto)             | [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Air](https://github.com/CodeEditorLand/Air) background daemon services |
 
-The proto files are compiled separately for each consumer. Mountain's `build.rs`
-compiles `Vine.proto` and `Spine.proto` into Rust types. A separate `protoc`
+The proto files are compiled separately for each consumer. [Mountain](https://github.com/CodeEditorLand/Mountain)'s [`build.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs)
+compiles [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto) and `Spine.proto` into Rust types. A separate `protoc`
 invocation generates TypeScript stubs committed to Cocoon's source tree.
 
 ---
 
 ## MountainService RPC Definitions
 
-`MountainService` is the gRPC service implemented by Mountain's tonic server.
+`MountainService` is the gRPC service implemented by [Mountain](https://github.com/CodeEditorLand/Mountain)'s tonic server.
 Cocoon connects as a client and calls these RPCs when extensions need native
 capabilities.
 
@@ -93,7 +93,7 @@ service MountainService {
 
 `ProcessCocoonRequest` and `SendCocoonNotification` carry a `method` string and
 a `params` bytes field containing JSON-encoded arguments. This generic envelope
-lets the Mountain IPC dispatcher (`WindServiceHandlers/mod.rs`) route to the
+lets the [Mountain](https://github.com/CodeEditorLand/Mountain) IPC dispatcher ([`WindServiceHandlers/mod.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs)) route to the
 correct handler without requiring a new RPC for every method. New IPC methods
 can be added by registering a handler in `mod.rs` without touching the proto
 file.
@@ -106,7 +106,7 @@ the same stream.
 
 ### Rust tonic Server Implementation
 
-Mountain's gRPC server lives in `Element/Mountain/Source/Vine/Server/`. The
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s gRPC server lives in [`Element/Mountain/Source/Vine/Server/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Server/). The
 tonic `#[async_trait]` implementation dispatches each RPC:
 
 ```rust
@@ -126,15 +126,15 @@ impl MountainService for MountainVineServiceImpl {
 }
 ```
 
-The dispatcher in `WindServiceHandlers/mod.rs` matches the `method` string
+The dispatcher in [`WindServiceHandlers/mod.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs) matches the `method` string
 against registered handlers and calls the appropriate Rust function. Each
-handler lives in its own atomic file under the `WindServiceHandlers/` directory.
+handler lives in its own atomic file under the [`WindServiceHandlers/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/) directory.
 
 ---
 
 ## CocoonService RPC Definitions
 
-`CocoonService` is implemented by Cocoon's gRPC server. Mountain connects as a
+`CocoonService` is implemented by [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server. [Mountain](https://github.com/CodeEditorLand/Mountain) connects as a
 client and calls these RPCs to drive the extension host.
 
 ```protobuf
@@ -171,7 +171,7 @@ service CocoonService {
 
 ### TypeScript Implementation
 
-Cocoon's gRPC server (`Cocoon/Source/Services/gRPC/Server/Service.ts`) uses
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server ([`Cocoon/Source/Services/gRPC/Server/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts)) uses
 `@grpc/grpc-js` with the generated TypeScript stubs. Each `Provide*` RPC routes
 to the language feature provider registry:
 
@@ -194,14 +194,14 @@ dispatches to the registered extension provider.
 `ProvideInlineCompletionItems` was added to `CocoonService` as part of the
 inline completions pipeline. It follows the same `Register*/Provide*` pattern
 and is dispatched through the `LanguageFeatureProviderRegistry` in Cocoon.
-Sky's Monaco editor calls `language:provideInlineCompletions` on Mountain,
-which routes the request to Cocoon via this RPC.
+[Sky](https://github.com/CodeEditorLand/Sky)'s Monaco editor calls `language:provideInlineCompletions` on [Mountain](https://github.com/CodeEditorLand/Mountain),
+which routes the request to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via this RPC.
 
 ---
 
 ## Bidirectional Streaming Patterns
 
-Vine uses bidirectional streaming for two purposes: multiplexed high-frequency
+[Vine](https://github.com/CodeEditorLand/Vine) uses bidirectional streaming for two purposes: multiplexed high-frequency
 dispatch and real-time event delivery.
 
 ### Multiplexed Dispatch (`OpenChannel*`)
@@ -244,11 +244,11 @@ listeners.
 
 ## Data Flow
 
-The following diagram shows how a VS Code command travels from Sky/Wind through
-the Vine protocol to Cocoon and back.
+The following diagram shows how a VS Code command travels from [Sky](https://github.com/CodeEditorLand/Sky)/[Wind](https://github.com/CodeEditorLand/Wind) through
+the [Vine](https://github.com/CodeEditorLand/Vine) protocol to [Cocoon](https://github.com/CodeEditorLand/Cocoon) and back.
 
 <img src="/Mermaid/b69dda10ae2a79b7.svg" alt="Mermaid diagram" />
-**Communication patterns supported by Vine:**
+**Communication patterns supported by [Vine](https://github.com/CodeEditorLand/Vine):**
 
 - **Unary RPC** - Request/response for commands and queries.
 - **Server streaming** - Mountain streams events (terminal output, diagnostics)
@@ -261,7 +261,7 @@ the Vine protocol to Cocoon and back.
 
 ## Proto Compilation in build.rs
 
-Mountain's `build.rs` compiles all proto files at build time:
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s [`build.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs) compiles all proto files at build time:
 
 ```rust
 fn main() {
@@ -282,8 +282,8 @@ fn main() {
 
 `tonic_build` invokes `prost-build` internally. The generated Rust types are
 written to `$OUT_DIR/vine.rs` and `$OUT_DIR/spine.rs` and included via
-`include!(concat!(env!("OUT_DIR"), "/vine.rs"))` in Mountain's
-`Source/Vine/Generated/` module.
+`include!(concat!(env!("OUT_DIR"), "/vine.rs"))` in [Mountain](https://github.com/CodeEditorLand/Mountain)'s
+[`Source/Vine/Generated/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/) module.
 
 The `protoc` binary must be available on `PATH`. In the CI environment, it is
 installed by the `prost-build` feature flag that bundles `protoc`. For local
@@ -293,7 +293,7 @@ development on macOS, `brew install protobuf` provides it.
 
 ## URI and Range Message Formats
 
-Vine uses explicit message types for VS Code's URI and Range primitives rather
+[Vine](https://github.com/CodeEditorLand/Vine) uses explicit message types for VS Code's URI and Range primitives rather
 than encoding them as strings:
 
 ```protobuf
@@ -317,8 +317,8 @@ message Range {
 ```
 
 > [!IMPORTANT] All line and character positions in Vine messages are 0-based,
-> matching the VS Code Language Server Protocol convention. Mountain's IPC
-> handlers that bridge between Vine and the Monaco editor must translate from
+> matching the VS Code Language Server Protocol convention. [Mountain](https://github.com/CodeEditorLand/Mountain)'s IPC
+> handlers that bridge between [Vine](https://github.com/CodeEditorLand/Vine) and the Monaco editor must translate from
 > 0-based (Vine) to 1-based (Monaco model) when applying edits, and back to
 > 0-based when constructing Vine responses.
 
@@ -326,11 +326,11 @@ message Range {
 
 ## How to Add a New RPC
 
-Adding a new RPC requires coordinated changes across the proto file, Mountain,
-and Cocoon. The steps below use adding a hypothetical `ProvideInlayHints` RPC as
+Adding a new RPC requires coordinated changes across the proto file, [Mountain](https://github.com/CodeEditorLand/Mountain),
+and [Cocoon](https://github.com/CodeEditorLand/Cocoon). The steps below use adding a hypothetical `ProvideInlayHints` RPC as
 an example.
 
-**Step 1: Add the message and RPC to `Vine.proto`.**
+**Step 1: Add the message and RPC to [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto).**
 
 ```protobuf
 message ProvideInlayHintsRequest {
@@ -349,20 +349,20 @@ rpc ProvideInlayHints(ProvideInlayHintsRequest) returns (ProvideInlayHintsRespon
 **Step 2: Regenerate TypeScript stubs** by running `protoc` with the `--ts_out`
 flag and committing the updated files in `Cocoon/Source/Generated/`.
 
-**Step 3: Add the Mountain handler.** Create
+**Step 3: Add the [Mountain](https://github.com/CodeEditorLand/Mountain) handler.** Create
 `Element/Mountain/Source/IPC/WindServiceHandlers/Language/ProvideInlayHints.rs`
 implementing the Rust side. Register it in `mod.rs` dispatch table.
 
-**Step 4: Add the Cocoon handler.** In
-`Cocoon/Source/Services/gRPC/Server/Service.ts`, implement the
+**Step 4: Add the [Cocoon](https://github.com/CodeEditorLand/Cocoon) handler.** In
+[`Cocoon/Source/Services/gRPC/Server/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts), implement the
 `provideInlayHints` method, routing it through the language provider registry.
 
-**Step 5: Add the Channel enum entry.** Update `Common/Source/IPC/Channel.rs`
-(Rust) and `Wind/Source/IPC/Channel.ts` (TypeScript) with the new channel
+**Step 5: Add the Channel enum entry.** Update [`Common/Source/IPC/Channel.rs`](https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs)
+(Rust) and [`Wind/Source/IPC/Channel.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts) (TypeScript) with the new channel
 identifier. These two files must stay in lockstep.
 
 **Step 6: Build both sides.** `cargo build -p Mountain` catches Rust compile
-errors; `pnpm run prepublishOnly` catches TypeScript errors in Cocoon.
+errors; `pnpm run prepublishOnly` catches TypeScript errors in [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 
 > [!WARNING] Never remove or rename a proto field without a migration plan.
 > Proto3 field numbers are permanent identifiers in the wire format. Removing
@@ -372,9 +372,9 @@ errors; `pnpm run prepublishOnly` catches TypeScript errors in Cocoon.
 
 ---
 
-## Air.proto
+## [`Air.proto`](https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto)
 
-Air uses a separate proto file with its own `BackgroundServices` gRPC service on
+[Air](https://github.com/CodeEditorLand/Air) uses a separate proto file with its own `BackgroundServices` gRPC service on
 port 50053. The structure mirrors Vine but is scoped to background operations:
 
 ```protobuf
@@ -390,17 +390,17 @@ service BackgroundServices {
 
 `PerformAction` uses a discriminated `ActionRequest` where the action type field
 routes to UpdateService, DownloadService, AuthService, or IndexService inside
-Air.
+[Air](https://github.com/CodeEditorLand/Air).
 
 ---
 
 ## Integration Points
 
-| Connecting Element | Direction       | Mechanism                  | Description                                                        |
-| :----------------- | :-------------- | :------------------------- | :----------------------------------------------------------------- |
-| **Mountain**       | Server          | tonic gRPC server          | Hosts Vine server on `50051`; handles incoming RPC from Cocoon/Air |
-| **Cocoon**         | Client          | Node.js `grpc-js` / Bridge | Connects to Mountain's Vine server                                 |
-| **Air**            | Server + Client | tonic gRPC                 | Hosts AirService on `50053`; also connects back to Mountain        |
+| Connecting Element                                         | Direction       | Mechanism                  | Description                                                                                                                                                                                       |
+| :--------------------------------------------------------- | :-------------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)** | Server          | tonic gRPC server          | Hosts [Vine](https://github.com/CodeEditorLand/Vine) server on `50051`; handles incoming RPC from [Cocoon](https://github.com/CodeEditorLand/Cocoon)/[Air](https://github.com/CodeEditorLand/Air) |
+| **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**     | Client          | Node.js `grpc-js` / Bridge | Connects to [Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine) server                                                                        |
+| **[Air](https://github.com/CodeEditorLand/Air)**           | Server + Client | tonic gRPC                 | Hosts AirService on `50053`; also connects back to [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                                         |
 
 **Listening addresses:**
 
@@ -414,10 +414,10 @@ Air.
 
 ## Configuration
 
-| Parameter | Value                  | Description                                      |
-| :-------- | :--------------------- | :----------------------------------------------- |
-| Transport | TCP loopback           | `[::1]` only; no external exposure               |
-| TLS       | Disabled for local IPC | Mist DNS isolation enforces the network boundary |
+| Parameter | Value                  | Description                                                                                |
+| :-------- | :--------------------- | :----------------------------------------------------------------------------------------- |
+| Transport | TCP loopback           | `[::1]` only; no external exposure                                                         |
+| TLS       | Disabled for local IPC | [Mist](https://github.com/CodeEditorLand/Mist) DNS isolation enforces the network boundary |
 
 ---
 

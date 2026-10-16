@@ -64,11 +64,11 @@ The "path" argument must be of type string. Received type undefined
 The stack trace points into `open (workbench.desktop.main.*.js)`.
 
 **Cause:** `ISandboxConfiguration.profiles` or one of its required URI fields
-was missing or `undefined` in Mountain's `ConstructSandboxConfiguration`. VS
+was missing or `undefined` in [Mountain](https://github.com/CodeEditorLand/Mountain)'s `ConstructSandboxConfiguration`. VS
 Code's `NativeWorkbenchEnvironmentService` accesses URI fields like
 `languageModelsResource` without null-guards.
 
-**Fix:** Rebuild Mountain after any change to `InitializationData.rs`:
+**Fix:** Rebuild [Mountain](https://github.com/CodeEditorLand/Mountain) after any change to `InitializationData.rs`:
 
 ```sh
 cargo build -p Mountain
@@ -93,10 +93,10 @@ If still failing, open DevTools (`Inspect=1`) and set a breakpoint at
 **Symptom:** The editor window opens but the workbench is blank or shows a
 loading spinner indefinitely. The extension host never activates.
 
-**Cause:** Cocoon failed to start or failed to connect to Mountain within the
+**Cause:** [Cocoon](https://github.com/CodeEditorLand/Cocoon) failed to start or failed to connect to [Mountain](https://github.com/CodeEditorLand/Mountain) within the
 30-second gRPC budget. The most common sub-causes are: port 50051 or 50052
-already in use from a previous run, or Cocoon's gRPC server on port 50052
-failed to bind before Mountain attempted to connect.
+already in use from a previous run, or [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server on port 50052
+failed to bind before [Mountain](https://github.com/CodeEditorLand/Mountain) attempted to connect.
 
 **Fix:**
 
@@ -108,15 +108,15 @@ failed to bind before Mountain attempted to connect.
     ```
 
     Kill any orphaned process found, or change `NetworkMountainPort` /
-    `NetworkCocoonPort` in `.env.Land`.
+    `NetworkCocoonPort` in [`.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land).
 
 2. Check the dev log for the line `RPCServer bound on port 50052`. If it is
-   absent, Cocoon's gRPC server never started. Look for earlier error lines in
-   the log. Cocoon must bind port 50052 before Mountain attempts the connection
+   absent, [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server never started. Look for earlier error lines in
+   the log. [Cocoon](https://github.com/CodeEditorLand/Cocoon) must bind port 50052 before [Mountain](https://github.com/CodeEditorLand/Mountain) attempts the connection
     - bootstrap stage ordering matters.
 
-3. Set `Trace=cocoon,grpc` and `Record=1` in `.env.Land.Diagnostics`, relaunch,
-   and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the Cocoon
+3. Set `Trace=cocoon,grpc` and `Record=1` in [`.env.Land.Diagnostics`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Diagnostics), relaunch,
+   and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the [Cocoon](https://github.com/CodeEditorLand/Cocoon)
    subprocess output.
 
 ### `dataFolderName` crash
@@ -139,13 +139,13 @@ but never activates.
    root is `~/.land/extensions/`. The directory must contain a `package.json`
    with a valid `"main"` field.
 2. Check that `package.json` has an `"engines"` field with a `"vscode"` version
-   range that the current Land version satisfies (`ProductVersion` in
-   `.env.Land`, default `1.118.0`).
+   range that the current [Land](https://github.com/CodeEditorLand/Land) version satisfies (`ProductVersion` in
+   [`.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land), default `1.118.0`).
 3. Set `Trace=extensions` and `Record=1`, relaunch, and check the dev log for
    activation errors. Common causes are a missing compiled entry point, a
    Node.js require error in the extension's code, or an `activationEvent` that
    is never fired.
-4. Check the Cocoon log in DevTools Console for uncaught exceptions during
+4. Check the [Cocoon](https://github.com/CodeEditorLand/Cocoon) log in DevTools Console for uncaught exceptions during
    `activate()`.
 
 ### Terminal not opening
@@ -159,12 +159,12 @@ Node.js binary to spawn the shell.
 
 **Fix:**
 
-1. Verify the `SideCar` binary for your platform is present in the app bundle's
+1. Verify the [`SideCar`](https://github.com/CodeEditorLand/SideCar) binary for your platform is present in the app bundle's
    resources directory.
 2. Check `NetworkCocoonPort` is reachable - terminal creation goes through the
-   Cocoon gRPC service.
+   [Cocoon](https://github.com/CodeEditorLand/Cocoon) gRPC service.
 3. Set `Trace=terminal` and relaunch. The dev log shows the exact command
-   Mountain attempted to pass to `localPty:createProcess` and any error
+   [Mountain](https://github.com/CodeEditorLand/Mountain) attempted to pass to `localPty:createProcess` and any error
    returned.
 
 ## Code Signing Issues 🖊️
@@ -176,7 +176,7 @@ incomplete" error, or Gatekeeper blocks it. Alternatively, `codesign --verify`
 reports `not signed` or `invalid signature`.
 
 **Cause:** Tauri's build process does not automatically re-sign the bundle after
-it copies the Cocoon Node.js binary and other resources into the `.app`. The
+it copies the [Cocoon](https://github.com/CodeEditorLand/Cocoon) Node.js binary and other resources into the `.app`. The
 ad-hoc signature applied at Tauri bundle time becomes invalid once additional
 files are written.
 
@@ -187,7 +187,7 @@ BundleLevel=debug sh Maintain/Script/SignBundle.sh
 ```
 
 The script runs `xattr -cr` to strip quarantine attributes, then applies a fresh
-`codesign` with the entitlements from `Element/Mountain/Entitlements.plist`.
+`codesign` with the entitlements from [`Element/Mountain/Entitlements.plist`](https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist).
 
 > [!WARNING]
 > XML comments inside the `<dict>` block of `Entitlements.plist`

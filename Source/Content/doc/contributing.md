@@ -8,7 +8,7 @@ description:
     style, commit conventions, and security reporting."
 ---
 
-Land is a CC0-licensed open-source project maintained by PlayForm in Sofia,
+[Land](https://github.com/CodeEditorLand/Land) is a CC0-licensed open-source project maintained by [PlayForm](https://PlayForm.Cloud) in Sofia,
 Bulgaria, with funding from the NLnet NGI0 Commons Fund. All contributions -
 code, documentation, bug reports, and extension compatibility reports - are
 welcome. No CLA or copyright assignment is required. All code is dedicated to
@@ -28,7 +28,7 @@ runs from private correction through temporary and permanent ban.
 
 ## What Contributions Are Accepted ✅
 
-**Bug reports.** Open a GitHub issue with reproduction steps, the Land version,
+**Bug reports.** Open a GitHub issue with reproduction steps, the [Land](https://github.com/CodeEditorLand/Land) version,
 and the platform (macOS/Linux/Windows). Include the FIDDEE log content if the
 bug involves startup or extension loading. The more specific the reproduction,
 the faster it gets triaged.
@@ -38,12 +38,12 @@ improvements, documentation updates, and test additions are all accepted.
 Complex changes benefit from a brief issue or discussion before work begins.
 
 **Documentation.** Corrections or additions to files under
-`Land/Documentation/GitHub/` and the WebSite source at `WebSite/Source/Content/`.
+[`Land/Documentation/GitHub/`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub) and the WebSite source at `WebSite/Source/Content/`.
 Documentation PRs have a lower review bar than code PRs.
 
-**Extension compatibility reports.** If a VS Code extension fails in Land, open
+**Extension compatibility reports.** If a VS Code extension fails in [Land](https://github.com/CodeEditorLand/Land), open
 an issue with the extension name, the failing API call, the error message, and
-the extension version. This helps prioritize Cocoon API coverage work. Even
+the extension version. This helps prioritize [Cocoon](https://github.com/CodeEditorLand/Cocoon) API coverage work. Even
 partial reports are useful.
 
 ---
@@ -63,14 +63,14 @@ partial reports are useful.
 4. All CI checks must pass before merge. The pipeline runs:
     - `cargo check` across the Rust workspace
     - `pnpm biome check` across TypeScript sources
-    - Integration smoke tests for Mountain and Cocoon
+    - Integration smoke tests for [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon)
     - See [CI/CD Pipeline](/Doc/ci-cd-pipeline)
 
 5. A maintainer reviews the PR. Review feedback should be addressed with
    additional commits (not rebased force-pushes) to make incremental review
    easier. Squash merge is used at merge time.
 
-> [!IMPORTANT] Land uses `Current` as the integration target, not `main`.
+> [!IMPORTANT] [Land](https://github.com/CodeEditorLand/Land) uses `Current` as the integration target, not `main`.
 > Pull requests opened against `main` will be redirected.
 
 ---
@@ -110,7 +110,7 @@ partial reports are useful.
   Element is managed on its own branch independently.
 
 - **Do not upgrade the Rust toolchain** without auditing 51
-  `[patch.crates-io]` redirects in `Cargo.toml` that are version-sensitive.
+  `[patch.crates-io]` redirects in [`Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml) that are version-sensitive.
 
 ---
 
@@ -132,8 +132,8 @@ partial reports are useful.
 
 ### Rust Style Guide
 
-- Edition 2024, MSRV 1.95.0. The toolchain is pinned in `rust-toolchain.toml`.
-- Run `cargo fmt` before committing. The workspace `rustfmt.toml` sets rules.
+- Edition 2024, MSRV 1.95.0. The toolchain is pinned in [`rust-toolchain.toml`](https://github.com/CodeEditorLand/Land/tree/Current/rust-toolchain.toml).
+- Run `cargo fmt` before committing. The workspace [`rustfmt.toml`](https://github.com/CodeEditorLand/Land/tree/Current/rustfmt.toml) sets rules.
 - Never write `pub use` re-exports anywhere in the workspace. Use type aliases,
   delegating functions, or fresh constants instead.
 - Filenames follow the same PascalCase convention as TypeScript.
@@ -141,7 +141,7 @@ partial reports are useful.
 
 ### Icons and Images
 
-Icons must come from `editor.land/Image/` only. Never reference external CDN
+Icons must come from [`editor.land/Image/`](https://github.com/CodeEditorLand/Land) only. Never reference external CDN
 URLs in source or documentation. This rule applies to all project documentation,
 the WebSite, and the application UI.
 
@@ -149,18 +149,18 @@ the WebSite, and the application UI.
 
 ## Testing 🧪
 
-Land uses a tiered testing strategy:
+[Land](https://github.com/CodeEditorLand/Land) uses a tiered testing strategy:
 
 **Rust tests.** Unit tests live alongside the code with `#[cfg(test)]` modules.
-Integration tests for Mountain verify IPC handler dispatch and gRPC server
+Integration tests for [Mountain](https://github.com/CodeEditorLand/Mountain) verify IPC handler dispatch and gRPC server
 behavior. Run with `cargo test -p mountain`.
 
-**TypeScript tests.** Cocoon and Wind use Effect-TS's built-in `TestClock` and
+**TypeScript tests.** [Cocoon](https://github.com/CodeEditorLand/Cocoon) and [Wind](https://github.com/CodeEditorLand/Wind) use [`Effect-TS`](https://effect.website)'s built-in `TestClock` and
 `TestEnvironment` for service-level tests. Vitest is the test runner. Run with
-`pnpm test` inside `Element/Cocoon` or `Element/Wind`.
+`pnpm test` inside [`Element/Cocoon`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon) or [`Element/Wind`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind).
 
 **Smoke tests.** The `Maintain/CI/` directory contains end-to-end tests that
-start Mountain, wait for the gRPC server to accept connections, run a set of
+start [Mountain](https://github.com/CodeEditorLand/Mountain), wait for the gRPC server to accept connections, run a set of
 IPC operations, and validate responses. These require a full build.
 
 ---
@@ -189,8 +189,8 @@ vulnerability reporting workflow for coordinated disclosure.
 
 ## Funding 💎
 
-Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
+[Land](https://github.com/CodeEditorLand/Land)'s development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by
-**PlayForm** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
+**[PlayForm](https://PlayForm.Cloud)** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
 the public domain under CC0 - no CLA required, no copyright assignment, no
 restrictions on use.

@@ -9,18 +9,18 @@ description:
     integration, and version mismatch handling."
 ---
 
-SideCar provides the technical foundation binary
-distribution layer within the Land project. **SideCar** manages pre-compiled,
-platform-specific runtime binaries (primarily Node.js) so that the Land editor
+[SideCar](https://github.com/CodeEditorLand/SideCar) provides the technical foundation binary
+distribution layer within the [Land](https://github.com/CodeEditorLand/Land) project. **[SideCar](https://github.com/CodeEditorLand/SideCar)** manages pre-compiled,
+platform-specific runtime binaries (primarily Node.js) so that the [Land](https://github.com/CodeEditorLand/Land) editor
 can bundle vendored runtimes without requiring users to install them separately.
 
 ---
 
 ## Architecture
 
-SideCar is a Rust workspace containing a download tool and a spawn helper. The
+[SideCar](https://github.com/CodeEditorLand/SideCar) is a Rust workspace containing a download tool and a spawn helper. The
 download tool fetches official runtime distributions and organizes them under a
-target-triple directory convention. The spawn helper is used by Mountain to
+target-triple directory convention. The spawn helper is used by [Mountain](https://github.com/CodeEditorLand/Mountain) to
 launch sidecars from the vendored binary store.
 
 <img src="/Mermaid/2d1ca0004138ea30.svg" alt="Mermaid diagram" />
@@ -28,14 +28,14 @@ launch sidecars from the vendored binary store.
 
 ## Key Modules
 
-| Path                 | Description                                                                                        |
-| :------------------- | :------------------------------------------------------------------------------------------------- |
-| `Source/Download.rs` | Main download binary: fetches runtime distributions, resolves versions, organizes by target triple |
-| `Source/Spawn.rs`    | Spawn helper: invoked by Mountain to launch a sidecar binary from the vendored store               |
-| `Source/Library.rs`  | Shared library code: version resolution utilities, path helpers, cache types                       |
-| `Source/Source/`     | Internal module source files for the library                                                       |
-| `Cache.json`         | Tracks which versions have been downloaded per target triple to avoid redundant fetches            |
-| `.gitattributes`     | Configured by the download tool to register large binary files with Git LFS                        |
+| Path                                                                                              | Description                                                                                                                        |
+| :------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------- |
+| [`Source/Download.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Download.rs) | Main download binary: fetches runtime distributions, resolves versions, organizes by target triple                                 |
+| `Source/Spawn.rs`                                                                                 | Spawn helper: invoked by [Mountain](https://github.com/CodeEditorLand/Mountain) to launch a sidecar binary from the vendored store |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Library.rs)   | Shared library code: version resolution utilities, path helpers, cache types                                                       |
+| `Source/Source/`                                                                                  | Internal module source files for the library                                                                                       |
+| [`Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json)                 | Tracks which versions have been downloaded per target triple to avoid redundant fetches                                            |
+| [`.gitattributes`](https://github.com/CodeEditorLand/SideCar/tree/Current/.gitattributes)         | Configured by the download tool to register large binary files with Git LFS                                                        |
 
 ---
 
@@ -44,7 +44,7 @@ launch sidecars from the vendored binary store.
 <img src="/Mermaid/437ef5e8ea10ac60.svg" alt="Mermaid diagram" />
 **Build-time selection:**
 
-Mountain's `build.rs` reads the SideCar directory, selects the binary matching
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` reads the [SideCar](https://github.com/CodeEditorLand/SideCar) directory, selects the binary matching
 the current Tauri build target triple, and copies it into the Tauri `sidecar`
 resource path for bundling into the application installer.
 
@@ -52,24 +52,24 @@ resource path for bundling into the application installer.
 
 ## Integration Points
 
-| Connecting Element | Direction          | Mechanism                 | Description                                                                       |
-| :----------------- | :----------------- | :------------------------ | :-------------------------------------------------------------------------------- |
-| **Mountain**       | Consumer           | `build.rs` file copy      | Mountain's build script selects the correct Node.js binary by target triple       |
-| **Tauri**          | Consumer           | Sidecar resource bundling | Tauri bundles the selected binary into the platform installer                     |
-| **Cocoon**         | Runtime dependency | Spawned process           | Mountain spawns Cocoon using the vendored Node.js binary from the SideCar store   |
-| **Air**            | Potential consumer | Same convention           | Additional daemon binaries may be vendored using the same target-triple structure |
+| Connecting Element                                         | Direction          | Mechanism                 | Description                                                                                                                                                               |
+| :--------------------------------------------------------- | :----------------- | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)** | Consumer           | `build.rs` file copy      | [Mountain](https://github.com/CodeEditorLand/Mountain)'s build script selects the correct Node.js binary by target triple                                                 |
+| **Tauri**                                                  | Consumer           | Sidecar resource bundling | Tauri bundles the selected binary into the platform installer                                                                                                             |
+| **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**     | Runtime dependency | Spawned process           | [Mountain](https://github.com/CodeEditorLand/Mountain) spawns [Cocoon](https://github.com/CodeEditorLand/Cocoon) using the vendored Node.js binary from the SideCar store |
+| **[Air](https://github.com/CodeEditorLand/Air)**           | Potential consumer | Same convention           | Additional daemon binaries may be vendored using the same target-triple structure                                                                                         |
 
 ---
 
 ## Configuration
 
-| Parameter             | Convention / Value                                                                 | Description                                                           |
-| :-------------------- | :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
-| Directory structure   | `[target-triple]/[NAME]/[version]/bin/`                                            | Standard layout for deterministic build-time binary selection         |
-| Target triples        | `x86_64-pc-windows-msvc`, `aarch64-apple-darwin`, `x86_64-unknown-linux-gnu`, etc. | All Tauri-supported platform identifiers                              |
-| Node.js major version | `22` (current default)                                                             | Controlled by the `--node-version` build flag                         |
-| Cache file            | `Cache.json`                                                                       | JSON map of `{ \"[triple]/[name]/[major]\": \"[resolved-version]\" }` |
-| Git LFS               | `.gitattributes` auto-updated                                                      | All `*.node`, `node`, `node.exe` binaries tracked via LFS             |
+| Parameter             | Convention / Value                                                                                     | Description                                                           |
+| :-------------------- | :----------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| Directory structure   | `[target-triple]/[NAME]/[version]/bin/`                                                                | Standard layout for deterministic build-time binary selection         |
+| Target triples        | `x86_64-pc-windows-msvc`, `aarch64-apple-darwin`, `x86_64-unknown-linux-gnu`, etc.                     | All Tauri-supported platform identifiers                              |
+| Node.js major version | `22` (current default)                                                                                 | Controlled by the `--node-version` build flag                         |
+| Cache file            | [`Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json)                      | JSON map of `{ \"[triple]/[name]/[major]\": \"[resolved-version]\" }` |
+| Git LFS               | [`.gitattributes`](https://github.com/CodeEditorLand/SideCar/tree/Current/.gitattributes) auto-updated | All `*.node`, `node`, `node.exe` binaries tracked via LFS             |
 
 The SideCar directory is not committed to version control in its populated form.
 Developers run the Download tool once during initial project setup, and CI
@@ -94,8 +94,8 @@ The mapping from Rust target triple to Node.js platform string is:
 | `aarch64-pc-windows-msvc`   | `win-arm64`             | `.zip`         |
 | `x86_64-pc-windows-msvc`    | `win-x64`               | `.zip`         |
 
-**At build time**, Mountain's `build.rs` calls `GetTauriTargetTriple.rs` (from
-Maintain) to read the `CARGO_BUILD_TARGET` environment variable, which Cargo
+**At build time**, [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` calls [`GetTauriTargetTriple.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs) (from
+[Maintain](https://github.com/CodeEditorLand/Maintain)) to read the `CARGO_BUILD_TARGET` environment variable, which Cargo
 sets to the current compilation target. The result is used to select the correct
 subdirectory under `SideCar/`.
 
@@ -196,14 +196,14 @@ SideCar/
     .gitattributes     <- auto-updated by download tool for Git LFS
 ```
 
-The download tool automatically updates `.gitattributes` to add Git LFS tracking
+The download tool automatically updates [`.gitattributes`](https://github.com/CodeEditorLand/SideCar/tree/Current/.gitattributes) to add Git LFS tracking
 patterns for every binary it writes. This ensures that if the SideCar directory
 is committed to a repository, the large binaries are stored in LFS rather than
 the Git object database.
 
 ## Mountain ProcessManagement integration
 
-**At build time**, Mountain's `build.rs` performs the following steps:
+**At build time**, [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` performs the following steps:
 
 1. Reads `CARGO_BUILD_TARGET` to determine the current target triple.
 2. Constructs the expected path `SideCar/{triple}/NODE/{major}/bin/node[.exe]`.
@@ -212,15 +212,15 @@ the Git object database.
 4. If the path does not exist, the build fails with an actionable error message
    indicating which platform is missing.
 
-**At runtime**, Mountain's `ProcessManagement/CocoonManagement.rs` calls
+**At runtime**, [Mountain](https://github.com/CodeEditorLand/Mountain)'s [`ProcessManagement/CocoonManagement.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs) calls
 `SideCar::Spawn` to get the path to the bundled Node.js binary. The Tauri
 `sidecar()` API resolves the platform-specific binary name from the bundle.
 Mountain then spawns Cocoon using that binary, passing:
 
-- The `DnsPort` environment variable pointing to the Mist DNS server
+- The `DnsPort` environment variable pointing to the [Mist](https://github.com/CodeEditorLand/Mist) DNS server
 - `VSCODE_PARENT_PID` for heartbeat monitoring
 - `TierIPC` routing configuration
-- The path to Cocoon's `bootstrap-fork.js` entry point
+- The path to [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s [`bootstrap-fork.js`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Scripts/cocoon/bootstrap-fork.js) entry point
 
 Because the binary was selected and verified at build time, no runtime detection,
 version negotiation, or fallback logic is needed.
@@ -234,7 +234,7 @@ it alongside the existing cached version (different `{major}` subdirectory), and
 updates `Cache.json`. Old versions are not automatically deleted; they remain
 until the cache is manually cleared or a full re-download is triggered.
 
-> Mountain's `build.rs` selects a binary by major version number. If
+> [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` selects a binary by major version number. If
 > `Cache.json` contains entries for multiple major versions of the same platform,
 > `build.rs` takes the highest available major version. To pin a specific
 > version, set `NodeVersion` explicitly and run the download tool before
@@ -242,7 +242,7 @@ until the cache is manually cleared or a full re-download is triggered.
 
 ## Git LFS management
 
-The download tool reads the existing `.gitattributes` at the root of the SideCar
+The download tool reads the existing [`.gitattributes`](https://github.com/CodeEditorLand/SideCar/tree/Current/.gitattributes) at the root of the [SideCar](https://github.com/CodeEditorLand/SideCar)
 directory and appends LFS tracking rules for any new binary paths it creates.
 The pattern used is:
 
@@ -256,14 +256,14 @@ Running the download tool multiple times is idempotent with respect to
 
 ## Module reference
 
-| File                 | Purpose                                                                                                                                |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `Source/Download.rs` | Version resolution, parallel HTTP download, SHA-256 verification, archive extraction, `Cache.json` update, `.gitattributes` management |
-| `Source/Spawn.rs`    | Runtime spawn helper: resolves binary path from cache, returns to Mountain's `ProcessManagement`                                       |
-| `Source/Library.rs`  | Shared types: `CacheEntry`, version resolution helpers, path construction                                                              |
-| `Source/main.rs`     | Entry point for the standalone `Download` binary                                                                                       |
-| `build.rs`           | Cargo build script: reads current target triple, copies binary to Tauri sidecar resource path                                          |
-| `Cache.json`         | JSON manifest tracking downloaded versions per platform                                                                                |
+| File                                                                              | Purpose                                                                                                                                |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `Source/Download.rs`                                                              | Version resolution, parallel HTTP download, SHA-256 verification, archive extraction, `Cache.json` update, `.gitattributes` management |
+| `Source/Spawn.rs`                                                                 | Runtime spawn helper: resolves binary path from cache, returns to Mountain's `ProcessManagement`                                       |
+| `Source/Library.rs`                                                               | Shared types: `CacheEntry`, version resolution helpers, path construction                                                              |
+| `Source/main.rs`                                                                  | Entry point for the standalone `Download` binary                                                                                       |
+| [`build.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/build.rs)     | Cargo build script: reads current target triple, copies binary to Tauri sidecar resource path                                          |
+| [`Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json) | JSON manifest tracking downloaded versions per platform                                                                                |
 
 ## Related Documentation
 

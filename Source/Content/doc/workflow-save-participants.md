@@ -8,13 +8,13 @@ description:
 ---
 
 A save with participants involves two distinct network round-trips before the
-file is written: Wind asks Cocoon to run all `onWillSaveTextDocument` handlers
+file is written: [Wind](https://github.com/CodeEditorLand/Wind) asks [Cocoon](https://github.com/CodeEditorLand/Cocoon) to run all `onWillSaveTextDocument` handlers
 and collect their edits, then the merged edits are applied in-memory before the
-normal write path to Mountain executes. The extension author sees only a single
+normal write path to [Mountain](https://github.com/CodeEditorLand/Mountain) executes. The extension author sees only a single
 `onWillSaveTextDocument` event; the IPC machinery is invisible.
 
 <img src="/Mermaid/5e843b98af5d6c71.svg" alt="Mermaid diagram" />
-## Phase 1 - User action and save trigger (Wind/Sky)
+## Phase 1 - User action and save trigger ([Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky))
 
 1. The user presses `Ctrl+S` in an editor with unsaved changes. The keybinding
    system dispatches `workbench.action.files.save`.
@@ -26,19 +26,19 @@ normal write path to Mountain executes. The extension author sees only a single
    emits a `willSave` event and passes control to `IWorkingCopyFileService` to
    run all registered save participants.
 
-## Phase 2 - Save participant orchestration (Wind → Cocoon → Wind)
+## Phase 2 - Save participant orchestration ([Wind](https://github.com/CodeEditorLand/Wind) → [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Wind](https://github.com/CodeEditorLand/Wind))
 
 4. `WorkingCopyFileService.runSaveParticipants()` gathers every registered
    `ISaveParticipant`. The relevant one here is `ExtHostSaveParticipant`, which
-   bridges to Cocoon.
+   bridges to [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 
 5. `ExtHostSaveParticipant.participate()` sends a **`$participateInSave` gRPC
-   request** to Cocoon, carrying the document URI and save reason (e.g.
-   `explicit`). Wind then awaits the response.
+   request** to [Cocoon](https://github.com/CodeEditorLand/Cocoon), carrying the document URI and save reason (e.g.
+   `explicit`). [Wind](https://github.com/CodeEditorLand/Wind) then awaits the response.
 
-## Phase 3 - Extension execution (Cocoon)
+## Phase 3 - Extension execution ([Cocoon](https://github.com/CodeEditorLand/Cocoon))
 
-6. Cocoon's gRPC server receives `$participateInSave` and dispatches it to
+6. [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server receives `$participateInSave` and dispatches it to
    `ExtHostDocumentSaveParticipant`.
 
 7. The service constructs a `WillSaveTextDocumentEvent` and fires the
@@ -50,19 +50,19 @@ normal write path to Mountain executes. The extension author sees only a single
 
 9. `ExtHostDocumentSaveParticipant` awaits all returned promises, collects the
    `TextEdit` arrays, serialises them into DTOs via `TypeConverter`, and returns
-   the complete array to Wind as the `$participateInSave` gRPC response.
+   the complete array to [Wind](https://github.com/CodeEditorLand/Wind) as the `$participateInSave` gRPC response.
 
-## Phase 4 - Apply edits and write to disk (Wind → Mountain)
+## Phase 4 - Apply edits and write to disk ([Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain))
 
-10. The `$participateInSave` gRPC call resolves in Wind.
+10. The `$participateInSave` gRPC call resolves in [Wind](https://github.com/CodeEditorLand/Wind).
     `WorkingCopyFileService` passes the collected edits to `IBulkEditService`.
 
     > `workspace.applyEdit()` is a full awaitable round-trip: the call is a
-    > `sendRequest` round-trip to Mountain rather than a fire-and-forget
+    > `sendRequest` round-trip to [Mountain](https://github.com/CodeEditorLand/Mountain) rather than a fire-and-forget
     > notification. The caller receives confirmation that the edit was applied
-    > before proceeding. Mountain treats a `null` response from Sky as `true`
+    > before proceeding. [Mountain](https://github.com/CodeEditorLand/Mountain) treats a `null` response from [Sky](https://github.com/CodeEditorLand/Sky) as `true`
     > (matching VS Code's own `MainThreadBulkEdits` behaviour). The
-    > `WorkspaceEdit` payload is normalised in the Sky bridge to handle multiple
+    > `WorkspaceEdit` payload is normalised in the [Sky](https://github.com/CodeEditorLand/Sky) bridge to handle multiple
     > wire shapes: `_edits` with `_type: 2` entries (text edits, `_range` using
     > 0-based lines converted to Monaco 1-based), `_type: 1` entries (file
     > operations), and serialised `vscode.Uri` objects.
@@ -77,9 +77,9 @@ normal write path to Mountain executes. The extension author sees only a single
 
 13. The write follows the same provider chain as reading: `IFileService` →
     `TauriDiskFileSystemProvider` → `WriteFile` Effect →
-    `TauriInvoke("plugin:fs|WriteFile")` → Mountain.
+    `TauriInvoke("plugin:fs|WriteFile")` → [Mountain](https://github.com/CodeEditorLand/Mountain).
 
-14. Mountain executes:
+14. [Mountain](https://github.com/CodeEditorLand/Mountain) executes:
 
     ```rust
     tokio::fs::write(path, content)
@@ -111,14 +111,14 @@ extension's awaited promise.
 ### applyEdit round-trip
 
 `workspace.applyEdit(edit)` is a full awaitable round-trip via
-`Call(Context, "applyEdit", [edit])` (Mountain `sendRequest`, not a
+`Call(Context, "applyEdit", [edit])` ([Mountain](https://github.com/CodeEditorLand/Mountain) `sendRequest`, not a
 fire-and-forget notification). The extension's `await workspace.applyEdit(...)`
-resolves only after Sky's `sky://workspace/applyEdit` handler finishes applying
-the edit to the Monaco model and returns a success boolean. Mountain treats a
-`null` response from Sky as `true` (matching VS Code's own `MainThreadBulkEdits`
+resolves only after [Sky](https://github.com/CodeEditorLand/Sky)'s `sky://workspace/applyEdit` handler finishes applying
+the edit to the Monaco model and returns a success boolean. [Mountain](https://github.com/CodeEditorLand/Mountain) treats a
+`null` response from [Sky](https://github.com/CodeEditorLand/Sky) as `true` (matching VS Code's own `MainThreadBulkEdits`
 behaviour).
 
-The `WorkspaceEdit` payload is normalised inside the Sky bridge to handle
+The `WorkspaceEdit` payload is normalised inside the [Sky](https://github.com/CodeEditorLand/Sky) bridge to handle
 multiple wire shapes:
 
 - `_edits` array with `_type: 2` entries (extHostTypes text edit) - `_range`

@@ -8,13 +8,13 @@ description:
     Land application assembly, and troubleshooting."
 ---
 
-This guide walks through building the **Land** code editor from source. The
+This guide walks through building the **[Land](https://github.com/CodeEditorLand/Land)** code editor from source. The
 build is a **two-step linear flow** - do **not** pull submodules recursively;
 each submodule is managed independently on its own branch.
 
 1. **Compile VS Code Source** - build the VS Code platform code that the
    extension host consumes
-2. **Build Land Application** - compile the native Rust backend and bundle the
+2. **Build [Land](https://github.com/CodeEditorLand/Land) Application** - compile the native Rust backend and bundle the
    TypeScript frontend into a runnable Tauri application
 
 ---
@@ -41,13 +41,13 @@ nvm use 24
 > [!NOTE]
 > Node 24 is required specifically to compile the VS Code Editor submodule
 > (Step 1). The pinned version is tracked in
-> `Dependency/Microsoft/Dependency/Editor/.nvmrc`.
+> [`Dependency/Microsoft/Dependency/Editor/.nvmrc`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor/.nvmrc).
 
 ### Rust Toolchain & Targets
 
 Install the Rust toolchain via `rustup` and add the necessary compilation
-targets. The macOS build targets are required for Mountain (Tauri backend)
-and Air (background daemon):
+targets. The macOS build targets are required for [Mountain](https://github.com/CodeEditorLand/Mountain) (Tauri backend)
+and [Air](https://github.com/CodeEditorLand/Air) (background daemon):
 
 ```sh
 # Install Rust (stable)
@@ -98,21 +98,21 @@ source ~/.zshrc  # or restart your terminal
 The Land build is a **two-step linear flow**. Do NOT pull submodules
 recursively - each submodule is managed independently on its own branch.
 
-1. **Compile VS Code Source** - Build the VS Code platform code that `Cocoon`
-   consumes. This runs in `Dependency/Microsoft/Dependency/Editor`.
-2. **Build Land Application** - Compile the native Rust backend (`Mountain`)
-   and bundle the TypeScript frontend (`Wind` + `Sky`) into a runnable Tauri
+1. **Compile VS Code Source** - Build the VS Code platform code that [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
+   consumes. This runs in [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor).
+2. **Build [Land](https://github.com/CodeEditorLand/Land) Application** - Compile the native Rust backend ([`Mountain`](https://github.com/CodeEditorLand/Mountain))
+   and bundle the TypeScript frontend ([`Wind`](https://github.com/CodeEditorLand/Wind) + [`Sky`](https://github.com/CodeEditorLand/Sky)) into a runnable Tauri
    application.
 
 The submodules are compiled in this order because each subsequent layer depends
 on artifacts produced by the previous one:
 
-- `Editor` → produces compiled VS Code platform code consumed by `Cocoon` and
-  `Output`
-- `Output` (via `Rest`) → bundles the platform code as
-  `@codeeditorland/output` for the extension host
-- `Mountain` + `Air` → native Rust binaries compiled via `cargo`
-- `Wind` + `Sky` → TypeScript frontend assets compiled and bundled into the
+- `Editor` → produces compiled VS Code platform code consumed by [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) and
+  [`Output`](https://github.com/CodeEditorLand/Output)
+- [`Output`](https://github.com/CodeEditorLand/Output) (via [`Rest`](https://github.com/CodeEditorLand/Rest)) → bundles the platform code as
+  [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output) for the extension host
+- [`Mountain`](https://github.com/CodeEditorLand/Mountain) + [`Air`](https://github.com/CodeEditorLand/Air) → native Rust binaries compiled via `cargo`
+- [`Wind`](https://github.com/CodeEditorLand/Wind) + [`Sky`](https://github.com/CodeEditorLand/Sky) → TypeScript frontend assets compiled and bundled into the
   Tauri app
 
 ---
@@ -120,8 +120,8 @@ on artifacts produced by the previous one:
 ## Step 1: Compile VS Code Source
 
 The VS Code source is vendored as a Git submodule at
-`Dependency/Microsoft/Dependency/Editor`. **This step is mandatory** - Land
-cannot build without it. `Cocoon` (the extension host) and `Output` (the
+[`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor). **This step is mandatory** - [Land](https://github.com/CodeEditorLand/Land)
+cannot build without it. [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) (the extension host) and [`Output`](https://github.com/CodeEditorLand/Output) (the
 platform bundle) both consume the compiled output produced here.
 
 > [!IMPORTANT]
@@ -154,8 +154,8 @@ npm run compile-extensions-build
 
 > [!IMPORTANT]
 > The `compile-extensions-build` step produces the `out-<platform>`
-> directories that `Rest` bundles into `@codeeditorland/output`. Without it,
-> `Cocoon` will fail to locate the VS Code platform code at runtime.
+> directories that [`Rest`](https://github.com/CodeEditorLand/Rest) bundles into [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output). Without it,
+> [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) will fail to locate the VS Code platform code at runtime.
 
 ---
 
@@ -183,30 +183,30 @@ optimization levels. See
 [`BuildMatrix.md`](/Doc/build-matrix) for the full matrix
 of environment variables and tier configurations.
 
-| Profile                       | Workbench         | Coverage                                              | Notes                             |
-| :---------------------------- | :---------------- | :---------------------------------------------------- | :-------------------------------- |
-| `debug`                       | Browser           | 70–80%                                                | Default debug                     |
-| `debug-mountain`              | Mountain          | 80–90%                                                | Recommended for daily development |
-| `debug-electron`              | Electron          | 95%+                                                  | Full feature set                  |
-| `debug-electron-rest`         | Electron + OXC    | 95%+                                                  | Fastest TypeScript compile        |
-| `debug-electron-minimal`      | Electron          | No built-in extensions                                | Atom J1                           |
-| `debug-mountain-only`         | Mountain          | No `Cocoon` subprocess                                | Atom N3                           |
-| `debug-cocoon-headless`       | Mountain + Cocoon | `Wind` preload disabled                               | Atom N3b                          |
-| `debug-kernel`                | None              | Pure `Mountain`, no built-ins, no `Cocoon`, no `Wind` | Atom N3c                          |
-| `debug-electron-compiled`     | Electron          | Single-binary embedded resources                      | Debug symbols + `Compile=true`    |
-| `debug-mountain-compiled`     | Mountain          | Single-binary embedded resources                      | Debug symbols + `Compile=true`    |
-| `debug-electron-bundled`      | Electron          | Vite/Astro compiled workbench                         | Full bundled Electron debug build |
-| `debug-browser-bundled`       | Browser           | Vite/Astro compiled workbench                         |                                   |
-| `debug-sessions-bundled`      | Sessions          | Vite/Astro compiled workbench                         |                                   |
-| `debug-workbench-bundled`     | Base workbench    | Vite/Astro compiled workbench                         |                                   |
-| `debug-bundled-all`           | All four          | Single Rollup pass                                    |                                   |
-| `production-electron-bundled` | Electron          | Optimized release                                     |                                   |
+| Profile                       | Workbench                                                                                                   | Coverage                                                                                                                                                                                  | Notes                             |
+| :---------------------------- | :---------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------- |
+| `debug`                       | Browser                                                                                                     | 70-80%                                                                                                                                                                                    | Default debug                     |
+| `debug-mountain`              | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                      | 80-90%                                                                                                                                                                                    | Recommended for daily development |
+| `debug-electron`              | Electron                                                                                                    | 95%+                                                                                                                                                                                      | Full feature set                  |
+| `debug-electron-rest`         | Electron + OXC                                                                                              | 95%+                                                                                                                                                                                      | Fastest TypeScript compile        |
+| `debug-electron-minimal`      | Electron                                                                                                    | No built-in extensions                                                                                                                                                                    | Atom J1                           |
+| `debug-mountain-only`         | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                      | No [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) subprocess                                                                                                                        | Atom N3                           |
+| `debug-cocoon-headless`       | [Mountain](https://github.com/CodeEditorLand/Mountain) + [Cocoon](https://github.com/CodeEditorLand/Cocoon) | [`Wind`](https://github.com/CodeEditorLand/Wind) preload disabled                                                                                                                         | Atom N3b                          |
+| `debug-kernel`                | None                                                                                                        | Pure [`Mountain`](https://github.com/CodeEditorLand/Mountain), no built-ins, no [`Cocoon`](https://github.com/CodeEditorLand/Cocoon), no [`Wind`](https://github.com/CodeEditorLand/Wind) | Atom N3c                          |
+| `debug-electron-compiled`     | Electron                                                                                                    | Single-binary embedded resources                                                                                                                                                          | Debug symbols + `Compile=true`    |
+| `debug-mountain-compiled`     | [Mountain](https://github.com/CodeEditorLand/Mountain)                                                      | Single-binary embedded resources                                                                                                                                                          | Debug symbols + `Compile=true`    |
+| `debug-electron-bundled`      | Electron                                                                                                    | Vite/Astro compiled workbench                                                                                                                                                             | Full bundled Electron debug build |
+| `debug-browser-bundled`       | Browser                                                                                                     | Vite/Astro compiled workbench                                                                                                                                                             |                                   |
+| `debug-sessions-bundled`      | Sessions                                                                                                    | Vite/Astro compiled workbench                                                                                                                                                             |                                   |
+| `debug-workbench-bundled`     | Base workbench                                                                                              | Vite/Astro compiled workbench                                                                                                                                                             |                                   |
+| `debug-bundled-all`           | All four                                                                                                    | Single Rollup pass                                                                                                                                                                        |                                   |
+| `production-electron-bundled` | Electron                                                                                                    | Optimized release                                                                                                                                                                         |                                   |
 
 ---
 
 ## Environment Variables
 
-Land uses a tier-gated system of environment variables to control build and
+[Land](https://github.com/CodeEditorLand/Land) uses a tier-gated system of environment variables to control build and
 runtime behavior. All variables are read from `.env.Land*` files in the
 repository root. Copy `.env.Land.example` to `.env.Land` to customize your
 local environment.
@@ -215,16 +215,16 @@ For a complete reference, see [Configuration](/Doc/configuration).
 
 Common variables:
 
-| Variable                  | Default    | Description                                       |
-| :------------------------ | :--------- | :------------------------------------------------ |
-| `ProductVersion`          | `1.118.0`  | Land version and feature tier gate                |
-| `Bundle`                  | (unset)    | Set to `true` to trigger `Rest` bundling          |
-| `NetworkMountainPort`     | `50051`    | gRPC port for `Mountain` backend                  |
-| `NetworkCocoonPort`       | `50052`    | gRPC port for `Cocoon` extension host             |
-| `TierFileSystem`          | `Layer2`   | Filesystem implementation tier                    |
-| `TierFileWatcher`         | `Layer4`   | File watching implementation tier                 |
-| `TierRemoteProcedureCall` | `gRPC`     | IPC transport mechanism                           |
-| `TierIPC`                 | `Mountain` | IPC routing: `Mountain` / `NodeDeferred` / `Node` |
+| Variable                  | Default    | Description                                                                        |
+| :------------------------ | :--------- | :--------------------------------------------------------------------------------- |
+| `ProductVersion`          | `1.118.0`  | [Land](https://github.com/CodeEditorLand/Land) version and feature tier gate       |
+| `Bundle`                  | (unset)    | Set to `true` to trigger [`Rest`](https://github.com/CodeEditorLand/Rest) bundling |
+| `NetworkMountainPort`     | `50051`    | gRPC port for [`Mountain`](https://github.com/CodeEditorLand/Mountain) backend     |
+| `NetworkCocoonPort`       | `50052`    | gRPC port for [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) extension host  |
+| `TierFileSystem`          | `Layer2`   | Filesystem implementation tier                                                     |
+| `TierFileWatcher`         | `Layer4`   | File watching implementation tier                                                  |
+| `TierRemoteProcedureCall` | `gRPC`     | IPC transport mechanism                                                            |
+| `TierIPC`                 | `Mountain` | IPC routing: `Mountain` / `NodeDeferred` / `Node`                                  |
 
 ---
 
@@ -261,7 +261,7 @@ Trace=all Record=1 Disable=false ./Element/Mountain/Target/debug/Mountain
 
 > [!NOTE]
 > All debug profiles write to `Target/debug/`. The profile name affects which
-> env vars are set and which Sky assets are produced - not the target directory
+> env vars are set and which [Sky](https://github.com/CodeEditorLand/Sky) assets are produced - not the target directory
 > name.
 
 ---
@@ -288,16 +288,16 @@ Land/
 Each Element may have additional build details. Refer to the specific README for
 element-specific workflows:
 
-| Element   | Build Instructions                                                   |
-| :-------- | :------------------------------------------------------------------- |
-| `Air`     | `Element/Air/README.md` - Background daemon build & daemon lifecycle |
-| `Grove`   | `Element/Grove/README.md` - Native Rust/WASM extension host build    |
-| `Mist`    | `Element/Mist/README.md` - DNS server build & testing                |
-| `Rest`    | `Element/Rest/README.md` - CLI compiler usage                        |
-| `SideCar` | `Element/SideCar/README.md` - Download tool for runtime binaries     |
-| `Sky`     | `Element/Sky/README.md` - Astro UI development                       |
-| `Wind`    | `Element/Wind/README.md` - Effect-TS service layer                   |
-| `Cocoon`  | `Element/Cocoon/README.md` - Extension host details                  |
+| Element                                                | Build Instructions                                                                                                                                |
+| :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`Air`](https://github.com/CodeEditorLand/Air)         | [`Element/Air/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Air/README.md) - Background daemon build & daemon lifecycle |
+| [`Grove`](https://github.com/CodeEditorLand/Grove)     | [`Element/Grove/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove/README.md) - Native Rust/WASM extension host build  |
+| [`Mist`](https://github.com/CodeEditorLand/Mist)       | [`Element/Mist/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mist/README.md) - DNS server build & testing               |
+| [`Rest`](https://github.com/CodeEditorLand/Rest)       | [`Element/Rest/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest/README.md) - CLI compiler usage                       |
+| [`SideCar`](https://github.com/CodeEditorLand/SideCar) | [`Element/SideCar/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/README.md) - Download tool for runtime binaries |
+| [`Sky`](https://github.com/CodeEditorLand/Sky)         | [`Element/Sky/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/README.md) - Astro UI development                       |
+| [`Wind`](https://github.com/CodeEditorLand/Wind)       | [`Element/Wind/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/README.md) - Effect-TS service layer                  |
+| [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)   | [`Element/Cocoon/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/README.md) - Extension host details               |
 
 ---
 
@@ -369,10 +369,10 @@ npm install
 npm run compile
 ```
 
-### `Rest` binary not found
+### [`Rest`](https://github.com/CodeEditorLand/Rest) binary not found
 
-The build script expects the `rest` CLI compiler to be on `PATH` or pointed to
-by `REST_BINARY_PATH`. If you see errors about a missing `Rest` binary:
+The build script expects the [`rest`](https://github.com/CodeEditorLand/Rest) CLI compiler to be on `PATH` or pointed to
+by `REST_BINARY_PATH`. If you see errors about a missing [`Rest`](https://github.com/CodeEditorLand/Rest) binary:
 
 ```sh
 export REST_BINARY_PATH=/path/to/rest
@@ -413,8 +413,8 @@ echo "NetworkMountainPort=50061" >> .env.Land
 ### App crashes immediately on macOS (code signing)
 
 Tauri's ad-hoc signature does not embed the entitlements from
-`Element/Mountain/Entitlements.plist`. Without the correct entitlements,
-`Cocoon`'s V8 JIT crashes, extension helpers fail to spawn, and file pickers
+[`Element/Mountain/Entitlements.plist`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Entitlements.plist). Without the correct entitlements,
+[`Cocoon`](https://github.com/CodeEditorLand/Cocoon)'s V8 JIT crashes, extension helpers fail to spawn, and file pickers
 silently do nothing.
 
 Re-sign the `.app` after any `tauri build`:

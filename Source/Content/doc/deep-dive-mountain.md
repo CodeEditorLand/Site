@@ -11,20 +11,20 @@ description:
     performance optimization."
 ---
 
-Mountain is the Rust binary at the foundation of Land. It serves as the concrete
+[Mountain](https://github.com/CodeEditorLand/Mountain) is the Rust binary at the foundation of [Land](https://github.com/CodeEditorLand/Land). It serves as the concrete
 implementation layer that brings VSCode service compatibility through native Rust
 implementations, Tauri integration, and gRPC communication.
 
 ## Core Architecture Principles
 
-| Principle                         | Description                                                                                                                                                    | Key Components Involved                          |
-| :-------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------- |
-| **Native Service Implementation** | Provide concrete implementations of all abstract service `trait`s defined in the `Common` crate, delivering native-speed performance for core operations.      | `Environment/*` providers                        |
-| **Effect System Execution**       | Execute declarative `ActionEffect`s through a sophisticated `ApplicationRunTime` that bridges abstract effect descriptions with concrete native capabilities.  | `RunTime/*`, `Track/EffectCreation.rs`, `Common` |
-| **Centralized State Management**  | Maintain a single, thread-safe `ApplicationState` struct managed by Tauri to ensure data consistency across the entire application lifecycle.                  | `ApplicationState/*`                             |
-| **gRPC-Powered IPC**              | Utilize `tonic`-based gRPC for all communication with the `Cocoon` sidecar, ensuring a strongly-typed, high-performance API boundary.                          | `Vine/*`                                         |
-| **Tauri Integration Excellence**  | Leverage Tauri's capabilities for cross-platform windowing, system integration, and secure communication while maintaining native performance characteristics. | `Binary.rs`, Tauri plugins                       |
-| **Sidecar Orchestration**         | Reliably launch, manage, and communicate with the `Cocoon` Node.js extension host sidecar via robust process management and health monitoring.                 | `ProcessManagement/*`                            |
+| Principle                         | Description                                                                                                                                                                                           | Key Components Involved                                                                      |
+| :-------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| **Native Service Implementation** | Provide concrete implementations of all abstract service `trait`s defined in the [`Common`](https://github.com/CodeEditorLand/Common) crate, delivering native-speed performance for core operations. | `Environment/*` providers                                                                    |
+| **Effect System Execution**       | Execute declarative `ActionEffect`s through a sophisticated `ApplicationRunTime` that bridges abstract effect descriptions with concrete native capabilities.                                         | `RunTime/*`, `Track/EffectCreation.rs`, [`Common`](https://github.com/CodeEditorLand/Common) |
+| **Centralized State Management**  | Maintain a single, thread-safe `ApplicationState` struct managed by Tauri to ensure data consistency across the entire application lifecycle.                                                         | `ApplicationState/*`                                                                         |
+| **gRPC-Powered IPC**              | Utilize `tonic`-based gRPC for all communication with the [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) sidecar, ensuring a strongly-typed, high-performance API boundary.                     | `Vine/*`                                                                                     |
+| **Tauri Integration Excellence**  | Leverage Tauri's capabilities for cross-platform windowing, system integration, and secure communication while maintaining native performance characteristics.                                        | `Binary.rs`, Tauri plugins                                                                   |
+| **Sidecar Orchestration**         | Reliably launch, manage, and communicate with the [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) Node.js extension host sidecar via robust process management and health monitoring.            | `ProcessManagement/*`                                                                        |
 
 ---
 
@@ -33,7 +33,7 @@ implementations, Tauri integration, and gRPC communication.
 ### 1. The `ApplicationRunTime` Engine: Concrete Effect Execution
 
 The `ApplicationRunTime` serves as the bridge between the declarative effect
-system defined in `Common` and the concrete native implementations provided by
+system defined in [`Common`](https://github.com/CodeEditorLand/Common) and the concrete native implementations provided by
 Mountain.
 
 #### Concrete Effect Execution Flow
@@ -117,7 +117,7 @@ impl ApplicationState {
 
 ### 3. Concrete gRPC Communication System
 
-The `Vine` gRPC layer provides concrete communication with the `Cocoon`
+The [`Vine`](https://github.com/CodeEditorLand/Vine) gRPC layer provides concrete communication with the [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
 extension host. It consists of a gRPC server (tonic implementation), a gRPC
 client for extension host communication, Protocol Buffer strongly-typed
 contracts, and a serialization layer for DTO conversion.
@@ -156,25 +156,25 @@ impl VineService for MountainVineService {
 ### 4. Concrete Process Management System
 
 The process management system provides concrete sidecar orchestration for the
-Cocoon Node.js extension host:
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) Node.js extension host:
 
-1. Mountain Core → Process Manager: Launch Cocoon Sidecar
+1. Mountain Core → Process Manager: Launch [Cocoon](https://github.com/CodeEditorLand/Cocoon) Sidecar
 2. Process Manager → OS: Spawn Node.js Process
-3. OS → Cocoon: Start Extension Host
-4. Cocoon → Process Manager: Process Ready Signal
+3. OS → [Cocoon](https://github.com/CodeEditorLand/Cocoon): Start Extension Host
+4. [Cocoon](https://github.com/CodeEditorLand/Cocoon) → Process Manager: Process Ready Signal
 5. Process Manager → Mountain Core: Sidecar Ready
 
 A health monitoring loop runs continuously:
 
-- Process Manager → Cocoon: Health Check
-- Cocoon → Process Manager: Health Status
+- Process Manager → [Cocoon](https://github.com/CodeEditorLand/Cocoon): Health Check
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon) → Process Manager: Health Status
 - Process Manager → Mountain Core: Health Report
 
 On graceful shutdown:
 
 - Mountain Core → Process Manager: Graceful Shutdown
-- Process Manager → Cocoon: Termination Signal
-- Cocoon → Process Manager: Clean Exit
+- Process Manager → [Cocoon](https://github.com/CodeEditorLand/Cocoon): Termination Signal
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon) → Process Manager: Clean Exit
 - Process Manager → Mountain Core: Process Terminated
 
 #### Concrete Process Management
@@ -646,10 +646,10 @@ mod performance_tests {
 
 ### Concrete VSCode Service Lifting Architecture
 
-The Mountain service implementation connects Common Traits to the Mountain
+The [Mountain](https://github.com/CodeEditorLand/Mountain) service implementation connects [Common](https://github.com/CodeEditorLand/Common) Traits to the [Mountain](https://github.com/CodeEditorLand/Mountain)
 Implementation, which in turn connects to both Tauri Integration and the gRPC
-Server. Service communication flows from Wind UI Services (via Tauri) and the
-Cocoon Extension Host (via gRPC). Native integration covers the native file
+Server. Service communication flows from [Wind](https://github.com/CodeEditorLand/Wind) UI Services (via Tauri) and the
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) Extension Host (via gRPC). Native integration covers the native file
 system, process management, and window management.
 
 #### Service Implementation Table
@@ -668,8 +668,8 @@ system, process management, and window management.
 
 ### Atomization Pattern
 
-Every IPC command exposed to the Wind/Sky frontend lives in its own dedicated
-`.rs` file. The top-level `mod.rs` (`IPC/WindServiceHandlers/mod.rs`, ~2 500
+Every IPC command exposed to the [Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky) frontend lives in its own dedicated
+`.rs` file. The top-level `mod.rs` ([`IPC/WindServiceHandlers/mod.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs), ~2 500
 lines) imports every atom and dispatches via a single `match` arm per command
 string. Nothing is implemented inline in `mod.rs` except trivially short
 responses that are not reused anywhere.
@@ -714,13 +714,13 @@ Terminal/LocalPTYCreateProcess.rs → pub struct LocalPTYCreateProcess; …
 
 ## ISandboxConfiguration
 
-`ProcessManagement/InitializationData.rs` contains two builders that fire at
+[`ProcessManagement/InitializationData.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs) contains two builders that fire at
 application startup:
 
 - **`ConstructSandboxConfiguration`** - produces the `ISandboxConfiguration`
-  JSON payload delivered to the Sky (VS Code workbench) frontend.
+  JSON payload delivered to the [Sky](https://github.com/CodeEditorLand/Sky) (VS Code workbench) frontend.
 - **`ConstructExtensionHostInitializationData`** - produces the
-  `IExtensionHostInitData` JSON payload delivered to Cocoon.
+  `IExtensionHostInitData` JSON payload delivered to [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 
 ### Critical ISandboxConfiguration fields
 
@@ -757,7 +757,7 @@ To avoid hitting `json!` macro recursion limits, all sub-objects
 ## Encryption Provider
 
 Three files in `IPC/WindServiceHandlers/Encryption/` back the
-`encryption:encrypt` and `encryption:decrypt` IPC commands that Cocoon uses for
+`encryption:encrypt` and `encryption:decrypt` IPC commands that [Cocoon](https://github.com/CodeEditorLand/Cocoon) uses for
 `context.secrets`:
 
 ### `Key.rs`
@@ -786,7 +786,7 @@ AES-256-GCM symmetric encryption:
 - `encryption:encrypt` → returns `{ ciphertext, nonce }` (base-64 encoded)
 - `encryption:decrypt` → accepts `{ ciphertext, nonce }`, returns plaintext
 
-Used by Cocoon's `context.secrets` API (`secrets.get` / `secrets.store` /
+Used by [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s `context.secrets` API (`secrets.get` / `secrets.store` /
 `secrets.delete` IPC calls route through Mountain's storage backed by these two
 handlers).
 
@@ -800,14 +800,14 @@ handlers).
 in all build paths: direct `pnpm tauri build`, `Build.sh`, CI). It walks every
 extension root and writes `extensions.manifest.json` into the bundle resources.
 
-At runtime `ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs` reads
+At runtime [`ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs) reads
 that pre-baked manifest. Cold load time: **<50 ms** vs ~1 200 ms for a live
 directory scan.
 
 ### Fallback (`ScanAndPopulateExtensions.rs`)
 
 If the cache file is absent (first run from source, dev builds without
-`beforeBundleCommand`), `ScanAndPopulateExtensions.rs` falls back to a parallel
+`beforeBundleCommand`), [`ScanAndPopulateExtensions.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs) falls back to a parallel
 `join_all` scan over all extension roots, then writes the result for subsequent
 runs.
 
@@ -822,20 +822,20 @@ and subsequent calls are free.
 
 ## Cocoon Management
 
-`ProcessManagement/CocoonManagement.rs` spawns and monitors the Cocoon Node.js
+[`ProcessManagement/CocoonManagement.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs) spawns and monitors the [Cocoon](https://github.com/CodeEditorLand/Cocoon) Node.js
 sidecar:
 
-| Detail                       | Value / Notes                                                    |
-| :--------------------------- | :--------------------------------------------------------------- |
-| Cocoon gRPC port             | 50052 (Mountain's Vine gRPC server is on **50051**)              |
-| Mountain gRPC connect budget | `GRPC_CONNECT_BUDGET_MS = 30_000` (30 seconds)                   |
-| IO forwarder runtime         | `tauri::async_runtime::spawn` - **not** `tokio::spawn`           |
-| Bootstrap script             | `scripts/cocoon/bootstrap-fork.js` (bundled sidecar)             |
-| WebSocket config             | Port picked at spawn time via `portpicker`, stored in `OnceLock` |
+| Detail                                                       | Value / Notes                                                                                                                                    |
+| :----------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon) gRPC port | 50052 ([Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine) gRPC server is on **50051**)      |
+| Mountain gRPC connect budget                                 | `GRPC_CONNECT_BUDGET_MS = 30_000` (30 seconds)                                                                                                   |
+| IO forwarder runtime                                         | `tauri::async_runtime::spawn` - **not** `tokio::spawn`                                                                                           |
+| Bootstrap script                                             | [`scripts/cocoon/bootstrap-fork.js`](https://github.com/CodeEditorLand/Mountain/tree/Current/scripts/cocoon/bootstrap-fork.js) (bundled sidecar) |
+| WebSocket config                                             | Port picked at spawn time via `portpicker`, stored in `OnceLock`                                                                                 |
 
-The 30-second budget exists to give Cocoon enough time to complete its own
+The 30-second budget exists to give [Cocoon](https://github.com/CodeEditorLand/Cocoon) enough time to complete its own
 bootstrap stages (especially the `RPCServer` stage that must bind port 50052
-before Mountain attempts a gRPC handshake).
+before [Mountain](https://github.com/CodeEditorLand/Mountain) attempts a gRPC handshake).
 
 ### Component Block Map
 
@@ -876,8 +876,8 @@ intentional departure from standard Rust conventions.
 
 The rationale is zero-friction mapping across the stack:
 
-- Rust DTOs in Mountain map 1:1 to Protocol Buffer messages in `Vine.proto`.
-- Protocol Buffer messages map 1:1 to TypeScript interfaces in Wind and Cocoon.
+- Rust DTOs in [Mountain](https://github.com/CodeEditorLand/Mountain) map 1:1 to Protocol Buffer messages in [`Vine.proto`](https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto).
+- Protocol Buffer messages map 1:1 to TypeScript interfaces in [Wind](https://github.com/CodeEditorLand/Wind) and [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 - No `#[serde(rename)]` attributes needed at any layer.
 
 Modules enable this with `#![allow(non_snake_case, non_camel_case_types)]` at

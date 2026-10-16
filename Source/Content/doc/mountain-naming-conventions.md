@@ -12,7 +12,7 @@ description:
 
 ## Overview
 
-**Mountain** adopts **PascalCase** as the primary naming convention for nearly
+**[Mountain](https://github.com/CodeEditorLand/Mountain)** adopts **PascalCase** as the primary naming convention for nearly
 all Rust elements, diverging from Rust's traditional `snake_case` conventions.
 This intentional design choice serves critical project requirements:
 
@@ -20,8 +20,8 @@ This intentional design choice serves critical project requirements:
   directly between Rust, TypeScript, and gRPC Protocol Buffers
 - **gRPC/Protocol Buffer Compatibility**: gRPC services and messages use
   PascalCase by specification
-- **Ecosystem Consistency**: Other components (Cocoon/Node.js sidecar,
-  Wind/TypeScript UI) use PascalCase
+- **Ecosystem Consistency**: Other components ([Cocoon](https://github.com/CodeEditorLand/Cocoon)/Node.js sidecar,
+  [Wind](https://github.com/CodeEditorLand/Wind)/TypeScript UI) use PascalCase
 - **TypeScript Interoperability**: Seamless translation between Rust types and
   TypeScript interfaces
 
@@ -41,16 +41,16 @@ deviation from Rust conventions is deliberate and approved.
 
 ### 1. Ecosystem Consistency
 
-The Land project consists of multiple language-specific components that must
+The [Land](https://github.com/CodeEditorLand/Land) project consists of multiple language-specific components that must
 interoperate seamlessly:
 
-| Component     | Language           | Naming Convention                |
-| ------------- | ------------------ | -------------------------------- |
-| **Mountain**  | Rust               | **PascalCase** (this convention) |
-| **Cocoon**    | Node.js/TypeScript | **PascalCase**                   |
-| **Wind**      | TypeScript/React   | **PascalCase**                   |
-| **Common**    | Rust (shared)      | **PascalCase**                   |
-| **Vine gRPC** | Protocol Buffers   | **PascalCase**                   |
+| Component                                                  | Language           | Naming Convention                |
+| ---------------------------------------------------------- | ------------------ | -------------------------------- |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)** | Rust               | **PascalCase** (this convention) |
+| **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**     | Node.js/TypeScript | **PascalCase**                   |
+| **[Wind](https://github.com/CodeEditorLand/Wind)**         | TypeScript/React   | **PascalCase**                   |
+| **[Common](https://github.com/CodeEditorLand/Common)**     | Rust (shared)      | **PascalCase**                   |
+| **[Vine](https://github.com/CodeEditorLand/Vine) gRPC**    | Protocol Buffers   | **PascalCase**                   |
 
 Using PascalCase across all components eliminates cognitive overhead during
 cross-language development and ensures type safety in gRPC interfaces.
@@ -60,7 +60,7 @@ cross-language development and ensures type safety in gRPC interfaces.
 Data Transfer Objects (DTOs) in Rust map directly to:
 
 - **Protocol Buffer Messages** (gRPC service contracts)
-- **TypeScript Interfaces** (Wind UI)
+- **TypeScript Interfaces** ([Wind](https://github.com/CodeEditorLand/Wind) UI)
 - **JSON Schema** (serialization/deserialization)
 
 Example of DTO alignment:
@@ -415,7 +415,7 @@ std::env::var("PATH")?;
 
 ### For New Code
 
-**Rule**: All new code in Mountain must follow PascalCase conventions.
+**Rule**: All new code in [Mountain](https://github.com/CodeEditorLand/Mountain) must follow PascalCase conventions.
 
 **Checklist** when creating new modules:
 
@@ -527,7 +527,7 @@ Before renaming, assess the impact:
 
 2. **gRPC Interfaces**: Does this affect Protocol Buffer definitions?
     - Must update `.proto` files and regenerate code
-    - Verify compatibility with Cocoon and Wind
+    - Verify compatibility with [Cocoon](https://github.com/CodeEditorLand/Cocoon) and [Wind](https://github.com/CodeEditorLand/Wind)
 
 3. **Tests**: Update all test references to use new names
     - Unit tests
@@ -542,60 +542,60 @@ Before renaming, assess the impact:
 
 ### Core Modules ✅
 
-| Module             | Status      | Notes                                                |
-| ------------------ | ----------- | ---------------------------------------------------- |
-| `ApplicationState` | ✅ Complete | All structs, DTOs, and methods follow PascalCase     |
-| `Environment`      | ✅ Complete | All providers and helpers follow PascalCase          |
-| `RunTime`          | ✅ Complete | ApplicationRunTime and all helpers follow PascalCase |
-| `Track`            | ✅ Complete | DispatchLogic and EffectCreation follow PascalCase   |
-| `Vine`             | ✅ Complete | Server and gRPC integration follow PascalCase        |
-| `IPC`              | ✅ Complete | All IPC handlers and adapters follow PascalCase      |
-| `WorkSpace`        | ✅ Complete | WorkspaceProvider follows PascalCase                 |
+| Module                                           | Status      | Notes                                                |
+| ------------------------------------------------ | ----------- | ---------------------------------------------------- |
+| `ApplicationState`                               | ✅ Complete | All structs, DTOs, and methods follow PascalCase     |
+| `Environment`                                    | ✅ Complete | All providers and helpers follow PascalCase          |
+| `RunTime`                                        | ✅ Complete | ApplicationRunTime and all helpers follow PascalCase |
+| `Track`                                          | ✅ Complete | DispatchLogic and EffectCreation follow PascalCase   |
+| [`Vine`](https://github.com/CodeEditorLand/Vine) | ✅ Complete | Server and gRPC integration follow PascalCase        |
+| `IPC`                                            | ✅ Complete | All IPC handlers and adapters follow PascalCase      |
+| `WorkSpace`                                      | ✅ Complete | WorkspaceProvider follows PascalCase                 |
 
 ### DTOs ✅
 
 All DTO files in `ApplicationState/DTO/` follow PascalCase conventions:
 
-- `CustomDocumentStateDTO.rs`
-- `DocumentStateDTO.rs`
-- `ExtensionDescriptionStateDTO.rs`
-- `MarkerDataDTO.rs`
-- `MergedConfigurationStateDTO.rs`
-- `OutputChannelStateDTO.rs`
-- `ProviderRegistrationDTO.rs`
-- `RPCModelContentChangeDTO.rs`
-- `TerminalStateDTO.rs`
-- `TreeViewStateDTO.rs`
+- [`CustomDocumentStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/CustomDocumentStateDTO.rs)
+- [`DocumentStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/DocumentStateDTO.rs)
+- [`ExtensionDescriptionStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ExtensionDescriptionStateDTO.rs)
+- [`MarkerDataDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MarkerDataDTO.rs)
+- [`MergedConfigurationStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MergedConfigurationStateDTO.rs)
+- [`OutputChannelStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/OutputChannelStateDTO.rs)
+- [`ProviderRegistrationDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ProviderRegistrationDTO.rs)
+- [`RPCModelContentChangeDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/RPCModelContentChangeDTO.rs)
+- [`TerminalStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TerminalStateDTO.rs)
+- [`TreeViewStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TreeViewStateDTO.rs)
 - `WebViewStateDTO.rs`
-- `WindowStateDTO.rs`
+- [`WindowStateDTO.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/WindowStateDTO.rs)
 - `WorkSpaceFolderStateDTO.rs`
 
 ### Environment Providers ✅
 
 All provider implementations in `Environment/` follow PascalCase:
 
-- `MountainEnvironment.rs`
-- `CommandProvider.rs`
+- [`MountainEnvironment.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/MountainEnvironment.rs)
+- [`CommandProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs)
 - `ConfigurationProvider.rs`
-- `CustomEditorProvider.rs`
-- `DebugProvider.rs`
-- `DiagnosticProvider.rs`
+- [`CustomEditorProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CustomEditorProvider.rs)
+- [`DebugProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DebugProvider.rs)
+- [`DiagnosticProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DiagnosticProvider.rs)
 - `DocumentProvider.rs`
-- `FileSystemProvider.rs`
-- `IPCProvider.rs`
-- `KeybindingProvider.rs`
+- [`FileSystemProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider.rs)
+- [`IPCProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/IPCProvider.rs)
+- [`KeybindingProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/KeybindingProvider.rs)
 - `LanguageFeatureProvider.rs`
 - `OutputProvider.rs`
-- `SearchProvider.rs`
-- `SecretProvider.rs`
-- `SourceControlManagementProvider.rs`
-- `StatusBarProvider.rs`
-- `StorageProvider.rs`
-- `SynchronizationProvider.rs`
-- `TerminalProvider.rs`
-- `TestProvider.rs`
+- [`SearchProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SearchProvider.rs)
+- [`SecretProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SecretProvider.rs)
+- [`SourceControlManagementProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SourceControlManagementProvider.rs)
+- [`StatusBarProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/StatusBarProvider.rs)
+- [`StorageProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/StorageProvider.rs)
+- [`SynchronizationProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SynchronizationProvider.rs)
+- [`TerminalProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TerminalProvider.rs)
+- [`TestProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TestProvider.rs)
 - `TreeViewProvider.rs`
-- `UserInterfaceProvider.rs`
+- [`UserInterfaceProvider.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/UserInterfaceProvider.rs)
 - `WebViewProvider.rs`
 - `WorkSpaceProvider.rs`
 

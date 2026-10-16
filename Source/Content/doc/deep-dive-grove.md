@@ -11,45 +11,45 @@ description:
 
 # Grove - Deep Dive
 
-Grove provides the technical foundation Rust/WASM
-extension host within the Land project. **Grove** provides a native, sandboxed
+[Grove](https://github.com/CodeEditorLand/Grove) provides the technical foundation Rust/WASM
+extension host within the [Land](https://github.com/CodeEditorLand/Land) project. **[Grove](https://github.com/CodeEditorLand/Grove)** provides a native, sandboxed
 environment for running VS Code extensions compiled to WebAssembly or native
-Rust, complementing the Node.js-based Cocoon host.
+Rust, complementing the Node.js-based [Cocoon](https://github.com/CodeEditorLand/Cocoon) host.
 
 ---
 
 ## Architecture
 
-Grove is organized into five layers: the extension host controller that manages
+[Grove](https://github.com/CodeEditorLand/Grove) is organized into five layers: the extension host controller that manages
 the lifecycle, the WASM runtime that provides sandboxed execution, the VS Code
 API bridge that presents the standard extension API, the transport layer that
-communicates with Mountain, and shared utility modules.
+communicates with [Mountain](https://github.com/CodeEditorLand/Mountain), and shared utility modules.
 
 <img src="/Mermaid/2f21cd2157b432e2.svg" alt="Mermaid diagram" />
 ---
 
 ## Key Modules
 
-| Path                                 | Description                                                                       |
-| :----------------------------------- | :-------------------------------------------------------------------------------- |
-| `Source/lib.rs`                      | Library root; exports public API for integration and testing                      |
-| `Source/main.rs`                     | Binary entry point; parses CLI and starts the extension host                      |
-| `Source/Binary/`                     | CLI argument handling and standalone vs connected mode selection                  |
-| `Source/Host/ExtensionHost.rs`       | Main controller: coordinates extension loading, activation, and service provision |
-| `Source/Host/ExtensionManager.rs`    | Extension discovery, manifest parsing, and loading                                |
-| `Source/Host/Activation.rs`          | Activation event processing (`onLanguage`, `onCommand`, etc.)                     |
-| `Source/Host/Lifecycle.rs`           | Extension activate/deactivate lifecycle management                                |
-| `Source/Host/APIBridge.rs`           | VS Code API facade implementation for Rust/WASM extensions                        |
-| `Source/WASM/Runtime.rs`             | WASMtime engine and store management with memory limits                           |
-| `Source/WASM/ModuleLoader.rs`        | WASM module compilation, caching, and instantiation                               |
-| `Source/WASM/MemoryManager.rs`       | WASM linear memory allocation and bounds enforcement                              |
-| `Source/WASM/HostBridge.rs`          | Host function exports to WASM modules                                             |
-| `Source/WASM/FunctionExport.rs`      | Registered host functions available to extension WASM code                        |
-| `Source/Transport/Strategy.rs`       | Transport strategy trait for pluggable communication                              |
-| `Source/Transport/gRPCTransport.rs`  | gRPC communication with Mountain via `tonic`                                      |
-| `Source/Transport/IPCTransport.rs`   | Unix/Windows IPC transport for same-host communication                            |
-| `Source/Transport/WASMTransport.rs`  | Direct in-process WASM function call transport                                    |
-| `Source/Protocol/SpineConnection.rs` | Spine protocol client for extension host coordination                             |
+| Path                                                                                                                            | Description                                                                       |
+| :------------------------------------------------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------- |
+| `Source/lib.rs`                                                                                                                 | Library root; exports public API for integration and testing                      |
+| [`Source/main.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs)                                         | Binary entry point; parses CLI and starts the extension host                      |
+| `Source/Binary/`                                                                                                                | CLI argument handling and standalone vs connected mode selection                  |
+| [`Source/Host/ExtensionHost.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionHost.rs)             | Main controller: coordinates extension loading, activation, and service provision |
+| [`Source/Host/ExtensionManager.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionManager.rs)       | Extension discovery, manifest parsing, and loading                                |
+| `Source/Host/Activation.rs`                                                                                                     | Activation event processing (`onLanguage`, `onCommand`, etc.)                     |
+| [`Source/Host/Lifecycle.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/Lifecycle.rs)                     | Extension activate/deactivate lifecycle management                                |
+| [`Source/Host/APIBridge.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/APIBridge.rs)                     | VS Code API facade implementation for Rust/WASM extensions                        |
+| [`Source/WASM/Runtime.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/Runtime.rs)                         | WASMtime engine and store management with memory limits                           |
+| [`Source/WASM/ModuleLoader.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/ModuleLoader.rs)               | WASM module compilation, caching, and instantiation                               |
+| [`Source/WASM/MemoryManager.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs)             | WASM linear memory allocation and bounds enforcement                              |
+| [`Source/WASM/HostBridge.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/HostBridge.rs)                   | Host function exports to WASM modules                                             |
+| `Source/WASM/FunctionExport.rs`                                                                                                 | Registered host functions available to extension WASM code                        |
+| [`Source/Transport/Strategy.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/Strategy.rs)             | Transport strategy trait for pluggable communication                              |
+| [`Source/Transport/gRPCTransport.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/gRPCTransport.rs)   | gRPC communication with Mountain via `tonic`                                      |
+| [`Source/Transport/IPCTransport.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs)     | Unix/Windows IPC transport for same-host communication                            |
+| [`Source/Transport/WASMTransport.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/WASMTransport.rs)   | Direct in-process WASM function call transport                                    |
+| [`Source/Protocol/SpineConnection.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs) | Spine protocol client for extension host coordination                             |
 
 ---
 
@@ -60,22 +60,22 @@ communicates with Mountain, and shared utility modules.
 
 ## Integration Points
 
-| Connecting Element | Direction     | Mechanism          | Description                                                                       |
-| :----------------- | :------------ | :----------------- | :-------------------------------------------------------------------------------- |
-| **Mountain**       | Bidirectional | gRPC via Vine      | Mountain activates extensions; Grove forwards API calls back to Mountain          |
-| **Cocoon**         | Sibling       | Shared API surface | Grove implements the same VS Code API surface as Cocoon for extension portability |
+| Connecting Element                                         | Direction     | Mechanism                                               | Description                                                                                                                                                                                                     |
+| :--------------------------------------------------------- | :------------ | :------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)** | Bidirectional | gRPC via [Vine](https://github.com/CodeEditorLand/Vine) | [Mountain](https://github.com/CodeEditorLand/Mountain) activates extensions; [Grove](https://github.com/CodeEditorLand/Grove) forwards API calls back to [Mountain](https://github.com/CodeEditorLand/Mountain) |
+| **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**     | Sibling       | Shared API surface                                      | [Grove](https://github.com/CodeEditorLand/Grove) implements the same VS Code API surface as [Cocoon](https://github.com/CodeEditorLand/Cocoon) for extension portability                                        |
 
 ---
 
 ## Configuration
 
-| Option            | CLI Flag / Feature | Default          | Description                                                  |
-| :---------------- | :----------------- | :--------------- | :----------------------------------------------------------- |
-| Standalone mode   | `--standalone`     | off              | Run without Mountain connection for testing                  |
-| Extension path    | `--extension`      | unset            | Load a specific extension directly                           |
-| Transport         | feature flag       | gRPC             | Select `grpc`, `ipc`, or `wasm` transport via Cargo features |
-| Memory limit      | runtime config     | platform default | Per-extension WASM memory ceiling enforced by WASMtime       |
-| WASM build target | `wasm32-wasi`      | native           | Extensions must target `wasm32-wasi` for WASM mode           |
+| Option            | CLI Flag / Feature | Default          | Description                                                                               |
+| :---------------- | :----------------- | :--------------- | :---------------------------------------------------------------------------------------- |
+| Standalone mode   | `--standalone`     | off              | Run without [Mountain](https://github.com/CodeEditorLand/Mountain) connection for testing |
+| Extension path    | `--extension`      | unset            | Load a specific extension directly                                                        |
+| Transport         | feature flag       | gRPC             | Select `grpc`, `ipc`, or `wasm` transport via Cargo features                              |
+| Memory limit      | runtime config     | platform default | Per-extension WASM memory ceiling enforced by WASMtime                                    |
+| WASM build target | `wasm32-wasi`      | native           | Extensions must target `wasm32-wasi` for WASM mode                                        |
 
 ### Cargo features
 

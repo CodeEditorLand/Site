@@ -26,20 +26,20 @@ causal chain.
 
 | Layer    | File / Module                                          | Pipe(s)        |
 | -------- | ------------------------------------------------------ | -------------- |
-| Build.sh | `Maintain/Script/PostHogCapture.sh`                    | PostHog + OTLP |
+| Build.sh | [`Maintain/Script/PostHogCapture.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh)                    | PostHog + OTLP |
 | Mountain | `Element/Mountain/Source/Binary/Build/PostHogPlugin/*` | PostHog        |
-| Mountain | `Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`   | OTLP           |
+| Mountain | [`Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs)   | OTLP           |
 | Mountain | `Element/Mountain/Source/Telemetry/*`                  | OTLP (tracing) |
 | Cocoon   | `Element/Cocoon/Source/Telemetry/PostHogBridge.ts`     | PostHog        |
-| Cocoon   | `Element/Cocoon/Source/Telemetry/OTLPBridge.ts`        | OTLP           |
+| Cocoon   | [`Element/Cocoon/Source/Telemetry/OTLPBridge.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts)        | OTLP           |
 | Wind     | `Element/Wind/Source/Telemetry/Bridge.ts`              | both           |
 | Sky      | `Element/Sky/Source/Function/Telemetry/Bridge.ts`      | both           |
 | Output   | `Element/Output/Source/Telemetry/*`                    | both           |
-| Sidecars | re-export Mountain's macros via the `tracing` crate    | OTLP           |
+| Sidecars | re-export [Mountain](https://github.com/CodeEditorLand/Mountain)'s macros via the `tracing` crate    | OTLP           |
 
 ## Event-name convention
 
-Every Land-emitted event uses the prefix `land:<element>:<action>`:
+Every [Land](https://github.com/CodeEditorLand/Land)-emitted event uses the prefix `land:<element>:<action>`:
 
 - `land:build:start`, `land:build:phase:complete`, `land:build:complete`,
   `land:build:error`
@@ -86,7 +86,7 @@ Single source of truth for both pipes. Read at boot by every layer.
 
 Every layer compiles the telemetry stack out of release builds:
 
-- **Rust** (`Mountain`, `Air`, `Echo`, `Rest`, `Grove`, `Mist`) - capture paths
+- **Rust** ([`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Air`](https://github.com/CodeEditorLand/Air), [`Echo`](https://github.com/CodeEditorLand/Echo), [`Rest`](https://github.com/CodeEditorLand/Rest), [`Grove`](https://github.com/CodeEditorLand/Grove), [`Mist`](https://github.com/CodeEditorLand/Mist)) - capture paths
   gate on `cfg!(debug_assertions)`. LLVM dead-codes them in `--release`.
 - **TypeScript** - bridges import lazily through
   `if (process.env.NODE_ENV !== "production") { … }` so esbuild's `define`
@@ -97,7 +97,7 @@ Every layer compiles the telemetry stack out of release builds:
 Plus the runtime kill switches: `Capture=false` short-circuits **all** pipes
 regardless of build mode; `Report=false` / `OTLPEnabled=false` flip a single
 pipe. (`Capture` is the telemetry switch; the unrelated `Disable` in
-`.env.Land.Diagnostics` controls polyfill / shim loading.)
+[`.env.Land.Diagnostics`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Diagnostics) controls polyfill / shim loading.)
 
 ## Bring-up sequence
 

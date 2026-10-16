@@ -2,6 +2,7 @@
 import { Header } from "../Component/Layout/Header";
 import Base from "../Layout/Base.astro";
 import { GetI18n } from "../Library/I18n/Server";
+import { LinkMentions } from "../Library/CodeMentions";
 
 const T = GetI18n();
 
@@ -26,27 +27,21 @@ const MetaDescription = T("meta.contributing.description", {
 	<div class="container mx-auto max-w-4xl px-4 py-16">
 		<!-- Breadcrumbs -->
 		<nav aria-label="Breadcrumb" class="mb-8">
-			<ol
-				class="flex flex-wrap items-center space-x-2 text-muted-foreground"
-			>
+			<ol class="flex flex-wrap items-center space-x-2 text-muted-foreground">
 				<li>
-					<a href="/" class="transition-colors hover:text-foreground"
-						>{
-							T("common.breadcrumb.home", {
-								defaultValue: "Home",
-							})
-						}</a
-					>
+					<a href="/" class="transition-colors hover:text-foreground">
+						{T("common.breadcrumb.home", {
+							defaultValue: "Home",
+						})}
+					</a>
 				</li>
 				<li class="mx-2">/</li>
 				<li>
-					<span class="font-medium text-foreground"
-						>{
-							T("common.contributing.pageTitle", {
-								defaultValue: "Contributing",
-							})
-						}</span
-					>
+					<span class="font-medium text-foreground">
+						{T("common.contributing.pageTitle", {
+							defaultValue: "Contributing",
+						})}
+					</span>
 				</li>
 			</ol>
 		</nav>
@@ -54,30 +49,27 @@ const MetaDescription = T("meta.contributing.description", {
 		<!-- Page Header -->
 		<header class="mb-12">
 			<h1 class="text-2xl font-medium tracking-tight sm:text-3xl">
-				{
-					T("common.contributing.pageTitle", {
-						defaultValue: "Contributing",
-					})
-				}
+				{T("common.contributing.pageTitle", {
+					defaultValue: "Contributing",
+				})}
 			</h1>
-			<p class="whitespace-pre-line text-muted">
-				{
+			<p
+				class="whitespace-pre-line text-muted"
+				set:html={LinkMentions(
 					T("common.contributing.pageSubtitle", {
 						defaultValue:
 							"Land is open source and built in public.\n\nEvery contribution - code, docs, tests, or design - ships to real users.",
-					})
-				}
-			</p>
+					}),
+				)}
+			/>
 		</header>
 
 		<!-- Quick Links -->
 		<section class="mb-12">
 			<h2 class="sr-only">
-				{
-					T("common.contributing.quickLinks.heading", {
-						defaultValue: "Quick Links",
-					})
-				}
+				{T("common.contributing.quickLinks.heading", {
+					defaultValue: "Quick Links",
+				})}
 			</h2>
 			<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 				<a
@@ -87,19 +79,16 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 				>
 					<h3 class="text-card-foreground mb-2 text-xl font-medium">
-						{
-							T("common.contributing.guide.title", {
-								defaultValue: "Contributing Guide",
-							})
-						}<span class="InlineSeparator">→</span>
+						{T("common.contributing.guide.title", {
+							defaultValue: "Contributing Guide",
+						})}
+						<span class="InlineSeparator">→</span>
 					</h3>
 					<p class="whitespace-pre-line text-card-foreground">
-						{
-							T("common.contributing.guide.description", {
-								defaultValue:
-									"Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes.",
-							})
-						}
+						{T("common.contributing.guide.description", {
+							defaultValue:
+								"Read CONTRIBUTING.md on GitHub for the full setup walkthrough: environment, branch conventions, and how to submit changes.",
+						})}
 					</p>
 				</a>
 
@@ -110,22 +99,16 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer block bg-card p-6 transition-colors hover:bg-secondary focus:outline-2 focus:outline-offset-2 focus:outline-[var(--Primary)]"
 				>
 					<h3 class="text-card-foreground mb-2 text-xl font-medium">
-						{
-							T("common.contributing.goodFirstIssues.title", {
-								defaultValue: "Good First Issues",
-							})
-						}<span class="InlineSeparator">→</span>
+						{T("common.contributing.goodFirstIssues.title", {
+							defaultValue: "Good First Issues",
+						})}
+						<span class="InlineSeparator">→</span>
 					</h3>
 					<p class="whitespace-pre-line text-card-foreground">
-						{
-							T(
-								"common.contributing.goodFirstIssues.description",
-								{
-									defaultValue:
-										'Browse issues labeled "good first issue" to find approachable tasks for new contributors.',
-								},
-							)
-						}
+						{T("common.contributing.goodFirstIssues.description", {
+							defaultValue:
+								'Browse issues labeled "good first issue" to find approachable tasks for new contributors.',
+						})}
 					</p>
 				</a>
 			</div>
@@ -134,40 +117,33 @@ const MetaDescription = T("meta.contributing.description", {
 		<!-- How to Contribute -->
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-medium">
-				{
-					T("common.contributing.howToContribute.heading", {
-						defaultValue: "How to Contribute",
-					})
-				}
+				{T("common.contributing.howToContribute.heading", {
+					defaultValue: "How to Contribute",
+				})}
 			</h2>
 			<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 				<ol class="space-y-6">
 					<li class="flex items-start gap-4">
-						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg"
-							>1</span
-						>
+						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
+							1
+						</span>
 						<div>
 							<h3 class="font-medium text-card-foreground">
-								{
-									T("common.contributing.step1.title", {
-										defaultValue: "Fork and Clone",
-									})
-								}
+								{T("common.contributing.step1.title", {
+									defaultValue: "Fork and Clone",
+								})}
 							</h3>
 							<p
 								class="mt-1 whitespace-pre-line text-card-foreground"
-							>
-								{
+								set:html={LinkMentions(
 									T("common.contributing.step1.description", {
 										defaultValue:
 											"Fork the Land repository on GitHub and clone it locally with submodules:",
-									})
-								}
-							</p>
+									}),
+								)}
+							/>
 							<div class="mt-2 flex items-start gap-2">
-								<pre
-									class="bg-mute min-w-0 flex-1 overflow-x-auto p-3 font-mono text-foreground">git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git</pre>
+								<pre class="bg-mute min-w-0 flex-1 overflow-x-auto p-3 font-mono text-foreground">git clone --recurse-submodules https://github.com/YOUR_USERNAME/Land.git</pre>
 								<jelly-icon-button
 									data-copy
 									size="small"
@@ -189,40 +165,42 @@ const MetaDescription = T("meta.contributing.description", {
 										stroke-linejoin="round"
 										style="color: var(--jelly-label)"
 										aria-hidden="true"
-										><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path
-											d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-										/></svg
 									>
+										<rect
+											width="14"
+											height="14"
+											x="8"
+											y="8"
+											rx="2"
+											ry="2"
+										/>
+										<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+									</svg>
 								</jelly-icon-button>
 							</div>
 						</div>
 					</li>
 					<li class="flex items-start gap-4">
-						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg"
-							>2</span
-						>
+						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
+							2
+						</span>
 						<div>
 							<h3 class="font-medium text-card-foreground">
-								{
-									T("common.contributing.step2.title", {
-										defaultValue: "Set Up the Environment",
-									})
-								}
+								{T("common.contributing.step2.title", {
+									defaultValue: "Set Up the Environment",
+								})}
 							</h3>
 							<p
 								class="mt-1 whitespace-pre-line text-card-foreground"
-							>
-								{
+								set:html={LinkMentions(
 									T("common.contributing.step2.description", {
 										defaultValue:
 											"Install Rust nightly and Node.js 24. Then compile the VS Code Editor submodule first (see Installation guide), then run:",
-									})
-								}
-							</p>
+									}),
+								)}
+							/>
 							<div class="mt-2 flex items-start gap-2">
-								<pre
-									class="bg-mute min-w-0 flex-1 overflow-x-auto p-3 font-mono text-foreground">cd Land && pnpm install && ./Maintain/Debug/Build.sh --profile debug-electron-bundled</pre>
+								<pre class="bg-mute min-w-0 flex-1 overflow-x-auto p-3 font-mono text-foreground">cd Land && pnpm install && ./Maintain/Debug/Build.sh --profile debug-electron-bundled</pre>
 								<jelly-icon-button
 									data-copy
 									size="small"
@@ -244,62 +222,61 @@ const MetaDescription = T("meta.contributing.description", {
 										stroke-linejoin="round"
 										style="color: var(--jelly-label)"
 										aria-hidden="true"
-										><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path
-											d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
-										/></svg
 									>
+										<rect
+											width="14"
+											height="14"
+											x="8"
+											y="8"
+											rx="2"
+											ry="2"
+										/>
+										<path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+									</svg>
 								</jelly-icon-button>
 							</div>
 						</div>
 					</li>
 					<li class="flex items-start gap-4">
-						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg"
-							>3</span
-						>
+						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
+							3
+						</span>
 						<div>
 							<h3 class="font-medium text-card-foreground">
-								{
-									T("common.contributing.step3.title", {
-										defaultValue: "Make Your Changes",
-									})
-								}
+								{T("common.contributing.step3.title", {
+									defaultValue: "Make Your Changes",
+								})}
 							</h3>
 							<p
 								class="mt-1 whitespace-pre-line text-card-foreground"
-							>
-								{
+								set:html={LinkMentions(
 									T("common.contributing.step3.description", {
 										defaultValue:
 											"Create a branch, make your changes, and follow the PascalCase naming convention used throughout the project.",
-									})
-								}
-							</p>
+									}),
+								)}
+							/>
 						</div>
 					</li>
 					<li class="flex items-start gap-4">
-						<span
-							class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg"
-							>4</span
-						>
+						<span class="flex h-8 w-8 shrink-0 items-center justify-center bg-secondary font-medium text-secondary-fg">
+							4
+						</span>
 						<div>
 							<h3 class="font-medium text-card-foreground">
-								{
-									T("common.contributing.step4.title", {
-										defaultValue: "Submit a Pull Request",
-									})
-								}
+								{T("common.contributing.step4.title", {
+									defaultValue: "Submit a Pull Request",
+								})}
 							</h3>
 							<p
 								class="mt-1 whitespace-pre-line text-card-foreground"
-							>
-								{
+								set:html={LinkMentions(
 									T("common.contributing.step4.description", {
 										defaultValue:
 											"Push your branch and open a pull request against the Current branch.\n\nDescribe what changed and why. One sentence is enough.",
-									})
-								}
-							</p>
+									}),
+								)}
+							/>
 						</div>
 					</li>
 				</ol>
@@ -309,35 +286,32 @@ const MetaDescription = T("meta.contributing.description", {
 		<!-- Elements Architecture -->
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-medium">
-				{
-					T("common.contributing.elements.heading", {
-						defaultValue: "Fifteen Elements, One Editor",
-					})
-				}
+				{T("common.contributing.elements.heading", {
+					defaultValue: "Fifteen Elements, One Editor",
+				})}
 			</h2>
-			<p class="mb-6 whitespace-pre-line text-muted-foreground">
-				{
+			<p
+				class="mb-6 whitespace-pre-line text-muted-foreground"
+				set:html={LinkMentions(
 					T("common.contributing.elements.description", {
 						defaultValue:
 							"Land is built from fifteen modular Elements, each a standalone Rust crate or TypeScript package. Each element can be developed, tested, and published independently without touching the others.",
-					})
-				}
-			</p>
-			<div
-				class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-			>
+					}),
+				)}
+			/>
+			<div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
 				<a
 					href="https://github.com/CodeEditorLand/Mountain"
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
-					<span class="font-medium"
-						>Mountain&#x2001;&#x26F0;&#xFE0F;</span
-					>
-					<span class="block text-card-foreground"
-						>Native backend</span
-					>
+					<span class="font-medium">
+						Mountain&#x2001;&#x26F0;&#xFE0F;
+					</span>
+					<span class="block text-card-foreground">
+						Native backend
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Cocoon"
@@ -346,9 +320,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Cocoon&#x2001;&#x1F98B;</span>
-					<span class="block text-card-foreground"
-						>Extension host</span
-					>
+					<span class="block text-card-foreground">
+						Extension host
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Wind"
@@ -357,9 +331,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Wind&#x2001;&#x1F343;</span>
-					<span class="block text-card-foreground"
-						>Workbench shell</span
-					>
+					<span class="block text-card-foreground">
+						Workbench shell
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Sky"
@@ -368,8 +342,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Sky&#x2001;&#x1F30C;</span>
-					<span class="block text-card-foreground">UI components</span
-					>
+					<span class="block text-card-foreground">
+						UI components
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Air"
@@ -378,9 +353,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Air&#x2001;&#x1FA81;</span>
-					<span class="block text-card-foreground"
-						>Background daemon</span
-					>
+					<span class="block text-card-foreground">
+						Background daemon
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Echo"
@@ -389,9 +364,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Echo&#x2001;&#x1F4E3;</span>
-					<span class="block text-card-foreground"
-						>Work-stealing scheduler</span
-					>
+					<span class="block text-card-foreground">
+						Work-stealing scheduler
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Common"
@@ -399,12 +374,12 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
-					<span class="font-medium"
-						>Common&#x2001;&#x1F468;&#x1F3FB;&#x200D;&#x1F3ED;</span
-					>
-					<span class="block text-card-foreground"
-						>Traits &amp; DTOs</span
-					>
+					<span class="font-medium">
+						Common&#x2001;&#x1F468;&#x1F3FB;&#x200D;&#x1F3ED;
+					</span>
+					<span class="block text-card-foreground">
+						Traits &amp; DTOs
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Vine"
@@ -413,8 +388,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Vine&#x2001;&#x1F33F;</span>
-					<span class="block text-card-foreground">gRPC protocol</span
-					>
+					<span class="block text-card-foreground">
+						gRPC protocol
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Rest"
@@ -422,11 +398,12 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
-					<span class="font-medium">Rest&#x2001;&#x26F1;&#xFE0F;</span
-					>
-					<span class="block text-card-foreground"
-						>TypeScript compiler</span
-					>
+					<span class="font-medium">
+						Rest&#x2001;&#x26F1;&#xFE0F;
+					</span>
+					<span class="block text-card-foreground">
+						TypeScript compiler
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Output"
@@ -443,9 +420,9 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
-					<span class="font-medium"
-						>Mist&#x2001;&#x1F32B;&#xFE0F;</span
-					>
+					<span class="font-medium">
+						Mist&#x2001;&#x1F32B;&#xFE0F;
+					</span>
 					<span class="block text-card-foreground">DNS resolver</span>
 				</a>
 				<a
@@ -464,9 +441,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">SideCar&#x2001;&#x1F683;</span>
-					<span class="block text-card-foreground"
-						>Node.js binary distributor</span
-					>
+					<span class="block text-card-foreground">
+						Node.js binary distributor
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Worker"
@@ -475,9 +452,9 @@ const MetaDescription = T("meta.contributing.description", {
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
 					<span class="font-medium">Worker&#x2001;&#x1F369;</span>
-					<span class="block text-card-foreground"
-						>Web Worker pool</span
-					>
+					<span class="block text-card-foreground">
+						Web Worker pool
+					</span>
 				</a>
 				<a
 					href="https://github.com/CodeEditorLand/Maintain"
@@ -485,104 +462,103 @@ const MetaDescription = T("meta.contributing.description", {
 					rel="noopener noreferrer"
 					class="StaccatoCard StaccatoBorderShimmer bg-card p-3 text-center transition-colors hover:bg-secondary"
 				>
-					<span class="font-medium"
-						>Maintain&#x2001;&#x1F4AA;&#x1F3FB;</span
-					>
-					<span class="block text-card-foreground"
-						>Build orchestrator</span
-					>
+					<span class="font-medium">
+						Maintain&#x2001;&#x1F4AA;&#x1F3FB;
+					</span>
+					<span class="block text-card-foreground">
+						Build orchestrator
+					</span>
 				</a>
 			</div>
-			<p class="mt-4 whitespace-pre-line text-muted-foreground">
-				{
+			<p
+				class="mt-4 whitespace-pre-line text-muted-foreground"
+				set:html={LinkMentions(
 					T("common.contributing.elements.docs", {
 						defaultValue:
 							"Every Element has its own README with architecture details. Find them in Land/Element/",
-					})
-				}
-			</p>
+					}),
+				)}
+			/>
 		</section>
 
 		<!-- Ways to Contribute -->
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-medium">
-				{
-					T("common.contributing.ways.heading", {
-						defaultValue: "Ways to Contribute",
-					})
-				}
+				{T("common.contributing.ways.heading", {
+					defaultValue: "Ways to Contribute",
+				})}
 			</h2>
 			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
 					<h3 class="text-card-foreground mb-2 font-medium">
-						{
-							T("common.contributing.ways.code.title", {
-								defaultValue: "Code",
-							})
-						}&#x2001;&#x1F4BB;
+						{T("common.contributing.ways.code.title", {
+							defaultValue: "Code",
+						})}
+						&#x2001;&#x1F4BB;
 					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{
+					<p
+						class="whitespace-pre-line text-card-foreground"
+						set:html={LinkMentions(
 							T("common.contributing.ways.code.description", {
 								defaultValue:
 									"Fix bugs, implement features, or improve performance in Rust or TypeScript.",
-							})
-						}
-					</p>
+							}),
+						)}
+					/>
 				</div>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
 					<h3 class="text-card-foreground mb-2 font-medium">
-						{
-							T("common.contributing.ways.documentation.title", {
-								defaultValue: "Documentation",
-							})
-						}&#x2001;&#x1F4D6;
+						{T("common.contributing.ways.documentation.title", {
+							defaultValue: "Documentation",
+						})}
+						&#x2001;&#x1F4D6;
 					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{
+					<p
+						class="whitespace-pre-line text-card-foreground"
+						set:html={LinkMentions(
 							T(
 								"common.contributing.ways.documentation.description",
 								{
 									defaultValue:
 										"Improve guides, add examples, or translate existing content into other languages.",
 								},
-							)
-						}
-					</p>
+							),
+						)}
+					/>
 				</div>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
 					<h3 class="text-card-foreground mb-2 font-medium">
-						{
-							T("common.contributing.ways.testing.title", {
-								defaultValue: "Testing",
-							})
-						}&#x2001;&#x1F9EA;
+						{T("common.contributing.ways.testing.title", {
+							defaultValue: "Testing",
+						})}
+						&#x2001;&#x1F9EA;
 					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{
+					<p
+						class="whitespace-pre-line text-card-foreground"
+						set:html={LinkMentions(
 							T("common.contributing.ways.testing.description", {
 								defaultValue:
 									"Write tests, reproduce reported bugs, or help triage open issues.",
-							})
-						}
-					</p>
+							}),
+						)}
+					/>
 				</div>
 				<div class="StaccatoCard StaccatoBorderShimmer bg-card p-5">
 					<h3 class="text-card-foreground mb-2 font-medium">
-						{
-							T("common.contributing.ways.design.title", {
-								defaultValue: "Design",
-							})
-						}&#x2001;&#x1F3A8;
+						{T("common.contributing.ways.design.title", {
+							defaultValue: "Design",
+						})}
+						&#x2001;&#x1F3A8;
 					</h3>
-					<p class="whitespace-pre-line text-card-foreground">
-						{
+					<p
+						class="whitespace-pre-line text-card-foreground"
+						set:html={LinkMentions(
 							T("common.contributing.ways.design.description", {
 								defaultValue:
 									"Contribute UI and UX improvements, icons, or visual design work for the editor or website.",
-							})
-						}
-					</p>
+							}),
+						)}
+					/>
 				</div>
 			</div>
 		</section>
@@ -590,11 +566,9 @@ const MetaDescription = T("meta.contributing.description", {
 		<!-- Funding -->
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-medium">
-				{
-					T("common.contributing.funding.heading", {
-						defaultValue: "Funding",
-					})
-				}
+				{T("common.contributing.funding.heading", {
+					defaultValue: "Funding",
+				})}
 			</h2>
 			<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 				<div class="mb-4 flex flex-wrap gap-x-4 gap-y-1">
@@ -604,56 +578,54 @@ const MetaDescription = T("meta.contributing.description", {
 						rel="noopener noreferrer"
 						class="font-medium text-card-foreground hover:underline"
 					>
-						NLnet Project Page<span class="InlineSeparator"
-							>&#x1F310;</span
-						>
+						NLnet Project Page
+						<span class="InlineSeparator">&#x1F310;</span>
 					</a>
 					<a
 						href="https://nlnet.nl/commonsfund"
-											target="_blank"
-											rel="noopener noreferrer"
-											class="font-medium text-card-foreground hover:underline"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-card-foreground hover:underline"
 					>
-						NGI0 Commons Fund<span class="InlineSeparator"
-							>&#x1F91D;</span
-						>
+						NGI0 Commons Fund
+						<span class="InlineSeparator">&#x1F91D;</span>
 					</a>
 					<a
 						href="https://nlnet.nl"
-											target="_blank"
-											rel="noopener noreferrer"
-											class="font-medium text-card-foreground hover:underline"
+						target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium text-card-foreground hover:underline"
 					>
 						NLnet<span class="InlineSeparator">&#x1F3E0;</span>
 					</a>
 				</div>
-				<p class="mb-4 whitespace-pre-line text-card-foreground">
-					{
+				<p
+					class="mb-4 whitespace-pre-line text-card-foreground"
+					set:html={LinkMentions(
 						T("common.contributing.funding.nlnetIntro", {
 							defaultValue:
 								"Code Editor Land has been funded through the NGI0 Commons Fund, supported by NLnet.",
-						})
-					}
-				</p>
-				<p class="whitespace-pre-line text-card-foreground">
-					{
+						}),
+					)}
+				/>
+				<p
+					class="whitespace-pre-line text-card-foreground"
+					set:html={LinkMentions(
 						T("common.contributing.funding.playformInfo", {
 							defaultValue:
 								"The project is operated by PlayForm, a company based in Sofia, Bulgaria.\n\nPlayForm acts as the open-source steward for Code Editor Land under the NGI0 Commons Fund grant.",
-						})
-					}
-				</p>
+						}),
+					)}
+				/>
 			</div>
 		</section>
 
 		<!-- Code of Conduct -->
 		<section class="mb-12">
 			<h2 class="mb-6 text-2xl font-medium">
-				{
-					T("common.contributing.conduct.heading", {
-						defaultValue: "Code of Conduct",
-					})
-				}
+				{T("common.contributing.conduct.heading", {
+					defaultValue: "Code of Conduct",
+				})}
 			</h2>
 			<div class="StaccatoCard StaccatoBorderShimmer bg-card p-6">
 				<a
@@ -661,28 +633,29 @@ const MetaDescription = T("meta.contributing.description", {
 					target="_blank"
 					rel="noopener noreferrer"
 					class="StaccatoButton font-medium text-card-foreground hover:underline"
-					>Code of Conduct<span class="InlineSeparator">→</span></a
 				>
-				<p class="mt-2 text-card-foreground">
-					{
+					Code of Conduct<span class="InlineSeparator">→</span>
+				</a>
+				<p
+					class="mt-2 text-card-foreground"
+					set:html={LinkMentions(
 						T("common.contributing.conduct.description", {
 							defaultValue:
 								"All participants in the Land community are expected to be respectful and constructive.\n\nRead the full Code of Conduct on GitHub.",
-						})
-					}
-				</p>
+						}),
+					)}
+				/>
 			</div>
 		</section>
 
 		<!-- Back to top -->
 		<div class="mt-12 border-t pt-8">
-			<a href="#top" class="StaccatoButton text-primary hover:underline"
-				>{
-					T("common.button.backToTop", {
-						defaultValue: "Back to top",
-					})
-				}<span class="InlineSeparator">↑</span></a
-			>
+			<a href="#top" class="StaccatoButton text-primary hover:underline">
+				{T("common.button.backToTop", {
+					defaultValue: "Back to top",
+				})}
+				<span class="InlineSeparator">↑</span>
+			</a>
 		</div>
 	</div>
 </Base>

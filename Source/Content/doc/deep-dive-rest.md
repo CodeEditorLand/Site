@@ -9,8 +9,8 @@ description:
     reference."
 ---
 
-Rest provides the technical foundation TypeScript compiler
-within the Land project. **Rest** is a Rust binary that uses the OXC toolchain
+[Rest](https://github.com/CodeEditorLand/Rest) provides the technical foundation TypeScript compiler
+within the [Land](https://github.com/CodeEditorLand/Land) project. **[Rest](https://github.com/CodeEditorLand/Rest)** is a Rust binary that uses the OXC toolchain
 to compile TypeScript 2-3x faster than esbuild while producing output compatible
 with VS Code's build process.
 
@@ -28,20 +28,20 @@ concurrently across CPU cores.
 
 ## Key Modules
 
-| Path                              | Description                                                                 |
-| :-------------------------------- | :-------------------------------------------------------------------------- |
-| `Source/Library.rs`               | Binary entry point; parses CLI arguments and dispatches to compiler         |
-| `Source/Fn/OXC/Compiler.rs`       | Main compilation orchestrator; coordinates parser, transformer, and codegen |
-| `Source/Fn/OXC/Parser.rs`         | Wraps `oxc_parser` with error normalization and source tracking             |
-| `Source/Fn/OXC/Transformer.rs`    | Applies TypeScript-to-JavaScript AST transformations including decorators   |
-| `Source/Fn/OXC/Codegen.rs`        | Generates final JavaScript text from the transformed AST                    |
-| `Source/Fn/Build.rs`              | Directory-based compilation: walks source trees preserving structure        |
-| `Source/Fn/Bundle/`               | Bundling utilities for multi-file outputs                                   |
-| `Source/Fn/NLS/`                  | Natural Language Support string extraction                                  |
-| `Source/Fn/SWC/`                  | SWC integration shims (alternative transformer path)                        |
-| `Source/Fn/Worker/`               | Worker thread support for parallel compilation                              |
-| `Source/Struct/CompilerConfig.rs` | Configuration struct: decorator mode, class fields, source maps             |
-| `Source/Struct/SWC.rs`            | SWC-specific configuration types                                            |
+| Path                                                                                                                     | Description                                                                 |
+| :----------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------- |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Library.rs)                             | Binary entry point; parses CLI arguments and dispatches to compiler         |
+| [`Source/Fn/OXC/Compiler.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs)             | Main compilation orchestrator; coordinates parser, transformer, and codegen |
+| [`Source/Fn/OXC/Parser.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Parser.rs)                 | Wraps `oxc_parser` with error normalization and source tracking             |
+| [`Source/Fn/OXC/Transformer.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Transformer.rs)       | Applies TypeScript-to-JavaScript AST transformations including decorators   |
+| [`Source/Fn/OXC/Codegen.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Codegen.rs)               | Generates final JavaScript text from the transformed AST                    |
+| [`Source/Fn/Build.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/Build.rs)                           | Directory-based compilation: walks source trees preserving structure        |
+| `Source/Fn/Bundle/`                                                                                                      | Bundling utilities for multi-file outputs                                   |
+| `Source/Fn/NLS/`                                                                                                         | Natural Language Support string extraction                                  |
+| `Source/Fn/SWC/`                                                                                                         | SWC integration shims (alternative transformer path)                        |
+| `Source/Fn/Worker/`                                                                                                      | Worker thread support for parallel compilation                              |
+| [`Source/Struct/CompilerConfig.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs) | Configuration struct: decorator mode, class fields, source maps             |
+| [`Source/Struct/SWC.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/SWC.rs)                       | SWC-specific configuration types                                            |
 
 ---
 
@@ -55,11 +55,11 @@ Tokio worker threads and collects aggregated metrics.
 
 ## Integration Points
 
-| Connecting Element | Direction         | Mechanism                           | Description                                                                  |
-| :----------------- | :---------------- | :---------------------------------- | :--------------------------------------------------------------------------- |
-| **Output**         | Consumer          | Process invocation / esbuild plugin | Output's `RestPlugin.ts` invokes the Rest binary or calls it via plugin API  |
-| **Cocoon**         | Indirect consumer | Compiled artifacts                  | Cocoon loads the JavaScript produced by Rest from `Target/Microsoft/VSCode/` |
-| **Sky**            | Indirect consumer | `@codeeditorland/output` package    | Sky loads VS Code UI components compiled through the Rest pipeline           |
+| Connecting Element                                     | Direction         | Mechanism                                                                    | Description                                                                                                                                                        |
+| :----------------------------------------------------- | :---------------- | :--------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Output](https://github.com/CodeEditorLand/Output)** | Consumer          | Process invocation / esbuild plugin                                          | [Output](https://github.com/CodeEditorLand/Output)'s `RestPlugin.ts` invokes the [Rest](https://github.com/CodeEditorLand/Rest) binary or calls it via plugin API  |
+| **[Cocoon](https://github.com/CodeEditorLand/Cocoon)** | Indirect consumer | Compiled artifacts                                                           | [Cocoon](https://github.com/CodeEditorLand/Cocoon) loads the JavaScript produced by [Rest](https://github.com/CodeEditorLand/Rest) from `Target/Microsoft/VSCode/` |
+| **Sky**                                                | Indirect consumer | [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output) package | [Sky](https://github.com/CodeEditorLand/Sky) loads VS Code UI components compiled through the [Rest](https://github.com/CodeEditorLand/Rest) pipeline              |
 
 ---
 
@@ -75,5 +75,5 @@ Tokio worker threads and collects aggregated metrics.
 | Source maps        | `CompilerConfig`    | development only          | Inline source maps for debug builds                          |
 
 The `CompilerConfig` struct is populated from either CLI flags or from the
-esbuild plugin context when Rest is invoked as a plugin within the Output build
+esbuild plugin context when [Rest](https://github.com/CodeEditorLand/Rest) is invoked as a plugin within the [Output](https://github.com/CodeEditorLand/Output) build
 pipeline.

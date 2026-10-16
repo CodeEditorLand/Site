@@ -9,11 +9,11 @@ description:
     Sky, and Wind."
 ---
 
-Output is the build orchestration layer for Land's TypeScript assets. It wraps
-ESBuild with Land-specific transforms, plugin hooks, and polyfill injection,
-and supports an optional Rest (OXC-based) compiler pipeline for faster
-TypeScript compilation. The result is published as the `@codeeditorland/output`
-npm package consumed by Cocoon (extension host), Sky (UI layer), and Wind
+[Output](https://github.com/CodeEditorLand/Output) is the build orchestration layer for [Land](https://github.com/CodeEditorLand/Land)'s TypeScript assets. It wraps
+ESBuild with [Land](https://github.com/CodeEditorLand/Land)-specific transforms, plugin hooks, and polyfill injection,
+and supports an optional [Rest](https://github.com/CodeEditorLand/Rest) (OXC-based) compiler pipeline for faster
+TypeScript compilation. The result is published as the [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output)
+npm package consumed by [Cocoon](https://github.com/CodeEditorLand/Cocoon) (extension host), [Sky](https://github.com/CodeEditorLand/Sky) (UI layer), and [Wind](https://github.com/CodeEditorLand/Wind)
 (service layer).
 
 ## Architecture
@@ -21,29 +21,29 @@ npm package consumed by Cocoon (extension host), Sky (UI layer), and Wind
 <img src="/Mermaid/7e71cba488932f79.svg" alt="Mermaid diagram" />
 ### Module Map
 
-| Path                             | Purpose                                    |
-| -------------------------------- | ------------------------------------------ |
-| `Source/ESBuild/Output.ts`       | Primary ESBuild compilation pipeline       |
-| `Source/ESBuild/Rest/`           | Rest OXC compiler plugin integration       |
-| `Source/ESBuild/Microsoft/`      | VS Code source-specific compilation config |
-| `Source/ESBuild/CodeEditorLand/` | Land-specific compilation config           |
-| `Source/ESBuild/Exclude/`        | Exclude patterns for compilation           |
-| `Source/Plugin/Apply.ts`         | ESBuild plugin for applying transforms     |
-| `Source/Plugin/Copy/`            | Asset copying plugin                       |
-| `Source/Plugin/Transform/`       | Code transform plugins                     |
-| `Source/Plugin/Polyfill/`        | Polyfill injection plugins                 |
-| `Source/Plugin/Index.ts`         | Plugin registry                            |
-| `Source/Polyfill/Child/`         | Child process polyfills                    |
-| `Source/Polyfill/File/`          | File system polyfills                      |
-| `Source/Polyfill/IPC/`           | IPC polyfills                              |
-| `Source/Polyfill/Native/`        | Native module polyfills                    |
-| `Source/Polyfill/Process/`       | Process polyfills                          |
-| `Source/Polyfill/Shared/`        | Shared polyfill utilities                  |
-| `Source/Service/CEL/`            | Code Editor Land specific services         |
-| `Source/Service/Dev/`            | Development-time services                  |
-| `Source/Service/Tauri/`          | Tauri-specific services                    |
-| `Source/Asset/Style/`            | CSS asset management                       |
-| `Source/Apply/Pipeline.ts`       | Apply pipeline orchestration               |
+| Path                                                                                                         | Purpose                                    |
+| ------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| [`Source/ESBuild/Output.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts) | Primary ESBuild compilation pipeline       |
+| `Source/ESBuild/Rest/`                                                                                       | Rest OXC compiler plugin integration       |
+| `Source/ESBuild/Microsoft/`                                                                                  | VS Code source-specific compilation config |
+| `Source/ESBuild/CodeEditorLand/`                                                                             | Land-specific compilation config           |
+| `Source/ESBuild/Exclude/`                                                                                    | Exclude patterns for compilation           |
+| [`Source/Plugin/Apply.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts)     | ESBuild plugin for applying transforms     |
+| `Source/Plugin/Copy/`                                                                                        | Asset copying plugin                       |
+| `Source/Plugin/Transform/`                                                                                   | Code transform plugins                     |
+| `Source/Plugin/Polyfill/`                                                                                    | Polyfill injection plugins                 |
+| [`Source/Plugin/Index.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Index.ts)     | Plugin registry                            |
+| `Source/Polyfill/Child/`                                                                                     | Child process polyfills                    |
+| `Source/Polyfill/File/`                                                                                      | File system polyfills                      |
+| `Source/Polyfill/IPC/`                                                                                       | IPC polyfills                              |
+| `Source/Polyfill/Native/`                                                                                    | Native module polyfills                    |
+| `Source/Polyfill/Process/`                                                                                   | Process polyfills                          |
+| `Source/Polyfill/Shared/`                                                                                    | Shared polyfill utilities                  |
+| `Source/Service/CEL/`                                                                                        | Code Editor Land specific services         |
+| `Source/Service/Dev/`                                                                                        | Development-time services                  |
+| `Source/Service/Tauri/`                                                                                      | Tauri-specific services                    |
+| `Source/Asset/Style/`                                                                                        | CSS asset management                       |
+| [`Source/Apply/Pipeline.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Apply/Pipeline.ts) | Apply pipeline orchestration               |
 
 ## Compiler Modes
 
@@ -112,13 +112,13 @@ export interface OutputPlugin {
 
 ### Built-in Plugins
 
-| Plugin              | Purpose                                        |
-| ------------------- | ---------------------------------------------- |
-| `Apply.ts`          | Applies Land-specific code transforms          |
-| `Copy.ts`           | Copies static assets to output directory       |
-| `Transform.ts`      | TypeScript-to-JavaScript transformation config |
-| `Polyfill/Index.ts` | Polyfill injection orchestration               |
-| `RestPlugin.ts`     | Rest OXC compiler integration (optional)       |
+| Plugin                                                                                     | Purpose                                                                            |
+| ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| [`Apply.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts) | Applies [Land](https://github.com/CodeEditorLand/Land)-specific code transforms    |
+| [`Copy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Copy.ts)   | Copies static assets to output directory                                           |
+| `Transform.ts`                                                                             | TypeScript-to-JavaScript transformation config                                     |
+| `Polyfill/Index.ts`                                                                        | Polyfill injection orchestration                                                   |
+| `RestPlugin.ts`                                                                            | [Rest](https://github.com/CodeEditorLand/Rest) OXC compiler integration (optional) |
 
 ## Polyfill Injection
 

@@ -8,7 +8,7 @@ description:
     source."
 ---
 
-Land is source-build only. There are no public signed installer packages.
+[Land](https://github.com/CodeEditorLand/Land) is source-build only. There are no public signed installer packages.
 Building from source is the single supported path today. The build is a
 **two-step linear flow**: compile the VS Code Editor submodule, then build the
 Land application with the chosen profile.
@@ -27,9 +27,9 @@ Land application with the chosen profile.
 | Disk space       | ~10 GB        | VS Code source (~2 GB), Rust build cache (~4 GB), Node modules (~2 GB), build artifacts (~1 GB). |
 | RAM              | 8 GB minimum  | 16 GB recommended for parallel Rust compilation.                                                 |
 
-The workspace Rust toolchain is pinned in `Land/rust-toolchain.toml` and must
+The workspace Rust toolchain is pinned in [`Land/rust-toolchain.toml`](https://github.com/CodeEditorLand/Land/tree/Current/rust-toolchain.toml) and must
 not be upgraded without auditing 51 `[patch.crates-io]` redirects in
-`Cargo.toml` that are version-sensitive.
+[`Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml) that are version-sensitive.
 
 ---
 
@@ -62,7 +62,7 @@ source ~/.zshrc
 > independent branches. Recursive cloning pulls the wrong commits.
 
 Each element is a separate Git repository cloned into `Element/<Name>/` inside
-the Land repository root. Clone the main repo first, then each element
+the [Land](https://github.com/CodeEditorLand/Land) repository root. Clone the main repo first, then each element
 individually on the `Current` branch.
 
 ```sh
@@ -72,24 +72,24 @@ cd Land
 
 ### Element Repository Table
 
-| Element  | Repository                         | Path in Land repo                        |
-| -------- | ---------------------------------- | ---------------------------------------- |
-| Common   | github.com/CodeEditorLand/Common   | `Element/Common`                         |
-| Echo     | github.com/CodeEditorLand/Echo     | `Element/Echo`                           |
-| Vine     | github.com/CodeEditorLand/Vine     | `Element/Vine`                           |
-| Mountain | github.com/CodeEditorLand/Mountain | `Element/Mountain`                       |
-| Cocoon   | github.com/CodeEditorLand/Cocoon   | `Element/Cocoon`                         |
-| Wind     | github.com/CodeEditorLand/Wind     | `Element/Wind`                           |
-| Sky      | github.com/CodeEditorLand/Sky      | `Element/Sky`                            |
-| Output   | github.com/CodeEditorLand/Output   | `Element/Output`                         |
-| Rest     | github.com/CodeEditorLand/Rest     | `Element/Rest`                           |
-| Worker   | github.com/CodeEditorLand/Worker   | `Element/Worker`                         |
-| Mist     | github.com/CodeEditorLand/Mist     | `Element/Mist`                           |
-| Maintain | github.com/CodeEditorLand/Maintain | `Element/Maintain`                       |
-| Air      | github.com/CodeEditorLand/Air      | `Element/Air`                            |
-| SideCar  | github.com/CodeEditorLand/SideCar  | `Element/SideCar`                        |
-| Grove    | github.com/CodeEditorLand/Grove    | `Element/Grove`                          |
-| Editor   | github.com/CodeEditorLand/Editor   | `Dependency/Microsoft/Dependency/Editor` |
+| Element                                                | Repository                         | Path in Land repo                                                                                                                      |
+| ------------------------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [Common](https://github.com/CodeEditorLand/Common)     | github.com/CodeEditorLand/Common   | [`Element/Common`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Common)                                                 |
+| [Echo](https://github.com/CodeEditorLand/Echo)         | github.com/CodeEditorLand/Echo     | [`Element/Echo`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Echo)                                                     |
+| [Vine](https://github.com/CodeEditorLand/Vine)         | github.com/CodeEditorLand/Vine     | [`Element/Vine`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Vine)                                                     |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) | github.com/CodeEditorLand/Mountain | [`Element/Mountain`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain)                                             |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon)     | github.com/CodeEditorLand/Cocoon   | [`Element/Cocoon`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon)                                                 |
+| [Wind](https://github.com/CodeEditorLand/Wind)         | github.com/CodeEditorLand/Wind     | [`Element/Wind`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind)                                                     |
+| [Sky](https://github.com/CodeEditorLand/Sky)           | github.com/CodeEditorLand/Sky      | [`Element/Sky`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky)                                                       |
+| [Output](https://github.com/CodeEditorLand/Output)     | github.com/CodeEditorLand/Output   | [`Element/Output`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Output)                                                 |
+| [Rest](https://github.com/CodeEditorLand/Rest)         | github.com/CodeEditorLand/Rest     | [`Element/Rest`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest)                                                     |
+| [Worker](https://github.com/CodeEditorLand/Worker)     | github.com/CodeEditorLand/Worker   | [`Element/Worker`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Worker)                                                 |
+| [Mist](https://github.com/CodeEditorLand/Mist)         | github.com/CodeEditorLand/Mist     | [`Element/Mist`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mist)                                                     |
+| [Maintain](https://github.com/CodeEditorLand/Maintain) | github.com/CodeEditorLand/Maintain | [`Element/Maintain`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Maintain)                                             |
+| [Air](https://github.com/CodeEditorLand/Air)           | github.com/CodeEditorLand/Air      | [`Element/Air`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Air)                                                       |
+| [SideCar](https://github.com/CodeEditorLand/SideCar)   | github.com/CodeEditorLand/SideCar  | [`Element/SideCar`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar)                                               |
+| [Grove](https://github.com/CodeEditorLand/Grove)       | github.com/CodeEditorLand/Grove    | [`Element/Grove`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove)                                                   |
+| Editor                                                 | github.com/CodeEditorLand/Editor   | [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor) |
 
 After cloning each element, check out its `Current` branch:
 
@@ -117,11 +117,11 @@ npm run compile
 npm run compile-extensions-build
 ```
 
-> The Editor submodule uses **npm**, not pnpm. The Land workspace uses pnpm, but
+> The Editor submodule uses **npm**, not pnpm. The [Land](https://github.com/CodeEditorLand/Land) workspace uses pnpm, but
 > the VS Code platform build requires npm for its lockfile and lifecycle hooks.
 
 The compilation takes approximately 5-8 minutes on a modern machine. The output
-is consumed by the `@codeeditorland/output` package.
+is consumed by the [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output) package.
 
 ---
 
@@ -134,19 +134,19 @@ cd Land
 
 ### Common Build Profiles
 
-| Profile                         | Workbench      | Feature coverage                 | Output type                             |
-| ------------------------------- | -------------- | -------------------------------- | --------------------------------------- |
-| `debug`                         | Browser        | 70-80%                           | Dev binary                              |
-| `debug-mountain`                | Mountain       | 80-90%                           | Dev binary                              |
-| `debug-electron`                | Electron       | 95%+                             | Dev binary                              |
-| `debug-electron-bundled`        | Electron       | 95%+                             | Dev binary with Vite/Astro pre-compiled |
-| `debug-electron-unbundled`      | Electron       | 95%+                             | Dev binary, dynamic-import path         |
-| `debug-mountain-only`           | Mountain       | No Cocoon subprocess             | Dev binary                              |
-| `debug-cocoon-headless`         | None           | Mountain + Cocoon, Wind disabled | Dev binary                              |
-| `debug-kernel`                  | None           | Pure Mountain, no built-ins      | Dev binary                              |
-| `debug-electron-rest`           | Electron + OXC | 95%+ with faster TS compiler     | Dev binary                              |
-| `production-electron-bundled`   | Electron       | Optimized release                | Prod binary                             |
-| `production-electron-unbundled` | Electron       | Release without bundled assets   | Prod binary                             |
+| Profile                         | Workbench                                              | Feature coverage                                                                                                                                                     | Output type                             |
+| ------------------------------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- |
+| `debug`                         | Browser                                                | 70-80%                                                                                                                                                               | Dev binary                              |
+| `debug-mountain`                | [Mountain](https://github.com/CodeEditorLand/Mountain) | 80-90%                                                                                                                                                               | Dev binary                              |
+| `debug-electron`                | Electron                                               | 95%+                                                                                                                                                                 | Dev binary                              |
+| `debug-electron-bundled`        | Electron                                               | 95%+                                                                                                                                                                 | Dev binary with Vite/Astro pre-compiled |
+| `debug-electron-unbundled`      | Electron                                               | 95%+                                                                                                                                                                 | Dev binary, dynamic-import path         |
+| `debug-mountain-only`           | [Mountain](https://github.com/CodeEditorLand/Mountain) | No [Cocoon](https://github.com/CodeEditorLand/Cocoon) subprocess                                                                                                     | Dev binary                              |
+| `debug-cocoon-headless`         | None                                                   | [Mountain](https://github.com/CodeEditorLand/Mountain) + [Cocoon](https://github.com/CodeEditorLand/Cocoon), [Wind](https://github.com/CodeEditorLand/Wind) disabled | Dev binary                              |
+| `debug-kernel`                  | None                                                   | Pure [Mountain](https://github.com/CodeEditorLand/Mountain), no built-ins                                                                                            | Dev binary                              |
+| `debug-electron-rest`           | Electron + OXC                                         | 95%+ with faster TS compiler                                                                                                                                         | Dev binary                              |
+| `production-electron-bundled`   | Electron                                               | Optimized release                                                                                                                                                    | Prod binary                             |
+| `production-electron-unbundled` | Electron                                               | Release without bundled assets                                                                                                                                       | Prod binary                             |
 
 The profile flag controls which workbench variant is compiled, which tier flags
 are active, and whether assets are pre-bundled. The `debug-mountain` profile is
@@ -214,7 +214,7 @@ To manually re-sign after modifying the bundle:
 BundleLevel=debug sh Maintain/Script/SignBundle.sh
 ```
 
-Tauri's `tauri.conf.json` and the `Entitlements.plist` file are the single
+Tauri's [`tauri.conf.json`](https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json) and the [`Entitlements.plist`](https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist) file are the single
 sources of truth for what the FIDDEE binary is permitted to do on macOS --
 hardened runtime, keychain access, and network client capability -- without a
 separate Xcode project.
@@ -223,14 +223,14 @@ separate Xcode project.
 
 ## Quick Troubleshooting ⚠️
 
-| Symptom                      | Fix                                                                            |
-| ---------------------------- | ------------------------------------------------------------------------------ |
-| `npm install` stalls         | Set `ELECTRON_SKIP_BINARY_DOWNLOAD=1` and `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` |
-| Playwright lockfile error    | `rm -rf ~/Library/Caches/ms-playwright/__dirlock`                              |
-| App crashes on macOS         | `BundleLevel=debug sh Maintain/Script/SignBundle.sh`                           |
-| Compilation errors in Editor | `git clean -dfx && rm -rf node_modules && npm install && npm run compile`      |
-| Rust toolchain mismatch      | Check `Land/rust-toolchain.toml` and `rustc --version`                         |
-| `git submodule` issues       | Never use `--recursive`. Clone each element individually on `Current`.         |
+| Symptom                      | Fix                                                                                                                               |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `npm install` stalls         | Set `ELECTRON_SKIP_BINARY_DOWNLOAD=1` and `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`                                                    |
+| Playwright lockfile error    | `rm -rf ~/Library/Caches/ms-playwright/__dirlock`                                                                                 |
+| App crashes on macOS         | `BundleLevel=debug sh Maintain/Script/SignBundle.sh`                                                                              |
+| Compilation errors in Editor | `git clean -dfx && rm -rf node_modules && npm install && npm run compile`                                                         |
+| Rust toolchain mismatch      | Check [`Land/rust-toolchain.toml`](https://github.com/CodeEditorLand/Land/tree/Current/rust-toolchain.toml) and `rustc --version` |
+| `git submodule` issues       | Never use `--recursive`. Clone each element individually on `Current`.                                                            |
 
 ---
 
@@ -246,8 +246,8 @@ separate Xcode project.
 
 ## Funding 💎
 
-Land's development is funded by the **NLnet NGI0 Commons Fund**, a European
+[Land](https://github.com/CodeEditorLand/Land)'s development is funded by the **NLnet NGI0 Commons Fund**, a European
 initiative supporting open-source infrastructure. The project is maintained by
-**PlayForm** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
+**[PlayForm](https://PlayForm.Cloud)** (Sofia, Bulgaria) as a non-profit effort. All code is dedicated to
 the public domain under CC0 - no CLA required, no copyright assignment, no
 restrictions on use.

@@ -8,11 +8,11 @@ description:
     relying on Node.js process isolation.
 ---
 
-Grove is Land's native Rust and WASM extension host. It provides a sandboxed
+[Grove](https://github.com/CodeEditorLand/Grove) is [Land](https://github.com/CodeEditorLand/Land)'s native Rust and WASM extension host. It provides a sandboxed
 environment for running WASM-compiled VS Code extensions via Wasmtime, sharing
-the same VS Code API surface as Cocoon. Grove is implemented and available as an
+the same VS Code API surface as [Cocoon](https://github.com/CodeEditorLand/Cocoon). Grove is implemented and available as an
 optional build feature; it is not the active extension path for existing VS Code
-extensions. Cocoon remains the default host for unmodified extension
+extensions. [Cocoon](https://github.com/CodeEditorLand/Cocoon) remains the default host for unmodified extension
 compatibility.
 
 ## The problem Grove solves
@@ -23,52 +23,52 @@ another extension's in-memory state. The extension sandbox in VS Code is a
 policy document enforced by trust, not a technical boundary enforced by the
 runtime.
 
-Grove makes the sandbox a hardware-enforced boundary. A WASM module running
+[Grove](https://github.com/CodeEditorLand/Grove) makes the sandbox a hardware-enforced boundary. A WASM module running
 inside Wasmtime has no access to the host OS by default. It can only call
 functions that the host explicitly exports to it. An extension that requests
 file access gets exactly the file handles it was granted -- nothing more.
 
 ## Overview
 
-| Attribute     | Value                                                      |
-| ------------- | ---------------------------------------------------------- |
-| Language      | Rust (edition 2021)                                        |
-| Crate type    | Library + Binary                                           |
-| WASM runtime  | Wasmtime (optional feature)                                |
-| Dependencies  | Common, wasmtime, wasmtime-wasi, tonic, prost, clap, serde |
-| Feature-gated | Not enabled by default (opt-in: `--features grove`)        |
+| Attribute     | Value                                                                                                    |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| Language      | Rust (edition 2021)                                                                                      |
+| Crate type    | Library + Binary                                                                                         |
+| WASM runtime  | Wasmtime (optional feature)                                                                              |
+| Dependencies  | [`Common`](https://github.com/CodeEditorLand/Common), wasmtime, wasmtime-wasi, tonic, prost, clap, serde |
+| Feature-gated | Not enabled by default (opt-in: `--features grove`)                                                      |
 
 ## Architecture
 
-Grove is organized into five layers:
+[Grove](https://github.com/CodeEditorLand/Grove) is organized into five layers:
 
 <img src="/Mermaid/15173764de5d4f18.svg" alt="Mermaid diagram" />
 ### Module Map
 
-| Path                                    | Purpose                                |
-| --------------------------------------- | -------------------------------------- |
-| `Source/Host/ExtensionHost.rs`          | Main extension host controller         |
-| `Source/Host/ExtensionManager.rs`       | Extension discovery and loading        |
-| `Source/Host/Activation.rs`             | Extension activation logic             |
-| `Source/Host/Lifecycle.rs`              | Extension startup/shutdown lifecycle   |
-| `Source/Host/APIBridge.rs`              | Bridges WASM API calls to Mountain     |
-| `Source/WASM/Runtime.rs`                | Wasmtime engine initialization         |
-| `Source/WASM/ModuleLoader.rs`           | WASM module loading and compilation    |
-| `Source/WASM/MemoryManager.rs`          | WASM linear memory management          |
-| `Source/WASM/HostBridge.rs`             | Host function registration for WASM    |
-| `Source/WASM/FunctionExport.rs`         | Exported WASM function wrappers        |
-| `Source/Transport/gRPCTransport.rs`     | gRPC-based communication with Mountain |
-| `Source/Transport/IPCTransport.rs`      | IPC-based communication                |
-| `Source/Transport/WASMTransport.rs`     | Direct WASM host function calls        |
-| `Source/Transport/Strategy.rs`          | Transport selection strategy trait     |
-| `Source/Transport/CommonAdapter.rs`     | Shared transport utilities             |
-| `Source/Protocol/SpcineConnection.rs`   | Spine protocol client connection       |
-| `Source/Protocol/SpcineActionClient.rs` | Spine action/response client           |
-| `Source/Binary/Main.rs`                 | Binary entry point                     |
+| Path                                                                                                                          | Purpose                                |
+| ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| [`Source/Host/ExtensionHost.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionHost.rs)           | Main extension host controller         |
+| [`Source/Host/ExtensionManager.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionManager.rs)     | Extension discovery and loading        |
+| `Source/Host/Activation.rs`                                                                                                   | Extension activation logic             |
+| [`Source/Host/Lifecycle.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/Lifecycle.rs)                   | Extension startup/shutdown lifecycle   |
+| [`Source/Host/APIBridge.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/APIBridge.rs)                   | Bridges WASM API calls to Mountain     |
+| [`Source/WASM/Runtime.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/Runtime.rs)                       | Wasmtime engine initialization         |
+| [`Source/WASM/ModuleLoader.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/ModuleLoader.rs)             | WASM module loading and compilation    |
+| [`Source/WASM/MemoryManager.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs)           | WASM linear memory management          |
+| [`Source/WASM/HostBridge.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/HostBridge.rs)                 | Host function registration for WASM    |
+| `Source/WASM/FunctionExport.rs`                                                                                               | Exported WASM function wrappers        |
+| [`Source/Transport/gRPCTransport.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/gRPCTransport.rs) | gRPC-based communication with Mountain |
+| [`Source/Transport/IPCTransport.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs)   | IPC-based communication                |
+| [`Source/Transport/WASMTransport.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/WASMTransport.rs) | Direct WASM host function calls        |
+| [`Source/Transport/Strategy.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/Strategy.rs)           | Transport selection strategy trait     |
+| [`Source/Transport/CommonAdapter.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/CommonAdapter.rs) | Shared transport utilities             |
+| `Source/Protocol/SpcineConnection.rs`                                                                                         | Spine protocol client connection       |
+| `Source/Protocol/SpcineActionClient.rs`                                                                                       | Spine action/response client           |
+| `Source/Binary/Main.rs`                                                                                                       | Binary entry point                     |
 
 ## How Grove differs from Cocoon
 
-| Aspect                                | Cocoon                                                         | Grove                                                       |
+| Aspect                                | [Cocoon](https://github.com/CodeEditorLand/Cocoon)             | [Grove](https://github.com/CodeEditorLand/Grove)            |
 | :------------------------------------ | :------------------------------------------------------------- | :---------------------------------------------------------- |
 | Runtime                               | Node.js (V8)                                                   | Wasmtime (WASM)                                             |
 | Language extensions can be written in | TypeScript / JavaScript                                        | Rust (compiled to WASM), or any language with a WASM target |
@@ -79,7 +79,7 @@ Grove is organized into five layers:
 
 ## Transport Strategies
 
-Grove supports three transport strategies for communicating with Mountain:
+[Grove](https://github.com/CodeEditorLand/Grove) supports three transport strategies for communicating with [Mountain](https://github.com/CodeEditorLand/Mountain):
 
 | Strategy | Tracking          | Latency | Use Case                        |
 | -------- | ----------------- | ------- | ------------------------------- |
@@ -103,7 +103,7 @@ all` enables all three.
 
 ## WASM Runtime
 
-Grove uses Wasmtime as its WebAssembly runtime:
+[Grove](https://github.com/CodeEditorLand/Grove) uses Wasmtime as its WebAssembly runtime:
 
 | Component      | Detail                                          |
 | -------------- | ----------------------------------------------- |
@@ -115,13 +115,13 @@ Grove uses Wasmtime as its WebAssembly runtime:
 
 ### Sandbox Properties
 
-| Property    | Setting                                    |
-| ----------- | ------------------------------------------ |
-| File system | WASI virtual filesystem (no host access)   |
-| Network     | Proxied through Mountain via gRPC          |
-| Process     | No process creation (wasmtime restriction) |
-| Memory      | Isolated linear memory per module          |
-| CPU         | Bounded by Wasmtime execution limits       |
+| Property    | Setting                                                                         |
+| ----------- | ------------------------------------------------------------------------------- |
+| File system | WASI virtual filesystem (no host access)                                        |
+| Network     | Proxied through [Mountain](https://github.com/CodeEditorLand/Mountain) via gRPC |
+| Process     | No process creation (wasmtime restriction)                                      |
+| Memory      | Isolated linear memory per module                                               |
+| CPU         | Bounded by Wasmtime execution limits                                            |
 
 ### Host Function Bridge
 
@@ -188,7 +188,7 @@ Grove's Cargo features control build configuration:
 | `ipc`   | No      | Enable IPC transport                          |
 | `all`   | No      | Enable all transport strategies               |
 
-When not enabled, Grove is a compile-time no-op. Mountain links it conditionally:
+When not enabled, [Grove](https://github.com/CodeEditorLand/Grove) is a compile-time no-op. [Mountain](https://github.com/CodeEditorLand/Mountain) links it conditionally:
 
 ```toml
 # Mountain/Cargo.toml
@@ -198,7 +198,7 @@ grove = ["dep:grove"]
 
 ## Target use cases
 
-Grove is intended for two categories of extensions:
+[Grove](https://github.com/CodeEditorLand/Grove) is intended for two categories of extensions:
 
 - **Performance-critical extensions** -- parser integrations, language servers,
   formatters that benefit from near-native execution speed without a JavaScript
@@ -207,17 +207,17 @@ Grove is intended for two categories of extensions:
   signing operations, or sensitive file access where users need verifiable
   capability boundaries before installation
 
-Grove is not intended to replace Cocoon for the broad platform of existing VS
+[Grove](https://github.com/CodeEditorLand/Grove) is not intended to replace [Cocoon](https://github.com/CodeEditorLand/Cocoon) for the broad platform of existing VS
 Code extensions, which are written in TypeScript and depend on full Node.js
 compatibility.
 
 ## Current status
 
-> [!NOTE] Grove is implemented and available as an optional Cargo feature
+> [!NOTE] [Grove](https://github.com/CodeEditorLand/Grove) is implemented and available as an optional Cargo feature
 > (`--features grove`). It is not enabled in the default `debug-electron` build
-> profile. Cocoon (Node.js) remains the default extension host for unmodified VS
-> Code extensions. WASM-targeting extensions can use Grove's Wasmtime sandbox
-> today. Full integration with Mountain's extension activation flow and a
+> profile. [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node.js) remains the default extension host for unmodified VS
+> Code extensions. WASM-targeting extensions can use [Grove](https://github.com/CodeEditorLand/Grove)'s Wasmtime sandbox
+> today. Full integration with [Mountain](https://github.com/CodeEditorLand/Mountain)'s extension activation flow and a
 > complete VS Code API subset are ongoing work.
 
 ## Related Documentation

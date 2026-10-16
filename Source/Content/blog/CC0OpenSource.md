@@ -24,7 +24,7 @@ in some jurisdictions), CC0 includes a permissive fallback license.
 
 In practical terms:
 
-- You can use Land's code in proprietary software.
+- You can use [Land](https://github.com/CodeEditorLand/Land)'s code in proprietary software.
 - You can modify it without publishing your changes.
 - You do not need to include attribution (though it is appreciated).
 - You can sell products built on top of it.
@@ -36,7 +36,7 @@ Many open-source projects require contributors to sign a Contributor License
 Agreement (CLA) that transfers or grants broad rights over their contributions.
 Others require full copyright assignment to a corporate entity.
 
-Land requires neither.
+[Land](https://github.com/CodeEditorLand/Land) requires neither.
 
 When you submit a pull request to any CodeEditorLand repository, your
 contribution is accepted under the same CC0 dedication. There is no paperwork,
@@ -67,11 +67,11 @@ A CC0 dedication is a deliberate architectural choice, not just a legal one. It
 shapes how the codebase is organized. When every component carries no
 restrictions, there is no need for licensing headers on every file, no license
 compliance tooling in CI, and no per-component license auditing. The build
-pipeline stays lean. The `Maintain` element focuses on build orchestration,
+pipeline stays lean. The [`Maintain`](https://github.com/CodeEditorLand/Maintain) element focuses on build orchestration,
 dead-code elimination, and development tooling rather than license compliance.
 
-Every Land element -- `Mountain`, `Cocoon`, `Grove`, `Sky`, `Wind`, `Vine`,
-`Air`, `Echo`, and the rest -- shares the same public domain status. This means
+Every [Land](https://github.com/CodeEditorLand/Land) element -- [`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Cocoon`](https://github.com/CodeEditorLand/Cocoon), [`Grove`](https://github.com/CodeEditorLand/Grove), [`Sky`](https://github.com/CodeEditorLand/Sky), [`Wind`](https://github.com/CodeEditorLand/Wind), [`Vine`](https://github.com/CodeEditorLand/Vine),
+[`Air`](https://github.com/CodeEditorLand/Air), [`Echo`](https://github.com/CodeEditorLand/Echo), and the rest -- shares the same public domain status. This means
 components can be extracted, combined, or embedded without license compatibility
 analysis.
 
@@ -85,14 +85,14 @@ Next Generation Internet program, provides exactly this. The grant funds
 development of open internet infrastructure without requiring proprietary
 lock-in.
 
-PlayForm develops and maintains the project under this funding model. The
+[PlayForm](https://PlayForm.Cloud) develops and maintains the project under this funding model. The
 funding model ensures that CC0 licensing is sustainable - contributors and
 maintainers are compensated through public interest funding, not through
 monetizing user data or restricting distribution.
 
 ## What This Means for You
 
-If you are an individual developer, CC0 means Land is yours. Fork it, ship it,
+If you are an individual developer, CC0 means [Land](https://github.com/CodeEditorLand/Land) is yours. Fork it, ship it,
 break it apart, rebuild it.
 
 If you are a company, CC0 means there is no license compliance burden. Your

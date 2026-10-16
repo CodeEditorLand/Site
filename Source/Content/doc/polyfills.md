@@ -8,7 +8,7 @@ description: "Every polyfill, shim, and compatibility layer that enables the VS 
 # Polyfills and Compatibility Shims
 
 This document catalogues every polyfill, shim, and compatibility layer that
-enables the VS Code workbench and extension host to function inside **Land**'s
+enables the VS Code workbench and extension host to function inside [**Land**](https://github.com/CodeEditorLand/Land)'s
 `Tauri` WebView and `Node.js` sidecar architecture. These layers translate
 Electron and `Node.js` APIs into their `Tauri` and `Rust` equivalents without
 modifying upstream VS Code source code.
@@ -29,9 +29,9 @@ modifying upstream VS Code source code.
 
 ---
 
-## Wind Preload Shim 🛡️
+## [`Wind`](https://github.com/CodeEditorLand/Wind) Preload Shim 🛡️
 
-The Preload shim (`Wind/Source/Preload.ts`) establishes the VS Code workbench
+The Preload shim ([`Wind/Source/Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)) establishes the VS Code workbench
 execution environment inside the `Tauri` WebView. It runs as the first script
 loaded by `index.html` and patches the global scope with Electron/`Node.js` APIs
 before the workbench bundle loads.
@@ -43,17 +43,17 @@ before the workbench bundle loads.
 
 The Preload shim defines the following global replacements:
 
-| VS Code Expectation         | Land Implementation                     | Mechanism                                                                      |
-| --------------------------- | --------------------------------------- | ------------------------------------------------------------------------------ |
-| `window.vscode.ipcRenderer` | `Tauri` `invoke()` wrapper              | Custom `IPCRenderer` interface in `Wind/Source/Types/Interface/IPCRenderer.ts` |
-| `process.env`               | Object with tier-gated env vars         | Populated from `__LandTiers` at preload time                                   |
-| `process.platform`          | `darwin` / `linux` / `win32`            | Derived from `navigator.userAgent` at preload time                             |
-| `process.versions`          | Object with `node`, `http_parser`, `v8` | Populated from navigator.userAgent                                             |
-| `process.argv`              | Array of launch arguments               | Received from `Tauri` IPC                                                      |
-| `process.cwd()`             | Resolved workspace root                 | Set during init from `Mountain`                                                |
-| `process.nextTick()`        | Custom microtask queue                  | Standard `queueMicrotask` + polyfill                                           |
-| `globalThis.__filename`     | Environment path `appRoot`              | Path to workbench bundle root                                                  |
-| `webFrame` (Electron)       | No-op stub                              | Methods return undefined                                                       |
+| VS Code Expectation         | [Land](https://github.com/CodeEditorLand/Land) Implementation | Mechanism                                                                                                                                                                   |
+| --------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `window.vscode.ipcRenderer` | `Tauri` `invoke()` wrapper                                    | Custom `IPCRenderer` interface in [`Wind/Source/Types/Interface/IPCRenderer.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts) |
+| `process.env`               | Object with tier-gated env vars                               | Populated from `__LandTiers` at preload time                                                                                                                                |
+| `process.platform`          | `darwin` / `linux` / `win32`                                  | Derived from `navigator.userAgent` at preload time                                                                                                                          |
+| `process.versions`          | Object with `node`, `http_parser`, `v8`                       | Populated from navigator.userAgent                                                                                                                                          |
+| `process.argv`              | Array of launch arguments                                     | Received from `Tauri` IPC                                                                                                                                                   |
+| `process.cwd()`             | Resolved workspace root                                       | Set during init from [`Mountain`](https://github.com/CodeEditorLand/Mountain)                                                                                               |
+| `process.nextTick()`        | Custom microtask queue                                        | Standard `queueMicrotask` + polyfill                                                                                                                                        |
+| `globalThis.__filename`     | Environment path `appRoot`                                    | Path to workbench bundle root                                                                                                                                               |
+| `webFrame` (Electron)       | No-op stub                                                    | Methods return undefined                                                                                                                                                    |
 
 ### Diagnostic Tag
 
@@ -65,7 +65,7 @@ The Preload shim defines the following global replacements:
 [preload-shim] land-preload-ready dispatched
 ```
 
-This diagnostic is visible in `Mountain`'s dev-log when `Trace=preload-shim` is
+This diagnostic is visible in [`Mountain`](https://github.com/CodeEditorLand/Mountain)'s dev-log when `Trace=preload-shim` is
 set. It confirms the shim is active in the real WebView (not an `Astro` SSR pass
 where `window` is a Node polyfill).
 
@@ -73,7 +73,7 @@ where `window` is a Node polyfill).
 
 ## SkyBridge 🌐
 
-`SkyBridge` (`Sky/Source/Function/Sky/Bridge.ts`) is the runtime event routing
+`SkyBridge` ([`Sky/Source/Function/Sky/Bridge.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts)) is the runtime event routing
 bridge between `Tauri`'s IPC system and the VS Code workbench's internal message
 channel system. It is composed of focused sub-modules in the `Bridge/`
 directory:
@@ -87,7 +87,7 @@ directory:
 - `InstallEditorAndOutput.ts` - `sky://workspace/applyEdit`, save, saveAll,
   saveAs
 - `InstallEditorOperations.ts` - Monaco content debounce (300 ms) →
-  `sky:model:contentChanged` → `$acceptModelChanged` → Cocoon
+  `sky:model:contentChanged` → `$acceptModelChanged` → [Cocoon](https://github.com/CodeEditorLand/Cocoon)
   `onDidChangeTextDocument`
 - `InstallFanOut.ts` - fan-out dispatcher for multi-subscriber channels
 - `InstallInlineCompletions.ts` -
@@ -111,13 +111,13 @@ It translates between two event models:
 
 ### Event Translation
 
-| Tauri Event                     | VS Code Workbench Channel  | Direction               |
-| ------------------------------- | -------------------------- | ----------------------- |
-| `mountain:configurationChanged` | `onDidChangeConfiguration` | `Mountain` -> Workbench |
-| `mountain:extensionsChanged`    | `onDidChangeExtensions`    | `Mountain` -> Workbench |
-| `mountain:themeChanged`         | `onDidChangeColorTheme`    | `Mountain` -> Workbench |
-| `mountain:fileChanged`          | FileSystem watcher events  | `Mountain` -> Workbench |
-| `cocoon:commandExecuted`        | Extension command result   | `Cocoon` -> Workbench   |
+| Tauri Event                     | VS Code Workbench Channel  | Direction                                                             |
+| ------------------------------- | -------------------------- | --------------------------------------------------------------------- |
+| `mountain:configurationChanged` | `onDidChangeConfiguration` | [`Mountain`](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `mountain:extensionsChanged`    | `onDidChangeExtensions`    | [`Mountain`](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `mountain:themeChanged`         | `onDidChangeColorTheme`    | [`Mountain`](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `mountain:fileChanged`          | FileSystem watcher events  | [`Mountain`](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `cocoon:commandExecuted`        | Extension command result   | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) -> Workbench     |
 
 ### Bridge Architecture
 
@@ -150,9 +150,9 @@ Sky webview sets HTML content
 
 ---
 
-## Cocoon Initialization Prelude 🚀
+## [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) Initialization Prelude 🚀
 
-The `Cocoon` initialization prelude (`Cocoon/Source/Effect/Bootstrap.ts`) runs
+The [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) initialization prelude (`Cocoon/Source/Effect/Bootstrap.ts`) runs
 before any extension code executes. It establishes the execution environment for
 the VS Code Extension Host within `Node.js`.
 
@@ -211,7 +211,7 @@ The `RequireInterceptor` patches `Node.js`'s `require()` to:
 1. Remap `electron` module references to local shims (empty objects with
    expected method shapes)
 2. Remap `original-fs` to `fs` (`Node.js` standard library)
-3. Intercept VS Code module loading to inject **Land**-specific patches
+3. Intercept VS Code module loading to inject [**Land**](https://github.com/CodeEditorLand/Land)-specific patches
 4. Provide shims for native modules (`keytar`, `spdlog`,
    `vscode-windows-registry`)
 
@@ -220,9 +220,9 @@ module resolution works correctly for the unmodified `extHost*.ts` sources.
 
 ---
 
-## Output Transform Pipeline 🔧
+## [`Output`](https://github.com/CodeEditorLand/Output) Transform Pipeline 🔧
 
-The `Output` element applies polyfills during the compilation of VS Code
+The [`Output`](https://github.com/CodeEditorLand/Output) element applies polyfills during the compilation of VS Code
 platform code:
 
 ### Transform Categories
@@ -237,7 +237,7 @@ platform code:
 
 ### Platform Code Markers
 
-The `Output` element identifies platform-specific code sections through marker
+The [`Output`](https://github.com/CodeEditorLand/Output) element identifies platform-specific code sections through marker
 comments:
 
 ```typescript
@@ -253,26 +253,26 @@ comments:
 These markers are respected by the VS Code platform code and used by the
 workbench variant selection system.
 
-### Cocoon `console.*` Replacement
+### [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) `console.*` Replacement
 
-In production Cocoon source, all `console.log`, `console.warn`, and
+In production [Cocoon](https://github.com/CodeEditorLand/Cocoon) source, all `console.log`, `console.warn`, and
 `console.error` calls are replaced with `CocoonDevLog` (routes through
-`Mountain`'s dev-log sink) or `process.stdout.write` / `process.stderr.write`
+[`Mountain`](https://github.com/CodeEditorLand/Mountain)'s dev-log sink) or `process.stdout.write` / `process.stderr.write`
 directly. This ensures diagnostic output survives esbuild's `drop: ["console"]`
 pass, which strips bare `console.*` calls from production bundles.
 
-### Sky Sourcemap Strategy
+### [`Sky`](https://github.com/CodeEditorLand/Sky) Sourcemap Strategy
 
-Sky dev builds use `sourcemap: "inline"` so the browser profiler and DevTools
+[Sky](https://github.com/CodeEditorLand/Sky) dev builds use `sourcemap: "inline"` so the browser profiler and DevTools
 can resolve minified symbols back to original TypeScript source without a
 separate `.map` file download. Production builds use the standard external
 sourcemap (a `.js.map` file alongside the bundle).
 
 ---
 
-## Worker Service Worker 🗂️
+## [`Worker`](https://github.com/CodeEditorLand/Worker) Service Worker 🗂️
 
-The `Worker` element provides a service worker that enables offline support and
+The [`Worker`](https://github.com/CodeEditorLand/Worker) element provides a service worker that enables offline support and
 optimizes asset loading:
 
 ### Caching Strategy
@@ -286,7 +286,7 @@ optimizes asset loading:
 
 ### Dynamic CSS Interception
 
-A unique feature of the `Worker` is its dynamic CSS loading interceptor:
+A unique feature of the [`Worker`](https://github.com/CodeEditorLand/Worker) is its dynamic CSS loading interceptor:
 
 ```
 JavaScript imports CSS file
@@ -328,14 +328,14 @@ processes:
 
 ### Diagnostic Tag System
 
-| Tag                | Source              | Purpose                               |
-| ------------------ | ------------------- | ------------------------------------- |
-| `preload-shim`     | `Wind` `Preload.ts` | Confirms shim installation success    |
-| `landfix:layer`    | `Wind` Layer        | Service layer composition diagnostics |
-| `landfix:tier`     | All processes       | Runtime tier banner                   |
-| `landfix:bridge`   | `SkyBridge`         | Event bridge state changes            |
-| `landfix:cocoon`   | `Cocoon`            | Extension host lifecycle              |
-| `landfix:mountain` | `Mountain`          | Backend service initialization        |
+| Tag                | Source                                                        | Purpose                               |
+| ------------------ | ------------------------------------------------------------- | ------------------------------------- |
+| `preload-shim`     | [`Wind`](https://github.com/CodeEditorLand/Wind) `Preload.ts` | Confirms shim installation success    |
+| `landfix:layer`    | [`Wind`](https://github.com/CodeEditorLand/Wind) Layer        | Service layer composition diagnostics |
+| `landfix:tier`     | All processes                                                 | Runtime tier banner                   |
+| `landfix:bridge`   | `SkyBridge`                                                   | Event bridge state changes            |
+| `landfix:cocoon`   | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)          | Extension host lifecycle              |
+| `landfix:mountain` | [`Mountain`](https://github.com/CodeEditorLand/Mountain)      | Backend service initialization        |
 
 ### Runtime Tier Banner
 
@@ -347,12 +347,12 @@ Every process emits a tier banner at startup showing the resolved tier values:
 [LandFix:Tier] TierExtensionActivation=Layer3 TierExtensionScan=Layer3 TierModuleCache=Layer2
 ```
 
-The three banners (`Mountain`, `Cocoon`, `Wind`) must agree. A mismatch
+The three banners ([`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Cocoon`](https://github.com/CodeEditorLand/Cocoon), [`Wind`](https://github.com/CodeEditorLand/Wind)) must agree. A mismatch
 indicates env propagation drift.
 
 ### Dev-Log File Sink
 
-`Mountain` writes diagnostic output to a structured dev-log file when
+[`Mountain`](https://github.com/CodeEditorLand/Mountain) writes diagnostic output to a structured dev-log file when
 `Trace=all` and `Record=1` are set:
 
 ```
@@ -371,12 +371,12 @@ The dev-log captures:
 
 ## Telemetry Bridge 📊
 
-**Land** implements a dual-pipe telemetry system through the PostHog+OTEL
+[**Land**](https://github.com/CodeEditorLand/Land) implements a dual-pipe telemetry system through the PostHog+OTEL
 bridge:
 
-### Wind PostHog Bridge
+### [`Wind`](https://github.com/CodeEditorLand/Wind) PostHog Bridge
 
-The `Wind` PostHog bridge (`Wind/Source/Telemetry/PostHogBridge.ts`) reuses an
+The [`Wind`](https://github.com/CodeEditorLand/Wind) PostHog bridge ([`Wind/Source/Telemetry/PostHogBridge.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts)) reuses an
 in-webview `window.posthog` client:
 
 ```
@@ -391,9 +391,9 @@ Wind PostHogBridge.ts
     +---> If disabled: silently drops event
 ```
 
-### Mountain Telemetry
+### [`Mountain`](https://github.com/CodeEditorLand/Mountain) Telemetry
 
-`Mountain`'s telemetry layer sends events from `Rust` directly to both PostHog
+[`Mountain`](https://github.com/CodeEditorLand/Mountain)'s telemetry layer sends events from `Rust` directly to both PostHog
 (via `posthog-rs` crate) and OTLP (via `opentelemetry` crate).
 
 ### Telemetry Kill Switch

@@ -8,22 +8,22 @@ description:
     turbo.json task graph - it does not need to be recompiled when changed.
 ---
 
-Maintain is the build orchestrator for the Land project. It coordinates shell
+[Maintain](https://github.com/CodeEditorLand/Maintain) is the build orchestrator for the [Land](https://github.com/CodeEditorLand/Land) project. It coordinates shell
 scripts, a Rust CLI with embedded Rhai scripting, and a Turborepo task graph to
-produce deterministic builds across all Land elements. Unlike Mountain, Cocoon,
-or Rest, Maintain does not need to be recompiled when its source changes - it is
+produce deterministic builds across all Land elements. Unlike [Mountain](https://github.com/CodeEditorLand/Mountain), [Cocoon](https://github.com/CodeEditorLand/Cocoon),
+or [Rest](https://github.com/CodeEditorLand/Rest), [Maintain](https://github.com/CodeEditorLand/Maintain) does not need to be recompiled when its source changes - it is
 a build wrapper, not a compiled artifact that runs inside the editor.
 
 ## What Maintain provides
 
-| Capability                | Description                                                                                                   |
-| :------------------------ | :------------------------------------------------------------------------------------------------------------ |
-| Shell script entry points | `Debug/Build.sh`, `Release/Build.sh`, `SignBundle.sh` - the commands developers and CI run                    |
-| Rhai scripting engine     | Embedded `rhai` interpreter for flexible build logic and custom automation without shell portability concerns |
-| TOML / JSON5 editing      | Type-safe, non-lossy editing of `Cargo.toml` and `package.json` files via `toml_edit` and `json5`             |
-| turbo.json task graph     | Defines `globalEnv`, task dependencies, and parallel execution across all Land packages                       |
-| GritQL queries            | Automated refactoring patterns for bulk code transformations across the codebase                              |
-| CI/CD configuration       | Pipeline definitions for building and signing on each supported platform                                      |
+| Capability                | Description                                                                                                                                                                                                                                                                                                                                     |
+| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shell script entry points | [`Debug/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh), [`Release/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh), [`SignBundle.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh) - the commands developers and CI run |
+| Rhai scripting engine     | Embedded `rhai` interpreter for flexible build logic and custom automation without shell portability concerns                                                                                                                                                                                                                                   |
+| TOML / JSON5 editing      | Type-safe, non-lossy editing of `Cargo.toml` and `package.json` files via `toml_edit` and `json5`                                                                                                                                                                                                                                               |
+| turbo.json task graph     | Defines `globalEnv`, task dependencies, and parallel execution across all Land packages                                                                                                                                                                                                                                                         |
+| GritQL queries            | Automated refactoring patterns for bulk code transformations across the codebase                                                                                                                                                                                                                                                                |
+| CI/CD configuration       | Pipeline definitions for building and signing on each supported platform                                                                                                                                                                                                                                                                        |
 
 ## Architecture
 
@@ -35,38 +35,38 @@ modifications to project configuration files.
 <img src="/Mermaid/8bc86b64cbb3c6d9.svg" alt="Mermaid diagram" />
 ## Key Modules
 
-| Path                                       | Description                                                                  |
-| :----------------------------------------- | :--------------------------------------------------------------------------- |
-| `Source/Library.rs`                        | Binary entry point; wires together CLI, logging, and error handling          |
-| `Source/Build/CLI.rs`                      | `clap`-based CLI with subcommands: debug, release, profile, dev              |
-| `Source/Build/Definition.rs`               | Build group definitions: which elements to build, in what order              |
-| `Source/Build/Fn.rs`                       | Core build function dispatch: clean, compile, link, post-process             |
-| `Source/Build/Process.rs`                  | Child process spawning with stdout/stderr capture and exit code handling     |
-| `Source/Build/TomlEdit.rs`                 | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes |
-| `Source/Build/JsonEdit.rs`                 | JSON5-aware configuration editing for `package.json` and `.json5` files      |
-| `Source/Build/Pascalize.rs`                | PascalCase ↔ words conversion utilities for naming convention enforcement    |
-| `Source/Build/GetTauriTargetTriple.rs`     | Detects current Rust target triple for SideCar binary selection              |
-| `Source/Build/EnvironmentResolver.rs`      | Resolves environment variables with fallbacks for build-time configuration   |
-| `Source/Build/Logger.rs`                   | Colored terminal output using the `colored` crate                            |
-| `Source/Build/Error.rs`                    | Unified error type for build failures                                        |
-| `Source/Build/Rhai/ConfigLoader.rs`        | Loads and parses Rhai build configuration scripts                            |
-| `Source/Build/Rhai/ScriptRunner.rs`        | Executes Rhai scripts within the build context with Land API bindings        |
-| `Source/Build/Rhai/EnvironmentResolver.rs` | Exposes environment variable resolution to Rhai scripts                      |
+| Path                                                                                                                                           | Description                                                                                                     |
+| :--------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Library.rs)                                               | Binary entry point; wires together CLI, logging, and error handling                                             |
+| `Source/Build/CLI.rs`                                                                                                                          | `clap`-based CLI with subcommands: debug, release, profile, dev                                                 |
+| [`Source/Build/Definition.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Definition.rs)                             | Build group definitions: which elements to build, in what order                                                 |
+| [`Source/Build/Fn.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs)                                             | Core build function dispatch: clean, compile, link, post-process                                                |
+| `Source/Build/Process.rs`                                                                                                                      | Child process spawning with stdout/stderr capture and exit code handling                                        |
+| [`Source/Build/TomlEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs)                                 | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes                                    |
+| [`Source/Build/JsonEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs)                                 | JSON5-aware configuration editing for `package.json` and `.json5` files                                         |
+| [`Source/Build/Pascalize.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Pascalize.rs)                               | PascalCase ↔ words conversion utilities for naming convention enforcement                                       |
+| [`Source/Build/GetTauriTargetTriple.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs)         | Detects current Rust target triple for [SideCar](https://github.com/CodeEditorLand/SideCar) binary selection    |
+| `Source/Build/EnvironmentResolver.rs`                                                                                                          | Resolves environment variables with fallbacks for build-time configuration                                      |
+| [`Source/Build/Logger.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Logger.rs)                                     | Colored terminal output using the `colored` crate                                                               |
+| [`Source/Build/Error.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Error.rs)                                       | Unified error type for build failures                                                                           |
+| [`Source/Build/Rhai/ConfigLoader.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs)               | Loads and parses Rhai build configuration scripts                                                               |
+| [`Source/Build/Rhai/ScriptRunner.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs)               | Executes Rhai scripts within the build context with [Land](https://github.com/CodeEditorLand/Land) API bindings |
+| [`Source/Build/Rhai/EnvironmentResolver.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs) | Exposes environment variable resolution to Rhai scripts                                                         |
 
 ## Data Flow
 
 <img src="/Mermaid/5becfbd1ececd232.svg" alt="Mermaid diagram" />
 ## Integration Points
 
-| Connecting Element | Direction     | Mechanism                            | Description                                                         |
-| :----------------- | :------------ | :----------------------------------- | :------------------------------------------------------------------ |
-| **Mountain**       | Build target  | `cargo build` subprocess             | Maintain compiles Mountain as part of the debug/release build group |
-| **Air**            | Build target  | `cargo build` subprocess             | Air daemon compiled alongside Mountain                              |
-| **Echo**           | Build target  | `cargo build` subprocess             | Echo scheduler compiled as a dependency of Mountain                 |
-| **Rest**           | Build target  | `cargo build` subprocess             | Rest compiler binary built for use by Output                        |
-| **SideCar**        | Build target  | `cargo build` subprocess             | SideCar Download tool compiled and run as part of setup             |
-| **Output**         | Build trigger | `pnpm run prepublishOnly` subprocess | Maintain triggers TypeScript builds via pnpm                        |
-| **Wind / Sky**     | Build trigger | `pnpm run prepublishOnly` subprocess | Frontend packages built through Turborepo via Maintain              |
+| Connecting Element                                                                                | Direction     | Mechanism                            | Description                                                                                                                                                     |
+| :------------------------------------------------------------------------------------------------ | :------------ | :----------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)**                                        | Build target  | `cargo build` subprocess             | [Maintain](https://github.com/CodeEditorLand/Maintain) compiles [Mountain](https://github.com/CodeEditorLand/Mountain) as part of the debug/release build group |
+| **[Air](https://github.com/CodeEditorLand/Air)**                                                  | Build target  | `cargo build` subprocess             | Air daemon compiled alongside [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                            |
+| **[Echo](https://github.com/CodeEditorLand/Echo)**                                                | Build target  | `cargo build` subprocess             | Echo scheduler compiled as a dependency of [Mountain](https://github.com/CodeEditorLand/Mountain)                                                               |
+| **[Rest](https://github.com/CodeEditorLand/Rest)**                                                | Build target  | `cargo build` subprocess             | Rest compiler binary built for use by [Output](https://github.com/CodeEditorLand/Output)                                                                        |
+| **[SideCar](https://github.com/CodeEditorLand/SideCar)**                                          | Build target  | `cargo build` subprocess             | SideCar Download tool compiled and run as part of setup                                                                                                         |
+| **[Output](https://github.com/CodeEditorLand/Output)**                                            | Build trigger | `pnpm run prepublishOnly` subprocess | [Maintain](https://github.com/CodeEditorLand/Maintain) triggers TypeScript builds via pnpm                                                                      |
+| **[Wind](https://github.com/CodeEditorLand/Wind) / [Sky](https://github.com/CodeEditorLand/Sky)** | Build trigger | `pnpm run prepublishOnly` subprocess | Frontend packages built through Turborepo via [Maintain](https://github.com/CodeEditorLand/Maintain)                                                            |
 
 ## Configuration
 
@@ -82,21 +82,21 @@ modifications to project configuration files.
 
 The primary entry points are shell scripts in `Element/Maintain/`:
 
-| Script                 | Purpose                                                                                                |
-| :--------------------- | :----------------------------------------------------------------------------------------------------- |
-| `Debug.sh`             | Full debug build of all elements                                                                       |
-| `Debug/Build.sh`       | Debug build: sets up env vars, runs `tauri build --profile debug-electron`, then calls `SignBundle.sh` |
-| `Debug/Run.sh`         | Launches the built debug binary with `Trace`, `Record`, and other dev env vars                         |
-| `Debug/Wind.sh`        | Builds and watches only the Wind TypeScript service layer                                              |
-| `Debug/All.sh`         | Debug all components including frontend                                                                |
-| `Release.sh`           | Optimized release build with all elements                                                              |
-| `Script/SignBundle.sh` | Ad-hoc re-sign of the `.app` bundle using `xattr -cr` and `codesign`                                   |
-| `Dev-Mountain.sh`      | Hot-reload development mode for Mountain only                                                          |
-| `Profile.sh`           | Release build with profiling instrumentation enabled                                                   |
+| Script                                                                                                      | Purpose                                                                                                |
+| :---------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+| [`Debug.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug.sh)                         | Full debug build of all elements                                                                       |
+| [`Debug/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh)             | Debug build: sets up env vars, runs `tauri build --profile debug-electron`, then calls `SignBundle.sh` |
+| [`Debug/Run.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Run.sh)                 | Launches the built debug binary with `Trace`, `Record`, and other dev env vars                         |
+| `Debug/Wind.sh`                                                                                             | Builds and watches only the Wind TypeScript service layer                                              |
+| [`Debug/All.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/All.sh)                 | Debug all components including frontend                                                                |
+| [`Release.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release.sh)                     | Optimized release build with all elements                                                              |
+| [`Script/SignBundle.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh) | Ad-hoc re-sign of the `.app` bundle using `xattr -cr` and `codesign`                                   |
+| [`Dev-Mountain.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Dev-Mountain.sh)           | Hot-reload development mode for [Mountain](https://github.com/CodeEditorLand/Mountain) only            |
+| [`Profile.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Profile.sh)                     | Release build with profiling instrumentation enabled                                                   |
 
 ## Why Maintain does not need rebuild
 
-Maintain's shell scripts are plain `sh` - they run directly on any POSIX system
+[Maintain](https://github.com/CodeEditorLand/Maintain)'s shell scripts are plain `sh` - they run directly on any POSIX system
 without compilation. The Rust Maintain binary is a build helper CLI that is
 compiled once and cached; it does not run inside the editor at runtime. Changes
 to the shell scripts take effect immediately on the next invocation. Changes to
@@ -104,14 +104,14 @@ to the shell scripts take effect immediately on the next invocation. Changes to
 source under `Source/Build/` require `cargo build -p Maintain`.
 
 > [!IMPORTANT] Never run `cargo build -p Maintain` as part of a normal
-> development loop. The shell scripts invoke the pre-built binary. Maintain is
+> development loop. The shell scripts invoke the pre-built binary. [Maintain](https://github.com/CodeEditorLand/Maintain) is
 > rebuilt only when its own Rust source is intentionally modified.
 
 ## GritQL queries
 
-Maintain ships a set of GritQL pattern files for automated refactoring. GritQL
+[Maintain](https://github.com/CodeEditorLand/Maintain) ships a set of GritQL pattern files for automated refactoring. GritQL
 is a structural search-and-replace language for code that operates on ASTs
-rather than text. Land uses these queries for:
+rather than text. [Land](https://github.com/CodeEditorLand/Land) uses these queries for:
 
 - Bulk renames of TypeScript identifiers across all packages
 - Migration of import paths when element structure changes
@@ -123,7 +123,7 @@ any element in the workspace.
 
 ## turbo.json task graph
 
-The `turbo.json` at the workspace root defines:
+The [`turbo.json`](https://github.com/CodeEditorLand/Land/tree/Current/turbo.json) at the workspace root defines:
 
 - **`globalEnv`** - all PascalCase env vars (`BundleLevel`, `HotReload`,
   `Watch`, `TierIPC`, etc.) that Turborepo passes through to child tasks
@@ -136,16 +136,16 @@ The `turbo.json` at the workspace root defines:
 
 ## pnpm workspace management
 
-Maintain works within the pnpm workspace defined at `Land/package.json`. All
+[Maintain](https://github.com/CodeEditorLand/Maintain) works within the pnpm workspace defined at [`Land/package.json`](https://github.com/CodeEditorLand/Land/tree/Current/package.json). All
 TypeScript packages use the `workspace:` protocol for cross-package
-dependencies. Maintain's `Source/Build/JsonEdit.rs` handles non-lossy edits to
+dependencies. [Maintain](https://github.com/CodeEditorLand/Maintain)'s [`Source/Build/JsonEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs) handles non-lossy edits to
 `package.json` files when version bumps are required - it uses the `json5` crate
 to preserve comments and formatting that `JSON.parse` / `JSON.stringify` would
 destroy.
 
 ## Rust CLI
 
-The Maintain Rust binary provides subcommands for cases where shell scripts are
+The [Maintain](https://github.com/CodeEditorLand/Maintain) Rust binary provides subcommands for cases where shell scripts are
 insufficient:
 
 ```bash
@@ -167,14 +167,14 @@ direct build functions depending on the subcommand.
 
 ## Source files
 
-| File                                   | Role                                                                         |
-| :------------------------------------- | :--------------------------------------------------------------------------- |
-| `Source/Library.rs`                    | Entry point, wires CLI, logging, and error handling                          |
-| `Source/Build/CLI.rs`                  | `clap`-based CLI with `debug`, `release`, `profile`, `dev` subcommands       |
-| `Source/Build/Fn.rs`                   | Core build function dispatch: clean, compile, link, post-process             |
-| `Source/Build/Process.rs`              | Child process spawning with stdout/stderr capture and exit code handling     |
-| `Source/Build/TomlEdit.rs`             | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes |
-| `Source/Build/JsonEdit.rs`             | JSON5-aware editing for `package.json` files                                 |
-| `Source/Build/Rhai/ScriptRunner.rs`    | Rhai script execution with Land API bindings                                 |
-| `Source/Build/Rhai/ConfigLoader.rs`    | Rhai build configuration script loading                                      |
-| `Source/Build/GetTauriTargetTriple.rs` | Platform detection for SideCar binary selection                              |
+| File                                                                                                                                   | Role                                                                                         |
+| :------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Library.rs)                                       | Entry point, wires CLI, logging, and error handling                                          |
+| `Source/Build/CLI.rs`                                                                                                                  | `clap`-based CLI with `debug`, `release`, `profile`, `dev` subcommands                       |
+| [`Source/Build/Fn.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs)                                     | Core build function dispatch: clean, compile, link, post-process                             |
+| `Source/Build/Process.rs`                                                                                                              | Child process spawning with stdout/stderr capture and exit code handling                     |
+| [`Source/Build/TomlEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs)                         | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes                 |
+| [`Source/Build/JsonEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs)                         | JSON5-aware editing for `package.json` files                                                 |
+| [`Source/Build/Rhai/ScriptRunner.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs)       | Rhai script execution with [Land](https://github.com/CodeEditorLand/Land) API bindings       |
+| [`Source/Build/Rhai/ConfigLoader.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs)       | Rhai build configuration script loading                                                      |
+| [`Source/Build/GetTauriTargetTriple.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs) | Platform detection for [SideCar](https://github.com/CodeEditorLand/SideCar) binary selection |

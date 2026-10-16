@@ -11,23 +11,23 @@ description:
     patterns, and security architecture."
 ---
 
-Wind is the Effect-TS frontend service layer for Land. the
+[Wind](https://github.com/CodeEditorLand/Wind) is the [Effect-TS](https://effect.website) frontend service layer for [Land](https://github.com/CodeEditorLand/Land). the
 internal mechanics of `TauriLiveLayer` construction, `TauriMainProcessService`
-tier routing, `Preload.ts` shimming strategy, the `Generated/*Upstream.ts`
-codegen pipeline, and how Wind maintains lockstep state with Output's service
+tier routing, [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts) shimming strategy, the `Generated/*Upstream.ts`
+codegen pipeline, and how [Wind](https://github.com/CodeEditorLand/Wind) maintains lockstep state with [Output](https://github.com/CodeEditorLand/Output)'s service
 copy. For an overview, see the
 [Wind element page](/Doc/wind).
 
 ## Core Architecture Principles
 
-| Principle                           | Description                                                                                                                               | Key Components Involved                  |
-| :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| **High-Fidelity Emulation**         | Provide comprehensive VSCode renderer environment emulation to maximize `Sky`'s reusability with minimal changes to VSCode UI components. | `Preload.ts`, `Platform/VSCode/*`        |
-| **Effect-TS Native Architecture**   | Build the entire application with Effect-TS, using `Layer` composition and declarative effects for maximum robustness and type safety.    | All `Effect`-based modules               |
-| **Anti-Corruption Layer**           | Create a clean abstraction layer over Tauri APIs, isolating platform specifics and simplifying usage within the application.              | `Integration/Tauri/Wrap/*`, `Preload.ts` |
-| **Declarative Service Composition** | Implement VSCode frontend services using Effect-TS patterns for clean dependency injection and composable service construction.           | `Application/*`, `AppLayer`              |
-| **Performance Optimization**        | Utilize efficient bundling strategies and optimized API shimming to minimize overhead while maintaining compatibility.                    | `Configuration/ESBuild/*`, `Preload.ts`  |
-| **Security Hardening**              | Implement comprehensive security measures for Tauri webview environment, including CSP and secure API boundaries.                         | `Preload.ts` security patterns           |
+| Principle                           | Description                                                                                                                               | Key Components Involved                                                                                           |
+| :---------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| **High-Fidelity Emulation**         | Provide comprehensive VSCode renderer environment emulation to maximize `Sky`'s reusability with minimal changes to VSCode UI components. | [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts), `Platform/VSCode/*`        |
+| **Effect-TS Native Architecture**   | Build the entire application with Effect-TS, using `Layer` composition and declarative effects for maximum robustness and type safety.    | All `Effect`-based modules                                                                                        |
+| **Anti-Corruption Layer**           | Create a clean abstraction layer over Tauri APIs, isolating platform specifics and simplifying usage within the application.              | `Integration/Tauri/Wrap/*`, [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts) |
+| **Declarative Service Composition** | Implement VSCode frontend services using Effect-TS patterns for clean dependency injection and composable service construction.           | `Application/*`, `AppLayer`                                                                                       |
+| **Performance Optimization**        | Utilize efficient bundling strategies and optimized API shimming to minimize overhead while maintaining compatibility.                    | `Configuration/ESBuild/*`, [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)  |
+| **Security Hardening**              | Implement comprehensive security measures for Tauri webview environment, including CSP and secure API boundaries.                         | [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts) security patterns           |
 
 ## TauriLiveLayer Construction and Service Dependency Graph
 
@@ -85,10 +85,10 @@ export const LiveEditorServiceLayer = Layer.succeed(
 );
 ```
 
-### ManagedRuntime Singleton
+### [ManagedRuntime](https://effect.website) Singleton
 
 `Wind/Source/Effect/LandWorkbench/LandWorkbenchRuntime.ts` provides a
-module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
+module-singleton [`ManagedRuntime`](https://effect.website) that wraps the full `LandWorkbenchLayer`:
 
 - Initialized eagerly via an IIFE at module load time. The initialization cost
   is paid once during Sky bundle evaluation, not deferred to the first service
@@ -102,10 +102,10 @@ module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
 
 ## Deep Dive into Wind's Components
 
-### 1. `Preload.ts` (The Environmental Foundation)
+### 1. [`Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts) (The Environmental Foundation)
 
 - **Role:** This cornerstone script is executed in the Tauri webview _before_
-  `Sky`'s main application code loads, establishing a VSCode-like renderer
+  [`Sky`](https://github.com/CodeEditorLand/Sky)'s main application code loads, establishing a VSCode-like renderer
   environment.
 - **Advanced Implementation:**
     - **Global API Reconstruction:** Creates and populates the `window.vscode`
@@ -120,7 +120,7 @@ module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
           `cwd()`.
     - **Configuration Resolution:** Implements `context.resolveConfiguration()`
       which dynamically reads `ISandboxConfiguration` from meta tags injected by
-      `Mountain`.
+      [`Mountain`](https://github.com/CodeEditorLand/Mountain).
     - **Security Hardening:** Implements Content Security Policy (CSP)
       compliance and secure API boundary enforcement.
 
@@ -168,10 +168,10 @@ module-singleton `ManagedRuntime` that wraps the full `LandWorkbenchLayer`:
 
 ### VSCode Environment Emulation Architecture
 
-Wind's concrete environment emulation enables seamless VSCode compatibility:
+[Wind](https://github.com/CodeEditorLand/Wind)'s concrete environment emulation enables seamless VSCode compatibility:
 
 <img src="/Mermaid/a70b3ee1f37d6369.svg" alt="Mermaid diagram" />
-Wind's environment emulation provides high-fidelity VSCode API compatibility
+[Wind](https://github.com/CodeEditorLand/Wind)'s environment emulation provides high-fidelity VSCode API compatibility
 through:
 
 1. **Interface Matching:** All VSCode API interfaces are precisely matched in
@@ -183,9 +183,9 @@ through:
 4. **Asynchronous Semantics:** Async operations maintain proper sequencing and
    error propagation
 
-### Effect-TS Service Layer Architecture
+### [Effect-TS](https://effect.website) Service Layer Architecture
 
-Wind implements concrete Effect-TS patterns for robust service composition:
+[Wind](https://github.com/CodeEditorLand/Wind) implements concrete [Effect-TS](https://effect.website) patterns for robust service composition:
 
 <img src="/Mermaid/428e1d586b2589cd.svg" alt="Mermaid diagram" />
 ### Security Architecture
@@ -194,7 +194,7 @@ Wind implements comprehensive security measures for the Tauri webview
 environment:
 
 <img src="/Mermaid/8c9742d4b78ceefe.svg" alt="Mermaid diagram" />
-Wind's security architecture prevents common webview security vulnerabilities
+[Wind](https://github.com/CodeEditorLand/Wind)'s security architecture prevents common webview security vulnerabilities
 through:
 
 1. **CSP Enforcement:** Strict Content Security Policy prevents script injection
@@ -223,20 +223,20 @@ through:
 
 ## TauriMainProcessService Routing
 
-`Source/Service/TauriMainProcessService.ts` implements the VS Code
+[`Source/Service/TauriMainProcessService.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts) implements the VS Code
 `IMainProcessService` interface. Every workbench IPC call arrives here as a
 `{ channel, args }` pair and is dispatched based on the `TierIPC` environment
 variable and per-subsystem overrides.
 
 ### Global TierIPC Values
 
-| TierIPC value        | Behavior                                                                                            |
-| -------------------- | --------------------------------------------------------------------------------------------------- |
-| `Mountain` (default) | All `channel.call()` invocations route to Mountain via Tauri `MountainIPCInvoke`                    |
-| `NodeDeferred`       | Mountain first; if Mountain returns `undefined` or has no handler, falls through to Cocoon via gRPC |
-| `Node`               | All calls bypass Mountain and route to Cocoon via the `cocoon:request` gRPC bridge                  |
+| TierIPC value                                                      | Behavior                                                                                                                                                                                        |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`Mountain`](https://github.com/CodeEditorLand/Mountain) (default) | All `channel.call()` invocations route to [Mountain](https://github.com/CodeEditorLand/Mountain) via Tauri `MountainIPCInvoke`                                                                  |
+| `NodeDeferred`                                                     | [Mountain](https://github.com/CodeEditorLand/Mountain) first; if [Mountain](https://github.com/CodeEditorLand/Mountain) returns `undefined` or has no handler, falls through to Cocoon via gRPC |
+| `Node`                                                             | All calls bypass [Mountain](https://github.com/CodeEditorLand/Mountain) and route to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via the `cocoon:request` gRPC bridge                    |
 
-### Mountain Tier (default)
+### [Mountain](https://github.com/CodeEditorLand/Mountain) Tier (default)
 
 All calls invoke `@tauri-apps/api`'s `invoke()` directly:
 
@@ -244,12 +244,12 @@ All calls invoke `@tauri-apps/api`'s `invoke()` directly:
 invoke("MountainIPCInvoke", { method: channel, args });
 ```
 
-Mountain's `WindServiceHandlers/mod.rs` receives the call, pattern-matches on
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s [`WindServiceHandlers/mod.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs) receives the call, pattern-matches on
 `channel`, and dispatches to the appropriate atomic handler file.
 
 ### NodeDeferred Tier
 
-Mountain is tried first. If Mountain returns `undefined` or throws a "command
+[Mountain](https://github.com/CodeEditorLand/Mountain) is tried first. If Mountain returns `undefined` or throws a "command
 not found" error, the call is forwarded to Cocoon via the `cocoon:request` Tauri
 event bridge:
 
@@ -261,19 +261,19 @@ if (result === undefined) {
 return result;
 ```
 
-This tier allows gradual migration: Mountain handlers that are not yet
-implemented fall through to Cocoon's Node.js implementations without any
+This tier allows gradual migration: [Mountain](https://github.com/CodeEditorLand/Mountain) handlers that are not yet
+implemented fall through to [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s Node.js implementations without any
 call-site changes.
 
 ### Node Tier
 
-All calls bypass Mountain entirely and go directly to Cocoon:
+All calls bypass [Mountain](https://github.com/CodeEditorLand/Mountain) entirely and go directly to [Cocoon](https://github.com/CodeEditorLand/Cocoon):
 
 ```typescript
 emit("cocoon:request", { channel, args });
 ```
 
-Used when developing Cocoon-side handlers in isolation before the Mountain
+Used when developing [Cocoon](https://github.com/CodeEditorLand/Cocoon)-side handlers in isolation before the Mountain
 counterpart is ready.
 
 ### Per-Subsystem Tier Overrides
@@ -281,53 +281,53 @@ counterpart is ready.
 Individual subsystems can override `TierIPC` independently. All default to
 `Mountain` unless noted:
 
-| Variable               | Default    | Channels governed                                   |
-| ---------------------- | ---------- | --------------------------------------------------- |
-| `TierTerminal`         | `Mountain` | `terminal`, `localPty`                              |
-| `TierSCM`              | `Mountain` | `git` (localGit)                                    |
-| `TierDebug`            | `Mountain` | `extensionHostStarter`, `extensionhostdebugservice` |
-| `TierLanguageFeatures` | `Mountain` | `language`, `languages`                             |
-| `TierSearch`           | `Mountain` | `search`                                            |
-| `TierOutputChannel`    | `Mountain` | `output`                                            |
-| `TierNativeHost`       | `Mountain` | `nativeHost`                                        |
-| `TierTreeView`         | `Mountain` | `tree`                                              |
-| `TierStorage`          | `Mountain` | `storage`                                           |
-| `TierModel`            | `Mountain` | `model`, `textFile`, `file`                         |
-| `TierTasks`            | `Node`     | `tasks`                                             |
-| `TierAuth`             | `Node`     | `auth`                                              |
-| `TierEncryption`       | `Mountain` | `encryption`                                        |
-| `TierWebSocket`        | `Disabled` | Mist WebSocket transport (not yet active)           |
+| Variable               | Default                                                  | Channels governed                                                                   |
+| ---------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `TierTerminal`         | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `terminal`, `localPty`                                                              |
+| `TierSCM`              | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `git` (localGit)                                                                    |
+| `TierDebug`            | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `extensionHostStarter`, `extensionhostdebugservice`                                 |
+| `TierLanguageFeatures` | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `language`, `languages`                                                             |
+| `TierSearch`           | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `search`                                                                            |
+| `TierOutputChannel`    | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `output`                                                                            |
+| `TierNativeHost`       | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `nativeHost`                                                                        |
+| `TierTreeView`         | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `tree`                                                                              |
+| `TierStorage`          | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `storage`                                                                           |
+| `TierModel`            | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `model`, `textFile`, `file`                                                         |
+| `TierTasks`            | `Node`                                                   | `tasks`                                                                             |
+| `TierAuth`             | `Node`                                                   | `auth`                                                                              |
+| `TierEncryption`       | [`Mountain`](https://github.com/CodeEditorLand/Mountain) | `encryption`                                                                        |
+| `TierWebSocket`        | `Disabled`                                               | [Mist](https://github.com/CodeEditorLand/Mist) WebSocket transport (not yet active) |
 
 All tier variables are read from `.env.Land` and mirrored into
-`import.meta.env.Tier*` at build time by `astro.config.ts`. `Wind/Source/Utility/Tier.ts`
-and `Cocoon/Source/Utility/Tier.ts` resolve the same values without a runtime
+`import.meta.env.Tier*` at build time by [`astro.config.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/astro.config.ts). [`Wind/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts)
+and [`Cocoon/Source/Utility/Tier.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts) resolve the same values without a runtime
 lookup.
 
 ### Output Lockstep Copy
 
-`Output/Source/Service/Tauri/Main/Process/Service.ts` is an exact copy of
-Wind's `TauriMainProcessService.ts`. Output is loaded by Cocoon's bootstrap in a
-module context that cannot import from Wind's npm package, so the file is
-duplicated. Any routing change applied to Wind must be applied to Output in the
+[`Output/Source/Service/Tauri/Main/Process/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts) is an exact copy of
+[Wind](https://github.com/CodeEditorLand/Wind)'s [`TauriMainProcessService.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts). [Output](https://github.com/CodeEditorLand/Output) is loaded by [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s bootstrap in a
+module context that cannot import from [Wind](https://github.com/CodeEditorLand/Wind)'s npm package, so the file is
+duplicated. Any routing change applied to [Wind](https://github.com/CodeEditorLand/Wind) must be applied to [Output](https://github.com/CodeEditorLand/Output) in the
 same commit. The lockstep requirement is enforced by code review convention, not
 a build check.
 
 ## Preload.ts Global Shimming Strategy
 
-`Source/Preload.ts` executes synchronously in the Tauri webview before any
-module from `@codeeditorland/output` is parsed. It patches the globals that VS
+[`Source/Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts) executes synchronously in the Tauri webview before any
+module from [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output) is parsed. It patches the globals that VS
 Code's workbench bundle accesses at module evaluation time.
 
 ### What Gets Patched and Why
 
-| Global                             | Patched value                                                                | Why required                                                                                                  |
-| ---------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `window.vscode.ipcRenderer`        | Object with `send`, `invoke`, `on`, `once` backed by Tauri `invoke`/`listen` | VS Code workbench calls `ipcRenderer.invoke("vscode:mainProcessService", ...)` at bootstrap                   |
-| `window.vscode.ipcRenderer.invoke` | `async (channel, args) => invoke("MountainIPCInvoke", ...)`                  | Routes workbench IPC to Mountain                                                                              |
-| `window.process`                   | `ISandboxNodeProcess`-shaped object with `platform`, `arch`, `env`, `cwd()`  | Multiple VS Code modules read `process.platform` at module load time                                          |
-| `window.MonacoEnvironment`         | `{ getWorkerUrl(moduleId, label) }`                                          | Monaco editor resolves web worker URLs through this global before spawning workers                            |
-| `window.__CEL_LAND__.polyfills`    | Object with `requestIdleCallback`, `queryLocalFonts`, `__name`               | WKWebView does not implement these browser APIs that the workbench bundle expects                             |
-| `window.ISandboxConfiguration`     | Parsed from meta tags injected by Mountain                                   | VS Code's `NativeWorkbenchEnvironmentService` reads this at startup to locate extensions, logs, and user data |
+| Global                             | Patched value                                                                            | Why required                                                                                                  |
+| ---------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `window.vscode.ipcRenderer`        | Object with `send`, `invoke`, `on`, `once` backed by Tauri `invoke`/`listen`             | VS Code workbench calls `ipcRenderer.invoke("vscode:mainProcessService", ...)` at bootstrap                   |
+| `window.vscode.ipcRenderer.invoke` | `async (channel, args) => invoke("MountainIPCInvoke", ...)`                              | Routes workbench IPC to Mountain                                                                              |
+| `window.process`                   | `ISandboxNodeProcess`-shaped object with `platform`, `arch`, `env`, `cwd()`              | Multiple VS Code modules read `process.platform` at module load time                                          |
+| `window.MonacoEnvironment`         | `{ getWorkerUrl(moduleId, label) }`                                                      | Monaco editor resolves web worker URLs through this global before spawning workers                            |
+| `window.__CEL_LAND__.polyfills`    | Object with `requestIdleCallback`, `queryLocalFonts`, `__name`                           | WKWebView does not implement these browser APIs that the workbench bundle expects                             |
+| `window.ISandboxConfiguration`     | Parsed from meta tags injected by [Mountain](https://github.com/CodeEditorLand/Mountain) | VS Code's `NativeWorkbenchEnvironmentService` reads this at startup to locate extensions, logs, and user data |
 
 ### Timing Guarantee
 
@@ -347,7 +347,7 @@ the correct Mountain IPC channel.
 
 > [!WARNING] These files are generated output. Never edit them directly. To
 > change a generated bridge shape, update the corresponding template in
-> `Source/Codegen/Emit/EmitServiceSchema.ts` and re-run the codegen step.
+> [`Source/Codegen/Emit/EmitServiceSchema.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts) and re-run the codegen step.
 
 ### Import Depth Convention
 
@@ -360,12 +360,12 @@ import { CodegenBase } from "../../../Codegen/Base";
 ```
 
 If you see module resolution errors mentioning `Codegen/Base` or `Codegen/Type`
-after a Wind rebuild, the generator template in `EmitServiceSchema.ts` has
+after a Wind rebuild, the generator template in [`EmitServiceSchema.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts) has
 regressed. Fix the template, not the generated files.
 
-## Wind Codegen Pipeline
+## [Wind](https://github.com/CodeEditorLand/Wind) Codegen Pipeline
 
-`Source/Codegen/` extracts VS Code service bridge shapes from the compiled VS
+[`Source/Codegen/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/) extracts VS Code service bridge shapes from the compiled VS
 Code source tree. The pipeline runs as part of `pnpm prepublishOnly` and writes
 results to `Source/Effect/Generated/`.
 
@@ -379,7 +379,7 @@ results to `Source/Effect/Generated/`.
    corresponding TypeScript interface definition and enumerates its method
    signatures: parameter names, types, and return types.
 
-3. **Emit** - `EmitServiceSchema.ts` writes one `*Upstream.ts` file per service
+3. **Emit** - [`EmitServiceSchema.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts) writes one `*Upstream.ts` file per service
    to `Source/Effect/Generated/`. Each file exports a `ServiceUpstream` object
    mapping method names to their IPC channel strings.
 
@@ -389,13 +389,13 @@ results to `Source/Effect/Generated/`.
 
 ### When to Re-Run
 
-Re-run codegen after updating the VS Code dependency version in Output. New
+Re-run codegen after updating the VS Code dependency version in [Output](https://github.com/CodeEditorLand/Output). New
 service methods added in VS Code will otherwise be missing from Wind's bridge
 shapes, causing those calls to silently route to the wrong Mountain handler.
 
-## Effect-TS Service Pattern
+## [Effect-TS](https://effect.website) Service Pattern
 
-Every Wind service follows the Define/Implement/Problem structure:
+Every [Wind](https://github.com/CodeEditorLand/Wind) service follows the Define/Implement/Problem structure:
 
 ```typescript
 // Effect/Clipboard/Define.ts - service Tag
@@ -561,7 +561,7 @@ async function robustDialogOperation() {
 
 ### Webview Security
 
-Wind implements comprehensive webview security measures:
+[Wind](https://github.com/CodeEditorLand/Wind) implements comprehensive webview security measures:
 
 <img src="/Mermaid/796f752a8f032ac9.svg" alt="Mermaid diagram" />
 ### API Security Patterns
@@ -591,7 +591,7 @@ class SecureAPIService {
 
 ### Adding New Services
 
-When adding new services to Wind, follow these patterns:
+When adding new services to [Wind](https://github.com/CodeEditorLand/Wind), follow these patterns:
 
 1. **Define Service Interface:** Create TypeScript interface matching VSCode
    service
@@ -616,7 +616,7 @@ When adding new services to Wind, follow these patterns:
 - **Follow Tauri Security Guidelines:** Adhere to Tauri security recommendations
 - **Regular Security Audits:** Continuous security auditing and improvement
 
-Wind represents a sophisticated integration layer that enables VSCode-based UI
+[Wind](https://github.com/CodeEditorLand/Wind) represents a sophisticated integration layer that enables VSCode-based UI
 components to operate seamlessly within the Tauri framework, providing high
 performance, robust security, and comprehensive compatibility through advanced
 TypeScript and Effect-TS patterns.

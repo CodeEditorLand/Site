@@ -12,11 +12,11 @@ description:
 Common defines the abstract architectural patterns, service contracts, and data
 structures that enable type-safe, testable service implementations across Rust
 and TypeScript boundaries - providing the technical foundation for
-lifting VSCode services into the Land platform.
+lifting VSCode services into the [Land](https://github.com/CodeEditorLand/Land) platform.
 
-Common uses **Rust edition 2024** with a minimum supported Rust version (MSRV)
+[Common](https://github.com/CodeEditorLand/Common) uses **Rust edition 2024** with a minimum supported Rust version (MSRV)
 of **1.95.0**. It is a pure library crate with no binary targets and no concrete
-I/O - all platform-specific logic lives in Mountain.
+I/O - all platform-specific logic lives in [Mountain](https://github.com/CodeEditorLand/Mountain).
 
 ---
 
@@ -70,7 +70,7 @@ its entire interface. Second, composing operations - run A then B if A succeeds,
 or run A and B in parallel - requires explicit async coordination at each call
 site.
 
-Common's `ActionEffect` system treats operations as data. An effect constructor
+[Common](https://github.com/CodeEditorLand/Common)'s `ActionEffect` system treats operations as data. An effect constructor
 returns a description of what should happen; it does not perform any I/O. The
 `ApplicationRunTime` receives the description, resolves the required capability
 from its environment, and executes it.
@@ -146,10 +146,10 @@ pub trait FileSystemReader: Send + Sync {
 }
 ```
 
-Mountain implements each trait in a corresponding file under
+[Mountain](https://github.com/CodeEditorLand/Mountain) implements each trait in a corresponding file under
 `Element/Mountain/Source/Environment/`. Tests implement the same traits with
-in-memory or panic-on-call stubs. The trait implementation is in Mountain; the
-trait definition is in Common. Common never imports from Mountain. This one-way
+in-memory or panic-on-call stubs. The trait implementation is in [Mountain](https://github.com/CodeEditorLand/Mountain); the
+trait definition is in [Common](https://github.com/CodeEditorLand/Common). [Common](https://github.com/CodeEditorLand/Common) never imports from [Mountain](https://github.com/CodeEditorLand/Mountain). This one-way
 dependency is enforced by the workspace `Cargo.toml`.
 
 ### How Mountain Implements a Common Trait
@@ -241,11 +241,11 @@ The type system prevents runtime capability errors through:
 ## DTO Library Structure
 
 The Data Transfer Object system provides type-safe serialization for IPC
-communication. Common's `DTO/` module re-exports structs from each service
+communication. [Common](https://github.com/CodeEditorLand/Common)'s `DTO/` module re-exports structs from each service
 domain's `DTO/` subdirectory. All DTOs are:
 
 - `#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]`
-- Named in PascalCase matching the Land naming convention
+- Named in PascalCase matching the [Land](https://github.com/CodeEditorLand/Land) naming convention
 - Field-compatible with the corresponding protobuf message fields in
   `Vine.proto`
 
@@ -284,7 +284,7 @@ pub enum CommonError {
 }
 ```
 
-Every `async trait` method returns `Result<T, CommonError>`. Mountain maps
+Every `async trait` method returns `Result<T, CommonError>`. [Mountain](https://github.com/CodeEditorLand/Mountain) maps
 platform errors at the implementation boundary:
 
 ```rust
@@ -310,8 +310,8 @@ This means callers in effects and tests never need to match against
 
 ## How Common Enables Testability
 
-Because Common contains no concrete logic, any component that depends only on
-Common traits can be tested with lightweight in-memory implementations. A test
+Because [Common](https://github.com/CodeEditorLand/Common) contains no concrete logic, any component that depends only on
+[Common](https://github.com/CodeEditorLand/Common) traits can be tested with lightweight in-memory implementations. A test
 for Mountain's file-open effect needs:
 
 1. A struct that implements `FileSystemReader` by reading from a
@@ -319,7 +319,7 @@ for Mountain's file-open effect needs:
 2. An `ApplicationRunTime` constructed with that struct as the environment
 3. The effect under test
 
-No Tauri process, no real file system, no spawned Cocoon. The test runs in
+No Tauri process, no real file system, no spawned [Cocoon](https://github.com/CodeEditorLand/Cocoon). The test runs in
 milliseconds and is fully deterministic.
 
 ```rust
@@ -338,9 +338,9 @@ impl FileSystemReader for MockFileSystem {
 }
 ```
 
-This pattern is used throughout Mountain's test suite. The `src/tests/`
-directories in each Mountain service module contain mock implementations of the
-Common traits they depend on.
+This pattern is used throughout [Mountain](https://github.com/CodeEditorLand/Mountain)'s test suite. The `src/tests/`
+directories in each [Mountain](https://github.com/CodeEditorLand/Mountain) service module contain mock implementations of the
+[Common](https://github.com/CodeEditorLand/Common) traits they depend on.
 
 ### Testing Strategies
 
@@ -357,7 +357,7 @@ Common traits they depend on.
 
 ## VSCode Service Lifting Patterns
 
-Common provides the foundation for lifting VSCode services through abstract
+[Common](https://github.com/CodeEditorLand/Common) provides the foundation for lifting VSCode services through abstract
 interfaces, effect constructors, and DTO definitions.
 
 ### Service Interface Definition
@@ -442,13 +442,13 @@ pub fn GetConfiguration_effect(section: Option<String>)
 <img src="/Mermaid/7f324b1c75c5f503.svg" alt="Mermaid diagram" />
 ### Service Migration Table
 
-| VSCode Service          | Common Trait           | Mountain Implementation | Effect-TS Layer        |
-| :---------------------- | :--------------------- | :---------------------- | :--------------------- |
-| `IFileService`          | `FileSystemService`    | `MountainFileSystem`    | `FileService`          |
-| `IWorkspaceService`     | `WorkspaceService`     | `MountainWorkspace`     | `WorkspaceService`     |
-| `IConfigurationService` | `ConfigurationService` | `MountainConfiguration` | `ConfigurationService` |
-| `ICommandService`       | `CommandService`       | `MountainCommand`       | `CommandService`       |
-| `IDocumentService`      | `DocumentProvider`     | `MountainDocument`      | `DocumentService`      |
+| VSCode Service          | [Common](https://github.com/CodeEditorLand/Common) Trait | [Mountain](https://github.com/CodeEditorLand/Mountain) Implementation | [Effect-TS](https://effect.website) Layer |
+| :---------------------- | :------------------------------------------------------- | :-------------------------------------------------------------------- | :---------------------------------------- |
+| `IFileService`          | `FileSystemService`                                      | `MountainFileSystem`                                                  | `FileService`                             |
+| `IWorkspaceService`     | `WorkspaceService`                                       | `MountainWorkspace`                                                   | `WorkspaceService`                        |
+| `IConfigurationService` | `ConfigurationService`                                   | `MountainConfiguration`                                               | `ConfigurationService`                    |
+| `ICommandService`       | `CommandService`                                         | `MountainCommand`                                                     | `CommandService`                          |
+| `IDocumentService`      | `DocumentProvider`                                       | `MountainDocument`                                                    | `DocumentService`                         |
 
 ### Component Block Map
 
@@ -457,8 +457,8 @@ pub fn GetConfiguration_effect(section: Option<String>)
 
 ## Transport Layer
 
-Common defines the transport-agnostic communication interface used by Air,
-Grove, and future Rust sidecars:
+[Common](https://github.com/CodeEditorLand/Common) defines the transport-agnostic communication interface used by [Air](https://github.com/CodeEditorLand/Air),
+[Grove](https://github.com/CodeEditorLand/Grove), and future Rust sidecars:
 
 ```rust
 pub trait TransportStrategy: Send + Sync {
@@ -472,7 +472,7 @@ pub trait TransportStrategy: Send + Sync {
 ```
 
 Concrete transport implementations (`gRPCTransport`, `IPCTransport`,
-`WASMTransport`) live in the Grove crate, not in Common. Common owns only the
+`WASMTransport`) live in the [Grove](https://github.com/CodeEditorLand/Grove) crate, not in [Common](https://github.com/CodeEditorLand/Common). [Common](https://github.com/CodeEditorLand/Common) owns only the
 trait surface and the `TransportConfig` DTO. This keeps Common free of tonic,
 tokio-tungstenite, and wasmtime dependencies.
 
@@ -480,7 +480,7 @@ tokio-tungstenite, and wasmtime dependencies.
 
 ## Telemetry Module
 
-Common's `Telemetry/` module provides a dual-pipe emit surface shared across all
+[Common](https://github.com/CodeEditorLand/Common)'s `Telemetry/` module provides a dual-pipe emit surface shared across all
 Rust sidecars:
 
 | Pipe    | Crate           | Controlled By                                  |
@@ -488,7 +488,7 @@ Rust sidecars:
 | PostHog | `posthog-rs`    | `TELEMETRY_POSTHOG_KEY` environment variable   |
 | OTLP    | `opentelemetry` | `TELEMETRY_OTLP_ENDPOINT` environment variable |
 
-Both pipes honor the `Disable=true` build-time flag, which the Maintain build
+Both pipes honor the `Disable=true` build-time flag, which the [Maintain](https://github.com/CodeEditorLand/Maintain) build
 pipeline sets to completely strip telemetry from production binaries when the
 flag is present. Neither pipe is enabled in debug builds by default.
 
@@ -521,7 +521,7 @@ flag is present. Neither pipe is enabled in debug builds by default.
 
 ### Adding New Services
 
-When adding new services to `Common`, follow these concrete patterns:
+When adding new services to [`Common`](https://github.com/CodeEditorLand/Common), follow these concrete patterns:
 
 1. **Define Service Interface:** Create Rust trait matching VSCode service
    interface

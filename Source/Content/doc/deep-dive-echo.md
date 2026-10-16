@@ -13,10 +13,10 @@ description:
 
 # **Echo** 📣 Deep Dive & Architecture
 
-**Echo** provides the technical foundation for implementing
-high-performance task scheduling within the Land platform. It serves as
+**[Echo](https://github.com/CodeEditorLand/Echo)** provides the technical foundation for implementing
+high-performance task scheduling within the [Land](https://github.com/CodeEditorLand/Land) platform. It serves as
 the work-stealing scheduler that provides efficient task execution for
-Mountain's ApplicationRunTime and other components requiring asynchronous task
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s ApplicationRunTime and other components requiring asynchronous task
 management.
 
 ---
@@ -97,13 +97,13 @@ management.
 
 #### 1. Work-Stealing Scheduler Architecture
 
-Echo's scheduler implements concrete concurrency patterns for optimal
+[Echo](https://github.com/CodeEditorLand/Echo)'s scheduler implements concrete concurrency patterns for optimal
 performance:
 
 <img src="/Mermaid/f66d6d1b22e4006b.svg" alt="Mermaid diagram" />
 **Concrete Work-Stealing Efficiency**
 
-Echo's work-stealing algorithm ensures optimal CPU utilization through:
+[Echo](https://github.com/CodeEditorLand/Echo)'s work-stealing algorithm ensures optimal CPU utilization through:
 
 1. **Load Balancing:** Idle workers steal tasks from busy workers' queues
 2. **Lock-Free Operations:** Queue operations use atomic instructions,
@@ -114,13 +114,13 @@ Echo's work-stealing algorithm ensures optimal CPU utilization through:
 
 #### 2. Priority-Based Execution Flow
 
-Echo implements sophisticated priority handling to ensure timely execution of
+[Echo](https://github.com/CodeEditorLand/Echo) implements sophisticated priority handling to ensure timely execution of
 critical tasks:
 
 <img src="/Mermaid/790d374d558cfc15.svg" alt="Mermaid diagram" />
 #### 3. Memory Management Architecture
 
-Echo employs sophisticated memory management strategies for optimal performance:
+[Echo](https://github.com/CodeEditorLand/Echo) employs sophisticated memory management strategies for optimal performance:
 
 <img src="/Mermaid/c26d16134db1b19e.svg" alt="Mermaid diagram" />
 ### Advanced Technical Proofs
@@ -139,7 +139,7 @@ Echo employs sophisticated memory management strategies for optimal performance:
 
 #### Scalability Proof
 
-**Theorem:** Echo scales linearly with available CPU cores.
+**Theorem:** [Echo](https://github.com/CodeEditorLand/Echo) scales linearly with available CPU cores.
 
 **Proof:**
 
@@ -193,7 +193,7 @@ Echo employs sophisticated memory management strategies for optimal performance:
 
 ### Custom Task Submission
 
-Echo provides flexible APIs for advanced task submission scenarios:
+[Echo](https://github.com/CodeEditorLand/Echo) provides flexible APIs for advanced task submission scenarios:
 
 ```rust
 use Echo::Scheduler::SchedulerBuilder;
@@ -261,7 +261,7 @@ scheduler.Submit(async {
 
 ### Scalability Testing
 
-Echo has been tested with:
+[Echo](https://github.com/CodeEditorLand/Echo) has been tested with:
 
 - **Small workloads:** 1-100 tasks with mixed priorities
 - **Medium workloads:** 1K-10K tasks simulating real application patterns
@@ -269,7 +269,7 @@ Echo has been tested with:
 
 ### Real-world Integration Performance
 
-When integrated with Mountain's ApplicationRunTime:
+When integrated with [Mountain](https://github.com/CodeEditorLand/Mountain)'s ApplicationRunTime:
 
 - **Effect execution overhead:** < 1 microsecond
 - **gRPC integration latency:** < 100 microseconds added
@@ -284,15 +284,15 @@ When integrated with Mountain's ApplicationRunTime:
 <img src="/Mermaid/d2954fdd8424a8e5.svg" alt="Mermaid diagram" />
 #### Scheduler Integration Table
 
-| Component            | Echo Integration        | Communication Pattern | Performance Characteristics      |
-| :------------------- | :---------------------- | :-------------------- | :------------------------------- |
-| ApplicationRunTime   | Direct integration      | Task submission API   | < 1μs overhead                   |
-| ActionEffect         | Task wrapping           | Future execution      | Native async support             |
-| Mountain Environment | Capability resolution   | Worker thread access  | Concurrent capability access     |
-| gRPC Integration     | Background task support | Async I/O operations  | Optimized for network operations |
+| Component                                                          | Echo Integration        | Communication Pattern | Performance Characteristics      |
+| :----------------------------------------------------------------- | :---------------------- | :-------------------- | :------------------------------- |
+| ApplicationRunTime                                                 | Direct integration      | Task submission API   | < 1μs overhead                   |
+| ActionEffect                                                       | Task wrapping           | Future execution      | Native async support             |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) Environment | Capability resolution   | Worker thread access  | Concurrent capability access     |
+| gRPC Integration                                                   | Background task support | Async I/O operations  | Optimized for network operations |
 
-Echo represents a concrete foundation for high-performance task execution in the
-Land platform, providing efficient work-stealing scheduling for Mountain's
+[Echo](https://github.com/CodeEditorLand/Echo) represents a concrete foundation for high-performance task execution in the
+[Land](https://github.com/CodeEditorLand/Land) platform, providing efficient work-stealing scheduling for [Mountain](https://github.com/CodeEditorLand/Mountain)'s
 ApplicationRunTime and other asynchronous operations.
 
 ---
@@ -302,13 +302,13 @@ ApplicationRunTime and other asynchronous operations.
 <img src="/Mermaid/2d67f67ca7b5dbe8.svg" alt="Mermaid diagram" />
 #### Performance Characteristics Table
 
-| Metric                  | Echo Performance      | Mountain Integration | Notes                     |
-| :---------------------- | :-------------------- | :------------------- | :------------------------ |
-| Task Submission Latency | ~0.05ms               | ~0.10ms              | Includes queue operations |
-| Task Execution Overhead | ~0.18ms               | ~1μs                 | Effect execution overhead |
-| Memory per Task         | < 64 bytes            | Minimal increase     | Efficient memory usage    |
-| Scalability             | Linear with CPU cores | Full utilization     | Optimal CPU usage         |
-| Priority Handling       | High/Normal/Low       | Native support       | Preemptive scheduling     |
+| Metric                  | [Echo](https://github.com/CodeEditorLand/Echo) Performance | [Mountain](https://github.com/CodeEditorLand/Mountain) Integration | Notes                     |
+| :---------------------- | :--------------------------------------------------------- | :----------------------------------------------------------------- | :------------------------ |
+| Task Submission Latency | ~0.05ms                                                    | ~0.10ms                                                            | Includes queue operations |
+| Task Execution Overhead | ~0.18ms                                                    | ~1μs                                                               | Effect execution overhead |
+| Memory per Task         | < 64 bytes                                                 | Minimal increase                                                   | Efficient memory usage    |
+| Scalability             | Linear with CPU cores                                      | Full utilization                                                   | Optimal CPU usage         |
+| Priority Handling       | High/Normal/Low                                            | Native support                                                     | Preemptive scheduling     |
 
 ### Component Block Map
 

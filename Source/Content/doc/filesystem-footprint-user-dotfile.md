@@ -9,7 +9,7 @@ description: "The ~/.fiddee/ tree - Land's primary product-owned filesystem doma
 
 # User Dotfile 🏞️
 
-The `~/.fiddee/` tree - Land's primary product-owned filesystem domain.
+The `~/.fiddee/` tree - [Land](https://github.com/CodeEditorLand/Land)'s primary product-owned filesystem domain.
 
 See also: [Filesystem Footprint](/Doc/filesystem-footprint)
 
@@ -18,13 +18,13 @@ See also: [Filesystem Footprint](/Doc/filesystem-footprint)
 ## At a Glance 🗺️
 
 `~/.fiddee/` is centralised by **one atom**: `FiddeeRoot::Fn` (Rust) +
-`FiddeeRoot()` (TypeScript). Every Land call site resolves sub-paths through
+`FiddeeRoot()` (TypeScript). Every [Land](https://github.com/CodeEditorLand/Land) call site resolves sub-paths through
 this atom so future renames touch a single file per Element.
 
 | Source of truth     | File                                                                      |
 | :------------------ | :------------------------------------------------------------------------ |
-| Rust (Mountain)     | `Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs` |
-| TypeScript (Cocoon) | `Element/Cocoon/Source/Platform/FiddeeRoot.ts`                            |
+| Rust ([Mountain](https://github.com/CodeEditorLand/Mountain))     | [`Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs) |
+| TypeScript ([Cocoon](https://github.com/CodeEditorLand/Cocoon)) | [`Element/Cocoon/Source/Platform/FiddeeRoot.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts)                            |
 | Constant            | `DOTFILE_NAME = ".fiddee"`                                                |
 
 ---
@@ -50,8 +50,8 @@ fallback to a relative `.fiddee` keeps callers receiving a valid `PathBuf`.
 | Path                                           | Producer                                                                               | Purpose                                                                                                                    |
 | :--------------------------------------------- | :------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
 | `.fiddee/extensions/<publisher>.<name>-<ver>/` | `ExtensionManagement/VsixInstaller.rs::InstallVsix`                                    | Primary user-extension root. VSIX archive extraction target. Sets `chmod 755` on platform binaries (`HealExecutableBits`). |
-| `.fiddee/extensions/<id>/.storage/`            | `Cocoon/Source/Services/Extension/Context.ts:495`                                      | Per-extension persistent state written **inside** the extension's own directory. Lost on reinstall or version bump.        |
-| `.fiddee/extensionStorage/<extId>/`            | `Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts:51`                | Per-extension workspace-scoped storage path passed to `context.storageUri`. `mkdir`'d at activation.                       |
+| `.fiddee/extensions/<id>/.storage/`            | [`Cocoon/Source/Services/Extension/Context.ts:495`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts)                                      | Per-extension persistent state written **inside** the extension's own directory. Lost on reinstall or version bump.        |
+| `.fiddee/extensionStorage/<extId>/`            | [`Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts:51`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts)                | Per-extension workspace-scoped storage path passed to `context.storageUri`. `mkdir`'d at activation.                       |
 | `.fiddee/globalStorage/<extId>/`               | `Cocoon/.../ActivateExtension.ts:52` + `Extension/Context.ts:495` (env override below) | Per-extension global storage path passed to `context.globalStorageUri`. `mkdir`'d at activation.                           |
 | `.fiddee/logs/<extId>/`                        | `Cocoon/.../ActivateExtension.ts:53`                                                   | Per-extension log directory passed to `context.logUri`. `mkdir`'d at activation.                                           |
 | `.fiddee/workspaces/RecentlyOpened.json`       | `Mountain/.../Utilities/RecentlyOpened.rs` + `State/WorkspaceState/WorkspaceDelta.rs`  | Up to 50 most-recent workspace folder URIs with labels. Pretty-printed JSON.                                               |
@@ -64,7 +64,7 @@ GB** depending on which language servers are installed.
 
 ## Storage-Path Override 🎛️
 
-Cocoon respects one env var that re-roots part of the tree:
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) respects one env var that re-roots part of the tree:
 
 | Variable                       | Effect                                                               | Default                         |
 | :----------------------------- | :------------------------------------------------------------------- | :------------------------------ |
@@ -78,7 +78,7 @@ Cocoon respects one env var that re-roots part of the tree:
 
 ## Cocoon-Side Mirror 🪞
 
-`Element/Cocoon/Source/Platform/FiddeeRoot.ts` exists so Node-side code does not
+[`Element/Cocoon/Source/Platform/FiddeeRoot.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts) exists so Node-side code does not
 call back into Rust to resolve the path. The TypeScript implementation mirrors
 the Rust resolution exactly:
 
@@ -91,8 +91,8 @@ export default function FiddeeRoot(): string {
 }
 ```
 
-Drift between the two implementations would manifest as Cocoon writing per-
-extension storage to a different location than Mountain expects when scanning.
+Drift between the two implementations would manifest as [Cocoon](https://github.com/CodeEditorLand/Cocoon) writing per-
+extension storage to a different location than [Mountain](https://github.com/CodeEditorLand/Mountain) expects when scanning.
 Keep them lockstep; the docstring on each file references the other.
 
 ---
@@ -129,7 +129,7 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
   `.fiddee/extensions/<id>/`, then runs `HealExecutableBits` on `bin/`,
   `server/`, `tools/`, etc. to promote `0o644` → `0o755` on ELF / Mach-O /
   shebang files. One-shot per boot per path.
-- **Extension activation:** Cocoon `ActivateExtension.ts` mkdir's the three
+- **Extension activation:** [Cocoon](https://github.com/CodeEditorLand/Cocoon) [`ActivateExtension.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts) mkdir's the three
   sibling storage roots (`extensionStorage/<extId>`, `globalStorage/<extId>`,
   `logs/<extId>`). Then `Extension/Context.ts` mkdir's the in-bundle `.storage/`
   inside the extension's own directory.
@@ -149,7 +149,7 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
   parallel to the existing siblings. See [`Encapsulation.md`](/Doc/filesystem-footprint-encapsulation)
   §H.
 - `.fiddee/data/` is reserved but not yet wired. The background-daemon flow may
-  bypass it entirely (Air uses `<config_dir>/FIDDEE/` instead - see
+  bypass it entirely ([Air](https://github.com/CodeEditorLand/Air) uses `<config_dir>/FIDDEE/` instead - see
   [`PerElement.md`](/Doc/filesystem-footprint-per-element) §Air for the divergence).
 
 ---

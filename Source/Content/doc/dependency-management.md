@@ -8,7 +8,7 @@ description:
     updates."
 ---
 
-Land is a monorepo with two parallel dependency graphs: a **pnpm workspace** for
+[Land](https://github.com/CodeEditorLand/Land) is a monorepo with two parallel dependency graphs: a **pnpm workspace** for
 all TypeScript elements and a **Cargo workspace** for all Rust elements. Each
 element is also a Git submodule with its own repository, so dependency changes
 require following the correct per-submodule workflow. The rules
@@ -30,14 +30,14 @@ protocol:
 ```
 
 > [!IMPORTANT]
-> Never use `npm` or `yarn` to install packages in any Land workspace
+> Never use `npm` or `yarn` to install packages in any [Land](https://github.com/CodeEditorLand/Land) workspace
 > package. The repository uses a pnpm content-addressed store. Running
 > `npm install` in a workspace package creates a `node_modules` tree that
 > conflicts with pnpm's layout and may overwrite workspace symlinks.
 
 ### Adding a New JavaScript Dependency
 
-1. `cd` into the element's directory (e.g., `Element/Wind`).
+1. `cd` into the element's directory (e.g., [`Element/Wind`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind)).
 2. Run `pnpm add <package-name>` for a runtime dependency, or
    `pnpm add -D <package-name>` for a dev dependency.
 3. Verify the entry in `package.json` is correct, then run `pnpm install` from
@@ -46,7 +46,7 @@ protocol:
 
 ### VS Code Editor Submodule
 
-The VS Code source in `Dependency/Microsoft/Dependency/Editor` uses **npm**, not
+The VS Code source in [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor) uses **npm**, not
 pnpm. Its `package-lock.json` and `.npmrc` are npm-native. When updating
 dependencies in that submodule, use `npm install` inside that directory only.
 See [Building Land](/Doc/getting-started) for the full
@@ -57,31 +57,31 @@ Node 24 compile steps.
 ### Adding a New Rust Dependency
 
 1. Edit the `Cargo.toml` of the specific element (e.g.,
-   `Element/Mountain/Cargo.toml`), not the workspace root.
+   [`Element/Mountain/Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml)), not the workspace root.
 2. Add the dependency under `[dependencies]` with an explicit version.
 3. If the crate requires a fork or a pinned unreleased commit, add a
-   `[patch.crates-io]` entry in the workspace root `Cargo.toml`.
+   `[patch.crates-io]` entry in the workspace root [`Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml).
 4. Run `cargo build -p <element-name>` to verify it compiles. Do not run a full
-   workspace build unless needed - the Maintain crate does not require
+   workspace build unless needed - the [Maintain](https://github.com/CodeEditorLand/Maintain) crate does not require
    rebuilding when only source files change.
 
 ### The 51 Active `[patch.crates-io]` Redirects
 
-The workspace `Cargo.toml` contains 51 active `[patch.crates-io]` entries.
+The workspace [`Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml) contains 51 active `[patch.crates-io]` entries.
 These exist for one of three reasons:
 
-| Reason                                         | Example              |
-| ---------------------------------------------- | -------------------- |
-| Pinned fork for Tauri 2.x compatibility        | `wry`, `tao`         |
-| Unreleased upstream fix not yet on crates.io   | gRPC transport fixes |
-| Land-specific patch applied to upstream source | Asset scheme handler |
+| Reason                                                                                   | Example              |
+| ---------------------------------------------------------------------------------------- | -------------------- |
+| Pinned fork for Tauri 2.x compatibility                                                  | `wry`, `tao`         |
+| Unreleased upstream fix not yet on crates.io                                             | gRPC transport fixes |
+| [Land](https://github.com/CodeEditorLand/Land)-specific patch applied to upstream source | Asset scheme handler |
 
 > [!WARNING]
 > Do not remove `[patch.crates-io]` entries without verifying that the
 > upstream crate now contains the required change. Removing a patch that is
 > still needed causes either a compile error or a silent runtime regression.
 
-When a new patch is needed, add it to the workspace root `Cargo.toml` under
+When a new patch is needed, add it to the workspace root [`Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml) under
 `[patch.crates-io]` with a `git` and `branch` or `rev` specifier:
 
 ```toml
@@ -91,7 +91,7 @@ some-crate = { git = "https://github.com/CodeEditorLand/some-crate", branch = "C
 
 ## Submodule Update Workflow 🔄
 
-Each element under `Land/Element/` is a separate Git submodule with its own
+Each element under [`Land/Element/`](https://github.com/CodeEditorLand/Land/tree/Current/Element) is a separate Git submodule with its own
 repository and branch. **Never** use `git submodule update --recursive`.
 
 ### Updating a Single Element Submodule
@@ -115,7 +115,7 @@ git add Element/Mountain
 
 ### Updating the VS Code Dependency Submodule
 
-The VS Code source submodule at `Dependency/Microsoft/Dependency/Editor`
+The VS Code source submodule at [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor)
 requires Node 24 for the compile step. Full update sequence:
 
 ```sh
@@ -137,12 +137,12 @@ git add Dependency/Microsoft/Dependency/Editor
 ```
 
 The `compile-extensions-build` step produces the `out-<platform>` directories
-consumed by the Output element. Skip it and Cocoon will fail to locate platform
+consumed by the [Output](https://github.com/CodeEditorLand/Output) element. Skip it and [Cocoon](https://github.com/CodeEditorLand/Cocoon) will fail to locate platform
 code at runtime.
 
 ## Git LFS 📦
 
-SideCar stores vendored Node.js binaries in Git LFS. Before cloning or running
+[SideCar](https://github.com/CodeEditorLand/SideCar) stores vendored Node.js binaries in Git LFS. Before cloning or running
 the SideCar download tool for the first time, ensure Git LFS is initialized on
 the machine:
 
@@ -150,8 +150,8 @@ the machine:
 git lfs install
 ```
 
-Without Git LFS, the binary files in `Element/SideCar/` are checked out as LFS
-pointer stubs rather than real binaries, and Mountain's `build.rs` will fail to
+Without Git LFS, the binary files in [`Element/SideCar/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar) are checked out as LFS
+pointer stubs rather than real binaries, and [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` will fail to
 stage the correct Node.js binary for bundling.
 
 ## pnpm Content-Addressed Store 💾

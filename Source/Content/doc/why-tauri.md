@@ -17,12 +17,12 @@ process with a Rust backend.
 
 ## No bundled Chromium
 
-| Attribute                     | Electron (VS Code)                 | Land (Tauri)          |
-| ----------------------------- | ---------------------------------- | --------------------- |
-| Bundled runtime               | Chromium + Node.js                 | None - system WebView |
-| Main process language         | JavaScript (Node.js)               | Rust (Mountain)       |
-| Renderer processes per window | 3 (main, renderer, extension host) | 1 WebView             |
-| Binary size baseline          | ~300 MB download                   | Significantly smaller |
+| Attribute                     | Electron (VS Code)                 | [Land](https://github.com/CodeEditorLand/Land) (Tauri)        |
+| ----------------------------- | ---------------------------------- | ------------------------------------------------------------- |
+| Bundled runtime               | Chromium + Node.js                 | None - system WebView                                         |
+| Main process language         | JavaScript (Node.js)               | Rust ([Mountain](https://github.com/CodeEditorLand/Mountain)) |
+| Renderer processes per window | 3 (main, renderer, extension host) | 1 WebView                                                     |
+| Binary size baseline          | ~300 MB download                   | Significantly smaller                                         |
 
 The size advantage is structural. There is nothing to strip - Chromium is
 simply not included.
@@ -31,7 +31,7 @@ simply not included.
 
 In Electron, every native OS operation - opening a dialog, spawning a terminal,
 reading the keychain - calls through a Node.js native addon or IPC bridge. In
-Tauri, Mountain calls OS APIs directly via the `tauri`, `portable-pty`,
+Tauri, [Mountain](https://github.com/CodeEditorLand/Mountain) calls OS APIs directly via the `tauri`, `portable-pty`,
 `keyring`, and `notify` crates.
 
 The practical result: dialog open ~2 ms vs ~200 ms. File reads go through
@@ -40,10 +40,10 @@ SIGWINCH directly rather than through a bridge serialization layer.
 
 ## Typed IPC via invoke
 
-Wind calls Mountain handlers through `@tauri-apps/api`'s `invoke()`. Each call
+[Wind](https://github.com/CodeEditorLand/Wind) calls [Mountain](https://github.com/CodeEditorLand/Mountain) handlers through `@tauri-apps/api`'s `invoke()`. Each call
 maps to a `#[tauri::command]` Rust function. Tauri deserializes JSON into typed
 Rust parameters at the boundary - wrong shape means the call fails before
-Mountain's handler runs. No duck-typing at the IPC boundary.
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s handler runs. No duck-typing at the IPC boundary.
 
 ## Security model: command allowlist
 
@@ -66,11 +66,11 @@ equivalent and require platform-specific Rust code.
 > (macOS). macOS is the primary development path; other platforms may have
 > rendering differences.
 
-## Cocoon is still Node.js
+## [Cocoon](https://github.com/CodeEditorLand/Cocoon) is still Node.js
 
 Tauri removes Node.js from the main process. It does not remove it from the
-extension host. Cocoon - the VS Code extension host sidecar - is still a
-Node.js process managed by Mountain. The architecture isolates Node.js to
+extension host. [Cocoon](https://github.com/CodeEditorLand/Cocoon) - the VS Code extension host sidecar - is still a
+Node.js process managed by [Mountain](https://github.com/CodeEditorLand/Mountain). The architecture isolates Node.js to
 extension execution rather than making it the main process that owns all OS
 calls.
 

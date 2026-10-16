@@ -8,33 +8,33 @@ description:
     with the Node.js extension host."
 ---
 
-Echo is a bounded work-stealing task scheduler written in Rust. It is not a
-separate process - it is a library embedded directly inside Mountain's binary.
-When Mountain needs to dispatch parallel work, it submits tasks to Echo's worker
+[Echo](https://github.com/CodeEditorLand/Echo) is a bounded work-stealing task scheduler written in Rust. It is not a
+separate process - it is a library embedded directly inside [Mountain](https://github.com/CodeEditorLand/Mountain)'s binary.
+When [Mountain](https://github.com/CodeEditorLand/Mountain) needs to dispatch parallel work, it submits tasks to [Echo](https://github.com/CodeEditorLand/Echo)'s worker
 pool rather than spawning child processes or relying on tokio's default
 scheduler alone.
 
-Echo integrates with Mountain's `ApplicationRunTime` as the execution engine for
-`ActionEffect` values defined in Common, and provides priority-based scheduling
+[Echo](https://github.com/CodeEditorLand/Echo) integrates with [Mountain](https://github.com/CodeEditorLand/Mountain)'s `ApplicationRunTime` as the execution engine for
+`ActionEffect` values defined in [`Common`](https://github.com/CodeEditorLand/Common), and provides priority-based scheduling
 with lock-free work-stealing deques built on
 [crossbeam-deque](https://github.com/crossbeam-rs/crossbeam).
 
 ## Architecture
 
-Echo is organised into three core subsystems:
+[Echo](https://github.com/CodeEditorLand/Echo) is organised into three core subsystems:
 
 <img src="/Mermaid/4263fe64a01e3bae.svg" alt="Mermaid diagram" />
 ### Module Map
 
-| Path                                   | Purpose                                              |
-| -------------------------------------- | ---------------------------------------------------- |
-| `Source/Task/Priority.rs`              | Priority enum (High, Normal, Low)                    |
-| `Source/Task/Task.rs`                  | Generic task wrapper implementing `Future`           |
-| `Source/Queue/StealingQueue.rs`        | Lock-free double-ended queue using `crossbeam-deque` |
-| `Source/Scheduler/Scheduler.rs`        | Main scheduler orchestrator                          |
-| `Source/Scheduler/SchedulerBuilder.rs` | Builder pattern for scheduler configuration          |
-| `Source/Scheduler/Worker.rs`           | Per-worker thread implementation                     |
-| `Source/Library.rs`                    | Crate root, public API                               |
+| Path                                                                                                                               | Purpose                                              |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| [`Source/Task/Priority.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs)                           | Priority enum (High, Normal, Low)                    |
+| [`Source/Task/Task.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Task.rs)                                   | Generic task wrapper implementing `Future`           |
+| [`Source/Queue/StealingQueue.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs)               | Lock-free double-ended queue using `crossbeam-deque` |
+| [`Source/Scheduler/Scheduler.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Scheduler.rs)               | Main scheduler orchestrator                          |
+| [`Source/Scheduler/SchedulerBuilder.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/SchedulerBuilder.rs) | Builder pattern for scheduler configuration          |
+| [`Source/Scheduler/Worker.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Worker.rs)                     | Per-worker thread implementation                     |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs)                                       | Crate root, public API                               |
 
 ## What Work-Stealing Means
 
@@ -76,11 +76,11 @@ VS Code dispatches background work through its shared process and extension
 host, both of which run on the Node.js event loop. Heavy I/O-bound batches
 compete with extension event handlers on that same loop.
 
-Because Echo runs inside Mountain's Rust binary, background work dispatched
-through Echo runs on native threads completely outside the Node.js event loop.
-Cocoon's extension fibres and Echo's worker pool are independent schedulers - a
-saturated Echo pool does not delay Cocoon's extension activations, and a slow
-extension does not delay Echo's background tasks.
+Because [Echo](https://github.com/CodeEditorLand/Echo) runs inside [Mountain](https://github.com/CodeEditorLand/Mountain)'s Rust binary, background work dispatched
+through [Echo](https://github.com/CodeEditorLand/Echo) runs on native threads completely outside the Node.js event loop.
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s extension fibres and [Echo](https://github.com/CodeEditorLand/Echo)'s worker pool are independent schedulers - a
+saturated [Echo](https://github.com/CodeEditorLand/Echo) pool does not delay [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s extension activations, and a slow
+extension does not delay [Echo](https://github.com/CodeEditorLand/Echo)'s background tasks.
 
 ## Priority System
 
@@ -130,9 +130,9 @@ let scheduler = SchedulerBuilder::new()
 
 ## Integration with Mountain's ApplicationRunTime
 
-Echo serves as the execution engine for Mountain's `ApplicationRunTime`. When
-Mountain calls `runtime.execute_effect(effect).await`, the runtime wraps the
-effect's future in an Echo `Task` and submits it to the scheduler with an
+[Echo](https://github.com/CodeEditorLand/Echo) serves as the execution engine for [Mountain](https://github.com/CodeEditorLand/Mountain)'s `ApplicationRunTime`. When
+[Mountain](https://github.com/CodeEditorLand/Mountain) calls `runtime.execute_effect(effect).await`, the runtime wraps the
+effect's future in an [Echo](https://github.com/CodeEditorLand/Echo) `Task` and submits it to the scheduler with an
 appropriate priority.
 
 ```rust
@@ -155,12 +155,12 @@ scheduler.shutdown().await;
 
 ## Supervision and Shutdown
 
-Echo tasks run inside supervised scopes. If a task panics, the panic is caught
-at the scope boundary and reported via Mountain's diagnostic logging without
-taking down the Mountain process. This prevents a buggy extension-triggered
+[Echo](https://github.com/CodeEditorLand/Echo) tasks run inside supervised scopes. If a task panics, the panic is caught
+at the scope boundary and reported via [Mountain](https://github.com/CodeEditorLand/Mountain)'s diagnostic logging without
+taking down the [Mountain](https://github.com/CodeEditorLand/Mountain) process. This prevents a buggy extension-triggered
 operation from crashing the entire editor.
 
-When Mountain shuts down, it calls `scheduler.shutdown().await`, which signals
+When [Mountain](https://github.com/CodeEditorLand/Mountain) shuts down, it calls `scheduler.shutdown().await`, which signals
 all worker threads to drain their queues and waits for each in-flight task to
 complete before joining the threads. No task outlives its scope, which prevents
 orphaned threads from holding file handles or network sockets after shutdown.
@@ -186,8 +186,8 @@ orphaned threads from holding file handles or network sockets after shutdown.
 
 ## Current Status
 
-Echo is active inside Mountain's binary on macOS (Apple Silicon and Intel) and
-Windows. The worker pool initialises during Mountain's startup sequence and
+[Echo](https://github.com/CodeEditorLand/Echo) is active inside [Mountain](https://github.com/CodeEditorLand/Mountain)'s binary on macOS (Apple Silicon and Intel) and
+Windows. The worker pool initialises during [Mountain](https://github.com/CodeEditorLand/Mountain)'s startup sequence and
 handles all async work dispatched through `ApplicationRunTime`.
 
 ## Related Documentation

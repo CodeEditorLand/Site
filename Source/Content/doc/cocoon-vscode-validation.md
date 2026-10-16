@@ -10,14 +10,14 @@ description:
 
 # VS Code Source Validation Checklist for Cocoon
 
-This document validates Cocoon's implementation against the original VS Code
+This document validates [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s implementation against the original VS Code
 source to ensure compatibility and correctness.
 
 ## Validation Methodology
 
 ### Sources Compared
 
-- **Cocoon Source**: `Land/Element/Cocoon/Source/` (repo-relative)
+- **[Cocoon](https://github.com/CodeEditorLand/Cocoon) Source**: `Land/Element/Cocoon/Source/` (repo-relative)
 - **VS Code Source**: Microsoft's VS Code GitHub repository
 - **Validation Focus**: Extension host architecture, API compatibility,
   communication patterns
@@ -79,15 +79,15 @@ source to ensure compatibility and correctness.
 
 **VS Code Source Reference**: Various `IExtHost*` services
 
-| Service   | Cocoon Implementation | VS Code Equivalent  | Status | Notes             |
-| --------- | --------------------- | ------------------- | ------ | ----------------- |
-| Commands  | `Command.ts`          | `IExtHostCommands`  | ✅     | Similar API       |
-| Documents | `Document.ts`         | `IExtHostDocuments` | ✅     | Compatible        |
-| Window    | `Window.ts`           | `IExtHostWindow`    | ✅     | Similar methods   |
-| Workspace | `WorkSpace.ts`        | `IExtHostWorkspace` | ✅     | Compatible        |
-| Debug     | `Debug.ts`            | `IExtHostDebug`     | ✅     | Similar structure |
-| Terminal  | `Task.ts`             | `IExtHostTerminal`  | ✅     | Compatible        |
-| Webview   | `WebViewPanel.ts`     | `IExtHostWebview`   | ✅     | Similar API       |
+| Service   | Cocoon Implementation                                                                           | VS Code Equivalent  | Status | Notes             |
+| --------- | ----------------------------------------------------------------------------------------------- | ------------------- | ------ | ----------------- |
+| Commands  | `Command.ts`                                                                                    | `IExtHostCommands`  | ✅     | Similar API       |
+| Documents | `Document.ts`                                                                                   | `IExtHostDocuments` | ✅     | Compatible        |
+| Window    | [`Window.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts)  | `IExtHostWindow`    | ✅     | Similar methods   |
+| Workspace | `WorkSpace.ts`                                                                                  | `IExtHostWorkspace` | ✅     | Compatible        |
+| Debug     | `Debug.ts`                                                                                      | `IExtHostDebug`     | ✅     | Similar structure |
+| Terminal  | [`Task.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter/Task.ts) | `IExtHostTerminal`  | ✅     | Compatible        |
+| Webview   | `WebViewPanel.ts`                                                                               | `IExtHostWebview`   | ✅     | Similar API       |
 
 ---
 
@@ -95,14 +95,14 @@ source to ensure compatibility and correctness.
 
 ### Effect-TS Integration ✅
 
-**Innovation**: Cocoon uses Effect-TS while VS Code uses traditional OOP
+**Innovation**: [Cocoon](https://github.com/CodeEditorLand/Cocoon) uses [Effect-TS](https://effect.website) while VS Code uses traditional OOP
 
-| Aspect               | Cocoon Approach    | VS Code Approach      | Compatibility   |
-| -------------------- | ------------------ | --------------------- | --------------- |
-| Dependency injection | Effect-TS Layers   | Service collection    | ✅ (Bridged)    |
-| Error handling       | Effect error types | Exception handling    | ✅ (Mapped)     |
-| Async operations     | Effect pipelines   | Promises/async-await  | ✅ (Compatible) |
-| Service composition  | Layer composition  | Service instantiation | ✅ (Similar)    |
+| Aspect               | Cocoon Approach                            | VS Code Approach      | Compatibility   |
+| -------------------- | ------------------------------------------ | --------------------- | --------------- |
+| Dependency injection | [Effect-TS](https://effect.website) Layers | Service collection    | ✅ (Bridged)    |
+| Error handling       | Effect error types                         | Exception handling    | ✅ (Mapped)     |
+| Async operations     | Effect pipelines                           | Promises/async-await  | ✅ (Compatible) |
+| Service composition  | Layer composition                          | Service instantiation | ✅ (Similar)    |
 
 ### Process Management ✅
 
@@ -166,18 +166,18 @@ source to ensure compatibility and correctness.
 
 ### Expected Performance Characteristics
 
-| Metric              | VS Code  | Cocoon (Expected) | Status |
-| ------------------- | -------- | ----------------- | ------ |
-| Extension load time | ~1-2s    | ~1-2s             | ✅     |
-| API call latency    | <100ms   | <100ms            | ✅     |
-| Memory usage        | Moderate | Comparable        | ✅     |
-| Startup time        | Fast     | Comparable        | ✅     |
+| Metric              | VS Code  | [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Expected) | Status |
+| ------------------- | -------- | ------------------------------------------------------------- | ------ |
+| Extension load time | ~1-2s    | ~1-2s                                                         | ✅     |
+| API call latency    | <100ms   | <100ms                                                        | ✅     |
+| Memory usage        | Moderate | Comparable                                                    | ✅     |
+| Startup time        | Fast     | Comparable                                                    | ✅     |
 
 ### Optimization Opportunities
 
-1. **gRPC Efficiency**: Cocoon's gRPC may be more efficient than VS Code's
+1. **gRPC Efficiency**: [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC may be more efficient than VS Code's
    custom protocol
-2. **Effect-TS Benefits**: Better error handling and resource management
+2. **[Effect-TS](https://effect.website) Benefits**: Better error handling and resource management
 3. **Modern Architecture**: Cleaner separation of concerns
 
 ---
@@ -187,7 +187,7 @@ source to ensure compatibility and correctness.
 ### Known Differences ⚠️
 
 1. **ESM Support**: Cocoon has ESM interception, VS Code is CJS-only
-2. **Effect-TS Architecture**: Different programming paradigm
+2. **[Effect-TS](https://effect.website) Architecture**: Different programming paradigm
 3. **gRPC Protocol**: Different communication protocol
 
 ### Compatibility Achievements ✅
@@ -234,12 +234,12 @@ source to ensure compatibility and correctness.
 
 ### Overall Assessment ✅
 
-Cocoon's implementation shows **high compatibility** with VS Code's extension
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s implementation shows **high compatibility** with VS Code's extension
 host architecture. The core functionality is well-implemented with several
 architectural improvements:
 
 1. **Modern Communication**: gRPC vs custom protocol
-2. **Better Error Handling**: Effect-TS provides superior error management
+2. **Better Error Handling**: [Effect-TS](https://effect.website) provides superior error management
 3. **Enhanced Architecture**: Clean separation of concerns
 
 ### Areas for Further Validation 🔄
@@ -264,6 +264,6 @@ architectural improvements:
 
 ---
 
-_This validation demonstrates that Cocoon provides a robust, compatible
+_This validation demonstrates that [Cocoon](https://github.com/CodeEditorLand/Cocoon) provides a robust, compatible
 extension host implementation that maintains VS Code compatibility while
 offering architectural improvements._

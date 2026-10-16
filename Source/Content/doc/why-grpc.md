@@ -8,7 +8,7 @@ description:
     proto-loader, with bidirectional streaming for real-time events.
 ---
 
-Land is multi-process: Mountain (Rust), Cocoon (Node.js), and Air (Rust daemon)
+[Land](https://github.com/CodeEditorLand/Land) is multi-process: [Mountain](https://github.com/CodeEditorLand/Mountain) (Rust), [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node.js), and [Air](https://github.com/CodeEditorLand/Air) (Rust daemon)
 each run in separate processes and must exchange messages with strong contracts.
 gRPC over localhost TCP with `Vine.proto` provides those contracts: code is
 generated for both Rust and TypeScript from the same `.proto` file. Adding a
@@ -17,8 +17,8 @@ updated.
 
 ## The proto file as contract
 
-`Element/Vine/Proto/Vine.proto` is the canonical definition of every RPC
-between Mountain and Cocoon. It is not documentation that can drift - it is the
+[`Element/Vine/Proto/Vine.proto`](https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto) is the canonical definition of every RPC
+between [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon). It is not documentation that can drift - it is the
 source from which both Rust `tonic` stubs and TypeScript `@grpc/proto-loader`
 bindings are generated at build time.
 
@@ -30,7 +30,7 @@ service CocoonService {
 }
 ```
 
-When Mountain adds a new RPC, the proto change propagates to both the Rust
+When [Mountain](https://github.com/CodeEditorLand/Mountain) adds a new RPC, the proto change propagates to both the Rust
 handler and the TypeScript dispatcher before either compiles. There is no gap
 where one side has the new method and the other silently ignores it.
 
@@ -66,31 +66,31 @@ measurable.
 
 ## Port allocation
 
-| Channel                                    | Port  |
-| ------------------------------------------ | ----- |
-| Mountain Cocoon (Mountain server → Cocoon) | 50051 |
-| Mountain Cocoon (Cocoon server → Mountain) | 50052 |
-| Mountain Air (Air server)                  | 50053 |
+| Channel                                                                                                                                                                                                                        | Port  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) [Cocoon](https://github.com/CodeEditorLand/Cocoon) ([Mountain](https://github.com/CodeEditorLand/Mountain) server → [Cocoon](https://github.com/CodeEditorLand/Cocoon)) | 50051 |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) [Cocoon](https://github.com/CodeEditorLand/Cocoon) ([Cocoon](https://github.com/CodeEditorLand/Cocoon) server → [Mountain](https://github.com/CodeEditorLand/Mountain)) | 50052 |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) [Air](https://github.com/CodeEditorLand/Air) ([Air](https://github.com/CodeEditorLand/Air) server)                                                                      | 50053 |
 
 ## TierIPC routing
 
-`TierIPC` controls how Wind routes `TauriMainProcessService` calls: `Mountain`
-(default - all IPC via Tauri commands), `NodeDeferred` (Mountain first, fall
-back to Cocoon via `cocoon:request` bridge), or `Node` (directly to Cocoon,
-bypassing Mountain). The fallback in `NodeDeferred` mode reuses the same gRPC
+`TierIPC` controls how [Wind](https://github.com/CodeEditorLand/Wind) routes `TauriMainProcessService` calls: [`Mountain`](https://github.com/CodeEditorLand/Mountain)
+(default - all IPC via Tauri commands), `NodeDeferred` ([Mountain](https://github.com/CodeEditorLand/Mountain) first, fall
+back to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via `cocoon:request` bridge), or `Node` (directly to [Cocoon](https://github.com/CodeEditorLand/Cocoon),
+bypassing [Mountain](https://github.com/CodeEditorLand/Mountain)). The fallback in `NodeDeferred` mode reuses the same gRPC
 request-routing handler that processes `languages:*`, `scm:*`, and `debug:*`
 namespaces.
 
-## Why not Tauri commands for Mountain-Cocoon
+## Why not Tauri commands for [Mountain](https://github.com/CodeEditorLand/Mountain)-[Cocoon](https://github.com/CodeEditorLand/Cocoon)
 
-Tauri commands are designed for WebView-Rust communication. Cocoon is a
+Tauri commands are designed for WebView-Rust communication. [Cocoon](https://github.com/CodeEditorLand/Cocoon) is a
 separate OS process, not a WebView. gRPC is the right transport for two native
 processes that need a typed, bidirectional, streaming protocol.
 
 ## Discoverability
 
 `Vine.proto` documents every RPC in the system. Reading it gives a complete
-inventory of what Mountain can ask Cocoon to do and vice versa. The proto file
+inventory of what [Mountain](https://github.com/CodeEditorLand/Mountain) can ask [Cocoon](https://github.com/CodeEditorLand/Cocoon) to do and vice versa. The proto file
 is the API documentation, enforced at compile time.
 
 ## Related Documentation

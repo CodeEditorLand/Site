@@ -8,51 +8,51 @@ description: "Technical architecture of the Air background daemon: gRPC service
     lifecycle with Mountain."
 ---
 
-Air is a standalone Rust binary structured around a central gRPC server that
-receives task delegation from Mountain. It runs as a persistent sidecar process
-alongside Mountain, offloading resource-intensive operations so the editor
+[Air](https://github.com/CodeEditorLand/Air) is a standalone Rust binary structured around a central gRPC server that
+receives task delegation from [Mountain](https://github.com/CodeEditorLand/Mountain). It runs as a persistent sidecar process
+alongside [Mountain](https://github.com/CodeEditorLand/Mountain), offloading resource-intensive operations so the editor
 remains responsive. Internal modules handle distinct responsibilities: updates,
 downloads, authentication, and health monitoring.
 
 <img src="/Mermaid/a7c6a35d763a4ed6.svg" alt="Mermaid diagram" />
 ## Key Modules
 
-| Path                     | Description                                                    |
-| :----------------------- | :------------------------------------------------------------- |
-| `Source/Binary.rs`       | Binary entry point; bootstraps Tokio runtime and starts daemon |
-| `Source/Initialize/`     | Startup sequence: config loading, server binding, state init   |
-| `Source/Vine/`           | gRPC server implementation using tonic; routes incoming calls  |
-| `Source/Updates/`        | Update lifecycle: check, download, verify, apply patches       |
-| `Source/Downloader/`     | Resilient download manager with pause, resume, and retry       |
-| `Source/Authentication/` | Cryptographic signing of binaries and secure token storage     |
-| `Source/HTTP/`           | HTTP client configured to use Mist local DNS resolver          |
-| `Source/HealthCheck/`    | Self-monitoring and watchdog for process health                |
-| `Source/Metrics/`        | Telemetry collection and reporting to Mountain                 |
-| `Source/Logging/`        | Structured tracing output via the `tracing` crate              |
-| `Source/CLI/`            | Command-line argument parsing for daemon startup options       |
-| `Source/Resilience/`     | Retry logic and circuit breakers for network operations        |
-| `Source/Security/`       | Signature verification and secure storage utilities            |
-| `Source/Configuration/`  | Runtime configuration loading and hot-reload support           |
-| `Source/Library.rs`      | Library root exposing the public API for integration tests     |
+| Path                                                                                        | Description                                                                                  |
+| :------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------- |
+| [`Source/Binary.rs`](https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary.rs)   | Binary entry point; bootstraps Tokio runtime and starts daemon                               |
+| `Source/Initialize/`                                                                        | Startup sequence: config loading, server binding, state init                                 |
+| `Source/Vine/`                                                                              | gRPC server implementation using tonic; routes incoming calls                                |
+| `Source/Updates/`                                                                           | Update lifecycle: check, download, verify, apply patches                                     |
+| `Source/Downloader/`                                                                        | Resilient download manager with pause, resume, and retry                                     |
+| `Source/Authentication/`                                                                    | Cryptographic signing of binaries and secure token storage                                   |
+| `Source/HTTP/`                                                                              | HTTP client configured to use Mist local DNS resolver                                        |
+| `Source/HealthCheck/`                                                                       | Self-monitoring and watchdog for process health                                              |
+| `Source/Metrics/`                                                                           | Telemetry collection and reporting to [Mountain](https://github.com/CodeEditorLand/Mountain) |
+| `Source/Logging/`                                                                           | Structured tracing output via the `tracing` crate                                            |
+| `Source/CLI/`                                                                               | Command-line argument parsing for daemon startup options                                     |
+| `Source/Resilience/`                                                                        | Retry logic and circuit breakers for network operations                                      |
+| `Source/Security/`                                                                          | Signature verification and secure storage utilities                                          |
+| `Source/Configuration/`                                                                     | Runtime configuration loading and hot-reload support                                         |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Air/tree/Current/Source/Library.rs) | Library root exposing the public API for integration tests                                   |
 
 ## Data Flow
 
-The following sequence shows how Mountain delegates an update task to Air and
+The following sequence shows how [Mountain](https://github.com/CodeEditorLand/Mountain) delegates an update task to [Air](https://github.com/CodeEditorLand/Air) and
 receives progress notifications.
 
 <img src="/Mermaid/378b32a5be76d9a8.svg" alt="Mermaid diagram" />
 **Port allocation:**
 
-- Air listens on `[::1]:50053` (reserved for the Air daemon).
-- Cocoon uses `[::1]:50052` (the VS Code extension host).
+- [Air](https://github.com/CodeEditorLand/Air) listens on `[::1]:50053` (reserved for the Air daemon).
+- [Cocoon](https://github.com/CodeEditorLand/Cocoon) uses `[::1]:50052` (the VS Code extension host).
 
 ## Integration Points
 
-| Connecting Element | Direction     | Mechanism                | Description                                                            |
-| :----------------- | :------------ | :----------------------- | :--------------------------------------------------------------------- |
-| **Mountain**       | Bidirectional | gRPC over Vine/Air.proto | Mountain delegates tasks; Air streams progress events back             |
-| **Mist**           | Inbound       | Local DNS resolver       | Air configures its HTTP client to use Mist's DNS for secure resolution |
-| **Vine**           | Inbound       | Protocol definition      | Air.proto defines service contracts; tonic generates Rust server stubs |
+| Connecting Element                                         | Direction     | Mechanism                | Description                                                                                                                                               |
+| :--------------------------------------------------------- | :------------ | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)** | Bidirectional | gRPC over Vine/Air.proto | [Mountain](https://github.com/CodeEditorLand/Mountain) delegates tasks; [Air](https://github.com/CodeEditorLand/Air) streams progress events back         |
+| **[Mist](https://github.com/CodeEditorLand/Mist)**         | Inbound       | Local DNS resolver       | [Air](https://github.com/CodeEditorLand/Air) configures its HTTP client to use [Mist](https://github.com/CodeEditorLand/Mist)'s DNS for secure resolution |
+| **[Vine](https://github.com/CodeEditorLand/Vine)**         | Inbound       | Protocol definition      | Air.proto defines service contracts; tonic generates Rust server stubs                                                                                    |
 
 ## Configuration
 
@@ -64,8 +64,8 @@ receives progress notifications.
 | Health check interval    | Configuration file              | Frequency of self-monitoring checks            |
 | Log level                | `RUST_LOG` environment variable | Tracing filter for structured log output       |
 
-Air is spawned automatically by Mountain at startup. Mountain detects whether an
-Air process is already running before spawning a new instance.
+[Air](https://github.com/CodeEditorLand/Air) is spawned automatically by [Mountain](https://github.com/CodeEditorLand/Mountain) at startup. [Mountain](https://github.com/CodeEditorLand/Mountain) detects whether an
+[Air](https://github.com/CodeEditorLand/Air) process is already running before spawning a new instance.
 
 ## Related Documentation
 

@@ -10,7 +10,7 @@ description:
 
 # Rest: OXC TypeScript Compiler ⛱️
 
-`Rest` is a high-performance `TypeScript` compiler built on the OXC (Oxidation
+[`Rest`](https://github.com/CodeEditorLand/Rest) is a high-performance `TypeScript` compiler built on the OXC (Oxidation
 Compiler) toolchain:
 
 - Replaces `esbuild`'s `TypeScript` loader with a `Rust`-powered OXC pipeline
@@ -34,21 +34,21 @@ Compiler) toolchain:
 
 ## Overview 📋
 
-`Rest` is a `Rust` binary and library that provides a
+[`Rest`](https://github.com/CodeEditorLand/Rest) is a `Rust` binary and library that provides a
 `TypeScript`-to-`JavaScript` compiler using the OXC toolchain:
 
 - Handles decorators, class field transformations, JSX, and TypeScript type
   stripping
 - Produces output compatible with VS Code's module system
-- Integrates with `Output`'s build pipeline via `RestPlugin`
+- Integrates with [`Output`](https://github.com/CodeEditorLand/Output)'s build pipeline via `RestPlugin`
 
-| Attribute    | Value                                                                                                                             |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| Language     | `Rust` (edition 2024)                                                                                                             |
-| Crate type   | Binary + Library                                                                                                                  |
-| OXC version  | 0.48+                                                                                                                             |
-| Dependencies | `oxc_allocator`, `oxc_parser`, `oxc_transformer`, `oxc_codegen`, `oxc_semantic`, `oxc_span`, `oxc_ast`, `Common`, `clap`, `rayon` |
-| Consumed by  | `Output` (optional `RestPlugin`)                                                                                                  |
+| Attribute    | Value                                                                                                                                                                         |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                                                                                                                         |
+| Crate type   | Binary + Library                                                                                                                                                              |
+| OXC version  | 0.48+                                                                                                                                                                         |
+| Dependencies | `oxc_allocator`, `oxc_parser`, `oxc_transformer`, `oxc_codegen`, `oxc_semantic`, `oxc_span`, `oxc_ast`, [`Common`](https://github.com/CodeEditorLand/Common), `clap`, `rayon` |
+| Consumed by  | [`Output`](https://github.com/CodeEditorLand/Output) (optional `RestPlugin`)                                                                                                  |
 
 ---
 
@@ -57,18 +57,18 @@ Compiler) toolchain:
 <img src="/Mermaid/5a4b0e61fea6b7b0.svg" alt="Mermaid diagram" />
 ### Module Map 🗺️
 
-| Path                              | Purpose                              |
-| --------------------------------- | ------------------------------------ |
-| `Source/Binary.rs`                | Binary entry point                   |
-| `Source/Fn/Build.rs`              | Build pipeline orchestration         |
-| `Source/Fn/Bundle.rs`             | Module bundling                      |
-| `Source/Fn/Transform.rs`          | `TypeScript` transformation pipeline |
-| `Source/Fn/OXC.rs`                | OXC compiler integration             |
-| `Source/Fn/Worker.rs`             | Parallel worker pool                 |
-| `Source/Fn/NLS.rs`                | Natural language search integration  |
-| `Source/Struct/CompilerConfig.rs` | Compiler configuration types         |
-| `Source/Library.rs`               | Library root for integration         |
-| `Source/Main.rs`                  | Alternative entry point              |
+| Path                                                                                                                     | Purpose                              |
+| ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| [`Source/Binary.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Binary.rs)                               | Binary entry point                   |
+| [`Source/Fn/Build.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/Build.rs)                           | Build pipeline orchestration         |
+| `Source/Fn/Bundle.rs`                                                                                                    | Module bundling                      |
+| `Source/Fn/Transform.rs`                                                                                                 | `TypeScript` transformation pipeline |
+| `Source/Fn/OXC.rs`                                                                                                       | OXC compiler integration             |
+| `Source/Fn/Worker.rs`                                                                                                    | Parallel worker pool                 |
+| `Source/Fn/NLS.rs`                                                                                                       | Natural language search integration  |
+| [`Source/Struct/CompilerConfig.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs) | Compiler configuration types         |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Library.rs)                             | Library root for integration         |
+| [`Source/Main.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Main.rs)                                   | Alternative entry point              |
 
 ---
 
@@ -80,7 +80,7 @@ stages:
 <img src="/Mermaid/e45f0cbede66f2ee.svg" alt="Mermaid diagram" />
 ### Parallel Processing ⚡
 
-`Rest` uses `rayon` for parallel file compilation:
+[`Rest`](https://github.com/CodeEditorLand/Rest) uses `rayon` for parallel file compilation:
 
 ```rust
 // Worker pool processes files in parallel
@@ -96,7 +96,7 @@ the `--workers N` flag.
 
 ## Configuration ⚙️
 
-`Rest` reads configuration from CLI flags and environment variables:
+[`Rest`](https://github.com/CodeEditorLand/Rest) reads configuration from CLI flags and environment variables:
 
 | Flag             | Env Variable        | Default    | Description                   |
 | ---------------- | ------------------- | ---------- | ----------------------------- |
@@ -144,7 +144,7 @@ rest --entry src/index.ts --out-dir dist/ --decorators stage3
 
 ## Integration with Output 🔗
 
-`Rest` integrates with the `Output` element's build pipeline through the
+[`Rest`](https://github.com/CodeEditorLand/Rest) integrates with the [`Output`](https://github.com/CodeEditorLand/Output) element's build pipeline through the
 `RestPlugin`:
 
 ```typescript
@@ -176,12 +176,12 @@ Activated via environment variable: `Compiler=Rest`
 
 ## Performance Benchmarks 📊
 
-| Operation                    | esbuild | Rest (OXC) | Improvement |
-| ---------------------------- | ------- | ---------- | ----------- |
-| Parse + transform 1000 files | 2.4s    | 0.9s       | 2.7x        |
-| Full bundle (100K LOC)       | 1.8s    | 0.7s       | 2.6x        |
-| Minified bundle              | 3.1s    | 1.3s       | 2.4x        |
-| Source map generation        | 0.8s    | 0.4s       | 2.0x        |
+| Operation                    | esbuild | [Rest](https://github.com/CodeEditorLand/Rest) (OXC) | Improvement |
+| ---------------------------- | ------- | ---------------------------------------------------- | ----------- |
+| Parse + transform 1000 files | 2.4s    | 0.9s                                                 | 2.7x        |
+| Full bundle (100K LOC)       | 1.8s    | 0.7s                                                 | 2.6x        |
+| Minified bundle              | 3.1s    | 1.3s                                                 | 2.4x        |
+| Source map generation        | 0.8s    | 0.4s                                                 | 2.0x        |
 
 Benchmarks performed on Apple M1 Max with 8 worker threads.
 

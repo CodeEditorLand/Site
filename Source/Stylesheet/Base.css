@@ -1123,7 +1123,7 @@
 
 	margin: 1.25rem 0;
 
-	padding: 0.5rem 1rem;
+	padding: 1.4rem 1rem;
 
 	background-color: color-mix(in srgb, var(--CardForeground) 4%, transparent);
 }
@@ -1156,6 +1156,21 @@
 	flex-shrink: 0;
 
 	font-style: normal;
+
+	/* Icon enlarged per user request (was inheriting the 0.875rem title size) */
+	font-size: 1.75rem;
+
+	line-height: 1;
+
+	width: 1.75rem;
+
+	height: 1.75rem;
+
+	display: inline-flex;
+
+	align-items: center;
+
+	justify-content: center;
 }
 
 /* NOTE - blue */

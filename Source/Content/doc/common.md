@@ -10,7 +10,7 @@ description:
 
 # Common: Abstract Core Library 🧑🏻‍🏭
 
-`Common` is the architectural foundation of `Land`'s native `Rust` backend. `Common` is a pure abstract library that defines:
+[`Common`](https://github.com/CodeEditorLand/Common) is the architectural foundation of [`Land`](https://github.com/CodeEditorLand/Land)'s native `Rust` backend. [`Common`](https://github.com/CodeEditorLand/Common) is a pure abstract library that defines:
 
 - Every application capability as async traits
 - The `ActionEffect` declarative system
@@ -40,30 +40,30 @@ It contains no concrete implementations.
 <img src="/Mermaid/525e1c793a35a144.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
-`Common` defines the architectural language of the entire native platform:
+[`Common`](https://github.com/CodeEditorLand/Common) defines the architectural language of the entire native platform:
 
 - Every service interface, data contract, and communication pattern originates here
-- `Mountain`, `Air`, `Echo`, `Mist`, `Rest`, `SideCar`, and `Grove` all depend on `Common`'s definitions
+- [`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Air`](https://github.com/CodeEditorLand/Air), [`Echo`](https://github.com/CodeEditorLand/Echo), [`Mist`](https://github.com/CodeEditorLand/Mist), [`Rest`](https://github.com/CodeEditorLand/Rest), [`SideCar`](https://github.com/CodeEditorLand/SideCar), and [`Grove`](https://github.com/CodeEditorLand/Grove) all depend on [`Common`](https://github.com/CodeEditorLand/Common)'s definitions
 
-| Attribute    | Value                                                                           |
-| ------------ | ------------------------------------------------------------------------------- |
-| Language     | `Rust` (edition 2024)                                                           |
-| Crate type   | Library (no binary)                                                             |
-| Dependencies | `tauri`, `async-trait`, `serde`, `thiserror`, `url`, `prometheus`, `posthog-rs` |
-| Consumers    | `Mountain`, `Air`, `Echo`, `Mist`, `Rest`, `SideCar`, `Grove`                   |
+| Attribute    | Value                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                                                                                                                                                                                                                                                                                                                      |
+| Crate type   | Library (no binary)                                                                                                                                                                                                                                                                                                                                                        |
+| Dependencies | `tauri`, `async-trait`, `serde`, `thiserror`, `url`, `prometheus`, `posthog-rs`                                                                                                                                                                                                                                                                                            |
+| Consumers    | [`Mountain`](https://github.com/CodeEditorLand/Mountain), [`Air`](https://github.com/CodeEditorLand/Air), [`Echo`](https://github.com/CodeEditorLand/Echo), [`Mist`](https://github.com/CodeEditorLand/Mist), [`Rest`](https://github.com/CodeEditorLand/Rest), [`SideCar`](https://github.com/CodeEditorLand/SideCar), [`Grove`](https://github.com/CodeEditorLand/Grove) |
 
 ---
 
 ## Architecture Principles 📐
 
-| Principle                    | Description                                                                               | Key Components                             |
-| ---------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------ |
-| **Pure Abstraction**         | Every application capability is an abstract `async trait` with no concrete implementation | All `*Provider.rs` and `*Manager.rs` files |
-| **Declarative Effects**      | Operations are `ActionEffect` values separating description from execution                | `Effect/` module                           |
-| **Trait-Based DI**           | Compile-time dependency injection via `Environment` and `Requires` traits                 | `Environment/` module                      |
-| **Universal Error Handling** | Single `CommonError` enum covering all failure scenarios                                  | `Error/CommonError.rs`                     |
-| **Contract-First Design**    | DTOs and errors defined before implementations                                            | `DTO/`, `Error/` modules                   |
-| **Minimal Dependencies**     | Independent from `Tauri`, `gRPC`, or any specific application logic                       | `Cargo.toml`                               |
+| Principle                    | Description                                                                               | Key Components                                                                                              |
+| ---------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Pure Abstraction**         | Every application capability is an abstract `async trait` with no concrete implementation | All `*Provider.rs` and `*Manager.rs` files                                                                  |
+| **Declarative Effects**      | Operations are `ActionEffect` values separating description from execution                | `Effect/` module                                                                                            |
+| **Trait-Based DI**           | Compile-time dependency injection via `Environment` and `Requires` traits                 | `Environment/` module                                                                                       |
+| **Universal Error Handling** | Single `CommonError` enum covering all failure scenarios                                  | [`Error/CommonError.rs`](https://github.com/CodeEditorLand/Common/tree/Current/Source/Error/CommonError.rs) |
+| **Contract-First Design**    | DTOs and errors defined before implementations                                            | `DTO/`, `Error/` modules                                                                                    |
+| **Minimal Dependencies**     | Independent from `Tauri`, `gRPC`, or any specific application logic                       | `Cargo.toml`                                                                                                |
 
 ---
 
@@ -170,7 +170,7 @@ let result: Result<Vec<u8>, CommonError> = runtime
 
 ## Environment and Dependency Injection 🧩
 
-`Common` implements compile-time dependency injection through the `Environment` and `Requires` traits:
+[`Common`](https://github.com/CodeEditorLand/Common) implements compile-time dependency injection through the `Environment` and `Requires` traits:
 
 ```rust
 // A component declares what capabilities it requires
@@ -213,18 +213,18 @@ Effect executed with concrete implementation
 
 ## Data Transfer Objects 📦
 
-`Common` defines all `DTO`s shared across components:
+[`Common`](https://github.com/CodeEditorLand/Common) defines all `DTO`s shared across components:
 
-| DTO                   | Module                | Fields                                   | Used By                  |
-| --------------------- | --------------------- | ---------------------------------------- | ------------------------ |
-| `FileStat`            | `FileSystem/DTO`      | path, type, size, mtime, permissions     | All file ops             |
-| `InitData`            | `Workspace`           | workspace info, extensions, config       | Mountain->Cocoon startup |
-| `TerminalOptions`     | `Terminal`            | name, shellPath, cwd, env, cols, rows    | Terminal creation        |
-| `ExtensionManifest`   | `ExtensionManagement` | id, version, publisher, activationEvents | Extension mgmt           |
-| `ConfigurationTarget` | `Configuration`       | Global, Workspace, WorkspaceFolder       | Config ops               |
-| `SearchOptions`       | `Search`              | pattern, include, exclude, maxResults    | Search ops               |
-| `WorkspaceEditDTO`    | `DTO/`                | edits, fileCreates, fileDeletes          | Workspace edits          |
-| `TransportConfig`     | `Transport`           | timeout, retry config                    | Transport configuration  |
+| DTO                   | Module                | Fields                                   | Used By                                                                                                            |
+| --------------------- | --------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `FileStat`            | `FileSystem/DTO`      | path, type, size, mtime, permissions     | All file ops                                                                                                       |
+| `InitData`            | `Workspace`           | workspace info, extensions, config       | [Mountain](https://github.com/CodeEditorLand/Mountain)->[Cocoon](https://github.com/CodeEditorLand/Cocoon) startup |
+| `TerminalOptions`     | `Terminal`            | name, shellPath, cwd, env, cols, rows    | Terminal creation                                                                                                  |
+| `ExtensionManifest`   | `ExtensionManagement` | id, version, publisher, activationEvents | Extension mgmt                                                                                                     |
+| `ConfigurationTarget` | `Configuration`       | Global, Workspace, WorkspaceFolder       | Config ops                                                                                                         |
+| `SearchOptions`       | `Search`              | pattern, include, exclude, maxResults    | Search ops                                                                                                         |
+| `WorkspaceEditDTO`    | `DTO/`                | edits, fileCreates, fileDeletes          | Workspace edits                                                                                                    |
+| `TransportConfig`     | `Transport`           | timeout, retry config                    | Transport configuration                                                                                            |
 
 ---
 
@@ -250,7 +250,7 @@ pub enum CommonError {
 
 ## Transport Layer 🔗
 
-`Common` provides a transport-agnostic communication interface:
+[`Common`](https://github.com/CodeEditorLand/Common) provides a transport-agnostic communication interface:
 
 ```rust
 pub trait TransportStrategy: Send + Sync {
@@ -263,13 +263,13 @@ pub trait TransportStrategy: Send + Sync {
 }
 ```
 
-`Common` defines the trait surface and `TransportConfig`; concrete transports (`gRPCTransport`, `IPCTransport`, `WASMTransport`, `MistTransport`) live in `Grove`.
+`Common` defines the trait surface and `TransportConfig`; concrete transports (`gRPCTransport`, `IPCTransport`, `WASMTransport`, `MistTransport`) live in [`Grove`](https://github.com/CodeEditorLand/Grove).
 
 ---
 
 ## Telemetry Module 📡
 
-`Common`'s telemetry module provides a dual-pipe emit surface:
+[`Common`](https://github.com/CodeEditorLand/Common)'s telemetry module provides a dual-pipe emit surface:
 
 | Pipe    | Crate           | Configuration                                  |
 | ------- | --------------- | ---------------------------------------------- |
@@ -322,12 +322,12 @@ Common/
 
 - [Mountain](/Doc/mountain) -- Trait implementations
 - [Echo](/Doc/echo) -- Task scheduler integration
-- [Air](/Doc/air) -- Background daemon (`Common` consumer)
+- [Air](/Doc/air) -- Background daemon ([`Common`](https://github.com/CodeEditorLand/Common) consumer)
 - [RustInfrastructure](/Doc/architecture) -- `Rust` backend components
 
 ## Funding 💎
 
-Common is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
+[Common](https://github.com/CodeEditorLand/Common) is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
 
 ---
 

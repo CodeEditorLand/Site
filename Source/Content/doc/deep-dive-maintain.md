@@ -9,9 +9,9 @@ description:
     integration points, and CLI configuration."
 ---
 
-Maintain is the build orchestrator for Land. It covers the internals of
-the Maintain Rust binary: its architecture, module layout, data flow,
-integration with other Land elements, and configuration options.
+[Maintain](https://github.com/CodeEditorLand/Maintain) is the build orchestrator for [Land](https://github.com/CodeEditorLand/Land). It covers the internals of
+the [Maintain](https://github.com/CodeEditorLand/Maintain) Rust binary: its architecture, module layout, data flow,
+integration with other [Land](https://github.com/CodeEditorLand/Land) elements, and configuration options.
 
 ---
 
@@ -27,23 +27,23 @@ modifications to project configuration files.
 
 ## Key Modules 🔌
 
-| Path                                       | Description                                                                  |
-| :----------------------------------------- | :--------------------------------------------------------------------------- |
-| `Source/Library.rs`                        | Binary entry point; wires together CLI, logging, and error handling          |
-| `Source/Build/CLI.rs`                      | `clap`-based CLI with subcommands: debug, release, profile, dev              |
-| `Source/Build/Definition.rs`               | Build group definitions: which elements to build, in what order              |
-| `Source/Build/Fn.rs`                       | Core build function dispatch: clean, compile, link, post-process             |
-| `Source/Build/Process.rs`                  | Child process spawning with stdout/stderr capture and exit code handling     |
-| `Source/Build/TomlEdit.rs`                 | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes |
-| `Source/Build/JsonEdit.rs`                 | JSON5-aware configuration editing for `package.json` and `.json5` files      |
-| `Source/Build/Pascalize.rs`                | PascalCase ↔ words conversion utilities for naming convention enforcement    |
-| `Source/Build/GetTauriTargetTriple.rs`     | Detects current Rust target triple for SideCar binary selection              |
-| `Source/Build/EnvironmentResolver.rs`      | Resolves environment variables with fallbacks for build-time configuration   |
-| `Source/Build/Logger.rs`                   | Colored terminal output using the `colored` crate                            |
-| `Source/Build/Error.rs`                    | Unified error type for build failures                                        |
-| `Source/Build/Rhai/ConfigLoader.rs`        | Loads and parses Rhai build configuration scripts                            |
-| `Source/Build/Rhai/ScriptRunner.rs`        | Executes Rhai scripts within the build context with Land API bindings        |
-| `Source/Build/Rhai/EnvironmentResolver.rs` | Exposes environment variable resolution to Rhai scripts                      |
+| Path                                                                                                                                           | Description                                                                                                     |
+| :--------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Library.rs)                                               | Binary entry point; wires together CLI, logging, and error handling                                             |
+| `Source/Build/CLI.rs`                                                                                                                          | `clap`-based CLI with subcommands: debug, release, profile, dev                                                 |
+| [`Source/Build/Definition.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Definition.rs)                             | Build group definitions: which elements to build, in what order                                                 |
+| [`Source/Build/Fn.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs)                                             | Core build function dispatch: clean, compile, link, post-process                                                |
+| `Source/Build/Process.rs`                                                                                                                      | Child process spawning with stdout/stderr capture and exit code handling                                        |
+| [`Source/Build/TomlEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs)                                 | Non-lossy TOML editing for `Cargo.toml` version bumps and dependency changes                                    |
+| [`Source/Build/JsonEdit.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs)                                 | JSON5-aware configuration editing for `package.json` and `.json5` files                                         |
+| [`Source/Build/Pascalize.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Pascalize.rs)                               | PascalCase ↔ words conversion utilities for naming convention enforcement                                       |
+| [`Source/Build/GetTauriTargetTriple.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs)         | Detects current Rust target triple for [SideCar](https://github.com/CodeEditorLand/SideCar) binary selection    |
+| `Source/Build/EnvironmentResolver.rs`                                                                                                          | Resolves environment variables with fallbacks for build-time configuration                                      |
+| [`Source/Build/Logger.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Logger.rs)                                     | Colored terminal output using the `colored` crate                                                               |
+| [`Source/Build/Error.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Error.rs)                                       | Unified error type for build failures                                                                           |
+| [`Source/Build/Rhai/ConfigLoader.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs)               | Loads and parses Rhai build configuration scripts                                                               |
+| [`Source/Build/Rhai/ScriptRunner.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs)               | Executes Rhai scripts within the build context with [Land](https://github.com/CodeEditorLand/Land) API bindings |
+| [`Source/Build/Rhai/EnvironmentResolver.rs`](https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs) | Exposes environment variable resolution to Rhai scripts                                                         |
 
 ---
 
@@ -54,15 +54,15 @@ modifications to project configuration files.
 
 ## Integration Points 🔗
 
-| Connecting Element | Direction     | Mechanism                            | Description                                                         |
-| :----------------- | :------------ | :----------------------------------- | :------------------------------------------------------------------ |
-| **Mountain**       | Build target  | `cargo build` subprocess             | Maintain compiles Mountain as part of the debug/release build group |
-| **Air**            | Build target  | `cargo build` subprocess             | Air daemon compiled alongside Mountain                              |
-| **Echo**           | Build target  | `cargo build` subprocess             | Echo scheduler compiled as a dependency of Mountain                 |
-| **Rest**           | Build target  | `cargo build` subprocess             | Rest compiler binary built for use by Output                        |
-| **SideCar**        | Build target  | `cargo build` subprocess             | SideCar Download tool compiled and run as part of setup             |
-| **Output**         | Build trigger | `pnpm run prepublishOnly` subprocess | Maintain triggers TypeScript builds via pnpm                        |
-| **Wind / Sky**     | Build trigger | `pnpm run prepublishOnly` subprocess | Frontend packages built through Turborepo via Maintain              |
+| Connecting Element                                                                                | Direction     | Mechanism                            | Description                                                                                                                                                     |
+| :------------------------------------------------------------------------------------------------ | :------------ | :----------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **[Mountain](https://github.com/CodeEditorLand/Mountain)**                                        | Build target  | `cargo build` subprocess             | [Maintain](https://github.com/CodeEditorLand/Maintain) compiles [Mountain](https://github.com/CodeEditorLand/Mountain) as part of the debug/release build group |
+| **[Air](https://github.com/CodeEditorLand/Air)**                                                  | Build target  | `cargo build` subprocess             | Air daemon compiled alongside [Mountain](https://github.com/CodeEditorLand/Mountain)                                                                            |
+| **[Echo](https://github.com/CodeEditorLand/Echo)**                                                | Build target  | `cargo build` subprocess             | Echo scheduler compiled as a dependency of [Mountain](https://github.com/CodeEditorLand/Mountain)                                                               |
+| **[Rest](https://github.com/CodeEditorLand/Rest)**                                                | Build target  | `cargo build` subprocess             | Rest compiler binary built for use by [Output](https://github.com/CodeEditorLand/Output)                                                                        |
+| **[SideCar](https://github.com/CodeEditorLand/SideCar)**                                          | Build target  | `cargo build` subprocess             | SideCar Download tool compiled and run as part of setup                                                                                                         |
+| **[Output](https://github.com/CodeEditorLand/Output)**                                            | Build trigger | `pnpm run prepublishOnly` subprocess | [Maintain](https://github.com/CodeEditorLand/Maintain) triggers TypeScript builds via pnpm                                                                      |
+| **[Wind](https://github.com/CodeEditorLand/Wind) / [Sky](https://github.com/CodeEditorLand/Sky)** | Build trigger | `pnpm run prepublishOnly` subprocess | Frontend packages built through Turborepo via [Maintain](https://github.com/CodeEditorLand/Maintain)                                                            |
 
 ---
 
@@ -78,14 +78,14 @@ modifications to project configuration files.
 
 ### Shell script entry points
 
-| Script            | Purpose                                      |
-| :---------------- | :------------------------------------------- |
-| `Debug.sh`        | Full debug build of all elements             |
-| `Dev-Mountain.sh` | Hot-reload development mode for Mountain     |
-| `Release.sh`      | Optimized release build with all elements    |
-| `Profile.sh`      | Release build with profiling instrumentation |
-| `Debug/All.sh`    | Debug all components including frontend      |
-| `Debug/Wind.sh`   | Debug Wind TypeScript service layer only     |
+| Script                                                                                            | Purpose                                                                                |
+| :------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------- |
+| [`Debug.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug.sh)               | Full debug build of all elements                                                       |
+| [`Dev-Mountain.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Dev-Mountain.sh) | Hot-reload development mode for [Mountain](https://github.com/CodeEditorLand/Mountain) |
+| [`Release.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release.sh)           | Optimized release build with all elements                                              |
+| [`Profile.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Profile.sh)           | Release build with profiling instrumentation                                           |
+| [`Debug/All.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/All.sh)       | Debug all components including frontend                                                |
+| `Debug/Wind.sh`                                                                                   | Debug [Wind](https://github.com/CodeEditorLand/Wind) TypeScript service layer only     |
 
 ---
 

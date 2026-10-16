@@ -57,13 +57,13 @@ cd Land
 
 ### Common Profiles
 
-| Profile                       | When to use                              |
-| :---------------------------- | :--------------------------------------- |
-| `debug-mountain`              | Daily development (fastest viable build) |
-| `debug-electron`              | Full feature set, Electron workbench     |
-| `debug-electron-bundled`      | Bundled Vite/Astro workbench debug build |
-| `production-electron-bundled` | Release build                            |
-| `debug-kernel`                | Pure Mountain, no Cocoon, no UI          |
+| Profile                       | When to use                                                                                                               |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| `debug-mountain`              | Daily development (fastest viable build)                                                                                  |
+| `debug-electron`              | Full feature set, Electron workbench                                                                                      |
+| `debug-electron-bundled`      | Bundled Vite/Astro workbench debug build                                                                                  |
+| `production-electron-bundled` | Release build                                                                                                             |
+| `debug-kernel`                | Pure [Mountain](https://github.com/CodeEditorLand/Mountain), no [Cocoon](https://github.com/CodeEditorLand/Cocoon), no UI |
 
 ---
 
@@ -81,12 +81,12 @@ cd Land
 
 ## Quick Troubleshooting
 
-| Symptom                      | Fix                                                                            |
-| :--------------------------- | :----------------------------------------------------------------------------- |
-| `npm install` stalls         | Set `ELECTRON_SKIP_BINARY_DOWNLOAD=1` and `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` |
-| Playwright lockfile error    | `rm -rf ~/Library/Caches/ms-playwright/__dirlock`                              |
-| App crashes on macOS         | Run `BundleLevel=debug sh Maintain/Script/SignBundle.sh`                       |
-| Compilation errors in Editor | `git clean -dfx && rm -rf node_modules && npm install && npm run compile`      |
+| Symptom                      | Fix                                                                                                                                             |
+| :--------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm install` stalls         | Set `ELECTRON_SKIP_BINARY_DOWNLOAD=1` and `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1`                                                                  |
+| Playwright lockfile error    | `rm -rf ~/Library/Caches/ms-playwright/__dirlock`                                                                                               |
+| App crashes on macOS         | Run `BundleLevel=debug sh` [`Maintain/Script/SignBundle.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh) |
+| Compilation errors in Editor | `git clean -dfx && rm -rf node_modules && npm install && npm run compile`                                                                       |
 
 ---
 

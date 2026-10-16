@@ -7,10 +7,10 @@ description:
     Environment providers, and Cocoon process orchestration."
 ---
 
-`Mountain` is the primary `Tauri` application and native `Rust` backend for the
+[`Mountain`](https://github.com/CodeEditorLand/Mountain) is the primary `Tauri` application and native `Rust` backend for the [`Land`](https://github.com/CodeEditorLand/Land) code editor. `Mountain`:
 `Land` code editor. `Mountain`:
 
-- Implements every abstract trait from `Common`
+- Implements every abstract trait from [`Common`](https://github.com/CodeEditorLand/Common)
 - Hosts the `gRPC` server
 - Manages application state
 - Dispatches `Tauri` commands
@@ -38,19 +38,19 @@ description:
 <img src="/Mermaid/d7d58c57ba37be8c.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
-`Mountain` is a `Rust` binary built with `Tauri` v2 and `tonic` `gRPC`:
+[`Mountain`](https://github.com/CodeEditorLand/Mountain) is a `Rust` binary built with `Tauri` v2 and `tonic` `gRPC`:
 
 - It is the single native process that owns all OS-level capabilities (file
   system, terminal PTY, clipboard, dialogs)
-- It coordinates the `Cocoon` extension host and `Air` background daemon
+- It coordinates the [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) extension host and [`Air`](https://github.com/CodeEditorLand/Air) background daemon
 
-| Attribute    | Value                                                                                                                             |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------- |
-| Language     | `Rust` (edition 2024)                                                                                                             |
-| Framework    | `Tauri` v2                                                                                                                        |
-| gRPC         | `tonic` + `prost`                                                                                                                 |
-| Dependencies | `Common`, `Echo`, `Mist`, `tauri`, `tauri-plugin-dialog`, `tauri-plugin-fs`, `tonic`, `prost`, `keyring`, `portable-pty`, `tokio` |
-| Sidecars     | `Cocoon` (`Node.js`), `Air` (`Rust` daemon)                                                                                       |
+| Attribute    | Value                                                                                                                                                                                                                                                             |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                                                                                                                                                                                                             |
+| Framework    | `Tauri` v2                                                                                                                                                                                                                                                        |
+| gRPC         | `tonic` + `prost`                                                                                                                                                                                                                                                 |
+| Dependencies | [`Common`](https://github.com/CodeEditorLand/Common), [`Echo`](https://github.com/CodeEditorLand/Echo), [`Mist`](https://github.com/CodeEditorLand/Mist), `tauri`, `tauri-plugin-dialog`, `tauri-plugin-fs`, `tonic`, `prost`, `keyring`, `portable-pty`, `tokio` |
+| Sidecars     | [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) (`Node.js`), [`Air`](https://github.com/CodeEditorLand/Air) (`Rust` daemon)                                                                                                                                  |
 
 ---
 
@@ -201,23 +201,23 @@ pub struct AppState {
 
 ## Environment and Providers 🧩
 
-`MountainEnvironment` implements every trait from `Common`. Each capability has
+`MountainEnvironment` implements every trait from [`Common`](https://github.com/CodeEditorLand/Common). Each capability has
 a dedicated Provider:
 
-| Provider                     | Common Trait                 | Implementation                  |
-| ---------------------------- | ---------------------------- | ------------------------------- |
-| `FileSystemProvider`         | `FileSystem`                 | tokio::fs native operations     |
-| `ConfigurationProvider`      | `Configuration`              | JSON file read/write with merge |
-| `TerminalProvider`           | `Terminal`                   | portable-pty PTY management     |
-| `UserInterfaceProvider`      | `UserInterface`              | tauri-plugin-dialog             |
-| `CommandProvider`            | `CommandExecutor`            | Command registry + dispatch     |
-| `DocumentProvider`           | `Document`                   | Text model management           |
-| `ExtensionManagementService` | `ExtensionManagementService` | VSIX install + manifest scan    |
-| `SearchProvider`             | `Search`                     | ripgrep-based search            |
-| `SecretProvider`             | `Secret`                     | OS keyring (keyring crate)      |
-| `StorageProvider`            | `Storage`                    | JSON file key-value             |
-| `WorkspaceProvider`          | `Workspace`                  | Folder management               |
-| `IPCProvider`                | `IPC`                        | gRPC proxy to Cocoon            |
+| Provider                     | Common Trait                 | Implementation                                                   |
+| ---------------------------- | ---------------------------- | ---------------------------------------------------------------- |
+| `FileSystemProvider`         | `FileSystem`                 | tokio::fs native operations                                      |
+| `ConfigurationProvider`      | `Configuration`              | JSON file read/write with merge                                  |
+| `TerminalProvider`           | `Terminal`                   | portable-pty PTY management                                      |
+| `UserInterfaceProvider`      | `UserInterface`              | tauri-plugin-dialog                                              |
+| `CommandProvider`            | `CommandExecutor`            | Command registry + dispatch                                      |
+| `DocumentProvider`           | `Document`                   | Text model management                                            |
+| `ExtensionManagementService` | `ExtensionManagementService` | VSIX install + manifest scan                                     |
+| `SearchProvider`             | `Search`                     | ripgrep-based search                                             |
+| `SecretProvider`             | `Secret`                     | OS keyring (keyring crate)                                       |
+| `StorageProvider`            | `Storage`                    | JSON file key-value                                              |
+| `WorkspaceProvider`          | `Workspace`                  | Folder management                                                |
+| `IPCProvider`                | `IPC`                        | gRPC proxy to [Cocoon](https://github.com/CodeEditorLand/Cocoon) |
 
 ### Provider Registration 📝
 
@@ -238,7 +238,7 @@ impl MountainEnvironment {
 
 ## Tauri Command System ⌨️
 
-`Mountain` registers `Tauri` commands as typed `Rust` handlers:
+[`Mountain`](https://github.com/CodeEditorLand/Mountain) registers `Tauri` commands as typed `Rust` handlers:
 
 ```rust
 #[tauri::command]
@@ -271,7 +271,7 @@ async fn read_file(
 
 ## gRPC Service (Vine) 🌐
 
-`Mountain` hosts the `Vine` `gRPC` server for `Cocoon` and `Air` communication.
+[`Mountain`](https://github.com/CodeEditorLand/Mountain) hosts the [`Vine`](https://github.com/CodeEditorLand/Vine) `gRPC` server for [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) and [`Air`](https://github.com/CodeEditorLand/Air) communication.
 
 ### Server Configuration ⚙️
 
@@ -290,13 +290,13 @@ Server::builder()
 
 ### Service Handlers 📋
 
-| Service       | RPC                | Handler Module                            |
-| ------------- | ------------------ | ----------------------------------------- |
-| ExtensionHost | Initialize         | `ProcessManagement/InitializationData.rs` |
-| ExtensionHost | ExecuteCommand     | `RPC/CocoonService/Command/`              |
-| ExtensionHost | ProvideHover       | `RPC/CocoonService/Provider/`             |
-| ExtensionHost | CreateWebviewPanel | `RPC/CocoonService/Window/`               |
-| ExtensionHost | HealthCheck        | `Vine/Server/`                            |
+| Service       | RPC                | Handler Module                                                                                                                                      |
+| ------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ExtensionHost | Initialize         | [`ProcessManagement/InitializationData.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs) |
+| ExtensionHost | ExecuteCommand     | `RPC/CocoonService/Command/`                                                                                                                        |
+| ExtensionHost | ProvideHover       | `RPC/CocoonService/Provider/`                                                                                                                       |
+| ExtensionHost | CreateWebviewPanel | `RPC/CocoonService/Window/`                                                                                                                         |
+| ExtensionHost | HealthCheck        | `Vine/Server/`                                                                                                                                      |
 
 ---
 
@@ -304,7 +304,7 @@ Server::builder()
 
 ### Cocoon Management 🔄
 
-The `CocoonManagement` module handles the `Cocoon` sidecar lifecycle:
+The `CocoonManagement` module handles the [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) sidecar lifecycle:
 
 1. **Environment construction**: Sets `PATH`, `VSCODE_PARENT_PID`, tier env vars
 2. **Process spawn**: `std::process::Command` spawns `node bootstrap-fork.js`
@@ -314,20 +314,20 @@ The `CocoonManagement` module handles the `Cocoon` sidecar lifecycle:
 
 ### Air Management 🔄
 
-The `AirManagement` module handles `Air` sidecar lifecycle:
+The `AirManagement` module handles [`Air`](https://github.com/CodeEditorLand/Air) sidecar lifecycle:
 
-1. **Process spawn**: Spawns `Air` binary with configured data directory
+1. **Process spawn**: Spawns [`Air`](https://github.com/CodeEditorLand/Air) binary with configured data directory
 2. **gRPC connection**: Connects to `Air` on port 50053
 3. **Service registration**: `Air` reports available services (updater, indexer,
    etc.)
 4. **Health monitoring**: Bidirectional heartbeat
-5. **Coordination**: `Mountain` dispatches background work via `PerformAction`
+5. **Coordination**: [`Mountain`](https://github.com/CodeEditorLand/Mountain) dispatches background work via `PerformAction`
 
 ---
 
 ## IPC and Event System 📡
 
-`Mountain` pushes events to `Wind`/`Sky` via `Tauri`'s event system:
+[`Mountain`](https://github.com/CodeEditorLand/Mountain) pushes events to [`Wind`](https://github.com/CodeEditorLand/Wind)/[`Sky`](https://github.com/CodeEditorLand/Sky) via `Tauri`'s event system:
 
 ```rust
 // Emit configuration change event

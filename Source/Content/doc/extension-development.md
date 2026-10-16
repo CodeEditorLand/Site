@@ -6,7 +6,7 @@ description: "How to develop, test, and report compatibility issues for VS Code
     extensions running in Land."
 ---
 
-Land hosts VS Code extensions through **Cocoon**, a Node.js extension host that
+[Land](https://github.com/CodeEditorLand/Land) hosts VS Code extensions through **[Cocoon](https://github.com/CodeEditorLand/Cocoon)**, a Node.js extension host that
 implements the `vscode.*` API surface. Current coverage is approximately **88%**
 of the VS Code extension API, making the majority of published extensions
 compatible without modification. What works, what does not,
@@ -14,20 +14,20 @@ and how to test and report gaps are covered below.
 
 ## API Coverage 📊
 
-The Cocoon extension host implements the `vscode.*` namespace shim. As of the
+The [Cocoon](https://github.com/CodeEditorLand/Cocoon) extension host implements the `vscode.*` namespace shim. As of the
 current release, the following areas are fully or substantially covered:
 
-| API Area                | Coverage | Notes                                                                                                                                                  |
-| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `vscode.workspace`      | ~96%     | `onWillCreate/Delete/RenameFiles`, `applyEdit`, `saveAll` all wired                                                                                    |
-| `vscode.window`         | ~95%     | TextEditor object, QuickPick, InputBox, StatusBarItem, terminal events including `onDidStartTerminalShellExecution` / `onDidEndTerminalShellExecution` |
-| `vscode.languages`      | ~95%     | All LSP provider types including resolve handlers                                                                                                      |
-| `vscode.scm`            | ~95%     | InputBox, commitTemplate, acceptInputCommand                                                                                                           |
-| `vscode.commands`       | ~95%     | `onDidExecuteCommand` event, `registerTextEditorCommand`                                                                                               |
-| `vscode.extensions`     | ~90%     | Activation, exports, Memento-backed state                                                                                                              |
-| `vscode.debug`          | ~25%     | Configuration providers registered; DAP pipe/socket adapters and `startDebugging` transport incomplete                                                 |
-| `vscode.tasks`          | ~25%     | `registerTaskProvider` and `executeTask` wired; Mountain-side process spawn for shell tasks not yet implemented                                        |
-| `vscode.authentication` | ~30%     | API surface present; no real OAuth backend                                                                                                             |
+| API Area                | Coverage | Notes                                                                                                                                                         |
+| ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vscode.workspace`      | ~96%     | `onWillCreate/Delete/RenameFiles`, `applyEdit`, `saveAll` all wired                                                                                           |
+| `vscode.window`         | ~95%     | TextEditor object, QuickPick, InputBox, StatusBarItem, terminal events including `onDidStartTerminalShellExecution` / `onDidEndTerminalShellExecution`        |
+| `vscode.languages`      | ~95%     | All LSP provider types including resolve handlers                                                                                                             |
+| `vscode.scm`            | ~95%     | InputBox, commitTemplate, acceptInputCommand                                                                                                                  |
+| `vscode.commands`       | ~95%     | `onDidExecuteCommand` event, `registerTextEditorCommand`                                                                                                      |
+| `vscode.extensions`     | ~90%     | Activation, exports, Memento-backed state                                                                                                                     |
+| `vscode.debug`          | ~25%     | Configuration providers registered; DAP pipe/socket adapters and `startDebugging` transport incomplete                                                        |
+| `vscode.tasks`          | ~25%     | `registerTaskProvider` and `executeTask` wired; [Mountain](https://github.com/CodeEditorLand/Mountain)-side process spawn for shell tasks not yet implemented |
+| `vscode.authentication` | ~30%     | API surface present; no real OAuth backend                                                                                                                    |
 
 For a detailed method-level breakdown, see the
 [VS Code API Coverage](/Doc/cocoon-vscode-validation)
@@ -44,8 +44,8 @@ OAuth 2.0 provider (Copilot, GitHub Pull Requests, Live Share) will fail to
 authenticate. The API structure is present but there is no real OAuth backend
 wired.
 
-**`registerInlineCompletionItemProvider` (🟡 partial)** - The Vine proto
-definition, Mountain dispatcher, and Sky `ILanguageFeaturesService`
+**`registerInlineCompletionItemProvider` (🟡 partial)** - The [Vine](https://github.com/CodeEditorLand/Vine) proto
+definition, [Mountain](https://github.com/CodeEditorLand/Mountain) dispatcher, and [Sky](https://github.com/CodeEditorLand/Sky) `ILanguageFeaturesService`
 registration all exist. Single-item and list providers work for basic inline
 suggestions. Providers that return `InlineCompletionList` with
 `suppressSuggestions` or custom range objects may not render correctly in all
@@ -68,14 +68,14 @@ all platforms.
 
 The following `ExtensionContext` members are fully implemented in Land:
 
-| Member                      | Backing implementation                                          |
-| --------------------------- | --------------------------------------------------------------- |
-| `context.workspaceState`    | Mountain `storage:get` / `storage:set` IPC                      |
-| `context.globalState`       | Mountain `storage:get` / `storage:set` IPC                      |
-| `context.secrets.get`       | Mountain `encryption:decrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.store`     | Mountain `encryption:encrypt` (AES-256-GCM, machine-stable key) |
-| `context.secrets.delete`    | Mountain `storage:set` with empty string value                  |
-| `context.extension.exports` | Set after the activation function resolves                      |
+| Member                      | Backing implementation                                                                                        |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `context.workspaceState`    | [Mountain](https://github.com/CodeEditorLand/Mountain) `storage:get` / `storage:set` IPC                      |
+| `context.globalState`       | [Mountain](https://github.com/CodeEditorLand/Mountain) `storage:get` / `storage:set` IPC                      |
+| `context.secrets.get`       | [Mountain](https://github.com/CodeEditorLand/Mountain) `encryption:decrypt` (AES-256-GCM, machine-stable key) |
+| `context.secrets.store`     | [Mountain](https://github.com/CodeEditorLand/Mountain) `encryption:encrypt` (AES-256-GCM, machine-stable key) |
+| `context.secrets.delete`    | [Mountain](https://github.com/CodeEditorLand/Mountain) `storage:set` with empty string value                  |
+| `context.extension.exports` | Set after the activation function resolves                                                                    |
 
 Secret storage uses AES-256-GCM encryption keyed from the machine UUID (SHA-256
 hash). Secrets stored by one extension cannot be read by another and do not
@@ -93,12 +93,12 @@ Place your unpacked extension directory in the user extension root. On macOS:
 ```
 
 The directory must contain a valid `package.json` with `"main"` pointing to the
-compiled entry point. Land scans this directory at startup and activates
+the compiled entry point. [Land](https://github.com/CodeEditorLand/Land) scans this directory at startup and activates
 extensions matching their `activationEvents`.
 
 ### VSIX Install
 
-Land accepts `.vsix` packages. From the Extensions sidebar, use the "Install
+[Land](https://github.com/CodeEditorLand/Land) accepts `.vsix` packages. From the Extensions sidebar, use the "Install
 from VSIX" option, or set the `Lodge` environment variable to point to a custom
 extension root and drop the unpacked VSIX there.
 
@@ -115,35 +115,35 @@ Probe=/path/to/your-extension
 
 Then rebuild and run. Probe extensions reload on each application restart.
 
-### `TierIPC=Node` for Cocoon-Only Testing
+### `TierIPC=Node` for [Cocoon](https://github.com/CodeEditorLand/Cocoon)-Only Testing
 
-To test your extension against the pure Node.js Cocoon IPC path (bypassing
-Mountain's Rust handlers entirely), set:
+To test your extension against the pure Node.js [Cocoon](https://github.com/CodeEditorLand/Cocoon) IPC path (bypassing
+[Mountain](https://github.com/CodeEditorLand/Mountain)'s Rust handlers entirely), set:
 
 ```sh
 TierIPC=Node
 ```
 
 This routes all IPC calls through `cocoon:request` instead of Tauri's native IPC
-bridge. It is useful for isolating whether a failure is in Mountain's handler or
-in the Cocoon shim layer.
+bridge. It is useful for isolating whether a failure is in [Mountain](https://github.com/CodeEditorLand/Mountain)'s handler or
+in the [Cocoon](https://github.com/CodeEditorLand/Cocoon) shim layer.
 
 ## Accessing Extension Host Logs 📝
 
-Cocoon writes structured log output to standard output, which Mountain captures
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) writes structured log output to standard output, which [Mountain](https://github.com/CodeEditorLand/Mountain) captures
 and forwards to the dev log. To see Cocoon's output:
 
 1. Set `Trace=cocoon` (or `Trace=all`) in `.env.Land.Diagnostics`.
 2. Set `Record=1` to persist the log to disk at
    `<app-data>/logs/<timestamp>/Mountain.dev.log`.
-3. Open DevTools (`Inspect=1`) and check the Console for Sky-side errors.
+3. Open DevTools (`Inspect=1`) and check the Console for [Sky](https://github.com/CodeEditorLand/Sky)-side errors.
 
-For gRPC-level tracing between Mountain and Cocoon, add `grpc` to the `Trace`
+For gRPC-level tracing between [Mountain](https://github.com/CodeEditorLand/Mountain) and [Cocoon](https://github.com/CodeEditorLand/Cocoon), add `grpc` to the `Trace`
 tag list.
 
 ## Reporting API Compatibility Gaps 🐛
 
-If your extension fails in Land due to a missing or broken API, open a GitHub
+If your extension fails in [Land](https://github.com/CodeEditorLand/Land) due to a missing or broken API, open a GitHub
 issue at
 [github.com/CodeEditorLand/Land/issues](https://github.com/CodeEditorLand/Land/issues)
 with:
@@ -154,5 +154,5 @@ with:
   "throws", "never resolves").
 - A minimal reproduction if possible.
 
-Label the issue `api-coverage`. This directly feeds the prioritization of Cocoon
+Label the issue `api-coverage`. This directly feeds the prioritization of [Cocoon](https://github.com/CodeEditorLand/Cocoon)
 shim work.

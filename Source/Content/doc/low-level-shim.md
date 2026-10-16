@@ -27,7 +27,7 @@ The architecture has three distinct planes:
 
 1. **Interception Plane** (🟠 orange) - The 6 prototype hooks that wrap VS Code internals
 2. **Diagnostics Plane** (🔵 blue) - `LandDiagnostics`, the unified ring-buffer tracer
-3. **Flush Plane** (🟣 purple) - Mountain dev log, OTLP traces, PostHog sampling
+3. **Flush Plane** (🟣 purple) - [Mountain](https://github.com/CodeEditorLand/Mountain) dev log, OTLP traces, PostHog sampling
 
 ---
 
@@ -449,29 +449,29 @@ This adds 5-8% total overhead but provides full visibility for debugging.
 
 **Key insight**: `TierShim=Proxy` activates only the 🔵 coverage tier (ServiceCollection audit).
 `TierShim=Replace` adds service descriptor replacement. The 🟠 low-level hooks (L1-L8) only activate
-at `Own` and above. `Preempt` additionally gives Land control of `BrowserMain.open()`.
+at `Own` and above. `Preempt` additionally gives [Land](https://github.com/CodeEditorLand/Land) control of `BrowserMain.open()`.
 
 ---
 
 ## 🟠 Source File Map
 
-| #   | File                                                                 | Layer       | VS Code Module Intercepted                                                      | Purpose                                                                   |
-| --- | -------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| 1   | `Output/Source/Service/CEL/Land/Shim/Init.ts`                        | Bootstrap   | `workbench.startup()` return value                                              | Entry point injected by Output Transform; reads TierShim, activates hooks |
-| 2   | `Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts` | L1          | `vs/base/common/errors.js` → `errorHandler.onUnexpectedError()`                 | Error boundary interception                                               |
-| 3   | `Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts`  | L2          | `vs/base/common/event.js` → `Emitter.prototype.fire()`                          | Event dispatch interception                                               |
-| 4   | `Output/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts` | L3          | `vs/base/common/cancellation.js` → `CancellationTokenSource.prototype.cancel()` | Cancellation chain interception                                           |
-| 5   | `Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts`   | L4          | `vs/base/common/lifecycle.js` → `DisposableStore.prototype.add/dispose`         | Resource lifecycle tracking                                               |
-| 6   | `Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts`        | L5          | `vs/base/common/platform.js` → `platform.setTimeout0()`                         | Async scheduling interception                                             |
-| 7   | `Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts`       | L8          | `vs/base/common/stopwatch.js` → `StopWatch.constructor/stop/elapsed`            | Performance timing interception                                           |
-| 8   | `Output/Source/Service/CEL/Land/Shim/Intercept/Index.ts`             | -           | -                                                                               | Barrel export for all 6 proxies                                           |
-| 9   | `Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts` | Diagnostics | -                                                                               | Unified ring-buffer tracer with flush to Mountain                         |
-| 10  | `Output/Source/Service/CEL/Land/Shim/Index.ts`                       | -           | -                                                                               | Top-level barrel: Init + Diagnostics + Intercepts                         |
-| 11  | `Output/Source/Service/CEL/Null/Telemetry/Service.ts`                | 🔵 Replace  | `vs/platform/telemetry/common/telemetry.ts`                                     | No-op telemetry service (all publicLog are void)                          |
-| 12  | `Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts`        | 🔵 Replace  | `vs/platform/extensionManagement/common/`                                       | Offline extension gallery (empty results, reject downloads)               |
-| 13  | `Output/Source/Service/CEL/Null/Update/Service.ts`                   | 🔵 Replace  | `vs/platform/update/common/update.ts`                                           | No-op update service (air-based updates only)                             |
+| #   | File                                                                                                                                                                                      | Layer       | VS Code Module Intercepted                                                      | Purpose                                                                                                               |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 1   | [`Output/Source/Service/CEL/Land/Shim/Init.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts)                                               | Bootstrap   | `workbench.startup()` return value                                              | Entry point injected by [Output](https://github.com/CodeEditorLand/Output) Transform; reads TierShim, activates hooks |
+| 2   | [`Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts) | L1          | `vs/base/common/errors.js` → `errorHandler.onUnexpectedError()`                 | Error boundary interception                                                                                           |
+| 3   | [`Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts)   | L2          | `vs/base/common/event.js` → `Emitter.prototype.fire()`                          | Event dispatch interception                                                                                           |
+| 4   | [`Output/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts) | L3          | `vs/base/common/cancellation.js` → `CancellationTokenSource.prototype.cancel()` | Cancellation chain interception                                                                                       |
+| 5   | [`Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts)     | L4          | `vs/base/common/lifecycle.js` → `DisposableStore.prototype.add/dispose`         | Resource lifecycle tracking                                                                                           |
+| 6   | [`Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts)               | L5          | `vs/base/common/platform.js` → `platform.setTimeout0()`                         | Async scheduling interception                                                                                         |
+| 7   | [`Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts)             | L8          | `vs/base/common/stopwatch.js` → `StopWatch.constructor/stop/elapsed`            | Performance timing interception                                                                                       |
+| 8   | [`Output/Source/Service/CEL/Land/Shim/Intercept/Index.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/Index.ts)                         | -           | -                                                                               | Barrel export for all 6 proxies                                                                                       |
+| 9   | [`Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts) | Diagnostics | -                                                                               | Unified ring-buffer tracer with flush to [Mountain](https://github.com/CodeEditorLand/Mountain)                       |
+| 10  | [`Output/Source/Service/CEL/Land/Shim/Index.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Index.ts)                                             | -           | -                                                                               | Top-level barrel: Init + Diagnostics + Intercepts                                                                     |
+| 11  | [`Output/Source/Service/CEL/Null/Telemetry/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Telemetry/Service.ts)                               | 🔵 Replace  | `vs/platform/telemetry/common/telemetry.ts`                                     | No-op telemetry service (all publicLog are void)                                                                      |
+| 12  | [`Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Extension/Gallery/Service.ts)               | 🔵 Replace  | `vs/platform/extensionManagement/common/`                                       | Offline extension gallery (empty results, reject downloads)                                                           |
+| 13  | [`Output/Source/Service/CEL/Null/Update/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Update/Service.ts)                                     | 🔵 Replace  | `vs/platform/update/common/update.ts`                                           | No-op update service (air-based updates only)                                                                         |
 
-**Compilation path**: Files 2-9 are compiled by Output's esbuild step to
+**Compilation path**: Files 2-9 are compiled by [Output](https://github.com/CodeEditorLand/Output)'s esbuild step to
 `Configuration/Service/CEL/Land/Shim/` and copied to
 `Target/Microsoft/VSCode/vs/workbench/browser/CEL/Land/Shim/` at depth 3.
 Import paths resolve at this final on-disk location.
@@ -543,7 +543,7 @@ VS Code runs un-instrumented but working. If tracing fails mid-flight, the origi
 | `timingBuffer`     | StopWatch operations       | L8 TimingProxy            |
 | `auditBuffer`      | Service resolutions        | ServiceCollection wrapper |
 
-**Flush payload format** (sent to Mountain's `diagnostic:log` method):
+**Flush payload format** (sent to [Mountain](https://github.com/CodeEditorLand/Mountain)'s `diagnostic:log` method):
 
 ```json
 {
@@ -582,7 +582,7 @@ all 6 hook layers:
 | L4    | 1× DisposableStore.add                    | Listener ID 1247, typeName "Function"                 |
 | L5    | 1× setTimeout0 coalesced                  | Queue length 3, batch flushed                         |
 
-All this data flows to Mountain dev log within 30 seconds, providing a forensic trace of
+All this data flows to [Mountain](https://github.com/CodeEditorLand/Mountain) dev log within 30 seconds, providing a forensic trace of
 every user interaction when `TierShim=Own`.
 
 ---
@@ -634,7 +634,7 @@ removed from production builds. **Zero bytes, zero runtime cost.**
 - [Architecture](/Doc/architecture) - System architecture overview
 - [Deep Dive: Mountain](/Doc/deep-dive-mountain) - Rust-side intercept infrastructure
 - [Environment Variables](/Doc/configuration) - TierShim and TierSwallow* vars
-- [Build Pipeline](/Doc/build-pipeline) - Output Transform injection
+- [Build Pipeline](/Doc/build-pipeline) - [Output](https://github.com/CodeEditorLand/Output) Transform injection
 
 ⚠️ **EXPERIMENTAL** - This component operates at the JavaScript engine level.
 Changes to VS Code's internal classes may require updates to these hooks.

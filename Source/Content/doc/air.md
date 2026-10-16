@@ -10,9 +10,9 @@ description:
 
 # Air: Background Daemon 🪁
 
-The `Air` background daemon:
+The [`Air`](https://github.com/CodeEditorLand/Air) background daemon:
 
-- A persistent `Rust` sidecar process that runs alongside `Mountain`
+- A persistent `Rust` sidecar process that runs alongside [`Mountain`](https://github.com/CodeEditorLand/Mountain)
 - Handles resource-intensive operations to keep the main editor process responsive
 - Operations include: update management, file indexing, cryptographic operations, and background downloads
 
@@ -34,44 +34,44 @@ The `Air` background daemon:
 <img src="/Mermaid/033d441edd08796f.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
-| Attribute    | Value                                                          |
-| ------------ | -------------------------------------------------------------- |
-| Language     | `Rust` (edition 2024)                                          |
-| Crate type   | Binary                                                         |
-| IPC          | `gRPC` (`tonic`) on port 50053                                 |
-| Dependencies | `tokio`, `tonic`, `prost`, `reqwest`, `ring`, `Common`, `Mist` |
-| Managed by   | `Mountain` `ProcessManagement`                                 |
+| Attribute    | Value                                                                                                                                                |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                                                                                                |
+| Crate type   | Binary                                                                                                                                               |
+| IPC          | `gRPC` (`tonic`) on port 50053                                                                                                                       |
+| Dependencies | `tokio`, `tonic`, `prost`, `reqwest`, `ring`, [`Common`](https://github.com/CodeEditorLand/Common), [`Mist`](https://github.com/CodeEditorLand/Mist) |
+| Managed by   | [`Mountain`](https://github.com/CodeEditorLand/Mountain) `ProcessManagement`                                                                         |
 
 ---
 
 ## Architecture 🏗️
 
-`Air` is structured around a central `gRPC` server that receives task delegation from `Mountain`. Internal modules handle distinct responsibilities.
+[`Air`](https://github.com/CodeEditorLand/Air) is structured around a central `gRPC` server that receives task delegation from [`Mountain`](https://github.com/CodeEditorLand/Mountain). Internal modules handle distinct responsibilities.
 
 <img src="/Mermaid/dff92e52586447cb.svg" alt="Mermaid diagram" />
 ---
 
 ## Module Map 🗺️
 
-| Path                      | Purpose                                                                        |
-| ------------------------- | ------------------------------------------------------------------------------ |
-| `Source/Binary/Binary.rs` | Binary entry point; bootstraps `Tokio` runtime, starts daemon                  |
-| `Source/Initialize/`      | Startup sequence: config loading, `gRPC` binding, state initialization         |
-| `Source/Vine/`            | `gRPC` server implementation using `tonic`; routes incoming calls              |
-| `Source/Updates/`         | Update lifecycle: check for updates, download, verify signature, apply patches |
-| `Source/Downloader/`      | Resilient download manager with pause, resume, retry, and progress reporting   |
-| `Source/Authentication/`  | Cryptographic signing of binaries, secure token storage                        |
-| `Source/HTTP/Client.rs`   | HTTP client configured to use `Mist` local DNS resolver                        |
-| `Source/HealthCheck/`     | Self-monitoring and watchdog for process health                                |
-| `Source/Metrics/`         | Telemetry collection and reporting to `Mountain`                               |
-| `Source/Logging/`         | Structured tracing output via the `tracing` crate                              |
-| `Source/Indexing/`        | File content indexing for workspace search                                     |
-| `Source/CLI/`             | Command-line argument parsing for daemon startup options                       |
-| `Source/Resilience/`      | Retry logic and circuit breakers for network operations                        |
-| `Source/Security/`        | Signature verification and secure storage utilities                            |
-| `Source/Configuration/`   | Runtime configuration loading with hot-reload support                          |
-| `Source/Library.rs`       | Library root exposing the public API for integration tests                     |
-| `Source/Daemon/`          | Daemon lifecycle management (start, stop, restart)                             |
+| Path                                                                                                    | Purpose                                                                                           |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| [`Source/Binary/Binary.rs`](https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs) | Binary entry point; bootstraps `Tokio` runtime, starts daemon                                     |
+| `Source/Initialize/`                                                                                    | Startup sequence: config loading, `gRPC` binding, state initialization                            |
+| `Source/Vine/`                                                                                          | `gRPC` server implementation using `tonic`; routes incoming calls                                 |
+| `Source/Updates/`                                                                                       | Update lifecycle: check for updates, download, verify signature, apply patches                    |
+| `Source/Downloader/`                                                                                    | Resilient download manager with pause, resume, retry, and progress reporting                      |
+| `Source/Authentication/`                                                                                | Cryptographic signing of binaries, secure token storage                                           |
+| [`Source/HTTP/Client.rs`](https://github.com/CodeEditorLand/Air/tree/Current/Source/HTTP/Client.rs)     | HTTP client configured to use [`Mist`](https://github.com/CodeEditorLand/Mist) local DNS resolver |
+| `Source/HealthCheck/`                                                                                   | Self-monitoring and watchdog for process health                                                   |
+| `Source/Metrics/`                                                                                       | Telemetry collection and reporting to [`Mountain`](https://github.com/CodeEditorLand/Mountain)    |
+| `Source/Logging/`                                                                                       | Structured tracing output via the `tracing` crate                                                 |
+| `Source/Indexing/`                                                                                      | File content indexing for workspace search                                                        |
+| `Source/CLI/`                                                                                           | Command-line argument parsing for daemon startup options                                          |
+| `Source/Resilience/`                                                                                    | Retry logic and circuit breakers for network operations                                           |
+| `Source/Security/`                                                                                      | Signature verification and secure storage utilities                                               |
+| `Source/Configuration/`                                                                                 | Runtime configuration loading with hot-reload support                                             |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/Air/tree/Current/Source/Library.rs)             | Library root exposing the public API for integration tests                                        |
+| `Source/Daemon/`                                                                                        | Daemon lifecycle management (start, stop, restart)                                                |
 
 ### gRPC Service Definition (Vine/Air.proto) 📜
 
@@ -112,13 +112,13 @@ The update manager owns the full lifecycle of application updates:
 
 The resilient download manager handles extension downloads, language server binaries, and dependency fetching:
 
-| Feature    | Implementation                                        |
-| ---------- | ----------------------------------------------------- |
-| Resume     | HTTP Range headers for partial download resume        |
-| Retry      | Exponential backoff with configurable max attempts    |
-| Progress   | Streaming progress reporting to `Mountain` via `gRPC` |
-| Bandwidth  | Configurable rate limiting per download               |
-| Concurrent | Parallel download queue with configurable concurrency |
+| Feature    | Implementation                                                                                      |
+| ---------- | --------------------------------------------------------------------------------------------------- |
+| Resume     | HTTP Range headers for partial download resume                                                      |
+| Retry      | Exponential backoff with configurable max attempts                                                  |
+| Progress   | Streaming progress reporting to [`Mountain`](https://github.com/CodeEditorLand/Mountain) via `gRPC` |
+| Bandwidth  | Configurable rate limiting per download                                                             |
+| Concurrent | Parallel download queue with configurable concurrency                                               |
 
 ### Indexing Service 🔍
 
@@ -184,16 +184,16 @@ Manages sensitive cryptographic operations:
 
 ## Configuration ⚙️
 
-`Air` reads configuration from environment variables and supports hot-reload via file watching:
+[`Air`](https://github.com/CodeEditorLand/Air) reads configuration from environment variables and supports hot-reload via file watching:
 
-| Variable                   | Default            | Description                           |
-| -------------------------- | ------------------ | ------------------------------------- |
-| `VINE_PORT`                | `50053`            | `gRPC` server port                    |
-| `MIST_PORT`                | `5380`             | `Mist` DNS server port                |
-| `DATA_DIR`                 | `~/.land/data/air` | Data directory for caches and indexes |
-| `LOG_LEVEL`                | `info`             | Tracing log level                     |
-| `MAX_CONCURRENT_DOWNLOADS` | `3`                | Parallel download limit               |
-| `UPDATE_CHECK_INTERVAL`    | `3600`             | Update check interval in seconds      |
+| Variable                   | Default            | Description                                                      |
+| -------------------------- | ------------------ | ---------------------------------------------------------------- |
+| `VINE_PORT`                | `50053`            | `gRPC` server port                                               |
+| `MIST_PORT`                | `5380`             | [`Mist`](https://github.com/CodeEditorLand/Mist) DNS server port |
+| `DATA_DIR`                 | `~/.land/data/air` | Data directory for caches and indexes                            |
+| `LOG_LEVEL`                | `info`             | Tracing log level                                                |
+| `MAX_CONCURRENT_DOWNLOADS` | `3`                | Parallel download limit                                          |
+| `UPDATE_CHECK_INTERVAL`    | `3600`             | Update check interval in seconds                                 |
 
 ---
 
@@ -207,7 +207,7 @@ Manages sensitive cryptographic operations:
 
 ## Funding 💎
 
-Air is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
+[Air](https://github.com/CodeEditorLand/Air) is developed as part of the CodeEditorLand project, funded through the NGI0 Commons Fund, a grant programme of the European Commission's Next Generation Internet initiative.
 
 ---
 

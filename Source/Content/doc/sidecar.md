@@ -8,10 +8,10 @@ description:
     target triples so Cocoon always starts with the right runtime.
 ---
 
-SideCar is a Rust library and binary that manages pre-compiled native dependency
-binaries for Land. It handles download, caching, verification, and management of
+[SideCar](https://github.com/CodeEditorLand/SideCar) is a Rust library and binary that manages pre-compiled native dependency
+binaries for [Land](https://github.com/CodeEditorLand/Land). It handles download, caching, verification, and management of
 Node.js runtime binaries across multiple target platforms, integrating with
-Mountain at both build time and runtime.
+[Mountain](https://github.com/CodeEditorLand/Mountain) at both build time and runtime.
 
 ## Architecture
 
@@ -20,17 +20,17 @@ Mountain at both build time and runtime.
 | ------------ | --------------------------------------------------------------------- |
 | Language     | `Rust` (edition 2024)                                                 |
 | Crate type   | Library + Binary                                                      |
-| Dependencies | `tokio`, `reqwest`, `serde`, `zip`, `tar`, `flate2`, `Common`, `Mist` |
-| Consumed by  | `Mountain` (build-time binary selection)                              |
-| Storage      | `SideCar/Cache.json` + per-platform cached binaries                   |
+| Dependencies | `tokio`, `reqwest`, `serde`, `zip`, `tar`, `flate2`, [`Common`](https://github.com/CodeEditorLand/Common), [`Mist`](https://github.com/CodeEditorLand/Mist) |
+| Consumed by  | [`Mountain`](https://github.com/CodeEditorLand/Mountain) (build-time binary selection)                              |
+| Storage      | [`SideCar/Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json) + per-platform cached binaries                   |
 
 ### Module Map
 
-| Path                 | Purpose                                                 |
-| :------------------- | :------------------------------------------------------ |
-| `Source/Download.rs` | Binary download, archive extraction, platform targeting |
-| `Source/Library.rs`  | Library root                                            |
-| `Source/main.rs`     | Binary entry point for standalone operation             |
+| Path                                                                                              | Purpose                                                 |
+| :------------------------------------------------------------------------------------------------ | :------------------------------------------------------ |
+| [`Source/Download.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Download.rs) | Binary download, archive extraction, platform targeting |
+| [`Source/Library.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Library.rs)   | Library root                                            |
+| [`Source/main.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/main.rs)         | Binary entry point for standalone operation             |
 
 ## Binary Resolution
 
@@ -110,7 +110,7 @@ The `Download` module handles archive retrieval and extraction:
 
 ## Caching Strategy
 
-SideCar maintains a JSON-based cache manifest at `SideCar/Cache.json`:
+[SideCar](https://github.com/CodeEditorLand/SideCar) maintains a JSON-based cache manifest at [`SideCar/Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json):
 
 ```json
 {

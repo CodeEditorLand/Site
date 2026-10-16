@@ -10,12 +10,12 @@ description:
 
 # Sky: UI Component Layer 🌌
 
-`Sky` is the UI component layer of `Land`.
+[`Sky`](https://github.com/CodeEditorLand/Sky) is the UI component layer of [`Land`](https://github.com/CodeEditorLand/Land).
 
-- `Sky` is built with the `Astro` framework.
+- [`Sky`](https://github.com/CodeEditorLand/Sky) is built with the `Astro` framework.
 - It renders the editor interface - editor, side bar, activity bar, status bar,
   and panels - inside the `Tauri` WebView.
-- It loads the VS Code workbench from `@codeeditorland/output`.
+- It loads the VS Code workbench from [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output).
 - It communicates via `SkyBridge` for event routing.
 
 ---
@@ -36,19 +36,19 @@ description:
 <img src="/Mermaid/f0a6731b0c205de9.svg" alt="Mermaid diagram" />
 ## Overview 📋
 
-`Sky` is the rendering layer that presents the `Land` editor to the user.
+[`Sky`](https://github.com/CodeEditorLand/Sky) is the rendering layer that presents the [`Land`](https://github.com/CodeEditorLand/Land) editor to the user.
 
 - It uses `Astro` for page composition.
-- It loads the VS Code workbench from `@codeeditorland/output`.
+- It loads the VS Code workbench from [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output).
 - It bridges `Tauri` events to the workbench through `SkyBridge`.
 
-| Attribute    | Value                                                                                                                                        |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Language     | `TypeScript` (`Astro` v6, `Vite` v8)                                                                                                         |
-| Framework    | `Astro` + `Vite`                                                                                                                             |
-| IPC          | `Tauri` events (via `SkyBridge`)                                                                                                             |
-| Dependencies | `@codeeditorland/wind`, `@codeeditorland/output`, `@codeeditorland/cocoon`, `@codeeditorland/worker`, `@xterm/xterm`, `astro`, `vite`, `zod` |
-| Consumes     | `Wind` (services), `Output` (bundles), `Worker` (service worker)                                                                             |
+| Attribute    | Value                                                                                                                                                                                                                                                                                                                      |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `TypeScript` (`Astro` v6, `Vite` v8)                                                                                                                                                                                                                                                                                       |
+| Framework    | `Astro` + `Vite`                                                                                                                                                                                                                                                                                                           |
+| IPC          | `Tauri` events (via `SkyBridge`)                                                                                                                                                                                                                                                                                           |
+| Dependencies | [`@codeeditorland/wind`](https://github.com/CodeEditorLand/Wind), [`@codeeditorland/output`](https://github.com/CodeEditorLand/Output), [`@codeeditorland/cocoon`](https://github.com/CodeEditorLand/Cocoon), [`@codeeditorland/worker`](https://github.com/CodeEditorLand/Worker), `@xterm/xterm`, `astro`, `vite`, `zod` |
+| Consumes     | [`Wind`](https://github.com/CodeEditorLand/Wind) (services), [`Output`](https://github.com/CodeEditorLand/Output) (bundles), [`Worker`](https://github.com/CodeEditorLand/Worker) (service worker)                                                                                                                         |
 
 ---
 
@@ -57,21 +57,21 @@ description:
 <img src="/Mermaid/5e2be849a7a31a72.svg" alt="Mermaid diagram" />
 ### Module Map 🗺️
 
-| Path                              | Purpose                        |
-| --------------------------------- | ------------------------------ |
-| `Source/pages/index.astro`        | Main entry page                |
-| `Source/pages/Mountain.astro`     | Mountain workbench variant     |
-| `Source/pages/Browser.astro`      | Browser workbench variant      |
-| `Source/pages/Electron.astro`     | Electron workbench variant     |
-| `Source/pages/Isolation.astro`    | Isolation mode variant         |
-| `Source/Workbench/Mountain.astro` | Mountain workbench component   |
-| `Source/Workbench/Browser.astro`  | Browser workbench component    |
-| `Source/Workbench/Electron/`      | Electron workbench component   |
-| `Source/Workbench/Bundled/`       | Pre-compiled workbench chunks  |
-| `Source/Function/SkyBridge.ts`    | Tauri event routing bridge     |
-| `Source/Function/Debug.ts`        | Debug utilities                |
-| `Source/Function/Shared.ts`       | Shared UI utilities            |
-| `Source/Function/Build/`          | Build-time compilation helpers |
+| Path                                                                                                                    | Purpose                        |
+| ----------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| [`Source/pages/index.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro)               | Main entry page                |
+| [`Source/pages/Mountain.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Mountain.astro)         | Mountain workbench variant     |
+| [`Source/pages/Browser.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Browser.astro)           | Browser workbench variant      |
+| [`Source/pages/Electron.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Electron.astro)         | Electron workbench variant     |
+| [`Source/pages/Isolation.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Isolation.astro)       | Isolation mode variant         |
+| [`Source/Workbench/Mountain.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Mountain.astro) | Mountain workbench component   |
+| [`Source/Workbench/Browser.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Browser.astro)   | Browser workbench component    |
+| [`Source/Workbench/Electron/`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/)           | Electron workbench component   |
+| [`Source/Workbench/Bundled/`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Bundled/)             | Pre-compiled workbench chunks  |
+| `Source/Function/SkyBridge.ts`                                                                                          | Tauri event routing bridge     |
+| [`Source/Function/Debug.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Debug.ts)               | Debug utilities                |
+| [`Source/Function/Shared.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Shared.ts)             | Shared UI utilities            |
+| [`Source/Function/Build/`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Build/)                   | Build-time compilation helpers |
 
 ---
 
@@ -103,14 +103,14 @@ const WorkbenchComponent =
 
 ### Pages Overview
 
-| Page                 | Workbench | Purpose                                              |
-| -------------------- | --------- | ---------------------------------------------------- |
-| `index.astro`        | Dynamic   | Default entry point, delegates to workbench selector |
-| `Mountain.astro`     | Mountain  | Production workbench for Tauri runtime               |
-| `Browser.astro`      | Browser   | Development workbench with limited native features   |
-| `Electron.astro`     | Electron  | Maximum VS Code compatibility variant                |
-| `BrowserProxy.astro` | Browser   | Proxy-mode workbench                                 |
-| `Isolation.astro`    | Isolation | Minimal workbench for testing                        |
+| Page                                                                                                       | Workbench | Purpose                                              |
+| ---------------------------------------------------------------------------------------------------------- | --------- | ---------------------------------------------------- |
+| [`index.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro)               | Dynamic   | Default entry point, delegates to workbench selector |
+| [`Mountain.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Mountain.astro)         | Mountain  | Production workbench for Tauri runtime               |
+| [`Browser.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Browser.astro)           | Browser   | Development workbench with limited native features   |
+| [`Electron.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Electron.astro)         | Electron  | Maximum VS Code compatibility variant                |
+| [`BrowserProxy.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/BrowserProxy.astro) | Browser   | Proxy-mode workbench                                 |
+| [`Isolation.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Isolation.astro)       | Isolation | Minimal workbench for testing                        |
 
 ---
 
@@ -118,14 +118,14 @@ const WorkbenchComponent =
 
 `Sky` supports multiple workbench variants compiled through `Vite`/`Rollup`:
 
-| Variant          | Astro Page           | Feature Coverage        | Build Profile             |
-| ---------------- | -------------------- | ----------------------- | ------------------------- |
-| **Mountain**     | `Mountain.astro`     | 80-90%                  | `debug-mountain`          |
-| **Browser**      | `Browser.astro`      | 70-80%                  | `debug`                   |
-| **Electron**     | `Electron.astro`     | 95%+                    | `debug-electron`          |
-| **Default**      | `Default.astro`      | Base workbench          | `debug-workbench-bundled` |
-| **BrowserProxy** | `BrowserProxy.astro` | 70-80%                  | `debug-browser`           |
-| **NLS**          | `NLS.astro`          | Natural language search | (experimental)            |
+| Variant          | Astro Page                                                                                                 | Feature Coverage        | Build Profile             |
+| ---------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------- | ------------------------- |
+| **Mountain**     | [`Mountain.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Mountain.astro)         | 80-90%                  | `debug-mountain`          |
+| **Browser**      | [`Browser.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Browser.astro)           | 70-80%                  | `debug`                   |
+| **Electron**     | [`Electron.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Electron.astro)         | 95%+                    | `debug-electron`          |
+| **Default**      | `Default.astro`                                                                                            | Base workbench          | `debug-workbench-bundled` |
+| **BrowserProxy** | [`BrowserProxy.astro`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/BrowserProxy.astro) | 70-80%                  | `debug-browser`           |
+| **NLS**          | `NLS.astro`                                                                                                | Natural language search | (experimental)            |
 
 ### Variant Selection
 
@@ -152,13 +152,13 @@ message channel system.
 
 ### Event Translation Table
 
-| Tauri Event                     | VS Code Workbench Channel  | Direction             |
-| ------------------------------- | -------------------------- | --------------------- |
-| `mountain:configurationChanged` | `onDidChangeConfiguration` | Mountain -> Workbench |
-| `mountain:extensionsChanged`    | `onDidChangeExtensions`    | Mountain -> Workbench |
-| `mountain:themeChanged`         | `onDidChangeColorTheme`    | Mountain -> Workbench |
-| `mountain:fileChanged`          | FileSystem watcher events  | Mountain -> Workbench |
-| `cocoon:commandExecuted`        | Extension command result   | Cocoon -> Workbench   |
+| Tauri Event                     | VS Code Workbench Channel  | Direction                                                           |
+| ------------------------------- | -------------------------- | ------------------------------------------------------------------- |
+| `mountain:configurationChanged` | `onDidChangeConfiguration` | [Mountain](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `mountain:extensionsChanged`    | `onDidChangeExtensions`    | [Mountain](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `mountain:themeChanged`         | `onDidChangeColorTheme`    | [Mountain](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `mountain:fileChanged`          | FileSystem watcher events  | [Mountain](https://github.com/CodeEditorLand/Mountain) -> Workbench |
+| `cocoon:commandExecuted`        | Extension command result   | [Cocoon](https://github.com/CodeEditorLand/Cocoon) -> Workbench     |
 
 ### Bridge Architecture
 
@@ -203,7 +203,7 @@ SkyBridge sets HTML content:
 
 ## Build-time Variant Selection 🔧
 
-`Sky` uses `Vite`'s conditional dynamic imports to select the active workbench
+[`Sky`](https://github.com/CodeEditorLand/Sky) uses `Vite`'s conditional dynamic imports to select the active workbench
 at build time:
 
 ```typescript
