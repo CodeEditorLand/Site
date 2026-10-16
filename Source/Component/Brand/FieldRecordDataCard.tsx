@@ -13,7 +13,7 @@ const FieldRecordDataCard = React.forwardRef<
 	return (
 		<div
 			ref={ref}
-			className={cn("text-card-fg relative bg-card", className)}
+			className={cn("CornerMarkShell text-card-fg bg-card relative", className)}
 			style={
 				{
 					"--card-padding-block": "2.75rem",

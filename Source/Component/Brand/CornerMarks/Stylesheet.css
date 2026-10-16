@@ -1,0 +1,67 @@
+/**
+ * C19: corner-mark hover interaction - CSS-only, no JS state.
+ *
+ * The treated card shell carries the .CornerMarkShell class. Hovering the
+ * shell (1) switches the cursor to pointer and (2) makes the corner ticks
+ * expand outward from their corner - each tick translates a few px along
+ * its own axis (plus a slight scale anchored at the corner end) so the
+ * picture frame visibly breathes. The marks stay present at rest; the
+ * transition springs them back on mouse-out ("jump back, expand").
+ *
+ * prefers-reduced-motion: the transition and transform are scoped to
+ * `no-preference` - reduced-motion users get the static frame and the
+ * cursor pointer only.
+ *
+ * Tick direction contract (matches the data-corner / data-axis attributes
+ * emitted by CornerMarks.tsx): the tl-h arm grows rightward (+x), tl-v
+ * downward (+y), tr-h leftward (-x), tr-v downward (+y), bl-h rightward
+ * (+x), bl-v upward (-y), br-h leftward (-x), br-v upward (-y).
+ */
+
+.CornerMarkShell {
+	cursor: default;
+}
+
+.CornerMarkShell:hover {
+	cursor: pointer;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.CornerMarkTick {
+		transition:
+			transform 200ms ease,
+			opacity 200ms ease;
+	}
+
+	/* Top-left: arms extend right / down, anchored at the corner end. */
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="h"] {
+		transform: translate(4px, 0) scale(1.15);
+	}
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="v"] {
+		transform: translate(0, 4px) scale(1.15);
+	}
+
+	/* Top-right: horizontal arm extends left, vertical extends down. */
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="h"] {
+		transform: translate(-4px, 0) scale(1.15);
+	}
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="v"] {
+		transform: translate(0, 4px) scale(1.15);
+	}
+
+	/* Bottom-left: horizontal arm extends right, vertical extends up. */
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
+		transform: translate(4px, 0) scale(1.15);
+	}
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
+		transform: translate(0, -4px) scale(1.15);
+	}
+
+	/* Bottom-right: horizontal arm extends left, vertical extends up. */
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
+		transform: translate(-4px, 0) scale(1.15);
+	}
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="v"] {
+		transform: translate(0, -4px) scale(1.15);
+	}
+}
