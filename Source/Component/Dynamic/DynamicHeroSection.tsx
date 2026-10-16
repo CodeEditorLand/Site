@@ -161,7 +161,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 				State.CurrentY += (TargetY - State.CurrentY) * 0.04;
 
-				Card.style.transform = `translate(-50%, -50%) translate3d(${State.CurrentX.toFixed(2)}px, ${State.CurrentY.toFixed(2)}px, 0)`;
+				Card.style.transform = `translate3d(${State.CurrentX.toFixed(2)}px, ${State.CurrentY.toFixed(2)}px, 0)`;
 			});
 
 			FrameIdentifier = requestAnimationFrame(AnimateCards);
