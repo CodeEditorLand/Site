@@ -1,5 +1,4 @@
 [submodule "Vendor/JellyUI"]
 	path = Vendor/JellyUI
 	url = https://github.com/DependencyCodeEditorLand/Jelly.git
-	ignore = all
 	branch = main
