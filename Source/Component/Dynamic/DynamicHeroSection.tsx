@@ -161,7 +161,10 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 
 				State.CurrentY += (TargetY - State.CurrentY) * 0.04;
 
-				Card.style.transform = `translate3d(${State.CurrentX.toFixed(2)}px, ${State.CurrentY.toFixed(2)}px, 0)`;
+				// Float motion via the standalone `translate` property so it composes
+				// with the Attention wobble (which owns `transform`: scale + rotate)
+				// instead of clobbering it on the same property.
+				Card.style.translate = `${State.CurrentX.toFixed(2)}px ${State.CurrentY.toFixed(2)}px`;
 			});
 
 			FrameIdentifier = requestAnimationFrame(AnimateCards);
@@ -199,7 +202,7 @@ const DynamicHeroSection = ({ Content, ClassName }: Property) => {
 			ref={SectionReference}
 			id="hero"
 			aria-label="Hero"
-			className={`relative w-full overflow-hidden ${ClassName || ""}`}
+			className={`relative w-full cursor-pointer overflow-hidden ${ClassName || ""}`}
 			onClick={HandleHeroClick}
 			onKeyDown={(Event) => {
 				if (Event.key === "Enter" || Event.key === " ") {

@@ -377,53 +377,53 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 											# RELEASE_01
 										</span>
 
-										<div className="flex items-center gap-3">
-											{PlatformIcon && (
-												<PlatformIcon
-													className="h-5 w-5 shrink-0 text-card-foreground"
-													aria-hidden="true"
-												/>
-											)}
+										<div>
+																<h3
+																	className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground"
+																	style={{
+																		color:
+																			KeywordInk(
+																				Platform.Name.toUpperCase(),
+																			) ??
+																			"var(--CardForeground)",
+																	}}
+																>
+																	{Platform.Name}
+																</h3>
+															</div>
 
-											<div>
-												<h3
-													className="font-mono text-sm font-medium leading-snug tracking-tight text-card-foreground"
-													style={{
-														color:
-															KeywordInk(
-																Platform.Name.toUpperCase(),
-															) ??
-															"var(--CardForeground)",
-													}}
-												>
-													{Platform.Name}
-												</h3>
+															<div className="flex items-center gap-3">
+																<p className="font-mono text-sm uppercase tracking-[0.2em]">
+																	<span
+																		aria-hidden="true"
+																		style={{
+																			color: GLYPH_INK,
+																		}}
+																	>
+																		〈
+																	</span>
+																	<PlatformDescriptionText
+																		Text={
+																			Platform.Description
+																		}
+																	/>
+																	<span
+																		aria-hidden="true"
+																		style={{
+																			color: GLYPH_INK,
+																		}}
+																	>
+																		〉
+																	</span>
+																</p>
 
-												<p className="font-mono text-sm uppercase tracking-[0.2em]">
-													<span
-														aria-hidden="true"
-														style={{
-															color: GLYPH_INK,
-														}}
-													>
-														〈
-													</span>
-													<PlatformDescriptionText
-														Text={
-															Platform.Description
-														}
-													/>
-													<span
-														aria-hidden="true"
-														style={{
-															color: GLYPH_INK,
-														}}
-													>
-														〉
-													</span>
-												</p>
-											</div>
-										</div>
+																{PlatformIcon && (
+																	<PlatformIcon
+																		className="h-5 w-5 shrink-0 text-card-foreground"
+																		aria-hidden="true"
+																	/>
+																)}
+															</div>
 									</div>
 								),
 							},

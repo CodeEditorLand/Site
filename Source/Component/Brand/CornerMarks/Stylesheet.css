@@ -1,33 +1,28 @@
 /**
  * C19: corner-mark hover interaction - CSS-only, no JS state.
  *
- * The treated card shell carries the .CornerMarkShell class. Hovering the
- * shell (1) switches the cursor to pointer and (2) makes the corner ticks
- * expand outward from their corner - each tick translates a few px along
+ * The treated card shell carries the .CornerMarkShell class. The cursor is
+ * DEFAULT on these shells (pointer only where the surface itself links or
+ * clicks - the cards are not clickable as a whole); hovering the shell
+ * makes the corner ticks expand outward - each arm slides PERPENDICULAR to
  * its own axis AS A WHOLE LINE (rigid slide - no scaling) so the picture
  * frame visibly breathes while the L keeps its fixed separation. The marks stay present at rest; the
  * transition springs them back on mouse-out ("jump back, expand").
  *
  * prefers-reduced-motion: the transition and transform are scoped to
- * `no-preference` - reduced-motion users get the static frame and the
- * cursor pointer only.
+ * `no-preference` - reduced-motion users get the static frame only.
  *
  * Tick direction contract (matches the data-corner / data-axis attributes
- * emitted by CornerMarks.tsx): on hover each L moves TOWARD its corner -
- * the horizontal arm translates outward horizontally (toward the left/right
- * edge) and the vertical arm translates outward vertically (toward the
- * top/bottom edge), reducing the inset from the panel edge on both planes; the arms never
- * cross and the separation from the corner point stays fixed:
- * tl-h moves left (-x) / tl-v moves up (-y), tr-h right (+x) / tr-v up (-y),
- * bl-h left (-x) / bl-v down (+y), br-h right (+x) / br-v down (+y).
+ * emitted by CornerMarks.tsx): on hover each arm slides PERPENDICULAR to
+ * itself so the L SEPARATES at the corner (the arms never cross):
+ * tl-h moves up (-y) / tl-v moves left (-x), tr-h moves up (-y) / tr-v moves
+ * right (+x), bl-h moves down (+y) / bl-v moves left (-x), br-h moves down
+ * (+y) / br-v moves right (+x). The separation from the corner point stays
+ * fixed; the whole line moves, giving the expanding-crosshair effect.
  */
 
 .CornerMarkShell {
 	cursor: default;
-}
-
-.CornerMarkShell:hover {
-	cursor: pointer;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -39,33 +34,33 @@
 
 	/* Top-left: the L slides toward the corner - left / up. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="h"] {
-		transform: translate(0, -6px);
+		transform: translate(0, -8px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="v"] {
-		transform: translate(-6px, 0);
+		transform: translate(-8px, 0);
 	}
 
 	/* Top-right: horizontal arm toward the right edge, vertical toward the top. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="h"] {
-		transform: translate(0, -6px);
+		transform: translate(0, -8px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="v"] {
-		transform: translate(6px, 0);
+		transform: translate(8px, 0);
 	}
 
 	/* Bottom-left: horizontal arm toward the left edge, vertical toward the bottom. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
-		transform: translate(0, 6px);
+		transform: translate(0, 8px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
-		transform: translate(-6px, 0);
+		transform: translate(-8px, 0);
 	}
 
 	/* Bottom-right: the L slides toward the corner - right / down. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
-		transform: translate(0, 6px);
+		transform: translate(0, 8px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="v"] {
-		transform: translate(6px, 0);
+		transform: translate(8px, 0);
 	}
 }

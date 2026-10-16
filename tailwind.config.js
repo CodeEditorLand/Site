@@ -10,8 +10,6 @@ export default {
 		"./src/**/*.{astro,js,jsx,ts,tsx}",
 	],
 
-	darkMode: false,
-
 	theme: {
 		container: {
 			center: true,
