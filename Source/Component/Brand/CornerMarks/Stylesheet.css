@@ -55,7 +55,7 @@
 
 	/* Bottom-left: horizontal arm toward the left edge, vertical toward the bottom. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
-		transform: translate(0, 4px);
+		transform: translate(0, 6px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
 		transform: translate(-6px, 0);
@@ -63,7 +63,7 @@
 
 	/* Bottom-right: the L slides toward the corner - right / down. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
-		transform: translate(0, 4px);
+		transform: translate(0, 6px);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="v"] {
 		transform: translate(6px, 0);
