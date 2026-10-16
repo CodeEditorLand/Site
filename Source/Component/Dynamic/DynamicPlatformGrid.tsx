@@ -538,16 +538,7 @@ const DynamicPlatformGrid = ({ Content, ClassName }: Property) => {
 											STATUS:
 										</span>
 
-										<span
-											className="font-medium"
-											style={{
-												color:
-													KeywordInk(
-														"RELEASE PREPARATION",
-													) ??
-													"var(--CardForeground)",
-											}}
-										>
+										<span className="font-medium text-card-foreground">
 											RELEASE PREPARATION
 										</span>
 									</div>

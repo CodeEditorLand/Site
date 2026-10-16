@@ -16,11 +16,6 @@ import {
 	StampText,
 } from "../Brand/SemanticLedger";
 
-import {
-	GLYPH_INK,
-	KeywordInk,
-} from "../../Function/Theme/SemanticColor";
-
 import type Property from "./Interface/Property/Grid/Platform.js";
 
 /**
@@ -202,26 +197,8 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 												variant="button"
 											/>
 										) : (
-											<p className="text-field-s font-mono uppercase tracking-wider">
-																						<span
-																							style={{
-																								color: "var(--CardForeground)",
-																							}}
-																						>
-																							STATUS:
-																						</span>
-																						<span
-																							style={{
-																								color:
-																									KeywordInk(
-																										"RELEASE PREPARATION",
-																									) ??
-																									"var(--CardForeground)",
-																							}}
-																						>
-																							{" "}
-																							RELEASE PREPARATION
-																						</span>
+											<p className="text-field-s font-mono uppercase tracking-wider text-card-foreground">
+																						STATUS: RELEASE PREPARATION
 																					</p>
 										)}
 									</div>

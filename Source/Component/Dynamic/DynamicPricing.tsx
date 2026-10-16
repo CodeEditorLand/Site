@@ -6,7 +6,10 @@ import { DynamicButton } from "./DynamicButton.js";
 
 import { RouteText, StampText, StatusText } from "../Brand/SemanticLedger.js";
 
-import { ElementInk } from "../../Function/Theme/SemanticColor.js";
+import {
+	ElementInk,
+	KeywordInk,
+} from "../../Function/Theme/SemanticColor.js";
 
 // RichText is used with Terms={true} throughout so element names, tool names,
 // protocols, and licenses are auto-badged with logos from the term dictionary.
@@ -213,9 +216,19 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								<span>FUNDING: NLNET / NGI0 COMMONS FUND</span>
 
 								<span className="opacity-70">
-									PHASE: ACTIVE SOURCE / INTEGRATION / RELEASE
-									PREPARATION
-								</span>
+															PHASE:{" "}
+															<span style={{ color: KeywordInk("ACTIVE SOURCE") ?? "var(--CardForeground)" }}>
+																ACTIVE SOURCE
+															</span>
+															{" / "}
+															<span style={{ color: KeywordInk("INTEGRATION") ?? "var(--CardForeground)" }}>
+																INTEGRATION
+															</span>
+															{" / "}
+															<span style={{ color: KeywordInk("RELEASE PREPARATION") ?? "var(--CardForeground)" }}>
+																RELEASE PREPARATION
+															</span>
+														</span>
 							</div>
 						)}
 					</div>

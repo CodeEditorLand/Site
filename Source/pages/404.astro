@@ -46,16 +46,25 @@ const RequestedPath = Astro.url.pathname;
 								/>
 
 								<p
-									class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
-								>
-									〈NOT FOUND〉
-								</p>
+															class="text-field-xl font-mono font-normal leading-[0.95] tracking-[-0.02em] text-card-foreground"
+														>
+															<span style={`color:${GLYPH_INK}`}>〈</span
+															><span
+																style={`color:${KeywordInk("NOT FOUND") ?? "var(--CardForeground)"}`}
+																>NOT FOUND</span
+															><span style={`color:${GLYPH_INK}`}>〉</span>
+														</p>
 
-								<p
-									class="text-field-s font-mono font-normal leading-[1.1] text-card-foreground opacity-70"
-								>
-									/TRACE: {RequestedPath}
-								</p>
+														<p
+															class="text-field-s font-mono font-normal leading-[1.1] text-card-foreground"
+														>
+															<span style={`color:${GLYPH_INK}`}>/</span
+															><span style={`color:${ROUTE_KEYWORD_INK}`}
+																>TRACE</span
+															><span style={`color:var(--CardForeground)`}
+																>: {RequestedPath}</span
+															>
+														</p>
 
 								<div class="mt-6">
 									<FieldRecordStatus

@@ -75,8 +75,12 @@ describe("DynamicFeatures", () => {
 	it("renders the record status metadata on each card", () => {
 		render(<DynamicFeatures Content={SampleContent} />);
 
-		// Every element record carries STATUS: ACTIVE.
-		expect(screen.getAllByText("STATUS: ACTIVE").length).toBeGreaterThan(0);
+		// Every element record carries STATUS: ACTIVE. The STATUS row is
+		// character-level split (C17): "STATUS:" label in ink, the value in
+		// green - assert both fragments.
+		expect(screen.getAllByText("STATUS:").length).toBeGreaterThan(0);
+
+		expect(screen.getAllByText("ACTIVE").length).toBeGreaterThan(0);
 	});
 
 	it("renders section title and subtitle", () => {
