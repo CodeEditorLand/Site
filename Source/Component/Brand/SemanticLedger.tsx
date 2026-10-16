@@ -32,9 +32,7 @@ export interface StampTextProps {
  * Render one stamp segment: exact keyword match first, then per-word ink
  * (SideCar PREBUILT/BINARY/TRIPLE/PER/TARGET), then ink fallback.
  */
-const RenderStampSegment = (
-	Segment: string,
-): React.ReactNode => {
+const RenderStampSegment = (Segment: string): React.ReactNode => {
 	const Whole = KeywordInk(Segment);
 
 	if (Whole) {
@@ -49,7 +47,11 @@ const RenderStampSegment = (
 		return Words.map((Word, WordIndex) => (
 			<span key={WordIndex}>
 				{WordIndex > 0 && " "}
-				<span style={{ color: WordInks[WordIndex] ?? "var(--CardForeground)" }}>
+				<span
+					style={{
+						color: WordInks[WordIndex] ?? "var(--CardForeground)",
+					}}
+				>
 					{Word}
 				</span>
 			</span>
@@ -73,29 +75,21 @@ export const StampText: React.FC<StampTextProps> = ({ Line, className }) => {
 
 	return (
 		<span className={className}>
-			<span
-				aria-hidden="true"
-				style={{ color: GLYPH_INK }}
-			>
+			<span aria-hidden="true" style={{ color: GLYPH_INK }}>
 				〈
 			</span>
 			{Segments.map((Segment, Index) => (
 				<React.Fragment key={Index}>
 					{Index > 0 && (
-						<span
-							aria-hidden="true"
-							style={{ color: GLYPH_INK }}
-						>
+						<span aria-hidden="true" style={{ color: GLYPH_INK }}>
 							{" + "}
 						</span>
 					)}
+
 					{RenderStampSegment(Segment)}
 				</React.Fragment>
 			))}
-			<span
-				aria-hidden="true"
-				style={{ color: GLYPH_INK }}
-			>
+			<span aria-hidden="true" style={{ color: GLYPH_INK }}>
 				〉
 			</span>
 		</span>
@@ -124,10 +118,7 @@ export const RouteText: React.FC<RouteTextProps> = ({ Line, className }) => {
 
 	return (
 		<span className={className}>
-			<span
-				aria-hidden="true"
-				style={{ color: GLYPH_INK }}
-			>
+			<span aria-hidden="true" style={{ color: GLYPH_INK }}>
 				/
 			</span>
 			<span style={{ color: ROUTE_KEYWORD_INK }}>
@@ -159,13 +150,8 @@ export const StatusText: React.FC<StatusTextProps> = ({
 
 	return (
 		<span className={className}>
-			<span style={{ color: "var(--CardForeground)" }}>
-				STATUS:
-			</span>
-			<span style={{ color: ValueColor }}>
-				{" "}
-				{value}
-			</span>
+			<span style={{ color: "var(--CardForeground)" }}>STATUS:</span>
+			<span style={{ color: ValueColor }}> {value}</span>
 		</span>
 	);
 };
@@ -184,6 +170,7 @@ export const PlatformDescriptionText: React.FC<
 		{PlatformDescriptionParts(Text).map((Part, Index) => (
 			<span
 				key={Index}
+
 				style={{
 					color: Part.Ink ?? "var(--CardForeground)",
 				}}

@@ -154,17 +154,17 @@ const DynamicFeatures = ({ Content, ClassName }: Property) => {
 							ElementRecords[Index % ElementRecords.length];
 
 						return (
-												<jelly-card
-													key={Record.Id}
-													className="FeatureCard min-h-0 p-5 flat"
-													style={JellyCardStyle(Record.Id)}
-												>
-													<SpecimenLabel
-														record={Record}
-														className="h-full"
-													/>
-												</jelly-card>
-											);
+							<jelly-card
+								key={Record.Id}
+								className="FeatureCard flat min-h-0 p-5"
+								style={JellyCardStyle(Record.Id)}
+							>
+								<SpecimenLabel
+									record={Record}
+									className="h-full"
+								/>
+							</jelly-card>
+						);
 					})}
 				</div>
 			</div>

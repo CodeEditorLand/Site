@@ -2,6 +2,8 @@ import React from "react";
 
 import { cn } from "../UI/Utility";
 
+import { CornerMarks } from "./CornerMarks";
+
 export interface FieldRecordDataCardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const FieldRecordDataCard = React.forwardRef<
@@ -11,15 +13,18 @@ const FieldRecordDataCard = React.forwardRef<
 	return (
 		<div
 			ref={ref}
-			className={cn("text-card-fg bg-card", className)}
+			className={cn("text-card-fg relative bg-card", className)}
 			style={
 				{
-					"--card-padding-block": "1.5rem",
+					"--card-padding-block": "2.75rem",
 					"--card-padding-inline": "1.5rem",
 				} as React.CSSProperties
 			}
 			{...props}
 		>
+			{/* C19: picture-frame corner marks at the card level - every
+			 FieldRecord surface (hero / 404 / portal / manifest) inherits them. */}
+			<CornerMarks />
 			<div
 				style={{
 					padding:

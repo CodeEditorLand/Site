@@ -250,7 +250,7 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 					<FieldRecordSeal
 						element={ElementRecord.Seal}
 
-						size={28}
+						size={36}
 
 						className="shrink-0"
 					/>
@@ -306,7 +306,7 @@ const RenderTestimonialBody = ({ Testimonial }: { Testimonial: Item }) => {
 
 			{/* Role → keyword chips split by em-space (U+2001) or legacy " - " */}
 			{Testimonial.Role && (
-				<div className="mt-3 mb-2 flex flex-wrap gap-y-2 text-card-foreground">
+				<div className="mb-2 mt-3 flex flex-wrap gap-y-2 text-card-foreground">
 					{Testimonial.Role.split(/\u2001| - /).map(
 						(Tag, TagIndex) => (
 							<Fragment key={TagIndex}>
@@ -480,7 +480,7 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 							return (
 								<jelly-card
 									key={Testimonial.Id}
-									className="MasonryCard TestimonialCard p-5 flat"
+									className="MasonryCard TestimonialCard flat p-5"
 									style={
 										{
 											...JellyCardStyle(Testimonial.Id),
@@ -532,16 +532,16 @@ const DynamicTestimonials = ({ Content, ClassName }: Property) => {
 				>
 					{Testimonials.map((Testimonial) => {
 						return (
-												<jelly-card
-													key={Testimonial.Id}
-													className="TestimonialCard p-5 flat"
-													style={JellyCardStyle(Testimonial.Id)}
-												>
-													<RenderTestimonialBody
-														Testimonial={Testimonial}
-													/>
-												</jelly-card>
-											);
+							<jelly-card
+								key={Testimonial.Id}
+								className="TestimonialCard flat p-5"
+								style={JellyCardStyle(Testimonial.Id)}
+							>
+								<RenderTestimonialBody
+									Testimonial={Testimonial}
+								/>
+							</jelly-card>
+						);
 					})}
 				</div>
 			</div>

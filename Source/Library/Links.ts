@@ -66,35 +66,83 @@ export const ExternalLinks = {
 
 /** Every element repository, keyed by element name, linked at the canonical Current branch. */
 export const ElementRepos = {
-	Air: { Base: "https://github.com/CodeEditorLand/Air", Branch: BranchCurrent },
+	Air: {
+		Base: "https://github.com/CodeEditorLand/Air",
+		Branch: BranchCurrent,
+	},
 
-	Cocoon: { Base: "https://github.com/CodeEditorLand/Cocoon", Branch: BranchCurrent },
+	Cocoon: {
+		Base: "https://github.com/CodeEditorLand/Cocoon",
+		Branch: BranchCurrent,
+	},
 
-	Common: { Base: "https://github.com/CodeEditorLand/Common", Branch: BranchCurrent },
+	Common: {
+		Base: "https://github.com/CodeEditorLand/Common",
+		Branch: BranchCurrent,
+	},
 
-	Echo: { Base: "https://github.com/CodeEditorLand/Echo", Branch: BranchCurrent },
+	Echo: {
+		Base: "https://github.com/CodeEditorLand/Echo",
+		Branch: BranchCurrent,
+	},
 
-	Grove: { Base: "https://github.com/CodeEditorLand/Grove", Branch: BranchCurrent },
+	Grove: {
+		Base: "https://github.com/CodeEditorLand/Grove",
+		Branch: BranchCurrent,
+	},
 
-	Land: { Base: "https://github.com/CodeEditorLand/Land", Branch: BranchCurrent },
+	Land: {
+		Base: "https://github.com/CodeEditorLand/Land",
+		Branch: BranchCurrent,
+	},
 
-	Maintain: { Base: "https://github.com/CodeEditorLand/Maintain", Branch: BranchCurrent },
+	Maintain: {
+		Base: "https://github.com/CodeEditorLand/Maintain",
+		Branch: BranchCurrent,
+	},
 
-	Mist: { Base: "https://github.com/CodeEditorLand/Mist", Branch: BranchCurrent },
+	Mist: {
+		Base: "https://github.com/CodeEditorLand/Mist",
+		Branch: BranchCurrent,
+	},
 
-	Mountain: { Base: "https://github.com/CodeEditorLand/Mountain", Branch: BranchCurrent },
+	Mountain: {
+		Base: "https://github.com/CodeEditorLand/Mountain",
+		Branch: BranchCurrent,
+	},
 
-	Output: { Base: "https://github.com/CodeEditorLand/Output", Branch: BranchCurrent },
+	Output: {
+		Base: "https://github.com/CodeEditorLand/Output",
+		Branch: BranchCurrent,
+	},
 
-	Rest: { Base: "https://github.com/CodeEditorLand/Rest", Branch: BranchCurrent },
+	Rest: {
+		Base: "https://github.com/CodeEditorLand/Rest",
+		Branch: BranchCurrent,
+	},
 
-	SideCar: { Base: "https://github.com/CodeEditorLand/SideCar", Branch: BranchCurrent },
+	SideCar: {
+		Base: "https://github.com/CodeEditorLand/SideCar",
+		Branch: BranchCurrent,
+	},
 
-	Sky: { Base: "https://github.com/CodeEditorLand/Sky", Branch: BranchCurrent },
+	Sky: {
+		Base: "https://github.com/CodeEditorLand/Sky",
+		Branch: BranchCurrent,
+	},
 
-	Vine: { Base: "https://github.com/CodeEditorLand/Vine", Branch: BranchCurrent },
+	Vine: {
+		Base: "https://github.com/CodeEditorLand/Vine",
+		Branch: BranchCurrent,
+	},
 
-	Wind: { Base: "https://github.com/CodeEditorLand/Wind", Branch: BranchCurrent },
+	Wind: {
+		Base: "https://github.com/CodeEditorLand/Wind",
+		Branch: BranchCurrent,
+	},
 
-	Worker: { Base: "https://github.com/CodeEditorLand/Worker", Branch: BranchCurrent },
+	Worker: {
+		Base: "https://github.com/CodeEditorLand/Worker",
+		Branch: BranchCurrent,
+	},
 } as const;

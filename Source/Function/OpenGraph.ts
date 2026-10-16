@@ -67,6 +67,78 @@ const EscapeXML = (Text: string): string =>
 		.replace(/'/g, "&apos;");
 
 /**
+ * C17 remainder (C19): semantic stamp inks for the SVG share images.
+ * Standalone SVGs cannot resolve CSS var() strings, so the keyword -> ink
+ * map from Source/Function/Theme/SemanticColor.ts (KEYWORD_INK) is mirrored
+ * here with the SAME hex values that Base.css defines for those tokens:
+ *   EXTENSION HOST / CAPABILITY HOST / WORK-STEALING / NATIVE BACKEND /
+ *   BACKGROUND SERVICES ... -> --SpineIPCFore  #1d4ed8  (blue)
+ *   RUST / RUST-NATIVE                            -> --SemanticRed  #b91c1c
+ *   TAURI                                         -> --ExtensionTauriFore  #b45309 (amber)
+ *   NO ELECTRON                                   -> --SemanticTeal  #155e75  (teal)
+ *   SCHEDULER / OXC PIPELINE / FOUR MODES / ...   -> --SpineTCPFore  #c2410c  (orange)
+ *   ASTRO UI / WASM SANDBOX / PROVIDER PLAN       -> --SpineWASMFore  #6d28d9  (purple)
+ *   ACTIVE SOURCE / GRPC BACKBONE / DETERMINISTIC -> --SpinegRPCFore  #15803d  (green)
+ *   LINUX / ESBUILD PRIMARY                       -> --SemanticYellow  #854d0e
+ *   WEBVIEW BRIDGE                                -> --SemanticSky  #0369a1
+ *   WORKBENCH / NOT FOUND / MACOS / ENTERPRISE    -> neutral gray (matches MutedColor)
+ * Unknown keywords stay gray (they frame, they do not shout).
+ */
+const OPENGRAPH_STAMP_HEX: Record<string, string> = {
+	"EXTENSION HOST": "#1d4ed8",
+	"CAPABILITY HOST": "#1d4ed8",
+	"DUAL-TRACK": "#c2410c",
+	WORKBENCH: "#6b6b6b",
+	"EFFECT-TS": "#0e7490",
+	"EFFECT-TS LAYERS": "#0e7490",
+	"WORK-STEALING": "#1d4ed8",
+	SCHEDULER: "#c2410c",
+	RUST: "#b91c1c",
+	TAURI: "#b45309",
+	"NATIVE BACKEND": "#1d4ed8",
+	"RUST-NATIVE": "#b91c1c",
+	"OXC PIPELINE": "#c2410c",
+	"REST SELECTABLE": "#c2410c",
+	"NO ELECTRON": "#155e75",
+	"ASTRO UI": "#6d28d9",
+	"WEBVIEW BRIDGE": "#0369a1",
+	"WASM SANDBOX": "#6d28d9",
+	"BACKGROUND SERVICES": "#1d4ed8",
+	DAEMON: "#1d4ed8",
+	"LOCAL AUTHORITY": "#1d4ed8",
+	"DNS SANDBOX": "#1d4ed8",
+	"SERVICE WORKER": "#1d4ed8",
+	"OFFLINE SHELL": "#1d4ed8",
+	"PURE ABSTRACT": "#6b6b6b",
+	"CONTRACT CRATE": "#6b6b6b",
+	DETERMINISTIC: "#15803d",
+	"BUILD ORCHESTRATOR": "#c2410c",
+	"ESBUILD PRIMARY": "#854d0e",
+	"GRPC BACKBONE": "#15803d",
+	"CONTRACT-FIRST": "#15803d",
+	"AUTHENTICATION TIERS": "#1d4ed8",
+	"FOUR MODES": "#c2410c",
+	"NOT FOUND": "#6b6b6b",
+	MACOS: "#6b6b6b",
+	WINDOWS: "#1d4ed8",
+	LINUX: "#854d0e",
+	"ACTIVE SOURCE": "#15803d",
+	INTEGRATION: "#1d4ed8",
+	"RELEASE PREPARATION": "#c2410c",
+	"CLOUD PLAN": "#1d4ed8",
+	"PROVIDER PLAN": "#6d28d9",
+	"LOCAL-FIRST PLAN": "#c2410c",
+	"ENTERPRISE PLAN": "#6b6b6b",
+};
+
+/** Semantic ink for one stamp keyword; null keeps the neutral gray. */
+const StampInk = (Keyword: string): string | null => {
+	const Hit = OPENGRAPH_STAMP_HEX[Keyword.toUpperCase()];
+
+	return Hit ?? null;
+};
+
+/**
  * Generates a field-record artifact SVG at 1200×675 (16:9).
  *
  * Structure:
@@ -109,9 +181,13 @@ const GenerateOpenGraphSvg = (
 	const EvidenceX = SplitX + 12;
 	const EvidenceW = CardX + CardW - EvidenceX - 28;
 
-	// Compose stamp: 〈STAMP〉
-	const StampText = (Meta?.Stamp ?? [SectionUpper])
-		.map((Stamp) => `〈${Stamp}〉`)
+	// Compose stamp: 〈STAMP〉 - per-keyword semantic ink, brackets stay gray
+	const StampElement = (Meta?.Stamp ?? [SectionUpper])
+		.map((Stamp) => {
+			const Ink = StampInk(Stamp) ?? MutedColor;
+
+			return `<tspan fill="${MutedColor}">\u3008</tspan><tspan fill="${Ink}">${EscapeXML(Stamp)}</tspan><tspan fill="${MutedColor}">\u3009</tspan>`;
+		})
 		.join(" ");
 
 	// Compose route: /ROUTE
@@ -192,7 +268,7 @@ const GenerateOpenGraphSvg = (
 	<text x="${TextX}" y="${CardY + 60}" font-family="${FontStack}" font-size="20" font-weight="600" fill="${FrameColor}" letter-spacing="0.04em">${EscapeXML(IndexText)}</text>
 
 	<!-- Stamp -->
-	<text x="${TextX}" y="${CardY + 96}" font-family="${FontStack}" font-size="14" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(StampText)}</text>
+	<text x="${TextX}" y="${CardY + 96}" font-family="${FontStack}" font-size="14" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${StampElement}</text>
 
 	<!-- Route -->
 	<text x="${TextX}" y="${CardY + 124}" font-family="${FontStack}" font-size="13" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(RouteText)}</text>

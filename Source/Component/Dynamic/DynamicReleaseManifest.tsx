@@ -11,10 +11,7 @@ import {
 	FieldRecordSeal,
 } from "../Brand/FieldRecord.js";
 
-import {
-	RouteText,
-	StampText,
-} from "../Brand/SemanticLedger";
+import { RouteText, StampText } from "../Brand/SemanticLedger";
 
 import type Property from "./Interface/Property/Grid/Platform.js";
 
@@ -130,18 +127,18 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 									</div>
 
 									{/* Platform stamp - ledger scale (not the hero text-field-xl) */}
-																	<div className="mt-6">
-																		<p className="font-mono text-xl font-medium uppercase tracking-[0.1em]">
-																			<StampText
-																				Line={Platform.Name.toUpperCase()}
-																			/>
-																		</p>
-																		<p className="text-field-s mt-2 font-mono font-normal leading-[1.1]">
-																			<RouteText
-																				Line={`/CHANNEL:${Platform.Channel.toUpperCase()}`}
-																			/>
-																		</p>
-																	</div>
+									<div className="mt-6">
+										<p className="font-mono text-xl font-medium uppercase tracking-[0.1em]">
+											<StampText
+												Line={Platform.Name.toUpperCase()}
+											/>
+										</p>
+										<p className="text-field-s mt-2 font-mono font-normal leading-[1.1]">
+											<RouteText
+												Line={`/CHANNEL:${Platform.Channel.toUpperCase()}`}
+											/>
+										</p>
+									</div>
 
 									{/* Metadata block */}
 									<div className="mt-6">
@@ -198,8 +195,8 @@ const DynamicReleaseManifest = ({ Content, ClassName }: Property) => {
 											/>
 										) : (
 											<p className="text-field-s font-mono uppercase tracking-wider text-card-foreground">
-																						STATUS: RELEASE PREPARATION
-																					</p>
+												STATUS: RELEASE PREPARATION
+											</p>
 										)}
 									</div>
 								</div>

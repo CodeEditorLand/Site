@@ -6,10 +6,9 @@ import { DynamicButton } from "./DynamicButton.js";
 
 import { RouteText, StampText, StatusText } from "../Brand/SemanticLedger.js";
 
-import {
-	ElementInk,
-	KeywordInk,
-} from "../../Function/Theme/SemanticColor.js";
+import { ElementInk, KeywordInk } from "../../Function/Theme/SemanticColor.js";
+
+import { CornerMarks } from "../Brand/CornerMarks.js";
 
 // RichText is used with Terms={true} throughout so element names, tool names,
 // protocols, and licenses are auto-badged with logos from the term dictionary.
@@ -216,19 +215,38 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 								<span>FUNDING: NLNET / NGI0 COMMONS FUND</span>
 
 								<span className="opacity-70">
-															PHASE:{" "}
-															<span style={{ color: KeywordInk("ACTIVE SOURCE") ?? "var(--CardForeground)" }}>
-																ACTIVE SOURCE
-															</span>
-															{" / "}
-															<span style={{ color: KeywordInk("INTEGRATION") ?? "var(--CardForeground)" }}>
-																INTEGRATION
-															</span>
-															{" / "}
-															<span style={{ color: KeywordInk("RELEASE PREPARATION") ?? "var(--CardForeground)" }}>
-																RELEASE PREPARATION
-															</span>
-														</span>
+									PHASE:{" "}
+									<span
+										style={{
+											color:
+												KeywordInk("ACTIVE SOURCE") ??
+												"var(--CardForeground)",
+										}}
+									>
+										ACTIVE SOURCE
+									</span>
+									{" / "}
+									<span
+										style={{
+											color:
+												KeywordInk("INTEGRATION") ??
+												"var(--CardForeground)",
+										}}
+									>
+										INTEGRATION
+									</span>
+									{" / "}
+									<span
+										style={{
+											color:
+												KeywordInk(
+													"RELEASE PREPARATION",
+												) ?? "var(--CardForeground)",
+										}}
+									>
+										RELEASE PREPARATION
+									</span>
+								</span>
 							</div>
 						)}
 					</div>
@@ -246,7 +264,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 						return (
 							<jelly-card
 								key={Tier.Identifier}
-								className={`PricingCard flat ${
+								className={`PricingCard flat relative ${
 									Tier.Highlighted || Tier.Popular ? "" : ""
 								} ${
 									Tier.Status && Tier.Status !== "Ready"
@@ -257,7 +275,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									{
 										"--jelly-fill": "var(--Card)",
 										"--jelly-radius": "0",
-										"--jelly-card-padding-block": "0",
+										"--jelly-card-padding-block": "2.75rem",
 										"--jelly-card-padding-inline": "0",
 									} as React.CSSProperties
 								}
@@ -267,9 +285,11 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 										: undefined
 								}
 							>
+								{/* C19: picture-frame corner marks inside the tier card shell */}
+								<CornerMarks />
 								<div className="flex flex-col">
 									{/* ── Card header - release manifest ─────────── */}
-									<div className="border-b border-[color-mix(in_srgb,var(--CardForeground)_8%,transparent)] p-8">
+									<div className="border-b border-[color-mix(in_srgb,var(--CardForeground)_8%,transparent)] px-8 pb-6 pt-0">
 										<div className="mb-4 flex flex-col gap-1 font-mono text-sm font-medium uppercase tracking-[0.2em] text-card-foreground">
 											<span>
 												# RELEASE_
@@ -280,22 +300,24 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 											</span>
 
 											<span className="opacity-70">
-																						<StampText Line={Manifest.Phase} />
-																					</span>
+												<StampText
+													Line={Manifest.Phase}
+												/>
+											</span>
 
-																					<span className="opacity-70">
-																						<RouteText Line="/CHANNEL: PUBLIC" />
-																					</span>
+											<span className="opacity-70">
+												<RouteText Line="/CHANNEL: PUBLIC" />
+											</span>
 
-																					<span>
-																						<StatusText
-																							value={Manifest.Status}
-																							active={
-																								Manifest.Status ===
-																								"ACTIVE"
-																							}
-																						/>
-																					</span>
+											<span>
+												<StatusText
+													value={Manifest.Status}
+													active={
+														Manifest.Status ===
+														"ACTIVE"
+													}
+												/>
+											</span>
 
 											<span className="opacity-70">
 												TARGET: {Manifest.Target}
@@ -321,7 +343,7 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 									</div>
 
 									{/* ── Card body ─────────────────────────────── */}
-									<div className="flex flex-1 flex-col p-8">
+									<div className="flex flex-1 flex-col px-8 pb-0 pt-6">
 										{/* Elements section */}
 										{Tier.Element &&
 											Tier.Element.length > 0 && (

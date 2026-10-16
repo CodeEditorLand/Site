@@ -18,10 +18,15 @@ import { ElementFill } from "../../../../Function/Theme/SemanticColor";
 /** Light card fills: --Card white, --Mute creme, the 18%-on-white *Mute tints. */
 export const JELLY_CARD_FILLS: readonly string[] = [
 	"var(--Card)", // white
+
 	"var(--Mute)", // creme
+
 	"var(--SpinegRPCMute)", // green tint
+
 	"var(--SpineIPCMute)", // blue tint
+
 	"var(--SpineTCPMute)", // orange tint
+
 	"var(--SpineWASMMute)", // purple tint
 ];
 
@@ -32,9 +37,13 @@ export const JELLY_CARD_FILLS: readonly string[] = [
  */
 export const JELLY_BADGE_FILLS: readonly string[] = [
 	"var(--Mute)", // creme
+
 	"var(--SpinegRPCMute)", // green tint
+
 	"var(--SpineIPCMute)", // blue tint
+
 	"var(--SpineTCPMute)", // orange tint
+
 	"var(--SpineWASMMute)", // purple tint
 ];
 
@@ -45,57 +54,109 @@ export const JELLY_BADGE_FILLS: readonly string[] = [
  */
 const BADGE_FILL_RULES: ReadonlyArray<readonly [string, string]> = [
 	["WASM", "var(--SpineWASMMute)"],
+
 	["SANDBOX", "var(--SpineWASMMute)"],
+
 	["RUNTIME", "var(--SpineWASMMute)"],
+
 	["ISOLATION", "var(--SpineWASMMute)"],
+
 	["CAPABILITY", "var(--SpineWASMMute)"],
+
 	["ASTRO", "var(--ExtensionAstroMute)"],
+
 	["VISUAL", "var(--ExtensionAstroMute)"],
+
 	["GRPC", "var(--SpinegRPCMute)"],
+
 	["PROTO", "var(--SpinegRPCMute)"],
+
 	["CONTRACT", "var(--SpinegRPCMute)"],
+
 	["WORK-STEALING", "var(--SpineIPCMute)"],
+
 	["SCHEDUL", "var(--SpineTCPMute)"],
+
 	["CROSSBEAM", "var(--SpineIPCMute)"],
+
 	["DEQUE", "var(--SpineIPCMute)"],
+
 	["EXTENSION", "var(--SpineIPCMute)"],
+
 	["VS CODE", "var(--SpineIPCMute)"],
+
 	["WORKBENCH", "var(--SpineIPCMute)"],
+
 	["WORKER", "var(--SpineIPCMute)"],
+
 	["TYPESCRIPT", "var(--SpineIPCMute)"],
+
 	["WEBVIEW", "var(--SpineIPCMute)"],
+
 	["WEB", "var(--SpineIPCMute)"],
+
 	["DNS", "var(--SpineIPCMute)"],
+
 	["NETWORK", "var(--SpineIPCMute)"],
+
 	["RESOLUTION", "var(--SpineIPCMute)"],
+
 	["EFFECT", "var(--ExtensionEffectTypeScriptMute)"],
+
 	["LAYER", "var(--ExtensionEffectTypeScriptMute)"],
+
 	["TAURI", "var(--ExtensionTauriMute)"],
+
 	["RUST", "var(--ExtensionRustMute)"],
+
 	["NATIVE", "var(--ExtensionRustMute)"],
+
 	["ELECTRON", "var(--ExtensionElectronMute)"],
+
 	["OXC", "var(--ToolOxcMute)"],
+
 	["ORCHESTR", "var(--SpineTCPMute)"],
+
 	["PIPELINE", "var(--SpineTCPMute)"],
+
 	["COMPILE", "var(--SpineTCPMute)"],
+
 	["TRANSFORM", "var(--SpineTCPMute)"],
+
 	["BUILD", "var(--SpineTCPMute)"],
+
 	["DOWNLOAD", "var(--ExtensionTauriMute)"],
+
 	["INDEX", "var(--ExtensionTauriMute)"],
+
 	["BACKGROUND", "var(--ExtensionTauriMute)"],
+
 	["SERVICE", "var(--ExtensionTauriMute)"],
+
 	["NODE", "var(--RuntimeNodeMute)"],
+
 	["BINARY", "var(--RuntimeNodeMute)"],
+
 	["OFFLINE", "var(--PlatformWebMute)"],
+
 	["CACHE", "var(--PlatformWebMute)"],
+
 	["CSS", "var(--PlatformWebMute)"],
+
 	["PLUGIN", "var(--ToolEsBuildMute)"],
+
 	["TARGET", "var(--OSMacOSMute)"],
+
 	["TRIPLE", "var(--OSMacOSMute)"],
+
 	["PROFILE", "var(--OSMacOSMute)"],
+
 	["CONFIG", "var(--OSMacOSMute)"],
+
 	["FOUNDATION", "var(--OSMacOSMute)"],
+
 	["TRAIT", "var(--OSMacOSMute)"],
+
 	["TYPE", "var(--OSMacOSMute)"],
 ];
 
@@ -145,7 +206,7 @@ export const JellyCardStyle = (Id: string): CSSProperties =>
 		"--jelly-card-padding-block": "0",
 		"--jelly-card-padding-inline": "0",
 		"--jelly-card-font-size": "inherit",
-	} as CSSProperties);
+	}) as CSSProperties;
 
 /**
  * Role-chip badge surface: light fill from the chip label, dark ink label
@@ -161,4 +222,4 @@ export const JellyBadgeStyle = (Label: string): CSSProperties =>
 		"--jelly-badge-font-size": "14px",
 		"font-family": "var(--FontMono)",
 		"font-weight": "400",
-	} as CSSProperties);
+	}) as CSSProperties;

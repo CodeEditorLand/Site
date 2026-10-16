@@ -60,13 +60,8 @@ const FieldRecordStatus: React.FC<FieldRecordStatusProps> = ({
 				className,
 			)}
 		>
-			<span style={{ color: "var(--CardForeground)" }}>
-				STATUS:
-			</span>
-			<span style={{ color: ValueColor }}>
-				{" "}
-				{CopyValue}
-			</span>
+			<span style={{ color: "var(--CardForeground)" }}>STATUS:</span>
+			<span style={{ color: ValueColor }}> {CopyValue}</span>
 		</span>
 	);
 };

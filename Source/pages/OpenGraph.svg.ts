@@ -10,12 +10,22 @@ import type { APIRoute } from "astro";
 
 import type { FieldRecord } from "../Content/Record/FieldRecord";
 
+import { OPENGRAPH_STAMP_HEX } from "../Function/OpenGraph";
+
 const EscapeXML = (Text: string): string =>
 	Text.replace(/&/g, "&amp;")
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;")
 		.replace(/'/g, "&apos;");
+
+/** C19: semantic stamp ink (mirrors KEYWORD_INK in Theme/SemanticColor.ts via
+ * the hex map shared with Function/OpenGraph.ts); null keeps neutral gray. */
+const StampInk = (Keyword: string): string | null => {
+	const Hit = OPENGRAPH_STAMP_HEX[Keyword.toUpperCase()];
+
+	return Hit ?? null;
+};
 
 /**
  * Generates a field-record artifact SVG at 1200×675 (16:9).
@@ -53,8 +63,12 @@ const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 	const EvidenceX = SplitX + 12;
 	const EvidenceW = CardX + CardW - EvidenceX - 28;
 
-	// Compose stamp: 〈STAMP〉 〈STAMP〉
-	const StampText = Record.Stamp.map((s) => `〈${s}〉`).join(" ");
+	// Compose stamp: 〈STAMP〉 〈STAMP〉 - per-keyword semantic ink
+	const StampElement = Record.Stamp.map((s) => {
+		const Ink = StampInk(s) ?? MutedColor;
+
+		return `<tspan fill="${MutedColor}">\u3008</tspan><tspan fill="${Ink}">${EscapeXML(s)}</tspan><tspan fill="${MutedColor}">\u3009</tspan>`;
+	}).join(" ");
 
 	// Compose route: /ROUTE · /ROUTE
 	const RouteText = Record.Route.join("\u2001");
@@ -105,7 +119,7 @@ const GenerateFieldRecordSvg = (Record: FieldRecord): string => {
 	<text x="${TextX}" y="${CardY + 60}" font-family="'JetBrains Mono', 'SF Mono', 'Fira Code', monospace" font-size="20" font-weight="600" fill="${FrameColor}" letter-spacing="0.04em">${EscapeXML(Record.Index)}</text>
 
 	<!-- Stamp -->
-	<text x="${TextX}" y="${CardY + 96}" font-family="'JetBrains Mono', 'SF Mono', 'Fira Code', monospace" font-size="14" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(StampText)}</text>
+	<text x="${TextX}" y="${CardY + 96}" font-family="'JetBrains Mono', 'SF Mono', 'Fira Code', monospace" font-size="14" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${StampElement}</text>
 
 	<!-- Route -->
 	<text x="${TextX}" y="${CardY + 124}" font-family="'JetBrains Mono', 'SF Mono', 'Fira Code', monospace" font-size="13" font-weight="400" fill="${MutedColor}" letter-spacing="0.02em">${EscapeXML(RouteText)}</text>

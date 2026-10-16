@@ -15,7 +15,7 @@ export interface SpecimenLabelProps {
 
 	className?: string;
 
-	/** Seal render size in px (default 28 - card-sized specimen anchor, not the hero 64). */
+	/** Seal render size in px (default 36 - card-sized specimen anchor, not the hero 64). */
 	sealSize?: number;
 
 	/** Hide the index + seal header row (used when the host renders its own). */
@@ -48,7 +48,7 @@ export interface SpecimenLabelProps {
 const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 	record,
 	className,
-	sealSize = 28,
+	sealSize = 36,
 	showHeader = true,
 	showTitle = true,
 	action,
@@ -131,6 +131,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 							{record.Title}:
 						</p>
 					)}
+
 					{record.Relation ? (
 						<p className="mt-1.5 font-mono text-sm leading-relaxed text-card-foreground opacity-70">
 							↳{record.Relation}
@@ -145,9 +146,7 @@ const SpecimenLabel: React.FC<SpecimenLabelProps> = ({
 						value={record.Status.Value}
 						active={
 							IsSpecimen ||
-							record.Status.Value.toUpperCase().includes(
-								"ACTIVE",
-							)
+							record.Status.Value.toUpperCase().includes("ACTIVE")
 						}
 					/>
 				</p>
