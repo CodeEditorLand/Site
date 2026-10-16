@@ -1,7 +1,7 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "Der Code-Editor der nächsten Generation.\nOpen Source und für immer kostenlos."
+		"description": "Kein Electron. Kein Chromium. Jede Erweiterung läuft unverändert.\n\nOpen Source und für immer kostenlos."
 	},
 	"columns": {
 		"product": {
@@ -43,5 +43,33 @@
 		"nlnet": "NLnet",
 		"euSupport": " mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr.\u00a0101135429. ",
 		"projectPage": "Projektseite anzeigen"
+	},
+	"record": {
+		"end": "LAND / RECORD END",
+		"source": {
+			"key": "SOURCE",
+			"value": "CODEEDITORLAND"
+		},
+		"license": {
+			"key": "LICENSE",
+			"value": "CC0"
+		},
+		"maintained": {
+			"key": "MAINTAINED BY",
+			"value": "PLAYFORM"
+		},
+		"support": {
+			"key": "SUPPORT",
+			"nlnet": "NLNET",
+			"ngi": "NGI0"
+		},
+		"status": {
+			"key": "STATUS",
+			"value": "PUBLIC SOURCE"
+		},
+		"docs": "/DOCS",
+		"download": "/DOWNLOAD",
+		"github": "/GITHUB",
+		"contact": "/CONTACT"
 	}
 }

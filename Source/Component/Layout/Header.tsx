@@ -138,7 +138,7 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 			},
 
 			{
-				Text: T("actions.editorPortal", "Portal"),
+				Text: T("actions.editorPortal", "Editor Portal"),
 
 				Variant: "ghost",
 

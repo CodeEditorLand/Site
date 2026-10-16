@@ -10,19 +10,19 @@
 		"github": "GitHub"
 	},
 	"actions": {
-		"signIn": "Iniciar sesion",
+		"signIn": "Iniciar sesión",
 		"signUp": "Registrarse",
 		"editorPortal": "Portal del editor",
 		"getStarted": "Obtener Land",
-		"logout": "Cerrar sesion",
+		"logout": "Cerrar sesión",
 		"loading": "Cargando\u2026"
 	},
 	"user": {
-		"avatarAlt": "Menu de usuario",
+		"avatarAlt": "Menú de usuario",
 		"menu": {
 			"dashboard": "Panel de control",
 			"account": "Cuenta",
-			"signOut": "Cerrar sesion"
+			"signOut": "Cerrar sesión"
 		}
 	}
 }

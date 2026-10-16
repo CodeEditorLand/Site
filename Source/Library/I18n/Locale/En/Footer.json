@@ -1,7 +1,7 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "No Electron. No Chromium. VS Code-compatible extension host.\n\nOpen source, CC0, free forever."
+		"description": "No Electron. No Chromium. Every extension runs unchanged.\n\nOpen source and free forever."
 	},
 	"columns": {
 		"product": {
@@ -41,7 +41,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", a fund established by ",
 		"nlnet": "NLnet",
-		"euSupport": " with financial support from the European Commission\u2019s Next Generation Internet programme, under grant agreement No. 101135429. ",
+		"euSupport": " with financial support from the European Commission's Next Generation Internet programme, under grant agreement No. 101135429. ",
 		"projectPage": "View project page"
 	},
 	"record": {

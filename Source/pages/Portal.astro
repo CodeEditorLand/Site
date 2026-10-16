@@ -26,7 +26,7 @@ const PortalContent = {
 	}),
 	Subtitle: T("account.portal.subtitle", {
 		defaultValue:
-			"Land supports four authentication tiers: Cloud account sync, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
+			"Land is organized around four authentication tiers: Cloud account sign-in, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
 	}),
 
 	Cloud: {
@@ -36,7 +36,7 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.cloud.subtitle", {
 			defaultValue:
-				"Planned hosted sync for users who want account-backed state.\n\nThe local editor should remain useful without this service.",
+				"Sign in with a hosted account through Auth0 Universal Login. Workspace sync, backup, and team features are planned.\n\nThe local editor remains fully usable without an account.",
 		}),
 		Color: "var(--TierCloud)",
 		BorderColor: "var(--TierCloudFore)",
@@ -85,7 +85,7 @@ const PortalContent = {
 		],
 		Capability: [
 			T("account.portal.cloud.capability.jwt", {
-				defaultValue: "Planned account tokens for hosted services",
+				defaultValue: "JWT account tokens for hosted services, issued on sign-in",
 			}),
 			T("account.portal.cloud.capability.okta", {
 				defaultValue: "Okta SSO belongs to the enterprise plan",
@@ -113,7 +113,7 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.provider.subtitle", {
 			defaultValue:
-				"Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE. Provider identity links your editor session to source repositories and hosted services you already use.",
+				"Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE via Auth0. Which provider connections are available depends on tenant configuration; linking sessions to repositories is planned.",
 		}),
 		Color: "var(--TierProvider)",
 		BorderColor: "var(--TierProviderFore)",
@@ -200,7 +200,7 @@ const PortalContent = {
 		BorderColor: "var(--TierLocalFirstFore)",
 		Icon: "HardDrive",
 		Badge: "Local-First",
-		Protocol: "mTLS / WebSocket planned",
+		Protocol: "mTLS active / WebSocket planned",
 		Status: "ComingSoon" as const,
 		Feature: [
 			{
@@ -260,11 +260,12 @@ const PortalContent = {
 		],
 		Capability: [
 			T("account.portal.localfirst.capability.jwt", {
-				defaultValue: "Short-lived local credentials are planned",
+				defaultValue:
+					"Local session tokens with short expiry, managed by the daemon",
 			}),
 			T("account.portal.localfirst.capability.mtls", {
 				defaultValue:
-					"mTLS mutual authentication is planned for daemon control",
+					"mTLS mutual authentication is enabled by default for daemon connections",
 			}),
 			T("account.portal.localfirst.capability.crdt", {
 				defaultValue:
@@ -275,7 +276,7 @@ const PortalContent = {
 			}),
 			T("account.portal.localfirst.capability.cert", {
 				defaultValue:
-					"Local certificate authority code exists in Mountain; portal integration is planned",
+					"Local certificate management is planned; daemon credential storage is active",
 			}),
 			T("account.portal.localfirst.capability.ws", {
 				defaultValue: "WebSocket loopback connection is planned",
@@ -296,7 +297,7 @@ const PortalContent = {
 		}),
 		Subtitle: T("account.portal.enterprise.subtitle", {
 			defaultValue:
-				"Connect Land to your organisation's identity infrastructure via OIDC, SAML 2.0, or SCIM. Enterprise SSO and directory provisioning are in development.",
+				"Connect Land to your organisation's identity infrastructure through Auth0 enterprise connections for Okta, Azure AD, and SAML 2.0. SCIM directory provisioning is planned.",
 		}),
 		Color: "var(--PlatformDesktopFore)",
 		BorderColor: "var(--PlatformDesktop)",
@@ -350,16 +351,19 @@ const PortalContent = {
 		],
 		Capability: [
 			T("account.portal.enterprise.capability.oidc", {
-				defaultValue: "OIDC discovery is planned",
+				defaultValue:
+					"OIDC discovery is handled by the configured identity provider",
 			}),
 			T("account.portal.enterprise.capability.jit", {
-				defaultValue: "Just-in-time provisioning is planned",
+				defaultValue:
+					"Just-in-time provisioning happens through the configured identity provider",
 			}),
 			T("account.portal.enterprise.capability.mfa", {
 				defaultValue: "MFA enforcement depends on the configured IdP",
 			}),
 			T("account.portal.enterprise.capability.session", {
-				defaultValue: "Session duration policy is planned",
+				defaultValue:
+					"Session duration follows the configured tenant policy",
 			}),
 			T("account.portal.enterprise.capability.ca", {
 				defaultValue:

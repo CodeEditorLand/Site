@@ -903,7 +903,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 		},
 
 		Download: {
-			Title: T("download:title", { defaultValue: "DOWNLOAD LAND" }),
+			Title: T("download:title", { defaultValue: "Download Land" }),
 
 			Subtitle: T("download:subtitle", {
 				defaultValue:
@@ -915,7 +915,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "macos",
 
 					Name: T("download:card.platform.macos.title", {
-						defaultValue: "MACOS",
+						defaultValue: "macOS",
 					}),
 
 					Icon: "Apple" as const,
@@ -938,7 +938,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "windows",
 
 					Name: T("download:card.platform.windows.title", {
-						defaultValue: "WINDOWS",
+						defaultValue: "Windows",
 					}),
 
 					Icon: "Monitor" as const,
@@ -960,7 +960,7 @@ const HomePage = ({ Content, ClassName }: Property) => {
 					Id: "linux",
 
 					Name: T("download:card.platform.linux.title", {
-						defaultValue: "LINUX",
+						defaultValue: "Linux",
 					}),
 
 					Icon: "Terminal" as const,

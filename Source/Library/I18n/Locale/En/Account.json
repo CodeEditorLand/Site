@@ -82,7 +82,7 @@
 			"google": "Continue with Google",
 			"gitlab": "Continue with GitLab"
 		},
-		"subtitle": "Create your free Land account.",
+		"subtitle": "Create your Land account.",
 		"termsLabel": "I agree to the Terms of Service and Privacy Policy",
 		"title": "Create Account",
 		"validation": {
@@ -95,7 +95,7 @@
 		},
 		"emailLabel": "Email",
 		"passwordLabel": "Password",
-		"submit": "Create Free Account",
+		"submit": "Create Account",
 		"loading": "Creating account...",
 		"or": "Or",
 		"hasAccount": "Already have an account?",
@@ -116,10 +116,10 @@
 	},
 	"portal": {
 		"title": "CodeEditorLand Portal Roadmap",
-		"subtitle": "Land supports four authentication tiers: Cloud account sync, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
+		"subtitle": "Land is organized around four authentication tiers: Cloud account sign-in, OAuth provider identity, local-first Air daemon control, and enterprise SSO. The local editor works without any of them.",
 		"cloud": {
 			"title": "Cloud Plan",
-			"subtitle": "Planned hosted sync for users who want account-backed state.\n\nThe local editor should remain useful without this service.",
+			"subtitle": "Sign in with a hosted account through Auth0 Universal Login. Workspace sync, backup, and team features are planned.\n\nThe local editor remains fully usable without an account.",
 			"signIn": "Secure Sign In",
 			"emailLabel": "Email",
 			"emailPlaceholder": "name@example.com",
@@ -133,7 +133,7 @@
 				"remote": "Remote development integration is planned"
 			},
 			"capability": {
-				"jwt": "Planned account tokens for hosted services",
+				"jwt": "JWT account tokens for hosted services, issued on sign-in",
 				"okta": "Okta SSO belongs to the enterprise plan",
 				"mfa": "MFA support depends on the configured identity provider",
 				"rbac": "Gateway RBAC is planned",
@@ -143,11 +143,11 @@
 		},
 		"provider": {
 			"title": "Provider Plan",
-			"subtitle": "Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE. Provider identity links your editor session to source repositories and hosted services you already use.",
+			"subtitle": "Sign in with GitHub, GitLab, or Google through OAuth 2.0 PKCE via Auth0. Which provider connections are available depends on tenant configuration; linking sessions to repositories is planned.",
 			"continueGitHub": "Continue with GitHub",
 			"continueGoogle": "Continue with Google",
 			"continueGitLab": "Continue with GitLab",
-			"oauthNote": "OAuth 2.0 \u2001 Profile + Email scope \u2001 Linked to your preferences",
+			"oauthNote": "OAuth 2.0 \u2001 Profile + Email scope \u2001 PKCE code flow",
 			"feature": {
 				"github": "GitHub identity is planned as a low-friction sign-in option",
 				"sso": "Single sign-on across Land services is planned",
@@ -170,7 +170,7 @@
 			"daemonLabel": "Air Daemon",
 			"daemonStatus": "Scanning...",
 			"connect": "Connect to Air Daemon",
-			"note": "Zero cloud dependency \u2001 JWT certificates \u2001 mTLS",
+			"note": "Zero cloud dependency \u2001 Local session tokens \u2001 mTLS",
 			"feature": {
 				"daemon": "Browser-to-daemon loopback control is planned",
 				"build": "Launching builds from the website console is planned",
@@ -181,11 +181,11 @@
 				"bake": "Embedding portal surfaces into the editor is planned"
 			},
 			"capability": {
-				"jwt": "Short-lived local credentials are planned",
-				"mtls": "mTLS mutual authentication is planned for daemon control",
+				"jwt": "Local session tokens with short expiry, managed by the daemon",
+				"mtls": "mTLS mutual authentication is enabled by default for daemon connections",
 				"crdt": "CRDT state synchronization - planned for conflict-free offline edits",
 				"team": "Fully local team management is planned",
-				"cert": "Local certificate authority code exists in Mountain; portal integration is planned",
+				"cert": "Local certificate management is planned; daemon credential storage is active",
 				"ws": "WebSocket loopback connection is planned",
 				"rbac": "Local RBAC policies are planned",
 				"backup": "Encrypted local backup is planned"
@@ -193,7 +193,7 @@
 		},
 		"enterprise": {
 			"title": "Enterprise Plan",
-			"subtitle": "Connect Land to your organisation's identity infrastructure via OIDC, SAML 2.0, or SCIM. Enterprise SSO and directory provisioning are in development.",
+			"subtitle": "Connect Land to your organisation's identity infrastructure through Auth0 enterprise connections for Okta, Azure AD, and SAML 2.0. SCIM directory provisioning is planned.",
 			"ariaLabel": "Enterprise SSO",
 			"domainLabel": "Work Email or Domain",
 			"domainPlaceholder": "name@company.com",
@@ -217,10 +217,10 @@
 				"audit": "Audit export is planned"
 			},
 			"capability": {
-				"oidc": "OIDC discovery is planned",
-				"jit": "Just-in-time provisioning is planned",
+				"oidc": "OIDC discovery is handled by the configured identity provider",
+				"jit": "Just-in-time provisioning happens through the configured identity provider",
 				"mfa": "MFA enforcement depends on the configured IdP",
-				"session": "Session duration policy is planned",
+				"session": "Session duration follows the configured tenant policy",
 				"ca": "Organization CA certificate management is planned",
 				"compliance": "Compliance documentation is planned"
 			},
@@ -247,7 +247,7 @@
 		"welcome": "Welcome back",
 		"downloadsHeading": "Downloads",
 		"signOut": "Sign Out",
-		"loading": "Loading account…",
+		"loading": "Loading account...",
 		"error": "Could not load your account. Please refresh."
 	},
 	"notSignedIn": "Sign in to manage your account.",

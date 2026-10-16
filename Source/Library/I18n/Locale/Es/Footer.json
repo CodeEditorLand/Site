@@ -1,14 +1,14 @@
 {
 	"brand": {
 		"name": "Code Editor Land",
-		"description": "El editor de codigo de nueva generacion.\nCodigo abierto y gratuito para siempre."
+		"description": "Sin Electron. Sin Chromium. Cada extensión funciona sin cambios.\n\nCódigo abierto y gratuito para siempre."
 	},
 	"columns": {
 		"product": {
 			"title": "Producto",
 			"features": "Funciones",
 			"downloads": "Descargar",
-			"docs": "Documentacion",
+			"docs": "Documentación",
 			"blog": "Blog"
 		},
 		"company": {
@@ -21,7 +21,7 @@
 		"legal": {
 			"title": "Legal",
 			"privacy": "Privacidad",
-			"terms": "Terminos",
+			"terms": "Términos",
 			"license": "Licencia"
 		}
 	},
@@ -43,5 +43,33 @@
 		"nlnet": "NLnet",
 		"euSupport": " con el apoyo financiero del programa de Internet de próxima generación de la Comisión Europea, en virtud del acuerdo de subvención n.º 101135429. ",
 		"projectPage": "Ver página del proyecto"
+	},
+	"record": {
+		"end": "LAND / RECORD END",
+		"source": {
+			"key": "SOURCE",
+			"value": "CODEEDITORLAND"
+		},
+		"license": {
+			"key": "LICENSE",
+			"value": "CC0"
+		},
+		"maintained": {
+			"key": "MAINTAINED BY",
+			"value": "PLAYFORM"
+		},
+		"support": {
+			"key": "SUPPORT",
+			"nlnet": "NLNET",
+			"ngi": "NGI0"
+		},
+		"status": {
+			"key": "STATUS",
+			"value": "PUBLIC SOURCE"
+		},
+		"docs": "/DOCS",
+		"download": "/DOWNLOAD",
+		"github": "/GITHUB",
+		"contact": "/CONTACT"
 	}
 }
