@@ -22,24 +22,19 @@ import "./CornerMarks/Stylesheet.css";
  * Color: subtle ink - var(--CardForeground) at reduced opacity by default;
  * they frame, they do not shout.
  *
- * FUTURE (C19 intent, not implemented): hover animation where the
-  * cross-hairs appear/expand on mouse hover while always present - old-school
-  * game UI. The CSS-only hook classes .CornerMarks / .CornerMarkTick are
-  * already in place so a later pass can add
-  *   .CornerMarkTick { transition: transform 180ms ease, opacity 180ms ease; }
-  *   .CornerMarks:hover .CornerMarkTick { transform: scale(1.35); opacity: 0.8; }
-  * without touching any host component.
-  *
-  * Pure presentational: aria-hidden, pointer-events-none, no JS state.
-  *
-  * HOVER (implemented, CSS-only): the host shell that keeps the marks adds
-  * the .CornerMarkShell class (see CornerMarks/Stylesheet.css). On shell
-  * hover the cursor becomes a pointer and each tick expands outward from
-  * its corner (translate a few px along its axis + slight scale, 200ms
-  * ease), scoped to prefers-reduced-motion: no-preference. The ticks carry
-  * data-corner (tl/tr/bl/br) + data-axis (h/v) attributes the stylesheet
-  * keys its direction rules on.
-  */
+ * Pure presentational: aria-hidden, pointer-events-none, no JS state.
+ *
+ * HOVER (implemented, CSS-only - the C19 "old-school game UI" intent): the
+ * the .CornerMarkShell class (see CornerMarks/Stylesheet.css). On shell
+ * hover the cursor becomes a pointer and each L moves TOWARD its corner -
+ * the horizontal arm translates outward horizontally (toward the side edge)
+ * and the vertical arm outward vertically (toward the top/bottom edge),
+ * so the marks become less inset from the panel edge on both planes
+ * (translate a few px + slight scale, 200ms ease), scoped to
+ * prefers-reduced-motion: no-preference. The ticks carry
+ * data-corner (tl/tr/bl/br) + data-axis (h/v) attributes the stylesheet
+ * keys its direction rules on.
+ */
 
 export interface CornerMarksProps extends React.HTMLAttributes<HTMLDivElement> {
 	/** Distance of the ticks from the panel edge, px. */
@@ -222,20 +217,60 @@ const CornerMarks = ({
 			{...props}
 		>
 			{/* Top-left L */}
-			<span className="CornerMarkTick" data-corner="tl" data-axis="h" style={TopLeftHorizontal} />
-			<span className="CornerMarkTick" data-corner="tl" data-axis="v" style={TopLeftVertical} />
+			<span
+				className="CornerMarkTick"
+				data-corner="tl"
+				data-axis="h"
+				style={TopLeftHorizontal}
+			/>
+			<span
+				className="CornerMarkTick"
+				data-corner="tl"
+				data-axis="v"
+				style={TopLeftVertical}
+			/>
 
 			{/* Top-right L */}
-			<span className="CornerMarkTick" data-corner="tr" data-axis="h" style={TopRightHorizontal} />
-			<span className="CornerMarkTick" data-corner="tr" data-axis="v" style={TopRightVertical} />
+			<span
+				className="CornerMarkTick"
+				data-corner="tr"
+				data-axis="h"
+				style={TopRightHorizontal}
+			/>
+			<span
+				className="CornerMarkTick"
+				data-corner="tr"
+				data-axis="v"
+				style={TopRightVertical}
+			/>
 
 			{/* Bottom-left L */}
-			<span className="CornerMarkTick" data-corner="bl" data-axis="h" style={BottomLeftHorizontal} />
-			<span className="CornerMarkTick" data-corner="bl" data-axis="v" style={BottomLeftVertical} />
+			<span
+				className="CornerMarkTick"
+				data-corner="bl"
+				data-axis="h"
+				style={BottomLeftHorizontal}
+			/>
+			<span
+				className="CornerMarkTick"
+				data-corner="bl"
+				data-axis="v"
+				style={BottomLeftVertical}
+			/>
 
 			{/* Bottom-right L */}
-			<span className="CornerMarkTick" data-corner="br" data-axis="h" style={BottomRightHorizontal} />
-			<span className="CornerMarkTick" data-corner="br" data-axis="v" style={BottomRightVertical} />
+			<span
+				className="CornerMarkTick"
+				data-corner="br"
+				data-axis="h"
+				style={BottomRightHorizontal}
+			/>
+			<span
+				className="CornerMarkTick"
+				data-corner="br"
+				data-axis="v"
+				style={BottomRightVertical}
+			/>
 		</div>
 	);
 };

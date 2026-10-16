@@ -67,9 +67,9 @@
 			"key": "STATUS",
 			"value": "PUBLIC SOURCE"
 		},
-		"docs": "/DOCS",
-		"download": "/DOWNLOAD",
-		"github": "/GITHUB",
-		"contact": "/CONTACT"
+		"docs": "/ DOCS",
+		"download": "/ DOWNLOAD",
+		"github": "/ GITHUB",
+		"contact": "/ CONTACT"
 	}
 }

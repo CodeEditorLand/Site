@@ -264,13 +264,13 @@ const DynamicPricing = ({ Content, ClassName }: Property) => {
 						return (
 							<jelly-card
 								key={Tier.Identifier}
-								className={`PricingCard CornerMarkShell relative flat ${
-																Tier.Highlighted || Tier.Popular ? "" : ""
-															} ${
-																Tier.Status && Tier.Status !== "Ready"
-																	? "opacity-75"
-																	: ""
-															}`}
+								className={`PricingCard CornerMarkShell flat relative ${
+									Tier.Highlighted || Tier.Popular ? "" : ""
+								} ${
+									Tier.Status && Tier.Status !== "Ready"
+										? "opacity-75"
+										: ""
+								}`}
 								style={
 									{
 										"--jelly-fill": "var(--Card)",

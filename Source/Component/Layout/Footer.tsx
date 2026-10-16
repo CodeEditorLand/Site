@@ -82,10 +82,10 @@ const Footer = ({ Content }: FooterProps) => {
 
 				<nav className="FooterQuickLinks" aria-label="Quick links">
 					<a href="/Doc" className="FooterQuickLink">
-						{T("record.docs", "/DOCS")}
+						{T("record.docs", "/ DOCS")}
 					</a>
 					<a href="/Download" className="FooterQuickLink">
-						{T("record.download", "/DOWNLOAD")}
+						{T("record.download", "/ DOWNLOAD")}
 					</a>
 					<a
 						href="https://github.com/CodeEditorLand/Land"
@@ -93,10 +93,10 @@ const Footer = ({ Content }: FooterProps) => {
 						rel="noopener noreferrer"
 						className="FooterQuickLink"
 					>
-						{T("record.github", "/GITHUB")}
+						{T("record.github", "/ GITHUB")}
 					</a>
 					<a href="/Contact" className="FooterQuickLink">
-						{T("record.contact", "/CONTACT")}
+						{T("record.contact", "/ CONTACT")}
 					</a>
 				</nav>
 

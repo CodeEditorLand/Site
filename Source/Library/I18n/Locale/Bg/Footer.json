@@ -41,7 +41,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", фонд създаден от ",
 		"nlnet": "NLnet",
-		"euSupport": " с финансова подкрепа от Програмата за Интернет от ново поколение на Европейската комисия, споразумение No.\u00a0101135429. ",
+		"euSupport": " с финансова подкрепа от Програмата за Интернет от ново поколение на Европейската комисия, споразумение No. 101135429. ",
 		"projectPage": "Вижте страницата на проекта"
 	},
 	"record": {
@@ -67,9 +67,9 @@
 			"key": "STATUS",
 			"value": "PUBLIC SOURCE"
 		},
-		"docs": "/DOCS",
-		"download": "/DOWNLOAD",
-		"github": "/GITHUB",
-		"contact": "/CONTACT"
+		"docs": "/ DOCS",
+		"download": "/ DOWNLOAD",
+		"github": "/ GITHUB",
+		"contact": "/ CONTACT"
 	}
 }

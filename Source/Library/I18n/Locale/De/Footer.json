@@ -41,7 +41,7 @@
 		"ngiFund": "NGI0 Commons Fund",
 		"nlnetIntro": ", einen Fonds der ",
 		"nlnet": "NLnet",
-		"euSupport": " mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr.\u00a0101135429. ",
+		"euSupport": " mit finanzieller Unterstützung des Programms der Europäischen Kommission für das Internet der nächsten Generation, unter Fördervereinbarung Nr. 101135429. ",
 		"projectPage": "Projektseite anzeigen"
 	},
 	"record": {
@@ -67,9 +67,9 @@
 			"key": "STATUS",
 			"value": "PUBLIC SOURCE"
 		},
-		"docs": "/DOCS",
-		"download": "/DOWNLOAD",
-		"github": "/GITHUB",
-		"contact": "/CONTACT"
+		"docs": "/ DOCS",
+		"download": "/ DOWNLOAD",
+		"github": "/ GITHUB",
+		"contact": "/ CONTACT"
 	}
 }

@@ -13,9 +13,12 @@
  * cursor pointer only.
  *
  * Tick direction contract (matches the data-corner / data-axis attributes
- * emitted by CornerMarks.tsx): the tl-h arm grows rightward (+x), tl-v
- * downward (+y), tr-h leftward (-x), tr-v downward (+y), bl-h rightward
- * (+x), bl-v upward (-y), br-h leftward (-x), br-v upward (-y).
+ * emitted by CornerMarks.tsx): on hover each L moves TOWARD its corner -
+ * the horizontal arm translates outward horizontally (toward the left/right
+ * edge) and the vertical arm translates outward vertically (toward the
+ * top/bottom edge), reducing the inset from the panel edge on both planes:
+ * tl-h moves left (-x) / tl-v moves up (-y), tr-h right (+x) / tr-v up (-y),
+ * bl-h left (-x) / bl-v down (+y), br-h right (+x) / br-v down (+y).
  */
 
 .CornerMarkShell {
@@ -33,35 +36,35 @@
 			opacity 200ms ease;
 	}
 
-	/* Top-left: arms extend right / down, anchored at the corner end. */
+	/* Top-left: the L slides toward the corner - left / up. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="h"] {
-		transform: translate(4px, 0) scale(1.15);
+		transform: translate(-4px, 0) scale(1.15);
 	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tl"][data-axis="v"] {
-		transform: translate(0, 4px) scale(1.15);
+		transform: translate(0, -4px) scale(1.15);
 	}
 
-	/* Top-right: horizontal arm extends left, vertical extends down. */
+	/* Top-right: horizontal arm toward the right edge, vertical toward the top. */
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="h"] {
-		transform: translate(-4px, 0) scale(1.15);
-	}
-	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="v"] {
-		transform: translate(0, 4px) scale(1.15);
-	}
-
-	/* Bottom-left: horizontal arm extends right, vertical extends up. */
-	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
 		transform: translate(4px, 0) scale(1.15);
 	}
-	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="tr"][data-axis="v"] {
 		transform: translate(0, -4px) scale(1.15);
 	}
 
-	/* Bottom-right: horizontal arm extends left, vertical extends up. */
-	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
+	/* Bottom-left: horizontal arm toward the left edge, vertical toward the bottom. */
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="h"] {
 		transform: translate(-4px, 0) scale(1.15);
 	}
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="bl"][data-axis="v"] {
+		transform: translate(0, 4px) scale(1.15);
+	}
+
+	/* Bottom-right: the L slides toward the corner - right / down. */
+	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="h"] {
+		transform: translate(4px, 0) scale(1.15);
+	}
 	.CornerMarkShell:hover .CornerMarkTick[data-corner="br"][data-axis="v"] {
-		transform: translate(0, -4px) scale(1.15);
+		transform: translate(0, 4px) scale(1.15);
 	}
 }
