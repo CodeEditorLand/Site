@@ -25,7 +25,10 @@ if [ ! -f "$Vendor/package.json" ]; then
 		cd "$Vendor"
 		git init --quiet
 		git remote add origin "$Remote"
-		git fetch --quiet --depth 1 origin "$Branch"
+		# Full fetch - never shallow: a depth-1 fetch truncates the local
+		# JellyUI history to a single commit (the vendor repo's full source
+		# history is part of the project).
+		git fetch --quiet origin "$Branch"
 		# Check out the BRANCH (not FETCH_HEAD) so the submodule is never
 		# left on a detached HEAD after the vendor build.
 		git checkout --quiet -B "$Branch" FETCH_HEAD
@@ -37,7 +40,15 @@ else
 	echo "BuildJellyUIVendor: fetching latest $Branch"
 	(
 		cd "$Vendor"
-		git fetch --quiet --depth 1 origin "$Branch"
+		# Full fetch - never shallow: a depth-1 fetch truncates the local
+		# JellyUI history to a single commit (the vendor repo's full source
+		# history is part of the project). Unshallow first if the repo was
+		# previously fetched shallowly.
+		if [ -f "$(git rev-parse --git-path shallow)" ]; then
+			git fetch --quiet --unshallow origin
+		else
+			git fetch --quiet origin "$Branch"
+		fi
 		# Check out the BRANCH (not FETCH_HEAD) so the submodule is never
 		# left on a detached HEAD after the vendor build.
 		git checkout --quiet -B "$Branch" FETCH_HEAD
