@@ -114,7 +114,9 @@ const RenderAs = (Path: string, Markdown: string): string =>
 
 describe("remarkCodeMentions (render-time placement)", () => {
 	it("index cache holds every resolved entry (UNKNOWNs skipped, noise dropped)", () => {
-		expect(LinkCount).toBe(1955);
+		// 1955 pre-3e; the 3e broken-link round removed the gitlink/untracked
+		// URLs (terms: {} fragments keep their file), so the index holds 1935.
+		expect(LinkCount).toBe(1935);
 	});
 
 	it("links prose mentions of each class with byte-identical labels", () => {

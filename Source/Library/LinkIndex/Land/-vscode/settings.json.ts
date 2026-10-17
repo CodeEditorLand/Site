@@ -14,14 +14,22 @@ import type { LinkSpec } from "../../../Links";
 import type { LinkIndexData } from "../../Type";
 
 export const LinkIndexData: LinkIndexData = {
-
 	url: "https://github.com/CodeEditorLand/Land/tree/Current/.vscode/settings.json",
 
-	pages: ["ApplicationStartupHandshake", "filesystem-footprint-encapsulation", "mountain", "workflow-startup", "workflow-user-data-sync"],
+	pages: [
+		"ApplicationStartupHandshake",
+		"filesystem-footprint-encapsulation",
+		"mountain",
+		"workflow-startup",
+		"workflow-user-data-sync",
+	],
 
 	tags: ["Land", "api", "remove"],
 
 	terms: {
-		"settings.json": { Repo: ElementRepos.Land, Path: ".vscode/settings.json" },
+		"settings.json": {
+			Repo: ElementRepos.Land,
+			Path: ".vscode/settings.json",
+		},
 	},
 };

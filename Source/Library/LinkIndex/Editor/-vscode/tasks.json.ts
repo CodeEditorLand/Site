@@ -14,7 +14,6 @@ import type { LinkSpec } from "../../../Links";
 import type { LinkIndexData } from "../../Type";
 
 export const LinkIndexData: LinkIndexData = {
-
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/.vscode/tasks.json",
 
 	pages: ["filesystem-footprint-encapsulation", "workflow-overview"],

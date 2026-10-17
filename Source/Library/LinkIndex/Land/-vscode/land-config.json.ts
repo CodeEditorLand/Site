@@ -14,7 +14,6 @@ import type { LinkSpec } from "../../../Links";
 import type { LinkIndexData } from "../../Type";
 
 export const LinkIndexData: LinkIndexData = {
-
 	url: "https://github.com/CodeEditorLand/Land/tree/Current/.vscode/land-config.json",
 
 	pages: [],
@@ -22,6 +21,9 @@ export const LinkIndexData: LinkIndexData = {
 	tags: ["Land", "file"],
 
 	terms: {
-		"CodeEditorLand/Land/tree/Current/.vscode/land-config.json": { Repo: ElementRepos.Land, Path: ".vscode/land-config.json" },
+		"CodeEditorLand/Land/tree/Current/.vscode/land-config.json": {
+			Repo: ElementRepos.Land,
+			Path: ".vscode/land-config.json",
+		},
 	},
 };
