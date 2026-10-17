@@ -284,6 +284,7 @@ describe("remarkCodeMentions (render-time placement)", () => {
 	it("derives the page key from the vfile path and pins an override URL", () => {
 		const Out = RenderAs(
 			"api-reference.md",
+
 			"Prose mentions ProcessCocoonRequest for the RPC channel.",
 		);
 
@@ -299,6 +300,7 @@ describe("remarkCodeMentions (render-time placement)", () => {
 	it("a per-page override can remove a term that stays linked elsewhere", () => {
 		const Out = RenderAs(
 			"workflow-tier-gated-implementation-selection.md",
+
 			"IPC is proxied through the tier gate.",
 		);
 

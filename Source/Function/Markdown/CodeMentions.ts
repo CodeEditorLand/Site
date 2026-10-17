@@ -61,6 +61,7 @@ const PageKeyOf = (File: unknown): string | undefined => {
 /** The per-page override for one term: undefined = no override, false = never link, string = pin URL. */
 const OverrideOf = (
 	PageKey: string | undefined,
+
 	Term: string,
 ): string | false | undefined =>
 	PageKey ? LinkIndexOverrides[PageKey]?.[Term] : undefined;
@@ -123,7 +124,9 @@ function Walk(Node: CodeMentionsNode, PageKey: string | undefined) {
 /** A code span whose text IS a term becomes a link whose label is the span. */
 function LinkInlineCode(
 	Node: CodeMentionsNode,
+
 	Index: number,
+
 	PageKey: string | undefined,
 ) {
 	const Span = Node.children![Index];
@@ -152,6 +155,7 @@ function LinkInlineCode(
  */
 function LinkText(
 	Node: CodeMentionsNode,
+
 	PageKey: string | undefined,
 ): CodeMentionsNode[] | null {
 	const Value = Node.value ?? "";
