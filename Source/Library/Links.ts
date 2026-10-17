@@ -3,6 +3,15 @@
  * source for every internal route and external URL the pages emit. Adapted
  * from the Aphrodite/Site pattern (typed Link lists + ExternalLinks +
  * Repo/Link() composition with the branch pin in one place).
+ *
+ * Submodule rule (gitlinks): paths under Land/Element/<Name>/ and
+ * Land/Dependency/<...>/ are SUBMODULES - GitHub does not render files
+ * through them. A link into one must compose via the checkout's OWN repo
+ * home: the element repo (CodeEditorLand/<Name>, from Land/Element/
+ * .gitmodules) or the dependency repo (DependencyCodeEditorLand/<Name>,
+ * from the innermost Dependency .gitmodules). The repo consts below are
+ * keyed by the local checkout dir name, so the index never hardcodes a
+ * gitlink path.
  */
 
 export interface InternalLink {
@@ -20,6 +29,15 @@ export interface Repo {
 	Branch: string;
 }
 
+/**
+ * One composed link spec: either a registry repo + path (with an optional
+ * line anchor) or a literal external URL. The matcher precomposes every
+ * spec into its final URL string once at module load; nothing here is a
+ * hardcoded URL literal.
+ */
+export type LinkSpec =
+	{ Repo: Repo; Path: string; Line?: number } | { External: string };
+
 /** The canonical branch: every repository deep-link composes with it. */
 export const BranchCurrent = "tree/Current";
 
@@ -36,6 +54,76 @@ export function Link(Repo: Repo, Path: string): string {
 /** The Land repository - the product repo and the site's canonical home. */
 export const LandRepo: Repo = {
 	Base: "https://github.com/CodeEditorLand/Land",
+
+	Branch: BranchCurrent,
+};
+
+/** The dependency Editor repository - the VS Code fork under the Dependency org. */
+export const EditorRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/Editor",
+
+	Branch: BranchCurrent,
+};
+
+/** The Cache element repository (gitlink under Land/Element/Cache). */
+export const CacheRepo: Repo = {
+	Base: "https://github.com/CodeEditorLand/Cache",
+
+	Branch: BranchCurrent,
+};
+
+/** The Ingress dependency repository (gitlink under Dependency/Microsoft/NPM). */
+export const IngressRepo: Repo = {
+	Base: "https://github.com/CodeEditorLand/Ingress",
+
+	Branch: BranchCurrent,
+};
+
+/** The LandSWCDevtools dependency repository. */
+export const LandSWCDevtoolsRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/LandSWCDevtools",
+
+	Branch: BranchCurrent,
+};
+
+/** The SWC dependency repository (gitlink under Dependency/SWC/Dependency/SWC and NodeSWC/swc). */
+export const SWCRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/SWC",
+
+	Branch: BranchCurrent,
+};
+
+/** The SWCProject.github.io dependency repository. */
+export const SWCProjectGithubIoRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/SWCProject.github.io",
+
+	Branch: BranchCurrent,
+};
+
+/** The SWCDev dependency repository. */
+export const SWCDevRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/SWCDev",
+
+	Branch: BranchCurrent,
+};
+
+/** The TsParserTestRef dependency repository. */
+export const TsParserTestRefRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/TsParserTestRef",
+
+	Branch: BranchCurrent,
+};
+
+/** The Tauri dependency repository (gitlink under Dependency/Tauri/Dependency/Tauri). */
+export const TauriRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/Tauri",
+
+	Branch: BranchCurrent,
+};
+
+/** The PluginsWorkSpace dependency repository (gitlink under Dependency/Tauri/Dependency/PluginsWorkspace). */
+export const PluginsWorkSpaceRepo: Repo = {
+	Base: "https://github.com/DependencyCodeEditorLand/PluginsWorkSpace",
 
 	Branch: BranchCurrent,
 };

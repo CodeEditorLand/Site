@@ -37,7 +37,7 @@ protocol:
 
 ### Adding a New JavaScript Dependency
 
-1. `cd` into the element's directory (e.g., [`Element/Wind`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind)).
+1. `cd` into the element's directory (e.g., [`Element/Wind`](https://github.com/CodeEditorLand/Wind/tree/Current)).
 2. Run `pnpm add <package-name>` for a runtime dependency, or
    `pnpm add -D <package-name>` for a dev dependency.
 3. Verify the entry in `package.json` is correct, then run `pnpm install` from
@@ -46,7 +46,7 @@ protocol:
 
 ### VS Code Editor Submodule
 
-The VS Code source in [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor) uses **npm**, not
+The VS Code source in [`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current) uses **npm**, not
 pnpm. Its `package-lock.json` and `.npmrc` are npm-native. When updating
 dependencies in that submodule, use `npm install` inside that directory only.
 See [Building Land](/Doc/getting-started) for the full
@@ -57,7 +57,7 @@ Node 24 compile steps.
 ### Adding a New Rust Dependency
 
 1. Edit the `Cargo.toml` of the specific element (e.g.,
-   [`Element/Mountain/Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml)), not the workspace root.
+   [`Element/Mountain/Cargo.toml`](https://github.com/CodeEditorLand/Mountain/tree/Current/Cargo.toml)), not the workspace root.
 2. Add the dependency under `[dependencies]` with an explicit version.
 3. If the crate requires a fork or a pinned unreleased commit, add a
    `[patch.crates-io]` entry in the workspace root [`Cargo.toml`](https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml).
@@ -115,7 +115,7 @@ git add Element/Mountain
 
 ### Updating the VS Code Dependency Submodule
 
-The VS Code source submodule at [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor)
+The VS Code source submodule at [`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current)
 requires Node 24 for the compile step. Full update sequence:
 
 ```sh
@@ -150,7 +150,7 @@ the machine:
 git lfs install
 ```
 
-Without Git LFS, the binary files in [`Element/SideCar/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar) are checked out as LFS
+Without Git LFS, the binary files in [`Element/SideCar/`](https://github.com/CodeEditorLand/SideCar/tree/Current) are checked out as LFS
 pointer stubs rather than real binaries, and [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` will fail to
 stage the correct Node.js binary for bundling.
 

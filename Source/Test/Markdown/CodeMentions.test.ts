@@ -9,6 +9,12 @@
  * path, extHost API), a code fence, a whole-span inline code term, a
  * multi-token code span, an existing link, a heading, frontmatter, and the
  * protected brand compounds.
+ *
+ * Phase 3b additions: the submodule class (Land/Element/<Name>/... and
+ * Land/Dependency/<...>/... gitlink paths) composes to the element/dependency
+ * repos instead of the Land URL, pure-lowercase noise terms ("shell") never
+ * link while allowlisted brands ("esbuild", "pnpm") still do, a dotted API
+ * term keeps its #L anchor, and an External spec renders verbatim.
  */
 
 import { unified } from "unified";
@@ -32,6 +38,14 @@ const RestPluginUrl =
 const ExtHostCommandsUrl =
 	"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L132";
 
+/** The submodule class: Element/Air/README.md lives in the Air repo, not Land. */
+const ElementSubmoduleUrl =
+	"https://github.com/CodeEditorLand/Air/tree/Current/README.md";
+
+/** The submodule class: Dependency/Microsoft/Dependency/Editor/.nvmrc lives in the Editor repo. */
+const DependencySubmoduleUrl =
+	"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/.nvmrc";
+
 const Frontmatter = "---\ntitle: Land frontmatter\n---";
 
 const Sample = [
@@ -43,6 +57,8 @@ const Sample = [
 
 	"File path prose: Source/Binary/Binary.rs and the long form CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs.",
 
+	"Submodule prose: Element/Air/README.md and Dependency/Microsoft/Dependency/Editor/.nvmrc.",
+
 	"",
 
 	"Inline code: `Source/Binary/Binary.rs` whole-span and `let x = foo()` multi-token.",
@@ -50,6 +66,10 @@ const Sample = [
 	"",
 
 	"CodeEditorLand and Code Editor Land are protected compounds.",
+
+	"",
+
+	"Allowlisted brands esbuild and pnpm link; noise terms shell, window and run never do.",
 
 	"",
 
@@ -76,7 +96,7 @@ const Render = (Markdown: string): string =>
 
 describe("remarkCodeMentions (render-time placement)", () => {
 	it("index cache holds every resolved entry (UNKNOWNs skipped, noise dropped)", () => {
-		expect(LinkCount).toBe(2260);
+		expect(LinkCount).toBe(2115);
 	});
 
 	it("links prose mentions of each class with byte-identical labels", () => {
@@ -115,6 +135,60 @@ describe("remarkCodeMentions (render-time placement)", () => {
 		expect(Out).toContain("`let x = foo()`");
 
 		expect(Out).not.toContain("`[let x = foo()]");
+	});
+
+	it("composes the submodule class to the element/dependency repos", () => {
+		const Out = Render(Sample);
+
+		expect(Out).toContain(
+			`[Element/Air/README.md](${ElementSubmoduleUrl})`,
+		);
+
+		expect(Out).toContain(
+			`[Dependency/Microsoft/Dependency/Editor/.nvmrc](${DependencySubmoduleUrl})`,
+		);
+
+		expect(Out).not.toContain(
+			"[Element/Air/README.md](https://github.com/CodeEditorLand/Land/",
+		);
+
+		expect(Out).not.toContain(
+			"[Dependency/Microsoft/Dependency/Editor/.nvmrc](https://github.com/CodeEditorLand/Land/",
+		);
+	});
+
+	it("never links pure-lowercase noise terms, still links allowlisted brands", () => {
+		const Out = Render(Sample);
+
+		expect(Out).toContain(`[esbuild](https://esbuild.github.io)`);
+
+		expect(Out).toContain(`[pnpm](https://pnpm.io)`);
+
+		expect(Out).not.toContain("[shell](");
+
+		expect(Out).not.toContain("[window](");
+
+		expect(Out).not.toContain("[run](");
+	});
+
+	it("links a dotted API term with its #L anchor intact", () => {
+		const Out = Render(Sample);
+
+		expect(Out).toContain(
+			`[commands.executeCommand](${ExtHostCommandsUrl})`,
+		);
+
+		expect(Out).not.toContain(
+			"commands.executeCommand](https://github.com/CodeEditorLand/",
+		);
+	});
+
+	it("renders an External spec verbatim (no tree/Current composition)", () => {
+		const Out = Render(Sample);
+
+		expect(Out).toContain(`[esbuild](https://esbuild.github.io)`);
+
+		expect(Out).toContain(`[pnpm](https://pnpm.io)`);
 	});
 
 	it("never links inside code fences", () => {

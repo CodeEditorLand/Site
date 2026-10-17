@@ -129,7 +129,7 @@ extension load. On the `TypeScript` side, `Effect.fork` creates supervised
 fibers that the Effect runtime can preempt - a hung `Promise` in one extension
 no longer blocks the others.
 
-On the `Rust` side, the [`Echo`](https://github.com/CodeEditorLand/Echo) element ([`Land/Element/Echo`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Echo)) provides a
+On the `Rust` side, the [`Echo`](https://github.com/CodeEditorLand/Echo) element ([`Land/Element/Echo`](https://github.com/CodeEditorLand/Echo/tree/Current)) provides a
 work-stealing task scheduler for bounded background work: lock-free queues on
 `crossbeam-deque`, with `High`, `Normal`, and `Low` priority tiers. Each layer
 runs its own scheduler; together they replace the single-threaded event-loop

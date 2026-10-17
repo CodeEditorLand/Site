@@ -1,16 +1,32 @@
 /**
  * The runtime link index for the markdown pass - the full term -> URL map.
  *
- * Composed at module load from exactly two sources, never hardcoded by hand:
- *  1. The C15 registry (Source/Library/Links.ts): the sixteen element repos
- *     (ElementRepos), the product links (ExternalLinks) and the curated
- *     prose symbols (MentionMap / TechnicalMentions) - registry references,
- *     so a future branch rename edits Links.ts alone.
+ * Every entry is a COMPOSED SPEC, never a URL literal:
+ *   { Repo: <repo from Links.ts>, Path: "...", Line: N }  (repo deep-link)
+ *   { External: "https://..." }                           (literal canonical home)
+ * The matcher (LinkMatcher.ts) precomposes each spec into its URL string
+ * ONCE at module load; renders never touch a hardcoded URL.
+ *
+ * Sources (both composed from the C15 registry, Source/Library/Links.ts):
+ *  1. The registry itself - ElementRepos (the sixteen element repos), the
+ *     product links (ExternalLinks) and the curated prose symbols
+ *     (MentionMap / TechnicalMentions) - registry references, so a future
+ *     branch rename edits Links.ts alone.
  *  2. The Phase 2 research audit trail (.hermes/website/tasks/LINKS-INDEX.md,
- *     2026-10-17): the 2263 non-UNKNOWN entries - concrete file paths,
- *     identifier definitions and members (with #L anchors), file-like names,
- *     repo-root fallbacks and the extHost API symbols. UNKNOWN entries and
- *     the eight "anchor TBD" extHost namespace templates are skipped.
+ *     2026-10-17): concrete file paths, identifier definitions and members
+ *     (with #L anchors), file-like names, repo-root fallbacks and the
+ *     extHost API symbols - each resolved to a spec by the origin-remote
+ *     rule below.
+ *
+ * Submodule rule (gitlinks): Land's Element/ and Dependency/ trees are
+ * SUBMODULES - GitHub does not render files through them. A path under
+ * Land/Element/<Name>/ composes via the element's own checkout origin
+ * (CodeEditorLand/<Name>); a path under Land/Dependency/<...>/ composes via
+ * the innermost checkout's origin remote (the DependencyCodeEditorLand/*
+ * dependency forks). UNKNOWN entries and the "anchor TBD" extHost namespace
+ * templates are skipped, as are the Phase-2 noise terms (pure-lowercase
+ * single-word keys that are identifier-extraction artifacts - "shell" must
+ * not link).
  *
  * Curated (registry-composed) values override the researched fallbacks for
  * three terms so the prose pages and the markdown pass agree:
@@ -26,7 +42,23 @@
  * pure index; renders never scan it linearly.
  */
 
-import { ElementRepos, ExternalLinks } from "./Links";
+import {
+	ElementRepos,
+	ExternalLinks,
+	LandRepo,
+	EditorRepo,
+	CacheRepo,
+	IngressRepo,
+	LandSWCDevtoolsRepo,
+	SWCRepo,
+	SWCProjectGithubIoRepo,
+	SWCDevRepo,
+	TsParserTestRefRepo,
+	TauriRepo,
+	PluginsWorkSpaceRepo,
+} from "./Links";
+
+import type { LinkSpec } from "./Links";
 
 /**
  * The mention map: term -> target URL for the hand-written prose pages,
@@ -93,6226 +125,12399 @@ export const TechnicalMentions: Readonly<Record<string, string>> = {
 export const Protected = ["Code Editor Land", "CodeEditorLand"] as const;
 
 /**
- * The full runtime index: every resolved term the markdown pass can link.
- * The researched Phase 2 entries first, then the registry-composed curated
- * maps override them for the element/product/symbol keys above.
+ * Identical specs used by many entries, factored into named consts so the
+ * index states each common target once (commonality reduction). A const is
+ * just a spec - the matcher composes it exactly like an inline one.
  */
-export const LinkIndex: Readonly<Record<string, string>> = {
-	AIR_LOG_DIR: "https://github.com/CodeEditorLand/Air/tree/Current/",
+const AirRoot: LinkSpec = { Repo: ElementRepos.Air, Path: "" };
 
-	AIR_LOG_FILE: "https://github.com/CodeEditorLand/Air/tree/Current/",
+const CocoonRoot: LinkSpec = { Repo: ElementRepos.Cocoon, Path: "" };
 
-	AIR_LOG_JSON: "https://github.com/CodeEditorLand/Air/tree/Current/",
+const SkyRoot: LinkSpec = { Repo: ElementRepos.Sky, Path: "" };
 
-	APPDATA: "https://github.com/CodeEditorLand/Air/tree/Current/",
+const CocoonHostActivateExtension: LinkSpec = {
+	Repo: ElementRepos.Cocoon,
 
-	AbortController: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+};
 
-	AbortSignal: "https://github.com/CodeEditorLand/Air/tree/Current/",
+const MountainRoot: LinkSpec = { Repo: ElementRepos.Mountain, Path: "" };
 
-	AcceptInputCommand: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+const LandRoot: LinkSpec = { Repo: ElementRepos.Land, Path: "" };
 
-	ActionEffect:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Effect/ActionEffect.rs#L21",
+const AirSourceBinary: LinkSpec = {
+	Repo: ElementRepos.Air,
 
-	ActionRequest: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Path: "Source/Binary.rs",
+};
 
-	ActivateByEvent: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+const CocoonCocoonMain: LinkSpec = {
+	Repo: ElementRepos.Cocoon,
 
-	"ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+	Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
+};
 
-	ActiveDocuments: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+const LandReleaseBuild: LinkSpec = {
+	Repo: ElementRepos.Land,
 
-	"Air.proto":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto",
+	Path: "Maintain/Release/Build.sh",
+};
 
-	"Air/Source/Initialize/Command/HandleCommand.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Command/HandleCommand.rs",
+const CocoonExtensionContext: LinkSpec = {
+	Repo: ElementRepos.Cocoon,
 
-	"Air/Source/Initialize/Configure/Log/ConfigureLog.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Configure/Log/ConfigureLog.rs",
+	Path: "Source/Services/Extension/Context.ts",
+};
 
-	AirManagement: "https://github.com/CodeEditorLand/Air/tree/Current/",
+const CocoonUtilityTier: LinkSpec = {
+	Repo: ElementRepos.Cocoon,
 
-	Any: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts#L11019",
+	Path: "Source/Utility/Tier.ts",
+};
 
-	ApiFactory: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+const MountainWindServiceHandlersMod: LinkSpec = {
+	Repo: ElementRepos.Mountain,
 
-	ApiFactoryLayer: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	Path: "Source/IPC/WindServiceHandlers/mod.rs",
+};
 
-	AppHandle:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/Entry.rs#L724",
+const MountainProcessManagementInitializationData: LinkSpec = {
+	Repo: ElementRepos.Mountain,
 
-	"AppHandle.emit":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/WindowUI.rs#L47",
+	Path: "Source/ProcessManagement/InitializationData.rs",
+};
 
-	AppLayer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Skeleton.ts#L548",
+const MountainBuild: LinkSpec = {
+	Repo: ElementRepos.Mountain,
 
-	"AppLifecycle.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs",
+	Path: "build.rs",
+};
 
-	AppRuntime:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/README.md#L441",
+const SkyAstroconfig: LinkSpec = {
+	Repo: ElementRepos.Sky,
 
-	AppState:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement/FireWorkspaceContainsEvents.rs#L19",
+	Path: "astro.config.ts",
+};
 
-	"AppState.ActiveScmProviders":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/SourceControlManagementSCM.md#L171",
+const WindUtilityTier: LinkSpec = {
+	Repo: ElementRepos.Wind,
 
-	"AppState.ActiveTerminals":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/CreatingAndInteractingWithAnIntegratedTerminal.md#L111",
+	Path: "Source/Utility/Tier.ts",
+};
 
-	"AppState.ActiveWebviews":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/CreatingAndInteractingWithAWebviewPanel.md#L112",
+const VineProtoVine: LinkSpec = {
+	Repo: ElementRepos.Vine,
 
-	"AppState.CommandRegistry":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/ExecutingACommandFromTheCommandPalette.md#L102",
+	Path: "Proto/Vine.proto",
+};
 
-	"AppState.Configuration":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Indexing/FileIndexer.rs#L70",
+const WindRoot: LinkSpec = { Repo: ElementRepos.Wind, Path: "" };
 
-	"AppState.Extensions":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement/FireWorkspaceContainsEvents.rs#L19",
+/**
+ * Convert a curated string map (MentionMap / TechnicalMentions) into
+ * External specs for the composed index - the registry values are already
+ * final URL strings, so they spread as-is.
+ */
+const AsExternalSpecs = (
+	Map: Readonly<Record<string, string>>,
+): Readonly<Record<string, LinkSpec>> =>
+	Object.fromEntries(
+		Object.entries(Map).map(([Term, Url]) => [Term, { External: Url }]),
+	);
 
-	"AppState.LanguageProviders":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/InvokingALanguageFeatureHoverProvider.md#L22",
+/**
+ * The full runtime index: every resolved term the markdown pass can link,
+ * as a composed spec (never a URL literal). Noise terms are not emitted;
+ * the curated registry maps are appended as External specs.
+ */
+export const LinkIndex: Readonly<Record<string, LinkSpec>> = {
+	AIR_LOG_DIR: AirRoot,
 
-	ApplicationRunTime:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/type.impl/alloc/sync/struct.Arc.js#L2",
+	AIR_LOG_FILE: AirRoot,
 
-	ApplicationState:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Library.rs#L84",
+	AIR_LOG_JSON: AirRoot,
 
-	"ApplicationState.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/ApplicationState/ApplicationState.rs",
+	APPDATA: AirRoot,
 
-	"ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+	AbortController: CocoonRoot,
 
-	"ApplicationState/Internal/Persistence/MementoSaver.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/Persistence/MementoSaver.rs",
+	AbortSignal: AirRoot,
 
-	"ApplicationState/State/WorkspaceState/WorkspaceDelta.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/State/WorkspaceState/WorkspaceDelta.rs",
+	AcceptInputCommand: SkyRoot,
 
-	"Apply.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts",
+	ActionEffect: {
+		Repo: ElementRepos.Common,
 
-	ApplyUpdate:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Client/AirServiceProvider/mod.rs#L75",
+		Path: "Source/Effect/ActionEffect.rs",
 
-	Arc: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri/src/resources/mod.rs#L53",
+		Line: 21,
+	},
 
-	"Architecture.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Architecture.md",
+	ActionRequest: AirRoot,
 
-	Ask: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/common/chatModes.ts#L713",
+	ActivateByEvent: CocoonRoot,
 
-	AssetMemoryMap:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cache/Source/Library.rs#L35",
+	"ActivateExtension.ts": CocoonHostActivateExtension,
 
-	Astro: "https://astro.build",
+	ActiveDocuments: MountainRoot,
 
-	AsyncFn: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Air.proto": { Repo: ElementRepos.Air, Path: "Proto/Air.proto" },
 
-	AsyncProxy:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts#L34",
+	"Air/Source/Initialize/Command/HandleCommand.rs": {
+		Repo: ElementRepos.Air,
 
-	Auth0: "https://auth0.com",
+		Path: "Source/Initialize/Command/HandleCommand.rs",
+	},
 
-	AuthenticationProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.authenticationChallenges.d.ts#L64",
+	"Air/Source/Initialize/Configure/Log/ConfigureLog.rs": {
+		Repo: ElementRepos.Air,
 
-	AuthenticationService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Authentication.ts#L72",
+		Path: "Source/Initialize/Configure/Log/ConfigureLog.rs",
+	},
 
-	Authorize:
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Telemetry/Bridge.ts#L39",
+	AirManagement: AirRoot,
 
-	BackgroundServices: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Any: {
+		Repo: EditorRepo,
 
-	BakeExtensionManifest:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts",
 
-	Batch: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Workspace/Namespace/Find/Files.ts#L234",
+		Line: 11019,
+	},
 
-	BatchSpanProcessor:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ApiFactory: CocoonRoot,
 
-	Batched: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	ApiFactoryLayer: CocoonRoot,
 
-	Beam: "https://github.com/CodeEditorLand/Worker/tree/Current/Source/Telemetry/Bridge.ts#L41",
+	AppHandle: {
+		Repo: ElementRepos.Mountain,
 
-	"Binary.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary.rs",
+		Path: "Source/Binary/Main/Entry.rs",
 
-	"Binary/Extension/ScanPathConfigure.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Extension/ScanPathConfigure.rs",
+		Line: 724,
+	},
 
-	"Binary/Main/AppLifecycle.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs",
+	"AppHandle.emit": {
+		Repo: ElementRepos.Mountain,
 
-	"Binary/Main/Entry.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Binary/Main/Entry.rs",
+		Path: "Source/Track/Effect/CreateEffectForRequest/WindowUI.rs",
 
-	Boot: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 47,
+	},
 
-	"Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/BrowserProxy/Bootstrap.ts",
+	AppLayer: {
+		Repo: ElementRepos.Cocoon,
 
-	"Bootstrap/Implementation/Cocoon/Main.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+		Path: "Archive/Skeleton.ts",
 
-	Brand: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/DistinctId.rs#L12",
+		Line: 548,
+	},
 
-	Browser:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L3",
+	"AppLifecycle.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Browser.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Bundled/Browser.astro#L3",
+		Path: "Source/Binary/Main/AppLifecycle.rs",
+	},
 
-	BrowserProxy:
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro#L31",
+	AppRuntime: { Repo: ElementRepos.Wind, Path: "README.md", Line: 441 },
 
-	"BrowserProxy.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/BrowserProxy.astro#L3",
+	AppState: {
+		Repo: ElementRepos.Mountain,
 
-	Buffer: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Telemetry/PostHog/Buffer.ts#L16",
+		Path: "Source/ProcessManagement/CocoonManagement/FireWorkspaceContainsEvents.rs",
 
-	"Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh",
+		Line: 19,
+	},
 
-	"BuildMatrix.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildMatrix.md",
+	"AppState.ActiveScmProviders": {
+		Repo: ElementRepos.Land,
 
-	Builder:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Request/Routing/Handler.ts#L450",
+		Path: "Documentation/GitHub/Workflow/SourceControlManagementSCM.md",
 
-	BulkEditService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/bulkEdit/browser/bulkEditService.ts#L176",
+		Line: 171,
+	},
 
-	Bundle: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Configuration/ESBuild/Constant/Environment/Constant.ts#L7",
+	"AppState.ActiveTerminals": {
+		Repo: ElementRepos.Land,
 
-	BundleLevel: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Documentation/GitHub/Workflow/CreatingAndInteractingWithAnIntegratedTerminal.md",
 
-	Bundled:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri-bundler/src/bundle/macos/dmg/mod.rs#L21",
+		Line: 111,
+	},
 
-	CACHE_ASSET:
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker.ts#L14",
+	"AppState.ActiveWebviews": {
+		Repo: ElementRepos.Land,
 
-	CACHE_CORE:
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker.ts#L12",
+		Path: "Documentation/GitHub/Workflow/CreatingAndInteractingWithAWebviewPanel.md",
 
-	CACHE_EXT: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 112,
+	},
 
-	CARGO_BUILD_TARGET:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"AppState.CommandRegistry": {
+		Repo: ElementRepos.Land,
 
-	CARGO__: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Documentation/GitHub/Workflow/ExecutingACommandFromTheCommandPalette.md",
 
-	COCOON_GRPC_PORT:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs#L146",
+		Line: 102,
+	},
 
-	CONNECTION_TIMEOUT:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Server/Initialize.rs#L64",
+	"AppState.Configuration": {
+		Repo: ElementRepos.Air,
 
-	"CSS/Load.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/CSS/Load.ts",
+		Path: "Source/Indexing/FileIndexer.rs",
 
-	Cache: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/cache.ts#L13",
+		Line: 70,
+	},
 
-	"Cache.json":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json",
+	"AppState.Extensions": {
+		Repo: ElementRepos.Mountain,
 
-	CacheEntry:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Build/Scheme.rs#L106",
+		Path: "Source/ProcessManagement/CocoonManagement/FireWorkspaceContainsEvents.rs",
 
-	CancelAction:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/browser/actions/chatExecuteActions.ts#L924",
+		Line: 19,
+	},
 
-	CancelOperation:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization.rs#L5",
+	"AppState.LanguageProviders": {
+		Repo: ElementRepos.Land,
 
-	CancellationProxy:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts#L22",
+		Path: "Documentation/GitHub/Workflow/InvokingALanguageFeatureHoverProvider.md",
 
-	CancellationTokenSource:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L1675",
+		Line: 22,
+	},
 
-	Cap: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Workspace/Namespace/Find/Files.ts#L72",
+	ApplicationRunTime: {
+		Repo: ElementRepos.Air,
 
-	Capture:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/test/scenario/src/renderEvidenceChapters.ts#L23",
+		Path: "Documentation/Rust/doc/type.impl/alloc/sync/struct.Arc.js",
 
-	Cargo: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/LandSWCDevtools/src/cargo/index.ts#L31",
+		Line: 2,
+	},
 
-	"Cargo.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml",
+	ApplicationState: {
+		Repo: ElementRepos.Mountain,
 
-	"Cargo.toml.Backup":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PerElement.md#L195",
+		Path: "Source/Library.rs",
 
-	Cause: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 84,
+	},
 
-	CheckForUpdate:
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Register.ts#L64",
+	"ApplicationState.rs": {
+		Repo: ElementRepos.Air,
 
-	Clean: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/ESBuild.ts#L3",
+		Path: "Source/ApplicationState/ApplicationState.rs",
+	},
 
-	Cleanup:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts#L154",
+	"ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Cleanup.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/Cleanup.md",
+		Path: "Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+	},
 
-	Clipboard:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L23",
+	"ApplicationState/Internal/Persistence/MementoSaver.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ClipboardLive:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md#L168",
+		Path: "Source/ApplicationState/Internal/Persistence/MementoSaver.rs",
+	},
 
-	"Cocoon/.../ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+	"ApplicationState/State/WorkspaceState/WorkspaceDelta.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Cocoon/Services/Mountain/Client/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/Client/Service.ts",
+		Path: "Source/ApplicationState/State/WorkspaceState/WorkspaceDelta.rs",
+	},
 
-	"Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+	"Apply.ts": { Repo: ElementRepos.Output, Path: "Source/Plugin/Apply.ts" },
 
-	"Cocoon/Source/Platform/FiddeeRoot.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/FiddeeRoot.ts",
+	ApplyUpdate: {
+		Repo: ElementRepos.Air,
 
-	"Cocoon/Source/Services/Extension/Context.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts",
+		Path: "Source/Client/AirServiceProvider/mod.rs",
+
+		Line: 75,
+	},
+
+	Arc: {
+		Repo: TauriRepo,
+
+		Path: "crates/tauri/src/resources/mod.rs",
+
+		Line: 53,
+	},
+
+	"Architecture.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Architecture.md",
+	},
+
+	Ask: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/chat/common/chatModes.ts",
+
+		Line: 713,
+	},
+
+	AssetMemoryMap: { Repo: CacheRepo, Path: "Source/Library.rs", Line: 35 },
+
+	Astro: { External: "https://astro.build" },
+
+	AsyncFn: LandRoot,
+
+	AsyncProxy: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts",
+
+		Line: 34,
+	},
+
+	Auth0: { External: "https://auth0.com" },
+
+	AuthenticationProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.authenticationChallenges.d.ts",
+
+		Line: 64,
+	},
+
+	AuthenticationService: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/Authentication.ts",
+
+		Line: 72,
+	},
+
+	Authorize: {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Telemetry/Bridge.ts",
+
+		Line: 39,
+	},
+
+	BackgroundServices: AirRoot,
+
+	BakeExtensionManifest: CocoonRoot,
+
+	Batch: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Find/Files.ts",
+
+		Line: 234,
+	},
+
+	BatchSpanProcessor: CocoonRoot,
+
+	Batched: AirRoot,
+
+	Beam: {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Telemetry/Bridge.ts",
+
+		Line: 41,
+	},
+
+	"Binary.rs": AirSourceBinary,
+
+	"Binary/Extension/ScanPathConfigure.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Extension/ScanPathConfigure.rs",
+	},
+
+	"Binary/Main/AppLifecycle.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Main/AppLifecycle.rs",
+	},
+
+	"Binary/Main/Entry.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Binary/Main/Entry.rs",
+	},
+
+	Boot: AirRoot,
+
+	"Bootstrap.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Workbench/BrowserProxy/Bootstrap.ts",
+	},
+
+	"Bootstrap/Implementation/Cocoon/Main.ts": CocoonCocoonMain,
+
+	Brand: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Telemetry/DistinctId.rs",
+
+		Line: 12,
+	},
+
+	Browser: { Repo: ElementRepos.Output, Path: "Source/ESBuild.ts", Line: 3 },
+
+	"Browser.astro": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/pages/Bundled/Browser.astro",
+
+		Line: 3,
+	},
+
+	BrowserProxy: {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/pages/index.astro",
+
+		Line: 31,
+	},
+
+	"BrowserProxy.astro": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/pages/BrowserProxy.astro",
+
+		Line: 3,
+	},
+
+	Buffer: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Telemetry/PostHog/Buffer.ts",
+
+		Line: 16,
+	},
+
+	"Build.sh": LandReleaseBuild,
+
+	"BuildMatrix.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/BuildMatrix.md",
+	},
+
+	Builder: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/Request/Routing/Handler.ts",
+
+		Line: 450,
+	},
+
+	BulkEditService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/bulkEdit/browser/bulkEditService.ts",
+
+		Line: 176,
+	},
+
+	Bundle: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Configuration/ESBuild/Constant/Environment/Constant.ts",
+
+		Line: 7,
+	},
+
+	BundleLevel: AirRoot,
+
+	Bundled: {
+		Repo: TauriRepo,
+
+		Path: "crates/tauri-bundler/src/bundle/macos/dmg/mod.rs",
+
+		Line: 21,
+	},
+
+	CACHE_ASSET: {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker.ts",
+
+		Line: 14,
+	},
+
+	CACHE_CORE: {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker.ts",
+
+		Line: 12,
+	},
+
+	CACHE_EXT: LandRoot,
+
+	CARGO_BUILD_TARGET: CocoonRoot,
+
+	CARGO__: CocoonRoot,
+
+	COCOON_GRPC_PORT: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/CocoonManagement.rs",
+
+		Line: 146,
+	},
+
+	CONNECTION_TIMEOUT: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Vine/Server/Initialize.rs",
+
+		Line: 64,
+	},
+
+	"CSS/Load.ts": {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker/CSS/Load.ts",
+	},
+
+	Cache: { Repo: EditorRepo, Path: "src/vs/base/common/cache.ts", Line: 13 },
+
+	"Cache.json": { Repo: ElementRepos.SideCar, Path: "Cache.json" },
+
+	CacheEntry: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Build/Scheme.rs",
+
+		Line: 106,
+	},
+
+	CancelAction: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/chat/browser/actions/chatExecuteActions.ts",
+
+		Line: 924,
+	},
+
+	CancelOperation: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Initialization.rs",
+
+		Line: 5,
+	},
+
+	CancellationProxy: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts",
+
+		Line: 22,
+	},
+
+	CancellationTokenSource: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 1675,
+	},
+
+	Cap: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Find/Files.ts",
+
+		Line: 72,
+	},
+
+	Capture: {
+		Repo: EditorRepo,
+
+		Path: "test/scenario/src/renderEvidenceChapters.ts",
+
+		Line: 23,
+	},
+
+	Cargo: { Repo: LandSWCDevtoolsRepo, Path: "src/cargo/index.ts", Line: 31 },
+
+	"Cargo.toml": { Repo: ElementRepos.Land, Path: "Cargo.toml" },
+
+	"Cargo.toml.Backup": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/FilesystemFootprint/PerElement.md",
+
+		Line: 195,
+	},
+
+	Cause: CocoonRoot,
+
+	CheckForUpdate: {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker/Register.ts",
+
+		Line: 64,
+	},
+
+	Clean: { Repo: ElementRepos.Cocoon, Path: "Source/ESBuild.ts", Line: 3 },
+
+	Cleanup: { Repo: ElementRepos.Wind, Path: "Source/Preload.ts", Line: 154 },
+
+	"Cleanup.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/FilesystemFootprint/Cleanup.md",
+	},
+
+	Clipboard: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
+
+		Line: 23,
+	},
+
+	ClipboardLive: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Documentation/GitHub/Architecture.md",
+
+		Line: 168,
+	},
+
+	"Cocoon/.../ActivateExtension.ts": CocoonHostActivateExtension,
+
+	"Cocoon/Services/Mountain/Client/Service.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Mountain/Client/Service.ts",
+	},
+
+	"Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts": CocoonCocoonMain,
+
+	"Cocoon/Source/Platform/FiddeeRoot.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Platform/FiddeeRoot.ts",
+	},
+
+	"Cocoon/Source/Services/Extension/Context.ts": CocoonExtensionContext,
 
 	"Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+		CocoonHostActivateExtension,
 
-	"Cocoon/Source/Services/Handler/VscodeAPI/ROUTING.md":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/ROUTING.md",
+	"Cocoon/Source/Services/Handler/VscodeAPI/ROUTING.md": {
+		Repo: ElementRepos.Cocoon,
 
-	"Cocoon/Source/Services/Mountain/gRPC/Client.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts",
+		Path: "Source/Services/Handler/VscodeAPI/ROUTING.md",
+	},
 
-	"Cocoon/Source/Services/gRPC/Server/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts",
+	"Cocoon/Source/Services/Mountain/gRPC/Client.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Cocoon/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts",
+		Path: "Source/Services/Mountain/gRPC/Client.ts",
+	},
 
-	CocoonClient:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/NamingConventions.md#L306",
+	"Cocoon/Source/Services/gRPC/Server/Service.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	CocoonDevLog:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Dev/Log.ts#L52",
+		Path: "Source/Services/gRPC/Server/Service.ts",
+	},
 
-	CocoonEsbuildDefine: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Cocoon/Source/Utility/Tier.ts": CocoonUtilityTier,
 
-	CocoonManagement:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/mod.rs#L54",
+	CocoonClient: {
+		Repo: ElementRepos.Mountain,
 
-	"CocoonManagement.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs",
+		Path: "Documentation/GitHub/NamingConventions.md",
 
-	CocoonService:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/mod.rs#L8",
+		Line: 306,
+	},
 
-	"CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md",
+	CocoonDevLog: {
+		Repo: ElementRepos.Cocoon,
 
-	"CodeEditorLand/Air/tree/Current/Proto/Air.proto":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto",
+		Path: "Source/Services/Dev/Log.ts",
 
-	"CodeEditorLand/Air/tree/Current/Source/Binary.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary.rs",
+		Line: 52,
+	},
 
-	"CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs",
+	CocoonEsbuildDefine: LandRoot,
 
-	"CodeEditorLand/Air/tree/Current/Source/HTTP/Client.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/HTTP/Client.rs",
+	CocoonManagement: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/mod.rs",
+
+		Line: 54,
+	},
+
+	"CocoonManagement.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/CocoonManagement.rs",
+	},
+
+	CocoonService: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/mod.rs",
+
+		Line: 8,
+	},
+
+	"CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Air,
+
+		Path: "Documentation/GitHub/Architecture.md",
+	},
+
+	"CodeEditorLand/Air/tree/Current/Proto/Air.proto": {
+		Repo: ElementRepos.Air,
+
+		Path: "Proto/Air.proto",
+	},
+
+	"CodeEditorLand/Air/tree/Current/Source/Binary.rs": AirSourceBinary,
+
+	"CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs": {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Binary/Binary.rs",
+	},
+
+	"CodeEditorLand/Air/tree/Current/Source/HTTP/Client.rs": {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/HTTP/Client.rs",
+	},
 
 	"CodeEditorLand/Air/tree/Current/Source/Initialize/Command/HandleCommand.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Command/HandleCommand.rs",
+		{
+			Repo: ElementRepos.Air,
+
+			Path: "Source/Initialize/Command/HandleCommand.rs",
+		},
 
 	"CodeEditorLand/Air/tree/Current/Source/Initialize/Configure/Log/ConfigureLog.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Configure/Log/ConfigureLog.rs",
+		{
+			Repo: ElementRepos.Air,
 
-	"CodeEditorLand/Air/tree/Current/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Library.rs",
+			Path: "Source/Initialize/Configure/Log/ConfigureLog.rs",
+		},
 
-	"CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md",
+	"CodeEditorLand/Air/tree/Current/Source/Library.rs": {
+		Repo: ElementRepos.Air,
 
-	"CodeEditorLand/Cocoon/tree/Current/Scripts/cocoon/bootstrap-fork.js":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Scripts/cocoon/bootstrap-fork.js",
+		Path: "Source/Library.rs",
+	},
+
+	"CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Documentation/GitHub/Architecture.md",
+	},
+
+	"CodeEditorLand/Cocoon/tree/Current/Scripts/cocoon/bootstrap-fork.js": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Scripts/cocoon/bootstrap-fork.js",
+	},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+		CocoonCocoonMain,
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Configuration/ESBuild/Cocoon.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Configuration/ESBuild/Cocoon.ts",
+		{
+			Repo: ElementRepos.Cocoon,
 
-	"CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts",
+			Path: "Source/Configuration/ESBuild/Cocoon.ts",
+		},
+
+	"CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Bootstrap.ts",
+	},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Module/Interceptor.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Module/Interceptor.ts",
+		{
+			Repo: ElementRepos.Cocoon,
 
-	"CodeEditorLand/Cocoon/tree/Current/Source/Service/Mapping.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Mapping.ts",
+			Path: "Source/Service/Effect/Module/Interceptor.ts",
+		},
+
+	"CodeEditorLand/Cocoon/tree/Current/Source/Service/Mapping.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Mapping.ts",
+	},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/API/Factory/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/API/Factory/Service.ts",
+		{
+			Repo: ElementRepos.Cocoon,
 
-	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension.ts",
+			Path: "Source/Services/API/Factory/Service.ts",
+		},
+
+	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension.ts",
+	},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts",
+		CocoonExtensionContext,
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Host/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Host/Service.ts",
+		{
+			Repo: ElementRepos.Cocoon,
+
+			Path: "Source/Services/Extension/Host/Service.ts",
+		},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+		CocoonHostActivateExtension,
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/ROUTING.md":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/ROUTING.md",
+		{
+			Repo: ElementRepos.Cocoon,
+
+			Path: "Source/Services/Handler/VscodeAPI/ROUTING.md",
+		},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/Client/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/Client/Service.ts",
+		{
+			Repo: ElementRepos.Cocoon,
+
+			Path: "Source/Services/Mountain/Client/Service.ts",
+		},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts",
+		{
+			Repo: ElementRepos.Cocoon,
 
-	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts",
+			Path: "Source/Services/Mountain/gRPC/Client.ts",
+		},
+
+	"CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Window.ts",
+	},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts",
+		{
+			Repo: ElementRepos.Cocoon,
 
-	"CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter/Task.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter/Task.ts",
+			Path: "Source/Services/gRPC/Server/Service.ts",
+		},
+
+	"CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter/Task.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/TypeConverter/Task.ts",
+	},
 
 	"CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts",
+		CocoonUtilityTier,
 
-	"CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md",
+	"CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Common,
 
-	"CodeEditorLand/Common/tree/Current/Source/Error/CommonError.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Error/CommonError.rs",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs",
+	"CodeEditorLand/Common/tree/Current/Source/Error/CommonError.rs": {
+		Repo: ElementRepos.Common,
 
-	"CodeEditorLand/Echo/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Documentation/GitHub/Architecture.md",
+		Path: "Source/Error/CommonError.rs",
+	},
 
-	"CodeEditorLand/Echo/tree/Current/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs",
+	"CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs": {
+		Repo: ElementRepos.Common,
 
-	"CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs",
+		Path: "Source/IPC/Channel.rs",
+	},
 
-	"CodeEditorLand/Echo/tree/Current/Source/Scheduler/Scheduler.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Scheduler.rs",
+	"CodeEditorLand/Echo/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Echo/tree/Current/Source/Scheduler/SchedulerBuilder.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/SchedulerBuilder.rs",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Echo/tree/Current/Source/Scheduler/Worker.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Worker.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Library.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
+		Path: "Source/Library.rs",
+	},
 
-	"CodeEditorLand/Echo/tree/Current/Source/Task/Task.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Task.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md",
+		Path: "Source/Queue/StealingQueue.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/Host/APIBridge.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/APIBridge.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Scheduler/Scheduler.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionHost.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionHost.rs",
+		Path: "Source/Scheduler/Scheduler.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionManager.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionManager.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Scheduler/SchedulerBuilder.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Grove/tree/Current/Source/Host/Lifecycle.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/Lifecycle.rs",
+		Path: "Source/Scheduler/SchedulerBuilder.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Scheduler/Worker.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Grove/tree/Current/Source/Transport/CommonAdapter.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/CommonAdapter.rs",
+		Path: "Source/Scheduler/Worker.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Grove/tree/Current/Source/Transport/Strategy.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/Strategy.rs",
+		Path: "Source/Task/Priority.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/Transport/WASMTransport.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/WASMTransport.rs",
+	"CodeEditorLand/Echo/tree/Current/Source/Task/Task.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Grove/tree/Current/Source/Transport/gRPCTransport.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/gRPCTransport.rs",
+		Path: "Source/Task/Task.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/WASM/HostBridge.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/HostBridge.rs",
+	"CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Grove,
 
-	"CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/WASM/ModuleLoader.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/ModuleLoader.rs",
+	"CodeEditorLand/Grove/tree/Current/Source/Host/APIBridge.rs": {
+		Repo: ElementRepos.Grove,
 
-	"CodeEditorLand/Grove/tree/Current/Source/WASM/Runtime.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/Runtime.rs",
+		Path: "Source/Host/APIBridge.rs",
+	},
 
-	"CodeEditorLand/Grove/tree/Current/Source/main.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs",
+	"CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionHost.rs": {
+		Repo: ElementRepos.Grove,
 
-	"CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md":
-		"https://github.com/CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md",
+		Path: "Source/Host/ExtensionHost.rs",
+	},
 
-	"CodeEditorLand/Land/blob/main/SECURITY.md":
-		"https://github.com/CodeEditorLand/Land/blob/main/SECURITY.md",
+	"CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionManager.rs": {
+		Repo: ElementRepos.Grove,
 
-	"CodeEditorLand/Land/tree/Current/.vscode/land-config.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/.vscode/land-config.json",
+		Path: "Source/Host/ExtensionManager.rs",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Cargo.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml",
+	"CodeEditorLand/Grove/tree/Current/Source/Host/Lifecycle.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Host/Lifecycle.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Protocol/SpineConnection.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/Transport/CommonAdapter.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/CommonAdapter.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/IPCTransport.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/Transport/Strategy.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/Strategy.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/Transport/WASMTransport.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/WASMTransport.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/Transport/gRPCTransport.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/gRPCTransport.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/WASM/HostBridge.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/WASM/HostBridge.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/WASM/MemoryManager.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/WASM/ModuleLoader.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/WASM/ModuleLoader.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/WASM/Runtime.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/WASM/Runtime.rs",
+	},
+
+	"CodeEditorLand/Grove/tree/Current/Source/main.rs": {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/main.rs",
+	},
+
+	"CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md": {
+		External:
+			"https://github.com/CodeEditorLand/Land/blob/main/CODE_OF_CONDUCT.md",
+	},
+
+	"CodeEditorLand/Land/blob/main/SECURITY.md": {
+		External:
+			"https://github.com/CodeEditorLand/Land/blob/main/SECURITY.md",
+	},
+
+	"CodeEditorLand/Land/tree/Current/.vscode/land-config.json": {
+		Repo: ElementRepos.Land,
+
+		Path: ".vscode/land-config.json",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Cargo.toml": {
+		Repo: ElementRepos.Land,
+
+		Path: "Cargo.toml",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor/.nvmrc":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor/.nvmrc",
+		{ Repo: EditorRepo, Path: ".nvmrc" },
 
-	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md",
+	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md",
+		Path: "Documentation/GitHub/BuildPipeline.md",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md",
+	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/Building.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Building.md",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EditorCore.md",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/GitHub/EnvironmentVariables.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PerElement.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PerElement.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/GitHub/FilesystemFootprint/PerElement.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PlatformPaths.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PlatformPaths.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/GitHub/FilesystemFootprint/PlatformPaths.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/InterComponentProtocol.md",
+		{
+			Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md",
+			Path: "Documentation/GitHub/InterComponentProtocol.md",
+		},
+
+	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Polyfills.md",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/RustInfrastructure.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/GitHub/RustInfrastructure.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md",
+		{
+			Repo: ElementRepos.Land,
+
+			Path: "Documentation/Module/Telemetry/Effect-OTel.md",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Tree-Shaking.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Tree-Shaking.md",
+		{
+			Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Element/Air/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Air/README.md",
+			Path: "Documentation/Module/Telemetry/Tree-Shaking.md",
+		},
+
+	"CodeEditorLand/Land/tree/Current/Element/Air/README.md": {
+		Repo: ElementRepos.Air,
+
+		Path: "README.md",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Element/Air/Source/Binary.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Air/Source/Binary.rs",
+		AirSourceBinary,
 
-	"CodeEditorLand/Land/tree/Current/Element/Cocoon/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/README.md",
+	"CodeEditorLand/Land/tree/Current/Element/Cocoon/README.md": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "README.md",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+		CocoonCocoonMain,
 
 	"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts",
+		{ Repo: ElementRepos.Cocoon, Path: "Source/Platform/FiddeeRoot.ts" },
 
 	"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+		CocoonHostActivateExtension,
 
 	"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts",
+		{ Repo: ElementRepos.Cocoon, Path: "Source/Telemetry/OTLPBridge.ts" },
 
 	"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Utility/Tier.ts",
+		CocoonUtilityTier,
 
 	"CodeEditorLand/Land/tree/Current/Element/Common/Source/Telemetry/Tier.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Common/Source/Telemetry/Tier.rs",
+		{ Repo: ElementRepos.Common, Path: "Source/Telemetry/Tier.rs" },
 
-	"CodeEditorLand/Land/tree/Current/Element/Echo/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Echo/Source/Library.rs",
+	"CodeEditorLand/Land/tree/Current/Element/Echo/Source/Library.rs": {
+		Repo: ElementRepos.Echo,
 
-	"CodeEditorLand/Land/tree/Current/Element/Grove/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove/README.md",
+		Path: "Source/Library.rs",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Element/Grove/Source/main.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove/Source/main.rs",
+	"CodeEditorLand/Land/tree/Current/Element/Grove/README.md": {
+		Repo: ElementRepos.Grove,
 
-	"CodeEditorLand/Land/tree/Current/Element/Mist/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mist/README.md",
+		Path: "README.md",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml",
+	"CodeEditorLand/Land/tree/Current/Element/Grove/Source/main.rs": {
+		Repo: ElementRepos.Grove,
 
-	"CodeEditorLand/Land/tree/Current/Element/Mountain/Entitlements.plist":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Entitlements.plist",
+		Path: "Source/main.rs",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/Mist/README.md": {
+		Repo: ElementRepos.Mist,
+
+		Path: "README.md",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Cargo.toml",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/Mountain/Entitlements.plist": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Entitlements.plist",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Binary/Main/AppLifecycle.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Binary/Main/AppLifecycle.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Binary/Main/AppLifecycle.rs",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Binary/Main/Entry.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Binary/Main/Entry.rs",
+		{ Repo: ElementRepos.Mountain, Path: "Source/Binary/Main/Entry.rs" },
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/IPC/DevLog/EmitOTLPSpan.rs",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
+		},
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs",
+		MountainWindServiceHandlersMod,
 
-	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/LandFixTier.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/LandFixTier.rs",
+	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/LandFixTier.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/LandFixTier.rs",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/ProcessManagement/InitializationData.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/ProcessManagement/InitializationData.rs",
+		MountainProcessManagementInitializationData,
 
 	"CodeEditorLand/Land/tree/Current/Element/Mountain/Target/debug/extensions.manifest.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Target/debug/extensions.manifest.json",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs",
+			Path: "Target/debug/extensions.manifest.json",
+		},
 
-	"CodeEditorLand/Land/tree/Current/Element/Mountain/tauri.conf.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/tauri.conf.json",
+	"CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs": MountainBuild,
 
-	"CodeEditorLand/Land/tree/Current/Element/Rest/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest/README.md",
+	"CodeEditorLand/Land/tree/Current/Element/Mountain/tauri.conf.json": {
+		Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Land/tree/Current/Element/Rest/Source/Main.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest/Source/Main.rs",
+		Path: "tauri.conf.json",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Element/SideCar/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/README.md",
+	"CodeEditorLand/Land/tree/Current/Element/Rest/README.md": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Land/tree/Current/Element/SideCar/Source/Download.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/Source/Download.rs",
+		Path: "README.md",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Element/SideCar/Source/main.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/Source/main.rs",
+	"CodeEditorLand/Land/tree/Current/Element/Rest/Source/Main.rs": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Land/tree/Current/Element/Sky/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/README.md",
+		Path: "Source/Main.rs",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/SideCar/README.md": {
+		Repo: ElementRepos.SideCar,
+
+		Path: "README.md",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/SideCar/Source/Download.rs": {
+		Repo: ElementRepos.SideCar,
+
+		Path: "Source/Download.rs",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/SideCar/Source/main.rs": {
+		Repo: ElementRepos.SideCar,
+
+		Path: "Source/main.rs",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Element/Sky/README.md": {
+		Repo: ElementRepos.Sky,
+
+		Path: "README.md",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Element/Sky/astro.config.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/astro.config.ts",
+		SkyAstroconfig,
 
-	"CodeEditorLand/Land/tree/Current/Element/Wind/README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/README.md",
+	"CodeEditorLand/Land/tree/Current/Element/Wind/README.md": {
+		Repo: ElementRepos.Wind,
+
+		Path: "README.md",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Element/Wind/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Utility/Tier.ts",
+		WindUtilityTier,
 
 	"CodeEditorLand/Land/tree/Current/Element/Worker/Source/Telemetry/Bridge.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Worker/Source/Telemetry/Bridge.ts",
+		{ Repo: ElementRepos.Worker, Path: "Source/Telemetry/Bridge.ts" },
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Debug.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug.sh",
+	"CodeEditorLand/Land/tree/Current/Maintain/Debug.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Debug/All.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/All.sh",
+		Path: "Maintain/Debug.sh",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh",
+	"CodeEditorLand/Land/tree/Current/Maintain/Debug/All.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Debug/Run.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Run.sh",
+		Path: "Maintain/Debug/All.sh",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Dev-Mountain.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Dev-Mountain.sh",
+	"CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Profile.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Profile.sh",
+		Path: "Maintain/Debug/Build.sh",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Release.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release.sh",
+	"CodeEditorLand/Land/tree/Current/Maintain/Debug/Run.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Debug/Run.sh",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Maintain/Dev-Mountain.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Dev-Mountain.sh",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Maintain/Profile.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Profile.sh",
+	},
+
+	"CodeEditorLand/Land/tree/Current/Maintain/Release.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Release.sh",
+	},
 
 	"CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh",
+		LandReleaseBuild,
 
 	"CodeEditorLand/Land/tree/Current/Maintain/Script/GenerateRouteManifest.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/GenerateRouteManifest.sh",
+		{
+			Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh",
+			Path: "Maintain/Script/GenerateRouteManifest.sh",
+		},
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh",
+	"CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh",
+		Path: "Maintain/Script/PostHogCapture.sh",
+	},
 
-	"CodeEditorLand/Land/tree/Current/Maintain/Test/TelemetryTreeShake.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Test/TelemetryTreeShake.sh",
+	"CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/package.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/package.json",
+		Path: "Maintain/Script/SignBundle.sh",
+	},
 
-	"CodeEditorLand/Land/tree/Current/rust-toolchain.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/rust-toolchain.toml",
+	"CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Land/tree/Current/rustfmt.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/rustfmt.toml",
+		Path: "Maintain/Script/TierEnvironment.sh",
+	},
 
-	"CodeEditorLand/Land/tree/Current/turbo.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json",
+	"CodeEditorLand/Land/tree/Current/Maintain/Test/TelemetryTreeShake.sh": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/CLI/Cli.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/CLI/Cli.rs",
+		Path: "Maintain/Test/TelemetryTreeShake.sh",
+	},
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Definition.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Definition.rs",
+	"CodeEditorLand/Land/tree/Current/package.json": {
+		Repo: ElementRepos.Land,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Error.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Error.rs",
+		Path: "package.json",
+	},
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs",
+	"CodeEditorLand/Land/tree/Current/rust-toolchain.toml": {
+		Repo: ElementRepos.Land,
+
+		Path: "rust-toolchain.toml",
+	},
+
+	"CodeEditorLand/Land/tree/Current/rustfmt.toml": {
+		Repo: ElementRepos.Land,
+
+		Path: "rustfmt.toml",
+	},
+
+	"CodeEditorLand/Land/tree/Current/turbo.json": {
+		Repo: ElementRepos.Land,
+
+		Path: "turbo.json",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/CLI/Cli.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/CLI/Cli.rs",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Definition.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/Definition.rs",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Error.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/Error.rs",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/Fn.rs",
+	},
 
 	"CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs",
+		{
+			Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs",
+			Path: "Source/Build/GetTauriTargetTriple.rs",
+		},
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Logger.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Logger.rs",
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Pascalize.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Pascalize.rs",
+		Path: "Source/Build/JsonEdit.rs",
+	},
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/PlistEdit.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/PlistEdit.rs",
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Logger.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs",
+		Path: "Source/Build/Logger.rs",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Pascalize.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/Pascalize.rs",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/PlistEdit.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/PlistEdit.rs",
+	},
+
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/Rhai/ConfigLoader.rs",
+	},
 
 	"CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs",
+		{
+			Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs",
+			Path: "Source/Build/Rhai/EnvironmentResolver.rs",
+		},
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs",
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Maintain/tree/Current/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Library.rs",
+		Path: "Source/Build/Rhai/ScriptRunner.rs",
+	},
 
-	"CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md",
+	"CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Mist/tree/Current/Source/ForwardSecurity.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/ForwardSecurity.rs",
+		Path: "Source/Build/TomlEdit.rs",
+	},
 
-	"CodeEditorLand/Mist/tree/Current/Source/Resolver.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Resolver.rs",
+	"CodeEditorLand/Maintain/tree/Current/Source/Library.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"CodeEditorLand/Mist/tree/Current/Source/Server.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Server.rs",
+		Path: "Source/Library.rs",
+	},
 
-	"CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs",
+	"CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Mist,
 
-	"CodeEditorLand/Mist/tree/Current/Source/Zone.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Zone.rs",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Mist/tree/Current/tests/integration.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/tests/integration.rs",
+	"CodeEditorLand/Mist/tree/Current/Source/ForwardSecurity.rs": {
+		Repo: ElementRepos.Mist,
+
+		Path: "Source/ForwardSecurity.rs",
+	},
+
+	"CodeEditorLand/Mist/tree/Current/Source/Resolver.rs": {
+		Repo: ElementRepos.Mist,
+
+		Path: "Source/Resolver.rs",
+	},
+
+	"CodeEditorLand/Mist/tree/Current/Source/Server.rs": {
+		Repo: ElementRepos.Mist,
+
+		Path: "Source/Server.rs",
+	},
+
+	"CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs": {
+		Repo: ElementRepos.Mist,
+
+		Path: "Source/WebSocket.rs",
+	},
+
+	"CodeEditorLand/Mist/tree/Current/Source/Zone.rs": {
+		Repo: ElementRepos.Mist,
+
+		Path: "Source/Zone.rs",
+	},
+
+	"CodeEditorLand/Mist/tree/Current/tests/integration.rs": {
+		Repo: ElementRepos.Mist,
+
+		Path: "tests/integration.rs",
+	},
 
 	"CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Documentation/GitHub/Architecture.md",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/NamingConventions.md":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/NamingConventions.md",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/Entitlements.plist":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist",
+			Path: "Documentation/GitHub/NamingConventions.md",
+		},
 
-	"CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+	"CodeEditorLand/Mountain/tree/Current/Entitlements.plist": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Entitlements.plist",
+	},
+
+	"CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Proto/Vine.proto",
+	},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/CustomDocumentStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/CustomDocumentStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/CustomDocumentStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/DocumentStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/DocumentStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/DocumentStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ExtensionDescriptionStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ExtensionDescriptionStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/ExtensionDescriptionStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MarkerDataDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MarkerDataDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/MarkerDataDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MergedConfigurationStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MergedConfigurationStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/MergedConfigurationStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/OutputChannelStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/OutputChannelStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/OutputChannelStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ProviderRegistrationDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ProviderRegistrationDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/ProviderRegistrationDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/RPCModelContentChangeDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/RPCModelContentChangeDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/RPCModelContentChangeDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TerminalStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TerminalStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/TerminalStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TreeViewStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TreeViewStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/TreeViewStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/WindowStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/WindowStateDTO.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/DTO/WindowStateDTO.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/Entry.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/Entry.rs",
+			Path: "Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs",
+		},
+
+	"CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/Entry.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Main/Entry.rs",
+	},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/CommandProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/CustomEditorProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CustomEditorProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/CustomEditorProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/DebugProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DebugProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/DebugProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/DiagnosticProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DiagnosticProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/DiagnosticProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/Source/Environment/IPCProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/IPCProvider.rs",
+			Path: "Source/Environment/FileSystemProvider.rs",
+		},
+
+	"CodeEditorLand/Mountain/tree/Current/Source/Environment/IPCProvider.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/IPCProvider.rs",
+	},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/KeybindingProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/KeybindingProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/KeybindingProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/Registration.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/Registration.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/LanguageFeatureProvider/Registration.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/MountainEnvironment.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/MountainEnvironment.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/MountainEnvironment.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/SearchProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SearchProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/SearchProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/SecretProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SecretProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/SecretProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/SourceControlManagementProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SourceControlManagementProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/SourceControlManagementProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/StatusBarProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/StatusBarProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/StatusBarProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/StorageProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/StorageProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/StorageProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/SynchronizationProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/SynchronizationProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/Environment/SynchronizationProvider.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/TerminalProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TerminalProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/Source/Environment/TestProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TestProvider.rs",
+			Path: "Source/Environment/TerminalProvider.rs",
+		},
+
+	"CodeEditorLand/Mountain/tree/Current/Source/Environment/TestProvider.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/TestProvider.rs",
+	},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/Environment/UserInterfaceProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/UserInterfaceProvider.rs",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs",
+			Path: "Source/Environment/UserInterfaceProvider.rs",
+		},
+
+	"CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/TauriIPCServer.rs",
+	},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
+		MountainWindServiceHandlersMod,
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs",
+		{
+			Repo: ElementRepos.Mountain,
+
+			Path: "Source/ProcessManagement/CocoonManagement.rs",
+		},
 
 	"CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs",
+		MountainProcessManagementInitializationData,
 
-	"CodeEditorLand/Mountain/tree/Current/Source/Shim/Gate.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/Gate.rs",
+	"CodeEditorLand/Mountain/tree/Current/Source/Shim/Gate.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs",
+		Path: "Source/Shim/Gate.rs",
+	},
 
-	"CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs",
+	"CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/build.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs",
+		Path: "Source/Shim/SwallowMap.rs",
+	},
 
-	"CodeEditorLand/Mountain/tree/Current/scripts/cocoon/bootstrap-fork.js":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/scripts/cocoon/bootstrap-fork.js",
+	"CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Mountain/tree/Current/tauri.conf.json":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json",
+		Path: "Source/Track/mod.rs",
+	},
 
-	"CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md",
+	"CodeEditorLand/Mountain/tree/Current/build.rs": MountainBuild,
 
-	"CodeEditorLand/Output/tree/Current/Source/Apply/Pipeline.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Apply/Pipeline.ts",
+	"CodeEditorLand/Mountain/tree/Current/scripts/cocoon/bootstrap-fork.js": {
+		Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Output/tree/Current/Source/ESBuild.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts",
+		Path: "scripts/cocoon/bootstrap-fork.js",
+	},
 
-	"CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.js":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.js",
+	"CodeEditorLand/Mountain/tree/Current/tauri.conf.json": {
+		Repo: ElementRepos.Mountain,
 
-	"CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts",
+		Path: "tauri.conf.json",
+	},
 
-	"CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts",
+	"CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Output,
 
-	"CodeEditorLand/Output/tree/Current/Source/Plugin/Copy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Copy.ts",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Output/tree/Current/Source/Plugin/Index.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Index.ts",
+	"CodeEditorLand/Output/tree/Current/Source/Apply/Pipeline.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Apply/Pipeline.ts",
+	},
+
+	"CodeEditorLand/Output/tree/Current/Source/ESBuild.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild.ts",
+	},
+
+	"CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.js": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild/Output.js",
+	},
+
+	"CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild/Output.ts",
+	},
+
+	"CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Plugin/Apply.ts",
+	},
+
+	"CodeEditorLand/Output/tree/Current/Source/Plugin/Copy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Plugin/Copy.ts",
+	},
+
+	"CodeEditorLand/Output/tree/Current/Source/Plugin/Index.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Plugin/Index.ts",
+	},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Index.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Index.ts",
+		{
+			Repo: ElementRepos.Output,
 
-	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts",
+			Path: "Source/Service/CEL/Land/Shim/Index.ts",
+		},
+
+	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Init.ts",
+	},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/Index.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/Index.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/Index.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Extension/Gallery/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Extension/Gallery/Service.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Null/Extension/Gallery/Service.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Telemetry/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Telemetry/Service.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Null/Telemetry/Service.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Update/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Update/Service.ts",
+		{
+			Repo: ElementRepos.Output,
+
+			Path: "Source/Service/CEL/Null/Update/Service.ts",
+		},
 
 	"CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts",
+		{
+			Repo: ElementRepos.Output,
 
-	"CodeEditorLand/Rest/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Documentation/GitHub/Architecture.md",
+			Path: "Source/Service/Tauri/Main/Process/Service.ts",
+		},
 
-	"CodeEditorLand/Rest/tree/Current/Source/Binary.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Binary.rs",
+	"CodeEditorLand/Rest/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Rest/tree/Current/Source/Fn/Build.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/Build.rs",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Codegen.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Codegen.rs",
+	"CodeEditorLand/Rest/tree/Current/Source/Binary.rs": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs",
+		Path: "Source/Binary.rs",
+	},
 
-	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Parser.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Parser.rs",
+	"CodeEditorLand/Rest/tree/Current/Source/Fn/Build.rs": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Transformer.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Transformer.rs",
+		Path: "Source/Fn/Build.rs",
+	},
 
-	"CodeEditorLand/Rest/tree/Current/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Library.rs",
+	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Codegen.rs": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Rest/tree/Current/Source/Main.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Main.rs",
+		Path: "Source/Fn/OXC/Codegen.rs",
+	},
 
-	"CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs",
+	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs": {
+		Repo: ElementRepos.Rest,
 
-	"CodeEditorLand/Rest/tree/Current/Source/Struct/SWC.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/SWC.rs",
+		Path: "Source/Fn/OXC/Compiler.rs",
+	},
 
-	"CodeEditorLand/SideCar/tree/Current/Cache.json":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json",
+	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Parser.rs": {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Fn/OXC/Parser.rs",
+	},
+
+	"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Transformer.rs": {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Fn/OXC/Transformer.rs",
+	},
+
+	"CodeEditorLand/Rest/tree/Current/Source/Library.rs": {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Library.rs",
+	},
+
+	"CodeEditorLand/Rest/tree/Current/Source/Main.rs": {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Main.rs",
+	},
+
+	"CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs": {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Struct/CompilerConfig.rs",
+	},
+
+	"CodeEditorLand/Rest/tree/Current/Source/Struct/SWC.rs": {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Struct/SWC.rs",
+	},
+
+	"CodeEditorLand/SideCar/tree/Current/Cache.json": {
+		Repo: ElementRepos.SideCar,
+
+		Path: "Cache.json",
+	},
 
 	"CodeEditorLand/SideCar/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Documentation/GitHub/Architecture.md",
+		{
+			Repo: ElementRepos.SideCar,
 
-	"CodeEditorLand/SideCar/tree/Current/Source/Download.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Download.rs",
+			Path: "Documentation/GitHub/Architecture.md",
+		},
 
-	"CodeEditorLand/SideCar/tree/Current/Source/Library.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Library.rs",
+	"CodeEditorLand/SideCar/tree/Current/Source/Download.rs": {
+		Repo: ElementRepos.SideCar,
 
-	"CodeEditorLand/SideCar/tree/Current/Source/main.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/main.rs",
+		Path: "Source/Download.rs",
+	},
 
-	"CodeEditorLand/SideCar/tree/Current/build.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/build.rs",
+	"CodeEditorLand/SideCar/tree/Current/Source/Library.rs": {
+		Repo: ElementRepos.SideCar,
 
-	"CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md",
+		Path: "Source/Library.rs",
+	},
+
+	"CodeEditorLand/SideCar/tree/Current/Source/main.rs": {
+		Repo: ElementRepos.SideCar,
+
+		Path: "Source/main.rs",
+	},
+
+	"CodeEditorLand/SideCar/tree/Current/build.rs": {
+		Repo: ElementRepos.SideCar,
+
+		Path: "build.rs",
+	},
+
+	"CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Build/BakeExtensionManifest.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Build/BakeExtensionManifest.ts",
+		{
+			Repo: ElementRepos.Sky,
 
-	"CodeEditorLand/Sky/tree/Current/Source/Function/Debug.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Debug.ts",
+			Path: "Source/Function/Build/BakeExtensionManifest.ts",
+		},
 
-	"CodeEditorLand/Sky/tree/Current/Source/Function/Shared.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Shared.ts",
+	"CodeEditorLand/Sky/tree/Current/Source/Function/Debug.ts": {
+		Repo: ElementRepos.Sky,
 
-	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts",
+		Path: "Source/Function/Debug.ts",
+	},
+
+	"CodeEditorLand/Sky/tree/Current/Source/Function/Shared.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Shared.ts",
+	},
+
+	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge.ts",
+	},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallCommands.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallCommands.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallCommands.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDebug.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDebug.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallDebug.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDiagnostics.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDiagnostics.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallDiagnostics.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorAndOutput.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorOperations.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorOperations.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallEditorOperations.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallFanOut.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallFanOut.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallFanOut.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallInlineCompletions.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallInlineCompletions.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallInlineCompletions.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallScm.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallSearch.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallSearch.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallSearch.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallSimpleRelays.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallSimpleRelays.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallSimpleRelays.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallStatusbar.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallStatusbar.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallStatusbar.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallTasksAndDecorations.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallTasksAndDecorations.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallTasksAndDecorations.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallTreeView.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallTreeView.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallTreeView.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallUiRequests.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallUiRequests.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallUiRequests.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallWebview.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallWebview.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/Sky/Bridge/InstallWebview.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Auto/Diagnose/Input.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Auto/Diagnose/Input.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/SmokeTest/Auto/Diagnose/Input.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts",
+		{
+			Repo: ElementRepos.Sky,
+
+			Path: "Source/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts",
+		},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Workbench/BrowserProxy/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/BrowserProxy/Bootstrap.ts",
+		{
+			Repo: ElementRepos.Sky,
 
-	"CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Bootstrap.ts",
+			Path: "Source/Workbench/BrowserProxy/Bootstrap.ts",
+		},
 
-	"CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Polyfills.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Polyfills.ts",
+	"CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Bootstrap.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Workbench/Electron/Bootstrap.ts",
+	},
+
+	"CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Polyfills.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Workbench/Electron/Polyfills.ts",
+	},
 
 	"CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Post/Hog/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Post/Hog/Bridge.ts",
+		{
+			Repo: ElementRepos.Sky,
 
-	"CodeEditorLand/Sky/tree/Current/astro.config.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/astro.config.ts",
+			Path: "Source/Workbench/Electron/Post/Hog/Bridge.ts",
+		},
 
-	"CodeEditorLand/Vine/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Documentation/GitHub/Architecture.md",
+	"CodeEditorLand/Sky/tree/Current/astro.config.ts": SkyAstroconfig,
 
-	"CodeEditorLand/Vine/tree/Current/Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto",
+	"CodeEditorLand/Vine/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Vine,
 
-	"CodeEditorLand/Vine/tree/Current/Source/Error.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Error.rs",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	"CodeEditorLand/Vine/tree/Current/Source/Host.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Host.rs",
+	"CodeEditorLand/Vine/tree/Current/Proto/Vine.proto": VineProtoVine,
 
-	"CodeEditorLand/Vine/tree/Current/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Library.rs",
+	"CodeEditorLand/Vine/tree/Current/Source/Error.rs": {
+		Repo: ElementRepos.Vine,
 
-	"CodeEditorLand/Vine/tree/Current/Source/Multiplexer.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Multiplexer.rs",
+		Path: "Source/Error.rs",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md",
+	"CodeEditorLand/Vine/tree/Current/Source/Host.rs": {
+		Repo: ElementRepos.Vine,
+
+		Path: "Source/Host.rs",
+	},
+
+	"CodeEditorLand/Vine/tree/Current/Source/Library.rs": {
+		Repo: ElementRepos.Vine,
+
+		Path: "Source/Library.rs",
+	},
+
+	"CodeEditorLand/Vine/tree/Current/Source/Multiplexer.rs": {
+		Repo: ElementRepos.Vine,
+
+		Path: "Source/Multiplexer.rs",
+	},
+
+	"CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
 	"CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts",
+		{
+			Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts",
+			Path: "Source/Codegen/Emit/EmitServiceSchema.ts",
+		},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Function/Install.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Function/Install.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts",
+		Path: "Source/ESBuild.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Preload.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Function/Install.ts": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Function/Install.ts",
+	},
+
+	"CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/IPC/Channel.ts",
+	},
+
+	"CodeEditorLand/Wind/tree/Current/Source/Preload.ts": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Preload.ts",
+	},
 
 	"CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts",
+		{
+			Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/AsyncProxy.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/AsyncProxy.ts",
+			Path: "Source/Service/TauriMainProcessService.ts",
+		},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/AuditLog.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/AuditLog.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/AsyncProxy.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts",
+		Path: "Source/Shim/AsyncProxy.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/FullIndex.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/FullIndex.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/AuditLog.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts",
+		Path: "Source/Shim/AuditLog.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/IPCInterceptor.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/IPCInterceptor.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts",
+		Path: "Source/Shim/EventInterceptor.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/FullIndex.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/RedirectBus.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/RedirectBus.ts",
+		Path: "Source/Shim/FullIndex.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/SwallowMap.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/SwallowMap.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts",
+		Path: "Source/Shim/Gate.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/IPCInterceptor.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts",
+		Path: "Source/Shim/IPCInterceptor.ts",
+	},
 
-	"CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CodeEditorLand/Worker/tree/Current/Documentation/GitHub/Architecture.md":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Documentation/GitHub/Architecture.md",
+		Path: "Source/Shim/Index.ts",
+	},
 
-	"Command.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts": {
+		Repo: ElementRepos.Wind,
 
-	CommandBuilder: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Source/Shim/NetworkProxy.ts",
+	},
 
-	CommandExecutor:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Command/mod.rs#L9",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/RedirectBus.ts": {
+		Repo: ElementRepos.Wind,
 
-	CommandHandler:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs#L63",
+		Path: "Source/Shim/RedirectBus.ts",
+	},
 
-	CommandProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/mod.rs#L40",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/SwallowMap.ts": {
+		Repo: ElementRepos.Wind,
 
-	"CommandProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/CommandProvider.rs",
+		Path: "Source/Shim/SwallowMap.ts",
+	},
 
-	CommandRegistry:
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallCommands.ts#L27",
+	"CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts": {
+		Repo: ElementRepos.Wind,
 
-	CommandService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L164",
+		Path: "Source/Shim/Type.ts",
+	},
 
-	"Commands/Namespace.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Wrap/Commands/Namespace.ts",
+	"CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts": {
+		Repo: ElementRepos.Wind,
 
-	CommandsProvider: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Telemetry/PostHogBridge.ts",
+	},
 
-	CommandsQuickAccessProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts#L44",
+	"CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts": {
+		Repo: ElementRepos.Wind,
 
-	"Comments/Namespace.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Comments/Namespace.ts",
+		Path: "Source/Types/Interface/IPCRenderer.ts",
+	},
 
-	"Common/Source/IPC/Channel.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs",
+	"CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts": WindUtilityTier,
 
-	CommonError:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Error/mod.rs#L8",
+	"CodeEditorLand/Worker/tree/Current/Documentation/GitHub/Architecture.md": {
+		Repo: ElementRepos.Worker,
 
-	Compiler:
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs#L47",
+		Path: "Documentation/GitHub/Architecture.md",
+	},
 
-	CompilerConfig:
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs#L16",
+	"Command.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	Configuration:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L29",
+		Path: "Source/Services/Command.ts",
+	},
 
-	ConfigurationProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Configuration/ConfigurationProvider.rs#L23",
+	CommandBuilder: MountainRoot,
 
-	"ConfigurationProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Configuration/ConfigurationProvider.rs",
+	CommandExecutor: {
+		Repo: ElementRepos.Common,
 
-	ConfigurationService:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/Configuration.rs#L8",
+		Path: "Source/Command/mod.rs",
 
-	ConfigurationTarget:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Configuration/DTO/mod.rs#L17",
+		Line: 9,
+	},
 
-	ConnectionMetadata:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs#L62",
+	CommandHandler: {
+		Repo: ElementRepos.Mountain,
 
-	ConstructExtensionHostInitializationData:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L465",
+		Path: "Source/Environment/CommandProvider.rs",
 
-	ConstructSandboxConfiguration:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L229",
+		Line: 63,
+	},
 
-	"Context.Tag":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Command.ts#L7",
+	CommandProvider: {
+		Repo: ElementRepos.Mountain,
 
-	"Copy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Copy.ts",
+		Path: "Source/Environment/mod.rs",
 
-	CopyToDesktop: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 40,
+	},
 
-	Core: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/benches/full/typescript.js#L141007",
+	"CommandProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	CreateWebviewPanel:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window/Webview/Panel.ts#L41",
+		Path: "Source/Environment/CommandProvider.rs",
+	},
 
-	CreateWorkSpace: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	CommandRegistry: {
+		Repo: ElementRepos.Sky,
 
-	Current:
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Architecture.rs#L55",
+		Path: "Source/Function/Sky/Bridge/InstallCommands.ts",
 
-	"CustomDocumentStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/CustomDocumentStateDTO.rs",
+		Line: 27,
+	},
 
-	"CustomEditorProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/CustomEditor/CustomEditorProvider.rs",
+	CommandService: {
+		Repo: ElementRepos.Cocoon,
 
-	CustomEvent:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/tests/fixture/next/chakra/input.js#L387",
+		Path: "Source/Services/Command.ts",
 
-	DATA_DIR:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/scripts/chat-simulation/common/utils.js#L23",
+		Line: 164,
+	},
 
-	DNS_OVERRIDE:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/SideCar/Spawn/constant.DNS_OVERRIDE.html#L1",
+	"Commands/Namespace.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	DO: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_parser/src/lexer/token.rs#L531",
+		Path: "Source/Services/Handler/VscodeAPI/Wrap/Commands/Namespace.ts",
+	},
 
-	DTO: "https://github.com/CodeEditorLand/Common/tree/Current/Source/StatusBar/mod.rs#L19",
+	CommandsProvider: CocoonRoot,
 
-	DeactivateExtension:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	CommandsQuickAccessProvider: {
+		Repo: EditorRepo,
 
-	"Debug.Start":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Debug/Namespace.ts#L219",
+		Path: "src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts",
 
-	"Debug.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug.sh",
+		Line: 44,
+	},
 
-	"Debug.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Debug.ts",
+	"Comments/Namespace.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Debug/All.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/All.sh",
+		Path: "Source/Services/Handler/VscodeAPI/Comments/Namespace.ts",
+	},
 
-	"Debug/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh",
+	"Common/Source/IPC/Channel.rs": {
+		Repo: ElementRepos.Common,
 
-	"Debug/Run.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Run.sh",
+		Path: "Source/IPC/Channel.rs",
+	},
 
-	DebugProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/mod.rs#L49",
+	CommonError: {
+		Repo: ElementRepos.Common,
 
-	"DebugProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DebugProvider.rs",
+		Path: "Source/Error/mod.rs",
 
-	DebugServer: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 8,
+	},
 
-	DebugServerPort: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Compiler: {
+		Repo: ElementRepos.Rest,
 
-	DebugService:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Debug/DebugService.rs#L24",
+		Path: "Source/Fn/OXC/Compiler.rs",
 
-	DecorationTypeLifecycle:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Server/Notification/DecorationTypeLifecycle.rs#L6",
+		Line: 47,
+	},
 
-	"Decrypt.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Encryption/Decrypt.rs",
+	CompilerConfig: {
+		Repo: ElementRepos.Rest,
 
-	"Default.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro#L23",
+		Path: "Source/Struct/CompilerConfig.rs",
 
-	Delta: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 16,
+	},
 
-	Dependency:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L9",
+	Configuration: {
+		Repo: ElementRepos.Mountain,
 
-	"Dependency/Microsoft/Dependency/Editor/.nvmrc":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/.nvmrc",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	"DependencyCodeEditorLand/Editor":
-		"https://github.com/DependencyCodeEditorLand/Editor",
+		Line: 29,
+	},
 
-	Deserialize:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/marshalling.ts#L37",
+	ConfigurationProvider: {
+		Repo: ElementRepos.Common,
 
-	DiagnosticManager:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Diagnostic/mod.rs#L16",
+		Path: "Source/Configuration/ConfigurationProvider.rs",
 
-	"DiagnosticProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DiagnosticProvider.rs",
+		Line: 23,
+	},
 
-	Dialog: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/Native/Module/Polyfill.ts#L149",
+	"ConfigurationProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	DiffEditorInput:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/common/editor/diffEditorInput.ts#L37",
+		Path: "Source/Configuration/ConfigurationProvider.rs",
+	},
 
-	Disable:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Telemetry/FeatureFlags/mod.rs#L24",
+	ConfigurationService: {
+		Repo: ElementRepos.Mountain,
 
-	DisableUIFixes: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/RPC/Configuration.rs",
 
-	Disabled:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/update/common/update.ts#L72",
+		Line: 8,
+	},
 
-	DisposableProxy:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts#L22",
+	ConfigurationTarget: {
+		Repo: ElementRepos.Common,
 
-	DisposableStore:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/lifecycle.ts#L416",
+		Path: "Source/Configuration/DTO/mod.rs",
 
-	DnsPort:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Build/Scheme.rs#L102",
+		Line: 17,
+	},
 
-	Document:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Library.rs#L95",
+	ConnectionMetadata: {
+		Repo: ElementRepos.Vine,
 
-	"Document.Save":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Workspace/Namespace/Index.ts#L644",
+		Path: "Source/Client/Shared.rs",
 
-	"Document.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Workspace/Namespace/Text/Document.ts",
+		Line: 62,
+	},
 
-	DocumentContentCache:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	ConstructExtensionHostInitializationData: {
+		Repo: ElementRepos.Mountain,
 
-	DocumentProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Document/mod.rs#L10",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	"DocumentProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Document/DocumentProvider.rs",
+		Line: 465,
+	},
 
-	DocumentService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Document.ts#L58",
+	ConstructSandboxConfiguration: {
+		Repo: ElementRepos.Mountain,
 
-	"DocumentStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/DocumentStateDTO.rs",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	"Documentation/GitHub/BuildMatrix.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildMatrix.md",
+		Line: 229,
+	},
 
-	"Documentation/GitHub/VSCode-API-Coverage-Matrix.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+	"Context.Tag": {
+		Repo: ElementRepos.Cocoon,
 
-	Download:
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Library.rs#L64",
+		Path: "Archive/Command.ts",
 
-	ESBuild:
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/Bundle/mod.rs#L19",
+		Line: 7,
+	},
 
-	"ESBuild.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts",
+	"Copy.ts": { Repo: ElementRepos.Output, Path: "Source/Plugin/Copy.ts" },
 
-	ESRCH: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	CopyToDesktop: AirRoot,
 
-	Eager: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Core: {
+		Repo: SWCRepo,
 
-	Editor: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window/Text/Document.ts#L115",
+		Path: "crates/swc_ecma_minifier/benches/full/typescript.js",
 
-	EditorGroupModel:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/common/editor/editorGroupModel.ts#L185",
+		Line: 141007,
+	},
 
-	EditorGroupsService:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	CreateWebviewPanel: {
+		Repo: ElementRepos.Cocoon,
 
-	EditorInput:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/common/editor/editorInput.ts#L61",
+		Path: "Source/Services/Window/Webview/Panel.ts",
 
-	EditorService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/editor/browser/editorService.ts#L39",
+		Line: 41,
+	},
 
-	Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+	CreateWorkSpace: MountainRoot,
 
-	"Effect.Service":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Interfaces/I/Mountain/Client/Service.ts#L62",
+	Current: {
+		Repo: ElementRepos.Maintain,
 
-	"Effect.catchTag":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/PatchProcess/Loader.ts#L97",
+		Path: "Source/Architecture.rs",
 
-	"Effect.fork":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/PatchProcess.ts#L322",
+		Line: 55,
+	},
 
-	"Effect.linkSpans":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md#L228",
+	"CustomDocumentStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Effect.race":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+		Path: "Source/ApplicationState/DTO/CustomDocumentStateDTO.rs",
+	},
 
-	"Effect.runPromise":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/DeepDive.md#L84",
+	"CustomEditorProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	"Effect.timeout":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+		Path: "Source/CustomEditor/CustomEditorProvider.rs",
+	},
 
-	"Effect.withSpan":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Wrap/Namespace/With/Heuristics.ts#L21",
+	CustomEvent: {
+		Repo: SWCRepo,
 
-	"Effect/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts",
+		Path: "crates/swc_ecma_minifier/tests/fixture/next/chakra/input.js",
 
-	"Effect/Health.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Health.ts",
+		Line: 387,
+	},
 
-	"Effect/Module/Interceptor.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Module/Interceptor.ts",
+	DATA_DIR: {
+		Repo: EditorRepo,
 
-	"Effect/RPCServer.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/RPCServer.ts",
+		Path: "scripts/chat-simulation/common/utils.js",
 
-	"Effect/Telemetry.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Telemetry.ts",
+		Line: 23,
+	},
 
-	Electron:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L5",
+	DNS_OVERRIDE: {
+		Repo: ElementRepos.Land,
 
-	"Electron.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/Electron.astro#L3",
+		Path: "Documentation/Rust/doc/SideCar/Spawn/constant.DNS_OVERRIDE.html",
 
-	ElectronLiveLayer:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md#L382",
+		Line: 1,
+	},
 
-	"Element/Air/Proto/Air.proto":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Proto/Air.proto",
+	DO: {
+		Repo: SWCRepo,
 
-	"Element/Air/README.md":
-		"https://github.com/CodeEditorLand/Air/tree/Current/README.md",
+		Path: "crates/swc_ecma_parser/src/lexer/token.rs",
 
-	"Element/Air/Source/Authentication/mod.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Authentication/mod.rs",
+		Line: 531,
+	},
 
-	"Element/Air/Source/Binary.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary.rs",
+	DTO: {
+		Repo: ElementRepos.Common,
 
-	"Element/Air/Source/Downloader/mod.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Downloader/mod.rs",
+		Path: "Source/StatusBar/mod.rs",
 
-	"Element/Air/Source/Updates/mod.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Updates/mod.rs",
+		Line: 19,
+	},
 
-	"Element/Cocoon/README.md":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/README.md",
+	DeactivateExtension: CocoonRoot,
 
-	"Element/Cocoon/Scripts/cocoon/bootstrap-fork.js":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Scripts/cocoon/bootstrap-fork.js",
+	"Debug.Start": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Debug/Namespace.ts",
+
+		Line: 219,
+	},
+
+	"Debug.sh": { Repo: ElementRepos.Land, Path: "Maintain/Debug.sh" },
+
+	"Debug.ts": { Repo: ElementRepos.Sky, Path: "Source/Function/Debug.ts" },
+
+	"Debug/All.sh": { Repo: ElementRepos.Land, Path: "Maintain/Debug/All.sh" },
+
+	"Debug/Build.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Debug/Build.sh",
+	},
+
+	"Debug/Run.sh": { Repo: ElementRepos.Land, Path: "Maintain/Debug/Run.sh" },
+
+	DebugProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/mod.rs",
+
+		Line: 49,
+	},
+
+	"DebugProvider.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/DebugProvider.rs",
+	},
+
+	DebugServer: AirRoot,
+
+	DebugServerPort: AirRoot,
+
+	DebugService: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Debug/DebugService.rs",
+
+		Line: 24,
+	},
+
+	DecorationTypeLifecycle: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Vine/Server/Notification/DecorationTypeLifecycle.rs",
+
+		Line: 6,
+	},
+
+	"Decrypt.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Encryption/Decrypt.rs",
+	},
+
+	"Default.astro": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/pages/index.astro",
+
+		Line: 23,
+	},
+
+	Delta: AirRoot,
+
+	Dependency: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild.ts",
+
+		Line: 9,
+	},
+
+	"Dependency/Microsoft/Dependency/Editor/.nvmrc": {
+		Repo: EditorRepo,
+
+		Path: ".nvmrc",
+	},
+
+	"DependencyCodeEditorLand/Editor": {
+		External: "https://github.com/DependencyCodeEditorLand/Editor",
+	},
+
+	Deserialize: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/common/marshalling.ts",
+
+		Line: 37,
+	},
+
+	DiagnosticManager: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Diagnostic/mod.rs",
+
+		Line: 16,
+	},
+
+	"DiagnosticProvider.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/DiagnosticProvider.rs",
+	},
+
+	Dialog: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Polyfill/Native/Module/Polyfill.ts",
+
+		Line: 149,
+	},
+
+	DiffEditorInput: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/common/editor/diffEditorInput.ts",
+
+		Line: 37,
+	},
+
+	Disable: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Telemetry/FeatureFlags/mod.rs",
+
+		Line: 24,
+	},
+
+	DisableUIFixes: AirRoot,
+
+	Disabled: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/update/common/update.ts",
+
+		Line: 72,
+	},
+
+	DisposableProxy: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts",
+
+		Line: 22,
+	},
+
+	DisposableStore: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/common/lifecycle.ts",
+
+		Line: 416,
+	},
+
+	DnsPort: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Build/Scheme.rs",
+
+		Line: 102,
+	},
+
+	Document: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Library.rs",
+
+		Line: 95,
+	},
+
+	"Document.Save": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Index.ts",
+
+		Line: 644,
+	},
+
+	"Document.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Text/Document.ts",
+	},
+
+	DocumentContentCache: MountainRoot,
+
+	DocumentProvider: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Document/mod.rs",
+
+		Line: 10,
+	},
+
+	"DocumentProvider.rs": {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Document/DocumentProvider.rs",
+	},
+
+	DocumentService: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/Document.ts",
+
+		Line: 58,
+	},
+
+	"DocumentStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/DTO/DocumentStateDTO.rs",
+	},
+
+	"Documentation/GitHub/BuildMatrix.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/BuildMatrix.md",
+	},
+
+	"Documentation/GitHub/VSCode-API-Coverage-Matrix.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+	},
+
+	Download: {
+		Repo: ElementRepos.SideCar,
+
+		Path: "Source/Library.rs",
+
+		Line: 64,
+	},
+
+	ESBuild: {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Fn/Bundle/mod.rs",
+
+		Line: 19,
+	},
+
+	"ESBuild.ts": { Repo: ElementRepos.Wind, Path: "Source/ESBuild.ts" },
+
+	ESRCH: CocoonRoot,
+
+	Eager: AirRoot,
+
+	Editor: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Window/Text/Document.ts",
+
+		Line: 115,
+	},
+
+	EditorGroupModel: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/common/editor/editorGroupModel.ts",
+
+		Line: 185,
+	},
+
+	EditorGroupsService: MountainRoot,
+
+	EditorInput: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/common/editor/editorInput.ts",
+
+		Line: 61,
+	},
+
+	EditorService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/editor/browser/editorService.ts",
+
+		Line: 39,
+	},
+
+	Effect: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Track/mod.rs",
+
+		Line: 19,
+	},
+
+	"Effect.Service": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Interfaces/I/Mountain/Client/Service.ts",
+
+		Line: 62,
+	},
+
+	"Effect.catchTag": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/PatchProcess/Loader.ts",
+
+		Line: 97,
+	},
+
+	"Effect.fork": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/PatchProcess.ts",
+
+		Line: 322,
+	},
+
+	"Effect.linkSpans": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Module/Telemetry/Effect-OTel.md",
+
+		Line: 228,
+	},
+
+	"Effect.race": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Track/mod.rs",
+
+		Line: 19,
+	},
+
+	"Effect.runPromise": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Documentation/GitHub/DeepDive.md",
+
+		Line: 84,
+	},
+
+	"Effect.timeout": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Track/mod.rs",
+
+		Line: 19,
+	},
+
+	"Effect.withSpan": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Wrap/Namespace/With/Heuristics.ts",
+
+		Line: 21,
+	},
+
+	"Effect/Bootstrap.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Bootstrap.ts",
+	},
+
+	"Effect/Health.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Health.ts",
+	},
+
+	"Effect/Module/Interceptor.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Module/Interceptor.ts",
+	},
+
+	"Effect/RPCServer.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/RPCServer.ts",
+	},
+
+	"Effect/Telemetry.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Telemetry.ts",
+	},
+
+	Electron: { Repo: ElementRepos.Output, Path: "Source/ESBuild.ts", Line: 5 },
+
+	"Electron.astro": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/pages/Electron.astro",
+
+		Line: 3,
+	},
+
+	ElectronLiveLayer: {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EditorCore.md",
+
+		Line: 382,
+	},
+
+	"Element/Air/Proto/Air.proto": {
+		Repo: ElementRepos.Air,
+
+		Path: "Proto/Air.proto",
+	},
+
+	"Element/Air/README.md": { Repo: ElementRepos.Air, Path: "README.md" },
+
+	"Element/Air/Source/Authentication/mod.rs": {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Authentication/mod.rs",
+	},
+
+	"Element/Air/Source/Binary.rs": AirSourceBinary,
+
+	"Element/Air/Source/Downloader/mod.rs": {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Downloader/mod.rs",
+	},
+
+	"Element/Air/Source/Updates/mod.rs": {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Updates/mod.rs",
+	},
+
+	"Element/Cocoon/README.md": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "README.md",
+	},
+
+	"Element/Cocoon/Scripts/cocoon/bootstrap-fork.js": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Scripts/cocoon/bootstrap-fork.js",
+	},
 
 	"Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+		CocoonCocoonMain,
 
-	"Element/Cocoon/Source/Platform/FiddeeRoot.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/FiddeeRoot.ts",
+	"Element/Cocoon/Source/Platform/FiddeeRoot.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Element/Cocoon/Source/Services/Extension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension.ts",
+		Path: "Source/Platform/FiddeeRoot.ts",
+	},
+
+	"Element/Cocoon/Source/Services/Extension.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension.ts",
+	},
 
 	"Element/Cocoon/Source/Services/Extension/Context.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts",
+		CocoonExtensionContext,
 
 	"Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+		CocoonHostActivateExtension,
 
-	"Element/Cocoon/Source/Services/Mountain/gRPC/Client.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts",
+	"Element/Cocoon/Source/Services/Mountain/gRPC/Client.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Element/Cocoon/Source/Telemetry/OTLPBridge.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Telemetry/OTLPBridge.ts",
+		Path: "Source/Services/Mountain/gRPC/Client.ts",
+	},
 
-	"Element/Cocoon/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts",
+	"Element/Cocoon/Source/Telemetry/OTLPBridge.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Element/Common/Source/Telemetry/Tier.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/Tier.rs",
+		Path: "Source/Telemetry/OTLPBridge.ts",
+	},
 
-	"Element/Echo/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs",
+	"Element/Cocoon/Source/Utility/Tier.ts": CocoonUtilityTier,
 
-	"Element/Grove/Proto/Grove.proto":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Proto/Grove.proto",
+	"Element/Common/Source/Telemetry/Tier.rs": {
+		Repo: ElementRepos.Common,
 
-	"Element/Grove/README.md":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/README.md",
+		Path: "Source/Telemetry/Tier.rs",
+	},
 
-	"Element/Grove/Source/main.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs",
+	"Element/Echo/Source/Library.rs": {
+		Repo: ElementRepos.Echo,
 
-	"Element/Mist/README.md":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/README.md",
+		Path: "Source/Library.rs",
+	},
 
-	"Element/Mountain/Cargo.toml":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Cargo.toml",
+	"Element/Grove/Proto/Grove.proto": {
+		Repo: ElementRepos.Grove,
 
-	"Element/Mountain/Entitlements.plist":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist",
+		Path: "Proto/Grove.proto",
+	},
 
-	"Element/Mountain/Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+	"Element/Grove/README.md": { Repo: ElementRepos.Grove, Path: "README.md" },
 
-	"Element/Mountain/Source/Binary/Initialize/CliParse.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Initialize/CliParse.rs",
+	"Element/Grove/Source/main.rs": {
+		Repo: ElementRepos.Grove,
 
-	"Element/Mountain/Source/Binary/Main/AppLifecycle.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs",
+		Path: "Source/main.rs",
+	},
 
-	"Element/Mountain/Source/ExtensionManagement/Scanner.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ExtensionManagement/Scanner.rs",
+	"Element/Mist/README.md": { Repo: ElementRepos.Mist, Path: "README.md" },
 
-	"Element/Mountain/Source/IPC/DevLog/AppDataPrefix.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/DevLog/AppDataPrefix.rs",
+	"Element/Mountain/Cargo.toml": {
+		Repo: ElementRepos.Mountain,
 
-	"Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/DevLog/EmitOTLPSpan.rs",
+		Path: "Cargo.toml",
+	},
 
-	"Element/Mountain/Source/IPC/DevLog/WriteToFile.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/DevLog/WriteToFile.rs",
+	"Element/Mountain/Entitlements.plist": {
+		Repo: ElementRepos.Mountain,
 
-	"Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
+		Path: "Entitlements.plist",
+	},
+
+	"Element/Mountain/Proto/Vine.proto": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Proto/Vine.proto",
+	},
+
+	"Element/Mountain/Source/Binary/Initialize/CliParse.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Initialize/CliParse.rs",
+	},
+
+	"Element/Mountain/Source/Binary/Main/AppLifecycle.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Main/AppLifecycle.rs",
+	},
+
+	"Element/Mountain/Source/ExtensionManagement/Scanner.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ExtensionManagement/Scanner.rs",
+	},
+
+	"Element/Mountain/Source/IPC/DevLog/AppDataPrefix.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/DevLog/AppDataPrefix.rs",
+	},
+
+	"Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/DevLog/EmitOTLPSpan.rs",
+	},
+
+	"Element/Mountain/Source/IPC/DevLog/WriteToFile.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/DevLog/WriteToFile.rs",
+	},
+
+	"Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
+	},
 
 	"Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs",
+		{
+			Repo: ElementRepos.Mountain,
 
-	"Element/Mountain/Source/LandFixTier.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/LandFixTier.rs",
+			Path: "Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs",
+		},
+
+	"Element/Mountain/Source/LandFixTier.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/LandFixTier.rs",
+	},
 
 	"Element/Mountain/Source/ProcessManagement/InitializationData.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs",
+		MountainProcessManagementInitializationData,
 
-	"Element/Mountain/Source/Telemetry/Tracing/InitializeTracing.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Telemetry/Tracing/InitializeTracing.rs",
+	"Element/Mountain/Source/Telemetry/Tracing/InitializeTracing.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Element/Mountain/Target/debug/extensions.manifest.json":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Target/debug/extensions.manifest.json",
+		Path: "Source/Telemetry/Tracing/InitializeTracing.rs",
+	},
 
-	"Element/Mountain/build.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs",
+	"Element/Mountain/Target/debug/extensions.manifest.json": {
+		Repo: ElementRepos.Mountain,
 
-	"Element/Mountain/tauri.conf.json":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json",
+		Path: "Target/debug/extensions.manifest.json",
+	},
 
-	"Element/Rest/README.md":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/README.md",
+	"Element/Mountain/build.rs": MountainBuild,
 
-	"Element/Rest/Source/Main.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Main.rs",
+	"Element/Mountain/tauri.conf.json": {
+		Repo: ElementRepos.Mountain,
 
-	"Element/SideCar/README.md":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/README.md",
+		Path: "tauri.conf.json",
+	},
 
-	"Element/SideCar/Source/Download.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Download.rs",
+	"Element/Rest/README.md": { Repo: ElementRepos.Rest, Path: "README.md" },
 
-	"Element/SideCar/Source/main.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/main.rs",
+	"Element/Rest/Source/Main.rs": {
+		Repo: ElementRepos.Rest,
 
-	"Element/Sky/README.md":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/README.md",
+		Path: "Source/Main.rs",
+	},
 
-	"Element/Sky/Source/Workbench/Electron/Post/Hog/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Post/Hog/Bridge.ts",
+	"Element/SideCar/README.md": {
+		Repo: ElementRepos.SideCar,
 
-	"Element/Vine/Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto",
+		Path: "README.md",
+	},
 
-	"Element/Vine/Vine.proto":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto",
+	"Element/SideCar/Source/Download.rs": {
+		Repo: ElementRepos.SideCar,
 
-	"Element/Wind/README.md":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/README.md",
+		Path: "Source/Download.rs",
+	},
 
-	"Element/Wind/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts",
+	"Element/SideCar/Source/main.rs": {
+		Repo: ElementRepos.SideCar,
 
-	"Element/Worker/Source/Telemetry/Bridge.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Telemetry/Bridge.ts",
+		Path: "Source/main.rs",
+	},
 
-	Embedded: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Element/Sky/README.md": { Repo: ElementRepos.Sky, Path: "README.md" },
 
-	"EmitServiceSchema.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts",
+	"Element/Sky/Source/Workbench/Electron/Post/Hog/Bridge.ts": {
+		Repo: ElementRepos.Sky,
 
-	EmitTierDefaults:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs#L439",
+		Path: "Source/Workbench/Electron/Post/Hog/Bridge.ts",
+	},
 
-	Emitter:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/SkyEmit.rs#L44",
+	"Element/Vine/Proto/Vine.proto": VineProtoVine,
 
-	EmitterFireProxy:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts#L40",
+	"Element/Vine/Vine.proto": VineProtoVine,
 
-	Empty: "https://github.com/CodeEditorLand/Vine/tree/Current/Documentation/Rust/doc/Vine/Generated/struct.Empty.html#L1",
+	"Element/Wind/README.md": { Repo: ElementRepos.Wind, Path: "README.md" },
 
-	Encapsulation: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Element/Wind/Source/Utility/Tier.ts": WindUtilityTier,
 
-	"Encapsulation.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/Encapsulation.md",
+	"Element/Worker/Source/Telemetry/Bridge.ts": {
+		Repo: ElementRepos.Worker,
 
-	"Encrypt.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Encryption/Encrypt.rs",
+		Path: "Source/Telemetry/Bridge.ts",
+	},
 
-	"Encryption/Key.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Encryption/Key.rs",
+	Embedded: AirRoot,
 
-	EnqueueTreeViewEmit:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/TreeView.rs#L11",
+	"EmitServiceSchema.ts": {
+		Repo: ElementRepos.Wind,
 
-	"Entitlements.plist":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist",
+		Path: "Source/Codegen/Emit/EmitServiceSchema.ts",
+	},
 
-	Envelope:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/mod.rs#L59",
+	EmitTierDefaults: {
+		Repo: ElementRepos.Mountain,
 
-	Environment:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Library.rs#L69",
+		Path: "build.rs",
 
-	"Environment/ConfigurationProvider/UpdateValue.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/ConfigurationProvider/UpdateValue.rs",
+		Line: 439,
+	},
 
-	"Environment/FileSystemProvider/WriteOperations.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider/WriteOperations.rs",
+	Emitter: {
+		Repo: ElementRepos.Mountain,
 
-	"Environment/FileWatcherProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/FileWatcherProvider.rs",
+		Path: "Source/IPC/SkyEmit.rs",
 
-	"Environment/KeybindingProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/KeybindingProvider.rs",
+		Line: 44,
+	},
 
-	"Environment/StorageProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/StorageProvider.rs",
+	EmitterFireProxy: {
+		Repo: ElementRepos.Output,
 
-	"Environment/Terminal/ShellIntegration.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/Terminal/ShellIntegration.rs",
+		Path: "Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts",
 
-	"Environment/WebviewProvider/Messaging.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/WebviewProvider/Messaging.rs",
+		Line: 40,
+	},
 
-	"Environment/WorkspaceProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/WorkspaceProvider.rs",
+	Empty: {
+		Repo: ElementRepos.Vine,
 
-	"EnvironmentVariables.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md",
+		Path: "Documentation/Rust/doc/Vine/Generated/struct.Empty.html",
 
-	Err: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RunTime/Shutdown/Shutdown.rs#L15",
+		Line: 1,
+	},
 
-	"Error/CommonError.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Error/CommonError.rs",
+	Encapsulation: AirRoot,
 
-	ErrorHandlerProxy:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts#L23",
+	"Encapsulation.md": {
+		Repo: ElementRepos.Land,
 
-	EventEmitter:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/VSCode/Type.ts#L55",
+		Path: "Documentation/GitHub/FilesystemFootprint/Encapsulation.md",
+	},
 
-	"EventTarget.prototype.addEventListener":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts#L6",
+	"Encrypt.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ExecuteCommandLogic:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/Encryption/Encrypt.rs",
+	},
 
-	ExecuteContributedCommand:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Command.rs#L6",
+	"Encryption/Key.rs": {
+		Repo: ElementRepos.Mountain,
 
-	Executions:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts#L37",
+		Path: "Source/IPC/WindServiceHandlers/Encryption/Key.rs",
+	},
 
-	ExtHostApiImpl: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	EnqueueTreeViewEmit: {
+		Repo: ElementRepos.Mountain,
 
-	ExtHostAuthentication:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostAuthentication.ts#L58",
+		Path: "Source/RPC/CocoonService/TreeView.rs",
 
-	ExtHostContext:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L4171",
+		Line: 11,
+	},
 
-	ExtHostDocumentSaveParticipant:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDocumentSaveParticipant.ts#L22",
+	"Entitlements.plist": {
+		Repo: ElementRepos.Mountain,
 
-	ExtHostRequireInterceptor:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Entitlements.plist",
+	},
 
-	ExtHostSaveParticipant:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/browser/mainThreadSaveParticipant.ts#L17",
+	Envelope: {
+		Repo: ElementRepos.Mountain,
 
-	ExtHostTaskService: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Vine/Generated/mod.rs",
 
-	Extend: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_transforms_module/src/module_decl_strip.rs#L603",
+		Line: 59,
+	},
 
-	"Extension/Context.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts",
+	Environment: {
+		Repo: ElementRepos.Common,
 
-	ExtensionContext:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L439",
+		Path: "Source/Library.rs",
 
-	ExtensionDescriptionRegistry:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/extensions/common/extensionDescriptionRegistry.ts#L29",
+		Line: 69,
+	},
 
-	"ExtensionDescriptionStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ExtensionDescriptionStateDTO.rs",
+	"Environment/ConfigurationProvider/UpdateValue.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ExtensionHost:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Extension.ts#L37",
+		Path: "Source/Environment/ConfigurationProvider/UpdateValue.rs",
+	},
 
-	ExtensionHostHandler:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Environment/FileSystemProvider/WriteOperations.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ExtensionHostLayer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Host/Service.ts#L319",
+		Path: "Source/Environment/FileSystemProvider/WriteOperations.rs",
+	},
 
-	ExtensionHostProvider:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/",
+	"Environment/FileWatcherProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ExtensionManagement:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Library.rs#L98",
+		Path: "Source/Environment/FileWatcherProvider.rs",
+	},
 
-	"ExtensionManagement/Scanner.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ExtensionManagement/Scanner.rs",
+	"Environment/KeybindingProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"ExtensionManagement/VsixInstaller.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ExtensionManagement/VsixInstaller.rs",
+		Path: "Source/Environment/KeybindingProvider.rs",
+	},
 
-	ExtensionManagementService:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/ExtensionManagement/mod.rs#L11",
+	"Environment/StorageProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ExtensionManifest:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Extension.ts#L14",
+		Path: "Source/Environment/StorageProvider.rs",
+	},
 
-	ExtensionProvider: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Environment/Terminal/ShellIntegration.rs": {
+		Repo: ElementRepos.Mountain,
 
-	ExtensionService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Extension.ts#L130",
+		Path: "Source/Environment/Terminal/ShellIntegration.rs",
+	},
 
-	ExtensionTypeFilter:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"Environment/WebviewProvider/Messaging.rs": {
+		Repo: ElementRepos.Mountain,
 
-	Extensions:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+		Path: "Source/Environment/WebviewProvider/Messaging.rs",
+	},
 
-	ExtensionsGetInstalled:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Extensions.rs#L24",
+	"Environment/WorkspaceProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"ExtensionsGetInstalled.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Extensions/ExtensionsGetInstalled.rs",
+		Path: "Source/Environment/WorkspaceProvider.rs",
+	},
 
-	ExtensionsSynchronizer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"EnvironmentVariables.md": {
+		Repo: ElementRepos.Land,
 
-	F8: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Documentation/GitHub/EnvironmentVariables.md",
+	},
 
-	FC: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/tests/fixture/next/asmjs/1/input.js#L26109",
+	Err: {
+		Repo: ElementRepos.Mountain,
 
-	FN: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/RunTime/Shutdown/Shutdown.rs",
 
-	FOLDERID_LocalAppData:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 15,
+	},
 
-	FOLDERID_RoamingAppData:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Error/CommonError.rs": {
+		Repo: ElementRepos.Common,
 
-	FR: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Error/CommonError.rs",
+	},
 
-	FailureCount: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ErrorHandlerProxy: {
+		Repo: ElementRepos.Output,
 
-	"FeatureMethods.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+		Path: "Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
 
-	"FiddeeRoot.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
+		Line: 23,
+	},
 
-	FileService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/files/common/fileService.ts#L26",
+	EventEmitter: {
+		Repo: ElementRepos.Cocoon,
 
-	FileStat:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/Managed/mod.rs#L20",
+		Path: "Archive/VSCode/Type.ts",
 
-	FileSystem:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L41",
+		Line: 55,
+	},
 
-	"FileSystem.ReadFile":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/SideCarRequest/DispatchSideCarRequest.rs#L76",
+	"EventTarget.prototype.addEventListener": {
+		Repo: ElementRepos.Wind,
 
-	FileSystemProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/mod.rs#L58",
+		Path: "Source/Shim/EventInterceptor.ts",
 
-	"FileSystemProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider.rs",
+		Line: 6,
+	},
 
-	FileSystemReader:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/FileSystem/mod.rs#L10",
+	ExecuteCommandLogic: MountainRoot,
 
-	FileSystemService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/File/System/Service.ts#L39",
+	ExecuteContributedCommand: {
+		Repo: ElementRepos.Mountain,
 
-	FileSystemWriter:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/FileSystem/mod.rs#L13",
+		Path: "Source/RPC/CocoonService/Command.rs",
 
-	FileWatcher:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L44",
+		Line: 6,
+	},
 
-	FileWatcherProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/mod.rs#L62",
+	Executions: {
+		Repo: ElementRepos.Cocoon,
 
-	FromAsync: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts",
 
-	FsReader: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 37,
+	},
 
-	FsWriter: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtHostApiImpl: CocoonRoot,
 
-	Full: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Workspace/Contains/Activator.ts#L209",
+	ExtHostAuthentication: {
+		Repo: EditorRepo,
 
-	FullAppInitialization:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/",
+		Path: "src/vs/workbench/api/common/extHostAuthentication.ts",
 
-	Future: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L2111",
+		Line: 58,
+	},
 
-	GenericNotification:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L13",
+	ExtHostContext: {
+		Repo: EditorRepo,
 
-	GenericRequest:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L15",
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
 
-	GetCompletions: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 4171,
+	},
 
-	GetConfigurationValue:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/ConfigurationProvider/mod.rs#L52",
+	ExtHostDocumentSaveParticipant: {
+		Repo: EditorRepo,
 
-	GetDefinition: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vs/workbench/api/common/extHostDocumentSaveParticipant.ts",
 
-	GetDocumentSymbols:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 22,
+	},
 
-	GetHoverAtPosition:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtHostRequireInterceptor: CocoonRoot,
 
-	GetReferences: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtHostSaveParticipant: {
+		Repo: EditorRepo,
 
-	"GetTauriTargetTriple.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs",
+		Path: "src/vs/workbench/api/browser/mainThreadSaveParticipant.ts",
 
-	Git: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L47",
+		Line: 17,
+	},
 
-	GitProvider: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	ExtHostTaskService: LandRoot,
 
-	Glob: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Workspace/Contains/Activator.ts#L305",
+	Extend: {
+		Repo: SWCRepo,
 
-	Global: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Tauri/Drag/Region.ts#L83",
+		Path: "crates/swc_ecma_transforms_module/src/module_decl_strip.rs",
 
-	"Grove.proto":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Proto/Grove.proto",
+		Line: 603,
+	},
 
-	HEALTH_CHECK_INTERVAL_MS:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs#L50",
+	"Extension/Context.ts": CocoonExtensionContext,
 
-	HOME: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	ExtensionContext: {
+		Repo: ElementRepos.Cocoon,
 
-	HTTPProxy: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Services/Extension/Context.ts",
 
-	HTTPS_PROXY: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 439,
+	},
 
-	HTTP_PROXY: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ExtensionDescriptionRegistry: {
+		Repo: EditorRepo,
 
-	HandRolled: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "src/vs/workbench/services/extensions/common/extensionDescriptionRegistry.ts",
 
-	"HandleExec.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Git/HandleExec.rs",
+		Line: 29,
+	},
 
-	HashMap:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_allocator/src/api/mod.rs#L14",
+	"ExtensionDescriptionStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
 
-	HealExecutableBits:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ExtensionManagement/VsixInstaller.rs#L401",
+		Path: "Source/ApplicationState/DTO/ExtensionDescriptionStateDTO.rs",
+	},
 
-	Heartbeat: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtensionHost: {
+		Repo: ElementRepos.Cocoon,
 
-	High: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs#L132",
+		Path: "Source/Service/Effect/Extension.ts",
 
-	Hive: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 37,
+	},
 
-	HostBridge:
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/mod.rs#L41",
+	ExtensionHostHandler: CocoonRoot,
 
-	HotReload:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Configuration/mod.rs#L93",
+	ExtensionHostLayer: {
+		Repo: ElementRepos.Cocoon,
 
-	Hover: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Command/Hover/Fn.rs#L57",
+		Path: "Source/Services/Extension/Host/Service.ts",
 
-	HoverResultDto: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Line: 319,
+	},
 
-	Hybrid: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	ExtensionHostProvider: WindRoot,
 
-	Hyper: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ExtensionManagement: {
+		Repo: ElementRepos.Common,
 
-	IBulkEditService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/browser/services/bulkEditService.ts#L17",
+		Path: "Source/Library.rs",
 
-	ICommandService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/commands/common/commands.ts#L15",
+		Line: 98,
+	},
 
-	IConfigurationService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Interfaces/I/Configuration/Service.ts#L25",
+	"ExtensionManagement/Scanner.rs": {
+		Repo: ElementRepos.Mountain,
 
-	IDocumentService: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/ExtensionManagement/Scanner.rs",
+	},
 
-	IEditorService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/editor/common/editorService.ts#L17",
+	"ExtensionManagement/VsixInstaller.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"IEditorService.activeTextEditorControl":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L73",
+		Path: "Source/ExtensionManagement/VsixInstaller.rs",
+	},
 
-	IExtHostCommands:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L347",
+	ExtensionManagementService: {
+		Repo: ElementRepos.Common,
 
-	IExtHostDebug: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/ExtensionManagement/mod.rs",
 
-	IExtHostDocuments: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 11,
+	},
 
-	IExtHostExtensions:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtensionManifest: {
+		Repo: ElementRepos.Cocoon,
 
-	IExtHostLanguages: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Service/Effect/Extension.ts",
 
-	IExtHostRpcService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostRpcService.ts#L9",
+		Line: 14,
+	},
 
-	IExtHostTerminal: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtensionProvider: CocoonRoot,
 
-	IExtHostWebview: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ExtensionService: {
+		Repo: ElementRepos.Cocoon,
 
-	IExtHostWebviews: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Service/Effect/Extension.ts",
 
-	IExtHostWindow:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWindow.ts#L115",
+		Line: 130,
+	},
 
-	IExtHostWorkspace:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L1168",
+	ExtensionTypeFilter: MountainRoot,
 
-	IExtensionHostInitData:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/extensions/common/extensionHostProtocol.ts#L28",
+	Extensions: {
+		Repo: ElementRepos.Mountain,
 
-	IExtensionService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/extensions/common/extensions.ts#L38",
+		Path: "Source/IPC/WindServiceHandlers/mod.rs",
 
-	IF: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/TsParserTestRef/parser/ecmascript5/parserSyntaxWalker.generated/input.ts#L212",
+		Line: 20,
+	},
 
-	IFTNMMMMMM: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ExtensionsGetInstalled: {
+		Repo: ElementRepos.Mountain,
 
-	IFileService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/files/common/files.ts#L26",
+		Path: "Source/IPC/WindServiceHandlers/Extensions.rs",
 
-	ILanguageFeaturesService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/services/languageFeatures.ts#L10",
+		Line: 24,
+	},
 
-	"ILanguageFeaturesService.inlineCompletionsProvider":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallInlineCompletions.ts#L5",
+	"ExtensionsGetInstalled.rs": {
+		Repo: ElementRepos.Mountain,
 
-	IMainProcessService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/ipc/common/mainProcessService.ts#L10",
+		Path: "Source/IPC/WindServiceHandlers/Extensions/ExtensionsGetInstalled.rs",
+	},
 
-	IN: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_parser/src/lexer/token.rs#L555",
+	ExtensionsSynchronizer: CocoonRoot,
 
-	INTNNNNNNN: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	F8: AirRoot,
 
-	IOPlatformUUID: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	FC: {
+		Repo: SWCRepo,
 
-	IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+		Path: "crates/swc_ecma_minifier/tests/fixture/next/asmjs/1/input.js",
 
-	"IPC.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Exclude/Chromium/IPC.ts",
+		Line: 26109,
+	},
 
-	"IPC/DevLog/AppDataPrefix.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/DevLog/AppDataPrefix.rs",
+	FN: AirRoot,
 
-	"IPC/DevLog/WriteToFile.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/DevLog/WriteToFile.rs",
+	FOLDERID_LocalAppData: CocoonRoot,
 
-	"IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs",
+	FOLDERID_RoamingAppData: CocoonRoot,
 
-	"IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs",
+	FR: AirRoot,
 
-	"IPC/WindServiceHandlers/mod.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
+	FailureCount: LandRoot,
 
-	IPCProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/IPCProvider.rs#L16",
+	"FeatureMethods.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"IPCProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/IPCProvider.rs",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+	},
 
-	IPCRenderer:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts#L17",
+	"FiddeeRoot.rs": {
+		Repo: ElementRepos.Mountain,
 
-	IPCTransport:
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs#L24",
+		Path: "Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
+	},
 
-	IQuickInputService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/quickinput/common/quickInput.ts#L963",
+	FileService: {
+		Repo: EditorRepo,
 
-	ISCMService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/scm/common/scm.ts#L35",
+		Path: "src/vs/platform/files/common/fileService.ts",
 
-	ISandboxConfiguration:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/ISandboxConfiguration.ts#L27",
+		Line: 26,
+	},
 
-	"ISandboxConfiguration.profiles":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/ISandboxConfiguration.ts#L27",
+	FileStat: {
+		Repo: ElementRepos.Mountain,
 
-	ISandboxNodeProcess:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/parts/sandbox/electron-browser/globals.ts#L13",
+		Path: "Source/IPC/WindServiceHandlers/FileSystem/Managed/mod.rs",
 
-	ISaveParticipant: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 20,
+	},
 
-	ISearchResultProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/search/common/search.ts#L66",
+	FileSystem: {
+		Repo: ElementRepos.Mountain,
 
-	IStatusbarService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/statusbar/browser/statusbar.ts#L15",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	"ITextFileService.save":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/Workspace.rs#L206",
+		Line: 41,
+	},
 
-	ITreeItem:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/common/views.ts#L768",
+	"FileSystem.ReadFile": {
+		Repo: ElementRepos.Mountain,
 
-	ITreeView:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/common/views.ts#L653",
+		Path: "Source/Track/SideCarRequest/DispatchSideCarRequest.rs",
 
-	IUntypedEditorInput:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/common/editor.ts#L886",
+		Line: 76,
+	},
 
-	IW: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	FileSystemProvider: {
+		Repo: ElementRepos.Mountain,
 
-	IWTAMMMMMM: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Environment/mod.rs",
 
-	IWTNMMMMMM: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 58,
+	},
 
-	IWorkingCopyFileService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/workingCopy/common/workingCopyFileService.ts#L25",
+	"FileSystemProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	IWorkspaceService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/platform/workspace/common/workspaceService.ts#L17",
+		Path: "Source/Environment/FileSystemProvider.rs",
+	},
 
-	InProgress:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/Handler.ts#L290",
+	FileSystemReader: {
+		Repo: ElementRepos.Common,
 
-	"Index.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts",
+		Path: "Source/FileSystem/mod.rs",
 
-	InflightExecution:
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts#L260",
+		Line: 10,
+	},
 
-	"Info.plist":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Info.plist",
+	FileSystemService: {
+		Repo: ElementRepos.Cocoon,
 
-	"Init.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts",
+		Path: "Source/Services/File/System/Service.ts",
 
-	InitData:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Init/Data.ts#L6",
+		Line: 39,
+	},
 
-	InitDataLayer: "https://github.com/CodeEditorLand/Wind/tree/Current/",
+	FileSystemWriter: {
+		Repo: ElementRepos.Common,
 
-	InitExtensionHost:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization.rs#L8",
+		Path: "Source/FileSystem/mod.rs",
 
-	InitialHandshake:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization.rs#L12",
+		Line: 13,
+	},
 
-	InitializationData:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/mod.rs#L60",
+	FileWatcher: {
+		Repo: ElementRepos.Mountain,
 
-	"InitializationData.FoldersWire":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L110",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	"InitializationData.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs",
+		Line: 44,
+	},
 
-	InitializeCocoon:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs#L260",
+	FileWatcherProvider: {
+		Repo: ElementRepos.Mountain,
 
-	InitializeConfiguration:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/",
+		Path: "Source/Environment/mod.rs",
 
-	InlineCompletion:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/languages.ts#L836",
+		Line: 62,
+	},
 
-	InlineCompletionList:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.inlineCompletionsAdditions.d.ts#L268",
+	FromAsync: CocoonRoot,
 
-	InlineCompletionsProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/languages.ts#L947",
+	FsReader: CocoonRoot,
 
-	InputBoxPlaceholder: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	FsWriter: CocoonRoot,
 
-	InputBoxValue: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	Full: {
+		Repo: ElementRepos.Cocoon,
 
-	Inspect: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Services/Handler/Workspace/Contains/Activator.ts",
 
-	Install:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L112",
+		Line: 209,
+	},
 
-	"InstallCommands.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallCommands.ts",
+	FullAppInitialization: WindRoot,
 
-	"InstallDeadChannelListeners.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDeadChannelListeners.ts",
+	Future: {
+		Repo: ElementRepos.Mountain,
 
-	"InstallDebug.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDebug.ts",
+		Path: "Source/Vine/Generated/vine.rs",
 
-	"InstallDiagnostics.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallDiagnostics.ts",
+		Line: 2111,
+	},
 
-	"InstallEditorAndOutput.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+	GenericNotification: {
+		Repo: ElementRepos.Mountain,
 
-	"InstallEditorOperations.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorOperations.ts",
+		Path: "Source/RPC/CocoonService/mod.rs",
 
-	"InstallFanOut.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallFanOut.ts",
+		Line: 13,
+	},
 
-	"InstallInlineCompletions.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallInlineCompletions.ts",
+	GenericRequest: {
+		Repo: ElementRepos.Mountain,
 
-	"InstallProgressTerminalWorkspace.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts",
+		Path: "Source/RPC/CocoonService/mod.rs",
 
-	"InstallScm.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts",
+		Line: 15,
+	},
 
-	"InstallSearch.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallSearch.ts",
+	GetCompletions: CocoonRoot,
 
-	"InstallSimpleRelays.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallSimpleRelays.ts",
+	GetConfigurationValue: {
+		Repo: ElementRepos.Mountain,
 
-	"InstallStatusbar.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallStatusbar.ts",
+		Path: "Source/Environment/ConfigurationProvider/mod.rs",
 
-	"InstallTasksAndDecorations.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallTasksAndDecorations.ts",
+		Line: 52,
+	},
 
-	"InstallTreeView.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallTreeView.ts",
+	GetDefinition: CocoonRoot,
 
-	"InstallUiRequests.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallUiRequests.ts",
+	GetDocumentSymbols: CocoonRoot,
 
-	"InstallWebview.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallWebview.ts",
+	GetHoverAtPosition: CocoonRoot,
 
-	InvokeLanguageProvider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Language/Provider/Handler.ts#L336",
+	GetReferences: CocoonRoot,
 
-	IpcProvider: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"GetTauriTargetTriple.rs": {
+		Repo: ElementRepos.Maintain,
 
-	IpcProviderLayer: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Build/GetTauriTargetTriple.rs",
+	},
 
-	IpcRenderer:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/parts/sandbox/electron-browser/electronTypes.ts#L35",
+	Git: {
+		Repo: ElementRepos.Mountain,
 
-	IsDeclaredTierFeature:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs#L547",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	IsDefaultTierValue:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs#L591",
+		Line: 47,
+	},
 
-	IsEnabled:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Telemetry/FeatureFlags/mod.rs#L48",
+	GitProvider: SkyRoot,
 
-	IsHealthy:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/Common/HealthStatus/HealthMonitor.rs#L75",
+	Glob: {
+		Repo: ElementRepos.Cocoon,
 
-	IsOwn: "https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts#L52",
+		Path: "Source/Services/Handler/Workspace/Contains/Activator.ts",
 
-	IsPreempt:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts#L55",
+		Line: 305,
+	},
 
-	IsProxy:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TreeViewStateDTO.rs#L211",
+	Global: {
+		Repo: ElementRepos.Output,
 
-	IsReplace:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts#L48",
+		Path: "Source/Plugin/Polyfill/Tauri/Drag/Region.ts",
 
-	"Isolation.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md#L91",
+		Line: 83,
+	},
 
-	"JSON.parse":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L101",
+	"Grove.proto": { Repo: ElementRepos.Grove, Path: "Proto/Grove.proto" },
 
-	"JSON.stringify":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/Sync.ts#L239",
+	HEALTH_CHECK_INTERVAL_MS: {
+		Repo: ElementRepos.Vine,
 
-	JSX: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts#L52103",
+		Path: "Source/Client/Shared.rs",
 
-	JavaScript:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/typescript-language-features/package.nls.json#L327",
+		Line: 50,
+	},
 
-	"Key.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Encryption/Key.rs",
+	HOME: AirRoot,
 
-	KeybindingProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Keybinding/KeybindingProvider.rs#L20",
+	HTTPProxy: LandRoot,
 
-	"KeybindingProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Keybinding/KeybindingProvider.rs",
+	HTTPS_PROXY: LandRoot,
 
-	KeybindingsSynchronizer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	HTTP_PROXY: LandRoot,
 
-	LAND_: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	HandRolled: AirRoot,
 
-	LAND_ORIG_ZDOTDIR: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"HandleExec.rs": {
+		Repo: ElementRepos.Mountain,
 
-	LAND_SHELL_INTEGRATION_ACTIVE:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/Git/HandleExec.rs",
+	},
 
-	LOCALAPPDATA: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	HashMap: {
+		Repo: SWCRepo,
 
-	LOG_LEVEL: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "crates/swc_allocator/src/api/mod.rs",
 
-	Lair: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 14,
+	},
 
-	"Land/Cargo.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Cargo.toml",
+	HealExecutableBits: {
+		Repo: ElementRepos.Mountain,
 
-	"Land/Container/Up.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Container/Up.sh",
+		Path: "Source/ExtensionManagement/VsixInstaller.rs",
+
+		Line: 401,
+	},
+
+	Heartbeat: CocoonRoot,
+
+	High: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs",
+
+		Line: 132,
+	},
+
+	Hive: AirRoot,
+
+	HostBridge: {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/WASM/mod.rs",
+
+		Line: 41,
+	},
+
+	HotReload: {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Configuration/mod.rs",
+
+		Line: 93,
+	},
+
+	Hover: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Command/Hover/Fn.rs",
+
+		Line: 57,
+	},
+
+	HoverResultDto: MountainRoot,
+
+	Hybrid: AirRoot,
+
+	Hyper: LandRoot,
+
+	IBulkEditService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/browser/services/bulkEditService.ts",
+
+		Line: 17,
+	},
+
+	ICommandService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/commands/common/commands.ts",
+
+		Line: 15,
+	},
+
+	IConfigurationService: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Interfaces/I/Configuration/Service.ts",
+
+		Line: 25,
+	},
+
+	IDocumentService: AirRoot,
+
+	IEditorService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/editor/common/editorService.ts",
+
+		Line: 17,
+	},
+
+	"IEditorService.activeTextEditorControl": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
+		Line: 73,
+	},
+
+	IExtHostCommands: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
+		Line: 347,
+	},
+
+	IExtHostDebug: CocoonRoot,
+
+	IExtHostDocuments: CocoonRoot,
+
+	IExtHostExtensions: CocoonRoot,
+
+	IExtHostLanguages: CocoonRoot,
+
+	IExtHostRpcService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostRpcService.ts",
+
+		Line: 9,
+	},
+
+	IExtHostTerminal: CocoonRoot,
+
+	IExtHostWebview: CocoonRoot,
+
+	IExtHostWebviews: CocoonRoot,
+
+	IExtHostWindow: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWindow.ts",
+
+		Line: 115,
+	},
+
+	IExtHostWorkspace: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 1168,
+	},
+
+	IExtensionHostInitData: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/extensions/common/extensionHostProtocol.ts",
+
+		Line: 28,
+	},
+
+	IExtensionService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/extensions/common/extensions.ts",
+
+		Line: 38,
+	},
+
+	IF: {
+		Repo: TsParserTestRefRepo,
+
+		Path: "parser/ecmascript5/parserSyntaxWalker.generated/input.ts",
+
+		Line: 212,
+	},
+
+	IFTNMMMMMM: LandRoot,
+
+	IFileService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/files/common/files.ts",
+
+		Line: 26,
+	},
+
+	ILanguageFeaturesService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/common/services/languageFeatures.ts",
+
+		Line: 10,
+	},
+
+	"ILanguageFeaturesService.inlineCompletionsProvider": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallInlineCompletions.ts",
+
+		Line: 5,
+	},
+
+	IMainProcessService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/ipc/common/mainProcessService.ts",
+
+		Line: 10,
+	},
+
+	IN: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_parser/src/lexer/token.rs",
+
+		Line: 555,
+	},
+
+	INTNNNNNNN: LandRoot,
+
+	IOPlatformUUID: MountainRoot,
+
+	IPC: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/WebviewPanel/Webview/Implementation.ts",
+
+		Line: 23,
+	},
+
+	"IPC.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild/Exclude/Chromium/IPC.ts",
+	},
+
+	"IPC/DevLog/AppDataPrefix.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/DevLog/AppDataPrefix.rs",
+	},
+
+	"IPC/DevLog/WriteToFile.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/DevLog/WriteToFile.rs",
+	},
+
+	"IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs",
+	},
+
+	"IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs",
+	},
+
+	"IPC/WindServiceHandlers/mod.rs": MountainWindServiceHandlersMod,
+
+	IPCProvider: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/IPC/IPCProvider.rs",
+
+		Line: 16,
+	},
+
+	"IPCProvider.rs": {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/IPC/IPCProvider.rs",
+	},
+
+	IPCRenderer: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Types/Interface/IPCRenderer.ts",
+
+		Line: 17,
+	},
+
+	IPCTransport: {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/IPCTransport.rs",
+
+		Line: 24,
+	},
+
+	IQuickInputService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/quickinput/common/quickInput.ts",
+
+		Line: 963,
+	},
+
+	ISCMService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/scm/common/scm.ts",
+
+		Line: 35,
+	},
+
+	ISandboxConfiguration: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Types/Interface/ISandboxConfiguration.ts",
+
+		Line: 27,
+	},
+
+	"ISandboxConfiguration.profiles": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Types/Interface/ISandboxConfiguration.ts",
+
+		Line: 27,
+	},
+
+	ISandboxNodeProcess: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/parts/sandbox/electron-browser/globals.ts",
+
+		Line: 13,
+	},
+
+	ISaveParticipant: CocoonRoot,
+
+	ISearchResultProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/search/common/search.ts",
+
+		Line: 66,
+	},
+
+	IStatusbarService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/statusbar/browser/statusbar.ts",
+
+		Line: 15,
+	},
+
+	"ITextFileService.save": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Track/Effect/CreateEffectForRequest/Workspace.rs",
+
+		Line: 206,
+	},
+
+	ITreeItem: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/common/views.ts",
+
+		Line: 768,
+	},
+
+	ITreeView: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/common/views.ts",
+
+		Line: 653,
+	},
+
+	IUntypedEditorInput: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/common/editor.ts",
+
+		Line: 886,
+	},
+
+	IW: LandRoot,
+
+	IWTAMMMMMM: LandRoot,
+
+	IWTNMMMMMM: AirRoot,
+
+	IWorkingCopyFileService: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/workingCopy/common/workingCopyFileService.ts",
+
+		Line: 25,
+	},
+
+	IWorkspaceService: {
+		Repo: EditorRepo,
+
+		Path: "extensions/copilot/src/platform/workspace/common/workspaceService.ts",
+
+		Line: 17,
+	},
+
+	InProgress: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/Extension/Host/Handler.ts",
+
+		Line: 290,
+	},
+
+	"Index.ts": { Repo: ElementRepos.Wind, Path: "Source/Shim/Index.ts" },
+
+	InflightExecution: {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts",
+
+		Line: 260,
+	},
+
+	"Info.plist": { Repo: ElementRepos.Mountain, Path: "Info.plist" },
+
+	"Init.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Init.ts",
+	},
+
+	InitData: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Init/Data.ts",
+
+		Line: 6,
+	},
+
+	InitDataLayer: WindRoot,
+
+	InitExtensionHost: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Initialization.rs",
+
+		Line: 8,
+	},
+
+	InitialHandshake: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Initialization.rs",
+
+		Line: 12,
+	},
+
+	InitializationData: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/mod.rs",
+
+		Line: 60,
+	},
+
+	"InitializationData.FoldersWire": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
+		Line: 110,
+	},
+
+	"InitializationData.rs": MountainProcessManagementInitializationData,
+
+	InitializeCocoon: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/CocoonManagement.rs",
+
+		Line: 260,
+	},
+
+	InitializeConfiguration: WindRoot,
+
+	InlineCompletion: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/common/languages.ts",
+
+		Line: 836,
+	},
+
+	InlineCompletionList: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.inlineCompletionsAdditions.d.ts",
+
+		Line: 268,
+	},
+
+	InlineCompletionsProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/common/languages.ts",
+
+		Line: 947,
+	},
+
+	InputBoxPlaceholder: SkyRoot,
+
+	InputBoxValue: SkyRoot,
+
+	Inspect: AirRoot,
+
+	Install: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Plugin/Polyfill/Workbench/Paint/Prime.ts",
+
+		Line: 112,
+	},
+
+	"InstallCommands.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallCommands.ts",
+	},
+
+	"InstallDeadChannelListeners.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallDeadChannelListeners.ts",
+	},
+
+	"InstallDebug.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallDebug.ts",
+	},
+
+	"InstallDiagnostics.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallDiagnostics.ts",
+	},
+
+	"InstallEditorAndOutput.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+	},
+
+	"InstallEditorOperations.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallEditorOperations.ts",
+	},
+
+	"InstallFanOut.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallFanOut.ts",
+	},
+
+	"InstallInlineCompletions.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallInlineCompletions.ts",
+	},
+
+	"InstallProgressTerminalWorkspace.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallProgressTerminalWorkspace.ts",
+	},
+
+	"InstallScm.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallScm.ts",
+	},
+
+	"InstallSearch.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallSearch.ts",
+	},
+
+	"InstallSimpleRelays.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallSimpleRelays.ts",
+	},
+
+	"InstallStatusbar.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallStatusbar.ts",
+	},
+
+	"InstallTasksAndDecorations.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallTasksAndDecorations.ts",
+	},
+
+	"InstallTreeView.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallTreeView.ts",
+	},
+
+	"InstallUiRequests.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallUiRequests.ts",
+	},
+
+	"InstallWebview.ts": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallWebview.ts",
+	},
+
+	InvokeLanguageProvider: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/Language/Provider/Handler.ts",
+
+		Line: 336,
+	},
+
+	IpcProvider: MountainRoot,
+
+	IpcProviderLayer: CocoonRoot,
+
+	IpcRenderer: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/parts/sandbox/electron-browser/electronTypes.ts",
+
+		Line: 35,
+	},
+
+	IsDeclaredTierFeature: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "build.rs",
+
+		Line: 547,
+	},
+
+	IsDefaultTierValue: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "build.rs",
+
+		Line: 591,
+	},
+
+	IsEnabled: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Telemetry/FeatureFlags/mod.rs",
+
+		Line: 48,
+	},
+
+	IsHealthy: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/Common/HealthStatus/HealthMonitor.rs",
+
+		Line: 75,
+	},
+
+	IsOwn: { Repo: ElementRepos.Wind, Path: "Source/Shim/Gate.ts", Line: 52 },
+
+	IsPreempt: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Shim/Gate.ts",
+
+		Line: 55,
+	},
+
+	IsProxy: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/DTO/TreeViewStateDTO.rs",
+
+		Line: 211,
+	},
+
+	IsReplace: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Shim/Gate.ts",
+
+		Line: 48,
+	},
+
+	"Isolation.astro": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Documentation/GitHub/Architecture.md",
+
+		Line: 91,
+	},
+
+	"JSON.parse": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
+
+		Line: 101,
+	},
+
+	"JSON.stringify": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Codegen/Sync.ts",
+
+		Line: 239,
+	},
+
+	JSX: {
+		Repo: EditorRepo,
+
+		Path: "extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts",
+
+		Line: 52103,
+	},
+
+	JavaScript: {
+		Repo: EditorRepo,
+
+		Path: "extensions/typescript-language-features/package.nls.json",
+
+		Line: 327,
+	},
+
+	"Key.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Encryption/Key.rs",
+	},
+
+	KeybindingProvider: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Keybinding/KeybindingProvider.rs",
+
+		Line: 20,
+	},
+
+	"KeybindingProvider.rs": {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Keybinding/KeybindingProvider.rs",
+	},
+
+	KeybindingsSynchronizer: CocoonRoot,
+
+	LAND_: AirRoot,
+
+	LAND_ORIG_ZDOTDIR: AirRoot,
+
+	LAND_SHELL_INTEGRATION_ACTIVE: AirRoot,
+
+	LOCALAPPDATA: AirRoot,
+
+	LOG_LEVEL: AirRoot,
+
+	Lair: AirRoot,
+
+	"Land/Cargo.toml": { Repo: ElementRepos.Land, Path: "Cargo.toml" },
+
+	"Land/Container/Up.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Container/Up.sh",
+	},
 
 	"Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+		CocoonCocoonMain,
 
-	"Land/Element/Cocoon/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Utility/Tier.ts",
+	"Land/Element/Cocoon/Source/Utility/Tier.ts": CocoonUtilityTier,
 
 	"Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs",
+		MountainWindServiceHandlersMod,
 
-	"Land/Element/Mountain/Source/LandFixTier.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/LandFixTier.rs",
+	"Land/Element/Mountain/Source/LandFixTier.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Land/Element/Mountain/build.rs":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs",
+		Path: "Source/LandFixTier.rs",
+	},
 
-	"Land/Element/Sky/astro.config.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/astro.config.ts",
+	"Land/Element/Mountain/build.rs": MountainBuild,
 
-	"Land/Element/Wind/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/Source/Utility/Tier.ts",
+	"Land/Element/Sky/astro.config.ts": SkyAstroconfig,
 
-	"Land/Maintain/Debug/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh",
+	"Land/Element/Wind/Source/Utility/Tier.ts": WindUtilityTier,
 
-	"Land/Maintain/Release/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh",
+	"Land/Maintain/Debug/Build.sh": {
+		Repo: ElementRepos.Land,
 
-	"Land/Maintain/Script/TierEnvironment.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh",
+		Path: "Maintain/Debug/Build.sh",
+	},
 
-	"Land/package.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/package.json",
+	"Land/Maintain/Release/Build.sh": LandReleaseBuild,
 
-	"Land/rust-toolchain.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/rust-toolchain.toml",
+	"Land/Maintain/Script/TierEnvironment.sh": {
+		Repo: ElementRepos.Land,
 
-	"Land/turbo.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json",
+		Path: "Maintain/Script/TierEnvironment.sh",
+	},
 
-	LandDiagnostics: "https://github.com/CodeEditorLand/Output/tree/Current/",
+	"Land/package.json": { Repo: ElementRepos.Land, Path: "package.json" },
 
-	LandDnsResolver:
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Resolver.rs#L36",
+	"Land/rust-toolchain.toml": {
+		Repo: ElementRepos.Land,
 
-	LandFixLog:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Land/Fix/Log.ts#L232",
+		Path: "rust-toolchain.toml",
+	},
 
-	"LandFixLog.Info":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/TierGatedImplementationSelection.md#L303",
+	"Land/turbo.json": { Repo: ElementRepos.Land, Path: "turbo.json" },
 
-	LandIsProduction: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	LandDiagnostics: { Repo: ElementRepos.Output, Path: "" },
 
-	LandWorkbenchLayer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	LandDnsResolver: {
+		Repo: ElementRepos.Mist,
 
-	LanguageFeatureProviderRegistry:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/LanguageFeature/LanguageFeatureProviderRegistry.rs#L39",
+		Path: "Source/Resolver.rs",
 
-	LanguageFeaturesProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Line: 36,
+	},
 
-	LanguageProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Command/Bootstrap.rs#L216",
+	LandFixLog: {
+		Repo: ElementRepos.Cocoon,
 
-	LanguageProviderHandler:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Utility/Land/Fix/Log.ts",
 
-	LanguageService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/services/languageService.ts#L15",
+		Line: 232,
+	},
 
-	LastActivity: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"LandFixLog.Info": {
+		Repo: ElementRepos.Land,
 
-	LaunchAndManageCocoonSidecar:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Documentation/GitHub/Workflow/TierGatedImplementationSelection.md",
 
-	Layer: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Container.ts#L29",
+		Line: 303,
+	},
 
-	"Layer.effect":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Architecture.md#L172",
+	LandIsProduction: AirRoot,
 
-	"Layer.empty":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md#L69",
+	LandWorkbenchLayer: CocoonRoot,
 
-	"Layer.mergeAll":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md#L70",
+	LanguageFeatureProviderRegistry: {
+		Repo: ElementRepos.Common,
 
-	"Layer.succeed":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Architecture.md#L172",
+		Path: "Source/LanguageFeature/LanguageFeatureProviderRegistry.rs",
 
-	"Layer.toRuntime":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md#L233",
+		Line: 39,
+	},
 
-	Layer2: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	LanguageFeaturesProvider: MountainRoot,
 
-	Layer3: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	LanguageProvider: {
+		Repo: ElementRepos.Mountain,
 
-	Layer4: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Command/Bootstrap.rs",
 
-	Layer5: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 216,
+	},
 
-	"Layout.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/astro.config.ts#L982",
+	LanguageProviderHandler: CocoonRoot,
 
-	Lazy: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/lazy.ts#L12",
+	LanguageService: {
+		Repo: EditorRepo,
 
-	Level: "https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L11",
+		Path: "src/vs/editor/common/services/languageService.ts",
 
-	LifecycleWhenPhase:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/UI/mod.rs#L27",
+		Line: 15,
+	},
 
-	Linux: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	LastActivity: LandRoot,
 
-	LiveClipboardService:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/",
+	LaunchAndManageCocoonSidecar: MountainRoot,
 
-	LiveDialogService: "https://github.com/CodeEditorLand/Wind/tree/Current/",
+	Layer: { Repo: ElementRepos.Common, Path: "Source/Container.ts", Line: 29 },
 
-	LiveEditorService: "https://github.com/CodeEditorLand/Wind/tree/Current/",
+	"Layer.effect": {
+		Repo: ElementRepos.Land,
 
-	LiveReloadPort: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Documentation/GitHub/Architecture.md",
 
-	"LoadFromCache.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+		Line: 172,
+	},
 
-	"Loading.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/ConfigurationProvider/Loading.rs",
+	"Layer.empty": {
+		Repo: ElementRepos.Land,
 
-	LocalStorageService: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Documentation/Module/Telemetry/Effect-OTel.md",
 
-	Lodge: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 69,
+	},
 
-	LogMaxSize: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Layer.mergeAll": {
+		Repo: ElementRepos.Land,
 
-	LogPruneOnBoot: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Documentation/Module/Telemetry/Effect-OTel.md",
 
-	LogRetention: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 70,
+	},
 
-	LogService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/log/common/logService.ts#L10",
+	"Layer.succeed": {
+		Repo: ElementRepos.Land,
 
-	Low: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs#L134",
+		Path: "Documentation/GitHub/Architecture.md",
 
-	MAX_CONCURRENT_DOWNLOADS:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 172,
+	},
 
-	MAX_CONNECTIONS:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Server/Initialize.rs#L61",
+	"Layer.toRuntime": {
+		Repo: ElementRepos.Wind,
 
-	MAX_RETRY_ATTEMPTS:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs#L35",
+		Path: "Documentation/GitHub/Architecture.md",
 
-	MIST_PORT: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 233,
+	},
 
-	MM: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	Layer2: LandRoot,
 
-	MOUNTAIN_GRPC_PORT:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs#L179",
+	Layer3: LandRoot,
 
-	Main: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/mod.rs#L52",
+	Layer4: LandRoot,
 
-	"Main.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts",
+	Layer5: LandRoot,
 
-	MainContext:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L4081",
+	"Layout.astro": {
+		Repo: ElementRepos.Sky,
 
-	MainThreadBulkEdits:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/browser/mainThreadBulkEdits.ts#L20",
+		Path: "astro.config.ts",
 
-	"Maintain/Debug/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh",
+		Line: 982,
+	},
 
-	"Maintain/Debug/Run.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Debug/Run.sh",
+	Lazy: { Repo: EditorRepo, Path: "src/vs/base/common/lazy.ts", Line: 12 },
 
-	"Maintain/Release/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh",
+	Level: { Repo: ElementRepos.Output, Path: "Source/ESBuild.ts", Line: 11 },
 
-	"Maintain/Script/GenerateRouteManifest.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/GenerateRouteManifest.sh",
+	LifecycleWhenPhase: {
+		Repo: ElementRepos.Mountain,
 
-	"Maintain/Script/PostHogCapture.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh",
+		Path: "Source/IPC/WindServiceHandlers/UI/mod.rs",
 
-	"Maintain/Script/SignBundle.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh",
+		Line: 27,
+	},
 
-	"Maintain/Script/TierEnvironment.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh",
+	Linux: LandRoot,
 
-	"Maintain/Test/TelemetryTreeShake.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Test/TelemetryTreeShake.sh",
+	LiveClipboardService: WindRoot,
 
-	"MarkerDataDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MarkerDataDTO.rs",
+	LiveDialogService: WindRoot,
 
-	Memento:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L88",
+	LiveEditorService: WindRoot,
 
-	"MementoLoader/AttemptMementoRecovery.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/Persistence/MementoLoader/AttemptMementoRecovery.rs",
+	LiveReloadPort: AirRoot,
 
-	"MementoLoader/CreateCorruptedBackup.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/Persistence/MementoLoader/CreateCorruptedBackup.rs",
+	"LoadFromCache.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"MergedConfigurationStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/MergedConfigurationStateDTO.rs",
+		Path: "Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
+	},
 
-	MessageType:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/Common/mod.rs#L8",
+	"Loading.rs": {
+		Repo: ElementRepos.Mountain,
 
-	Meta: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/ESBuild.ts#L5",
+		Path: "Source/Environment/ConfigurationProvider/Loading.rs",
+	},
 
-	MistTransport:
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/mod.rs#L40",
+	LocalStorageService: LandRoot,
 
-	MockClipboardLayer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	Lodge: AirRoot,
 
-	"Mountain.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts#L83",
+	LogMaxSize: AirRoot,
 
-	"Mountain/.../Utilities/RecentlyOpened.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs",
+	LogPruneOnBoot: AirRoot,
 
-	"Mountain/Cargo.toml":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Cargo.toml",
+	LogRetention: AirRoot,
 
-	"Mountain/Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+	LogService: {
+		Repo: EditorRepo,
 
-	"Mountain/Source/Binary/Main/Entry.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/Entry.rs",
+		Path: "src/vs/platform/log/common/logService.ts",
 
-	"Mountain/Source/Environment/FileSystemProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider.rs",
+		Line: 10,
+	},
 
-	"Mountain/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+	Low: {
+		Repo: ElementRepos.Mountain,
 
-	"Mountain/Source/Environment/LanguageFeatureProvider/Registration.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/Registration.rs",
+		Path: "Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs",
+
+		Line: 134,
+	},
+
+	MAX_CONCURRENT_DOWNLOADS: AirRoot,
+
+	MAX_CONNECTIONS: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Vine/Server/Initialize.rs",
+
+		Line: 61,
+	},
+
+	MAX_RETRY_ATTEMPTS: {
+		Repo: ElementRepos.Vine,
+
+		Path: "Source/Client/Shared.rs",
+
+		Line: 35,
+	},
+
+	MIST_PORT: AirRoot,
+
+	MM: LandRoot,
+
+	MOUNTAIN_GRPC_PORT: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/CocoonManagement.rs",
+
+		Line: 179,
+	},
+
+	Main: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/mod.rs",
+
+		Line: 52,
+	},
+
+	"Main.ts": CocoonCocoonMain,
+
+	MainContext: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 4081,
+	},
+
+	MainThreadBulkEdits: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/browser/mainThreadBulkEdits.ts",
+
+		Line: 20,
+	},
+
+	"Maintain/Debug/Build.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Debug/Build.sh",
+	},
+
+	"Maintain/Debug/Run.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Debug/Run.sh",
+	},
+
+	"Maintain/Release/Build.sh": LandReleaseBuild,
+
+	"Maintain/Script/GenerateRouteManifest.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Script/GenerateRouteManifest.sh",
+	},
+
+	"Maintain/Script/PostHogCapture.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Script/PostHogCapture.sh",
+	},
+
+	"Maintain/Script/SignBundle.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Script/SignBundle.sh",
+	},
+
+	"Maintain/Script/TierEnvironment.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Script/TierEnvironment.sh",
+	},
+
+	"Maintain/Test/TelemetryTreeShake.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Test/TelemetryTreeShake.sh",
+	},
+
+	"MarkerDataDTO.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/DTO/MarkerDataDTO.rs",
+	},
+
+	Memento: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Context.ts",
+
+		Line: 88,
+	},
+
+	"MementoLoader/AttemptMementoRecovery.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/Internal/Persistence/MementoLoader/AttemptMementoRecovery.rs",
+	},
+
+	"MementoLoader/CreateCorruptedBackup.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/Internal/Persistence/MementoLoader/CreateCorruptedBackup.rs",
+	},
+
+	"MergedConfigurationStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/DTO/MergedConfigurationStateDTO.rs",
+	},
+
+	MessageType: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/Common/mod.rs",
+
+		Line: 8,
+	},
+
+	Meta: { Repo: ElementRepos.Cocoon, Path: "Source/ESBuild.ts", Line: 5 },
+
+	MistTransport: {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/mod.rs",
+
+		Line: 40,
+	},
+
+	MockClipboardLayer: CocoonRoot,
+
+	"Mountain.astro": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge.ts",
+
+		Line: 83,
+	},
+
+	"Mountain/.../Utilities/RecentlyOpened.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs",
+	},
+
+	"Mountain/Cargo.toml": { Repo: ElementRepos.Mountain, Path: "Cargo.toml" },
+
+	"Mountain/Proto/Vine.proto": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Proto/Vine.proto",
+	},
+
+	"Mountain/Source/Binary/Main/Entry.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Main/Entry.rs",
+	},
+
+	"Mountain/Source/Environment/FileSystemProvider.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/FileSystemProvider.rs",
+	},
+
+	"Mountain/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+	},
+
+	"Mountain/Source/Environment/LanguageFeatureProvider/Registration.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/LanguageFeatureProvider/Registration.rs",
+	},
 
 	"Mountain/Source/IPC/WindServiceHandlers/mod.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
+		MountainWindServiceHandlersMod,
 
-	"Mountain/Source/LandFixTier.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/LandFixTier.rs",
+	"Mountain/Source/LandFixTier.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Mountain/Source/Shim/Gate.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/Gate.rs",
+		Path: "Source/LandFixTier.rs",
+	},
 
-	"Mountain/Source/Shim/SwallowMap.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs",
+	"Mountain/Source/Shim/Gate.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Mountain/build.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs",
+		Path: "Source/Shim/Gate.rs",
+	},
 
-	MountainCommand: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Mountain/Source/Shim/SwallowMap.rs": {
+		Repo: ElementRepos.Mountain,
 
-	MountainConfiguration:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Shim/SwallowMap.rs",
+	},
 
-	MountainConnectMaxAttempts:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts#L119",
+	"Mountain/build.rs": MountainBuild,
 
-	MountainConnection:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/ApplicationState/ApplicationState.rs#L297",
+	MountainCommand: AirRoot,
 
-	MountainDir: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	MountainConfiguration: AirRoot,
 
-	MountainDocument: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	MountainConnectMaxAttempts: {
+		Repo: ElementRepos.Cocoon,
 
-	MountainEnvironment:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/MountainEnvironment.rs#L71",
+		Path: "Source/Service/Effect/Bootstrap.ts",
 
-	"MountainEnvironment.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/MountainEnvironment.rs",
+		Line: 119,
+	},
 
-	MountainFileSystem: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	MountainConnection: {
+		Repo: ElementRepos.Air,
 
-	MountainIPCInvoke:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/IPC/InvokeCommand.rs#L67",
+		Path: "Source/ApplicationState/ApplicationState.rs",
 
-	MountainProbeMaxAttempts:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts#L111",
+		Line: 297,
+	},
 
-	MountainProbeTimeoutMs:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts#L109",
+	MountainDir: AirRoot,
 
-	MountainService:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L2002",
+	MountainDocument: AirRoot,
 
-	MountainWorkspace: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	MountainEnvironment: {
+		Repo: ElementRepos.Mountain,
 
-	Mute: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Environment/MountainEnvironment.rs",
 
-	"NLS.astro":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Default.astro#L2",
+		Line: 71,
+	},
 
-	NN: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"MountainEnvironment.rs": {
+		Repo: ElementRepos.Mountain,
 
-	NODE_ENV:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWCProject.github.io/assets/js/2ea007dc.f22f21cf.js#L1",
+		Path: "Source/Environment/MountainEnvironment.rs",
+	},
 
-	NODE_EXTRA_CA_CERTS: "https://github.com/CodeEditorLand/Mist/tree/Current/",
+	MountainFileSystem: AirRoot,
 
-	NSQuitAlwaysKeepsWindows:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	MountainIPCInvoke: {
+		Repo: ElementRepos.Mountain,
 
-	NXDOMAIN: "https://github.com/CodeEditorLand/Mist/tree/Current/",
+		Path: "Source/Binary/IPC/InvokeCommand.rs",
 
-	Native: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/mod.rs#L14",
+		Line: 67,
+	},
 
-	"NativeHost/Quit.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/NativeHost/Quit.rs",
+	MountainProbeMaxAttempts: {
+		Repo: ElementRepos.Cocoon,
 
-	"NativeHost/Relaunch.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/NativeHost/Relaunch.rs",
+		Path: "Source/Service/Effect/Bootstrap.ts",
 
-	NativeWorkbenchEnvironmentService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/environment/electron-browser/environmentService.ts#L59",
+		Line: 111,
+	},
 
-	"NativeWorkbenchEnvironmentService.logsHome":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L257",
+	MountainProbeTimeoutMs: {
+		Repo: ElementRepos.Cocoon,
 
-	NetworkAirPort: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Service/Effect/Bootstrap.ts",
 
-	NetworkCocoonPort: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 109,
+	},
 
-	NetworkMountainPort: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	MountainService: {
+		Repo: ElementRepos.Mountain,
 
-	NlsSection:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L344",
+		Path: "Source/Vine/Generated/vine.rs",
 
-	Node: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L75",
+		Line: 2002,
+	},
 
-	"Node.js": "https://nodejs.org",
+	MountainWorkspace: AirRoot,
 
-	NodeDeferred: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	Mute: AirRoot,
 
-	NodePlatform:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWCDev/arch/src/lib.rs#L61",
+	"NLS.astro": {
+		Repo: ElementRepos.Sky,
 
-	"NodeRuntime.runMain":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/DeepDive.md#L38",
+		Path: "Source/Workbench/Default.astro",
 
-	NodeVersion: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 2,
+	},
 
-	None: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/event.ts#L51",
+	NN: LandRoot,
 
-	Normal: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	NODE_ENV: {
+		Repo: SWCProjectGithubIoRepo,
 
-	"Notification/Handler.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Notification/Handler.ts",
+		Path: "assets/js/2ea007dc.f22f21cf.js",
 
-	NotificationHandler:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/IPC/Protocol.ts#L114",
+		Line: 1,
+	},
 
-	Notify: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Cocoon/mod.rs#L9",
+	NODE_EXTRA_CA_CERTS: { Repo: ElementRepos.Mist, Path: "" },
 
-	OTLP: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L28",
+	NSQuitAlwaysKeepsWindows: CocoonRoot,
 
-	OTLPEnabled: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	NXDOMAIN: { Repo: ElementRepos.Mist, Path: "" },
 
-	OTLPEndpoint: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Native: {
+		Repo: ElementRepos.Mountain,
 
-	OTLP_TRACE_ID: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/FileSystem/mod.rs",
 
-	OXC: "https://oxc-project.github.io",
+		Line: 14,
+	},
 
-	Off: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"NativeHost/Quit.rs": {
+		Repo: ElementRepos.Mountain,
 
-	On: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/ESBuild.ts#L7",
+		Path: "Source/IPC/WindServiceHandlers/NativeHost/Quit.rs",
+	},
 
-	OnceLock: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"NativeHost/Relaunch.rs": {
+		Repo: ElementRepos.Mountain,
 
-	OpenChannelFromCocoon:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/NativeHost/Relaunch.rs",
+	},
 
-	OpenChannelFromMountain:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+	NativeWorkbenchEnvironmentService: {
+		Repo: EditorRepo,
 
-	OptionalFromAsync: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vs/workbench/services/environment/electron-browser/environmentService.ts",
 
-	OsSection:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L360",
+		Line: 59,
+	},
 
-	"Output/ESBuild/Output.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts",
+	"NativeWorkbenchEnvironmentService.logsHome": {
+		Repo: ElementRepos.Mountain,
 
-	"Output/Source/ESBuild.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	"Output/Source/ESBuild/Output.js":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.js",
+		Line: 257,
+	},
 
-	"Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+	NetworkAirPort: AirRoot,
 
-	"Output/Source/Service/CEL/Land/Shim/Index.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Index.ts",
+	NetworkCocoonPort: AirRoot,
 
-	"Output/Source/Service/CEL/Land/Shim/Init.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts",
+	NetworkMountainPort: AirRoot,
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts",
+	NlsSection: {
+		Repo: ElementRepos.Mountain,
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts",
+		Line: 344,
+	},
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts",
+	Node: {
+		Repo: ElementRepos.Output,
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
+		Path: "Source/Plugin/Polyfill/Workbench/Paint/Prime.ts",
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/Index.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/Index.ts",
+		Line: 75,
+	},
 
-	"Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts",
+	"Node.js": { External: "https://nodejs.org" },
 
-	"Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Extension/Gallery/Service.ts",
+	NodeDeferred: LandRoot,
 
-	"Output/Source/Service/CEL/Null/Telemetry/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Telemetry/Service.ts",
+	NodePlatform: { Repo: SWCDevRepo, Path: "arch/src/lib.rs", Line: 61 },
 
-	"Output/Source/Service/CEL/Null/Update/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Update/Service.ts",
+	"NodeRuntime.runMain": {
+		Repo: ElementRepos.Cocoon,
 
-	"Output/Source/Service/Tauri/Main/Process/Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts",
+		Path: "Documentation/GitHub/DeepDive.md",
 
-	"OutputChannelStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/OutputChannelStateDTO.rs",
+		Line: 38,
+	},
 
-	Own: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	NodeVersion: LandRoot,
 
-	PASSTHROUGH: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	None: { Repo: EditorRepo, Path: "src/vs/base/common/event.ts", Line: 51 },
 
-	PATH: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/server/node/extensionHostConnection.ts#L52",
+	Normal: LandRoot,
 
-	PTY: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Notification/Handler.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	Pack: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Services/Handler/Notification/Handler.ts",
+	},
 
-	Parallel:
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/Binary/Command/Option.rs#L65",
+	NotificationHandler: {
+		Repo: ElementRepos.Cocoon,
 
-	Parallel16: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/IPC/Protocol.ts",
 
-	Parallel4: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 114,
+	},
 
-	Parallel8: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Notify: {
+		Repo: ElementRepos.Mountain,
 
-	PascalCase: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/Cocoon/mod.rs",
 
-	PatchProcess:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/PatchProcess.ts#L24",
+		Line: 9,
+	},
 
-	"PatchProcess/index.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/PatchProcess/index.ts",
+	OTLP: {
+		Repo: ElementRepos.Common,
 
-	PathBuf:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/Native/FileDeleteNative.rs#L19",
+		Path: "Source/Telemetry/IsAllowed.rs",
 
-	PathCanon:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Element/Cache/Source/Library.rs#L37",
+		Line: 28,
+	},
 
-	PathResolver:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L236",
+	OTLPEnabled: AirRoot,
 
-	"PerElement.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PerElement.md",
+	OTLPEndpoint: AirRoot,
 
-	PerformAction: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	OTLP_TRACE_ID: LandRoot,
 
-	Pick: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/quickinput/browser/pickerQuickAccess.ts#L104",
+	OXC: { External: "https://oxc-project.github.io" },
 
-	"Platform/FiddeeRoot.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/FiddeeRoot.ts",
+	Off: AirRoot,
 
-	"PlatformPaths.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PlatformPaths.md",
+	On: { Repo: ElementRepos.Cocoon, Path: "Source/ESBuild.ts", Line: 7 },
 
-	"Policy.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Policy.ts",
+	OnceLock: CocoonRoot,
 
-	"Polyfills.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md",
+	OpenChannelFromCocoon: LandRoot,
 
-	Position:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Command/Hover/Interface.rs#L23",
+	OpenChannelFromMountain: LandRoot,
 
-	PostHog:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+	OptionalFromAsync: CocoonRoot,
 
-	Preempt: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	OsSection: {
+		Repo: ElementRepos.Mountain,
 
-	"Preload.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	Probe: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/Utility/EnhanceShellEnvironment.rs#L30",
+		Line: 360,
+	},
 
-	Process:
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Process.rs#L65",
+	"Output/ESBuild/Output.ts": {
+		Repo: ElementRepos.Output,
 
-	ProcessCocoonRequest:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/ESBuild/Output.ts",
+	},
 
-	ProcessManagement:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Library.rs#L106",
+	"Output/Source/ESBuild.ts": {
+		Repo: ElementRepos.Output,
 
-	"ProcessManagement/CocoonManagement.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs",
+		Path: "Source/ESBuild.ts",
+	},
+
+	"Output/Source/ESBuild/Output.js": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild/Output.js",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Index.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Index.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Init.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Init.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/Index.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/Index.ts",
+	},
+
+	"Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts",
+	},
+
+	"Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Null/Extension/Gallery/Service.ts",
+	},
+
+	"Output/Source/Service/CEL/Null/Telemetry/Service.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Null/Telemetry/Service.ts",
+	},
+
+	"Output/Source/Service/CEL/Null/Update/Service.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Null/Update/Service.ts",
+	},
+
+	"Output/Source/Service/Tauri/Main/Process/Service.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/Tauri/Main/Process/Service.ts",
+	},
+
+	"OutputChannelStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/DTO/OutputChannelStateDTO.rs",
+	},
+
+	Own: MountainRoot,
+
+	PASSTHROUGH: MountainRoot,
+
+	PATH: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/server/node/extensionHostConnection.ts",
+
+		Line: 52,
+	},
+
+	PTY: CocoonRoot,
+
+	Pack: AirRoot,
+
+	Parallel: {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Struct/Binary/Command/Option.rs",
+
+		Line: 65,
+	},
+
+	Parallel16: AirRoot,
+
+	Parallel4: AirRoot,
+
+	Parallel8: AirRoot,
+
+	PascalCase: LandRoot,
+
+	PatchProcess: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/PatchProcess.ts",
+
+		Line: 24,
+	},
+
+	"PatchProcess/index.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/PatchProcess/index.ts",
+	},
+
+	PathBuf: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/FileSystem/Native/FileDeleteNative.rs",
+
+		Line: 19,
+	},
+
+	PathCanon: { Repo: CacheRepo, Path: "Source/Library.rs", Line: 37 },
+
+	PathResolver: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/InitializationData.rs",
+
+		Line: 236,
+	},
+
+	"PerElement.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/FilesystemFootprint/PerElement.md",
+	},
+
+	PerformAction: AirRoot,
+
+	Pick: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/quickinput/browser/pickerQuickAccess.ts",
+
+		Line: 104,
+	},
+
+	"Platform/FiddeeRoot.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Platform/FiddeeRoot.ts",
+	},
+
+	"PlatformPaths.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/FilesystemFootprint/PlatformPaths.md",
+	},
+
+	"Policy.ts": { Repo: ElementRepos.Worker, Path: "Source/Worker/Policy.ts" },
+
+	"Polyfills.md": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Polyfills.md",
+	},
+
+	Position: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Command/Hover/Interface.rs",
+
+		Line: 23,
+	},
+
+	PostHog: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Telemetry/IsAllowed.rs",
+
+		Line: 16,
+	},
+
+	Preempt: MountainRoot,
+
+	"Preload.ts": { Repo: ElementRepos.Wind, Path: "Source/Preload.ts" },
+
+	Probe: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/Utility/EnhanceShellEnvironment.rs",
+
+		Line: 30,
+	},
+
+	Process: {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Run/Process.rs",
+
+		Line: 65,
+	},
+
+	ProcessCocoonRequest: LandRoot,
+
+	ProcessManagement: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Library.rs",
+
+		Line: 106,
+	},
+
+	"ProcessManagement/CocoonManagement.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ProcessManagement/CocoonManagement.rs",
+	},
 
 	"ProcessManagement/InitializationData.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs",
+		MountainProcessManagementInitializationData,
 
-	ProcessMountainRequest:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+	ProcessMountainRequest: LandRoot,
 
-	ProductApplicationName:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L227",
+	ProductApplicationName: {
+		Repo: ElementRepos.Land,
 
-	ProductCommit:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L245",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProductConfig:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L350",
+		Line: 227,
+	},
 
-	ProductDataFolderName:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L233",
+	ProductCommit: {
+		Repo: ElementRepos.Land,
 
-	ProductEmbedderIdentifier:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L273",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProductFlavor: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 245,
+	},
 
-	ProductFlavorLong: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	ProductConfig: {
+		Repo: ElementRepos.Mountain,
 
-	ProductNameLong:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L221",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	ProductNameShort:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L215",
+		Line: 350,
+	},
 
-	ProductQuality:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L252",
+	ProductDataFolderName: {
+		Repo: ElementRepos.Land,
 
-	ProductServerApplicationName:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L266",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProductUrlProtocol:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L260",
+		Line: 233,
+	},
 
-	ProductVersion:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Codegen/ResolveIdentity.ts#L239",
+	ProductEmbedderIdentifier: {
+		Repo: ElementRepos.Land,
 
-	Production:
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Example/Sequence.rs#L24",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	"Production.Bundled":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json#L19",
+		Line: 273,
+	},
 
-	"Production.Diagnostics":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json#L20",
+	ProductFlavor: AirRoot,
 
-	"Production.Extensions":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json#L21",
+	ProductFlavorLong: AirRoot,
 
-	"Production.Node":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json#L22",
+	ProductNameLong: {
+		Repo: ElementRepos.Land,
 
-	"Production.PostHog":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json#L23",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	Profile:
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Definition.rs#L243",
+		Line: 221,
+	},
 
-	"Profile.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Profile.sh",
+	ProductNameShort: {
+		Repo: ElementRepos.Land,
 
-	ProfilesSection:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs#L336",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProgressReport:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/UI/mod.rs#L41",
+		Line: 215,
+	},
 
-	Promise:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts#L42453",
+	ProductQuality: {
+		Repo: ElementRepos.Land,
 
-	"Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProvideCallHierarchyIncomingCalls:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L27",
+		Line: 252,
+	},
 
-	ProvideCallHierarchyOutgoingCalls:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L31",
+	ProductServerApplicationName: {
+		Repo: ElementRepos.Land,
 
-	ProvideCodeActions:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L35",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProvideCodeLenses:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L39",
+		Line: 266,
+	},
 
-	ProvideCompletionItems:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L33",
+	ProductUrlProtocol: {
+		Repo: ElementRepos.Land,
 
-	ProvideDefinition:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L47",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProvideDocumentFormatting:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L39",
+		Line: 260,
+	},
 
-	ProvideDocumentHighlights:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L55",
+	ProductVersion: {
+		Repo: ElementRepos.Land,
 
-	ProvideDocumentRangeFormatting:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L47",
+		Path: "Maintain/Codegen/ResolveIdentity.ts",
 
-	ProvideDocumentSymbols:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L67",
+		Line: 239,
+	},
 
-	ProvideFoldingRanges:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L75",
+	Production: {
+		Repo: ElementRepos.Echo,
 
-	ProvideHover:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L79",
+		Path: "Example/Sequence.rs",
 
-	ProvideInlayHints:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L83",
+		Line: 24,
+	},
 
-	ProvideInlineCompletionItems:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L63",
+	"Production.Bundled": {
+		Repo: ElementRepos.Land,
 
-	ProvideLinkedEditingRanges:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L91",
+		Path: "turbo.json",
 
-	ProvideOnTypeFormatting:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L70",
+		Line: 19,
+	},
 
-	ProvideReferences:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L99",
+	"Production.Diagnostics": {
+		Repo: ElementRepos.Land,
 
-	ProvideRenameEdits:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L103",
+		Path: "turbo.json",
 
-	ProvideSelectionRanges:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L107",
+		Line: 20,
+	},
 
-	ProvideSemanticTokensFull:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L111",
+	"Production.Extensions": {
+		Repo: ElementRepos.Land,
 
-	ProvideSignatureHelp:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L115",
+		Path: "turbo.json",
 
-	ProvideTypeHierarchySubtypes:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L119",
+		Line: 21,
+	},
 
-	ProvideTypeHierarchySupertypes:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L123",
+	"Production.Node": {
+		Repo: ElementRepos.Land,
 
-	ProvideWorkspaceSymbols:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/LanguageFeatureProvider/FeatureMethods.rs#L127",
+		Path: "turbo.json",
 
-	"ProviderRegistrationDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/ProviderRegistrationDTO.rs",
+		Line: 22,
+	},
 
-	ProviderRegistrationDto:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"Production.PostHog": {
+		Repo: ElementRepos.Land,
 
-	Proxy: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/Utilities/mod.rs#L7",
+		Path: "turbo.json",
 
-	Queue: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L51",
+		Line: 23,
+	},
 
-	QuickInputService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/QuickInput.ts#L52",
+	Profile: {
+		Repo: ElementRepos.Maintain,
 
-	"README.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/README.md",
+		Path: "Source/Run/Definition.rs",
 
-	REST_BINARY_PATH:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Rest/Plugin.ts#L47",
+		Line: 243,
+	},
 
-	REST_CLASS_FIELDS: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Profile.sh": { Repo: ElementRepos.Land, Path: "Maintain/Profile.sh" },
 
-	REST_DECORATORS: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ProfilesSection: {
+		Repo: ElementRepos.Mountain,
 
-	REST_ENTRY: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/ProcessManagement/InitializationData.rs",
 
-	REST_MINIFY: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 336,
+	},
 
-	REST_OUT_DIR: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ProgressReport: {
+		Repo: ElementRepos.Mountain,
 
-	REST_SOURCEMAP: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/UI/mod.rs",
 
-	REST_TARGET: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 41,
+	},
 
-	REST_WORKERS: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	Promise: {
+		Repo: EditorRepo,
 
-	RETRY_BASE_DELAY_MS:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs#L38",
+		Path: "extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts",
 
-	"RPCModelContentChangeDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/RPCModelContentChangeDTO.rs",
+		Line: 42453,
+	},
 
-	RPCProtocol:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/extensions/common/rpcProtocol.ts#L115",
+	"Proto/Vine.proto": VineProtoVine,
 
-	RPCServer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/RPCServer.ts#L162",
+	ProvideCallHierarchyIncomingCalls: {
+		Repo: ElementRepos.Mountain,
 
-	RUST_LOG: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	Range: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Command/Hover/Interface.rs#L26",
+		Line: 27,
+	},
 
-	ReadFile:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/FileSystem.rs#L20",
+	ProvideCallHierarchyOutgoingCalls: {
+		Repo: ElementRepos.Mountain,
 
-	Record: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Codegen/Run/Ext/Host/Codegen.ts#L89",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RecordSideCarFailure:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs#L180",
+		Line: 31,
+	},
 
-	RedirectHandler:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts#L46",
+	ProvideCodeActions: {
+		Repo: ElementRepos.Mountain,
 
-	"Register.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Register.ts",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RegisterCallHierarchyProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L102",
+		Line: 35,
+	},
 
-	RegisterCodeActionsProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L105",
+	ProvideCodeLenses: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterCodeLensProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L108",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RegisterCommand:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Language/Provider/Registry.ts#L111",
+		Line: 39,
+	},
 
-	RegisterCompletionItemProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L112",
+	ProvideCompletionItems: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterDefinitionProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L115",
+		Path: "Source/RPC/CocoonService/Provider.rs",
 
-	RegisterDocumentFormattingProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L119",
+		Line: 33,
+	},
 
-	RegisterDocumentHighlightProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L123",
+	ProvideDefinition: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterDocumentRangeFormattingProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L127",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RegisterDocumentSymbolProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L131",
+		Line: 47,
+	},
 
-	RegisterFoldingRangeProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L134",
+	ProvideDocumentFormatting: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterHoverProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L137",
+		Path: "Source/RPC/CocoonService/Provider.rs",
 
-	RegisterInlayHintsProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L140",
+		Line: 39,
+	},
 
-	RegisterInlineCompletionItemProvider:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+	ProvideDocumentHighlights: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterLinkedEditingRangeProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L144",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RegisterOnTypeFormattingProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L148",
+		Line: 55,
+	},
 
-	RegisterReferenceProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L151",
+	ProvideDocumentRangeFormatting: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterRenameProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L154",
+		Path: "Source/RPC/CocoonService/Provider.rs",
 
-	RegisterSelectionRangeProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L158",
+		Line: 47,
+	},
 
-	RegisterSemanticTokensProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L162",
+	ProvideDocumentSymbols: {
+		Repo: ElementRepos.Mountain,
 
-	RegisterSignatureHelpProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L165",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RegisterTypeHierarchyProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L168",
+		Line: 67,
+	},
 
-	RegisterWorkspaceSymbolProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Provider.rs#L172",
+	ProvideFoldingRanges: {
+		Repo: ElementRepos.Mountain,
 
-	"Release.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release.sh",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	"Release/Build.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh",
+		Line: 75,
+	},
 
-	RemoteProcedureCall: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ProvideHover: {
+		Repo: ElementRepos.Mountain,
 
-	Render: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_parser/tests/tsc/jsDeclarationsReferenceToClassInstanceCrossFile.ts#L17",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	Replace:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TerminalEnvCollection.rs#L86",
+		Line: 79,
+	},
 
-	Replay: "https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/ReplayEvents.ts#L41",
+	ProvideInlayHints: {
+		Repo: ElementRepos.Mountain,
 
-	Report: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/consoleCompactor/consoleCompactor.ts#L41",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RequestRoutingHandler:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts#L954",
+		Line: 83,
+	},
 
-	Require:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts#L818",
+	ProvideInlineCompletionItems: {
+		Repo: ElementRepos.Mountain,
 
-	RequireInterceptor:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/RequireInterceptor.ts#L69",
+		Path: "Source/RPC/CocoonService/Provider.rs",
 
-	Requires:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Environment/mod.rs#L17",
+		Line: 63,
+	},
 
-	ResolveUIRequest:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/UIRequest/mod.rs#L6",
+	ProvideLinkedEditingRanges: {
+		Repo: ElementRepos.Mountain,
 
-	Resources:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary/Monitor/StartMonitoring.rs#L149",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RestPlugin:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts#L6",
+		Line: 91,
+	},
 
-	Rhai: "https://rhai.rs",
+	ProvideOnTypeFormatting: {
+		Repo: ElementRepos.Mountain,
 
-	Ring: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/tests/benches-full/echarts.js#L6810",
+		Path: "Source/RPC/CocoonService/Provider.rs",
 
-	RollbackUpdate: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 70,
+	},
 
-	Rollup: "https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro#L59",
+	ProvideReferences: {
+		Repo: ElementRepos.Mountain,
 
-	RoutePatterns:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Request/Routing/Handler.ts#L56",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	RunTime:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Library.rs#L90",
+		Line: 99,
+	},
 
-	"RunTime/Shutdown/SaveApplicationState.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RunTime/Shutdown/SaveApplicationState.rs",
+	ProvideRenameEdits: {
+		Repo: ElementRepos.Mountain,
 
-	Runtime:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs#L534",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	Rust: "https://www.rust-lang.org",
+		Line: 103,
+	},
 
-	RwLock: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Indexing/Store/UpdateIndex.rs#L272",
+	ProvideSelectionRanges: {
+		Repo: ElementRepos.Mountain,
 
-	SIDECAR_CLIENTS:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/Vine/Client/Shared/struct.SIDECAR_CLIENTS.html#L1",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	SIGINT: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 107,
+	},
 
-	SIGKILL: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	ProvideSemanticTokensFull: {
+		Repo: ElementRepos.Mountain,
 
-	SIGTERM: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	SKIP_WAITING: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 111,
+	},
 
-	"ScanAndPopulateExtensions.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs",
+	ProvideSignatureHelp: {
+		Repo: ElementRepos.Mountain,
 
-	Scheduler:
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Scheduler.rs#L26",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	SchedulerBuilder:
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/mod.rs#L11",
+		Line: 115,
+	},
 
-	ScmProvider: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	ProvideTypeHierarchySubtypes: {
+		Repo: ElementRepos.Mountain,
 
-	Scope: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Cancellation.ts#L10",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	"Script/SignBundle.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh",
+		Line: 119,
+	},
 
-	Search: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Library.rs#L116",
+	ProvideTypeHierarchySupertypes: {
+		Repo: ElementRepos.Mountain,
 
-	SearchOptions:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.textSearchProvider.d.ts#L50",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	SearchProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Search/mod.rs#L6",
+		Line: 123,
+	},
 
-	"SearchProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Search/SearchProvider.rs",
+	ProvideWorkspaceSymbols: {
+		Repo: ElementRepos.Mountain,
 
-	Secret: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L35",
+		Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
 
-	SecretProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Secret/SecretProvider.rs#L18",
+		Line: 127,
+	},
 
-	"SecretProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Secret/SecretProvider.rs",
+	"ProviderRegistrationDTO.rs": {
+		Repo: ElementRepos.Mountain,
 
-	SecretStorage:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L556",
+		Path: "Source/ApplicationState/DTO/ProviderRegistrationDTO.rs",
+	},
 
-	SecretsProvider: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	ProviderRegistrationDto: MountainRoot,
 
-	SendCocoonNotification:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+	Proxy: {
+		Repo: ElementRepos.Mountain,
 
-	SendMountainNotification:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Track/Effect/CreateEffectForRequest/Utilities/mod.rs",
 
-	SendTextToTerminalLogic:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Line: 7,
+	},
 
-	Sequential:
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/Binary/Command.rs#L160",
+	Queue: { Repo: ElementRepos.Echo, Path: "Source/Library.rs", Line: 51 },
 
-	Serialize:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/testing/common/testTypes.ts#L169",
+	QuickInputService: {
+		Repo: ElementRepos.Cocoon,
 
-	"Server/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts",
+		Path: "Archive/QuickInput.ts",
 
-	"Service.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Transform/Replace/Telemetry/Service.ts",
+		Line: 52,
+	},
 
-	"Service/Effect/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts",
+	"README.md": { Repo: ElementRepos.Land, Path: "README.md" },
 
-	"Service/Effect/Module/Interceptor.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Module/Interceptor.ts",
+	REST_BINARY_PATH: {
+		Repo: ElementRepos.Output,
 
-	"Service/Mapping.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Mapping.ts",
+		Path: "Source/ESBuild/Rest/Plugin.ts",
 
-	ServiceUpstream: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 47,
+	},
 
-	ServiceWorker: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	REST_CLASS_FIELDS: LandRoot,
 
-	"Services/API/Factory/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/API/Factory/Service.ts",
+	REST_DECORATORS: LandRoot,
 
-	"Services/Configuration.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Configuration.ts",
+	REST_ENTRY: LandRoot,
 
-	"Services/Extension/Context.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts",
+	REST_MINIFY: LandRoot,
 
-	"Services/Extension/Host/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Host/Service.ts",
+	REST_OUT_DIR: LandRoot,
+
+	REST_SOURCEMAP: LandRoot,
+
+	REST_TARGET: LandRoot,
+
+	REST_WORKERS: LandRoot,
+
+	RETRY_BASE_DELAY_MS: {
+		Repo: ElementRepos.Vine,
+
+		Path: "Source/Client/Shared.rs",
+
+		Line: 38,
+	},
+
+	"RPCModelContentChangeDTO.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/DTO/RPCModelContentChangeDTO.rs",
+	},
+
+	RPCProtocol: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/extensions/common/rpcProtocol.ts",
+
+		Line: 115,
+	},
+
+	RPCServer: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/RPCServer.ts",
+
+		Line: 162,
+	},
+
+	RUST_LOG: AirRoot,
+
+	Range: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Command/Hover/Interface.rs",
+
+		Line: 26,
+	},
+
+	ReadFile: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/FileSystem.rs",
+
+		Line: 20,
+	},
+
+	Record: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Codegen/Run/Ext/Host/Codegen.ts",
+
+		Line: 89,
+	},
+
+	RecordSideCarFailure: {
+		Repo: ElementRepos.Vine,
+
+		Path: "Source/Client/Shared.rs",
+
+		Line: 180,
+	},
+
+	RedirectHandler: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Shim/Type.ts",
+
+		Line: 46,
+	},
+
+	"Register.ts": {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker/Register.ts",
+	},
+
+	RegisterCallHierarchyProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 102,
+	},
+
+	RegisterCodeActionsProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 105,
+	},
+
+	RegisterCodeLensProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 108,
+	},
+
+	RegisterCommand: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Language/Provider/Registry.ts",
+
+		Line: 111,
+	},
+
+	RegisterCompletionItemProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 112,
+	},
+
+	RegisterDefinitionProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 115,
+	},
+
+	RegisterDocumentFormattingProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 119,
+	},
+
+	RegisterDocumentHighlightProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 123,
+	},
+
+	RegisterDocumentRangeFormattingProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 127,
+	},
+
+	RegisterDocumentSymbolProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 131,
+	},
+
+	RegisterFoldingRangeProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 134,
+	},
+
+	RegisterHoverProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 137,
+	},
+
+	RegisterInlayHintsProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 140,
+	},
+
+	RegisterInlineCompletionItemProvider: AirRoot,
+
+	RegisterLinkedEditingRangeProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 144,
+	},
+
+	RegisterOnTypeFormattingProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 148,
+	},
+
+	RegisterReferenceProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 151,
+	},
+
+	RegisterRenameProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 154,
+	},
+
+	RegisterSelectionRangeProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 158,
+	},
+
+	RegisterSemanticTokensProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 162,
+	},
+
+	RegisterSignatureHelpProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 165,
+	},
+
+	RegisterTypeHierarchyProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 168,
+	},
+
+	RegisterWorkspaceSymbolProvider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/Provider.rs",
+
+		Line: 172,
+	},
+
+	"Release.sh": { Repo: ElementRepos.Land, Path: "Maintain/Release.sh" },
+
+	"Release/Build.sh": LandReleaseBuild,
+
+	RemoteProcedureCall: LandRoot,
+
+	Render: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_parser/tests/tsc/jsDeclarationsReferenceToClassInstanceCrossFile.ts",
+
+		Line: 17,
+	},
+
+	Replace: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/TerminalEnvCollection.rs",
+
+		Line: 86,
+	},
+
+	Replay: {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/ReplayEvents.ts",
+
+		Line: 41,
+	},
+
+	Report: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/consoleCompactor/consoleCompactor.ts",
+
+		Line: 41,
+	},
+
+	RequestRoutingHandler: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/gRPC/Server/Service.ts",
+
+		Line: 954,
+	},
+
+	Require: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+
+		Line: 818,
+	},
+
+	RequireInterceptor: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/RequireInterceptor.ts",
+
+		Line: 69,
+	},
+
+	Requires: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Environment/mod.rs",
+
+		Line: 17,
+	},
+
+	ResolveUIRequest: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Track/UIRequest/mod.rs",
+
+		Line: 6,
+	},
+
+	Resources: {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Binary/Monitor/StartMonitoring.rs",
+
+		Line: 149,
+	},
+
+	RestPlugin: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/ESBuild/Output.ts",
+
+		Line: 6,
+	},
+
+	Rhai: { External: "https://rhai.rs" },
+
+	Ring: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_minifier/tests/benches-full/echarts.js",
+
+		Line: 6810,
+	},
+
+	RollbackUpdate: AirRoot,
+
+	Rollup: {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/pages/index.astro",
+
+		Line: 59,
+	},
+
+	RoutePatterns: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/Request/Routing/Handler.ts",
+
+		Line: 56,
+	},
+
+	RunTime: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Library.rs",
+
+		Line: 90,
+	},
+
+	"RunTime/Shutdown/SaveApplicationState.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RunTime/Shutdown/SaveApplicationState.rs",
+	},
+
+	Runtime: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Main/AppLifecycle.rs",
+
+		Line: 534,
+	},
+
+	Rust: { External: "https://www.rust-lang.org" },
+
+	RwLock: {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Indexing/Store/UpdateIndex.rs",
+
+		Line: 272,
+	},
+
+	SIDECAR_CLIENTS: {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Rust/doc/Vine/Client/Shared/struct.SIDECAR_CLIENTS.html",
+
+		Line: 1,
+	},
+
+	SIGINT: CocoonRoot,
+
+	SIGKILL: AirRoot,
+
+	SIGTERM: CocoonRoot,
+
+	SKIP_WAITING: LandRoot,
+
+	"ScanAndPopulateExtensions.rs": {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs",
+	},
+
+	Scheduler: {
+		Repo: ElementRepos.Echo,
+
+		Path: "Source/Scheduler/Scheduler.rs",
+
+		Line: 26,
+	},
+
+	SchedulerBuilder: {
+		Repo: ElementRepos.Echo,
+
+		Path: "Source/Scheduler/mod.rs",
+
+		Line: 11,
+	},
+
+	ScmProvider: SkyRoot,
+
+	Scope: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/Cancellation.ts",
+
+		Line: 10,
+	},
+
+	"Script/SignBundle.sh": {
+		Repo: ElementRepos.Land,
+
+		Path: "Maintain/Script/SignBundle.sh",
+	},
+
+	Search: { Repo: ElementRepos.Common, Path: "Source/Library.rs", Line: 116 },
+
+	SearchOptions: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.textSearchProvider.d.ts",
+
+		Line: 50,
+	},
+
+	SearchProvider: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Search/mod.rs",
+
+		Line: 6,
+	},
+
+	"SearchProvider.rs": {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Search/SearchProvider.rs",
+	},
+
+	Secret: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 35,
+	},
+
+	SecretProvider: {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Secret/SecretProvider.rs",
+
+		Line: 18,
+	},
+
+	"SecretProvider.rs": {
+		Repo: ElementRepos.Common,
+
+		Path: "Source/Secret/SecretProvider.rs",
+	},
+
+	SecretStorage: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Context.ts",
+
+		Line: 556,
+	},
+
+	SecretsProvider: CocoonRoot,
+
+	SendCocoonNotification: LandRoot,
+
+	SendMountainNotification: LandRoot,
+
+	SendTextToTerminalLogic: MountainRoot,
+
+	Sequential: {
+		Repo: ElementRepos.Rest,
+
+		Path: "Source/Fn/Binary/Command.rs",
+
+		Line: 160,
+	},
+
+	Serialize: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/testing/common/testTypes.ts",
+
+		Line: 169,
+	},
+
+	"Server/Service.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/gRPC/Server/Service.ts",
+	},
+
+	"Service.ts": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Plugin/Transform/Replace/Telemetry/Service.ts",
+	},
+
+	"Service/Effect/Bootstrap.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Bootstrap.ts",
+	},
+
+	"Service/Effect/Module/Interceptor.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Module/Interceptor.ts",
+	},
+
+	"Service/Mapping.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Mapping.ts",
+	},
+
+	ServiceUpstream: CocoonRoot,
+
+	ServiceWorker: LandRoot,
+
+	"Services/API/Factory/Service.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/API/Factory/Service.ts",
+	},
+
+	"Services/Configuration.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Configuration.ts",
+	},
+
+	"Services/Extension/Context.ts": CocoonExtensionContext,
+
+	"Services/Extension/Host/Service.ts": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Host/Service.ts",
+	},
 
 	"Services/Handler/Extension/Host/ActivateExtension.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+		CocoonHostActivateExtension,
 
-	"Services/Handler/Notification/Handler.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Notification/Handler.ts",
+	"Services/Handler/Notification/Handler.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Services/Mountain/Client/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/Client/Service.ts",
+		Path: "Source/Services/Handler/Notification/Handler.ts",
+	},
 
-	"Services/Mountain/gRPC/Client.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts",
+	"Services/Mountain/Client/Service.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Services/Window.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts",
+		Path: "Source/Services/Mountain/Client/Service.ts",
+	},
 
-	"Services/Workspace.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Workspace.ts",
+	"Services/Mountain/gRPC/Client.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Services/gRPC/Server/Service.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts",
+		Path: "Source/Services/Mountain/gRPC/Client.ts",
+	},
 
-	SettingsSynchronizer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Services/Window.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	Shared: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Client.rs#L37",
+		Path: "Source/Services/Window.ts",
+	},
 
-	SharedMemory: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Services/Workspace.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"ShellIntegration.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/Terminal/ShellIntegration.rs",
+		Path: "Source/Services/Workspace.ts",
+	},
 
-	ShimEvent:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts#L59",
+	"Services/gRPC/Server/Service.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	ShimLevel:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts#L12",
+		Path: "Source/Services/gRPC/Server/Service.ts",
+	},
 
-	Ship: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	SettingsSynchronizer: CocoonRoot,
 
-	ShowMessageRequest:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/mod.rs#L278",
+	Shared: {
+		Repo: ElementRepos.Mountain,
 
-	"SideCar/Cache.json":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json",
+		Path: "Source/Vine/Client.rs",
 
-	"SignBundle.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh",
+		Line: 37,
+	},
 
-	Simple: "https://github.com/CodeEditorLand/Maintain/tree/Current/tests/Eliminate/Integration.rs#L95",
+	SharedMemory: LandRoot,
 
-	Skip: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"ShellIntegration.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Sky/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts",
+		Path: "Source/Environment/Terminal/ShellIntegration.rs",
+	},
 
-	"Sky/Function/SmokeTest/Auto/Diagnose/Input.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Auto/Diagnose/Input.ts",
+	ShimEvent: {
+		Repo: ElementRepos.Wind,
 
-	"Sky/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts",
+		Path: "Source/Shim/Type.ts",
 
-	"Sky/Source/Function/Build/BakeExtensionManifest.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Build/BakeExtensionManifest.ts",
+		Line: 59,
+	},
 
-	"Sky/Source/Function/Sky/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts",
+	ShimLevel: {
+		Repo: ElementRepos.Wind,
 
-	"Sky/Workbench/Electron/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Bootstrap.ts",
+		Path: "Source/Shim/Type.ts",
 
-	"Sky/Workbench/Electron/Post/Hog/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Post/Hog/Bridge.ts",
+		Line: 12,
+	},
 
-	"Sky/astro.config.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/astro.config.ts",
+	Ship: AirRoot,
 
-	SkyBridge: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	ShowMessageRequest: {
+		Repo: ElementRepos.Mountain,
 
-	Smoke: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Vine/Generated/mod.rs",
 
-	"Source/Apply/Pipeline.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Apply/Pipeline.ts",
+		Line: 278,
+	},
 
-	"Source/Authentication/mod.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Authentication/mod.rs",
+	"SideCar/Cache.json": { Repo: ElementRepos.SideCar, Path: "Cache.json" },
 
-	"Source/Binary.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary.rs",
+	"SignBundle.sh": {
+		Repo: ElementRepos.Land,
 
-	"Source/Binary/Binary.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs",
+		Path: "Maintain/Script/SignBundle.sh",
+	},
 
-	"Source/Build/CLI/Cli.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/CLI/Cli.rs",
+	Simple: {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Build/Definition.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Definition.rs",
+		Path: "tests/Eliminate/Integration.rs",
 
-	"Source/Build/Error.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Error.rs",
+		Line: 95,
+	},
 
-	"Source/Build/Fn.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Fn.rs",
+	Skip: AirRoot,
 
-	"Source/Build/GetTauriTargetTriple.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs",
+	"Sky/Bridge.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Build/JsonEdit.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/JsonEdit.rs",
+		Path: "Source/Function/Sky/Bridge.ts",
+	},
 
-	"Source/Build/Logger.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Logger.rs",
+	"Sky/Function/SmokeTest/Auto/Diagnose/Input.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Build/Pascalize.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Pascalize.rs",
+		Path: "Source/Function/SmokeTest/Auto/Diagnose/Input.ts",
+	},
 
-	"Source/Build/PlistEdit.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/PlistEdit.rs",
+	"Sky/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Build/Rhai/ConfigLoader.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ConfigLoader.rs",
+		Path: "Source/Function/SmokeTest/Run/Command/Catalog/Smoke/Test.ts",
+	},
 
-	"Source/Build/Rhai/EnvironmentResolver.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs",
+	"Sky/Source/Function/Build/BakeExtensionManifest.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Build/Rhai/ScriptRunner.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/ScriptRunner.rs",
+		Path: "Source/Function/Build/BakeExtensionManifest.ts",
+	},
 
-	"Source/Build/TomlEdit.rs":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/TomlEdit.rs",
+	"Sky/Source/Function/Sky/Bridge.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Codegen/Emit/EmitServiceSchema.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts",
+		Path: "Source/Function/Sky/Bridge.ts",
+	},
 
-	"Source/Configuration/ESBuild/Config/TargetConfig.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Configuration/ESBuild/Config/TargetConfig.ts",
+	"Sky/Workbench/Electron/Bootstrap.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/DevLog.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/DevLog.rs",
+		Path: "Source/Workbench/Electron/Bootstrap.ts",
+	},
 
-	"Source/Download.rs":
-		"https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Download.rs",
+	"Sky/Workbench/Electron/Post/Hog/Bridge.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Downloader/mod.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Downloader/mod.rs",
+		Path: "Source/Workbench/Electron/Post/Hog/Bridge.ts",
+	},
 
-	"Source/ESBuild.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts",
+	"Sky/astro.config.ts": SkyAstroconfig,
 
-	"Source/ESBuild/Output.js":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.js",
+	SkyBridge: LandRoot,
 
-	"Source/ESBuild/Output.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts",
+	Smoke: AirRoot,
 
-	"Source/ESBuild/Rest/Plugin.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Rest/Plugin.ts",
+	"Source/Apply/Pipeline.ts": {
+		Repo: ElementRepos.Output,
 
-	"Source/Effect/RPCServer.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/RPCServer.ts",
+		Path: "Source/Apply/Pipeline.ts",
+	},
 
-	"Source/Error.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Error.rs",
+	"Source/Authentication/mod.rs": {
+		Repo: ElementRepos.Air,
 
-	"Source/Fn/Build.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/Build.rs",
+		Path: "Source/Authentication/mod.rs",
+	},
 
-	"Source/Fn/OXC/Codegen.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Codegen.rs",
+	"Source/Binary.rs": AirSourceBinary,
 
-	"Source/Fn/OXC/Compiler.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs",
+	"Source/Binary/Binary.rs": {
+		Repo: ElementRepos.Air,
 
-	"Source/Fn/OXC/Parser.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Parser.rs",
+		Path: "Source/Binary/Binary.rs",
+	},
 
-	"Source/Fn/OXC/Transformer.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Transformer.rs",
+	"Source/Build/CLI/Cli.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/ForwardSecurity.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/ForwardSecurity.rs",
+		Path: "Source/Build/CLI/Cli.rs",
+	},
 
-	"Source/Function/Debug.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Debug.ts",
+	"Source/Build/Definition.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Function/Install.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Function/Install.ts",
+		Path: "Source/Build/Definition.rs",
+	},
 
-	"Source/Function/Shared.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Shared.ts",
+	"Source/Build/Error.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Function/Sky/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts",
+		Path: "Source/Build/Error.rs",
+	},
 
-	"Source/HTTP/Client.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/HTTP/Client.rs",
+	"Source/Build/Fn.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Host.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Host.rs",
+		Path: "Source/Build/Fn.rs",
+	},
 
-	"Source/Host/APIBridge.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/APIBridge.rs",
+	"Source/Build/GetTauriTargetTriple.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Host/ExtensionHost.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionHost.rs",
+		Path: "Source/Build/GetTauriTargetTriple.rs",
+	},
 
-	"Source/Host/ExtensionManager.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/ExtensionManager.rs",
+	"Source/Build/JsonEdit.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Host/Lifecycle.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Host/Lifecycle.rs",
+		Path: "Source/Build/JsonEdit.rs",
+	},
 
-	"Source/IPC/Channel.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/IPC/Channel.ts",
+	"Source/Build/Logger.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/IPC/TauriIPCServer.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs",
+		Path: "Source/Build/Logger.rs",
+	},
 
-	"Source/Initialize/Command/HandleCommand.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Command/HandleCommand.rs",
+	"Source/Build/Pascalize.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Initialize/Configure/Log/ConfigureLog.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Configure/Log/ConfigureLog.rs",
+		Path: "Source/Build/Pascalize.rs",
+	},
 
-	"Source/Library.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Library.rs",
+	"Source/Build/PlistEdit.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Main.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Main.rs",
+		Path: "Source/Build/PlistEdit.rs",
+	},
 
-	"Source/Multiplexer.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Multiplexer.rs",
+	"Source/Build/Rhai/ConfigLoader.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Plugin/Apply.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts",
+		Path: "Source/Build/Rhai/ConfigLoader.rs",
+	},
 
-	"Source/Plugin/Index.ts":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Index.ts",
+	"Source/Build/Rhai/EnvironmentResolver.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Preload.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts",
+		Path: "Source/Build/Rhai/EnvironmentResolver.rs",
+	},
 
-	"Source/Protocol/SpineConnection.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs",
+	"Source/Build/Rhai/ScriptRunner.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Queue/StealingQueue.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs",
+		Path: "Source/Build/Rhai/ScriptRunner.rs",
+	},
 
-	"Source/Resolver.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Resolver.rs",
+	"Source/Build/TomlEdit.rs": {
+		Repo: ElementRepos.Maintain,
 
-	"Source/Scheduler/Scheduler.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Scheduler.rs",
+		Path: "Source/Build/TomlEdit.rs",
+	},
 
-	"Source/Scheduler/SchedulerBuilder.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/SchedulerBuilder.rs",
+	"Source/Codegen/Emit/EmitServiceSchema.ts": {
+		Repo: ElementRepos.Wind,
 
-	"Source/Scheduler/Worker.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Scheduler/Worker.rs",
+		Path: "Source/Codegen/Emit/EmitServiceSchema.ts",
+	},
 
-	"Source/Server.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Server.rs",
+	"Source/Configuration/ESBuild/Config/TargetConfig.ts": {
+		Repo: ElementRepos.Wind,
 
-	"Source/Service/TauriMainProcessService.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts",
+		Path: "Source/Configuration/ESBuild/Config/TargetConfig.ts",
+	},
 
-	"Source/Services/Configuration.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Configuration.ts",
+	"Source/DevLog.rs": { Repo: ElementRepos.Grove, Path: "Source/DevLog.rs" },
 
-	"Source/Services/ConfigurationService.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Services/ConfigurationService.rs",
+	"Source/Download.rs": {
+		Repo: ElementRepos.SideCar,
 
-	"Source/Services/Window.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts",
+		Path: "Source/Download.rs",
+	},
 
-	"Source/Services/Workspace.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Workspace.ts",
+	"Source/Downloader/mod.rs": {
+		Repo: ElementRepos.Air,
 
-	"Source/Struct/CompilerConfig.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/CompilerConfig.rs",
+		Path: "Source/Downloader/mod.rs",
+	},
 
-	"Source/Struct/SWC.rs":
-		"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/SWC.rs",
+	"Source/ESBuild.ts": { Repo: ElementRepos.Wind, Path: "Source/ESBuild.ts" },
 
-	"Source/Task/Priority.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
+	"Source/ESBuild/Output.js": {
+		Repo: ElementRepos.Output,
 
-	"Source/Task/Task.rs":
-		"https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Task.rs",
+		Path: "Source/ESBuild/Output.js",
+	},
 
-	"Source/Telemetry/Bridge.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Telemetry/Bridge.ts",
+	"Source/ESBuild/Output.ts": {
+		Repo: ElementRepos.Output,
 
-	"Source/Telemetry/PostHog/Configuration.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHog/Configuration.ts",
+		Path: "Source/ESBuild/Output.ts",
+	},
 
-	"Source/Telemetry/PostHogBridge.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts",
+	"Source/ESBuild/Rest/Plugin.ts": {
+		Repo: ElementRepos.Output,
 
-	"Source/Transport/CommonAdapter.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/CommonAdapter.rs",
+		Path: "Source/ESBuild/Rest/Plugin.ts",
+	},
 
-	"Source/Transport/IPCTransport.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs",
+	"Source/Effect/RPCServer.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Source/Transport/Strategy.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/Strategy.rs",
+		Path: "Source/Service/Effect/RPCServer.ts",
+	},
 
-	"Source/Transport/WASMTransport.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/WASMTransport.rs",
+	"Source/Error.rs": { Repo: ElementRepos.Vine, Path: "Source/Error.rs" },
 
-	"Source/Transport/gRPCTransport.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/gRPCTransport.rs",
+	"Source/Fn/Build.rs": {
+		Repo: ElementRepos.Rest,
 
-	"Source/Updates/mod.rs":
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Updates/mod.rs",
+		Path: "Source/Fn/Build.rs",
+	},
 
-	"Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts",
+	"Source/Fn/OXC/Codegen.rs": {
+		Repo: ElementRepos.Rest,
 
-	"Source/WASM/HostBridge.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/HostBridge.rs",
+		Path: "Source/Fn/OXC/Codegen.rs",
+	},
 
-	"Source/WASM/MemoryManager.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs",
+	"Source/Fn/OXC/Compiler.rs": {
+		Repo: ElementRepos.Rest,
 
-	"Source/WASM/ModuleLoader.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/ModuleLoader.rs",
+		Path: "Source/Fn/OXC/Compiler.rs",
+	},
 
-	"Source/WASM/Runtime.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/WASM/Runtime.rs",
+	"Source/Fn/OXC/Parser.rs": {
+		Repo: ElementRepos.Rest,
 
-	"Source/WebSocket.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs",
+		Path: "Source/Fn/OXC/Parser.rs",
+	},
 
-	"Source/Workbench/BrowserProxy/Bootstrap.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/BrowserProxy/Bootstrap.ts",
+	"Source/Fn/OXC/Transformer.rs": {
+		Repo: ElementRepos.Rest,
 
-	"Source/Workbench/Electron/Polyfills.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Polyfills.ts",
+		Path: "Source/Fn/OXC/Transformer.rs",
+	},
 
-	"Source/Worker/CSS/Load.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/CSS/Load.ts",
+	"Source/ForwardSecurity.rs": {
+		Repo: ElementRepos.Mist,
 
-	"Source/Worker/Policy.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Policy.ts",
+		Path: "Source/ForwardSecurity.rs",
+	},
 
-	"Source/Worker/Register.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Register.ts",
+	"Source/Function/Debug.ts": {
+		Repo: ElementRepos.Sky,
 
-	"Source/Zone.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Zone.rs",
+		Path: "Source/Function/Debug.ts",
+	},
 
-	"Source/main.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs",
+	"Source/Function/Install.ts": {
+		Repo: ElementRepos.Wind,
 
-	SourceControl:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.scmHistoryProvider.d.ts#L9",
+		Path: "Source/Function/Install.ts",
+	},
 
-	SourceControlManagementProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/SourceControlManagement/SourceControlManagementProvider.rs#L24",
+	"Source/Function/Shared.ts": {
+		Repo: ElementRepos.Sky,
 
-	"SourceControlManagementProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/SourceControlManagement/SourceControlManagementProvider.rs",
+		Path: "Source/Function/Shared.ts",
+	},
 
-	SourceControlResourceState:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/mod.rs#L296",
+	"Source/Function/Sky/Bridge.ts": {
+		Repo: ElementRepos.Sky,
 
-	SpanProcessor:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotCliBridgeSpanProcessor.ts#L40",
+		Path: "Source/Function/Sky/Bridge.ts",
+	},
 
-	Spine: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Source/HTTP/Client.rs": {
+		Repo: ElementRepos.Air,
 
-	StageUpdate:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Updates/UpdateManager.rs#L2059",
+		Path: "Source/HTTP/Client.rs",
+	},
 
-	Standard: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Source/Host.rs": { Repo: ElementRepos.Vine, Path: "Source/Host.rs" },
 
-	"State/WorkspaceState/WorkspaceDelta.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/State/WorkspaceState/WorkspaceDelta.rs",
+	"Source/Host/APIBridge.rs": {
+		Repo: ElementRepos.Grove,
 
-	StatusBarProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/StatusBar/StatusBarProvider.rs#L25",
+		Path: "Source/Host/APIBridge.rs",
+	},
 
-	"StatusBarProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/StatusBar/StatusBarProvider.rs",
+	"Source/Host/ExtensionHost.rs": {
+		Repo: ElementRepos.Grove,
 
-	StopWatch:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/stopwatch.ts#L9",
+		Path: "Source/Host/ExtensionHost.rs",
+	},
 
-	Storage:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L74",
+	"Source/Host/ExtensionManager.rs": {
+		Repo: ElementRepos.Grove,
 
-	"Storage.Get":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/State.ts#L379",
+		Path: "Source/Host/ExtensionManager.rs",
+	},
 
-	"Storage.Set":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/State.ts#L358",
+	"Source/Host/Lifecycle.rs": {
+		Repo: ElementRepos.Grove,
 
-	StorageProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/mod.rs#L94",
+		Path: "Source/Host/Lifecycle.rs",
+	},
 
-	"StorageProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Storage/StorageProvider.rs",
+	"Source/IPC/Channel.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	StreamActions: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/IPC/Channel.ts",
+	},
 
-	Stub: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Extensions/Namespace.ts#L134",
+	"Source/IPC/TauriIPCServer.rs": {
+		Repo: ElementRepos.Mountain,
 
-	Submit: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs#L169",
+		Path: "Source/IPC/TauriIPCServer.rs",
+	},
 
-	SwallowAction:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs#L16",
+	"Source/Initialize/Command/HandleCommand.rs": {
+		Repo: ElementRepos.Air,
 
-	SwallowDecision:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts#L38",
+		Path: "Source/Initialize/Command/HandleCommand.rs",
+	},
 
-	SwallowRule:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts#L22",
+	"Source/Initialize/Configure/Log/ConfigureLog.rs": {
+		Repo: ElementRepos.Air,
 
-	SynchronizationProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Synchronization/SynchronizationProvider.rs#L15",
+		Path: "Source/Initialize/Configure/Log/ConfigureLog.rs",
+	},
 
-	"SynchronizationProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Synchronization/SynchronizationProvider.rs",
+	"Source/Library.rs": { Repo: ElementRepos.Air, Path: "Source/Library.rs" },
 
-	Synchronous: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Main.rs": { Repo: ElementRepos.Rest, Path: "Source/Main.rs" },
 
-	SystemTime: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"Source/Multiplexer.rs": {
+		Repo: ElementRepos.Vine,
 
-	TA: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/tests/fixture/next/asmjs/1/input.js#L21593",
+		Path: "Source/Multiplexer.rs",
+	},
 
-	TAURI_ENV_DEBUG: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Plugin/Apply.ts": {
+		Repo: ElementRepos.Output,
 
-	TCapability: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Plugin/Apply.ts",
+	},
 
-	TCapabilityProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"Source/Plugin/Index.ts": {
+		Repo: ElementRepos.Output,
 
-	TELEMETRY_DISABLE: "https://github.com/CodeEditorLand/Common/tree/Current/",
+		Path: "Source/Plugin/Index.ts",
+	},
 
-	TELEMETRY_OTLP_ENDPOINT:
-		"https://github.com/CodeEditorLand/Common/tree/Current/",
+	"Source/Preload.ts": { Repo: ElementRepos.Wind, Path: "Source/Preload.ts" },
 
-	TELEMETRY_POSTHOG_KEY:
-		"https://github.com/CodeEditorLand/Common/tree/Current/",
+	"Source/Protocol/SpineConnection.rs": {
+		Repo: ElementRepos.Grove,
 
-	TMPDIR: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Protocol/SpineConnection.rs",
+	},
 
-	TN: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Source/Queue/StealingQueue.rs": {
+		Repo: ElementRepos.Echo,
 
-	Tag: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Notification/Handler.ts#L332",
+		Path: "Source/Queue/StealingQueue.rs",
+	},
 
-	"TargetConfig.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Configuration/ESBuild/Config/TargetConfig.ts",
+	"Source/Resolver.rs": {
+		Repo: ElementRepos.Mist,
 
-	Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
+		Path: "Source/Resolver.rs",
+	},
 
-	"Task.Execute":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts#L110",
+	"Source/Scheduler/Scheduler.rs": {
+		Repo: ElementRepos.Echo,
 
-	"Task.Fetch":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts#L91",
+		Path: "Source/Scheduler/Scheduler.rs",
+	},
 
-	"Task.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter/Task.ts",
+	"Source/Scheduler/SchedulerBuilder.rs": {
+		Repo: ElementRepos.Echo,
 
-	TaskExecution:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Task.ts#L14",
+		Path: "Source/Scheduler/SchedulerBuilder.rs",
+	},
 
-	Tauri: "https://tauri.app",
+	"Source/Scheduler/Worker.rs": {
+		Repo: ElementRepos.Echo,
 
-	TauriDiskFileSystemProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Source/Scheduler/Worker.rs",
+	},
 
-	TauriEmit: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Source/Server.rs": { Repo: ElementRepos.Mist, Path: "Source/Server.rs" },
 
-	TauriInvoke:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Search/Service.ts#L73",
+	"Source/Service/TauriMainProcessService.ts": {
+		Repo: ElementRepos.Wind,
 
-	TauriListen:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts#L353",
+		Path: "Source/Service/TauriMainProcessService.ts",
+	},
 
-	TauriLiveLayer:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md#L372",
+	"Source/Services/Configuration.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	TauriMainProcessService:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts#L1383",
+		Path: "Source/Services/Configuration.ts",
+	},
 
-	"TauriMainProcessService.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts",
+	"Source/Services/ConfigurationService.rs": {
+		Repo: ElementRepos.Grove,
 
-	TauriWebviewWindow:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/ConfigurationService.rs",
+	},
 
-	Telemetry:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Telemetry.ts#L122",
+	"Source/Services/Window.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	Terminal:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L80",
+		Path: "Source/Services/Window.ts",
+	},
 
-	"Terminal/LocalPTYCreateProcess.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Terminal/LocalPTYCreateProcess.rs",
+	"Source/Services/Workspace.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	TerminalId:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Terminal/ResizeTerminal.rs#L14",
+		Path: "Source/Services/Workspace.ts",
+	},
 
-	TerminalOptions:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.terminalTitle.d.ts#L10",
+	"Source/Struct/CompilerConfig.rs": {
+		Repo: ElementRepos.Rest,
 
-	TerminalProvider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/mod.rs#L106",
+		Path: "Source/Struct/CompilerConfig.rs",
+	},
 
-	"TerminalProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Terminal/TerminalProvider.rs",
+	"Source/Struct/SWC.rs": {
+		Repo: ElementRepos.Rest,
 
-	"TerminalStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TerminalStateDTO.rs",
+		Path: "Source/Struct/SWC.rs",
+	},
 
-	TerminalStateDto:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"Source/Task/Priority.rs": {
+		Repo: ElementRepos.Echo,
 
-	TestClock: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Task/Priority.rs",
+	},
 
-	TestController:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Testing/mod.rs#L9",
+	"Source/Task/Task.rs": {
+		Repo: ElementRepos.Echo,
 
-	TestEnvironment: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Task/Task.rs",
+	},
 
-	TestLayer:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md#L212",
+	"Source/Telemetry/Bridge.ts": {
+		Repo: ElementRepos.Worker,
 
-	"TestProvider.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TestProvider.rs",
+		Path: "Source/Telemetry/Bridge.ts",
+	},
 
-	TextDocumentContentProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L1850",
+	"Source/Telemetry/PostHog/Configuration.ts": {
+		Repo: ElementRepos.Wind,
 
-	TextEdit:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Types.ts#L57",
+		Path: "Source/Telemetry/PostHog/Configuration.ts",
+	},
 
-	TextEditor:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.textEditorDiffInformation.d.ts#L39",
+	"Source/Telemetry/PostHogBridge.ts": {
+		Repo: ElementRepos.Wind,
 
-	TextEditorEdit:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L1400",
+		Path: "Source/Telemetry/PostHogBridge.ts",
+	},
 
-	TextEditorPane: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	"Source/Transport/CommonAdapter.rs": {
+		Repo: ElementRepos.Grove,
 
-	TextEditorService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/textfile/common/textEditorService.ts#L69",
+		Path: "Source/Transport/CommonAdapter.rs",
+	},
 
-	TextFileEditorModel:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/textfile/common/textFileEditorModel.ts#L51",
+	"Source/Transport/IPCTransport.rs": {
+		Repo: ElementRepos.Grove,
 
-	TextFileEditorModelManager:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/textfile/common/textFileEditorModelManager.ts#L40",
+		Path: "Source/Transport/IPCTransport.rs",
+	},
 
-	Throttle: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Transport/Strategy.rs": {
+		Repo: ElementRepos.Grove,
 
-	Tier: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/Tier.rs#L9",
+		Path: "Source/Transport/Strategy.rs",
+	},
 
-	TierAuth: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Source/Transport/WASMTransport.rs": {
+		Repo: ElementRepos.Grove,
 
-	TierClipboard: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Transport/WASMTransport.rs",
+	},
 
-	TierClipboardLayer4: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Transport/gRPCTransport.rs": {
+		Repo: ElementRepos.Grove,
 
-	TierCommandEventBroadcast:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Transport/gRPCTransport.rs",
+	},
 
-	TierConfiguration: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Updates/mod.rs": {
+		Repo: ElementRepos.Air,
 
-	TierConfigurationEager:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Updates/mod.rs",
+	},
 
-	TierDebug: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Source/Utility/Tier.ts": CocoonUtilityTier,
 
-	TierDiagnostics: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/WASM/HostBridge.rs": {
+		Repo: ElementRepos.Grove,
 
-	TierDiagnosticsDelta: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/WASM/HostBridge.rs",
+	},
 
-	TierDocumentMirror: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/WASM/MemoryManager.rs": {
+		Repo: ElementRepos.Grove,
 
-	TierEncryption: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/WASM/MemoryManager.rs",
+	},
 
-	"TierEnvironment.sh":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh",
+	"Source/WASM/ModuleLoader.rs": {
+		Repo: ElementRepos.Grove,
 
-	TierExtensionActivation:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/WASM/ModuleLoader.rs",
+	},
 
-	TierExtensionHost:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs#L498",
+	"Source/WASM/Runtime.rs": {
+		Repo: ElementRepos.Grove,
 
-	TierExtensionScan: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/WASM/Runtime.rs",
+	},
 
-	TierExtensionScanParallel:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/WebSocket.rs": {
+		Repo: ElementRepos.Mist,
 
-	TierFileSystem: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/WebSocket.rs",
+	},
 
-	TierFileSystemLayer4: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Workbench/BrowserProxy/Bootstrap.ts": {
+		Repo: ElementRepos.Sky,
 
-	TierFileWatcher: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Workbench/BrowserProxy/Bootstrap.ts",
+	},
 
-	TierFileWatcherLayer4:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Workbench/Electron/Polyfills.ts": {
+		Repo: ElementRepos.Sky,
 
-	TierFindFiles: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Workbench/Electron/Polyfills.ts",
+	},
 
-	TierFindFilesLayer4: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Worker/CSS/Load.ts": {
+		Repo: ElementRepos.Worker,
 
-	TierGlob: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Worker/CSS/Load.ts",
+	},
 
-	TierGlobNative: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Worker/Policy.ts": {
+		Repo: ElementRepos.Worker,
 
-	TierHTTPProxy: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Worker/Policy.ts",
+	},
 
-	TierHTTPProxyHyper: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/Worker/Register.ts": {
+		Repo: ElementRepos.Worker,
 
-	TierIPC:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/DispatchMatch.rs#L2544",
+		Path: "Source/Worker/Register.ts",
+	},
 
-	TierLanguageFeatures:
-		"https://github.com/CodeEditorLand/Land/tree/Current/",
+	"Source/Zone.rs": { Repo: ElementRepos.Mist, Path: "Source/Zone.rs" },
 
-	TierLogger: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"Source/main.rs": { Repo: ElementRepos.Grove, Path: "Source/main.rs" },
 
-	TierLoggerRing: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	SourceControl: {
+		Repo: EditorRepo,
 
-	TierModel: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vscode-dts/vscode.proposed.scmHistoryProvider.d.ts",
 
-	TierModuleCache: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 9,
+	},
 
-	TierNativeHost: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	SourceControlManagementProvider: {
+		Repo: ElementRepos.Common,
 
-	TierOpenExternal: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/SourceControlManagement/SourceControlManagementProvider.rs",
 
-	TierOpenExternalLayer4:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 24,
+	},
 
-	TierOutputChannel: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"SourceControlManagementProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	TierRemoteProcedureCall:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/SourceControlManagement/SourceControlManagementProvider.rs",
+	},
 
-	TierRemoteProcedureCallSharedMemory:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+	SourceControlResourceState: {
+		Repo: ElementRepos.Mountain,
 
-	TierSCM: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Vine/Generated/mod.rs",
 
-	TierSchemeAssets:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs#L74",
+		Line: 296,
+	},
 
-	TierSchemeAssetsHybrid:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+	SpanProcessor: {
+		Repo: EditorRepo,
 
-	TierSearch: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotCliBridgeSpanProcessor.ts",
 
-	TierStorage: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 40,
+	},
 
-	TierTasks: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	Spine: LandRoot,
 
-	TierTelemetry: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	StageUpdate: {
+		Repo: ElementRepos.Air,
 
-	TierTerminal: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Updates/UpdateManager.rs",
 
-	TierTreeView: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 2059,
+	},
 
-	TierWebSocket: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	Standard: LandRoot,
 
-	TierXValue: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"State/WorkspaceState/WorkspaceDelta.rs": {
+		Repo: ElementRepos.Mountain,
 
-	TimeoutError:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Errors.ts#L38",
+		Path: "Source/ApplicationState/State/WorkspaceState/WorkspaceDelta.rs",
+	},
 
-	TimingProxy:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts#L33",
+	StatusBarProvider: {
+		Repo: ElementRepos.Common,
 
-	Tokio: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/StatusBar/StatusBarProvider.rs",
 
-	Trace: "https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/Trace.ts#L11",
+		Line: 25,
+	},
 
-	"Tracer.startSpan":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md#L239",
+	"StatusBarProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	Track: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Library.rs#L120",
+		Path: "Source/StatusBar/StatusBarProvider.rs",
+	},
 
-	Transport:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Library.rs#L153",
+	StopWatch: {
+		Repo: EditorRepo,
 
-	TransportConfig:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Transport/mod.rs#L56",
+		Path: "src/vs/base/common/stopwatch.ts",
 
-	TreeDataProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L12236",
+		Line: 9,
+	},
 
-	TreeView:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/TreeView.ts#L236",
+	Storage: {
+		Repo: ElementRepos.Mountain,
 
-	TreeViewProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/TreeView/mod.rs#L9",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	"TreeViewProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/TreeView/TreeViewProvider.rs",
+		Line: 74,
+	},
 
-	"TreeViewStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/TreeViewStateDTO.rs",
+	"Storage.Get": {
+		Repo: ElementRepos.Cocoon,
 
-	Turborepo: "https://turbo.build",
+		Path: "Source/WebviewPanel/State.ts",
 
-	TypeConverter:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Type/Converter.ts#L89",
+		Line: 379,
+	},
 
-	TypeScript: "https://www.typescriptlang.org",
+	"Storage.Set": {
+		Repo: ElementRepos.Cocoon,
 
-	UPDATE_CHECK_INTERVAL:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/cli/src/tunnels/agent_host.rs#L55",
+		Path: "Source/WebviewPanel/State.ts",
 
-	URI: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization/InitExtensionHost.rs#L36",
+		Line: 358,
+	},
 
-	USER: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	StorageProvider: {
+		Repo: ElementRepos.Mountain,
 
-	USERNAME: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Environment/mod.rs",
 
-	USERPROFILE: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 94,
+	},
 
-	Uint8Array:
-		"https://github.com/CodeEditorLand/Common/tree/Current/TypeScript/Interface/Decrypt.ts#L14",
+	"StorageProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	UnregisterCommand:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Language/Provider/Registry.ts#L143",
+		Path: "Source/Storage/StorageProvider.rs",
+	},
 
-	Update: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Configuration/mod.rs#L9",
+	StreamActions: AirRoot,
 
-	UpdateSideCarActivity:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs#L211",
+	Stub: {
+		Repo: ElementRepos.Cocoon,
 
-	Uri: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/mod.rs#L342",
+		Path: "Source/Services/Handler/VscodeAPI/Extensions/Namespace.ts",
 
-	UserDataAutoSyncService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/userDataSync/node/userDataAutoSyncService.ts#L17",
+		Line: 134,
+	},
 
-	UserDataSyncAccountService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/userDataSync/common/userDataSyncAccount.ts#L27",
+	Submit: {
+		Repo: ElementRepos.Echo,
 
-	UserDataSyncStoreService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/userDataSync/common/userDataSyncStoreService.ts#L703",
+		Path: "Source/Queue/StealingQueue.rs",
 
-	"UserDotfile.md":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
+		Line: 169,
+	},
 
-	UserInterface:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L86",
+	SwallowAction: {
+		Repo: ElementRepos.Mountain,
 
-	UserInterfaceProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/UserInterface/UserInterfaceProvider.rs#L28",
+		Path: "Source/Shim/SwallowMap.rs",
 
-	"UserInterfaceProvider.rs":
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/UserInterface/UserInterfaceProvider.rs",
+		Line: 16,
+	},
 
-	"Utilities/UserdataDir.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/UserdataDir.rs",
+	SwallowDecision: {
+		Repo: ElementRepos.Wind,
 
-	"Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts",
+		Path: "Source/Shim/Type.ts",
 
-	VINE_PORT: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 38,
+	},
 
-	VSCODE_APP_ROOT: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	SwallowRule: {
+		Repo: ElementRepos.Wind,
 
-	VSCODE_COCOON_GLOBAL_STORAGE:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Shim/Type.ts",
 
-	VSCODE_IPC_HOOK_CLI:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 22,
+	},
 
-	VSCODE_PARENT_PID: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	SynchronizationProvider: {
+		Repo: ElementRepos.Common,
 
-	VerifyChecksum:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Downloader/DownloadManager.rs#L969",
+		Path: "Source/Synchronization/SynchronizationProvider.rs",
 
-	"Vine.proto":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto",
+		Line: 15,
+	},
 
-	"Vine/Proto/Vine.proto":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto",
+	"SynchronizationProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	"Vine/Source/Client/CheckSideCarHealth.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/CheckSideCarHealth.rs",
+		Path: "Source/Synchronization/SynchronizationProvider.rs",
+	},
 
-	"Vine/Source/Client/Shared.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Client/Shared.rs",
+	Synchronous: AirRoot,
 
-	"Vine/Source/Library.rs":
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Library.rs",
+	SystemTime: MountainRoot,
 
-	VineError:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Vine/Error.rs#L44",
+	TA: {
+		Repo: SWCRepo,
 
-	VineHost:
-		"https://github.com/CodeEditorLand/Vine/tree/Current/Source/Host.rs#L76",
+		Path: "crates/swc_ecma_minifier/tests/fixture/next/asmjs/1/input.js",
 
-	Vite: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_parser/tests/typescript/ts-import-type/input.ts#L1",
+		Line: 21593,
+	},
 
-	WASM: "https://webassembly.org",
+	TAURI_ENV_DEBUG: AirRoot,
 
-	WASMTransport:
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/mod.rs#L37",
+	TCapability: AirRoot,
 
-	WASMtime: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	TCapabilityProvider: MountainRoot,
 
-	WaitForClientConnection:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Client.rs#L49",
+	TELEMETRY_DISABLE: { Repo: ElementRepos.Common, Path: "" },
 
-	Wasmtime: "https://wasmtime.dev",
+	TELEMETRY_OTLP_ENDPOINT: { Repo: ElementRepos.Common, Path: "" },
 
-	Watch: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Indexing/mod.rs#L76",
+	TELEMETRY_POSTHOG_KEY: { Repo: ElementRepos.Common, Path: "" },
 
-	"WebSocket.rs":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs",
+	TMPDIR: AirRoot,
 
-	WebWorker:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/webWorker/browser/webWorkerServiceImpl.ts#L141",
+	TN: LandRoot,
 
-	Webview:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L16",
+	Tag: {
+		Repo: ElementRepos.Cocoon,
 
-	WebviewManagementService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/Handler/Notification/Handler.ts",
 
-	WebviewPanelProvider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 332,
+	},
 
-	WebviewPanelShim: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"TargetConfig.ts": {
+		Repo: ElementRepos.Wind,
 
-	WebviewProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Webview/mod.rs#L15",
+		Path: "Source/Configuration/ESBuild/Config/TargetConfig.ts",
+	},
 
-	WebviewShim: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	Task: { Repo: ElementRepos.Echo, Path: "Source/Library.rs", Line: 55 },
 
-	WebviewStateDto: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Task.Execute": {
+		Repo: ElementRepos.Cocoon,
 
-	WillSaveTextDocumentEvent:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts",
 
-	"Wind/Source/ESBuild.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts",
+		Line: 110,
+	},
 
-	"Wind/Source/IPC/Channel.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts",
+	"Task.Fetch": {
+		Repo: ElementRepos.Cocoon,
 
-	"Wind/Source/Preload.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts",
+		Path: "Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts",
 
-	"Wind/Source/Service/TauriMainProcessService.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts",
+		Line: 91,
+	},
 
-	"Wind/Source/Shim/AsyncProxy.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/AsyncProxy.ts",
+	"Task.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"Wind/Source/Shim/AuditLog.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/AuditLog.ts",
+		Path: "Source/TypeConverter/Task.ts",
+	},
 
-	"Wind/Source/Shim/EventInterceptor.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts",
+	TaskExecution: {
+		Repo: ElementRepos.Cocoon,
 
-	"Wind/Source/Shim/FullIndex.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/FullIndex.ts",
+		Path: "Archive/Task.ts",
 
-	"Wind/Source/Shim/Gate.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts",
+		Line: 14,
+	},
 
-	"Wind/Source/Shim/IPCInterceptor.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/IPCInterceptor.ts",
+	Tauri: { External: "https://tauri.app" },
 
-	"Wind/Source/Shim/Index.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts",
+	TauriDiskFileSystemProvider: MountainRoot,
 
-	"Wind/Source/Shim/NetworkProxy.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts",
+	TauriEmit: CocoonRoot,
 
-	"Wind/Source/Shim/RedirectBus.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/RedirectBus.ts",
+	TauriInvoke: {
+		Repo: ElementRepos.Output,
 
-	"Wind/Source/Shim/SwallowMap.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/SwallowMap.ts",
+		Path: "Source/Service/CEL/Search/Service.ts",
 
-	"Wind/Source/Shim/Type.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts",
+		Line: 73,
+	},
 
-	"Wind/Source/Telemetry/PostHogBridge.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts",
+	TauriListen: {
+		Repo: ElementRepos.Wind,
 
-	"Wind/Source/Types/Interface/IPCRenderer.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts",
+		Path: "Source/Preload.ts",
 
-	"Wind/Source/Utility/Tier.ts":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts",
+		Line: 353,
+	},
 
-	"Wind/src/vs/editor/common/services/languageFeaturesService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/services/languageFeaturesService.ts",
+	TauriLiveLayer: {
+		Repo: ElementRepos.Land,
 
-	WindServiceHandlers:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/mod.rs#L27",
+		Path: "Documentation/GitHub/EditorCore.md",
 
-	"WindServiceHandlers/mod.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
+		Line: 372,
+	},
 
-	Window: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L103",
+	TauriMainProcessService: {
+		Repo: ElementRepos.Output,
 
-	"Window.ts":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window.ts",
+		Path: "Source/Service/Tauri/Main/Process/Service.ts",
 
-	WindowProvider: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 1383,
+	},
 
-	WindowService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Window/Index.ts#L64",
+	"TauriMainProcessService.ts": {
+		Repo: ElementRepos.Wind,
 
-	"WindowStateDTO.rs":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/DTO/WindowStateDTO.rs",
+		Path: "Source/Service/TauriMainProcessService.ts",
+	},
 
-	Windows: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	TauriWebviewWindow: CocoonRoot,
 
-	Wire: "https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/SkyEvent.rs#L361",
+	Telemetry: {
+		Repo: ElementRepos.Cocoon,
 
-	WorkSpace: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Source/Service/Effect/Telemetry.ts",
 
-	WorkSpaceFolderStateDTO:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/NamingConventions.md#L103",
+		Line: 122,
+	},
 
-	WorkSpaceIdentifier:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/NamingConventions.md#L339",
+	Terminal: {
+		Repo: ElementRepos.Mountain,
 
-	Workbench:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Configuration/mod.rs#L11",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	"Workbench/Bundled/Electron/Entry.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Bundled/Electron/Entry.ts",
+		Line: 80,
+	},
 
-	"Workbench/Electron/Post/Hog/Bridge.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Post/Hog/Bridge.ts",
+	"Terminal/LocalPTYCreateProcess.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"Worker.js":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Configuration/ESBuild/Worker.js",
+		Path: "Source/IPC/WindServiceHandlers/Terminal/LocalPTYCreateProcess.rs",
+	},
 
-	"Worker.ts":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker.ts",
+	TerminalId: {
+		Repo: ElementRepos.Mountain,
 
-	WorkingCopyFileService:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/workingCopy/common/workingCopyFileService.ts#L290",
+		Path: "Source/RPC/CocoonService/Terminal/ResizeTerminal.rs",
 
-	Workspace:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Library.rs#L149",
+		Line: 14,
+	},
 
-	"Workspace.SaveAll":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Workspace/Namespace/Text/Document.ts#L643",
+	TerminalOptions: {
+		Repo: EditorRepo,
 
-	WorkspaceEdit:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/VSCode/Type.ts#L65",
+		Path: "src/vscode-dts/vscode.proposed.terminalTitle.d.ts",
 
-	WorkspaceEditApplier:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/WorkspaceProvider.rs#L616",
+		Line: 10,
+	},
 
-	WorkspaceEditDTO:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/DTO/WorkspaceEditDTO.rs#L15",
+	TerminalProvider: {
+		Repo: ElementRepos.Mountain,
 
-	WorkspaceFolder:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/Workspace.rs#L9",
+		Path: "Source/Environment/mod.rs",
 
-	WorkspaceProvider:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Source/Workspace/mod.rs#L12",
+		Line: 106,
+	},
 
-	WorkspaceService:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Workspace.ts#L216",
+	"TerminalProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	WriteFile:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/FileSystem.rs#L35",
+		Path: "Source/Terminal/TerminalProvider.rs",
+	},
 
-	XDG_CACHE_HOME: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"TerminalStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
 
-	XDG_CONFIG_HOME: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/ApplicationState/DTO/TerminalStateDTO.rs",
+	},
 
-	XDG_DATA_HOME: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TerminalStateDto: MountainRoot,
 
-	XMLHttpRequest:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/worker/extensionHostWorker.ts#L37",
+	TestClock: LandRoot,
 
-	ZDOTDIR: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TestController: {
+		Repo: ElementRepos.Common,
 
-	_LOAD_CSS_WORKER: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Testing/mod.rs",
 
-	__CEL_SERVICES__: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 9,
+	},
 
-	"__CEL_SERVICES__.CommandRegistry.registerCommand":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L64",
+	TestEnvironment: LandRoot,
 
-	"__CEL_SERVICES__.Commands.executeCommand":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/WorkspaceProvider.rs#L581",
+	TestLayer: {
+		Repo: ElementRepos.Wind,
 
-	"__CEL_SERVICES__.SCM":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts#L12",
+		Path: "Documentation/GitHub/Architecture.md",
 
-	"__CEL_SERVICES__.Statusbar":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L82",
+		Line: 212,
+	},
 
-	"__CEL_SERVICES__.Statusbar.addEntry":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L82",
+	"TestProvider.rs": {
+		Repo: ElementRepos.Mountain,
 
-	__DEV__:
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/CSS/Load.ts#L8",
+		Path: "Source/Environment/TestProvider.rs",
+	},
 
-	__LandProduct: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TextDocumentContentProvider: {
+		Repo: EditorRepo,
 
-	__LandTier_FileSystem__:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts#L44",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	__LandTier_Shim__:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Shim/NodeModuleInterceptor.ts#L33",
+		Line: 1850,
+	},
 
-	__LandTiers: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TextEdit: {
+		Repo: ElementRepos.Cocoon,
 
-	__activeDebugSession:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/Mountain/gRPC/Types.ts",
 
-	__landDisposableId:
-		"https://github.com/CodeEditorLand/Output/tree/Current/",
+		Line: 57,
+	},
 
-	__name: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Transform/Inject/Name/Shim.ts#L31",
+	TextEditor: {
+		Repo: EditorRepo,
 
-	__terminals: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "src/vscode-dts/vscode.proposed.textEditorDiffInformation.d.ts",
 
-	__textDocuments: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 39,
+	},
 
-	__workspaceFolders: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TextEditorEdit: {
+		Repo: EditorRepo,
 
-	_edits: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"_end._line":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/SavingAFileWithSaveParticipants.md#L193",
+		Line: 1400,
+	},
 
-	_path: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/PluginsWorkspace/plugins/sql/guest-js/index.ts#L49",
+	TextEditorPane: MountainRoot,
 
-	_range: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/notebook/browser/view/renderers/webviewPreloads.ts#L919",
+	TextEditorService: {
+		Repo: EditorRepo,
 
-	_scheme:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/notebook/common/notebookDocumentService.ts#L34",
+		Path: "src/vs/workbench/services/textfile/common/textEditorService.ts",
 
-	"_start._line":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorOperations.ts#L154",
+		Line: 69,
+	},
 
-	_v: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/util/common/test/result.spec.ts#L177",
+	TextFileEditorModel: {
+		Repo: EditorRepo,
 
-	aarch64: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "src/vs/workbench/services/textfile/common/textFileEditorModel.ts",
 
-	acceptInputCommand: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+		Line: 51,
+	},
 
-	acquireRelease: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	TextFileEditorModelManager: {
+		Repo: EditorRepo,
 
-	activate:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Extension.ts#L190",
+		Path: "src/vs/workbench/services/textfile/common/textFileEditorModelManager.ts",
 
-	activatedExtension: "https://github.com/CodeEditorLand/Wind/tree/Current/",
+		Line: 40,
+	},
 
-	activationEvent:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/commands/common/commandService.ts#L55",
+	Throttle: AirRoot,
 
-	activationEvents:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/editor/test/browser/editorGroupsService.test.ts#L2363",
+	Tier: {
+		Repo: ElementRepos.Common,
 
-	activation_events:
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Common/Traits.rs#L47",
+		Path: "Source/Telemetry/Tier.rs",
 
-	activeDebugSession:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17297",
+		Line: 9,
+	},
 
-	activeStackItem:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17343",
+	TierAuth: LandRoot,
 
-	activeTextEditor:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11084",
+	TierClipboard: AirRoot,
 
-	addBreakpoints:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17411",
+	TierClipboardLayer4: AirRoot,
 
-	alias: "https://github.com/CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitBridgeShape.ts#L64",
+	TierCommandEventBroadcast: AirRoot,
 
-	all: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17478",
+	TierConfiguration: AirRoot,
 
-	"api.posthog.com":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md#L164",
+	TierConfigurationEager: AirRoot,
 
-	appName:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10747",
+	TierDebug: LandRoot,
 
-	appRoot:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10755",
+	TierDiagnostics: AirRoot,
 
-	appSharedDataHome:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	TierDiagnosticsDelta: AirRoot,
 
-	app_cache_dir:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri/src/path/android.rs#L151",
+	TierDocumentMirror: AirRoot,
 
-	app_config_dir:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri/src/path/android.rs#L130",
+	TierEncryption: CocoonRoot,
 
-	app_data_dir:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri/src/path/android.rs#L137",
+	"TierEnvironment.sh": {
+		Repo: ElementRepos.Land,
 
-	app_log_dir:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri/src/path/android.rs#L156",
+		Path: "Maintain/Script/TierEnvironment.sh",
+	},
 
-	applyEdit:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14149",
+	TierExtensionActivation: AirRoot,
 
-	applyEdits:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/jsonEdit.ts#L164",
+	TierExtensionHost: {
+		Repo: ElementRepos.Mountain,
 
-	arch: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts#L139",
+		Path: "build.rs",
 
-	asExternalUri:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10927",
+		Line: 498,
+	},
 
-	astro: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	TierExtensionScan: AirRoot,
 
-	"astro.config.ts":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/astro.config.ts",
+	TierExtensionScanParallel: AirRoot,
 
-	asyncBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L35",
+	TierFileSystem: AirRoot,
 
-	async_trait: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TierFileSystemLayer4: AirRoot,
 
-	attach: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/chat/test/browser/chatView.test.ts#L3974",
+	TierFileWatcher: AirRoot,
 
-	auditBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L41",
+	TierFileWatcherLayer4: AirRoot,
 
-	auth: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Configuration/HotReload.rs#L1373",
+	TierFindFiles: AirRoot,
 
-	authority:
-		"https://github.com/CodeEditorLand/Mist/tree/Current/tests/integration.rs#L73",
+	TierFindFilesLayer4: AirRoot,
 
-	bash: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/common/agentMetaReaders.test.ts#L413",
+	TierGlob: AirRoot,
 
-	beforeBundleCommand: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TierGlobNative: AirRoot,
 
-	both: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/layout/test/browser/chatLayoutOwnership.test.ts#L1188",
+	TierHTTPProxy: AirRoot,
 
-	branch: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/static.files/stringdex-2da4960a.js#L2",
+	TierHTTPProxyHyper: AirRoot,
 
-	breaker:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Resilience/ResilienceOrchestrator.rs#L120",
+	TierIPC: {
+		Repo: ElementRepos.Mountain,
 
-	breakpoints:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17308",
+		Path: "Source/IPC/WindServiceHandlers/DispatchMatch.rs",
 
-	browser:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/chat/test/browser/sessionChatInputToolbar.test.ts#L2243",
+		Line: 2544,
+	},
 
-	"build.rs": "https://github.com/CodeEditorLand/Grove/tree/Current/build.rs",
+	TierLanguageFeatures: LandRoot,
 
-	cancelBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L29",
+	TierLogger: AirRoot,
 
-	cargo: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWCDev/src/util/mod.rs#L5",
+	TierLoggerRing: AirRoot,
 
-	cd: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWCEcosystemCi/utils.ts#L25",
+	TierModel: CocoonRoot,
 
-	channel:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/IPC/Channel.ts#L439",
+	TierModuleCache: AirRoot,
 
-	character:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/cursor/cursorDeleteOperations.ts#L103",
+	TierNativeHost: CocoonRoot,
 
-	child_process:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/html-language-features/build/bundleTypeScriptLibraries.js#L8",
+	TierOpenExternal: AirRoot,
 
-	"child_process.spawn":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/ExtensionManagement/VsixInstaller.rs#L135",
+	TierOpenExternalLayer4: AirRoot,
 
-	chokidar:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/Pkgs/packages/cli/src/swc/sources.ts#L116",
+	TierOutputChannel: CocoonRoot,
 
-	clap: "https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Library.rs#L170",
+	TierRemoteProcedureCall: AirRoot,
 
-	"clipboard.readText":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Tauri/Clipboard/Wrapper.ts#L23",
+	TierRemoteProcedureCallSharedMemory: AirRoot,
 
-	"cloud.fiddee.editor":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint.md#L173",
+	TierSCM: LandRoot,
 
-	cocoon: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	TierSchemeAssets: {
+		Repo: ElementRepos.Mountain,
 
-	"cocoon.editor.land":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/DeepDive.md#L110",
+		Path: "build.rs",
 
-	codesign: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 74,
+	},
 
-	colorScheme:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/languages/defaultDocumentColorsComputer.ts#L111",
+	TierSchemeAssetsHybrid: AirRoot,
 
-	colored:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/test/browser/chatPetColors.test.ts#L576",
+	TierSearch: LandRoot,
 
-	"commands.executeCommand":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L132",
+	TierStorage: LandRoot,
 
-	"commands.executed":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTypeConverters.ts#L2081",
+	TierTasks: LandRoot,
 
-	"commands.registerCommand":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L123",
+	TierTelemetry: AirRoot,
 
-	commitTemplate:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/scm/browser/scmInput.ts#L507",
+	TierTerminal: LandRoot,
 
-	console:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/TsParserTestRef/es6/modules/exportsAndImportsWithUnderscores4/input.ts#L5",
+	TierTreeView: CocoonRoot,
 
-	"console.error":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Build/WindowBuild.rs#L189",
+	TierWebSocket: CocoonRoot,
 
-	"console.info":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/TierGatedImplementationSelection.md#L328",
+	TierXValue: LandRoot,
 
-	"console.log":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindAdvancedSync.rs#L219",
+	TimeoutError: {
+		Repo: ElementRepos.Common,
 
-	"console.warn":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Build/WindowBuild.rs#L191",
+		Path: "Source/Errors.ts",
 
-	"context.extension.exports":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts#L1097",
+		Line: 38,
+	},
 
-	"context.globalState":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Transform/Instrument/Vscode/Git.ts#L159",
+	TimingProxy: {
+		Repo: ElementRepos.Output,
 
-	"context.globalStorageUri":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md#L67",
+		Path: "Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts",
 
-	"context.logUri":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md#L68",
+		Line: 33,
+	},
 
-	"context.secrets":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/DeepDive.md#L849",
+	Tokio: AirRoot,
 
-	"context.secrets.delete":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/github-authentication/src/common/enterpriseStorage.ts#L78",
+	Trace: {
+		Repo: ElementRepos.Wind,
 
-	"context.secrets.get":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L192",
+		Path: "Source/Service/Trace.ts",
 
-	"context.secrets.store":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/github-authentication/src/common/enterpriseStorage.ts#L73",
+		Line: 11,
+	},
 
-	"context.storageUri":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/UserDotfile.md#L66",
+	"Tracer.startSpan": {
+		Repo: ElementRepos.Land,
 
-	"context.subscriptions":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Host/Service.ts#L282",
+		Path: "Documentation/Module/Telemetry/Effect-OTel.md",
 
-	"context.workspaceState":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts#L864",
+		Line: 239,
+	},
 
-	copy_file:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L4080",
+	Track: {
+		Repo: ElementRepos.Mountain,
 
-	createChatParticipant:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.chatParticipantAdditions.d.ts#L912",
+		Path: "Source/Library.rs",
 
-	createCommentController:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17813",
+		Line: 120,
+	},
 
-	createDiagnosticCollection:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14822",
+	Transport: {
+		Repo: ElementRepos.Common,
 
-	createDirectory:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/benches/full/typescript.js#L118072",
+		Path: "Source/Library.rs",
 
-	createExtensionHostManager:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 153,
+	},
 
-	createFileSystemWatcher:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14079",
+	TransportConfig: {
+		Repo: ElementRepos.Common,
 
-	createNotebookController:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.notebookMessaging.d.ts#L66",
+		Path: "Source/Transport/mod.rs",
 
-	createOutputChannel:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11526",
+		Line: 56,
+	},
 
-	createQuickPick:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11502",
+	TreeDataProvider: {
+		Repo: EditorRepo,
 
-	createSourceControl:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.scmProviderOptions.d.ts#L42",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	createStatusBarItem:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11641",
+		Line: 12236,
+	},
 
-	createTerminal:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11665",
+	TreeView: {
+		Repo: ElementRepos.Cocoon,
 
-	createTestController:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L18286",
+		Path: "Archive/TreeView.ts",
 
-	createTreeView:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11703",
+		Line: 236,
+	},
 
-	createWebviewPanel:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11547",
+	TreeViewProvider: {
+		Repo: ElementRepos.Common,
 
-	create_directory:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L4102",
+		Path: "Source/TreeView/mod.rs",
 
-	create_terminal:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/DeepDive.md#L333",
+		Line: 9,
+	},
 
-	"crossbeam-deque": "https://docs.rs/crossbeam-deque",
+	"TreeViewProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	cursorMove: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/TreeView/TreeViewProvider.rs",
+	},
 
-	cwd: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/process.ts#L55",
+	"TreeViewStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
 
-	darwin: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+		Path: "Source/ApplicationState/DTO/TreeViewStateDTO.rs",
+	},
 
-	dataFolderName:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/mainImpl.ts#L479",
+	Turborepo: { External: "https://turbo.build" },
 
-	"dc.services.visualstudio.com":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts#L26",
+	TypeConverter: {
+		Repo: ElementRepos.Cocoon,
 
-	deactivate:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Extension.ts#L303",
+		Path: "Source/WebviewPanel/Type/Converter.ts",
 
-	"debug.addBreakpoints":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Debug/Namespace.ts#L252",
+		Line: 89,
+	},
 
-	"debug.didChangeActiveSession":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Debug/Namespace.ts#L288",
+	TypeScript: { External: "https://www.typescriptlang.org" },
 
-	"debug.didStartSession":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts#L1382",
+	UPDATE_CHECK_INTERVAL: {
+		Repo: EditorRepo,
 
-	debugServer: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "cli/src/tunnels/agent_host.rs",
 
-	development:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/extensions/electron-browser/cachedExtensionScanner.ts#L114",
+		Line: 55,
+	},
 
-	dirs: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/telemetry/node/telemetry.ts#L20",
+	URI: {
+		Repo: ElementRepos.Mountain,
 
-	disposableBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L32",
+		Path: "Source/RPC/CocoonService/Initialization/InitExtensionHost.rs",
 
-	dispose:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer/Server.rs#L511",
+		Line: 36,
+	},
 
-	distinctId: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	USER: AirRoot,
 
-	distinct_id: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	USERNAME: AirRoot,
 
-	downloaded_at: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	USERPROFILE: AirRoot,
 
-	editBuilder: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	Uint8Array: {
+		Repo: ElementRepos.Common,
 
-	"editor.action.formatDocument":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/ExecutingACommandFromTheCommandPalette.md#L118",
+		Path: "TypeScript/Interface/Decrypt.ts",
 
-	"editor.fiddee.binary":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint.md#L174",
+		Line: 14,
+	},
 
-	"editor.fontSize":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/ConfigurationBridge.rs#L168",
+	UnregisterCommand: {
+		Repo: ElementRepos.Cocoon,
 
-	edits: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/core/edits/lengthEdit.ts#L51",
+		Path: "Source/Services/Language/Provider/Registry.ts",
 
-	effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/Shim.rs#L25",
+		Line: 143,
+	},
 
-	eliminate: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	Update: {
+		Repo: ElementRepos.Mountain,
 
-	emitDecoratorMetadata:
-		"https://github.com/CodeEditorLand/Rest/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/Configuration/mod.rs",
 
-	emitterBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L26",
+		Line: 9,
+	},
 
-	encoding:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/File/System/Polyfill.ts#L364",
+	UpdateSideCarActivity: {
+		Repo: ElementRepos.Vine,
 
-	encryption: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Client/Shared.rs",
 
-	"env.clipboard":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md#L659",
+		Line: 211,
+	},
 
-	errorBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L23",
+	Uri: {
+		Repo: ElementRepos.Mountain,
 
-	es2022: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_compat_es2022/src/lib.rs#L17",
+		Path: "Source/Vine/Generated/mod.rs",
 
-	esbuild: "https://esbuild.github.io",
+		Line: 342,
+	},
 
-	"event.payload._traceparent":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md#L228",
+	UserDataAutoSyncService: {
+		Repo: EditorRepo,
 
-	exclude:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/browser/parts/editor/editorsObserver.ts#L171",
+		Path: "src/vs/platform/userDataSync/node/userDataAutoSyncService.ts",
 
-	executable:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/server/node/remoteExtensionHostAgentCli.ts#L189",
+		Line: 17,
+	},
 
-	executeCommand:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11023",
+	UserDataSyncAccountService: {
+		Repo: EditorRepo,
 
-	executeTask:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L9382",
+		Path: "src/vs/platform/userDataSync/common/userDataSyncAccount.ts",
 
-	explicit:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/test/browser/dom.test.ts#L247",
+		Line: 27,
+	},
 
-	"extHost.api.impl.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts",
+	UserDataSyncStoreService: {
+		Repo: EditorRepo,
 
-	"extHost.protocol.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts",
+		Path: "src/vs/platform/userDataSync/common/userDataSyncStoreService.ts",
 
-	"extHostAuthentication.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostAuthentication.ts",
+		Line: 703,
+	},
 
-	"extHostBulkEdits.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostBulkEdits.ts",
+	"UserDotfile.md": {
+		Repo: ElementRepos.Land,
 
-	"extHostChatAgents2.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostChatAgents2.ts",
+		Path: "Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
+	},
 
-	"extHostClipboard.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostClipboard.ts",
+	UserInterface: {
+		Repo: ElementRepos.Mountain,
 
-	"extHostCommands.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts",
+		Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
 
-	"extHostComments.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostComments.ts",
+		Line: 86,
+	},
 
-	"extHostConfiguration.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostConfiguration.ts",
+	UserInterfaceProvider: {
+		Repo: ElementRepos.Common,
 
-	"extHostCustomEditors.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCustomEditors.ts",
+		Path: "Source/UserInterface/UserInterfaceProvider.rs",
 
-	"extHostDebugService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDebugService.ts",
+		Line: 28,
+	},
 
-	"extHostDecorations.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDecorations.ts",
+	"UserInterfaceProvider.rs": {
+		Repo: ElementRepos.Common,
 
-	"extHostDiagnostics.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDiagnostics.ts",
+		Path: "Source/UserInterface/UserInterfaceProvider.rs",
+	},
 
-	"extHostDialogs.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDialogs.ts",
+	"Utilities/UserdataDir.rs": {
+		Repo: ElementRepos.Mountain,
 
-	"extHostDocumentContentProviders.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDocumentContentProviders.ts",
+		Path: "Source/IPC/WindServiceHandlers/Utilities/UserdataDir.rs",
+	},
 
-	"extHostDocumentSaveParticipant.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDocumentSaveParticipant.ts",
+	"Utility/Tier.ts": WindUtilityTier,
 
-	"extHostDocuments.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDocuments.ts",
+	VINE_PORT: AirRoot,
 
-	"extHostFileSystem.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostFileSystem.ts",
+	VSCODE_APP_ROOT: AirRoot,
 
-	"extHostFileSystemConsumer.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostFileSystemConsumer.ts",
+	VSCODE_COCOON_GLOBAL_STORAGE: AirRoot,
 
-	"extHostFileSystemEventService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostFileSystemEventService.ts",
+	VSCODE_IPC_HOOK_CLI: CocoonRoot,
 
-	"extHostLanguageFeatures.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+	VSCODE_PARENT_PID: CocoonRoot,
 
-	"extHostLanguageModels.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageModels.ts",
+	VerifyChecksum: {
+		Repo: ElementRepos.Air,
 
-	"extHostLanguages.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguages.ts",
+		Path: "Source/Downloader/DownloadManager.rs",
 
-	"extHostLocalizationService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLocalizationService.ts",
+		Line: 969,
+	},
 
-	"extHostMessageService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostMessageService.ts",
+	"Vine.proto": VineProtoVine,
 
-	"extHostNotebook.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebook.ts",
+	"Vine/Proto/Vine.proto": VineProtoVine,
 
-	"extHostNotebookDocuments.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebookDocuments.ts",
+	"Vine/Source/Client/CheckSideCarHealth.rs": {
+		Repo: ElementRepos.Vine,
 
-	"extHostNotebookKernels.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebookKernels.ts",
+		Path: "Source/Client/CheckSideCarHealth.rs",
+	},
 
-	"extHostOutput.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostOutput.ts",
+	"Vine/Source/Client/Shared.rs": {
+		Repo: ElementRepos.Vine,
 
-	"extHostProgress.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostProgress.ts",
+		Path: "Source/Client/Shared.rs",
+	},
 
-	"extHostQuickOpen.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostQuickOpen.ts",
+	"Vine/Source/Library.rs": {
+		Repo: ElementRepos.Vine,
 
-	extHostRpcService: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Library.rs",
+	},
 
-	"extHostSCM.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostSCM.ts",
+	VineError: {
+		Repo: ElementRepos.Air,
 
-	"extHostSearch.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostSearch.ts",
+		Path: "Source/Vine/Error.rs",
 
-	"extHostSecrets.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostSecrets.ts",
+		Line: 44,
+	},
 
-	"extHostStatusBar.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostStatusBar.ts",
+	VineHost: { Repo: ElementRepos.Vine, Path: "Source/Host.rs", Line: 76 },
 
-	"extHostStorage.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostStorage.ts",
+	Vite: {
+		Repo: SWCRepo,
 
-	"extHostTask.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTask.ts",
+		Path: "crates/swc_ecma_parser/tests/typescript/ts-import-type/input.ts",
 
-	"extHostTerminalService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTerminalService.ts",
+		Line: 1,
+	},
 
-	"extHostTesting.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTesting.ts",
+	WASM: { External: "https://webassembly.org" },
 
-	"extHostTextEditor.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTextEditor.ts",
+	WASMTransport: {
+		Repo: ElementRepos.Grove,
 
-	"extHostTextEditors.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTextEditors.ts",
+		Path: "Source/Transport/mod.rs",
 
-	"extHostTreeViews.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTreeViews.ts",
+		Line: 37,
+	},
 
-	"extHostUrls.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostUrls.ts",
+	WASMtime: LandRoot,
 
-	"extHostWebview.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWebview.ts",
+	WaitForClientConnection: {
+		Repo: ElementRepos.Mountain,
 
-	"extHostWebviewPanels.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWebviewPanels.ts",
+		Path: "Source/Vine/Client.rs",
 
-	"extHostWebviewView.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWebviewView.ts",
+		Line: 49,
+	},
 
-	"extHostWindow.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWindow.ts",
+	Wasmtime: { External: "https://wasmtime.dev" },
 
-	"extHostWorkspace.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts",
+	Watch: { Repo: ElementRepos.Air, Path: "Source/Indexing/mod.rs", Line: 76 },
 
-	extensionDependencies:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"WebSocket.rs": { Repo: ElementRepos.Mist, Path: "Source/WebSocket.rs" },
 
-	extensionHostStarter:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	WebWorker: {
+		Repo: EditorRepo,
 
-	extensionStorage: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "src/vs/platform/webWorker/browser/webWorkerServiceImpl.ts",
 
-	extensionhostdebugservice:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 141,
+	},
 
-	extensions:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Extension.ts#L171",
+	Webview: {
+		Repo: ElementRepos.Mountain,
 
-	fetch: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/shared-fetch-utils/common/test/advancedFetcher.spec.ts#L56",
+		Path: "Source/Track/mod.rs",
 
-	fetchTasks:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L9369",
+		Line: 16,
+	},
 
-	fiddee: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	WebviewManagementService: CocoonRoot,
 
-	fileUri:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/FileSystem/README.md#L77",
+	WebviewPanelProvider: CocoonRoot,
 
-	file_creates: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	WebviewPanelShim: CocoonRoot,
 
-	file_deletes: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	WebviewProvider: {
+		Repo: ElementRepos.Common,
 
-	file_type:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Indexing/Scan/ScanDirectory.rs#L423",
+		Path: "Source/Webview/mod.rs",
 
-	findFiles:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14098",
+		Line: 15,
+	},
 
-	findGroup:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/editor/common/editorGroupFinder.ts#L21",
+	WebviewShim: CocoonRoot,
 
-	findTextInFiles:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.findTextInFiles.d.ts#L92",
+	WebviewStateDto: CocoonRoot,
 
-	flate2: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	WillSaveTextDocumentEvent: CocoonRoot,
 
-	fragment:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/static.files/main-fcd733ba.js#L24",
+	"Wind/Source/ESBuild.ts": {
+		Repo: ElementRepos.Wind,
 
-	"fs.isWritableFileSystem":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L120",
+		Path: "Source/ESBuild.ts",
+	},
 
-	"fs.readFile":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L503",
+	"Wind/Source/IPC/Channel.ts": {
+		Repo: ElementRepos.Wind,
 
-	"fs.watch":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Dual/Track.ts#L63",
+		Path: "Source/IPC/Channel.ts",
+	},
 
-	gRPC: "https://grpc.io",
+	"Wind/Source/Preload.ts": {
+		Repo: ElementRepos.Wind,
 
-	gRPCTransport:
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/mod.rs#L31",
+		Path: "Source/Preload.ts",
+	},
 
-	getAccounts:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L18166",
+	"Wind/Source/Service/TauriMainProcessService.ts": {
+		Repo: ElementRepos.Wind,
 
-	getCommands:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11032",
+		Path: "Source/Service/TauriMainProcessService.ts",
+	},
 
-	getConfiguration:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14488",
+	"Wind/Source/Shim/AsyncProxy.ts": {
+		Repo: ElementRepos.Wind,
 
-	getHover:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/test/browser/promptSyntax/languageProviders/promptHovers.test.ts#L98",
+		Path: "Source/Shim/AsyncProxy.ts",
+	},
 
-	getSession:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L18116",
+	"Wind/Source/Shim/AuditLog.ts": {
+		Repo: ElementRepos.Wind,
 
-	getText:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/services/editorWebWorker.ts#L357",
+		Path: "Source/Shim/AuditLog.ts",
+	},
 
-	getWordRangeAtPosition:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/extensions/browser/extensionsCompletionItemsProvider.ts#L29",
+	"Wind/Source/Shim/EventInterceptor.ts": {
+		Repo: ElementRepos.Wind,
 
-	getWorkspaceFolder:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L13893",
+		Path: "Source/Shim/EventInterceptor.ts",
+	},
 
-	get_clipboard: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Wind/Source/Shim/FullIndex.ts": {
+		Repo: ElementRepos.Wind,
 
-	get_configuration:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1409",
+		Path: "Source/Shim/FullIndex.ts",
+	},
 
-	get_env:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri-cli/src/signer/sign.rs#L45",
+	"Wind/Source/Shim/Gate.ts": {
+		Repo: ElementRepos.Wind,
 
-	"git.commit":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md#L642",
+		Path: "Source/Shim/Gate.ts",
+	},
 
-	"git.createSourceControl":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Workspace/Namespace/Index.ts#L755",
+	"Wind/Source/Shim/IPCInterceptor.ts": {
+		Repo: ElementRepos.Wind,
 
-	globalEnv: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Shim/IPCInterceptor.ts",
+	},
 
-	globalState:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/test/common/event.test.ts#L782",
+	"Wind/Source/Shim/Index.ts": {
+		Repo: ElementRepos.Wind,
 
-	globalStorage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/extension/chatSessions/vscode-node/test/copilotCLINativeShim.spec.ts#L23",
+		Path: "Source/Shim/Index.ts",
+	},
 
-	globalThis:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/worker/webWorkerBootstrap.ts#L12",
+	"Wind/Source/Shim/NetworkProxy.ts": {
+		Repo: ElementRepos.Wind,
 
-	"globalThis.__CEL_WIND_RUNTIME__":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Architecture.md#L172",
+		Path: "Source/Shim/NetworkProxy.ts",
+	},
 
-	"globalThis.__LandTiers":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts#L14",
+	"Wind/Source/Shim/RedirectBus.ts": {
+		Repo: ElementRepos.Wind,
 
-	"globalThis.__cocoonBootstrapConfig":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/DeepDive.md#L929",
+		Path: "Source/Shim/RedirectBus.ts",
+	},
 
-	"globalThis.__filename":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md#L63",
+	"Wind/Source/Shim/SwallowMap.ts": {
+		Repo: ElementRepos.Wind,
 
-	globset: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Shim/SwallowMap.ts",
+	},
 
-	grep: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/git/src/util.ts#L216",
+	"Wind/Source/Shim/Type.ts": {
+		Repo: ElementRepos.Wind,
 
-	grep_searcher: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Shim/Type.ts",
+	},
 
-	handle: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts#L1137",
+	"Wind/Source/Telemetry/PostHogBridge.ts": {
+		Repo: ElementRepos.Wind,
 
-	has: "https://github.com/CodeEditorLand/Grove/tree/Current/Source/API/VSCode/WorkspaceConfiguration.rs#L60",
+		Path: "Source/Telemetry/PostHogBridge.ts",
+	},
 
-	home: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/Environment.ts#L592",
+	"Wind/Source/Types/Interface/IPCRenderer.ts": {
+		Repo: ElementRepos.Wind,
 
-	http_parser: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+		Path: "Source/Types/Interface/IPCRenderer.ts",
+	},
 
-	identifier:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/IPC/Message/Types.ts#L47",
+	"Wind/Source/Utility/Tier.ts": WindUtilityTier,
 
-	"import.meta.env":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts#L5",
+	"Wind/src/vs/editor/common/services/languageFeaturesService.ts": {
+		Repo: EditorRepo,
 
-	"import.meta.env.DEV":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts#L40",
+		Path: "src/vs/editor/common/services/languageFeaturesService.ts",
+	},
 
-	"import.meta.env.Disable":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts#L383",
+	WindServiceHandlers: {
+		Repo: ElementRepos.Mountain,
 
-	"import.meta.env.TierFileSystem":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/BuildPipeline.md#L301",
+		Path: "Source/IPC/mod.rs",
 
-	include:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/model/intervalTree.ts#L742",
+		Line: 27,
+	},
 
-	"index.astro":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md#L267",
+	"WindServiceHandlers/mod.rs": MountainWindServiceHandlersMod,
 
-	"index.html":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/index.html",
+	Window: {
+		Repo: ElementRepos.Cocoon,
 
-	initExtensionHost: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/Command.ts",
 
-	inject: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/node/agentService.test.ts#L37103",
+		Line: 103,
+	},
 
-	"inputBox.placeholder":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/contrib/find/browser/findController.ts#L848",
+	"Window.ts": {
+		Repo: ElementRepos.Cocoon,
 
-	"inputBox.value":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts#L694",
+		Path: "Source/Services/Window.ts",
+	},
 
-	installed:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/copilot_shim/src/app.rs#L1453",
+	WindowProvider: CocoonRoot,
 
-	invoke: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/MistWebSocketTransport.ts#L153",
+	WindowService: {
+		Repo: ElementRepos.Cocoon,
 
-	ipcRenderer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/IPC/Renderer/Shim.ts#L1265",
+		Path: "Source/Services/Window/Index.ts",
 
-	isAppPortable:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10805",
+		Line: 64,
+	},
 
-	isNewAppInstall:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10795",
+	"WindowStateDTO.rs": {
+		Repo: ElementRepos.Mountain,
 
-	join_all: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Source/ApplicationState/DTO/WindowStateDTO.rs",
+	},
 
-	json5: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri-utils/src/config_v1/parse.rs#L154",
+	Windows: LandRoot,
 
-	keyring: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	Wire: {
+		Repo: ElementRepos.Common,
 
-	keytar: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/IPC/SkyEvent.rs",
 
-	kwallet: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 361,
+	},
 
-	languageId:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Workspace.ts#L76",
+	WorkSpace: MountainRoot,
 
-	languageModelsResource:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	WorkSpaceFolderStateDTO: {
+		Repo: ElementRepos.Mountain,
 
-	languages:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/editor.api.ts#L39",
+		Path: "Documentation/GitHub/NamingConventions.md",
 
-	"languages.setLanguageConfiguration":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageFeatures.ts#L3010",
+		Line: 103,
+	},
 
-	legacy: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/copilot_shim/src/candidate.rs#L483",
+	WorkSpaceIdentifier: {
+		Repo: ElementRepos.Mountain,
 
-	lifecycle:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Server/Notification/DecorationTypeLifecycle.rs#L5",
+		Path: "Documentation/GitHub/NamingConventions.md",
 
-	lineAt: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 339,
+	},
 
-	linux: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentPlugins/common/pluginParsers.ts#L782",
+	Workbench: {
+		Repo: ElementRepos.Mountain,
 
-	lipo: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/IPC/WindServiceHandlers/Configuration/mod.rs",
 
-	listen: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/actions/test/common/menuService.test.ts#L71",
+		Line: 11,
+	},
 
-	localGit: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Workbench/Bundled/Electron/Entry.ts": {
+		Repo: ElementRepos.Sky,
 
-	localPty: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Workbench/Bundled/Electron/Entry.ts",
+	},
 
-	localResourceRoots:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"Workbench/Electron/Post/Hog/Bridge.ts": {
+		Repo: ElementRepos.Sky,
 
-	localStorage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/node/agentHostCatalogSyncService.test.ts#L240",
+		Path: "Source/Workbench/Electron/Post/Hog/Bridge.ts",
+	},
 
-	loggers:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/electron-browser/sessions.main.ts#L204",
+	"Worker.js": {
+		Repo: ElementRepos.Worker,
 
-	logs: "https://github.com/CodeEditorLand/Air/tree/Current/Source/CLI/CliHandler.rs#L165",
+		Path: "Configuration/ESBuild/Worker.js",
+	},
 
-	logsPath:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/server-main.ts#L190",
+	"Worker.ts": { Repo: ElementRepos.Worker, Path: "Source/Worker.ts" },
 
-	macOS: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/examples/api/src/views/Menu.svelte#L12",
+	WorkingCopyFileService: {
+		Repo: EditorRepo,
 
-	machineId:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10783",
+		Path: "src/vs/workbench/services/workingCopy/common/workingCopyFileService.ts",
 
-	mainPid: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Line: 290,
+	},
 
-	"mainThreadCommands.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/browser/mainThreadCommands.ts",
+	Workspace: {
+		Repo: ElementRepos.Common,
 
-	"mainThreadMessageService.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/browser/mainThreadMessageService.ts",
+		Path: "Source/Library.rs",
 
-	"mainThreadStatusBar.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/browser/mainThreadStatusBar.ts",
+		Line: 149,
+	},
 
-	manualChunks: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	"Workspace.SaveAll": {
+		Repo: ElementRepos.Cocoon,
 
-	"marketplace.visualstudio.com":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts#L11",
+		Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Text/Document.ts",
 
-	max_results:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Indexing/Store/QueryIndex.rs#L229",
+		Line: 643,
+	},
 
-	message:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Error/CoreError.rs#L201",
+	WorkspaceEdit: {
+		Repo: ElementRepos.Cocoon,
 
-	mkdir: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/File/System/Polyfill.ts#L514",
+		Path: "Archive/VSCode/Type.ts",
 
-	"mod.rs":
-		"https://github.com/CodeEditorLand/Grove/tree/Current/Source/Protocol/mod.rs",
+		Line: 65,
+	},
 
-	model: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Transform/Instrument/Vscode/Git.ts#L159",
+	WorkspaceEditApplier: {
+		Repo: ElementRepos.Mountain,
 
-	mountain: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Environment/WorkspaceProvider.rs",
 
-	mountain_ipc_get_status:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs#L910",
+		Line: 616,
+	},
 
-	mountain_ipc_invoke:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L74",
+	WorkspaceEditDTO: {
+		Repo: ElementRepos.Common,
 
-	mountain_ipc_receive_message:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs#L894",
+		Path: "Source/DTO/WorkspaceEditDTO.rs",
 
-	mpsc: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Line: 15,
+	},
 
-	mtime: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/textfile/common/textFileEditorModel.ts#L336",
+	WorkspaceFolder: {
+		Repo: ElementRepos.Mountain,
 
-	nativeHost:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/sessions/test/electron-browser/sessionsApplicationBadge.test.ts#L90",
+		Path: "Source/RPC/Workspace.rs",
 
-	"navigator.serviceWorker":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Register.ts#L85",
+		Line: 9,
+	},
 
-	"navigator.userAgent":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/OTELBridge.ts#L126",
+	WorkspaceProvider: {
+		Repo: ElementRepos.Common,
 
-	nikola: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Workspace/mod.rs",
 
-	node: "https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/Rust/doc/static.files/main-fcd733ba.js#L24",
+		Line: 12,
+	},
 
-	"node.exe":
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Process/Process.rs#L306",
+	WorkspaceService: {
+		Repo: ElementRepos.Cocoon,
 
-	nodeIntegration: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "Source/Services/Workspace.ts",
 
-	node_modules:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/NodeSWC/swc/crates/swc_ecma_loader/src/resolvers/node.rs#L398",
+		Line: 216,
+	},
 
-	npm: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri-cli/src/helpers/mod.rs#L13",
+	WriteFile: {
+		Repo: ElementRepos.Mountain,
 
-	num_cpus:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/Enhanced/ConnectionPool/Pool.rs#L366",
+		Path: "Source/RPC/CocoonService/FileSystem.rs",
 
-	nvm: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 35,
+	},
 
-	offsetAt: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	XDG_CACHE_HOME: AirRoot,
 
-	onClick:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/extensions/browser/extensionsWidgets.ts#L62",
+	XDG_CONFIG_HOME: AirRoot,
 
-	onCommand: "https://github.com/CodeEditorLand/Grove/tree/Current/",
+	XDG_DATA_HOME: AirRoot,
 
-	onData: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/remote/node/nodeSocketFactory.ts#L26",
+	XMLHttpRequest: {
+		Repo: EditorRepo,
 
-	onDidChange:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17484",
+		Path: "src/vs/workbench/api/worker/extensionHostWorker.ts",
 
-	onDidChangeActiveTerminal:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11177",
+		Line: 37,
+	},
 
-	onDidChangeActiveTextEditor:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11096",
+	ZDOTDIR: AirRoot,
 
-	onDidChangeColorTheme:
-		"https://github.com/CodeEditorLand/Sky/tree/Current/",
+	_LOAD_CSS_WORKER: LandRoot,
 
-	onDidChangeConfiguration:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14493",
+	__CEL_SERVICES__: CocoonRoot,
 
-	onDidChangeEncoding:
-		"https://github.com/CodeEditorLand/Output/tree/Current/",
+	"__CEL_SERVICES__.CommandRegistry.registerCommand": {
+		Repo: ElementRepos.Land,
 
-	onDidChangeExtensions:
-		"https://github.com/CodeEditorLand/Sky/tree/Current/",
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
 
-	onDidChangeModelContent:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/automations/test/browser/automationInputCompletions.test.ts#L138",
+		Line: 64,
+	},
 
-	onDidChangeSelection:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebookKernels.ts#L137",
+	"__CEL_SERVICES__.Commands.executeCommand": {
+		Repo: ElementRepos.Mountain,
 
-	onDidChangeStatus: "https://github.com/CodeEditorLand/Output/tree/Current/",
+		Path: "Source/Environment/WorkspaceProvider.rs",
 
-	onDidChangeTextDocument:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14299",
+		Line: 581,
+	},
 
-	onDidChangeWindowState:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11223",
+	"__CEL_SERVICES__.SCM": {
+		Repo: ElementRepos.Sky,
 
-	onDidChangeWorkspaceFolders:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L13883",
+		Path: "Source/Function/Sky/Bridge/InstallScm.ts",
 
-	onDidCloseTerminal:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11188",
+		Line: 12,
+	},
 
-	onDidCollapse: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	"__CEL_SERVICES__.Statusbar": {
+		Repo: ElementRepos.Land,
 
-	onDidDispose:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCodeInsets.ts#L59",
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
 
-	onDidEndTask:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L9397",
+		Line: 82,
+	},
 
-	onDidEndTerminalShellExecution:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11212",
+	"__CEL_SERVICES__.Statusbar.addEntry": {
+		Repo: ElementRepos.Land,
 
-	onDidExecuteCommand:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/test/browser/chatPetAchievementsContribution.test.ts#L158",
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
 
-	onDidExecuteTerminalCommand:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.terminalExecuteCommandEvent.d.ts#L46",
+		Line: 82,
+	},
 
-	onDidExpand: "https://github.com/CodeEditorLand/Sky/tree/Current/",
+	__DEV__: {
+		Repo: ElementRepos.Worker,
 
-	onDidOpenTerminal:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11183",
+		Path: "Source/Worker/CSS/Load.ts",
 
-	onDidOpenTextDocument:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14280",
+		Line: 8,
+	},
 
-	onDidReceiveMessage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCodeInsets.ts#L58",
+	__LandProduct: AirRoot,
 
-	onDidStartTask:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L9392",
+	__LandTier_FileSystem__: {
+		Repo: ElementRepos.Cocoon,
 
-	onDidStartTerminalShellExecution:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11205",
+		Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 
-	onDidWriteData: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Line: 44,
+	},
 
-	onLanguage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/standalone/browser/standaloneLanguages.ts#L65",
+	__LandTier_Shim__: {
+		Repo: ElementRepos.Cocoon,
 
-	onWillSaveTextDocument:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14314",
+		Path: "Source/Shim/NodeModuleInterceptor.ts",
 
-	once: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/parts/ipc/node/ipc.mp.ts#L100",
+		Line: 33,
+	},
 
-	onclick: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	__LandTiers: AirRoot,
 
-	openEditor:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/editor/test/browser/editorService.test.ts#L636",
+	__activeDebugSession: CocoonRoot,
 
-	openEditorEffect:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+	__landDisposableId: { Repo: ElementRepos.Output, Path: "" },
 
-	openExternal:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.externalUriOpener.d.ts#L167",
+	__name: {
+		Repo: ElementRepos.Output,
 
-	openTextDocument:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14175",
+		Path: "Source/Plugin/Transform/Inject/Name/Shim.ts",
 
-	open_dialog: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 31,
+	},
 
-	opentelemetry: "https://github.com/CodeEditorLand/Common/tree/Current/",
+	__terminals: MountainRoot,
 
-	options:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Shim/NodeModuleInterceptor.ts#L202",
+	__textDocuments: CocoonRoot,
 
-	os: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/test/common/path.test.ts#L162",
+	__workspaceFolders: AirRoot,
 
-	output: "https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/Rust/doc/static.files/settings-170eb4bf.js#L1",
+	_edits: CocoonRoot,
 
-	oxc_allocator: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"_end._line": {
+		Repo: ElementRepos.Land,
 
-	oxc_ast: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Documentation/GitHub/Workflow/SavingAFileWithSaveParticipants.md",
 
-	oxc_codegen: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 193,
+	},
 
-	oxc_parser: "https://github.com/CodeEditorLand/Rest/tree/Current/",
+	_path: {
+		Repo: PluginsWorkSpaceRepo,
 
-	oxc_semantic: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "plugins/sql/guest-js/index.ts",
 
-	oxc_span: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 49,
+	},
 
-	oxc_transformer: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	_range: {
+		Repo: EditorRepo,
 
-	"package.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/package.json",
+		Path: "src/vs/workbench/contrib/notebook/browser/view/renderers/webviewPreloads.ts",
 
-	"panel.webview.onDidReceiveMessage":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/CreatingAndInteractingWithAWebviewPanel.md#L180",
+		Line: 919,
+	},
 
-	params: "https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/static.files/main-fcd733ba.js#L1",
+	_scheme: {
+		Repo: EditorRepo,
 
-	payload:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/DocumentProvider/Notifications.rs#L38",
+		Path: "src/vs/workbench/services/notebook/common/notebookDocumentService.ts",
 
-	perfMarks:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/notebook/browser/notebookEditor.ts#L452",
+		Line: 34,
+	},
 
-	permissions:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Plugins/PluginManager.rs#L210",
+	"_start._line": {
+		Repo: ElementRepos.Sky,
 
-	phc_: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Function/Sky/Bridge/InstallEditorOperations.ts",
 
-	phc_mvbuxcLutfZctCVwnC4TTksmtNPPVgcx7gX96tTuCKk4:
-		"https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 154,
+	},
 
-	pid: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/services/agentHostFilter/test/browser/agentHostFilterService.test.ts#L100",
+	_v: {
+		Repo: EditorRepo,
 
-	pipeTransport: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "extensions/copilot/src/util/common/test/result.spec.ts",
 
-	platform:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/Environment.ts#L572",
+		Line: 177,
+	},
 
-	pnpm: "https://pnpm.io",
+	aarch64: LandRoot,
 
-	portpicker: "https://github.com/CodeEditorLand/Mist/tree/Current/",
+	acceptInputCommand: SkyRoot,
 
-	positionAt:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/browser/aiCustomization/embeddedMcpServerDetail.ts#L786",
+	acquireRelease: CocoonRoot,
 
-	postMessage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/worker/extensionHostWorker.ts#L23",
+	activatedExtension: WindRoot,
 
-	"posthog.distinct_id":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Overview.md#L11",
+	activationEvent: {
+		Repo: EditorRepo,
 
-	"posthog.event":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Overview.md#L11",
+		Path: "src/vs/workbench/services/commands/common/commandService.ts",
 
-	preopened_dir: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 55,
+	},
 
-	prepublishOnly: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	activationEvents: {
+		Repo: EditorRepo,
 
-	"process.argv":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Build/VS/Code.ts#L141",
+		Path: "src/vs/workbench/services/editor/test/browser/editorGroupsService.test.ts",
 
-	"process.env":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/NPM/Ingress/Configuration/ESBuild.ts#L34",
+		Line: 2363,
+	},
 
-	"process.env.NODE_ENV":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Tree-Shaking.md#L43",
+	activation_events: {
+		Repo: ElementRepos.Grove,
 
-	"process.env.TierX":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/TierGatedImplementationSelection.md#L301",
+		Path: "Source/Common/Traits.rs",
 
-	"process.exit":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts#L317",
+		Line: 47,
+	},
 
-	"process.kill":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/PatchProcess/Patcher.ts#L384",
+	activeDebugSession: {
+		Repo: EditorRepo,
 
-	"process.platform":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts#L137",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"process.stderr.write":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Land/Fix/Log.ts#L5",
+		Line: 17297,
+	},
 
-	"process.stdout.write":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Land/Fix/Log.ts#L5",
+	activeStackItem: {
+		Repo: EditorRepo,
 
-	"process.versions":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Transform/Rewrite/Icons/Style/Sheet/URLs.ts#L64",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"product.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/debug/product.json",
+		Line: 17343,
+	},
 
-	profile:
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/CLI/Cli.rs#L140",
+	activeTextEditor: {
+		Repo: EditorRepo,
 
-	profiles:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/terminal/browser/sessionsTerminalContribution.ts#L162",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	prometheus: "https://github.com/CodeEditorLand/Common/tree/Current/",
+		Line: 11084,
+	},
 
-	prost: "https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/trait.impl/prost/message/trait.Message.js#L2",
+	addBreakpoints: {
+		Repo: EditorRepo,
 
-	protoc: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	provideInlayHints:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/benches/full/typescript.js#L148074",
+		Line: 17411,
+	},
 
-	provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Command/LanguageFeature/InvokeProvider.rs#L27",
+	"api.posthog.com": {
+		Repo: ElementRepos.Mist,
 
-	"provider.onDidChange":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts#L644",
+		Path: "Documentation/GitHub/Architecture.md",
 
-	publisher:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/extensionManagement/common/extensionManagementService.ts#L907",
+		Line: 164,
+	},
 
-	query: "https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/static.files/search-fd9372ac.js#L1",
+	appName: {
+		Repo: EditorRepo,
 
-	queryLocalFonts: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	queueMicrotask:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/tests/fixture/issues/2257/full/input.js#L11315",
+		Line: 10747,
+	},
 
-	rand: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/arrays.ts#L517",
+	appRoot: {
+		Repo: EditorRepo,
 
-	rayon: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	readDirectory:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/benches/full/typescript.js#L7451",
+		Line: 10755,
+	},
 
-	readFile:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/File/System/Polyfill.ts#L357",
+	appSharedDataHome: MountainRoot,
 
-	read_dir:
-		"https://github.com/CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md#L114",
+	app_cache_dir: {
+		Repo: TauriRepo,
 
-	read_file:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L804",
+		Path: "crates/tauri/src/path/android.rs",
 
-	refresh:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/services/sessions/browser/sessionsRecentWorkspacesService.ts#L314",
+		Line: 151,
+	},
 
-	registerAuthenticationProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L18186",
+	app_config_dir: {
+		Repo: TauriRepo,
 
-	registerCodeActionsProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14879",
+		Path: "crates/tauri/src/path/android.rs",
 
-	registerCodeLensProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14892",
+		Line: 130,
+	},
 
-	registerCommand:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10990",
+	app_data_dir: {
+		Repo: TauriRepo,
 
-	registerCompletionItemProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14852",
+		Path: "crates/tauri/src/path/android.rs",
 
-	registerCompletionProvider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 137,
+	},
 
-	registerCustomEditorProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11791",
+	app_log_dir: {
+		Repo: TauriRepo,
 
-	registerDebugAdapterDescriptorFactory:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17375",
+		Path: "crates/tauri/src/path/android.rs",
 
-	registerDebugAdapterTrackerFactory:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17384",
+		Line: 156,
+	},
 
-	registerDebugConfigurationProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17364",
+	applyEdit: {
+		Repo: EditorRepo,
 
-	registerDefinitionProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14905",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	registerDocumentFormattingEditProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15096",
+		Line: 14149,
+	},
 
-	registerDocumentSymbolProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15013",
+	applyEdits: {
+		Repo: EditorRepo,
 
-	registerFileDecorationProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11835",
+		Path: "src/vs/base/common/jsonEdit.ts",
 
-	registerFileSystemProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14517",
+		Line: 164,
+	},
 
-	registerFoldingRangeProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15208",
+	asExternalUri: {
+		Repo: EditorRepo,
 
-	registerHoverProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14957",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	registerInlayHintsProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15191",
+		Line: 10927,
+	},
 
-	registerInlineCompletionItemProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.inlineCompletionsAdditions.d.ts#L23",
+	astro: CocoonRoot,
 
-	registerLanguageModelChatProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L20853",
+	"astro.config.ts": SkyAstroconfig,
 
-	registerNotebookCellStatusBarItemProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L16377",
+	asyncBuffer: {
+		Repo: ElementRepos.Output,
 
-	registerNotebookSerializer:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.notebookLiveShare.d.ts#L19",
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
 
-	registerReferenceProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15038",
+		Line: 35,
+	},
 
-	registerRenameProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15051",
+	async_trait: AirRoot,
 
-	registerSemanticTokensProvider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	auditBuffer: {
+		Repo: ElementRepos.Output,
 
-	registerSignatureHelpProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15142",
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
 
-	registerTaskProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L9359",
+		Line: 41,
+	},
 
-	registerTextDocumentContentProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14266",
+	beforeBundleCommand: AirRoot,
 
-	registerTextEditorCommand:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11007",
+	"build.rs": { Repo: ElementRepos.Grove, Path: "build.rs" },
 
-	registerTreeDataProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11695",
+	cancelBuffer: {
+		Repo: ElementRepos.Output,
 
-	registerUriHandler:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11727",
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
 
-	registerWebviewPanelSerializer:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11741",
+		Line: 29,
+	},
 
-	registerWebviewViewProvider:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11752",
+	child_process: {
+		Repo: EditorRepo,
 
-	register_authentication_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1389",
+		Path: "extensions/html-language-features/build/bundleTypeScriptLibraries.js",
 
-	register_code_actions_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L708",
+		Line: 8,
+	},
 
-	register_code_lens_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1132",
+	"child_process.spawn": {
+		Repo: ElementRepos.Mountain,
 
-	register_completion_item_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L660",
+		Path: "Source/ExtensionManagement/VsixInstaller.rs",
 
-	register_debug_adapter:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L964",
+		Line: 135,
+	},
 
-	register_debug_configuration_provider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"clipboard.readText": {
+		Repo: ElementRepos.Cocoon,
 
-	register_definition_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L676",
+		Path: "Archive/Tauri/Clipboard/Wrapper.ts",
 
-	register_document_formatting_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1068",
+		Line: 23,
+	},
 
-	register_file_system_provider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"cloud.fiddee.editor": {
+		Repo: ElementRepos.Land,
 
-	register_folding_range_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1148",
+		Path: "Documentation/GitHub/FilesystemFootprint.md",
 
-	register_hover_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L644",
+		Line: 173,
+	},
 
-	register_inlay_hints_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1196",
+	"cocoon.editor.land": {
+		Repo: ElementRepos.Mist,
 
-	register_inline_completion_item_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1276",
+		Path: "Documentation/GitHub/DeepDive.md",
 
-	register_notebook_serializer:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 110,
+	},
 
-	register_reference_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L692",
+	colorScheme: {
+		Repo: EditorRepo,
 
-	register_rename_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1052",
+		Path: "src/vs/editor/common/languages/defaultDocumentColorsComputer.ts",
 
-	register_scm_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L948",
+		Line: 111,
+	},
 
-	register_semantic_tokens_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1180",
+	"commands.executeCommand": {
+		Repo: EditorRepo,
 
-	register_signature_help_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1116",
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
 
-	register_task_provider:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L1365",
+		Line: 132,
+	},
 
-	register_text_document_content_provider:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	"commands.executed": {
+		Repo: EditorRepo,
 
-	register_uri_handler:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vs/workbench/api/common/extHostTypeConverters.ts",
 
-	remoteAuthority:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.proposed.resolvers.d.ts#L472",
+		Line: 2081,
+	},
 
-	remoteName:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10843",
+	"commands.registerCommand": {
+		Repo: EditorRepo,
 
-	removeBreakpoints:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17417",
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
 
-	rename_file:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L4058",
+		Line: 123,
+	},
 
-	replacePreviousChar:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	commitTemplate: {
+		Repo: EditorRepo,
 
-	requestAnimationFrame:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts#L1117",
+		Path: "src/vs/workbench/contrib/scm/browser/scmInput.ts",
 
-	requestIdleCallback:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/typings/base-common.d.ts#L17",
+		Line: 507,
+	},
 
-	reqwest:
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/Resolver.rs#L70",
+	"console.error": {
+		Repo: ElementRepos.Mountain,
 
-	reserved:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/browser/dom.ts#L1707",
+		Path: "Source/Binary/Build/WindowBuild.rs",
 
-	"resourceGroups.Changes":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/SourceControlManagementSCM.md#L33",
+		Line: 189,
+	},
 
-	resourceStates:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/git/src/repository.ts#L1396",
+	"console.info": {
+		Repo: ElementRepos.Land,
 
-	rest: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Indexing/Language/ParseTypeScript.rs#L334",
+		Path: "Documentation/GitHub/Workflow/TierGatedImplementationSelection.md",
 
-	retry_backoff_ms: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 328,
+	},
 
-	retry_count: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"console.log": {
+		Repo: ElementRepos.Mountain,
 
-	rev: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/test/componentFixtures/cssOrderScan.mts#L229",
+		Path: "Source/IPC/WindAdvancedSync.rs",
 
-	rhai: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Line: 219,
+	},
 
-	ripgrep:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/search/node/fileSearch.ts#L200",
+	"console.warn": {
+		Repo: ElementRepos.Mountain,
 
-	rustfmt: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Binary/Build/WindowBuild.rs",
 
-	"rustfmt.toml":
-		"https://github.com/CodeEditorLand/Land/tree/Current/rustfmt.toml",
+		Line: 191,
+	},
 
-	rustup: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"context.extension.exports": {
+		Repo: ElementRepos.Cocoon,
 
-	sample: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/chat/browser/sessionWorkspacePicker.ts#L1069",
+		Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 
-	satisfies:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts#L17",
+		Line: 1097,
+	},
 
-	saveAll:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14130",
+	"context.globalState": {
+		Repo: ElementRepos.Output,
 
-	saveAs: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14121",
+		Path: "Source/Plugin/Transform/Instrument/Vscode/Git.ts",
 
-	scheme: "https://github.com/CodeEditorLand/Wind/tree/Current/Source/Workbench/Implementation/WorkbenchIntegrationImplementation.ts#L566",
+		Line: 159,
+	},
 
-	secrets:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/github-authentication/src/test/enterpriseStorage.test.ts#L29",
+	"context.globalStorageUri": {
+		Repo: ElementRepos.Land,
 
-	"secrets.delete":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L347",
+		Path: "Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
 
-	"secrets.get":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L277",
+		Line: 67,
+	},
 
-	"secrets.store":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts#L309",
+	"context.logUri": {
+		Repo: ElementRepos.Land,
 
-	security:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri-utils/src/config.rs#L4372",
+		Path: "Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
 
-	selectChatModels:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L20772",
+		Line: 68,
+	},
 
-	sendRequest:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/electron-browser/agentHostProtocolClient.test.ts#L816",
+	"context.secrets": {
+		Repo: ElementRepos.Mountain,
 
-	serde: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/GenericRequest/FileSystem/mod.rs#L8",
+		Path: "Documentation/GitHub/DeepDive.md",
 
-	sessionId:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10789",
+		Line: 849,
+	},
 
-	sessions:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Updates/UpdateManager.rs#L1941",
+	"context.secrets.delete": {
+		Repo: EditorRepo,
 
-	setInterval:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/typings/base-common.d.ts#L28",
+		Path: "extensions/github-authentication/src/common/enterpriseStorage.ts",
 
-	setLanguageConfiguration:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15303",
+		Line: 78,
+	},
 
-	setStatusBarMessage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11566",
+	"context.secrets.get": {
+		Repo: ElementRepos.Land,
 
-	setTextDocumentLanguage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14746",
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
 
-	setTimeout:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/typings/base-common.d.ts#L25",
+		Line: 192,
+	},
 
-	setTimeout0:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/platform.ts#L221",
+	"context.secrets.store": {
+		Repo: EditorRepo,
 
-	set_clipboard: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "extensions/github-authentication/src/common/enterpriseStorage.ts",
 
-	set_configuration: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 73,
+	},
 
-	"settings.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/.vscode/settings.json",
+	"context.storageUri": {
+		Repo: ElementRepos.Land,
 
-	setup_webview_message_listener_impl:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/WebviewProvider/Messaging.rs#L92",
+		Path: "Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
 
-	sh: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/tests/fixture/issues/firebase-firestore/1/input.js#L24249",
+		Line: 66,
+	},
 
-	sha256: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/build/lib/download.ts#L17",
+	"context.subscriptions": {
+		Repo: ElementRepos.Cocoon,
 
-	sharedDataFolderName:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/",
+		Path: "Source/Services/Extension/Host/Service.ts",
 
-	shell: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10850",
+		Line: 282,
+	},
 
-	"shell.open":
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/Native/Module/Polyfill.ts#L462",
+	"context.workspaceState": {
+		Repo: ElementRepos.Cocoon,
 
-	shell_path: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 
-	showCommands:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/browser/parts/editor/editorGroupWatermark.ts#L35",
+		Line: 864,
+	},
 
-	showErrorMessage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11376",
+	copy_file: {
+		Repo: ElementRepos.Mountain,
 
-	showInformationMessage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11285",
+		Path: "Source/Vine/Generated/vine.rs",
 
-	showInputBox:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11491",
+		Line: 4080,
+	},
 
-	showNotebookDocument:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11267",
+	createChatParticipant: {
+		Repo: EditorRepo,
 
-	showOpenDialog:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11469",
+		Path: "src/vscode-dts/vscode.proposed.chatParticipantAdditions.d.ts",
 
-	showPreviousWindowTab:
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 912,
+	},
 
-	showQuickPick:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11421",
+	createCommentController: {
+		Repo: EditorRepo,
 
-	showSaveDialog:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11478",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	showTextDocument:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11236",
+		Line: 17813,
+	},
 
-	showWarningMessage:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11330",
+	createDiagnosticCollection: {
+		Repo: EditorRepo,
 
-	showWorkspaceFolderPick:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11460",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	sidecar:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/node/copilot/localModelBridge/shim/downloader.ts#L643",
+		Line: 14822,
+	},
 
-	snake_case:
-		"https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Tauri/Dependency/Tauri/crates/tauri-cli/src/mobile/init.rs#L299",
+	createDirectory: {
+		Repo: SWCRepo,
 
-	span_id:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/Enhanced/PerformanceDashboard/Dashboard.rs#L160",
+		Path: "crates/swc_ecma_minifier/benches/full/typescript.js",
 
-	spdlog: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/environment/test/node/nativeModules.integrationTest.ts#L74",
+		Line: 118072,
+	},
 
-	startDebugging:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L17397",
+	createExtensionHostManager: CocoonRoot,
 
-	stat: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L4744",
+	createFileSystemWatcher: {
+		Repo: EditorRepo,
 
-	statechange: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	stderr: "https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Rest/Plugin.ts#L416",
+		Line: 14079,
+	},
 
-	stdout: "https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild/Rest/Plugin.ts#L418",
+	createNotebookController: {
+		Repo: EditorRepo,
 
-	storage:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceAdapters/WindServiceAdapter.rs#L98",
+		Path: "src/vscode-dts/vscode.proposed.notebookMessaging.d.ts",
 
-	store: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Transform/Patch/Local/Terminal/Backend.ts#L84",
+		Line: 66,
+	},
 
-	strings:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/php-language-features/src/features/validationProvider.ts#L72",
+	createOutputChannel: {
+		Repo: EditorRepo,
 
-	structuredClone: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	suppressSuggestions:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/contrib/suggest/browser/suggestModel.ts#L115",
+		Line: 11526,
+	},
 
-	tao: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	createQuickPick: {
+		Repo: EditorRepo,
 
-	tar: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/cli/src/util.rs#L22",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"task.didEnd":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts#L1203",
+		Line: 11502,
+	},
 
-	"task.didEndProcess":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts#L144",
+	createSourceControl: {
+		Repo: EditorRepo,
 
-	"task.didStart":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts#L1186",
+		Path: "src/vscode-dts/vscode.proposed.scmProviderOptions.d.ts",
 
-	"task.didStartProcess":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts#L143",
+		Line: 42,
+	},
 
-	taskExecutions:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L9387",
+	createStatusBarItem: {
+		Repo: EditorRepo,
 
-	tasks: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/async.ts#L1092",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"tasks.json":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/.vscode/tasks.json",
+		Line: 11641,
+	},
 
-	tauri: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs#L298",
+	createTerminal: {
+		Repo: EditorRepo,
 
-	"tauri.conf.json":
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	temp: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/mermaid-markdown-features/preview-src/notebook/index.ts#L44",
+		Line: 11665,
+	},
 
-	temp_dir:
-		"https://github.com/CodeEditorLand/Air/tree/Current/Source/Downloader/DownloadManager.rs#L1780",
+	createTestController: {
+		Repo: EditorRepo,
 
-	terminal:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/DeepDive.md#L337",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	textDocuments:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L14154",
+		Line: 18286,
+	},
 
-	textEditor:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/contrib/editor/test/browser/diffEditor.sessions.contribution.test.ts#L229",
+	createTreeView: {
+		Repo: EditorRepo,
 
-	textFile:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/platform/workspaceChunkSearch/test/node/externalIngest.spec.ts#L434",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"this.productService.dataFolderName":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/environment/common/environmentService.ts#L101",
+		Line: 11703,
+	},
 
-	thiserror: "https://github.com/CodeEditorLand/Common/tree/Current/",
+	createWebviewPanel: {
+		Repo: EditorRepo,
 
-	tier_routes_to_node:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/DispatchMatch.rs#L344",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	timeout_ms: "https://github.com/CodeEditorLand/Air/tree/Current/",
+		Line: 11547,
+	},
 
-	timingBuffer:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts#L38",
+	create_directory: {
+		Repo: ElementRepos.Mountain,
 
-	title: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Debug/WebkitServer.rs#L454",
+		Path: "Source/Vine/Generated/vine.rs",
 
-	tmpdir: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/cli/src/commands/serve_web.rs#L816",
+		Line: 4102,
+	},
 
-	tokio: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	create_terminal: {
+		Repo: ElementRepos.Mountain,
 
-	toml_edit: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Documentation/GitHub/DeepDive.md",
 
-	tonic: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Vine/Generated/air.rs#L450",
+		Line: 333,
+	},
 
-	tonic_build: "https://github.com/CodeEditorLand/Air/tree/Current/",
+	"crossbeam-deque": { External: "https://docs.rs/crossbeam-deque" },
 
-	trace_id:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/Enhanced/PerformanceDashboard/Dashboard.rs#L158",
+	cursorMove: CocoonRoot,
 
-	traceparent:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/mcp/test/common/mcpServerRequestHandler.test.ts#L390",
+	dataFolderName: { Repo: EditorRepo, Path: "src/mainImpl.ts", Line: 479 },
 
-	tracing:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/extension/xtab/node/xtabProvider.ts#L212",
+	"dc.services.visualstudio.com": {
+		Repo: ElementRepos.Wind,
 
-	track: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/browser/widget/diffEditor/features/movedBlocksLinesFeature.ts#L107",
+		Path: "Source/Shim/NetworkProxy.ts",
 
-	tree: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/RefactoringStrategy.md#L260",
+		Line: 26,
+	},
 
-	"tree.register":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/Client/Service.ts#L835",
+	"debug.addBreakpoints": {
+		Repo: ElementRepos.Cocoon,
 
-	"turbo.json":
-		"https://github.com/CodeEditorLand/Land/tree/Current/turbo.json",
+		Path: "Source/Services/Handler/VscodeAPI/Debug/Namespace.ts",
 
-	turborepo: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Line: 252,
+	},
 
-	"update.editor.land":
-		"https://github.com/CodeEditorLand/Mist/tree/Current/Source/ForwardSecurity.rs#L23",
+	"debug.didChangeActiveSession": {
+		Repo: ElementRepos.Cocoon,
 
-	updatefound: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "Source/Services/Handler/VscodeAPI/Debug/Namespace.ts",
 
-	uriScheme:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10768",
+		Line: 288,
+	},
 
-	useDefineForClassFields:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts#L1496",
+	"debug.didStartSession": {
+		Repo: ElementRepos.Cocoon,
 
-	userData:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/userDataSync/browser/userDataSyncInit.ts#L232",
+		Path: "Source/Services/gRPC/Server/Service.ts",
 
-	v8: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/TsParserTestRef/expressions/optionalChaining/optionalChainingInference/input.ts#L30",
+		Line: 1382,
+	},
 
-	vars: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/SWC/crates/swc_ecma_minifier/src/option/mod.rs#L503",
+	debugServer: CocoonRoot,
 
-	viewColumn:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/cursor/cursorMoveCommands.ts#L644",
+	disposableBuffer: {
+		Repo: ElementRepos.Output,
 
-	viewType:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebook.ts#L228",
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
 
-	visibleTextEditors:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11089",
+		Line: 32,
+	},
 
-	vite: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	distinctId: AirRoot,
 
-	"vortex.data.microsoft.com":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts#L28",
+	distinct_id: LandRoot,
 
-	"vscode.Memento":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostMemento.ts#L12",
+	downloaded_at: LandRoot,
 
-	"vscode.Notebook":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebook.ts#L43",
+	editBuilder: MountainRoot,
 
-	"vscode.Uri":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L1439",
+	"editor.action.formatDocument": {
+		Repo: ElementRepos.Land,
 
-	"vscode.WebviewPanel":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L10086",
+		Path: "Documentation/GitHub/Workflow/ExecutingACommandFromTheCommandPalette.md",
 
-	"vscode.authentication":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostAuthentication.ts#L58",
+		Line: 118,
+	},
 
-	"vscode.chat":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostChatAgents2.ts#L488",
+	"editor.fiddee.binary": {
+		Repo: ElementRepos.Land,
 
-	"vscode.chat.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostChatAgents2.ts#L488",
+		Path: "Documentation/GitHub/FilesystemFootprint.md",
 
-	"vscode.commands":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L46",
+		Line: 174,
+	},
 
-	"vscode.commands.executeCommand":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L132",
+	"editor.fontSize": {
+		Repo: ElementRepos.Mountain,
 
-	"vscode.commands.registerCommand":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostCommands.ts#L123",
+		Path: "Source/IPC/ConfigurationBridge.rs",
 
-	"vscode.commands.registerTextEditorCommand":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L380",
+		Line: 168,
+	},
 
-	"vscode.comments":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostComments.ts#L34",
+	effect: {
+		Repo: ElementRepos.Mountain,
 
-	"vscode.d.ts":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L6",
+		Path: "Source/Track/Effect/CreateEffectForRequest/Shim.rs",
 
-	"vscode.debug":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDebugService.ts#L64",
+		Line: 25,
+	},
 
-	"vscode.debug.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDebugService.ts#L64",
+	emitDecoratorMetadata: { Repo: ElementRepos.Rest, Path: "" },
 
-	"vscode.debug.registerDebugConfigurationProvider":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDebugService.ts#L56",
+	emitterBuffer: {
+		Repo: ElementRepos.Output,
 
-	"vscode.debug.startDebugging":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostDebugService.ts#L54",
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
 
-	"vscode.env":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L421",
+		Line: 26,
+	},
 
-	"vscode.env.appRoot":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L431",
+	"env.clipboard": {
+		Repo: ElementRepos.Cocoon,
 
-	"vscode.env.machineId":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L422",
+		Path: "Documentation/GitHub/Architecture.md",
 
-	"vscode.env.openExternal":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L470",
+		Line: 659,
+	},
 
-	"vscode.extensions":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostExtensionService.ts#L81",
+	errorBuffer: {
+		Repo: ElementRepos.Output,
 
-	"vscode.extensions.getExtension":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L2078",
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
 
-	"vscode.git":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostGitExtensionService.ts#L177",
+		Line: 23,
+	},
 
-	"vscode.l10n":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLocalizationService.ts#L16",
+	es2022: {
+		Repo: SWCRepo,
 
-	"vscode.languages":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageFeatures.ts#L2163",
+		Path: "crates/swc_ecma_compat_es2022/src/lib.rs",
 
-	"vscode.languages.registerHoverProvider":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageFeatures.ts#L2354",
+		Line: 17,
+	},
 
-	"vscode.languages.registerInlineCompletionItemProvider":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L757",
+	esbuild: { External: "https://esbuild.github.io" },
 
-	"vscode.lm":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageModels.ts#L123",
+	"event.payload._traceparent": {
+		Repo: ElementRepos.Land,
 
-	"vscode.lm.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostLanguageModels.ts#L123",
+		Path: "Documentation/Module/Telemetry/Effect-OTel.md",
 
-	"vscode.notebook.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebook.ts#L43",
+		Line: 228,
+	},
 
-	"vscode.notebooks":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostNotebook.ts#L43",
+	executeCommand: {
+		Repo: EditorRepo,
 
-	"vscode.open":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorAndOutput.ts#L289",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"vscode.postMessage":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWebview.ts#L129",
+		Line: 11023,
+	},
 
-	"vscode.scm":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostSCM.ts#L971",
+	executeTask: {
+		Repo: EditorRepo,
 
-	"vscode.scm.createSourceControl":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostSCM.ts#L1031",
+		Path: "src/vscode-dts/vscode.d.ts",
 
-	"vscode.tasks":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTask.ts#L751",
+		Line: 9382,
+	},
 
-	"vscode.tasks.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTask.ts#L751",
+	"extHost.api.impl.ts": {
+		Repo: EditorRepo,
 
-	"vscode.tasks.executeTask":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTask.ts#L47",
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+	},
 
-	"vscode.tests":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTesting.ts#L55",
+	"extHost.protocol.ts": {
+		Repo: EditorRepo,
 
-	"vscode.tests.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTesting.ts#L55",
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+	},
 
-	"vscode.window":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWindow.ts#L17",
+	"extHostAuthentication.ts": {
+		Repo: EditorRepo,
 
-	"vscode.window.createTerminal":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L687",
+		Path: "src/vs/workbench/api/common/extHostAuthentication.ts",
+	},
 
-	"vscode.window.createWebviewPanel":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L1130",
+	"extHostBulkEdits.ts": {
+		Repo: EditorRepo,
 
-	"vscode.window.showInformationMessage":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L909",
+		Path: "src/vs/workbench/api/common/extHostBulkEdits.ts",
+	},
 
-	"vscode.window.showQuickPick":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L918",
+	"extHostChatAgents2.ts": {
+		Repo: EditorRepo,
 
-	"vscode.workspace":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L194",
+		Path: "src/vs/workbench/api/common/extHostChatAgents2.ts",
+	},
 
-	"vscode.workspace.fs":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L1396",
+	"extHostClipboard.ts": {
+		Repo: EditorRepo,
 
-	"vscode.workspace.fs.stat":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L2026",
+		Path: "src/vs/workbench/api/common/extHostClipboard.ts",
+	},
 
-	"vscode.workspace.getConfiguration":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L259",
+	"extHostCommands.ts": {
+		Repo: EditorRepo,
 
-	"vscode.workspace.onDidChangeConfiguration":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostConfiguration.ts#L156",
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
+	},
 
-	"vscode.workspace.openTextDocument":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L840",
+	"extHostComments.ts": {
+		Repo: EditorRepo,
 
-	"vscode.workspace.registerFileSystemProvider":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L2022",
+		Path: "src/vs/workbench/api/common/extHostComments.ts",
+	},
 
-	"vscode.workspace.textDocuments":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L1292",
+	"extHostConfiguration.ts": {
+		Repo: EditorRepo,
 
-	waiting:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/policies/test/browser/accountPolicyService.test.ts#L1215",
+		Path: "src/vs/workbench/api/common/extHostConfiguration.ts",
+	},
 
-	wasm: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/test/browser/componentFixtures/fixtureSyntaxHighlighting.ts#L215",
+	"extHostCustomEditors.ts": {
+		Repo: EditorRepo,
 
-	webFrame:
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts#L387",
+		Path: "src/vs/workbench/api/common/extHostCustomEditors.ts",
+	},
 
-	webview:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWebviewView.ts#L193",
+	"extHostDebugService.ts": {
+		Repo: EditorRepo,
 
-	willSave: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vs/workbench/api/common/extHostDebugService.ts",
+	},
 
-	win32: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/path.ts#L207",
+	"extHostDecorations.ts": {
+		Repo: EditorRepo,
 
-	"window.ISandboxConfiguration":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Types/Sandbox.ts#L105",
+		Path: "src/vs/workbench/api/common/extHostDecorations.ts",
+	},
 
-	"window._LOAD_CSS_WORKER":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/CSS/Load.ts#L30",
+	"extHostDiagnostics.ts": {
+		Repo: EditorRepo,
 
-	"window._WORKER":
-		"https://github.com/CodeEditorLand/Worker/tree/Current/Source/Worker/Register.ts#L24",
+		Path: "src/vs/workbench/api/common/extHostDiagnostics.ts",
+	},
 
-	"window.createWebviewPanel":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L1130",
+	"extHostDialogs.ts": {
+		Repo: EditorRepo,
 
-	"window.didCloseTerminal":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTerminalService.ts#L443",
+		Path: "src/vs/workbench/api/common/extHostDialogs.ts",
+	},
 
-	"window.didOpenTerminal":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTerminalService.ts#L445",
+	"extHostDocumentContentProviders.ts": {
+		Repo: EditorRepo,
 
-	"window.onDidEndTerminalShellExecution":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L900",
+		Path: "src/vs/workbench/api/common/extHostDocumentContentProviders.ts",
+	},
 
-	"window.onDidExecuteTerminalCommand":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostTerminalService.ts#L48",
+	"extHostDocumentSaveParticipant.ts": {
+		Repo: EditorRepo,
 
-	"window.onDidStartTerminalShellExecution":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L897",
+		Path: "src/vs/workbench/api/common/extHostDocumentSaveParticipant.ts",
+	},
 
-	"window.posthog":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts#L4",
+	"extHostDocuments.ts": {
+		Repo: EditorRepo,
 
-	"window.posthog.capture":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts#L4",
+		Path: "src/vs/workbench/api/common/extHostDocuments.ts",
+	},
 
-	"window.process":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Workbench/Electron/Polyfills.ts#L6",
+	"extHostFileSystem.ts": {
+		Repo: EditorRepo,
 
-	"window.showInformationMessage":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L909",
+		Path: "src/vs/workbench/api/common/extHostFileSystem.ts",
+	},
 
-	"window.vscode":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Function/Install/Function/Install.ts#L5",
+	"extHostFileSystemConsumer.ts": {
+		Repo: EditorRepo,
 
-	"window.vscode.ipcRenderer":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts#L103",
+		Path: "src/vs/workbench/api/common/extHostFileSystemConsumer.ts",
+	},
 
-	"window.vscode.ipcRenderer.invoke":
-		"https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts#L134",
+	"extHostFileSystemEventService.ts": {
+		Repo: EditorRepo,
 
-	withProgress:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L11622",
+		Path: "src/vs/workbench/api/common/extHostFileSystemEventService.ts",
+	},
 
-	workbench:
-		"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs#L63",
+	"extHostLanguageFeatures.ts": {
+		Repo: EditorRepo,
 
-	"workbench.action.applyThemeFromFile":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L117",
+		Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+	},
 
-	"workbench.action.authentication.signIn":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/UserDataSynchronization.md#L30",
+	"extHostLanguageModels.ts": {
+		Repo: EditorRepo,
 
-	"workbench.action.files.openFile":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md#L641",
+		Path: "src/vs/workbench/api/common/extHostLanguageModels.ts",
+	},
 
-	"workbench.action.files.save":
-		"https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md#L466",
+	"extHostLanguages.ts": {
+		Repo: EditorRepo,
 
-	"workbench.action.files.saveAll":
-		"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallEditorAndOutput.ts#L304",
+		Path: "src/vs/workbench/api/common/extHostLanguages.ts",
+	},
 
-	"workbench.action.showCommands":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/browser/controller/editContext/screenReaderUtils.ts#L121",
+	"extHostLocalizationService.ts": {
+		Repo: EditorRepo,
 
-	"workbench.action.terminal.new":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/terminal/electron-browser/terminalRemote.ts#L18",
+		Path: "src/vs/workbench/api/common/extHostLocalizationService.ts",
+	},
 
-	"workbench.action.terminal.toggleTerminal":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md#L640",
+	"extHostMessageService.ts": {
+		Repo: EditorRepo,
 
-	"workbench.action.toggleSidebar":
-		"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EditorCore.md#L640",
+		Path: "src/vs/workbench/api/common/extHostMessageService.ts",
+	},
 
-	workspace:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/sessions/services/sessions/common/sessionContextKeys.ts#L168",
+	"extHostNotebook.ts": {
+		Repo: EditorRepo,
 
-	"workspace.applyEdit":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L1280",
+		Path: "src/vs/workbench/api/common/extHostNotebook.ts",
+	},
 
-	"workspace.findFiles":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L498",
+	"extHostNotebookDocuments.ts": {
+		Repo: EditorRepo,
 
-	"workspace.fs.":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L194",
+		Path: "src/vs/workbench/api/common/extHostNotebookDocuments.ts",
+	},
 
-	"workspace.fs.readFile":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.protocol.ts#L2028",
+	"extHostNotebookKernels.ts": {
+		Repo: EditorRepo,
 
-	"workspace.openTextDocument":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L840",
+		Path: "src/vs/workbench/api/common/extHostNotebookKernels.ts",
+	},
 
-	"workspace.save":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L918",
+	"extHostOutput.ts": {
+		Repo: EditorRepo,
 
-	"workspace.saveAll":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L930",
+		Path: "src/vs/workbench/api/common/extHostOutput.ts",
+	},
 
-	"workspace.saveAs":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostWorkspace.ts#L919",
+	"extHostProgress.ts": {
+		Repo: EditorRepo,
 
-	"workspace.textDocuments":
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHost.api.impl.ts#L1292",
+		Path: "src/vs/workbench/api/common/extHostProgress.ts",
+	},
 
-	workspaceFolders:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L13830",
+	"extHostQuickOpen.ts": {
+		Repo: EditorRepo,
 
-	workspaceState:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostExtensionService.ts#L505",
+		Path: "src/vs/workbench/api/common/extHostQuickOpen.ts",
+	},
 
-	writeClipboard: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+	extHostRpcService: CocoonRoot,
 
-	writeFile:
-		"https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/File/System/Polyfill.ts#L386",
+	"extHostSCM.ts": {
+		Repo: EditorRepo,
 
-	writeText:
-		"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/node/e2e/suites/clientFilesystemSuite.ts#L74",
+		Path: "src/vs/workbench/api/common/extHostSCM.ts",
+	},
 
-	write_file:
-		"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L4722",
+	"extHostSearch.ts": {
+		Repo: EditorRepo,
 
-	write_terminal: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+		Path: "src/vs/workbench/api/common/extHostSearch.ts",
+	},
 
-	wry: "https://github.com/CodeEditorLand/Land/tree/Current/",
+	"extHostSecrets.ts": {
+		Repo: EditorRepo,
 
-	x86_64: "https://github.com/CodeEditorLand/Land/tree/Current/",
+		Path: "src/vs/workbench/api/common/extHostSecrets.ts",
+	},
 
-	yarn: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/NodeSWC/swc/crates/swc/tests/exec.rs#L65",
+	"extHostStatusBar.ts": {
+		Repo: EditorRepo,
 
-	yes: "https://github.com/CodeEditorLand/Land/tree/Current/Dependency/SWC/Dependency/TsParserTestRef/internalModules/codeGeneration/exportCodeGen/input.ts#L28",
+		Path: "src/vs/workbench/api/common/extHostStatusBar.ts",
+	},
 
-	zip: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/node/zip.ts#L258",
+	"extHostStorage.ts": {
+		Repo: EditorRepo,
 
-	zod: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
-	...MentionMap,
-	...TechnicalMentions,
+		Path: "src/vs/workbench/api/common/extHostStorage.ts",
+	},
+
+	"extHostTask.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTask.ts",
+	},
+
+	"extHostTerminalService.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTerminalService.ts",
+	},
+
+	"extHostTesting.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTesting.ts",
+	},
+
+	"extHostTextEditor.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTextEditor.ts",
+	},
+
+	"extHostTextEditors.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTextEditors.ts",
+	},
+
+	"extHostTreeViews.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTreeViews.ts",
+	},
+
+	"extHostUrls.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostUrls.ts",
+	},
+
+	"extHostWebview.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWebview.ts",
+	},
+
+	"extHostWebviewPanels.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWebviewPanels.ts",
+	},
+
+	"extHostWebviewView.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWebviewView.ts",
+	},
+
+	"extHostWindow.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWindow.ts",
+	},
+
+	"extHostWorkspace.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+	},
+
+	extensionDependencies: CocoonRoot,
+
+	extensionHostStarter: CocoonRoot,
+
+	extensionStorage: AirRoot,
+
+	fetchTasks: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 9369,
+	},
+
+	fileUri: {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/FileSystem/README.md",
+
+		Line: 77,
+	},
+
+	file_creates: AirRoot,
+
+	file_deletes: AirRoot,
+
+	file_type: {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Indexing/Scan/ScanDirectory.rs",
+
+		Line: 423,
+	},
+
+	findFiles: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14098,
+	},
+
+	findGroup: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/editor/common/editorGroupFinder.ts",
+
+		Line: 21,
+	},
+
+	findTextInFiles: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.findTextInFiles.d.ts",
+
+		Line: 92,
+	},
+
+	flate2: LandRoot,
+
+	"fs.isWritableFileSystem": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
+		Line: 120,
+	},
+
+	"fs.readFile": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Context.ts",
+
+		Line: 503,
+	},
+
+	"fs.watch": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Dual/Track.ts",
+
+		Line: 63,
+	},
+
+	gRPC: { External: "https://grpc.io" },
+
+	gRPCTransport: {
+		Repo: ElementRepos.Grove,
+
+		Path: "Source/Transport/mod.rs",
+
+		Line: 31,
+	},
+
+	getAccounts: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 18166,
+	},
+
+	getCommands: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11032,
+	},
+
+	getConfiguration: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14488,
+	},
+
+	getHover: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/chat/test/browser/promptSyntax/languageProviders/promptHovers.test.ts",
+
+		Line: 98,
+	},
+
+	getSession: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 18116,
+	},
+
+	getText: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/common/services/editorWebWorker.ts",
+
+		Line: 357,
+	},
+
+	getWordRangeAtPosition: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/extensions/browser/extensionsCompletionItemsProvider.ts",
+
+		Line: 29,
+	},
+
+	getWorkspaceFolder: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 13893,
+	},
+
+	get_clipboard: CocoonRoot,
+
+	get_configuration: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1409,
+	},
+
+	get_env: {
+		Repo: TauriRepo,
+
+		Path: "crates/tauri-cli/src/signer/sign.rs",
+
+		Line: 45,
+	},
+
+	"git.commit": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EditorCore.md",
+
+		Line: 642,
+	},
+
+	"git.createSourceControl": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Index.ts",
+
+		Line: 755,
+	},
+
+	globalEnv: CocoonRoot,
+
+	globalState: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/test/common/event.test.ts",
+
+		Line: 782,
+	},
+
+	globalStorage: {
+		Repo: EditorRepo,
+
+		Path: "extensions/copilot/src/extension/chatSessions/vscode-node/test/copilotCLINativeShim.spec.ts",
+
+		Line: 23,
+	},
+
+	globalThis: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/common/worker/webWorkerBootstrap.ts",
+
+		Line: 12,
+	},
+
+	"globalThis.__CEL_WIND_RUNTIME__": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Architecture.md",
+
+		Line: 172,
+	},
+
+	"globalThis.__LandTiers": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Utility/Tier.ts",
+
+		Line: 14,
+	},
+
+	"globalThis.__cocoonBootstrapConfig": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Documentation/GitHub/DeepDive.md",
+
+		Line: 929,
+	},
+
+	"globalThis.__filename": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Polyfills.md",
+
+		Line: 63,
+	},
+
+	grep_searcher: CocoonRoot,
+
+	http_parser: SkyRoot,
+
+	"import.meta.env": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Utility/Tier.ts",
+
+		Line: 5,
+	},
+
+	"import.meta.env.DEV": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Telemetry/PostHogBridge.ts",
+
+		Line: 40,
+	},
+
+	"import.meta.env.Disable": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge.ts",
+
+		Line: 383,
+	},
+
+	"import.meta.env.TierFileSystem": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/BuildPipeline.md",
+
+		Line: 301,
+	},
+
+	"index.astro": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EnvironmentVariables.md",
+
+		Line: 267,
+	},
+
+	"index.html": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Rust/doc/index.html",
+	},
+
+	initExtensionHost: CocoonRoot,
+
+	"inputBox.placeholder": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/contrib/find/browser/findController.ts",
+
+		Line: 848,
+	},
+
+	"inputBox.value": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallScm.ts",
+
+		Line: 694,
+	},
+
+	ipcRenderer: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Polyfill/IPC/Renderer/Shim.ts",
+
+		Line: 1265,
+	},
+
+	isAppPortable: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10805,
+	},
+
+	isNewAppInstall: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10795,
+	},
+
+	join_all: MountainRoot,
+
+	json5: {
+		Repo: TauriRepo,
+
+		Path: "crates/tauri-utils/src/config_v1/parse.rs",
+
+		Line: 154,
+	},
+
+	languageId: {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Archive/Workspace.ts",
+
+		Line: 76,
+	},
+
+	languageModelsResource: MountainRoot,
+
+	"languages.setLanguageConfiguration": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+
+		Line: 3010,
+	},
+
+	lineAt: CocoonRoot,
+
+	localGit: CocoonRoot,
+
+	localPty: CocoonRoot,
+
+	localResourceRoots: CocoonRoot,
+
+	localStorage: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/agentHost/test/node/agentHostCatalogSyncService.test.ts",
+
+		Line: 240,
+	},
+
+	logsPath: { Repo: EditorRepo, Path: "src/server-main.ts", Line: 190 },
+
+	macOS: {
+		Repo: TauriRepo,
+
+		Path: "examples/api/src/views/Menu.svelte",
+
+		Line: 12,
+	},
+
+	machineId: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10783,
+	},
+
+	mainPid: MountainRoot,
+
+	"mainThreadCommands.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/browser/mainThreadCommands.ts",
+	},
+
+	"mainThreadMessageService.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/browser/mainThreadMessageService.ts",
+	},
+
+	"mainThreadStatusBar.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/browser/mainThreadStatusBar.ts",
+	},
+
+	manualChunks: SkyRoot,
+
+	"marketplace.visualstudio.com": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Shim/NetworkProxy.ts",
+
+		Line: 11,
+	},
+
+	max_results: {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Indexing/Store/QueryIndex.rs",
+
+		Line: 229,
+	},
+
+	"mod.rs": { Repo: ElementRepos.Grove, Path: "Source/Protocol/mod.rs" },
+
+	mountain_ipc_get_status: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/TauriIPCServer.rs",
+
+		Line: 910,
+	},
+
+	mountain_ipc_invoke: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/mod.rs",
+
+		Line: 74,
+	},
+
+	mountain_ipc_receive_message: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/TauriIPCServer.rs",
+
+		Line: 894,
+	},
+
+	nativeHost: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/sessions/contrib/sessions/test/electron-browser/sessionsApplicationBadge.test.ts",
+
+		Line: 90,
+	},
+
+	"navigator.serviceWorker": {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker/Register.ts",
+
+		Line: 85,
+	},
+
+	"navigator.userAgent": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Workbench/Electron/OTELBridge.ts",
+
+		Line: 126,
+	},
+
+	node: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Documentation/Rust/doc/static.files/main-fcd733ba.js",
+
+		Line: 24,
+	},
+
+	"node.exe": {
+		Repo: ElementRepos.Maintain,
+
+		Path: "Source/Build/Process/Process.rs",
+
+		Line: 306,
+	},
+
+	nodeIntegration: CocoonRoot,
+
+	node_modules: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_loader/src/resolvers/node.rs",
+
+		Line: 398,
+	},
+
+	npm: {
+		Repo: TauriRepo,
+
+		Path: "crates/tauri-cli/src/helpers/mod.rs",
+
+		Line: 13,
+	},
+
+	num_cpus: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/Enhanced/ConnectionPool/Pool.rs",
+
+		Line: 366,
+	},
+
+	offsetAt: CocoonRoot,
+
+	onClick: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/extensions/browser/extensionsWidgets.ts",
+
+		Line: 62,
+	},
+
+	onCommand: { Repo: ElementRepos.Grove, Path: "" },
+
+	onData: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/remote/node/nodeSocketFactory.ts",
+
+		Line: 26,
+	},
+
+	onDidChange: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 17484,
+	},
+
+	onDidChangeActiveTerminal: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11177,
+	},
+
+	onDidChangeActiveTextEditor: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11096,
+	},
+
+	onDidChangeColorTheme: SkyRoot,
+
+	onDidChangeConfiguration: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14493,
+	},
+
+	onDidChangeEncoding: { Repo: ElementRepos.Output, Path: "" },
+
+	onDidChangeExtensions: SkyRoot,
+
+	onDidChangeModelContent: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/sessions/contrib/automations/test/browser/automationInputCompletions.test.ts",
+
+		Line: 138,
+	},
+
+	onDidChangeSelection: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostNotebookKernels.ts",
+
+		Line: 137,
+	},
+
+	onDidChangeStatus: { Repo: ElementRepos.Output, Path: "" },
+
+	onDidChangeTextDocument: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14299,
+	},
+
+	onDidChangeWindowState: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11223,
+	},
+
+	onDidChangeWorkspaceFolders: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 13883,
+	},
+
+	onDidCloseTerminal: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11188,
+	},
+
+	onDidCollapse: SkyRoot,
+
+	onDidDispose: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostCodeInsets.ts",
+
+		Line: 59,
+	},
+
+	onDidEndTask: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 9397,
+	},
+
+	onDidEndTerminalShellExecution: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11212,
+	},
+
+	onDidExecuteCommand: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/chat/test/browser/chatPetAchievementsContribution.test.ts",
+
+		Line: 158,
+	},
+
+	onDidExecuteTerminalCommand: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.terminalExecuteCommandEvent.d.ts",
+
+		Line: 46,
+	},
+
+	onDidExpand: SkyRoot,
+
+	onDidOpenTerminal: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11183,
+	},
+
+	onDidOpenTextDocument: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14280,
+	},
+
+	onDidReceiveMessage: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostCodeInsets.ts",
+
+		Line: 58,
+	},
+
+	onDidStartTask: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 9392,
+	},
+
+	onDidStartTerminalShellExecution: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11205,
+	},
+
+	onDidWriteData: MountainRoot,
+
+	onLanguage: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/standalone/browser/standaloneLanguages.ts",
+
+		Line: 65,
+	},
+
+	onWillSaveTextDocument: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14314,
+	},
+
+	openEditor: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/editor/test/browser/editorService.test.ts",
+
+		Line: 636,
+	},
+
+	openEditorEffect: MountainRoot,
+
+	openExternal: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.externalUriOpener.d.ts",
+
+		Line: 167,
+	},
+
+	openTextDocument: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14175,
+	},
+
+	open_dialog: CocoonRoot,
+
+	oxc_allocator: LandRoot,
+
+	oxc_ast: LandRoot,
+
+	oxc_codegen: LandRoot,
+
+	oxc_parser: { Repo: ElementRepos.Rest, Path: "" },
+
+	oxc_semantic: LandRoot,
+
+	oxc_span: LandRoot,
+
+	oxc_transformer: LandRoot,
+
+	"package.json": { Repo: ElementRepos.Land, Path: "package.json" },
+
+	"panel.webview.onDidReceiveMessage": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Workflow/CreatingAndInteractingWithAWebviewPanel.md",
+
+		Line: 180,
+	},
+
+	perfMarks: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/notebook/browser/notebookEditor.ts",
+
+		Line: 452,
+	},
+
+	phc_: AirRoot,
+
+	phc_mvbuxcLutfZctCVwnC4TTksmtNPPVgcx7gX96tTuCKk4: AirRoot,
+
+	pipeTransport: CocoonRoot,
+
+	pnpm: { External: "https://pnpm.io" },
+
+	positionAt: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/chat/browser/aiCustomization/embeddedMcpServerDetail.ts",
+
+		Line: 786,
+	},
+
+	postMessage: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/worker/extensionHostWorker.ts",
+
+		Line: 23,
+	},
+
+	"posthog.distinct_id": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Module/Telemetry/Overview.md",
+
+		Line: 11,
+	},
+
+	"posthog.event": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Module/Telemetry/Overview.md",
+
+		Line: 11,
+	},
+
+	preopened_dir: CocoonRoot,
+
+	prepublishOnly: CocoonRoot,
+
+	"process.argv": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Build/VS/Code.ts",
+
+		Line: 141,
+	},
+
+	"process.env": {
+		Repo: IngressRepo,
+
+		Path: "Configuration/ESBuild.ts",
+
+		Line: 34,
+	},
+
+	"process.env.NODE_ENV": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Module/Telemetry/Tree-Shaking.md",
+
+		Line: 43,
+	},
+
+	"process.env.TierX": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Workflow/TierGatedImplementationSelection.md",
+
+		Line: 301,
+	},
+
+	"process.exit": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
+
+		Line: 317,
+	},
+
+	"process.kill": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/PatchProcess/Patcher.ts",
+
+		Line: 384,
+	},
+
+	"process.platform": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Service/Effect/Bootstrap.ts",
+
+		Line: 137,
+	},
+
+	"process.stderr.write": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Utility/Land/Fix/Log.ts",
+
+		Line: 5,
+	},
+
+	"process.stdout.write": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Utility/Land/Fix/Log.ts",
+
+		Line: 5,
+	},
+
+	"process.versions": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Plugin/Transform/Rewrite/Icons/Style/Sheet/URLs.ts",
+
+		Line: 64,
+	},
+
+	"product.json": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/Rust/debug/product.json",
+	},
+
+	provideInlayHints: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_minifier/benches/full/typescript.js",
+
+		Line: 148074,
+	},
+
+	"provider.onDidChange": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallScm.ts",
+
+		Line: 644,
+	},
+
+	queryLocalFonts: CocoonRoot,
+
+	queueMicrotask: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_minifier/tests/fixture/issues/2257/full/input.js",
+
+		Line: 11315,
+	},
+
+	readDirectory: {
+		Repo: SWCRepo,
+
+		Path: "crates/swc_ecma_minifier/benches/full/typescript.js",
+
+		Line: 7451,
+	},
+
+	readFile: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Polyfill/File/System/Polyfill.ts",
+
+		Line: 357,
+	},
+
+	read_dir: {
+		Repo: ElementRepos.Common,
+
+		Path: "Documentation/GitHub/Architecture.md",
+
+		Line: 114,
+	},
+
+	read_file: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 804,
+	},
+
+	registerAuthenticationProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 18186,
+	},
+
+	registerCodeActionsProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14879,
+	},
+
+	registerCodeLensProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14892,
+	},
+
+	registerCommand: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10990,
+	},
+
+	registerCompletionItemProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14852,
+	},
+
+	registerCompletionProvider: CocoonRoot,
+
+	registerCustomEditorProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11791,
+	},
+
+	registerDebugAdapterDescriptorFactory: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 17375,
+	},
+
+	registerDebugAdapterTrackerFactory: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 17384,
+	},
+
+	registerDebugConfigurationProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 17364,
+	},
+
+	registerDefinitionProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14905,
+	},
+
+	registerDocumentFormattingEditProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15096,
+	},
+
+	registerDocumentSymbolProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15013,
+	},
+
+	registerFileDecorationProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11835,
+	},
+
+	registerFileSystemProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14517,
+	},
+
+	registerFoldingRangeProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15208,
+	},
+
+	registerHoverProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14957,
+	},
+
+	registerInlayHintsProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15191,
+	},
+
+	registerInlineCompletionItemProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.inlineCompletionsAdditions.d.ts",
+
+		Line: 23,
+	},
+
+	registerLanguageModelChatProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 20853,
+	},
+
+	registerNotebookCellStatusBarItemProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 16377,
+	},
+
+	registerNotebookSerializer: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.notebookLiveShare.d.ts",
+
+		Line: 19,
+	},
+
+	registerReferenceProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15038,
+	},
+
+	registerRenameProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15051,
+	},
+
+	registerSemanticTokensProvider: CocoonRoot,
+
+	registerSignatureHelpProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15142,
+	},
+
+	registerTaskProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 9359,
+	},
+
+	registerTextDocumentContentProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14266,
+	},
+
+	registerTextEditorCommand: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11007,
+	},
+
+	registerTreeDataProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11695,
+	},
+
+	registerUriHandler: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11727,
+	},
+
+	registerWebviewPanelSerializer: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11741,
+	},
+
+	registerWebviewViewProvider: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11752,
+	},
+
+	register_authentication_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1389,
+	},
+
+	register_code_actions_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 708,
+	},
+
+	register_code_lens_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1132,
+	},
+
+	register_completion_item_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 660,
+	},
+
+	register_debug_adapter: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 964,
+	},
+
+	register_debug_configuration_provider: CocoonRoot,
+
+	register_definition_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 676,
+	},
+
+	register_document_formatting_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1068,
+	},
+
+	register_file_system_provider: CocoonRoot,
+
+	register_folding_range_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1148,
+	},
+
+	register_hover_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 644,
+	},
+
+	register_inlay_hints_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1196,
+	},
+
+	register_inline_completion_item_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1276,
+	},
+
+	register_notebook_serializer: CocoonRoot,
+
+	register_reference_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 692,
+	},
+
+	register_rename_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1052,
+	},
+
+	register_scm_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 948,
+	},
+
+	register_semantic_tokens_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1180,
+	},
+
+	register_signature_help_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1116,
+	},
+
+	register_task_provider: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/RPC/CocoonService/mod.rs",
+
+		Line: 1365,
+	},
+
+	register_text_document_content_provider: CocoonRoot,
+
+	register_uri_handler: CocoonRoot,
+
+	remoteAuthority: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.proposed.resolvers.d.ts",
+
+		Line: 472,
+	},
+
+	remoteName: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10843,
+	},
+
+	removeBreakpoints: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 17417,
+	},
+
+	rename_file: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Vine/Generated/vine.rs",
+
+		Line: 4058,
+	},
+
+	replacePreviousChar: CocoonRoot,
+
+	requestAnimationFrame: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+
+		Line: 1117,
+	},
+
+	requestIdleCallback: {
+		Repo: EditorRepo,
+
+		Path: "src/typings/base-common.d.ts",
+
+		Line: 17,
+	},
+
+	"resourceGroups.Changes": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Workflow/SourceControlManagementSCM.md",
+
+		Line: 33,
+	},
+
+	resourceStates: {
+		Repo: EditorRepo,
+
+		Path: "extensions/git/src/repository.ts",
+
+		Line: 1396,
+	},
+
+	retry_backoff_ms: AirRoot,
+
+	retry_count: AirRoot,
+
+	rhai: LandRoot,
+
+	"rustfmt.toml": { Repo: ElementRepos.Land, Path: "rustfmt.toml" },
+
+	saveAll: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14130,
+	},
+
+	saveAs: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14121,
+	},
+
+	"secrets.delete": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Context.ts",
+
+		Line: 347,
+	},
+
+	"secrets.get": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Context.ts",
+
+		Line: 277,
+	},
+
+	"secrets.store": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Extension/Context.ts",
+
+		Line: 309,
+	},
+
+	selectChatModels: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 20772,
+	},
+
+	sendRequest: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/agentHost/test/electron-browser/agentHostProtocolClient.test.ts",
+
+		Line: 816,
+	},
+
+	sessionId: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10789,
+	},
+
+	setInterval: {
+		Repo: EditorRepo,
+
+		Path: "src/typings/base-common.d.ts",
+
+		Line: 28,
+	},
+
+	setLanguageConfiguration: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 15303,
+	},
+
+	setStatusBarMessage: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11566,
+	},
+
+	setTextDocumentLanguage: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14746,
+	},
+
+	setTimeout: {
+		Repo: EditorRepo,
+
+		Path: "src/typings/base-common.d.ts",
+
+		Line: 25,
+	},
+
+	setTimeout0: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/base/common/platform.ts",
+
+		Line: 221,
+	},
+
+	set_clipboard: CocoonRoot,
+
+	set_configuration: CocoonRoot,
+
+	"settings.json": { Repo: ElementRepos.Land, Path: ".vscode/settings.json" },
+
+	setup_webview_message_listener_impl: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Environment/WebviewProvider/Messaging.rs",
+
+		Line: 92,
+	},
+
+	sha256: { Repo: EditorRepo, Path: "build/lib/download.ts", Line: 17 },
+
+	sharedDataFolderName: MountainRoot,
+
+	"shell.open": {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Polyfill/Native/Module/Polyfill.ts",
+
+		Line: 462,
+	},
+
+	shell_path: AirRoot,
+
+	showCommands: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/browser/parts/editor/editorGroupWatermark.ts",
+
+		Line: 35,
+	},
+
+	showErrorMessage: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11376,
+	},
+
+	showInformationMessage: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11285,
+	},
+
+	showInputBox: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11491,
+	},
+
+	showNotebookDocument: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11267,
+	},
+
+	showOpenDialog: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11469,
+	},
+
+	showPreviousWindowTab: CocoonRoot,
+
+	showQuickPick: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11421,
+	},
+
+	showSaveDialog: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11478,
+	},
+
+	showTextDocument: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11236,
+	},
+
+	showWarningMessage: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11330,
+	},
+
+	showWorkspaceFolderPick: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11460,
+	},
+
+	snake_case: {
+		Repo: TauriRepo,
+
+		Path: "crates/tauri-cli/src/mobile/init.rs",
+
+		Line: 299,
+	},
+
+	span_id: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/Enhanced/PerformanceDashboard/Dashboard.rs",
+
+		Line: 160,
+	},
+
+	startDebugging: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 17397,
+	},
+
+	structuredClone: AirRoot,
+
+	suppressSuggestions: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/contrib/suggest/browser/suggestModel.ts",
+
+		Line: 115,
+	},
+
+	"task.didEnd": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/gRPC/Server/Service.ts",
+
+		Line: 1203,
+	},
+
+	"task.didEndProcess": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts",
+
+		Line: 144,
+	},
+
+	"task.didStart": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/gRPC/Server/Service.ts",
+
+		Line: 1186,
+	},
+
+	"task.didStartProcess": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts",
+
+		Line: 143,
+	},
+
+	taskExecutions: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 9387,
+	},
+
+	"tasks.json": { Repo: EditorRepo, Path: ".vscode/tasks.json" },
+
+	tauri: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Binary/Main/AppLifecycle.rs",
+
+		Line: 298,
+	},
+
+	"tauri.conf.json": { Repo: ElementRepos.Mountain, Path: "tauri.conf.json" },
+
+	temp_dir: {
+		Repo: ElementRepos.Air,
+
+		Path: "Source/Downloader/DownloadManager.rs",
+
+		Line: 1780,
+	},
+
+	textDocuments: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 14154,
+	},
+
+	textEditor: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/sessions/contrib/editor/test/browser/diffEditor.sessions.contribution.test.ts",
+
+		Line: 229,
+	},
+
+	textFile: {
+		Repo: EditorRepo,
+
+		Path: "extensions/copilot/src/platform/workspaceChunkSearch/test/node/externalIngest.spec.ts",
+
+		Line: 434,
+	},
+
+	"this.productService.dataFolderName": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/environment/common/environmentService.ts",
+
+		Line: 101,
+	},
+
+	tier_routes_to_node: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/WindServiceHandlers/DispatchMatch.rs",
+
+		Line: 344,
+	},
+
+	timeout_ms: AirRoot,
+
+	timingBuffer: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+
+		Line: 38,
+	},
+
+	toml_edit: LandRoot,
+
+	tonic_build: AirRoot,
+
+	trace_id: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/IPC/Enhanced/PerformanceDashboard/Dashboard.rs",
+
+		Line: 158,
+	},
+
+	"tree.register": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Source/Services/Mountain/Client/Service.ts",
+
+		Line: 835,
+	},
+
+	"turbo.json": { Repo: ElementRepos.Land, Path: "turbo.json" },
+
+	"update.editor.land": {
+		Repo: ElementRepos.Mist,
+
+		Path: "Source/ForwardSecurity.rs",
+
+		Line: 23,
+	},
+
+	uriScheme: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10768,
+	},
+
+	useDefineForClassFields: {
+		Repo: EditorRepo,
+
+		Path: "extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts",
+
+		Line: 1496,
+	},
+
+	userData: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/services/userDataSync/browser/userDataSyncInit.ts",
+
+		Line: 232,
+	},
+
+	v8: {
+		Repo: TsParserTestRefRepo,
+
+		Path: "expressions/optionalChaining/optionalChainingInference/input.ts",
+
+		Line: 30,
+	},
+
+	viewColumn: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/common/cursor/cursorMoveCommands.ts",
+
+		Line: 644,
+	},
+
+	viewType: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostNotebook.ts",
+
+		Line: 228,
+	},
+
+	visibleTextEditors: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11089,
+	},
+
+	"vortex.data.microsoft.com": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Shim/NetworkProxy.ts",
+
+		Line: 28,
+	},
+
+	"vscode.Memento": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostMemento.ts",
+
+		Line: 12,
+	},
+
+	"vscode.Notebook": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostNotebook.ts",
+
+		Line: 43,
+	},
+
+	"vscode.Uri": {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 1439,
+	},
+
+	"vscode.WebviewPanel": {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 10086,
+	},
+
+	"vscode.authentication": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostAuthentication.ts",
+
+		Line: 58,
+	},
+
+	"vscode.chat": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostChatAgents2.ts",
+
+		Line: 488,
+	},
+
+	"vscode.chat.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostChatAgents2.ts",
+
+		Line: 488,
+	},
+
+	"vscode.commands": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
+		Line: 46,
+	},
+
+	"vscode.commands.executeCommand": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
+		Line: 132,
+	},
+
+	"vscode.commands.registerCommand": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
+		Line: 123,
+	},
+
+	"vscode.commands.registerTextEditorCommand": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 380,
+	},
+
+	"vscode.comments": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostComments.ts",
+
+		Line: 34,
+	},
+
+	"vscode.d.ts": {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 6,
+	},
+
+	"vscode.debug": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostDebugService.ts",
+
+		Line: 64,
+	},
+
+	"vscode.debug.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostDebugService.ts",
+
+		Line: 64,
+	},
+
+	"vscode.debug.registerDebugConfigurationProvider": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostDebugService.ts",
+
+		Line: 56,
+	},
+
+	"vscode.debug.startDebugging": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostDebugService.ts",
+
+		Line: 54,
+	},
+
+	"vscode.env": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 421,
+	},
+
+	"vscode.env.appRoot": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 431,
+	},
+
+	"vscode.env.machineId": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 422,
+	},
+
+	"vscode.env.openExternal": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 470,
+	},
+
+	"vscode.extensions": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostExtensionService.ts",
+
+		Line: 81,
+	},
+
+	"vscode.extensions.getExtension": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 2078,
+	},
+
+	"vscode.git": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostGitExtensionService.ts",
+
+		Line: 177,
+	},
+
+	"vscode.l10n": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostLocalizationService.ts",
+
+		Line: 16,
+	},
+
+	"vscode.languages": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+
+		Line: 2163,
+	},
+
+	"vscode.languages.registerHoverProvider": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+
+		Line: 2354,
+	},
+
+	"vscode.languages.registerInlineCompletionItemProvider": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 757,
+	},
+
+	"vscode.lm": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostLanguageModels.ts",
+
+		Line: 123,
+	},
+
+	"vscode.lm.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostLanguageModels.ts",
+
+		Line: 123,
+	},
+
+	"vscode.notebook.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostNotebook.ts",
+
+		Line: 43,
+	},
+
+	"vscode.notebooks": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostNotebook.ts",
+
+		Line: 43,
+	},
+
+	"vscode.open": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+
+		Line: 289,
+	},
+
+	"vscode.postMessage": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWebview.ts",
+
+		Line: 129,
+	},
+
+	"vscode.scm": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostSCM.ts",
+
+		Line: 971,
+	},
+
+	"vscode.scm.createSourceControl": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostSCM.ts",
+
+		Line: 1031,
+	},
+
+	"vscode.tasks": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTask.ts",
+
+		Line: 751,
+	},
+
+	"vscode.tasks.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTask.ts",
+
+		Line: 751,
+	},
+
+	"vscode.tasks.executeTask": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTask.ts",
+
+		Line: 47,
+	},
+
+	"vscode.tests": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTesting.ts",
+
+		Line: 55,
+	},
+
+	"vscode.tests.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTesting.ts",
+
+		Line: 55,
+	},
+
+	"vscode.window": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWindow.ts",
+
+		Line: 17,
+	},
+
+	"vscode.window.createTerminal": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 687,
+	},
+
+	"vscode.window.createWebviewPanel": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 1130,
+	},
+
+	"vscode.window.showInformationMessage": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 909,
+	},
+
+	"vscode.window.showQuickPick": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 918,
+	},
+
+	"vscode.workspace": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 194,
+	},
+
+	"vscode.workspace.fs": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 1396,
+	},
+
+	"vscode.workspace.fs.stat": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 2026,
+	},
+
+	"vscode.workspace.getConfiguration": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 259,
+	},
+
+	"vscode.workspace.onDidChangeConfiguration": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostConfiguration.ts",
+
+		Line: 156,
+	},
+
+	"vscode.workspace.openTextDocument": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 840,
+	},
+
+	"vscode.workspace.registerFileSystemProvider": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 2022,
+	},
+
+	"vscode.workspace.textDocuments": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 1292,
+	},
+
+	wasm: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/test/browser/componentFixtures/fixtureSyntaxHighlighting.ts",
+
+		Line: 215,
+	},
+
+	webFrame: { Repo: ElementRepos.Wind, Path: "Source/Preload.ts", Line: 387 },
+
+	willSave: CocoonRoot,
+
+	win32: { Repo: EditorRepo, Path: "src/vs/base/common/path.ts", Line: 207 },
+
+	"window.ISandboxConfiguration": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Types/Sandbox.ts",
+
+		Line: 105,
+	},
+
+	"window._LOAD_CSS_WORKER": {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker/CSS/Load.ts",
+
+		Line: 30,
+	},
+
+	"window._WORKER": {
+		Repo: ElementRepos.Worker,
+
+		Path: "Source/Worker/Register.ts",
+
+		Line: 24,
+	},
+
+	"window.createWebviewPanel": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 1130,
+	},
+
+	"window.didCloseTerminal": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTerminalService.ts",
+
+		Line: 443,
+	},
+
+	"window.didOpenTerminal": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTerminalService.ts",
+
+		Line: 445,
+	},
+
+	"window.onDidEndTerminalShellExecution": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 900,
+	},
+
+	"window.onDidExecuteTerminalCommand": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostTerminalService.ts",
+
+		Line: 48,
+	},
+
+	"window.onDidStartTerminalShellExecution": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 897,
+	},
+
+	"window.posthog": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Telemetry/PostHogBridge.ts",
+
+		Line: 4,
+	},
+
+	"window.posthog.capture": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Telemetry/PostHogBridge.ts",
+
+		Line: 4,
+	},
+
+	"window.process": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Workbench/Electron/Polyfills.ts",
+
+		Line: 6,
+	},
+
+	"window.showInformationMessage": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 909,
+	},
+
+	"window.vscode": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Function/Install/Function/Install.ts",
+
+		Line: 5,
+	},
+
+	"window.vscode.ipcRenderer": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Preload.ts",
+
+		Line: 103,
+	},
+
+	"window.vscode.ipcRenderer.invoke": {
+		Repo: ElementRepos.Wind,
+
+		Path: "Source/Preload.ts",
+
+		Line: 134,
+	},
+
+	withProgress: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 11622,
+	},
+
+	"workbench.action.applyThemeFromFile": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
+		Line: 117,
+	},
+
+	"workbench.action.authentication.signIn": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/Workflow/UserDataSynchronization.md",
+
+		Line: 30,
+	},
+
+	"workbench.action.files.openFile": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EditorCore.md",
+
+		Line: 641,
+	},
+
+	"workbench.action.files.save": {
+		Repo: ElementRepos.Cocoon,
+
+		Path: "Documentation/GitHub/Architecture.md",
+
+		Line: 466,
+	},
+
+	"workbench.action.files.saveAll": {
+		Repo: ElementRepos.Sky,
+
+		Path: "Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+
+		Line: 304,
+	},
+
+	"workbench.action.showCommands": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/editor/browser/controller/editContext/screenReaderUtils.ts",
+
+		Line: 121,
+	},
+
+	"workbench.action.terminal.new": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/contrib/terminal/electron-browser/terminalRemote.ts",
+
+		Line: 18,
+	},
+
+	"workbench.action.terminal.toggleTerminal": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EditorCore.md",
+
+		Line: 640,
+	},
+
+	"workbench.action.toggleSidebar": {
+		Repo: ElementRepos.Land,
+
+		Path: "Documentation/GitHub/EditorCore.md",
+
+		Line: 640,
+	},
+
+	"workspace.applyEdit": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 1280,
+	},
+
+	"workspace.findFiles": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 498,
+	},
+
+	"workspace.fs.": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 194,
+	},
+
+	"workspace.fs.readFile": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
+		Line: 2028,
+	},
+
+	"workspace.openTextDocument": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 840,
+	},
+
+	"workspace.save": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 918,
+	},
+
+	"workspace.saveAll": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 930,
+	},
+
+	"workspace.saveAs": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
+		Line: 919,
+	},
+
+	"workspace.textDocuments": {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
+		Line: 1292,
+	},
+
+	workspaceFolders: {
+		Repo: EditorRepo,
+
+		Path: "src/vscode-dts/vscode.d.ts",
+
+		Line: 13830,
+	},
+
+	workspaceState: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/workbench/api/common/extHostExtensionService.ts",
+
+		Line: 505,
+	},
+
+	writeClipboard: CocoonRoot,
+
+	writeFile: {
+		Repo: ElementRepos.Output,
+
+		Path: "Source/Polyfill/File/System/Polyfill.ts",
+
+		Line: 386,
+	},
+
+	writeText: {
+		Repo: EditorRepo,
+
+		Path: "src/vs/platform/agentHost/test/node/e2e/suites/clientFilesystemSuite.ts",
+
+		Line: 74,
+	},
+
+	write_file: {
+		Repo: ElementRepos.Mountain,
+
+		Path: "Source/Vine/Generated/vine.rs",
+
+		Line: 4722,
+	},
+
+	write_terminal: CocoonRoot,
+
+	x86_64: LandRoot,
+	...AsExternalSpecs(MentionMap),
+	...AsExternalSpecs(TechnicalMentions),
 };

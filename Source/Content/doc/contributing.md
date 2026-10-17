@@ -157,7 +157,7 @@ behavior. Run with `cargo test -p mountain`.
 
 **TypeScript tests.** [Cocoon](https://github.com/CodeEditorLand/Cocoon) and [Wind](https://github.com/CodeEditorLand/Wind) use [`Effect-TS`](https://effect.website)'s built-in `TestClock` and
 `TestEnvironment` for service-level tests. Vitest is the test runner. Run with
-`pnpm test` inside [`Element/Cocoon`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon) or [`Element/Wind`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind).
+`pnpm test` inside [`Element/Cocoon`](https://github.com/CodeEditorLand/Cocoon/tree/Current) or [`Element/Wind`](https://github.com/CodeEditorLand/Wind/tree/Current).
 
 **Smoke tests.** The `Maintain/CI/` directory contains end-to-end tests that
 start [Mountain](https://github.com/CodeEditorLand/Mountain), wait for the gRPC server to accept connections, run a set of

@@ -24,18 +24,18 @@ causal chain.
 
 ## Layout
 
-| Layer    | File / Module                                                                                                                                                  | Pipe(s)        |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| Build.sh | [`Maintain/Script/PostHogCapture.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh)                                   | PostHog + OTLP |
-| Mountain | `Element/Mountain/Source/Binary/Build/PostHogPlugin/*`                                                                                                         | PostHog        |
-| Mountain | [`Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs) | OTLP           |
-| Mountain | `Element/Mountain/Source/Telemetry/*`                                                                                                                          | OTLP (tracing) |
-| Cocoon   | `Element/Cocoon/Source/Telemetry/PostHogBridge.ts`                                                                                                             | PostHog        |
-| Cocoon   | [`Element/Cocoon/Source/Telemetry/OTLPBridge.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts)           | OTLP           |
-| Wind     | `Element/Wind/Source/Telemetry/Bridge.ts`                                                                                                                      | both           |
-| Sky      | `Element/Sky/Source/Function/Telemetry/Bridge.ts`                                                                                                              | both           |
-| Output   | `Element/Output/Source/Telemetry/*`                                                                                                                            | both           |
-| Sidecars | re-export [Mountain](https://github.com/CodeEditorLand/Mountain)'s macros via the `tracing` crate                                                              | OTLP           |
+| Layer    | File / Module                                                                                                                                     | Pipe(s)        |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| Build.sh | [`Maintain/Script/PostHogCapture.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh)                      | PostHog + OTLP |
+| Mountain | `Element/Mountain/Source/Binary/Build/PostHogPlugin/*`                                                                                            | PostHog        |
+| Mountain | [`Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/DevLog/EmitOTLPSpan.rs) | OTLP           |
+| Mountain | `Element/Mountain/Source/Telemetry/*`                                                                                                             | OTLP (tracing) |
+| Cocoon   | `Element/Cocoon/Source/Telemetry/PostHogBridge.ts`                                                                                                | PostHog        |
+| Cocoon   | [`Element/Cocoon/Source/Telemetry/OTLPBridge.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Telemetry/OTLPBridge.ts)           | OTLP           |
+| Wind     | `Element/Wind/Source/Telemetry/Bridge.ts`                                                                                                         | both           |
+| Sky      | `Element/Sky/Source/Function/Telemetry/Bridge.ts`                                                                                                 | both           |
+| Output   | `Element/Output/Source/Telemetry/*`                                                                                                               | both           |
+| Sidecars | re-export [Mountain](https://github.com/CodeEditorLand/Mountain)'s macros via the `tracing` crate                                                 | OTLP           |
 
 ## Event-name convention
 

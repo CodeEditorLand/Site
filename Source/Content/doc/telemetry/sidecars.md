@@ -16,17 +16,17 @@ per-Element changes.
 
 ## Architecture
 
-| Type    | Path                                                                                                                                         | Wiring                                                                                                  |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Library | [`Element/Common/Source/Telemetry/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Common/Source/Telemetry/)                   | shared. Provides `Capture*::Fn`, `EmitOTLPSpan::Fn`, `Initialize::Fn(Tier)`                             |
-| Binary  | [`Element/Air/Source/Binary.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Air/Source/Binary.rs)                           | calls `CommonLibrary::Telemetry::Initialize::Fn(Tier::Air)` in `Main`                                   |
-| Binary  | [`Element/Rest/Source/Main.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest/Source/Main.rs)                             | calls `Initialize::Fn(Tier::Rest)`                                                                      |
-| Binary  | [`Element/Grove/Source/main.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove/Source/main.rs)                           | calls `Initialize::Fn(Tier::Grove)` after `Cli::parse`                                                  |
-| Binary  | [`Element/SideCar/Source/main.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/Source/main.rs)                       | sync `main` → spawns short-lived `tokio::Runtime` to call `Initialize::Fn(Tier::SideCar)`               |
-| Binary  | [`Element/SideCar/Source/Download.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/Source/Download.rs)               | `Tier::SideCar` (vendoring binary)                                                                      |
-| Library | [`Element/Echo/Source/Library.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Echo/Source/Library.rs)                       | linked into Mountain - emits via `CommonLibrary::Telemetry::CaptureEvent::Fn`, inherits Mountain's tier |
-| Library | `Element/Mist/Source/lib.rs`                                                                                                                 | linked into Mountain & Air - same                                                                       |
-| Worker  | [`Element/Worker/Source/Telemetry/Bridge.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Worker/Source/Telemetry/Bridge.ts) | TS service worker; auto-loaded from `Worker.ts` install/activate hooks                                  |
+| Type    | Path                                                                                                                            | Wiring                                                                                                  |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Library | [`Element/Common/Source/Telemetry/`](https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/)                   | shared. Provides `Capture*::Fn`, `EmitOTLPSpan::Fn`, `Initialize::Fn(Tier)`                             |
+| Binary  | [`Element/Air/Source/Binary.rs`](https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary.rs)                           | calls `CommonLibrary::Telemetry::Initialize::Fn(Tier::Air)` in `Main`                                   |
+| Binary  | [`Element/Rest/Source/Main.rs`](https://github.com/CodeEditorLand/Rest/tree/Current/Source/Main.rs)                             | calls `Initialize::Fn(Tier::Rest)`                                                                      |
+| Binary  | [`Element/Grove/Source/main.rs`](https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs)                           | calls `Initialize::Fn(Tier::Grove)` after `Cli::parse`                                                  |
+| Binary  | [`Element/SideCar/Source/main.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/main.rs)                       | sync `main` → spawns short-lived `tokio::Runtime` to call `Initialize::Fn(Tier::SideCar)`               |
+| Binary  | [`Element/SideCar/Source/Download.rs`](https://github.com/CodeEditorLand/SideCar/tree/Current/Source/Download.rs)               | `Tier::SideCar` (vendoring binary)                                                                      |
+| Library | [`Element/Echo/Source/Library.rs`](https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs)                       | linked into Mountain - emits via `CommonLibrary::Telemetry::CaptureEvent::Fn`, inherits Mountain's tier |
+| Library | `Element/Mist/Source/lib.rs`                                                                                                    | linked into Mountain & Air - same                                                                       |
+| Worker  | [`Element/Worker/Source/Telemetry/Bridge.ts`](https://github.com/CodeEditorLand/Worker/tree/Current/Source/Telemetry/Bridge.ts) | TS service worker; auto-loaded from `Worker.ts` install/activate hooks                                  |
 
 ## Cargo.toml additions
 
@@ -40,7 +40,7 @@ Common = { workspace = true }
 
 ## Tier identification
 
-[`Element/Common/Source/Telemetry/Tier.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Common/Source/Telemetry/Tier.rs):
+[`Element/Common/Source/Telemetry/Tier.rs`](https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/Tier.rs):
 
 ```rust
 pub enum Tier {

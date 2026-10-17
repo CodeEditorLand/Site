@@ -41,7 +41,7 @@ nvm use 24
 > [!NOTE]
 > Node 24 is required specifically to compile the VS Code Editor submodule
 > (Step 1). The pinned version is tracked in
-> [`Dependency/Microsoft/Dependency/Editor/.nvmrc`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor/.nvmrc).
+> [`Dependency/Microsoft/Dependency/Editor/.nvmrc`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current/.nvmrc).
 
 ### Rust Toolchain & Targets
 
@@ -99,7 +99,7 @@ The Land build is a **two-step linear flow**. Do NOT pull submodules
 recursively - each submodule is managed independently on its own branch.
 
 1. **Compile VS Code Source** - Build the VS Code platform code that [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
-   consumes. This runs in [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor).
+   consumes. This runs in [`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current).
 2. **Build [Land](https://github.com/CodeEditorLand/Land) Application** - Compile the native Rust backend ([`Mountain`](https://github.com/CodeEditorLand/Mountain))
    and bundle the TypeScript frontend ([`Wind`](https://github.com/CodeEditorLand/Wind) + [`Sky`](https://github.com/CodeEditorLand/Sky)) into a runnable Tauri
    application.
@@ -120,7 +120,7 @@ on artifacts produced by the previous one:
 ## Step 1: Compile VS Code Source
 
 The VS Code source is vendored as a Git submodule at
-[`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor). **This step is mandatory** - [Land](https://github.com/CodeEditorLand/Land)
+[`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current). **This step is mandatory** - [Land](https://github.com/CodeEditorLand/Land)
 cannot build without it. [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) (the extension host) and [`Output`](https://github.com/CodeEditorLand/Output) (the
 platform bundle) both consume the compiled output produced here.
 
@@ -288,16 +288,16 @@ Land/
 Each Element may have additional build details. Refer to the specific README for
 element-specific workflows:
 
-| Element                                                | Build Instructions                                                                                                                                |
-| :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`Air`](https://github.com/CodeEditorLand/Air)         | [`Element/Air/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Air/README.md) - Background daemon build & daemon lifecycle |
-| [`Grove`](https://github.com/CodeEditorLand/Grove)     | [`Element/Grove/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove/README.md) - Native Rust/WASM extension host build  |
-| [`Mist`](https://github.com/CodeEditorLand/Mist)       | [`Element/Mist/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mist/README.md) - DNS server build & testing               |
-| [`Rest`](https://github.com/CodeEditorLand/Rest)       | [`Element/Rest/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest/README.md) - CLI compiler usage                       |
-| [`SideCar`](https://github.com/CodeEditorLand/SideCar) | [`Element/SideCar/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar/README.md) - Download tool for runtime binaries |
-| [`Sky`](https://github.com/CodeEditorLand/Sky)         | [`Element/Sky/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky/README.md) - Astro UI development                       |
-| [`Wind`](https://github.com/CodeEditorLand/Wind)       | [`Element/Wind/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind/README.md) - Effect-TS service layer                  |
-| [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)   | [`Element/Cocoon/README.md`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/README.md) - Extension host details               |
+| Element                                                | Build Instructions                                                                                                                   |
+| :----------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| [`Air`](https://github.com/CodeEditorLand/Air)         | [`Element/Air/README.md`](https://github.com/CodeEditorLand/Air/tree/Current/README.md) - Background daemon build & daemon lifecycle |
+| [`Grove`](https://github.com/CodeEditorLand/Grove)     | [`Element/Grove/README.md`](https://github.com/CodeEditorLand/Grove/tree/Current/README.md) - Native Rust/WASM extension host build  |
+| [`Mist`](https://github.com/CodeEditorLand/Mist)       | [`Element/Mist/README.md`](https://github.com/CodeEditorLand/Mist/tree/Current/README.md) - DNS server build & testing               |
+| [`Rest`](https://github.com/CodeEditorLand/Rest)       | [`Element/Rest/README.md`](https://github.com/CodeEditorLand/Rest/tree/Current/README.md) - CLI compiler usage                       |
+| [`SideCar`](https://github.com/CodeEditorLand/SideCar) | [`Element/SideCar/README.md`](https://github.com/CodeEditorLand/SideCar/tree/Current/README.md) - Download tool for runtime binaries |
+| [`Sky`](https://github.com/CodeEditorLand/Sky)         | [`Element/Sky/README.md`](https://github.com/CodeEditorLand/Sky/tree/Current/README.md) - Astro UI development                       |
+| [`Wind`](https://github.com/CodeEditorLand/Wind)       | [`Element/Wind/README.md`](https://github.com/CodeEditorLand/Wind/tree/Current/README.md) - Effect-TS service layer                  |
+| [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)   | [`Element/Cocoon/README.md`](https://github.com/CodeEditorLand/Cocoon/tree/Current/README.md) - Extension host details               |
 
 ---
 
@@ -413,7 +413,7 @@ echo "NetworkMountainPort=50061" >> .env.Land
 ### App crashes immediately on macOS (code signing)
 
 Tauri's ad-hoc signature does not embed the entitlements from
-[`Element/Mountain/Entitlements.plist`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Entitlements.plist). Without the correct entitlements,
+[`Element/Mountain/Entitlements.plist`](https://github.com/CodeEditorLand/Mountain/tree/Current/Entitlements.plist). Without the correct entitlements,
 [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)'s V8 JIT crashes, extension helpers fail to spawn, and file pickers
 silently do nothing.
 

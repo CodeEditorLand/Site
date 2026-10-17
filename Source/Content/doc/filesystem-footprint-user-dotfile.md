@@ -21,11 +21,11 @@ See also: [Filesystem Footprint](/Doc/filesystem-footprint)
 `FiddeeRoot()` (TypeScript). Every [Land](https://github.com/CodeEditorLand/Land) call site resolves sub-paths through
 this atom so future renames touch a single file per Element.
 
-| Source of truth                                                 | File                                                                                                                                                                                                     |
-| :-------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Rust ([Mountain](https://github.com/CodeEditorLand/Mountain))   | [`Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs) |
-| TypeScript ([Cocoon](https://github.com/CodeEditorLand/Cocoon)) | [`Element/Cocoon/Source/Platform/FiddeeRoot.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts)                                                       |
-| Constant                                                        | `DOTFILE_NAME = ".fiddee"`                                                                                                                                                                               |
+| Source of truth                                                 | File                                                                                                                                                                                        |
+| :-------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Rust ([Mountain](https://github.com/CodeEditorLand/Mountain))   | [`Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs) |
+| TypeScript ([Cocoon](https://github.com/CodeEditorLand/Cocoon)) | [`Element/Cocoon/Source/Platform/FiddeeRoot.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/FiddeeRoot.ts)                                                       |
+| Constant                                                        | `DOTFILE_NAME = ".fiddee"`                                                                                                                                                                  |
 
 ---
 
@@ -78,7 +78,7 @@ GB** depending on which language servers are installed.
 
 ## Cocoon-Side Mirror 🪞
 
-[`Element/Cocoon/Source/Platform/FiddeeRoot.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts) exists so Node-side code does not
+[`Element/Cocoon/Source/Platform/FiddeeRoot.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Platform/FiddeeRoot.ts) exists so Node-side code does not
 call back into Rust to resolve the path. The TypeScript implementation mirrors
 the Rust resolution exactly:
 
@@ -129,7 +129,7 @@ Retirement plan (deferred): one-shot migration that moves `~/.land/extensions/*`
   `.fiddee/extensions/<id>/`, then runs `HealExecutableBits` on `bin/`,
   `server/`, `tools/`, etc. to promote `0o644` → `0o755` on ELF / Mach-O /
   shebang files. One-shot per boot per path.
-- **Extension activation:** [Cocoon](https://github.com/CodeEditorLand/Cocoon) [`ActivateExtension.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts) mkdir's the three
+- **Extension activation:** [Cocoon](https://github.com/CodeEditorLand/Cocoon) [`ActivateExtension.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts) mkdir's the three
   sibling storage roots (`extensionStorage/<extId>`, `globalStorage/<extId>`,
   `logs/<extId>`). Then `Extension/Context.ts` mkdir's the in-bundle `.storage/`
   inside the extension's own directory.

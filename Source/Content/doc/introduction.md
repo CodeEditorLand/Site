@@ -38,7 +38,7 @@ identical while replacing the substrate underneath.
 
 [Land](https://github.com/CodeEditorLand/Land) is not a fork of VS Code. It does not maintain a modified copy of the
 `src/vs` codebase. The upstream VS Code repository is a Git submodule at
-[`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor) and is consumed as a
+[`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current) and is consumed as a
 dependency: compiled, not edited. All custom code lives in the [Land](https://github.com/CodeEditorLand/Land) elements
 themselves.
 

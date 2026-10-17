@@ -72,24 +72,24 @@ cd Land
 
 ### Element Repository Table
 
-| Element                                                | Repository                         | Path in Land repo                                                                                                                      |
-| ------------------------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| [Common](https://github.com/CodeEditorLand/Common)     | github.com/CodeEditorLand/Common   | [`Element/Common`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Common)                                                 |
-| [Echo](https://github.com/CodeEditorLand/Echo)         | github.com/CodeEditorLand/Echo     | [`Element/Echo`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Echo)                                                     |
-| [Vine](https://github.com/CodeEditorLand/Vine)         | github.com/CodeEditorLand/Vine     | [`Element/Vine`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Vine)                                                     |
-| [Mountain](https://github.com/CodeEditorLand/Mountain) | github.com/CodeEditorLand/Mountain | [`Element/Mountain`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain)                                             |
-| [Cocoon](https://github.com/CodeEditorLand/Cocoon)     | github.com/CodeEditorLand/Cocoon   | [`Element/Cocoon`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon)                                                 |
-| [Wind](https://github.com/CodeEditorLand/Wind)         | github.com/CodeEditorLand/Wind     | [`Element/Wind`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Wind)                                                     |
-| [Sky](https://github.com/CodeEditorLand/Sky)           | github.com/CodeEditorLand/Sky      | [`Element/Sky`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Sky)                                                       |
-| [Output](https://github.com/CodeEditorLand/Output)     | github.com/CodeEditorLand/Output   | [`Element/Output`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Output)                                                 |
-| [Rest](https://github.com/CodeEditorLand/Rest)         | github.com/CodeEditorLand/Rest     | [`Element/Rest`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Rest)                                                     |
-| [Worker](https://github.com/CodeEditorLand/Worker)     | github.com/CodeEditorLand/Worker   | [`Element/Worker`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Worker)                                                 |
-| [Mist](https://github.com/CodeEditorLand/Mist)         | github.com/CodeEditorLand/Mist     | [`Element/Mist`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mist)                                                     |
-| [Maintain](https://github.com/CodeEditorLand/Maintain) | github.com/CodeEditorLand/Maintain | [`Element/Maintain`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Maintain)                                             |
-| [Air](https://github.com/CodeEditorLand/Air)           | github.com/CodeEditorLand/Air      | [`Element/Air`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Air)                                                       |
-| [SideCar](https://github.com/CodeEditorLand/SideCar)   | github.com/CodeEditorLand/SideCar  | [`Element/SideCar`](https://github.com/CodeEditorLand/Land/tree/Current/Element/SideCar)                                               |
-| [Grove](https://github.com/CodeEditorLand/Grove)       | github.com/CodeEditorLand/Grove    | [`Element/Grove`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Grove)                                                   |
-| Editor                                                 | github.com/CodeEditorLand/Editor   | [`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor) |
+| Element                                                | Repository                         | Path in Land repo                                                                                           |
+| ------------------------------------------------------ | ---------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [Common](https://github.com/CodeEditorLand/Common)     | github.com/CodeEditorLand/Common   | [`Element/Common`](https://github.com/CodeEditorLand/Common/tree/Current)                                   |
+| [Echo](https://github.com/CodeEditorLand/Echo)         | github.com/CodeEditorLand/Echo     | [`Element/Echo`](https://github.com/CodeEditorLand/Echo/tree/Current)                                       |
+| [Vine](https://github.com/CodeEditorLand/Vine)         | github.com/CodeEditorLand/Vine     | [`Element/Vine`](https://github.com/CodeEditorLand/Vine/tree/Current)                                       |
+| [Mountain](https://github.com/CodeEditorLand/Mountain) | github.com/CodeEditorLand/Mountain | [`Element/Mountain`](https://github.com/CodeEditorLand/Mountain/tree/Current)                               |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon)     | github.com/CodeEditorLand/Cocoon   | [`Element/Cocoon`](https://github.com/CodeEditorLand/Cocoon/tree/Current)                                   |
+| [Wind](https://github.com/CodeEditorLand/Wind)         | github.com/CodeEditorLand/Wind     | [`Element/Wind`](https://github.com/CodeEditorLand/Wind/tree/Current)                                       |
+| [Sky](https://github.com/CodeEditorLand/Sky)           | github.com/CodeEditorLand/Sky      | [`Element/Sky`](https://github.com/CodeEditorLand/Sky/tree/Current)                                         |
+| [Output](https://github.com/CodeEditorLand/Output)     | github.com/CodeEditorLand/Output   | [`Element/Output`](https://github.com/CodeEditorLand/Output/tree/Current)                                   |
+| [Rest](https://github.com/CodeEditorLand/Rest)         | github.com/CodeEditorLand/Rest     | [`Element/Rest`](https://github.com/CodeEditorLand/Rest/tree/Current)                                       |
+| [Worker](https://github.com/CodeEditorLand/Worker)     | github.com/CodeEditorLand/Worker   | [`Element/Worker`](https://github.com/CodeEditorLand/Worker/tree/Current)                                   |
+| [Mist](https://github.com/CodeEditorLand/Mist)         | github.com/CodeEditorLand/Mist     | [`Element/Mist`](https://github.com/CodeEditorLand/Mist/tree/Current)                                       |
+| [Maintain](https://github.com/CodeEditorLand/Maintain) | github.com/CodeEditorLand/Maintain | [`Element/Maintain`](https://github.com/CodeEditorLand/Maintain/tree/Current)                               |
+| [Air](https://github.com/CodeEditorLand/Air)           | github.com/CodeEditorLand/Air      | [`Element/Air`](https://github.com/CodeEditorLand/Air/tree/Current)                                         |
+| [SideCar](https://github.com/CodeEditorLand/SideCar)   | github.com/CodeEditorLand/SideCar  | [`Element/SideCar`](https://github.com/CodeEditorLand/SideCar/tree/Current)                                 |
+| [Grove](https://github.com/CodeEditorLand/Grove)       | github.com/CodeEditorLand/Grove    | [`Element/Grove`](https://github.com/CodeEditorLand/Grove/tree/Current)                                     |
+| Editor                                                 | github.com/CodeEditorLand/Editor   | [`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current) |
 
 After cloning each element, check out its `Current` branch:
 

@@ -27,7 +27,7 @@ Stage 1 output is required before Stage 2 can proceed.
 **Stage 1: VS Code Platform Compilation**
 
 The VS Code source is vendored as a Git submodule at
-[`Dependency/Microsoft/Dependency/Editor`](https://github.com/CodeEditorLand/Land/tree/Current/Dependency/Microsoft/Dependency/Editor). This step produces the compiled
+[`Dependency/Microsoft/Dependency/Editor`](https://github.com/DependencyCodeEditorLand/Editor/tree/Current). This step produces the compiled
 JavaScript platform code that [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) (the extension host) and [`Output`](https://github.com/CodeEditorLand/Output) (the
 platform bundle) consume.
 
@@ -66,7 +66,7 @@ finally Tauri bundling for the `.app` bundle.
 
 ## [Maintain](https://github.com/CodeEditorLand/Maintain): Build Orchestrator
 
-[Maintain](https://github.com/CodeEditorLand/Maintain) is a Rust binary at [`Element/Maintain/`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Maintain) that provides build
+[Maintain](https://github.com/CodeEditorLand/Maintain) is a Rust binary at [`Element/Maintain/`](https://github.com/CodeEditorLand/Maintain/tree/Current) that provides build
 orchestration, dead-code elimination, and a development runner. Its build
 side resolves named profiles from [`.vscode/land-config.json`](https://github.com/CodeEditorLand/Land/tree/Current/.vscode/land-config.json) (JSON5, comments
 and trailing commas allowed) and drives the compile:
@@ -282,7 +282,7 @@ Both [`Maintain/Debug/Build.sh`](https://github.com/CodeEditorLand/Land/tree/Cur
 routing tiers:
 
 - **Tier 1**: [Mountain](https://github.com/CodeEditorLand/Mountain) Rust handlers, extracted from
-  [`Element/Mountain/Source/Track/Effect/CreateEffectForRequest/*.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Track/Effect/CreateEffectForRequest) by matching
+  [`Element/Mountain/Source/Track/Effect/CreateEffectForRequest/*.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest) by matching
   `"Name" =>` arms.
 - **Tier 2**: Stock VS Code lifted functions from
   `Element/Cocoon/Source/Services/Handler/VscodeAPI/StockLift.ts`.
