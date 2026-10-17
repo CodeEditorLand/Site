@@ -17,6 +17,7 @@ for (const [Term, Spec] of Object.entries(LinkIndex as any)) {
 
 writeFileSync(
 	"/Users/nikola/.hermes/cache/scratch/term_urls.json",
+
 	JSON.stringify(All),
 );
 
