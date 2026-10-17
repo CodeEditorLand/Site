@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
 	],
 
@@ -27,11 +29,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Mountain/Source/IPC/DevLog/WriteToFile.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/DevLog/WriteToFile.rs",
 		},
 
 		"IPC/DevLog/WriteToFile.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/DevLog/WriteToFile.rs",
 		},
 	},

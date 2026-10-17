@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RETRY_BASE_DELAY_MS: {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Client/Shared.rs",
+
 			Line: 38,
 		},
 	},

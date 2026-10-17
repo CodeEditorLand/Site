@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"configuration",
+
 		"maintain",
+
 		"project-structure",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		HotReload: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Configuration/mod.rs",
+
 			Line: 93,
 		},
 	},

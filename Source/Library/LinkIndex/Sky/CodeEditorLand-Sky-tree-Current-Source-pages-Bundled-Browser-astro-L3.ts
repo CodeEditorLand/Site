@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Browser.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/Bundled/Browser.astro",
+
 			Line: 3,
 		},
 	},

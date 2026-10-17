@@ -24,6 +24,7 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mountain/tree/Current/Source/Environment/SearchProvider.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/Environment/SearchProvider.rs",
 			},
 	},

@@ -23,39 +23,46 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ActivateExtension.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 		},
 
 		"Cocoon/.../ActivateExtension.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 		},
 
 		"Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 		},
 
 		"CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 			},
 
 		"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 			},
 
 		"Element/Cocoon/Source/Services/Handler/Extension/Host/ActivateExtension.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 			},
 
 		"Services/Handler/Extension/Host/ActivateExtension.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
 		},
 	},

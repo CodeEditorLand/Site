@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		UserDataSyncAccountService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/userDataSync/common/userDataSyncAccount.ts",
+
 			Line: 27,
 		},
 	},

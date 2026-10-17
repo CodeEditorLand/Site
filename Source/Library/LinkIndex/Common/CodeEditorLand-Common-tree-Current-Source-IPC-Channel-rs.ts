@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Common/tree/Current/Source/IPC/Channel.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/IPC/Channel.rs",
 		},
 
 		"Common/Source/IPC/Channel.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/IPC/Channel.rs",
 		},
 	},

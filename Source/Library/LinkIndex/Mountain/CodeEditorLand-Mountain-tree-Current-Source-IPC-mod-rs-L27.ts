@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WindServiceHandlers: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/mod.rs",
+
 			Line: 27,
 		},
 	},

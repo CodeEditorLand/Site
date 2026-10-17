@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/IPC/Channel.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/IPC/Channel.ts",
 		},
 
 		"Wind/Source/IPC/Channel.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/IPC/Channel.ts",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		openExternal: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.externalUriOpener.d.ts",
+
 			Line: 167,
 		},
 	},

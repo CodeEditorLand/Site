@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"architecture",
+
 		"cocoon-vscode-validation",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-echo",
+
 		"deep-dive-wind",
+
 		"echo",
+
 		"mountain-naming-conventions",
+
 		"project-structure",
+
 		"vscode-api-coverage",
+
 		"why-rust",
 	],
 
@@ -35,7 +45,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		High: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs",
+
 			Line: 132,
 		},
 	},

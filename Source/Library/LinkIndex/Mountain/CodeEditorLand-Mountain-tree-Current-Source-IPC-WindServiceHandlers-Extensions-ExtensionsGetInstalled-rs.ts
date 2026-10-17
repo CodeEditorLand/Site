@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ExtensionsGetInstalled.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Extensions/ExtensionsGetInstalled.rs",
 		},
 	},

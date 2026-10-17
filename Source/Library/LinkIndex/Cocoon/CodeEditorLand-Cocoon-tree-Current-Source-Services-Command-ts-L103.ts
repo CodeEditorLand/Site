@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"architecture",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"configuration",
+
 		"deep-dive-mountain",
+
 		"development-history",
+
 		"filesystem-footprint-platform-paths",
+
 		"introduction",
+
 		"low-level-shim",
+
 		"mountain",
+
 		"vscode-api-coverage",
+
 		"workflow-command-palette",
 	],
 
@@ -37,7 +49,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Window: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Command.ts",
+
 			Line: 103,
 		},
 	},

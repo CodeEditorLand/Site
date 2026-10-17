@@ -18,18 +18,31 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"coverage",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-user-dotfile",
+
 		"getting-started",
+
 		"installation",
+
 		"low-level-shim",
+
 		"polyfills",
+
 		"why-tauri",
+
 		"worker",
 	],
 
@@ -38,7 +51,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		None: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/event.ts",
+
 			Line: 51,
 		},
 	},

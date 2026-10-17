@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		QuickInputService: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/QuickInput.ts",
+
 			Line: 52,
 		},
 	},

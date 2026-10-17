@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,16 +34,19 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Element/Mountain/Source/LandFixTier.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/LandFixTier.rs",
 		},
 
 		"Land/Element/Mountain/Source/LandFixTier.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/LandFixTier.rs",
 		},
 
 		"Mountain/Source/LandFixTier.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/LandFixTier.rs",
 		},
 	},

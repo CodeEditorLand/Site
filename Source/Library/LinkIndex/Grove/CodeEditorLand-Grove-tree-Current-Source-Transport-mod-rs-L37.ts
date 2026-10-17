@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WASMTransport: {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/Transport/mod.rs",
+
 			Line: 37,
 		},
 	},

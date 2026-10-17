@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		file_type: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Indexing/Scan/ScanDirectory.rs",
+
 			Line: 423,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ISearchResultProvider: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/search/common/search.ts",
+
 			Line: 66,
 		},
 	},

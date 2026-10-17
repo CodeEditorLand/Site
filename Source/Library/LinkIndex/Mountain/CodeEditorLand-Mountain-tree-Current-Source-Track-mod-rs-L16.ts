@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-cleanup",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
+
 		"workflow-tier-gated-implementation-selection",
+
 		"workflow-webview",
 	],
 
@@ -35,7 +45,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Webview: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/mod.rs",
+
 			Line: 16,
 		},
 	},

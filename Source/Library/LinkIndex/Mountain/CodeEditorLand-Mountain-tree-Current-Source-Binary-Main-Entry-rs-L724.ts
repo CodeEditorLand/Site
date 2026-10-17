@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		AppHandle: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Main/Entry.rs",
+
 			Line: 724,
 		},
 	},

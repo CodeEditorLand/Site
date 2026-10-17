@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"low-level-shim",
+
 		"vscode-api-coverage",
+
 		"workflow-command-palette",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Emitter: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/SkyEmit.rs",
+
 			Line: 44,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TransportConfig: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Transport/mod.rs",
+
 			Line: 56,
 		},
 	},

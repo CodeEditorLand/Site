@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"cocoon",
+
 		"deep-dive-wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,11 +31,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Cocoon/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
@@ -41,16 +46,19 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Element/Cocoon/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"Land/Element/Cocoon/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 	},

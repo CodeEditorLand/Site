@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"navigator.userAgent": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Workbench/Electron/OTELBridge.ts",
+
 			Line: 126,
 		},
 	},

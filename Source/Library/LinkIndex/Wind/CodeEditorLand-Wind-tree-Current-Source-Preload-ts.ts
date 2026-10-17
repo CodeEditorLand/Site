@@ -18,12 +18,19 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"cocoon",
+
 		"deep-dive-sky",
+
 		"deep-dive-wind",
+
 		"polyfills",
+
 		"wind",
+
 		"workflow-startup",
 	],
 
@@ -32,6 +39,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/Preload.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Preload.ts",
 		},
 
@@ -39,11 +47,13 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Source/Preload.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Preload.ts",
 		},
 
 		"Wind/Source/Preload.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Preload.ts",
 		},
 	},

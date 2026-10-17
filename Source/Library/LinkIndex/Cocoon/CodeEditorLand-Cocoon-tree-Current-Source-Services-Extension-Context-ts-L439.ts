@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon-vscode-validation",
+
 		"deep-dive-cocoon",
+
 		"extension-development",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtensionContext: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Extension/Context.ts",
+
 			Line: 439,
 		},
 	},

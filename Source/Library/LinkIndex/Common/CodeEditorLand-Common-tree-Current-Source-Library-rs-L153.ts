@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"architecture",
+
 		"build-matrix",
+
 		"common",
+
 		"deep-dive-common",
+
 		"deep-dive-grove",
+
 		"deep-dive-mist",
+
 		"deep-dive-vine",
+
 		"grove",
+
 		"vine",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -35,7 +45,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Transport: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Library.rs",
+
 			Line: 153,
 		},
 	},

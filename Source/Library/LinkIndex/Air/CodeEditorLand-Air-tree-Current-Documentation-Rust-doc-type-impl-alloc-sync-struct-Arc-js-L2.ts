@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"TauriDesktopIntegration",
+
 		"deep-dive-common",
+
 		"deep-dive-echo",
+
 		"deep-dive-mountain",
+
 		"echo",
+
 		"mountain-naming-conventions",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ApplicationRunTime: {
 			Repo: ElementRepos.Air,
+
 			Path: "Documentation/Rust/doc/type.impl/alloc/sync/struct.Arc.js",
+
 			Line: 2,
 		},
 	},

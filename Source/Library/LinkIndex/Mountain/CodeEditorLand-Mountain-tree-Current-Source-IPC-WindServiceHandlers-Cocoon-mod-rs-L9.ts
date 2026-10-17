@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Notify: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Cocoon/mod.rs",
+
 			Line: 9,
 		},
 	},

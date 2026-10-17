@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"deep-dive-sky",
+
 		"low-level-shim",
+
 		"polyfills",
+
 		"sky",
 	],
 
@@ -33,7 +41,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Production: {
 			Repo: ElementRepos.Echo,
+
 			Path: "Example/Sequence.rs",
+
 			Line: 24,
 		},
 	},

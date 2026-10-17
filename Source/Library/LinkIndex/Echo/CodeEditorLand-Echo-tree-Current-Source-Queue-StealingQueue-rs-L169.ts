@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Submit: {
 			Repo: ElementRepos.Echo,
+
 			Path: "Source/Queue/StealingQueue.rs",
+
 			Line: 169,
 		},
 	},

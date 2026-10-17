@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"deep-dive-common",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Sequential: {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Fn/Binary/Command.rs",
+
 			Line: 160,
 		},
 	},

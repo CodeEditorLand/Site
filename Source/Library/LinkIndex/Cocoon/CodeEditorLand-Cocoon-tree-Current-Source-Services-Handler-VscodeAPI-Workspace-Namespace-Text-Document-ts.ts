@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Document.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Text/Document.ts",
 		},
 	},

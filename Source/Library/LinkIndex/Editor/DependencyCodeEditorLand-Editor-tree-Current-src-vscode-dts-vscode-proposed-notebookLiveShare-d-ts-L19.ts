@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		registerNotebookSerializer: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.notebookLiveShare.d.ts",
+
 			Line: 19,
 		},
 	},

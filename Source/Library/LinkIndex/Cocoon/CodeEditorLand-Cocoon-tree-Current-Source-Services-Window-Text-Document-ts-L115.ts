@@ -18,22 +18,39 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"api-reference",
+
 		"architecture",
+
 		"build-pipeline",
+
 		"coverage",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"installation",
+
 		"introduction",
+
 		"local-first-protocol",
+
 		"project-structure",
+
 		"quickstart",
+
 		"vscode-api-coverage",
+
 		"wind",
+
 		"workflow-hover-provider",
+
 		"workflow-open-file",
+
 		"workflow-overview",
+
 		"workflow-startup",
 	],
 
@@ -42,7 +59,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Editor: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Window/Text/Document.ts",
+
 			Line: 115,
 		},
 	},

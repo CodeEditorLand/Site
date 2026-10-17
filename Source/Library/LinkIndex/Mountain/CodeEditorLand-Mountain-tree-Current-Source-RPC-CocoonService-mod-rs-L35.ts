@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"extension-development",
+
 		"filesystem-footprint-cleanup",
+
 		"mountain",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Secret: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/mod.rs",
+
 			Line: 35,
 		},
 	},

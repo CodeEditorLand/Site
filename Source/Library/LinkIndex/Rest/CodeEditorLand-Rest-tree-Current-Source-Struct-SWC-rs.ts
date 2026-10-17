@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Rest/tree/Current/Source/Struct/SWC.rs": {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Struct/SWC.rs",
 		},
 
 		"Source/Struct/SWC.rs": {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Struct/SWC.rs",
 		},
 	},

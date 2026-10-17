@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Binary/Main/Entry.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/Binary/Main/Entry.rs",
 		},
 	},

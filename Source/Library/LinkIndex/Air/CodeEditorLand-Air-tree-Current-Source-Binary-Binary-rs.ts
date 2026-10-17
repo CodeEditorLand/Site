@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Air/tree/Current/Source/Binary/Binary.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Binary/Binary.rs",
 		},
 
 		"Source/Binary/Binary.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Binary/Binary.rs",
 		},
 	},

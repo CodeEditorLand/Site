@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"NativeHost/Quit.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/NativeHost/Quit.rs",
 		},
 	},

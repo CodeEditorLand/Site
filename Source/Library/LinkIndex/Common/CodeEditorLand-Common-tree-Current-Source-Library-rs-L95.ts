@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"configuration",
+
 		"deep-dive-mountain",
+
 		"filesystem-footprint",
+
 		"mountain",
+
 		"mountain-naming-conventions",
+
 		"wind",
+
 		"workflow-command-palette",
+
 		"workflow-overview",
 	],
 
@@ -34,7 +43,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Document: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Library.rs",
+
 			Line: 95,
 		},
 	},

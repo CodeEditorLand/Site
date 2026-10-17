@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.files.openFile": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EditorCore.md",
+
 			Line: 641,
 		},
 	},

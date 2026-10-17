@@ -18,24 +18,43 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"BuildSystemDesign",
+
 		"api-reference",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-worker",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-cleanup",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
+
 		"getting-started",
+
 		"installation",
+
 		"polyfills",
+
 		"sky",
+
 		"workflow-overview",
+
 		"workflow-startup",
 	],
 
@@ -44,7 +63,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Workbench: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Configuration/mod.rs",
+
 			Line: 11,
 		},
 	},

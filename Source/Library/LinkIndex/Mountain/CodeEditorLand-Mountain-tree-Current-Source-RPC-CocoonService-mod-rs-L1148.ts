@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		register_folding_range_provider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/mod.rs",
+
 			Line: 1148,
 		},
 	},

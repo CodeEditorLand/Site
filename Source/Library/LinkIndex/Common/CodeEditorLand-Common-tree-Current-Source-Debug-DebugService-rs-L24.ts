@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DebugService: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Debug/DebugService.rs",
+
 			Line: 24,
 		},
 	},

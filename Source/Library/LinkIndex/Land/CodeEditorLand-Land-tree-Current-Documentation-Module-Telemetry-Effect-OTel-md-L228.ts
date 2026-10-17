@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect.linkSpans": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Module/Telemetry/Effect-OTel.md",
+
 			Line: 228,
 		},
 
 		"event.payload._traceparent": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Module/Telemetry/Effect-OTel.md",
+
 			Line: 228,
 		},
 	},

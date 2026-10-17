@@ -18,28 +18,51 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-echo",
+
 		"deep-dive-maintain",
+
 		"deep-dive-wind",
+
 		"dependency-management",
+
 		"getting-started",
+
 		"grove",
+
 		"introduction",
+
 		"maintain",
+
 		"output",
+
 		"quickstart",
+
 		"rest",
+
 		"vine",
+
 		"why-grpc",
+
 		"why-wasm",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -48,7 +71,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Full: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Workspace/Contains/Activator.ts",
+
 			Line: 209,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CommandsQuickAccessProvider: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/quickaccess/browser/commandsQuickAccess.ts",
+
 			Line: 44,
 		},
 	},

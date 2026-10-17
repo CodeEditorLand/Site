@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"context.logUri": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/FilesystemFootprint/UserDotfile.md",
+
 			Line: 68,
 		},
 	},

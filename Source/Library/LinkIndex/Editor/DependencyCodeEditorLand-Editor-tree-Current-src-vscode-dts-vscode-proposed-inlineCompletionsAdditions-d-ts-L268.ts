@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		InlineCompletionList: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.inlineCompletionsAdditions.d.ts",
+
 			Line: 268,
 		},
 	},

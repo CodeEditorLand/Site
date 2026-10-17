@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs",
 			},
 
 		"IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Utilities/UserdataDir/Ensure.rs",
 		},
 	},

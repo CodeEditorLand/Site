@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"cocoon",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-wind",
+
 		"development-history",
 	],
 
@@ -29,19 +33,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Layer.effect": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 172,
 		},
 
 		"Layer.succeed": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 172,
 		},
 
 		"globalThis.__CEL_WIND_RUNTIME__": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 172,
 		},
 	},

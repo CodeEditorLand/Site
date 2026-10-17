@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CocoonClient: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Documentation/GitHub/NamingConventions.md",
+
 			Line: 306,
 		},
 	},

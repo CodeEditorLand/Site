@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-wind",
+
 		"development-history",
+
 		"workflow-command-palette",
+
 		"workflow-hover-provider",
+
 		"workflow-open-file",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TauriInvoke: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Search/Service.ts",
+
 			Line: 73,
 		},
 	},

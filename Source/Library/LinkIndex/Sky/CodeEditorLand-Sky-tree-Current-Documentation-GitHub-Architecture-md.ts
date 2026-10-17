@@ -24,6 +24,7 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md":
 			{
 				Repo: ElementRepos.Sky,
+
 				Path: "Documentation/GitHub/Architecture.md",
 			},
 	},

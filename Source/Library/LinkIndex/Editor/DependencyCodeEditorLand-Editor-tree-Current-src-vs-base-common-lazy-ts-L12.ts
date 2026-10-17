@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Lazy: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/lazy.ts",
+
 			Line: 12,
 		},
 	},

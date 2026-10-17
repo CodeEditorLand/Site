@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"clipboard.readText": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/Tauri/Clipboard/Wrapper.ts",
+
 			Line: 23,
 		},
 	},

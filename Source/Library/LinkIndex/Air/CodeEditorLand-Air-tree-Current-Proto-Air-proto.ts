@@ -25,11 +25,13 @@ export const LinkIndexData: LinkIndexData = {
 
 		"CodeEditorLand/Air/tree/Current/Proto/Air.proto": {
 			Repo: ElementRepos.Air,
+
 			Path: "Proto/Air.proto",
 		},
 
 		"Element/Air/Proto/Air.proto": {
 			Repo: ElementRepos.Air,
+
 			Path: "Proto/Air.proto",
 		},
 	},

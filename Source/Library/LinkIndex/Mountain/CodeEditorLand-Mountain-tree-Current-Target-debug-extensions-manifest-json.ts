@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Target/debug/extensions.manifest.json":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Target/debug/extensions.manifest.json",
 			},
 
 		"Element/Mountain/Target/debug/extensions.manifest.json": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Target/debug/extensions.manifest.json",
 		},
 	},

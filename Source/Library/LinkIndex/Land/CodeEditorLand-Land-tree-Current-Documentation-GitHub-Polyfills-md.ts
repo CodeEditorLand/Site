@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Documentation/GitHub/Polyfills.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Polyfills.md",
 		},
 
 		"Polyfills.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Polyfills.md",
 		},
 	},

@@ -24,16 +24,19 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Maintain/tree/Current/Source/Build/GetTauriTargetTriple.rs":
 			{
 				Repo: ElementRepos.Maintain,
+
 				Path: "Source/Build/GetTauriTargetTriple.rs",
 			},
 
 		"GetTauriTargetTriple.rs": {
 			Repo: ElementRepos.Maintain,
+
 			Path: "Source/Build/GetTauriTargetTriple.rs",
 		},
 
 		"Source/Build/GetTauriTargetTriple.rs": {
 			Repo: ElementRepos.Maintain,
+
 			Path: "Source/Build/GetTauriTargetTriple.rs",
 		},
 	},

@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"deep-dive-cocoon",
+
 		"echo",
+
 		"filesystem-footprint-platform-paths",
+
 		"why-grpc",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Empty: {
 			Repo: ElementRepos.Vine,
+
 			Path: "Documentation/Rust/doc/Vine/Generated/struct.Empty.html",
+
 			Line: 1,
 		},
 	},

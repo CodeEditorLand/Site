@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"project-structure",
+
 		"vscode-api-coverage",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IConfigurationService: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Interfaces/I/Configuration/Service.ts",
+
 			Line: 25,
 		},
 	},

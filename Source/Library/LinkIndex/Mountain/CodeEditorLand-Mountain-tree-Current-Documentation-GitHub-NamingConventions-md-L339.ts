@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WorkSpaceIdentifier: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Documentation/GitHub/NamingConventions.md",
+
 			Line: 339,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DATA_DIR: {
 			Repo: EditorRepo,
+
 			Path: "scripts/chat-simulation/common/utils.js",
+
 			Line: 23,
 		},
 	},

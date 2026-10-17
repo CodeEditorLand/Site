@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect/Telemetry.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Telemetry.ts",
 		},
 	},

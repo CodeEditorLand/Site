@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window._LOAD_CSS_WORKER": {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Worker/CSS/Load.ts",
+
 			Line: 30,
 		},
 	},

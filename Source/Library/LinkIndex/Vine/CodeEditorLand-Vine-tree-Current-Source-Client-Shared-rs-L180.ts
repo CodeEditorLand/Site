@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RecordSideCarFailure: {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Client/Shared.rs",
+
 			Line: 180,
 		},
 	},

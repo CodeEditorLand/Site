@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SynchronizationProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Synchronization/SynchronizationProvider.rs",
+
 			Line: 15,
 		},
 	},

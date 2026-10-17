@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"deep-dive-vine",
+
 		"filesystem-footprint-encapsulation",
+
 		"vine",
+
 		"workflow-overview",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -30,21 +35,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/build.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "build.rs",
 		},
 
 		"CodeEditorLand/Mountain/tree/Current/build.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "build.rs",
 		},
 
 		"Element/Mountain/build.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "build.rs",
 		},
 
 		"Land/Element/Mountain/build.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "build.rs",
 		},
 

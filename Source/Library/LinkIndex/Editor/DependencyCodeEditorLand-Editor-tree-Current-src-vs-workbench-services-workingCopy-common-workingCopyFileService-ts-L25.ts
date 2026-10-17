@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IWorkingCopyFileService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/workingCopy/common/workingCopyFileService.ts",
+
 			Line: 25,
 		},
 	},

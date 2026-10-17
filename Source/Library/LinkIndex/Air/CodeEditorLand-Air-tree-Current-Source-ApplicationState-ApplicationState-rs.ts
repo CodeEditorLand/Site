@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ApplicationState.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/ApplicationState/ApplicationState.rs",
 		},
 	},

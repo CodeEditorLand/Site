@@ -18,12 +18,19 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"architecture",
+
 		"mountain",
+
 		"project-structure",
+
 		"workflow-command-palette",
+
 		"workflow-extension-tests",
+
 		"workflow-startup",
+
 		"workflow-terminal",
 	],
 
@@ -32,13 +39,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		AppState: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/CocoonManagement/FireWorkspaceContainsEvents.rs",
+
 			Line: 19,
 		},
 
 		"AppState.Extensions": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/CocoonManagement/FireWorkspaceContainsEvents.rs",
+
 			Line: 19,
 		},
 	},

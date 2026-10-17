@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Mountain.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge.ts",
+
 			Line: 83,
 		},
 	},

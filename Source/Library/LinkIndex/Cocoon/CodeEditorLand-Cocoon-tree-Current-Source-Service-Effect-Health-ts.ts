@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect/Health.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Health.ts",
 		},
 	},

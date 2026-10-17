@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"vscode-api-coverage",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Stub: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/Extensions/Namespace.ts",
+
 			Line: 134,
 		},
 	},

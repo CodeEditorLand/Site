@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WebviewProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Webview/mod.rs",
+
 			Line: 15,
 		},
 	},

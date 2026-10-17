@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"console.warn": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Build/WindowBuild.rs",
+
 			Line: 191,
 		},
 	},

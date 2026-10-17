@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		findTextInFiles: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.findTextInFiles.d.ts",
+
 			Line: 92,
 		},
 	},

@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs",
 		},
 
 		"Mountain/.../Utilities/RecentlyOpened.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Utilities/RecentlyOpened.rs",
 		},
 	},

@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"coverage",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"grove",
+
 		"low-level-shim",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Level: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild.ts",
+
 			Line: 11,
 		},
 	},

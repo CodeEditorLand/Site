@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidChangeModelContent: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/sessions/contrib/automations/test/browser/automationInputCompletions.test.ts",
+
 			Line: 138,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"debug.didChangeActiveSession": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/Debug/Namespace.ts",
+
 			Line: 288,
 		},
 	},

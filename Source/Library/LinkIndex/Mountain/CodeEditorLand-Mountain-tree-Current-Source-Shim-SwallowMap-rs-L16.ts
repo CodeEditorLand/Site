@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SwallowAction: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Shim/SwallowMap.rs",
+
 			Line: 16,
 		},
 	},

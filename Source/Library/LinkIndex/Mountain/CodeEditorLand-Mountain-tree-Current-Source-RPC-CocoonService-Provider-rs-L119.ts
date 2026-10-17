@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RegisterDocumentFormattingProvider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/Provider.rs",
+
 			Line: 119,
 		},
 	},

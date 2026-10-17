@@ -18,16 +18,27 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"air",
+
 		"architecture",
+
 		"build-matrix",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-air",
+
 		"deep-dive-worker",
+
 		"filesystem-footprint-per-element",
+
 		"local-first-protocol",
+
 		"mist",
+
 		"wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -36,7 +47,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Telemetry: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Telemetry.ts",
+
 			Line: 122,
 		},
 	},

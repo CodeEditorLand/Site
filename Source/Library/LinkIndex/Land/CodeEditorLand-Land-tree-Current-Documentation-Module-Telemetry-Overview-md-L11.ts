@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"posthog.distinct_id": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Module/Telemetry/Overview.md",
+
 			Line: 11,
 		},
 
 		"posthog.event": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Module/Telemetry/Overview.md",
+
 			Line: 11,
 		},
 	},

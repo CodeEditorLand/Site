@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
+
 		"mountain-naming-conventions",
 	],
 
@@ -28,11 +30,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mountain/tree/Current/Source/Environment/StorageProvider.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/Environment/StorageProvider.rs",
 			},
 
 		"Environment/StorageProvider.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/StorageProvider.rs",
 		},
 	},

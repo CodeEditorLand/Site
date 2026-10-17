@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"configuration",
+
 		"mountain",
+
 		"polyfills",
+
 		"sky",
+
 		"workflow-open-file",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		FileSystem: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
+
 			Line: 41,
 		},
 	},

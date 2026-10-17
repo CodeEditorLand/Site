@@ -24,6 +24,7 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Cocoon/tree/Current/Source/Configuration/ESBuild/Cocoon.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Configuration/ESBuild/Cocoon.ts",
 			},
 	},

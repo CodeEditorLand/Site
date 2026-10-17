@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"cloud.fiddee.editor": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/FilesystemFootprint.md",
+
 			Line: 173,
 		},
 	},

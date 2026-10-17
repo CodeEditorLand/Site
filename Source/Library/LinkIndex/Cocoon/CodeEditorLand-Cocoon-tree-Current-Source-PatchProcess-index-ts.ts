@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"PatchProcess/index.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/PatchProcess/index.ts",
 		},
 	},

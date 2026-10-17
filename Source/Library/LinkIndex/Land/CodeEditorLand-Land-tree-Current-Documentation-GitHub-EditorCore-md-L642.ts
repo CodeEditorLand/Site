@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"git.commit": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EditorCore.md",
+
 			Line: 642,
 		},
 	},

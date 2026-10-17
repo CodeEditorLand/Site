@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.tests": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostTesting.ts",
+
 			Line: 55,
 		},
 
 		"vscode.tests.": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostTesting.ts",
+
 			Line: 55,
 		},
 	},

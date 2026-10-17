@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"architecture",
+
 		"deep-dive-wind",
+
 		"why-effect-ts",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TauriLiveLayer: {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EditorCore.md",
+
 			Line: 372,
 		},
 	},

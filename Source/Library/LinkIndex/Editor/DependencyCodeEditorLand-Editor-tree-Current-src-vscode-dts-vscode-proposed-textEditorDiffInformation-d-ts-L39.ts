@@ -18,12 +18,19 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"development-history",
+
 		"extension-development",
+
 		"introduction",
+
 		"vscode-api-coverage",
+
 		"workflow-command-palette",
 	],
 
@@ -32,7 +39,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TextEditor: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.textEditorDiffInformation.d.ts",
+
 			Line: 39,
 		},
 	},

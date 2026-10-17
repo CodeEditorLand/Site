@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"extension-development",
+
 		"vscode-api-coverage",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		executeTask: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.d.ts",
+
 			Line: 9382,
 		},
 	},

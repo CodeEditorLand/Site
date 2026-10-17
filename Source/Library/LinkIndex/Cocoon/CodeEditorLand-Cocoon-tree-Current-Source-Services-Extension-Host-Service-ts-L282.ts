@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"context.subscriptions": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Extension/Host/Service.ts",
+
 			Line: 282,
 		},
 	},

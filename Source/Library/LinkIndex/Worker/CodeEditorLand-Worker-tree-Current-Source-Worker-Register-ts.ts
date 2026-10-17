@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Register.ts": {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Worker/Register.ts",
 		},
 
 		"Source/Worker/Register.ts": {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Worker/Register.ts",
 		},
 	},

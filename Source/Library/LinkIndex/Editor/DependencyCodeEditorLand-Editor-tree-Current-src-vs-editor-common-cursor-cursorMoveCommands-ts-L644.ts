@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		viewColumn: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/common/cursor/cursorMoveCommands.ts",
+
 			Line: 644,
 		},
 	},

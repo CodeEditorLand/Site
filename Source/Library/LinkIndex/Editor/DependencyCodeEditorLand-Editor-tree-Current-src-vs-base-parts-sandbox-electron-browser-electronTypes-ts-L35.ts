@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IpcRenderer: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/parts/sandbox/electron-browser/electronTypes.ts",
+
 			Line: 35,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		GenericNotification: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/mod.rs",
+
 			Line: 13,
 		},
 	},

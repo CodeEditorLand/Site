@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mountain/tree/Current/Source/Environment/DebugProvider.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/Environment/DebugProvider.rs",
 			},
 
 		"DebugProvider.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/DebugProvider.rs",
 		},
 	},

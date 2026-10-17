@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"fs.isWritableFileSystem": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
 			Line: 120,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		getText: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/common/services/editorWebWorker.ts",
+
 			Line: 357,
 		},
 	},

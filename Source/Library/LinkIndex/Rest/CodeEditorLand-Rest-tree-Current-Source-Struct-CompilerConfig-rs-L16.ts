@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CompilerConfig: {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Struct/CompilerConfig.rs",
+
 			Line: 16,
 		},
 	},

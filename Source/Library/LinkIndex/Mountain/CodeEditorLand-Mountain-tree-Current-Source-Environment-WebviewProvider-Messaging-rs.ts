@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Environment/WebviewProvider/Messaging.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/WebviewProvider/Messaging.rs",
 		},
 	},

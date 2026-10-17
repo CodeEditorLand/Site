@@ -18,19 +18,33 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"air",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"configuration",
+
 		"deep-dive-common",
+
 		"deep-dive-echo",
+
 		"deep-dive-sidecar",
+
 		"deep-dive-worker",
+
 		"filesystem-footprint-encapsulation",
+
 		"maintain",
+
 		"mountain",
+
 		"polyfills",
+
 		"sidecar",
+
 		"worker",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -39,7 +53,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Cache: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/cache.ts",
+
 			Line: 13,
 		},
 	},

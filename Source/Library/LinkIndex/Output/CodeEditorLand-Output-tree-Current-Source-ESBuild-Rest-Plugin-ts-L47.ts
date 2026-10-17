@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		REST_BINARY_PATH: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild/Rest/Plugin.ts",
+
 			Line: 47,
 		},
 	},

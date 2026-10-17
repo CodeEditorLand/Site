@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.authentication.signIn": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/UserDataSynchronization.md",
+
 			Line: 30,
 		},
 	},

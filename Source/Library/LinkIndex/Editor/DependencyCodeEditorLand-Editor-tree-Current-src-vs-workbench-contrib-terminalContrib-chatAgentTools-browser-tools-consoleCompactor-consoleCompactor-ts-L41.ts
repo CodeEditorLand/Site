@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"deep-dive-mountain",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Report: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/consoleCompactor/consoleCompactor.ts",
+
 			Line: 41,
 		},
 	},

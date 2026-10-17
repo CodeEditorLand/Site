@@ -18,22 +18,39 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"architecture",
+
 		"cocoon-vscode-validation",
+
 		"common",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-common",
+
 		"introduction",
+
 		"mountain",
+
 		"vscode-api-coverage",
+
 		"why-grpc",
+
 		"why-rust",
+
 		"why-tauri",
+
 		"wind",
+
 		"workflow-terminal",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -42,7 +59,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Terminal: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
+
 			Line: 80,
 		},
 	},

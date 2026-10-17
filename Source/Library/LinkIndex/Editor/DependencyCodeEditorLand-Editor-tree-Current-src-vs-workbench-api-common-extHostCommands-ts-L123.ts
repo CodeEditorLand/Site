@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"commands.registerCommand": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
 			Line: 123,
 		},
 
 		"vscode.commands.registerCommand": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
 			Line: 123,
 		},
 	},

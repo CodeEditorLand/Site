@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		createNotebookController: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.notebookMessaging.d.ts",
+
 			Line: 66,
 		},
 	},

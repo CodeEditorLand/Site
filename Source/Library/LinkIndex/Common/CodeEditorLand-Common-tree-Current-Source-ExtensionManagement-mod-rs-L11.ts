@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtensionManagementService: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/ExtensionManagement/mod.rs",
+
 			Line: 11,
 		},
 	},

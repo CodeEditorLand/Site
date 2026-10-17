@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"index.html": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Rust/doc/index.html",
 		},
 	},

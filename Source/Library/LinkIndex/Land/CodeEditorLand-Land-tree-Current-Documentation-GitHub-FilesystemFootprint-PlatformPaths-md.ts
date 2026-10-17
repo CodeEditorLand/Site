@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/PlatformPaths.md":
 			{
 				Repo: ElementRepos.Land,
+
 				Path: "Documentation/GitHub/FilesystemFootprint/PlatformPaths.md",
 			},
 
 		"PlatformPaths.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/FilesystemFootprint/PlatformPaths.md",
 		},
 	},

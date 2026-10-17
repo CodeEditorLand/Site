@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"cocoon-vscode-validation",
+
 		"configuration",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-wind",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"mist",
 	],
 
@@ -33,7 +41,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Dependency: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild.ts",
+
 			Line: 9,
 		},
 	},

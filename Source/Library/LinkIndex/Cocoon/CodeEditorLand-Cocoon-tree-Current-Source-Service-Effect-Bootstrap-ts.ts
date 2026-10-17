@@ -24,16 +24,19 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Service/Effect/Bootstrap.ts",
 			},
 
 		"Effect/Bootstrap.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Bootstrap.ts",
 		},
 
 		"Service/Effect/Bootstrap.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Bootstrap.ts",
 		},
 	},

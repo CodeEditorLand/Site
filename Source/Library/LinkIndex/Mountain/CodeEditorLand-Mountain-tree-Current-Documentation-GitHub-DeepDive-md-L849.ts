@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-mountain",
+
 		"local-first-protocol",
+
 		"workflow-user-data-sync",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"context.secrets": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Documentation/GitHub/DeepDive.md",
+
 			Line: 849,
 		},
 	},

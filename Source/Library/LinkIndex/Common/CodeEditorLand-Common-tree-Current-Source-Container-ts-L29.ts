@@ -18,20 +18,35 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"api-reference",
+
 		"architecture",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-wind",
+
 		"low-level-shim",
+
 		"polyfills",
+
 		"why-effect-ts",
+
 		"wind",
+
 		"workflow-open-file",
+
 		"workflow-startup",
 	],
 
@@ -40,7 +55,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Layer: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Container.ts",
+
 			Line: 29,
 		},
 	},

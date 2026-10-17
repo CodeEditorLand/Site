@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"__CEL_SERVICES__.CommandRegistry.registerCommand": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
 			Line: 64,
 		},
 	},

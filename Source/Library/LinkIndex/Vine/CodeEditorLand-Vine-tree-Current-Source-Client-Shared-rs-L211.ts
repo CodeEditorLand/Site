@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		UpdateSideCarActivity: {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Client/Shared.rs",
+
 			Line: 211,
 		},
 	},

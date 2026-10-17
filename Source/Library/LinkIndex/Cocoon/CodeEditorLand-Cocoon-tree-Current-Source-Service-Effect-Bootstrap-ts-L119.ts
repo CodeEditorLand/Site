@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MountainConnectMaxAttempts: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Bootstrap.ts",
+
 			Line: 119,
 		},
 	},

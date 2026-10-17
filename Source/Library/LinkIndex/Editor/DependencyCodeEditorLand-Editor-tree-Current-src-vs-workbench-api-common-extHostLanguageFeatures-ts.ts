@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"extHostLanguageFeatures.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
 		},
 	},

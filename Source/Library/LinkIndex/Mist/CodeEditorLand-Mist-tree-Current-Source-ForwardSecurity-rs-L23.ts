@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"update.editor.land": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Source/ForwardSecurity.rs",
+
 			Line: 23,
 		},
 	},

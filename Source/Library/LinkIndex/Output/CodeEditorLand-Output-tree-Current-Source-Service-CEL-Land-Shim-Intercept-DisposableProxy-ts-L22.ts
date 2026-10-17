@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DisposableProxy: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts",
+
 			Line: 22,
 		},
 	},

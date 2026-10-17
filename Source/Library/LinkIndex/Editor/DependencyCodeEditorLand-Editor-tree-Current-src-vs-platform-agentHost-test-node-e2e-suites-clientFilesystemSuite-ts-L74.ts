@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		writeText: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/agentHost/test/node/e2e/suites/clientFilesystemSuite.ts",
+
 			Line: 74,
 		},
 	},

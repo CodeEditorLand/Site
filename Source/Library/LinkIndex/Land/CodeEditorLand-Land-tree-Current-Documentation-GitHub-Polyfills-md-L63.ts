@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"globalThis.__filename": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Polyfills.md",
+
 			Line: 63,
 		},
 	},

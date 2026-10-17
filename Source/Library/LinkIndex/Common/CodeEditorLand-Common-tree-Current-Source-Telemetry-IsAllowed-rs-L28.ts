@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"cocoon",
+
 		"common",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-common",
+
 		"deep-dive-sky",
+
 		"local-first-protocol",
+
 		"low-level-shim",
+
 		"polyfills",
 	],
 
@@ -34,7 +43,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		OTLP: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Telemetry/IsAllowed.rs",
+
 			Line: 28,
 		},
 	},

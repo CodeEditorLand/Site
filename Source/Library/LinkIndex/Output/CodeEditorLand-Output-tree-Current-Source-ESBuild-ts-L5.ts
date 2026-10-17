@@ -18,29 +18,53 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"BuildSystemDesign",
+
 		"EffectTypeScriptArchitecture",
+
 		"TauriDesktopIntegration",
+
 		"architecture",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"configuration",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-sky",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"installation",
+
 		"introduction",
+
 		"polyfills",
+
 		"project-structure",
+
 		"quickstart",
+
 		"sky",
+
 		"vscode-api-coverage",
+
 		"why-rust",
+
 		"why-tauri",
+
 		"wind",
+
 		"workflow-startup",
 	],
 
@@ -49,7 +73,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Electron: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild.ts",
+
 			Line: 5,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		EventEmitter: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/VSCode/Type.ts",
+
 			Line: 55,
 		},
 	},

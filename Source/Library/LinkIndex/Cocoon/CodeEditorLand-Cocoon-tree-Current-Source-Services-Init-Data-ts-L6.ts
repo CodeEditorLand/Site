@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		InitData: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Init/Data.ts",
+
 			Line: 6,
 		},
 	},

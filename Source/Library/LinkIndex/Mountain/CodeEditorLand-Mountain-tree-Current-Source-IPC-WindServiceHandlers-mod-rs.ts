@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-mountain",
+
 		"deep-dive-vine",
+
 		"deep-dive-wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -29,32 +32,38 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/IPC/WindServiceHandlers/mod.rs",
 			},
 
 		"CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/IPC/WindServiceHandlers/mod.rs",
 			},
 
 		"IPC/WindServiceHandlers/mod.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
 		},
 
 		"Land/Element/Mountain/Source/IPC/WindServiceHandlers/mod.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
 		},
 
 		"Mountain/Source/IPC/WindServiceHandlers/mod.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
 		},
 
 		"WindServiceHandlers/mod.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
 		},
 	},

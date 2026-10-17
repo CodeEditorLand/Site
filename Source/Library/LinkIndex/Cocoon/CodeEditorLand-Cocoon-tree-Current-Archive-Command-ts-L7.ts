@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Context.Tag": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/Command.ts",
+
 			Line: 7,
 		},
 	},

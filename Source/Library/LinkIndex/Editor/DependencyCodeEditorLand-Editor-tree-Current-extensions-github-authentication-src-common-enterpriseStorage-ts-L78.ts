@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"context.secrets.delete": {
 			Repo: EditorRepo,
+
 			Path: "extensions/github-authentication/src/common/enterpriseStorage.ts",
+
 			Line: 78,
 		},
 	},

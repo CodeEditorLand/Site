@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Sky/tree/Current/Source/Function/Build/BakeExtensionManifest.ts":
 			{
 				Repo: ElementRepos.Sky,
+
 				Path: "Source/Function/Build/BakeExtensionManifest.ts",
 			},
 
 		"Sky/Source/Function/Build/BakeExtensionManifest.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Build/BakeExtensionManifest.ts",
 		},
 	},

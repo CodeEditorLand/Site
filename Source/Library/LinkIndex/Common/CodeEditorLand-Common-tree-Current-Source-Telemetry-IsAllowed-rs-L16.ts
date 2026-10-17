@@ -18,25 +18,45 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"common",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-common",
+
 		"deep-dive-sky",
+
 		"deep-dive-worker",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"local-first-protocol",
+
 		"low-level-shim",
+
 		"polyfills",
+
 		"vscode-api-coverage",
+
 		"wind",
 	],
 
@@ -45,7 +65,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		PostHog: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Telemetry/IsAllowed.rs",
+
 			Line: 16,
 		},
 	},

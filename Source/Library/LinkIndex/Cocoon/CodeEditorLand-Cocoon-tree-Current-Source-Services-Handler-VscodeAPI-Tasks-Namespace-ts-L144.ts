@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"task.didEndProcess": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/Tasks/Namespace.ts",
+
 			Line: 144,
 		},
 	},

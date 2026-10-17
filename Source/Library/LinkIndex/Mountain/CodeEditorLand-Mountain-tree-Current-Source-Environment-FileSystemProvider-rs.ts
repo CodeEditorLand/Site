@@ -24,16 +24,19 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mountain/tree/Current/Source/Environment/FileSystemProvider.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/Environment/FileSystemProvider.rs",
 			},
 
 		"FileSystemProvider.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/FileSystemProvider.rs",
 		},
 
 		"Mountain/Source/Environment/FileSystemProvider.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/FileSystemProvider.rs",
 		},
 	},

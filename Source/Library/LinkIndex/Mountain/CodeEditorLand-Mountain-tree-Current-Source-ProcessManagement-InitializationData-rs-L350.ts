@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ProductConfig: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
+
 			Line: 350,
 		},
 	},

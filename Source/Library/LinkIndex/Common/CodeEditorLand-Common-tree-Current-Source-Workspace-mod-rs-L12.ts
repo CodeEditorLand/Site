@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"cocoon",
+
 		"common",
+
 		"deep-dive-cocoon",
+
 		"mountain",
+
 		"mountain-naming-conventions",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WorkspaceProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Workspace/mod.rs",
+
 			Line: 12,
 		},
 	},

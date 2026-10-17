@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		AssetMemoryMap: {
 			Repo: CacheRepo,
+
 			Path: "Source/Library.rs",
+
 			Line: 35,
 		},
 	},

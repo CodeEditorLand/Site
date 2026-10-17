@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"inputBox.value": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge/InstallScm.ts",
+
 			Line: 694,
 		},
 	},

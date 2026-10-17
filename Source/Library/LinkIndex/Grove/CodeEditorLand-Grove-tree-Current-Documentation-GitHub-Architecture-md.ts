@@ -24,6 +24,7 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md":
 			{
 				Repo: ElementRepos.Grove,
+
 				Path: "Documentation/GitHub/Architecture.md",
 			},
 	},

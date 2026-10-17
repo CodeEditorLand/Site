@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"BrowserProxy.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/BrowserProxy.astro",
+
 			Line: 3,
 		},
 	},

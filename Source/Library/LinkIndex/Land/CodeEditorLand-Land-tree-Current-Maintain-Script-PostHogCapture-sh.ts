@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/PostHogCapture.sh",
 		},
 
 		"Maintain/Script/PostHogCapture.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/PostHogCapture.sh",
 		},
 	},

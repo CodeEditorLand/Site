@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Pick: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/quickinput/browser/pickerQuickAccess.ts",
+
 			Line: 104,
 		},
 	},

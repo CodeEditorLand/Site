@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CommonError: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Error/mod.rs",
+
 			Line: 8,
 		},
 	},

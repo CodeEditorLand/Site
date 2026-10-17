@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		KeybindingProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Keybinding/KeybindingProvider.rs",
+
 			Line: 20,
 		},
 	},

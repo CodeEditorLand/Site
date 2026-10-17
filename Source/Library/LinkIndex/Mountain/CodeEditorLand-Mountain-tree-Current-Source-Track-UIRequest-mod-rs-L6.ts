@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ResolveUIRequest: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/UIRequest/mod.rs",
+
 			Line: 6,
 		},
 	},

@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"TerminalProvider.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Terminal/TerminalProvider.rs",
 		},
 	},

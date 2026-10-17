@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"TauriDesktopIntegration",
+
 		"common",
+
 		"deep-dive-common",
+
 		"workflow-startup",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtensionManagement: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Library.rs",
+
 			Line: 98,
 		},
 	},

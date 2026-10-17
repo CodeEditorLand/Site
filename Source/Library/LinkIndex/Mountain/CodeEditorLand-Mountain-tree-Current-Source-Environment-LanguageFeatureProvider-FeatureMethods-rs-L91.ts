@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ProvideLinkedEditingRanges: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+
 			Line: 91,
 		},
 	},

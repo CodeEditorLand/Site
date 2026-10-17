@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"index.astro": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EnvironmentVariables.md",
+
 			Line: 267,
 		},
 	},

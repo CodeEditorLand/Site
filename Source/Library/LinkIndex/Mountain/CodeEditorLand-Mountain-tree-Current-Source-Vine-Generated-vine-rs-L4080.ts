@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		copy_file: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Generated/vine.rs",
+
 			Line: 4080,
 		},
 	},

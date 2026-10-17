@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"architecture",
+
 		"build-matrix",
+
 		"configuration",
+
 		"coverage",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"low-level-shim",
+
 		"wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -34,7 +43,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Tier: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Telemetry/Tier.rs",
+
 			Line: 9,
 		},
 	},

@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		PatchProcess: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/PatchProcess.ts",
+
 			Line: 24,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"languages.setLanguageConfiguration": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+
 			Line: 3010,
 		},
 	},

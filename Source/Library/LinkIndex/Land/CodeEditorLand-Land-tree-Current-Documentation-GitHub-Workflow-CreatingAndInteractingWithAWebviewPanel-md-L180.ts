@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"panel.webview.onDidReceiveMessage": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/CreatingAndInteractingWithAWebviewPanel.md",
+
 			Line: 180,
 		},
 	},

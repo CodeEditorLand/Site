@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IWorkspaceService: {
 			Repo: EditorRepo,
+
 			Path: "extensions/copilot/src/platform/workspace/common/workspaceService.ts",
+
 			Line: 17,
 		},
 	},

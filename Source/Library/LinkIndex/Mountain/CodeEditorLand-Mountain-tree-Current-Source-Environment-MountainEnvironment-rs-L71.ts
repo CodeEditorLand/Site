@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"mountain",
+
 		"workflow-command-palette",
+
 		"workflow-scm",
+
 		"workflow-startup",
+
 		"workflow-webview",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MountainEnvironment: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/MountainEnvironment.rs",
+
 			Line: 71,
 		},
 	},

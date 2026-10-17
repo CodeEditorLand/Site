@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExecuteContributedCommand: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/Command.rs",
+
 			Line: 6,
 		},
 	},

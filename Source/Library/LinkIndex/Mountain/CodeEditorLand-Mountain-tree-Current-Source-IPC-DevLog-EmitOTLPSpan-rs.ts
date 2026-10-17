@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/IPC/DevLog/EmitOTLPSpan.rs",
 			},
 
 		"Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/DevLog/EmitOTLPSpan.rs",
 		},
 	},

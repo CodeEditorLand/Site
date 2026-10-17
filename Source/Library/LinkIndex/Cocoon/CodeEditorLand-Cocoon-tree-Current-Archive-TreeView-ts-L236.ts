@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TreeView: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/TreeView.ts",
+
 			Line: 236,
 		},
 	},

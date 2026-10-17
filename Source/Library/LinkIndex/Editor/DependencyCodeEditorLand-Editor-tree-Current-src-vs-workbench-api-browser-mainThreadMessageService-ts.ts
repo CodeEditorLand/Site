@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"mainThreadMessageService.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/browser/mainThreadMessageService.ts",
 		},
 	},

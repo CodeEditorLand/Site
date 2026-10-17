@@ -23,16 +23,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Grove/tree/Current/Source/main.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/main.rs",
 		},
 
 		"CodeEditorLand/Land/tree/Current/Element/Grove/Source/main.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/main.rs",
 		},
 
 		"Element/Grove/Source/main.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/main.rs",
 		},
 

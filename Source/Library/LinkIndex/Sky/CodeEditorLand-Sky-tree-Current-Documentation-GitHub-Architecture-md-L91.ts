@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Isolation.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 91,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		suppressSuggestions: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/contrib/suggest/browser/suggestModel.ts",
+
 			Line: 115,
 		},
 	},

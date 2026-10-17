@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"process.env.TierX": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/TierGatedImplementationSelection.md",
+
 			Line: 301,
 		},
 	},

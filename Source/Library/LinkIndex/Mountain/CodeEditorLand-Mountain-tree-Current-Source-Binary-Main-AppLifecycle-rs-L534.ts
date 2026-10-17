@@ -18,20 +18,35 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"air",
+
 		"build-matrix",
+
 		"cocoon",
+
 		"configuration",
+
 		"deep-dive-air",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-sidecar",
+
 		"grove",
+
 		"mountain-naming-conventions",
+
 		"polyfills",
+
 		"worker",
+
 		"workflow-startup",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -40,7 +55,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Runtime: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Main/AppLifecycle.rs",
+
 			Line: 534,
 		},
 	},

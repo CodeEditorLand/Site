@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ErrorHandlerProxy: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
+
 			Line: 23,
 		},
 	},

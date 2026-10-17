@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		readDirectory: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_minifier/benches/full/typescript.js",
+
 			Line: 7451,
 		},
 	},

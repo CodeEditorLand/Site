@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		register_code_actions_provider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/mod.rs",
+
 			Line: 708,
 		},
 	},

@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"deep-dive-sky",
+
 		"deep-dive-wind",
+
 		"polyfills",
+
 		"workflow-startup",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window.vscode": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Function/Install/Function/Install.ts",
+
 			Line: 5,
 		},
 	},

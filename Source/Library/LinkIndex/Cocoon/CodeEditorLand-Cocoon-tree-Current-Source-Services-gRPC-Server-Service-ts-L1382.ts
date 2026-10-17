@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"debug.didStartSession": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/gRPC/Server/Service.ts",
+
 			Line: 1382,
 		},
 	},

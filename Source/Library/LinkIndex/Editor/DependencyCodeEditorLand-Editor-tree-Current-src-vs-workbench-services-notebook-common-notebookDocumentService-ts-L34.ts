@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		_scheme: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/notebook/common/notebookDocumentService.ts",
+
 			Line: 34,
 		},
 	},

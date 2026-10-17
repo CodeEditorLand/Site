@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ILanguageFeaturesService.inlineCompletionsProvider": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge/InstallInlineCompletions.ts",
+
 			Line: 5,
 		},
 	},

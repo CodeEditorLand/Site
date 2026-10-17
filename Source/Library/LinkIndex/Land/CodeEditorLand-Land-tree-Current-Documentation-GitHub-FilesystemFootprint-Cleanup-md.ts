@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Cleanup.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/FilesystemFootprint/Cleanup.md",
 		},
 	},

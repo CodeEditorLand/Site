@@ -18,25 +18,45 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"api-reference",
+
 		"architecture",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-echo",
+
 		"deep-dive-mountain",
+
 		"deep-dive-wind",
+
 		"getting-started",
+
 		"introduction",
+
 		"output",
+
 		"project-structure",
+
 		"vscode-api-coverage",
+
 		"worker",
+
 		"workflow-command-palette",
+
 		"workflow-overview",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -45,7 +65,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Native: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/FileSystem/mod.rs",
+
 			Line: 14,
 		},
 	},

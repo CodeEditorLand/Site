@@ -24,6 +24,7 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Tree-Shaking.md":
 			{
 				Repo: ElementRepos.Land,
+
 				Path: "Documentation/Module/Telemetry/Tree-Shaking.md",
 			},
 	},

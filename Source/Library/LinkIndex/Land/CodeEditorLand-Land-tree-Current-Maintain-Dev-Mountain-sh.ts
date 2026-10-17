@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Maintain/Dev-Mountain.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Dev-Mountain.sh",
 		},
 	},

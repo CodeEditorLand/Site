@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"api-reference",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"deep-dive-sidecar",
+
 		"dependency-management",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 

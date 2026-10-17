@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Grove/Proto/Grove.proto": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Proto/Grove.proto",
 		},
 

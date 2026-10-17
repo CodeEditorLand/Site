@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		setTimeout0: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/platform.ts",
+
 			Line: 221,
 		},
 	},

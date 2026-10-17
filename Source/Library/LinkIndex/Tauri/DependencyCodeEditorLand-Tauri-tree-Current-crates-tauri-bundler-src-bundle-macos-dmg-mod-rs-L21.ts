@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-platform-paths",
+
 		"quickstart",
+
 		"why-tauri",
 	],
 
@@ -33,7 +41,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Bundled: {
 			Repo: TauriRepo,
+
 			Path: "crates/tauri-bundler/src/bundle/macos/dmg/mod.rs",
+
 			Line: 21,
 		},
 	},

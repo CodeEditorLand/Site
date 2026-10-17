@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-wind",
+
 		"why-effect-ts",
+
 		"workflow-startup",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		AppLayer: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/Skeleton.ts",
+
 			Line: 548,
 		},
 	},

@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"extHostFileSystemEventService.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostFileSystemEventService.ts",
 		},
 	},

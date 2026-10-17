@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DNS_OVERRIDE: {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Rust/doc/SideCar/Spawn/constant.DNS_OVERRIDE.html",
+
 			Line: 1,
 		},
 	},

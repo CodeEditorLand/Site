@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"TauriDesktopIntegration",
+
 		"deep-dive-mountain",
+
 		"mountain-naming-conventions",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ApplicationState: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Library.rs",
+
 			Line: 84,
 		},
 	},

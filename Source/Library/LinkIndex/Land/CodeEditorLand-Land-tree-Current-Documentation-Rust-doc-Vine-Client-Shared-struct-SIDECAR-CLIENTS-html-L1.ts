@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SIDECAR_CLIENTS: {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Rust/doc/Vine/Client/Shared/struct.SIDECAR_CLIENTS.html",
+
 			Line: 1,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		es2022: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_compat_es2022/src/lib.rs",
+
 			Line: 17,
 		},
 	},

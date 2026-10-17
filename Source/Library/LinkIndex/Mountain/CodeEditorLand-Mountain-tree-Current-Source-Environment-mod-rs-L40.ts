@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CommandProvider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/mod.rs",
+
 			Line: 40,
 		},
 	},

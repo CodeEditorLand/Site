@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"process.kill": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/PatchProcess/Patcher.ts",
+
 			Line: 384,
 		},
 	},

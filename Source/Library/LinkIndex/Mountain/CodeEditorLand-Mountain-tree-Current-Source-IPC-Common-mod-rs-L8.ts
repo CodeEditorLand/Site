@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MessageType: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/Common/mod.rs",
+
 			Line: 8,
 		},
 	},

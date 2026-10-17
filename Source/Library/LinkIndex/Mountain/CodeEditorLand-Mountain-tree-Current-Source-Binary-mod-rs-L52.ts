@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"air",
+
 		"cocoon",
+
 		"deep-dive-grove",
+
 		"deep-dive-rest",
+
 		"deep-dive-sidecar",
+
 		"echo",
+
 		"grove",
+
 		"sidecar",
+
 		"sky",
+
 		"why-tauri",
+
 		"worker",
+
 		"workflow-extension-tests",
 	],
 
@@ -37,7 +49,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Main: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/mod.rs",
+
 			Line: 52,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		create_terminal: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Documentation/GitHub/DeepDive.md",
+
 			Line: 333,
 		},
 	},

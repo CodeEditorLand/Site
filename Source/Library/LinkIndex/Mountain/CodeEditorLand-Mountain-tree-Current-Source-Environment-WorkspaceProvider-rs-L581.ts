@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"__CEL_SERVICES__.Commands.executeCommand": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/WorkspaceProvider.rs",
+
 			Line: 581,
 		},
 	},

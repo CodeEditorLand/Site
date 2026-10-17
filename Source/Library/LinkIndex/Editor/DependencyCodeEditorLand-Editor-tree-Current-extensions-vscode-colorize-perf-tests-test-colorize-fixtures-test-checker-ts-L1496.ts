@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		useDefineForClassFields: {
 			Repo: EditorRepo,
+
 			Path: "extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts",
+
 			Line: 1496,
 		},
 	},

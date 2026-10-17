@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		register_inlay_hints_provider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/mod.rs",
+
 			Line: 1196,
 		},
 	},

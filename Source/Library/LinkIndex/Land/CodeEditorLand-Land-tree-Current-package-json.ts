@@ -18,12 +18,19 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-pipeline",
+
 		"deep-dive-maintain",
+
 		"dependency-management",
+
 		"extension-development",
+
 		"maintain",
+
 		"mountain",
+
 		"troubleshooting",
+
 		"workflow-extension-tests",
 	],
 
@@ -32,6 +39,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/package.json": {
 			Repo: ElementRepos.Land,
+
 			Path: "package.json",
 		},
 

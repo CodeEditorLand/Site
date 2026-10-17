@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"configuration",
+
 		"deep-dive-grove",
+
 		"deep-dive-sidecar",
+
 		"dependency-management",
+
 		"grove",
+
 		"project-structure",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -34,7 +43,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Cargo: {
 			Repo: LandSWCDevtoolsRepo,
+
 			Path: "src/cargo/index.ts",
+
 			Line: 31,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect.runPromise": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Documentation/GitHub/DeepDive.md",
+
 			Line: 84,
 		},
 	},

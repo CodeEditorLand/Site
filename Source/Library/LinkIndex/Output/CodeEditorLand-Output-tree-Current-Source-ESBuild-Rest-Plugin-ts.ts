@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Source/ESBuild/Rest/Plugin.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild/Rest/Plugin.ts",
 		},
 	},

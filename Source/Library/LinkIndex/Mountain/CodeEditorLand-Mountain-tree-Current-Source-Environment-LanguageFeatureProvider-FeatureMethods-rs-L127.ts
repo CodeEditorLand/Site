@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ProvideWorkspaceSymbols: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/LanguageFeatureProvider/FeatureMethods.rs",
+
 			Line: 127,
 		},
 	},

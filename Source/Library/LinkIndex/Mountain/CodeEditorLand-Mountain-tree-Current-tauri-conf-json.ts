@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"development-history",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-per-element",
+
 		"installation",
+
 		"why-rust",
+
 		"why-tauri",
 	],
 
@@ -35,21 +45,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/tauri.conf.json": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "tauri.conf.json",
 		},
 
 		"CodeEditorLand/Mountain/tree/Current/tauri.conf.json": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "tauri.conf.json",
 		},
 
 		"Element/Mountain/tauri.conf.json": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "tauri.conf.json",
 		},
 
 		"tauri.conf.json": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "tauri.conf.json",
 		},
 	},

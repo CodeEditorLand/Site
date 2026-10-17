@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		v8: {
 			Repo: TsParserTestRefRepo,
+
 			Path: "expressions/optionalChaining/optionalChainingInference/input.ts",
+
 			Line: 30,
 		},
 	},

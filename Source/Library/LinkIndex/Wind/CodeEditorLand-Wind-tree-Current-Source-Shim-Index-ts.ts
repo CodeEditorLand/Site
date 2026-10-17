@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/Index.ts",
 		},
 
@@ -30,6 +31,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Wind/Source/Shim/Index.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/Index.ts",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"editor.action.formatDocument": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/ExecutingACommandFromTheCommandPalette.md",
+
 			Line: 118,
 		},
 	},

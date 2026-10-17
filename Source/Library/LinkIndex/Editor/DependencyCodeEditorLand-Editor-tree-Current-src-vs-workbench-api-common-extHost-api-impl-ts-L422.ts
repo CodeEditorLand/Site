@@ -18,6 +18,7 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
 	],
 
@@ -26,7 +27,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.env.machineId": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
 			Line: 422,
 		},
 	},

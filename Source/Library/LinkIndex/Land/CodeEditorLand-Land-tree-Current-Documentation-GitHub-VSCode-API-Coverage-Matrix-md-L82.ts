@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"__CEL_SERVICES__.Statusbar": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
 			Line: 82,
 		},
 
 		"__CEL_SERVICES__.Statusbar.addEntry": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
 			Line: 82,
 		},
 	},

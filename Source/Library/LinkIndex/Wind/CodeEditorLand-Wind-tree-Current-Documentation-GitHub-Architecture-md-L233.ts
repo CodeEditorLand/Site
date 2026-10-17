@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Layer.toRuntime": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 233,
 		},
 	},

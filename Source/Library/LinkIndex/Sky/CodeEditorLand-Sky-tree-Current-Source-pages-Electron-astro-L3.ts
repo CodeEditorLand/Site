@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Electron.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/Electron.astro",
+
 			Line: 3,
 		},
 	},

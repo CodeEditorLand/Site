@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidEndTask: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.d.ts",
+
 			Line: 9397,
 		},
 	},

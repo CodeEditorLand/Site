@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Source/DevLog.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/DevLog.rs",
 		},
 	},

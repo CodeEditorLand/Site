@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		_range: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/notebook/browser/view/renderers/webviewPreloads.ts",
+
 			Line: 919,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Storage.Get": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/WebviewPanel/State.ts",
+
 			Line: 379,
 		},
 	},

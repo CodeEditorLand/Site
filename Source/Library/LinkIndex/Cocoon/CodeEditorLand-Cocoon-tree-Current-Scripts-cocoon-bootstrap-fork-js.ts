@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Cocoon/tree/Current/Scripts/cocoon/bootstrap-fork.js": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Scripts/cocoon/bootstrap-fork.js",
 		},
 
 		"Element/Cocoon/Scripts/cocoon/bootstrap-fork.js": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Scripts/cocoon/bootstrap-fork.js",
 		},
 	},

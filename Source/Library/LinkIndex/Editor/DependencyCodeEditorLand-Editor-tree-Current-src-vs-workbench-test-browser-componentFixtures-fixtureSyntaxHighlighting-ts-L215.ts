@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		wasm: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/test/browser/componentFixtures/fixtureSyntaxHighlighting.ts",
+
 			Line: 215,
 		},
 	},

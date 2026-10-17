@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidExecuteCommand: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/chat/test/browser/chatPetAchievementsContribution.test.ts",
+
 			Line: 158,
 		},
 	},

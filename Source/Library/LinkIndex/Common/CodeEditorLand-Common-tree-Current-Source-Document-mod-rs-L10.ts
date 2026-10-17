@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DocumentProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Document/mod.rs",
+
 			Line: 10,
 		},
 	},

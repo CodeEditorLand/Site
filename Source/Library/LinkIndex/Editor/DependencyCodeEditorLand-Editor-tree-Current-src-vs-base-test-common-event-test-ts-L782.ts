@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-cocoon",
+
 		"filesystem-footprint-platform-paths",
+
 		"workflow-user-data-sync",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		globalState: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/test/common/event.test.ts",
+
 			Line: 782,
 		},
 	},

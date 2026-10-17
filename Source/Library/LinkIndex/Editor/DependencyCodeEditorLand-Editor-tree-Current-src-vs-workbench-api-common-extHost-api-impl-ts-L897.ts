@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window.onDidStartTerminalShellExecution": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
 			Line: 897,
 		},
 	},

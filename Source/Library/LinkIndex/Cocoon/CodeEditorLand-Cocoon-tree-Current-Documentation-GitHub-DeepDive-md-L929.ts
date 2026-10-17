@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"globalThis.__cocoonBootstrapConfig": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Documentation/GitHub/DeepDive.md",
+
 			Line: 929,
 		},
 	},

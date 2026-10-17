@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"AppHandle.emit": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/WindowUI.rs",
+
 			Line: 47,
 		},
 	},

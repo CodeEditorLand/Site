@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"polyfills",
+
 		"sky",
+
 		"vscode-api-coverage",
+
 		"workflow-user-data-sync",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidChangeConfiguration: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.d.ts",
+
 			Line: 14493,
 		},
 	},

@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"api-reference",
+
 		"architecture",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-vine",
+
 		"introduction",
+
 		"project-structure",
+
 		"vscode-api-coverage",
+
 		"why-grpc",
 	],
 
@@ -34,21 +43,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Vine/tree/Current/Proto/Vine.proto": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		"Element/Vine/Proto/Vine.proto": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		"Element/Vine/Vine.proto": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		"Proto/Vine.proto": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Proto/Vine.proto",
 		},
 
@@ -56,6 +69,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Vine/Proto/Vine.proto": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Proto/Vine.proto",
 		},
 	},

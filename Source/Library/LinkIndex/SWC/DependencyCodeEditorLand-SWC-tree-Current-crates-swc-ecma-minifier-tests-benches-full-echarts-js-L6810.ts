@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"coverage",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Ring: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_minifier/tests/benches-full/echarts.js",
+
 			Line: 6810,
 		},
 	},

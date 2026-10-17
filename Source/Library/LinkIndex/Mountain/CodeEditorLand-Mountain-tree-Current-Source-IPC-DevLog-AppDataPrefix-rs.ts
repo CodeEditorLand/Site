@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Mountain/Source/IPC/DevLog/AppDataPrefix.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/DevLog/AppDataPrefix.rs",
 		},
 
 		"IPC/DevLog/AppDataPrefix.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/DevLog/AppDataPrefix.rs",
 		},
 	},

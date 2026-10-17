@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window.vscode.ipcRenderer": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Preload.ts",
+
 			Line: 103,
 		},
 	},

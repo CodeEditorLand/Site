@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"air",
+
 		"configuration",
+
 		"deep-dive-common",
+
 		"deep-dive-rest",
+
 		"maintain",
+
 		"rest",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Parallel: {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Struct/Binary/Command/Option.rs",
+
 			Line: 65,
 		},
 	},

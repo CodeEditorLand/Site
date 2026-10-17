@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/Shim/SwallowMap.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/SwallowMap.ts",
 		},
 
 		"Wind/Source/Shim/SwallowMap.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/SwallowMap.ts",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		InitializeCocoon: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/CocoonManagement.rs",
+
 			Line: 260,
 		},
 	},

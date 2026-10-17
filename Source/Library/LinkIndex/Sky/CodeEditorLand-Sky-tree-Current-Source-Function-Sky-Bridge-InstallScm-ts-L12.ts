@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"__CEL_SERVICES__.SCM": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge/InstallScm.ts",
+
 			Line: 12,
 		},
 	},

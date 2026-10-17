@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"BuildMatrix.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/BuildMatrix.md",
 		},
 
 		"Documentation/GitHub/BuildMatrix.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/BuildMatrix.md",
 		},
 	},

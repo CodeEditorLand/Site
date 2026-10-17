@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		colorScheme: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/common/languages/defaultDocumentColorsComputer.ts",
+
 			Line: 111,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"InitializationData.FoldersWire": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
 			Line: 110,
 		},
 	},

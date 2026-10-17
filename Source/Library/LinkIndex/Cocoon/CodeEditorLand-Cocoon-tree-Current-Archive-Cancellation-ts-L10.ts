@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"why-effect-ts",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Scope: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/Cancellation.ts",
+
 			Line: 10,
 		},
 	},

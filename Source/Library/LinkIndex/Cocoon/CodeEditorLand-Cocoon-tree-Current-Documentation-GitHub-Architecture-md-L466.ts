@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.files.save": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 466,
 		},
 	},

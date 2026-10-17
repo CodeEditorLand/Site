@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-user-dotfile",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Extend: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_transforms_module/src/module_decl_strip.rs",
+
 			Line: 603,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DiagnosticManager: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Diagnostic/mod.rs",
+
 			Line: 16,
 		},
 	},

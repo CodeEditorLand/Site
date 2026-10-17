@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"development-history",
+
 		"extension-development",
+
 		"filesystem-footprint-environment-variables",
+
 		"low-level-shim",
+
 		"maintain",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Trace: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Service/Trace.ts",
+
 			Line: 11,
 		},
 	},

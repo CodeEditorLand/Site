@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"deep-dive-mountain",
+
 		"development-history",
 	],
 
@@ -29,17 +33,20 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
 		},
 
 		"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
 			},
 
 		"LoadFromCache.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/Internal/ExtensionScanner/LoadFromCache.rs",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workspace.findFiles": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostWorkspace.ts",
+
 			Line: 498,
 		},
 	},

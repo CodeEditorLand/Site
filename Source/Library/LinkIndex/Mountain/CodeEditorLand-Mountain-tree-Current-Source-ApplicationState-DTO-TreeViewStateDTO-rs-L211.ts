@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IsProxy: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/DTO/TreeViewStateDTO.rs",
+
 			Line: 211,
 		},
 	},

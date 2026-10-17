@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Mountain/tree/Current/Source/Shim/Gate.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Shim/Gate.rs",
 		},
 
 		"Mountain/Source/Shim/Gate.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Shim/Gate.rs",
 		},
 	},

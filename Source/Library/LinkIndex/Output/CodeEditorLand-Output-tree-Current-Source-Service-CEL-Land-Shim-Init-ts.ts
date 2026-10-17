@@ -24,16 +24,19 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts":
 			{
 				Repo: ElementRepos.Output,
+
 				Path: "Source/Service/CEL/Land/Shim/Init.ts",
 			},
 
 		"Init.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Init.ts",
 		},
 
 		"Output/Source/Service/CEL/Land/Shim/Init.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Init.ts",
 		},
 	},

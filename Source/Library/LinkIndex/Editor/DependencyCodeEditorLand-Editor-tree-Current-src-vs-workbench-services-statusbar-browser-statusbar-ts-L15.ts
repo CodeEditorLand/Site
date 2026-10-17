@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IStatusbarService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/statusbar/browser/statusbar.ts",
+
 			Line: 15,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.files.saveAll": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge/InstallEditorAndOutput.ts",
+
 			Line: 304,
 		},
 	},

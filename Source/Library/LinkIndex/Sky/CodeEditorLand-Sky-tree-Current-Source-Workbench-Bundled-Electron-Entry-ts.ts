@@ -18,6 +18,7 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -26,6 +27,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Workbench/Bundled/Electron/Entry.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Workbench/Bundled/Electron/Entry.ts",
 		},
 	},

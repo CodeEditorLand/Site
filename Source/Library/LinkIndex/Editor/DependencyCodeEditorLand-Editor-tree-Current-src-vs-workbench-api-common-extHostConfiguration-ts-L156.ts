@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.workspace.onDidChangeConfiguration": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostConfiguration.ts",
+
 			Line: 156,
 		},
 	},

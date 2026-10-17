@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TerminalId: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/Terminal/ResizeTerminal.rs",
+
 			Line: 14,
 		},
 	},

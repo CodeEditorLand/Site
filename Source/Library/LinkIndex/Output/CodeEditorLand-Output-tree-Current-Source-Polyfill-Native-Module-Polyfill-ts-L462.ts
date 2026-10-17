@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"shell.open": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Polyfill/Native/Module/Polyfill.ts",
+
 			Line: 462,
 		},
 	},

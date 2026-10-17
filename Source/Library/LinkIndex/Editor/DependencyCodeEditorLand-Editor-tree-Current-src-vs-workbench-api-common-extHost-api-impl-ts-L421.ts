@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.env": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
 			Line: 421,
 		},
 	},

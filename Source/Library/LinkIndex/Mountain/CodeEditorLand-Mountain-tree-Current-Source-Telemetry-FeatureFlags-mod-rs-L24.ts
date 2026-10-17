@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"polyfills",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Disable: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Telemetry/FeatureFlags/mod.rs",
+
 			Line: 24,
 		},
 	},

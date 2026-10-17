@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Default.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/index.astro",
+
 			Line: 23,
 		},
 	},

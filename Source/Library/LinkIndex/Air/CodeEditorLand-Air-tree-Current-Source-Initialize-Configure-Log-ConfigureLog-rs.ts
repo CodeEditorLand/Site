@@ -23,17 +23,20 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Air/Source/Initialize/Configure/Log/ConfigureLog.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Initialize/Configure/Log/ConfigureLog.rs",
 		},
 
 		"CodeEditorLand/Air/tree/Current/Source/Initialize/Configure/Log/ConfigureLog.rs":
 			{
 				Repo: ElementRepos.Air,
+
 				Path: "Source/Initialize/Configure/Log/ConfigureLog.rs",
 			},
 
 		"Source/Initialize/Configure/Log/ConfigureLog.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Initialize/Configure/Log/ConfigureLog.rs",
 		},
 	},

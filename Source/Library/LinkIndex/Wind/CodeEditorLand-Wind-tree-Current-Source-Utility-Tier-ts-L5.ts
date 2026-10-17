@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"import.meta.env": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Utility/Tier.ts",
+
 			Line: 5,
 		},
 	},

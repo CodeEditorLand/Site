@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"cocoon",
+
 		"deep-dive-wind",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MountainIPCInvoke: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/IPC/InvokeCommand.rs",
+
 			Line: 67,
 		},
 	},

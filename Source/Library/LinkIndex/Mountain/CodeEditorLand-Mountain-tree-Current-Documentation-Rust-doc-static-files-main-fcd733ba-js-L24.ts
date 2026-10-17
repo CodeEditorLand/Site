@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		node: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Documentation/Rust/doc/static.files/main-fcd733ba.js",
+
 			Line: 24,
 		},
 	},

@@ -24,6 +24,7 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md":
 			{
 				Repo: ElementRepos.Mist,
+
 				Path: "Documentation/GitHub/Architecture.md",
 			},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"IEditorService.activeTextEditorControl": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
+
 			Line: 73,
 		},
 	},

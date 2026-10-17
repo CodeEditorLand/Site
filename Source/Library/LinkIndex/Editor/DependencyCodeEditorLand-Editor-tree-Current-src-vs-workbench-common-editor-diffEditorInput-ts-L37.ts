@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DiffEditorInput: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/common/editor/diffEditorInput.ts",
+
 			Line: 37,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		_path: {
 			Repo: PluginsWorkSpaceRepo,
+
 			Path: "plugins/sql/guest-js/index.ts",
+
 			Line: 49,
 		},
 	},

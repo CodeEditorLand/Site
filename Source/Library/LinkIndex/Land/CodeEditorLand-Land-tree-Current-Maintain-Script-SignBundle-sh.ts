@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"configuration",
+
 		"filesystem-footprint-platform-paths",
+
 		"installation",
+
 		"maintain",
+
 		"quickstart",
+
 		"troubleshooting",
 	],
 
@@ -33,21 +41,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/SignBundle.sh",
 		},
 
 		"Maintain/Script/SignBundle.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/SignBundle.sh",
 		},
 
 		"Script/SignBundle.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/SignBundle.sh",
 		},
 
 		"SignBundle.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/SignBundle.sh",
 		},
 	},

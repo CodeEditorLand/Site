@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WaitForClientConnection: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Client.rs",
+
 			Line: 49,
 		},
 	},

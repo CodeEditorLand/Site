@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WindowService: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Window/Index.ts",
+
 			Line: 64,
 		},
 	},

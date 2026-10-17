@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"configuration",
+
 		"getting-started",
+
 		"troubleshooting",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ProductVersion: {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Codegen/ResolveIdentity.ts",
+
 			Line: 239,
 		},
 	},

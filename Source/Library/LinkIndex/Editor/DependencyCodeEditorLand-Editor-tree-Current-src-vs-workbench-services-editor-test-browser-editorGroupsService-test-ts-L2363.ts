@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		activationEvents: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/editor/test/browser/editorGroupsService.test.ts",
+
 			Line: 2363,
 		},
 	},

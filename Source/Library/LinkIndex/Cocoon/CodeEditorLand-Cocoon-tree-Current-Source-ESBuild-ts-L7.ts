@@ -18,18 +18,31 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"coverage",
+
 		"deep-dive-mountain",
+
 		"deep-dive-worker",
+
 		"development-history",
+
 		"extension-development",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"mist",
+
 		"troubleshooting",
+
 		"workflow-scm",
+
 		"workflow-startup",
+
 		"workflow-tier-gated-implementation-selection",
+
 		"workflow-user-data-sync",
 	],
 

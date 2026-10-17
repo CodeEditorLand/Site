@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Production.Bundled": {
 			Repo: ElementRepos.Land,
+
 			Path: "turbo.json",
+
 			Line: 19,
 		},
 	},

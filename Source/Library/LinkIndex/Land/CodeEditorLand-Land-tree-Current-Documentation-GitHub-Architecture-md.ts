@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Architecture.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Architecture.md",
 		},
 	},

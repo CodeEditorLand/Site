@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LanguageProvider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Command/Bootstrap.rs",
+
 			Line: 216,
 		},
 	},

@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"build-matrix",
+
 		"configuration",
+
 		"extension-development",
+
 		"getting-started",
+
 		"installation",
+
 		"mountain",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Install: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Polyfill/Workbench/Paint/Prime.ts",
+
 			Line: 112,
 		},
 	},

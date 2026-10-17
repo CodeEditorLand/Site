@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"secrets.store": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Extension/Context.ts",
+
 			Line: 309,
 		},
 	},

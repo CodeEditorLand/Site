@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MAX_CONNECTIONS: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Server/Initialize.rs",
+
 			Line: 61,
 		},
 	},

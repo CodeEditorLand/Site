@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Mountain/tree/Current/Source/IPC/TauriIPCServer.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/TauriIPCServer.rs",
 		},
 
 		"Source/IPC/TauriIPCServer.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/TauriIPCServer.rs",
 		},
 	},

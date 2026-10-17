@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs":
 			{
 				Repo: ElementRepos.Grove,
+
 				Path: "Source/Protocol/SpineConnection.rs",
 			},
 
 		"Source/Protocol/SpineConnection.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/Protocol/SpineConnection.rs",
 		},
 	},

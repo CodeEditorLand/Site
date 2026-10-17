@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		createSourceControl: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.scmProviderOptions.d.ts",
+
 			Line: 42,
 		},
 	},

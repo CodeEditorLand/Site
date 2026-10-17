@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		textEditor: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/sessions/contrib/editor/test/browser/diffEditor.sessions.contribution.test.ts",
+
 			Line: 229,
 		},
 	},

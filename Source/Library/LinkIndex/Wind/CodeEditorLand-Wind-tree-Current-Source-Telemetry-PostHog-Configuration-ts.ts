@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Source/Telemetry/PostHog/Configuration.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Telemetry/PostHog/Configuration.ts",
 		},
 	},

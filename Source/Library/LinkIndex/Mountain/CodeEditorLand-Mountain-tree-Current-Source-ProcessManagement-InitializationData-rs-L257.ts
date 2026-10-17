@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"NativeWorkbenchEnvironmentService.logsHome": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
+
 			Line: 257,
 		},
 	},

@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"product.json": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Rust/debug/product.json",
 		},
 	},

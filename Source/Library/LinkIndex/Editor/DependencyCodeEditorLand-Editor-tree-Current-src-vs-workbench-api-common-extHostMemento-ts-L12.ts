@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.Memento": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostMemento.ts",
+
 			Line: 12,
 		},
 	},

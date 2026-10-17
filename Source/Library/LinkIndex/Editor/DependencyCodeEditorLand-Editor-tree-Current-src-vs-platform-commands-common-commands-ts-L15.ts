@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"vscode-api-coverage",
+
 		"workflow-startup",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ICommandService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/commands/common/commands.ts",
+
 			Line: 15,
 		},
 	},

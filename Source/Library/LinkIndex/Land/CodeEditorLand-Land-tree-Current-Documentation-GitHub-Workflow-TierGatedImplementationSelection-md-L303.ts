@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"LandFixLog.Info": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/TierGatedImplementationSelection.md",
+
 			Line: 303,
 		},
 	},

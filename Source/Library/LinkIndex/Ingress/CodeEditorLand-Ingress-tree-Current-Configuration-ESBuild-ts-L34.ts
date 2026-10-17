@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-per-element",
+
 		"polyfills",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"process.env": {
 			Repo: IngressRepo,
+
 			Path: "Configuration/ESBuild.ts",
+
 			Line: 34,
 		},
 	},

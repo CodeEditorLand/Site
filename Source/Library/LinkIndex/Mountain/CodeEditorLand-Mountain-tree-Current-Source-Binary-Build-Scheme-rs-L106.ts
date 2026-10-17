@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CacheEntry: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Build/Scheme.rs",
+
 			Line: 106,
 		},
 	},

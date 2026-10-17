@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		PathBuf: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/FileSystem/Native/FileDeleteNative.rs",
+
 			Line: 19,
 		},
 	},

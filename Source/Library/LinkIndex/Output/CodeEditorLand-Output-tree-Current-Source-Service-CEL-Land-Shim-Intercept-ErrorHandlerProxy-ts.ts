@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts":
 			{
 				Repo: ElementRepos.Output,
+
 				Path: "Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
 			},
 
 		"Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"AppState.CommandRegistry": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/ExecutingACommandFromTheCommandPalette.md",
+
 			Line: 102,
 		},
 	},

@@ -18,26 +18,47 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon-vscode-validation",
+
 		"common",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-grove",
+
 		"extension-development",
+
 		"introduction",
+
 		"local-first-protocol",
+
 		"mountain",
+
 		"troubleshooting",
+
 		"why-wasm",
+
 		"wind",
+
 		"workflow-startup",
+
 		"workflow-user-data-sync",
 	],
 
@@ -46,7 +67,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Extensions: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
+
 			Line: 20,
 		},
 	},

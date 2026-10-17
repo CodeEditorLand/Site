@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ConstructExtensionHostInitializationData: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
+
 			Line: 465,
 		},
 	},

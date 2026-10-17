@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtensionHostLayer: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Extension/Host/Service.ts",
+
 			Line: 319,
 		},
 	},

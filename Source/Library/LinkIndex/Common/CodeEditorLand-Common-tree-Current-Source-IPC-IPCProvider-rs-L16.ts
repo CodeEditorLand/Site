@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IPCProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/IPC/IPCProvider.rs",
+
 			Line: 16,
 		},
 	},

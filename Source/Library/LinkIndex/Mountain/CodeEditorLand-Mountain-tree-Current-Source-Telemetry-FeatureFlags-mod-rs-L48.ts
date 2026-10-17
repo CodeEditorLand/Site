@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IsEnabled: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Telemetry/FeatureFlags/mod.rs",
+
 			Line: 48,
 		},
 	},

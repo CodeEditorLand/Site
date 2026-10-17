@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"AppState.LanguageProviders": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/InvokingALanguageFeatureHoverProvider.md",
+
 			Line: 22,
 		},
 	},

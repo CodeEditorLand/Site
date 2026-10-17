@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CocoonService: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/mod.rs",
+
 			Line: 8,
 		},
 	},

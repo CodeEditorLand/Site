@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		num_cpus: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/Enhanced/ConnectionPool/Pool.rs",
+
 			Line: 366,
 		},
 	},

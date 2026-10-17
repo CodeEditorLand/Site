@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"resourceGroups.Changes": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/SourceControlManagementSCM.md",
+
 			Line: 33,
 		},
 	},

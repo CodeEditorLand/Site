@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"cocoon.editor.land": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Documentation/GitHub/DeepDive.md",
+
 			Line: 110,
 		},
 	},

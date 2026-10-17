@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ConnectionMetadata: {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Client/Shared.rs",
+
 			Line: 62,
 		},
 	},

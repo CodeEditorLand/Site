@@ -23,16 +23,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Mist/tree/Current/Source/WebSocket.rs": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Source/WebSocket.rs",
 		},
 
 		"Source/WebSocket.rs": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Source/WebSocket.rs",
 		},
 
 		"WebSocket.rs": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Source/WebSocket.rs",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		createChatParticipant: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.chatParticipantAdditions.d.ts",
+
 			Line: 912,
 		},
 	},

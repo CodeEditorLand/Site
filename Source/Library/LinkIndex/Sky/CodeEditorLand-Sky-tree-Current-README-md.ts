@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Element/Sky/README.md": {
 			Repo: ElementRepos.Sky,
+
 			Path: "README.md",
 		},
 

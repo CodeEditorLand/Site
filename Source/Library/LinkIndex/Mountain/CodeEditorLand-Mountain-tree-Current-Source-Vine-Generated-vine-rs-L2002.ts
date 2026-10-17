@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MountainService: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Generated/vine.rs",
+
 			Line: 2002,
 		},
 	},

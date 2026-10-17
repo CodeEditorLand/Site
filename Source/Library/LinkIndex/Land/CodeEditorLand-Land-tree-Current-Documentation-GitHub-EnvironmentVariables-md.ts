@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md":
 			{
 				Repo: ElementRepos.Land,
+
 				Path: "Documentation/GitHub/EnvironmentVariables.md",
 			},
 
 		"EnvironmentVariables.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EnvironmentVariables.md",
 		},
 	},

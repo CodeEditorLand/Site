@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"process.exit": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
+
 			Line: 317,
 		},
 	},

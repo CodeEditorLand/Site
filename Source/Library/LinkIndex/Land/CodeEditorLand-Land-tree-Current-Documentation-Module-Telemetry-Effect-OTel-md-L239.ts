@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Tracer.startSpan": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/Module/Telemetry/Effect-OTel.md",
+
 			Line: 239,
 		},
 	},

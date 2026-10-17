@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md":
 			{
 				Repo: ElementRepos.Land,
+
 				Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
 			},
 
 		"Documentation/GitHub/VSCode-API-Coverage-Matrix.md": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/VSCode-API-Coverage-Matrix.md",
 		},
 	},

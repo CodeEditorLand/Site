@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"filesystem-footprint-per-element",
+
 		"workflow-user-data-sync",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ConfigurationService: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/Configuration.rs",
+
 			Line: 8,
 		},
 	},

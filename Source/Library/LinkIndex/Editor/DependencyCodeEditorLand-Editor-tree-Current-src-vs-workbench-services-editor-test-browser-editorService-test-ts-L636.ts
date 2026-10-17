@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		openEditor: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/editor/test/browser/editorService.test.ts",
+
 			Line: 636,
 		},
 	},

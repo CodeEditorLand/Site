@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Maintain/Test/TelemetryTreeShake.sh":
 			{
 				Repo: ElementRepos.Land,
+
 				Path: "Maintain/Test/TelemetryTreeShake.sh",
 			},
 
 		"Maintain/Test/TelemetryTreeShake.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Test/TelemetryTreeShake.sh",
 		},
 	},

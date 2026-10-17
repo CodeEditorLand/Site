@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"editor.fontSize": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/ConfigurationBridge.rs",
+
 			Line: 168,
 		},
 	},

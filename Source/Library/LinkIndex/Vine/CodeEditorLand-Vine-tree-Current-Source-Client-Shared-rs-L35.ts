@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MAX_RETRY_ATTEMPTS: {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Client/Shared.rs",
+
 			Line: 35,
 		},
 	},

@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"configuration",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-platform-paths",
+
 		"getting-started",
+
 		"installation",
+
 		"quickstart",
+
 		"sky",
 	],
 
@@ -37,7 +49,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Profile: {
 			Repo: ElementRepos.Maintain,
+
 			Path: "Source/Run/Definition.rs",
+
 			Line: 243,
 		},
 	},

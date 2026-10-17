@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Output/tree/Current/Source/Plugin/Copy.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Copy.ts",
 		},
 

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		globalThis: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/worker/webWorkerBootstrap.ts",
+
 			Line: 12,
 		},
 	},

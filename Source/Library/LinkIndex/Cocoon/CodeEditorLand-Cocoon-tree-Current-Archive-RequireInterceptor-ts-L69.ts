@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon",
+
 		"polyfills",
+
 		"workflow-extension-tests",
+
 		"workflow-startup",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RequireInterceptor: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/RequireInterceptor.ts",
+
 			Line: 69,
 		},
 	},

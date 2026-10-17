@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IPCTransport: {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/Transport/IPCTransport.rs",
+
 			Line: 24,
 		},
 	},

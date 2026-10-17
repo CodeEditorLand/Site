@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.terminal.toggleTerminal": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EditorCore.md",
+
 			Line: 640,
 		},
 
 		"workbench.action.toggleSidebar": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/EditorCore.md",
+
 			Line: 640,
 		},
 	},

@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"extension-development",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -29,13 +33,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtHostAuthentication: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostAuthentication.ts",
+
 			Line: 58,
 		},
 
 		"vscode.authentication": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostAuthentication.ts",
+
 			Line: 58,
 		},
 	},

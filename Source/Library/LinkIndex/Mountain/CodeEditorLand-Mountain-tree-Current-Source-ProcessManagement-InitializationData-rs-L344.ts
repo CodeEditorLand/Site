@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		NlsSection: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
+
 			Line: 344,
 		},
 	},

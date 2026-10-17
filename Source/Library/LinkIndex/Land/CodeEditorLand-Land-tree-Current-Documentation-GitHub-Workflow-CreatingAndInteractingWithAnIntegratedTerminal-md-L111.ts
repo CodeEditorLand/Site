@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"AppState.ActiveTerminals": {
 			Repo: ElementRepos.Land,
+
 			Path: "Documentation/GitHub/Workflow/CreatingAndInteractingWithAnIntegratedTerminal.md",
+
 			Line: 111,
 		},
 	},

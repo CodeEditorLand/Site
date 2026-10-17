@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon",
+
 		"filesystem-footprint-environment-variables",
+
 		"grove",
+
 		"vscode-api-coverage",
+
 		"workflow-command-palette",
+
 		"workflow-extension-tests",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		executeCommand: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.d.ts",
+
 			Line: 11023,
 		},
 	},

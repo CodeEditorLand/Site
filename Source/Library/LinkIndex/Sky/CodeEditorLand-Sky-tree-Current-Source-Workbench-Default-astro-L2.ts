@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"NLS.astro": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Workbench/Default.astro",
+
 			Line: 2,
 		},
 	},

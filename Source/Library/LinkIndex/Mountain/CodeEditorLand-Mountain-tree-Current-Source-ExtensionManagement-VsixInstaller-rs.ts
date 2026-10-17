@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ExtensionManagement/VsixInstaller.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ExtensionManagement/VsixInstaller.rs",
 		},
 	},

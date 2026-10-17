@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SourceControlResourceState: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Generated/mod.rs",
+
 			Line: 296,
 		},
 	},

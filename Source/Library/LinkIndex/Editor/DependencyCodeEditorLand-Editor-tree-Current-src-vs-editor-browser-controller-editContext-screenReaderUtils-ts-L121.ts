@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.showCommands": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/browser/controller/editContext/screenReaderUtils.ts",
+
 			Line: 121,
 		},
 	},

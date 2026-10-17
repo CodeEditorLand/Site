@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Loading.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/ConfigurationProvider/Loading.rs",
 		},
 	},

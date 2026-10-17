@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"workbench.action.terminal.new": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/terminal/electron-browser/terminalRemote.ts",
+
 			Line: 18,
 		},
 	},

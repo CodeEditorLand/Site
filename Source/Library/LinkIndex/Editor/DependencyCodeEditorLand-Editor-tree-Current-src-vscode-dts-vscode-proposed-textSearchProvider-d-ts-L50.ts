@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SearchOptions: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.textSearchProvider.d.ts",
+
 			Line: 50,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		asyncBuffer: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+
 			Line: 35,
 		},
 	},

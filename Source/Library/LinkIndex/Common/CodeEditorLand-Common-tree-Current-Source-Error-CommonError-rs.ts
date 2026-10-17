@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Common/tree/Current/Source/Error/CommonError.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Error/CommonError.rs",
 		},
 
 		"Error/CommonError.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Error/CommonError.rs",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		EditorGroupModel: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/common/editor/editorGroupModel.ts",
+
 			Line: 185,
 		},
 	},

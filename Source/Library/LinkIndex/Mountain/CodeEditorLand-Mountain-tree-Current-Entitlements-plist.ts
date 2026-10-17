@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"getting-started",
+
 		"installation",
+
 		"troubleshooting",
+
 		"why-rust",
+
 		"why-tauri",
 	],
 
@@ -37,16 +46,19 @@ export const LinkIndexData: LinkIndexData = {
 
 		"CodeEditorLand/Mountain/tree/Current/Entitlements.plist": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Entitlements.plist",
 		},
 
 		"Element/Mountain/Entitlements.plist": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Entitlements.plist",
 		},
 
 		"Entitlements.plist": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Entitlements.plist",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"env.clipboard": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 659,
 		},
 	},

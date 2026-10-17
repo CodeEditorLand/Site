@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"air",
+
 		"deep-dive-vine",
+
 		"vine",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Range: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Command/Hover/Interface.rs",
+
 			Line: 26,
 		},
 	},

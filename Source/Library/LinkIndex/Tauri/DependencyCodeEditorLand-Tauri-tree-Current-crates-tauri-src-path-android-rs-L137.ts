@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-platform-paths",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		app_data_dir: {
 			Repo: TauriRepo,
+
 			Path: "crates/tauri/src/path/android.rs",
+
 			Line: 137,
 		},
 	},

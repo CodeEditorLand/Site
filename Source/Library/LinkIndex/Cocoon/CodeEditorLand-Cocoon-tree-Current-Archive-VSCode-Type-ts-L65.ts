@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"workflow-save-participants",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WorkspaceEdit: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/VSCode/Type.ts",
+
 			Line: 65,
 		},
 	},

@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"deep-dive-mountain",
+
 		"development-history",
+
 		"getting-started",
+
 		"maintain",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -34,26 +43,31 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Release/Build.sh",
 		},
 
 		"CodeEditorLand/Land/tree/Current/Maintain/Release/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Release/Build.sh",
 		},
 
 		"Land/Maintain/Release/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Release/Build.sh",
 		},
 
 		"Maintain/Release/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Release/Build.sh",
 		},
 
 		"Release/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Release/Build.sh",
 		},
 	},

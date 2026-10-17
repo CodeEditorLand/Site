@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Rollup: {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/pages/index.astro",
+
 			Line: 59,
 		},
 	},

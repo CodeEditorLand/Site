@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"git.createSourceControl": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/Workspace/Namespace/Index.ts",
+
 			Line: 755,
 		},
 	},

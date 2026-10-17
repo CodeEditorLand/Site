@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Worker.js": {
 			Repo: ElementRepos.Worker,
+
 			Path: "Configuration/ESBuild/Worker.js",
 		},
 	},

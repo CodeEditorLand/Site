@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		queueMicrotask: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_minifier/tests/fixture/issues/2257/full/input.js",
+
 			Line: 11315,
 		},
 	},

@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"TauriDesktopIntegration",
+
 		"build-matrix",
+
 		"installation",
+
 		"maintain",
+
 		"project-structure",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,21 +37,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Maintain/Debug/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Debug/Build.sh",
 		},
 
 		"Debug/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Debug/Build.sh",
 		},
 
 		"Land/Maintain/Debug/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Debug/Build.sh",
 		},
 
 		"Maintain/Debug/Build.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Debug/Build.sh",
 		},
 	},

@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Authorize: {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Telemetry/Bridge.ts",
+
 			Line: 39,
 		},
 	},

@@ -18,23 +18,41 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"architecture",
+
 		"cocoon",
+
 		"configuration",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"development-history",
+
 		"echo",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-environment-variables",
+
 		"maintain",
+
 		"vscode-api-coverage",
+
 		"wind",
+
 		"workflow-hover-provider",
+
 		"workflow-open-file",
+
 		"workflow-terminal",
+
 		"workflow-tier-gated-implementation-selection",
+
 		"workflow-webview",
 	],
 
@@ -43,7 +61,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		effect: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/Shim.rs",
+
 			Line: 25,
 		},
 	},

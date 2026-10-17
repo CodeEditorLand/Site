@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MountainProbeTimeoutMs: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Bootstrap.ts",
+
 			Line: 109,
 		},
 	},

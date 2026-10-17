@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mountain/tree/Current/Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs",
 			},
 
 		"ScanAndPopulateExtensions.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/Internal/ExtensionScanner/ScanAndPopulateExtensions.rs",
 		},
 	},

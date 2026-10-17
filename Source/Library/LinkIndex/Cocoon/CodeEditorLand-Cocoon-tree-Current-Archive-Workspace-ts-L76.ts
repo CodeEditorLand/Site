@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		languageId: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Archive/Workspace.ts",
+
 			Line: 76,
 		},
 	},

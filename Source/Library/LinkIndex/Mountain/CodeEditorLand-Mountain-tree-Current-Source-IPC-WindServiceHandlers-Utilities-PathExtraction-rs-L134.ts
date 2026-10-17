@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"architecture",
+
 		"coverage",
+
 		"deep-dive-echo",
+
 		"deep-dive-wind",
+
 		"echo",
+
 		"filesystem-footprint-encapsulation",
+
 		"low-level-shim",
+
 		"mountain-naming-conventions",
+
 		"project-structure",
+
 		"why-rust",
 	],
 
@@ -35,7 +45,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Low: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs",
+
 			Line: 134,
 		},
 	},

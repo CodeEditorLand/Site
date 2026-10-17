@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"process.argv": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Build/VS/Code.ts",
+
 			Line: 141,
 		},
 	},

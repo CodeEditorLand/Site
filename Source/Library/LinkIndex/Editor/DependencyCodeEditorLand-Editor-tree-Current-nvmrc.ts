@@ -26,6 +26,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Dependency/Microsoft/Dependency/Editor/.nvmrc": {
 			Repo: EditorRepo,
+
 			Path: ".nvmrc",
 		},
 	},

@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon",
+
 		"local-first-protocol",
+
 		"mountain",
+
 		"vscode-api-coverage",
+
 		"wind",
+
 		"workflow-open-file",
+
 		"workflow-scm",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		FileSystemProvider: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/mod.rs",
+
 			Line: 58,
 		},
 	},

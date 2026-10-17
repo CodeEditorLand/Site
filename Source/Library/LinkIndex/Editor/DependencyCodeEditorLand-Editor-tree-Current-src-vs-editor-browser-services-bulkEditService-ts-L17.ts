@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IBulkEditService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/browser/services/bulkEditService.ts",
+
 			Line: 17,
 		},
 	},

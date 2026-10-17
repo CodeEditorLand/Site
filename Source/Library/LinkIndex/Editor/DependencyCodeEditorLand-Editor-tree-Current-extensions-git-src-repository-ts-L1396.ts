@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		resourceStates: {
 			Repo: EditorRepo,
+
 			Path: "extensions/git/src/repository.ts",
+
 			Line: 1396,
 		},
 	},

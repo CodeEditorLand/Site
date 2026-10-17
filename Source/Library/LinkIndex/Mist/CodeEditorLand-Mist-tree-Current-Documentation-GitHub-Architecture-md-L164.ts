@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"api.posthog.com": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Documentation/GitHub/Architecture.md",
+
 			Line: 164,
 		},
 	},

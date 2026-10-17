@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"extHostDecorations.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostDecorations.ts",
 		},
 	},

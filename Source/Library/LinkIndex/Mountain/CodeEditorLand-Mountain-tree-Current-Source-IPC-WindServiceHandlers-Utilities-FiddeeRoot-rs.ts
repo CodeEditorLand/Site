@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-user-dotfile",
 	],
 
@@ -28,17 +30,20 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
 			},
 
 		"Element/Mountain/Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
 			},
 
 		"FiddeeRoot.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Utilities/FiddeeRoot.rs",
 		},
 	},

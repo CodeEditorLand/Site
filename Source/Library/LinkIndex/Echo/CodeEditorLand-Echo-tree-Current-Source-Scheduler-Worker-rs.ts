@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Echo/tree/Current/Source/Scheduler/Worker.rs": {
 			Repo: ElementRepos.Echo,
+
 			Path: "Source/Scheduler/Worker.rs",
 		},
 
 		"Source/Scheduler/Worker.rs": {
 			Repo: ElementRepos.Echo,
+
 			Path: "Source/Scheduler/Worker.rs",
 		},
 	},

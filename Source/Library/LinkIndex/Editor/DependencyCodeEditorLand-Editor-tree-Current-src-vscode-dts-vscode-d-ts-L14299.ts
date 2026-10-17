@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-cocoon",
+
 		"deep-dive-sky",
+
 		"polyfills",
+
 		"why-grpc",
+
 		"workflow-save-participants",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidChangeTextDocument: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.d.ts",
+
 			Line: 14299,
 		},
 	},

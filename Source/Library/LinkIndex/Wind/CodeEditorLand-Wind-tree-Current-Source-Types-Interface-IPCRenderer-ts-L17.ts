@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IPCRenderer: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Types/Interface/IPCRenderer.ts",
+
 			Line: 17,
 		},
 	},

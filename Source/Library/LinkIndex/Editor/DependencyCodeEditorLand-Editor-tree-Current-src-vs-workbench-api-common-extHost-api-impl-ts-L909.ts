@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.window.showInformationMessage": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
 			Line: 909,
 		},
 
 		"window.showInformationMessage": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.api.impl.ts",
+
 			Line: 909,
 		},
 	},

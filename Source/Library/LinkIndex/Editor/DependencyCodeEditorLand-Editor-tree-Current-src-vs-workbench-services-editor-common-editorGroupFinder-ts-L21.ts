@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		findGroup: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/editor/common/editorGroupFinder.ts",
+
 			Line: 21,
 		},
 	},
