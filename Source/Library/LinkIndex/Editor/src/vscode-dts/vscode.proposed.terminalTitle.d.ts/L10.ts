@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TerminalOptions: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.terminalTitle.d.ts",
+
 			Line: 10,
 		},
 	},

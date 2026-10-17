@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		sendRequest: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/agentHost/test/electron-browser/agentHostProtocolClient.test.ts",
+
 			Line: 816,
 		},
 	},

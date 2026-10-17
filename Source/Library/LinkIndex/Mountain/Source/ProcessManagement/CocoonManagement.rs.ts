@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"cocoon",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-mountain",
+
 		"deep-dive-sidecar",
+
 		"workflow-startup",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,17 +37,20 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CocoonManagement.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/CocoonManagement.rs",
 		},
 
 		"CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/CocoonManagement.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/ProcessManagement/CocoonManagement.rs",
 			},
 
 		"ProcessManagement/CocoonManagement.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/CocoonManagement.rs",
 		},
 	},

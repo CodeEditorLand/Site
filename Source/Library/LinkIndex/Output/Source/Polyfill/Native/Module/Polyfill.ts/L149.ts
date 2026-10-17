@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"architecture",
+
 		"coverage",
+
 		"mountain",
+
 		"wind",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Dialog: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Polyfill/Native/Module/Polyfill.ts",
+
 			Line: 149,
 		},
 	},

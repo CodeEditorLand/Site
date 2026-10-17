@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"cocoon-vscode-validation",
+
 		"deep-dive-cocoon",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IExtHostCommands: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostCommands.ts",
+
 			Line: 347,
 		},
 	},

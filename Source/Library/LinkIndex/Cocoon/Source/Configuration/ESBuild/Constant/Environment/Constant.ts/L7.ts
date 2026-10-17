@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"deep-dive-wind",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"worker",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Bundle: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Configuration/ESBuild/Constant/Environment/Constant.ts",
+
 			Line: 7,
 		},
 	},

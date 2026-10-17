@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TauriListen: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Preload.ts",
+
 			Line: 353,
 		},
 	},

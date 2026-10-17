@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		requestAnimationFrame: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/test/browser/componentFixtures/fixtureUtils.ts",
+
 			Line: 1117,
 		},
 	},

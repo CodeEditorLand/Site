@@ -18,20 +18,35 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"common",
+
 		"coverage",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-echo",
+
 		"deep-dive-sky",
+
 		"echo",
+
 		"maintain",
+
 		"mountain",
+
 		"vscode-api-coverage",
+
 		"workflow-overview",
+
 		"workflow-terminal",
 	],
 

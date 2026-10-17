@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"extension-development",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
+
 		"local-first-protocol",
+
 		"workflow-user-data-sync",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Memento: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Extension/Context.ts",
+
 			Line: 88,
 		},
 	},

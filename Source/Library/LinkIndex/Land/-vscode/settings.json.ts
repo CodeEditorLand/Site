@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"filesystem-footprint-encapsulation",
+
 		"mountain",
+
 		"workflow-startup",
+
 		"workflow-user-data-sync",
 	],
 
@@ -29,6 +33,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"settings.json": {
 			Repo: ElementRepos.Land,
+
 			Path: ".vscode/settings.json",
 		},
 	},

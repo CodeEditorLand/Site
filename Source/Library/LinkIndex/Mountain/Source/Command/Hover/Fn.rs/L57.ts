@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Hover: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Command/Hover/Fn.rs",
+
 			Line: 57,
 		},
 	},

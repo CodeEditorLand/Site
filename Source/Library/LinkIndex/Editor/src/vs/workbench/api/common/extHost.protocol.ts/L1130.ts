@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.window.createWebviewPanel": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
 			Line: 1130,
 		},
 
 		"window.createWebviewPanel": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
 			Line: 1130,
 		},
 	},

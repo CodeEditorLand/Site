@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"deep-dive-air",
+
 		"deep-dive-maintain",
+
 		"deep-dive-sidecar",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"maintain",
+
 		"sidecar",
 	],
 
@@ -33,7 +41,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Download: {
 			Repo: ElementRepos.SideCar,
+
 			Path: "Source/Library.rs",
+
 			Line: 64,
 		},
 	},

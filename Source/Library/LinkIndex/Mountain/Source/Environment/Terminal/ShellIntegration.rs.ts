@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
 	],
 
@@ -27,11 +29,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Environment/Terminal/ShellIntegration.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/Terminal/ShellIntegration.rs",
 		},
 
 		"ShellIntegration.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/Terminal/ShellIntegration.rs",
 		},
 	},

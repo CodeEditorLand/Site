@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"common",
+
 		"deep-dive-common",
+
 		"grove",
+
 		"vscode-api-coverage",
+
 		"worker",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Requires: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Environment/mod.rs",
+
 			Line: 17,
 		},
 	},

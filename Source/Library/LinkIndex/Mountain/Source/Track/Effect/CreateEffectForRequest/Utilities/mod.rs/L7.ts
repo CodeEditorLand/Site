@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Proxy: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/Utilities/mod.rs",
+
 			Line: 7,
 		},
 	},

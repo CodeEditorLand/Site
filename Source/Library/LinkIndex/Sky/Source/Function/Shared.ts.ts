@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Sky/tree/Current/Source/Function/Shared.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Shared.ts",
 		},
 
 		"Source/Function/Shared.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Shared.ts",
 		},
 	},

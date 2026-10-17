@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IMainProcessService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/ipc/common/mainProcessService.ts",
+
 			Line: 10,
 		},
 	},

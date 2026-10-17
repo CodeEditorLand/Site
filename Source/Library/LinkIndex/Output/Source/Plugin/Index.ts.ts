@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Output/tree/Current/Source/Plugin/Index.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Index.ts",
 		},
 
 		"Source/Plugin/Index.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Index.ts",
 		},
 	},

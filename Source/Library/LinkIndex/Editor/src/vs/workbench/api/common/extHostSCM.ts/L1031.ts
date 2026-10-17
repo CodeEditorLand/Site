@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.scm.createSourceControl": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostSCM.ts",
+
 			Line: 1031,
 		},
 	},

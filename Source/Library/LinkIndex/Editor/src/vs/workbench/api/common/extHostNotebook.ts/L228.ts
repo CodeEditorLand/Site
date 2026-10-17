@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		viewType: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostNotebook.ts",
+
 			Line: 228,
 		},
 	},

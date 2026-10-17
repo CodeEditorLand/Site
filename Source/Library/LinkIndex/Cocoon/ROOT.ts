@@ -18,44 +18,83 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"BuildSystemDesign",
+
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"LocalFirstPhilosophy",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"architecture",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"common",
+
 		"coverage",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-mountain",
+
 		"deep-dive-sidecar",
+
 		"deep-dive-vine",
+
 		"deep-dive-wind",
+
 		"extension-development",
+
 		"filesystem-footprint-platform-paths",
+
 		"grove",
+
 		"introduction",
+
 		"maintain",
+
 		"mountain",
+
 		"sky",
+
 		"troubleshooting",
+
 		"vscode-api-coverage",
+
 		"why-effect-ts",
+
 		"why-rust",
+
 		"why-tauri",
+
 		"why-wasm",
+
 		"wind",
+
 		"workflow-command-palette",
+
 		"workflow-extension-tests",
+
 		"workflow-overview",
+
 		"workflow-save-participants",
+
 		"workflow-startup",
+
 		"workflow-terminal",
+
 		"workflow-tier-gated-implementation-selection",
+
 		"workflow-user-data-sync",
+
 		"workflow-webview",
 	],
 
@@ -190,6 +229,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		register_debug_configuration_provider: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "",
 		},
 
@@ -199,6 +239,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		register_text_document_content_provider: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "",
 		},
 

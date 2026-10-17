@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"commands.executed": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostTypeConverters.ts",
+
 			Line: 2081,
 		},
 	},

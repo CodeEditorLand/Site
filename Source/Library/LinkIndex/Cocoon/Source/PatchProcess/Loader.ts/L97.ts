@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect.catchTag": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/PatchProcess/Loader.ts",
+
 			Line: 97,
 		},
 	},

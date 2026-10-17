@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"low-level-shim",
+
 		"why-effect-ts",
+
 		"workflow-command-palette",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Promise: {
 			Repo: EditorRepo,
+
 			Path: "extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts",
+
 			Line: 42453,
 		},
 	},

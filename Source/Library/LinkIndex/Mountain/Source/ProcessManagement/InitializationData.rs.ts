@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"deep-dive-mountain",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-platform-paths",
+
 		"mountain",
+
 		"troubleshooting",
+
 		"workflow-startup",
 	],
 
@@ -32,27 +38,32 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/ProcessManagement/InitializationData.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/ProcessManagement/InitializationData.rs",
 			},
 
 		"CodeEditorLand/Mountain/tree/Current/Source/ProcessManagement/InitializationData.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/ProcessManagement/InitializationData.rs",
 			},
 
 		"Element/Mountain/Source/ProcessManagement/InitializationData.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
 		},
 
 		"InitializationData.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
 		},
 
 		"ProcessManagement/InitializationData.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ProcessManagement/InitializationData.rs",
 		},
 	},

@@ -23,16 +23,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/Telemetry/PostHogBridge.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Telemetry/PostHogBridge.ts",
 		},
 
 		"Source/Telemetry/PostHogBridge.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Telemetry/PostHogBridge.ts",
 		},
 
 		"Wind/Source/Telemetry/PostHogBridge.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Telemetry/PostHogBridge.ts",
 		},
 	},

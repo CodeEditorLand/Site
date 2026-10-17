@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/rustfmt.toml": {
 			Repo: ElementRepos.Land,
+
 			Path: "rustfmt.toml",
 		},
 

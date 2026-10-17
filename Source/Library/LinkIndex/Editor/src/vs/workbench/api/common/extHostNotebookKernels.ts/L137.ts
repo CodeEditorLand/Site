@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidChangeSelection: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostNotebookKernels.ts",
+
 			Line: 137,
 		},
 	},

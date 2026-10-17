@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"project-structure",
+
 		"workflow-open-file",
+
 		"workflow-save-participants",
+
 		"workflow-startup",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IFileService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/files/common/files.ts",
+
 			Line: 26,
 		},
 	},

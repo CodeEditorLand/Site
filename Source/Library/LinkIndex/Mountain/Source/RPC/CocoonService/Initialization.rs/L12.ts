@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		InitialHandshake: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/Initialization.rs",
+
 			Line: 12,
 		},
 	},

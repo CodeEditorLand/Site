@@ -18,6 +18,7 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -27,11 +28,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Sky/tree/Current/Source/Function/SmokeTest/Auto/Diagnose/Input.ts":
 			{
 				Repo: ElementRepos.Sky,
+
 				Path: "Source/Function/SmokeTest/Auto/Diagnose/Input.ts",
 			},
 
 		"Sky/Function/SmokeTest/Auto/Diagnose/Input.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/SmokeTest/Auto/Diagnose/Input.ts",
 		},
 	},

@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Air/Source/Downloader/mod.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Downloader/mod.rs",
 		},
 
 		"Source/Downloader/mod.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Downloader/mod.rs",
 		},
 	},

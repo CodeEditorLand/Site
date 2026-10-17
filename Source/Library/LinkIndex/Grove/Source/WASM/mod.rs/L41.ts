@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		HostBridge: {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/WASM/mod.rs",
+
 			Line: 41,
 		},
 	},

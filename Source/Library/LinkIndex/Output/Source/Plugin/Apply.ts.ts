@@ -23,16 +23,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Apply.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Apply.ts",
 		},
 
 		"CodeEditorLand/Output/tree/Current/Source/Plugin/Apply.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Apply.ts",
 		},
 
 		"Source/Plugin/Apply.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Apply.ts",
 		},
 	},

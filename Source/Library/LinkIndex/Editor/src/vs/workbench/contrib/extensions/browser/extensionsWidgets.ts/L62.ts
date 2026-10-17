@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onClick: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/extensions/browser/extensionsWidgets.ts",
+
 			Line: 62,
 		},
 	},

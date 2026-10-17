@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		InlineCompletionsProvider: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/common/languages.ts",
+
 			Line: 947,
 		},
 	},

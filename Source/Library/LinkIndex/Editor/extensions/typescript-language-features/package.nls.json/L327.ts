@@ -18,24 +18,43 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"LocalFirstPhilosophy",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon-vscode-validation",
+
 		"configuration",
+
 		"deep-dive-rest",
+
 		"grove",
+
 		"low-level-shim",
+
 		"output",
+
 		"polyfills",
+
 		"rest",
+
 		"why-effect-ts",
+
 		"why-rust",
+
 		"why-tauri",
+
 		"worker",
+
 		"workflow-command-palette",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -44,7 +63,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		JavaScript: {
 			Repo: EditorRepo,
+
 			Path: "extensions/typescript-language-features/package.nls.json",
+
 			Line: 327,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SpanProcessor: {
 			Repo: EditorRepo,
+
 			Path: "extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotCliBridgeSpanProcessor.ts",
+
 			Line: 40,
 		},
 	},

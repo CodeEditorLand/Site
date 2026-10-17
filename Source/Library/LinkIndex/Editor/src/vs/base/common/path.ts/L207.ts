@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		win32: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/path.ts",
+
 			Line: 207,
 		},
 	},

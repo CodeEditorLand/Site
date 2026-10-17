@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LanguageService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/common/services/languageService.ts",
+
 			Line: 15,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WorkspaceEditApplier: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/WorkspaceProvider.rs",
+
 			Line: 616,
 		},
 	},

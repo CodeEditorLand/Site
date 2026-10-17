@@ -18,6 +18,7 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -26,6 +27,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/ESBuild.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/ESBuild.ts",
 		},
 
@@ -33,11 +35,13 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Source/ESBuild.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/ESBuild.ts",
 		},
 
 		"Wind/Source/ESBuild.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/ESBuild.ts",
 		},
 	},

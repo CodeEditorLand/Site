@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/EventInterceptor.ts",
 		},
 
 		"Wind/Source/Shim/EventInterceptor.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/EventInterceptor.ts",
 		},
 	},

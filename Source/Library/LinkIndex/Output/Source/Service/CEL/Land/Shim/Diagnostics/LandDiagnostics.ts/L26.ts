@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		emitterBuffer: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts",
+
 			Line: 26,
 		},
 	},

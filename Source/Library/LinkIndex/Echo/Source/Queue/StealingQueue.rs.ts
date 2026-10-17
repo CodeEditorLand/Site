@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Echo/tree/Current/Source/Queue/StealingQueue.rs": {
 			Repo: ElementRepos.Echo,
+
 			Path: "Source/Queue/StealingQueue.rs",
 		},
 
 		"Source/Queue/StealingQueue.rs": {
 			Repo: ElementRepos.Echo,
+
 			Path: "Source/Queue/StealingQueue.rs",
 		},
 	},

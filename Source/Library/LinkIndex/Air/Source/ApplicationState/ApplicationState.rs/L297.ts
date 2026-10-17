@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"architecture",
+
 		"deep-dive-cocoon",
+
 		"development-history",
+
 		"workflow-startup",
 	],
 
@@ -33,7 +41,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MountainConnection: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/ApplicationState/ApplicationState.rs",
+
 			Line: 297,
 		},
 	},

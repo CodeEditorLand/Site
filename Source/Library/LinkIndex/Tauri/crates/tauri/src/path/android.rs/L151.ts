@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		app_cache_dir: {
 			Repo: TauriRepo,
+
 			Path: "crates/tauri/src/path/android.rs",
+
 			Line: 151,
 		},
 	},

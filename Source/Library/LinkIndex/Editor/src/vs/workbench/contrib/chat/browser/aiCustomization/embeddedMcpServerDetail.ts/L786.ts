@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		positionAt: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/chat/browser/aiCustomization/embeddedMcpServerDetail.ts",
+
 			Line: 786,
 		},
 	},

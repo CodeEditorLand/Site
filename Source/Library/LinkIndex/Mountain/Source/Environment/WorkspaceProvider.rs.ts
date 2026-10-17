@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Environment/WorkspaceProvider.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/WorkspaceProvider.rs",
 		},
 	},

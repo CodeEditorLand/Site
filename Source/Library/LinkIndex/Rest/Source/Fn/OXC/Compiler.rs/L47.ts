@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"project-structure",
+
 		"rest",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Compiler: {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Fn/OXC/Compiler.rs",
+
 			Line: 47,
 		},
 	},

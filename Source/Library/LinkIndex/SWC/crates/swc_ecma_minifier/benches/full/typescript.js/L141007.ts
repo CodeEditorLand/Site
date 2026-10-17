@@ -18,22 +18,39 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"ExtensionHostDeepDive",
+
 		"LocalFirstPhilosophy",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-maintain",
+
 		"deep-dive-mountain",
+
 		"deep-dive-vine",
+
 		"introduction",
+
 		"maintain",
+
 		"project-structure",
+
 		"vine",
 	],
 
@@ -42,7 +59,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Core: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_minifier/benches/full/typescript.js",
+
 			Line: 141007,
 		},
 	},

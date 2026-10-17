@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CONNECTION_TIMEOUT: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Server/Initialize.rs",
+
 			Line: 64,
 		},
 	},

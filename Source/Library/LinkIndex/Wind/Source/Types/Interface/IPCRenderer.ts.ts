@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Wind/tree/Current/Source/Types/Interface/IPCRenderer.ts":
 			{
 				Repo: ElementRepos.Wind,
+
 				Path: "Source/Types/Interface/IPCRenderer.ts",
 			},
 
 		"Wind/Source/Types/Interface/IPCRenderer.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Types/Interface/IPCRenderer.ts",
 		},
 	},

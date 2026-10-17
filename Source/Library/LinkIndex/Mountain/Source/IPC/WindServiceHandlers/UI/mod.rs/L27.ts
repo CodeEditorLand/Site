@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LifecycleWhenPhase: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/UI/mod.rs",
+
 			Line: 27,
 		},
 	},

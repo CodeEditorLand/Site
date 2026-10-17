@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Element/Rest/README.md": {
 			Repo: ElementRepos.Rest,
+
 			Path: "README.md",
 		},
 
 		"Element/Rest/README.md": {
 			Repo: ElementRepos.Rest,
+
 			Path: "README.md",
 		},
 	},

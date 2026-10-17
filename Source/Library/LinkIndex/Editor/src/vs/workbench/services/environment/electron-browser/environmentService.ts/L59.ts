@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		NativeWorkbenchEnvironmentService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/environment/electron-browser/environmentService.ts",
+
 			Line: 59,
 		},
 	},

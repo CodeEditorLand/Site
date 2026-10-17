@@ -23,17 +23,20 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Air/Source/Initialize/Command/HandleCommand.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Initialize/Command/HandleCommand.rs",
 		},
 
 		"CodeEditorLand/Air/tree/Current/Source/Initialize/Command/HandleCommand.rs":
 			{
 				Repo: ElementRepos.Air,
+
 				Path: "Source/Initialize/Command/HandleCommand.rs",
 			},
 
 		"Source/Initialize/Command/HandleCommand.rs": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Initialize/Command/HandleCommand.rs",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		getHover: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/chat/test/browser/promptSyntax/languageProviders/promptHovers.test.ts",
+
 			Line: 98,
 		},
 	},

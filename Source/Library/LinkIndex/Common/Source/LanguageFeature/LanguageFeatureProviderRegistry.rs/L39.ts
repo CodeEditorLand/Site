@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"common",
+
 		"deep-dive-vine",
+
 		"workflow-hover-provider",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LanguageFeatureProviderRegistry: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/LanguageFeature/LanguageFeatureProviderRegistry.rs",
+
 			Line: 39,
 		},
 	},

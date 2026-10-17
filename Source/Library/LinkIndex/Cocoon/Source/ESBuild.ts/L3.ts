@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon-vscode-validation",
+
 		"configuration",
+
 		"deep-dive-mountain",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Clean: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/ESBuild.ts",
+
 			Line: 3,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LandDnsResolver: {
 			Repo: ElementRepos.Mist,
+
 			Path: "Source/Resolver.rs",
+
 			Line: 36,
 		},
 	},

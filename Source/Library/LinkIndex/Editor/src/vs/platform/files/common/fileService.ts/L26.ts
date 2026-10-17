@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		FileService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/files/common/fileService.ts",
+
 			Line: 26,
 		},
 	},

@@ -18,13 +18,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"TauriDesktopIntegration",
+
 		"api-reference",
+
 		"architecture",
+
 		"cocoon",
+
 		"deep-dive-cocoon",
+
 		"mountain-naming-conventions",
+
 		"vscode-api-coverage",
+
 		"workflow-command-palette",
 	],
 
@@ -33,7 +41,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Track: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Library.rs",
+
 			Line: 120,
 		},
 	},

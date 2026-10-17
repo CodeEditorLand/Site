@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		setup_webview_message_listener_impl: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/WebviewProvider/Messaging.rs",
+
 			Line: 92,
 		},
 	},

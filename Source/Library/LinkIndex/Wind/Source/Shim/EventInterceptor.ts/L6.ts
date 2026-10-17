@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"EventTarget.prototype.addEventListener": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/EventInterceptor.ts",
+
 			Line: 6,
 		},
 	},

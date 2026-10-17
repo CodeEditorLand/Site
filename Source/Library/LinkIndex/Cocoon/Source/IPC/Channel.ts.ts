@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Source/IPC/Channel.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/IPC/Channel.ts",
 		},
 	},

@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -27,11 +29,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Source/Configuration/ESBuild/Config/TargetConfig.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Configuration/ESBuild/Config/TargetConfig.ts",
 		},
 
 		"TargetConfig.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Configuration/ESBuild/Config/TargetConfig.ts",
 		},
 	},

@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"StorageProvider.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Storage/StorageProvider.rs",
 		},
 	},

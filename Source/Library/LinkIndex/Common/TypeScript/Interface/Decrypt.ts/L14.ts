@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Uint8Array: {
 			Repo: ElementRepos.Common,
+
 			Path: "TypeScript/Interface/Decrypt.ts",
+
 			Line: 14,
 		},
 	},

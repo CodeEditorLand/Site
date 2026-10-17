@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		FileSystemWriter: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/FileSystem/mod.rs",
+
 			Line: 13,
 		},
 	},

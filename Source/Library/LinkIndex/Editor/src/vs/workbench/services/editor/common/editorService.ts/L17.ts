@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IEditorService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/editor/common/editorService.ts",
+
 			Line: 17,
 		},
 	},

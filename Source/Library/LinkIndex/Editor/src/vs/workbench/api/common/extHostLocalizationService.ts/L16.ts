@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.l10n": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostLocalizationService.ts",
+
 			Line: 16,
 		},
 	},

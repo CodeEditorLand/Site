@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Mist/tree/Current/Source/Zone.rs": {
 			Repo: ElementRepos.Mist,
+
 			Path: "Source/Zone.rs",
 		},
 

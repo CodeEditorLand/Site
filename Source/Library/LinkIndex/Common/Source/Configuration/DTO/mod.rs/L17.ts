@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ConfigurationTarget: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Configuration/DTO/mod.rs",
+
 			Line: 17,
 		},
 	},

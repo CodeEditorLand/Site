@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"extension-development",
+
 		"vscode-api-coverage",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.scm": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostSCM.ts",
+
 			Line: 971,
 		},
 	},

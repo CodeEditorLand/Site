@@ -18,16 +18,27 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"configuration",
+
 		"deep-dive-worker",
+
 		"filesystem-footprint-per-element",
+
 		"output",
+
 		"polyfills",
+
 		"worker",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -36,7 +47,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ESBuild: {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Fn/Bundle/mod.rs",
+
 			Line: 19,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.languages.registerHoverProvider": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostLanguageFeatures.ts",
+
 			Line: 2354,
 		},
 	},

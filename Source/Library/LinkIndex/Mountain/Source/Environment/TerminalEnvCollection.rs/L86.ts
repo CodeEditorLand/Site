@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"air",
+
 		"coverage",
+
 		"filesystem-footprint-encapsulation",
+
 		"introduction",
+
 		"low-level-shim",
+
 		"polyfills",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Replace: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/TerminalEnvCollection.rs",
+
 			Line: 86,
 		},
 	},

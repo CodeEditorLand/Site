@@ -18,20 +18,35 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"architecture",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-mountain",
+
 		"deep-dive-rest",
+
 		"filesystem-footprint-platform-paths",
+
 		"grove",
+
 		"introduction",
+
 		"mountain",
+
 		"output",
+
 		"polyfills",
+
 		"vscode-api-coverage",
+
 		"why-wasm",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -40,7 +55,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Process: {
 			Repo: ElementRepos.Maintain,
+
 			Path: "Source/Run/Process.rs",
+
 			Line: 65,
 		},
 	},

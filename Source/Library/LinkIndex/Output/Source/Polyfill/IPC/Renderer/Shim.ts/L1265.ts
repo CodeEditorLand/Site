@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"cocoon",
+
 		"deep-dive-wind",
+
 		"output",
+
 		"workflow-startup",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ipcRenderer: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Polyfill/IPC/Renderer/Shim.ts",
+
 			Line: 1265,
 		},
 	},

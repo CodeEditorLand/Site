@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onDidExecuteTerminalCommand: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.terminalExecuteCommandEvent.d.ts",
+
 			Line: 46,
 		},
 	},

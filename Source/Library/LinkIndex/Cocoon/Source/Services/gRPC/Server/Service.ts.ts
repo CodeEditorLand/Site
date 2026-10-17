@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-vine",
 	],
 
@@ -29,22 +33,26 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Cocoon/Source/Services/gRPC/Server/Service.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/gRPC/Server/Service.ts",
 		},
 
 		"CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/gRPC/Server/Service.ts",
 			},
 
 		"Server/Service.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/gRPC/Server/Service.ts",
 		},
 
 		"Services/gRPC/Server/Service.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/gRPC/Server/Service.ts",
 		},
 	},

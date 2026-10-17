@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		UPDATE_CHECK_INTERVAL: {
 			Repo: EditorRepo,
+
 			Path: "cli/src/tunnels/agent_host.rs",
+
 			Line: 55,
 		},
 	},

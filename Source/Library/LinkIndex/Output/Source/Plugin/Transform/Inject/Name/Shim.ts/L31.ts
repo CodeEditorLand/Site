@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		__name: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Transform/Inject/Name/Shim.ts",
+
 			Line: 31,
 		},
 	},

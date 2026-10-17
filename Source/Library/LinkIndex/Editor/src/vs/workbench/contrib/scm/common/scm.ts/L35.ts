@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ISCMService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/scm/common/scm.ts",
+
 			Line: 35,
 		},
 	},

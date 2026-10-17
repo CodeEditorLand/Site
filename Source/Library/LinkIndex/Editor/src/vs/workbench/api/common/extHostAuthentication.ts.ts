@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"extHostAuthentication.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostAuthentication.ts",
 		},
 	},

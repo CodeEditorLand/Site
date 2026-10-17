@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IsReplace: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/Gate.ts",
+
 			Line: 48,
 		},
 	},

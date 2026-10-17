@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window.posthog": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Telemetry/PostHogBridge.ts",
+
 			Line: 4,
 		},
 
 		"window.posthog.capture": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Telemetry/PostHogBridge.ts",
+
 			Line: 4,
 		},
 	},

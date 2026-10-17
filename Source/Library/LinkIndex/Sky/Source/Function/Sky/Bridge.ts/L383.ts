@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"import.meta.env.Disable": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge.ts",
+
 			Line: 383,
 		},
 	},

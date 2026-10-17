@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"deep-dive-wind",
+
 		"wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,26 +34,31 @@ export const LinkIndexData: LinkIndexData = {
 
 		"CodeEditorLand/Wind/tree/Current/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"Element/Wind/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"Land/Element/Wind/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"Utility/Tier.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 
 		"Wind/Source/Utility/Tier.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Utility/Tier.ts",
 		},
 	},

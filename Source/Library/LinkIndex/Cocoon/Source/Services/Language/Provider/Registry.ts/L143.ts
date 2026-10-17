@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		UnregisterCommand: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Language/Provider/Registry.ts",
+
 			Line: 143,
 		},
 	},

@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"TauriDesktopIntegration",
+
 		"air",
+
 		"api-reference",
+
 		"deep-dive-air",
+
 		"deep-dive-vine",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-per-element",
+
 		"local-first-protocol",
+
 		"mountain-naming-conventions",
+
 		"project-structure",
+
 		"vscode-api-coverage",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -37,7 +49,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Update: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/Configuration/mod.rs",
+
 			Line: 9,
 		},
 	},

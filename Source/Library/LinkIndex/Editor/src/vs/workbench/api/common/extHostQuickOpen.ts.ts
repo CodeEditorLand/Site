@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"extHostQuickOpen.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostQuickOpen.ts",
 		},
 	},

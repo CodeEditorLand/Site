@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TimeoutError: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Errors.ts",
+
 			Line: 38,
 		},
 	},

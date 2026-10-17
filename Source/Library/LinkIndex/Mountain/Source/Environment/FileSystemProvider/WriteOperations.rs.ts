@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Environment/FileSystemProvider/WriteOperations.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/FileSystemProvider/WriteOperations.rs",
 		},
 	},

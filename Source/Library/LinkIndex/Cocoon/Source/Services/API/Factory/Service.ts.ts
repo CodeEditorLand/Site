@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Cocoon/tree/Current/Source/Services/API/Factory/Service.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/API/Factory/Service.ts",
 			},
 
 		"Services/API/Factory/Service.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/API/Factory/Service.ts",
 		},
 	},

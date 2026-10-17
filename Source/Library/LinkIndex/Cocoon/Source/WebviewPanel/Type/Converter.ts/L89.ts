@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TypeConverter: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/WebviewPanel/Type/Converter.ts",
+
 			Line: 89,
 		},
 	},

@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/rust-toolchain.toml": {
 			Repo: ElementRepos.Land,
+
 			Path: "rust-toolchain.toml",
 		},
 
 		"Land/rust-toolchain.toml": {
 			Repo: ElementRepos.Land,
+
 			Path: "rust-toolchain.toml",
 		},
 	},

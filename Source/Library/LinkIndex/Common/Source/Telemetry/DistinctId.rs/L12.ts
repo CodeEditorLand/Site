@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Brand: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Telemetry/DistinctId.rs",
+
 			Line: 12,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IQuickInputService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/quickinput/common/quickInput.ts",
+
 			Line: 963,
 		},
 	},

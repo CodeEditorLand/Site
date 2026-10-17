@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"deep-dive-wind",
+
 		"workflow-command-palette",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CommandService: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Command.ts",
+
 			Line: 164,
 		},
 	},

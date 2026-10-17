@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.comments": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostComments.ts",
+
 			Line: 34,
 		},
 	},

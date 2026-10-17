@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Binary/Extension/ScanPathConfigure.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Extension/ScanPathConfigure.rs",
 		},
 	},

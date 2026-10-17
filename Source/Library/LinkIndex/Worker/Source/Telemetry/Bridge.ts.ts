@@ -26,11 +26,13 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Element/Worker/Source/Telemetry/Bridge.ts": {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Telemetry/Bridge.ts",
 		},
 
 		"Source/Telemetry/Bridge.ts": {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Telemetry/Bridge.ts",
 		},
 	},

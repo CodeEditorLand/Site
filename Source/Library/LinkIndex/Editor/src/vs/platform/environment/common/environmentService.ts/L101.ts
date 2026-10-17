@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"this.productService.dataFolderName": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/environment/common/environmentService.ts",
+
 			Line: 101,
 		},
 	},

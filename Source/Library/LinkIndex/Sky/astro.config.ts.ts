@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-matrix",
+
 		"deep-dive-sky",
+
 		"deep-dive-wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -29,21 +33,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Element/Sky/astro.config.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "astro.config.ts",
 		},
 
 		"CodeEditorLand/Sky/tree/Current/astro.config.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "astro.config.ts",
 		},
 
 		"Land/Element/Sky/astro.config.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "astro.config.ts",
 		},
 
 		"Sky/astro.config.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "astro.config.ts",
 		},
 

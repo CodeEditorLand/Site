@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Vine/tree/Current/Source/Library.rs": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Library.rs",
 		},
 
 		"Vine/Source/Library.rs": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Library.rs",
 		},
 	},

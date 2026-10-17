@@ -16,22 +16,39 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"CC0OpenSource",
+
 		"LocalFirstPhilosophy",
+
 		"api-reference",
+
 		"architecture",
+
 		"build-matrix",
+
 		"common",
+
 		"deep-dive-common",
+
 		"deep-dive-grove",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"grove",
+
 		"installation",
+
 		"introduction",
+
 		"project-structure",
+
 		"vine",
+
 		"why-wasm",
+
 		"workflow-overview",
 	],
 

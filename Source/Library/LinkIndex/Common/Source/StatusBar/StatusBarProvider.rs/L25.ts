@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		StatusBarProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/StatusBar/StatusBarProvider.rs",
+
 			Line: 25,
 		},
 	},

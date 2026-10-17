@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DisposableStore: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/lifecycle.ts",
+
 			Line: 416,
 		},
 	},

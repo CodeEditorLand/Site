@@ -18,11 +18,17 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"cocoon",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-wind",
+
 		"extension-development",
+
 		"grove",
 	],
 
@@ -31,7 +37,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.window": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostWindow.ts",
+
 			Line: 17,
 		},
 	},

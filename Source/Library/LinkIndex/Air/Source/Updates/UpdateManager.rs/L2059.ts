@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		StageUpdate: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Updates/UpdateManager.rs",
+
 			Line: 2059,
 		},
 	},

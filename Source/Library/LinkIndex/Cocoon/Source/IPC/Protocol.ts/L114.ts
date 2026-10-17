@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		NotificationHandler: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/IPC/Protocol.ts",
+
 			Line: 114,
 		},
 	},

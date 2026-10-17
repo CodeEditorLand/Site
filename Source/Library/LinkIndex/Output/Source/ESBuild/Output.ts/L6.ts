@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RestPlugin: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild/Output.ts",
+
 			Line: 6,
 		},
 	},

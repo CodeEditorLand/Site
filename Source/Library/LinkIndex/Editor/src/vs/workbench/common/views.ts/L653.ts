@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ITreeView: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/common/views.ts",
+
 			Line: 653,
 		},
 	},

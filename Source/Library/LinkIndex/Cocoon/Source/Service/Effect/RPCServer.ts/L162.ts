@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"architecture",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-mountain",
+
 		"development-history",
+
 		"workflow-extension-tests",
+
 		"workflow-startup",
 	],
 
@@ -35,7 +45,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RPCServer: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/RPCServer.ts",
+
 			Line: 162,
 		},
 	},

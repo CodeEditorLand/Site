@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LandFixLog: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Land/Fix/Log.ts",
+
 			Line: 232,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.postMessage": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostWebview.ts",
+
 			Line: 129,
 		},
 	},

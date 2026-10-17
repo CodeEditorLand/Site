@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SwallowDecision: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/Type.ts",
+
 			Line: 38,
 		},
 	},

@@ -18,16 +18,27 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-mountain",
+
 		"deep-dive-vine",
+
 		"troubleshooting",
+
 		"wind",
+
 		"workflow-hover-provider",
+
 		"workflow-open-file",
+
 		"workflow-save-participants",
+
 		"workflow-scm",
+
 		"workflow-user-data-sync",
 	],
 
@@ -36,7 +47,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		URI: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/RPC/CocoonService/Initialization/InitExtensionHost.rs",
+
 			Line: 36,
 		},
 	},

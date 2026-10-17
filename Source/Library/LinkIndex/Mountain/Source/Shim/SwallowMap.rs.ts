@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Shim/SwallowMap.rs",
 		},
 
 		"Mountain/Source/Shim/SwallowMap.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Shim/SwallowMap.rs",
 		},
 	},

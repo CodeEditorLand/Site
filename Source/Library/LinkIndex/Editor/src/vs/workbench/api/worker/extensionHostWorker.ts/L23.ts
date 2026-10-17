@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		postMessage: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/worker/extensionHostWorker.ts",
+
 			Line: 23,
 		},
 	},

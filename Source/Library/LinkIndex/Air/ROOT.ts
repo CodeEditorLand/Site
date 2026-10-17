@@ -18,43 +18,81 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"BuildSystemDesign",
+
 		"air",
+
 		"api-reference",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"common",
+
 		"configuration",
+
 		"contributing",
+
 		"deep-dive-air",
+
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"deep-dive-sidecar",
+
 		"deep-dive-vine",
+
 		"dependency-management",
+
 		"development-history",
+
 		"extension-development",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-cleanup",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-user-dotfile",
+
 		"getting-started",
+
 		"local-first-protocol",
+
 		"low-level-shim",
+
 		"maintain",
+
 		"mist",
+
 		"mountain",
+
 		"polyfills",
+
 		"project-structure",
+
 		"troubleshooting",
+
 		"vine",
+
 		"why-rust",
+
 		"wind",
+
 		"workflow-startup",
+
 		"workflow-terminal",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -159,6 +197,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		RegisterInlineCompletionItemProvider: {
 			Repo: ElementRepos.Air,
+
 			Path: "",
 		},
 
@@ -230,6 +269,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		TierRemoteProcedureCallSharedMemory: {
 			Repo: ElementRepos.Air,
+
 			Path: "",
 		},
 
@@ -257,6 +297,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		phc_mvbuxcLutfZctCVwnC4TTksmtNPPVgcx7gX96tTuCKk4: {
 			Repo: ElementRepos.Air,
+
 			Path: "",
 		},
 

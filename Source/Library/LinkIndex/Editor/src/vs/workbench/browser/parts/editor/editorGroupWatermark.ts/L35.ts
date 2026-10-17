@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		showCommands: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/browser/parts/editor/editorGroupWatermark.ts",
+
 			Line: 35,
 		},
 	},

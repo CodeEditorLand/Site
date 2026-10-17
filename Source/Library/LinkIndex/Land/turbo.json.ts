@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"cocoon",
+
 		"maintain",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,6 +31,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/turbo.json": {
 			Repo: ElementRepos.Land,
+
 			Path: "turbo.json",
 		},
 

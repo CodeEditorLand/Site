@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"console.log": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindAdvancedSync.rs",
+
 			Line: 219,
 		},
 	},

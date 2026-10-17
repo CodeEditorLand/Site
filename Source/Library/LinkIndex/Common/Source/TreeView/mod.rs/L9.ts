@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TreeViewProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/TreeView/mod.rs",
+
 			Line: 9,
 		},
 	},

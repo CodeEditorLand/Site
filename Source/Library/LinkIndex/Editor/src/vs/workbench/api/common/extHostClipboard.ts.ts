@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"extHostClipboard.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostClipboard.ts",
 		},
 	},

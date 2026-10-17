@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TauriMainProcessService: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/Tauri/Main/Process/Service.ts",
+
 			Line: 1383,
 		},
 	},

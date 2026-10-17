@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"extension-development",
+
 		"filesystem-footprint-per-element",
+
 		"local-first-protocol",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"context.globalState": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Transform/Instrument/Vscode/Git.ts",
+
 			Line: 159,
 		},
 	},

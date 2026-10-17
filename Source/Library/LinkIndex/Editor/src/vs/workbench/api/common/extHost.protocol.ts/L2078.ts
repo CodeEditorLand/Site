@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.extensions.getExtension": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHost.protocol.ts",
+
 			Line: 2078,
 		},
 	},

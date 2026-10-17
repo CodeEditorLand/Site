@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		VineError: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Vine/Error.rs",
+
 			Line: 44,
 		},
 	},

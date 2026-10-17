@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Grove/tree/Current/Source/WASM/MemoryManager.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/WASM/MemoryManager.rs",
 		},
 
 		"Source/WASM/MemoryManager.rs": {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/WASM/MemoryManager.rs",
 		},
 	},

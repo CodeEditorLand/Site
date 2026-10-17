@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"common",
+
 		"mountain",
+
 		"why-tauri",
+
 		"workflow-open-file",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		tauri: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Main/AppLifecycle.rs",
+
 			Line: 298,
 		},
 	},

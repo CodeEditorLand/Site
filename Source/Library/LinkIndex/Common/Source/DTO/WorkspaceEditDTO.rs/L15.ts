@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WorkspaceEditDTO: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/DTO/WorkspaceEditDTO.rs",
+
 			Line: 15,
 		},
 	},

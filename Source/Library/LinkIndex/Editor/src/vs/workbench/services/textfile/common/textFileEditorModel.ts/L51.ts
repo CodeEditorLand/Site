@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TextFileEditorModel: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/textfile/common/textFileEditorModel.ts",
+
 			Line: 51,
 		},
 	},

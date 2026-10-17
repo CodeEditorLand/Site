@@ -23,21 +23,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Maintain/Script/TierEnvironment.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/TierEnvironment.sh",
 		},
 
 		"Land/Maintain/Script/TierEnvironment.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/TierEnvironment.sh",
 		},
 
 		"Maintain/Script/TierEnvironment.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/TierEnvironment.sh",
 		},
 
 		"TierEnvironment.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/TierEnvironment.sh",
 		},
 	},

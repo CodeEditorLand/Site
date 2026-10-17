@@ -16,24 +16,43 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"CC0OpenSource",
+
 		"build-matrix",
+
 		"configuration",
+
 		"deep-dive-common",
+
 		"deep-dive-maintain",
+
 		"deep-dive-mountain",
+
 		"deep-dive-sidecar",
+
 		"dependency-management",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-cleanup",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
+
 		"installation",
+
 		"maintain",
+
 		"project-structure",
+
 		"workflow-overview",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 

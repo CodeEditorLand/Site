@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Mountain/tree/Current/Source/Environment/KeybindingProvider.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/Environment/KeybindingProvider.rs",
 			},
 
 		"Environment/KeybindingProvider.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/KeybindingProvider.rs",
 		},
 	},

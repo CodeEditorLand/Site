@@ -25,11 +25,13 @@ export const LinkIndexData: LinkIndexData = {
 
 		"CodeEditorLand/SideCar/tree/Current/Cache.json": {
 			Repo: ElementRepos.SideCar,
+
 			Path: "Cache.json",
 		},
 
 		"SideCar/Cache.json": {
 			Repo: ElementRepos.SideCar,
+
 			Path: "Cache.json",
 		},
 	},

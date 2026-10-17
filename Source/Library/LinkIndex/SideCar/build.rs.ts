@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/SideCar/tree/Current/build.rs": {
 			Repo: ElementRepos.SideCar,
+
 			Path: "build.rs",
 		},
 	},

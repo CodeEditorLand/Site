@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		readFile: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Polyfill/File/System/Polyfill.ts",
+
 			Line: 357,
 		},
 	},

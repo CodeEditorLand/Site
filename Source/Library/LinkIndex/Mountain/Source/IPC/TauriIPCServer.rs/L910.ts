@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		mountain_ipc_get_status: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/TauriIPCServer.rs",
+
 			Line: 910,
 		},
 	},

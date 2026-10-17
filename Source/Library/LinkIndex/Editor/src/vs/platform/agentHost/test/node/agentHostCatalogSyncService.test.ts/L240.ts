@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-platform-paths",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		localStorage: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/agentHost/test/node/agentHostCatalogSyncService.test.ts",
+
 			Line: 240,
 		},
 	},

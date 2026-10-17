@@ -16,21 +16,37 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"LocalFirstPhilosophy",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"common",
+
 		"deep-dive-maintain",
+
 		"deep-dive-rest",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"installation",
+
 		"maintain",
+
 		"output",
+
 		"project-structure",
+
 		"rest",
+
 		"workflow-overview",
 	],
 

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		create_directory: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Generated/vine.rs",
+
 			Line: 4102,
 		},
 	},

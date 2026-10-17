@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CACHE_CORE: {
 			Repo: ElementRepos.Worker,
+
 			Path: "Source/Worker.ts",
+
 			Line: 12,
 		},
 	},

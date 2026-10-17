@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"inputBox.placeholder": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/contrib/find/browser/findController.ts",
+
 			Line: 848,
 		},
 	},

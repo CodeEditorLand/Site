@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CreateWebviewPanel: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Window/Webview/Panel.ts",
+
 			Line: 41,
 		},
 	},

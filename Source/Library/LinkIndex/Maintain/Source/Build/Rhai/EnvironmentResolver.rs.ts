@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Maintain/tree/Current/Source/Build/Rhai/EnvironmentResolver.rs":
 			{
 				Repo: ElementRepos.Maintain,
+
 				Path: "Source/Build/Rhai/EnvironmentResolver.rs",
 			},
 
 		"Source/Build/Rhai/EnvironmentResolver.rs": {
 			Repo: ElementRepos.Maintain,
+
 			Path: "Source/Build/Rhai/EnvironmentResolver.rs",
 		},
 	},

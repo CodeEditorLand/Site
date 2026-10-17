@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"local-first-protocol",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Replay: {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge/ReplayEvents.ts",
+
 			Line: 41,
 		},
 	},

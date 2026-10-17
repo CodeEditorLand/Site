@@ -18,21 +18,37 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"api-reference",
+
 		"architecture",
+
 		"build-matrix",
+
 		"cocoon",
+
 		"configuration",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-sidecar",
+
 		"deep-dive-wind",
+
 		"development-history",
+
 		"filesystem-footprint-environment-variables",
+
 		"getting-started",
+
 		"introduction",
+
 		"maintain",
+
 		"project-structure",
+
 		"why-grpc",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -41,7 +57,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TierIPC: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/IPC/WindServiceHandlers/DispatchMatch.rs",
+
 			Line: 2544,
 		},
 	},

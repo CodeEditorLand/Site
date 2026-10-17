@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"mist",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Wire: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/IPC/SkyEvent.rs",
+
 			Line: 361,
 		},
 	},

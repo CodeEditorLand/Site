@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		_v: {
 			Repo: EditorRepo,
+
 			Path: "extensions/copilot/src/util/common/test/result.spec.ts",
+
 			Line: 177,
 		},
 	},

@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon",
+
 		"common",
+
 		"mountain",
+
 		"mountain-naming-conventions",
+
 		"wind",
+
 		"workflow-user-data-sync",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ConfigurationProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Configuration/ConfigurationProvider.rs",
+
 			Line: 23,
 		},
 	},

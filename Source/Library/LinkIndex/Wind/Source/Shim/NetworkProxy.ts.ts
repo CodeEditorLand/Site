@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/NetworkProxy.ts",
 		},
 
 		"Wind/Source/Shim/NetworkProxy.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/NetworkProxy.ts",
 		},
 	},

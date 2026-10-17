@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"architecture",
+
 		"configuration",
+
 		"deep-dive-wind",
+
 		"introduction",
+
 		"mountain",
+
 		"wind",
 	],
 
@@ -30,7 +35,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Clipboard: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
+
 			Line: 23,
 		},
 	},

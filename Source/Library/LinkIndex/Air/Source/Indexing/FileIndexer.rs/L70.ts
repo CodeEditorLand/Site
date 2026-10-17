@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"AppState.Configuration": {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Indexing/FileIndexer.rs",
+
 			Line: 70,
 		},
 	},

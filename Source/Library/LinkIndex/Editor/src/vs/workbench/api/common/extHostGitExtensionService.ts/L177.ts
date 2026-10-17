@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.git": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostGitExtensionService.ts",
+
 			Line: 177,
 		},
 	},

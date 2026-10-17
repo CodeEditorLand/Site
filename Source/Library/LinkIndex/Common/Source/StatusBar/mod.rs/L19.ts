@@ -18,12 +18,19 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"common",
+
 		"deep-dive-common",
+
 		"deep-dive-mountain",
+
 		"mountain-naming-conventions",
+
 		"workflow-hover-provider",
+
 		"workflow-scm",
+
 		"workflow-webview",
 	],
 
@@ -32,7 +39,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DTO: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/StatusBar/mod.rs",
+
 			Line: 19,
 		},
 	},

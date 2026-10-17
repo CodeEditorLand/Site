@@ -18,12 +18,19 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"cocoon",
+
 		"common",
+
 		"coverage",
+
 		"deep-dive-common",
+
 		"mountain",
+
 		"wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -32,7 +39,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Search: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Library.rs",
+
 			Line: 116,
 		},
 	},

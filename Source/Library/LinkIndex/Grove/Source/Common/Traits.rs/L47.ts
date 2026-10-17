@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		activation_events: {
 			Repo: ElementRepos.Grove,
+
 			Path: "Source/Common/Traits.rs",
+
 			Line: 47,
 		},
 	},

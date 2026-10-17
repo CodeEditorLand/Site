@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Rest/tree/Current/Source/Fn/OXC/Compiler.rs": {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Fn/OXC/Compiler.rs",
 		},
 
 		"Source/Fn/OXC/Compiler.rs": {
 			Repo: ElementRepos.Rest,
+
 			Path: "Source/Fn/OXC/Compiler.rs",
 		},
 	},

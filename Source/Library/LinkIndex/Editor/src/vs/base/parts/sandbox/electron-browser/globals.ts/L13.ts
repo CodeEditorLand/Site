@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ISandboxNodeProcess: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/parts/sandbox/electron-browser/globals.ts",
+
 			Line: 13,
 		},
 	},

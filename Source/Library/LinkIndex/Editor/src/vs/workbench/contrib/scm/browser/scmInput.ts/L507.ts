@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		commitTemplate: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/scm/browser/scmInput.ts",
+
 			Line: 507,
 		},
 	},

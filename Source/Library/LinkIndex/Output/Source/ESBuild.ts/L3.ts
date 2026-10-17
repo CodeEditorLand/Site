@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"LocalFirstPhilosophy",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"configuration",
+
 		"deep-dive-sky",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"installation",
+
 		"sky",
 	],
 
@@ -37,7 +49,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Browser: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild.ts",
+
 			Line: 3,
 		},
 	},

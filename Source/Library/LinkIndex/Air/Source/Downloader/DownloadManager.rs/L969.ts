@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		VerifyChecksum: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Downloader/DownloadManager.rs",
+
 			Line: 969,
 		},
 	},

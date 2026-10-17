@@ -18,10 +18,15 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"configuration",
+
 		"deep-dive-wind",
+
 		"development-history",
+
 		"project-structure",
+
 		"workflow-open-file",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -31,21 +36,25 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Wind/tree/Current/Source/Service/TauriMainProcessService.ts":
 			{
 				Repo: ElementRepos.Wind,
+
 				Path: "Source/Service/TauriMainProcessService.ts",
 			},
 
 		"Source/Service/TauriMainProcessService.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Service/TauriMainProcessService.ts",
 		},
 
 		"TauriMainProcessService.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Service/TauriMainProcessService.ts",
 		},
 
 		"Wind/Source/Service/TauriMainProcessService.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Service/TauriMainProcessService.ts",
 		},
 	},

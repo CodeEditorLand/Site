@@ -18,6 +18,7 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-user-dotfile",
 	],
 
@@ -26,7 +27,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		HealExecutableBits: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ExtensionManagement/VsixInstaller.rs",
+
 			Line: 401,
 		},
 	},

@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"process.stderr.write": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Land/Fix/Log.ts",
+
 			Line: 5,
 		},
 
 		"process.stdout.write": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Land/Fix/Log.ts",
+
 			Line: 5,
 		},
 	},

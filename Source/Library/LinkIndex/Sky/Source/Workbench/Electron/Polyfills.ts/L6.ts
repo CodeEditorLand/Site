@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window.process": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Workbench/Electron/Polyfills.ts",
+
 			Line: 6,
 		},
 	},

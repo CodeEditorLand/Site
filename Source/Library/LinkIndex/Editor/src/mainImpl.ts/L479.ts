@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"deep-dive-mountain",
+
 		"workflow-startup",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		dataFolderName: {
 			Repo: EditorRepo,
+
 			Path: "src/mainImpl.ts",
+
 			Line: 479,
 		},
 	},

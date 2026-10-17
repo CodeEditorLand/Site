@@ -16,25 +16,45 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"common",
+
 		"deep-dive-maintain",
+
 		"deep-dive-mist",
+
 		"deep-dive-sidecar",
+
 		"dependency-management",
+
 		"filesystem-footprint",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"installation",
+
 		"maintain",
+
 		"mist",
+
 		"project-structure",
+
 		"sidecar",
+
 		"troubleshooting",
+
 		"workflow-overview",
 	],
 

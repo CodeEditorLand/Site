@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"window.ISandboxConfiguration": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Types/Sandbox.ts",
+
 			Line: 105,
 		},
 	},

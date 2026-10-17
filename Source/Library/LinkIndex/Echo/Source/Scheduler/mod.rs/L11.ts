@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SchedulerBuilder: {
 			Repo: ElementRepos.Echo,
+
 			Path: "Source/Scheduler/mod.rs",
+
 			Line: 11,
 		},
 	},

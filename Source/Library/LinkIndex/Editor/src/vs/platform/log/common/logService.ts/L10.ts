@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		LogService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/log/common/logService.ts",
+
 			Line: 10,
 		},
 	},

@@ -18,20 +18,35 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"TauriDesktopIntegration",
+
 		"api-reference",
+
 		"architecture",
+
 		"cocoon",
+
 		"common",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-echo",
+
 		"deep-dive-mountain",
+
 		"echo",
+
 		"filesystem-footprint-per-element",
+
 		"grove",
+
 		"introduction",
+
 		"project-structure",
+
 		"vine",
 	],
 
@@ -40,7 +55,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ActionEffect: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Effect/ActionEffect.rs",
+
 			Line: 21,
 		},
 	},

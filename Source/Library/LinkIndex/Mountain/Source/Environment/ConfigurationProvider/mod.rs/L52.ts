@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		GetConfigurationValue: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Environment/ConfigurationProvider/mod.rs",
+
 			Line: 52,
 		},
 	},

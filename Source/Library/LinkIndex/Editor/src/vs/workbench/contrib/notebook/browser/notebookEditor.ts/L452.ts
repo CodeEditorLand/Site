@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		perfMarks: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/notebook/browser/notebookEditor.ts",
+
 			Line: 452,
 		},
 	},

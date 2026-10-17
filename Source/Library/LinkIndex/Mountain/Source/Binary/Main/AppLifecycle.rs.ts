@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint",
+
 		"filesystem-footprint-encapsulation",
+
 		"filesystem-footprint-platform-paths",
 	],
 
@@ -27,22 +29,26 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"AppLifecycle.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Main/AppLifecycle.rs",
 		},
 
 		"Binary/Main/AppLifecycle.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Main/AppLifecycle.rs",
 		},
 
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Source/Binary/Main/AppLifecycle.rs":
 			{
 				Repo: ElementRepos.Mountain,
+
 				Path: "Source/Binary/Main/AppLifecycle.rs",
 			},
 
 		"Element/Mountain/Source/Binary/Main/AppLifecycle.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Main/AppLifecycle.rs",
 		},
 	},

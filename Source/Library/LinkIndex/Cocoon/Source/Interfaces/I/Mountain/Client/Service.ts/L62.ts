@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect.Service": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Interfaces/I/Mountain/Client/Service.ts",
+
 			Line: 62,
 		},
 	},

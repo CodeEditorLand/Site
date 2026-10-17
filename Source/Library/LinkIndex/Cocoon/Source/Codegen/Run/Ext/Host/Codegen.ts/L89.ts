@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"filesystem-footprint-environment-variables",
+
 		"maintain",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Record: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Codegen/Run/Ext/Host/Codegen.ts",
+
 			Line: 89,
 		},
 	},

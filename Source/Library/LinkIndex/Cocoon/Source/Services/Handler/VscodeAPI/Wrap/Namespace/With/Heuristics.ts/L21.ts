@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect.withSpan": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/Wrap/Namespace/With/Heuristics.ts",
+
 			Line: 21,
 		},
 	},

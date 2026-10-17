@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"extension-development",
+
 		"filesystem-footprint-per-element",
+
 		"local-first-protocol",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"context.workspaceState": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Extension/Host/ActivateExtension.ts",
+
 			Line: 864,
 		},
 	},

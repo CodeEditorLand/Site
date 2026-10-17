@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"common",
+
 		"contributing",
+
 		"deep-dive-common",
+
 		"deep-dive-maintain",
+
 		"dependency-management",
+
 		"installation",
+
 		"maintain",
 	],
 
@@ -36,6 +45,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		"CodeEditorLand/Land/tree/Current/Cargo.toml": {
 			Repo: ElementRepos.Land,
+
 			Path: "Cargo.toml",
 		},
 

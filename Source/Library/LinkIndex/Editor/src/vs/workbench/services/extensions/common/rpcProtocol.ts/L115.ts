@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		RPCProtocol: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/extensions/common/rpcProtocol.ts",
+
 			Line: 115,
 		},
 	},

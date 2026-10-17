@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"child_process.spawn": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ExtensionManagement/VsixInstaller.rs",
+
 			Line: 135,
 		},
 	},

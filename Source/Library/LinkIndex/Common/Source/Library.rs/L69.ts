@@ -18,19 +18,33 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ExtensionHostDeepDive",
+
 		"api-reference",
+
 		"architecture",
+
 		"common",
+
 		"configuration",
+
 		"deep-dive-common",
+
 		"deep-dive-echo",
+
 		"deep-dive-mist",
+
 		"filesystem-footprint",
+
 		"mountain",
+
 		"mountain-naming-conventions",
+
 		"polyfills",
+
 		"why-wasm",
+
 		"wind",
+
 		"workflow-startup",
 	],
 
@@ -39,7 +53,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Environment: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Library.rs",
+
 			Line: 69,
 		},
 	},

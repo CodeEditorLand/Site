@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"api-reference",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"common",
+
 		"coverage",
+
 		"deep-dive-common",
+
 		"development-history",
+
 		"filesystem-footprint-per-element",
+
 		"introduction",
+
 		"mountain",
+
 		"vscode-api-coverage",
+
 		"wind",
 	],
 
@@ -37,7 +49,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Workspace: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Library.rs",
+
 			Line: 149,
 		},
 	},

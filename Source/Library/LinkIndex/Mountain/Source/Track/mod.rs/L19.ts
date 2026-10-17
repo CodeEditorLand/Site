@@ -18,29 +18,53 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"TauriDesktopIntegration",
+
 		"VSCodeCompatibility",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"cocoon-vscode-validation",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-common",
+
 		"deep-dive-echo",
+
 		"deep-dive-mountain",
+
 		"deep-dive-sky",
+
 		"deep-dive-wind",
+
 		"development-history",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-user-dotfile",
+
 		"why-effect-ts",
+
 		"workflow-command-palette",
+
 		"workflow-hover-provider",
+
 		"workflow-open-file",
+
 		"workflow-overview",
+
 		"workflow-save-participants",
+
 		"workflow-terminal",
+
 		"workflow-user-data-sync",
 	],
 
@@ -49,7 +73,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Effect: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/mod.rs",
+
 			Line: 19,
 		},
 	},

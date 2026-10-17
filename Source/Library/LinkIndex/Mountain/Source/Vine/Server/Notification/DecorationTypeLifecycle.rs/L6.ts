@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		DecorationTypeLifecycle: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Server/Notification/DecorationTypeLifecycle.rs",
+
 			Line: 6,
 		},
 	},

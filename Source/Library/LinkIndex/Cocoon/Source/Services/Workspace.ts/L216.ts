@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		WorkspaceService: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Workspace.ts",
+
 			Line: 216,
 		},
 	},

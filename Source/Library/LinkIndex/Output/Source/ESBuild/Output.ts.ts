@@ -23,16 +23,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Output/tree/Current/Source/ESBuild/Output.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild/Output.ts",
 		},
 
 		"Output/ESBuild/Output.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild/Output.ts",
 		},
 
 		"Source/ESBuild/Output.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/ESBuild/Output.ts",
 		},
 	},

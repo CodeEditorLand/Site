@@ -18,30 +18,55 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
+
 		"ExtensionHostDeepDive",
+
 		"TauriDesktopIntegration",
+
 		"api-reference",
+
 		"architecture",
+
 		"build-matrix",
+
 		"build-pipeline",
+
 		"ci-cd-pipeline",
+
 		"cocoon",
+
 		"configuration",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-wind",
+
 		"dependency-management",
+
 		"development-history",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-user-dotfile",
+
 		"getting-started",
+
 		"installation",
+
 		"introduction",
+
 		"output",
+
 		"polyfills",
+
 		"vscode-api-coverage",
+
 		"why-grpc",
+
 		"workflow-tier-gated-implementation-selection",
+
 		"workflow-user-data-sync",
 	],
 
@@ -50,7 +75,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Node: {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Polyfill/Workbench/Paint/Prime.ts",
+
 			Line: 75,
 		},
 	},

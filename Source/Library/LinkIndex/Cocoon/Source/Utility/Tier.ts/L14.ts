@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-cocoon",
+
 		"polyfills",
+
 		"workflow-startup",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,7 +31,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"globalThis.__LandTiers": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Utility/Tier.ts",
+
 			Line: 14,
 		},
 	},

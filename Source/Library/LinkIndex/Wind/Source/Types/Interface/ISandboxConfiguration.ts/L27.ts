@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"deep-dive-mountain",
+
 		"deep-dive-wind",
+
 		"troubleshooting",
+
 		"workflow-startup",
 	],
 
@@ -29,13 +33,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ISandboxConfiguration: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Types/Interface/ISandboxConfiguration.ts",
+
 			Line: 27,
 		},
 
 		"ISandboxConfiguration.profiles": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Types/Interface/ISandboxConfiguration.ts",
+
 			Line: 27,
 		},
 	},

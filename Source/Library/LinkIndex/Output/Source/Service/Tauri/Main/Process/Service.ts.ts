@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts":
 			{
 				Repo: ElementRepos.Output,
+
 				Path: "Source/Service/Tauri/Main/Process/Service.ts",
 			},
 
 		"Output/Source/Service/Tauri/Main/Process/Service.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Service/Tauri/Main/Process/Service.ts",
 		},
 	},

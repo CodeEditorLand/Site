@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ApplicationState/Internal/Persistence/MementoSaver.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/Internal/Persistence/MementoSaver.rs",
 		},
 	},

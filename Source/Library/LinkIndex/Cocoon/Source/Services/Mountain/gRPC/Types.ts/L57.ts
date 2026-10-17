@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		TextEdit: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Mountain/gRPC/Types.ts",
+
 			Line: 57,
 		},
 	},

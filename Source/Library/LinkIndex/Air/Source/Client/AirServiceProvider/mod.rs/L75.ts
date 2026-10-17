@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ApplyUpdate: {
 			Repo: ElementRepos.Air,
+
 			Path: "Source/Client/AirServiceProvider/mod.rs",
+
 			Line: 75,
 		},
 	},

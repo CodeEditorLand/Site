@@ -23,16 +23,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/Element/Mountain/Cargo.toml": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Cargo.toml",
 		},
 
 		"Element/Mountain/Cargo.toml": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Cargo.toml",
 		},
 
 		"Mountain/Cargo.toml": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Cargo.toml",
 		},
 	},

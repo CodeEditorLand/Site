@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-mountain",
+
 		"deep-dive-vine",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 

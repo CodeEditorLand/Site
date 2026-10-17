@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		MainThreadBulkEdits: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/browser/mainThreadBulkEdits.ts",
+
 			Line: 20,
 		},
 	},

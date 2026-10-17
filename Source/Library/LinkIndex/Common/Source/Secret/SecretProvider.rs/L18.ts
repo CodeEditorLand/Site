@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SecretProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Secret/SecretProvider.rs",
+
 			Line: 18,
 		},
 	},

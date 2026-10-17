@@ -18,15 +18,25 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"deep-dive-grove",
+
 		"deep-dive-mountain",
+
 		"deep-dive-sidecar",
+
 		"deep-dive-sky",
+
 		"grove",
+
 		"output",
+
 		"sky",
+
 		"vine",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -35,7 +45,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Shared: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Vine/Client.rs",
+
 			Line: 37,
 		},
 	},

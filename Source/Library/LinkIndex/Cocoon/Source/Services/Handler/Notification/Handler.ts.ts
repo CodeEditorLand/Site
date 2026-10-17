@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Notification/Handler.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Notification/Handler.ts",
 		},
 
 		"Services/Handler/Notification/Handler.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Notification/Handler.ts",
 		},
 	},

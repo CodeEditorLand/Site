@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-mountain",
+
 		"filesystem-footprint-encapsulation",
+
 		"mountain",
+
 		"wind",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Storage: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
+
 			Line: 74,
 		},
 	},

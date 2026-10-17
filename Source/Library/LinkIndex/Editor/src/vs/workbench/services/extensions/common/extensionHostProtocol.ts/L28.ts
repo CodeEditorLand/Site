@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"cocoon-vscode-validation",
+
 		"deep-dive-mountain",
+
 		"workflow-startup",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IExtensionHostInitData: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/extensions/common/extensionHostProtocol.ts",
+
 			Line: 28,
 		},
 	},

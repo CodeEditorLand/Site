@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IUntypedEditorInput: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/common/editor.ts",
+
 			Line: 886,
 		},
 	},

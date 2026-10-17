@@ -18,25 +18,45 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"BuildSystemDesign",
+
 		"ExtensionHostDeepDive",
+
 		"api-reference",
+
 		"architecture",
+
 		"cocoon",
+
 		"common",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-air",
+
 		"deep-dive-common",
+
 		"deep-dive-maintain",
+
 		"deep-dive-rest",
+
 		"deep-dive-wind",
+
 		"extension-development",
+
 		"maintain",
+
 		"mountain",
+
 		"vscode-api-coverage",
+
 		"wind",
+
 		"workflow-startup",
+
 		"workflow-user-data-sync",
 	],
 
@@ -45,7 +65,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Configuration: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Track/Effect/CreateEffectForRequest/mod.rs",
+
 			Line: 29,
 		},
 	},

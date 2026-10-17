@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		HashMap: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_allocator/src/api/mod.rs",
+
 			Line: 14,
 		},
 	},

@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"mainThreadCommands.ts": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/browser/mainThreadCommands.ts",
 		},
 	},

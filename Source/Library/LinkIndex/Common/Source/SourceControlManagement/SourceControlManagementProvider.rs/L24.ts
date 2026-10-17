@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SourceControlManagementProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/SourceControlManagement/SourceControlManagementProvider.rs",
+
 			Line: 24,
 		},
 	},

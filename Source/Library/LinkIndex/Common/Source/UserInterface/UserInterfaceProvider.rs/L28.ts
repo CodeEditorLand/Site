@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		UserInterfaceProvider: {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/UserInterface/UserInterfaceProvider.rs",
+
 			Line: 28,
 		},
 	},

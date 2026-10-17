@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		json5: {
 			Repo: TauriRepo,
+
 			Path: "crates/tauri-utils/src/config_v1/parse.rs",
+
 			Line: 154,
 		},
 	},

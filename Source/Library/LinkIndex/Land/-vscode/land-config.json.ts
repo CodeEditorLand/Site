@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Land/tree/Current/.vscode/land-config.json": {
 			Repo: ElementRepos.Land,
+
 			Path: ".vscode/land-config.json",
 		},
 	},

@@ -23,12 +23,14 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Cocoon/Source/Services/Handler/VscodeAPI/ROUTING.md": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/VscodeAPI/ROUTING.md",
 		},
 
 		"CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/ROUTING.md":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/Handler/VscodeAPI/ROUTING.md",
 			},
 	},

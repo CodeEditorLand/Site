@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"JSON.stringify": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Codegen/Sync.ts",
+
 			Line: 239,
 		},
 	},

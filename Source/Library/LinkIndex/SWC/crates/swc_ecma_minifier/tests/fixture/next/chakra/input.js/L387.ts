@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-sky",
+
 		"deep-dive-wind",
+
 		"polyfills",
+
 		"vscode-api-coverage",
+
 		"workflow-scm",
 	],
 
@@ -29,7 +33,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CustomEvent: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_minifier/tests/fixture/next/chakra/input.js",
+
 			Line: 387,
 		},
 	},

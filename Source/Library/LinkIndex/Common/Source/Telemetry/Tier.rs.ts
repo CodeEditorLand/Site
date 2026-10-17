@@ -26,6 +26,7 @@ export const LinkIndexData: LinkIndexData = {
 
 		"Element/Common/Source/Telemetry/Tier.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/Telemetry/Tier.rs",
 		},
 	},

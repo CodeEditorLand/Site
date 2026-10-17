@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		CocoonDevLog: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Dev/Log.ts",
+
 			Line: 52,
 		},
 	},

@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -27,7 +29,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Simple: {
 			Repo: ElementRepos.Maintain,
+
 			Path: "tests/Eliminate/Integration.rs",
+
 			Line: 95,
 		},
 	},

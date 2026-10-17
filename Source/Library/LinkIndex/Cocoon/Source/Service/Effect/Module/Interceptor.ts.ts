@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"deep-dive-cocoon",
 	],
 
@@ -28,16 +30,19 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Module/Interceptor.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Service/Effect/Module/Interceptor.ts",
 			},
 
 		"Effect/Module/Interceptor.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Module/Interceptor.ts",
 		},
 
 		"Service/Effect/Module/Interceptor.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/Module/Interceptor.ts",
 		},
 	},

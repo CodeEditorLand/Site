@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Mountain/Source/Telemetry/Tracing/InitializeTracing.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Telemetry/Tracing/InitializeTracing.rs",
 		},
 	},

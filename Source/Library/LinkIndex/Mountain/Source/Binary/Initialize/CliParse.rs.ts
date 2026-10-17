@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Mountain/Source/Binary/Initialize/CliParse.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/Binary/Initialize/CliParse.rs",
 		},
 	},

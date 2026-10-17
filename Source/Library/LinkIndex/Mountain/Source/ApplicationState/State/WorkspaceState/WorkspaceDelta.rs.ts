@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"ApplicationState/State/WorkspaceState/WorkspaceDelta.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/State/WorkspaceState/WorkspaceDelta.rs",
 		},
 
 		"State/WorkspaceState/WorkspaceDelta.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ApplicationState/State/WorkspaceState/WorkspaceDelta.rs",
 		},
 	},

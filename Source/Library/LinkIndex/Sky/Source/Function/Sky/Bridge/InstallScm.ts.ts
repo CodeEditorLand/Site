@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts":
 			{
 				Repo: ElementRepos.Sky,
+
 				Path: "Source/Function/Sky/Bridge/InstallScm.ts",
 			},
 
 		"InstallScm.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge/InstallScm.ts",
 		},
 	},

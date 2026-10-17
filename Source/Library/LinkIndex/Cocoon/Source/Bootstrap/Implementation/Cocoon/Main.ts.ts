@@ -18,8 +18,11 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"deep-dive-cocoon",
+
 		"workflow-tier-gated-implementation-selection",
 	],
 
@@ -28,38 +31,45 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Bootstrap/Implementation/Cocoon/Main.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 		},
 
 		"Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 		},
 
 		"CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 			},
 
 		"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 			},
 
 		"Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 		},
 
 		"Land/Element/Cocoon/Source/Bootstrap/Implementation/Cocoon/Main.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 		},
 
 		"Main.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Bootstrap/Implementation/Cocoon/Main.ts",
 		},
 	},

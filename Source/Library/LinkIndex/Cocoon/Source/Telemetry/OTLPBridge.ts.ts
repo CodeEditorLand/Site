@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Telemetry/OTLPBridge.ts",
 			},
 
 		"Element/Cocoon/Source/Telemetry/OTLPBridge.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Telemetry/OTLPBridge.ts",
 		},
 	},

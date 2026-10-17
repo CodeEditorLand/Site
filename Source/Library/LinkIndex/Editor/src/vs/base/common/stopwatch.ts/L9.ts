@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		StopWatch: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/base/common/stopwatch.ts",
+
 			Line: 9,
 		},
 	},

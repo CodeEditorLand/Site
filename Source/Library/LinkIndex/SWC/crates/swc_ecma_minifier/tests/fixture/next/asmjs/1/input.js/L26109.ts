@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		FC: {
 			Repo: SWCRepo,
+
 			Path: "crates/swc_ecma_minifier/tests/fixture/next/asmjs/1/input.js",
+
 			Line: 26109,
 		},
 	},

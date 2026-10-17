@@ -18,17 +18,29 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"ApplicationStartupHandshake",
+
 		"coverage",
+
 		"deep-dive-mountain",
+
 		"low-level-shim",
+
 		"mountain-naming-conventions",
+
 		"troubleshooting",
+
 		"workflow-command-palette",
+
 		"workflow-hover-provider",
+
 		"workflow-open-file",
+
 		"workflow-save-participants",
+
 		"workflow-startup",
+
 		"workflow-terminal",
+
 		"workflow-webview",
 	],
 

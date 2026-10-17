@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtHostDocumentSaveParticipant: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostDocumentSaveParticipant.ts",
+
 			Line: 22,
 		},
 	},

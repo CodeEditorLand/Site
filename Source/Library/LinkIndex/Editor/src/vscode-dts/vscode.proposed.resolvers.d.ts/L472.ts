@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		remoteAuthority: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.resolvers.d.ts",
+
 			Line: 472,
 		},
 	},

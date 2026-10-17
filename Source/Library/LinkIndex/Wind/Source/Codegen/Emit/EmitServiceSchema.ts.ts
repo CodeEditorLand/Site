@@ -24,16 +24,19 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Wind/tree/Current/Source/Codegen/Emit/EmitServiceSchema.ts":
 			{
 				Repo: ElementRepos.Wind,
+
 				Path: "Source/Codegen/Emit/EmitServiceSchema.ts",
 			},
 
 		"EmitServiceSchema.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Codegen/Emit/EmitServiceSchema.ts",
 		},
 
 		"Source/Codegen/Emit/EmitServiceSchema.ts": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Codegen/Emit/EmitServiceSchema.ts",
 		},
 	},

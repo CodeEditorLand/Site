@@ -18,7 +18,9 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"filesystem-footprint",
+
 		"filesystem-footprint-per-element",
+
 		"filesystem-footprint-user-dotfile",
 	],
 
@@ -27,22 +29,26 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Cocoon/Source/Platform/FiddeeRoot.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Platform/FiddeeRoot.ts",
 		},
 
 		"CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Platform/FiddeeRoot.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Platform/FiddeeRoot.ts",
 			},
 
 		"Element/Cocoon/Source/Platform/FiddeeRoot.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Platform/FiddeeRoot.ts",
 		},
 
 		"Platform/FiddeeRoot.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Platform/FiddeeRoot.ts",
 		},
 	},

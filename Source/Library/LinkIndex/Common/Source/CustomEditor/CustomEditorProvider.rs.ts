@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CustomEditorProvider.rs": {
 			Repo: ElementRepos.Common,
+
 			Path: "Source/CustomEditor/CustomEditorProvider.rs",
 		},
 	},

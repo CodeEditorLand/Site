@@ -23,13 +23,17 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"vscode.chat": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostChatAgents2.ts",
+
 			Line: 488,
 		},
 
 		"vscode.chat.": {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostChatAgents2.ts",
+
 			Line: 488,
 		},
 	},

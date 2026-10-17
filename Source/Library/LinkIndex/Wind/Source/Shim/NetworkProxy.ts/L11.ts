@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"marketplace.visualstudio.com": {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/NetworkProxy.ts",
+
 			Line: 11,
 		},
 	},

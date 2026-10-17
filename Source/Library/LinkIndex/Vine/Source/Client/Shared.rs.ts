@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Vine/Source/Client/Shared.rs": {
 			Repo: ElementRepos.Vine,
+
 			Path: "Source/Client/Shared.rs",
 		},
 	},

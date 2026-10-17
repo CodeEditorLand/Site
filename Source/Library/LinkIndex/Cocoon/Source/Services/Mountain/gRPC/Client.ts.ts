@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"EffectTypeScriptArchitecture",
+
 		"ExtensionHostDeepDive",
+
 		"VSCodeCompatibility",
+
 		"api-reference",
+
 		"vine",
 	],
 
@@ -29,22 +33,26 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Cocoon/Source/Services/Mountain/gRPC/Client.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Mountain/gRPC/Client.ts",
 		},
 
 		"CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts":
 			{
 				Repo: ElementRepos.Cocoon,
+
 				Path: "Source/Services/Mountain/gRPC/Client.ts",
 			},
 
 		"Element/Cocoon/Source/Services/Mountain/gRPC/Client.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Mountain/gRPC/Client.ts",
 		},
 
 		"Services/Mountain/gRPC/Client.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Mountain/gRPC/Client.ts",
 		},
 	},

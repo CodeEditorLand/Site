@@ -24,11 +24,13 @@ export const LinkIndexData: LinkIndexData = {
 		"CodeEditorLand/Land/tree/Current/Maintain/Script/GenerateRouteManifest.sh":
 			{
 				Repo: ElementRepos.Land,
+
 				Path: "Maintain/Script/GenerateRouteManifest.sh",
 			},
 
 		"Maintain/Script/GenerateRouteManifest.sh": {
 			Repo: ElementRepos.Land,
+
 			Path: "Maintain/Script/GenerateRouteManifest.sh",
 		},
 	},

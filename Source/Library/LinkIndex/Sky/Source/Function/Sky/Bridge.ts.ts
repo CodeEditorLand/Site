@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-sky",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"polyfills",
+
 		"workflow-scm",
 	],
 
@@ -29,21 +33,25 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge.ts",
 		},
 
 		"Sky/Bridge.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge.ts",
 		},
 
 		"Sky/Source/Function/Sky/Bridge.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge.ts",
 		},
 
 		"Source/Function/Sky/Bridge.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Function/Sky/Bridge.ts",
 		},
 	},

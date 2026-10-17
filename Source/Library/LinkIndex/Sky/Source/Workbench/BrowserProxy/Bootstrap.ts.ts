@@ -23,17 +23,20 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Bootstrap.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Workbench/BrowserProxy/Bootstrap.ts",
 		},
 
 		"CodeEditorLand/Sky/tree/Current/Source/Workbench/BrowserProxy/Bootstrap.ts":
 			{
 				Repo: ElementRepos.Sky,
+
 				Path: "Source/Workbench/BrowserProxy/Bootstrap.ts",
 			},
 
 		"Source/Workbench/BrowserProxy/Bootstrap.ts": {
 			Repo: ElementRepos.Sky,
+
 			Path: "Source/Workbench/BrowserProxy/Bootstrap.ts",
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		InvokeLanguageProvider: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Services/Handler/Language/Provider/Handler.ts",
+
 			Line: 336,
 		},
 	},

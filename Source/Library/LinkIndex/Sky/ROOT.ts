@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"deep-dive-sky",
+
 		"extension-development",
+
 		"polyfills",
+
 		"sky",
+
 		"workflow-scm",
 	],
 

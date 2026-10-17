@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		ExtensionDescriptionRegistry: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/services/extensions/common/extensionDescriptionRegistry.ts",
+
 			Line: 29,
 		},
 	},

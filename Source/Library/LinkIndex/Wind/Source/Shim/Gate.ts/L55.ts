@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IsPreempt: {
 			Repo: ElementRepos.Wind,
+
 			Path: "Source/Shim/Gate.ts",
+
 			Line: 55,
 		},
 	},

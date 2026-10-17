@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onLanguage: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/editor/standalone/browser/standaloneLanguages.ts",
+
 			Line: 65,
 		},
 	},

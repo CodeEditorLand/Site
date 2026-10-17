@@ -18,9 +18,13 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"api-reference",
+
 		"deep-dive-mountain",
+
 		"deep-dive-vine",
+
 		"vine",
+
 		"vscode-api-coverage",
 	],
 
@@ -29,16 +33,19 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		"Element/Mountain/Proto/Vine.proto": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Proto/Vine.proto",
 		},
 
 		"Mountain/Proto/Vine.proto": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Proto/Vine.proto",
 		},
 	},

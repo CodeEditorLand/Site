@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IsDefaultTierValue: {
 			Repo: ElementRepos.Mountain,
+
 			Path: "build.rs",
+
 			Line: 591,
 		},
 	},

@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		onData: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/platform/remote/node/nodeSocketFactory.ts",
+
 			Line: 26,
 		},
 	},

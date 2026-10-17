@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Effect/RPCServer.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/RPCServer.ts",
 		},
 
 		"Source/Effect/RPCServer.ts": {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Service/Effect/RPCServer.ts",
 		},
 	},

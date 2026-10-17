@@ -23,6 +23,7 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Service.ts": {
 			Repo: ElementRepos.Output,
+
 			Path: "Source/Plugin/Transform/Replace/Telemetry/Service.ts",
 		},
 	},

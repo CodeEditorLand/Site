@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		getWordRangeAtPosition: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/contrib/extensions/browser/extensionsCompletionItemsProvider.ts",
+
 			Line: 29,
 		},
 	},

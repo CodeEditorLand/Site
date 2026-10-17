@@ -23,11 +23,13 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		"Element/Mountain/Source/ExtensionManagement/Scanner.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ExtensionManagement/Scanner.rs",
 		},
 
 		"ExtensionManagement/Scanner.rs": {
 			Repo: ElementRepos.Mountain,
+
 			Path: "Source/ExtensionManagement/Scanner.rs",
 		},
 	},

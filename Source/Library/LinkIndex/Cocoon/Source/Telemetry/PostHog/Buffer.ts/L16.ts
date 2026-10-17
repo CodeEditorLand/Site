@@ -18,14 +18,23 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"build-matrix",
+
 		"configuration",
+
 		"coverage",
+
 		"deep-dive-cocoon",
+
 		"deep-dive-mountain",
+
 		"filesystem-footprint-environment-variables",
+
 		"filesystem-footprint-per-element",
+
 		"getting-started",
+
 		"low-level-shim",
+
 		"mountain-naming-conventions",
 	],
 
@@ -34,7 +43,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		Buffer: {
 			Repo: ElementRepos.Cocoon,
+
 			Path: "Source/Telemetry/PostHog/Buffer.ts",
+
 			Line: 16,
 		},
 	},

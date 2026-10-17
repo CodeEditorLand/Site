@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		IExtHostRpcService: {
 			Repo: EditorRepo,
+
 			Path: "src/vs/workbench/api/common/extHostRpcService.ts",
+
 			Line: 9,
 		},
 	},

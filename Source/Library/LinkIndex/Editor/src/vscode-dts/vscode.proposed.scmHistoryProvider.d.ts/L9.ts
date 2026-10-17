@@ -23,7 +23,9 @@ export const LinkIndexData: LinkIndexData = {
 	terms: {
 		SourceControl: {
 			Repo: EditorRepo,
+
 			Path: "src/vscode-dts/vscode.proposed.scmHistoryProvider.d.ts",
+
 			Line: 9,
 		},
 	},
