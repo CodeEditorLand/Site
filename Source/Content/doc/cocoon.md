@@ -83,6 +83,7 @@ Each service in [Cocoon](https://github.com/CodeEditorLand/Cocoon) is composed t
 services are wired to Cocoon versus resolved locally:
 
 <img src="/Mermaid/b3e92044704c9dea.svg" alt="Mermaid diagram" />
+
 ### Layer Composition
 
 Individual services use `Layer.succeed` to wrap a concrete implementation,
@@ -187,6 +188,7 @@ Command Registration:
 Commands flow through all three layers depending on origin:
 
 <img src="/Mermaid/1095802e93661f09.svg" alt="Mermaid diagram" />
+
 ### Command Categories
 
 | Category        | Registered In                                            | Examples                                                                     |
