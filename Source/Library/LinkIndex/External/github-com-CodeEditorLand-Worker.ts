@@ -16,37 +16,21 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
-
 		"architecture",
-
 		"build-matrix",
-
 		"build-pipeline",
-
 		"ci-cd-pipeline",
-
 		"deep-dive-echo",
-
 		"deep-dive-rest",
-
 		"deep-dive-sky",
-
 		"deep-dive-worker",
-
 		"echo",
-
 		"filesystem-footprint-per-element",
-
 		"installation",
-
 		"polyfills",
-
 		"project-structure",
-
 		"sky",
-
 		"worker",
-
 		"workflow-overview",
 	],
 

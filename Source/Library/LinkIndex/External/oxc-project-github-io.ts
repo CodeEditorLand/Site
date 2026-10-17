@@ -1,5 +1,5 @@
 /**
- * Composed URL: https://oxc.rs
+ * Composed URL: https://oxc-project.github.io
  * Terms resolving here: 1
  * Pages: (none in LINK-CONTEXT-REVIEW)
  * Tags: External, external
@@ -12,13 +12,13 @@ import type { LinkSpec } from "../../Links";
 import type { LinkIndexData } from "../Type";
 
 export const LinkIndexData: LinkIndexData = {
-	url: "https://oxc.rs",
+	url: "https://oxc-project.github.io",
 
 	pages: [],
 
 	tags: ["External", "external"],
 
 	terms: {
-		OXC: { External: "https://oxc.rs" },
+		OXC: { External: "https://oxc-project.github.io" },
 	},
 };

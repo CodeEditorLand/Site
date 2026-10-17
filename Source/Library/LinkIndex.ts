@@ -1,10 +1,12 @@
 /**
  * The runtime link index for the markdown pass - the full term -> URL map,
- * split (Phase 3d) into one granular file per unique composed URL under
- * ./LinkIndex/, NESTED by repo family and keyed by a deterministic slug of
- * the final URL. Each fragment exports LinkIndexData { url, pages, tags,
- * terms }; this module merges ONLY the terms maps back into LinkIndex and
- * exposes the audit metadata as LinkIndexMeta.
+ * split (Phase 3f) into one granular file per unique composed URL under
+ * ./LinkIndex/, NESTED by repo family with the directory tree MIRRORING the
+ * composed URL path below the repo root (LinkIndex/<Repo>/<path-dirs>/<leaf>.ts,
+ * ROOT.ts for a repo-root URL, External/<host>-<slug>.ts flat). Each fragment
+ * exports LinkIndexData { url, pages, tags, terms }; this module merges ONLY
+ * the terms maps back into LinkIndex and exposes the audit metadata as
+ * LinkIndexMeta.
  *
  * Every entry is a COMPOSED SPEC, never a URL literal:
  *   { Repo: <repo from Links.ts>, Path: "...", Line: N }  (repo deep-link)
@@ -13,8 +15,8 @@
  * ONCE at module load; renders never touch a hardcoded URL.
  *
  * THIS MODULE IS A THIN AGGREGATOR ONLY: import.meta.glob (eager) over the
- * nested per-URL fragments (one directory deep under ./LinkIndex/) merges
- * the per-URL terms maps (the curated registry maps
+ * per-URL fragments at arbitrary depth under ./LinkIndex/ merges the
+ * per-URL terms maps (the curated registry maps
  * MentionMap/TechnicalMentions/Protected from ./LinkIndex/Mentions.ts
  * and the per-page overrides LinkIndexOverrides from ./LinkIndex/Overrides.ts
  * are re-exported unchanged). A correction edits one tiny URL file, never
@@ -28,7 +30,7 @@ export { LinkIndexOverrides } from "./LinkIndex/Overrides";
 
 export { MentionMap, Protected, TechnicalMentions } from "./LinkIndex/Mentions";
 
-const UrlModules = import.meta.glob("./LinkIndex/*/*.ts", {
+const UrlModules = import.meta.glob("./LinkIndex/**/*.ts", {
 	eager: true,
 }) as Record<string, { LinkIndexData: LinkIndexData }>;
 

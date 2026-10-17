@@ -16,39 +16,22 @@ export const LinkIndexData: LinkIndexData = {
 
 	pages: [
 		"BuildSystemDesign",
-
 		"CC0OpenSource",
-
 		"EffectTypeScriptArchitecture",
-
 		"LocalFirstPhilosophy",
-
 		"api-reference",
-
 		"architecture",
-
 		"build-matrix",
-
 		"common",
-
 		"deep-dive-echo",
-
 		"deep-dive-maintain",
-
 		"echo",
-
 		"filesystem-footprint-per-element",
-
 		"installation",
-
 		"maintain",
-
 		"mountain",
-
 		"project-structure",
-
 		"why-rust",
-
 		"workflow-overview",
 	],
 
