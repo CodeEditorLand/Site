@@ -39,6 +39,10 @@ const Merged: Record<string, LinkSpec> = {};
 const Meta: Record<string, { pages: string[]; tags: string[] }> = {};
 
 for (const Module of Object.values(UrlModules)) {
+	// Support files (Type/Mentions/Overrides) match the glob too now that it
+	// spans arbitrary depth; they export no LinkIndexData - skip them.
+	if (!Module.LinkIndexData) continue;
+
 	Object.assign(Merged, Module.LinkIndexData.terms);
 
 	Meta[Module.LinkIndexData.url] = {
