@@ -24,18 +24,18 @@ causal chain.
 
 ## Layout
 
-| Layer    | File / Module                                          | Pipe(s)        |
-| -------- | ------------------------------------------------------ | -------------- |
-| Build.sh | [`Maintain/Script/PostHogCapture.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh)                    | PostHog + OTLP |
-| Mountain | `Element/Mountain/Source/Binary/Build/PostHogPlugin/*` | PostHog        |
-| Mountain | [`Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs)   | OTLP           |
-| Mountain | `Element/Mountain/Source/Telemetry/*`                  | OTLP (tracing) |
-| Cocoon   | `Element/Cocoon/Source/Telemetry/PostHogBridge.ts`     | PostHog        |
-| Cocoon   | [`Element/Cocoon/Source/Telemetry/OTLPBridge.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts)        | OTLP           |
-| Wind     | `Element/Wind/Source/Telemetry/Bridge.ts`              | both           |
-| Sky      | `Element/Sky/Source/Function/Telemetry/Bridge.ts`      | both           |
-| Output   | `Element/Output/Source/Telemetry/*`                    | both           |
-| Sidecars | re-export [Mountain](https://github.com/CodeEditorLand/Mountain)'s macros via the `tracing` crate    | OTLP           |
+| Layer    | File / Module                                                                                                                                                  | Pipe(s)        |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| Build.sh | [`Maintain/Script/PostHogCapture.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/PostHogCapture.sh)                                   | PostHog + OTLP |
+| Mountain | `Element/Mountain/Source/Binary/Build/PostHogPlugin/*`                                                                                                         | PostHog        |
+| Mountain | [`Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Mountain/Source/IPC/DevLog/EmitOTLPSpan.rs) | OTLP           |
+| Mountain | `Element/Mountain/Source/Telemetry/*`                                                                                                                          | OTLP (tracing) |
+| Cocoon   | `Element/Cocoon/Source/Telemetry/PostHogBridge.ts`                                                                                                             | PostHog        |
+| Cocoon   | [`Element/Cocoon/Source/Telemetry/OTLPBridge.ts`](https://github.com/CodeEditorLand/Land/tree/Current/Element/Cocoon/Source/Telemetry/OTLPBridge.ts)           | OTLP           |
+| Wind     | `Element/Wind/Source/Telemetry/Bridge.ts`                                                                                                                      | both           |
+| Sky      | `Element/Sky/Source/Function/Telemetry/Bridge.ts`                                                                                                              | both           |
+| Output   | `Element/Output/Source/Telemetry/*`                                                                                                                            | both           |
+| Sidecars | re-export [Mountain](https://github.com/CodeEditorLand/Mountain)'s macros via the `tracing` crate                                                              | OTLP           |
 
 ## Event-name convention
 
@@ -118,5 +118,5 @@ export Trace=all
 #   Jaeger UI:          http://127.0.0.1:16686
 ```
 
-See `Effect-OTel.md` for the Effect-TS integration pattern Wind / Cocoon use,
-and `Tree-Shaking.md` for the production-zero contract.
+See [`Effect-OTel.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md) for the [Effect-TS](https://effect.website) integration pattern [Wind](https://github.com/CodeEditorLand/Wind) / [Cocoon](https://github.com/CodeEditorLand/Cocoon) use,
+and [`Tree-Shaking.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Tree-Shaking.md) for the production-zero contract.

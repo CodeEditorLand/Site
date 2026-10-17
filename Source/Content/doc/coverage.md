@@ -13,10 +13,10 @@ order: 510
 > **Overhead**: <1% (passthrough mode)
 
 The Coverage Shim intercepts VS Code at the **application service level** - routing
-IPC commands through Land's SwallowMap, proxying the ServiceCollection DI container,
+IPC commands through [Land](https://github.com/CodeEditorLand/Land)'s SwallowMap, proxying the ServiceCollection DI container,
 and tracking coverage across all 474 decorated services. Unlike the 🟠 Low-Level Shim
 (which operates at the JS engine level), the 🔵 Coverage Shim works at the architectural
-boundary between Wind (renderer), Cocoon (bridge), and Mountain (native backend).
+boundary between [Wind](https://github.com/CodeEditorLand/Wind) (renderer), [Cocoon](https://github.com/CodeEditorLand/Cocoon) (bridge), and [Mountain](https://github.com/CodeEditorLand/Mountain) (native backend).
 
 ---
 
@@ -38,60 +38,60 @@ boundary between Wind (renderer), Cocoon (bridge), and Mountain (native backend)
 
 ## 🔵 Full Domain Coverage Table
 
-| #   | Domain                   | Status         | Tier                               | TierShim | Redirect | Notes                                   |
-| --- | ------------------------ | -------------- | ---------------------------------- | -------- | -------- | --------------------------------------- |
-| 1   | **Status Bar**           | 🔵 SWALLOW     | `TierSwallowStatusBar=Swallow`     | Replace  | Wind     | Land renders its own status bar via Sky |
-| 2   | **SCM / Git**            | 🔵 SWALLOW     | `TierSwallowSCM=Swallow`           | Replace  | Cocoon   | Native git operations via Cocoon bridge |
-| 3   | **Search**               | 🔵 SWALLOW     | `TierSwallowSearch=Swallow`        | Replace  | Mountain | Native ripgrep via Mountain NativeBus   |
-| 4   | **Terminal**             | 🔵 SWALLOW     | `TierSwallowTerminal=Swallow`      | Replace  | Mountain | Native PTY via Mountain                 |
-| 5   | **Output**               | 🔵 SWALLOW     | `TierSwallowOutput=Swallow`        | Replace  | Output   | Output panel rendered by Land           |
-| 6   | **File System**          | 🔵 SWALLOW     | `TierSwallowFile=Swallow`          | Replace  | Mountain | tokio::fs via Mountain NativeBus        |
-| 7   | **Notifications**        | 🔵 SWALLOW     | `TierSwallowNotification=Swallow`  | Replace  | Wind     | Land notification system                |
-| 8   | **Dialogs**              | 🔵 SWALLOW     | `TierSwallowDialog=Swallow`        | Replace  | Mountain | Native OS dialogs via Mountain          |
-| 9   | **Quick Input**          | 🔵 SWALLOW     | `TierSwallowQuickInput=Swallow`    | Replace  | Wind     | Land quick-pick UI                      |
-| 10  | **Keybindings**          | 🔵 SWALLOW     | `TierSwallowKeybinding=Swallow`    | Replace  | Wind     | Land keybinding system                  |
-| 11  | **Themes**               | 🔵 SWALLOW     | `TierSwallowTheme=Swallow`         | Replace  | Wind     | Land theme engine                       |
-| 12  | **Configuration**        | 🔵 SWALLOW     | `TierSwallowConfiguration=Swallow` | Replace  | Wind     | Land settings system                    |
-| 13  | **Telemetry**            | 🔵 DISCARD     | `TierSwallowTelemetry=Discard`     | Replace  | None     | Silently dropped (MS endpoints)         |
-| 14  | **Extension Gallery**    | 🔵 SWALLOW     | `TierSwallowGallery=Swallow`       | Replace  | Wind     | Offline gallery (CEL null service)      |
-| 15  | **Product Identity**     | 🔵 SWALLOW     | `TierSwallowProduct=Swallow`       | Replace  | Mountain | Land replaces VS Code product.json      |
-| 16  | **Debug**                | ⚪ PASSTHROUGH | -                                  | -        | None     | Debug adapter protocol passes through   |
-| 17  | **Tasks**                | ⚪ PASSTHROUGH | -                                  | -        | None     | Task execution passes through           |
-| 18  | **Extensions (runtime)** | ⚪ PASSTHROUGH | -                                  | -        | None     | Extension host runs unmodified          |
-| 19  | **Editor (core)**        | ⚪ PASSTHROUGH | -                                  | -        | None     | Monaco editor untouched                 |
-| 20  | **Language Features**    | ⚪ PASSTHROUGH | -                                  | -        | None     | LSP providers pass through              |
-| 21  | **Remote**               | ⚪ PASSTHROUGH | -                                  | -        | None     | Remote development passthrough          |
-| 22  | **Testing**              | ⚪ PASSTHROUGH | -                                  | -        | None     | Test runner passthrough                 |
+| #   | Domain                   | Status         | Tier                               | TierShim | Redirect                                               | Notes                                                                                                                      |
+| --- | ------------------------ | -------------- | ---------------------------------- | -------- | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Status Bar**           | 🔵 SWALLOW     | `TierSwallowStatusBar=Swallow`     | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | [Land](https://github.com/CodeEditorLand/Land) renders its own status bar via [Sky](https://github.com/CodeEditorLand/Sky) |
+| 2   | **SCM / Git**            | 🔵 SWALLOW     | `TierSwallowSCM=Swallow`           | Replace  | [Cocoon](https://github.com/CodeEditorLand/Cocoon)     | Native git operations via [Cocoon](https://github.com/CodeEditorLand/Cocoon) bridge                                        |
+| 3   | **Search**               | 🔵 SWALLOW     | `TierSwallowSearch=Swallow`        | Replace  | [Mountain](https://github.com/CodeEditorLand/Mountain) | Native ripgrep via [Mountain](https://github.com/CodeEditorLand/Mountain) NativeBus                                        |
+| 4   | **Terminal**             | 🔵 SWALLOW     | `TierSwallowTerminal=Swallow`      | Replace  | [Mountain](https://github.com/CodeEditorLand/Mountain) | Native PTY via [Mountain](https://github.com/CodeEditorLand/Mountain)                                                      |
+| 5   | **Output**               | 🔵 SWALLOW     | `TierSwallowOutput=Swallow`        | Replace  | [Output](https://github.com/CodeEditorLand/Output)     | Output panel rendered by [Land](https://github.com/CodeEditorLand/Land)                                                    |
+| 6   | **File System**          | 🔵 SWALLOW     | `TierSwallowFile=Swallow`          | Replace  | [Mountain](https://github.com/CodeEditorLand/Mountain) | tokio::fs via [Mountain](https://github.com/CodeEditorLand/Mountain) NativeBus                                             |
+| 7   | **Notifications**        | 🔵 SWALLOW     | `TierSwallowNotification=Swallow`  | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | [Land](https://github.com/CodeEditorLand/Land) notification system                                                         |
+| 8   | **Dialogs**              | 🔵 SWALLOW     | `TierSwallowDialog=Swallow`        | Replace  | [Mountain](https://github.com/CodeEditorLand/Mountain) | Native OS dialogs via [Mountain](https://github.com/CodeEditorLand/Mountain)                                               |
+| 9   | **Quick Input**          | 🔵 SWALLOW     | `TierSwallowQuickInput=Swallow`    | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | [Land](https://github.com/CodeEditorLand/Land) quick-pick UI                                                               |
+| 10  | **Keybindings**          | 🔵 SWALLOW     | `TierSwallowKeybinding=Swallow`    | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | [Land](https://github.com/CodeEditorLand/Land) keybinding system                                                           |
+| 11  | **Themes**               | 🔵 SWALLOW     | `TierSwallowTheme=Swallow`         | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | [Land](https://github.com/CodeEditorLand/Land) theme engine                                                                |
+| 12  | **Configuration**        | 🔵 SWALLOW     | `TierSwallowConfiguration=Swallow` | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | [Land](https://github.com/CodeEditorLand/Land) settings system                                                             |
+| 13  | **Telemetry**            | 🔵 DISCARD     | `TierSwallowTelemetry=Discard`     | Replace  | None                                                   | Silently dropped (MS endpoints)                                                                                            |
+| 14  | **Extension Gallery**    | 🔵 SWALLOW     | `TierSwallowGallery=Swallow`       | Replace  | [Wind](https://github.com/CodeEditorLand/Wind)         | Offline gallery (CEL null service)                                                                                         |
+| 15  | **Product Identity**     | 🔵 SWALLOW     | `TierSwallowProduct=Swallow`       | Replace  | [Mountain](https://github.com/CodeEditorLand/Mountain) | [Land](https://github.com/CodeEditorLand/Land) replaces VS Code product.json                                               |
+| 16  | **Debug**                | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | Debug adapter protocol passes through                                                                                      |
+| 17  | **Tasks**                | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | Task execution passes through                                                                                              |
+| 18  | **Extensions (runtime)** | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | Extension host runs unmodified                                                                                             |
+| 19  | **Editor (core)**        | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | Monaco editor untouched                                                                                                    |
+| 20  | **Language Features**    | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | LSP providers pass through                                                                                                 |
+| 21  | **Remote**               | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | Remote development passthrough                                                                                             |
+| 22  | **Testing**              | ⚪ PASSTHROUGH | -                                  | -        | None                                                   | Test runner passthrough                                                                                                    |
 
 **Coverage**: 15 of 22 core domains are actively swallowed. 7 remain passthrough because they involve
 extension-host interactions (Debug, Language Features), the Monaco editor core, or infrastructure that
-Land does not replace (Tasks, Remote, Testing).
+[Land](https://github.com/CodeEditorLand/Land) does not replace (Tasks, Remote, Testing).
 
 ---
 
 ## 🔵 Service Coverage Matrix by Category
 
-| Category              | Total Services | Covered | Coverage % | Swallow Strategy                            |
-| --------------------- | -------------- | ------- | ---------- | ------------------------------------------- |
-| **Workbench UI**      | 25             | 15      | 60%        | SwallowMap + Wind handlers                  |
-| **Platform Services** | 100            | 35      | 35%        | ServiceCollection proxy + CEL null services |
-| **Editor Core**       | 40             | 8       | 20%        | Passthrough (Monaco editor)                 |
-| **Extensions**        | 30             | 5       | 17%        | Gallery replaced, runtime passthrough       |
-| **Terminal**          | 12             | 4       | 33%        | PTY passthrough, UI swallowed               |
-| **Chat/Copilot**      | 25             | 0       | 0%         | Passthrough (future)                        |
-| **Testing**           | 8              | 0       | 0%         | Passthrough                                 |
-| **Remote**            | 15             | 0       | 0%         | Passthrough                                 |
-| **Misc/Specialized**  | 219            | 0       | 0%         | Passthrough                                 |
-| **Total**             | **474**        | **67**  | **14%**    | Mixed                                       |
+| Category              | Total Services | Covered | Coverage % | Swallow Strategy                                                     |
+| --------------------- | -------------- | ------- | ---------- | -------------------------------------------------------------------- |
+| **Workbench UI**      | 25             | 15      | 60%        | SwallowMap + [Wind](https://github.com/CodeEditorLand/Wind) handlers |
+| **Platform Services** | 100            | 35      | 35%        | ServiceCollection proxy + CEL null services                          |
+| **Editor Core**       | 40             | 8       | 20%        | Passthrough (Monaco editor)                                          |
+| **Extensions**        | 30             | 5       | 17%        | Gallery replaced, runtime passthrough                                |
+| **Terminal**          | 12             | 4       | 33%        | PTY passthrough, UI swallowed                                        |
+| **Chat/Copilot**      | 25             | 0       | 0%         | Passthrough (future)                                                 |
+| **Testing**           | 8              | 0       | 0%         | Passthrough                                                          |
+| **Remote**            | 15             | 0       | 0%         | Passthrough                                                          |
+| **Misc/Specialized**  | 219            | 0       | 0%         | Passthrough                                                          |
+| **Total**             | **474**        | **67**  | **14%**    | Mixed                                                                |
 
 **Coverage growth trajectory**:
 
-| Milestone            | Services Covered | %    | Approach                                  |
-| -------------------- | ---------------- | ---- | ----------------------------------------- |
-| **Current**          | 67               | 14%  | SwallowMap rules + CEL null services      |
-| **Phase 2**          | ~120             | 25%  | Wind handler registration for UI domains  |
-| **Phase 3**          | ~200             | 42%  | Cocoon bridge for extension-host services |
-| **Full replacement** | 474              | 100% | TierShim=Preempt - Land IS the engine     |
+| Milestone            | Services Covered | %    | Approach                                                                              |
+| -------------------- | ---------------- | ---- | ------------------------------------------------------------------------------------- |
+| **Current**          | 67               | 14%  | SwallowMap rules + CEL null services                                                  |
+| **Phase 2**          | ~120             | 25%  | [Wind](https://github.com/CodeEditorLand/Wind) handler registration for UI domains    |
+| **Phase 3**          | ~200             | 42%  | [Cocoon](https://github.com/CodeEditorLand/Cocoon) bridge for extension-host services |
+| **Full replacement** | 474              | 100% | TierShim=Preempt - [Land](https://github.com/CodeEditorLand/Land) IS the engine       |
 
 Current coverage focuses on **user-facing UI surfaces** (status bar, SCM, search, terminal, notifications,
 dialogs, quick input) and **data-safety domains** (telemetry discarded, file system native, extension
@@ -201,7 +201,7 @@ pub fn decide(method: &str) -> (SwallowAction, RedirectTarget) {
 
 The TypeScript and Rust SwallowMaps are kept in **lockstep** - any rule added to one side
 requires a matching rule on the other. The Rust side handles direct-native IPC calls that
-bypass Wind entirely; the TypeScript side handles calls originating from the renderer.
+bypass [Wind](https://github.com/CodeEditorLand/Wind) entirely; the TypeScript side handles calls originating from the renderer.
 
 ---
 
@@ -298,13 +298,13 @@ class AuditLog {
 
 **Flush cadence**:
 
-| Trigger      | Interval              | Data Sent                       | Target                    |
-| ------------ | --------------------- | ------------------------------- | ------------------------- |
-| **Timer**    | Every 30 seconds      | Full buffer drain + summary     | Mountain `diagnostic:log` |
-| **Capacity** | Buffer > 2000 entries | Oldest entries dropped silently | Ring buffer compaction    |
-| **Shutdown** | On `forceFlush()`     | Final drain                     | Mountain `diagnostic:log` |
+| Trigger      | Interval              | Data Sent                       | Target                                                                  |
+| ------------ | --------------------- | ------------------------------- | ----------------------------------------------------------------------- |
+| **Timer**    | Every 30 seconds      | Full buffer drain + summary     | [Mountain](https://github.com/CodeEditorLand/Mountain) `diagnostic:log` |
+| **Capacity** | Buffer > 2000 entries | Oldest entries dropped silently | Ring buffer compaction                                                  |
+| **Shutdown** | On `forceFlush()`     | Final drain                     | [Mountain](https://github.com/CodeEditorLand/Mountain) `diagnostic:log` |
 
-**Flush payload sent to Mountain**:
+**Flush payload sent to [Mountain](https://github.com/CodeEditorLand/Mountain)**:
 
 ```json
 {
@@ -341,65 +341,65 @@ because they're heavily read but rarely re-instantiated.
 
 ---
 
-## 🔵 Wind Shim Module Map (13 Modules)
+## 🔵 [Wind](https://github.com/CodeEditorLand/Wind) Shim Module Map (13 Modules)
 
-| #   | Module                       | TypeScript File                        | Purpose                                                                                                                            |
-| --- | ---------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | **Gate**                     | `Wind/Source/Shim/Gate.ts`             | Reads `__LandTier_Shim__` (build-time constant), exports boolean flags (`IsEnabled`, `IsProxy`, `IsReplace`, `IsOwn`, `IsPreempt`) |
-| 2   | **SwallowMap**               | `Wind/Source/Shim/SwallowMap.ts`       | Pattern-matching decision engine; `decide()`, `shouldSwallow()`, `shouldPassthrough()`                                             |
-| 3   | **RedirectBus**              | `Wind/Source/Shim/RedirectBus.ts`      | Handler registration and routing; `register()`, `route()`, `unregister()`                                                          |
-| 4   | **IPCInterceptor**           | `Wind/Source/Shim/IPCInterceptor.ts`   | Wraps `invoke("MountainIPCInvoke")` with SwallowMap check; `createInterceptedInvoke()`                                             |
-| 5   | **AuditLog**                 | `Wind/Source/Shim/AuditLog.ts`         | Service resolution auditor; ring buffer, flush, summary, `topServices()`                                                           |
-| 6   | **Type**                     | `Wind/Source/Shim/Type.ts`             | Core types: `ShimLevel`, `SwallowAction`, `SwallowRule`, `SwallowDecision`, `RedirectHandler`, `ShimEvent`                         |
-| 7   | **Index**                    | `Wind/Source/Shim/Index.ts`            | Barrel export for core shim modules (1-6)                                                                                          |
-| 8   | **EventInterceptor**         | `Wind/Source/Shim/EventInterceptor.ts` | Patches `EventTarget.prototype.addEventListener` to route DOM events through RedirectBus                                           |
-| 9   | **NetworkProxy**             | `Wind/Source/Shim/NetworkProxy.ts`     | Patches `fetch()` and `XMLHttpRequest`; discards MS telemetry endpoints; routes `vscode-file://` through Mountain                  |
-| 10  | **AsyncProxy**               | `Wind/Source/Shim/AsyncProxy.ts`       | Patches `setTimeout`, `setInterval`, `requestAnimationFrame`, `requestIdleCallback`; batch coalescing                              |
-| 11  | **FullIndex**                | `Wind/Source/Shim/FullIndex.ts`        | Full barrel: Index + EventInterceptor + NetworkProxy + AsyncProxy                                                                  |
-| 12  | **Mountain Shim/Gate**       | `Mountain/Source/Shim/Gate.rs`         | Rust compile-time gate: `env!("TierShim")`, exports `is_enabled()`, `is_proxy()`, etc.                                             |
-| 13  | **Mountain Shim/SwallowMap** | `Mountain/Source/Shim/SwallowMap.rs`   | Rust pattern-matching engine; identical rule table to TypeScript version                                                           |
+| #   | Module                       | TypeScript File                                                                                                               | Purpose                                                                                                                            |
+| --- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | **Gate**                     | [`Wind/Source/Shim/Gate.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Gate.ts)                         | Reads `__LandTier_Shim__` (build-time constant), exports boolean flags (`IsEnabled`, `IsProxy`, `IsReplace`, `IsOwn`, `IsPreempt`) |
+| 2   | **SwallowMap**               | [`Wind/Source/Shim/SwallowMap.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/SwallowMap.ts)             | Pattern-matching decision engine; `decide()`, `shouldSwallow()`, `shouldPassthrough()`                                             |
+| 3   | **RedirectBus**              | [`Wind/Source/Shim/RedirectBus.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/RedirectBus.ts)           | Handler registration and routing; `register()`, `route()`, `unregister()`                                                          |
+| 4   | **IPCInterceptor**           | [`Wind/Source/Shim/IPCInterceptor.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/IPCInterceptor.ts)     | Wraps `invoke("MountainIPCInvoke")` with SwallowMap check; `createInterceptedInvoke()`                                             |
+| 5   | **AuditLog**                 | [`Wind/Source/Shim/AuditLog.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/AuditLog.ts)                 | Service resolution auditor; ring buffer, flush, summary, `topServices()`                                                           |
+| 6   | **Type**                     | [`Wind/Source/Shim/Type.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Type.ts)                         | Core types: `ShimLevel`, `SwallowAction`, `SwallowRule`, `SwallowDecision`, `RedirectHandler`, `ShimEvent`                         |
+| 7   | **Index**                    | [`Wind/Source/Shim/Index.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/Index.ts)                       | Barrel export for core shim modules (1-6)                                                                                          |
+| 8   | **EventInterceptor**         | [`Wind/Source/Shim/EventInterceptor.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/EventInterceptor.ts) | Patches `EventTarget.prototype.addEventListener` to route DOM events through RedirectBus                                           |
+| 9   | **NetworkProxy**             | [`Wind/Source/Shim/NetworkProxy.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/NetworkProxy.ts)         | Patches `fetch()` and `XMLHttpRequest`; discards MS telemetry endpoints; routes `vscode-file://` through Mountain                  |
+| 10  | **AsyncProxy**               | [`Wind/Source/Shim/AsyncProxy.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/AsyncProxy.ts)             | Patches `setTimeout`, `setInterval`, `requestAnimationFrame`, `requestIdleCallback`; batch coalescing                              |
+| 11  | **FullIndex**                | [`Wind/Source/Shim/FullIndex.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Shim/FullIndex.ts)               | Full barrel: Index + EventInterceptor + NetworkProxy + AsyncProxy                                                                  |
+| 12  | **Mountain Shim/Gate**       | [`Mountain/Source/Shim/Gate.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/Gate.rs)                 | Rust compile-time gate: `env!("TierShim")`, exports `is_enabled()`, `is_proxy()`, etc.                                             |
+| 13  | **Mountain Shim/SwallowMap** | [`Mountain/Source/Shim/SwallowMap.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Shim/SwallowMap.rs)     | Rust pattern-matching engine; identical rule table to TypeScript version                                                           |
 
 ---
 
-## 🔵 Output Shim Module Map (9 Modules)
+## 🔵 [Output](https://github.com/CodeEditorLand/Output) Shim Module Map (9 Modules)
 
-| #   | Module                | TypeScript File                                                      | Purpose                                                                        |
-| --- | --------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| 1   | **Init**              | `Output/Source/Service/CEL/Land/Shim/Init.ts`                        | Entry point injected by Output Transform; `LandShimInit(instantiationService)` |
-| 2   | **Index**             | `Output/Source/Service/CEL/Land/Shim/Index.ts`                       | Barrel: Init + Diagnostics + 6 Intercept proxies                               |
-| 3   | **Diagnostics**       | `Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts` | Unified ring-buffer tracer; 7 buffer categories, flush timer, `forceFlush()`   |
-| 4   | **ErrorHandlerProxy** | `Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts` | L1: `errorHandler.onUnexpectedError()`                                         |
-| 5   | **EmitterFireProxy**  | `Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts`  | L2: `Emitter.prototype.fire()`                                                 |
-| 6   | **CancellationProxy** | `Output/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts` | L3: `CancellationTokenSource.prototype.cancel()`                               |
-| 7   | **DisposableProxy**   | `Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts`   | L4: `DisposableStore.prototype.add/dispose`                                    |
-| 8   | **AsyncProxy**        | `Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts`        | L5: `platform.setTimeout0()` batching                                          |
-| 9   | **TimingProxy**       | `Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts`       | L8: `StopWatch` constructor/stop/elapsed                                       |
+| #   | Module                | TypeScript File                                                                                                                                                                           | Purpose                                                                        |
+| --- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| 1   | **Init**              | [`Output/Source/Service/CEL/Land/Shim/Init.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts)                                               | Entry point injected by Output Transform; `LandShimInit(instantiationService)` |
+| 2   | **Index**             | [`Output/Source/Service/CEL/Land/Shim/Index.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Index.ts)                                             | Barrel: Init + Diagnostics + 6 Intercept proxies                               |
+| 3   | **Diagnostics**       | [`Output/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Diagnostics/LandDiagnostics.ts) | Unified ring-buffer tracer; 7 buffer categories, flush timer, `forceFlush()`   |
+| 4   | **ErrorHandlerProxy** | [`Output/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts) | L1: `errorHandler.onUnexpectedError()`                                         |
+| 5   | **EmitterFireProxy**  | [`Output/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/EmitterFireProxy.ts)   | L2: `Emitter.prototype.fire()`                                                 |
+| 6   | **CancellationProxy** | [`Output/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/CancellationProxy.ts) | L3: `CancellationTokenSource.prototype.cancel()`                               |
+| 7   | **DisposableProxy**   | [`Output/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/DisposableProxy.ts)     | L4: `DisposableStore.prototype.add/dispose`                                    |
+| 8   | **AsyncProxy**        | [`Output/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/AsyncProxy.ts)               | L5: `platform.setTimeout0()` batching                                          |
+| 9   | **TimingProxy**       | [`Output/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/TimingProxy.ts)             | L8: `StopWatch` constructor/stop/elapsed                                       |
 
-### CEL Null Service Modules (Output 🔵 Replace Tier)
+### CEL Null Service Modules ([Output](https://github.com/CodeEditorLand/Output) 🔵 Replace Tier)
 
-| #   | Module                          | TypeScript File                                               | VS Code Module Replaced                     |
-| --- | ------------------------------- | ------------------------------------------------------------- | ------------------------------------------- |
-| 10  | **NullTelemetryService**        | `Output/Source/Service/CEL/Null/Telemetry/Service.ts`         | `vs/platform/telemetry/common/telemetry.ts` |
-| 11  | **NullExtensionGalleryService** | `Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts` | `vs/platform/extensionManagement/common/`   |
-| 12  | **NullUpdateService**           | `Output/Source/Service/CEL/Null/Update/Service.ts`            | `vs/platform/update/common/update.ts`       |
+| #   | Module                          | TypeScript File                                                                                                                                                             | VS Code Module Replaced                     |
+| --- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
+| 10  | **NullTelemetryService**        | [`Output/Source/Service/CEL/Null/Telemetry/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Telemetry/Service.ts)                 | `vs/platform/telemetry/common/telemetry.ts` |
+| 11  | **NullExtensionGalleryService** | [`Output/Source/Service/CEL/Null/Extension/Gallery/Service.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Null/Extension/Gallery/Service.ts) | `vs/platform/extensionManagement/common/`   |
+| 12  | **NullUpdateService**           | `Output/Source/Service/CEL/Null/Update/Service.ts`                                                                                                                          | `vs/platform/update/common/update.ts`       |
 
-These are compiled by Output's esbuild step and dropped into the VS Code tree via `ApplyPipeline.ts`.
+These are compiled by [Output](https://github.com/CodeEditorLand/Output)'s esbuild step and dropped into the VS Code tree via `ApplyPipeline.ts`.
 Original module bodies are reduced to one-line re-exports pointing to the CEL null service.
 
 ---
 
-## 🔵 Integration Diagram: Wind / Output / Cocoon / Mountain
+## 🔵 Integration Diagram: [Wind](https://github.com/CodeEditorLand/Wind) / [Output](https://github.com/CodeEditorLand/Output) / [Cocoon](https://github.com/CodeEditorLand/Cocoon) / [Mountain](https://github.com/CodeEditorLand/Mountain)
 
 <img src="/Mermaid/dda8891a3a241b02.svg" alt="Mermaid diagram" />
 **Data flow summary**:
 
-| Path                   | Direction      | Data                                    | Frequency            |
-| ---------------------- | -------------- | --------------------------------------- | -------------------- |
-| Wind → Mountain        | IPC invoke     | Swallowed events routed via RedirectBus | Per user interaction |
-| Wind → Mountain        | diagnostic:log | AuditLog flush (30s)                    | Every 30 seconds     |
-| Output → Mountain      | diagnostic:log | LandDiagnostics flush (30s)             | Every 30 seconds     |
-| Wind → Cocoon          | gRPC           | SCM operations (git via Cocoon)         | Per git operation    |
-| Cocoon → Wind/Mountain | esbuild define | `__LandTier_Shim__` constant            | Build time only      |
+| Path                                                                                                                                                       | Direction      | Data                                                                        | Frequency            |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | --------------------------------------------------------------------------- | -------------------- |
+| [Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain)                                                    | IPC invoke     | Swallowed events routed via RedirectBus                                     | Per user interaction |
+| [Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain)                                                    | diagnostic:log | AuditLog flush (30s)                                                        | Every 30 seconds     |
+| [Output](https://github.com/CodeEditorLand/Output) → [Mountain](https://github.com/CodeEditorLand/Mountain)                                                | diagnostic:log | LandDiagnostics flush (30s)                                                 | Every 30 seconds     |
+| [Wind](https://github.com/CodeEditorLand/Wind) → [Cocoon](https://github.com/CodeEditorLand/Cocoon)                                                        | gRPC           | SCM operations (git via [Cocoon](https://github.com/CodeEditorLand/Cocoon)) | Per git operation    |
+| [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Wind](https://github.com/CodeEditorLand/Wind)/[Mountain](https://github.com/CodeEditorLand/Mountain) | esbuild define | `__LandTier_Shim__` constant                                                | Build time only      |
 
 ---
 
@@ -486,13 +486,13 @@ pub fn is_enabled() -> bool { TIER_SHIM != "None" }
 
 ### Dead Code Elimination Guarantee
 
-| TierShim  | esbuild define | Wind Shim bundle           | Output Shim bundle        |
-| --------- | -------------- | -------------------------- | ------------------------- |
-| `None`    | `"None"`       | **0 bytes** (tree-shaken)  | **0 bytes** (tree-shaken) |
-| `Proxy`   | `"Proxy"`      | AuditLog + Gate only       | Audit-only                |
-| `Replace` | `"Replace"`    | Audit + Replace logic      | Null services + Replace   |
-| `Own`     | `"Own"`        | Full shim (no BrowserMain) | Full 6 hooks              |
-| `Preempt` | `"Preempt"`    | Full shim + BrowserMain    | Full 6 hooks + Preempt    |
+| TierShim  | esbuild define | [Wind](https://github.com/CodeEditorLand/Wind) Shim bundle | [Output](https://github.com/CodeEditorLand/Output) Shim bundle |
+| --------- | -------------- | ---------------------------------------------------------- | -------------------------------------------------------------- |
+| `None`    | `"None"`       | **0 bytes** (tree-shaken)                                  | **0 bytes** (tree-shaken)                                      |
+| `Proxy`   | `"Proxy"`      | AuditLog + Gate only                                       | Audit-only                                                     |
+| `Replace` | `"Replace"`    | Audit + Replace logic                                      | Null services + Replace                                        |
+| `Own`     | `"Own"`        | Full shim (no BrowserMain)                                 | Full 6 hooks                                                   |
+| `Preempt` | `"Preempt"`    | Full shim + BrowserMain                                    | Full 6 hooks + Preempt                                         |
 
 ---
 
@@ -542,7 +542,7 @@ class RedirectBus {
 
 **Handler registration lifecycle**:
 
-1. **App startup** → Land services register their handlers on the RedirectBus
+1. **App startup** → [Land](https://github.com/CodeEditorLand/Land) services register their handlers on the RedirectBus
 2. **User interaction** → SwallowMap decides to SWALLOW an IPC method
 3. **IPCInterceptor** → Routes to `RedirectBus.route(method, params)`
 4. **RedirectBus** → Finds first matching handler by pattern
@@ -615,17 +615,17 @@ XMLHttpRequest.prototype.send = function (body) {
 
 **Three network interception targets**:
 
-| Target              | Detection                                                   | Action                           | Status               |
-| ------------------- | ----------------------------------------------------------- | -------------------------------- | -------------------- |
-| Microsoft Telemetry | `dc.services.visualstudio.com`, `vortex.data.microsoft.com` | Return 204 or abort XHR          | ✅ Active            |
-| Extension Gallery   | `marketplace.visualstudio.com`, `open-vsx.org`              | Route to Land GalleryService     | 🔶 Placeholder (501) |
-| vscode-file:// URIs | URL scheme check                                            | Route to Mountain scheme handler | 🔶 Placeholder (501) |
+| Target              | Detection                                                   | Action                                                                         | Status               |
+| ------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------ | -------------------- |
+| Microsoft Telemetry | `dc.services.visualstudio.com`, `vortex.data.microsoft.com` | Return 204 or abort XHR                                                        | ✅ Active            |
+| Extension Gallery   | `marketplace.visualstudio.com`, `open-vsx.org`              | Route to Land GalleryService                                                   | 🔶 Placeholder (501) |
+| vscode-file:// URIs | URL scheme check                                            | Route to [Mountain](https://github.com/CodeEditorLand/Mountain) scheme handler | 🔶 Placeholder (501) |
 
 ---
 
 ## 🔵 Service Replacement Strategy (TierShim=Replace)
 
-When `TierShim=Replace`, the `LandShimInit()` function in `Init.ts` performs service-level
+When `TierShim=Replace`, the `LandShimInit()` function in [`Init.ts`](https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Init.ts) performs service-level
 replacement by wrapping `ServiceCollection.get()`:
 
 ```typescript
@@ -664,11 +664,11 @@ function createNoopTelemetryService() {
 ```
 
 **Replace strategy**: Instead of replacing the module file (which requires tracking VS Code's
-module graph), Land intercepts the `ServiceCollection.get()` call and returns a no-op shim when
+module graph), [Land](https://github.com/CodeEditorLand/Land) intercepts the `ServiceCollection.get()` call and returns a no-op shim when
 VS Code requests a telemetry service. This is less invasive than module replacement and works
 regardless of how VS Code imports the service.
 
-The CEL Null Service modules provide a **second layer** of replacement: Output Transform
+The CEL Null Service modules provide a **second layer** of replacement: [Output](https://github.com/CodeEditorLand/Output) Transform
 reduces the original VS Code module body to a one-line re-export pointing at the CEL null
 service. This double-coverage ensures telemetry is neutralized even if some code imports
 the module directly rather than going through ServiceCollection.
@@ -685,5 +685,5 @@ the module directly rather than going through ServiceCollection.
 - [Architecture](/Doc/architecture) - System architecture overview
 
 🔵 **COVERAGE TELEMETRY - ACTIVE** - This component tracks service resolution,
-event routing, and domain coverage. All data flows through Land's diagnostic
+event routing, and domain coverage. All data flows through [Land](https://github.com/CodeEditorLand/Land)'s diagnostic
 pipeline (OTLP/PostHog/dev log). No data leaves the local machine.

@@ -8,28 +8,28 @@ author: "CodeEditorLand"
 readTime: 8
 ---
 
-# Extension Host Deep Dive: Cocoon Architecture
+# Extension Host Deep Dive: [Cocoon](https://github.com/CodeEditorLand/Cocoon) Architecture
 
 VS Code's extension host runs on a single Node.js event loop. One hung Promise
 blocks every other extension. There is no way to cancel an in-flight operation,
-no back-pressure, and no preemption. Cocoon solves this by running each
-extension in its own supervised Effect-TS fiber.
+no back-pressure, and no preemption. [Cocoon](https://github.com/CodeEditorLand/Cocoon) solves this by running each
+extension in its own supervised [Effect-TS](https://effect.website) fiber.
 
-## What Cocoon Is
+## What [Cocoon](https://github.com/CodeEditorLand/Cocoon) Is
 
-Cocoon is a Node.js sidecar process spawned and managed by Mountain. It provides
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) is a Node.js sidecar process spawned and managed by [Mountain](https://github.com/CodeEditorLand/Mountain). It provides
 a comprehensive VS Code Extension Host API surface so existing extensions run
-unmodified. All communication with Mountain happens over gRPC through the Vine
+unmodified. All communication with [Mountain](https://github.com/CodeEditorLand/Mountain) happens over gRPC through the [Vine](https://github.com/CodeEditorLand/Vine)
 protocol.
 
-The key distinction: Cocoon does not ask extension authors to change their code.
+The key distinction: [Cocoon](https://github.com/CodeEditorLand/Cocoon) does not ask extension authors to change their code.
 Extensions written for VS Code call `require('vscode')` and get back an API
-object. Cocoon builds that object from Effect-TS services.
+object. [Cocoon](https://github.com/CodeEditorLand/Cocoon) builds that object from [Effect-TS](https://effect.website) services.
 
 ## Bootstrap Sequence
 
-The entry point is `Bootstrap/Implementation/Cocoon/Main.ts`. It composes all
-Effect-TS layers into the master `AppLayer` (wired by `Service/Mapping.ts`):
+The entry point is [`Bootstrap/Implementation/Cocoon/Main.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Bootstrap/Implementation/Cocoon/Main.ts). It composes all
+[Effect-TS](https://effect.website) layers into the master `AppLayer` (wired by [`Service/Mapping.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Mapping.ts)):
 
 ```
 PatchProcess -> Service/Effect/Bootstrap -> AppLayer -> ExtensionHost
@@ -40,47 +40,47 @@ it:
 
 - Patches `process.exit` so extensions cannot kill the host
 - Captures `SIGTERM`, `SIGINT` for graceful shutdown
-- Redirects `stdout` and `stderr` to Mountain via the established channel
+- Redirects `stdout` and `stderr` to [Mountain](https://github.com/CodeEditorLand/Mountain) via the established channel
 - Sets up uncaught exception and unhandled rejection handlers
-- Monitors the parent Mountain process PID; if it exits, Cocoon terminates
+- Monitors the parent [Mountain](https://github.com/CodeEditorLand/Mountain) process PID; if it exits, [Cocoon](https://github.com/CodeEditorLand/Cocoon) terminates
   automatically
 
-After hardening, `Service/Effect/Bootstrap.ts` coordinates the initialization
+After hardening, [`Service/Effect/Bootstrap.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts) coordinates the initialization
 stages in order:
 
 1. Environment detection (OS, Node version, platform data)
 2. Configuration loading
-3. RPCServer startup - Cocoon binds its gRPC port (Phase 2, fixed 2026-05-22)
-4. MountainConnection - connects outbound to Mountain's Vine server (Phase 3)
+3. RPCServer startup - [Cocoon](https://github.com/CodeEditorLand/Cocoon) binds its gRPC port (Phase 2, fixed 2026-05-22)
+4. MountainConnection - connects outbound to [Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine) server (Phase 3)
 5. Module interceptor installation
 6. Extension registry population
 7. Health check setup
 
-The ordering of steps 3 and 4 matters. Previously these were reversed: Cocoon
-attempted the outbound Mountain connection before its own gRPC port was bound.
+The ordering of steps 3 and 4 matters. Previously these were reversed: [Cocoon](https://github.com/CodeEditorLand/Cocoon)
+attempted the outbound [Mountain](https://github.com/CodeEditorLand/Mountain) connection before its own gRPC port was bound.
 Mountain's 30-second gRPC connection budget expired waiting for a port that
 was not yet listening. The fix ensures `RPCServer` is up before
 `MountainConnection` fires.
 
-When the gRPC connection to Mountain's Vine server succeeds, Cocoon sends the
+When the gRPC connection to [Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine) server succeeds, [Cocoon](https://github.com/CodeEditorLand/Cocoon) sends the
 `$initialHandshake` notification and waits for `initExtensionHost` to return
 with the initialization payload. That payload contains workspace info, extension
 lists, configuration, and feature flags.
 
 ## Module Interception System
 
-When an extension calls `require('vscode')`, Cocoon intercepts the module
+When an extension calls `require('vscode')`, [Cocoon](https://github.com/CodeEditorLand/Cocoon) intercepts the module
 request before the extension code ever sees the module. This is the core
 compatibility mechanism.
 
-The module interceptor (`Service/Effect/Module/Interceptor.ts`) patches both
+The module interceptor ([`Service/Effect/Module/Interceptor.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Module/Interceptor.ts)) patches both
 CommonJS `require()` and ESM `import` at Node.js module resolution level. The
 interception flow:
 
 1. Extension calls `require('vscode')` or `import 'vscode'`.
 2. The interceptor detects the vscode module pattern.
 3. It requests an API instance from `ApiFactory` for the calling extension.
-4. `ApiFactory` creates an isolated vscode API object wired through Effect-TS
+4. `ApiFactory` creates an isolated vscode API object wired through [Effect-TS](https://effect.website)
    services.
 5. The interceptor returns this instance to the extension.
 
@@ -89,16 +89,16 @@ interfere with another's state. This instance isolation prevents the global
 state pollution that plagues shared extension hosts.
 
 The VS Code upstream uses a similar pattern in
-`src/vs/workbench/api/common/extHostRequireInterceptor.ts`. Cocoon's
+`src/vs/workbench/api/common/extHostRequireInterceptor.ts`. [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s
 implementation extends it with ESM interception, which VS Code does not support.
 
 ## API Factory and Service Shims
 
-`Services/API/Factory/Service.ts` constructs the vscode API object that
-extensions receive. Every method is wired through the Effect-TS service stack,
+[`Services/API/Factory/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/API/Factory/Service.ts) constructs the vscode API object that
+extensions receive. Every method is wired through the [Effect-TS](https://effect.website) service stack,
 not through raw callbacks.
 
-The service layer implements VS Code extension host interfaces as Effect-TS
+The service layer implements VS Code extension host interfaces as [Effect-TS](https://effect.website)
 `Layer`s:
 
 | VS Code Service     | Cocoon Implementation | VS Code Upstream Reference |
@@ -109,7 +109,7 @@ The service layer implements VS Code extension host interfaces as Effect-TS
 | `vscode.extensions` | `ExtensionProvider`   | `IExtHostExtensions`       |
 | `vscode.languages`  | `LanguageProvider`    | `IExtHostLanguages`        |
 
-Each provider is an Effect-TS service. This means every API call carries typed
+Each provider is an [Effect-TS](https://effect.website) service. This means every API call carries typed
 error information, resource cleanup guarantees, and dependency declarations in
 its function signature. An API method cannot silently swallow an error or forget
 a dependency.
@@ -121,26 +121,26 @@ When an extension calls `vscode.window.showInformationMessage("Hello")`:
 1. The extension's `vscode` object is the instance created by `ApiFactory`.
 2. `showInformationMessage` is implemented by `WindowProvider`.
 3. `WindowProvider` creates an Effect that serializes the message into a
-   gRPC-compatible format and sends a `ShowMessageRequest` to Mountain via
-   `Services/Mountain/gRPC/Client.ts`.
-4. The request flows through the bidirectional gRPC channel to Mountain's Vine
+   gRPC-compatible format and sends a `ShowMessageRequest` to [Mountain](https://github.com/CodeEditorLand/Mountain) via
+   [`Services/Mountain/gRPC/Client.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts).
+4. The request flows through the bidirectional gRPC channel to [Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine)
    server.
-5. Mountain's `Track` dispatcher routes the request to the native dialog
+5. [Mountain](https://github.com/CodeEditorLand/Mountain)'s `Track` dispatcher routes the request to the native dialog
    handler.
-6. Mountain displays a native OS information dialog and waits for user
+6. [Mountain](https://github.com/CodeEditorLand/Mountain) displays a native OS information dialog and waits for user
    interaction.
-7. The user's choice flows back: Mountain -> gRPC -> Cocoon -> WindowProvider ->
+7. The user's choice flows back: [Mountain](https://github.com/CodeEditorLand/Mountain) -> gRPC -> [Cocoon](https://github.com/CodeEditorLand/Cocoon) -> WindowProvider ->
    extension promise resolution.
 
-Total latency is dominated by the gRPC round-trip and Mountain's native dialog
+Total latency is dominated by the gRPC round-trip and [Mountain](https://github.com/CodeEditorLand/Mountain)'s native dialog
 handling; Cocoon-side serialization overhead is minimal.
 
 ## Extension Host Service and Fiber Supervision
 
-`Services/Extension/Host/Service.ts` manages extension activation and lifecycle.
+[`Services/Extension/Host/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Host/Service.ts) manages extension activation and lifecycle.
 The key design decision: each extension runs in its own supervised fiber.
 
-Effect-TS fibers are lightweight, preemptible execution units managed by the
+[Effect-TS](https://effect.website) fibers are lightweight, preemptible execution units managed by the
 runtime scheduler. When an extension is activated:
 
 1. A new `Scope` is created for that extension.
@@ -154,7 +154,7 @@ If an extension crashes:
 1. The fiber is interrupted.
 2. The `Scope` runs deterministic cleanup: every registered resource is
    released.
-3. The supervisor logs the error and reports it to Mountain.
+3. The supervisor logs the error and reports it to [Mountain](https://github.com/CodeEditorLand/Mountain).
 4. Other extensions continue running unaffected.
 
 This is fundamentally different from the VS Code model where unhandled
@@ -162,17 +162,17 @@ exceptions in one extension can cause cascading failures.
 
 ## gRPC Communication: Client and Server
 
-Cocoon maintains a dual gRPC presence:
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) maintains a dual gRPC presence:
 
-**`Services/Mountain/gRPC/Client.ts`** provides Effect-wrapped methods for
-calling Mountain back. The interface groups operations into logical categories:
+**[`Services/Mountain/gRPC/Client.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts)** provides Effect-wrapped methods for
+calling [Mountain](https://github.com/CodeEditorLand/Mountain) back. The interface groups operations into logical categories:
 
 - `window` operations (dialogs, notifications, status bar)
 - `workspace` operations (file system, configuration, workspace folders)
 - `commands` operations (registration, execution, keybindings)
 - `secrets` operations (secure credential storage)
 
-**`Services/gRPC/Server/Service.ts`** implements Cocoon's side of the Vine
+**[`Services/gRPC/Server/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts)** implements [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s side of the [Vine](https://github.com/CodeEditorLand/Vine)
 protocol. It handles incoming requests from Mountain with bidirectional
 streaming for real-time event communication. Incoming requests are delegated to
 domain-specific handler modules: `ExtensionHostHandler`,
@@ -186,7 +186,7 @@ backoff), and request queuing during connection outages.
 
 VS Code types like `Range`, `Position`, `URI`, `Dialog`, `TreeView`, `Webview`,
 `Task`, and `WorkspaceEdit` cannot be serialized naively across a process
-boundary. The `TypeConverter/` module provides pure conversion functions that
+boundary. The [`TypeConverter/`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter) module provides pure conversion functions that
 transform each rich type into a plain DTO suitable for gRPC transport.
 
 Each conversion path is documented and tested. The converter organizes itself by
@@ -195,9 +195,9 @@ and `WorkspaceEdit`.
 
 ## Code Generation Pipeline
 
-Cocoon includes a `Codegen/` pipeline that walks the VS Code extension-host
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) includes a [`Codegen/`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Codegen) pipeline that walks the VS Code extension-host
 source subtree and emits `IExtHost*Upstream` schemas grounded in real upstream
-definitions. This reuses Wind's extractor and resolver infrastructure. The
+definitions. This reuses [Wind](https://github.com/CodeEditorLand/Wind)'s extractor and resolver infrastructure. The
 generated schemas ensure that Cocoon's API shims stay aligned with actual VS
 Code extension-host types, reducing drift as VS Code evolves.
 
@@ -226,7 +226,7 @@ Source-backed compatibility today:
 - ESM module interception (beyond what VS Code's own extension host supports)
 - Typed error handling and resource cleanup through Effect-TS fibers
 - File system event notifications: `$acceptDidCreateFiles`,
-  `$acceptDidDeleteFiles`, and `$acceptDidRenameFiles` fired to Cocoon on
+  `$acceptDidDeleteFiles`, and `$acceptDidRenameFiles` fired to [Cocoon](https://github.com/CodeEditorLand/Cocoon) on
   underlying operation completion
 - Encrypted secret storage (`encryption:encrypt` / `encryption:decrypt`) using
   AES-256-GCM with a machine-stable key derived from the hardware UUID
@@ -257,19 +257,19 @@ Extensions using the unimplemented APIs activate but the specific features
 silently no-op. A public extension validation matrix naming specific
 extensions, versions, platforms, and exercised APIs is pending.
 
-## The Architecture Decision: Effect-TS Over Traditional OOP
+## The Architecture Decision: [Effect-TS](https://effect.website) Over Traditional OOP
 
 VS Code's extension host uses traditional object-oriented service instantiation.
-Cocoon uses Effect-TS Layer composition. The difference is not cosmetic:
+[Cocoon](https://github.com/CodeEditorLand/Cocoon) uses [Effect-TS](https://effect.website) Layer composition. The difference is not cosmetic:
 
-| Aspect               | VS Code Approach   | Cocoon Approach    | Result                     |
-| -------------------- | ------------------ | ------------------ | -------------------------- |
-| Dependency injection | Service collection | Effect-TS Layers   | Compile-time guarantees    |
-| Error handling       | try/catch          | Effect error types | No swallowed errors        |
-| Async operations     | Promises           | Effect pipelines   | Cancellable, preemptible   |
-| Service composition  | Instantiation      | Layer composition  | Deterministic availability |
+| Aspect               | VS Code Approach   | Cocoon Approach                            | Result                     |
+| -------------------- | ------------------ | ------------------------------------------ | -------------------------- |
+| Dependency injection | Service collection | [Effect-TS](https://effect.website) Layers | Compile-time guarantees    |
+| Error handling       | try/catch          | Effect error types                         | No swallowed errors        |
+| Async operations     | Promises           | Effect pipelines                           | Cancellable, preemptible   |
+| Service composition  | Instantiation      | Layer composition                          | Deterministic availability |
 
-The Effect-TS approach shifts correctness from runtime testing to compile-time
+The [Effect-TS](https://effect.website) approach shifts correctness from runtime testing to compile-time
 verification. When a service tag is renamed or an interface changes, the
 compiler fails at every consuming site. This is expensive to adopt but pays for
 itself in refactoring safety.

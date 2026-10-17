@@ -7,7 +7,7 @@ description:
     IPC connections on every launch."
 ---
 
-Land starts in three overlapping phases: the native [Mountain](https://github.com/CodeEditorLand/Mountain) binary starts its
+[Land](https://github.com/CodeEditorLand/Land) starts in three overlapping phases: the native [Mountain](https://github.com/CodeEditorLand/Mountain) binary starts its
 gRPC listener and spawns the [Cocoon](https://github.com/CodeEditorLand/Cocoon) Node.js sidecar, [Cocoon](https://github.com/CodeEditorLand/Cocoon) bootstraps and
 completes the `initExtensionHost` handshake, and the [Wind](https://github.com/CodeEditorLand/Wind) workbench renders in
 the Tauri webview. The [Mountain](https://github.com/CodeEditorLand/Mountain)↔[Cocoon](https://github.com/CodeEditorLand/Cocoon) handshake is the hard ordering constraint

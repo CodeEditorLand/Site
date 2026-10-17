@@ -8,10 +8,10 @@ description:
     and PostHog events via custom SpanProcessors."
 ---
 
-# Effect-TS + OpenTelemetry - Integration Pattern
+# [Effect-TS](https://effect.website) + OpenTelemetry - Integration Pattern
 
-Wind and Cocoon are written in Effect-TS. Effect ships first-class OpenTelemetry
-support through `@effect/opentelemetry`, and the natural Land integration is to
+[Wind](https://github.com/CodeEditorLand/Wind) and [Cocoon](https://github.com/CodeEditorLand/Cocoon) are written in [Effect-TS](https://effect.website). Effect ships first-class OpenTelemetry
+support through `@effect/opentelemetry`, and the natural [Land](https://github.com/CodeEditorLand/Land) integration is to
 let Effect own span creation and attribute propagation, then **export** to two
 sinks: a `BatchSpanProcessor` → OTLP collector, and a custom `SpanProcessor`
 that re-emits each span as a PostHog event.
@@ -29,12 +29,12 @@ pnpm add @effect/opentelemetry \
          @opentelemetry/semantic-conventions
 ```
 
-`sdk-trace-node` for Cocoon (Node), `sdk-trace-web` for Sky (browser),
-`sdk-trace-base` for Wind (which composes either).
+`sdk-trace-node` for [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node), `sdk-trace-web` for [Sky](https://github.com/CodeEditorLand/Sky) (browser),
+`sdk-trace-base` for [Wind](https://github.com/CodeEditorLand/Wind) (which composes either).
 
 ## Wiring
 
-### Cocoon (Node, Effect-TS)
+### Cocoon (Node, [Effect-TS](https://effect.website))
 
 ```ts
 // Element/Cocoon/Source/Telemetry/OTel.ts
@@ -184,7 +184,7 @@ with the literal `false` for production builds, dropping the entire branch.
 
 ## Mountain (Rust) bridge
 
-Mountain emits spans through the `tracing` crate. The bridge layer is
+[Mountain](https://github.com/CodeEditorLand/Mountain) emits spans through the `tracing` crate. The bridge layer is
 `tracing-opentelemetry`, which converts every `tracing::span!` into an OTLP
 span:
 
@@ -233,13 +233,13 @@ bridge in `Binary/Build/PostHogPlugin/CaptureHandler::Fn` receives the same
 
 ## Cross-tier trace propagation
 
-Tauri events between Mountain and Sky carry the `traceparent` header (W3C
-format) on every IPC envelope. Wind extracts it from
+Tauri events between [Mountain](https://github.com/CodeEditorLand/Mountain) and [Sky](https://github.com/CodeEditorLand/Sky) carry the `traceparent` header (W3C
+format) on every IPC envelope. [Wind](https://github.com/CodeEditorLand/Wind) extracts it from
 `event.payload._traceparent`, opens a child span with `Effect.linkSpans`, and
-forwards downstream. This lets Jaeger render a single trace that begins in Sky,
-hops Mountain (Rust), fans into Cocoon (Node), and rejoins on the response.
+forwards downstream. This lets Jaeger render a single trace that begins in [Sky](https://github.com/CodeEditorLand/Sky),
+hops [Mountain](https://github.com/CodeEditorLand/Mountain) (Rust), fans into [Cocoon](https://github.com/CodeEditorLand/Cocoon) (Node), and rejoins on the response.
 
-Mountain attaches the header in `IPC/Sky/EmitToWebview.rs`; Cocoon extracts it
+[Mountain](https://github.com/CodeEditorLand/Mountain) attaches the header in `IPC/Sky/EmitToWebview.rs`; [Cocoon](https://github.com/CodeEditorLand/Cocoon) extracts it
 in `Effect/RPCServer.ts`.
 
 ## When **not** to use Effect spans

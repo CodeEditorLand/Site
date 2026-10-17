@@ -8,30 +8,30 @@ description:
 ---
 
 The integrated terminal is a native PTY process managed entirely inside
-Mountain. Sky renders the terminal via xterm.js, receiving output as Tauri
-events. Cocoon receives the same output as gRPC notifications so extensions can
-observe terminal data. User keystrokes take the reverse path: Sky → Mountain IPC
+[Mountain](https://github.com/CodeEditorLand/Mountain). [Sky](https://github.com/CodeEditorLand/Sky) renders the terminal via xterm.js, receiving output as Tauri
+events. [Cocoon](https://github.com/CodeEditorLand/Cocoon) receives the same output as gRPC notifications so extensions can
+observe terminal data. User keystrokes take the reverse path: [Sky](https://github.com/CodeEditorLand/Sky) → [Mountain](https://github.com/CodeEditorLand/Mountain) IPC
 → PTY master → shell stdin.
 
-## Phase 1 - Creation request (Cocoon or Wind → Mountain)
+## Phase 1 - Creation request ([Cocoon](https://github.com/CodeEditorLand/Cocoon) or [Wind](https://github.com/CodeEditorLand/Wind) → [Mountain](https://github.com/CodeEditorLand/Mountain))
 
 ### 1. Request origin
 
 The request originates from one of two places:
 
-- **Extension**: `vscode.window.createTerminal(...)` in Cocoon sends a
-  `$createTerminal` gRPC request to Mountain.
+- **Extension**: `vscode.window.createTerminal(...)` in [Cocoon](https://github.com/CodeEditorLand/Cocoon) sends a
+  `$createTerminal` gRPC request to [Mountain](https://github.com/CodeEditorLand/Mountain).
 - **User command**: `workbench.action.terminal.new` from the Command Palette in
-  Wind reaches Mountain as a Tauri IPC call.
+  [Wind](https://github.com/CodeEditorLand/Wind) reaches [Mountain](https://github.com/CodeEditorLand/Mountain) as a Tauri IPC call.
 
-Both paths resolve to the same `Common::terminal::CreateTerminal` Effect
-executed by Mountain's `TerminalProvider`.
+Both paths resolve to the same [`Common`](https://github.com/CodeEditorLand/Common)`::terminal::CreateTerminal` Effect
+executed by [Mountain](https://github.com/CodeEditorLand/Mountain)'s `TerminalProvider`.
 
-For the extension path, Cocoon routes through its gRPC terminal service. For the
-user path, Wind dispatches the action through `track.rs` which creates and runs
+For the extension path, [Cocoon](https://github.com/CodeEditorLand/Cocoon) routes through its gRPC terminal service. For the
+user path, [Wind](https://github.com/CodeEditorLand/Wind) dispatches the action through `track.rs` which creates and runs
 the effect.
 
-## Phase 2 - Native PTY spawning (Mountain)
+## Phase 2 - Native PTY spawning ([Mountain](https://github.com/CodeEditorLand/Mountain))
 
 ### 2. TerminalProvider.CreateTerminal
 
@@ -39,7 +39,7 @@ the effect.
 allocates a new `TerminalId` from `AppState` and determines the shell to launch
 (from request options or the system default).
 
-Mountain uses the `portable-pty` crate to open a pseudo-terminal pair:
+[Mountain](https://github.com/CodeEditorLand/Mountain) uses the `portable-pty` crate to open a pseudo-terminal pair:
 
 ```rust
 PtySystem.openpty(size)   // returns master + slave handles
@@ -63,57 +63,57 @@ Three Tokio tasks are spawned for the terminal's lifetime:
   `TerminalStateDto`.
 - **Reader Task** - loops reading from the PTY master reader; for each chunk of
   output it both sends a **`$acceptTerminalProcessData` gRPC notification** to
-  Cocoon (containing the `TerminalId` and data string) and emits a Tauri event
-  to Sky: `sky://terminal/data { id, data }`.
+  [Cocoon](https://github.com/CodeEditorLand/Cocoon) (containing the `TerminalId` and data string) and emits a Tauri event
+  to [Sky](https://github.com/CodeEditorLand/Sky): `sky://terminal/data { id, data }`.
 - **Waiter Task** - awaits shell process exit; on termination it sends a
-  **`$acceptTerminalClosed` gRPC notification** to Cocoon and removes the entry
+  **`$acceptTerminalClosed` gRPC notification** to [Cocoon](https://github.com/CodeEditorLand/Cocoon) and removes the entry
   from `AppState.ActiveTerminals`.
 
 ### 4. Initial notifications
 
-Mountain sends `$acceptTerminalOpened` (with `TerminalId` and name) and
-`$acceptTerminalProcessId` (with OS-level `pid`) gRPC notifications to Cocoon.
-Cocoon's notification handler adds the terminal to the `__terminals` cache and
+[Mountain](https://github.com/CodeEditorLand/Mountain) sends `$acceptTerminalOpened` (with `TerminalId` and name) and
+`$acceptTerminalProcessId` (with OS-level `pid`) gRPC notifications to [Cocoon](https://github.com/CodeEditorLand/Cocoon).
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s notification handler adds the terminal to the `__terminals` cache and
 fires the `onDidOpenTerminal` event to any listening extensions.
 
-Mountain also emits the same event to Sky via `AppHandle.emit` so the workbench
+[Mountain](https://github.com/CodeEditorLand/Mountain) also emits the same event to [Sky](https://github.com/CodeEditorLand/Sky) via `AppHandle.emit` so the workbench
 UI can register the new terminal entry.
 
-Finally, Mountain returns the creation result (ID, name, PID) to the caller.
+Finally, [Mountain](https://github.com/CodeEditorLand/Mountain) returns the creation result (ID, name, PID) to the caller.
 
-## Phase 3 - UI rendering and state sync (Mountain → Cocoon + Sky)
+## Phase 3 - UI rendering and state sync ([Mountain](https://github.com/CodeEditorLand/Mountain) → [Cocoon](https://github.com/CodeEditorLand/Cocoon) + [Sky](https://github.com/CodeEditorLand/Sky))
 
-### 5. Cocoon terminal service
+### 5. [Cocoon](https://github.com/CodeEditorLand/Cocoon) terminal service
 
-Cocoon's terminal service ([Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/))
+[Cocoon](https://github.com/CodeEditorLand/Cocoon)'s terminal service ([Cocoon](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/))
 receives the `$acceptTerminalOpened`, `$acceptTerminalProcessId`, and
-`$acceptTerminalProcessData` notifications from Mountain.
+`$acceptTerminalProcessData` notifications from [Mountain](https://github.com/CodeEditorLand/Mountain).
 
 It creates a local `Terminal` proxy object that represents the terminal to
 extensions. When it receives data, it fires the `onDidWriteData` event for that
 specific terminal instance, allowing extensions to "listen" to a terminal's
 output.
 
-### 6. Mountain → Wind/Sky bridge
+### 6. [Mountain](https://github.com/CodeEditorLand/Mountain) → [Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky) bridge
 
-In addition to notifying Cocoon, Mountain's Reader Task (Phase 2, step 3)
+In addition to notifying [Cocoon](https://github.com/CodeEditorLand/Cocoon), [Mountain](https://github.com/CodeEditorLand/Mountain)'s Reader Task (Phase 2, step 3)
 notifies the frontend UI via Tauri events. It emits:
 
 ```
 AppHandle.emit("sky://terminal/data", { Id: TerminalId, Data: ... })
 ```
 
-### 7. Terminal UI component (Wind/Sky)
+### 7. Terminal UI component ([Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky))
 
-Sky's terminal component listens for Tauri events. When it receives a
+[Sky](https://github.com/CodeEditorLand/Sky)'s terminal component listens for Tauri events. When it receives a
 `sky://terminal/create` event (triggered at creation time), it instantiates a
 new xterm.js instance for the `TerminalId`.
 
-As the Reader Task emits `sky://terminal/data` events, Sky finds the correct
+As the Reader Task emits `sky://terminal/data` events, [Sky](https://github.com/CodeEditorLand/Sky) finds the correct
 xterm.js instance by `TerminalId` and calls `xterm.write(data)`. The shell
 prompt appears in the panel.
 
-## Phase 4 - User input loop (Sky → Mountain → shell)
+## Phase 4 - User input loop ([Sky](https://github.com/CodeEditorLand/Sky) → [Mountain](https://github.com/CodeEditorLand/Mountain) → shell)
 
 ### 8. Terminal UI captures input
 
@@ -127,10 +127,10 @@ TauriInvoke("mountain://terminal/send-text", {
 });
 ```
 
-### 9. track.rs and TerminalLogic handler (Mountain)
+### 9. track.rs and TerminalLogic handler ([Mountain](https://github.com/CodeEditorLand/Mountain))
 
 The `mountain://terminal/send-text` command is dispatched to `track`, which
-creates and runs the `Common::terminal::SendTextToTerminal` effect.
+creates and runs the [`Common`](https://github.com/CodeEditorLand/Common)`::terminal::SendTextToTerminal` effect.
 
 The `SendTextToTerminalLogic` handler is executed:
 
@@ -152,16 +152,16 @@ and writes the resulting directory listing to stdout. The PTY slave captures it
 and makes it available on the PTY master.
 
 The Reader Task reads the output and the loop from Phase 3 repeats - the listing
-appears in xterm.js and is also forwarded to Cocoon via
+appears in xterm.js and is also forwarded to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via
 `$acceptTerminalProcessData`.
 
 ## Terminal lifecycle events
 
 When a terminal closes (shell exits or the user explicitly closes it):
 
-- The **Waiter Task** fires **`$acceptTerminalClosed`** to Cocoon, which removes
+- The **Waiter Task** fires **`$acceptTerminalClosed`** to [Cocoon](https://github.com/CodeEditorLand/Cocoon), which removes
   the terminal from its `__terminals` cache and fires `onDidCloseTerminal`.
-- Mountain emits the closure to Sky via Tauri event so the workbench removes the
+- [Mountain](https://github.com/CodeEditorLand/Mountain) emits the closure to [Sky](https://github.com/CodeEditorLand/Sky) via Tauri event so the workbench removes the
   terminal tab.
 
 The full lifecycle event set available to extensions:
@@ -175,7 +175,7 @@ The full lifecycle event set available to extensions:
 ## Shell integration events (OSC 633)
 
 Modern shells emit OSC 633 escape sequences to mark the boundaries of each
-command. Land processes these sequences through the PTY Reader Task and routes
+command. [Land](https://github.com/CodeEditorLand/Land) processes these sequences through the PTY Reader Task and routes
 them as IPC calls:
 
 | Sequence               | Meaning       | IPC routing                                                                                                                        |
@@ -203,24 +203,24 @@ does not forward the raw escape sequence to xterm.js. Instead:
 1. **Prompt markers (A, B)**: Stripped from the output. They exist solely for
    shell integration decoration in the xterm.js renderer and are reconstructed
    by the frontend from IPC signals.
-2. **Command start (C)**: Mountain stores an `InflightExecution` entry in a
+2. **Command start (C)**: [Mountain](https://github.com/CodeEditorLand/Mountain) stores an `InflightExecution` entry in a
    per-terminal map keyed by sequence number. A `localPty:shellExecutionStart`
-   IPC event fires to Sky (for UI decoration like the run icon in the gutter)
-   and a `$acceptTerminalShellExecutionStart` gRPC notification fires to Cocoon.
+   IPC event fires to [Sky](https://github.com/CodeEditorLand/Sky) (for UI decoration like the run icon in the gutter)
+   and a `$acceptTerminalShellExecutionStart` gRPC notification fires to [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 3. **Line capture (E)**: The captured command line text is stored in the
    `InflightExecution` map, associated with the most recent `OSC 633 ; C`
    entry. Multiple `E` sequences may arrive before the corresponding `D` flush.
-4. **Command end (D)**: Mountain looks up the `InflightExecution` entry, pairs
+4. **Command end (D)**: [Mountain](https://github.com/CodeEditorLand/Mountain) looks up the `InflightExecution` entry, pairs
    it with any captured command lines, fires `$acceptTerminalShellExecutionEnd`
-   and `$acceptExecutedTerminalCommand` gRPC notifications to Cocoon, and
-   sends `localPty:shellExecutionEnd` to Sky. The exit code (after `;` in the
+   and `$acceptExecutedTerminalCommand` gRPC notifications to [Cocoon](https://github.com/CodeEditorLand/Cocoon), and
+   sends `localPty:shellExecutionEnd` to [Sky](https://github.com/CodeEditorLand/Sky). The exit code (after `;` in the
    `D` sequence) is included in the notification payload.
 
 ### PTY data flow model
 
 The PTY reader operates on a raw byte stream that interleaves terminal
 control sequences, OSC 633 markers, and actual shell output. The Reader Task
-in Mountain's `TerminalProvider` must:
+in [Mountain](https://github.com/CodeEditorLand/Mountain)'s `TerminalProvider` must:
 
 1. Accumulate bytes from the PTY master reader until a complete OSC sequence
    boundary is identified.
@@ -229,7 +229,7 @@ in Mountain's `TerminalProvider` must:
 3. Forward all non-OSC-633 output (standard terminal data, ANSI escape
    sequences, other XTerm escape codes) as-is to the `sky://terminal/data`
    Tauri event for xterm.js rendering.
-4. Send the same forwarded data and OSC 633 IPC notifications to Cocoon via
+4. Send the same forwarded data and OSC 633 IPC notifications to [Cocoon](https://github.com/CodeEditorLand/Cocoon) via
    gRPC so extensions receive both raw terminal data and structured command
    execution events.
 

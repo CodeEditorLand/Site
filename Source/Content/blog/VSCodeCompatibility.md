@@ -9,52 +9,52 @@ author: "CodeEditorLand"
 readTime: 5
 ---
 
-# VS Code Extension Compatibility in Land
+# VS Code Extension Compatibility in [Land](https://github.com/CodeEditorLand/Land)
 
-Land's active compatibility path is `Cocoon`. `Cocoon` loads existing `VS Code`
+[Land](https://github.com/CodeEditorLand/Land)'s active compatibility path is [`Cocoon`](https://github.com/CodeEditorLand/Cocoon). [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) loads existing `VS Code`
 extension entry points and provides the `vscode` API object those extensions
-expect. `Mountain` scans installed extensions, reads manifests, handles local
-VSIX install and uninstall routes, and notifies `Cocoon` when the extension set
+expect. [`Mountain`](https://github.com/CodeEditorLand/Mountain) scans installed extensions, reads manifests, handles local
+VSIX install and uninstall routes, and notifies [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) when the extension set
 changes.
 
-That means Land can make a strong, useful claim: installed `VS Code` extensions
-run unmodified through `Cocoon` when the APIs they use are implemented.
+That means [Land](https://github.com/CodeEditorLand/Land) can make a strong, useful claim: installed `VS Code` extensions
+run unmodified through [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) when the APIs they use are implemented.
 
 Current weighted coverage across the measured `vscode.*` namespaces is
 approximately 88%. Extensions that rely on unimplemented API surface will not
 activate correctly. No public validation matrix across extensions and versions
 exists yet.
 
-## How Cocoon Hosts Extensions
+## How [Cocoon](https://github.com/CodeEditorLand/Cocoon) Hosts Extensions
 
 The compatibility architecture has three layers:
 
 ### 1. The Extension Host Process
 
-`Cocoon` is a dedicated Node.js sidecar process spawned and managed by
-`Mountain`. It receives initialization data over a gRPC channel (`Vine`
-protocol) and bootstraps an Effect-TS runtime that mirrors the VS Code Extension
+[`Cocoon`](https://github.com/CodeEditorLand/Cocoon) is a dedicated Node.js sidecar process spawned and managed by
+[`Mountain`](https://github.com/CodeEditorLand/Mountain). It receives initialization data over a gRPC channel ([`Vine`](https://github.com/CodeEditorLand/Vine)
+protocol) and bootstraps an [Effect-TS](https://effect.website) runtime that mirrors the VS Code Extension
 Host environment:
 
 - `PatchProcess` hardens the environment immediately: patches `process.exit`,
-  handles uncaught exceptions, pipes logs to `Mountain`, and terminates if the
+  handles uncaught exceptions, pipes logs to [`Mountain`](https://github.com/CodeEditorLand/Mountain), and terminates if the
   parent process exits.
-- `Service/Effect/Bootstrap.ts` coordinates initialization stages: `RPCServer`
-  binds first, then `MountainConnection` connects to Mountain's Vine server.
+- [`Service/Effect/Bootstrap.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Effect/Bootstrap.ts) coordinates initialization stages: `RPCServer`
+  binds first, then `MountainConnection` connects to [Mountain](https://github.com/CodeEditorLand/Mountain)'s [Vine](https://github.com/CodeEditorLand/Vine) server.
   This ordering matters - Mountain waits for Cocoon's gRPC port to be ready
   before proceeding.
-- The `AppLayer` (wired via `Service/Mapping.ts`) composes all Effect-TS service
+- The `AppLayer` (wired via [`Service/Mapping.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Service/Mapping.ts)) composes all [Effect-TS](https://effect.website) service
   layers into a single runnable unit.
 
 ### 2. Module Interception
 
-When a VS Code extension calls `require('vscode')`, `Cocoon` intercepts the
+When a VS Code extension calls `require('vscode')`, [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) intercepts the
 module request and returns a sandboxed `vscode` API instance specific to that
 extension. This happens for both CJS `require()` and ESM `import` statements.
 
 The interceptor works at the Node.js module resolution level, before the
 extension code ever sees the module. Each extension gets its own API object
-wired through Effect-TS services, so one extension's API calls do not interfere
+wired through [Effect-TS](https://effect.website) services, so one extension's API calls do not interfere
 with another's.
 
 ```typescript
@@ -67,13 +67,13 @@ with another's.
 
 A comprehensive set of service shims replicates the behavior of the real
 `vscode.workspace`, `vscode.window`, `vscode.commands`, and other VS Code
-extension APIs. Each shim is built on Effect-TS services that route privileged
-calls to `Mountain` via gRPC.
+extension APIs. Each shim is built on [Effect-TS](https://effect.website) services that route privileged
+calls to [`Mountain`](https://github.com/CodeEditorLand/Mountain) via gRPC.
 
-The gRPC client in `Cocoon` (`Services/Mountain/gRPC/Client.ts`) provides
+The gRPC client in [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) ([`Services/Mountain/gRPC/Client.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Mountain/gRPC/Client.ts)) provides
 Effect-wrapped methods for window, workspace, command, and secret storage
-operations. The gRPC server (`Services/gRPC/Server/Service.ts`) implements the
-Vine protocol with bidirectional streaming for real-time event communication.
+operations. The gRPC server ([`Services/gRPC/Server/Service.ts`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/gRPC/Server/Service.ts)) implements the
+[Vine](https://github.com/CodeEditorLand/Vine) protocol with bidirectional streaming for real-time event communication.
 
 ## What Is Source-Backed Today
 
@@ -89,17 +89,17 @@ Weighted coverage across the actively measured namespaces is approximately 88%:
 
 Source-backed surfaces include:
 
-- `Cocoon` hosts existing extension code instead of asking authors to fork or
+- [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) hosts existing extension code instead of asking authors to fork or
   rewrite their extension.
-- `Mountain` contains extension scanning, manifest parsing, local VSIX install
+- [`Mountain`](https://github.com/CodeEditorLand/Mountain) contains extension scanning, manifest parsing, local VSIX install
   and uninstall routes, and extension-state updates.
-- `Output` ships the bundled `VS Code` platform code, including the
+- [`Output`](https://github.com/CodeEditorLand/Output) ships the bundled `VS Code` platform code, including the
   extension-gallery service helpers used by sideloaded extensions.
 - Core surfaces such as commands, workspace, window, terminals, webviews,
   language providers, diagnostics, output channels, and document events have
   active source paths.
 - File system event notifications: `$acceptDidCreateFiles`,
-  `$acceptDidDeleteFiles`, and `$acceptDidRenameFiles` are fired to `Cocoon`
+  `$acceptDidDeleteFiles`, and `$acceptDidRenameFiles` are fired to [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)
   when the underlying operations complete.
 - Encrypted secret storage (`encryption:encrypt` / `encryption:decrypt`) backed
   by AES-256-GCM with a machine-stable key.
@@ -133,29 +133,29 @@ Source-backed surfaces include:
 
 ## Marketplace Integration
 
-Land does not need to connect to the Microsoft Visual Studio Marketplace to run
+[Land](https://github.com/CodeEditorLand/Land) does not need to connect to the Microsoft Visual Studio Marketplace to run
 installed extension code. The current source is oriented around local extension
 paths and sideloaded packages. Open registry and enterprise registry flows are
 in development and not yet available in the editor.
 
 ## Code Generation Pipeline
 
-`Cocoon` includes a code generation pipeline (`Codegen/`) that walks the VS Code
+[`Cocoon`](https://github.com/CodeEditorLand/Cocoon) includes a code generation pipeline ([`Codegen/`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Codegen)) that walks the VS Code
 extension-host source subtree and emits `IExtHost*Upstream` schemas grounded in
-real upstream definitions. This reuses `Wind`'s extractor and resolver
-infrastructure. The schemas ensure that the API shims in `Cocoon` stay aligned
+real upstream definitions. This reuses [`Wind`](https://github.com/CodeEditorLand/Wind)'s extractor and resolver
+infrastructure. The schemas ensure that the API shims in [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) stay aligned
 with the actual VS Code extension-host types, reducing drift.
 
 ## Type Conversion
 
 Type definitions used by VS Code extensions (`Range`, `Position`, `URI`,
 `Dialog`, `TreeView`, `Webview`, `Task`, `WorkspaceEdit`) are serialized through
-pure conversion functions in `TypeConverter/` into plain DTOs suitable for gRPC
+pure conversion functions in [`TypeConverter/`](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/TypeConverter) into plain DTOs suitable for gRPC
 transport. This avoids serializing rich objects across process boundaries in an
 unstructured way -- every type has a documented conversion path.
 
 ## Reporting Compatibility Issues
 
-If an extension that works in `VS Code` fails in Land, open an issue with the
+If an extension that works in `VS Code` fails in [Land](https://github.com/CodeEditorLand/Land), open an issue with the
 extension name, version, platform, activation event, and the API that failed.
 That keeps compatibility work tied to real behavior instead of broad promises.

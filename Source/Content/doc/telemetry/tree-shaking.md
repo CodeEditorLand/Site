@@ -11,7 +11,7 @@ description:
 # Production Zero - Tree-Shaking Telemetry
 
 The contract: a `cargo build --release` of any Rust element, and an
-`astro build` of Sky / a `pnpm run --filter Output build` of Output, must
+`astro build` of [Sky](https://github.com/CodeEditorLand/Sky) / a `pnpm run --filter Output build` of [Output](https://github.com/CodeEditorLand/Output), must contain
 contain **zero** bytes of telemetry SDK code, no PostHog endpoint string, no
 OTLP collector URL, no `posthog-js` import.
 
@@ -132,9 +132,9 @@ different module that **doesn't** import the dev bridge.
 sh Maintain/Test/TelemetryTreeShake.sh
 ```
 
-Builds Mountain in `--release`, Cocoon / Sky / Output in `NODE_ENV=production`,
+Builds [Mountain](https://github.com/CodeEditorLand/Mountain) in `--release`, [Cocoon](https://github.com/CodeEditorLand/Cocoon) / [Sky](https://github.com/CodeEditorLand/Sky) / [Output](https://github.com/CodeEditorLand/Output) in `NODE_ENV=production`,
 runs `strings` / `grep` / `du -sh` against the output, fails CI if any forbidden
 symbol is found.
 
-(File `Maintain/Test/TelemetryTreeShake.sh` lands in the same commit as the Wind
-/ Sky bridges.)
+(File [`Maintain/Test/TelemetryTreeShake.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Test/TelemetryTreeShake.sh) lands in the same commit as the [Wind](https://github.com/CodeEditorLand/Wind)
+/ [Sky](https://github.com/CodeEditorLand/Sky) bridges.)
