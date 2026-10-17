@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/SideCar/tree/Current/Source/main.rs
- * Terms resolving here: 3
+ * Terms resolving here: 4
  * Pages: sidecar
  * Tags: SideCar, file, keep
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../Links";
 
 import type { LinkIndexData } from "../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/SideCar/tree/Current/Source/main.rs",
 
 	pages: ["sidecar"],
@@ -36,6 +36,11 @@ export const LinkIndexData: LinkIndexData = {
 		"Element/SideCar/Source/main.rs": {
 			Repo: ElementRepos.SideCar,
 
+			Path: "Source/main.rs",
+		},
+
+		"Source/main.rs": {
+			Repo: ElementRepos.SideCar,
 			Path: "Source/main.rs",
 		},
 	},

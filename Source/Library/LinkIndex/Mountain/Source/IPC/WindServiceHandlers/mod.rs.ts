@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs
- * Terms resolving here: 6
+ * Terms resolving here: 7
  * Pages: deep-dive-mountain, deep-dive-vine, deep-dive-wind, workflow-tier-gated-implementation-selection
  * Tags: Mountain, file, keep
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../Links";
 
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
 
 	pages: [
@@ -64,6 +64,11 @@ export const LinkIndexData: LinkIndexData = {
 		"WindServiceHandlers/mod.rs": {
 			Repo: ElementRepos.Mountain,
 
+			Path: "Source/IPC/WindServiceHandlers/mod.rs",
+		},
+
+		"mod.rs": {
+			Repo: ElementRepos.Mountain,
 			Path: "Source/IPC/WindServiceHandlers/mod.rs",
 		},
 	},

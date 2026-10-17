@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs
- * Terms resolving here: 4
+ * Terms resolving here: 3
  * Pages: deep-dive-grove, deep-dive-sidecar
  * Tags: Grove, file, change
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../Links";
 
 import type { LinkIndexData } from "../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs",
 
 	pages: ["deep-dive-grove", "deep-dive-sidecar"],
@@ -38,7 +38,5 @@ export const LinkIndexData: LinkIndexData = {
 
 			Path: "Source/main.rs",
 		},
-
-		"Source/main.rs": { Repo: ElementRepos.Grove, Path: "Source/main.rs" },
 	},
 };

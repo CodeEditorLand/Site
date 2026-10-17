@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/services/workingCopy/common/workingCopyFileService.ts#L290",
 
 	pages: ["workflow-save-participants"],

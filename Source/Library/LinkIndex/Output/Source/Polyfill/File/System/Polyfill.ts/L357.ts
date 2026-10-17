@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Polyfill/File/System/Polyfill.ts#L357",
 
 	pages: ["cocoon", "workflow-open-file"],

@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/PluginsWorkSpace/tree/Current/plugins/sql/guest-js/index.ts#L49",
 
 	pages: ["workflow-save-participants"],

@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../Links";
 
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vscode-dts/vscode.d.ts#L15038",
 
 	pages: ["vscode-api-coverage"],

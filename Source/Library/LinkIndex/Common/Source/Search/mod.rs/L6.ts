@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../Links";
 
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Search/mod.rs#L6",
 
 	pages: ["common", "mountain"],

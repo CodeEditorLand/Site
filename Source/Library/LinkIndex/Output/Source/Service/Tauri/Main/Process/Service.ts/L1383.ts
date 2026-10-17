@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/Tauri/Main/Process/Service.ts#L1383",
 
 	pages: ["build-matrix", "deep-dive-wind", "why-grpc"],

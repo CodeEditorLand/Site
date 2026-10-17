@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts#L12",
 
 	pages: ["deep-dive-sky", "polyfills", "workflow-scm"],

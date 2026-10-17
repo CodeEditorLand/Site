@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/mod.rs#L342",
 
 	pages: ["vine", "workflow-command-palette", "workflow-open-file"],

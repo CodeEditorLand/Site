@@ -22,6 +22,14 @@
  * ("workflow-tier-gated-implementation-selection" -> IPC -> false). The
  * globally-wrong noise class ("macOS", "Current", ...) is dropped from the
  * index entirely, so LinkCount shrinks.
+ *
+ * Phase 3g additions: the verdict-derived default derivation dropped the
+ * remove-majority terms from their fragments (index 1935 -> 1859), and the
+ * text-path resolver consults the compiled occurrence-level context rules
+ * (LinkIndex/ContextRules.ts) between the page override and the global
+ * index - the same term links in one sentence and stays plain in another
+ * on the SAME page, `then: false` unlinks only its sentence context, and a
+ * page override still wins over the context rules.
  */
 
 import { unified } from "unified";
@@ -115,8 +123,10 @@ const RenderAs = (Path: string, Markdown: string): string =>
 describe("remarkCodeMentions (render-time placement)", () => {
 	it("index cache holds every resolved entry (UNKNOWNs skipped, noise dropped)", () => {
 		// 1955 pre-3e; the 3e broken-link round removed the gitlink/untracked
-		// URLs (terms: {} fragments keep their file), so the index holds 1935.
-		expect(LinkCount).toBe(1935);
+		// URLs (terms: {} fragments keep their file), so the index held 1935.
+		// The 3g derivation then dropped the remove-majority terms (76) from
+		// their fragments, so the index holds 1859.
+		expect(LinkCount).toBe(1859);
 	});
 
 	it("links prose mentions of each class with byte-identical labels", () => {
@@ -301,20 +311,20 @@ describe("remarkCodeMentions (render-time placement)", () => {
 
 	it("a per-page override can remove a term that stays linked elsewhere", () => {
 		const Out = RenderAs(
-			"workflow-tier-gated-implementation-selection.md",
+			"architecture.md",
 
-			"IPC is proxied through the tier gate.",
+			"SkyBridge is the transport bridge.",
 		);
 
-		expect(Out).not.toContain("[IPC](");
+		expect(Out).not.toContain("[SkyBridge](");
 
-		expect(Out).toContain("IPC is proxied through the tier gate.");
+		expect(Out).toContain("SkyBridge is the transport bridge.");
 
 		// the same term on an unrelated page still links via the index
-		const Plain = Render("IPC is the inter-process channel.");
+		const Plain = Render("SkyBridge is the transport bridge.");
 
 		expect(Plain).toContain(
-			"[IPC](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23)",
+			"[SkyBridge](https://github.com/CodeEditorLand/Land/tree/Current/)",
 		);
 	});
 
@@ -326,5 +336,59 @@ describe("remarkCodeMentions (render-time placement)", () => {
 		expect(Out).not.toContain("[Current](");
 
 		expect(Out).toContain("macOS and Current are English words here.");
+	});
+
+	it("context rules split one term into two meanings on one page", () => {
+		// troubleshooting.Terminal unlinks 'Terminal not opening'/'terminal
+		// pane' sentences; the Terminal API sentence still links via the index.
+		const Out = RenderAs(
+			"troubleshooting.md",
+
+			"The Terminal not opening section explains the fix. The Terminal API is exposed to extensions.",
+		);
+
+		expect(Out).toContain(
+			"[Terminal](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L80)",
+		);
+
+		expect(Out.split("[Terminal](").length - 1).toBe(1);
+
+		expect(Out).toContain(
+			"The Terminal not opening section explains the fix.",
+		);
+	});
+
+	it("a context rule with then:false unlinks only its sentence context", () => {
+		const Out = RenderAs(
+			"troubleshooting.md",
+
+			"Opening the Terminal pane shows a blank panel.",
+		);
+
+		expect(Out).not.toContain("[Terminal](");
+
+		expect(Out).toContain("Opening the Terminal pane shows a blank panel.");
+
+		// the same sentence on a page without the rule still links via the index
+		const Plain = Render("Opening the Terminal pane shows a blank panel.");
+
+		expect(Plain).toContain(
+			"[Terminal](https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/mod.rs#L80)",
+		);
+	});
+
+	it("a page override still wins over context rules", () => {
+		// getting-started pins Editor to the Editor repo (review change row);
+		// the seeded context rule would unlink 'Editor UI' sentences - the
+		// override must win.
+		const Out = RenderAs(
+			"getting-started.md",
+
+			"The Editor UI surface hosts the workbench.",
+		);
+
+		expect(Out).toContain(
+			"[Editor](https://github.com/DependencyCodeEditorLand/Editor)",
+		);
 	});
 });

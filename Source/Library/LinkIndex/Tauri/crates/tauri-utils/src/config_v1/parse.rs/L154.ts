@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Tauri/tree/Current/crates/tauri-utils/src/config_v1/parse.rs#L154",
 
 	pages: ["BuildSystemDesign", "deep-dive-maintain", "maintain"],

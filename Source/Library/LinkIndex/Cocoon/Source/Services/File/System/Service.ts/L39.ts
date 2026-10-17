@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/File/System/Service.ts#L39",
 
 	pages: ["deep-dive-common", "deep-dive-mountain"],

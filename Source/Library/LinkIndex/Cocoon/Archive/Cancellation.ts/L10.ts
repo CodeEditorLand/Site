@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Cancellation.ts#L10
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: EffectTypeScriptArchitecture, ExtensionHostDeepDive, why-effect-ts
  * Tags: Cocoon, symbol, remove
  *
@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../Links";
 import type { LinkSpec } from "../../../../Links";
 import type { LinkIndexData } from "../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Cancellation.ts#L10",
 	pages: [
 		"EffectTypeScriptArchitecture",
@@ -19,11 +19,5 @@ export const LinkIndexData: LinkIndexData = {
 		"why-effect-ts",
 	],
 	tags: ["Cocoon", "symbol", "remove"],
-	terms: {
-		Scope: {
-			Repo: ElementRepos.Cocoon,
-			Path: "Archive/Cancellation.ts",
-			Line: 10,
-		},
-	},
+	terms: {},
 };

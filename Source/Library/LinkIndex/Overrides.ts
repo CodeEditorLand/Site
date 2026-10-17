@@ -1,10 +1,13 @@
 /**
- * Per-page overrides for the markdown pass (Phase 3c): keyed by the .md
- * basename (no extension) of the page being rendered. false -> never link
- * this term on this page; string -> pin this exact URL. Consulted by the
- * remark plugin (Source/Function/Markdown/CodeMentions.ts) via the vfile
- * path after a term resolves through the matcher. Phase 3d split: this is
- * a separate page-keyed file, re-exported by the LinkIndex aggregator.
+ * Per-page overrides for the markdown pass (Phase 3c + 3g): keyed by
+ * the .md basename (no extension) of the page being rendered. false ->
+ * never link this term on this page; string -> pin this exact URL.
+ * Consulted by the remark plugin (Source/Function/Markdown/CodeMentions.ts)
+ * via the vfile path after a term resolves through the matcher.
+ * Phase 3g: regenerated COMPLETELY by derive_defaults.py from
+ * LINK-CONTEXT-REVIEW.md (every change-to row -> pin, every remove row
+ * -> false) plus the verdict-derived pins (majority -> global default,
+ * minority -> override).
  */
 
 export const LinkIndexOverrides: Record<
@@ -12,35 +15,93 @@ export const LinkIndexOverrides: Record<
 	Record<string, string | false>
 > = {
 	ApplicationStartupHandshake: {
+		Builder:
+			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Request/Routing/Handler.ts#L450",
+
 		Editor: false,
 
 		Electron: "https://www.electronjs.org",
 
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
+		Layer: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Container.ts#L29",
+
 		Process: false,
 
+		Runtime:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs#L534",
+
 		Workspace: false,
+
+		effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/Shim.rs#L25",
+
+		mainPid: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
 	},
 
 	BuildSystemDesign: {
+		Any: false,
+
+		Bundled:
+			"https://github.com/DependencyCodeEditorLand/Tauri/tree/Current/crates/tauri-bundler/src/bundle/macos/dmg/mod.rs#L21",
+
 		Cargo: false,
 
 		Configuration: false,
+
+		Core: "https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_minifier/benches/full/typescript.js#L141007",
 
 		Electron: false,
 
 		Embedded: false,
 
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
+		Git: false,
+
 		IPC: false,
 
 		JavaScript: false,
 
+		Layer2: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Layer4: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
 		Native: false,
 
+		Node: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L75",
+
+		PascalCase: false,
+
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
+		Production:
+			"https://github.com/CodeEditorLand/Echo/tree/Current/Example/Sequence.rs#L24",
+
+		Profile:
+			"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Definition.rs#L243",
+
+		"TargetConfig.ts":
+			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Configuration/ESBuild/Cocoon.ts",
+
 		Tier: false,
+
+		TierFileSystem: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Vite: false,
+
+		macOS: false,
+
+		npm: false,
 	},
 
 	EffectTypeScriptArchitecture: {
 		Effect: false,
+
+		"Effect.race": false,
+
+		"Effect.timeout": false,
 
 		Electron: "https://www.electronjs.org",
 
@@ -63,6 +124,8 @@ export const LinkIndexOverrides: Record<
 		Scope: false,
 
 		Update: false,
+
+		__CEL_SERVICES__: false,
 	},
 
 	ExtensionHostDeepDive: {
@@ -76,13 +139,21 @@ export const LinkIndexOverrides: Record<
 
 		Dependency: false,
 
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
 		ExtensionHostHandler: false,
 
 		ExtensionProvider: false,
 
 		Extensions: false,
 
+		IExtHostExtensions: false,
+
+		IExtHostLanguages: false,
+
 		LanguageProviderHandler: false,
+
+		Layer: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Container.ts#L29",
 
 		Main: false,
 
@@ -98,6 +169,15 @@ export const LinkIndexOverrides: Record<
 		SIGINT: false,
 
 		SIGTERM: false,
+
+		Scope: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Cancellation.ts#L10",
+
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
+
+		URI: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization/InitExtensionHost.rs#L36",
+
+		Webview:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L16",
 
 		WindowProvider: false,
 
@@ -129,17 +209,36 @@ export const LinkIndexOverrides: Record<
 
 		IPC: false,
 
+		Linux: false,
+
 		Node: false,
+
+		Update: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Configuration/mod.rs#L9",
+
+		Windows: false,
+
+		macOS: false,
 	},
 
 	VSCodeCompatibility: {
 		Core: false,
 
+		Current: false,
+
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
 		Extensions: false,
 
 		PTY: false,
 
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
+
 		Terminal: false,
+
+		URI: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization/InitExtensionHost.rs#L36",
+
+		Webview:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L16",
 	},
 
 	air: {
@@ -174,6 +273,8 @@ export const LinkIndexOverrides: Record<
 
 	"api-reference": {
 		Core: false,
+
+		Deserialize: false,
 
 		Environment: false,
 
@@ -218,13 +319,19 @@ export const LinkIndexOverrides: Record<
 		ProcessMountainRequest:
 			"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto#L34",
 
+		SIGKILL: false,
+
 		SendCocoonNotification:
 			"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto#L11",
 
 		SendMountainNotification:
 			"https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto#L37",
 
+		Serialize: false,
+
 		Spine: false,
+
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
 
 		TierSearch:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/LandFixTier.rs#L84",
@@ -234,6 +341,12 @@ export const LinkIndexOverrides: Record<
 
 		TierTerminal:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/LandFixTier.rs#L75",
+
+		Update: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Configuration/mod.rs#L9",
+
+		Window: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L103",
+
+		macOS: false,
 	},
 
 	architecture: {
@@ -243,21 +356,33 @@ export const LinkIndexOverrides: Record<
 
 		Dialog: false,
 
+		Disabled: false,
+
 		ESBuild: "https://esbuild.github.io",
 
 		Editor: false,
 
 		Electron: false,
 
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
 		FileSystem: false,
 
 		Full: false,
+
+		HTTPProxy: false,
 
 		High: false,
 
 		Hyper: false,
 
 		IPC: false,
+
+		JSX: false,
+
+		JavaScript:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/typescript-language-features/package.nls.json#L327",
 
 		Layer: false,
 
@@ -268,6 +393,8 @@ export const LinkIndexOverrides: Record<
 		Layer4: false,
 
 		Layer5: false,
+
+		Linux: false,
 
 		Low: false,
 
@@ -284,7 +411,12 @@ export const LinkIndexOverrides: Record<
 
 		PTY: false,
 
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
 		Process: false,
+
+		RemoteProcedureCall: false,
 
 		SharedMemory: false,
 
@@ -312,31 +444,89 @@ export const LinkIndexOverrides: Record<
 
 		Transport: false,
 
+		Vite: false,
+
 		WASMtime: "https://wasmtime.dev",
 
 		Window: false,
 
+		Windows: false,
+
+		aarch64: false,
+
 		effect: false,
+
+		macOS: false,
+
+		npm: false,
+
+		x86_64: false,
 	},
 
 	"build-matrix": {
+		Boot: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Bundled:
+			"https://github.com/DependencyCodeEditorLand/Tauri/tree/Current/crates/tauri-bundler/src/bundle/macos/dmg/mod.rs#L21",
+
+		Cache: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/cache.ts#L13",
+
+		Cargo: "https://github.com/DependencyCodeEditorLand/LandSWCDevtools/tree/Current/src/cargo/index.ts#L31",
+
+		Core: "https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_minifier/benches/full/typescript.js#L141007",
+
 		ESBuild: false,
+
+		Embedded: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
+		Full: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Workspace/Contains/Activator.ts#L209",
+
+		Future: false,
 
 		IPC: false,
 
+		Install:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L112",
+
+		JavaScript:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/typescript-language-features/package.nls.json#L327",
+
+		Layer2: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Layer4: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Node: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L75",
+
 		None: false,
 
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
+		Production:
+			"https://github.com/CodeEditorLand/Echo/tree/Current/Example/Sequence.rs#L24",
+
 		Profile: false,
+
+		Report: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/consoleCompactor/consoleCompactor.ts#L41",
 
 		Runtime: false,
 
 		Shared: false,
 
+		Standard: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
 		Telemetry: false,
 
 		Tier: false,
 
+		TierFileSystem: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
 		Transport: false,
+
+		Vite: false,
 
 		beforeBundleCommand: false,
 	},
@@ -364,13 +554,22 @@ export const LinkIndexOverrides: Record<
 
 		Full: false,
 
+		Git: false,
+
+		JSX: false,
+
 		JavaScript: false,
+
+		Linux: false,
 
 		Native: false,
 
 		Node: false,
 
 		None: false,
+
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
 
 		Production: false,
 
@@ -380,10 +579,18 @@ export const LinkIndexOverrides: Record<
 
 		ServiceWorker: false,
 
+		Vite: false,
+
+		Windows: false,
+
 		Workbench: false,
 
 		beforeBundleCommand:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json",
+
+		macOS: false,
+
+		x86_64: false,
 	},
 
 	"ci-cd-pipeline": {
@@ -401,7 +608,13 @@ export const LinkIndexOverrides: Record<
 
 		Extensions: false,
 
+		Git: false,
+
+		JSX: false,
+
 		JavaScript: false,
+
+		Linux: false,
 
 		Native: false,
 
@@ -409,16 +622,27 @@ export const LinkIndexOverrides: Record<
 
 		None: false,
 
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
 		Production: false,
 
 		Profile: false,
 
 		Rollup: false,
 
+		Vite: false,
+
+		Windows: false,
+
 		Workbench: false,
 
 		beforeBundleCommand:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json",
+
+		macOS: false,
+
+		x86_64: false,
 	},
 
 	cocoon: {
@@ -426,11 +650,17 @@ export const LinkIndexOverrides: Record<
 
 		Configuration: false,
 
+		Disabled: false,
+
 		Effect: false,
 
 		Electron: false,
 
 		Full: false,
+
+		Future: false,
+
+		Git: false,
 
 		IPC: false,
 
@@ -444,6 +674,9 @@ export const LinkIndexOverrides: Record<
 
 		PTY: false,
 
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
 		Process: false,
 
 		Profile: false,
@@ -454,7 +687,29 @@ export const LinkIndexOverrides: Record<
 
 		Task: false,
 
+		TierAuth: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		TierDebug: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		TierIPC:
+			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Utility/Tier.ts",
+
+		TierLanguageFeatures:
+			"https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		TierModel: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+
+		TierSCM: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		TierTasks: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		TierTerminal: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		TierWebSocket: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+
 		Track: false,
+
+		Vite: false,
 
 		Webview: false,
 
@@ -474,7 +729,11 @@ export const LinkIndexOverrides: Record<
 		"index.astro":
 			"https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro",
 
+		macOS: false,
+
 		readDirectory: false,
+
+		textFile: false,
 	},
 
 	"cocoon-vscode-validation": {
@@ -489,6 +748,8 @@ export const LinkIndexOverrides: Record<
 		Extensions: false,
 
 		Full: false,
+
+		Git: false,
 
 		High: false,
 
@@ -518,9 +779,17 @@ export const LinkIndexOverrides: Record<
 	common: {
 		DTO: false,
 
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
+		Global: false,
+
 		PTY: false,
 
 		PostHog: false,
+
+		Requires:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Environment/mod.rs#L17",
 
 		TCapability:
 			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Effect/ActionEffect.rs#L21",
@@ -538,38 +807,150 @@ export const LinkIndexOverrides: Record<
 	},
 
 	configuration: {
+		Boot: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Bundled:
+			"https://github.com/DependencyCodeEditorLand/Tauri/tree/Current/crates/tauri-bundler/src/bundle/macos/dmg/mod.rs#L21",
+
+		Cache: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/cache.ts#L13",
+
 		Cargo: false,
 
 		Clean: false,
 
+		Core: "https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_minifier/benches/full/typescript.js#L141007",
+
+		Dependency:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L9",
+
 		Electron: false,
+
+		Embedded: "https://github.com/CodeEditorLand/Air/tree/Current/",
 
 		Empty: false,
 
 		Environment: false,
 
+		Extend: "https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_transforms_module/src/module_decl_strip.rs#L603",
+
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
+		Full: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/Workspace/Contains/Activator.ts#L209",
+
+		Global: false,
+
+		Hyper: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
+		Install:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L112",
+
+		JavaScript:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/typescript-language-features/package.nls.json#L327",
+
+		Layer2: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Layer4: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Layer5: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Linux: false,
+
+		NODE_ENV: false,
+
+		Native: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/mod.rs#L14",
+
+		Node: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L75",
+
+		Parallel:
+			"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/Binary/Command/Option.rs#L65",
+
+		PascalCase: false,
+
+		Pick: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/quickinput/browser/pickerQuickAccess.ts#L104",
+
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
 		Production: false,
+
+		Profile:
+			"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Definition.rs#L243",
+
+		Report: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/terminalContrib/chatAgentTools/browser/tools/consoleCompactor/consoleCompactor.ts#L41",
+
+		Ring: "https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_minifier/tests/benches-full/echarts.js#L6810",
+
+		Runtime:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs#L534",
+
+		Shared: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Client.rs#L37",
+
+		SharedMemory: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
+		Smoke: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Standard: "https://github.com/CodeEditorLand/Land/tree/Current/",
 
 		Terminal: false,
 
+		TierFileSystem: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Vite: false,
+
 		Window: false,
+
+		Windows: false,
 
 		"build.rs":
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs",
 
 		effect: false,
+
+		"index.astro":
+			"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md#L267",
+
+		localStorage:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/node/agentHostCatalogSyncService.test.ts#L240",
+
+		macOS: false,
 	},
 
 	contributing: {
+		Current: false,
+
+		Git: false,
+
 		IPC: false,
 
+		Linux: false,
+
+		PascalCase: false,
+
 		Smoke: false,
+
+		TestClock: false,
+
+		TestEnvironment: false,
+
+		Windows: false,
+
+		macOS: false,
 	},
 
 	coverage: {
 		Core: false,
 
+		Current: false,
+
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
 		Full: false,
+
+		Git: false,
 
 		IPC: false,
 
@@ -589,6 +970,8 @@ export const LinkIndexOverrides: Record<
 		On: false,
 
 		Own: false,
+
+		PASSTHROUGH: false,
 
 		PTY: false,
 
@@ -622,7 +1005,14 @@ export const LinkIndexOverrides: Record<
 	},
 
 	"deep-dive-cocoon": {
+		Any: false,
+
 		Buffer: false,
+
+		Dependency:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L9",
+
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
 
 		Electron: false,
 
@@ -636,19 +1026,38 @@ export const LinkIndexOverrides: Record<
 
 		IPC: false,
 
+		Layer: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Container.ts#L29",
+
+		Native: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/mod.rs#L14",
+
+		Node: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L75",
+
 		Process: false,
 
 		Runtime: false,
+
+		SIGTERM: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
 
 		Task: false,
 
 		URI: false,
 
 		effect: false,
+
+		globalState:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/test/common/event.test.ts#L782",
+
+		macOS: false,
+
+		npm: false,
 	},
 
 	"deep-dive-common": {
+		Any: false,
+
 		ApplicationRunTime: false,
+
+		Arc: false,
 
 		Cache: false,
 
@@ -658,11 +1067,33 @@ export const LinkIndexOverrides: Record<
 
 		Full: false,
 
+		Global: false,
+
+		IDocumentService: false,
+
 		IPC: false,
 
 		Layer: false,
 
+		MountainCommand: false,
+
+		MountainConfiguration: false,
+
+		MountainDocument: false,
+
+		MountainFileSystem: false,
+
+		MountainWorkspace: false,
+
 		Parallel: false,
+
+		PascalCase: false,
+
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
+		Requires:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Environment/mod.rs#L17",
 
 		Runtime: false,
 
@@ -670,7 +1101,21 @@ export const LinkIndexOverrides: Record<
 
 		TCapability: false,
 
+		async_trait: false,
+
 		effect: false,
+
+		file_creates: false,
+
+		file_deletes: false,
+
+		retry_backoff_ms: false,
+
+		retry_count: false,
+
+		shell_path: false,
+
+		timeout_ms: false,
 	},
 
 	"deep-dive-echo": {
@@ -681,15 +1126,21 @@ export const LinkIndexOverrides: Record<
 
 		Cache: false,
 
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
 		Full: false,
 
-		High: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
+		Future: false,
+
+		High: false,
 
 		Low: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
 
 		Native: false,
 
 		Normal: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
+
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
 
 		Worker: false,
 	},
@@ -705,9 +1156,16 @@ export const LinkIndexOverrides: Record<
 
 		Shared: false,
 
+		"Source/main.rs":
+			"https://github.com/CodeEditorLand/Grove/tree/Current/Source/main.rs",
+
 		Spine: "https://github.com/CodeEditorLand/Grove/tree/Current/Source/Protocol/SpineConnection.rs",
 
 		WASMtime: "https://wasmtime.dev",
+
+		Windows: false,
+
+		onCommand: false,
 
 		wasm: false,
 	},
@@ -718,9 +1176,13 @@ export const LinkIndexOverrides: Record<
 		Core: false,
 
 		Full: false,
+
+		PascalCase: false,
 	},
 
 	"deep-dive-mist": {
+		DO: false,
+
 		Environment: false,
 
 		Transport: false,
@@ -740,7 +1202,31 @@ export const LinkIndexOverrides: Record<
 
 		DTO: false,
 
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
+		Err: false,
+
+		ExtensionTypeFilter: false,
+
+		IDocumentService: false,
+
+		IOPlatformUUID: false,
+
 		IPC: false,
+
+		Linux: false,
+
+		MountainCommand: false,
+
+		MountainConfiguration: false,
+
+		MountainDocument: false,
+
+		MountainFileSystem: false,
+
+		MountainWorkspace: false,
+
+		Native: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/mod.rs#L14",
 
 		On: false,
 
@@ -748,7 +1234,29 @@ export const LinkIndexOverrides: Record<
 
 		PTY: false,
 
+		PascalCase: false,
+
+		Process:
+			"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Process.rs#L65",
+
 		Report: false,
+
+		RwLock: false,
+
+		Shared: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Client.rs#L37",
+
+		SystemTime: false,
+
+		URI: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization/InitExtensionHost.rs#L36",
+
+		"Vine.proto":
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+
+		Window: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L103",
+
+		Windows: false,
+
+		appSharedDataHome: false,
 
 		beforeBundleCommand: false,
 
@@ -757,12 +1265,18 @@ export const LinkIndexOverrides: Record<
 
 		effect: false,
 
+		join_all: false,
+
 		languageModelsResource: false,
+
+		macOS: false,
 
 		mainPid: false,
 
 		"mod.rs":
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
+
+		sharedDataFolderName: false,
 	},
 
 	"deep-dive-rest": {
@@ -772,15 +1286,24 @@ export const LinkIndexOverrides: Record<
 
 		Main: false,
 
+		Parallel:
+			"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/Binary/Command/Option.rs#L65",
+
 		Process: false,
 
 		Worker: false,
+
+		emitDecoratorMetadata: false,
+
+		oxc_parser: false,
 	},
 
 	"deep-dive-sidecar": {
 		Cache: false,
 
 		Cargo: false,
+
+		Git: false,
 
 		Main: false,
 
@@ -812,15 +1335,34 @@ export const LinkIndexOverrides: Record<
 
 		IPC: false,
 
+		NODE_ENV: false,
+
+		PostHog:
+			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/IsAllowed.rs#L16",
+
 		Production: false,
 
 		Shared: false,
 
 		Task: false,
+
+		Vite: false,
+
+		manualChunks: false,
+
+		onDidCollapse: false,
+
+		onDidExpand: false,
 	},
 
 	"deep-dive-vine": {
+		ActionRequest: false,
+
+		BackgroundServices: false,
+
 		Core: false,
+
+		Disabled: false,
 
 		IPC: false,
 
@@ -829,6 +1371,10 @@ export const LinkIndexOverrides: Record<
 
 		OpenChannelFromMountain:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+
+		PATH: false,
+
+		PerformAction: false,
 
 		ProcessCocoonRequest:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
@@ -847,26 +1393,47 @@ export const LinkIndexOverrides: Record<
 
 		Update: false,
 
+		"Vine.proto":
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+
 		__textDocuments: false,
+
+		__workspaceFolders: false,
+
+		macOS: false,
 
 		"mod.rs":
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs",
+
+		provideInlayHints: false,
+
+		tonic_build: false,
 	},
 
 	"deep-dive-wind": {
+		Any: false,
+
 		Bundle: false,
 
 		CustomEvent: false,
 
 		Dependency: false,
 
+		Disabled: false,
+
 		Effect: false,
 
+		FromAsync: false,
+
 		Full: false,
+
+		Global: false,
 
 		High: false,
 
 		IPC: false,
+
+		LandWorkbenchLayer: false,
 
 		Layer: false,
 
@@ -881,7 +1448,13 @@ export const LinkIndexOverrides: Record<
 
 		NodeDeferred: false,
 
+		OptionalFromAsync: false,
+
+		ServiceUpstream: false,
+
 		Tag: false,
+
+		TauriEmit: false,
 
 		TierAuth: false,
 
@@ -893,6 +1466,10 @@ export const LinkIndexOverrides: Record<
 
 		TierModel: false,
 
+		TierNativeHost: false,
+
+		TierOutputChannel: false,
+
 		TierSCM: false,
 
 		TierSearch: false,
@@ -903,6 +1480,8 @@ export const LinkIndexOverrides: Record<
 
 		TierTerminal: false,
 
+		TierTreeView: false,
+
 		TierWebSocket: false,
 
 		extensionHostStarter: false,
@@ -910,9 +1489,19 @@ export const LinkIndexOverrides: Record<
 		localGit: false,
 
 		localPty: false,
+
+		nativeHost: false,
+
+		npm: false,
+
+		queryLocalFonts: false,
+
+		textFile: false,
 	},
 
 	"deep-dive-worker": {
+		Any: false,
+
 		Cache: false,
 
 		ESBuild: "https://esbuild.github.io",
@@ -937,12 +1526,18 @@ export const LinkIndexOverrides: Record<
 
 		Full: false,
 
+		Git: false,
+
 		Node: false,
 
 		Skip: false,
 
 		"build.rs":
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs",
+
+		node_modules: false,
+
+		npm: false,
 	},
 
 	"development-history": {
@@ -985,21 +1580,31 @@ export const LinkIndexOverrides: Record<
 
 		Empty: false,
 
-		High: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
+		Future: false,
 
-		Low: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
+		High: false,
+
+		Low: false,
 
 		Main: false,
 
 		Normal: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Task/Priority.rs",
 
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
+
+		Windows: false,
+
 		Worker: false,
 
 		effect: false,
+
+		macOS: false,
 	},
 
 	"extension-development": {
 		Configuration: false,
+
+		Current: false,
 
 		Extensions: false,
 
@@ -1017,6 +1622,12 @@ export const LinkIndexOverrides: Record<
 			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Scm/Namespace.ts#L531",
 
 		activationEvents: false,
+
+		debugServer: false,
+
+		macOS: false,
+
+		pipeTransport: false,
 	},
 
 	"filesystem-footprint": {
@@ -1026,9 +1637,19 @@ export const LinkIndexOverrides: Record<
 
 		Bundled: false,
 
+		Linux: false,
+
 		PostHog: false,
 
+		Profile:
+			"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Definition.rs#L243",
+
 		Update: false,
+
+		Webview:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L16",
+
+		Windows: false,
 
 		distinctId: false,
 
@@ -1036,27 +1657,51 @@ export const LinkIndexOverrides: Record<
 
 		extensionStorage: false,
 
+		globalStorage: false,
+
 		localStorage: false,
+
+		macOS: false,
+
+		read_dir: false,
 	},
 
 	"filesystem-footprint-cleanup": {
+		Cleanup: false,
+
+		Encapsulation: false,
+
+		Linux: false,
+
 		Normal: false,
 
 		Secret: false,
 
 		Webview: false,
 
+		Windows: false,
+
 		Workbench: false,
+
+		macOS: false,
 	},
 
 	"filesystem-footprint-encapsulation": {
 		Boot: false,
 
+		Cache: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/cache.ts#L13",
+
+		Cleanup: false,
+
 		Dependency: false,
 
 		Extend: false,
 
+		Low: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/Utilities/PathExtraction.rs#L134",
+
 		None: false,
+
+		On: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/ESBuild.ts#L7",
 
 		PostHog: false,
 
@@ -1069,6 +1714,13 @@ export const LinkIndexOverrides: Record<
 		Webview: false,
 
 		Workbench: false,
+
+		extensionStorage: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		localStorage:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/agentHost/test/node/agentHostCatalogSyncService.test.ts#L240",
+
+		macOS: false,
 	},
 
 	"filesystem-footprint-environment-variables": {
@@ -1081,21 +1733,45 @@ export const LinkIndexOverrides: Record<
 		AIR_LOG_JSON:
 			"https://github.com/CodeEditorLand/Air/tree/Current/Source/Initialize/Configure/Log/ConfigureLog.rs",
 
+		APPDATA: false,
+
 		Ask: false,
 
 		Cap: false,
 
 		Capture: false,
 
+		Clean: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/ESBuild.ts#L3",
+
+		Cleanup: false,
+
+		Dependency:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L9",
+
 		Effect: false,
+
+		Electron:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L5",
 
 		Extend: false,
 
+		HOME: false,
+
 		LAND_: false,
+
+		LAND_SHELL_INTEGRATION_ACTIVE: false,
+
+		LOCALAPPDATA: false,
+
+		Level: "https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L11",
+
+		Linux: false,
 
 		Lodge: false,
 
 		MountainDir: false,
+
+		NODE_ENV: false,
 
 		Node: false,
 
@@ -1107,22 +1783,56 @@ export const LinkIndexOverrides: Record<
 
 		On: false,
 
+		PascalCase: false,
+
 		PostHog: false,
 
 		Record: false,
+
+		Render: false,
 
 		Report: false,
 
 		Smoke: false,
 
+		TAURI_ENV_DEBUG: false,
+
+		TMPDIR: false,
+
 		Throttle: false,
+
+		TierCommandEventBroadcast: false,
+
+		USER: false,
+
+		USERNAME: false,
+
+		USERPROFILE: false,
+
+		VSCODE_APP_ROOT: false,
 
 		VSCODE_COCOON_GLOBAL_STORAGE:
 			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Extension/Context.ts",
 
+		Vite: false,
+
+		Windows: false,
+
+		XDG_CACHE_HOME: false,
+
+		XDG_CONFIG_HOME: false,
+
+		XDG_DATA_HOME: false,
+
+		ZDOTDIR: false,
+
 		effect: false,
 
+		globalStorage: false,
+
 		localStorage: false,
+
+		macOS: false,
 	},
 
 	"filesystem-footprint-per-element": {
@@ -1138,9 +1848,29 @@ export const LinkIndexOverrides: Record<
 
 		Capture: false,
 
+		Clean: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/ESBuild.ts#L3",
+
+		Cleanup: false,
+
+		Dependency:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L9",
+
 		ESBuild: false,
 
+		Electron:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L5",
+
+		Encapsulation: false,
+
 		IPC: false,
+
+		Level: "https://github.com/CodeEditorLand/Output/tree/Current/Source/ESBuild.ts#L11",
+
+		Linux: false,
+
+		LocalStorageService: false,
+
+		NODE_ENV: false,
 
 		Node: false,
 
@@ -1148,13 +1878,21 @@ export const LinkIndexOverrides: Record<
 
 		Report: false,
 
+		"Service Worker": false,
+
 		Smoke: false,
+
+		TAURI_ENV_DEBUG: false,
 
 		Throttle: false,
 
 		Update: false,
 
+		VSCODE_APP_ROOT: false,
+
 		Webview: false,
+
+		Windows: false,
 
 		Workbench: false,
 
@@ -1164,7 +1902,11 @@ export const LinkIndexOverrides: Record<
 		distinctId:
 			"https://github.com/CodeEditorLand/Common/tree/Current/Source/Telemetry/DistinctId.rs",
 
+		get_env: false,
+
 		localStorage: false,
+
+		macOS: false,
 
 		"process.env": false,
 	},
@@ -1174,6 +1916,14 @@ export const LinkIndexOverrides: Record<
 
 		Empty: false,
 
+		FOLDERID_LocalAppData: false,
+
+		FOLDERID_RoamingAppData: false,
+
+		Linux: false,
+
+		NSQuitAlwaysKeepsWindows: false,
+
 		Process: false,
 
 		Profile: false,
@@ -1182,26 +1932,49 @@ export const LinkIndexOverrides: Record<
 
 		ServiceWorker: false,
 
+		Vite: false,
+
+		Webview:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L16",
+
 		Window: false,
+
+		Windows: false,
 
 		globalState: false,
 
 		localStorage: false,
+
+		macOS: false,
 	},
 
 	"filesystem-footprint-user-dotfile": {
+		Cleanup: false,
+
 		Effect: false,
 
+		Encapsulation: false,
+
 		Extend: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/EnvironmentVariables.md#L46",
+
+		Linux: false,
 
 		Lodge: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/EnvironmentVariables.md#L45",
 
 		Node: false,
 
+		None: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/event.ts#L51",
+
 		VSCODE_COCOON_GLOBAL_STORAGE:
 			"https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/FilesystemFootprint/EnvironmentVariables.md#L49",
 
+		Windows: false,
+
 		extensionStorage: false,
+
+		globalStorage: false,
+
+		macOS: false,
 	},
 
 	"getting-started": {
@@ -1215,6 +1988,8 @@ export const LinkIndexOverrides: Record<
 		Electron: "https://www.electronjs.org",
 
 		Full: false,
+
+		Git: false,
 
 		IPC: false,
 
@@ -1236,6 +2011,8 @@ export const LinkIndexOverrides: Record<
 
 		None: false,
 
+		PATH: false,
+
 		Profile: false,
 
 		Rollup: false,
@@ -1246,11 +2023,19 @@ export const LinkIndexOverrides: Record<
 
 		TierRemoteProcedureCall: false,
 
+		Vite: false,
+
 		Workbench: false,
+
+		macOS: false,
+
+		npm: false,
 	},
 
 	grove: {
 		Cargo: false,
+
+		Current: false,
 
 		Full: false,
 
@@ -1259,6 +2044,8 @@ export const LinkIndexOverrides: Record<
 		JavaScript: false,
 
 		Level: false,
+
+		Main: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/mod.rs#L52",
 
 		Process: false,
 
@@ -1274,17 +2061,33 @@ export const LinkIndexOverrides: Record<
 	},
 
 	installation: {
+		Any: false,
+
+		Current: false,
+
 		Editor: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current",
 
 		Electron: "https://www.electronjs.org",
 
+		Git: false,
+
 		Install: false,
+
+		Linux: false,
 
 		Node: false,
 
 		None: false,
 
 		Profile: false,
+
+		Vite: false,
+
+		Windows: false,
+
+		macOS: false,
+
+		npm: false,
 	},
 
 	introduction: {
@@ -1298,7 +2101,11 @@ export const LinkIndexOverrides: Record<
 
 		Full: false,
 
+		Git: false,
+
 		IPC: false,
+
+		Linux: false,
 
 		Native: false,
 
@@ -1320,7 +2127,11 @@ export const LinkIndexOverrides: Record<
 
 		Window: false,
 
+		Windows: false,
+
 		Workspace: false,
+
+		macOS: false,
 	},
 
 	"local-first-protocol": {
@@ -1350,6 +2161,8 @@ export const LinkIndexOverrides: Record<
 	},
 
 	"low-level-shim": {
+		Any: false,
+
 		JavaScript: false,
 
 		Layer: false,
@@ -1358,13 +2171,23 @@ export const LinkIndexOverrides: Record<
 
 		Low: false,
 
+		None: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/event.ts#L51",
+
 		OTLP: false,
 
 		PostHog: false,
 
 		Production: false,
 
+		Promise:
+			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/vscode-colorize-perf-tests/test/colorize-fixtures/test-checker.ts#L42453",
+
+		Replace:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TerminalEnvCollection.rs#L86",
+
 		Tier: false,
+
+		Window: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L103",
 	},
 
 	maintain: {
@@ -1380,6 +2203,8 @@ export const LinkIndexOverrides: Record<
 
 		Parallel: false,
 
+		PascalCase: false,
+
 		Task: false,
 
 		effect: false,
@@ -1390,6 +2215,8 @@ export const LinkIndexOverrides: Record<
 
 		IPC: false,
 
+		NXDOMAIN: false,
+
 		On: false,
 
 		Tokio: false,
@@ -1398,32 +2225,91 @@ export const LinkIndexOverrides: Record<
 	},
 
 	mountain: {
+		Air: "https://github.com/CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md",
+
+		AirManagement: false,
+
+		Cache: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/cache.ts#L13",
+
+		Common: "https://github.com/CodeEditorLand/Common/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Echo: "https://github.com/CodeEditorLand/Echo/tree/Current/Documentation/GitHub/Architecture.md",
+
 		Environment: false,
+
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
+		Install:
+			"https://github.com/CodeEditorLand/Output/tree/Current/Source/Plugin/Polyfill/Workbench/Paint/Prime.ts#L112",
+
+		Mist: "https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md",
+
+		PATH: false,
 
 		PTY: false,
 
+		PerformAction: false,
+
+		Process:
+			"https://github.com/CodeEditorLand/Maintain/tree/Current/Source/Run/Process.rs#L65",
+
+		SIGKILL: false,
+
 		SIGTERM: false,
 
+		Secret: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/mod.rs#L35",
+
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
+
 		VSCODE_PARENT_PID: false,
+
+		Vine: "https://github.com/CodeEditorLand/Vine/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Window: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L103",
+
+		get_clipboard: false,
+
+		open_dialog: false,
+
+		set_clipboard: false,
+
+		set_configuration: false,
+
+		write_terminal: false,
 	},
 
 	"mountain-naming-conventions": {
 		Buffer: false,
 
+		DTO: "https://github.com/CodeEditorLand/Common/tree/Current/Source/StatusBar/mod.rs#L19",
+
 		Document: false,
+
+		Global: false,
 
 		High: false,
 
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
 		Low: false,
+
+		PascalCase: false,
 
 		Runtime: false,
 
 		Standard: false,
 
 		Update: false,
+
+		snake_case: false,
 	},
 
 	output: {
+		Cocoon: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md",
+
 		ESBuild: "https://esbuild.github.io",
 
 		Full: false,
@@ -1438,11 +2324,24 @@ export const LinkIndexOverrides: Record<
 
 		Process: false,
 
+		Rest: "https://github.com/CodeEditorLand/Rest/tree/Current/Documentation/GitHub/Architecture.md",
+
 		Shared: false,
+
+		Sky: "https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Wind: "https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md",
+
+		child_process: false,
+
+		npm: false,
 	},
 
 	polyfills: {
 		Cache: false,
+
+		CustomEvent:
+			"https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_minifier/tests/fixture/next/chakra/input.js#L387",
 
 		Electron: false,
 
@@ -1484,15 +2383,21 @@ export const LinkIndexOverrides: Record<
 	},
 
 	"project-structure": {
+		Any: false,
+
 		BundleLevel: false,
 
 		Cargo: false,
 
 		Core: false,
 
+		Current: false,
+
 		Editor: "https://github.com/DependencyCodeEditorLand/Editor",
 
 		Electron: false,
+
+		Git: false,
 
 		High: false,
 
@@ -1506,6 +2411,8 @@ export const LinkIndexOverrides: Record<
 
 		Normal: false,
 
+		PascalCase: false,
+
 		TierFileSystem: false,
 
 		TierSCM: false,
@@ -1513,6 +2420,8 @@ export const LinkIndexOverrides: Record<
 		TierTerminal: false,
 
 		Update: false,
+
+		npm: false,
 	},
 
 	quickstart: {
@@ -1525,12 +2434,25 @@ export const LinkIndexOverrides: Record<
 		Full: false,
 
 		Profile: false,
+
+		Vite: false,
+
+		macOS: false,
+
+		npm: false,
 	},
 
 	rest: {
 		Full: false,
 
+		JSX: false,
+
 		JavaScript: false,
+
+		Output: "https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Parallel:
+			"https://github.com/CodeEditorLand/Rest/tree/Current/Source/Struct/Binary/Command/Option.rs#L65",
 
 		REST_CLASS_FIELDS:
 			"https://github.com/CodeEditorLand/Rest/tree/Current/Documentation/GitHub/Architecture.md#L194",
@@ -1555,12 +2477,31 @@ export const LinkIndexOverrides: Record<
 
 		REST_WORKERS:
 			"https://github.com/CodeEditorLand/Rest/tree/Current/Documentation/GitHub/Architecture.md#L192",
+
+		oxc_allocator: false,
+
+		oxc_ast: false,
+
+		oxc_codegen: false,
+
+		oxc_parser: false,
+
+		oxc_semantic: false,
+
+		oxc_span: false,
+
+		oxc_transformer: false,
 	},
 
 	sidecar: {
 		Cache: false,
 
 		Main: false,
+
+		Mist: "https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Mountain:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md",
 
 		downloaded_at:
 			"https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json",
@@ -1569,33 +2510,79 @@ export const LinkIndexOverrides: Record<
 	},
 
 	sky: {
+		Cocoon: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md",
+
 		Electron: false,
 
 		FileSystem: false,
 
 		IPC: false,
 
+		Main: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/mod.rs#L52",
+
+		Mountain:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Output: "https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Production:
+			"https://github.com/CodeEditorLand/Echo/tree/Current/Example/Sequence.rs#L24",
+
 		Profile: false,
 
 		Proxy: false,
+
+		Rollup: "https://github.com/CodeEditorLand/Sky/tree/Current/Source/pages/index.astro#L59",
+
+		Shared: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Client.rs#L37",
+
+		Vite: false,
+
+		Wind: "https://github.com/CodeEditorLand/Wind/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Worker: "https://github.com/CodeEditorLand/Worker/tree/Current/Documentation/GitHub/Architecture.md",
 
 		v8: false,
 	},
 
 	troubleshooting: {
+		Cause: false,
+
 		Common: false,
+
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
 
 		On: false,
 
 		URI: false,
+
+		Vite: false,
+
+		macOS: false,
 	},
 
 	vine: {
+		Air: "https://github.com/CodeEditorLand/Air/tree/Current/Documentation/GitHub/Architecture.md",
+
+		CancelAction: false,
+
+		Cocoon: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md",
+
 		Core: false,
 
 		Full: false,
 
+		Grove: "https://github.com/CodeEditorLand/Grove/tree/Current/Documentation/GitHub/Architecture.md",
+
 		IPC: false,
+
+		Mountain:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md",
+
+		NetworkAirPort: false,
 
 		NetworkCocoonPort: false,
 
@@ -1606,6 +2593,8 @@ export const LinkIndexOverrides: Record<
 
 		OpenChannelFromMountain:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
+
+		PerformAction: false,
 
 		ProcessCocoonRequest:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
@@ -1622,15 +2611,26 @@ export const LinkIndexOverrides: Record<
 		SendMountainNotification:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
 
+		Shared: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Client.rs#L37",
+
+		StreamActions: false,
+
 		Transport: false,
+
+		"Vine.proto":
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
 	},
 
 	"vscode-api-coverage": {
 		Batch: false,
 
+		Current: false,
+
 		CustomEvent: false,
 
 		Electron: false,
+
+		Git: false,
 
 		High: false,
 
@@ -1641,6 +2641,8 @@ export const LinkIndexOverrides: Record<
 		Node: false,
 
 		PTY: false,
+
+		PascalCase: false,
 
 		PostHog: false,
 
@@ -1656,13 +2658,23 @@ export const LinkIndexOverrides: Record<
 
 		Update: false,
 
+		Window: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Command.ts#L103",
+
 		__activeDebugSession:
 			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Debug/Namespace.ts",
+
+		child_process: false,
 
 		createDirectory:
 			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostFileSystemConsumer.ts",
 
+		createExtensionHostManager: false,
+
 		effect: false,
+
+		extHostRpcService: false,
+
+		grep_searcher: false,
 
 		readDirectory:
 			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/api/common/extHostFileSystemConsumer.ts",
@@ -1687,6 +2699,8 @@ export const LinkIndexOverrides: Record<
 	},
 
 	"why-effect-ts": {
+		AbortController: false,
+
 		Effect: false,
 
 		JavaScript: false,
@@ -1699,6 +2713,8 @@ export const LinkIndexOverrides: Record<
 		Promise: false,
 
 		Scope: false,
+
+		acquireRelease: false,
 	},
 
 	"why-grpc": {
@@ -1725,11 +2741,23 @@ export const LinkIndexOverrides: Record<
 
 		High: false,
 
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
 		JavaScript: false,
+
+		Linux: false,
 
 		Low: false,
 
+		PTY: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+
 		Terminal: false,
+
+		Tokio: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		Windows: false,
+
+		macOS: false,
 	},
 
 	"why-tauri": {
@@ -1741,11 +2769,21 @@ export const LinkIndexOverrides: Record<
 
 		JavaScript: false,
 
+		Linux: false,
+
 		Main: false,
 
 		None: false,
 
 		Terminal: false,
+
+		Windows: false,
+
+		macOS: false,
+
+		nodeIntegration: false,
+
+		showPreviousWindowTab: false,
 	},
 
 	"why-wasm": {
@@ -1753,35 +2791,86 @@ export const LinkIndexOverrides: Record<
 
 		Full: false,
 
+		Linux: false,
+
 		Process: false,
+
+		Windows: false,
+
+		macOS: false,
 	},
 
 	wind: {
+		Cause: false,
+
+		Cocoon: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Documentation/GitHub/Architecture.md",
+
 		Electron: "https://www.electronjs.org",
+
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
 
 		IPC: false,
 
+		Layer: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Container.ts#L29",
+
+		Mountain:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/GitHub/Architecture.md",
+
+		Output: "https://github.com/CodeEditorLand/Output/tree/Current/Documentation/GitHub/Architecture.md",
+
 		PostHog: false,
+
+		Sky: "https://github.com/CodeEditorLand/Sky/tree/Current/Documentation/GitHub/Architecture.md",
 
 		Synchronous: false,
 
+		URI: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/RPC/CocoonService/Initialization/InitExtensionHost.rs#L36",
+
+		Vite: false,
+
 		effect: "https://effect.website",
+
+		get_clipboard: false,
+
+		open_dialog: false,
+
+		set_clipboard: false,
+
+		set_configuration: false,
+
+		write_terminal: false,
 	},
 
 	worker: {
 		Bundle: false,
 
+		Cache: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/cache.ts#L13",
+
 		JavaScript: false,
+
+		Main: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/mod.rs#L52",
 
 		Native: false,
 
+		None: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/base/common/event.ts#L51",
+
 		Requires: false,
+
+		Runtime:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Binary/Main/AppLifecycle.rs#L534",
+
+		ServiceWorker: "https://github.com/CodeEditorLand/Land/tree/Current/",
 	},
 
 	"workflow-command-palette": {
 		CommandsProvider: false,
 
 		Document: false,
+
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
+		ExecuteCommandLogic: false,
 
 		IPC: false,
 
@@ -1790,14 +2879,20 @@ export const LinkIndexOverrides: Record<
 
 		JavaScript: false,
 
+		Native: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/FileSystem/mod.rs#L14",
+
 		Pick: false,
 
 		Promise: false,
 
 		Window: false,
+
+		editBuilder: false,
 	},
 
 	"workflow-extension-tests": {
+		Cleanup: false,
+
 		Main: false,
 	},
 
@@ -1805,6 +2900,8 @@ export const LinkIndexOverrides: Record<
 		DTO: false,
 
 		Editor: false,
+
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
 
 		IPC: false,
 
@@ -1814,7 +2911,11 @@ export const LinkIndexOverrides: Record<
 	},
 
 	"workflow-open-file": {
+		DocumentContentCache: false,
+
 		Editor: false,
+
+		EditorGroupsService: false,
 
 		Effect: false,
 
@@ -1823,15 +2924,25 @@ export const LinkIndexOverrides: Record<
 
 		IPC: false,
 
+		Layer: "https://github.com/CodeEditorLand/Common/tree/Current/Source/Container.ts#L29",
+
 		TauriDiskFileSystemProvider: false,
+
+		TextEditorPane: false,
 
 		URI: false,
 
 		effect: false,
+
+		openEditorEffect: false,
 	},
 
 	"workflow-overview": {
 		Editor: false,
+
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
+		Git: false,
 
 		IPC: false,
 
@@ -1839,7 +2950,11 @@ export const LinkIndexOverrides: Record<
 
 		PTY: false,
 
+		Spine: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
 		Task: false,
+
+		Vite: false,
 
 		Workbench: false,
 
@@ -1847,6 +2962,10 @@ export const LinkIndexOverrides: Record<
 	},
 
 	"workflow-save-participants": {
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
 		URI: false,
 	},
 
@@ -1854,6 +2973,10 @@ export const LinkIndexOverrides: Record<
 		CustomEvent: false,
 
 		DTO: false,
+
+		Git: false,
+
+		GitProvider: false,
 
 		"InstallScm.ts":
 			"https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallScm.ts",
@@ -1864,6 +2987,8 @@ export const LinkIndexOverrides: Record<
 			"https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/Handler/VscodeAPI/Scm/Namespace.ts",
 
 		URI: false,
+
+		applyEdits: false,
 
 		sendRequest: false,
 	},
@@ -1881,11 +3006,16 @@ export const LinkIndexOverrides: Record<
 
 		ExtensionHostProvider: false,
 
+		Extensions:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/IPC/WindServiceHandlers/mod.rs#L20",
+
 		FullAppInitialization: false,
 
 		IPC: false,
 
 		InitDataLayer: false,
+
+		InitializeConfiguration: false,
 
 		Layer: false,
 
@@ -1906,6 +3036,8 @@ export const LinkIndexOverrides: Record<
 		Workbench:
 			"https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/browser/workbench.ts",
 
+		activatedExtension: false,
+
 		beforeBundleCommand:
 			"https://github.com/CodeEditorLand/Mountain/tree/Current/tauri.conf.json",
 
@@ -1913,12 +3045,35 @@ export const LinkIndexOverrides: Record<
 
 		initExtensionHost: false,
 
+		join_all: false,
+
 		mainPid: false,
 
 		"settings.json": false,
 	},
 
+	"workflow-terminal": {
+		Cocoon: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/Services/",
+
+		Effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L19",
+
+		IPC: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23",
+
+		Mountain:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Environment/TerminalProvider.rs",
+
+		PTY: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
+
+		Task: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L55",
+
+		Tokio: "https://github.com/CodeEditorLand/Air/tree/Current/",
+
+		effect: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/Effect/CreateEffectForRequest/Shim.rs#L25",
+	},
+
 	"workflow-tier-gated-implementation-selection": {
+		Any: false,
+
 		Batched: false,
 
 		Boot: false,
@@ -1929,11 +3084,15 @@ export const LinkIndexOverrides: Record<
 
 		Delta: false,
 
+		Disabled: false,
+
 		ESBuild: false,
 
 		Eager: false,
 
 		Embedded: false,
+
+		ExtHostTaskService: false,
 
 		Extend: false,
 
@@ -1945,7 +3104,19 @@ export const LinkIndexOverrides: Record<
 
 		Hyper: false,
 
+		IF: false,
+
+		IFTNMMMMMM: false,
+
+		IN: false,
+
+		INTNNNNNNN: false,
+
 		IPC: false,
+
+		IW: false,
+
+		IWTAMMMMMM: false,
 
 		IWTNMMMMMM: false,
 
@@ -1960,6 +3131,10 @@ export const LinkIndexOverrides: Record<
 		Layer5: false,
 
 		Lazy: false,
+
+		MM: false,
+
+		NN: false,
 
 		Native: false,
 
@@ -1980,6 +3155,8 @@ export const LinkIndexOverrides: Record<
 		Parallel4: false,
 
 		Parallel8: false,
+
+		PascalCase: false,
 
 		Process: false,
 
@@ -2002,6 +3179,10 @@ export const LinkIndexOverrides: Record<
 		Stub: false,
 
 		Synchronous: false,
+
+		TA: false,
+
+		TN: false,
 
 		TierAuth: false,
 
@@ -2039,7 +3220,11 @@ export const LinkIndexOverrides: Record<
 
 		TierModuleCache: false,
 
+		TierNativeHost: false,
+
 		TierOpenExternal: false,
+
+		TierOutputChannel: false,
 
 		TierRemoteProcedureCall: false,
 
@@ -2055,11 +3240,22 @@ export const LinkIndexOverrides: Record<
 
 		TierTerminal: false,
 
+		TierTreeView: false,
+
 		TierWebSocket: false,
+
+		TierXValue: false,
 
 		Tokio: false,
 
 		Update: false,
+
+		Vite: false,
+
+		WebWorker: false,
+
+		Webview:
+			"https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Track/mod.rs#L16",
 
 		Wire: false,
 
@@ -2089,6 +3285,8 @@ export const LinkIndexOverrides: Record<
 
 		On: false,
 
+		TierAuth: "https://github.com/CodeEditorLand/Land/tree/Current/",
+
 		URI: false,
 
 		globalState: false,
@@ -2101,8 +3299,22 @@ export const LinkIndexOverrides: Record<
 
 		IpcProvider: false,
 
+		TauriWebviewWindow: false,
+
 		Webview: false,
 
+		WebviewManagementService: false,
+
+		WebviewPanelProvider: false,
+
+		WebviewPanelShim: false,
+
+		WebviewShim: false,
+
+		WebviewStateDto: false,
+
 		effect: false,
+
+		localResourceRoots: false,
 	},
 };

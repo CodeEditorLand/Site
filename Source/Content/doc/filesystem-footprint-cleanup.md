@@ -40,7 +40,7 @@ Read before running anything below:
 Tested against the 2026-05-26 cleanup; archive-then-delete pattern.
 
 ```bash
-ARCH=/Volumes/<external-disk>/Archive/ApplicationSupport/$(date +%Y-%m-%d)-fresh
+ARCH=/path/to/archive/ApplicationSupport/$(date +%Y-%m-%d)-fresh
 mkdir -p "$ARCH"/Library/{Application\ Support,Caches,Preferences,Logs,WebKit,Saved\ Application\ State,HTTPStorages} \
 	"$ARCH"/Home
 

@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../Links";
 import type { LinkSpec } from "../../../../Links";
 import type { LinkIndexData } from "../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Document.ts#L58",
 	pages: ["deep-dive-common"],
 	tags: ["Cocoon", "symbol", "keep"],

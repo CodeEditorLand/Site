@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mountain/tree/Current/Source/Vine/Generated/vine.rs#L4080",
 
 	pages: ["filesystem-footprint-per-element"],

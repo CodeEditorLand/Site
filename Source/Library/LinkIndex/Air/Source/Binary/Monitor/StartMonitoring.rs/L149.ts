@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Binary/Monitor/StartMonitoring.rs#L149",
 
 	pages: ["configuration", "filesystem-footprint-platform-paths", "worker"],

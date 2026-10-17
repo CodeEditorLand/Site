@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/scripts/chat-simulation/common/utils.js#L23",
 
 	pages: ["air"],

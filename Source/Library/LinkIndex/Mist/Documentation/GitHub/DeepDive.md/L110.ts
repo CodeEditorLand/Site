@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../../Links";
 import type { LinkSpec } from "../../../../../Links";
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mist/tree/Current/Documentation/GitHub/DeepDive.md#L110",
 	pages: ["deep-dive-mist", "mist"],
 	tags: ["Mist", "api", "keep"],

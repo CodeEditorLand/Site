@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/SWC/tree/Current/crates/swc_ecma_minifier/benches/full/typescript.js#L7451",
 
 	pages: ["cocoon", "vscode-api-coverage"],

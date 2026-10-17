@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../Links";
 
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Common/tree/Current/Source/IPC/IPCProvider.rs#L16",
 
 	pages: ["common", "deep-dive-vine", "mountain"],

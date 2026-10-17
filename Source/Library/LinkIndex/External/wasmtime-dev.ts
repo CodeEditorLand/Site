@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://wasmtime.dev
- * Terms resolving here: 1
+ * Terms resolving here: 2
  * Pages: (none in LINK-CONTEXT-REVIEW)
  * Tags: External, external
  *
@@ -11,7 +11,7 @@ import type { LinkSpec } from "../../Links";
 
 import type { LinkIndexData } from "../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://wasmtime.dev",
 
 	pages: [],
@@ -19,6 +19,8 @@ export const LinkIndexData: LinkIndexData = {
 	tags: ["External", "external"],
 
 	terms: {
+		WASMtime: { External: "https://wasmtime.dev" },
+
 		Wasmtime: { External: "https://wasmtime.dev" },
 	},
 };

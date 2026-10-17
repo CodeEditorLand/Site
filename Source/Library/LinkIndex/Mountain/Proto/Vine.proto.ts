@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto
- * Terms resolving here: 3
+ * Terms resolving here: 6
  * Pages: api-reference, deep-dive-mountain, deep-dive-vine, vine, vscode-api-coverage
  * Tags: Mountain, file, keep
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../Links";
 
 import type { LinkIndexData } from "../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mountain/tree/Current/Proto/Vine.proto",
 
 	pages: [
@@ -46,6 +46,21 @@ export const LinkIndexData: LinkIndexData = {
 		"Mountain/Proto/Vine.proto": {
 			Repo: ElementRepos.Mountain,
 
+			Path: "Proto/Vine.proto",
+		},
+
+		OpenChannelFromCocoon: {
+			Repo: ElementRepos.Mountain,
+			Path: "Proto/Vine.proto",
+		},
+
+		ProcessCocoonRequest: {
+			Repo: ElementRepos.Mountain,
+			Path: "Proto/Vine.proto",
+		},
+
+		SendCocoonNotification: {
+			Repo: ElementRepos.Mountain,
 			Path: "Proto/Vine.proto",
 		},
 	},

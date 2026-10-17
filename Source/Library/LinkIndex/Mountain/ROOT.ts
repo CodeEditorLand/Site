@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Mountain/tree/Current/
- * Terms resolving here: 19
+ * Terms resolving here: 18
  * Pages: ApplicationStartupHandshake, coverage, deep-dive-mountain, low-level-shim, mountain-naming-conventions, troubleshooting, workflow-command-palette, workflow-hover-provider, workflow-open-file, workflow-save-participants, workflow-startup, workflow-terminal, workflow-webview
  * Tags: Mountain, symbol, remove
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../Links";
 
 import type { LinkIndexData } from "../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mountain/tree/Current/",
 
 	pages: [
@@ -80,8 +80,6 @@ export const LinkIndexData: LinkIndexData = {
 		__terminals: { Repo: ElementRepos.Mountain, Path: "" },
 
 		languageModelsResource: { Repo: ElementRepos.Mountain, Path: "" },
-
-		mainPid: { Repo: ElementRepos.Mountain, Path: "" },
 
 		onDidWriteData: { Repo: ElementRepos.Mountain, Path: "" },
 	},

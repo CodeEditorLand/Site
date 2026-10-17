@@ -10,7 +10,7 @@
 import type { LinkSpec } from "../../../../../../../../../Links";
 import type { LinkIndexData } from "../../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/type.impl/alloc/sync/struct.Arc.js#L2",
 	pages: [
 		"TauriDesktopIntegration",

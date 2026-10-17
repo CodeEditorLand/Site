@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/userDataSync/common/userDataSyncStoreService.ts#L703",
 
 	pages: ["workflow-user-data-sync"],

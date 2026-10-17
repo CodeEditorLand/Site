@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/extensions/copilot/src/extension/chatSessions/copilotcli/node/copilotCliBridgeSpanProcessor.ts#L40",
 
 	pages: [],

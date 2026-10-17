@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../../Links";
 import type { LinkSpec } from "../../../../../Links";
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/VSCode-API-Coverage-Matrix.md#L192",
 	pages: ["extension-development"],
 	tags: ["Land", "api", "keep"],

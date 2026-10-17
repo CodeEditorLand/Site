@@ -17,22 +17,29 @@
  * THIS MODULE IS A THIN AGGREGATOR ONLY: import.meta.glob (eager) over the
  * per-URL fragments at arbitrary depth under ./LinkIndex/ merges the
  * per-URL terms maps (the curated registry maps
- * MentionMap/TechnicalMentions/Protected from ./LinkIndex/Mentions.ts
- * and the per-page overrides LinkIndexOverrides from ./LinkIndex/Overrides.ts
- * are re-exported unchanged). A correction edits one tiny URL file, never
- * this aggregator.
+ * MentionMap/TechnicalMentions/Protected from ./LinkIndex/Mentions.ts,
+ * the per-page overrides LinkIndexOverrides from ./LinkIndex/Overrides.ts
+ * and the occurrence-level context rules LinkIndexContextRules from
+ * ./LinkIndex/ContextRules.ts are re-exported unchanged). A correction
+ * edits one tiny URL file, never this aggregator.
  */
 import type { LinkSpec } from "./Links";
 
-import type { LinkIndexData } from "./LinkIndex/Type";
+import type { LinkIndexFragment } from "./LinkIndex/Type";
 
 export { LinkIndexOverrides } from "./LinkIndex/Overrides";
+
+export {
+	ContextRuleOf,
+	LinkIndexContextRules,
+	SentenceWindowOf,
+} from "./LinkIndex/ContextRules";
 
 export { MentionMap, Protected, TechnicalMentions } from "./LinkIndex/Mentions";
 
 const UrlModules = import.meta.glob("./LinkIndex/**/*.ts", {
 	eager: true,
-}) as Record<string, { LinkIndexData: LinkIndexData }>;
+}) as Record<string, { LinkIndexData: LinkIndexFragment }>;
 
 const Merged: Record<string, LinkSpec> = {};
 

@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../Links";
 
 import type { LinkIndexData } from "../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Echo/tree/Current/Source/Library.rs#L51",
 
 	pages: ["deep-dive-cocoon", "deep-dive-echo", "echo", "low-level-shim"],

@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../Links";
 import type { LinkSpec } from "../../../../Links";
 import type { LinkIndexData } from "../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Vine/tree/Current/Documentation/GitHub/Architecture.md",
 	pages: ["mountain"],
 	tags: ["Vine", "file", "keep"],

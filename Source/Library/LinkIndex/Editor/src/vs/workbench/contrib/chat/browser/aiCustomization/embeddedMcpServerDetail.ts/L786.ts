@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/workbench/contrib/chat/browser/aiCustomization/embeddedMcpServerDetail.ts#L786",
 
 	pages: ["deep-dive-cocoon"],

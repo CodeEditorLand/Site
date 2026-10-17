@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/editor/common/services/languageService.ts#L15",
 
 	pages: ["deep-dive-wind"],

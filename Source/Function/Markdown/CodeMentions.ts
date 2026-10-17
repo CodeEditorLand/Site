@@ -31,7 +31,18 @@
  * consulted first: `false` emits plain text (the mention is prose on this
  * page), a URL pins that exact URL (the context names a better target).
  * The index and the Scan/Lookup contract are otherwise unchanged.
+ *
+ * Phase 3g (occurrence-level context rules): between the page override and
+ * the global index, the text-path resolver consults the compiled context
+ * rules (Source/Library/LinkIndex/ContextRules.ts) - the first rule whose
+ * `when` matches the match's ENCLOSING SENTENCE decides (`then: false` =
+ * plain text, URL = pinned), so the same term can link in one sentence and
+ * stay plain in another on the SAME page. The inline-code path is unchanged:
+ * whole-span lookups have no context sentence, their page override still
+ * applies.
  */
+
+import { ContextRuleOf } from "../../Library/LinkIndex";
 
 import { Lookup, MarkdownMatcher } from "../../Library/LinkMatcher";
 
@@ -173,13 +184,23 @@ function LinkText(
 			Out.push({ type: "text", value: Value.slice(Cursor, M.Start) });
 		}
 
+		// Resolution per match: page override -> context rules (enclosing
+		// sentence) -> global index -> plain. The inline-code path is
+		// unchanged (no context sentence; its page override still applies).
 		const Override = M.Url ? OverrideOf(PageKey, M.Term) : undefined;
 
-		if (M.Url && Override !== false) {
+		const Rule =
+			Override === undefined && M.Url
+				? ContextRuleOf(PageKey, M.Term, Value, M.Start, M.End)
+				: undefined;
+
+		const Pin = Override === undefined ? Rule : Override;
+
+		if (M.Url && Pin !== false) {
 			Out.push({
 				type: "link",
 
-				url: Override === undefined ? M.Url : Override,
+				url: Pin === undefined ? M.Url : Pin,
 
 				children: [{ type: "text", value: M.Term }],
 			});

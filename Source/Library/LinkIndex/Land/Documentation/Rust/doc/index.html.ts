@@ -10,7 +10,7 @@
 import type { LinkSpec } from "../../../../../Links";
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/index.html",
 	pages: ["ApplicationStartupHandshake", "polyfills", "workflow-startup"],
 	tags: ["Land", "api", "remove"],

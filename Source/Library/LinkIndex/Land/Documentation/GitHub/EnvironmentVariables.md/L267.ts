@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md#L267
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: cocoon, configuration
  * Tags: Land, api, change
  *
@@ -11,15 +11,9 @@ import { ElementRepos } from "../../../../../Links";
 import type { LinkSpec } from "../../../../../Links";
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/EnvironmentVariables.md#L267",
 	pages: ["cocoon", "configuration"],
 	tags: ["Land", "api", "change"],
-	terms: {
-		"index.astro": {
-			Repo: ElementRepos.Land,
-			Path: "Documentation/GitHub/EnvironmentVariables.md",
-			Line: 267,
-		},
-	},
+	terms: {},
 };

@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../Links";
 import type { LinkSpec } from "../../../../Links";
 import type { LinkIndexData } from "../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Authentication.ts#L72",
 	pages: ["workflow-user-data-sync"],
 	tags: ["Cocoon", "symbol", "keep"],

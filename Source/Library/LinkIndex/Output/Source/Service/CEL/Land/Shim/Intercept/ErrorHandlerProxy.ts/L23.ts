@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Output/tree/Current/Source/Service/CEL/Land/Shim/Intercept/ErrorHandlerProxy.ts#L23",
 
 	pages: ["coverage", "low-level-shim"],

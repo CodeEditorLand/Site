@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Sky/tree/Current/Source/Function/Sky/Bridge/InstallInlineCompletions.ts#L5",
 
 	pages: ["deep-dive-sky", "workflow-hover-provider"],

@@ -10,7 +10,7 @@
 import type { LinkSpec } from "../../../../../../../Links";
 import type { LinkIndexData } from "../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/Rust/doc/static.files/main-fcd733ba.js#L24",
 	pages: ["deep-dive-sidecar", "polyfills", "workflow-overview"],
 	tags: ["Mountain", "symbol", "remove"],

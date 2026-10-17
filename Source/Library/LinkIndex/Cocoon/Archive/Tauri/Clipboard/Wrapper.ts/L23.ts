@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../../../Links";
 import type { LinkSpec } from "../../../../../../Links";
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Cocoon/tree/Current/Archive/Tauri/Clipboard/Wrapper.ts#L23",
 	pages: ["vscode-api-coverage"],
 	tags: ["Cocoon", "api", "keep"],

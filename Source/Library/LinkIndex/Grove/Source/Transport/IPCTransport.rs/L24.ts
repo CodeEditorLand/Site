@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../Links";
 
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Grove/tree/Current/Source/Transport/IPCTransport.rs#L24",
 
 	pages: ["common", "deep-dive-common", "filesystem-footprint-per-element"],

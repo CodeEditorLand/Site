@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Air/tree/Current/
- * Terms resolving here: 96
+ * Terms resolving here: 90
  * Pages: ApplicationStartupHandshake, BuildSystemDesign, air, api-reference, build-matrix, build-pipeline, ci-cd-pipeline, common, configuration, contributing, deep-dive-air, deep-dive-common, deep-dive-mountain, deep-dive-sidecar, deep-dive-vine, dependency-management, development-history, extension-development, filesystem-footprint, filesystem-footprint-cleanup, filesystem-footprint-encapsulation, filesystem-footprint-environment-variables, filesystem-footprint-per-element, filesystem-footprint-user-dotfile, getting-started, local-first-protocol, low-level-shim, maintain, mist, mountain, polyfills, project-structure, troubleshooting, vine, why-rust, wind, workflow-startup, workflow-terminal, workflow-tier-gated-implementation-selection
  * Tags: Air, symbol, remove
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../Links";
 
 import type { LinkIndexData } from "../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Air/tree/Current/",
 
 	pages: [
@@ -109,8 +109,6 @@ export const LinkIndexData: LinkIndexData = {
 
 		Batched: { Repo: ElementRepos.Air, Path: "" },
 
-		Boot: { Repo: ElementRepos.Air, Path: "" },
-
 		BundleLevel: { Repo: ElementRepos.Air, Path: "" },
 
 		CopyToDesktop: { Repo: ElementRepos.Air, Path: "" },
@@ -124,8 +122,6 @@ export const LinkIndexData: LinkIndexData = {
 		DisableUIFixes: { Repo: ElementRepos.Air, Path: "" },
 
 		Eager: { Repo: ElementRepos.Air, Path: "" },
-
-		Embedded: { Repo: ElementRepos.Air, Path: "" },
 
 		F8: { Repo: ElementRepos.Air, Path: "" },
 
@@ -197,7 +193,6 @@ export const LinkIndexData: LinkIndexData = {
 
 		RegisterInlineCompletionItemProvider: {
 			Repo: ElementRepos.Air,
-
 			Path: "",
 		},
 
@@ -206,8 +201,6 @@ export const LinkIndexData: LinkIndexData = {
 		Ship: { Repo: ElementRepos.Air, Path: "" },
 
 		Skip: { Repo: ElementRepos.Air, Path: "" },
-
-		Smoke: { Repo: ElementRepos.Air, Path: "" },
 
 		Synchronous: { Repo: ElementRepos.Air, Path: "" },
 
@@ -234,8 +227,6 @@ export const LinkIndexData: LinkIndexData = {
 		TierExtensionScan: { Repo: ElementRepos.Air, Path: "" },
 
 		TierExtensionScanParallel: { Repo: ElementRepos.Air, Path: "" },
-
-		TierFileSystem: { Repo: ElementRepos.Air, Path: "" },
 
 		TierFileSystemLayer4: { Repo: ElementRepos.Air, Path: "" },
 
@@ -269,15 +260,12 @@ export const LinkIndexData: LinkIndexData = {
 
 		TierRemoteProcedureCallSharedMemory: {
 			Repo: ElementRepos.Air,
-
 			Path: "",
 		},
 
 		TierSchemeAssetsHybrid: { Repo: ElementRepos.Air, Path: "" },
 
 		TierTelemetry: { Repo: ElementRepos.Air, Path: "" },
-
-		Tokio: { Repo: ElementRepos.Air, Path: "" },
 
 		VINE_PORT: { Repo: ElementRepos.Air, Path: "" },
 
@@ -291,13 +279,10 @@ export const LinkIndexData: LinkIndexData = {
 
 		distinctId: { Repo: ElementRepos.Air, Path: "" },
 
-		extensionStorage: { Repo: ElementRepos.Air, Path: "" },
-
 		phc_: { Repo: ElementRepos.Air, Path: "" },
 
 		phc_mvbuxcLutfZctCVwnC4TTksmtNPPVgcx7gX96tTuCKk4: {
 			Repo: ElementRepos.Air,
-
 			Path: "",
 		},
 

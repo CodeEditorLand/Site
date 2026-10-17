@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/TsParserTestRef/tree/Current/expressions/optionalChaining/optionalChainingInference/input.ts#L30",
 
 	pages: ["polyfills", "sky"],

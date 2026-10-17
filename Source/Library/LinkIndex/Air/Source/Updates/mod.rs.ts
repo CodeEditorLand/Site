@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../Links";
 
 import type { LinkIndexData } from "../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Air/tree/Current/Source/Updates/mod.rs",
 
 	pages: ["filesystem-footprint", "filesystem-footprint-encapsulation"],

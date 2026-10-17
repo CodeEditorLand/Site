@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../Links";
 
 import type { LinkIndexData } from "../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/SWCDev/tree/Current/arch/src/lib.rs#L61",
 
 	pages: ["build-pipeline", "ci-cd-pipeline", "deep-dive-sidecar"],

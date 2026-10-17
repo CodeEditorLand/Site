@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Cocoon/tree/Current/
- * Terms resolving here: 71
+ * Terms resolving here: 67
  * Pages: ApplicationStartupHandshake, BuildSystemDesign, EffectTypeScriptArchitecture, ExtensionHostDeepDive, LocalFirstPhilosophy, VSCodeCompatibility, api-reference, architecture, cocoon, cocoon-vscode-validation, common, coverage, deep-dive-cocoon, deep-dive-mountain, deep-dive-sidecar, deep-dive-vine, deep-dive-wind, extension-development, filesystem-footprint-platform-paths, grove, introduction, maintain, mountain, sky, troubleshooting, vscode-api-coverage, why-effect-ts, why-rust, why-tauri, why-wasm, wind, workflow-command-palette, workflow-extension-tests, workflow-overview, workflow-save-participants, workflow-startup, workflow-terminal, workflow-tier-gated-implementation-selection, workflow-user-data-sync, workflow-webview
  * Tags: Cocoon, symbol, remove
  *
@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../Links";
 
 import type { LinkIndexData } from "../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Cocoon/tree/Current/",
 
 	pages: [
@@ -169,21 +169,13 @@ export const LinkIndexData: LinkIndexData = {
 
 		OnceLock: { Repo: ElementRepos.Cocoon, Path: "" },
 
-		PTY: { Repo: ElementRepos.Cocoon, Path: "" },
-
 		SIGINT: { Repo: ElementRepos.Cocoon, Path: "" },
-
-		SIGTERM: { Repo: ElementRepos.Cocoon, Path: "" },
 
 		SecretsProvider: { Repo: ElementRepos.Cocoon, Path: "" },
 
 		SettingsSynchronizer: { Repo: ElementRepos.Cocoon, Path: "" },
 
 		TierEncryption: { Repo: ElementRepos.Cocoon, Path: "" },
-
-		TierModel: { Repo: ElementRepos.Cocoon, Path: "" },
-
-		TierWebSocket: { Repo: ElementRepos.Cocoon, Path: "" },
 
 		VSCODE_IPC_HOOK_CLI: { Repo: ElementRepos.Cocoon, Path: "" },
 

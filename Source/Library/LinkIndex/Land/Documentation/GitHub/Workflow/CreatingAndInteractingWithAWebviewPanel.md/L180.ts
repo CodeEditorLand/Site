@@ -11,7 +11,7 @@ import { ElementRepos } from "../../../../../../Links";
 import type { LinkSpec } from "../../../../../../Links";
 import type { LinkIndexData } from "../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/CodeEditorLand/Land/tree/Current/Documentation/GitHub/Workflow/CreatingAndInteractingWithAWebviewPanel.md#L180",
 	pages: ["workflow-webview"],
 	tags: ["Land", "api", "keep"],

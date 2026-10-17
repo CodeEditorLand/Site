@@ -13,7 +13,7 @@ import type { LinkSpec } from "../../../../../../../../Links";
 
 import type { LinkIndexData } from "../../../../../../../Type";
 
-export const LinkIndexData: LinkIndexData = {
+export const LinkIndexData: LinkIndexFragment = {
 	url: "https://github.com/DependencyCodeEditorLand/Editor/tree/Current/src/vs/platform/log/common/logService.ts#L10",
 
 	pages: ["filesystem-footprint-platform-paths"],
