@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/Vine/Client/Shared/struct.SIDECAR_CLIENTS.html#L1
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: mountain-naming-conventions
  * Tags: Land, symbol, keep
  *
@@ -20,13 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Land", "symbol", "keep"],
 
-	terms: {
-		SIDECAR_CLIENTS: {
-			Repo: ElementRepos.Land,
-
-			Path: "Documentation/Rust/doc/Vine/Client/Shared/struct.SIDECAR_CLIENTS.html",
-
-			Line: 1,
-		},
-	},
+	terms: {},
 };

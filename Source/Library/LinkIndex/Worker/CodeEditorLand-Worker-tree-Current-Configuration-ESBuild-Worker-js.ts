@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Worker/tree/Current/Configuration/ESBuild/Worker.js
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: deep-dive-worker
  * Tags: Worker, api, keep
  *
@@ -20,11 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Worker", "api", "keep"],
 
-	terms: {
-		"Worker.js": {
-			Repo: ElementRepos.Worker,
-
-			Path: "Configuration/ESBuild/Worker.js",
-		},
-	},
+	terms: {},
 };

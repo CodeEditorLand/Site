@@ -16,6 +16,7 @@ shim that proxies property assignments and message events across gRPC. Every
 [Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain) → [Sky](https://github.com/CodeEditorLand/Sky) path.
 
 <img src="/Mermaid/1ef7c8936e669b2f.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Phase 1 - Extension creates the panel ([Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain))

@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Mountain/tree/Current/Documentation/Rust/doc/static.files/main-fcd733ba.js#L24
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: deep-dive-sidecar, polyfills, workflow-overview
  * Tags: Mountain, symbol, remove
  *
@@ -20,13 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Mountain", "symbol", "remove"],
 
-	terms: {
-		node: {
-			Repo: ElementRepos.Mountain,
-
-			Path: "Documentation/Rust/doc/static.files/main-fcd733ba.js",
-
-			Line: 24,
-		},
-	},
+	terms: {},
 };

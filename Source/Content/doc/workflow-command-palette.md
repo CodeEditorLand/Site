@@ -22,6 +22,7 @@ Rust function pointer or to [Cocoon](https://github.com/CodeEditorLand/Cocoon) v
 stored at registration time.
 
 <img src="/Mermaid/01a12338e1cb7562.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Phase 1 - Opening the Command Palette ([Sky](https://github.com/CodeEditorLand/Sky) → [Wind](https://github.com/CodeEditorLand/Wind))

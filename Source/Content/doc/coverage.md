@@ -23,6 +23,7 @@ boundary between [Wind](https://github.com/CodeEditorLand/Wind) (renderer), [Coc
 ## 🔵 Full Architecture Diagram
 
 <img src="/Mermaid/bfa821f01d73085b.svg" alt="Mermaid diagram" />
+
 **Three interlocking planes**:
 
 1. **Decision Plane** (SwallowMap + Gate) - Pattern-matching engine that decides: swallow, passthrough, mixed, or discard
@@ -34,6 +35,7 @@ boundary between [Wind](https://github.com/CodeEditorLand/Wind) (renderer), [Coc
 ## 🔵 IPC Interception Flow
 
 <img src="/Mermaid/ed9f510a7159d54f.svg" alt="Mermaid diagram" />
+
 ---
 
 ## 🔵 Full Domain Coverage Table
@@ -391,6 +393,7 @@ Original module bodies are reduced to one-line re-exports pointing to the CEL nu
 ## 🔵 Integration Diagram: [Wind](https://github.com/CodeEditorLand/Wind) / [Output](https://github.com/CodeEditorLand/Output) / [Cocoon](https://github.com/CodeEditorLand/Cocoon) / [Mountain](https://github.com/CodeEditorLand/Mountain)
 
 <img src="/Mermaid/dda8891a3a241b02.svg" alt="Mermaid diagram" />
+
 **Data flow summary**:
 
 | Path                                                                                                                                                       | Direction      | Data                                                                        | Frequency            |
@@ -406,6 +409,7 @@ Original module bodies are reduced to one-line re-exports pointing to the CEL nu
 ## 🔵 TierShim Propagation Chain: .env.Land → esbuild → Runtime
 
 <img src="/Mermaid/9373fefd713a8973.svg" alt="Mermaid diagram" />
+
 ### Step-by-Step Propagation
 
 #### 1. Source: `.env.Land`

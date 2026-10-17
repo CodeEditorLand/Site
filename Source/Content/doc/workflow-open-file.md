@@ -20,6 +20,7 @@ native disk read, and the result unwinds back through the same chain until
 Monaco renders the content.
 
 <img src="/Mermaid/227acacee85aaeda.svg" alt="Mermaid diagram" />
+
 ## Phase 1 - User Interaction ([Sky](https://github.com/CodeEditorLand/Sky))
 
 1.  **File Explorer UI** - The user clicks on a file entry (`<div>`

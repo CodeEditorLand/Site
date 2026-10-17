@@ -32,6 +32,7 @@ The [`Air`](https://github.com/CodeEditorLand/Air) background daemon:
 ---
 
 <img src="/Mermaid/033d441edd08796f.svg" alt="Mermaid diagram" />
+
 ## Overview 📋
 
 | Attribute    | Value                                                                                                                                                |
@@ -49,6 +50,7 @@ The [`Air`](https://github.com/CodeEditorLand/Air) background daemon:
 [`Air`](https://github.com/CodeEditorLand/Air) is structured around a central `gRPC` server that receives task delegation from [`Mountain`](https://github.com/CodeEditorLand/Mountain). Internal modules handle distinct responsibilities.
 
 <img src="/Mermaid/dff92e52586447cb.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Module Map 🗺️
@@ -146,9 +148,11 @@ Manages sensitive cryptographic operations:
 ### Update Check Flow 🔄
 
 <img src="/Mermaid/3ec9349196041cba.svg" alt="Mermaid diagram" />
+
 ### Download with Progress Flow 📥
 
 <img src="/Mermaid/eaf339b70a8cb98a.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Startup Sequence 🚀

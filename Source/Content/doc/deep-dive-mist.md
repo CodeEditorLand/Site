@@ -26,6 +26,7 @@ DNS catalog contains two zones: an authoritative zone for `editor.land` and a
 restricted forward allowlist for external queries.
 
 <img src="/Mermaid/954dd992597143be.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Key Modules
@@ -44,6 +45,7 @@ restricted forward allowlist for external queries.
 ## Data Flow
 
 <img src="/Mermaid/64fac31bdb95d126.svg" alt="Mermaid diagram" />
+
 **Startup sequence:**
 
 1. [Mountain](https://github.com/CodeEditorLand/Mountain) calls `Mist::start(5380)` during initialization.

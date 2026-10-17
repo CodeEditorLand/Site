@@ -34,6 +34,7 @@ description:
 ---
 
 <img src="/Mermaid/f0a6731b0c205de9.svg" alt="Mermaid diagram" />
+
 ## Overview 📋
 
 [`Sky`](https://github.com/CodeEditorLand/Sky) is the rendering layer that presents the [`Land`](https://github.com/CodeEditorLand/Land) editor to the user.
@@ -55,6 +56,7 @@ description:
 ## Architecture 🏗️
 
 <img src="/Mermaid/5e2be849a7a31a72.svg" alt="Mermaid diagram" />
+
 ### Module Map 🗺️
 
 | Path                                                                                                                    | Purpose                        |

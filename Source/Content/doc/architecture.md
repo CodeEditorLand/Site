@@ -52,6 +52,7 @@ sidecar for updates and indexing.
 > [EnvironmentVariables.md](/Doc/build-matrix).
 
 <img src="/Mermaid/34a85ab8cb121c5d.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Component Map 🗺️
@@ -101,6 +102,7 @@ All requests from the user interface follow a consistent flow through the
 system:
 
 <img src="/Mermaid/8cee2b513c583966.svg" alt="Mermaid diagram" />
+
 ### Protocol Layers
 
 **Land**'s IPC uses three distinct protocol layers:
@@ -174,6 +176,7 @@ implementations through IPC.
 Each service follows a consistent module structure:
 
 <img src="/Mermaid/9f77c651715fb4f2.svg" alt="Mermaid diagram" />
+
 Services compose into Layer stacks:
 
 | Layer                 | Components                   | Purpose                                                |
@@ -245,12 +248,15 @@ for the full propagation workflow.
 ### Read Request (File Open)
 
 <img src="/Mermaid/fcd9b18a6e360b3d.svg" alt="Mermaid diagram" />
+
 ### Extension Feature Request (Hover)
 
 <img src="/Mermaid/6b5ac0ec8a41c400.svg" alt="Mermaid diagram" />
+
 ### Configuration Change
 
 <img src="/Mermaid/3ac3d18466d160b6.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Related Documentation 📋

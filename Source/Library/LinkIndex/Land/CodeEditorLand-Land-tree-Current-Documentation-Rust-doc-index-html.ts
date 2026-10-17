@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/index.html
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: ApplicationStartupHandshake, polyfills, workflow-startup
  * Tags: Land, api, remove
  *
@@ -20,11 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Land", "api", "remove"],
 
-	terms: {
-		"index.html": {
-			Repo: ElementRepos.Land,
-
-			Path: "Documentation/Rust/doc/index.html",
-		},
-	},
+	terms: {},
 };

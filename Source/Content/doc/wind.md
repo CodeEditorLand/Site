@@ -37,6 +37,7 @@ workbench.
 ---
 
 <img src="/Mermaid/f65329819d9f0d8d.svg" alt="Mermaid diagram" />
+
 ## Overview 📋
 
 [`Wind`](https://github.com/CodeEditorLand/Wind) provides the [`Effect-TS`](https://effect.website) native service layer that [`Sky`](https://github.com/CodeEditorLand/Sky) consumes.
@@ -59,6 +60,7 @@ workbench.
 ## Architecture 🏗️
 
 <img src="/Mermaid/fe202d09f7232db0.svg" alt="Mermaid diagram" />
+
 ### Module Map 🗺️
 
 | Path                                                                                                                         | Purpose                                                           |
@@ -82,6 +84,7 @@ Each [`Wind`](https://github.com/CodeEditorLand/Wind) service follows a consiste
 Define/Implement/Problem pattern:
 
 <img src="/Mermaid/7c6bf207410331ba.svg" alt="Mermaid diagram" />
+
 This pattern provides:
 
 - **Define.ts**: Exports the [`Effect-TS`](https://effect.website) `Tag` that identifies the service.
@@ -156,6 +159,7 @@ export const TestLayer: Layer<...> = Layer.mergeAll(
 ### Layer Resolution
 
 <img src="/Mermaid/113c3d5fdc05ba01.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Preload Shim Integration 🔌
@@ -164,6 +168,7 @@ export const TestLayer: Layer<...> = Layer.mergeAll(
 workbench bundle loads:
 
 <img src="/Mermaid/8b570de012b968ab.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Service Catalog 📋

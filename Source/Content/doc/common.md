@@ -38,6 +38,7 @@ It contains no concrete implementations.
 ---
 
 <img src="/Mermaid/525e1c793a35a144.svg" alt="Mermaid diagram" />
+
 ## Overview 📋
 
 [`Common`](https://github.com/CodeEditorLand/Common) defines the architectural language of the entire native platform:

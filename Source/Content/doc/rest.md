@@ -55,6 +55,7 @@ Compiler) toolchain:
 ## Architecture 🏗️
 
 <img src="/Mermaid/5a4b0e61fea6b7b0.svg" alt="Mermaid diagram" />
+
 ### Module Map 🗺️
 
 | Path                                                                                                                     | Purpose                              |
@@ -78,6 +79,7 @@ The OXC compilation pipeline processes `TypeScript` input through multiple
 stages:
 
 <img src="/Mermaid/e45f0cbede66f2ee.svg" alt="Mermaid diagram" />
+
 ### Parallel Processing ⚡
 
 [`Rest`](https://github.com/CodeEditorLand/Rest) uses `rayon` for parallel file compilation:

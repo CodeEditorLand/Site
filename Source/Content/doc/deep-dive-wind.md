@@ -171,6 +171,7 @@ module-singleton [`ManagedRuntime`](https://effect.website) that wraps the full 
 [Wind](https://github.com/CodeEditorLand/Wind)'s concrete environment emulation enables seamless VSCode compatibility:
 
 <img src="/Mermaid/a70b3ee1f37d6369.svg" alt="Mermaid diagram" />
+
 [Wind](https://github.com/CodeEditorLand/Wind)'s environment emulation provides high-fidelity VSCode API compatibility
 through:
 
@@ -188,12 +189,14 @@ through:
 [Wind](https://github.com/CodeEditorLand/Wind) implements concrete [Effect-TS](https://effect.website) patterns for robust service composition:
 
 <img src="/Mermaid/428e1d586b2589cd.svg" alt="Mermaid diagram" />
+
 ### Security Architecture
 
 Wind implements comprehensive security measures for the Tauri webview
 environment:
 
 <img src="/Mermaid/8c9742d4b78ceefe.svg" alt="Mermaid diagram" />
+
 [Wind](https://github.com/CodeEditorLand/Wind)'s security architecture prevents common webview security vulnerabilities
 through:
 
@@ -510,6 +513,7 @@ async function robustDialogOperation() {
 ## Ecosystem Integration Mapping
 
 <img src="/Mermaid/7eda43fc648d6b38.svg" alt="Mermaid diagram" />
+
 ### Service Implementation Table
 
 | VSCode Service      | Wind Service       | Effect-TS Layer  | Communication Protocol |
@@ -523,14 +527,17 @@ async function robustDialogOperation() {
 ### Component Block Map
 
 <img src="/Mermaid/2cad35fa555b44b4.svg" alt="Mermaid diagram" />
+
 ### Service Communication Patterns
 
 <img src="/Mermaid/314a3e71f81b47eb.svg" alt="Mermaid diagram" />
+
 ## Advanced Integration Patterns
 
 ### Real-time UI Operation Flow
 
 <img src="/Mermaid/733ff9745f1183a3.svg" alt="Mermaid diagram" />
+
 ## Performance Characteristics
 
 ### Bundle Optimization
@@ -564,6 +571,7 @@ async function robustDialogOperation() {
 [Wind](https://github.com/CodeEditorLand/Wind) implements comprehensive webview security measures:
 
 <img src="/Mermaid/796f752a8f032ac9.svg" alt="Mermaid diagram" />
+
 ### API Security Patterns
 
 Sophisticated API security patterns:

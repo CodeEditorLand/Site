@@ -25,6 +25,7 @@ truth; generated Rust code via `prost-build`/`tonic` is shared by [Mountain](htt
 and [Cocoon](https://github.com/CodeEditorLand/Cocoon).
 
 <img src="/Mermaid/ce500333327e1492.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Key Modules
@@ -248,6 +249,7 @@ The following diagram shows how a VS Code command travels from [Sky](https://git
 the [Vine](https://github.com/CodeEditorLand/Vine) protocol to [Cocoon](https://github.com/CodeEditorLand/Cocoon) and back.
 
 <img src="/Mermaid/b69dda10ae2a79b7.svg" alt="Mermaid diagram" />
+
 **Communication patterns supported by [Vine](https://github.com/CodeEditorLand/Vine):**
 
 - **Unary RPC** - Request/response for commands and queries.

@@ -16,13 +16,14 @@ Node.js runtime binaries across multiple target platforms, integrating with
 ## Architecture
 
 <img src="/Mermaid/8f062e52e5dd079b.svg" alt="Mermaid diagram" />
-| Attribute    | Value                                                                 |
-| ------------ | --------------------------------------------------------------------- |
-| Language     | `Rust` (edition 2024)                                                 |
-| Crate type   | Library + Binary                                                      |
+
+| Attribute    | Value                                                                                                                                                       |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language     | `Rust` (edition 2024)                                                                                                                                       |
+| Crate type   | Library + Binary                                                                                                                                            |
 | Dependencies | `tokio`, `reqwest`, `serde`, `zip`, `tar`, `flate2`, [`Common`](https://github.com/CodeEditorLand/Common), [`Mist`](https://github.com/CodeEditorLand/Mist) |
-| Consumed by  | [`Mountain`](https://github.com/CodeEditorLand/Mountain) (build-time binary selection)                              |
-| Storage      | [`SideCar/Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json) + per-platform cached binaries                   |
+| Consumed by  | [`Mountain`](https://github.com/CodeEditorLand/Mountain) (build-time binary selection)                                                                      |
+| Storage      | [`SideCar/Cache.json`](https://github.com/CodeEditorLand/SideCar/tree/Current/Cache.json) + per-platform cached binaries                                    |
 
 ### Module Map
 

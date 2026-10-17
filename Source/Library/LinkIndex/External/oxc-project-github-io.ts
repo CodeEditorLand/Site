@@ -1,5 +1,5 @@
 /**
- * Composed URL: https://oxc-project.github.io
+ * Composed URL: https://oxc.rs
  * Terms resolving here: 1
  * Pages: (none in LINK-CONTEXT-REVIEW)
  * Tags: External, external

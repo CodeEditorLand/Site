@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/doc/SideCar/Spawn/constant.DNS_OVERRIDE.html#L1
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: filesystem-footprint-per-element
  * Tags: Land, symbol, keep
  *
@@ -20,13 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Land", "symbol", "keep"],
 
-	terms: {
-		DNS_OVERRIDE: {
-			Repo: ElementRepos.Land,
-
-			Path: "Documentation/Rust/doc/SideCar/Spawn/constant.DNS_OVERRIDE.html",
-
-			Line: 1,
-		},
-	},
+	terms: {},
 };

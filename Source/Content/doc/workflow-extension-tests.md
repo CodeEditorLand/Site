@@ -21,6 +21,7 @@ back to the **original [Mountain](https://github.com/CodeEditorLand/Mountain) in
 rather than a headless stub.
 
 <img src="/Mermaid/e923c9c8a0417198.svg" alt="Mermaid diagram" />
+
 ## Phase 1 - Development mode launch
 
 1. **Extension manifest.** The extension being developed includes a `"test"`

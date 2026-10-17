@@ -23,6 +23,7 @@ editing is performed through `toml_edit` and `json5` for structured, non-lossy
 modifications to project configuration files.
 
 <img src="/Mermaid/0be4b3c23f1e8a2c.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Key Modules 🔌
@@ -50,6 +51,7 @@ modifications to project configuration files.
 ## Data Flow 🔄
 
 <img src="/Mermaid/5becfbd1ececd232.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Integration Points 🔗

@@ -45,6 +45,7 @@ levels:
 ### Protocol Stack
 
 <img src="/Mermaid/62d10f27634a3077.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Tauri IPC 🎮
@@ -630,6 +631,7 @@ communication.
 ### Action/Response Pattern
 
 <img src="/Mermaid/5bd7d1e48e6c5c5d.svg" alt="Mermaid diagram" />
+
 ### ActionEffect Types
 
 The `Spine` protocol encodes all possible extension actions as a discriminated
@@ -694,6 +696,7 @@ order causes Mountain to time out before Cocoon is ready to accept the
 handshake.
 
 <img src="/Mermaid/f8eed166325051ea.svg" alt="Mermaid diagram" />
+
 ### Disconnection and Reconnection
 
 ```

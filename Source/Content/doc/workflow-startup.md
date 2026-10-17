@@ -19,6 +19,7 @@ interaction and all dependent workflows - opening files, executing commands,
 language features - can proceed.
 
 <img src="/Mermaid/dc004668c806a100.svg" alt="Mermaid diagram" />
+
 ## Phase 1 - [Mountain](https://github.com/CodeEditorLand/Mountain) native startup
 
 1. The OS launches the [Mountain](https://github.com/CodeEditorLand/Mountain) binary. The `main` function in

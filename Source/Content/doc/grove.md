@@ -43,6 +43,7 @@ file access gets exactly the file handles it was granted -- nothing more.
 [Grove](https://github.com/CodeEditorLand/Grove) is organized into five layers:
 
 <img src="/Mermaid/15173764de5d4f18.svg" alt="Mermaid diagram" />
+
 ### Module Map
 
 | Path                                                                                                                          | Purpose                                |

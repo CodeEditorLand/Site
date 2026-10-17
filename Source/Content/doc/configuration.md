@@ -88,6 +88,7 @@ same key.
 ### Sourcing Order
 
 <img src="/Mermaid/f36644aa05d19bfe.svg" alt="Mermaid diagram" />
+
 ### Key Rules
 
 1. **Overlay conditional** - Production overlays are only sourced when

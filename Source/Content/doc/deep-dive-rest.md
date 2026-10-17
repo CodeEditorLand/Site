@@ -24,6 +24,7 @@ generator in sequence. An optional parallel mode processes multiple files
 concurrently across CPU cores.
 
 <img src="/Mermaid/8d8367d4a86a59e0.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Key Modules
@@ -48,6 +49,7 @@ concurrently across CPU cores.
 ## Data Flow
 
 <img src="/Mermaid/32628aab22a45d3f.svg" alt="Mermaid diagram" />
+
 When `--Parallel` is specified, the compiler fans out file compilation across
 Tokio worker threads and collects aggregated metrics.
 

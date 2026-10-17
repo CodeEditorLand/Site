@@ -39,6 +39,7 @@ before the workbench bundle loads.
 ### Execution Order
 
 <img src="/Mermaid/67815590cb2a740a.svg" alt="Mermaid diagram" />
+
 ### Shimming Strategy
 
 The Preload shim defines the following global replacements:
@@ -122,6 +123,7 @@ It translates between two event models:
 ### Bridge Architecture
 
 <img src="/Mermaid/d60d42f7b1cc87aa.svg" alt="Mermaid diagram" />
+
 ### HTML Injection and Webview Input
 
 `SkyBridge` manages the lifecycle of webview content injection through
@@ -409,6 +411,7 @@ binary -- no runtime toggle.
 The startup sequence coordinates all polyfill layers:
 
 <img src="/Mermaid/184bba5eafb26c6d.svg" alt="Mermaid diagram" />
+
 ### Polyfill Disable Flag
 
 The `Disable` environment variable can be set to `true` to bypass all polyfill

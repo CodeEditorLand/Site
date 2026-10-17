@@ -28,6 +28,7 @@ The Land build has six stages:
 6. **Re-sign** - strips quarantine bits and re-applies entitlements
 
 <img src="/Mermaid/8aac22fc7883b886.svg" alt="Mermaid diagram" />
+
 ### Stage 1: VS Code Platform Compilation
 
 The VS Code source is vendored as a Git submodule at
@@ -143,8 +144,8 @@ Each build profile loads a specific combination of env files:
 
 | Profile String                  | Workbench      | Feature Coverage                 | Output Type              |
 | :------------------------------ | :------------- | :------------------------------- | :----------------------- |
-| `debug`                         | Browser        | 70–80%                           | Dev binary               |
-| `debug-mountain`                | Mountain       | 80–90%                           | Dev binary (recommended) |
+| `debug`                         | Browser        | 70-80%                           | Dev binary               |
+| `debug-mountain`                | Mountain       | 80-90%                           | Dev binary (recommended) |
 | `debug-electron`                | Electron       | 95%+                             | Dev binary               |
 | `debug-electron-rest`           | Electron + OXC | 95%+ + fastest TS                | Dev binary               |
 | `debug-electron-minimal`        | Electron       | No built-in extensions           | Dev binary               |
@@ -177,6 +178,7 @@ Each Element reads the resolved environment variables through its own build
 system path:
 
 <img src="/Mermaid/4057d7f8b9f9ed57.svg" alt="Mermaid diagram" />
+
 ### Rust Elements (Mountain, Common, Echo, Mist, Rest, SideCar, Air, Grove, Vine)
 
 ```
@@ -371,7 +373,7 @@ two parallel compiler paths:
 ### Optional Path (Rest/OXC)
 
 1. **Input:** Same VS Code source
-2. **Processing:** `Rest` (Rust OXC) re-compiles TypeScript 2–3x faster:
+2. **Processing:** `Rest` (Rust OXC) re-compiles TypeScript 2-3x faster:
     - OXC parser handles decorators, class fields, JSX
     - OXC transformer produces VS Code-compatible output
     - `Rest --compiler` CLI flag activates this path

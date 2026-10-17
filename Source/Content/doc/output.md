@@ -19,6 +19,7 @@ npm package consumed by [Cocoon](https://github.com/CodeEditorLand/Cocoon) (exte
 ## Architecture
 
 <img src="/Mermaid/7e71cba488932f79.svg" alt="Mermaid diagram" />
+
 ### Module Map
 
 | Path                                                                                                         | Purpose                                    |
@@ -52,11 +53,13 @@ Output supports two compiler backends.
 ### Default: ESBuild
 
 <img src="/Mermaid/5878b3a8ceb83f24.svg" alt="Mermaid diagram" />
+
 ### Optional: Rest OXC
 
 Activated via `Compiler=Rest` environment variable:
 
 <img src="/Mermaid/5b93deb7f70a9527.svg" alt="Mermaid diagram" />
+
 ### Integration
 
 ```typescript

@@ -20,6 +20,7 @@ The system is the foundation we use to test upgrades, keep fallback paths warm,
 and bisect regressions to a specific implementation tier.
 
 <img src="/Mermaid/c8de42384aea961e.svg" alt="Mermaid diagram" />
+
 ---
 
 #### **Phase 1: Authoring the Tier Set (`.env.Land`)**

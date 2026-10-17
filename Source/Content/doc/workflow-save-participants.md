@@ -14,6 +14,7 @@ normal write path to [Mountain](https://github.com/CodeEditorLand/Mountain) exec
 `onWillSaveTextDocument` event; the IPC machinery is invisible.
 
 <img src="/Mermaid/5e843b98af5d6c71.svg" alt="Mermaid diagram" />
+
 ## Phase 1 - User action and save trigger ([Wind](https://github.com/CodeEditorLand/Wind)/[Sky](https://github.com/CodeEditorLand/Sky))
 
 1. The user presses `Ctrl+S` in an editor with unsaved changes. The keybinding

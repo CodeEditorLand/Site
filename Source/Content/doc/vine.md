@@ -17,6 +17,7 @@ between:
 - **[Air](https://github.com/CodeEditorLand/Air)** (background daemon) - gRPC client
 
 <img src="/Mermaid/a886e98576e6fe7f.svg" alt="Mermaid diagram" />
+
 ## Why a Typed Protocol
 
 Tauri's IPC is untyped. A call to `invoke('open-file', { path })` has no
@@ -36,6 +37,7 @@ can silently drift from the schema.
 [Vine](https://github.com/CodeEditorLand/Vine) is the protocol layer that enables all inter-component communication:
 
 <img src="/Mermaid/dd501536bfa01bee.svg" alt="Mermaid diagram" />
+
 ## Protocol Files
 
 | File                                                                                     | Location                                                                                                        | Defines                                                                                                                      |

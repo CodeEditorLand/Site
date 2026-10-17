@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Air/tree/Current/Documentation/Rust/doc/type.impl/alloc/sync/struct.Arc.js#L2
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: TauriDesktopIntegration, deep-dive-common, deep-dive-echo, deep-dive-mountain, echo, mountain-naming-conventions
  * Tags: Air, symbol, remove
  *
@@ -32,13 +32,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Air", "symbol", "remove"],
 
-	terms: {
-		ApplicationRunTime: {
-			Repo: ElementRepos.Air,
-
-			Path: "Documentation/Rust/doc/type.impl/alloc/sync/struct.Arc.js",
-
-			Line: 2,
-		},
-	},
+	terms: {},
 };

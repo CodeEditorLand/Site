@@ -26,6 +26,7 @@ API bridge that presents the standard extension API, the transport layer that
 communicates with [Mountain](https://github.com/CodeEditorLand/Mountain), and shared utility modules.
 
 <img src="/Mermaid/2f21cd2157b432e2.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Key Modules
@@ -56,6 +57,7 @@ communicates with [Mountain](https://github.com/CodeEditorLand/Mountain), and sh
 ## Data Flow
 
 <img src="/Mermaid/ad063a0e6fcd9139.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Integration Points

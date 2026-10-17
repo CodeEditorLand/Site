@@ -46,6 +46,7 @@ The **Land** build has six stages:
    re-applies entitlements
 
 <img src="/Mermaid/8aac22fc7883b886.svg" alt="Mermaid diagram" />
+
 ### Stage 1: VS Code Platform Compilation
 
 The VS Code source is vendored as a `Git` submodule at
@@ -204,6 +205,7 @@ Each Element reads the resolved environment variables through its own build
 system path:
 
 <img src="/Mermaid/4057d7f8b9f9ed57.svg" alt="Mermaid diagram" />
+
 ### Rust Elements (Mountain, Common, Echo, Mist, Rest, SideCar, Air, Grove, Vine)
 
 ```
@@ -367,6 +369,7 @@ After a successful build, artifacts are placed in per-Element target
 directories:
 
 <img src="/Mermaid/aa37bf530fa05a5f.svg" alt="Mermaid diagram" />
+
 Notable artifacts:
 
 | Path                                                       | Description                                                 |

@@ -21,6 +21,7 @@ points, workbench components that compose the VSCode-compatible editor layout,
 and utility functions that support the build and runtime process.
 
 <img src="/Mermaid/9e999e3dd8c312e6.svg" alt="Mermaid diagram" />
+
 ### Layer Responsibilities
 
 - **Pages** - Astro route files that act as Tauri webview entry points. Each
@@ -130,6 +131,7 @@ The following sequence shows how a user action travels from the [Sky](https://gi
 [Wind](https://github.com/CodeEditorLand/Wind) services to the [Mountain](https://github.com/CodeEditorLand/Mountain) backend and back.
 
 <img src="/Mermaid/f2360069a9a6dc03.svg" alt="Mermaid diagram" />
+
 ### Startup Sequence
 
 1. Tauri loads the webview pointing at Sky's built output.

@@ -24,6 +24,7 @@ with lock-free work-stealing deques built on
 [Echo](https://github.com/CodeEditorLand/Echo) is organised into three core subsystems:
 
 <img src="/Mermaid/4263fe64a01e3bae.svg" alt="Mermaid diagram" />
+
 ### Module Map
 
 | Path                                                                                                                               | Purpose                                              |
@@ -51,6 +52,7 @@ cores without the caller managing thread lifetimes manually.
 Each worker thread maintains:
 
 <img src="/Mermaid/36cf4d884e97b9ca.svg" alt="Mermaid diagram" />
+
 ### Task Submission
 
 1. **External submission** (from any thread): Task enters the global injector.

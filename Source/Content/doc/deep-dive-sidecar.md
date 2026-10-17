@@ -24,6 +24,7 @@ target-triple directory convention. The spawn helper is used by [Mountain](https
 launch sidecars from the vendored binary store.
 
 <img src="/Mermaid/2d1ca0004138ea30.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Key Modules
@@ -42,6 +43,7 @@ launch sidecars from the vendored binary store.
 ## Data Flow
 
 <img src="/Mermaid/437ef5e8ea10ac60.svg" alt="Mermaid diagram" />
+
 **Build-time selection:**
 
 [Mountain](https://github.com/CodeEditorLand/Mountain)'s `build.rs` reads the [SideCar](https://github.com/CodeEditorLand/SideCar) directory, selects the binary matching

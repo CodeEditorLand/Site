@@ -15,6 +15,7 @@ remains responsive. Internal modules handle distinct responsibilities: updates,
 downloads, authentication, and health monitoring.
 
 <img src="/Mermaid/a7c6a35d763a4ed6.svg" alt="Mermaid diagram" />
+
 ## Key Modules
 
 | Path                                                                                        | Description                                                                                  |
@@ -41,6 +42,7 @@ The following sequence shows how [Mountain](https://github.com/CodeEditorLand/Mo
 receives progress notifications.
 
 <img src="/Mermaid/378b32a5be76d9a8.svg" alt="Mermaid diagram" />
+
 **Port allocation:**
 
 - [Air](https://github.com/CodeEditorLand/Air) listens on `[::1]:50053` (reserved for the Air daemon).

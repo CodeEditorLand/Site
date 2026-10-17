@@ -115,6 +115,7 @@ The `Environment` trait system implements capability-based architecture for
 clean dependency management:
 
 <img src="/Mermaid/1fb260cfada735e7.svg" alt="Mermaid diagram" />
+
 ### Concrete Capability Resolution
 
 For any `ActionEffect<C, E, T>`, the runtime provides `C` through these steps:
@@ -250,6 +251,7 @@ domain's `DTO/` subdirectory. All DTOs are:
   `Vine.proto`
 
 <img src="/Mermaid/f28ca06196ba6b72.svg" alt="Mermaid diagram" />
+
 ### Key DTOs
 
 | DTO                   | Module                | Primary Fields                                      |
@@ -270,6 +272,7 @@ domain's `DTO/` subdirectory. All DTOs are:
 The `CommonError` enum provides comprehensive error handling:
 
 <img src="/Mermaid/ba6ccbcd65d41fc6.svg" alt="Mermaid diagram" />
+
 ```rust
 pub enum CommonError {
     NotFound(String),          // resource does not exist at the given path or ID
@@ -353,6 +356,7 @@ directories in each [Mountain](https://github.com/CodeEditorLand/Mountain) servi
 ## Ecosystem Integration Mapping
 
 <img src="/Mermaid/e2988db55cd6791e.svg" alt="Mermaid diagram" />
+
 ---
 
 ## VSCode Service Lifting Patterns
@@ -440,6 +444,7 @@ pub fn GetConfiguration_effect(section: Option<String>)
 ### Service Lifting Architecture
 
 <img src="/Mermaid/7f324b1c75c5f503.svg" alt="Mermaid diagram" />
+
 ### Service Migration Table
 
 | VSCode Service          | [Common](https://github.com/CodeEditorLand/Common) Trait | [Mountain](https://github.com/CodeEditorLand/Mountain) Implementation | [Effect-TS](https://effect.website) Layer |
@@ -453,6 +458,7 @@ pub fn GetConfiguration_effect(section: Option<String>)
 ### Component Block Map
 
 <img src="/Mermaid/936b7cc256ec2eec.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Transport Layer

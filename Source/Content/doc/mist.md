@@ -34,6 +34,7 @@ that resolve only within the running editor process.
 Mist is organised into five core modules:
 
 <img src="/Mermaid/a08c62373866bebb.svg" alt="Mermaid diagram" />
+
 ### Module Map
 
 | Path                                                                                                         | Purpose                                                                                                                                   |
@@ -135,6 +136,7 @@ under 1 ms for the high-frequency calls that dominate a session. This transport
 is used when gRPC is unavailable or inappropriate for the communication pattern.
 
 <img src="/Mermaid/8f7ee38f7b61f2ef.svg" alt="Mermaid diagram" />
+
 ## Integration with Mountain and Air
 
 [Mountain](https://github.com/CodeEditorLand/Mountain) calls `Mist::start(5380)` during application initialisation and

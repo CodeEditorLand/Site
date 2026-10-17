@@ -15,6 +15,7 @@ filesystem stat for repository detection and a `GitProvider` that safely spawns
 [Sky](https://github.com/CodeEditorLand/Sky) via Tauri events.
 
 <img src="/Mermaid/adbcc0a78658c231.svg" alt="Mermaid diagram" />
+
 ## Phase 1 - Registration and repository detection ([Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain))
 
 1. On startup [Cocoon](https://github.com/CodeEditorLand/Cocoon) activates the built-in Git extension. Its `activate()`

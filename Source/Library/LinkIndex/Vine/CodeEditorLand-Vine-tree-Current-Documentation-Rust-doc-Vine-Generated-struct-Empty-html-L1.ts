@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Vine/tree/Current/Documentation/Rust/doc/Vine/Generated/struct.Empty.html#L1
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: configuration, deep-dive-cocoon, echo, filesystem-footprint-platform-paths, why-grpc
  * Tags: Vine, symbol, remove
  *
@@ -30,13 +30,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Vine", "symbol", "remove"],
 
-	terms: {
-		Empty: {
-			Repo: ElementRepos.Vine,
-
-			Path: "Documentation/Rust/doc/Vine/Generated/struct.Empty.html",
-
-			Line: 1,
-		},
-	},
+	terms: {},
 };

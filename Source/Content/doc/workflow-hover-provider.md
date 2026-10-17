@@ -16,6 +16,7 @@ acts as the broker that maps language selectors to provider handles and routes
 requests to the correct sidecar.
 
 <img src="/Mermaid/db35696ce4bb1276.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Phase 1 - Extension registration ([Cocoon](https://github.com/CodeEditorLand/Cocoon) → [Mountain](https://github.com/CodeEditorLand/Mountain))

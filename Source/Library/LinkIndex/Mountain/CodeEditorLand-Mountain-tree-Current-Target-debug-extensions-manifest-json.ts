@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Mountain/tree/Current/Target/debug/extensions.manifest.json
- * Terms resolving here: 2
+ * Terms resolving here: 0
  * Pages: filesystem-footprint-platform-paths
  * Tags: Mountain, file, keep
  *
@@ -20,18 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Mountain", "file", "keep"],
 
-	terms: {
-		"CodeEditorLand/Land/tree/Current/Element/Mountain/Target/debug/extensions.manifest.json":
-			{
-				Repo: ElementRepos.Mountain,
-
-				Path: "Target/debug/extensions.manifest.json",
-			},
-
-		"Element/Mountain/Target/debug/extensions.manifest.json": {
-			Repo: ElementRepos.Mountain,
-
-			Path: "Target/debug/extensions.manifest.json",
-		},
-	},
+	terms: {},
 };

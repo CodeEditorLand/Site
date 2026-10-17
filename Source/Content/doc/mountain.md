@@ -36,6 +36,7 @@ description:
 ---
 
 <img src="/Mermaid/d7d58c57ba37be8c.svg" alt="Mermaid diagram" />
+
 ## Overview 📋
 
 [`Mountain`](https://github.com/CodeEditorLand/Mountain) is a `Rust` binary built with `Tauri` v2 and `tonic` `gRPC`:

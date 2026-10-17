@@ -23,6 +23,7 @@ injecting itself between the runtime and every subsystem of VS Code.
 ## 🟠 Full Architecture Diagram
 
 <img src="/Mermaid/1f43045a1183657f.svg" alt="Mermaid diagram" />
+
 The architecture has three distinct planes:
 
 1. **Interception Plane** (🟠 orange) - The 6 prototype hooks that wrap VS Code internals
@@ -481,6 +482,7 @@ Import paths resolve at this final on-disk location.
 ## 🟠 Bootstrap Flow
 
 <img src="/Mermaid/3dff1b7ccc919ab4.svg" alt="Mermaid diagram" />
+
 **Critical detail**: The low-level hooks activate via **dynamic `import()`**, not static import. This is because
 they must resolve at the final on-disk location inside the VS Code tree (`vs/workbench/browser/CEL/Land/Shim/Intercept/`).
 Each `import()` returns a Promise; `.catch(() => {})` ensures a failed import never crashes the workbench.
@@ -531,6 +533,7 @@ VS Code runs un-instrumented but working. If tracing fails mid-flight, the origi
 ## 🟠 Flush Mechanism: How Trace Data Reaches Mountain
 
 <img src="/Mermaid/1671dfde0f64186b.svg" alt="Mermaid diagram" />
+
 **Ring buffer structure** (per category, max 512 entries):
 
 | Buffer             | Category                   | Recorded by               |
@@ -572,6 +575,7 @@ Here's how a user clicking the status bar to change the encoding propagates thro
 all 6 hook layers:
 
 <img src="/Mermaid/b28373dc0b57c551.svg" alt="Mermaid diagram" />
+
 **Trace data captured from this single user action**:
 
 | Layer | Events Captured                           | Data                                                  |

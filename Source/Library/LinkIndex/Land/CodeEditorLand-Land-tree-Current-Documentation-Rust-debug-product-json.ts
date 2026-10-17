@@ -1,6 +1,6 @@
 /**
  * Composed URL: https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Rust/debug/product.json
- * Terms resolving here: 1
+ * Terms resolving here: 0
  * Pages: configuration, coverage
  * Tags: Land, api, keep
  *
@@ -20,11 +20,5 @@ export const LinkIndexData: LinkIndexData = {
 
 	tags: ["Land", "api", "keep"],
 
-	terms: {
-		"product.json": {
-			Repo: ElementRepos.Land,
-
-			Path: "Documentation/Rust/debug/product.json",
-		},
-	},
+	terms: {},
 };

@@ -101,6 +101,7 @@ management.
 performance:
 
 <img src="/Mermaid/f66d6d1b22e4006b.svg" alt="Mermaid diagram" />
+
 **Concrete Work-Stealing Efficiency**
 
 [Echo](https://github.com/CodeEditorLand/Echo)'s work-stealing algorithm ensures optimal CPU utilization through:
@@ -118,11 +119,13 @@ performance:
 critical tasks:
 
 <img src="/Mermaid/790d374d558cfc15.svg" alt="Mermaid diagram" />
+
 #### 3. Memory Management Architecture
 
 [Echo](https://github.com/CodeEditorLand/Echo) employs sophisticated memory management strategies for optimal performance:
 
 <img src="/Mermaid/c26d16134db1b19e.svg" alt="Mermaid diagram" />
+
 ### Advanced Technical Proofs
 
 #### Performance Analysis: Task Execution Latency
@@ -154,6 +157,7 @@ critical tasks:
 ### Ecosystem Integration Mapping
 
 <img src="/Mermaid/7bd604f5f52994da.svg" alt="Mermaid diagram" />
+
 ### Performance Optimization Strategies
 
 #### 1. Advanced Work-Stealing Algorithms
@@ -184,9 +188,11 @@ critical tasks:
 #### Integration with Mountain's ApplicationRunTime
 
 <img src="/Mermaid/9fe4573a31bb5d94.svg" alt="Mermaid diagram" />
+
 #### Multi-Priority Task Execution
 
 <img src="/Mermaid/98932cae4e0dc4af.svg" alt="Mermaid diagram" />
+
 ---
 
 ## Advanced Usage Patterns
@@ -282,6 +288,7 @@ When integrated with [Mountain](https://github.com/CodeEditorLand/Mountain)'s Ap
 ### Integration with Mountain's ApplicationRunTime
 
 <img src="/Mermaid/d2954fdd8424a8e5.svg" alt="Mermaid diagram" />
+
 #### Scheduler Integration Table
 
 | Component                                                          | Echo Integration        | Communication Pattern | Performance Characteristics      |
@@ -300,6 +307,7 @@ ApplicationRunTime and other asynchronous operations.
 ## Concrete Task Scheduling Architecture
 
 <img src="/Mermaid/2d67f67ca7b5dbe8.svg" alt="Mermaid diagram" />
+
 #### Performance Characteristics Table
 
 | Metric                  | [Echo](https://github.com/CodeEditorLand/Echo) Performance | [Mountain](https://github.com/CodeEditorLand/Mountain) Integration | Notes                     |
@@ -313,6 +321,7 @@ ApplicationRunTime and other asynchronous operations.
 ### Component Block Map
 
 <img src="/Mermaid/6177871da7f0ba32.svg" alt="Mermaid diagram" />
+
 ### Task Execution Patterns
 
 <img src="/Mermaid/7bcbde5ff32ca8e5.svg" alt="Mermaid diagram" />
