@@ -15,6 +15,13 @@
  * repos instead of the Land URL, pure-lowercase noise terms ("shell") never
  * link while allowlisted brands ("esbuild", "pnpm") still do, a dotted API
  * term keeps its #L anchor, and an External spec renders verbatim.
+ *
+ * Phase 3c additions: the transformer derives the page key from the vfile
+ * path (the .md basename) and applies the per-page override map - a pin
+ * ("api-reference" -> ProcessCocoonRequest -> Vine.proto#L8) and a removal
+ * ("workflow-tier-gated-implementation-selection" -> IPC -> false). The
+ * globally-wrong noise class ("macOS", "Current", ...) is dropped from the
+ * index entirely, so LinkCount shrinks.
  */
 
 import { unified } from "unified";
@@ -26,6 +33,8 @@ import remarkStringify from "remark-stringify";
 import remarkCodeMentions from "../../Function/Markdown/CodeMentions";
 
 import { LinkCount } from "../../Library/LinkMatcher";
+
+import { VFile } from "vfile";
 
 const LandUrl = "https://github.com/CodeEditorLand/Land";
 
@@ -94,9 +103,18 @@ const Render = (Markdown: string): string =>
 		.processSync(Markdown)
 		.toString();
 
+/** Render with an explicit vfile path so the plugin derives the page key. */
+const RenderAs = (Path: string, Markdown: string): string =>
+	unified()
+		.use(remarkParse)
+		.use(remarkCodeMentions)
+		.use(remarkStringify)
+		.processSync(new VFile({ path: Path, value: Markdown }))
+		.toString();
+
 describe("remarkCodeMentions (render-time placement)", () => {
 	it("index cache holds every resolved entry (UNKNOWNs skipped, noise dropped)", () => {
-		expect(LinkCount).toBe(2115);
+		expect(LinkCount).toBe(1955);
 	});
 
 	it("links prose mentions of each class with byte-identical labels", () => {
@@ -261,5 +279,48 @@ describe("remarkCodeMentions (render-time placement)", () => {
 		expect(Tree.children[1].children[0].url).toBe(LandUrl);
 
 		expect(Tree.children[1].children[0].children[0].value).toBe("Land");
+	});
+
+	it("derives the page key from the vfile path and pins an override URL", () => {
+		const Out = RenderAs(
+			"api-reference.md",
+			"Prose mentions ProcessCocoonRequest for the RPC channel.",
+		);
+
+		expect(Out).toContain(
+			"[ProcessCocoonRequest](https://github.com/CodeEditorLand/Vine/tree/Current/Proto/Vine.proto#L8)",
+		);
+
+		expect(Out).not.toContain(
+			"[ProcessCocoonRequest](https://github.com/CodeEditorLand/Land/",
+		);
+	});
+
+	it("a per-page override can remove a term that stays linked elsewhere", () => {
+		const Out = RenderAs(
+			"workflow-tier-gated-implementation-selection.md",
+			"IPC is proxied through the tier gate.",
+		);
+
+		expect(Out).not.toContain("[IPC](");
+
+		expect(Out).toContain("IPC is proxied through the tier gate.");
+
+		// the same term on an unrelated page still links via the index
+		const Plain = Render("IPC is the inter-process channel.");
+
+		expect(Plain).toContain(
+			"[IPC](https://github.com/CodeEditorLand/Cocoon/tree/Current/Source/WebviewPanel/Webview/Implementation.ts#L23)",
+		);
+	});
+
+	it("globally-dropped noise terms never link on any page", () => {
+		const Out = Render("macOS and Current are English words here.");
+
+		expect(Out).not.toContain("[macOS](");
+
+		expect(Out).not.toContain("[Current](");
+
+		expect(Out).toContain("macOS and Current are English words here.");
 	});
 });

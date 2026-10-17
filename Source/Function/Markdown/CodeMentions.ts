@@ -23,9 +23,19 @@
  *    and reference nodes.
  *  - Protected compounds ("CodeEditorLand", "Code Editor Land") are part of
  *    the compiled matcher and re-emit unchanged - never linked.
+ *
+ * Phase 3c (per-page context overrides): the transformer now receives the
+ * vfile and derives the page key from File.path (the .md basename, no
+ * extension). When a term resolves through the matcher, the per-page
+ * override map (LinkIndexOverrides, Source/Library/LinkIndex.ts) is
+ * consulted first: `false` emits plain text (the mention is prose on this
+ * page), a URL pins that exact URL (the context names a better target).
+ * The index and the Scan/Lookup contract are otherwise unchanged.
  */
 
 import { Lookup, MarkdownMatcher } from "../../Library/LinkMatcher";
+
+import { LinkIndexOverrides } from "../../Library/LinkIndex";
 
 interface CodeMentionsNode {
 	type: string;
@@ -37,9 +47,27 @@ interface CodeMentionsNode {
 	[key: string]: unknown;
 }
 
+/** The page key for the override map: the .md basename without extension. */
+const PageKeyOf = (File: unknown): string | undefined => {
+	const Path = (File as { path?: string } | undefined)?.path;
+
+	if (!Path) return undefined;
+
+	const Base = Path.split("/").pop() ?? "";
+
+	return Base.replace(/\.(md|mdx)$/i, "");
+};
+
+/** The per-page override for one term: undefined = no override, false = never link, string = pin URL. */
+const OverrideOf = (
+	PageKey: string | undefined,
+	Term: string,
+): string | false | undefined =>
+	PageKey ? LinkIndexOverrides[PageKey]?.[Term] : undefined;
+
 export default function remarkCodeMentions() {
-	return (Tree: CodeMentionsNode) => {
-		Walk(Tree);
+	return (Tree: CodeMentionsNode, File: unknown) => {
+		Walk(Tree, PageKeyOf(File));
 	};
 }
 
@@ -62,7 +90,7 @@ const Skip = new Set([
 	"yaml",
 ]);
 
-function Walk(Node: CodeMentionsNode) {
+function Walk(Node: CodeMentionsNode, PageKey: string | undefined) {
 	if (!Node.children) return;
 
 	for (let I = 0; I < Node.children.length; I++) {
@@ -71,13 +99,13 @@ function Walk(Node: CodeMentionsNode) {
 		if (Skip.has(Child.type)) continue;
 
 		if (Child.type === "inlineCode") {
-			LinkInlineCode(Node, I);
+			LinkInlineCode(Node, I, PageKey);
 
 			continue;
 		}
 
 		if (Child.type === "text") {
-			const Replaced = LinkText(Child);
+			const Replaced = LinkText(Child, PageKey);
 
 			if (Replaced) {
 				Node.children.splice(I, 1, ...Replaced);
@@ -88,22 +116,30 @@ function Walk(Node: CodeMentionsNode) {
 			continue;
 		}
 
-		Walk(Child);
+		Walk(Child, PageKey);
 	}
 }
 
 /** A code span whose text IS a term becomes a link whose label is the span. */
-function LinkInlineCode(Node: CodeMentionsNode, Index: number) {
+function LinkInlineCode(
+	Node: CodeMentionsNode,
+	Index: number,
+	PageKey: string | undefined,
+) {
 	const Span = Node.children![Index];
 
 	const Url = Lookup(Span.value ?? "");
 
 	if (!Url) return;
 
+	const Override = OverrideOf(PageKey, Span.value ?? "");
+
+	if (Override === false) return;
+
 	Node.children![Index] = {
 		type: "link",
 
-		url: Url,
+		url: Override === undefined ? Url : Override,
 
 		children: [{ type: "inlineCode", value: Span.value }],
 	};
@@ -114,7 +150,10 @@ function LinkInlineCode(Node: CodeMentionsNode, Index: number) {
  * Protected compounds and the index terms both come from MarkdownMatcher;
  * protected matches carry no Url and re-emit as plain text.
  */
-function LinkText(Node: CodeMentionsNode): CodeMentionsNode[] | null {
+function LinkText(
+	Node: CodeMentionsNode,
+	PageKey: string | undefined,
+): CodeMentionsNode[] | null {
 	const Value = Node.value ?? "";
 
 	const Matches = MarkdownMatcher.Scan(Value);
@@ -130,11 +169,13 @@ function LinkText(Node: CodeMentionsNode): CodeMentionsNode[] | null {
 			Out.push({ type: "text", value: Value.slice(Cursor, M.Start) });
 		}
 
-		if (M.Url) {
+		const Override = M.Url ? OverrideOf(PageKey, M.Term) : undefined;
+
+		if (M.Url && Override !== false) {
 			Out.push({
 				type: "link",
 
-				url: M.Url,
+				url: Override === undefined ? M.Url : Override,
 
 				children: [{ type: "text", value: M.Term }],
 			});
