@@ -108,14 +108,14 @@ failed to bind before [Mountain](https://github.com/CodeEditorLand/Mountain) att
     ```
 
     Kill any orphaned process found, or change `NetworkMountainPort` /
-    `NetworkCocoonPort` in [`.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land).
+    `NetworkCocoonPort` in `.env.Land`.
 
 2. Check the dev log for the line `RPCServer bound on port 50052`. If it is
    absent, [Cocoon](https://github.com/CodeEditorLand/Cocoon)'s gRPC server never started. Look for earlier error lines in
    the log. [Cocoon](https://github.com/CodeEditorLand/Cocoon) must bind port 50052 before [Mountain](https://github.com/CodeEditorLand/Mountain) attempts the connection
     - bootstrap stage ordering matters.
 
-3. Set `Trace=cocoon,grpc` and `Record=1` in [`.env.Land.Diagnostics`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Diagnostics), relaunch,
+3. Set `Trace=cocoon,grpc` and `Record=1` in `.env.Land.Diagnostics`, relaunch,
    and inspect `<app-data>/logs/<timestamp>/Mountain.dev.log` for the [Cocoon](https://github.com/CodeEditorLand/Cocoon)
    subprocess output.
 
@@ -140,7 +140,7 @@ but never activates.
    with a valid `"main"` field.
 2. Check that `package.json` has an `"engines"` field with a `"vscode"` version
    range that the current [Land](https://github.com/CodeEditorLand/Land) version satisfies (`ProductVersion` in
-   [`.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land), default `1.118.0`).
+   `.env.Land`, default `1.118.0`).
 3. Set `Trace=extensions` and `Record=1`, relaunch, and check the dev log for
    activation errors. Common causes are a missing compiled entry point, a
    Node.js require error in the extension's code, or an `activationEvent` that

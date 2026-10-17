@@ -16,3 +16,4 @@ lychee-report.md
 # Built by Maintain/Script/BuildJellyUIVendor.sh from Vendor/JellyUI
 # (git submodule) - never hand-edit, never commit.
 Public/Vendor/JellyUI/
+.vitest/

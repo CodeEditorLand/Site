@@ -97,7 +97,7 @@ Every layer compiles the telemetry stack out of release builds:
 Plus the runtime kill switches: `Capture=false` short-circuits **all** pipes
 regardless of build mode; `Report=false` / `OTLPEnabled=false` flip a single
 pipe. (`Capture` is the telemetry switch; the unrelated `Disable` in
-[`.env.Land.Diagnostics`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Diagnostics) controls polyfill / shim loading.)
+`.env.Land.Diagnostics` controls polyfill / shim loading.)
 
 ## Bring-up sequence
 
@@ -118,5 +118,5 @@ export Trace=all
 #   Jaeger UI:          http://127.0.0.1:16686
 ```
 
-See [`Effect-OTel.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Effect-OTel.md) for the [Effect-TS](https://effect.website) integration pattern [Wind](https://github.com/CodeEditorLand/Wind) / [Cocoon](https://github.com/CodeEditorLand/Cocoon) use,
-and [`Tree-Shaking.md`](https://github.com/CodeEditorLand/Land/tree/Current/Documentation/Module/Telemetry/Tree-Shaking.md) for the production-zero contract.
+See `Effect-OTel.md` for the [Effect-TS](https://effect.website) integration pattern [Wind](https://github.com/CodeEditorLand/Wind) / [Cocoon](https://github.com/CodeEditorLand/Cocoon) use,
+and `Tree-Shaking.md` for the production-zero contract.

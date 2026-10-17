@@ -89,7 +89,7 @@ and Commands**.
       [`Cocoon`](https://github.com/CodeEditorLand/Cocoon) instance remote-controlling the main UI._
 
 11. [**Tier-Gated Implementation Selection**](/Doc/workflow-tier-gated-implementation-selection)
-    - _Describes how the [`.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land) file propagates through [`Maintain`](https://github.com/CodeEditorLand/Maintain)'s build
+    - _Describes how the `.env.Land` file propagates through [`Maintain`](https://github.com/CodeEditorLand/Maintain)'s build
       script into [`Mountain`](https://github.com/CodeEditorLand/Mountain)'s [`build.rs`](https://github.com/CodeEditorLand/Mountain/tree/Current/build.rs), [`Cocoon`](https://github.com/CodeEditorLand/Cocoon)'s esbuild define map, and
       [`Sky`](https://github.com/CodeEditorLand/Sky)'s Vite define map - allowing each capability with more than one viable
       implementation (gRPC vs native, JS glob vs `globset`, etc.) to live in the

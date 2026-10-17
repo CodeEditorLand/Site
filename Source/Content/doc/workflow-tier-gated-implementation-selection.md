@@ -376,7 +376,7 @@ and bisect regressions to a specific implementation tier.
 
 | Element   | Path                                                                                                                                                                         | Role                                         |
 | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------- |
-| Repo root | [`Land/.env.Land`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land)                                                                                            | Active tier set (overrides Sample)           |
+| Repo root | `Land/.env.Land`                                                                                                                                                             | Active tier set (overrides Sample)           |
 | Repo root | [`Land/.env.Land.Sample`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.Sample)                                                                              | Canonical default tier set                   |
 | Repo root | [`Land/.env.Land.RustOnly`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.RustOnly)                                                                          | Flavor overlay: native Rust everywhere       |
 | Repo root | [`Land/.env.Land.NodeFirst`](https://github.com/CodeEditorLand/Land/tree/Current/.env.Land.NodeFirst)                                                                        | Flavor overlay: Cocoon Node.js everywhere    |

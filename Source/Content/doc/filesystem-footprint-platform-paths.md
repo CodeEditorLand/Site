@@ -181,15 +181,15 @@ The `~/.fiddee/` tree resolves the same way on every OS. Summary:
 
 Cross-OS, not part of user-install footprint:
 
-| Path                                                                                                                                                      | Purpose                                                                                                                                               |
-| :-------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`Element/Mountain/Target/`](https://github.com/CodeEditorLand/Mountain/tree/Current/Target/)                                                             | Rust build output. Hundreds of MB to several GB per profile.                                                                                          |
-| [`Element/Mountain/Target/debug/extensions.manifest.json`](https://github.com/CodeEditorLand/Mountain/tree/Current/Target/debug/extensions.manifest.json) | PreBake cache (built-in extension manifests).                                                                                                         |
-| `Element/Mountain/Target/Resources/extensions/`                                                                                                           | Bundled built-in extensions copied into the `.app`'s Resources tree. Read-only.                                                                       |
-| `Element/Mountain/Target/<profile>/.../*.app`                                                                                                             | Built bundle. [`Maintain/Script/SignBundle.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh) re-signs in place. |
-| [`Element/Sky/Target/`](https://github.com/CodeEditorLand/Sky/tree/Current/Target/)                                                                       | Astro / Vite build output (workbench + webview assets).                                                                                               |
-| `Element/<Other>/Target/`                                                                                                                                 | Per-Element TypeScript compile output.                                                                                                                |
-| `Element/Mountain/Cargo.toml.Backup`                                                                                                                      | Build-script residue (Maintain wrappers rewrite + restore; sometimes leaves a diff).                                                                  |
+| Path                                                     | Purpose                                                                                                                                               |
+| :------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Element/Mountain/Target/`                               | Rust build output. Hundreds of MB to several GB per profile.                                                                                          |
+| `Element/Mountain/Target/debug/extensions.manifest.json` | PreBake cache (built-in extension manifests).                                                                                                         |
+| `Element/Mountain/Target/Resources/extensions/`          | Bundled built-in extensions copied into the `.app`'s Resources tree. Read-only.                                                                       |
+| `Element/Mountain/Target/<profile>/.../*.app`            | Built bundle. [`Maintain/Script/SignBundle.sh`](https://github.com/CodeEditorLand/Land/tree/Current/Maintain/Script/SignBundle.sh) re-signs in place. |
+| `Element/Sky/Target/`                                    | Astro / Vite build output (workbench + webview assets).                                                                                               |
+| `Element/<Other>/Target/`                                | Per-Element TypeScript compile output.                                                                                                                |
+| `Element/Mountain/Cargo.toml.Backup`                     | Build-script residue (Maintain wrappers rewrite + restore; sometimes leaves a diff).                                                                  |
 
 ---
 

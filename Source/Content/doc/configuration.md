@@ -404,7 +404,7 @@ configurations, edit the `.Sample` file and point specific sessions at it:
 
 ```bash
 # Session 1: Default dev (reads .env.Land)
-cd /Volumes/CORSAIR/Developer/macOS/Application/CodeEditorLand
+cd /path/to/CodeEditorLand
 cargo build -p mountain
 
 # Session 2: Experimental layers

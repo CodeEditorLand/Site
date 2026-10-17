@@ -170,7 +170,7 @@ recommended deployment always sets `Mountain=true`.
 
 **Astro configuration** ([`astro.config.ts`](https://github.com/CodeEditorLand/Sky/tree/Current/astro.config.ts)) resolves [Wind](https://github.com/CodeEditorLand/Wind) and other
 `@codeeditorland/*` packages through Vite aliases, sets [`Source/`](https://github.com/CodeEditorLand/Sky/tree/Current/Source/) as the content
-root, and directs build output to [`Target/`](https://github.com/CodeEditorLand/Sky/tree/Current/Target/).
+root, and directs build output to `Target/`.
 
 ---
 

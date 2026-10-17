@@ -91,7 +91,7 @@ some-crate = { git = "https://github.com/CodeEditorLand/some-crate", branch = "C
 
 ## Submodule Update Workflow 🔄
 
-Each element under [`Land/Element/`](https://github.com/CodeEditorLand/Land/tree/Current/Element) is a separate Git submodule with its own
+Each element under `Land/Element/` is a separate Git submodule with its own
 repository and branch. **Never** use `git submodule update --recursive`.
 
 ### Updating a Single Element Submodule

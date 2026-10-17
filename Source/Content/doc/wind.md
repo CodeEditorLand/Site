@@ -66,7 +66,7 @@ workbench.
 | Path                                                                                                                         | Purpose                                                           |
 | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | [`Source/Preload.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Preload.ts)                                 | `Electron`/`Node.js` API shim (see Polyfills)                     |
-| [`Source/Effect/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/)                                       | Service implementations (each domain as Define/Implement/Problem) |
+| `Source/Effect/`                                                                                                             | Service implementations (each domain as Define/Implement/Problem) |
 | [`Source/Function/Install.ts`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Function/Install.ts)               | Layer composition and installation entry point                    |
 | [`Source/Function/Install/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Function/Install/)                   | Layer composition details                                         |
 | [`Source/Workbench/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Workbench/)                                 | VS Code workbench integration                                     |
@@ -186,14 +186,14 @@ workbench bundle loads:
 
 ### Editor Services
 
-| Service           | Module                                                                                                          | Purpose                                |
-| ----------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| Editor            | `Effect/Editor.ts`                                                                                              | Text editor creation, focus, layout    |
-| Model             | `Effect/Model.ts`                                                                                               | Document model creation and management |
-| TextModelResolver | `Effect/TextModelResolver.ts`                                                                                   | URI-to-model resolution                |
-| CodeEditor        | [`Effect/WorkbenchEditor/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/WorkbenchEditor/) | Monaco editor widget                   |
-| Decorations       | `Effect/Decorations.ts`                                                                                         | Editor decoration management           |
-| History           | `Effect/History.ts`                                                                                             | Undo/redo stack management             |
+| Service           | Module                        | Purpose                                |
+| ----------------- | ----------------------------- | -------------------------------------- |
+| Editor            | `Effect/Editor.ts`            | Text editor creation, focus, layout    |
+| Model             | `Effect/Model.ts`             | Document model creation and management |
+| TextModelResolver | `Effect/TextModelResolver.ts` | URI-to-model resolution                |
+| CodeEditor        | `Effect/WorkbenchEditor/`     | Monaco editor widget                   |
+| Decorations       | `Effect/Decorations.ts`       | Editor decoration management           |
+| History           | `Effect/History.ts`           | Undo/redo stack management             |
 
 ### File System Services
 
@@ -205,16 +205,16 @@ workbench bundle loads:
 
 ### Window and UI Services
 
-| Service      | Module                                                                                                          | Purpose                                |
-| ------------ | --------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| ActivityBar  | `Effect/ActivityBar.ts`                                                                                         | Activity bar state                     |
-| Sidebar      | `Effect/Sidebar.ts`                                                                                             | Side bar visibility and view switching |
-| StatusBar    | `Effect/StatusBar.ts`                                                                                           | Status bar items                       |
-| Panel        | `Effect/Panel.ts`                                                                                               | Bottom panel (terminal, output)        |
-| Notification | `Effect/Notification.ts`                                                                                        | Toast notifications                    |
-| Progress     | `Effect/Progress.ts`                                                                                            | Long-running operation progress        |
-| Dialog       | [`Effect/WorkbenchDialog/`](https://github.com/CodeEditorLand/Wind/tree/Current/Source/Effect/WorkbenchDialog/) | Message boxes and input boxes          |
-| QuickInput   | `Effect/QuickInput.ts`                                                                                          | Quick pick and input box               |
+| Service      | Module                    | Purpose                                |
+| ------------ | ------------------------- | -------------------------------------- |
+| ActivityBar  | `Effect/ActivityBar.ts`   | Activity bar state                     |
+| Sidebar      | `Effect/Sidebar.ts`       | Side bar visibility and view switching |
+| StatusBar    | `Effect/StatusBar.ts`     | Status bar items                       |
+| Panel        | `Effect/Panel.ts`         | Bottom panel (terminal, output)        |
+| Notification | `Effect/Notification.ts`  | Toast notifications                    |
+| Progress     | `Effect/Progress.ts`      | Long-running operation progress        |
+| Dialog       | `Effect/WorkbenchDialog/` | Message boxes and input boxes          |
+| QuickInput   | `Effect/QuickInput.ts`    | Quick pick and input box               |
 
 ### Clipboard, Terminal, and Extensions
 
