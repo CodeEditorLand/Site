@@ -96,7 +96,7 @@
 		"cmdk": "1.1.1",
 		"cssnano": "9.9.0",
 		"cssnano-preset-advanced": "9.7.0",
-		"dotenv": "18.0.7",
+		"dotenv": "18.0.8",
 		"embla-carousel-react": "8.6.0",
 		"esbuild": "0.28.2",
 		"firebase": "13.0.0",
