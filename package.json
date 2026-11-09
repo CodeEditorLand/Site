@@ -75,7 +75,7 @@
 		"@radix-ui/react-tooltip": "1.4.1",
 		"@tailwindcss/aspect-ratio": "0.4.2",
 		"@tailwindcss/forms": "0.5.11",
-		"@tailwindcss/postcss": "4.3.4",
+		"@tailwindcss/postcss": "4.3.5",
 		"@tailwindcss/typography": "0.5.20",
 		"@testing-library/jest-dom": "7.0.1",
 		"@testing-library/react": "16.3.3",
