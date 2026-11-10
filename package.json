@@ -101,7 +101,7 @@
 		"esbuild": "0.28.2",
 		"firebase": "13.2.0",
 		"happy-dom": "21.0.4",
-		"i18next": "26.7.2",
+		"i18next": "27.0.1",
 		"input-otp": "1.5.0",
 		"jsdom": "31.0.0",
 		"lucide-react": "1.70.0",
