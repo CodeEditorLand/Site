@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 
 import { useTranslation } from "react-i18next";
 
-import type Content from "../Interface/Content/Feature.js";
+import type Content from "./Interface/Content/Feature.js";
 
 import type { HeroBand } from "./Hero/Type.js";
 

@@ -14,11 +14,36 @@ import {
 	HeaderView,
 } from "./Header/Data.js";
 
-import type { HeaderContent } from "./Header/Type.js";
+import type { HeaderAction, HeaderContent } from "./Header/Type.js";
 
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export type { HeaderContent };
+
+/**
+ * The variants that have no filled-blob equivalent in Jelly UI. They render as a
+ * plain CSS button wrapping an anchor; every other variant renders as the Jelly
+ * element itself. `link` is listed because the button surface accepts it even
+ * though the header's own data never emits it - the rule belongs to the shape,
+ * not to today's rows.
+ */
+const PlainVariant: ReadonlySet<string> = new Set(["ghost", "link"]);
+
+/**
+ * Where an action sends the reader. The Jelly path has no anchor to carry the
+ * href, so the destination is honoured here instead: an off-site action opens in
+ * the second tab its `Target` asks for, and everything else replaces the page
+ * the way the anchor would have.
+ */
+const Navigate = (Action: HeaderAction): void => {
+	if (Action.Target === "blank") {
+		window.open(Action.Href, "_blank", "noopener,noreferrer");
+
+		return;
+	}
+
+	window.location.href = Action.Href;
+};
 
 /**
  * Header - the site chrome.
@@ -39,6 +64,16 @@ export type { HeaderContent };
  * into the same shapes, so the markup below has one nav and one action row and
  * never branches on where they came from. `AuthSlot` is the auth island: when it
  * is mounted the Sign In action is dropped, because the island is that action.
+ *
+ * An action wears one of two bodies. `ghost` and `link` have no filled-blob
+ * equivalent in Jelly UI, so they stay a plain CSS button wrapping an anchor and
+ * keep the anchor's own semantics. `default` and `outline` render as real
+ * `jelly-button` elements - never through the Slot passthrough, so the Jelly
+ * custom element is the rendered node rather than being swallowed by an anchor -
+ * and navigate on click, which is what gives the header CTAs the same soft-body
+ * physics as the hero buttons. The element's own shadow `<button>` is the
+ * focusable, keyboard-operable control, so Enter and Space activate it exactly
+ * like a native button.
  */
 interface HeaderProps {
 	Content?: HeaderContent;
@@ -207,23 +242,48 @@ const Header = ({ Content, AuthSlot, Mode = "minimal" }: HeaderProps) => {
 						<div className="HeaderActions">
 							{AuthSlot}
 
-							{Actions.map((Action) => (
-								<Button
-									key={Action.Href}
-									variant={Action.Variant}
-									size="default"
-									className="HeaderActionButton"
-									asChild
-								>
-									<a
-										href={Action.Href}
-										{...HeaderLinkAttributes(Action.Target)}
-										onClick={() => SetOpen(false)}
+							{Actions.map((Action) =>
+								PlainVariant.has(Action.Variant) ? (
+									/* No Jelly form for this variant: the anchor is
+									   the control, so it keeps its href, its target
+									   and its own keyboard behaviour. */
+									<Button
+										key={Action.Href}
+										variant={Action.Variant}
+										size="default"
+										className="HeaderActionButton"
+										asChild
+									>
+										<a
+											href={Action.Href}
+											{...HeaderLinkAttributes(Action.Target)}
+											onClick={() => SetOpen(false)}
+										>
+											{Action.Label}
+										</a>
+									</Button>
+								) : (
+									/* The Jelly element is the rendered node -
+									   not routed through the Slot passthrough,
+									   so it is not swallowed by an anchor. Its
+									   shadow `<button>` carries focus and
+									   Enter/Space; the destination is honoured
+									   by Navigate. */
+									<Button
+										key={Action.Href}
+										variant={Action.Variant}
+										size="default"
+										className="HeaderActionButton"
+										onClick={() => {
+											SetOpen(false);
+
+											Navigate(Action);
+										}}
 									>
 										{Action.Label}
-									</a>
-								</Button>
-							))}
+									</Button>
+								),
+							)}
 						</div>
 					</div>
 				</div>

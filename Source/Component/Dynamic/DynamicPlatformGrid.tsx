@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import type Content from "../Interface/Content/Grid/Platform.js";
+import type Content from "./Interface/Content/Grid/Platform.js";
 
 import { Caption, Columns, Footnote, Kicker, RowsOf } from "./Platform/Data.js";
 

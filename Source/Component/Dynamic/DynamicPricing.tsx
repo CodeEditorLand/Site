@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import type Content from "../Interface/Content/Pricing.js";
+import type Content from "./Interface/Content/Pricing.js";
 
 import { Badge } from "../UI/Badge.js";
 

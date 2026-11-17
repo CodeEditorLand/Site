@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-import type Content from "../Interface/Content/Testimonial.js";
+import type Content from "./Interface/Content/Testimonial.js";
 
 import {
 	FeaturedOf,
